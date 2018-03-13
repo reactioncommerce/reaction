@@ -72,6 +72,62 @@ const filters = new SimpleSchema({
 registerSchema("filters", filters);
 
 /**
+ * Broadens an existing selector to include all variants of the given top-level productIds
+ * Additionally considers the tags product filter, if given
+ * Can operate on the "Revisions" and the "Products" collection
+ * @param collectionName {String} - "Revisions" or "Products"
+ * @param selector {object} - the selector that should be extended
+ * @param productFilters { object } - the product filter (e.g. orginating from query parameters)
+ * @param productIds {String[]} - the top-level productIds we want to get the variants of.
+ */
+function extendSelectorWithVariants(collectionName, selector, productFilters, productIds) {
+  let prefix = "";
+
+  if (collectionName.toLowerCase() === "revisions") {
+    prefix = "documentData.";
+  } else if (collectionName.toLowerCase() !== "products") {
+    throw new Error(`Can't extend selector for collection ${collectionName}.`);
+  }
+
+  // Remove hashtag filter from selector (hashtags are not applied to variants, we need to get variants)
+  const newSelector = _.omit(selector, ["hashtags", "ancestors"]);
+  if (productFilters && productFilters.tags) {
+    // Re-configure selector to pick either Variants of one of the top-level products, or the top-level products in the filter
+    _.extend(newSelector, {
+      $or: [{
+        [`${prefix}ancestors`]: {
+          $in: productIds
+        }
+      }, {
+        $and: [{
+          [`${prefix}hashtags`]: {
+            $in: productFilters.tags
+          }
+        }, {
+          [`${prefix}_id`]: {
+            $in: productIds
+          }
+        }]
+      }]
+    });
+  } else {
+    _.extend(newSelector, {
+      $or: [{
+        [`${prefix}ancestors`]: {
+          $in: productIds
+        }
+      }, {
+        [`${prefix}_id`]: {
+          $in: productIds
+        }
+      }]
+    });
+  }
+  return newSelector;
+}
+
+
+/**
  * products publication
  * @param {Number} [productScrollLimit] - optional, defaults to 24
  * @param {Array} shops - array of shopId to retrieve product from.
@@ -297,53 +353,19 @@ Meteor.publish("Products", function (productScrollLimit = 24, productFilters, so
       limit: productScrollLimit
     }).map((product) => product._id);
 
-    let newSelector = selector;
 
-    // Remove hashtag filter from selector (hashtags are not applied to variants, we need to get variants)
-    if (productFilters && productFilters.tags) {
-      newSelector = _.omit(selector, ["hashtags", "ancestors"]);
-
-      // Re-configure selector to pick either Variants of one of the top-level products, or the top-level products in the filter
-      _.extend(newSelector, {
-        $or: [{
-          ancestors: {
-            $in: productIds
-          }
-        }, {
-          $and: [{
-            hashtags: {
-              $in: productFilters.tags
-            }
-          }, {
-            _id: {
-              $in: productIds
-            }
-          }]
-        }]
-      });
-    } else {
-      newSelector = _.omit(selector, ["hashtags", "ancestors"]);
-      _.extend(newSelector, {
-        $or: [{
-          ancestors: {
-            $in: productIds
-          }
-        }, {
-          _id: {
-            $in: productIds
-          }
-        }]
-      });
-    }
+    const productSelectorWithVariants = extendSelectorWithVariants("Products", selector, productFilters, productIds);
 
     if (RevisionApi.isRevisionControlEnabled()) {
-      const handle = Revisions.find({
+      const revisionSelector = {
         "workflow.status": {
           $nin: [
             "revision/published"
           ]
         }
-      }).observe({
+      };
+      const revisionSelectorWithVariants = extendSelectorWithVariants("Revisions", revisionSelector, productFilters, productIds);
+      const handle = Revisions.find(revisionSelectorWithVariants).observe({
         added: (revision) => {
           this.added("Revisions", revision._id, revision);
           if (revision.documentType === "product") {
@@ -351,24 +373,10 @@ Meteor.publish("Products", function (productScrollLimit = 24, productFilters, so
             // If yes, we send a `changed`, otherwise `added`. I'm assuming
             // that this._documents.Products is somewhat equivalent to
             // the merge box Meteor.server.sessions[sessionId].getCollectionView("Products").documents
-            if (this._documents.Products) {
-              if (this._documents.Products[revision.documentId]) {
-                // I find it much clearer without `else if`
-                // eslint-disable-next-line no-lonely-if
-                if (revision.workflow.status !== "revision/published") {
-                  this.changed("Products", revision.documentId, { __revisions: [revision] });
-                } else {
-                  this.changed("Products", revision.documentId, { __revisions: [] });
-                }
-              } else {
-                // I find it much clearer without `else if`
-                // eslint-disable-next-line no-lonely-if
-                if (revision.workflow.status !== "revision/published") {
-                  this.added("Products", revision.documentId, { __revisions: [revision] });
-                } else {
-                  this.added("Products", revision.documentId, { __revisions: [] });
-                }
-              }
+            if (this._documents.Products && this._documents.Products[revision.documentId]) {
+              this.changed("Products", revision.documentId, { __revisions: [revision] });
+            } else {
+              this.added("Products", revision.documentId, { __revisions: [revision] });
             }
           }
         },
@@ -394,11 +402,11 @@ Meteor.publish("Products", function (productScrollLimit = 24, productFilters, so
         handle.stop();
       });
 
-      return Products.find(newSelector);
+      return Products.find(productSelectorWithVariants);
     }
 
     // Revision control is disabled, but is admin
-    return Products.find(newSelector, {
+    return Products.find(productSelectorWithVariants, {
       sort,
       limit: productScrollLimit
     });
