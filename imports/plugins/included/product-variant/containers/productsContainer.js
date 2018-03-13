@@ -178,17 +178,15 @@ function composer(props, onData) {
     shopId: { $in: activeShopsIds }
   });
 
-  const sortedProducts = ReactionProduct.sortProducts(productCursor.fetch(), currentTag);
-  Session.set("productGrid/products", sortedProducts);
-
   const productIds = [];
-  const stateProducts = sortedProducts.map((product) => {
+  const products = productCursor.map((product) => {
     productIds.push(product._id);
 
-    return {
-      ...applyProductRevision(product)
-    };
+    return applyProductRevision(product);
   });
+
+  const sortedProducts = ReactionProduct.sortProducts(products, currentTag);
+  Session.set("productGrid/products", sortedProducts);
 
   reactiveProductIds.set(productIds);
 
@@ -201,7 +199,7 @@ function composer(props, onData) {
 
   onData(null, {
     canLoadMoreProducts,
-    products: stateProducts,
+    products: sortedProducts,
     productsSubscription
   });
 }
