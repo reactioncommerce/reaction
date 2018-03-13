@@ -202,7 +202,8 @@ jobs:
       - run:
           name: Snyk Test
           command: |
-            PATH=$PATH:~/$APP_SOURCE_DIR/node_modules/.bin && snyk test
+            PATH=$PATH:$CIRCLE_WORKING_DIRECTORY/node_modules/.bin && \
+              snyk test
 
 workflows:
   version: 2
