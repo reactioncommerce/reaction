@@ -145,7 +145,7 @@ class ProductGridItem extends Component {
         >
           <div className="overlay">
             <div className="overlay-title">{product.title}</div>
-            <div className="currency-symbol">{formatPriceString(product.price.range)}</div>
+            <div className="currency-symbol">{formatPriceString((product.price && product.price.range) || "")}</div>
             {this.props.isSearch &&
                 <div className="overlay-description">{product.description}</div>
             }
