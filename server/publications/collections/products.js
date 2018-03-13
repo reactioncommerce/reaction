@@ -373,29 +373,8 @@ Meteor.publish("Products", function (productScrollLimit = 24, productFilters, so
             // If yes, we send a `changed`, otherwise `added`. I'm assuming
             // that this._documents.Products is somewhat equivalent to
             // the merge box Meteor.server.sessions[sessionId].getCollectionView("Products").documents
-            if (this._documents.Products) {
-              if (this._documents.Products[revision.documentId]) {
-                // I find it much clearer without `else if`
-                // eslint-disable-next-line no-lonely-if
-                if (revision.workflow.status !== "revision/published") {
-                  this.changed("Products", revision.documentId, { __revisions: [revision] });
-                } else {
-                  // TODO Review: I think this branch will never be executed, because if
-                  // revision.workflow.status === "revision/published" the `added` observe callback
-                  // shouldn't have been called in the first place (because the cursor that's observed
-                  // only fetches documents where revision.workflow.status !== "revision/published")
-                  this.changed("Products", revision.documentId, { __revisions: [] });
-                }
-              } else {
-                // I find it much clearer without `else if`
-                // eslint-disable-next-line no-lonely-if
-                if (revision.workflow.status !== "revision/published") {
-                  this.added("Products", revision.documentId, { __revisions: [revision] });
-                } else {
-                  // TODO: See above.
-                  this.added("Products", revision.documentId, { __revisions: [] });
-                }
-              }
+            if (this._documents.Products && this._documents.Products[revision.documentId]) {
+              this.changed("Products", revision.documentId, { __revisions: [revision] });
             } else {
               this.added("Products", revision.documentId, { __revisions: [revision] });
             }
