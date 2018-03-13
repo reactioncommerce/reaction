@@ -7,7 +7,6 @@ import { registerSchema } from "@reactioncommerce/reaction-collections";
 import { Products, Shops, Revisions } from "/lib/collections";
 import { Reaction, Logger } from "/server/api";
 import { RevisionApi } from "/imports/plugins/core/revisions/lib/api/revisions";
-import { findProductMedia } from "./product";
 
 //
 // define search filters as a schema so we can validate
@@ -71,6 +70,62 @@ const filters = new SimpleSchema({
 }, { check, tracker: Tracker });
 
 registerSchema("filters", filters);
+
+/**
+ * Broadens an existing selector to include all variants of the given top-level productIds
+ * Additionally considers the tags product filter, if given
+ * Can operate on the "Revisions" and the "Products" collection
+ * @param collectionName {String} - "Revisions" or "Products"
+ * @param selector {object} - the selector that should be extended
+ * @param productFilters { object } - the product filter (e.g. orginating from query parameters)
+ * @param productIds {String[]} - the top-level productIds we want to get the variants of.
+ */
+function extendSelectorWithVariants(collectionName, selector, productFilters, productIds) {
+  let prefix = "";
+
+  if (collectionName.toLowerCase() === "revisions") {
+    prefix = "documentData.";
+  } else if (collectionName.toLowerCase() !== "products") {
+    throw new Error(`Can't extend selector for collection ${collectionName}.`);
+  }
+
+  // Remove hashtag filter from selector (hashtags are not applied to variants, we need to get variants)
+  const newSelector = _.omit(selector, ["hashtags", "ancestors"]);
+  if (productFilters && productFilters.tags) {
+    // Re-configure selector to pick either Variants of one of the top-level products, or the top-level products in the filter
+    _.extend(newSelector, {
+      $or: [{
+        [`${prefix}ancestors`]: {
+          $in: productIds
+        }
+      }, {
+        $and: [{
+          [`${prefix}hashtags`]: {
+            $in: productFilters.tags
+          }
+        }, {
+          [`${prefix}_id`]: {
+            $in: productIds
+          }
+        }]
+      }]
+    });
+  } else {
+    _.extend(newSelector, {
+      $or: [{
+        [`${prefix}ancestors`]: {
+          $in: productIds
+        }
+      }, {
+        [`${prefix}_id`]: {
+          $in: productIds
+        }
+      }]
+    });
+  }
+  return newSelector;
+}
+
 
 /**
  * products publication
@@ -298,53 +353,19 @@ Meteor.publish("Products", function (productScrollLimit = 24, productFilters, so
       limit: productScrollLimit
     }).map((product) => product._id);
 
-    let newSelector = selector;
 
-    // Remove hashtag filter from selector (hashtags are not applied to variants, we need to get variants)
-    if (productFilters && productFilters.tags) {
-      newSelector = _.omit(selector, ["hashtags", "ancestors"]);
-
-      // Re-configure selector to pick either Variants of one of the top-level products, or the top-level products in the filter
-      _.extend(newSelector, {
-        $or: [{
-          ancestors: {
-            $in: productIds
-          }
-        }, {
-          $and: [{
-            hashtags: {
-              $in: productFilters.tags
-            }
-          }, {
-            _id: {
-              $in: productIds
-            }
-          }]
-        }]
-      });
-    } else {
-      newSelector = _.omit(selector, ["hashtags", "ancestors"]);
-      _.extend(newSelector, {
-        $or: [{
-          ancestors: {
-            $in: productIds
-          }
-        }, {
-          _id: {
-            $in: productIds
-          }
-        }]
-      });
-    }
+    const productSelectorWithVariants = extendSelectorWithVariants("Products", selector, productFilters, productIds);
 
     if (RevisionApi.isRevisionControlEnabled()) {
-      const handle = Revisions.find({
+      const revisionSelector = {
         "workflow.status": {
           $nin: [
             "revision/published"
           ]
         }
-      }).observe({
+      };
+      const revisionSelectorWithVariants = extendSelectorWithVariants("Revisions", revisionSelector, productFilters, productIds);
+      const handle = Revisions.find(revisionSelectorWithVariants).observe({
         added: (revision) => {
           this.added("Revisions", revision._id, revision);
           if (revision.documentType === "product") {
@@ -352,24 +373,10 @@ Meteor.publish("Products", function (productScrollLimit = 24, productFilters, so
             // If yes, we send a `changed`, otherwise `added`. I'm assuming
             // that this._documents.Products is somewhat equivalent to
             // the merge box Meteor.server.sessions[sessionId].getCollectionView("Products").documents
-            if (this._documents.Products) {
-              if (this._documents.Products[revision.documentId]) {
-                // I find it much clearer without `else if`
-                // eslint-disable-next-line no-lonely-if
-                if (revision.workflow.status !== "revision/published") {
-                  this.changed("Products", revision.documentId, { __revisions: [revision] });
-                } else {
-                  this.changed("Products", revision.documentId, { __revisions: [] });
-                }
-              } else {
-                // Just pushing the revisions of the product to the client is not enough,
-                // because additionally all other product fields should be pushed as well. But this will not happen
-                // because the productCursor observer is not reactive and therefore isn't executed if a new product
-                // is in db that matches the first selector (top-level products)
-                // Solution is to push a special notification to the client that tells it to re-subscribe to the
-                // publication.
-                this.added("Products", revision.documentId, { __resubscribe: true });
-              }
+            if (this._documents.Products && this._documents.Products[revision.documentId]) {
+              this.changed("Products", revision.documentId, { __revisions: [revision] });
+            } else {
+              this.added("Products", revision.documentId, { __revisions: [revision] });
             }
           }
         },
@@ -382,7 +389,7 @@ Meteor.publish("Products", function (productScrollLimit = 24, productFilters, so
           }
         },
         removed: (revision) => {
-          this.removed("Revisions", revision._id, revision);
+          this.removed("Revisions", revision._id);
           if (revision.documentType === "product") {
             if (this._documents.Products && this._documents.Products[revision.documentId]) {
               this.changed("Products", revision.documentId, { __revisions: [] });
@@ -395,27 +402,14 @@ Meteor.publish("Products", function (productScrollLimit = 24, productFilters, so
         handle.stop();
       });
 
-      const productCursor = Products.find(newSelector);
-      const mediaProductIds = productCursor.fetch().map((p) => p._id);
-      const mediaCursor = findProductMedia(this, mediaProductIds);
-
-      return [
-        productCursor,
-        mediaCursor
-      ];
+      return Products.find(productSelectorWithVariants);
     }
+
     // Revision control is disabled, but is admin
-    const productCursor = Products.find(newSelector, {
+    return Products.find(productSelectorWithVariants, {
       sort,
       limit: productScrollLimit
     });
-    const mediaProductIds = productCursor.fetch().map((p) => p._id);
-    const mediaCursor = findProductMedia(this, mediaProductIds);
-
-    return [
-      productCursor,
-      mediaCursor
-    ];
   }
 
   // This is where the publication begins for non-admin users
@@ -502,40 +496,11 @@ Meteor.publish("Products", function (productScrollLimit = 24, productFilters, so
   };
 
   // Returning Complete product tree for top level products to avoid sold out warning.
-  const productCursor = Products.find(newSelector, {
+  return Products.find(newSelector, {
     sort
     // TODO: REVIEW Limiting final products publication for non-admins
     // I think we shouldn't limit here, otherwise we are limited to 24 total products which
     // could be far less than 24 top-level products
     // limit: productScrollLimit
   });
-
-  const mediaProductIds = productCursor.fetch().map((p) => p._id);
-  const mediaCursor = findProductMedia(this, mediaProductIds);
-
-  const handle = productCursor.observe({
-    added: (product) => {
-      let productId;
-      if (product.type === "variant") {
-        [productId] = product.ancestors;
-      } else {
-        productId = product._id;
-      }
-      const cursor = findProductMedia(this, productId);
-      if (cursor) {
-        cursor.forEach((media) => {
-          this.added("cfs.Media.filerecord", media._id, media);
-        });
-      }
-    }
-  });
-
-  this.onStop(() => {
-    handle.stop();
-  });
-
-  return [
-    productCursor,
-    mediaCursor
-  ];
 });

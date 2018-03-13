@@ -1,13 +1,39 @@
 import _ from "lodash";
-import path from "path";
 import accounting from "accounting-js";
 import Future from "fibers/future";
 import { Meteor } from "meteor/meteor";
 import { check, Match } from "meteor/check";
 import { SSR } from "meteor/meteorhacks:ssr";
-import { Media, Orders, Products, Shops, Packages } from "/lib/collections";
-import { Logger, Hooks, Reaction } from "/server/api";
+import { Orders, Products, Shops, Packages } from "/lib/collections";
 import { PaymentMethodArgument } from "/lib/collections/schemas";
+import { Logger, Hooks, Reaction } from "/server/api";
+import { Media } from "/imports/plugins/core/files/server";
+
+/**
+ * @name getPrimaryMediaForItem
+ * @summary Gets the FileRecord for the primary media item associated with the variant or product
+ *   for the given item. This is similar to a function in /lib/api/helpers, but that one uses
+ *   Media.findOneLocal, which is only for browser code.
+ * @param {Object} item Must have `productId` and/or `variantId` set to get back a result.
+ * @return {FileRecord|null}
+ */
+async function getPrimaryMediaForItem({ productId, variantId } = {}) {
+  let result;
+
+  if (variantId) {
+    result = await Media.findOne({
+      "metadata.variantId": variantId
+    }, { sort: { "metadata.priority": 1, "uploadedAt": 1 } });
+  }
+
+  if (!result && productId) {
+    result = await Media.findOne({
+      "metadata.productId": productId
+    }, { sort: { "metadata.priority": 1, "uploadedAt": 1 } });
+  }
+
+  return result || null;
+}
 
 /**
  * @name formatDateForEmail
@@ -633,14 +659,7 @@ export const methods = {
     const shop = Shops.findOne(order.shopId);
     // TODO need to make this fully support multi-shop. Now it's just collapsing into one
     // Get shop logo, if available
-    let emailLogo;
-    if (Array.isArray(shop.brandAssets)) {
-      const brandAsset = shop.brandAssets.find((asset) => asset.type === "navbarBrandImage");
-      const mediaId = Media.findOne(brandAsset.mediaId);
-      emailLogo = path.join(Meteor.absoluteUrl(), mediaId.url());
-    } else {
-      emailLogo = `${Meteor.absoluteUrl()}resources/email-templates/shop-logo.png`;
-    }
+    const emailLogo = Reaction.Email.getShopLogo(shop);
 
     let subtotal = 0;
     let shippingCost = 0;
@@ -714,18 +733,19 @@ export const methods = {
           // Placeholder image if there is no product image
           orderItem.placeholderImage = `${Meteor.absoluteUrl()}resources/placeholder.gif`;
 
-          const variantImage = Media.findOne({
-            "metadata.productId": orderItem.productId,
-            "metadata.variantId": orderItem.variants._id
-          });
           // variant image
+          const variantImage = Promise.await(getPrimaryMediaForItem({
+            productId: orderItem.productId,
+            variantId: orderItem.variants && orderItem.variants._id
+          }));
           if (variantImage) {
-            orderItem.variantImage = Meteor.absoluteUrl(variantImage.url());
+            orderItem.variantImage = variantImage.url({ absolute: true, store: "large" });
           }
+
           // find a default image
-          const productImage = Media.findOne({ "metadata.productId": orderItem.productId });
+          const productImage = Promise.await(getPrimaryMediaForItem({ productId: orderItem.productId }));
           if (productImage) {
-            orderItem.productImage = Meteor.absoluteUrl(productImage.url());
+            orderItem.productImage = productImage.url({ absolute: true, store: "large" });
           }
         }
       }
