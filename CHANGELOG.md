@@ -1,3 +1,79 @@
+# v1.9.0
+This release contains a lot of fixes, some of them performance related, but by far the biggest change is that we've migrated from the Meteor version of Simple Schema to the npm version.
+
+## BREAKING CHANGES
+This is a breaking change for any plugin that implements or modifies a schema based on the Meteor simple-schema package.
+
+From the PR Notes
+
+This PR updates the `aldeed:simple-schema` Meteor package dependency to instead depend on the `simpl-schema` NPM package, which is the newest release of the same library. As part of this change, there are several breaking changes and other gotchas to be aware of.
+
+IMPORTANT! The NPM package does not play nice with the previous Meteor package. After updating to this Reaction release, run the app one time, and then look at the .meteor/versions file. Make sure that aldeed:simple-schema is not listed. If it is there, that is because you depend on another Meteor package that depends on aldeed:simple-schema. You will have to update or remove any such packages (with meteor remove / meteor add) until aldeed:simple-schema disappears from your .meteor/versions file.
+Search your app for any import { SimpleSchema } from "meteor/aldeed:simple-schema" lines that you have added in your custom code, and replace them with import SimpleSchema from "simpl-schema"
+Be aware that the package name does not have the "e" on "simpl". (There is a different NPM package called simple-schema with the "e", and that is NOT the one you want.)
+If you have your own custom schemas, refer to the SimpleSchema changelog to update them for the breaking changes: https://github.com/aldeed/meteor-simple-schema/blob/master/CHANGELOG.md#200
+If you use attachSchema in your code, be aware that passing an array to attachSchema will no longer work. You should first merge all the schemas and then pass the combined schema to attachSchema
+
+Please read the PR if you need more details [Use NPM SimpleSchema rather than Meteor #3331](https://github.com/reactioncommerce/reaction/pull/3331)
+
+## Docker Potentially Breaking Changes
+reactioncommerce/base:v4.0.1 removed the following:
+- Removed the conditional MongoDB installation (via $INSTALL_MONGO env). Use `mongo` as a service in docker-compose, see example in README.
+- Removed the conditional PhantomJS installation (via $INSTALL_PHANTOMJS env). If PhantomJS is required in your build, you can include it in your custom Dockerfile.
+
+## Dockerfile Updates
+- Base image updated to `reactioncommerce/base:v4.0.1` which has:
+  - `node:8.9.4` as base image (same Debian base as before, but with Node 8 preinstalled)
+  - Meteor 1.6.1 preinstalled
+- [Multi-stage build support](https://docs.docker.com/develop/develop-images/multistage-build/).
+  This helped reduce the size of the production image by removing un-required dependencies.
+- Final production bundle uses `node:8.9.4-slim`
+
+## Docker Compose changes
+- Updated existing `docker-compose.yml` to serve as the config for running a local development environment.
+- Added  a new `docker-compose-demo.yml` for testing out production builds (this is the replacement for the previous `docker-compose.yml`).
+## Upgrades
+- Use NPM SimpleSchema rather than Meteor (#3331)
+
+## Refactor
+- refactor: rename Import to Importer (#3613) .. Resolves ##1364
+- refactor: Convert search modal wrapper to React (#3853)
+
+## Fix
+ - fix #3718: Inventory updated on shopify sync (#3897)
+ - fix settings startup error (#3939)
+ - fix #3733: email validation (#3899)
+ - fix for `Change all email verification links to use tokens` (#3884)
+ - fix: update shopId the right way. (#3947) .. Resolves #3945
+ - fix: migration version after SimpleSchema NPM merge (#3929)
+ - fix: ui glitches using dynamic merchandising (#3932)
+ - fix: Setting or changing a products perma-link causes hard refresh (#3755) .. #2246
+ - fix: Removing search-mongo plugin causes errors at startup (#3837) .. Resolves #3797
+ - fix: `Reaction.getShopId` missing `()` (#3891)
+ - fix: added delay and loader (#3796) .. #2863
+ - fix: Add back missing browser policy (#3894)
+ - fix: Discount codes limits are not honored (#3824) .. #3783
+ - fix: Remove cfs:graphicsmagick (#3869) .. Resolves #3868
+ - fix: password validation (#3860) .. Resolves #3854
+ - fix: Set localstorage even when no Meteor.user exists (#3856) .. Resolves #3846
+ - fix: Handle misconfigured Avalara api (#3827) .. Resolves #3813
+ - fix: Fix for "capturing bulk orders throws server side error" (#3822) .. Resolves #3705
+ - fix: Shop switcher opens off-screen (#3809) .. Resolves #3619
+ - fix: /shop added to URL (#3794) .. Resolves #2810
+ - fix: adding country code to phone number before sending SMS (#3751) .. Resolves #3597
+ - fix: Changing the permalink before publishing a product results in "not found" (#3748)
+ - fix: Errors when updating default shipping and billing addresses (#3802)
+ - fix: delayed response in localization settings (#3872)
+ - fix: Handle integer schema type when getting form field type (#3930)
+
+ ## Chore
+ - chore: add imports/plugins/custom to eslint ignore (#3901)
+ - chore: update Docker base for multi-stage builds (#3653)
+
+## Docs
+ - docs(jsdoc) #3840 - document and namespace Router.Hooks methods (#3874)
+
+
 # v1.8.2
 ## Fixes
  - fix: added unique to slug (#3745) .. Resolves #2736

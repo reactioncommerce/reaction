@@ -11,7 +11,6 @@ import { ITEMS_INCREMENT } from "/client/config/defaults";
 import { ReactionProduct } from "/lib/api";
 import { applyProductRevision } from "/lib/api/products";
 import { Products, Tags, Shops } from "/lib/collections";
-import { Media } from "/imports/plugins/core/files/client";
 import ProductsComponent from "../components/products";
 
 const reactiveProductIds = new ReactiveVar([], (oldVal, newVal) => JSON.stringify(oldVal.sort()) === JSON.stringify(newVal.sort()));
@@ -179,42 +178,15 @@ function composer(props, onData) {
     shopId: { $in: activeShopsIds }
   });
 
-  const sortedProducts = ReactionProduct.sortProducts(productCursor.fetch(), currentTag);
-  Session.set("productGrid/products", sortedProducts);
-
   const productIds = [];
-  // Instantiate an object for use as a map. This object does not inherit prototype or methods from `Object`
-  const productMediaById = Object.create(null);
-  const stateProducts = sortedProducts.map((product) => {
+  const products = productCursor.map((product) => {
     productIds.push(product._id);
-
-    const primaryMedia = Media.findOneLocal({
-      "metadata.productId": product._id,
-      "metadata.toGrid": 1,
-      "metadata.workflow": { $nin: ["archived", "unpublished"] }
-    }, {
-      sort: { "metadata.priority": 1, "uploadedAt": 1 }
-    });
-
-    const variantIds = ReactionProduct.getVariants(product._id).map((variant) => variant._id);
-    let additionalMedia = Media.findLocal({
-      "metadata.productId": product._id,
-      "metadata.variantId": { $in: variantIds },
-      "metadata.workflow": { $nin: ["archived", "unpublished"] }
-    }, {
-      limit: 3,
-      sort: { "metadata.priority": 1, "uploadedAt": 1 }
-    });
-
-    if (additionalMedia.length < 2) additionalMedia = null;
-
-    productMediaById[product._id] = {
-      additionalMedia,
-      primaryMedia
-    };
 
     return applyProductRevision(product);
   });
+
+  const sortedProducts = ReactionProduct.sortProducts(products, currentTag);
+  Session.set("productGrid/products", sortedProducts);
 
   reactiveProductIds.set(productIds);
 
@@ -227,8 +199,7 @@ function composer(props, onData) {
 
   onData(null, {
     canLoadMoreProducts,
-    productMediaById,
-    products: stateProducts,
+    products: sortedProducts,
     productsSubscription
   });
 }
