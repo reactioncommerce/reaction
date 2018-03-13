@@ -21,5 +21,5 @@ export default function runMeteorMethodWithContext(context, name, args) {
     randomSeed: null
   });
 
-  DDP._CurrentInvocation.withValue(invocation, () => Meteor.apply(name, args));
+  return DDP._CurrentInvocation.withValue(invocation, () => Meteor.apply(name, args));
 }
