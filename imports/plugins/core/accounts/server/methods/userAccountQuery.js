@@ -16,7 +16,7 @@ export function userAccountQuery(context, id) {
   // Check to make sure current user has permissions to view queried user
   if (!Reaction.hasPermission("reaction-accounts", userId)) throw new Meteor.Error("User does not have permission");
 
-  // Query the accounts collection to find user by ID
+  // Query the accounts collection to find user by `id`
   const userAccount = Accounts.findOne({
     _id: id
   });
