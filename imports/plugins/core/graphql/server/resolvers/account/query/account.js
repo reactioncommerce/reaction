@@ -1,4 +1,5 @@
 import { transformIdFromBase64 } from "@reactioncommerce/reaction-graphql-utils";
+import { xformAccountResponse } from "../../xforms/account";
 import { userAccountQuery } from "/imports/plugins/core/accounts/server/methods/userAccountQuery";
 
 /**
@@ -19,5 +20,5 @@ export default function account(_, { id }, context) {
   // Pass decoded id (idFromBase64.id) and context into userAccountQuery function
   const userAccount = userAccountQuery(context, idFromBase64.id);
 
-  return userAccount;
+  return xformAccountResponse(userAccount);
 }
