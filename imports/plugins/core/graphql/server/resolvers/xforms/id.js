@@ -7,7 +7,7 @@ export const encodeOpaqueId = curry((namespace, id) => {
 });
 
 /* Transform an opaque ID to an internal ID. */
-export const decodeOpaqueId = opaqueId => {
+export const decodeOpaqueId = (opaqueId) => {
   const unencoded = Buffer.from(opaqueId, "base64").toString("utf8");
   const [namespace, id] = unencoded.split(":");
   return { namespace, id };
@@ -17,11 +17,10 @@ export const decodeOpaqueId = opaqueId => {
  * NOTE: Assumes key is _id but key could be provided as another curried param.
  */
 export const assocOpaqueId = curry((namespace, item) =>
-  assoc("_id", encodeOpaqueId(namespace, item._id), item)
-);
+  assoc("_id", encodeOpaqueId(namespace, item._id), item));
 
 /* Assoc an internal ID onto an object by decoding it's existing opaque _id.
  * NOTE: Assumes key is _id but key could be provided as another curried param.
  */
-export const assocInternalId = item =>
+export const assocInternalId = (item) =>
   assoc("_id", decodeOpaqueId(item._id).id, item);

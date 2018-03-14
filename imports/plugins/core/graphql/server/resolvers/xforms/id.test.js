@@ -1,6 +1,5 @@
 import {
   assocInternalId,
-  assocOpaqueId,
   decodeOpaqueId,
   encodeOpaqueId
 } from "./id";
