@@ -51,9 +51,9 @@ class AddressBook extends Component {
     return (Object.keys(editAddress).length !== 0);
   }
 
-  get addressCount() {
+  get hasAddress() {
     const { addressBook } = this.props;
-    return addressBook.length;
+    return (addressBook && addressBook.length !== 0);
   }
 
   // Address Actions
@@ -93,10 +93,10 @@ class AddressBook extends Component {
   }
 
   onAdd = (address) => {
-    const { editAddress } = this.state;
     const { addAddress, updateAddress } = this.props;
 
     if (this.hasEditAddress) {
+      const { editAddress } = this.state;
       updateAddress({ _id: editAddress._id, ...address });
       this.clearForm();
     } else {
@@ -185,9 +185,9 @@ class AddressBook extends Component {
       content = (
         <Components.AddressBookForm
           add={this.onAdd}
-          addressCount={this.addressCount}
           cancel={this.onCancel}
           editAddress={editAddress}
+          hasAddress={this.hasAddress}
         />
       );
     } else {

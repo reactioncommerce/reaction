@@ -7,16 +7,16 @@ import { Components, registerComponent } from "@reactioncommerce/reaction-compon
 class AddressBookForm extends Component {
   static propTypes = {
     add: PropTypes.func, // add addess callback
-    addressCount: PropTypes.number, // number of address in addressBook
     cancel: PropTypes.func, // cancel address entry and render AddressBookGrid
-    editAddress: PropTypes.object // address object
+    editAddress: PropTypes.object, // address object
+    hasAddress: PropTypes.bool // has address in addressBook
   }
 
   state = {
     countries: [],
     regions: [],
     fields: {
-      country: "US", // defaults to United States
+      country: this.props.editAddress.country || "US", // defaults to United States
       fullName: this.props.editAddress.fullName || "",
       address1: this.props.editAddress.address1 || "",
       address2: this.props.editAddress.address2 || "",
@@ -24,8 +24,8 @@ class AddressBookForm extends Component {
       city: this.props.editAddress.city || "",
       region: this.props.editAddress.region || "",
       phone: this.props.editAddress.phone || "",
-      isShippingDefault: this.props.editAddress.isShippingDefault || false,
-      isBillingDefault: this.props.editAddress.isBillingDefault || false,
+      isShippingDefault: this.props.editAddress.isShippingDefault || (!this.props.hasAddress),
+      isBillingDefault: this.props.editAddress.isBillingDefault || (!this.props.hasAddress),
       isCommercial: this.props.editAddress.isCommercial || false
     }
   }
@@ -75,6 +75,59 @@ class AddressBookForm extends Component {
     this.onFieldChange(new Event("onSelect"), value, name);
   }
 
+  renderAddressOptions() {
+    const { hasAddress } = this.props;
+    const { fields } = this.state;
+
+    let defaultOptions;
+    if (hasAddress) {
+      defaultOptions = (
+        <div>
+          <div className="form-group">
+            <span className="control-label" />
+            <div className="checkbox">
+              <Components.Checkbox
+                label="Make this your default shipping address."
+                name="isShippingDefault"
+                onChange={this.onFieldChange}
+                checked={fields.isShippingDefault}
+                />
+            </div>
+          </div>
+          <div className="form-group">
+            <span className="control-label" />
+            <div className="checkbox">
+              <Components.Checkbox
+                label="Make this your default billing address."
+                name="isBillingDefault"
+                onChange={this.onFieldChange}
+                checked={fields.isBillingDefault}
+                />
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    return (
+      <div className="row address-options" style={{ paddingLeft: "5px" }}>
+        <div className="col-md-12">
+          {defaultOptions}
+          <div className="form-group">
+            <div className="checkbox">
+              <Components.Checkbox
+                label="This is a commercal address."
+                name="isCommercial"
+                onChange={this.onFieldChange}
+                checked={fields.isCommercial}
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   renderButtons() {
     const { cancel } = this.props;
     // TODO: use translation component for button text!
@@ -91,9 +144,8 @@ class AddressBookForm extends Component {
     console.log("React AddressBookForm", this.props, this.state);
     return (
       <form onSubmit={this.onSubmit}>
-
         <div className="row">
-          <div className="col-md-6 form-group">
+          <div className="col-md-6">
             <Components.Select
               label="Country"
               name="country"
@@ -106,7 +158,7 @@ class AddressBookForm extends Component {
         </div>
 
         <div className="row">
-          <div className="col-md-6 form-group">
+          <div className="col-md-6">
             <Components.TextField
               label="Full Name"
               name="fullName"
@@ -117,7 +169,7 @@ class AddressBookForm extends Component {
         </div>
 
         <div className="row">
-          <div className="col-md-6 form-group">
+          <div className="col-md-6">
             <Components.TextField
               label="Address"
               name="address1"
@@ -125,7 +177,7 @@ class AddressBookForm extends Component {
               value={fields.address1}
             />
           </div>
-          <div className="col-md-6 form-group">
+          <div className="col-md-6">
             <Components.TextField
               label="Address"
               name="address2"
@@ -136,7 +188,7 @@ class AddressBookForm extends Component {
         </div>
 
         <div className="row">
-          <div className="col-md-4 form-group">
+          <div className="col-md-4">
             <Components.TextField
               label="Postal"
               name="postal"
@@ -144,7 +196,7 @@ class AddressBookForm extends Component {
               value={fields.postal}
             />
           </div>
-          <div className="col-md-4 form-group">
+          <div className="col-md-4">
             <Components.TextField
               label="City"
               name="city"
@@ -152,7 +204,7 @@ class AddressBookForm extends Component {
               value={fields.city}
             />
           </div>
-          <div className="col-md-4 form-group">
+          <div className="col-md-4">
             <Components.Select
               label="Region"
               name="region"
@@ -164,7 +216,7 @@ class AddressBookForm extends Component {
         </div>
 
         <div className="row">
-          <div className="col-md-4 form-group">
+          <div className="col-md-4">
             <Components.TextField
               label="Phone"
               name="phone"
@@ -174,15 +226,7 @@ class AddressBookForm extends Component {
           </div>
         </div>
 
-        <div className="row address-options">
-          <Components.Checkbox
-            label="This is a Commercal Address."
-            name="isCommercial"
-            onChange={this.onChange}
-            checked={fields.isCommercial}
-          />
-        </div>
-
+        {this.renderAddressOptions()}
         {this.renderButtons()}
       </form>
     );
