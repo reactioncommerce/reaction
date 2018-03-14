@@ -9,7 +9,6 @@ export { default as Item } from "./items/item";
 export { default as TextField } from "./textfield/textfield";
 export { default as NumericInput } from "./numericInput/numericInput";
 export { default as NumberTypeInput } from "./numericInput/numberTypeInput";
-export { default as CurrencyInput } from "./currencyInput/currencyInput.js";
 export { Button, IconButton, EditButton, VisibilityButton, Handle, ButtonSelect } from "./button";
 export { Badge } from "./badge";
 export { Translation, Currency } from "./translation";
