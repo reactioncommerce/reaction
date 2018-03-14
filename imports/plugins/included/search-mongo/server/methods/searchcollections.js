@@ -245,7 +245,7 @@ export function buildOrderSearchRecord(orderId) {
   try {
     OrderSearch.upsert(orderId, { $set: { ...orderSearch } });
   } catch (error) {
-    Logger.error(error, "Failed to add order to OrderSearch collection");
+    Logger.error(error, "Failed to add order to the OrderSearch collection");
   }
 }
 
