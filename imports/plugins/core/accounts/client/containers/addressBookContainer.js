@@ -118,10 +118,25 @@ class AddressBook extends Component {
 
   // rendering the address book control bar
   renderControlBar() {
-    const { entryMode } = this.state;
+    const { entryMode, editAddress } = this.state;
+
+    let controlBarContent;
+    if (entryMode && Object.keys(editAddress).length === 0) {
+      controlBarContent = (<span>Add a new address entry</span>);
+    } else if (entryMode && Object.keys(editAddress).length !== 0) {
+      controlBarContent = (<span>Editing this addres entry</span>);
+    } else {
+      controlBarContent = (
+        <button className="btn btn-default" onClick={this.toggleEntryMode}>
+          <i className="fa fa-plus fa-lg address-icons" />
+          <span data-i18n="addressBookGrid.addAddress">Add Address</span>
+        </button>
+      );
+    }
+
     return (
       <div className="panel-control-bar">
-        {(entryMode) ? "Adding New Address" : "Add Address"}
+        {controlBarContent}
       </div>
     );
   }
