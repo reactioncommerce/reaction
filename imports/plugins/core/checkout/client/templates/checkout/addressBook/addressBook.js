@@ -35,6 +35,7 @@ function removeAddress(_id) {
       Alerts.toast(i18next.t("addressBookGrid.cantRemoveThisAddress", { err: error.message }), "error");
     }
     if (result) {
+      // TODO: FIX THIS
       console.log("address removed!");
     }
   });

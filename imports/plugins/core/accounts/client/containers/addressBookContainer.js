@@ -12,13 +12,13 @@ class AddressBook extends Component {
   }
 
   state = {
-    entryMode: (this.props.addressBook.length === 0)
+    entryMode: (this.props.addressBook.length === 0), // no address enable the form
+    editAddress: {} // address to be edited.
   }
 
   componentWillReceiveProps(nextProps) {
     const { addressBook } = nextProps;
     const { entryMode } = this.state;
-    console.log(entryMode, addressBook.length === 0)
 
     if (addressBook.length === 0 && !entryMode) {
       this.setState({ entryMode: true });
@@ -37,7 +37,7 @@ class AddressBook extends Component {
     return addressBook.find((addy) => addy._id === _id);
   }
 
-  // Address Book Actions
+  // Address Actions
 
   /**
    * @method onSelect
@@ -71,6 +71,26 @@ class AddressBook extends Component {
   onRemove = (_id) => {
     const { removeAddress } = this.props;
     removeAddress(_id);
+  }
+
+  // Address Book Actions
+
+  /**
+   * @method toggleEntryMode
+   * @summary toggles the entryMode state.
+   * @since 2.0.0
+   */
+  toggleEntryMode = () => {
+    console.log("toggle entry mode")
+    const { entryMode } = this.state;
+    this.setState({ entryMode: !entryMode });
+  }
+
+  onEdit = (_id) => {
+    console.log("on edit", _id);
+    const editAddress = this.findAddress(_id);
+    this.setState({ editAddress });
+    this.toggleEntryMode();
   }
 
   // Address Book JSX
@@ -109,18 +129,19 @@ class AddressBook extends Component {
   // render address book content
   renderContent() {
     const { addressBook } = this.props;
-    const { entryMode } = this.state;
+    const { editAddress, entryMode } = this.state;
 
-    console.log("render content entryMode", entryMode)
     return (
       <div className="panel-body panel-content">
-        {(entryMode) ? <Components.AddressBookForm /> : <Components.AddressBookGrid addressBook={addressBook} select={this.onSelect} remove={this.onRemove} />}
+        {
+          (entryMode) ? <Components.AddressBookForm editAddress={editAddress} /> : <Components.AddressBookGrid addressBook={addressBook} select={this.onSelect} remove={this.onRemove} edit={this.onEdit} />
+        }
       </div>
     );
   }
 
   render() {
-    // console.log("React AddressBookContainer", this.props, this.state);
+    console.log("React AddressBookContainer", this.props, this.state);
     return (
       <div className="panel panel-default panel-address-book">
         {this.renderHeading()}

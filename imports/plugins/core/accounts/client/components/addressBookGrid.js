@@ -5,6 +5,7 @@ import { Components, registerComponent } from "@reactioncommerce/reaction-compon
 class AddressBookGrid extends Component {
   static propTypes = {
     addressBook: PropTypes.array,
+    edit: PropTypes.func,
     remove: PropTypes.func,
     select: PropTypes.func
   }
@@ -42,7 +43,7 @@ class AddressBookGrid extends Component {
   }
 
   renderAddressGrid() {
-    const { addressBook, select, remove } = this.props;
+    const { addressBook, edit, select, remove } = this.props;
     return addressBook.map((address) => {
       const { _id, fullName, isBillingDefault, isShippingDefault } = address;
       return (
@@ -56,7 +57,7 @@ class AddressBookGrid extends Component {
             {this.renderAddress(address)}
           </div>
           <div className="controls">
-            <button className="btn btn-default" title="{{i18n 'addressBookGrid.edit' 'Edit'}}">
+            <button className="btn btn-default" title="{{i18n 'addressBookGrid.edit' 'Edit'}}" onClick={() => { edit(_id); }}>
               <i className="fa fa-pencil" />
             </button>
             <button className="btn btn-default danger-action" title="{{i18n 'addressBookGrid.removeAddress' 'Remove Address'}}" onClick={() => { remove(_id); }}>
