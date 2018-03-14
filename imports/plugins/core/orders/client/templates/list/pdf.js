@@ -41,7 +41,7 @@ Template.completedPDFLayout.helpers({
   },
   billing() {
     const order = Template.instance().state.get("order");
-    if (order && order.billing) {
+    if (order && order.billing && order.billing.length) {
       return order.billing[0];
     }
 
