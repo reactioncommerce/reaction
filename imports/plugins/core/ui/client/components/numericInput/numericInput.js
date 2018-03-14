@@ -149,7 +149,8 @@ class NumericInput extends Component {
   }
 
   /**
-   * Render the label for the field if one is provided in props
+   * renderLabel
+   * @summary Render the label for the field if one is provided in props
    * @return {ReactNode|null} react node or null
    */
   renderLabel() {
@@ -165,7 +166,8 @@ class NumericInput extends Component {
   }
 
   /**
-   * Render the input box or field
+   * renderField
+   * @summary Render the input box or field
    * @return {JSX} jsx template
    */
   renderField() {
