@@ -5,16 +5,33 @@ import { Components, registerComponent } from "@reactioncommerce/reaction-compon
 class AddressBook extends Component {
   static propTypes = {
     account: PropTypes.object, // might only need the accountId
-    addressBook: PropTypes.array,
+    addressBook: PropTypes.array, // array of address objects
     heading: PropTypes.object, // { defaultValue: String, i18nKey: String, checkout: Object }
-    removeAddress: PropTypes.func,
-    updateAddress: PropTypes.func
+    removeAddress: PropTypes.func, // remove address reducer calls meteor method
+    updateAddress: PropTypes.func // update address reducer calls meteor method
   }
 
   state = {
-    entryMode: false
+    entryMode: (this.props.addressBook.length === 0)
   }
 
+  componentWillReceiveProps(nextProps) {
+    const { addressBook } = nextProps;
+    const { entryMode } = this.state;
+    console.log(entryMode, addressBook.length === 0)
+
+    if (addressBook.length === 0 && !entryMode) {
+      this.setState({ entryMode: true });
+    }
+  }
+
+  /**
+   * @method findAddres
+   * @summary using the provided _id finds an address object from the addressBook array.
+   * @since 2.0.0
+   * @param {String} _id - address object _id
+   * @return {Object} - address object.
+   */
   findAddress(_id) {
     const { addressBook } = this.props;
     return addressBook.find((addy) => addy._id === _id);
@@ -22,13 +39,18 @@ class AddressBook extends Component {
 
   // Address Book Actions
 
-  // on select
-  // update an address in the address book
-  // that's been selected as the default shipping or billing address
-  onSelect = (_id, method) => {
+  /**
+   * @method onSelect
+   * @summary updating an address if it's been selected as the default shipping or billing address.
+   * @since 2.0.0
+   * @param {String} _id - address object _id
+   * @param {String} usage - the address usage "shipping" or "billing"
+   * @return {Object} - contains the component for updating a user's address.
+   */
+  onSelect = (_id, usage) => {
     const { updateAddress } = this.props;
     const address = this.findAddress(_id);
-    switch (method) {
+    switch (usage) {
       case "shipping":
         updateAddress(address, "isShippingDefault");
         break;
@@ -40,10 +62,18 @@ class AddressBook extends Component {
     }
   }
 
+  /**
+   * @method onRemove
+   * @summary using the provided _id to call the removeAddress reducer that removes an address.
+   * @since 2.0.0
+   * @param {String} _id - address object _id
+   */
   onRemove = (_id) => {
     const { removeAddress } = this.props;
     removeAddress(_id);
   }
+
+  // Address Book JSX
 
   // rendering the checkout step icon
   renderCheckoutIcon() {
@@ -66,6 +96,7 @@ class AddressBook extends Component {
     );
   }
 
+  // rendering the address book control bar
   renderControlBar() {
     const { entryMode } = this.state;
     return (
@@ -79,6 +110,8 @@ class AddressBook extends Component {
   renderContent() {
     const { addressBook } = this.props;
     const { entryMode } = this.state;
+
+    console.log("render content entryMode", entryMode)
     return (
       <div className="panel-body panel-content">
         {(entryMode) ? <Components.AddressBookForm /> : <Components.AddressBookGrid addressBook={addressBook} select={this.onSelect} remove={this.onRemove} />}
@@ -87,7 +120,7 @@ class AddressBook extends Component {
   }
 
   render() {
-    console.log("React AddressBookContainer", this.props, this.state);
+    // console.log("React AddressBookContainer", this.props, this.state);
     return (
       <div className="panel panel-default panel-address-book">
         {this.renderHeading()}

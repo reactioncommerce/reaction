@@ -4,14 +4,31 @@ import { i18next } from "/client/api";
 import * as Collections from "/lib/collections";
 import { Components } from "@reactioncommerce/reaction-components";
 
-let entryMode = false;
-
+/**
+ * @method getAccount
+ * @summary general helper function that returns the current user account
+ * @since 2.0.0
+ * @return {Object} - user account.
+ */
 const getAccount = () => Collections.Accounts.findOne({ _id: Meteor.userId() });
 
+/**
+ * @method updateAddress
+ * @summary helper function that updates an address in the account's addressBook via a meteor method.
+ * @since 2.0.0
+ * @param {Object} address - address to be updated.
+ * @param{String} property - property to be updated.
+ */
 function updateAddress(address, property) {
   Meteor.call("accounts/addressBookUpdate", address, null, property);
 }
 
+/**
+ * @method removeAddress
+ * @summary helper function that updates an address in the account's addressBook via a meteor method.
+ * @since 2.0.0
+ * @param {String} _id - _id of address to be removed.
+ */
 function removeAddress(_id) {
   Meteor.call("accounts/addressBookRemove", _id, (error, result) => {
     if (error) {
