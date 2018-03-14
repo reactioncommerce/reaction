@@ -4,7 +4,7 @@ import { Meteor } from "meteor/meteor";
 import { Tracker } from "meteor/tracker";
 import { check, Match } from "meteor/check";
 import { registerSchema } from "@reactioncommerce/reaction-collections";
-import { Products, Shops, Revisions } from "/lib/collections";
+import { Products, Shops, Revisions, Catalog } from "/lib/collections";
 import { Reaction, Logger } from "/server/api";
 import { RevisionApi } from "/imports/plugins/core/revisions/lib/api/revisions";
 
@@ -126,48 +126,14 @@ function extendSelectorWithVariants(collectionName, selector, productFilters, pr
   return newSelector;
 }
 
-
-/**
- * products publication
- * @param {Number} [productScrollLimit] - optional, defaults to 24
- * @param {Array} shops - array of shopId to retrieve product from.
- * @return {Object} return product cursor
- */
-Meteor.publish("Products", function (productScrollLimit = 24, productFilters, sort = {}, editMode = true) {
-  check(productScrollLimit, Number);
-  check(productFilters, Match.OneOf(undefined, Object));
-  check(sort, Match.OneOf(undefined, Object));
-  check(editMode, Match.Maybe(Boolean));
-
-  // TODO: Consider publishing the non-admin publication if a user is not in "edit mode" to see what is published
-
-  // Active shop
-  const shopId = Reaction.getShopId();
-  const primaryShopId = Reaction.getPrimaryShopId();
-
-  // Get a list of shopIds that this user has "createProduct" permissions for (owner permission is checked by default)
-  const userAdminShopIds = Reaction.getShopsWithRoles(["createProduct"], this.userId);
-
-  // Don't publish if we're missing an active or primary shopId
-  if (!shopId || !primaryShopId) {
-    return this.ready();
-  }
-
-  // Get active shop id's to use for filtering
-  const activeShopsIds = Shops.find({
-    $or: [
-      { "workflow.status": "active" },
-      { _id: Reaction.getPrimaryShopId() }
-    ]
-  }).fetch().map((activeShop) => activeShop._id);
-
+function filterProducts(productFilters) {
   // if there are filter/params that don't match the schema
   // validate, catch except but return no results
   try {
     if (productFilters) filters.validate(productFilters);
   } catch (e) {
     Logger.debug(e, "Invalid Product Filters");
-    return this.ready();
+    return false;
   }
 
   const shopIdsOrSlugs = productFilters && productFilters.shops;
@@ -175,14 +141,11 @@ Meteor.publish("Products", function (productScrollLimit = 24, productFilters, so
   if (shopIdsOrSlugs) {
     // Get all shopIds associated with the slug or Id
     const shopIds = Shops.find({
-      $or: [{
-        _id: {
-          $in: shopIdsOrSlugs
-        }
+      "workflow.status": "active",
+      "$or": [{
+        _id: { $in: shopIdsOrSlugs }
       }, {
-        slug: {
-          $in: shopIdsOrSlugs
-        }
+        slug: { $in: shopIdsOrSlugs }
       }]
     }).map((shop) => shop._id);
 
@@ -190,7 +153,7 @@ Meteor.publish("Products", function (productScrollLimit = 24, productFilters, so
     if (shopIds) {
       productFilters.shops = shopIds;
     } else {
-      return this.ready();
+      return false;
     }
   }
 
@@ -205,15 +168,9 @@ Meteor.publish("Products", function (productScrollLimit = 24, productFilters, so
     // handle multiple shops
     if (productFilters.shops) {
       _.extend(selector, {
-        $or: [{
-          shopId: {
-            $in: productFilters.shops
-          }
-        }, {
-          slug: {
-            $in: productFilters.shops
-          }
-        }]
+        shopId: {
+          $in: productFilters.shops
+        }
       });
     }
 
@@ -334,6 +291,48 @@ Meteor.publish("Products", function (productScrollLimit = 24, productFilters, so
     }
   } // end if productFilters
 
+  return selector;
+}
+
+/**
+ * products publication
+ * @param {Number} [productScrollLimit] - optional, defaults to 24
+ * @param {Array} shops - array of shopId to retrieve product from.
+ * @return {Object} return product cursor
+ */
+Meteor.publish("Products", function (productScrollLimit = 24, productFilters, sort = {}, editMode = true) {
+  check(productScrollLimit, Number);
+  check(productFilters, Match.OneOf(undefined, Object));
+  check(sort, Match.OneOf(undefined, Object));
+  check(editMode, Match.Maybe(Boolean));
+
+  // TODO: Consider publishing the non-admin publication if a user is not in "edit mode" to see what is published
+
+  // Active shop
+  const shopId = Reaction.getShopId();
+  const primaryShopId = Reaction.getPrimaryShopId();
+
+  // Get a list of shopIds that this user has "createProduct" permissions for (owner permission is checked by default)
+  const userAdminShopIds = Reaction.getShopsWithRoles(["createProduct"], this.userId);
+
+  // Don't publish if we're missing an active or primary shopId
+  if (!shopId || !primaryShopId) {
+    return this.ready();
+  }
+
+  // Get active shop id's to use for filtering
+  const activeShopsIds = Shops.find({
+    $or: [
+      { "workflow.status": "active" },
+      { _id: Reaction.getPrimaryShopId() }
+    ]
+  }).fetch().map((activeShop) => activeShop._id);
+
+  const selector = filterProducts(productFilters);
+
+  if (selector === false) {
+    return this.ready();
+  }
 
   // We publish an admin version of this publication to admins of products who are in "Edit Mode"
   // Authorized content curators for shops get special publication of the product
@@ -503,4 +502,36 @@ Meteor.publish("Products", function (productScrollLimit = 24, productFilters, so
     // could be far less than 24 top-level products
     // limit: productScrollLimit
   });
+});
+
+/**
+ * @name Products/grid
+ * @method
+ * @memberof Core
+ * @summary Publication method for a customer facing product grid
+ * @param {number} productScrollLimit - product find limit
+ * @param {object} productFilters - filters to be applied to the product find
+ * @param {object} sort - sorting to be applied to the product find
+ * @return {MongoCursor} Mongo cursor object of found products
+ */
+Meteor.publish("Products/grid", function (productScrollLimit = 24, productFilters, sort = {}) {
+  check(productScrollLimit, Number);
+  check(productFilters, Match.OneOf(undefined, Object));
+  check(sort, Match.OneOf(undefined, Object));
+
+  const newSelector = filterProducts(productFilters);
+
+  if (newSelector === false) {
+    return this.ready();
+  }
+
+  const productCursor = Catalog.find(newSelector, {
+    sort,
+    limit: productScrollLimit,
+    fields: {
+      variants: 0
+    }
+  });
+
+  return productCursor;
 });
