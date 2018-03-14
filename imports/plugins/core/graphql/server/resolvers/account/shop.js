@@ -2,10 +2,10 @@ import { xformShopResponse } from "../xforms/shop";
 
 /**
  * @name shop
-user account object * @method
+ * @method
  * @summary query the Accounts collection and return user account data
  * @param {Object} account - an object containing account data
- * @return {Object}
+ * @return {Object} object containing transformed shop data
  */
 export default function shop(account) {
   const { shopId } = account;
