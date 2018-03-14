@@ -7,15 +7,6 @@ import { i18next } from "/client/api";
 
 
 class TextField extends Component {
-  constructor(props) {
-    super(props);
-
-    // will be used by the child class.
-    this.onBlur = this.onBlur.bind(this);
-    this.onFocus = this.onFocus.bind(this);
-    this.onChange = this.onChange.bind(this);
-    this.onKeyDown = this.onKeyDown.bind(this);
-  }
   /**
    * Getter: value
    * @return {String} value for text input
@@ -71,7 +62,7 @@ class TextField extends Component {
    * @param  {Event} event Event object
    * @return {void}
    */
-  onChange(event) {
+  onChange = (event) => {
     if (this.props.onChange) {
       this.props.onChange(event, event.target.value, this.props.name);
     }
@@ -83,7 +74,7 @@ class TextField extends Component {
    * @param  {Event} event Event object
    * @return {void}
    */
-  onBlur(event) {
+  onBlur = (event) => {
     if (this.props.onBlur) {
       this.props.onBlur(event, event.target.value, this.props.name);
     }
@@ -95,7 +86,7 @@ class TextField extends Component {
    * @param  {Event} event Event object
    * @return {void}
    */
-  onFocus(event) {
+  onFocus = (event) => {
     if (this.props.onFocus) {
       this.props.onFocus(event, event.target.value, this.props.name);
     }
@@ -107,7 +98,7 @@ class TextField extends Component {
    * @param  {Event} event Event object
    * @return {void}
    */
-  onKeyDown(event) {
+  onKeyDown = (event) => {
     if (this.props.onKeyDown) {
       this.props.onKeyDown(event, this.props.name);
     }
