@@ -41,6 +41,24 @@ function removeAddress(_id) {
   });
 }
 
+function addAddress(address) {
+  Meteor.call("accounts/validateAddress", address, (error, result) => {
+    if (result.validated) {
+      console.log("address is valid", result);
+      Meteor.call("accounts/addressBookAdd", address, (error, result) => {
+        if (error) {
+          Alerts.toast(i18next.t("addressBookAdd.failedToAddAddress", { err: error.message }), "error");
+        }
+        if (result) {
+          console.log("address added!");
+        }
+      });
+    } else {
+      console.log("address validatiion error", error);
+    }
+  });
+}
+
 
 /**
  * Helpers: Checkout Address Book
@@ -60,6 +78,7 @@ Template.checkoutAddressBook.helpers({
     return {
       component: Components.AddressBook,
       account,
+      addAddress,
       addressBook,
       heading: {
         defaultValue: "Choose shipping & billing address",

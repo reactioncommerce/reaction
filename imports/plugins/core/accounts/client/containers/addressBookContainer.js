@@ -5,6 +5,7 @@ import { Components, registerComponent } from "@reactioncommerce/reaction-compon
 class AddressBook extends Component {
   static propTypes = {
     account: PropTypes.object, // might only need the accountId
+    addAddress: PropTypes.func, // add address reducer calls meteor method
     addressBook: PropTypes.array, // array of address objects
     heading: PropTypes.object, // { defaultValue: String, i18nKey: String, checkout: Object }
     removeAddress: PropTypes.func, // remove address reducer calls meteor method
@@ -16,12 +17,26 @@ class AddressBook extends Component {
     editAddress: {} // address to be edited.
   }
 
+  // componentWillMount() {
+  //   const { addressBook } = this.props;
+  //   const { entryMode } = this.state;
+
+  //   if (addressBook.length === 0 && !entryMode) {
+  //     this.setState({ entryMode: true });
+  //   }
+  // }
+
   componentWillReceiveProps(nextProps) {
     const { addressBook } = nextProps;
     const { entryMode } = this.state;
 
     if (addressBook.length === 0 && !entryMode) {
       this.setState({ entryMode: true });
+    }
+
+    if (addressBook.length !== 0 && entryMode) {
+      console.log("this shouldn't be true", addressBook.lenght, entryMode)
+      this.setState({ entryMode: false });
     }
   }
 
@@ -73,6 +88,11 @@ class AddressBook extends Component {
     removeAddress(_id);
   }
 
+  onAdd = (address) => {
+    const { addAddress } = this.props;
+    addAddress(address);
+  }
+
   // Address Book Actions
 
   /**
@@ -81,13 +101,11 @@ class AddressBook extends Component {
    * @since 2.0.0
    */
   toggleEntryMode = () => {
-    console.log("toggle entry mode")
     const { entryMode } = this.state;
     this.setState({ entryMode: !entryMode });
   }
 
   onEdit = (_id) => {
-    console.log("on edit", _id);
     const editAddress = this.findAddress(_id);
     this.setState({ editAddress });
     this.toggleEntryMode();
@@ -149,7 +167,7 @@ class AddressBook extends Component {
     return (
       <div className="panel-body panel-content">
         {
-          (entryMode) ? <Components.AddressBookForm editAddress={editAddress} /> : <Components.AddressBookGrid addressBook={addressBook} select={this.onSelect} remove={this.onRemove} edit={this.onEdit} />
+          (entryMode) ? <Components.AddressBookForm editAddress={editAddress} add={this.onAdd} /> : <Components.AddressBookGrid addressBook={addressBook} select={this.onSelect} remove={this.onRemove} edit={this.onEdit} />
         }
       </div>
     );
