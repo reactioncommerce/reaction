@@ -42,6 +42,7 @@ class AddressBookGrid extends Component {
     );
   }
 
+  // TODO: keyboard helper
   renderAddressGrid() {
     const { addressBook, edit, select, remove } = this.props;
     return addressBook.map((address) => {
