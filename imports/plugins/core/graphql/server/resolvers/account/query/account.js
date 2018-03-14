@@ -1,6 +1,6 @@
-import { transformIdFromBase64 } from "@reactioncommerce/reaction-graphql-utils";
 import { xformAccountResponse } from "../../xforms/account";
 import { userAccountQuery } from "/imports/plugins/core/accounts/server/methods/userAccountQuery";
+import { decodeOpaqueId } from "../../xforms/id";
 
 /**
  * @name account
@@ -15,7 +15,7 @@ import { userAccountQuery } from "/imports/plugins/core/accounts/server/methods/
 export default function account(_, { id }, context) {
   // Trasform ID from base64
   // Returns an object. Use `.id` to get ID
-  const idFromBase64 = transformIdFromBase64(id);
+  const idFromBase64 = decodeOpaqueId(id);
 
   // Pass decoded id (idFromBase64.id) and context into userAccountQuery function
   const userAccount = userAccountQuery(context, idFromBase64.id);
