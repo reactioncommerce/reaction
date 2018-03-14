@@ -167,7 +167,7 @@ class NumericInput extends Component {
 
   /**
    * renderField
-   * @summary Render the input box or field
+   * @summary Render input box or field
    * @return {JSX} jsx template
    */
   renderField() {
