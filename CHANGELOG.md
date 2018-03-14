@@ -31,7 +31,6 @@ becomes
 /assets/files/:collectionName/:fileId/:primaryStoreName/:filename
 ```
 
-
 and
 ```
 /assets/files/:collectionName/:fileId/:filename?store=storeName
@@ -43,7 +42,7 @@ becomes
 /assets/files/:collectionName/:fileId/:storeName/:filename
 ```
 
-#### I've deleted some unused Blaze templates rather than update URL handling within them:
+#### We've deleted some unused Blaze templates rather than update URL handling within them:
 - shopBrandImageOption
 - ordersListItems
 - select
@@ -93,7 +92,7 @@ Full notes on the PR
 ## Upgrades
 - Use NPM SimpleSchema rather than Meteor (#3331)
 
-## CI:
+## CI
 We've updated our circle ci config to use [v2 of Workflows](https://circleci.com/docs/2.0/workflows/). This permits us to run additional automated tests on circle instead of using other services. We now have 6 workflow steps that must pass before a PR can be merged.
 
 ## Refactor
