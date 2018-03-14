@@ -5,7 +5,7 @@ import _ from "lodash";
 import Velocity from "velocity-animate";
 import "velocity-animate/velocity.ui";
 import { Components } from "@reactioncommerce/reaction-components";
-import { findCurrency } from "/client/api"
+import { findCurrency } from "/client/api";
 
 const fieldNames = [
   "title",
@@ -122,7 +122,6 @@ class VariantForm extends Component {
   }
 
   handleFieldChange = (event, value, field) => {
-    console.log(value, " = ", field);
     this.setState(({ variant }) => ({
       variant: {
         ...variant,

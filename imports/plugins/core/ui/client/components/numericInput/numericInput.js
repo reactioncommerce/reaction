@@ -2,8 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import classnames from "classnames";
 import accounting from "accounting-js";
-import { registerComponent } from "@reactioncommerce/reaction-components";
-
+import { Components, registerComponent } from "@reactioncommerce/reaction-components";
 
 class NumericInput extends Component {
   constructor(props) {
@@ -150,10 +149,26 @@ class NumericInput extends Component {
   }
 
   /**
-   * render
-   * @return {ReactElement} markup
+   * Render the label for the field if one is provided in props
+   * @return {ReactNode|null} react node or null
    */
-  render() {
+  renderLabel() {
+    if (this.props.label) {
+      return (
+        <label htmlFor={this.props.id}>
+          <Components.Translation defaultValue={this.props.label} i18nKey={this.props.i18nKeyLabel} />
+        </label>
+      );
+    }
+
+    return null;
+  }
+
+  /**
+   * Render the input box or field
+   * @return {JSX} jsx template
+   */
+  renderField() {
     const { classNames } = this.props;
 
     if (this.props.isEditing === false) {
@@ -169,14 +184,12 @@ class NumericInput extends Component {
         </span>
       );
     }
-
     const fieldClassName = classnames({
       "form-control": true, // eslint-disable-line: quote-props
       ...(classNames.input || {})
     });
-
     return (
-      <div className="rui control numeric-input">
+      <div className="rui control numeric-input-field">
         <input
           className={fieldClassName}
           disabled={this.props.disabled}
@@ -185,6 +198,19 @@ class NumericInput extends Component {
           onChange={this.handleChange}
           value={this.displayValue}
         />
+      </div>
+    );
+  }
+
+  /**
+   * render
+   * @return {ReactElement} markup
+   */
+  render() {
+    return (
+      <div className="numeric-input">
+        {this.renderLabel()}
+        {this.renderField()}
       </div>
     );
   }
@@ -202,7 +228,10 @@ NumericInput.propTypes = {
   format: PropTypes.shape({
     decimal: PropTypes.number
   }),
+  i18nKeyLabel: PropTypes.string,
+  id: PropTypes.string,
   isEditing: PropTypes.bool,
+  label: PropTypes.string,
   maxValue: PropTypes.number,
   name: PropTypes.string,
   onBlur: PropTypes.func,
