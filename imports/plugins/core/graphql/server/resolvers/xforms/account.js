@@ -10,17 +10,17 @@ export const accountNs = "reaction/account";
 export const encodeAccountOpaqueId = encodeOpaqueId(accountNs);
 export const assocAccountOpaqueId = assocOpaqueId(accountNs);
 
-export const mergeAddressBookFromProfile = item => {
+export const mergeAddressBookFromProfile = (item) => {
   const value = pathOr(null, ["profile", "addressBook"], item);
   return assoc("addressBook", value, item);
 };
 
-export const mergeCurrencyFromProfile = item => {
+export const mergeCurrencyFromProfile = (item) => {
   const value = pathOr(null, ["profile", "currency"], item);
   return assoc("currency", value, item);
 };
 
-export const mergePreferencesFromProfile = item => {
+export const mergePreferencesFromProfile = (item) => {
   const value = pathOr(null, ["profile", "preferences"], item);
   return assoc("preferences", value, item);
 };
