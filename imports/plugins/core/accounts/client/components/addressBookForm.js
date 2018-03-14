@@ -7,6 +7,8 @@ import { Components, registerComponent } from "@reactioncommerce/reaction-compon
 class AddressBookForm extends Component {
   static propTypes = {
     add: PropTypes.func, // add addess callback
+    addressCount: PropTypes.number, // number of address in addressBook
+    cancel: PropTypes.func, // cancel address entry and render AddressBookGrid
     editAddress: PropTypes.object // address object
   }
 
@@ -15,16 +17,16 @@ class AddressBookForm extends Component {
     regions: [],
     fields: {
       country: "US", // defaults to United States
-      fullName: "",
-      address1: "",
-      address2: "",
-      postal: "",
-      city: "",
-      region: "",
-      phone: "",
-      isShippingDefault: false,
-      isBillingDefault: false,
-      isCommercial: false
+      fullName: this.props.editAddress.fullName || "",
+      address1: this.props.editAddress.address1 || "",
+      address2: this.props.editAddress.address2 || "",
+      postal: this.props.editAddress.postal || "",
+      city: this.props.editAddress.city || "",
+      region: this.props.editAddress.region || "",
+      phone: this.props.editAddress.phone || "",
+      isShippingDefault: this.props.editAddress.isShippingDefault || false,
+      isBillingDefault: this.props.editAddress.isBillingDefault || false,
+      isCommercial: this.props.editAddress.isCommercial || false
     }
   }
 
@@ -74,18 +76,19 @@ class AddressBookForm extends Component {
   }
 
   renderButtons() {
+    const { cancel } = this.props;
     // TODO: use translation component for button text!
     return (
       <div className="row text-right">
         <button className="btn btn-primary" data-i18n="app.saveAndContinue">Save and continue</button>
-        <button type="reset" className="btn btn-default" data-i18n="app.cancel">Cancel</button>
+        <button type="reset" className="btn btn-default" data-i18n="app.cancel" onClick={cancel}>Cancel</button>
       </div>
     );
   }
 
   render() {
     const { countries, regions, fields } = this.state;
-    // console.log("React AddressBookForm", this.props, this.state);
+    console.log("React AddressBookForm", this.props, this.state);
     return (
       <form onSubmit={this.onSubmit}>
 

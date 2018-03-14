@@ -17,26 +17,16 @@ class AddressBook extends Component {
     editAddress: {} // address to be edited.
   }
 
-  // componentWillMount() {
-  //   const { addressBook } = this.props;
-  //   const { entryMode } = this.state;
-
-  //   if (addressBook.length === 0 && !entryMode) {
-  //     this.setState({ entryMode: true });
-  //   }
-  // }
-
   componentWillReceiveProps(nextProps) {
     const { addressBook } = nextProps;
     const { entryMode } = this.state;
 
     if (addressBook.length === 0 && !entryMode) {
-      this.setState({ entryMode: true });
+      this.toggleEntryMode();
     }
 
     if (addressBook.length !== 0 && entryMode) {
-      console.log("this shouldn't be true", addressBook.lenght, entryMode)
-      this.setState({ entryMode: false });
+      this.toggleEntryMode();
     }
   }
 
@@ -50,6 +40,20 @@ class AddressBook extends Component {
   findAddress(_id) {
     const { addressBook } = this.props;
     return addressBook.find((addy) => addy._id === _id);
+  }
+
+  clearForm() {
+    if (this.hasEditAddress) this.setState({ editAddress: {} });
+  }
+
+  get hasEditAddress() {
+    const { editAddress } = this.state;
+    return (Object.keys(editAddress).length !== 0);
+  }
+
+  get addressCount() {
+    const { addressBook } = this.props;
+    return addressBook.length;
   }
 
   // Address Actions
@@ -89,8 +93,15 @@ class AddressBook extends Component {
   }
 
   onAdd = (address) => {
-    const { addAddress } = this.props;
-    addAddress(address);
+    const { editAddress } = this.state;
+    const { addAddress, updateAddress } = this.props;
+
+    if (this.hasEditAddress) {
+      updateAddress({ _id: editAddress._id, ...address });
+      this.clearForm();
+    } else {
+      addAddress(address);
+    }
   }
 
   // Address Book Actions
@@ -103,6 +114,11 @@ class AddressBook extends Component {
   toggleEntryMode = () => {
     const { entryMode } = this.state;
     this.setState({ entryMode: !entryMode });
+  }
+
+  onCancel = () => {
+    this.toggleEntryMode();
+    this.clearForm();
   }
 
   onEdit = (_id) => {
@@ -164,11 +180,30 @@ class AddressBook extends Component {
     const { addressBook } = this.props;
     const { editAddress, entryMode } = this.state;
 
+    let content;
+    if (entryMode) {
+      content = (
+        <Components.AddressBookForm
+          add={this.onAdd}
+          addressCount={this.addressCount}
+          cancel={this.onCancel}
+          editAddress={editAddress}
+        />
+      );
+    } else {
+      content = (
+        <Components.AddressBookGrid
+          addressBook={addressBook}
+          edit={this.onEdit}
+          remove={this.onRemove}
+          select={this.onSelect}
+        />
+      );
+    }
+
     return (
       <div className="panel-body panel-content">
-        {
-          (entryMode) ? <Components.AddressBookForm editAddress={editAddress} add={this.onAdd} /> : <Components.AddressBookGrid addressBook={addressBook} select={this.onSelect} remove={this.onRemove} edit={this.onEdit} />
-        }
+        {content}
       </div>
     );
   }

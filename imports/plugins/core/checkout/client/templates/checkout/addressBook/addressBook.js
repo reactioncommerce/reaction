@@ -20,7 +20,12 @@ const getAccount = () => Collections.Accounts.findOne({ _id: Meteor.userId() });
  * @param{String} property - property to be updated.
  */
 function updateAddress(address, property) {
-  Meteor.call("accounts/addressBookUpdate", address, null, property);
+  console.log("update address", address)
+  if (property) {
+    Meteor.call("accounts/addressBookUpdate", address, null, property);
+  } else {
+    Meteor.call("accounts/addressBookUpdate", address);
+  }
 }
 
 /**
