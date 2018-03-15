@@ -1,6 +1,6 @@
 import _ from "lodash";
 import { Meteor } from "meteor/meteor";
-import { Products, ProductSearch, OrderSearch, AccountSearch } from "/lib/collections";
+import { ProductSearch, OrderSearch, AccountSearch } from "/lib/collections";
 import {
   getSearchParameters,
   buildAccountSearchRecord,
