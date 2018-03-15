@@ -3,8 +3,8 @@ import { sinon } from "meteor/practicalmeteor:sinon";
 
 import { Shops } from "/lib/collections";
 
-import core from './core';
-import ConnectionDataStore from "./ConnectionDataStore";
+import core from "./core";
+import ConnectionDataStore from "./connectionDataStore";
 
 describe("Server/API/Core", () => {
   let sandbox;

@@ -1,10 +1,7 @@
 import { expect } from "meteor/practicalmeteor:chai";
 import { sinon } from "meteor/practicalmeteor:sinon";
-
-import { Meteor } from 'meteor/meteor';
 import { DDP } from "meteor/ddp-client";
-
-import ConnectionDataStore from './ConnectionDataStore';
+import ConnectionDataStore from "./connectionDataStore";
 
 describe("ConnectionDataStore", () => {
   describe("used outside of a connection", () => {
@@ -48,12 +45,13 @@ describe("ConnectionDataStore", () => {
     });
 
     it("stores data on the connection object", () => {
-      expect(mockConnection["connection-data"]["key"]).to.equal("val");
+      expect(mockConnection["connection-data"].key).to.equal("val");
     });
   });
 
   describe("within the context of a multiple connections", () => {
-    let mockConnection, mockConnection2;
+    let mockConnection;
+    let mockConnection2;
 
     beforeEach(() => {
       mockConnection = {};
@@ -90,7 +88,7 @@ describe("ConnectionDataStore", () => {
 
     it("does modify _this_ connection's data", () => {
       expect(ConnectionDataStore.get("key2")).to.equal("val2");
-      expect(mockConnection2["connection-data"]["key2"]).to.equal("val2");
+      expect(mockConnection2["connection-data"].key2).to.equal("val2");
     });
   });
 });

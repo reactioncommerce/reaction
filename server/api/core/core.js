@@ -2,7 +2,7 @@ import url from "url";
 import packageJson from "/package.json";
 import _, { merge, uniqWith } from "lodash";
 import { Meteor } from "meteor/meteor";
-import { check, Match } from "meteor/check";
+import { check } from "meteor/check";
 import { Random } from "meteor/random";
 import { Accounts } from "meteor/accounts-base";
 import { Roles } from "meteor/alanning:roles";
@@ -14,7 +14,7 @@ import { registerTemplate } from "./templates";
 import { sendVerificationEmail } from "./accounts";
 import { getMailUrl } from "./email/config";
 import { createGroups } from "./groups";
-import ConnectionDataStore from "./ConnectionDataStore";
+import ConnectionDataStore from "./connectionDataStore";
 
 /**
  * @file Server core methods
