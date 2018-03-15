@@ -84,25 +84,23 @@ class AddressBookForm extends Component {
       defaultOptions = (
         <div>
           <div className="form-group">
-            <span className="control-label" />
             <div className="checkbox">
               <Components.Checkbox
                 label="Make this your default shipping address."
                 name="isShippingDefault"
                 onChange={this.onFieldChange}
                 checked={fields.isShippingDefault}
-                />
+              />
             </div>
           </div>
           <div className="form-group">
-            <span className="control-label" />
             <div className="checkbox">
               <Components.Checkbox
                 label="Make this your default billing address."
                 name="isBillingDefault"
                 onChange={this.onFieldChange}
                 checked={fields.isBillingDefault}
-                />
+              />
             </div>
           </div>
         </div>
@@ -129,12 +127,12 @@ class AddressBookForm extends Component {
   }
 
   renderButtons() {
-    const { cancel } = this.props;
+    const { cancel, hasAddress } = this.props;
     // TODO: use translation component for button text!
     return (
       <div className="row text-right">
-        <button className="btn btn-primary" data-i18n="app.saveAndContinue">Save and continue</button>
-        <button type="reset" className="btn btn-default" data-i18n="app.cancel" onClick={cancel}>Cancel</button>
+        <button type="submit" className="btn btn-primary" data-i18n="app.saveAndContinue">Save and continue</button>
+        {(hasAddress) ? <button type="reset" className="btn btn-default" style={{ marginLeft: "5px" }} data-i18n="app.cancel" onClick={cancel}>Cancel</button> : ""}
       </div>
     );
   }
