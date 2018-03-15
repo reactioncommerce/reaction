@@ -10,6 +10,41 @@ class AddressBookGrid extends Component {
     select: PropTypes.func // selects a default shipping or billing address
   }
 
+  state = {
+    defaultAddress: {
+      shipping: this.defaultShippingAddressId, // the _id of the default shipping address
+      billing: this.defaultBillingAddressId // the _id of the default billing address
+    }
+  }
+
+  componentWillReceiveProps(nextProps) {
+
+  }
+
+  get defaultShippingAddressId() {
+    const { addressBook } = this.props;
+    const defaultShippingAddress = addressBook.find((addy) => addy.isShippingDefault);
+    return (defaultShippingAddress) ? defaultShippingAddress._id : "";
+  }
+
+  get defaultBillingAddressId() {
+    const { addressBook } = this.props;
+    const defaultBillingAddress = addressBook.find((addy) => addy.isBillingDefault);
+    return (defaultBillingAddress) ? defaultBillingAddress._id : "";
+  }
+
+  setDefaultAddress(_id, usage) {
+    const { defaultAddress } = this.state;
+    defaultAddress[usage] = _id;
+    this.setState({ defaultAddress });
+  }
+
+  onSelect = (_id, usage) => {
+    const { select } = this.props;
+    this.setDefaultAddress(_id, usage);
+    select(_id, usage);
+  }
+
   /**
    * @method renderHeading
    * @summary renders address book grid heading content
@@ -17,7 +52,6 @@ class AddressBookGrid extends Component {
    * @return {Object} - JSX
    */
   renderHeading() {
-    // TODO: replace h4 copy with translation component
     return (
       <div className="address-list-header">
         <div className="address-list-heading">
@@ -39,6 +73,7 @@ class AddressBookGrid extends Component {
    * @method renderAddress
    * @summary renders an address
    * @since 2.0.0
+   * @param {Object} address - address object that we destructor to get the needed property
    * @return {Object} - JSX
    */
   renderAddress({ address1, address2, city, region, postal, country, phone }) {
@@ -59,17 +94,20 @@ class AddressBookGrid extends Component {
    * @return {Object} - JSX
    */
   renderAddressGrid() {
-    const { addressBook, edit, select, remove } = this.props;
+    const { addressBook, edit, remove } = this.props;
     // TODO: keyboard helper
     return addressBook.map((address) => {
-      const { _id, fullName, isBillingDefault, isShippingDefault } = address;
+      const { defaultAddress: { shipping, billing } } = this.state;
+      const { _id, fullName } = address;
+      const activeShipping = (shipping === _id) ? "active" : "";
+      const activeBilling = (billing === _id) ? "active" : "";
       return (
         <div className="address-list-item" key={_id}>
-          <div className={`address ${isShippingDefault ? "active" : ""}`} role="button" tabIndex="0" onClick={() => { select(_id, "shipping"); }}>
+          <div className={`address ${activeShipping}`} role="button" tabIndex="0" onClick={() => { this.onSelect(_id, "shipping"); }}>
             <strong>{fullName}</strong>
             {this.renderAddress(address)}
           </div>
-          <div className={`address ${isBillingDefault ? "active" : ""}`} role="button" tabIndex="0" onClick={() => { select(_id, "billing"); }}>
+          <div className={`address ${activeBilling}`} role="button" tabIndex="0" onClick={() => { this.onSelect(_id, "billing"); }}>
             <strong>{fullName}</strong>
             {this.renderAddress(address)}
           </div>
@@ -93,6 +131,7 @@ class AddressBookGrid extends Component {
   }
 
   render() {
+    console.log("address book grid", this.defaultShippingAddressId, this.state)
     return (
       <div className="address-list">
         {this.renderHeading()}
