@@ -72,7 +72,6 @@ const wrapComponent = (Comp) => (
       if (this.props.showNotFound === true) {
         return false;
       }
-
       const isInitialLoad = this.state.initialLoad === true;
       const isReady = this.props.productsSubscription.ready();
 
@@ -83,7 +82,6 @@ const wrapComponent = (Comp) => (
       if (isReady) {
         return true;
       }
-
       return false;
     }
 
@@ -160,18 +158,14 @@ function composer(props, onData) {
 
   const queryParams = Object.assign({}, tags, Reaction.Router.current().query, shopIds);
   let productsSubscription = Meteor.subscribe("Products", scrollLimit, queryParams, sort, editMode);
+  if (Session.get("products/resubscribe")) {
+    Session.set("products/resubscribe", false);
+    productsSubscription.stop();
+    productsSubscription = Meteor.subscribe("Products", scrollLimit, queryParams, sort, editMode);
+  }
 
   if (productsSubscription.ready()) {
     window.prerenderReady = true;
-
-    const product = Products.findOne({
-      __resubscribe: true
-    });
-    if (product) {
-      // Resubscribe
-      productsSubscription.stop();
-      productsSubscription = Meteor.subscribe("Products", scrollLimit, queryParams, sort, editMode);
-    }
   }
 
   const activeShopsIds = Shops.find({
