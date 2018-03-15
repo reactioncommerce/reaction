@@ -1,3 +1,26 @@
+# v1.10.0
+
+In addition to a few performance updates, refactors, and bug fixes, this release starts the rollout of our GraphQL api. Until further notice, this GraphQL api should be considered a prototype and should not be used for production. If you're interested in following along with our GraphQL work, tracking our [GraphQL issues](https://github.com/reactioncommerce/reaction/issues?utf8=%E2%9C%93&q=is%3Aissue+graphql+) is probably the easiest way for now.
+
+ ## GraphQL
+ - GraphQL Prototype (#3898)
+ - GraphQL Jest testing pattern (#3995)
+
+## Refactors
+ - 3866 willopez remove collection hooks in search mongo package (#3889)
+ - Remove collection hooks for Products collection (#3825)
+
+## Performance
+ - [#3507] Memoize/Cache getShopId to Reduce DB Load (#3510)
+
+## Fixes
+ - Fix #3975: typo fix (#4000)
+ - Fix for "Browser console warning when beginning checkout" (#3980)
+ - Fix for "PDP Image gallery does not handle portrait sized images well" (#3993)
+
+## Docs
+ - docs(jsdoc): #3840 namespace MethodHooks into its own JSDoc section. (#3844)
+
 # v1.9.0
 This release contains a lot of fixes, some of them performance related and several enormous refactors.
 The three biggest changes are:
