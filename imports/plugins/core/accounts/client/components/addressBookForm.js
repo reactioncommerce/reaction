@@ -24,8 +24,8 @@ class AddressBookForm extends Component {
       city: this.props.editAddress.city || "",
       region: this.props.editAddress.region || "",
       phone: this.props.editAddress.phone || "",
-      isShippingDefault: this.props.editAddress.isShippingDefault || (!this.props.hasAddress),
-      isBillingDefault: this.props.editAddress.isBillingDefault || (!this.props.hasAddress),
+      isShippingDefault: this.props.editAddress.isShippingDefault || (!this.props.hasAddress), // no address, default to true
+      isBillingDefault: this.props.editAddress.isBillingDefault || (!this.props.hasAddress), // no addres, default to true
       isCommercial: this.props.editAddress.isCommercial || false
     }
   }

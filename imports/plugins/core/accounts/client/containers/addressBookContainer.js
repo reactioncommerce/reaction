@@ -13,23 +13,22 @@ class AddressBook extends Component {
   }
 
   state = {
-    entryMode: (this.props.addressBook.length === 0), // no address, enable the form
+    entryMode: (!this.props.addressBook || this.props.addressBook.length === 0), // no address, enable the form
     editAddress: {} // address to be edited.
   }
 
   componentWillReceiveProps(nextProps) {
-    const { addressBook } = nextProps;
     const { entryMode } = this.state;
 
     // if the new addressBook array is empty and
     // the address book form is not active
-    if (addressBook.length === 0 && !entryMode) {
+    if (!this.hasAddress && !entryMode) {
       this.toggleEntryMode();
     }
 
     // if the new addressBook array is not empty but
     // the address book form is active
-    if (addressBook.length !== 0 && entryMode) {
+    if (this.hasAddress && entryMode) {
       this.toggleEntryMode();
     }
   }
