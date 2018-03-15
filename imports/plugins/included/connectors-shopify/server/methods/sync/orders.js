@@ -1,5 +1,5 @@
 import { check } from "meteor/check";
-import { Hooks, Reaction } from "/server/api";
+import { Hooks } from "/server/api";
 import { Products } from "/lib/collections";
 
 /**
