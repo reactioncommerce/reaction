@@ -114,7 +114,7 @@ Meteor.methods({
    *          has all the information it needs to determine this on its own,
    *          and allowing the client to set shopId could be a security risk
    */
-  "shop/resetShopId": function () {
+  "shop/resetShopId"() {
     return Reaction.resetShopId();
   },
 

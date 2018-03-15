@@ -1,8 +1,7 @@
+import { Meteor } from "meteor/meteor";
 import { expect } from "meteor/practicalmeteor:chai";
 import { sinon } from "meteor/practicalmeteor:sinon";
-
 import { Shops } from "/lib/collections";
-
 import core from "./core";
 import ConnectionDataStore from "./connectionDataStore";
 
@@ -31,8 +30,6 @@ describe("Server/API/Core", () => {
   });
 
   describe("#getShopId", () => {
-    let fnSetCachedData;
-
     afterEach(() => {
       core.resetShopId();
     });
@@ -69,8 +66,7 @@ describe("Server/API/Core", () => {
     });
 
     it("caches the shopId for subsequent calls", () => {
-      const fnSetCachedData =
-        sandbox.stub(ConnectionDataStore, "set").withArgs("shopId", shop._id);
+      const fnSetCachedData = sandbox.stub(ConnectionDataStore, "set").withArgs("shopId", shop._id);
 
       sandbox.stub(Meteor, "userId").returns(null);
       sandbox.stub(core, "getShopIdByDomain").returns(shop._id);
@@ -123,7 +119,7 @@ describe("Server/API/Core", () => {
     it("gets the shopId from a user's preferences store", () => {
       const fnUserSettings = sandbox.stub(core, "getUserPreferences")
         .withArgs(sinon.match({
-          userId: userId,
+          userId,
           preference: "activeShopId"
         }));
 
@@ -134,6 +130,6 @@ describe("Server/API/Core", () => {
   });
 
   function randomString() {
-    return "" + new Date().getTime();
+    return new Date().getTime().toString();
   }
 });
