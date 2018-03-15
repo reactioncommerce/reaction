@@ -385,7 +385,11 @@ function updateCatalogProduct(userId, selector, modifier, validation) {
   });
 
   if (shouldUpdateProduct) {
-    return Products.update(selector, modifier, validation);
+    const result = Products.update(selector, modifier, validation);
+
+    Hooks.Events.run("afterUpdateCatalogProduct", product, { modifier });
+
+    return result;
   }
 
   Logger.debug(`beforeUpdateCatalogProduct hook returned falsy, not updating catalog product`);
@@ -509,6 +513,8 @@ Meteor.methods({
         throw error;
       }
 
+      Hooks.Events.run("afterInsertProduct", clone);
+
       return newId;
     });
   },
@@ -611,8 +617,7 @@ Meteor.methods({
         _id: variant._id
       },
       {
-        $set: newVariant // newVariant already contain `type` property, so we
-        // do not need to pass it explicitly
+        $set: newVariant
       },
       {
         selector: { type: currentVariant.type },
