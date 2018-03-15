@@ -20,7 +20,6 @@ const getAccount = () => Collections.Accounts.findOne({ _id: Meteor.userId() });
  * @param{String} property - property to be updated.
  */
 function updateAddress(address, property) {
-  console.log("update address", address)
   if (property) {
     Meteor.call("accounts/addressBookUpdate", address, null, property);
   } else {
@@ -46,15 +45,20 @@ function removeAddress(_id) {
   });
 }
 
+/**
+ * @method addAddress
+ * @summary helper function that adds an address in the account's addressBook via a meteor method.
+ * @since 2.0.0
+ * @param {Object} address - address to be added.
+ */
 function addAddress(address) {
   Meteor.call("accounts/validateAddress", address, (error, result) => {
     if (result.validated) {
-      console.log("address is valid", result);
-      Meteor.call("accounts/addressBookAdd", address, (error, result) => {
-        if (error) {
-          Alerts.toast(i18next.t("addressBookAdd.failedToAddAddress", { err: error.message }), "error");
+      Meteor.call("accounts/addressBookAdd", address, (err, res) => {
+        if (err) {
+          Alerts.toast(i18next.t("addressBookAdd.failedToAddAddress", { err: err.message }), "error");
         }
-        if (result) {
+        if (res) {
           console.log("address added!");
         }
       });

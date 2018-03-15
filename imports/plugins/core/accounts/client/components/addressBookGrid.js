@@ -147,11 +147,23 @@ class AddressBookGrid extends Component {
       const activeBilling = (billing === _id) ? "active" : "";
       return (
         <div className="address-list-item" key={_id}>
-          <div className={`address ${activeShipping}`} role="button" tabIndex="0" onClick={() => { this.onSelect(_id, "shipping"); }}>
+          <div
+            className={`address ${activeShipping}`}
+            role="button"
+            tabIndex="0"
+            onKeyUp={(e) => { if (e.keyCode === 13) this.onSelect(_id, "shipping"); }}
+            onClick={() => { this.onSelect(_id, "shipping"); }}
+          >
             <strong>{fullName}</strong>
             {this.renderAddress(address)}
           </div>
-          <div className={`address ${activeBilling}`} role="button" tabIndex="0" onClick={() => { this.onSelect(_id, "billing"); }}>
+          <div
+            className={`address ${activeBilling}`}
+            role="button"
+            tabIndex="0"
+            onKeyUp={(e) => { if (e.keyCode === 13) this.onSelect(_id, "billing"); }}
+            onClick={() => { this.onSelect(_id, "billing"); }}
+          >
             <strong>{fullName}</strong>
             {this.renderAddress(address)}
           </div>

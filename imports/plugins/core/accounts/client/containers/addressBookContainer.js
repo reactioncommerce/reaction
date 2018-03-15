@@ -17,7 +17,7 @@ class AddressBook extends Component {
     editAddress: {} // address to be edited.
   }
 
-  componentWillReceiveProps(nextProps) {
+  componentWillReceiveProps() {
     const { entryMode } = this.state;
 
     // if the new addressBook array is empty and
