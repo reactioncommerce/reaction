@@ -13,16 +13,9 @@ import "./components/cards/cardGroup.html";
 import "./components/cards/cards.html";
 import "./components/cards/cards.js";
 
-import "./components/numericInput/numericInput.html";
 import "./components/numericInput/numericInput.js";
 
-import "./components/select/select.html";
-import "./components/select/select.js";
-
 import "./components/textfield/textfield.html";
-
-import "./components/upload/upload.html";
-import "./components/upload/upload.js";
 
 // Safe css import for npm package
 import "nouislider-algolia-fork/src/nouislider.css";

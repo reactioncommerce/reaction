@@ -17,8 +17,7 @@ const code = {
 };
 
 before(function () {
-  this.timeout(10000);
-  Meteor._sleepForMs(7000);
+  this.timeout(15000);
 });
 
 describe("discount code methods", function () {
@@ -33,23 +32,21 @@ describe("discount code methods", function () {
   });
 
   describe("discounts/addCode", function () {
-    it("should throw 403 error with discounts permission", function (done) {
+    it("should throw 403 error with discounts permission", function () {
       sandbox.stub(Roles, "userIsInRole", () => false);
       // this should actually trigger a whole lot of things
       expect(() => Meteor.call("discounts/addCode", code)).to.throw(Meteor.Error, /Access Denied/);
-      return done();
     });
+
     // admin user
-    it("should add code when user has role", function (done) {
+    it("should add code when user has role", function () {
       sandbox.stub(Roles, "userIsInRole", () => true);
       const discountInsertSpy = sandbox.spy(Discounts, "insert");
       const discountId = Meteor.call("discounts/addCode", code);
       expect(discountInsertSpy).to.have.been.called;
 
-      Meteor._sleepForMs(500);
       const discountCount = Discounts.find(discountId).count();
       expect(discountCount).to.equal(1);
-      return done();
     });
   });
 

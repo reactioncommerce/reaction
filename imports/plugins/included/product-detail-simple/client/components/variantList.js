@@ -123,12 +123,9 @@ class VariantList extends Component {
 
     if (this.props.childVariants) {
       childVariants = this.props.childVariants.map((childVariant, index) => {
-        const media = this.props.childVariantMedia.filter((mediaItem) => {
-          if (mediaItem.metadata.variantId === childVariant._id) {
-            return true;
-          }
-          return false;
-        });
+        const media = this.props.childVariantMedia.filter((mediaItem) => (
+          (mediaItem.document.metadata.variantId === childVariant._id)
+        ));
 
         return (
           <Components.EditContainer

@@ -37,7 +37,7 @@ Migrations.add({
           baseUOM: shop.baseUOM,
           unitsOfMeasure: shop.unitsOfMeasure
         }
-      });
+      }, { bypassCollection2: true });
     });
   },
   down() {
@@ -47,7 +47,7 @@ Migrations.add({
         $set: {
           baseUOM: shop.baseUOM
         }
-      });
+      }, { bypassCollection2: true });
     });
   }
 });

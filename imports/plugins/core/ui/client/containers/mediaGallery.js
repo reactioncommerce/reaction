@@ -5,50 +5,14 @@ import update from "immutability-helper";
 import { compose } from "recompose";
 import { registerComponent, composeWithTracker } from "@reactioncommerce/reaction-components";
 import _ from "lodash";
+import { FileRecord } from "@reactioncommerce/file-collections";
 import { Meteor } from "meteor/meteor";
 import MediaGallery from "../components/media/mediaGallery";
-import { Reaction } from "/client/api";
+import { Logger, Reaction } from "/client/api";
 import { ReactionProduct } from "/lib/api";
-import { Media, Revisions } from "/lib/collections";
-
-function uploadHandler(files) {
-  // TODO: It would be cool to move this logic to common ValidatedMethod, but
-  // I can't find a way to do this, because of browser's `FileList` collection
-  // and it `Blob`s which is our event.target.files.
-  // There is a way to do this: http://stackoverflow.com/a/24003932. but it's too
-  // tricky
-  const productId = ReactionProduct.selectedProductId();
-  const variant = ReactionProduct.selectedVariant();
-  if (typeof variant !== "object") {
-    return Alerts.add("Please, create new Variant first.", "danger", {
-      autoHide: true
-    });
-  }
-  const variantId = variant._id;
-  const shopId = ReactionProduct.selectedProduct().shopId || Reaction.getShopId();
-  const userId = Meteor.userId();
-  let count = Media.find({
-    "metadata.variantId": variantId
-  }).count();
-
-  for (const file of files) {
-    const fileObj = new FS.File(file);
-
-    fileObj.metadata = {
-      ownerId: userId,
-      productId,
-      variantId,
-      shopId,
-      priority: count,
-      toGrid: 1 // we need number
-    };
-
-    Media.insert(fileObj);
-    count += 1;
-  }
-
-  return true;
-}
+import { Revisions } from "/lib/collections";
+import { isRevisionControlEnabled } from "/imports/plugins/core/revisions/lib/api";
+import { Media } from "/imports/plugins/core/files/client";
 
 const wrapComponent = (Comp) => (
   class MediaGalleryContainer extends Component {
@@ -64,27 +28,32 @@ const wrapComponent = (Comp) => (
       super(props);
 
       this.state = {
-        featuredMedia: props.media[0],
         dimensions: {
           width: -1,
           height: -1
-        }
+        },
+        featuredMedia: null,
+        media: null,
+        uploadProgress: null
       };
     }
 
     componentWillReceiveProps(nextProps) {
-      this.setState({
-        featuredMedia: nextProps.media[0],
-        media: nextProps.media
-      });
-    }
+      // We need to do this logic only if we've temporarily set media in state for latency compensation
+      if (!this.state.media) return;
 
-    handleDrop = (files) => {
-      uploadHandler(files);
+      const previousMediaIds = (this.props.media || []).map(({ _id }) => _id);
+      const nextMediaIds = (nextProps.media || []).map(({ _id }) => _id);
+
+      // If added, moved, or reordered media items since last render, then we can assume
+      // we got updated data in subscription, clear state, and go back to using the prop
+      if (JSON.stringify(previousMediaIds) !== JSON.stringify(nextMediaIds)) {
+        this.setState({ media: null });
+      }
     }
 
     handleRemoveMedia = (media) => {
-      const imageUrl = media.url();
+      const imageUrl = media.url({ store: "medium" });
       const mediaId = media._id;
 
       Alerts.alert({
@@ -95,48 +64,48 @@ const wrapComponent = (Comp) => (
         imageHeight: 150
       }, (isConfirm) => {
         if (isConfirm) {
-          Media.remove({ _id: mediaId }, (error) => {
+          Media.remove(mediaId, (error) => {
             if (error) {
               Alerts.toast(error.reason, "warning", {
                 autoHide: 10000
               });
             }
-
-            // updateImagePriorities();
           });
         }
         // show media as removed (since it will not disappear until changes are published
       });
-    }
-
-    get allowFeaturedMediaHover() {
-      if (this.state.featuredMedia) {
-        return true;
-      }
-      return false;
-    }
+    };
 
     get media() {
-      return (this.state && this.state.media) || this.props.media;
+      return this.state.media || this.props.media;
     }
 
     handleMouseEnterMedia = (event, media) => {
-      this.setState({
-        featuredMedia: media
-      });
-    }
+      const { editable } = this.props;
+
+      // It is confusing for an admin to know what the actual featured media is if it
+      // changes on hover of the other media.
+      if (!editable) {
+        this.setState({ featuredMedia: media });
+      }
+    };
 
     handleMouseLeaveMedia = () => {
-      this.setState({
-        featuredMedia: undefined
-      });
-    }
+      const { editable } = this.props;
+
+      // It is confusing for an admin to know what the actual featured media is if it
+      // changes on hover of the other media.
+      if (!editable) {
+        this.setState({ featuredMedia: null });
+      }
+    };
 
     handleMoveMedia = (dragIndex, hoverIndex) => {
-      const media = this.props.media[dragIndex];
+      const mediaList = this.media;
+      const media = mediaList[dragIndex];
 
       // Apply new sort order to variant list
-      const newMediaOrder = update(this.props.media, {
+      const newMediaOrder = update(mediaList, {
         $splice: [
           [dragIndex, 1],
           [hoverIndex, 0, media]
@@ -145,21 +114,69 @@ const wrapComponent = (Comp) => (
 
       // Set local state so the component does't have to wait for a round-trip
       // to the server to get the updated list of variants
-      this.setState({
-        media: newMediaOrder
-      });
+      this.setState({ media: newMediaOrder });
 
       // Save the updated positions
-      Meteor.defer(() => {
-        newMediaOrder.forEach((mediaItem, index) => {
-          Media.update(mediaItem._id, {
-            $set: {
-              "metadata.priority": index
-            }
+      const sortedMediaIDs = newMediaOrder.map(({ _id }) => _id);
+      Meteor.call("media/updatePriorities", sortedMediaIDs, (error) => {
+        if (error) {
+          // Go back to using media prop instead of media state so that it doesn't appear successful
+          this.setState({ media: null });
+
+          Alerts.toast(error.reason, "warning", {
+            autoHide: 10000
           });
-        });
+        }
       });
-    }
+    };
+
+    handleUpload = (files) => {
+      const productId = ReactionProduct.selectedProductId();
+      const variant = ReactionProduct.selectedVariant();
+      if (typeof variant !== "object") {
+        return Alerts.add("Select a variant", "danger", { autoHide: true });
+      }
+      const variantId = variant._id;
+      const shopId = ReactionProduct.selectedProduct().shopId || Reaction.getShopId();
+      const userId = Meteor.userId();
+      let count = Media.findLocal({
+        "metadata.variantId": variantId
+      }).length;
+
+      for (const file of files) {
+        // Convert it to a FileRecord
+        const fileRecord = FileRecord.fromFile(file);
+
+        // Set metadata
+        fileRecord.metadata = {
+          ownerId: userId,
+          productId,
+          variantId,
+          shopId,
+          priority: count,
+          toGrid: 1 // we need number
+        };
+
+        count += 1;
+
+        // Listen for upload progress events
+        fileRecord.on("uploadProgress", (uploadProgress) => {
+          this.setState({ uploadProgress });
+        });
+
+        // Do the upload. chunkSize is optional and defaults to 5MB
+        fileRecord.upload({})
+          // We insert only AFTER the server has confirmed that all chunks were uploaded
+          .then(() => Media.insert(fileRecord))
+          .then(() => {
+            this.setState({ uploadProgress: null });
+          })
+          .catch((error) => {
+            this.setState({ uploadProgress: null });
+            Logger.error(error);
+          });
+      }
+    };
 
     render() {
       const { width, height } = this.state.dimensions;
@@ -171,13 +188,11 @@ const wrapComponent = (Comp) => (
             this.setState({ dimensions: contentRect.bounds });
           }}
         >
-
           {({ measureRef }) =>
             <div ref={measureRef}>
               <Comp
-                allowFeaturedMediaHover={this.allowFeaturedMediaHover}
                 featuredMedia={this.state.featuredMedia}
-                onDrop={this.handleDrop}
+                onDrop={this.handleUpload}
                 onMouseEnterMedia={this.handleMouseEnterMedia}
                 onMouseLeaveMedia={this.handleMouseLeaveMedia}
                 onMoveMedia={this.handleMoveMedia}
@@ -186,6 +201,7 @@ const wrapComponent = (Comp) => (
                 media={this.media}
                 mediaGalleryHeight={height}
                 mediaGalleryWidth={width}
+                uploadProgress={this.state.uploadProgress}
               />
             </div>
           }
@@ -209,13 +225,19 @@ function fetchMediaRevisions() {
 
 // resort the media in
 function sortMedia(media) {
-  const sortedMedia = _.sortBy(media, (m) => m.metadata.priority);
+  const sortedMedia = _.sortBy(media, (m) => {
+    const { priority } = (m && m.metadata) || {};
+    if (!priority && priority !== 0) {
+      return 1000;
+    }
+    return priority;
+  });
   return sortedMedia;
 }
 
 // Search through revisions and if we find one for the image, stick it on the object
 function appendRevisionsToMedia(props, media) {
-  if (!Reaction.hasPermission(props.permission || ["createProduct"])) {
+  if (!isRevisionControlEnabled() || !Reaction.hasPermission(props.permission || ["createProduct"])) {
     return media;
   }
   const mediaRevisions = fetchMediaRevisions();
@@ -238,9 +260,7 @@ function composer(props, onData) {
   let editable;
   const viewAs = Reaction.getUserPreferences("reaction-dashboard", "viewAs", "administrator");
 
-  if (!props.media) {
-    // Fetch media based on props
-  } else {
+  if (props.media) {
     media = appendRevisionsToMedia(props, props.media);
   }
 

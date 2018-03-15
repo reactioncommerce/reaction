@@ -1,4 +1,6 @@
 import React, { Component } from "react";
+import PropTypes from "prop-types";
+import ReactDom from "react-dom";
 import { compose } from "recompose";
 import _ from "lodash";
 import { Reaction } from "/client/api";
@@ -12,8 +14,27 @@ function tagToggle(arr, val) {
   return arr;
 }
 
+function getModalRootNode() {
+  let modalNode = document.getElementById("search-modal-root");
+
+  if (modalNode) {
+    return modalNode;
+  }
+
+  modalNode = document.createElement("div");
+  modalNode.setAttribute("id", "search-modal-root");
+  document.body.appendChild(modalNode);
+
+  return modalNode;
+}
+
 const wrapComponent = (Comp) => (
   class SearchModalContainer extends Component {
+    static propTypes = {
+      onClose: PropTypes.func,
+      open: PropTypes.bool
+    }
+
     constructor(props) {
       super(props);
       this.state = {
@@ -77,30 +98,32 @@ const wrapComponent = (Comp) => (
     }
 
     handleChildUnmount = () => {
-      const body = document.getElementsByTagName("BODY")[0];
-      body.removeAttribute("style");
-      this.setState({ renderChild: false });
+      if (this.props.onClose) {
+        this.props.onClose();
+      }
     }
 
     render() {
-      return (
-        <div>
-          {this.state.renderChild ?
-            <div className="rui search-modal js-search-modal">
-              <Comp
-                handleChange={this.handleChange}
-                handleClick={this.handleClick}
-                handleToggle={this.handleToggle}
-                handleAccountClick={this.handleAccountClick}
-                handleTagClick={this.handleTagClick}
-                value={this.state.value}
-                unmountMe={this.handleChildUnmount}
-                searchCollection={this.state.collection}
-                facets={this.state.facets}
-              />
-            </div> : null
-          }
-        </div>
+      return ReactDom.createPortal(
+        (
+          <div>
+            {this.props.open ?
+              <div className="rui search-modal js-search-modal">
+                <Comp
+                  handleChange={this.handleChange}
+                  handleClick={this.handleClick}
+                  handleToggle={this.handleToggle}
+                  handleAccountClick={this.handleAccountClick}
+                  handleTagClick={this.handleTagClick}
+                  value={this.state.value}
+                  unmountMe={this.handleChildUnmount}
+                  searchCollection={this.state.collection}
+                  facets={this.state.facets}
+                />
+              </div> : null
+            }
+          </div>
+        ), getModalRootNode()
       );
     }
   }
