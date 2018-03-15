@@ -18,27 +18,40 @@ class AddressBookGrid extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
+    const { addressBook } = nextProps;
+    addressBook.forEach((addy) => {
+      if (addy.isShippingDefault && addy._id !== this.defaultShippingAddressId) {
+        this.setDefaultAddress(addy._id, "shipping");
+      }
 
+      if (addy.isBillingDefault && addy._id !== this.defaultBillingAddressId) {
+        this.setDefaultAddress(addy._id, "billing");
+      }
+    });
   }
 
+  // TODO: jsDocs
   get defaultShippingAddressId() {
     const { addressBook } = this.props;
     const defaultShippingAddress = addressBook.find((addy) => addy.isShippingDefault);
     return (defaultShippingAddress) ? defaultShippingAddress._id : "";
   }
 
+  // TODO: jsDocs
   get defaultBillingAddressId() {
     const { addressBook } = this.props;
     const defaultBillingAddress = addressBook.find((addy) => addy.isBillingDefault);
     return (defaultBillingAddress) ? defaultBillingAddress._id : "";
   }
 
+  // TODO: jsDocs
   setDefaultAddress(_id, usage) {
     const { defaultAddress } = this.state;
     defaultAddress[usage] = _id;
     this.setState({ defaultAddress });
   }
 
+  // TODO: jsDocs
   onSelect = (_id, usage) => {
     const { select } = this.props;
     this.setDefaultAddress(_id, usage);
