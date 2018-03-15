@@ -3,10 +3,11 @@ import { check, Match } from "meteor/check";
 import { Random } from "meteor/random";
 import { EJSON } from "meteor/ejson";
 import { Meteor } from "meteor/meteor";
-import { copyFile, ReactionProduct } from "/lib/api";
+import { ReactionProduct } from "/lib/api";
 import { ProductRevision as Catalog } from "/imports/plugins/core/revisions/server/hooks";
-import { Media, Products, Revisions, Tags } from "/lib/collections";
+import { MediaRecords, Products, Revisions, Tags } from "/lib/collections";
 import { Logger, Reaction } from "/server/api";
+import { Media } from "/imports/plugins/core/files/server";
 
 /* eslint new-cap: 0 */
 /* eslint no-loop-func: 0 */
@@ -151,9 +152,15 @@ function createHandle(productHandle, productId) {
   }
 
   // we should check again if there are any new matches with DB
-  if (Products.find({
-    handle
-  }).count() !== 0) {
+  // exception product._id needed for cases then double triggering happens
+  const newHandleCount = Products.find({
+    handle,
+    _id: {
+      $nin: [productId]
+    }
+  }).count();
+
+  if (newHandleCount !== 0) {
     handle = createHandle(handle, productId);
   }
 
@@ -167,18 +174,26 @@ function createHandle(productHandle, productId) {
  * @param {String} newId - [cloned|original] product _id
  * @param {String} variantOldId - old variant _id
  * @param {String} variantNewId - - cloned variant _id
- * @return {Number} Media#update result
+ * @return {undefined}
  */
 function copyMedia(newId, variantOldId, variantNewId) {
   Media.find({
     "metadata.variantId": variantOldId
-  }).forEach((fileObj) => {
-    // Copy File and insert directly, bypasing revision control
-    copyFile(fileObj, {
-      productId: newId,
-      variantId: variantNewId
+  })
+    .then((fileRecords) => {
+      fileRecords.forEach((fileRecord) => {
+        // Copy File and insert directly, bypasing revision control
+        fileRecord.fullClone({
+          productId: newId,
+          variantId: variantNewId
+        }).catch((error) => {
+          Logger.error(`Error in copyMedia for product ${newId}`, error);
+        });
+      });
+    })
+    .catch((error) => {
+      Logger.error(`Error in copyMedia for product ${newId}`, error);
     });
-  });
 }
 
 /**
@@ -838,7 +853,7 @@ Meteor.methods({
 
     if (numRemoved > 0) {
       // we can get removes results only in async way
-      Media.update({
+      MediaRecords.update({
         "metadata.productId": {
           $in: ids
         },

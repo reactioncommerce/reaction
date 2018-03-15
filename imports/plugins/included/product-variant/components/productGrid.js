@@ -4,18 +4,29 @@ import { Components } from "@reactioncommerce/reaction-components";
 
 class ProductGrid extends Component {
   static propTypes = {
-    products: PropTypes.array
+    productMediaById: PropTypes.object,
+    products: PropTypes.arrayOf(PropTypes.object)
   }
+
+  static defaultProps = {
+    productMediaById: {}
+  };
 
   renderProductGridItems = (products) => {
     if (Array.isArray(products)) {
+      const { productMediaById } = this.props;
+
       return products.map((product, index) => (
         <Components.ProductGridItems
           {...this.props}
-          product={product} key={index} index={index}
+          product={product}
+          productMedia={productMediaById[product._id]}
+          key={index}
+          index={index}
         />
       ));
     }
+
     return (
       <div className="row">
         <div className="text-center">

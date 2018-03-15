@@ -4,8 +4,8 @@ import { Meteor } from "meteor/meteor";
 import { ReactiveDict } from "meteor/reactive-dict";
 import { Reaction } from "/client/api";
 import Logger from "/client/modules/logger";
-import { ReactionProduct } from "/lib/api";
-import { Media, Products } from "/lib/collections";
+import { getPrimaryMediaForItem, ReactionProduct } from "/lib/api";
+import { Products } from "/lib/collections";
 import { isRevisionControlEnabled } from "/imports/plugins/core/revisions/lib/api";
 import { applyProductRevision } from "/lib/api/products";
 
@@ -72,7 +72,7 @@ Template.productSettings.helpers({
 Template.productSettingsListItem.events({
   "click [data-event-action=product-click]"() {
     Reaction.Router.go("product", {
-      handle: this.handle
+      handle: (this.__published && this.__published.handle) || this.handle
     });
 
     Reaction.state.set("edit/focus", "productDetails");
@@ -94,14 +94,12 @@ Template.productSettingsListItem.helpers({
     return null;
   },
 
-  media() {
-    const media = Media.findOne({
-      "metadata.productId": this._id,
-      "metadata.workflow": { $nin: ["archived"] },
-      "metadata.toGrid": 1
-    }, { sort: { uploadedAt: 1 } });
-
-    return media instanceof FS.File ? media : false;
+  mediaUrl() {
+    const variants = ReactionProduct.getTopVariants(this._id);
+    if (!variants || variants.length === 0) return "/resources/placeholder.gif";
+    const media = getPrimaryMediaForItem({ productId: this._id, variantId: variants[0]._id });
+    if (!media) return "/resources/placeholder.gif";
+    return media.url({ store: "thumbnail" });
   },
 
   listItemActiveClassName(productId) {

@@ -105,6 +105,7 @@ describe("Account Meteor method ", function () {
       const newAddress = account.profile.addressBook[
         account.profile.addressBook.length - 1];
       delete newAddress._id;
+      delete newAddress.failedValidation;
       expect(_.isEqual(address, newAddress)).to.be.true;
       return done();
     });
@@ -385,7 +386,9 @@ describe("Account Meteor method ", function () {
           isShippingDefault: true,
           isBillingDefault: true
         });
-        Meteor.call("accounts/addressBookUpdate", address);
+
+        Meteor.call("accounts/addressBookUpdate", address, null, "isBillingDefault");
+        Meteor.call("accounts/addressBookUpdate", address, null, "isShippingDefault");
         account = Accounts.findOne(account._id);
 
         expect(account.profile.addressBook[0].isBillingDefault).to.be.false;

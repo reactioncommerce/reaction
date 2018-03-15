@@ -11,7 +11,9 @@ import { Hooks, Logger } from "/server/api";
 
 Hooks.Events.add("afterAccountsInsert", (userId, accountId) => {
   if (AccountSearch && !Meteor.isAppTest) {
-    buildAccountSearchRecord(accountId);
+    // Passing forceIndex will run account search index even if
+    // updated fields don't match a searchable field
+    buildAccountSearchRecord(accountId, ["forceIndex"]);
   }
 });
 
@@ -21,10 +23,11 @@ Hooks.Events.add("afterAccountsRemove", (userId, accountId) => {
   }
 });
 
-Hooks.Events.add("afterAccountsUpdate", (userId, accountId) => {
+Hooks.Events.add("afterAccountsUpdate", (userId, updateData) => {
+  const { accountId, updatedFields } = updateData;
+
   if (AccountSearch && !Meteor.isAppTest) {
-    AccountSearch.remove(accountId);
-    buildAccountSearchRecord(accountId);
+    buildAccountSearchRecord(accountId, updatedFields);
   }
 });
 

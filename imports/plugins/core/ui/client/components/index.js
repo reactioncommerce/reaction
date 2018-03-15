@@ -16,7 +16,7 @@ export { default as Tooltip } from "./tooltip/tooltip";
 export { Metadata, Metafield } from "./metadata";
 export { TagList, TagItem } from "./tags";
 export * from "./cards";
-export { MediaGallery, MediaItem } from "./media";
+export { MediaGallery, MediaItem, MediaUploader } from "./media";
 export { default as FlatButton } from "./button/flatButton";
 export { SortableTable, SortableTableLegacy } from "./table";
 export { Checkbox, RolloverCheckbox } from "./checkbox";

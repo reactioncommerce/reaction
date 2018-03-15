@@ -13,11 +13,11 @@ Migrations.add({
       "emails.0.address": { $exists: true }
     }, {
       $set: { shopType: "primary" }
-    });
+    }, { bypassCollection2: true });
   },
   down() {
-    Shops._collection.update({ shopType: "primary" }, {
+    Shops.update({ shopType: "primary" }, {
       $unset: { shopType: "" }
-    });
+    }, { bypassCollection2: true });
   }
 });

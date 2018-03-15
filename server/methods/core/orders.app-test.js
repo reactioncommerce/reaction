@@ -8,8 +8,8 @@ import { sinon } from "meteor/practicalmeteor:sinon";
 import Fixtures from "/server/imports/fixtures";
 import { Reaction } from "/server/api";
 import { getShop } from "/server/imports/fixtures/shops";
-import { Orders, Media, Notifications, Products, Shops } from "/lib/collections";
-
+import { Orders, Notifications, Products, Shops } from "/lib/collections";
+import { Media } from "/imports/plugins/core/files/server";
 
 Fixtures();
 
@@ -423,13 +423,10 @@ describe("orders test", function () {
 
     it("should send email notification", function () {
       spyOnMethod("sendNotification", order.userId);
-      sandbox.stub(Media, "findOne", () => {
-        // stub url method for media file
-        const url = () => "/stub/url";
-        return {
-          url
-        };
-      });
+      // stub url method for media file
+      sandbox.stub(Media, "findOne", () => Promise.resolve({
+        url: () => "/stub/url"
+      }));
       sandbox.stub(Shops, "findOne", () => shop);
       const result = Meteor.call("orders/sendNotification", order);
       expect(result).to.be.true;
@@ -540,8 +537,8 @@ describe("orders test", function () {
         const orderPaymentMethod = billingObjectMethod(Orders.findOne({ _id: order._id })).paymentMethod;
         expect(orderPaymentMethod.mode).to.equal("capture");
         expect(orderPaymentMethod.status).to.equal("completed");
+        done();
       });
-      return done();
     });
 
     it("should update order payment method status to error if payment processor fails", function (done) {
@@ -558,8 +555,8 @@ describe("orders test", function () {
         const orderPaymentMethod = billingObjectMethod(Orders.findOne({ _id: order._id })).paymentMethod;
         expect(orderPaymentMethod.mode).to.equal("capture");
         expect(orderPaymentMethod.status).to.equal("error");
+        done();
       });
-      return done();
     });
   });
 
