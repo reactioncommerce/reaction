@@ -215,21 +215,30 @@ class AddressBook extends Component {
     let controlBarContent;
     if (entryMode && !this.hasEditAddress) {
       // active form with no edit address
-      // show adding address message
+
+      let translationContent;
+      if (this.hasAddress) {
+        // has address in addressBook array, adding a new entry
+        translationContent = { defaultValue: "Add a new address entry", i18nKey: "addressBookAdd.addAddress" };
+      } else {
+        // first address to be created is default address
+        translationContent = { defaultValue: "Create your default address", i18nKey: "addressBookAdd.createAddress" };
+      }
+
       controlBarContent = (
-        <span>Add a new address entry</span>
+        <Components.Translation {...translationContent} />
       );
     } else if (entryMode && this.hasEditAddress) {
       // active form with an edit address
       // show editing address message
       controlBarContent = (
-        <span>Editing this addres entry</span>
+        <Components.Translation defaultValue="Editing this address entry" i18nKey="addressBookEdit.editAddress" />
       );
     } else {
       controlBarContent = (
         <button className="btn btn-default" onClick={this.toggleEntryMode}>
           <i className="fa fa-plus fa-lg address-icons" />
-          <span data-i18n="addressBookGrid.addAddress">Add Address</span>
+          <Components.Translation defaultValue="Add Address" i18nKey="addressBookGrid.addAddress"/>
         </button>
       );
     }

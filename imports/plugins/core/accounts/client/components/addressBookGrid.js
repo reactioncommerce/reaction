@@ -21,10 +21,14 @@ class AddressBookGrid extends Component {
     return (
       <div className="address-list-header">
         <div className="address-list-heading">
-          <h4 data-i18n="addressBookGrid.selectShippingAddress">Select a shipping address</h4>
+          <h4>
+            <Components.Translation defaultValue="Select a shipping address" i18nKey="addressBookGrid.selectShippingAddress" />
+          </h4>
         </div>
         <div className="address-list-heading">
-          <h4 id="billing-address-label" data-i18n="addressBookGrid.selectBillingAddress">Select a billing address</h4>
+          <h4>
+            <Components.Translation defaultValue="Select a billing address" i18nKey="addressBookGrid.selectBillingAddress"/>
+          </h4>
         </div>
         <div className="address-list-heading-blank" />
       </div>
@@ -56,24 +60,30 @@ class AddressBookGrid extends Component {
    */
   renderAddressGrid() {
     const { addressBook, edit, select, remove } = this.props;
-    // TODO: keyboard helper, roles, translations
+    // TODO: keyboard helper
     return addressBook.map((address) => {
       const { _id, fullName, isBillingDefault, isShippingDefault } = address;
       return (
         <div className="address-list-item" key={_id}>
-          <div className={`address ${isShippingDefault ? "active" : ""}`} onClick={() => { select(_id, "shipping"); }}>
+          <div className={`address ${isShippingDefault ? "active" : ""}`} role="button" tabIndex="0" onClick={() => { select(_id, "shipping"); }}>
             <strong>{fullName}</strong>
             {this.renderAddress(address)}
           </div>
-          <div className={`address ${isBillingDefault ? "active" : ""}`} onClick={() => { select(_id, "billing"); }}>
+          <div className={`address ${isBillingDefault ? "active" : ""}`} role="button" tabIndex="0" onClick={() => { select(_id, "billing"); }}>
             <strong>{fullName}</strong>
             {this.renderAddress(address)}
           </div>
           <div className="controls">
-            <button className="btn btn-default" title="{{i18n 'addressBookGrid.edit' 'Edit'}}" onClick={() => { edit(_id); }}>
+            <button className="btn btn-default" onClick={() => { edit(_id); }}>
+              <span className="sr-only">
+                <Components.Translation defaultValue="Edit Address" i18nKey="addressBookGrid.edit" />
+              </span>
               <i className="fa fa-pencil" />
             </button>
-            <button className="btn btn-default danger-action" title="{{i18n 'addressBookGrid.removeAddress' 'Remove Address'}}" onClick={() => { remove(_id); }}>
+            <button className="btn btn-default danger-action" onClick={() => { remove(_id); }}>
+              <span className="sr-only">
+                <Components.Translation defaultValue="Remove Address" i18nKey="addressBookGrid.removeAddress" />
+              </span>
               <i className="fa fa-trash-o" />
             </button>
           </div>

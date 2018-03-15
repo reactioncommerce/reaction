@@ -107,7 +107,7 @@ class AddressBookForm extends Component {
   /**
    * @method renderAddressOptiions
    * @summary renders address options at the bottom of the address book form
-   * if no address in addressBook array only show the isComercial option
+   * if no address in addressBook array only show the isCommercial option
    * since a first address will always be the default shipping/billing address.
    * @since 2.0.0
    * @return {Object} - JSX and Checkbox components.
@@ -123,6 +123,7 @@ class AddressBookForm extends Component {
           <div className="form-group">
             <div className="checkbox">
               <Components.Checkbox
+                i18nKeyLabel="address.isShippingDefault"
                 label="Make this your default shipping address."
                 name="isShippingDefault"
                 onChange={this.onFieldChange}
@@ -133,6 +134,7 @@ class AddressBookForm extends Component {
           <div className="form-group">
             <div className="checkbox">
               <Components.Checkbox
+                i18nKeyLabel="address.isBillingDefault"
                 label="Make this your default billing address."
                 name="isBillingDefault"
                 onChange={this.onFieldChange}
@@ -151,6 +153,7 @@ class AddressBookForm extends Component {
           <div className="form-group">
             <div className="checkbox">
               <Components.Checkbox
+                i18nKeyLabel="address.isCommercial"
                 label="This is a commercal address."
                 name="isCommercial"
                 onChange={this.onFieldChange}
@@ -167,17 +170,23 @@ class AddressBookForm extends Component {
    * @method renderButtons
    * @summary renders submit and cancel buttons for address book form
    * if no address in addressBook array don't show the cancel button
-   * since the user needs to add and address.
+   * since the user needs to add a default address.
    * @since 2.0.0
    * @return {Object} - JSX
    */
   renderButtons() {
     const { cancel, hasAddress } = this.props;
-    // TODO: use translation component for button text!
+    const cancelBtn = (
+      <button type="reset" className="btn btn-default" style={{ marginLeft: "5px" }} onClick={cancel}>
+        <Components.Translation defaultValue="Cancel" i18nKey="app.cancel" />
+      </button>
+    );
     return (
       <div className="row text-right">
-        <button type="submit" className="btn btn-primary" data-i18n="app.saveAndContinue">Save and continue</button>
-        {(hasAddress) ? <button type="reset" className="btn btn-default" style={{ marginLeft: "5px" }} data-i18n="app.cancel" onClick={cancel}>Cancel</button> : ""}
+        <button type="submit" className="btn btn-primary">
+          <Components.Translation defaultValue="Save and continue" i18nKey="app.saveAndContinue" />
+        </button>
+        {(hasAddress) ? cancelBtn : ""}
       </div>
     );
   }
@@ -189,6 +198,7 @@ class AddressBookForm extends Component {
         <div className="row">
           <div className="col-md-6">
             <Components.Select
+              i18nKeyLabel="address.country"
               label="Country"
               name="country"
               options={countries}
@@ -202,6 +212,7 @@ class AddressBookForm extends Component {
         <div className="row">
           <div className="col-md-6">
             <Components.TextField
+              i18nKeyLabel="address.fullName"
               label="Full Name"
               name="fullName"
               onChange={this.onFieldChange}
@@ -213,6 +224,7 @@ class AddressBookForm extends Component {
         <div className="row">
           <div className="col-md-6">
             <Components.TextField
+              i18nKeyLabel="address.address1"
               label="Address"
               name="address1"
               onChange={this.onFieldChange}
@@ -221,6 +233,7 @@ class AddressBookForm extends Component {
           </div>
           <div className="col-md-6">
             <Components.TextField
+              i18nKeyLabel="address.address2"
               label="Address"
               name="address2"
               onChange={this.onFieldChange}
@@ -232,6 +245,7 @@ class AddressBookForm extends Component {
         <div className="row">
           <div className="col-md-4">
             <Components.TextField
+              i18nKeyLabel="address.postal"
               label="Postal"
               name="postal"
               onChange={this.onFieldChange}
@@ -240,6 +254,7 @@ class AddressBookForm extends Component {
           </div>
           <div className="col-md-4">
             <Components.TextField
+              i18nKeyLabel="address.city"
               label="City"
               name="city"
               onChange={this.onFieldChange}
@@ -248,6 +263,7 @@ class AddressBookForm extends Component {
           </div>
           <div className="col-md-4">
             <Components.Select
+              i18nKeyLabel="address.region"
               label="Region"
               name="region"
               options={regions}
@@ -260,6 +276,7 @@ class AddressBookForm extends Component {
         <div className="row">
           <div className="col-md-4">
             <Components.TextField
+              i18nKeyLabel="address.phone"
               label="Phone"
               name="phone"
               onChange={this.onFieldChange}
