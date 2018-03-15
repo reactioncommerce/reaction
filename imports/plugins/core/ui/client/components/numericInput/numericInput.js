@@ -228,7 +228,7 @@ NumericInput.propTypes = {
   classNames: PropTypes.shape({}),
   disabled: PropTypes.bool,
   format: PropTypes.shape({
-    decimal: PropTypes.number
+    decimal: PropTypes.string
   }),
   i18nKeyLabel: PropTypes.string,
   id: PropTypes.string,
