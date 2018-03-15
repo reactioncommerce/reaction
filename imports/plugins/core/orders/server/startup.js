@@ -23,16 +23,14 @@ Hooks.Events.add("afterOrderInsert", (order) => {
 */
 
 /**
- * Orders collection before update
- * @param {String} userId - User wanting to update this documen
+ * @method beforeUpdateOrderWorkflow hook
+ *
+ * @summary Updates an order's workflow before persisting order.
+ *
  * @param {Order} order - Order object, before any modifications
- * @param {Array} fieldNames - Array of field names to update
- * @param {Object} modifier - Mongo modifier object
+ * @param {Object} options - Includes userId, modifier and validation
  * @return {Boolean} true if document should be updated, false otherwise
 */
-// NOTE: The workflow method ends up being set to 'workflow/coreOrderWorkflow/processing'
-// Which does not exist as a meteor server handler. This methods does hooks as it
-// is does not accomplish anything, perhaps it could be removed.
 Hooks.Events.add("beforeUpdateOrderWorkflow", (order, options) => {
   const { userId, modifier } = options;
   // if we're adding a new product or variant to the cart

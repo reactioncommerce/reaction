@@ -3,10 +3,11 @@ import { check, Match } from "meteor/check";
 import { Random } from "meteor/random";
 import { EJSON } from "meteor/ejson";
 import { Meteor } from "meteor/meteor";
-import { copyFile, ReactionProduct } from "/lib/api";
+import { ReactionProduct } from "/lib/api";
 import { ProductRevision as Catalog } from "/imports/plugins/core/revisions/server/hooks";
-import { Media, Products, Revisions, Tags } from "/lib/collections";
 import { Hooks, Logger, Reaction } from "/server/api";
+import { MediaRecords, Products, Revisions, Tags } from "/lib/collections";
+import { Media } from "/imports/plugins/core/files/server";
 
 /* eslint new-cap: 0 */
 /* eslint no-loop-func: 0 */
@@ -151,9 +152,15 @@ function createHandle(productHandle, productId) {
   }
 
   // we should check again if there are any new matches with DB
-  if (Products.find({
-    handle
-  }).count() !== 0) {
+  // exception product._id needed for cases then double triggering happens
+  const newHandleCount = Products.find({
+    handle,
+    _id: {
+      $nin: [productId]
+    }
+  }).count();
+
+  if (newHandleCount !== 0) {
     handle = createHandle(handle, productId);
   }
 
@@ -167,18 +174,26 @@ function createHandle(productHandle, productId) {
  * @param {String} newId - [cloned|original] product _id
  * @param {String} variantOldId - old variant _id
  * @param {String} variantNewId - - cloned variant _id
- * @return {Number} Media#update result
+ * @return {undefined}
  */
 function copyMedia(newId, variantOldId, variantNewId) {
   Media.find({
     "metadata.variantId": variantOldId
-  }).forEach((fileObj) => {
-    // Copy File and insert directly, bypasing revision control
-    copyFile(fileObj, {
-      productId: newId,
-      variantId: variantNewId
+  })
+    .then((fileRecords) => {
+      fileRecords.forEach((fileRecord) => {
+        // Copy File and insert directly, bypasing revision control
+        fileRecord.fullClone({
+          productId: newId,
+          variantId: variantNewId
+        }).catch((error) => {
+          Logger.error(`Error in copyMedia for product ${newId}`, error);
+        });
+      });
+    })
+    .catch((error) => {
+      Logger.error(`Error in copyMedia for product ${newId}`, error);
     });
-  });
 }
 
 /**
@@ -349,19 +364,22 @@ function createProduct(props = null) {
 }
 
 /**
- * @description Updates revision and product documents.
+ * @function
+ * @name updateCatalogProduct
+ * @summary Updates a product's revision and conditionally updates
+ * the underlying product.
  *
- * @param {String} uId - currently logged in user
+ * @param {String} userId - currently logged in user
  * @param {Object} selector - selector for product to update
  * @param {Object} modifier - Object describing what parts of the document to update.
- * @param {Object} options
+ * @param {Object} validation - simple schema validation options
  * @return {String} _id of updated document
  */
-function updateCatalogProduct(uId, selector, modifier, validation) {
+function updateCatalogProduct(userId, selector, modifier, validation) {
   const product = Products.findOne(selector);
 
-  const shouldUpdateProduct = Hooks.Events.run("shouldCatalogProductUpdate", product, {
-    userId: uId,
+  const shouldUpdateProduct = Hooks.Events.run("beforeUpdateCatalogProduct", product, {
+    userId,
     modifier,
     validation
   });
@@ -370,7 +388,7 @@ function updateCatalogProduct(uId, selector, modifier, validation) {
     return Products.update(selector, modifier, validation);
   }
 
-  Logger.debug(`shouldCatalogProductUpdate hook returned falsy, not updating catalog product`);
+  Logger.debug(`beforeUpdateCatalogProduct hook returned falsy, not updating catalog product`);
 
   return false;
 }
@@ -480,7 +498,7 @@ Meteor.methods({
 
       let newId;
       try {
-        Hooks.Events.run("beforeInsertCatalogProduct", clone);
+        Hooks.Events.run("beforeInsertCatalogProductInsertRevision", clone);
         newId = Products.insert(clone, { validate: false });
         const newProduct = Products.findOne(newId);
         Hooks.Events.run("afterInsertCatalogProduct", newProduct);
@@ -550,8 +568,11 @@ Meteor.methods({
     }
 
     Hooks.Events.run("beforeInsertCatalogProduct", assembledVariant);
-    Products.insert(assembledVariant);
+    const _id = Products.insert(assembledVariant);
     Hooks.Events.run("afterInsertCatalogProduct", assembledVariant);
+   
+    Hooks.Events.run("afterInsertCatalogProductInsertRevision", Products.findOne({ _id }));
+
     Logger.debug(`products/createVariant: created variant: ${newVariantId} for ${parentId}`);
 
     return newVariantId;
@@ -651,11 +672,9 @@ Meteor.methods({
     // out if nothing to delete
     if (!Array.isArray(toDelete) || toDelete.length === 0) return false;
 
-
-    const options = { userId: this.userId };
-    let shouldRemoveProduct;
+    // Flag the variant and all its children as deleted in Revisions collection.
     toDelete.forEach((product) => {
-      shouldRemoveProduct = Hooks.Events.run("shouldRemoveCatalogProduct", product, options);
+      Hooks.Events.run("beforeRemoveCatalogProduct", product, { userId: this.userId });
     });
 
     let deleted = 0;
@@ -670,6 +689,7 @@ Meteor.methods({
       // denormalized fields
       const productId = toDelete[0].ancestors[0];
       toDenormalize.forEach((field) => denormalize(productId, field));
+      Logger.debug(`Flagged variant and all its children as deleted.`);
     }
 
     return typeof deleted === "number" && deleted > 0;
@@ -772,7 +792,7 @@ Meteor.methods({
           newProduct._id
         );
       }
-      Hooks.Events.run("beforeInsertCatalogProduct", newProduct);
+      Hooks.Events.run("beforeInsertCatalogProductInsertRevision", newProduct);
       result = Products.insert(newProduct, { validate: false });
       Hooks.Events.run("afterInsertCatalogProduct", newProduct);
       results.push(result);
@@ -801,7 +821,7 @@ Meteor.methods({
         delete newVariant.createdAt;
         delete newVariant.publishedAt; // TODO can variant have this param?
 
-        Hooks.Events.run("beforeInsertCatalogProduct", newVariant);
+        Hooks.Events.run("beforeInsertCatalogProductInsertRevision", newVariant);
         result = Products.insert(newVariant, { validate: false });
         Hooks.Events.run("afterInsertCatalogProduct", newVariant);
         copyMedia(productNewId, variant._id, variantNewId);
@@ -835,7 +855,7 @@ Meteor.methods({
       }
 
       // Create product revision
-      Hooks.Events.run("beforeInsertCatalogProduct", product);
+      Hooks.Events.run("beforeInsertCatalogProductInsertRevision", product);
 
       return Products.insert(product);
     }
@@ -843,7 +863,7 @@ Meteor.methods({
     const newSimpleProduct = createProduct();
 
     // Create simple product revision
-    Hooks.Events.run("beforeInsertCatalogProduct", newSimpleProduct);
+    Hooks.Events.run("afterInsertCatalogProductInsertRevision", newSimpleProduct);
 
     const newVariant = createProduct({
       ancestors: [newSimpleProduct._id],
@@ -853,7 +873,7 @@ Meteor.methods({
     });
 
     // Create variant revision
-    Hooks.Events.run("beforeInsertCatalogProduct", newVariant);
+    Hooks.Events.run("afterInsertCatalogProductInsertRevision", newVariant);
 
     return newSimpleProduct._id;
   },
@@ -915,30 +935,21 @@ Meteor.methods({
       return ids;
     });
 
-    const options = { userId: this.userId };
-    let shouldRemoveProduct;
+    // Flag the product and all its variants as deleted in the Revisions collection.
     ids.forEach((_id) => {
-      shouldRemoveProduct = Hooks.Events.run("shouldRemoveCatalogProduct", Products.findOne({ _id }), options);
+      Hooks.Events.run("beforeRemoveCatalogProduct", Products.findOne({ _id }), { userId: this.userId });
     });
 
-    if (shouldRemoveProduct) {
-      Products.remove({
-        _id: {
-          $in: ids
-        }
-      });
-    }
-
-    const numRemoved = Revisions.find({
+    const numFlaggedAsDeleted = Revisions.find({
       "documentId": {
         $in: ids
       },
       "documentData.isDeleted": true
     }).count();
 
-    if (numRemoved > 0) {
-      // we can get removes results only in async way
-      Media.update({
+    if (numFlaggedAsDeleted > 0) {
+      // Flag associated MediaRecords as deleted.
+      MediaRecords.update({
         "metadata.productId": {
           $in: ids
         },
@@ -950,9 +961,10 @@ Meteor.methods({
           "metadata.isDeleted": true
         }
       });
-      return numRemoved;
+      return numFlaggedAsDeleted;
     }
-    throw new Meteor.Error("server-error", "Something went wrong, nothing was deleted");
+
+    Logger.debug(`${numFlaggedAsDeleted} products have been flagged as deleted`);
   },
 
   /**

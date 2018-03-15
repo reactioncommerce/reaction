@@ -1,3 +1,4 @@
+import _ from "lodash";
 import { Meteor } from "meteor/meteor";
 import { Shipping, Packages } from "/lib/collections";
 import { Logger, Reaction, Hooks } from "/server/api";
@@ -5,39 +6,28 @@ import { Logger, Reaction, Hooks } from "/server/api";
 // callback ran on getShippingRates hook
 function getShippingRates(previousQueryResults, cart) {
   const marketplaceSettings = Reaction.getMarketplaceSettings();
-  let merchantShippingRates = false;
-  if (marketplaceSettings && marketplaceSettings.public && marketplaceSettings.public.merchantShippingRates) {
-    ({ merchantShippingRates } = marketplaceSettings.public);
-  }
+  const merchantShippingRates = _.get(marketplaceSettings, "public.merchantShippingRates", false);
 
-  const [rates, retrialTargets] = previousQueryResults;
-  const shops = [];
-  const products = cart.items;
-
-  let pkgData;
   if (merchantShippingRates) {
     Logger.fatal("Multiple shipping providers is currently not implemented");
     throw new Meteor.Error("not-implemented", "Multiple shipping providers is currently not implemented");
-  } else {
-    pkgData = Packages.findOne({
-      name: "reaction-shippo",
-      shopId: Reaction.getPrimaryShopId()
-    });
   }
 
+  const pkgData = Packages.findOne({
+    name: "reaction-shippo",
+    shopId: Reaction.getPrimaryShopId()
+  });
+
+  const [rates, retrialTargets] = previousQueryResults;
+  const products = cart.items;
 
   // must have cart items and package enabled to calculate shipping
-  if (!pkgData || !cart.items || pkgData.settings.shippo.enabled !== true) {
+  if (!pkgData || !products || pkgData.settings.shippo.enabled !== true) {
     return [rates, retrialTargets];
   }
 
-  // default selector is current shop
-  let selector = {
-    "shopId": Reaction.getShopId(),
-    "provider.enabled": true
-  };
-
   // if we don't have merchant shipping rates enabled, only grab rates from primary shop
+  const shops = [];
   if (!merchantShippingRates) {
     shops.push(Reaction.getPrimaryShopId());
   } else {
@@ -49,32 +39,26 @@ function getShippingRates(previousQueryResults, cart) {
       }
     }
   }
-  selector = {
-    "shopId": {
-      $in: shops
-    },
-    "provider.enabled": true
-  };
 
-  const shippingCollection = Shipping.find(selector);
   const shippoDocs = {};
-  if (shippingCollection) {
-    shippingCollection.forEach((doc) => {
-      // If provider is from Shippo, put it in an object to get rates dynamically(shippoApi) for all of them after.
-      if (doc.provider.shippoProvider) {
-        shippoDocs[doc.provider.shippoProvider.carrierAccountId] = doc;
-      }
-    });
-
-    //  Get shippingRates from Shippo
-    if (Object.keys(shippoDocs).length > 0) {
-      const targets = retrialTargets.slice();
-      const shippingRatesInfo =
-        Meteor.call("shippo/getShippingRatesForCart", cart._id, shippoDocs, targets);
-      const [shippoRates, singleRetrialTarget] = shippingRatesInfo;
-      rates.push(...shippoRates);
-      retrialTargets.push(...singleRetrialTarget);
+  Shipping.find({
+    "shopId": { $in: shops },
+    "provider.enabled": true
+  }).forEach((doc) => {
+    // If provider is from Shippo, put it in an object to get rates dynamically(shippoApi) for all of them after.
+    if (doc.provider.shippoProvider) {
+      shippoDocs[doc.provider.shippoProvider.carrierAccountId] = doc;
     }
+  });
+
+  // Get shippingRates from Shippo
+  if (Object.keys(shippoDocs).length > 0) {
+    const targets = retrialTargets.slice();
+    const shippingRatesInfo =
+      Meteor.call("shippo/getShippingRatesForCart", cart._id, shippoDocs, targets);
+    const [shippoRates, singleRetrialTarget] = shippingRatesInfo;
+    rates.push(...shippoRates);
+    retrialTargets.push(...singleRetrialTarget);
   }
 
   Logger.debug("Shippo onGetShippingRates", [rates, retrialTargets]);

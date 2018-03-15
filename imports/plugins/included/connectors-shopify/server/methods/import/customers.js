@@ -170,7 +170,10 @@ export const methods = {
             ids.push(reactionCustomerId);
 
             Accounts.update({ _id: reactionCustomerId }, { publish: true });
-            Hooks.Events.run("afterAccountsUpdate", Meteor.userId(), reactionCustomerId);
+            Hooks.Events.run("afterAccountsUpdate", Meteor.userId(), {
+              accountId: reactionCustomerId,
+              updatedFields: ["forceIndex"]
+            });
           } else { // customer already exists check
             Logger.info(`Customer ${shopifyCustomer.last_name} ${shopifyCustomer.id} already exists`);
           }

@@ -79,15 +79,12 @@ class ChildVariant extends Component {
   }
 
   renderMedia() {
-    if (this.hasMedia) {
-      const media = this.primaryMediaItem;
+    const media = this.primaryMediaItem;
+    if (!media) return null;
 
-      return (
-        <Components.MediaItem source={media.url()} />
-      );
-    }
-
-    return null;
+    return (
+      <Components.MediaItem source={media} />
+    );
   }
 
   renderValidationButton = () => {

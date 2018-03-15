@@ -8,20 +8,20 @@ import { Hooks, Logger, Reaction } from "/server/api";
 /* eslint no-shadow: 0 */
 
 /**
- * @description Updates a hook to update orders status before
- * updating an order.
+ * @method updateOrderWorkflow
+ * @summary Updates a hook to update orders status before updating an order.
  *
- * @param {String} uId - currently logged in user
+ * @param {String} userId - currently logged in user
  * @param {Object} selector - selector for product to update
  * @param {Object} modifier - Object describing what parts of the document to update.
  * @param {Object} validation
  * @return {String} _id of updated document
  */
-function updateOrderWorkflow(uId, selector, modifier, validation) {
+function updateOrderWorkflow(userId, selector, modifier, validation) {
   const order = Orders.findOne(selector);
 
   Hooks.Events.run("beforeUpdateOrderWorkflow", order, {
-    userId: uId,
+    userId,
     modifier,
     validation
   });
@@ -294,7 +294,9 @@ Meteor.methods({
   "workflow/pushOrderWorkflow"(workflow, status, order) {
     check(workflow, String);
     check(status, String);
-    check(order, Object); // TODO: Validatate as Schemas.Order
+    check(order, Match.ObjectIncluding({
+      _id: String
+    }));
     this.unblock();
 
     const workflowStatus = `${workflow}/${status}`;
@@ -333,7 +335,12 @@ Meteor.methods({
   "workflow/pullOrderWorkflow"(workflow, status, order) {
     check(workflow, String);
     check(status, String);
-    check(order, Object);
+    check(order, Match.ObjectIncluding({
+      _id: String,
+      workflow: Match.ObjectIncluding({
+        status: String
+      })
+    }));
     this.unblock();
 
     const result = Orders.update({
@@ -361,7 +368,10 @@ Meteor.methods({
    */
   "workflow/pushItemWorkflow"(status, order, itemIds) {
     check(status, String);
-    check(order, Object);
+    check(order, Match.ObjectIncluding({
+      _id: String,
+      items: [Object]
+    }));
     check(itemIds, Array);
 
     // We can't trust the order from the client (for several reasons)

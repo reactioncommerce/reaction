@@ -7,27 +7,47 @@ import { Components } from "@reactioncommerce/reaction-components";
 import { Reaction } from "/client/api";
 
 class MediaGallery extends Component {
+  static propTypes = {
+    editable: PropTypes.bool,
+    featuredMedia: PropTypes.object,
+    media: PropTypes.arrayOf(PropTypes.object),
+    mediaGalleryHeight: PropTypes.number,
+    mediaGalleryWidth: PropTypes.number,
+    onDrop: PropTypes.func,
+    onMouseEnterMedia: PropTypes.func,
+    onMouseLeaveMedia: PropTypes.func,
+    onMoveMedia: PropTypes.func,
+    onRemoveMedia: PropTypes.func,
+    uploadProgress: PropTypes.shape({
+      bytesUploaded: PropTypes.number.isRequired,
+      bytesTotal: PropTypes.number.isRequired,
+      percentage: PropTypes.number.isRequired
+    })
+  };
+
+  static defaultProps = {
+    onDrop() {},
+    onMouseEnterMedia() {},
+    onMouseLeaveMedia() {},
+    onMoveMedia() {},
+    onRemoveMedia() {}
+  };
+
   constructor() {
     super();
+
     this.state = {
       dimensions: {
         width: -1,
         height: -1
       }
     };
-    this.onDrop = this.onDrop.bind(this);
   }
 
   get hasMedia() {
-    return Array.isArray(this.props.media) && this.props.media.length > 0;
-  }
+    const { media } = this.props;
 
-  get allowFeaturedMediaHover() {
-    if (this.props.allowFeaturedMediaHover && this.props.featuredMedia) {
-      return true;
-    }
-
-    return false;
+    return Array.isArray(media) && media.length > 0;
   }
 
   get featuredMedia() {
@@ -35,15 +55,13 @@ class MediaGallery extends Component {
   }
 
   handleDropClick = () => {
-    this.refs.dropzone.open();
-  }
+    this.dropzone && this.dropzone.open();
+  };
 
-  onDrop(files) {
-    if (files.length === 0) {
-      return;
-    }
+  handleDrop = (files) => {
+    if (files.length === 0) return;
     return this.props.onDrop(files);
-  }
+  };
 
   renderAddItem() {
     if (this.props.editable) {
@@ -77,100 +95,102 @@ class MediaGallery extends Component {
     return null;
   }
 
+  renderProgressItem() {
+    // For now, we are not showing actual progress, but we could
+    return (
+      <div className="gallery-image add">
+        <img
+          alt=""
+          className="img-responsive"
+          src={"/resources/placeholder.gif"}
+        />
+        <div className="rui badge-container">
+          <Components.CircularProgress indeterminate={true} />
+        </div>
+      </div>
+    );
+  }
+
   renderFeaturedMedia() {
+    const { editable, onMouseEnterMedia, onMoveMedia, onRemoveMedia } = this.props;
     const { width, height } = this.state.dimensions;
 
-    if (this.hasMedia) {
-      return this.props.media.map((media, index) => {
-        if (index === 0) {
-          return (
-            <Measure
-              key={index}
-              bounds
-              onResize={(contentRect) => {
-                this.setState({ dimensions: contentRect.bounds });
-              }}
-            >
-              {({ measureRef }) =>
-                <div ref={measureRef}>
-                  <Components.MediaItem
-                    editable={this.props.editable}
-                    index={index}
-                    key={index}
-                    revision={this.featuredMedia.revision}
-                    metadata={this.featuredMedia.metadata}
-                    onMouseEnter={this.props.onMouseEnterMedia}
-                    onMove={this.props.onMoveMedia}
-                    onRemoveMedia={this.props.onRemoveMedia}
-                    source={this.featuredMedia}
-                    mediaHeight={height}
-                    mediaWidth={width}
-                    isFeatured={true}
-                    zoomable={true}
-                    {...this.props}
-                  />
-                </div>
-              }
-            </Measure>
-          );
-        }
-        return null;
-      });
-    }
+    const media = this.featuredMedia;
+    if (!media) return <Components.MediaItem />;
 
     return (
-      <Components.MediaItem />
+      <Measure
+        bounds
+        onResize={(contentRect) => {
+          const dimensions = { ...contentRect.bounds };
+
+          // We get React warnings in console when the bounds height comes in as zero
+          if (dimensions.height === 0) dimensions.height = -1;
+
+          this.setState({ dimensions });
+        }}
+      >
+        {({ measureRef }) =>
+          <div ref={measureRef}>
+            <Components.MediaItem
+              editable={editable}
+              index={0} // index prop is required for SortableItem HOC to work
+              mediaHeight={height}
+              mediaWidth={width}
+              onMouseEnter={onMouseEnterMedia}
+              onMove={onMoveMedia}
+              onRemoveMedia={onRemoveMedia}
+              source={this.featuredMedia}
+              zoomable
+            />
+          </div>
+        }
+      </Measure>
     );
   }
 
   renderMediaThumbnails() {
-    if (this.hasMedia) {
-      return this.props.media.map((media, index) => (
-        <Components.MediaItem
-          editable={this.props.editable}
-          index={index}
-          key={index}
-          revision={media.revision}
-          metadata={media.metadata}
-          onMouseEnter={this.props.onMouseEnterMedia}
-          onMove={this.props.onMoveMedia}
-          onRemoveMedia={this.props.onRemoveMedia}
-          source={media}
-        />
-      ));
-    }
-    return null;
+    const { editable, media: mediaList, onMouseEnterMedia, onMoveMedia, onRemoveMedia } = this.props;
+
+    return (mediaList || []).map((media, index) => (
+      <Components.MediaItem
+        editable={editable}
+        key={media._id}
+        index={index} // index prop is required for SortableItem HOC to work
+        onMouseEnter={onMouseEnterMedia}
+        onMove={onMoveMedia}
+        onRemoveMedia={onRemoveMedia}
+        size="small"
+        source={media}
+      />
+    ));
   }
 
   renderMediaGalleryUploader() {
-    const containerWidth = this.props.mediaGalleryWidth;
-    const classes = { "admin-featuredImage": Reaction.hasAdminAccess() };
-    let featured = this.renderAddItem();
-    let gallery;
-
-    // Only render media only if there is any
-    if (this.hasMedia) {
-      featured = this.renderFeaturedMedia();
-      gallery = this.renderMediaThumbnails();
-    }
+    const { mediaGalleryWidth: containerWidth, uploadProgress } = this.props;
+    const classes = {
+      "admin-featuredImage": Reaction.hasAdminAccess(),
+      "featuredImage": true
+    };
 
     return (
       <div className="rui media-gallery">
         <Dropzone
           className="rui gallery-drop-pane"
-          disableClick={true}
-          multiple={true}
-          disablePreview={true}
-          onDrop={this.onDrop}
-          ref="dropzone"
+          disableClick
+          multiple
+          disablePreview
+          onDrop={this.handleDrop}
+          ref={(inst) => { this.dropzone = inst; }}
           accept="image/jpg, image/png, image/jpeg"
         >
           <div className="rui gallery">
-            <div className={classnames(classes)} style={{ height: `${containerWidth}px` }}>
-              {featured}
+            <div className={classnames(classes)} style={{ height: containerWidth }}>
+              {this.featuredMedia ? this.renderFeaturedMedia() : this.renderAddItem()}
             </div>
             <div className="rui gallery-thumbnails">
-              {gallery}
+              {!!this.hasMedia && this.renderMediaThumbnails()}
+              {!!uploadProgress && this.renderProgressItem()}
               {this.renderAddItem()}
             </div>
           </div>
@@ -181,12 +201,15 @@ class MediaGallery extends Component {
 
   renderMediaGallery() {
     const containerWidth = this.props.mediaGalleryWidth;
-    const classes = { "admin-featuredImage": Reaction.hasAdminAccess() };
+    const classes = {
+      "admin-featuredImage": Reaction.hasAdminAccess(),
+      "featuredImage": true
+    };
 
     return (
       <div className="rui media-gallery">
         <div className="rui gallery">
-          <div className={classnames(classes)} style={{ height: `${containerWidth}px` }}>
+          <div className={classnames(classes)} style={{ height: containerWidth }}>
             {this.renderFeaturedMedia()}
           </div>
           <div className="rui gallery-thumbnails">
@@ -198,26 +221,23 @@ class MediaGallery extends Component {
   }
 
   render() {
-    if (this.props.editable) {
-      return this.renderMediaGalleryUploader();
+    const { editable } = this.props;
+
+    let gallery;
+    if (editable) {
+      gallery = this.renderMediaGalleryUploader();
+    } else {
+      gallery = this.renderMediaGallery();
     }
 
-    return this.renderMediaGallery();
+    // Note that only editable mode actually uses drag-drop, but since both views render
+    // MediaItems, which are SortableItems, there is an error if it isn't in the ancester tree
+    return (
+      <Components.DragDropProvider>
+        {gallery}
+      </Components.DragDropProvider>
+    );
   }
 }
-
-MediaGallery.propTypes = {
-  allowFeaturedMediaHover: PropTypes.bool,
-  editable: PropTypes.bool,
-  featuredMedia: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
-  media: PropTypes.arrayOf(PropTypes.object),
-  mediaGalleryHeight: PropTypes.number,
-  mediaGalleryWidth: PropTypes.number,
-  onDrop: PropTypes.func,
-  onMouseEnterMedia: PropTypes.func,
-  onMouseLeaveMedia: PropTypes.func,
-  onMoveMedia: PropTypes.func,
-  onRemoveMedia: PropTypes.func
-};
 
 export default MediaGallery;

@@ -1,7 +1,50 @@
 import { Meteor } from "meteor/meteor";
 import { check, Match } from "meteor/check";
-import { Products, Media, Revisions, Packages } from "/lib/collections";
+import { Products, MediaRecords, Revisions, Packages } from "/lib/collections";
 import { Hooks, Logger } from "/server/api";
+
+function handleImageRevision(revision) {
+  let result = 0;
+  if (revision.changeType === "insert") {
+    // TODO: after we've removed the hook, we shouldn't need updates
+    result = MediaRecords.direct.update({
+      _id: revision.documentId
+    }, {
+      $set: {
+        metadata: revision.documentData
+      }
+    });
+  } else if (revision.changeType === "remove") {
+    // TODO: after we've removed the hook, we shouldn't need updates
+    result = MediaRecords.direct.update({
+      _id: revision.documentId
+    }, {
+      $set: {
+        "metadata.workflow": "archived"
+      }
+    });
+  } else if (revision.changeType === "update") {
+    // TODO: after we've removed the hook, we shouldn't need updates
+    result = MediaRecords.direct.update({
+      _id: revision.documentId
+    }, {
+      $set: {
+        metadata: revision.documentData
+      }
+    });
+    Logger.debug(`setting metadata for ${revision.documentId} to ${JSON.stringify(revision.documentData, null, 4)}`);
+  }
+  // mark revision published whether we are publishing the image or not
+  Revisions.update({
+    _id: revision._id
+  }, {
+    $set: {
+      "workflow.status": "revision/published"
+    }
+  });
+
+  return result;
+}
 
 export function updateSettings(settings) {
   check(settings, Object);
@@ -16,15 +59,17 @@ export function updateSettings(settings) {
 }
 
 /**
- * @description Updates revision and product documents.
+ * @function
+ * @name publishCatalogProduct
+ * @description Updates revision and publishes a product.
  *
  * @param {String} userId - currently logged in user
  * @param {Object} selector - selector for product to update
  * @param {Object} modifier - Object describing what parts of the document to update.
- * @param {Object} options
+ * @param {Object} validation - simple schema validation
  * @return {String} _id of updated document
  */
-function updateCatalogProduct(userId, selector, modifier, validation) {
+function publishCatalogProduct(userId, selector, modifier, validation) {
   const product = Products.findOne(selector);
   Hooks.Events.run("beforeUpdateCatalogProduct", product, {
     userId,
@@ -130,14 +175,10 @@ Meteor.methods({
     }
 
     let updatedDocuments = 0;
-    const previousDocuments = [];
-
     if (revisions) {
       for (const revision of revisions) {
         if (!revision.documentType || revision.documentType === "product") {
-          previousDocuments.push(Products.findOne(revision.documentId));
-
-          const res = updateCatalogProduct(
+          const res = publishCatalogProduct(
             this.userId,
             {
               _id: revision.documentId
@@ -148,51 +189,14 @@ Meteor.methods({
           );
           updatedDocuments += res;
         } else if (revision.documentType === "image") {
-          if (revision.changeType === "insert") {
-            const res = Media.files.direct.update({
-              _id: revision.documentId
-            }, {
-              $set: {
-                metadata: revision.documentData
-              }
-            });
-            updatedDocuments += res;
-          } else if (revision.changeType === "remove") {
-            const res = Media.files.direct.update({
-              _id: revision.documentId
-            }, {
-              $set: {
-                "metadata.workflow": "archived"
-              }
-            });
-            updatedDocuments += res;
-          } else if (revision.changeType === "update") {
-            const res = Media.files.direct.update({
-              _id: revision.documentId
-            }, {
-              $set: {
-                metadata: revision.documentData
-              }
-            });
-            updatedDocuments += res;
-            Logger.debug(`setting metadata for ${revision.documentId} to ${JSON.stringify(revision.documentData, null, 4)}`);
-          }
-          // mark revision published whether we are publishing the image or not
-          Revisions.update({
-            _id: revision._id
-          }, {
-            $set: {
-              "workflow.status": "revision/published"
-            }
-          });
+          updatedDocuments += handleImageRevision(revision);
         }
       }
     }
 
     if (updatedDocuments > 0) {
       return {
-        status: "success",
-        previousDocuments
+        status: "success"
       };
     }
 
