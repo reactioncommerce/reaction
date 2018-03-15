@@ -1,6 +1,6 @@
 # v1.10.0
 
-In addition to a few performance updates, refactors, and bug fixes, this release starts the rollout of our GraphQL api. Until further notice, this GraphQL api should be considered a prototype and should not be used for production. If you're interested in following along with our GraphQL work, tracking our [GraphQL issues](https://github.com/reactioncommerce/reaction/issues?utf8=%E2%9C%93&q=is%3Aissue+graphql+) is probably the easiest way for now.
+In addition to a few performance updates, refactors, and bug fixes, this release starts the rollout of our GraphQL API. Until further notice, this GraphQL API should be considered a prototype and should not be used for production. If you're interested in following along with our GraphQL work, tracking our [GraphQL issues](https://github.com/reactioncommerce/reaction/issues?utf8=%E2%9C%93&q=is%3Aissue+graphql+) is probably the easiest way for now.
 
 In short, this release adds a prototype GraphQL server running in the Reaction project with the following urls exposed:
 
@@ -10,6 +10,8 @@ In short, this release adds a prototype GraphQL server running in the Reaction p
 ```
 
 We'll be incrementally adding functionality to this GraphQL endpoint, but this release serves as the starting point for our GraphQL api.
+
+This release also removes the collection hooks for the Products collection. While we've not quite fully removed the collection hooks package from the app, we're almost done replacing all bits of code that use collection hooks internally. Once that's done, we will remove the [meteor-collection-hooks](https://github.com/matb33/meteor-collection-hooks) package. If you're app or plugin is dependent on collection hooks, we'd recommend refactoring to eliminate the need for those types of hooks. If you're not up for refactoring you can just add that package back into your app though you'll lose the benefits that Reaction will see by eliminating that dependency.
 
  ## GraphQL
  - GraphQL Prototype (#3898) .. Resolves #3935, Resolves #3928, Resolves #3910
