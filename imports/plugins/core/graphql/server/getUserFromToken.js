@@ -1,5 +1,5 @@
-import { Meteor } from "meteor/meteor";
 import { Accounts } from "meteor/accounts-base";
+import { Meteor } from "meteor/meteor";
 
 async function getUserFromToken(loginToken) {
   const hashedToken = Accounts._hashLoginToken(loginToken);

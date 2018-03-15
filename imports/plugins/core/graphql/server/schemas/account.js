@@ -42,14 +42,14 @@ export const typeDefs = `
   }
 
   extend type Mutation {
-    addAccountAddressBookEntry(accountId: ID, input: CreateAddressInput!): Address
+    addAccountAddressBookEntry(accountId: ID, address: NewAddress!): Address
     addAccountEmailRecord(email: Email!): EmailRecord
     addAccountToGroup(accountId: ID!, groupId: ID!): Group
     removeAccountAddressBookEntry(accountId: ID, addressId: ID!): Address
     removeAccountEmailRecord(email: Email!): EmailRecord
     removeAccountFromGroup(accountId: ID!, groupId: ID!): Group
     updateAccount(accountId: ID!, modifier: UpdateAccountInput!): Account
-    updateAccountAddressBookEntry(accountId: ID, addressId: ID!, modifier: UpdateAddressInput!): Address
+    updateAccountAddressBookEntry(accountId: ID, addressId: ID!, modifier: UpdatedAddress!): Address
   }
 
   extend type Query {
