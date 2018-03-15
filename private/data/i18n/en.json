@@ -443,7 +443,8 @@
         "guestOrLogin": "Sign in, or checkout as a guest",
         "continueAsGuest": "Continue as guest",
         "guestMessage": "You can checkout without creating an account. You'll have a chance to create an account later.",
-        "addEmail": "Add email"
+        "addEmail": "Add email",
+        "invalidEmail": "Email is not valid"
       },
       "addressBookGrid": {
         "addAddress": "Add address",
@@ -712,6 +713,8 @@
           "userNotFound": "User not found",
           "verifyEmailLinkExpired": "Verify email link expired",
           "verifyEmailLinkIsForUnknownAddress": "Verify email link is for unknown address",
+          "verifyTimeout": "Verification timed out. Probably you've already been verified successfully.",
+          "verifyEmailAddressNotFound": "Couldn't verify email address.",
           "matchFailed": "Match failed",
           "unknownError": "Unknown error"
         }

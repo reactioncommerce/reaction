@@ -1,7 +1,5 @@
 import "./helpers";
 
-import "./templates/list/items.html";
-import "./templates/list/items.js";
 import "./templates/list/pdf.html";
 import "./templates/list/pdf.js";
 import "./templates/list/summary.html";

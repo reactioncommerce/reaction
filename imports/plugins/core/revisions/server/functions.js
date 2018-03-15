@@ -9,7 +9,9 @@ import { getSlug } from "/lib/api";
 
 
 /**
- * Inserts a new revision for the given product
+ * @method insertRevision
+ * @summary Inserts a new revision for a given product
+ *
  * @param {Object} product
  * @returns {undefined}
  */
@@ -32,11 +34,11 @@ export function insertRevision(product) {
     }
   });
 
-  // Prevent this product from being created if a parent product / varaint ancestor is deleted.
+  // Prevent this product from being created if a parent product / variant ancestor is deleted.
   //
-  // This will prevent cases where a parent variant hase been deleted and a user tries to create a
-  // child variant. You cannot create the child variant becuase the parent will no longer exist when
-  // changes have been published; resulting in a broken inheretence and UI
+  // This will prevent cases where a parent variant has been deleted and a user tries to create a
+  // child variant. You cannot create the child variant because the parent will no longer exist when
+  // changes have been published; resulting in a broken inheritance and UI
   const productHasAncestors = Array.isArray(product.ancestors);
 
   if (productHasAncestors) {
@@ -70,13 +72,13 @@ export function insertRevision(product) {
 }
 
 /**
- * Update a product's revision
+ * @method updateRevision
+ * @summary Update a product's revision
  *
- * @param {any} userId
- * @param {Object} product - product to update
- * @param {Object} modifier - properties to updated
- * @param {Object} options
- * @returns {Boolean} true if upderlying product should be updated, otherwise false.
+ * @param {String} userId
+ * @param {Object} product - Product to update
+ * @param {Object} options - Options include userId, modifier and validation properties
+ * @returns {Boolean} true if underlying product should be updated, otherwise false.
  */
 export function updateRevision(product, options = {}) {
   if (RevisionApi.isRevisionControlEnabled() === false) {
@@ -92,17 +94,17 @@ export function updateRevision(product, options = {}) {
     }
   });
 
-  // Prevent this product revision from beign restored from isDeleted state if a product / varaint
+  // Prevent this product revision from being restored from isDeleted state if a product / variant
   // ancestor is also deleted.
   //
-  // This will prevent cases where a parent variant hase been deleted and a user tries to undeleted a
-  // child variant. You cannot undeleted the child variant, becuase the parent will no longer exist when
-  // changes have been published; resulting in a broken inheretence and UI
+  // This will prevent cases where a parent variant has been deleted and a user tries to restore a
+  // child variant. You cannot restore the child variant, because the parent will no longer exist when
+  // changes have been published; resulting in a broken inheritance and UI
   const revisionHasAncestors =
     productRevision && productRevision.documentData && Array.isArray(productRevision.documentData.ancestors);
-  const modiferContainsIsDeleted = modifier.$set && modifier.$set.isDeleted === false;
+  const modifierContainsIsDeleted = modifier.$set && modifier.$set.isDeleted === false;
 
-  if (revisionHasAncestors && modiferContainsIsDeleted) {
+  if (revisionHasAncestors && modifierContainsIsDeleted) {
     // Verify there are no deleted ancestors,
     // Variants cannot be restored if their parent product / variant is deleted
     const archivedCount = Revisions.find({
@@ -163,7 +165,7 @@ export function updateRevision(product, options = {}) {
   if (publish === true || (product.workflow && product.workflow.status === "product/publish")) {
     // Maybe mark the revision as published
 
-    Logger.debug(`Publishing revison for product ${product._id}.`);
+    Logger.debug(`Publishing revision for product ${product._id}.`);
     Revisions.update(revisionSelector, {
       $set: {
         "workflow.status": "revision/published"
@@ -188,7 +190,7 @@ export function updateRevision(product, options = {}) {
         if ({}.hasOwnProperty.call(modifier[operation], property)) {
           if (operation === "$set" && property === "metafields.$") {
             // Special handling for meta fields with $ operator
-            // We need to update the selector otherwise the operation would completly fail.
+            // We need to update the selector otherwise the operation would completely fail.
             //
             // This does NOT apply to metafield.0, metafield.1, metafield.n operations
             // where 0, 1, n represent an array index.
@@ -240,7 +242,7 @@ export function updateRevision(product, options = {}) {
             //
             // Summary:
             // When a user updates the product title, if the handle matches the product id,
-            // then update the handle to be a sligified version of the title
+            // then update the handle to be a slugified version of the title
             //
             // This block ensures that the handle is either a custom slug, slug of the title, or
             // the _id of the product, but is never blank
@@ -267,7 +269,7 @@ export function updateRevision(product, options = {}) {
               newValue === documentId ||
               newValue === slugDocId;
 
-            // Continue to set the title / handle as origionally requested
+            // Continue to set the title / handle as originally requested
             // Handle will get changed if conditions are met in the below if block
             revisionModifier.$set[`documentData.${property}`] = newValue;
 
@@ -277,13 +279,13 @@ export function updateRevision(product, options = {}) {
               hasNewHandle === false
             ) {
               // Set the handle to be the slug of the product.title
-              // when documentId (product._id) matches the handle, then handle is enpty, and a title exists
+              // when documentId (product._id) matches the handle, then handle is empty, and a title exists
               revisionModifier.$set["documentData.handle"] = getSlug(newTitle || revisionTitle);
             } else if (hasHandle === false && hasExistingTitle === false && hasNewHandle === false) {
               // If the handle & title is empty, the handle becomes the product id
               revisionModifier.$set["documentData.handle"] = documentId;
             } else if (hasNewHandle === false && property === "handle") {
-              // If the handle is empty, the handle becomes the sligified product title, or document id if title does not exist.
+              // If the handle is empty, the handle becomes the slugified product title, or document id if title does not exist.
               // const newTitle = modifier.$set["title"];
               revisionModifier.$set["documentData.handle"] = hasExistingTitle
                 ? getSlug(newTitle || revisionTitle)
@@ -293,13 +295,13 @@ export function updateRevision(product, options = {}) {
             // Special handling for product handle when it is going to be unset
             //
             // Summary:
-            // When a user updates the handle to a black string e.g. deltes all text in field in UI and saves,
+            // When a user updates the handle to a black string e.g. deletes all text in field in UI and saves,
             // the handle will be adjusted so it will not be blank
             const newValue = modifier.$unset[property];
             const revisionTitle = productRevision.documentData.title;
             const hasExistingTitle = _.isEmpty(revisionTitle) === false;
 
-            // If the new handle is going to be empty, the handle becomes the sligified product title, or document id if title does not exist.
+            // If the new handle is going to be empty, the handle becomes the slugified product title, or document id if title does not exist.
             if (_.isEmpty(newValue)) {
               revisionModifier.$set["documentData.handle"] = hasExistingTitle
                 ? getSlug(revisionTitle)
@@ -318,7 +320,7 @@ export function updateRevision(product, options = {}) {
   const updatedRevision = Revisions.findOne({ documentId: product._id });
   Hooks.Events.run("afterRevisionsUpdate", userId, updatedRevision);
 
-  Logger.debug(`Revison updated for product ${product._id}.`);
+  Logger.debug(`Revision updated for product ${product._id}.`);
 
   if (modifier.$pull && modifier.$pull.hashtags) {
     const tagId = modifier.$pull.hashtags;
@@ -395,10 +397,11 @@ export function updateRevision(product, options = {}) {
   return false;
 }
 /**
- * Flag a product's revision as deleted
- * @export
- * @param {Object} product - the product whose revision will be flagged as deleted.
- * @param {Object} options
+ * @method markRevisionAsDeleted
+ * @summary Flag a product's revision as deleted
+ *
+ * @param {Object} product - The product whose revision will be flagged as deleted.
+ * @param {Object} options - Contains userId
  * @returns {undefined}
  */
 export function markRevisionAsDeleted(product, options) {

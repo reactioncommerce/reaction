@@ -9,7 +9,6 @@ import { getPkgData } from "./packages";
 import { getAddress } from "./accounts";
 import { addProduct } from "./products";
 
-
 /**
  * order factory methods
  * @type {Object}
@@ -135,10 +134,12 @@ export default function () {
     requiresShipping: true,
     shipping: [{
       shopId,
+      address: getAddress({ isShippingDefault: true }),
       items: [
         {
           _id: itemIdOne,
           productId: Random.id(),
+          quantity: 1,
           shopId,
           variantId: Random.id(),
           packed: false
@@ -146,6 +147,7 @@ export default function () {
         {
           _id: itemIdTwo,
           productId: Random.id(),
+          quantity: 1,
           shopId,
           variantId: Random.id(),
           packed: false

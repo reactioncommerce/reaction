@@ -1,9 +1,10 @@
 import _ from "lodash";
 import { diff } from "deep-diff";
-import { Products, Revisions, Media } from "/lib/collections";
-import { Hooks } from "/server/api";
 import { RevisionApi } from "../lib/api";
 import { insertRevision, updateRevision, markRevisionAsDeleted } from "./functions";
+import { Products, Revisions, MediaRecords } from "/lib/collections";
+import { Hooks } from "/server/api";
+import { Media } from "/imports/plugins/core/files/server";
 
 function convertMetadata(modifierObject) {
   const metadata = {};
@@ -22,10 +23,14 @@ export const ProductRevision = {
   getProductPriceRange(productId) {
     const product = Products.findOne(productId);
     if (!product) {
-      return "";
+      return {
+        range: "0",
+        min: 0,
+        max: 0
+      };
     }
-    const variants = this.getTopVariants(product._id);
 
+    const variants = this.getTopVariants(product._id);
     if (variants.length > 0) {
       const variantPrices = [];
       variants.forEach((variant) => {
@@ -56,6 +61,15 @@ export const ProductRevision = {
       };
       return priceObject;
     }
+
+    if (!product.price) {
+      return {
+        range: "0",
+        min: 0,
+        max: 0
+      };
+    }
+
     // if we have no variants subscribed to (client)
     // we'll get the price object previously from the product
     return product.price;
@@ -123,7 +137,7 @@ export const ProductRevision = {
       ancestors: [id],
       type: "variant",
       isDeleted: false
-    }).map((product) => {
+    }).forEach((product) => {
       const revision = this.findRevision({
         documentId: product._id
       });
@@ -158,8 +172,10 @@ export const ProductRevision = {
         variants.push(product);
       }
     });
+
     return variants;
   },
+
   getVariantQuantity(variant) {
     const options = this.getVariants(variant._id);
     if (options && options.length) {
@@ -170,7 +186,7 @@ export const ProductRevision = {
   }
 };
 
-Media.files.before.insert((userid, media) => {
+MediaRecords.before.insert((userid, media) => {
   if (RevisionApi.isRevisionControlEnabled() === false) {
     return true;
   }
@@ -199,7 +215,7 @@ Media.files.before.insert((userid, media) => {
   return true;
 });
 
-Media.files.before.update((userId, media, fieldNames, modifier) => {
+MediaRecords.before.update((userId, media, fieldNames, modifier) => {
   if (RevisionApi.isRevisionControlEnabled() === false) {
     return true;
   }
@@ -254,7 +270,7 @@ Media.files.before.update((userId, media, fieldNames, modifier) => {
   return true;
 });
 
-Media.files.before.remove((userId, media) => {
+MediaRecords.before.remove((userId, media) => {
   if (RevisionApi.isRevisionControlEnabled() === false) {
     return true;
   }
@@ -282,20 +298,60 @@ Media.files.before.remove((userId, media) => {
   return true;
 });
 
+/**
+ * @function
+ * @name beforeInsertCatalogProductInsertRevision
+ *
+ * @summary Executes the provided function when beforeInsertCatalogProductInsertRevision
+ * hook is ran. The hook is ran before a product is inserted, and it will insert a
+ * corresponding revision for the provided product.
+ * @param {Function} Callback to execute
+ * @return {Object} product - the product in which the callback was called on.
+ */
 Hooks.Events.add("beforeInsertCatalogProductInsertRevision", (product) => {
   insertRevision(product);
 
   return product;
 });
 
+/**
+ * @function
+ * @name afterInsertCatalogProductInsertRevision
+ *
+ * @summary Executes the provided function when beforeInsertCatalogProductInsertRevision
+ * hook is ran. The hook is ran after a product is inserted, and it will insert a
+ * corresponding revision for the provided product.
+ * @param {Function} Callback to execute
+ * @return {Object} product - the product in which the callback was called on.
+ */
 Hooks.Events.add("afterInsertCatalogProductInsertRevision", (product) => {
   insertRevision(product);
 
   return product;
 });
 
+/**
+ * @function
+ * @name beforeUpdateCatalogProduct
+ *
+ * @summary Executes the provided function when beforeUpdateCatalogProduct
+ * hook is ran. The hook is ran before a product is updated, and it will updated the
+ * corresponding revisions for the provided product.
+ * @param {Function} Callback to execute
+ * @return {Boolean} true|false - Used to determine whether the underlying product should be updated.
+ */
 Hooks.Events.add("beforeUpdateCatalogProduct", (product, options) => updateRevision(product, options));
 
+/**
+ * @function
+ * @name beforeRemoveCatalogProduct
+ *
+ * @summary Executes the provided function when beforeRemoveCatalogProduct
+ * hook is ran. The hook is ran before a product or variant is archived, and it will updated the
+ * corresponding revisions for the provided product or variant.
+ * @param {Function} Callback to execute
+ * @return {Boolean} true|false - Used to determine whether the underlying product should be updated.
+ */
 Hooks.Events.add("beforeRemoveCatalogProduct", (product, options) => markRevisionAsDeleted(product, options));
 
 Hooks.Events.add("afterRevisionsUpdate", (userId, revision) => {
@@ -314,8 +370,8 @@ Hooks.Events.add("afterRevisionsUpdate", (userId, revision) => {
   }
 
   if (revision.documentType && revision.documentType === "image") {
-    const image = Media.findOne(revision.documentId);
-    differences = diff(image.metadata, revision.documentData);
+    const image = Promise.await(Media.findOne(revision.documentId, { raw: true }));
+    differences = image && diff(image.metadata, revision.documentData);
   }
 
   Revisions.update({

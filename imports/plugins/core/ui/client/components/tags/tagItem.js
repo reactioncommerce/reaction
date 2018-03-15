@@ -7,8 +7,8 @@ import "velocity-animate/velocity.ui";
 import { registerComponent } from "@reactioncommerce/reaction-components";
 import { i18next } from "/client/api";
 import { Button, Handle } from "/imports/plugins/core/ui/client/components";
+import { SortableItem } from "/imports/plugins/core/ui/client/containers";
 import { Router } from "@reactioncommerce/reaction-router";
-import { SortableItem } from "../../containers";
 
 class TagItem extends Component {
   componentWillReceiveProps(nextProps) {

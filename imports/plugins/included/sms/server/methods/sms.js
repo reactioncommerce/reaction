@@ -1,7 +1,8 @@
 import { Meteor } from "meteor/meteor";
 import { check } from "meteor/check";
-import { Sms, Accounts } from "/lib/collections";
+import { Sms } from "/lib/collections";
 import { Reaction, Logger } from "/server/api";
+import { formatPhoneNumber } from "/lib/api";
 
 // We lazy load these in order to shave a few seconds off the time
 // it takes Meteor to start/restart the app.
@@ -62,15 +63,25 @@ Meteor.methods({
     check(userId, String);
     check(shopId, String);
 
-    const user = Accounts.findOne({ _id: userId });
-    const addressBook = user && user.profile ? user.profile.addressBook : false;
-    // check for addressBook phone
-    const phone = (Array.isArray(addressBook) && addressBook[0] && addressBook[0].phone) || false;
+    const user = Meteor.users.findOne(userId);
+    if (!user) return;
 
-    if (!phone) return;
+    const addressBook = user.profile && user.profile.addressBook;
+
+    // check for addressBook phone
+    const phone = addressBook && addressBook.phone;
+    const country = addressBook && addressBook.country;
+
+    if (!phone || !country) {
+      return;
+    }
 
     const smsSettings = Sms.findOne({ shopId });
-    if (!smsSettings) return;
+    if (!smsSettings) {
+      return;
+    }
+
+    const formattedPhone = formatPhoneNumber(phone, country);
 
     const { apiKey, apiToken, smsPhone, smsProvider } = smsSettings;
     if (smsProvider === "twilio") {
@@ -78,7 +89,7 @@ Meteor.methods({
       Promise.await(lazyLoadTwilio());
       const client = new Twilio(apiKey, apiToken);
       client.messages.create({
-        to: phone,
+        to: formattedPhone,
         from: smsPhone,
         body: message
       }, (err) => {
@@ -93,7 +104,7 @@ Meteor.methods({
       Logger.debug("choose nexmo");
       Promise.await(lazyLoadNexmo());
       const client = new Nexmo({ apiKey, apiSecret: apiToken });
-      client.message.sendSms(smsPhone, phone, message, (err, result) => {
+      client.message.sendSms(smsPhone, formattedPhone, message, (err, result) => {
         if (err) {
           Logger.error("Nexmo error", err);
         }
