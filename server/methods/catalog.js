@@ -570,7 +570,7 @@ Meteor.methods({
     Hooks.Events.run("beforeInsertCatalogProduct", assembledVariant);
     const _id = Products.insert(assembledVariant);
     Hooks.Events.run("afterInsertCatalogProduct", assembledVariant);
-   
+
     Hooks.Events.run("afterInsertCatalogProductInsertRevision", Products.findOne({ _id }));
 
     Logger.debug(`products/createVariant: created variant: ${newVariantId} for ${parentId}`);
@@ -677,22 +677,14 @@ Meteor.methods({
       Hooks.Events.run("beforeRemoveCatalogProduct", product, { userId: this.userId });
     });
 
-    let deleted = 0;
-    if (shouldRemoveProduct) {
-      deleted = Products.remove(selector);
+    // After variant was removed from product, we need to recalculate all
+    // denormalized fields
+    const productId = toDelete[0].ancestors[0];
+    toDenormalize.forEach((field) => denormalize(productId, field));
 
-      toDelete.forEach((product) => {
-        Hooks.Events.run("afterRemoveCatalogProduct", Meteor.userId(), product);
-      });
+    Logger.debug(`Flagged variant and all its children as deleted.`);
 
-      // after variant were removed from product, we need to recalculate all
-      // denormalized fields
-      const productId = toDelete[0].ancestors[0];
-      toDenormalize.forEach((field) => denormalize(productId, field));
-      Logger.debug(`Flagged variant and all its children as deleted.`);
-    }
-
-    return typeof deleted === "number" && deleted > 0;
+    return true;
   },
 
   /**
