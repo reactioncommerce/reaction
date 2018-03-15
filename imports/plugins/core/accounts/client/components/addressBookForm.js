@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { Countries, Shops } from "/client/collections";
+import { Countries } from "/client/collections";
 import * as Collections from "/lib/collections";
 import { Components, registerComponent } from "@reactioncommerce/reaction-components";
 
@@ -32,16 +32,27 @@ class AddressBookForm extends Component {
 
   componentWillMount() {
     const { fields: { country } } = this.state;
+    // getting the countriies options for the county select
     const countries = Countries.find().fetch();
     this.setState({ countries });
+    // if selected country has region options get those too
     if (country === "US" || country === "DE" || country === "CA") this.regionOptions();
   }
 
-  // creating region options
+  // Address Book Form helpers
+
+  /**
+   * @method regionOptions
+   * @summary creates an array of region options for the regions select.
+   * @since 2.0.0
+   */
   regionOptions() {
     const { fields: { country } } = this.state;
     const shop = Collections.Shops.findOne();
     const rawRegions = shop.locales.countries[country].states;
+
+    // rawRegions is an object that needs to be convered to an array
+    // of region labels and values
     const regions = [];
     Object.keys(rawRegions).forEach((key) => {
       regions.push({
@@ -52,21 +63,37 @@ class AddressBookForm extends Component {
     this.setState({ regions });
   }
 
-  // on submit event handler
+  // Address Book Form Actions
+
+  /**
+   * @method onSubmit
+   * @summary takes the entered address and adds or updates it to the addressBook.
+   * @since 2.0.0
+   */
   onSubmit = (event) => {
     event.preventDefault();
     const { add } = this.props;
-    const { fields: enteredAddress } = this.state;
+    const { fields: enteredAddress } = this.state; // fields object as enteredAddress
+    // TODO: field validatiion
     add(enteredAddress);
   }
 
-  // on field change handler
+  /**
+   * @method onFieldChange
+   * @summary when field values change update the value in state
+   * @since 2.0.0
+   */
   onFieldChange = (event, value, name) => {
     const { fields } = this.state;
     fields[name] = value;
     this.setState({ fields });
   }
 
+  /**
+   * @method onSelectChange
+   * @summary normalizes the select components onChange.
+   * @since 2.0.0
+   */
   onSelectChange = (value, name) => {
     // the reaction select component doesn't return
     // the same values as the other field components
@@ -75,6 +102,16 @@ class AddressBookForm extends Component {
     this.onFieldChange(new Event("onSelect"), value, name);
   }
 
+  // Address Book Form JSX
+
+  /**
+   * @method renderAddressOptiions
+   * @summary renders address options at the bottom of the address book form
+   * if no address in addressBook array only show the isComercial option
+   * since a first address will always be the default shipping/billing address.
+   * @since 2.0.0
+   * @return {Object} - JSX and Checkbox components.
+   */
   renderAddressOptions() {
     const { hasAddress } = this.props;
     const { fields } = this.state;
@@ -126,6 +163,14 @@ class AddressBookForm extends Component {
     );
   }
 
+  /**
+   * @method renderButtons
+   * @summary renders submit and cancel buttons for address book form
+   * if no address in addressBook array don't show the cancel button
+   * since the user needs to add and address.
+   * @since 2.0.0
+   * @return {Object} - JSX
+   */
   renderButtons() {
     const { cancel, hasAddress } = this.props;
     // TODO: use translation component for button text!
@@ -139,7 +184,6 @@ class AddressBookForm extends Component {
 
   render() {
     const { countries, regions, fields } = this.state;
-    console.log("React AddressBookForm", this.props, this.state);
     return (
       <form onSubmit={this.onSubmit}>
         <div className="row">

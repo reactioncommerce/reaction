@@ -4,19 +4,20 @@ import { Components, registerComponent } from "@reactioncommerce/reaction-compon
 
 class AddressBookGrid extends Component {
   static propTypes = {
-    addressBook: PropTypes.array,
-    edit: PropTypes.func,
-    remove: PropTypes.func,
-    select: PropTypes.func
+    addressBook: PropTypes.array, // array of address objects
+    edit: PropTypes.func, // selects an address to be edited and renders the AddressBookForm
+    remove: PropTypes.func, // removes the selected address
+    select: PropTypes.func // selects a default shipping or billing address
   }
 
-  onSelect = () => {
-
-  }
-
-  // render the address book grid heading
-  // TODO: replace h4 copy with translation component
+  /**
+   * @method renderHeading
+   * @summary renders address book grid heading content
+   * @since 2.0.0
+   * @return {Object} - JSX
+   */
   renderHeading() {
+    // TODO: replace h4 copy with translation component
     return (
       <div className="address-list-header">
         <div className="address-list-heading">
@@ -30,7 +31,12 @@ class AddressBookGrid extends Component {
     );
   }
 
-  // rendering individual address
+  /**
+   * @method renderAddress
+   * @summary renders an address
+   * @since 2.0.0
+   * @return {Object} - JSX
+   */
   renderAddress({ address1, address2, city, region, postal, country, phone }) {
     return (
       <address>
@@ -42,9 +48,15 @@ class AddressBookGrid extends Component {
     );
   }
 
-  // TODO: keyboard helper
+  /**
+   * @method renderAddressGrid
+   * @summary renders address grid by mapping over the addressBook array
+   * @since 2.0.0
+   * @return {Object} - JSX
+   */
   renderAddressGrid() {
     const { addressBook, edit, select, remove } = this.props;
+    // TODO: keyboard helper, roles, translations
     return addressBook.map((address) => {
       const { _id, fullName, isBillingDefault, isShippingDefault } = address;
       return (
@@ -71,7 +83,6 @@ class AddressBookGrid extends Component {
   }
 
   render() {
-    console.log("React AddressBookGrid", this.props, this.state);
     return (
       <div className="address-list">
         {this.renderHeading()}
