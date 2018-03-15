@@ -11,7 +11,7 @@ import { Reaction } from "/lib/api";
  * @return {Object} user account object
  */
 export function userAccountQuery(context, id) {
-  const userId = context.user._id;
+  const { _id: userId } = context.user || {};
 
   // Check to make sure current user has permissions to view queried user
   if (!Reaction.hasPermission("reaction-accounts", userId)) throw new Meteor.Error("access-denied", "User does not have permission");
