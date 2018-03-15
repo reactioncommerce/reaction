@@ -1,6 +1,5 @@
 import { Accounts } from "meteor/accounts-base";
 import { Template } from "meteor/templating";
-import { Meteor } from "meteor/meteor";
 import { $ } from "meteor/jquery";
 import { Random } from "meteor/random";
 import { Blaze } from "meteor/blaze";
@@ -26,7 +25,6 @@ Accounts.onResetPasswordLink((token, done) => {
  * Accounts Event: onEnrollmentLink When a user uses an enrollment link
  */
 Accounts.onEnrollmentLink((token, done) => {
-  Meteor.call("accounts/verifyAccount", "", token);
   Blaze.renderWithData(Template.loginFormUpdatePasswordOverlay, {
     token,
     callback: done,
@@ -35,13 +33,6 @@ Accounts.onEnrollmentLink((token, done) => {
   }, $("body").get(0));
 });
 
-/**
- * Accounts Event: onEmailVerificationLink When a user uses an verification link
- */
-Accounts.onEmailVerificationLink((token, done) => {
-  Accounts.verifyEmail(token);
-  done();
-});
 
 // ----------------------------------------------------------------------------
 // /**

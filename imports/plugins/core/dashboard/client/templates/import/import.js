@@ -1,7 +1,9 @@
 import { Template } from "meteor/templating";
 import { Meteor } from "meteor/meteor";
-import { Reaction } from "/client/api";
-import { Media, Products } from "/lib/collections";
+import { FileRecord } from "@reactioncommerce/file-collections";
+import { Logger, Reaction } from "/client/api";
+import { Products } from "/lib/collections";
+import { Media } from "/imports/plugins/core/files/client";
 
 function uploadHandler(event) {
   const shopId = Reaction.getShopId();
@@ -23,15 +25,19 @@ function uploadHandler(event) {
       });
     }
     if (product) {
-      const fileObj = new FS.File(files[i]);
-      fileObj.metadata = {
+      const fileRecord = FileRecord.fromFile(files[i]);
+      fileRecord.metadata = {
         ownerId: userId,
         productId: product._id,
         variantId: product.variants[0]._id,
         shopId,
         priority: Number(parts[1]) || 0
       };
-      Media.insert(fileObj);
+      fileRecord.upload()
+        .then(() => Media.insert(fileRecord))
+        .catch((error) => {
+          Logger.error(error);
+        });
     }
   }
 }

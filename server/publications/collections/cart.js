@@ -1,6 +1,6 @@
 import { Meteor } from "meteor/meteor";
 import { check, Match } from "meteor/check";
-import { Cart, Media } from "/lib/collections";
+import { Cart, MediaRecords } from "/lib/collections";
 import { Reaction } from "/server/api";
 
 /**
@@ -68,15 +68,20 @@ Meteor.publish("Cart", function (sessionId, userId) {
 });
 
 
-Meteor.publish("CartImages", (cartItems) => {
-  check(cartItems, Array);
+Meteor.publish("CartImages", (cartId) => {
+  check(cartId, Match.Optional(String));
+  if (!cartId) return [];
+
+  const cart = Cart.findOne(cartId);
+  const { items: cartItems } = cart || {};
+  if (!Array.isArray(cartItems)) return [];
 
   // Ensure each of these are unique
   const productIds = [...new Set(cartItems.map((item) => item.product._id))];
   const variantIds = [...new Set(cartItems.map((item) => item.variants._id))];
 
   // return image for each the top level product or the variant and let the client code decide which to display
-  const productImages = Media.find({
+  return MediaRecords.find({
     "$or": [
       {
         "metadata.productId": {
@@ -84,7 +89,7 @@ Meteor.publish("CartImages", (cartItems) => {
         }
       },
       {
-        "metadata.productId": {
+        "metadata.variantId": {
           $in: variantIds
         }
       }
@@ -92,17 +97,5 @@ Meteor.publish("CartImages", (cartItems) => {
     "metadata.workflow": {
       $nin: ["archived", "unpublished"]
     }
-  });
-
-  return productImages;
-});
-
-Meteor.publish("CartItemImage", (cartItem) => {
-  check(cartItem, Match.Optional(Object));
-  const { productId } = cartItem;
-
-  return Media.find({
-    "metadata.productId": productId,
-    "metadata.workflow": { $nin: ["archived", "unpublished"] }
   });
 });

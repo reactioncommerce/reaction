@@ -6,7 +6,6 @@ import { registerComponent } from "@reactioncommerce/reaction-components";
 import { Session } from "meteor/session";
 import { Reaction } from "/client/api";
 import { ReactionProduct } from "/lib/api";
-import { Media } from "/lib/collections";
 import { SortableItem } from "/imports/plugins/core/ui/client/containers";
 import ProductGridItems from "../components/productGridItems";
 
@@ -19,22 +18,6 @@ const wrapComponent = (Comp) => (
       itemSelectHandler: PropTypes.func,
       product: PropTypes.object,
       unmountMe: PropTypes.func
-    }
-
-    constructor() {
-      super();
-
-      this.productPath = this.productPath.bind(this);
-      this.positions = this.positions.bind(this);
-      this.weightClass = this.weightClass.bind(this);
-      this.isSelected = this.isSelected.bind(this);
-      this.productMedia = this.productMedia.bind(this);
-      this.additionalProductMedia = this.additionalProductMedia.bind(this);
-      this.isMediumWeight = this.isMediumWeight.bind(this);
-      this.displayPrice = this.displayPrice.bind(this);
-      this.onDoubleClick = this.onDoubleClick.bind(this);
-      this.onClick = this.onClick.bind(this);
-      this.onPageClick = this.onPageClick.bind(this);
     }
 
     componentDidMount() {
@@ -112,31 +95,6 @@ const wrapComponent = (Comp) => (
         return _.includes(Session.get("productGrid/selectedProducts"), this.props.product._id) ? "active" : "";
       }
       return false;
-    }
-
-    productMedia = () => {
-      const media = Media.findOne({
-        "metadata.productId": this.props.product._id,
-        "metadata.toGrid": 1
-      }, {
-        sort: { "metadata.priority": 1, "uploadedAt": 1 }
-      });
-
-      return media instanceof FS.File ? media : false;
-    }
-
-    additionalProductMedia = () => {
-      const variants = ReactionProduct.getVariants(this.props.product._id);
-      const variantIds = variants.map((variant) => variant._id);
-      const mediaArray = Media.find({
-        "metadata.productId": this.props.product._id,
-        "metadata.variantId": {
-          $in: variantIds
-        },
-        "metadata.workflow": { $nin: ["archived", "unpublished"] }
-      }, { limit: 3 });
-
-      return mediaArray.count() > 1 ? mediaArray : false;
     }
 
     isMediumWeight = () => {
@@ -258,8 +216,6 @@ const wrapComponent = (Comp) => (
           positions={this.positions}
           weightClass={this.weightClass}
           isSelected={this.isSelected}
-          media={this.productMedia}
-          additionalMedia={this.additionalProductMedia}
           isMediumWeight={this.isMediumWeight}
           displayPrice={this.displayPrice}
           onDoubleClick={this.onDoubleClick}

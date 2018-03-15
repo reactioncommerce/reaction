@@ -1,7 +1,7 @@
 {
   "name": "reaction",
   "description": "Reaction is a modern reactive, real-time event driven ecommerce platform.",
-  "version": "1.8.2",
+  "version": "1.9.0",
   "main": "main.js",
   "directories": {
     "test": "tests"
@@ -19,12 +19,14 @@
     "url": "https://github.com/reactioncommerce/reaction/issues"
   },
   "dependencies": {
-    "@reactioncommerce/job-queue": "^1.0.4",
     "@babel/runtime": "7.0.0-beta.38",
+    "@reactioncommerce/file-collections": "^0.4.5",
+    "@reactioncommerce/file-collections-sa-gridfs": "0.0.1",
+    "@reactioncommerce/job-queue": "^1.0.4",
     "@reactioncommerce/nodemailer": "^5.0.5",
     "accounting-js": "^1.1.1",
     "authorize-net": "^1.1.1",
-    "autoprefixer": "^8.0.0",
+    "autoprefixer": "^7.2.5",
     "autosize": "^4.0.0",
     "body-parser": "^1.18.2",
     "bootstrap": "^3.3.7",
@@ -67,6 +69,7 @@
     "moment-timezone": "^0.5.14",
     "nexmo": "^2.2.0",
     "nock": "^9.1.6",
+    "node-fetch": "^2.0.0",
     "node-geocoder": "^3.22.0",
     "node-loggly-bulk": "^2.2.1",
     "nodemailer-wellknown": "^0.2.3",
@@ -85,7 +88,7 @@
     "react-avatar": "^2.5.1",
     "react-color": "^2.13.8",
     "react-copy-to-clipboard": "^5.0.1",
-    "react-dates": "^15.5.3",
+    "react-dates": "^16.3.6",
     "react-dnd": "^2.5.4",
     "react-dnd-html5-backend": "^2.5.4",
     "react-dom": "16.2.0",
@@ -109,6 +112,7 @@
     "sharp": "^0.19.0",
     "shippo": "^1.3.1",
     "shopify-api-node": "^2.10.2",
+    "simpl-schema": "^1.4.2",
     "slugify": "^1.2.9",
     "sortablejs": "^1.7.0",
     "store": "^2.0.12",
@@ -139,7 +143,6 @@
     "enzyme": "^3.3.0",
     "enzyme-to-json": "^3.3.1",
     "eslint": "^4.18.1",
-    "eslint-config-react-tools": "^1.1.2",
     "eslint-plugin-import": "^2.8.0",
     "eslint-plugin-jest": "^21.12.1",
     "eslint-plugin-jsx-a11y": "^6.0.3",
@@ -199,7 +202,6 @@
       "^/lib(.*)": "<rootDir>/lib/$1",
       "^/imports/plugins(.*)": "<rootDir>/imports/plugins/$1",
       "^/client/api(.*)": "<rootDir>/imports/test-utils/__mocks__/client/api$1",
-      "^meteor/aldeed:simple-schema": "<rootDir>/imports/test-utils/__mocks__/meteor/aldeed-simple-schema",
       "^meteor/tmeasday:publish-counts": "<rootDir>/imports/test-utils/__mocks__/meteor/aldeed-simple-schema",
       "^meteor/(.*)": "<rootDir>/imports/test-utils/__mocks__/meteor/$1"
     }

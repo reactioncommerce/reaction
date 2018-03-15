@@ -14,7 +14,7 @@ es5-shim@4.7.0               # ECMAScript 5 compatibility for older browsers.
 ecmascript@0.10.0              # Enable ECMAScript2015+ syntax in app code
 audit-argument-checks@1.0.7   # ensure meteor method argument validation
 browser-policy@1.1.0          # security-related policies enforced by newer browsers
-juliancwirko:postcss          # CSS post-processing plugin (replaces standard-minifier-css)
+juliancwirko:postcss@1.3.0    # CSS post-processing plugin (replaces standard-minifier-css)
 session@1.1.7                 # ReactiveDict whose contents are preserved across Hot Code Push
 tracker@1.1.3                 # Meteor transparent reactive programming library
 mongo@1.4.2
@@ -48,23 +48,16 @@ twitter-config-ui@1.0.0
 
 # Community Packages
 alanning:roles
-aldeed:autoform
-aldeed:collection2
-aldeed:schema-index
+aldeed:autoform@6.2.0
+aldeed:collection2@3.0.0
+aldeed:schema-index@3.0.0
 aldeed:template-extension
 bozhao:accounts-instagram
-cfs:filesystem
-cfs:graphicsmagick
-cfs:gridfs
-cfs:standard-packages
-cfs:storage-adapter
-cfs:ui
 dispatch:run-as-user
 matb33:collection-hooks
 meteorhacks:ssr
 meteorhacks:subs-manager
 ongoworks:security
-raix:ui-dropped-event
 tmeasday:publish-counts
 percolate:migrations
 gadicc:blaze-react-component

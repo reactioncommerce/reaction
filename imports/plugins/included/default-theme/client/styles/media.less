@@ -56,14 +56,14 @@
 
 
 // Gallery Thumbnails
-.rui.media-gallery .rui.gallery-thumbnails {
+.rui.gallery-thumbnails {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   // justify-content: center;
 }
 
-.rui.media-gallery .rui.gallery-thumbnails .gallery-image {
+.rui.gallery-thumbnails .gallery-image {
   position: relative;
   flex-basis: 25%;
   padding: 3px;
@@ -76,10 +76,10 @@
   height: auto;
 }
 
-.rui.media-gallery .rui.badge-container {
+.gallery-image .rui.badge-container {
   position: absolute;
-  top: @badge-offset + 5px;
-  right: @badge-offset + 5px;
+  top: 6px;
+  right: 6px;
   z-index: 1;
 
   .rui.status-badge {

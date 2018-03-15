@@ -423,13 +423,15 @@ describe("core product methods", function () {
     it("should create variant with new product", function (done) {
       sandbox.stub(Reaction, "hasPermission", () => true);
       Meteor.call("products/createProduct", (error, result) => {
-        if (result) {
-          // this test successfully finds product variant only by such way
-          Meteor.setTimeout(() => {
-            expect(Products.find({ ancestors: [result] }).count()).to.equal(1);
-            return done();
-          }, 50);
+        if (error || !result) {
+          done(error || new Error("no result"));
+          return;
         }
+        // this test successfully finds product variant only by such way
+        Meteor.defer(() => {
+          expect(Products.find({ ancestors: [result] }).count()).to.equal(1);
+          done();
+        });
       });
     });
   });
