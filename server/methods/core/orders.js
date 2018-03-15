@@ -165,7 +165,7 @@ export function ordersInventoryAdjustByShop(orderId, shopId) {
           type: "variant"
         }
       });
-      
+
       Hooks.Events.run("afterUpdateCatalogProduct", item.variants);
 
       // Publish inventory updates to the Catalog
