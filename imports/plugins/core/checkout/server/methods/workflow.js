@@ -28,7 +28,12 @@ function updateOrderWorkflow(userId, selector, modifier, validation) {
 
   Logger.debug("beforeUpdateOrderWorkflow hook executed before Order is updated");
 
-  return Orders.update(selector, modifier, validation);
+  const result = Orders.update(selector, modifier, validation);
+
+  // Update mongo search record
+  Hooks.Events.run("afterUpdateOrderUpdateSearchRecord", order);
+
+  return result;
 }
 
 /**
@@ -408,6 +413,9 @@ Meteor.methods({
         items
       }
     });
+
+    // Update search record
+    Hooks.Events.run("afterUpdateOrderUpdateSearchRecord", order);
 
     return result;
   }
