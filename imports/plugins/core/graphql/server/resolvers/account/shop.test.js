@@ -6,7 +6,9 @@ const fakeUser = {
   shopId: "W64ZQe9RUMuAoKrli"
 };
 
+// encoded shopId is: cmVhY3Rpb24vc2hvcDpXNjRaUWU5UlVNdUFvS3JsaQ==
+
 test("returns the shop object from the context", () => {
   const shopObject = shop(fakeUser);
-  expect(shopObject._id).toBe("W64ZQe9RUMuAoKrli");
+  expect(shopObject._id).toBe("cmVhY3Rpb24vc2hvcDpXNjRaUWU5UlVNdUFvS3JsaQ==");
 });
