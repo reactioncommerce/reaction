@@ -2,24 +2,33 @@
 
 In addition to a few performance updates, refactors, and bug fixes, this release starts the rollout of our GraphQL api. Until further notice, this GraphQL api should be considered a prototype and should not be used for production. If you're interested in following along with our GraphQL work, tracking our [GraphQL issues](https://github.com/reactioncommerce/reaction/issues?utf8=%E2%9C%93&q=is%3Aissue+graphql+) is probably the easiest way for now.
 
+In short, this release adds a prototype GraphQL server running in the Reaction project with the following urls exposed:
+
+```
+/graphql - The GraphQL endpoint.
+/graphiql - The GraphiQL user interface.
+```
+
+We'll be incrementally adding functionality to this GraphQL endpoint, but this release serves as the starting point for our GraphQL api.
+
  ## GraphQL
- - GraphQL Prototype (#3898)
- - GraphQL Jest testing pattern (#3995)
+ - GraphQL Prototype (#3898) .. Resolves #3935, Resolves #3928, Resolves #3910
+ - GraphQL Jest testing pattern (#3995) .. Resolves #3936
 
 ## Refactors
- - 3866 willopez remove collection hooks in search mongo package (#3889)
+ - Remove collection hooks in search mongo package (#3889) .. Resolves #3866
  - Remove collection hooks for Products collection (#3825)
 
 ## Performance
- - [#3507] Memoize/Cache getShopId to Reduce DB Load (#3510)
+ - Memoize/Cache getShopId to Reduce DB Load (#3510) .. Resolves #3507
 
 ## Fixes
- - Fix #3975: typo fix (#4000)
- - Fix for "Browser console warning when beginning checkout" (#3980)
- - Fix for "PDP Image gallery does not handle portrait sized images well" (#3993)
+ - fix: typo fix (#4000) .. Resolves #3975
+ - fix: Browser console warning when beginning checkout (#3980)
+ - fix: PDP Image gallery does not handle portrait sized images well (#3993)
 
 ## Docs
- - docs(jsdoc): #3840 namespace MethodHooks into its own JSDoc section. (#3844)
+ - docs(jsdoc): namespace MethodHooks into its own JSDoc section. (#3844) .. Resolves #3840
 
 # v1.9.0
 This release contains a lot of fixes, some of them performance related and several enormous refactors.
