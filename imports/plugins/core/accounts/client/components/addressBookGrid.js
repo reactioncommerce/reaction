@@ -19,6 +19,9 @@ class AddressBookGrid extends Component {
 
   componentWillReceiveProps(nextProps) {
     const { addressBook } = nextProps;
+
+    // if a new address has been added to the addressBook
+    // check to see if the new address is now the default shipping or billing address
     addressBook.forEach((addy) => {
       if (addy.isShippingDefault && addy._id !== this.defaultShippingAddressId) {
         this.setDefaultAddress(addy._id, "shipping");
@@ -30,28 +33,56 @@ class AddressBookGrid extends Component {
     });
   }
 
-  // TODO: jsDocs
-  get defaultShippingAddressId() {
-    const { addressBook } = this.props;
-    const defaultShippingAddress = addressBook.find((addy) => addy.isShippingDefault);
-    return (defaultShippingAddress) ? defaultShippingAddress._id : "";
-  }
+  // Address Book Grid helpers
 
-  // TODO: jsDocs
-  get defaultBillingAddressId() {
-    const { addressBook } = this.props;
-    const defaultBillingAddress = addressBook.find((addy) => addy.isBillingDefault);
-    return (defaultBillingAddress) ? defaultBillingAddress._id : "";
-  }
-
-  // TODO: jsDocs
+  /**
+   * @method setDefaultaddress
+   * @summary updating the compoenet state with the new default shipping or billing address.
+   * @since 2.0.0
+   * @param {String} _id - address object _id.
+   * @param {String} usage - the address usage "shipping" or "billing".
+   */
   setDefaultAddress(_id, usage) {
     const { defaultAddress } = this.state;
     defaultAddress[usage] = _id;
     this.setState({ defaultAddress });
   }
 
-  // TODO: jsDocs
+  /**
+   * @method defaultShippingAddressId
+   * @summary getter that returns ether the default shipping address _id or and empty string.
+   * @since 2.0.0
+   * @return {String} - default shipping address _id or empty string.
+   */
+  get defaultShippingAddressId() {
+    const { addressBook } = this.props;
+    const defaultShippingAddress = addressBook.find((addy) => addy.isShippingDefault);
+    return (defaultShippingAddress) ? defaultShippingAddress._id : "";
+  }
+
+  /**
+   * @method defaultBillingAddressId
+   * @summary getter that returns ether the default billing address _id or and empty string.
+   * @since 2.0.0
+   * @return {String} - default billing address _id or empty string.
+   */
+  get defaultBillingAddressId() {
+    const { addressBook } = this.props;
+    const defaultBillingAddress = addressBook.find((addy) => addy.isBillingDefault);
+    return (defaultBillingAddress) ? defaultBillingAddress._id : "";
+  }
+
+  // Address Book Actions
+
+  /**
+   * @method onSelect
+   * @summary handler when an address in the grid is selected at
+   * a default shipping or billing address. This handler sets the default address
+   * in component state as well as calling the parent reducer to set the default address in db.
+   * @since 2.0.0
+   * @param {String} _id - address object _id.
+   * @param {String} usage - the address usage "shipping" or "billing".
+   */
   onSelect = (_id, usage) => {
     const { select } = this.props;
     this.setDefaultAddress(_id, usage);
@@ -144,7 +175,6 @@ class AddressBookGrid extends Component {
   }
 
   render() {
-    console.log("address book grid", this.defaultShippingAddressId, this.state)
     return (
       <div className="address-list">
         {this.renderHeading()}

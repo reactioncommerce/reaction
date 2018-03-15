@@ -86,7 +86,6 @@ class AddressBook extends Component {
    * @since 2.0.0
    * @param {String} _id - address object _id.
    * @param {String} usage - the address usage "shipping" or "billing".
-   * @return {Object} - contains the component for updating a user's address.
    */
   onSelect = (_id, usage) => {
     const { updateAddress } = this.props;
