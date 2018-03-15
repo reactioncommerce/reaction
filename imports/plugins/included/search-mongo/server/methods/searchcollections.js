@@ -242,7 +242,11 @@ export function buildOrderSearchRecord(orderId) {
   orderSearch.variants.title = order.items.map((item) => item.variants && item.variants.title);
   orderSearch.variants.optionTitle = order.items.map((item) => item.variants && item.variants.optionTitle);
 
-  OrderSearch.insert(orderSearch);
+  try {
+    OrderSearch.upsert(orderId, { $set: { ...orderSearch } });
+  } catch (error) {
+    Logger.error(error, "Failed to add order to the OrderSearch collection");
+  }
 }
 
 export function buildOrderSearch(cb) {

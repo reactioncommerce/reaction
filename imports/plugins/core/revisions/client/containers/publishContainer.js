@@ -12,8 +12,22 @@ import { Reaction, i18next } from "/client/api";
  * PublishContainer is a container component connected to Meteor data source.
  */
 class PublishContainer extends Component {
+  publishToCatalog(collection, documentIds) {
+    Meteor.call(`catalog/publish/${collection}`, documentIds, (error, result) => {
+      if (result) {
+        Alerts.toast(i18next.t("admin.catalogProductPublishSuccess", { defaultValue: "Product published to catalog" }), "success");
+      } else if (error) {
+        Alerts.toast(error.message, "error");
+      }
+    });
+  }
+
   handlePublishClick = (revisions) => {
-    if (Array.isArray(revisions)) {
+    const productIds = this.props.documents
+      .filter((doc) => doc.type === "simple")
+      .map((doc) => doc._id);
+
+    if (Array.isArray(revisions) && revisions.length) {
       let documentIds = revisions.map((revision) => {
         if (revision.parentDocument && revision.documentType !== "product") {
           return revision.parentDocument;
@@ -29,10 +43,20 @@ class PublishContainer extends Component {
             defaultValue: "Changes published successfully"
           });
           Alerts.toast(message, "success");
+
+          if (this.props.onPublishSuccess) {
+            this.props.onPublishSuccess(result);
+          }
+
+          // Publish to catalog after revisions have been published
+          this.publishToCatalog("products", productIds);
         } else {
           Alerts.toast((error && error.message) || (result && result.status) || i18next.t("app.error"), "error");
         }
       });
+    } else {
+      // Publish to catalog immediately if there are no revisions to publish beforehand
+      this.publishToCatalog("products", productIds);
     }
   }
 
@@ -88,7 +112,9 @@ PublishContainer.propTypes = {
   isEnabled: PropTypes.bool,
   isPreview: PropTypes.bool,
   onAction: PropTypes.func,
+  onPublishSuccess: PropTypes.func,
   onVisibilityChange: PropTypes.func,
+  product: PropTypes.object,
   revisions: PropTypes.arrayOf(PropTypes.object)
 };
 

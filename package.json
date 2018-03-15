@@ -1,7 +1,7 @@
 {
   "name": "reaction",
   "description": "Reaction is a modern reactive, real-time event driven ecommerce platform.",
-  "version": "1.9.0",
+  "version": "1.10.0",
   "main": "main.js",
   "directories": {
     "test": "tests"
@@ -47,7 +47,6 @@
     "deep-equal": "^1.0.1",
     "dnd-core": "^2.5.4",
     "escape-string-regexp": "^1.0.5",
-    "eslint-config-react-tools": "^1.1.2",
     "eslint-import-resolver-meteor": "^0.4.0",
     "express": "4.16.2",
     "faker": "^4.1.0",
@@ -151,7 +150,6 @@
     "enzyme": "^3.3.0",
     "enzyme-to-json": "^3.3.1",
     "eslint": "^4.18.1",
-    "eslint-config-react-tools": "^1.1.2",
     "eslint-plugin-import": "^2.8.0",
     "eslint-plugin-jest": "^21.12.1",
     "eslint-plugin-jsx-a11y": "^6.0.3",

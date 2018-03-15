@@ -24,5 +24,7 @@ export { default as GridPublishContainer } from "../containers/gridPublishContai
 export { default as ProductGridContainer } from "../containers/productGridContainer";
 export { default as ProductGridItemsContainer } from "../containers/productGridItemsContainer";
 export { default as ProductsContainer } from "../containers/productsContainer";
+export { default as ProductsContainerAdmin } from "../containers/productsContainerAdmin";
+export { default as ProductsContainerCustomer } from "../containers/productsContainerCustomer";
 export { default as VariantFormContainer } from "../containers/variantFormContainer";
 export { default as VariantEditContainer } from "../containers/variantEditContainer";
