@@ -47,7 +47,9 @@ export default function () {
       if (arg.role) {
         // Note: userId is passed to getShopId to ensure that it returns the correct shop based on the User Preference
         // if not passed, getShopId can default to primaryShopId if Meteor.userId is not available in the context the code is run
-        return Roles.userIsInRole(userId, arg.role, Reaction.getShopId(userId));
+        const shopId = Reaction.getUserShopId(this.userId) || Reaction.getShopId();
+
+        return Roles.userIsInRole(userId, arg.role, shopId);
       }
       return Roles.userIsInRole(userId, arg);
     }
@@ -60,7 +62,9 @@ export default function () {
     deny(type, arg, userId, doc) {
       // Note: userId is passed to getShopId to ensure that it returns the correct shop based on the User Preference
       // if not passed, getShopId can default to primaryShopId if Meteor.userId is not available in the context the code is run
-      return doc.shopId !== Reaction.getShopId(userId);
+      const shopId = Reaction.getUserShopId(this.userId) || Reaction.getShopId();
+
+      return doc.shopId !== shopId;
     }
   });
   // this rule is for the Shops collection
@@ -70,7 +74,9 @@ export default function () {
     deny(type, arg, userId, doc) {
       // Note: userId is passed to getShopId to ensure that it returns the correct shop based on the User Preference
       // if not passed, getShopId can default to primaryShopId if Meteor.userId is not available in the context the code is run
-      return doc._id !== Reaction.getShopId(userId);
+      const shopId = Reaction.getUserShopId(this.userId) || Reaction.getShopId();
+
+      return doc._id !== shopId;
     }
   });
 
@@ -79,7 +85,9 @@ export default function () {
     deny(type, arg, userId, doc) {
       // Note: userId is passed to getShopId to ensure that it returns the correct shop based on the User Preference
       // if not passed, getShopId can default to primaryShopId if Meteor.userId is not available in the context the code is run
-      return doc.metadata.shopId !== Reaction.getShopId(userId);
+      const shopId = Reaction.getUserShopId(this.userId) || Reaction.getShopId();
+
+      return doc.metadata.shopId !== shopId;
     }
   });
 
