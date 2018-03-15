@@ -3,7 +3,6 @@ import { Meteor } from "meteor/meteor";
 import { BrowserPolicy } from "meteor/browser-policy-common";
 import { WebApp } from "meteor/webapp";
 
-
 /**
  * Set headers for Reaction CDN
  */
@@ -14,7 +13,6 @@ WebApp.rawConnectHandlers.use((req, res, next) => {
   next();
 });
 
-
 /**
  * Set browser policies
  */
@@ -24,6 +22,10 @@ if (process.env.NODE_ENV === "development") {
   BrowserPolicy.content.allowConnectOrigin("http://localhost:*");
   BrowserPolicy.content.allowConnectOrigin("https://localhost:*");
   BrowserPolicy.framing.allowAll();
+
+  // GraphiQL
+  BrowserPolicy.content.allowOriginForAll("unpkg.com");
+  BrowserPolicy.content.allowOriginForAll("cdn.jsdelivr.net");
 }
 
 // get current hostname of app
