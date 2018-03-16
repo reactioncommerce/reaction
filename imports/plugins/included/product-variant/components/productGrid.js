@@ -7,11 +7,12 @@ class ProductGrid extends Component {
     canEdit: PropTypes.bool,
     itemSelectHandler: PropTypes.func,
     onMove: PropTypes.func,
-    products: PropTypes.array
+    productMediaById: PropTypes.object,
+    products: PropTypes.arrayOf(PropTypes.object)
   }
 
   renderProductGridItems() {
-    const { canEdit, itemSelectHandler, onMove, products } = this.props;
+    const { canEdit, itemSelectHandler, onMove, products, productMediaById } = this.props;
     if (Array.isArray(products)) {
       return products.map((product) => (
         <Components.ProductGridItems
@@ -20,9 +21,11 @@ class ProductGrid extends Component {
           itemSelectHandler={itemSelectHandler}
           onMove={onMove}
           product={product}
+          productMedia={productMediaById[product._id]}
         />
       ));
     }
+
     return (
       <div className="row">
         <div className="text-center">

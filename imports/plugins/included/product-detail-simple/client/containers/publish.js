@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { registerComponent, composeWithTracker } from "@reactioncommerce/reaction-components";
 import { Meteor } from "meteor/meteor";
-import { Router } from "/client/api";
 import { ReactionProduct } from "/lib/api";
 import { Products } from "/lib/collections";
 import PublishContainer from "/imports/plugins/core/revisions/client/containers/publishContainer";
@@ -17,12 +16,15 @@ class ProductPublishContainer extends Component {
   }
 
   handleVisibilityChange = (event, isProductVisible) => {
+    const { product } = this.props;
+    if (!product) return;
+
     // Update main product
-    Meteor.call("products/updateProductField", this.props.product._id, "isVisible", isProductVisible);
+    Meteor.call("products/updateProductField", product._id, "isVisible", isProductVisible);
 
     const variants = Products.find({
       ancestors: {
-        $in: [this.props.product._id]
+        $in: [product._id]
       }
     }).fetch();
 
@@ -37,27 +39,10 @@ class ProductPublishContainer extends Component {
     }
   }
 
-  handlePublishSuccess = (result) => {
-    if (result && result.status === "success" && this.props.product) {
-      const productDocument = result.previousDocuments.find((product) => this.props.product._id === product._id);
-
-      if (productDocument && this.props.product.handle !== productDocument.handle) {
-        const newProductPath = Router.pathFor("product", {
-          hash: {
-            handle: this.props.product.handle
-          }
-        });
-
-        window.location.href = newProductPath;
-      }
-    }
-  }
-
   render() {
     return (
       <PublishContainer
         onAction={this.handlePublishActions}
-        onPublishSuccess={this.handlePublishSuccess}
         onVisibilityChange={this.handleVisibilityChange}
         {...this.props}
       />
@@ -69,10 +54,8 @@ class ProductPublishContainer extends Component {
 function composer(props, onData) {
   const product = ReactionProduct.selectedProduct();
   let revisonDocumentIds;
-
   if (product) {
     revisonDocumentIds = [product._id];
-
     onData(null, {
       product,
       documentIds: revisonDocumentIds,

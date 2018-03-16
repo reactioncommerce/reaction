@@ -1,3 +1,161 @@
+# v1.9.0
+This release contains a lot of fixes, some of them performance related and several enormous refactors.
+The three biggest changes are:
+1. We've migrated from the Meteor version of Simple Schema to the npm version. See notes in the breaking changes section below.
+2. We've dropped our dependency on the deprecated Meteor-CollectionFS package. We've replaced it with an npm package we've created called [reaction-file-collections](https://github.com/reactioncommerce/reaction-file-collections)
+3. We've created a new catalog collection for use on the Product Grid when viewed by a consumer or other user without a product admin role
+
+There's a full list of changes and fixes below, as well as detailed explanations of potential breaking changes and what you might need to do to migrate
+
+## BREAKING CHANGES
+This is a breaking change for any plugin that implements or modifies a schema based on the Meteor simple-schema package.
+
+### From the Simple Schema update
+This PR updates the `aldeed:simple-schema` Meteor package dependency to instead depend on the `simpl-schema` NPM package, which is the newest release of the same library. As part of this change, there are several breaking changes and other gotchas to be aware of.
+
+IMPORTANT! The NPM package does not play nice with the previous Meteor package. After updating to this Reaction release, run the app one time, and then look at the .meteor/versions file. Make sure that aldeed:simple-schema is not listed. If it is there, that is because you depend on another Meteor package that depends on aldeed:simple-schema. You will have to update or remove any such packages (with meteor remove / meteor add) until aldeed:simple-schema disappears from your .meteor/versions file.
+Search your app for any import { SimpleSchema } from "meteor/aldeed:simple-schema" lines that you have added in your custom code, and replace them with import SimpleSchema from "simpl-schema"
+Be aware that the package name does not have the "e" on "simpl". (There is a different NPM package called simple-schema with the "e", and that is NOT the one you want.)
+If you have your own custom schemas, refer to the SimpleSchema changelog to update them for the breaking changes: https://github.com/aldeed/meteor-simple-schema/blob/master/CHANGELOG.md#200
+If you use attachSchema in your code, be aware that passing an array to attachSchema will no longer work. You should first merge all the schemas and then pass the combined schema to attachSchema
+
+Please read the PR if you need more details [Use NPM SimpleSchema rather than Meteor #3331](https://github.com/reactioncommerce/reaction/pull/3331)
+
+### From the removal of CollecitonFS
+#### If you've saved the file URLs anywhere, they're now different.
+```
+/assets/files/:collectionName/:fileId/:filename
+```
+becomes
+```
+/assets/files/:collectionName/:fileId/:primaryStoreName/:filename
+```
+
+and
+```
+/assets/files/:collectionName/:fileId/:filename?store=storeName
+```
+
+becomes
+
+```
+/assets/files/:collectionName/:fileId/:storeName/:filename
+```
+
+#### We've deleted some unused Blaze templates rather than update URL handling within them:
+- shopBrandImageOption
+- ordersListItems
+- select
+- upload
+- productMetaField
+- productMetaFieldForm
+- metaComponent
+- productDetailEdit
+- productDetailField
+- productImageGallery
+- imageDetail
+- imageUploader
+- productSocial
+- variantList
+- variant
+- Media-related publishing is changed and improved:
+
+#### Publications have been added, removed, or changed:
+- `CartItemImage` publication is removed
+- `CartImages` now takes an ID
+- Added `ProductGridMedia` to replace Media being included with the products publication for the grid
+- Added `ProductMedia`
+- Added `OrderImages`, similar to `CartImages`, used for order now rather than reusing CartImages
+
+Full notes on the PR to replace CFS #3782
+
+### From the customer product catalog
+The old `imports/plugins/included/product-variants/containers/productsContainer.js` has been renamed to `productsContainerAdmin.js` and a new component named `productsContainer.js` now handles which products container to load based on the user's permissions. Full notes on the PR #3876
+
+### From the Dockerfile updates
+reactioncommerce/base:v4.0.1 removed the following:
+- Removed the conditional MongoDB installation (via $INSTALL_MONGO env). Use `mongo` as a service in docker-compose, see example in README.
+- Removed the conditional PhantomJS installation (via $INSTALL_PHANTOMJS env). If PhantomJS is required in your build, you can include it in your custom Dockerfile.
+Full notes on the PR
+
+## Dockerfile Updates
+- Base image updated to `reactioncommerce/base:v4.0.1` which has:
+  - `node:8.9.4` as base image (same Debian base as before, but with Node 8 preinstalled)
+  - Meteor 1.6.1 preinstalled
+- [Multi-stage build support](https://docs.docker.com/develop/develop-images/multistage-build/).
+  This helped reduce the size of the production image by removing un-required dependencies.
+- Final production bundle uses `node:8.9.4-slim`
+
+## Docker Compose changes
+- Updated existing `docker-compose.yml` to serve as the config for running a local development environment.
+- Added  a new `docker-compose-demo.yml` for testing out production builds (this is the replacement for the previous `docker-compose.yml`).
+## Upgrades
+- Use NPM SimpleSchema rather than Meteor (#3331)
+
+## CI
+We've updated our circle ci config to use [v2 of Workflows](https://circleci.com/docs/2.0/workflows/). This permits us to run additional automated tests on circle instead of using other services. We now have 6 workflow steps that must pass before a PR can be merged.
+
+## Refactor
+- refactor: rename Import to Importer (#3613) .. Resolves ##1364
+- refactor: convert search modal wrapper to React (#3853)
+- refactor: replace CFS (#3782)
+- refactor: customer product grid publishing (#3876) .. Resolves #3662
+- refactor: remove unused collection hook (#3950)
+
+## Fix
+ - fix: inventory updated on shopify sync (#3897) .. Resolves #3718
+ - fix: settings startup error (#3939)
+ - fix: email validation (#3899) .. Resolves #3733
+ - fix: change all email verification links to use tokens (#3884)
+ - fix: update shopId the right way. (#3947) .. Resolves #3945
+ - fix: migration version after SimpleSchema NPM merge (#3929)
+ - fix: ui glitches using dynamic merchandising (#3932)
+ - fix: setting or changing a products perma-link causes hard refresh (#3755) .. #2246
+ - fix: removing search-mongo plugin causes errors at startup (#3837) .. Resolves #3797
+ - fix: `Reaction.getShopId` missing `()` (#3891)
+ - fix: added delay and loader (#3796) .. #2863
+ - fix: add back missing browser policy (#3894)
+ - fix: discount codes limits are not honored (#3824) .. #3783
+ - fix: remove cfs:graphicsmagick (#3869) .. Resolves #3868
+ - fix: password validation (#3860) .. Resolves #3854
+ - fix: set localstorage even when no Meteor.user exists (#3856) .. Resolves #3846
+ - fix: handle misconfigured Avalara api (#3827) .. Resolves #3813
+ - fix: fix for "capturing bulk orders throws server side error" (#3822) .. Resolves #3705
+ - fix: shop switcher opens off-screen (#3809) .. Resolves #3619
+ - fix: /shop added to URL (#3794) .. Resolves #2810
+ - fix: adding country code to phone number before sending SMS (#3751) .. Resolves #3597
+ - fix: changing the permalink before publishing a product results in "not found" (#3748)
+ - fix: errors when updating default shipping and billing addresses (#3802)
+ - fix: delayed response in localization settings (#3872)
+ - fix: handle integer schema type when getting form field type (#3930)
+ - fix: check for number if sms is enabled. (#3983) .. Resolves #3965
+ - fix: marketplace shipping (#3981) .. Resolves #3979
+ - fix: summary not shown in Invoice (#3989)
+ - fix: dirty badge in product grid does not work (#3984)
+ - fix: reactivity error when products are not published yet (#3970)
+ - fix: global route hooks (#3896) .. Resolves #3895
+ - fix: added all the missing avalara settings fields to the fieldsProps… (#3969)
+ - fix: publishing group related to current shop (#3943) .. Resolves #3942
+ - fix: break payment before sending to paypal (#3859) .. Resolves #1236
+ - fix: delete shipping rates one at a time (#3968)
+ - fix: card validator (#3892) .. Resolves #3875
+ - fix: can't input refund properly (#3893) .. Resolves #3703
+ - fix: clean paymentMethod objects before validating (#3961)
+ - fix: console error during checkout (#3948)
+
+ ## Chore
+ - chore: add imports/plugins/custom to eslint ignore (#3901)
+ - chore: update Docker base for multi-stage builds (#3653)
+ - chore: use circleci workflows 2 in circle config (#3959)
+ - chore: remove ability to load Meteor.settings from settings.json (#3951)
+ - chore: upgrade react-dates to 16.3.6 (#3952)
+
+## Docs
+ - docs(jsdoc) - document and namespace Router.Hooks methods (#3874) .. Resolves #3840
+
+## Contributors
+Thanks to @pmn4 for contributing to this release!
+
 # v1.8.2
 ## Fixes
  - fix: added unique to slug (#3745) .. Resolves #2736
