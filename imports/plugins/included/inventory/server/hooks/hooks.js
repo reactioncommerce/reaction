@@ -70,6 +70,8 @@ Hooks.Events.add("afterUpdateCatalogProduct", (doc) => {
   if (doc.type === "variant") {
     Meteor.call("inventory/adjust", doc);
   }
+
+  return doc;
 });
 
 /**
