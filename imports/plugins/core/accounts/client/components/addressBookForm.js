@@ -35,32 +35,46 @@ class AddressBookForm extends Component {
     // getting the countriies options for the county select
     const countries = Countries.find().fetch();
     this.setState({ countries });
-    // if selected country has region options get those too
-    if (country === "US" || country === "DE" || country === "CA") this.regionOptions();
+    // if selected country has region options set those too
+    this.setRegionOptions(country);
   }
-
   // Address Book Form helpers
 
   /**
-   * @method regionOptions
-   * @summary creates an array of region options for the regions select.
+   * @method setRegionOptions
+   * @summary creates an array of region options for the regions select field.
    * @since 2.0.0
+   * @param {String} country - country code "US" "CA" "JP"
    */
-  regionOptions() {
-    const { fields: { country } } = this.state;
+  setRegionOptions(country) {
+    const { fields } = this.state;
     const shop = Collections.Shops.findOne();
-    const rawRegions = shop.locales.countries[country].states;
-
-    // rawRegions is an object that needs to be convered to an array
-    // of region labels and values
+    const rawRegions = shop.locales.countries[country].states; // an object of country regions
     const regions = [];
-    Object.keys(rawRegions).forEach((key) => {
-      regions.push({
-        label: rawRegions[key].name,
-        value: key
+    // if regions exist for country
+    if (rawRegions) {
+      // rawRegions is an object that needs to be convered
+      // to an array of region labels and values
+      Object.keys(rawRegions).forEach((key) => {
+        regions.push({
+          label: rawRegions[key].name,
+          value: key
+        });
       });
-    });
-    this.setState({ regions });
+
+      // if no region is set
+      if (fields.region === "") {
+        // setting the fields region to be the
+        // first region in options array
+        const [firstRegion] = regions;
+        fields.region = firstRegion;
+        this.setState({ regions, fields });
+      } else {
+        this.setState({ regions });
+      }
+    } else {
+      this.setState({ regions });
+    }
   }
 
   // Address Book Form Actions
@@ -87,6 +101,8 @@ class AddressBookForm extends Component {
     const { fields } = this.state;
     fields[name] = value;
     this.setState({ fields });
+    // if country changed set new region options
+    if (name === "country") this.setRegionOptions(value);
   }
 
   /**
@@ -193,6 +209,33 @@ class AddressBookForm extends Component {
 
   render() {
     const { countries, regions, fields } = this.state;
+    let regionField;
+    if (regions.length === 0) {
+      // if no region optioins
+      // render a TextField
+      regionField = (
+        <Components.TextField
+          i18nKeyLabel="address.region"
+          label="Region"
+          name="region"
+          onChange={this.onFieldChange}
+          value={fields.region}
+        />
+      );
+    } else {
+      // if region optioins
+      // render a Select
+      regionField = (
+        <Components.Select
+          i18nKeyLabel="address.region"
+          label="Region"
+          name="region"
+          options={regions}
+          onChange={this.onSelectChange}
+          value={fields.region}
+        />
+      );
+    }
     return (
       <form onSubmit={this.onSubmit}>
         <div className="row">
@@ -262,14 +305,7 @@ class AddressBookForm extends Component {
             />
           </div>
           <div className="col-md-4">
-            <Components.Select
-              i18nKeyLabel="address.region"
-              label="Region"
-              name="region"
-              options={regions}
-              onChange={this.onSelectChange}
-              value={fields.region}
-            />
+            {regionField}
           </div>
         </div>
 
