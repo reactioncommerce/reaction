@@ -1467,7 +1467,7 @@ Meteor.methods({
     }).fetch();
     let variantValidator = true;
 
-    if (typeof product === "object" && product.title.length > 1) {
+    if (typeof product === "object" && product.title && product.title.length > 1) {
       if (variants.length > 0) {
         variants.forEach((variant) => {
           // if this is a top variant with children, we avoid it to check price

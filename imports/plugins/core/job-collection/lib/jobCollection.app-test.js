@@ -41,6 +41,8 @@ describe("JobCollection", function () {
   let testColl;
 
   before(function () {
+    this.timeout(10000);
+
     clientTestColl = new JobCollection("ClientTest", { idGeneration: "MONGO" });
     serverTestColl = new JobCollection("ServerTest", { idGeneration: "STRING" });
 
