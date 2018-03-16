@@ -154,7 +154,7 @@ jobs:
           command: |
             npm run lint
 
-  test:
+  test-integration:
     <<: *defaults
     steps:
       - checkout
@@ -174,7 +174,10 @@ jobs:
           name: Install Reaction CLI
           command: sudo npm install -g reaction-cli
       - run:
-          name: Reaction Test
+          name: Load App Plugins
+          command: reaction plugins load
+      - run:
+          name: Run Integration Tests
           command: .circleci/tests.sh
 
   dockerfile-lint:
@@ -194,7 +197,7 @@ workflows:
     jobs:
       - build
       - dockerfile-lint
-      - test:
+      - test-integration:
           requires:
             - build
       - eslint:
@@ -208,7 +211,7 @@ workflows:
             - docker-build
       - deploy-docs:
           requires:
-            - test
+            - test-integration
             - docker-build
           filters:
             branches:
