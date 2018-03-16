@@ -187,34 +187,34 @@ export const ProductRevision = {
   }
 };
 
-MediaRecords.before.insert((userid, media) => {
-  if (RevisionApi.isRevisionControlEnabled() === false) {
-    return true;
-  }
-  if (media.metadata.workflow === "published") {
-    // Skip by setting metadata.workflow.status to published
-    return true;
-  }
+// MediaRecords.before.insert((userid, media) => {
+//   if (RevisionApi.isRevisionControlEnabled() === false) {
+//     return true;
+//   }
+//   if (media.metadata.workflow === "published") {
+//     // Skip by setting metadata.workflow.status to published
+//     return true;
+//   }
 
-  if (media.metadata.productId) {
-    const revisionMetadata = Object.assign({}, media.metadata);
-    revisionMetadata.workflow = "published";
-    Revisions.insert({
-      documentId: media._id,
-      documentData: revisionMetadata,
-      documentType: "image",
-      parentDocument: media.metadata.productId,
-      changeType: "insert",
-      workflow: {
-        status: "revision/update"
-      }
-    });
-    media.metadata.workflow = "unpublished";
-  } else {
-    media.metadata.workflow = "published";
-  }
-  return true;
-});
+//   if (media.metadata.productId) {
+//     const revisionMetadata = Object.assign({}, media.metadata);
+//     revisionMetadata.workflow = "published";
+//     Revisions.insert({
+//       documentId: media._id,
+//       documentData: revisionMetadata,
+//       documentType: "image",
+//       parentDocument: media.metadata.productId,
+//       changeType: "insert",
+//       workflow: {
+//         status: "revision/update"
+//       }
+//     });
+//     media.metadata.workflow = "unpublished";
+//   } else {
+//     media.metadata.workflow = "published";
+//   }
+//   return true;
+// });
 
 MediaRecords.before.update((userId, media, fieldNames, modifier) => {
   if (RevisionApi.isRevisionControlEnabled() === false) {
