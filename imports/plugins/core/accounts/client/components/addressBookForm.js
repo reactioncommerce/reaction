@@ -131,7 +131,6 @@ class AddressBookForm extends Component {
   renderAddressOptions() {
     const { hasAddress } = this.props;
     const { fields } = this.state;
-
     let defaultOptions;
     if (hasAddress) {
       defaultOptions = (

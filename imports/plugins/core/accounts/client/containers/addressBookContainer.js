@@ -50,7 +50,8 @@ function removeAddress(_id) {
  */
 function addAddress(address) {
   Meteor.call("accounts/validateAddress", address, (error, result) => {
-    if (result.validated) {
+    if (error) Alerts.toast(i18next.t("addressBookAdd.failedToAddAddress", { err: error.message }), "error");
+    if (result && result.validated) {
       Meteor.call("accounts/addressBookAdd", address, (err, res) => {
         if (err) {
           Alerts.toast(i18next.t("addressBookAdd.failedToAddAddress", { err: err.message }), "error");
@@ -94,7 +95,10 @@ const wrapComponent = (Comp) => (
 
 function composer(props, onData) {
   const account = Collections.Accounts.findOne({ _id: Meteor.userId() });
-  const { heading: templateHeading } = Template.instance().data;
+  const template = Template.instance();
+  const { data } = template || { data: undefined };
+  const { heading: templateHeading } = data || { heading: undefined };
+  const { addressBook } = account.profile;
 
   let heading;
   // AddressBook heading will be different in different views
@@ -109,8 +113,6 @@ function composer(props, onData) {
       i18nKey: "accountsUI.addressBook"
     };
   }
-
-  const { addressBook } = account.profile;
 
   onData(null, {
     addressBook,

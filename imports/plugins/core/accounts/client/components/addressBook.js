@@ -17,18 +17,19 @@ class AddressBook extends Component {
     editAddress: {} // address to be edited.
   }
 
-  componentWillReceiveProps() {
+  componentWillReceiveProps(nextProps) {
+    const { addressBook } = nextProps;
     const { entryMode } = this.state;
 
     // if the new addressBook array is empty and
     // the address book form is not active
-    if (!this.hasAddress && !entryMode) {
+    if (addressBook.length === 0 && !entryMode) {
       this.toggleEntryMode();
     }
 
     // if the new addressBook array is not empty but
     // the address book form is active
-    if (this.hasAddress && entryMode) {
+    if (addressBook.length !== 0 && entryMode) {
       this.toggleEntryMode();
     }
   }
@@ -121,7 +122,6 @@ class AddressBook extends Component {
    */
   onAdd = (address) => {
     const { addAddress, updateAddress } = this.props;
-
     // if edit address is in the address book form
     if (this.hasEditAddress) {
       const { editAddress } = this.state;
@@ -214,7 +214,6 @@ class AddressBook extends Component {
     let controlBarContent;
     if (entryMode && !this.hasEditAddress) {
       // active form with no edit address
-
       let translationContent;
       if (this.hasAddress) {
         // has address in addressBook array, adding a new entry

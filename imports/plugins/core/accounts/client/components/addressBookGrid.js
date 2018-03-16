@@ -19,7 +19,6 @@ class AddressBookGrid extends Component {
 
   componentWillReceiveProps(nextProps) {
     const { addressBook } = nextProps;
-
     // if a new address has been added to the addressBook
     // check to see if the new address is now the default shipping or billing address
     addressBook.forEach((addy) => {
@@ -139,7 +138,6 @@ class AddressBookGrid extends Component {
    */
   renderAddressGrid() {
     const { addressBook, edit, remove } = this.props;
-    // TODO: keyboard helper
     return addressBook.map((address) => {
       const { defaultAddress: { shipping, billing } } = this.state;
       const { _id, fullName } = address;
