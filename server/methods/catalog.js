@@ -336,8 +336,6 @@ function flushQuantity(id) {
     }
   });
 
-  Hooks.Events.run("afterUpdateCatalogProduct", variant);
-
   return productUpdate;
 }
 
