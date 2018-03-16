@@ -180,6 +180,19 @@ jobs:
           name: Run Integration Tests
           command: .circleci/tests.sh
 
+  test-unit:
+    <<: *defaults
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - v1-node-modules-{{ checksum "package.json" }}
+            - v1-node-modules-{{ .Branch }}
+            - v1-node-modules-master
+      - run:
+          name: Run Unit Tests
+          command: npm run test:unit
+
   dockerfile-lint:
     <<: *defaults
     docker:
@@ -200,6 +213,9 @@ workflows:
       - test-integration:
           requires:
             - build
+      - test-unit:
+          requires:
+            - build
       - eslint:
           requires:
             - build
@@ -211,6 +227,7 @@ workflows:
             - docker-build
       - deploy-docs:
           requires:
+            - test-unit
             - test-integration
             - docker-build
           filters:
