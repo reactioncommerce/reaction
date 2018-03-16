@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { compose } from "recompose";
 import { Meteor } from "meteor/meteor";
+import { Template } from "meteor/templating";
 import { i18next } from "/client/api";
 import * as Collections from "/lib/collections";
 import { registerComponent, composeWithTracker } from "@reactioncommerce/reaction-components";
@@ -69,7 +70,7 @@ const wrapComponent = (Comp) => (
   class AddressBookContainer extends Component {
     static propTypes = {
       addressBook: PropTypes.array, // array of address objects
-      heading: PropTypes.object // heading content { defaultValue: String, i18nKey: String, checkout: Object }
+      heading: PropTypes.object // heading content
     }
 
     addAddress = (address) => addAddress(address);
@@ -93,15 +94,17 @@ const wrapComponent = (Comp) => (
 
 function composer(props, onData) {
   const account = Collections.Accounts.findOne({ _id: Meteor.userId() });
+  const { heading: templateHeading } = Template.instance().data;
 
-  const heading = {
-    defaultValue: "Title",
-    i18nKey: "key",
-    checkout: {
-      icon: "active",
-      position: 2
-    }
-  };
+  let heading;
+  if (templateHeading) {
+    heading = templateHeading;
+  } else {
+    heading = {
+      defaultValue: "Address Book",
+      i18nKey: "accountsUI.addressBook"
+    };
+  }
 
   const { addressBook } = account.profile;
 

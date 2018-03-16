@@ -1,73 +1,5 @@
-import { Meteor } from "meteor/meteor";
 import { Template } from "meteor/templating";
-import { i18next } from "/client/api";
-import * as Collections from "/lib/collections";
 import { Components } from "@reactioncommerce/reaction-components";
-
-/**
- * @method getAccount
- * @summary general helper function that returns the current user account
- * @since 2.0.0
- * @return {Object} - user account.
- */
-const getAccount = () => Collections.Accounts.findOne({ _id: Meteor.userId() });
-
-/**
- * @method updateAddress
- * @summary helper function that updates an address in the account's addressBook via a meteor method.
- * @since 2.0.0
- * @param {Object} address - address to be updated.
- * @param{String} property - property to be updated.
- */
-function updateAddress(address, property) {
-  if (property) {
-    Meteor.call("accounts/addressBookUpdate", address, null, property);
-  } else {
-    Meteor.call("accounts/addressBookUpdate", address);
-  }
-}
-
-/**
- * @method removeAddress
- * @summary helper function that updates an address in the account's addressBook via a meteor method.
- * @since 2.0.0
- * @param {String} _id - _id of address to be removed.
- */
-function removeAddress(_id) {
-  Meteor.call("accounts/addressBookRemove", _id, (error, result) => {
-    if (error) {
-      Alerts.toast(i18next.t("addressBookGrid.cantRemoveThisAddress", { err: error.message }), "error");
-    }
-    if (result) {
-      // TODO: FIX THIS
-      console.log("address removed!");
-    }
-  });
-}
-
-/**
- * @method addAddress
- * @summary helper function that adds an address in the account's addressBook via a meteor method.
- * @since 2.0.0
- * @param {Object} address - address to be added.
- */
-function addAddress(address) {
-  Meteor.call("accounts/validateAddress", address, (error, result) => {
-    if (result.validated) {
-      Meteor.call("accounts/addressBookAdd", address, (err, res) => {
-        if (err) {
-          Alerts.toast(i18next.t("addressBookAdd.failedToAddAddress", { err: err.message }), "error");
-        }
-        if (res) {
-          console.log("address added!");
-        }
-      });
-    } else {
-      console.log("address validatiion error", error);
-    }
-  });
-}
-
 
 /**
  * Helpers: Checkout Address Book
@@ -81,14 +13,8 @@ Template.checkoutAddressBook.helpers({
    */
   AddressBook() {
     const { status, position } = Template.instance().data;
-    const account = getAccount();
-    const { addressBook } = account.profile;
-
     return {
-      component: Components.AddressBook,
-      account,
-      addAddress,
-      addressBook,
+      component: Components.AddressBookContainer,
       heading: {
         defaultValue: "Choose shipping & billing address",
         i18nKey: "addressBookGrid.chooseAddress",
@@ -96,9 +22,7 @@ Template.checkoutAddressBook.helpers({
           icon: (status === true || status === this.template) ? "active" : "",
           position
         }
-      },
-      updateAddress,
-      removeAddress
+      }
     };
   }
 });
