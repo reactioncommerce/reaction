@@ -10,7 +10,6 @@ import { typeDefs as metafield } from "./metafield";
 import { typeDefs as node } from "./node";
 import { typeDefs as role } from "./role";
 import { typeDefs as shop } from "./shop";
-import { typeDefs as users } from "./users";
 
 // Define base GraphQL schema maps that can be extended by the schema modules
 // without throwing errors. Extend with `extend type Query ...`.
@@ -39,6 +38,5 @@ export default base.concat([
   metafield,
   node,
   role,
-  shop,
-  users
+  shop
 ]);
