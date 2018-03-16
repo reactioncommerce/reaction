@@ -75,6 +75,12 @@ Hooks.Events.add("afterRemoveProduct", (doc) => {
 * after product update rebuild product search record
 */
 Hooks.Events.add("afterUpdateCatalogProduct", (doc, options) => {
+  // If this hook is ran without options, then this callback
+  // should no be executed.
+  if (!options) {
+    return doc;
+  }
+
   const { modifier: { $set: allProps } } = options;
   const topLevelFieldNames = Object.getOwnPropertyNames(allProps);
 
