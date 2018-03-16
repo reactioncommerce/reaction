@@ -919,10 +919,6 @@ Meteor.methods({
           $in: productIds
         }
       }]
-    }, {
-      fields: {
-        type: 1
-      }
     }).fetch();
 
     const ids = [];
