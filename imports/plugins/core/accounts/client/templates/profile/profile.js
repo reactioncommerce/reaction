@@ -121,16 +121,8 @@ Template.accountProfile.helpers({
    * @return {Object} - contains the component for updating a user's address.
    */
   AddressBook() {
-    const account = Collections.Accounts.findOne({ _id: Meteor.userId() });
-    const { addressBook } = account.profile;
     return {
       component: Components.AddressBookContainer
-      // account,
-      // addressBook,
-      // heading: {
-      //   defaultValue: "Address Book",
-      //   i18nKey: "accountsUI.addressBook"
-      // }
     };
   },
 

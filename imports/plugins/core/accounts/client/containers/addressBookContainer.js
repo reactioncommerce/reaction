@@ -97,9 +97,13 @@ function composer(props, onData) {
   const { heading: templateHeading } = Template.instance().data;
 
   let heading;
+  // AddressBook heading will be different in different views
+  // If the view template that's using the AddressBook has a
+  // heading object, set it as the AddressBook heading
   if (templateHeading) {
     heading = templateHeading;
   } else {
+    // default AddressBook heading
     heading = {
       defaultValue: "Address Book",
       i18nKey: "accountsUI.addressBook"
