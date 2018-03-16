@@ -1,5 +1,5 @@
 import { Meteor } from "meteor/meteor";
-import { Cart, Orders } from "/lib/collections";
+import { Cart, Orders, Products } from "/lib/collections";
 import { Logger, Hooks } from "/server/api";
 import { registerInventory } from "../methods/inventory";
 
@@ -69,11 +69,17 @@ Hooks.Events.add("afterRemoveCatalogProduct", (userId, doc) => {
 * @return {undefined}
 */
 Hooks.Events.add("afterUpdateCatalogProduct", (doc) => {
+  // Find the most recent version of the product document based on
+  // the passed in doc._id
+  const productDocument = Products.findOne({
+    _id: doc._id
+  });
+
   if (doc.type === "variant") {
-    Meteor.call("inventory/adjust", doc);
+    Meteor.call("inventory/adjust", productDocument);
   }
 
-  return doc;
+  return productDocument;
 });
 
 /**
