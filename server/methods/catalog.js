@@ -678,6 +678,7 @@ Meteor.methods({
     // Flag the variant and all its children as deleted in Revisions collection.
     toDelete.forEach((product) => {
       Hooks.Events.run("beforeRemoveCatalogProduct", product, { userId: this.userId });
+      Hooks.Events.run("afterRemoveCatalogProduct", this.userId, product);
     });
 
     // After variant was removed from product, we need to recalculate all
@@ -931,8 +932,10 @@ Meteor.methods({
     });
 
     // Flag the product and all its variants as deleted in the Revisions collection.
-    ids.forEach((_id) => {
-      Hooks.Events.run("beforeRemoveCatalogProduct", Products.findOne({ _id }), { userId: this.userId });
+    productsWithVariants.forEach((toArchiveProduct) => {
+      Hooks.Events.run("beforeRemoveCatalogProduct", toArchiveProduct, { userId: this.userId });
+
+      Hooks.Events.run("afterRemoveCatalogProduct", this.userId, toArchiveProduct);
     });
 
     const numFlaggedAsDeleted = Revisions.find({
