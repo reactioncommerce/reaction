@@ -1,28 +1,12 @@
 /* eslint camelcase: 0 */
 // meteor modules
 import { Meteor } from "meteor/meteor";
-import { check, Match } from "meteor/check";
+import { check } from "meteor/check";
 // reaction modules
 import { Logger } from "/server/api";
+import { ValidCardNumber, ValidExpireMonth, ValidExpireYear, ValidCVV } from "/lib/api";
 import { ExampleApi } from "./exampleapi";
 import { PaymentMethodArgument } from "/lib/collections/schemas";
-
-function luhnValid(x) {
-  return [...x].reverse().reduce((sum, c, i) => {
-    let d = parseInt(c, 10);
-    if (i % 2 !== 0) { d *= 2; }
-    if (d > 9) { d -= 9; }
-    return sum + d;
-  }, 0) % 10 === 0;
-}
-
-const ValidCardNumber = Match.Where((x) => /^[0-9]{13,16}$/.test(x) && luhnValid(x));
-
-const ValidExpireMonth = Match.Where((x) => /^[0-9]{1,2}$/.test(x));
-
-const ValidExpireYear = Match.Where((x) => /^[0-9]{4}$/.test(x));
-
-const ValidCVV = Match.Where((x) => /^[0-9]{3,4}$/.test(x));
 
 // function chargeObj() {
 //   return {

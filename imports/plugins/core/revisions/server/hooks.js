@@ -1,10 +1,11 @@
 import _ from "lodash";
 import { diff } from "deep-diff";
 import { Meteor } from "meteor/meteor";
-import { Products, Revisions, Tags, Media } from "/lib/collections";
+import { Products, Revisions, Tags, MediaRecords } from "/lib/collections";
 import { Hooks, Logger } from "/server/api";
 import { RevisionApi } from "../lib/api";
 import { getSlug } from "/lib/api";
+import { Media } from "/imports/plugins/core/files/server";
 
 function convertMetadata(modifierObject) {
   const metadata = {};
@@ -186,7 +187,7 @@ export const ProductRevision = {
   }
 };
 
-Media.files.before.insert((userid, media) => {
+MediaRecords.before.insert((userid, media) => {
   if (RevisionApi.isRevisionControlEnabled() === false) {
     return true;
   }
@@ -215,7 +216,7 @@ Media.files.before.insert((userid, media) => {
   return true;
 });
 
-Media.files.before.update((userId, media, fieldNames, modifier) => {
+MediaRecords.before.update((userId, media, fieldNames, modifier) => {
   if (RevisionApi.isRevisionControlEnabled() === false) {
     return true;
   }
@@ -270,7 +271,7 @@ Media.files.before.update((userId, media, fieldNames, modifier) => {
   return true;
 });
 
-Media.files.before.remove((userId, media) => {
+MediaRecords.before.remove((userId, media) => {
   if (RevisionApi.isRevisionControlEnabled() === false) {
     return true;
   }
@@ -572,7 +573,7 @@ Products.before.update(function (userId, product, fieldNames, modifier, options)
   }
 
   Revisions.update(revisionSelector, revisionModifier);
-  const updatedRevision = Revisions.findOne({ documentId: product._id });
+  const updatedRevision = Revisions.findOne(revisionSelector);
   Hooks.Events.run("afterRevisionsUpdate", userId, updatedRevision);
 
   Logger.debug(`Revison updated for product ${product._id}.`);
@@ -721,8 +722,8 @@ Hooks.Events.add("afterRevisionsUpdate", (userId, revision) => {
   }
 
   if (revision.documentType && revision.documentType === "image") {
-    const image = Media.findOne(revision.documentId);
-    differences = diff(image.metadata, revision.documentData);
+    const image = Promise.await(Media.findOne(revision.documentId, { raw: true }));
+    differences = image && diff(image.metadata, revision.documentData);
   }
 
   Revisions.update({

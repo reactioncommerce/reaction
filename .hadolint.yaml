@@ -1,0 +1,3 @@
+ignored:
+  - DL3008 #Pin versions in apt get install. We'll opt for updates.
+  - DL3016 #Pin versions in npm install rule currently affects "meteor npm install". Versions are in package.json

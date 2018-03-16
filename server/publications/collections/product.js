@@ -1,52 +1,8 @@
 import { Meteor } from "meteor/meteor";
 import { check, Match } from "meteor/check";
-import { Media, Products, Revisions, Shops } from "/lib/collections";
+import { Products, Revisions, Shops } from "/lib/collections";
 import { Logger, Reaction } from "/server/api";
 import { RevisionApi } from "/imports/plugins/core/revisions/lib/api/revisions";
-
-
-/**
- * Helper function that creates and returns a Cursor of Media for relevant
- * products to a publication
- * @method findProductMedia
- * @param {Object} publicationInstance instance of the publication that invokes this method
- * @param {array} productIds array of productIds
- * @return {Object} Media Cursor containing the product media that matches the selector
- */
-export function findProductMedia(publicationInstance, productIds) {
-  const selector = {};
-
-  if (Array.isArray(productIds)) {
-    selector["metadata.productId"] = {
-      $in: productIds
-    };
-  } else {
-    selector["metadata.productId"] = productIds;
-  }
-
-  // No one needs to see archived images on products
-  selector["metadata.workflow"] = {
-    $nin: ["archived"]
-  };
-
-  // Product editors can see both published and unpublished images
-  // There is an implied shopId in Reaction.hasPermission that defaults to
-  // the active shopId via Reaction.getShopId
-  if (!Reaction.hasPermission(["createProduct"], publicationInstance.userId)) {
-    selector["metadata.workflow"].$in = [null, "published"];
-  }
-
-
-  // TODO: We should differentiate between the media selector for the product grid and PDP
-  // The grid shouldn't need more than one Media document per product, while the PDP will need
-  // all the images associated with the
-  return Media.find(selector, {
-    sort: {
-      "metadata.priority": 1
-    }
-  });
-}
-
 
 /**
  * product detail publication
@@ -62,7 +18,7 @@ Meteor.publish("Product", function (productIdOrHandle, shopIdOrSlug) {
     return this.ready();
   }
 
-  const preSelector = {
+  const selector = {
     $or: [{
       _id: productIdOrHandle
     }, {
@@ -83,15 +39,15 @@ Meteor.publish("Product", function (productIdOrHandle, shopIdOrSlug) {
     });
 
     if (shop) {
-      preSelector.shopId = shop._id;
+      selector.shopId = shop._id;
     } else {
       return this.ready();
     }
   }
 
   // TODO review for REGEX / DOS vulnerabilities.
-  const product = Products.findOne(preSelector);
-
+  // Need to peek into product to get associated shop. This is important to check permissions.
+  const product = Products.findOne(selector);
   if (!product) {
     // Product not found, return empty subscription.
     return this.ready();
@@ -99,14 +55,12 @@ Meteor.publish("Product", function (productIdOrHandle, shopIdOrSlug) {
 
   const { _id } = product;
 
-  const selector = {
-    isVisible: true,
-    isDeleted: { $in: [null, false] },
-    $or: [
-      { _id },
-      { ancestors: _id }
-    ]
-  };
+  selector.isVisible = true;
+  selector.isDeleted = { $in: [null, false] };
+  selector.$or = [
+    { _id },
+    { ancestors: _id },
+    { handle: productIdOrHandle }];
 
   // Authorized content curators for the shop get special publication of the product
   // all all relevant revisions all is one package
@@ -116,117 +70,53 @@ Meteor.publish("Product", function (productIdOrHandle, shopIdOrSlug) {
     };
 
     if (RevisionApi.isRevisionControlEnabled()) {
-      const productCursor = Products.find(selector);
-      const productIds = productCursor.map((p) => p._id);
-
-      const handle = productCursor.observeChanges({
-        added: (id, fields) => {
-          const revisions = Revisions.find({
-            "documentId": id,
-            "workflow.status": {
-              $nin: [
-                "revision/published"
-              ]
-            }
-          }).fetch();
-          fields.__revisions = revisions;
-
-          this.added("Products", id, fields);
-        },
-        changed: (id, fields) => {
-          const revisions = Revisions.find({
-            "documentId": id,
-            "workflow.status": {
-              $nin: [
-                "revision/published"
-              ]
-            }
-          }).fetch();
-
-          fields.__revisions = revisions;
-          this.changed("Products", id, fields);
-        },
-        removed: (id) => {
-          this.removed("Products", id);
-        }
-      });
-
-      const handle2 = Revisions.find({
+      const handle = Revisions.find({
         "workflow.status": {
           $nin: [
             "revision/published"
           ]
-        }
+        },
+        "$or": [
+          { "documentData._id": _id },
+          { "documentData.ancestors": _id }
+        ]
       }).observe({
         added: (revision) => {
-          let observedProduct;
-          if (!revision.parentDocument) {
-            observedProduct = Products.findOne(revision.documentId);
-          } else {
-            observedProduct = Products.findOne(revision.parentDocument);
-          }
-          if (observedProduct) {
-            this.added("Products", observedProduct._id, observedProduct);
-            this.added("Revisions", revision._id, revision);
+          this.added("Revisions", revision._id, revision);
+          if (revision.documentType === "product") {
+            // Check merge box (session collection view), if product is already in cache.
+            // If yes, we send a `changed`, otherwise `added`. I'm assuming
+            // that this._documents.Products is somewhat equivalent to the
+            // merge box Meteor.server.sessions[sessionId].getCollectionView("Products").documents
+            if (this._documents.Products && this._documents.Products[revision.documentId]) {
+              this.changed("Products", revision.documentId, { __revisions: [revision] });
+            } else {
+              this.added("Products", revision.documentId, { __revisions: [revision] });
+            }
           }
         },
         changed: (revision) => {
-          let observedProduct;
-          if (!revision.parentDocument) {
-            observedProduct = Products.findOne(revision.documentId);
-          } else {
-            observedProduct = Products.findOne(revision.parentDocument);
-          }
-
-          if (observedProduct) {
-            observedProduct.__revisions = [revision];
-            this.changed("Products", observedProduct._id, observedProduct);
-            this.changed("Revisions", revision._id, revision);
+          this.changed("Revisions", revision._id, revision);
+          if (revision.documentType === "product") {
+            if (this._documents.Products && this._documents.Products[revision.documentId]) {
+              this.changed("Products", revision.documentId, { __revisions: [revision] });
+            }
           }
         },
         removed: (revision) => {
-          let observedProduct;
-          if (!revision.parentDocument) {
-            observedProduct = Products.findOne(revision.documentId);
-          } else {
-            observedProduct = Products.findOne(revision.parentDocument);
-          }
-          if (observedProduct) {
-            observedProduct.__revisions = [];
-            this.changed("Products", observedProduct._id, observedProduct);
-            this.removed("Revisions", revision._id, revision);
+          this.removed("Revisions", revision._id);
+          if (revision.documentType === "product") {
+            if (this._documents.Products && this._documents.Products[revision.documentId]) {
+              this.changed("Products", revision.documentId, { __revisions: [] });
+            }
           }
         }
       });
-
       this.onStop(() => {
         handle.stop();
-        handle2.stop();
       });
-
-      return [
-        findProductMedia(this, productIds)
-      ];
     }
-
-    // Revision control is disabled, but is an admin
-    const productCursor = Products.find(selector);
-    const productIds = productCursor.map((p) => p._id);
-    const mediaCursor = findProductMedia(this, productIds);
-
-    return [
-      productCursor,
-      mediaCursor
-    ];
   }
 
-  // Everyone else gets the standard, visible products and variants
-  const productCursor = Products.find(selector);
-  const productIds = productCursor.map((p) => p._id);
-  const mediaCursor = findProductMedia(this, productIds);
-
-  return [
-    productCursor,
-    mediaCursor
-  ];
+  return Products.find(selector);
 });

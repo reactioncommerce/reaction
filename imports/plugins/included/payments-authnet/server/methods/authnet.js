@@ -9,6 +9,7 @@ import { Promise } from "meteor/promise";
 import AuthNetAPI from "authorize-net";
 import { Reaction, Logger } from "/server/api";
 import { Packages } from "/lib/collections";
+import { ValidCardNumber, ValidExpireMonth, ValidExpireYear, ValidCVV } from "/lib/api";
 import { PaymentMethodArgument } from "/lib/collections/schemas";
 
 function getAccountOptions(isPayment) {
@@ -42,14 +43,6 @@ function getSettings(settings, ref, valueName) {
   }
   return undefined;
 }
-
-const ValidCardNumber = Match.Where((x) => /^[0-9]{14,16}$/.test(x));
-
-const ValidExpireMonth = Match.Where((x) => /^[0-9]{1,2}$/.test(x));
-
-const ValidExpireYear = Match.Where((x) => /^[0-9]{4}$/.test(x));
-
-const ValidCVV = Match.Where((x) => /^[0-9]{3,4}$/.test(x));
 
 Meteor.methods({
   authnetSubmit(transactionType = "authorizeTransaction", cardInfo, paymentInfo) {
@@ -107,7 +100,7 @@ Meteor.methods({
     // Call both check and validate because by calling `clean`, the audit pkg
     // thinks that we haven't checked paymentMethod arg
     check(paymentMethod, Object);
-    PaymentMethodArgument.validate(paymentMethod);
+    PaymentMethodArgument.validate(PaymentMethodArgument.clean(paymentMethod));
 
     const {
       transactionId,
@@ -177,7 +170,7 @@ Meteor.methods({
     // Call both check and validate because by calling `clean`, the audit pkg
     // thinks that we haven't checked paymentMethod arg
     check(paymentMethod, Object);
-    PaymentMethodArgument.validate(paymentMethod);
+    PaymentMethodArgument.validate(PaymentMethodArgument.clean(paymentMethod));
 
     const result = {
       saved: false,
