@@ -57,6 +57,8 @@ Hooks.Events.add("afterRemoveCatalogProduct", (userId, doc) => {
     }, call inventory/remove`);
     Meteor.call("inventory/remove", variantItem);
   }
+
+  return doc;
 });
 
 /**
@@ -86,6 +88,8 @@ Hooks.Events.add("afterInsertCatalogProduct", (doc) => {
     return false;
   }
   registerInventory(doc);
+
+  return doc;
 });
 
 /**
@@ -111,6 +115,8 @@ function markInventoryShipped(doc) {
     cartItems.push(cartItem);
   }
   Meteor.call("inventory/shipped", cartItems);
+
+  return doc;
 }
 
 /**
@@ -136,6 +142,8 @@ function markInventorySold(doc) {
     cartItems.push(cartItem);
   }
   Meteor.call("inventory/sold", cartItems);
+
+  return doc;
 }
 
 /**
@@ -160,4 +168,6 @@ Hooks.Events.add("afterOrderInsert", (order) => {
 Hooks.Events.add("onOrderShipmentShipped", (doc) => {
   Logger.debug("Inventory module handling Order update");
   markInventoryShipped(doc);
+
+  return doc;
 });
