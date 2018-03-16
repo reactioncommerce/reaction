@@ -1,9 +1,9 @@
 import { Meteor } from "meteor/meteor";
-import { transformIdToBase64 } from "../../util";
+import { encodeOpaqueId } from "../../xforms/id";
 import addAccountAddressBookEntry from "./addAccountAddressBookEntry";
 
 test("correctly passes through to accounts/addressBookAdd method", () => {
-  const accountId = transformIdToBase64("Account", "1");
+  const accountId = encodeOpaqueId("Account", "1");
   const address = { address1: "123 Main St" };
 
   const fakeResult = { _id: "1", ...address };
