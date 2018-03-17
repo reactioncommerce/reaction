@@ -101,6 +101,12 @@ function removeShippingAddresses(cart) {
   }, {
     $set: { shipping: cartShipping }
   });
+
+  // Calculate discounts
+  Hooks.Events.run("afterCartUpdateCalculateDiscount", cart._id);
+
+  // Calculate taxes
+  Hooks.Events.run("afterCartUpdateCalculateTaxes", cart._id);
 }
 
 /**
@@ -439,6 +445,8 @@ Meteor.methods({
       Meteor.call("workflow/revertCartWorkflow", "coreCheckoutShipping");
       // reset selected shipment method
       Meteor.call("cart/resetShipmentMethod", cart._id);
+      // Calculate taxes
+      Hooks.Events.run("afterCartUpdateCalculateTaxes", cart._id);
 
       Logger.debug(`cart: increment variant ${variantId} quantity by ${quantity}`);
 
@@ -501,6 +509,8 @@ Meteor.methods({
     Meteor.call("workflow/revertCartWorkflow", "coreCheckoutShipping");
     // reset selected shipment method
     Meteor.call("cart/resetShipmentMethod", cart._id);
+    // Calculate taxes
+    Hooks.Events.run("afterCartUpdateCalculateTaxes", cart._id);
 
     Logger.debug(`cart: add variant ${variantId} to cartId ${cart._id}`);
 
@@ -577,6 +587,8 @@ Meteor.methods({
       Meteor.call("workflow/revertCartWorkflow", "coreCheckoutShipping");
       // reset selected shipment method
       Meteor.call("cart/resetShipmentMethod", cart._id);
+      // Calculate taxes
+      Hooks.Events.run("afterCartUpdateCalculateTaxes", cart._id);
       return cartResult;
     }
 
@@ -616,6 +628,9 @@ Meteor.methods({
     Meteor.call("workflow/revertCartWorkflow", "coreCheckoutShipping");
     // reset selected shipment method
     Meteor.call("cart/resetShipmentMethod", cart._id);
+    // Calculate taxes
+    Hooks.Events.run("afterCartUpdateCalculateTaxes", cart._id);
+
     return cartResult;
   },
 
@@ -891,6 +906,9 @@ Meteor.methods({
     // Calculate discounts
     Hooks.Events.run("afterCartUpdateCalculateDiscount", cartId);
 
+    // Calculate taxes
+    Hooks.Events.run("afterCartUpdateCalculateTaxes", cartId);
+
     if (typeof cart.workflow !== "object") {
       throw new Meteor.Error(
         "server-error",
@@ -976,6 +994,9 @@ Meteor.methods({
 
     // Calculate discounts
     Hooks.Events.run("afterCartUpdateCalculateDiscount", cartId);
+
+    // Calculate taxes
+    Hooks.Events.run("afterCartUpdateCalculateTaxes", cartId);
 
     return result;
   },
@@ -1153,6 +1174,9 @@ Meteor.methods({
 
     // Calculate discounts
     Hooks.Events.run("afterCartUpdateCalculateDiscount", cartId);
+
+    // Calculate taxes
+    Hooks.Events.run("afterCartUpdateCalculateTaxes", cartId);
 
     return Collections.Cart.findOne(selector);
   },
