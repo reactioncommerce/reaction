@@ -12,7 +12,7 @@ Template.checkoutAddressBook.helpers({
    * @return {Object} - contains the component for updating a user's address.
    */
   AddressBook() {
-    const { status, position } = Template.instance().data;
+    const { status, position } = Template.currentData();
     return {
       component: Components.AddressBookContainer,
       heading: {
