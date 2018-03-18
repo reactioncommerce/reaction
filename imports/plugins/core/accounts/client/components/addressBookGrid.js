@@ -4,21 +4,45 @@ import { Components, registerComponent } from "@reactioncommerce/reaction-compon
 
 class AddressBookGrid extends Component {
   static propTypes = {
-    addressBook: PropTypes.array, // array of address objects
-    edit: PropTypes.func, // selects an address to be edited and renders the AddressBookForm
-    remove: PropTypes.func, // removes the selected address
-    select: PropTypes.func // selects a default shipping or billing address
+    /**
+     * array of address objects
+     */
+    addressBook: PropTypes.arrayOf(PropTypes.shape({
+      _id: PropTypes.String,
+      fullName: PropTypes.String,
+      address1: PropTypes.String,
+      addresss2: PropTypes.String,
+      postal: PropTypes.String,
+      city: PropTypes.String,
+      region: PropTypes.String,
+      country: PropTypes.String,
+      phone: PropTypes.String,
+      isBillingDefault: PropTypes.Bool,
+      isShippingDefault: PropTypes.Bool,
+      isCommercal: PropTypes.Bool
+    })),
+    /**
+     * selects an address to be edited and renders the AddressBookForm
+     */
+    edit: PropTypes.func,
+    /**
+     * removes the selected address
+     */
+    remove: PropTypes.func,
+    /**
+     * selects a default shipping or billing address
+     */
+    select: PropTypes.func
   }
 
   state = {
-    defaultAddress: {
-      shipping: this.defaultShippingAddressId, // the _id of the default shipping address
-      billing: this.defaultBillingAddressId // the _id of the default billing address
-    }
+    defaultShippingAddressId: this.defaultShippingAddressId,
+    defaultBillingAddressId: this.defaultBillingAddressId
   }
 
   componentWillReceiveProps(nextProps) {
-    const { addressBook } = nextProps;
+    let { addressBook } = nextProps;
+    if (!Array.isArray(addressBook)) addressBook = [];
     // if a new address has been added to the addressBook
     // check to see if the new address is now the default shipping or billing address
     addressBook.forEach((addy) => {
@@ -42,9 +66,10 @@ class AddressBookGrid extends Component {
    * @param {String} usage - the address usage "shipping" or "billing".
    */
   setDefaultAddress(_id, usage) {
-    const { defaultAddress } = this.state;
-    defaultAddress[usage] = _id;
-    this.setState({ defaultAddress });
+    let { defaultBillingAddressId, defaultShippingAddressId } = this.state;
+    if (usage === "shipping") defaultShippingAddressId = _id;
+    if (usage === "billing") defaultBillingAddressId = _id;
+    this.setState({ defaultBillingAddressId, defaultShippingAddressId });
   }
 
   /**
@@ -75,7 +100,7 @@ class AddressBookGrid extends Component {
 
   /**
    * @method onSelect
-   * @summary handler when an address in the grid is selected at
+   * @summary handler when an address in the grid is selected as
    * a default shipping or billing address. This handler sets the default address
    * in component state as well as calling the parent reducer to set the default address in db.
    * @since 2.0.0
@@ -139,10 +164,10 @@ class AddressBookGrid extends Component {
   renderAddressGrid() {
     const { addressBook, edit, remove } = this.props;
     return addressBook.map((address) => {
-      const { defaultAddress: { shipping, billing } } = this.state;
+      const { defaultBillingAddressId, defaultShippingAddressId } = this.state;
       const { _id, fullName } = address;
-      const activeShipping = (shipping === _id) ? "active" : "";
-      const activeBilling = (billing === _id) ? "active" : "";
+      const activeShipping = (defaultShippingAddressId === _id) ? "active" : "";
+      const activeBilling = (defaultBillingAddressId === _id) ? "active" : "";
       return (
         <div className="address-list-item" key={_id}>
           <div
