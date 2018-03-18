@@ -14,13 +14,22 @@ import AddressBook from "../components/addressBook";
  * @since 2.0.0
  * @param {Object} address - address to be updated.
  * @param{String} property - property to be updated.
+ * @return {Promise}
  */
 function updateAddress(address, property) {
-  if (property) {
-    Meteor.call("accounts/addressBookUpdate", address, null, property);
-  } else {
-    Meteor.call("accounts/addressBookUpdate", address);
-  }
+  return new Promise((resolve, reject) => {
+    if (property) {
+      Meteor.call("accounts/addressBookUpdate", address, null, property, (error, result) => {
+        if (error || !result) reject(i18next.t("addressBookGrid.somethingWentWrong", { err: error.message }));
+        if (result) resolve(result);
+      });
+    } else {
+      Meteor.call("accounts/addressBookUpdate", address, (error, result) => {
+        if (error || !result) reject(i18next.t("addressBookGrid.somethingWentWrong", { err: error.message }));
+        if (result) resolve(result);
+      });
+    }
+  });
 }
 
 /**
@@ -28,17 +37,14 @@ function updateAddress(address, property) {
  * @summary helper function that updates an address in the account's addressBook via a meteor method.
  * @since 2.0.0
  * @param {String} _id - _id of address to be removed.
+ * @return {Promise}
  */
 function removeAddress(_id) {
-  Meteor.call("accounts/addressBookRemove", _id, (error, result) => {
-    if (error) {
-      Alerts.toast(i18next.t("addressBookGrid.cantRemoveThisAddress", { err: error.message }), "error");
-      // return false;
-    }
-    if (result) {
-      // return true;
-    }
-    // return false;
+  return new Promise((resolve, reject) => {
+    Meteor.call("accounts/addressBookRemove", _id, (error, result) => {
+      if (error || !result) reject(i18next.t("addressBookGrid.cantRemoveThisAddress", { err: error.message }));
+      if (result) resolve(result);
+    });
   });
 }
 
@@ -47,24 +53,30 @@ function removeAddress(_id) {
  * @summary helper function that adds an address in the account's addressBook via a meteor method.
  * @since 2.0.0
  * @param {Object} address - address to be added.
+ * @return {Promise}
  */
 function addAddress(address) {
-  Meteor.call("accounts/validateAddress", address, (error, result) => {
-    if (error) Alerts.toast(i18next.t("addressBookAdd.failedToAddAddress", { err: error.message }), "error");
-    if (result && result.validated) {
-      Meteor.call("accounts/addressBookAdd", address, (err, res) => {
-        if (err) {
-          Alerts.toast(i18next.t("addressBookAdd.failedToAddAddress", { err: err.message }), "error");
-          // return false;
-        }
-        if (res) {
-          // return true;
-        }
-        // return false;
-      });
-    }
-    // return false;
+  return new Promise((resolve, reject) => {
+    Meteor.call("accounts/validateAddress", address, (error, result) => {
+      if (error || !result) reject(i18next.t("addressBookAdd.failedToAddAddress", { err: error.message }));
+      if (result && result.validated) {
+        Meteor.call("accounts/addressBookAdd", address, (err, res) => {
+          if (err || !res) reject(i18next.t("addressBookAdd.failedToAddAddress", { err: err.message }));
+          if (res) resolve(res);
+        });
+      }
+    });
   });
+}
+
+/**
+ * @method onError
+ * @summary helper function that shows an error message in an alert toast.
+ * @since 2.0.0
+ * @param {Object} errorMessage - error message object.
+ */
+function onError(errorMessage) {
+  Alerts.toast(errorMessage, "error");
 }
 
 const wrapComponent = (Comp) => (
@@ -74,19 +86,14 @@ const wrapComponent = (Comp) => (
       heading: PropTypes.object // heading content
     }
 
-    addAddress = (address) => addAddress(address);
-
-    updateAddress = (address, property) => updateAddress(address, property);
-
-    removeAddress = (_id) => removeAddress(_id);
-
     render() {
       return (
         <Comp
           {...this.props}
-          addAddress={this.addAddress}
-          updateAddress={this.updateAddress}
-          removeAddress={this.removeAddress}
+          addAddress={addAddress}
+          updateAddress={updateAddress}
+          removeAddress={removeAddress}
+          onError={onError}
         />
       );
     }

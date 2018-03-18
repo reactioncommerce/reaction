@@ -46,6 +46,10 @@ class AddressBook extends Component {
       })
     }),
     /**
+     * handles error by calling Alerts.toast with the error meesage
+     */
+    onError: PropTypes.func,
+    /**
      * Remove address reducer calls meteor method
      */
     removeAddress: PropTypes.func,
@@ -58,7 +62,8 @@ class AddressBook extends Component {
   static defaultProps = {
     addAddress() {},
     removeAddress() {},
-    updateAddress() {}
+    updateAddress() {},
+    onError() {}
   }
 
   state = {
@@ -157,14 +162,14 @@ class AddressBook extends Component {
    * @param {String} usage - the address usage "shipping" or "billing".
    */
   onSelect = (_id, usage) => {
-    const { updateAddress } = this.props;
+    const { onError, updateAddress } = this.props;
     const address = this.findAddress(_id);
     switch (usage) {
       case "shipping":
-        updateAddress(address, "isShippingDefault");
+        updateAddress(address, "isShippingDefault").catch(onError);
         break;
       case "billing":
-        updateAddress(address, "isBillingDefault");
+        updateAddress(address, "isBillingDefault").catch(onError);
         break;
       default:
         return;
@@ -178,8 +183,8 @@ class AddressBook extends Component {
    * @param {String} _id - address object _id.
    */
   onRemove = (_id) => {
-    const { removeAddress } = this.props;
-    removeAddress(_id);
+    const { onError, removeAddress } = this.props;
+    removeAddress(_id).catch(onError);
   }
 
   /**
@@ -189,15 +194,15 @@ class AddressBook extends Component {
    * @param {Object} address - new or updated address object.
    */
   onAdd = (address) => {
-    const { addAddress, updateAddress } = this.props;
+    const { addAddress, onError, updateAddress } = this.props;
     // if edit address is in the address book form
     if (this.hasEditAddress) {
       const { editAddress } = this.state;
       // new object with editAddress _id and the param addess data
-      updateAddress({ _id: editAddress._id, ...address });
+      updateAddress({ _id: editAddress._id, ...address }).catch(onError);
       this.clearForm();
     } else {
-      addAddress(address);
+      addAddress(address).catch(onError);
     }
   }
 
