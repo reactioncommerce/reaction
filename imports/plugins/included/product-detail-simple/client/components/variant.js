@@ -43,49 +43,6 @@ class Variant extends Component {
     return this.props.displayPrice || this.props.variant.price;
   }
 
-  renderInventoryStatus() {
-    const {
-      inventoryManagement,
-      inventoryPolicy
-    } = this.props.variant;
-
-    // If variant is sold out, show Sold Out badge
-    if (inventoryManagement && this.props.soldOut) {
-      if (inventoryPolicy) {
-        return (
-          <span className="variant-qty-sold-out badge badge-danger variant-badge-label">
-            <Components.Translation defaultValue="Sold Out!" i18nKey="productDetail.soldOut" />
-          </span>
-        );
-      }
-
-      return (
-        <span className="variant-qty-sold-out badge badge-info variant-badge-label">
-          <Components.Translation defaultValue="Backorder" i18nKey="productDetail.backOrder" />
-        </span>
-      );
-    }
-
-    // If Warning Threshold is met, show Limited Supply Badge
-    if (inventoryManagement && this.props.variant.lowInventoryWarningThreshold >= this.props.variant.inventoryTotal) {
-      if (inventoryPolicy) {
-        return (
-          <span className="variant-qty-sold-out badge badge-warning variant-badge-label">
-            <Components.Translation defaultValue="Limited Supply" i18nKey="productDetail.limitedSupply" />
-          </span>
-        );
-      }
-
-      return (
-        <span className="variant-qty-sold-out badge badge-info variant-badge-label">
-          <Components.Translation defaultValue="Backorder" i18nKey="productDetail.backOrder" />
-        </span>
-      );
-    }
-
-    return null;
-  }
-
   renderDeletionStatus() {
     if (this.props.variant.isDeleted) {
       return (
@@ -188,7 +145,7 @@ class Variant extends Component {
 
           <div className="alerts">
             {this.renderDeletionStatus()}
-            {this.renderInventoryStatus()}
+            <Components.InventoryBadge className="variant-qty-sold-out variant-badge-label" {...this.props} />
             {this.renderValidationButton()}
             {this.props.editButton}
           </div>
