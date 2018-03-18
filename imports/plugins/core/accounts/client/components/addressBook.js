@@ -4,22 +4,78 @@ import { Components, registerComponent } from "@reactioncommerce/reaction-compon
 
 class AddressBook extends Component {
   static propTypes = {
-    addAddress: PropTypes.func, // add address reducer calls meteor method
-    addressBook: PropTypes.array, // array of address objects
-    heading: PropTypes.object, // heading content { defaultValue: String, i18nKey: String, checkout: Object }
-    removeAddress: PropTypes.func, // remove address reducer calls meteor method
-    testProp: PropTypes.any,
-    updateAddress: PropTypes.func // update address reducer calls meteor method
+    /**
+     * Add address reducer calls meteor method
+     */
+    addAddress: PropTypes.func,
+    /**
+     * array of address objects
+     */
+    addressBook: PropTypes.arrayOf(PropTypes.shape({
+      _id: PropTypes.String,
+      fullName: PropTypes.String,
+      address1: PropTypes.String,
+      addresss2: PropTypes.String,
+      postal: PropTypes.String,
+      city: PropTypes.String,
+      region: PropTypes.String,
+      country: PropTypes.String,
+      phone: PropTypes.String,
+      isBillingDefault: PropTypes.Bool,
+      isShippingDefault: PropTypes.Bool,
+      isCommercal: PropTypes.Bool
+    })),
+    /**
+     *  Heading content for address book
+     */
+    heading: PropTypes.shape({
+      /**
+       * Heading title
+       */
+      defaultValue: PropTypes.String,
+      /**
+       * i18nKey for heading title
+       */
+      i18nKey: PropTypes.String,
+      /**
+       * If in checkout view, addressbook checkout step position and icon className
+       */
+      checkout: PropTypes.shape({
+        icon: PropTypes.String,
+        position: PropTypes.Number
+      })
+    }),
+    /**
+     * Remove address reducer calls meteor method
+     */
+    removeAddress: PropTypes.func,
+    /**
+     * Update address reducer calls meteor method
+     */
+    updateAddress: PropTypes.func
+  }
+
+  static defaultProps = {
+    addAddress() {},
+    removeAddress() {},
+    updateAddress() {}
   }
 
   state = {
-    entryMode: (!this.props.addressBook || this.props.addressBook.length === 0), // no address, enable the form
-    editAddress: {} // address to be edited.
+    /**
+     * No address, enable the form
+     */
+    entryMode: (!this.props.addressBook || this.props.addressBook.length === 0),
+    /**
+     * Address to be edited
+     */
+    editAddress: {}
   }
 
   componentWillReceiveProps(nextProps) {
-    const { addressBook } = nextProps;
+    let { addressBook } = nextProps;
     const { entryMode } = this.state;
+    if (!Array.isArray(addressBook)) addressBook = [];
 
     // if the new addressBook array is empty and
     // the address book form is not active
@@ -37,14 +93,14 @@ class AddressBook extends Component {
   // Address Book helpers
 
   /**
-   * @method findAddres
+   * @method findAddress
    * @summary using the provided _id finds an address object from the addressBook array.
    * @since 2.0.0
    * @param {String} _id - address object _id.
    * @return {Object} - address object.
    */
   findAddress(_id) {
-    const { addressBook } = this.props;
+    const { addressBook } = this;
     return addressBook.find((addy) => addy._id === _id);
   }
 
@@ -55,6 +111,18 @@ class AddressBook extends Component {
    */
   clearForm() {
     if (this.hasEditAddress) this.setState({ editAddress: {} });
+  }
+
+  /**
+   * @method addressBook
+   * @summary getter that returns the addressBook array if avalible on the props or an empty array.
+   * @since 2.0.0
+   * @return {Array} addressBook - array of address object or an empty array.
+   */
+  get addressBook() {
+    let { addressBook } = this.props;
+    if (!Array.isArray(addressBook)) addressBook = [];
+    return addressBook;
   }
 
   /**
@@ -75,7 +143,7 @@ class AddressBook extends Component {
    * @return {Boolean}
    */
   get hasAddress() {
-    const { addressBook } = this.props;
+    const { addressBook } = this;
     return (addressBook && addressBook.length !== 0);
   }
 
@@ -256,7 +324,7 @@ class AddressBook extends Component {
    * @return {Object} - JSX and child component.
    */
   renderContent() {
-    const { addressBook } = this.props;
+    const { addressBook } = this;
     const { editAddress, entryMode } = this.state;
 
     let content;
