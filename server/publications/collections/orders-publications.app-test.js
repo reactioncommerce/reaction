@@ -19,8 +19,6 @@ Fixtures();
 describe("Order Publication", function () {
   const shop = getShop();
   let sandbox;
-  let productRemoveStub;
-  let productInsertStub;
 
   beforeEach(function () {
     sandbox = sinon.sandbox.create();
@@ -30,22 +28,6 @@ describe("Order Publication", function () {
   afterEach(function () {
     sandbox.restore();
     Collections.Orders.remove();
-  });
-
-  before(function () {
-    // We are mocking inventory hooks, because we don't need them here, but
-    // if you want to do a real stress test, you could try to comment out
-    // this spyOn lines. This is needed only for ./reaction test. In one
-    // package test this is ignoring.
-    if (Array.isArray(Collections.Products._hookAspects.remove.after) && Collections.Products._hookAspects.remove.after.length) {
-      productRemoveStub = sinon.stub(Collections.Products._hookAspects.remove.after[0], "aspect");
-      productInsertStub = sinon.stub(Collections.Products._hookAspects.insert.after[0], "aspect");
-    }
-  });
-
-  after(function () {
-    productRemoveStub.restore();
-    productInsertStub.restore();
   });
 
   describe("Orders", () => {
