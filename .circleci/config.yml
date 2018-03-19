@@ -154,7 +154,7 @@ jobs:
           command: |
             npm run lint
 
-  test-integration:
+  test-app:
     <<: *defaults
     steps:
       - checkout
@@ -210,7 +210,7 @@ workflows:
     jobs:
       - build
       - dockerfile-lint
-      - test-integration:
+      - test-app:
           requires:
             - build
       - test-unit:
@@ -228,7 +228,7 @@ workflows:
       - deploy-docs:
           requires:
             - test-unit
-            - test-integration
+            - test-app
             - docker-build
           filters:
             branches:
