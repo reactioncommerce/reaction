@@ -170,7 +170,7 @@ const wrapComponent = (Comp) => (
         fileRecord.upload({})
           // We insert only AFTER the server has confirmed that all chunks were uploaded
           .then(() => {
-            Meteor.call("media/insert", fileRecord, (error) => {
+            Meteor.call("media/insert", fileRecord.document, (error) => {
               if (error) Alerts.toast(error.reason, "error");
               this.setState({ uploadProgress: null });
             });
