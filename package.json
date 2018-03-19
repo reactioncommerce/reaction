@@ -88,6 +88,7 @@
     "prop-types": "^15.6.0",
     "query-parse": "^2.0.0",
     "radium": "^0.22.0",
+    "ramda": "^0.25.0",
     "react": "16.2.0",
     "react-addons-create-fragment": "15.6.2",
     "react-addons-pure-render-mixin": "15.6.2",
@@ -205,6 +206,7 @@
           "alias": {
             "@reactioncommerce/reaction-collections": "./imports/plugins/core/collections",
             "@reactioncommerce/reaction-components": "./imports/plugins/core/components/lib",
+            "@reactioncommerce/reaction-graphql-utils": "./imports/plugins/core/graphql/server/resolvers/util",
             "@reactioncommerce/reaction-router": "./imports/plugins/core/router/lib",
             "@reactioncommerce/reaction-ui": "./imports/plugins/core/ui/client/components",
             "underscore": "lodash"

@@ -8,7 +8,7 @@ import { Reaction } from "/client/api";
 import { ITEMS_INCREMENT } from "/client/config/defaults";
 import { ReactionProduct } from "/lib/api";
 import { Catalog, Tags, Shops } from "/lib/collections";
-import ProductsComponent from "../components/customer/productGrid";
+import ProductGridCustomer from "../components/customer/productGrid";
 
 const wrapComponent = (Comp) => (
   class ProductsContainer extends Component {
@@ -114,11 +114,11 @@ function composer(props, onData) {
   });
 }
 
-registerComponent("ProductsCustomer", ProductsComponent, [
+registerComponent("ProductsCustomer", ProductGridCustomer, [
   composeWithTracker(composer)
 ]);
 
 export default compose(
   composeWithTracker(composer),
   wrapComponent
-)(ProductsComponent);
+)(ProductGridCustomer);

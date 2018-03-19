@@ -1,5 +1,7 @@
-import getUserId from "./getUserId";
+import account from "./account";
+import viewer from "./viewer";
 
 export default {
-  getUserId
+  account,
+  viewer
 };

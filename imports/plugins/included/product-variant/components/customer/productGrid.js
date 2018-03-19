@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Components } from "@reactioncommerce/reaction-components";
-import ProductGridItem from "./productGridItem";
 import { ReactionProduct } from "/lib/api";
 
 class ProductGrid extends Component {
@@ -65,7 +64,7 @@ class ProductGrid extends Component {
       <div className="product-grid">
         <ul className="product-grid-list list-unstyled" id="product-grid-list">
           {products.map((product) => (
-            <ProductGridItem
+            <Components.ProductGridItemCustomer
               product={product}
               position={(product.positions && product.positions[currentTag]) || {}}
               key={product._id}

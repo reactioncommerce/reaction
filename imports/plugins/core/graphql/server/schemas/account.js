@@ -1,19 +1,22 @@
+/**
+ * Changes going from account MongoDB schema to the GraphQL schema:
+ * - acceptsMarketing is removed.
+ * - sessions is removed.
+ * - state attribute is removed.
+ * - taxSettings attribute is removed.
+ * - username attribute is removed.
+ * - AccountProfile is removed.
+ * - addressBook is merged from profile.
+ * - currency is merged from profile.
+ * - preferences is merged from profile.
+ * - note attribute is only used in Shopify import.
+ */
 export const typeDefs = `
   input UpdateAccountInput {
     currencyCode: String!
   }
 
-  # Account.
-  # NOTE: acceptsMarketing is removed.
-  # NOTE: sessions is removed.
-  # NOTE: state attribute is removed.
-  # NOTE: taxSettings attribute is removed.
-  # NOTE: username attribute is removed.
-  # NOTE: AccountProfile is removed.
-  # NOTE: addressBook is merged from profile.
-  # NOTE: currency is merged from profile.
-  # NOTE: preferences is merged from profile.
-  # NOTE: note attribute is only used in Shopify import.
+  # The \`Account\` type represents a single user account
   type Account implements Node {
     _id: ID!
     addressBook: AddressConnection
