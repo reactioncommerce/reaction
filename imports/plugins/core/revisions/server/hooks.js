@@ -215,60 +215,60 @@ export const ProductRevision = {
 //   return true;
 // });
 
-MediaRecords.before.update((userId, media, fieldNames, modifier) => {
-  if (RevisionApi.isRevisionControlEnabled() === false) {
-    return true;
-  }
-  // if it's not metadata ignore it, as LOTS of othing things change on this record
-  if (!_.includes(fieldNames, "metadata")) {
-    return true;
-  }
+// MediaRecords.before.update((userId, media, fieldNames, modifier) => {
+//   if (RevisionApi.isRevisionControlEnabled() === false) {
+//     return true;
+//   }
+//   // if it's not metadata ignore it, as LOTS of othing things change on this record
+//   if (!_.includes(fieldNames, "metadata")) {
+//     return true;
+//   }
 
-  if (media.metadata.productId) {
-    const convertedModifier = convertMetadata(modifier.$set);
-    const convertedMetadata = Object.assign({}, media.metadata, convertedModifier);
-    const existingRevision = Revisions.findOne({
-      "documentId": media._id,
-      "workflow.status": {
-        $nin: [
-          "revision/published"
-        ]
-      }
-    });
-    if (existingRevision) {
-      const updatedMetadata = Object.assign({}, existingRevision.documentData, convertedMetadata);
-      // Special case where if we have both added and reordered images before publishing we don't want to overwrite
-      // the workflow status since it would be "unpublished"
-      if (existingRevision.documentData.workflow === "published" || existingRevision.changeType === "insert") {
-        updatedMetadata.workflow = "published";
-      }
-      Revisions.update({ _id: existingRevision._id }, {
-        $set: {
-          documentData: updatedMetadata
-        }
-      });
-      Hooks.Events.run("afterRevisionsUpdate", userId, {
-        ...existingRevision,
-        documentData: updatedMetadata
-      });
-    } else {
-      Revisions.insert({
-        documentId: media._id,
-        documentData: convertedMetadata,
-        documentType: "image",
-        parentDocument: media.metadata.productId,
-        changeType: "update",
-        workflow: {
-          status: "revision/update"
-        }
-      });
-    }
+//   if (media.metadata.productId) {
+//     const convertedModifier = convertMetadata(modifier.$set);
+//     const convertedMetadata = Object.assign({}, media.metadata, convertedModifier);
+//     const existingRevision = Revisions.findOne({
+//       "documentId": media._id,
+//       "workflow.status": {
+//         $nin: [
+//           "revision/published"
+//         ]
+//       }
+//     });
+//     if (existingRevision) {
+//       const updatedMetadata = Object.assign({}, existingRevision.documentData, convertedMetadata);
+//       // Special case where if we have both added and reordered images before publishing we don't want to overwrite
+//       // the workflow status since it would be "unpublished"
+//       if (existingRevision.documentData.workflow === "published" || existingRevision.changeType === "insert") {
+//         updatedMetadata.workflow = "published";
+//       }
+//       Revisions.update({ _id: existingRevision._id }, {
+//         $set: {
+//           documentData: updatedMetadata
+//         }
+//       });
+//       Hooks.Events.run("afterRevisionsUpdate", userId, {
+//         ...existingRevision,
+//         documentData: updatedMetadata
+//       });
+//     } else {
+//       Revisions.insert({
+//         documentId: media._id,
+//         documentData: convertedMetadata,
+//         documentType: "image",
+//         parentDocument: media.metadata.productId,
+//         changeType: "update",
+//         workflow: {
+//           status: "revision/update"
+//         }
+//       });
+//     }
 
-    return false; // prevent actual update of image. This also stops other hooks from running :/
-  }
-  // for non-product images, just ignore and keep on moving
-  return true;
-});
+//     return false; // prevent actual update of image. This also stops other hooks from running :/
+//   }
+//   // for non-product images, just ignore and keep on moving
+//   return true;
+// });
 
 MediaRecords.before.remove((userId, media) => {
   if (RevisionApi.isRevisionControlEnabled() === false) {
