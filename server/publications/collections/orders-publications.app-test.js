@@ -22,12 +22,12 @@ describe("Order Publication", function () {
 
   beforeEach(function () {
     sandbox = sinon.sandbox.create();
-    Collections.Orders.direct.remove();
+    Collections.Orders.remove();
   });
 
   afterEach(function () {
     sandbox.restore();
-    Collections.Orders.direct.remove();
+    Collections.Orders.remove();
   });
 
   describe("Orders", () => {

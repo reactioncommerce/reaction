@@ -42,7 +42,7 @@ describe("Catalog", function () {
     };
 
     beforeEach(function (done) {
-      Collections.Products.direct.remove({});
+      Collections.Products.remove({});
       Collections.Catalog.remove({});
 
       // a product with price range A, and not visible

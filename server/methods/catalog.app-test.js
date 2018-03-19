@@ -39,7 +39,7 @@ describe("core product methods", function () {
       removeStub = sinon.stub(Products._hookAspects.remove.after[0], "aspect");
       insertStub = sinon.stub(Products._hookAspects.insert.after[0], "aspect");
     }
-    Products.direct.remove({});
+    Products.remove({});
   });
 
   after(function () {
@@ -298,7 +298,7 @@ describe("core product methods", function () {
     // cloning hierarchy, so the only way to track that will be cleaning
     // collection on before each test.
     beforeEach(function () {
-      return Products.direct.remove({});
+      return Products.remove({});
     });
 
     it("should throw 403 error by non admin", function () {

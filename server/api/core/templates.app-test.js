@@ -22,7 +22,7 @@ function sampleReactComponent() {
 
 describe("Templates:", function () {
   beforeEach(function () {
-    Templates.direct.remove();
+    Templates.remove();
     resetRegisteredTemplates();
   });
 
