@@ -26,6 +26,13 @@ class AddressBook extends Component {
       isCommercal: PropTypes.Bool
     })),
     /**
+     * country options for select
+     */
+    countries: PropTypes.arrayOf(PropTypes.shape({
+      label: PropTypes.String,
+      value: PropTypes.String
+    })),
+    /**
      *  Heading content for address book
      */
     heading: PropTypes.shape({
@@ -49,6 +56,15 @@ class AddressBook extends Component {
      * handles error by calling Alerts.toast with the error meesage
      */
     onError: PropTypes.func,
+    /**
+     * regions by county
+     */
+    regionsByCountry: PropTypes.shape({
+      countryCode: PropTypes.arrayOf(PropTypes.shape({
+        label: PropTypes.String,
+        value: PropTypes.String
+      }))
+    }),
     /**
      * Remove address reducer calls meteor method
      */
@@ -330,6 +346,7 @@ class AddressBook extends Component {
    */
   renderContent() {
     const { addressBook } = this;
+    const { countries, regionsByCountry } = this.props;
     const { editAddress, entryMode } = this.state;
 
     let content;
@@ -338,8 +355,10 @@ class AddressBook extends Component {
         <Components.AddressBookForm
           add={this.onAdd}
           cancel={this.onCancel}
+          countries={countries}
           editAddress={editAddress}
           hasAddress={this.hasAddress}
+          regionsByCountry={regionsByCountry}
         />
       );
     } else {

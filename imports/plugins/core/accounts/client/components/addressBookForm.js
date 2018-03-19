@@ -1,19 +1,44 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { Countries } from "/client/collections";
-import * as Collections from "/lib/collections";
 import { Components, registerComponent } from "@reactioncommerce/reaction-components";
 
 class AddressBookForm extends Component {
   static propTypes = {
-    add: PropTypes.func, // add addess callback
-    cancel: PropTypes.func, // cancel address entry and render AddressBookGrid
-    editAddress: PropTypes.object, // address object
-    hasAddress: PropTypes.bool // has address in addressBook
+    /**
+     * add addess callback
+     */
+    add: PropTypes.func,
+    /**
+     * cancel address entry and render AddressBookGrid
+     */
+    cancel: PropTypes.func,
+    /**
+     * country options for select
+     */
+    countries: PropTypes.arrayOf(PropTypes.shape({
+      label: PropTypes.String,
+      value: PropTypes.String
+    })),
+    /**
+     * address object
+     */
+    editAddress: PropTypes.object,
+    /**
+     * has address in addressBook
+     */
+    hasAddress: PropTypes.bool,
+    /**
+     * regions by county
+     */
+    regionsByCountry: PropTypes.shape({
+      countryCode: PropTypes.arrayOf(PropTypes.shape({
+        label: PropTypes.String,
+        value: PropTypes.String
+      }))
+    })
   }
 
   state = {
-    countries: [],
     regions: [],
     fields: {
       country: this.props.editAddress.country || "US", // defaults to United States
@@ -32,9 +57,7 @@ class AddressBookForm extends Component {
 
   componentWillMount() {
     const { fields: { country } } = this.state;
-    // getting the countriies options for the county select
-    const countries = Countries.find().fetch();
-    this.setState({ countries });
+
     // if selected country has region options set those too
     this.setRegionOptions(country);
   }
@@ -47,34 +70,14 @@ class AddressBookForm extends Component {
    * @param {String} country - country code "US" "CA" "JP"
    */
   setRegionOptions(country) {
+    const { regionsByCountry } = this.props;
     const { fields } = this.state;
-    const shop = Collections.Shops.findOne();
-    const rawRegions = shop.locales.countries[country].states; // an object of country regions
-    const regions = [];
-    // if regions exist for country
-    if (rawRegions) {
-      // rawRegions is an object that needs to be convered
-      // to an array of region labels and values
-      Object.keys(rawRegions).forEach((key) => {
-        regions.push({
-          label: rawRegions[key].name,
-          value: key
-        });
-      });
-
-      // if no region is set
-      if (fields.region === "") {
-        // setting the fields region to be the
-        // first region in options array
-        const [firstRegion] = regions;
-        fields.region = firstRegion;
-        this.setState({ regions, fields });
-      } else {
-        this.setState({ regions });
-      }
-    } else {
-      this.setState({ regions });
-    }
+    const regions = regionsByCountry[country];
+    // setting the fields region to be the
+    // first region in options array
+    const [firstRegion] = regions;
+    fields.region = firstRegion;
+    this.setState({ regions, fields });
   }
 
   // Address Book Form Actions
@@ -207,7 +210,8 @@ class AddressBookForm extends Component {
   }
 
   render() {
-    const { countries, regions, fields } = this.state;
+    const { countries } = this.props;
+    const { regions, fields } = this.state;
     let regionField;
     if (regions.length === 0) {
       // if no region optioins

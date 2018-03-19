@@ -4,6 +4,7 @@ import { compose } from "recompose";
 import { Meteor } from "meteor/meteor";
 import { Template } from "meteor/templating";
 import { i18next } from "/client/api";
+import { Countries } from "/client/collections";
 import * as Collections from "/lib/collections";
 import { registerComponent, composeWithTracker } from "@reactioncommerce/reaction-components";
 import AddressBook from "../components/addressBook";
@@ -82,8 +83,59 @@ function onError(errorMessage) {
 const wrapComponent = (Comp) => (
   class AddressBookContainer extends Component {
     static propTypes = {
-      addressBook: PropTypes.array, // array of address objects
-      heading: PropTypes.object // heading content
+      /**
+       * array of address objects
+       */
+      addressBook: PropTypes.arrayOf(PropTypes.shape({
+        _id: PropTypes.String,
+        fullName: PropTypes.String,
+        address1: PropTypes.String,
+        addresss2: PropTypes.String,
+        postal: PropTypes.String,
+        city: PropTypes.String,
+        region: PropTypes.String,
+        country: PropTypes.String,
+        phone: PropTypes.String,
+        isBillingDefault: PropTypes.Bool,
+        isShippingDefault: PropTypes.Bool,
+        isCommercal: PropTypes.Bool
+      })),
+      /**
+       * country options for select
+       */
+      countries: PropTypes.arrayOf(PropTypes.shape({
+        label: PropTypes.String,
+        value: PropTypes.String
+      })),
+      /**
+       *  Heading content for address book
+       */
+      heading: PropTypes.shape({
+        /**
+         * Heading title
+         */
+        defaultValue: PropTypes.String,
+        /**
+         * i18nKey for heading title
+         */
+        i18nKey: PropTypes.String,
+        /**
+         * If in checkout view, addressbook checkout step position and icon className
+         */
+        checkout: PropTypes.shape({
+          icon: PropTypes.String,
+          position: PropTypes.Number
+        })
+      }),
+      /**
+       * regions by county
+       */
+      regionsByCountry: PropTypes.shape({
+        countryCode: PropTypes.arrayOf(PropTypes.shape({
+          label: PropTypes.String,
+          value: PropTypes.String
+        }))
+      })
     }
 
     render() {
@@ -102,10 +154,32 @@ const wrapComponent = (Comp) => (
 
 function composer(props, onData) {
   const account = Collections.Accounts.findOne({ _id: Meteor.userId() });
+  const { addressBook } = account.profile;
+  const countries = Countries.find().fetch();
   const template = Template.instance();
   const { data } = template || { data: undefined };
   const { heading: templateHeading } = data || { heading: undefined };
-  const { addressBook } = account.profile;
+  const shop = Collections.Shops.findOne();
+  const shopCountries = shop.locales.countries;
+
+  let regionsByCountry;
+  Object.keys(shopCountries).forEach((key) => {
+    const { states } = shopCountries[key] || undefined;
+    const regions = [];
+    const country = {};
+    if (states) {
+      // states is an object that needs to be convered
+      // to an array of region labels and values
+      Object.keys(states).forEach((i) => {
+        regions.push({
+          label: states[i].name,
+          value: i
+        });
+      });
+    }
+    country[key] = regions;
+    regionsByCountry = { ...regionsByCountry, ...country };
+  });
 
   let heading;
   // AddressBook heading will be different in different views
@@ -123,7 +197,9 @@ function composer(props, onData) {
 
   onData(null, {
     addressBook,
-    heading
+    countries,
+    heading,
+    regionsByCountry
   });
 }
 
