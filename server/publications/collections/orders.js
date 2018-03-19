@@ -11,13 +11,14 @@ import { Reaction } from "/server/api";
  * @param {String} shopId - shopId to filter records by
  * @param {Object} sort - An object containing a sort
  * @param {Number} limit - An optional limit of how many records to return
+ * @param {Object} query - An optional query to match
  * @returns {Array} An array of projection operators
  * @private
  */
-function createAggregate(shopId, sort = { createdAt: -1 }, limit = 0) {
+function createAggregate(shopId, sort = { createdAt: -1 }, limit = 0, query = {}) {
   // NOTE: in Mongo 3.4 using the $in operator will be supported for projection filters
   const aggregate = [
-    { $match: { "items.shopId": shopId } },
+    { $match: { "items.shopId": shopId, ...query  } },
     {
       $project: {
         items: {
@@ -138,7 +139,8 @@ Meteor.publish("CustomPaginatedOrders", function (query, options) {
       "items.shopId": shopId
     }
   };
-  const aggregate = createAggregate(shopId);
+  const limit = (options && options.limit) ? options.limit : 0;
+  const aggregate = createAggregate(shopId, { createdAt: -1 }, limit, query);
   if (Roles.userIsInRole(this.userId, ["admin", "owner", "orders"], shopId)) {
     ReactiveAggregate(this, Orders, aggregate, aggregateOptions);
   } else {
