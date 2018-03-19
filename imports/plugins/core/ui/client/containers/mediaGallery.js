@@ -164,8 +164,6 @@ const wrapComponent = (Comp) => (
           this.setState({ uploadProgress });
         });
 
-        console.log("media gallery filerecord", fileRecord)
-
         // Do the upload. chunkSize is optional and defaults to 5MB
         fileRecord.upload({})
           // We insert only AFTER the server has confirmed that all chunks were uploaded
