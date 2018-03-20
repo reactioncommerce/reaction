@@ -19,8 +19,8 @@ export const typeDefs = `
   }
 
   type RoleEdge implements NodeEdge {
-    cursor: String!
-    node: [Role]
+    cursor: ConnectionCursor!
+    node: Role
   }
 
   extend type Query {

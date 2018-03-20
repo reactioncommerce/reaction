@@ -4,7 +4,6 @@ import { typeDefs as currency } from "./currency";
 import { typeDefs as datetime } from "./datetime";
 import { typeDefs as email } from "./email";
 import { typeDefs as group } from "./group";
-import { typeDefs as hello } from "./hello";
 import { typeDefs as jsonObject } from "./json-object";
 import { typeDefs as metafield } from "./metafield";
 import { typeDefs as node } from "./node";
@@ -33,7 +32,6 @@ export default base.concat([
   datetime,
   email,
   group,
-  hello,
   jsonObject,
   metafield,
   node,

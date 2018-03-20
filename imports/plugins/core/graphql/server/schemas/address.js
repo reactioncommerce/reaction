@@ -4,7 +4,7 @@ export const typeDefs = `
     shipping
   }
 
-  input NewAddress {
+  input AddressInput {
     address1: String!
     address2: String
     city: String!
@@ -15,28 +15,10 @@ export const typeDefs = `
     isBillingDefault: Boolean!
     isCommercial: Boolean!
     isShippingDefault: Boolean!
-    metafields: [CreateMetafieldInput]
+    metafields: [MetafieldInput]
     phone: String!
     postal: String!
     region: String!
-  }
-
-  input UpdatedAddress {
-    address1: String!
-    address2: String
-    city: String!
-    company: String
-    country: String!
-    failedValidation: Boolean
-    fullName: String!
-    isBillingDefault: Boolean!
-    isCommercial: Boolean!
-    isShippingDefault: Boolean!
-    metafields: [CreateMetafieldInput]
-    phone: String!
-    postal: String!
-    region: String!
-    type: AddressType
   }
 
   type Address implements Node {
@@ -65,7 +47,7 @@ export const typeDefs = `
   }
 
   type AddressEdge implements NodeEdge {
-    cursor: String!
-    node: [Address]
+    cursor: ConnectionCursor!
+    node: Address
   }
 `;

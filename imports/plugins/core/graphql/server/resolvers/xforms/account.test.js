@@ -2,6 +2,7 @@ import { map } from "ramda";
 import {
   assocAccountOpaqueId,
   encodeAccountOpaqueId,
+  xformAccountInput,
   xformAccountResponse
 } from "./account";
 
@@ -76,6 +77,28 @@ const expectedResponse = {
   note: "This is a note.",
   preferences: { foo: "baz" },
   shop: { type: "Shop" },
+  taxSettings: { type: "TaxSettings" },
+  updatedAt: "2018-03-13T00:00:00Z",
+  user: { type: "User" }
+};
+
+const accountInternal = {
+  _id: "00000",
+  createdAt: "2018-03-13T00:00:00Z",
+  emails: [
+    { provides: "default", address: "test@example.com", verified: true }
+  ],
+  groups: { type: "GroupConnection" },
+  metafields: [{ type: "Metafield" }],
+  name: "User Name",
+  note: "This is a note.",
+  profile: {
+    addressBook: { type: "AddressConnection" },
+    currency: { type: "Currency" },
+    preferences: { foo: "baz" }
+  },
+  shop: { type: "Shop" },
+  taxSettings: { type: "TaxSettings" },
   updatedAt: "2018-03-13T00:00:00Z",
   user: { type: "User" }
 };
@@ -86,4 +109,12 @@ test("xformAccountResponse transforms internal account to response schema", () =
 
 test("xformAccountResponse can be applied to map with an array of input", () => {
   expect(map(xformAccountResponse, [accountInput])).toEqual([expectedResponse]);
+});
+
+test("xformAccountInput transforms Account schema to internal account", () => {
+  expect(xformAccountInput(expectedResponse)).toEqual(accountInternal);
+});
+
+test("xformAccountInput can be applied to map with an array of input", () => {
+  expect(map(xformAccountInput, [expectedResponse])).toEqual([accountInternal]);
 });

@@ -1,8 +1,7 @@
 import { merge } from "lodash";
 import account from "./account";
-import datetime from "./datetime";
-import group from "./group";
 import ping from "./ping";
-import role from "./role";
+import scalar from "./scalar";
+import shop from "./shop";
 
-export default merge({}, account, datetime, group, ping, role);
+export default merge({}, account, scalar, ping, shop);

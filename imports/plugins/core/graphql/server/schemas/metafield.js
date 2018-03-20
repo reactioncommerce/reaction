@@ -1,5 +1,6 @@
 export const typeDefs = `
-  input CreateMetafieldInput {
+  # User defined attributes
+  input MetafieldInput {
     description: String
     key: String!
     namespace: String
@@ -8,17 +9,7 @@ export const typeDefs = `
     valueType: String
   }
 
-  input UpdateMetafieldInput {
-    description: String
-    key: String!
-    namespace: String
-    scope: String
-    value: String
-    valueType: String
-  }
-
-  # User defined attributes.
-  # NOTE: key attribute is modified to be required.
+  # User defined attributes
   type Metafield {
     description: String
     key: String

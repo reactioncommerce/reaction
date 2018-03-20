@@ -22,7 +22,7 @@ export const typeDefs = `
   }
 
   type CurrencyEdge implements NodeEdge {
-    cursor: String!
-    node: [Currency]
+    cursor: ConnectionCursor!
+    node: Currency
   }
 `;

@@ -1,11 +1,18 @@
 export const typeDefs = `
+  scalar ConnectionCursor
+
+  enum SortOrder {
+    asc
+    desc
+  }
+
   interface Node {
     _id: ID!
   }
 
   interface NodeEdge {
-    cursor: String!
-    node: [Node]
+    cursor: ConnectionCursor!
+    node: Node
   }
 
   interface NodeConnection {
@@ -16,9 +23,9 @@ export const typeDefs = `
   }
 
   type PageInfo {
-    endCursor: String
+    endCursor: ConnectionCursor
     hasNextPage: Boolean!
     hasPreviousPage: Boolean!
-    startCursor: String
+    startCursor: ConnectionCursor
   }
 `;
