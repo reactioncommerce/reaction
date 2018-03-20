@@ -18,7 +18,7 @@ import { Reaction } from "/server/api";
 function createAggregate(shopId, sort = { createdAt: -1 }, limit = 0, query = {}) {
   // NOTE: in Mongo 3.4 using the $in operator will be supported for projection filters
   const aggregate = [
-    { $match: { "items.shopId": shopId, ...query  } },
+    { $match: { "items.shopId": shopId, ...query } },
     {
       $project: {
         items: {
