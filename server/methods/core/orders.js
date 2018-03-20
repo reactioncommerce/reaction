@@ -125,6 +125,8 @@ export function ordersInventoryAdjust(orderId) {
       }
     });
 
+    Hooks.Events.run("afterUpdateCatalogProduct", item.variant);
+
     // Publish inventory updates to the Catalog
     publishProductInventoryAdjustments(item.productId);
   });
@@ -163,6 +165,8 @@ export function ordersInventoryAdjustByShop(orderId, shopId) {
           type: "variant"
         }
       });
+
+      Hooks.Events.run("afterUpdateCatalogProduct", item.variants);
 
       // Publish inventory updates to the Catalog
       publishProductInventoryAdjustments(item.productId);
@@ -433,6 +437,8 @@ export const methods = {
             bypassCollection2: true,
             publish: true
           });
+
+          Hooks.Events.run("afterUpdateCatalogProduct", item.variants);
 
           // Publish inventory updates to the Catalog
           publishProductInventoryAdjustments(item.productId);
