@@ -73,13 +73,25 @@ class AddressBookGrid extends Component {
   }
 
   /**
+   * @method addressBook
+   * @summary getter that returns the addressBook array if avalible on the props or an empty array.
+   * @since 2.0.0
+   * @return {Array} addressBook - array of address object or an empty array.
+   */
+  get addressBook() {
+    let { addressBook } = this.props;
+    if (!Array.isArray(addressBook)) addressBook = [];
+    return addressBook;
+  }
+
+  /**
    * @method defaultShippingAddressId
    * @summary getter that returns ether the default shipping address _id or and empty string.
    * @since 2.0.0
    * @return {String} - default shipping address _id or empty string.
    */
   get defaultShippingAddressId() {
-    const { addressBook } = this.props;
+    const { addressBook } = this;
     const defaultShippingAddress = addressBook.find((addy) => addy.isShippingDefault);
     return (defaultShippingAddress) ? defaultShippingAddress._id : "";
   }
@@ -91,7 +103,7 @@ class AddressBookGrid extends Component {
    * @return {String} - default billing address _id or empty string.
    */
   get defaultBillingAddressId() {
-    const { addressBook } = this.props;
+    const { addressBook } = this;
     const defaultBillingAddress = addressBook.find((addy) => addy.isBillingDefault);
     return (defaultBillingAddress) ? defaultBillingAddress._id : "";
   }
@@ -162,7 +174,8 @@ class AddressBookGrid extends Component {
    * @return {Object} - JSX
    */
   renderAddressGrid() {
-    const { addressBook, edit, remove } = this.props;
+    const { addressBook } = this;
+    const { edit, remove } = this.props;
     return addressBook.map((address) => {
       const { defaultBillingAddressId, defaultShippingAddressId } = this.state;
       const { _id, fullName } = address;
