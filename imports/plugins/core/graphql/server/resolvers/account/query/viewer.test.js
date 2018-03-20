@@ -1,41 +1,47 @@
-import { decodeOpaqueId } from "../../xforms/id";
 import viewer from "./viewer";
 
-const encodedUserId = "cmVhY3Rpb24vYWNjb3VudDoxMjM=";
-const fakeUser = {
-  _id: "123",
-  name: "Reaction"
-};
+jest.mock("graphql-fields", () => jest.fn().mockName("graphqlFields"));
 
-jest.mock("/lib/collections", () => ({
-  Accounts: {
-    findOne() {
-      return {
-        _id: "123",
-        name: "Reaction"
-      };
-    }
-  }
-}));
+test("calls queries.userAccount and returns the viewing user", () => {
+  require("graphql-fields").mockReturnValueOnce({ _id: "1", name: "1" });
 
-jest.mock("/lib/api", () => ({
-  Reaction: {
-    hasPermission() {
-      return false;
-    }
-  }
-}));
+  const userAccount = jest.fn().mockName("userAccount").mockReturnValueOnce({
+    _id: "123",
+    name: "Reaction"
+  });
 
+  const user = viewer(null, null, {
+    queries: { userAccount },
+    userId: "123"
+  });
 
-test("returns the user ID of the viewing user", () => {
-  const user = viewer(null, null, { user: { _id: "123" } });
+  expect(user).toEqual({
+    _id: "cmVhY3Rpb24vYWNjb3VudDoxMjM=",
+    addressBook: null,
+    currency: null,
+    name: "Reaction",
+    preferences: null
+  });
 
-  expect(encodedUserId).toBe(user._id);
+  expect(userAccount).toHaveBeenCalled();
 });
 
-test("returns and decodes the user ID of the viewing user", () => {
-  const user = viewer(null, null, { user: { _id: "123" } });
-  const { id } = decodeOpaqueId(user._id);
+test("returns without calling queries.userAccount if only _id requested", () => {
+  require("graphql-fields").mockReturnValueOnce({ _id: "1" });
 
-  expect(fakeUser._id).toBe(id);
+  const userAccount = jest.fn().mockName("userAccount");
+
+  const user = viewer(null, null, {
+    queries: { userAccount },
+    userId: "123"
+  });
+
+  expect(user).toEqual({
+    _id: "cmVhY3Rpb24vYWNjb3VudDoxMjM=",
+    addressBook: null,
+    currency: null,
+    preferences: null
+  });
+
+  expect(userAccount).not.toHaveBeenCalled();
 });

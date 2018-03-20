@@ -1,12 +1,9 @@
-import { assocOpaqueId, encodeOpaqueId } from "./id";
+import { namespaces } from "@reactioncommerce/reaction-graphql-utils";
+import { assocOpaqueId, decodeOpaqueIdForNamespace, encodeOpaqueId } from "./id";
 
-/* Namespace specific ID functions for Shop.
- * These functions use the power of currying to build existing functionality
- * with simple interfaces on existing functions.
- */
-export const namespace = "reaction/shop";
-export const encodeShopOpaqueId = encodeOpaqueId(namespace);
-export const assocShopOpaqueId = assocOpaqueId(namespace);
+export const assocShopOpaqueId = assocOpaqueId(namespaces.Shop);
+export const decodeShopOpaqueId = decodeOpaqueIdForNamespace(namespaces.Shop);
+export const encodeShopOpaqueId = encodeOpaqueId(namespaces.Shop);
 
 /* Composed function that fully transforms the Shop ID for response. */
 export const xformShopResponse = assocShopOpaqueId;

@@ -1,3 +1,5 @@
 export default {
-  Account: "Account"
+  Account: "reaction/account",
+  Address: "reaction/address",
+  Shop: "reaction/shop"
 };

@@ -1,20 +1,21 @@
-import { xformAccountResponse } from "../../xforms/account";
-import { userAccountQuery } from "/imports/plugins/core/accounts/server/methods/userAccountQuery";
+import { pipe } from "ramda";
+import { xformAccountResponse } from "@reactioncommerce/reaction-graphql-xforms/account";
+import { optimizeIdOnly } from "@reactioncommerce/reaction-graphql-utils";
 
 /**
  * @name viewer
  * @method
  * @summary query the Accounts collection and return user account data for the current user
- * @param {Object} _ - an object containing the result returned from the resolver
- * @param {Object} args - an object of arguments to pass to the function
+ * @param {Object} _ - unused
+ * @param {Object} args - an object of all arguments that were sent by the client
  * @param {Object} context - an object containing the per-request state
  * @return {Object} user account object
  */
-export default function viewer(_, __, context) {
-  const userId = (context && context.user && context.user._id) || {};
+export default function viewer(_, __, context, info) {
+  if (!context.userId) return null;
 
-  // Get the current user account data
-  const userAccount = userAccountQuery(context, userId);
-
-  return xformAccountResponse(userAccount);
+  return pipe(
+    optimizeIdOnly(context.userId, info, context.queries.userAccount),
+    xformAccountResponse
+  )(context, context.userId);
 }
