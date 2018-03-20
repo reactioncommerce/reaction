@@ -13,7 +13,7 @@ class Login extends Component {
   static defaultProps = {
     credentials: {},
     loginFormCurrentView: "loginFormSignInView",
-    get uniqueId() { return Random.id() }
+    get uniqueId() { return Random.id(); }
   }
 
   constructor(props) {
