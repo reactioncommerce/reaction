@@ -55,7 +55,7 @@ export async function updateMediaMetadata(fileRecordId, metadata) {
         });
       }
 
-      return false; // prevent actual update of image. This also stops other hooks from running :/
+      return false;
     }
   }
   // for non-product images, just ignore and keep on moving
@@ -71,14 +71,14 @@ export async function updateMediaMetadata(fileRecordId, metadata) {
  */
 export async function insertMedia(fileRecord) {
   check(fileRecord, Object);
-  const mediaRecord = await MediaRecords.insert(fileRecord);
+  const mediaRecordId = await MediaRecords.insert(fileRecord);
 
   if (RevisionApi.isRevisionControlEnabled() && fileRecord.metadata.workflow !== "published") {
     if (fileRecord.metadata.productId) {
       const revisionMetadata = Object.assign({}, fileRecord.metadata);
       revisionMetadata.workflow = "published";
       Revisions.insert({
-        documentId: mediaRecord,
+        documentId: mediaRecordId,
         documentData: revisionMetadata,
         documentType: "image",
         parentDocument: fileRecord.metadata.productId,
@@ -87,35 +87,44 @@ export async function insertMedia(fileRecord) {
           status: "revision/update"
         }
       });
-      fileRecord.metadata.workflow = "unpublished";
+      MediaRecords.update({
+        _id: mediaRecordId
+      }, {
+        $set: {
+          "metadata.workflow": "unpublished"
+        }
+      });
     } else {
-      fileRecord.metadata.workflow = "published";
+      MediaRecords.update({
+        _id: mediaRecordId
+      }, {
+        $set: {
+          "metadata.workflow": "published"
+        }
+      });
     }
   }
 
-  return mediaRecord;
+  return mediaRecordId;
 }
 
 /**
  * @method removeMedia
  * @memberof media
  * @summary removes media file and updates record in revision control.
- * @param {String} fileRecordId - _id of updated file record.
- * @param {Object} metadata - metadata from updated media file.
+ * @param {String} fileRecordId - _id of file record to be deleted.
  * @return {Boolean}
  */
 export async function removeMedia(fileRecordId) {
   check(fileRecordId, String);
   const { metadata } = MediaRecords.findOne({ _id: fileRecordId });
-  Media.remove(fileRecordId);
-  console.log("removeMedia", metadata)
   if (RevisionApi.isRevisionControlEnabled() && metadata.workflow && metadata.workflow === "unpublished") {
     Revisions.remove({
       documentId: fileRecordId
     });
+    Media.remove(fileRecordId);
     return true;
-  }
-  if (metadata.productId) {
+  } else if (metadata.productId) {
     Revisions.insert({
       documentId: fileRecordId,
       documentData: metadata,
@@ -126,9 +135,9 @@ export async function removeMedia(fileRecordId) {
         status: "revision/update"
       }
     });
-    return false; // prevent actual deletion of image. This also stops other hooks from running :/
+    return true;
   }
-  return true;
+  return false;
 }
 
 /**
