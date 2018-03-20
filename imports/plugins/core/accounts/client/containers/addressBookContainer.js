@@ -58,7 +58,10 @@ function removeAddress(_id) {
 function addAddress(address) {
   return new Promise((resolve, reject) => {
     Meteor.call("accounts/validateAddress", address, (error, result) => {
-      if (error || !result || !result.validated) reject(i18next.t("addressBookAdd.failedToAddAddress", { err: error.message }));
+      if (error || !result || !result.validated) {
+        reject(i18next.t("addressBookAdd.failedToAddAddress", { err: error.message }));
+        return;
+      }
       Meteor.call("accounts/addressBookAdd", address, (err, res) => {
         if (err || !res) {
           reject(i18next.t("addressBookAdd.failedToAddAddress", { err: err.message }));
@@ -82,61 +85,7 @@ function onError(errorMessage) {
 
 const wrapComponent = (Comp) => (
   class AddressBookContainer extends Component {
-    static propTypes = {
-      /**
-       * array of address objects
-       */
-      addressBook: PropTypes.arrayOf(PropTypes.shape({
-        _id: PropTypes.String,
-        fullName: PropTypes.String,
-        address1: PropTypes.String,
-        addresss2: PropTypes.String,
-        postal: PropTypes.String,
-        city: PropTypes.String,
-        region: PropTypes.String,
-        country: PropTypes.String,
-        phone: PropTypes.String,
-        isBillingDefault: PropTypes.Bool,
-        isShippingDefault: PropTypes.Bool,
-        isCommercal: PropTypes.Bool
-      })),
-      /**
-       * country options for select
-       */
-      countries: PropTypes.arrayOf(PropTypes.shape({
-        label: PropTypes.String,
-        value: PropTypes.String
-      })),
-      /**
-       *  Heading content for address book
-       */
-      heading: PropTypes.shape({
-        /**
-         * Heading title
-         */
-        defaultValue: PropTypes.String,
-        /**
-         * i18nKey for heading title
-         */
-        i18nKey: PropTypes.String,
-        /**
-         * If in checkout view, addressbook checkout step position and icon className
-         */
-        checkout: PropTypes.shape({
-          icon: PropTypes.String,
-          position: PropTypes.Number
-        })
-      }),
-      /**
-       * regions by county
-       */
-      regionsByCountry: PropTypes.shape({
-        countryCode: PropTypes.arrayOf(PropTypes.shape({
-          label: PropTypes.String,
-          value: PropTypes.String
-        }))
-      })
-    }
+    static propTypes = Comp.PropTypes;
 
     render() {
       return (
