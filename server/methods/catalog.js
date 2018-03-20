@@ -324,7 +324,7 @@ function flushQuantity(id) {
     return 1; // let them think that we have one successful operation here
   }
 
-  return Products.update({
+  const productUpdate = Products.update({
     _id: id
   }, {
     $set: {
@@ -335,6 +335,8 @@ function flushQuantity(id) {
       type: "variant"
     }
   });
+
+  return productUpdate;
 }
 
 /**
@@ -352,7 +354,11 @@ function createProduct(props = null) {
     validate: false
   });
 
-  return Products.findOne({ _id });
+  const newProduct = Products.findOne({ _id });
+
+  Hooks.Events.run("afterInsertCatalogProduct", newProduct);
+
+  return newProduct;
 }
 
 /**
@@ -496,6 +502,8 @@ Meteor.methods({
       try {
         Hooks.Events.run("beforeInsertCatalogProductInsertRevision", clone);
         newId = Products.insert(clone, { validate: false });
+        const newProduct = Products.findOne(newId);
+        Hooks.Events.run("afterInsertCatalogProduct", newProduct);
         Logger.debug(`products/cloneVariant: created ${type === "child" ? "sub child " : ""}clone: ${
           clone._id} from ${variantId}`);
       } catch (error) {
@@ -563,7 +571,10 @@ Meteor.methods({
       flushQuantity(parentId);
     }
 
+    Hooks.Events.run("beforeInsertCatalogProduct", assembledVariant);
     const _id = Products.insert(assembledVariant);
+    Hooks.Events.run("afterInsertCatalogProduct", assembledVariant);
+
     Hooks.Events.run("afterInsertCatalogProductInsertRevision", Products.findOne({ _id }));
 
     Logger.debug(`products/createVariant: created variant: ${newVariantId} for ${parentId}`);
@@ -667,6 +678,7 @@ Meteor.methods({
     // Flag the variant and all its children as deleted in Revisions collection.
     toDelete.forEach((product) => {
       Hooks.Events.run("beforeRemoveCatalogProduct", product, { userId: this.userId });
+      Hooks.Events.run("afterRemoveCatalogProduct", this.userId, product);
     });
 
     // After variant was removed from product, we need to recalculate all
@@ -778,6 +790,7 @@ Meteor.methods({
       }
       Hooks.Events.run("beforeInsertCatalogProductInsertRevision", newProduct);
       result = Products.insert(newProduct, { validate: false });
+      Hooks.Events.run("afterInsertCatalogProduct", newProduct);
       results.push(result);
 
       // cloning variants
@@ -806,6 +819,7 @@ Meteor.methods({
 
         Hooks.Events.run("beforeInsertCatalogProductInsertRevision", newVariant);
         result = Products.insert(newVariant, { validate: false });
+        Hooks.Events.run("afterInsertCatalogProduct", newVariant);
         copyMedia(productNewId, variant._id, variantNewId);
         results.push(result);
       }
@@ -905,10 +919,6 @@ Meteor.methods({
           $in: productIds
         }
       }]
-    }, {
-      fields: {
-        type: 1
-      }
     }).fetch();
 
     const ids = [];
@@ -918,8 +928,10 @@ Meteor.methods({
     });
 
     // Flag the product and all its variants as deleted in the Revisions collection.
-    ids.forEach((_id) => {
-      Hooks.Events.run("beforeRemoveCatalogProduct", Products.findOne({ _id }), { userId: this.userId });
+    productsWithVariants.forEach((toArchiveProduct) => {
+      Hooks.Events.run("beforeRemoveCatalogProduct", toArchiveProduct, { userId: this.userId });
+
+      Hooks.Events.run("afterRemoveCatalogProduct", this.userId, toArchiveProduct);
     });
 
     const numFlaggedAsDeleted = Revisions.find({

@@ -20,14 +20,8 @@ describe("Merge Cart function ", function () {
   let originals;
   let sandbox;
   let pushCartWorkflowStub;
-  let productHookStub;
 
   before(function () {
-    // We are mocking inventory hooks, because we don't need them here, but
-    if (Array.isArray(Collections.Products._hookAspects.remove.after) &&
-      Collections.Products._hookAspects.remove.after.length) {
-      productHookStub = sinon.stub(Collections.Products._hookAspects.remove.after[0], "aspect");
-    }
     originals = {
       mergeCart: Meteor.server.method_handlers["cart/mergeCart"],
       copyCartToOrder: Meteor.server.method_handlers["cart/copyCartToOrder"],
@@ -47,7 +41,6 @@ describe("Merge Cart function ", function () {
 
   after(function () {
     pushCartWorkflowStub.restore();
-    productHookStub.restore();
   });
 
   beforeEach(function () {
