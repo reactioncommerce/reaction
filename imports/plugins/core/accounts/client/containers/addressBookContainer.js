@@ -162,11 +162,10 @@ function composer(props, onData) {
   const shop = Collections.Shops.findOne();
   const shopCountries = shop.locales.countries;
 
-  let regionsByCountry;
+  const regionsByCountry = {};
   Object.keys(shopCountries).forEach((key) => {
-    const { states } = shopCountries[key] || undefined;
+    const { states } = shopCountries[key] || {};
     const regions = [];
-    const country = {};
     if (states) {
       // states is an object that needs to be convered
       // to an array of region labels and values
@@ -177,8 +176,7 @@ function composer(props, onData) {
         });
       });
     }
-    country[key] = regions;
-    regionsByCountry = { ...regionsByCountry, ...country };
+    regionsByCountry[key] = regions;
   });
 
   let heading;
