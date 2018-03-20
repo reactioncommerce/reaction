@@ -11,7 +11,7 @@ function handleImageRevision(revision) {
       _id: revision.documentId
     }, {
       $set: {
-        metadata: revision.documentData
+        metadata: { ...revision.documentData, workflow: "published" }
       }
     });
   } else if (revision.changeType === "remove") {
@@ -29,7 +29,7 @@ function handleImageRevision(revision) {
       _id: revision.documentId
     }, {
       $set: {
-        metadata: revision.documentData
+        metadata: { ...revision.documentData, workflow: "published" }
       }
     });
     Logger.debug(`setting metadata for ${revision.documentId} to ${JSON.stringify(revision.documentData, null, 4)}`);
