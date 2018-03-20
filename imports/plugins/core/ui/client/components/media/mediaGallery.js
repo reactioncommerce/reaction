@@ -168,7 +168,10 @@ class MediaGallery extends Component {
 
   renderMediaGalleryUploader() {
     const { mediaGalleryWidth: containerWidth, uploadProgress } = this.props;
-    const classes = { "admin-featuredImage": Reaction.hasAdminAccess() };
+    const classes = {
+      "admin-featuredImage": Reaction.hasAdminAccess(),
+      "featuredImage": true
+    };
 
     return (
       <div className="rui media-gallery">
@@ -198,7 +201,10 @@ class MediaGallery extends Component {
 
   renderMediaGallery() {
     const containerWidth = this.props.mediaGalleryWidth;
-    const classes = { "admin-featuredImage": Reaction.hasAdminAccess() };
+    const classes = {
+      "admin-featuredImage": Reaction.hasAdminAccess(),
+      "featuredImage": true
+    };
 
     return (
       <div className="rui media-gallery">

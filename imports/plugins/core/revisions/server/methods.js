@@ -1,7 +1,7 @@
 import { Meteor } from "meteor/meteor";
 import { check, Match } from "meteor/check";
 import { Products, MediaRecords, Revisions, Packages } from "/lib/collections";
-import { Logger } from "/server/api";
+import { Hooks, Logger } from "/server/api";
 
 function handleImageRevision(revision) {
   let result = 0;
@@ -56,6 +56,42 @@ export function updateSettings(settings) {
       settings
     }
   });
+}
+
+/**
+ * @function
+ * @name publishCatalogProduct
+ * @description Updates revision and publishes a product.
+ *
+ * @param {String} userId - currently logged in user
+ * @param {Object} selector - selector for product to update
+ * @param {Object} modifier - Object describing what parts of the document to update.
+ * @param {Object} validation - simple schema validation
+ * @return {String} _id of updated document
+ */
+function publishCatalogProduct(userId, selector, modifier, validation) {
+  const product = Products.findOne(selector);
+  const options = {
+    userId,
+    modifier,
+    validation,
+    publish: true
+  };
+
+  Hooks.Events.run("beforeUpdateCatalogProduct", product, options);
+
+  const result = Products.update(selector, modifier, validation);
+
+  Hooks.Events.run("afterUpdateCatalogProduct", product, options);
+
+  // Records are not remove from the Products collection, they are only flagged as deleted.
+  // Run Hook to remove search record, if a product is being published as deleted
+  // Which is the equivalent to removing a product.
+  if (modifier.$set.isDeleted === true) {
+    Hooks.Events.run("afterRemoveProduct", product);
+  }
+
+  return result;
 }
 
 export function discardDrafts(documentIds) {
@@ -155,17 +191,15 @@ Meteor.methods({
     if (revisions) {
       for (const revision of revisions) {
         if (!revision.documentType || revision.documentType === "product") {
-          const oldDocument = Products.findOne(revision.documentId);
-          if (oldDocument && revision.documentData.handle !== oldDocument.handle) {
-            revision.documentData.changedHandleWas = oldDocument.handle;
-          }
-          const res = Products.update({
-            _id: revision.documentId
-          }, {
-            $set: revision.documentData
-          }, {
-            publish: true
-          });
+          const res = publishCatalogProduct(
+            this.userId,
+            {
+              _id: revision.documentId
+            },
+            {
+              $set: revision.documentData
+            }
+          );
           updatedDocuments += res;
         } else if (revision.documentType === "image") {
           updatedDocuments += handleImageRevision(revision);

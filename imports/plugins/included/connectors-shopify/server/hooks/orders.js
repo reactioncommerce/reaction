@@ -1,6 +1,6 @@
 import { Job } from "/imports/plugins/core/job-collection/lib";
-import { Reaction } from "/server/api";
-import { Orders, Jobs } from "/lib/collections";
+import { Hooks, Reaction } from "/server/api";
+import { Jobs } from "/lib/collections";
 
 
 function addExportJob(orderId) {
@@ -14,7 +14,7 @@ function addExportJob(orderId) {
 }
 
 
-Orders.after.insert((userId, doc) => {
+Hooks.Events.add("afterOrderInsert", (doc) => {
   // Ensure we have items
   if (doc && doc.items && Array.isArray(doc.items)) {
     // Get all shopIds represented in this cart
@@ -42,4 +42,6 @@ Orders.after.insert((userId, doc) => {
       }
     });
   }
+
+  return doc;
 });
