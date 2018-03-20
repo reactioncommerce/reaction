@@ -30,12 +30,7 @@ class AddressBookForm extends Component {
     /**
      * regions by county
      */
-    regionsByCountry: PropTypes.shape({
-      countryCode: PropTypes.arrayOf(PropTypes.shape({
-        label: PropTypes.String,
-        value: PropTypes.String
-      }))
-    })
+    regionsByCountry: PropTypes.Object
   }
 
   state = {
