@@ -28,7 +28,6 @@ function composer(props, onData) {
       // being here means no search text is inputed or search was cleared, so reset any previous match
       delete query._id;
     }
-    
     const options = { limit: 100 };
     const ordersSubscription = Meteor.subscribe("CustomPaginatedOrders", query, options);
 
