@@ -1,4 +1,3 @@
-import { isEqual } from "lodash";
 import { Meteor } from "meteor/meteor";
 import { check } from "meteor/check";
 import { Reaction } from "/server/api";
@@ -16,7 +15,7 @@ Meteor.publish("MerchantShops", function (shopsOfUser = Reaction.getShopsForUser
   check(shopsOfUser, Array);
 
   // Check if user has permissions for those shops
-  if (!isEqual(Reaction.getShopsForUser(["admin"], this.userId), shopsOfUser)) {
+  if (Reaction.hasPermissionForAll(["admin"], this.userId, shopsOfUser)) {
     throw new Meteor.Error("access-denied", "Shops requested don't belong to user");
   }
 
