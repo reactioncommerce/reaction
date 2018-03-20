@@ -43,6 +43,7 @@ function createReactionProductFromShopifyProduct(options) {
     isBackorder: false,
     metafields: [],
     pageTitle: shopifyProduct.pageTitle,
+    price: { range: "0" },
     productType: shopifyProduct.product_type,
     requiresShipping: true,
     shopId, // set shopId to active shopId;

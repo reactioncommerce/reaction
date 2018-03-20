@@ -1,4 +1,3 @@
-import _ from "lodash";
 import { Security } from "meteor/ongoworks:security";
 import { Roles } from "meteor/alanning:roles";
 import * as Collections from "/lib/collections";
@@ -10,7 +9,7 @@ const {
   Packages,
   Emails,
   Jobs,
-  Media,
+  MediaRecords,
   Orders,
   Products,
   Shipping,
@@ -48,7 +47,9 @@ export default function () {
       if (arg.role) {
         // Note: userId is passed to getShopId to ensure that it returns the correct shop based on the User Preference
         // if not passed, getShopId can default to primaryShopId if Meteor.userId is not available in the context the code is run
-        return Roles.userIsInRole(userId, arg.role, Reaction.getShopId(userId));
+        const shopId = Reaction.getUserShopId(this.userId) || Reaction.getShopId();
+
+        return Roles.userIsInRole(userId, arg.role, shopId);
       }
       return Roles.userIsInRole(userId, arg);
     }
@@ -61,7 +62,9 @@ export default function () {
     deny(type, arg, userId, doc) {
       // Note: userId is passed to getShopId to ensure that it returns the correct shop based on the User Preference
       // if not passed, getShopId can default to primaryShopId if Meteor.userId is not available in the context the code is run
-      return doc.shopId !== Reaction.getShopId(userId);
+      const shopId = Reaction.getUserShopId(this.userId) || Reaction.getShopId();
+
+      return doc.shopId !== shopId;
     }
   });
   // this rule is for the Shops collection
@@ -71,7 +74,9 @@ export default function () {
     deny(type, arg, userId, doc) {
       // Note: userId is passed to getShopId to ensure that it returns the correct shop based on the User Preference
       // if not passed, getShopId can default to primaryShopId if Meteor.userId is not available in the context the code is run
-      return doc._id !== Reaction.getShopId(userId);
+      const shopId = Reaction.getUserShopId(this.userId) || Reaction.getShopId();
+
+      return doc._id !== shopId;
     }
   });
 
@@ -80,7 +85,9 @@ export default function () {
     deny(type, arg, userId, doc) {
       // Note: userId is passed to getShopId to ensure that it returns the correct shop based on the User Preference
       // if not passed, getShopId can default to primaryShopId if Meteor.userId is not available in the context the code is run
-      return doc.metadata.shopId !== Reaction.getShopId(userId);
+      const shopId = Reaction.getUserShopId(this.userId) || Reaction.getShopId();
+
+      return doc.metadata.shopId !== shopId;
     }
   });
 
@@ -127,10 +134,9 @@ export default function () {
    */
 
   Security.permit(["insert", "update", "remove"])
-    .collections([Media])
+    .collections([MediaRecords])
     .ifHasRoleForActiveShop({ role: ["admin", "owner", "createProduct"] })
-    .ifFileBelongsToShop()
-    .allowInClientCode();
+    .ifFileBelongsToShop();
 
   /*
    * Users with the "admin" or "owner" role may update and
@@ -183,15 +189,6 @@ export default function () {
     .ifHasRoleForActiveShop({ role: ["anonymous", "guest"] })
     .ifUserIdMatches()
     .allowInClientCode();
-
-  /*
-   * apply download permissions to file collections
-   */
-  _.each([Media], (fsCollection) => fsCollection.allow({
-    download() {
-      return true;
-    }
-  }));
 
   /**
    * Emails - Deny all client side ops

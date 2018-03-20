@@ -1,4 +1,6 @@
-import { SimpleSchema } from "meteor/aldeed:simple-schema";
+import SimpleSchema from "simpl-schema";
+import { check } from "meteor/check";
+import { Tracker } from "meteor/tracker";
 import { registerSchema } from "@reactioncommerce/reaction-collections";
 
 /**
@@ -6,45 +8,48 @@ import { registerSchema } from "@reactioncommerce/reaction-collections";
 */
 
 export const TaxCodes = new SimpleSchema({
-  id: {
+  "id": {
     type: String,
     label: "Tax Id",
     unique: true
   },
-  shopId: {
+  "shopId": {
     type: String
   },
-  taxCode: {
+  "taxCode": {
     type: String,
     label: "Tax Code"
   },
-  taxCodeProvider: {
+  "taxCodeProvider": {
     type: String,
     label: "Tax Code Provider"
   },
-  ssuta: {
+  "ssuta": {
     type: Boolean,
     label: "Streamlined Sales Tax",
     optional: true,
     defaultValue: false
   },
-  title: {
+  "title": {
     type: String,
     optional: true
   },
-  label: {
+  "label": {
     type: String,
     optional: true
   },
-  parent: {
+  "parent": {
     type: String,
     optional: true
   },
-  children: {
-    type: [Object],
-    optional: true,
+  "children": {
+    type: Array,
+    optional: true
+  },
+  "children.$": {
+    type: Object,
     blackbox: true
   }
-});
+}, { check, tracker: Tracker });
 
 registerSchema("TaxCodes", TaxCodes);

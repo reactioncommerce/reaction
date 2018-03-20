@@ -59,7 +59,7 @@ function checkConfiguration(packageData = taxCalc.getPackageData()) {
     }
   }
   if (!isValid) {
-    throw new Meteor.Error("bad-configuration", "The Avalara package is not configured correctly. Cannot continue");
+    Logger.error("The Avalara package is not configured correctly. Cannot continue");
   }
   return isValid;
 }
@@ -96,11 +96,32 @@ function parseError(error) {
   let errorData;
   // The Avalara API constantly times out, so handle this special case first
   if (error.code === "ETIMEDOUT") {
-    errorData = { errorCode: 503, errorDetails: { message: "ETIMEDOUT", description: "The request timeod out" } };
+    errorData = {
+      errorCode: 503,
+      type: "apiFailure",
+      errorDetails: {
+        message: "ETIMEDOUT",
+        description: "The request timed out"
+      }
+    };
     return errorData;
   }
-  const errorDetails = [];
-  if (error.response.data.error.details) {
+
+  if (error.response && error.response.statusCode === 401) {
+    // authentification error
+    errorData = {
+      errorCode: 401,
+      type: "apiFailure",
+      errorDetails: {
+        message: error.message,
+        description: error.description
+      }
+    };
+    return errorData;
+  }
+
+  if (error.response && error.response.data && error.response.data.error.details) {
+    const errorDetails = [];
     const { details } = error.response.data.error;
     for (const detail of details) {
       if (detail.severity === "Error") {
@@ -110,7 +131,6 @@ function parseError(error) {
     errorData = { errorCode: details[0].number, errorDetails };
   } else {
     Avalogger.error("Unknown error or error format");
-    throw new Meteor.Error("bad-error", "Unknown error or error format");
   }
   return errorData;
 }
@@ -180,8 +200,20 @@ function avaGet(requestUrl, options = {}, testCredentials = true) {
 function avaPost(requestUrl, options) {
   const logObject = {};
   const pkgData = taxCalc.getPackageData();
+  // If package is not configured don't bother making an API call
+  if (!checkConfiguration(pkgData)) {
+    return {
+      error: {
+        errorCode: 400,
+        type: "apiFailure",
+        errorDetails: {
+          message: "API is not configured"
+        }
+      }
+    };
+  }
   const appVersion = Reaction.getAppVersion();
-  const meteorVersion = _.split(Meteor.release, "@")[1];
+  const meteorVersion = Meteor.release.split("@")[1];
   const machineName = os.hostname();
   const avaClient = `Reaction; ${appVersion}; Meteor HTTP; ${meteorVersion}; ${machineName}`;
   const headers = {
@@ -292,6 +324,18 @@ taxCalc.validateAddress = function (address) {
   const baseUrl = getUrl();
   const requestUrl = `${baseUrl}addresses/resolve`;
   const result = avaPost(requestUrl, { data: addressToValidate });
+  if (result.error) {
+    if (result.error.type === "apiError") {
+      // If we have a problem with the API there's no reason to tell the customer
+      // so let's consider this unvalidated but move along
+      Logger.error("API error, ignoring address validation");
+    }
+
+    if (result.error.type === "validationError") {
+      // We received a validation error so we need somehow pass this up to the client
+      Logger.error("Address Validation Error");
+    }
+  }
   const content = result.data;
   if (content && content.messages) {
     ({ messages } = content);
@@ -463,7 +507,7 @@ function cartToSalesOrder(cart) {
  * @returns {Object} result Result of SalesOrder call
  */
 taxCalc.estimateCart = function (cart, callback) {
-  check(cart, Reaction.Schemas.Cart);
+  Reaction.Schemas.Cart.validate(cart);
   check(callback, Function);
 
   if (cart.items && cart.shipping && cart.shipping[0].address) {

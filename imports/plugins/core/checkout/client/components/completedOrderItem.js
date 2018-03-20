@@ -1,20 +1,20 @@
 import React from "react";
 import PropTypes from "prop-types";
+import { getPrimaryMediaForOrderItem } from "/lib/api";
 import { Components, registerComponent } from "@reactioncommerce/reaction-components";
 
 /**
  * @summary Shows the individual line items for a completed order
  * @param {Object} props - React PropTypes
  * @property {Object} item - An object representing each item on the order
- * @property {Function} handleDisplayMedia - a function for displaying the proper product image
  * @return {Node} React node containing each line item on an order
  */
-const CompletedOrderItem = ({ item, handleDisplayMedia }) => (
+const CompletedOrderItem = ({ item }) => (
   <div className="row order-details-line">
     <div className="order-details-media">
       <Components.ProductImage
         item={item}
-        displayMedia={handleDisplayMedia}
+        displayMedia={getPrimaryMediaForOrderItem}
         size="small"
         badge={false}
       />
@@ -25,9 +25,7 @@ const CompletedOrderItem = ({ item, handleDisplayMedia }) => (
   </div>
 );
 
-
 CompletedOrderItem.propTypes = {
-  handleDisplayMedia: PropTypes.func,
   item: PropTypes.object
 };
 

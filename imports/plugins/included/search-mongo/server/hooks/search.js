@@ -1,6 +1,6 @@
 import _ from "lodash";
 import { Meteor } from "meteor/meteor";
-import { Products, ProductSearch, Orders, OrderSearch, AccountSearch } from "/lib/collections";
+import { ProductSearch, OrderSearch, AccountSearch } from "/lib/collections";
 import {
   getSearchParameters,
   buildAccountSearchRecord,
@@ -11,7 +11,9 @@ import { Hooks, Logger } from "/server/api";
 
 Hooks.Events.add("afterAccountsInsert", (userId, accountId) => {
   if (AccountSearch && !Meteor.isAppTest) {
-    buildAccountSearchRecord(accountId);
+    // Passing forceIndex will run account search index even if
+    // updated fields don't match a searchable field
+    buildAccountSearchRecord(accountId, ["forceIndex"]);
   }
 });
 
@@ -21,30 +23,36 @@ Hooks.Events.add("afterAccountsRemove", (userId, accountId) => {
   }
 });
 
-Hooks.Events.add("afterAccountsUpdate", (userId, accountId) => {
+Hooks.Events.add("afterAccountsUpdate", (userId, updateData) => {
+  const { accountId, updatedFields } = updateData;
+
   if (AccountSearch && !Meteor.isAppTest) {
-    AccountSearch.remove(accountId);
-    buildAccountSearchRecord(accountId);
+    buildAccountSearchRecord(accountId, updatedFields);
   }
 });
 
 
-Orders.after.remove((userId, doc) => {
-  if (OrderSearch && !Meteor.isAppTest) {
-    OrderSearch.remove(doc._id);
-  }
-});
+// NOTE: this hooks does not seemed to get fired, are there is no way
+// to delete an order, only cancel.
+// TODO: Verify the assumption above.
+// Orders.after.remove((userId, doc) => {
+//   if (OrderSearch && !Meteor.isAppTest) {
+//     OrderSearch.remove(doc._id);
+//   }
+// });
 
-Orders.after.insert((userId, doc) => {
+Hooks.Events.add("afterOrderInsert", (doc) => {
   if (OrderSearch && !Meteor.isAppTest) {
     const orderId = doc._id;
     buildOrderSearchRecord(orderId);
   }
+
+  return doc;
 });
 
-Orders.after.update((userId, doc) => {
+Hooks.Events.add("afterUpdateOrderUpdateSearchRecord", (order) => {
   if (OrderSearch && !Meteor.isAppTest) {
-    const orderId = doc._id;
+    const orderId = order._id;
     OrderSearch.remove(orderId);
     buildOrderSearchRecord(orderId);
   }
@@ -53,22 +61,27 @@ Orders.after.update((userId, doc) => {
 /**
  * if product is removed, remove product search record
  */
-Products.after.remove((userId, doc) => {
+Hooks.Events.add("afterRemoveProduct", (doc) => {
   if (ProductSearch && !Meteor.isAppTest && doc.type === "simple") {
     const productId = doc._id;
     ProductSearch.remove(productId);
     Logger.debug(`Removed product ${productId} from ProductSearch collection`);
   }
+
+  return doc;
 });
 
-//
-// after product update rebuild product search record
-//
-Products.after.update((userId, doc, fieldNames) => {
+/**
+* after product update rebuild product search record
+*/
+Hooks.Events.add("afterUpdateCatalogProduct", (doc, options) => {
+  const { modifier: { $set: allProps } } = options;
+  const topLevelFieldNames = Object.getOwnPropertyNames(allProps);
+
   if (ProductSearch && !Meteor.isAppTest && doc.type === "simple") {
     const productId = doc._id;
     const { fieldSet } = getSearchParameters();
-    const modifiedFields = _.intersection(fieldSet, fieldNames);
+    const modifiedFields = _.intersection(fieldSet, topLevelFieldNames);
     if (modifiedFields.length) {
       Logger.debug(`Rewriting search record for ${doc.title}`);
       ProductSearch.remove(productId);
@@ -79,16 +92,20 @@ Products.after.update((userId, doc, fieldNames) => {
       Logger.debug("No watched fields modified, skipping");
     }
   }
+
+  return doc;
 });
 
 /**
  * after insert
  * @summary should fires on create new variants, on clones products/variants
  */
-Products.after.insert((userId, doc) => {
+Hooks.Events.add("afterInsertProduct", (doc) => {
   if (ProductSearch && !Meteor.isAppTest && doc.type === "simple") {
     const productId = doc._id;
     buildProductSearchRecord(productId);
     Logger.debug(`Added product ${productId} to ProductSearch`);
   }
+
+  return doc;
 });

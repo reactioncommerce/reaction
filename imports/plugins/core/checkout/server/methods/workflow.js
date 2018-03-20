@@ -3,9 +3,38 @@ import { Meteor } from "meteor/meteor";
 import { Roles } from "meteor/alanning:roles";
 import { check, Match } from "meteor/check";
 import { Cart, Orders, Packages, Groups } from "/lib/collections";
-import { Logger, Reaction } from "/server/api";
+import { Hooks, Logger, Reaction } from "/server/api";
 
 /* eslint no-shadow: 0 */
+
+/**
+ * @method updateOrderWorkflow
+ * @summary Updates a hook to update orders status before updating an order.
+ *
+ * @param {String} userId - currently logged in user
+ * @param {Object} selector - selector for product to update
+ * @param {Object} modifier - Object describing what parts of the document to update.
+ * @param {Object} validation
+ * @return {String} _id of updated document
+ */
+function updateOrderWorkflow(userId, selector, modifier, validation) {
+  const order = Orders.findOne(selector);
+
+  Hooks.Events.run("beforeUpdateOrderWorkflow", order, {
+    userId,
+    modifier,
+    validation
+  });
+
+  Logger.debug("beforeUpdateOrderWorkflow hook executed before Order is updated");
+
+  const result = Orders.update(selector, modifier, validation);
+
+  // Update mongo search record
+  Hooks.Events.run("afterUpdateOrderUpdateSearchRecord", order);
+
+  return result;
+}
 
 /**
  * @file Methods for Workflow. Run these methods using `Meteor.call()`.
@@ -270,23 +299,29 @@ Meteor.methods({
   "workflow/pushOrderWorkflow"(workflow, status, order) {
     check(workflow, String);
     check(status, String);
-    check(order, Object); // TODO: Validatate as Schemas.Order
+    check(order, Match.ObjectIncluding({
+      _id: String
+    }));
     this.unblock();
 
     const workflowStatus = `${workflow}/${status}`;
 
-    const result = Orders.update({
-      _id: order._id
-    }, {
-      $set: {
-        // Combine (workflow) "coreOrderWorkflow", (status) "processing" into "coreOrderWorkflow/processing".
-        // This comoniation will be used to call the method "workflow/coreOrderWorkflow/processing", if it exists.
-        "workflow.status": `${workflow}/${status}`
+    const result = updateOrderWorkflow(
+      this.userId,
+      {
+        _id: order._id
       },
-      $addToSet: {
-        "workflow.workflow": workflowStatus
+      {
+        $set: {
+          // Combine (workflow) "coreOrderWorkflow", (status) "processing" into "coreOrderWorkflow/processing".
+          // This comoniation will be used to call the method "workflow/coreOrderWorkflow/processing", if it exists.
+          "workflow.status": `${workflow}/${status}`
+        },
+        $addToSet: {
+          "workflow.workflow": workflowStatus
+        }
       }
-    });
+    );
 
     return result;
   },
@@ -305,7 +340,12 @@ Meteor.methods({
   "workflow/pullOrderWorkflow"(workflow, status, order) {
     check(workflow, String);
     check(status, String);
-    check(order, Object);
+    check(order, Match.ObjectIncluding({
+      _id: String,
+      workflow: Match.ObjectIncluding({
+        status: String
+      })
+    }));
     this.unblock();
 
     const result = Orders.update({
@@ -333,7 +373,10 @@ Meteor.methods({
    */
   "workflow/pushItemWorkflow"(status, order, itemIds) {
     check(status, String);
-    check(order, Object);
+    check(order, Match.ObjectIncluding({
+      _id: String,
+      items: [Object]
+    }));
     check(itemIds, Array);
 
     // We can't trust the order from the client (for several reasons)
@@ -370,6 +413,9 @@ Meteor.methods({
         items
       }
     });
+
+    // Update search record
+    Hooks.Events.run("afterUpdateOrderUpdateSearchRecord", order);
 
     return result;
   }

@@ -1,75 +1,215 @@
 version: 2
 
+# The following stanza defines a map named defaults with a variable that may be
+# inserted using the YAML merge (<<: *) key later in the file to save some
+# typing. See http://yaml.org/type/merge.html for details.
+defaults: &defaults
+  environment:
+    - DOCKER_REPOSITORY: "reactioncommerce/reaction"
+    - DOCKER_NAMESPACE: "reactioncommerce"
+    - DOCKER_NAME: "reaction"
+    - TOOL_NODE_FLAGS: "--max-old-space-size=4096"
+  working_directory: ~/reaction-app
+  docker:
+    - image: circleci/node:8-stretch
+
 jobs:
   build:
-    working_directory: /home/reaction
-
-    docker:
-      - image: node:8
-
-    environment:
-      - DOCKER_VERSION: 17.05.0-ce
-      - DOCKER_COMPOSE_VERSION: 1.15.0
-      - METEOR_ALLOW_SUPERUSER: true
-      - TOOL_NODE_FLAGS: "--max-old-space-size=4096"
-
+    <<: *defaults
     steps:
-      - setup_remote_docker
       - checkout
-
-      # install OS dependencies
+      - setup_remote_docker
       - restore_cache:
           name: Restoring Meteor cache
           key: meteor
-
-      - run: .circleci/install.sh
-
+      - run:
+          name: Install Meteor
+          command: |
+            if [[ -f ~/.meteor/meteor ]]; then \
+              printf "\nMeteor already installed. Creating symlink.\n"
+              sudo ln -s ~/.meteor/meteor /usr/local/bin/meteor;
+            else
+              printf "\Installing Meteor\n"
+              curl https://install.meteor.com | /bin/sh
+            fi
       - save_cache:
           name: Saving Meteor to cache
           key: meteor
           paths:
             - ~/.meteor
-
-      # install app dependencies
-
-      - run: meteor npm install
-
-      # run tests
-      - restore_cache:
-          name: Restoring Meteor dev_bundle cache
-          key: dev_bundle
-
-      # run reaction tests
-      - run: .circleci/tests.sh
-
+      - run:
+          name: Meteor NPM Install
+          command: meteor npm install
+      # Store node_modules dependency cache.
+      # Saved with package.json checksum and timestamped branch name keys.
       - save_cache:
-          name: Saving Meteor dev_bundle to cache
-          key: dev_bundle
+          key: v1-node-modules-{{ checksum "package.json" }}
           paths:
-            - /home/reaction/.meteor/local
+            - node_modules
+      - save_cache:
+          key: v1-node-modules-{{ .Branch }}-{{ epoch }}
+          paths:
+            - node_modules
 
+  docker-build:
+    <<: *defaults
+    steps:
+      - checkout
+      - setup_remote_docker
+      - attach_workspace:
+          at: docker-cache
       - run:
-          command: .circleci/build.sh
-          no_output_timeout: 30m
-
-      - run:
-          command: .reaction/jsdoc/build.sh
-          no_output_timeout: 2m
-
-      # deploy the docs if on master branch
-      - deploy:
-          name: Deploy to S3 if tests pass and branch is Master
+          name: Discover Docker Tags
           command: |
-            if [ "${CIRCLE_BRANCH}" == "master" ]; then
-              if [[ "${API_DOC_BUCKET}" && "${API_DOC_BUCKET_REGION}" ]]; then
-                aws s3 sync /tmp/reaction-docs ${API_DOC_BUCKET} --delete --region ${API_DOC_BUCKET_REGION}
-              else
-                echo "S3 bucket configuration not found for jsdocs"
-                echo "Set API_DOC_BUCKET and API_DOC_BUCKET_REGION to build and deploy jsdocs to S3"
-              fi
+            mkdir -p docker-cache
+            .circleci/bin/docker-tags "$CIRCLE_SHA1" "$CIRCLE_BRANCH" | sed 's/\//-/g' \
+              > docker-cache/docker-tags.txt
+      - run:
+          name: Docker build
+          command: |
+            docker build \
+              --build-arg TOOL_NODE_FLAGS="--max-old-space-size=4096" \
+              -t "$DOCKER_REPOSITORY:$CIRCLE_SHA1" .
+            mkdir -p docker-cache
+            docker save \
+              -o docker-cache/docker-image.tar \
+              "$DOCKER_REPOSITORY:$CIRCLE_SHA1"
+          no_output_timeout: 30m
+      - persist_to_workspace:
+          root: docker-cache
+          paths:
+            - docker-image.tar
+            - docker-tags.txt
+
+  docker-push:
+    <<: *defaults
+    steps:
+      - setup_remote_docker
+      - attach_workspace:
+          at: docker-cache
+      - run:
+          name: Load Docker Image
+          command: |
+            docker load < docker-cache/docker-image.tar
+      - run:
+          name: Tag Docker Image
+          command: |
+            cat docker-cache/docker-tags.txt \
+              | xargs -t -I % \
+                docker tag \
+                  "$DOCKER_REPOSITORY:$CIRCLE_SHA1" \
+                  "$DOCKER_REPOSITORY:%"
+      - run:
+          name: Docker Push
+          command: |
+            if [ -z "$CIRCLE_PR_USERNAME" ]; then \
+              docker login -u "$DOCKER_USER" -p "$DOCKER_PASS"
+              docker push "$DOCKER_REPOSITORY:$CIRCLE_SHA1"
+              cat docker-cache/docker-tags.txt \
+                | xargs -t -I % \
+                  docker push "$DOCKER_REPOSITORY:%"
             else
-              echo "Not master branch so not deploying"
+              echo "No deploy for forks"
             fi
-      - deploy:
-          name: Docker Image Deploment
-          command: .circleci/deploy.sh
+
+  deploy-docs:
+    <<: *defaults
+    steps:
+      - checkout
+      - run:
+          name: Install AWS CLI
+          command: sudo apt-get -y -qq install awscli
+      - run:
+          name: NPM Install JSDoc
+          command: sudo npm install -g jsdoc
+      - run:
+          name: Build JSDoc files
+          command: |
+            jsdoc . \
+              --verbose \
+              --configure .reaction/jsdoc/jsdoc.json \
+              --readme .reaction/jsdoc/templates/static/README.md
+      - run:
+          name: Deploy Doc files to S3
+          command: |
+            if [[ "${API_DOC_BUCKET}" && "${API_DOC_BUCKET_REGION}" ]]; then
+              aws s3 sync /tmp/reaction-docs ${API_DOC_BUCKET} --delete --region ${API_DOC_BUCKET_REGION}
+            else
+              echo "S3 bucket configuration not found for jsdocs"
+              echo "Set API_DOC_BUCKET and API_DOC_BUCKET_REGION to build and deploy jsdocs to S3"
+              exit 1;
+            fi
+
+  eslint:
+    <<: *defaults
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - v1-node-modules-{{ checksum "package.json" }}
+            - v1-node-modules-{{ .Branch }}
+            - v1-node-modules-master
+      - run:
+          name: Run Lint
+          command: |
+            npm run lint
+
+  test:
+    <<: *defaults
+    steps:
+      - checkout
+      - restore_cache:
+          name: Restoring Meteor cache
+          key: meteor
+      - run:
+          name: Link Restored Meteor
+          command: sudo ln -s ~/.meteor/meteor /usr/local/bin/meteor
+      - restore_cache:
+          # Fall back to less specific caches
+          keys:
+            - v1-node-modules-{{ checksum "package.json" }}
+            - v1-node-modules-{{ .Branch }}
+            - v1-node-modules-master
+      - run:
+          name: Install Reaction CLI
+          command: sudo npm install -g reaction-cli
+      - run:
+          name: Reaction Test
+          command: .circleci/tests.sh
+
+  dockerfile-lint:
+    <<: *defaults
+    docker:
+      - image: hadolint/hadolint
+    steps:
+      - checkout
+      - setup_remote_docker
+      - run:
+          name: Dockerfile Lint
+          command: |
+            hadolint Dockerfile
+workflows:
+  version: 2
+  build_and_test:
+    jobs:
+      - build
+      - dockerfile-lint
+      - test:
+          requires:
+            - build
+      - eslint:
+          requires:
+            - build
+      - docker-build:
+          context: reaction-build-read
+      - docker-push:
+          context: reaction-publish-docker
+          requires:
+            - docker-build
+      - deploy-docs:
+          requires:
+            - test
+            - docker-build
+          filters:
+            branches:
+              only: /^master$/

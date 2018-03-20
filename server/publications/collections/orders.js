@@ -2,7 +2,7 @@ import { Meteor } from "meteor/meteor";
 import { check, Match } from "meteor/check";
 import { Roles } from "meteor/alanning:roles";
 import { ReactiveAggregate } from "./reactiveAggregate";
-import { Orders } from "/lib/collections";
+import { MediaRecords, Orders } from "/lib/collections";
 import { Reaction } from "/server/api";
 
 
@@ -98,7 +98,7 @@ Meteor.publish("PaginatedOrders", function (limit) {
   if (this.userId === null) {
     return this.ready();
   }
-  const shopId = Reaction.getShopId(this.userId);
+  const shopId = Reaction.getUserShopId(this.userId) || Reaction.getShopId();
   if (!shopId) {
     return this.ready();
   }
@@ -127,7 +127,7 @@ Meteor.publish("CustomPaginatedOrders", function (query, options) {
   if (this.userId === null) {
     return this.ready();
   }
-  const shopId = Reaction.getShopId(this.userId);
+  const shopId = Reaction.getUserShopId(this.userId) || Reaction.getShopId();
   if (!shopId) {
     return this.ready();
   }
@@ -185,5 +185,37 @@ Meteor.publish("CompletedCartOrder", function (userId, cartId) {
   return Orders.find({
     cartId,
     userId
+  });
+});
+
+Meteor.publish("OrderImages", (orderId) => {
+  check(orderId, Match.Optional(String));
+  if (!orderId) return [];
+
+  const order = Orders.findOne(orderId);
+  const { items: orderItems } = order || {};
+  if (!Array.isArray(orderItems)) return [];
+
+  // Ensure each of these are unique
+  const productIds = [...new Set(orderItems.map((item) => item.product._id))];
+  const variantIds = [...new Set(orderItems.map((item) => item.variants._id))];
+
+  // return image for each the top level product or the variant and let the client code decide which to display
+  return MediaRecords.find({
+    "$or": [
+      {
+        "metadata.productId": {
+          $in: productIds
+        }
+      },
+      {
+        "metadata.variantId": {
+          $in: variantIds
+        }
+      }
+    ],
+    "metadata.workflow": {
+      $nin: ["archived", "unpublished"]
+    }
   });
 });

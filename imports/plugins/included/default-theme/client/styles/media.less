@@ -29,46 +29,19 @@
   width: 100%;
 }
 
-// .rui.media img {
-//   width: auto;
-//   height: auto;
-//   max-width: 100%;
-//   max-height: 100%;
-// }
-
-
-// Gallery Featured Image
-.rui.media-gallery .featuredImage {
-  width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    overflow: hidden;
-    // background: @white;
-    // Height is set via React.Measure to match width
-    // Width is 100%
-}
-
-.rui.media-gallery .featuredImage .gallery-image {
-  flex-basis: 100%;
-  padding: 3px;
-}
-
-
 // Gallery Thumbnails
-.rui.media-gallery .rui.gallery-thumbnails {
+.rui.gallery-thumbnails {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   // justify-content: center;
 }
 
-.rui.media-gallery .rui.gallery-thumbnails .gallery-image {
+.rui.gallery-thumbnails .gallery-image {
   position: relative;
   flex-basis: 25%;
   padding: 3px;
 }
-
 
 // Media Gallery Admin
 .rui.media-gallery .rui.gallery-drop-pane {
@@ -76,10 +49,10 @@
   height: auto;
 }
 
-.rui.media-gallery .rui.badge-container {
+.gallery-image .rui.badge-container {
   position: absolute;
-  top: @badge-offset + 5px;
-  right: @badge-offset + 5px;
+  top: 6px;
+  right: 6px;
   z-index: 1;
 
   .rui.status-badge {
@@ -140,6 +113,21 @@
   color: @gray-dark;
 }
 
+.rui.media-gallery .featuredImage {
+  & > div {
+    height: 100%;
+    .gallery-image {
+      height: 100%;
+    }
+  }
+}
+
+.rui.media-gallery .gallery-image .img-responsive {
+  height: 100%;
+  width: 100%;
+  object-fit: contain;
+}
+
 .admin-gallery-image {
   cursor: pointer;
 
@@ -149,39 +137,20 @@
   }
 }
 
+.gallery-image.no-fade-on-hover,
 .admin-gallery-image.no-fade-on-hover {
   &:hover {
     opacity: 1;
   }
-
-  & > div {
-    height: auto !important;
-
-    & > img {
-      height: auto !important;
-    }
-  }
-
-}
-
-.gallery-image.no-fade-on-hover {
-  &:hover {
-    opacity: 1;
-  }
-
-  & > div {
-    height: auto !important;
-
-    & > img {
-      height: auto !important;
-    }
-  }
-
 }
 
 .zoomed-image-container {
   z-index: 1;
   direction: ltr;
+  background-color: @body-bg;
+  img {
+     object-fit: contain;
+  }
 }
 
 @media(min-width: 480px) {

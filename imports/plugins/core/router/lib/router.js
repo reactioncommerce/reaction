@@ -15,7 +15,6 @@ import { Packages, Shops } from "/lib/collections";
 import { getComponent } from "@reactioncommerce/reaction-components/components";
 import Hooks from "./hooks";
 
-
 // Using a ternary operator here to avoid a mutable export - open to suggestions for a better way to do this
 export const history = Meteor.isClient ? createBrowserHistory() : createMemoryHistory();
 
@@ -344,18 +343,14 @@ Router.isActiveClassName = (routeName) => {
  * check if user has route permissions
  * @access private
  * @param  {Object} route - route context
- * @return {Boolean} returns `true` if route is autoriized, `false` otherwise
+ * @return {Boolean} returns `true` if user is allowed to see route, `false` otherwise
  */
 function hasRoutePermission(route) {
   const routeName = route.name;
 
-  if (routeName === "index" || routeName === "not-found") {
-    return true;
-  } else if (Router.Reaction.hasPermission(route.permissions, Meteor.userId())) {
-    return true;
-  }
-
-  return false;
+  return routeName === "index" ||
+    routeName === "not-found" ||
+    Router.Reaction.hasPermission(route.permissions, Meteor.userId());
 }
 
 
@@ -520,7 +515,7 @@ export function ReactionLayout(options = {}) {
       };
 
       // If the current route is unauthorized, and is not the "not-found" route,
-      // then override the template to use the default unauthroized template
+      // then override the template to use the default unauthorized template
       if (hasRoutePermission({ ...route, permissions }) === false && route.name !== "not-found" && !Meteor.user()) {
         if (!Router.Reaction.hasPermission(route.permissions, Meteor.userId())) {
           structure.template = "unauthorized";
@@ -558,6 +553,19 @@ Router.initPackageRoutes = (options) => {
   Router.Reaction = options.reactionContext;
   Router.routes = [];
 
+  let marketplaceSettings = {
+    shopPrefix: "/shop" // default value
+  };
+
+  const marketplace = Packages.findOne({
+    name: "reaction-marketplace",
+    shopId: Router.Reaction.getPrimaryShopId()
+  });
+
+  if (marketplace && marketplace.settings && marketplace.settings.public) {
+    marketplaceSettings = marketplace.settings.public;
+  }
+
   const pkgs = Packages.find().fetch();
 
   const routeDefinitions = [];
@@ -590,7 +598,7 @@ Router.initPackageRoutes = (options) => {
       });
 
       routeDefinitions.push({
-        route: "/shop/:shopSlug",
+        route: `${marketplaceSettings.shopPrefix}/:shopSlug`,
         name: "index",
         options: {
           name: "index",

@@ -5,6 +5,7 @@ import { Roles } from "meteor/alanning:roles";
 import { Random } from "meteor/random";
 import * as Collections from "/lib/collections";
 import { Hooks, Logger, Reaction } from "/server/api";
+import { PaymentMethodArgument } from "/lib/collections/schemas";
 
 /**
  * @method quantityProcessing
@@ -100,6 +101,12 @@ function removeShippingAddresses(cart) {
   }, {
     $set: { shipping: cartShipping }
   });
+
+  // Calculate discounts
+  Hooks.Events.run("afterCartUpdateCalculateDiscount", cart._id);
+
+  // Calculate taxes
+  Hooks.Events.run("afterCartUpdateCalculateTaxes", cart._id);
 }
 
 /**
@@ -221,7 +228,7 @@ Meteor.methods({
 
     // `checkoutLogin` should be used for anonymous only. Registered users
     // no need see this.
-    if (currentCart.workflow.status === "new") {
+    if (currentCart.workflow && currentCart.workflow.status === "new") {
       // to call `workflow/pushCartWorkflow` two times is the only way to move
       // from status "new" to "checkoutAddressBook" which I found without
       // refactoring of `workflow/pushCartWorkflow`
@@ -423,7 +430,7 @@ Meteor.methods({
         Logger.error("Error adding to cart.", error);
         Logger.error(
           "Error adding to cart. Invalid keys:",
-          Collections.Cart.simpleSchema().namedContext().invalidKeys()
+          Collections.Cart.simpleSchema().namedContext().validationErrors()
         );
         throw error;
       }
@@ -438,6 +445,8 @@ Meteor.methods({
       Meteor.call("workflow/revertCartWorkflow", "coreCheckoutShipping");
       // reset selected shipment method
       Meteor.call("cart/resetShipmentMethod", cart._id);
+      // Calculate taxes
+      Hooks.Events.run("afterCartUpdateCalculateTaxes", cart._id);
 
       Logger.debug(`cart: increment variant ${variantId} quantity by ${quantity}`);
 
@@ -485,7 +494,7 @@ Meteor.methods({
       Logger.error("Error adding to cart.", error);
       Logger.error(
         "Error adding to cart. Invalid keys:",
-        Collections.Cart.simpleSchema().namedContext().invalidKeys()
+        Collections.Cart.simpleSchema().namedContext().validationErrors()
       );
       throw error;
     }
@@ -500,6 +509,8 @@ Meteor.methods({
     Meteor.call("workflow/revertCartWorkflow", "coreCheckoutShipping");
     // reset selected shipment method
     Meteor.call("cart/resetShipmentMethod", cart._id);
+    // Calculate taxes
+    Hooks.Events.run("afterCartUpdateCalculateTaxes", cart._id);
 
     Logger.debug(`cart: add variant ${variantId} to cartId ${cart._id}`);
 
@@ -555,7 +566,7 @@ Meteor.methods({
         Logger.error("Error removing from cart.", error);
         Logger.error(
           "Error removing from cart. Invalid keys:",
-          Collections.Cart.simpleSchema().namedContext().invalidKeys()
+          Collections.Cart.simpleSchema().namedContext().validationErrors()
         );
         throw error;
       }
@@ -576,6 +587,8 @@ Meteor.methods({
       Meteor.call("workflow/revertCartWorkflow", "coreCheckoutShipping");
       // reset selected shipment method
       Meteor.call("cart/resetShipmentMethod", cart._id);
+      // Calculate taxes
+      Hooks.Events.run("afterCartUpdateCalculateTaxes", cart._id);
       return cartResult;
     }
 
@@ -596,7 +609,7 @@ Meteor.methods({
       Logger.error("Error removing from cart.", error);
       Logger.error(
         "Error removing from cart. Invalid keys:",
-        Collections.Cart.simpleSchema().namedContext().invalidKeys()
+        Collections.Cart.simpleSchema().namedContext().validationErrors()
       );
       throw error;
     }
@@ -615,6 +628,9 @@ Meteor.methods({
     Meteor.call("workflow/revertCartWorkflow", "coreCheckoutShipping");
     // reset selected shipment method
     Meteor.call("cart/resetShipmentMethod", cart._id);
+    // Calculate taxes
+    Hooks.Events.run("afterCartUpdateCalculateTaxes", cart._id);
+
     return cartResult;
   },
 
@@ -628,7 +644,8 @@ Meteor.methods({
    */
   "cart/setShipmentMethod"(cartId, method) {
     check(cartId, String);
-    check(method, Object);
+    Reaction.Schemas.ShippingMethod.validate(method);
+
     // get current cart
     const cart = Collections.Cart.findOne({
       _id: cartId,
@@ -644,29 +661,15 @@ Meteor.methods({
 
     // Sets all shipping methods to the one selected
     // TODO: Accept an object of shopId to method map to ship via different methods per shop
-    let selector;
     let update;
     // if we have an existing item update it, otherwise add to set.
     if (cart.shipping) {
-      const updatedShipping = [];
-      cart.shipping.map((shipRecord) => {
-        shipRecord.shipmentMethod = method;
-        updatedShipping.push(shipRecord);
-        return updatedShipping;
-      });
-
-      selector = {
-        _id: cartId
-      };
-      update = {
-        $set: {
-          shipping: updatedShipping
-        }
-      };
+      const shipping = cart.shipping.map((shipRecord) => ({
+        ...shipRecord,
+        shipmentMethod: method
+      }));
+      update = { $set: { shipping } };
     } else {
-      selector = {
-        _id: cartId
-      };
       update = {
         $addToSet: {
           shipping: {
@@ -679,7 +682,7 @@ Meteor.methods({
 
     // update or insert method
     try {
-      Collections.Cart.update(selector, update);
+      Collections.Cart.update({ _id: cartId }, update);
     } catch (e) {
       Logger.error(e, `Error adding rates to cart ${cartId}`);
       throw new Meteor.Error("server-error", "An error occurred saving the order", e);
@@ -690,10 +693,7 @@ Meteor.methods({
     Hooks.Events.run("afterCartUpdateCalculateDiscount", cart._id);
 
     // this will transition to review
-    return Meteor.call(
-      "workflow/pushCartWorkflow", "coreCartWorkflow",
-      "coreCheckoutShipping"
-    );
+    return Meteor.call("workflow/pushCartWorkflow", "coreCartWorkflow", "coreCheckoutShipping");
   },
 
   /**
@@ -794,7 +794,7 @@ Meteor.methods({
    */
   "cart/setShipmentAddress"(cartId, address) {
     check(cartId, String);
-    check(address, Reaction.Schemas.Address);
+    Reaction.Schemas.Address.validate(address);
 
     const cart = Collections.Cart.findOne({
       _id: cartId,
@@ -906,6 +906,9 @@ Meteor.methods({
     // Calculate discounts
     Hooks.Events.run("afterCartUpdateCalculateDiscount", cartId);
 
+    // Calculate taxes
+    Hooks.Events.run("afterCartUpdateCalculateTaxes", cartId);
+
     if (typeof cart.workflow !== "object") {
       throw new Meteor.Error(
         "server-error",
@@ -945,7 +948,7 @@ Meteor.methods({
    */
   "cart/setPaymentAddress"(cartId, address) {
     check(cartId, String);
-    check(address, Reaction.Schemas.Address);
+    Reaction.Schemas.Address.validate(address);
 
     const cart = Collections.Cart.findOne({
       _id: cartId,
@@ -991,6 +994,9 @@ Meteor.methods({
 
     // Calculate discounts
     Hooks.Events.run("afterCartUpdateCalculateDiscount", cartId);
+
+    // Calculate taxes
+    Hooks.Events.run("afterCartUpdateCalculateTaxes", cartId);
 
     return result;
   },
@@ -1075,12 +1081,7 @@ Meteor.methods({
    * @return {String} returns update result
    */
   "cart/submitPayment"(paymentMethods) {
-    if (Array.isArray((paymentMethods))) {
-      check(paymentMethods, [Reaction.Schemas.PaymentMethod]);
-    } else {
-      check(paymentMethods, Reaction.Schemas.PaymentMethod);
-    }
-
+    PaymentMethodArgument.validate(paymentMethods);
 
     const cart = Collections.Cart.findOne({
       userId: Meteor.userId()
@@ -1102,14 +1103,14 @@ Meteor.methods({
     // we'll just update the workflow and billing data where
     // method-hooks can process the workflow update.
 
-    const payments = [];
-    let paymentAddress;
-
     // Find the payment address associated that the user input during the
     // checkout process
+    let paymentAddress;
     if (Array.isArray(cart.billing) && cart.billing[0]) {
       paymentAddress = cart.billing[0].address;
     }
+
+    const payments = [];
 
     // Payment plugins which have been updated for marketplace are passing an array as paymentMethods
     if (Array.isArray(paymentMethods)) {
@@ -1150,6 +1151,10 @@ Meteor.methods({
       });
     }
 
+    // e.g. discount records would be already present on the billing array. Add to the end of the array.
+    const discountRecords = cart.billing.filter((billingInfo) => billingInfo.paymentMethod);
+    payments.push(...discountRecords);
+
     const selector = {
       _id: cartId
     };
@@ -1169,6 +1174,9 @@ Meteor.methods({
 
     // Calculate discounts
     Hooks.Events.run("afterCartUpdateCalculateDiscount", cartId);
+
+    // Calculate taxes
+    Hooks.Events.run("afterCartUpdateCalculateTaxes", cartId);
 
     return Collections.Cart.findOne(selector);
   },

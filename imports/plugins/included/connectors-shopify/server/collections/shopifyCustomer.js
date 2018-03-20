@@ -1,5 +1,5 @@
 /* eslint camelcase: 0 */
-import { SimpleSchema } from "meteor/aldeed:simple-schema";
+import SimpleSchema from "simpl-schema";
 import { Accounts } from "/lib/collections";
 import { registerSchema } from "/imports/plugins/core/collections";
 
@@ -17,14 +17,12 @@ import { registerSchema } from "/imports/plugins/core/collections";
  */
 export const ShopifyCustomer = new SimpleSchema({
   shopifyId: {
-    type: Number,
-    optional: true,
-    decimal: false
+    type: SimpleSchema.Integer,
+    optional: true
   },
   orders_count: {
-    type: Number,
-    optional: true,
-    decimal: false
+    type: SimpleSchema.Integer,
+    optional: true
   },
   tags: {
     type: String,
