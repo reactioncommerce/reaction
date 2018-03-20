@@ -35,6 +35,12 @@ class AddressBookGrid extends Component {
     select: PropTypes.func
   }
 
+  static defaultProps = {
+    edit() {},
+    remove() {},
+    select() {}
+  }
+
   state = {
     defaultShippingAddressId: this.defaultShippingAddressId,
     defaultBillingAddressId: this.defaultBillingAddressId
