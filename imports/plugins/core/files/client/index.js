@@ -1,4 +1,5 @@
 import { Meteor } from "meteor/meteor";
+import { Reaction } from "/client/api";
 import { MeteorFileCollection, FileRecord } from "@reactioncommerce/file-collections";
 import { MediaRecords } from "/lib/collections";
 

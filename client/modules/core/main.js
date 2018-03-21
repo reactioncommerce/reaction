@@ -1,3 +1,4 @@
+import url from "url";
 import _ from "lodash";
 import store from "store";
 import { Accounts as MeteorAccounts } from "meteor/accounts-base";
@@ -29,6 +30,7 @@ const deps = new Map();
 export default {
   _shopId: new ReactiveVar(null), // The active shop
   _primaryShopId: new ReactiveVar(null), // The first shop created
+  _shopDomain: new ReactiveVar(null), // current domain from which our site is hosted
   marketplace: { _ready: false }, // Marketplace Settings
 
   Locale: new ReactiveVar({}),
@@ -110,7 +112,7 @@ export default {
             });
           } else {
             shop = Shops.findOne({
-              domains: domain
+              domains: this.getDomain()
             });
           }
         }

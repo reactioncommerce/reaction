@@ -1,7 +1,10 @@
-import { Meteor } from "meteor/meteor";
+import { DDP } from "meteor/ddp-client";
+
 import { expect } from "meteor/practicalmeteor:chai";
 import { sinon } from "meteor/practicalmeteor:sinon";
 import { Shops } from "/lib/collections";
+import { Meteor } from "meteor/meteor";
+
 import core from "./core";
 import ConnectionDataStore from "./connectionDataStore";
 
@@ -164,7 +167,7 @@ describe("Server/API/Core", () => {
 
       core.absoluteUrl(path, options);
 
-      expect(fnMeteorAbsoluteUrl.called).to.be.true;
+      expect(fnMeteorAbsoluteUrl).to.have.been.called;
     });
 
     describe("outside of a connection", () => {
@@ -194,9 +197,22 @@ describe("Server/API/Core", () => {
         expect(core.absoluteUrl()).to.startsWith("https://");
       });
     });
+
+    it("accepts options the same way Meteor.absoluteUrl does", () => {
+      const options = {
+        secure: true,
+        replaceLocalhost: true,
+        rootUrl: "http://127.0.0.1"
+      };
+
+      const reactionVersion = core.absoluteUrl(path, options);
+      const meteorVersion = Meteor.absoluteUrl(path, options);
+
+      expect(reactionVersion).to.equal(meteorVersion);
+    });
   });
 
   function randomString() {
-    return Math.random.toString(36);
+    return Math.random().toString(36);
   }
 });
