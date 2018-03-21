@@ -43,9 +43,9 @@ export function groupsQuery(context, shopId) {
 
   if (Reaction.hasPermission(["owner", "admin", "reaction-accounts"], userId)) {
     // find groups by shop ID
-    return Groups.find({
+    return Promise.resolve(Groups.find({
       shopId
-    });
+    }));
   }
 
   const userAccount = Accounts.findOne({
