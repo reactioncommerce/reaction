@@ -30,11 +30,11 @@ export const typeDefs = `
   # The \`Account\` type represents a single user account
   type Account implements Node {
     _id: ID!
-    addressBook(after: ConnectionCursor, before: ConnectionCursor, first: Int, last: Int): AddressConnection
+    addressBook(after: ConnectionCursor, before: ConnectionCursor, first: ConnectionLimitInt, last: ConnectionLimitInt): AddressConnection
     createdAt: DateTime!
     currency: Currency
     emailRecords: [EmailRecord]
-    groups(after: ConnectionCursor, before: ConnectionCursor, first: Int, last: Int): GroupConnection
+    groups(after: ConnectionCursor, before: ConnectionCursor, first: ConnectionLimitInt, last: ConnectionLimitInt): GroupConnection
     metafields: [Metafield]
     name: String
     note: String
@@ -70,6 +70,6 @@ export const typeDefs = `
   extend type Query {
     viewer: Account
     account(id: ID!): Account
-    administrators(shopId: ID!, after: ConnectionCursor, before: ConnectionCursor, first: Int, last: Int, sortOrder: SortOrder = asc, sortBy: AccountSortByField = createdAt): AccountConnection
+    administrators(shopId: ID!, after: ConnectionCursor, before: ConnectionCursor, first: ConnectionLimitInt, last: ConnectionLimitInt, sortOrder: SortOrder = asc, sortBy: AccountSortByField = createdAt): AccountConnection
   }
 `;

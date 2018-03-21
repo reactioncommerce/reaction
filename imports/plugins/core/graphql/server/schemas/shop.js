@@ -2,7 +2,7 @@ export const typeDefs = `
   # TODO: Implement. Included to satisfy dependency in other types.
   type Shop implements Node {
     _id: ID!
-    administrators(after: ConnectionCursor, before: ConnectionCursor, first: Int, last: Int, sortOrder: SortOrder = asc, sortBy: AccountSortByField = createdAt): AccountConnection
+    administrators(after: ConnectionCursor, before: ConnectionCursor, first: ConnectionLimitInt, last: ConnectionLimitInt, sortOrder: SortOrder = asc, sortBy: AccountSortByField = createdAt): AccountConnection
   }
 
   extend type Mutation {

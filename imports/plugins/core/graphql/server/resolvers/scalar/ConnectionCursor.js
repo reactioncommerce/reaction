@@ -4,7 +4,7 @@ import { Kind } from "graphql/language";
 const toCursor = (value) => (value ? Buffer.from(value).toString("base64") : null);
 const fromCursor = (cursor) => (cursor ? Buffer.from(cursor, "base64").toString("utf8") : null);
 
-const ConnectionCursor = new GraphQLScalarType({
+export default new GraphQLScalarType({
   name: "ConnectionCursor",
   serialize: toCursor,
   parseLiteral(ast) {
@@ -13,5 +13,3 @@ const ConnectionCursor = new GraphQLScalarType({
   },
   parseValue: fromCursor
 });
-
-export default ConnectionCursor;
