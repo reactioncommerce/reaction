@@ -1,7 +1,11 @@
 export const typeDefs = `
-  # TODO: Implement. Included to satisfy dependency in other types.
+  # Represents a Reaction shop
   type Shop implements Node {
+    # The shop ID
     _id: ID!
+
+    # Returns a list of administrators for this shop, as a Relay-compatible connection.
+    # "Administrators" means all linked accounts that have the "admin" role for this shop.
     administrators(after: ConnectionCursor, before: ConnectionCursor, first: ConnectionLimitInt, last: ConnectionLimitInt, sortOrder: SortOrder = asc, sortBy: AccountSortByField = createdAt): AccountConnection
   }
 

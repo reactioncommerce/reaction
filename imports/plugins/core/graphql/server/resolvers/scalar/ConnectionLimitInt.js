@@ -15,7 +15,13 @@ function parseValue(value) {
   return Math.min(Math.max(1, value), MAX_LIMIT);
 }
 
+const description = `
+An integer between 1 and 50, inclusive. Values less than 1 become 1 and
+values greater than 50 become 50.
+`;
+
 export default new GraphQLScalarType({
+  description,
   name: "ConnectionLimitInt",
   serialize: (value) => value,
   parseLiteral(ast) {

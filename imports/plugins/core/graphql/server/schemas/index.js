@@ -15,10 +15,12 @@ import { typeDefs as shop } from "./shop";
 // See https://www.apollographql.com/docs/graphql-tools/generate-schema.html#extend-types
 const base = [
   `
+  # Mutations have side effects, such as mutating data or triggering a task
   type Mutation {
     echo(str: String): String
   }
 
+  # Queries return all requested data, without any side effects
   type Query {
     ping: String!
   }

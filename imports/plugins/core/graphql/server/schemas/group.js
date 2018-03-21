@@ -1,4 +1,5 @@
 export const typeDefs = `
+  # The details for creating or updating a group
   input GroupInput {
     description: String
     name: String!
@@ -6,6 +7,7 @@ export const typeDefs = `
     slug: String!
   }
 
+  # Represents an account group
   type Group implements Node {
     _id: ID!
     createdAt: DateTime!
@@ -18,6 +20,7 @@ export const typeDefs = `
     updatedAt: DateTime!
   }
 
+  # Wraps a list of \`Groups\`, providing pagination cursors and information.
   type GroupConnection implements NodeConnection {
     edges: [GroupEdge]
     nodes: [Group]
@@ -25,6 +28,7 @@ export const typeDefs = `
     totalCount: Int!
   }
 
+  # A connection edge in which each node is a \`Group\` object
   type GroupEdge implements NodeEdge {
     cursor: ConnectionCursor!
     node: Group

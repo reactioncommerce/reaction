@@ -1,8 +1,8 @@
+// NOTE: Currency is modeled as an map in the current code. The currency code is
+// they key in the map. Transform to an array, with the key mapped as _id and
+// code in the object.
 export const typeDefs = `
-  # Currency
-  # NOTE: This is modeled as an map in the current code. The currency code is
-  # they key in the map. Transform to an array, with the key mapped as _id and
-  # code in the object.
+  # Represents one type of currency
   type Currency implements Node {
     _id: ID!
     code: String!
@@ -14,6 +14,7 @@ export const typeDefs = `
     rate: Int
   }
 
+  # Wraps a list of \`Currencies\`, providing pagination cursors and information.
   type CurrencyConnection implements NodeConnection {
     edges: [CurrencyEdge]
     nodes: [Currency]
@@ -21,6 +22,7 @@ export const typeDefs = `
     totalCount: Int!
   }
 
+  # A connection edge in which each node is an \`Currency\` object
   type CurrencyEdge implements NodeEdge {
     cursor: ConnectionCursor!
     node: Currency

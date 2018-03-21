@@ -11,6 +11,7 @@
  * - note attribute is only used in Shopify import.
  */
 export const typeDefs = `
+  # The fields by which you are allowed to sort any query that returns an \`AccountConnection\`
   enum AccountSortByField {
     _id
     name
@@ -18,16 +19,18 @@ export const typeDefs = `
     updatedAt
   }
 
+  # The input object for mutating an existing \`Account\`
   input UpdateAccountInput {
     currencyCode: String!
   }
 
+  # Per-account tax exemption settings used by the Avalara plugin
   type TaxSettings {
     exemptionNo: String
     customerUsageType: String
   }
 
-  # The \`Account\` type represents a single user account
+  # Represents a single user account
   type Account implements Node {
     _id: ID!
     addressBook(after: ConnectionCursor, before: ConnectionCursor, first: ConnectionLimitInt, last: ConnectionLimitInt): AddressConnection
@@ -44,6 +47,7 @@ export const typeDefs = `
     updatedAt: DateTime!
   }
 
+  # Wraps a list of \`Accounts\`, providing pagination cursors and information.
   type AccountConnection implements NodeConnection {
     edges: [AccountEdge]
     nodes: [Account]
@@ -51,13 +55,16 @@ export const typeDefs = `
     totalCount: Int!
   }
 
+  # A connection edge in which each node is an \`Account\` object
   type AccountEdge implements NodeEdge {
     cursor: ConnectionCursor!
     node: Account
   }
 
   extend type Mutation {
-    addAccountAddressBookEntry(accountId: ID, address: AddressInput!): Address
+    # Provide the ID of an \`Account\` and an \`AddressInput\` object. The address will be added to the \`addressBook\`
+    # of that account, and the added \`Address\` object is returned.
+    addAccountAddressBookEntry(accountId: ID!, address: AddressInput!): Address
     addAccountEmailRecord(email: Email!): EmailRecord
     addAccountToGroup(accountId: ID!, groupId: ID!): Group
     removeAccountAddressBookEntry(accountId: ID, addressId: ID!): Address
@@ -68,8 +75,12 @@ export const typeDefs = `
   }
 
   extend type Query {
+    # Returns the account for the authenticated user
     viewer: Account
+    # Returns the account with the provided ID
     account(id: ID!): Account
+    # Returns a list of administrators for the shop with ID \`shopId\`, as a Relay-compatible connection.
+    # "Administrators" means all linked accounts that have the "admin" role for this shop.
     administrators(shopId: ID!, after: ConnectionCursor, before: ConnectionCursor, first: ConnectionLimitInt, last: ConnectionLimitInt, sortOrder: SortOrder = asc, sortBy: AccountSortByField = createdAt): AccountConnection
   }
 `;
