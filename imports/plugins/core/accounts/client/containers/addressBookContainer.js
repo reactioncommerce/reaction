@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import PropTypes from "prop-types";
 import { compose } from "recompose";
 import { Meteor } from "meteor/meteor";
 import { Template } from "meteor/templating";
@@ -19,13 +18,23 @@ import AddressBook from "../components/addressBook";
  */
 function updateAddress(address, property) {
   return new Promise((resolve, reject) => {
-    Meteor.call("accounts/addressBookUpdate", address, null, property, (error, result) => {
-      if (error || !result) {
-        reject(i18next.t("addressBookGrid.somethingWentWrong", { err: error.message }));
-      } else {
-        resolve(result);
-      }
-    });
+    if (property) {
+      Meteor.call("accounts/addressBookUpdate", address, null, property, (error, result) => {
+        if (error || !result) {
+          reject(i18next.t("addressBookGrid.somethingWentWrong", { err: error.message }));
+        } else {
+          resolve(result);
+        }
+      });
+    } else {
+      Meteor.call("accounts/addressBookUpdate", address, (error, result) => {
+        if (error || !result) {
+          reject(i18next.t("addressBookGrid.somethingWentWrong", { err: error.message }));
+        } else {
+          resolve(result);
+        }
+      });
+    }
   });
 }
 

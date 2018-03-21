@@ -59,7 +59,7 @@ class AddressBook extends Component {
     /**
      * regions by county
      */
-    regionsByCountry: PropTypes.Object,
+    regionsByCountry: PropTypes.object,
     /**
      * Remove address reducer calls meteor method
      */
