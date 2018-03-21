@@ -1,22 +1,6 @@
 import { curry } from "ramda";
-import applyPaginationToMongoQuery from "./applyPaginationToMongoQuery";
 import { decodeOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/id";
-
-function connectionArgsToMongoFilter({ before, after }) {
-  const filter = {};
-
-  if (before) {
-    filter._id = {};
-    filter._id.$lt = before;
-  }
-
-  if (after) {
-    if (!filter._id) filter._id = {};
-    filter._id.$gt = after;
-  }
-
-  return filter;
-}
+import applyPaginationToMongoQuery from "./applyPaginationToMongoQuery";
 
 async function applyBeforeAfterToFilter({ after, baseFilter, before, collection, sortBy: sortByField, sortOrder }) {
   let filter = baseFilter;
@@ -112,9 +96,6 @@ const getPaginatedResponse = curry(async (xform, query, args) => {
 
   const updatedFilter = await applyBeforeAfterToFilter({ collection, baseFilter, ...args });
   const sort = getMongoSort(args);
-
-  console.log("filter", updatedFilter);
-  console.log("sort", sort);
 
   let nodes = await query.filter(updatedFilter).sort(sort).toArray();
   if (xform) nodes = nodes.map(xform);
