@@ -63,5 +63,42 @@ export default {
       },
       name: "Fake Person"
     };
+  },
+  groups(context, shopId) {
+    return Promise.resolve(getFakeMongoCursor("Groups", [
+      {
+        _id: "bc456",
+        createdAt: new Date(),
+        createdBy: "acc123",
+        description: "",
+        name: "shop_managers",
+        permissions: ["owner", "admin", "createProduct"],
+        shopId: "abc123",
+        slug: "shop-managers",
+        updatedAt: new Date()
+      },
+      {
+        _id: "gh678",
+        createdAt: new Date(),
+        createdBy: "acc123",
+        description: "",
+        name: "special_customers",
+        permissions: ["createProduct"],
+        shopId: "abc123",
+        slug: "special-customers",
+        updatedAt: new Date()
+      },
+      {
+        _id: "db7986",
+        createdAt: new Date(),
+        createdBy: "acc123",
+        description: "",
+        name: "brands",
+        permissions: ["owner", "admin", "createProduct"],
+        shopId: "bcfgghj6768",
+        slug: "brands",
+        updatedAt: new Date()
+      }
+    ]));
   }
 };
