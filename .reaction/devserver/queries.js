@@ -1,17 +1,38 @@
+function getFakeMongoCursor(collectionName, results) {
+  const cursor = {
+    clone: () => ({
+      count: () => results.length
+    }),
+    cmd: {
+      query: {}
+    },
+    filter: () => cursor,
+    limit: () => cursor,
+    ns: `meteor.${collectionName}`,
+    options: {
+      db: {
+        collection: () => ({
+          findOne: () => Promise.resolve(null)
+        }),
+        databaseName: "meteor"
+      },
+    },
+    skip: () => cursor,
+    sort: () => cursor,
+    toArray() {
+      return Promise.resolve(results)
+    }
+  };
+  return cursor;
+}
+
 export default {
   shopAdministrators() {
-    return Promise.resolve({
-      clone: () => ({
-        count: () => 3
-      }),
-      toArray() {
-        return Promise.resolve([
-          { _id: "a1", name: "Owner" },
-          { _id: "b2", name: "Admin 1" },
-          { _id: "c3", name: "Admin 2" }
-        ])
-      }
-    });
+    return Promise.resolve(getFakeMongoCursor("Accounts", [
+      { _id: "a1", name: "Owner" },
+      { _id: "b2", name: "Admin 1" },
+      { _id: "c3", name: "Admin 2" }
+    ]));
   },
   shopById(context, _id) {
     return {
