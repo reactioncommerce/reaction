@@ -58,7 +58,12 @@ function addAddress(address) {
   return new Promise((resolve, reject) => {
     Meteor.call("accounts/validateAddress", address, (error, result) => {
       if (error || !result || !result.validated) {
-        reject(i18next.t("addressBookAdd.failedToAddAddress", { err: error.message }));
+        let errorMessage = (error && error.message) || "Validation Failed";
+        if (error && error.error === "validation-error" && Array.isArray(error.details) && error.details.length) {
+          // Add details of first invalid field from SimpleSchema
+          errorMessage = error.details[0].message;
+        }
+        reject(i18next.t("addressBookAdd.failedToAddAddress", { err: errorMessage }));
         return;
       }
       Meteor.call("accounts/addressBookAdd", address, (err, res) => {
