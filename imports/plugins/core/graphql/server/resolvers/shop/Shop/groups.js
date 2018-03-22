@@ -1,4 +1,5 @@
 import { getPaginatedGroupResponse } from "@reactioncommerce/reaction-graphql-xforms/group";
+import { decodeShopOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/shop";
 
 /**
  * @name groups
@@ -14,6 +15,9 @@ import { getPaginatedGroupResponse } from "@reactioncommerce/reaction-graphql-xf
  * @return {Object[]} Promise that resolves with array of user Group objects
  */
 export default async function groups({ _id }, connectionArgs, context) {
-  const query = await context.queries.groups(context, _id);
+  // Transform ID from base64
+  const dbShopId = decodeShopOpaqueId(_id);
+  const query = await context.queries.groups(context, dbShopId);
+
   return await getPaginatedGroupResponse(query, connectionArgs);
 }
