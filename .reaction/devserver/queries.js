@@ -64,6 +64,19 @@ export default {
       name: "Fake Person"
     };
   },
+  group(context, _id) {
+    return {
+      _id: "bc456",
+      createdAt: new Date(),
+      createdBy: "acc123",
+      description: "",
+      name: "shop_managers",
+      permissions: ["owner", "admin", "createProduct"],
+      shopId: "abc123",
+      slug: "shop-managers",
+      updatedAt: new Date()
+    };
+  },
   groups(context, shopId) {
     return Promise.resolve(getFakeMongoCursor("Groups", [
       {
