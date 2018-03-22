@@ -27,6 +27,9 @@ export const typeDefs = `
     # The group ID
     id: ID!
 
+    # The ID of the shop this group belongs to
+    shopId: ID!
+
     # The changes to apply to the group
     updates: GroupInput!
   }

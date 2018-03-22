@@ -21,8 +21,8 @@ export const typeDefs = `
 
   # Defines a new Address and the account to which it should be added
   input AddAccountAddressBookEntryInput {
-    # The account ID
-    accountId: ID!
+    # The account ID, which defaults to the viewer account
+    accountId: ID
 
     # The address to add
     address: AddressInput!
@@ -33,8 +33,8 @@ export const typeDefs = `
 
   # Describes changes that should be applied to one of the addresses for an account
   input UpdateAccountAddressBookEntryInput {
-    # The account ID
-    accountId: ID!
+    # The account ID, which defaults to the viewer account
+    accountId: ID
 
     # The address ID
     addressId: ID!
@@ -51,8 +51,8 @@ export const typeDefs = `
 
   # Describes which address should be removed from which account
   input RemoveAccountAddressBookEntryInput {
-    # The account ID
-    accountId: ID!
+    # The account ID, which defaults to the viewer account
+    accountId: ID
 
     # The address ID
     addressId: ID!
@@ -61,10 +61,19 @@ export const typeDefs = `
     clientMutationId: String
   }
 
+  # Describes an account profile currency change
+  input SetAccountProfileCurrencyInput {
+    # An optional string identifying the mutation call, which will be returned in the response payload
+    clientMutationId: String
+
+    # The currency code
+    currencyCode: String!
+  }
+
   # Defines a new Email and the account to which it should be added
   input AddAccountEmailRecordInput {
-    # The account ID
-    accountId: ID!
+    # The account ID, which defaults to the viewer account
+    accountId: ID
 
     # The email address to add
     email: Email!
@@ -75,8 +84,8 @@ export const typeDefs = `
 
   # Defines which email address should be removed from which account
   input RemoveAccountEmailRecordInput {
-    # The account ID
-    accountId: ID!
+    # The account ID, which defaults to the viewer account
+    accountId: ID
 
     # The email address to remove
     email: Email!
@@ -196,6 +205,15 @@ export const typeDefs = `
     clientMutationId: String
   }
 
+  # The response from the \`setAccountProfileCurrency\` mutation
+  type SetAccountProfileCurrencyPayload {
+    # The updated account
+    account: Account
+
+    # The same string you sent with the mutation params, for matching mutation calls with their responses
+    clientMutationId: String
+  }
+
   extend type Mutation {
     # Provide the ID of an \`Account\` and an \`AddressInput\` object. The address will be added to the \`addressBook\`
     # of that account, and the added \`Address\` object is returned.
@@ -203,6 +221,7 @@ export const typeDefs = `
     addAccountEmailRecord(input: AddAccountEmailRecordInput!): AddAccountEmailRecordPayload
     removeAccountAddressBookEntry(input: RemoveAccountAddressBookEntryInput!): RemoveAccountAddressBookEntryPayload
     removeAccountEmailRecord(input: RemoveAccountEmailRecordInput!): RemoveAccountEmailRecordPayload
+    setAccountProfileCurrency(input: SetAccountProfileCurrencyInput!): SetAccountProfileCurrencyPayload
     updateAccount(input: UpdateAccountInput!): UpdateAccountPayload
     updateAccountAddressBookEntry(input: UpdateAccountAddressBookEntryInput!): UpdateAccountAddressBookEntryPayload
   }

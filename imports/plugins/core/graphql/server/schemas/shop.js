@@ -26,7 +26,7 @@ export const typeDefs = `
 
   # The response from the \`inviteShopMember\` mutation
   type InviteShopMemberPayload {
-    # The new user's account
+    # The account that was successfully created or found and updated by inviting this shop member
     account: Account
 
     # The same string you sent with the mutation params, for matching mutation calls with their responses
