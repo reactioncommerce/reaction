@@ -29,7 +29,7 @@ export function groupQuery(context, id) {
 
   if (userAccount) {
     // Query the groups collection to find a group by `id`
-    return Groups.findOne({
+    return Groups.rawCollection().findOne({
       _id: id
     });
   }
@@ -43,7 +43,7 @@ export function groupsQuery(context, shopId) {
 
   if (Reaction.hasPermission(["owner", "admin", "reaction-accounts"], userId)) {
     // find groups by shop ID
-    return Promise.resolve(Groups.find({
+    return Promise.resolve(Groups.rawCollection().find({
       shopId
     }));
   }
@@ -58,7 +58,7 @@ export function groupsQuery(context, shopId) {
 
   if (userAccount) {
     // Query the groups collection to find a group by `id`
-    return Promise.resolve(Groups.find({
+    return Promise.resolve(Groups.rawCollection().find({
       _id: userAccount.groups,
       shopId
     }));
