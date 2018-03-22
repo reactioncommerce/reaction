@@ -1,30 +1,4 @@
-function getFakeMongoCursor(collectionName, results) {
-  const cursor = {
-    clone: () => ({
-      count: () => results.length
-    }),
-    cmd: {
-      query: {}
-    },
-    filter: () => cursor,
-    limit: () => cursor,
-    ns: `meteor.${collectionName}`,
-    options: {
-      db: {
-        collection: () => ({
-          findOne: () => Promise.resolve(null)
-        }),
-        databaseName: "meteor"
-      },
-    },
-    skip: () => cursor,
-    sort: () => cursor,
-    toArray() {
-      return Promise.resolve(results)
-    }
-  };
-  return cursor;
-}
+import getFakeMongoCursor from "/imports/test-utils/helpers/getFakeMongoCursor";
 
 export default {
   shopAdministrators() {
