@@ -165,10 +165,9 @@ class AddressBookGrid extends Component {
   renderAddress({ address1, address2, city, region, postal, country, phone }) {
     return (
       <address>
-        {address1}
-        {address2},<br/>
+        {`${address1 || ""} ${address2 || ""}`.trim()}<br/>
         {city}, {region} {postal} {country}<br/>
-        {phone}
+        {phone || ""}
       </address>
     );
   }
