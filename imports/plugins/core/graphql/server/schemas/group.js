@@ -7,12 +7,72 @@ export const typeDefs = `
     updatedAt
   }
 
-  # The details for creating or updating a group
+  # A group definition
   input GroupInput {
     description: String
     name: String!
     permissions: [String]
     slug: String!
+  }
+
+  # The details for creating a group
+  input CreateGroupInput {
+    # An optional string identifying the mutation call, which will be returned in the response payload
+    clientMutationId: String
+
+    # The group to create
+    group: GroupInput!
+
+    # The ID of the shop this group belongs to
+    shopId: ID!
+  }
+
+  # The details for updating a group
+  input UpdateGroupInput {
+    # An optional string identifying the mutation call, which will be returned in the response payload
+    clientMutationId: String
+
+    # The group ID
+    id: ID!
+
+    # The ID of the shop this group belongs to
+    shopId: ID!
+
+    # The changes to apply to the group
+    updates: GroupInput!
+  }
+
+  # The details for removing a group
+  input RemoveGroupInput {
+    # An optional string identifying the mutation call, which will be returned in the response payload
+    clientMutationId: String
+
+    # The group ID
+    id: ID!
+  }
+
+  # Defines a group and account that should be linked
+  input AddAccountToGroupInput {
+    # The account ID
+    accountId: ID!
+
+    # The group ID
+    groupId: ID!
+
+    # An optional string identifying the mutation call, which will be returned in the response payload
+    clientMutationId: String
+  }
+
+  # Defines a group and account that should be unlinked
+  input RemoveAccountFromGroupInput {
+    # The account ID
+    accountId: ID!
+
+    # An optional string identifying the mutation call, which will be returned in the response payload
+    clientMutationId: String
+
+    # The group ID
+    groupId: ID!
   }
 
   # Represents an account group
@@ -42,9 +102,57 @@ export const typeDefs = `
     node: Group
   }
 
+  # The response from the \`addAccountToGroup\` mutation
+  type AddAccountToGroupPayload {
+    # The updated group
+    group: Group
+
+    # The same string you sent with the mutation params, for matching mutation calls with their responses
+    clientMutationId: String
+  }
+
+  # The response from the \`createGroup\` mutation
+  type CreateGroupPayload {
+    # The new group
+    group: Group
+
+    # The same string you sent with the mutation params, for matching mutation calls with their responses
+    clientMutationId: String
+  }
+
+  # The response from the \`updateGroup\` mutation
+  type UpdateGroupPayload {
+    # The updated group
+    group: Group
+
+    # The same string you sent with the mutation params, for matching mutation calls with their responses
+    clientMutationId: String
+  }
+
+  # The response from the \`removeAccountFromGroup\` mutation
+  type RemoveAccountFromGroupPayload {
+    # The updated group
+    group: Group
+
+    # The same string you sent with the mutation params, for matching mutation calls with their responses
+    clientMutationId: String
+  }
+
+  # The response from the \`removeGroup\` mutation
+  type RemoveGroupPayload {
+    # Successfully removed?
+    wasRemoved: Boolean!
+
+    # The same string you sent with the mutation params, for matching mutation calls with their responses
+    clientMutationId: String
+  }
+
   extend type Mutation {
-    createGroup(shopId: ID!, group: GroupInput!): Group
-    updateGroup(shopId: ID!, id: ID!, modifier: GroupInput!): Group
+    addAccountToGroup(input: AddAccountToGroupInput!): AddAccountToGroupPayload
+    createGroup(input: CreateGroupInput!): CreateGroupPayload
+    updateGroup(input: UpdateGroupInput!): UpdateGroupPayload
+    removeAccountFromGroup(input: RemoveAccountFromGroupInput!): RemoveAccountFromGroupPayload
+    removeGroup(input: RemoveGroupInput!): RemoveGroupPayload
   }
 
   extend type Query {
