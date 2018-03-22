@@ -14,6 +14,7 @@ export const typeDefs = `
   # Objects implementing the \`Node\` interface will always have an \`_id\` field that
   # is globally unique.
   interface Node {
+    # The ID of the object
     _id: ID!
   }
 
@@ -51,16 +52,16 @@ export const typeDefs = `
   # Pagination information. When requesting pages of results, you can use \`endCursor\` or \`startCursor\`
   # as your \`before\` or \`after\` parameters for the query you are paging.
   type PageInfo {
-    # The cursor string for the last node in the connection result
+    # When paginating forwards, the cursor to continue.
     endCursor: ConnectionCursor
 
-    # True if there are any more nodes after the current list of nodes
+    # When paginating forwards, are there more items?
     hasNextPage: Boolean!
 
-    # True if there are any more nodes before the current list of nodes
+    # When paginating backwards, are there more items?
     hasPreviousPage: Boolean!
 
-    # The cursor string for the first node in the connection result
+    # When paginating backwards, the cursor to continue.
     startCursor: ConnectionCursor
   }
 `;

@@ -7,8 +7,6 @@ test("correctly passes through to accounts/addressBookAdd method", () => {
 
   const fakeResult = { _id: "1", ...address };
 
-  const expectedResult = { _id: accountId, ...address };
-
   const mockMethod = jest.fn().mockName("accounts/addressBookAdd method");
   mockMethod.mockReturnValueOnce(fakeResult);
   const context = {
@@ -18,9 +16,15 @@ test("correctly passes through to accounts/addressBookAdd method", () => {
   };
 
   const result = addAccountAddressBookEntry(null, {
-    accountId,
-    address
+    input: {
+      accountId,
+      address,
+      clientMutationId: "clientMutationId"
+    }
   }, context);
 
-  expect(result).toEqual(expectedResult);
+  expect(result).toEqual({
+    address: { _id: accountId, ...address },
+    clientMutationId: "clientMutationId"
+  });
 });

@@ -19,9 +19,87 @@ export const typeDefs = `
     updatedAt
   }
 
+  # Defines a new Address and the account to which it should be added
+  input AddAccountAddressBookEntryInput {
+    # The account ID
+    accountId: ID!
+
+    # The address to add
+    address: AddressInput!
+
+    # An optional string identifying the mutation call, which will be returned in the response payload
+    clientMutationId: String
+  }
+
+  # Describes changes that should be applied to one of the addresses for an account
+  input UpdateAccountAddressBookEntryInput {
+    # The account ID
+    accountId: ID!
+
+    # The address ID
+    addressId: ID!
+
+    # An optional string identifying the mutation call, which will be returned in the response payload
+    clientMutationId: String
+
+    # If present, make this address the default address of this type
+    type: AddressType
+
+    # The address changes to apply
+    updates: AddressInput!
+  }
+
+  # Describes which address should be removed from which account
+  input RemoveAccountAddressBookEntryInput {
+    # The account ID
+    accountId: ID!
+
+    # The address ID
+    addressId: ID!
+
+    # An optional string identifying the mutation call, which will be returned in the response payload
+    clientMutationId: String
+  }
+
+  # Defines a new Email and the account to which it should be added
+  input AddAccountEmailRecordInput {
+    # The account ID
+    accountId: ID!
+
+    # The email address to add
+    email: Email!
+
+    # An optional string identifying the mutation call, which will be returned in the response payload
+    clientMutationId: String
+  }
+
+  # Defines which email address should be removed from which account
+  input RemoveAccountEmailRecordInput {
+    # The account ID
+    accountId: ID!
+
+    # The email address to remove
+    email: Email!
+
+    # An optional string identifying the mutation call, which will be returned in the response payload
+    clientMutationId: String
+  }
+
   # The input object for mutating an existing \`Account\`
-  input UpdateAccountInput {
+  input AccountUpdatesInput {
     currencyCode: String!
+  }
+
+  # Defines how an account should be updated, and which account
+  input UpdateAccountInput {
+    # The account ID
+    accountId: ID!
+
+    # The field changes to apply
+    updates: AccountUpdatesInput!
+
+    # An optional string identifying the mutation call, which will be returned in the response payload
+    clientMutationId: String
   }
 
   # Per-account tax exemption settings used by the Avalara plugin
@@ -61,24 +139,81 @@ export const typeDefs = `
     node: Account
   }
 
+  # The response from the \`addAccountAddressBookEntry\` mutation
+  type AddAccountAddressBookEntryPayload {
+    # The added address
+    address: Address
+
+    # The added address edge
+    addressEdge: AddressEdge
+
+    # The same string you sent with the mutation params, for matching mutation calls with their responses
+    clientMutationId: String
+  }
+
+  # The response from the \`addAccountEmailRecord\` mutation
+  type AddAccountEmailRecordPayload {
+    # The added email record
+    emailRecord: EmailRecord
+
+    # The same string you sent with the mutation params, for matching mutation calls with their responses
+    clientMutationId: String
+  }
+
+  # The response from the \`removeAccountAddressBookEntry\` mutation
+  type RemoveAccountAddressBookEntryPayload {
+    # The account, with updated \`addressBook\`
+    account: Account
+
+    # The same string you sent with the mutation params, for matching mutation calls with their responses
+    clientMutationId: String
+  }
+
+  # The response from the \`removeAccountEmailRecord\` mutation
+  type RemoveAccountEmailRecordPayload {
+    # The account, with updated \`emailRecords\`
+    account: Account
+
+    # The same string you sent with the mutation params, for matching mutation calls with their responses
+    clientMutationId: String
+  }
+
+  # The response from the \`updateAccount\` mutation
+  type UpdateAccountPayload {
+    # The updated account
+    account: Account
+
+    # The same string you sent with the mutation params, for matching mutation calls with their responses
+    clientMutationId: String
+  }
+
+  # The response from the \`updateAccountAddressBookEntry\` mutation
+  type UpdateAccountAddressBookEntryPayload {
+    # The updated address
+    address: Address
+
+    # The same string you sent with the mutation params, for matching mutation calls with their responses
+    clientMutationId: String
+  }
+
   extend type Mutation {
     # Provide the ID of an \`Account\` and an \`AddressInput\` object. The address will be added to the \`addressBook\`
     # of that account, and the added \`Address\` object is returned.
-    addAccountAddressBookEntry(accountId: ID!, address: AddressInput!): Address
-    addAccountEmailRecord(email: Email!): EmailRecord
-    addAccountToGroup(accountId: ID!, groupId: ID!): Group
-    removeAccountAddressBookEntry(accountId: ID, addressId: ID!): Address
-    removeAccountEmailRecord(email: Email!): EmailRecord
-    removeAccountFromGroup(accountId: ID!, groupId: ID!): Group
-    updateAccount(accountId: ID!, modifier: UpdateAccountInput!): Account
-    updateAccountAddressBookEntry(accountId: ID, addressId: ID!, modifier: AddressInput!, type: AddressType): Address
+    addAccountAddressBookEntry(input: AddAccountAddressBookEntryInput!): AddAccountAddressBookEntryPayload
+    addAccountEmailRecord(input: AddAccountEmailRecordInput!): AddAccountEmailRecordPayload
+    removeAccountAddressBookEntry(input: RemoveAccountAddressBookEntryInput!): RemoveAccountAddressBookEntryPayload
+    removeAccountEmailRecord(input: RemoveAccountEmailRecordInput!): RemoveAccountEmailRecordPayload
+    updateAccount(input: UpdateAccountInput!): UpdateAccountPayload
+    updateAccountAddressBookEntry(input: UpdateAccountAddressBookEntryInput!): UpdateAccountAddressBookEntryPayload
   }
 
   extend type Query {
     # Returns the account for the authenticated user
     viewer: Account
+
     # Returns the account with the provided ID
     account(id: ID!): Account
+
     # Returns a list of administrators for the shop with ID \`shopId\`, as a Relay-compatible connection.
     # "Administrators" means all linked accounts that have the "admin" role for this shop.
     administrators(shopId: ID!, after: ConnectionCursor, before: ConnectionCursor, first: ConnectionLimitInt, last: ConnectionLimitInt, sortOrder: SortOrder = asc, sortBy: AccountSortByField = createdAt): AccountConnection

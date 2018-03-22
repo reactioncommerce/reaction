@@ -9,11 +9,38 @@ export const typeDefs = `
     administrators(after: ConnectionCursor, before: ConnectionCursor, first: ConnectionLimitInt, last: ConnectionLimitInt, sortOrder: SortOrder = asc, sortBy: AccountSortByField = createdAt): AccountConnection
   }
 
+  # Input parameters for the inviteShopMember mutation
+  input InviteShopMemberInput {
+    # The email address of the person to invite
+    email: String!
+
+    # The permission group for this person's new account
+    groupId: ID!
+
+    # The invitee's full name
+    name: String!
+
+    # The ID of the shop to which you want to invite this person
+    shopId: ID!
+  }
+
+  # The response from the \`inviteShopMember\` mutation
+  type InviteShopMemberPayload {
+    # The new user's account
+    account: Account
+
+    # The same string you sent with the mutation params, for matching mutation calls with their responses
+    clientMutationId: String
+  }
+
   extend type Mutation {
-    inviteShopMember(shopId: ID!, email: String!, name: String!, groupId: ID!): Account
+    # Given a person's email address and name, invite them to create an account for a certain shop,
+    # and put them in the provided permission group
+    inviteShopMember(input: InviteShopMemberInput!): InviteShopMemberPayload
   }
 
   extend type Query {
+    # Returns a shop by ID
     shop(id: ID!): Shop
   }
 `;
