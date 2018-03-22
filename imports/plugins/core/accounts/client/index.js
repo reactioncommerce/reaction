@@ -1,5 +1,6 @@
 export { default as AccountsDashboard } from "./components/accountsDashboard";
 export { default as AddressBookForm } from "./components/addressBookForm";
+export { default as AddressBookReview } from "./components/addressBookReview";
 export { default as AddressBookGrid } from "./components/addressBookGrid";
 export { default as AddressBook } from "./components/addressBook.js";
 export { default as AdminInviteForm } from "./components/adminInviteForm";

@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import { isObject, transform, isEqual } from "lodash";
 import { Components, registerComponent } from "@reactioncommerce/reaction-components";
 
 class AddressBook extends Component {
@@ -77,33 +78,91 @@ class AddressBook extends Component {
     onError() {}
   }
 
-  state = {
-    /**
-     * No address, enable the form
-     */
-    entryMode: (!this.props.addressBook || this.props.addressBook.length === 0),
-    /**
-     * Address to be edited
-     */
-    editAddress: {}
+  constructor(props) {
+    super(props);
+
+    console.log("***************** AddressBook is made again ******************");
+
+    this.state = {
+      /**
+       * No address, enable the form
+       */
+      mode: (!props.addressBook || props.addressBook.length === 0) ? "entry" : "grid",
+      /**
+       * Address to be edited
+       */
+      editAddress: {},
+      /**
+       * Address returned after validation check
+       */
+      validationResults: null
+    };
   }
+
 
   componentWillReceiveProps(nextProps) {
     let { addressBook } = nextProps;
-    const { entryMode } = this.state;
+    const { mode } = this.state;
     if (!Array.isArray(addressBook)) addressBook = [];
+
+    if (mode === "review") {
+      return;
+    }
 
     // if the new addressBook array is empty and
     // the address book form is not active
-    if (addressBook.length === 0 && !entryMode) {
-      this.toggleEntryMode();
+    if (addressBook.length === 0 && mode !== "entry") {
+      this.mode = "entry";
     }
 
     // if the new addressBook array is not empty but
     // the address book form is active
-    if (addressBook.length !== 0 && entryMode) {
-      this.toggleEntryMode();
+    if (addressBook.length !== 0 && mode !== "grid") {
+      this.mode = "grid";
     }
+  }
+
+  componentWillUpdate(nextProps, nextState) {
+    const d = this.difference(nextProps, this.props);
+    console.log("Props difference", d);
+    const d2 = this.difference(nextState, this.state);
+    console.log("State difference", d2);
+  }
+
+  /**
+ * Deep diff between two object, using lodash
+ * @param  {Object} object Object compared
+ * @param  {Object} base   Object to compare with
+ * @return {Object}        Return a new object who represent the diff
+ */
+  difference(object, base) {
+    function changes(object, base) {
+      return transform(object, (result, value, key) => {
+        if (!isEqual(value, base[key])) {
+          result[key] = (isObject(value) && isObject(base[key])) ? changes(value, base[key]) : value;
+        }
+      });
+    }
+    return changes(object, base);
+  }
+
+  set mode(mode) {
+    this.setState({
+      mode
+    });
+  }
+
+  setEntryMode = () => {
+    this.setState({
+      mode: "entry"
+    });
+  }
+
+  switchMode = (newMode, address) => {
+    this.setState({
+      mode: newMode,
+      editAddress: address
+    });
   }
 
   // Address Book helpers
@@ -204,52 +263,54 @@ class AddressBook extends Component {
    * @since 2.0.0
    * @param {Object} address - new or updated address object.
    */
-  onAdd = (address) => {
+  onAdd = (address, validateAddress = true) => {
     const { addAddress, onError, updateAddress } = this.props;
     // if edit address is in the address book form
     if (this.hasEditAddress) {
       const { editAddress } = this.state;
       // new object with editAddress _id and the param addess data
-      updateAddress({ _id: editAddress._id, ...address }).catch(onError);
       this.clearForm();
-    } else {
-      addAddress(address).catch(onError);
+      return updateAddress({ _id: editAddress._id, ...address }).catch(onError);
     }
+    return addAddress(address, validateAddress)
+      .then((result) => {
+        if (result && result.validated === false) {
+          this.setState({
+            mode: "review",
+            validationResults: result
+          });
+        } else {
+          this.setState({
+            mode: "grid"
+          });
+        }
+      })
+      .catch(onError);
   }
 
   // Address Book Actions
 
   /**
-   * @method toggleEntryMode
-   * @summary toggles the entryMode state.
-   * @since 2.0.0
-   */
-  toggleEntryMode = () => {
-    const { entryMode } = this.state;
-    this.setState({ entryMode: !entryMode });
-  }
-
-  /**
    * @method onCancel
-   * @summary toggles the entryMode state and clears the address book form.
+   * @summary sets mode to "grid" and clears the address book form.
    * this will only be called from the address book form.
    * @since 2.0.0
    */
   onCancel = () => {
-    this.toggleEntryMode();
+    this.mode = "grid";
     this.clearForm();
   }
 
   /**
    * @method onEdit
-   * @summary sets the address to be edited and toggles the entryMode state.
+   * @summary sets the address to be edited and makes the mode as "entry".
    * this will only be called form the address book grid.
    * @since 2.0.0
    */
   onEdit = (_id) => {
     const editAddress = this.findAddress(_id);
     this.setState({ editAddress });
-    this.toggleEntryMode();
+    this.mode = "entry";
   }
 
   // Address Book JSX
@@ -293,10 +354,10 @@ class AddressBook extends Component {
    * @return {Object} - JSX
    */
   renderControlBar() {
-    const { entryMode } = this.state;
+    const { mode } = this.state;
 
     let controlBarContent;
-    if (entryMode && !this.hasEditAddress) {
+    if (mode === "entry" && !this.hasEditAddress) {
       // active form with no edit address
       let translationContent;
       if (this.hasAddress) {
@@ -310,15 +371,15 @@ class AddressBook extends Component {
       controlBarContent = (
         <Components.Translation {...translationContent} />
       );
-    } else if (entryMode && this.hasEditAddress) {
+    } else if (mode === "entry" && this.hasEditAddress) {
       // active form with an edit address
       // show editing address message
       controlBarContent = (
         <Components.Translation defaultValue="Editing this address entry" i18nKey="addressBookEdit.editAddress" />
       );
-    } else {
+    } else if (mode === "grid") {
       controlBarContent = (
-        <button className="btn btn-default" onClick={this.toggleEntryMode}>
+        <button className="btn btn-default" onClick={this.setEntryMode}>
           <i className="fa fa-plus fa-lg address-icons" />
           <Components.Translation defaultValue="Add Address" i18nKey="addressBookGrid.addAddress"/>
         </button>
@@ -334,18 +395,19 @@ class AddressBook extends Component {
 
   /**
    * @method renderContent
-   * @summary renders ether the AddressBookForm or AddressBookGrid components
-   * if the entryMode is active or not.
+   * @summary renders the AddressBookForm, AddressBookGrid, AddressBookReview components
+   * based on mode.
    * @since 2.0.0
    * @return {Object} - JSX and child component.
    */
   renderContent() {
+    console.log("Rendering", this.state.mode);
     const { addressBook } = this;
     const { countries, regionsByCountry } = this.props;
-    const { editAddress, entryMode } = this.state;
+    const { editAddress, mode } = this.state;
 
     let content;
-    if (entryMode) {
+    if (mode === "entry") {
       content = (
         <Components.AddressBookForm
           add={this.onAdd}
@@ -356,13 +418,22 @@ class AddressBook extends Component {
           regionsByCountry={regionsByCountry}
         />
       );
-    } else {
+    } else if (mode === "grid") {
       content = (
         <Components.AddressBookGrid
           addressBook={addressBook}
           edit={this.onEdit}
           remove={this.onRemove}
           select={this.onSelect}
+        />
+      );
+    } else {
+      content = (
+        <Components.AddressBookReview
+          addressBook={addressBook}
+          add={this.onAdd}
+          validationResults={this.state.validationResults}
+          switchMode={this.switchMode}
         />
       );
     }

@@ -20,6 +20,10 @@ function linesToTaxes(lines) {
 MethodHooks.after("taxes/calculate", (options) => {
   const cartId = options.arguments[0];
   const cartToCalc = Cart.findOne(cartId);
+  if (cartToCalc.taxCalculationFailed || cartToCalc.userBypassedAddressValidation) {
+    // User bypassed address validation so we can't calc taxes so don't even try
+    return options.result;
+  }
   const pkg = taxCalc.getPackageData();
 
   Logger.debug("Avalara triggered on taxes/calculate for cartId:", cartId);
@@ -35,6 +39,8 @@ MethodHooks.after("taxes/calculate", (options) => {
         // for bad auth, timeout, or misconfiguration there's nothing we can do so keep moving
       } else if ([503, 400, 401].includes(result.error.errorCode)) {
         Logger.error("Timeout, Authentification, or Misconfiguration error: Not trying to estimate cart");
+      } else if (result.error.errorCode === 300) {
+        Logger.error("Cannot validate address so we cannot calculate tax, skipping");
       } else {
         Logger.error("Unknown error", result.error.errorCode);
       }

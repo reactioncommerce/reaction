@@ -460,7 +460,8 @@
         "addAddress": "Add a new address entry",
         "createAddress": "Create your default address",
         "failedToAddAddress": "Failed to add address: {{err}}",
-        "validatedAddress": "Made changes to your address based upon validation. Please ensure this is correct"
+        "validatedAddress": "Made changes to your address based upon validation. Please ensure this is correct",
+        "valildationBypassed": "You have requested to bypass address validation"
       },
       "addressBookEdit": {
         "editAddress": "Editing this address entry",

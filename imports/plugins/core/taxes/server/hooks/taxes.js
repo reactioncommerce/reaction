@@ -16,9 +16,14 @@ import { Cart } from "/lib/collections";
 Cart.after.update((userId, cart, fieldNames) => {
   const trigger = ["discount", "billing", "shipping"];
 
+  let recalculateTax = false;
   for (const field of fieldNames) {
     if (indexOf(trigger, field) !== -1) {
-      Meteor.call("taxes/calculate", cart._id);
+      recalculateTax = true;
     }
+  }
+  if (recalculateTax) {
+    console.log("God has decided to recalculate tax ##########", fieldNames);
+    Meteor.call("taxes/calculate", cart._id);
   }
 });

@@ -135,10 +135,10 @@ export function syncUsersAndAccounts() {
 function getValidator() {
   const shopId = Reaction.getShopId();
   const geoCoders = Packages.find({
-    "registry.provides": "addressValidation",
+    "registry": { $elemMatch: { provides: "addressValidation" } },
     "settings.addressValidation.enabled": true,
     shopId,
-    "enabled": true
+    "settings.avalara.enabled": true
   }).fetch();
 
   if (!geoCoders.length) {
@@ -265,28 +265,29 @@ export function validateAddress(address) {
 
   let validated = true;
   let validationErrors;
-  let validatedAddress = address;
+  let suggestedAddress = {};
   let formErrors;
   const validator = getValidator();
   if (validator) {
     const validationResult = Meteor.call(validator, address);
-    ({ validatedAddress } = validationResult);
+    ({ validatedAddress: suggestedAddress } = validationResult);
     formErrors = validationResult.errors;
-    if (validatedAddress) {
-      validationErrors = compareAddress(address, validatedAddress);
+    if (suggestedAddress) {
+      validationErrors = compareAddress(address, suggestedAddress);
       if (validationErrors.totalErrors || formErrors.length) {
         validated = false;
-        validatedAddress.failedValidation = true;
+        suggestedAddress.failedValidation = true;
       }
     } else {
       // No address, fail validation
       validated = false;
-      validatedAddress = {
+      suggestedAddress = {
         failedValidation: true
       };
     }
   }
-  const validationResults = { validated, fieldErrors: validationErrors, formErrors, validatedAddress };
+  suggestedAddress = { ...address, ...suggestedAddress };
+  const validationResults = { validated, fieldErrors: validationErrors, formErrors, suggestedAddress, enteredAddress: address };
   return validationResults;
 }
 
@@ -1046,6 +1047,28 @@ export function setProfileCurrency(currencyName) {
   }
 }
 
+/**
+ * @name markAddressValidationBypassed
+ * @summary Write that the customer has bypassed address validation
+ * @returns {Number} updateResult - Result of the update
+ */
+function markAddressValidationBypassed() {
+  const userId = Meteor.userId();
+  const updateResult = Cart.update({ userId }, { $set: { bypassAddressValidation: true } });
+  return updateResult;
+}
+
+/**
+   * @name markTaxCalculationFailed
+   * @summary Write tax calculation has failed for this customer
+   * @returns {Number} updateResult - Result of the update
+   */
+function markTaxCalculationFailed() {
+  const userId = Meteor.userId();
+  const updateResult = Cart.update({ userId }, { $set: { taxCalculationFailed: true } });
+  return updateResult;
+}
+
 Meteor.methods({
   "accounts/verifyAccount": verifyAccount,
   "accounts/validateAddress": validateAddress,
@@ -1062,5 +1085,7 @@ Meteor.methods({
   "accounts/createFallbackLoginToken": createFallbackLoginToken,
   "accounts/updateEmailAddress": updateEmailAddress,
   "accounts/removeEmailAddress": removeEmailAddress,
-  "accounts/setProfileCurrency": setProfileCurrency
+  "accounts/setProfileCurrency": setProfileCurrency,
+  "accounts/markAddressValidationBypassed": markAddressValidationBypassed,
+  "accounts/markTaxCalculationFailed": markTaxCalculationFailed
 });

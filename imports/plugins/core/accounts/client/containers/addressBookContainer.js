@@ -25,9 +25,16 @@ function updateAddress(address, property) {
         if (result) resolve(result);
       });
     } else {
-      Meteor.call("accounts/addressBookUpdate", address, (error, result) => {
-        if (error || !result) reject(i18next.t("addressBookGrid.somethingWentWrong", { err: error.message }));
-        if (result) resolve(result);
+      Meteor.call("accounts/validateAddress", address, (error, result) => {
+        if (error || !result) reject(i18next.t("addressBookAdd.failedToupdateAddress", { err: error.message }));
+        if (result && result.validated) {
+          Meteor.call("accounts/addressBookUpdate", address, (err, res) => {
+            if (err || !res) reject(i18next.t("addressBookGrid.somethingWentWrong", { err: err.message }));
+            if (res) resolve(res);
+          });
+        } else {
+          resolve(result);
+        }
       });
     }
   });
@@ -56,17 +63,28 @@ function removeAddress(_id) {
  * @param {Object} address - address to be added.
  * @return {Promise}
  */
-function addAddress(address) {
+function addAddress(address, validateAddress = true) {
   return new Promise((resolve, reject) => {
-    Meteor.call("accounts/validateAddress", address, (error, result) => {
-      if (error || !result) reject(i18next.t("addressBookAdd.failedToAddAddress", { err: error.message }));
-      if (result && result.validated) {
-        Meteor.call("accounts/addressBookAdd", address, (err, res) => {
-          if (err || !res) reject(i18next.t("addressBookAdd.failedToAddAddress", { err: err.message }));
-          if (res) resolve(res);
-        });
-      }
-    });
+    if (validateAddress) {
+      // This address was tried for validation
+      address.validationAttempted = true;
+      Meteor.call("accounts/validateAddress", address, (error, result) => {
+        if (error || !result) reject(i18next.t("addressBookAdd.failedToAddAddress", { err: error.message }));
+        if (result && result.validated) {
+          Meteor.call("accounts/addressBookAdd", address, (err, res) => {
+            if (err || !res) reject(i18next.t("addressBookAdd.failedToAddAddress", { err: err.message }));
+            if (res) resolve(res);
+          });
+        } else {
+          resolve(result);
+        }
+      });
+    } else {
+      Meteor.call("accounts/addressBookAdd", address, (err, res) => {
+        if (err || !res) reject(i18next.t("addressBookAdd.failedToAddAddress", { err: err.message }));
+        if (res) resolve(res);
+      });
+    }
   });
 }
 
@@ -138,6 +156,11 @@ const wrapComponent = (Comp) => (
       })
     }
 
+    constructor(props) {
+      super(props);
+      console.log("***************** AddressBookContainer is made again ******************");
+    }
+
     render() {
       return (
         <Comp
@@ -154,6 +177,7 @@ const wrapComponent = (Comp) => (
 
 function composer(props, onData) {
   const account = Collections.Accounts.findOne({ _id: Meteor.userId() });
+  console.log(account, account.profile.addressBook);
   const { addressBook } = account.profile;
   const countries = Countries.find().fetch();
   const template = Template.instance();

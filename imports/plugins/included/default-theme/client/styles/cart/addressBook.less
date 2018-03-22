@@ -4,6 +4,57 @@
     .panel-heading {
       .panel-default > .panel-heading;
     }
+    .address-review {
+      margin-top: 20px;
+      input {
+        margin: 0px 5px 0px 0px;
+      }
+      .radio-heading {
+        margin-bottom: 20px;
+      }
+      .entered-address {
+        display: inline-block;
+        width: 40%;
+        padding-left: 10%;
+        border-width: 0px 1px 0px 0px;
+        border-style: solid;
+        border-right-color: grey;
+        line-height: 1.6em;
+        border-color: #EBEBEB;
+        .error {
+          padding: 0px 4px 0px 4px;
+          display: inline;
+          background: #FCEFEF;
+          border-color: #DEA7AA;
+          border: 1px solid;
+          border-radius: 4px;
+        }
+        span {
+          font-weight: 600;
+        }
+      }
+      
+      .suggested-address {
+        display: inline-block;
+        padding-left: 10%;
+        line-height: 1.6em;
+        span {
+          font-weight: 600;
+        }
+      }
+      .panel-buttons {
+        margin-top: 15px;
+        button {
+          display: block;
+          float: right;
+        }
+        #reviewAddressEditButton {
+          float: right;
+          margin: 6px 22px;
+          cursor: pointer;
+        }
+      }
+    }
   }
 
   .list-group-item {
