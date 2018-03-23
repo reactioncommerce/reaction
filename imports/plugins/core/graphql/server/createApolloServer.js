@@ -8,7 +8,7 @@ import schema from "./schema";
 
 const defaultServerConfig = {
   // graphql endpoint
-  path: "/graphql",
+  path: "/graphql-alpha",
   // GraphiQL endpoint
   graphiqlPath: "/graphiql",
   // GraphiQL options (default: log the current user in your request)
