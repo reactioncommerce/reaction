@@ -17,7 +17,8 @@ export default function updateAccountAddressBookEntry(_, { input }, context) {
   const { accountId, addressId, clientMutationId, type, updates } = input;
   const dbAccountId = decodeAccountOpaqueId(accountId);
   const address = xformAddressInput({ ...updates, _id: addressId });
-  const account = context.methods["accounts/addressBookUpdate"](context, [address, dbAccountId, type]);
+  context.methods["accounts/addressBookUpdate"](context, [address, dbAccountId, type]);
+  // const account = context.methods["accounts/addressBookUpdate"](context, [address, dbAccountId, type]);
   // TODO returns the whole updated account. Need to grab just the address that was updated,
   // transform it, and return that.
   return {

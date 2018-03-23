@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 /**
  * Changes going from account MongoDB schema to the GraphQL schema:
  * - acceptsMarketing is removed.

@@ -11,7 +11,9 @@ const MAX_LIMIT = 50;
  * @returns The adjusted integer value.
  */
 function parseValue(value) {
-  if (typeof value !== "number" || isNaN(value)) return MAX_LIMIT;
+  // Note that we do not have to do isNaN(value) check here because GraphQLScalarType will not call this for isNaN.
+  // Instead it automatically changes isNaN to undefined.
+  if (typeof value !== "number") return MAX_LIMIT;
   return Math.min(Math.max(1, value), MAX_LIMIT);
 }
 

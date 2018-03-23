@@ -1,6 +1,8 @@
 import {
   assocInternalId,
+  assocOpaqueId,
   decodeOpaqueId,
+  decodeOpaqueIdForNamespace,
   encodeOpaqueId
 } from "./id";
 
@@ -8,10 +10,21 @@ const testNamespace = "reaction/accounts";
 const testId = "12345";
 const testOpaqueId = "cmVhY3Rpb24vYWNjb3VudHM6MTIzNDU=";
 
-test("decodeOpaqueId returns an object with namespace and id", () => {
+test("decodeOpaqueId returns an object with namespace and ID", () => {
   const { namespace, id } = decodeOpaqueId(testOpaqueId);
   expect(namespace).toBe(testNamespace);
   expect(id).toBe(testId);
+});
+
+test("decodeOpaqueIdForNamespace returns just the ID", () => {
+  const id = decodeOpaqueIdForNamespace(testNamespace, testOpaqueId);
+  expect(id).toBe(testId);
+});
+
+test("decodeOpaqueIdForNamespace throws an error if the namespace is incorrect", () => {
+  expect(() => {
+    decodeOpaqueIdForNamespace("foo", testOpaqueId);
+  }).toThrowError("ID namespace must be foo");
 });
 
 test("encodeOpaqueId returns an opaque, base64-encoded, namespaced id", () => {
@@ -26,13 +39,24 @@ test("encodeOpaqueId passes through null", () => {
   expect(encodeOpaqueId(testNamespace, null)).toBe(null);
 });
 
-test("assocInternalId associates an internal ID to an object", () => {
+test("assocInternalId associates an internal _id to an object", () => {
   const input = {
     _id: testOpaqueId,
     foo: "baz"
   };
   expect(assocInternalId(testNamespace, input)).toEqual({
     _id: testId,
+    foo: "baz"
+  });
+});
+
+test("assocOpaqueId associates an opaque _id to an object", () => {
+  const input = {
+    _id: testId,
+    foo: "baz"
+  };
+  expect(assocOpaqueId(testNamespace, input)).toEqual({
+    _id: testOpaqueId,
     foo: "baz"
   });
 });

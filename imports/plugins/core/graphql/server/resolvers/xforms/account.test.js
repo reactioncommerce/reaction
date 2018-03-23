@@ -1,6 +1,8 @@
 import { map } from "ramda";
 import {
+  assocAccountInternalId,
   assocAccountOpaqueId,
+  decodeAccountOpaqueId,
   encodeAccountOpaqueId,
   xformAccountInput,
   xformAccountResponse
@@ -10,7 +12,7 @@ const testId = "12345";
 const testOpaqueId = "cmVhY3Rpb24vYWNjb3VudDoxMjM0NQ==";
 
 test("encodeAccountOpaqueId returns an opaque, base64-encoded, Account namespaced id", () => {
-  expect(encodeAccountOpaqueId(testId)).toEqual(testOpaqueId);
+  expect(encodeAccountOpaqueId(testId)).toBe(testOpaqueId);
 });
 
 test("assocAcountOpaqueId returns an Account-namespaced, opaque ID to an object", () => {
@@ -24,18 +26,19 @@ test("assocAcountOpaqueId returns an Account-namespaced, opaque ID to an object"
   });
 });
 
-// Not actually in code to test, but demonstrates a map with curried fn.
-test("example map over Account array", () => {
-  const input = [
-    { _id: "00000", foo: "bar" },
-    { _id: "11111", foo: "baz" },
-    { _id: "22222", foo: "boo" }
-  ];
-  expect(map(assocAccountOpaqueId, input)).toEqual([
-    { _id: "cmVhY3Rpb24vYWNjb3VudDowMDAwMA==", foo: "bar" },
-    { _id: "cmVhY3Rpb24vYWNjb3VudDoxMTExMQ==", foo: "baz" },
-    { _id: "cmVhY3Rpb24vYWNjb3VudDoyMjIyMg==", foo: "boo" }
-  ]);
+test("decodeAccountOpaqueId returns the internal ID from opaque ID", () => {
+  expect(decodeAccountOpaqueId(testOpaqueId)).toBe(testId);
+});
+
+test("assocAccountInternalId transforms the _id on an object from Address-namespaced opaque ID to internal", () => {
+  const input = {
+    _id: testOpaqueId,
+    foo: "baz"
+  };
+  expect(assocAccountInternalId(input)).toEqual({
+    _id: testId,
+    foo: "baz"
+  });
 });
 
 const accountInput = {

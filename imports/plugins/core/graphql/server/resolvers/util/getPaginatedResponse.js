@@ -1,11 +1,11 @@
 import { curry } from "ramda";
 import applyBeforeAfterToFilter from "./applyBeforeAfterToFilter";
-import applyPaginationToMongoQuery from "./applyPaginationToMongoQuery";
+import applyPaginationToMongoCursor from "./applyPaginationToMongoCursor";
 import getCollectionFromCursor from "./getCollectionFromCursor";
 import getMongoSort from "./getMongoSort";
 
 const getPaginatedResponse = curry(async (xform, query, args) => {
-  const { totalCount, pageInfo } = await applyPaginationToMongoQuery(query, args);
+  const { totalCount, pageInfo } = await applyPaginationToMongoCursor(query, args);
 
   const collection = getCollectionFromCursor(query);
   const baseFilter = query.cmd.query;

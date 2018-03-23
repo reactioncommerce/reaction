@@ -5,6 +5,5 @@ export const assocAddressInternalId = assocInternalId(namespaces.Address);
 export const assocAddressOpaqueId = assocOpaqueId(namespaces.Address);
 export const decodeAddressOpaqueId = decodeOpaqueIdForNamespace(namespaces.Address);
 export const encodeAddressOpaqueId = encodeOpaqueId(namespaces.Address);
-
-export const xformAddressResponse = assocAddressOpaqueId;
 export const xformAddressInput = assocAddressInternalId;
+export const xformAddressResponse = assocAddressOpaqueId;
