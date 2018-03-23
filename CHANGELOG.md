@@ -1,3 +1,37 @@
+# v1.10.0
+
+In addition to a few performance updates, refactors, and bug fixes, this release starts the rollout of our GraphQL API. Until further notice, this GraphQL API should be considered a prototype and should not be used for production. If you're interested in following along with our GraphQL work, tracking our [GraphQL issues](https://github.com/reactioncommerce/reaction/issues?utf8=%E2%9C%93&q=is%3Aissue+graphql+) is probably the easiest way for now.
+
+In short, this release adds a prototype GraphQL server running in the Reaction project with the following urls exposed:
+
+```
+/graphql - The GraphQL endpoint.
+/graphiql - The GraphiQL user interface.
+```
+
+We'll be incrementally adding functionality to this GraphQL endpoint, but this release serves as the starting point for our GraphQL api.
+
+This release also removes the collection hooks for the Products collection. While we've not quite fully removed the collection hooks package from the app, we're almost done replacing all bits of code that use collection hooks internally. Once that's done, we will remove the [meteor-collection-hooks](https://github.com/matb33/meteor-collection-hooks) package. If you're app or plugin is dependent on collection hooks, we'd recommend refactoring to eliminate the need for those types of hooks. If you're not up for refactoring you can just add that package back into your app though you'll lose the benefits that Reaction will see by eliminating that dependency.
+
+ ## GraphQL
+ - GraphQL Prototype (#3898) .. Resolves #3935, Resolves #3928, Resolves #3910
+ - GraphQL Jest testing pattern (#3995) .. Resolves #3936
+
+## Refactors
+ - Remove collection hooks in search mongo package (#3889) .. Resolves #3866
+ - Remove collection hooks for Products collection (#3825)
+
+## Performance
+ - Memoize/Cache getShopId to Reduce DB Load (#3510) .. Resolves #3507
+
+## Fixes
+ - fix: typo fix (#4000) .. Resolves #3975
+ - fix: Browser console warning when beginning checkout (#3980)
+ - fix: PDP Image gallery does not handle portrait sized images well (#3993)
+
+## Docs
+ - docs(jsdoc): namespace MethodHooks into its own JSDoc section. (#3844) .. Resolves #3840
+
 # v1.9.0
 This release contains a lot of fixes, some of them performance related and several enormous refactors.
 The three biggest changes are:

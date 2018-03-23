@@ -417,7 +417,7 @@ export function addressBookAdd(address, accountUserId) {
 export function addressBookUpdate(address, accountUserId, type) {
   Schemas.Address.validate(address);
   check(accountUserId, Match.OneOf(String, null, undefined));
-  check(type, Match.Optional(String));
+  check(type, Match.Maybe(String));
   // security, check for admin access. We don't need to check every user call
   // here because we are calling `Meteor.userId` from within this Method.
   if (typeof accountUserId === "string") { // if this will not be a String -

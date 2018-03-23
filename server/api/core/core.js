@@ -2,7 +2,7 @@ import url from "url";
 import packageJson from "/package.json";
 import _, { merge, uniqWith } from "lodash";
 import { Meteor } from "meteor/meteor";
-import { check, Match } from "meteor/check";
+import { check } from "meteor/check";
 import { Random } from "meteor/random";
 import { Accounts } from "meteor/accounts-base";
 import { Roles } from "meteor/alanning:roles";
@@ -14,6 +14,7 @@ import { registerTemplate } from "./templates";
 import { sendVerificationEmail } from "./accounts";
 import { getMailUrl } from "./email/config";
 import { createGroups } from "./groups";
+import ConnectionDataStore from "./connectionDataStore";
 
 /**
  * @file Server core methods
@@ -25,7 +26,6 @@ import { createGroups } from "./groups";
 const { Jobs, Packages, Shops, Accounts: AccountsCollection } = Collections;
 
 export default {
-
   init() {
     // run beforeCoreInit hooks
     Hooks.Events.run("beforeCoreInit");
@@ -368,25 +368,57 @@ export default {
    * @name getShopId
    * @method
    * @memberof Core
-   * @summary Get shop ID
-   * @todo This should intelligently find the correct default shop Probably whatever the main shop is or marketplace
-   * @param  {String} userId User ID String
+   * @summary Get shop ID, first by checking the current user's preferences
+   * then by getting the shop by the current domain.
+   * @todo should we return the Primary Shop if none found?
    * @return {String} active shop ID
    */
-  getShopId(userId) {
-    check(userId, Match.Maybe(String));
-    const activeUserId = Meteor.call("reaction/getUserId");
-    if (activeUserId || userId) {
-      const activeShopId = this.getUserPreferences({
-        userId: activeUserId || userId,
-        packageName: "reaction",
-        preference: "activeShopId"
-      });
-      if (activeShopId) {
-        return activeShopId;
-      }
+  getShopId() {
+    // is there a stored value?
+    let shopId = ConnectionDataStore.get("shopId");
+
+    // if so, return it
+    if (shopId) {
+      return shopId;
     }
 
+    try {
+      // otherwise, find the shop by user settings
+      shopId = this.getUserShopId(Meteor.userId());
+    } catch (e) {
+      // `Meteor.userId` will raise an error when invoked outside of a method
+      // call or publication, i.e., at startup. That's ok here.
+    }
+
+    // if still not found, look up the shop by domain
+    if (!shopId) {
+      shopId = this.getShopIdByDomain();
+    }
+
+    // store the value for faster responses
+    ConnectionDataStore.set("shopId", shopId);
+
+    return shopId;
+  },
+
+  /**
+   * @name clearCache
+   * @method
+   * @memberof Core
+   * @summary allows the client to trigger an uncached lookup of the shopId.
+   *          this is useful when a user switches shops.
+   */
+  resetShopId() {
+    ConnectionDataStore.clear("shopId");
+  },
+
+  /**
+   * @name getShopIdByDomain
+   * @method
+   * @memberof Core
+   * @summary returns the shop which should be used given the current domain
+   */
+  getShopIdByDomain() {
     const domain = this.getDomain();
     const shop = Shops.find({
       domains: domain
@@ -396,7 +428,26 @@ export default {
         _id: 1
       }
     }).fetch()[0];
+
     return shop && shop._id;
+  },
+
+  /**
+   * @name getUserShopId
+   * @method
+   * @memberof Core
+   * @summary Get a user's shop ID, as stored in preferences
+   * @todo This should intelligently find the correct default shop Probably whatever the main shop is or marketplace
+   * @return {StringId}        active shop ID
+   */
+  getUserShopId(userId) {
+    check(userId, String);
+
+    return this.getUserPreferences({
+      userId,
+      packageName: "reaction",
+      preference: "activeShopId"
+    });
   },
 
   /**

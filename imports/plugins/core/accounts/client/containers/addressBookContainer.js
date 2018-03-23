@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import PropTypes from "prop-types";
 import { compose } from "recompose";
 import { Meteor } from "meteor/meteor";
 import { Template } from "meteor/templating";
@@ -19,24 +18,13 @@ import AddressBook from "../components/addressBook";
  */
 function updateAddress(address, property) {
   return new Promise((resolve, reject) => {
-    if (property) {
-      Meteor.call("accounts/addressBookUpdate", address, null, property, (error, result) => {
-        if (error || !result) reject(i18next.t("addressBookGrid.somethingWentWrong", { err: error.message }));
-        if (result) resolve(result);
-      });
-    } else {
-      Meteor.call("accounts/validateAddress", address, (error, result) => {
-        if (error || !result) reject(i18next.t("addressBookAdd.failedToupdateAddress", { err: error.message }));
-        if (result && result.validated) {
-          Meteor.call("accounts/addressBookUpdate", address, (err, res) => {
-            if (err || !res) reject(i18next.t("addressBookGrid.somethingWentWrong", { err: err.message }));
-            if (res) resolve(res);
-          });
-        } else {
-          resolve(result);
-        }
-      });
-    }
+    Meteor.call("accounts/addressBookUpdate", address, null, property, (error, result) => {
+      if (error || !result) {
+        reject(i18next.t("addressBookGrid.somethingWentWrong", { err: error.message }));
+      } else {
+        resolve(result);
+      }
+    });
   });
 }
 
@@ -50,8 +38,11 @@ function updateAddress(address, property) {
 function removeAddress(_id) {
   return new Promise((resolve, reject) => {
     Meteor.call("accounts/addressBookRemove", _id, (error, result) => {
-      if (error || !result) reject(i18next.t("addressBookGrid.cantRemoveThisAddress", { err: error.message }));
-      if (result) resolve(result);
+      if (error || !result) {
+        reject(i18next.t("addressBookGrid.cantRemoveThisAddress", { err: error.message }));
+      } else {
+        resolve(result);
+      }
     });
   });
 }
@@ -65,19 +56,29 @@ function removeAddress(_id) {
  */
 function addAddress(address, validateAddress = true) {
   return new Promise((resolve, reject) => {
+    // This address was tried for validation
     if (validateAddress) {
-      // This address was tried for validation
       address.validationAttempted = true;
       Meteor.call("accounts/validateAddress", address, (error, result) => {
-        if (error || !result) reject(i18next.t("addressBookAdd.failedToAddAddress", { err: error.message }));
-        if (result && result.validated) {
-          Meteor.call("accounts/addressBookAdd", address, (err, res) => {
-            if (err || !res) reject(i18next.t("addressBookAdd.failedToAddAddress", { err: err.message }));
-            if (res) resolve(res);
-          });
-        } else {
+        if (error || !result) {
+          let errorMessage = (error && error.message) || "Validation Failed";
+          if (error && error.error === "validation-error" && Array.isArray(error.details) && error.details.length) {
+          // Add details of first invalid field from SimpleSchema
+            errorMessage = error.details[0].message;
+          }
+          reject(i18next.t("addressBookAdd.failedToAddAddress", { err: errorMessage }));
+          return;
+        } else if (result && !result.validated === false) {
           resolve(result);
+          return;
         }
+        Meteor.call("accounts/addressBookAdd", address, (err, res) => {
+          if (err || !res) {
+            reject(i18next.t("addressBookAdd.failedToAddAddress", { err: err.message }));
+          } else {
+            resolve(res);
+          }
+        });
       });
     } else {
       Meteor.call("accounts/addressBookAdd", address, (err, res) => {
@@ -100,61 +101,7 @@ function onError(errorMessage) {
 
 const wrapComponent = (Comp) => (
   class AddressBookContainer extends Component {
-    static propTypes = {
-      /**
-       * array of address objects
-       */
-      addressBook: PropTypes.arrayOf(PropTypes.shape({
-        _id: PropTypes.String,
-        fullName: PropTypes.String,
-        address1: PropTypes.String,
-        addresss2: PropTypes.String,
-        postal: PropTypes.String,
-        city: PropTypes.String,
-        region: PropTypes.String,
-        country: PropTypes.String,
-        phone: PropTypes.String,
-        isBillingDefault: PropTypes.Bool,
-        isShippingDefault: PropTypes.Bool,
-        isCommercal: PropTypes.Bool
-      })),
-      /**
-       * country options for select
-       */
-      countries: PropTypes.arrayOf(PropTypes.shape({
-        label: PropTypes.String,
-        value: PropTypes.String
-      })),
-      /**
-       *  Heading content for address book
-       */
-      heading: PropTypes.shape({
-        /**
-         * Heading title
-         */
-        defaultValue: PropTypes.String,
-        /**
-         * i18nKey for heading title
-         */
-        i18nKey: PropTypes.String,
-        /**
-         * If in checkout view, addressbook checkout step position and icon className
-         */
-        checkout: PropTypes.shape({
-          icon: PropTypes.String,
-          position: PropTypes.Number
-        })
-      }),
-      /**
-       * regions by county
-       */
-      regionsByCountry: PropTypes.shape({
-        countryCode: PropTypes.arrayOf(PropTypes.shape({
-          label: PropTypes.String,
-          value: PropTypes.String
-        }))
-      })
-    }
+    static propTypes = Comp.PropTypes;
 
     constructor(props) {
       super(props);
@@ -186,11 +133,10 @@ function composer(props, onData) {
   const shop = Collections.Shops.findOne();
   const shopCountries = shop.locales.countries;
 
-  let regionsByCountry;
+  const regionsByCountry = {};
   Object.keys(shopCountries).forEach((key) => {
-    const { states } = shopCountries[key] || undefined;
+    const { states } = shopCountries[key] || {};
     const regions = [];
-    const country = {};
     if (states) {
       // states is an object that needs to be convered
       // to an array of region labels and values
@@ -201,8 +147,7 @@ function composer(props, onData) {
         });
       });
     }
-    country[key] = regions;
-    regionsByCountry = { ...regionsByCountry, ...country };
+    regionsByCountry[key] = regions;
   });
 
   let heading;

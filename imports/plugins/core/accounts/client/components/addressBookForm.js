@@ -30,12 +30,7 @@ class AddressBookForm extends Component {
     /**
      * regions by county
      */
-    regionsByCountry: PropTypes.shape({
-      countryCode: PropTypes.arrayOf(PropTypes.shape({
-        label: PropTypes.String,
-        value: PropTypes.String
-      }))
-    })
+    regionsByCountry: PropTypes.object
   }
 
   state = {
@@ -70,14 +65,20 @@ class AddressBookForm extends Component {
    * @param {String} country - country code "US" "CA" "JP"
    */
   setRegionOptions(country) {
-    const { regionsByCountry } = this.props;
+    const { regionsByCountry, editAddress } = this.props;
     const { fields } = this.state;
     const regions = regionsByCountry[country];
-    // setting the fields region to be the
-    // first region in options array
-    const [firstRegion] = regions;
-    fields.region = firstRegion;
-    this.setState({ regions, fields });
+
+    // if the region field is empty
+    if (Object.keys(editAddress).length) {
+      this.setState({ regions });
+    } else {
+      // setting the fields region to be the
+      // first region in options array
+      const [firstRegion] = regions;
+      fields.region = firstRegion;
+      this.setState({ regions, fields });
+    }
   }
 
   // Address Book Form Actions
