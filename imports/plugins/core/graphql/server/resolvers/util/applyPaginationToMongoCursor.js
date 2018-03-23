@@ -36,8 +36,8 @@ export default async function applyPaginationToMongoCursor(cursor, { first, last
   return {
     totalCount,
     pageInfo: {
-      hasNextPage: first ? resultCount >= first : null,
-      hasPreviousPage: last ? resultCount >= last : null
+      hasNextPage: !!first && resultCount >= first,
+      hasPreviousPage: !!last && resultCount >= last
     }
   };
 }
