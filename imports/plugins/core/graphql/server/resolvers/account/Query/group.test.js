@@ -2,7 +2,7 @@ import group from "./group";
 
 const base64ID = "cmVhY3Rpb24vZ3JvdXA6YWJjMTMyMQ=="; // reaction/group:abc1321
 
-test("calls queries.groups with a shopId and retuns groups", async () => {
+test("calls queries.group with a group id should return a group", async () => {
   const groupQuery = jest.fn().mockName("groupQuery").mockReturnValueOnce({
     _id: "abc1321",
     name: "shop manager",
