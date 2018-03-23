@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 export const typeDefs = `
   # Represents a Reaction shop
   type Shop implements Node {

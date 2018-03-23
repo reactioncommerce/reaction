@@ -1,9 +1,19 @@
 import { decodeOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/id";
 
-export default async function applyBeforeAfterToFilter({ after, baseFilter, before, collection, sortBy: sortByField, sortOrder }) {
+export default async function applyBeforeAfterToFilter({
+  after,
+  baseFilter = {},
+  before,
+  collection,
+  sortBy: sortByField = "_id",
+  sortOrder = "asc"
+}) {
   let filter = baseFilter;
   const limits = {};
   const ors = [];
+
+  if (typeof sortByField !== "string") throw new Error("sortBy is required");
+  if (sortOrder !== "asc" && sortOrder !== "desc") throw new Error("sortOrder is required");
 
   if (after && before) throw new Error("Including both 'after' and 'before' params is not allowed");
 

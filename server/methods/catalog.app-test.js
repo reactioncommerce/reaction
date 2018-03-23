@@ -30,16 +30,7 @@ describe("core product methods", function () {
   let insertStub;
 
   before(function () {
-    // We are mocking inventory hooks, because we don't need them here, but
-    // if you want to do a real stress test, you could try to comment out
-    // this three lines. This is needed only for ./reaction test. In one
-    // package test this is ignoring.
-    if (Array.isArray(Products._hookAspects.remove.after) && Products._hookAspects.remove.after.length) {
-      updateStub = sinon.stub(Products._hookAspects.update.after[0], "aspect");
-      removeStub = sinon.stub(Products._hookAspects.remove.after[0], "aspect");
-      insertStub = sinon.stub(Products._hookAspects.insert.after[0], "aspect");
-    }
-    Products.direct.remove({});
+    Products.remove({});
   });
 
   after(function () {
@@ -298,7 +289,7 @@ describe("core product methods", function () {
     // cloning hierarchy, so the only way to track that will be cleaning
     // collection on before each test.
     beforeEach(function () {
-      return Products.direct.remove({});
+      return Products.remove({});
     });
 
     it("should throw 403 error by non admin", function () {

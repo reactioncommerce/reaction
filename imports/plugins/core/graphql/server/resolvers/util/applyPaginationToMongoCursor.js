@@ -1,8 +1,9 @@
 /**
  * Mostly borrowed from https://www.reindex.io/blog/relay-graphql-pagination-with-mongodb/
  */
-export default async function applyPaginationToMongoQuery(query, { first, last }) {
-  const totalCount = await query.clone().count();
+export default async function applyPaginationToMongoCursor(cursor, { first, last } = {}) {
+  const totalCount = await cursor.clone().count();
+  let resultCount = totalCount;
 
   if (first || last) {
     let limit;
@@ -22,19 +23,21 @@ export default async function applyPaginationToMongoQuery(query, { first, last }
     }
 
     if (skip) {
-      query.skip(skip);
+      cursor.skip(skip);
     }
 
     if (limit) {
-      query.limit(limit);
+      cursor.limit(limit);
     }
+
+    resultCount = await cursor.clone().count();
   }
 
   return {
     totalCount,
     pageInfo: {
-      hasNextPage: !!first && totalCount > first,
-      hasPreviousPage: !!last && totalCount > last
+      hasNextPage: first ? resultCount >= first : null,
+      hasPreviousPage: last ? resultCount >= last : null
     }
   };
 }
