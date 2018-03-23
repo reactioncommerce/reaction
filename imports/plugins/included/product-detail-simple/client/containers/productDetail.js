@@ -33,6 +33,14 @@ const wrapComponent = (Comp) => (
       };
     }
 
+    componentDidMount() {
+      this._isMounted = true;
+    }
+
+    componentWillUnmount() {
+      this._isMounted = false;
+    }
+
     handleCartQuantityChange = (event, quantity) => {
       this.setState({
         cartQuantity: Math.max(quantity, 1)
@@ -174,7 +182,9 @@ const wrapComponent = (Comp) => (
               $("#spin").addClass("hidden");
               $(".cart-alert-text").text(`${this.state.productClick * quantity} ${addToCartTitle} ${addToCartText}`);
               $(".cart-alert-text").fadeIn("slow");
-              this.setState({ productClick: 0 });
+              if (this._isMounted) {
+                this.setState({ productClick: 0 });
+              }
             }, 2000);
 
             clearTimeout(this.animationTimeOut);

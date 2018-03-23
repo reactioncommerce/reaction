@@ -1,4 +1,3 @@
-
 class Dependency {
   depend() {}
   changed() {}
