@@ -54,8 +54,8 @@ test("calls queries.shopAdministrators and returns a partial connection", async 
     nodes: transformedAccounts,
     pageInfo: {
       endCursor: "cmVhY3Rpb24vYWNjb3VudDpjMw==",
-      hasNextPage: null,
-      hasPreviousPage: null,
+      hasNextPage: false,
+      hasPreviousPage: false,
       startCursor: "cmVhY3Rpb24vYWNjb3VudDphMQ=="
     },
     totalCount: 3

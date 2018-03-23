@@ -20,6 +20,6 @@ const app = createApolloServer({
 });
 
 app.listen(PORT, () => {
-  console.info(`GraphQL listening at http://localhost:${PORT}/graphql`);
+  console.info(`GraphQL listening at http://localhost:${PORT}/graphql-alpha`);
   console.info(`GraphiQL UI: http://localhost:${PORT}/graphiql`);
 });
