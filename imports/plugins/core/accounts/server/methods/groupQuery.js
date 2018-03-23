@@ -13,13 +13,15 @@ import { Reaction } from "/lib/api";
 export function groupQuery(context, id) {
   const { userId } = context;
 
+  // If the user is an has sufficient permissions, then allow them to find any group by id
   if (Reaction.hasPermission(["owner", "admin", "reaction-accounts"], userId)) {
     // find groups by shop ID
-    return Groups.find({
+    return Groups.rawCollection().findOne({
       _id: id
     });
   }
 
+  // Otherwise, only let users see groups that they are members of
   const userAccount = Accounts.findOne({
     _id: userId,
     groups: {
