@@ -6,17 +6,15 @@ import { Hooks, Logger } from "/server/api";
 function handleImageRevision(revision) {
   let result = 0;
   if (revision.changeType === "insert") {
-    // TODO: after we've removed the hook, we shouldn't need updates
-    result = MediaRecords.direct.update({
+    result = MediaRecords.update({
       _id: revision.documentId
     }, {
       $set: {
-        metadata: revision.documentData
+        metadata: { ...revision.documentData, workflow: "published" }
       }
     });
   } else if (revision.changeType === "remove") {
-    // TODO: after we've removed the hook, we shouldn't need updates
-    result = MediaRecords.direct.update({
+    result = MediaRecords.update({
       _id: revision.documentId
     }, {
       $set: {
@@ -24,12 +22,11 @@ function handleImageRevision(revision) {
       }
     });
   } else if (revision.changeType === "update") {
-    // TODO: after we've removed the hook, we shouldn't need updates
-    result = MediaRecords.direct.update({
+    result = MediaRecords.update({
       _id: revision.documentId
     }, {
       $set: {
-        metadata: revision.documentData
+        metadata: { ...revision.documentData, workflow: "published" }
       }
     });
     Logger.debug(`setting metadata for ${revision.documentId} to ${JSON.stringify(revision.documentData, null, 4)}`);

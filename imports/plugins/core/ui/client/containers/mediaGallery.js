@@ -64,7 +64,7 @@ const wrapComponent = (Comp) => (
         imageHeight: 150
       }, (isConfirm) => {
         if (isConfirm) {
-          Media.remove(mediaId, (error) => {
+          Meteor.call("media/remove", mediaId, (error) => {
             if (error) {
               Alerts.toast(error.reason, "warning", {
                 autoHide: 10000
@@ -167,9 +167,11 @@ const wrapComponent = (Comp) => (
         // Do the upload. chunkSize is optional and defaults to 5MB
         fileRecord.upload({})
           // We insert only AFTER the server has confirmed that all chunks were uploaded
-          .then(() => Media.insert(fileRecord))
           .then(() => {
-            this.setState({ uploadProgress: null });
+            Meteor.call("media/insert", fileRecord.document, (error) => {
+              if (error) Alerts.toast(error.reason, "error");
+              this.setState({ uploadProgress: null });
+            });
           })
           .catch((error) => {
             this.setState({ uploadProgress: null });

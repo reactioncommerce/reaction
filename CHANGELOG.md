@@ -1,5 +1,9 @@
 # v1.10.0
 
+## Collection Hooks | Breaking Change!
+The biggest change in 1.10.0 is the removal of the [meteor-collection-hooks](https://github.com/matb33/meteor-collection-hooks) package. If your app or plugin is dependent on collection hooks, we'd recommend refactoring to eliminate the need for those types of hooks. If you're not up for refactoring you can just add that package back into your app though you'll lose some of the benefits that Reaction will see by eliminating that dependency. The removal of this package is a breaking change for any plugin that depends on collection hooks or uses the `direct` method to update a collection. For example, `Products.before`, `Products.after`, and `Products.direct` will no longer work. These hooks have all been migrated to our event hook system. If you were using Collection hooks to perform an action that you cannot perform in 1.10.0 with the current set of event hooks, please file an issue and we can determine if we need to add additional event hooks. This change should lead to much simpler code that is easier to understand.
+
+## New GraphQL API
 In addition to a few performance updates, refactors, and bug fixes, this release starts the rollout of our GraphQL API. Until further notice, this GraphQL API should be considered a prototype and should not be used for production. If you're interested in following along with our GraphQL work, tracking our [GraphQL issues](https://github.com/reactioncommerce/reaction/issues?utf8=%E2%9C%93&q=is%3Aissue+graphql+) is probably the easiest way for now.
 
 In short, this release adds a prototype GraphQL server running in the Reaction project with the following urls exposed:
@@ -11,23 +15,33 @@ In short, this release adds a prototype GraphQL server running in the Reaction p
 
 We'll be incrementally adding functionality to this GraphQL endpoint, but this release serves as the starting point for our GraphQL api.
 
-This release also removes the collection hooks for the Products collection. While we've not quite fully removed the collection hooks package from the app, we're almost done replacing all bits of code that use collection hooks internally. Once that's done, we will remove the [meteor-collection-hooks](https://github.com/matb33/meteor-collection-hooks) package. If you're app or plugin is dependent on collection hooks, we'd recommend refactoring to eliminate the need for those types of hooks. If you're not up for refactoring you can just add that package back into your app though you'll lose the benefits that Reaction will see by eliminating that dependency.
-
  ## GraphQL
- - GraphQL Prototype (#3898) .. Resolves #3935, Resolves #3928, Resolves #3910
- - GraphQL Jest testing pattern (#3995) .. Resolves #3936
+ - feat: GraphQL Prototype (#3898) .. Resolves #3935, Resolves #3928, Resolves #3910
+ - feat: GraphQL Jest testing pattern (#3995) .. Resolves #3936
+ - feat: Create GraphQL viewer query (#4019)
+ - feat: Create GraphQL account query (#3991)
 
 ## Refactors
- - Remove collection hooks in search mongo package (#3889) .. Resolves #3866
- - Remove collection hooks for Products collection (#3825)
+ - refactor: remove collection hooks in search mongo package (#3889) .. Resolves #3866
+ - refactor: remove collection hooks for Products collection (#3825)
+ - refactor: remove media hooks (#4035) .. Resolves #3994
+ - refactor: hooks in the inventory package to use Hooks.Events (#3887)
+ - refactor: remove collection hooks package (#4036)
 
 ## Performance
- - Memoize/Cache getShopId to Reduce DB Load (#3510) .. Resolves #3507
+ - perf: Memoize/Cache getShopId to Reduce DB Load (#3510) .. Resolves #3507
 
 ## Fixes
  - fix: typo fix (#4000) .. Resolves #3975
  - fix: Browser console warning when beginning checkout (#3980)
  - fix: PDP Image gallery does not handle portrait sized images well (#3993)
+ - fix: Cloning products is not reactive (#3964)
+ - fix: Uploading Product Image (#4029)
+ - fix: ProductsContainers are not replaceable (#4025)
+ - fix: ProductGridItem is not replaceable (#4027)
+
+## Tests
+ - CI: Run Jest and Meteor tests in parallel (#4030)
 
 ## Docs
  - docs(jsdoc): namespace MethodHooks into its own JSDoc section. (#3844) .. Resolves #3840

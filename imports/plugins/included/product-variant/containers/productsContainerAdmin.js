@@ -9,7 +9,7 @@ import { Tracker } from "meteor/tracker";
 import { Reaction } from "/client/api";
 import { ITEMS_INCREMENT } from "/client/config/defaults";
 import { ReactionProduct } from "/lib/api";
-import { applyProductRevision } from "/lib/api/products";
+import { applyProductRevision, resubscribeAfterCloning } from "/lib/api/products";
 import { Products, Tags, Shops } from "/lib/collections";
 import ProductsComponent from "../components/products";
 
@@ -72,7 +72,6 @@ const wrapComponent = (Comp) => (
       if (this.props.showNotFound === true) {
         return false;
       }
-
       const isInitialLoad = this.state.initialLoad === true;
       const isReady = this.props.productsSubscription.ready();
 
@@ -83,7 +82,6 @@ const wrapComponent = (Comp) => (
       if (isReady) {
         return true;
       }
-
       return false;
     }
 
@@ -160,6 +158,10 @@ function composer(props, onData) {
 
   const queryParams = Object.assign({}, tags, Reaction.Router.current().query, shopIds);
   const productsSubscription = Meteor.subscribe("Products", scrollLimit, queryParams, sort, editMode);
+  if (resubscribeAfterCloning.get()) {
+    resubscribeAfterCloning.set(false);
+    productsSubscription.stop();
+  }
 
   if (productsSubscription.ready()) {
     window.prerenderReady = true;

@@ -9,12 +9,12 @@
 
 set +e
 
-reaction test
+npm run test:app
 
 if [ $? -eq 0 ]; then
   echo "Reaction tests have passed!"
 else
   echo "Reaction tests failed. Trying one more time..."
   set -e
-  reaction test
+  npm run test:app
 fi

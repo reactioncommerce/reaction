@@ -14,6 +14,11 @@ Meteor.publish("PrimaryShop", () => Shops.find({
 Meteor.publish("MerchantShops", function (shopsOfUser = Reaction.getShopsForUser(["admin"], this.userId)) {
   check(shopsOfUser, Array);
 
+  // Check if user has permissions for those shops
+  if (Reaction.hasPermissionForAll(["admin"], this.userId, shopsOfUser)) {
+    throw new Meteor.Error("access-denied", "Shops requested don't belong to user");
+  }
+
   const domain = Reaction.getDomain();
   const { enabled } = Reaction.getMarketplaceSettings();
   // Don't publish currencies, languages, or locales for merchant shops.

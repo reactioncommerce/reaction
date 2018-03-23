@@ -18,12 +18,12 @@ describe("Fixtures:", function () {
 
   beforeEach(function () {
     sandbox = sinon.sandbox.create();
-    Collections.Orders.direct.remove();
+    Collections.Orders.remove();
   });
 
   afterEach(function () {
     sandbox.restore();
-    Collections.Orders.direct.remove();
+    Collections.Orders.remove();
   });
 
   it("Account fixture should create an account", function () {
