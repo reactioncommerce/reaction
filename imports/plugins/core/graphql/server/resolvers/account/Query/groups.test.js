@@ -3,13 +3,31 @@ import getFakeMongoCursor from "/imports/test-utils/helpers/getFakeMongoCursor";
 
 jest.mock("graphql-fields", () => jest.fn().mockName("graphqlFields"));
 
-const base64ID = "cmVhY3Rpb24vc2hvcDpzMTIz"; // reaction/shop:s123
+const shopBase64ID = "cmVhY3Rpb24vc2hvcDpzMTIz"; // reaction/shop:s123
 
-test("calls queries.groups with a shopId and retuns groups", async () => {
-  const groupsQuery = jest.fn().mockName("groupsQuery").mockReturnValueOnce(getFakeMongoCursor("Groups", [{
-    _id: "dLKH5uPjTTGK2qrWH",
-    name: "shop manager",
-    slug: "shop manager",
+const group1Base64ID = "cmVhY3Rpb24vZ3JvdXA6ZzE="; // reaction/group:g2
+const group2Base64ID = "cmVhY3Rpb24vZ3JvdXA6ZzI="; // reaction/group:g2
+const group3Base64ID = "cmVhY3Rpb24vZ3JvdXA6ZzM="; // reaction/group:g3
+
+const groupsData = [
+  {
+    _id: "g1",
+    name: "Shop Manager",
+    slug: "shop-manager",
+    permissions: [
+      "core",
+      "admin",
+      "createProduct",
+      "dashboard"
+    ],
+    shopId: "s123",
+    createdAt: "2018-03-21T21:36:36.307Z",
+    updatedAt: "2018-03-22T18:17:22.342Z"
+  },
+  {
+    _id: "g2",
+    name: "Product Manager",
+    slug: "product-manager",
     permissions: [
       "core",
       "createProduct",
@@ -18,13 +36,32 @@ test("calls queries.groups with a shopId and retuns groups", async () => {
     shopId: "s123",
     createdAt: "2018-03-21T21:36:36.307Z",
     updatedAt: "2018-03-22T18:17:22.342Z"
-  }]));
+  },
+  {
+    _id: "g3",
+    name: "Order Fulfilment",
+    slug: "shop manager",
+    permissions: [
+      "dashboard",
+      "orders"
+    ],
+    shopId: "s123",
+    createdAt: "2018-03-21T21:36:36.307Z",
+    updatedAt: "2018-03-22T18:17:22.342Z"
+  }
+];
 
-  const result = await groups(null, { shopId: base64ID }, {
+test("calls queries.groups with a shopId and retuns groups", async () => {
+  const groupsQuery = jest.fn().mockName("groupsQuery").mockReturnValueOnce(getFakeMongoCursor("Groups", groupsData));
+
+  const result = await groups(null, { shopId: shopBase64ID }, {
     queries: { groups: groupsQuery },
     userId: "123"
   });
 
   expect(result.nodes[0].shopId).toEqual("s123");
+  expect(result.nodes[0]._id).toEqual(group1Base64ID);
+  expect(result.nodes[1]._id).toEqual(group2Base64ID);
+  expect(result.nodes[2]._id).toEqual(group3Base64ID);
   expect(groupsQuery).toHaveBeenCalled();
 });
