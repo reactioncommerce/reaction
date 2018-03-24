@@ -31,7 +31,10 @@ function composer(props, onData) {
     }
     const options = { limit: props.pageSize, skip: props.skip };
     const ordersSubscription = Meteor.subscribe("CustomPaginatedOrders", query, options);
-    const total = Counts.get("orders-count");
+    let total = Counts.get("orders-count");
+    if (props.searchQuery !== "") {
+      total = orderSearchResults.length
+    }
     const pages = Math.ceil(total / props.pageSize);
     const page = props.page;
     if (ordersSubscription.ready()) {
