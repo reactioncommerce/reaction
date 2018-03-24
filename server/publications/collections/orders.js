@@ -144,7 +144,7 @@ Meteor.publish("CustomPaginatedOrders", function (query, options) {
   const skip  = (options && options.skip) ? options.skip : 0;
   const aggregate = createAggregate(shopId, { createdAt: -1 }, limit, query, skip);
   if (Roles.userIsInRole(this.userId, ["admin", "owner", "orders"], shopId)) {
-    Counts.publish(this, "orders-count", Orders.find());
+    Counts.publish(this, "orders-count", Orders.find(), { noReady: true });
     ReactiveAggregate(this, Orders, aggregate, aggregateOptions);
   } else {
     return Orders.find({
