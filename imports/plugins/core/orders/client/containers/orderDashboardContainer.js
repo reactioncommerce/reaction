@@ -12,7 +12,10 @@ const wrapComponent = (Comp) => (
         query: {},
         searchQuery: "",
         shippingFilter: "",
-        workflowFilter: ""
+        workflowFilter: "",
+        skip: 0,
+        pageSize: 10,
+        page: 0
       };
     }
 
@@ -112,6 +115,18 @@ const wrapComponent = (Comp) => (
         workflowFilter
       });
     }
+    
+    updatePage = (page) => {
+      const offset = page * this.state.pageSize;
+      console.log("updatePage")
+      this.setState({ skip: offset, page: page });
+    }
+
+    updatePageSize = (pageSize, pageIndex) => {
+      const offset = pageIndex * pageSize;
+      console.log("updatePageSize")
+      this.setState({ pageSize: pageSize, skip: offset });
+    }
 
     render() {
       return (
@@ -123,6 +138,11 @@ const wrapComponent = (Comp) => (
           filterShippingStatus={this.filterShippingStatus}
           filterWorkflowStatus={this.filterWorkflowStatus}
           handleChange={this.handleSearchChange}
+          skip={this.state.skip}
+          pageSize={this.state.pageSize}
+          onPageChange={this.updatePage}
+          onPageSizeChange={this.updatePageSize}
+          page={this.state.page}
         />
       );
     }
