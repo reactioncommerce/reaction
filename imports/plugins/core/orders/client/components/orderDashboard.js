@@ -63,7 +63,7 @@ class OrderDashboard extends Component {
           filterShippingStatus={this.props.filterShippingStatus}
           filterWorkflowStatus={this.props.filterWorkflowStatus}
         />
-        {this.state.orders.length ?
+        {this.props.orders.length ?
           <div className="container-fluid-sm order-details-list-container">
             <div className="order-toggle-buttons-container">
               <div className="order-toggle-buttons">
