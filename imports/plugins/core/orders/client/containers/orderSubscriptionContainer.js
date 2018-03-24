@@ -3,6 +3,7 @@ import { Meteor } from "meteor/meteor";
 import { Orders, OrderSearch } from "/lib/collections";
 import { Components, composeWithTracker } from "@reactioncommerce/reaction-components";
 import OrderDashboard from "../components/orderDashboard";
+import { Counts } from "meteor/tmeasday:publish-counts";
 
 class OrderSubscription extends Component {
   render() {
@@ -28,13 +29,18 @@ function composer(props, onData) {
       // being here means no search text is inputed or search was cleared, so reset any previous match
       delete query._id;
     }
-    const options = { limit: 100 };
+    const options = { limit: props.pageSize, skip: props.skip };
     const ordersSubscription = Meteor.subscribe("CustomPaginatedOrders", query, options);
-
+    const total = Counts.get("orders-count");
+    const pages = Math.ceil(total / props.pageSize);
+    const page = props.page;
     if (ordersSubscription.ready()) {
       const results = Orders.find(query).fetch();
       return onData(null, {
-        orders: results
+        orders: results,
+        total: total,
+        pages: pages,
+        page: page
       });
     }
   }
