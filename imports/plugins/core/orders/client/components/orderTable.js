@@ -201,6 +201,16 @@ class OrderTable extends Component {
     );
   }
 
+  onPageChange = (index) => {
+    console.log("onPageChange: ", index);
+    this.props.onPageChange(index);
+  }
+
+  onPageSizeChange = (pageSize, pageIndex) => {
+    console.log("onPageSizeChange: ", pageSize, pageIndex)
+    this.props.onPageSizeChange(pageSize, pageIndex);
+  }
+
   render() {
     let getTrProps;
     let getTheadProps;
@@ -376,6 +386,10 @@ class OrderTable extends Component {
           })}
           getTableProps={getTableProps}
           showPaginationTop={!this.props.selectedItems.length}
+          onPageChange={this.onPageChange}
+          onPageSizeChange={this.onPageSizeChange}
+          pages={this.props.pages}
+          page={this.props.page}
         />
       </div>
     );
