@@ -131,7 +131,8 @@ class OrderSummaryContainer extends Component {
 }
 
 const composer = (props, onData) => {
-  const orderSub = Meteor.subscribe("Orders");
+  const query = { _id: props.orderId };
+  const orderSub = Meteor.subscribe("CustomPaginatedOrders", query);
 
   if (orderSub.ready()) {
     // Find current order
