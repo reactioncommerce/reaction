@@ -15,7 +15,7 @@ import { Reaction } from "/server/api";
  * @returns {Array} An array of projection operators
  * @private
  */
-function createAggregate(shopId, sort = { createdAt: -1 }, limit = 0, query = {}) {
+function createAggregate(shopId, sort = { createdAt: -1 }, limit = 0, query = {}, skip = 0) {
   // NOTE: in Mongo 3.4 using the $in operator will be supported for projection filters
   const aggregate = [
     { $match: { "items.shopId": shopId, ...query } },
@@ -53,7 +53,8 @@ function createAggregate(shopId, sort = { createdAt: -1 }, limit = 0, query = {}
         userId: 1
       }
     },
-    { $sort: sort }
+    { $sort: sort },
+    { $skip: skip }
   ];
 
   if (limit > 0) {
@@ -140,8 +141,10 @@ Meteor.publish("CustomPaginatedOrders", function (query, options) {
     }
   };
   const limit = (options && options.limit) ? options.limit : 0;
-  const aggregate = createAggregate(shopId, { createdAt: -1 }, limit, query);
+  const skip  = (options && options.skip) ? options.skip : 0;
+  const aggregate = createAggregate(shopId, { createdAt: -1 }, limit, query, skip);
   if (Roles.userIsInRole(this.userId, ["admin", "owner", "orders"], shopId)) {
+    Counts.publish(this, "orders-count", Orders.find());
     ReactiveAggregate(this, Orders, aggregate, aggregateOptions);
   } else {
     return Orders.find({
