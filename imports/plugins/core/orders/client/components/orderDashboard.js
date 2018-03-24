@@ -86,6 +86,10 @@ class OrderDashboard extends Component {
             <OrderTable
               orders={this.props.orders}
               isOpen={this.state.openList}
+              onPageChange={this.props.onPageChange}
+              onPageSizeChange={this.props.onPageSizeChange}
+              pages={this.props.pages}
+              page={this.props.page}
             />
           </div> :
           <div className="container-fluid-sm order-details-list-container">
