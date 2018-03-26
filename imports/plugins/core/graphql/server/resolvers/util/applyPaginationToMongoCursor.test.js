@@ -1,11 +1,9 @@
 import applyPaginationToMongoCursor from "./applyPaginationToMongoCursor";
+import getFakeMongoCursor from "/imports/test-utils/helpers/getFakeMongoCursor";
 
 const mockCount = jest.fn().mockName("cursor.clone.count");
-const mockCursor = {
-  clone: () => ({ count: mockCount }),
-  limit: jest.fn().mockName("cursor.limit"),
-  skip: jest.fn().mockName("cursor.skip")
-};
+const mockCursor = getFakeMongoCursor("Test", new Array(100));
+mockCursor.clone = () => ({ count: mockCount });
 
 test("with neither first nor last", () => {
   mockCount.mockReturnValueOnce(Promise.resolve(100));
