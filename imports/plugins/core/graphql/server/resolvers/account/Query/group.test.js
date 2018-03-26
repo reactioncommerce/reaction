@@ -22,6 +22,6 @@ test("calls queries.group with a group id should return a group", async () => {
     userId: "123"
   });
 
-  expect(result._id).toEqual(base64ID);
+  expect(result._id).toBe(base64ID);
   expect(groupQuery).toHaveBeenCalled();
 });
