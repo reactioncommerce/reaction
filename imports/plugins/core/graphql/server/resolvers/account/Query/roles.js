@@ -1,4 +1,4 @@
-import { getPaginatedRolesResponse } from "@reactioncommerce/reaction-graphql-xforms/group";
+import { getPaginatedRolesResponse } from "@reactioncommerce/reaction-graphql-xforms/roles";
 import { decodeShopOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/shop";
 
 /**
