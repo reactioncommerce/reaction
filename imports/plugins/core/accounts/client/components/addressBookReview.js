@@ -64,19 +64,24 @@ class AddressBookReview extends Component {
     let address = this.props.validationResults.enteredAddress;
     if (!this.state.isEnteredSelected) {
       address = this.props.validationResults.suggestedAddress;
-    } else {
-      Meteor.call("accounts/markAddressValidationBypassed", (error, result) => {
+      Meteor.call("accounts/markAddressValidationBypassed", false, (error) => {
         if (error) {
           return Logger.error(error, "Unable to mark the cart");
         }
-        Meteor.call("accounts/markTaxCalculationFailed", (err, res) => {
+        Meteor.call("accounts/markTaxCalculationFailed", false, (err) => {
           if (err) {
             return Logger.error(err, "Unable to mark the cart");
           }
         });
       });
+    } else {
+      Meteor.call("accounts/markAddressValidationBypassed", true, (error) => {
+        if (error) {
+          return Logger.error(error, "Unable to mark the cart");
+        }
+      });
     }
-    this.props.add(address, false).catch(console.log);
+    this.props.add(address, false);
   };
 
   /**

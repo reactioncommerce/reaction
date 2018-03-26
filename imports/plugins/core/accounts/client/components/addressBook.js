@@ -426,7 +426,6 @@ class AddressBook extends Component {
    * @return {Object} - JSX and child component.
    */
   renderContent() {
-    console.log("Rendering", this.state.mode);
     const { addressBook } = this;
     const { countries, regionsByCountry } = this.props;
     const { editAddress, mode } = this.state;

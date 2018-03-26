@@ -544,7 +544,6 @@ taxCalc.estimateCart = function (cart, callback) {
   check(callback, Function);
 
   if (cart.items && cart.shipping && cart.shipping[0].address && cart.shipping[0]) {
-    console.log("Sent the request to calculate tax");
     const salesOrder = Object.assign({}, cartToSalesOrder(cart), getTaxSettings(cart.userId));
     const baseUrl = getUrl();
     const requestUrl = `${baseUrl}transactions/create`;

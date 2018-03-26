@@ -15,25 +15,25 @@ function linesToTaxes(lines) {
   }));
   return taxes;
 }
-
+/**
+ * @method markCartTax
+ * @summary Calls the method accounts/markTaxCalculationFailed
+ * through meteor.
+ * @param {Boolean} value - the value to be set
+ */
 function markCartTax(value = true) {
-  Meteor.call("accounts/markAddressValidationBypassed", value, (error, result) => {
+  Meteor.call("accounts/markTaxCalculationFailed", value, (error) => {
     if (error) {
       return Logger.error(error, "Unable to mark the cart");
     }
-    Meteor.call("accounts/markTaxCalculationFailed", value, (err, res) => {
-      if (err) {
-        return Logger.error(err, "Unable to mark the cart");
-      }
-    });
-  });          
+  });
 }
 
 
 MethodHooks.after("taxes/calculate", (options) => {
   const cartId = options.arguments[0];
   const cartToCalc = Cart.findOne(cartId);
-  if (cartToCalc.taxCalculationFailed || cartToCalc.userBypassedAddressValidation) {
+  if (cartToCalc.bypassAddressValidation) {
     // User bypassed address validation so we can't calc taxes so don't even try
     return options.result;
   }

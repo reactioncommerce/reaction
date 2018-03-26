@@ -1053,17 +1053,19 @@ export function setProfileCurrency(currencyName) {
  * @returns {Number} updateResult - Result of the update
  */
 function markAddressValidationBypassed(value = true) {
+  check(value, Boolean);
   const userId = Meteor.userId();
   const updateResult = Cart.update({ userId }, { $set: { bypassAddressValidation: value } });
   return updateResult;
 }
 
 /**
-   * @name markTaxCalculationFailed
-   * @summary Write tax calculation has failed for this customer
-   * @returns {Number} updateResult - Result of the update
-   */
+ * @name markTaxCalculationFailed
+ * @summary Write tax calculation has failed for this customer
+ * @returns {Number} updateResult - Result of the update
+ */
 function markTaxCalculationFailed(value = true) {
+  check(value, Boolean);
   const userId = Meteor.userId();
   const updateResult = Cart.update({ userId }, { $set: { taxCalculationFailed: value } });
   return updateResult;
