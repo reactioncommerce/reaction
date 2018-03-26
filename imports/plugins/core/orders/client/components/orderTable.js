@@ -202,12 +202,10 @@ class OrderTable extends Component {
   }
 
   onPageChange = (index) => {
-    console.log("onPageChange: ", index);
     this.props.onPageChange(index);
   }
 
   onPageSizeChange = (pageSize, pageIndex) => {
-    console.log("onPageSizeChange: ", pageSize, pageIndex)
     this.props.onPageSizeChange(pageSize, pageIndex);
   }
 
