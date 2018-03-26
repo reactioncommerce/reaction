@@ -1052,9 +1052,9 @@ export function setProfileCurrency(currencyName) {
  * @summary Write that the customer has bypassed address validation
  * @returns {Number} updateResult - Result of the update
  */
-function markAddressValidationBypassed() {
+function markAddressValidationBypassed(value = true) {
   const userId = Meteor.userId();
-  const updateResult = Cart.update({ userId }, { $set: { bypassAddressValidation: true } });
+  const updateResult = Cart.update({ userId }, { $set: { bypassAddressValidation: value } });
   return updateResult;
 }
 
@@ -1063,9 +1063,9 @@ function markAddressValidationBypassed() {
    * @summary Write tax calculation has failed for this customer
    * @returns {Number} updateResult - Result of the update
    */
-function markTaxCalculationFailed() {
+function markTaxCalculationFailed(value = true) {
   const userId = Meteor.userId();
-  const updateResult = Cart.update({ userId }, { $set: { taxCalculationFailed: true } });
+  const updateResult = Cart.update({ userId }, { $set: { taxCalculationFailed: value } });
   return updateResult;
 }
 

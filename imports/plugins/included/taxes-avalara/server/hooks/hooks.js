@@ -16,12 +16,24 @@ function linesToTaxes(lines) {
   return taxes;
 }
 
+function markCartTax(value = true) {
+  Meteor.call("accounts/markAddressValidationBypassed", value, (error, result) => {
+    if (error) {
+      return Logger.error(error, "Unable to mark the cart");
+    }
+    Meteor.call("accounts/markTaxCalculationFailed", value, (err, res) => {
+      if (err) {
+        return Logger.error(err, "Unable to mark the cart");
+      }
+    });
+  });          
+}
+
 
 MethodHooks.after("taxes/calculate", (options) => {
   const cartId = options.arguments[0];
   const cartToCalc = Cart.findOne(cartId);
   if (cartToCalc.taxCalculationFailed || cartToCalc.userBypassedAddressValidation) {
-    console.log("By passed tax validation");
     // User bypassed address validation so we can't calc taxes so don't even try
     return options.result;
   }
@@ -37,13 +49,17 @@ MethodHooks.after("taxes/calculate", (options) => {
         const taxAmount = taxes.reduce((totalTaxes, tax) => totalTaxes + tax.tax, 0);
         const taxRate = taxAmount / taxCalc.calcTaxable(cartToCalc);
         Meteor.call("taxes/setRate", cartId, taxRate, taxes);
+        markCartTax(false);
         // for bad auth, timeout, or misconfiguration there's nothing we can do so keep moving
       } else if ([503, 400, 401].includes(result.error.errorCode)) {
         Logger.error("Timeout, Authentification, or Misconfiguration error: Not trying to estimate cart");
+        markCartTax(true);
       } else if (result.error.errorCode === 300) {
         Logger.error("Cannot validate address so we cannot calculate tax, skipping");
+        markCartTax(true);
       } else {
         Logger.error("Unknown error", result.error.errorCode);
+        markCartTax(true);
       }
     });
   }

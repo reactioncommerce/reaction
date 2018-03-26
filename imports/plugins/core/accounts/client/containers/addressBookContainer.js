@@ -160,12 +160,6 @@ function composer(props, onData) {
   const account = Collections.Accounts.findOne({ _id: Meteor.userId() });
   const { addressBook } = account.profile;
   const countries = Countries.find().fetch();
-  if (!this.heading) {
-    const template = Template.instance();
-    const { data } = template || { data: undefined };
-    const { heading: templateHeading } = data || { heading: undefined };
-    this.heading = templateHeading;
-  }
   const shop = Collections.Shops.findOne();
   const shopCountries = shop.locales.countries;
 
@@ -187,21 +181,26 @@ function composer(props, onData) {
   });
   // The initial mode for addressBook
   let initMode;
+  const cart = Collections.Cart.findOne();
+  // If we have passed the address step, show the grid
+  if (cart.workflow.status !== "checkoutAddressBook") {
+    initMode = "grid";
+  }
   // AddressBook heading will be different in different views
   // If the view template that's using the AddressBook has a
   // heading object, set it as the AddressBook heading
-  if (this.heading) {
-    const cart = Collections.Cart.findOne();
-    // If we have passed the address step, show the grid
-    if (cart.workflow.status !== "checkoutAddressBook") {
-      initMode = "grid";
+  if (!this.heading) {
+    const template = Template.instance();
+    const { data } = template || { data: undefined };
+    const { heading: templateHeading } = data || { heading: undefined };
+    if (templateHeading) {
+      this.heading = templateHeading;
+    } else {
+      this.heading = {
+        defaultValue: "Address Book",
+        i18nKey: "accountsUI.addressBook"
+      };
     }
-  } else {
-    // default AddressBook heading
-    this.heading = {
-      defaultValue: "Address Book",
-      i18nKey: "accountsUI.addressBook"
-    };
   }
 
   onData(null, {
