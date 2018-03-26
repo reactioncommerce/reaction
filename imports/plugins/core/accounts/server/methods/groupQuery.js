@@ -58,10 +58,12 @@ export function groupsQuery(context, shopId) {
     }
   });
 
-  if (userAccount) {
+  if (userAccount && Array.isArray(userAccount.groups)) {
     // Query the groups collection to find a group by `id`
     return Promise.resolve(Groups.rawCollection().find({
-      _id: userAccount.groups,
+      _id: {
+        $in: userAccount.groups
+      },
       shopId
     }));
   }
