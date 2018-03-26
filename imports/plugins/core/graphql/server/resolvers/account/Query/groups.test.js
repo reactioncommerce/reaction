@@ -51,7 +51,7 @@ const groupsData = [
   }
 ];
 
-test("calls queries.groups with a shopId and retuns groups", async () => {
+test("calls queries.groups with a shopId and returns groups", async () => {
   const groupsQuery = jest.fn().mockName("groupsQuery").mockReturnValueOnce(getFakeMongoCursor("Groups", groupsData));
 
   const result = await groups(null, { shopId: shopBase64ID }, {
