@@ -16,7 +16,7 @@ export function groupQuery(context, id) {
   // If the user is an has sufficient permissions, then allow them to find any group by id
   if (Reaction.hasPermission(["owner", "admin", "reaction-accounts"], userId)) {
     // find groups by shop ID
-    return Groups.rawCollection().findOne({
+    return Groups.findOne({
       _id: id
     });
   }
@@ -31,7 +31,7 @@ export function groupQuery(context, id) {
 
   if (userAccount) {
     // Query the groups collection to find a group by `id`
-    return Groups.rawCollection().findOne({
+    return Groups.findOne({
       _id: id
     });
   }
