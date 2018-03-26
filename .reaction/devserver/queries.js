@@ -1,30 +1,4 @@
-function getFakeMongoCursor(collectionName, results) {
-  const cursor = {
-    clone: () => ({
-      count: () => results.length
-    }),
-    cmd: {
-      query: {}
-    },
-    filter: () => cursor,
-    limit: () => cursor,
-    ns: `meteor.${collectionName}`,
-    options: {
-      db: {
-        collection: () => ({
-          findOne: () => Promise.resolve(null)
-        }),
-        databaseName: "meteor"
-      },
-    },
-    skip: () => cursor,
-    sort: () => cursor,
-    toArray() {
-      return Promise.resolve(results)
-    }
-  };
-  return cursor;
-}
+import getFakeMongoCursor from "/imports/test-utils/helpers/getFakeMongoCursor";
 
 export default {
   shopAdministrators() {
@@ -63,5 +37,39 @@ export default {
       },
       name: "Fake Person"
     };
+  },
+  roles(context, shopId) {
+    return Promise.resolve(getFakeMongoCursor("roles", [
+      {
+        "name": "reaction-shipping"
+      },
+      {
+        "name": "reaction-stripe/stripeConnectAuthorize"
+      },
+      {
+        "name": "reaction-payments"
+      },
+      {
+        "name": "shipping/flatRates"
+      },
+      {
+        "name": "discount-codes/customDiscountCodes"
+      },
+      {
+        "name": "reaction-auth-net/authnetSettings"
+      },
+      {
+        "name": "reaction-social/socialSettings"
+      },
+      {
+        "name": "reaction-i18n"
+      },
+      {
+        "name": "dashboardPackages"
+      },
+      {
+        "name": "dashboard/shippo"
+      }
+    ]));
   }
 };
