@@ -37,18 +37,6 @@ export { default as VerifyAccount } from "./containers/verifyAccount";
 
 import "./templates/accounts.html";
 
-import "./templates/addressBook/add/add.html";
-import "./templates/addressBook/add/add.js";
-import "./templates/addressBook/edit/edit.html";
-import "./templates/addressBook/edit/edit.js";
-import "./templates/addressBook/form/form.html";
-import "./templates/addressBook/form/form.js";
-import "./templates/addressBook/grid/grid.html";
-import "./templates/addressBook/grid/grid.js";
-import "./templates/addressBook/review/review.html";
-import "./templates/addressBook/review/review.js";
-import "./templates/addressBook/addressBook.html";
-import "./templates/addressBook/addressBook.js";
 import "./templates/dashboard/dashboard.html";
 import "./templates/dashboard/dashboard.js";
 import "./templates/dropdown/helpers";
