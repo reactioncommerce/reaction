@@ -8,6 +8,9 @@ export const typeDefs = `
     # Returns a list of administrators for this shop, as a Relay-compatible connection.
     # "Administrators" means all linked accounts that have the "admin" role for this shop.
     administrators(after: ConnectionCursor, before: ConnectionCursor, first: ConnectionLimitInt, last: ConnectionLimitInt, sortOrder: SortOrder = asc, sortBy: AccountSortByField = createdAt): AccountConnection
+
+    # Returns a list of roles for the shop with ID \`shopId\`, as a Relay-compatible connection.
+    roles(after: ConnectionCursor, before: ConnectionCursor, first: ConnectionLimitInt, last: ConnectionLimitInt, sortOrder: SortOrder = asc, sortBy: RoleSortByField = createdAt): RoleConnection
   }
 
   # Input parameters for the inviteShopMember mutation
