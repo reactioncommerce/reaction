@@ -1,14 +1,8 @@
 export const typeDefs = `
-  # RoleName - String that conforms to Role regex.
-  # This may be required if the role name must match a specific pattern.
-  # Could also be made more generic depending on pattern.
-  # Remove if not used.
-  scalar RoleName
-
   # Represents a named role
   type Role implements Node {
     _id: ID!
-    name: RoleName!
+    name: String!
   }
 
   # Wraps a list of \`Roles\`, providing pagination cursors and information.
