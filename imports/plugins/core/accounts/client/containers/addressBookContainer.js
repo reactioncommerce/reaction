@@ -16,7 +16,7 @@ import AddressBook from "../components/addressBook";
  * @param{String} property - property to be updated.
  * @return {Promise}
  */
-function updateAddress(address, property, validateAddress) {
+function updateAddress(address, property, validateAddress = true) {
   return new Promise((resolve, reject) => {
     if (validateAddress) {
       Meteor.call("accounts/validateAddress", address, (error, result) => {
@@ -160,10 +160,10 @@ function composer(props, onData) {
   const account = Collections.Accounts.findOne({ _id: Meteor.userId() });
   const { addressBook } = account.profile;
   const countries = Countries.find().fetch();
-  const template = Template.instance();
-  const { data } = template || { data: undefined };
-  const { heading: templateHeading } = data || { heading: undefined };
-  if (templateHeading && !this.heading) {
+  if (!this.heading) {
+    const template = Template.instance();
+    const { data } = template || { data: undefined };
+    const { heading: templateHeading } = data || { heading: undefined };
     this.heading = templateHeading;
   }
   const shop = Collections.Shops.findOne();

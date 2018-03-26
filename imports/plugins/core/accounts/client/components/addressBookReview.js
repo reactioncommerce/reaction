@@ -143,7 +143,6 @@ class AddressBookReview extends Component {
     const radioTextEntered = "Entered Address";
     const radioTextSuggested = "Suggested Address";
     const { isEnteredSelected } = this.state;
-    // i18nKey={}
     return (
       <div className="address-review">
         <div className="alert alert-warning">

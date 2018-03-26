@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { isObject, transform, isEqual } from "lodash";
 import { Components, registerComponent } from "@reactioncommerce/reaction-components";
 
 class AddressBook extends Component {
@@ -134,30 +133,6 @@ class AddressBook extends Component {
     }
 
     this.mode = mode;
-  }
-
-  componentWillUpdate(nextProps, nextState) {
-    const d = this.difference(nextProps, this.props);
-    console.log("Props difference", d);
-    const d2 = this.difference(nextState, this.state);
-    console.log("State difference", d2);
-  }
-
-  /**
- * Deep diff between two object, using lodash
- * @param  {Object} object Object compared
- * @param  {Object} base   Object to compare with
- * @return {Object}        Return a new object who represent the diff
- */
-  difference(object, base) {
-    function changes(object, base) {
-      return transform(object, (result, value, key) => {
-        if (!isEqual(value, base[key])) {
-          result[key] = (isObject(value) && isObject(base[key])) ? changes(value, base[key]) : value;
-        }
-      });
-    }
-    return changes(object, base);
   }
 
   // State change helpers

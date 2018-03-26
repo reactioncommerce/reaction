@@ -67,7 +67,8 @@ class OrderTableColumn extends Component {
                 className="risk-info"
                 i18nKeyLabel={`admin.orderRisk.${orderRisk}`}
                 status={getOrderRiskBadge(orderRisk)}
-              />}
+              />
+            }
           </strong>
         </div>
       );
