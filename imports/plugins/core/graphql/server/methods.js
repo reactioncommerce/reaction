@@ -7,7 +7,7 @@ const methods = {};
   "accounts/addressBookUpdate"
 ].forEach((methodName) => {
   methods[methodName] = (context, args) => {
-    runMeteorMethodWithContext(context, methodName, args);
+    return runMeteorMethodWithContext(context, methodName, args);
   };
 });
 
