@@ -11,7 +11,7 @@ import { decodeAccountOpaqueId, encodeAccountOpaqueId } from "@reactioncommerce/
  */
 export default function addAccountAddressBookEntry(_, { input }, context) {
   const { accountId, address, clientMutationId = null } = input;
-  const dbAccountId = decodeAccountOpaqueId(accountId);
+  const dbAccountId = accountId && decodeAccountOpaqueId(accountId);
   const updatedAddress = context.methods["accounts/addressBookAdd"](context, [address, dbAccountId]);
   return {
     address: {
