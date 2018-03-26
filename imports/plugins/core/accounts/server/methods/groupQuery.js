@@ -7,7 +7,7 @@ import { Reaction } from "/lib/api";
  * @method
  * @summary query the Groups collection and return group data
  * @param {Object} context - an object containing the per-request state
- * @param {String} id - id of roup to query
+ * @param {String} id - id of group to query
  * @return {Object} group object
  */
 export function groupQuery(context, id) {
