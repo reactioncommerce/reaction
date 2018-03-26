@@ -260,7 +260,7 @@ function compareAddress(address, validationAddress) {
  * @returns {{validated: boolean, address: *}} - The results of the validation
  */
 export function validateAddress(address) {
-  Schemas.Address.clean(address, { mutate: true });
+  Schemas.Address.clean(address);
   Schemas.Address.validate(address);
 
   let validated = true;

@@ -124,7 +124,7 @@ function getTaxSettings(userId) {
 function parseError(error) {
   let errorData;
   // The Avalara API constantly times out, so handle this special case first
-  if (error && error.code === "ETIMEDOUT") {
+  if (error && (error.code === "ETIMEDOUT" || error.code === "ESOCKETTIMEDOUT")) {
     errorData = {
       errorCode: 503,
       type: "apiFailure",
@@ -543,7 +543,8 @@ taxCalc.estimateCart = function (cart, callback) {
   Reaction.Schemas.Cart.validate(cart);
   check(callback, Function);
 
-  if (cart.items && cart.shipping && cart.shipping[0].address) {
+  if (cart.items && cart.shipping && cart.shipping[0].address && cart.shipping[0]) {
+    console.log("Sent the request to calculate tax");
     const salesOrder = Object.assign({}, cartToSalesOrder(cart), getTaxSettings(cart.userId));
     const baseUrl = getUrl();
     const requestUrl = `${baseUrl}transactions/create`;
@@ -553,6 +554,11 @@ taxCalc.estimateCart = function (cart, callback) {
     }
     return callback(result);
   }
+  return callback({
+    error: {
+      errorCode: 300
+    }
+  });
 };
 
 /**

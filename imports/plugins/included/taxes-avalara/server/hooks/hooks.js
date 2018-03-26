@@ -21,6 +21,7 @@ MethodHooks.after("taxes/calculate", (options) => {
   const cartId = options.arguments[0];
   const cartToCalc = Cart.findOne(cartId);
   if (cartToCalc.taxCalculationFailed || cartToCalc.userBypassedAddressValidation) {
+    console.log("By passed tax validation");
     // User bypassed address validation so we can't calc taxes so don't even try
     return options.result;
   }

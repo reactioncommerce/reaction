@@ -10,19 +10,49 @@ import AddressBook from "../components/addressBook";
 
 /**
  * @method updateAddress
- * @summary helper function that updates an address in the account's addressBook via a meteor method.
+ * @summary helper function that validates and updates an address in the account's addressBook via a meteor method.
  * @since 2.0.0
  * @param {Object} address - address to be updated.
  * @param{String} property - property to be updated.
  * @return {Promise}
  */
-function updateAddress(address, property) {
+function updateAddress(address, property, validateAddress) {
   return new Promise((resolve, reject) => {
-    Meteor.call("accounts/addressBookUpdate", address, null, property, (error, result) => {
-      if (error || !result) {
-        reject(i18next.t("addressBookGrid.somethingWentWrong", { err: error.message }));
+    if (validateAddress) {
+      Meteor.call("accounts/validateAddress", address, (error, result) => {
+        if (error || !result) {
+          let errorMessage = (error && error.message) || "Validation Failed";
+          if (error && error.error === "validation-error" && Array.isArray(error.details) && error.details.length) {
+          // Add details of first invalid field from SimpleSchema
+            errorMessage = error.details[0].message;
+          }
+          reject(i18next.t("addressBookAdd.failedToUpdateAddress", { err: errorMessage }));
+          return;
+        } else if (result.validated === false && !result.suggestedAddress) {
+          reject(i18next.t("addressBookAdd.failedToUpdateAddress", { err: "Unable to fetch corrected address" }));
+          return;
+        } else if (result.validated === false && result.suggestedAddress && result.formErrors && result.formErrors.length > 0) {
+          reject(i18next.t("addressBookAdd.failedToUpdateAddress", { err: result.formErrors[0].summary }));
+          return;
+        } else if (result.validated === false && result.suggestedAddress) {
+          resolve(result);
+          return;
+        }
+        Meteor.call("accounts/addressBookUpdate", address, null, property, (err, res) => {
+          if (err || !res) {
+            reject(i18next.t("addressBookGrid.somethingWentWrong", { err: err.message }));
+          } else {
+            resolve(res);
+          }
+        });
+        return;
+      });
+    }
+    Meteor.call("accounts/addressBookUpdate", address, null, property, (err, res) => {
+      if (err || !res) {
+        reject(i18next.t("addressBookGrid.somethingWentWrong", { err: err.message }));
       } else {
-        resolve(result);
+        resolve(res);
       }
     });
   });
@@ -49,7 +79,7 @@ function removeAddress(_id) {
 
 /**
  * @method addAddress
- * @summary helper function that adds an address in the account's addressBook via a meteor method.
+ * @summary helper function that validates and adds an address in the account's addressBook via a meteor method.
  * @since 2.0.0
  * @param {Object} address - address to be added.
  * @return {Promise}
@@ -58,7 +88,6 @@ function addAddress(address, validateAddress = true) {
   return new Promise((resolve, reject) => {
     // This address was tried for validation
     if (validateAddress) {
-      address.validationAttempted = true;
       Meteor.call("accounts/validateAddress", address, (error, result) => {
         if (error || !result) {
           let errorMessage = (error && error.message) || "Validation Failed";
@@ -68,7 +97,13 @@ function addAddress(address, validateAddress = true) {
           }
           reject(i18next.t("addressBookAdd.failedToAddAddress", { err: errorMessage }));
           return;
-        } else if (result && !result.validated === false) {
+        } else if (result.validated === false && !result.suggestedAddress) {
+          reject(i18next.t("addressBookAdd.failedToAddAddress", { err: "Unable to fetch corrected address" }));
+          return;
+        } else if (result.validated === false && result.suggestedAddress && result.formErrors && result.formErrors.length > 0) {
+          reject(i18next.t("addressBookAdd.failedToAddAddress", { err: result.formErrors[0].summary }));
+          return;
+        } else if (result.validated === false && result.suggestedAddress) {
           resolve(result);
           return;
         }
@@ -103,11 +138,6 @@ const wrapComponent = (Comp) => (
   class AddressBookContainer extends Component {
     static propTypes = Comp.PropTypes;
 
-    constructor(props) {
-      super(props);
-      console.log("***************** AddressBookContainer is made again ******************");
-    }
-
     render() {
       return (
         <Comp
@@ -123,13 +153,19 @@ const wrapComponent = (Comp) => (
 );
 
 function composer(props, onData) {
+  const handle = Meteor.subscribe("Accounts", Meteor.userId());
+  if (!handle.ready()) {
+    return;
+  }
   const account = Collections.Accounts.findOne({ _id: Meteor.userId() });
-  console.log(account, account.profile.addressBook);
   const { addressBook } = account.profile;
   const countries = Countries.find().fetch();
   const template = Template.instance();
   const { data } = template || { data: undefined };
   const { heading: templateHeading } = data || { heading: undefined };
+  if (templateHeading && !this.heading) {
+    this.heading = templateHeading;
+  }
   const shop = Collections.Shops.findOne();
   const shopCountries = shop.locales.countries;
 
@@ -149,16 +185,20 @@ function composer(props, onData) {
     }
     regionsByCountry[key] = regions;
   });
-
-  let heading;
+  // The initial mode for addressBook
+  let initMode;
   // AddressBook heading will be different in different views
   // If the view template that's using the AddressBook has a
   // heading object, set it as the AddressBook heading
-  if (templateHeading) {
-    heading = templateHeading;
+  if (this.heading) {
+    const cart = Collections.Cart.findOne();
+    // If we have passed the address step, show the grid
+    if (cart.workflow.status !== "checkoutAddressBook") {
+      initMode = "grid";
+    }
   } else {
     // default AddressBook heading
-    heading = {
+    this.heading = {
       defaultValue: "Address Book",
       i18nKey: "accountsUI.addressBook"
     };
@@ -167,7 +207,8 @@ function composer(props, onData) {
   onData(null, {
     addressBook,
     countries,
-    heading,
+    heading: this.heading,
+    initMode,
     regionsByCountry
   });
 }

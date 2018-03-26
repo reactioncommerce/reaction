@@ -1,12 +1,10 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import classnames from "classnames";
 import { Meteor } from "meteor/meteor";
 import { Logger } from "/client/api";
 import { Components, registerComponent } from "@reactioncommerce/reaction-components";
 
 class AddressBookReview extends Component {
-
   static propTypes = {
     /**
      * Add the address to database
@@ -48,10 +46,15 @@ class AddressBookReview extends Component {
         isShippingDefault: PropTypes.Bool,
         isCommercal: PropTypes.Bool
       }),
+      /**
+       * map of all fields and
+       * errors in them.
+       */
       fieldErrors: PropTypes.object
     })
   }
 
+  // Select the entered address by default.
   state = {
     isEnteredSelected: false
   }
@@ -76,26 +79,50 @@ class AddressBookReview extends Component {
     this.props.add(address, false).catch(console.log);
   };
 
+  /**
+   * @method handleEdit
+   * @summary takes user back to the edit address screen
+   * @since 2.0.0
+   */
   handleEdit = (event) => {
     event.preventDefault();
-    this.props.switchMode("entry", this.props.validationResults.enteredAddress);
+    if (this.props.switchMode) {
+      this.props.switchMode("entry", this.props.validationResults.enteredAddress);
+    }
   }
 
+  /**
+   * @method selectEntered
+   * @summary select the entered address
+   * @since 2.0.0
+   */
   selectEntered = () => {
     this.setState({
       isEnteredSelected: true
     });
   }
 
+  /**
+   * @method selectSuggested
+   * @summary select the suggested address
+   * @since 2.0.0
+   */
   selectSuggested = () => {
     this.setState({
       isEnteredSelected: false
     });
   }
 
+  /**
+   * @method renderField
+   * @summary renders a field in the address
+   * with error if present
+   * @since 2.0.0
+   * @return {Object} - JSX and child component.
+   */
   renderField(field, value, showError) {
     const { fieldErrors } = this.props.validationResults;
-    if (showError && fieldErrors[field] && fieldErrors[field].length > 0) {
+    if (showError && fieldErrors && fieldErrors[field] && fieldErrors[field].length > 0) {
       return (
         <div >
           <div className="error">
@@ -110,6 +137,7 @@ class AddressBookReview extends Component {
       </div>
     );
   }
+
   render() {
     const { enteredAddress, suggestedAddress } = this.props.validationResults;
     const radioTextEntered = "Entered Address";
@@ -118,6 +146,13 @@ class AddressBookReview extends Component {
     // i18nKey={}
     return (
       <div className="address-review">
+        <div className="alert alert-warning">
+          <Components.Translation
+            defaultValue={`The address you entered may be incorrect or incomplete.
+              Please review our suggestions below, and choose which version you'd like to use. Errors are shown in red.`}
+            i18nKey=""
+          />
+        </div>
         <form>
           <div className="entered-address">
             <div className="radio-heading">

@@ -54,6 +54,10 @@ class AddressBook extends Component {
       })
     }),
     /**
+     * the initial mode of the AddressBook(used only in constructor)
+     */
+    initMode: PropTypes.oneOf(["grid", "entry", "review"]),
+    /**
      * handles error by calling Alerts.toast with the error meesage
      */
     onError: PropTypes.func,
@@ -81,13 +85,17 @@ class AddressBook extends Component {
   constructor(props) {
     super(props);
 
-    console.log("***************** AddressBook is made again ******************");
+    let mode = (!props.addressBook || props.addressBook.length === 0) ? "entry" : "grid";
+    // initMode overrired everything
+    if (props.initMode) {
+      mode = props.initMode;
+    }
 
     this.state = {
       /**
        * No address, enable the form
        */
-      mode: (!props.addressBook || props.addressBook.length === 0) ? "entry" : "grid",
+      mode,
       /**
        * Address to be edited
        */
@@ -102,7 +110,7 @@ class AddressBook extends Component {
 
   componentWillReceiveProps(nextProps) {
     let { addressBook } = nextProps;
-    const { mode } = this.state;
+    let { mode } = this.state;
     if (!Array.isArray(addressBook)) addressBook = [];
 
     if (mode === "review") {
@@ -112,14 +120,20 @@ class AddressBook extends Component {
     // if the new addressBook array is empty and
     // the address book form is not active
     if (addressBook.length === 0 && mode !== "entry") {
-      this.mode = "entry";
+      mode = "entry";
     }
 
     // if the new addressBook array is not empty but
     // the address book form is active
     if (addressBook.length !== 0 && mode !== "grid") {
-      this.mode = "grid";
+      mode = "grid";
     }
+
+    if (!this.props.initMode && nextProps.initMode) {
+      mode = nextProps.initMode;
+    }
+
+    this.mode = mode;
   }
 
   componentWillUpdate(nextProps, nextState) {
@@ -146,22 +160,41 @@ class AddressBook extends Component {
     return changes(object, base);
   }
 
+  // State change helpers
+
+  /**
+   * @method mode
+   * @summary setter for mode in state
+   * @since 2.0.0
+   * @param {String} mode - the mode to be set.
+   */
   set mode(mode) {
     this.setState({
       mode
     });
   }
 
+  /**
+   * @method setEntryMode
+   * @summary changes the mode to "entry"
+   * @since 2.0.0
+   */
   setEntryMode = () => {
-    this.setState({
-      mode: "entry"
-    });
+    this.mode = "entry";
   }
 
-  switchMode = (newMode, address) => {
+  /**
+   * @method switchMode
+   * @summary changes the address to newMode and editAddress to the value passed.
+   * @since 2.0.0
+   * @param {String} newMode - new mode to be set
+   * @param {String} editAddress - the address to be set for the form.
+   * @return {Object} - address object.
+   */
+  switchMode = (newMode, editAddress) => {
     this.setState({
       mode: newMode,
-      editAddress: address
+      editAddress
     });
   }
 
@@ -266,11 +299,24 @@ class AddressBook extends Component {
   onAdd = (address, validateAddress = true) => {
     const { addAddress, onError, updateAddress } = this.props;
     // if edit address is in the address book form
-    if (this.hasEditAddress) {
+    if (this.hasEditAddress || address._id) {
       const { editAddress } = this.state;
       // new object with editAddress _id and the param addess data
       this.clearForm();
-      return updateAddress({ _id: editAddress._id, ...address }).catch(onError);
+      return updateAddress({ _id: editAddress._id, ...address }, null, validateAddress)
+        .then((result) => {
+          if (result && result.validated === false) {
+            this.setState({
+              mode: "review",
+              validationResults: result
+            });
+          } else {
+            this.setState({
+              mode: "grid"
+            });
+          }
+        })
+        .catch(onError);
     }
     return addAddress(address, validateAddress)
       .then((result) => {
@@ -383,6 +429,10 @@ class AddressBook extends Component {
           <i className="fa fa-plus fa-lg address-icons" />
           <Components.Translation defaultValue="Add Address" i18nKey="addressBookGrid.addAddress"/>
         </button>
+      );
+    } else if (mode === "review") {
+      controlBarContent = (
+        <Components.Translation defaultValue="Review address" i18nKey="addressBookEdit.reviewAddress" />
       );
     }
 

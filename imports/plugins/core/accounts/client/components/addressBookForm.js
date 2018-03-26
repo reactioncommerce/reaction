@@ -36,6 +36,7 @@ class AddressBookForm extends Component {
   state = {
     regions: [],
     fields: {
+      _id: this.props.editAddress._id,
       country: this.props.editAddress.country || "US", // defaults to United States
       fullName: this.props.editAddress.fullName || "",
       address1: this.props.editAddress.address1 || "",

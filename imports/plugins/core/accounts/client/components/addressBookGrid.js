@@ -72,10 +72,16 @@ class AddressBookGrid extends Component {
    * @param {String} usage - the address usage "shipping" or "billing".
    */
   setDefaultAddress(_id, usage) {
-    let { defaultBillingAddressId, defaultShippingAddressId } = this.state;
-    if (usage === "shipping") defaultShippingAddressId = _id;
-    if (usage === "billing") defaultBillingAddressId = _id;
-    this.setState({ defaultBillingAddressId, defaultShippingAddressId });
+    if (usage === "shipping") {
+      this.setState({
+        defaultShippingAddressId: _id
+      });
+    }
+    if (usage === "billing") {
+      this.setState({
+        defaultBillingAddressId: _id
+      });
+    }
   }
 
   /**

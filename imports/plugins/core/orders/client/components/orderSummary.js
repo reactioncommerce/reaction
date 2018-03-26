@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { withMoment } from "@reactioncommerce/reaction-components";
 import { Badge, ClickToCopy } from "@reactioncommerce/reaction-ui";
-import { getOrderRiskBadge, getOrderRiskStatus, getBillingInfo, getShippingInfo } from "../helpers";
+import { getOrderRiskBadge, getOrderRiskStatus, getBillingInfo, getShippingInfo, getTaxRiskStatus } from "../helpers";
 
 class OrderSummary extends Component {
   static propTypes = {
@@ -49,7 +49,8 @@ class OrderSummary extends Component {
     const paymentMethod = getBillingInfo(order).paymentMethod || {};
     const invoice = getBillingInfo(order).invoice || {};
     const shipmentMethod = getShippingInfo(order).shipmentMethod || {};
-    const orderRisk = getOrderRiskStatus(order);
+    const orderPaymentRisk = getOrderRiskStatus(order);
+    const orderTaxRisk = getTaxRiskStatus(order);
 
     return (
       <div>
@@ -72,13 +73,21 @@ class OrderSummary extends Component {
                 label={order && order.workflow && order.workflow.status}
                 status={this.badgeStatus()}
               />
-              {orderRisk &&
+              {orderPaymentRisk &&
                 <Badge
                   badgeSize="large"
-                  className={`risk-info risk-info-detail ${orderRisk}`}
-                  i18nKeyLabel={`admin.orderRisk.${orderRisk}`}
-                  label={orderRisk}
-                  status={getOrderRiskBadge(orderRisk)}
+                  className={`risk-info risk-info-detail ${orderPaymentRisk}`}
+                  i18nKeyLabel={`admin.orderRisk.${orderPaymentRisk}`}
+                  label={orderPaymentRisk}
+                  status={getOrderRiskBadge(orderPaymentRisk)}
+                />
+              }
+              {orderTaxRisk &&
+                <Badge
+                  badgeSize="large"
+                  className="risk-info risk-tax"
+                  i18nKeyLabel="admin.orderRisk.orderTaxRisk"
+                  label="Tax not calulated"
                 />
               }
             </div>
