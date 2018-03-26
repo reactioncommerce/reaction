@@ -82,7 +82,7 @@ export const methods = {
     check(taxRate, Number);
     check(taxes, Match.Optional(Array));
 
-    return Cart.direct.update(cartId, {
+    return Cart.update(cartId, {
       $set: {
         taxes,
         tax: taxRate
@@ -114,7 +114,7 @@ export const methods = {
 
     const { cartTaxData, cartTaxRate, itemsWithTax, taxRatesByShop } = options;
 
-    return Cart.direct.update(cartId, {
+    return Cart.update(cartId, {
       $set: {
         taxes: cartTaxData,
         tax: cartTaxRate,

@@ -122,7 +122,7 @@ function composer(props, onData) {
   const viewAs = Reaction.getUserPreferences("reaction-dashboard", "viewAs", "administrator");
 
   if (Array.isArray(props.documentIds) && props.documentIds.length) {
-    const subscription = Meteor.subscribe("Revisions", props.documentIds);
+    const subscription = Meteor.subscribe("ProductRevisions", props.documentIds);
 
     if (subscription.ready()) {
       const revisions = Revisions.find({

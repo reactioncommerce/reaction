@@ -1,31 +1,18 @@
 import _ from "lodash";
 import { Meteor } from "meteor/meteor";
 
-/*
- *  Blatant reuse of Meteor method hooks from
- *  @see https://github.com/hitchcott/meteor-method-hooks
- *  @see https://github.com/Workpop/meteor-method-hooks
+/**
+ * @file **Method Hooks for Meteor** - Use a hook to run something before or after a method on the server
+ * Reused Meteor method hooks from [hitchcott/meteor-method-hooks](https://github.com/hitchcott/meteor-method-hooks) and [Workpop/meteor-method-hooks](https://github.com/Workpop/meteor-method-hooks)
+ * Read more on how to use [Method Hooks](https://docs.reactioncommerce.com/reaction-docs/master/method-hooks).
+ * @example MethodHooks.after('orders/orderCompleted', callback)
+ * @namespace MethodHooks
  */
 export const MethodHooks = {};
 
 /**
- * A hook to be run before or after a method.
- * @name Hook
- * @function
- * @return {*} The result of the method. Ignored for before hooks, passed as the methodResult to subsequent method hooks.
- * You can mutate the return value in after hooks.
- * @param {{result: *, error: *, arguments: Array, hooksProcessed: Number}} An options parameter that has the result and
- * error from calling the method and the arguments used to call that method. `result` and `error` are null for before
- * hooks, since the method has not yet been called. On the client, after hooks are called when the method returns from
- * the server, but before the callback is invoked. `hooksProcessed` gives you the number of hooks processed so far,
- * since previous hooks may have mutated the arguments.
- *
- * After hooks can change the result values. Use `hooksProcessed` to keep track of how many modifications have been
- * made.
- */
-
-/**
- * A collection of after hooks
+ * @method afterHooks
+ * @summary A collection of after hooks
  * @type {Object}
  * @summary <String, [Hook]> A mapping from method names to arrays of hooks
  * @private
@@ -33,7 +20,7 @@ export const MethodHooks = {};
 MethodHooks._afterHooks = {};
 
 /**
- * A collection of before hooks
+ * @summary A collection of before hooks
  * @type {Object}
  * @summary <String, [Hook]> A mapping from method names to arrays of hooks
  * @private
@@ -41,22 +28,23 @@ MethodHooks._afterHooks = {};
 MethodHooks._beforeHooks = {};
 
 /**
- * handlers
- * The method handler definitions appropriate to the environment
+ * @method handlers
+ * @summary The method handler definitions appropriate to the environment
  */
 MethodHooks._handlers = Meteor.isClient ? Meteor.connection._methodHandlers :
   Meteor.server.method_handlers;
 
 /**
- * The original method handlers
+ * @method _originalMethodHandlers
+ * @summary The original method handlers
  * @type {Object}
- * @summary <String, Function> Method handler mapping
+ * @returns <String, Function> Method handler mapping
  * @private
  */
 MethodHooks._originalMethodHandlers = {};
 
 /**
- * Wrappers
+ * @method Wrappers
  * @type {Object}
  * @summary <String, Function> A mapping from method names to method functions
  * @private
@@ -64,7 +52,7 @@ MethodHooks._originalMethodHandlers = {};
 MethodHooks._wrappers = {};
 
 /**
- * initializeHook
+ * @method initializeHook
  * @summary Initializes a new hook
  * @param {String} mapping - map hook: a is  place to store the mapping
  * @param {String} methodName - The name of the method
@@ -152,11 +140,12 @@ MethodHooks._initializeHook = function (mapping, methodName, hookFunction) {
 };
 
 /**
- * Reaction MethodHooks before
+ * @method before
+ * @memberof MethodHooks
  * @summary Add a function to call before the specified method
  * @param {String} methodName - methodName
  * @param {String} beforeFunction - beforeFunction
- * @return {String} - returns transformed data
+ * @return {String} - returns transformed data, Ignored for before hooks
  */
 MethodHooks.before = function (methodName, beforeFunction) {
   MethodHooks._initializeHook(
@@ -166,11 +155,13 @@ MethodHooks.before = function (methodName, beforeFunction) {
 };
 
 /**
- * MethodHooks.after
- * Add a function to call after the specified method
+ * @method after
+ * @memberof MethodHooks
+ * @summary Add a function to call after the specified method
+ * After hooks can change the result values. Use `hooksProcessed` to keep track of how many modifications have been made. You can mutate the return value in after hooks.
  * @param {String} methodName - methodName
  * @param {String} afterFunction - afterFunction
- * @return {String} - returns transformed data
+ * @return {String} - returns transformed data, Passed as the methodResult to subsequent method hooks.
  */
 MethodHooks.after = function (methodName, afterFunction) {
   MethodHooks._initializeHook(
@@ -180,10 +171,11 @@ MethodHooks.after = function (methodName, afterFunction) {
 };
 
 /**
- * MethodHooks.beforeMethods
- * Call the provided hook in values for the key'd method names
+ * @method beforeMethods
+ * @memberof MethodHooks
+ * @summary Call the provided hook in values for the key'd method names
  * @param {Object} dict - <string, Hook> dict
- * @return {String} - returns transformed data
+ * @return {String} - returns transformed data, Ignored for before hooks
  */
 MethodHooks.beforeMethods = function (dict) {
   _.each(dict, (v, k) => {
@@ -192,9 +184,11 @@ MethodHooks.beforeMethods = function (dict) {
 };
 
 /**
- * Call the provided hook in values for the key'd method names
+ * @method afterMethods
+ * @memberof MethodHooks
+ * @summary Call the provided hook in values for the key'd method names
  * @param {Object} dict - <string, Hook> dict
- * @return {String} - returns transformed data
+ * @return {String} - returns transformed data, Passed as the methodResult to subsequent method hooks.
  */
 MethodHooks.afterMethods = function (dict) {
   _.each(dict, (v, k) => {
