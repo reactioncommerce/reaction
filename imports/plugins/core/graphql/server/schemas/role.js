@@ -1,4 +1,12 @@
 export const typeDefs = `
+  # The fields by which you are allowed to sort any query that returns an \`RoleConnection\`
+  enum RoleSortByField {
+    _id
+    name
+    createdAt
+    updatedAt
+  }
+
   # Represents a named role
   type Role implements Node {
     _id: ID!
@@ -20,6 +28,6 @@ export const typeDefs = `
   }
 
   extend type Query {
-    roles(shopId: ID!): RoleConnection
+    roles(shopId: ID!, after: ConnectionCursor, before: ConnectionCursor, first: ConnectionLimitInt, last: ConnectionLimitInt, sortOrder: SortOrder = asc, sortBy: RoleSortByField = createdAt): RoleConnection
   }
 `;
