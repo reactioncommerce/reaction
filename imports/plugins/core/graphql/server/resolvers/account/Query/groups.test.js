@@ -59,9 +59,9 @@ test("calls queries.groups with a shopId and retuns groups", async () => {
     userId: "123"
   });
 
-  expect(result.nodes[0].shopId).toEqual("s123");
-  expect(result.nodes[0]._id).toEqual(group1Base64ID);
-  expect(result.nodes[1]._id).toEqual(group2Base64ID);
-  expect(result.nodes[2]._id).toEqual(group3Base64ID);
+  expect(result.nodes[0].shopId).toBe("s123");
+  expect(result.nodes[0]._id).toBe(group1Base64ID);
+  expect(result.nodes[1]._id).toBe(group2Base64ID);
+  expect(result.nodes[2]._id).toBe(group3Base64ID);
   expect(groupsQuery).toHaveBeenCalled();
 });
