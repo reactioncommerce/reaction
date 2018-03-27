@@ -378,20 +378,16 @@ class PublishControls extends Component {
   }
 
   render() {
-    if (this.props.isEnabled) {
-      return (
-        <Components.ToolbarGroup lastChild={true}>
-          {this.renderDeletionStatus()}
-          {this.renderUndoButton()}
-          {this.renderArchiveButton()}
-          {this.renderViewControls()}
-          {this.renderPublishButton()}
-          {/* this.renderMoreOptionsButton() */}
-        </Components.ToolbarGroup>
-      );
-    }
-
-    return null;
+    return (
+      <Components.ToolbarGroup lastChild={true}>
+        {this.props.isEnabled && this.renderDeletionStatus()}
+        {this.props.isEnabled && this.renderUndoButton()}
+        {this.props.isEnabled && this.renderArchiveButton()}
+        {this.renderViewControls()}
+        {this.renderPublishButton()}
+        {/* this.renderMoreOptionsButton() */}
+      </Components.ToolbarGroup>
+    );
   }
 }
 
