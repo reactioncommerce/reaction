@@ -525,7 +525,7 @@ export function addressBookUpdate(address, accountUserId, type) {
   Meteor.users.update(Meteor.userId(), userUpdateQuery);
 
   // Update the Reaction Accounts collection with new address info
-  const updatedAccount = Accounts.update({
+  const updatedAccountResult = Accounts.update({
     userId
   }, accountsUpdateQuery);
 
@@ -544,7 +544,18 @@ export function addressBookUpdate(address, accountUserId, type) {
     updatedFields
   });
 
-  return updatedAccount;
+  // If the address update was successful, then return the full updated addrtess
+  if (updatedAccountResult === 1) {
+    // Find the account
+    const updatedAccount = Accounts.findOne({
+      userId
+    });
+
+    // Pull the updated address and return it
+    return updatedAccount.profile.addressBook.find((updatedAddress) => address._id === updatedAddress._id);
+  }
+
+  return updatedAccountResult;
 }
 
 /**
