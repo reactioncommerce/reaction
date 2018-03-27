@@ -406,7 +406,7 @@ export function addressBookAdd(address, accountUserId) {
   if (result.numberAffected === 1) {
     // Find the account
     const updatedAccount = Accounts.findOne({
-      _id: userId
+      userId
     });
 
     // Pull the updated address and return it
