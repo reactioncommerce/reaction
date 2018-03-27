@@ -59,6 +59,11 @@ class AddressBookReview extends Component {
     isEnteredSelected: false
   }
 
+  /**
+   * @method handleSelection
+   * @summary either saves the suggested or entered address
+   * @since 2.0.0
+   */
   handleSelection = (event) => {
     event.preventDefault();
     let address = this.props.validationResults.enteredAddress;
@@ -145,8 +150,6 @@ class AddressBookReview extends Component {
 
   render() {
     const { enteredAddress, suggestedAddress } = this.props.validationResults;
-    const radioTextEntered = "Entered Address";
-    const radioTextSuggested = "Suggested Address";
     const { isEnteredSelected } = this.state;
     return (
       <div className="address-review">
@@ -154,7 +157,7 @@ class AddressBookReview extends Component {
           <Components.Translation
             defaultValue={`The address you entered may be incorrect or incomplete.
               Please review our suggestions below, and choose which version you'd like to use. Errors are shown in red.`}
-            i18nKey=""
+            i18nKey="addressBookReview.warning"
           />
         </div>
         <form>
@@ -167,7 +170,7 @@ class AddressBookReview extends Component {
                 checked={isEnteredSelected}
                 onChange={this.selectEntered}
               />
-              <Components.Translation defaultValue={radioTextEntered}/>
+              <Components.Translation defaultValue="Entered Address" i18nKey="addressBookReview.enteredAddress"/>
             </div>
             {this.renderField("address1", enteredAddress.address1, true)}
             {this.renderField("address2", enteredAddress.address2, true)}
@@ -185,7 +188,7 @@ class AddressBookReview extends Component {
                 checked={!isEnteredSelected}
                 onChange={this.selectSuggested}
               />
-              <Components.Translation defaultValue={radioTextSuggested}/>
+              <Components.Translation defaultValue="Suggested Address" i18nKey="addressBookReview.suggestedAddress"/>
             </div>
             {this.renderField("address1", suggestedAddress.address1, false)}
             {this.renderField("address2", suggestedAddress.address2, false)}
@@ -200,7 +203,7 @@ class AddressBookReview extends Component {
               buttonType="submit"
               onClick={this.handleSelection}
               bezelStyle="solid"
-              // i18nKeyLabel={this.props.i18nKeyLabel}
+              i18nKeyLabel="addressBookReview.useSelectedAddress"
               label="Use selected address"
               id="reviewAddressSelectButton"
             />
@@ -211,7 +214,7 @@ class AddressBookReview extends Component {
               onKeyDown={this.handleEdit}
               tabIndex={0}
             >
-              Edit entered address
+              <Components.Translation defaultValue="Edit entered address" i18nKey="addressBookReview.editAddress"/>
             </div>
           </div>
         </form>
