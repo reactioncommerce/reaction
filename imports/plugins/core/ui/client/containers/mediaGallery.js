@@ -85,7 +85,7 @@ const wrapComponent = (Comp) => (
 
       // It is confusing for an admin to know what the actual featured media is if it
       // changes on hover of the other media.
-      if (!editable) {
+      if (editable) {
         this.setState({ featuredMedia: media });
       }
     };
