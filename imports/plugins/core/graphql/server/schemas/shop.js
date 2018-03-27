@@ -11,6 +11,9 @@ export const typeDefs = `
 
     # Returns a list of groups for the shop with ID \`shopId\`, as a Relay-compatible connection.
     groups(after: ConnectionCursor, before: ConnectionCursor, first: ConnectionLimitInt, last: ConnectionLimitInt, sortOrder: SortOrder = asc, sortBy: GroupSortByField = createdAt): GroupConnection
+
+    # Returns a list of roles for the shop with ID \`shopId\`, as a Relay-compatible connection.
+    roles(after: ConnectionCursor, before: ConnectionCursor, first: ConnectionLimitInt, last: ConnectionLimitInt, sortOrder: SortOrder = asc, sortBy: RoleSortByField = createdAt): RoleConnection
   }
 
   # Input parameters for the inviteShopMember mutation
