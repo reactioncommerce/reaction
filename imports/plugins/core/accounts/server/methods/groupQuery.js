@@ -7,7 +7,7 @@ import { Reaction } from "/lib/api";
  * @method
  * @summary query the Groups collection and return group data
  * @param {Object} context - an object containing the per-request state
- * @param {String} id - id of roup to query
+ * @param {String} id - id of group to query
  * @return {Object} group object
  */
 export function groupQuery(context, id) {
@@ -58,10 +58,12 @@ export function groupsQuery(context, shopId) {
     }
   });
 
-  if (userAccount) {
+  if (userAccount && Array.isArray(userAccount.groups)) {
     // Query the groups collection to find a group by `id`
     return Promise.resolve(Groups.rawCollection().find({
-      _id: userAccount.groups,
+      _id: {
+        $in: userAccount.groups
+      },
       shopId
     }));
   }

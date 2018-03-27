@@ -4,30 +4,44 @@
  * @param {Any} results - results to be returned as part of the cursor
  * @return {Object} fake cursor
  */
-export default function getFakeMongoCursor(collectionName, results) {
+export default function getFakeMongoCursor(collectionName, results, options) {
   const cursor = {
-    clone: () => ({
-      count: () => results.length
-    }),
     cmd: {
-      query: {}
+      query: (options && options.query) || {}
     },
-    filter: () => cursor,
-    limit: () => cursor,
     ns: `meteor.${collectionName}`,
     options: {
       db: {
-        collection: () => ({
-          findOne: () => Promise.resolve(null)
-        }),
         databaseName: "meteor"
       }
-    },
-    skip: () => cursor,
-    sort: () => cursor,
-    toArray() {
-      return Promise.resolve(results);
     }
   };
+
+  const isTesting = typeof jest !== "undefined";
+
+  if (isTesting) {
+    cursor.clone = jest.fn().mockName("cursor.clone").mockImplementation(() => cursor);
+    cursor.count = jest.fn().mockName("cursor.count").mockReturnValue(results.length);
+    cursor.filter = jest.fn().mockName("cursor.filter").mockReturnValue(cursor);
+    cursor.limit = jest.fn().mockName("cursor.limit").mockReturnValue(cursor);
+    cursor.options.db.collection = jest.fn().mockName("cursor.options.db.collection").mockReturnValue({
+      findOne: jest.fn().mockName("cursor.options.db.collection.findOne").mockResolvedValue(null)
+    });
+    cursor.skip = jest.fn().mockName("cursor.skip").mockReturnValue(cursor);
+    cursor.sort = jest.fn().mockName("cursor.sort").mockReturnValue(cursor);
+    cursor.toArray = jest.fn().mockName("cursor.toArray").mockResolvedValue(results);
+  } else {
+    cursor.clone = () => cursor;
+    cursor.count = () => results.length;
+    cursor.filter = () => cursor;
+    cursor.limit = () => cursor;
+    cursor.options.db.collection = () => ({
+      findOne: () => Promise.resolve(null)
+    });
+    cursor.skip = () => cursor;
+    cursor.sort = () => cursor;
+    cursor.toArray = () => Promise.resolve(results);
+  }
+
   return cursor;
 }
