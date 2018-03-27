@@ -5,6 +5,8 @@ import { EJSON } from "meteor/ejson";
 import { Meteor } from "meteor/meteor";
 import { ReactionProduct } from "/lib/api";
 import { ProductRevision as Catalog } from "/imports/plugins/core/revisions/server/hooks";
+import { publishProductsToCatalog } from "/imports/plugins/core/catalog/server/methods/catalog"
+import { RevisionApi } from "/imports/plugins/core/revisions/lib/api/revisions";
 import { Hooks, Logger, Reaction } from "/server/api";
 import { MediaRecords, Products, Revisions, Tags } from "/lib/collections";
 import { Media } from "/imports/plugins/core/files/server";
@@ -921,25 +923,43 @@ Meteor.methods({
       }]
     }).fetch();
 
-    const ids = [];
-    productsWithVariants.map((doc) => {
-      ids.push(doc._id);
-      return ids;
-    });
+    const ids = productsWithVariants.map((doc) => doc._id);
+    let numFlaggedAsDeleted = 0;
+    if (RevisionApi.isRevisionControlEnabled()) {
+      // Flag the product and all its variants as deleted in the Revisions collection.
+      productsWithVariants.forEach((toArchiveProduct) => {
+        Hooks.Events.run("beforeRemoveCatalogProduct", toArchiveProduct, { userId: this.userId });
 
-    // Flag the product and all its variants as deleted in the Revisions collection.
-    productsWithVariants.forEach((toArchiveProduct) => {
-      Hooks.Events.run("beforeRemoveCatalogProduct", toArchiveProduct, { userId: this.userId });
+        Hooks.Events.run("afterRemoveCatalogProduct", this.userId, toArchiveProduct);
+      });
 
-      Hooks.Events.run("afterRemoveCatalogProduct", this.userId, toArchiveProduct);
-    });
-
-    const numFlaggedAsDeleted = Revisions.find({
-      "documentId": {
-        $in: ids
-      },
-      "documentData.isDeleted": true
-    }).count();
+      numFlaggedAsDeleted = Revisions.find({
+        "documentId": {
+          $in: ids
+        },
+        "documentData.isDeleted": true
+      }).count();
+    } else {
+      productsWithVariants.forEach((product) => {
+        Products.update({
+            _id: product._id
+          }, {
+            $set: {
+              isDeleted: true
+            }
+          }, {
+            bypassCollection2: true,
+            publish: true
+          }
+        );
+      });
+      numFlaggedAsDeleted = Products.find({
+        _id: {
+          $in: ids
+        },
+        isDeleted: true
+      }).count();
+    }
 
     if (numFlaggedAsDeleted > 0) {
       // Flag associated MediaRecords as deleted.
@@ -955,10 +975,15 @@ Meteor.methods({
           "metadata.isDeleted": true
         }
       });
-      return numFlaggedAsDeleted;
+    }
+
+    if (!RevisionApi.isRevisionControlEnabled()) {
+      // Publish products that have been marked as deleted immediately.
+      publishProductsToCatalog(ids);
     }
 
     Logger.debug(`${numFlaggedAsDeleted} products have been flagged as deleted`);
+    return numFlaggedAsDeleted;
   },
 
   /**
