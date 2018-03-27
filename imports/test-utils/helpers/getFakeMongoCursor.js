@@ -20,9 +20,8 @@ export default function getFakeMongoCursor(collectionName, results, options) {
   const isTesting = typeof jest !== "undefined";
 
   if (isTesting) {
-    cursor.clone = jest.fn().mockName("cursor.clone").mockReturnValue({
-      count: jest.fn().mockName("cursor.clone.count").mockReturnValueOnce(results.length)
-    });
+    cursor.clone = jest.fn().mockName("cursor.clone").mockImplementation(() => cursor);
+    cursor.count = jest.fn().mockName("cursor.count").mockReturnValue(results.length);
     cursor.filter = jest.fn().mockName("cursor.filter").mockReturnValue(cursor);
     cursor.limit = jest.fn().mockName("cursor.limit").mockReturnValue(cursor);
     cursor.options.db.collection = jest.fn().mockName("cursor.options.db.collection").mockReturnValue({
@@ -32,9 +31,8 @@ export default function getFakeMongoCursor(collectionName, results, options) {
     cursor.sort = jest.fn().mockName("cursor.sort").mockReturnValue(cursor);
     cursor.toArray = jest.fn().mockName("cursor.toArray").mockResolvedValue(results);
   } else {
-    cursor.clone = () => ({
-      count: () => results.length
-    });
+    cursor.clone = () => cursor;
+    cursor.count = () => results.length;
     cursor.filter = () => cursor;
     cursor.limit = () => cursor;
     cursor.options.db.collection = () => ({
