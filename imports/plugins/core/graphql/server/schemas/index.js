@@ -4,7 +4,6 @@ import { typeDefs as currency } from "./currency";
 import { typeDefs as datetime } from "./datetime";
 import { typeDefs as email } from "./email";
 import { typeDefs as group } from "./group";
-import { typeDefs as hello } from "./hello";
 import { typeDefs as jsonObject } from "./json-object";
 import { typeDefs as metafield } from "./metafield";
 import { typeDefs as node } from "./node";
@@ -16,10 +15,12 @@ import { typeDefs as shop } from "./shop";
 // See https://www.apollographql.com/docs/graphql-tools/generate-schema.html#extend-types
 const base = [
   `
+  # Mutations have side effects, such as mutating data or triggering a task
   type Mutation {
     echo(str: String): String
   }
 
+  # Queries return all requested data, without any side effects
   type Query {
     ping: String!
   }
@@ -33,7 +34,6 @@ export default base.concat([
   datetime,
   email,
   group,
-  hello,
   jsonObject,
   metafield,
   node,
