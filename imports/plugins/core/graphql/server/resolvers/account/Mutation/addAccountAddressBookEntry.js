@@ -1,4 +1,5 @@
-import { decodeAccountOpaqueId, encodeAccountOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/account";
+import { decodeAccountOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/account";
+import { xformAddressResponse } from "@reactioncommerce/reaction-graphql-xforms/address";
 
 /**
  * @name addAccountAddressBookEntry
@@ -17,10 +18,7 @@ export default function addAccountAddressBookEntry(_, { input }, context) {
   const dbAccountId = accountId && decodeAccountOpaqueId(accountId);
   const updatedAddress = context.methods["accounts/addressBookAdd"](context, [address, dbAccountId]);
   return {
-    address: {
-      ...updatedAddress,
-      _id: encodeAccountOpaqueId(updatedAddress._id)
-    },
+    address: xformAddressResponse(updatedAddress),
     clientMutationId
   };
 }
