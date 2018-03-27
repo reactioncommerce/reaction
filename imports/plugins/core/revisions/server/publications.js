@@ -18,8 +18,27 @@ Meteor.publish("ProductRevisions", function (productIds) {
   // all all relevant revisions all is one package
   if (Roles.userIsInRole(this.userId, ["owner", "admin", "createProduct"], shop._id)) {
     return Revisions.find({
-      _id: {
-        $in: productIds
+      "$or": [
+        {
+          documentId: {
+            $in: productIds
+          }
+        },
+        {
+          "documentData.ancestors": {
+            $in: productIds
+          }
+        },
+        {
+          parentDocument: {
+            $in: productIds
+          }
+        }
+      ],
+      "workflow.status": {
+        $nin: [
+          "revision/published"
+        ]
       }
     });
   }

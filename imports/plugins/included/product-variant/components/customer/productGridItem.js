@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import classnames from "classnames";
 import { formatPriceString, Router } from "/client/api";
-import { Components } from "@reactioncommerce/reaction-components";
+import { registerComponent, Components } from "@reactioncommerce/reaction-components";
 
 class ProductGridItem extends Component {
   static propTypes = {
@@ -187,5 +187,8 @@ class ProductGridItem extends Component {
     );
   }
 }
+
+
+registerComponent("ProductGridItemCustomer", ProductGridItem);
 
 export default ProductGridItem;

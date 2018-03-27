@@ -2,22 +2,9 @@ import _ from "lodash";
 import { diff } from "deep-diff";
 import { RevisionApi } from "../lib/api";
 import { insertRevision, updateRevision, markRevisionAsDeleted } from "./functions";
-import { Products, Revisions, MediaRecords } from "/lib/collections";
+import { Products, Revisions } from "/lib/collections";
 import { Hooks } from "/server/api";
 import { Media } from "/imports/plugins/core/files/server";
-
-function convertMetadata(modifierObject) {
-  const metadata = {};
-  for (const prop in modifierObject) {
-    if ({}.hasOwnProperty.call(modifierObject, prop)) {
-      if (prop.indexOf("metadata") !== -1) {
-        const splitName = _.split(prop, ".")[1];
-        metadata[splitName] = modifierObject[prop];
-      }
-    }
-  }
-  return metadata;
-}
 
 export const ProductRevision = {
   getProductPriceRange(productId) {
@@ -185,118 +172,6 @@ export const ProductRevision = {
     return variant.inventoryQuantity || 0;
   }
 };
-
-MediaRecords.before.insert((userid, media) => {
-  if (RevisionApi.isRevisionControlEnabled() === false) {
-    return true;
-  }
-  if (media.metadata.workflow === "published") {
-    // Skip by setting metadata.workflow.status to published
-    return true;
-  }
-
-  if (media.metadata.productId) {
-    const revisionMetadata = Object.assign({}, media.metadata);
-    revisionMetadata.workflow = "published";
-    Revisions.insert({
-      documentId: media._id,
-      documentData: revisionMetadata,
-      documentType: "image",
-      parentDocument: media.metadata.productId,
-      changeType: "insert",
-      workflow: {
-        status: "revision/update"
-      }
-    });
-    media.metadata.workflow = "unpublished";
-  } else {
-    media.metadata.workflow = "published";
-  }
-  return true;
-});
-
-MediaRecords.before.update((userId, media, fieldNames, modifier) => {
-  if (RevisionApi.isRevisionControlEnabled() === false) {
-    return true;
-  }
-  // if it's not metadata ignore it, as LOTS of othing things change on this record
-  if (!_.includes(fieldNames, "metadata")) {
-    return true;
-  }
-
-  if (media.metadata.productId) {
-    const convertedModifier = convertMetadata(modifier.$set);
-    const convertedMetadata = Object.assign({}, media.metadata, convertedModifier);
-    const existingRevision = Revisions.findOne({
-      "documentId": media._id,
-      "workflow.status": {
-        $nin: [
-          "revision/published"
-        ]
-      }
-    });
-    if (existingRevision) {
-      const updatedMetadata = Object.assign({}, existingRevision.documentData, convertedMetadata);
-      // Special case where if we have both added and reordered images before publishing we don't want to overwrite
-      // the workflow status since it would be "unpublished"
-      if (existingRevision.documentData.workflow === "published" || existingRevision.changeType === "insert") {
-        updatedMetadata.workflow = "published";
-      }
-      Revisions.update({ _id: existingRevision._id }, {
-        $set: {
-          documentData: updatedMetadata
-        }
-      });
-      Hooks.Events.run("afterRevisionsUpdate", userId, {
-        ...existingRevision,
-        documentData: updatedMetadata
-      });
-    } else {
-      Revisions.insert({
-        documentId: media._id,
-        documentData: convertedMetadata,
-        documentType: "image",
-        parentDocument: media.metadata.productId,
-        changeType: "update",
-        workflow: {
-          status: "revision/update"
-        }
-      });
-    }
-
-    return false; // prevent actual update of image. This also stops other hooks from running :/
-  }
-  // for non-product images, just ignore and keep on moving
-  return true;
-});
-
-MediaRecords.before.remove((userId, media) => {
-  if (RevisionApi.isRevisionControlEnabled() === false) {
-    return true;
-  }
-
-  // if the media is unpublished, then go ahead and just delete it
-  if (media.metadata.workflow && media.metadata.workflow === "unpublished") {
-    Revisions.remove({
-      documentId: media._id
-    });
-    return true;
-  }
-  if (media.metadata.productId) {
-    Revisions.insert({
-      documentId: media._id,
-      documentData: media.metadata,
-      documentType: "image",
-      parentDocument: media.metadata.productId,
-      changeType: "remove",
-      workflow: {
-        status: "revision/update"
-      }
-    });
-    return false; // prevent actual deletion of image. This also stops other hooks from running :/
-  }
-  return true;
-});
 
 /**
  * @function

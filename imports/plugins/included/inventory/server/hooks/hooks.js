@@ -1,11 +1,15 @@
 import { Meteor } from "meteor/meteor";
-import { Cart, Products, Orders } from "/lib/collections";
+import { Cart, Orders, Products } from "/lib/collections";
 import { Logger, Hooks } from "/server/api";
 import { registerInventory } from "../methods/inventory";
 
 /**
- * After cart update add invetory reservations
- */
+* @method afterAddItemsToCart
+* @summary reserves inventory when item is added to cart
+* @param {String} cartId - current cartId
+* @param {Object} options - product document
+* @return {undefined}
+*/
 Hooks.Events.add("afterAddItemsToCart", (cartId, options) => {
   // Adding a new product or variant to the cart
   Logger.debug("after cart update, call inventory/addReserve");
@@ -15,6 +19,13 @@ Hooks.Events.add("afterAddItemsToCart", (cartId, options) => {
   Meteor.call("inventory/addReserve", items.filter((item) => item._id === options.newItemId));
 });
 
+/**
+* @method afterModifyQuantityInCart
+* @summary reserves inventory when cart quantity is updated
+* @param {String} cartId - current cartId
+* @param {Object} options - product document
+* @return {undefined}
+*/
 Hooks.Events.add("afterModifyQuantityInCart", (cartId, options) => {
   // Modifying item quantity in cart.
   Logger.debug("after variant increment, call inventory/addReserve");
@@ -27,11 +38,15 @@ Hooks.Events.add("afterModifyQuantityInCart", (cartId, options) => {
   Meteor.call("inventory/addReserve", item);
 });
 
+
 /**
- * after variant were removed
- * @fires `inventory/remove` Method
- */
-Products.after.remove((userId, doc) => {
+* @method afterRemoveCatalogProduct
+* @summary updates product inventory after variant is removed
+* @param {String} userId - userId of user making the call
+* @param {Object} doc - product document
+* @return {undefined}
+*/
+Hooks.Events.add("afterRemoveCatalogProduct", (userId, doc) => {
   if (doc.type === "variant") {
     const variantItem = {
       productId: doc.ancestors[0],
@@ -42,42 +57,53 @@ Products.after.remove((userId, doc) => {
     }, call inventory/remove`);
     Meteor.call("inventory/remove", variantItem);
   }
-});
 
-//
-// after product update
-//
-Products.after.update((userId, doc, fieldNames, modifier) => {
-  // product update can't affect on inventory, so we don't manage this cases
-  // we should keep in mind that returning false within hook prevents other
-  // hooks to be run
-  if (doc.type !== "variant") return false;
-
-  // check if modifier is set and $pull and $push are undefined. This need
-  // because anyway on every create or delete operation we have additionally
-  // $set modifier because of auto-updating of `shopId` and `updateAt` schema
-  // properties
-  if ((modifier.$set || modifier.$inc) && !modifier.$pull && !modifier.$push) {
-    if (!modifier.$set) {
-      modifier.$set = {};
-    }
-    modifier.$set.updatedAt = new Date();
-    // triggers inventory adjustment
-    Meteor.call("inventory/adjust", doc);
-  }
+  return doc;
 });
 
 /**
- * after insert
- * @summary should fires on create new variants, on clones products/variants
- */
-Products.after.insert((userId, doc) => {
+* @method afterUpdateCatalogProduct
+* @summary adjust inventory of variants after an update
+* @param {String} userId - userId of user making the call
+* @param {Object} doc - product document
+* @return {undefined}
+*/
+Hooks.Events.add("afterUpdateCatalogProduct", (doc) => {
+  // Find the most recent version of the product document based on
+  // the passed in doc._id
+  const productDocument = Products.findOne({
+    _id: doc._id
+  });
+
+  if (doc.type === "variant") {
+    Meteor.call("inventory/adjust", productDocument);
+  }
+
+  return productDocument;
+});
+
+/**
+* @method afterInsertCatalogProduct
+* @summary adds product inventory when new product is created
+* @param {String} userId - userId of user making the call
+* @param {Object} doc - product document
+* @return {undefined}
+*/
+Hooks.Events.add("afterInsertCatalogProduct", (doc) => {
   if (doc.type !== "variant") {
     return false;
   }
   registerInventory(doc);
+
+  return doc;
 });
 
+/**
+ * markInventoryShipped
+ * @summary check a product and update Inventory collection with inventory documents.
+ * @param {Object} product - valid Schemas.Product object
+ * @return {Number} - returns the total amount of new inventory created
+ */
 function markInventoryShipped(doc) {
   const order = Orders.findOne(doc._id);
   const orderItems = order.items;
@@ -95,8 +121,16 @@ function markInventoryShipped(doc) {
     cartItems.push(cartItem);
   }
   Meteor.call("inventory/shipped", cartItems);
+
+  return doc;
 }
 
+/**
+ * markInventorySold
+ * @summary check a product and update Inventory collection with inventory documents.
+ * @param {Object} doc - valid Schemas.Product object
+ * @return {Number} - returns the total amount of new inventory created
+ */
 function markInventorySold(doc) {
   const orderItems = doc.items;
   const cartItems = [];
@@ -114,18 +148,32 @@ function markInventorySold(doc) {
     cartItems.push(cartItem);
   }
   Meteor.call("inventory/sold", cartItems);
+
+  return doc;
 }
 
-Orders.after.insert((userId, doc) => {
+/**
+* @method afterOrderInsert
+* @summary marks inventory as sold when order is created
+* @param {Object} order - order document
+* @return {Object} order - order document
+*/
+Hooks.Events.add("afterOrderInsert", (order) => {
   Logger.debug("Inventory module handling Order insert");
-  markInventorySold(doc);
+  markInventorySold(order);
+
+  return order;
 });
 
-Orders.after.update((userId, doc, fieldnames, modifier) => {
+/**
+* @method onOrderShipmentShipped
+* @summary marks inventory as shipped when order workflow is completed
+* @param {Object} doc - order document
+* @return {undefined}
+*/
+Hooks.Events.add("onOrderShipmentShipped", (doc) => {
   Logger.debug("Inventory module handling Order update");
-  if (modifier.$addToSet) {
-    if (modifier.$addToSet["workflow.workflow"] === "coreOrderWorkflow/completed") {
-      markInventoryShipped(doc);
-    }
-  }
+  markInventoryShipped(doc);
+
+  return doc;
 });

@@ -36,11 +36,11 @@ describe("Cart Publication", function () {
     };
 
     beforeEach(() => {
-      Collections.Cart.direct.remove({});
+      Collections.Cart.remove({});
     });
 
     afterEach(() => {
-      Collections.Cart.direct.remove({});
+      Collections.Cart.remove({});
     });
 
     it("should return a cart cursor", function () {
