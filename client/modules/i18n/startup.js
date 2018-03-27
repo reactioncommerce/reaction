@@ -1,4 +1,3 @@
-import _ from "lodash";
 import i18nextBrowserLanguageDetector from "i18next-browser-languagedetector";
 import i18nextLocalStorageCache from "i18next-localstorage-cache";
 import i18nextSprintfPostProcessor from "i18next-sprintf-postprocessor";
@@ -41,8 +40,8 @@ SimpleSchema.addValidator(function () {
     }
 
     // Remove error message from the other field as well.
-    const validationErrors = _.get(this, "validationContext._validationErrors");
-    const deps = _.get(this, "validationContext._deps");
+    const validationErrors = this.validationContext && this.validationContext._validationErrors;
+    const deps = this.validationContext && this.validationContext._deps;
     if (validationErrors) {
       const index = validationErrors.findIndex((error) => error.name === sibling && error.type === "dateBeforeNow");
       if (index !== -1) {
