@@ -940,7 +940,7 @@ Meteor.methods({
         "documentData.isDeleted": true
       }).count();
     } else {
-      //eslint-disable-next-line no-shadow
+      // eslint-disable-next-line no-shadow
       productsWithVariants.forEach((product) => {
         Products.update({
           _id: product._id
