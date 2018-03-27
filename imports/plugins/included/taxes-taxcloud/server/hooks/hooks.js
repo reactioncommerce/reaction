@@ -90,11 +90,15 @@ MethodHooks.after("taxes/calculate", (options) => {
           };
 
           try {
-            let response = HTTP.post(url, request);
+            const response = HTTP.post(url, request);
             let taxRate = 0;
             // ResponseType 3 is a successful call.
             if (response.data.ResponseType !== 3) {
-              throw new Error("Error calling taxcloud API", JSON.stringify(response.data));
+              let errMsg = "Unable to access service. Check credentials.";
+              if (response && response.data.Messages[0].Message) {
+                errMsg = response.data.Messages[0].Message;
+              }
+              throw new Error("Error calling taxcloud API", errMsg);
             }
 
             let totalTax = 0;
@@ -111,11 +115,7 @@ MethodHooks.after("taxes/calculate", (options) => {
             const taxes = []; // only populated for Avalara
             Meteor.call("taxes/setRate", cartId, taxRate, taxes);
           } catch (error) {
-            let errMsg = "Unable to access service. Check credentials.";
-            if (response && response.data.Messages[0].Message) {
-              errMsg = response.data.Messages[0].Message;
-            }
-            Logger.warn("Error fetching tax rate from TaxCloud:", errMsg);
+            Logger.warn("Error fetching tax rate from TaxCloud:", error.message);
           }
         }
       }
