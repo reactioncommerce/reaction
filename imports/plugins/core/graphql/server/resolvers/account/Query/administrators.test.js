@@ -1,35 +1,8 @@
 import { xformAccountResponse } from "@reactioncommerce/reaction-graphql-xforms/account";
 import administratorsResolver from "./administrators";
+import getFakeMongoCursor from "/imports/test-utils/helpers/getFakeMongoCursor";
 
 const base64ID = "cmVhY3Rpb24vc2hvcDoxMjM="; // reaction/shop:123
-
-function getFakeMongoCursor(collectionName, results) {
-  const cursor = {
-    clone: () => ({
-      count: () => results.length
-    }),
-    cmd: {
-      query: {}
-    },
-    filter: () => cursor,
-    limit: () => cursor,
-    ns: `meteor.${collectionName}`,
-    options: {
-      db: {
-        collection: () => ({
-          findOne: () => Promise.resolve(null)
-        }),
-        databaseName: "meteor"
-      }
-    },
-    skip: () => cursor,
-    sort: () => cursor,
-    toArray() {
-      return Promise.resolve(results);
-    }
-  };
-  return cursor;
-}
 
 const mockAccounts = [
   { _id: "a1", name: "Owner" },

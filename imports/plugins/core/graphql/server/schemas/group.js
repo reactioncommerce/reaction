@@ -1,4 +1,12 @@
 export const typeDefs = `
+  # The fields by which you are allowed to sort any query that returns an \`GroupConnection\`
+  enum GroupSortByField {
+    _id
+    name
+    createdAt
+    updatedAt
+  }
+
   # A group definition
   input GroupInput {
     description: String
@@ -148,7 +156,9 @@ export const typeDefs = `
   }
 
   extend type Query {
+    # Returns a single group by ID.
     group(id: ID!): Group
-    groups(shopId: ID!): GroupConnection
+    # Returns a list of groups for the shop with ID \`shopId\`, as a Relay-compatible connection.
+    groups(shopId: ID!, after: ConnectionCursor, before: ConnectionCursor, first: ConnectionLimitInt, last: ConnectionLimitInt, sortOrder: SortOrder = asc, sortBy: GroupSortByField = createdAt): GroupConnection
   }
 `;

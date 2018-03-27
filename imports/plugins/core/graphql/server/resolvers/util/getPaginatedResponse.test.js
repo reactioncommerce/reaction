@@ -1,26 +1,12 @@
 import getPaginatedResponse from "./getPaginatedResponse";
+import getFakeMongoCursor from "/imports/test-utils/helpers/getFakeMongoCursor";
 import { restore as restore$applyBeforeAfterToFilter, rewire as rewire$applyBeforeAfterToFilter } from "./applyBeforeAfterToFilter";
 import { restore as restore$applyPaginationToMongoCursor, rewire as rewire$applyPaginationToMongoCursor } from "./applyPaginationToMongoCursor";
 import { restore as restore$getMongoSort, rewire as rewire$getMongoSort } from "./getMongoSort";
 
 const baseQuery = { _id: "BASE_QUERY" };
-const mockCursor = {
-  clone: () => mockCursor,
-  cmd: { query: baseQuery },
-  count: jest.fn().mockName("cursor.clone.count"),
-  filter: jest.fn().mockName("cursor.filter").mockImplementation(() => mockCursor),
-  limit: jest.fn().mockName("cursor.limit").mockImplementation(() => mockCursor),
-  ns: "meteor.Accounts",
-  options: {
-    db: {
-      databaseName: "meteor",
-      collection: jest.fn().mockName("db.collection").mockReturnValue("COLLECTION")
-    }
-  },
-  skip: jest.fn().mockName("cursor.skip").mockImplementation(() => mockCursor),
-  sort: jest.fn().mockName("cursor.sort").mockImplementation(() => mockCursor),
-  toArray: jest.fn().mockName("cursor.toArray").mockImplementation(() => [])
-};
+const mockCursor = getFakeMongoCursor("COLLECTIONss", [], { query: baseQuery });
+mockCursor.options.db.collection = jest.fn().mockName("db.collection").mockReturnValue("COLLECTION");
 
 const applyBeforeAfterToFilterMock = jest.fn().mockName("applyBeforeAfterToFilter");
 const applyPaginationToMongoCursorMock = jest.fn().mockName("applyPaginationToMongoCursor").mockReturnValue({ totalCount: 5, pageInfo: { info: true } });
