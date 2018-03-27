@@ -89,30 +89,34 @@ MethodHooks.after("taxes/calculate", (options) => {
             }
           };
 
-          HTTP.post(url, request, (error, response) => {
+          try {
+            let response = HTTP.post(url, request);
             let taxRate = 0;
             // ResponseType 3 is a successful call.
-            if (!error && response.data.ResponseType === 3) {
-              let totalTax = 0;
-              for (const item of response.data.CartItemsResponse) {
-                totalTax += item.TaxAmount;
-              }
-              // don't run this calculation if there isn't tax.
-              if (totalTax > 0) {
-                taxRate = (totalTax / cartToCalc.getSubTotal());
-              }
-              // we should consider if we want percentage and dollar
-              // as this is assuming that subTotal actually contains everything
-              // taxable
-              Meteor.call("taxes/setRate", cartId, taxRate, response.CartItemsResponse);
-            } else {
-              let errMsg = "Unable to access service. Check credentials.";
-              if (response && response.data.Messages[0].Message) {
-                errMsg = response.data.Messages[0].Message;
-              }
-              Logger.warn("Error fetching tax rate from TaxCloud:", errMsg);
+            if (response.data.ResponseType !== 3) {
+              throw new Error("Error calling taxcloud API", JSON.stringify(response.data));
             }
-          });
+
+            let totalTax = 0;
+            for (const item of response.data.CartItemsResponse) {
+              totalTax += item.TaxAmount;
+            }
+            // don't run this calculation if there isn't tax.
+            if (totalTax > 0) {
+              taxRate = (totalTax / cartToCalc.getSubTotal());
+            }
+            // we should consider if we want percentage and dollar
+            // as this is assuming that subTotal actually contains everything
+            // taxable
+            const taxes = []; // only populated for Avalara
+            Meteor.call("taxes/setRate", cartId, taxRate, taxes);
+          } catch (error) {
+            let errMsg = "Unable to access service. Check credentials.";
+            if (response && response.data.Messages[0].Message) {
+              errMsg = response.data.Messages[0].Message;
+            }
+            Logger.warn("Error fetching tax rate from TaxCloud:", errMsg);
+          }
         }
       }
     }
