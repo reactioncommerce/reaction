@@ -189,6 +189,11 @@ class PublishControls extends Component {
     return null;
   }
 
+  /**
+   * Allows an archived variant to be restored if revision control is enabled (and
+   * it's not published yet). Once an archived product/variant is published, it's gone
+   * forever.
+   */
   renderDeletionStatus() {
     if (this.hasChanges) {
       if (this.primaryRevision && this.primaryRevision.documentData.isDeleted) {
@@ -229,48 +234,6 @@ class PublishControls extends Component {
           {...buttonProps}
         />
       </div>
-    );
-  }
-
-  renderMoreOptionsButton() {
-    return (
-      <DropDownMenu
-        buttonElement={<IconButton icon={"fa fa-ellipsis-v"}/>}
-        handleMenuItemChange={this.handleAction}
-      >
-        <MenuItem label="Administrator" value="administrator" />
-        <MenuItem label="Customer" value="customer" />
-        <Divider />
-        <MenuItem
-          i18nKeyLabel="app.public"
-          icon="fa fa-unlock"
-          label="Public"
-          selectLabel="Public"
-          value="public"
-        />
-        <MenuItem
-          i18nKeyLabel="app.private"
-          label="Private"
-          icon="fa fa-lock"
-          selectLabel="Public"
-          value="private"
-        />
-        <Divider />
-        <MenuItem
-          disabled={this.hasChanges === false}
-          i18nKeyLabel="revisions.discardChanges"
-          icon="fa fa-undo"
-          label="Discard Changes"
-          value="discard"
-        />
-        <Divider />
-        <MenuItem
-          i18nKeyLabel="app.archive"
-          icon="fa fa-trash-o"
-          label="Archive"
-          value="archive"
-        />
-      </DropDownMenu>
     );
   }
 
@@ -382,10 +345,9 @@ class PublishControls extends Component {
       <Components.ToolbarGroup lastChild={true}>
         {this.props.isEnabled && this.renderDeletionStatus()}
         {this.props.isEnabled && this.renderUndoButton()}
-        {this.props.isEnabled && this.renderArchiveButton()}
+        {this.renderArchiveButton()}
         {this.renderViewControls()}
         {this.renderPublishButton()}
-        {/* this.renderMoreOptionsButton() */}
       </Components.ToolbarGroup>
     );
   }
