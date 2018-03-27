@@ -38,53 +38,37 @@ export default {
       name: "Fake Person"
     };
   },
-  group(context, _id) {
-    return {
-      _id: "bc456",
-      createdAt: new Date(),
-      createdBy: "acc123",
-      description: "",
-      name: "shop_managers",
-      permissions: ["owner", "admin", "createProduct"],
-      shopId: "abc123",
-      slug: "shop-managers",
-      updatedAt: new Date()
-    };
-  },
-  groups(context, shopId) {
-    return Promise.resolve(getFakeMongoCursor("Groups", [
+  roles(context, shopId) {
+    return Promise.resolve(getFakeMongoCursor("roles", [
       {
-        _id: "bc456",
-        createdAt: new Date(),
-        createdBy: "acc123",
-        description: "",
-        name: "shop_managers",
-        permissions: ["owner", "admin", "createProduct"],
-        shopId: "abc123",
-        slug: "shop-managers",
-        updatedAt: new Date()
+        "name": "reaction-shipping"
       },
       {
-        _id: "gh678",
-        createdAt: new Date(),
-        createdBy: "acc123",
-        description: "",
-        name: "special_customers",
-        permissions: ["createProduct"],
-        shopId: "abc123",
-        slug: "special-customers",
-        updatedAt: new Date()
+        "name": "reaction-stripe/stripeConnectAuthorize"
       },
       {
-        _id: "db7986",
-        createdAt: new Date(),
-        createdBy: "acc123",
-        description: "",
-        name: "brands",
-        permissions: ["owner", "admin", "createProduct"],
-        shopId: "bcfgghj6768",
-        slug: "brands",
-        updatedAt: new Date()
+        "name": "reaction-payments"
+      },
+      {
+        "name": "shipping/flatRates"
+      },
+      {
+        "name": "discount-codes/customDiscountCodes"
+      },
+      {
+        "name": "reaction-auth-net/authnetSettings"
+      },
+      {
+        "name": "reaction-social/socialSettings"
+      },
+      {
+        "name": "reaction-i18n"
+      },
+      {
+        "name": "dashboardPackages"
+      },
+      {
+        "name": "dashboard/shippo"
       }
     ]));
   }

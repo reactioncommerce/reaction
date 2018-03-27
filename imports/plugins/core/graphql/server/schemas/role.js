@@ -1,14 +1,16 @@
 export const typeDefs = `
-  # RoleName - String that conforms to Role regex.
-  # This may be required if the role name must match a specific pattern.
-  # Could also be made more generic depending on pattern.
-  # Remove if not used.
-  scalar RoleName
+  # The fields by which you are allowed to sort any query that returns an \`RoleConnection\`
+  enum RoleSortByField {
+    _id
+    name
+    createdAt
+    updatedAt
+  }
 
   # Represents a named role
   type Role implements Node {
     _id: ID!
-    name: RoleName!
+    name: String!
   }
 
   # Wraps a list of \`Roles\`, providing pagination cursors and information.
@@ -26,6 +28,6 @@ export const typeDefs = `
   }
 
   extend type Query {
-    roles(shopId: ID!): RoleConnection
+    roles(shopId: ID!, after: ConnectionCursor, before: ConnectionCursor, first: ConnectionLimitInt, last: ConnectionLimitInt, sortOrder: SortOrder = asc, sortBy: RoleSortByField = createdAt): RoleConnection
   }
 `;

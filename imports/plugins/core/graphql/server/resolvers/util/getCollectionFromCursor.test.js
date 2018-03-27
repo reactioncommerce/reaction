@@ -1,7 +1,14 @@
 import getCollectionFromCursor from "./getCollectionFromCursor";
-import getFakeMongoCursor from "/imports/test-utils/helpers/getFakeMongoCursor";
 
-const mockCursor = getFakeMongoCursor("Accounts", []);
+const mockCursor = {
+  options: {
+    db: {
+      databaseName: "meteor",
+      collection: jest.fn().mockName("db.collection")
+    }
+  },
+  ns: "meteor.Accounts"
+};
 
 test("returns the collection instance", () => {
   mockCursor.options.db.collection.mockReturnValueOnce("fakeInstance");
