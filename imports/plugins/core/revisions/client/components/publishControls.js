@@ -4,10 +4,6 @@ import { Components } from "@reactioncommerce/reaction-components";
 import {
   Button,
   FlatButton,
-  IconButton,
-  Divider,
-  DropDownMenu,
-  MenuItem,
   Switch,
   Icon
 } from "/imports/plugins/core/ui/client/components";
