@@ -5,7 +5,7 @@ import { EJSON } from "meteor/ejson";
 import { Meteor } from "meteor/meteor";
 import { ReactionProduct } from "/lib/api";
 import { ProductRevision as Catalog } from "/imports/plugins/core/revisions/server/hooks";
-import { publishProductsToCatalog } from "/imports/plugins/core/catalog/server/methods/catalog"
+import { publishProductsToCatalog } from "/imports/plugins/core/catalog/server/methods/catalog";
 import { RevisionApi } from "/imports/plugins/core/revisions/lib/api/revisions";
 import { Hooks, Logger, Reaction } from "/server/api";
 import { MediaRecords, Products, Revisions, Tags } from "/lib/collections";
@@ -940,18 +940,18 @@ Meteor.methods({
         "documentData.isDeleted": true
       }).count();
     } else {
+      //eslint-disable-next-line no-shadow
       productsWithVariants.forEach((product) => {
         Products.update({
-            _id: product._id
-          }, {
-            $set: {
-              isDeleted: true
-            }
-          }, {
-            bypassCollection2: true,
-            publish: true
+          _id: product._id
+        }, {
+          $set: {
+            isDeleted: true
           }
-        );
+        }, {
+          bypassCollection2: true,
+          publish: true
+        });
       });
       numFlaggedAsDeleted = Products.find({
         _id: {
