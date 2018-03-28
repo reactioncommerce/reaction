@@ -1,10 +1,8 @@
 export const typeDefs = `
   # The fields by which you are allowed to sort any query that returns an \`RoleConnection\`
   enum RoleSortByField {
-    _id
     name
-    createdAt
-    updatedAt
+    _id
   }
 
   # Represents a named role
