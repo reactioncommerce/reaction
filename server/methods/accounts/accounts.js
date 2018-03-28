@@ -413,7 +413,7 @@ export function addressBookAdd(address, accountUserId) {
     return updatedAccount.profile.addressBook.find((updatedAddress) => address._id === updatedAddress._id);
   }
 
-  return result;
+  throw new Meteor.Error("server-error", "Unable to add address to account");
 }
 
 /**
