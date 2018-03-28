@@ -15,7 +15,7 @@ import { xformAddressResponse } from "@reactioncommerce/reaction-graphql-xforms/
  */
 export default function addAccountAddressBookEntry(_, { input }, context) {
   const { accountId, address, clientMutationId = null } = input;
-  const dbAccountId = accountId && decodeAccountOpaqueId(accountId);
+  const dbAccountId = decodeAccountOpaqueId(accountId);
   const updatedAddress = context.methods["accounts/addressBookAdd"](context, [address, dbAccountId]);
   return {
     address: xformAddressResponse(updatedAddress),
