@@ -50,8 +50,8 @@ test("calls queries.roles with a shopId and returns roles", async () => {
     userId: "123"
   });
 
-  expect(result.nodes[0].name).toEqual(role1);
-  expect(result.nodes[1].name).toEqual(role2);
-  expect(result.nodes[2].name).toEqual(role3);
+  expect(result.nodes[0].name).toBe(role1);
+  expect(result.nodes[1].name).toBe(role2);
+  expect(result.nodes[2].name).toBe(role3);
   expect(rolesQuery).toHaveBeenCalled();
 });
