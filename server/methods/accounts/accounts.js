@@ -424,7 +424,7 @@ export function addressBookAdd(address, accountUserId) {
  * @param {Object} address - address
  * @param {String|null} [accountUserId] - `account.userId` used by admin to edit users
  * @param {shipping|billing} [type] - name of selected address type
- * @return {Number} The number of affected documents
+ * @return {Object} The updated address
  */
 export function addressBookUpdate(address, accountUserId, type) {
   Schemas.Address.validate(address);
