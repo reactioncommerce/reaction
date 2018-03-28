@@ -309,7 +309,7 @@ function currentUserHasPassword() {
  * @example Meteor.call("accounts/addressBookAdd", address, callBackFunction(error, result))
  * @param {Object} address - address
  * @param {String} [accountUserId] - `account.userId` used by admin to edit users
- * @return {Object} with keys `numberAffected` and `insertedId` if doc was inserted
+ * @return {Object} with updated address
  */
 export function addressBookAdd(address, accountUserId) {
   Schemas.Address.validate(address);
@@ -318,7 +318,7 @@ export function addressBookAdd(address, accountUserId) {
   // here because we are calling `Meteor.userId` from within this Method.
   if (typeof accountUserId === "string") { // if this will not be a String -
     // `check` will not pass it.
-    if (!Reaction.hasAdminAccess()) {
+    if (Meteor.userId() !== accountUserId && !Reaction.hasPermission("reaction-accounts")) {
       throw new Meteor.Error("access-denied", "Access denied");
     }
   }
@@ -398,9 +398,22 @@ export function addressBookAdd(address, accountUserId) {
 
   Meteor.users.update(Meteor.userId(), userUpdateQuery);
 
-  return Accounts.upsert({
+  const result = Accounts.upsert({
     userId
   }, accountsUpdateQuery);
+
+  // If the address update was successful, then return the full updated addrtess
+  if (result.numberAffected === 1) {
+    // Find the account
+    const updatedAccount = Accounts.findOne({
+      userId
+    });
+
+    // Pull the updated address and return it
+    return updatedAccount.profile.addressBook.find((updatedAddress) => address._id === updatedAddress._id);
+  }
+
+  throw new Meteor.Error("server-error", "Unable to add address to account");
 }
 
 /**
