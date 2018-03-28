@@ -388,6 +388,7 @@ class OrderTable extends Component {
           onPageSizeChange={this.onPageSizeChange}
           pages={this.props.pages}
           page={this.props.page}
+          manual={true}
         />
       </div>
     );
