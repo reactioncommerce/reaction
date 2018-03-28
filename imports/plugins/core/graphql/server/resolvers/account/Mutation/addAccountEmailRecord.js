@@ -16,10 +16,9 @@ export default function addAccountEmailRecord(_, { input }, context) {
   const { accountId, email, clientMutationId = null } = input;
   const dbAccountId = decodeAccountOpaqueId(accountId);
   const updatedEmail = context.methods["accounts/updateEmailAddress"](context, [email, dbAccountId]);
-  console.log("updatedEmail", updatedEmail);
 
   return {
-    ...updatedEmail,
+    emailRecord: updatedEmail,
     clientMutationId
   };
 }
