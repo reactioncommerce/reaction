@@ -555,7 +555,7 @@ export function addressBookUpdate(address, accountUserId, type) {
     return updatedAccount.profile.addressBook.find((updatedAddress) => address._id === updatedAddress._id);
   }
 
-  return updatedAccountResult;
+  throw new Meteor.Error("server-error", "Unable to update account address");
 }
 
 /**
