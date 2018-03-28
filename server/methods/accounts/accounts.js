@@ -424,7 +424,7 @@ export function addressBookAdd(address, accountUserId) {
  * @param {Object} address - address
  * @param {String|null} [accountUserId] - `account.userId` used by admin to edit users
  * @param {shipping|billing} [type] - name of selected address type
- * @return {Number} The number of affected documents
+ * @return {Object} The updated address
  */
 export function addressBookUpdate(address, accountUserId, type) {
   Schemas.Address.validate(address);
@@ -434,7 +434,7 @@ export function addressBookUpdate(address, accountUserId, type) {
   // here because we are calling `Meteor.userId` from within this Method.
   if (typeof accountUserId === "string") { // if this will not be a String -
     // `check` will not pass it.
-    if (!Reaction.hasAdminAccess()) {
+    if (Meteor.userId() !== accountUserId && !Reaction.hasPermission("reaction-accounts")) {
       throw new Meteor.Error("access-denied", "Access denied");
     }
   }
@@ -525,7 +525,7 @@ export function addressBookUpdate(address, accountUserId, type) {
   Meteor.users.update(Meteor.userId(), userUpdateQuery);
 
   // Update the Reaction Accounts collection with new address info
-  const updatedAccount = Accounts.update({
+  const updatedAccountResult = Accounts.update({
     userId
   }, accountsUpdateQuery);
 
@@ -544,7 +544,18 @@ export function addressBookUpdate(address, accountUserId, type) {
     updatedFields
   });
 
-  return updatedAccount;
+  // If the address update was successful, then return the full updated addrtess
+  if (updatedAccountResult === 1) {
+    // Find the account
+    const updatedAccount = Accounts.findOne({
+      userId
+    });
+
+    // Pull the updated address and return it
+    return updatedAccount.profile.addressBook.find((updatedAddress) => address._id === updatedAddress._id);
+  }
+
+  throw new Meteor.Error("server-error", "Unable to update account address");
 }
 
 /**
