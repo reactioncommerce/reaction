@@ -32,7 +32,7 @@ class ParcelSizeSettings extends Component {
   }
 
   /**
-  * @name handleCardExpand()
+  * @name handleCardExpand
   * @summary Handle card expansion
   * @param {script} event - onChange event when expander is clicked
   * @param {Object} card - card component
@@ -52,10 +52,6 @@ class ParcelSizeSettings extends Component {
   * renderComponent
   * @method render()
   * @summary React component for displaying default parcel size form
-  * @param {Object} props - React PropTypes
-  * @property {Boolean} isEditing - show/hide save button
-  * @property {Boolean} isSaving - show/hide loading icon on button
-  * @property {Object} size - provides parcel weight, lenght, width, and height
   * @return {Node} React node containing form view
   */
   render() {
@@ -96,11 +92,13 @@ class ParcelSizeSettings extends Component {
   * @name ParcelSizeSettings propTypes
   * @type {propTypes}
   * @param {Object} props - React PropTypes
+  * @property {Function} doc the parcel object
+  * @property {Obejct} fieldsProp properties of the fields
   * @property {Function} getEditFocus provides function that gets edit/focus value in Reaction state
+  * @property {Array} hiddenFields fields not to be shown
   * @property {Function} onCardExpand provides function that controls card expansion
   * @property {Function} saveDefaultSize provides function / action when form is submitted
-  * @property {Object} size provides parcel weight, lenght, width, and height
-  * @property {Function} validation provides function that validates form inputs
+  * @property {Object} shownFields fields to be shown and how to be shown
   * @return {Array} React propTypes
 */
 
@@ -113,7 +111,7 @@ ParcelSizeSettings.propTypes = {
   }),
   fieldsProp: PropTypes.object,
   getEditFocus: PropTypes.func,
-  hiddenFields: PropTypes.object,
+  hiddenFields: PropTypes.array,
   onCardExpand: PropTypes.func,
   saveDefaultSize: PropTypes.func,
   shownFields: PropTypes.object
