@@ -6,39 +6,33 @@ ignore:
     - nexmo > jsonwebtoken > joi > hoek:
         reason: No patch available
         expires: '2018-03-22T04:22:44.834Z'
-      prerender-node > request > hawk > hoek:
-        reason: Breaking change downstream
-        expires: '2018-04-26T20:23:03.274Z'
+      nexmo > request > hawk > hoek:
+        reason: Low Priority - Prototype Pollution Warning - No fix yet - Revisit
+        expires: '2018-04-27T18:52:08.506Z'
     - nexmo > jsonwebtoken > joi > topo > hoek:
         reason: no patch available
         expires: '2018-03-22T04:22:44.834Z'
-      prerender-node > request > hawk > boom > hoek:
-        reason: Breaking change downstream
-        expires: '2018-04-26T20:23:03.275Z'
+      nexmo > request > hawk > boom > hoek:
+        reason: Low Priority - Prototype Pollution Warning - No fix yet - Revisit
+        expires: '2018-04-27T18:52:08.506Z'
     - prerender-node > request > hawk > hoek:
         reason: no patch available
         expires: '2018-03-22T04:22:44.834Z'
-      prerender-node > request > hawk > sntp > hoek:
-        reason: Breaking change downstream
-        expires: '2018-04-26T20:23:03.275Z'
+      nexmo > request > hawk > sntp > hoek:
+        reason: Low Priority - Prototype Pollution Warning - No fix yet - Revisit
+        expires: '2018-04-27T18:52:08.506Z'
     - prerender-node > request > hawk > boom > hoek:
         reason: no patch available
         expires: '2018-03-22T04:22:44.834Z'
-      prerender-node > request > hawk > cryptiles > boom > hoek:
-        reason: Breaking change downstream
-        expires: '2018-04-26T20:23:03.275Z'
+      nexmo > request > hawk > cryptiles > boom > hoek:
+        reason: Low Priority - Prototype Pollution Warning - No fix yet - Revisit
+        expires: '2018-04-27T18:52:08.506Z'
     - prerender-node > request > hawk > sntp > hoek:
         reason: no patch available
         expires: '2018-03-22T04:22:44.834Z'
-      nexmo > jsonwebtoken > joi > hoek:
-        reason: Breaking change in downstream dependency
-        expires: '2018-04-26T20:23:03.275Z'
     - prerender-node > request > hawk > cryptiles > boom > hoek:
         reason: no patch available
         expires: '2018-03-22T04:22:44.834Z'
-      nexmo > jsonwebtoken > joi > topo > hoek:
-        reason: Breaking change in downstream dependency
-        expires: '2018-04-26T20:23:03.275Z'
     - jest > jest-cli > jest-haste-map > sane > fsevents > node-pre-gyp > request > hawk > hoek:
         reason: no patch available
         expires: '2018-03-22T04:22:44.834Z'
@@ -387,6 +381,24 @@ ignore:
     - '@reactioncommerce/file-collections > tus-node-server > google-auto-auth > google-auth-library > request > hawk > sntp > hoek':
         reason: 'Low Priority - Prototype Pollution Warning '
         expires: '2018-04-13T16:30:47.476Z'
+    - prerender-node > request > hawk > hoek:
+        reason: Breaking change downstream
+        expires: '2018-04-26T20:23:03.274Z'
+    - prerender-node > request > hawk > boom > hoek:
+        reason: Breaking change downstream
+        expires: '2018-04-26T20:23:03.275Z'
+    - prerender-node > request > hawk > sntp > hoek:
+        reason: Breaking change downstream
+        expires: '2018-04-26T20:23:03.275Z'
+    - prerender-node > request > hawk > cryptiles > boom > hoek:
+        reason: Breaking change downstream
+        expires: '2018-04-26T20:23:03.275Z'
+    - nexmo > jsonwebtoken > joi > hoek:
+        reason: Breaking change in downstream dependency
+        expires: '2018-04-26T20:23:03.275Z'
+    - nexmo > jsonwebtoken > joi > topo > hoek:
+        reason: Breaking change in downstream dependency
+        expires: '2018-04-26T20:23:03.275Z'
   'npm:shelljs:20140723':
     - eslint-config-react-tools > eslint-plugin-class-property > eslint > shelljs:
         reason: no patch available
