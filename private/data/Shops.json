@@ -3212,5 +3212,7 @@
     "isCommercial": true,
     "isShippingDefault": true,
     "isBillingDefault": true
-  }]
+  }],
+  "defaultParcelSize": {
+  }
 }]

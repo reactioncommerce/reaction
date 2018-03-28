@@ -1,5 +1,6 @@
 import { Template } from "meteor/templating";
 import { Meteor } from "meteor/meteor";
+import { Components } from "@reactioncommerce/reaction-components";
 /*
  * Template shippinges Helpers
  */
@@ -21,6 +22,9 @@ Template.shippingSettings.helpers({
       return "hidden";
     }
     return "";
+  },
+  parcelSizeSettings() {
+    return Components.ParcelSizeSettings;
   }
 });
 
