@@ -309,7 +309,7 @@ function currentUserHasPassword() {
  * @example Meteor.call("accounts/addressBookAdd", address, callBackFunction(error, result))
  * @param {Object} address - address
  * @param {String} [accountUserId] - `account.userId` used by admin to edit users
- * @return {Object} with keys `numberAffected` and `insertedId` if doc was inserted
+ * @return {Object} with updated address
  */
 export function addressBookAdd(address, accountUserId) {
   Schemas.Address.validate(address);
