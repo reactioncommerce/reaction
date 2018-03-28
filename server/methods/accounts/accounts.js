@@ -554,7 +554,7 @@ export function addressBookUpdate(address, accountUserId, type) {
  * @summary Remove existing address in user's profile
  * @param {String} addressId - address `_id`
  * @param {String} [accountUserId] - `account.userId` used by admin to edit users
- * @return {Number|Object} The number of removed documents or error object
+ * @return {Object} Removed address object
  */
 export function addressBookRemove(addressId, accountUserId) {
   check(addressId, String);
@@ -574,7 +574,7 @@ export function addressBookRemove(addressId, accountUserId) {
   // remove this address in cart, if used, before completely removing
   Meteor.call("cart/unsetAddresses", addressId, userId);
 
-  const updatedAccount = Accounts.update({
+  const updatedAccountResult = Accounts.update({
     userId,
     "profile.addressBook._id": addressId
   }, {
@@ -591,7 +591,13 @@ export function addressBookRemove(addressId, accountUserId) {
     updatedFields: ["forceIndex"]
   });
 
-  return updatedAccount;
+  // If the address remove was successful, then return the removed addrtess
+  if (updatedAccountResult === 1) {
+    // Pull the address from the account before it was updated and return it
+    return account.profile.addressBook.find((removedAddress) => addressId === removedAddress._id);
+  }
+
+  throw new Meteor.Error("server-error", "Unable to add address to account");
 }
 
 /**
