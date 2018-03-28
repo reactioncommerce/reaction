@@ -16,9 +16,29 @@ test("decodeOpaqueId returns an object with namespace and ID", () => {
   expect(id).toBe(testId);
 });
 
+test("decodeOpaqueId returns null if opaqueId is undefined", () => {
+  const decodedId = decodeOpaqueId(undefined);
+  expect(decodedId).toBe(null);
+});
+
+test("decodeOpaqueId returns null if opaqueId is null", () => {
+  const decodedId = decodeOpaqueId(null);
+  expect(decodedId).toBe(null);
+});
+
 test("decodeOpaqueIdForNamespace returns just the ID", () => {
   const id = decodeOpaqueIdForNamespace(testNamespace, testOpaqueId);
   expect(id).toBe(testId);
+});
+
+test("decodeOpaqueIdForNamespace returns null if opaqueId is undefined", () => {
+  const result = decodeOpaqueIdForNamespace(testNamespace, undefined);
+  expect(result).toBe(null);
+});
+
+test("decodeOpaqueIdForNamespace returns null if opaqueId is null", () => {
+  const result = decodeOpaqueIdForNamespace(testNamespace, null);
+  expect(result).toBe(null);
 });
 
 test("decodeOpaqueIdForNamespace throws an error if the namespace is incorrect", () => {

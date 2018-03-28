@@ -87,5 +87,39 @@ export default {
         updatedAt: new Date()
       }
     ]));
+  },
+  roles(context, shopId) {
+    return Promise.resolve(getFakeMongoCursor("roles", [
+      {
+        "name": "reaction-shipping"
+      },
+      {
+        "name": "reaction-stripe/stripeConnectAuthorize"
+      },
+      {
+        "name": "reaction-payments"
+      },
+      {
+        "name": "shipping/flatRates"
+      },
+      {
+        "name": "discount-codes/customDiscountCodes"
+      },
+      {
+        "name": "reaction-auth-net/authnetSettings"
+      },
+      {
+        "name": "reaction-social/socialSettings"
+      },
+      {
+        "name": "reaction-i18n"
+      },
+      {
+        "name": "dashboardPackages"
+      },
+      {
+        "name": "dashboard/shippo"
+      }
+    ]));
   }
 };

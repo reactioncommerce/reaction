@@ -18,6 +18,7 @@ export const encodeOpaqueId = curry((namespace, id) => {
  * @returns {String} An internal ID
  */
 export const decodeOpaqueId = (opaqueId) => {
+  if (opaqueId === undefined || opaqueId === null) return null;
   const unencoded = Buffer.from(opaqueId, "base64").toString("utf8");
   const [namespace, id] = unencoded.split(":");
   return { namespace, id };
@@ -30,7 +31,9 @@ export const decodeOpaqueId = (opaqueId) => {
  * @returns {String} An internal ID
  */
 export const decodeOpaqueIdForNamespace = curry((namespace, opaqueId, error = new Error(`ID namespace must be ${namespace}`)) => {
-  const { namespace: actualNamespace, id } = decodeOpaqueId(opaqueId);
+  const decodedId = decodeOpaqueId(opaqueId);
+  if (!decodedId) return null;
+  const { namespace: actualNamespace, id } = decodedId;
   if (actualNamespace !== namespace) throw error;
   return id;
 });
