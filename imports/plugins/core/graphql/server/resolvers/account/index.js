@@ -6,6 +6,8 @@ import GroupConnection from "./GroupConnection";
 import GroupEdge from "./GroupEdge";
 import Mutation from "./Mutation";
 import Query from "./Query";
+import RoleConnection from "./RoleConnection";
+import RoleEdge from "./RoleEdge";
 
 export default {
   Account,
@@ -15,5 +17,7 @@ export default {
   GroupConnection,
   GroupEdge,
   Mutation,
-  Query
+  Query,
+  RoleConnection,
+  RoleEdge
 };
