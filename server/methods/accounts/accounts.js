@@ -69,9 +69,17 @@ export function updateEmailAddress(email) {
   const user = Meteor.user();
 
   // Add email to user account
+  // Will only fail in once instance: if another user is using this address
+  // https://github.com/meteor/meteor/blob/master/packages/accounts-password/password_server.js#L933
   MeteorAccounts.addEmail(user._id, email);
 
-  return true;
+  // Find the account that was just updated
+  const updatedAccount = Accounts.findOne({
+    _id: user._id
+  });
+
+  // return object of updated email address
+  return updatedAccount.emails.find((updatedEmail) => updatedEmail.address === email);
 }
 
 /**
