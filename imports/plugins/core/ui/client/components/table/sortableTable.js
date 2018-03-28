@@ -327,7 +327,7 @@ class SortableTable extends Component {
           onPageChange={otherProps.onPageChange}
           onPageSizeChange={otherProps.onPageSizeChange}
           page={otherProps.page}
-          manual
+          manual={otherProps.manual}
         />
       </div>
     );
