@@ -16,5 +16,5 @@ export default async function roles(_, { shopId, ...connectionArgs }, context) {
 
   const query = await context.queries.roles(context, dbShopId);
 
-  return await getPaginatedRolesResponse(query, connectionArgs);
+  return getPaginatedRolesResponse(query, connectionArgs);
 }
