@@ -19,32 +19,32 @@ class AddressBookReview extends Component {
      */
     validationResults: PropTypes.shape({
       enteredAddress: PropTypes.shape({
-        _id: PropTypes.String,
-        fullName: PropTypes.String,
-        address1: PropTypes.String,
-        addresss2: PropTypes.String,
-        postal: PropTypes.String,
-        city: PropTypes.String,
-        region: PropTypes.String,
-        country: PropTypes.String,
-        phone: PropTypes.String,
-        isBillingDefault: PropTypes.Bool,
-        isShippingDefault: PropTypes.Bool,
-        isCommercal: PropTypes.Bool
+        _id: PropTypes.string,
+        fullName: PropTypes.string,
+        address1: PropTypes.string,
+        addresss2: PropTypes.string,
+        postal: PropTypes.string,
+        city: PropTypes.string,
+        region: PropTypes.string,
+        country: PropTypes.string,
+        phone: PropTypes.string,
+        isBillingDefault: PropTypes.bool,
+        isShippingDefault: PropTypes.bool,
+        isCommercal: PropTypes.bool
       }),
       suggestedAddress: PropTypes.shape({
-        _id: PropTypes.String,
-        fullName: PropTypes.String,
-        address1: PropTypes.String,
-        addresss2: PropTypes.String,
-        postal: PropTypes.String,
-        city: PropTypes.String,
-        region: PropTypes.String,
-        country: PropTypes.String,
-        phone: PropTypes.String,
-        isBillingDefault: PropTypes.Bool,
-        isShippingDefault: PropTypes.Bool,
-        isCommercal: PropTypes.Bool
+        _id: PropTypes.string,
+        fullName: PropTypes.string,
+        address1: PropTypes.string,
+        addresss2: PropTypes.string,
+        postal: PropTypes.string,
+        city: PropTypes.string,
+        region: PropTypes.string,
+        country: PropTypes.string,
+        phone: PropTypes.string,
+        isBillingDefault: PropTypes.bool,
+        isShippingDefault: PropTypes.bool,
+        isCommercal: PropTypes.bool
       }),
       /**
        * map of all fields and

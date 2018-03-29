@@ -16,8 +16,8 @@ class AddressBookForm extends Component {
      * country options for select
      */
     countries: PropTypes.arrayOf(PropTypes.shape({
-      label: PropTypes.String,
-      value: PropTypes.String
+      label: PropTypes.string,
+      value: PropTypes.string
     })),
     /**
      * address object

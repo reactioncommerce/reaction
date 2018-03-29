@@ -12,25 +12,25 @@ class AddressBook extends Component {
      * array of address objects
      */
     addressBook: PropTypes.arrayOf(PropTypes.shape({
-      _id: PropTypes.String,
-      fullName: PropTypes.String,
-      address1: PropTypes.String,
-      addresss2: PropTypes.String,
-      postal: PropTypes.String,
-      city: PropTypes.String,
-      region: PropTypes.String,
-      country: PropTypes.String,
-      phone: PropTypes.String,
-      isBillingDefault: PropTypes.Bool,
-      isShippingDefault: PropTypes.Bool,
-      isCommercal: PropTypes.Bool
+      _id: PropTypes.string,
+      fullName: PropTypes.string,
+      address1: PropTypes.string,
+      addresss2: PropTypes.string,
+      postal: PropTypes.string,
+      city: PropTypes.string,
+      region: PropTypes.string,
+      country: PropTypes.string,
+      phone: PropTypes.string,
+      isBillingDefault: PropTypes.bool,
+      isShippingDefault: PropTypes.bool,
+      isCommercal: PropTypes.bool
     })),
     /**
      * country options for select
      */
     countries: PropTypes.arrayOf(PropTypes.shape({
-      label: PropTypes.String,
-      value: PropTypes.String
+      label: PropTypes.string,
+      value: PropTypes.string
     })),
     /**
      *  Heading content for address book
@@ -39,16 +39,16 @@ class AddressBook extends Component {
       /**
        * Heading title
        */
-      defaultValue: PropTypes.String,
+      defaultValue: PropTypes.string,
       /**
        * i18nKey for heading title
        */
-      i18nKey: PropTypes.String,
+      i18nKey: PropTypes.string,
       /**
        * If in checkout view, addressbook checkout step position and icon className
        */
       checkout: PropTypes.shape({
-        icon: PropTypes.String,
+        icon: PropTypes.string,
         position: PropTypes.Number
       })
     }),
