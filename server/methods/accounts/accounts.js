@@ -1057,17 +1057,27 @@ export function createFallbackLoginToken() {
  * @name accounts/setProfileCurrency
  * @memberof Methods/Accounts
  * @method
+ * @param {String} accountId - accountId of user to set currency of
+ * @param {String} currencyName - currency symbol to add to user profile
  * @summary Sets users profile currency
  */
-export function setProfileCurrency(currencyName) {
 export function setProfileCurrency(accountId, currencyName) {
+  check(accountId, String);
   check(currencyName, String);
-  if (this.userId) {
-    Accounts.update(this.userId, { $set: { "profile.currency": currencyName } });
-    Hooks.Events.run("afterAccountsUpdate", this.userId, {
-      accountId: this.userId,
+
+  const userId = accountId || this.userId;
+  if (userId) {
+    Accounts.update(userId, { $set: { "profile.currency": currencyName } });
+    Hooks.Events.run("afterAccountsUpdate", userId, {
+      accountId: userId,
       updatedFields: ["currency"]
     });
+
+    const updatedAccount = Accounts.findOne({
+      _id: userId
+    });
+
+    return updatedAccount;
   }
 }
 
