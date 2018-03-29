@@ -597,7 +597,7 @@ export function addressBookRemove(addressId, accountUserId) {
     return account.profile.addressBook.find((removedAddress) => addressId === removedAddress._id);
   }
 
-  throw new Meteor.Error("server-error", "Unable to add address to account");
+  throw new Meteor.Error("server-error", "Unable to remove address from account");
 }
 
 /**
