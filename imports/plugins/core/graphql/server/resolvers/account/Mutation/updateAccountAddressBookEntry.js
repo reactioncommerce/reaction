@@ -1,5 +1,5 @@
 import { decodeAccountOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/account";
-import { xformAddressInput } from "@reactioncommerce/reaction-graphql-xforms/address";
+import { xformAddressInput, xformAddressResponse } from "@reactioncommerce/reaction-graphql-xforms/address";
 
 /**
  * @name updateAccountAddressBookEntry
@@ -17,12 +17,9 @@ export default function updateAccountAddressBookEntry(_, { input }, context) {
   const { accountId, addressId, clientMutationId, type, updates } = input;
   const dbAccountId = decodeAccountOpaqueId(accountId);
   const address = xformAddressInput({ ...updates, _id: addressId });
-  context.methods["accounts/addressBookUpdate"](context, [address, dbAccountId, type]);
-  // const account = context.methods["accounts/addressBookUpdate"](context, [address, dbAccountId, type]);
-  // TODO returns the whole updated account. Need to grab just the address that was updated,
-  // transform it, and return that.
+  const updatedAddress = context.methods["accounts/addressBookUpdate"](context, [address, dbAccountId, type]);
   return {
-    address: {},
+    address: xformAddressResponse(updatedAddress),
     clientMutationId
   };
 }
