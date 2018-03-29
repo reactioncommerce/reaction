@@ -574,7 +574,7 @@ export function addressBookRemove(addressId, accountUserId) {
   // here because we are calling `Meteor.userId` from within this Method.
   if (typeof accountUserId === "string") { // if this will not be a String -
     // `check` will not pass it.
-    if (!Reaction.hasAdminAccess()) {
+    if (Meteor.userId() !== accountUserId && !Reaction.hasPermission("reaction-accounts")) {
       throw new Meteor.Error("access-denied", "Access denied");
     }
   }
