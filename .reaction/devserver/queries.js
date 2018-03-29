@@ -34,6 +34,7 @@ export default {
             region: "NY"
           }
         ],
+        currency: "USD"
       },
       name: "Fake Person"
     };
