@@ -460,7 +460,7 @@ Meteor.methods({
 
     // Get default parcel size from primary shop
     const { defaultParcelSize } = Collections.Shops.findOne({
-      _id: product.shopId
+      _id: product.shopId || Reaction.getShopId()
     });
 
     let parcel = null;
