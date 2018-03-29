@@ -71,16 +71,16 @@ function wrapWithDb(mongoConn) {
  */
 export function ReactiveAggregate(pub, collection, pipeline, options) {
   let allowDiskUse = false;
-  
+
   if (process.env.MONGO_ALLOW_DISK_USE) {
-    allowDiskUse = true
+    allowDiskUse = true;
   }
-  
+
   const defaultOptions = {
     observeSelector: {},
     observeOptions: {},
     clientCollection: collection._name,
-    allowDiskUse: allowDiskUse
+    allowDiskUse
   };
   const pubOptions = Object.assign({}, defaultOptions, options);
 

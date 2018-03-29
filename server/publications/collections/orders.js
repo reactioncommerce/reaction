@@ -3,8 +3,8 @@ import { check, Match } from "meteor/check";
 import { Roles } from "meteor/alanning:roles";
 import { ReactiveAggregate } from "./reactiveAggregate";
 import { MediaRecords, Orders } from "/lib/collections";
-import { Reaction } from "/server/api";
 import { Counts } from "meteor/tmeasday:publish-counts";
+import { Reaction } from "/server/api";
 
 /**
  * A shared way of creating a projection
@@ -141,7 +141,7 @@ Meteor.publish("CustomPaginatedOrders", function (query, options) {
     }
   };
   const limit = (options && options.limit) ? options.limit : 0;
-  const skip  = (options && options.skip) ? options.skip : 0;
+  const skip = (options && options.skip) ? options.skip : 0;
   const aggregate = createAggregate(shopId, { createdAt: -1 }, limit, query, skip);
   if (Roles.userIsInRole(this.userId, ["admin", "owner", "orders"], shopId)) {
     Counts.publish(this, "orders-count", Orders.find(), { noReady: true });

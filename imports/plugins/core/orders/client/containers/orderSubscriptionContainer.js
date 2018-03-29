@@ -2,8 +2,8 @@ import React, { Component } from "react";
 import { Meteor } from "meteor/meteor";
 import { Orders, OrderSearch } from "/lib/collections";
 import { Components, composeWithTracker } from "@reactioncommerce/reaction-components";
-import OrderDashboard from "../components/orderDashboard";
 import { Counts } from "meteor/tmeasday:publish-counts";
+import OrderDashboard from "../components/orderDashboard";
 
 class OrderSubscription extends Component {
   render() {
@@ -16,7 +16,7 @@ class OrderSubscription extends Component {
 function composer(props, onData) {
   const subscription = Meteor.subscribe("SearchResults", "orders", props.searchQuery);
   let orderSearchResultsIds;
-  const { query } = props;
+  const { query, page } = props;
 
   if (subscription.ready()) {
     const orderSearchResults = OrderSearch.find().fetch();
@@ -33,17 +33,17 @@ function composer(props, onData) {
     const ordersSubscription = Meteor.subscribe("CustomPaginatedOrders", query, options);
     let total = Counts.get("orders-count");
     if (props.searchQuery !== "") {
-      total = orderSearchResults.length
+      total = orderSearchResults.length;
     }
     const pages = Math.ceil(total / props.pageSize);
-    const page = props.page;
+
     if (ordersSubscription.ready()) {
       const results = Orders.find(query).fetch();
       return onData(null, {
         orders: results,
-        total: total,
-        pages: pages,
-        page: page
+        total,
+        pages,
+        page
       });
     }
   }

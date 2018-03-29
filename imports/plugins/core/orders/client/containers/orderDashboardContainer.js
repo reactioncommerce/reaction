@@ -115,17 +115,15 @@ const wrapComponent = (Comp) => (
         workflowFilter
       });
     }
-    
+
     updatePage = (page) => {
       const offset = page * this.state.pageSize;
-      console.log("updatePage")
-      this.setState({ skip: offset, page: page });
+      this.setState({ skip: offset, page });
     }
 
     updatePageSize = (pageSize, pageIndex) => {
       const offset = pageIndex * pageSize;
-      console.log("updatePageSize")
-      this.setState({ pageSize: pageSize, skip: offset });
+      this.setState({ pageSize, skip: offset });
     }
 
     render() {
