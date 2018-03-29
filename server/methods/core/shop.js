@@ -341,7 +341,7 @@ Meteor.methods({
         [profileCurrency] = shop.currency.split(",");
       }
 
-      Meteor.call("accounts/setProfileCurrency", profileCurrency);
+      Meteor.call("accounts/setProfileCurrency", Meteor.userId(), profileCurrency);
     }
 
     // set server side locale
