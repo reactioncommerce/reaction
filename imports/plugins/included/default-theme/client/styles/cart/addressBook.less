@@ -6,6 +6,11 @@
     }
     .address-review {
       margin-top: 20px;
+      .alert.alert-warning {
+        background: @rui-warning-bg;
+        color: @rui-warning-text;
+        border-color: @rui-warning;
+      }
       input {
         margin: 0px 5px 0px 0px;
       }
@@ -24,10 +29,11 @@
         .error {
           padding: 0px 4px 0px 4px;
           display: inline;
-          background: #FCEFEF;
-          border-color: #DEA7AA;
+          background: @rui-danger-bg;
+          color: @rui-danger-text;
+          border-color: @rui-danger;
           border: 1px solid;
-          border-radius: 4px;
+          border-radius: 3px;
         }
         span {
           font-weight: 600;
