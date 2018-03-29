@@ -62,24 +62,32 @@ export function verifyAccount() {
  * @method
  * @summary Update a user's email address
  * @param {String} email - user email
- * @returns {Boolean} - return True on success
+ * @param {String} accountUserId - userId of user to update
+ * @returns {Object} - updated email object
  */
-export function updateEmailAddress(email) {
+export function updateEmailAddress(email, accountUserId) {
   check(email, String);
-  const user = Meteor.user();
+  check(accountUserId, Match.Maybe(String));
+
+  // Use provided accountUserId, or current user if no accountUserId is provided
+  const userId = accountUserId || Meteor.userId();
 
   // Add email to user account
   // Will only fail in once instance: if another user is using this address
   // https://github.com/meteor/meteor/blob/master/packages/accounts-password/password_server.js#L933
-  MeteorAccounts.addEmail(user._id, email);
+  // Returns `Email already exists. [403]` if there is an error
+  MeteorAccounts.addEmail(userId, email);
+
 
   // Find the account that was just updated
   const updatedAccount = Accounts.findOne({
-    _id: user._id
+    _id: userId
   });
 
   // return object of updated email address
-  return updatedAccount.emails.find((updatedEmail) => updatedEmail.address === email);
+  const updatedEmail = updatedAccount.emails.find((newEmail) => newEmail.address === email);
+
+  return updatedEmail;
 }
 
 /**
