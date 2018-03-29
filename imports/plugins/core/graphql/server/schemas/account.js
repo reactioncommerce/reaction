@@ -172,8 +172,8 @@ export const typeDefs = `
 
   # The response from the \`removeAccountAddressBookEntry\` mutation
   type RemoveAccountAddressBookEntryPayload {
-    # The account, with updated \`addressBook\`
-    account: Account
+    # The removed address
+    address: Address
 
     # The same string you sent with the mutation params, for matching mutation calls with their responses
     clientMutationId: String
