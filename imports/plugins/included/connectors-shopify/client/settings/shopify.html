@@ -7,9 +7,9 @@
       {{> afQuickField name="settings.sharedSecret" class='form-control'}}
       <label class="control-label">Shop slug</label>
       <div>
-        <div style="display: inline-block">https://</div>
+        <div style="display: inline-block" class="custom-form-label">https://</div>
         {{> afFieldInput name="settings.shopName" class='form-control shop-slug'}}
-        <div style="display: inline-block">.shopify.com</div>
+        <div style="display: inline-block" class="custom-form-label">.shopify.com</div>
       </div>
       {{> shopSettingsSubmitButton}}
     {{/autoForm}}
