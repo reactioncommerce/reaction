@@ -109,6 +109,10 @@ AutoForm.hooks({
             addressBook.trigger($.Event("showMainView")); // Show the grid
           });
         } else {
+          if (res.formErrors && res.formErrors.length > 0) {
+            Alerts.toast(res.formErrors[0].summary, "error");
+            return;
+          }
           // set addressState and kick it back to review
           const addressState = {
             requiresReview: true,

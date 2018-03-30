@@ -3,7 +3,7 @@ import _ from "lodash";
 import { Meteor } from "meteor/meteor";
 import { check, Match } from "meteor/check";
 import { Roles } from "meteor/alanning:roles";
-import { Reaction, Hooks } from "/server/api";
+import { Reaction, Hooks, Logger } from "/server/api";
 import { Packages, Accounts, Shops, Shipping, Cart, Orders } from "/lib/collections";
 import { ShippoPackageConfig } from "../../lib/collections/schemas";
 import { shippingRoles } from "../lib/roles";
@@ -28,6 +28,27 @@ function createShippoAddress(reactionAddress, email, purpose) {
   };
 
   return shippoAddress;
+}
+
+function createValidatedAddress(apiResult) {
+  const formErrors = [];
+  apiResult.messages.forEach((message) => {
+    formErrors.push({
+      summary: message.code,
+      details: message.text
+    });
+  });
+  return {
+    validatedAddress: {
+      address1: apiResult.street1,
+      address2: apiResult.street2,
+      city: apiResult.city,
+      region: apiResult.state,
+      postal: apiResult.zip,
+      country: apiResult.country
+    },
+    errors: formErrors
+  };
 }
 
 // Creates a parcel object suitable for Shippo Api Calls given
@@ -348,6 +369,57 @@ export const methods = {
     });
 
     return updatingResult;
+  },
+  /**
+     * Formats and sends a cart address to Shippo to for validation
+     * @param {String} cartId - The id of the cart to get the address from
+     * @return {Object} result - The validation result from Shippo
+     */
+  "shippo/addressValidation"(address) {
+    check(address, Object);
+
+    const apiKey = getApiKey(Reaction.getShopId());
+
+    if (!apiKey) {
+      const msg = "No Shippo API key was found.";
+      Logger.error(msg);
+      throw new Meteor.Error("shippo-api-error", msg);
+    }
+
+    // get the buyer's email
+    const buyer = Accounts.findOne({ _id: this.userId }, { fields: { emails: 1 } });
+
+    if (!address) {
+      const msg = "The 'shipping' property of this cart is either missing or incomplete.";
+      Logger.error(msg);
+      throw new Meteor.Error("address-validation-error", msg);
+    }
+
+    const shop = Shops.findOne({ _id: Reaction.getShopId() }, { fields: { emails: 1 } });
+
+    // TODO take a more elegant approach to guest checkout -> no email address
+    let email = shop.emails[0].address || "noreply@localhost";
+
+    if (buyer.emails.length > 0) {
+      if (buyer.emails[0].address) {
+        email = buyer.emails[0].address;
+      }
+    }
+
+    // format the address for Shippo
+    const shippoAddress = createShippoAddress(address, email, "QUOTE");
+    // make sure we mark this as an address validation for the Shippo API
+    shippoAddress.validate = true;
+
+    try {
+      const apiResult = ShippoApi.methods.validateAddress.call({ address: shippoAddress, apiKey });
+      const validateAddress = createValidatedAddress(apiResult);
+      console.log(validateAddress);
+      return validateAddress;
+    } catch (error) {
+      Logger.error(error);
+      throw new Meteor.Error("shippo-api-error", error.message);
+    }
   },
 
   /**

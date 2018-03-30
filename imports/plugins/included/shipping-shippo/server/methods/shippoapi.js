@@ -210,3 +210,33 @@ ShippoApi.methods.getTransaction = new ValidatedMethod({
     }
   }
 });
+
+/**
+ * Tries to validate a address using Shippo API
+ * @see https://goshippo.com/docs/address-validation
+ * @param {Object} parameter - ValidatedMethod's parameter
+ * @param {Object} parameter.address - The address to validate
+ * @param {String} parameter.apiKey - The Test or Live Token required
+ * for authentication by Shippo's api
+ * @return {Object} result.validation_results - The validation results from Shippo
+ * */
+ShippoApi.methods.validateAddress = new ValidatedMethod({
+  name: "ShippoApi.methods.validateAddress",
+  validate: new SimpleSchema({
+    address: purchaseAddressSchema,
+    apiKey: String
+  }).validator(),
+  run({ address, apiKey }) {
+    const shippo = new Shippo(apiKey);
+
+    const validateAddress = Meteor.wrapAsync(shippo.address.create, shippo.address);
+
+    try {
+      const validatedAddressResult = validateAddress(address);
+      return validatedAddressResult;
+    } catch (error) {
+      Logger.error(error);
+      throw new Meteor.Error("shippo-api-error", error.message);
+    }
+  }
+});

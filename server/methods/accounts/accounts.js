@@ -138,6 +138,7 @@ function getValidator() {
     "registry.provides": "addressValidation",
     "settings.addressValidation.enabled": true,
     shopId,
+    "name": "reaction-shippo",
     "enabled": true
   }).fetch();
 
