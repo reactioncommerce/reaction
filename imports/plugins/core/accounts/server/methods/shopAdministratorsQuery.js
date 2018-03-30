@@ -1,6 +1,4 @@
 import { Meteor } from "meteor/meteor";
-import { Accounts } from "/lib/collections";
-import { Reaction } from "/lib/api";
 
 /**
  * @name shopAdministratorsQuery
@@ -11,15 +9,18 @@ import { Reaction } from "/lib/api";
  * @return {Object[]} Array of user account objects
  */
 export async function shopAdministratorsQuery(context, id) {
-  const { userId } = context;
+  const { collections, hasPermission, userId } = context;
+  const { Accounts, users: Users } = collections;
 
-  if (!Reaction.hasPermission(["owner", "admin"], userId, id)) throw new Meteor.Error("access-denied", "User does not have permission");
+  const allowed = await hasPermission(["owner", "admin"], userId, id);
+  if (!allowed) throw new Meteor.Error("access-denied", "User does not have permission");
 
-  const userIds = Meteor.users.find({
+  const users = await Users.find({
     [`roles.${id}`]: "admin"
   }, {
     fields: { _id: 1 }
-  }).map(({ _id }) => _id);
+  }).toArray();
+  const userIds = users.map(({ _id }) => _id);
 
-  return Accounts.rawCollection().find({ _id: { $in: userIds } });
+  return Accounts.find({ _id: { $in: userIds } });
 }

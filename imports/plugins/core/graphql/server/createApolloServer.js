@@ -40,7 +40,7 @@ export default function createApolloServer(options = {}) {
       if (token && typeof getUserFromToken === "function") {
         try {
           // get the current user
-          const user = await getUserFromToken(token);
+          const user = await getUserFromToken(token, contextFromOptions);
           context = { ...contextFromOptions, user, userId: (user && user._id) || null };
         } catch (error) {
           throw new HttpQueryError(401, error.message);

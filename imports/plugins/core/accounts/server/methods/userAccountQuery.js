@@ -1,6 +1,4 @@
 import { Meteor } from "meteor/meteor";
-import { Accounts } from "/lib/collections";
-import { Reaction } from "/lib/api";
 
 /**
  * @name userAccountQuery
@@ -10,14 +8,18 @@ import { Reaction } from "/lib/api";
  * @param {String} id - id of user to query
  * @return {Object} user account object
  */
-export function userAccountQuery(context, id) {
-  const { userId } = context;
+export async function userAccountQuery(context, id) {
+  const { collections, hasPermission, userId } = context;
+  const { Accounts } = collections;
 
   // Check to make sure current user has permissions to view queried user
-  if (userId !== id && !Reaction.hasPermission("reaction-accounts", userId)) throw new Meteor.Error("access-denied", "User does not have permission");
+  if (userId !== id) {
+    const allowed = await hasPermission("reaction-accounts", userId);
+    if (!allowed) throw new Meteor.Error("access-denied", "User does not have permission");
+  }
 
   // Query the accounts collection to find user by `id`
-  const userAccount = Accounts.findOne({
+  const userAccount = await Accounts.findOne({
     _id: id
   });
 
