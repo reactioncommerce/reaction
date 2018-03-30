@@ -14,7 +14,7 @@ Template.checkoutAddressBook.helpers({
   AddressBook() {
     const { status, position } = Template.currentData();
     return {
-      component: Components.AddressBookContainer,
+      component: Components.AddressBook,
       heading: {
         defaultValue: "Choose shipping & billing address",
         i18nKey: "addressBookGrid.chooseAddress",

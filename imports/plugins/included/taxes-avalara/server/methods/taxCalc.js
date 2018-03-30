@@ -152,8 +152,8 @@ function parseError(error) {
       });
     }
   } else {
-    Logger.error("Unknown Error", error);
-    Avalogger.error("Unknown error or error format", error);
+    Logger.error(error, "Unknown Error");
+    Avalogger.error(error, "Unknown error or error format");
   }
   const errorObjectContext = ErrorObject.newContext();
   // No Generic errors ever
@@ -359,7 +359,7 @@ taxCalc.validateAddress = function (address) {
     if (result.error.type === "apiError") {
       // If we have a problem with the API there's no reason to tell the customer
       // so let's consider this unvalidated but move along
-      Logger.info("API error, ignoring address validation");
+      Logger.error("API error, ignoring address validation");
     }
 
     if (result.error.type === "addressError") {
@@ -543,7 +543,7 @@ taxCalc.estimateCart = function (cart, callback) {
   Reaction.Schemas.Cart.validate(cart);
   check(callback, Function);
 
-  if (cart.items && cart.shipping && cart.shipping[0].address && cart.shipping[0]) {
+  if (cart.items && cart.shipping && cart.shipping[0] && cart.shipping[0].address) {
     const salesOrder = Object.assign({}, cartToSalesOrder(cart), getTaxSettings(cart.userId));
     const baseUrl = getUrl();
     const requestUrl = `${baseUrl}transactions/create`;

@@ -15,7 +15,7 @@ class AddressBook extends Component {
       _id: PropTypes.string,
       fullName: PropTypes.string,
       address1: PropTypes.string,
-      addresss2: PropTypes.string,
+      address2: PropTypes.string,
       postal: PropTypes.string,
       city: PropTypes.string,
       region: PropTypes.string,
@@ -427,7 +427,7 @@ class AddressBook extends Component {
    */
   renderContent() {
     const { addressBook } = this;
-    const { countries, regionsByCountry } = this.props;
+    const { countries, regionsByCountry, markCart } = this.props;
     const { editAddress, mode } = this.state;
 
     let content;
@@ -458,6 +458,7 @@ class AddressBook extends Component {
           add={this.onAdd}
           validationResults={this.state.validationResults}
           switchMode={this.switchMode}
+          markCart={markCart}
         />
       );
     }

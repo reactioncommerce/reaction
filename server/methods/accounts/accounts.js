@@ -138,7 +138,7 @@ function getValidator() {
     "registry": { $elemMatch: { provides: "addressValidation" } },
     "settings.addressValidation.enabled": true,
     shopId,
-    "settings.avalara.enabled": true
+    "enabled": true
   }).fetch();
 
   if (!geoCoders.length) {

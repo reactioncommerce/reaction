@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import { HTTP } from "meteor/http";
 import { Components, registerComponent } from "@reactioncommerce/reaction-components";
 
 class AddressBookForm extends Component {
@@ -33,22 +34,42 @@ class AddressBookForm extends Component {
     regionsByCountry: PropTypes.object
   }
 
-  state = {
-    regions: [],
-    fields: {
-      _id: this.props.editAddress._id,
-      country: this.props.editAddress.country || "US", // defaults to United States
-      fullName: this.props.editAddress.fullName || "",
-      address1: this.props.editAddress.address1 || "",
-      address2: this.props.editAddress.address2 || "",
-      postal: this.props.editAddress.postal || "",
-      city: this.props.editAddress.city || "",
-      region: this.props.editAddress.region || "",
-      phone: this.props.editAddress.phone || "",
-      isShippingDefault: this.props.editAddress.isShippingDefault || (!this.props.hasAddress), // no address, default to true
-      isBillingDefault: this.props.editAddress.isBillingDefault || (!this.props.hasAddress), // no addres, default to true
-      isCommercial: this.props.editAddress.isCommercial || false
-    }
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      regions: [],
+      fields: {
+        _id: this.props.editAddress._id,
+        country: this.props.editAddress.country || "US", // defaults to United States
+        fullName: this.props.editAddress.fullName || "",
+        address1: this.props.editAddress.address1 || "",
+        address2: this.props.editAddress.address2 || "",
+        postal: this.props.editAddress.postal || "",
+        city: this.props.editAddress.city || "",
+        region: this.props.editAddress.region || "",
+        phone: this.props.editAddress.phone || "",
+        isShippingDefault: this.props.editAddress.isShippingDefault || (!this.props.hasAddress), // no address, default to true
+        isBillingDefault: this.props.editAddress.isBillingDefault || (!this.props.hasAddress), // no addres, default to true
+        isCommercial: this.props.editAddress.isCommercial || false
+      }
+    };
+    // Getting the user's countrt and setting it as default
+    HTTP.get("https://geo.getreaction.io/json/", (err, res) => {
+      if (!err) {
+        const countryCode = res.data.country_code;
+        if (countryCode && !this.props.editAddress.country) {
+          this.setState((prevState) => ({
+            fields: {
+              ...prevState.fields,
+              country: countryCode
+            }
+          }), () => {
+            this.setRegionOptions(countryCode);
+          });
+        }
+      }
+    });
   }
 
   componentWillMount() {
@@ -197,15 +218,24 @@ class AddressBookForm extends Component {
   renderButtons() {
     const { cancel, hasAddress } = this.props;
     const cancelBtn = (
-      <button type="reset" className="btn btn-default" style={{ marginLeft: "5px" }} onClick={cancel}>
-        <Components.Translation defaultValue="Cancel" i18nKey="app.cancel" />
-      </button>
+      <Components.Button
+        buttonType="reset"
+        className="btn btn-default"
+        bezelStyle="solid"
+        onClick={cancel}
+        i18nKeyLabel="app.cancel"
+        label="Cancel"
+      />
     );
     return (
       <div className="row text-right">
-        <button type="submit" className="btn btn-primary">
-          <Components.Translation defaultValue="Save and continue" i18nKey="app.saveAndContinue" />
-        </button>
+        <Components.Button
+          buttonType="submit"
+          className="btn btn-primary"
+          bezelStyle="solid"
+          i18nKeyLabel="app.saveAndContinue"
+          label="Save and continue"
+        />
         {(hasAddress) ? cancelBtn : ""}
       </div>
     );

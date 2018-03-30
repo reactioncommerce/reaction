@@ -4,14 +4,12 @@ import { Components, registerComponent } from "@reactioncommerce/reaction-compon
 
 class AddressBookGrid extends Component {
   static propTypes = {
-    /**
-     * array of address objects
-     */
+    // array of address objects
     addressBook: PropTypes.arrayOf(PropTypes.shape({
       _id: PropTypes.string,
       fullName: PropTypes.string,
       address1: PropTypes.string,
-      addresss2: PropTypes.string,
+      address2: PropTypes.string,
       postal: PropTypes.string,
       city: PropTypes.string,
       region: PropTypes.string,
@@ -21,17 +19,11 @@ class AddressBookGrid extends Component {
       isShippingDefault: PropTypes.bool,
       isCommercal: PropTypes.bool
     })),
-    /**
-     * selects an address to be edited and renders the AddressBookForm
-     */
+    // selects an address to be edited and renders the AddressBookForm
     edit: PropTypes.func,
-    /**
-     * removes the selected address
-     */
+    // removes the selected address
     remove: PropTypes.func,
-    /**
-     * selects a default shipping or billing address
-     */
+    // selects a default shipping or billing address
     select: PropTypes.func
   }
 
@@ -214,19 +206,22 @@ class AddressBookGrid extends Component {
             <strong>{fullName}</strong>
             {this.renderAddress(address)}
           </div>
+          {/* <span className="sr-only"> */}
           <div className="controls">
-            <button className="btn btn-default" onClick={() => { edit(_id); }}>
-              <span className="sr-only">
-                <Components.Translation defaultValue="Edit Address" i18nKey="addressBookGrid.edit" />
-              </span>
-              <i className="fa fa-pencil" />
-            </button>
-            <button className="btn btn-default danger-action" onClick={() => { remove(_id); }}>
-              <span className="sr-only">
-                <Components.Translation defaultValue="Remove Address" i18nKey="addressBookGrid.removeAddress" />
-              </span>
-              <i className="fa fa-trash-o" />
-            </button>
+            <Components.Button
+              className="btn btn-default"
+              onClick={() => { edit(_id); }}
+              icon="fa fa-pencil"
+              tooltip="Edit Address"
+              i18nKeyTooltip="addressBookGrid.edit"
+            />
+            <Components.Button
+              className="btn btn-default danger-action"
+              onClick={() => { remove(_id); }}
+              icon="fa fa-trash-o"
+              tooltip="Remove Address"
+              i18nKeyTooltip="addressBookGrid.removeAddress"
+            />
           </div>
         </div>
       );

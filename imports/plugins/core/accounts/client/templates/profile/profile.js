@@ -122,7 +122,7 @@ Template.accountProfile.helpers({
    */
   AddressBook() {
     return {
-      component: Components.AddressBookContainer
+      component: Components.AddressBook
     };
   },
 

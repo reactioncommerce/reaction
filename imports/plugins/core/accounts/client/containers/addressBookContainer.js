@@ -1,13 +1,15 @@
 import React, { Component } from "react";
-import { compose } from "recompose";
+import { compose, withProps } from "recompose";
 import { Meteor } from "meteor/meteor";
 import { Template } from "meteor/templating";
-import { i18next } from "/client/api";
+import { i18next, Logger } from "/client/api";
 import { Countries } from "/client/collections";
 import * as Collections from "/lib/collections";
 import { registerComponent, composeWithTracker } from "@reactioncommerce/reaction-components";
 import AddressBook from "../components/addressBook";
 
+
+const handlers = {
 /**
  * @method updateAddress
  * @summary helper function that validates and updates an address in the account's addressBook via a meteor method.
@@ -16,141 +18,145 @@ import AddressBook from "../components/addressBook";
  * @param{String} property - property to be updated.
  * @return {Promise}
  */
-function updateAddress(address, property, validateAddress = true) {
-  return new Promise((resolve, reject) => {
-    if (validateAddress) {
-      Meteor.call("accounts/validateAddress", address, (error, result) => {
-        if (error || !result) {
-          let errorMessage = (error && error.message) || "Validation Failed";
-          if (error && error.error === "validation-error" && Array.isArray(error.details) && error.details.length) {
-          // Add details of first invalid field from SimpleSchema
-            errorMessage = error.details[0].message;
+  updateAddress(address, property, validateAddress = true) {
+    return new Promise((resolve, reject) => {
+      if (validateAddress) {
+        Meteor.call("accounts/validateAddress", address, (error, result) => {
+          if (error || !result) {
+            let errorMessage = (error && error.message) || "Validation Failed";
+            if (error && error.error === "validation-error" && Array.isArray(error.details) && error.details.length) {
+              // Add details of first invalid field from SimpleSchema
+              errorMessage = error.details[0].message;
+            }
+            reject(i18next.t("addressBookAdd.failedToUpdateAddress", { err: errorMessage }));
+            return;
+          } else if (result.validated === false && !result.suggestedAddress) {
+            reject(i18next.t("addressBookAdd.failedToUpdateAddress", { err: "Unable to fetch corrected address" }));
+            return;
+          } else if (result.validated === false && result.suggestedAddress && result.formErrors && result.formErrors.length > 0) {
+            reject(i18next.t("addressBookAdd.failedToUpdateAddress", { err: result.formErrors[0].summary }));
+            return;
+          } else if (result.validated === false && result.suggestedAddress) {
+            resolve(result);
+            return;
           }
-          reject(i18next.t("addressBookAdd.failedToUpdateAddress", { err: errorMessage }));
+          Meteor.call("accounts/addressBookUpdate", address, null, property, (err, res) => {
+            if (err || !res) {
+              reject(i18next.t("addressBookGrid.somethingWentWrong", { err: err.message }));
+            } else {
+              resolve(res);
+            }
+          });
           return;
-        } else if (result.validated === false && !result.suggestedAddress) {
-          reject(i18next.t("addressBookAdd.failedToUpdateAddress", { err: "Unable to fetch corrected address" }));
-          return;
-        } else if (result.validated === false && result.suggestedAddress && result.formErrors && result.formErrors.length > 0) {
-          reject(i18next.t("addressBookAdd.failedToUpdateAddress", { err: result.formErrors[0].summary }));
-          return;
-        } else if (result.validated === false && result.suggestedAddress) {
-          resolve(result);
-          return;
-        }
-        Meteor.call("accounts/addressBookUpdate", address, null, property, (err, res) => {
-          if (err || !res) {
-            reject(i18next.t("addressBookGrid.somethingWentWrong", { err: err.message }));
-          } else {
-            resolve(res);
-          }
         });
-        return;
-      });
-    }
-    Meteor.call("accounts/addressBookUpdate", address, null, property, (err, res) => {
-      if (err || !res) {
-        reject(i18next.t("addressBookGrid.somethingWentWrong", { err: err.message }));
-      } else {
-        resolve(res);
       }
+      Meteor.call("accounts/addressBookUpdate", address, null, property, (err, res) => {
+        if (err || !res) {
+          reject(i18next.t("addressBookGrid.somethingWentWrong", { err: err.message }));
+        } else {
+          resolve(res);
+        }
+      });
     });
-  });
-}
+  },
 
-/**
+  /**
  * @method removeAddress
  * @summary helper function that updates an address in the account's addressBook via a meteor method.
  * @since 2.0.0
  * @param {String} _id - _id of address to be removed.
  * @return {Promise}
  */
-function removeAddress(_id) {
-  return new Promise((resolve, reject) => {
-    Meteor.call("accounts/addressBookRemove", _id, (error, result) => {
-      if (error || !result) {
-        reject(i18next.t("addressBookGrid.cantRemoveThisAddress", { err: error.message }));
-      } else {
-        resolve(result);
-      }
+  removeAddress(_id) {
+    return new Promise((resolve, reject) => {
+      Meteor.call("accounts/addressBookRemove", _id, (error, result) => {
+        if (error || !result) {
+          reject(i18next.t("addressBookGrid.cantRemoveThisAddress", { err: error.message }));
+        } else {
+          resolve(result);
+        }
+      });
     });
-  });
-}
+  },
 
-/**
+  /**
  * @method addAddress
  * @summary helper function that validates and adds an address in the account's addressBook via a meteor method.
  * @since 2.0.0
  * @param {Object} address - address to be added.
  * @return {Promise}
  */
-function addAddress(address, validateAddress = true) {
-  return new Promise((resolve, reject) => {
+  addAddress(address, validateAddress = true) {
+    return new Promise((resolve, reject) => {
     // This address was tried for validation
-    if (validateAddress) {
-      Meteor.call("accounts/validateAddress", address, (error, result) => {
-        if (error || !result) {
-          let errorMessage = (error && error.message) || "Validation Failed";
-          if (error && error.error === "validation-error" && Array.isArray(error.details) && error.details.length) {
-          // Add details of first invalid field from SimpleSchema
-            errorMessage = error.details[0].message;
+      if (validateAddress) {
+        Meteor.call("accounts/validateAddress", address, (error, result) => {
+          if (error || !result) {
+            let errorMessage = (error && error.message) || "Validation Failed";
+            if (error && error.error === "validation-error" && Array.isArray(error.details) && error.details.length) {
+              // Add details of first invalid field from SimpleSchema
+              errorMessage = error.details[0].message;
+            }
+            reject(i18next.t("addressBookAdd.failedToAddAddress", { err: errorMessage }));
+            return;
+          } else if (result.validated === false && !result.suggestedAddress) {
+            reject(i18next.t("addressBookAdd.failedToAddAddress", { err: "Unable to fetch corrected address" }));
+            return;
+          } else if (result.validated === false && result.suggestedAddress && result.formErrors && result.formErrors.length > 0) {
+            reject(i18next.t("addressBookAdd.failedToAddAddress", { err: result.formErrors[0].summary }));
+            return;
+          } else if (result.validated === false && result.suggestedAddress) {
+            resolve(result);
+            return;
           }
-          reject(i18next.t("addressBookAdd.failedToAddAddress", { err: errorMessage }));
-          return;
-        } else if (result.validated === false && !result.suggestedAddress) {
-          reject(i18next.t("addressBookAdd.failedToAddAddress", { err: "Unable to fetch corrected address" }));
-          return;
-        } else if (result.validated === false && result.suggestedAddress && result.formErrors && result.formErrors.length > 0) {
-          reject(i18next.t("addressBookAdd.failedToAddAddress", { err: result.formErrors[0].summary }));
-          return;
-        } else if (result.validated === false && result.suggestedAddress) {
-          resolve(result);
-          return;
-        }
+          Meteor.call("accounts/addressBookAdd", address, (err, res) => {
+            if (err || !res) {
+              reject(i18next.t("addressBookAdd.failedToAddAddress", { err: err.message }));
+            } else {
+              resolve(res);
+            }
+          });
+        });
+      } else {
         Meteor.call("accounts/addressBookAdd", address, (err, res) => {
-          if (err || !res) {
-            reject(i18next.t("addressBookAdd.failedToAddAddress", { err: err.message }));
-          } else {
-            resolve(res);
+          if (err || !res) reject(i18next.t("addressBookAdd.failedToAddAddress", { err: err.message }));
+          if (res) resolve(res);
+        });
+      }
+    });
+  },
+
+  markCart(address, isEnteredSelected) {
+    if (!isEnteredSelected) {
+      Meteor.call("accounts/markAddressValidationBypassed", false, (error) => {
+        if (error) {
+          return Logger.error(error, "Unable to mark the cart");
+        }
+        Meteor.call("accounts/markTaxCalculationFailed", false, (err) => {
+          if (err) {
+            return Logger.error(err, "Unable to mark the cart");
           }
         });
       });
     } else {
-      Meteor.call("accounts/addressBookAdd", address, (err, res) => {
-        if (err || !res) reject(i18next.t("addressBookAdd.failedToAddAddress", { err: err.message }));
-        if (res) resolve(res);
+      Meteor.call("accounts/markAddressValidationBypassed", true, (error) => {
+        if (error) {
+          return Logger.error(error, "Unable to mark the cart");
+        }
       });
     }
-  });
-}
+  },
 
-/**
+  /**
  * @method onError
  * @summary helper function that shows an error message in an alert toast.
  * @since 2.0.0
  * @param {Object} errorMessage - error message object.
  */
-function onError(errorMessage) {
-  Alerts.toast(errorMessage, "error");
-}
-
-const wrapComponent = (Comp) => (
-  class AddressBookContainer extends Component {
-    static propTypes = Comp.PropTypes;
-
-    render() {
-      return (
-        <Comp
-          {...this.props}
-          addAddress={addAddress}
-          updateAddress={updateAddress}
-          removeAddress={removeAddress}
-          onError={onError}
-        />
-      );
-    }
+  onError(errorMessage) {
+    Alerts.toast(errorMessage, "error");
   }
-);
+};
 
 function composer(props, onData) {
   const handle = Meteor.subscribe("Accounts", Meteor.userId());
@@ -212,12 +218,12 @@ function composer(props, onData) {
   });
 }
 
-registerComponent("AddressBookContainer", AddressBook, [
+registerComponent("AddressBook", AddressBook, [
   composeWithTracker(composer),
-  wrapComponent
+  withProps(handlers)
 ]);
 
 export default compose(
   composeWithTracker(composer),
-  wrapComponent
+  withProps(handlers)
 )(AddressBook);

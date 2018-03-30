@@ -6,23 +6,19 @@ import { Components, registerComponent } from "@reactioncommerce/reaction-compon
 
 class AddressBookReview extends Component {
   static propTypes = {
-    /**
-     * Add the address to database
-     */
+    // Add the address to database
     add: PropTypes.func,
-    /**
-     * Add address reducer calls meteor method
-     */
+    // Marks the address as bypassed.
+    markCart: PropTypes.func,
+    // Add address reducer calls meteor method
     switchMode: PropTypes.func,
-    /**
-     * array of address objects
-     */
+    // array of address objects
     validationResults: PropTypes.shape({
       enteredAddress: PropTypes.shape({
         _id: PropTypes.string,
         fullName: PropTypes.string,
         address1: PropTypes.string,
-        addresss2: PropTypes.string,
+        address2: PropTypes.string,
         postal: PropTypes.string,
         city: PropTypes.string,
         region: PropTypes.string,
@@ -36,7 +32,7 @@ class AddressBookReview extends Component {
         _id: PropTypes.string,
         fullName: PropTypes.string,
         address1: PropTypes.string,
-        addresss2: PropTypes.string,
+        address2: PropTypes.string,
         postal: PropTypes.string,
         city: PropTypes.string,
         region: PropTypes.string,
@@ -69,24 +65,13 @@ class AddressBookReview extends Component {
     let address = this.props.validationResults.enteredAddress;
     if (!this.state.isEnteredSelected) {
       address = this.props.validationResults.suggestedAddress;
-      Meteor.call("accounts/markAddressValidationBypassed", false, (error) => {
-        if (error) {
-          return Logger.error(error, "Unable to mark the cart");
-        }
-        Meteor.call("accounts/markTaxCalculationFailed", false, (err) => {
-          if (err) {
-            return Logger.error(err, "Unable to mark the cart");
-          }
-        });
-      });
-    } else {
-      Meteor.call("accounts/markAddressValidationBypassed", true, (error) => {
-        if (error) {
-          return Logger.error(error, "Unable to mark the cart");
-        }
-      });
     }
-    this.props.add(address, false);
+    if (typeof this.props.markCart === "function") {
+      this.props.markCart(address, this.state.isEnteredSelected);
+    }
+    if (typeof this.props.add === "function") {
+      this.props.add(address, false);
+    }
   };
 
   /**
