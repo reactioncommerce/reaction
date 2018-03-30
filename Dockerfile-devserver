@@ -1,0 +1,18 @@
+FROM node:8.9.4
+
+LABEL maintainer="Reaction Commerce <architecture@reactioncommerce.com>"
+
+RUN mkdir app
+
+WORKDIR /app
+
+COPY --chown=node package.json .
+COPY --chown=node package-lock.json .
+
+RUN npm install
+
+COPY --chown=node . .
+
+EXPOSE 3030
+
+CMD ["npm", "run", "devserver"]
