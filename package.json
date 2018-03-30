@@ -7,7 +7,6 @@
     "build": "rimraf ./dist && babel src --out-dir ./dist",
     "lint": "eslint ./src",
     "lintfix": "eslint ./src --fix",
-    "semantic-release": "semantic-release",
     "watch": "watch 'npm run build' src"
   },
   "repository": {
