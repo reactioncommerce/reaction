@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 export const typeDefs = `
   # The fields by which you are allowed to sort any query that returns an \`GroupConnection\`
   enum GroupSortByField {

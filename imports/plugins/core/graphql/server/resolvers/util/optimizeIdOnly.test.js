@@ -7,7 +7,7 @@ test("returns the given query function if the GraphQL request is asking for more
   expect(optimizeIdOnly("KNOWN_ID", {}, () => "ORIGINAL")()).toBe("ORIGINAL");
 });
 
-test("returns a replacement query function if the GraphQL request is asking for only _id", () => {
+test("returns a replacement query function if the GraphQL request is asking for only _id", async () => {
   require("graphql-fields").mockReturnValueOnce({ _id: "1" });
-  expect(optimizeIdOnly("KNOWN_ID", {}, () => "ORIGINAL")()).toEqual({ _id: "KNOWN_ID" });
+  expect(await optimizeIdOnly("KNOWN_ID", {}, () => "ORIGINAL")()).toEqual({ _id: "KNOWN_ID" });
 });
