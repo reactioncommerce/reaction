@@ -4,13 +4,9 @@ import { Components, registerComponent } from "@reactioncommerce/reaction-compon
 
 class AddressBook extends Component {
   static propTypes = {
-    /**
-     * Add address reducer calls meteor method
-     */
+    // Add address reducer calls meteor method
     addAddress: PropTypes.func,
-    /**
-     * array of address objects
-     */
+    // array of address objects
     addressBook: PropTypes.arrayOf(PropTypes.shape({
       _id: PropTypes.string,
       fullName: PropTypes.string,
@@ -25,52 +21,34 @@ class AddressBook extends Component {
       isShippingDefault: PropTypes.bool,
       isCommercal: PropTypes.bool
     })),
-    /**
-     * country options for select
-     */
+    // country options for select
     countries: PropTypes.arrayOf(PropTypes.shape({
       label: PropTypes.string,
       value: PropTypes.string
     })),
-    /**
-     *  Heading content for address book
-     */
+    //  Heading content for address book
     heading: PropTypes.shape({
-      /**
-       * Heading title
-       */
+      // Heading title
       defaultValue: PropTypes.string,
-      /**
-       * i18nKey for heading title
-       */
+      // i18nKey for heading title
       i18nKey: PropTypes.string,
-      /**
-       * If in checkout view, addressbook checkout step position and icon className
-       */
+      // If in checkout view, addressbook checkout step position and icon className
       checkout: PropTypes.shape({
         icon: PropTypes.string,
         position: PropTypes.Number
       })
     }),
-    /**
-     * the initial mode of the AddressBook(used only in constructor)
-     */
+    // the initial mode of the AddressBook(used only in constructor)
     initMode: PropTypes.oneOf(["grid", "entry", "review"]),
-    /**
-     * handles error by calling Alerts.toast with the error meesage
-     */
+    // function to mark tax calculation on cart.
+    markCart: PropTypes.func,
+    // handles error by calling Alerts.toast with the error meesage
     onError: PropTypes.func,
-    /**
-     * regions by county
-     */
+    // regions by county
     regionsByCountry: PropTypes.object,
-    /**
-     * Remove address reducer calls meteor method
-     */
+    // Remove address reducer calls meteor method
     removeAddress: PropTypes.func,
-    /**
-     * Update address reducer calls meteor method
-     */
+    // Update address reducer calls meteor method
     updateAddress: PropTypes.func
   }
 
@@ -91,17 +69,11 @@ class AddressBook extends Component {
     }
 
     this.state = {
-      /**
-       * No address, enable the form
-       */
+      // No address, enable the form
       mode,
-      /**
-       * Address to be edited
-       */
+      // Address to be edited
       editAddress: {},
-      /**
-       * Address returned after validation check
-       */
+      // Address returned after validation check
       validationResults: null
     };
   }

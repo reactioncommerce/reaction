@@ -1,7 +1,5 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { Meteor } from "meteor/meteor";
-import { Logger } from "/client/api";
 import { Components, registerComponent } from "@reactioncommerce/reaction-components";
 
 class AddressBookReview extends Component {

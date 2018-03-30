@@ -1,4 +1,3 @@
-import React, { Component } from "react";
 import { compose, withProps } from "recompose";
 import { Meteor } from "meteor/meteor";
 import { Template } from "meteor/templating";
