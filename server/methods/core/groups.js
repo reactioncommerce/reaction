@@ -234,7 +234,7 @@ Meteor.methods({
         accountId: userId,
         updatedFields: ["groups"]
       });
-      return { status: 200 };
+      return defaultCustomerGroupForShop;
     } catch (error) {
       Logger.error(error);
       throw new Meteor.Error("server-error", "Could not add user");
