@@ -13,12 +13,13 @@ services:
     depends_on:
       - mongo
     environment:
-      ROOT_URL: "http://localhost"
+      ROOT_URL: "http://localhost:3000"
       MONGO_URL: "mongodb://mongo:27017/reaction"
     ports:
       - "3000:3000"
     volumes:
       - .:/opt/reaction/src
+      - reaction_node_modules:/opt/reaction/src/node_modules # do not link node_modules in, and persist it between dc up runs
 
   mongo:
     image: mongo:3.4
@@ -28,4 +29,4 @@ services:
 
 volumes:
   mongo-db:
-
+  reaction_node_modules:
