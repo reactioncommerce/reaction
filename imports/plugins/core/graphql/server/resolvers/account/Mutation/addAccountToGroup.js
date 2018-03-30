@@ -17,9 +17,9 @@ export default function addAccountToGroup(_, { input }, context) {
   const { accountId, groupId, clientMutationId = null } = input;
   const dbAccountId = decodeAccountOpaqueId(accountId);
   const dbGroupId = decodeGroupOpaqueId(groupId);
-  const updatedAddress = context.methods["group/addUser"](context, [dbAccountId, dbGroupId]);
+  const group = context.methods["group/addUser"](context, [dbAccountId, dbGroupId]);
   return {
-    group: xformGroupResponse(updatedAddress),
+    group: xformGroupResponse(group),
     clientMutationId
   };
 }
