@@ -3,7 +3,7 @@ version: 2
 jobs:
   build:
     docker:
-      - image: circleci/node:8.11.0
+      - image: node:8
 
     dependencies:
       pre:
@@ -28,7 +28,7 @@ jobs:
 
   deploy:
     docker:
-      - image: circleci/node:8.11.0
+      - image: node:8
 
     steps:
       - checkout
