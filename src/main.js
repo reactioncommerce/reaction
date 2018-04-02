@@ -45,7 +45,7 @@ if (logglyToken && logglySubdomain) {
 
 // create default logger instance
 const Logger = bunyan.createLogger({
-  name: "Reaction",
+  name: process.env.REACTION_LOGGER_NAME || "Reaction",
   streams
 });
 
