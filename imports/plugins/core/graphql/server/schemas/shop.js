@@ -29,6 +29,9 @@ export const typeDefs = `
 
     # The ID of the shop to which you want to invite this person
     shopId: ID!
+
+    # An optional string identifying the mutation call, which will be returned in the response payload
+    clientMutationId: String
   }
 
   # The response from the \`inviteShopMember\` mutation
