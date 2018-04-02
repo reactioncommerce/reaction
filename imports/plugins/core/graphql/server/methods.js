@@ -6,7 +6,7 @@ const methods = {};
   "accounts/addressBookAdd",
   "accounts/addressBookUpdate",
   "accounts/addressBookRemove",
-  "accounts/inviteShopMember"
+  "accounts/inviteShopMember",
   "group/addUser"
 ].forEach((methodName) => {
   methods[methodName] = (context, args) => (
