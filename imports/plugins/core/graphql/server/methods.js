@@ -5,7 +5,8 @@ const methods = {};
 [
   "accounts/addressBookAdd",
   "accounts/addressBookUpdate",
-  "accounts/addressBookRemove"
+  "accounts/addressBookRemove",
+  "group/addUser"
 ].forEach((methodName) => {
   methods[methodName] = (context, args) => (
     runMeteorMethodWithContext(context, methodName, args)

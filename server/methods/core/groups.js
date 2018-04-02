@@ -190,7 +190,8 @@ Meteor.methods({
         Meteor.call("group/addUser", Meteor.userId(), currentUserGrpInShop);
       }
 
-      return { status: 200 };
+      // Return the group the account as added to
+      return Groups.findOne({ _id: groupId });
     } catch (error) {
       Logger.error(error);
       throw new Meteor.Error("server-error", "Could not add user");

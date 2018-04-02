@@ -1,9 +1,11 @@
 import addAccountAddressBookEntry from "./addAccountAddressBookEntry";
-import updateAccountAddressBookEntry from "./updateAccountAddressBookEntry";
+import addAccountToGroup from "./addAccountToGroup";
 import removeAccountAddressBookEntry from "./removeAccountAddressBookEntry";
+import updateAccountAddressBookEntry from "./updateAccountAddressBookEntry";
 
 export default {
   addAccountAddressBookEntry,
-  updateAccountAddressBookEntry,
-  removeAccountAddressBookEntry
+  addAccountToGroup,
+  removeAccountAddressBookEntry,
+  updateAccountAddressBookEntry
 };
