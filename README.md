@@ -55,7 +55,7 @@ Suggestions: Use "DEBUG" sparingly. Information that will be useful to debug err
 ## Usage
 
 ```js
-import Logger from "@reactioncommerce/reaction-logger";
+import Logger from "@reactioncommerce/logger";
 
 /**
  * Logging general info

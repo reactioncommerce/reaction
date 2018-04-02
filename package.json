@@ -1,5 +1,5 @@
 {
-  "name": "@reactioncommerce/reaction-logger",
+  "name": "@reactioncommerce/logger",
   "version": "0.0.0-development",
   "description": "Reaction application logging based on Bunyan logger",
   "main": "./dist/main.js",
@@ -11,14 +11,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/reactioncommerce/reaction-logger.git"
+    "url": "https://github.com/reactioncommerce/logger.git"
   },
   "author": "Reaction Commerce <hello@reactioncommerce.com>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/reactioncommerce/reaction-logger/issues"
+    "url": "https://github.com/reactioncommerce/logger/issues"
   },
-  "homepage": "https://github.com/reactioncommerce/reaction-logger#readme",
+  "homepage": "https://github.com/reactioncommerce/logger#readme",
   "devDependencies": {
     "@reactioncommerce/eslint-config": "^1.0.1",
     "babel-cli": "^6.26.0",
