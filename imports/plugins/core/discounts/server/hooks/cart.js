@@ -17,5 +17,8 @@ Hooks.Events.add("afterCartUpdateCalculateDiscount", (cartId) => {
     const discount = Meteor.call("discounts/calculate", cart);
 
     Cart.update({ _id: cart._id }, { $set: { discount } });
+
+    // Calculate taxes
+    Hooks.Events.run("afterCartUpdateCalculateTaxes", cartId);
   }
 });

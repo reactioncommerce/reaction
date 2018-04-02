@@ -154,7 +154,7 @@ jobs:
           command: |
             npm run lint
 
-  test:
+  test-app:
     <<: *defaults
     steps:
       - checkout
@@ -174,8 +174,24 @@ jobs:
           name: Install Reaction CLI
           command: sudo npm install -g reaction-cli
       - run:
-          name: Reaction Test
+          name: Load App Plugins
+          command: reaction plugins load
+      - run:
+          name: Run Integration Tests
           command: .circleci/tests.sh
+
+  test-unit:
+    <<: *defaults
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - v1-node-modules-{{ checksum "package.json" }}
+            - v1-node-modules-{{ .Branch }}
+            - v1-node-modules-master
+      - run:
+          name: Run Unit Tests
+          command: npm run test:unit
 
   dockerfile-lint:
     <<: *defaults
@@ -194,7 +210,10 @@ workflows:
     jobs:
       - build
       - dockerfile-lint
-      - test:
+      - test-app:
+          requires:
+            - build
+      - test-unit:
           requires:
             - build
       - eslint:
@@ -208,7 +227,8 @@ workflows:
             - docker-build
       - deploy-docs:
           requires:
-            - test
+            - test-unit
+            - test-app
             - docker-build
           filters:
             branches:
