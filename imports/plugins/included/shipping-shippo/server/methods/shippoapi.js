@@ -4,6 +4,7 @@ import SimpleSchema from "simpl-schema";
 import { Meteor } from "meteor/meteor";
 import { ValidatedMethod } from "meteor/mdg:validated-method";
 import { Logger } from "/server/api";
+import { ErrorObject } from "../../lib/collections/schemas";
 import { purchaseAddressSchema, parcelSchema } from "../lib/shippoApiSchema";
 
 export const ShippoApi = {
@@ -211,6 +212,54 @@ ShippoApi.methods.getTransaction = new ValidatedMethod({
   }
 });
 
+
+/**
+ * @summary: Break Shippo error object into consistent format
+ * @param {Object} error The error result from Shippo
+ * @returns {Object} Error object with code and errorDetails
+ */
+function parseError(error) {
+  let errorData;
+  // The Avalara API constantly times out, so handle this special case first
+  if (error && (error.code === "ETIMEDOUT" || error.code === "ESOCKETTIMEDOUT")) {
+    errorData = {
+      errorCode: 503,
+      type: "apiFailure",
+      errorDetails: [{ message: error.message, description: error.description }]
+    };
+  } else if (error && error.response && error.response.statusCode === 401) {
+    // authentification error
+    errorData = {
+      errorCode: 401,
+      type: "apiFailure",
+      errorDetails: {
+        message: error.message,
+        description: error.description
+      }
+    };
+  } else if (error && error.response && error.response.statusCode === 400) {
+    // address validation error
+    if (error.response.data.error.code === "GetTaxError") {
+      errorData = {
+        errorCode: 300,
+        type: "addressError"
+      };
+      errorData.errorDetails = error.response.data.error.details.map((errorDetail) => { // eslint-disable-line
+        return ({ message: errorDetail.message, description: errorDetail.description });
+      });
+    }
+  } else {
+    Logger.error(error, "Unknown Error");
+  }
+  const errorObjectContext = ErrorObject.newContext();
+  // No Generic errors ever
+  errorObjectContext.validate(errorData);
+  if (!errorObjectContext.isValid()) {
+    throw new Meteor.Error("invalid-return", "Returning invalid Error results");
+  }
+  return errorData;
+}
+
 /**
  * Tries to validate a address using Shippo API
  * @see https://goshippo.com/docs/address-validation
@@ -236,7 +285,7 @@ ShippoApi.methods.validateAddress = new ValidatedMethod({
       return validatedAddressResult;
     } catch (error) {
       Logger.error(error);
-      throw new Meteor.Error("shippo-api-error", error.message);
+      return { error: parseError(error) };
     }
   }
 });

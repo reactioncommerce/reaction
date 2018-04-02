@@ -1,4 +1,5 @@
 import _ from "lodash";
+import SimpleSchema from "simpl-schema";
 import { Meteor } from "meteor/meteor";
 import { Random } from "meteor/random";
 import { Accounts as MeteorAccounts } from "meteor/accounts-base";
@@ -16,7 +17,6 @@ import { sendUpdatedVerificationEmail } from "/server/api/core/accounts";
  * @example Meteor.call("accounts/verifyAccount", email, token)
  * @namespace Methods/Accounts
  */
-
 /**
  * @name accounts/verifyAccount
  * @memberof Methods/Accounts
@@ -138,7 +138,8 @@ function getValidator() {
     "registry": { $elemMatch: { provides: "addressValidation" } },
     "settings.addressValidation.enabled": true,
     shopId,
-    "enabled": true
+    "enabled": true,
+    "name": "reaction-shippo"
   }).fetch();
 
   if (!geoCoders.length) {

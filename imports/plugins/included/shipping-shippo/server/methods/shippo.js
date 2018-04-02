@@ -32,12 +32,14 @@ function createShippoAddress(reactionAddress, email, purpose) {
 
 function createValidatedAddress(apiResult) {
   const formErrors = [];
-  apiResult.messages.forEach((message) => {
-    formErrors.push({
-      summary: message.code,
-      details: message.text
+  if (apiResult.messages) {
+    apiResult.messages.forEach((message) => {
+      formErrors.push({
+        summary: message.code,
+        details: message.text
+      });
     });
-  });
+  }
   return {
     validatedAddress: {
       address1: apiResult.street1,
@@ -414,11 +416,10 @@ export const methods = {
     try {
       const apiResult = ShippoApi.methods.validateAddress.call({ address: shippoAddress, apiKey });
       const validateAddress = createValidatedAddress(apiResult);
-      console.log(validateAddress);
       return validateAddress;
     } catch (error) {
       Logger.error(error);
-      throw new Meteor.Error("shippo-api-error", error.message);
+      throw new Meteor.Error(error, "Shippo API error");
     }
   },
 

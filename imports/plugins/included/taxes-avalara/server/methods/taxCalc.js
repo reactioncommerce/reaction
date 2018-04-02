@@ -1,42 +1,14 @@
 import os from "os";
 import _ from "lodash";
 import accounting from "accounting-js";
-import SimpleSchema from "simpl-schema";
 import { Meteor } from "meteor/meteor";
 import { HTTP } from "meteor/http";
 import { check } from "meteor/check";
 import { Shops, Accounts } from "/lib/collections";
+import { ErrorObject } from "/lib/collections/schemas";
 import { TaxCodes } from "/imports/plugins/core/taxes/lib/collections";
 import { Reaction, Logger } from "/server/api";
 import Avalogger from "./avalogger";
-
-const errorDetails = new SimpleSchema({
-  message: {
-    type: String
-  },
-  description: {
-    type: String,
-    optional: true
-  }
-});
-
-  // Validate that whenever we return an error we return the same format
-const ErrorObject = new SimpleSchema({
-  "type": {
-    type: String
-  },
-  "errorCode": {
-    type: Number
-  },
-  "errorDetails": {
-    type: Array,
-    optional: true
-  },
-  "errorDetails.$": {
-    type: errorDetails,
-    optional: true
-  }
-});
 
 let moment;
 async function lazyLoadMoment() {
@@ -123,34 +95,13 @@ function getTaxSettings(userId) {
  */
 function parseError(error) {
   let errorData;
-  // The Avalara API constantly times out, so handle this special case first
-  if (error && (error.code === "ETIMEDOUT" || error.code === "ESOCKETTIMEDOUT")) {
+  // Not able to get to shippo API
+  if (error && error.detail && error.detail.code === "ENOTFOUND") {
     errorData = {
       errorCode: 503,
       type: "apiFailure",
       errorDetails: [{ message: error.message, description: error.description }]
     };
-  } else if (error && error.response && error.response.statusCode === 401) {
-    // authentification error
-    errorData = {
-      errorCode: 401,
-      type: "apiFailure",
-      errorDetails: {
-        message: error.message,
-        description: error.description
-      }
-    };
-  } else if (error && error.response && error.response.statusCode === 400) {
-    // address validation error
-    if (error.response.data.error.code === "GetTaxError") {
-      errorData = {
-        errorCode: 300,
-        type: "addressError"
-      };
-      errorData.errorDetails = error.response.data.error.details.map((errorDetail) => { // eslint-disable-line
-        return ({ message: errorDetail.message, description: errorDetail.description });
-      });
-    }
   } else {
     Logger.error(error, "Unknown Error");
     Avalogger.error(error, "Unknown error or error format");
@@ -291,7 +242,7 @@ taxCalc.getEntityCodes = function () {
     const requestUrl = `${baseUrl}definitions/entityusecodes`;
     const result = avaGet(requestUrl);
 
-    if (result && result.code === "ETIMEDOUT") {
+    if (result && result.error && result.error.errorCode === 503) {
       throw new Meteor.Error("request-timeout", "Request timed out while populating entity codes.");
     }
 
@@ -409,7 +360,7 @@ taxCalc.testCredentials = function (credentials, testCredentials = false) {
   const requestUrl = `${baseUrl}companies/${credentials.companyCode}/transactions`;
   const result = avaGet(requestUrl, { auth, timeout: credentials.requestTimeout }, testCredentials);
 
-  if (result && result.code === "ETIMEDOUT") {
+  if (result && result.error && result.error.errorCode === 503) {
     throw new Meteor.Error("request-timeout", "Request Timed out. Increase your timeout settings");
   }
 
