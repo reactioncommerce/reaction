@@ -787,7 +787,7 @@ export function inviteShopMember(options) {
     html: SSR.render(tpl, dataForEmail)
   });
 
-  return true;
+  return Accounts.findOne({ userId });
 }
 
 /**
