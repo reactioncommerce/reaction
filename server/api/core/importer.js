@@ -1,10 +1,10 @@
+import Logger from "@reactioncommerce/reaction-logger";
 import { Mongo, MongoInternals } from "meteor/mongo";
 import { EJSON } from "meteor/ejson";
 import { check, Match } from "meteor/check";
 import { Random } from "meteor/random";
 import * as Collections from "/lib/collections";
 import Hooks from "../hooks";
-import { Logger } from "../logger";
 
 /**
  * @file Exposes the Importer object implementing methods for bulk imports.
