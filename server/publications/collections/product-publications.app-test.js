@@ -314,7 +314,7 @@ describe("Publication", function () {
         });
       });
 
-      it("should not return a product based on exacte handle match if it isn't visible", function (done) {
+      it("should not return a product based on exact handle match if it isn't visible", function (done) {
         sandbox.stub(Reaction, "getShopId", () => shopId);
         sandbox.stub(Roles, "userIsInRole", () => false);
 
