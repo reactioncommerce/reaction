@@ -1,5 +1,5 @@
-import bunyan from "bunyan";
-import bunyanFormat from "bunyan-format";
+import Bunyan from "bunyan";
+import BunyanFormat from "bunyan-format";
 import Bunyan2Loggly from "./loggly";
 
 
@@ -24,7 +24,7 @@ if (!levels.includes(level)) {
 // default console config (stdout)
 const streams = [{
   level,
-  stream: bunyanFormat({ outputMode })
+  stream: BunyanFormat({ outputMode })
 }];
 
 // Loggly config (only used if configured)
@@ -44,9 +44,13 @@ if (logglyToken && logglySubdomain) {
 }
 
 // create default logger instance
-const Logger = bunyan.createLogger({
+const Logger = Bunyan.createLogger({
   name: process.env.REACTION_LOGGER_NAME || "Reaction",
   streams
 });
+
+// export bunyan so users can create their own loggers from scratch if needed
+export { default as bunyan } from "bunyan";
+export { default as bunyanFormat } from "bunyan-format";
 
 export default Logger;
