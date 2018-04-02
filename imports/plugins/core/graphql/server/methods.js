@@ -4,6 +4,7 @@ const methods = {};
 
 [
   "accounts/addressBookAdd",
+  "accounts/addressBookRemove",
   "accounts/addressBookUpdate",
   "group/addUser",
   "group/removeUser"
