@@ -4,7 +4,7 @@ import SimpleSchema from "simpl-schema";
 import { Meteor } from "meteor/meteor";
 import { ValidatedMethod } from "meteor/mdg:validated-method";
 import { Logger } from "/server/api";
-import { ErrorObject } from "../../lib/collections/schemas";
+import { ErrorObject } from "/lib/collections/schemas";
 import { purchaseAddressSchema, parcelSchema } from "../lib/shippoApiSchema";
 
 export const ShippoApi = {
@@ -220,36 +220,16 @@ ShippoApi.methods.getTransaction = new ValidatedMethod({
  */
 function parseError(error) {
   let errorData;
-  // The Avalara API constantly times out, so handle this special case first
-  if (error && (error.code === "ETIMEDOUT" || error.code === "ESOCKETTIMEDOUT")) {
+  // Not able to get to shippo API
+  if (error && error.detail && error.detail.code === "ENOTFOUND") {
     errorData = {
       errorCode: 503,
       type: "apiFailure",
       errorDetails: [{ message: error.message, description: error.description }]
     };
-  } else if (error && error.response && error.response.statusCode === 401) {
-    // authentification error
-    errorData = {
-      errorCode: 401,
-      type: "apiFailure",
-      errorDetails: {
-        message: error.message,
-        description: error.description
-      }
-    };
-  } else if (error && error.response && error.response.statusCode === 400) {
-    // address validation error
-    if (error.response.data.error.code === "GetTaxError") {
-      errorData = {
-        errorCode: 300,
-        type: "addressError"
-      };
-      errorData.errorDetails = error.response.data.error.details.map((errorDetail) => { // eslint-disable-line
-        return ({ message: errorDetail.message, description: errorDetail.description });
-      });
-    }
   } else {
     Logger.error(error, "Unknown Error");
+    Avalogger.error(error, "Unknown error or error format");
   }
   const errorObjectContext = ErrorObject.newContext();
   // No Generic errors ever
@@ -285,7 +265,7 @@ ShippoApi.methods.validateAddress = new ValidatedMethod({
       return validatedAddressResult;
     } catch (error) {
       Logger.error(error);
-      return { error: parseError(error) };
+      return { errors: parseError(error) };
     }
   }
 });

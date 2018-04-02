@@ -415,6 +415,9 @@ export const methods = {
 
     try {
       const apiResult = ShippoApi.methods.validateAddress.call({ address: shippoAddress, apiKey });
+      if (apiResult.errors) {
+        return apiResult;
+      }
       const validateAddress = createValidatedAddress(apiResult);
       return validateAddress;
     } catch (error) {

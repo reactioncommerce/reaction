@@ -95,13 +95,34 @@ function getTaxSettings(userId) {
  */
 function parseError(error) {
   let errorData;
-  // Not able to get to shippo API
-  if (error && error.detail && error.detail.code === "ENOTFOUND") {
+  // The Avalara API constantly times out, so handle this special case first
+  if (error && (error.code === "ETIMEDOUT" || error.code === "ESOCKETTIMEDOUT")) {
     errorData = {
       errorCode: 503,
       type: "apiFailure",
       errorDetails: [{ message: error.message, description: error.description }]
     };
+  } else if (error && error.response && error.response.statusCode === 401) {
+    // authentification error
+    errorData = {
+      errorCode: 401,
+      type: "apiFailure",
+      errorDetails: {
+        message: error.message,
+        description: error.description
+      }
+    };
+  } else if (error && error.response && error.response.statusCode === 400) {
+    // address validation error
+    if (error.response.data.error.code === "GetTaxError") {
+      errorData = {
+        errorCode: 300,
+        type: "addressError"
+      };
+      errorData.errorDetails = error.response.data.error.details.map((errorDetail) => { // eslint-disable-line
+        return ({ message: errorDetail.message, description: errorDetail.description });
+      });
+    }
   } else {
     Logger.error(error, "Unknown Error");
     Avalogger.error(error, "Unknown error or error format");
