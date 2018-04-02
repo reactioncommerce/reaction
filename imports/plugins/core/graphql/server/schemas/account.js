@@ -22,8 +22,8 @@ export const typeDefs = `
 
   # Defines a new Address and the account to which it should be added
   input AddAccountAddressBookEntryInput {
-    # The account ID, which defaults to the viewer account
-    accountId: ID
+    # The account ID
+    accountId: ID!
 
     # The address to add
     address: AddressInput!
@@ -34,8 +34,8 @@ export const typeDefs = `
 
   # Describes changes that should be applied to one of the addresses for an account
   input UpdateAccountAddressBookEntryInput {
-    # The account ID, which defaults to the viewer account
-    accountId: ID
+    # The account ID
+    accountId: ID!
 
     # The address ID
     addressId: ID!
@@ -52,8 +52,8 @@ export const typeDefs = `
 
   # Describes which address should be removed from which account
   input RemoveAccountAddressBookEntryInput {
-    # The account ID, which defaults to the viewer account
-    accountId: ID
+    # The account ID
+    accountId: ID!
 
     # The address ID
     addressId: ID!
@@ -172,8 +172,8 @@ export const typeDefs = `
 
   # The response from the \`removeAccountAddressBookEntry\` mutation
   type RemoveAccountAddressBookEntryPayload {
-    # The account, with updated \`addressBook\`
-    account: Account
+    # The removed address
+    address: Address
 
     # The same string you sent with the mutation params, for matching mutation calls with their responses
     clientMutationId: String
