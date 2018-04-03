@@ -45,7 +45,7 @@ MethodHooks.after("taxes/calculate", (options) => {
       // check if plugin is enabled and this calculation method is enabled
       if (pkg && pkg.enabled === true && pkg.settings.taxcloud.enabled === true) {
         if (!apiKey || !apiLoginId) {
-          Logger.warn("TaxCloud API Key is required.");
+          Logger.fatal("TaxCloud API Key is required.");
         }
         if (Array.isArray(cartToCalc.shipping) && cartToCalc.shipping.length > 0 && cartToCalc.items) {
           const shippingAddress = cartToCalc.shipping[0].address;

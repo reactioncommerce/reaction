@@ -59,7 +59,7 @@ function checkConfiguration(packageData = taxCalc.getPackageData()) {
     }
   }
   if (!isValid) {
-    Logger.error("The Avalara package is not configured correctly. Cannot continue");
+    Logger.fatal("The Avalara package is not configured correctly. Cannot continue");
   }
   return isValid;
 }
@@ -108,6 +108,7 @@ function parseError(error) {
   }
 
   if (error.response && error.response.statusCode === 401) {
+    Logger.fatal("Avalara authentication failed", error.message);
     // authentification error
     errorData = {
       errorCode: 401,

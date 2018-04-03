@@ -1,7 +1,10 @@
 import _ from "lodash";
 import bunyan from "bunyan";
 import bunyanFormat from "bunyan-format";
+import { EmailStream } from "bunyan-emailstream";
 import { Meteor } from "meteor/meteor";
+import { Reaction } from "/server/api";
+import Hooks from "../hooks";
 import Bunyan2Loggly from "./loggly";
 
 
@@ -45,10 +48,79 @@ if (logglyToken && logglySubdomain) {
   streams.push(logglyStream);
 }
 
-// create default logger instance
-const Logger = bunyan.createLogger({
+// Create mutable logger instance and export it. This is intentional.
+//
+// In order to be able to re-assign with a email stream handler
+// after the core has loaded successfully, we need to ensure this is not
+// a default export, because default exports are treated similar to exporting
+// const values, which can't be re-assigned
+// http://2ality.com/2014/09/es6-modules-final.html
+//   export default 123;
+// equals
+//   const D = 123;
+//   export { D as default };
+//
+// eslint-disable-next-line import/no-mutable-exports
+export let Logger = bunyan.createLogger({
   name: "Reaction",
   streams
 });
 
-export default Logger;
+// This won't work, even if the Logger instance is declared with let. Any reference to it will
+// hold the initial value, not the latest one.
+// export default Logger;
+
+Hooks.Events.add("afterCoreInit", () => {
+  const reactionEmail = Reaction.getShopEmail();
+  if (reactionEmail) {
+    try {
+      const { user, password, host, port } = Reaction.getShopSettings().mail;
+      // Don't start via plaintext when using 465.
+      // (Beware: false doesn't mean it's un-encrypted, either)
+      const secureConnection = port === 465;
+      const reactionAlertsNotificationEmail = process.env.REACTION_ALERTS_NOTFICATION_EMAIL
+        || Meteor.settings.reaction.REACTION_ALERTS_NOTFICATION_EMAIL
+        || reactionEmail;
+      // Nodemailer transportOptions
+      const transportOptions = {
+        type: "SMTP",
+        host,
+        port,
+        secureConnection
+      };
+
+      // Some server, e.g. Maildev don't like credentials
+      if (user && password) {
+        transportOptions.auth = {
+          user,
+          pass: password
+        };
+      }
+
+      const emailStream = new EmailStream(
+        // Nodemailer mailOptions
+        {
+          from: reactionEmail,
+          to: reactionAlertsNotificationEmail
+        },
+        transportOptions
+      );
+
+      streams.push({
+        type: "raw", // You should use EmailStream with "raw" type!
+        stream: emailStream,
+        level: "fatal"
+      });
+
+      // Replace previously created console logger with this mailer-aware version
+      Logger = bunyan.createLogger({
+        name: "Reaction",
+        streams
+      });
+    } catch (error) {
+      // Not much we can do, but also not a situation we want to exit.
+      // Assuming that the standard logger is in place, we may log an error.
+      Logger.error("Can't setup email messages for fatal errors: ", error.message);
+    }
+  }
+});
