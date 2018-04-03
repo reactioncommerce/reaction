@@ -106,7 +106,7 @@ export const methods = {
   "taxes/setRateByShopAndItem"(cartId, options) {
     check(cartId, String);
     check(options, {
-      taxRatesByShop: Object,
+      taxRatesByShop: Match.OneOf(undefined, null, Object),
       itemsWithTax: [Object],
       cartTaxRate: Number,
       cartTaxData: Match.OneOf([Object], undefined, null)
