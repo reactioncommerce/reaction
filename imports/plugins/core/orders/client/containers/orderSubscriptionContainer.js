@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import { Meteor } from "meteor/meteor";
+import { Counts } from "meteor/tmeasday:publish-counts";
 import { Orders, OrderSearch } from "/lib/collections";
 import { Components, composeWithTracker } from "@reactioncommerce/reaction-components";
-import { Counts } from "meteor/tmeasday:publish-counts";
 import OrderDashboard from "../components/orderDashboard";
 
 class OrderSubscription extends Component {
@@ -16,7 +16,7 @@ class OrderSubscription extends Component {
 function composer(props, onData) {
   const subscription = Meteor.subscribe("SearchResults", "orders", props.searchQuery);
   let orderSearchResultsIds;
-  const { query, page } = props;
+  const { query, currentPage } = props;
 
   if (subscription.ready()) {
     const orderSearchResults = OrderSearch.find().fetch();
@@ -30,20 +30,20 @@ function composer(props, onData) {
       delete query._id;
     }
     const options = { limit: props.pageSize, skip: props.skip };
-    const ordersSubscription = Meteor.subscribe("CustomPaginatedOrders", query, options);
-    let total = Counts.get("orders-count");
+    const ordersSubscription = Meteor.subscribe("PaginatedOrders", query, options);
+    let totalOrderCount = Counts.get("orders-count");
     if (props.searchQuery !== "") {
-      total = orderSearchResults.length;
+      totalOrderCount = orderSearchResults.length;
     }
-    const pages = Math.ceil(total / props.pageSize);
+    const pages = Math.ceil(totalOrderCount / props.pageSize);
 
     if (ordersSubscription.ready()) {
       const results = Orders.find(query).fetch();
       return onData(null, {
         orders: results,
-        total,
+        totalOrderCount,
         pages,
-        page
+        currentPage
       });
     }
   }

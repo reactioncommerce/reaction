@@ -8,6 +8,7 @@ import OrderSearch from "./orderSearch";
 class OrderDashboard extends Component {
   static propTypes = {
     clearFilter: PropTypes.func,
+    currentPage: PropTypes.number,
     filterDates: PropTypes.func,
     filterShippingStatus: PropTypes.func,
     filterWorkflowStatus: PropTypes.func,
@@ -20,7 +21,6 @@ class OrderDashboard extends Component {
     onPageChange: PropTypes.func,
     onPageSizeChange: PropTypes.func,
     orders: PropTypes.array,
-    page: PropTypes.number,
     pages: PropTypes.number,
     query: PropTypes.object,
     renderFlowList: PropTypes.bool,
@@ -93,7 +93,7 @@ class OrderDashboard extends Component {
               onPageChange={this.props.onPageChange}
               onPageSizeChange={this.props.onPageSizeChange}
               pages={this.props.pages}
-              page={this.props.page}
+              page={this.props.currentPage}
             />
           </div> :
           <div className="container-fluid-sm order-details-list-container">

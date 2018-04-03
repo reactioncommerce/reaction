@@ -140,7 +140,7 @@ const wrapComponent = (Comp) => (
           pageSize={this.state.pageSize}
           onPageChange={this.updatePage}
           onPageSizeChange={this.updatePageSize}
-          page={this.state.page}
+          currentPage={this.state.page}
         />
       );
     }

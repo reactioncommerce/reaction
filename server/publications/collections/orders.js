@@ -90,39 +90,8 @@ Meteor.publish("Orders", function () {
   }
 });
 
-/**
- * paginated orders
- */
 
-Meteor.publish("PaginatedOrders", function (limit) {
-  check(limit, Number);
-
-  if (this.userId === null) {
-    return this.ready();
-  }
-  const shopId = Reaction.getUserShopId(this.userId) || Reaction.getShopId();
-  if (!shopId) {
-    return this.ready();
-  }
-  // return any order for which the shopId is attached to an item
-  const aggregateOptions = {
-    observeSelector: {
-      "items.shopId": shopId
-    }
-  };
-  const aggregate = createAggregate(shopId, { createdAt: -1 }, limit);
-
-  if (Roles.userIsInRole(this.userId, ["admin", "owner", "orders"], shopId)) {
-    ReactiveAggregate(this, Orders, aggregate, aggregateOptions);
-  } else {
-    return Orders.find({
-      shopId,
-      userId: this.userId
-    });
-  }
-});
-
-Meteor.publish("CustomPaginatedOrders", function (query, options) {
+Meteor.publish("PaginatedOrders", function (query, options) {
   check(query, Match.Optional(Object));
   check(options, Match.Optional(Object));
 
