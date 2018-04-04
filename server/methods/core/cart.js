@@ -475,12 +475,14 @@ Meteor.methods({
     }
     // Merge parcel with defaultParcel
     // so that all fields are filled.
-    if (!parcel) {
-      parcel = defaultParcelSize;
-    } else {
-      Object.keys(parcel).forEach((key) => {
-        parcel[key] = parcel[key] || defaultParcelSize[key];
-      });
+    if (defaultParcelSize) {
+      if (!parcel) {
+        parcel = defaultParcelSize;
+      } else {
+        Object.keys(parcel).forEach((key) => {
+          parcel[key] = parcel[key] || defaultParcelSize[key];
+        });
+      }
     }
 
 

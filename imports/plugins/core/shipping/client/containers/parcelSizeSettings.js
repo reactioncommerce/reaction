@@ -68,6 +68,8 @@ const composer = (props, onData) => {
       length: convertLength("in", baseUOL, 11.25),
       width: convertLength("in", baseUOL, 8.75)
     };
+    // Save default settings for the first time user.
+    saveDefaultSize(doc);
   }
   const formSettings = {
     shownFields: {
