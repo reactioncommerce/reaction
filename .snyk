@@ -6,27 +6,27 @@ ignore:
     - nexmo > jsonwebtoken > joi > hoek:
         reason: No patch available
         expires: '2018-03-22T04:22:44.834Z'
-      nexmo > request > hawk > hoek:
-        reason: Low Priority - Prototype Pollution Warning - No fix yet - Revisit
-        expires: '2018-04-27T18:52:08.506Z'
+      '@reactioncommerce/logger > node-loggly-bulk > request > hawk > hoek':
+        reason: None given
+        expires: '2018-05-04T15:13:32.647Z'
     - nexmo > jsonwebtoken > joi > topo > hoek:
         reason: no patch available
         expires: '2018-03-22T04:22:44.834Z'
-      nexmo > request > hawk > boom > hoek:
-        reason: Low Priority - Prototype Pollution Warning - No fix yet - Revisit
-        expires: '2018-04-27T18:52:08.506Z'
+      '@reactioncommerce/logger > node-loggly-bulk > request > hawk > boom > hoek':
+        reason: None given
+        expires: '2018-05-04T15:13:32.647Z'
     - prerender-node > request > hawk > hoek:
         reason: no patch available
         expires: '2018-03-22T04:22:44.834Z'
-      nexmo > request > hawk > sntp > hoek:
-        reason: Low Priority - Prototype Pollution Warning - No fix yet - Revisit
-        expires: '2018-04-27T18:52:08.506Z'
+      '@reactioncommerce/logger > node-loggly-bulk > request > hawk > sntp > hoek':
+        reason: None given
+        expires: '2018-05-04T15:13:32.647Z'
     - prerender-node > request > hawk > boom > hoek:
         reason: no patch available
         expires: '2018-03-22T04:22:44.834Z'
-      nexmo > request > hawk > cryptiles > boom > hoek:
-        reason: Low Priority - Prototype Pollution Warning - No fix yet - Revisit
-        expires: '2018-04-27T18:52:08.506Z'
+      '@reactioncommerce/logger > node-loggly-bulk > request > hawk > cryptiles > boom > hoek':
+        reason: None given
+        expires: '2018-05-04T15:13:32.647Z'
     - prerender-node > request > hawk > sntp > hoek:
         reason: no patch available
         expires: '2018-03-22T04:22:44.834Z'
@@ -399,6 +399,18 @@ ignore:
     - nexmo > jsonwebtoken > joi > topo > hoek:
         reason: Breaking change in downstream dependency
         expires: '2018-04-26T20:23:03.275Z'
+    - nexmo > request > hawk > hoek:
+        reason: Low Priority - Prototype Pollution Warning - No fix yet - Revisit
+        expires: '2018-04-27T18:52:08.506Z'
+    - nexmo > request > hawk > boom > hoek:
+        reason: Low Priority - Prototype Pollution Warning - No fix yet - Revisit
+        expires: '2018-04-27T18:52:08.506Z'
+    - nexmo > request > hawk > sntp > hoek:
+        reason: Low Priority - Prototype Pollution Warning - No fix yet - Revisit
+        expires: '2018-04-27T18:52:08.506Z'
+    - nexmo > request > hawk > cryptiles > boom > hoek:
+        reason: Low Priority - Prototype Pollution Warning - No fix yet - Revisit
+        expires: '2018-04-27T18:52:08.506Z'
   'npm:shelljs:20140723':
     - eslint-config-react-tools > eslint-plugin-class-property > eslint > shelljs:
         reason: no patch available
