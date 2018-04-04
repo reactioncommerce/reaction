@@ -1,4 +1,4 @@
-import Hooks from "@reactioncommerce/reaction-hooks";
+import Hooks from "@reactioncommerce/hooks";
 import Reaction from "./core";
 import * as Accounts from "./core/accounts";
 import Router from "./router";

@@ -3,7 +3,7 @@ import { EJSON } from "meteor/ejson";
 import { check, Match } from "meteor/check";
 import { Random } from "meteor/random";
 import * as Collections from "/lib/collections";
-import Hooks from "@reactioncommerce/reaction-hooks";
+import Hooks from "@reactioncommerce/hooks";
 import { Logger } from "../logger";
 
 /**
