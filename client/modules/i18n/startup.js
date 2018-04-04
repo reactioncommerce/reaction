@@ -10,7 +10,7 @@ import { ReactiveVar } from "meteor/reactive-var";
 import SimpleSchema from "simpl-schema";
 import { Reaction } from "/client/api";
 import { Shops, Translations, Packages } from "/lib/collections";
-import { getSchemas } from "@reactioncommerce/reaction-collections";
+import Schemas from "@reactioncommerce/schemas";
 import i18next, { getLabelsFor, getValidationErrorMessages, i18nextDep, currencyDep } from "./main";
 import { mergeDeep } from "/lib/api";
 
@@ -161,7 +161,6 @@ Meteor.startup(() => {
           resources
         }, () => {
           // Loop through registered Schemas to change labels and messages
-          const Schemas = getSchemas();
           for (const schemaName in Schemas) {
             if ({}.hasOwnProperty.call(Schemas, schemaName)) {
               const schemaInstance = Schemas[schemaName];

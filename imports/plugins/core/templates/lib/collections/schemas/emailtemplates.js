@@ -3,7 +3,7 @@ import { check } from "meteor/check";
 import { Tracker } from "meteor/tracker";
 import { Templates } from "/lib/collections";
 import { shopIdAutoValue } from "/lib/collections/schemas/helpers";
-import { registerSchema } from "@reactioncommerce/reaction-collections";
+import { registerSchema } from "@reactioncommerce/schemas";
 
 /**
  * EmailTemplates Schema
