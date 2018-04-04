@@ -4,11 +4,11 @@ import express from "express";
 import { graphqlExpress, graphiqlExpress } from "apollo-server-express";
 import { HttpQueryError } from "apollo-server-core";
 import getErrorFormatter from "./getErrorFormatter";
-import getUserFromToken from "./getUserFromToken";
+import schema from "./schema";
 
 const defaultServerConfig = {
   // graphql endpoint
-  path: "/graphql",
+  path: "/graphql-alpha",
   // GraphiQL endpoint
   graphiqlPath: "/graphiql",
   // GraphiQL options (default: log the current user in your request)
@@ -17,17 +17,11 @@ const defaultServerConfig = {
   }
 };
 
-// take the existing context and return a new extended context with
-// the current user (if valid login token)
-async function addUserToContextFromToken(context, token) {
-  if (!token) return context;
-  return { ...context, user: await getUserFromToken(token) };
-}
-
 export default function createApolloServer(options = {}) {
   // the Meteor GraphQL server is an Express server
   const expressServer = express();
 
+  const { context: contextFromOptions, getUserFromToken } = options;
   const graphQLPath = options.path || defaultServerConfig.path;
 
   // GraphQL endpoint, enhanced with JSON body parser
@@ -41,12 +35,18 @@ export default function createApolloServer(options = {}) {
       // network interface middleware if enabled
       const token = req.headers["meteor-login-token"];
 
-      let context = {};
-      try {
-        // get the current user
-        context = await addUserToContextFromToken(context, token);
-      } catch (error) {
-        throw new HttpQueryError(401, error.message);
+      let context;
+
+      if (token && typeof getUserFromToken === "function") {
+        try {
+          // get the current user
+          const user = await getUserFromToken(token);
+          context = { ...contextFromOptions, user, userId: (user && user._id) || null };
+        } catch (error) {
+          throw new HttpQueryError(401, error.message);
+        }
+      } else {
+        context = { ...contextFromOptions };
       }
 
       return {
@@ -62,7 +62,7 @@ export default function createApolloServer(options = {}) {
 
           return res;
         },
-        schema: options.schema
+        schema
       };
     })
   );

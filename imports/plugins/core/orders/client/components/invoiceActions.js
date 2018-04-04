@@ -103,9 +103,9 @@ class InvoiceActions extends Component {
                     amount: true
                   }
                 }}
-                onChange={(event, data) => {
+                onChange={(event, value) => {
                   this.setState({
-                    value: data.numberValue
+                    value
                   });
                 }}
               />

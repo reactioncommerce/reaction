@@ -1,8 +1,8 @@
 export const typeDefs = `
-  # An string email address.
+  # A string email address
   scalar Email
 
-  # A confirmable email record.
+  # A confirmable email record
   type EmailRecord {
     provides: String
     address: Email
