@@ -2,32 +2,16 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import classnames from "classnames";
 import TextareaAutosize from "react-textarea-autosize";
-import { unformat } from "accounting-js";
 import { Components, registerComponent } from "@reactioncommerce/reaction-components";
-import { i18next, formatPriceString } from "/client/api";
+import { i18next } from "/client/api";
 
 
 class TextField extends Component {
-  constructor(props) {
-    super(props);
-    if (props.isCurrency) {
-      this.state = {
-        value: formatPriceString(props.value),
-        isEditing: false
-      };
-    } else {
-      this.state = {};
-    }
-  }
-
   /**
    * Getter: value
    * @return {String} value for text input
    */
   get value() {
-    if (this.props.isCurrency && !this.state.isEditing) {
-      return (this.state && this.state.value) || this.props.value || "";
-    }
     // if the props.value is not a number
     // return ether the value or and empty string
     if (isNaN(this.props.value)) {
@@ -91,12 +75,6 @@ class TextField extends Component {
    * @return {void}
    */
   onBlur = (event) => {
-    if (this.props.isCurrency) {
-      this.setState({
-        value: formatPriceString(event.target.value),
-        isEditing: false
-      });
-    }
     if (this.props.onBlur) {
       this.props.onBlur(event, event.target.value, this.props.name);
     }
@@ -109,13 +87,6 @@ class TextField extends Component {
    * @return {void}
    */
   onFocus = (event) => {
-    if (this.props.isCurrency) {
-      event.target.value = unformat(event.target.value);
-      this.setState({
-        value: event.target.value,
-        isEditing: true
-      });
-    }
     if (this.props.onFocus) {
       this.props.onFocus(event, event.target.value, this.props.name);
     }
@@ -300,7 +271,6 @@ TextField.propTypes = {
   i18nKeyLabel: PropTypes.string,
   i18nKeyPlaceholder: PropTypes.string,
   id: PropTypes.string,
-  isCurrency: PropTypes.bool,
   isValid: PropTypes.bool,
   label: PropTypes.string,
   maxRows: PropTypes.number,

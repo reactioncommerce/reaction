@@ -171,7 +171,8 @@
     "js-yaml": "^3.10.0",
     "jsdoc": "^3.5.5",
     "nodemon": "^1.17.2",
-    "react-addons-test-utils": "15.6.2"
+    "react-addons-test-utils": "15.6.2",
+    "snyk": "^1.70.3"
   },
   "postcss": {
     "plugins": {

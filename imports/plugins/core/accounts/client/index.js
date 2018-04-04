@@ -1,4 +1,8 @@
 export { default as AccountsDashboard } from "./components/accountsDashboard";
+export { default as AddressBookForm } from "./components/addressBookForm";
+export { default as AddressBookReview } from "./components/addressBookReview";
+export { default as AddressBookGrid } from "./components/addressBookGrid";
+export { default as AddressBook } from "./components/addressBook.js";
 export { default as AdminInviteForm } from "./components/adminInviteForm";
 export { default as EditGroup } from "./components/editGroup";
 export { default as ForgotPassword } from "./components/forgotPassword";
@@ -20,6 +24,7 @@ export { default as UpdatePasswordOverlay } from "./components/updatePasswordOve
 export { default as LoginInline } from "./components/loginInline";
 
 export { default as AccountsDashboardContainer } from "./containers/accountsDashboardContainer";
+export { default as AddressBookContainer } from "./containers/addressBookContainer";
 export { default as UserOrdersListContainer } from "./containers/userOrdersListContainer";
 export { default as AuthContainer } from "./containers/auth";
 export { default as EditGroupContainer } from "./containers/editGroupContainer";
@@ -32,18 +37,6 @@ export { default as VerifyAccount } from "./containers/verifyAccount";
 
 import "./templates/accounts.html";
 
-import "./templates/addressBook/add/add.html";
-import "./templates/addressBook/add/add.js";
-import "./templates/addressBook/edit/edit.html";
-import "./templates/addressBook/edit/edit.js";
-import "./templates/addressBook/form/form.html";
-import "./templates/addressBook/form/form.js";
-import "./templates/addressBook/grid/grid.html";
-import "./templates/addressBook/grid/grid.js";
-import "./templates/addressBook/review/review.html";
-import "./templates/addressBook/review/review.js";
-import "./templates/addressBook/addressBook.html";
-import "./templates/addressBook/addressBook.js";
 import "./templates/dashboard/dashboard.html";
 import "./templates/dashboard/dashboard.js";
 import "./templates/dropdown/helpers";

@@ -204,6 +204,23 @@ jobs:
           name: Dockerfile Lint
           command: |
             hadolint Dockerfile
+
+  snyk-security:
+    <<: *defaults
+    steps:
+      - checkout
+      - setup_remote_docker
+      - restore_cache:
+          keys:
+            - v1-node-modules-{{ checksum "package.json" }}
+            - v1-node-modules-{{ .Branch }}
+            - v1-node-modules-master
+      - run:
+          name: Snyk Test
+          command: |
+            PATH=$PATH:$CIRCLE_WORKING_DIRECTORY/node_modules/.bin && \
+              snyk test
+
 workflows:
   version: 2
   build_and_test:
@@ -233,3 +250,7 @@ workflows:
           filters:
             branches:
               only: /^master$/
+      - snyk-security:
+          context: reaction-validation
+          requires:
+            - build

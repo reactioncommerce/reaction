@@ -128,9 +128,9 @@ Meteor.methods({
    * @summary Adds a user to a permission group
    * Updates the user's list of permissions/roles with the defined the list defined for the group
    * (NB: At this time, a user only belongs to only one group per shop)
-   * @param {String} userId - current data of the group to be updated
-   * @param {String} groupId - id of the group
-   * @return {Object} - `object.status` of 200 on success or Error object on failure
+   * @param {String} userId - The account ID to add to the group
+   * @param {String} groupId - ID of the group
+   * @return {Object} - The modified group object
    */
   "group/addUser"(userId, groupId) {
     check(userId, String);
@@ -190,7 +190,8 @@ Meteor.methods({
         Meteor.call("group/addUser", Meteor.userId(), currentUserGrpInShop);
       }
 
-      return { status: 200 };
+      // Return the group the account as added to
+      return Groups.findOne({ _id: groupId });
     } catch (error) {
       Logger.error(error);
       throw new Meteor.Error("server-error", "Could not add user");
@@ -204,9 +205,9 @@ Meteor.methods({
    * @summary Removes a user from a group for a shop, and adds them to the default customer group.
    * Updates the user's permission list to reflect.
    * (NB: At this time, a user only belongs to only one group per shop)
-   * @param {String} userId - current data of the group to be updated
-   * @param {String} groupId - name of the group
-   * @return {Object} - `object.status` of 200 on success or Error object on failure
+   * @param {String} userId - The account ID to remove from the group
+   * @param {String} groupId - ID of the group
+   * @return {Object} - The modified group object
    */
   "group/removeUser"(userId, groupId) {
     check(userId, String);
@@ -233,7 +234,7 @@ Meteor.methods({
         accountId: userId,
         updatedFields: ["groups"]
       });
-      return { status: 200 };
+      return defaultCustomerGroupForShop;
     } catch (error) {
       Logger.error(error);
       throw new Meteor.Error("server-error", "Could not add user");
