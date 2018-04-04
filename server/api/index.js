@@ -1,4 +1,4 @@
-import Logger from "@reactioncommerce/reaction-logger";
+import Logger from "@reactioncommerce/logger";
 import Reaction from "./core";
 import * as Accounts from "./core/accounts";
 import Router from "./router";

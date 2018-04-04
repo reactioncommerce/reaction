@@ -1,4 +1,4 @@
-import Log from "@reactioncommerce/reaction-logger";
+import Log from "@reactioncommerce/logger";
 import Core from "./core";
 import * as Accounts from "./accounts";
 import * as AddDefaultRoles from "./addDefaultRoles";

@@ -24,7 +24,7 @@
     "@reactioncommerce/file-collections-sa-gridfs": "0.0.1",
     "@reactioncommerce/job-queue": "^1.0.4",
     "@reactioncommerce/nodemailer": "^5.0.5",
-    "@reactioncommerce/reaction-logger": "^1.1.0",
+    "@reactioncommerce/logger": "^1.1.1",
     "accounting-js": "^1.1.1",
     "apollo-server-core": "1.3.2",
     "apollo-server-express": "1.3.2",

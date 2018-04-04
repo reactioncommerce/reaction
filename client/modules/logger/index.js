@@ -1,4 +1,4 @@
-import { bunyan } from "@reactioncommerce/reaction-logger";
+import { bunyan } from "@reactioncommerce/logger";
 import { Meteor } from "meteor/meteor";
 
 /*
