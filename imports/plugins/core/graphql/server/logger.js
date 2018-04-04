@@ -1,1 +1,3 @@
-export { Logger } from "/server/api";
+import Logger from "@reactioncommerce/logger";
+
+export { Logger };

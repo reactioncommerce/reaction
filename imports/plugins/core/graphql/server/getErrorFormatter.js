@@ -1,5 +1,5 @@
 import cuid from "cuid";
-import Logger from "@reactioncommerce/reaction-logger";
+import { Logger } from "./logger";
 
 function getErrorFormatter(context = {}) {
   return (err) => {
