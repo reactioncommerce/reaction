@@ -79,7 +79,7 @@ export const methods = {
     });
 
     if (!Reaction.hasPermission(shippingRoles)) {
-      throw new Meteor.Error(403, "Access Denied");
+      throw new Meteor.Error("access-denied", "Access Denied");
     }
 
     const modifier = Object.keys(parcel).reduce((mod, key) => {

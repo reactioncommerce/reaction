@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Components, registerComponent } from "@reactioncommerce/reaction-components";
-import Form from "../../../ui/client/components/forms/form";
 import { ShippingParcel } from "/lib/collections/schemas";
 
 
@@ -69,7 +68,7 @@ class ParcelSizeSettings extends Component {
               title="Parcel Size"
             />
             <Components.CardBody expandable={true}>
-              <Form
+              <Components.Form
                 autoSave
                 renderFromFields
                 fieldsProp={fieldsProp}
