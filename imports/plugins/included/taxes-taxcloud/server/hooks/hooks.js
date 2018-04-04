@@ -48,10 +48,20 @@ function calculateTax(pkgSettings, cartToCalc) {
   }
   // Create a map of shopId -> shopAddress
   const shopsList = Shops.find({ _id: { $in: Object.keys(shopItemsMap) } }, { _id: 1, addressBook: 1 }).fetch();
+  let shopsHaveAddress = true;
   const shopsAddressMap = shopsList.reduce((addressMap, shop) => {
+    if (!shop.addressBook) {
+      shopsHaveAddress = false;
+      return;
+    }
     [addressMap[shop._id]] = shop.addressBook;
     return addressMap;
   }, {});
+  if (!shopsHaveAddress) {
+    // All the marketplace shops don't have address yet.
+    Logger.error("All the marketplace shops don't have address yet.");
+    return;
+  }
   let totalTax = 0;
   const subtotalsByShop = cartToCalc.getSubtotalByShop();
   const subTotal = cartToCalc.getSubTotal();
@@ -102,10 +112,8 @@ function calculateTax(pkgSettings, cartToCalc) {
       for (const item of response.data.CartItemsResponse) {
         totalTax += item.TaxAmount;
         const cartPosition = item.CartItemIndex;
-        items[cartPosition];
-        items[cartPosition].tax = item.TaxAmount;
         items[cartPosition].taxRate =
-        items[cartPosition].tax / subtotalsByShop[shopId];
+        item.TaxAmount / subtotalsByShop[shopId];
       }
     } catch (error) {
       Logger.warn("Error fetching tax rate from TaxCloud:", error.message);
