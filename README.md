@@ -15,13 +15,15 @@ To set the logger name that appears at the beginning of every log line and as th
 export REACTION_LOGGER_NAME="My Custom Logger"
 ```
 
+The default log level is `INFO`. You can override that with `REACTION_LOG_LEVEL` (see more about available levels below).
+
 To set the server log level in development, you can add the environment variable before the `reaction` command when starting the app.
 
 ```sh
 REACTION_LOG_LEVEL="DEBUG" reaction
 ```
 
-Or export it...
+Or export it first...
 
 ```sh
 export REACTION_LOG_LEVEL="DEBUG"
@@ -34,8 +36,6 @@ To set it in production (assuming you're using Docker), it would look like this:
 ```sh
 docker run -e REACTION_LOG_LEVEL="DEBUG" ...
 ```
-
-The default value for `REACTION_LOG_LEVEL` is `INFO`.
 
 ### Log Levels
 
