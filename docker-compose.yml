@@ -4,6 +4,11 @@
 
 version: '3.4'
 
+networks:
+  reaction-api:
+    external:
+      name: reaction-api
+
 services:
 
   devserver:
@@ -16,6 +21,9 @@ services:
     environment:
       ROOT_URL: "http://localhost:3030"
       MONGO_URL: "mongodb://mongo:27017/reaction"
+    networks:
+      default:
+      reaction-api:
     ports:
       - "3030:3030"
     volumes:
@@ -32,6 +40,9 @@ services:
     environment:
       ROOT_URL: "http://localhost:3000"
       MONGO_URL: "mongodb://mongo:27017/reaction"
+    networks:
+      default:
+      reaction-api:
     ports:
       - "3000:3000"
     volumes:
