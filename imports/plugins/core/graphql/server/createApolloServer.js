@@ -2,8 +2,9 @@ import cors from "cors";
 import bodyParser from "body-parser";
 import express from "express";
 import { graphqlExpress, graphiqlExpress } from "apollo-server-express";
-import { HttpQueryError } from "apollo-server-core";
+import buildContext from "./buildContext";
 import getErrorFormatter from "./getErrorFormatter";
+import meteorTokenMiddleware from "./meteorTokenMiddleware";
 import schema from "./schema";
 
 const defaultServerConfig = {
@@ -21,7 +22,7 @@ export default function createApolloServer(options = {}) {
   // the Meteor GraphQL server is an Express server
   const expressServer = express();
 
-  const { context: contextFromOptions, getUserFromToken } = options;
+  const { context: contextFromOptions } = options;
   const graphQLPath = options.path || defaultServerConfig.path;
 
   // GraphQL endpoint, enhanced with JSON body parser
@@ -29,25 +30,12 @@ export default function createApolloServer(options = {}) {
     graphQLPath,
     cors(),
     bodyParser.json(),
+    meteorTokenMiddleware("meteor-login-token", contextFromOptions),
     graphqlExpress(async (req) => {
-      // token is set by express-bearer-token middleware
-      // get the login token from the headers request, given by the Meteor's
-      // network interface middleware if enabled
-      const token = req.headers["meteor-login-token"];
+      const context = { ...contextFromOptions };
 
-      let context;
-
-      if (token && typeof getUserFromToken === "function") {
-        try {
-          // get the current user
-          const user = await getUserFromToken(token, contextFromOptions);
-          context = { ...contextFromOptions, user, userId: (user && user._id) || null };
-        } catch (error) {
-          throw new HttpQueryError(401, error.message);
-        }
-      } else {
-        context = { ...contextFromOptions };
-      }
+      // meteorTokenMiddleware will have set req.user if there is one
+      await buildContext(context, req.user);
 
       return {
         context,

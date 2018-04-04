@@ -1,7 +1,6 @@
 import { MongoClient } from "mongodb";
 import createApolloServer from "../../imports/plugins/core/graphql/server/createApolloServer";
 import defineCollections from "../../imports/plugins/core/graphql/server/defineCollections";
-import getUserFromToken from "../../imports/plugins/core/graphql/server/getUserFromToken";
 import methods from "./methods";
 import queries from "../../imports/plugins/core/graphql/server/queries";
 
@@ -34,12 +33,10 @@ MongoClient.connect(dbUrl, (error, client) => {
 const app = createApolloServer({
   context: {
     collections,
-    hasPermission: () => Promise.resolve(true),
     methods,
     queries
   },
   debug: true,
-  getUserFromToken,
   graphiql: true
 });
 

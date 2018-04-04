@@ -1,0 +1,7 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`throws if permissions is not an array 1`] = `"permissions must be an array of strings"`;
+
+exports[`throws if roleGroup is present but an empty string 1`] = `"roleGroup must be a non-empty string"`;
+
+exports[`throws if roleGroup is present but not a string 1`] = `"roleGroup must be a non-empty string"`;

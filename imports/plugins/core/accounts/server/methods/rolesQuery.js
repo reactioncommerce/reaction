@@ -9,11 +9,12 @@ import { Meteor } from "meteor/meteor";
  * @return {Object} roles object Promise
  */
 export async function rolesQuery(context) {
-  const { collections, hasPermission, userId } = context;
+  const { collections, shopId: contextShopId, userHasPermission } = context;
   const { roles } = collections;
 
-  const allowed = await hasPermission(["owner", "admin"], userId);
-  if (!allowed) throw new Meteor.Error("access-denied", "User does not have permissions to view roles");
+  if (!userHasPermission(["owner", "admin"], contextShopId)) {
+    throw new Meteor.Error("access-denied", "User does not have permissions to view roles");
+  }
 
   return roles.find({});
 }

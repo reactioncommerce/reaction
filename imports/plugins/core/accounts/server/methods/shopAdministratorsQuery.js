@@ -9,11 +9,10 @@ import { Meteor } from "meteor/meteor";
  * @return {Object[]} Array of user account objects
  */
 export async function shopAdministratorsQuery(context, id) {
-  const { collections, hasPermission, userId } = context;
+  const { collections, userHasPermission } = context;
   const { Accounts, users: Users } = collections;
 
-  const allowed = await hasPermission(["owner", "admin"], userId, id);
-  if (!allowed) throw new Meteor.Error("access-denied", "User does not have permission");
+  if (!userHasPermission(["owner", "admin"], id)) throw new Meteor.Error("access-denied", "User does not have permission");
 
   const users = await Users.find({
     [`roles.${id}`]: "admin"
