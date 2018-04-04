@@ -21,7 +21,8 @@ class ParcelSizeSettings extends Component {
   /**
   * @name handleSubmit
   * @summary Handle form submission
-  * @param {script} event - onChange event when typing in input field
+  * @param {Object} event - onChange event when typing in input field
+  * @param {Object} formData - the data of the whole form
   * @return {function} state for field value
   */
   handleSubmit = (event, formData) => {
@@ -32,7 +33,7 @@ class ParcelSizeSettings extends Component {
   /**
   * @name handleCardExpand
   * @summary Handle card expansion
-  * @param {script} event - onChange event when expander is clicked
+  * @param {Object} event - onChange event when expander is clicked
   * @param {Object} card - card component
   * @param {String} cardName - card name
   * @param {Boolean} isExpanded - boolean value from card component
