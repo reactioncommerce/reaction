@@ -277,6 +277,16 @@ export const methods = {
       };
       return Meteor.call("payments/apply", id, paymentMethod, collection);
     }
+  },
+  /**
+   * List all refunds for this payment method
+   * @param {Object} paymentMethod - Object containing everything about the transaction to be settled
+   * @return {Array} results - An array of refund objects for display in admin
+   */
+  "code/refund/list"(paymentMethod) {
+    check(paymentMethod, Object);
+    // discount codes can't be refunded
+    return [];
   }
 };
 

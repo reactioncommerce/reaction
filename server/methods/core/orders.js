@@ -842,7 +842,6 @@ export const methods = {
 
       Logger.debug(`orders/sendNotification status: ${order.workflow.status}`);
 
-
       // handle missing root shop email
       if (!shop.emails[0].address) {
         shop.emails[0].address = "no-reply@reactioncommerce.com";
