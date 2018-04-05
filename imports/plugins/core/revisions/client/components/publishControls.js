@@ -343,7 +343,7 @@ class PublishControls extends Component {
         {this.props.isEnabled && this.renderUndoButton()}
         {this.renderArchiveButton()}
         {this.renderViewControls()}
-        {this.renderPublishButton()}
+        {this.props.isEnabled && this.renderPublishButton()}
       </Components.ToolbarGroup>
     );
   }

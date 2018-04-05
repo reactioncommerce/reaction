@@ -979,7 +979,8 @@ Meteor.methods({
 
     if (!RevisionApi.isRevisionControlEnabled()) {
       // Publish products that have been marked as deleted immediately.
-      publishProductsToCatalog(ids);
+      const products = productsWithVariants.filter((doc) => doc.type === "simple").map((doc) => doc._id);
+      publishProductsToCatalog(products);
     }
 
     Logger.debug(`${numFlaggedAsDeleted} products have been flagged as deleted`);
@@ -1042,7 +1043,6 @@ Meteor.methods({
       update = EJSON.parse(`{"${field}":${stringValue}}`);
     }
 
-
     // we need to use sync mode here, to return correct error and result to UI
     let result;
 
@@ -1067,6 +1067,10 @@ Meteor.methods({
     // meaning the update went past revision control,
     // denormalize and attach results to top-level product
     if (result === 1) {
+      if (type === "simple" && !RevisionApi.isRevisionControlEnabled()) {
+        // Publish product changes immediately.
+        publishProductsToCatalog(_id);
+      }
       if (type === "variant" && toDenormalize.indexOf(field) >= 0) {
         denormalize(doc.ancestors[0], field);
       }
