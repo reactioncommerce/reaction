@@ -1,3 +1,38 @@
+# v1.11.0
+
+The major focus of `v1.11.0` has been on our GraphQL API. We've added most of the queries and mutations that are necessary for building a headless client to interact with `Accounts`. We're actively doing experiments on how we'll recommend connecting to this GraphQL client and we'll start publishing some of our initial client apps to interact with this GraphQL API in the near future.
+
+## GraphQL
+ - feat: GraphQL remove account from group mutation (#4102)
+ - feat: GraphQL invite shop member (#4103)
+ - feat: GraphQL add account to group mutation (#4095)
+ - feat: GraphQL address remove mutation (#4087)
+ - feat: GraphQL address update mutation (#4077)
+ - feat: GraphQL address add mutation (#4068)
+ - feat: GraphQL roles query (#4076)
+ - feat: GraphQL group and groups query (#4053)
+ - feat: GraphQL connections and devserver app (#4048)
+
+ ## Features
+ - feat: styling shop slug box for Shopify (#4091) .. Resolves #2780
+ - feat: convert AddressBook to react (#4054) .. Resolves #3518
+
+ ## CI
+ - chore: Add snyk check to CI config; Bump base version (#4002)
+
+ ## Fixes
+ - fix: preference writing in marketplace (#4111)
+ - fix: onClick to image too (#4067) .. Resolves #4058
+ - fix: wait for slugify to show up before returning slug (#4049)
+ - fix: use numericInput for pricing (#3999) .. Resolves #3821
+ - fix: credit card accepts invalid expiration date (#3795)
+ - fix: check permission before publish (#3885) .. Resolves #3754
+ - fix: multiple instances of Components.Login causes a browser warning (#4044)
+
+## Docs
+ - docs(jsdoc): #3840 DOM module - add @memberof, @method (#3842)
+ - docs: #3840 jsdoc - document fixtures (#3873)
+
 # v1.10.0
 
 ## Collection Hooks | Breaking Change!
