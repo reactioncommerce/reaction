@@ -6,27 +6,27 @@ ignore:
     - nexmo > jsonwebtoken > joi > hoek:
         reason: No patch available
         expires: '2018-03-22T04:22:44.834Z'
-      nexmo > request > hawk > hoek:
-        reason: Low Priority - Prototype Pollution Warning - No fix yet - Revisit
-        expires: '2018-04-27T18:52:08.506Z'
+      '@reactioncommerce/file-collections > tus-node-server > @google-cloud/storage > gcs-resumable-upload > google-auto-auth > gcp-metadata > retry-request > request > hawk > hoek':
+        reason: No patch and we do not use this optional package
+        expires: '2018-05-05T19:14:36.151Z'
     - nexmo > jsonwebtoken > joi > topo > hoek:
         reason: no patch available
         expires: '2018-03-22T04:22:44.834Z'
-      nexmo > request > hawk > boom > hoek:
-        reason: Low Priority - Prototype Pollution Warning - No fix yet - Revisit
-        expires: '2018-04-27T18:52:08.506Z'
+      '@reactioncommerce/file-collections > tus-node-server > @google-cloud/storage > gcs-resumable-upload > google-auto-auth > gcp-metadata > retry-request > request > hawk > boom > hoek':
+        reason: No patch and we do not use this optional package
+        expires: '2018-05-05T19:14:36.152Z'
     - prerender-node > request > hawk > hoek:
         reason: no patch available
         expires: '2018-03-22T04:22:44.834Z'
-      nexmo > request > hawk > sntp > hoek:
-        reason: Low Priority - Prototype Pollution Warning - No fix yet - Revisit
-        expires: '2018-04-27T18:52:08.506Z'
+      '@reactioncommerce/file-collections > tus-node-server > @google-cloud/storage > gcs-resumable-upload > google-auto-auth > gcp-metadata > retry-request > request > hawk > sntp > hoek':
+        reason: No patch and we do not use this optional package
+        expires: '2018-05-05T19:14:36.152Z'
     - prerender-node > request > hawk > boom > hoek:
         reason: no patch available
         expires: '2018-03-22T04:22:44.834Z'
-      nexmo > request > hawk > cryptiles > boom > hoek:
-        reason: Low Priority - Prototype Pollution Warning - No fix yet - Revisit
-        expires: '2018-04-27T18:52:08.506Z'
+      '@reactioncommerce/file-collections > tus-node-server > @google-cloud/storage > gcs-resumable-upload > google-auto-auth > gcp-metadata > retry-request > request > hawk > cryptiles > boom > hoek':
+        reason: No patch and we do not use this optional package
+        expires: '2018-05-05T19:14:36.152Z'
     - prerender-node > request > hawk > sntp > hoek:
         reason: no patch available
         expires: '2018-03-22T04:22:44.834Z'
@@ -399,6 +399,18 @@ ignore:
     - nexmo > jsonwebtoken > joi > topo > hoek:
         reason: Breaking change in downstream dependency
         expires: '2018-04-26T20:23:03.275Z'
+    - nexmo > request > hawk > hoek:
+        reason: Low Priority - Prototype Pollution Warning - No fix yet - Revisit
+        expires: '2018-04-27T18:52:08.506Z'
+    - nexmo > request > hawk > boom > hoek:
+        reason: Low Priority - Prototype Pollution Warning - No fix yet - Revisit
+        expires: '2018-04-27T18:52:08.506Z'
+    - nexmo > request > hawk > sntp > hoek:
+        reason: Low Priority - Prototype Pollution Warning - No fix yet - Revisit
+        expires: '2018-04-27T18:52:08.506Z'
+    - nexmo > request > hawk > cryptiles > boom > hoek:
+        reason: Low Priority - Prototype Pollution Warning - No fix yet - Revisit
+        expires: '2018-04-27T18:52:08.506Z'
   'npm:shelljs:20140723':
     - eslint-config-react-tools > eslint-plugin-class-property > eslint > shelljs:
         reason: no patch available
@@ -411,12 +423,21 @@ ignore:
     - eslint-config-react-tools > babel-eslint > babel-types > lodash:
         reason: no patch available
         expires: '2018-03-22T04:49:05.875Z'
+      authorize-net > 42-cent-base > lodash:
+        reason: no patch
+        expires: '2018-05-05T19:14:36.152Z'
     - eslint-config-react-tools > eslint-plugin-class-property > eslint > table > lodash:
         reason: no patch available
         expires: '2018-03-22T04:49:05.875Z'
+      twilio > lodash:
+        reason: no patch
+        expires: '2018-05-05T19:14:36.152Z'
     - eslint-config-react-tools > eslint-plugin-class-property > eslint > lodash:
         reason: no patch available
         expires: '2018-03-22T04:49:05.875Z'
+      velocity-react > lodash:
+        reason: no patch
+        expires: '2018-05-05T19:14:36.152Z'
     - eslint-config-react-tools > eslint > table > lodash:
         reason: no patch available
         expires: '2018-03-22T04:49:05.875Z'
@@ -670,6 +691,6 @@ ignore:
         expires: '2018-04-05T17:36:16.542Z'
   'npm:tunnel-agent:20170305':
     - '@reactioncommerce/file-collections > tus-node-server > @google-cloud/storage > gcs-resumable-upload > google-auto-auth > gcp-metadata > retry-request > request > tunnel-agent':
-        reason: no patch
-        expires: '2018-04-05T17:36:16.542Z'
+        reason: No patch and we do not use this optional package
+        expires: '2018-05-05T19:14:36.152Z'
 patch: {}
