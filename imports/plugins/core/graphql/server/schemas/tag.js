@@ -1,0 +1,73 @@
+/* eslint-disable max-len */
+export const typeDefs = `
+# Represents a single tag
+type Tag implements Node & Deletable {
+  # The tag ID
+  _id: ID!
+
+  # The date and time at which this tag was created
+  createdAt: DateTime!
+
+  # The date and time at which the object was soft deleted. This will be set if \`isDeleted\` is \`true\`.
+  deletedAt: DateTime
+
+  # If \`true\`, this object should be considered deleted. Soft deleted objects are not
+  # returned in query results unless you explicitly ask for them.
+  isDeleted: Boolean!
+
+  # If \`true\`, this tag should be shown at the top level of the tag hierarchy
+  isTopLevel: Boolean!
+
+  # Arbitrary additional metadata about this tag
+  metafields: [Metafield]
+
+  # The display name for the tag. This is unique within a given shop.
+  name: String!
+
+  # The tag's position relative to other tags at the same level of the tag hierarchy
+  position: Int
+
+  # A paged list of tags that have this tag as their parent in the tag hierarchy. Currently only three levels are supported.
+  subTags(after: ConnectionCursor, before: ConnectionCursor, first: ConnectionLimitInt, last: ConnectionLimitInt, sortOrder: SortOrder = asc, sortBy: TagSortByField = position): TagConnection
+
+  # The shop to which this tag belongs
+  shop: Shop!
+
+  # A unique URL-safe string representing this tag for links
+  slug: String
+
+  # The date and time at which this tag was last updated
+  updatedAt: DateTime!
+}
+
+# The fields by which you are allowed to sort any query that returns a \`TagConnection\`
+enum TagSortByField {
+  _id
+  createdAt
+  deletedAt
+  name
+  position
+  updatedAt
+}
+
+# A connection edge in which each node is a \`Tag\` object
+type TagEdge implements NodeEdge {
+  cursor: ConnectionCursor!
+  node: Tag
+}
+
+# Wraps a list of \`Tags\`, providing pagination cursors and information.
+type TagConnection implements NodeConnection {
+  edges: [TagEdge]
+  nodes: [Tag]
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
+extend type Query {
+  # Returns a paged list of tags for a shop. You must include a shopId when querying, and you may also limit to only top-level tags.
+  #
+  # Typically, to get a list of all tags for a shop, you will query with \`isTopLevel: true\` and request two levels of \`subTags\` within that.
+  tags(shopId: ID!, isTopLevel: Boolean, after: ConnectionCursor, before: ConnectionCursor, first: ConnectionLimitInt, last: ConnectionLimitInt, sortOrder: SortOrder = asc, sortBy: TagSortByField = position): TagConnection
+}
+`;

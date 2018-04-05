@@ -14,6 +14,11 @@ export const typeDefs = `
 
     # Returns a list of roles for this shop, as a Relay-compatible connection.
     roles(after: ConnectionCursor, before: ConnectionCursor, first: ConnectionLimitInt, last: ConnectionLimitInt, sortOrder: SortOrder = asc, sortBy: RoleSortByField = name): RoleConnection
+
+    # Returns a paged list of tags for this shop. You may optionally limit to only top-level tags.
+    #
+    # Typically, to get a list of all tags for a shop, you will query with \`isTopLevel: true\` and request two levels of \`subTags\` within that.
+    tags(isTopLevel: Boolean, after: ConnectionCursor, before: ConnectionCursor, first: ConnectionLimitInt, last: ConnectionLimitInt, sortOrder: SortOrder = asc, sortBy: TagSortByField = position): TagConnection
   }
 
   # Input parameters for the inviteShopMember mutation

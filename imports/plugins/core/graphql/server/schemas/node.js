@@ -18,6 +18,16 @@ export const typeDefs = `
     _id: ID!
   }
 
+  # Objects implementing the \`Deletable\` support soft deletion
+  interface Deletable {
+    # The date and time at which the object was soft deleted. This will be set if \`isDeleted\` is \`true\`.
+    deletedAt: DateTime
+
+    # If \`true\`, this object should be considered deleted. Soft deleted objects are not
+    # returned in query results unless you explicitly ask for them.
+    isDeleted: Boolean!
+  }
+
   # Objects implementing the \`NodeEdge\` interface will always have a \`node\` and a \`cursor\`
   # that represents that node for purposes of requesting paginated results.
   interface NodeEdge {
