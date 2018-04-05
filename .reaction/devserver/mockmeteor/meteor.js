@@ -1,12 +1,7 @@
-class mockErrorClass {
-  constructor(error) {
-    this.error = error;
-    this.message = error;
-  }
-}
+import ReactionError from "../../../imports/plugins/core/graphql/server/ReactionError";
 
 export const Meteor = {
-  Error: mockErrorClass,
+  Error: ReactionError,
   isClient: false,
   isServer: true,
   settings: {

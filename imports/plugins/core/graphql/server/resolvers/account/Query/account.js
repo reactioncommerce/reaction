@@ -1,4 +1,4 @@
-import { pipe } from "ramda";
+import { pipeP } from "ramda";
 import { decodeAccountOpaqueId, xformAccountResponse } from "@reactioncommerce/reaction-graphql-xforms/account";
 
 /**
@@ -15,7 +15,7 @@ export default function account(_, { id }, context) {
   // Transform ID from base64
   const dbAccountId = decodeAccountOpaqueId(id);
 
-  return pipe(
+  return pipeP(
     context.queries.userAccount,
     xformAccountResponse
   )(context, dbAccountId);
