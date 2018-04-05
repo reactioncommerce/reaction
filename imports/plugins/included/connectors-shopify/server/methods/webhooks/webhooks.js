@@ -10,7 +10,6 @@ import { Packages } from "/lib/collections";
  *       synchronization between a Shopify store and a Reaction shop
  * @module connectors-shopify
  */
-
 export const methods = {
   /**
    * Meteor method for creating a shopify webhook for the active shop
