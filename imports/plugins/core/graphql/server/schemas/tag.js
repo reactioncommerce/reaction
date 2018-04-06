@@ -8,9 +8,6 @@ type Tag implements Node & Deletable {
   # The date and time at which this tag was created
   createdAt: DateTime!
 
-  # The date and time at which the object was soft deleted. This will be set if \`isDeleted\` is \`true\`.
-  deletedAt: DateTime
-
   # If \`true\`, this object should be considered deleted. Soft deleted objects are not
   # returned in query results unless you explicitly ask for them.
   isDeleted: Boolean!
@@ -26,6 +23,9 @@ type Tag implements Node & Deletable {
 
   # The tag's position relative to other tags at the same level of the tag hierarchy
   position: Int
+
+  # A list of the IDs of tags that have this tag as their parent in the tag hierarchy, in the user-defined order
+  subTagIds: [ID]!
 
   # A paged list of tags that have this tag as their parent in the tag hierarchy. Currently only three levels are supported.
   subTags(after: ConnectionCursor, before: ConnectionCursor, first: ConnectionLimitInt, last: ConnectionLimitInt, sortOrder: SortOrder = asc, sortBy: TagSortByField = position): TagConnection
@@ -44,7 +44,6 @@ type Tag implements Node & Deletable {
 enum TagSortByField {
   _id
   createdAt
-  deletedAt
   name
   position
   updatedAt
@@ -65,9 +64,25 @@ type TagConnection implements NodeConnection {
 }
 
 extend type Query {
-  # Returns a paged list of tags for a shop. You must include a shopId when querying, and you may also limit to only top-level tags.
-  #
-  # Typically, to get a list of all tags for a shop, you will query with \`isTopLevel: true\` and request two levels of \`subTags\` within that.
-  tags(shopId: ID!, isTopLevel: Boolean, after: ConnectionCursor, before: ConnectionCursor, first: ConnectionLimitInt, last: ConnectionLimitInt, sortOrder: SortOrder = asc, sortBy: TagSortByField = position): TagConnection
+  # Returns a paged list of tags for a shop. You must include a shopId when querying.
+  tags(
+    # Only tags associated with this shop will be returned
+    shopId: ID!,
+
+    "If set, the query will return only top-level tags or only non-top-level tags. By default, both types of tags are returned."
+    isTopLevel: Boolean,
+
+    "Set to true if you want soft deleted tags to be included in the response"
+    includeDeleted: Boolean = false,
+
+    after: ConnectionCursor,
+    before: ConnectionCursor,
+    first: ConnectionLimitInt,
+    last: ConnectionLimitInt,
+    sortOrder: SortOrder = asc,
+
+    "By default, tags are sorted by position. Set this to sort by one of the other allowed fields"
+    sortBy: TagSortByField = position
+  ): TagConnection
 }
 `;

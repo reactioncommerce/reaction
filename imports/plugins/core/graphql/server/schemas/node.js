@@ -20,9 +20,6 @@ export const typeDefs = `
 
   # Objects implementing the \`Deletable\` support soft deletion
   interface Deletable {
-    # The date and time at which the object was soft deleted. This will be set if \`isDeleted\` is \`true\`.
-    deletedAt: DateTime
-
     # If \`true\`, this object should be considered deleted. Soft deleted objects are not
     # returned in query results unless you explicitly ask for them.
     isDeleted: Boolean!
