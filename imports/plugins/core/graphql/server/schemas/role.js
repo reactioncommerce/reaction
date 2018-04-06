@@ -8,7 +8,10 @@ export const typeDefs = `
 
   # Represents a named role
   type Role implements Node {
+    # The role ID
     _id: ID!
+
+    # A unique name for the role
     name: String!
   }
 
@@ -27,6 +30,7 @@ export const typeDefs = `
   }
 
   extend type Query {
+    # Returns a paged list of all roles associated with a shop
     roles(shopId: ID!, after: ConnectionCursor, before: ConnectionCursor, first: ConnectionLimitInt, last: ConnectionLimitInt, sortOrder: SortOrder = asc, sortBy: RoleSortByField = name): RoleConnection
   }
 `;
