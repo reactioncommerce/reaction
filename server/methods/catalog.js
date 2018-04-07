@@ -677,16 +677,38 @@ Meteor.methods({
     // out if nothing to delete
     if (!Array.isArray(toDelete) || toDelete.length === 0) return false;
 
-    // Flag the variant and all its children as deleted in Revisions collection.
-    toDelete.forEach((product) => {
-      Hooks.Events.run("beforeRemoveCatalogProduct", product, { userId: this.userId });
-      Hooks.Events.run("afterRemoveCatalogProduct", this.userId, product);
-    });
+    if (RevisionApi.isRevisionControlEnabled()) {
+      // Flag the variant and all its children as deleted in Revisions collection.
+      // eslint-disable-next-line no-shadow
+      toDelete.forEach((variant) => {
+        Hooks.Events.run("beforeRemoveCatalogProduct", variant, { userId: this.userId });
+        Hooks.Events.run("afterRemoveCatalogProduct", this.userId, variant);
+      });
+    } else {
+      // eslint-disable-next-line no-shadow
+      toDelete.forEach((variant) => {
+        Products.update({
+          _id: variant._id
+        }, {
+          $set: {
+            isDeleted: true
+          }
+        }, {
+          bypassCollection2: true,
+          publish: true
+        });
+      });
+    }
 
     // After variant was removed from product, we need to recalculate all
     // denormalized fields
     const productId = toDelete[0].ancestors[0];
     toDenormalize.forEach((field) => denormalize(productId, field));
+
+    if (!RevisionApi.isRevisionControlEnabled()) {
+      // Publish variants that have been marked as deleted immediately.
+      publishProductsToCatalog(productId);
+    }
 
     Logger.debug(`Flagged variant and all its children as deleted.`);
 
@@ -959,6 +981,10 @@ Meteor.methods({
         },
         isDeleted: true
       }).count();
+
+      // Publish products that have been marked as deleted immediately.
+      const products = productsWithVariants.filter((doc) => doc.type === "simple").map((doc) => doc._id);
+      publishProductsToCatalog(products);
     }
 
     if (numFlaggedAsDeleted > 0) {
@@ -975,12 +1001,6 @@ Meteor.methods({
           "metadata.isDeleted": true
         }
       });
-    }
-
-    if (!RevisionApi.isRevisionControlEnabled()) {
-      // Publish products that have been marked as deleted immediately.
-      const products = productsWithVariants.filter((doc) => doc.type === "simple").map((doc) => doc._id);
-      publishProductsToCatalog(products);
     }
 
     Logger.debug(`${numFlaggedAsDeleted} products have been flagged as deleted`);
@@ -1067,12 +1087,20 @@ Meteor.methods({
     // meaning the update went past revision control,
     // denormalize and attach results to top-level product
     if (result === 1) {
-      if (type === "simple" && !RevisionApi.isRevisionControlEnabled()) {
-        // Publish product changes immediately.
-        publishProductsToCatalog(_id);
-      }
       if (type === "variant" && toDenormalize.indexOf(field) >= 0) {
         denormalize(doc.ancestors[0], field);
+      }
+      if (!RevisionApi.isRevisionControlEnabled()) {
+        let productId;
+        if (type === "variant") {
+          [productId] = doc.ancestors;
+        } else if (type === "simple") {
+          productId = _id;
+        }
+        if (productId) {
+          // Publish product changes immediately.
+          publishProductsToCatalog(productId);
+        }
       }
     }
     return result;
