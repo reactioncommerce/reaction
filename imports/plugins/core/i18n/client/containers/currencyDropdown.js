@@ -11,7 +11,7 @@ const handlers = {
     const currency = value.split(" ");
     const currencyName = currency[0];
     // update Accounts with the selected currency
-    Meteor.call("accounts/setProfileCurrency", Meteor.userId(), currencyName);
+    Meteor.call("accounts/setProfileCurrency", currencyName);
 
     const cart = Cart.findOne({ userId: Meteor.userId() });
 

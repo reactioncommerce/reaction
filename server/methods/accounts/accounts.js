@@ -1064,28 +1064,32 @@ export function createFallbackLoginToken() {
  * @name accounts/setProfileCurrency
  * @memberof Methods/Accounts
  * @method
- * @param {String} accountId - accountId of user to set currency of
  * @param {String} currencyName - currency symbol to add to user profile
+ * @param {String} [accountId] - accountId of user to set currency of. Defaults to current user ID
  * @summary Sets users profile currency
  */
-export function setProfileCurrency(accountId, currencyName) {
-  check(accountId, String);
+export function setProfileCurrency(currencyName, accountId) {
   check(currencyName, String);
+  check(accountId, Match.Maybe(String));
 
   const userId = accountId || this.userId;
-  if (userId) {
-    Accounts.update(userId, { $set: { "profile.currency": currencyName } });
-    Hooks.Events.run("afterAccountsUpdate", userId, {
-      accountId: userId,
-      updatedFields: ["currency"]
-    });
+  if (!userId) throw new Meteor.Error("access-denied", "You must be logged in to set your profile currency");
 
-    const updatedAccount = Accounts.findOne({
-      _id: userId
-    });
+  const account = Accounts.findOne({ userId }, { fields: { shopId: 1 } });
 
-    return updatedAccount;
+  if (!account) throw new Meteor.Error("not-found", "Account not found");
+
+  if (!Reaction.hasPermission("reaction-accounts", Meteor.userId(), account.shopId)) {
+    throw new Meteor.Error("access-denied", "Access denied");
   }
+
+  Accounts.update({ userId }, { $set: { "profile.currency": currencyName } });
+  Hooks.Events.run("afterAccountsUpdate", userId, {
+    accountId: account._id,
+    updatedFields: ["currency"]
+  });
+
+  return Accounts.findOne({ userId });
 }
 
 /**
