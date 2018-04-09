@@ -5,7 +5,7 @@ export default function optimizeIdOnly(_id, info, queryFunc) {
 
   // If only the _id was requested, we already have that. Save a DB call.
   if (topLevelFields.length === 1 && topLevelFields[0] === "_id") {
-    return () => ({ _id });
+    return () => Promise.resolve({ _id });
   }
 
   return queryFunc;

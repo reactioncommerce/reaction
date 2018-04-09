@@ -1,12 +1,13 @@
 ##############################################################################
 # meteor-dev stage - builds image for dev and used with docker-compose.yml
 ##############################################################################
-FROM reactioncommerce/base:v4.0.1 as meteor-dev
+FROM reactioncommerce/base:v4.0.2 as meteor-dev
 
 LABEL maintainer="Reaction Commerce <architecture@reactioncommerce.com>"
 
 ENV PATH $PATH:/home/node/.meteor
 
+COPY --chown=node package-lock.json $APP_SOURCE_DIR/
 COPY --chown=node package.json $APP_SOURCE_DIR/
 
 RUN meteor npm install

@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 export const typeDefs = `
   # The fields by which you are allowed to sort any query that returns an \`GroupConnection\`
   enum GroupSortByField {
@@ -9,9 +10,16 @@ export const typeDefs = `
 
   # A group definition
   input GroupInput {
+    # A free text description of this group
     description: String
+
+    # A unique name for the group
     name: String!
+
+    # A list of the account permissions implied by membership in this group
     permissions: [String]
+
+    # A unique URL-safe string representing this group
     slug: String!
   }
 
@@ -77,14 +85,31 @@ export const typeDefs = `
 
   # Represents an account group
   type Group implements Node {
+    # The group ID
     _id: ID!
+
+    # The date and time at which this group was created
     createdAt: DateTime!
+
+    # The account that created this group
     createdBy: Account
+
+    # A free text description of this group
     description: String
+
+    # A unique name for the group
     name: String!
+
+    # A list of the account permissions implied by membership in this group
     permissions: [String]
+
+    # The shop to which this group belongs
     shop: Shop
+
+    # A unique URL-safe string representing this group
     slug: String!
+
+    # The date and time at which this group was last updated
     updatedAt: DateTime!
   }
 
@@ -148,16 +173,26 @@ export const typeDefs = `
   }
 
   extend type Mutation {
+    # Add an account to a group
     addAccountToGroup(input: AddAccountToGroupInput!): AddAccountToGroupPayload
+
+    # Create a new permission group
     createGroup(input: CreateGroupInput!): CreateGroupPayload
+
+    # Update an existing permission group
     updateGroup(input: UpdateGroupInput!): UpdateGroupPayload
+
+    # Remove an account from a group
     removeAccountFromGroup(input: RemoveAccountFromGroupInput!): RemoveAccountFromGroupPayload
+
+    # Remove an existing permission group
     removeGroup(input: RemoveGroupInput!): RemoveGroupPayload
   }
 
   extend type Query {
     # Returns a single group by ID.
     group(id: ID!): Group
+
     # Returns a list of groups for the shop with ID \`shopId\`, as a Relay-compatible connection.
     groups(shopId: ID!, after: ConnectionCursor, before: ConnectionCursor, first: ConnectionLimitInt, last: ConnectionLimitInt, sortOrder: SortOrder = asc, sortBy: GroupSortByField = createdAt): GroupConnection
   }

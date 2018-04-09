@@ -22,8 +22,8 @@ export const typeDefs = `
 
   # Defines a new Address and the account to which it should be added
   input AddAccountAddressBookEntryInput {
-    # The account ID, which defaults to the viewer account
-    accountId: ID
+    # The account ID
+    accountId: ID!
 
     # The address to add
     address: AddressInput!
@@ -34,8 +34,8 @@ export const typeDefs = `
 
   # Describes changes that should be applied to one of the addresses for an account
   input UpdateAccountAddressBookEntryInput {
-    # The account ID, which defaults to the viewer account
-    accountId: ID
+    # The account ID
+    accountId: ID!
 
     # The address ID
     addressId: ID!
@@ -52,8 +52,8 @@ export const typeDefs = `
 
   # Describes which address should be removed from which account
   input RemoveAccountAddressBookEntryInput {
-    # The account ID, which defaults to the viewer account
-    accountId: ID
+    # The account ID
+    accountId: ID!
 
     # The address ID
     addressId: ID!
@@ -117,24 +117,52 @@ export const typeDefs = `
 
   # Per-account tax exemption settings used by the Avalara plugin
   type TaxSettings {
+    # Exemption number for an account
     exemptionNo: String
+
+    # Customer usage type. A value matching the \`code\` field of one TaxEntityCode, or any custom string.
     customerUsageType: String
   }
 
   # Represents a single user account
   type Account implements Node {
+    # The account ID
     _id: ID!
+
+    # A list of physical or mailing addresses associated with this account
     addressBook(after: ConnectionCursor, before: ConnectionCursor, first: ConnectionLimitInt, last: ConnectionLimitInt): AddressConnection
+
+    # The date and time at which this account was created
     createdAt: DateTime!
+
+    # The preferred currency used by this account
     currency: Currency
+
+    # A list of email records associated with this account
     emailRecords: [EmailRecord]
-    groups(after: ConnectionCursor, before: ConnectionCursor, first: ConnectionLimitInt, last: ConnectionLimitInt): GroupConnection
+
+    # A paged list of the permission groups in which this account is listed
+    groups(after: ConnectionCursor, before: ConnectionCursor, first: ConnectionLimitInt, last: ConnectionLimitInt, sortOrder: SortOrder = asc, sortBy: GroupSortByField = createdAt): GroupConnection
+
+    # Arbitrary additional metadata about this account
     metafields: [Metafield]
+
+    # The full name of the person this account represents, if known
     name: String
+
+    # Some note about this account
     note: String
+
+    # An object storing plugin-specific preferences for this account
     preferences: JSONObject
+
+    # The shop to which this account belongs, if it is associated with a specific shop
     shop: Shop
+
+    # Per-account tax exemption settings used by the Avalara plugin
     taxSettings: TaxSettings
+
+    # The date and time at which this account was last updated
     updatedAt: DateTime!
   }
 
@@ -175,8 +203,8 @@ export const typeDefs = `
 
   # The response from the \`removeAccountAddressBookEntry\` mutation
   type RemoveAccountAddressBookEntryPayload {
-    # The account, with updated \`addressBook\`
-    account: Account
+    # The removed address
+    address: Address
 
     # The same string you sent with the mutation params, for matching mutation calls with their responses
     clientMutationId: String
@@ -185,15 +213,6 @@ export const typeDefs = `
   # The response from the \`removeAccountEmailRecord\` mutation
   type RemoveAccountEmailRecordPayload {
     # The account, with updated \`emailRecords\`
-    account: Account
-
-    # The same string you sent with the mutation params, for matching mutation calls with their responses
-    clientMutationId: String
-  }
-
-  # The response from the \`updateAccount\` mutation
-  type UpdateAccountPayload {
-    # The updated account
     account: Account
 
     # The same string you sent with the mutation params, for matching mutation calls with their responses
@@ -219,14 +238,22 @@ export const typeDefs = `
   }
 
   extend type Mutation {
-    # Provide the ID of an \`Account\` and an \`AddressInput\` object. The address will be added to the \`addressBook\`
-    # of that account, and the added \`Address\` object is returned.
+    # Add a new address to the \`addressBook\` field for an account
     addAccountAddressBookEntry(input: AddAccountAddressBookEntryInput!): AddAccountAddressBookEntryPayload
+
+    # Add an email address to an account
     addAccountEmailRecord(input: AddAccountEmailRecordInput!): AddAccountEmailRecordPayload
+
+    # Remove an address from the \`addressBook\` field for an account
     removeAccountAddressBookEntry(input: RemoveAccountAddressBookEntryInput!): RemoveAccountAddressBookEntryPayload
+
+    # Remove an email address from an account
     removeAccountEmailRecord(input: RemoveAccountEmailRecordInput!): RemoveAccountEmailRecordPayload
+
+    # Set the preferred currency for an account
     setAccountProfileCurrency(input: SetAccountProfileCurrencyInput!): SetAccountProfileCurrencyPayload
-    updateAccount(input: UpdateAccountInput!): UpdateAccountPayload
+
+    # Remove an address that exists in the \`addressBook\` field for an account
     updateAccountAddressBookEntry(input: UpdateAccountAddressBookEntryInput!): UpdateAccountAddressBookEntryPayload
   }
 
