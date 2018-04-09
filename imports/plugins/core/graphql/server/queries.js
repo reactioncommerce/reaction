@@ -8,10 +8,6 @@ export default {
   groups: groupsQuery,
   roles: rolesQuery,
   shopAdministrators: shopAdministratorsQuery,
-  shopById(context, _id) {
-    return {
-      _id
-    };
-  },
+  shopById: (context, _id) => context.collections.Shops.findOne({ _id }),
   userAccount: userAccountQuery
 };

@@ -16,7 +16,6 @@ test("calls queries.userAccount and returns the requested user", async () => {
   expect(user).toEqual({
     _id: "cmVhY3Rpb24vYWNjb3VudDoxMjM=",
     addressBook: null,
-    currency: null,
     name: "Reaction",
     preferences: null
   });

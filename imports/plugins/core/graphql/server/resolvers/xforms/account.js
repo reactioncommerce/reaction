@@ -22,11 +22,6 @@ export const mergeAddressBookFromProfile = (item) => {
   return assoc("addressBook", value, item);
 };
 
-export const mergeCurrencyFromProfile = (item) => {
-  const value = pathOr(null, ["profile", "currency"], item);
-  return assoc("currency", value, item);
-};
-
 export const mergePreferencesFromProfile = (item) => {
   const value = pathOr(null, ["profile", "preferences"], item);
   return assoc("preferences", value, item);
@@ -40,10 +35,8 @@ export const xformAccountResponse = pipe(
   dissoc("state"),
   dissoc("username"),
   mergeAddressBookFromProfile,
-  mergeCurrencyFromProfile,
   mergePreferencesFromProfile,
-  renameKeys({ emails: "emailRecords" }),
-  dissoc("profile")
+  renameKeys({ emails: "emailRecords" })
 );
 
 export const xformAccountInput = pipe(

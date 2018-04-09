@@ -1083,6 +1083,13 @@ export function setProfileCurrency(currencyName, accountId) {
     throw new Meteor.Error("access-denied", "Access denied");
   }
 
+  // Make sure this currency code is in the related shop currencies list
+  const shop = Shops.findOne({ _id: account.shopId }, { fields: { currencies: 1 } });
+
+  if (!shop || !shop.currencies || !shop.currencies[currencyName]) {
+    throw new Meteor.Error("invalid-argument", `The shop for this account does not define any currency with code "${currencyName}"`);
+  }
+
   Accounts.update({ userId }, { $set: { "profile.currency": currencyName } });
   Hooks.Events.run("afterAccountsUpdate", userId, {
     accountId: account._id,

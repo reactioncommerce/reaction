@@ -1,5 +1,4 @@
 import { decodeAccountOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/account";
-import { getXformedCurrencyByCode } from "@reactioncommerce/reaction-graphql-xforms/currency";
 
 /**
  * @name setAccountProfileCurrency
@@ -16,15 +15,10 @@ import { getXformedCurrencyByCode } from "@reactioncommerce/reaction-graphql-xfo
 export default function setAccountProfileCurrency(_, { input }, context) {
   const { accountId, currencyCode, clientMutationId = null } = input;
   const dbAccountId = decodeAccountOpaqueId(accountId);
-  const updatedProfile = context.methods["accounts/setProfileCurrency"](context, [dbAccountId, currencyCode]);
-
-  const userCurrency = getXformedCurrencyByCode(updatedProfile && updatedProfile.profile && updatedProfile.profile.currency);
+  const updatedAccount = context.methods["accounts/setProfileCurrency"](context, [currencyCode, dbAccountId]);
 
   return {
-    account: {
-      currency: userCurrency,
-      ...updatedProfile
-    },
+    account: updatedAccount,
     clientMutationId
   };
 }
