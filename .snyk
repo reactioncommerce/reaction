@@ -6,33 +6,63 @@ ignore:
     - nexmo > jsonwebtoken > joi > hoek:
         reason: No patch available
         expires: '2018-03-22T04:22:44.834Z'
+      boom > hoek:
+        reason: no fix
+        expires: '2018-05-09T22:07:03.162Z'
     - nexmo > jsonwebtoken > joi > topo > hoek:
         reason: no patch available
         expires: '2018-03-22T04:22:44.834Z'
+      cryptiles > boom > hoek:
+        reason: no fix
+        expires: '2018-05-09T22:07:03.162Z'
     - prerender-node > request > hawk > hoek:
         reason: no patch available
         expires: '2018-03-22T04:22:44.834Z'
+      hawk > hoek:
+        reason: no fix
+        expires: '2018-05-09T22:07:03.162Z'
     - prerender-node > request > hawk > boom > hoek:
         reason: no patch available
         expires: '2018-03-22T04:22:44.834Z'
+      hawk > cryptiles > boom > hoek:
+        reason: no fix
+        expires: '2018-05-09T22:07:03.162Z'
     - prerender-node > request > hawk > sntp > hoek:
         reason: no patch available
         expires: '2018-03-22T04:22:44.834Z'
+      hawk > boom > hoek:
+        reason: no fix
+        expires: '2018-05-09T22:07:03.162Z'
     - prerender-node > request > hawk > cryptiles > boom > hoek:
         reason: no patch available
         expires: '2018-03-22T04:22:44.834Z'
+      hawk > sntp > hoek:
+        reason: no fix
+        expires: '2018-05-09T22:07:03.162Z'
     - jest > jest-cli > jest-haste-map > sane > fsevents > node-pre-gyp > request > hawk > hoek:
         reason: no patch available
         expires: '2018-03-22T04:22:44.834Z'
+      request > hawk > cryptiles > boom > hoek:
+        reason: no fix
+        expires: '2018-05-09T22:07:03.162Z'
     - jest > jest-cli > jest-haste-map > sane > fsevents > node-pre-gyp > request > hawk > boom > hoek:
         reason: no patch availalbe
         expires: '2018-03-22T04:22:44.834Z'
+      request > hawk > boom > hoek:
+        reason: no fix
+        expires: '2018-05-09T22:07:03.162Z'
     - jest > jest-cli > jest-haste-map > sane > fsevents > node-pre-gyp > request > hawk > sntp > hoek:
         reason: no patch available
         expires: '2018-03-22T04:22:44.834Z'
+      request > hawk > hoek:
+        reason: no fix
+        expires: '2018-05-09T22:07:03.162Z'
     - jest > jest-cli > jest-haste-map > sane > fsevents > node-pre-gyp > request > hawk > cryptiles > boom > hoek:
         reason: no patch available
         expires: '2018-03-22T04:22:44.834Z'
+      request > hawk > sntp > hoek:
+        reason: no fix
+        expires: '2018-05-09T22:07:03.162Z'
     - jest > jest-cli > jest-runtime > jest-haste-map > sane > fsevents > node-pre-gyp > request > hawk > hoek:
         reason: no patch available
         expires: '2018-03-22T04:22:44.834Z'
