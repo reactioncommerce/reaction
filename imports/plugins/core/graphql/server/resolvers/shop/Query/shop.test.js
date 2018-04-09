@@ -1,13 +1,21 @@
 import shop from "./shop";
 
-const id = "cmVhY3Rpb24vc2hvcDpXNjRaUWU5UlVNdUFvS3JsaQ==";
+const fakeShopId = "W64ZQe9RUMuAoKrli";
+const opaqueShopId = "cmVhY3Rpb24vc2hvcDpXNjRaUWU5UlVNdUFvS3JsaQ==";
 
-// TODO: This is just a shell for now
-test("returns the shop object", () => {
-  const shopObject = shop(null, { id }, {
-    queries: {
-      shopById: (context, _id) => ({ _id })
-    }
+test("calls queries.shopById and returns the requested shop", async () => {
+  const shopById = jest.fn().mockName("shopById").mockReturnValueOnce(Promise.resolve({
+    _id: fakeShopId,
+    name: "Reaction"
+  }));
+
+  const shopObject = await shop(null, { id: opaqueShopId }, { queries: { shopById } });
+
+  expect(shopObject).toEqual({
+    _id: "cmVhY3Rpb24vc2hvcDpXNjRaUWU5UlVNdUFvS3JsaQ==",
+    name: "Reaction"
   });
-  expect(shopObject._id).toBe(id);
+
+  expect(shopById).toHaveBeenCalled();
+  expect(shopById.mock.calls[0][1]).toBe(fakeShopId);
 });

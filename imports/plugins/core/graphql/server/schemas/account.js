@@ -64,6 +64,9 @@ export const typeDefs = `
 
   # Describes an account profile currency change
   input SetAccountProfileCurrencyInput {
+     # The account ID, which defaults to the viewer account
+    accountId: ID
+
     # An optional string identifying the mutation call, which will be returned in the response payload
     clientMutationId: String
 

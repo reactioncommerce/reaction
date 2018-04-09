@@ -9,6 +9,10 @@ export const typeDefs = `
     # "Administrators" means all linked accounts that have the "admin" role for this shop.
     administrators(after: ConnectionCursor, before: ConnectionCursor, first: ConnectionLimitInt, last: ConnectionLimitInt, sortOrder: SortOrder = asc, sortBy: AccountSortByField = createdAt): AccountConnection
 
+    currencies: [Currency]
+
+    currency: Currency
+
     # Returns a list of groups for this shop, as a Relay-compatible connection.
     groups(after: ConnectionCursor, before: ConnectionCursor, first: ConnectionLimitInt, last: ConnectionLimitInt, sortOrder: SortOrder = asc, sortBy: GroupSortByField = createdAt): GroupConnection
 
