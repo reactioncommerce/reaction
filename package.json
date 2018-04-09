@@ -90,7 +90,6 @@
     "radium": "^0.22.0",
     "ramda": "^0.25.0",
     "react": "16.2.0",
-    "react-addons-create-fragment": "15.6.2",
     "react-addons-pure-render-mixin": "15.6.2",
     "react-addons-shallow-compare": "^15.6.2",
     "react-autosuggest": "^9.3.3",

@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import createFragment from "react-addons-create-fragment";
 import classnames from "classnames/dedupe";
 import { Components, registerComponent } from "@reactioncommerce/reaction-components";
 
@@ -62,7 +61,7 @@ class Button extends Component {
   renderOnStateIcon() {
     if (this.props.onIcon) {
       return (
-        <Components.Icon icon={this.props.onIcon} />
+        <Components.Icon key={"icon"} icon={this.props.onIcon} />
       );
     }
     return null;
@@ -71,7 +70,7 @@ class Button extends Component {
   renderNormalStateIcon() {
     if (this.props.icon) {
       return (
-        <Components.Icon icon={this.props.icon} />
+        <Components.Icon key={"icon"} icon={this.props.icon} />
       );
     }
     return null;
@@ -83,7 +82,6 @@ class Button extends Component {
         return this.renderOnStateIcon();
       }
     }
-
     return this.renderNormalStateIcon();
   }
 
@@ -111,6 +109,7 @@ class Button extends Component {
         if (this.props.toggleOn && this.props.toggleOnLabel) {
           return (
             <Components.Translation
+              key={"label"}
               defaultValue={this.props.toggleOnLabel}
               i18nKey={this.props.i18nKeyToggleOnLabel}
             />
@@ -120,6 +119,7 @@ class Button extends Component {
 
       return (
         <Components.Translation
+          key={"label"}
           defaultValue={this.props.label}
           i18nKey={this.props.i18nKeyLabel}
         />
@@ -127,6 +127,14 @@ class Button extends Component {
     }
 
     return null;
+  }
+
+  renderChildren() {
+    return (
+      <div key={"children"}>
+        {this.props.children}
+      </div>
+    );
   }
 
   render() {
@@ -192,17 +200,17 @@ class Button extends Component {
     let buttonChildren;
 
     if (iconAfter) {
-      buttonChildren = createFragment({
-        label: this.renderLabel(),
-        icon: this.renderIcon(),
-        children: this.props.children
-      });
+      buttonChildren = [
+        this.renderLabel(),
+        this.renderIcon(),
+        this.renderChildren()
+      ];
     } else {
-      buttonChildren = createFragment({
-        icon: this.renderIcon(),
-        label: this.renderLabel(),
-        children: this.props.children
-      });
+      buttonChildren = [
+        this.renderIcon(),
+        this.renderLabel(),
+        this.renderChildren()
+      ];
     }
 
     // Button with tooltip gets some special treatment
