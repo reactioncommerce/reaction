@@ -10,6 +10,7 @@ const mockContext = {
   "Groups",
   "roles",
   "Shops",
+  "Tags",
   "users"
 ].forEach((collectionName) => {
   mockContext.collections[collectionName] = {

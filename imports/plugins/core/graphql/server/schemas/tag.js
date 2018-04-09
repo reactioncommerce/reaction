@@ -73,7 +73,7 @@ extend type Query {
     isTopLevel: Boolean,
 
     "Set to true if you want soft deleted tags to be included in the response"
-    includeDeleted: Boolean = false,
+    shouldIncludeDeleted: Boolean = false,
 
     after: ConnectionCursor,
     before: ConnectionCursor,

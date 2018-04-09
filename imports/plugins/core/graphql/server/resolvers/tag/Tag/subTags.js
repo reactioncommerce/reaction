@@ -5,7 +5,7 @@ import { xformArrayToConnection } from "@reactioncommerce/reaction-graphql-xform
  * Arguments passed by the client for a tags query
  * @typedef {ConnectionArgs} SubTagConnectionArgs - An object of all arguments that were sent by the client
  * @property {ConnectionArgs} args - An object of all arguments that were sent by the client. {@link ConnectionArgs|See default connection arguments}
- * @property {Boolean} args.includeDeleted - If set to true, include deleted. Default false.
+ * @property {Boolean} args.shouldIncludeDeleted - If set to true, include deleted. Default false.
  * @property {Number} args.sortBy - Sort results by a TagSortByField enum value of `_id`, `name`, `position`, `createdAt`, `updatedAt`
  */
 
