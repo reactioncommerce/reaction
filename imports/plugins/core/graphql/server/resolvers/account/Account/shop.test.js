@@ -6,7 +6,19 @@ const fakeUser = {
   shopId: "W64ZQe9RUMuAoKrli" // encoded shopId is: cmVhY3Rpb24vc2hvcDpXNjRaUWU5UlVNdUFvS3JsaQ==
 };
 
-test("returns the shop object from the context", () => {
-  const shopObject = shop(fakeUser);
-  expect(shopObject._id).toBe("cmVhY3Rpb24vc2hvcDpXNjRaUWU5UlVNdUFvS3JsaQ==");
+test("calls queries.shopById and returns the requested shop", async () => {
+  const shopById = jest.fn().mockName("shopById").mockReturnValueOnce(Promise.resolve({
+    _id: fakeUser.shopId,
+    name: "Reaction"
+  }));
+
+  const shopObject = await shop(fakeUser, {}, { queries: { shopById } });
+
+  expect(shopObject).toEqual({
+    _id: "cmVhY3Rpb24vc2hvcDpXNjRaUWU5UlVNdUFvS3JsaQ==",
+    name: "Reaction"
+  });
+
+  expect(shopById).toHaveBeenCalled();
+  expect(shopById.mock.calls[0][1]).toBe(fakeUser.shopId);
 });

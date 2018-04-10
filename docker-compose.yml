@@ -38,8 +38,9 @@ services:
     depends_on:
       - mongo
     environment:
-      ROOT_URL: "http://localhost:3000"
+      METEOR_DISABLE_OPTIMISTIC_CACHING: 1
       MONGO_URL: "mongodb://mongo:27017/reaction"
+      ROOT_URL: "http://localhost:3000"
     networks:
       default:
       reaction-api:

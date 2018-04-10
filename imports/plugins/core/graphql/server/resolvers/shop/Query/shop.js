@@ -1,4 +1,4 @@
-import { pipe } from "ramda";
+import { pipeP } from "ramda";
 import { decodeShopOpaqueId, xformShopResponse } from "@reactioncommerce/reaction-graphql-xforms/shop";
 
 /**
@@ -15,7 +15,7 @@ export default function shop(_, { id }, context) {
   // Transform ID from base64
   const dbShopId = decodeShopOpaqueId(id);
 
-  return pipe(
+  return pipeP(
     context.queries.shopById,
     xformShopResponse
   )(context, dbShopId);

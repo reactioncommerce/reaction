@@ -73,7 +73,30 @@ const expectedResponse = {
   emailRecords: [
     { provides: "default", address: "test@example.com", verified: true }
   ],
+  groups: { type: "GroupConnection" },
+  metafields: [{ type: "Metafield" }],
+  name: "User Name",
+  note: "This is a note.",
+  preferences: { foo: "baz" },
+  profile: {
+    addressBook: { type: "AddressConnection" },
+    currency: { type: "Currency" },
+    preferences: { foo: "baz" }
+  },
+  shop: { type: "Shop" },
+  taxSettings: { type: "TaxSettings" },
+  updatedAt: "2018-03-13T00:00:00Z",
+  user: { type: "User" }
+};
+
+const accountGraphQLInput = {
+  _id: "cmVhY3Rpb24vYWNjb3VudDowMDAwMA==",
+  addressBook: { type: "AddressConnection" },
+  createdAt: "2018-03-13T00:00:00Z",
   currency: { type: "Currency" },
+  emailRecords: [
+    { provides: "default", address: "test@example.com", verified: true }
+  ],
   groups: { type: "GroupConnection" },
   metafields: [{ type: "Metafield" }],
   name: "User Name",
@@ -115,9 +138,9 @@ test("xformAccountResponse can be applied to map with an array of input", () => 
 });
 
 test("xformAccountInput transforms Account schema to internal account", () => {
-  expect(xformAccountInput(expectedResponse)).toEqual(accountInternal);
+  expect(xformAccountInput(accountGraphQLInput)).toEqual(accountInternal);
 });
 
 test("xformAccountInput can be applied to map with an array of input", () => {
-  expect(map(xformAccountInput, [expectedResponse])).toEqual([accountInternal]);
+  expect(map(xformAccountInput, [accountGraphQLInput])).toEqual([accountInternal]);
 });

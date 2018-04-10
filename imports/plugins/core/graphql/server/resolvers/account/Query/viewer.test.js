@@ -18,7 +18,6 @@ test("calls queries.userAccount and returns the viewing user", async () => {
   expect(user).toEqual({
     _id: "cmVhY3Rpb24vYWNjb3VudDoxMjM=",
     addressBook: null,
-    currency: null,
     name: "Reaction",
     preferences: null
   });
@@ -39,7 +38,6 @@ test("returns without calling queries.userAccount if only _id requested", async 
   expect(user).toEqual({
     _id: "cmVhY3Rpb24vYWNjb3VudDoxMjM=",
     addressBook: null,
-    currency: null,
     preferences: null
   });
 
