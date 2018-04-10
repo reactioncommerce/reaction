@@ -3,7 +3,7 @@ import packageJson from "/package.json";
 import _, { merge, uniqWith } from "lodash";
 import { Meteor } from "meteor/meteor";
 import { DDP } from "meteor/ddp-client";
-import { check, Match } from "meteor/check";
+import { check } from "meteor/check";
 import { Random } from "meteor/random";
 import { Accounts } from "meteor/accounts-base";
 import { Roles } from "meteor/alanning:roles";

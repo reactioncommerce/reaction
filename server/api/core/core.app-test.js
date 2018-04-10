@@ -1,9 +1,9 @@
+import { Meteor } from "meteor/meteor";
 import { DDP } from "meteor/ddp-client";
 
 import { expect } from "meteor/practicalmeteor:chai";
 import { sinon } from "meteor/practicalmeteor:sinon";
 import { Shops } from "/lib/collections";
-import { Meteor } from "meteor/meteor";
 
 import core from "./core";
 import ConnectionDataStore from "./connectionDataStore";
