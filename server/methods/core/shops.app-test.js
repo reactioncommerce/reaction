@@ -45,8 +45,13 @@ describe("core shop methods", function () {
   });
 
   describe("shop/createShop", function () {
+    let primaryShop;
+
     beforeEach(function () {
       Shops.remove({});
+
+      primaryShop = Factory.create("shop");
+      sandbox.stub(Reaction, "getPrimaryShop", () => primaryShop);
     });
 
     it("should throw 403 error by non admin", function (done) {
@@ -77,6 +82,31 @@ describe("core shop methods", function () {
       sandbox.stub(Reaction, "getPrimaryShopId", () => shopId);
       Meteor.call("shop/createShop", "12345678", shop);
       const newShopCount = Shops.find({ name: shop.name }).count();
+      expect(newShopCount).to.equal(1);
+    });
+
+    it("creates a new shop for admin for userId and a partial shopObject", function () {
+      // this.timeout(5000);
+      const userId = Random.id();
+      const shopId = Random.id();
+      const partialShop = { name: Random.id() };
+
+      Factory.create("account", { _id: userId, shopId });
+
+      sandbox.stub(Meteor, "user", () => ({
+        userId,
+        emails: [{
+          address: `${userId}@example.com`,
+          provides: "default",
+          verified: true
+        }]
+      }));
+      sandbox.stub(Reaction, "hasPermission", () => true);
+      sandbox.stub(Reaction, "getPrimaryShopId", () => shopId);
+
+      Meteor.call("shop/createShop", userId, partialShop);
+
+      const newShopCount = Shops.find({ name: partialShop.name }).count();
       expect(newShopCount).to.equal(1);
     });
   });

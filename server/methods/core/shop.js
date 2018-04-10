@@ -14,13 +14,11 @@ import * as Schemas from "/lib/collections/schemas";
  * @summary Returns an existing shop object, with some values removed or changed such
  *   that it is suitable for inserting as a new shop.
  * @method
- * @param {String} shopId - the ID of the shop to clone
+ * @param {Object} shop - the shop to clone
  * @param {Object} partialShopData - any properties you'd like to override
  * @return {Object|null} The cloned shop object or null if a shop with that ID can't be found
  */
-function cloneShop(shopId, partialShopData = {}) {
-  const shop = Collections.Shops.findOne({ _id: shopId }) || {};
-
+function cloneShop(shop, partialShopData = {}) {
   // if a name is not provided, generate a unique name
   if (!partialShopData || !partialShopData.name) {
     const count = Collections.Shops.find().count() || "";
@@ -182,7 +180,6 @@ Meteor.methods({
 
     let shopUser = currentUser;
     let shopAccount = currentAccount;
-
     // TODO: Create a grantable permission for creating shops so we can decouple ownership from shop creation
     // Only marketplace owners can create shops for others
     if (hasPrimaryShopOwnerPermission) {
@@ -200,7 +197,7 @@ Meteor.methods({
       );
     }
 
-    const shop = cloneShop(Reaction.getPrimaryShopId(), partialShopData);
+    const shop = cloneShop(Reaction.getPrimaryShop(), partialShopData);
 
     shop.emails = shopUser.emails;
     shop.addressBook = shopAccount.addressBook;
