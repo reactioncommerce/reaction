@@ -3,18 +3,17 @@ import shop from "./shop";
 const fakeShopId = "W64ZQe9RUMuAoKrli";
 const opaqueShopId = "cmVhY3Rpb24vc2hvcDpXNjRaUWU5UlVNdUFvS3JsaQ==";
 
+const fakeShop = {
+  _id: fakeShopId,
+  name: "Reaction"
+};
+
 test("calls queries.shopById and returns the requested shop", async () => {
-  const shopById = jest.fn().mockName("shopById").mockReturnValueOnce(Promise.resolve({
-    _id: fakeShopId,
-    name: "Reaction"
-  }));
+  const shopById = jest.fn().mockName("shopById").mockReturnValueOnce(Promise.resolve(fakeShop));
 
   const shopObject = await shop(null, { id: opaqueShopId }, { queries: { shopById } });
 
-  expect(shopObject).toEqual({
-    _id: "cmVhY3Rpb24vc2hvcDpXNjRaUWU5UlVNdUFvS3JsaQ==",
-    name: "Reaction"
-  });
+  expect(shopObject).toEqual(fakeShop);
 
   expect(shopById).toHaveBeenCalled();
   expect(shopById.mock.calls[0][1]).toBe(fakeShopId);
