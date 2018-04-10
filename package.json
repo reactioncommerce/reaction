@@ -153,6 +153,7 @@
     "babel-eslint": "^8.2.1",
     "babel-jest": "^22.4.1",
     "babel-plugin-dynamic-import-node": "^1.2.0",
+    "babel-plugin-inline-import": "^2.0.6",
     "babel-plugin-lodash": "^3.3.2",
     "babel-plugin-module-resolver": "^3.1.0",
     "babel-plugin-rewire-exports": "^0.3.0",
@@ -197,6 +198,7 @@
     "plugins": [
       "transform-class-properties",
       "dynamic-import-node",
+      "babel-plugin-inline-import",
       [
         "lodash",
         {
@@ -238,6 +240,7 @@
           "@babel/preset-stage-2"
         ],
         "plugins": [
+          "babel-plugin-inline-import",
           [
             "module-resolver",
             {
@@ -272,6 +275,7 @@
         ],
         "plugins": [
           "rewire-exports",
+          "babel-plugin-inline-import",
           [
             "module-resolver",
             {
