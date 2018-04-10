@@ -1,0 +1,163 @@
+"Represents the minimum and maximum price a product has"
+type PriceRange {
+  range: String!
+  min: Float!
+  max: Float!
+}
+
+"This interface represents the fields that are identical for both Products and Variants"
+interface CatalogProductOrVariant {
+  ancestorIds: [ID]
+  ancestors: [CatalogProductOrVariant]
+  barcode: String
+  compareAtPrice: Float
+  createdAt: DateTime!
+  fulfillmentService: String
+  height: Float
+  isLowQuantity: Boolean
+  isSoldOut: Boolean
+  isVisible: Boolean
+  length: Float
+  lowInventoryWarningThreshold: Int
+  metafields: [Metafield]
+  minOrderQuantity: Int
+  originCountry: String
+  shop: Shop!
+  sku: String
+  taxCode: String
+  taxDescription: String
+  taxable: Boolean
+  title: String
+  updatedAt: DateTime!
+  weight: Float
+  width: Float
+}
+
+type CatalogProduct implements CatalogProductOrVariant & Node & Deletable {
+  _id: ID!
+  ancestorIds: [ID]
+  ancestors: [CatalogProductOrVariant]
+  barcode: String
+  compareAtPrice: Float
+  createdAt: DateTime!
+  description: String
+  facebookMessage: String
+  fulfillmentService: String
+  googlePlusMessage: String
+  height: Float
+  isBackorder: Boolean
+  isDeleted: Boolean!
+  isLowQuantity: Boolean
+  isSoldOut: Boolean
+  isVisible: Boolean
+  length: Float
+  lowInventoryWarningThreshold: Int
+  metafields: [Metafield]
+  metaDescription: String
+  minOrderQuantity: Int
+  originCountry: String
+  pageTitle: String
+  parcel: ShippingParcel
+  pinterestMessage: String
+  price: PriceRange
+  productType: String
+  requiresShipping: Boolean
+  shop: Shop!
+  sku: String
+  slug: String
+  tags: TagConnection
+  taxCode: String
+  taxDescription: String
+  taxable: Boolean
+  title: String
+  twitterMessage: String
+  type: String!
+  updatedAt: DateTime!
+  variants: [CatalogProductVariant]
+  vendor: String
+  weight: Float
+  width: Float
+}
+
+type CatalogProductVariant implements CatalogProductOrVariant & Node & Deletable {
+  _id: ID!
+  ancestorIds: [ID]
+  ancestors: [CatalogProductOrVariant]
+  barcode: String
+  compareAtPrice: Float
+  createdAt: DateTime!
+  fulfillmentService: String
+  height: Float
+  index: Int
+  inventoryManagement: Boolean
+  inventoryPolicy: Boolean
+  inventoryQuantity: Int
+  isDeleted: Boolean!
+  isLowQuantity: Boolean
+  isSoldOut: Boolean
+  isVisible: Boolean
+  length: Float
+  lowInventoryWarningThreshold: Int
+  metafields: [Metafield]
+  minOrderQuantity: Int
+  optionTitle: String
+  originCountry: String
+  price: Float!
+  shop: Shop!
+  sku: String
+  taxCode: String
+  taxDescription: String
+  taxable: Boolean
+  title: String
+  type: String
+  updatedAt: DateTime!
+  weight: Float
+  width: Float
+}
+
+type CatalogItemProduct implements Node {
+  _id: ID!
+  shop: Shop!
+  product: CatalogProduct
+  createdAt: DateTime
+  updatedAt: DateTime
+}
+
+type CatalogItemContent implements Node {
+  _id: ID!
+  shop: Shop!
+  createdAt: DateTime
+  updatedAt: DateTime
+}
+
+union CatalogItem = CatalogItemProduct | CatalogItemContent
+
+type CatalogItemEdge implements NodeEdge {
+  cursor: ConnectionCursor!
+  node: CatalogItem
+}
+
+type CatalogItemConnection implements NodeConnection {
+  edges: [CatalogItemEdge]
+  nodes: [CatalogItem]
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
+type Catalog implements Node {
+  _id: ID!
+  shop: Shop!
+  name: String!
+  createdAt: DateTime
+  updatedAt: DateTime
+}
+
+input CatalogFilter {
+  shopIds: [ID]
+  tags: [String]
+}
+
+extend type Query {
+  "Gets items from a shop catalog"
+  catalogItems(filter: CatalogFilter): CatalogItemConnection
+}
