@@ -112,7 +112,6 @@ describe("core product methods", function () {
       let variants = Products.find({ ancestors: [product._id] }).fetch();
       expect(variants.length).to.equal(1);
       Meteor.call("products/createVariant", product._id);
-      Meteor._sleepForMs(500);
       variants = Products.find({ ancestors: [product._id] }).fetch();
       expect(variants.length).to.equal(2);
       return done();
@@ -129,7 +128,6 @@ describe("core product methods", function () {
       expect(options.length).to.equal(2);
 
       Meteor.call("products/createVariant", variant._id);
-      Meteor._sleepForMs(500);
       options = Products.find({
         ancestors: { $in: [variant._id] }
       }).fetch();
@@ -148,7 +146,6 @@ describe("core product methods", function () {
       expect(variants.length).to.equal(1);
 
       Meteor.call("products/createVariant", product._id, newVariant);
-      Meteor._sleepForMs(500);
       variants = Products.find({ ancestors: [product._id] }).fetch();
       const createdVariant = variants.filter((v) => v._id !== firstVariantId);
       expect(variants.length).to.equal(2);
@@ -926,7 +923,6 @@ describe("core product methods", function () {
       Meteor.call("products/updateVariantsPosition", [
         variant2._id, variant3._id, variant1._id
       ]);
-      Meteor._sleepForMs(500);
       const modifiedVariant1 = Products.findOne(variant1._id);
       const modifiedVariant2 = Products.findOne(variant2._id);
       const modifiedVariant3 = Products.findOne(variant3._id);
@@ -948,7 +944,6 @@ describe("core product methods", function () {
       Meteor.call("products/updateVariantsPosition", [
         variant2._id, variant3._id, variant1._id
       ]);
-      Meteor._sleepForMs(500);
       const modifiedVariantRevision1 = Revisions.findOne({ documentId: variant1._id });
       const modifiedVariantRevision2 = Revisions.findOne({ documentId: variant2._id });
       const modifiedVariantRevision3 = Revisions.findOne({ documentId: variant3._id });
@@ -970,7 +965,6 @@ describe("core product methods", function () {
       Meteor.call("products/updateVariantsPosition", [
         variant2._id, variant3._id, variant1._id
       ]);
-      Meteor._sleepForMs(500);
       Meteor.call("revisions/publish", [
         variant1._id, variant2._id, variant3._id
       ]);
@@ -1053,7 +1047,6 @@ describe("core product methods", function () {
       const { isVisible } = product;
       expect(() => Meteor.call("products/publishProduct", product._id)).to.not.throw(Meteor.Error, /Access Denied/);
       Meteor.call("revisions/publish", product._id);
-      Meteor._sleepForMs(500);
       product = Products.findOne(product._id);
       // We switch the visible state in `products/publishProdct` for revisions
       expect(product.isVisible).to.equal(!isVisible);

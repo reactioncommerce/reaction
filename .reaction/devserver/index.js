@@ -1,8 +1,29 @@
+import { MongoClient } from "mongodb";
 import createApolloServer from "../../imports/plugins/core/graphql/server/createApolloServer";
+import defineCollections from "../../imports/plugins/core/graphql/server/defineCollections";
 import methods from "./methods";
-import queries from "./queries";
+import queries from "../../imports/plugins/core/graphql/server/queries";
 
+const { MONGO_URL } = process.env;
+if (!MONGO_URL) throw new Error("You must set MONGO_URL");
+
+const lastSlash = MONGO_URL.lastIndexOf("/");
+const dbUrl = MONGO_URL.slice(0, lastSlash);
+const dbName = MONGO_URL.slice(lastSlash + 1);
 const PORT = 3030;
+
+let mongoClient;
+let db;
+
+const collections = {};
+
+MongoClient.connect(dbUrl, (error, client) => {
+  if (error) throw error;
+  console.info("Connected to MongoDB");
+  mongoClient = client;
+  db = client.db(dbName);
+  defineCollections(db, collections);
+});
 
 /**
  * This is a server for development of the GraphQL API without needing
@@ -11,11 +32,11 @@ const PORT = 3030;
  */
 const app = createApolloServer({
   context: {
+    collections,
     methods,
     queries
   },
   debug: true,
-  getUserFromToken: () => ({ _id: "123", name: "Fake Person" }),
   graphiql: true
 });
 

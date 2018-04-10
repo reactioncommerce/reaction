@@ -83,7 +83,10 @@ class ChildVariant extends Component {
     if (!media) return null;
 
     return (
-      <Components.MediaItem source={media} />
+      <Components.MediaItem
+        source={media}
+        onClick={this.handleClick}
+      />
     );
   }
 

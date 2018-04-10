@@ -1,4 +1,4 @@
-import { pipe } from "ramda";
+import { pipeP } from "ramda";
 import { decodeGroupOpaqueId, xformGroupResponse } from "@reactioncommerce/reaction-graphql-xforms/group";
 
 /**
@@ -15,7 +15,7 @@ export default function group(_, { id }, context) {
   // Transform ID from base64
   const dbGroupId = decodeGroupOpaqueId(id);
 
-  return pipe(
+  return pipeP(
     context.queries.group,
     xformGroupResponse
   )(context, dbGroupId);
