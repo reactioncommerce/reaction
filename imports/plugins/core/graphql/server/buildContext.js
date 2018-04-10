@@ -1,5 +1,4 @@
-import { curryN } from "ramda";
-import hasPermission from "/imports/plugins/core/accounts/server/no-meteor/hasPermission";
+import { getHasPermissionFunctionForUser } from "/imports/plugins/core/accounts/server/no-meteor/hasPermission";
 import getShopIdForContext from "/imports/plugins/core/accounts/server/no-meteor/getShopIdForContext";
 
 /**
@@ -18,5 +17,5 @@ export default async function buildContext(context, user) {
   context.shopId = await getShopIdForContext(context);
 
   // Add a curried hasPermission tied to the current user (or to no user)
-  context.userHasPermission = curryN(2, hasPermission)(context.user);
+  context.userHasPermission = getHasPermissionFunctionForUser(context.user);
 }

@@ -1,7 +1,7 @@
 import { Meteor } from "meteor/meteor";
 import { WebApp } from "meteor/webapp";
-import createApolloServer from "./createApolloServer";
 import { baseContext } from "./buildMeteorContext";
+import createApolloServer from "./createApolloServer";
 
 const server = createApolloServer({
   context: baseContext,

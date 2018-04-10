@@ -1,0 +1,119 @@
+import { Meteor } from "meteor/meteor";
+import { Random } from "meteor/random";
+import { get } from "lodash";
+
+/**
+ * @name accounts/addressBookAdd
+ * @memberof Mutations/Accounts
+ * @method
+ * @summary Add a new address to an account
+ * @param {Object} context - GraphQL execution context
+ * @param {Object} address - address
+ * @param {String} [accountUserId] - `account.userId` used by admin to edit users
+ * @return {Promise<Object>} with updated address
+ */
+export default async function addressBookAdd(context, address, accountUserId) {
+  const { collections, userHasPermission, userId: userIdFromContext } = context;
+  const { Accounts, Cart, users: Users } = collections;
+
+  const userId = accountUserId || userIdFromContext;
+  const account = await Accounts.findOne({ userId });
+
+  if (!account) throw new Meteor.Error("not-found", "No account found");
+
+  // security, check for admin access. We don't need to check every user call
+  // here because we are calling `Meteor.userId` from within this Method.
+  if (typeof accountUserId === "string" && userIdFromContext !== accountUserId) {
+    if (!userHasPermission("reaction-accounts", account.shopId)) throw new Meteor.Error("access-denied", "Access denied");
+  }
+
+  // required default id
+  if (!address._id) address._id = Random.id();
+
+  // if address got shippment or billing default, we need to update cart
+  // addresses accordingly
+  if (address.isShippingDefault || address.isBillingDefault) {
+    const cart = await Cart.findOne({ userId });
+
+    // If this user has a cart, first set the new shipping or payment address on the cart
+    if (typeof cart === "object") {
+      if (address.isShippingDefault) {
+        // TODO
+        Meteor.call("cart/setShipmentAddress", cart._id, address);
+      }
+      if (address.isBillingDefault) {
+        // TODO
+        Meteor.call("cart/setPaymentAddress", cart._id, address);
+      }
+    }
+
+    // then change the address that has been affected
+    if (address.isShippingDefault) {
+      await Accounts.update({
+        userId,
+        "profile.addressBook.isShippingDefault": true
+      }, {
+        $set: {
+          "profile.addressBook.$.isShippingDefault": false
+        }
+      });
+
+      // TODO
+      Hooks.Events.run("afterAccountsUpdate", userIdFromContext, {
+        accountId: account._id,
+        updatedFields: ["isShippingDefault"]
+      });
+    }
+
+    if (address.isBillingDefault) {
+      await Accounts.update({
+        userId,
+        "profile.addressBook.isBillingDefault": true
+      }, {
+        $set: {
+          "profile.addressBook.$.isBillingDefault": false
+        }
+      });
+
+      // TODO
+      Hooks.Events.run("afterAccountsUpdate", userIdFromContext, {
+        accountId: account._id,
+        updatedFields: ["isBillingDefault"]
+      });
+    }
+  }
+
+  const userUpdateQuery = {
+    $set: {
+      "profile.addressBook": address
+    }
+  };
+  const accountsUpdateQuery = {
+    $set: {
+      userId
+    },
+    $addToSet: {
+      "profile.addressBook": address
+    }
+  };
+
+  if (!account.name || get(account, "profile.addressBook.length", 0) === 0) {
+    userUpdateQuery.$set.name = address.fullName;
+    accountsUpdateQuery.$set.name = address.fullName;
+  }
+
+  await Users.update(userIdFromContext, userUpdateQuery);
+
+  const result = await Accounts.upsert({ userId }, accountsUpdateQuery);
+
+  // If the address update was successful, then return the full updated address
+  if (result.numberAffected === 1) {
+    // Find the account
+    const updatedAccount = await Accounts.findOne({ userId });
+
+    // Pull the updated address and return it
+    return updatedAccount.profile.addressBook.find((updatedAddress) => address._id === updatedAddress._id);
+  }
+
+  throw new Meteor.Error("server-error", "Unable to add address to account");
+}
