@@ -1,4 +1,4 @@
-import { pipe } from "ramda";
+import { pipeP } from "ramda";
 import { xformAccountResponse } from "@reactioncommerce/reaction-graphql-xforms/account";
 import { optimizeIdOnly } from "@reactioncommerce/reaction-graphql-utils";
 
@@ -14,7 +14,7 @@ import { optimizeIdOnly } from "@reactioncommerce/reaction-graphql-utils";
 export default function viewer(_, __, context, info) {
   if (!context.userId) return null;
 
-  return pipe(
+  return pipeP(
     optimizeIdOnly(context.userId, info, context.queries.userAccount),
     xformAccountResponse
   )(context, context.userId);

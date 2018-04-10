@@ -14,7 +14,7 @@ function getErrorFormatter(context = {}) {
         errorId: err.errorId,
         path: err.path,
         userId: (context.user && context.user._id) || null,
-        ...(originalError.eventObj || {})
+        ...(originalError.eventData || {})
       };
 
       Logger.error(eventObj);

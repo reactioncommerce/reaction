@@ -5,4 +5,7 @@ export default {
   "accounts/addressBookUpdate"() {
     return {};
   },
+  "accounts/setProfileCurrency"() {
+    return {};
+  },
 };

@@ -7,6 +7,7 @@ const methods = {};
   "accounts/addressBookRemove",
   "accounts/addressBookUpdate",
   "accounts/inviteShopMember",
+  "accounts/setProfileCurrency",
   "group/addUser",
   "group/removeUser"
 ].forEach((methodName) => {

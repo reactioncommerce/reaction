@@ -17,7 +17,6 @@ Fixtures();
 
 before(function () {
   this.timeout(10000);
-  Meteor._sleepForMs(7000);
 });
 
 describe("Account Meteor method ", function () {
