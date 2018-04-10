@@ -1,4 +1,4 @@
-import { getPaginatedTagsResponse } from "@reactioncommerce/reaction-graphql-xforms/tag";
+import { getPaginatedResponse } from "@reactioncommerce/reaction-graphql-utils";
 import { decodeShopOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/shop";
 
 /**
@@ -24,5 +24,5 @@ export default async function tags({ _id }, connectionArgs, context) {
 
   const query = await context.queries.tags(context, dbShopId, connectionArgs);
 
-  return getPaginatedTagsResponse(query, connectionArgs);
+  return getPaginatedResponse(query, connectionArgs);
 }

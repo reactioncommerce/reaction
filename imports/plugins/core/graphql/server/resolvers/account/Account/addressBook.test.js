@@ -5,17 +5,7 @@ const addressBook = [
   { _id: "456", address1: "456 Sesame St" }
 ];
 
-const testAccount = { addressBook };
-
-const transformedAddressBook = [
-  {
-    _id: "cmVhY3Rpb24vYWRkcmVzczoxMjM=",
-    address1: "123 Main St"
-  }, {
-    _id: "cmVhY3Rpb24vYWRkcmVzczo0NTY=",
-    address1: "456 Sesame St"
-  }
-];
+const testAccount = { profile: { addressBook } };
 
 test("converts the addressBook prop on an account to a connection", async () => {
   const result = await addressBookResolver(testAccount, {});
@@ -23,13 +13,13 @@ test("converts the addressBook prop on an account to a connection", async () => 
     edges: [
       {
         cursor: "YXJyYXljb25uZWN0aW9uOjA=",
-        node: transformedAddressBook[0]
+        node: addressBook[0]
       }, {
         cursor: "YXJyYXljb25uZWN0aW9uOjE=",
-        node: transformedAddressBook[1]
+        node: addressBook[1]
       }
     ],
-    nodes: transformedAddressBook,
+    nodes: addressBook,
     pageInfo: {
       endCursor: "YXJyYXljb25uZWN0aW9uOjE=",
       hasNextPage: false,

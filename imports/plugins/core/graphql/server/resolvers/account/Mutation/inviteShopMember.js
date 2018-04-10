@@ -1,6 +1,5 @@
 import { decodeGroupOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/group";
 import { decodeShopOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/shop";
-import { xformAccountResponse } from "@reactioncommerce/reaction-graphql-xforms/account";
 
 /**
  * @name inviteShopMember
@@ -26,7 +25,7 @@ export default function inviteShopMember(_, { input }, context) {
   };
   const account = context.methods["accounts/inviteShopMember"](context, [options]);
   return {
-    account: xformAccountResponse(account),
+    account,
     clientMutationId
   };
 }

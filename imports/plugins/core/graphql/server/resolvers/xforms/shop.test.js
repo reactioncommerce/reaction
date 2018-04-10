@@ -3,7 +3,6 @@ import {
   assocShopOpaqueId,
   decodeShopOpaqueId,
   encodeShopOpaqueId,
-  xformShopResponse,
   xformShopInput
 } from "./shop";
 
@@ -36,17 +35,6 @@ test("assocShopInternalId transforms the _id on an object from Shop-namespaced o
   };
   expect(assocShopInternalId(input)).toEqual({
     _id: testId,
-    foo: "baz"
-  });
-});
-
-test("xformShopResponse transforms an address to GraphQL schema with opaque IDs", () => {
-  const input = {
-    _id: testId,
-    foo: "baz"
-  };
-  expect(xformShopResponse(input)).toEqual({
-    _id: testOpaqueId,
     foo: "baz"
   });
 });

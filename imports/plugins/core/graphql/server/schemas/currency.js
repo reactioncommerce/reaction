@@ -8,10 +8,10 @@ export const typeDefs = `
     code: String!
     symbol: String!
     format: String!
-    scale: Float
+    scale: Int
     decimal: String
     thousand: String
-    rate: Int
+    rate: Float
   }
 
   # Wraps a list of \`Currencies\`, providing pagination cursors and information.

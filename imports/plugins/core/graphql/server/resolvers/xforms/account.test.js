@@ -4,8 +4,7 @@ import {
   assocAccountOpaqueId,
   decodeAccountOpaqueId,
   encodeAccountOpaqueId,
-  xformAccountInput,
-  xformAccountResponse
+  xformAccountInput
 } from "./account";
 
 const testId = "12345";
@@ -40,54 +39,6 @@ test("assocAccountInternalId transforms the _id on an object from Address-namesp
     foo: "baz"
   });
 });
-
-const accountInput = {
-  _id: "00000",
-  acceptsMarketing: true,
-  createdAt: "2018-03-13T00:00:00Z",
-  emails: [
-    { provides: "default", address: "test@example.com", verified: true }
-  ],
-  groups: { type: "GroupConnection" },
-  metafields: [{ type: "Metafield" }],
-  name: "User Name",
-  note: "This is a note.",
-  profile: {
-    addressBook: { type: "AddressConnection" },
-    currency: { type: "Currency" },
-    preferences: { foo: "baz" }
-  },
-  sessions: ["1", "2", "3"],
-  shop: { type: "Shop" },
-  state: "new",
-  taxSettings: { type: "TaxSettings" },
-  updatedAt: "2018-03-13T00:00:00Z",
-  user: { type: "User" },
-  username: "username"
-};
-
-const expectedResponse = {
-  _id: "cmVhY3Rpb24vYWNjb3VudDowMDAwMA==",
-  addressBook: { type: "AddressConnection" },
-  createdAt: "2018-03-13T00:00:00Z",
-  emailRecords: [
-    { provides: "default", address: "test@example.com", verified: true }
-  ],
-  groups: { type: "GroupConnection" },
-  metafields: [{ type: "Metafield" }],
-  name: "User Name",
-  note: "This is a note.",
-  preferences: { foo: "baz" },
-  profile: {
-    addressBook: { type: "AddressConnection" },
-    currency: { type: "Currency" },
-    preferences: { foo: "baz" }
-  },
-  shop: { type: "Shop" },
-  taxSettings: { type: "TaxSettings" },
-  updatedAt: "2018-03-13T00:00:00Z",
-  user: { type: "User" }
-};
 
 const accountGraphQLInput = {
   _id: "cmVhY3Rpb24vYWNjb3VudDowMDAwMA==",
@@ -128,14 +79,6 @@ const accountInternal = {
   updatedAt: "2018-03-13T00:00:00Z",
   user: { type: "User" }
 };
-
-test("xformAccountResponse transforms internal account to response schema", () => {
-  expect(xformAccountResponse(accountInput)).toEqual(expectedResponse);
-});
-
-test("xformAccountResponse can be applied to map with an array of input", () => {
-  expect(map(xformAccountResponse, [accountInput])).toEqual([expectedResponse]);
-});
 
 test("xformAccountInput transforms Account schema to internal account", () => {
   expect(xformAccountInput(accountGraphQLInput)).toEqual(accountInternal);

@@ -3,7 +3,6 @@ import {
   assocAddressOpaqueId,
   decodeAddressOpaqueId,
   encodeAddressOpaqueId,
-  xformAddressResponse,
   xformAddressInput
 } from "./address";
 
@@ -36,17 +35,6 @@ test("assocAddressInternalId transforms the _id on an object from Address-namesp
   };
   expect(assocAddressInternalId(input)).toEqual({
     _id: testId,
-    foo: "baz"
-  });
-});
-
-test("xformAddressResponse transforms an address to GraphQL schema with opaque IDs", () => {
-  const input = {
-    _id: testId,
-    foo: "baz"
-  };
-  expect(xformAddressResponse(input)).toEqual({
-    _id: testOpaqueId,
     foo: "baz"
   });
 });
