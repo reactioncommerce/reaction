@@ -7,7 +7,7 @@ describe("xformArrayToConnection", () => {
       { _id: "321", name: "far" }
     ];
 
-    const result = await xformArrayToConnection({})(inputArray);
+    const result = await xformArrayToConnection({}, inputArray);
 
     expect(result).toEqual({
       edges: [
@@ -42,7 +42,7 @@ describe("xformArrayToConnection", () => {
       { _id: "321", name: "far" }
     ];
 
-    const result = await xformArrayToConnection({})(Promise.resolve(inputArray));
+    const result = await xformArrayToConnection({}, Promise.resolve(inputArray));
 
     expect(result).toEqual({
       edges: [
@@ -80,7 +80,7 @@ describe("xformArrayToConnection", () => {
     const result = await xformArrayToConnection({
       first: 1,
       after: "YXJyYXljb25uZWN0aW9uOjA="
-    })(Promise.resolve(inputArray));
+    }, Promise.resolve(inputArray));
 
     expect(result).toEqual({
       edges: [
@@ -111,7 +111,7 @@ describe("xformArrayToConnection", () => {
     const result = await xformArrayToConnection({
       last: 1,
       before: "YXJyYXljb25uZWN0aW9uOjE="
-    })(Promise.resolve(inputArray));
+    }, Promise.resolve(inputArray));
 
     expect(result).toEqual({
       edges: [

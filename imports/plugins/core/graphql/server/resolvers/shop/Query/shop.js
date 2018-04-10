@@ -1,5 +1,4 @@
-import { pipeP } from "ramda";
-import { decodeShopOpaqueId, xformShopResponse } from "@reactioncommerce/reaction-graphql-xforms/shop";
+import { decodeShopOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/shop";
 
 /**
  * @name shop
@@ -9,14 +8,10 @@ import { decodeShopOpaqueId, xformShopResponse } from "@reactioncommerce/reactio
  * @param {Object} args - an object of all arguments that were sent by the client
  * @param {String} args.id - ID of shop to query
  * @param {Object} context - an object containing the per-request state
- * @return {Object} user account object
+ * @return {Promise<Object>} user account object
  */
-export default function shop(_, { id }, context) {
-  // Transform ID from base64
+export default async function shop(_, { id }, context) {
   const dbShopId = decodeShopOpaqueId(id);
 
-  return pipeP(
-    context.queries.shopById,
-    xformShopResponse
-  )(context, dbShopId);
+  return context.queries.shopById(context, dbShopId);
 }

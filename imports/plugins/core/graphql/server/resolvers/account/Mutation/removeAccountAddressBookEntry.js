@@ -1,5 +1,5 @@
 import { decodeAccountOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/account";
-import { xformAddressResponse, decodeAddressOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/address";
+import { decodeAddressOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/address";
 
 /**
  * @name removeAccountAddressBookEntry
@@ -19,7 +19,7 @@ export default function removeAccountAddressBookEntry(_, { input }, context) {
   const dbAddressId = decodeAddressOpaqueId(addressId);
   const removedAddress = context.methods["accounts/addressBookRemove"](context, [dbAddressId, dbAccountId]);
   return {
-    address: xformAddressResponse(removedAddress),
+    address: removedAddress,
     clientMutationId
   };
 }

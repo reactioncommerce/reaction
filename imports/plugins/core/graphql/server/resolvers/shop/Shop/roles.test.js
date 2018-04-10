@@ -1,4 +1,3 @@
-import { xformRolesResponse } from "@reactioncommerce/reaction-graphql-xforms/roles";
 import rolesResolver from "./roles";
 import getFakeMongoCursor from "/imports/test-utils/helpers/getFakeMongoCursor";
 
@@ -12,22 +11,20 @@ const mockRoles = [
 
 const mockRolesQuery = getFakeMongoCursor("Tags", mockRoles);
 
-const transformedRoles = mockRoles.map(xformRolesResponse);
-
-test("calls queries.tags and returns a partial connection", async () => {
-  const roles = jest.fn().mockName("roles").mockReturnValueOnce(Promise.resolve(mockRolesQuery));
+test("calls queries.roles and returns a partial connection", async () => {
+  const roles = jest.fn().mockName("queries.roles").mockReturnValueOnce(Promise.resolve(mockRolesQuery));
 
   const result = await rolesResolver({ _id: base64ID }, {}, {
     queries: { roles }
   });
 
   expect(result).toEqual({
-    nodes: transformedRoles,
+    nodes: mockRoles,
     pageInfo: {
-      endCursor: "cmVhY3Rpb24vcm9sZTpjMw==",
+      endCursor: "c3",
       hasNextPage: false,
       hasPreviousPage: false,
-      startCursor: "cmVhY3Rpb24vcm9sZTphMQ=="
+      startCursor: "a1"
     },
     totalCount: 3
   });

@@ -1,5 +1,5 @@
-import { assoc, assocPath, dissoc, pathOr, pipe } from "ramda";
-import { getPaginatedResponse, namespaces } from "@reactioncommerce/reaction-graphql-utils";
+import { assocPath, dissoc, pipe } from "ramda";
+import { namespaces } from "@reactioncommerce/reaction-graphql-utils";
 import { assocInternalId, assocOpaqueId, decodeOpaqueIdForNamespace, encodeOpaqueId } from "./id";
 import { renameKeys } from "./ramda-ext";
 
@@ -17,28 +17,6 @@ export const mergeCurrencyToProfile = (item) =>
 export const mergePreferencesToProfile = (item) =>
   assocPath(["profile", "preferences"], item.preferences, item);
 
-export const mergeAddressBookFromProfile = (item) => {
-  const value = pathOr(null, ["profile", "addressBook"], item);
-  return assoc("addressBook", value, item);
-};
-
-export const mergePreferencesFromProfile = (item) => {
-  const value = pathOr(null, ["profile", "preferences"], item);
-  return assoc("preferences", value, item);
-};
-
-/* Composed function that fully transforms the Account for response. */
-export const xformAccountResponse = pipe(
-  assocAccountOpaqueId,
-  dissoc("acceptsMarketing"),
-  dissoc("sessions"),
-  dissoc("state"),
-  dissoc("username"),
-  mergeAddressBookFromProfile,
-  mergePreferencesFromProfile,
-  renameKeys({ emails: "emailRecords" })
-);
-
 export const xformAccountInput = pipe(
   assocAccountInternalId,
   mergeAddressBookToProfile,
@@ -49,5 +27,3 @@ export const xformAccountInput = pipe(
   dissoc("preferences"),
   renameKeys({ emailRecords: "emails" })
 );
-
-export const getPaginatedAccountResponse = getPaginatedResponse(xformAccountResponse);

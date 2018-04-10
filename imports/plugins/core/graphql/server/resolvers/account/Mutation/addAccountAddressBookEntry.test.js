@@ -1,5 +1,4 @@
 import { encodeAccountOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/account";
-import { encodeAddressOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/address";
 import addAccountAddressBookEntry from "./addAccountAddressBookEntry";
 
 test("correctly passes through to accounts/addressBookAdd method", () => {
@@ -25,7 +24,7 @@ test("correctly passes through to accounts/addressBookAdd method", () => {
   }, context);
 
   expect(result).toEqual({
-    address: { _id: encodeAddressOpaqueId("1"), ...address },
+    address: fakeResult,
     clientMutationId: "clientMutationId"
   });
 });
