@@ -3,7 +3,7 @@
 // meteor modules
 import accounting from "accounting-js";
 import { Meteor } from "meteor/meteor";
-import { check, Match } from "meteor/check";
+import { check } from "meteor/check";
 import { Promise } from "meteor/promise";
 
 import AuthNetAPI from "authorize-net";

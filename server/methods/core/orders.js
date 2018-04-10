@@ -1091,11 +1091,11 @@ export const methods = {
       // check if payment provider supports refunds
       const packageId = paymentMethod.paymentPackageId;
       const settingsKey = paymentMethod.paymentSettingsKey;
-      const package = Packages.findOne({
+      const pkg = Packages.findOne({
         _id: packageId
       });
 
-      const support = _.get(package, `settings[${settingsKey}].support`, []);
+      const support = _.get(pkg, `settings[${settingsKey}].support`, []);
       if (support.includes("Refund")) {
         const processor = paymentMethod.processor.toLowerCase();
         const shopRefunds = Meteor.call(`${processor}/refund/list`, paymentMethod);
