@@ -1,21 +1,20 @@
 import { Meteor } from "meteor/meteor";
-import { Reaction } from "/lib/api";
 
 /**
  * @name rolesQuery
  * @method
  * @summary query the Shops collection, filter over packages, and return available roles data
  * @param {Object} context - an object containing the per-request state
- * @param {String} shopId - id of Shop to query
+ * @param {String} shopId - ID of Shop to query
  * @return {Object} roles object Promise
  */
-export function rolesQuery(context) {
-  const { userId } = context;
+export async function rolesQuery(context) {
+  const { collections, shopId: contextShopId, userHasPermission } = context;
+  const { roles } = collections;
 
-  if (Reaction.hasPermission(["owner", "admin"], userId)) {
-    return Promise.resolve(Meteor.roles.rawCollection().find({}));
+  if (!userHasPermission(["owner", "admin"], contextShopId)) {
+    throw new Meteor.Error("access-denied", "User does not have permissions to view roles");
   }
 
-  // If user doesn't have permission, throw an error
-  throw new Meteor.Error("access-denied", "User does not have permissions to view roles");
+  return roles.find({});
 }

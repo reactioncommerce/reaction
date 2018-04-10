@@ -31,7 +31,12 @@ export default async function applyBeforeAfterToFilter({
 
   // "encodedId" is encoded twice. At this point the cursor has already been decoded
   // but we are still left with an encoded ID, which we'll now decode.
-  const internalId = decodeOpaqueId(encodedId).id;
+  let internalId;
+  if (encodedId.endsWith("=")) {
+    internalId = decodeOpaqueId(encodedId).id;
+  } else {
+    internalId = encodedId; // it was only encoded once
+  }
 
   if (sortByField === "_id") {
     // We already have _id. Skip the lookup

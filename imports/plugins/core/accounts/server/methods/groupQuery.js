@@ -1,6 +1,4 @@
 import { Meteor } from "meteor/meteor";
-import { Accounts, Groups } from "/lib/collections";
-import { Reaction } from "/lib/api";
 
 /**
  * @name groupQuery
@@ -10,64 +8,65 @@ import { Reaction } from "/lib/api";
  * @param {String} id - id of group to query
  * @return {Object} group object
  */
-export function groupQuery(context, id) {
-  const { userId } = context;
+export async function groupQuery(context, id) {
+  const { collections, userHasPermission, userId } = context;
+  const { Accounts, Groups } = collections;
 
-  // If the user is an has sufficient permissions, then allow them to find any group by id
-  if (Reaction.hasPermission(["owner", "admin", "reaction-accounts"], userId)) {
-    // find groups by shop ID
-    return Groups.findOne({
-      _id: id
-    });
-  }
+  const group = await Groups.findOne({ _id: id });
+  if (!group) throw new Meteor.Error("not-found", "There is no group with this ID");
+
+  // If the user has sufficient permissions, then allow them to find any group by ID
+  if (userHasPermission(["owner", "admin", "reaction-accounts"], group.shopId)) return group;
 
   // Otherwise, only let users see groups that they are members of
-  const userAccount = Accounts.findOne({
+  const userAccount = await Accounts.findOne({
     _id: userId,
-    groups: {
-      $in: [id]
+    groups: id
+  }, {
+    projection: {
+      _id: 1
     }
   });
 
-  if (userAccount) {
-    // Query the groups collection to find a group by `id`
-    return Groups.findOne({
-      _id: id
-    });
-  }
-
   // If user is not found, throw an error
-  throw new Meteor.Error("access-denied", "User does not have permissions to view group");
+  if (!userAccount) throw new Meteor.Error("access-denied", "User does not have permissions to view groups");
+
+  return group;
 }
 
-export function groupsQuery(context, shopId) {
-  const { userId } = context;
+/**
+ * @name groupsQuery
+ * @method
+ * @summary query the Groups collection and return a MongoDB cursor
+ * @param {Object} context - an object containing the per-request state
+ * @param {String} shopId - shop ID to get groups for
+ * @return {Object} Groups collection cursor
+ */
+export async function groupsQuery(context, shopId) {
+  const { collections, userHasPermission, userId } = context;
+  const { Accounts, Groups } = collections;
 
-  if (Reaction.hasPermission(["owner", "admin", "reaction-accounts"], userId)) {
+  if (userHasPermission(["owner", "admin", "reaction-accounts"], shopId)) {
     // find groups by shop ID
-    return Promise.resolve(Groups.rawCollection().find({
-      shopId
-    }));
+    return Groups.find({ shopId });
   }
 
   const userAccount = Accounts.findOne({
     _id: userId
   }, {
-    fields: {
+    projection: {
       groups: 1
     }
   });
 
-  if (userAccount && Array.isArray(userAccount.groups)) {
-    // Query the groups collection to find a group by `id`
-    return Promise.resolve(Groups.rawCollection().find({
-      _id: {
-        $in: userAccount.groups
-      },
-      shopId
-    }));
-  }
-
   // If user is not found, throw an error
-  throw new Meteor.Error("access-denied", "User does not have permissions to view group");
+  if (!userAccount) throw new Meteor.Error("access-denied", "User does not have permissions to view groups");
+
+  // find groups by shop ID limited to those the current user is in
+  return Groups.find({
+    _id: {
+      $in: userAccount.groups || []
+    },
+    shopId
+  });
 }

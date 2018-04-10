@@ -2,15 +2,15 @@ import viewer from "./viewer";
 
 jest.mock("graphql-fields", () => jest.fn().mockName("graphqlFields"));
 
-test("calls queries.userAccount and returns the viewing user", () => {
+test("calls queries.userAccount and returns the viewing user", async () => {
   require("graphql-fields").mockReturnValueOnce({ _id: "1", name: "1" });
 
-  const userAccount = jest.fn().mockName("userAccount").mockReturnValueOnce({
+  const userAccount = jest.fn().mockName("userAccount").mockReturnValueOnce(Promise.resolve({
     _id: "123",
     name: "Reaction"
-  });
+  }));
 
-  const user = viewer(null, null, {
+  const user = await viewer(null, null, {
     queries: { userAccount },
     userId: "123"
   });
@@ -18,7 +18,6 @@ test("calls queries.userAccount and returns the viewing user", () => {
   expect(user).toEqual({
     _id: "cmVhY3Rpb24vYWNjb3VudDoxMjM=",
     addressBook: null,
-    currency: null,
     name: "Reaction",
     preferences: null
   });
@@ -26,12 +25,12 @@ test("calls queries.userAccount and returns the viewing user", () => {
   expect(userAccount).toHaveBeenCalled();
 });
 
-test("returns without calling queries.userAccount if only _id requested", () => {
+test("returns without calling queries.userAccount if only _id requested", async () => {
   require("graphql-fields").mockReturnValueOnce({ _id: "1" });
 
   const userAccount = jest.fn().mockName("userAccount");
 
-  const user = viewer(null, null, {
+  const user = await viewer(null, null, {
     queries: { userAccount },
     userId: "123"
   });
@@ -39,7 +38,6 @@ test("returns without calling queries.userAccount if only _id requested", () => 
   expect(user).toEqual({
     _id: "cmVhY3Rpb24vYWNjb3VudDoxMjM=",
     addressBook: null,
-    currency: null,
     preferences: null
   });
 

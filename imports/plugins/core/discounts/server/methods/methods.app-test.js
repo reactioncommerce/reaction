@@ -48,8 +48,6 @@ describe("discounts methods", function () {
       expect(discountInsertSpy).to.have.been.called;
 
       Meteor.call("discounts/deleteRate", discountId);
-      Meteor._sleepForMs(500);
-
       const discountCount = Discounts.find(discountId).count();
       expect(discountCount).to.equal(0);
       return done();

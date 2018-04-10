@@ -48,6 +48,7 @@
     "deep-diff": "^0.3.8",
     "deep-equal": "^1.0.1",
     "dnd-core": "^2.5.4",
+    "es6-error": "^4.1.1",
     "escape-string-regexp": "^1.0.5",
     "eslint-import-resolver-meteor": "^0.4.0",
     "express": "4.16.2",
@@ -78,6 +79,7 @@
     "meteor-node-stubs": "^0.3.2",
     "moment": "^2.20.1",
     "moment-timezone": "^0.5.14",
+    "mongodb": "^3.0.5",
     "nexmo": "^2.2.0",
     "nock": "^9.1.6",
     "node-fetch": "^2.0.0",
@@ -134,7 +136,7 @@
     "tether-drop": "^1.4.2",
     "tether-tooltip": "^1.2.0",
     "transliteration": "github:reactioncommerce/transliteration",
-    "twilio": "^3.11.2",
+    "twilio": "^3.11.3",
     "url": "^0.11.0",
     "velocity-animate": "^1.5.1",
     "velocity-react": "^1.3.3"
@@ -171,7 +173,7 @@
     "jsdoc": "^3.5.5",
     "nodemon": "^1.17.2",
     "react-addons-test-utils": "15.6.2",
-    "snyk": "^1.70.3"
+    "snyk": "^1.71.0"
   },
   "postcss": {
     "plugins": {

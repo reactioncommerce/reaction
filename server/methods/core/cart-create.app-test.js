@@ -117,7 +117,6 @@ describe("Add/Create cart methods", function () {
       const items = cart.items.length;
       spyOnMethod("addToCart", cart.userId);
       Meteor.call("cart/addToCart", productId, variantId, quantity);
-      Meteor._sleepForMs(500);
       cart = Cart.findOne(cart._id);
       expect(cart.items.length).to.equal(items + 1);
       expect(cart.items[cart.items.length - 1].productId).to.equal(productId);
