@@ -131,9 +131,9 @@ class Button extends Component {
 
   renderChildren() {
     return (
-      <div key={"children"}>
+      <React.Fragment key={"children"}>
         {this.props.children}
-      </div>
+      </React.Fragment>
     );
   }
 
