@@ -1,53 +1,33 @@
-import { expect } from "meteor/practicalmeteor:chai";
-import { sinon } from "meteor/practicalmeteor:sinon";
-
 import { Meteor } from "meteor/meteor";
 
-import main from "./main";
+import { default as main } from "./main";
 
 describe("Client/API/Core", () => {
-  let sandbox;
+  const meteorAbsoluteUrl = "https://www.reactioncommerce.com/";
   let path;
   let connectionHost;
   let rootUrl;
-  let meteorRoolUrl;
 
   beforeEach(() => {
-    sandbox = sinon.sandbox.create();
-
     // commonly used test vars
     path = randomString();
     connectionHost = `${randomString()}.reactioncommerce.com`;
     rootUrl = `https://${randomString()}.reactioncommerce.com`;
-
-    // mocking Meteor
-    meteorRoolUrl = Meteor.absoluteUrl.defaultOptions.rootUrl;
-    // this is a round-about way of mocking $ROOT_URL
-    Meteor.absoluteUrl.defaultOptions.rootUrl = rootUrl;
-  });
-
-  afterEach(() => {
-    sandbox.restore();
-
-    // restore Meteor
-    Meteor.absoluteUrl.defaultOptions.rootUrl = meteorRoolUrl;
   });
 
   describe("#absoluteUrl", () => {
     it("wraps Meteor.absoluteUrl", () => {
       const options = { rootUrl }; // passing rootUrl will skip some internal logic
 
-      const fnMeteorAbsoluteUrl =
-        sandbox.spy(Meteor, "absoluteUrl").withArgs(path, options);
+      spyOn(Meteor, "absoluteUrl").mockImplementation(() => meteorAbsoluteUrl);
+      expect(Meteor.absoluteUrl).toBeCalledWith(path, options);
 
       main.absoluteUrl(path, options);
-
-      expect(fnMeteorAbsoluteUrl).to.have.been.called;
     });
 
     describe("before the domain is set", () => {
       it("defaults to $ROOT_URL", () => {
-        expect(main.absoluteUrl()).to.include(rootUrl);
+        expect(main.absoluteUrl()).toMatch(rootUrl);
       });
     });
 
@@ -64,12 +44,12 @@ describe("Client/API/Core", () => {
       });
 
       it("uses the current connection's host", () => {
-        expect(main.absoluteUrl()).to.include(connectionHost);
+        expect(main.absoluteUrl()).toMatch(connectionHost);
       });
 
       it("uses $ROOT_URL's protocol/scheme", () => {
         // this would he http:// if $ROOT_URL had not used https://
-        expect(main.absoluteUrl()).to.startsWith("https://");
+        expect(main.absoluteUrl()).toMatch(/^https:\/\//);
       });
     });
 
@@ -83,7 +63,7 @@ describe("Client/API/Core", () => {
       const reactionVersion = main.absoluteUrl(options);
       const meteorVersion = Meteor.absoluteUrl(options);
 
-      expect(reactionVersion).to.equal(meteorVersion);
+      expect(reactionVersion).toEqual(meteorVersion);
     });
   });
 
