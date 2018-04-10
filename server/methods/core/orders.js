@@ -1088,9 +1088,19 @@ export const methods = {
     const refunds = [];
     for (const billingRecord of order.billing) {
       const { paymentMethod } = billingRecord;
-      const processor = paymentMethod.processor.toLowerCase();
-      const shopRefunds = Meteor.call(`${processor}/refund/list`, paymentMethod);
-      refunds.push(...shopRefunds);
+      // check if payment provider supports refunds
+      const packageId = paymentMethod.paymentPackageId;
+      const settingsKey = paymentMethod.paymentSettingsKey;
+      const package = Packages.findOne({
+        _id: packageId
+      });
+
+      const support = _.get(package, `settings[${settingsKey}].support`, []);
+      if (support.includes("Refund")) {
+        const processor = paymentMethod.processor.toLowerCase();
+        const shopRefunds = Meteor.call(`${processor}/refund/list`, paymentMethod);
+        refunds.push(...shopRefunds);
+      }
     }
     return refunds;
   },

@@ -37,13 +37,15 @@ export const methods = {
       _id: id
     }, {
       $addToSet: {
-        shopId,
         billing: {
           ...billing,
+          shopId,
           _id: billingId,
           paymentMethod
         }
       }
+    }, {
+      bypassCollection2: true
     });
     // calculate discounts
     Hooks.Events.run("afterCartUpdateCalculateDiscount", id);

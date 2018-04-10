@@ -7,7 +7,8 @@ Reaction.registerPackage({
   autoEnable: true,
   settings: {
     "discount-codes": {
-      enabled: false
+      enabled: false,
+      support: []
     }
   },
   registry: [

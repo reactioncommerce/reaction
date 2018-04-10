@@ -263,12 +263,17 @@ export const methods = {
         return { i18nKeyLabel: "Code is expired", i18nKey: "discounts.codeIsExpired" };
       }
 
+      const packageData = Reaction.getPackageSettings("discount-codes");
+      const packageId = packageData._id;
+
       // save to payment methods
       // and update status in Discounts
       // payment methods can be debit or credit.
       const paymentMethod = {
         id: discount._id,
         processor: discount.discountMethod,
+        paymentSettingsKey: "discount-codes",
+        paymentPackageId: packageId,
         method: discount.calculation.method,
         code: discount.code,
         transactionId: Random.id(),
@@ -277,16 +282,6 @@ export const methods = {
       };
       return Meteor.call("payments/apply", id, paymentMethod, collection);
     }
-  },
-  /**
-   * List all refunds for this payment method
-   * @param {Object} paymentMethod - Object containing everything about the transaction to be settled
-   * @return {Array} results - An array of refund objects for display in admin
-   */
-  "code/refund/list"(paymentMethod) {
-    check(paymentMethod, Object);
-    // discount codes can't be refunded
-    return [];
   }
 };
 
