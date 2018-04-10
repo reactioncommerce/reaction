@@ -43,7 +43,7 @@ jobs:
       # Store node_modules dependency cache.
       # Saved with package.json checksum and timestamped branch name keys.
       - save_cache:
-          key: v1-node-modules-{{ checksum "package.json" }}
+          key: v1-node-modules-{{ checksum "package.json" }}-{{ checksum "package-lock.json" }}
           paths:
             - node_modules
       - save_cache:
@@ -146,7 +146,7 @@ jobs:
       - checkout
       - restore_cache:
           keys:
-            - v1-node-modules-{{ checksum "package.json" }}
+            - v1-node-modules-{{ checksum "package.json" }}-{{ checksum "package-lock.json" }}
             - v1-node-modules-{{ .Branch }}
             - v1-node-modules-master
       - run:
@@ -167,7 +167,7 @@ jobs:
       - restore_cache:
           # Fall back to less specific caches
           keys:
-            - v1-node-modules-{{ checksum "package.json" }}
+            - v1-node-modules-{{ checksum "package.json" }}-{{ checksum "package-lock.json" }}
             - v1-node-modules-{{ .Branch }}
             - v1-node-modules-master
       - run:
@@ -186,7 +186,7 @@ jobs:
       - checkout
       - restore_cache:
           keys:
-            - v1-node-modules-{{ checksum "package.json" }}
+            - v1-node-modules-{{ checksum "package.json" }}-{{ checksum "package-lock.json" }}
             - v1-node-modules-{{ .Branch }}
             - v1-node-modules-master
       - run:
@@ -212,7 +212,7 @@ jobs:
       - setup_remote_docker
       - restore_cache:
           keys:
-            - v1-node-modules-{{ checksum "package.json" }}
+            - v1-node-modules-{{ checksum "package.json" }}-{{ checksum "package-lock.json" }}
             - v1-node-modules-{{ .Branch }}
             - v1-node-modules-master
       - run:
