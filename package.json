@@ -135,7 +135,7 @@
     "tether-drop": "^1.4.2",
     "tether-tooltip": "^1.2.0",
     "transliteration": "github:reactioncommerce/transliteration",
-    "twilio": "^3.11.2",
+    "twilio": "^3.11.3",
     "url": "^0.11.0",
     "velocity-animate": "^1.5.1",
     "velocity-react": "^1.3.3"
@@ -172,7 +172,7 @@
     "jsdoc": "^3.5.5",
     "nodemon": "^1.17.2",
     "react-addons-test-utils": "15.6.2",
-    "snyk": "^1.70.3"
+    "snyk": "^1.71.0"
   },
   "postcss": {
     "plugins": {

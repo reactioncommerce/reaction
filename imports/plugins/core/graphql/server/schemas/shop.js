@@ -18,6 +18,24 @@ export const typeDefs = `
 
     # Returns a list of roles for this shop, as a Relay-compatible connection.
     roles(after: ConnectionCursor, before: ConnectionCursor, first: ConnectionLimitInt, last: ConnectionLimitInt, sortOrder: SortOrder = asc, sortBy: RoleSortByField = name): RoleConnection
+
+    # Returns a paged list of tags for this shop
+    tags(
+      "If set, the query will return only top-level tags or only non-top-level tags. By default, both types of tags are returned."
+      isTopLevel: Boolean,
+
+      "Set to true if you want soft deleted tags to be included in the response"
+      shouldIncludeDeleted: Boolean = false,
+
+      after: ConnectionCursor,
+      before: ConnectionCursor,
+      first: ConnectionLimitInt,
+      last: ConnectionLimitInt,
+      sortOrder: SortOrder = asc,
+
+      "By default, tags are sorted by position. Set this to sort by one of the other allowed fields"
+      sortBy: TagSortByField = position
+    ): TagConnection
   }
 
   # Input parameters for the inviteShopMember mutation
