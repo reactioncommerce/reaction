@@ -1,5 +1,5 @@
 import cuid from "cuid";
-import { Logger } from "./meteor";
+import { Logger } from "./logger";
 
 function getErrorFormatter(context = {}) {
   return (err) => {
