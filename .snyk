@@ -6,63 +6,45 @@ ignore:
     - nexmo > jsonwebtoken > joi > hoek:
         reason: No patch available
         expires: '2018-03-22T04:22:44.834Z'
-      boom > hoek:
-        reason: no fix
-        expires: '2018-05-09T22:07:03.162Z'
+      '@reactioncommerce/logger > node-loggly-bulk > request > hawk > hoek':
+        reason: None given
+        expires: '2018-05-11T20:05:54.341Z'
     - nexmo > jsonwebtoken > joi > topo > hoek:
         reason: no patch available
         expires: '2018-03-22T04:22:44.834Z'
-      cryptiles > boom > hoek:
-        reason: no fix
-        expires: '2018-05-09T22:07:03.162Z'
+      '@reactioncommerce/logger > node-loggly-bulk > request > hawk > boom > hoek':
+        reason: None given
+        expires: '2018-05-11T20:05:54.341Z'
     - prerender-node > request > hawk > hoek:
         reason: no patch available
         expires: '2018-03-22T04:22:44.834Z'
-      hawk > hoek:
-        reason: no fix
-        expires: '2018-05-09T22:07:03.162Z'
+      '@reactioncommerce/logger > node-loggly-bulk > request > hawk > sntp > hoek':
+        reason: None given
+        expires: '2018-05-11T20:05:54.341Z'
     - prerender-node > request > hawk > boom > hoek:
         reason: no patch available
         expires: '2018-03-22T04:22:44.834Z'
-      hawk > cryptiles > boom > hoek:
-        reason: no fix
-        expires: '2018-05-09T22:07:03.162Z'
+      '@reactioncommerce/logger > node-loggly-bulk > request > hawk > cryptiles > boom > hoek':
+        reason: None given
+        expires: '2018-05-11T20:05:54.341Z'
     - prerender-node > request > hawk > sntp > hoek:
         reason: no patch available
         expires: '2018-03-22T04:22:44.834Z'
-      hawk > boom > hoek:
-        reason: no fix
-        expires: '2018-05-09T22:07:03.162Z'
     - prerender-node > request > hawk > cryptiles > boom > hoek:
         reason: no patch available
         expires: '2018-03-22T04:22:44.834Z'
-      hawk > sntp > hoek:
-        reason: no fix
-        expires: '2018-05-09T22:07:03.162Z'
     - jest > jest-cli > jest-haste-map > sane > fsevents > node-pre-gyp > request > hawk > hoek:
         reason: no patch available
         expires: '2018-03-22T04:22:44.834Z'
-      request > hawk > cryptiles > boom > hoek:
-        reason: no fix
-        expires: '2018-05-09T22:07:03.162Z'
     - jest > jest-cli > jest-haste-map > sane > fsevents > node-pre-gyp > request > hawk > boom > hoek:
         reason: no patch availalbe
         expires: '2018-03-22T04:22:44.834Z'
-      request > hawk > boom > hoek:
-        reason: no fix
-        expires: '2018-05-09T22:07:03.162Z'
     - jest > jest-cli > jest-haste-map > sane > fsevents > node-pre-gyp > request > hawk > sntp > hoek:
         reason: no patch available
         expires: '2018-03-22T04:22:44.834Z'
-      request > hawk > hoek:
-        reason: no fix
-        expires: '2018-05-09T22:07:03.162Z'
     - jest > jest-cli > jest-haste-map > sane > fsevents > node-pre-gyp > request > hawk > cryptiles > boom > hoek:
         reason: no patch available
         expires: '2018-03-22T04:22:44.834Z'
-      request > hawk > sntp > hoek:
-        reason: no fix
-        expires: '2018-05-09T22:07:03.162Z'
     - jest > jest-cli > jest-runtime > jest-haste-map > sane > fsevents > node-pre-gyp > request > hawk > hoek:
         reason: no patch available
         expires: '2018-03-22T04:22:44.834Z'
@@ -441,6 +423,36 @@ ignore:
     - '@reactioncommerce/file-collections > tus-node-server > @google-cloud/storage > gcs-resumable-upload > google-auto-auth > gcp-metadata > retry-request > request > hawk > cryptiles > boom > hoek':
         reason: No patch and we do not use this optional package
         expires: '2018-05-05T19:14:36.152Z'
+    - boom > hoek:
+        reason: no fix
+        expires: '2018-05-09T22:07:03.162Z'
+    - cryptiles > boom > hoek:
+        reason: no fix
+        expires: '2018-05-09T22:07:03.162Z'
+    - hawk > hoek:
+        reason: no fix
+        expires: '2018-05-09T22:07:03.162Z'
+    - hawk > cryptiles > boom > hoek:
+        reason: no fix
+        expires: '2018-05-09T22:07:03.162Z'
+    - hawk > boom > hoek:
+        reason: no fix
+        expires: '2018-05-09T22:07:03.162Z'
+    - hawk > sntp > hoek:
+        reason: no fix
+        expires: '2018-05-09T22:07:03.162Z'
+    - request > hawk > cryptiles > boom > hoek:
+        reason: no fix
+        expires: '2018-05-09T22:07:03.162Z'
+    - request > hawk > boom > hoek:
+        reason: no fix
+        expires: '2018-05-09T22:07:03.162Z'
+    - request > hawk > hoek:
+        reason: no fix
+        expires: '2018-05-09T22:07:03.162Z'
+    - request > hawk > sntp > hoek:
+        reason: no fix
+        expires: '2018-05-09T22:07:03.162Z'
   'npm:shelljs:20140723':
     - eslint-config-react-tools > eslint-plugin-class-property > eslint > shelljs:
         reason: no patch available

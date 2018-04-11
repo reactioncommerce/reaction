@@ -24,6 +24,7 @@
     "@reactioncommerce/file-collections-sa-gridfs": "0.0.1",
     "@reactioncommerce/hooks": "^1.0.1",
     "@reactioncommerce/job-queue": "^1.0.4",
+    "@reactioncommerce/logger": "^1.1.1",
     "@reactioncommerce/nodemailer": "^5.0.5",
     "@reactioncommerce/schemas": "^1.1.0",
     "accounting-js": "^1.1.1",
@@ -35,8 +36,6 @@
     "body-parser": "^1.18.2",
     "bootstrap": "^3.3.7",
     "braintree": "^2.7.0",
-    "bunyan": "^2.0.2",
-    "bunyan-format": "^0.2.1",
     "classnames": "^2.2.5",
     "connect": "^3.6.6",
     "connect-query": "^1.0.0",
@@ -85,7 +84,6 @@
     "nock": "^9.1.6",
     "node-fetch": "^2.0.0",
     "node-geocoder": "^3.22.0",
-    "node-loggly-bulk": "^2.2.1",
     "nodemailer-wellknown": "^0.2.3",
     "nouislider-algolia-fork": "^10.0.0",
     "path-to-regexp": "^2.1.0",
@@ -155,6 +153,7 @@
     "babel-eslint": "^8.2.1",
     "babel-jest": "^22.4.1",
     "babel-plugin-dynamic-import-node": "^1.2.0",
+    "babel-plugin-inline-import": "^2.0.6",
     "babel-plugin-lodash": "^3.3.2",
     "babel-plugin-module-resolver": "^3.1.0",
     "babel-plugin-rewire-exports": "^0.3.0",
@@ -199,6 +198,7 @@
     "plugins": [
       "transform-class-properties",
       "dynamic-import-node",
+      "babel-plugin-inline-import",
       [
         "lodash",
         {
@@ -240,6 +240,7 @@
           "@babel/preset-stage-2"
         ],
         "plugins": [
+          "babel-plugin-inline-import",
           [
             "module-resolver",
             {
@@ -274,6 +275,7 @@
         ],
         "plugins": [
           "rewire-exports",
+          "babel-plugin-inline-import",
           [
             "module-resolver",
             {
