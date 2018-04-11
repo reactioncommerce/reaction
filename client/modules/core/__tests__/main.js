@@ -1,69 +1,79 @@
 import { Meteor } from "meteor/meteor";
 
-import { default as main } from "./main";
+import main from "../main";
 
 describe("Client/API/Core", () => {
-  const meteorAbsoluteUrl = "https://www.reactioncommerce.com/";
   let path;
   let connectionHost;
-  let rootUrl;
+  let ROOT_URL;
 
   beforeEach(() => {
     // commonly used test vars
     path = randomString();
     connectionHost = `${randomString()}.reactioncommerce.com`;
-    rootUrl = `https://${randomString()}.reactioncommerce.com`;
+    // mocking $ROOT_URL
+    ROOT_URL = `https://${randomString()}.reactioncommerce.com`;
   });
 
   describe("#absoluteUrl", () => {
-    it("wraps Meteor.absoluteUrl", () => {
-      const options = { rootUrl }; // passing rootUrl will skip some internal logic
-
-      spyOn(Meteor, "absoluteUrl").mockImplementation(() => meteorAbsoluteUrl);
-      expect(Meteor.absoluteUrl).toBeCalledWith(path, options);
-
-      main.absoluteUrl(path, options);
+    beforeEach(() => {
+      if (!Meteor.absoluteUrl.defaultOptions) {
+        Meteor.absoluteUrl.defaultOptions = {};
+      }
+      Meteor.absoluteUrl.defaultOptions.rootUrl = ROOT_URL;
     });
 
     describe("before the domain is set", () => {
-      it("defaults to $ROOT_URL", () => {
-        expect(main.absoluteUrl()).toMatch(rootUrl);
+      it("wraps Meteor.absoluteUrl without parameters", () => {
+        main.absoluteUrl();
+
+        expect(Meteor.absoluteUrl).toBeCalledWith(undefined, {});
+      });
+
+      it("wraps Meteor.absoluteUrl with path only", () => {
+        main.absoluteUrl(path);
+
+        expect(Meteor.absoluteUrl).toBeCalledWith(path, {});
+      });
+
+      it("wraps Meteor.absoluteUrl with options only", () => {
+        const options = { a: 1, b: 2 };
+
+        main.absoluteUrl(options);
+
+        expect(Meteor.absoluteUrl).toBeCalledWith(undefined, options);
+      });
+
+      it("wraps Meteor.absoluteUrl both a path and options", () => {
+        const options = { a: 1, b: 2 };
+
+        main.absoluteUrl(path, options);
+
+        expect(Meteor.absoluteUrl).toBeCalledWith(path, options);
       });
     });
 
     describe("within the domain set", () => {
-      let previousShopDomain;
-
       beforeEach(() => {
-        previousShopDomain = main._shopDomain.get();
         main._shopDomain.set(connectionHost);
-      });
 
-      afterEach(() => {
-        main._shopDomain.set(previousShopDomain);
+        main.absoluteUrl();
       });
 
       it("uses the current connection's host", () => {
-        expect(main.absoluteUrl()).toMatch(connectionHost);
+        expect(Meteor.absoluteUrl)
+          .toBeCalledWith(undefined, expect.objectContaining({
+            rootUrl: expect.stringContaining(connectionHost)
+          }));
       });
 
       it("uses $ROOT_URL's protocol/scheme", () => {
         // this would he http:// if $ROOT_URL had not used https://
-        expect(main.absoluteUrl()).toMatch(/^https:\/\//);
+        expect(Meteor.absoluteUrl)
+          .toBeCalledWith(undefined, expect.objectContaining({
+            rootUrl: expect.stringMatching(/^https:\/\//)
+          }));
       });
-    });
-
-    it("accepts parameters the same way Meteor.absoluteUrl does", () => {
-      const options = {
-        secure: true,
-        replaceLocalhost: true,
-        rootUrl: "http://127.0.0.1"
-      };
-
-      const reactionVersion = main.absoluteUrl(options);
-      const meteorVersion = Meteor.absoluteUrl(options);
-
-      expect(reactionVersion).toEqual(meteorVersion);
     });
   });
 

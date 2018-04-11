@@ -176,6 +176,12 @@ export default {
    * @return {String} URL for the given path and options
    */
   absoluteUrl(path, options) {
+    // path is optional
+    if (!options && typeof path === 'object') {
+      options = path;
+      path = undefined;
+    }
+
     const opts = Object.assign({}, options);
     const hasRootUrl = "rootUrl" in opts;
 

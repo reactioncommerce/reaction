@@ -86,6 +86,12 @@ export default {
    * @param {String} options.rootUrl Override the default ROOT_URL from the server environment. For example: "`http://foo.example.com`"
    */
   absoluteUrl(path, options) {
+    // path is optional
+    if (!options && typeof path === 'object') {
+      options = path;
+      path = undefined;
+    }
+
     const opts = Object.assign({}, options);
     const hasRootUrl = "rootUrl" in opts;
 
