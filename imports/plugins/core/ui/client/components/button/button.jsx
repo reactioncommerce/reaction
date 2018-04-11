@@ -61,7 +61,7 @@ class Button extends Component {
   renderOnStateIcon() {
     if (this.props.onIcon) {
       return (
-        <Components.Icon key={"icon"} icon={this.props.onIcon} />
+        <Components.Icon icon={this.props.onIcon} />
       );
     }
     return null;
@@ -70,7 +70,7 @@ class Button extends Component {
   renderNormalStateIcon() {
     if (this.props.icon) {
       return (
-        <Components.Icon key={"icon"} icon={this.props.icon} />
+        <Components.Icon icon={this.props.icon} />
       );
     }
     return null;
@@ -82,6 +82,7 @@ class Button extends Component {
         return this.renderOnStateIcon();
       }
     }
+
     return this.renderNormalStateIcon();
   }
 
@@ -109,7 +110,6 @@ class Button extends Component {
         if (this.props.toggleOn && this.props.toggleOnLabel) {
           return (
             <Components.Translation
-              key={"label"}
               defaultValue={this.props.toggleOnLabel}
               i18nKey={this.props.i18nKeyToggleOnLabel}
             />
@@ -119,7 +119,6 @@ class Button extends Component {
 
       return (
         <Components.Translation
-          key={"label"}
           defaultValue={this.props.label}
           i18nKey={this.props.i18nKeyLabel}
         />
@@ -129,10 +128,26 @@ class Button extends Component {
     return null;
   }
 
-  renderChildren() {
+  getFragments(iconAfter) {
     return (
-      <React.Fragment key={"children"}>
-        {this.props.children}
+      <React.Fragment>
+        {iconAfter
+          ? <React.Fragment key={"label"}>
+              {this.renderLabel()}
+            </React.Fragment>
+          : <React.Fragment key={"icon"}>
+              {this.renderIcon()}
+            </React.Fragment>}
+        {iconAfter
+          ? <React.Fragment key={"icon"}>
+              {this.renderIcon()}
+            </React.Fragment>
+          : <React.Fragment key={"label"}>
+              {this.renderLabel()}
+            </React.Fragment>}
+        <React.Fragment key={"children"}>
+          {this.props.children}
+        </React.Fragment>
       </React.Fragment>
     );
   }
@@ -195,30 +210,14 @@ class Button extends Component {
       "type": buttonType || "button"
     }, attrs, extraProps);
 
-
-    // Create a react fragment for all the button children
-    let buttonChildren;
-
-    if (iconAfter) {
-      buttonChildren = [
-        this.renderLabel(),
-        this.renderIcon(),
-        this.renderChildren()
-      ];
-    } else {
-      buttonChildren = [
-        this.renderIcon(),
-        this.renderLabel(),
-        this.renderChildren()
-      ];
-    }
-
     // Button with tooltip gets some special treatment
     if (tooltip) {
-      return React.createElement(tagName, buttonProps,
+      return React.createElement(
+        tagName,
+        buttonProps,
         <span className="rui btn-tooltip" style={{ display: "inline-flex", ...containerStyle }}>
           <Components.Tooltip attachment={tooltipAttachment} tooltipContent={this.renderTooltipContent()}>
-            {buttonChildren}
+            {this.getFragments(iconAfter)}
           </Components.Tooltip>
         </span>
       );
@@ -226,15 +225,16 @@ class Button extends Component {
 
     // Add a wrapped container with styles for standard button
     if (containerStyle) {
-      buttonChildren = (
+      return React.createElement(
+        tagName,
+        buttonProps,
         <div style={containerStyle}>
-          {buttonChildren}
-        </div>
-      );
+          {this.getFragments(iconAfter)}
+        </div>);
     }
 
     // Normal button, without tooltip
-    return React.createElement(tagName, buttonProps, buttonChildren);
+    return React.createElement(tagName, buttonProps, this.getFragments(iconAfter));
   }
 }
 
