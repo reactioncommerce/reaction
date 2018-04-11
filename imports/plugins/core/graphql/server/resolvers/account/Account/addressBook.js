@@ -1,5 +1,4 @@
-import { map, pipe } from "ramda";
-import { xformAddressResponse } from "@reactioncommerce/reaction-graphql-xforms/address";
+import { get } from "lodash";
 import { xformArrayToConnection } from "@reactioncommerce/reaction-graphql-xforms/connection";
 
 /**
@@ -7,14 +6,11 @@ import { xformArrayToConnection } from "@reactioncommerce/reaction-graphql-xform
  * @method
  * @summary converts the `addressBook` prop on the provided account to a connection
  * @param {Object} account - result of the parent resolver, which is an Account object in GraphQL schema format
- * @return {Object} The shop having ID account.shopId, in GraphQL schema format
+ * @return {Promise<Object>} A connection object
  */
-export default function addressBook(account, connectionArgs) {
-  const { addressBook: addressList } = account;
+export default async function addressBook(account, connectionArgs) {
+  const addressList = get(account, "profile.addressBook");
   if (!Array.isArray(addressList)) return null;
 
-  return pipe(
-    map(xformAddressResponse),
-    xformArrayToConnection(connectionArgs)
-  )(addressList);
+  return xformArrayToConnection(connectionArgs, addressList);
 }

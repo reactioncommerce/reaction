@@ -1,4 +1,4 @@
-import { getPaginatedTagsResponse } from "@reactioncommerce/reaction-graphql-xforms/tag";
+import { getPaginatedResponse } from "@reactioncommerce/reaction-graphql-utils";
 import { xformArrayToConnection } from "@reactioncommerce/reaction-graphql-xforms/connection";
 
 /**
@@ -19,9 +19,9 @@ import { xformArrayToConnection } from "@reactioncommerce/reaction-graphql-xform
  * @return {Promise<Object[]>} Promise that resolves with array of Tag objects
  */
 export default async function subTags({ relatedTagIds }, connectionArgs, context) {
-  if (!relatedTagIds || relatedTagIds.length === 0) return xformArrayToConnection(connectionArgs)([]);
+  if (!relatedTagIds || relatedTagIds.length === 0) return xformArrayToConnection(connectionArgs, []);
 
   const query = await context.queries.tagsByIds(context, relatedTagIds, connectionArgs);
 
-  return getPaginatedTagsResponse(query, connectionArgs);
+  return getPaginatedResponse(query, connectionArgs);
 }

@@ -27,7 +27,7 @@ test("correctly passes through to group/removeUser method", () => {
   }, context);
 
   expect(result).toEqual({
-    group: { _id: encodeGroupOpaqueId("g1"), ...group },
+    group: fakeResult,
     clientMutationId: "clientMutationId"
   });
 });

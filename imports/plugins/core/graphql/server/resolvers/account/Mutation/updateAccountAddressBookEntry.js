@@ -1,5 +1,5 @@
 import { decodeAccountOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/account";
-import { xformAddressInput, xformAddressResponse } from "@reactioncommerce/reaction-graphql-xforms/address";
+import { xformAddressInput } from "@reactioncommerce/reaction-graphql-xforms/address";
 
 /**
  * @name updateAccountAddressBookEntry
@@ -20,7 +20,7 @@ export default function updateAccountAddressBookEntry(_, { input }, context) {
   const address = xformAddressInput({ ...updates, _id: addressId });
   const updatedAddress = context.methods["accounts/addressBookUpdate"](context, [address, dbAccountId, type]);
   return {
-    address: xformAddressResponse(updatedAddress),
+    address: updatedAddress,
     clientMutationId
   };
 }

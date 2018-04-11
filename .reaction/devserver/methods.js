@@ -6,6 +6,10 @@ export default {
     return {};
   },
   "accounts/setProfileCurrency"() {
-    return {};
+    return {
+      _id: "setProfileCurrency_method_mock",
+      createdAt: new Date(),
+      updatedAt: new Date()
+    };
   },
 };

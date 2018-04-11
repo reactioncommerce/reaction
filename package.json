@@ -22,9 +22,10 @@
     "@babel/runtime": "7.0.0-beta.38",
     "@reactioncommerce/file-collections": "^0.4.5",
     "@reactioncommerce/file-collections-sa-gridfs": "0.0.1",
+    "@reactioncommerce/hooks": "^1.0.1",
     "@reactioncommerce/job-queue": "^1.0.4",
     "@reactioncommerce/nodemailer": "^5.0.5",
-    "@reactioncommerce/schemas": "^1.0.0",
+    "@reactioncommerce/schemas": "^1.1.0",
     "accounting-js": "^1.1.1",
     "apollo-server-core": "1.3.2",
     "apollo-server-express": "1.3.2",
@@ -214,6 +215,7 @@
             "./"
           ],
           "alias": {
+            "@reactioncommerce/reaction-collections": "./imports/plugins/core/collections",
             "@reactioncommerce/reaction-components": "./imports/plugins/core/components/lib",
             "@reactioncommerce/reaction-graphql-utils": "./imports/plugins/core/graphql/server/resolvers/util",
             "@reactioncommerce/reaction-graphql-xforms": "./imports/plugins/core/graphql/server/resolvers/xforms",
@@ -245,6 +247,7 @@
                 "./"
               ],
               "alias": {
+                "@reactioncommerce/reaction-collections": "./imports/plugins/core/collections",
                 "@reactioncommerce/reaction-components": "./imports/plugins/core/components/lib",
                 "@reactioncommerce/reaction-graphql-utils": "./imports/plugins/core/graphql/server/resolvers/util",
                 "@reactioncommerce/reaction-graphql-xforms": "./imports/plugins/core/graphql/server/resolvers/xforms",
@@ -278,6 +281,7 @@
                 "./"
               ],
               "alias": {
+                "@reactioncommerce/reaction-collections": "./imports/plugins/core/collections",
                 "@reactioncommerce/reaction-components": "./imports/plugins/core/components/lib",
                 "@reactioncommerce/reaction-graphql-utils": "./imports/plugins/core/graphql/server/resolvers/util",
                 "@reactioncommerce/reaction-graphql-xforms": "./imports/plugins/core/graphql/server/resolvers/xforms",

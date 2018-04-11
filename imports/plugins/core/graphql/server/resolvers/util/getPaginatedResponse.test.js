@@ -26,22 +26,18 @@ afterAll(() => {
   restore$getMongoSort();
 });
 
-test("curried", () => {
-  expect(typeof getPaginatedResponse((doc) => doc)).toBe("function");
-});
-
 test("calls applyPaginationToMongoCursor with mongo cursor and args", async () => {
-  await getPaginatedResponse(null, mockCursor, mockArgs);
+  await getPaginatedResponse(mockCursor, mockArgs);
   expect(applyPaginationToMongoCursorMock).toHaveBeenCalledWith(mockCursor, mockArgs);
 });
 
 test("calls applyBeforeAfterToFilter with correct args", async () => {
-  await getPaginatedResponse(null, mockCursor, mockArgs);
+  await getPaginatedResponse(mockCursor, mockArgs);
   expect(applyBeforeAfterToFilterMock).toHaveBeenCalledWith({ arg1: "test", baseFilter: baseQuery, collection: "COLLECTION" });
 });
 
 test("calls getMongoSort with correct args", async () => {
-  await getPaginatedResponse(null, mockCursor, mockArgs);
+  await getPaginatedResponse(mockCursor, mockArgs);
   expect(getMongoSortMock).toHaveBeenCalledWith(mockArgs);
 });
 
@@ -50,7 +46,7 @@ test("applies filter and sort and returns correct result", async () => {
   getMongoSortMock.mockReturnValueOnce("SORT");
   applyBeforeAfterToFilterMock.mockReturnValueOnce("FILTER");
   mockCursor.toArray.mockReturnValueOnce(nodes);
-  const result = await getPaginatedResponse(null, mockCursor, mockArgs);
+  const result = await getPaginatedResponse(mockCursor, mockArgs);
   expect(mockCursor.filter).toHaveBeenCalledWith("FILTER");
   expect(mockCursor.sort).toHaveBeenCalledWith("SORT");
   expect(result).toEqual({

@@ -1,10 +1,9 @@
-import { curry } from "ramda";
 import applyBeforeAfterToFilter from "./applyBeforeAfterToFilter";
 import applyPaginationToMongoCursor from "./applyPaginationToMongoCursor";
 import getCollectionFromCursor from "./getCollectionFromCursor";
 import getMongoSort from "./getMongoSort";
 
-const getPaginatedResponse = curry(async (xform, query, args) => {
+const getPaginatedResponse = async (query, args) => {
   const { totalCount, pageInfo } = await applyPaginationToMongoCursor(query, args);
 
   const collection = getCollectionFromCursor(query);
@@ -13,8 +12,7 @@ const getPaginatedResponse = curry(async (xform, query, args) => {
   const updatedFilter = await applyBeforeAfterToFilter({ collection, baseFilter, ...args });
   const sort = getMongoSort(args);
 
-  let nodes = await query.filter(updatedFilter).sort(sort).toArray();
-  if (xform) nodes = nodes.map(xform);
+  const nodes = await query.filter(updatedFilter).sort(sort).toArray();
 
   const count = nodes.length;
   if (count) {
@@ -23,6 +21,6 @@ const getPaginatedResponse = curry(async (xform, query, args) => {
   }
 
   return { nodes, pageInfo, totalCount };
-});
+};
 
 export default getPaginatedResponse;
