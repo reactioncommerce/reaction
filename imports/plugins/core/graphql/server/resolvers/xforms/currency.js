@@ -1,5 +1,12 @@
 import { assoc, compose, map, toPairs } from "ramda";
 import { Meteor } from "meteor/meteor";
+import { namespaces } from "@reactioncommerce/reaction-graphql-utils";
+import { assocInternalId, assocOpaqueId, decodeOpaqueIdForNamespace, encodeOpaqueId } from "./id";
+
+export const assocCurrencyInternalId = assocInternalId(namespaces.Currency);
+export const assocCurrencyOpaqueId = assocOpaqueId(namespaces.Currency);
+export const decodeCurrencyOpaqueId = decodeOpaqueIdForNamespace(namespaces.Currency);
+export const encodeCurrencyOpaqueId = encodeOpaqueId(namespaces.Currency);
 
 // add `code` and `_id` keys to each currency object
 export const xformCurrencyEntry = ([k, v]) => compose(

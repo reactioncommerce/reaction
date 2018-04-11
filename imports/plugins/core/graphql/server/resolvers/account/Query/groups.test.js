@@ -5,10 +5,6 @@ jest.mock("graphql-fields", () => jest.fn().mockName("graphqlFields"));
 
 const shopBase64ID = "cmVhY3Rpb24vc2hvcDpzMTIz"; // reaction/shop:s123
 
-const group1Base64ID = "cmVhY3Rpb24vZ3JvdXA6ZzE="; // reaction/group:g2
-const group2Base64ID = "cmVhY3Rpb24vZ3JvdXA6ZzI="; // reaction/group:g2
-const group3Base64ID = "cmVhY3Rpb24vZ3JvdXA6ZzM="; // reaction/group:g3
-
 const groupsData = [
   {
     _id: "g1",
@@ -52,16 +48,13 @@ const groupsData = [
 ];
 
 test("calls queries.groups with a shopId and returns groups", async () => {
-  const groupsQuery = jest.fn().mockName("groupsQuery").mockReturnValueOnce(getFakeMongoCursor("Groups", groupsData));
+  const groupsQuery = jest.fn().mockName("queries.groups").mockReturnValueOnce(getFakeMongoCursor("Groups", groupsData));
 
   const result = await groups(null, { shopId: shopBase64ID }, {
     queries: { groups: groupsQuery },
     userId: "123"
   });
 
-  expect(result.nodes[0].shopId).toBe("s123");
-  expect(result.nodes[0]._id).toBe(group1Base64ID);
-  expect(result.nodes[1]._id).toBe(group2Base64ID);
-  expect(result.nodes[2]._id).toBe(group3Base64ID);
+  expect(result.nodes).toEqual(groupsData);
   expect(groupsQuery).toHaveBeenCalled();
 });

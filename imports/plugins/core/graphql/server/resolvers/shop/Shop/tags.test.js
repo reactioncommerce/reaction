@@ -12,7 +12,7 @@ const mockTags = [
 const mockTagsQuery = getFakeMongoCursor("Tags", mockTags);
 
 test("calls queries.tags and returns a partial connection", async () => {
-  const tags = jest.fn().mockName("tags").mockReturnValueOnce(Promise.resolve(mockTagsQuery));
+  const tags = jest.fn().mockName("queries.tags").mockReturnValueOnce(Promise.resolve(mockTagsQuery));
 
   const result = await tagsResolver({ _id: base64ID }, {}, {
     queries: { tags }

@@ -1,4 +1,4 @@
-import { getPaginatedGroupResponse } from "@reactioncommerce/reaction-graphql-xforms/group";
+import { getPaginatedResponse } from "@reactioncommerce/reaction-graphql-utils";
 import { decodeShopOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/shop";
 
 /**
@@ -23,5 +23,5 @@ export default async function groups(_, { shopId, ...connectionArgs }, context) 
   const dbShopId = decodeShopOpaqueId(shopId);
 
   const query = await context.queries.groups(context, dbShopId);
-  return await getPaginatedGroupResponse(query, connectionArgs);
+  return getPaginatedResponse(query, connectionArgs);
 }

@@ -1,4 +1,4 @@
-import { getPaginatedRolesResponse } from "@reactioncommerce/reaction-graphql-xforms/roles";
+import { getPaginatedResponse } from "@reactioncommerce/reaction-graphql-utils";
 import { decodeShopOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/shop";
 
 /**
@@ -13,7 +13,7 @@ import { decodeShopOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/sh
  * @param {Number} args.first - Connection argument
  * @param {Number} args.last - Connection argument
  * @param {Object} context - an object containing the per-request state
- * @return {Object[]} Promise that resolves with array of user Roles objects
+ * @return {Promise<Object[]>} Promise that resolves with array of user Roles objects
  */
 export default async function roles({ _id }, connectionArgs, context) {
   // Transform ID from base64
@@ -21,5 +21,5 @@ export default async function roles({ _id }, connectionArgs, context) {
 
   const query = await context.queries.roles(context, dbShopId);
 
-  return await getPaginatedRolesResponse(query, connectionArgs);
+  return getPaginatedResponse(query, connectionArgs);
 }

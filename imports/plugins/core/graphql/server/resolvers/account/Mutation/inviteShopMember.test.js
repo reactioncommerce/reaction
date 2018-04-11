@@ -1,10 +1,8 @@
-import { encodeAccountOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/account";
 import { encodeGroupOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/group";
 import { encodeShopOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/shop";
 import inviteShopMember from "./inviteShopMember";
 
 test("correctly passes through to accounts/inviteShopMember method", () => {
-  const accountId = encodeAccountOpaqueId("1");
   const groupId = encodeGroupOpaqueId("g1");
   const shopId = encodeShopOpaqueId("s1");
 
@@ -31,7 +29,7 @@ test("correctly passes through to accounts/inviteShopMember method", () => {
   }, context);
 
   expect(result).toEqual({
-    account: { _id: accountId, ...account },
+    account: fakeResult,
     clientMutationId: "clientMutationId"
   });
 });

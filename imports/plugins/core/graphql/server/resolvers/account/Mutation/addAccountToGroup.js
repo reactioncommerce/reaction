@@ -1,5 +1,5 @@
 import { decodeAccountOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/account";
-import { decodeGroupOpaqueId, xformGroupResponse } from "@reactioncommerce/reaction-graphql-xforms/group";
+import { decodeGroupOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/group";
 
 /**
  * @name addAccountToGroup
@@ -19,7 +19,7 @@ export default function addAccountToGroup(_, { input }, context) {
   const dbGroupId = decodeGroupOpaqueId(groupId);
   const group = context.methods["group/addUser"](context, [dbAccountId, dbGroupId]);
   return {
-    group: xformGroupResponse(group),
+    group,
     clientMutationId
   };
 }

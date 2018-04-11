@@ -1,6 +1,3 @@
-import { pipeP } from "ramda";
-import { xformAccountResponse } from "@reactioncommerce/reaction-graphql-xforms/account";
-
 /**
  * @name createdBy
  * @method
@@ -9,11 +6,8 @@ import { xformAccountResponse } from "@reactioncommerce/reaction-graphql-xforms/
  * @param {Object} args.createdBy - a string account id
  * @param {Object} _ - unused
  * @param {Object} context - an object containing the per-request state
- * @return {Object} user account object
+ * @return {Promise<Object>} user account object
  */
 export default function createdBy({ createdBy: createdByAccountId }, _, context) {
-  return pipeP(
-    context.queries.userAccount,
-    xformAccountResponse
-  )(context, createdByAccountId);
+  return context.queries.userAccount(context, createdByAccountId);
 }

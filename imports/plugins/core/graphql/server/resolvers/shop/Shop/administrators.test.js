@@ -1,4 +1,3 @@
-import { xformAccountResponse } from "@reactioncommerce/reaction-graphql-xforms/account";
 import administratorsResolver from "./administrators";
 import getFakeMongoCursor from "/imports/test-utils/helpers/getFakeMongoCursor";
 
@@ -12,10 +11,8 @@ const mockAccounts = [
 
 const mockAdministratorsQuery = getFakeMongoCursor("Accounts", mockAccounts);
 
-const transformedAccounts = mockAccounts.map(xformAccountResponse);
-
 test("calls queries.shopAdministrators and returns a partial connection", async () => {
-  const shopAdministrators = jest.fn().mockName("shopAdministrators")
+  const shopAdministrators = jest.fn().mockName("queries.shopAdministrators")
     .mockReturnValueOnce(Promise.resolve(mockAdministratorsQuery));
 
   const result = await administratorsResolver({ _id: base64ID }, {}, {
@@ -24,12 +21,12 @@ test("calls queries.shopAdministrators and returns a partial connection", async 
   });
 
   expect(result).toEqual({
-    nodes: transformedAccounts,
+    nodes: mockAccounts,
     pageInfo: {
-      endCursor: "cmVhY3Rpb24vYWNjb3VudDpjMw==",
+      endCursor: "c3",
       hasNextPage: false,
       hasPreviousPage: false,
-      startCursor: "cmVhY3Rpb24vYWNjb3VudDphMQ=="
+      startCursor: "a1"
     },
     totalCount: 3
   });
