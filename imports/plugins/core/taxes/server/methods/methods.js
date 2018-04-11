@@ -237,12 +237,6 @@ export const methods = {
           });
         } // end custom rates
       } // end shippingAddress calculation
-    } else {
-      // we are here because the custom rate package is disabled.
-      // we're going to set an inital rate of 0
-      // all methods that trigger when taxes/calculate will
-      // recalculate this rate as needed.
-      Meteor.call("taxes/setRate", cartToCalc._id, cartTaxRate);
     }
   } // end taxes/calculate
 };
