@@ -28,24 +28,26 @@ function cloneShop(shop, partialShopData = {}) {
   // merge in the partial shop data and some other current user attributes
   Object.assign(shop, partialShopData || {});
 
+  const cleanShop = Schemas.Shop.clean(shop);
+
   // Never create a second primary shop
-  if (!shop.shopType || shop.shopType === "primary") {
-    shop.shopType = "merchant";
+  if (!cleanShop.shopType || cleanShop.shopType === "primary") {
+    cleanShop.shopType = "merchant";
   }
 
   // Clean up values that get automatically added
-  delete shop._id;
-  delete shop.createdAt;
-  delete shop.updatedAt;
-  delete shop.slug;
+  delete cleanShop._id;
+  delete cleanShop.createdAt;
+  delete cleanShop.updatedAt;
+  delete cleanShop.slug;
   // TODO audience permissions need to be consolidated into [object] and not [string]
   // permissions with [string] on layout ie. orders and checkout, cause the insert to fail
-  delete shop.layout;
+  delete cleanShop.layout;
   // delete brandAssets object from shop to prevent new shops from carrying over existing shop's
   // brand image
-  delete shop.brandAssets;
+  delete cleanShop.brandAssets;
 
-  return shop;
+  return cleanShop;
 }
 
 /**
