@@ -229,7 +229,6 @@ function parseError(error) {
     };
   } else {
     Logger.error(error, "Unknown Error");
-    Avalogger.error(error, "Unknown error or error format");
   }
   const errorObjectContext = ErrorObject.newContext();
   // No Generic errors ever
