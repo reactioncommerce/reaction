@@ -72,6 +72,17 @@ class TextField extends Component {
     return undefined;
   }
 
+  getEventValue(event) {
+    if (this.props.type === "number") {
+      try {
+        return Number(event.target.value);
+      } catch (err) {
+        return event.target.value;
+      }
+    }
+    return event.target.value;
+  }
+
   /**
    * onValueChange
    * @summary set the state when the value of the input is changed
@@ -80,7 +91,7 @@ class TextField extends Component {
    */
   onChange = (event) => {
     if (this.props.onChange) {
-      this.props.onChange(event, event.target.value, this.props.name);
+      this.props.onChange(event, this.getEventValue(event), this.props.name);
     }
   }
 
@@ -98,7 +109,7 @@ class TextField extends Component {
       });
     }
     if (this.props.onBlur) {
-      this.props.onBlur(event, event.target.value, this.props.name);
+      this.props.onBlur(event, this.getEventValue(event), this.props.name);
     }
   }
 
@@ -117,7 +128,7 @@ class TextField extends Component {
       });
     }
     if (this.props.onFocus) {
-      this.props.onFocus(event, event.target.value, this.props.name);
+      this.props.onFocus(event, this.getEventValue(event), this.props.name);
     }
   }
 

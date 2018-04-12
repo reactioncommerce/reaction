@@ -8,7 +8,7 @@ const composer = (props, onData) => {
   let i18nKeyLabel = null;
   let status = null;
   // TODO: update this to use Catalog API.
-  if (inventoryManagement && !inventoryPolicy && Number(inventoryQuantity) === 0) {
+  if (inventoryManagement && !inventoryPolicy && inventoryQuantity === 0) {
     status = "info";
     label = "Backorder";
     i18nKeyLabel = "productDetail.backOrder";
@@ -16,8 +16,8 @@ const composer = (props, onData) => {
     status = "danger";
     label = "Sold Out!";
     i18nKeyLabel = "productDetail.soldOut";
-  } else if (inventoryManagement && inventoryPolicy) {
-    if (Number(lowInventoryWarningThreshold) >= Number(inventoryQuantity)) {
+  } else if (inventoryManagement && !inventoryPolicy) {
+    if (lowInventoryWarningThreshold >= inventoryQuantity) {
       status = "warning";
       label = "Limited Supply";
       i18nKeyLabel = "productDetail.limitedSupply";
