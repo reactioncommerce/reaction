@@ -4,10 +4,12 @@ import { groupQuery, groupsQuery } from "/imports/plugins/core/accounts/server/m
 import { rolesQuery } from "/imports/plugins/core/accounts/server/methods/rolesQuery";
 import tags from "/imports/plugins/core/catalog/server/queries/tags";
 import tagsByIds from "/imports/plugins/core/catalog/server/queries/tagsByIds";
+import getShopIdByDomain from "/imports/plugins/core/accounts/server/no-meteor/getShopIdByDomain";
 
 export default {
   group: groupQuery,
   groups: groupsQuery,
+  primaryShopId: getShopIdByDomain,
   roles: rolesQuery,
   shopAdministrators: shopAdministratorsQuery,
   shopById: (context, _id) => context.collections.Shops.findOne({ _id }),

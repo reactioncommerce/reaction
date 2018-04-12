@@ -76,4 +76,7 @@ extend type Mutation {
 extend type Query {
   "Returns a shop by ID"
   shop(id: ID!): Shop
+
+  "Returns the ID of the primary shop for the domain"
+  primaryShopId: ID
 }
