@@ -1,7 +1,7 @@
 {
   "name": "reaction",
   "description": "Reaction is a modern reactive, real-time event driven ecommerce platform.",
-  "version": "1.10.0",
+  "version": "1.11.0",
   "main": "main.js",
   "directories": {
     "test": "tests"
@@ -47,6 +47,7 @@
     "deep-diff": "^0.3.8",
     "deep-equal": "^1.0.1",
     "dnd-core": "^2.5.4",
+    "es6-error": "^4.1.1",
     "escape-string-regexp": "^1.0.5",
     "eslint-import-resolver-meteor": "^0.4.0",
     "express": "4.16.2",
@@ -55,7 +56,9 @@
     "flatten-obj": "^3.1.1",
     "font-awesome": "^4.7.0",
     "graphql": "0.13.1",
+    "graphql-fields": "^1.0.2",
     "graphql-iso-date": "^3.5.0",
+    "graphql-relay": "^0.5.4",
     "graphql-tools": "2.21.0",
     "handlebars": "^4.0.11",
     "history": "^4.7.2",
@@ -75,6 +78,7 @@
     "meteor-node-stubs": "^0.3.2",
     "moment": "^2.20.1",
     "moment-timezone": "^0.5.14",
+    "mongodb": "^3.0.5",
     "nexmo": "^2.2.0",
     "nock": "^9.1.6",
     "node-fetch": "^2.0.0",
@@ -131,7 +135,7 @@
     "tether-drop": "^1.4.2",
     "tether-tooltip": "^1.2.0",
     "transliteration": "github:reactioncommerce/transliteration",
-    "twilio": "^3.11.2",
+    "twilio": "^3.11.3",
     "url": "^0.11.0",
     "velocity-animate": "^1.5.1",
     "velocity-react": "^1.3.3"
@@ -139,6 +143,8 @@
   "devDependencies": {
     "@babel/cli": "7.0.0-beta.38",
     "@babel/core": "7.0.0-beta.38",
+    "@babel/node": "^7.0.0-beta.38",
+    "@babel/preset-env": "^7.0.0-beta.38",
     "@babel/preset-es2015": "7.0.0-beta.38",
     "@babel/preset-react": "7.0.0-beta.38",
     "@babel/preset-stage-2": "7.0.0-beta.38",
@@ -164,7 +170,9 @@
     "jest-junit": "^3.6.0",
     "js-yaml": "^3.10.0",
     "jsdoc": "^3.5.5",
-    "react-addons-test-utils": "15.6.2"
+    "nodemon": "^1.17.2",
+    "react-addons-test-utils": "15.6.2",
+    "snyk": "^1.71.0"
   },
   "postcss": {
     "plugins": {
@@ -176,6 +184,7 @@
     }
   },
   "scripts": {
+    "devserver": "NODE_ENV=devserver nodemon .reaction/devserver/index.js --exec babel-node",
     "lint": "eslint .",
     "test": "npm run test:unit && npm run test:app",
     "test:app": "meteor test --once --full-app --driver-package meteortesting:mocha",
@@ -207,6 +216,7 @@
             "@reactioncommerce/reaction-collections": "./imports/plugins/core/collections",
             "@reactioncommerce/reaction-components": "./imports/plugins/core/components/lib",
             "@reactioncommerce/reaction-graphql-utils": "./imports/plugins/core/graphql/server/resolvers/util",
+            "@reactioncommerce/reaction-graphql-xforms": "./imports/plugins/core/graphql/server/resolvers/xforms",
             "@reactioncommerce/reaction-router": "./imports/plugins/core/router/lib",
             "@reactioncommerce/reaction-ui": "./imports/plugins/core/ui/client/components",
             "underscore": "lodash"
@@ -215,23 +225,77 @@
       ]
     ],
     "env": {
-      "jesttest": {
-        "plugins": [
-          "rewire-exports"
-        ],
+      "devserver": {
         "presets": [
-          "@babel/preset-es2015",
+          [
+            "@babel/env",
+            {
+              "targets": {
+                "node": "current"
+              }
+            }
+          ],
           "@babel/preset-stage-2"
+        ],
+        "plugins": [
+          [
+            "module-resolver",
+            {
+              "root": [
+                "./"
+              ],
+              "alias": {
+                "@reactioncommerce/reaction-collections": "./imports/plugins/core/collections",
+                "@reactioncommerce/reaction-components": "./imports/plugins/core/components/lib",
+                "@reactioncommerce/reaction-graphql-utils": "./imports/plugins/core/graphql/server/resolvers/util",
+                "@reactioncommerce/reaction-graphql-xforms": "./imports/plugins/core/graphql/server/resolvers/xforms",
+                "@reactioncommerce/reaction-router": "./imports/plugins/core/router/lib",
+                "@reactioncommerce/reaction-ui": "./imports/plugins/core/ui/client/components",
+                "meteor": "./.reaction/devserver/mockmeteor",
+                "underscore": "lodash"
+              }
+            }
+          ]
+        ]
+      },
+      "jesttest": {
+        "presets": [
+          [
+            "@babel/env",
+            {
+              "targets": {
+                "node": "current"
+              }
+            }
+          ],
+          "@babel/preset-stage-2"
+        ],
+        "plugins": [
+          "rewire-exports",
+          [
+            "module-resolver",
+            {
+              "root": [
+                "./"
+              ],
+              "alias": {
+                "@reactioncommerce/reaction-collections": "./imports/plugins/core/collections",
+                "@reactioncommerce/reaction-components": "./imports/plugins/core/components/lib",
+                "@reactioncommerce/reaction-graphql-utils": "./imports/plugins/core/graphql/server/resolvers/util",
+                "@reactioncommerce/reaction-graphql-xforms": "./imports/plugins/core/graphql/server/resolvers/xforms",
+                "@reactioncommerce/reaction-router": "./imports/plugins/core/router/lib",
+                "@reactioncommerce/reaction-ui": "./imports/plugins/core/ui/client/components",
+                "meteor": "./imports/test-utils/__mocks__/meteor",
+                "underscore": "lodash"
+              }
+            }
+          ]
         ]
       }
     },
     "presets": []
   },
-  "jest": {
-    "moduleNameMapper": {
-      "^meteor/(.*)": "<rootDir>/imports/test-utils/__mocks__/meteor/$1"
-    }
-  },
+  "jest": {},
   "eslintConfig": {
     "extends": "@reactioncommerce",
     "globals": {

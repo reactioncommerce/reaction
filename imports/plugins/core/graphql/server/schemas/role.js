@@ -1,16 +1,21 @@
+/* eslint-disable max-len */
 export const typeDefs = `
-  # RoleName - String that conforms to Role regex.
-  # This may be required if the role name must match a specific pattern.
-  # Could also be made more generic depending on pattern.
-  # Remove if not used.
-  scalar RoleName
-
-  # Roles schema doesn't exist in Reaction.
-  type Role implements Node {
-    _id: ID!
-    name: RoleName!
+  # The fields by which you are allowed to sort any query that returns an \`RoleConnection\`
+  enum RoleSortByField {
+    _id
+    name
   }
 
+  # Represents a named role
+  type Role implements Node {
+    # The role ID
+    _id: ID!
+
+    # A unique name for the role
+    name: String!
+  }
+
+  # Wraps a list of \`Roles\`, providing pagination cursors and information.
   type RoleConnection implements NodeConnection {
     edges: [RoleEdge]
     nodes: [Role]
@@ -18,12 +23,14 @@ export const typeDefs = `
     totalCount: Int!
   }
 
+  # A connection edge in which each node is a \`Role\` object
   type RoleEdge implements NodeEdge {
-    cursor: String!
-    node: [Role]
+    cursor: ConnectionCursor!
+    node: Role
   }
 
   extend type Query {
-    roles(shopId: ID!): [String]
+    # Returns a paged list of all roles associated with a shop
+    roles(shopId: ID!, after: ConnectionCursor, before: ConnectionCursor, first: ConnectionLimitInt, last: ConnectionLimitInt, sortOrder: SortOrder = asc, sortBy: RoleSortByField = name): RoleConnection
   }
 `;

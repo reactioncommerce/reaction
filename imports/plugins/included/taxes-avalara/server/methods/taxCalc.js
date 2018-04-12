@@ -1,6 +1,7 @@
 import os from "os";
 import _ from "lodash";
 import accounting from "accounting-js";
+import SimpleSchema from "simpl-schema";
 import { Meteor } from "meteor/meteor";
 import { HTTP } from "meteor/http";
 import { check } from "meteor/check";
@@ -9,6 +10,34 @@ import { ErrorObject } from "/lib/collections/schemas";
 import { TaxCodes } from "/imports/plugins/core/taxes/lib/collections";
 import { Reaction, Logger } from "/server/api";
 import Avalogger from "./avalogger";
+
+const errorDetails = new SimpleSchema({
+  message: {
+    type: String
+  },
+  description: {
+    type: String,
+    optional: true
+  }
+});
+
+  // Validate that whenever we return an error we return the same format
+const ErrorObject = new SimpleSchema({
+  "type": {
+    type: String
+  },
+  "errorCode": {
+    type: Number
+  },
+  "errorDetails": {
+    type: Array,
+    optional: true
+  },
+  "errorDetails.$": {
+    type: errorDetails,
+    optional: true
+  }
+});
 
 let moment;
 async function lazyLoadMoment() {

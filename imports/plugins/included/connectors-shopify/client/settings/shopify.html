@@ -5,7 +5,12 @@
       {{> afQuickField name="settings.apiKey" class='form-control'}}
       {{> afQuickField name="settings.password" class='form-control' type="password"}}
       {{> afQuickField name="settings.sharedSecret" class='form-control'}}
-      {{> afQuickField name="settings.shopName" class='form-control'}}
+      <label class="control-label">Shop slug</label>
+      <div>
+        <div style="display: inline-block" class="custom-form-label">https://</div>
+        {{> afFieldInput name="settings.shopName" class='form-control shop-slug'}}
+        <div style="display: inline-block" class="custom-form-label">.shopify.com</div>
+      </div>
       {{> shopSettingsSubmitButton}}
     {{/autoForm}}
   </div>

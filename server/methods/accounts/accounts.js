@@ -311,7 +311,7 @@ function currentUserHasPassword() {
  * @example Meteor.call("accounts/addressBookAdd", address, callBackFunction(error, result))
  * @param {Object} address - address
  * @param {String} [accountUserId] - `account.userId` used by admin to edit users
- * @return {Object} with keys `numberAffected` and `insertedId` if doc was inserted
+ * @return {Object} with updated address
  */
 export function addressBookAdd(address, accountUserId) {
   Schemas.Address.validate(address);
@@ -320,7 +320,7 @@ export function addressBookAdd(address, accountUserId) {
   // here because we are calling `Meteor.userId` from within this Method.
   if (typeof accountUserId === "string") { // if this will not be a String -
     // `check` will not pass it.
-    if (!Reaction.hasAdminAccess()) {
+    if (Meteor.userId() !== accountUserId && !Reaction.hasPermission("reaction-accounts")) {
       throw new Meteor.Error("access-denied", "Access denied");
     }
   }
@@ -400,9 +400,22 @@ export function addressBookAdd(address, accountUserId) {
 
   Meteor.users.update(Meteor.userId(), userUpdateQuery);
 
-  return Accounts.upsert({
+  const result = Accounts.upsert({
     userId
   }, accountsUpdateQuery);
+
+  // If the address update was successful, then return the full updated addrtess
+  if (result.numberAffected === 1) {
+    // Find the account
+    const updatedAccount = Accounts.findOne({
+      userId
+    });
+
+    // Pull the updated address and return it
+    return updatedAccount.profile.addressBook.find((updatedAddress) => address._id === updatedAddress._id);
+  }
+
+  throw new Meteor.Error("server-error", "Unable to add address to account");
 }
 
 /**
@@ -413,7 +426,7 @@ export function addressBookAdd(address, accountUserId) {
  * @param {Object} address - address
  * @param {String|null} [accountUserId] - `account.userId` used by admin to edit users
  * @param {shipping|billing} [type] - name of selected address type
- * @return {Number} The number of affected documents
+ * @return {Object} The updated address
  */
 export function addressBookUpdate(address, accountUserId, type) {
   Schemas.Address.validate(address);
@@ -423,7 +436,7 @@ export function addressBookUpdate(address, accountUserId, type) {
   // here because we are calling `Meteor.userId` from within this Method.
   if (typeof accountUserId === "string") { // if this will not be a String -
     // `check` will not pass it.
-    if (!Reaction.hasAdminAccess()) {
+    if (Meteor.userId() !== accountUserId && !Reaction.hasPermission("reaction-accounts")) {
       throw new Meteor.Error("access-denied", "Access denied");
     }
   }
@@ -514,7 +527,7 @@ export function addressBookUpdate(address, accountUserId, type) {
   Meteor.users.update(Meteor.userId(), userUpdateQuery);
 
   // Update the Reaction Accounts collection with new address info
-  const updatedAccount = Accounts.update({
+  const updatedAccountResult = Accounts.update({
     userId
   }, accountsUpdateQuery);
 
@@ -533,7 +546,18 @@ export function addressBookUpdate(address, accountUserId, type) {
     updatedFields
   });
 
-  return updatedAccount;
+  // If the address update was successful, then return the full updated addrtess
+  if (updatedAccountResult === 1) {
+    // Find the account
+    const updatedAccount = Accounts.findOne({
+      userId
+    });
+
+    // Pull the updated address and return it
+    return updatedAccount.profile.addressBook.find((updatedAddress) => address._id === updatedAddress._id);
+  }
+
+  throw new Meteor.Error("server-error", "Unable to update account address");
 }
 
 /**
@@ -543,7 +567,7 @@ export function addressBookUpdate(address, accountUserId, type) {
  * @summary Remove existing address in user's profile
  * @param {String} addressId - address `_id`
  * @param {String} [accountUserId] - `account.userId` used by admin to edit users
- * @return {Number|Object} The number of removed documents or error object
+ * @return {Object} Removed address object
  */
 export function addressBookRemove(addressId, accountUserId) {
   check(addressId, String);
@@ -552,7 +576,7 @@ export function addressBookRemove(addressId, accountUserId) {
   // here because we are calling `Meteor.userId` from within this Method.
   if (typeof accountUserId === "string") { // if this will not be a String -
     // `check` will not pass it.
-    if (!Reaction.hasAdminAccess()) {
+    if (Meteor.userId() !== accountUserId && !Reaction.hasPermission("reaction-accounts")) {
       throw new Meteor.Error("access-denied", "Access denied");
     }
   }
@@ -563,7 +587,7 @@ export function addressBookRemove(addressId, accountUserId) {
   // remove this address in cart, if used, before completely removing
   Meteor.call("cart/unsetAddresses", addressId, userId);
 
-  const updatedAccount = Accounts.update({
+  const updatedAccountResult = Accounts.update({
     userId,
     "profile.addressBook._id": addressId
   }, {
@@ -580,7 +604,13 @@ export function addressBookRemove(addressId, accountUserId) {
     updatedFields: ["forceIndex"]
   });
 
-  return updatedAccount;
+  // If the address remove was successful, then return the removed addrtess
+  if (updatedAccountResult === 1) {
+    // Pull the address from the account before it was updated and return it
+    return account.profile.addressBook.find((removedAddress) => addressId === removedAddress._id);
+  }
+
+  throw new Meteor.Error("server-error", "Unable to remove address from account");
 }
 
 /**
@@ -759,7 +789,7 @@ export function inviteShopMember(options) {
     html: SSR.render(tpl, dataForEmail)
   });
 
-  return true;
+  return Accounts.findOne({ userId });
 }
 
 /**
@@ -1035,17 +1065,63 @@ export function createFallbackLoginToken() {
  * @name accounts/setProfileCurrency
  * @memberof Methods/Accounts
  * @method
+ * @param {String} currencyName - currency symbol to add to user profile
+ * @param {String} [accountId] - accountId of user to set currency of. Defaults to current user ID
  * @summary Sets users profile currency
  */
-export function setProfileCurrency(currencyName) {
+export function setProfileCurrency(currencyName, accountId) {
   check(currencyName, String);
-  if (this.userId) {
-    Accounts.update(this.userId, { $set: { "profile.currency": currencyName } });
-    Hooks.Events.run("afterAccountsUpdate", this.userId, {
-      accountId: this.userId,
-      updatedFields: ["currency"]
-    });
+  check(accountId, Match.Maybe(String));
+
+  const userId = accountId || this.userId;
+  if (!userId) throw new Meteor.Error("access-denied", "You must be logged in to set your profile currency");
+
+  const account = Accounts.findOne({ userId }, { fields: { shopId: 1 } });
+
+  if (!account) throw new Meteor.Error("not-found", "Account not found");
+
+  if (!Reaction.hasPermission("reaction-accounts", Meteor.userId(), account.shopId)) {
+    throw new Meteor.Error("access-denied", "Access denied");
   }
+
+  // Make sure this currency code is in the related shop currencies list
+  const shop = Shops.findOne({ _id: account.shopId }, { fields: { currencies: 1 } });
+
+  if (!shop || !shop.currencies || !shop.currencies[currencyName]) {
+    throw new Meteor.Error("invalid-argument", `The shop for this account does not define any currency with code "${currencyName}"`);
+  }
+
+  Accounts.update({ userId }, { $set: { "profile.currency": currencyName } });
+  Hooks.Events.run("afterAccountsUpdate", userId, {
+    accountId: account._id,
+    updatedFields: ["currency"]
+  });
+
+  return Accounts.findOne({ userId });
+}
+
+/**
+ * @name markAddressValidationBypassed
+ * @summary Write that the customer has bypassed address validation
+ * @returns {Number} updateResult - Result of the update
+ */
+function markAddressValidationBypassed(value = true) {
+  check(value, Boolean);
+  const userId = Meteor.userId();
+  const updateResult = Cart.update({ userId }, { $set: { bypassAddressValidation: value } });
+  return updateResult;
+}
+
+/**
+ * @name markTaxCalculationFailed
+ * @summary Write tax calculation has failed for this customer
+ * @returns {Number} updateResult - Result of the update
+ */
+function markTaxCalculationFailed(value = true) {
+  check(value, Boolean);
+  const userId = Meteor.userId();
+  const updateResult = Cart.update({ userId }, { $set: { taxCalculationFailed: value } });
+  return updateResult;
 }
 
 /**
