@@ -1,5 +1,4 @@
 import _ from "lodash";
-import SimpleSchema from "simpl-schema";
 import { Meteor } from "meteor/meteor";
 import { Random } from "meteor/random";
 import { Accounts as MeteorAccounts } from "meteor/accounts-base";
@@ -134,7 +133,7 @@ export function syncUsersAndAccounts() {
  */
 function getValidator() {
   const shopId = Reaction.getShopId();
-  let geoCoders = Packages.find({
+  const geoCoders = Packages.find({
     "registry": { $elemMatch: { provides: "addressValidation" } },
     "settings.addressValidation.enabled": true,
     shopId,
@@ -1097,30 +1096,6 @@ export function setProfileCurrency(currencyName, accountId) {
   });
 
   return Accounts.findOne({ userId });
-}
-
-/**
- * @name markAddressValidationBypassed
- * @summary Write that the customer has bypassed address validation
- * @returns {Number} updateResult - Result of the update
- */
-function markAddressValidationBypassed(value = true) {
-  check(value, Boolean);
-  const userId = Meteor.userId();
-  const updateResult = Cart.update({ userId }, { $set: { bypassAddressValidation: value } });
-  return updateResult;
-}
-
-/**
- * @name markTaxCalculationFailed
- * @summary Write tax calculation has failed for this customer
- * @returns {Number} updateResult - Result of the update
- */
-function markTaxCalculationFailed(value = true) {
-  check(value, Boolean);
-  const userId = Meteor.userId();
-  const updateResult = Cart.update({ userId }, { $set: { taxCalculationFailed: value } });
-  return updateResult;
 }
 
 /**

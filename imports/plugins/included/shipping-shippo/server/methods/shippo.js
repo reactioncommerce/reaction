@@ -373,10 +373,10 @@ export const methods = {
     return updatingResult;
   },
   /**
-     * Formats and sends a cart address to Shippo to for validation
-     * @param {String} cartId - The id of the cart to get the address from
-     * @return {Object} result - The validation result from Shippo
-     */
+   * Formats and sends a cart address to Shippo to for validation
+   * @param {String} address - The address to validate
+   * @return {Object} validateAddress - The validation result from Shippo
+   */
   "shippo/addressValidation"(address) {
     check(address, Object);
 
@@ -384,7 +384,7 @@ export const methods = {
 
     if (!apiKey) {
       const msg = "No Shippo API key was found.";
-      Logger.error(msg);
+      Logger.fatal(msg);
       throw new Meteor.Error("shippo-api-error", msg);
     }
 

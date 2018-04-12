@@ -19,7 +19,7 @@ Reaction.registerPackage({
       logRetentionDuration: 30
     },
     addressValidation: {
-      enabled: true,
+      enabled: false,
       countryList: ["US", "CA"],
       addressValidationMethod: "avalara/addressValidation"
     },
