@@ -42,7 +42,7 @@ describe("Publication", function () {
     };
 
     beforeEach(function () {
-      Collections.Products.direct.remove({});
+      Collections.Products.remove({});
 
       // a product with price range A, and not visible
       Collections.Products.insert({
