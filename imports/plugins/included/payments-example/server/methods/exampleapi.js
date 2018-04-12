@@ -1,7 +1,7 @@
 import SimpleSchema from "simpl-schema";
 import { ValidatedMethod } from "meteor/mdg:validated-method";
 import { Random } from "meteor/random";
-import { registerSchema } from "@reactioncommerce/reaction-collections";
+import { registerSchema } from "@reactioncommerce/schemas";
 
 // Test card to use to add risk level flag for testing purposes only.
 export const RISKY_TEST_CARD = "4000000000009235";

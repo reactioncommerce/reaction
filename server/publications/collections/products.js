@@ -3,7 +3,7 @@ import SimpleSchema from "simpl-schema";
 import { Meteor } from "meteor/meteor";
 import { Tracker } from "meteor/tracker";
 import { check, Match } from "meteor/check";
-import { registerSchema } from "@reactioncommerce/reaction-collections";
+import { registerSchema } from "@reactioncommerce/schemas";
 import { Products, Shops, Revisions, Catalog } from "/lib/collections";
 import { Reaction, Logger } from "/server/api";
 import { RevisionApi } from "/imports/plugins/core/revisions/lib/api/revisions";
