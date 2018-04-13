@@ -168,21 +168,28 @@ export default {
    * absoluteUrl
    * @summary a wrapper method for Meteor.absoluteUrl which sets the rootUrl to
    * the current URL (instead of defaulting to ROOT_URL)
-   * @param {String} [path] A path to append to the root URL. Do not include a leading "`/`".
+   * @param {String} [pathOrOptions] A path to append to the root URL. Do not include a leading "`/`".
+   *                                 absoluteUrl can be called with a single
+   *                                 parameter, where pathOrOptions can be the
+   *                                 path (String) or the options (Object)
    * @param {Object} [options]
    * @param {Boolean} options.secure Create an HTTPS URL.
    * @param {Boolean} options.replaceLocalhost Replace localhost with 127.0.0.1. Useful for services that don't recognize localhost as a domain name.
    * @param {String} options.rootUrl Override the default ROOT_URL from the server environment. For example: "`http://foo.example.com`"
    * @return {String} URL for the given path and options
    */
-  absoluteUrl(path, options) {
+  absoluteUrl(pathOrOptions, options) {
+    let path;
+    let opts;
     // path is optional
-    if (!options && typeof path === 'object') {
-      options = path;
+    if (!options && typeof pathOrOptions === "object") {
       path = undefined;
+      opts = Object.assign({}, pathOrOptions);
+    } else {
+      path = pathOrOptions;
+      opts = Object.assign({}, options);
     }
 
-    const opts = Object.assign({}, options);
     const hasRootUrl = "rootUrl" in opts;
 
     // presumably, you could simply access window.location.href here, but when

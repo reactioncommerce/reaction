@@ -1,5 +1,5 @@
 export const Roles = {
-  GLOBAL_GROUP: '__global_roles__',
+  GLOBAL_GROUP: "__global_roles__",
   createRole: () => {},
   deleteRole: () => {},
   addUsersToRoles: () => {},

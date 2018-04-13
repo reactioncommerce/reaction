@@ -1,6 +1,6 @@
 export class ReactiveVar {
   constructor() {
-  	this.value = undefined;
+    this.value = undefined;
   }
   set(value) {
     this.value = value;
