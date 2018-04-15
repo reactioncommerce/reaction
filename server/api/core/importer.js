@@ -1,5 +1,5 @@
 import Hooks from "@reactioncommerce/hooks";
-import Logger from "@reactioncommerce/logger";
+import { Logger } from "@reactioncommerce/logger";
 import { Mongo, MongoInternals } from "meteor/mongo";
 import { EJSON } from "meteor/ejson";
 import { check, Match } from "meteor/check";

@@ -1,3 +1,3 @@
-import Logger from "@reactioncommerce/logger";
+import { Logger } from "@reactioncommerce/logger";
 
 export { Logger };

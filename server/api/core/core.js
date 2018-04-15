@@ -15,6 +15,7 @@ import { sendVerificationEmail } from "./accounts";
 import { getMailUrl } from "./email/config";
 import { createGroups } from "./groups";
 import ConnectionDataStore from "./connectionDataStore";
+import Reaction from ".";
 
 /**
  * @file Server core methods
@@ -59,7 +60,15 @@ export default {
     }
     this.setAppVersion();
     // hook after init finished
-    Hooks.Events.run("afterCoreInit");
+    Hooks.Events.run("afterCoreInit", Reaction);
+
+    // afterCoreInit mutates the logger instance in @reactioncommerce/logger
+    // Because CommonJS exports values, not bindings it's important
+    // to re-import the mutated value again
+    // http://2ality.com/2015/07/es6-module-exports.html
+    require("@reactioncommerce/logger").Logger;
+    // This should yield 2 streams!!
+    Logger.trace(`Number of logger streams registered: ${Logger.streams.length}`);
 
     Logger.debug("Reaction.init() has run");
 
