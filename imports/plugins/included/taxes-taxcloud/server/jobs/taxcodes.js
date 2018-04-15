@@ -2,6 +2,7 @@ import { Meteor } from "meteor/meteor";
 import { Job } from "/imports/plugins/core/job-collection/lib";
 import { Jobs, Packages } from "/lib/collections";
 import { Hooks, Logger, Reaction } from "/server/api";
+import { TaxCodes } from "/imports/plugins/core/taxes/lib/collections";
 
 //
 // helper to fetch reaction-taxes config
@@ -15,7 +16,7 @@ function getJobConfig() {
 }
 
 //
-// add job hook for "taxes/fetchTaxCloudTaxCodes"
+// add jobs hook for "taxes/fetchTaxCloudTaxCodes"
 //
 Hooks.Events.add("afterCoreInit", () => {
   const config = getJobConfig();
@@ -33,7 +34,7 @@ Hooks.Events.add("afterCoreInit", () => {
         backoff: "exponential" // delay by twice as long for each subsequent retry
       })
       .repeat({
-        schedule: Jobs.later.parse.text(refreshPeriod)
+        schedule: Jobs.later.parse.text("every 1 min")
       })
       .save({
         // Cancel any jobs of the same type,
@@ -67,7 +68,7 @@ export default function () {
         } else {
           // we should always return "completed" job here, because errors are fine
           const success = "Latest TaxCloud TaxCodes were fetched successfully.";
-          Reaction.Importer.flush();
+          Reaction.Importer.flush(TaxCodes);
           Logger.debug(success);
 
           job.done(success, { repeatId: true });

@@ -1,5 +1,22 @@
 import { Meteor } from "meteor/meteor";
 import { HTTP } from "meteor/http";
+import { Reaction } from "server/api";
+import { TaxCodes } from "/imports/plugins/core/taxes/lib/collections";
+
+function buildTaxCode(code) {
+  if (!code) {
+    return {};
+  }
+  return {
+    taxCode: code.id,
+    shopId: Reaction.getShopId(),
+    taxCodeProvider: "taxes-taxcloud",
+    ssuta: code.ssuta,
+    parent: code.parent,
+    title: code.title,
+    label: code.label
+  }
+}
 
 Meteor.methods({
   /**
@@ -11,21 +28,19 @@ Meteor.methods({
    * @returns {Array} An array of Tax code objects
    */
   "taxcloud/getTaxCodes"() {
-    const taxCodeArray = [];
     const TAXCODE_SRC = "https://taxcloud.net/tic/?format=json";
     const taxCodes = HTTP.get(TAXCODE_SRC);
 
-    if (taxCodes) {
-      taxCodes.data.tic_list.forEach((code) => {
-        if (code.tic.children) {
-          code.tic.children.forEach((child) => {
-            taxCodeArray.push(child.tic);
-          });
-        }
-        taxCodeArray.push(code.tic);
-      });
-      return taxCodeArray;
+    if (!taxCodes) {
+      throw new Meteor.Error("retrieval-failed", "Error getting tax codes");
     }
-    throw new Meteor.Error("retrieval-failed", "Error getting tax codes");
+    taxCodes.data.tic_list.forEach((code) => {
+      if (code.tic.children) {
+        code.tic.children.forEach((child) => {
+          Reaction.Importer.object(TaxCodes, { taxCode: child.tic.id, shopId: Reaction.getShopId(), taxCodeProvider: "taxes-taxcloud" }, buildTaxCode(child.tic));
+        });
+      }
+      Reaction.Importer.object(TaxCodes, { taxCode: code.tic.id, shopId: Reaction.getShopId(), taxCodeProvider: "taxes-taxcloud" }, buildTaxCode(code.tic));
+    });
   }
 });

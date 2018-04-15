@@ -86,7 +86,7 @@ const wrapComponent = (Comp) => (
       const codes = TaxCodes.find({
         shopId,
         taxCodeProvider: provider.name
-      });
+      }).fetch();
 
       codes.forEach((code) => {
         taxCodesArray.push({

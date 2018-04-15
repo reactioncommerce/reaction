@@ -40,7 +40,7 @@ function calculateTax(pkgSettings, cartToCalc) {
       const taxCloudItem = {
         Index: index,
         ItemID: cartItem.variants._id,
-        TIC: "00000",
+        TIC: cartItem.variants.taxCode || "00000",
         Price: cartItem.variants.price,
         Qty: cartItem.quantity
       };
