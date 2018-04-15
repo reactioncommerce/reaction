@@ -85,23 +85,25 @@ function calculateTax(pkgSettings, cartToCalc) {
       Logger.warn("TaxCloud API Key is required.");
     }
     const shopAddress = shopsAddressMap[shopId];
-    const { zip4: Zip4, zip5: Zip5 } = zipSplit(shopAddress.postal);
+    const { zip4: originZip4, zip5: originZip5 } = zipSplit(shopAddress.postal);
     const origin = {
       Address1: shopAddress.address1,
       City: shopAddress.city,
       State: shopAddress.region,
-      Zip5,
-      Zip4
+      Zip5: originZip5,
+      Zip4: originZip4
     };
 
     const shippingAddress = shippingAddressMap[shopId];
     // User hasn't entered shipping address yet.
     if (!shippingAddress) return;
+    const { zip4: destZip4, zip5: destZip5 } = zipSplit(shippingAddress.postal);
     const destination = {
       Address1: shippingAddress.address1,
       City: shippingAddress.city,
       State: shippingAddress.region,
-      Zip5: shippingAddress.postal
+      Zip5: destZip5,
+      Zip4: destZip4
     };
 
     // request object
