@@ -130,7 +130,7 @@ function calculateTax(pkgSettings, cartToCalc) {
           if (response && response.data.Messages[0].Message) {
             errMsg = response.data.Messages[0].Message;
           }
-          reject();
+          reject(errMsg);
           throw new Error("Error calling taxcloud API", errMsg);
         }
         resolve({
@@ -141,28 +141,38 @@ function calculateTax(pkgSettings, cartToCalc) {
     }));
   });
 
-  try {
-    Promise.all(responsePromise).then((result) => {
-      result.forEach((res) => {
-        for (const item of res.items) {
-          totalTax += item.TaxAmount;
-          const cartPosition = item.CartItemIndex;
-          items[cartPosition].taxRate =
+  if (responsePromise && responsePromise.length > 0) {
+    Promise.all(responsePromise)
+      .then((result) => {
+        result.forEach((res) => {
+          for (const item of res.items) {
+            totalTax += item.TaxAmount;
+            const cartPosition = item.CartItemIndex;
+            items[cartPosition].taxRate =
           item.TaxAmount / subtotalsByShop[res.shopId];
-        }
+          }
+        });
+        // we should consider if we want percentage and dollar
+        // as this is assuming that subTotal actually contains everything
+        // taxable
+        Meteor.call("taxes/setRateByShopAndItem", cartToCalc._id, {
+          taxRatesByShop: undefined,
+          itemsWithTax: items,
+          cartTaxRate: totalTax / subTotal,
+          cartTaxData: undefined
+        });
+        Meteor.call("accounts/markTaxCalculationFailed", false);
+      })
+      .catch((error) => {
+        // No rates were fetched, set taxes to 0.
+        Meteor.call("taxes/setRate", cartToCalc._id, 0);
+        Meteor.call("accounts/markTaxCalculationFailed", true);
+        Logger.error("Error fetching tax rate from TaxCloud:", error);
       });
-      // we should consider if we want percentage and dollar
-      // as this is assuming that subTotal actually contains everything
-      // taxable
-      Meteor.call("taxes/setRateByShopAndItem", cartToCalc._id, {
-        taxRatesByShop: undefined,
-        itemsWithTax: items,
-        cartTaxRate: totalTax / subTotal,
-        cartTaxData: undefined
-      });
-    });
-  } catch (error) {
-    Logger.error("Error fetching tax rate from TaxCloud:", error);
+  } else {
+    // No items in the cart.
+    Meteor.call("taxes/setRate", cartToCalc._id, 0);
+    Meteor.call("accounts/markTaxCalculationFailed", false);
   }
 }
 //

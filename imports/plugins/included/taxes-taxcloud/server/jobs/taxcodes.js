@@ -16,7 +16,7 @@ function getJobConfig() {
 }
 
 //
-// add jobs hook for "taxes/fetchTaxCloudTaxCodes"
+// add job hook for "taxes/fetchTaxCloudTaxCodes"
 //
 Hooks.Events.add("afterCoreInit", () => {
   const config = getJobConfig();
@@ -34,7 +34,7 @@ Hooks.Events.add("afterCoreInit", () => {
         backoff: "exponential" // delay by twice as long for each subsequent retry
       })
       .repeat({
-        schedule: Jobs.later.parse.text("every 1 min")
+        schedule: Jobs.later.parse.text(refreshPeriod)
       })
       .save({
         // Cancel any jobs of the same type,

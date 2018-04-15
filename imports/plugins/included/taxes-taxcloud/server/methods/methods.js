@@ -3,6 +3,14 @@ import { HTTP } from "meteor/http";
 import { Reaction } from "server/api";
 import { TaxCodes } from "/imports/plugins/core/taxes/lib/collections";
 
+
+/**
+ * @name buildTaxCode
+ * @method
+ * @summary parses the code returned from taxcloud api to Reaction's taxcode
+ * @param {Object} code - code to convert
+ * @returns {Object} - code compatible with TaxCode schema
+ */
 function buildTaxCode(code) {
   if (!code) {
     return {};
