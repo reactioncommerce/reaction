@@ -8,6 +8,7 @@ function buildTaxCode(code) {
     return {};
   }
   return {
+    id: code.id,
     taxCode: code.id,
     shopId: Reaction.getShopId(),
     taxCodeProvider: "taxes-taxcloud",
