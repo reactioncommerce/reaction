@@ -1,9 +1,11 @@
 import { registerComponent, composeWithTracker } from "@reactioncommerce/reaction-components";
 import { InventoryBadge } from "../components/badge";
+import { ReactionProduct } from "/lib/api";
 
 const composer = (props, onData) => {
   const { variant, soldOut } = props;
-  const { inventoryManagement, inventoryPolicy, lowInventoryWarningThreshold, inventoryQuantity } = variant;
+  const { inventoryManagement, inventoryPolicy, lowInventoryWarningThreshold } = variant;
+  const inventoryQuantity = ReactionProduct.getVariantQuantity(variant);
   let label = null;
   let i18nKeyLabel = null;
   let status = null;
@@ -16,7 +18,7 @@ const composer = (props, onData) => {
     status = "danger";
     label = "Sold Out!";
     i18nKeyLabel = "productDetail.soldOut";
-  } else if (inventoryManagement && !inventoryPolicy) {
+  } else if (inventoryManagement) {
     if (lowInventoryWarningThreshold >= inventoryQuantity) {
       status = "warning";
       label = "Limited Supply";
