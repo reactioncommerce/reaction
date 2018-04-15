@@ -1,6 +1,6 @@
 import SimpleSchema from "simpl-schema";
 import { Discounts } from "/imports/plugins/core/discounts/lib/collections/schemas";
-import { registerSchema } from "@reactioncommerce/reaction-collections";
+import { registerSchema } from "@reactioncommerce/schemas";
 
 /**
 * Discount Codes Schema

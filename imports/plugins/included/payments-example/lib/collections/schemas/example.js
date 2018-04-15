@@ -2,7 +2,7 @@ import SimpleSchema from "simpl-schema";
 import { check } from "meteor/check";
 import { Tracker } from "meteor/tracker";
 import { PackageConfig } from "/lib/collections/schemas/registry";
-import { registerSchema } from "@reactioncommerce/reaction-collections";
+import { registerSchema } from "@reactioncommerce/schemas";
 
 export const ExamplePackageConfig = PackageConfig.clone().extend({
   // Remove blackbox: true from settings obj

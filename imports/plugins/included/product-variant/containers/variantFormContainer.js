@@ -4,7 +4,7 @@ import { compose } from "recompose";
 import { registerComponent } from "@reactioncommerce/reaction-components";
 import { Meteor } from "meteor/meteor";
 import { Session } from "meteor/session";
-import { Validation } from "@reactioncommerce/reaction-collections";
+import { Validation } from "@reactioncommerce/schemas";
 import { ReactionProduct } from "/lib/api";
 import { Packages } from "/lib/collections";
 import { Reaction, i18next } from "/client/api";

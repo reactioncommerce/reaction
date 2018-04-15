@@ -1,17 +1,18 @@
 /**
  * @file Exposes the DOM object used to manipulate the document.
- *  NOTE: this functions are only meant to be used on the client.
- * @author Will Lopez
+ * The functions are only meant to be used on the client.
  * @namespace DOM
  */
 
 const DOM = {};
 
-/*
- * Sets/adds a meta tag to the document head
+/**
+ * @method setMetaTag
+ * @memberof DOM
+ * @summary Sets/adds a meta tag to the document head
  * @param {Object} attributes - key/value pairs for tag attributes
  * @return {undefined} no return value
-  */
+ */
 DOM.setMetaTag = (attributes) => {
   const currentMetaTag = document.querySelector(`meta[name="${attributes.name}"]`);
 
@@ -34,11 +35,13 @@ DOM.setMetaTag = (attributes) => {
   document.head.appendChild(newMetaTag);
 };
 
-/*
- * Adds a link tags to the document head
+/**
+ * @method addLinkTag
+ * @memberof DOM
+ * @summary Adds a link tags to the document head
  * @param {Object} attributes - key/value pairs for tag attributes
  * @return {undefined} no return value
-  */
+ */
 DOM.addLinkTag = (attributes) => {
   const newLinkTag = document.createElement("link");
 
@@ -52,8 +55,9 @@ DOM.addLinkTag = (attributes) => {
 };
 
 /**
- * Removes document head tags
- *
+ * @method removeDocHeadAddedTags
+ * @memberof DOM
+ * @summary Removes document head tags
  * @returns {undefined} no return value
  */
 DOM.removeDocHeadAddedTags = () => {
