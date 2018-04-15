@@ -1,4 +1,3 @@
-import Log from "@reactioncommerce/logger";
 import Core from "./core";
 import * as Accounts from "./accounts";
 import * as AddDefaultRoles from "./addDefaultRoles";
@@ -28,7 +27,6 @@ const Reaction = Object.assign(
   { Endpoints },
   Importer,
   LoadSettings,
-  { Log },
   { Router },
   { Schemas },
   SetDomain,
