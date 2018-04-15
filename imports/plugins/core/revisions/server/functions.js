@@ -372,12 +372,20 @@ export function updateRevision(product, options = {}) {
     const ignoredFields = ["isLowQuantity", "isSoldOut", "inventoryQuantity"];
 
     for (const field of ignoredFields) {
-      if (modifier.$set && (typeof modifier.$set[field] === "number" || typeof modifier.$set[field] === "boolean")) {
+      if (modifier.$set && (
+        typeof modifier.$set[field] === "number" ||
+        typeof modifier.$set[field] === "boolean" ||
+        typeof modifier.$set[field] === "string"
+      )) {
         newSet[field] = modifier.$set[field];
         hasIgnoredFields = true;
       }
 
-      if (modifier.$inc && (typeof modifier.$inc[field] === "number" || typeof modifier.$inc[field] === "boolean")) {
+      if (modifier.$inc && (
+        typeof modifier.$inc[field] === "number" ||
+        typeof modifier.$inc[field] === "boolean" ||
+        typeof modifier.$set[field] === "string"
+      )) {
         newInc[field] = modifier.$inc[field];
         hasIgnoredFields = true;
       }

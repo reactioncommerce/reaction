@@ -1,6 +1,6 @@
 import _ from "lodash";
 import { Meteor } from "meteor/meteor";
-import { ProductSearch, OrderSearch, AccountSearch } from "/lib/collections";
+import { Products, ProductSearch, OrderSearch, AccountSearch } from "/lib/collections";
 import {
   getSearchParameters,
   buildAccountSearchRecord,
@@ -75,17 +75,29 @@ Hooks.Events.add("afterRemoveProduct", (doc) => {
 * after product update rebuild product search record
 */
 Hooks.Events.add("afterUpdateCatalogProduct", (doc, options) => {
+  // Find the most recent version of the product document based on
+  // the passed in doc._id
+  const productDocument = Products.findOne({
+    _id: doc._id
+  });
+
+  // If this hook is ran without options, then this callback
+  // should no be executed.
+  if (!options) {
+    return productDocument;
+  }
+
   const { modifier: { $set: allProps } } = options;
   const topLevelFieldNames = Object.getOwnPropertyNames(allProps);
 
-  if (ProductSearch && !Meteor.isAppTest && doc.type === "simple") {
-    const productId = doc._id;
+  if (ProductSearch && !Meteor.isAppTest && productDocument.type === "simple") {
+    const productId = productDocument._id;
     const { fieldSet } = getSearchParameters();
     const modifiedFields = _.intersection(fieldSet, topLevelFieldNames);
     if (modifiedFields.length) {
-      Logger.debug(`Rewriting search record for ${doc.title}`);
+      Logger.debug(`Rewriting search record for ${productDocument.title}`);
       ProductSearch.remove(productId);
-      if (!doc.isDeleted) { // do not create record if product was archived
+      if (!productDocument.isDeleted) { // do not create record if product was archived
         buildProductSearchRecord(productId);
       }
     } else {
@@ -93,7 +105,7 @@ Hooks.Events.add("afterUpdateCatalogProduct", (doc, options) => {
     }
   }
 
-  return doc;
+  return productDocument;
 });
 
 /**

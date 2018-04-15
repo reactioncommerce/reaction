@@ -1,4 +1,5 @@
 import { check } from "meteor/check";
+import { Hooks } from "/server/api";
 import { Products } from "/lib/collections";
 
 /**
@@ -60,6 +61,7 @@ export const methods = {
           }
         }
       }, { selector: { type: "variant" }, publish: true });
+      Hooks.Events.run("afterUpdateCatalogProduct", variant);
     });
   }
 };
