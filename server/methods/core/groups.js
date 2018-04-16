@@ -230,7 +230,7 @@ Meteor.methods({
     try {
       setUserPermissions(user, defaultCustomerGroupForShop.permissions, shopId);
       Accounts.update({ _id: userId, groups: groupId }, { $set: { "groups.$": defaultCustomerGroupForShop._id } }); // replace the old id with new id
-      Hooks.Events.run("afterAccountsUpdate", Meteor.userId(), {
+      Hooks.Events.run("afterAccountsUpdate", userId, {
         accountId: userId,
         updatedFields: ["groups"]
       });

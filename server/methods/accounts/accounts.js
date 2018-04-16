@@ -357,7 +357,7 @@ export function addressBookAdd(address, accountUserId) {
           "profile.addressBook.$.isShippingDefault": false
         }
       });
-      Hooks.Events.run("afterAccountsUpdate", Meteor.userId(), {
+      Hooks.Events.run("afterAccountsUpdate", userId, {
         accountId: account._id,
         updatedFields: ["isShippingDefault"]
       });
@@ -371,7 +371,7 @@ export function addressBookAdd(address, accountUserId) {
           "profile.addressBook.$.isBillingDefault": false
         }
       });
-      Hooks.Events.run("afterAccountsUpdate", Meteor.userId(), {
+      Hooks.Events.run("afterAccountsUpdate", userId, {
         accountId: account._id,
         updatedFields: ["isBillingDefault"]
       });
@@ -397,7 +397,7 @@ export function addressBookAdd(address, accountUserId) {
     accountsUpdateQuery.$set.name = address.fullName;
   }
 
-  Meteor.users.update(Meteor.userId(), userUpdateQuery);
+  Meteor.users.update(userId, userUpdateQuery);
 
   const result = Accounts.upsert({
     userId
@@ -523,7 +523,7 @@ export function addressBookUpdate(address, accountUserId, type) {
   }
 
   // Update the Meteor.users collection with new address info
-  Meteor.users.update(Meteor.userId(), userUpdateQuery);
+  Meteor.users.update(userId, userUpdateQuery);
 
   // Update the Reaction Accounts collection with new address info
   const updatedAccountResult = Accounts.update({
@@ -540,7 +540,7 @@ export function addressBookUpdate(address, accountUserId, type) {
   });
 
   // Run afterAccountsUpdate hook to update Accounts Search
-  Hooks.Events.run("afterAccountsUpdate", Meteor.userId(), {
+  Hooks.Events.run("afterAccountsUpdate", userId, {
     accountId: account._id,
     updatedFields
   });
@@ -598,7 +598,7 @@ export function addressBookRemove(addressId, accountUserId) {
   }, { bypassCollection2: true });
 
   // forceIndex when removing an address
-  Hooks.Events.run("afterAccountsUpdate", Meteor.userId(), {
+  Hooks.Events.run("afterAccountsUpdate", userId, {
     accountId: account._id,
     updatedFields: ["forceIndex"]
   });

@@ -9,7 +9,7 @@ import { Accounts as MeteorAccount } from "meteor/accounts-base";
 import { expect } from "meteor/practicalmeteor:chai";
 import { sinon } from "meteor/practicalmeteor:sinon";
 import { Accounts, Packages, Orders, Products, Shops, Cart } from "/lib/collections";
-import { Reaction } from "/server/api";
+import { Reaction, Hooks } from "/server/api";
 import { getShop, getAddress } from "/server/imports/fixtures/shops";
 import Fixtures from "/server/imports/fixtures";
 
@@ -85,10 +85,17 @@ describe("Account Meteor method ", function () {
       let account = Factory.create("account");
       const address = getAddress();
       expect(account.profile.addressBook.length).to.equal(1);
+
+      // stub Meteor.userId() to a userId other than the account being acted upon
+      sandbox.stub(Meteor, "userId", () => account.userId + 1);
+      const userUpdateSpy = sandbox.spy(Meteor.users, "update");
+
       Meteor.call("accounts/addressBookAdd", address, account.userId);
 
       account = Accounts.findOne(account._id);
       expect(account.profile.addressBook.length).to.equal(2);
+      expect(userUpdateSpy)
+        .to.have.been.calledWith(account.userId, sinon.match.any);
       return done();
     });
 
@@ -262,6 +269,11 @@ describe("Account Meteor method ", function () {
       sandbox.stub(Reaction, "getShopId", () => shopId);
       Meteor.call("cart/createCart", account.userId, sessionId);
 
+      // stub Meteor.userId() to a userId other than the account being acted upon
+      sandbox.stub(Meteor, "userId", () => account.userId + 1);
+      const hooksSpy = sandbox.spy(Hooks.Events, "run");
+      const userUpdateSpy = sandbox.spy(Meteor.users, "update");
+
       // we put new faker address over current address to test all fields
       // at once, but keep current address._id
       const address = Object.assign({}, account.profile.addressBook[0], getAddress());
@@ -271,6 +283,11 @@ describe("Account Meteor method ", function () {
       account = Accounts.findOne(account._id);
       const newAddress = account.profile.addressBook[0];
       expect(_.isEqual(address, newAddress)).to.be.true;
+
+      expect(hooksSpy)
+        .to.have.been.calledWith("afterAccountsUpdate", account.userId, sinon.match.any);
+      expect(userUpdateSpy)
+        .to.have.been.calledWith(account.userId, sinon.match.any);
 
       return done();
     });
@@ -445,9 +462,17 @@ describe("Account Meteor method ", function () {
       const address = account.profile.addressBook[0];
       sandbox.stub(Reaction, "hasPermission", () => true);
       expect(account.profile.addressBook.length).to.equal(1);
+
+      // stub Meteor.userId() to a userId other than the account being acted upon
+      sandbox.stub(Meteor, "userId", () => account.userId + 1);
+      const hooksSpy = sandbox.spy(Hooks.Events, "run");
+
       Meteor.call("accounts/addressBookRemove", address._id, account.userId);
       account = Accounts.findOne(account._id);
       expect(account.profile.addressBook.length).to.equal(0);
+
+      expect(hooksSpy)
+        .to.have.been.calledWith("afterAccountsUpdate", account.userId, sinon.match.any);
     });
 
     it("should throw error if wrong arguments were passed", function () {

@@ -4,7 +4,7 @@ import { check, Match } from "meteor/check";
 import { Factory } from "meteor/dburles:factory";
 import { expect } from "meteor/practicalmeteor:chai";
 import { sinon } from "meteor/practicalmeteor:sinon";
-import { Reaction } from "/server/api";
+import { Reaction, Hooks } from "/server/api";
 import { Accounts, Groups } from "/lib/collections";
 import Fixtures from "/server/imports/fixtures";
 import { getUser } from "/server/imports/fixtures/users";
@@ -132,9 +132,14 @@ describe("Group test", function () {
     let updatedUser = Meteor.users.findOne({ _id: user._id });
     expect(updatedUser.roles[shop._id]).to.include.members(sampleGroup.permissions);
 
+    const hooksSpy = sandbox.spy(Hooks.Events, "run");
+
     Meteor.call("group/removeUser", user._id, group._id);
     updatedUser = Meteor.users.findOne({ _id: user._id });
     expect(updatedUser.roles[shop._id]).to.include.members(sampleCustomerGroup.permissions);
+
+    expect(hooksSpy)
+      .to.have.been.calledWith("afterAccountsUpdate", user._id, sinon.match.any);
   });
 
   it("should ensure a user's permissions does not include roles from previous group", function () {
