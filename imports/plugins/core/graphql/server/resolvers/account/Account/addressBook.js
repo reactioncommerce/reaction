@@ -2,7 +2,7 @@ import { get } from "lodash";
 import { xformArrayToConnection } from "@reactioncommerce/reaction-graphql-xforms/connection";
 
 /**
- * @name shop
+ * @name addressBook
  * @method
  * @summary converts the `addressBook` prop on the provided account to a connection
  * @param {Object} account - result of the parent resolver, which is an Account object in GraphQL schema format
