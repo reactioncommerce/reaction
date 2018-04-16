@@ -326,15 +326,11 @@ export function updateRevision(product, options = {}) {
     const tagId = modifier.$pull.hashtags;
 
     const productCount = Products.find({
-      hashtags: {
-        $in: [tagId]
-      }
+      hashtags: tagId
     }).count();
 
     const relatedTagsCount = Tags.find({
-      relatedTagIds: {
-        $in: [tagId]
-      }
+      relatedTagIds: tagId
     }).count();
 
     if (productCount === 0 && relatedTagsCount === 0) {
