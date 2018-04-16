@@ -10,7 +10,7 @@ beforeEach(() => {
 test("default", async () => {
   mockContext.collections.Tags.find.mockReturnValueOnce("CURSOR");
   const result = await tagsByIds(mockContext, mockTagIds);
-  expect(mockContext.collections.Tags.find).toHaveBeenCalledWith({ _id: { $in: mockTagIds }, isDeleted: false });
+  expect(mockContext.collections.Tags.find).toHaveBeenCalledWith({ _id: { $in: mockTagIds }, isDeleted: { $ne: true } });
   expect(result).toBe("CURSOR");
 });
 

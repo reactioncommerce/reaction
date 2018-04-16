@@ -10,7 +10,7 @@ beforeEach(() => {
 test("default", async () => {
   mockContext.collections.Tags.find.mockReturnValueOnce("CURSOR");
   const result = await tags(mockContext, mockShopId);
-  expect(mockContext.collections.Tags.find).toHaveBeenCalledWith({ shopId: mockShopId, isDeleted: false });
+  expect(mockContext.collections.Tags.find).toHaveBeenCalledWith({ shopId: mockShopId, isDeleted: { $ne: true } });
   expect(result).toBe("CURSOR");
 });
 
@@ -24,14 +24,14 @@ test("include deleted", async () => {
 test("top-level only", async () => {
   mockContext.collections.Tags.find.mockReturnValueOnce("CURSOR");
   const result = await tags(mockContext, mockShopId, { isTopLevel: true });
-  expect(mockContext.collections.Tags.find).toHaveBeenCalledWith({ shopId: mockShopId, isDeleted: false, isTopLevel: true });
+  expect(mockContext.collections.Tags.find).toHaveBeenCalledWith({ shopId: mockShopId, isDeleted: { $ne: true }, isTopLevel: true });
   expect(result).toBe("CURSOR");
 });
 
 test("non-top-level only", async () => {
   mockContext.collections.Tags.find.mockReturnValueOnce("CURSOR");
   const result = await tags(mockContext, mockShopId, { isTopLevel: false });
-  expect(mockContext.collections.Tags.find).toHaveBeenCalledWith({ shopId: mockShopId, isDeleted: false, isTopLevel: false });
+  expect(mockContext.collections.Tags.find).toHaveBeenCalledWith({ shopId: mockShopId, isDeleted: { $ne: true }, isTopLevel: false });
   expect(result).toBe("CURSOR");
 });
 
