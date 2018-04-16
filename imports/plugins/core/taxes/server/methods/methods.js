@@ -1,6 +1,7 @@
 import { Meteor } from "meteor/meteor";
 import { Match, check } from "meteor/check";
-import { Cart, Packages } from "/lib/collections";
+import { Catalog } from "/lib/api";
+import { Cart, Packages, Products } from "/lib/collections";
 import { Taxes } from "../../lib/collections";
 import Reaction from "../api";
 import { Logger } from "/server/api";
@@ -121,6 +122,36 @@ export const methods = {
         items: itemsWithTax,
         taxRatesByShop
       }
+    });
+  },
+
+  /**
+   * @name "taxes/updateTaxCode"
+   * @method
+   * @memberof Methods/Taxes
+   * @summary updates the taxcode on options of a product.
+   * @param  {String} products array of products to be updated.
+   * @return {undefined} returns nothing
+   */
+  "taxes/updateTaxCode"(products) {
+    check(products, Array);
+    products.forEach((product) => {
+      let variants = [product];
+      if (product.type === "simple") {
+        variants = Catalog.getVariants(product._id);
+      }
+      variants.forEach((variant) => {
+        const options = Catalog.getVariants(variant._id);
+        options.forEach((option) => {
+          Products.update({
+            _id: option._id
+          }, {
+            $set: {
+              taxCode: variant.taxCode
+            }
+          }, { selector: { type: "variant" }, publish: true });
+        });
+      });
     });
   },
 

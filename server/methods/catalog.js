@@ -554,6 +554,7 @@ Meteor.methods({
     const assembledVariant = Object.assign(newVariant || {}, {
       _id: newVariantId,
       ancestors,
+      taxCode: product.taxCode,
       type: "variant"
     });
 
