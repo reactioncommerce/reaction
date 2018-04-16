@@ -1,12 +1,13 @@
 import { merge } from "lodash";
 import account from "./account";
+import catalog from "./catalog";
 import core from "./core";
 import ping from "./ping";
 import scalar from "./scalar";
 import shop from "./shop";
 import tag from "./tag";
 
-export default merge({}, account, core, scalar, ping, shop, tag);
+export default merge({}, account, catalog, core, scalar, ping, shop, tag);
 
 /**
  * Arguments passed by the client for a query

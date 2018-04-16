@@ -7,8 +7,6 @@ type PriceRange {
 
 "This interface represents the fields that are identical for both Products and Variants"
 interface CatalogProductOrVariant {
-  ancestorIds: [ID]
-  ancestors: [CatalogProductOrVariant]
   barcode: String
   compareAtPrice: Float
   createdAt: DateTime!
@@ -35,8 +33,6 @@ interface CatalogProductOrVariant {
 
 type CatalogProduct implements CatalogProductOrVariant & Node & Deletable {
   _id: ID!
-  ancestorIds: [ID]
-  ancestors: [CatalogProductOrVariant]
   barcode: String
   compareAtPrice: Float
   createdAt: DateTime!
@@ -60,12 +56,14 @@ type CatalogProduct implements CatalogProductOrVariant & Node & Deletable {
   parcel: ShippingParcel
   pinterestMessage: String
   price: PriceRange
+  primaryImage: ImageInfo
   productType: String
   requiresShipping: Boolean
   shop: Shop!
   sku: String
   slug: String
-  tags: TagConnection
+  tagIds: [ID]
+  tags(after: ConnectionCursor, before: ConnectionCursor, first: ConnectionLimitInt, last: ConnectionLimitInt, sortOrder: SortOrder = asc, sortBy: TagSortByField = _id): TagConnection
   taxCode: String
   taxDescription: String
   taxable: Boolean
@@ -81,8 +79,7 @@ type CatalogProduct implements CatalogProductOrVariant & Node & Deletable {
 
 type CatalogProductVariant implements CatalogProductOrVariant & Node & Deletable {
   _id: ID!
-  ancestorIds: [ID]
-  ancestors: [CatalogProductOrVariant]
+  ancestorIds: [ID]!
   barcode: String
   compareAtPrice: Float
   createdAt: DateTime!
@@ -91,7 +88,6 @@ type CatalogProductVariant implements CatalogProductOrVariant & Node & Deletable
   index: Int
   inventoryManagement: Boolean
   inventoryPolicy: Boolean
-  inventoryQuantity: Int
   isDeleted: Boolean!
   isLowQuantity: Boolean
   isSoldOut: Boolean
@@ -115,7 +111,14 @@ type CatalogProductVariant implements CatalogProductOrVariant & Node & Deletable
   width: Float
 }
 
-type CatalogItemProduct implements Node {
+interface CatalogItem {
+  _id: ID!
+  shop: Shop!
+  createdAt: DateTime
+  updatedAt: DateTime
+}
+
+type CatalogItemProduct implements CatalogItem {
   _id: ID!
   shop: Shop!
   product: CatalogProduct
@@ -123,21 +126,19 @@ type CatalogItemProduct implements Node {
   updatedAt: DateTime
 }
 
-type CatalogItemContent implements Node {
+type CatalogItemContent implements CatalogItem {
   _id: ID!
   shop: Shop!
   createdAt: DateTime
   updatedAt: DateTime
 }
 
-union CatalogItem = CatalogItemProduct | CatalogItemContent
-
-type CatalogItemEdge implements NodeEdge {
+type CatalogItemEdge {
   cursor: ConnectionCursor!
   node: CatalogItem
 }
 
-type CatalogItemConnection implements NodeConnection {
+type CatalogItemConnection {
   edges: [CatalogItemEdge]
   nodes: [CatalogItem]
   pageInfo: PageInfo!
@@ -152,12 +153,31 @@ type Catalog implements Node {
   updatedAt: DateTime
 }
 
-input CatalogFilter {
-  shopIds: [ID]
-  tags: [String]
+enum CatalogItemSortByField {
+  _id
+  createdAt
+  updatedAt
 }
 
 extend type Query {
   "Gets items from a shop catalog"
-  catalogItems(filter: CatalogFilter): CatalogItemConnection
+  catalogItems(
+    "Provide a list of shop IDs from which you want to get catalog items"
+    shopIds: [ID]!
+
+    "Optionally provide a list of tag IDs to further filter the item list"
+    tagIds: [ID]
+
+    "Set to true if you want soft deleted items to be included in the response"
+    shouldIncludeDeleted: Boolean = false,
+
+    after: ConnectionCursor,
+    before: ConnectionCursor,
+    first: ConnectionLimitInt,
+    last: ConnectionLimitInt,
+    sortOrder: SortOrder = desc,
+
+    "By default, items are sorted by when they were created, newest first. Set this to sort by one of the other allowed fields"
+    sortBy: CatalogItemSortByField = createdAt
+  ): CatalogItemConnection
 }
