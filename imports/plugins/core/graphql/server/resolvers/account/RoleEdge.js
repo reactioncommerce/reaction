@@ -1,4 +1,4 @@
 export default {
-  cursor: (roles) => roles._id,
-  node: (roles) => roles
+  cursor: (role) => role._id,
+  node: (role) => role
 };
