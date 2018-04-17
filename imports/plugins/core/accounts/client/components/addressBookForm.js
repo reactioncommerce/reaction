@@ -157,7 +157,7 @@ class AddressBookForm extends Component {
       });
     } else {
       this.setState({
-        validation: null
+        validation: undefined
       });
     }
     return isValid;
