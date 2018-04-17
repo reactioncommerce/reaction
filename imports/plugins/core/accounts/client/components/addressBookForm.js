@@ -134,7 +134,11 @@ class AddressBookForm extends Component {
       // setting the fields region to be the
       // first region in options array
       const [firstRegion] = regions;
-      fields.region = firstRegion;
+      if (firstRegion !== null && typeof firstRegion === "object") {
+        fields.region = firstRegion.value;
+      } else {
+        fields.region = firstRegion;
+      }
       this.setState({ regions, fields });
     }
   }
@@ -144,7 +148,10 @@ class AddressBookForm extends Component {
     const validation = { messages: {} };
     let isValid = true;
     Object.keys(enteredAddress).forEach((key) => {
-      if (requiredFields.indexOf(key) > -1 && !enteredAddress[key].trim()) {
+      if (enteredAddress[key] && typeof enteredAddress[key] === "string" && requiredFields.indexOf(key) > -1) {
+        enteredAddress[key] = enteredAddress[key].trim();
+      }
+      if (requiredFields.indexOf(key) > -1 && !enteredAddress[key]) {
         validation.messages[key] = {
           message: `${this.fieldLabelMap[key].label} is required`
         };
