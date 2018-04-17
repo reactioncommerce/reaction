@@ -144,7 +144,7 @@ class AddressBookForm extends Component {
     const validation = { messages: {} };
     let isValid = true;
     Object.keys(enteredAddress).forEach((key) => {
-      if (requiredFields.indexOf(key) > -1 && !enteredAddress[key]) {
+      if (requiredFields.indexOf(key) > -1 && !enteredAddress[key].trim()) {
         validation.messages[key] = {
           message: `${this.fieldLabelMap[key].label} is required`
         };
