@@ -1,4 +1,5 @@
 import util from "util";
+import { merge } from "lodash";
 import graphql from "graphql.js";
 import findFreePort from "find-free-port";
 import Datastore from "nedb";
@@ -11,9 +12,35 @@ import queries from "../imports/plugins/core/graphql/server/queries";
 const loginToken = "LOGIN_TOKEN";
 const hashedToken = "5b4TxnA+4UFjJLDxvntNe8D6VXzVtiRXyKFo8mta+wU=";
 
-// nedb has `.exec` on cursor rather than `.toArray`
-Cursor.prototype.toArray = Cursor.prototype.exec;
-Cursor.prototype.count = Cursor.prototype.exec;
+// nedb does not fully and correctly implement the latest
+// MongoDB Cursor schema, so we make some adjustments here
+Object.assign(Cursor.prototype, {
+  get cmd() {
+    return { query: this.query };
+  },
+  filter(query) {
+    merge(this.query, query);
+    return this;
+  },
+  get options() {
+    return {
+      db: {
+        collection: () => this.db,
+        databaseName: "reaction"
+      }
+    };
+  },
+  ns: "reaction.collection",
+  toArray() {
+    return util.promisify(this.exec.bind(this))();
+  },
+  clone() {
+    return new Cursor(this.db, this.query, this.execFn);
+  },
+  count() {
+    return util.promisify(this.exec.bind(this))();
+  }
+});
 
 // nedb does not have the Promise API, so we need to create it for everything we await
 [

@@ -8,10 +8,9 @@ import { Meteor } from "meteor/meteor";
  * @param {Object} params - request parameters
  * @param {String[]} [params.shopIds] - Shop IDs to include (OR)
  * @param {String[]} [params.tags] - Tag IDs to include (OR)
- * @param {Boolean} [params.shouldIncludeDeleted] - Whether or not to include `isDeleted=true` tags. Default is `false`
  * @return {Promise<MongoCursor>} - A MongoDB cursor for the proper query
  */
-export default async function catalogItems(context, { shopIds, tagIds, shouldIncludeDeleted } = {}) {
+export default async function catalogItems(context, { shopIds, tagIds } = {}) {
   const { collections } = context;
   const { Catalog } = collections;
 
@@ -19,11 +18,13 @@ export default async function catalogItems(context, { shopIds, tagIds, shouldInc
     throw new Meteor.Error("invalid-param", "You must provide tagIds or shopIds or both");
   }
 
-  const query = {};
+  const query = {
+    isDeleted: { $ne: true },
+    isVisible: { $ne: false }
+  };
 
   if (shopIds) query.shopId = { $in: shopIds };
   if (tagIds) query.hashtags = { $in: tagIds };
-  if (shouldIncludeDeleted !== true) query.isDeleted = { $ne: true };
 
   return Catalog.find(query);
 }
