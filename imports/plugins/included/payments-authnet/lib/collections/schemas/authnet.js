@@ -25,6 +25,10 @@ export const AuthNetPackageConfig = PackageConfig.clone().extend({
     type: Boolean,
     defaultValue: false
   },
+  "settings.reaction-auth-net": {
+    type: Object,
+    defaultValue: {}
+  },
   "settings.reaction-auth-net.support": {
     type: Array,
     label: "Payment provider supported methods"
