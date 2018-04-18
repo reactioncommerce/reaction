@@ -17,6 +17,10 @@ export const PaypalPackageConfig = PackageConfig.clone().extend({
     label: "Capture at time of Auth",
     defaultValue: false
   },
+  "settings.express": {
+    type: Object,
+    defaultValue: {}
+  },
   "settings.express.support": {
     type: Array,
     label: "Payment provider supported methods"
@@ -24,6 +28,10 @@ export const PaypalPackageConfig = PackageConfig.clone().extend({
   "settings.express.support.$": {
     type: String,
     allowedValues: ["Authorize", "De-authorize", "Capture", "Refund"]
+  },
+  "settings.payflow": {
+    type: Object,
+    defaultValue: {}
   },
   "settings.payflow.support": {
     type: Array,

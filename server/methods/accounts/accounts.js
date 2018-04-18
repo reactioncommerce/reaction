@@ -1072,14 +1072,14 @@ export function setProfileCurrency(currencyName, accountId) {
   check(currencyName, String);
   check(accountId, Match.Maybe(String));
 
-  const userId = accountId || this.userId;
-  if (!userId) throw new Meteor.Error("access-denied", "You must be logged in to set your profile currency");
+  const currentUserId = this.userId;
+  const userId = accountId || currentUserId;
+  if (!userId) throw new Meteor.Error("access-denied", "You must be logged in to set profile currency");
 
   const account = Accounts.findOne({ userId }, { fields: { shopId: 1 } });
-
   if (!account) throw new Meteor.Error("not-found", "Account not found");
 
-  if (!Reaction.hasPermission("reaction-accounts", Meteor.userId(), account.shopId)) {
+  if (userId !== currentUserId && !Reaction.hasPermission("reaction-accounts", currentUserId, account.shopId)) {
     throw new Meteor.Error("access-denied", "Access denied");
   }
 

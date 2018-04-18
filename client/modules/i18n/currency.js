@@ -38,7 +38,7 @@ export function findCurrency(defaultCurrency, useDefaultShopCurrency) {
     }
     return userCurrency;
   }
-  return shopCurrency;
+  return shop.currencies[shopCurrency];
 }
 
 /**
