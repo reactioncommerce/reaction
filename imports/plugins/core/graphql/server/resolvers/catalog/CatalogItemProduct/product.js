@@ -9,7 +9,9 @@ import { xformProductMedia } from "@reactioncommerce/reaction-graphql-xforms/cat
  */
 export default function product(item) {
   const { media } = item;
-  const primaryImage = (media || []).find(({ metadata = {} }) => metadata.productId === item.productId && metadata.priority === 1);
+  const primaryImage = (media || [])
+    .sort((a, b) => a.metadata.priority - b.metadata.priority)
+    .find(({ metadata = {} }) => metadata.productId === item.productId);
 
   return {
     ...item,
