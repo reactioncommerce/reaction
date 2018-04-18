@@ -38,6 +38,10 @@ export const MarketplacePackageConfig = PackageConfig.clone().extend({
     blackbox: true,
     optional: true
   },
+  "settings.shops": {
+    type: Object,
+    defaultValue: {}
+  },
   "settings.shops.enabledShopTypes": {
     type: Array,
     defaultValue: [{
