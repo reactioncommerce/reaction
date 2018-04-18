@@ -13,7 +13,7 @@ class TextField extends Component {
    */
   get value() {
     // if the props.value is not a number
-    // return ether the value or and empty string
+    // return either the value or and empty string
     if (isNaN(this.props.value)) {
       return this.props.value || "";
     }

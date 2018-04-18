@@ -272,10 +272,6 @@ class AddressBook extends Component {
             mode: "review",
             validationResults: result
           });
-        } else {
-          this.setState({
-            mode: "grid"
-          });
         }
       })
       .catch(onError);
