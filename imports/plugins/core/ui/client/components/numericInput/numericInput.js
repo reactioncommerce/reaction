@@ -197,6 +197,7 @@ class NumericInput extends Component {
           disabled={this.props.disabled}
           onFocus={this.onFocus}
           onBlur={this.onBlur}
+          ref="input"
           onChange={this.handleChange}
           value={this.displayValue}
         />
