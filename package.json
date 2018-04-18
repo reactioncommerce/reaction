@@ -193,10 +193,10 @@
     "test": "npm run test:unit && npm run test:app",
     "test:app": "meteor test --once --full-app --driver-package meteortesting:mocha",
     "test:app:watch": "TEST_WATCH=1 meteor test --full-app --driver-package meteortesting:mocha",
-    "test:unit": "NODE_ENV=jesttest jest --testPathIgnorePatterns /tests/",
-    "test:unit:watch": "NODE_ENV=jesttest jest --watch",
-    "test:integration": "NODE_ENV=jesttest jest /tests/",
-    "test:integration:watch": "NODE_ENV=jesttest jest --watch /tests/",
+    "test:unit": "NODE_ENV=jesttest BABEL_DISABLE_CACHE=1 jest --no-cache --testPathIgnorePatterns /tests/",
+    "test:unit:watch": "NODE_ENV=jesttest BABEL_DISABLE_CACHE=1 jest --no-cache --watch",
+    "test:integration": "NODE_ENV=jesttest BABEL_DISABLE_CACHE=1 jest --no-cache /tests/",
+    "test:integration:watch": "NODE_ENV=jesttest BABEL_DISABLE_CACHE=1 jest --no-cache --watch /tests/",
     "docs": "jsdoc . --configure .reaction/jsdoc/jsdoc.json --readme .reaction/jsdoc/templates/static/README.md"
   },
   "babel": {
