@@ -43,6 +43,10 @@ export const AvalaraPackageConfig = TaxPackageConfig.clone().extend({
     label: "Shipping Tax Code",
     type: String
   },
+  "settings.addressValidation": {
+    type: Object,
+    defaultValue: {}
+  },
   "settings.addressValidation.enabled": {
     label: "Address Validation",
     type: Boolean,

@@ -5,7 +5,6 @@
 export default function defineCollections(db, collections) {
   Object.assign(collections, {
     Accounts: db.collection("Accounts"),
-    AnalyticsEvents: db.collection("AnalyticsEvents"),
     Assets: db.collection("Assets"),
     Cart: db.collection("Cart"),
     Catalog: db.collection("Catalog"),
