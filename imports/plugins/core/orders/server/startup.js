@@ -1,18 +1,6 @@
 import { Meteor } from "meteor/meteor";
 import { Hooks } from "/server/api";
-import { AnalyticsEvents } from "/lib/collections";
 
-
-Hooks.Events.add("afterOrderInsert", (order) => {
-  const analyticsEvent = {
-    eventType: "buy",
-    value: order._id,
-    label: "bought products"
-  };
-  AnalyticsEvents.insert(analyticsEvent);
-
-  return order;
-});
 
 /**
 *  Step 3 of the "workflow/pushOrderWorkflow" flow
