@@ -10,9 +10,9 @@ import { xformArrayToConnection } from "@reactioncommerce/reaction-graphql-xform
  */
 
 /**
- * @name tags
+ * @name subTags
  * @method
- * @summary Returns the tags for the parent resolver shop
+ * @summary Returns the child tags for a tag
  * @param {Object} tag - Tag response from parent resolver
  * @param {SubTagConnectionArgs} args - arguments sent by the client {@link ConnectionArgs|See default connection arguments}
  * @param {Object} context - an object containing the per-request state

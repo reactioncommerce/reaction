@@ -7,6 +7,7 @@ const mockContext = {
 
 [
   "Accounts",
+  "Catalog",
   "Groups",
   "roles",
   "Shops",

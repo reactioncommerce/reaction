@@ -21,6 +21,7 @@ services:
     environment:
       ROOT_URL: "http://localhost:3030"
       MONGO_URL: "mongodb://mongo:27017/reaction"
+      BABEL_DISABLE_CACHE: 1 # This is needed to pick up changes to .graphql files. See https://www.npmjs.com/package/babel-plugin-inline-import#caveats
     networks:
       default:
       reaction-api:
@@ -41,6 +42,7 @@ services:
       METEOR_DISABLE_OPTIMISTIC_CACHING: 1
       MONGO_URL: "mongodb://mongo:27017/reaction"
       ROOT_URL: "http://localhost:3000"
+      BABEL_DISABLE_CACHE: 1 # This is needed to pick up changes to .graphql files. See https://www.npmjs.com/package/babel-plugin-inline-import#caveats
     networks:
       default:
       reaction-api:

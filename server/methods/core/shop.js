@@ -757,15 +757,11 @@ Meteor.methods({
     });
     // check to see if tag is in use.
     const productCount = Collections.Products.find({
-      hashtags: {
-        $in: [tagId]
-      }
+      hashtags: tagId
     }).count();
     // check to see if in use as a related tag
     const relatedTagsCount = Collections.Tags.find({
-      relatedTagIds: {
-        $in: [tagId]
-      }
+      relatedTagIds: tagId
     }).count();
     // not in use anywhere, delete it
     if (productCount === 0 && relatedTagsCount === 0) {
