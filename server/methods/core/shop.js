@@ -14,32 +14,40 @@ import * as Schemas from "/lib/collections/schemas";
  * @summary Returns an existing shop object, with some values removed or changed such
  *   that it is suitable for inserting as a new shop.
  * @method
- * @param {String} shopId - the ID of the shop to clone
+ * @param {Object} shop - the shop to clone
+ * @param {Object} partialShopData - any properties you'd like to override
  * @return {Object|null} The cloned shop object or null if a shop with that ID can't be found
  */
-function cloneShop(shopId) {
-  const shop = Collections.Shops.findOne(shopId);
-  if (!shop) return null;
+function cloneShop(shop, partialShopData = {}) {
+  // if a name is not provided, generate a unique name
+  if (!partialShopData || !partialShopData.name) {
+    const count = Collections.Shops.find().count() || "";
+    shop.name += count;
+  }
+
+  // merge in the partial shop data and some other current user attributes
+  Object.assign(shop, partialShopData || {});
+
+  const cleanShop = Schemas.Shop.clean(shop);
 
   // Never create a second primary shop
-  if (shop.shopType === "primary") shop.shopType = "merchant";
-
-  // Ensure unique id and shop name
-  const count = Collections.Shops.find().count() || "";
-  shop.name += count;
+  if (!cleanShop.shopType || cleanShop.shopType === "primary") {
+    cleanShop.shopType = "merchant";
+  }
 
   // Clean up values that get automatically added
-  delete shop._id;
-  delete shop.createdAt;
-  delete shop.updatedAt;
-  delete shop.slug;
+  delete cleanShop._id;
+  delete cleanShop.createdAt;
+  delete cleanShop.updatedAt;
+  delete cleanShop.slug;
   // TODO audience permissions need to be consolidated into [object] and not [string]
   // permissions with [string] on layout ie. orders and checkout, cause the insert to fail
-  delete shop.layout;
+  delete cleanShop.layout;
   // delete brandAssets object from shop to prevent new shops from carrying over existing shop's
   // brand image
-  delete shop.brandAssets;
-  return shop;
+  delete cleanShop.brandAssets;
+
+  return cleanShop;
 }
 
 /**
@@ -123,16 +131,20 @@ Meteor.methods({
    * @method
    * @memberof Methods/Shop
    * @param {String} shopAdminUserId - optionally create shop for provided userId
-   * @param {Object} shopData - optionally provide shop object to customize
+   * @param {Object} partialShopData - optionally provide a subset of shop data
+   *                 which will be merged with properties from the primary shop
+   *                 in order to create a document which meets the Shops schema
+   *                 requirements.
    * @return {String} return shopId
    */
-  "shop/createShop"(shopAdminUserId, shopData) {
+  "shop/createShop"(shopAdminUserId, partialShopData) {
     check(shopAdminUserId, Match.Optional(String));
-    if (shopData) {
-      Collections.Shops.simpleSchema(shopData).validate(shopData);
-      // Never create a second primary shop
-      if (shopData.shopType === "primary") shopData.shopType = "merchant";
-    }
+    // It is not necessary to test whether shopData is valid against the Shops
+    // schema here, as shopData can be a subset of data. Later, shopData is
+    // combined with a copy of the Primary Shop to fill in the gaps. It is at
+    // that point that we validate/`check` that the combined object is valid
+    // against the Shops schema.
+    check(partialShopData, Match.Maybe(Object));
 
     // Get the current marketplace settings
     const marketplace = Reaction.getMarketplaceSettings();
@@ -151,7 +163,7 @@ Meteor.methods({
       throw new Meteor.Error("access-denied", "Access Denied");
     }
 
-    // Users may only create shops for themselves
+    // Non-admin users may only create shops for themselves
     if (!hasPrimaryShopOwnerPermission && shopAdminUserId !== Meteor.userId()) {
       throw new Meteor.Error("access-denied", "Access Denied");
     }
@@ -170,7 +182,6 @@ Meteor.methods({
 
     let shopUser = currentUser;
     let shopAccount = currentAccount;
-
     // TODO: Create a grantable permission for creating shops so we can decouple ownership from shop creation
     // Only marketplace owners can create shops for others
     if (hasPrimaryShopOwnerPermission) {
@@ -188,10 +199,12 @@ Meteor.methods({
       );
     }
 
-    // we'll accept a shop object, or clone the current shop
-    const shop = shopData || cloneShop(primaryShopId);
+    const shop = cloneShop(Reaction.getPrimaryShop(), partialShopData);
+
     shop.emails = shopUser.emails;
     shop.addressBook = shopAccount.addressBook;
+
+    Collections.Shops.simpleSchema(shop).validate(shop);
 
     let newShopId;
 
@@ -229,7 +242,7 @@ Meteor.methods({
     Collections.Shops.update({ _id: primaryShopId }, {
       $addToSet: {
         merchantShops: {
-          _id: newShop._id,
+          _id: newShopId,
           slug: newShop.slug,
           name: newShop.name
         }
