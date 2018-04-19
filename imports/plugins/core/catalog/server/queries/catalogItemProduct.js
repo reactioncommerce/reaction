@@ -3,23 +3,32 @@ import { Meteor } from "meteor/meteor";
 /**
  * @name catalogItemProduct
  * @method
- * @summary query the Catalog by shop ID and/or tag ID
+ * @summary query the Catalog for a single Product by id or slug
+ * id takes priority if both are provided, throws meteor error if neither
  * @param {Object} context - an object containing the per-request state
  * @param {Object} params - request parameters
- * @param {String[]} [params.shopIds] - Shop IDs to include (OR)
- * @return {Promise<MongoCursor>} - A MongoDB cursor for the proper query
+ * @param {String} [params._id] - Product id to include
+ * @param {String} [param.slug] - Product slug (handle)
+ * @return {Object} - A Product from the Catalog
  */
-export default async function catalogItemProduct(context, { slugOrId } = {}) {
+export default async function catalogItemProduct(context, { _id, slug } = {}) {
   const { collections } = context;
   const { Catalog } = collections;
 
-  if (!slugOrId) {
-    throw new Meteor.Error("invalid-param", "You must provide a slug or product id");
+  if (!_id && !slug) {
+    throw new Meteor.Error("invalid-param", "You must provide a product slug or product id");
   }
 
   const query = {
-    $or: [{ handle: slugOrId }, { _id: slugOrId }]
+    isDeleted: { $ne: true },
+    isVisible: { $ne: false }
   };
+
+  if (_id) {
+    query._id = _id;
+  } else {
+    query.handle = slug;
+  }
 
   return Catalog.findOne(query);
 }
