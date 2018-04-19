@@ -10,7 +10,6 @@ import { Packages } from "/lib/collections";
  *       synchronization between a Shopify store and a Reaction shop
  * @module connectors-shopify
  */
-
 export const methods = {
   /**
    * Meteor method for creating a shopify webhook for the active shop
@@ -50,16 +49,25 @@ export const methods = {
 
     const host = options.webhooksDomain || Meteor.absoluteUrl();
     const webhookAddress = `${host}webhooks/shopify/${options.topic.replace(/\//g, "-")}?shopId=${Reaction.getShopId()}`;
-    try {
-      // Create webhook on Shopify
-      const webhookResponse = await shopify.webhook.create({
-        topic: options.topic,
-        address: webhookAddress,
-        format: "json"
-      });
 
+    try {
+      let shopifyId;
+      // Create webhook on Shopify if it isn't installed yet
+      const webhooks = await shopify.webhook.list({
+        address: webhookAddress
+      });
+      if (webhooks.length === 0) {
+        const webhookResponse = await shopify.webhook.create({
+          topic: options.topic,
+          address: webhookAddress,
+          format: "json"
+        });
+        shopifyId = webhookResponse.id;
+      } else {
+        shopifyId = webhooks[0].id;
+      }
       const webhook = {
-        shopifyId: webhookResponse.id,
+        shopifyId,
         topic: options.topic,
         address: webhookAddress,
         format: "json",
@@ -67,6 +75,7 @@ export const methods = {
         // TODO: Add method to update an existing webhook if we want to change the integrations that use it
         //       E.g. turn on inventory sync, but turn off order sync - both might use the same webhook subscription
       };
+
 
       // Add webhook to webhooks array in Shop specific connectors-shopify pkg
       Packages.update({ _id: shopifyPkg._id }, {
