@@ -288,7 +288,7 @@ type CatalogItemPosition {
   tagId: ID!
 
   "The date and time at which this item position was last updated"
-  updatedAt: DateTime!
+  updatedAt: DateTime
 }
 
 """

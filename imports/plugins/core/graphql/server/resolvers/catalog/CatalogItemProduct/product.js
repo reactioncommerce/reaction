@@ -15,7 +15,7 @@ export default function product(item) {
 
   return {
     ...item,
-    isTaxable: item.taxable,
+    isTaxable: !!item.taxable,
     media: media.map(xformProductMedia),
     primaryImage: xformProductMedia(primaryImage),
     tagIds: item.hashtags,

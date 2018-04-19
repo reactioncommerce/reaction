@@ -11,6 +11,7 @@ export default async function variants(product) {
 
   return productVariants.filter((variant) => !variant.isDeleted && variant.isVisible).map((variant) => ({
     ...variant,
+    index: variant.index || 0,
     isBackorder: !!variant.isBackorder,
     isLowQuantity: !!variant.isLowQuantity,
     isSoldOut: !!variant.isSoldOut,

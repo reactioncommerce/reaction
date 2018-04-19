@@ -35,7 +35,7 @@ export default async function positions(product, _, context) {
     const info = productPositions[tag];
     return {
       displayWeight: info.weight,
-      isPinned: info.pinned,
+      isPinned: !!info.pinned,
       position: info.position || 1,
       tagId,
       updatedAt: info.updatedAt
