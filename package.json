@@ -167,10 +167,13 @@
     "eslint-plugin-jest": "^21.14.0",
     "eslint-plugin-jsx-a11y": "^6.0.3",
     "eslint-plugin-react": "^7.7.0",
+    "find-free-port": "^1.2.0",
+    "graphql.js": "^0.4.20",
     "jest": "^22.4.2",
     "jest-junit": "^3.6.0",
     "js-yaml": "^3.10.0",
     "jsdoc": "^3.5.5",
+    "nedb": "^1.8.0",
     "nodemon": "^1.17.2",
     "react-addons-test-utils": "15.6.2",
     "snyk": "^1.71.0"
@@ -190,8 +193,10 @@
     "test": "npm run test:unit && npm run test:app",
     "test:app": "meteor test --once --full-app --driver-package meteortesting:mocha",
     "test:app:watch": "TEST_WATCH=1 meteor test --full-app --driver-package meteortesting:mocha",
-    "test:unit": "NODE_ENV=jesttest jest",
+    "test:unit": "NODE_ENV=jesttest jest --testPathIgnorePatterns /tests/",
     "test:unit:watch": "NODE_ENV=jesttest jest --watch",
+    "test:integration": "NODE_ENV=jesttest jest /tests/",
+    "test:integration:watch": "NODE_ENV=jesttest jest --watch /tests/",
     "docs": "jsdoc . --configure .reaction/jsdoc/jsdoc.json --readme .reaction/jsdoc/templates/static/README.md"
   },
   "babel": {
