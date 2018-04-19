@@ -7,13 +7,63 @@ import { Template } from "meteor/templating";
 import { $ } from "meteor/jquery";
 import { Tracker } from "meteor/tracker";
 import { ReactiveVar } from "meteor/reactive-var";
+import SimpleSchema from "simpl-schema";
 import { Reaction } from "/client/api";
 import { Shops, Translations, Packages } from "/lib/collections";
-import { getSchemas } from "@reactioncommerce/reaction-collections";
+import Schemas from "@reactioncommerce/schemas";
 import i18next, { getLabelsFor, getValidationErrorMessages, i18nextDep, currencyDep } from "./main";
 import { mergeDeep } from "/lib/api";
 
-//
+/**
+ * Every schema that feature an expireMonth and an expireYear
+ * field will be validated against the dateBeforeNow rule.
+ */
+SimpleSchema.addValidator(function () {
+  let expireMonth;
+  let expireYear;
+  let sibling;
+  if (this.key === "expireMonth") {
+    sibling = "expireYear";
+    expireMonth = this.value;
+    expireYear = this.field(sibling).value;
+  }
+  if (this.key === "expireYear") {
+    sibling = "expireMonth";
+    expireMonth = this.field(sibling).value;
+    expireYear = this.value;
+  }
+  if (expireYear && expireMonth) {
+    const now = new Date();
+    const expire = new Date(expireYear, expireMonth);
+    if (now > expire) {
+      return "dateBeforeNow";
+    }
+
+    // Remove error message from the other field as well.
+    const validationErrors = this.validationContext && this.validationContext._validationErrors;
+    const deps = this.validationContext && this.validationContext._deps;
+    if (validationErrors) {
+      const index = validationErrors.findIndex((error) => error.name === sibling && error.type === "dateBeforeNow");
+      if (index !== -1) {
+        validationErrors.splice(index, 1);
+        if (deps) deps[sibling].changed();
+      }
+    }
+  }
+});
+
+/**
+ * Error messages that are used for all SimpleSchema instances
+ * ATM, validation errors are not translated in Reaction in general.
+ */
+SimpleSchema.setDefaultMessages({
+  messages: {
+    en: {
+      dateBeforeNow: "Dates in the past are not allowed."
+    }
+  }
+});
+
 // setup options for i18nextBrowserLanguageDetector
 // note: this isn't fully operational yet
 // language is set by user currently
@@ -111,7 +161,6 @@ Meteor.startup(() => {
           resources
         }, () => {
           // Loop through registered Schemas to change labels and messages
-          const Schemas = getSchemas();
           for (const schemaName in Schemas) {
             if ({}.hasOwnProperty.call(Schemas, schemaName)) {
               const schemaInstance = Schemas[schemaName];

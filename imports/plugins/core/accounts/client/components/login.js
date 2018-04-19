@@ -1,7 +1,7 @@
 import React, { Component } from "react";
+import { Random } from "meteor/random";
 import PropTypes from "prop-types";
 import { Components, registerComponent } from "@reactioncommerce/reaction-components";
-import { Random } from "meteor/random";
 
 class Login extends Component {
   static propTypes = {
@@ -13,7 +13,7 @@ class Login extends Component {
   static defaultProps = {
     credentials: {},
     loginFormCurrentView: "loginFormSignInView",
-    uniqueId: Random.id()
+    get uniqueId() { return Random.id(); }
   }
 
   constructor(props) {

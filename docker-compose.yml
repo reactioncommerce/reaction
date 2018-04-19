@@ -4,28 +4,61 @@
 
 version: '3.4'
 
+networks:
+  reaction-api:
+    external:
+      name: reaction-api
+
 services:
+
+  devserver:
+    build:
+      context: .
+      dockerfile: Dockerfile-devserver
+    command: bash -c "npm install && npm run devserver"
+    depends_on:
+      - mongo
+    environment:
+      ROOT_URL: "http://localhost:3030"
+      MONGO_URL: "mongodb://mongo:27017/reaction"
+    networks:
+      default:
+      reaction-api:
+    ports:
+      - "3030:3030"
+    volumes:
+      - .:/app
+      - devserver_node_modules:/app/node_modules # do not link node_modules in, and persist it between dc up runs
+
   reaction:
     build:
       context: .
       target: meteor-dev
-    command: "reaction"
+    command: bash -c "meteor npm install && reaction"
     depends_on:
       - mongo
     environment:
-      ROOT_URL: "http://localhost"
+      METEOR_DISABLE_OPTIMISTIC_CACHING: 1
       MONGO_URL: "mongodb://mongo:27017/reaction"
+      ROOT_URL: "http://localhost:3000"
+    networks:
+      default:
+      reaction-api:
     ports:
       - "3000:3000"
     volumes:
       - .:/opt/reaction/src
+      - reaction_node_modules:/opt/reaction/src/node_modules # do not link node_modules in, and persist it between dc up runs
 
   mongo:
     image: mongo:3.4
     command: mongod --storageEngine=wiredTiger
+    ports:
+      - "27017:27017"
     volumes:
       - mongo-db:/data/db
 
 volumes:
+  devserver_node_modules:
   mongo-db:
-
+  reaction_node_modules:

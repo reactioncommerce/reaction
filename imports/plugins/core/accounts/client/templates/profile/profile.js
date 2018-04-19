@@ -115,6 +115,18 @@ Template.accountProfile.helpers({
   },
 
   /**
+   * @method AddressBook
+   * @summary returns a component for updating a user's address.
+   * @since 2.0.0
+   * @return {Object} - contains the component for updating a user's address.
+   */
+  AddressBook() {
+    return {
+      component: Components.AddressBook
+    };
+  },
+
+  /**
    * @method userHasPassword
    * @summary checks whether a user has set a password for his/her account.
    * @since 1.5.0

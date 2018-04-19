@@ -1,7 +1,7 @@
 /* eslint camelcase: 0 */
 import SimpleSchema from "simpl-schema";
 import { Accounts } from "/lib/collections";
-import { registerSchema } from "/imports/plugins/core/collections";
+import { registerSchema } from "@reactioncommerce/schemas";
 
 /**
  * @file ShopifyCustomer

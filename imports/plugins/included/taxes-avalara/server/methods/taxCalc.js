@@ -1,6 +1,7 @@
 import os from "os";
 import _ from "lodash";
 import accounting from "accounting-js";
+import SimpleSchema from "simpl-schema";
 import { Meteor } from "meteor/meteor";
 import { HTTP } from "meteor/http";
 import { check } from "meteor/check";
@@ -8,6 +9,34 @@ import { Shops, Accounts } from "/lib/collections";
 import { TaxCodes } from "/imports/plugins/core/taxes/lib/collections";
 import { Reaction, Logger } from "/server/api";
 import Avalogger from "./avalogger";
+
+const errorDetails = new SimpleSchema({
+  message: {
+    type: String
+  },
+  description: {
+    type: String,
+    optional: true
+  }
+});
+
+  // Validate that whenever we return an error we return the same format
+const ErrorObject = new SimpleSchema({
+  "type": {
+    type: String
+  },
+  "errorCode": {
+    type: Number
+  },
+  "errorDetails": {
+    type: Array,
+    optional: true
+  },
+  "errorDetails.$": {
+    type: errorDetails,
+    optional: true
+  }
+});
 
 let moment;
 async function lazyLoadMoment() {
@@ -95,19 +124,13 @@ function getTaxSettings(userId) {
 function parseError(error) {
   let errorData;
   // The Avalara API constantly times out, so handle this special case first
-  if (error.code === "ETIMEDOUT") {
+  if (error && (error.code === "ETIMEDOUT" || error.code === "ESOCKETTIMEDOUT")) {
     errorData = {
       errorCode: 503,
       type: "apiFailure",
-      errorDetails: {
-        message: "ETIMEDOUT",
-        description: "The request timed out"
-      }
+      errorDetails: [{ message: error.message, description: error.description }]
     };
-    return errorData;
-  }
-
-  if (error.response && error.response.statusCode === 401) {
+  } else if (error && error.response && error.response.statusCode === 401) {
     // authentification error
     errorData = {
       errorCode: 401,
@@ -117,23 +140,30 @@ function parseError(error) {
         description: error.description
       }
     };
-    return errorData;
-  }
-
-  if (error.response && error.response.data && error.response.data.error.details) {
-    const errorDetails = [];
-    const { details } = error.response.data.error;
-    for (const detail of details) {
-      if (detail.severity === "Error") {
-        errorDetails.push({ message: detail.message, description: detail.description });
-      }
+  } else if (error && error.response && error.response.statusCode === 400) {
+    // address validation error
+    if (error.response.data.error.code === "GetTaxError") {
+      errorData = {
+        errorCode: 300,
+        type: "addressError"
+      };
+      errorData.errorDetails = error.response.data.error.details.map((errorDetail) => { // eslint-disable-line
+        return ({ message: errorDetail.message, description: errorDetail.description });
+      });
     }
-    errorData = { errorCode: details[0].number, errorDetails };
   } else {
-    Avalogger.error("Unknown error or error format");
+    Logger.error(error, "Unknown Error");
+    Avalogger.error(error, "Unknown error or error format");
+  }
+  const errorObjectContext = ErrorObject.newContext();
+  // No Generic errors ever
+  errorObjectContext.validate(errorData);
+  if (!errorObjectContext.isValid()) {
+    throw new Meteor.Error("invalid-return", "Returning invalid Error results");
   }
   return errorData;
 }
+
 
 /**
  * @summary function to get HTTP data and pass in extra Avalara-specific headers
@@ -324,16 +354,19 @@ taxCalc.validateAddress = function (address) {
   const baseUrl = getUrl();
   const requestUrl = `${baseUrl}addresses/resolve`;
   const result = avaPost(requestUrl, { data: addressToValidate });
-  if (result.error) {
+  // Handle errors where we don't get back an address
+  if (result.error && result.error.type) {
     if (result.error.type === "apiError") {
       // If we have a problem with the API there's no reason to tell the customer
       // so let's consider this unvalidated but move along
       Logger.error("API error, ignoring address validation");
     }
 
-    if (result.error.type === "validationError") {
+    if (result.error.type === "addressError") {
       // We received a validation error so we need somehow pass this up to the client
-      Logger.error("Address Validation Error");
+      Logger.info("Address Validation Error");
+      // package up errors
+      return { validatedAddress: {}, errors: [result.error] };
     }
   }
   const content = result.data;
@@ -510,7 +543,7 @@ taxCalc.estimateCart = function (cart, callback) {
   Reaction.Schemas.Cart.validate(cart);
   check(callback, Function);
 
-  if (cart.items && cart.shipping && cart.shipping[0].address) {
+  if (cart.items && cart.shipping && cart.shipping[0] && cart.shipping[0].address) {
     const salesOrder = Object.assign({}, cartToSalesOrder(cart), getTaxSettings(cart.userId));
     const baseUrl = getUrl();
     const requestUrl = `${baseUrl}transactions/create`;
@@ -520,6 +553,11 @@ taxCalc.estimateCart = function (cart, callback) {
     }
     return callback(result);
   }
+  return callback({
+    error: {
+      errorCode: 300
+    }
+  });
 };
 
 /**

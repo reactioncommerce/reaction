@@ -12,7 +12,7 @@ import { currencyDep } from "./main";
  * @param {Boolean} useDefaultShopCurrency - flag for displaying shop's currency in Admin view of PDP
  * @return {Object}  user currency or shop currency if none is found
  */
-function findCurrency(defaultCurrency, useDefaultShopCurrency) {
+export function findCurrency(defaultCurrency, useDefaultShopCurrency) {
   const shop = Shops.findOne(Reaction.getPrimaryShopId(), {
     fields: {
       currencies: 1,
@@ -89,7 +89,10 @@ export function formatPriceString(formatPrice, useDefaultShopCurrency) {
       if (typeof userCurrency.rate !== "number") {
         throw new Meteor.Error("invalid-exchange-rate", "Exchange rate is invalid");
       }
-      prices[i] *= userCurrency.rate;
+      // Only convert for non-admin view.
+      if (!defaultShopCurrency) {
+        prices[i] *= userCurrency.rate;
+      }
 
       price = _formatPrice(
         price, originalPrice, prices[i],
