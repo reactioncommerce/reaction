@@ -1,6 +1,4 @@
-import { getPaginatedResponse } from "@reactioncommerce/reaction-graphql-utils";
-import { decodeShopOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/shop";
-import { decodeTagOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/tag";
+import { decodeCatalogItemOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/catalogItem";
 
 /**
  * @name catalogItemProduct
@@ -8,20 +6,23 @@ import { decodeTagOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/tag
  * @summary Get a list of catalogItemProduct
  * @param {Object} _ - unused
  * @param {ConnectionArgs} args - an object of all arguments that were sent by the client
- * @param {Object} args.shopIds - limit to catalog items for these shops
- * @param {Object} args.tagIds - limit to catalog items with these tags
- * @param {Boolean} args.shouldIncludeDeleted - Whether or not to include `isDeleted=true` tags. Default is `false`
+ * @param {String} args.slugOrId - slug or id for catalog item product
  * @param {Object} context - an object containing the per-request state
- * @return {Promise<Object>} A CatalogItemConnection object
+ * @return {Promise<Object>} A CatalogItemProduct object
  */
 export default async function catalogItemProduct(_, args, context) {
-  const { slugOrId: opaqueSlugOrId } = args;
+  const { slugOrId } = args;
 
-  const slugOrId = opaqueSlugOrId;
+  let productId;
+  let productSlug;
+  try {
+    productId = decodeCatalogItemOpaqueId(slugOrId);
+  } catch (error) {
+    productSlug = slugOrId;
+  }
 
-  const query = await context.queries.catalogItemProduct(context, {
-    slugOrId
+  return context.queries.catalogItemProduct(context, {
+    _id: productId,
+    slug: productSlug
   });
-
-  return query;
 }
