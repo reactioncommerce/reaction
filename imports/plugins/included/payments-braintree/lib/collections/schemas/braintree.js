@@ -40,6 +40,10 @@ export const BraintreePackageConfig = PackageConfig.clone().extend({
     label: "Private Key",
     optional: false
   },
+  "settings.reaction-braintree": {
+    type: Object,
+    defaultValue: {}
+  },
   "settings.reaction-braintree.support": {
     type: Array,
     label: "Payment provider supported methods"

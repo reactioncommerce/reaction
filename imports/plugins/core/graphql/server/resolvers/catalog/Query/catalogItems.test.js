@@ -19,7 +19,6 @@ test("calls queries.catalogItems and returns a partial connection", async () => 
 
   const result = await catalogItemsResolver({}, {
     shopIds,
-    shouldIncludeDeleted: true,
     tagIds
   }, {
     queries: { catalogItems }
@@ -39,7 +38,6 @@ test("calls queries.catalogItems and returns a partial connection", async () => 
   expect(catalogItems).toHaveBeenCalled();
   expect(catalogItems.mock.calls[0][1]).toEqual({
     shopIds: ["123"],
-    shouldIncludeDeleted: true,
     tagIds: ["456"]
   });
 });
