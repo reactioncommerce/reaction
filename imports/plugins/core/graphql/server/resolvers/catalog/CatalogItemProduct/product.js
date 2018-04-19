@@ -11,7 +11,7 @@ export default function product(item) {
   const { media } = item;
   const primaryImage = (media || [])
     .sort((a, b) => a.metadata.priority - b.metadata.priority)
-    .find(({ metadata = {} }) => metadata.productId === item.productId);
+    .find(({ metadata = {} }) => metadata.toGrid === 1);
 
   return {
     ...item,
