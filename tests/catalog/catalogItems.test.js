@@ -161,7 +161,7 @@ const mockProduct = {
       small: "http://localhost/small",
       medium: "http://localhost/medium",
       large: "http://localhost/large",
-      original: "http://localhost/original"
+      image: "http://localhost/original"
     }
   ],
   productId: internalProductId,

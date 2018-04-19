@@ -16,7 +16,7 @@ export const encodeCatalogProductOpaqueId = encodeOpaqueId(namespaces.CatalogPro
 export function xformProductMedia(mediaItem) {
   if (!mediaItem) return null;
 
-  const { metadata, large, medium, original, small, thumbnail } = mediaItem;
+  const { metadata, large, medium, image, small, thumbnail } = mediaItem;
 
   return {
     priority: metadata && metadata.priority,
@@ -26,7 +26,7 @@ export function xformProductMedia(mediaItem) {
     URLs: {
       large,
       medium,
-      original,
+      original: image,
       small,
       thumbnail
     }
