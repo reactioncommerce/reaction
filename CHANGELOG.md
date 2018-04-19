@@ -1,3 +1,68 @@
+# v1.11.0
+
+The major focus of `v1.11.0` has been on our GraphQL API. We've added most of the queries and mutations that are necessary for building a headless client to interact with `Accounts`. We're actively doing experiments on how we'll recommend connecting to this GraphQL client and we'll start publishing some of our initial client apps to interact with this GraphQL API in the near future.
+
+## GraphQL
+ - feat: GraphQL remove account from group mutation (#4102)
+ - feat: GraphQL invite shop member (#4103)
+ - feat: GraphQL add account to group mutation (#4095)
+ - feat: GraphQL address remove mutation (#4087)
+ - feat: GraphQL address update mutation (#4077)
+ - feat: GraphQL address add mutation (#4068)
+ - feat: GraphQL roles query (#4076)
+ - feat: GraphQL group and groups query (#4053)
+ - feat: GraphQL connections and devserver app (#4048)
+ - feat: GraphQL add primaryShopId query (#4175)
+ - feat: GraphQL add setAccountProfileCurrency mutation (#4094)
+ - feat: GraphQL tags query (#4165)
+ - feat: GraphQL Update queries to not need Meteor (#4097)
+ - refactor: GraphQL transform types using resolvers (#4166)
+ - refactor: GraphQL switch to .graphql files for schema (#4169)
+ - docs: GraphQL add some missing schema docs (#4160)
+
+ ## Features
+ - feat: styling shop slug box for Shopify (#4091) .. Resolves #2780
+ - feat: convert AddressBook to react (#4054) .. Resolves #3518
+ - feat: Accept Shop Data when Inviting Shop Owner (#3456)
+
+## Refactors
+ - refactor: extract schemas API to an npm package (#4149)
+ - refactor: extract Logger API into new npm package (#4110)
+ - refactor: extract Hooks API to an npm package (#4147)
+ - refactor: remove unused Themes collection (#4198)
+
+ ## CI
+ - chore: Add snyk check to CI config; Bump base version (#4002)
+
+ ## Fixes
+ - fix: preference writing in marketplace (#4111)
+ - fix: onClick to image too (#4067) .. Resolves #4058
+ - fix: wait for slugify to show up before returning slug (#4049)
+ - fix: use numericInput for pricing (#3999) .. Resolves #3821
+ - fix: credit card accepts invalid expiration date (#3795)
+ - fix: check permission before publish (#3885) .. Resolves #3754
+ - fix: multiple instances of Components.Login causes a browser warning (#4044)
+ - fix: Currency as object (#4156) .. Resolves #4152
+ - fix: no access-denied in "accounts/setProfileCurrency" for self (#4199)
+ - fix: client side validation on address book (#4183)
+ - fix: Fix Simple Schema runtime errors (#4190) .. Resolves #4173
+ - fix: Remove _sleepForMs from tests (#4161)
+ - fix: #4037: Paginate and Filter Orders Subscription on Admin Dashboard (#4038)
+ - fix: for "Product publication handle regex match issues with similar product handles (#4065)
+ - fix: #4057: Admin should have media editable (#4072)
+ - fix: Make shipping discount code case-insensitive (#4082)
+ - fix: Error when enabling Shopify inventory hooks (#4148)
+ - fix: Correct some translation errors for i18n/it.json (#4174)
+ - fix: inventory badge component added #4032 .. Resolves #4009
+
+## Docs
+ - docs(jsdoc): #3840 DOM module - add @memberof, @method (#3842)
+ - docs: #3840 jsdoc - document fixtures (#3873)
+
+
+ ## Contributors
+ Thanks to @pmn4, @glmaljkovich, and @awles for contributing to this release
+
 # v1.10.0
 
 ## Collection Hooks | Breaking Change!

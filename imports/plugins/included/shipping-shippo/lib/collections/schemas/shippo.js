@@ -1,5 +1,5 @@
 import { PackageConfig } from "/lib/collections/schemas/registry";
-import { registerSchema } from "@reactioncommerce/reaction-collections";
+import { registerSchema } from "@reactioncommerce/schemas";
 
 export const ShippoPackageConfig = PackageConfig.clone().extend({
   // Remove blackbox: true from settings obj

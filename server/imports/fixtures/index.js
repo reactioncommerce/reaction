@@ -8,6 +8,13 @@ import shops from "./shops";
 import users from "./users";
 import groups from "./groups";
 
+/**
+ * @file Fixtures and Factories for testing - Use these factories to test shops, users, example payment methods, example packages, orders, products, accounts, carts and user groups.
+ * See the [meteor-factory](https://github.com/versolearning/meteor-factory/) documentation to learn how to define, extend and create your own factories.
+ *
+ * @namespace Fixtures
+*/
+
 export default function () {
   shops();
   users();

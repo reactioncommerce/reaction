@@ -2,7 +2,7 @@ import SimpleSchema from "simpl-schema";
 import { check } from "meteor/check";
 import { Tracker } from "meteor/tracker";
 import { PackageConfig } from "/lib/collections/schemas/registry";
-import { registerSchema } from "@reactioncommerce/reaction-collections";
+import { registerSchema } from "@reactioncommerce/schemas";
 
 /**
  *  Meteor.settings.braintree =
@@ -39,6 +39,10 @@ export const BraintreePackageConfig = PackageConfig.clone().extend({
     type: String,
     label: "Private Key",
     optional: false
+  },
+  "settings.reaction-braintree": {
+    type: Object,
+    defaultValue: {}
   },
   "settings.reaction-braintree.support": {
     type: Array,

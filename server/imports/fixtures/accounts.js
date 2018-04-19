@@ -6,14 +6,35 @@ import { Accounts } from "/lib/collections";
 import { getShop } from "./shops";
 
 /**
- * Factory account
+ * @method getUser
+ * @memberof Fixtures
+ * @return {Object} Existing user or Factory user
  */
-
 export function getUser() {
   const existingUser = Meteor.users.findOne();
   return existingUser || Factory.create("user");
 }
 
+/**
+ * @method getAddress
+ * @memberof Fixtures
+ * @param {Object} [options={}] Address options, optional
+ * @param {String} [options._id] - id of CartItem
+ * @param {String} [options.fullName] fullName
+ * @param {String} [options.address1] address1
+ * @param {String} [options.address2] address2
+ * @param {String} [options.city] city
+ * @param {String} [options.company] company
+ * @param {String} [options.phone] phone
+ * @param {String} [options.region] region
+ * @param {String} [options.postal] postal
+ * @param {String} [options.country] country
+ * @param {Boolean} [options.isCommercial] isCommercial
+ * @param {Boolean} [options.isShippingDefault] isShippingDefault
+ * @param {Boolean} [options.isBillingDefault] isBillingDefault
+ * @param {Array} [options.metafields] metafields
+ * @return {Object}              Address object
+ */
 export function getAddress(options = {}) {
   const defaults = {
     fullName: options.fullName || faker.name.findName(),
@@ -33,6 +54,29 @@ export function getAddress(options = {}) {
   return _.defaults(options, defaults);
 }
 
+/**
+ * @name account
+ * @memberof Fixtures
+ * @summary Factory for Account
+ * @example Factory.create("account", { _id: "12345678", shopId });
+ * @property {String} shopID - `getShop()._id`
+ * @property {String} userId id - `Factory.get("user")`
+ * @property {Array} emails `[{
+   address: faker.internet.email(),
+   verified: faker.random.boolean()
+ }]`
+ * @property {Boolean} acceptsMarketing - `true`
+ * @property {String} state - `"new"`
+ * @property {Note} note - `faker.lorem.sentences()`
+ * @property {Object} profile - `{
+   addressBook: [
+     getAddress()
+   ]
+ }`
+ * @property {Array} metafields - '[]'
+ * @property {Date} createdAt - `new Date()`
+ * @property {Date} updatedAt - `new Date()`
+ */
 export function createAccountFactory() {
   Factory.define("account", Accounts, {
     shopId: getShop()._id,

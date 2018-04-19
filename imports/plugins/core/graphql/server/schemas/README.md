@@ -15,13 +15,3 @@ the opportunity to do some cleanup to the schema. In these changes we will:
 * Remove unused attributes.
 
 Notes are placed on the schema to indicate these changes.
-
-## JavaScript Wrapped Schema
-
-The schema are currently wrapped in JavaScript files. This adds a small amount
-of boilerplate to the code but `*.graphql` files are not included in Meteor
-builds. Tools like `graphcool/graphql-import` won't work without modifying the
-Meteor build to include them.
-
-We may alter this in the future. Plugins do exist to add `.graphql` to the
-build but they are published Atmosphere only.

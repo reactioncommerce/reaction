@@ -565,6 +565,21 @@ export default {
   },
 
   /**
+   * @name getShopCurrencies
+   * @method
+   * @memberof Core
+   * @summary Get all currencies available to a shop
+   * @return {Object} Shop currency or "USD"
+   */
+  getShopCurrencies() {
+    const shop = Shops.findOne({
+      _id: this.getShopId()
+    });
+
+    return shop && shop.currencies;
+  },
+
+  /**
    * @name getShopLanguage
    * @method
    * @memberof Core
