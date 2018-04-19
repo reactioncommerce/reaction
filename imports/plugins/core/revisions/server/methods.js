@@ -190,7 +190,7 @@ Meteor.methods({
         if (!revision.documentType || revision.documentType === "product") {
           const oldDocument = Products.findOne(revision.documentId);
           if (oldDocument && revision.documentData.handle !== oldDocument.handle) {
-            revision.documentData.changedHandleWas = oldDocument.handle;
+            revision.documentData.previousHandle = oldDocument.handle;
           }
           const res = publishCatalogProduct(
             this.userId,
