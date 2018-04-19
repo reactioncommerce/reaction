@@ -391,4 +391,7 @@ extend type Query {
     "By default, items are sorted by when they were created, newest first. Set this to sort by one of the other allowed fields"
     sortBy: CatalogItemSortByField = createdAt
   ): CatalogItemConnection
+  catalogItemProduct(
+    slugOrId: String
+  ): CatalogItemProduct
 }
