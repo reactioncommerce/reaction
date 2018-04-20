@@ -12,6 +12,9 @@ import shipping from "./shipping.graphql";
 import shop from "./shop.graphql";
 import tag from "./tag.graphql";
 
+
+
+
 export default [
   base,
   account,

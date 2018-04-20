@@ -1,0 +1,145 @@
+($slugOrId: String!) {
+  catalogItemProduct(slugOrId: $slugOrId) {
+   _id
+    shop {
+      _id
+    }
+    createdAt
+    updatedAt
+    positions {
+      displayWeight
+      isPinned
+      position
+      tagId
+      updatedAt
+    }
+    product {
+       _id
+      barcode
+      compareAtPrice
+      createdAt
+      description
+      height
+      isBackorder
+      isLowQuantity
+      isSoldOut
+      isTaxable
+      length
+      lowInventoryWarningThreshold
+      metafields {
+        value
+        namespace
+        description
+        valueType
+        scope
+        key
+      }
+      metaDescription
+      minOrderQuantity
+      originCountry
+      pageTitle
+      parcel {
+        containers
+        length
+        width
+        height
+        weight
+      }
+      price {
+        max
+        min
+        range
+      }
+      media {
+        toGrid
+        priority
+        productId
+        variantId
+        URLs {
+          thumbnail
+          small
+          medium
+          large
+          original
+        }
+      }
+      primaryImage {
+        toGrid
+        priority
+        productId
+        variantId
+        URLs {
+          thumbnail
+          small
+          medium
+          large
+          original
+        }
+      }
+      productId
+      productType
+      requiresShipping
+      shop {
+        _id
+      }
+      sku
+      slug
+      socialMetadata {
+        service
+        message
+      }
+      tagIds
+      tags(first: 2) {
+        nodes {
+          _id
+        }
+      }
+      taxCode
+      taxDescription
+      title
+      updatedAt
+      variants {
+        _id
+        ancestorIds
+        barcode
+        compareAtPrice
+        createdAt
+        height
+        index
+        inventoryManagement
+        inventoryPolicy
+        isLowQuantity
+        isSoldOut
+        isTaxable
+        length
+        lowInventoryWarningThreshold
+        metafields {
+          value
+          namespace
+          description
+          valueType
+          scope
+          key
+        }
+        minOrderQuantity
+        optionTitle
+        originCountry
+        price
+        shop {
+          _id
+        }
+        sku
+        taxCode
+        taxDescription
+        title
+        updatedAt
+        variantId
+        weight
+        width
+      }
+      vendor
+      weight
+      width
+    }
+  }
+}

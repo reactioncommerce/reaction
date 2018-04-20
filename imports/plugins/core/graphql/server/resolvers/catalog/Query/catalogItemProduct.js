@@ -3,7 +3,7 @@ import { decodeCatalogItemOpaqueId } from "@reactioncommerce/reaction-graphql-xf
 /**
  * @name catalogItemProduct
  * @method
- * @summary Get a list of catalogItemProduct
+ * @summary Get a CatalogItemProduct from the Catalog
  * @param {Object} _ - unused
  * @param {ConnectionArgs} args - an object of all arguments that were sent by the client
  * @param {String} args.slugOrId - slug or id for catalog item product
