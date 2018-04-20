@@ -1,5 +1,3 @@
-import { decodeAccountOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/account";
-
 /**
  * @name account
  * @method
@@ -11,6 +9,5 @@ import { decodeAccountOpaqueId } from "@reactioncommerce/reaction-graphql-xforms
  * @return {Promise<Object>} user account object
  */
 export default function account(_, { id }, context) {
-  const dbAccountId = decodeAccountOpaqueId(id);
-  return context.queries.userAccount(context, dbAccountId);
+  return context.queries.userAccount(context, id);
 }

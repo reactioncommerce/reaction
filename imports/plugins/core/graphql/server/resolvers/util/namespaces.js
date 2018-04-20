@@ -1,13 +1,16 @@
+const PREFIX = "reaction/";
+
 export default {
-  Account: "reaction/account",
-  Address: "reaction/address",
-  CatalogItem: "reaction/catalogItem",
-  CatalogProduct: "reaction/catalogProduct",
-  CatalogProductVariant: "reaction/catalogProductVariant",
-  Currency: "reaction/currency",
-  Group: "reaction/group",
-  Product: "reaction/product",
-  Role: "reaction/role",
-  Shop: "reaction/shop",
-  Tag: "reaction/tag"
+  PREFIX,
+  Account: `${PREFIX}account`,
+  Address: `${PREFIX}address`,
+  CatalogItem: `${PREFIX}catalogItem`,
+  CatalogProduct: `${PREFIX}catalogProduct`,
+  CatalogProductVariant: `${PREFIX}catalogProductVariant`,
+  Currency: `${PREFIX}currency`,
+  Group: `${PREFIX}group`,
+  Product: `${PREFIX}product`,
+  Role: `${PREFIX}role`,
+  Shop: `${PREFIX}shop`,
+  Tag: `${PREFIX}tag`
 };
