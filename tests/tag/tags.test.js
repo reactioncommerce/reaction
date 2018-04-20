@@ -49,8 +49,6 @@ test("get the first 50 tags when neither first or last is in query", async () =>
     return;
   }
 
-  result.tags.nodes.forEach((tag, i) => console.log("tags", tag.position))
-
   expect(result.tags.nodes.length).toBe(50);
   expect(result.tags.totalCount).toBe(55);
   expect(result.tags.pageInfo).toEqual({ endCursor: "MTQ5", hasNextPage: true, hasPreviousPage: false, startCursor: "MTAw" });
@@ -61,8 +59,6 @@ test("get the first 50 tags when neither first or last is in query", async () =>
     expect(error).toBeUndefined();
     return;
   }
-
-  result.tags.nodes.forEach((tag, i) => console.log("tags", tag.position))
 
   expect(result.tags.nodes.length).toBe(5);
   expect(result.tags.totalCount).toBe(55);
