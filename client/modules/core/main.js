@@ -738,12 +738,6 @@ export default {
     }]);
   },
 
-  getCurrentTag() {
-    if (this.Router.getRouteName() === "tag") {
-      return this.Router.current().params.slug;
-    }
-  },
-
   getRegistryForCurrentRoute(provides = "dashboard") {
     this.Router.watchPathChange();
     const currentRouteName = this.Router.getRouteName();
