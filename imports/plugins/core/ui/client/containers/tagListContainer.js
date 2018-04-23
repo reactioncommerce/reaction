@@ -241,7 +241,7 @@ function composer(props, onData) {
 
   if (props.product) {
     if (_.isArray(props.product.hashtags)) {
-      tags = _.map(props.product.hashtags, (id) => Tags.findOne(id));
+      tags = Tags.find({ _id: { $in: props.product.hashtags } }).fetch();
     }
   }
 
