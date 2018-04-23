@@ -58,7 +58,7 @@ class ProductGrid extends Component {
   // render the product grid
   renderProductGrid() {
     const { products } = this.props;
-    const currentTag = ReactionProduct.getTag();
+    const currentTagId = ReactionProduct.getTagIdForPosition();
 
     return (
       <div className="product-grid">
@@ -66,7 +66,7 @@ class ProductGrid extends Component {
           {products.map((product) => (
             <Components.ProductGridItemCustomer
               product={product}
-              position={(product.positions && product.positions[currentTag]) || {}}
+              position={(product.positions && product.positions[currentTagId]) || {}}
               key={product._id}
             />
           ))}

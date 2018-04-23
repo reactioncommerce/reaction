@@ -74,11 +74,10 @@ function composer(props, onData) {
     return;
   }
 
-  const currentTag = ReactionProduct.getTag();
+  const currentTagId = ReactionProduct.getTagIdForPosition();
 
   const sort = {
-    [`positions.${currentTag}.position`]: 1,
-    [`positions.${currentTag}.createdAt`]: 1,
+    [`positions.${currentTagId}.position`]: 1,
     createdAt: 1
   };
 

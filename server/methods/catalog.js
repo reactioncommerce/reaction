@@ -1279,14 +1279,13 @@ Meteor.methods({
    * @summary update product grid positions
    * @param {String} productId - productId
    * @param {Object} positionData -  an object with position,dimensions
-   * @param {String} tag - current route name. If it is not tag, then we using
-   * shop name as base `positions` name. Could be useful for multi-shopping.
+   * @param {String} tagId - The tag route for which this position is intended, or the string "_default" for default/home route
    * @return {Number} collection update returns
    */
-  "products/updateProductPosition"(productId, positionData, tag) {
+  "products/updateProductPosition"(productId, positionData, tagId) {
     check(productId, String);
     check(positionData, Object);
-    check(tag, String);
+    check(tagId, String);
 
     // Check first if Product exists and then if user has the proper rights
     const product = Products.findOne(productId);
@@ -1298,10 +1297,10 @@ Meteor.methods({
 
     this.unblock();
 
-    const position = `positions.${tag}.position`;
-    const pinned = `positions.${tag}.pinned`;
-    const weight = `positions.${tag}.weight`;
-    const updatedAt = `positions.${tag}.updatedAt`;
+    const position = `positions.${tagId}.position`;
+    const pinned = `positions.${tagId}.pinned`;
+    const weight = `positions.${tagId}.weight`;
+    const updatedAt = `positions.${tagId}.updatedAt`;
 
     return updateCatalogProduct(
       this.userId,
