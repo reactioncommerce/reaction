@@ -36,8 +36,6 @@ export default async function applyPaginationToMongoCursor(cursor, { first, last
 
   resultCount = await cursor.clone().count();
 
-  console.log("apply mongo cursor", totalCount, resultCount);
-
   return {
     pageInfo: {
       hasNextPage: !!maybeFirst && resultCount >= maybeFirst,
