@@ -393,7 +393,7 @@ extend type Query {
   ): CatalogItemConnection
   "Gets product from catalog"
   catalogItemProduct(
-    "Provide either a product id or slug"
+    "Provide either a product ID or slug"
     slugOrId: String
   ): CatalogItemProduct
 }
