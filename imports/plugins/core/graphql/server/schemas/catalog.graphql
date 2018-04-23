@@ -105,6 +105,9 @@ type CatalogProduct implements CatalogProductOrVariant & Node {
   "The quantity value below which `isLowQuantity` should be true"
   lowInventoryWarningThreshold: Int
 
+  "All media for this product and its variants"
+  media: [ImageInfo]
+
   "Arbitrary additional metadata about this product"
   metafields: [Metafield]
 
@@ -125,9 +128,6 @@ type CatalogProduct implements CatalogProductOrVariant & Node {
 
   "The range of prices among all variants"
   price: PriceRange
-
-  "All media for this product and its variants"
-  media: [ImageInfo]
 
   "The primary image"
   primaryImage: ImageInfo
