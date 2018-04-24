@@ -1,4 +1,4 @@
-import _ from "lodash";
+// import _ from "lodash";
 import { diff } from "deep-diff";
 import { RevisionApi } from "../lib/api";
 import { insertRevision, updateRevision, markRevisionAsDeleted } from "./functions";
@@ -199,7 +199,7 @@ export const ProductRevision = {
  * @param {Function} Callback to execute
  * @return {Object} product - the product in which the callback was called on.
  */
-Hooks.Events.add("beforeInsertCatalogProductInsertRevision", product => {
+Hooks.Events.add("beforeInsertCatalogProductInsertRevision", (product) => {
   insertRevision(product);
 
   return product;
@@ -215,7 +215,7 @@ Hooks.Events.add("beforeInsertCatalogProductInsertRevision", product => {
  * @param {Function} Callback to execute
  * @return {Object} product - the product in which the callback was called on.
  */
-Hooks.Events.add("afterInsertCatalogProductInsertRevision", product => {
+Hooks.Events.add("afterInsertCatalogProductInsertRevision", (product) => {
   insertRevision(product);
 
   return product;
@@ -272,7 +272,7 @@ Hooks.Events.add(
       },
       {
         $set: {
-          diff: differences && differences.map(d => Object.assign({}, d))
+          diff: differences && differences.map((d) => Object.assign({}, d))
         }
       }
     );

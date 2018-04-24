@@ -13,22 +13,20 @@ const ProductRevision = {
     const variants = await this.getTopVariants(product._id, collections);
     if (variants.length > 0) {
       const variantPrices = [];
-      await Promise.all(
-        variants.map(async (variant) => {
-          if (variant.isVisible === true) {
-            const range = await this.getVariantPriceRange(variant._id, collections);
-            if (typeof range === "string") {
-              const firstPrice = parseFloat(range.substr(0, range.indexOf(" ")));
-              const lastPrice = parseFloat(range.substr(range.lastIndexOf(" ") + 1));
-              variantPrices.push(firstPrice, lastPrice);
-            } else {
-              variantPrices.push(range);
-            }
+      await Promise.all(variants.map(async (variant) => {
+        if (variant.isVisible === true) {
+          const range = await this.getVariantPriceRange(variant._id, collections);
+          if (typeof range === "string") {
+            const firstPrice = parseFloat(range.substr(0, range.indexOf(" ")));
+            const lastPrice = parseFloat(range.substr(range.lastIndexOf(" ") + 1));
+            variantPrices.push(firstPrice, lastPrice);
           } else {
-            variantPrices.push(0, 0);
+            variantPrices.push(range);
           }
-        })
-      );
+        } else {
+          variantPrices.push(0, 0);
+        }
+      }));
 
       const priceMin = variantPrices.reduce((currentMin, price) => (price < currentMin ? price : currentMin), Infinity);
       const priceMax = variantPrices.reduce((currentMax, price) => (price > currentMax ? price : currentMax), 0);
@@ -127,24 +125,22 @@ const ProductRevision = {
       isDeleted: false
     }).toArray();
 
-    await Promise.all(
-      products.map(async (product) => {
-        const revision = await this.findRevision(
-          {
-            documentId: product._id
-          },
-          collections
-        );
+    await Promise.all(products.map(async (product) => {
+      const revision = await this.findRevision(
+        {
+          documentId: product._id
+        },
+        collections
+      );
 
-        if (revision && revision.documentData.isVisible) {
-          variants.push(revision.documentData);
-        } else if (!revision && product.isVisible) {
-          variants.push(product);
-        }
+      if (revision && revision.documentData.isVisible) {
+        variants.push(revision.documentData);
+      } else if (!revision && product.isVisible) {
+        variants.push(product);
+      }
 
-        return variants;
-      })
-    );
+      return variants;
+    }));
 
     return variants;
   },
@@ -159,22 +155,20 @@ const ProductRevision = {
       isDeleted: false
     }).toArray();
 
-    await Promise.all(
-      products.map(async (product) => {
-        const revision = await this.findRevision(
-          {
-            documentId: product._id
-          },
-          collections
-        );
+    await Promise.all(products.map(async (product) => {
+      const revision = await this.findRevision(
+        {
+          documentId: product._id
+        },
+        collections
+      );
 
-        if (revision && revision.documentData.isVisible) {
-          variants.push(revision.documentData);
-        } else if (!revision && product.isVisible) {
-          variants.push(product);
-        }
-      })
-    );
+      if (revision && revision.documentData.isVisible) {
+        variants.push(revision.documentData);
+      } else if (!revision && product.isVisible) {
+        variants.push(product);
+      }
+    }));
     return variants;
   },
 

@@ -6,7 +6,5 @@
  * @return {boolean} is backorder allowed or not for a product
  */
 export default async function isBackorder(variants) {
-  return variants.every(
-    (variant) => !variant.inventoryPolicy && variant.inventoryManagement && variant.inventoryQuantity === 0
-  );
+  return variants.every((variant) => !variant.inventoryPolicy && variant.inventoryManagement && variant.inventoryQuantity === 0);
 }
