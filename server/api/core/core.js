@@ -1,9 +1,9 @@
 import url from "url";
+import Random from "@reactioncommerce/random";
 import packageJson from "/package.json";
 import _, { merge, uniqWith } from "lodash";
 import { Meteor } from "meteor/meteor";
 import { check } from "meteor/check";
-import { Random } from "meteor/random";
 import { Accounts } from "meteor/accounts-base";
 import { Roles } from "meteor/alanning:roles";
 import { EJSON } from "meteor/ejson";
