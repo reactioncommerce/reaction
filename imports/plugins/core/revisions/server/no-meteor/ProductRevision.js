@@ -14,7 +14,7 @@ const ProductRevision = {
     if (variants.length > 0) {
       const variantPrices = [];
       await Promise.all(
-        variants.map(async variant => {
+        variants.map(async (variant) => {
           if (variant.isVisible === true) {
             const range = await this.getVariantPriceRange(variant._id, collections);
             if (typeof range === "string") {
@@ -61,7 +61,7 @@ const ProductRevision = {
 
   async getVariantPriceRange(variantId, collections) {
     const children = await this.getVariants(variantId, null, collections);
-    const visibleChildren = children.filter(child => child.isVisible && !child.isDeleted);
+    const visibleChildren = children.filter((child) => child.isVisible && !child.isDeleted);
 
     switch (visibleChildren.length) {
       case 0: {
@@ -76,7 +76,7 @@ const ProductRevision = {
         let priceMin = Number.POSITIVE_INFINITY;
         let priceMax = Number.NEGATIVE_INFINITY;
 
-        visibleChildren.forEach(child => {
+        visibleChildren.forEach((child) => {
           if (child.price < priceMin) {
             priceMin = child.price;
           }
@@ -128,7 +128,7 @@ const ProductRevision = {
     }).toArray();
 
     await Promise.all(
-      products.map(async product => {
+      products.map(async (product) => {
         const revision = await this.findRevision(
           {
             documentId: product._id
@@ -160,7 +160,7 @@ const ProductRevision = {
     }).toArray();
 
     await Promise.all(
-      products.map(async product => {
+      products.map(async (product) => {
         const revision = await this.findRevision(
           {
             documentId: product._id
