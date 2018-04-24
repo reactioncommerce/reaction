@@ -39,7 +39,7 @@ if (!crypto || !crypto.getRandomValues) {
 }
 
 const Random = new RandomGenerator({
-  getRandomValues: crypto && crypto.getRandomValues,
+  getRandomValues: crypto && crypto.getRandomValues && crypto.getRandomValues.bind(crypto),
   seeds
 });
 
