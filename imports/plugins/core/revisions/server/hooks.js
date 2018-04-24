@@ -5,171 +5,187 @@ import { insertRevision, updateRevision, markRevisionAsDeleted } from "./functio
 import { Products, Revisions } from "/lib/collections";
 import { Hooks } from "/server/api";
 import { Media } from "/imports/plugins/core/files/server";
+import NoMeteorProductRevision from "./no-meteor/ProductRevision";
+
+const rawCollections = {
+  Products: Products.rawCollection(),
+  Revisions: Revisions.rawCollection()
+};
 
 export const ProductRevision = {
   getProductPriceRange(productId) {
-    const product = Products.findOne(productId);
-    if (!product) {
-      return {
-        range: "0",
-        min: 0,
-        max: 0
-      };
-    }
+    // const product = Products.findOne(productId);
+    // if (!product) {
+    //   return {
+    //     range: "0",
+    //     min: 0,
+    //     max: 0
+    //   };
+    // }
 
-    const variants = this.getTopVariants(product._id);
-    if (variants.length > 0) {
-      const variantPrices = [];
-      variants.forEach((variant) => {
-        if (variant.isVisible === true) {
-          const range = this.getVariantPriceRange(variant._id);
-          if (typeof range === "string") {
-            const firstPrice = parseFloat(range.substr(0, range.indexOf(" ")));
-            const lastPrice = parseFloat(range.substr(range.lastIndexOf(" ") + 1));
-            variantPrices.push(firstPrice, lastPrice);
-          } else {
-            variantPrices.push(range);
-          }
-        } else {
-          variantPrices.push(0, 0);
-        }
-      });
-      const priceMin = _.min(variantPrices);
-      const priceMax = _.max(variantPrices);
-      let priceRange = `${priceMin} - ${priceMax}`;
-      // if we don't have a range
-      if (priceMin === priceMax) {
-        priceRange = priceMin.toString();
-      }
-      const priceObject = {
-        range: priceRange,
-        min: priceMin,
-        max: priceMax
-      };
-      return priceObject;
-    }
+    // const variants = this.getTopVariants(product._id);
+    // if (variants.length > 0) {
+    //   const variantPrices = [];
+    //   variants.forEach(variant => {
+    //     if (variant.isVisible === true) {
+    //       const range = this.getVariantPriceRange(variant._id);
+    //       if (typeof range === "string") {
+    //         const firstPrice = parseFloat(range.substr(0, range.indexOf(" ")));
+    //         const lastPrice = parseFloat(range.substr(range.lastIndexOf(" ") + 1));
+    //         variantPrices.push(firstPrice, lastPrice);
+    //       } else {
+    //         variantPrices.push(range);
+    //       }
+    //     } else {
+    //       variantPrices.push(0, 0);
+    //     }
+    //   });
+    //   const priceMin = _.min(variantPrices);
+    //   const priceMax = _.max(variantPrices);
+    //   let priceRange = `${priceMin} - ${priceMax}`;
+    //   // if we don't have a range
+    //   if (priceMin === priceMax) {
+    //     priceRange = priceMin.toString();
+    //   }
+    //   const priceObject = {
+    //     range: priceRange,
+    //     min: priceMin,
+    //     max: priceMax
+    //   };
+    //   return priceObject;
+    // }
 
-    if (!product.price) {
-      return {
-        range: "0",
-        min: 0,
-        max: 0
-      };
-    }
+    // if (!product.price) {
+    //   return {
+    //     range: "0",
+    //     min: 0,
+    //     max: 0
+    //   };
+    // }
 
-    // if we have no variants subscribed to (client)
-    // we'll get the price object previously from the product
-    return product.price;
+    // // if we have no variants subscribed to (client)
+    // // we'll get the price object previously from the product
+    // return product.price;
+
+    return Promise.await(NoMeteorProductRevision.getProductPriceRange(productId, rawCollections));
   },
 
   getVariantPriceRange(variantId) {
-    const children = this.getVariants(variantId);
-    const visibleChildren = children.filter((child) => child.isVisible && !child.isDeleted);
+    // const children = this.getVariants(variantId);
+    // const visibleChildren = children.filter(child => child.isVisible && !child.isDeleted);
 
-    switch (visibleChildren.length) {
-      case 0: {
-        const topVariant = this.getProduct(variantId);
-        // topVariant could be undefined when we removing last top variant
-        return topVariant && topVariant.price;
-      }
-      case 1: {
-        return visibleChildren[0].price;
-      }
-      default: {
-        let priceMin = Number.POSITIVE_INFINITY;
-        let priceMax = Number.NEGATIVE_INFINITY;
+    // switch (visibleChildren.length) {
+    //   case 0: {
+    //     const topVariant = this.getProduct(variantId);
+    //     // topVariant could be undefined when we removing last top variant
+    //     return topVariant && topVariant.price;
+    //   }
+    //   case 1: {
+    //     return visibleChildren[0].price;
+    //   }
+    //   default: {
+    //     let priceMin = Number.POSITIVE_INFINITY;
+    //     let priceMax = Number.NEGATIVE_INFINITY;
 
-        visibleChildren.forEach((child) => {
-          if (child.price < priceMin) {
-            priceMin = child.price;
-          }
-          if (child.price > priceMax) {
-            priceMax = child.price;
-          }
-        });
+    //     visibleChildren.forEach(child => {
+    //       if (child.price < priceMin) {
+    //         priceMin = child.price;
+    //       }
+    //       if (child.price > priceMax) {
+    //         priceMax = child.price;
+    //       }
+    //     });
 
-        if (priceMin === priceMax) {
-          // TODO check impact on i18n/formatPrice from moving return to string
-          return priceMin.toString();
-        }
-        return `${priceMin} - ${priceMax}`;
-      }
-    }
+    //     if (priceMin === priceMax) {
+    //       // TODO check impact on i18n/formatPrice from moving return to string
+    //       return priceMin.toString();
+    //     }
+    //     return `${priceMin} - ${priceMax}`;
+    //   }
+    // }
+
+    return Promise.await(NoMeteorProductRevision.getVariantPriceRange(variantId, rawCollections));
   },
 
   findRevision({ documentId }) {
-    return Revisions.findOne({
-      documentId,
-      "workflow.status": {
-        $nin: [
-          "revision/published"
-        ]
-      }
-    });
+    // return Revisions.findOne({
+    //   documentId,
+    //   "workflow.status": {
+    //     $nin: ["revision/published"]
+    //   }
+    // });
+
+    return Promise.await(NoMeteorProductRevision.findRevision(documentId, rawCollections));
   },
 
   getProduct(variantId) {
-    const product = Products.findOne(variantId);
-    const revision = this.findRevision({
-      documentId: variantId
-    });
+    // const product = Products.findOne(variantId);
+    // const revision = this.findRevision({
+    //   documentId: variantId
+    // });
 
-    return (revision && revision.documentData) || product;
+    // return (revision && revision.documentData) || product;
+    return Promise.await(NoMeteorProductRevision.getProduct(variantId, rawCollections));
   },
 
-  getTopVariants(id) {
-    const variants = [];
+  getTopVariants(productId) {
+    // const variants = [];
 
-    Products.find({
-      ancestors: [id],
-      type: "variant",
-      isDeleted: false
-    }).forEach((product) => {
-      const revision = this.findRevision({
-        documentId: product._id
-      });
+    // Products.find({
+    //   ancestors: [id],
+    //   type: "variant",
+    //   isDeleted: false
+    // }).forEach(product => {
+    //   const revision = this.findRevision({
+    //     documentId: product._id
+    //   });
 
-      if (revision && revision.documentData.isVisible) {
-        variants.push(revision.documentData);
-      } else if (!revision && product.isVisible) {
-        variants.push(product);
-      }
+    //   if (revision && revision.documentData.isVisible) {
+    //     variants.push(revision.documentData);
+    //   } else if (!revision && product.isVisible) {
+    //     variants.push(product);
+    //   }
 
-      return variants;
-    });
+    //   return variants;
+    // });
 
-    return variants;
+    // return variants;
+
+    return Promise.await(NoMeteorProductRevision.getTopVariants(productId, rawCollections));
   },
 
-  getVariants(id, type) {
-    const variants = [];
+  getVariants(productOrVariantId, type) {
+    // const variants = [];
 
-    Products.find({
-      ancestors: { $in: [id] },
-      type: type || "variant",
-      isDeleted: false
-    }).forEach((product) => {
-      const revision = this.findRevision({
-        documentId: product._id
-      });
+    // Products.find({
+    //   ancestors: { $in: [id] },
+    //   type: type || "variant",
+    //   isDeleted: false
+    // }).forEach(product => {
+    //   const revision = this.findRevision({
+    //     documentId: product._id
+    //   });
 
-      if (revision && revision.documentData.isVisible) {
-        variants.push(revision.documentData);
-      } else if (!revision && product.isVisible) {
-        variants.push(product);
-      }
-    });
+    //   if (revision && revision.documentData.isVisible) {
+    //     variants.push(revision.documentData);
+    //   } else if (!revision && product.isVisible) {
+    //     variants.push(product);
+    //   }
+    // });
 
-    return variants;
+    // return variants;
+
+    return Promise.await(NoMeteorProductRevision.getVariants(productOrVariantId, type, rawCollections));
   },
 
   getVariantQuantity(variant) {
-    const options = this.getVariants(variant._id);
-    if (options && options.length) {
-      return options.reduce((sum, option) =>
-        sum + option.inventoryQuantity || 0, 0);
-    }
-    return variant.inventoryQuantity || 0;
+    // const options = this.getVariants(variant._id);
+    // if (options && options.length) {
+    //   return options.reduce((sum, option) => sum + option.inventoryQuantity || 0, 0);
+    // }
+    // return variant.inventoryQuantity || 0;
+
+    return Promise.await(NoMeteorProductRevision.getVariantQuantity(variant, rawCollections));
   }
 };
 
@@ -183,7 +199,7 @@ export const ProductRevision = {
  * @param {Function} Callback to execute
  * @return {Object} product - the product in which the callback was called on.
  */
-Hooks.Events.add("beforeInsertCatalogProductInsertRevision", (product) => {
+Hooks.Events.add("beforeInsertCatalogProductInsertRevision", product => {
   insertRevision(product);
 
   return product;
@@ -199,7 +215,7 @@ Hooks.Events.add("beforeInsertCatalogProductInsertRevision", (product) => {
  * @param {Function} Callback to execute
  * @return {Object} product - the product in which the callback was called on.
  */
-Hooks.Events.add("afterInsertCatalogProductInsertRevision", (product) => {
+Hooks.Events.add("afterInsertCatalogProductInsertRevision", product => {
   insertRevision(product);
 
   return product;
@@ -229,33 +245,39 @@ Hooks.Events.add("beforeUpdateCatalogProduct", (product, options) => updateRevis
  */
 Hooks.Events.add("beforeRemoveCatalogProduct", (product, options) => markRevisionAsDeleted(product, options));
 
-Hooks.Events.add("afterRevisionsUpdate", (userId, revision) => {
-  if (RevisionApi.isRevisionControlEnabled() === false) {
-    return true;
-  }
-  let differences;
-
-
-  if (!revision.documentType || revision.documentType === "product") {
-    // Make diff
-    const product = Products.findOne({
-      _id: revision.documentId
-    });
-    differences = diff(product, revision.documentData);
-  }
-
-  if (revision.documentType && revision.documentType === "image") {
-    const image = Promise.await(Media.findOne(revision.documentId, { raw: true }));
-    differences = image && diff(image.metadata, revision.documentData);
-  }
-
-  Revisions.update({
-    _id: revision._id
-  }, {
-    $set: {
-      diff: differences && differences.map((d) => Object.assign({}, d))
+Hooks.Events.add(
+  "afterRevisionsUpdate",
+  (userId, revision) => {
+    if (RevisionApi.isRevisionControlEnabled() === false) {
+      return true;
     }
-  });
-}, {
-  fetchPrevious: false
-});
+    let differences;
+
+    if (!revision.documentType || revision.documentType === "product") {
+      // Make diff
+      const product = Products.findOne({
+        _id: revision.documentId
+      });
+      differences = diff(product, revision.documentData);
+    }
+
+    if (revision.documentType && revision.documentType === "image") {
+      const image = Promise.await(Media.findOne(revision.documentId, { raw: true }));
+      differences = image && diff(image.metadata, revision.documentData);
+    }
+
+    Revisions.update(
+      {
+        _id: revision._id
+      },
+      {
+        $set: {
+          diff: differences && differences.map(d => Object.assign({}, d))
+        }
+      }
+    );
+  },
+  {
+    fetchPrevious: false
+  }
+);
