@@ -64,10 +64,8 @@ export const DomainsMixin = {
 
     if (!absoluteUrl) { return null; }
 
-    const reactionUrl = url.parse(absoluteUrl);
+    const { hostname } = url.parse(absoluteUrl);
 
-    if (!reactionUrl) { return null; }
-
-    return reactionUrl.hostname;
+    return hostname;
   }
 };

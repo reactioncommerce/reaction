@@ -21,8 +21,6 @@ describe("DomainsMixin", () => {
         Meteor.absoluteUrl.defaultOptions = {};
       }
       Meteor.absoluteUrl.defaultOptions.rootUrl = ROOT_URL;
-
-      jest.spyOn(Meteor, "absoluteUrl");
     });
 
     describe("before the domain is set", () => {
