@@ -148,11 +148,47 @@ Uploads are handled by the [tus](https://tus.io/) library.
 
 A FileCollection is where original files are tracked and mapped to their copies that exist in one or more stores. Most `FileCollection` methods accept and/or return `FileRecord` instances. A `FileRecord` is one document within a `FileCollection`, representing one original file, but potentially multiple copies of it in your linked stores.
 
-The `FileCollection` class itself is generic and must be subclassed to define where the file document is actually stored. Currently the only subclass is `MeteorFileCollection`.
+The `FileCollection` class itself is generic and must be subclassed to define where the file document is actually stored. There are currently two included subclasses: `MeteorFileCollection` and `MongoFileCollection`.
+
+#### MongoFileCollection
+
+A `MongoFileCollection` is a FileCollection that stores the documents in MongoDB.
+
+Here's an example:
+
+```js
+import { MongoClient } from "mongodb";
+import { MongoFileCollection } from "@reactioncommerce/file-collections";
+import getRandomId from "./getRandomId";
+
+const { DATABASE_NAME, DATABASE_URL } = process.env;
+
+MongoClient.connect(DATABASE_URL, (error, client) => {
+  if (error) throw error;
+  console.info("Connected to MongoDB");
+  db = client.db(DATABASE_NAME);
+
+  const Images = new MongoFileCollection("Images", {
+    // Just a normal Mongo `Collection` instance. Name it however you like.
+    collection: db.collection("ImagesFileCollection"),
+
+    // add more security here if the files should not be public
+    allowGet: () => true,
+
+    makeNewStringID: () => getRandomId(),
+
+    // See previous sections in the documentation for the definitions of imagesStore and tempStore
+    stores: [imagesStore],
+    tempStore
+  });
+
+  // Do something with Images
+});
+```
 
 #### MeteorFileCollection
 
-A `MeteorFileCollection` is a FileCollection that stores the documents in MongoDB. Most of it is not Meteor specific, but there are a couple dependencies on Meteor's implementation of Mongo, so that's why it's not called `MongoFileCollection`. But someone could very easily adapt it into a pure `MongoFileCollection`.
+A `MeteorFileCollection` is a FileCollection that stores the documents in MongoDB using Meteor's `Mongo.Collection` API. While you could just use `MongoFileCollection` in a Meteor app, `MeteorFileCollection` will set up DDP methods and security automatically, and exports a client API that uses them. This means you can insert, update, and remove file records from browser code. You will also get the built-in Tracker reactivity when you `find` in browser code.
 
 Here's an example:
 
@@ -219,6 +255,8 @@ This means that all files in the Images file collection will have URLs that begi
 
 A `TempFileStoreWorker` instance observes one or more MeteorFileCollections and triggers final storage after an upload from a browser is complete and all the chunks have been assembled into a single file in the temp store.
 
+All provided FileCollections must be `MeteorFileCollections` rather than `MongoFileCollections` because Meteor's observe API is used. A variation of this could be created to use polling or some other method for detecting waiting temporary files.
+
 Example:
 
 ```js
@@ -235,6 +273,8 @@ Also, a `TempFileStoreWorker` must be running on the same machine (or container)
 ### Set Up a Worker for Streaming Remote URLs to Storage
 
 A `RemoteUrlWorker` instance observes one or more MeteorFileCollections and triggers final storage streaming from a remote URL, after you've inserted a FileRecord that you created using `FileRecord.fromUrl`. You'll need to pass in a reference to a `fetch` implementation.
+
+All provided FileCollections must be `MeteorFileCollections` rather than `MongoFileCollections` because Meteor's observe API is used. A variation of this could be created to use polling or some other method for detecting waiting remote URL inserts.
 
 Example:
 

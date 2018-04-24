@@ -1,5 +1,6 @@
 import { Meteor } from "meteor/meteor";
 import { Mongo, MongoInternals } from "meteor/mongo";
+import { Random } from "meteor/random";
 import { WebApp } from "meteor/webapp";
 import { check } from "meteor/check";
 import fetch from "node-fetch";
@@ -8,6 +9,7 @@ import {
   FileRecord,
   RemoteUrlWorker,
   MeteorFileCollection,
+  MongoFileCollection,
   TempFileStore,
   TempFileStoreWorker
 } from "@reactioncommerce/file-collections";
@@ -79,7 +81,9 @@ const tempStore = new TempFileStore({
   }
 });
 
-const Images = new MeteorFileCollection("Images", {
+const ImagesCollection = new Mongo.Collection("ImagesFileCollection");
+
+const MeteorImages = new MeteorFileCollection("Images", {
   // add more security depending on who should be able to manipulate the file records
   allowInsert: () => true,
   allowUpdate: () => true,
@@ -87,8 +91,17 @@ const Images = new MeteorFileCollection("Images", {
   // add more security here if the files should not be public
   allowGet: () => true,
   check,
-  collection: new Mongo.Collection("ImagesFileCollection"),
+  collection: ImagesCollection,
   DDP: Meteor,
+  stores,
+  tempStore
+});
+
+const Images = new MongoFileCollection("Images", {
+  // add more security here if the files should not be public
+  allowGet: () => true,
+  collection: ImagesCollection.rawCollection(),
+  makeNewStringID: () => Random.id(),
   stores,
   tempStore
 });
@@ -129,10 +142,10 @@ const downloadManager = new FileDownloadManager({
   }
 });
 
-const remoteUrlWorker = new RemoteUrlWorker({ fetch, fileCollections: [Images] });
+const remoteUrlWorker = new RemoteUrlWorker({ fetch, fileCollections: [MeteorImages] });
 remoteUrlWorker.start();
 
-const uploadWorker = new TempFileStoreWorker({ fileCollections: [Images] });
+const uploadWorker = new TempFileStoreWorker({ fileCollections: [MeteorImages] });
 uploadWorker.start();
 
 WebApp.connectHandlers.use("/juicy/uploads", (req, res) => {

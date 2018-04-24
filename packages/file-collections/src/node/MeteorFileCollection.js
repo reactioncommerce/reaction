@@ -156,7 +156,7 @@ export default class MeteorFileCollection extends FileCollection {
    * @method _find
    * @param {Object|String} selector A FileRecord ID or MongoDB selector
    * @param {Object} options Options object to be passed through to Meteor's findOne
-   * @returns {Promise<Cursor>} A Promise that resolves with the Meteor find cursor
+   * @returns {Promise<Object[]>} A Promise that resolves with an array of file documents that match the selector
    */
   _find(selector, options) {
     return new Promise((resolve, reject) => {
