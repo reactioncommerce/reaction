@@ -1,6 +1,6 @@
 import _ from "lodash";
+import Random from "@reactioncommerce/random";
 import { check, Match } from "meteor/check";
-import { Random } from "meteor/random";
 import { EJSON } from "meteor/ejson";
 import { Meteor } from "meteor/meteor";
 import { ReactionProduct } from "/lib/api";

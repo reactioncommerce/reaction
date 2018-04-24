@@ -1,8 +1,8 @@
 import accounting from "accounting-js";
+import Random from "@reactioncommerce/random";
 import stripeNpm from "stripe";
 import { Meteor } from "meteor/meteor";
 import { check } from "meteor/check";
-import { Random } from "meteor/random";
 import { Reaction, Logger, Hooks } from "/server/api";
 import { Cart, Shops, Accounts, Packages } from "/lib/collections";
 import { PaymentMethodArgument } from "/lib/collections/schemas";
