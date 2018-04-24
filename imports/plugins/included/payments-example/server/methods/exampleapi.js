@@ -1,6 +1,6 @@
+import Random from "@reactioncommerce/random";
 import SimpleSchema from "simpl-schema";
 import { ValidatedMethod } from "meteor/mdg:validated-method";
-import { Random } from "meteor/random";
 import { registerSchema } from "@reactioncommerce/schemas";
 
 // Test card to use to add risk level flag for testing purposes only.

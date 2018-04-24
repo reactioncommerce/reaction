@@ -1,8 +1,8 @@
 import _ from "lodash";
+import Random from "@reactioncommerce/random";
 import { Meteor } from "meteor/meteor";
 import { check, Match } from "meteor/check";
 import { Roles } from "meteor/alanning:roles";
-import { Random } from "meteor/random";
 import * as Collections from "/lib/collections";
 import { Hooks, Logger, Reaction } from "/server/api";
 import { PaymentMethodArgument } from "/lib/collections/schemas";
