@@ -1,8 +1,8 @@
 import { Meteor } from "meteor/meteor";
 
-import main from "../main";
+import { DomainsMixin } from "./domains";
 
-describe("Client/API/Core", () => {
+describe.only("DomainsMixin", () => {
   let path;
   let connectionHost;
   let ROOT_URL;
@@ -24,30 +24,30 @@ describe("Client/API/Core", () => {
     });
 
     describe("before the domain is set", () => {
-      it("wraps Meteor.absoluteUrl without parameters", () => {
-        main.absoluteUrl();
+      test("wraps Meteor.absoluteUrl without parameters", () => {
+        DomainsMixin.absoluteUrl();
 
         expect(Meteor.absoluteUrl).toBeCalledWith(undefined, {});
       });
 
-      it("wraps Meteor.absoluteUrl with path only", () => {
-        main.absoluteUrl(path);
+      test("wraps Meteor.absoluteUrl with path only", () => {
+        DomainsMixin.absoluteUrl(path);
 
         expect(Meteor.absoluteUrl).toBeCalledWith(path, {});
       });
 
-      it("wraps Meteor.absoluteUrl with options only", () => {
+      test("wraps Meteor.absoluteUrl with options only", () => {
         const options = { a: 1, b: 2 };
 
-        main.absoluteUrl(options);
+        DomainsMixin.absoluteUrl(options);
 
         expect(Meteor.absoluteUrl).toBeCalledWith(undefined, options);
       });
 
-      it("wraps Meteor.absoluteUrl both a path and options", () => {
+      test("wraps Meteor.absoluteUrl both a path and options", () => {
         const options = { a: 1, b: 2 };
 
-        main.absoluteUrl(path, options);
+        DomainsMixin.absoluteUrl(path, options);
 
         expect(Meteor.absoluteUrl).toBeCalledWith(path, options);
       });
@@ -55,19 +55,19 @@ describe("Client/API/Core", () => {
 
     describe("within the domain set", () => {
       beforeEach(() => {
-        main._shopDomain.set(connectionHost);
+        DomainsMixin.shopDomain = jest.fn().mockReturnValue(connectionHost);
 
-        main.absoluteUrl();
+        DomainsMixin.absoluteUrl();
       });
 
-      it("uses the current connection's host", () => {
+      test("uses the current connection's host", () => {
         expect(Meteor.absoluteUrl)
           .toBeCalledWith(undefined, expect.objectContaining({
             rootUrl: expect.stringContaining(connectionHost)
           }));
       });
 
-      it("uses $ROOT_URL's protocol/scheme", () => {
+      test("uses $ROOT_URL's protocol/scheme", () => {
         // this would he http:// if $ROOT_URL had not used https://
         expect(Meteor.absoluteUrl)
           .toBeCalledWith(undefined, expect.objectContaining({
