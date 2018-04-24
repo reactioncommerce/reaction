@@ -2,11 +2,11 @@ import ProductRevision from "/imports/plugins/core/revisions/server/no-meteor/Pr
 
 /**
  * @method isSoldOut
- * @summary We are to stop accepting new orders if product is marked as `isSoldOut`.
+ * @summary If all the product variants have a quantity of 0 return `true`.
  * @memberof Catalog
  * @param {Array} variants - Array with top-level variants
- * @param {Object} collections - raw collections
- * @return {Boolean} true if summary product quantity is zero.
+ * @param {Object} collections - Raw collections
+ * @return {Boolean} true if quantity is zero.
  */
 export default async function isSoldOut(variants, collections) {
   const promises = variants.map(async (variant) => {
