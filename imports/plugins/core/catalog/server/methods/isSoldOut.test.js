@@ -54,7 +54,7 @@ test("expect false when an array of product variants are not sold out and invent
   expect(spec).toBe(false);
 });
 
-test("expect false when an array of product variants has on sold out and one not sold out and inventory management is enabled", async () => {
+test("expect false when an array of product variants has one sold out and one not sold out and inventory management is enabled", async () => {
   mockProductRevision.getVariantQuantity
     .mockReturnValueOnce(Promise.resolve(0))
     .mockReturnValueOnce(Promise.resolve(1));

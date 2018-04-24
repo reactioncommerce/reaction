@@ -10,7 +10,7 @@ import ProductRevision from "/imports/plugins/core/revisions/server/no-meteor/Pr
  */
 export default async function isLowQuantity(variants, collections) {
   const promises = variants.map(async (variant) => {
-    const quantity = await ProductRevision.getVariantQuantity(variant);
+    const quantity = await ProductRevision.getVariantQuantity(variant, collections);
     if (variant.inventoryManagement && variant.inventoryPolicy && quantity) {
       return quantity <= variant.lowInventoryWarningThreshold;
     }
