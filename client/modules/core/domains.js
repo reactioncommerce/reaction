@@ -60,6 +60,14 @@ export const DomainsMixin = {
    * @return {String} Domain/hostname for the given options
    */
   getDomain(options) {
-    return this.absoluteUrl("", options).split("/")[2].split(":")[0];
+    const absoluteUrl = this.absoluteUrl(options);
+
+    if (!absoluteUrl) { return null; }
+
+    const reactionUrl = url.parse(absoluteUrl);
+
+    if (!reactionUrl) { return null; }
+
+    return reactionUrl.hostname;
   }
 };
