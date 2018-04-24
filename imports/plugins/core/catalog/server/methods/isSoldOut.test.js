@@ -8,12 +8,6 @@ const mockProductRevision = {
   getVariantQuantity: jest.fn().mockName("ProductRevision.getVariantQuantity")
 };
 
-beforeAll(() => {
-  rewire$ProductRevision(mockProductRevision);
-});
-
-afterAll(restore$ProductRevision);
-
 // mock collections
 const mockCollections = {};
 
@@ -25,6 +19,12 @@ const mockVariantWithInventoryManagment = {
 const mockVariantWithOutInventoryManagment = {
   inventoryManagement: false
 };
+
+beforeAll(() => {
+  rewire$ProductRevision(mockProductRevision);
+});
+
+afterAll(restore$ProductRevision);
 
 test("expect true when a single product variant is sold out and inventory management is enabled", async () => {
   mockProductRevision.getVariantQuantity.mockReturnValueOnce(Promise.resolve(0));
