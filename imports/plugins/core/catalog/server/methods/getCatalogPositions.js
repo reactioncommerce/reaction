@@ -1,10 +1,10 @@
 /**
  *
- * @method
- * @summary
+ * @method getCatalogPositions
+ * @summary returns the products postions as an array of CatalogPosition objects.
  * @memberof Catalog
- * @param  {Object} productPositions - TODO
- * @return {Object}
+ * @param  {Object} productPositions - product positions by tag.
+ * @return {Array} array of CatalogPosition objects
  */
 export default async function getCatalogPositions(productPositions) {
   return Object.keys(productPositions).map((tagId) => {

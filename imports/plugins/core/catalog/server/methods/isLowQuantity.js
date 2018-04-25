@@ -5,7 +5,7 @@ import ProductRevision from "/imports/plugins/core/revisions/server/no-meteor/Pr
  * @summary If at least one of the product variants quantity is less than the low inventory threshold return `true`.
  * @memberof Catalog
  * @param {Array} variants - Array of child variants
- * @param {Object} collections - Raw collections
+ * @param {Object} collections - Raw mongo collections are passed to ProductRevision
  * @return {boolean} low quantity or not
  */
 export default async function isLowQuantity(variants, collections) {
