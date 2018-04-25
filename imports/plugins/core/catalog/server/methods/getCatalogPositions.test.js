@@ -27,7 +27,13 @@ const mockCatalogPositions = [
   }
 ];
 
-test("expect array of CatalogPosition object when providing a product postions object with mutliple tag positions", async () => {
+test("expect array of CatalogPosition objects when providing a product postions object with a single tag positions", async () => {
+  const spec = await getCatalogPositions({ tag1: { ...mockProductPositions.tag1 } });
+  const success = [mockCatalogPositions[0]];
+  expect(spec).toEqual(success);
+});
+
+test("expect array of CatalogPosition objects when providing a product postions object with mutliple tag positions", async () => {
   const spec = await getCatalogPositions(mockProductPositions);
   const success = mockCatalogPositions;
   expect(spec).toEqual(success);
