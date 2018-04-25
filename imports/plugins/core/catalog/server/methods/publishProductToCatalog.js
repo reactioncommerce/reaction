@@ -8,7 +8,7 @@ import getCatalogPositions from "./getCatalogPositions";
 
 /**
  * @method publishProductToCatalog
- * @summary Publish a product to the Catalog
+ * @summary Publish a product to the Catalog collection
  * @memberof Catalog
  * @param {Object} product - A product object
  * @return {boolean} true on successful publish, false if publish was unsuccessful

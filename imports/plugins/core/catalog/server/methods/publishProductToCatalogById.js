@@ -3,14 +3,14 @@ import Logger from "@reactioncommerce/logger";
 import publishProductToCatalog from "./publishProductToCatalog";
 
 /**
- * @method publishProductIdToCatalog
+ * @method publishProductToCatalogById
  * @summary Publish a product to the Catalog by ID
  * @memberof Catalog
  * @param {string} productId - A string product id
  * @return {boolean} true on successful publish, false if publish was unsuccessful
  * @todo revisit this function's name, maybe should be `publishProductToCatalogById`?
  */
-export default async function publishProductIdToCatalog(productId, collections) {
+export default async function publishProductToCatalogById(productId, collections) {
   const { Products } = collections;
   // Find the product by id
   let product = Products.findOne({ _id: productId });
