@@ -3,7 +3,18 @@ import applyPaginationToMongoCursor from "./applyPaginationToMongoCursor";
 import getCollectionFromCursor from "./getCollectionFromCursor";
 import getMongoSort from "./getMongoSort";
 
-const getPaginatedResponse = async (query, args) => {
+/**
+ * Resolvers that return multiple documents in the form of a connection should construct a
+ * MongoDB query, pass that cursor to this function, and then return the result.
+ *
+ * @name getPaginatedResponse
+ * @method
+ * @memberof GraphQL/ResolverUtilities
+ * @summary Given a MongoDB cursor, adds skip, limit, sort, and other filters as necessary
+ *   based on GraphQL resolver arguments.
+ * @return {Promise<Object>} `{ nodes, pageInfo, totalCount }`
+ */
+async function getPaginatedResponse(query, args) {
   const totalCount = await query.clone().count();
   const collection = getCollectionFromCursor(query);
 
@@ -23,6 +34,6 @@ const getPaginatedResponse = async (query, args) => {
   }
 
   return { nodes, pageInfo, totalCount };
-};
+}
 
 export default getPaginatedResponse;

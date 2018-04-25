@@ -6,6 +6,11 @@ import defineCollections from "./defineCollections";
 import methods from "./methods";
 import queries from "./queries";
 
+/**
+ * Functions used by the GraphQL server configuration
+ * @namespace GraphQL
+ */
+
 const collections = {};
 
 const { db } = MongoInternals.defaultRemoteCollectionDriver().mongo;

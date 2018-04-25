@@ -1,6 +1,9 @@
 import { assoc, curry } from "ramda";
 
 /**
+ * @name encodeOpaqueId
+ * @method
+ * @memberof GraphQL/Transforms
  * @summary Transforms an internal ID to an opaque ID
  * @param {String} namespace The namespace of the ID
  * @param {String} id The ID to transform
@@ -13,6 +16,9 @@ export const encodeOpaqueId = curry((namespace, id) => {
 });
 
 /**
+ * @name decodeOpaqueId
+ * @method
+ * @memberof GraphQL/Transforms
  * @summary Transforms an opaque ID to an internal ID
  * @param {String} opaqueId The ID to transform
  * @returns {String} An internal ID
@@ -25,6 +31,9 @@ export const decodeOpaqueId = (opaqueId) => {
 };
 
 /**
+ * @name decodeOpaqueIdForNamespace
+ * @method
+ * @memberof GraphQL/Transforms
  * @summary Transforms an opaque ID to an internal ID, throwing an error if the namespace is wrong
  * @param {String} namespace The namespace that you expect the decoded ID to have
  * @param {String} opaqueId The ID to transform
@@ -39,6 +48,9 @@ export const decodeOpaqueIdForNamespace = curry((namespace, opaqueId, error = ne
 });
 
 /**
+ * @name assocOpaqueId
+ * @method
+ * @memberof GraphQL/Transforms
  * @summary Assoc an opaque ID onto an object by transforming its existing _id
  *   Assumes key is _id but key could be provided as another curried param.
  * @param {String} namespace The namespace
@@ -48,6 +60,9 @@ export const assocOpaqueId = curry((namespace, item) =>
   assoc("_id", encodeOpaqueId(namespace, item._id), item));
 
 /**
+ * @name assocInternalId
+ * @method
+ * @memberof GraphQL/Transforms
  * @summary Assoc an internal ID onto an object by decoding its existing opaque _id
  *   Assumes key is _id but key could be provided as another curried param.
  * @param {String} namespace The namespace

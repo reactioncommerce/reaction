@@ -4,6 +4,11 @@ import { Tracker } from "meteor/tracker";
 import { PackageConfig } from "/lib/collections/schemas/registry";
 import { registerSchema } from "@reactioncommerce/schemas";
 
+/**
+ * @name PaypalPackageConfig
+ * @memberof Schemas
+ * @type {SimpleSchema}
+ */
 export const PaypalPackageConfig = PackageConfig.clone().extend({
   // Remove blackbox: true from settings obj
   "settings": {
@@ -89,6 +94,11 @@ export const PaypalPackageConfig = PackageConfig.clone().extend({
 
 registerSchema("PaypalPackageConfig", PaypalPackageConfig);
 
+/**
+ * @name PaypalPayment
+ * @memberof Schemas
+ * @type {SimpleSchema}
+ */
 export const PaypalPayment = new SimpleSchema({
   payerName: {
     type: String,

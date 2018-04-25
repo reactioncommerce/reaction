@@ -6,6 +6,11 @@ import CatalogProduct from "./CatalogProduct";
 import CatalogProductVariant from "./CatalogProductVariant";
 import Query from "./Query";
 
+/**
+ * Catalog-related GraphQL resolvers
+ * @namespace Catalog/GraphQL
+ */
+
 export default {
   CatalogItem: {
     __resolveType() {

@@ -99,6 +99,7 @@ export default function () {
   const shopId = getShopId();
   /**
    * @name order
+   * @memberof Fixtures
    * @summary Create an Order Factory
    * @example order = Factory.create("order")
    * @property {String} additionalField OrderItems - `faker.lorem.sentence()`

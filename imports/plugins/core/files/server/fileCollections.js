@@ -16,6 +16,11 @@ import GridFSStore from "@reactioncommerce/file-collections-sa-gridfs";
 import { Logger } from "/server/api";
 import { MediaRecords } from "/lib/collections";
 
+/**
+ * Functions and objects related to file upload, download, and storage
+ * @namespace Files
+ */
+
 // lazy loading sharp package
 let sharp;
 async function lazyLoadSharp() {
@@ -32,25 +37,27 @@ const mongodb = MongoInternals.NpmModules.mongodb.module;
 const { db } = MongoInternals.defaultRemoteCollectionDriver().mongo;
 
 /**
- * @name imgTransforms
- * @constant {Array}
- * @property {string} name - transform name that will be used as GridFS name
- * @property {object|undefined} transform - object with image transform settings
- * @property {number} size - transform size, only one number needed for both width & height
- * @property {string} mod - transform modifier function call,
- * for example the `large` & `medium` image transforms want to preserve
- * the image's aspect ratio and resize based on the larger width or height
- * so we use the `max` Sharp modifier function.
- * Check out the {@link http://sharp.pixelplumbing.com/en/stable/|Sharp Docs} for more helper functions.
- * {@link http://sharp.pixelplumbing.com/en/stable/api-resize/#max|Sharp max()}
- * {@link http://sharp.pixelplumbing.com/en/stable/api-resize/#crop|Sharp crop()}
- * @property {string} format - output image format
- * @summary Defines all image transforms
  * Image files are resized to 4 different sizes:
  * 1. `large` - 1000px by 1000px - preserves aspect ratio
  * 2. `medium` - 600px by 600px - preserves aspect ratio
  * 3. `small` - 235px by 235px - crops to square - creates png version
  * 4. `thumbnail` - 100px by 100px - crops to square - creates png version
+ * @name imgTransforms
+ * @memberof Files
+ * @constant {Array}
+ * @property {string} name - transform name that will be used as GridFS name
+ * @property {object|undefined} transform - object with image transform settings
+ * @property {number} size - transform size, only one number needed for both width & height
+ * @property {string} mod - transform modifier function call,
+ *   for example the `large` & `medium` image transforms want to preserve
+ *   the image's aspect ratio and resize based on the larger width or height
+ *   so we use the `max` Sharp modifier function.
+ *   Check out the {@link http://sharp.pixelplumbing.com/en/stable/|Sharp Docs} for more helper functions.
+ *   {@link http://sharp.pixelplumbing.com/en/stable/api-resize/#max|Sharp max()}
+ *   {@link http://sharp.pixelplumbing.com/en/stable/api-resize/#crop|Sharp crop()}
+ * @property {string} format - output image format
+ * @summary Defines all image transforms
+ * @ignore
  */
 const imgTransforms = [
   { name: "image", transform: { size: 1600, mod: "max", format: "jpg", type: "image/jpeg" } },
@@ -61,7 +68,9 @@ const imgTransforms = [
 ];
 
 /**
- * @function buildGFS
+ * @name buildGFS
+ * @method
+ * @memberof Files
  * @param {object} imgTransform
  * @summary buildGFS returns a fresh GridFSStore instance from provided image transform settings.
  */
@@ -100,6 +109,7 @@ const buildGFS = ({ name, transform }) => (
 
 /**
  * @name stores
+ * @memberof Files
  * @constant {Array}
  * @summary Defines an array of GridFSStore by mapping the imgTransform settings over the buildGFS function
  */
@@ -108,10 +118,11 @@ const stores = imgTransforms.map(buildGFS);
 /**
  * @name tempStore
  * @type TempFileStore
+ * @memberof Files
  * @summary Defines the temporary store where chunked uploads from browsers go
  * initially, until the chunks are eventually combined into one complete file
  * which the worker will then store to the permanant stores.
- * @see https://github.com/reactioncommerce/reaction-file-collections
+ * @see {@link https://github.com/reactioncommerce/reaction-file-collections}
  */
 const tempStore = new TempFileStore({
   shouldAllowRequest(req) {
@@ -131,10 +142,11 @@ WebApp.connectHandlers.use("/assets/uploads", (req, res) => {
 /**
  * @name Media
  * @type MeteorFileCollection
+ * @memberof Files
  * @summary Defines the Media FileCollection
- * To learn how to further manipulate images with Sharp, refer to
- * {@link http://sharp.pixelplumbing.com/en/stable/|Sharp Docs}
- * @see https://github.com/reactioncommerce/reaction-file-collections
+ *   To learn how to further manipulate images with Sharp, refer to
+ *   {@link http://sharp.pixelplumbing.com/en/stable/|Sharp Docs}
+ * @see {@link https://github.com/reactioncommerce/reaction-file-collections}
  */
 export const Media = new MeteorFileCollection("Media", {
   allowInsert: (userId, doc) => Security.can(userId).insert(doc).for(MediaRecords).check(),
@@ -155,6 +167,7 @@ Media.files = MediaRecords;
 /**
  * @name downloadManager
  * @type FileDownloadManager
+ * @memberof Files
  * @summary Set up a URL for downloading the files
  * @see https://github.com/reactioncommerce/reaction-file-collections
  */
@@ -171,6 +184,7 @@ WebApp.connectHandlers.use("/assets/files", downloadManager.connectHandler);
 /**
  * @name remoteUrlWorker
  * @type RemoteUrlWorker
+ * @memberof Files
  * @summary Start a worker to watch for inserted remote URLs and stream them to all stores
  * @see https://github.com/reactioncommerce/reaction-file-collections
  */
@@ -180,6 +194,7 @@ remoteUrlWorker.start();
 /**
  * @name fileWorker
  * @type TempFileStoreWorker
+ * @memberof Files
  * @summary Start a worker to watch for finished uploads, store them permanantly,
  * and then remove the temporary file
  * @see https://github.com/reactioncommerce/reaction-file-collections

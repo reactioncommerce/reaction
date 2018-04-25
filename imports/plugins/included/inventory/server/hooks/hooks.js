@@ -4,12 +4,12 @@ import { Logger, Hooks } from "/server/api";
 import { registerInventory } from "../methods/inventory";
 
 /**
-* @method afterAddItemsToCart
-* @summary reserves inventory when item is added to cart
-* @param {String} cartId - current cartId
-* @param {Object} options - product document
-* @return {undefined}
-*/
+ * @summary reserves inventory when item is added to cart
+ * @param {String} cartId - current cartId
+ * @param {Object} options - product document
+ * @return {undefined}
+ * @private
+ */
 Hooks.Events.add("afterAddItemsToCart", (cartId, options) => {
   // Adding a new product or variant to the cart
   Logger.debug("after cart update, call inventory/addReserve");
@@ -20,12 +20,12 @@ Hooks.Events.add("afterAddItemsToCart", (cartId, options) => {
 });
 
 /**
-* @method afterModifyQuantityInCart
-* @summary reserves inventory when cart quantity is updated
-* @param {String} cartId - current cartId
-* @param {Object} options - product document
-* @return {undefined}
-*/
+ * @summary reserves inventory when cart quantity is updated
+ * @param {String} cartId - current cartId
+ * @param {Object} options - product document
+ * @return {undefined}
+ * @private
+ */
 Hooks.Events.add("afterModifyQuantityInCart", (cartId, options) => {
   // Modifying item quantity in cart.
   Logger.debug("after variant increment, call inventory/addReserve");
@@ -40,12 +40,12 @@ Hooks.Events.add("afterModifyQuantityInCart", (cartId, options) => {
 
 
 /**
-* @method afterRemoveCatalogProduct
-* @summary updates product inventory after variant is removed
-* @param {String} userId - userId of user making the call
-* @param {Object} doc - product document
-* @return {undefined}
-*/
+ * @summary updates product inventory after variant is removed
+ * @param {String} userId - userId of user making the call
+ * @param {Object} doc - product document
+ * @return {undefined}
+ * @private
+ */
 Hooks.Events.add("afterRemoveCatalogProduct", (userId, doc) => {
   if (doc.type === "variant") {
     const variantItem = {
@@ -62,12 +62,12 @@ Hooks.Events.add("afterRemoveCatalogProduct", (userId, doc) => {
 });
 
 /**
-* @method afterUpdateCatalogProduct
-* @summary adjust inventory of variants after an update
-* @param {String} userId - userId of user making the call
-* @param {Object} doc - product document
-* @return {undefined}
-*/
+ * @summary adjust inventory of variants after an update
+ * @param {String} userId - userId of user making the call
+ * @param {Object} doc - product document
+ * @return {undefined}
+ * @private
+ */
 Hooks.Events.add("afterUpdateCatalogProduct", (doc) => {
   // Find the most recent version of the product document based on
   // the passed in doc._id
@@ -83,12 +83,12 @@ Hooks.Events.add("afterUpdateCatalogProduct", (doc) => {
 });
 
 /**
-* @method afterInsertCatalogProduct
-* @summary adds product inventory when new product is created
-* @param {String} userId - userId of user making the call
-* @param {Object} doc - product document
-* @return {undefined}
-*/
+ * @summary adds product inventory when new product is created
+ * @param {String} userId - userId of user making the call
+ * @param {Object} doc - product document
+ * @return {undefined}
+ * @private
+ */
 Hooks.Events.add("afterInsertCatalogProduct", (doc) => {
   if (doc.type !== "variant") {
     return false;
@@ -99,10 +99,10 @@ Hooks.Events.add("afterInsertCatalogProduct", (doc) => {
 });
 
 /**
- * markInventoryShipped
  * @summary check a product and update Inventory collection with inventory documents.
  * @param {Object} product - valid Schemas.Product object
  * @return {Number} - returns the total amount of new inventory created
+ * @private
  */
 function markInventoryShipped(doc) {
   const order = Orders.findOne(doc._id);
@@ -126,10 +126,10 @@ function markInventoryShipped(doc) {
 }
 
 /**
- * markInventorySold
  * @summary check a product and update Inventory collection with inventory documents.
  * @param {Object} doc - valid Schemas.Product object
  * @return {Number} - returns the total amount of new inventory created
+ * @private
  */
 function markInventorySold(doc) {
   const orderItems = doc.items;
@@ -153,11 +153,11 @@ function markInventorySold(doc) {
 }
 
 /**
-* @method afterOrderInsert
-* @summary marks inventory as sold when order is created
-* @param {Object} order - order document
-* @return {Object} order - order document
-*/
+ * @summary marks inventory as sold when order is created
+ * @param {Object} order - order document
+ * @return {Object} order - order document
+ * @private
+ */
 Hooks.Events.add("afterOrderInsert", (order) => {
   Logger.debug("Inventory module handling Order insert");
   markInventorySold(order);
@@ -166,11 +166,11 @@ Hooks.Events.add("afterOrderInsert", (order) => {
 });
 
 /**
-* @method onOrderShipmentShipped
-* @summary marks inventory as shipped when order workflow is completed
-* @param {Object} doc - order document
-* @return {undefined}
-*/
+ * @summary marks inventory as shipped when order workflow is completed
+ * @param {Object} doc - order document
+ * @return {undefined}
+ * @private
+ */
 Hooks.Events.add("onOrderShipmentShipped", (doc) => {
   Logger.debug("Inventory module handling Order update");
   markInventoryShipped(doc);

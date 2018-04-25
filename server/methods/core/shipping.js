@@ -9,7 +9,7 @@ import { Cart as CartSchema } from "/lib/collections/schemas";
  * Run these methods using `Meteor.call()`.
  *
  *
- * @namespace Methods/Shipping
+ * @namespace Shipping/Methods
 */
 
 /**
@@ -297,7 +297,7 @@ export const methods = {
   /**
    * @name shipping/updateShipmentQuotes
    * @method
-   * @memberof Methods/Shipping
+   * @memberof Shipping/Methods
    * @summary Gets shipping rates and updates the users cart methods
    * @todo Add orderId argument/fallback
    * @param {String} cartId - cartId
@@ -325,7 +325,7 @@ export const methods = {
   /**
    * @name shipping/getShippingRates
    * @method
-   * @memberof Methods/Shipping
+   * @memberof Shipping/Methods
    * @summary Just gets rates, without updating anything
    * @param {Object} cart - cart object
    * @return {Array} return updated rates in cart

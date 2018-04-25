@@ -3,6 +3,7 @@ import { Meteor } from "meteor/meteor";
 /**
  * @name catalogItemProduct
  * @method
+ * @memberof Catalog/NoMeteorQueries
  * @summary query the Catalog for a single Product by id or slug
  * id takes priority if both are provided, throws meteor error if neither
  * @param {Object} context - an object containing the per-request state

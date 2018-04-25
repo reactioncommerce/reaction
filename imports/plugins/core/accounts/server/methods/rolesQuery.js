@@ -3,6 +3,7 @@ import { Meteor } from "meteor/meteor";
 /**
  * @name rolesQuery
  * @method
+ * @memberof Accounts/NoMeteorQueries
  * @summary query the Shops collection, filter over packages, and return available roles data
  * @param {Object} context - an object containing the per-request state
  * @param {String} shopId - ID of Shop to query

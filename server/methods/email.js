@@ -9,14 +9,14 @@ import { Logger, Reaction } from "/server/api";
  * Run these methods using `Meteor.call()`
  *
  * @example Meteor.call("emails/retryFailed", email._id, (err)
- * @namespace Methods/Email
+ * @namespace Email/Methods
 */
 Meteor.methods({
   /**
    * @name email/verifySettings
    * @method
    * @summary Verify the current email configuration
-   * @memberof Methods/Email
+   * @memberof Email/Methods
    * @param {Object} settings - optional settings object (otherwise uses settings in database)
    * @return {Boolean} - returns true if SMTP connection succeeds
    */
@@ -71,7 +71,7 @@ Meteor.methods({
    * @name email/saveSettings
    * @method
    * @summary Save new email configuration
-   * @memberof Methods/Email
+   * @memberof Email/Methods
    * @param {Object} settings - mail provider settings
    * @return {Boolean} - returns true if update succeeds
    */
@@ -106,7 +106,7 @@ Meteor.methods({
    * @name email/retryFailed
    * @method
    * @summary Retry a failed or cancelled email job
-   * @memberof Methods/Email
+   * @memberof Email/Methods
    * @param {String} jobId - a sendEmail job ID
    * @return {Boolean} - returns true if job is successfully restarted
    */

@@ -2,8 +2,9 @@ import { getPaginatedResponse } from "@reactioncommerce/reaction-graphql-utils";
 import { decodeShopOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/shop";
 
 /**
- * @name roles
+ * @name "Shop.roles"
  * @method
+ * @memberof Shop/GraphQL
  * @summary find and return the roles for a shop
  * @param {Object} _ - unused
  * @param {Object} args - an object of all arguments that were sent by the client
