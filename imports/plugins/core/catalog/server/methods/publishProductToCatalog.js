@@ -1,5 +1,5 @@
 import Logger from "@reactioncommerce/logger";
-import { Random } from "@reactioncommerce/random";
+import Random from "@reactioncommerce/random";
 
 import isBackorder from "./isBackorder";
 import isLowQuantity from "./isLowQuantity";
@@ -60,7 +60,6 @@ export default async function publishProductToCatalog(product, collections) {
 
   // Get all variants of the product and denormalize them into an array on the CatalogProduct
   const variants = await Products.find({ ancestors: product._id }).toArray();
-  console.log("publishProductToCatalog", variants);
 
   const catalogProductVariants = variants
     // We filter out deleted or non-visible variants when publishing to catalog.
@@ -108,10 +107,10 @@ export default async function publishProductToCatalog(product, collections) {
     createdAt: product.createdAt,
     description: product.description,
     height: product.height,
-    isBackorder: isBackorder(catalogProductVariants),
+    isBackorder: await isBackorder(catalogProductVariants),
     isDeleted: !!product.isDeleted,
-    isLowQuantity: isLowQuantity(catalogProductVariants, collections),
-    isSoldOut: isSoldOut(catalogProductVariants, collections),
+    isLowQuantity: await isLowQuantity(catalogProductVariants, collections),
+    isSoldOut: await isSoldOut(catalogProductVariants, collections),
     isTaxable: !!product.taxable,
     isVisible: !!product.isVisible,
     length: product.length,
@@ -151,10 +150,10 @@ export default async function publishProductToCatalog(product, collections) {
   };
 
   // Move `positions` onto the CatalogItem instead of the product, and switch from map to array
-  const positions = getCatalogPositions(product.positions);
+  const positions = await getCatalogPositions(product.positions);
 
   // Insert/update catalog document
-  const result = Catalog.upsert(
+  const result = await Catalog.update(
     {
       "product.productId": product.productId
     },
@@ -169,7 +168,8 @@ export default async function publishProductToCatalog(product, collections) {
         _id: Random.id(),
         createdAt: new Date()
       }
-    }
+    },
+    { upsert: true }
   );
 
   return result && result.numberAffected === 1;
