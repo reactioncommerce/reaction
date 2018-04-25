@@ -9,14 +9,17 @@ const mockContext = {
   "Accounts",
   "Catalog",
   "Groups",
+  "Products",
   "roles",
   "Shops",
   "Tags",
   "users"
 ].forEach((collectionName) => {
   mockContext.collections[collectionName] = {
-    find: jest.fn().mockName(`${collectionName}.find`),
-    findOne: jest.fn().mockName(`${collectionName}.findOne`)
+    find: jest.fn().mockName(`${collectionName}.find`).mockReturnThis(),
+    findOne: jest.fn().mockName(`${collectionName}.findOne`),
+    toArray: jest.fn().mockName(`${collectionName}.toArray`),
+    update: jest.fn().mockName(`${collectionName}.update`)
   };
 });
 
