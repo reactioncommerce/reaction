@@ -8,12 +8,11 @@ import publishProductToCatalog from "./publishProductToCatalog";
  * @memberof Catalog
  * @param {string} productId - A string product id
  * @return {boolean} true on successful publish, false if publish was unsuccessful
- * @todo revisit this function's name, maybe should be `publishProductToCatalogById`?
  */
 export default async function publishProductToCatalogById(productId, collections) {
   const { Products } = collections;
   // Find the product by id
-  let product = Products.findOne({ _id: productId });
+  let product = await Products.findOne({ _id: productId });
 
   // Stop if a product could not be found
   if (!product) {
@@ -23,10 +22,11 @@ export default async function publishProductToCatalogById(productId, collections
 
   // If the product has ancestors, then find the top product document
   if (Array.isArray(product.ancestors) && product.ancestors.length) {
-    product = Products.findOne({
+    product = await Products.findOne({
       _id: product.ancestors[0]
     });
   }
 
-  return publishProductToCatalog(product, collections);
+  const result = await publishProductToCatalog(product, collections);
+  return result;
 }
