@@ -4,7 +4,10 @@ import debug from "../debug";
 import requestRange from "./requestRange";
 import writeHeadersToResponse from "./writeHeadersToResponse";
 
-const routePath = new Path("/:collectionName/:fileId/:storeName/:filename");
+// NOTE: This path can be changed back to "/:collectionName/:fileId/:storeName/:filename" if this issue is fixed and pulled in:
+// https://github.com/troch/path-parser/issues/22
+const matchFix = "<[a-zA-Z0-9-_.~%':|\\+]+>";
+const routePath = new Path(`/:collectionName${matchFix}/:fileId${matchFix}/:storeName${matchFix}/:filename${matchFix}`);
 
 export default function getFileDownloadHandler({
   getFileInfo,
@@ -23,6 +26,14 @@ export default function getFileDownloadHandler({
     debug("  headers:", headers);
     debug("  query:", JSON.stringify(query));
     debug("---------------------------------------");
+
+    const itemsFromUrl = routePath.partialTest(url);
+    if (!itemsFromUrl) {
+      debug(`Unable to parse file download URL: ${url}`);
+      res.writeHead(400, "Bad Request");
+      res.end();
+      return;
+    }
 
     const {
       collectionName,
