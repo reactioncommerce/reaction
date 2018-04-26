@@ -99,7 +99,14 @@ jobs:
             # fallback to using the latest cache if no exact match is found
             - v1-dependencies-
 
-      - run: npx lerna publish --conventional-commits --yes
+      - run:
+          name: Publish to NPM and GitHub
+          command: npx lerna publish --conventional-commits --yes
+          environment:
+            GIT_AUTHOR_EMAIL: rc-publisher@reactioncommerce.com
+            GIT_AUTHOR_NAME: rc-publisher
+            GIT_COMMITTER_EMAIL: rc-publisher@reactioncommerce.com
+            GIT_COMMITTER_NAME: rc-publisher
 
 workflows:
   version: 2
@@ -109,11 +116,6 @@ workflows:
           context: reaction-publish-semantic-release
       - deploy:
           context: reaction-publish-semantic-release
-          environment:
-            GIT_AUTHOR_EMAIL: rc-publisher@reactioncommerce.com
-            GIT_AUTHOR_NAME: rc-publisher
-            GIT_COMMITTER_EMAIL: rc-publisher@reactioncommerce.com
-            GIT_COMMITTER_NAME: rc-publisher
           requires:
             - build
           filters:
