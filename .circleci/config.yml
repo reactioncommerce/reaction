@@ -109,6 +109,11 @@ workflows:
           context: reaction-publish-semantic-release
       - deploy:
           context: reaction-publish-semantic-release
+          environment:
+            GIT_AUTHOR_EMAIL: rc-publisher@reactioncommerce.com
+            GIT_AUTHOR_NAME: rc-publisher
+            GIT_COMMITTER_EMAIL: rc-publisher@reactioncommerce.com
+            GIT_COMMITTER_NAME: rc-publisher
           requires:
             - build
           filters:
