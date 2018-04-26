@@ -122,7 +122,7 @@ class Variant extends Component {
     const variantElement = (
       <li
         className="variant-list-item"
-        id="variant-list-item-{variant._id}"
+        id={`variant-list-item-${variant._id}`}
         key={variant._id}
       >
         <div
