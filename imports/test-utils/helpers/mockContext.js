@@ -7,12 +7,28 @@ const mockContext = {
 
 [
   "Accounts",
+  "Assets",
+  "Cart",
   "Catalog",
+  "Emails",
   "Groups",
+  "Inventory",
+  "Logs",
+  "MediaRecords",
+  "Notifications",
+  "Orders",
+  "Packages",
   "Products",
+  "Revisions",
   "roles",
+  "SellerShops",
+  "Shipping",
   "Shops",
+  "Sms",
   "Tags",
+  "Templates",
+  "Themes",
+  "Translations",
   "users"
 ].forEach((collectionName) => {
   mockContext.collections[collectionName] = {
