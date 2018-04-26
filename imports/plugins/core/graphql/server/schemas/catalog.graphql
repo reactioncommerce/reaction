@@ -397,3 +397,11 @@ extend type Query {
     slugOrId: String
   ): CatalogItemProduct
 }
+
+extend type Mutation {
+  "TODO:"
+  pubslishProductsToCatalog(
+    "TODO:"
+    productIds: [ID]!
+  ): [CatalogItemProduct]
+}
