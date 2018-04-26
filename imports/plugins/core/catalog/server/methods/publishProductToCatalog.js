@@ -5,6 +5,7 @@ import isBackorder from "./isBackorder";
 import isLowQuantity from "./isLowQuantity";
 import isSoldOut from "./isSoldOut";
 import getCatalogPositions from "./getCatalogPositions";
+import getCatalogProductMedia from "./getCatalogProductMedia";
 
 /**
  * @method publishProductToCatalog
@@ -22,41 +23,8 @@ export default async function publishProductToCatalog(product, collections) {
     return false;
   }
 
-  // TODO: get product media working / maybe move to it's own function file
-  // // Get Media for the product
-  // const mediaArray = await Media.find(
-  //   {
-  //     "metadata.productId": product._id,
-  //     "metadata.toGrid": 1,
-  //     "metadata.workflow": { $nin: ["archived", "unpublished"] }
-  //   },
-  //   {
-  //     sort: { "metadata.priority": 1, uploadedAt: 1 }
-  //   }
-  // );
-
-  // // Denormalize media
-  // const catalogProductMedia = mediaArray
-  //   .map((media) => {
-  //     const { metadata } = media;
-  //     const { toGrid, priority, productId, variantId } = metadata || {};
-
-  //     return {
-  //       priority,
-  //       toGrid,
-  //       productId,
-  //       variantId,
-  //       URLs: {
-  //         large: `${media.url({ store: "large" })}`,
-  //         medium: `${media.url({ store: "medium" })}`,
-  //         original: `${media.url({ store: "image" })}`,
-  //         small: `${media.url({ store: "small" })}`,
-  //         thumbnail: `${media.url({ store: "thumbnail" })}`
-  //       }
-  //     };
-  //   })
-  //   .sort((a, b) => a.priority - b.priority);
-
+  // TODO: get product media working
+  // const catalogProductMedia = await getCatalogProductMedia(product._id, collections);
   // const primaryImage = catalogProductMedia.find(({ toGrid }) => toGrid === 1) || null;
 
   // Get all variants of the product and denormalize them into an array on the CatalogProduct
