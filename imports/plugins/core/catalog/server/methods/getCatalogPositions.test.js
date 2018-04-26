@@ -7,6 +7,10 @@ const mockProductPositions = {
   },
   tag2: {
     weight: 2
+  },
+  tag3: {
+    weight: 1,
+    pinned: true
   }
 };
 
@@ -23,6 +27,13 @@ const mockCatalogPositions = [
     isPinned: false,
     position: 1,
     tagId: "tag2",
+    updatedAt: undefined
+  },
+  {
+    displayWeight: 1,
+    isPinned: true,
+    position: 1,
+    tagId: "tag3",
     updatedAt: undefined
   }
 ];

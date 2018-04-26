@@ -38,7 +38,7 @@ export default async function publishProductsToCatalog(productIds, collections) 
   // as well as its parent ID.
   products = uniqBy(products, "_id");
 
-  const promises = products.map((product) => publishProductToCatalog(product));
+  const promises = products.map((product) => publishProductToCatalog(product, collections));
   const results = await Promise.all(promises);
   return results.every((result) => result);
 }

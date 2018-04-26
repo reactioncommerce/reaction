@@ -23,7 +23,6 @@ export default async function publishProductToCatalog(product, collections) {
     return false;
   }
 
-  // TODO: get product media working
   // const catalogProductMedia = await getCatalogProductMedia(product._id, collections);
   // const primaryImage = catalogProductMedia.find(({ toGrid }) => toGrid === 1) || null;
 
@@ -76,7 +75,7 @@ export default async function publishProductToCatalog(product, collections) {
     createdAt: product.createdAt,
     description: product.description,
     height: product.height,
-    isBackorder: await isBackorder(catalogProductVariants),
+    isBackorder: await isBackorder(catalogProductVariants, collections),
     isDeleted: !!product.isDeleted,
     isLowQuantity: await isLowQuantity(catalogProductVariants, collections),
     isSoldOut: await isSoldOut(catalogProductVariants, collections),

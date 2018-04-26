@@ -5,6 +5,7 @@ import isLowQuantity from "./isLowQuantity";
 import isSoldOut from "./isSoldOut";
 
 /**
+ * TODO: rename to updateCatalogProductInventoryStatus
  * @method publishProductInventoryAdjustments
  * @summary Publish inventory updates for a single product to the Catalog
  * @memberof Catalog
@@ -19,19 +20,17 @@ export default async function publishProductInventoryAdjustments(productId, coll
   });
 
   if (!catalogProduct) {
-    Logger.info("Cannot publish inventory changes to catalog product");
+    Logger.info("Cannot publish inventory status changes to catalog product");
     return false;
   }
 
   const variants = await Products.find({
-    ancestors: {
-      $in: [productId]
-    }
+    ancestors: productId
   }).toArray();
 
   const update = {
     isSoldOut: await isSoldOut(variants, collections),
-    isBackorder: await isBackorder(variants),
+    isBackorder: await isBackorder(variants, collections),
     isLowQuantity: await isLowQuantity(variants, collections)
   };
 
