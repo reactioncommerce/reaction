@@ -72,6 +72,10 @@ jobs:
 
     working_directory: ~/repo
 
+    dependencies:
+      pre:
+        - echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/.npmrc
+
     steps:
       - checkout
 
