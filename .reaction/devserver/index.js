@@ -1,9 +1,10 @@
 import mongodb, { MongoClient } from "mongodb";
 import createApolloServer from "../../imports/plugins/core/graphql/server/createApolloServer";
 import defineCollections from "../../imports/plugins/core/graphql/server/defineCollections";
-import methods from "./methods";
+import mutations from "../../imports/plugins/core/graphql/server/mutations";
 import queries from "../../imports/plugins/core/graphql/server/queries";
 import setUpFileCollections from "../../imports/plugins/core/files/server/no-meteor/setUpFileCollections";
+import methods from "./methods";
 
 const { MONGO_URL, ROOT_URL } = process.env;
 if (!MONGO_URL) throw new Error("You must set MONGO_URL");
@@ -26,10 +27,7 @@ MongoClient.connect(dbUrl, (error, client) => {
   db = client.db(dbName);
   defineCollections(db, collections);
 
-  const {
-    downloadManager,
-    Media
-  } = setUpFileCollections({
+  const { downloadManager, Media } = setUpFileCollections({
     absoluteUrlPrefix: ROOT_URL,
     db,
     Logger: { info: console.info.bind(console) },
@@ -49,6 +47,7 @@ MongoClient.connect(dbUrl, (error, client) => {
     context: {
       collections,
       methods,
+      mutations,
       queries
     },
     debug: true,
