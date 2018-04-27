@@ -189,7 +189,7 @@
     }
   },
   "scripts": {
-    "devserver": "NODE_ENV=devserver nodemon .reaction/devserver/index.js --exec babel-node",
+    "devserver": "NODE_ENV=devserver nodemon .reaction/devserver/index.js",
     "lint": "eslint .",
     "test": "npm run test:unit && npm run test:app",
     "test:app": "meteor test --once --full-app --driver-package meteortesting:mocha",
@@ -321,6 +321,17 @@
     },
     "plugins": [
       "jest"
+    ]
+  },
+  "nodemonConfig": {
+    "delay": "2000",
+    "execMap": {
+      "js": "babel-node"
+    },
+    "ext": "js,json,graphql",
+    "watch": [
+      "imports",
+      ".reaction"
     ]
   }
 }

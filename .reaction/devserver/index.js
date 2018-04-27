@@ -1,3 +1,4 @@
+import express from "express";
 import mongodb, { MongoClient } from "mongodb";
 import createApolloServer from "../../imports/plugins/core/graphql/server/createApolloServer";
 import defineCollections from "../../imports/plugins/core/graphql/server/defineCollections";
@@ -56,6 +57,8 @@ MongoClient.connect(dbUrl, (error, client) => {
   });
 
   app.use("/assets/files", downloadManager.connectHandler);
+
+  app.use(express.static('public'))
 
   app.listen(PORT, () => {
     console.info(`GraphQL listening at http://localhost:${PORT}/graphql-alpha`);
