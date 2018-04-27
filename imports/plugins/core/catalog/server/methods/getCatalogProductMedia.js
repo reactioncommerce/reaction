@@ -15,7 +15,7 @@ export default async function getCatalogProductMedia(productId, collections) {
       "metadata.workflow": { $nin: ["archived", "unpublished"] }
     },
     {
-      sort: { "metadata.priority": 1, uploadedAt: 1 }
+      sort: { "metadata.priority": 1, "uploadedAt": 1 }
     }
   );
 
@@ -23,12 +23,12 @@ export default async function getCatalogProductMedia(productId, collections) {
   const catalogProductMedia = mediaArray
     .map((media) => {
       const { metadata } = media;
-      const { toGrid, priority, productId, variantId } = metadata || {};
+      const { toGrid, priority, productId: prodId, variantId } = metadata || {};
 
       return {
         priority,
         toGrid,
-        productId,
+        productId: prodId,
         variantId,
         URLs: {
           large: `${media.url({ store: "large" })}`,

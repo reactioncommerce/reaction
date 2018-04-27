@@ -23,8 +23,8 @@ export default async function publishProductToCatalog(product, collections) {
     return false;
   }
 
-  // const catalogProductMedia = await getCatalogProductMedia(product._id, collections);
-  // const primaryImage = catalogProductMedia.find(({ toGrid }) => toGrid === 1) || null;
+  const catalogProductMedia = await getCatalogProductMedia(product._id, collections);
+  const primaryImage = catalogProductMedia.find(({ toGrid }) => toGrid === 1) || null;
 
   // Get all variants of the product and denormalize them into an array on the CatalogProduct
   const variants = await Products.find({ ancestors: product._id }).toArray();
@@ -83,7 +83,7 @@ export default async function publishProductToCatalog(product, collections) {
     isVisible: !!product.isVisible,
     length: product.length,
     lowInventoryWarningThreshold: product.lowInventoryWarningThreshold,
-    // media: catalogProductMedia,
+    media: catalogProductMedia,
     metafields: product.metafields,
     metaDescription: product.metaDescription,
     minOrderQuantity: product.minOrderQuantity,
@@ -91,7 +91,7 @@ export default async function publishProductToCatalog(product, collections) {
     pageTitle: product.pageTitle,
     parcel: product.parcel,
     price: product.price,
-    // primaryImage,
+    primaryImage,
     // The _id prop could change whereas this should always point back to the source product in Products collection
     productId: product._id,
     productType: product.productType,
