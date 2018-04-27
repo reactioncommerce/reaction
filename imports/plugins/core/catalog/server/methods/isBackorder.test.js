@@ -1,12 +1,10 @@
 import {
-  rewire as rewire$ProductRevision,
-  restore as restore$ProductRevision
-} from "/imports/plugins/core/revisions/server/no-meteor/ProductRevision";
+  rewire as rewire$getVariantQuantity,
+  restore as restore$getVariantQuantity
+} from "/imports/plugins/core/revisions/server/no-meteor/getVariantQuantity";
 import isBackorder from "./isBackorder";
 
-const mockProductRevision = {
-  getVariantQuantity: jest.fn().mockName("ProductRevision.getVariantQuantity")
-};
+const mockGetVariantQuantity = jest.fn().mockName("ProductRevision.getVariantQuantity");
 
 // mock variant
 const mockVariantWithBackorder = {
@@ -34,55 +32,49 @@ const mockVariantWithOutInventory = {
 };
 
 beforeAll(() => {
-  rewire$ProductRevision(mockProductRevision);
+  rewire$getVariantQuantity(mockGetVariantQuantity);
 });
 
-afterAll(restore$ProductRevision);
+afterAll(restore$getVariantQuantity);
 
 test("expect true when a single product vartiant is sold out and has inventory policy disabled", async () => {
-  mockProductRevision.getVariantQuantity.mockReturnValueOnce(Promise.resolve(0));
+  mockGetVariantQuantity.mockReturnValueOnce(Promise.resolve(0));
   const spec = await isBackorder([mockVariantWithBackorder]);
   expect(spec).toBe(true);
 });
 
 test("expect true when an array of product vartiants are sold out and have inventory policy disabled", async () => {
-  mockProductRevision.getVariantQuantity
-    .mockReturnValueOnce(Promise.resolve(0))
-    .mockReturnValueOnce(Promise.resolve(0));
+  mockGetVariantQuantity.mockReturnValueOnce(Promise.resolve(0)).mockReturnValueOnce(Promise.resolve(0));
   const spec = await isBackorder([mockVariantWithBackorder, mockVariantWithBackorder]);
   expect(spec).toBe(true);
 });
 
 test("expect false when an array of product vartiants has one sold out and another not sold out and both have inventory policy disabled", async () => {
-  mockProductRevision.getVariantQuantity
-    .mockReturnValueOnce(Promise.resolve(10))
-    .mockReturnValueOnce(Promise.resolve(0));
+  mockGetVariantQuantity.mockReturnValueOnce(Promise.resolve(10)).mockReturnValueOnce(Promise.resolve(0));
   const spec = await isBackorder([mockVariantWithBackorder, mockVariantWithBackorderNotSoldOut]);
   expect(spec).toBe(false);
 });
 
 test("expect false when a single product vartiant is not sold out and has inventory policy disabled", async () => {
-  mockProductRevision.getVariantQuantity.mockReturnValueOnce(Promise.resolve(10));
+  mockGetVariantQuantity.mockReturnValueOnce(Promise.resolve(10));
   const spec = await isBackorder([mockVariantWithBackorderNotSoldOut]);
   expect(spec).toBe(false);
 });
 
 test("expect false when an array of product vartiants are not sold out and have inventory policy disabled", async () => {
-  mockProductRevision.getVariantQuantity
-    .mockReturnValueOnce(Promise.resolve(10))
-    .mockReturnValueOnce(Promise.resolve(10));
+  mockGetVariantQuantity.mockReturnValueOnce(Promise.resolve(10)).mockReturnValueOnce(Promise.resolve(10));
   const spec = await isBackorder([mockVariantWithBackorderNotSoldOut, mockVariantWithBackorderNotSoldOut]);
   expect(spec).toBe(false);
 });
 
 test("expect false when a single product vartiant is sold out and has inventory policy enabled", async () => {
-  mockProductRevision.getVariantQuantity.mockReturnValueOnce(Promise.resolve(0));
+  mockGetVariantQuantity.mockReturnValueOnce(Promise.resolve(0));
   const spec = await isBackorder([mockVariantWithOutBackorder]);
   expect(spec).toBe(false);
 });
 
 test("expect false when a single product vartiant is sold out and has inventory controls disabled", async () => {
-  mockProductRevision.getVariantQuantity.mockReturnValueOnce(Promise.resolve(0));
+  mockGetVariantQuantity.mockReturnValueOnce(Promise.resolve(0));
   const spec = await isBackorder([mockVariantWithOutInventory]);
   expect(spec).toBe(false);
 });
