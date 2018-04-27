@@ -9,7 +9,7 @@ import publishProductsToCatalog from "./publishProductsToCatalog";
  * @summary
  * @param {Object} context - TODO
  * @param {Array}
- * @return
+ * @return {Promise<Object[]>} TODO:
  */
 export default async function publishProducts(context, productIds) {
   const { collections, shopId: primaryShopId, userHasPermission } = context;
