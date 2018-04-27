@@ -1,7 +1,7 @@
 import { Meteor } from "meteor/meteor";
-import Logger from "@reactioncommerce/logger";
 import { uniq } from "lodash";
-import publishProductsToCatalog from "./publishProductsToCatalog";
+import Logger from "@reactioncommerce/logger";
+import publishProductsToCatalog from "../utils/no-meteor/publishProductsToCatalog";
 
 /**
  * TODO:
