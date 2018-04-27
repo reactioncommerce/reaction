@@ -5,7 +5,7 @@ import findFreePort from "find-free-port";
 import Datastore from "nedb";
 import Cursor from "nedb/lib/cursor";
 import createApolloServer from "../imports/plugins/core/graphql/server/createApolloServer";
-import defineCollections from "../imports/plugins/core/graphql/server/defineCollections";
+import defineCollections from "../imports/collections/defineCollections";
 import methods from "../.reaction/devserver/methods";
 import queries from "../imports/plugins/core/graphql/server/queries";
 

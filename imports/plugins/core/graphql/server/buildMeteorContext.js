@@ -1,15 +1,8 @@
-import { MongoInternals } from "meteor/mongo";
-import { NoMeteorMedia } from "/imports/plugins/core/files/server";
 import buildContext from "./buildContext";
-import defineCollections from "./defineCollections";
+import collections from "/imports/collections/rawCollections";
 import methods from "./methods";
 import mutations from "./muitations";
 import queries from "./queries";
-
-const collections = { Media: NoMeteorMedia };
-
-const { db } = MongoInternals.defaultRemoteCollectionDriver().mongo;
-defineCollections(db, collections);
 
 export const baseContext = {
   collections,

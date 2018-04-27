@@ -1,6 +1,6 @@
 import mongodb, { MongoClient } from "mongodb";
 import createApolloServer from "../../imports/plugins/core/graphql/server/createApolloServer";
-import defineCollections from "../../imports/plugins/core/graphql/server/defineCollections";
+import defineCollections from "../../imports/collections/defineCollections";
 import mutations from "../../imports/plugins/core/graphql/server/mutations";
 import queries from "../../imports/plugins/core/graphql/server/queries";
 import setUpFileCollections from "../../imports/plugins/core/files/server/no-meteor/setUpFileCollections";
