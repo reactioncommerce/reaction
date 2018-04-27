@@ -1,4 +1,4 @@
-import ProductRevision from "/imports/plugins/core/revisions/server/no-meteor/ProductRevision";
+import getVariantQuantity from "/imports/plugins/core/revisions/server/no-meteor/getVariantQuantity";
 
 /**
  * @method isSoldOut
@@ -11,7 +11,7 @@ import ProductRevision from "/imports/plugins/core/revisions/server/no-meteor/Pr
 export default async function isSoldOut(variants, collections) {
   const promises = variants.map(async (variant) => {
     if (variant.inventoryManagement) {
-      const isVariantSoldOut = (await ProductRevision.getVariantQuantity(variant, collections, variants)) <= 0;
+      const isVariantSoldOut = (await getVariantQuantity(variant, collections, variants)) <= 0;
       return isVariantSoldOut;
     }
     return false;

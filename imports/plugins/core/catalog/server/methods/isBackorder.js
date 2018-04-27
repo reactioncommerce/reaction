@@ -1,4 +1,5 @@
-import ProductRevision from "/imports/plugins/core/revisions/server/no-meteor/ProductRevision";
+import getVariantQuantity from "/imports/plugins/core/revisions/server/no-meteor/getVariantQuantity";
+
 /**
  * @method isBackorder
  * @summary If all the products variants have inventory policy disabled, inventory management enabled and a quantity of zero return `true`
@@ -8,7 +9,7 @@ import ProductRevision from "/imports/plugins/core/revisions/server/no-meteor/Pr
  */
 export default async function isBackorder(variants, collections) {
   const promises = variants.map(async (variant) => {
-    const quantity = await ProductRevision.getVariantQuantity(variant, collections, variants);
+    const quantity = await getVariantQuantity(variant, collections, variants);
     return !variant.inventoryPolicy && variant.inventoryManagement && quantity === 0;
   });
   const results = await Promise.all(promises);
