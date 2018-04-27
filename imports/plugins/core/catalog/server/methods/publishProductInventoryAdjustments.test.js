@@ -218,7 +218,7 @@ test("expect true if a product's inventory has changed and is updated in the cat
   mockCollections.Catalog.findOne.mockReturnValueOnce(Promise.resolve(mockProduct));
   mockCollections.Products.toArray.mockReturnValueOnce(Promise.resolve(mockVariants));
   mockIsSoldOut.mockReturnValueOnce(Promise.resolve(true));
-  mockCollections.Catalog.update.mockReturnValueOnce(Promise.resolve({ result: { ok: 1 } }));
+  mockCollections.Catalog.updateOne.mockReturnValueOnce(Promise.resolve({ result: { ok: 1 } }));
   const spec = await publishProductInventoryAdjustments(mockProduct, mockCollections);
   expect(spec).toBe(true);
 });

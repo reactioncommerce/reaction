@@ -1,5 +1,9 @@
 import mockContext from "/imports/test-utils/helpers/mockContext";
 import { rewire as rewire$getCatalogPositions, restore as restore$getCatalogPositions } from "./getCatalogPositions";
+import {
+  rewire as rewire$getCatalogProductMedia,
+  restore as restore$getCatalogProductMedia
+} from "./getCatalogProductMedia";
 import { rewire as rewire$isBackorder, restore as restore$isBackorder } from "./isBackorder";
 import { rewire as rewire$isLowQuantity, restore as restore$isLowQuantity } from "./isLowQuantity";
 import { rewire as rewire$isSoldOut, restore as restore$isSoldOut } from "./isSoldOut";
@@ -193,6 +197,26 @@ const mockProduct = {
   width: 8.4
 };
 
+const mockGeCatalogProductMedia = jest
+  .fn()
+  .mockName("getCatalogProductMedia")
+  .mockReturnValue(
+    Promise.resolve([
+      {
+        priority: 1,
+        toGrid: 1,
+        productId: internalProductId,
+        variantId: internalVariantIds[1],
+        URLs: {
+          large: "large/path/to/image.jpg",
+          medium: "medium/path/to/image.jpg",
+          original: "image/path/to/image.jpg",
+          small: "small/path/to/image.jpg",
+          thumbnail: "thumbnail/path/to/image.jpg"
+        }
+      }
+    ])
+  );
 const mockGetCatalogPositions = jest
   .fn()
   .mockName("getCatalogPositions")
@@ -219,6 +243,7 @@ const mockIsSoldOut = jest
   .mockReturnValue(Promise.resolve(false));
 
 beforeAll(() => {
+  rewire$getCatalogProductMedia(mockGeCatalogProductMedia);
   rewire$getCatalogPositions(mockGetCatalogPositions);
   rewire$isBackorder(mockIsBackorder);
   rewire$isLowQuantity(mockIsLowQuantity);
@@ -230,18 +255,19 @@ afterAll(() => {
   restore$isBackorder();
   restore$isLowQuantity();
   restore$isSoldOut();
+  restore$getCatalogProductMedia();
 });
 
 test("expect true if a product is published to the catalog collection", async () => {
   mockCollections.Products.toArray.mockReturnValueOnce(Promise.resolve(mockVariants));
-  mockCollections.Catalog.update.mockReturnValueOnce(Promise.resolve({ numberAffected: 1 }));
+  mockCollections.Catalog.updateOne.mockReturnValueOnce(Promise.resolve({ result: { ok: 1 } }));
   const spec = await publishProductToCatalog(mockProduct, mockCollections);
   expect(spec).toBe(true);
 });
 
 test("expect false if a product is not published to the catalog collection", async () => {
   mockCollections.Products.toArray.mockReturnValueOnce(Promise.resolve(mockVariants));
-  mockCollections.Catalog.update.mockReturnValueOnce(Promise.resolve({ numberAffected: 0 }));
+  mockCollections.Catalog.updateOne.mockReturnValueOnce(Promise.resolve({ result: { ok: 0 } }));
   const spec = await publishProductToCatalog(mockProduct, mockCollections);
   expect(spec).toBe(false);
 });

@@ -121,7 +121,7 @@ export default async function publishProductToCatalog(product, collections) {
   const positions = await getCatalogPositions(product.positions);
 
   // Insert/update catalog document
-  const result = await Catalog.update(
+  const result = await Catalog.updateOne(
     {
       "product.productId": product.productId
     },
@@ -140,5 +140,5 @@ export default async function publishProductToCatalog(product, collections) {
     { upsert: true }
   );
 
-  return result && result.numberAffected === 1;
+  return result && result.result && result.result.ok === 1;
 }

@@ -40,7 +40,7 @@ export default async function publishProductInventoryAdjustments(productId, coll
     update.isBackorder !== catalogProduct.isBackorder ||
     update.isLowQuantity !== catalogProduct.isLowQuantity
   ) {
-    const result = await Catalog.update(
+    const result = await Catalog.updateOne(
       {
         _id: productId
       },
