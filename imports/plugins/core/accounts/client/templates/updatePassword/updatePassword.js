@@ -69,13 +69,6 @@ Template.loginFormChangePassword.helpers(LoginFormSharedHelpers);
  * Events: Login Form Change Password
  */
 Template.loginFormChangePassword.events({
-
-  /**
-   * Submit form for password update
-   * @param  {Event} event - jQuery Event
-   * @param  {Template} template - Blaze Template
-   * @return {void}
-   */
   "submit form"(event, template) {
     event.preventDefault();
     event.stopPropagation();

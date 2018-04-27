@@ -1,8 +1,9 @@
 import { decodeShopOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/shop";
 
 /**
- * @name shop
+ * @name "Query.shop"
  * @method
+ * @memberof Shop/GraphQL
  * @summary query the Shops collection and return shop data
  * @param {Object} _ - unused
  * @param {Object} args - an object of all arguments that were sent by the client

@@ -174,14 +174,12 @@ export const ProductRevision = {
 };
 
 /**
- * @function
- * @name beforeInsertCatalogProductInsertRevision
- *
  * @summary Executes the provided function when beforeInsertCatalogProductInsertRevision
  * hook is ran. The hook is ran before a product is inserted, and it will insert a
  * corresponding revision for the provided product.
  * @param {Function} Callback to execute
  * @return {Object} product - the product in which the callback was called on.
+ * @private
  */
 Hooks.Events.add("beforeInsertCatalogProductInsertRevision", (product) => {
   insertRevision(product);
@@ -190,14 +188,12 @@ Hooks.Events.add("beforeInsertCatalogProductInsertRevision", (product) => {
 });
 
 /**
- * @function
- * @name afterInsertCatalogProductInsertRevision
- *
  * @summary Executes the provided function when beforeInsertCatalogProductInsertRevision
  * hook is ran. The hook is ran after a product is inserted, and it will insert a
  * corresponding revision for the provided product.
  * @param {Function} Callback to execute
  * @return {Object} product - the product in which the callback was called on.
+ * @private
  */
 Hooks.Events.add("afterInsertCatalogProductInsertRevision", (product) => {
   insertRevision(product);
@@ -206,26 +202,22 @@ Hooks.Events.add("afterInsertCatalogProductInsertRevision", (product) => {
 });
 
 /**
- * @function
- * @name beforeUpdateCatalogProduct
- *
  * @summary Executes the provided function when beforeUpdateCatalogProduct
  * hook is ran. The hook is ran before a product is updated, and it will updated the
  * corresponding revisions for the provided product.
  * @param {Function} Callback to execute
  * @return {Boolean} true|false - Used to determine whether the underlying product should be updated.
+ * @private
  */
 Hooks.Events.add("beforeUpdateCatalogProduct", (product, options) => updateRevision(product, options));
 
 /**
- * @function
- * @name beforeRemoveCatalogProduct
- *
  * @summary Executes the provided function when beforeRemoveCatalogProduct
  * hook is ran. The hook is ran before a product or variant is archived, and it will updated the
  * corresponding revisions for the provided product or variant.
  * @param {Function} Callback to execute
  * @return {Boolean} true|false - Used to determine whether the underlying product should be updated.
+ * @private
  */
 Hooks.Events.add("beforeRemoveCatalogProduct", (product, options) => markRevisionAsDeleted(product, options));
 

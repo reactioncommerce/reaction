@@ -67,6 +67,11 @@ const ThirdPartyAPI = {
 export const ExampleApi = {};
 ExampleApi.methods = {};
 
+/**
+ * @name cardSchema
+ * @memberof Schemas
+ * @type {SimpleSchema}
+ */
 export const cardSchema = new SimpleSchema({
   number: String,
   name: String,
@@ -78,6 +83,11 @@ export const cardSchema = new SimpleSchema({
 
 registerSchema("cardSchema", cardSchema);
 
+/**
+ * @name paymentDataSchema
+ * @memberof Schemas
+ * @type {SimpleSchema}
+ */
 export const paymentDataSchema = new SimpleSchema({
   total: String,
   currency: String

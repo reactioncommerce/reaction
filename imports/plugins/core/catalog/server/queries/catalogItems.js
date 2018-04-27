@@ -3,6 +3,7 @@ import { Meteor } from "meteor/meteor";
 /**
  * @name catalogItems
  * @method
+ * @memberof Catalog/NoMeteorQueries
  * @summary query the Catalog by shop ID and/or tag ID
  * @param {Object} context - an object containing the per-request state
  * @param {Object} params - request parameters

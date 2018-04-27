@@ -60,8 +60,8 @@ export function loadTranslation(source) {
 
 /**
  * @method loadTranslations
- * @summary Load an array of translation objects
- * and import using loadTranslation
+ * @memberof i18n
+ * @summary Load an array of translation objects and import using loadTranslation
  * @param  {Object} sources array of i18next translations
  * @return {Boolean} false if assets weren't loaded
  */
@@ -69,6 +69,12 @@ export function loadTranslations(sources) {
   sources.forEach(loadTranslation);
 }
 
+/**
+ * @method flushTranslationLoad
+ * @memberof i18n
+ * @summary Execute the bulk asset operation
+ * @return {undefined} No return
+ */
 export async function flushTranslationLoad() {
   if (!bulkAssetOp) return Promise.resolve();
 

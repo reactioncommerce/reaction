@@ -7,12 +7,12 @@ import { Reaction } from "/server/api";
  * @file Methods for Packages.
  *
  *
- * @namespace Methods/Package
+ * @namespace Package/Methods
 */
 
 /**
  * @method package/update
- * @memberof Methods/Package
+ * @memberof Package/Methods
  * @summary updates the data stored for a certain Package.
  * @param {String} packageName - the name of the Package to update.
  * @param {String} field - the part of the Package's data that is to

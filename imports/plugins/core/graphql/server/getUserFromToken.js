@@ -9,6 +9,21 @@ function hashLoginToken(loginToken) {
   return hash.digest("base64");
 }
 
+/**
+ * Given a login token and the current context, returns the user document
+ * for that token, using the same lookup logic that Meteor's accounts packages use.
+ *
+ * If the provided token is not associated with any user or is associated but is
+ * expired, this function throws an "access-denied" ReactionError.
+ *
+ * @name getUserFromToken
+ * @method
+ * @memberof GraphQL
+ * @summary Looks up a user by token
+ * @param {String} loginToken An object with request-specific state
+ * @param {Object} context An object with request-specific state
+ * @returns {Function} The error formatter function
+ */
 async function getUserFromToken(loginToken, context) {
   const { collections } = context;
   const { users } = collections;

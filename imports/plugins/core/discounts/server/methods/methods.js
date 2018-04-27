@@ -6,14 +6,14 @@ import Reaction from "../api";
 
 /**
  *
- * @namespace Methods/Discounts
+ * @namespace Discounts/Methods
  */
 
 export const methods = {
   /**
    * @name discounts/deleteRate
    * @method
-   * @memberof Methods/Discounts
+   * @memberof Discounts/Methods
    * @param  {String} discountId discount id to delete
    * @return {String} returns update/insert result
    */
@@ -31,7 +31,7 @@ export const methods = {
   /**
    * @name discounts/setRate
    * @method
-   * @memberof Methods/Discounts
+   * @memberof Discounts/Methods
    * @summary Update the cart discounts without hooks
    * @param  {String} cartId cartId
    * @param  {Number} discountRate discountRate
@@ -54,7 +54,7 @@ export const methods = {
   /**
    * @name discounts/transaction
    * @method
-   * @memberof Methods/Discounts
+   * @memberof Discounts/Methods
    * @summary Applies a transaction to discounts for history
    * @param  {String} cartId cartId
    * @param  {String} discountId discountId
@@ -81,7 +81,7 @@ export const methods = {
   /**
    * @name discounts/calculate
    * @method
-   * @memberof Methods/Discounts
+   * @memberof Discounts/Methods
    * @param  {String} cart cartId
    * @return {Object}  returns discount object
    */

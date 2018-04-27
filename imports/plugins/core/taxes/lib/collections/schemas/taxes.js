@@ -5,9 +5,11 @@ import { shopIdAutoValue } from "/lib/collections/schemas/helpers";
 import { registerSchema } from "@reactioncommerce/schemas";
 
 /**
-* Taxes Schema
-*/
-
+ * @name Taxes
+ * @memberof Schemas
+ * @type {SimpleSchema}
+ * @summary Taxes schema
+ */
 export const Taxes = new SimpleSchema({
   "shopId": {
     type: String,

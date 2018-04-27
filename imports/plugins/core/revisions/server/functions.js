@@ -9,11 +9,12 @@ import { getSlug } from "/lib/api";
 
 
 /**
- * @method insertRevision
+ * @name insertRevision
+ * @method
  * @summary Inserts a new revision for a given product
- *
  * @param {Object} product
  * @returns {undefined}
+ * @private
  */
 export function insertRevision(product) {
   if (RevisionApi.isRevisionControlEnabled() === false) {
@@ -72,13 +73,14 @@ export function insertRevision(product) {
 }
 
 /**
- * @method updateRevision
+ * @name updateRevision
+ * @method
  * @summary Update a product's revision
- *
  * @param {String} userId
  * @param {Object} product - Product to update
  * @param {Object} options - Options include userId, modifier and validation properties
  * @returns {Boolean} true if underlying product should be updated, otherwise false.
+ * @private
  */
 export function updateRevision(product, options = {}) {
   if (RevisionApi.isRevisionControlEnabled() === false) {
@@ -401,12 +403,13 @@ export function updateRevision(product, options = {}) {
   return false;
 }
 /**
- * @method markRevisionAsDeleted
+ * @name markRevisionAsDeleted
+ * @method
  * @summary Flag a product's revision as deleted
- *
  * @param {Object} product - The product whose revision will be flagged as deleted.
  * @param {Object} options - Contains userId
  * @returns {undefined}
+ * @private
  */
 export function markRevisionAsDeleted(product, options) {
   if (RevisionApi.isRevisionControlEnabled() === false) {

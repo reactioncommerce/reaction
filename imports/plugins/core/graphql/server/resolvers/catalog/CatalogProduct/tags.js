@@ -2,8 +2,9 @@ import { getPaginatedResponse } from "@reactioncommerce/reaction-graphql-utils";
 import { xformArrayToConnection } from "@reactioncommerce/reaction-graphql-xforms/connection";
 
 /**
- * @name tags
+ * @name "CatalogProduct.tags"
  * @method
+ * @memberof Catalog/GraphQL
  * @summary Returns the tags for a product
  * @param {Object} product - CatalogProduct response from parent resolver
  * @param {TagConnectionArgs} args - arguments sent by the client {@link ConnectionArgs|See default connection arguments}

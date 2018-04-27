@@ -12,11 +12,13 @@ import { publishProductInventoryAdjustments } from "/imports/plugins/core/catalo
 
 /**
  * @name getPrimaryMediaForItem
+ * @method
  * @summary Gets the FileRecord for the primary media item associated with the variant or product
  *   for the given item. This is similar to a function in /lib/api/helpers, but that one uses
  *   Media.findOneLocal, which is only for browser code.
  * @param {Object} item Must have `productId` and/or `variantId` set to get back a result.
  * @return {FileRecord|null}
+ * @ignore
  */
 async function getPrimaryMediaForItem({ productId, variantId } = {}) {
   let result;
@@ -61,13 +63,13 @@ function formatDateForEmail(date) {
  * @file Methods for Orders.
  *
  *
- * @namespace Methods/Orders
+ * @namespace Orders/Methods
 */
 
 /**
  * @name orderCreditMethod
  * @method
- * @memberof Methods/Orders
+ * @memberof Orders/Methods
  * @summary Helper to return the order credit object.
  * Credit paymentMethod on the order as per current active shop
  * @param  {Object} order order object
@@ -82,7 +84,7 @@ export function orderCreditMethod(order) {
 /**
  * @name orderDebitMethod
  * @method
- * @memberof Methods/Orders
+ * @memberof Orders/Methods
  * @summary Helper to return the order debit object
  * @param  {Object} order order object
  * @return {Object} returns entire payment method
@@ -96,7 +98,7 @@ export function orderDebitMethod(order) {
 /**
  * @name ordersInventoryAdjust
  * @method
- * @memberof Methods/Orders
+ * @memberof Orders/Methods
  * @summary Adjust inventory when an order is placed
  * @param {String} orderId - Add tracking to orderId
  * @todo Why are we waiting until someone with orders permissions does something to reduce quantity of
@@ -135,7 +137,7 @@ export function ordersInventoryAdjust(orderId) {
 /**
  * @name ordersInventoryAdjustByShop
  * @method
- * @memberof Methods/Orders
+ * @memberof Orders/Methods
  * @summary Adjust inventory for a particular shop when an order is approved
  * @todo Marketplace: Is there a reason to do this any other way? Can admins reduce for more than one shop?
  * @param {String} orderId - orderId
@@ -177,7 +179,7 @@ export function ordersInventoryAdjustByShop(orderId, shopId) {
 /**
  * @name orderQuantityAdjust
  * @method
- * @memberof Methods/Orders
+ * @memberof Orders/Methods
  * @param  {String} orderId      orderId
  * @param  {Object} refundedItem refunded item
  * @return {null} no return value
@@ -209,7 +211,7 @@ export const methods = {
   /**
    * @name orders/shipmentPicked
    * @method
-   * @memberof Methods/Orders
+   * @memberof Orders/Methods
    * @summary update picking status
    * @param {Object} order - order object
    * @param {Object} shipment - shipment object
@@ -246,7 +248,7 @@ export const methods = {
   /**
    * @name orders/shipmentPacked
    * @method
-   * @memberof Methods/Orders
+   * @memberof Orders/Methods
    * @summary update packing status
    * @param {Object} order - order object
    * @param {Object} shipment - shipment object
@@ -285,7 +287,7 @@ export const methods = {
   /**
    * @name orders/shipmentLabeled
    * @method
-   * @memberof Methods/Orders
+   * @memberof Orders/Methods
    * @summary update labeling status
    * @param {Object} order - order object
    * @param {Object} shipment - shipment object
@@ -322,7 +324,7 @@ export const methods = {
   /**
    * @name orders/makeAdjustmentsToInvoice
    * @method
-   * @memberof Methods/Orders
+   * @memberof Orders/Methods
    * @summary Update the status of an invoice to allow adjustments to be made
    * @param {Object} order - order object
    * @return {Object} Mongo update
@@ -350,7 +352,7 @@ export const methods = {
   /**
    * @name orders/approvePayment
    * @method
-   * @memberof Methods/Orders
+   * @memberof Orders/Methods
    * @summary Approve payment and apply any adjustments
    * @param {Object} order - order object
    * @return {Object} return this.processPayment result
@@ -400,7 +402,7 @@ export const methods = {
   /**
    * @name orders/cancelOrder
    * @method
-   * @memberof Methods/Orders
+   * @memberof Orders/Methods
    * @summary Start the cancel order process
    * @param {Object} order - order object
    * @param {Boolean} returnToStock - condition to return product to stock
@@ -495,7 +497,7 @@ export const methods = {
   /**
    * @name orders/processPayment
    * @method
-   * @memberof Methods/Orders
+   * @memberof Orders/Methods
    * @summary trigger processPayment and workflow update
    * @param {Object} order - order object
    * @return {Object} return this.processPayment result
@@ -530,7 +532,7 @@ export const methods = {
   /**
    * @name orders/shipmentShipped
    * @method
-   * @memberof Methods/Orders
+   * @memberof Orders/Methods
    * @summary trigger shipmentShipped status and workflow update
    * @param {Object} order - order object
    * @param {Object} shipment - shipment object
@@ -598,7 +600,7 @@ export const methods = {
   /**
    * @name orders/shipmentDelivered
    * @method
-   * @memberof Methods/Orders
+   * @memberof Orders/Methods
    * @summary trigger shipmentShipped status and workflow update
    * @param {Object} order - order object
    * @return {Object} return workflow result
@@ -658,7 +660,7 @@ export const methods = {
   /**
    * @name orders/sendNotification
    * @method
-   * @memberof Methods/Orders
+   * @memberof Orders/Methods
    * @summary send order notification email
    * @param {Object} order - order object
    * @param {Object} action - send notification action
@@ -894,7 +896,7 @@ export const methods = {
    * @summary Adds tracking information to order without workflow update.
    * Call after any tracking code is generated
    * @method
-   * @memberof Methods/Orders
+   * @memberof Orders/Methods
    * @param {Object} order - An Order object
    * @param {Object} shipment - A Shipment object
    * @param {String} tracking - tracking id
@@ -923,7 +925,7 @@ export const methods = {
   /**
    * @name orders/addOrderEmail
    * @method
-   * @memberof Methods/Orders
+   * @memberof Orders/Methods
    * @summary Adds email to order, used for guest users
    * @param {String} cartId - add tracking to orderId
    * @param {String} email - valid email address
@@ -948,7 +950,7 @@ export const methods = {
   /**
    * @name orders/updateHistory
    * @method
-   * @memberof Methods/Orders
+   * @memberof Orders/Methods
    * @summary adds order history item for tracking and logging order updates
    * @param {String} orderId - add tracking to orderId
    * @param {String} event - workflow event
@@ -983,7 +985,7 @@ export const methods = {
    * @summary Finalize any payment where mode is "authorize"
    * and status is "approved", reprocess as "capture"
    * @method
-   * @memberof Methods/Orders
+   * @memberof Orders/Methods
    * @param {String} orderId - add tracking to orderId
    * @return {null} no return value
    */
@@ -1075,7 +1077,7 @@ export const methods = {
    * @summary loop through order's payments and find existing refunds.
    * Get a list of refunds for a particular payment method.
    * @method
-   * @memberof Methods/Orders
+   * @memberof Orders/Methods
    * @param {Object} order - order object
    * @return {Array} Array contains refund records
    */
@@ -1099,7 +1101,7 @@ export const methods = {
   /**
    * @name orders/refund/create
    * @method
-   * @memberof Methods/Orders
+   * @memberof Orders/Methods
    * @summary Apply a refund to an already captured order
    * @param {String} orderId - order object
    * @param {Object} paymentMethod - paymentMethod object
@@ -1186,7 +1188,7 @@ export const methods = {
   /**
    * @name orders/refunds/refundItems
    * @method
-   * @memberof Methods/Orders
+   * @memberof Orders/Methods
    * @summary Apply a refund to line items
    * @param {String} orderId - order object
    * @param {Object} paymentMethod - paymentMethod object

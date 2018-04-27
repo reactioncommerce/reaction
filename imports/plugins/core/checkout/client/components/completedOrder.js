@@ -8,6 +8,7 @@ import AddEmail from "./addEmail";
 
 /**
  * @summary Displays a summary/information about the order the user has just completed
+ * @memberof Components
  * @param {Object} props - React PropTypes
  * @property {Object} order - An object representing the order
  * @property {Array} shops - An Array contains information broken down by shop
