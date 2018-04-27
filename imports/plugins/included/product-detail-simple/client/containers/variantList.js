@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { Session } from "meteor/session";
 import { Meteor } from "meteor/meteor";
 import { composeWithTracker, Components } from "@reactioncommerce/reaction-components";
-import { ReactionProduct } from "/lib/api";
+import { Catalog, ReactionProduct } from "/lib/api";
 import { Reaction, i18next } from "/client/api";
 import { getChildVariants } from "../selectors/variants";
 import { Products } from "/lib/collections";
@@ -13,7 +13,11 @@ import { Media } from "/imports/plugins/core/files/client";
 
 function variantIsSelected(variantId) {
   const current = ReactionProduct.selectedVariant();
-  if (current && typeof current === "object" && (variantId === current._id || current.ancestors.indexOf(variantId) >= 0)) {
+  if (
+    current &&
+    typeof current === "object" &&
+    (variantId === current._id || current.ancestors.indexOf(variantId) >= 0)
+  ) {
     return true;
   }
 
@@ -56,8 +60,7 @@ function getTopVariants() {
         variant.inventoryPercentage = 100;
       }
       if (variant.title) {
-        variant.inventoryWidth = parseInt(variant.inventoryPercentage -
-          variant.title.length, 10);
+        variant.inventoryWidth = parseInt(variant.inventoryPercentage - variant.title.length, 10);
       } else {
         variant.inventoryWidth = 0;
       }
@@ -99,11 +102,11 @@ class VariantListContainer extends Component {
         });
       }
     });
-  }
+  };
 
   handleVariantClick = (event, variant, ancestors = -1) => {
     this.handleEditVariant(event, variant, ancestors);
-  }
+  };
 
   handleEditVariant = (event, variant, ancestors = -1) => {
     let editVariant = variant;
@@ -128,21 +131,18 @@ class VariantListContainer extends Component {
 
     // Prevent the default edit button `onEditButtonClick` function from running
     return false;
-  }
+  };
 
   handleVariantVisibilityToggle = (event, variant, variantIsVisible) => {
     Meteor.call("products/updateProductField", variant._id, "isVisible", variantIsVisible);
-  }
+  };
 
   handleMoveVariant = (dragIndex, hoverIndex) => {
     const variant = this.props.variants[dragIndex];
 
     // Apply new sort order to variant list
     const newVariantOrder = update(this.props.variants, {
-      $splice: [
-        [dragIndex, 1],
-        [hoverIndex, 0, variant]
-      ]
+      $splice: [[dragIndex, 1], [hoverIndex, 0, variant]]
     });
 
     // Set local state so the component does't have to wait for a round-trip
@@ -155,7 +155,7 @@ class VariantListContainer extends Component {
     Meteor.defer(() => {
       Meteor.call("products/updateVariantsPosition", getVariantIds(newVariantOrder));
     });
-  }
+  };
 
   render() {
     return (
@@ -179,15 +179,18 @@ function composer(props, onData) {
   const childVariants = getChildVariants();
 
   if (Array.isArray(childVariants)) {
-    childVariantMedia = Media.findLocal({
-      "metadata.variantId": {
-        $in: getVariantIds(childVariants)
+    childVariantMedia = Media.findLocal(
+      {
+        "metadata.variantId": {
+          $in: getVariantIds(childVariants)
+        }
+      },
+      {
+        sort: {
+          "metadata.priority": 1
+        }
       }
-    }, {
-      sort: {
-        "metadata.priority": 1
-      }
-    });
+    );
   }
 
   let editable;
@@ -204,7 +207,7 @@ function composer(props, onData) {
     variantIsInActionView,
     childVariants,
     childVariantMedia,
-    displayPrice: ReactionProduct.getVariantPriceRange,
+    displayPrice: (variantId) => Catalog.getVariantPriceRange(variantId),
     isSoldOut,
     editable
   });

@@ -4,10 +4,16 @@ import { check, Match } from "meteor/check";
 import { EJSON } from "meteor/ejson";
 import { Meteor } from "meteor/meteor";
 import { ReactionProduct } from "/lib/api";
-import { ProductRevision as Catalog } from "/imports/plugins/core/revisions/server/hooks";
 import { Hooks, Logger, Reaction } from "/server/api";
 import { MediaRecords, Products, Revisions, Tags } from "/lib/collections";
 import { Media } from "/imports/plugins/core/files/server";
+import rawCollections from "/imports/collections/rawCollections";
+import getProductPriceRange from "/imports/plugins/core/revisions/server/no-meteor/getProductPriceRange";
+import getTopVariants from "/imports/plugins/core/revisions/server/no-meteor/getTopVariants";
+import getVariants from "/imports/plugins/core/revisions/server/no-meteor/getVariants";
+import isSoldOut from "import/plugins/core/catalog/server/methods/isSoldOut";
+import isLowQuantity from "import/plugins/core/catalog/server/methods/isLowQuantity";
+import isBackorder from "import/plugins/core/catalog/server/methods/isBackorder";
 
 /* eslint new-cap: 0 */
 /* eslint no-loop-func: 0 */
@@ -18,7 +24,7 @@ import { Media } from "/imports/plugins/core/files/server";
  *
  *
  * @namespace Methods/Products
-*/
+ */
 
 /**
  * updateVariantProductField
@@ -78,7 +84,7 @@ function createTitle(newTitle, productId) {
     // no numbers in copySuffix then we should put 1 in handleNumberSuffix
     titleNumberSuffix = +String(copySuffix).match(/\d+$/) || 1;
     // removing last numbers and last "-" if it presents
-    titleString = title.replace(/\d+$/, '').replace(/-$/, '');
+    titleString = title.replace(/\d+$/, "").replace(/-$/, "");
   }
 
   // if we have more than one product with the same handle, we should mark
@@ -95,9 +101,11 @@ function createTitle(newTitle, productId) {
   }
 
   // we should check again if there are any new matches with DB
-  if (Products.find({
-    title
-  }).count() !== 0) {
+  if (
+    Products.find({
+      title
+    }).count() !== 0
+  ) {
     title = createTitle(title, productId);
   }
   return title;
@@ -135,7 +143,7 @@ function createHandle(productHandle, productId) {
     // no numbers in copySuffix then we should put 1 in handleNumberSuffix
     handleNumberSuffix = +String(copySuffix).match(/\d+$/) || 1;
     // removing last numbers and last "-" if it presents
-    handleString = handle.replace(/\d+$/, '').replace(/-$/, '');
+    handleString = handle.replace(/\d+$/, "").replace(/-$/, "");
   }
 
   // if we have more than one product with the same handle, we should mark
@@ -147,7 +155,7 @@ function createHandle(productHandle, productId) {
       handle = `${handleString}-${handleNumberSuffix + handleCount}`;
     } else {
       // first copy will be "...-copy", second: "...-copy-2"
-      handle = `${handleString}-copy${handleCount > 1 ? `-${handleCount}` : ''}`;
+      handle = `${handleString}-copy${handleCount > 1 ? `-${handleCount}` : ""}`;
     }
   }
 
@@ -183,12 +191,14 @@ function copyMedia(newId, variantOldId, variantNewId) {
     .then((fileRecords) => {
       fileRecords.forEach((fileRecord) => {
         // Copy File and insert directly, bypasing revision control
-        fileRecord.fullClone({
-          productId: newId,
-          variantId: variantNewId
-        }).catch((error) => {
-          Logger.error(`Error in copyMedia for product ${newId}`, error);
-        });
+        fileRecord
+          .fullClone({
+            productId: newId,
+            variantId: variantNewId
+          })
+          .catch((error) => {
+            Logger.error(`Error in copyMedia for product ${newId}`, error);
+          });
       });
     })
     .catch((error) => {
@@ -220,9 +230,9 @@ function denormalize(id, field) {
   const doc = Products.findOne(id);
   let variants;
   if (doc.type === "simple") {
-    variants = Catalog.getTopVariants(id);
+    variants = Promise.await(getTopVariants(id, rawCollections));
   } else if (doc.type === "variant" && doc.ancestors.length === 1) {
-    variants = Catalog.getVariants(id);
+    variants = Promise.await(getVariants(id, null, rawCollections));
   }
   const update = {};
 
@@ -231,18 +241,19 @@ function denormalize(id, field) {
     case "inventoryQuantity":
     case "inventoryManagement":
       Object.assign(update, {
-        isSoldOut: isSoldOut(variants),
-        isLowQuantity: isLowQuantity(variants),
-        isBackorder: isBackorder(variants)
+        isSoldOut: Promise.await(isSoldOut(variants, rawCollections)),
+        isLowQuantity: Promise.await(isLowQuantity(variants, rawCollections)),
+        isBackorder: Promise.await(isBackorder(variants, rawCollections))
       });
       break;
     case "lowInventoryWarningThreshold":
       Object.assign(update, {
-        isLowQuantity: isLowQuantity(variants)
+        isLowQuantity: Promise.await(isLowQuantity(variants, rawCollections))
       });
       break;
-    default: { // "price" is object with range, min, max
-      const priceObject = Catalog.getProductPriceRange(id);
+    default: {
+      // "price" is object with range, min, max
+      const priceObject = Promise.await(getProductPriceRange(id, rawCollections));
       Object.assign(update, {
         price: priceObject
       });
@@ -250,60 +261,17 @@ function denormalize(id, field) {
   }
 
   // TODO: Determine if product revision needs to be updated as well.
-  Products.update(id, {
-    $set: update
-  }, {
-    selector: {
-      type: "simple"
+  Products.update(
+    id,
+    {
+      $set: update
+    },
+    {
+      selector: {
+        type: "simple"
+      }
     }
-  });
-}
-
-/**
- * isSoldOut
- * @private
- * @summary We are stop accepting new orders if product marked as `isSoldOut`.
- * @param {Array} variants - Array with top-level variants
- * @return {Boolean} true if summary product quantity is zero.
- */
-function isSoldOut(variants) {
-  return variants.every((variant) => {
-    if (variant.inventoryManagement && variant.inventoryPolicy) {
-      return Catalog.getVariantQuantity(variant) <= 0;
-    }
-    return false;
-  });
-}
-
-/**
- * isLowQuantity
- * @private
- * @summary If at least one of the variants is less than the threshold, then function returns `true`
- * @param {Array} variants - array of child variants
- * @return {boolean} low quantity or not
- */
-function isLowQuantity(variants) {
-  return variants.some((variant) => {
-    const quantity = Catalog.getVariantQuantity(variant);
-    // we need to keep an eye on `inventoryPolicy` too and qty > 0
-    if (variant.inventoryManagement && variant.inventoryPolicy && quantity) {
-      return quantity <= variant.lowInventoryWarningThreshold;
-    }
-    // TODO: need to test this function with real data
-    return false;
-  });
-}
-
-/**
- * isBackorder
- * @private
- * @description Is products variants is still available to be ordered after summary variants quantity is zero
- * @param {Array} variants - array with variant objects
- * @return {boolean} is backorder allowed or not for a product
- */
-function isBackorder(variants) {
-  return variants.every((variant) => !variant.inventoryPolicy && variant.inventoryManagement &&
-      variant.inventoryQuantity === 0);
+  );
 }
 
 /**
@@ -324,17 +292,21 @@ function flushQuantity(id) {
     return 1; // let them think that we have one successful operation here
   }
 
-  const productUpdate = Products.update({
-    _id: id
-  }, {
-    $set: {
-      inventoryQuantity: 0
+  const productUpdate = Products.update(
+    {
+      _id: id
+    },
+    {
+      $set: {
+        inventoryQuantity: 0
+      }
+    },
+    {
+      selector: {
+        type: "variant"
+      }
     }
-  }, {
-    selector: {
-      type: "variant"
-    }
-  });
+  );
 
   return productUpdate;
 }
@@ -347,12 +319,15 @@ function flushQuantity(id) {
  * @return {Object} product - new product
  */
 function createProduct(props = null) {
-  const _id = Products.insert({
-    type: "simple",
-    ...props
-  }, {
-    validate: false
-  });
+  const _id = Products.insert(
+    {
+      type: "simple",
+      ...props
+    },
+    {
+      validate: false
+    }
+  );
 
   const newProduct = Products.findOne({ _id });
 
@@ -395,7 +370,6 @@ function updateCatalogProduct(userId, selector, modifier, validation) {
   return false;
 }
 
-
 Meteor.methods({
   /**
    * @name products/cloneVariant
@@ -430,14 +404,17 @@ Meteor.methods({
     }
 
     const variants = Products.find({
-      $or: [{
-        _id: variantId
-      }, {
-        ancestors: {
-          $in: [variantId]
+      $or: [
+        {
+          _id: variantId
         },
-        isDeleted: false
-      }],
+        {
+          ancestors: {
+            $in: [variantId]
+          },
+          isDeleted: false
+        }
+      ],
       type: "variant"
     }).fetch();
     // exit if we're trying to clone a ghost
@@ -462,12 +439,10 @@ Meteor.methods({
           _id: variantNewId,
           title: `${sortedVariant.title} - copy`,
           optionTitle: `${sortedVariant.optionTitle} - copy`,
-          price: `${sortedVariant.price}` ?
-            `${sortedVariant.price}` :
-            `${variant.price}`,
-          compareAtPrice: `${sortedVariant.compareAtPrice}` ?
-            `${sortedVariant.compareAtPrice}` :
-            `${variant.compareAtPrice}`
+          price: `${sortedVariant.price}` ? `${sortedVariant.price}` : `${variant.price}`,
+          compareAtPrice: `${sortedVariant.compareAtPrice}`
+            ? `${sortedVariant.compareAtPrice}`
+            : `${variant.compareAtPrice}`
         });
       } else {
         const parentIndex = sortedVariant.ancestors.indexOf(variantId);
@@ -479,12 +454,10 @@ Meteor.methods({
           ancestors: ancestorsClone,
           title: `${sortedVariant.title}`,
           optionTitle: `${sortedVariant.optionTitle}`,
-          price: `${sortedVariant.price}` ?
-            `${sortedVariant.price}` :
-            `${variant.price}`,
-          compareAtPrice: `${sortedVariant.compareAtPrice}` ?
-            `${sortedVariant.compareAtPrice}` :
-            `${variant.compareAtPrice}`,
+          price: `${sortedVariant.price}` ? `${sortedVariant.price}` : `${variant.price}`,
+          compareAtPrice: `${sortedVariant.compareAtPrice}`
+            ? `${sortedVariant.compareAtPrice}`
+            : `${variant.compareAtPrice}`,
           height: `${sortedVariant.height}`,
           width: `${sortedVariant.width}`,
           weight: `${sortedVariant.weight}`,
@@ -504,8 +477,9 @@ Meteor.methods({
         newId = Products.insert(clone, { validate: false });
         const newProduct = Products.findOne(newId);
         Hooks.Events.run("afterInsertCatalogProduct", newProduct);
-        Logger.debug(`products/cloneVariant: created ${type === "child" ? "sub child " : ""}clone: ${
-          clone._id} from ${variantId}`);
+        Logger.debug(
+          `products/cloneVariant: created ${type === "child" ? "sub child " : ""}clone: ${clone._id} from ${variantId}`
+        );
       } catch (error) {
         Logger.error(`products/cloneVariant: cloning of ${variantId} was failed: ${error}`);
         throw error;
@@ -560,7 +534,7 @@ Meteor.methods({
     if (!newVariant) {
       Object.assign(assembledVariant, {
         title: `${product.title} - Untitled option`,
-        price: 0.00
+        price: 0.0
       });
     }
 
@@ -662,13 +636,16 @@ Meteor.methods({
       isDeleted: {
         $in: [false, undefined]
       },
-      $or: [{
-        _id: variantId
-      }, {
-        ancestors: {
-          $in: [variantId]
+      $or: [
+        {
+          _id: variantId
+        },
+        {
+          ancestors: {
+            $in: [variantId]
+          }
         }
-      }]
+      ]
     };
     const toDelete = Products.find(selector).fetch();
 
@@ -718,13 +695,11 @@ Meteor.methods({
       // For each unique shopId check to make sure that user has permission to clone
       uniqueShopIds.forEach((shopId) => {
         if (!Reaction.hasPermission("createProduct", this.userId, shopId)) {
-          throw new Meteor.Error(
-            "access-denied",
-            "Access Denied"
-          );
+          throw new Meteor.Error("access-denied", "Access Denied");
         }
       });
-    } else if (!Reaction.hasPermission("createProduct", this.userId, productOrArray.shopId)) { // Single product was passed in - ensure that user has permission to clone
+    } else if (!Reaction.hasPermission("createProduct", this.userId, productOrArray.shopId)) {
+      // Single product was passed in - ensure that user has permission to clone
       throw new Meteor.Error("access-denied", "Access Denied");
     }
 
@@ -734,11 +709,14 @@ Meteor.methods({
     const pool = []; // pool of id pairs: { oldId, newId }
 
     function getIds(id) {
-      return pool.filter(function (pair) {
-        return pair.oldId === this.id;
-      }, {
-        id
-      });
+      return pool.filter(
+        function(pair) {
+          return pair.oldId === this.id;
+        },
+        {
+          id
+        }
+      );
     }
 
     function setId(ids) {
@@ -783,10 +761,7 @@ Meteor.methods({
       if (newProduct.title) {
         // todo test this
         newProduct.title = createTitle(newProduct.title, newProduct._id);
-        newProduct.handle = createHandle(
-          Reaction.getSlug(newProduct.title),
-          newProduct._id
-        );
+        newProduct.handle = createHandle(Reaction.getSlug(newProduct.title), newProduct._id);
       }
       Hooks.Events.run("beforeInsertCatalogProductInsertRevision", newProduct);
       result = Products.insert(newProduct, { validate: false });
@@ -863,7 +838,7 @@ Meteor.methods({
 
     const newVariant = createProduct({
       ancestors: [newSimpleProduct._id],
-      price: 0.00,
+      price: 0.0,
       title: "",
       type: "variant" // needed for multi-schema
     });
@@ -910,15 +885,18 @@ Meteor.methods({
       isDeleted: {
         $in: [false, undefined]
       },
-      $or: [{
-        _id: {
-          $in: productIds
+      $or: [
+        {
+          _id: {
+            $in: productIds
+          }
+        },
+        {
+          ancestors: {
+            $in: productIds
+          }
         }
-      }, {
-        ancestors: {
-          $in: productIds
-        }
-      }]
+      ]
     }).fetch();
 
     const ids = [];
@@ -935,7 +913,7 @@ Meteor.methods({
     });
 
     const numFlaggedAsDeleted = Revisions.find({
-      "documentId": {
+      documentId: {
         $in: ids
       },
       "documentData.isDeleted": true
@@ -943,18 +921,21 @@ Meteor.methods({
 
     if (numFlaggedAsDeleted > 0) {
       // Flag associated MediaRecords as deleted.
-      MediaRecords.update({
-        "metadata.productId": {
-          $in: ids
+      MediaRecords.update(
+        {
+          "metadata.productId": {
+            $in: ids
+          },
+          "metadata.variantId": {
+            $in: ids
+          }
         },
-        "metadata.variantId": {
-          $in: ids
+        {
+          $set: {
+            "metadata.isDeleted": true
+          }
         }
-      }, {
-        $set: {
-          "metadata.isDeleted": true
-        }
-      });
+      );
       return numFlaggedAsDeleted;
     }
 
@@ -998,7 +979,7 @@ Meteor.methods({
     let update;
     // handle booleans with correct typing
     if (value === "false" || value === "true") {
-      const booleanValue = (value === "true" || value === true);
+      const booleanValue = value === "true" || value === true;
       update = EJSON.parse(`{"${field}":${booleanValue}}`);
     } else if (field === "handle") {
       update = {
@@ -1006,7 +987,8 @@ Meteor.methods({
         // Should be a call similar to the line below.
         [field]: createHandle(value, _id) // handle should be unique
       };
-    } else if (field === "title" && doc.handle === doc._id) { // update handle once title is set
+    } else if (field === "title" && doc.handle === doc._id) {
+      // update handle once title is set
       const handle = createHandle(Reaction.getSlug(value), _id);
       update = {
         [field]: value,
@@ -1016,7 +998,6 @@ Meteor.methods({
       const stringValue = EJSON.stringify(value);
       update = EJSON.parse(`{"${field}":${stringValue}}`);
     }
-
 
     // we need to use sync mode here, to return correct error and result to UI
     let result;
@@ -1197,7 +1178,7 @@ Meteor.methods({
       },
       {
         $set: { handle, type: "simple" }
-      },
+      }
     );
 
     return handle;
@@ -1248,10 +1229,7 @@ Meteor.methods({
     // this is needed to take care about product's handle which(product) was
     // previously tagged.
     for (const currentProduct of existingHandles) {
-      const currentProductHandle = createHandle(
-        Reaction.getSlug(currentProduct.title),
-        currentProduct._id
-      );
+      const currentProductHandle = createHandle(Reaction.getSlug(currentProduct.title), currentProduct._id);
       updateCatalogProduct(
         this.userId,
         {
@@ -1386,11 +1364,13 @@ Meteor.methods({
         {
           _id: productId,
           metafields: meta
-        }, {
+        },
+        {
           $set: {
             "metafields.$": updatedMeta
           }
-        }, {
+        },
+        {
           selector: { type: "simple", metafields: meta }
         }
       );
@@ -1495,8 +1475,8 @@ Meteor.methods({
         variants.forEach((variant) => {
           // if this is a top variant with children, we avoid it to check price
           // because we using price of its children
-          if ((variant.ancestors.length === 1 && !Catalog.getVariants(variant._id, "variant").length) ||
-            variant.ancestors.length !== 1) {
+          const options = Promise.await(getVariants(variant._id, "variant", rawCollections));
+          if ((variant.ancestors.length === 1 && !options.length) || variant.ancestors.length !== 1) {
             if (!(typeof variant.price === "number" && variant.price > 0)) {
               variantValidator = false;
             }
@@ -1516,10 +1496,7 @@ Meteor.methods({
 
       if (!variantValidator) {
         Logger.debug("invalid product visibility ", productId);
-        throw new Meteor.Error(
-          "invalid-parameter",
-          "Some properties are missing."
-        );
+        throw new Meteor.Error("invalid-parameter", "Some properties are missing.");
       }
 
       // update product visibility
@@ -1536,7 +1513,6 @@ Meteor.methods({
           }
         },
         {
-
           selector: { type: "simple" }
         }
       );
@@ -1591,7 +1567,7 @@ Meteor.methods({
 
     if (Array.isArray(product.ancestors) && product.ancestors.length) {
       const updateId = product.ancestors[0] || product._id;
-      const updatedPriceRange = ReactionProduct.getProductPriceRange(updateId);
+      const updatedPriceRange = Promise.await(getProductPriceRange(updateId, rawCollections));
 
       Meteor.call("products/updateProductField", updateId, "price", updatedPriceRange);
     }
