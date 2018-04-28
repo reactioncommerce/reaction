@@ -36,10 +36,10 @@ export const ProductRevision = {
       });
       const priceMin = _.min(variantPrices);
       const priceMax = _.max(variantPrices);
-      let priceRange = `${priceMin} - ${priceMax}`;
+      let priceRange = `${priceMin.toFixed(2)} - ${priceMax.toFixed(2)}`;
       // if we don't have a range
       if (priceMin === priceMax) {
-        priceRange = priceMin.toString();
+        priceRange = priceMin.toFixed(2);
       }
       const priceObject = {
         range: priceRange,
