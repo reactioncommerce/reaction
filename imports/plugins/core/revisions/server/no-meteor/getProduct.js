@@ -1,12 +1,12 @@
 import findRevision from "./findRevision";
 
 /**
- * TODO
- * @method
- * @summary
- * @param
- * @param
- * @return
+ *
+ * @method getProduct
+ * @summary TODO:
+ * @param {string} variantId - TODO:
+ * @param {Object} collections - TODO:
+ * @return {Object} TODO:
  */
 export default async function getProduct(variantId, collections) {
   const { Products } = collections;
