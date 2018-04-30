@@ -8,8 +8,8 @@ import publishProductsToCatalog from "../utils/no-meteor/publishProductsToCatalo
  * @method publishProducts
  * @summary
  * @param {Object} context - TODO
- * @param {Array}
- * @return {Promise<Object[]>} TODO:
+ * @param {Array} productIds - TODO
+ * @return {Promise<Object[]>} TODO
  */
 export default async function publishProducts(context, productIds) {
   const { collections, shopId: primaryShopId, userHasPermission } = context;
@@ -21,12 +21,12 @@ export default async function publishProducts(context, productIds) {
   }
 
   // Find all products
-  const products = Products.find(
+  const products = await Products.find(
     {
       _id: { $in: productIds }
     },
     { _id: 1, shopId: 1 }
-  ).fetch();
+  ).toArray();
 
   if (products.length !== productIds.length) {
     throw new Meteor.Error("not-found", "Some products not found");
@@ -46,6 +46,8 @@ export default async function publishProducts(context, productIds) {
   }
 
   const success = await publishProductsToCatalog(productIds, collections);
+
+  console.log(success);
 
   if (!success) {
     Logger.error("Some Products could not be published to the Catalog.");
