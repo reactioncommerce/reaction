@@ -1,13 +1,13 @@
-import getTopVariants from "./getTopVariant";
+import getTopVariants from "./getTopVariants";
 import getVariantPriceRange from "./getVariantPriceRange";
 
 /**
- * TODO
- * @method
- * @summary
- * @param {String} productId
- * @param {Object} collections
- * @return {Promise<Object>}
+ *
+ * @method getProductPriceRange
+ * @summary TODO:
+ * @param {String} productId - TODO:
+ * @param {Object} collections - TODO:
+ * @return {Promise<Object>} TODO:
  */
 export default async function getProductPriceRange(productId, collections) {
   const { Products } = collections;
