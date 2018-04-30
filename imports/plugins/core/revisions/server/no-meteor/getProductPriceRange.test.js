@@ -193,12 +193,18 @@ const mockProduct = {
   width: 8.4
 };
 
-const mockVariantPRiceRange = "2.99 - 5.99";
+const mockVariantPriceRange = "2.99 - 5.99";
 
 const mockProductPriceRange = {
   range: "2.99 - 5.99",
   min: 2.99,
   max: 5.99
+};
+
+const mockEmptyProductPriceRange = {
+  range: "0",
+  min: 0,
+  max: 0
 };
 
 beforeAll(() => {
@@ -211,14 +217,20 @@ afterAll(() => {
   restore$getVariantPriceRange();
 });
 
-test("expect to fail", async () => {
-  // product.findOne mock
-  // getTopVariants mock
-  // getVatiantPriceRange mock
+// expect a legit price range
+test("expect to return a promise that resolves to a product price object", async () => {
+  mockCollections.Products.findOne.mockReturnValueOnce(Promise.resolve(mockProduct));
+  mockGetTopVariants.mockReturnValueOnce(Promise.resolve(mockVariants));
+  mockGetVariantPriceRange.mockReturnValueOnce(Promise.resolve(mockVariantPriceRange));
   const spec = await getProductPriceRange("999", mockCollections);
   expect(spec).toEqual(mockProductPriceRange);
 });
 
-// expect a legit price range
-
 // expect an empty price range
+test("expect to return a promise that resolves to a zero product price object if no product price is found", async () => {
+  mockCollections.Products.findOne.mockReturnValueOnce(Promise.resolve(undefined));
+  mockGetTopVariants.mockReturnValueOnce(Promise.resolve(undefined));
+  mockGetVariantPriceRange.mockReturnValueOnce(Promise.resolve(undefined));
+  const spec = await getProductPriceRange("999", mockCollections);
+  expect(spec).toEqual(mockEmptyProductPriceRange);
+});
