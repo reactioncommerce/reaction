@@ -22,10 +22,7 @@ Meteor.publish("Product", function (productIdOrHandle, shopIdOrSlug) {
     $or: [{
       _id: productIdOrHandle
     }, {
-      handle: {
-        $regex: productIdOrHandle,
-        $options: "i"
-      }
+      handle: productIdOrHandle
     }]
   };
 

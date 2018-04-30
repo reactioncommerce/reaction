@@ -1,17 +1,25 @@
-import { makeExecutableSchema } from "graphql-tools";
 import { Meteor } from "meteor/meteor";
+import { MongoInternals } from "meteor/mongo";
 import { WebApp } from "meteor/webapp";
 import createApolloServer from "./createApolloServer";
-import resolvers from "./resolvers";
-import typeDefs from "./schemas";
+import defineCollections from "./defineCollections";
+import methods from "./methods";
+import queries from "./queries";
 
-const schema = makeExecutableSchema({ typeDefs, resolvers });
+const collections = {};
+
+const { db } = MongoInternals.defaultRemoteCollectionDriver().mongo;
+defineCollections(db, collections);
 
 const server = createApolloServer({
+  context: {
+    collections,
+    methods,
+    queries
+  },
   // XXX Eventually these should be from individual env variables instead
   debug: Meteor.isDevelopment,
-  graphiql: Meteor.isDevelopment,
-  schema
+  graphiql: Meteor.isDevelopment
 });
 
 // bind the specified paths to the Express server running Apollo + GraphiQL

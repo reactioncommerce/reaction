@@ -17,7 +17,6 @@ Fixtures();
 
 before(function () {
   this.timeout(10000);
-  Meteor._sleepForMs(7000);
 });
 
 describe("Account Meteor method ", function () {
@@ -496,10 +495,9 @@ describe("Account Meteor method ", function () {
       expect(cartUnsetSpy.args[0][1]).to.equal(account.userId);
     });
 
-    it("should return zero(0) if address not exists", function () {
+    it("should throw an error if address does not exist to remove", function () {
       sandbox.stub(Meteor, "userId", () => fakeUser.userId);
-      const result = Meteor.call("accounts/addressBookRemove", "asdasdasd");
-      expect(result).to.equal(0);
+      expect(() => Meteor.call("accounts/addressBookRemove", "asdasdasd")).to.throw(Meteor.Error, /Unable to remove address from account/);
     });
   });
 
@@ -574,6 +572,31 @@ describe("Account Meteor method ", function () {
         })).to.not.throw(Meteor.Error, /Access denied/);
 
       return done();
+    });
+
+    it("creates a shop with the data provided", function () {
+      const primaryShop = getShop();
+      const name = Random.id();
+      const shopData = { name };
+
+      sandbox.stub(Reaction, "hasPermission", () => true);
+      sandbox.stub(Reaction, "getPrimaryShop", () => primaryShop);
+
+      const newUser = Factory.create("user");
+      // create Account to go with new user
+      const newAccount = Factory.create("account", { _id: newUser.id, shopId: primaryShop.id });
+      // to resolve an issue in the onCreateUser hook, stub user creation
+      sandbox.stub(MeteorAccount, "createUser", () => newUser._id);
+      sandbox.stub(Accounts, "findOne", () => newAccount)
+        .withArgs({ id: newUser._id });
+
+      Meteor.call("accounts/inviteShopOwner", {
+        email: "custom1@email.co",
+        name: "custom name"
+      }, shopData);
+
+      const newShopCount = Shops.find({ name }).count();
+      expect(newShopCount).to.equal(1);
     });
   });
 });

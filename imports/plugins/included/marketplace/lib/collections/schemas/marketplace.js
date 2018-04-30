@@ -3,7 +3,7 @@ import { check } from "meteor/check";
 import { Tracker } from "meteor/tracker";
 import { PackageConfig } from "/lib/collections/schemas/registry";
 import { Shop } from "/lib/collections/schemas/shops.js";
-import { registerSchema } from "@reactioncommerce/reaction-collections";
+import { registerSchema } from "@reactioncommerce/schemas";
 
 export const ShopTypes = new SimpleSchema({
   shopType: {
@@ -37,6 +37,10 @@ export const MarketplacePackageConfig = PackageConfig.clone().extend({
     type: Object,
     blackbox: true,
     optional: true
+  },
+  "settings.shops": {
+    type: Object,
+    defaultValue: {}
   },
   "settings.shops.enabledShopTypes": {
     type: Array,

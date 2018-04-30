@@ -5,14 +5,13 @@ import { Products, Tags } from "/lib/collections";
 import { getShop } from "./shops";
 import { Hooks } from "/server/api";
 
-
 /**
- * ReactionFaker.metaField()
- *
+ * @method metaField
+ * @memberof Fixtures
  * @param   {Object} [options] - options object to override generated default values
- * @param   {string} [options.key] - metaField key
- * @param   {string} [options.value] - metaField value
- * @param   {string} [options.scope] - metaField scope
+ * @param   {String} [options.key] - metaField key
+ * @param   {String} [options.value] - metaField value
+ * @param   {String} [options.scope] - metaField scope
  * @returns {Object} - randomly generated metaField
  */
 export function metaField(options = {}) {
@@ -25,22 +24,22 @@ export function metaField(options = {}) {
 }
 
 /**
- * ReactionFaker.productVariant()
- *
+ * @method productVariant
+ * @memberof Fixtures
  * @param {Object} [options] - Options object
- * @param {string} [options._id] - id
- * @param {string} [options.parentId] - variant's parent's ID. Sets variant as child.
- * @param {string} [options.compareAtPrice] - MSRP Price / Compare At Price
- * @param {string} [options.weight] - productVariant weight
- * @param {string} [options.inventoryManagement] - Track inventory for this product?
- * @param {string} [options.inventoryPolicy] - Allow overselling of this product?
- * @param {string} [options.lowInventoryWarningThreshold] - Qty left of inventory that sets off warning
- * @param {string} [options.inventoryQuantity] - Inventory Quantity
- * @param {string} [options.price] - productVariant price
- * @param {string} [options.title] - productVariant title
- * @param {string} [options.optionTitle] - productVariant option title
- * @param {string} [options.sku] - productVariant sku
- * @param {string} [options.taxable] - is this productVariant taxable?
+ * @param {String} [options._id] - id
+ * @param {String} [options.parentId] - variant's parent's ID. Sets variant as child.
+ * @param {String} [options.compareAtPrice] - MSRP Price / Compare At Price
+ * @param {String} [options.weight] - productVariant weight
+ * @param {String} [options.inventoryManagement] - Track inventory for this product?
+ * @param {String} [options.inventoryPolicy] - Allow overselling of this product?
+ * @param {String} [options.lowInventoryWarningThreshold] - Qty left of inventory that sets off warning
+ * @param {String} [options.inventoryQuantity] - Inventory Quantity
+ * @param {String} [options.price] - productVariant price
+ * @param {String} [options.title] - productVariant title
+ * @param {String} [options.optionTitle] - productVariant option title
+ * @param {String} [options.sku] - productVariant sku
+ * @param {String} [options.taxable] - is this productVariant taxable?
  * @param {Object[]} [options.metafields] - productVariant metaFields
  *
  * @returns {Object} - randomly generated productVariant
@@ -76,6 +75,27 @@ export function productVariant(options = {}) {
   return _.defaults(options, defaults);
 }
 
+/**
+ * @method addProduct
+ * @summary Create a product with variants
+ * @memberof Fixtures
+ * @param {Object} [options={}] [description]
+ * @param {String} [options._id] - id
+ * @param {String} [options.parentId] - variant's parent's ID. Sets variant as child.
+ * @param {String} [options.compareAtPrice] - MSRP Price / Compare At Price
+ * @param {String} [options.weight] - productVariant weight
+ * @param {String} [options.inventoryManagement] - Track inventory for this product?
+ * @param {String} [options.inventoryPolicy] - Allow overselling of this product?
+ * @param {String} [options.lowInventoryWarningThreshold] - Qty left of inventory that sets off warning
+ * @param {String} [options.inventoryQuantity] - Inventory Quantity
+ * @param {String} [options.price] - productVariant price
+ * @param {String} [options.title] - productVariant title
+ * @param {String} [options.optionTitle] - productVariant option title
+ * @param {String} [options.sku] - productVariant sku
+ * @param {String} [options.taxable] - is this productVariant taxable?
+ * @param {Object[]} [options.metafields] - productVariant metaFields
+ * @returns {Object} Product
+ */
 export function addProduct(options = {}) {
   const product = Factory.create("product", options);
   Hooks.Events.run("afterInsertCatalogProductInsertRevision", product);
@@ -89,6 +109,13 @@ export function addProduct(options = {}) {
   return product;
 }
 
+/**
+ * @method addProductSingleVariant
+ * @summary Create a product with 1 variant
+ * @memberof Fixtures
+ * @param {Object} [options={}] Product variant options object
+ * @returns {Object} Product with Variant
+ */
 export function addProductSingleVariant() {
   const product = Factory.create("product");
   Hooks.Events.run("afterInsertCatalogProductInsertRevision", product);
@@ -98,12 +125,25 @@ export function addProductSingleVariant() {
   return { product, variant };
 }
 
+/**
+ * @method getProduct
+ * @summary Get a product
+ * @memberof Fixtures
+ * @param {Object} [options={}] Product variant options object
+ * @returns {Object} Product
+ */
 export function getProduct() {
   const existingProduct = Products.findOne();
   return existingProduct || Factory.create("product");
 }
 
-
+/**
+ * @method getProducts
+ * @summary Get a number of products
+ * @memberof Fixtures
+ * @param {Object} [limit=2] Number of products
+ * @returns {Array} Array of products
+ */
 export function getProducts(limit = 2) {
   const products = [];
   const existingProducts = Products.find({}, { limit }).fetch();
@@ -114,11 +154,19 @@ export function getProducts(limit = 2) {
   return products;
 }
 
-
 export default function () {
   /**
-   * Tag Factory
-   * @summary define tag Factory
+   * @name tag
+   * @memberof Fixtures
+   * @example Factory.create("tag")
+   * @summary Define a Tag for Products
+   * @property {String} name - `"Tag"`
+   * @property {String} slug - `"tag"`
+   * @property {Number} position - `_.random(0, 100000)`
+   * @property {Boolean} isTopLevel - `true`
+   * @property {String} shopId - `getShop()._id`
+   * @property {Date} createdAt - `faker.date.past()`
+   * @property {Date} updatedAt - `new Date()`
    */
   Factory.define("tag", Tags, {
     name: "Tag",
@@ -132,8 +180,32 @@ export default function () {
   });
 
   /**
-   * Product factory
-   * @summary define product Factory
+   * @name Product
+   * @memberof Fixtures
+   * @example const product = Factory.create("product")
+   * @example Factory.create("variant", Object.assign({}, productVariant(options), { ancestors: [product._id, variant._id] }));
+   * @summary Define a factory for Product
+   * @property {Array} ancestors `[]`
+   * @property {String} shopId `getShop()._id`
+   * @property {String} title `faker.commerce.productName()`
+   * @property {String} pageTitle `faker.lorem.sentence()`
+   * @property {String} description `faker.lorem.paragraph()`
+   * @property {String} type `"simple"` or `"variant"` for Product Variant
+   * @property {String} vendor `faker.company.companyName()`
+   * @property {Object} price `priceRange`
+   * @property {String} price.range `"1.00 - 12.99"`
+   * @property {Number} price.min `1.00`
+   * @property {Number} price.max `12.9`
+   * @property {Boolean} isLowQuantity `false`
+   * @property {Boolean} isSoldOut `false`
+   * @property {Boolean} isBackorder `false`
+   * @property {Array} metafields `[]`
+   * @property {Boolean} requiresShipping `true`
+   * @property {Array} hashtags `[]`
+   * @property {Boolean} isVisible `true`
+   * @property {Date} publishedAt `new Date()`
+   * @property {Date} createdAt `new Date()`
+   * @property {Date} updatedAt `new Date()`
    */
   const base = {
     ancestors: [],

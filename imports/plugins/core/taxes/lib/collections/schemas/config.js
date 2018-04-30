@@ -1,4 +1,4 @@
-import { registerSchema } from "@reactioncommerce/reaction-collections";
+import { registerSchema } from "@reactioncommerce/schemas";
 import { PackageConfig } from "/lib/collections/schemas/registry";
 import { Taxes } from "./taxes";
 

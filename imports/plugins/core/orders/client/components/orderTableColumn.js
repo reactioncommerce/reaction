@@ -5,7 +5,7 @@ import { formatPriceString, i18next } from "/client/api";
 import Avatar from "react-avatar";
 import { withMoment } from "@reactioncommerce/reaction-components";
 import { Badge, ClickToCopy, Icon, RolloverCheckbox, Checkbox } from "@reactioncommerce/reaction-ui";
-import { getOrderRiskBadge, getOrderRiskStatus, getBillingInfo } from "../helpers";
+import { getOrderRiskBadge, getOrderRiskStatus, getBillingInfo, getTaxRiskStatus } from "../helpers";
 
 class OrderTableColumn extends Component {
   static propTypes = {
@@ -52,7 +52,9 @@ class OrderTableColumn extends Component {
     const columnAccessor = this.props.row.column.id;
     const invoice = getBillingInfo(this.props.row.original).invoice || {};
     const { moment } = this.props;
-    const orderRisk = getOrderRiskStatus(this.props.row.original);
+    const orderPaymentRisk = getOrderRiskStatus(this.props.row.original);
+    const orderTaxRisk = getTaxRiskStatus(this.props.row.original);
+    const orderRisk = orderPaymentRisk || orderTaxRisk;
 
     if (columnAccessor === "shippingFullName") {
       return (

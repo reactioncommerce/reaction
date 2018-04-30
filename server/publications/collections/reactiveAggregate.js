@@ -70,10 +70,17 @@ function wrapWithDb(mongoConn) {
  * @constructor
  */
 export function ReactiveAggregate(pub, collection, pipeline, options) {
+  let allowDiskUse = false;
+
+  if (process.env.MONGO_ALLOW_DISK_USE) {
+    allowDiskUse = true;
+  }
+
   const defaultOptions = {
     observeSelector: {},
     observeOptions: {},
-    clientCollection: collection._name
+    clientCollection: collection._name,
+    allowDiskUse
   };
   const pubOptions = Object.assign({}, defaultOptions, options);
 
@@ -88,7 +95,7 @@ export function ReactiveAggregate(pub, collection, pipeline, options) {
     }
 
     // add and update documents on the client
-    collection.aggregate(pipeline).forEach((doc) => {
+    collection.aggregate(pipeline, { allowDiskUse: pubOptions.allowDiskUse }).forEach((doc) => {
       if (!pub._ids[doc._id]) {
         pub.added(pubOptions.clientCollection, doc._id, doc);
       } else {
