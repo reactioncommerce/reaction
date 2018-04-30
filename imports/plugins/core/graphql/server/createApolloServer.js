@@ -14,7 +14,7 @@ const defaultServerConfig = {
   graphiqlPath: "/graphiql",
   // GraphiQL options (default: log the current user in your request)
   graphiqlOptions: {
-    passHeader: "'meteor-login-token': localStorage['Meteor.loginToken']"
+    passHeader: "'meteor-login-token': localStorage['Meteor.loginToken'] || ''"
   }
 };
 
