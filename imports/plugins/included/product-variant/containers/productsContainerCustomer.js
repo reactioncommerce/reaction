@@ -52,26 +52,27 @@ function composer(props, onData) {
   const slug = Reaction.Router.getParam("slug");
   const shopIdOrSlug = Reaction.Router.getParam("shopSlug");
 
-  const tag = Tags.findOne({ slug }) || Tags.findOne(slug);
+  const tags = {};
+  if (slug) {
+    const tag = Tags.findOne({ slug }) || Tags.findOne({ _id: slug });
+
+    // if we get an invalid slug, don't return all products
+    if (!tag) {
+      onData(null, {
+        showNotFound: true
+      });
+
+      return;
+    }
+
+    tags.tags = [tag._id];
+  }
+
   const scrollLimit = Session.get("productScrollLimit");
-  let tags = {}; // this could be shop default implementation needed
-  let shopIds = {};
 
-  if (tag) {
-    tags = { tags: [tag._id] };
-  }
-
+  const shopIds = {};
   if (shopIdOrSlug) {
-    shopIds = { shops: [shopIdOrSlug] };
-  }
-
-  // if we get an invalid slug, don't return all products
-  if (!tag && slug) {
-    onData(null, {
-      showNotFound: true
-    });
-
-    return;
+    shopIds.shops = [shopIdOrSlug];
   }
 
   const currentTagId = ReactionProduct.getTagIdForPosition();
@@ -96,9 +97,8 @@ function composer(props, onData) {
   }).map((activeShop) => activeShop._id);
 
   const productCursor = Catalog.find({
-    ancestors: [],
-    type: { $in: ["product-simple"] },
-    shopId: { $in: activeShopsIds }
+    "product.type": "product-simple",
+    "shopId": { $in: activeShopsIds }
   }, {
     $sort: sort
   });
