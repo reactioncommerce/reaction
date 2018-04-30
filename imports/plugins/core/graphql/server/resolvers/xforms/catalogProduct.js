@@ -10,6 +10,7 @@ export const encodeCatalogProductOpaqueId = encodeOpaqueId(namespaces.CatalogPro
 /**
  * @name xformProductMedia
  * @method
+ * @memberof GraphQL/Transforms
  * @param {Object} mediaItem object from a catalog product
  * @return transformed product media array
  */

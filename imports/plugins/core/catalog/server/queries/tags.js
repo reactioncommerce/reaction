@@ -1,6 +1,7 @@
 /**
  * @name tags
  * @method
+ * @memberof Catalog/NoMeteorQueries
  * @summary query the Tags collection by shop ID and optionally by isTopLevel
  * @param {Object} context - an object containing the per-request state
  * @param {String} shopId - ID of shop to query

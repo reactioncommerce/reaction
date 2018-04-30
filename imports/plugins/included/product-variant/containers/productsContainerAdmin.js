@@ -22,11 +22,11 @@ Tracker.autorun(() => {
 
 
 /**
- * loadMoreProducts
- * @summary whenever #productScrollLimitLoader becomes visible, retrieve more results
- * this basically runs this:
- * Session.set('productScrollLimit', Session.get('productScrollLimit') + ITEMS_INCREMENT);
+ * This basically runs this:
+ *   Session.set('productScrollLimit', Session.get('productScrollLimit') + ITEMS_INCREMENT);
+ * @summary whenever `#productScrollLimitLoader` becomes visible, retrieve more results.
  * @return {undefined}
+ * @private
  */
 function loadMoreProducts() {
   let threshold;

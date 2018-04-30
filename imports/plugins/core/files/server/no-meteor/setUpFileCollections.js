@@ -22,25 +22,27 @@ export default function setUpFileCollections({
   const gridFSStoresChunkSize = 1 * 1024 * 1024;
 
   /**
-   * @name imgTransforms
-   * @constant {Array}
-   * @property {string} name - transform name that will be used as GridFS name
-   * @property {object|undefined} transform - object with image transform settings
-   * @property {number} size - transform size, only one number needed for both width & height
-   * @property {string} mod - transform modifier function call,
-   * for example the `large` & `medium` image transforms want to preserve
-   * the image's aspect ratio and resize based on the larger width or height
-   * so we use the `max` Sharp modifier function.
-   * Check out the {@link http://sharp.pixelplumbing.com/en/stable/|Sharp Docs} for more helper functions.
-   * {@link http://sharp.pixelplumbing.com/en/stable/api-resize/#max|Sharp max()}
-   * {@link http://sharp.pixelplumbing.com/en/stable/api-resize/#crop|Sharp crop()}
-   * @property {string} format - output image format
-   * @summary Defines all image transforms
    * Image files are resized to 4 different sizes:
    * 1. `large` - 1000px by 1000px - preserves aspect ratio
    * 2. `medium` - 600px by 600px - preserves aspect ratio
    * 3. `small` - 235px by 235px - crops to square - creates png version
    * 4. `thumbnail` - 100px by 100px - crops to square - creates png version
+   * @name imgTransforms
+   * @memberof Files
+   * @constant {Array}
+   * @property {string} name - transform name that will be used as GridFS name
+   * @property {object|undefined} transform - object with image transform settings
+   * @property {number} size - transform size, only one number needed for both width & height
+   * @property {string} mod - transform modifier function call,
+   *   for example the `large` & `medium` image transforms want to preserve
+   *   the image's aspect ratio and resize based on the larger width or height
+   *   so we use the `max` Sharp modifier function.
+   *   Check out the {@link http://sharp.pixelplumbing.com/en/stable/|Sharp Docs} for more helper functions.
+   *   {@link http://sharp.pixelplumbing.com/en/stable/api-resize/#max|Sharp max()}
+   *   {@link http://sharp.pixelplumbing.com/en/stable/api-resize/#crop|Sharp crop()}
+   * @property {string} format - output image format
+   * @summary Defines all image transforms
+   * @ignore
    */
   const imgTransforms = [
     { name: "image", transform: { size: 1600, mod: "max", format: "jpg", type: "image/jpeg" } },
@@ -51,7 +53,9 @@ export default function setUpFileCollections({
   ];
 
   /**
-   * @function buildGFS
+   * @name buildGFS
+   * @method
+   * @memberof Files
    * @param {object} imgTransform
    * @summary buildGFS returns a fresh GridFSStore instance from provided image transform settings.
    */
@@ -80,6 +84,7 @@ export default function setUpFileCollections({
 
   /**
    * @name stores
+   * @memberof Files
    * @constant {Array}
    * @summary Defines an array of GridFSStore by mapping the imgTransform settings over the buildGFS function
    */
@@ -88,10 +93,11 @@ export default function setUpFileCollections({
   /**
    * @name tempStore
    * @type TempFileStore
+   * @memberof Files
    * @summary Defines the temporary store where chunked uploads from browsers go
    * initially, until the chunks are eventually combined into one complete file
    * which the worker will then store to the permanant stores.
-   * @see https://github.com/reactioncommerce/reaction-file-collections
+   * @see {@link https://github.com/reactioncommerce/reaction-file-collections}
    */
   const tempStore = new TempFileStore({
     shouldAllowRequest(req) {
@@ -107,6 +113,7 @@ export default function setUpFileCollections({
   /**
    * @name Media
    * @type MongoFileCollection
+   * @memberof Files
    * @summary Defines the Media FileCollection
    * To learn how to further manipulate images with Sharp, refer to
    * {@link http://sharp.pixelplumbing.com/en/stable/|Sharp Docs}
@@ -123,6 +130,7 @@ export default function setUpFileCollections({
   /**
    * @name downloadManager
    * @type FileDownloadManager
+   * @memberof Files
    * @summary Set up a URL for downloading the files
    * @see https://github.com/reactioncommerce/reaction-file-collections
    */

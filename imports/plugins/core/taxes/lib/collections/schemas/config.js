@@ -3,9 +3,10 @@ import { PackageConfig } from "/lib/collections/schemas/registry";
 import { Taxes } from "./taxes";
 
 /**
-* TaxPackageConfig Schema
-*/
-
+ * @name TaxPackageConfig
+ * @memberof Schemas
+ * @type {SimpleSchema}
+ */
 export const TaxPackageConfig = PackageConfig.clone().extend({
   // Remove blackbox: true from settings obj
   "settings": {

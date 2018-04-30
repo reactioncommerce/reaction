@@ -8,9 +8,6 @@ import { Reaction, i18next } from "/client/api";
 import * as Collections from "/lib/collections";
 import { ServiceConfigHelper } from "../../helpers/util";
 
-/**
- * Accounts helpers
- */
 Template.accountsDashboard.onCreated(function () {
   this.autorun(() => {
     this.subscribe("ShopMembers");
@@ -21,6 +18,7 @@ Template.accountsDashboard.helpers({
   /**
    * isShopMember
    * @return {Boolean} True if the memnber is an administrator
+   * @ignore
    */
   isShopMember() {
     return _.includes(["dashboard", "admin", "owner"], this.role);
@@ -29,6 +27,7 @@ Template.accountsDashboard.helpers({
   /**
    * isShopGuest
    * @return {Boolean} True if the member is a guest
+   * @ignore
    */
   isShopGuest() {
     return !_.includes(["dashboard", "admin", "owner"], this.role);
@@ -36,6 +35,7 @@ Template.accountsDashboard.helpers({
   /**
    * members
    * @return {Boolean} True array of adminsitrative members
+   * @ignore
    */
   members() {
     if (Reaction.hasPermission("reaction-accounts")) {
@@ -89,21 +89,16 @@ Template.accountsDashboard.helpers({
   }
 });
 
-/**
- * Account Settings Helpers
- */
 Template.accountsSettings.onCreated(function () {
   this.subscribe("ServiceConfiguration", Meteor.userId());
 });
 
-/**
- * Account Settings Helpers
- */
 Template.accountsSettings.helpers({
 
   /**
    * services
    * @return {Array} available services
+   * @ignore
    */
   services() {
     const serviceHelper = new ServiceConfigHelper();
@@ -125,6 +120,7 @@ Template.accountsSettings.helpers({
    * Template helper to add a hidden class if the condition is false
    * @param  {Boolean} enabled Service enabled
    * @return {String}          "hidden" or ""
+   * @ignore
    */
   shown(enabled) {
     return enabled !== true ? "hidden" : "";
@@ -134,6 +130,7 @@ Template.accountsSettings.helpers({
    * Return checked classname if true
    * @param  {Boolean} enabled Boolean value true/false
    * @return {String}          "checked" or ""
+   * @ignore
    */
   checked(enabled) {
     return enabled === true ? "checked" : "";
@@ -144,6 +141,7 @@ Template.accountsSettings.helpers({
    * @param  {String} fieldName name of field to retrive the value for.
    * @param  {Object} service   Service object to find the value in.
    * @return {String}           A value or blank string if nothing is found.
+   * @ignore
    */
   valueForField(fieldName, service) {
     return service[fieldName] || "";
@@ -151,12 +149,6 @@ Template.accountsSettings.helpers({
 });
 
 Template.accountsSettings.events({
-
-  /**
-   * Account settings form submit
-   * @param  {event} event    jQuery event
-   * @return {void}
-   */
   "submit form": (event) => {
     event.preventDefault();
 
@@ -180,11 +172,6 @@ Template.accountsSettings.events({
     });
   },
 
-  /**
-   * Account settings update enabled status for login service on change
-   * @param  {event} event    jQuery Event
-   * @return {void}
-   */
   "change input[name=enabled]": (event) => {
     const service = event.target.value;
     const fields = [{
@@ -195,11 +182,6 @@ Template.accountsSettings.events({
     Meteor.call("accounts/updateServiceConfiguration", service, fields);
   },
 
-  /**
-   * Account settings show/hide secret key for a service
-   * @param  {event} event    jQuery Event
-   * @return {void}
-   */
   "click [data-event-action=showSecret]": (event) => {
     const button = Template.instance().$(event.currentTarget);
     const input = button.closest(".form-group").find("input[name=secret]");

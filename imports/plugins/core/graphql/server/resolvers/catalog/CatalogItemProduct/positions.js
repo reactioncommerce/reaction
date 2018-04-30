@@ -2,8 +2,9 @@ import { encodeShopOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/sh
 import { encodeTagOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/tag";
 
 /**
- * @name positions
+ * @name "CatalogItemProduct.positions"
  * @method
+ * @memberof Catalog/GraphQL
  * @summary Adjusts the positions prop of a product
  * @param {Object} product - CatalogProduct response from parent resolver
  * @return {Promise<Object[]>} Promise that resolves with an array of positions

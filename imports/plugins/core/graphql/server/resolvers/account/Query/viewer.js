@@ -1,8 +1,9 @@
 import { optimizeIdOnly } from "@reactioncommerce/reaction-graphql-utils";
 
 /**
- * @name viewer
+ * @name "Query.viewer"
  * @method
+ * @memberof Accounts/GraphQL
  * @summary query the Accounts collection and return user account data for the current user
  * @param {Object} _ - unused
  * @param {Object} args - an object of all arguments that were sent by the client

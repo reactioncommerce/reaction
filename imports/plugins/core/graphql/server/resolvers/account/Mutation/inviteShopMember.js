@@ -2,8 +2,9 @@ import { decodeGroupOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/g
 import { decodeShopOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/shop";
 
 /**
- * @name inviteShopMember
+ * @name "Mutation.inviteShopMember"
  * @method
+ * @memberof Accounts/GraphQL
  * @summary resolver for the inviteShopMember GraphQL mutation
  * @param {Object} _ - unused
  * @param {Object} args.input - an object of all mutation arguments that were sent by the client

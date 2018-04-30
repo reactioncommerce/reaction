@@ -1,8 +1,9 @@
 import { xformProductMedia } from "@reactioncommerce/reaction-graphql-xforms/catalogProduct";
 
 /**
- * @name product
+ * @name "CatalogItemProduct.product"
  * @method
+ * @memberof Catalog/GraphQL
  * @summary Returns the product for a catalog item
  * @param {Object} item - CatalogItem response from parent resolver
  * @return {Object} Adjusted product object

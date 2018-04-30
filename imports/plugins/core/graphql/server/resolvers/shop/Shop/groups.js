@@ -2,8 +2,9 @@ import { getPaginatedResponse } from "@reactioncommerce/reaction-graphql-utils";
 import { decodeShopOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/shop";
 
 /**
- * @name groups
+ * @name "Shop.groups"
  * @method
+ * @memberof Shop/GraphQL
  * @summary find and return the groups for a shop
  * @param {Object} resolverArgs - an object containing the result returned from the resolver
  * @param {String} resolverArgs._id - id of group to query

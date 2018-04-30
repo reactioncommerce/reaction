@@ -1,5 +1,11 @@
 /**
- * Mostly borrowed from https://www.reindex.io/blog/relay-graphql-pagination-with-mongodb/
+ * Inspired by https://www.reindex.io/blog/relay-graphql-pagination-with-mongodb/
+ * @name applyPaginationToMongoCursor
+ * @method
+ * @memberof GraphQL/ResolverUtilities
+ * @summary Adds `skip` and `limit` to a MongoDB cursor as necessary, based on GraphQL
+ *   `first` and `last` params
+ * @return {Promise<Object>} `{ pageInfo }`
  */
 export default async function applyPaginationToMongoCursor(cursor, { first, last } = {}, totalCount) {
   let resultCount = totalCount;

@@ -13,6 +13,11 @@ import { Logger } from "/server/api";
 import { MediaRecords } from "/lib/collections";
 import setUpFileCollections from "./no-meteor/setUpFileCollections";
 
+/**
+ * Functions and objects related to file upload, download, and storage
+ * @namespace Files
+ */
+
 const mongodb = MongoInternals.NpmModules.mongodb.module;
 const { db } = MongoInternals.defaultRemoteCollectionDriver().mongo;
 
@@ -37,10 +42,11 @@ WebApp.connectHandlers.use("/assets/uploads", (req, res) => {
 /**
  * @name Media
  * @type MeteorFileCollection
+ * @memberof Files
  * @summary Defines the Media FileCollection
- * To learn how to further manipulate images with Sharp, refer to
- * {@link http://sharp.pixelplumbing.com/en/stable/|Sharp Docs}
- * @see https://github.com/reactioncommerce/reaction-file-collections
+ *   To learn how to further manipulate images with Sharp, refer to
+ *   {@link http://sharp.pixelplumbing.com/en/stable/|Sharp Docs}
+ * @see {@link https://github.com/reactioncommerce/reaction-file-collections}
  */
 const Media = new MeteorFileCollection("Media", {
   allowInsert: (userId, doc) => Security.can(userId).insert(doc).for(MediaRecords).check(),
@@ -63,6 +69,7 @@ WebApp.connectHandlers.use("/assets/files", downloadManager.connectHandler);
 /**
  * @name remoteUrlWorker
  * @type RemoteUrlWorker
+ * @memberof Files
  * @summary Start a worker to watch for inserted remote URLs and stream them to all stores
  * @see https://github.com/reactioncommerce/reaction-file-collections
  */
@@ -72,6 +79,7 @@ remoteUrlWorker.start();
 /**
  * @name fileWorker
  * @type TempFileStoreWorker
+ * @memberof Files
  * @summary Start a worker to watch for finished uploads, store them permanantly,
  * and then remove the temporary file
  * @see https://github.com/reactioncommerce/reaction-file-collections

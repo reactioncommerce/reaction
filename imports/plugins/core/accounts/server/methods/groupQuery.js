@@ -3,6 +3,7 @@ import { Meteor } from "meteor/meteor";
 /**
  * @name groupQuery
  * @method
+ * @memberof Accounts/NoMeteorQueries
  * @summary query the Groups collection and return group data
  * @param {Object} context - an object containing the per-request state
  * @param {String} id - id of group to query
@@ -37,6 +38,7 @@ export async function groupQuery(context, id) {
 /**
  * @name groupsQuery
  * @method
+ * @memberof Accounts/NoMeteorQueries
  * @summary query the Groups collection and return a MongoDB cursor
  * @param {Object} context - an object containing the per-request state
  * @param {String} shopId - shop ID to get groups for

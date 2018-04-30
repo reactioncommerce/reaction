@@ -4,7 +4,7 @@ import classnames from "classnames";
 import { registerComponent } from "@reactioncommerce/reaction-components";
 
 /**
- * Toobar Text
+ * @memberof Components
  * @param {Object} props component props
  * @return {node} react element node
  */
