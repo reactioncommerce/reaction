@@ -24,7 +24,9 @@ async function getPaginatedResponse(query, args) {
 
   query.filter(updatedFilter).sort(sort);
 
-  const { pageInfo } = await applyPaginationToMongoCursor(query, args, totalCount);
+  const totalCountAfterOrBefore = await query.clone().count();
+
+  const { pageInfo } = await applyPaginationToMongoCursor(query, args, totalCountAfterOrBefore);
   const nodes = await query.toArray();
   const count = nodes.length;
 
