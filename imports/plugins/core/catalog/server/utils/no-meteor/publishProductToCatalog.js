@@ -19,7 +19,12 @@ export default async function publishProductToCatalog(product, collections) {
   const { Catalog, Products } = collections;
 
   if (!product) {
-    Logger.info("Cannot publish product to catalog");
+    Logger.info("Cannot publish undefined product to catalog");
+    return false;
+  }
+
+  if (Array.isArray(product.ancestors) && product.ancestors.length) {
+    Logger.info("Cannot publish product variants to catalog");
     return false;
   }
 
