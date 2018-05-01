@@ -3,7 +3,7 @@
 // meteor modules
 import accounting from "accounting-js";
 import { Meteor } from "meteor/meteor";
-import { check, Match } from "meteor/check";
+import { check } from "meteor/check";
 import { Promise } from "meteor/promise";
 
 import AuthNetAPI from "authorize-net";
@@ -179,11 +179,6 @@ Meteor.methods({
     };
 
     return result;
-  },
-  "authnet/refund/list"(...args) {
-    check(args, [Match.Any]);
-    Meteor.Error("not-implemented", "Authorize.net does not yet support retrieving a list of refunds.");
-    return [];
   }
 });
 

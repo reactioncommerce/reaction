@@ -32,16 +32,20 @@ export const methods = {
     // The first record holds the selected billing address
     const billing = cart.billing[0];
     const billingId = Random.id();
+    const shopId = Reaction.getShopId();
     const result = Collection.update({
       _id: id
     }, {
       $addToSet: {
         billing: {
           ...billing,
+          shopId,
           _id: billingId,
           paymentMethod
         }
       }
+    }, {
+      bypassCollection2: true
     });
     // calculate discounts
     Hooks.Events.run("afterCartUpdateCalculateDiscount", id);

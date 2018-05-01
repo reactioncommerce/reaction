@@ -278,12 +278,17 @@ export const methods = {
         return { i18nKeyLabel: "Code is expired", i18nKey: "discounts.codeIsExpired" };
       }
 
+      const packageData = Reaction.getPackageSettings("discount-codes");
+      const packageId = packageData._id;
+
       // save to payment methods
       // and update status in Discounts
       // payment methods can be debit or credit.
       const paymentMethod = {
         id: discount._id,
         processor: discount.discountMethod,
+        paymentSettingsKey: "discount-codes",
+        paymentPackageId: packageId,
         method: discount.calculation.method,
         code: discount.code,
         transactionId: Random.id(),
