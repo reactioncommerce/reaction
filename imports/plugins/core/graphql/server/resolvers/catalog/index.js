@@ -1,6 +1,5 @@
 import { encodeCatalogItemOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/catalogItem";
-import CatalogItemConnection from "./CatalogItemConnection";
-import CatalogItemEdge from "./CatalogItemEdge";
+import { getConnectionTypeResolvers } from "@reactioncommerce/reaction-graphql-utils";
 import CatalogItemProduct from "./CatalogItemProduct";
 import CatalogProduct from "./CatalogProduct";
 import CatalogProductVariant from "./CatalogProductVariant";
@@ -21,10 +20,9 @@ export default {
   CatalogItemContent: {
     _id: (item) => encodeCatalogItemOpaqueId(item._id)
   },
-  CatalogItemConnection,
-  CatalogItemEdge,
   CatalogItemProduct,
   CatalogProduct,
   CatalogProductVariant,
-  Query
+  Query,
+  ...getConnectionTypeResolvers("CatalogItem")
 };
