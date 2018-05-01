@@ -2,12 +2,12 @@ import getProduct from "./getProduct";
 import getVariants from "./getVariants";
 
 /**
- * TODO:
- * @method
- * @summary
- * @param
- * @param
- * @return
+ *
+ * @method getVariantPriceRange
+ * @summary TODO:
+ * @param {string} variantId - TODO:
+ * @param {Object} collections - TODO:
+ * @return {Promise<string>} TODO:
  */
 export default async function getVariantPriceRange(variantId, collections) {
   const children = await getVariants(variantId, null, collections);
@@ -17,10 +17,10 @@ export default async function getVariantPriceRange(variantId, collections) {
     case 0: {
       const topVariant = await getProduct(variantId, collections);
       // topVariant could be undefined when we removing last top variant
-      return topVariant && topVariant.price;
+      return topVariant && topVariant.price.toString();
     }
     case 1: {
-      return visibleChildren[0].price;
+      return visibleChildren[0].price.toString();
     }
     default: {
       let priceMin = Number.POSITIVE_INFINITY;
