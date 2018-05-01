@@ -1,6 +1,7 @@
 /**
  * @name tagsByIds
  * @method
+ * @memberof Catalog/NoMeteorQueries
  * @summary query the Tags collection by a list of IDs
  * @param {Object} context - an object containing the per-request state
  * @param {String[]} tagIds - tag IDs to get

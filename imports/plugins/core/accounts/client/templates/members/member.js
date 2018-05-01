@@ -124,9 +124,11 @@ Template.memberSettings.helpers({
   hasManyPermissions(permissions) {
     return Boolean(permissions.length);
   },
+
   /**
    * showAvalaraTaxSettings
    * @return {Boolean} True if avalara is enabled. Defaults to false if not found
+   * @ignore
    */
   showAvalaraTaxSettings() {
     const avalara = Packages.findOne({

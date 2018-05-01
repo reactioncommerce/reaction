@@ -1,6 +1,11 @@
 /**
+ * @name defineCollections
+ * @method
+ * @memberof GraphQL
+ * @summary Adds Collection instances to the provided `collections` map
  * @param {MongoDatabase} db A database instance from Node Mongo client
  * @param {Object} collections An object to mutate with all of the Reaction collections
+ * @returns {undefined} No return
  */
 export default function defineCollections(db, collections) {
   Object.assign(collections, {
@@ -12,7 +17,7 @@ export default function defineCollections(db, collections) {
     Groups: db.collection("Groups"),
     Inventory: db.collection("Inventory"),
     Logs: db.collection("Logs"),
-    MediaRecords: db.collection("MediaRecords"),
+    MediaRecords: db.collection("cfs.Media.filerecord"),
     Notifications: db.collection("Notifications"),
     Orders: db.collection("Orders"),
     Packages: db.collection("Packages"),

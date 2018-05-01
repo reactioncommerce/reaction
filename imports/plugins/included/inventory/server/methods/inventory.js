@@ -4,7 +4,13 @@ import { Inventory, Products } from "/lib/collections";
 import { Logger, Reaction } from "/server/api";
 
 /**
- * inventory/register
+ * @namespace Inventory/Methods
+ */
+
+/**
+ * @name inventory/register
+ * @method
+ * @memberof Inventory/Methods
  * @summary check a product and update Inventory collection with inventory documents.
  * @param {Object} product - valid Schemas.Product object
  * @return {Number} - returns the total amount of new inventory created
@@ -70,6 +76,15 @@ export function registerInventory(product) {
   return totalNewInventory;
 }
 
+/**
+ * @name inventory/adjust
+ * @method
+ * @memberof Inventory/Methods
+ * @param {Object} product - valid Schemas.Product object
+ * @param {String} userId - ID of user who is adjusting
+ * @param {Object} context - Meteor method context
+ * @return {undefined} - No return
+ */
 function adjustInventory(product, userId, context) {
   // TODO: This can fail even if updateVariant succeeds.
   Products.simpleSchema(product).validate(product);

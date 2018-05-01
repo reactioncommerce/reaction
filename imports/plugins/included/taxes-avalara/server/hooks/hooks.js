@@ -17,9 +17,9 @@ function linesToTaxes(lines) {
 }
 /**
  * @method markCartTax
- * @summary Calls the method accounts/markTaxCalculationFailed
- * through meteor.
+ * @summary Calls the method accounts/markTaxCalculationFailed through Meteor.
  * @param {Boolean} value - the value to be set
+ * @private
  */
 function markCartTax(value = true) {
   Meteor.call("accounts/markTaxCalculationFailed", value, (error) => {

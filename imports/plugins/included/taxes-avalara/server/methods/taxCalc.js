@@ -20,7 +20,7 @@ const errorDetails = new SimpleSchema({
   }
 });
 
-  // Validate that whenever we return an error we return the same format
+// Validate that whenever we return an error, we return the same format
 const ErrorObject = new SimpleSchema({
   "type": {
     type: String
@@ -58,6 +58,7 @@ taxCalc.getPackageData = function () {
 /**
  * @summary Get the root URL for REST calls
  * @returns {String} Base url
+ * @private
  */
 function getUrl() {
   const packageData = taxCalc.getPackageData();
@@ -75,6 +76,7 @@ function getUrl() {
  * @summary Verify that we have all required configuration data before attempting to use the API
  * @param {Object} packageData - Package data retrieved from the database
  * @returns {boolean} - isValid Is the current configuration valid
+ * @private
  */
 function checkConfiguration(packageData = taxCalc.getPackageData()) {
   let isValid = true;
@@ -97,6 +99,7 @@ function checkConfiguration(packageData = taxCalc.getPackageData()) {
  * @summary Get the auth info to authenticate to REST API
  * @param {Object} packageData - Optionally pass in packageData if we already have it
  * @returns {String} Username/Password string
+ * @private
  */
 function getAuthData(packageData = taxCalc.getPackageData()) {
   if (checkConfiguration(packageData)) {
@@ -111,6 +114,7 @@ function getAuthData(packageData = taxCalc.getPackageData()) {
  * @summary Get exempt tax settings to pass to REST API
  * @param {String} userId id of user to find settings
  * @returns {Object} containing exemptCode and customerUsageType
+ * @private
  */
 function getTaxSettings(userId) {
   return _.get(Accounts.findOne({ _id: userId }), "taxSettings");
@@ -120,6 +124,7 @@ function getTaxSettings(userId) {
  * @summary: Break Avalara error object into consistent format
  * @param {Object} error The error result from Avalara
  * @returns {Object} Error object with code and errorDetails
+ * @private
  */
 function parseError(error) {
   let errorData;
@@ -171,6 +176,7 @@ function parseError(error) {
  * @param {Object} options - An object of other options
  * @param {Boolean} testCredentials - determines skipping of configuration check
  * @returns {Object} Response from call
+ * @private
  */
 function avaGet(requestUrl, options = {}, testCredentials = true) {
   const logObject = {};
@@ -226,6 +232,7 @@ function avaGet(requestUrl, options = {}, testCredentials = true) {
  * @param {String} requestUrl - The URL to make the request to
  * @param {Object} options - An object of others options, usually data
  * @returns {Object} Response from call
+ * @private
  */
 function avaPost(requestUrl, options) {
   const logObject = {};
@@ -282,6 +289,13 @@ function avaPost(requestUrl, options) {
 }
 
 /**
+ * @namespace Taxes/Avalara/Methods
+ */
+
+/**
+ * @name avalara/getEntityCodes
+ * @method
+ * @memberof Taxes/Avalara/Methods
  * @summary Gets the full list of Avalara-supported entity use codes.
  * @returns {Object[]} API response
  */
@@ -300,9 +314,10 @@ taxCalc.getEntityCodes = function () {
   throw new Meteor.Error("bad-configuration", "Avalara package is enabled, but is not properly configured");
 };
 
-// API Methods
-
 /**
+ * @name avalara/calcTaxable
+ * @method
+ * @memberof Taxes/Avalara/Methods
  * @summary Calculate the taxable subtotal for a cart
  * @param {Cart} cart - Cart to calculate subtotal for
  * @returns {Number} Taxable subtotal
@@ -318,6 +333,9 @@ taxCalc.calcTaxable = function (cart) {
 };
 
 /**
+ * @name avalara/addressValidation
+ * @method
+ * @memberof Taxes/Avalara/Methods
  * @summary Validate a particular address
  * @param {Object} address Address to validate
  * @returns {Object} The validated result
@@ -396,6 +414,9 @@ taxCalc.validateAddress = function (address) {
 };
 
 /**
+ * @name avalara/testCredentials
+ * @method
+ * @memberof Taxes/Avalara/Methods
  * @summary Tests supplied Avalara credentials by calling company endpoint
  * @param {Object} credentials callback Callback function for asynchronous execution
  * @param {Boolean} testCredentials To be set as false so avaGet skips config check
@@ -439,6 +460,9 @@ taxCalc.testCredentials = function (credentials, testCredentials = false) {
 };
 
 /**
+ * @name avalara/getTaxCodes
+ * @method
+ * @memberof Taxes/Avalara/Methods
  * @summary get Avalara Tax Codes
  * @returns {Array} An array of Tax code objects
  */
@@ -456,6 +480,7 @@ taxCalc.getTaxCodes = function () {
  * @summary Translate RC cart into format for submission
  * @param {Object} cart RC cart to send for tax estimate
  * @returns {Object} SalesOrder in Avalara format
+ * @private
  */
 function cartToSalesOrder(cart) {
   const pkgData = taxCalc.getPackageData();
@@ -534,6 +559,9 @@ function cartToSalesOrder(cart) {
 }
 
 /**
+ * @name avalara/estimateCart
+ * @method
+ * @memberof Taxes/Avalara/Methods
  * @summary Submit cart for tax calculation
  * @param {Cart} cart Cart object for estimation
  * @param {Function} callback callback when using async version
@@ -564,6 +592,7 @@ taxCalc.estimateCart = function (cart, callback) {
  * @summary Translate RC order into format for final submission
  * @param {Object} order RC order to send for tax reporting
  * @returns {Object} SalesOrder in Avalara format
+ * @private
  */
 function orderToSalesInvoice(order) {
   let documentType;
@@ -646,6 +675,9 @@ function orderToSalesInvoice(order) {
 }
 
 /**
+ * @name avalara/recordOrder
+ * @method
+ * @memberof Taxes/Avalara/Methods
  * @summary Submit order for tax reporting
  * @param {Order} order Order object for submission
  * @param {Function} callback callback when using async version
@@ -669,6 +701,9 @@ taxCalc.recordOrder = function (order, callback) {
 };
 
 /**
+ * @name avalara/reportRefund
+ * @method
+ * @memberof Taxes/Avalara/Methods
  * @summary Report refund to Avalara
  * @param {Order} order - The original order the refund was against
  * @param {Number} refundAmount - Amount to be refunded

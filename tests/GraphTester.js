@@ -22,34 +22,37 @@ Object.assign(Cursor.prototype, {
     merge(this.query, query);
     return this;
   },
-  get options() {
+  ns: "reaction.collection",
+  toArray() {
+    return util.promisify(this.exec.bind(this))();
+  },
+  clone() {
+    const clonedCursor = new Cursor(this.db, this.query, this.execFn);
+    clonedCursor._limit = this._limit;
+    clonedCursor._skip = this._skip;
+    clonedCursor._sort = this._sort;
+    clonedCursor._projection = this._projection;
+    return clonedCursor;
+  },
+  async count() {
+    const values = await this.toArray();
+    return values.length;
+  }
+});
+
+Object.defineProperty(Cursor.prototype, "options", {
+  get: function options() {
     return {
       db: {
         collection: () => this.db,
         databaseName: "reaction"
       }
     };
-  },
-  ns: "reaction.collection",
-  toArray() {
-    return util.promisify(this.exec.bind(this))();
-  },
-  clone() {
-    return new Cursor(this.db, this.query, this.execFn);
-  },
-  count() {
-    return util.promisify(this.exec.bind(this))();
   }
 });
 
 // nedb does not have the Promise API, so we need to create it for everything we await
-[
-  "findOne",
-  "_insert",
-  "_update",
-  "_remove",
-  "count"
-].forEach((prop) => {
+["findOne", "_insert", "_update", "_remove", "count"].forEach((prop) => {
   Datastore.prototype[prop] = util.promisify(Datastore.prototype[prop]);
 });
 
@@ -76,11 +79,11 @@ class GraphTester {
     });
   }
 
-  mutate = (...args) => this.graphClient.mutate(...args)
+  mutate = (...args) => this.graphClient.mutate(...args);
 
-  query = (...args) => this.graphClient.query(...args)
+  query = (...args) => this.graphClient.query(...args);
 
-  subscribe = (...args) => this.graphClient.subscribe(...args)
+  subscribe = (...args) => this.graphClient.subscribe(...args);
 
   async setLoggedInUser(user = {}) {
     if (!user._id) throw new Error("setLoggedInUser: user must have _id property set");
@@ -89,10 +92,12 @@ class GraphTester {
       ...user,
       services: {
         resume: {
-          loginTokens: [{
-            hashedToken,
-            when: new Date()
-          }]
+          loginTokens: [
+            {
+              hashedToken,
+              when: new Date()
+            }
+          ]
         }
       }
     });

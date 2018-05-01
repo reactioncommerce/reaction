@@ -1,6 +1,7 @@
 /**
  * @name resolveShopFromShopId
  * @method
+ * @memberof GraphQL/ResolverUtilities
  * @summary A generic resolver that gets the shop object for the provided parent result, assuming it has a `shopId` property
  * @param {Object} parent - result of the parent resolver
  * @param {Object} args - an object of all arguments that were sent by the client

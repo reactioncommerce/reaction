@@ -1,4 +1,4 @@
-import { Media } from "./fileCollections";
+import { Media, NoMeteorMedia } from "./fileCollections";
 import "./methods";
 
-export { Media };
+export { Media, NoMeteorMedia };

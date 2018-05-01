@@ -10,6 +10,11 @@ import Query from "./Query";
 import RoleConnection from "./RoleConnection";
 import RoleEdge from "./RoleEdge";
 
+/**
+ * Account-related GraphQL resolvers
+ * @namespace Accounts/GraphQL
+ */
+
 export default {
   Account,
   AccountConnection,

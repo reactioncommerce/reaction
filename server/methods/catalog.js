@@ -1,6 +1,6 @@
 import _ from "lodash";
+import Random from "@reactioncommerce/random";
 import { check, Match } from "meteor/check";
-import { Random } from "meteor/random";
 import { EJSON } from "meteor/ejson";
 import { Meteor } from "meteor/meteor";
 import { ReactionProduct } from "/lib/api";
@@ -14,10 +14,10 @@ import { Media } from "/imports/plugins/core/files/server";
 /* eslint quotes: 0 */
 
 /**
- * @file Methods for Products. Run these methods using `Meteor.call()`.
+ * @file Meteor methods for Products. Run these methods using `Meteor.call()`.
  *
  *
- * @namespace Methods/Products
+ * @namespace Products/Methods
 */
 
 /**
@@ -362,16 +362,13 @@ function createProduct(props = null) {
 }
 
 /**
- * @function
- * @name updateCatalogProduct
- * @summary Updates a product's revision and conditionally updates
- * the underlying product.
- *
+ * @summary Updates a product's revision and conditionally updates the underlying product.
  * @param {String} userId - currently logged in user
  * @param {Object} selector - selector for product to update
  * @param {Object} modifier - Object describing what parts of the document to update.
  * @param {Object} validation - simple schema validation options
  * @return {String} _id of updated document
+ * @private
  */
 function updateCatalogProduct(userId, selector, modifier, validation) {
   const product = Products.findOne(selector);
@@ -399,7 +396,7 @@ function updateCatalogProduct(userId, selector, modifier, validation) {
 Meteor.methods({
   /**
    * @name products/cloneVariant
-   * @memberof Methods/Products
+   * @memberof Products/Methods
    * @method
    * @summary clones a product variant into a new variant
    * @description the method copies variants, but will also create and clone
@@ -519,7 +516,7 @@ Meteor.methods({
 
   /**
    * @name products/createVariant
-   * @memberof Methods/Products
+   * @memberof Products/Methods
    * @method
    * @summary initializes empty variant template
    * @param {String} parentId - the product _id or top level variant _id where
@@ -584,7 +581,7 @@ Meteor.methods({
 
   /**
    * @name products/updateVariant
-   * @memberof Methods/Products
+   * @memberof Products/Methods
    * @method
    * @summary update individual variant with new values, merges into original
    * only need to supply updated information. Currently used for a one use case
@@ -639,7 +636,7 @@ Meteor.methods({
 
   /**
    * @name products/deleteVariant
-   * @memberof Methods/Products
+   * @memberof Products/Methods
    * @method
    * @summary delete variant, which should also delete child variants
    * @param {String} variantId - variantId to delete
@@ -693,7 +690,7 @@ Meteor.methods({
 
   /**
    * @name products/cloneProduct
-   * @memberof Methods/Products
+   * @memberof Products/Methods
    * @method
    * @summary clone a whole product, defaulting visibility, etc
    * in the future we are going to do an inheritance product
@@ -829,7 +826,7 @@ Meteor.methods({
 
   /**
    * @name products/createProduct
-   * @memberof Methods/Products
+   * @memberof Products/Methods
    * @method
    * @summary when we create a new product, we create it with an empty variant.
    * all products have a variant with pricing and details
@@ -876,7 +873,7 @@ Meteor.methods({
 
   /**
    * @name products/archiveProduct
-   * @memberof Methods/Products
+   * @memberof Products/Methods
    * @method
    * @summary archive a product and unlink it from all media
    * @param {String} productId - productId to delete
@@ -963,7 +960,7 @@ Meteor.methods({
 
   /**
    * @name products/updateProductField
-   * @memberof Methods/Products
+   * @memberof Products/Methods
    * @method
    * @summary update single product or variant field
    * @param {String} _id - product._id or variant._id to update
@@ -1051,7 +1048,7 @@ Meteor.methods({
 
   /**
    * @name products/updateProductTags
-   * @memberof Methods/Products
+   * @memberof Products/Methods
    * @method
    * @summary method to insert or update tag with hierarchy
    * @param {String} productId - productId
@@ -1134,7 +1131,7 @@ Meteor.methods({
 
   /**
    * @name products/removeProductTag
-   * @memberof Methods/Products
+   * @memberof Products/Methods
    * @method
    * @summary method to remove tag from product
    * @param {String} productId - productId
@@ -1171,7 +1168,7 @@ Meteor.methods({
 
   /**
    * @name products/setHandle
-   * @memberof Methods/Products
+   * @memberof Products/Methods
    * @method
    * @summary copy of "products/setHandleTag", but without tag
    * @param {String} productId - productId
@@ -1205,7 +1202,7 @@ Meteor.methods({
 
   /**
    * @name products/setHandleTag
-   * @memberof Methods/Products
+   * @memberof Products/Methods
    * @method
    * @summary set or toggle product handle
    * @param {String} productId - productId
@@ -1274,7 +1271,7 @@ Meteor.methods({
 
   /**
    * @name products/updateProductPosition
-   * @memberof Methods/Products
+   * @memberof Products/Methods
    * @method
    * @summary update product grid positions
    * @param {String} productId - productId
@@ -1322,7 +1319,7 @@ Meteor.methods({
 
   /**
    * @name products/updateVariantsPosition
-   * @memberof Methods/Products
+   * @memberof Products/Methods
    * @method
    * @description updates top level variant position index
    * @param {Array} sortedVariantIds - array of top level variant `_id`s
@@ -1358,7 +1355,7 @@ Meteor.methods({
 
   /**
    * @name products/updateMetaFields
-   * @memberof Methods/Products
+   * @memberof Products/Methods
    * @method
    * @summary update product metafield
    * @param {String} productId - productId
@@ -1431,7 +1428,7 @@ Meteor.methods({
 
   /**
    * @name products/removeMetaFields
-   * @memberof Methods/Products
+   * @memberof Products/Methods
    * @method
    * @summary update product metafield
    * @param {String} productId - productId
@@ -1466,7 +1463,7 @@ Meteor.methods({
 
   /**
    * @name products/publishProduct
-   * @memberof Methods/Products
+   * @memberof Products/Methods
    * @method
    * @summary publish (visibility) of product
    * @todo hook into publishing flow
@@ -1553,7 +1550,7 @@ Meteor.methods({
 
   /**
    * @name products/toggleVisibility
-   * @memberof Methods/Products
+   * @memberof Products/Methods
    * @method
    * @summary publish (visibility) of product
    * @todo hook into publishing flow

@@ -2,11 +2,11 @@ import { DiscountsPackageConfig } from "/imports/plugins/core/discounts/lib/coll
 import { registerSchema } from "@reactioncommerce/schemas";
 
 /**
-* Discount Codes Package Config Schema
-* @type {Object}
-* @desc schema that extends discount schema
-* with properties for discount rates.
-*/
+ * @name DiscountCodesPackageConfig
+ * @memberof Schemas
+ * @type {SimpleSchema}
+ * @summary A schema that extends discount schema with properties for discount codes.
+ */
 export const DiscountCodesPackageConfig = DiscountsPackageConfig.clone().extend({
   "settings.codes": {
     type: Object,

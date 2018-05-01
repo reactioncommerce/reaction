@@ -1,7 +1,7 @@
 /* eslint dot-notation: 0 */
 /* eslint prefer-arrow-callback:0 */
+import Random from "@reactioncommerce/random";
 import { Meteor } from "meteor/meteor";
-import { Random } from "meteor/random";
 import { expect } from "meteor/practicalmeteor:chai";
 import { Factory } from "meteor/dburles:factory";
 import { sinon, stubs, spies } from "meteor/practicalmeteor:sinon";

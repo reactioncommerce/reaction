@@ -4,9 +4,11 @@ import { Tracker } from "meteor/tracker";
 import { registerSchema } from "@reactioncommerce/schemas";
 
 /**
-* TaxRates Schema
-*/
-
+ * @name TaxRates
+ * @memberof Schemas
+ * @type {SimpleSchema}
+ * @summary TaxRates schema
+ */
 export const TaxRates = new SimpleSchema({
   country: {
     type: String

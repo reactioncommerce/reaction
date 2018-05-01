@@ -19,11 +19,6 @@ Template.connectorSettings.helpers({
 // toggle connector methods visibility
 // also toggles connector method settings
 Template.connectorSettings.events({
-  /**
-   * connectorSettings settings update enabled status for connector service on change
-   * @param  {event} event    jQuery Event
-   * @return {void}
-   */
   "change input.checkbox-switch.connector-settings[name=enabled]": (event) => {
     event.preventDefault();
     const settingsKey = event.target.getAttribute("data-key");

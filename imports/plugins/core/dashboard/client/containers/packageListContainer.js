@@ -6,18 +6,20 @@ import { Roles } from "meteor/alanning:roles";
 import { Reaction } from "/client/api";
 
 /**
- * handleShowPackage - Push package into action view navigation stack
+ * Push package into action view navigation stack
  * @param  {SyntheticEvent} event Original event
  * @param  {Object} app Package data
  * @return {undefined} No return value
+ * @private
  */
 function handleShowPackage(event, app) {
   Reaction.pushActionView(app);
 }
 
 /**
- * handleShowDashboard - Open full dashbaord menu
+ * Open full dashbaord menu
  * @return {undefined} No return value
+ * @private
  */
 function handleShowDashboard() {
   Reaction.hideActionViewDetail();
@@ -29,10 +31,11 @@ function handleShowDashboard() {
 }
 
 /**
- * handleOpenShortcut - Push dashbaord & package into action view navigation stack
+ * Push dashbaord & package into action view navigation stack
  * @param  {SyntheticEvent} event Original event
  * @param  {Object} app Package data
  * @return {undefined} No return value
+ * @private
  */
 function handleOpenShortcut(event, app) {
   Reaction.hideActionViewDetail();

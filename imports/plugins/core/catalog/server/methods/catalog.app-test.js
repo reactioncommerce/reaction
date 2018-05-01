@@ -1,6 +1,6 @@
 /* eslint dot-notation: 0 */
 /* eslint prefer-arrow-callback:0 */
-import { Random } from "meteor/random";
+import Random from "@reactioncommerce/random";
 import { expect } from "meteor/practicalmeteor:chai";
 import { sinon } from "meteor/practicalmeteor:sinon";
 import { Roles } from "meteor/alanning:roles";

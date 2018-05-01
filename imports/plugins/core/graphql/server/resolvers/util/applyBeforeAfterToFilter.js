@@ -1,5 +1,12 @@
 import { decodeOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/id";
 
+/**
+ * @name applyBeforeAfterToFilter
+ * @method
+ * @memberof GraphQL/ResolverUtilities
+ * @summary Adjusts a MongoDB filter based on GraphQL `before` and `after` params
+ * @return {Promise<Object>} The potentially-modified filter object
+ */
 export default async function applyBeforeAfterToFilter({
   after,
   baseFilter = {},

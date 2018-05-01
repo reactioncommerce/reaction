@@ -1,6 +1,6 @@
+import Random from "@reactioncommerce/random";
 import { Meteor } from "meteor/meteor";
 import { check, Match } from "meteor/check";
-import { Random } from "meteor/random";
 import { Shipping } from "/lib/collections";
 import { ShippingMethod } from "/lib/collections/schemas";
 import { Reaction } from "/server/api";

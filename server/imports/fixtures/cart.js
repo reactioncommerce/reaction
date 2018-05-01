@@ -1,7 +1,7 @@
 import faker from "faker";
 import _ from "lodash";
+import Random from "@reactioncommerce/random";
 import { Factory } from "meteor/dburles:factory";
-import { Random } from "meteor/random";
 import { Cart, Products } from "/lib/collections";
 import { getShop } from "./shops";
 import { getAddress } from "./accounts";
