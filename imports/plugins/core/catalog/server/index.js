@@ -1,6 +1,6 @@
 import "./i18n";
 import "./methods/catalog";
-import "./methods/publishProduct";
+import "./methods/publishProducts";
 
 /**
  * Query functions that do not import or use any Meteor packages or globals. These can be used both

@@ -47,8 +47,6 @@ export default async function publishProducts(context, productIds) {
 
   const success = await publishProductsToCatalog(productIds, collections);
 
-  console.log(success);
-
   if (!success) {
     Logger.error("Some Products could not be published to the Catalog.");
     throw new Meteor.Error("server-error", "Some Products could not be published to the Catalog.");
