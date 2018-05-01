@@ -5,22 +5,24 @@
  * @memberof GraphQL/ResolverUtilities
  * @summary Adds `skip` and `limit` to a MongoDB cursor as necessary, based on GraphQL
  *   `first` and `last` params
+ * @param {Cursor} cursor MongoDB cursor
+ * @param {Object} args GraphQL query arguments
+ * @param {Number} totalCount Total count of docs that match the query, after applying the before/after filter
  * @return {Promise<Object>} `{ pageInfo }`
  */
-export default async function applyPaginationToMongoCursor(cursor, { first, last } = {}, totalCount) {
-  let resultCount = totalCount;
+export default async function applyPaginationToMongoCursor(cursor, { first: requestedFirst, last } = {}, totalCount) {
   let limit;
   let skip;
 
-  let maybeFirst;
-  if (!first && !last) {
-    maybeFirst = 50;
+  let first;
+  if (!requestedFirst && !last) {
+    first = 50;
   } else {
-    maybeFirst = first;
+    first = requestedFirst;
   }
 
-  if (maybeFirst && totalCount > maybeFirst) {
-    limit = maybeFirst;
+  if (first && totalCount > first) {
+    limit = first;
   }
 
   if (last) {
@@ -40,11 +42,11 @@ export default async function applyPaginationToMongoCursor(cursor, { first, last
     cursor.limit(limit);
   }
 
-  resultCount = await cursor.clone().count();
+  const resultCount = await cursor.clone().count();
 
   return {
     pageInfo: {
-      hasNextPage: !!maybeFirst && resultCount >= maybeFirst,
+      hasNextPage: !!first && resultCount >= first,
       hasPreviousPage: !!last && resultCount >= last
     }
   };

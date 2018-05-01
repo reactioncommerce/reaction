@@ -1,5 +1,3 @@
-import { decodeOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/id";
-
 /**
  * @name applyBeforeAfterToFilter
  * @method
@@ -16,6 +14,7 @@ export default async function applyBeforeAfterToFilter({
   sortOrder = "asc"
 }) {
   let filter = baseFilter;
+  const baseFilterIsEmpty = Object.keys(baseFilter).length === 0;
   const limits = {};
   const ors = [];
 
@@ -26,33 +25,28 @@ export default async function applyBeforeAfterToFilter({
 
   if (!after && !before) return filter;
 
-  let encodedId;
+  let internalId;
   let op;
   if (before) {
-    encodedId = before;
+    internalId = before;
     op = (sortOrder === "desc" ? "$gt" : "$lt");
   } else {
-    encodedId = after;
+    internalId = after;
     op = (sortOrder === "desc" ? "$lt" : "$gt");
-  }
-
-  // "encodedId" is encoded twice. At this point the cursor has already been decoded
-  // but we are still left with an encoded ID, which we'll now decode.
-  let internalId;
-  if (encodedId.endsWith("=")) {
-    internalId = decodeOpaqueId(encodedId).id;
-  } else {
-    internalId = encodedId; // it was only encoded once
   }
 
   if (sortByField === "_id") {
     // We already have _id. Skip the lookup
-    filter = {
-      $and: [
-        { ...filter },
-        { _id: { [op]: internalId } }
-      ]
-    };
+    if (baseFilterIsEmpty) {
+      filter = { _id: { [op]: internalId } };
+    } else {
+      filter = {
+        $and: [
+          { ...filter },
+          { _id: { [op]: internalId } }
+        ]
+      };
+    }
   } else {
     const doc = await collection.findOne({
       _id: internalId
@@ -69,19 +63,30 @@ export default async function applyBeforeAfterToFilter({
         _id: { [op]: internalId }
       });
 
-      filter = {
-        $and: [
-          { ...filter },
-          {
-            $or: [
-              {
-                [sortByField]: limits
-              },
-              ...ors
-            ]
-          }
-        ]
-      };
+      if (baseFilterIsEmpty) {
+        filter = {
+          $or: [
+            {
+              [sortByField]: limits
+            },
+            ...ors
+          ]
+        };
+      } else {
+        filter = {
+          $and: [
+            { ...filter },
+            {
+              $or: [
+                {
+                  [sortByField]: limits
+                },
+                ...ors
+              ]
+            }
+          ]
+        };
+      }
     }
   }
 
