@@ -1,4 +1,4 @@
-import { restore, rewire$Logger } from "./meteor";
+import { restore, rewire$Logger } from "./logger";
 import getErrorFormatter from "./getErrorFormatter";
 
 const LoggerMock = {

@@ -92,13 +92,13 @@ export const methods = {
     let discount = 0;
     const discountMethod = Discounts.findOne(discountId);
     const cart = Cart.findOne(cartId);
-
-    for (const shipping of cart.shipping) {
-      if (shipping.shipmentMethod && shipping.shipmentMethod.name === discountMethod.discount) {
-        discount += Math.max(0, shipping.shipmentMethod.rate);
+    if (cart.shipping && cart.shipping.length) {
+      for (const shipping of cart.shipping) {
+        if (shipping.shipmentMethod && shipping.shipmentMethod.name.toUpperCase() === discountMethod.discount.toUpperCase()) {
+          discount += Math.max(0, shipping.shipmentMethod.rate);
+        }
       }
     }
-
     return discount;
   },
 

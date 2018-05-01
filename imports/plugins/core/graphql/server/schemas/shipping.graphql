@@ -1,0 +1,7 @@
+type ShippingParcel {
+  containers: String
+  length: Float
+  width: Float
+  height: Float
+  weight: Float
+}

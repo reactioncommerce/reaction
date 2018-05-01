@@ -65,7 +65,7 @@ export async function publishProductToCatalog(productId) {
   let product = Products.findOne({
     $or: [
       { _id: productId },
-      { ancestors: { $in: [productId] } }
+      { ancestors: productId }
     ]
   });
 
@@ -75,7 +75,7 @@ export async function publishProductToCatalog(productId) {
     return false;
   }
 
-  // If the product has ancestors, then find to top product document
+  // If the product has ancestors, then find the top product document
   if (Array.isArray(product.ancestors) && product.ancestors.length) {
     product = Products.findOne({
       _id: product.ancestors[0]
@@ -84,9 +84,7 @@ export async function publishProductToCatalog(productId) {
 
   // Get variants of the product
   const variants = Products.find({
-    ancestors: {
-      $in: [productId]
-    }
+    ancestors: productId
   }).fetch();
 
   // Get Media for the product
@@ -217,25 +215,21 @@ Meteor.methods({
       _id: { $in: ids }
     }).fetch();
 
-    if (Array.isArray(productsToPublish)) {
-      const canUpdatePrimaryShopProducts = Reaction.hasPermission("createProduct", this.userId, Reaction.getPrimaryShopId());
+    const canUpdatePrimaryShopProducts = Reaction.hasPermission("createProduct", this.userId, Reaction.getPrimaryShopId());
 
-      const publisableProductIds = productsToPublish
-        // Only allow users to publish products for shops they permissions to createProductsFor
-        // If the user can createProducts on the main shop, they can publish products for all shops to the catalog.
-        .filter((product) => Reaction.hasPermission("createProduct", this.userId, product.shopId) || canUpdatePrimaryShopProducts)
-        .map((product) => product._id);
+    const publisableProductIds = productsToPublish
+      // Only allow users to publish products for shops they permissions to createProductsFor
+      // If the user can createProducts on the main shop, they can publish products for all shops to the catalog.
+      .filter((product) => Reaction.hasPermission("createProduct", this.userId, product.shopId) || canUpdatePrimaryShopProducts)
+      .map((product) => product._id);
 
-      const success = publishProductsToCatalog(publisableProductIds);
+    const success = publishProductsToCatalog(publisableProductIds);
 
-      if (!success) {
-        Logger.error("Some Products could not be published to the Catalog.");
-        throw new Meteor.Error("server-error", "Some Products could not be published to the Catalog.");
-      }
-
-      return true;
+    if (!success) {
+      Logger.error("Some Products could not be published to the Catalog.");
+      throw new Meteor.Error("server-error", "Some Products could not be published to the Catalog.");
     }
 
-    return false;
+    return true;
   }
 });

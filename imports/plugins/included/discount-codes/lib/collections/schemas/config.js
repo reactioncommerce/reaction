@@ -1,5 +1,5 @@
 import { DiscountsPackageConfig } from "/imports/plugins/core/discounts/lib/collections/schemas";
-import { registerSchema } from "@reactioncommerce/reaction-collections";
+import { registerSchema } from "@reactioncommerce/schemas";
 
 /**
 * Discount Codes Package Config Schema
