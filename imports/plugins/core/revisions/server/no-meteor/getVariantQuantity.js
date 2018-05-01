@@ -1,12 +1,13 @@
 import getVariants from "./getVariants";
 
 /**
- * TODO
- * @method
- * @summary
- * @param
- * @param
- * @return
+ *
+ * @method getVariantQuantity
+ * @summary TODO:
+ * @param {Object} variant - TODO:
+ * @param {Object} collection - TODO:
+ * @param {Object[]} variants - TODO:
+ * @return {Promise<number>} TODO:
  */
 export default async function getVariantQuantity(variant, collections, variants) {
   let options;
