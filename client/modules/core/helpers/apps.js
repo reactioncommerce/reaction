@@ -29,6 +29,7 @@ import { Packages, Shops } from "/lib/collections";
  *   @type {optionHash}
  *
  *  @return {optionHash} returns an array of filtered, structure reactionApps
+ *  ```
  *  [{
  *   enabled: true
  *   label: "Stripe"
@@ -40,6 +41,8 @@ import { Packages, Shops } from "/lib/collections";
  *   etc: "additional properties as defined in Packages.registry"
  *   ...
  *  }]
+ *  ```
+ *  @ignore
  */
 
 export function Apps(optionHash) {

@@ -10,13 +10,13 @@ import { getSlug } from "/lib/api";
  * @file Methods for creating and managing admin user permission groups.
  * Run these methods using `Meteor.call()`.
  * @example Meteor.call("group/createGroup", sampleCustomerGroup, shop._id)
- * @namespace Methods/Group
+ * @namespace Group/Methods
 */
 Meteor.methods({
   /**
    * @name group/createGroup
    * @method
-   * @memberof Methods/Group
+   * @memberof Group/Methods
    * @summary Creates a new permission group for a shop
    * It creates permission group for a given shop with passed in roles
    * @param {Object} groupData - info about group to create
@@ -70,7 +70,7 @@ Meteor.methods({
   /**
    * @name group/updateGroup
    * @method
-   * @memberof Methods/Group
+   * @memberof Group/Methods
    * @summary Updates a permission group for a shop.
    * Change the details of a group (name, desc, permissions etc) to the values passed in.
    * It also goes into affected user data to modify both the groupName (using Accounts schema)
@@ -124,7 +124,7 @@ Meteor.methods({
   /**
    * @name group/addUser
    * @method
-   * @memberof Methods/Group
+   * @memberof Group/Methods
    * @summary Adds a user to a permission group
    * Updates the user's list of permissions/roles with the defined the list defined for the group
    * (NB: At this time, a user only belongs to only one group per shop)
@@ -201,7 +201,7 @@ Meteor.methods({
   /**
    * @name group/removeUser
    * @method
-   * @memberof Methods/Group
+   * @memberof Group/Methods
    * @summary Removes a user from a group for a shop, and adds them to the default customer group.
    * Updates the user's permission list to reflect.
    * (NB: At this time, a user only belongs to only one group per shop)

@@ -75,6 +75,7 @@ registerSchema("filters", filters);
  * Broadens an existing selector to include all variants of the given top-level productIds
  * Additionally considers the tags product filter, if given
  * Can operate on the "Revisions" and the "Products" collection
+ * @memberof Helpers
  * @param collectionName {String} - "Revisions" or "Products"
  * @param selector {object} - the selector that should be extended
  * @param productFilters { object } - the product filter (e.g. orginating from query parameters)

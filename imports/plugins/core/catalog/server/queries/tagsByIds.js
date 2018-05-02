@@ -1,6 +1,7 @@
 /**
  * @name tagsByIds
  * @method
+ * @memberof Catalog/NoMeteorQueries
  * @summary query the Tags collection by a list of IDs
  * @param {Object} context - an object containing the per-request state
  * @param {String[]} tagIds - tag IDs to get
@@ -14,7 +15,7 @@ export default async function tagsByIds(context, tagIds, { shouldIncludeDeleted 
   const { Tags } = collections;
   const query = { _id: { $in: tagIds } };
 
-  if (shouldIncludeDeleted !== true) query.isDeleted = false;
+  if (shouldIncludeDeleted !== true) query.isDeleted = { $ne: true };
 
   return Tags.find(query);
 }

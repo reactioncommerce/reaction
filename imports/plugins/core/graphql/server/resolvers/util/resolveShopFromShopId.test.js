@@ -1,4 +1,4 @@
-import shop from "./shop";
+import resolveShopFromShopId from "./resolveShopFromShopId";
 
 const fakeUser = {
   _id: "123",
@@ -14,7 +14,7 @@ const fakeShop = {
 test("calls queries.shopById and returns the requested shop", async () => {
   const shopById = jest.fn().mockName("shopById").mockReturnValueOnce(Promise.resolve(fakeShop));
 
-  const shopObject = await shop(fakeUser, {}, { queries: { shopById } });
+  const shopObject = await resolveShopFromShopId(fakeUser, {}, { queries: { shopById } });
 
   expect(shopObject).toEqual(fakeShop);
 

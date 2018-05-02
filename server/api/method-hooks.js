@@ -11,7 +11,6 @@ import { Meteor } from "meteor/meteor";
 export const MethodHooks = {};
 
 /**
- * @method afterHooks
  * @summary A collection of after hooks
  * @type {Object}
  * @summary <String, [Hook]> A mapping from method names to arrays of hooks
@@ -28,14 +27,13 @@ MethodHooks._afterHooks = {};
 MethodHooks._beforeHooks = {};
 
 /**
- * @method handlers
  * @summary The method handler definitions appropriate to the environment
+ * @private
  */
 MethodHooks._handlers = Meteor.isClient ? Meteor.connection._methodHandlers :
   Meteor.server.method_handlers;
 
 /**
- * @method _originalMethodHandlers
  * @summary The original method handlers
  * @type {Object}
  * @returns <String, Function> Method handler mapping
@@ -44,7 +42,6 @@ MethodHooks._handlers = Meteor.isClient ? Meteor.connection._methodHandlers :
 MethodHooks._originalMethodHandlers = {};
 
 /**
- * @method Wrappers
  * @type {Object}
  * @summary <String, Function> A mapping from method names to method functions
  * @private
@@ -52,13 +49,12 @@ MethodHooks._originalMethodHandlers = {};
 MethodHooks._wrappers = {};
 
 /**
- * @method initializeHook
  * @summary Initializes a new hook
  * @param {String} mapping - map hook: a is  place to store the mapping
  * @param {String} methodName - The name of the method
  * @param {Function} hookFunction - The hook function
- * @private
  * @return {String} - returns transformed data
+ * @private
  */
 MethodHooks._initializeHook = function (mapping, methodName, hookFunction) {
   mapping[methodName] = mapping[methodName] || [];

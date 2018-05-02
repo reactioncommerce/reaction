@@ -1,15 +1,27 @@
 import getPaginatedResponse from "./getPaginatedResponse";
 import getFakeMongoCursor from "/imports/test-utils/helpers/getFakeMongoCursor";
-import { restore as restore$applyBeforeAfterToFilter, rewire as rewire$applyBeforeAfterToFilter } from "./applyBeforeAfterToFilter";
-import { restore as restore$applyPaginationToMongoCursor, rewire as rewire$applyPaginationToMongoCursor } from "./applyPaginationToMongoCursor";
+import {
+  restore as restore$applyBeforeAfterToFilter,
+  rewire as rewire$applyBeforeAfterToFilter
+} from "./applyBeforeAfterToFilter";
+import {
+  restore as restore$applyPaginationToMongoCursor,
+  rewire as rewire$applyPaginationToMongoCursor
+} from "./applyPaginationToMongoCursor";
 import { restore as restore$getMongoSort, rewire as rewire$getMongoSort } from "./getMongoSort";
 
 const baseQuery = { _id: "BASE_QUERY" };
-const mockCursor = getFakeMongoCursor("COLLECTIONss", [], { query: baseQuery });
-mockCursor.options.db.collection = jest.fn().mockName("db.collection").mockReturnValue("COLLECTION");
+const mockCursor = getFakeMongoCursor("COLLECTIONss", ["1", "2", "3", "4", "5"], { query: baseQuery });
+mockCursor.options.db.collection = jest
+  .fn()
+  .mockName("db.collection")
+  .mockReturnValue("COLLECTION");
 
 const applyBeforeAfterToFilterMock = jest.fn().mockName("applyBeforeAfterToFilter");
-const applyPaginationToMongoCursorMock = jest.fn().mockName("applyPaginationToMongoCursor").mockReturnValue({ totalCount: 5, pageInfo: { info: true } });
+const applyPaginationToMongoCursorMock = jest
+  .fn()
+  .mockName("applyPaginationToMongoCursor")
+  .mockReturnValue({ pageInfo: { info: true } });
 const getMongoSortMock = jest.fn().mockName("getMongoSort");
 
 const mockArgs = { arg1: "test" };
@@ -28,12 +40,16 @@ afterAll(() => {
 
 test("calls applyPaginationToMongoCursor with mongo cursor and args", async () => {
   await getPaginatedResponse(mockCursor, mockArgs);
-  expect(applyPaginationToMongoCursorMock).toHaveBeenCalledWith(mockCursor, mockArgs);
+  expect(applyPaginationToMongoCursorMock).toHaveBeenCalledWith(mockCursor, mockArgs, 5);
 });
 
 test("calls applyBeforeAfterToFilter with correct args", async () => {
   await getPaginatedResponse(mockCursor, mockArgs);
-  expect(applyBeforeAfterToFilterMock).toHaveBeenCalledWith({ arg1: "test", baseFilter: baseQuery, collection: "COLLECTION" });
+  expect(applyBeforeAfterToFilterMock).toHaveBeenCalledWith({
+    arg1: "test",
+    baseFilter: baseQuery,
+    collection: "COLLECTION"
+  });
 });
 
 test("calls getMongoSort with correct args", async () => {

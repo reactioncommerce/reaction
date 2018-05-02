@@ -62,6 +62,7 @@ class AddressBookGrid extends Component {
    * @since 2.0.0
    * @param {String} _id - address object _id.
    * @param {String} usage - the address usage "shipping" or "billing".
+   * @ignore
    */
   setDefaultAddress(_id, usage) {
     if (usage === "shipping") {
@@ -81,6 +82,7 @@ class AddressBookGrid extends Component {
    * @summary getter that returns the addressBook array if avalible on the props or an empty array.
    * @since 2.0.0
    * @return {Array} addressBook - array of address object or an empty array.
+   * @ignore
    */
   get addressBook() {
     let { addressBook } = this.props;
@@ -93,6 +95,7 @@ class AddressBookGrid extends Component {
    * @summary getter that returns ether the default shipping address _id or and empty string.
    * @since 2.0.0
    * @return {String} - default shipping address _id or empty string.
+   * @ignore
    */
   get defaultShippingAddressId() {
     const { addressBook } = this;
@@ -105,6 +108,7 @@ class AddressBookGrid extends Component {
    * @summary getter that returns ether the default billing address _id or and empty string.
    * @since 2.0.0
    * @return {String} - default billing address _id or empty string.
+   * @ignore
    */
   get defaultBillingAddressId() {
     const { addressBook } = this;
@@ -122,6 +126,7 @@ class AddressBookGrid extends Component {
    * @since 2.0.0
    * @param {String} _id - address object _id.
    * @param {String} usage - the address usage "shipping" or "billing".
+   * @ignore
    */
   onSelect = (_id, usage) => {
     const { select } = this.props;
@@ -134,6 +139,7 @@ class AddressBookGrid extends Component {
    * @summary renders address book grid heading content
    * @since 2.0.0
    * @return {Object} - JSX
+   * @ignore
    */
   renderHeading() {
     return (
@@ -159,6 +165,7 @@ class AddressBookGrid extends Component {
    * @since 2.0.0
    * @param {Object} address - address object that we destructor to get the needed property
    * @return {Object} - JSX
+   * @ignore
    */
   renderAddress({ address1, address2, city, region, postal, country, phone }) {
     return (
@@ -175,6 +182,7 @@ class AddressBookGrid extends Component {
    * @summary renders address grid by mapping over the addressBook array
    * @since 2.0.0
    * @return {Object} - JSX
+   * @ignore
    */
   renderAddressGrid() {
     const { addressBook } = this;

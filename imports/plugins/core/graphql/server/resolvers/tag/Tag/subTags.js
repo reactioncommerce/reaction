@@ -3,6 +3,7 @@ import { xformArrayToConnection } from "@reactioncommerce/reaction-graphql-xform
 
 /**
  * Arguments passed by the client for a tags query
+ * @memberof Tag/GraphQL
  * @typedef {ConnectionArgs} SubTagConnectionArgs - An object of all arguments that were sent by the client
  * @property {ConnectionArgs} args - An object of all arguments that were sent by the client. {@link ConnectionArgs|See default connection arguments}
  * @property {Boolean} args.shouldIncludeDeleted - If set to true, include deleted. Default false.
@@ -10,9 +11,10 @@ import { xformArrayToConnection } from "@reactioncommerce/reaction-graphql-xform
  */
 
 /**
- * @name tags
+ * @name "Tag.subTags"
  * @method
- * @summary Returns the tags for the parent resolver shop
+ * @memberof Tag/GraphQL
+ * @summary Returns the child tags for a tag
  * @param {Object} tag - Tag response from parent resolver
  * @param {SubTagConnectionArgs} args - arguments sent by the client {@link ConnectionArgs|See default connection arguments}
  * @param {Object} context - an object containing the per-request state

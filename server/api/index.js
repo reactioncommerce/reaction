@@ -6,6 +6,10 @@ import Router from "./router";
 import GeoCoder from "./geocoder";
 import { MethodHooks } from "./method-hooks";
 
+/**
+ * @namespace EventHooks
+ */
+
 export {
   Reaction,
   Accounts,

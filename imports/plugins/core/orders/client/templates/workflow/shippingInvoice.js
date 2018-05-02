@@ -108,12 +108,6 @@ Template.coreOrderShippingInvoice.helpers({
  * coreOrderAdjustments events
  */
 Template.coreOrderShippingInvoice.events({
-  /**
-   * Click Start Cancel Order
-   * @param {Event} event - Event Object
-   * @param {Template} instance - Blaze Template
-   * @return {void}
-   */
   "click [data-event-action=cancelOrder]": (event, instance) => {
     event.preventDefault();
     const order = instance.state.get("order");

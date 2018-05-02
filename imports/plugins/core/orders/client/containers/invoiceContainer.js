@@ -457,10 +457,10 @@ class InvoiceContainer extends Component {
 }
 
 /**
- * @method orderCreditMethod
  * @summary helper method to return the order payment object
  * @param {Object} order - object representing an order
  * @return {Object} object representing entire payment method
+ * @private
  */
 function orderCreditMethod(order) {
   const billingInfo = getBillingInfo(order);
@@ -475,6 +475,7 @@ function orderCreditMethod(order) {
  * @summary helper method to approve payment
  * @param {Object} order - object representing an order
  * @return {null} null
+ * @private
  */
 function approvePayment(order) {
   const paymentMethod = orderCreditMethod(order);
@@ -530,6 +531,7 @@ function approvePayment(order) {
  * @param {object} order - object representing an order
  * @param {function} onCancel - called on clicking cancel in alert dialog
  * @return {null} null
+ * @private
  */
 function capturePayments(order, onCancel) {
   const capture = () => {

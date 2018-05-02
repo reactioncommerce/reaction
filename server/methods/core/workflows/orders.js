@@ -7,7 +7,7 @@ Meteor.methods({
   /**
    * @name coreOrderWorkflow/coreOrderProcessing
    * @method
-   * @memberof Methods/Workflow
+   * @memberof Workflow/Methods
    * @summary Checks permissions for a given user to allow them to move an order into the processing phase.
    * @description Step 4 of the "workflow/pushOrderWorkflow" flow - called from Orders.before.update hook.
    * @param  {Object} options An object containing arbitary data
@@ -25,7 +25,7 @@ Meteor.methods({
   /**
    * @name coreOrderWorkflow/coreOrderCompleted
    * @method
-   * @memberof Methods/Workflow
+   * @memberof Workflow/Methods
    * @summary Performs various checks to determine if an order may be moved into the completed phase.
    * @description Step 4 of the "workflow/pushOrderWorkflow" flow - called from Orders.before.update hook.
    * @param  {Object} options An object containing arbitary data

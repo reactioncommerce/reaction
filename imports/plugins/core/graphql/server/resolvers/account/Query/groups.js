@@ -3,6 +3,7 @@ import { decodeShopOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/sh
 
 /**
  * Arguments passed by the client a groups query
+ * @memberof Accounts/GraphQL
  * @typedef {ConnectionArgs} GroupConnectionArgs - An object of all arguments that were sent by the client
  * @property {ConnectionArgs} args - An object of all arguments that were sent by the client. {@link ConnectionArgs|See default connection arguments}
  * @property {String} args.shopId - The id of shop to filter groups by
@@ -10,8 +11,9 @@ import { decodeShopOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/sh
  */
 
 /**
- * @name groups
+ * @name "Query.groups"
  * @method
+ * @memberof Accounts/GraphQL
  * @summary find and return the administrators (users with "admin" or "owner" role) for a shop
  * @param {Object} _ - unused
  * @param {GroupConnectionArgs} args - an object of all arguments that were sent by the client. {@link ConnectionArgs|See default connection arguments}

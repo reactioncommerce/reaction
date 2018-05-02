@@ -5,14 +5,10 @@ import { PackageConfig } from "/lib/collections/schemas/registry";
 import { registerSchema } from "@reactioncommerce/schemas";
 
 /**
- * Meteor.settings.authnet =
- *   mode: false (sandbox)
- *   api_id: ""
- *   transaction_key: ""
- *   see: https://developer.authnet.com/webapps/developer/docs/api/
- *   see: https://github.com/authnet/rest-api-sdk-nodejs
+ * @name AuthNetPackageConfig
+ * @memberof Schemas
+ * @type {SimpleSchema}
  */
-
 export const AuthNetPackageConfig = PackageConfig.clone().extend({
   // Remove blackbox: true from settings obj
   "settings": {
@@ -24,6 +20,10 @@ export const AuthNetPackageConfig = PackageConfig.clone().extend({
   "settings.mode": {
     type: Boolean,
     defaultValue: false
+  },
+  "settings.reaction-auth-net": {
+    type: Object,
+    defaultValue: {}
   },
   "settings.reaction-auth-net.support": {
     type: Array,
@@ -45,6 +45,11 @@ export const AuthNetPackageConfig = PackageConfig.clone().extend({
 
 registerSchema("AuthNetPackageConfig", AuthNetPackageConfig);
 
+/**
+ * @name AuthNetPayment
+ * @memberof Schemas
+ * @type {SimpleSchema}
+ */
 export const AuthNetPayment = new SimpleSchema({
   payerName: {
     type: String,
