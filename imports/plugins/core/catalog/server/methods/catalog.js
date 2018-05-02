@@ -8,11 +8,11 @@ import { Hooks, Logger, Reaction } from "/server/api";
 import { MediaRecords, Products, Revisions, Tags } from "/lib/collections";
 import { Media } from "/imports/plugins/core/files/server";
 import rawCollections from "/imports/collections/rawCollections";
-import getProductPriceRange from "/imports/plugins/core/revisions/server/no-meteor/getProductPriceRange";
-import getVariants from "/imports/plugins/core/revisions/server/no-meteor/getVariants";
-import isSoldOut from "../utils/no-meteor/isSoldOut";
-import isLowQuantity from "../utils/no-meteor/isLowQuantity";
-import isBackorder from "../utils/no-meteor/isBackorder";
+import getProductPriceRange from "/imports/plugins/core/revisions/server/no-meteor/utils/getProductPriceRange";
+import getVariants from "/imports/plugins/core/revisions/server/no-meteor/utils/getVariants";
+import isSoldOut from "../no-meteor/utils/isSoldOut";
+import isLowQuantity from "../no-meteor/utils/isLowQuantity";
+import isBackorder from "../no-meteor/utils/isBackorder";
 
 /* eslint new-cap: 0 */
 /* eslint no-loop-func: 0 */

@@ -1,4 +1,4 @@
-import getVariantQuantity from "/imports/plugins/core/revisions/server/no-meteor/getVariantQuantity";
+import getVariantQuantity from "/imports/plugins/core/revisions/server/no-meteor/utils/getVariantQuantity";
 
 /**
  * @method isSoldOut

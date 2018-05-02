@@ -6,7 +6,7 @@ import { RevisionApi } from "../lib/api";
 import { getSlug } from "/lib/api";
 import rawCollections from "/imports/collections/rawCollections";
 
-import getProductPriceRange from "./no-meteor/getProductPriceRange";
+import getProductPriceRange from "./no-meteor/utils/getProductPriceRange";
 
 /**
  * @name insertRevision
