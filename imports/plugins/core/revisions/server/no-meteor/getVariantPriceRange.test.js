@@ -208,21 +208,36 @@ test("expect topVariants price string if no child variants", async () => {
   mockGetVariants.mockReturnValueOnce(Promise.resolve([{ isDeleted: true }]));
   mockGetProduct.mockReturnValueOnce(Promise.resolve(mockVariants[0]));
   const spec = await getVariantPriceRange(internalVariantIds[0], mockCollections);
-  expect(spec).toEqual("2.99");
+  const success = {
+    range: "2.99",
+    max: 2.99,
+    min: 2.99
+  };
+  expect(spec).toEqual(success);
 });
 
 // expect child variant price if only one child variant
 test("expect child variant price string if only one child variant", async () => {
   mockGetVariants.mockReturnValueOnce(Promise.resolve([mockVariants[1]]));
   const spec = await getVariantPriceRange(internalVariantIds[0], mockCollections);
-  expect(spec).toEqual("5.99");
+  const success = {
+    range: "5.99",
+    max: 5.99,
+    min: 5.99
+  };
+  expect(spec).toEqual(success);
 });
 
 // expect a price rang string of the min price and max price
 test("expect price range string if variants have different prices", async () => {
   mockGetVariants.mockReturnValueOnce(Promise.resolve(mockVariants));
   const spec = await getVariantPriceRange(internalVariantIds[0], mockCollections);
-  expect(spec).toEqual("2.99 - 5.99");
+  const success = {
+    range: "2.99 - 5.99",
+    max: 5.99,
+    min: 2.99
+  };
+  expect(spec).toEqual(success);
 });
 
 // expect variant min price if min and max price are equal
@@ -230,5 +245,10 @@ test("expect variant price string if variants have same price", async () => {
   mockVariants[1].price = 2.99;
   mockGetVariants.mockReturnValueOnce(Promise.resolve(mockVariants));
   const spec = await getVariantPriceRange(internalVariantIds[0], mockCollections);
-  expect(spec).toEqual("2.99");
+  const success = {
+    range: "2.99",
+    max: 2.99,
+    min: 2.99
+  };
+  expect(spec).toEqual(success);
 });

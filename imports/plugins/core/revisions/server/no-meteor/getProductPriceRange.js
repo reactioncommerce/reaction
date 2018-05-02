@@ -1,5 +1,6 @@
-import getTopVariants from "./getTopVariants";
+import getVariants from "./getVariants";
 import getVariantPriceRange from "./getVariantPriceRange";
+import getPriceRange from "./getPriceRange";
 
 /**
  *
@@ -11,60 +12,23 @@ import getVariantPriceRange from "./getVariantPriceRange";
  */
 export default async function getProductPriceRange(productId, collections) {
   const { Products } = collections;
-  const product = await Products.findOne(productId);
+  const product = await Products.findOne({ _id: productId });
   if (!product) {
-    return {
-      range: "0",
-      min: 0,
-      max: 0
-    };
+    throw new Error("Product not found");
   }
 
-  const variants = await getTopVariants(product._id, collections);
-  if (variants.length > 0) {
+  const variants = await getVariants(product._id, collections, true);
+  const visableVariants = variants.filter((option) => option.isVisible && !option.isDeleted);
+  if (visableVariants.length > 0) {
     const variantPrices = [];
     await Promise.all(
-      variants.map(async (variant) => {
-        if (variant.isVisible === true) {
-          const range = await getVariantPriceRange(variant._id, collections);
-          if (typeof range === "string") {
-            const firstPrice = parseFloat(range.substr(0, range.indexOf(" ")));
-            const lastPrice = parseFloat(range.substr(range.lastIndexOf(" ") + 1));
-            variantPrices.push(firstPrice, lastPrice);
-          } else {
-            variantPrices.push(range);
-          }
-        } else {
-          variantPrices.push(0, 0);
-        }
+      visableVariants.map(async (variant) => {
+        const { min, max } = await getVariantPriceRange(variant._id, collections);
+        variantPrices.push(min, max);
       })
     );
-
-    const priceMin = variantPrices.reduce((currentMin, price) => (price < currentMin ? price : currentMin), Infinity);
-    const priceMax = variantPrices.reduce((currentMax, price) => (price > currentMax ? price : currentMax), 0);
-
-    let priceRange = `${priceMin} - ${priceMax}`;
-    // if we don't have a range
-    if (priceMin === priceMax) {
-      priceRange = priceMin.toString();
-    }
-    const priceObject = {
-      range: priceRange,
-      min: priceMin,
-      max: priceMax
-    };
-    return priceObject;
+    return getPriceRange(variantPrices);
   }
 
-  if (!product.price) {
-    return {
-      range: "0",
-      min: 0,
-      max: 0
-    };
-  }
-
-  // if we have no variants subscribed to (client)
-  // we'll get the price object previously from the product
-  return product.price;
+  return getPriceRange([0]);
 }

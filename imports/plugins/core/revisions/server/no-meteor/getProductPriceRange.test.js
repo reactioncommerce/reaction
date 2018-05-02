@@ -1,10 +1,10 @@
 import mockContext from "/imports/test-utils/helpers/mockContext";
-import { rewire as rewire$getTopVariants, restore as restore$getTopVariants } from "./getTopVariants";
+import { rewire as rewire$getVariants, restore as restore$getVariants } from "./getVariants";
 import { rewire as rewire$getVariantPriceRange, restore as restore$getVariantPriceRange } from "./getVariantPriceRange";
 import getProductPriceRange from "./getProductPriceRange";
 
 const mockCollections = { ...mockContext.collections };
-const mockGetTopVariants = jest.fn().mockName("getTopVariants");
+const mockGetVariants = jest.fn().mockName("getVariants");
 const mockGetVariantPriceRange = jest.fn().mockName("getVariantPriceRange");
 
 const internalShopId = "123";
@@ -92,7 +92,7 @@ const mockVariants = [
     minOrderQuantity: 0,
     optionTitle: "Awesome Soft Bike",
     originCountry: "US",
-    price: 992.0,
+    price: 2.99,
     shopId: internalShopId,
     sku: "sku",
     taxable: true,
@@ -193,44 +193,39 @@ const mockProduct = {
   width: 8.4
 };
 
-const mockVariantPriceRange = "2.99 - 5.99";
-
-const mockProductPriceRange = {
+const mockPriceRange = {
   range: "2.99 - 5.99",
-  min: 2.99,
-  max: 5.99
-};
-
-const mockEmptyProductPriceRange = {
-  range: "0",
-  min: 0,
-  max: 0
+  max: 5.99,
+  min: 2.99
 };
 
 beforeAll(() => {
-  rewire$getTopVariants(mockGetTopVariants);
+  rewire$getVariants(mockGetVariants);
   rewire$getVariantPriceRange(mockGetVariantPriceRange);
 });
 
 afterAll(() => {
-  restore$getTopVariants();
+  restore$getVariants();
   restore$getVariantPriceRange();
 });
 
 // expect a legit price range
 test("expect to return a promise that resolves to a product price object", async () => {
   mockCollections.Products.findOne.mockReturnValueOnce(Promise.resolve(mockProduct));
-  mockGetTopVariants.mockReturnValueOnce(Promise.resolve(mockVariants));
-  mockGetVariantPriceRange.mockReturnValueOnce(Promise.resolve(mockVariantPriceRange));
+  mockGetVariants.mockReturnValueOnce(Promise.resolve(mockVariants));
+  mockGetVariantPriceRange
+    .mockReturnValueOnce(Promise.resolve(mockPriceRange))
+    .mockReturnValueOnce(Promise.resolve(mockPriceRange));
   const spec = await getProductPriceRange("999", mockCollections);
-  expect(spec).toEqual(mockProductPriceRange);
+  expect(spec).toEqual(mockPriceRange);
 });
 
 // expect an empty price range
-test("expect to return a promise that resolves to a zero product price object if no product price is found", async () => {
+test("expect to throw an error if no product is found", async () => {
   mockCollections.Products.findOne.mockReturnValueOnce(Promise.resolve(undefined));
-  mockGetTopVariants.mockReturnValueOnce(Promise.resolve(undefined));
-  mockGetVariantPriceRange.mockReturnValueOnce(Promise.resolve(undefined));
-  const spec = await getProductPriceRange("999", mockCollections);
-  expect(spec).toEqual(mockEmptyProductPriceRange);
+  try {
+    getProductPriceRange("badID", mockCollections);
+  } catch (error) {
+    expect(error).toEqual("Product not found");
+  }
 });
