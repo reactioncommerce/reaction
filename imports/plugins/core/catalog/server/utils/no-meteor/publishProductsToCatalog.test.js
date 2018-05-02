@@ -1,12 +1,12 @@
 import mockContext from "/imports/test-utils/helpers/mockContext";
 import {
-  rewire as rewire$publishProductToCatalog,
-  restore as restore$publishProductToCatalog
-} from "./publishProductToCatalog";
+  rewire as rewire$publishProductToCatalogById,
+  restore as restore$publishProductToCatalogById
+} from "./publishProductToCatalogById";
 import publishProductsToCatalog from "./publishProductsToCatalog";
 
 const mockCollections = { ...mockContext.collections };
-const mockPublishProductToCatalog = jest.fn().mockName("publishProductToCatalog");
+const mockPublishProductToCatalogById = jest.fn().mockName("publishProductToCatalogById");
 
 const internalShopId = "123";
 const opaqueShopId = "cmVhY3Rpb24vc2hvcDoxMjM="; // reaction/shop:123
@@ -195,21 +195,24 @@ const mockProduct = {
 };
 
 beforeAll(() => {
-  rewire$publishProductToCatalog(mockPublishProductToCatalog);
+  rewire$publishProductToCatalogById(mockPublishProductToCatalogById);
 });
 
-afterAll(restore$publishProductToCatalog);
+afterAll(restore$publishProductToCatalogById);
 
 test("expect true if an array of products are published to the catalog collection by id", async () => {
   mockCollections.Products.findOne.mockReturnValueOnce(Promise.resolve(mockProduct));
-  mockPublishProductToCatalog.mockReturnValueOnce(Promise.resolve(true));
+  mockPublishProductToCatalogById
+    .mockReturnValueOnce(Promise.resolve(true))
+    .mockReturnValueOnce(Promise.resolve(true))
+    .mockReturnValueOnce(Promise.resolve(true));
   const spec = await publishProductsToCatalog(["123", "456", "999"], mockCollections);
   expect(spec).toBe(true);
 });
 
 test("expect false if an array of products are not published to the catalog collection by id", async () => {
   mockCollections.Products.findOne.mockReturnValue(Promise.resolve(mockProduct));
-  mockPublishProductToCatalog.mockReturnValueOnce(Promise.resolve(false));
+  mockPublishProductToCatalogById.mockReturnValueOnce(Promise.resolve(false));
   const spec = await publishProductsToCatalog(["123", "456", "999"], mockCollections);
   expect(spec).toBe(false);
 });
