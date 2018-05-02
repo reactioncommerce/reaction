@@ -206,14 +206,20 @@ const mockRevision = {
   diff: []
 };
 
-test("expect an array of product variants, one from revisions the other from products", async () => {
+// pass in product id return all variants
+test("expect an array of product top level variants from revisions", async () => {
+  mockCollections.Products.toArray.mockReturnValueOnce(Promise.resolve([mockVariants[0]]));
+  mockCollections.Revisions.findOne.mockReturnValueOnce(Promise.resolve(mockRevision));
+  const spec = await getVariants(internalProductId, mockCollections, true);
+  const success = [mockRevision.documentData];
+  expect(spec).toEqual(success);
+});
+
+// pass a variant id return all child options
+test("expect an array of product variant options, one from revisions the other from products", async () => {
   mockCollections.Products.toArray.mockReturnValueOnce(Promise.resolve(mockVariants));
   mockCollections.Revisions.findOne.mockReturnValueOnce(Promise.resolve(mockRevision));
   const spec = await getVariants(internalProductId, mockCollections);
   const success = [mockRevision.documentData, mockVariants[1]];
   expect(spec).toEqual(success);
 });
-
-// pass in product id return all variants
-
-// pass a variant id return all child options
