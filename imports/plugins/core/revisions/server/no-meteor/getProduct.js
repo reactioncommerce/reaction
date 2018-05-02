@@ -10,7 +10,6 @@ import findRevision from "./findRevision";
  */
 export default async function getProduct(variantId, collections) {
   const { Products } = collections;
-  const product = await Products.findOne(variantId);
   const revision = await findRevision(
     {
       documentId: variantId
@@ -18,5 +17,10 @@ export default async function getProduct(variantId, collections) {
     collections
   );
 
-  return (revision && revision.documentData) || product;
+  if (revision && revision.documentData) {
+    return revision.documentData;
+  }
+
+  const product = await Products.findOne({ _id: variantId });
+  return product;
 }

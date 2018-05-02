@@ -196,6 +196,7 @@ const mockRevision = {
   documentId: internalVariantIds[0],
   documentData: {
     _id: internalVariantIds[0],
+    isRevision: internalVariantIds[0],
     isVisible: true
   },
   workflow: {
@@ -216,7 +217,11 @@ afterAll(restore$findRevision);
 test("expect an array of product variants, one from revisions the other from products", async () => {
   mockCollections.Products.toArray.mockReturnValueOnce(Promise.resolve(mockVariants));
   mockFindRevision.mockReturnValueOnce(Promise.resolve(mockRevision));
-  const spec = await getVariants(internalProductId, null, mockCollections);
+  const spec = await getVariants(internalProductId, mockCollections);
   const success = [mockRevision.documentData, mockVariants[1]];
   expect(spec).toEqual(success);
 });
+
+// pass in product id return all variants
+
+// pass a variant id return all child options

@@ -9,7 +9,6 @@ import { MediaRecords, Products, Revisions, Tags } from "/lib/collections";
 import { Media } from "/imports/plugins/core/files/server";
 import rawCollections from "/imports/collections/rawCollections";
 import getProductPriceRange from "/imports/plugins/core/revisions/server/no-meteor/getProductPriceRange";
-import getTopVariants from "/imports/plugins/core/revisions/server/no-meteor/getTopVariants";
 import getVariants from "/imports/plugins/core/revisions/server/no-meteor/getVariants";
 import isSoldOut from "../utils/no-meteor/isSoldOut";
 import isLowQuantity from "../utils/no-meteor/isLowQuantity";
@@ -230,9 +229,9 @@ function denormalize(id, field) {
   const doc = Products.findOne(id);
   let variants;
   if (doc.type === "simple") {
-    variants = Promise.await(getTopVariants(id, rawCollections));
+    variants = Promise.await(getVariants(id, rawCollections, true));
   } else if (doc.type === "variant" && doc.ancestors.length === 1) {
-    variants = Promise.await(getVariants(id, null, rawCollections));
+    variants = Promise.await(getVariants(id, rawCollections));
   }
   const update = {};
 
@@ -477,7 +476,9 @@ Meteor.methods({
         newId = Products.insert(clone, { validate: false });
         const newProduct = Products.findOne(newId);
         Hooks.Events.run("afterInsertCatalogProduct", newProduct);
-        Logger.debug(`products/cloneVariant: created ${type === "child" ? "sub child " : ""}clone: ${clone._id} from ${variantId}`);
+        Logger.debug(
+          `products/cloneVariant: created ${type === "child" ? "sub child " : ""}clone: ${clone._id} from ${variantId}`
+        );
       } catch (error) {
         Logger.error(`products/cloneVariant: cloning of ${variantId} was failed: ${error}`);
         throw error;
@@ -708,7 +709,7 @@ Meteor.methods({
 
     function getIds(id) {
       return pool.filter(
-        function (pair) {
+        function(pair) {
           return pair.oldId === this.id;
         },
         {
@@ -911,7 +912,7 @@ Meteor.methods({
     });
 
     const numFlaggedAsDeleted = Revisions.find({
-      "documentId": {
+      documentId: {
         $in: ids
       },
       "documentData.isDeleted": true
@@ -1473,7 +1474,7 @@ Meteor.methods({
         variants.forEach((variant) => {
           // if this is a top variant with children, we avoid it to check price
           // because we using price of its children
-          const options = Promise.await(getVariants(variant._id, "variant", rawCollections));
+          const options = Promise.await(getVariants(variant._id, rawCollections));
           if ((variant.ancestors.length === 1 && !options.length) || variant.ancestors.length !== 1) {
             if (!(typeof variant.price === "number" && variant.price > 0)) {
               variantValidator = false;

@@ -9,29 +9,29 @@ import findRevision from "./findRevision";
  * @param {Object} collections - TODO:
  * @return {Promise<Object[]>} TODO:
  */
-export default async function getVariants(proudctOrVariantId, type, collections) {
+export default async function getVariants(proudctOrVariantId, collections, topOnly) {
   const { Products } = collections;
   const variants = [];
 
-  const products = await Products.find({
-    ancestors: proudctOrVariantId,
-    type: type || "variant",
+  const productVariants = await Products.find({
+    ancestors: topOnly ? [proudctOrVariantId] : proudctOrVariantId,
+    type: "variant",
     isDeleted: false
   }).toArray();
 
   await Promise.all(
-    products.map(async (product) => {
+    productVariants.map(async (variant) => {
       const revision = await findRevision(
         {
-          documentId: product._id
+          documentId: variant._id
         },
         collections
       );
 
       if (revision && revision.documentData.isVisible) {
         variants.push(revision.documentData);
-      } else if (!revision && product.isVisible) {
-        variants.push(product);
+      } else if (!revision && variant.isVisible) {
+        variants.push(variant);
       }
     })
   );

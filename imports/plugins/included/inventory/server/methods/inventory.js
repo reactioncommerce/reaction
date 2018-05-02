@@ -24,7 +24,7 @@ export function registerInventory(product) {
 
   let totalNewInventory = 0;
   const productId = type === "variant" ? product.ancestors[0] : product._id;
-  const variants = Promise.await(getVariants(productId, null, rawCollections));
+  const variants = Promise.await(getVariants(productId, rawCollections));
 
   // we'll check each variant to see if it has been fully registered
   for (const variant of variants) {
@@ -127,7 +127,7 @@ function adjustInventory(product, userId, context) {
         // we're only going to delete records that are new
         const removeInventory = Inventory.find(
           {
-            "variantId": variant._id,
+            variantId: variant._id,
             "workflow.status": "new"
           },
           {

@@ -105,15 +105,15 @@ afterAll(restore$getVariants);
 
 // expect product variant quantity number when passing a single variant
 test("expect product variant quantity number when pasing a single variant", async () => {
-  mockGetVariants.mockReturnValueOnce(Promise.resolve(mockVariants));
+  mockGetVariants.mockReturnValueOnce(Promise.resolve([mockVariants[1]]));
   const spec = await getVariantQuantity(mockVariants[0], mockCollections);
-  expect(spec).toEqual(10);
+  expect(spec).toEqual(5);
 });
 
 // expect product variant quantity number when passing a array of product variant objects
 test("expect product variant quantity number when passing a array of product variant objects", async () => {
   const spec = await getVariantQuantity(mockVariants[0], mockCollections, mockVariants);
-  expect(spec).toEqual(10);
+  expect(spec).toEqual(5);
 });
 
 // expect 0 if all variants have an inventory quantity of 0

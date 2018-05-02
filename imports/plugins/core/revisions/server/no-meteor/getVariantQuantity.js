@@ -14,7 +14,7 @@ export default async function getVariantQuantity(variant, collections, variants)
   if (variants) {
     options = variants.filter((option) => option.ancestors[1] === variant._id);
   } else {
-    options = await getVariants(variant._id, null, collections);
+    options = await getVariants(variant._id, collections);
   }
 
   if (options && options.length) {
