@@ -1,9 +1,7 @@
 import mockContext from "/imports/test-utils/helpers/mockContext";
-import { rewire as rewire$findRevision, restore as restore$findRevision } from "./findRevision";
 import getProduct from "./getProduct";
 
 const mockCollections = { ...mockContext.collections };
-const mockFindRevision = jest.fn().mockName("findRevision");
 
 const internalShopId = "123";
 const opaqueShopId = "cmVhY3Rpb24vc2hvcDoxMjM="; // reaction/shop:123
@@ -206,16 +204,10 @@ const mockRevision = {
   diff: []
 };
 
-beforeAll(() => {
-  rewire$findRevision(mockFindRevision);
-});
-
-afterAll(restore$findRevision);
-
 // expect to return revision object if one exist
 test("expect to return a product revision object if one exist", async () => {
   mockCollections.Products.findOne.mockReturnValueOnce(Promise.resolve(mockProduct));
-  mockFindRevision.mockReturnValueOnce(Promise.resolve(mockRevision));
+  mockCollections.Revisions.findOne.mockReturnValueOnce(Promise.resolve(mockRevision));
   const spec = await getProduct(internalVariantIds[0], mockCollections);
   expect(spec).toEqual(mockRevision.documentData);
 });
@@ -223,7 +215,7 @@ test("expect to return a product revision object if one exist", async () => {
 // expect to return a product object if no revision exist
 test("expect to return a product object if no revision exist", async () => {
   mockCollections.Products.findOne.mockReturnValueOnce(Promise.resolve(mockProduct));
-  mockFindRevision.mockReturnValueOnce(Promise.resolve(undefined));
+  mockCollections.Revisions.findOne.mockReturnValueOnce(Promise.resolve(undefined));
   const spec = await getProduct(internalVariantIds[0], mockCollections);
   expect(spec).toEqual(mockProduct);
 });

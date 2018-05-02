@@ -1,5 +1,3 @@
-import findRevision from "./findRevision";
-
 /**
  *
  * @method getVariants
@@ -10,7 +8,7 @@ import findRevision from "./findRevision";
  * @return {Promise<Object[]>} TODO:
  */
 export default async function getVariants(proudctOrVariantId, collections, topOnly) {
-  const { Products } = collections;
+  const { Products, Revisions } = collections;
   const variants = [];
 
   const productVariants = await Products.find({
@@ -21,12 +19,12 @@ export default async function getVariants(proudctOrVariantId, collections, topOn
 
   await Promise.all(
     productVariants.map(async (variant) => {
-      const revision = await findRevision(
-        {
-          documentId: variant._id
-        },
-        collections
-      );
+      const revision = await Revisions.findOne({
+        documentId: variant._id,
+        "workflow.status": {
+          $nin: ["revision/published"]
+        }
+      });
 
       if (revision && revision.documentData.isVisible) {
         variants.push(revision.documentData);

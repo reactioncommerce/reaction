@@ -1,5 +1,3 @@
-import findRevision from "./findRevision";
-
 /**
  *
  * @method getProduct
@@ -9,13 +7,13 @@ import findRevision from "./findRevision";
  * @return {Object} TODO:
  */
 export default async function getProduct(variantId, collections) {
-  const { Products } = collections;
-  const revision = await findRevision(
-    {
-      documentId: variantId
-    },
-    collections
-  );
+  const { Products, Revisions } = collections;
+  const revision = await Revisions.findOne({
+    documentId: variantId,
+    "workflow.status": {
+      $nin: ["revision/published"]
+    }
+  });
 
   if (revision && revision.documentData) {
     return revision.documentData;

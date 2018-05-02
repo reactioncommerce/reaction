@@ -1,9 +1,7 @@
 import mockContext from "/imports/test-utils/helpers/mockContext";
-import { rewire as rewire$findRevision, restore as restore$findRevision } from "./findRevision";
 import getVariants from "./getVariants";
 
 const mockCollections = { ...mockContext.collections };
-const mockFindRevision = jest.fn().mockName("findRevision");
 
 const internalShopId = "123";
 const opaqueShopId = "cmVhY3Rpb24vc2hvcDoxMjM="; // reaction/shop:123
@@ -208,15 +206,9 @@ const mockRevision = {
   diff: []
 };
 
-beforeAll(() => {
-  rewire$findRevision(mockFindRevision);
-});
-
-afterAll(restore$findRevision);
-
 test("expect an array of product variants, one from revisions the other from products", async () => {
   mockCollections.Products.toArray.mockReturnValueOnce(Promise.resolve(mockVariants));
-  mockFindRevision.mockReturnValueOnce(Promise.resolve(mockRevision));
+  mockCollections.Revisions.findOne.mockReturnValueOnce(Promise.resolve(mockRevision));
   const spec = await getVariants(internalProductId, mockCollections);
   const success = [mockRevision.documentData, mockVariants[1]];
   expect(spec).toEqual(success);
