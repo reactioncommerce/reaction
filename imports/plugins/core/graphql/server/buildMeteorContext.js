@@ -1,7 +1,7 @@
 import buildContext from "./buildContext";
 import collections from "/imports/collections/rawCollections";
 import methods from "./methods";
-import mutations from "./muitations";
+import mutations from "./mutations";
 import queries from "./queries";
 
 export const baseContext = {

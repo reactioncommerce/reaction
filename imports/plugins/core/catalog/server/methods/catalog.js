@@ -11,9 +11,9 @@ import rawCollections from "/imports/collections/rawCollections";
 import getProductPriceRange from "/imports/plugins/core/revisions/server/no-meteor/getProductPriceRange";
 import getTopVariants from "/imports/plugins/core/revisions/server/no-meteor/getTopVariants";
 import getVariants from "/imports/plugins/core/revisions/server/no-meteor/getVariants";
-import isSoldOut from "import/plugins/core/catalog/server/methods/isSoldOut";
-import isLowQuantity from "import/plugins/core/catalog/server/methods/isLowQuantity";
-import isBackorder from "import/plugins/core/catalog/server/methods/isBackorder";
+import isSoldOut from "../utils/no-meteor/isSoldOut";
+import isLowQuantity from "../utils/no-meteor/isLowQuantity";
+import isBackorder from "../utils/no-meteor/isBackorder";
 
 /* eslint new-cap: 0 */
 /* eslint no-loop-func: 0 */
@@ -477,9 +477,7 @@ Meteor.methods({
         newId = Products.insert(clone, { validate: false });
         const newProduct = Products.findOne(newId);
         Hooks.Events.run("afterInsertCatalogProduct", newProduct);
-        Logger.debug(
-          `products/cloneVariant: created ${type === "child" ? "sub child " : ""}clone: ${clone._id} from ${variantId}`
-        );
+        Logger.debug(`products/cloneVariant: created ${type === "child" ? "sub child " : ""}clone: ${clone._id} from ${variantId}`);
       } catch (error) {
         Logger.error(`products/cloneVariant: cloning of ${variantId} was failed: ${error}`);
         throw error;
@@ -710,7 +708,7 @@ Meteor.methods({
 
     function getIds(id) {
       return pool.filter(
-        function(pair) {
+        function (pair) {
           return pair.oldId === this.id;
         },
         {
@@ -913,7 +911,7 @@ Meteor.methods({
     });
 
     const numFlaggedAsDeleted = Revisions.find({
-      documentId: {
+      "documentId": {
         $in: ids
       },
       "documentData.isDeleted": true

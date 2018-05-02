@@ -2,7 +2,7 @@ import { Meteor } from "meteor/meteor";
 import { Inventory, Products } from "/lib/collections";
 import { Logger, Reaction } from "/server/api";
 import rawCollections from "/imports/collections/rawCollections";
-import getVariants from "/imports/plugins/core/revsions/server/no-meteor/getVariants";
+import getVariants from "/imports/plugins/core/revisions/server/no-meteor/getVariants";
 
 /**
  * @namespace Inventory/Methods
@@ -127,7 +127,7 @@ function adjustInventory(product, userId, context) {
         // we're only going to delete records that are new
         const removeInventory = Inventory.find(
           {
-            variantId: variant._id,
+            "variantId": variant._id,
             "workflow.status": "new"
           },
           {
