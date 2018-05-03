@@ -1,7 +1,7 @@
 import {
   rewire as rewire$getVariantQuantity,
   restore as restore$getVariantQuantity
-} from "/imports/plugins/core/revisions/server/no-meteor/getVariantQuantity";
+} from "/imports/plugins/core/revisions/server/no-meteor/utils/getVariantQuantity";
 import isSoldOut from "./isSoldOut";
 
 const mockGetVariantQuantity = jest.fn().mockName("ProductRevision.getVariantQuantity");

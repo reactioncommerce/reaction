@@ -2,7 +2,7 @@ import mockContext from "/imports/test-utils/helpers/mockContext";
 import {
   rewire as rewire$publishProductToCatalog,
   restore as restore$publishProductToCatalog
-} from "../utils/no-meteor/publishProductToCatalog";
+} from "../utils/publishProductToCatalog";
 import publishProducts from "./publishProducts";
 
 const mockPublishProductToCatalog = jest.fn().mockName("publishProductToCatalog");
