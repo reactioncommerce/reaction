@@ -177,7 +177,7 @@
     "nedb": "^1.8.0",
     "nodemon": "^1.17.2",
     "react-addons-test-utils": "15.6.2",
-    "snyk": "^1.71.0"
+    "snyk": "^1.78.0"
   },
   "postcss": {
     "plugins": {
