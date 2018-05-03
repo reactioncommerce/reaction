@@ -1,3 +1,10 @@
+/**
+ *
+ * @method getPriceRange
+ * @summary Get Price object from array of Product prices
+ * @param {Array} prices - Array of Product price properties
+ * @return {Promise<Object>} PriceRange object
+ */
 export default function getPriceRange(prices) {
   if (prices.length === 1) {
     return {

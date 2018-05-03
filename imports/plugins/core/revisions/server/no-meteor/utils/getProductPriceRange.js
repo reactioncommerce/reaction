@@ -5,10 +5,10 @@ import getPriceRange from "./getPriceRange";
 /**
  *
  * @method getProductPriceRange
- * @summary TODO:
- * @param {String} productId - TODO:
- * @param {Object} collections - TODO:
- * @return {Promise<Object>} TODO:
+ * @summary Get the PriceRange object for a Product by ID
+ * @param {String} productId - A product ID
+ * @param {Object} collections - Raw mongo collections
+ * @return {Promise<Object>} PriceRange object
  */
 export default async function getProductPriceRange(productId, collections) {
   const { Products } = collections;

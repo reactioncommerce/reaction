@@ -1,10 +1,10 @@
 /**
  *
  * @method getProduct
- * @summary TODO:
- * @param {string} variantId - TODO:
- * @param {Object} collections - TODO:
- * @return {Object} TODO:
+ * @summary Get a Product object by variant ID
+ * @param {string} variantId - A product variant ID.
+ * @param {Object} collections - Raw mongo collections
+ * @return {Promise<Object>} Product object
  */
 export default async function getProduct(variantId, collections) {
   const { Products, Revisions } = collections;
