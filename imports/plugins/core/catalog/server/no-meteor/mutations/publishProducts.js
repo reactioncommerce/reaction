@@ -4,12 +4,12 @@ import Logger from "@reactioncommerce/logger";
 import publishProductsToCatalog from "../utils/publishProductsToCatalog";
 
 /**
- * TODO:
+ *
  * @method publishProducts
- * @summary
- * @param {Object} context - TODO
- * @param {Array} productIds - TODO
- * @return {Promise<Object[]>} TODO
+ * @summary Publish an array of products to the Catalog collection by Product ID
+ * @param {Object} context -  an object containing the per-request state
+ * @param {Array} productIds - An array of product IDs
+ * @return {Promise<Object[]>} Array of CatalogItemProduct objects
  */
 export default async function publishProducts(context, productIds) {
   const { collections, shopId: primaryShopId, userHasPermission } = context;
