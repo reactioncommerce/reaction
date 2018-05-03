@@ -5,7 +5,7 @@ import publishProductToCatalogById from "./publishProductToCatalogById";
  * @summary Publish one or more products to the Catalog
  * @memberof Catalog
  * @param {Array} productIds - An array of product IDs. Must be top-level products.
- * @param {Object} collections - Raw mongo collections are passed to ProductRevision
+ * @param {Object} collections - Raw mongo collections
  * @return {boolean} true on successful publish for all documents, false if one ore more fail to publish
  */
 export default async function publishProductsToCatalog(productIds, collections) {

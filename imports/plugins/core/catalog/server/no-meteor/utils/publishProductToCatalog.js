@@ -12,7 +12,7 @@ import getCatalogProductMedia from "./getCatalogProductMedia";
  * @summary Publish a product to the Catalog collection
  * @memberof Catalog
  * @param {Object} product - A product object
- * @param {Object} collections - Raw mongo collections are passed to ProductRevision
+ * @param {Object} collections - Raw mongo collections
  * @return {boolean} true on successful publish, false if publish was unsuccessful
  */
 export default async function publishProductToCatalog(product, collections) {

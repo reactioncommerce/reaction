@@ -5,7 +5,7 @@ import getVariantQuantity from "/imports/plugins/core/revisions/server/no-meteor
  * @summary If all the product variants have a quantity of 0 return `true`.
  * @memberof Catalog
  * @param {Array} variants - Array with top-level variants
- * @param {Object} collections - Raw mongo collections are passed to ProductRevision
+ * @param {Object} collections - Raw mongo collections
  * @return {Boolean} true if quantity is zero.
  */
 export default async function isSoldOut(variants, collections) {

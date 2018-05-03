@@ -5,6 +5,7 @@ import getVariantQuantity from "/imports/plugins/core/revisions/server/no-meteor
  * @summary If all the products variants have inventory policy disabled, inventory management enabled and a quantity of zero return `true`
  * @memberof Catalog
  * @param {Array} variants - Array with product variant objects
+ * @param {Object} collections - Raw mongo collections
  * @return {boolean} is backorder allowed or not for a product
  */
 export default async function isBackorder(variants, collections) {

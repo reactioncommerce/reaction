@@ -5,12 +5,12 @@ import isLowQuantity from "./isLowQuantity";
 import isSoldOut from "./isSoldOut";
 
 /**
- * TODO: rename to updateCatalogProductInventoryStatus
+ * @todo: rename to updateCatalogProductInventoryStatus
  * @method publishProductInventoryAdjustments
  * @summary Publish inventory updates for a single product to the Catalog
  * @memberof Catalog
  * @param {string} productId - A string product id
- * @param {Object} collections - Raw mongo collections are passed to ProductRevision
+ * @param {Object} collections - Raw mongo collections
  * @return {boolean} true on success, false on failure
  */
 export default async function publishProductInventoryAdjustments(productId, collections) {
