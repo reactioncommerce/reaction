@@ -4,7 +4,6 @@ import Random from "@reactioncommerce/random";
 import isBackorder from "./isBackorder";
 import isLowQuantity from "./isLowQuantity";
 import isSoldOut from "./isSoldOut";
-import getCatalogPositions from "./getCatalogPositions";
 import getCatalogProductMedia from "./getCatalogProductMedia";
 
 /**
@@ -122,9 +121,6 @@ export default async function publishProductToCatalog(product, collections) {
     width: product.width
   };
 
-  // Move `positions` onto the CatalogItem instead of the product, and switch from map to array
-  const positions = await getCatalogPositions(product.positions);
-
   // Insert/update catalog document
   const result = await Catalog.updateOne(
     {
@@ -132,7 +128,6 @@ export default async function publishProductToCatalog(product, collections) {
     },
     {
       $set: {
-        positions,
         product: catalogProduct,
         shopId: product.shopId,
         updatedAt: new Date()

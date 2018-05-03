@@ -13,7 +13,10 @@ const internalTagIds = ["923", "924"];
 const opaqueTagIds = ["cmVhY3Rpb24vdGFnOjkyMw==", "cmVhY3Rpb24vdGFnOjkyNA=="]; // reaction/tag
 const internalVariantIds = ["875", "874"];
 const opaqueVariantIds = ["cmVhY3Rpb24vcHJvZHVjdDo4NzU=", "cmVhY3Rpb24vcHJvZHVjdDo4NzQ="]; // reaction/product
-const opaqueCatalogVariantIds = ["cmVhY3Rpb24vY2F0YWxvZ1Byb2R1Y3RWYXJpYW50Ojg3NQ==", "cmVhY3Rpb24vY2F0YWxvZ1Byb2R1Y3RWYXJpYW50Ojg3NA=="]; // reaction/catalogProductVariant
+const opaqueCatalogVariantIds = [
+  "cmVhY3Rpb24vY2F0YWxvZ1Byb2R1Y3RWYXJpYW50Ojg3NQ==",
+  "cmVhY3Rpb24vY2F0YWxvZ1Byb2R1Y3RWYXJpYW50Ojg3NA=="
+]; // reaction/catalogProductVariant
 
 const shopName = "Test Shop";
 
@@ -38,14 +41,16 @@ const variants = [
     isVisible: true,
     length: 0,
     lowInventoryWarningThreshold: 0,
-    metafields: [{
-      value: "value",
-      namespace: "namespace",
-      description: "description",
-      valueType: "valueType",
-      scope: "scope",
-      key: "key"
-    }],
+    metafields: [
+      {
+        value: "value",
+        namespace: "namespace",
+        description: "description",
+        valueType: "valueType",
+        scope: "scope",
+        key: "key"
+      }
+    ],
     minOrderQuantity: 0,
     optionTitle: "Untitled Option",
     originCountry: "US",
@@ -76,18 +81,20 @@ const variants = [
     isVisible: true,
     length: 2,
     lowInventoryWarningThreshold: 0,
-    metafields: [{
-      value: "value",
-      namespace: "namespace",
-      description: "description",
-      valueType: "valueType",
-      scope: "scope",
-      key: "key"
-    }],
+    metafields: [
+      {
+        value: "value",
+        namespace: "namespace",
+        description: "description",
+        valueType: "valueType",
+        scope: "scope",
+        key: "key"
+      }
+    ],
     minOrderQuantity: 0,
     optionTitle: "Awesome Soft Bike",
     originCountry: "US",
-    price: 992.00,
+    price: 992.0,
     shopId: internalShopId,
     sku: "sku",
     taxable: true,
@@ -116,14 +123,16 @@ const mockProduct = {
   isSoldOut: false,
   length: 5.67,
   lowInventoryWarningThreshold: 2,
-  metafields: [{
-    value: "value",
-    namespace: "namespace",
-    description: "description",
-    valueType: "valueType",
-    scope: "scope",
-    key: "key"
-  }],
+  metafields: [
+    {
+      value: "value",
+      namespace: "namespace",
+      description: "description",
+      valueType: "valueType",
+      scope: "scope",
+      key: "key"
+    }
+  ],
   metaDescription: "metaDescription",
   minOrderQuantity: 5,
   originCountry: "originCountry",
@@ -202,14 +211,16 @@ const expectedVariantsResponse = [
     isTaxable: true,
     length: 0,
     lowInventoryWarningThreshold: 0,
-    metafields: [{
-      value: "value",
-      namespace: "namespace",
-      description: "description",
-      valueType: "valueType",
-      scope: "scope",
-      key: "key"
-    }],
+    metafields: [
+      {
+        value: "value",
+        namespace: "namespace",
+        description: "description",
+        valueType: "valueType",
+        scope: "scope",
+        key: "key"
+      }
+    ],
     minOrderQuantity: 0,
     optionTitle: "Untitled Option",
     originCountry: "US",
@@ -241,18 +252,20 @@ const expectedVariantsResponse = [
     isTaxable: true,
     length: 2,
     lowInventoryWarningThreshold: 0,
-    metafields: [{
-      value: "value",
-      namespace: "namespace",
-      description: "description",
-      valueType: "valueType",
-      scope: "scope",
-      key: "key"
-    }],
+    metafields: [
+      {
+        value: "value",
+        namespace: "namespace",
+        description: "description",
+        valueType: "valueType",
+        scope: "scope",
+        key: "key"
+      }
+    ],
     minOrderQuantity: 0,
     optionTitle: "Awesome Soft Bike",
     originCountry: "US",
-    price: 992.00,
+    price: 992.0,
     shop: {
       _id: opaqueShopId
     },
@@ -277,15 +290,6 @@ const expectedItemsResponse = {
         shop: {
           _id: opaqueShopId
         },
-        positions: [
-          {
-            displayWeight: 1,
-            position: 1,
-            isPinned: true,
-            updatedAt: positionUpdatedAt.toISOString(),
-            tagId: opaqueShopId
-          }
-        ],
         product: {
           _id: opaqueCatalogProductId,
           barcode: "barcode",
@@ -299,14 +303,16 @@ const expectedItemsResponse = {
           isTaxable: false,
           length: 5.67,
           lowInventoryWarningThreshold: 2,
-          metafields: [{
-            value: "value",
-            namespace: "namespace",
-            description: "description",
-            valueType: "valueType",
-            scope: "scope",
-            key: "key"
-          }],
+          metafields: [
+            {
+              value: "value",
+              namespace: "namespace",
+              description: "description",
+              valueType: "valueType",
+              scope: "scope",
+              key: "key"
+            }
+          ],
           metaDescription: "metaDescription",
           minOrderQuantity: 5,
           originCountry: "originCountry",
@@ -367,10 +373,7 @@ const expectedItemsResponse = {
           ],
           tagIds: opaqueTagIds,
           tags: {
-            nodes: [
-              { _id: opaqueTagIds[0] },
-              { _id: opaqueTagIds[1] }
-            ]
+            nodes: [{ _id: opaqueTagIds[0] }, { _id: opaqueTagIds[1] }]
           },
           taxCode: "taxCode",
           taxDescription: "taxDescription",

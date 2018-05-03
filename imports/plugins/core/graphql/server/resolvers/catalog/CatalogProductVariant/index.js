@@ -6,21 +6,21 @@ import { resolveShopFromShopId } from "@reactioncommerce/reaction-graphql-utils"
 export default {
   _id: (node) => encodeCatalogProductVariantOpaqueId(node._id),
   ancestorIds: (node) => {
-    const { ancestors } = node;
+    const { ancestorsIds } = node;
 
-    if (ancestors.length === 1) {
-      return [encodeCatalogProductOpaqueId(ancestors[0])];
+    if (ancestorsIds.length === 1) {
+      return [encodeCatalogProductOpaqueId(ancestorsIds[0])];
     }
 
-    if (ancestors.length === 2) {
+    if (ancestorsIds.length === 2) {
       return [
-        encodeCatalogProductOpaqueId(ancestors[0]),
-        encodeCatalogProductVariantOpaqueId(ancestors[1])
+        encodeCatalogProductOpaqueId(ancestorsIds[0]),
+        encodeCatalogProductVariantOpaqueId(ancestorsIds[1])
       ];
     }
 
     return [];
   },
-  variantId: (node) => encodeProductOpaqueId(node._id),
+  variantId: (node) => encodeProductOpaqueId(node.variantId),
   shop: resolveShopFromShopId
 };

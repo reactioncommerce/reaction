@@ -3,13 +3,11 @@ import { encodeProductOpaqueId } from "@reactioncommerce/reaction-graphql-xforms
 import { resolveShopFromShopId } from "@reactioncommerce/reaction-graphql-utils";
 import tagIds from "./tagIds";
 import tags from "./tags";
-import variants from "./variants";
 
 export default {
   _id: (node) => encodeCatalogProductOpaqueId(node._id),
-  productId: (node) => encodeProductOpaqueId(node._id),
+  productId: (node) => encodeProductOpaqueId(node.productId),
   shop: resolveShopFromShopId,
   tagIds,
-  tags,
-  variants
+  tags
 };

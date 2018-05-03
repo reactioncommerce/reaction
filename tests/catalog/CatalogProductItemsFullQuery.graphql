@@ -7,13 +7,6 @@
       }
       createdAt
       updatedAt
-      positions {
-        displayWeight
-        isPinned
-        position
-        tagId
-        updatedAt
-      }
       ... on CatalogItemProduct {
         product {
           _id

@@ -273,31 +273,12 @@ type CatalogProductVariant implements CatalogProductOrVariant & Node {
   width: Float
 }
 
-"A tag-specific page position by which you can sort catalog items"
-type CatalogItemPosition {
-  "Items with greater weight should be displayed larger"
-  displayWeight: Int!
-
-  "True if the item position is pinned"
-  isPinned: Boolean!
-
-  "A positive integer to use when sorting catalog items by default sort"
-  position: Int!
-
-  "Use these position and display weight rules when displaying filtered by this tag"
-  tagId: ID!
-
-  "The date and time at which this item position was last updated"
-  updatedAt: DateTime
-}
-
 """
 Catalog items are combined to create a catalog. Each item can represent a different type of content.
 """
 interface CatalogItem {
   _id: ID!
   shop: Shop!
-  positions: [CatalogItemPosition]!
   createdAt: DateTime
   updatedAt: DateTime
 }
@@ -309,9 +290,6 @@ type CatalogItemProduct implements CatalogItem & Node {
 
   "The shop to which this catalog belongs"
   shop: Shop!
-
-  "The manually set display positions and weights within the associated catalog, per tag filter"
-  positions: [CatalogItemPosition]!
 
   "The catalog product"
   product: CatalogProduct
@@ -330,9 +308,6 @@ type CatalogItemContent implements CatalogItem & Node {
 
   "The shop to which this catalog belongs"
   shop: Shop!
-
-  "The manually set display positions and weights within the associated catalog, per tag filter"
-  positions: [CatalogItemPosition]!
 
   "The date and time at which this CatalogItem was first created"
   createdAt: DateTime!

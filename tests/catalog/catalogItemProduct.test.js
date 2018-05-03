@@ -289,15 +289,6 @@ const expectedItemsResponse = {
     shop: {
       _id: opaqueShopId
     },
-    positions: [
-      {
-        displayWeight: 1,
-        position: 1,
-        isPinned: true,
-        updatedAt: positionUpdatedAt.toISOString(),
-        tagId: opaqueShopId
-      }
-    ],
     product: {
       _id: opaqueCatalogProductId,
       barcode: "barcode",
@@ -423,7 +414,6 @@ test("get a catalog product by slug", async () => {
 
   expect(result).toEqual(expectedItemsResponse);
 });
-
 
 test("get a catalog product by id", async () => {
   let result;
