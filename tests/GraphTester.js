@@ -27,11 +27,11 @@ Object.assign(Cursor.prototype, {
     return util.promisify(this.exec.bind(this))();
   },
   clone() {
-    const clonedCursor = new Cursor(this.db, this.query, this.execFn);
+    const clonedCursor = new Cursor(this.db, merge({}, this.query), this.execFn);
     clonedCursor._limit = this._limit;
     clonedCursor._skip = this._skip;
-    clonedCursor._sort = this._sort;
-    clonedCursor._projection = this._projection;
+    clonedCursor._sort = this._sort ? merge({}, this._sort) : this._sort;
+    clonedCursor._projection = this._projection ? merge({}, this._projection) : this._projection;
     return clonedCursor;
   },
   async count() {

@@ -3,13 +3,18 @@
  * @method
  * @memberof GraphQL/ResolverUtilities
  * @summary Adjusts a MongoDB filter based on GraphQL `before` and `after` params
- * @return {Promise<Object>} The potentially-modified filter object
+ * @param {Object} args
+ * @param {Object} [args.after] A document that all results should be filtered to be after.
+ * @param {Object} [args.baseFilter] The MongoDB filter object to extend.
+ * @param {Object} [args.before] A document that all results should be filtered to be before.
+ * @param {String} [args.sortBy] The name of the field we are sorting by. Default _id
+ * @param {String} [args.sortOrder] The sort order, "asc" or "desc". Default "asc"
+ * @return {Object} The potentially-modified filter object
  */
-export default async function applyBeforeAfterToFilter({
+export default function applyBeforeAfterToFilter({
   after,
   baseFilter = {},
   before,
-  collection,
   sortBy: sortByField = "_id",
   sortOrder = "asc"
 }) {
@@ -25,18 +30,19 @@ export default async function applyBeforeAfterToFilter({
 
   if (!after && !before) return filter;
 
-  let internalId;
+  let doc;
   let op;
   if (before) {
-    internalId = before;
+    doc = before;
     op = (sortOrder === "desc" ? "$gt" : "$lt");
   } else {
-    internalId = after;
+    doc = after;
     op = (sortOrder === "desc" ? "$lt" : "$gt");
   }
 
+  const internalId = doc._id;
+
   if (sortByField === "_id") {
-    // We already have _id. Skip the lookup
     if (baseFilterIsEmpty) {
       filter = { _id: { [op]: internalId } };
     } else {
@@ -48,45 +54,35 @@ export default async function applyBeforeAfterToFilter({
       };
     }
   } else {
-    const doc = await collection.findOne({
-      _id: internalId
-    }, {
-      fields: {
-        [sortByField]: 1
-      }
+    limits[op] = doc[sortByField];
+    ors.push({
+      [sortByField]: doc[sortByField],
+      _id: { [op]: internalId }
     });
 
-    if (doc) {
-      limits[op] = doc[sortByField];
-      ors.push({
-        [sortByField]: doc[sortByField],
-        _id: { [op]: internalId }
-      });
-
-      if (baseFilterIsEmpty) {
-        filter = {
-          $or: [
-            {
-              [sortByField]: limits
-            },
-            ...ors
-          ]
-        };
-      } else {
-        filter = {
-          $and: [
-            { ...filter },
-            {
-              $or: [
-                {
-                  [sortByField]: limits
-                },
-                ...ors
-              ]
-            }
-          ]
-        };
-      }
+    if (baseFilterIsEmpty) {
+      filter = {
+        $or: [
+          {
+            [sortByField]: limits
+          },
+          ...ors
+        ]
+      };
+    } else {
+      filter = {
+        $and: [
+          { ...filter },
+          {
+            $or: [
+              {
+                [sortByField]: limits
+              },
+              ...ors
+            ]
+          }
+        ]
+      };
     }
   }
 
