@@ -1,6 +1,6 @@
 import { encodeCatalogProductOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/catalogProduct";
 import { encodeCatalogProductVariantOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/catalogProductVariant";
-import { encodeProductOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/product";
+import { encodeProductOpaqueId, xformPricingArray } from "@reactioncommerce/reaction-graphql-xforms/product";
 import { resolveShopFromShopId } from "@reactioncommerce/reaction-graphql-utils";
 
 export default {
@@ -22,5 +22,6 @@ export default {
     return [];
   },
   variantId: (node) => encodeProductOpaqueId(node.variantId),
-  shop: resolveShopFromShopId
+  shop: resolveShopFromShopId,
+  pricing: (node) => xformPricingArray(node.pricing)
 };

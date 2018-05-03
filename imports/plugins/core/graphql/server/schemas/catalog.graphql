@@ -20,6 +20,31 @@ type PriceRange {
   max: Float!
 }
 
+"The product price or price range for a specific currency"
+type ProductPricingInfo {
+  "The code for the currency these pricing details applies to"
+  currency: Currency!
+
+  """
+  UI should display this price. If a product has multiple potential prices depending on selected
+  variants and options, then this is a price range string such as "$3.95 - $6.99". It includes the currency
+  symbols.
+  """
+  displayPrice: String!
+
+  "The price of the most expensive possible variant+option combination"
+  maxPrice: Float!
+
+  "The price of the least expensive possible variant+option combination"
+  minPrice: Float!
+
+  """
+  For variants with no options and for options, this will always be set to a price. For variants
+  with options and products, this will be `null`.
+  """
+  price: Float
+}
+
 "Holds metadata specific to a specific social network service"
 type SocialMetadata {
   "Which social network is this metadata for"
@@ -126,8 +151,11 @@ type CatalogProduct implements CatalogProductOrVariant & Node {
   "Dimensions and other information about the containers in which this product will be shipped"
   parcel: ShippingParcel
 
-  "The range of prices among all variants"
+  "The range of prices among all variants (Deprecated use Pricing instead)"
   price: PriceRange
+
+  "Price and related information, per currency"
+  pricing: [ProductPricingInfo]!
 
   "The primary image"
   primaryImage: ImageInfo
@@ -242,8 +270,11 @@ type CatalogProductVariant implements CatalogProductOrVariant & Node {
   "The country of origin"
   originCountry: String
 
-  "The price, in the default shop currency"
+  "The price, in the default shop currency (Deprecated use Pricing instead)"
   price: Float!
+
+  "Price and related information, per currency"
+  pricing: [ProductPricingInfo]!
 
   "The shop to which this product variant belongs"
   shop: Shop!

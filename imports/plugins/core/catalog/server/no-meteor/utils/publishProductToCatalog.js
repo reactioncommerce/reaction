@@ -1,6 +1,6 @@
 import Logger from "@reactioncommerce/logger";
 import Random from "@reactioncommerce/random";
-
+import getPriceRange from "/imports/plugins/core/revisions/server/no-meteor/utils/getPriceRange";
 import isBackorder from "./isBackorder";
 import isLowQuantity from "./isLowQuantity";
 import isSoldOut from "./isSoldOut";
@@ -15,7 +15,7 @@ import getCatalogProductMedia from "./getCatalogProductMedia";
  * @return {boolean} true on successful publish, false if publish was unsuccessful
  */
 export default async function publishProductToCatalog(product, collections) {
-  const { Catalog, Products } = collections;
+  const { Catalog, Products, Shops } = collections;
 
   if (!product) {
     Logger.info("Cannot publish undefined product to catalog");
@@ -27,19 +27,40 @@ export default async function publishProductToCatalog(product, collections) {
     return false;
   }
 
+  const shop = await Shops.findOne({ _id: product.shopId }, { fields: { currency: 1 } });
+  if (!shop) {
+    Logger.info("Product's shop not found");
+    return false;
+  }
+
   const catalogProductMedia = await getCatalogProductMedia(product._id, collections);
   const primaryImage = catalogProductMedia.find(({ toGrid }) => toGrid === 1) || null;
 
   // Get all variants of the product and denormalize them into an array on the CatalogProduct
-  const variants = await Products.find({ ancestors: product._id }).toArray();
+  const variants = await Products.find({
+    ancestors: product._id,
+    isDeleted: { $ne: true },
+    isVisable: { $ne: false }
+  }).toArray();
 
-  const catalogProductVariants = variants
-    // We filter out deleted or non-visible variants when publishing to catalog.
-    // We don't do this for top-level products.
-    .filter((variant) => !variant.isDeleted && variant.isVisible)
+  const topVariants = [];
+  const options = new Map();
 
-    // We want to explicitly map everything so that new properties added to variant are not published to a catalog unless we want them
-    .map((variant) => ({
+  variants.forEach((variant) => {
+    if (variant.ancestors.length === 2) {
+      const parentId = variant.ancestors[1];
+      if (options.has(parentId)) {
+        options.get(parentId).push(variant);
+      } else {
+        options.set(parentId, [variant]);
+      }
+    } else {
+      topVariants.push(variant);
+    }
+  });
+
+  const xformVariant = (variant, variantPriceInfo) => {
+    return {
       _id: variant._id,
       ancestorIds: variant.ancestors || [],
       barcode: variant.barcode,
@@ -59,6 +80,14 @@ export default async function publishProductToCatalog(product, collections) {
       optionTitle: variant.optionTitle,
       originCountry: variant.originCountry,
       price: variant.price,
+      pricing: {
+        [shop.currency]: {
+          displayPrice: variantPriceInfo.range,
+          maxPrice: variantPriceInfo.max,
+          minPrice: variantPriceInfo.min,
+          price: typeof variant.price === "number" ? variant.price : null
+        }
+      },
       shopId: variant.shopId,
       sku: variant.sku,
       taxCode: variant.taxCode,
@@ -69,8 +98,32 @@ export default async function publishProductToCatalog(product, collections) {
       variantId: variant._id,
       weight: variant.weight,
       width: variant.width
-    }));
+    };
+  };
 
+  const prices = [];
+  const catalogProductVariants = topVariants
+    // We want to explicitly map everything so that new properties added to variant are not published to a catalog unless we want them
+    .map((variant) => {
+      const variantOptions = options.get(variant._id);
+      let priceInfo;
+      if (variantOptions) {
+        const optionPrices = variantOptions.map((option) => option.price);
+        priceInfo = getPriceRange(optionPrices);
+      } else {
+        priceInfo = getPriceRange([variant.price]);
+      }
+
+      prices.push(priceInfo.min, priceInfo.max);
+      const newVariant = xformVariant(variant, priceInfo);
+
+      if (variantOptions) {
+        newVariant.options = variantOptions.map((option) => xformVariant(option, getPriceRange([option.price])));
+      }
+      return newVariant;
+    });
+
+  const productPriceInfo = getPriceRange(prices);
   const catalogProduct = {
     // We want to explicitly map everything so that new properties added to product are not published to a catalog unless we want them
     _id: product._id,
@@ -95,6 +148,14 @@ export default async function publishProductToCatalog(product, collections) {
     pageTitle: product.pageTitle,
     parcel: product.parcel,
     price: product.price,
+    pricing: {
+      [shop.currency]: {
+        displayPrice: productPriceInfo.range,
+        maxPrice: productPriceInfo.max,
+        minPrice: productPriceInfo.min,
+        price: null
+      }
+    },
     primaryImage,
     // The _id prop could change whereas this should always point back to the source product in Products collection
     productId: product._id,
