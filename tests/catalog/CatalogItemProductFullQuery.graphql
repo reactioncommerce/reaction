@@ -6,13 +6,6 @@
     }
     createdAt
     updatedAt
-    positions {
-      displayWeight
-      isPinned
-      position
-      tagId
-      updatedAt
-    }
     product {
        _id
       barcode
