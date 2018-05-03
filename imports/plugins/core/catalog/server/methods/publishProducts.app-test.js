@@ -10,6 +10,7 @@ import * as Collections from "/lib/collections";
 import Fixtures from "/server/imports/fixtures";
 import { PublicationCollector } from "meteor/johanbrook:publication-collector";
 import { RevisionApi } from "/imports/plugins/core/revisions/lib/api/revisions";
+import rawCollections from "/imports/collections/rawCollections";
 import publishProductToCatalog from "../no-meteor/utils/publishProductToCatalog";
 
 Fixtures();
@@ -83,9 +84,9 @@ describe("Catalog", function () {
       });
 
       Promise.all([
-        publishProductToCatalog(id1, Collections),
-        publishProductToCatalog(id2, Collections),
-        publishProductToCatalog(id3, Collections)
+        publishProductToCatalog(id1, rawCollections),
+        publishProductToCatalog(id2, rawCollections),
+        publishProductToCatalog(id3, rawCollections)
       ]).then(() => {
         done();
       });

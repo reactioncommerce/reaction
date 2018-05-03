@@ -4,10 +4,11 @@ import Future from "fibers/future";
 import { Meteor } from "meteor/meteor";
 import { check, Match } from "meteor/check";
 import { SSR } from "meteor/meteorhacks:ssr";
-import { Catalog, Orders, Products, Shops, Packages } from "/lib/collections";
+import { Orders, Products, Shops, Packages } from "/lib/collections";
 import { PaymentMethodArgument } from "/lib/collections/schemas";
 import { Logger, Hooks, Reaction } from "/server/api";
 import { Media } from "/imports/plugins/core/files/server";
+import rawCollections from "/imports/collections/rawCollections";
 import publishProductInventoryAdjustments from "/imports/plugins/core/catalog/server/no-meteor/utils/publishProductInventoryAdjustments";
 
 /**
@@ -139,7 +140,7 @@ export function ordersInventoryAdjust(orderId) {
     Hooks.Events.run("afterUpdateCatalogProduct", item.variant);
 
     // Publish inventory updates to the Catalog
-    publishProductInventoryAdjustments(item.productId, { Catalog, Products });
+    Promise.await(publishProductInventoryAdjustments(item.productId, rawCollections));
   });
 }
 
@@ -184,7 +185,7 @@ export function ordersInventoryAdjustByShop(orderId, shopId) {
       Hooks.Events.run("afterUpdateCatalogProduct", item.variants);
 
       // Publish inventory updates to the Catalog
-      publishProductInventoryAdjustments(item.productId, { Catalog, Products });
+      Promise.await(publishProductInventoryAdjustments(item.productId, rawCollections));
     }
   });
 }
@@ -481,7 +482,7 @@ export const methods = {
           Hooks.Events.run("afterUpdateCatalogProduct", item.variants);
 
           // Publish inventory updates to the Catalog
-          publishProductInventoryAdjustments(item.productId, { Catalog, Products });
+          Promise.await(publishProductInventoryAdjustments(item.productId, rawCollections));
         }
       });
     }
