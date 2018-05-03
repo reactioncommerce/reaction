@@ -1,10 +1,10 @@
 /**
  *
  * @method getCatalogProductMedia
- * @summary TODO:
- * @param {String} productId - TODO
- * @param {Object} collections - TODO
- * @return {Array}
+ * @summary Get an array of ImageInfo objects by Product ID
+ * @param {String} productId -  A product ID. Must be a top-level product.
+ * @param {Object} collections - Raw mongo collections
+ * @return {Promise<Object[]>} Array of ImageInfo objects sorted by priority
  */
 export default async function getCatalogProductMedia(productId, collections) {
   const { Media } = collections;
@@ -15,7 +15,7 @@ export default async function getCatalogProductMedia(productId, collections) {
       "metadata.workflow": { $nin: ["archived", "unpublished"] }
     },
     {
-      sort: { "metadata.priority": 1, "uploadedAt": 1 }
+      sort: { "metadata.priority": 1, uploadedAt: 1 }
     }
   );
 
