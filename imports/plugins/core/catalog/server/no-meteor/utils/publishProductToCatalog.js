@@ -59,47 +59,45 @@ export default async function publishProductToCatalog(product, collections) {
     }
   });
 
-  const xformVariant = (variant, variantPriceInfo) => {
-    return {
-      _id: variant._id,
-      ancestorIds: variant.ancestors || [],
-      barcode: variant.barcode,
-      compareAtPrice: variant.compareAtPrice,
-      createdAt: variant.createdAt,
-      height: variant.height,
-      index: variant.index || 0,
-      inventoryManagement: !!variant.inventoryManagement,
-      inventoryPolicy: !!variant.inventoryPolicy,
-      isLowQuantity: !!variant.isLowQuantity,
-      isSoldOut: !!variant.isSoldOut,
-      isTaxable: !!variant.taxable,
-      length: variant.length,
-      lowInventoryWarningThreshold: variant.lowInventoryWarningThreshold,
-      metafields: variant.metafields,
-      minOrderQuantity: variant.minOrderQuantity,
-      optionTitle: variant.optionTitle,
-      originCountry: variant.originCountry,
-      price: variant.price,
-      pricing: {
-        [shop.currency]: {
-          displayPrice: variantPriceInfo.range,
-          maxPrice: variantPriceInfo.max,
-          minPrice: variantPriceInfo.min,
-          price: typeof variant.price === "number" ? variant.price : null
-        }
-      },
-      shopId: variant.shopId,
-      sku: variant.sku,
-      taxCode: variant.taxCode,
-      taxDescription: variant.taxDescription,
-      title: variant.title,
-      updatedAt: variant.updatedAt || variant.createdAt,
-      // The _id prop could change whereas this should always point back to the source variant in Products collection
-      variantId: variant._id,
-      weight: variant.weight,
-      width: variant.width
-    };
-  };
+  const xformVariant = (variant, variantPriceInfo) => ({
+    _id: variant._id,
+    ancestorIds: variant.ancestors || [],
+    barcode: variant.barcode,
+    createdAt: variant.createdAt,
+    height: variant.height,
+    index: variant.index || 0,
+    inventoryManagement: !!variant.inventoryManagement,
+    inventoryPolicy: !!variant.inventoryPolicy,
+    isLowQuantity: !!variant.isLowQuantity,
+    isSoldOut: !!variant.isSoldOut,
+    isTaxable: !!variant.taxable,
+    length: variant.length,
+    lowInventoryWarningThreshold: variant.lowInventoryWarningThreshold,
+    metafields: variant.metafields,
+    minOrderQuantity: variant.minOrderQuantity,
+    optionTitle: variant.optionTitle,
+    originCountry: variant.originCountry,
+    price: variant.price,
+    pricing: {
+      [shop.currency]: {
+        compareAtPrice: variant.compareAtPrice || null,
+        displayPrice: variantPriceInfo.range,
+        maxPrice: variantPriceInfo.max,
+        minPrice: variantPriceInfo.min,
+        price: typeof variant.price === "number" ? variant.price : null
+      }
+    },
+    shopId: variant.shopId,
+    sku: variant.sku,
+    taxCode: variant.taxCode,
+    taxDescription: variant.taxDescription,
+    title: variant.title,
+    updatedAt: variant.updatedAt || variant.createdAt,
+    // The _id prop could change whereas this should always point back to the source variant in Products collection
+    variantId: variant._id,
+    weight: variant.weight,
+    width: variant.width
+  });
 
   const prices = [];
   const catalogProductVariants = topVariants
@@ -128,7 +126,6 @@ export default async function publishProductToCatalog(product, collections) {
     // We want to explicitly map everything so that new properties added to product are not published to a catalog unless we want them
     _id: product._id,
     barcode: product.barcode,
-    compareAtPrice: product.compareAtPrice,
     createdAt: product.createdAt,
     description: product.description,
     height: product.height,
@@ -150,6 +147,7 @@ export default async function publishProductToCatalog(product, collections) {
     price: product.price,
     pricing: {
       [shop.currency]: {
+        compareAtPrice: product.compareAtPrice || null,
         displayPrice: productPriceInfo.range,
         maxPrice: productPriceInfo.max,
         minPrice: productPriceInfo.min,

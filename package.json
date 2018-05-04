@@ -191,7 +191,7 @@
   "scripts": {
     "devserver": "NODE_ENV=devserver nodemon .reaction/devserver/index.js",
     "lint": "eslint .",
-    "test": "npm run test:unit && npm run test:app",
+    "test": "npm run test:unit && npm run test:integration && npm run test:app",
     "test:app": "meteor test --once --full-app --driver-package meteortesting:mocha",
     "test:app:watch": "TEST_WATCH=1 meteor test --full-app --driver-package meteortesting:mocha",
     "test:unit": "NODE_ENV=jesttest BABEL_DISABLE_CACHE=1 jest --no-cache --testPathIgnorePatterns /tests/",

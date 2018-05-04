@@ -31,7 +31,6 @@ const mockVariants = [
     _id: internalVariantIds[0],
     ancestors: [internalCatalogProductId],
     barcode: "barcode",
-    compareAtPrice: 0,
     createdAt,
     height: 0,
     index: 0,
@@ -72,7 +71,6 @@ const mockVariants = [
     _id: internalVariantIds[1],
     ancestors: [internalCatalogProductId, internalVariantIds[0]],
     barcode: "barcode",
-    compareAtPrice: 15,
     height: 2,
     index: 0,
     inventoryManagement: true,
@@ -113,7 +111,6 @@ const mockProduct = {
   _id: internalCatalogItemId,
   shopId: internalShopId,
   barcode: "barcode",
-  compareAtPrice: 4.56,
   createdAt,
   description: "description",
   facebookMsg: "facebookMessage",
@@ -200,8 +197,7 @@ const mockProduct = {
 const mockGeCatalogProductMedia = jest
   .fn()
   .mockName("getCatalogProductMedia")
-  .mockReturnValue(
-    Promise.resolve([
+  .mockReturnValue(Promise.resolve([
       {
         priority: 1,
         toGrid: 1,
@@ -215,20 +211,17 @@ const mockGeCatalogProductMedia = jest
           thumbnail: "thumbnail/path/to/image.jpg"
         }
       }
-    ])
-  );
+    ]));
 const mockGetCatalogPositions = jest
   .fn()
   .mockName("getCatalogPositions")
-  .mockReturnValue(
-    Promise.resolve({
+  .mockReturnValue(Promise.resolve({
       displayWeight: 1,
       isPinned: false,
       position: 1,
       tagId: "999",
       updatedAt: positionUpdatedAt
-    })
-  );
+    }));
 const mockIsBackorder = jest
   .fn()
   .mockName("isBackorder")

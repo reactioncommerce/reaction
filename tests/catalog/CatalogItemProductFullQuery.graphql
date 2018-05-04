@@ -16,7 +16,6 @@
     product {
        _id
       barcode
-      compareAtPrice
       createdAt
       description
       height
@@ -102,7 +101,6 @@
         _id
         ancestorIds
         barcode
-        compareAtPrice
         createdAt
         height
         index
