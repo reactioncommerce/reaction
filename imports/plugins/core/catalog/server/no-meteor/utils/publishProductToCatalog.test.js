@@ -200,23 +200,21 @@ const mockShop = {
 const mockGeCatalogProductMedia = jest
   .fn()
   .mockName("getCatalogProductMedia")
-  .mockReturnValue(
-    Promise.resolve([
-      {
-        priority: 1,
-        toGrid: 1,
-        productId: internalProductId,
-        variantId: internalVariantIds[1],
-        URLs: {
-          large: "large/path/to/image.jpg",
-          medium: "medium/path/to/image.jpg",
-          original: "image/path/to/image.jpg",
-          small: "small/path/to/image.jpg",
-          thumbnail: "thumbnail/path/to/image.jpg"
-        }
+  .mockReturnValue(Promise.resolve([
+    {
+      priority: 1,
+      toGrid: 1,
+      productId: internalProductId,
+      variantId: internalVariantIds[1],
+      URLs: {
+        large: "large/path/to/image.jpg",
+        medium: "medium/path/to/image.jpg",
+        original: "image/path/to/image.jpg",
+        small: "small/path/to/image.jpg",
+        thumbnail: "thumbnail/path/to/image.jpg"
       }
-    ])
-  );
+    }
+  ]));
 
 const mockIsBackorder = jest
   .fn()
