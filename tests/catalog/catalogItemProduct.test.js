@@ -25,20 +25,187 @@ const createdAt = new Date("2018-04-16T15:34:28.043Z");
 const updatedAt = new Date("2018-04-17T15:34:28.043Z");
 const positionUpdatedAt = new Date("2018-04-15T15:34:28.043Z");
 
-const variants = [
+// const variants = [
+//   {
+//     _id: internalVariantIds[0],
+//     ancestors: [internalCatalogProductId],
+//     barcode: "barcode",
+//     createdAt,
+//     height: 0,
+//     index: 0,
+//     inventoryManagement: true,
+//     inventoryPolicy: false,
+//     isLowQuantity: true,
+//     isSoldOut: false,
+//     isDeleted: false,
+//     isVisible: true,
+//     length: 0,
+//     lowInventoryWarningThreshold: 0,
+//     metafields: [
+//       {
+//         value: "value",
+//         namespace: "namespace",
+//         description: "description",
+//         valueType: "valueType",
+//         scope: "scope",
+//         key: "key"
+//       }
+//     ],
+//     minOrderQuantity: 0,
+//     optionTitle: "Untitled Option",
+//     originCountry: "US",
+//     price: 0,
+//     shopId: internalShopId,
+//     sku: "sku",
+//     taxable: true,
+//     taxCode: "0000",
+//     taxDescription: "taxDescription",
+//     title: "Small Concrete Pizza",
+//     updatedAt,
+//     variantId: internalVariantIds[0],
+//     weight: 0,
+//     width: 0
+//   },
+//   {
+//     _id: internalVariantIds[1],
+//     ancestors: [internalCatalogProductId, internalVariantIds[0]],
+//     barcode: "barcode",
+//     height: 2,
+//     index: 0,
+//     inventoryManagement: true,
+//     inventoryPolicy: true,
+//     isLowQuantity: true,
+//     isSoldOut: false,
+//     isDeleted: false,
+//     isVisible: true,
+//     length: 2,
+//     lowInventoryWarningThreshold: 0,
+//     metafields: [
+//       {
+//         value: "value",
+//         namespace: "namespace",
+//         description: "description",
+//         valueType: "valueType",
+//         scope: "scope",
+//         key: "key"
+//       }
+//     ],
+//     minOrderQuantity: 0,
+//     optionTitle: "Awesome Soft Bike",
+//     originCountry: "US",
+//     price: 992.0,
+//     shopId: internalShopId,
+//     sku: "sku",
+//     taxable: true,
+//     taxCode: "0000",
+//     taxDescription: "taxDescription",
+//     title: "One pound bag",
+//     variantId: internalVariantIds[1],
+//     weight: 2,
+//     width: 2
+//   }
+// ];
+
+// const mockProduct = {
+//   _id: internalCatalogItemId,
+//   shopId: internalShopId,
+//   barcode: "barcode",
+//   createdAt,
+//   description: "description",
+//   facebookMsg: "facebookMessage",
+//   fulfillmentService: "fulfillmentService",
+//   googleplusMsg: "googlePlusMessage",
+//   height: 11.23,
+//   isBackorder: false,
+//   isLowQuantity: false,
+//   isSoldOut: false,
+//   length: 5.67,
+//   lowInventoryWarningThreshold: 2,
+//   metafields: [
+//     {
+//       value: "value",
+//       namespace: "namespace",
+//       description: "description",
+//       valueType: "valueType",
+//       scope: "scope",
+//       key: "key"
+//     }
+//   ],
+//   metaDescription: "metaDescription",
+//   minOrderQuantity: 5,
+//   originCountry: "originCountry",
+//   pageTitle: "pageTitle",
+//   parcel: {
+//     containers: "containers",
+//     length: 4.44,
+//     width: 5.55,
+//     height: 6.66,
+//     weight: 7.77
+//   },
+//   pinterestMsg: "pinterestMessage",
+//   positions: {
+//     [shopName.toLowerCase()]: {
+//       weight: 1,
+//       position: 1,
+//       pinned: true,
+//       updatedAt: positionUpdatedAt.toISOString()
+//     }
+//   },
+//   price: {
+//     max: 5.99,
+//     min: 2.99,
+//     range: "2.99 - 5.99"
+//   },
+//   media: [
+//     {
+//       metadata: {
+//         toGrid: 1,
+//         priority: 1,
+//         productId: internalProductId,
+//         variantId: null
+//       },
+//       thumbnail: "http://localhost/thumbnail",
+//       small: "http://localhost/small",
+//       medium: "http://localhost/medium",
+//       large: "http://localhost/large",
+//       image: "http://localhost/original"
+//     }
+//   ],
+//   productId: internalProductId,
+//   productType: "productType",
+//   requiresShipping: true,
+//   shop: {
+//     _id: opaqueShopId
+//   },
+//   sku: "ABC123",
+//   handle: productSlug,
+//   hashtags: internalTagIds,
+//   taxCode: "taxCode",
+//   taxDescription: "taxDescription",
+//   taxable: false,
+//   title: "Fake Product Title",
+//   twitterMsg: "twitterMessage",
+//   type: "product-simple",
+//   updatedAt,
+//   variants,
+//   vendor: "vendor",
+//   weight: 15.6,
+//   width: 8.4
+// };
+
+const mockCatalogProductVariants = [
   {
     _id: internalVariantIds[0],
-    ancestors: [internalCatalogProductId],
+    ancestorIds: [internalCatalogProductId],
     barcode: "barcode",
-    createdAt,
+    createdAt: createdAt.toISOString(),
     height: 0,
     index: 0,
     inventoryManagement: true,
     inventoryPolicy: false,
     isLowQuantity: true,
     isSoldOut: false,
-    isDeleted: false,
-    isVisible: true,
+    isTaxable: true,
     length: 0,
     lowInventoryWarningThreshold: 0,
     metafields: [
@@ -52,73 +219,90 @@ const variants = [
       }
     ],
     minOrderQuantity: 0,
+    options: [
+      {
+        _id: internalVariantIds[1],
+        ancestorIds: [internalCatalogProductId, internalVariantIds[0]],
+        barcode: "barcode",
+        createdAt: null,
+        height: 2,
+        index: 0,
+        inventoryManagement: true,
+        inventoryPolicy: true,
+        isLowQuantity: true,
+        isSoldOut: false,
+        isTaxable: true,
+        length: 2,
+        lowInventoryWarningThreshold: 0,
+        metafields: [
+          {
+            value: "value",
+            namespace: "namespace",
+            description: "description",
+            valueType: "valueType",
+            scope: "scope",
+            key: "key"
+          }
+        ],
+        minOrderQuantity: 0,
+        optionTitle: "Awesome Soft Bike",
+        originCountry: "US",
+        price: 992.0,
+        pricing: {
+          USD: {
+            compareAtPrice: 15,
+            displayPrice: "992.00",
+            maxPrice: 992.0,
+            minPrice: 992.0,
+            price: 992.0
+          }
+        },
+        shopId: internalShopId,
+        sku: "sku",
+        taxCode: "0000",
+        taxDescription: "taxDescription",
+        title: "One pound bag",
+        updatedAt: null,
+        variantId: internalVariantIds[1],
+        weight: 2,
+        width: 2
+      }
+    ],
     optionTitle: "Untitled Option",
     originCountry: "US",
     price: 0,
+    pricing: {
+      USD: {
+        compareAtPrice: 15,
+        displayPrice: "992.00",
+        maxPrice: 992.0,
+        minPrice: 992.0,
+        price: null
+      }
+    },
     shopId: internalShopId,
     sku: "sku",
-    taxable: true,
     taxCode: "0000",
     taxDescription: "taxDescription",
     title: "Small Concrete Pizza",
-    updatedAt,
+    updatedAt: updatedAt.toISOString(),
     variantId: internalVariantIds[0],
     weight: 0,
     width: 0
-  },
-  {
-    _id: internalVariantIds[1],
-    ancestors: [internalCatalogProductId, internalVariantIds[0]],
-    barcode: "barcode",
-    height: 2,
-    index: 0,
-    inventoryManagement: true,
-    inventoryPolicy: true,
-    isLowQuantity: true,
-    isSoldOut: false,
-    isDeleted: false,
-    isVisible: true,
-    length: 2,
-    lowInventoryWarningThreshold: 0,
-    metafields: [
-      {
-        value: "value",
-        namespace: "namespace",
-        description: "description",
-        valueType: "valueType",
-        scope: "scope",
-        key: "key"
-      }
-    ],
-    minOrderQuantity: 0,
-    optionTitle: "Awesome Soft Bike",
-    originCountry: "US",
-    price: 992.0,
-    shopId: internalShopId,
-    sku: "sku",
-    taxable: true,
-    taxCode: "0000",
-    taxDescription: "taxDescription",
-    title: "One pound bag",
-    variantId: internalVariantIds[1],
-    weight: 2,
-    width: 2
   }
 ];
 
-const mockProduct = {
-  _id: internalCatalogItemId,
-  shopId: internalShopId,
+const mockCatalogProduct = {
+  _id: internalCatalogProductId,
   barcode: "barcode",
-  createdAt,
+  createdAt: createdAt.toISOString(),
   description: "description",
-  facebookMsg: "facebookMessage",
-  fulfillmentService: "fulfillmentService",
-  googleplusMsg: "googlePlusMessage",
   height: 11.23,
   isBackorder: false,
   isLowQuantity: false,
   isSoldOut: false,
+  isTaxable: false,
+  isVisable: true,
   length: 5.67,
   lowInventoryWarningThreshold: 2,
   metafields: [
@@ -142,56 +326,73 @@ const mockProduct = {
     height: 6.66,
     weight: 7.77
   },
-  pinterestMsg: "pinterestMessage",
-  positions: {
-    [shopName.toLowerCase()]: {
-      weight: 1,
-      position: 1,
-      pinned: true,
-      updatedAt: positionUpdatedAt.toISOString()
-    }
-  },
   price: {
     max: 5.99,
     min: 2.99,
     range: "2.99 - 5.99"
   },
+  pricing: {
+    USD: {
+      compareAtPrice: 15,
+      displayPrice: "2.99 - 5.99",
+      maxPrice: 5.99,
+      minPrice: 2.99,
+      price: null
+    }
+  },
+  productId: internalProductId,
   media: [
     {
-      metadata: {
-        toGrid: 1,
-        priority: 1,
-        productId: internalProductId,
-        variantId: null
-      },
+      toGrid: 1,
+      priority: 1,
+      productId: internalProductId,
+      variantId: null,
+      URLs: {
+        thumbnail: "http://localhost/thumbnail",
+        small: "http://localhost/small",
+        medium: "http://localhost/medium",
+        large: "http://localhost/large",
+        original: "http://localhost/original"
+      }
+    }
+  ],
+  primaryImage: {
+    toGrid: 1,
+    priority: 1,
+    productId: internalProductId,
+    variantId: null,
+    URLs: {
       thumbnail: "http://localhost/thumbnail",
       small: "http://localhost/small",
       medium: "http://localhost/medium",
       large: "http://localhost/large",
-      image: "http://localhost/original"
+      original: "http://localhost/original"
     }
-  ],
-  productId: internalProductId,
+  },
   productType: "productType",
   requiresShipping: true,
-  shop: {
-    _id: opaqueShopId
-  },
+  shopId: internalShopId,
   sku: "ABC123",
-  handle: productSlug,
-  hashtags: internalTagIds,
+  slug: productSlug,
+  socialMetadata: [
+    { service: "twitter", message: "twitterMessage" },
+    { service: "facebook", message: "facebookMessage" },
+    { service: "googleplus", message: "googlePlusMessage" },
+    { service: "pinterest", message: "pinterestMessage" }
+  ],
+  tagIds: internalTagIds,
   taxCode: "taxCode",
   taxDescription: "taxDescription",
-  taxable: false,
   title: "Fake Product Title",
-  twitterMsg: "twitterMessage",
   type: "product-simple",
-  updatedAt,
-  variants,
+  updatedAt: updatedAt.toISOString(),
+  variants: mockCatalogProductVariants,
   vendor: "vendor",
   weight: 15.6,
   width: 8.4
 };
+
+const mockCatalogItem = { _id: internalCatalogItemId, product: mockCatalogProduct };
 
 const expectedVariantsResponse = [
   {
@@ -219,6 +420,48 @@ const expectedVariantsResponse = [
       }
     ],
     minOrderQuantity: 0,
+    options: [
+      {
+        _id: opaqueCatalogVariantIds[1],
+        ancestorIds: [opaqueCatalogProductId, opaqueCatalogVariantIds[0]],
+        barcode: "barcode",
+        createdAt: null,
+        height: 2,
+        index: 0,
+        inventoryManagement: true,
+        inventoryPolicy: true,
+        isLowQuantity: true,
+        isSoldOut: false,
+        isTaxable: true,
+        length: 2,
+        lowInventoryWarningThreshold: 0,
+        metafields: [
+          {
+            value: "value",
+            namespace: "namespace",
+            description: "description",
+            valueType: "valueType",
+            scope: "scope",
+            key: "key"
+          }
+        ],
+        minOrderQuantity: 0,
+        optionTitle: "Awesome Soft Bike",
+        originCountry: "US",
+        price: 992.0,
+        shop: {
+          _id: opaqueShopId
+        },
+        sku: "sku",
+        taxCode: "0000",
+        taxDescription: "taxDescription",
+        title: "One pound bag",
+        updatedAt: null,
+        variantId: opaqueVariantIds[1],
+        weight: 2,
+        width: 2
+      }
+    ],
     optionTitle: "Untitled Option",
     originCountry: "US",
     price: 0,
@@ -233,46 +476,6 @@ const expectedVariantsResponse = [
     variantId: opaqueVariantIds[0],
     weight: 0,
     width: 0
-  },
-  {
-    _id: opaqueCatalogVariantIds[1],
-    ancestorIds: [opaqueCatalogProductId, opaqueCatalogVariantIds[0]],
-    barcode: "barcode",
-    createdAt: null,
-    height: 2,
-    index: 0,
-    inventoryManagement: true,
-    inventoryPolicy: true,
-    isLowQuantity: true,
-    isSoldOut: false,
-    isTaxable: true,
-    length: 2,
-    lowInventoryWarningThreshold: 0,
-    metafields: [
-      {
-        value: "value",
-        namespace: "namespace",
-        description: "description",
-        valueType: "valueType",
-        scope: "scope",
-        key: "key"
-      }
-    ],
-    minOrderQuantity: 0,
-    optionTitle: "Awesome Soft Bike",
-    originCountry: "US",
-    price: 992.0,
-    shop: {
-      _id: opaqueShopId
-    },
-    sku: "sku",
-    taxCode: "0000",
-    taxDescription: "taxDescription",
-    title: "One pound bag",
-    updatedAt: null,
-    variantId: opaqueVariantIds[1],
-    weight: 2,
-    width: 2
   }
 ];
 
@@ -388,7 +591,7 @@ beforeAll(async () => {
   query = tester.query(CatalogItemProductFullQuery);
   await tester.collections.Shops.insert({ _id: internalShopId, name: shopName });
   await Promise.all(internalTagIds.map((_id) => tester.collections.Tags.insert({ _id, shopId: internalShopId })));
-  await tester.collections.Catalog.insert(mockProduct);
+  await tester.collections.Catalog.insert(mockCatalogItem);
 });
 
 afterAll(async () => {

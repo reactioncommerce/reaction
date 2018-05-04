@@ -275,6 +275,100 @@ const expectedVariantsResponse = [
   }
 ];
 
+const mockCatalogProduct = {
+  _id: opaqueCatalogProductId,
+  barcode: "barcode",
+  createdAt: createdAt.toISOString(),
+  description: "description",
+  height: 11.23,
+  isBackorder: false,
+  isLowQuantity: false,
+  isSoldOut: false,
+  isTaxable: false,
+  length: 5.67,
+  lowInventoryWarningThreshold: 2,
+  metafields: [
+    {
+      value: "value",
+      namespace: "namespace",
+      description: "description",
+      valueType: "valueType",
+      scope: "scope",
+      key: "key"
+    }
+  ],
+  metaDescription: "metaDescription",
+  minOrderQuantity: 5,
+  originCountry: "originCountry",
+  pageTitle: "pageTitle",
+  parcel: {
+    containers: "containers",
+    length: 4.44,
+    width: 5.55,
+    height: 6.66,
+    weight: 7.77
+  },
+  price: {
+    max: 5.99,
+    min: 2.99,
+    range: "2.99 - 5.99"
+  },
+  productId: opaqueProductId,
+  media: [
+    {
+      toGrid: 1,
+      priority: 1,
+      productId: opaqueProductId,
+      variantId: null,
+      URLs: {
+        thumbnail: "http://localhost/thumbnail",
+        small: "http://localhost/small",
+        medium: "http://localhost/medium",
+        large: "http://localhost/large",
+        original: "http://localhost/original"
+      }
+    }
+  ],
+  primaryImage: {
+    toGrid: 1,
+    priority: 1,
+    productId: opaqueProductId,
+    variantId: null,
+    URLs: {
+      thumbnail: "http://localhost/thumbnail",
+      small: "http://localhost/small",
+      medium: "http://localhost/medium",
+      large: "http://localhost/large",
+      original: "http://localhost/original"
+    }
+  },
+  productType: "productType",
+  requiresShipping: true,
+  shop: {
+    _id: opaqueShopId
+  },
+  sku: "ABC123",
+  slug: "fake-product",
+  socialMetadata: [
+    { service: "twitter", message: "twitterMessage" },
+    { service: "facebook", message: "facebookMessage" },
+    { service: "googleplus", message: "googlePlusMessage" },
+    { service: "pinterest", message: "pinterestMessage" }
+  ],
+  tagIds: opaqueTagIds,
+  tags: {
+    nodes: [{ _id: opaqueTagIds[0] }, { _id: opaqueTagIds[1] }]
+  },
+  taxCode: "taxCode",
+  taxDescription: "taxDescription",
+  title: "Fake Product Title",
+  updatedAt: updatedAt.toISOString(),
+  variants: expectedVariantsResponse,
+  vendor: "vendor",
+  weight: 15.6,
+  width: 8.4
+};
+
 const expectedItemsResponse = {
   catalogItems: {
     nodes: [
@@ -285,99 +379,7 @@ const expectedItemsResponse = {
         shop: {
           _id: opaqueShopId
         },
-        product: {
-          _id: opaqueCatalogProductId,
-          barcode: "barcode",
-          createdAt: createdAt.toISOString(),
-          description: "description",
-          height: 11.23,
-          isBackorder: false,
-          isLowQuantity: false,
-          isSoldOut: false,
-          isTaxable: false,
-          length: 5.67,
-          lowInventoryWarningThreshold: 2,
-          metafields: [
-            {
-              value: "value",
-              namespace: "namespace",
-              description: "description",
-              valueType: "valueType",
-              scope: "scope",
-              key: "key"
-            }
-          ],
-          metaDescription: "metaDescription",
-          minOrderQuantity: 5,
-          originCountry: "originCountry",
-          pageTitle: "pageTitle",
-          parcel: {
-            containers: "containers",
-            length: 4.44,
-            width: 5.55,
-            height: 6.66,
-            weight: 7.77
-          },
-          price: {
-            max: 5.99,
-            min: 2.99,
-            range: "2.99 - 5.99"
-          },
-          productId: opaqueProductId,
-          media: [
-            {
-              toGrid: 1,
-              priority: 1,
-              productId: opaqueProductId,
-              variantId: null,
-              URLs: {
-                thumbnail: "http://localhost/thumbnail",
-                small: "http://localhost/small",
-                medium: "http://localhost/medium",
-                large: "http://localhost/large",
-                original: "http://localhost/original"
-              }
-            }
-          ],
-          primaryImage: {
-            toGrid: 1,
-            priority: 1,
-            productId: opaqueProductId,
-            variantId: null,
-            URLs: {
-              thumbnail: "http://localhost/thumbnail",
-              small: "http://localhost/small",
-              medium: "http://localhost/medium",
-              large: "http://localhost/large",
-              original: "http://localhost/original"
-            }
-          },
-          productType: "productType",
-          requiresShipping: true,
-          shop: {
-            _id: opaqueShopId
-          },
-          sku: "ABC123",
-          slug: "fake-product",
-          socialMetadata: [
-            { service: "twitter", message: "twitterMessage" },
-            { service: "facebook", message: "facebookMessage" },
-            { service: "googleplus", message: "googlePlusMessage" },
-            { service: "pinterest", message: "pinterestMessage" }
-          ],
-          tagIds: opaqueTagIds,
-          tags: {
-            nodes: [{ _id: opaqueTagIds[0] }, { _id: opaqueTagIds[1] }]
-          },
-          taxCode: "taxCode",
-          taxDescription: "taxDescription",
-          title: "Fake Product Title",
-          updatedAt: updatedAt.toISOString(),
-          variants: expectedVariantsResponse,
-          vendor: "vendor",
-          weight: 15.6,
-          width: 8.4
-        }
+        product: mockCatalogProduct
       }
     ]
   }
@@ -398,7 +400,7 @@ test("get all items for shop", async () => {
 
   await Promise.all(internalTagIds.map((_id) => tester.collections.Tags.insert({ _id, shopId: internalShopId })));
 
-  await tester.collections.Catalog.insert(mockProduct);
+  await tester.collections.Catalog.insert(mockCatalogProduct);
 
   let result;
   try {
