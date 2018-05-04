@@ -249,6 +249,47 @@ const expectedVariantsResponse = [
       }
     ],
     minOrderQuantity: 0,
+    options: [
+      {
+        _id: opaqueCatalogVariantIds[1],
+        barcode: "barcode",
+        createdAt: null,
+        height: 2,
+        index: 0,
+        inventoryManagement: true,
+        inventoryPolicy: true,
+        isLowQuantity: true,
+        isSoldOut: false,
+        isTaxable: true,
+        length: 2,
+        lowInventoryWarningThreshold: 0,
+        metafields: [
+          {
+            value: "value",
+            namespace: "namespace",
+            description: "description",
+            valueType: "valueType",
+            scope: "scope",
+            key: "key"
+          }
+        ],
+        minOrderQuantity: 0,
+        optionTitle: "Awesome Soft Bike",
+        originCountry: "US",
+        price: 992.0,
+        shop: {
+          _id: opaqueShopId
+        },
+        sku: "sku",
+        taxCode: "0000",
+        taxDescription: "taxDescription",
+        title: "One pound bag",
+        updatedAt: null,
+        variantId: opaqueVariantIds[1],
+        weight: 2,
+        width: 2
+      }
+    ],
     optionTitle: "Untitled Option",
     originCountry: "US",
     price: 0,
@@ -263,45 +304,6 @@ const expectedVariantsResponse = [
     variantId: opaqueVariantIds[0],
     weight: 0,
     width: 0
-  },
-  {
-    _id: opaqueCatalogVariantIds[1],
-    barcode: "barcode",
-    createdAt: null,
-    height: 2,
-    index: 0,
-    inventoryManagement: true,
-    inventoryPolicy: true,
-    isLowQuantity: true,
-    isSoldOut: false,
-    isTaxable: true,
-    length: 2,
-    lowInventoryWarningThreshold: 0,
-    metafields: [
-      {
-        value: "value",
-        namespace: "namespace",
-        description: "description",
-        valueType: "valueType",
-        scope: "scope",
-        key: "key"
-      }
-    ],
-    minOrderQuantity: 0,
-    optionTitle: "Awesome Soft Bike",
-    originCountry: "US",
-    price: 992.0,
-    shop: {
-      _id: opaqueShopId
-    },
-    sku: "sku",
-    taxCode: "0000",
-    taxDescription: "taxDescription",
-    title: "One pound bag",
-    updatedAt: null,
-    variantId: opaqueVariantIds[1],
-    weight: 2,
-    width: 2
   }
 ];
 
