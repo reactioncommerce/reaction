@@ -31,7 +31,5 @@ export default async function catalogItemProduct(context, { _id, slug } = {}) {
     query["product.slug"] = slug;
   }
 
-  const result = await Catalog.findOne(query);
-
-  return result;
+  return Catalog.findOne(query);
 }
