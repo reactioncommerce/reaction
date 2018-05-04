@@ -183,12 +183,12 @@ export default async function publishProductToCatalog(product, collections) {
   // Insert/update catalog document
   const result = await Catalog.updateOne(
     {
-      "product.productId": product.productId
+      "product.productId": catalogProduct.productId
     },
     {
       $set: {
         product: catalogProduct,
-        shopId: product.shopId,
+        shopId: catalogProduct.shopId,
         updatedAt: new Date()
       },
       $setOnInsert: {
