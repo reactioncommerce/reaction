@@ -1,5 +1,4 @@
 import mockContext from "/imports/test-utils/helpers/mockContext";
-import { rewire as rewire$getCatalogPositions, restore as restore$getCatalogPositions } from "./getCatalogPositions";
 import {
   rewire as rewire$getCatalogProductMedia,
   restore as restore$getCatalogProductMedia
@@ -217,18 +216,6 @@ const mockGeCatalogProductMedia = jest
       }
     ])
   );
-const mockGetCatalogPositions = jest
-  .fn()
-  .mockName("getCatalogPositions")
-  .mockReturnValue(
-    Promise.resolve({
-      displayWeight: 1,
-      isPinned: false,
-      position: 1,
-      tagId: "999",
-      updatedAt: positionUpdatedAt
-    })
-  );
 const mockIsBackorder = jest
   .fn()
   .mockName("isBackorder")
@@ -244,14 +231,12 @@ const mockIsSoldOut = jest
 
 beforeAll(() => {
   rewire$getCatalogProductMedia(mockGeCatalogProductMedia);
-  rewire$getCatalogPositions(mockGetCatalogPositions);
   rewire$isBackorder(mockIsBackorder);
   rewire$isLowQuantity(mockIsLowQuantity);
   rewire$isSoldOut(mockIsSoldOut);
 });
 
 afterAll(() => {
-  restore$getCatalogPositions();
   restore$isBackorder();
   restore$isLowQuantity();
   restore$isSoldOut();
