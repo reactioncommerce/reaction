@@ -94,7 +94,6 @@
           updatedAt
           variants {
             _id
-            ancestorIds
             barcode
             createdAt
             height
