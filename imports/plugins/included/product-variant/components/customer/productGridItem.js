@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import classnames from "classnames";
-import { formatPriceString, Router } from "/client/api";
+import { Router } from "/client/api";
 import { registerComponent, Components } from "@reactioncommerce/reaction-components";
 
 class ProductGridItem extends Component {
@@ -157,7 +157,7 @@ class ProductGridItem extends Component {
         >
           <div className="overlay">
             <div className="overlay-title">{product.title}</div>
-            <div className="currency-symbol">{formatPriceString(product.pricing[shopCurrencyCode].displayPrice)}</div>
+            <div className="currency-symbol">{product.pricing[shopCurrencyCode].displayPrice}</div>
           </div>
         </a>
       </div>

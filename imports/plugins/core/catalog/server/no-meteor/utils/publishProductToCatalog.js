@@ -27,11 +27,18 @@ export default async function publishProductToCatalog(product, collections) {
     return false;
   }
 
-  const shop = await Shops.findOne({ _id: product.shopId }, { fields: { currency: 1 } });
+  const shop = await Shops.findOne({ _id: product.shopId }, {
+    fields: {
+      currencies: 1,
+      currency: 1
+    }
+  });
   if (!shop) {
     Logger.info("Product's shop not found");
     return false;
   }
+
+  const shopCurrencyInfo = shop.currencies[shop.currency];
 
   const catalogProductMedia = await getCatalogProductMedia(product._id, collections);
   const primaryImage = catalogProductMedia.find(({ toGrid }) => toGrid === 1) || null;
@@ -107,21 +114,21 @@ export default async function publishProductToCatalog(product, collections) {
       let priceInfo;
       if (variantOptions) {
         const optionPrices = variantOptions.map((option) => option.price);
-        priceInfo = getPriceRange(optionPrices);
+        priceInfo = getPriceRange(optionPrices, shopCurrencyInfo);
       } else {
-        priceInfo = getPriceRange([variant.price]);
+        priceInfo = getPriceRange([variant.price], shopCurrencyInfo);
       }
 
       prices.push(priceInfo.min, priceInfo.max);
       const newVariant = xformVariant(variant, priceInfo);
 
       if (variantOptions) {
-        newVariant.options = variantOptions.map((option) => xformVariant(option, getPriceRange([option.price])));
+        newVariant.options = variantOptions.map((option) => xformVariant(option, getPriceRange([option.price], shopCurrencyInfo)));
       }
       return newVariant;
     });
 
-  const productPriceInfo = getPriceRange(prices);
+  const productPriceInfo = getPriceRange(prices, shopCurrencyInfo);
   const catalogProduct = {
     // We want to explicitly map everything so that new properties added to product are not published to a catalog unless we want them
     _id: product._id,

@@ -98,7 +98,7 @@ function composer(props, onData) {
     }
   });
 
-  canLoadMoreProducts = catalogCursor.count() >= Session.get("productScrollLimit");
+  canLoadMoreProducts = catalogCursor.count() >= scrollLimit;
 
   const products = catalogCursor.map((catalogItem) => catalogItem.product);
 
