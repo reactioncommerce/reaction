@@ -196,6 +196,10 @@ const mockProduct = {
   width: 8.4
 };
 
+const mockShop = {
+  currency: "USD"
+};
+
 const mockGeCatalogProductMedia = jest
   .fn()
   .mockName("getCatalogProductMedia")
@@ -245,6 +249,7 @@ afterAll(() => {
 
 test("expect true if a product is published to the catalog collection", async () => {
   mockCollections.Products.toArray.mockReturnValueOnce(Promise.resolve(mockVariants));
+  mockCollections.Shops.findOne.mockReturnValueOnce(Promise.resolve(mockShop));
   mockCollections.Catalog.updateOne.mockReturnValueOnce(Promise.resolve({ result: { ok: 1 } }));
   const spec = await publishProductToCatalog(mockProduct, mockCollections);
   expect(spec).toBe(true);
@@ -252,6 +257,7 @@ test("expect true if a product is published to the catalog collection", async ()
 
 test("expect false if a product is not published to the catalog collection", async () => {
   mockCollections.Products.toArray.mockReturnValueOnce(Promise.resolve(mockVariants));
+  mockCollections.Shops.findOne.mockReturnValueOnce(Promise.resolve(mockShop));
   mockCollections.Catalog.updateOne.mockReturnValueOnce(Promise.resolve({ result: { ok: 0 } }));
   const spec = await publishProductToCatalog(mockProduct, mockCollections);
   expect(spec).toBe(false);
