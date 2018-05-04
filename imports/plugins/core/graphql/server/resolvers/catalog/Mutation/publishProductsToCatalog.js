@@ -12,5 +12,5 @@ import { decodeProductOpaqueId } from "@reactioncommerce/reaction-graphql-xforms
 export default async function publishProductsToCatalog(_, args, context) {
   const { productIds } = args;
   const internalProductIds = productIds.map(decodeProductOpaqueId);
-  return context.mutations.publishProducts(internalProductIds);
+  return context.mutations.publishProducts(context, internalProductIds);
 }

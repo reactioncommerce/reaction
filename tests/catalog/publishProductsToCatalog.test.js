@@ -203,7 +203,7 @@ beforeAll(async () => {
   tester = new GraphTester();
   await tester.startServer();
   mutate = tester.mutate(PublishProductToCatalogMutation);
-  await tester.collections.Shops.insert({ _id: internalShopId, name: shopName });
+  await tester.insertPrimaryShop({ _id: internalShopId, name: shopName });
   await Promise.all(internalTagIds.map((_id) => tester.collections.Tags.insert({ _id, shopId: internalShopId })));
   await tester.collections.Products.insert(mockProduct);
 });
