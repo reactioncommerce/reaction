@@ -405,8 +405,8 @@ extend type Query {
 }
 
 extend type Mutation {
-  "publish products to the Catalog collection by Product ID"
-  pubslishProductsToCatalog(
+  "Publish products to the Catalog collection by product ID"
+  publishProductsToCatalog(
     "Array of Product ID"
     productIds: [ID]!
   ): [CatalogItemProduct]
