@@ -22,6 +22,12 @@ type PriceRange {
 
 "The product price or price range for a specific currency"
 type ProductPricingInfo {
+  """
+  A comparison price value, usually MSRP. If `price` is null, this will also be null. That is,
+  only purchasable variants will have a `compareAtPrice`.
+  """
+  compareAtPrice: Float
+
   "The code for the currency these pricing details applies to"
   currency: Currency!
 
@@ -40,7 +46,8 @@ type ProductPricingInfo {
 
   """
   For variants with no options and for options, this will always be set to a price. For variants
-  with options and products, this will be `null`.
+  with options and products, this will be `null`. There must be a price for a variant to be
+  added to a cart or purchased. Otherwise you would instead add one of its child options to a cart.
   """
   price: Float
 }
@@ -57,7 +64,6 @@ type SocialMetadata {
 "This interface represents the fields that are identical for both Products and Variants"
 interface CatalogProductOrVariant {
   barcode: String
-  compareAtPrice: Float
 
   # This should be required but we need to migrate existing data first
   createdAt: DateTime
@@ -93,9 +99,6 @@ type CatalogProduct implements CatalogProductOrVariant & Node {
 
   "The product barcode value, if it has one"
   barcode: String
-
-  "A comparison price value, assumed to be in the default shop currency"
-  compareAtPrice: Float
 
   "The date and time at which this CatalogProduct was created, which is when the related product was first published"
   createdAt: DateTime!
@@ -224,9 +227,6 @@ type CatalogProductVariant implements CatalogProductOrVariant & Node {
 
   "The product variant barcode value, if it has one"
   barcode: String
-
-  "A comparison price value, assumed to be in the default shop currency"
-  compareAtPrice: Float
 
   "The date and time at which this CatalogProductVariant was created, which is when the related product was first published"
   createdAt: DateTime

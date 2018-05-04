@@ -30,7 +30,6 @@ const mockVariants = [
     _id: internalVariantIds[0],
     ancestors: [internalCatalogProductId],
     barcode: "barcode",
-    compareAtPrice: 0,
     createdAt,
     height: 0,
     index: 0,
@@ -71,7 +70,6 @@ const mockVariants = [
     _id: internalVariantIds[1],
     ancestors: [internalCatalogProductId, internalVariantIds[0]],
     barcode: "barcode",
-    compareAtPrice: 15,
     height: 2,
     index: 0,
     inventoryManagement: true,
@@ -112,7 +110,6 @@ const mockProduct = {
   _id: internalCatalogItemId,
   shopId: internalShopId,
   barcode: "barcode",
-  compareAtPrice: 4.56,
   createdAt,
   description: "description",
   facebookMsg: "facebookMessage",
@@ -220,6 +217,7 @@ const mockGeCatalogProductMedia = jest
       }
     ])
   );
+
 const mockIsBackorder = jest
   .fn()
   .mockName("isBackorder")

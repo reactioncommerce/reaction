@@ -59,7 +59,6 @@ const mockVariants = [
       }
     ],
     minOrderQuantity: 0,
-    optionTitle: "Untitled Option",
     originCountry: "US",
     price: 0,
     shopId: internalShopId,
@@ -202,53 +201,11 @@ const mockProduct = {
   width: 8.4
 };
 
-const expectedVariantsResponse = [
-  {
-    _id: opaqueCatalogVariantIds[0],
-    ancestorIds: [opaqueCatalogProductId],
-    barcode: "barcode",
-    compareAtPrice: 0,
-    createdAt: createdAt.toISOString(),
-    height: 0,
-    index: 0,
-    inventoryManagement: true,
-    inventoryPolicy: false,
-    isLowQuantity: true,
-    isSoldOut: false,
-    isTaxable: true,
-    length: 0,
-    lowInventoryWarningThreshold: 0,
-    metafields: [
-      {
-        value: "value",
-        namespace: "namespace",
-        description: "description",
-        valueType: "valueType",
-        scope: "scope",
-        key: "key"
-      }
-    ],
-    minOrderQuantity: 0,
-    optionTitle: "Untitled Option",
-    originCountry: "US",
-    price: 0,
-    shop: {
-      _id: opaqueShopId
-    },
-    sku: "sku",
-    taxCode: "0000",
-    taxDescription: "taxDescription",
-    title: "Small Concrete Pizza",
-    updatedAt: updatedAt.toISOString(),
-    variantId: opaqueVariantIds[0],
-    weight: 0,
-    width: 0
-  },
+const expectedOptionsResponse = [
   {
     _id: opaqueCatalogVariantIds[1],
     ancestorIds: [opaqueCatalogProductId, opaqueCatalogVariantIds[0]],
     barcode: "barcode",
-    compareAtPrice: 15,
     createdAt: null,
     height: 2,
     index: 0,
@@ -273,6 +230,15 @@ const expectedVariantsResponse = [
     optionTitle: "Awesome Soft Bike",
     originCountry: "US",
     price: 992.0,
+    pricing: {
+      USD: {
+        compareAtPrice: 15,
+        displayPrice: "992.00",
+        maxPrice: 992.0,
+        minPrice: 992.0,
+        price: 992.0
+      }
+    },
     shop: {
       _id: opaqueShopId
     },
@@ -284,6 +250,58 @@ const expectedVariantsResponse = [
     variantId: opaqueVariantIds[1],
     weight: 2,
     width: 2
+  }
+];
+
+const expectedVariantsResponse = [
+  {
+    _id: opaqueCatalogVariantIds[0],
+    ancestorIds: [opaqueCatalogProductId],
+    barcode: "barcode",
+    createdAt: createdAt.toISOString(),
+    height: 0,
+    index: 0,
+    inventoryManagement: true,
+    inventoryPolicy: false,
+    isLowQuantity: true,
+    isSoldOut: false,
+    isTaxable: true,
+    length: 0,
+    lowInventoryWarningThreshold: 0,
+    metafields: [
+      {
+        value: "value",
+        namespace: "namespace",
+        description: "description",
+        valueType: "valueType",
+        scope: "scope",
+        key: "key"
+      }
+    ],
+    minOrderQuantity: 0,
+    options: expectedOptionsResponse,
+    originCountry: "US",
+    price: 0,
+    pricing: {
+      USD: {
+        compareAtPrice: 0,
+        displayPrice: "2.99 - 5.99",
+        maxPrice: 5.99,
+        minPrice: 2.99,
+        price: null
+      }
+    },
+    shop: {
+      _id: opaqueShopId
+    },
+    sku: "sku",
+    taxCode: "0000",
+    taxDescription: "taxDescription",
+    title: "Small Concrete Pizza",
+    updatedAt: updatedAt.toISOString(),
+    variantId: opaqueVariantIds[0],
+    weight: 0,
+    width: 0
   }
 ];
 
@@ -309,7 +327,6 @@ const expectedItemsResponse = {
         product: {
           _id: opaqueCatalogProductId,
           barcode: "barcode",
-          compareAtPrice: 4.56,
           createdAt: createdAt.toISOString(),
           description: "description",
           height: 11.23,
@@ -344,6 +361,15 @@ const expectedItemsResponse = {
             max: 5.99,
             min: 2.99,
             range: "2.99 - 5.99"
+          },
+          pricing: {
+            USD: {
+              compareAtPrice: 4.56,
+              displayPrice: "2.99 - 5.99",
+              maxPrice: 5.99,
+              minPrice: 2.99,
+              price: null
+            }
           },
           productId: opaqueProductId,
           media: [

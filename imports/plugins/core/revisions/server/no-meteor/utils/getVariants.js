@@ -17,21 +17,19 @@ export default async function getVariants(proudctOrVariantId, collections, topOn
     isDeleted: false
   }).toArray();
 
-  await Promise.all(
-    productVariants.map(async (variant) => {
-      const revision = await Revisions.findOne({
-        documentId: variant._id,
-        "workflow.status": {
-          $nin: ["revision/published"]
-        }
-      });
-
-      if (revision && revision.documentData.isVisible) {
-        variants.push(revision.documentData);
-      } else if (!revision && variant.isVisible) {
-        variants.push(variant);
+  await Promise.all(productVariants.map(async (variant) => {
+    const revision = await Revisions.findOne({
+      "documentId": variant._id,
+      "workflow.status": {
+        $nin: ["revision/published"]
       }
-    })
-  );
+    });
+
+    if (revision && revision.documentData.isVisible) {
+      variants.push(revision.documentData);
+    } else if (!revision && variant.isVisible) {
+      variants.push(variant);
+    }
+  }));
   return variants;
 }

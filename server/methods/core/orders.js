@@ -29,7 +29,7 @@ async function getPrimaryMediaForItem({ productId, variantId } = {}) {
       {
         "metadata.variantId": variantId
       },
-      { sort: { "metadata.priority": 1, uploadedAt: 1 } }
+      { sort: { "metadata.priority": 1, "uploadedAt": 1 } }
     );
   }
 
@@ -38,7 +38,7 @@ async function getPrimaryMediaForItem({ productId, variantId } = {}) {
       {
         "metadata.productId": productId
       },
-      { sort: { "metadata.priority": 1, uploadedAt: 1 } }
+      { sort: { "metadata.priority": 1, "uploadedAt": 1 } }
     );
   }
 
@@ -249,7 +249,7 @@ export const methods = {
     if (result === 1) {
       return Orders.update(
         {
-          _id: order._id,
+          "_id": order._id,
           "shipping._id": shipment._id
         },
         {
@@ -292,7 +292,7 @@ export const methods = {
     if (result === 1) {
       return Orders.update(
         {
-          _id: order._id,
+          "_id": order._id,
           "shipping._id": shipment._id
         },
         {
@@ -333,7 +333,7 @@ export const methods = {
     if (result === 1) {
       return Orders.update(
         {
-          _id: order._id,
+          "_id": order._id,
           "shipping._id": shipment._id
         },
         {
@@ -369,7 +369,7 @@ export const methods = {
 
     return Orders.update(
       {
-        _id: order._id,
+        "_id": order._id,
         "billing.shopId": Reaction.getShopId(),
         "billing.paymentMethod.method": "credit"
       },
@@ -413,7 +413,7 @@ export const methods = {
 
     const result = Orders.update(
       {
-        _id: order._id,
+        "_id": order._id,
         "billing.shopId": shopId,
         "billing.paymentMethod.method": "credit"
       },
@@ -523,7 +523,7 @@ export const methods = {
 
     return Orders.update(
       {
-        _id: order._id,
+        "_id": order._id,
         "billing.shopId": Reaction.getShopId(),
         "billing.paymentMethod.method": "credit"
       },
@@ -558,7 +558,7 @@ export const methods = {
 
     this.unblock();
 
-    return Meteor.call("orders/processPayments", order._id, function(error, result) {
+    return Meteor.call("orders/processPayments", order._id, function (error, result) {
       if (result) {
         Meteor.call("workflow/pushOrderWorkflow", "coreOrderWorkflow", "coreProcessPayment", order._id);
 
@@ -630,7 +630,7 @@ export const methods = {
 
     Orders.update(
       {
-        _id: order._id,
+        "_id": order._id,
         "shipping._id": shipment._id
       },
       {
@@ -686,13 +686,11 @@ export const methods = {
     Meteor.call("workflow/pushItemWorkflow", "coreOrderItemWorkflow/delivered", order, itemIds);
     Meteor.call("workflow/pushItemWorkflow", "coreOrderItemWorkflow/completed", order, itemIds);
 
-    const isCompleted = order.items.every(
-      (item) => item.workflow.workflow && item.workflow.workflow.includes("coreOrderItemWorkflow/completed")
-    );
+    const isCompleted = order.items.every((item) => item.workflow.workflow && item.workflow.workflow.includes("coreOrderItemWorkflow/completed"));
 
     Orders.update(
       {
-        _id: order._id,
+        "_id": order._id,
         "shipping._id": shipment._id
       },
       {
@@ -820,12 +818,10 @@ export const methods = {
           orderItem.placeholderImage = `${Meteor.absoluteUrl()}resources/placeholder.gif`;
 
           // variant image
-          const variantImage = Promise.await(
-            getPrimaryMediaForItem({
-              productId: orderItem.productId,
-              variantId: orderItem.variants && orderItem.variants._id
-            })
-          );
+          const variantImage = Promise.await(getPrimaryMediaForItem({
+            productId: orderItem.productId,
+            variantId: orderItem.variants && orderItem.variants._id
+          }));
           if (variantImage) {
             orderItem.variantImage = variantImage.url({ absolute: true, store: "large" });
           }
@@ -984,7 +980,7 @@ export const methods = {
 
     return Orders.update(
       {
-        _id: order._id,
+        "_id": order._id,
         "shipping._id": shipment._id
       },
       {
@@ -1104,7 +1100,7 @@ export const methods = {
 
         Orders.update(
           {
-            _id: orderId,
+            "_id": orderId,
             "billing.paymentMethod.transactionId": transactionId
           },
           {
@@ -1133,7 +1129,7 @@ export const methods = {
 
       Orders.update(
         {
-          _id: orderId,
+          "_id": orderId,
           "billing.paymentMethod.transactionId": transactionId
         },
         {
@@ -1250,7 +1246,7 @@ export const methods = {
 
     Orders.update(
       {
-        _id: orderId,
+        "_id": orderId,
         "billing.shopId": Reaction.getShopId(),
         "billing.paymentMethod.transactionId": transactionId
       },
@@ -1326,7 +1322,7 @@ export const methods = {
 
         Orders.update(
           {
-            _id: orderId,
+            "_id": orderId,
             "billing.shopId": Reaction.getShopId(),
             "billing.paymentMethod.transactionId": transactionId
           },

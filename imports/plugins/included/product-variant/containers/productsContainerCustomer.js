@@ -6,7 +6,6 @@ import { Meteor } from "meteor/meteor";
 import { Session } from "meteor/session";
 import { Reaction } from "/client/api";
 import { ITEMS_INCREMENT } from "/client/config/defaults";
-import { ReactionProduct } from "/lib/api";
 import { Catalog, Tags, Shops } from "/lib/collections";
 import ProductGridCustomer from "../components/customer/productGrid";
 
@@ -49,10 +48,10 @@ function composer(props, onData) {
 
   let canLoadMoreProducts = false;
 
+  const queryParams = {};
   const slug = Reaction.Router.getParam("slug");
   const shopIdOrSlug = Reaction.Router.getParam("shopSlug");
 
-  const tags = {};
   if (slug) {
     const tag = Tags.findOne({ slug }) || Tags.findOne({ _id: slug });
 
@@ -64,26 +63,20 @@ function composer(props, onData) {
 
       return;
     }
+    queryParams.tagIds = [tag._id];
+  }
 
-    tags.tags = [tag._id];
+  if (shopIdOrSlug) {
+    queryParams.shopIdsOrSlugs = [shopIdOrSlug];
+  }
+
+  const queryString = Reaction.Router.current().query;
+  if (queryString) {
+    queryParams.query = queryString.query;
   }
 
   const scrollLimit = Session.get("productScrollLimit");
-
-  const shopIds = {};
-  if (shopIdOrSlug) {
-    shopIds.shops = [shopIdOrSlug];
-  }
-
-  const currentTagId = ReactionProduct.getTagIdForPosition();
-
-  const sort = {
-    [`positions.${currentTagId}.position`]: 1,
-    createdAt: 1
-  };
-
-  const queryParams = Object.assign({}, tags, Reaction.Router.current().query, shopIds);
-  const productsSubscription = Meteor.subscribe("Products/grid", scrollLimit, queryParams, sort);
+  const productsSubscription = Meteor.subscribe("Products/grid", scrollLimit, queryParams);
 
   if (productsSubscription.ready()) {
     window.prerenderReady = true;
@@ -96,20 +89,28 @@ function composer(props, onData) {
     ]
   }).map((activeShop) => activeShop._id);
 
-  const productCursor = Catalog.find({
+  const catalogCursor = Catalog.find({
     "product.type": "product-simple",
     "shopId": { $in: activeShopsIds }
   }, {
-    $sort: sort
+    $sort: {
+      createdAt: -1
+    }
   });
 
-  canLoadMoreProducts = productCursor.count() >= Session.get("productScrollLimit");
+  canLoadMoreProducts = catalogCursor.count() >= Session.get("productScrollLimit");
 
-  const products = productCursor.fetch();
+  const products = catalogCursor.map((catalogItem) => catalogItem.product);
+
+  const currentShop = Shops.findOne({
+    _id: Reaction.getPrimaryShopId()
+  });
+
   onData(null, {
     canLoadMoreProducts,
     products,
-    productsSubscription
+    productsSubscription,
+    shopCurrencyCode: currentShop.currency
   });
 }
 

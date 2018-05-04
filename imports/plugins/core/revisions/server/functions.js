@@ -31,7 +31,7 @@ export function insertRevision(product) {
   }
 
   const productRevision = Revisions.findOne({
-    documentId: product._id,
+    "documentId": product._id,
     "workflow.status": {
       $nin: ["revision/published"]
     }
@@ -48,7 +48,7 @@ export function insertRevision(product) {
     // Verify there are no deleted ancestors,
     // Variants cannot be restored if their parent product / variant is deleted
     const archivedCount = Revisions.find({
-      documentId: { $in: product.ancestors },
+      "documentId": { $in: product.ancestors },
       "documentData.isDeleted": true,
       "workflow.status": {
         $nin: ["revision/published"]
@@ -56,11 +56,9 @@ export function insertRevision(product) {
     }).count();
 
     if (archivedCount > 0) {
-      Logger.debug(
-        `Cannot create product ${
-          product._id
-        } as a product/variant higher in it's ancestors tree is marked as 'isDeleted'.`
-      );
+      Logger.debug(`Cannot create product ${
+        product._id
+      } as a product/variant higher in it's ancestors tree is marked as 'isDeleted'.`);
       throw new Meteor.Error("unable-to-create-variant", "Unable to create product variant");
     }
   }
@@ -93,7 +91,7 @@ export function updateRevision(product, options = {}) {
   const { userId, modifier } = options;
 
   let productRevision = Revisions.findOne({
-    documentId: product._id,
+    "documentId": product._id,
     "workflow.status": {
       $nin: ["revision/published"]
     }
@@ -113,7 +111,7 @@ export function updateRevision(product, options = {}) {
     // Verify there are no deleted ancestors,
     // Variants cannot be restored if their parent product / variant is deleted
     const archivedCount = Revisions.find({
-      documentId: { $in: productRevision.documentData.ancestors },
+      "documentId": { $in: productRevision.documentData.ancestors },
       "documentData.isDeleted": true,
       "workflow.status": {
         $nin: ["revision/published"]
@@ -121,11 +119,9 @@ export function updateRevision(product, options = {}) {
     }).count();
 
     if (archivedCount > 0) {
-      Logger.debug(
-        `Cannot restore product ${
-          product._id
-        } as a product/variant higher in it's ancestors tree is marked as 'isDeleted'.`
-      );
+      Logger.debug(`Cannot restore product ${
+        product._id
+      } as a product/variant higher in it's ancestors tree is marked as 'isDeleted'.`);
       throw new Meteor.Error("unable-to-delete-variant", "Unable to delete product variant");
     }
   }
@@ -150,7 +146,7 @@ export function updateRevision(product, options = {}) {
   // This is especially important since we may need to update some fields
   // like metadata, and the selector is very important to that.
   const revisionSelector = {
-    documentId: product._id,
+    "documentId": product._id,
     "workflow.status": {
       $nin: ["revision/published"]
     }

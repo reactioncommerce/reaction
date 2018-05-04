@@ -13,7 +13,7 @@ function updateVariantProductField(variants, field, value) {
   return variants.map((variant) => Meteor.call("products/updateProductField", variant._id, field, value));
 }
 
-Template.productSettings.onCreated(function() {
+Template.productSettings.onCreated(function () {
   this.state = new ReactiveDict();
   this.state.setDefault({
     products: [],

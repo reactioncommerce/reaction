@@ -127,7 +127,7 @@ function adjustInventory(product, userId, context) {
         // we're only going to delete records that are new
         const removeInventory = Inventory.find(
           {
-            variantId: variant._id,
+            "variantId": variant._id,
             "workflow.status": "new"
           },
           {

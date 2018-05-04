@@ -15,7 +15,7 @@ export default async function getCatalogProductMedia(productId, collections) {
       "metadata.workflow": { $nin: ["archived", "unpublished"] }
     },
     {
-      sort: { "metadata.priority": 1, uploadedAt: 1 }
+      sort: { "metadata.priority": 1, "uploadedAt": 1 }
     }
   );
 
