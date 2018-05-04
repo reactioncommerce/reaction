@@ -133,7 +133,7 @@ const mockCatalogProduct = {
   isLowQuantity: false,
   isSoldOut: false,
   isTaxable: false,
-  isVisable: true,
+  isVisible: true,
   length: 5.67,
   lowInventoryWarningThreshold: 2,
   metafields: [
