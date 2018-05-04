@@ -1,14 +1,14 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Components } from "@reactioncommerce/reaction-components";
-import { ReactionProduct } from "/lib/api";
 
 class ProductGrid extends Component {
   static propTypes = {
     canLoadMoreProducts: PropTypes.bool,
     loadProducts: PropTypes.func,
     products: PropTypes.array,
-    productsSubscription: PropTypes.object
+    productsSubscription: PropTypes.object,
+    shopCurrencyCode: PropTypes.string.isRequired
   }
 
   componentDidMount() {
@@ -57,16 +57,16 @@ class ProductGrid extends Component {
 
   // render the product grid
   renderProductGrid() {
-    const { products } = this.props;
-    const currentTagId = ReactionProduct.getTagIdForPosition();
+    const { products, shopCurrencyCode } = this.props;
 
     return (
       <div className="product-grid">
         <ul className="product-grid-list list-unstyled" id="product-grid-list">
           {products.map((product) => (
             <Components.ProductGridItemCustomer
+              shopCurrencyCode={shopCurrencyCode}
               product={product}
-              position={(product.positions && product.positions[currentTagId]) || {}}
+              position={{}}
               key={product._id}
             />
           ))}

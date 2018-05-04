@@ -12,15 +12,15 @@ export const baseContext = {
 };
 
 /**
- * TODO:
  * @method buildMeteorContext
- * @summary
- * @param {string} userId - TODO:
+ * @summary Calls buildContext to build a GraphQL context object, after first looking up
+ *   the user by userId in collections.users.
+ * @param {String} userId - The user ID for the current request
  * @return {Object}
  */
 export default async function buildMeteorContext(userId) {
   const user = await collections.users.findOne({ _id: userId });
   const meteorContext = { ...baseContext };
-  buildContext(meteorContext, user);
+  await buildContext(meteorContext, user);
   return meteorContext;
 }

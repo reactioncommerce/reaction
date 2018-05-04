@@ -4,7 +4,7 @@ import buildMeteorContext from "/imports/plugins/core/graphql/server/buildMeteor
 import publishProductsMutation from "../no-meteor/mutations/publishProducts";
 
 Meteor.methods({
-  "catalog/publish/products": (productIds) => {
+  "catalog/publish/products"(productIds) {
     check(productIds, [String]);
     const context = Promise.await(buildMeteorContext(this.userId));
     return publishProductsMutation(context, productIds);

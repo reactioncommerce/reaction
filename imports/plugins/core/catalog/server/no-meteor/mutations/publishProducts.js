@@ -15,7 +15,7 @@ export default async function publishProducts(context, productIds) {
   const { collections, shopId: primaryShopId, userHasPermission } = context;
   const { Catalog, Products } = collections;
   // Ensure user has createProduct permission for active shop
-  if (!userHasPermission("createProduct")) {
+  if (!userHasPermission(["createProduct"])) {
     Logger.error("Access Denied");
     throw new Meteor.Error("access-denied", "Access Denied");
   }
@@ -34,12 +34,12 @@ export default async function publishProducts(context, productIds) {
 
   // Only allow users to publish products for shops they permissions to createProductsFor
   // If the user can createProducts on the main shop, they can publish products for all shops to the catalog.
-  const canUpdatePrimaryShopProducts = userHasPermission("createProduct", primaryShopId);
+  const canUpdatePrimaryShopProducts = userHasPermission(["createProduct"], primaryShopId);
 
   if (!canUpdatePrimaryShopProducts) {
     const uniqueShopIds = uniq(products.map((product) => product.shopId));
     uniqueShopIds.forEach((shopId) => {
-      if (!userHasPermission("createProduct", shopId)) {
+      if (!userHasPermission(["createProduct"], shopId)) {
         throw new Meteor.Error("access-denied", "Access Denied");
       }
     });
