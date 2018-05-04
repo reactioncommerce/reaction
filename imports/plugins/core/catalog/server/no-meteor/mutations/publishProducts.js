@@ -14,11 +14,6 @@ import publishProductsToCatalog from "../utils/publishProductsToCatalog";
 export default async function publishProducts(context, productIds) {
   const { collections, shopId: primaryShopId, userHasPermission } = context;
   const { Catalog, Products } = collections;
-  // Ensure user has createProduct permission for active shop
-  if (!userHasPermission(["createProduct"])) {
-    Logger.error("Access Denied");
-    throw new Meteor.Error("access-denied", "Access Denied");
-  }
 
   // Find all products
   const products = await Products.find(
@@ -28,6 +23,8 @@ export default async function publishProducts(context, productIds) {
     { _id: 1, shopId: 1 }
   ).toArray();
 
+  console.log("publishProduct made it", productIds, products);
+
   if (products.length !== productIds.length) {
     throw new Meteor.Error("not-found", "Some products not found");
   }
@@ -35,7 +32,7 @@ export default async function publishProducts(context, productIds) {
   // Only allow users to publish products for shops they permissions to createProductsFor
   // If the user can createProducts on the main shop, they can publish products for all shops to the catalog.
   const canUpdatePrimaryShopProducts = userHasPermission(["createProduct"], primaryShopId);
-
+  console.log("can update shop products?", canUpdatePrimaryShopProducts);
   if (!canUpdatePrimaryShopProducts) {
     const uniqueShopIds = uniq(products.map((product) => product.shopId));
     uniqueShopIds.forEach((shopId) => {
@@ -46,11 +43,11 @@ export default async function publishProducts(context, productIds) {
   }
 
   const success = await publishProductsToCatalog(productIds, collections);
-
+  console.log("success?", success);
   if (!success) {
     Logger.error("Some Products could not be published to the Catalog.");
     throw new Meteor.Error("server-error", "Some Products could not be published to the Catalog.");
   }
-
+  console.log("catalog collection?", Catalog);
   return Catalog.find({ "product.productId": { $in: productIds } }).toArray();
 }

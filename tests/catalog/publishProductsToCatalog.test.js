@@ -216,6 +216,11 @@ afterAll(async () => {
 
 // publish new product to catalog
 test("expect a CatalogItemProduct when a Product is published to the Catalog collection", async () => {
+  await tester.setLoggedInUser({
+    _id: "123",
+    roles: { [internalShopId]: ["createProduct"] }
+  });
+
   let result;
   try {
     result = await mutate({ productIds: [opaqueProductId] });
@@ -225,6 +230,8 @@ test("expect a CatalogItemProduct when a Product is published to the Catalog col
   }
 
   expect(result).toEqual(mockCatalogItem);
+
+  await tester.clearLoggedInUser();
 });
 
 // publish product updates to catalog

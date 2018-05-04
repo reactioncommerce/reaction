@@ -1,3 +1,4 @@
+import mongodb from "mongodb";
 import util from "util";
 import { merge } from "lodash";
 import graphql from "graphql.js";
@@ -6,6 +7,7 @@ import Datastore from "nedb";
 import Cursor from "nedb/lib/cursor";
 import createApolloServer from "../imports/plugins/core/graphql/server/createApolloServer";
 import defineCollections from "../imports/collections/defineCollections";
+import setUpFileCollections from "../imports/plugins/core/files/server/no-meteor/setUpFileCollections";
 import methods from "../.reaction/devserver/methods";
 import mutations from "../imports/plugins/core/graphql/server/mutations";
 import queries from "../imports/plugins/core/graphql/server/queries";
@@ -57,6 +59,11 @@ Object.defineProperty(Cursor.prototype, "options", {
   Datastore.prototype[prop] = util.promisify(Datastore.prototype[prop]);
 });
 
+// adding the new mongodb api updateOne method to nedb
+Datastore.prototype.updateOne = function(args) {
+  return this.update(args);
+};
+
 function getLocalDb() {
   const db = {};
   db.collection = () => new Datastore();
@@ -69,6 +76,16 @@ class GraphTester {
 
     this.collections = {};
     defineCollections(this.db, this.collections);
+
+    const { Media } = setUpFileCollections({
+      absoluteUrlPrefix: "http://fake.com",
+      db: this.db,
+      Logger: { info: console.info.bind(console) },
+      MediaRecords: this.collections.MediaRecords,
+      mongodb
+    });
+
+    this.collections.Media = Media;
 
     this.app = createApolloServer({
       context: {
