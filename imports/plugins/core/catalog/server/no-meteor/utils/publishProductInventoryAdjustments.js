@@ -15,34 +15,32 @@ import isSoldOut from "./isSoldOut";
  */
 export default async function publishProductInventoryAdjustments(productId, collections) {
   const { Catalog, Products } = collections;
-  const catalogProduct = await Catalog.findOne({
-    _id: productId
-  });
+  const catalogItem = await Catalog.findOne({ "product.productId": productId });
 
-  if (!catalogProduct) {
+  if (!catalogItem) {
     Logger.info("Cannot publish inventory status changes to catalog product");
     return false;
   }
 
-  const variants = await Products.find({
-    ancestors: productId
-  }).toArray();
+  const catalogProduct = catalogItem.product;
+
+  const variants = await Products.find({ ancestors: productId }).toArray();
 
   const update = {
-    isSoldOut: await isSoldOut(variants, collections),
-    isBackorder: await isBackorder(variants, collections),
-    isLowQuantity: await isLowQuantity(variants, collections)
+    "product.isSoldOut": await isSoldOut(variants, collections),
+    "product.isBackorder": await isBackorder(variants, collections),
+    "product.isLowQuantity": await isLowQuantity(variants, collections)
   };
 
-  // Only apply changes of one these fields have changed
+  // Only apply changes if one of these fields have changed
   if (
-    update.isSoldOut !== catalogProduct.isSoldOut ||
-    update.isBackorder !== catalogProduct.isBackorder ||
-    update.isLowQuantity !== catalogProduct.isLowQuantity
+    update["product.isSoldOut"] !== catalogProduct.isSoldOut ||
+    update["product.isBackorder"] !== catalogProduct.isBackorder ||
+    update["product.isLowQuantity"] !== catalogProduct.isLowQuantity
   ) {
     const result = await Catalog.updateOne(
       {
-        _id: productId
+        "product.productId": productId
       },
       {
         $set: update

@@ -47,7 +47,7 @@ export default async function publishProductToCatalog(product, collections) {
   const variants = await Products.find({
     ancestors: product._id,
     isDeleted: { $ne: true },
-    isVisable: { $ne: false }
+    isVisible: { $ne: false }
   }).toArray();
 
   const topVariants = [];

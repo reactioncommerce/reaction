@@ -21,15 +21,17 @@ export default async function catalogItemProduct(context, { _id, slug } = {}) {
   }
 
   const query = {
-    isDeleted: { $ne: true },
-    isVisible: { $ne: false }
+    "product.isDeleted": { $ne: true },
+    "product.isVisible": true
   };
 
   if (_id) {
     query._id = _id;
   } else {
-    query.handle = slug;
+    query["product.slug"] = slug;
   }
 
-  return Catalog.findOne(query);
+  const result = await Catalog.findOne(query);
+
+  return result;
 }

@@ -34,7 +34,7 @@ beforeAll(async () => {
   await tester.startServer();
   query = tester.query(tagsQuery);
 
-  await tester.collections.Shops.insert({ _id: internalShopId, name: shopName });
+  await tester.insertPrimaryShop({ _id: internalShopId, name: shopName });
   await Promise.all(tags.map((tag) => tester.collections.Tags.insert(tag)));
 });
 

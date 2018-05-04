@@ -12,15 +12,15 @@ import getPriceRange from "./getPriceRange";
  */
 export default async function getVariantPriceRange(variantId, collections) {
   const options = await getVariants(variantId, collections);
-  const visableOptions = options.filter((option) => option.isVisible && !option.isDeleted);
+  const visibleOptions = options.filter((option) => option.isVisible && !option.isDeleted);
 
-  if (visableOptions.length === 0) {
+  if (visibleOptions.length === 0) {
     const topVariant = await getProduct(variantId, collections);
     // topVariant could be undefined when we removing last top variant
     return topVariant && getPriceRange([topVariant.price]);
   }
 
-  const prices = visableOptions.map((option) => option.price);
+  const prices = visibleOptions.map((option) => option.price);
   const price = getPriceRange(prices);
   return price;
 }

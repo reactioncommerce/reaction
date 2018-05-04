@@ -19,10 +19,10 @@ export default async function getProductPriceRange(productId, collections) {
   }
 
   const variants = await getVariants(product._id, collections, true);
-  const visableVariants = variants.filter((option) => option.isVisible && !option.isDeleted);
-  if (visableVariants.length > 0) {
+  const visibleVariants = variants.filter((option) => option.isVisible && !option.isDeleted);
+  if (visibleVariants.length > 0) {
     const variantPrices = [];
-    await Promise.all(visableVariants.map(async (variant) => {
+    await Promise.all(visibleVariants.map(async (variant) => {
       const { min, max } = await getVariantPriceRange(variant._id, collections);
       variantPrices.push(min, max);
     }));

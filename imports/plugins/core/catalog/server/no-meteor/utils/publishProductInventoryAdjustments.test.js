@@ -189,6 +189,12 @@ const mockProduct = {
   width: 8.4
 };
 
+const mockCatalogItem = {
+  _id: internalCatalogItemId,
+  shopId: internalShopId,
+  product: mockProduct
+};
+
 const mockIsBackorder = jest
   .fn()
   .mockName("isBackorder")
@@ -212,7 +218,7 @@ afterAll(() => {
 });
 
 test("expect true if a product's inventory has changed and is updated in the catalog collection", async () => {
-  mockCollections.Catalog.findOne.mockReturnValueOnce(Promise.resolve(mockProduct));
+  mockCollections.Catalog.findOne.mockReturnValueOnce(Promise.resolve(mockCatalogItem));
   mockCollections.Products.toArray.mockReturnValueOnce(Promise.resolve(mockVariants));
   mockIsSoldOut.mockReturnValueOnce(Promise.resolve(true));
   mockCollections.Catalog.updateOne.mockReturnValueOnce(Promise.resolve({ result: { ok: 1 } }));
@@ -221,7 +227,7 @@ test("expect true if a product's inventory has changed and is updated in the cat
 });
 
 test("expect false if a product's inventory did not change and is not updated in the catalog collection", async () => {
-  mockCollections.Catalog.findOne.mockReturnValueOnce(Promise.resolve(mockProduct));
+  mockCollections.Catalog.findOne.mockReturnValueOnce(Promise.resolve(mockCatalogItem));
   mockCollections.Products.toArray.mockReturnValueOnce(Promise.resolve(mockVariants));
   mockIsSoldOut.mockReturnValueOnce(Promise.resolve(false));
   const spec = await publishProductInventoryAdjustments(mockProduct, mockCollections);

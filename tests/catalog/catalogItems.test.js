@@ -26,7 +26,6 @@ const updatedAt = new Date("2018-04-17T15:34:28.043Z");
 const mockCatalogProductVariants = [
   {
     _id: internalVariantIds[0],
-    ancestorIds: [internalCatalogProductId],
     barcode: "barcode",
     createdAt: createdAt.toISOString(),
     height: 0,
@@ -52,7 +51,6 @@ const mockCatalogProductVariants = [
     options: [
       {
         _id: internalVariantIds[1],
-        ancestorIds: [internalCatalogProductId, internalVariantIds[0]],
         barcode: "barcode",
         createdAt: null,
         height: 2,
@@ -132,7 +130,7 @@ const mockCatalogProduct = {
   isLowQuantity: false,
   isSoldOut: false,
   isTaxable: false,
-  isVisable: true,
+  isVisible: true,
   length: 5.67,
   lowInventoryWarningThreshold: 2,
   metafields: [
@@ -222,7 +220,13 @@ const mockCatalogProduct = {
   width: 8.4
 };
 
-const mockCatalogItem = { _id: internalCatalogItemId, product: mockCatalogProduct };
+const mockCatalogItem = {
+  _id: internalCatalogItemId,
+  product: mockCatalogProduct,
+  shopId: internalShopId,
+  createdAt,
+  updatedAt
+};
 
 const expectedVariantsResponse = [
   {
@@ -249,9 +253,73 @@ const expectedVariantsResponse = [
       }
     ],
     minOrderQuantity: 0,
-    optionTitle: "Untitled Option",
+    options: [
+      {
+        _id: opaqueCatalogVariantIds[1],
+        barcode: "barcode",
+        createdAt: null,
+        height: 2,
+        index: 0,
+        inventoryManagement: true,
+        inventoryPolicy: true,
+        isLowQuantity: true,
+        isSoldOut: false,
+        isTaxable: true,
+        length: 2,
+        lowInventoryWarningThreshold: 0,
+        metafields: [
+          {
+            value: "value",
+            namespace: "namespace",
+            description: "description",
+            valueType: "valueType",
+            scope: "scope",
+            key: "key"
+          }
+        ],
+        minOrderQuantity: 0,
+        optionTitle: "Awesome Soft Bike",
+        originCountry: "US",
+        pricing: [
+          {
+            currency: {
+              _id: "cmVhY3Rpb24vY3VycmVuY3k6VVNE",
+              code: "USD"
+            },
+            compareAtPrice: 15,
+            displayPrice: "992.00",
+            maxPrice: 992.0,
+            minPrice: 992.0,
+            price: 992.0
+          }
+        ],
+        shop: {
+          _id: opaqueShopId
+        },
+        sku: "sku",
+        taxCode: "0000",
+        taxDescription: "taxDescription",
+        title: "One pound bag",
+        updatedAt: null,
+        variantId: opaqueVariantIds[1],
+        weight: 2,
+        width: 2
+      }
+    ],
     originCountry: "US",
-    price: 0,
+    pricing: [
+      {
+        currency: {
+          _id: "cmVhY3Rpb24vY3VycmVuY3k6VVNE",
+          code: "USD"
+        },
+        compareAtPrice: 15,
+        displayPrice: "992.00",
+        maxPrice: 992.0,
+        minPrice: 992.0,
+        price: null
+      }
+    ],
     shop: {
       _id: opaqueShopId
     },
@@ -263,45 +331,6 @@ const expectedVariantsResponse = [
     variantId: opaqueVariantIds[0],
     weight: 0,
     width: 0
-  },
-  {
-    _id: opaqueCatalogVariantIds[1],
-    barcode: "barcode",
-    createdAt: null,
-    height: 2,
-    index: 0,
-    inventoryManagement: true,
-    inventoryPolicy: true,
-    isLowQuantity: true,
-    isSoldOut: false,
-    isTaxable: true,
-    length: 2,
-    lowInventoryWarningThreshold: 0,
-    metafields: [
-      {
-        value: "value",
-        namespace: "namespace",
-        description: "description",
-        valueType: "valueType",
-        scope: "scope",
-        key: "key"
-      }
-    ],
-    minOrderQuantity: 0,
-    optionTitle: "Awesome Soft Bike",
-    originCountry: "US",
-    price: 992.0,
-    shop: {
-      _id: opaqueShopId
-    },
-    sku: "sku",
-    taxCode: "0000",
-    taxDescription: "taxDescription",
-    title: "One pound bag",
-    updatedAt: null,
-    variantId: opaqueVariantIds[1],
-    weight: 2,
-    width: 2
   }
 ];
 
@@ -348,11 +377,19 @@ const expectedItemsResponse = {
             height: 6.66,
             weight: 7.77
           },
-          price: {
-            max: 5.99,
-            min: 2.99,
-            range: "2.99 - 5.99"
-          },
+          pricing: [
+            {
+              currency: {
+                _id: "cmVhY3Rpb24vY3VycmVuY3k6VVNE",
+                code: "USD"
+              },
+              compareAtPrice: 15,
+              displayPrice: "2.99 - 5.99",
+              maxPrice: 5.99,
+              minPrice: 2.99,
+              price: null
+            }
+          ],
           productId: opaqueProductId,
           media: [
             {
@@ -424,7 +461,7 @@ beforeAll(async () => {
 afterAll(() => tester.stopServer());
 
 test("get all items for shop", async () => {
-  await tester.collections.Shops.insert({ _id: internalShopId, name: shopName });
+  await tester.insertPrimaryShop({ _id: internalShopId, name: shopName });
 
   await Promise.all(internalTagIds.map((_id) => tester.collections.Tags.insert({ _id, shopId: internalShopId })));
 

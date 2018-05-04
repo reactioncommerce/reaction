@@ -9,7 +9,7 @@ Migrations.add({
     const visiblePublishedProducts = Products.find({
       ancestors: [],
       isDeleted: { $ne: true },
-      isVisible: { $ne: false },
+      isVisible: true,
       type: "simple"
     }, { _id: 1 }).map((product) => product._id);
     const success = Promise.await(publishProductsToCatalog(visiblePublishedProducts));

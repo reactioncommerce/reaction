@@ -131,6 +131,26 @@ class GraphTester {
     this.setLoginToken(null);
   }
 
+  async insertPrimaryShop(shopData) {
+    // Need shop domains and ROOT_URL set in order for `shopId` to be correctly set on GraphQL context
+    const domain = "shop.fake.site";
+    process.env.ROOT_URL = `https://${domain}/`;
+
+    return this.collections.Shops.insert({
+      currencies: {
+        USD: {
+          enabled: true,
+          format: "%s%v",
+          symbol: "$"
+        }
+      },
+      currency: "USD",
+      name: "Primary Shop",
+      ...shopData,
+      domains: [domain]
+    });
+  }
+
   async startServer() {
     const port = await findFreePort(4040);
     return new Promise((resolve, reject) => {

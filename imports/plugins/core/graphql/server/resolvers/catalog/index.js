@@ -3,7 +3,9 @@ import { getConnectionTypeResolvers } from "@reactioncommerce/reaction-graphql-u
 import CatalogItemProduct from "./CatalogItemProduct";
 import CatalogProduct from "./CatalogProduct";
 import CatalogProductVariant from "./CatalogProductVariant";
+import ImageInfo from "./ImageInfo";
 import Query from "./Query";
+import ProductPricingInfo from "./ProductPricingInfo";
 
 /**
  * Catalog-related GraphQL resolvers
@@ -23,6 +25,8 @@ export default {
   CatalogItemProduct,
   CatalogProduct,
   CatalogProductVariant,
+  ImageInfo,
   Query,
+  ProductPricingInfo,
   ...getConnectionTypeResolvers("CatalogItem")
 };

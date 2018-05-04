@@ -261,6 +261,9 @@ type CatalogProductVariant implements CatalogProductOrVariant & Node {
   "The minimum quantity that must be added to a cart"
   minOrderQuantity: Int
 
+  "Child variants, if any"
+  options: [CatalogProductVariant]
+
   "An option title. If this is set and this variant has a CatalogProductVariant parent, treat this variant as an option"
   optionTitle: String
 
