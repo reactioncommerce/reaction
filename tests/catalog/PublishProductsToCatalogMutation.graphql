@@ -1,0 +1,3 @@
+($productIds: [ID]!) {
+  publishProductsToCatalog(productIds: $productIds) { _id }
+}
