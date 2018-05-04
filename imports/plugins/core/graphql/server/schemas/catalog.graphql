@@ -222,9 +222,6 @@ type CatalogProductVariant implements CatalogProductOrVariant & Node {
   "The CatalogProductVariant ID. Do not assume that this is the same as the related variant ID. See `variantId` for that."
   _id: ID!
 
-  "The list of ancestor product or variant IDs, in order from top to bottom"
-  ancestorIds: [ID]!
-
   "The product variant barcode value, if it has one"
   barcode: String
 

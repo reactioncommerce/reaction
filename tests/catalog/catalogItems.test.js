@@ -227,7 +227,6 @@ const mockCatalogItem = { _id: internalCatalogItemId, product: mockCatalogProduc
 const expectedVariantsResponse = [
   {
     _id: opaqueCatalogVariantIds[0],
-    ancestorIds: [opaqueCatalogProductId],
     barcode: "barcode",
     createdAt: createdAt.toISOString(),
     height: 0,
@@ -267,7 +266,6 @@ const expectedVariantsResponse = [
   },
   {
     _id: opaqueCatalogVariantIds[1],
-    ancestorIds: [opaqueCatalogProductId, opaqueCatalogVariantIds[0]],
     barcode: "barcode",
     createdAt: null,
     height: 2,

@@ -68,7 +68,6 @@ export default async function publishProductToCatalog(product, collections) {
 
   const xformVariant = (variant, variantPriceInfo) => ({
     _id: variant._id,
-    ancestorIds: variant.ancestors || [],
     barcode: variant.barcode,
     createdAt: variant.createdAt,
     height: variant.height,
