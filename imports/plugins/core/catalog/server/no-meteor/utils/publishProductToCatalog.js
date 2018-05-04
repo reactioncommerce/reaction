@@ -7,6 +7,55 @@ import isSoldOut from "./isSoldOut";
 import getCatalogProductMedia from "./getCatalogProductMedia";
 
 /**
+ * @method
+ * @summary Converts a variant Product document into the catalog schema for variants
+ * @param {Object} variant The variant from Products collection
+ * @param {Object} variantPriceInfo The result of calling getPriceRange for this price or all child prices
+ * @param {String} shopCurrencyCode The shop currency code for the shop to which this product belongs
+ * @private
+ */
+function xformVariant(variant, variantPriceInfo, shopCurrencyCode) {
+  return {
+    _id: variant._id,
+    barcode: variant.barcode,
+    createdAt: variant.createdAt,
+    height: variant.height,
+    index: variant.index || 0,
+    inventoryManagement: !!variant.inventoryManagement,
+    inventoryPolicy: !!variant.inventoryPolicy,
+    isLowQuantity: !!variant.isLowQuantity,
+    isSoldOut: !!variant.isSoldOut,
+    isTaxable: !!variant.taxable,
+    length: variant.length,
+    lowInventoryWarningThreshold: variant.lowInventoryWarningThreshold,
+    metafields: variant.metafields,
+    minOrderQuantity: variant.minOrderQuantity,
+    optionTitle: variant.optionTitle,
+    originCountry: variant.originCountry,
+    price: variant.price,
+    pricing: {
+      [shopCurrencyCode]: {
+        compareAtPrice: variant.compareAtPrice || null,
+        displayPrice: variantPriceInfo.range,
+        maxPrice: variantPriceInfo.max,
+        minPrice: variantPriceInfo.min,
+        price: typeof variant.price === "number" ? variant.price : null
+      }
+    },
+    shopId: variant.shopId,
+    sku: variant.sku,
+    taxCode: variant.taxCode,
+    taxDescription: variant.taxDescription,
+    title: variant.title,
+    updatedAt: variant.updatedAt || variant.createdAt,
+    // The _id prop could change whereas this should always point back to the source variant in Products collection
+    variantId: variant._id,
+    weight: variant.weight,
+    width: variant.width
+  };
+}
+
+/**
  * @method publishProductToCatalog
  * @summary Publish a product to the Catalog collection
  * @memberof Catalog
@@ -38,7 +87,8 @@ export default async function publishProductToCatalog(product, collections) {
     return false;
   }
 
-  const shopCurrencyInfo = shop.currencies[shop.currency];
+  const shopCurrencyCode = shop.currency;
+  const shopCurrencyInfo = shop.currencies[shopCurrencyCode];
 
   const catalogProductMedia = await getCatalogProductMedia(product._id, collections);
   const primaryImage = catalogProductMedia.find(({ toGrid }) => toGrid === 1) || null;
@@ -66,45 +116,6 @@ export default async function publishProductToCatalog(product, collections) {
     }
   });
 
-  const xformVariant = (variant, variantPriceInfo) => ({
-    _id: variant._id,
-    barcode: variant.barcode,
-    createdAt: variant.createdAt,
-    height: variant.height,
-    index: variant.index || 0,
-    inventoryManagement: !!variant.inventoryManagement,
-    inventoryPolicy: !!variant.inventoryPolicy,
-    isLowQuantity: !!variant.isLowQuantity,
-    isSoldOut: !!variant.isSoldOut,
-    isTaxable: !!variant.taxable,
-    length: variant.length,
-    lowInventoryWarningThreshold: variant.lowInventoryWarningThreshold,
-    metafields: variant.metafields,
-    minOrderQuantity: variant.minOrderQuantity,
-    optionTitle: variant.optionTitle,
-    originCountry: variant.originCountry,
-    price: variant.price,
-    pricing: {
-      [shop.currency]: {
-        compareAtPrice: variant.compareAtPrice || null,
-        displayPrice: variantPriceInfo.range,
-        maxPrice: variantPriceInfo.max,
-        minPrice: variantPriceInfo.min,
-        price: typeof variant.price === "number" ? variant.price : null
-      }
-    },
-    shopId: variant.shopId,
-    sku: variant.sku,
-    taxCode: variant.taxCode,
-    taxDescription: variant.taxDescription,
-    title: variant.title,
-    updatedAt: variant.updatedAt || variant.createdAt,
-    // The _id prop could change whereas this should always point back to the source variant in Products collection
-    variantId: variant._id,
-    weight: variant.weight,
-    width: variant.width
-  });
-
   const prices = [];
   const catalogProductVariants = topVariants
     // We want to explicitly map everything so that new properties added to variant are not published to a catalog unless we want them
@@ -119,10 +130,10 @@ export default async function publishProductToCatalog(product, collections) {
       }
 
       prices.push(priceInfo.min, priceInfo.max);
-      const newVariant = xformVariant(variant, priceInfo);
+      const newVariant = xformVariant(variant, priceInfo, shopCurrencyCode);
 
       if (variantOptions) {
-        newVariant.options = variantOptions.map((option) => xformVariant(option, getPriceRange([option.price], shopCurrencyInfo)));
+        newVariant.options = variantOptions.map((option) => xformVariant(option, getPriceRange([option.price], shopCurrencyInfo), shopCurrencyCode));
       }
       return newVariant;
     });
