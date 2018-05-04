@@ -9,7 +9,7 @@
 export default async function getProduct(variantId, collections) {
   const { Products, Revisions } = collections;
   const revision = await Revisions.findOne({
-    documentId: variantId,
+    "documentId": variantId,
     "workflow.status": {
       $nin: ["revision/published"]
     }

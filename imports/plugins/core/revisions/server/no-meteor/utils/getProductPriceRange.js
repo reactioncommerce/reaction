@@ -22,12 +22,10 @@ export default async function getProductPriceRange(productId, collections) {
   const visableVariants = variants.filter((option) => option.isVisible && !option.isDeleted);
   if (visableVariants.length > 0) {
     const variantPrices = [];
-    await Promise.all(
-      visableVariants.map(async (variant) => {
-        const { min, max } = await getVariantPriceRange(variant._id, collections);
-        variantPrices.push(min, max);
-      })
-    );
+    await Promise.all(visableVariants.map(async (variant) => {
+      const { min, max } = await getVariantPriceRange(variant._id, collections);
+      variantPrices.push(min, max);
+    }));
     return getPriceRange(variantPrices);
   }
 

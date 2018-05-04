@@ -476,9 +476,7 @@ Meteor.methods({
         newId = Products.insert(clone, { validate: false });
         const newProduct = Products.findOne(newId);
         Hooks.Events.run("afterInsertCatalogProduct", newProduct);
-        Logger.debug(
-          `products/cloneVariant: created ${type === "child" ? "sub child " : ""}clone: ${clone._id} from ${variantId}`
-        );
+        Logger.debug(`products/cloneVariant: created ${type === "child" ? "sub child " : ""}clone: ${clone._id} from ${variantId}`);
       } catch (error) {
         Logger.error(`products/cloneVariant: cloning of ${variantId} was failed: ${error}`);
         throw error;
@@ -709,7 +707,7 @@ Meteor.methods({
 
     function getIds(id) {
       return pool.filter(
-        function(pair) {
+        function (pair) {
           return pair.oldId === this.id;
         },
         {
@@ -912,7 +910,7 @@ Meteor.methods({
     });
 
     const numFlaggedAsDeleted = Revisions.find({
-      documentId: {
+      "documentId": {
         $in: ids
       },
       "documentData.isDeleted": true

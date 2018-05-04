@@ -198,30 +198,30 @@ const mockGeCatalogProductMedia = jest
   .fn()
   .mockName("getCatalogProductMedia")
   .mockReturnValue(Promise.resolve([
-      {
-        priority: 1,
-        toGrid: 1,
-        productId: internalProductId,
-        variantId: internalVariantIds[1],
-        URLs: {
-          large: "large/path/to/image.jpg",
-          medium: "medium/path/to/image.jpg",
-          original: "image/path/to/image.jpg",
-          small: "small/path/to/image.jpg",
-          thumbnail: "thumbnail/path/to/image.jpg"
-        }
+    {
+      priority: 1,
+      toGrid: 1,
+      productId: internalProductId,
+      variantId: internalVariantIds[1],
+      URLs: {
+        large: "large/path/to/image.jpg",
+        medium: "medium/path/to/image.jpg",
+        original: "image/path/to/image.jpg",
+        small: "small/path/to/image.jpg",
+        thumbnail: "thumbnail/path/to/image.jpg"
       }
-    ]));
+    }
+  ]));
 const mockGetCatalogPositions = jest
   .fn()
   .mockName("getCatalogPositions")
   .mockReturnValue(Promise.resolve({
-      displayWeight: 1,
-      isPinned: false,
-      position: 1,
-      tagId: "999",
-      updatedAt: positionUpdatedAt
-    }));
+    displayWeight: 1,
+    isPinned: false,
+    position: 1,
+    tagId: "999",
+    updatedAt: positionUpdatedAt
+  }));
 const mockIsBackorder = jest
   .fn()
   .mockName("isBackorder")
