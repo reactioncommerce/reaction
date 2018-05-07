@@ -178,7 +178,7 @@ Meteor.methods({
     try {
       setUserPermissions({ _id: userId }, permissions, shopId);
       Accounts.update({ _id: userId }, { $set: { groups: newGroups } });
-      Hooks.Events.run("afterAccountsUpdate", loggedInUserId, {
+      Hooks.Events.run("afterAccountsUpdate", userId, {
         accountId: userId,
         updatedFields: ["groups"]
       });

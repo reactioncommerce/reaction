@@ -166,11 +166,11 @@ export const methods = {
 
             // Insert customer, save id
             const reactionCustomerId = Accounts.insert(reactionCustomer, { publish: true });
-            Hooks.Events.run("afterAccountsInsert", Meteor.userId(), reactionCustomerId);
+            Hooks.Events.run("afterAccountsInsert", reactionCustomer._id, reactionCustomerId);
             ids.push(reactionCustomerId);
 
             Accounts.update({ _id: reactionCustomerId }, { publish: true });
-            Hooks.Events.run("afterAccountsUpdate", Meteor.userId(), {
+            Hooks.Events.run("afterAccountsUpdate", reactionCustomer._id, {
               accountId: reactionCustomerId,
               updatedFields: ["forceIndex"]
             });
