@@ -60,8 +60,11 @@ Object.defineProperty(Cursor.prototype, "options", {
 });
 
 // adding the new mongodb api updateOne method to nedb
-Datastore.prototype.updateOne = function(args) {
-  return this.update(args);
+// TODO: this mock needs to be revisited
+Datastore.prototype.updateOne = function (...args) {
+  return this._update(...args).then((res) => {
+    return res;
+  });
 };
 
 function getLocalDb() {
