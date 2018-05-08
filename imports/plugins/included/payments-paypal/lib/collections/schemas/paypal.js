@@ -23,7 +23,8 @@ export const PaypalPackageConfig = PackageConfig.clone().extend({
   },
   "settings.express.support": {
     type: Array,
-    label: "Payment provider supported methods"
+    label: "Payment provider supported methods",
+    optional: true
   },
   "settings.express.support.$": {
     type: String,
@@ -35,7 +36,8 @@ export const PaypalPackageConfig = PackageConfig.clone().extend({
   },
   "settings.payflow.support": {
     type: Array,
-    label: "Payment provider supported methods"
+    label: "Payment provider supported methods",
+    optional: true
   },
   "settings.payflow.support.$": {
     type: String,
