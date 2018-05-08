@@ -8,8 +8,7 @@ import getPriceRange from "./getPriceRange";
  * @summary Get the PriceRange object for a Product by ID
  * @param {String} productId - A product ID
  * @param {Object} collections - Raw mongo collections
- * @param {Object[]} variants - TODO:
- * @return {Promise<Object>} PriceRange object
+ * @return {Promise<Object>} Product PriceRange object
  */
 export default async function getProductPriceRange(productId, collections) {
   const { Products } = collections;
