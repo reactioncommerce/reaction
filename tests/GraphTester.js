@@ -1,5 +1,5 @@
-import mongodb from "mongodb";
 import util from "util";
+import mongodb from "mongodb";
 import { merge } from "lodash";
 import graphql from "graphql.js";
 import findFreePort from "find-free-port";
@@ -62,9 +62,7 @@ Object.defineProperty(Cursor.prototype, "options", {
 // adding the new mongodb api updateOne method to nedb
 // TODO: this mock needs to be revisited
 Datastore.prototype.updateOne = function (...args) {
-  return this._update(...args).then((res) => {
-    return res;
-  });
+  return this._update(...args).then((res) => res);
 };
 
 function getLocalDb() {
@@ -83,7 +81,7 @@ class GraphTester {
     const { Media } = setUpFileCollections({
       absoluteUrlPrefix: "http://fake.com",
       db: this.db,
-      Logger: { info: console.info.bind(console) },
+      Logger: { info: console.info.bind(console) }, // eslint-disable-line
       MediaRecords: this.collections.MediaRecords,
       mongodb
     });
