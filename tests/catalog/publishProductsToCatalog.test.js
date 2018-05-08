@@ -195,7 +195,8 @@ const mockProduct = {
 
 const mockCatalogItem = {
   product: {
-    productId: opaqueProductId
+    productId: opaqueProductId,
+    title: "Fake Product Title"
   }
 };
 
@@ -208,20 +209,46 @@ beforeAll(async () => {
   await tester.insertPrimaryShop({ _id: internalShopId, name: shopName });
   await Promise.all(internalTagIds.map((_id) => tester.collections.Tags.insert({ _id, shopId: internalShopId })));
   await tester.collections.Products.insert(mockProduct);
+  await tester.setLoggedInUser({
+    _id: "123",
+    roles: { [internalShopId]: ["createProduct"] }
+  });
 });
 
 afterAll(async () => {
   await tester.collections.Shops.remove({ _id: internalShopId });
   await tester.collections.Product.remove({ _id: internalProductId });
+  await tester.clearLoggedInUser();
   tester.stop();
 });
 
 // publish new product to catalog
 test("expect a CatalogItemProduct when a Product is published to the Catalog collection", async () => {
-  await tester.setLoggedInUser({
-    _id: "123",
-    roles: { [internalShopId]: ["createProduct"] }
-  });
+  let result;
+  try {
+    result = await mutate({ productIds: [opaqueProductId] });
+  } catch (error) {
+    expect(error).toBeUndefined();
+    return;
+  }
+  expect(result).toEqual({ publishProductsToCatalog: [mockCatalogItem] });
+});
+
+// publish product updates to catalog
+test("expect an updated CatalogItemProduct when a Product is updated and republished to the Catalog", async () => {
+  const updatedProductTitle = "Really Fake Product Title";
+  await tester.collections.Products.updateOne(
+    {
+      _id: internalProductId
+    },
+    {
+      $set: {
+        title: updatedProductTitle
+      }
+    }
+  );
+
+  mockCatalogItem.product.title = updatedProductTitle;
 
   let result;
   try {
@@ -230,14 +257,5 @@ test("expect a CatalogItemProduct when a Product is published to the Catalog col
     expect(error).toBeUndefined();
     return;
   }
-
   expect(result).toEqual({ publishProductsToCatalog: [mockCatalogItem] });
-
-  await tester.clearLoggedInUser();
-});
-
-// publish product updates to catalog
-
-test("temp test", () => {
-  expect(true).toBe(true);
 });

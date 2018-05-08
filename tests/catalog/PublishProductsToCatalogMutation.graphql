@@ -2,6 +2,7 @@
   publishProductsToCatalog(productIds: $productIds) {
     product {
       productId
+      title
     }
   }
 }
