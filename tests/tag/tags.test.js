@@ -1,5 +1,7 @@
 import GraphTester from "../GraphTester";
 
+jasmine.DEFAULT_TIMEOUT_INTERVAL = 60000;
+
 const internalShopId = "123";
 const opaqueShopId = "cmVhY3Rpb24vc2hvcDoxMjM="; // reaction/shop:123
 const shopName = "Test Shop";
@@ -31,14 +33,14 @@ let tester;
 let query;
 beforeAll(async () => {
   tester = new GraphTester();
-  await tester.startServer();
+  await tester.start();
   query = tester.query(tagsQuery);
 
   await tester.insertPrimaryShop({ _id: internalShopId, name: shopName });
   await Promise.all(tags.map((tag) => tester.collections.Tags.insert(tag)));
 });
 
-afterAll(() => tester.stopServer());
+afterAll(() => tester.stop());
 
 test("get the first 50 tags when neither first or last is in query", async () => {
   let result;

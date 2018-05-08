@@ -1,6 +1,8 @@
 import GraphTester from "../GraphTester";
 import CatalogProductItemsFullQuery from "./CatalogProductItemsFullQuery.graphql";
 
+jasmine.DEFAULT_TIMEOUT_INTERVAL = 60000;
+
 const internalShopId = "123";
 const opaqueShopId = "cmVhY3Rpb24vc2hvcDoxMjM="; // reaction/shop:123
 const internalCatalogItemId = "999";
@@ -454,11 +456,11 @@ let tester;
 let query;
 beforeAll(async () => {
   tester = new GraphTester();
-  await tester.startServer();
+  await tester.start();
   query = tester.query(CatalogProductItemsFullQuery);
 });
 
-afterAll(() => tester.stopServer());
+afterAll(() => tester.stop());
 
 test("get all items for shop", async () => {
   await tester.insertPrimaryShop({ _id: internalShopId, name: shopName });

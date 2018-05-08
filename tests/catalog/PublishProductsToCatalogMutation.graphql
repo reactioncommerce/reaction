@@ -1,3 +1,7 @@
 ($productIds: [ID]!) {
-  publishProductsToCatalog(productIds: $productIds) { _id }
+  publishProductsToCatalog(productIds: $productIds) {
+    product {
+      productId
+    }
+  }
 }
