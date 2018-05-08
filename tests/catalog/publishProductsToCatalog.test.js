@@ -196,7 +196,8 @@ const mockProduct = {
 const mockCatalogItem = {
   product: {
     productId: opaqueProductId,
-    title: "Fake Product Title"
+    title: "Fake Product Title",
+    isDeleted: false
   }
 };
 
@@ -249,6 +250,31 @@ test("expect an updated CatalogItemProduct when a Product is updated and republi
   );
 
   mockCatalogItem.product.title = updatedProductTitle;
+
+  let result;
+  try {
+    result = await mutate({ productIds: [opaqueProductId] });
+  } catch (error) {
+    expect(error).toBeUndefined();
+    return;
+  }
+  expect(result).toEqual({ publishProductsToCatalog: [mockCatalogItem] });
+});
+
+// publish product updates to catalog
+test("expect an updated CatalogItemProduct when a Product is marked as delted and republished to the Catalog", async () => {
+  await tester.collections.Products.updateOne(
+    {
+      _id: internalProductId
+    },
+    {
+      $set: {
+        isDeleted: true
+      }
+    }
+  );
+
+  mockCatalogItem.product.isDeleted = true;
 
   let result;
   try {

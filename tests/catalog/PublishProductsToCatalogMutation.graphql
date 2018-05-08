@@ -3,6 +3,7 @@
     product {
       productId
       title
+      isDeleted
     }
   }
 }
