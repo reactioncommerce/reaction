@@ -5,10 +5,11 @@ import getPriceRange from "./getPriceRange";
 /**
  *
  * @method getVariantPriceRange
- * @summary TODO:
- * @param {string} variantId - TODO:
- * @param {Object} collections - TODO:
- * @return {Promise<Object>} TODO:
+ * @summary Create a Product PriceRange object by taking the lowest variant price and the highest variant
+ * price to create the PriceRange. If only one variant use that variant's price to create the PriceRange
+ * @param {string} variantId - A product variant ID.
+ * @param {Object} collections - Raw mongo collections
+ * @return {Promise<Object>} Product PriceRange object
  */
 export default async function getVariantPriceRange(variantId, collections) {
   const options = await getVariants(variantId, collections);
