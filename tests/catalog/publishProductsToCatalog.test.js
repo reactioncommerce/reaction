@@ -2,15 +2,9 @@ import GraphTester from "../GraphTester";
 import PublishProductToCatalogMutation from "./PublishProductsToCatalogMutation.graphql";
 
 const internalShopId = "123";
-const opaqueShopId = "cmVhY3Rpb24vc2hvcDoxMjM="; // reaction/shop:123
-const internalCatalogItemId = "999";
-const opaqueCatalogItemId = "cmVhY3Rpb24vY2F0YWxvZ0l0ZW06OTk5"; // reaction/catalogItem:999
-const internalCatalogProductId = "999";
-const opaqueCatalogProductId = "cmVhY3Rpb24vY2F0YWxvZ1Byb2R1Y3Q6OTk5"; // reaction/catalogProduct:999
 const internalProductId = "999";
 const opaqueProductId = "cmVhY3Rpb24vcHJvZHVjdDo5OTk="; // reaction/product:999
 const internalTagIds = ["923", "924"];
-const opaqueTagIds = ["cmVhY3Rpb24vdGFnOjkyMw==", "cmVhY3Rpb24vdGFnOjkyNA=="]; // reaction/tag
 const internalVariantIds = ["875", "874", "925"];
 
 const opaqueCatalogVariantIds = [
@@ -200,7 +194,7 @@ test("expect an updated CatalogItemProduct when a Product Variant Option is upda
 });
 
 // publish deleted product option to catalog
-test("expect an updated CatalogItemProduct when a Product is marked as delted and republished to the Catalog", async () => {
+test("expect an updated CatalogItemProduct when a Product is marked as deleted and republished to the Catalog", async () => {
   await tester.collections.Products.updateOne(
     {
       _id: internalVariantIds[2]
@@ -225,7 +219,7 @@ test("expect an updated CatalogItemProduct when a Product is marked as delted an
 });
 
 // publish deleted product to catalog
-test("expect an updated CatalogItemProduct when a Product is marked as delted and republished to the Catalog", async () => {
+test("expect an updated CatalogItemProduct when a Product is marked as deleted and republished to the Catalog", async () => {
   await tester.collections.Products.updateOne(
     {
       _id: internalProductId
