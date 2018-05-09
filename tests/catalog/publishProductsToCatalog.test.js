@@ -11,193 +11,73 @@ const internalProductId = "999";
 const opaqueProductId = "cmVhY3Rpb24vcHJvZHVjdDo5OTk="; // reaction/product:999
 const internalTagIds = ["923", "924"];
 const opaqueTagIds = ["cmVhY3Rpb24vdGFnOjkyMw==", "cmVhY3Rpb24vdGFnOjkyNA=="]; // reaction/tag
-const internalVariantIds = ["875", "874"];
-const opaqueVariantIds = ["cmVhY3Rpb24vcHJvZHVjdDo4NzU=", "cmVhY3Rpb24vcHJvZHVjdDo4NzQ="]; // reaction/product
+const internalVariantIds = ["875", "874", "925"];
+
 const opaqueCatalogVariantIds = [
   "cmVhY3Rpb24vY2F0YWxvZ1Byb2R1Y3RWYXJpYW50Ojg3NQ==",
-  "cmVhY3Rpb24vY2F0YWxvZ1Byb2R1Y3RWYXJpYW50Ojg3NA=="
+  "cmVhY3Rpb24vY2F0YWxvZ1Byb2R1Y3RWYXJpYW50Ojg3NA==",
+  "cmVhY3Rpb24vY2F0YWxvZ1Byb2R1Y3RWYXJpYW50OjkyNQ=="
 ]; // reaction/catalogProductVariant
 
-const productSlug = "fake-product";
 const shopName = "Test Shop";
-
-const createdAt = new Date("2018-04-16T15:34:28.043Z");
-const updatedAt = new Date("2018-04-17T15:34:28.043Z");
-const positionUpdatedAt = new Date("2018-04-15T15:34:28.043Z");
-
-const mockVariants = [
-  {
-    _id: internalVariantIds[0],
-    ancestors: [internalCatalogProductId],
-    barcode: "barcode",
-    createdAt,
-    height: 0,
-    index: 0,
-    inventoryManagement: true,
-    inventoryPolicy: false,
-    isLowQuantity: true,
-    isSoldOut: false,
-    isDeleted: false,
-    isVisible: true,
-    length: 0,
-    lowInventoryWarningThreshold: 0,
-    metafields: [
-      {
-        value: "value",
-        namespace: "namespace",
-        description: "description",
-        valueType: "valueType",
-        scope: "scope",
-        key: "key"
-      }
-    ],
-    minOrderQuantity: 0,
-    optionTitle: "Untitled Option",
-    originCountry: "US",
-    price: 0,
-    shopId: internalShopId,
-    sku: "sku",
-    taxable: true,
-    taxCode: "0000",
-    taxDescription: "taxDescription",
-    title: "Small Concrete Pizza",
-    updatedAt,
-    variantId: internalVariantIds[0],
-    weight: 0,
-    width: 0
-  },
-  {
-    _id: internalVariantIds[1],
-    ancestors: [internalCatalogProductId, internalVariantIds[0]],
-    barcode: "barcode",
-    height: 2,
-    index: 0,
-    inventoryManagement: true,
-    inventoryPolicy: true,
-    isLowQuantity: true,
-    isSoldOut: false,
-    isDeleted: false,
-    isVisible: true,
-    length: 2,
-    lowInventoryWarningThreshold: 0,
-    metafields: [
-      {
-        value: "value",
-        namespace: "namespace",
-        description: "description",
-        valueType: "valueType",
-        scope: "scope",
-        key: "key"
-      }
-    ],
-    minOrderQuantity: 0,
-    optionTitle: "Awesome Soft Bike",
-    originCountry: "US",
-    price: 992.0,
-    shopId: internalShopId,
-    sku: "sku",
-    taxable: true,
-    taxCode: "0000",
-    taxDescription: "taxDescription",
-    title: "One pound bag",
-    variantId: internalVariantIds[1],
-    weight: 2,
-    width: 2
-  }
-];
 
 const mockProduct = {
   _id: internalProductId,
+  ancestors: [],
+  title: "Fake Product",
   shopId: internalShopId,
-  barcode: "barcode",
-  createdAt,
-  description: "description",
-  facebookMsg: "facebookMessage",
-  fulfillmentService: "fulfillmentService",
-  googleplusMsg: "googlePlusMessage",
-  height: 11.23,
-  isBackorder: false,
-  isLowQuantity: false,
-  isSoldOut: false,
-  length: 5.67,
-  lowInventoryWarningThreshold: 2,
-  metafields: [
-    {
-      value: "value",
-      namespace: "namespace",
-      description: "description",
-      valueType: "valueType",
-      scope: "scope",
-      key: "key"
-    }
-  ],
-  metaDescription: "metaDescription",
-  minOrderQuantity: 5,
-  originCountry: "originCountry",
-  pageTitle: "pageTitle",
-  parcel: {
-    containers: "containers",
-    length: 4.44,
-    width: 5.55,
-    height: 6.66,
-    weight: 7.77
-  },
-  pinterestMsg: "pinterestMessage",
-  positions: {
-    [shopName.toLowerCase()]: {
-      weight: 1,
-      position: 1,
-      pinned: true,
-      updatedAt: positionUpdatedAt.toISOString()
-    }
-  },
-  price: {
-    max: 5.99,
-    min: 2.99,
-    range: "2.99 - 5.99"
-  },
-  media: [
-    {
-      metadata: {
-        toGrid: 1,
-        priority: 1,
-        productId: internalProductId,
-        variantId: null
-      },
-      thumbnail: "http://localhost/thumbnail",
-      small: "http://localhost/small",
-      medium: "http://localhost/medium",
-      large: "http://localhost/large",
-      image: "http://localhost/original"
-    }
-  ],
-  productId: internalProductId,
-  productType: "productType",
-  requiresShipping: true,
-  shop: {
-    _id: opaqueShopId
-  },
-  sku: "ABC123",
-  handle: productSlug,
-  hashtags: internalTagIds,
-  taxCode: "taxCode",
-  taxDescription: "taxDescription",
-  taxable: false,
-  title: "Fake Product Title",
-  twitterMsg: "twitterMessage",
-  type: "product-simple",
-  updatedAt,
-  mockVariants,
-  vendor: "vendor",
-  weight: 15.6,
-  width: 8.4
+  isDeleted: false,
+  isVisible: true
+};
+
+const mockVariant = {
+  _id: internalVariantIds[0],
+  ancestors: [internalProductId],
+  title: "Fake Product Variant",
+  shopId: internalShopId,
+  isDeleted: false,
+  isVisible: true
+};
+
+const mockOptionOne = {
+  _id: internalVariantIds[1],
+  ancestors: [internalProductId, internalVariantIds[0]],
+  title: "Fake Product Option One",
+  shopId: internalShopId,
+  isDeleted: false,
+  isVisible: true
+};
+
+const mockOptionTwo = {
+  _id: internalVariantIds[2],
+  ancestors: [internalProductId, internalVariantIds[0]],
+  title: "Fake Product Option Two",
+  shopId: internalShopId,
+  isDeleted: false,
+  isVisible: true
 };
 
 const mockCatalogItem = {
   product: {
     productId: opaqueProductId,
-    title: "Fake Product Title",
-    isDeleted: false
+    title: "Fake Product",
+    isDeleted: false,
+    variants: [
+      {
+        _id: opaqueCatalogVariantIds[0],
+        title: "Fake Product Variant",
+        options: [
+          {
+            _id: opaqueCatalogVariantIds[1],
+            title: "Fake Product Option One"
+          },
+          {
+            _id: opaqueCatalogVariantIds[2],
+            title: "Fake Product Option Two"
+          }
+        ]
+      }
+    ]
   }
 };
 
@@ -210,6 +90,9 @@ beforeAll(async () => {
   await tester.insertPrimaryShop({ _id: internalShopId, name: shopName });
   await Promise.all(internalTagIds.map((_id) => tester.collections.Tags.insert({ _id, shopId: internalShopId })));
   await tester.collections.Products.insert(mockProduct);
+  await tester.collections.Products.insert(mockVariant);
+  await tester.collections.Products.insert(mockOptionOne);
+  await tester.collections.Products.insert(mockOptionTwo);
   await tester.setLoggedInUser({
     _id: "123",
     roles: { [internalShopId]: ["createProduct"] }
@@ -219,6 +102,9 @@ beforeAll(async () => {
 afterAll(async () => {
   await tester.collections.Shops.remove({ _id: internalShopId });
   await tester.collections.Product.remove({ _id: internalProductId });
+  await tester.collections.Product.remove({ _id: internalVariantIds[0] });
+  await tester.collections.Product.remove({ _id: internalVariantIds[1] });
+  await tester.collections.Product.remove({ _id: internalVariantIds[2] });
   await tester.clearLoggedInUser();
   tester.stop();
 });
@@ -237,19 +123,19 @@ test("expect a CatalogItemProduct when a Product is published to the Catalog col
 
 // publish product updates to catalog
 test("expect an updated CatalogItemProduct when a Product is updated and republished to the Catalog", async () => {
-  const updatedProductTitle = "Really Fake Product Title";
+  const updatedTitle = "Really Fake Product";
   await tester.collections.Products.updateOne(
     {
       _id: internalProductId
     },
     {
       $set: {
-        title: updatedProductTitle
+        title: updatedTitle
       }
     }
   );
 
-  mockCatalogItem.product.title = updatedProductTitle;
+  mockCatalogItem.product.title = updatedTitle;
 
   let result;
   try {
@@ -261,7 +147,84 @@ test("expect an updated CatalogItemProduct when a Product is updated and republi
   expect(result).toEqual({ publishProductsToCatalog: [mockCatalogItem] });
 });
 
-// publish product updates to catalog
+// publish product variant updates to catalog
+test("expect an updated CatalogItemProduct when a Product Variant is updated and republished to the Catalog", async () => {
+  const updatedTitle = "Really Fake Product Variant";
+  await tester.collections.Products.updateOne(
+    {
+      _id: internalVariantIds[0]
+    },
+    {
+      $set: {
+        title: updatedTitle
+      }
+    }
+  );
+
+  mockCatalogItem.product.variants[0].title = updatedTitle;
+
+  let result;
+  try {
+    result = await mutate({ productIds: [opaqueProductId] });
+  } catch (error) {
+    expect(error).toBeUndefined();
+    return;
+  }
+  expect(result).toEqual({ publishProductsToCatalog: [mockCatalogItem] });
+});
+
+// publish product variant option updates to catalog
+test("expect an updated CatalogItemProduct when a Product Variant Option is updated and republished to the Catalog", async () => {
+  const updatedTitle = "Really Fake Product Option";
+  await tester.collections.Products.updateOne(
+    {
+      _id: internalVariantIds[1]
+    },
+    {
+      $set: {
+        title: updatedTitle
+      }
+    }
+  );
+
+  mockCatalogItem.product.variants[0].options[0].title = updatedTitle;
+
+  let result;
+  try {
+    result = await mutate({ productIds: [opaqueProductId] });
+  } catch (error) {
+    expect(error).toBeUndefined();
+    return;
+  }
+  expect(result).toEqual({ publishProductsToCatalog: [mockCatalogItem] });
+});
+
+// publish deleted product option to catalog
+test("expect an updated CatalogItemProduct when a Product is marked as delted and republished to the Catalog", async () => {
+  await tester.collections.Products.updateOne(
+    {
+      _id: internalVariantIds[2]
+    },
+    {
+      $set: {
+        isDeleted: true
+      }
+    }
+  );
+
+  mockCatalogItem.product.variants[0].options = [mockCatalogItem.product.variants[0].options[0]];
+
+  let result;
+  try {
+    result = await mutate({ productIds: [opaqueProductId] });
+  } catch (error) {
+    expect(error).toBeUndefined();
+    return;
+  }
+  expect(result).toEqual({ publishProductsToCatalog: [mockCatalogItem] });
+});
+
+// publish deleted product to catalog
 test("expect an updated CatalogItemProduct when a Product is marked as delted and republished to the Catalog", async () => {
   await tester.collections.Products.updateOne(
     {
