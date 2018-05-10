@@ -21,42 +21,12 @@ class PublishContainer extends Component {
     });
   }
 
-  handlePublishClick = (revisions) => {
+  handlePublishClick = () => {
     const productIds = this.props.documents
       .filter((doc) => doc.type === "simple")
       .map((doc) => doc._id);
 
-    if (Array.isArray(revisions) && revisions.length) {
-      let documentIds = revisions.map((revision) => {
-        if (revision.parentDocument && revision.documentType !== "product") {
-          return revision.parentDocument;
-        }
-        return revision.documentId;
-      });
-
-      const documentIdsSet = new Set(documentIds); // ensures they are unique
-      documentIds = Array.from(documentIdsSet);
-      Meteor.call("revisions/publish", documentIds, (error, result) => {
-        if (result && result.status === "success") {
-          const message = i18next.t("revisions.changedPublished", {
-            defaultValue: "Changes published successfully"
-          });
-          Alerts.toast(message, "success");
-
-          if (this.props.onPublishSuccess) {
-            this.props.onPublishSuccess(result);
-          }
-
-          // Publish to catalog after revisions have been published
-          this.publishToCatalog("products", productIds);
-        } else {
-          Alerts.toast((error && error.message) || (result && result.status) || i18next.t("app.error"), "error");
-        }
-      });
-    } else {
-      // Publish to catalog immediately if there are no revisions to publish beforehand
-      this.publishToCatalog("products", productIds);
-    }
+    this.publishToCatalog("products", productIds);
   }
 
   handlePublishActions = (event, action, documentIds) => {
