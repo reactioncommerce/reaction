@@ -11,7 +11,6 @@ import {
   Switch,
   Icon
 } from "/imports/plugins/core/ui/client/components";
-import SimpleDiff from "./simpleDiff";
 import { Translatable } from "/imports/plugins/core/ui/client/providers";
 
 /** TMP **/
@@ -174,19 +173,6 @@ class PublishControls extends Component {
 
     // No revisions, no publishing
     return false;
-  }
-
-  renderChanges() {
-    if (this.showDiffs) {
-      const diffs = this.props.revisions.map((revision) => <SimpleDiff diff={revision.diff} key={revision._id} />);
-
-      return (
-        <div>
-          {diffs}
-        </div>
-      );
-    }
-    return null;
   }
 
   renderDeletionStatus() {
@@ -378,20 +364,15 @@ class PublishControls extends Component {
   }
 
   render() {
-    if (this.props.isEnabled) {
-      return (
-        <Components.ToolbarGroup lastChild={true}>
-          {this.renderDeletionStatus()}
-          {this.renderUndoButton()}
-          {this.renderArchiveButton()}
-          {this.renderViewControls()}
-          {this.renderPublishButton()}
-          {/* this.renderMoreOptionsButton() */}
-        </Components.ToolbarGroup>
-      );
-    }
-
-    return null;
+    return (
+      <Components.ToolbarGroup lastChild={true}>
+        {this.renderDeletionStatus()}
+        {this.renderArchiveButton()}
+        {this.renderViewControls()}
+        {this.renderPublishButton()}
+        {/* this.renderMoreOptionsButton() */}
+      </Components.ToolbarGroup>
+    );
   }
 }
 

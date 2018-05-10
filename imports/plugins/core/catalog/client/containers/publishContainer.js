@@ -5,7 +5,6 @@ import PublishControls from "../components/publishControls";
 import { Revisions } from "/lib/collections";
 import { Meteor } from "meteor/meteor";
 import TranslationProvider from "/imports/plugins/core/ui/client/providers/translationProvider";
-import { isRevisionControlEnabled } from "../../lib/api";
 import { Reaction, i18next } from "/client/api";
 
 /*
@@ -151,7 +150,6 @@ function composer(props, onData) {
       }).fetch();
 
       onData(null, {
-        isEnabled: isRevisionControlEnabled(),
         documentIds: props.documentIds,
         documents: props.documents,
         revisions,
@@ -163,7 +161,6 @@ function composer(props, onData) {
   }
 
   onData(null, {
-    isEnabled: isRevisionControlEnabled(),
     isPreview: viewAs === "customer"
   });
 }
