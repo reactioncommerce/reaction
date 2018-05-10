@@ -9,7 +9,6 @@ import { Tracker } from "meteor/tracker";
 import { Reaction } from "/client/api";
 import { ITEMS_INCREMENT } from "/client/config/defaults";
 import { ReactionProduct } from "/lib/api";
-import { applyProductRevision, resubscribeAfterCloning } from "/lib/api/products";
 import { Products, Tags, Shops } from "/lib/collections";
 import ProductsComponent from "../components/products";
 
@@ -158,10 +157,6 @@ function composer(props, onData) {
 
   const queryParams = Object.assign({}, tags, Reaction.Router.current().query, shopIds);
   const productsSubscription = Meteor.subscribe("Products", scrollLimit, queryParams, sort, editMode);
-  if (resubscribeAfterCloning.get()) {
-    resubscribeAfterCloning.set(false);
-    productsSubscription.stop();
-  }
 
   if (productsSubscription.ready()) {
     window.prerenderReady = true;
@@ -180,12 +175,8 @@ function composer(props, onData) {
     shopId: { $in: activeShopsIds }
   });
 
-  const productIds = [];
-  const products = productCursor.map((product) => {
-    productIds.push(product._id);
-
-    return applyProductRevision(product);
-  });
+  const products = productCursor.fetch();
+  const productIds = productCursor.map((product) => product._id);
 
   const sortedProducts = ReactionProduct.sortProducts(products, currentTag);
   Session.set("productGrid/products", sortedProducts);
