@@ -10,11 +10,8 @@ import getVariantQuantity from "/imports/plugins/core/revisions/server/no-meteor
  */
 export default async function isSoldOut(variants, collections) {
   const promises = variants.map(async (variant) => {
-    if (variant.inventoryManagement) {
-      const isVariantSoldOut = (await getVariantQuantity(variant, collections, variants)) <= 0;
-      return isVariantSoldOut;
-    }
-    return false;
+    const quantity = await getVariantQuantity(variant, collections, variants);
+    return variant.inventoryManagement && quantity <= 0;
   });
   const results = await Promise.all(promises);
   return results.every((result) => result);

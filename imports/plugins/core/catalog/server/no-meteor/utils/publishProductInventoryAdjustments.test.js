@@ -233,3 +233,9 @@ test("expect false if a product's inventory did not change and is not updated in
   const spec = await publishProductInventoryAdjustments(mockProduct, mockCollections);
   expect(spec).toBe(false);
 });
+
+test("expect false if a product's catalog item does not exsit", async () => {
+  mockCollections.Catalog.findOne.mockReturnValueOnce(Promise.resolve(undefined));
+  const spec = await publishProductInventoryAdjustments(mockProduct, mockCollections);
+  expect(spec).toBe(false);
+});
