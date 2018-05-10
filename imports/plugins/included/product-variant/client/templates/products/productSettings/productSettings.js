@@ -7,7 +7,6 @@ import Logger from "/client/modules/logger";
 import { getPrimaryMediaForItem, ReactionProduct } from "/lib/api";
 import { Products } from "/lib/collections";
 import { isRevisionControlEnabled } from "/imports/plugins/core/revisions/lib/api";
-import { applyProductRevision } from "/lib/api/products";
 
 function updateVariantProductField(variants, field, value) {
   return variants.map((variant) => Meteor.call("products/updateProductField", variant._id, field, value));
@@ -30,7 +29,7 @@ Template.productSettings.onCreated(function () {
         _id: {
           $in: productIds
         }
-      }).map((product) => applyProductRevision(product));
+      })
 
       this.state.set("productIds", productIds);
       this.state.set("products", products);
