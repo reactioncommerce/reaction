@@ -29,7 +29,7 @@ Template.productSettings.onCreated(function () {
         _id: {
           $in: productIds
         }
-      })
+      }).fetch();
 
       this.state.set("productIds", productIds);
       this.state.set("products", products);
