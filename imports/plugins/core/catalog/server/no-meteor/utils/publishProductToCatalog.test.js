@@ -226,15 +226,15 @@ const mockGeCatalogProductMedia = jest
 const mockIsBackorder = jest
   .fn()
   .mockName("isBackorder")
-  .mockReturnValue(Promise.resolve(false));
+  .mockReturnValue(false);
 const mockIsLowQuantity = jest
   .fn()
   .mockName("isLowQuantity")
-  .mockReturnValue(Promise.resolve(false));
+  .mockReturnValue(false);
 const mockIsSoldOut = jest
   .fn()
   .mockName("isSoldOut")
-  .mockReturnValue(Promise.resolve(false));
+  .mockReturnValue(false);
 
 beforeAll(() => {
   rewire$getCatalogProductMedia(mockGeCatalogProductMedia);

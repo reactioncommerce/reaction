@@ -5,6 +5,7 @@
  * take only a top level variant object as a param to return the product's quantity.
  * This method can also take a top level variant and an array of product variant options as
  * params return the product's quantity.
+ * @memberof Catalog
  * @param {Object} variant - A top level product variant object.
  * @param {Object[]} variants - Array of product variant option objects.
  * @return {number} Variant quantity

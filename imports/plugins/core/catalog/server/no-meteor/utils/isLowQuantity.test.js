@@ -1,10 +1,7 @@
-import {
-  rewire as rewire$getVariantQuantity,
-  restore as restore$getVariantQuantity
-} from "/imports/plugins/core/revisions/server/no-meteor/utils/getVariantQuantity";
+import { rewire as rewire$getProductQuantity, restore as restore$getProductQuantity } from "./getProductQuantity";
 import isLowQuantity from "./isLowQuantity";
 
-const mockGetVariantQuantity = jest.fn().mockName("ProductRevision.getVariantQuantity");
+const mockGetProductQuantity = jest.fn().mockName("getProductQuantity");
 
 // mock collections
 const mockCollections = {};
@@ -23,50 +20,44 @@ const mockVariantWithOutInventoryManagment = {
 };
 
 beforeAll(() => {
-  rewire$getVariantQuantity(mockGetVariantQuantity);
+  rewire$getProductQuantity(mockGetProductQuantity);
 });
 
-afterAll(restore$getVariantQuantity);
+afterAll(restore$getProductQuantity);
 
-test("expect true when a single product variant has a low quantity and inventory controls are enabled", async () => {
-  mockGetVariantQuantity.mockReturnValueOnce(Promise.resolve(2));
-  const spec = await isLowQuantity([mockVariantWithInventoryManagment], mockCollections);
+test("expect true when a single product variant has a low quantity and inventory controls are enabled", () => {
+  mockGetProductQuantity.mockReturnValueOnce(2);
+  const spec = isLowQuantity([mockVariantWithInventoryManagment], mockCollections);
   expect(spec).toBe(true);
 });
 
-test("expect true when an array of product variants each have a low quantity and inventory controls are enabled", async () => {
-  mockGetVariantQuantity.mockReturnValueOnce(Promise.resolve(2)).mockReturnValueOnce(Promise.resolve(2));
-  const spec = await isLowQuantity(
-    [mockVariantWithInventoryManagment, mockVariantWithInventoryManagment],
-    mockCollections
-  );
+test("expect true when an array of product variants each have a low quantity and inventory controls are enabled", () => {
+  mockGetProductQuantity.mockReturnValueOnce(2).mockReturnValueOnce(2);
+  const spec = isLowQuantity([mockVariantWithInventoryManagment, mockVariantWithInventoryManagment], mockCollections);
   expect(spec).toBe(true);
 });
 
-test("expect false when a single product variant does not have a low quantity and inventory controls are enabled", async () => {
-  mockGetVariantQuantity.mockReturnValueOnce(Promise.resolve(10));
-  const spec = await isLowQuantity([mockVariantWithInventoryManagment], mockCollections);
+test("expect false when a single product variant does not have a low quantity and inventory controls are enabled", () => {
+  mockGetProductQuantity.mockReturnValueOnce(10);
+  const spec = isLowQuantity([mockVariantWithInventoryManagment], mockCollections);
   expect(spec).toBe(false);
 });
 
-test("expect false when an array of product variants each do not have a low quantity and inventory controls are enabled", async () => {
-  mockGetVariantQuantity.mockReturnValueOnce(Promise.resolve(10)).mockReturnValueOnce(Promise.resolve(10));
-  const spec = await isLowQuantity(
-    [mockVariantWithInventoryManagment, mockVariantWithInventoryManagment],
-    mockCollections
-  );
+test("expect false when an array of product variants each do not have a low quantity and inventory controls are enabled", () => {
+  mockGetProductQuantity.mockReturnValueOnce(10).mockReturnValueOnce(10);
+  const spec = isLowQuantity([mockVariantWithInventoryManagment, mockVariantWithInventoryManagment], mockCollections);
   expect(spec).toBe(false);
 });
 
-test("expect false when a single product variant has a low quantity and inventory controls are disabled", async () => {
-  mockGetVariantQuantity.mockReturnValueOnce(Promise.resolve(2));
-  const spec = await isLowQuantity([mockVariantWithOutInventoryManagment], mockCollections);
+test("expect false when a single product variant has a low quantity and inventory controls are disabled", () => {
+  mockGetProductQuantity.mockReturnValueOnce(2);
+  const spec = isLowQuantity([mockVariantWithOutInventoryManagment], mockCollections);
   expect(spec).toBe(false);
 });
 
-test("expect false when an array of product variants each have a low quantity and inventory controls are disabled", async () => {
-  mockGetVariantQuantity.mockReturnValueOnce(Promise.resolve(2)).mockReturnValueOnce(Promise.resolve(2));
-  const spec = await isLowQuantity(
+test("expect false when an array of product variants each have a low quantity and inventory controls are disabled", () => {
+  mockGetProductQuantity.mockReturnValueOnce(2).mockReturnValueOnce(2);
+  const spec = isLowQuantity(
     [mockVariantWithOutInventoryManagment, mockVariantWithOutInventoryManagment],
     mockCollections
   );

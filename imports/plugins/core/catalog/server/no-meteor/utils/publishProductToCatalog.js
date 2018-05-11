@@ -76,12 +76,15 @@ export default async function publishProductToCatalog(product, collections) {
     return false;
   }
 
-  const shop = await Shops.findOne({ _id: product.shopId }, {
-    fields: {
-      currencies: 1,
-      currency: 1
+  const shop = await Shops.findOne(
+    { _id: product.shopId },
+    {
+      fields: {
+        currencies: 1,
+        currency: 1
+      }
     }
-  });
+  );
   if (!shop) {
     Logger.info("Product's shop not found");
     return false;
@@ -133,7 +136,9 @@ export default async function publishProductToCatalog(product, collections) {
       const newVariant = xformVariant(variant, priceInfo, shopCurrencyCode);
 
       if (variantOptions) {
-        newVariant.options = variantOptions.map((option) => xformVariant(option, getPriceRange([option.price], shopCurrencyInfo), shopCurrencyCode));
+        newVariant.options = variantOptions.map((option) =>
+          xformVariant(option, getPriceRange([option.price], shopCurrencyInfo), shopCurrencyCode)
+        );
       }
       return newVariant;
     });
@@ -146,10 +151,10 @@ export default async function publishProductToCatalog(product, collections) {
     createdAt: product.createdAt,
     description: product.description,
     height: product.height,
-    isBackorder: await isBackorder(variants, collections),
+    isBackorder: isBackorder(variants),
     isDeleted: !!product.isDeleted,
-    isLowQuantity: await isLowQuantity(variants, collections),
-    isSoldOut: await isSoldOut(variants, collections),
+    isLowQuantity: isLowQuantity(variants),
+    isSoldOut: isSoldOut(variants),
     isTaxable: !!product.taxable,
     isVisible: !!product.isVisible,
     length: product.length,
