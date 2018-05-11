@@ -9,7 +9,6 @@ import { Reaction } from "/server/api";
 import * as Collections from "/lib/collections";
 import Fixtures from "/server/imports/fixtures";
 import { PublicationCollector } from "meteor/johanbrook:publication-collector";
-import { RevisionApi } from "/imports/plugins/core/revisions/lib/api/revisions";
 import { publishProductToCatalog } from "./catalog";
 
 Fixtures();
@@ -21,7 +20,6 @@ describe("Catalog", function () {
   beforeEach(function () {
     createActiveShop({ _id: shopId });
     sandbox = sinon.sandbox.create();
-    sandbox.stub(RevisionApi, "isRevisionControlEnabled", () => true);
   });
 
   afterEach(function () {
