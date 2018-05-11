@@ -12,7 +12,6 @@ import { sinon } from "meteor/practicalmeteor:sinon";
 import { Roles } from "meteor/alanning:roles";
 import { addProduct, addProductSingleVariant } from "/server/imports/fixtures/products";
 import Fixtures from "/server/imports/fixtures";
-import { RevisionApi } from "/imports/plugins/core/revisions/lib/api/revisions";
 
 Fixtures();
 
@@ -43,7 +42,6 @@ describe("core product methods", function () {
 
   beforeEach(function () {
     sandbox = sinon.sandbox.create();
-    sandbox.stub(RevisionApi, "isRevisionControlEnabled", () => true);
     Revisions.remove({});
   });
 
