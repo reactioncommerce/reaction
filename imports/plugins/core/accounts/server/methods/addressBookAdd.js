@@ -1,9 +1,7 @@
 import { check, Match } from "meteor/check";
-import { Meteor } from "meteor/meteor";
 import * as Schemas from "/lib/collections/schemas";
-import { Accounts, Cart } from "/lib/collections";
-import addressBookAddMutation from "../mutations/addressBookAdd";
-import { getHasPermissionFunctionForUser } from "../no-meteor/hasPermission";
+import buildMeteorContext from "/imports/plugins/core/graphql/server/buildMeteorContext";
+import addressBookAddMutation from "../no-meteor/mutations/addressBookAdd";
 
 /**
  * @name accounts/addressBookAdd
@@ -17,22 +15,10 @@ import { getHasPermissionFunctionForUser } from "../no-meteor/hasPermission";
  */
 export default function addressBookAdd(address, accountUserId) {
   Schemas.Address.validate(address);
-  check(accountUserId, Match.Optional(String));
+  check(accountUserId, Match.Maybe(String));
 
   this.unblock();
 
-  const user = Meteor.users.findOne({ _id: this.userId });
-
-  const context = {
-    collections: {
-      Accounts: Accounts.rawCollection(),
-      Cart: Cart.rawCollection(),
-      users: Meteor.users.rawCollection()
-    },
-    userHasPermission: getHasPermissionFunctionForUser(user),
-    user,
-    userId: this.userId
-  };
-
+  const context = Promise.await(buildMeteorContext(this.userId));
   return addressBookAddMutation(context, address, accountUserId);
 }

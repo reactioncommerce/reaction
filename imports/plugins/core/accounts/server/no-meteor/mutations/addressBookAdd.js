@@ -1,5 +1,6 @@
 import { Meteor } from "meteor/meteor";
-import { Random } from "meteor/random";
+import Hooks from "@reactioncommerce/hooks";
+import Random from "@reactioncommerce/random";
 import { get } from "lodash";
 
 /**
@@ -30,7 +31,7 @@ export default async function addressBookAdd(context, address, accountUserId) {
   // required default id
   if (!address._id) address._id = Random.id();
 
-  // if address got shippment or billing default, we need to update cart
+  // if address got shipment or billing default, we need to update cart
   // addresses accordingly
   if (address.isShippingDefault || address.isBillingDefault) {
     const cart = await Cart.findOne({ userId });
@@ -49,7 +50,7 @@ export default async function addressBookAdd(context, address, accountUserId) {
 
     // then change the address that has been affected
     if (address.isShippingDefault) {
-      await Accounts.update({
+      await Accounts.updateOne({
         userId,
         "profile.addressBook.isShippingDefault": true
       }, {
@@ -58,7 +59,6 @@ export default async function addressBookAdd(context, address, accountUserId) {
         }
       });
 
-      // TODO
       Hooks.Events.run("afterAccountsUpdate", userIdFromContext, {
         accountId: account._id,
         updatedFields: ["isShippingDefault"]
@@ -66,7 +66,7 @@ export default async function addressBookAdd(context, address, accountUserId) {
     }
 
     if (address.isBillingDefault) {
-      await Accounts.update({
+      await Accounts.updateOne({
         userId,
         "profile.addressBook.isBillingDefault": true
       }, {
@@ -75,7 +75,6 @@ export default async function addressBookAdd(context, address, accountUserId) {
         }
       });
 
-      // TODO
       Hooks.Events.run("afterAccountsUpdate", userIdFromContext, {
         accountId: account._id,
         updatedFields: ["isBillingDefault"]
@@ -89,22 +88,21 @@ export default async function addressBookAdd(context, address, accountUserId) {
     }
   };
   const accountsUpdateQuery = {
-    $set: {
-      userId
-    },
     $addToSet: {
       "profile.addressBook": address
     }
   };
 
+  // If there is no `name` field on account or this is the first address we're
+  // adding for this account, set the name from the address.fullName.
   if (!account.name || get(account, "profile.addressBook.length", 0) === 0) {
     userUpdateQuery.$set.name = address.fullName;
     accountsUpdateQuery.$set.name = address.fullName;
   }
 
-  await Users.update(userIdFromContext, userUpdateQuery);
+  await Users.updateOne({ _id: userIdFromContext }, userUpdateQuery);
 
-  const result = await Accounts.upsert({ userId }, accountsUpdateQuery);
+  const result = await Accounts.updateOne({ userId }, accountsUpdateQuery);
 
   // If the address update was successful, then return the full updated address
   if (result.numberAffected === 1) {
