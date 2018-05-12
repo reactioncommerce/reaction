@@ -137,8 +137,7 @@ export default async function publishProductToCatalog(product, collections) {
 
       if (variantOptions) {
         newVariant.options = variantOptions.map((option) =>
-          xformVariant(option, getPriceRange([option.price], shopCurrencyInfo), shopCurrencyCode)
-        );
+          xformVariant(option, getPriceRange([option.price], shopCurrencyInfo), shopCurrencyCode));
       }
       return newVariant;
     });
