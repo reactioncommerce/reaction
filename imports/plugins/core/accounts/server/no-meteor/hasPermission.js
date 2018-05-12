@@ -41,3 +41,5 @@ export default function hasPermission(user, permissions, roleGroup) {
 
   return false;
 }
+
+export const getHasPermissionFunctionForUser = curryN(2, hasPermission);

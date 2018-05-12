@@ -1,7 +1,7 @@
 import { check, Match } from "meteor/check";
 import * as Schemas from "/lib/collections/schemas";
-import buildMeteorContext from "/imports/plugins/core/graphql/server/buildMeteorContext";
 import addressBookAddMutation from "../no-meteor/mutations/addressBookAdd";
+import getGraphQLContextInMeteorMethod from "/imports/plugins/core/graphql/server/getGraphQLContextInMeteorMethod";
 
 /**
  * @name accounts/addressBookAdd
@@ -19,6 +19,6 @@ export default function addressBookAdd(address, accountUserId) {
 
   this.unblock();
 
-  const context = Promise.await(buildMeteorContext(this.userId));
+  const context = Promise.await(getGraphQLContextInMeteorMethod(this.userId));
   return addressBookAddMutation(context, address, accountUserId);
 }

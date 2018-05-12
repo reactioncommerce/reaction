@@ -2,12 +2,9 @@ import mongodb, { MongoClient } from "mongodb";
 import graphql from "graphql.js";
 import findFreePort from "find-free-port";
 import MongoDBMemoryServer from "mongodb-memory-server";
-import createApolloServer from "../imports/plugins/core/graphql/server/createApolloServer";
+import createApolloServer from "../imports/plugins/core/graphql/server/no-meteor/createApolloServer";
 import defineCollections from "../imports/collections/defineCollections";
 import setUpFileCollections from "../imports/plugins/core/files/server/no-meteor/setUpFileCollections";
-import methods from "../.reaction/devserver/methods";
-import mutations from "../imports/plugins/core/graphql/server/mutations";
-import queries from "../imports/plugins/core/graphql/server/queries";
 
 const loginToken = "LOGIN_TOKEN";
 const hashedToken = "5b4TxnA+4UFjJLDxvntNe8D6VXzVtiRXyKFo8mta+wU=";
@@ -17,11 +14,15 @@ class GraphTester {
     this.collections = {};
 
     this.app = createApolloServer({
+      addCallMeteorMethod(context) {
+        context.callMeteorMethod = (name) => {
+          console.warn(`The "${name}" Meteor method was called. The method has not yet been converted to a mutation that` + // eslint-disable-line no-console
+            " works outside of Meteor. If you are relying on a side effect or return value from this method, you may notice unexpected behavior.");
+          return null;
+        };
+      },
       context: {
-        collections: this.collections,
-        methods,
-        mutations,
-        queries
+        collections: this.collections
       },
       debug: true
     });

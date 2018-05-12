@@ -25,7 +25,7 @@ export default async function addressBookAdd(context, address, accountUserId) {
   // security, check for admin access. We don't need to check every user call
   // here because we are calling `Meteor.userId` from within this Method.
   if (typeof accountUserId === "string" && userIdFromContext !== accountUserId) {
-    if (!userHasPermission("reaction-accounts", account.shopId)) throw new Meteor.Error("access-denied", "Access denied");
+    if (!userHasPermission(["reaction-accounts"], account.shopId)) throw new Meteor.Error("access-denied", "Access denied");
   }
 
   // required default id
@@ -39,12 +39,10 @@ export default async function addressBookAdd(context, address, accountUserId) {
     // If this user has a cart, first set the new shipping or payment address on the cart
     if (typeof cart === "object") {
       if (address.isShippingDefault) {
-        // TODO
-        Meteor.call("cart/setShipmentAddress", cart._id, address);
+        context.callMeteorMethod("cart/setShipmentAddress", cart._id, address);
       }
       if (address.isBillingDefault) {
-        // TODO
-        Meteor.call("cart/setPaymentAddress", cart._id, address);
+        context.callMeteorMethod("cart/setPaymentAddress", cart._id, address);
       }
     }
 

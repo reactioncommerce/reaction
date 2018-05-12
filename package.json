@@ -223,8 +223,8 @@
           "alias": {
             "@reactioncommerce/reaction-collections": "./imports/plugins/core/collections",
             "@reactioncommerce/reaction-components": "./imports/plugins/core/components/lib",
-            "@reactioncommerce/reaction-graphql-utils": "./imports/plugins/core/graphql/server/resolvers/util",
-            "@reactioncommerce/reaction-graphql-xforms": "./imports/plugins/core/graphql/server/resolvers/xforms",
+            "@reactioncommerce/reaction-graphql-utils": "./imports/plugins/core/graphql/server/no-meteor/resolvers/util",
+            "@reactioncommerce/reaction-graphql-xforms": "./imports/plugins/core/graphql/server/no-meteor/resolvers/xforms",
             "@reactioncommerce/reaction-router": "./imports/plugins/core/router/lib",
             "@reactioncommerce/reaction-ui": "./imports/plugins/core/ui/client/components",
             "meteor/random": "./imports/random",
@@ -257,8 +257,8 @@
               "alias": {
                 "@reactioncommerce/reaction-collections": "./imports/plugins/core/collections",
                 "@reactioncommerce/reaction-components": "./imports/plugins/core/components/lib",
-                "@reactioncommerce/reaction-graphql-utils": "./imports/plugins/core/graphql/server/resolvers/util",
-                "@reactioncommerce/reaction-graphql-xforms": "./imports/plugins/core/graphql/server/resolvers/xforms",
+                "@reactioncommerce/reaction-graphql-utils": "./imports/plugins/core/graphql/server/no-meteor/resolvers/util",
+                "@reactioncommerce/reaction-graphql-xforms": "./imports/plugins/core/graphql/server/no-meteor/resolvers/xforms",
                 "@reactioncommerce/reaction-router": "./imports/plugins/core/router/lib",
                 "@reactioncommerce/reaction-ui": "./imports/plugins/core/ui/client/components",
                 "meteor/random": "./imports/random",
@@ -293,8 +293,8 @@
               "alias": {
                 "@reactioncommerce/reaction-collections": "./imports/plugins/core/collections",
                 "@reactioncommerce/reaction-components": "./imports/plugins/core/components/lib",
-                "@reactioncommerce/reaction-graphql-utils": "./imports/plugins/core/graphql/server/resolvers/util",
-                "@reactioncommerce/reaction-graphql-xforms": "./imports/plugins/core/graphql/server/resolvers/xforms",
+                "@reactioncommerce/reaction-graphql-utils": "./imports/plugins/core/graphql/server/no-meteor/resolvers/util",
+                "@reactioncommerce/reaction-graphql-xforms": "./imports/plugins/core/graphql/server/no-meteor/resolvers/xforms",
                 "@reactioncommerce/reaction-router": "./imports/plugins/core/router/lib",
                 "@reactioncommerce/reaction-ui": "./imports/plugins/core/ui/client/components",
                 "meteor": "./imports/test-utils/__mocks__/meteor",

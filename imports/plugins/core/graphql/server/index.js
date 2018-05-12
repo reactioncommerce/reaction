@@ -1,10 +1,14 @@
 import { Meteor } from "meteor/meteor";
 import { WebApp } from "meteor/webapp";
-import { baseContext } from "./buildMeteorContext";
-import createApolloServer from "./createApolloServer";
+import collections from "/imports/collections/rawCollections";
+import createApolloServer from "./no-meteor/createApolloServer";
+import runMeteorMethodWithContext from "./runMeteorMethodWithContext";
 
 const server = createApolloServer({
-  context: baseContext,
+  addCallMeteorMethod(context) {
+    context.callMeteorMethod = (name, ...args) => runMeteorMethodWithContext(context, name, args);
+  },
+  context: { collections },
   // XXX Eventually these should be from individual env variables instead
   debug: Meteor.isDevelopment,
   graphiql: Meteor.isDevelopment
