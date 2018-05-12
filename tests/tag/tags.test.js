@@ -64,7 +64,19 @@ test("get the first 50 tags when neither first or last is in query", async () =>
 
   expect(result.tags.nodes.length).toBe(5);
   expect(result.tags.totalCount).toBe(55);
-  expect(result.tags.pageInfo).toEqual({ endCursor: "MTU0", hasNextPage: false, hasPreviousPage: false, startCursor: "MTUw" });
+  expect(result.tags.pageInfo).toEqual({ endCursor: "MTU0", hasNextPage: false, hasPreviousPage: true, startCursor: "MTUw" });
+
+  // Ensure it's also correct when we pass `first: 5` explicitly
+  try {
+    result = await query({ shopId: opaqueShopId, after: "MTQ5", first: 5 });
+  } catch (error) {
+    expect(error).toBeUndefined();
+    return;
+  }
+
+  expect(result.tags.nodes.length).toBe(5);
+  expect(result.tags.totalCount).toBe(55);
+  expect(result.tags.pageInfo).toEqual({ endCursor: "MTU0", hasNextPage: false, hasPreviousPage: true, startCursor: "MTUw" });
 });
 
 test("get the last 10 tags when last is in query and before last item in list", async () => {
@@ -79,4 +91,40 @@ test("get the last 10 tags when last is in query and before last item in list", 
   expect(result.tags.nodes.length).toBe(10);
   expect(result.tags.totalCount).toBe(55);
   expect(result.tags.pageInfo).toEqual({ endCursor: "MTUz", hasNextPage: false, hasPreviousPage: true, startCursor: "MTQ0" });
+
+  try {
+    result = await query({ shopId: opaqueShopId, last: 10, before: result.tags.pageInfo.startCursor });
+  } catch (error) {
+    expect(error).toBeUndefined();
+    return;
+  }
+
+  expect(result.tags.nodes.length).toBe(10);
+  expect(result.tags.totalCount).toBe(55);
+  expect(result.tags.pageInfo).toEqual({ endCursor: "MTQz", hasNextPage: true, hasPreviousPage: true, startCursor: "MTM0" });
+
+  try {
+    result = await query({ shopId: opaqueShopId, last: 34, before: result.tags.pageInfo.startCursor });
+  } catch (error) {
+    expect(error).toBeUndefined();
+    return;
+  }
+
+  expect(result.tags.nodes.length).toBe(34);
+  expect(result.tags.totalCount).toBe(55);
+  expect(result.tags.pageInfo).toEqual({ endCursor: "MTMz", hasNextPage: true, hasPreviousPage: false, startCursor: "MTAw" });
+});
+
+test("works correctly when last goes before start", async () => {
+  let result;
+  try {
+    result = await query({ shopId: opaqueShopId, last: 5, before: "MTAw" });
+  } catch (error) {
+    expect(error).toBeUndefined();
+    return;
+  }
+
+  expect(result.tags.nodes.length).toBe(0);
+  expect(result.tags.totalCount).toBe(55);
+  expect(result.tags.pageInfo).toEqual({ endCursor: null, hasNextPage: true, hasPreviousPage: false, startCursor: null });
 });

@@ -163,7 +163,7 @@
     "chai": "^4.1.2",
     "enzyme": "^3.3.0",
     "enzyme-to-json": "^3.3.1",
-    "eslint": "^4.18.1",
+    "eslint": "^4.19.1",
     "eslint-plugin-import": "^2.8.0",
     "eslint-plugin-jest": "^21.14.0",
     "eslint-plugin-jsx-a11y": "^6.0.3",
@@ -177,7 +177,7 @@
     "mongodb-memory-server": "^1.7.3",
     "nodemon": "^1.17.2",
     "react-addons-test-utils": "15.6.2",
-    "snyk": "^1.71.0"
+    "snyk": "^1.78.0"
   },
   "postcss": {
     "plugins": {

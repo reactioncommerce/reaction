@@ -115,7 +115,8 @@ function composer(props, onData) {
 }
 
 registerComponent("ProductsCustomer", ProductGridCustomer, [
-  composeWithTracker(composer)
+  composeWithTracker(composer),
+  wrapComponent
 ]);
 
 export default compose(

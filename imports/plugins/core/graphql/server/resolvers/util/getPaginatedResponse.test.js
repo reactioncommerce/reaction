@@ -8,6 +8,10 @@ import {
   restore as restore$applyPaginationToMongoCursor,
   rewire as rewire$applyPaginationToMongoCursor
 } from "./applyPaginationToMongoCursor";
+import {
+  restore as restore$checkHasMoreInOppositeDirection,
+  rewire as rewire$checkHasMoreInOppositeDirection
+} from "./checkHasMoreInOppositeDirection";
 import { restore as restore$getMongoSort, rewire as rewire$getMongoSort } from "./getMongoSort";
 
 const baseQuery = { _id: "BASE_QUERY" };
@@ -15,26 +19,34 @@ const mockCursor = getFakeMongoCursor("COLLECTIONss", ["1", "2", "3", "4", "5"],
 mockCursor.options.db.collection = jest
   .fn()
   .mockName("db.collection")
-  .mockReturnValue("COLLECTION");
+  .mockReturnValue({
+    findOne: ({ _id }) => Promise.resolve({ _id })
+  });
 
 const applyBeforeAfterToFilterMock = jest.fn().mockName("applyBeforeAfterToFilter");
 const applyPaginationToMongoCursorMock = jest
   .fn()
   .mockName("applyPaginationToMongoCursor")
-  .mockReturnValue({ pageInfo: { info: true } });
+  .mockReturnValue({ hasNextPage: true, hasPreviousPage: null });
+const checkHasMoreInOppositeDirectionMock = jest
+  .fn()
+  .mockName("checkHasMoreInOppositeDirectionMock")
+  .mockReturnValue(Promise.resolve(true));
 const getMongoSortMock = jest.fn().mockName("getMongoSort");
 
-const mockArgs = { arg1: "test" };
+const mockArgs = { before: "123", sortOrder: "asc", sortBy: "name" };
 
 beforeAll(() => {
   rewire$applyBeforeAfterToFilter(applyBeforeAfterToFilterMock);
   rewire$applyPaginationToMongoCursor(applyPaginationToMongoCursorMock);
+  rewire$checkHasMoreInOppositeDirection(checkHasMoreInOppositeDirectionMock);
   rewire$getMongoSort(getMongoSortMock);
 });
 
 afterAll(() => {
   restore$applyBeforeAfterToFilter();
   restore$applyPaginationToMongoCursor();
+  restore$checkHasMoreInOppositeDirection();
   restore$getMongoSort();
 });
 
@@ -46,15 +58,19 @@ test("calls applyPaginationToMongoCursor with mongo cursor and args", async () =
 test("calls applyBeforeAfterToFilter with correct args", async () => {
   await getPaginatedResponse(mockCursor, mockArgs);
   expect(applyBeforeAfterToFilterMock).toHaveBeenCalledWith({
-    arg1: "test",
-    baseFilter: baseQuery,
-    collection: "COLLECTION"
+    ...mockArgs,
+    after: undefined,
+    before: { _id: "123" },
+    baseFilter: baseQuery
   });
 });
 
 test("calls getMongoSort with correct args", async () => {
   await getPaginatedResponse(mockCursor, mockArgs);
-  expect(getMongoSortMock).toHaveBeenCalledWith(mockArgs);
+  expect(getMongoSortMock).toHaveBeenCalledWith({
+    sortBy: mockArgs.sortBy,
+    sortOrder: mockArgs.sortOrder
+  });
 });
 
 test("applies filter and sort and returns correct result", async () => {
@@ -67,7 +83,7 @@ test("applies filter and sort and returns correct result", async () => {
   expect(mockCursor.sort).toHaveBeenCalledWith("SORT");
   expect(result).toEqual({
     nodes,
-    pageInfo: { endCursor: "123end", info: true, startCursor: "123start" },
+    pageInfo: { endCursor: "123end", hasNextPage: true, hasPreviousPage: true, startCursor: "123start" },
     totalCount: 5
   });
 });
