@@ -2,7 +2,7 @@ import mockContext from "/imports/test-utils/helpers/mockContext";
 import { rewire as rewire$isBackorder, restore as restore$isBackorder } from "./isBackorder";
 import { rewire as rewire$isLowQuantity, restore as restore$isLowQuantity } from "./isLowQuantity";
 import { rewire as rewire$isSoldOut, restore as restore$isSoldOut } from "./isSoldOut";
-import publishProductInventoryAdjustments from "./publishProductInventoryAdjustments";
+import updateCatalogProductInventoryStatus from "./updateCatalogProductInventoryStatus";
 
 const mockCollections = { ...mockContext.collections };
 
@@ -222,7 +222,7 @@ test("expect true if a product's inventory has changed and is updated in the cat
   mockCollections.Products.toArray.mockReturnValueOnce(Promise.resolve(mockVariants));
   mockIsSoldOut.mockReturnValueOnce(true);
   mockCollections.Catalog.updateOne.mockReturnValueOnce(Promise.resolve({ result: { ok: 1 } }));
-  const spec = await publishProductInventoryAdjustments(mockProduct, mockCollections);
+  const spec = await updateCatalogProductInventoryStatus(mockProduct, mockCollections);
   expect(spec).toBe(true);
 });
 
@@ -230,12 +230,12 @@ test("expect false if a product's inventory did not change and is not updated in
   mockCollections.Catalog.findOne.mockReturnValueOnce(Promise.resolve(mockCatalogItem));
   mockCollections.Products.toArray.mockReturnValueOnce(Promise.resolve(mockVariants));
   mockIsSoldOut.mockReturnValueOnce(false);
-  const spec = await publishProductInventoryAdjustments(mockProduct, mockCollections);
+  const spec = await updateCatalogProductInventoryStatus(mockProduct, mockCollections);
   expect(spec).toBe(false);
 });
 
 test("expect false if a product's catalog item does not exsit", async () => {
   mockCollections.Catalog.findOne.mockReturnValueOnce(Promise.resolve(undefined));
-  const spec = await publishProductInventoryAdjustments(mockProduct, mockCollections);
+  const spec = await updateCatalogProductInventoryStatus(mockProduct, mockCollections);
   expect(spec).toBe(false);
 });
