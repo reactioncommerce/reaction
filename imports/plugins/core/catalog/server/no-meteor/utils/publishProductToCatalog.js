@@ -1,10 +1,10 @@
 import Logger from "@reactioncommerce/logger";
 import Random from "@reactioncommerce/random";
-import getPriceRange from "/imports/plugins/core/revisions/server/no-meteor/utils/getPriceRange";
+import getCatalogProductMedia from "./getCatalogProductMedia";
+import getPriceRange from "./getPriceRange";
 import isBackorder from "./isBackorder";
 import isLowQuantity from "./isLowQuantity";
 import isSoldOut from "./isSoldOut";
-import getCatalogProductMedia from "./getCatalogProductMedia";
 
 /**
  * @method
@@ -137,7 +137,8 @@ export default async function publishProductToCatalog(product, collections) {
 
       if (variantOptions) {
         newVariant.options = variantOptions.map((option) =>
-          xformVariant(option, getPriceRange([option.price], shopCurrencyInfo), shopCurrencyCode));
+          xformVariant(option, getPriceRange([option.price], shopCurrencyInfo), shopCurrencyCode)
+        );
       }
       return newVariant;
     });
