@@ -1,7 +1,7 @@
 import { Migrations } from "meteor/percolate:migrations";
 import Logger from "@reactioncommerce/logger";
 import { Products } from "/lib/collections";
-import { publishProductsToCatalog } from "/imports/plugins/core/catalog/server/methods/catalog";
+import { publishProductsToCatalog } from "/imports/plugins/core/catalog/server/no-meteor/utils/publishProductsToCatalog";
 
 Migrations.add({
   version: 24,
