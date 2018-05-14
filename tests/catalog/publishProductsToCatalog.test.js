@@ -1,6 +1,8 @@
 import GraphTester from "../GraphTester";
 import PublishProductToCatalogMutation from "./PublishProductsToCatalogMutation.graphql";
 
+jasmine.DEFAULT_TIMEOUT_INTERVAL = 60000;
+
 const internalShopId = "123";
 const internalProductId = "999";
 const opaqueProductId = "cmVhY3Rpb24vcHJvZHVjdDo5OTk="; // reaction/product:999
