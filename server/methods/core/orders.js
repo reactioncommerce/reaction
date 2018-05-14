@@ -9,7 +9,7 @@ import { PaymentMethodArgument } from "/lib/collections/schemas";
 import { Logger, Hooks, Reaction } from "/server/api";
 import { Media } from "/imports/plugins/core/files/server";
 import rawCollections from "/imports/collections/rawCollections";
-import publishProductInventoryAdjustments from "/imports/plugins/core/catalog/server/no-meteor/utils/publishProductInventoryAdjustments";
+import updateCatalogProductInventoryStatus from "/imports/plugins/core/catalog/server/no-meteor/utils/updateCatalogProductInventoryStatus";
 
 /**
  * @name getPrimaryMediaForItem
@@ -140,7 +140,7 @@ export function ordersInventoryAdjust(orderId) {
     Hooks.Events.run("afterUpdateCatalogProduct", item.variant);
 
     // Publish inventory updates to the Catalog
-    Promise.await(publishProductInventoryAdjustments(item.productId, rawCollections));
+    Promise.await(updateCatalogProductInventoryStatus(item.productId, rawCollections));
   });
 }
 
@@ -185,7 +185,7 @@ export function ordersInventoryAdjustByShop(orderId, shopId) {
       Hooks.Events.run("afterUpdateCatalogProduct", item.variants);
 
       // Publish inventory updates to the Catalog
-      Promise.await(publishProductInventoryAdjustments(item.productId, rawCollections));
+      Promise.await(updateCatalogProductInventoryStatus(item.productId, rawCollections));
     }
   });
 }
@@ -482,7 +482,7 @@ export const methods = {
           Hooks.Events.run("afterUpdateCatalogProduct", item.variants);
 
           // Publish inventory updates to the Catalog
-          Promise.await(publishProductInventoryAdjustments(item.productId, rawCollections));
+          Promise.await(updateCatalogProductInventoryStatus(item.productId, rawCollections));
         }
       });
     }
