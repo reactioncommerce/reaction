@@ -6,6 +6,7 @@ import isBackorder from "./isBackorder";
 import isLowQuantity from "./isLowQuantity";
 import isSoldOut from "./isSoldOut";
 
+
 /**
  * @method
  * @summary Converts a variant Product document into the catalog schema for variants
@@ -165,6 +166,7 @@ export default async function publishProductToCatalog(product, collections) {
     originCountry: product.originCountry,
     pageTitle: product.pageTitle,
     parcel: product.parcel,
+    positions: product.positions,
     price: product.price,
     pricing: {
       [shop.currency]: {

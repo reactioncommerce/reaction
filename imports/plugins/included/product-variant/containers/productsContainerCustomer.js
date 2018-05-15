@@ -51,6 +51,7 @@ function composer(props, onData) {
   const queryParams = {};
   const slug = Reaction.Router.getParam("slug");
   const shopIdOrSlug = Reaction.Router.getParam("shopSlug");
+  let tagIdForPosition = "_default";
 
   if (slug) {
     const tag = Tags.findOne({ slug }) || Tags.findOne({ _id: slug });
@@ -64,6 +65,7 @@ function composer(props, onData) {
       return;
     }
     queryParams.tagIds = [tag._id];
+    tagIdForPosition = tag._id;
   }
 
   if (shopIdOrSlug) {
@@ -94,6 +96,7 @@ function composer(props, onData) {
     "shopId": { $in: activeShopsIds }
   }, {
     $sort: {
+      [`product.positions.${tagIdForPosition}.position`]: 1,
       createdAt: -1
     }
   });

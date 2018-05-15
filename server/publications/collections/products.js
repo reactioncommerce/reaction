@@ -613,8 +613,14 @@ Meteor.publish("Products/grid", function (productScrollLimit = 24, productFilter
     return this.ready();
   }
 
+  let tagIdForPosition = "_default";
+  if (productFilters && Array.isArray(productFilters.tagIds) && productFilters.tagIds.length) {
+    [tagIdForPosition] = productFilters.tagIds;
+  }
+
   return Catalog.find(newSelector, {
     sort: {
+      [`product.positions.${tagIdForPosition}.position`]: 1,
       createdAt: -1
     },
     limit: productScrollLimit,
