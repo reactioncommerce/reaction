@@ -562,7 +562,7 @@ Meteor.methods({
     }
 
     Hooks.Events.run("beforeInsertCatalogProduct", assembledVariant);
-    const _id = Products.insert(assembledVariant);
+    Products.insert(assembledVariant);
     Hooks.Events.run("afterInsertCatalogProduct", assembledVariant);
 
     Logger.debug(`products/createVariant: created variant: ${newVariantId} for ${parentId}`);
