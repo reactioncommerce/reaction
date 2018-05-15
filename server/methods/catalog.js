@@ -4,7 +4,7 @@ import { check, Match } from "meteor/check";
 import { EJSON } from "meteor/ejson";
 import { Meteor } from "meteor/meteor";
 import { ReactionProduct } from "/lib/api";
-import { ProductRevision as Catalog } from "/imports/plugins/core/revisions/server/hooks";
+import Catalog from "/lib/api/catalog";
 import { Hooks, Logger, Reaction } from "/server/api";
 import { MediaRecords, Products, Revisions, Tags } from "/lib/collections";
 import { Media } from "/imports/plugins/core/files/server";
