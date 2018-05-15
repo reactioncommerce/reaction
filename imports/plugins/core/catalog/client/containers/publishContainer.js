@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { composeWithTracker } from "@reactioncommerce/reaction-components";
 import PublishControls from "../components/publishControls";
-import { Revisions } from "/lib/collections";
 import { Meteor } from "meteor/meteor";
 import TranslationProvider from "/imports/plugins/core/ui/client/providers/translationProvider";
 import { Reaction, i18next } from "/client/api";
@@ -91,43 +90,13 @@ function composer(props, onData) {
   const viewAs = Reaction.getUserPreferences("reaction-dashboard", "viewAs", "administrator");
 
   if (Array.isArray(props.documentIds) && props.documentIds.length) {
-    const subscription = Meteor.subscribe("ProductRevisions", props.documentIds);
+    onData(null, {
+      documentIds: props.documentIds,
+      documents: props.documents,
+      isPreview: viewAs === "customer"
+    });
 
-    if (subscription.ready()) {
-      const revisions = Revisions.find({
-        "$or": [
-          {
-            documentId: {
-              $in: props.documentIds
-            }
-          },
-          {
-            "documentData.ancestors": {
-              $in: props.documentIds
-            }
-          },
-          {
-            parentDocument: {
-              $in: props.documentIds
-            }
-          }
-        ],
-        "workflow.status": {
-          $nin: [
-            "revision/published"
-          ]
-        }
-      }).fetch();
-
-      onData(null, {
-        documentIds: props.documentIds,
-        documents: props.documents,
-        revisions,
-        isPreview: viewAs === "customer"
-      });
-
-      return;
-    }
+    return;
   }
 
   onData(null, {
