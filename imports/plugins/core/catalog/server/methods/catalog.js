@@ -3,7 +3,7 @@ import { check, Match } from "meteor/check";
 import { Products, Catalog as CatalogCollection } from "/lib/collections";
 import { Logger, Reaction } from "/server/api";
 import { Media } from "/imports/plugins/core/files/server";
-import { ProductRevision as Catalog } from "/imports/plugins/core/revisions/server/hooks";
+import Catalog from "/lib/api";
 
 /**
  * @method isSoldOut
