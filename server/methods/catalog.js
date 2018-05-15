@@ -497,7 +497,6 @@ Meteor.methods({
 
       let newId;
       try {
-        Hooks.Events.run("beforeInsertCatalogProductInsertRevision", clone);
         newId = Products.insert(clone, { validate: false });
         const newProduct = Products.findOne(newId);
         Hooks.Events.run("afterInsertCatalogProduct", newProduct);
@@ -571,8 +570,6 @@ Meteor.methods({
     Hooks.Events.run("beforeInsertCatalogProduct", assembledVariant);
     const _id = Products.insert(assembledVariant);
     Hooks.Events.run("afterInsertCatalogProduct", assembledVariant);
-
-    Hooks.Events.run("afterInsertCatalogProductInsertRevision", Products.findOne({ _id }));
 
     Logger.debug(`products/createVariant: created variant: ${newVariantId} for ${parentId}`);
 
@@ -785,7 +782,6 @@ Meteor.methods({
           newProduct._id
         );
       }
-      Hooks.Events.run("beforeInsertCatalogProductInsertRevision", newProduct);
       result = Products.insert(newProduct, { validate: false });
       Hooks.Events.run("afterInsertCatalogProduct", newProduct);
       results.push(result);
@@ -814,7 +810,6 @@ Meteor.methods({
         delete newVariant.createdAt;
         delete newVariant.publishedAt; // TODO can variant have this param?
 
-        Hooks.Events.run("beforeInsertCatalogProductInsertRevision", newVariant);
         result = Products.insert(newVariant, { validate: false });
         Hooks.Events.run("afterInsertCatalogProduct", newVariant);
         copyMedia(productNewId, variant._id, variantNewId);
@@ -847,26 +842,18 @@ Meteor.methods({
         throw new Meteor.Error("invalid-parameter", "Product should have a valid shopId");
       }
 
-      // Create product revision
-      Hooks.Events.run("beforeInsertCatalogProductInsertRevision", product);
-
       return Products.insert(product);
     }
 
     const newSimpleProduct = createProduct();
 
-    // Create simple product revision
-    Hooks.Events.run("afterInsertCatalogProductInsertRevision", newSimpleProduct);
-
-    const newVariant = createProduct({
+    // Create Variant
+    createProduct({
       ancestors: [newSimpleProduct._id],
       price: 0.00,
       title: "",
       type: "variant" // needed for multi-schema
     });
-
-    // Create variant revision
-    Hooks.Events.run("afterInsertCatalogProductInsertRevision", newVariant);
 
     return newSimpleProduct._id;
   },
