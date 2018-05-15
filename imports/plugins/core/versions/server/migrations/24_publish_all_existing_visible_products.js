@@ -1,7 +1,8 @@
 import { Migrations } from "meteor/percolate:migrations";
 import Logger from "@reactioncommerce/logger";
 import { Products } from "/lib/collections";
-import { publishProductsToCatalog } from "/imports/plugins/core/catalog/server/no-meteor/utils/publishProductsToCatalog";
+import collections from "/imports/collections/rawCollections";
+import publishProductsToCatalog from "/imports/plugins/core/catalog/server/no-meteor/utils/publishProductsToCatalog";
 
 Migrations.add({
   version: 24,
@@ -12,7 +13,7 @@ Migrations.add({
       isVisible: true,
       type: "simple"
     }, { _id: 1 }).map((product) => product._id);
-    const success = Promise.await(publishProductsToCatalog(visiblePublishedProducts));
+    const success = Promise.await(publishProductsToCatalog(visiblePublishedProducts, collections));
     if (!success) {
       Logger.error("Migration 24 failed to create catalog products for some published products.");
     }
