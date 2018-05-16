@@ -1,6 +1,5 @@
 import applyBeforeAfterToFilter from "./applyBeforeAfterToFilter";
 import applyPaginationToMongoCursor from "./applyPaginationToMongoCursor";
-import checkHasMoreInOppositeDirection from "./checkHasMoreInOppositeDirection";
 import getCollectionFromCursor from "./getCollectionFromCursor";
 import getMongoSort from "./getMongoSort";
 
@@ -30,6 +29,7 @@ async function getPaginatedResponse(mongoCursor, args) {
   // Find the document for the before/after ID
   const collection = getCollectionFromCursor(mongoCursor);
   let { after, before } = args;
+  let hasMore = false;
   if (after || before) {
     const doc = await collection.findOne({
       _id: before || after
@@ -41,17 +41,8 @@ async function getPaginatedResponse(mongoCursor, args) {
 
     if (after) after = doc;
     if (before) before = doc;
+    hasMore = true;
   }
-
-  const hasMore = await checkHasMoreInOppositeDirection({
-    after,
-    baseFilter,
-    before,
-    mongoCursor,
-    sort,
-    sortBy,
-    sortOrder
-  });
 
   // Get an updated filter, with before/after added
   const updatedFilter = applyBeforeAfterToFilter({
