@@ -11,7 +11,7 @@ import { MediaRecords } from "/lib/collections";
 /**
  * @method updateMediaMetadata
  * @memberof Media/Methods
- * @summary updates media record control.
+ * @summary Updates a media record.
  * @param {String} fileRecordId - _id of updated file record.
  * @param {Object} metadata - metadata from updated media file.
  * @return {Boolean}
@@ -36,7 +36,7 @@ async function updateMediaMetadata(fileRecordId, metadata) {
  * @name media/insert
  * @method
  * @memberof Media/Methods
- * @summary insert a new media record.
+ * @summary Insert a new media record.
  * @param {Object} fileRecord - document from file collection upload.
  * @return {String} - _id of the new inserted media record.
  */
@@ -57,7 +57,7 @@ export async function insertMedia(fileRecord) {
  * @name media/remove
  * @method
  * @memberof Media/Methods
- * @summary unpublished media file by updating it's workflow
+ * @summary Unpublish a media record by updating it's workflow
  * @param {String} fileRecordId - _id of file record to be deleted.
  * @return {Boolean}
  */
