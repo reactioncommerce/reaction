@@ -482,3 +482,27 @@ test("get all items for shop", async () => {
   await tester.collections.Shops.remove({ _id: internalShopId });
   await tester.collections.Catalog.remove({ _id: internalCatalogItemId });
 });
+
+// expect CatalogItems sorted by minPrice form high to low
+test("expect CatalogItemProducts sorted by minPrice from highest to lowest when sortByPriceCurrencyCode is provided", async () => {
+  const spec = false;
+  expect(spec).toBe(true);
+});
+
+// expect CatalogItems sorted by minPrice form high to low when sortOrder is desc
+test("expect CatalogItemProducts sorted by minPrice from highest to lowest when sortByPriceCurrencyCode is provided and sortOrder is desc", async () => {
+  const spec = false;
+  expect(spec).toBe(true);
+});
+
+// expect CatalogItems sorted by minPrice form low to high when sortOrder is asc
+test("expect CatalogItemProducts sorted by minPrice from lowest to highest when sortByPriceCurrencyCode is provided and sortOrder is asc", async () => {
+  const spec = false;
+  expect(spec).toBe(true);
+});
+
+// expect error when invalid currency code is provided
+test("expect error when sortByPriceCurrencyCode is provided an invalid currecnyCode", async () => {
+  const spec = false;
+  expect(spec).toBe(true);
+});
