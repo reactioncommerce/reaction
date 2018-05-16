@@ -25,11 +25,9 @@ const opaqueCatalogVariantIds = [
 ]; // reaction/catalogProductVariant
 
 const productSlug = "fake-product";
-const shopName = "Test Shop";
 
 const createdAt = new Date("2018-04-16T15:34:28.043Z");
 const updatedAt = new Date("2018-04-17T15:34:28.043Z");
-const positionUpdatedAt = new Date("2018-04-15T15:34:28.043Z");
 
 const mockVariants = [
   {
