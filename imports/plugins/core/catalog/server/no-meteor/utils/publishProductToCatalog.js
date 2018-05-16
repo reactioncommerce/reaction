@@ -6,7 +6,6 @@ import isBackorder from "./isBackorder";
 import isLowQuantity from "./isLowQuantity";
 import isSoldOut from "./isSoldOut";
 
-
 /**
  * @method
  * @summary Converts a variant Product document into the catalog schema for variants

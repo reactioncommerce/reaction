@@ -8,7 +8,7 @@ import getProductQuantity from "./getProductQuantity";
  * @return {boolean} low quantity or not
  */
 export default function isLowQuantity(variants) {
-  const threshold = variants[0].lowInventoryWarningThreshold;
+  const threshold = variants && variants.length && variants[0].lowInventoryWarningThreshold;
   const results = variants.map((variant) => {
     const quantity = getProductQuantity(variant, variants);
     if (variant.inventoryManagement && variant.inventoryPolicy && quantity) {

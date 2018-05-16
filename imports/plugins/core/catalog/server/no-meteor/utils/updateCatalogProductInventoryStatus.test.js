@@ -140,7 +140,7 @@ const mockProduct = {
   },
   pinterestMsg: "pinterestMessage",
   positions: {
-    [shopName.toLowerCase()]: {
+    _default: {
       weight: 1,
       position: 1,
       pinned: true,

@@ -151,14 +151,6 @@ const mockProduct = {
     weight: 7.77
   },
   pinterestMsg: "pinterestMessage",
-  positions: {
-    [shopName.toLowerCase()]: {
-      weight: 1,
-      position: 1,
-      pinned: true,
-      updatedAt: positionUpdatedAt.toISOString()
-    }
-  },
   price: {
     max: 5.99,
     min: 2.99,
@@ -313,15 +305,6 @@ const expectedItemsResponse = {
         shop: {
           _id: opaqueShopId
         },
-        positions: [
-          {
-            displayWeight: 1,
-            position: 1,
-            isPinned: true,
-            updatedAt: positionUpdatedAt.toISOString(),
-            tagId: opaqueShopId
-          }
-        ],
         product: {
           _id: opaqueCatalogProductId,
           barcode: "barcode",

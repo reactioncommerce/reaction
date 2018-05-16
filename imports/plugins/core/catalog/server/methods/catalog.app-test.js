@@ -851,7 +851,7 @@ describe("core product methods", function () {
       };
       expect(() => Meteor.call(
         "products/updateProductPosition",
-        product._id, position, tag.slug
+        product._id, position, tag._id
       )).to.not.throw(Meteor.Error, /Access Denied/);
       const updatedProduct = Products.findOne(product._id);
       expect(updatedProduct.positions).to.be.undefined;
@@ -870,10 +870,10 @@ describe("core product methods", function () {
       };
       expect(() => Meteor.call(
         "products/updateProductPosition",
-        product._id, position, tag.slug
+        product._id, position, tag._id
       )).to.not.throw(Meteor.Error, /Access Denied/);
       const updatedProductRevision = Revisions.findOne({ documentId: product._id });
-      expect(updatedProductRevision.documentData.positions[tag.slug].position).to.equal(0);
+      expect(updatedProductRevision.documentData.positions[tag._id].position).to.equal(0);
 
       return done();
     });
@@ -889,11 +889,11 @@ describe("core product methods", function () {
       };
       expect(() => Meteor.call(
         "products/updateProductPosition",
-        product._id, position, tag.slug
+        product._id, position, tag._id
       )).to.not.throw(Meteor.Error, /Access Denied/);
       Meteor.call("revisions/publish", product._id);
       const updatedProduct = Products.findOne(product._id);
-      expect(updatedProduct.positions[tag.slug].position).to.equal(0);
+      expect(updatedProduct.positions[tag._id].position).to.equal(0);
 
       return done();
     });

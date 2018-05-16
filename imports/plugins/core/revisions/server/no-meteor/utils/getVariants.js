@@ -9,12 +9,12 @@
  * @param {boolean} topOnly - True to return only a products top level variants.
  * @return {Promise<Object[]>} Array of Product Variant objects.
  */
-export default async function getVariants(proudctOrVariantId, collections, topOnly) {
+export default async function getVariants(productOrVariantId, collections, topOnly) {
   const { Products, Revisions } = collections;
   const variants = [];
 
   const productVariants = await Products.find({
-    ancestors: topOnly ? [proudctOrVariantId] : proudctOrVariantId,
+    ancestors: topOnly ? [productOrVariantId] : productOrVariantId,
     type: "variant",
     isDeleted: false
   }).toArray();
@@ -33,5 +33,6 @@ export default async function getVariants(proudctOrVariantId, collections, topOn
       variants.push(variant);
     }
   }));
+
   return variants;
 }
