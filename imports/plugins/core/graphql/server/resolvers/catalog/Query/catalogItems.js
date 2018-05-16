@@ -17,6 +17,13 @@ import { decodeTagOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/tag
 export default async function catalogItems(_, args, context) {
   const { shopIds: opaqueShopIds, tagIds: opaqueTagIds, ...connectionArgs } = args;
 
+  if (connectionArgs.sortBy === "minPrice") {
+    if (typeof connectionArgs.sortByPriceCurrencyCode !== "string") {
+      throw new Error("sortByPriceCurrencyCode is required when sorting by minPrice");
+    }
+    connectionArgs.sortBy = `product.pricing.${connectionArgs.sortByPriceCurrencyCode}.minPrice`;
+  }
+
   const shopIds = opaqueShopIds && opaqueShopIds.map(decodeShopOpaqueId);
   const tagIds = opaqueTagIds && opaqueTagIds.map(decodeTagOpaqueId);
 
@@ -24,8 +31,6 @@ export default async function catalogItems(_, args, context) {
     shopIds,
     tagIds
   });
-
-  connectionArgs.sortBy = `product.pricing.<sortByPriceCurrencyCode argument value>.minPrice`;
 
   return getPaginatedResponse(query, connectionArgs);
 }
