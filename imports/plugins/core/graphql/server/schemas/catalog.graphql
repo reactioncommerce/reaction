@@ -395,7 +395,7 @@ extend type Query {
     last: ConnectionLimitInt,
     sortOrder: SortOrder = desc,
 
-    "Optionally provide a Currecny code to sort by"
+    "Provide a Currency code if sortBy is minPrice"
     sortByPriceCurrencyCode: String
 
     "By default, items are sorted by when they were created, newest first. Set this to sort by one of the other allowed fields"
