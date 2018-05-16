@@ -25,5 +25,7 @@ export default async function catalogItems(_, args, context) {
     tagIds
   });
 
+  connectionArgs.sortBy = `product.pricing.<sortByPriceCurrencyCode argument value>.minPrice`;
+
   return getPaginatedResponse(query, connectionArgs);
 }
