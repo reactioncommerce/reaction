@@ -376,6 +376,7 @@ type Catalog implements Node {
 enum CatalogItemSortByField {
   _id
   createdAt
+  minPrice
   updatedAt
 }
 
@@ -393,6 +394,9 @@ extend type Query {
     first: ConnectionLimitInt,
     last: ConnectionLimitInt,
     sortOrder: SortOrder = desc,
+
+    "Optionally provide a Currecny code to sort by"
+    sortByPriceCurrencyCode: String
 
     "By default, items are sorted by when they were created, newest first. Set this to sort by one of the other allowed fields"
     sortBy: CatalogItemSortByField = createdAt
