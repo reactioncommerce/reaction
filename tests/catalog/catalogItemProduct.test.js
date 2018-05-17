@@ -1,6 +1,8 @@
 import GraphTester from "../GraphTester";
 import CatalogItemProductFullQuery from "./CatalogItemProductFullQuery.graphql";
 
+jasmine.DEFAULT_TIMEOUT_INTERVAL = 60000;
+
 const internalShopId = "123";
 const opaqueShopId = "cmVhY3Rpb24vc2hvcDoxMjM="; // reaction/shop:123
 const internalCatalogItemId = "999";
@@ -23,14 +25,11 @@ const shopName = "Test Shop";
 
 const createdAt = new Date("2018-04-16T15:34:28.043Z");
 const updatedAt = new Date("2018-04-17T15:34:28.043Z");
-const positionUpdatedAt = new Date("2018-04-15T15:34:28.043Z");
 
-const variants = [
+const mockCatalogProductVariants = [
   {
     _id: internalVariantIds[0],
-    ancestors: [internalCatalogProductId],
     barcode: "barcode",
-    compareAtPrice: 0,
     createdAt,
     height: 0,
     index: 0,
@@ -38,8 +37,7 @@ const variants = [
     inventoryPolicy: false,
     isLowQuantity: true,
     isSoldOut: false,
-    isDeleted: false,
-    isVisible: true,
+    isTaxable: true,
     length: 0,
     lowInventoryWarningThreshold: 0,
     metafields: [
@@ -53,75 +51,89 @@ const variants = [
       }
     ],
     minOrderQuantity: 0,
+    options: [
+      {
+        _id: internalVariantIds[1],
+        barcode: "barcode",
+        createdAt,
+        height: 2,
+        index: 0,
+        inventoryManagement: true,
+        inventoryPolicy: true,
+        isLowQuantity: true,
+        isSoldOut: false,
+        isTaxable: true,
+        length: 2,
+        lowInventoryWarningThreshold: 0,
+        metafields: [
+          {
+            value: "value",
+            namespace: "namespace",
+            description: "description",
+            valueType: "valueType",
+            scope: "scope",
+            key: "key"
+          }
+        ],
+        minOrderQuantity: 0,
+        optionTitle: "Awesome Soft Bike",
+        originCountry: "US",
+        price: 992.0,
+        pricing: {
+          USD: {
+            compareAtPrice: 15,
+            displayPrice: "992.00",
+            maxPrice: 992.0,
+            minPrice: 992.0,
+            price: 992.0
+          }
+        },
+        shopId: internalShopId,
+        sku: "sku",
+        taxCode: "0000",
+        taxDescription: "taxDescription",
+        title: "One pound bag",
+        updatedAt: null,
+        variantId: internalVariantIds[1],
+        weight: 2,
+        width: 2
+      }
+    ],
     optionTitle: "Untitled Option",
     originCountry: "US",
     price: 0,
+    pricing: {
+      USD: {
+        compareAtPrice: 15,
+        displayPrice: "992.00",
+        maxPrice: 992.0,
+        minPrice: 992.0,
+        price: null
+      }
+    },
     shopId: internalShopId,
     sku: "sku",
-    taxable: true,
     taxCode: "0000",
     taxDescription: "taxDescription",
     title: "Small Concrete Pizza",
-    updatedAt,
+    updatedAt: updatedAt.toISOString(),
     variantId: internalVariantIds[0],
     weight: 0,
     width: 0
-  },
-  {
-    _id: internalVariantIds[1],
-    ancestors: [internalCatalogProductId, internalVariantIds[0]],
-    barcode: "barcode",
-    compareAtPrice: 15,
-    height: 2,
-    index: 0,
-    inventoryManagement: true,
-    inventoryPolicy: true,
-    isLowQuantity: true,
-    isSoldOut: false,
-    isDeleted: false,
-    isVisible: true,
-    length: 2,
-    lowInventoryWarningThreshold: 0,
-    metafields: [
-      {
-        value: "value",
-        namespace: "namespace",
-        description: "description",
-        valueType: "valueType",
-        scope: "scope",
-        key: "key"
-      }
-    ],
-    minOrderQuantity: 0,
-    optionTitle: "Awesome Soft Bike",
-    originCountry: "US",
-    price: 992.0,
-    shopId: internalShopId,
-    sku: "sku",
-    taxable: true,
-    taxCode: "0000",
-    taxDescription: "taxDescription",
-    title: "One pound bag",
-    variantId: internalVariantIds[1],
-    weight: 2,
-    width: 2
   }
 ];
 
-const mockProduct = {
-  _id: internalCatalogItemId,
-  shopId: internalShopId,
+const mockCatalogProduct = {
+  _id: internalCatalogProductId,
   barcode: "barcode",
-  compareAtPrice: 4.56,
   createdAt,
   description: "description",
-  facebookMsg: "facebookMessage",
-  fulfillmentService: "fulfillmentService",
-  googleplusMsg: "googlePlusMessage",
   height: 11.23,
   isBackorder: false,
   isLowQuantity: false,
   isSoldOut: false,
+  isTaxable: false,
+  isVisible: true,
   length: 5.67,
   lowInventoryWarningThreshold: 2,
   metafields: [
@@ -145,63 +157,84 @@ const mockProduct = {
     height: 6.66,
     weight: 7.77
   },
-  pinterestMsg: "pinterestMessage",
-  positions: {
-    [shopName.toLowerCase()]: {
-      weight: 1,
-      position: 1,
-      pinned: true,
-      updatedAt: positionUpdatedAt.toISOString()
-    }
-  },
   price: {
     max: 5.99,
     min: 2.99,
     range: "2.99 - 5.99"
   },
+  pricing: {
+    USD: {
+      compareAtPrice: 15,
+      displayPrice: "2.99 - 5.99",
+      maxPrice: 5.99,
+      minPrice: 2.99,
+      price: null
+    }
+  },
+  productId: internalProductId,
   media: [
     {
-      metadata: {
-        toGrid: 1,
-        priority: 1,
-        productId: internalProductId,
-        variantId: null
-      },
+      toGrid: 1,
+      priority: 1,
+      productId: internalProductId,
+      variantId: null,
+      URLs: {
+        thumbnail: "http://localhost/thumbnail",
+        small: "http://localhost/small",
+        medium: "http://localhost/medium",
+        large: "http://localhost/large",
+        original: "http://localhost/original"
+      }
+    }
+  ],
+  primaryImage: {
+    toGrid: 1,
+    priority: 1,
+    productId: internalProductId,
+    variantId: null,
+    URLs: {
       thumbnail: "http://localhost/thumbnail",
       small: "http://localhost/small",
       medium: "http://localhost/medium",
       large: "http://localhost/large",
-      image: "http://localhost/original"
+      original: "http://localhost/original"
     }
-  ],
-  productId: internalProductId,
+  },
   productType: "productType",
   requiresShipping: true,
-  shop: {
-    _id: opaqueShopId
-  },
+  shopId: internalShopId,
   sku: "ABC123",
-  handle: productSlug,
-  hashtags: internalTagIds,
+  slug: productSlug,
+  socialMetadata: [
+    { service: "twitter", message: "twitterMessage" },
+    { service: "facebook", message: "facebookMessage" },
+    { service: "googleplus", message: "googlePlusMessage" },
+    { service: "pinterest", message: "pinterestMessage" }
+  ],
+  tagIds: internalTagIds,
   taxCode: "taxCode",
   taxDescription: "taxDescription",
-  taxable: false,
   title: "Fake Product Title",
-  twitterMsg: "twitterMessage",
   type: "product-simple",
-  updatedAt,
-  variants,
+  updatedAt: updatedAt.toISOString(),
+  variants: mockCatalogProductVariants,
   vendor: "vendor",
   weight: 15.6,
   width: 8.4
 };
 
+const mockCatalogItem = {
+  _id: internalCatalogItemId,
+  product: mockCatalogProduct,
+  shopId: internalShopId,
+  createdAt,
+  updatedAt
+};
+
 const expectedVariantsResponse = [
   {
     _id: opaqueCatalogVariantIds[0],
-    ancestorIds: [opaqueCatalogProductId],
     barcode: "barcode",
-    compareAtPrice: 0,
     createdAt: createdAt.toISOString(),
     height: 0,
     index: 0,
@@ -223,9 +256,73 @@ const expectedVariantsResponse = [
       }
     ],
     minOrderQuantity: 0,
-    optionTitle: "Untitled Option",
+    options: [
+      {
+        _id: opaqueCatalogVariantIds[1],
+        barcode: "barcode",
+        createdAt: createdAt.toISOString(),
+        height: 2,
+        index: 0,
+        inventoryManagement: true,
+        inventoryPolicy: true,
+        isLowQuantity: true,
+        isSoldOut: false,
+        isTaxable: true,
+        length: 2,
+        lowInventoryWarningThreshold: 0,
+        metafields: [
+          {
+            value: "value",
+            namespace: "namespace",
+            description: "description",
+            valueType: "valueType",
+            scope: "scope",
+            key: "key"
+          }
+        ],
+        minOrderQuantity: 0,
+        optionTitle: "Awesome Soft Bike",
+        originCountry: "US",
+        pricing: [
+          {
+            currency: {
+              _id: "cmVhY3Rpb24vY3VycmVuY3k6VVNE",
+              code: "USD"
+            },
+            compareAtPrice: 15,
+            displayPrice: "992.00",
+            maxPrice: 992.0,
+            minPrice: 992.0,
+            price: 992.0
+          }
+        ],
+        shop: {
+          _id: opaqueShopId
+        },
+        sku: "sku",
+        taxCode: "0000",
+        taxDescription: "taxDescription",
+        title: "One pound bag",
+        updatedAt: null,
+        variantId: opaqueVariantIds[1],
+        weight: 2,
+        width: 2
+      }
+    ],
     originCountry: "US",
-    price: 0,
+    pricing: [
+      {
+        currency: {
+          _id: "cmVhY3Rpb24vY3VycmVuY3k6VVNE",
+          code: "USD"
+        },
+        compareAtPrice: 15,
+        displayPrice: "992.00",
+        maxPrice: 992.0,
+        minPrice: 992.0,
+        price: null
+      }
+    ],
     shop: {
       _id: opaqueShopId
     },
@@ -237,47 +334,6 @@ const expectedVariantsResponse = [
     variantId: opaqueVariantIds[0],
     weight: 0,
     width: 0
-  },
-  {
-    _id: opaqueCatalogVariantIds[1],
-    ancestorIds: [opaqueCatalogProductId, opaqueCatalogVariantIds[0]],
-    barcode: "barcode",
-    compareAtPrice: 15,
-    createdAt: null,
-    height: 2,
-    index: 0,
-    inventoryManagement: true,
-    inventoryPolicy: true,
-    isLowQuantity: true,
-    isSoldOut: false,
-    isTaxable: true,
-    length: 2,
-    lowInventoryWarningThreshold: 0,
-    metafields: [
-      {
-        value: "value",
-        namespace: "namespace",
-        description: "description",
-        valueType: "valueType",
-        scope: "scope",
-        key: "key"
-      }
-    ],
-    minOrderQuantity: 0,
-    optionTitle: "Awesome Soft Bike",
-    originCountry: "US",
-    price: 992.0,
-    shop: {
-      _id: opaqueShopId
-    },
-    sku: "sku",
-    taxCode: "0000",
-    taxDescription: "taxDescription",
-    title: "One pound bag",
-    updatedAt: null,
-    variantId: opaqueVariantIds[1],
-    weight: 2,
-    width: 2
   }
 ];
 
@@ -289,19 +345,9 @@ const expectedItemsResponse = {
     shop: {
       _id: opaqueShopId
     },
-    positions: [
-      {
-        displayWeight: 1,
-        position: 1,
-        isPinned: true,
-        updatedAt: positionUpdatedAt.toISOString(),
-        tagId: opaqueShopId
-      }
-    ],
     product: {
       _id: opaqueCatalogProductId,
       barcode: "barcode",
-      compareAtPrice: 4.56,
       createdAt: createdAt.toISOString(),
       description: "description",
       height: 11.23,
@@ -332,11 +378,19 @@ const expectedItemsResponse = {
         height: 6.66,
         weight: 7.77
       },
-      price: {
-        max: 5.99,
-        min: 2.99,
-        range: "2.99 - 5.99"
-      },
+      pricing: [
+        {
+          currency: {
+            _id: "cmVhY3Rpb24vY3VycmVuY3k6VVNE",
+            code: "USD"
+          },
+          compareAtPrice: 15,
+          displayPrice: "2.99 - 5.99",
+          maxPrice: 5.99,
+          minPrice: 2.99,
+          price: null
+        }
+      ],
       productId: opaqueProductId,
       media: [
         {
@@ -399,17 +453,17 @@ let tester;
 let query;
 beforeAll(async () => {
   tester = new GraphTester();
-  await tester.startServer();
+  await tester.start();
   query = tester.query(CatalogItemProductFullQuery);
-  await tester.collections.Shops.insert({ _id: internalShopId, name: shopName });
+  await tester.insertPrimaryShop({ _id: internalShopId, name: shopName });
   await Promise.all(internalTagIds.map((_id) => tester.collections.Tags.insert({ _id, shopId: internalShopId })));
-  await tester.collections.Catalog.insert(mockProduct);
+  await tester.collections.Catalog.insert(mockCatalogItem);
 });
 
 afterAll(async () => {
   await tester.collections.Shops.remove({ _id: internalShopId });
   await tester.collections.Catalog.remove({ _id: internalCatalogItemId });
-  tester.stopServer();
+  tester.stop();
 });
 
 test("get a catalog product by slug", async () => {
@@ -424,8 +478,7 @@ test("get a catalog product by slug", async () => {
   expect(result).toEqual(expectedItemsResponse);
 });
 
-
-test("get a catalog product by id", async () => {
+test("get a catalog product by ID", async () => {
   let result;
   try {
     result = await query({ slugOrId: opaqueCatalogItemId });

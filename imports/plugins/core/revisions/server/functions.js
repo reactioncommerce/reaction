@@ -1,12 +1,12 @@
-
 import _ from "lodash";
 import { Meteor } from "meteor/meteor";
 import { Products, Revisions, Tags } from "/lib/collections";
 import { Hooks, Logger } from "/server/api";
 import { RevisionApi } from "../lib/api";
-import { ProductRevision } from "./hooks";
 import { getSlug } from "/lib/api";
+import rawCollections from "/imports/collections/rawCollections";
 
+import getProductPriceRange from "./no-meteor/utils/getProductPriceRange";
 
 /**
  * @name insertRevision
@@ -21,7 +21,11 @@ export function insertRevision(product) {
     return true;
   }
 
-  if (product.workflow && Array.isArray(product.workflow.workflow) && product.workflow.workflow.indexOf("imported") !== -1) {
+  if (
+    product.workflow &&
+    Array.isArray(product.workflow.workflow) &&
+    product.workflow.workflow.indexOf("imported") !== -1
+  ) {
     // Mark imported products as published by default.
     return true;
   }
@@ -29,9 +33,7 @@ export function insertRevision(product) {
   const productRevision = Revisions.findOne({
     "documentId": product._id,
     "workflow.status": {
-      $nin: [
-        "revision/published"
-      ]
+      $nin: ["revision/published"]
     }
   });
 
@@ -49,18 +51,17 @@ export function insertRevision(product) {
       "documentId": { $in: product.ancestors },
       "documentData.isDeleted": true,
       "workflow.status": {
-        $nin: [
-          "revision/published"
-        ]
+        $nin: ["revision/published"]
       }
     }).count();
 
     if (archivedCount > 0) {
-      Logger.debug(`Cannot create product ${product._id} as a product/variant higher in it's ancestors tree is marked as 'isDeleted'.`);
+      Logger.debug(`Cannot create product ${
+        product._id
+      } as a product/variant higher in it's ancestors tree is marked as 'isDeleted'.`);
       throw new Meteor.Error("unable-to-create-variant", "Unable to create product variant");
     }
   }
-
 
   if (!productRevision) {
     Logger.debug(`No revision found for product ${product._id}. Creating new revision`);
@@ -124,7 +125,6 @@ export function updateRevision(product, options = {}) {
       throw new Meteor.Error("unable-to-delete-variant", "Unable to delete product variant");
     }
   }
-
 
   if (!productRevision) {
     Logger.debug(`No revision found for product ${product._id}. Creating new revision`);
@@ -217,7 +217,7 @@ export function updateRevision(product, options = {}) {
             });
 
             const updateId = product.ancestors[0] || product._id;
-            const priceRange = ProductRevision.getProductPriceRange(updateId);
+            const priceRange = Promise.await(getProductPriceRange(updateId, rawCollections));
 
             Meteor.call("products/updateProductField", updateId, "price", priceRange);
           } else if (operation === "$set" && property === "isVisible" && hasAncestors) {
@@ -232,7 +232,7 @@ export function updateRevision(product, options = {}) {
             });
 
             const updateId = product.ancestors[0] || product._id;
-            const priceRange = ProductRevision.getProductPriceRange(updateId);
+            const priceRange = Promise.await(getProductPriceRange(updateId, rawCollections));
 
             Meteor.call("products/updateProductField", updateId, "price", priceRange);
           } else if (
@@ -370,20 +370,22 @@ export function updateRevision(product, options = {}) {
     const ignoredFields = ["isLowQuantity", "isSoldOut", "inventoryQuantity"];
 
     for (const field of ignoredFields) {
-      if (modifier.$set && (
-        typeof modifier.$set[field] === "number" ||
-        typeof modifier.$set[field] === "boolean" ||
-        typeof modifier.$set[field] === "string"
-      )) {
+      if (
+        modifier.$set &&
+        (typeof modifier.$set[field] === "number" ||
+          typeof modifier.$set[field] === "boolean" ||
+          typeof modifier.$set[field] === "string")
+      ) {
         newSet[field] = modifier.$set[field];
         hasIgnoredFields = true;
       }
 
-      if (modifier.$inc && (
-        typeof modifier.$inc[field] === "number" ||
-        typeof modifier.$inc[field] === "boolean" ||
-        typeof modifier.$set[field] === "string"
-      )) {
+      if (
+        modifier.$inc &&
+        (typeof modifier.$inc[field] === "number" ||
+          typeof modifier.$inc[field] === "boolean" ||
+          typeof modifier.$set[field] === "string")
+      ) {
         newInc[field] = modifier.$inc[field];
         hasIgnoredFields = true;
       }
@@ -435,14 +437,17 @@ export function markRevisionAsDeleted(product, options) {
   }
 
   // Set the revision as deleted "isDeleted: true"
-  Revisions.update({
-    documentId: product._id
-  }, {
-    $set: {
-      "documentData.isDeleted": true,
-      "workflow.status": "revision/remove"
+  Revisions.update(
+    {
+      documentId: product._id
+    },
+    {
+      $set: {
+        "documentData.isDeleted": true,
+        "workflow.status": "revision/remove"
+      }
     }
-  });
+  );
   Hooks.Events.run("afterRevisionsUpdate", userId, {
     ...productRevision,
     documentData: { ...productRevision.documentData, isDeleted: true },

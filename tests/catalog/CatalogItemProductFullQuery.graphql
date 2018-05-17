@@ -1,22 +1,14 @@
 ($slugOrId: String!) {
   catalogItemProduct(slugOrId: $slugOrId) {
-   _id
+    _id
     shop {
       _id
     }
     createdAt
     updatedAt
-    positions {
-      displayWeight
-      isPinned
-      position
-      tagId
-      updatedAt
-    }
     product {
-       _id
+      _id
       barcode
-      compareAtPrice
       createdAt
       description
       height
@@ -45,10 +37,16 @@
         height
         weight
       }
-      price {
-        max
-        min
-        range
+      pricing {
+        currency {
+          _id
+          code
+        }
+        compareAtPrice
+        price
+        maxPrice
+        minPrice
+        displayPrice
       }
       media {
         toGrid
@@ -100,9 +98,7 @@
       updatedAt
       variants {
         _id
-        ancestorIds
         barcode
-        compareAtPrice
         createdAt
         height
         index
@@ -122,9 +118,65 @@
           key
         }
         minOrderQuantity
-        optionTitle
+        options {
+          _id
+          barcode
+          createdAt
+          height
+          index
+          inventoryManagement
+          inventoryPolicy
+          isLowQuantity
+          isSoldOut
+          isTaxable
+          length
+          lowInventoryWarningThreshold
+          metafields {
+            value
+            namespace
+            description
+            valueType
+            scope
+            key
+          }
+          minOrderQuantity
+          optionTitle
+          originCountry
+          pricing {
+            currency {
+              _id
+              code
+            }
+            compareAtPrice
+            price
+            maxPrice
+            minPrice
+            displayPrice
+          }
+          shop {
+            _id
+          }
+          sku
+          taxCode
+          taxDescription
+          title
+          updatedAt
+          variantId
+          weight
+          width
+        }
         originCountry
-        price
+        pricing {
+          currency {
+            _id
+            code
+          }
+          compareAtPrice
+          price
+          maxPrice
+          minPrice
+          displayPrice
+        }
         shop {
           _id
         }
