@@ -90,7 +90,7 @@ test("get the last 10 tags when last is in query and before last item in list", 
 
   expect(result.tags.nodes.length).toBe(10);
   expect(result.tags.totalCount).toBe(55);
-  expect(result.tags.pageInfo).toEqual({ endCursor: "MTUz", hasNextPage: false, hasPreviousPage: true, startCursor: "MTQ0" });
+  expect(result.tags.pageInfo).toEqual({ endCursor: "MTUz", hasNextPage: true, hasPreviousPage: true, startCursor: "MTQ0" });
 
   try {
     result = await query({ shopId: opaqueShopId, last: 10, before: result.tags.pageInfo.startCursor });
