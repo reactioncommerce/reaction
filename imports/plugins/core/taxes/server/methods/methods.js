@@ -131,7 +131,7 @@ export const methods = {
    * @memberof Methods/Taxes
    * @summary updates the taxcode on options of a product.
    * @param  {String} products array of products to be updated.
-   * @return {undefined} returns nothing
+   * @return {Number} returns number of options updated
    */
   "taxes/updateTaxCode"(products) {
     check(products, Array);
