@@ -15,11 +15,28 @@ function linesToTaxes(lines) {
   }));
   return taxes;
 }
+/**
+ * @method markCartTax
+ * @summary Calls the method accounts/markTaxCalculationFailed
+ * through meteor.
+ * @param {Boolean} value - the value to be set
+ */
+function markCartTax(value = true) {
+  Meteor.call("accounts/markTaxCalculationFailed", value, (error) => {
+    if (error) {
+      return Logger.error(error, "Unable to mark the cart");
+    }
+  });
+}
 
 
 MethodHooks.after("taxes/calculate", (options) => {
   const cartId = options.arguments[0];
   const cartToCalc = Cart.findOne(cartId);
+  if (cartToCalc.bypassAddressValidation) {
+    // User bypassed address validation so we can't calc taxes so don't even try
+    return options.result;
+  }
   const pkg = taxCalc.getPackageData();
 
   Logger.debug("Avalara triggered on taxes/calculate for cartId:", cartId);
@@ -32,11 +49,17 @@ MethodHooks.after("taxes/calculate", (options) => {
         const taxAmount = taxes.reduce((totalTaxes, tax) => totalTaxes + tax.tax, 0);
         const taxRate = taxAmount / taxCalc.calcTaxable(cartToCalc);
         Meteor.call("taxes/setRate", cartId, taxRate, taxes);
+        markCartTax(false);
         // for bad auth, timeout, or misconfiguration there's nothing we can do so keep moving
       } else if ([503, 400, 401].includes(result.error.errorCode)) {
         Logger.error("Timeout, Authentification, or Misconfiguration error: Not trying to estimate cart");
+        markCartTax(true);
+      } else if (result.error.errorCode === 300) {
+        Logger.error("Cannot validate address so we cannot calculate tax, skipping");
+        markCartTax(true);
       } else {
         Logger.error("Unknown error", result.error.errorCode);
+        markCartTax(true);
       }
     });
   }

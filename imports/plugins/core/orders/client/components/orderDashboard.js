@@ -8,6 +8,7 @@ import OrderSearch from "./orderSearch";
 class OrderDashboard extends Component {
   static propTypes = {
     clearFilter: PropTypes.func,
+    currentPage: PropTypes.number,
     filterDates: PropTypes.func,
     filterShippingStatus: PropTypes.func,
     filterWorkflowStatus: PropTypes.func,
@@ -17,7 +18,10 @@ class OrderDashboard extends Component {
     handleSelect: PropTypes.func,
     isLoading: PropTypes.object,
     multipleSelect: PropTypes.bool,
+    onPageChange: PropTypes.func,
+    onPageSizeChange: PropTypes.func,
     orders: PropTypes.array,
+    pages: PropTypes.number,
     query: PropTypes.object,
     renderFlowList: PropTypes.bool,
     searchQuery: PropTypes.string,
@@ -63,7 +67,7 @@ class OrderDashboard extends Component {
           filterShippingStatus={this.props.filterShippingStatus}
           filterWorkflowStatus={this.props.filterWorkflowStatus}
         />
-        {this.state.orders.length ?
+        {this.props.orders.length ?
           <div className="container-fluid-sm order-details-list-container">
             <div className="order-toggle-buttons-container">
               <div className="order-toggle-buttons">
@@ -86,6 +90,10 @@ class OrderDashboard extends Component {
             <OrderTable
               orders={this.props.orders}
               isOpen={this.state.openList}
+              onPageChange={this.props.onPageChange}
+              onPageSizeChange={this.props.onPageSizeChange}
+              pages={this.props.pages}
+              page={this.props.currentPage}
             />
           </div> :
           <div className="container-fluid-sm order-details-list-container">

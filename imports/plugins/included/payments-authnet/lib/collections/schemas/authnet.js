@@ -2,7 +2,7 @@ import SimpleSchema from "simpl-schema";
 import { check } from "meteor/check";
 import { Tracker } from "meteor/tracker";
 import { PackageConfig } from "/lib/collections/schemas/registry";
-import { registerSchema } from "@reactioncommerce/reaction-collections";
+import { registerSchema } from "@reactioncommerce/schemas";
 
 /**
  * Meteor.settings.authnet =
@@ -24,6 +24,10 @@ export const AuthNetPackageConfig = PackageConfig.clone().extend({
   "settings.mode": {
     type: Boolean,
     defaultValue: false
+  },
+  "settings.reaction-auth-net": {
+    type: Object,
+    defaultValue: {}
   },
   "settings.reaction-auth-net.support": {
     type: Array,

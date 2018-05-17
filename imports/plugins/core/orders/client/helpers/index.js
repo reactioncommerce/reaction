@@ -47,6 +47,17 @@ export function getOrderRiskStatus(order) {
   return riskLevel;
 }
 
+/*
+ * @method getTaxRiskStatus
+ * @private
+ * @summary Gets the tax status of the order.
+ * @param {object} order - order object
+ * @return {boolean} label - true if the tax was not submitted by user.
+ */
+export function getTaxRiskStatus(order) {
+  return order.taxCalculationFailed || order.bypassAddressValidation;
+}
+
 /**
  * filterWorkflowStatus
  *
