@@ -3,7 +3,12 @@ import GraphTester from "../GraphTester";
 import { internalShopId, opaqueShopId, shopName } from "../mocks/mockShop";
 import { internalTagIds } from "../mocks/mockTags";
 import { internalCatalogItemIds } from "../mocks/mockCatalogProducts";
-import { mockCatalogItems, mockUnsortedCatalogItemsResponse } from "../mocks/mockCatalogItems";
+import {
+  mockCatalogItems,
+  mockUnsortedCatalogItemsResponse,
+  mockSortedByPriceHigh2LowCatalogItemsResponse,
+  mockSortedByPriceLow2HighCatalogItemsResponse
+} from "../mocks/mockCatalogItems";
 // temp mocks
 import CatalogProductItemsFullQuery from "./CatalogProductItemsFullQuery.graphql";
 
@@ -17,16 +22,17 @@ beforeAll(async () => {
   query = tester.query(CatalogProductItemsFullQuery);
   await tester.insertPrimaryShop({ _id: internalShopId, name: shopName });
   await Promise.all(internalTagIds.map((_id) => tester.collections.Tags.insert({ _id, shopId: internalShopId })));
+  await Promise.all(mockCatalogItems.map((mockCatalogItem) => tester.collections.Catalog.insert(mockCatalogItem)));
 });
 
 afterAll(async () => {
   await tester.collections.Shops.remove({ _id: internalShopId });
+  await tester.collections.Catalog.remove({ _id: internalCatalogItemIds[0] });
+  await tester.collections.Catalog.remove({ _id: internalCatalogItemIds[1] });
   tester.stop();
 });
 
 test("get all items for shop", async () => {
-  await Promise.all(mockCatalogItems.map((mockCatalogItem) => tester.collections.Catalog.insert(mockCatalogItem)));
-
   let result;
   try {
     result = await query({ shopIds: [opaqueShopId] });
@@ -36,44 +42,62 @@ test("get all items for shop", async () => {
   }
 
   expect(result).toEqual(mockUnsortedCatalogItemsResponse);
-
-  await tester.collections.Catalog.remove({ _id: internalCatalogItemIds[0] });
-  await tester.collections.Catalog.remove({ _id: internalCatalogItemIds[1] });
 });
 
-// // expect CatalogItems sorted by minPrice form high to low
-// test("expect CatalogItemProducts sorted by minPrice from highest to lowest when sortByPriceCurrencyCode is provided", async () => {
-//   //await tester.collections.Catalog.insert(mockCatalogItem);
-//   await tester.collections.Catalog.insert(mockCatalogItemTwo);
+// expect CatalogItems sorted by minPrice form high to low
+test("expect CatalogItemProducts sorted by minPrice from highest to lowest when sortByPriceCurrencyCode is provided", async () => {
+  let result;
+  try {
+    result = await query({ shopIds: [opaqueShopId], sortBy: "minPrice", sortByPriceCurrencyCode: "USD" });
+  } catch (error) {
+    expect(error).toBeUndefined();
+    return;
+  }
 
-//   let result;
-//   try {
-//     result = await query({ shopIds: [opaqueShopId], sortBy: "minPrice", sortByPriceCurrencyCode: "USD" });
-//   } catch (error) {
-//     expect(error).toBeUndefined();
-//     return;
-//   }
+  expect(result).toEqual(mockSortedByPriceHigh2LowCatalogItemsResponse);
+});
 
-//   expect(result).toEqual(mockSortedLowToHightCatalogItemProducts);
+// expect CatalogItems sorted by minPrice form high to low when sortOrder is desc
+test("expect CatalogItemProducts sorted by minPrice from highest to lowest when sortByPriceCurrencyCode is provided and sortOrder is desc", async () => {
+  let result;
+  try {
+    result = await query({
+      shopIds: [opaqueShopId],
+      sortBy: "minPrice",
+      sortByPriceCurrencyCode: "USD",
+      sortOrder: "desc"
+    });
+  } catch (error) {
+    expect(error).toBeUndefined();
+    return;
+  }
 
-//   await tester.collections.Catalog.remove({ _id: internalCatalogItemIds[0] });
-//   await tester.collections.Catalog.remove({ _id: internalCatalogItemIds[1] });
-// });
+  expect(result).toEqual(mockSortedByPriceHigh2LowCatalogItemsResponse);
+});
 
-// // expect CatalogItems sorted by minPrice form high to low when sortOrder is desc
-// test("expect CatalogItemProducts sorted by minPrice from highest to lowest when sortByPriceCurrencyCode is provided and sortOrder is desc", async () => {
-//   const spec = false;
-//   expect(spec).toBe(true);
-// });
+// expect CatalogItems sorted by minPrice form low to high when sortOrder is asc
+test("expect CatalogItemProducts sorted by minPrice from lowest to highest when sortByPriceCurrencyCode is provided and sortOrder is asc", async () => {
+  let result;
+  try {
+    result = await query({
+      shopIds: [opaqueShopId],
+      sortBy: "minPrice",
+      sortByPriceCurrencyCode: "USD",
+      sortOrder: "asc"
+    });
+  } catch (error) {
+    expect(error).toBeUndefined();
+    return;
+  }
 
-// // expect CatalogItems sorted by minPrice form low to high when sortOrder is asc
-// test("expect CatalogItemProducts sorted by minPrice from lowest to highest when sortByPriceCurrencyCode is provided and sortOrder is asc", async () => {
-//   const spec = false;
-//   expect(spec).toBe(true);
-// });
+  expect(result).toEqual(mockSortedByPriceLow2HighCatalogItemsResponse);
+});
 
-// // expect error when invalid currency code is provided
-// test("expect error when sortByPriceCurrencyCode is provided an invalid currecnyCode", async () => {
-//   const spec = false;
-//   expect(spec).toBe(true);
-// });
+// expect error when invalid currency code is provided
+test("expect error when sortByPriceCurrencyCode is provided an invalid currecnyCode", async () => {
+  const errorQuery = query({
+    shopIds: [opaqueShopId],
+    sortBy: "minPrice"
+  });
+  await expect(errorQuery).rejects.toThrowErrorMatchingSnapshot();
+});

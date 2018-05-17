@@ -41,3 +41,21 @@ export const mockUnsortedCatalogItemsResponse = {
     nodes: mockExternalCatalogProducts
   }
 };
+
+/**
+ * mock sorted by minPrice high to low catalogItems query response
+ */
+export const mockSortedByPriceHigh2LowCatalogItemsResponse = {
+  catalogItems: {
+    nodes: [mockExternalCatalogProducts[1], mockExternalCatalogProducts[0]]
+  }
+};
+
+/**
+ * mock sorted by minPrice low to high catalogItems query response
+ */
+export const mockSortedByPriceLow2HighCatalogItemsResponse = {
+  catalogItems: {
+    nodes: [mockExternalCatalogProducts[0], mockExternalCatalogProducts[1]]
+  }
+};
