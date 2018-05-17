@@ -135,6 +135,16 @@ export const methods = {
    */
   "taxes/updateTaxCode"(products) {
     check(products, Array);
+
+    // check permissions to create product
+    // to check if user can update the product
+    if (!Reaction.hasPermission("createProduct")) {
+      throw new Meteor.Error("access-denied", "Access Denied");
+    }
+
+    // number of options that get updated.
+    let updatedOptions = 0;
+
     products.forEach((product) => {
       let variants = [product];
       if (product.type === "simple") {
@@ -143,7 +153,7 @@ export const methods = {
       variants.forEach((variant) => {
         const options = Catalog.getVariants(variant._id);
         options.forEach((option) => {
-          Products.update({
+          updatedOptions += Products.update({
             _id: option._id
           }, {
             $set: {
@@ -153,6 +163,7 @@ export const methods = {
         });
       });
     });
+    return updatedOptions;
   },
 
   /**
