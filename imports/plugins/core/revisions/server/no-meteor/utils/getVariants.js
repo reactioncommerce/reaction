@@ -16,7 +16,7 @@ export default async function getVariants(productOrVariantId, collections, topOn
   const productVariants = await Products.find({
     ancestors: topOnly ? [productOrVariantId] : productOrVariantId,
     type: "variant",
-    isDeleted: false
+    isDeleted: { $ne: true }
   }).toArray();
 
   await Promise.all(productVariants.map(async (variant) => {

@@ -8,10 +8,6 @@ import {
   restore as restore$applyPaginationToMongoCursor,
   rewire as rewire$applyPaginationToMongoCursor
 } from "./applyPaginationToMongoCursor";
-import {
-  restore as restore$checkHasMoreInOppositeDirection,
-  rewire as rewire$checkHasMoreInOppositeDirection
-} from "./checkHasMoreInOppositeDirection";
 import { restore as restore$getMongoSort, rewire as rewire$getMongoSort } from "./getMongoSort";
 
 const baseQuery = { _id: "BASE_QUERY" };
@@ -28,10 +24,6 @@ const applyPaginationToMongoCursorMock = jest
   .fn()
   .mockName("applyPaginationToMongoCursor")
   .mockReturnValue({ hasNextPage: true, hasPreviousPage: null });
-const checkHasMoreInOppositeDirectionMock = jest
-  .fn()
-  .mockName("checkHasMoreInOppositeDirectionMock")
-  .mockReturnValue(Promise.resolve(true));
 const getMongoSortMock = jest.fn().mockName("getMongoSort");
 
 const mockArgs = { before: "123", sortOrder: "asc", sortBy: "name" };
@@ -39,14 +31,12 @@ const mockArgs = { before: "123", sortOrder: "asc", sortBy: "name" };
 beforeAll(() => {
   rewire$applyBeforeAfterToFilter(applyBeforeAfterToFilterMock);
   rewire$applyPaginationToMongoCursor(applyPaginationToMongoCursorMock);
-  rewire$checkHasMoreInOppositeDirection(checkHasMoreInOppositeDirectionMock);
   rewire$getMongoSort(getMongoSortMock);
 });
 
 afterAll(() => {
   restore$applyBeforeAfterToFilter();
   restore$applyPaginationToMongoCursor();
-  restore$checkHasMoreInOppositeDirection();
   restore$getMongoSort();
 });
 

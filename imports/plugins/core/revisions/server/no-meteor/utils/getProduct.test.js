@@ -12,7 +12,6 @@ const internalTagIds = ["923", "924"];
 const internalVariantIds = ["875", "874"];
 
 const productSlug = "fake-product";
-const shopName = "Test Shop";
 
 const createdAt = new Date("2018-04-16T15:34:28.043Z");
 const updatedAt = new Date("2018-04-17T15:34:28.043Z");
