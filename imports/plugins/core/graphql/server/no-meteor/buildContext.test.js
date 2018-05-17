@@ -10,6 +10,33 @@ test("properly mutates the context object without user", async () => {
   await buildContext(context, undefined);
   expect(context).toEqual({
     collections: mockContext.collections,
+    mutations: {
+      accounts: {
+        addressBookAdd: jasmine.any(Function)
+      },
+      catalog: {
+        publishProducts: jasmine.any(Function)
+      }
+    },
+    queries: {
+      accounts: {
+        group: jasmine.any(Function),
+        groups: jasmine.any(Function),
+        primaryShopId: jasmine.any(Function),
+        roles: jasmine.any(Function),
+        shopAdministrators: jasmine.any(Function),
+        userAccount: jasmine.any(Function)
+      },
+      catalog: {
+        catalogItemProduct: jasmine.any(Function),
+        catalogItems: jasmine.any(Function),
+        tags: jasmine.any(Function),
+        tagsByIds: jasmine.any(Function)
+      },
+      shops: {
+        shopById: jasmine.any(Function)
+      }
+    },
     shopId: null,
     user: null,
     userHasPermission: jasmine.any(Function),
@@ -22,6 +49,33 @@ test("properly mutates the context object with user", async () => {
   await buildContext(context, fakeUser);
   expect(context).toEqual({
     collections: mockContext.collections,
+    mutations: {
+      accounts: {
+        addressBookAdd: jasmine.any(Function)
+      },
+      catalog: {
+        publishProducts: jasmine.any(Function)
+      }
+    },
+    queries: {
+      accounts: {
+        group: jasmine.any(Function),
+        groups: jasmine.any(Function),
+        primaryShopId: jasmine.any(Function),
+        roles: jasmine.any(Function),
+        shopAdministrators: jasmine.any(Function),
+        userAccount: jasmine.any(Function)
+      },
+      catalog: {
+        catalogItemProduct: jasmine.any(Function),
+        catalogItems: jasmine.any(Function),
+        tags: jasmine.any(Function),
+        tagsByIds: jasmine.any(Function)
+      },
+      shops: {
+        shopById: jasmine.any(Function)
+      }
+    },
     shopId: null,
     user: fakeUser,
     userHasPermission: jasmine.any(Function),

@@ -13,9 +13,7 @@ test("correctly passes through to accounts/inviteShopMember method", () => {
   const mockMethod = jest.fn().mockName("accounts/inviteShopMember method");
   mockMethod.mockReturnValueOnce(fakeResult);
   const context = {
-    methods: {
-      "accounts/inviteShopMember": mockMethod
-    }
+    callMeteorMethod: mockMethod
   };
 
   const result = inviteShopMember(null, {
@@ -27,6 +25,13 @@ test("correctly passes through to accounts/inviteShopMember method", () => {
       clientMutationId: "clientMutationId"
     }
   }, context);
+
+  expect(mockMethod).toHaveBeenCalledWith("accounts/inviteShopMember", {
+    email: "test@email.com",
+    groupId: "g1",
+    name: "test name",
+    shopId: "s1"
+  });
 
   expect(result).toEqual({
     account: fakeResult,

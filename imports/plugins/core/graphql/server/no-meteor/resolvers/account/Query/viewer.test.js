@@ -13,7 +13,7 @@ test("calls queries.accounts.userAccount and returns the viewing user", async ()
   const userAccount = jest.fn().mockName("queries.accounts.userAccount").mockReturnValueOnce(Promise.resolve(mockAccount));
 
   const user = await viewer(null, null, {
-    queries: { userAccount },
+    queries: { accounts: { userAccount } },
     userId: "123"
   });
 
@@ -28,7 +28,7 @@ test("returns without calling queries.accounts.userAccount if only _id requested
   const userAccount = jest.fn().mockName("userAccount");
 
   const user = await viewer(null, null, {
-    queries: { userAccount },
+    queries: { accounts: { userAccount } },
     userId: "123"
   });
 

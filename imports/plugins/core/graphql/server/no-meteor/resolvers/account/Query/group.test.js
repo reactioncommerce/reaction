@@ -20,7 +20,7 @@ test("calls queries.accounts.group with a group id should return a group", async
   const groupQuery = jest.fn().mockName("queries.accounts.group").mockReturnValueOnce(Promise.resolve(mockGroup));
 
   const result = await group(null, { id: base64ID }, {
-    queries: { group: groupQuery },
+    queries: { accounts: { group: groupQuery } },
     userId: "123"
   });
 

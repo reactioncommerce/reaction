@@ -21,7 +21,7 @@ test("calls queries.catalog.catalogItemProduct with a product slug and return a 
       slugOrId
     },
     {
-      queries: { catalogItemProduct }
+      queries: { catalog: { catalogItemProduct } }
     }
   );
 
@@ -42,7 +42,7 @@ test("calls queries.catalog.catalogItemProduct with a product id and return a Ca
       slugOrId
     },
     {
-      queries: { catalogItemProduct }
+      queries: { catalog: { catalogItemProduct } }
     }
   );
 

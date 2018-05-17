@@ -3,7 +3,7 @@ import { encodeAddressOpaqueId } from "@reactioncommerce/reaction-graphql-xforms
 import removeAccountAddressBookEntry from "./removeAccountAddressBookEntry";
 
 test("correctly passes through to accounts/addressBookRemove method", () => {
-  const accountId = encodeAccountOpaqueId("1");
+  const accountId = encodeAccountOpaqueId("2");
   const addressId = encodeAddressOpaqueId("1");
   const address = { address1: "123 Main St" };
 
@@ -12,9 +12,7 @@ test("correctly passes through to accounts/addressBookRemove method", () => {
   const mockMethod = jest.fn().mockName("accounts/addressBookRemove method");
   mockMethod.mockReturnValueOnce(fakeResult);
   const context = {
-    methods: {
-      "accounts/addressBookRemove": mockMethod
-    }
+    callMeteorMethod: mockMethod
   };
 
   const result = removeAccountAddressBookEntry(null, {
@@ -24,6 +22,8 @@ test("correctly passes through to accounts/addressBookRemove method", () => {
       clientMutationId: "clientMutationId"
     }
   }, context);
+
+  expect(mockMethod).toHaveBeenCalledWith("accounts/addressBookRemove", "1", "2");
 
   expect(result).toEqual({
     address: fakeResult,

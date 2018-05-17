@@ -13,9 +13,7 @@ test("correctly passes through to group/removeUser method", () => {
   const mockMethod = jest.fn().mockName("group/removeUser method");
   mockMethod.mockReturnValueOnce(fakeResult);
   const context = {
-    methods: {
-      "group/removeUser": mockMethod
-    }
+    callMeteorMethod: mockMethod
   };
 
   const result = removeAccountFromGroup(null, {
@@ -25,6 +23,8 @@ test("correctly passes through to group/removeUser method", () => {
       clientMutationId: "clientMutationId"
     }
   }, context);
+
+  expect(mockMethod).toHaveBeenCalledWith("group/removeUser", "1", "g2");
 
   expect(result).toEqual({
     group: fakeResult,

@@ -1,27 +1,31 @@
 import { encodeAccountOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/account";
+import { encodeAddressOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/address";
 import updateAccountAddressBookEntry from "./updateAccountAddressBookEntry";
 
 test("correctly passes through to accounts/addressBookUpdate method", () => {
   const accountId = encodeAccountOpaqueId("1");
+  const addressId = encodeAddressOpaqueId("2");
   const address = { address1: "456 Pico Blvd" };
 
-  const fakeResult = { _id: "1", ...address };
+  const fakeResult = { _id: "2", ...address };
 
   const mockMethod = jest.fn().mockName("accounts/addressBookUpdate method");
   mockMethod.mockReturnValueOnce(fakeResult);
   const context = {
-    methods: {
-      "accounts/addressBookUpdate": mockMethod
-    }
+    callMeteorMethod: mockMethod
   };
 
   const result = updateAccountAddressBookEntry(null, {
     input: {
       accountId,
-      address,
-      clientMutationId: "clientMutationId"
+      addressId,
+      updates: address,
+      clientMutationId: "clientMutationId",
+      type: "billing"
     }
   }, context);
+
+  expect(mockMethod).toHaveBeenCalledWith("accounts/addressBookUpdate", fakeResult, "1", "billing");
 
   expect(result).toEqual({
     address: fakeResult,

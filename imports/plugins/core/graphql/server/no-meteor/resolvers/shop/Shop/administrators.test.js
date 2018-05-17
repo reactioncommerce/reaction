@@ -16,7 +16,7 @@ test("calls queries.accounts.shopAdministrators and returns a partial connection
     .mockReturnValueOnce(Promise.resolve(mockAdministratorsQuery));
 
   const result = await administratorsResolver({ _id: base64ID }, {}, {
-    queries: { shopAdministrators },
+    queries: { accounts: { shopAdministrators } },
     userId: "999"
   });
 

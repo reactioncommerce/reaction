@@ -10,7 +10,8 @@ import { xformAddressInput } from "@reactioncommerce/reaction-graphql-xforms/add
  * @param {Object} args.input - an object of all mutation arguments that were sent by the client
  * @param {String} args.input.accountId - optional opaque ID of account on which entry should be updated, for admins
  * @param {String} args.input.addressId - opaque ID of the address to edit
- * @param {Object} args.input.updatedAddress - updated address object, in GraphQL schema format
+ * @param {Object} args.input.updates - updated address object, in GraphQL schema format
+ * @param {String} args.input.type - If present, make this address the default address of this type (billing or shipping)
  * @param {String} [args.input.clientMutationId] - An optional string identifying the mutation call
  * @param {Object} context - an object containing the per-request state
  * @return {Object} UpdateAccountAddressBookEntryPayload

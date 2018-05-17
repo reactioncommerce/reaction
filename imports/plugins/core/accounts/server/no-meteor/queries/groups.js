@@ -9,7 +9,7 @@ import { Meteor } from "meteor/meteor";
  * @param {String} shopId - shop ID to get groups for
  * @return {Object} Groups collection cursor
  */
-export async function groups(context, shopId) {
+export default async function groups(context, shopId) {
   const { collections, userHasPermission, userId } = context;
   const { Accounts, Groups } = collections;
 

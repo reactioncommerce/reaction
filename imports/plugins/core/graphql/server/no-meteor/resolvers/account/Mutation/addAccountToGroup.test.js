@@ -12,9 +12,7 @@ test("correctly passes through to group/addUser method", () => {
   const mockMethod = jest.fn().mockName("group/addUser method");
   mockMethod.mockReturnValueOnce(fakeResult);
   const context = {
-    methods: {
-      "group/addUser": mockMethod
-    }
+    callMeteorMethod: mockMethod
   };
 
   const result = addAccountToGroup(null, {
@@ -24,6 +22,8 @@ test("correctly passes through to group/addUser method", () => {
       clientMutationId: "clientMutationId"
     }
   }, context);
+
+  expect(mockMethod).toHaveBeenCalledWith("group/addUser", "1", "g1");
 
   expect(result).toEqual({
     group: fakeResult,

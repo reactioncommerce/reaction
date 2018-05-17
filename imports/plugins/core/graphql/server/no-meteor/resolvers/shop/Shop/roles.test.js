@@ -15,7 +15,7 @@ test("calls queries.accounts.roles and returns a partial connection", async () =
   const roles = jest.fn().mockName("queries.accounts.roles").mockReturnValueOnce(Promise.resolve(mockRolesQuery));
 
   const result = await rolesResolver({ _id: base64ID }, {}, {
-    queries: { roles }
+    queries: { accounts: { roles } }
   });
 
   expect(result).toEqual({

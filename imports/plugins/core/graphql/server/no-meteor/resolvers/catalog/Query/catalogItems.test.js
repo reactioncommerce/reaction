@@ -21,7 +21,7 @@ test("calls queries.catalog.catalogItems and returns a partial connection", asyn
     shopIds,
     tagIds
   }, {
-    queries: { catalogItems }
+    queries: { catalog: { catalogItems } }
   });
 
   expect(result).toEqual({

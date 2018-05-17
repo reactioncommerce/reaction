@@ -11,7 +11,7 @@ test("calls queries.accounts.userAccount and returns the requested user", async 
   const userAccount = jest.fn().mockName("queries.accounts.userAccount").mockReturnValueOnce(Promise.resolve(mockAccount));
 
   const user = await account(null, { id: base64ID }, {
-    queries: { userAccount },
+    queries: { accounts: { userAccount } },
     userId: "999"
   });
 
