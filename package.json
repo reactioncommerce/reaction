@@ -177,6 +177,7 @@
     "mongodb-memory-server": "^1.7.3",
     "nodemon": "^1.17.2",
     "react-addons-test-utils": "15.6.2",
+    "simpl-schema-mockdoc": "^1.0.5",
     "snyk": "^1.78.0"
   },
   "postcss": {
