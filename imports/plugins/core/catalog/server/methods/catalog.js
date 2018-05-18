@@ -644,6 +644,8 @@ Meteor.methods({
         $set: {
           isDeleted: true
         }
+      }, {
+        type: product.type
       });
       Hooks.Events.run("afterRemoveCatalogProduct", this.userId, product);
     });
