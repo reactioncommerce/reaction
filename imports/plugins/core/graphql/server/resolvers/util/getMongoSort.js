@@ -5,7 +5,7 @@ const sortOrderEnumToMongo = {
 
 /**
  * Note that this uses the object format rather than the array format because our in-memory db
- * for tests, `nedb`, expects object format. The Node `mongodb` package allows either.
+ * for tests expects object format. The Node `mongodb` package allows either.
  * Technically an array would be better because JS does not guarantee preservation of object key
  * order, but this seems to work fine.
  *

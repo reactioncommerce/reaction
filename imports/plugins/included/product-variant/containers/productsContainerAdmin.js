@@ -137,11 +137,10 @@ function composer(props, onData) {
     return;
   }
 
-  const currentTag = ReactionProduct.getTag();
+  const currentTagId = ReactionProduct.getTagIdForPosition();
 
   const sort = {
-    [`positions.${currentTag}.position`]: 1,
-    [`positions.${currentTag}.createdAt`]: 1,
+    [`positions.${currentTagId}.position`]: 1,
     createdAt: 1
   };
 
@@ -178,7 +177,7 @@ function composer(props, onData) {
   const products = productCursor.fetch();
   const productIds = productCursor.map((product) => product._id);
 
-  const sortedProducts = ReactionProduct.sortProducts(products, currentTag);
+  const sortedProducts = ReactionProduct.sortProducts(products, currentTagId);
   Session.set("productGrid/products", sortedProducts);
 
   reactiveProductIds.set(productIds);

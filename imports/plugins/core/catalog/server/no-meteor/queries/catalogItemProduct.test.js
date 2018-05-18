@@ -4,8 +4,8 @@ import catalogItemProduct from "./catalogItemProduct";
 const productId = "cmVhY3Rpb24vY2F0YWxvZ0l0ZW06MTIz"; // reaction/catalogItem:123
 const productSlug = "PRODUCT_SLUG";
 const mockQueryBase = {
-  isDeleted: { $ne: true },
-  isVisible: { $ne: false }
+  "product.isDeleted": { $ne: true },
+  "product.isVisible": true
 };
 
 beforeEach(() => {
@@ -14,7 +14,7 @@ beforeEach(() => {
 
 // expect query by product slug
 test("returns a product from the catalog collection by product slug", async () => {
-  const query = { ...mockQueryBase, handle: productSlug };
+  const query = { ...mockQueryBase, "product.slug": productSlug };
   mockContext.collections.Catalog.findOne.mockReturnValueOnce("CATALOGPRODUCT");
   const result = await catalogItemProduct(mockContext, { slug: productSlug });
   expect(mockContext.collections.Catalog.findOne).toHaveBeenCalledWith(query);
@@ -22,7 +22,7 @@ test("returns a product from the catalog collection by product slug", async () =
 });
 
 // expect query by product _id
-test("returns a product from the catalog collection by product id", async () => {
+test("returns a product from the catalog collection by product ID", async () => {
   const query = { ...mockQueryBase, _id: productId };
   mockContext.collections.Catalog.findOne.mockReturnValueOnce("CATALOGPRODUCT");
   const result = await catalogItemProduct(mockContext, { _id: productId });
@@ -31,7 +31,7 @@ test("returns a product from the catalog collection by product id", async () => 
 });
 
 // expect query by id if both slug and id are provided as params
-test("returns a product from the catalog collection by product id if both slug and id are provided as params", async () => {
+test("returns a product from the catalog collection by product ID if both slug and ID are provided as params", async () => {
   const query = { ...mockQueryBase, _id: productId };
   mockContext.collections.Catalog.findOne.mockReturnValueOnce("CATALOGPRODUCT");
   const result = await catalogItemProduct(mockContext, { _id: productId, slug: productSlug });

@@ -13,7 +13,6 @@ import { registerInventory } from "../methods/inventory";
 
 Fixtures();
 
-
 function resetInventory() {
   Inventory.remove({});
   const products = Products.find().fetch();

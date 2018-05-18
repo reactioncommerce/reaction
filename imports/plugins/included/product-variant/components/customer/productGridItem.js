@@ -1,22 +1,33 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import classnames from "classnames";
-import { formatPriceString, Router } from "/client/api";
+import { Router } from "/client/api";
 import { registerComponent, Components } from "@reactioncommerce/reaction-components";
 
 class ProductGridItem extends Component {
   static propTypes = {
-    isSearch: PropTypes.bool,
     position: PropTypes.object,
-    product: PropTypes.object
+    product: PropTypes.shape({
+      _id: PropTypes.string,
+      description: PropTypes.string,
+      isBackorder: PropTypes.bool,
+      isLowQuantity: PropTypes.bool,
+      isSoldOut: PropTypes.bool,
+      media: PropTypes.arrayOf(PropTypes.object),
+      pricing: PropTypes.object,
+      primaryImage: PropTypes.object,
+      slug: PropTypes.string,
+      title: PropTypes.string
+    }),
+    shopCurrencyCode: PropTypes.string.isRequired
   }
 
   // get product detail page URL
   get productURL() {
-    const { product: { handle } } = this.props;
+    const { product: { slug } } = this.props;
     return Router.pathFor("product", {
       hash: {
-        handle
+        handle: slug
       }
     });
   }
@@ -93,8 +104,9 @@ class ProductGridItem extends Component {
   // render product image
   renderMedia() {
     const { product } = this.props;
+    const { primaryImage } = product || {};
     const MEDIA_PLACEHOLDER = "/resources/placeholder.gif";
-    const { large } = (Array.isArray(product.media) && product.media[0]) || { large: MEDIA_PLACEHOLDER };
+    const { large } = (primaryImage && primaryImage.URLs) || { large: MEDIA_PLACEHOLDER };
 
     return (
       <span
@@ -121,9 +133,9 @@ class ProductGridItem extends Component {
       <div className="product-additional-images">
         {additionalMedia.map((img) => (
           <span
-            key={img.small}
+            key={img.URLs.small}
             className="product-image"
-            style={{ backgroundImage: `url("${img.medium}")` }}
+            style={{ backgroundImage: `url("${img.URLs.medium}")` }}
           />
         ))}
       </div>
@@ -131,7 +143,7 @@ class ProductGridItem extends Component {
   }
 
   renderGridContent() {
-    const { product } = this.props;
+    const { product, shopCurrencyCode } = this.props;
 
     return (
       <div className="grid-content">
@@ -145,10 +157,7 @@ class ProductGridItem extends Component {
         >
           <div className="overlay">
             <div className="overlay-title">{product.title}</div>
-            <div className="currency-symbol">{formatPriceString((product.price && product.price.range) || "")}</div>
-            {this.props.isSearch &&
-                <div className="overlay-description">{product.description}</div>
-            }
+            <div className="currency-symbol">{product.pricing[shopCurrencyCode].displayPrice}</div>
           </div>
         </a>
       </div>
@@ -156,14 +165,14 @@ class ProductGridItem extends Component {
   }
 
   render() {
-    const { product, isSearch } = this.props;
+    const { product } = this.props;
     return (
       <li
         className={this.productClassNames}
         data-id={product._id}
         id={product._id}
       >
-        <div className={(isSearch) ? "item-content" : ""}>
+        <div>
           <span className="product-grid-item-alerts" />
 
           <a className="product-grid-item-images"
@@ -180,7 +189,7 @@ class ProductGridItem extends Component {
             {this.renderAdditionalMedia()}
           </a>
 
-          {!isSearch && this.renderNotices()}
+          {this.renderNotices()}
           {this.renderGridContent()}
         </div>
       </li>

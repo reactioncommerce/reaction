@@ -20,12 +20,12 @@ export default async function catalogItems(context, { shopIds, tagIds } = {}) {
   }
 
   const query = {
-    isDeleted: { $ne: true },
-    isVisible: { $ne: false }
+    "product.isDeleted": { $ne: true },
+    "product.isVisible": true
   };
 
   if (shopIds) query.shopId = { $in: shopIds };
-  if (tagIds) query.hashtags = { $in: tagIds };
+  if (tagIds) query["product.tagIds"] = { $in: tagIds };
 
   return Catalog.find(query);
 }

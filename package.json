@@ -174,7 +174,7 @@
     "jest-junit": "^3.6.0",
     "js-yaml": "^3.10.0",
     "jsdoc": "^3.5.5",
-    "nedb": "^1.8.0",
+    "mongodb-memory-server": "^1.7.3",
     "nodemon": "^1.17.2",
     "react-addons-test-utils": "15.6.2",
     "snyk": "^1.78.0"
@@ -191,11 +191,11 @@
   "scripts": {
     "devserver": "NODE_ENV=devserver nodemon .reaction/devserver/index.js",
     "lint": "eslint .",
-    "test": "npm run test:unit && npm run test:app",
+    "test": "npm run test:unit && npm run test:integration && npm run test:app",
     "test:app": "meteor test --once --full-app --driver-package meteortesting:mocha",
     "test:app:watch": "TEST_WATCH=1 meteor test --full-app --driver-package meteortesting:mocha",
     "test:unit": "NODE_ENV=jesttest BABEL_DISABLE_CACHE=1 jest --no-cache --testPathIgnorePatterns /tests/",
-    "test:unit:watch": "NODE_ENV=jesttest BABEL_DISABLE_CACHE=1 jest --no-cache --watch",
+    "test:unit:watch": "NODE_ENV=jesttest BABEL_DISABLE_CACHE=1 jest --no-cache --testPathIgnorePatterns /tests/ --watch",
     "test:integration": "NODE_ENV=jesttest BABEL_DISABLE_CACHE=1 jest --no-cache /tests/",
     "test:integration:watch": "NODE_ENV=jesttest BABEL_DISABLE_CACHE=1 jest --no-cache --watch /tests/",
     "docs": "jsdoc . --configure .reaction/jsdoc/jsdoc.json --readme .reaction/jsdoc/templates/static/README.md"

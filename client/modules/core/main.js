@@ -652,19 +652,6 @@ export default {
   },
 
   /**
-   * @name getShopCurrency
-   * @method
-   * @memberof Core/Client
-   */
-  getShopCurrency() {
-    const shop = Shops.findOne({
-      _id: this.shopId
-    });
-
-    return (shop && shop.currency) || "USD";
-  },
-
-  /**
    * @name isPreview
    * @method
    * @memberof Core/Client

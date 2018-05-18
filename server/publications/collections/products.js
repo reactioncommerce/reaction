@@ -70,6 +70,23 @@ const filters = new SimpleSchema({
 
 registerSchema("filters", filters);
 
+const catalogProductFiltersSchema = new SimpleSchema({
+  "shopIdsOrSlugs": {
+    type: Array,
+    optional: true
+  },
+  "shopIdsOrSlugs.$": String,
+  "tagIds": {
+    type: Array,
+    optional: true
+  },
+  "tagIds.$": String,
+  "query": {
+    type: String,
+    optional: true
+  }
+});
+
 function filterProducts(productFilters) {
   // if there are filter/params that don't match the schema
   // validate, catch except but return no results
@@ -104,7 +121,7 @@ function filterProducts(productFilters) {
   // Init default selector - Everyone can see products that fit this selector
   const selector = {
     ancestors: [], // Lookup top-level products
-    isDeleted: { $in: [null, false] }, // by default, we don't publish deleted products
+    isDeleted: { $ne: true }, // by default, we don't publish deleted products
     isVisible: true // by default, only lookup visible products
   };
 
@@ -382,6 +399,78 @@ Meteor.publish("Products", function (productScrollLimit = 24, productFilters, so
   });
 });
 
+function filterCatalogItems(catalogFilters) {
+  // if there are filter/params that don't match the schema
+  // validate, catch except but return no results
+  try {
+    if (catalogFilters) catalogProductFiltersSchema.validate(catalogFilters);
+  } catch (e) {
+    Logger.debug(e, "Invalid Catalog Product Filters");
+    return false;
+  }
+
+  const shopIdsOrSlugs = catalogFilters && catalogFilters.shopIdsOrSlugs;
+
+  if (shopIdsOrSlugs) {
+    // Get all shopIds associated with the slug or Id
+    const shopIds = Shops.find({
+      "workflow.status": "active",
+      "$or": [{
+        _id: { $in: shopIdsOrSlugs }
+      }, {
+        slug: { $in: shopIdsOrSlugs }
+      }]
+    }).map((shop) => shop._id);
+
+    // If we found shops, update the productFilters
+    if (shopIds) {
+      catalogFilters.shopIds = shopIds;
+    } else {
+      return false;
+    }
+  }
+
+  // Init default selector - Everyone can see products that fit this selector
+  const selector = {
+    "product.isDeleted": { $ne: true }, // by default, we don't publish deleted products
+    "product.isVisible": true // by default, only lookup visible products
+  };
+
+  if (!catalogFilters) return selector;
+
+  // handle multiple shops
+  if (catalogFilters.shopIds) {
+    selector.shopId = {
+      $in: catalogFilters.shopIds
+    };
+  }
+
+  // filter by tags
+  if (catalogFilters.tagIds) {
+    selector["product.tagIds"] = {
+      $in: catalogFilters.tagIds
+    };
+  }
+
+  // filter by query
+  if (catalogFilters.query) {
+    const cond = {
+      $regex: catalogFilters.query,
+      $options: "i"
+    };
+
+    selector.$or = [{
+      title: cond
+    }, {
+      pageTitle: cond
+    }, {
+      description: cond
+    }];
+  }
+
+  return selector;
+}
+
 /**
  * @name Products/grid
  * @method
@@ -389,27 +478,31 @@ Meteor.publish("Products", function (productScrollLimit = 24, productFilters, so
  * @summary Publication method for a customer facing product grid
  * @param {number} productScrollLimit - product find limit
  * @param {object} productFilters - filters to be applied to the product find
- * @param {object} sort - sorting to be applied to the product find
  * @return {MongoCursor} Mongo cursor object of found products
  */
-Meteor.publish("Products/grid", function (productScrollLimit = 24, productFilters, sort = {}) {
+Meteor.publish("Products/grid", function (productScrollLimit = 24, productFilters) {
   check(productScrollLimit, Number);
   check(productFilters, Match.OneOf(undefined, Object));
-  check(sort, Match.OneOf(undefined, Object));
 
-  const newSelector = filterProducts(productFilters);
+  const newSelector = filterCatalogItems(productFilters);
 
   if (newSelector === false) {
     return this.ready();
   }
 
-  const productCursor = Catalog.find(newSelector, {
-    sort,
+  let tagIdForPosition = "_default";
+  if (productFilters && Array.isArray(productFilters.tagIds) && productFilters.tagIds.length) {
+    [tagIdForPosition] = productFilters.tagIds;
+  }
+
+  return Catalog.find(newSelector, {
+    sort: {
+      [`product.positions.${tagIdForPosition}.position`]: 1,
+      createdAt: -1
+    },
     limit: productScrollLimit,
     fields: {
       variants: 0
     }
   });
-
-  return productCursor;
 });

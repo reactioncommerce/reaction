@@ -15,9 +15,9 @@ test("shopIds", async () => {
   mockContext.collections.Catalog.find.mockReturnValueOnce("CURSOR");
   const result = await catalogItems(mockContext, { shopIds });
   expect(mockContext.collections.Catalog.find).toHaveBeenCalledWith({
-    isDeleted: { $ne: true },
-    isVisible: { $ne: false },
-    shopId: { $in: shopIds }
+    "product.isDeleted": { $ne: true },
+    "product.isVisible": true,
+    "shopId": { $in: shopIds }
   });
   expect(result).toBe("CURSOR");
 });
@@ -26,10 +26,10 @@ test("shopIds and tagIds", async () => {
   mockContext.collections.Catalog.find.mockReturnValueOnce("CURSOR");
   const result = await catalogItems(mockContext, { shopIds, tagIds });
   expect(mockContext.collections.Catalog.find).toHaveBeenCalledWith({
-    hashtags: { $in: tagIds },
-    isDeleted: { $ne: true },
-    isVisible: { $ne: false },
-    shopId: { $in: shopIds }
+    "product.tagIds": { $in: tagIds },
+    "product.isDeleted": { $ne: true },
+    "product.isVisible": true,
+    "shopId": { $in: shopIds }
   });
   expect(result).toBe("CURSOR");
 });
