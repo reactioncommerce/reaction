@@ -639,13 +639,12 @@ Meteor.methods({
     toDelete.forEach((product) => {
       Hooks.Events.run("beforeRemoveCatalogProduct", product, { userId: this.userId });
       Products.update({
-        _id: product._id
+        _id: product._id,
+        type: product.type
       }, {
         $set: {
           isDeleted: true
         }
-      }, {
-        type: product.type
       });
       Hooks.Events.run("afterRemoveCatalogProduct", this.userId, product);
     });
@@ -892,12 +891,13 @@ Meteor.methods({
     productsWithVariants.forEach((toArchiveProduct) => {
       Hooks.Events.run("beforeRemoveCatalogProduct", toArchiveProduct, { userId: this.userId });
       Products.update({
-        _id: toArchiveProduct
+        _id: toArchiveProduct._id,
+        type: toArchiveProduct.type
       }, {
         $set: {
           isDeleted: true
         }
-      }).count();
+      });
       Hooks.Events.run("afterRemoveCatalogProduct", this.userId, toArchiveProduct);
     });
 
