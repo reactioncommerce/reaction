@@ -94,10 +94,13 @@ test("expect CatalogItemProducts sorted by minPrice from lowest to highest when 
 });
 
 // expect error when invalid currency code is provided
-test("expect error when sortByPriceCurrencyCode is provided an invalid currecnyCode", async () => {
-  const errorQuery = query({
-    shopIds: [opaqueShopId],
-    sortBy: "minPrice"
-  });
-  await expect(errorQuery).rejects.toThrowErrorMatchingSnapshot();
+test("expect error when sortByPriceCurrencyCode is not provided while sortBy is minPrice", async () => {
+  try {
+    await query({
+      shopIds: [opaqueShopId],
+      sortBy: "minPrice"
+    });
+  } catch (error) {
+    expect(error[0].message).toMatchSnapshot();
+  }
 });
