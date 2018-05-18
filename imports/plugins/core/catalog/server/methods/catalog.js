@@ -892,7 +892,7 @@ Meteor.methods({
     productsWithVariants.forEach((toArchiveProduct) => {
       Hooks.Events.run("beforeRemoveCatalogProduct", toArchiveProduct, { userId: this.userId });
       Products.update({
-        _id: toArchiveProduct._id
+        _id: toArchiveProduct
       }, {
         $set: {
           isDeleted: true
