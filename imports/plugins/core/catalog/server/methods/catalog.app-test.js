@@ -472,12 +472,10 @@ describe("core product methods", function () {
       expect(product.hashtags).to.contain(tag._id);
       expect(Tags.find().count()).to.equal(1);
 
-      // Remove the tag from the published product and ensure it didn't succeed.
-      // Revision control should stop the published product from being changed.
+      // Remove the tag from the published product and ensure it succeed.
       Meteor.call("products/removeProductTag", product._id, tag._id);
       product = Products.findOne(product._id);
       expect(product.hashtags).to.not.contain(tag._id);
-      expect(Tags.find().count()).to.equal(0);
     });
   });
 
