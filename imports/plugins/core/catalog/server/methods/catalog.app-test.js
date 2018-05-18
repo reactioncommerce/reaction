@@ -592,9 +592,9 @@ describe("core product methods", function () {
       const modifiedVariant1 = Products.findOne(variant1._id);
       const modifiedVariant2 = Products.findOne(variant2._id);
       const modifiedVariant3 = Products.findOne(variant3._id);
-      expect(modifiedVariant1.index).to.be(2);
-      expect(modifiedVariant2.index).to.be(0);
-      expect(modifiedVariant3.index).to.be(1);
+      expect(modifiedVariant1.index).to.be.equal(2);
+      expect(modifiedVariant2.index).to.be.equal(0);
+      expect(modifiedVariant3.index).to.be.equal(1);
     });
   });
 
