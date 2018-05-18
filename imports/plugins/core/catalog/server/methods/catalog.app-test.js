@@ -496,7 +496,7 @@ describe("core product methods", function () {
       Meteor.call("products/updateProductField", product._id, "title", "new product name");
       Meteor.call("products/setHandle", product._id);
       product = Products.findOne(product._id);
-      expect(product.handle).to.equal("new product name");
+      expect(product.handle).to.equal("new-product-name");
     });
   });
 
