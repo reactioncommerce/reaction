@@ -1,4 +1,4 @@
-import { internalShopId, opaqueShopId } from "./mockShop";
+import { internalShopId } from "./mockShop";
 import {
   internalCatalogItemIds,
   mockExternalCatalogProducts,
