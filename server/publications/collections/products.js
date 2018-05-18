@@ -324,8 +324,12 @@ Meteor.publish("Products", function (productScrollLimit = 24, productFilters, so
   const activeShopsIds = Shops.find({
     $or: [
       { "workflow.status": "active" },
-      { _id: Reaction.getPrimaryShopId() }
+      { _id: primaryShopId }
     ]
+  }, {
+    fields: {
+      _id: 1
+    }
   }).fetch().map((activeShop) => activeShop._id);
 
   const selector = filterProducts(productFilters);
@@ -343,13 +347,17 @@ Meteor.publish("Products", function (productScrollLimit = 24, productFilters, so
       $in: [true, false, null, undefined]
     };
     selector.shopId = {
-      $in: activeShopsIds
+      $in: userAdminShopIds
     };
 
     // Get _ids of top-level products
     const productIds = Products.find(selector, {
       sort,
       limit: productScrollLimit
+    }, {
+      fields: {
+        _id: 1
+      }
     }).map((product) => product._id);
 
 
@@ -416,14 +424,16 @@ Meteor.publish("Products", function (productScrollLimit = 24, productFilters, so
   const productIds = Products.find(selector, {
     sort,
     limit: productScrollLimit
+  }, {
+    fields: {
+      _id: 1
+    }
   }).map((product) => product._id);
 
-  let newSelector = { ...selector };
+  let newSelector = _.omit(selector, ["hashtags", "ancestors"]);
 
   // Remove hashtag filter from selector (hashtags are not applied to variants, we need to get variants)
   if (productFilters && Object.keys(productFilters).length === 0 && productFilters.constructor === Object) {
-    newSelector = _.omit(selector, ["hashtags", "ancestors"]);
-
     if (productFilters.tags) {
       // Re-configure selector to pick either Variants of one of the top-level products,
       // or the top-level products in the filter
@@ -471,8 +481,6 @@ Meteor.publish("Products", function (productScrollLimit = 24, productFilters, so
       });
     }
   } else {
-    newSelector = _.omit(selector, ["hashtags", "ancestors"]);
-
     _.extend(newSelector, {
       $or: [{
         ancestors: {
