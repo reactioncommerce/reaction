@@ -267,27 +267,17 @@ Meteor.publish("Products", function (productScrollLimit = 24, productFilters, so
   check(sort, Match.OneOf(undefined, Object));
   check(editMode, Match.Maybe(Boolean));
 
-  // TODO: Consider publishing the non-admin publication if a user is not in "edit mode" to see what is published
-
   // Active shop
   const shopId = Reaction.getShopId();
   const primaryShopId = Reaction.getPrimaryShopId();
-
-  // Get a list of shopIds that this user has "createProduct" permissions for (owner permission is checked by default)
-  const userAdminShopIds = Reaction.getShopsWithRoles(["createProduct"], this.userId);
 
   // Don't publish if we're missing an active or primary shopId
   if (!shopId || !primaryShopId) {
     return this.ready();
   }
 
-  // Get active shop id's to use for filtering
-  const activeShopsIds = Shops.find({
-    $or: [
-      { "workflow.status": "active" },
-      { _id: Reaction.getPrimaryShopId() }
-    ]
-  }).fetch().map((activeShop) => activeShop._id);
+  // Get a list of shopIds that this user has "createProduct" permissions for (owner permission is checked by default)
+  const userAdminShopIds = Reaction.getShopsWithRoles(["createProduct"], this.userId);
 
   const selector = filterProducts(productFilters);
 
@@ -296,106 +286,59 @@ Meteor.publish("Products", function (productScrollLimit = 24, productFilters, so
   }
 
   // We publish an admin version of this publication to admins of products who are in "Edit Mode"
-  // userAdminShopIds is a list of shopIds that the user has createProduct or owner access for
-  if (editMode && userAdminShopIds && Array.isArray(userAdminShopIds) && userAdminShopIds.length > 0) {
-    selector.isVisible = {
-      $in: [true, false, null, undefined]
+  if (editMode) {
+    // userAdminShopIds is a list of shopIds that the user has createProduct or owner access for
+    if (!Array.isArray(userAdminShopIds) || userAdminShopIds.length === 0) {
+      return this.ready();
+    }
+
+    delete selector.isVisible;
+    selector.shopId = {
+      $in: userAdminShopIds
     };
+  } else {
+    // Get active shop IDs to use for filtering
+    const activeShopsIds = Shops.find({
+      $or: [
+        { "workflow.status": "active" },
+        { _id: Reaction.getPrimaryShopId() }
+      ]
+    }, {
+      fields: {
+        _id: 1
+      }
+    }).map((activeShop) => activeShop._id);
+
     selector.shopId = {
       $in: activeShopsIds
     };
   }
 
-  // This is where the publication begins for non-admin users
-  // Get _ids of top-level products
+  // Get the IDs of the first N (limit) top-level products that match the query
   const productIds = Products.find(selector, {
     sort,
     limit: productScrollLimit
+  }, {
+    fields: {
+      _id: 1
+    }
   }).map((product) => product._id);
 
-  let newSelector = { ...selector };
-
-  // Remove hashtag filter from selector (hashtags are not applied to variants, we need to get variants)
-  if (productFilters && Object.keys(productFilters).length === 0 && productFilters.constructor === Object) {
-    newSelector = _.omit(selector, ["hashtags", "ancestors"]);
-
-    if (productFilters.tags) {
-      // Re-configure selector to pick either Variants of one of the top-level products,
-      // or the top-level products in the filter
-      _.extend(newSelector, {
-        $or: [{
-          ancestors: {
-            $in: productIds
-          }
-        }, {
-          $and: [{
-            hashtags: {
-              $in: productFilters.tags
-            }
-          }, {
-            _id: {
-              $in: productIds
-            }
-          }]
-        }]
-      });
-    }
-    // filter by query
-    if (productFilters.query) {
-      const cond = {
-        $regex: productFilters.query,
-        $options: "i"
-      };
-      _.extend(newSelector, {
-        $or: [{
-          title: cond
-        }, {
-          pageTitle: cond
-        }, {
-          description: cond
-        }, {
-          ancestors: {
-            $in: productIds
-          }
-        },
-        {
-          _id: {
-            $in: productIds
-          }
-        }]
-      });
-    }
-  } else {
-    newSelector = _.omit(selector, ["hashtags", "ancestors"]);
-
-    _.extend(newSelector, {
-      $or: [{
-        ancestors: {
-          $in: productIds
-        }
-      }, {
-        _id: {
-          $in: productIds
-        }
-      }]
-    });
-  }
-
-  // Adjust the selector to include only active shops
-  newSelector = {
-    ...newSelector,
-    shopId: {
-      $in: activeShopsIds
-    }
-  };
-
-  // Returning Complete product tree for top level products to avoid sold out warning.
-  return Products.find(newSelector, {
+  // Return a cursor for the matching products plus all their variants
+  return Products.find({
+    $or: [{
+      ancestors: {
+        $in: productIds
+      }
+    }, {
+      _id: {
+        $in: productIds
+      }
+    }]
+  }, {
     sort
-    // TODO: REVIEW Limiting final products publication for non-admins
-    // I think we shouldn't limit here, otherwise we are limited to 24 total products which
-    // could be far less than 24 top-level products
-    // limit: productScrollLimit
+    // We shouldn't limit here. Otherwise we are limited to 24 total products which
+    // could be far less than 24 top-level products.
   });
 });
 
