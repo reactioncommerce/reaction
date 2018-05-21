@@ -28,31 +28,9 @@ class PublishContainer extends Component {
     this.publishToCatalog("products", productIds);
   }
 
-  handlePublishActions = (event, action, documentIds) => {
-    switch (action) {
-      case "archive":
-        if (this.props.onAction) {
-          this.props.onAction(event, action, this.props.documentIds);
-        }
-        break;
-      case "discard":
-        Meteor.call("revisions/discard", documentIds, (error, result) => {
-          if (result === true) {
-            const message = i18next.t("revisions.changesDiscarded", {
-              defaultValue: "Changes discarded successfully"
-            });
-
-            Alerts.toast(message, "success");
-          } else {
-            const message = i18next.t("revisions.noChangesDiscarded", {
-              defaultValue: "There are no changes to discard"
-            });
-
-            Alerts.toast(message, "warning");
-          }
-        });
-        break;
-      default:
+  handlePublishActions = (event, action) => {
+    if (action === "archive" && this.props.onAction) {
+      this.props.onAction(event, action, this.props.documentIds);
     }
   }
 
