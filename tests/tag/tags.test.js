@@ -1,4 +1,6 @@
 import GraphTester from "../GraphTester";
+// import { Tag } from "/lib/collections/schemas/tags";
+import { createFactoryForSchema, Factory } from "/imports/test-utils/helpers/dataFactory";
 
 jasmine.DEFAULT_TIMEOUT_INTERVAL = 60000;
 
@@ -127,4 +129,13 @@ test("works correctly when last goes before start", async () => {
   expect(result.tags.nodes.length).toBe(0);
   expect(result.tags.totalCount).toBe(55);
   expect(result.tags.pageInfo).toEqual({ endCursor: null, hasNextPage: true, hasPreviousPage: false, startCursor: null });
+});
+
+
+test("testing data factory", () => {
+  const mockTag = Factory.Tag.makOne();
+  const spec = true;
+
+  console.log("facotry tag?", mockTag);
+  expect(spec).toBe(false);
 });
