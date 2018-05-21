@@ -44,7 +44,6 @@ class PublishContainer extends Component {
           onPublishClick={this.handlePublishClick}
           onAction={this.handlePublishActions}
           onVisibilityChange={this.props.onVisibilityChange}
-          revisions={this.props.revisions}
           isPreview={this.props.isPreview}
         />
       </TranslationProvider>
@@ -60,8 +59,7 @@ PublishContainer.propTypes = {
   onAction: PropTypes.func,
   onPublishSuccess: PropTypes.func,
   onVisibilityChange: PropTypes.func,
-  product: PropTypes.object,
-  revisions: PropTypes.arrayOf(PropTypes.object)
+  product: PropTypes.object
 };
 
 function composer(props, onData) {
