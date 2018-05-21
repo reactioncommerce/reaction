@@ -290,19 +290,6 @@ class PublishControls extends Component {
     return null;
   }
 
-  renderUndoButton() {
-    return (
-      <FlatButton
-        disabled={this.hasChanges === false}
-        tooltip="Discard Changes"
-        i18nKeyTooltip="revisions.discardChanges"
-        icon={"fa fa-undo"}
-        value="discard"
-        onClick={this.handleAction}
-      />
-    );
-  }
-
   renderArchiveButton() {
     return (
       <FlatButton
