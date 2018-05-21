@@ -513,20 +513,6 @@
           "isCommercial": "Detta är en kommersiell adress."
         }
       },
-      "revisions": {
-        "isDisabled": "Versionskontroll är inaktiverad. Eventuella ändringar kommer att publiceras omedelbart.",
-        "isEnabled": "Versionskontroll har aktiverats för produkter. Eventuella ändringar kommer att behöva publiceras innan de blir synliga för kunderna.",
-        "unpublishedChanges": "Avpublicera ändringar",
-        "publishChanges": "publicera ändringar",
-        "showChanges": "visa ändringar",
-        "hideChanges": "Göm ändringar",
-        "discardChanges": "Ignorera ändringar",
-        "changedPublished": "Ändringarna publicerades",
-        "changesDiscarded": "Ändringarna kastades bort",
-        "noChanges": "Inga förändringar",
-        "noChangesPublished": "Det finns inga ändringar att publicera",
-        "noChangesDiscarded": "Det finns inga ändringar att avbryta"
-      },
       "address": {
         "country": "Land",
         "fullName": "Fullständigt namn",
