@@ -28,11 +28,11 @@ ignore:
         expires: 2018-06-30T00:00:00.000Z
   'npm:stringstream:20180511':
     - '*':
-        reason: Waiting on updatedd package
+        reason: Waiting on updated package
         expires: 2018-05-30T00:00:00.000Z
   'npm:deep-extend:20180409':
     - '*':
-        reason: Waiting on rc to updated to latest deep-extend version
+        reason: No patch available: https://github.com/unclechu/node-deep-extend/issues/41
         expires: 2018-06-20T00:00:00.000Z
   'npm:base64url:20180511':
    - '*':
