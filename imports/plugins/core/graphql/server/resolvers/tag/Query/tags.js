@@ -4,6 +4,7 @@ import { decodeShopOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/sh
 /**
  * Arguments passed by the client for a tags query
  * @typedef {ConnectionArgs} TagConnectionArgs - An object of all arguments that were sent by the client
+ * @memberof Tag/GraphQL
  * @property {ConnectionArgs} args - An object of all arguments that were sent by the client. {@link ConnectionArgs|See default connection arguments}
  * @property {Boolean} args.shouldIncludeDeleted - If set to true, include deleted. Default false.
  * @property {Boolean} args.isTopLevel - If set to a boolean, filter by this.
@@ -12,8 +13,9 @@ import { decodeShopOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/sh
  */
 
 /**
- * @name tags
+ * @name "Query.tags"
  * @method
+ * @memberof Tag/GraphQL
  * @summary Returns the tags for a shop
  * @param {Object} _ - unused
  * @param {TagConnectionArgs} args - arguments sent by the client {@link ConnectionArgs|See default connection arguments}

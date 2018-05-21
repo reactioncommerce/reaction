@@ -3,8 +3,9 @@ import { decodeShopOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/sh
 import { decodeTagOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/tag";
 
 /**
- * @name catalogItems
+ * @name "Query.catalogItems"
  * @method
+ * @memberof Catalog/GraphQL
  * @summary Get a list of catalogItems
  * @param {Object} _ - unused
  * @param {ConnectionArgs} args - an object of all arguments that were sent by the client

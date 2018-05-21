@@ -1,6 +1,16 @@
 import cuid from "cuid";
 import { Logger } from "./logger";
 
+/**
+ * @name getErrorFormatter
+ * @method
+ * @memberof GraphQL
+ * @summary Given the current context, returns a context-specific error formatting
+ *   function for use as the `formatError` option when calling `graphqlExpress` from
+ *   the `apollo-server-express` package.
+ * @param {Object} context An object with request-specific state
+ * @returns {Function} The error formatter function
+ */
 function getErrorFormatter(context = {}) {
   return (err) => {
     const { originalError } = err;

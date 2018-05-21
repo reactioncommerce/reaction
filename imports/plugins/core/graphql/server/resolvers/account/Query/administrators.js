@@ -2,8 +2,9 @@ import { getPaginatedResponse } from "@reactioncommerce/reaction-graphql-utils";
 import { decodeShopOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/shop";
 
 /**
- * @name administrators
+ * @name "Query.administrators"
  * @method
+ * @memberof Accounts/GraphQL
  * @summary find and return the administrators (users with "admin" or "owner" role) for a shop
  * @param {Object} _ - unused
  * @param {ConnectionArgs} args - an object of all arguments that were sent by the client

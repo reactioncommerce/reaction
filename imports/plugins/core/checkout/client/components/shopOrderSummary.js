@@ -4,6 +4,7 @@ import { Components, registerComponent } from "@reactioncommerce/reaction-compon
 
 /**
  * @summary Displays the order summary for each shop
+ * @memberof Components
  * @param {Object} props - React PropTypes
  * @property {Object} shopSummary - An object representing the summary information for this Shop
  * @property {boolean} isProfilePage - Checks if current page is profile page (unused)

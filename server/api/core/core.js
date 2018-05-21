@@ -1,9 +1,9 @@
 import url from "url";
+import Random from "@reactioncommerce/random";
 import packageJson from "/package.json";
 import _, { merge, uniqWith } from "lodash";
 import { Meteor } from "meteor/meteor";
 import { check } from "meteor/check";
-import { Random } from "meteor/random";
 import { Accounts } from "meteor/accounts-base";
 import { Roles } from "meteor/alanning:roles";
 import { EJSON } from "meteor/ejson";
@@ -672,6 +672,7 @@ export default {
   /**
    * @name setUserPreferences
    * @method
+   * @memberof Core
    * @summary save user preferences in the Accounts collection
    * @param {String} packageName
    * @param {String} preference
@@ -687,15 +688,16 @@ export default {
     });
     return setPreferenceResult;
   },
+
   /**
-   *  @name insertPackagesForShop
-   *  @method
-   *  @memberof Core
-   *  @summary insert Reaction packages into Packages collection registry for a new shop
-   *  Assigns owner roles for new packages
-   *  Imports layouts from packages
-   *  @param {String} shopId - the shopId to create packages for
-   *  @return {String} returns insert result
+   * @name insertPackagesForShop
+   * @method
+   * @memberof Core
+   * @summary insert Reaction packages into Packages collection registry for a new shop
+   * - Assigns owner roles for new packages
+   * - Imports layouts from packages
+   * @param {String} shopId - the shopId to create packages for
+   * @return {String} returns insert result
    */
   insertPackagesForShop(shopId) {
     const layouts = [];

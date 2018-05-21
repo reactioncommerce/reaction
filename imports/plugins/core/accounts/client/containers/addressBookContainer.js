@@ -9,14 +9,16 @@ import AddressBook from "../components/addressBook";
 
 
 const handlers = {
-/**
- * @method updateAddress
- * @summary helper function that validates and updates an address in the account's addressBook via a meteor method.
- * @since 2.0.0
- * @param {Object} address - address to be updated.
- * @param{String} property - property to be updated.
- * @return {Promise}
- */
+  /**
+   * @name updateAddress
+   * @method
+   * @memberof Helpers
+   * @summary helper function that validates and updates an address in the account's addressBook via a meteor method.
+   * @since 2.0.0
+   * @param {Object} address - address to be updated.
+   * @param{String} property - property to be updated.
+   * @return {Promise}
+   */
   updateAddress(address, property, validateAddress = true) {
     return new Promise((resolve, reject) => {
       if (validateAddress) {
@@ -60,12 +62,14 @@ const handlers = {
   },
 
   /**
- * @method removeAddress
- * @summary helper function that updates an address in the account's addressBook via a meteor method.
- * @since 2.0.0
- * @param {String} _id - _id of address to be removed.
- * @return {Promise}
- */
+   * @name removeAddress
+   * @method
+   * @memberof Helpers
+   * @summary helper function that updates an address in the account's addressBook via a meteor method.
+   * @since 2.0.0
+   * @param {String} _id - _id of address to be removed.
+   * @return {Promise}
+   */
   removeAddress(_id) {
     return new Promise((resolve, reject) => {
       Meteor.call("accounts/addressBookRemove", _id, (error, result) => {
@@ -79,12 +83,14 @@ const handlers = {
   },
 
   /**
- * @method addAddress
- * @summary helper function that validates and adds an address in the account's addressBook via a meteor method.
- * @since 2.0.0
- * @param {Object} address - address to be added.
- * @return {Promise}
- */
+   * @name addAddress
+   * @method
+   * @memberof Helpers
+   * @summary helper function that validates and adds an address in the account's addressBook via a meteor method.
+   * @since 2.0.0
+   * @param {Object} address - address to be added.
+   * @return {Promise}
+   */
   addAddress(address, validateAddress = true) {
     return new Promise((resolve, reject) => {
     // This address was tried for validation
@@ -125,6 +131,7 @@ const handlers = {
     });
   },
 
+
   markCart(address, isEnteredSelected) {
     if (!isEnteredSelected) {
       Meteor.call("accounts/markAddressValidationBypassed", false, (error) => {
@@ -147,11 +154,13 @@ const handlers = {
   },
 
   /**
- * @method onError
- * @summary helper function that shows an error message in an alert toast.
- * @since 2.0.0
- * @param {Object} errorMessage - error message object.
- */
+   * @name onError
+   * @method
+   * @memberof Helpers
+   * @summary helper function that shows an error message in an alert toast.
+   * @since 2.0.0
+   * @param {Object} errorMessage - error message object.
+   */
   onError(errorMessage) {
     Alerts.toast(errorMessage, "error");
   }

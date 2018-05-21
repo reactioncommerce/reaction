@@ -12,6 +12,7 @@ import { registerSchema } from "@reactioncommerce/schemas";
 
 /**
  * @name Webhook
+ * @memberof Schemas
  * @type {SimpleSchema}
  * @property {Number} shopifyId Shopify webhook ID
  * @property {String} topic Shopify webhook topic
@@ -57,6 +58,7 @@ registerSchema("Webhook", Webhook);
 
 /**
  * @name Synchook
+ * @memberof Schemas
  * @type {SimpleSchema}
  * @property {String} topic - General topic this event is under
  * @property {String} event - The type of event that we are capturing
@@ -83,6 +85,7 @@ registerSchema("Synchook", Synchook);
 /**
  * @name ShopifyConnectPackageConfig
  * @type {SimpleSchema}
+ * @memberof Schemas
  * @property {String} settings.apiKey Shopify API key
  * @property {String} settings.password Shopify API password
  * @property {String} settings.sharedSecret Shopify API shared secret

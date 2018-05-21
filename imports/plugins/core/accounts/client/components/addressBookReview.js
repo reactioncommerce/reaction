@@ -41,8 +41,8 @@ class AddressBookReview extends Component {
         isCommercal: PropTypes.bool
       }),
       /**
-       * map of all fields and
-       * errors in them.
+       * A map of all fields and errors in them.
+       * @ignore
        */
       fieldErrors: PropTypes.object
     })
@@ -57,6 +57,7 @@ class AddressBookReview extends Component {
    * @method handleSelection
    * @summary either saves the suggested or entered address
    * @since 2.0.0
+   * @ignore
    */
   handleSelection = (event) => {
     event.preventDefault();
@@ -76,6 +77,7 @@ class AddressBookReview extends Component {
    * @method handleEdit
    * @summary takes user back to the edit address screen
    * @since 2.0.0
+   * @ignore
    */
   handleEdit = (event) => {
     event.preventDefault();
@@ -88,6 +90,7 @@ class AddressBookReview extends Component {
    * @method selectEntered
    * @summary select the entered address
    * @since 2.0.0
+   * @ignore
    */
   selectEntered = () => {
     this.setState({
@@ -99,6 +102,7 @@ class AddressBookReview extends Component {
    * @method selectSuggested
    * @summary select the suggested address
    * @since 2.0.0
+   * @ignore
    */
   selectSuggested = () => {
     this.setState({
@@ -112,6 +116,7 @@ class AddressBookReview extends Component {
    * with error if present
    * @since 2.0.0
    * @return {Object} - JSX and child component.
+   * @ignore
    */
   renderField(field, value, showError) {
     const { fieldErrors } = this.props.validationResults;

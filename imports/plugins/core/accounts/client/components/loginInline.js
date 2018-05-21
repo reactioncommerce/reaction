@@ -40,6 +40,7 @@ class LoginInline extends Component {
    * @param {String} value - the new value for the field
    * @param {String} field - which field to modify it's value
    * @return {undefined} undefined
+   * @private
    */
   handleFieldChange = (event, value, field) => {
     this.setState({

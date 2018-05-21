@@ -1,13 +1,19 @@
 import { Meteor } from "meteor/meteor";
 import { HTTP } from "meteor/http";
 
+/**
+ * Meteor methods for TaxCloud. Run these methods using `Meteor.call()`
+ * @namespace TaxCloud/Methods
+ */
+
 Meteor.methods({
   /**
-   * We're using https://taxcloud.net
-   * just to get an intial import data set
-   * this service doesn't require taxcloud id
-   * but other services need authorization
-   * use TAXCODE_SRC  to override source url
+   * We're using https://taxcloud.net just to get an intial import data set
+   * this service doesn't require taxcloud id but other services need authorization
+   * use TAXCODE_SRC to override source url
+   * @name taxcloud/getTaxCodes
+   * @method
+   * @memberof TaxCloud/Methods
    * @returns {Array} An array of Tax code objects
    */
   "taxcloud/getTaxCodes"() {
