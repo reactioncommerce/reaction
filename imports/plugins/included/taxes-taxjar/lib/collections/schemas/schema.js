@@ -2,9 +2,10 @@ import { TaxPackageConfig } from "/imports/plugins/core/taxes/lib/collections/sc
 import { registerSchema } from "@reactioncommerce/schemas";
 
 /**
-* TaxPackageConfig Schema
-*/
-
+ * @name TaxJarPackageConfig
+ * @memberof Schemas
+ * @type {SimpleSchema}
+ */
 export const TaxJarPackageConfig = TaxPackageConfig.clone().extend({
   "settings.taxjar": {
     type: Object,

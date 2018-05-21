@@ -1,6 +1,10 @@
 import { Meteor } from "meteor/meteor";
 import * as PayflowproMethods from "./payflowproMethods";
 
+/**
+ * @namespace Payment/PayflowPro/Methods
+ */
+
 Meteor.methods({
   "payflowpro/payment/submit": PayflowproMethods.paymentSubmit,
   "payflowpro/payment/capture": PayflowproMethods.paymentCapture,

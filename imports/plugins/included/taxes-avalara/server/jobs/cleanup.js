@@ -14,6 +14,7 @@ async function lazyLoadMoment() {
  * @summary Remove logs older than the configured number of days
  * @param {Function} callback - function to call when process complete
  * @returns {Number} results of remmoval query
+ * @private
  */
 function cleanupAvalaraJobs(callback) {
   Promise.await(lazyLoadMoment());

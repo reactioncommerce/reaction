@@ -11,6 +11,7 @@ export default merge({}, account, catalog, core, scalar, ping, shop, tag);
 
 /**
  * Arguments passed by the client for a query
+ * @memberof GraphQL
  * @typedef {Object} ConnectionArgs - an object of all arguments that were sent by the client
  * @property {String} args.after - Connection argument
  * @property {String} args.before - Connection argument
@@ -22,6 +23,7 @@ export default merge({}, account, catalog, core, scalar, ping, shop, tag);
 
 /**
  * Arguments passed by the client a groups query
+ * @memberof GraphQL
  * @typedef {Object} AddressInput - Address
  * @property {String} address1 - Address line 1
  * @property {String} [address2] - Address line 2
@@ -41,6 +43,7 @@ export default merge({}, account, catalog, core, scalar, ping, shop, tag);
 
 /**
  * Metafield input
+ * @memberof GraphQL
  * @typedef {Object} MetafieldInput - Metafield
  * @property {String} key - Key
  * @property {String} [value] - Value
@@ -48,4 +51,9 @@ export default merge({}, account, catalog, core, scalar, ping, shop, tag);
  * @property {String} [scope] - Scope
  * @property {String} [description] - Description
  * @property {String} [valueType] - Value type
+ */
+
+/**
+ * Utility functions for use by GraphQL resolvers
+ * @namespace GraphQL/Transforms
  */

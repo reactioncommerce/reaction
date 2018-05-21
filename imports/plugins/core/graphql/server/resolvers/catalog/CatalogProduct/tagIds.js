@@ -1,8 +1,9 @@
 import { encodeTagOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/tag";
 
 /**
- * @name tagIds
+ * @name "CatalogProduct.tagIds"
  * @method
+ * @memberof Catalog/GraphQL
  * @summary Returns the product tagIds prop to opaque IDs
  * @param {Object} product - CatalogProduct response from parent resolver
  * @return {String[]} Array of tag IDs

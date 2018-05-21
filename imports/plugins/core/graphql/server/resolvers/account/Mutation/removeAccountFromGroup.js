@@ -2,8 +2,9 @@ import { decodeAccountOpaqueId } from "@reactioncommerce/reaction-graphql-xforms
 import { decodeGroupOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/group";
 
 /**
- * @name removeAccountFromGroup
+ * @name "Mutation.removeAccountFromGroup"
  * @method
+ * @memberof Accounts/GraphQL
  * @summary resolver for the removeAccountFromGroup GraphQL mutation
  * @param {Object} _ - unused
  * @param {Object} args.input - an object of all mutation arguments that were sent by the client

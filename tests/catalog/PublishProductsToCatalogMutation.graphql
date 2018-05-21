@@ -1,0 +1,17 @@
+($productIds: [ID]!) {
+  publishProductsToCatalog(productIds: $productIds) {
+    product {
+      productId
+      title
+      isDeleted
+      variants {
+        _id
+        title
+        options {
+          _id
+          title
+        }
+      }
+    }
+  }
+}

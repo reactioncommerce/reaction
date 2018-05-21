@@ -59,12 +59,12 @@ function getSearchLanguage() {
 }
 
 /**
- * handleIndexUpdateFailures
  * When using Collection.rawCollection() methods that return a Promise,
  * handle the errors in a catch. However, ignore errors with altering indexes
  * before a collection exists.
  * @param  {Error} error an error object returned from a Promise rejection
  * @return {undefined}   doesn't return anything
+ * @private
  */
 function handleIndexUpdateFailures(error) {
   // If we get an error from the Mongo driver because something tried to drop a

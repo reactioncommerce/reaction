@@ -2,20 +2,19 @@ import { Mongo } from "meteor/mongo";
 import * as Schemas from "./schemas";
 
 /**
-* ReactionCore Collections TaxCodes
-*/
-
-/**
-* Taxes Collection
-*/
+ * @name Taxes
+ * @memberof Collections
+ * @type {MongoCollection}
+ */
 export const Taxes = new Mongo.Collection("Taxes");
 
 Taxes.attachSchema(Schemas.Taxes);
 
-
 /**
-* TaxCodes Collection
-*/
+ * @name TaxCodes
+ * @memberof Collections
+ * @type {MongoCollection}
+ */
 export const TaxCodes = new Mongo.Collection("TaxCodes");
 
 TaxCodes.attachSchema(Schemas.TaxCodes);

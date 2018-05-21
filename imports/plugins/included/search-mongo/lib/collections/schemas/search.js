@@ -2,6 +2,11 @@ import SimpleSchema from "simpl-schema";
 import { PackageConfig } from "/lib/collections/schemas/registry";
 import { registerSchema } from "@reactioncommerce/schemas";
 
+/**
+ * @name SearchPackageConfig
+ * @memberof Schemas
+ * @type {SimpleSchema}
+ */
 export const SearchPackageConfig = PackageConfig.clone().extend({
   // Remove blackbox: true from settings obj
   "settings": {

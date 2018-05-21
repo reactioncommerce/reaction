@@ -1,8 +1,8 @@
 import { Mongo } from "meteor/mongo";
 
 /**
- * Client side collections
- * @ignore
+ * @name Countries
+ * @memberof Collections/ClientOnly
+ * @type {MongoCollection}
  */
-
 export const Countries = new Mongo.Collection(null);

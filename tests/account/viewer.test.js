@@ -1,10 +1,12 @@
 import GraphTester from "../GraphTester";
 
+jasmine.DEFAULT_TIMEOUT_INTERVAL = 60000;
+
 let tester;
 let viewerQuery;
 beforeAll(async () => {
   tester = new GraphTester();
-  await tester.startServer();
+  await tester.start();
 
   viewerQuery = tester.query(`{
     viewer {
@@ -13,7 +15,7 @@ beforeAll(async () => {
   }`);
 });
 
-afterAll(() => tester.stopServer());
+afterAll(() => tester.stop());
 
 test("unauthenticated", async () => {
   const result = await viewerQuery();
