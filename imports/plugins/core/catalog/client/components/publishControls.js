@@ -4,10 +4,6 @@ import { Components } from "@reactioncommerce/reaction-components";
 import {
   Button,
   FlatButton,
-  IconButton,
-  Divider,
-  DropDownMenu,
-  MenuItem,
   Switch,
   Icon
 } from "/imports/plugins/core/ui/client/components";
@@ -218,48 +214,6 @@ class PublishControls extends Component {
     );
   }
 
-  renderMoreOptionsButton() {
-    return (
-      <DropDownMenu
-        buttonElement={<IconButton icon={"fa fa-ellipsis-v"}/>}
-        handleMenuItemChange={this.handleAction}
-      >
-        <MenuItem label="Administrator" value="administrator" />
-        <MenuItem label="Customer" value="customer" />
-        <Divider />
-        <MenuItem
-          i18nKeyLabel="app.public"
-          icon="fa fa-unlock"
-          label="Public"
-          selectLabel="Public"
-          value="public"
-        />
-        <MenuItem
-          i18nKeyLabel="app.private"
-          label="Private"
-          icon="fa fa-lock"
-          selectLabel="Public"
-          value="private"
-        />
-        <Divider />
-        <MenuItem
-          disabled={this.hasChanges === false}
-          i18nKeyLabel="revisions.discardChanges"
-          icon="fa fa-undo"
-          label="Discard Changes"
-          value="discard"
-        />
-        <Divider />
-        <MenuItem
-          i18nKeyLabel="app.archive"
-          icon="fa fa-trash-o"
-          label="Archive"
-          value="archive"
-        />
-      </DropDownMenu>
-    );
-  }
-
   renderViewControls() {
     if (this.props.showViewAsControls) {
       let tooltip = "Private";
@@ -357,7 +311,6 @@ class PublishControls extends Component {
         {this.renderArchiveButton()}
         {this.renderViewControls()}
         {this.renderPublishButton()}
-        {/* this.renderMoreOptionsButton() */}
       </Components.ToolbarGroup>
     );
   }
