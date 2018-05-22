@@ -39,13 +39,13 @@ const getMockDoc = (schema, prefix, addId) => {
     const defField = _.get(model[key], "type.definitions[0]") || model[key];
 
     try {
-      if (!_.isUndefined(model[key].mockValue)) {
+      if (model[key].mockValue !== undefined) {
         fieldValue = model[key].mockValue;
-      } else if (!_.isUndefined(model[key].defaultValue)) {
+      } else if (model[key].defaultValue !== undefined) {
         fieldValue = model[key].defaultValue;
-      } else if (!_.isUndefined(model[key].autoValue)) {
+      } else if (model[key].autoValue !== undefined) {
         fieldValue = model[key].autoValue.call({ operator: null });
-      } else if (_.isArray(defField.allowedValues)) {
+      } else if (Array.isArray(defField.allowedValues)) {
         fieldValue = defField.allowedValues[0];
       } else {
         throw new Error("Invalid");
@@ -112,7 +112,7 @@ const getMockDoc = (schema, prefix, addId) => {
           break;
 
         case Boolean:
-          fieldValue = !_.isUndefined(defField.defaultValue) ? defField.defaultValue : faker.random.boolean();
+          fieldValue = defField.defaultValue !== undefined ? defField.defaultValue : faker.random.boolean();
           break;
 
         case Object: {
