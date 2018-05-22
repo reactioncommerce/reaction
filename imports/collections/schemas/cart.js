@@ -37,7 +37,6 @@ export const CartItem = new SimpleSchema({
   },
   "shopId": {
     type: String,
-    autoValue: shopIdAutoValueForCart,
     index: 1,
     label: "Cart Item shopId",
     optional: true
@@ -146,7 +145,6 @@ export const Cart = new SimpleSchema({
   },
   "shopId": {
     type: String,
-    autoValue: shopIdAutoValueForCart,
     index: 1,
     label: "Cart ShopId"
   },
