@@ -1,6 +1,4 @@
 import SimpleSchema from "simpl-schema";
-import { check } from "meteor/check";
-import { Tracker } from "meteor/tracker";
 import { registerSchema } from "@reactioncommerce/schemas";
 import { shopIdAutoValue, schemaIdAutoValue } from "./helpers";
 import { Address } from "./address";
@@ -27,7 +25,7 @@ export const ShippoShippingMethod = new SimpleSchema({
     type: String,
     optional: true
   }
-}, { check, tracker: Tracker });
+});
 
 registerSchema("ShippoShippingMethod", ShippoShippingMethod);
 
@@ -155,7 +153,7 @@ export const ShippingMethod = new SimpleSchema({
     type: ShippoShippingMethod,
     optional: true
   }
-}, { check, tracker: Tracker });
+});
 
 registerSchema("ShippingMethod", ShippingMethod);
 
@@ -182,7 +180,7 @@ export const ShipmentQuote = new SimpleSchema({
     type: String,
     optional: true
   }
-}, { check, tracker: Tracker });
+});
 
 registerSchema("ShipmentQuote", ShipmentQuote);
 
@@ -222,7 +220,7 @@ export const ShipmentItem = new SimpleSchema({
   variantId: {
     type: String
   }
-}, { check, tracker: Tracker });
+});
 
 registerSchema("ShipmentItem", ShipmentItem);
 
@@ -257,7 +255,7 @@ export const ShippingParcel = new SimpleSchema({
     type: Number,
     optional: true
   }
-}, { check, tracker: Tracker });
+});
 
 registerSchema("ShippingParcel", ShippingParcel);
 
@@ -283,7 +281,7 @@ export const ShippoShipment = new SimpleSchema({
     type: String,
     optional: true
   }
-}, { check, tracker: Tracker });
+});
 
 registerSchema("ShippoShipment", ShippoShipment);
 
@@ -318,7 +316,7 @@ export const ShipmentQuotesQueryStatus = new SimpleSchema({
     type: String,
     optional: true
   }
-}, { check, tracker: Tracker });
+});
 
 registerSchema("ShipmentQuotesQueryStatus", ShipmentQuotesQueryStatus);
 
@@ -425,7 +423,7 @@ export const Shipment = new SimpleSchema({
     type: ShippoShipment,
     optional: true
   }
-}, { check, tracker: Tracker });
+});
 
 registerSchema("Shipment", Shipment);
 
@@ -443,7 +441,7 @@ export const ShippoShippingProvider = new SimpleSchema({
     type: String,
     optional: true
   }
-}, { check, tracker: Tracker });
+});
 
 registerSchema("ShippoShippingProvider", ShippoShippingProvider);
 
@@ -499,7 +497,7 @@ export const ShippingProvider = new SimpleSchema({
     type: ShippoShippingProvider,
     optional: true
   }
-}, { check, tracker: Tracker });
+});
 
 registerSchema("ShippingProvider", ShippingProvider);
 
@@ -552,7 +550,7 @@ export const Shipping = new SimpleSchema({
   "shipmentQuotes.$": {
     type: ShipmentQuote
   }
-}, { check, tracker: Tracker });
+});
 
 registerSchema("Shipping", Shipping);
 

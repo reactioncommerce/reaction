@@ -1,6 +1,4 @@
 import SimpleSchema from "simpl-schema";
-import { check } from "meteor/check";
-import { Tracker } from "meteor/tracker";
 import { registerSchema } from "@reactioncommerce/schemas";
 import { createdAtAutoValue, updatedAtAutoValue } from "./helpers";
 import { Workflow } from "./workflow";
@@ -75,6 +73,6 @@ export const Revisions = new SimpleSchema({
     type: Date,
     optional: true
   }
-}, { check, tracker: Tracker });
+});
 
 registerSchema("Revisions", Revisions);

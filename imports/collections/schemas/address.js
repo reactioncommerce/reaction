@@ -1,7 +1,5 @@
 import Random from "@reactioncommerce/random";
 import SimpleSchema from "simpl-schema";
-import { check } from "meteor/check";
-import { Tracker } from "meteor/tracker";
 import { registerSchema } from "@reactioncommerce/schemas";
 import { Metafield } from "./metafield";
 
@@ -112,6 +110,6 @@ export const Address = new SimpleSchema({
   "metafields.$": {
     type: Metafield
   }
-}, { check, tracker: Tracker });
+});
 
 registerSchema("Address", Address);

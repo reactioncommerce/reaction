@@ -1,6 +1,4 @@
 import SimpleSchema from "simpl-schema";
-import { check } from "meteor/check";
-import { Tracker } from "meteor/tracker";
 import { registerSchema } from "@reactioncommerce/schemas";
 
 /**
@@ -61,7 +59,7 @@ export const LayoutStructure = new SimpleSchema({
     optional: true,
     index: true
   }
-}, { check, tracker: Tracker });
+});
 
 registerSchema("LayoutStructure", LayoutStructure);
 
@@ -144,6 +142,6 @@ export const Layout = new SimpleSchema({
     optional: true,
     defaultValue: 1
   }
-}, { check, tracker: Tracker });
+});
 
 registerSchema("Layout", Layout);

@@ -1,8 +1,6 @@
 import Random from "@reactioncommerce/random";
 import SimpleSchema from "simpl-schema";
-import { check } from "meteor/check";
 import { Meteor } from "meteor/meteor";
-import { Tracker } from "meteor/tracker";
 import { registerSchema } from "@reactioncommerce/schemas";
 import { ReactionProduct, getSlug } from "/lib/api";
 import { createdAtAutoValue, shopIdAutoValue, shopDefaultCountry, updatedAtAutoValue } from "./helpers";
@@ -45,7 +43,7 @@ export const VariantMedia = new SimpleSchema({
     type: Date,
     autoValue: createdAtAutoValue
   }
-}, { check, tracker: Tracker });
+});
 
 registerSchema("VariantMedia", VariantMedia);
 
@@ -82,7 +80,7 @@ export const ProductPosition = new SimpleSchema({
   updatedAt: {
     type: Date
   }
-}, { check, tracker: Tracker });
+});
 
 registerSchema("ProductPosition", ProductPosition);
 
@@ -361,7 +359,7 @@ export const ProductVariant = new SimpleSchema({
     optional: true,
     autoValue: shopDefaultCountry
   }
-}, { check, tracker: Tracker });
+});
 
 registerSchema("ProductVariant", ProductVariant);
 
@@ -388,7 +386,7 @@ export const PriceRange = new SimpleSchema({
     defaultValue: 0,
     optional: true
   }
-}, { check, tracker: Tracker });
+});
 
 registerSchema("PriceRange", PriceRange);
 
@@ -615,6 +613,6 @@ export const Product = new SimpleSchema({
     optional: true,
     defaultValue: {}
   }
-}, { check, tracker: Tracker });
+});
 
 registerSchema("Product", Product);
