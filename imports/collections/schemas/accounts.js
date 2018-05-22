@@ -144,7 +144,6 @@ export const Accounts = new SimpleSchema({
   },
   "shopId": {
     type: String,
-    autoValue: shopIdAutoValue,
     regEx: SimpleSchema.RegEx.Id,
     index: 1
   },
