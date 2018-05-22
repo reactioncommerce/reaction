@@ -442,7 +442,6 @@ export const Product = new SimpleSchema({
   },
   "shopId": {
     type: String,
-    autoValue: shopIdAutoValue,
     index: 1,
     label: "Product ShopId"
   },

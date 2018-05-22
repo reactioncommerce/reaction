@@ -320,6 +320,7 @@ function flushQuantity(id) {
 function createProduct(props = null) {
   const _id = Products.insert(
     {
+      shopId: Reaction.getShopId(),
       type: "simple",
       ...props
     },
