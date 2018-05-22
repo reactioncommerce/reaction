@@ -513,20 +513,6 @@
           "isCommercial": "Ovo je adresa tvrtke."
         }
       },
-      "revisions": {
-        "isDisabled": "kontrola Revizija je onemogućen. Sve promjene bit će odmah objavljena.",
-        "isEnabled": "kontrola Revizija je omogućena za proizvode. Sve promjene bit će morati biti objavljena prije nego što je vidljivo na kupce.",
-        "unpublishedChanges": "Neobjavljena Promjene",
-        "publishChanges": "Objavi promjene",
-        "showChanges": "Prikaži promjene",
-        "hideChanges": "Sakrij promjene",
-        "discardChanges": "Odbaciti promjene",
-        "changedPublished": "Promjene objavljeno uspješno",
-        "changesDiscarded": "Promjene uspješno odbačena",
-        "noChanges": "Nema promjena",
-        "noChangesPublished": "Nema promjena za objavu",
-        "noChangesDiscarded": "Nema promjena za odbacivanje"
-      },
       "address": {
         "country": "Država",
         "fullName": "Puno ime",

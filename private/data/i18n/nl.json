@@ -513,20 +513,6 @@
           "isCommercial": "Dit is een zakelijk adres."
         }
       },
-      "revisions": {
-        "isDisabled": "Revisie controle is uitgeschakeld. Eventuele wijzigingen zullen onmiddellijk worden gepubliceerd.",
-        "isEnabled": "Revisie controle is ingeschakeld voor producten. Eventuele wijzigingen zullen nodig hebben voordat ze zichtbaar zijn voor klanten om te worden gepubliceerd.",
-        "unpublishedChanges": "ongepubliceerde Wijzigingen",
-        "publishChanges": "Wijzigingen publiceren",
-        "showChanges": "Wijzigingen weergeven",
-        "hideChanges": "verbergen Wijzigingen",
-        "discardChanges": "Veranderingen ongedaan maken",
-        "changedPublished": "Wijzigingen met succes gepubliceerd",
-        "changesDiscarded": "Wijzigingen met succes verwijderd",
-        "noChanges": "Geen veranderingen",
-        "noChangesPublished": "Er zijn geen wijzigingen te publiceren",
-        "noChangesDiscarded": "Er zijn geen wijzigingen te ontdoen"
-      },
       "address": {
         "country": "Land",
         "fullName": "Volledige naam",

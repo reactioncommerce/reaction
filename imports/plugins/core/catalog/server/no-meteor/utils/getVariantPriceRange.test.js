@@ -1,10 +1,8 @@
 import mockContext from "/imports/test-utils/helpers/mockContext";
-import { rewire as rewire$getProduct, restore as restore$getProduct } from "./getProduct";
 import { rewire as rewire$getVariants, restore as restore$getVariants } from "./getVariants";
 import getVariantPriceRange from "./getVariantPriceRange";
 
 const mockCollections = { ...mockContext.collections };
-const mockGetProduct = jest.fn().mockName("getProducts");
 const mockGetVariants = jest.fn().mockName("getVariants");
 
 const internalShopId = "123";
@@ -96,19 +94,17 @@ const mockVariants = [
 ];
 
 beforeAll(() => {
-  rewire$getProduct(mockGetProduct);
   rewire$getVariants(mockGetVariants);
 });
 
 afterAll(() => {
-  restore$getProduct();
   restore$getVariants();
 });
 
 // expect topVariant price if no children
 test("expect topVariants price string if no child variants", async () => {
   mockGetVariants.mockReturnValueOnce(Promise.resolve([{ isDeleted: true }]));
-  mockGetProduct.mockReturnValueOnce(Promise.resolve(mockVariants[0]));
+  mockCollections.Products.findOne.mockReturnValueOnce(Promise.resolve(mockVariants[0]));
   const spec = await getVariantPriceRange(internalVariantIds[0], mockCollections);
   const success = {
     range: "2.99",

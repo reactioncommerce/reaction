@@ -513,20 +513,6 @@
           "isCommercial": "Jedná se o obchodní adresu."
         }
       },
-      "revisions": {
-        "isDisabled": "Ovládání revize je zakázáno. Jakékoli změny budou zveřejněny okamžitě.",
-        "isEnabled": "Ovládání revize je povoleno za produkty. bude muset případné změny, které mají být zveřejněny dříve, než jsou viditelné pro zákazníky.",
-        "unpublishedChanges": "nepublikované Změny",
-        "publishChanges": "Publish changes",
-        "showChanges": "Zobrazit změny",
-        "hideChanges": "skrýt Změny",
-        "discardChanges": "Zrušit změny",
-        "changedPublished": "Změny úspěšně publikován",
-        "changesDiscarded": "Změny úspěšně zlikvidovat",
-        "noChanges": "Žádné změny",
-        "noChangesPublished": "Nejsou žádné změny publikovat",
-        "noChangesDiscarded": "Nejsou žádné změny k vyhazování"
-      },
       "address": {
         "country": "Země",
         "fullName": "Celé jméno",
