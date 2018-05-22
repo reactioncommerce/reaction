@@ -521,7 +521,6 @@ export const Shipping = new SimpleSchema({
   "shopId": {
     type: String,
     index: 1,
-    autoValue: shopIdAutoValue,
     label: "Shipping ShopId"
   },
   "name": {
