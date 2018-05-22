@@ -69,7 +69,6 @@ export const Tag = new SimpleSchema({
   "shopId": {
     type: String,
     index: 1,
-    autoValue: shopIdAutoValue,
     label: "Tag shopId"
   },
   "createdAt": {

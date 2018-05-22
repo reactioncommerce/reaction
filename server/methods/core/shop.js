@@ -643,6 +643,7 @@ Meteor.methods({
     const tag = {
       name: tagName,
       slug: Reaction.getSlug(tagName),
+      shopId: Reaction.getShopId(),
       isTopLevel,
       updatedAt: new Date(),
       createdAt: new Date()
