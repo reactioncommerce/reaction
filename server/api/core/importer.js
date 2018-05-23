@@ -237,13 +237,14 @@ Importer.buffer = function (collection) {
  * * Push the variant if it doesn't exist.
  * * Update the variant.
  */
-Importer.product = function (key, product) {
+Importer.product = function (key, product, shopId) {
   // If product has an _id, we use it to look up the product before
   // updating the product so as to avoid trying to change the _id
   // which is immutable.
   if (product._id && !key._id) {
     key._id = product._id;
   }
+  product.shopId = shopId;
   return this.object(Collections.Products, key, product);
 };
 
@@ -277,14 +278,16 @@ Importer.package = function (pkg, shopId) {
  * @memberof Importer
  * @summary Store a template in the import buffer.
  * @param {Object} templateInfo The template data to be updated
+ * @param {String} shopId The package data to be updated
  * @returns {undefined}
  */
-Importer.template = function (templateInfo) {
+Importer.template = function (templateInfo, shopId) {
   check(templateInfo, Object);
 
   const key = {
     name: templateInfo.name,
-    type: templateInfo.type || "template"
+    type: templateInfo.type || "template",
+    shopId
   };
 
   return this.object(Collections.Templates, key, templateInfo);
@@ -297,11 +300,12 @@ Importer.template = function (templateInfo) {
  * @summary Store a translation in the import buffer.
  * @param {Object} key A key to look up the translation
  * @param {Object} translation The translation data to be updated
+ * @param {String} shopId The package data to be updated
  * @returns {Object} updated translation buffer
  */
-Importer.translation = function (key, translation) {
+Importer.translation = function (key, translation, shopId) {
   const modifiedKey = Object.assign(key, { ns: translation.ns });
-  return this.object(Collections.Translations, modifiedKey, translation);
+  return this.object(Collections.Translations, modifiedKey, { ...translation, shopId });
 };
 
 /**
@@ -345,7 +349,7 @@ Importer.layout = function (layout, shopId) {
  * @param {Object} shipping The shipping data to be updated
  * @returns {Object} this shipping
  */
-Importer.shipping = function (key, shipping) {
+Importer.shipping = function (key, shipping, shopId) {
   let importKey = {};
   //
   // we have a bit of a strange structure in Shipping
@@ -361,6 +365,8 @@ Importer.shipping = function (key, shipping) {
       shopId: result.shopId
     };
     delete shipping.methods;
+  } else {
+    shipping.shopId = shopId;
   }
   const modifiedKey = Object.assign({}, key, importKey);
   return this.object(Collections.Shipping, modifiedKey, shipping);
@@ -375,7 +381,8 @@ Importer.shipping = function (key, shipping) {
  * @param {Object} tag The tag data to be updated
  * @returns {Object} this tag
  */
-Importer.tag = function (key, tag) {
+Importer.tag = function (key, tag, shopId) {
+  tag.shopId = shopId;
   return this.object(Collections.Tags, key, tag);
 };
 
@@ -436,11 +443,12 @@ Importer.object = function (collection, key, object) {
  * @param {Object[]} json An array containing the import documents
  * @param {string[]} keys Fields that should be used as the import key.
  * @param {Function} callback A callback accepting two parameters.
+ * @param {Array} cbArgs TODO:
  * The callback should accept a key document to consult the database as a first
  * parameter and an update document as the second parameter.
  * @returns {undefined}
  */
-Importer.process = function (json, keys, callback) {
+Importer.process = function (json, keys, callback, cbArgs) {
   check(json, String);
   check(keys, Array);
   check(callback, Function);
@@ -452,7 +460,7 @@ Importer.process = function (json, keys, callback) {
     for (let j = 0; j < keys.length; j += 1) {
       key[keys[j]] = array[i][keys[j]];
     }
-    callback.call(this, key, array[i]);
+    callback.call(this, key, array[i], ...cbArgs);
   }
 };
 
