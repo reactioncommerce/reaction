@@ -550,23 +550,7 @@ export const Product = new SimpleSchema({
   "handle": {
     type: String,
     optional: true,
-    index: 1,
-    autoValue() {
-      let slug = getSlug(this.value);
-
-      if (!slug && this.siblingField("title").value) {
-        slug = getSlug(this.siblingField("title").value);
-      } else if (!slug) {
-        slug = this.siblingField("_id").value || Random.id();
-      }
-      if (this.isInsert) {
-        return slug;
-      } else if (this.isUpsert) {
-        return {
-          $setOnInsert: slug
-        };
-      }
-    }
+    index: 1
   },
   "changedHandleWas": {
     type: String,

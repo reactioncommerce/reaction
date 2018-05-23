@@ -4,6 +4,7 @@ import Random from "@reactioncommerce/random";
 import { Mongo, MongoInternals } from "meteor/mongo";
 import { EJSON } from "meteor/ejson";
 import { check, Match } from "meteor/check";
+import { getSlug } from "/server/api/core/utils";
 import * as Collections from "/lib/collections";
 
 /**
@@ -245,6 +246,7 @@ Importer.product = function (key, product, shopId) {
     key._id = product._id;
   }
   product.shopId = shopId;
+  product.handle = getSlug(product.title || product._id || Random.id());
   return this.object(Collections.Products, key, product);
 };
 
@@ -318,6 +320,7 @@ Importer.translation = function (key, translation, shopId) {
  * @returns {Object} this shop
  */
 Importer.shop = function (key, shop) {
+  shop.slug = getSlug(shop.name);
   return this.object(Collections.Shops, key, shop);
 };
 

@@ -1,6 +1,7 @@
 import faker from "faker";
 import _ from "lodash";
 import { Factory } from "meteor/dburles:factory";
+import { getSlug } from "server/api/core/utils";
 import { Products, Tags } from "/lib/collections";
 import { getShop } from "./shops";
 import { Hooks } from "/server/api";
@@ -219,10 +220,13 @@ export default function () {
     max: 12.99
   };
 
+  const productTitle = faker.commerce.productName()
+
   const product = {
-    title: faker.commerce.productName(),
+    title: productTitle,
     pageTitle: faker.lorem.sentence(),
     description: faker.lorem.paragraph(),
+    handle: getSlug(productTitle),
     type: "simple",
     vendor: faker.company.companyName(),
     price: priceRange,

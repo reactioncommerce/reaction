@@ -1,6 +1,5 @@
 import SimpleSchema from "simpl-schema";
 import { registerSchema } from "@reactioncommerce/schemas";
-import { getSlug } from "/lib/api";
 import { Email } from "./accounts";
 import { Address } from "./address";
 import { createdAtAutoValue, updatedAtAutoValue } from "./helpers";
@@ -246,21 +245,7 @@ export const Shop = new SimpleSchema({
   "slug": {
     type: String,
     optional: true,
-    unique: true,
-    autoValue() {
-      let slug = getSlug(this.value);
-
-      if (!slug && this.siblingField("name").value) {
-        slug = getSlug(this.siblingField("name").value);
-      }
-      if (this.isInsert) {
-        return slug;
-      } else if (this.isUpsert) {
-        return {
-          $setOnInsert: slug
-        };
-      }
-    }
+    unique: true
   },
   "merchantShops": {
     type: Array,
