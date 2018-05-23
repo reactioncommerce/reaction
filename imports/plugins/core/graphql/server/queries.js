@@ -4,6 +4,7 @@ import { groupQuery, groupsQuery } from "/imports/plugins/core/accounts/server/m
 import { rolesQuery } from "/imports/plugins/core/accounts/server/methods/rolesQuery";
 import catalogItems from "/imports/plugins/core/catalog/server/no-meteor/queries/catalogItems";
 import catalogItemProduct from "/imports/plugins/core/catalog/server/no-meteor/queries/catalogItemProduct";
+import tag from "/imports/plugins/core/catalog/server/no-meteor/queries/tag";
 import tags from "/imports/plugins/core/catalog/server/no-meteor/queries/tags";
 import tagsByIds from "/imports/plugins/core/catalog/server/no-meteor/queries/tagsByIds";
 import getShopIdByDomain from "/imports/plugins/core/accounts/server/no-meteor/getShopIdByDomain";
@@ -17,6 +18,7 @@ export default {
   roles: rolesQuery,
   shopAdministrators: shopAdministratorsQuery,
   shopById: (context, _id) => context.collections.Shops.findOne({ _id }),
+  tag,
   tags,
   tagsByIds,
   userAccount: userAccountQuery
