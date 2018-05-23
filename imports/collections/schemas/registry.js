@@ -188,8 +188,6 @@ export const PackageConfig = new SimpleSchema({
   "shopId": {
     type: String,
     index: 1,
-    // see: https://github.com/reactioncommerce/reaction/issues/646#issuecomment-169351842
-    // autoValue: shopIdAutoValue,
     label: "PackageConfig ShopId",
     optional: true
   },

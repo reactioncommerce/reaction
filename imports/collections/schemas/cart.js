@@ -1,6 +1,6 @@
 import SimpleSchema from "simpl-schema";
 import { registerSchema } from "@reactioncommerce/schemas";
-import { createdAtAutoValue, shopIdAutoValueForCart, updatedAtAutoValue } from "./helpers";
+import { createdAtAutoValue, updatedAtAutoValue } from "./helpers";
 import { Payment } from "./payments";
 import { Product, ProductVariant } from "./products";
 import { Shipment, ShippingParcel } from "./shipping";

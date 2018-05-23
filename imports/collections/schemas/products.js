@@ -3,7 +3,7 @@ import SimpleSchema from "simpl-schema";
 import { Meteor } from "meteor/meteor";
 import { registerSchema } from "@reactioncommerce/schemas";
 import { ReactionProduct, getSlug } from "/lib/api";
-import { createdAtAutoValue, shopIdAutoValue, shopDefaultCountry, updatedAtAutoValue } from "./helpers";
+import { createdAtAutoValue, updatedAtAutoValue } from "./helpers";
 import { Event } from "./event";
 import { Metafield } from "./metafield";
 import { ShippingParcel } from "./shipping";
@@ -279,7 +279,6 @@ export const ProductVariant = new SimpleSchema({
   },
   "shopId": {
     type: String,
-    autoValue: shopIdAutoValue,
     index: 1,
     label: "Variant ShopId"
   },
@@ -356,8 +355,7 @@ export const ProductVariant = new SimpleSchema({
   },
   "originCountry": {
     type: String,
-    optional: true,
-    autoValue: shopDefaultCountry
+    optional: true
   }
 });
 
@@ -464,8 +462,7 @@ export const Product = new SimpleSchema({
   },
   "originCountry": {
     type: String,
-    optional: true,
-    autoValue: shopDefaultCountry
+    optional: true
   },
   "type": {
     label: "Type",

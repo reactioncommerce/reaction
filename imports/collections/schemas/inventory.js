@@ -29,7 +29,6 @@ export const Inventory = new SimpleSchema({
   },
   "shopId": {
     type: String,
-    autoValue: shopIdAutoValue,
     index: 1,
     label: "Inventory ShopId"
   },
