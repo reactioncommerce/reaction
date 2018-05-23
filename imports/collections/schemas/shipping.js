@@ -1,6 +1,6 @@
 import SimpleSchema from "simpl-schema";
 import { registerSchema } from "@reactioncommerce/schemas";
-import { shopIdAutoValue, schemaIdAutoValue } from "./helpers";
+import { schemaIdAutoValue } from "./helpers";
 import { Address } from "./address";
 import { Invoice } from "./payments";
 import { PackageConfig } from "./registry";
