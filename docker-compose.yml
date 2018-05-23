@@ -2,7 +2,7 @@
 # The local files are mounted into the created container.
 # Usage: docker-compose up [-d]
 
-version: '3.6.3'
+version: '3.4'
 
 networks:
   reaction-api:
