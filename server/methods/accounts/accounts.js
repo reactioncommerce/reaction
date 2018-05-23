@@ -387,6 +387,7 @@ export function addressBookAdd(address, accountUserId) {
   };
   const accountsUpdateQuery = {
     $set: {
+      shopId: Reaction.getShopId(),
       userId
     },
     $addToSet: {

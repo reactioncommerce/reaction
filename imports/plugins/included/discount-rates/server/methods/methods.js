@@ -54,7 +54,7 @@ export const methods = {
     if (docId) return Meteor.call("discounts/editRate", { _id: docId, modifier: doc });
 
     if (!Reaction.hasPermission("discount-rates")) throw new Meteor.Error("access-denied", "Access Denied");
-    doc.shppId = Reaction.getShopId();
+    doc.shopId = Reaction.getShopId();
     return Discounts.insert(doc);
   },
 
