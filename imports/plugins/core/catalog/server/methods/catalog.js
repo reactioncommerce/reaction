@@ -526,6 +526,7 @@ Meteor.methods({
     const assembledVariant = Object.assign(newVariant || {}, {
       _id: newVariantId,
       ancestors,
+      shopId: product.shopId,
       type: "variant"
     });
 
