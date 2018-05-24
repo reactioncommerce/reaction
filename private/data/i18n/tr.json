@@ -513,20 +513,6 @@
           "isCommercial": "Bu ticari bir adres."
         }
       },
-      "revisions": {
-        "isDisabled": "Revizyon kontrolü devre dışı bırakılır. Herhangi bir değişiklik derhal yayınlanacaktır.",
-        "isEnabled": "Revizyon kontrol Ürünleri etkindir. Herhangi bir değişiklik müşterilere görünür olmak önce yayınlanmış gerekir edilecektir.",
-        "unpublishedChanges": "yayınlanmamış değişiklikler",
-        "publishChanges": "Değişiklikleri Yayınla",
-        "showChanges": "Değişiklikleri göster",
-        "hideChanges": "gizle değişiklikler",
-        "discardChanges": "Değişiklikleri gözardı et",
-        "changedPublished": "Değişiklikler başarıyla yayınlandı",
-        "changesDiscarded": "Değişiklikler başarıyla atılır",
-        "noChanges": "Değişiklik yok",
-        "noChangesPublished": "yayımlamak için herhangi bir değişiklik bulunmamaktadır",
-        "noChangesDiscarded": "atmak için herhangi bir değişiklik bulunmamaktadır"
-      },
       "address": {
         "country": "Ülke",
         "fullName": "Ad Saoyad",

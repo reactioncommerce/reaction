@@ -526,20 +526,6 @@
           "isCommercial": "This is a commercial address."
         }
       },
-      "revisions": {
-        "isDisabled": "Revision control is disabled. Any changes will be published immediately.",
-        "isEnabled": "Revision control is enabled for products. Any changes will be need to be published before being visible to customers.",
-        "unpublishedChanges": "Unpublished changes",
-        "publishChanges": "Publish changes",
-        "showChanges": "Show changes",
-        "hideChanges": "Hide changes",
-        "discardChanges": "Discard changes",
-        "changedPublished": "Changes published successfully",
-        "changesDiscarded": "Changes discarded successfully",
-        "noChanges": "No changes",
-        "noChangesPublished": "There are no changes to publish",
-        "noChangesDiscarded": "There are no changes to discard"
-      },
       "address": {
         "country": "Country",
         "fullName": "Full name",
