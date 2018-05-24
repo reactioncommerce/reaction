@@ -1,8 +1,5 @@
 import SimpleSchema from "simpl-schema";
-import { check } from "meteor/check";
-import { Tracker } from "meteor/tracker";
 import { registerSchema } from "@reactioncommerce/schemas";
-import { getSlug } from "/lib/api";
 import { Email } from "./accounts";
 import { Address } from "./address";
 import { createdAtAutoValue, updatedAtAutoValue } from "./helpers";
@@ -41,7 +38,7 @@ export const CustomEmailSettings = new SimpleSchema({
     type: SimpleSchema.Integer,
     optional: true
   }
-}, { check, tracker: Tracker });
+});
 
 registerSchema("CustomEmailSettings", CustomEmailSettings);
 
@@ -84,7 +81,7 @@ export const Currency = new SimpleSchema({
     type: Number,
     optional: true
   }
-}, { check, tracker: Tracker });
+});
 
 registerSchema("Currency", Currency);
 
@@ -104,7 +101,7 @@ export const Locale = new SimpleSchema({
     type: Object,
     blackbox: true
   }
-}, { check, tracker: Tracker });
+});
 
 registerSchema("Locale", Locale);
 
@@ -127,7 +124,7 @@ export const Languages = new SimpleSchema({
     type: Boolean,
     defaultValue: true
   }
-}, { check, tracker: Tracker });
+});
 
 registerSchema("Languages", Languages);
 
@@ -146,7 +143,7 @@ export const ShopTheme = new SimpleSchema({
     type: String,
     optional: true
   }
-}, { check, tracker: Tracker });
+});
 
 registerSchema("ShopTheme", ShopTheme);
 
@@ -166,7 +163,7 @@ export const BrandAsset = new SimpleSchema({
     type: String,
     optional: true
   }
-}, { check, tracker: Tracker });
+});
 
 registerSchema("BrandAsset", BrandAsset);
 
@@ -191,7 +188,7 @@ const MerchantShop = new SimpleSchema({
     type: String,
     label: "Shop Name"
   }
-}, { check, tracker: Tracker });
+});
 
 registerSchema("MerchantShop", MerchantShop);
 
@@ -248,21 +245,7 @@ export const Shop = new SimpleSchema({
   "slug": {
     type: String,
     optional: true,
-    unique: true,
-    autoValue() {
-      let slug = getSlug(this.value);
-
-      if (!slug && this.siblingField("name").value) {
-        slug = getSlug(this.siblingField("name").value);
-      }
-      if (this.isInsert) {
-        return slug;
-      } else if (this.isUpsert) {
-        return {
-          $setOnInsert: slug
-        };
-      }
-    }
+    unique: true
   },
   "merchantShops": {
     type: Array,
@@ -484,6 +467,6 @@ export const Shop = new SimpleSchema({
     optional: true,
     defaultValue: {}
   }
-}, { check, tracker: Tracker });
+});
 
 registerSchema("Shop", Shop);

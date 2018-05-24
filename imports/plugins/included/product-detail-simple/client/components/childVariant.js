@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import classnames from "classnames";
 import { Components, registerComponent } from "@reactioncommerce/reaction-components";
 import { Validation } from "@reactioncommerce/schemas";
-import { ProductVariant } from "/lib/collections/schemas/products";
+import { ProductVariant } from "/lib/collections/schemas";
 
 
 class ChildVariant extends Component {

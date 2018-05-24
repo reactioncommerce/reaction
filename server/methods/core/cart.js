@@ -284,6 +284,7 @@ Meteor.methods({
     // anonymous.
     const currentCartId = Collections.Cart.insert({
       sessionId,
+      shopId,
       userId
     });
     Logger.debug(`create cart: into new user cart. created: ${currentCartId} for user ${userId}`);

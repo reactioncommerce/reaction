@@ -1,6 +1,4 @@
 import SimpleSchema from "simpl-schema";
-import { check } from "meteor/check";
-import { Tracker } from "meteor/tracker";
 import { registerSchema } from "@reactioncommerce/schemas";
 import { PackageConfig } from "./registry";
 
@@ -24,7 +22,7 @@ export const SocialProvider = new SimpleSchema({
     defaultValue: false,
     optional: true
   }
-}, { check, tracker: Tracker });
+});
 
 registerSchema("SocialProvider", SocialProvider);
 

@@ -1,6 +1,4 @@
 import SimpleSchema from "simpl-schema";
-import { check } from "meteor/check";
-import { Tracker } from "meteor/tracker";
 import { registerSchema } from "@reactioncommerce/schemas";
 import { shopIdAutoValue } from "./helpers";
 
@@ -97,7 +95,7 @@ export const ReactLayout = new SimpleSchema({
     type: Object,
     blackbox: true
   }
-}, { check, tracker: Tracker });
+});
 
 registerSchema("ReactLayout", ReactLayout);
 
@@ -125,6 +123,6 @@ export const Template = new SimpleSchema({
     type: String,
     optional: true
   }
-}, { check, tracker: Tracker });
+});
 
 registerSchema("Template", Template);

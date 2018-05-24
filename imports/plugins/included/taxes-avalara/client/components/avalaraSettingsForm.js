@@ -6,7 +6,7 @@ import { Form, Loading } from "/imports/plugins/core/ui/client/components";
 import { Components } from "@reactioncommerce/reaction-components";
 import { AvalaraPackageConfig } from "../../lib/collections/schemas";
 import { Logs } from "/lib/collections";
-import { Logs as LogSchema } from "/lib/collections/schemas/logs";
+import { Logs as LogSchema } from "/lib/collections/schemas";
 import { i18next } from "/client/api";
 
 /**

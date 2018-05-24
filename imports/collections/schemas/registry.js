@@ -1,6 +1,4 @@
 import SimpleSchema from "simpl-schema";
-import { check } from "meteor/check";
-import { Tracker } from "meteor/tracker";
 import { registerSchema } from "@reactioncommerce/schemas";
 import { Layout } from "./layouts";
 
@@ -20,7 +18,7 @@ export const Permissions = new SimpleSchema({
   label: {
     type: String
   }
-}, { check, tracker: Tracker });
+});
 
 registerSchema("Permissions", Permissions);
 
@@ -168,7 +166,7 @@ export const Registry = new SimpleSchema({
   "hideForShopTypes.$": {
     type: String
   }
-}, { check, tracker: Tracker });
+});
 
 registerSchema("Registry", Registry);
 
@@ -190,8 +188,6 @@ export const PackageConfig = new SimpleSchema({
   "shopId": {
     type: String,
     index: 1,
-    // see: https://github.com/reactioncommerce/reaction/issues/646#issuecomment-169351842
-    // autoValue: shopIdAutoValue,
     label: "PackageConfig ShopId",
     optional: true
   },
@@ -227,7 +223,7 @@ export const PackageConfig = new SimpleSchema({
   "layout.$": {
     type: Layout
   }
-}, { check, tracker: Tracker });
+});
 
 registerSchema("PackageConfig", PackageConfig);
 

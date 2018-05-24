@@ -1,8 +1,6 @@
 import SimpleSchema from "simpl-schema";
-import { check } from "meteor/check";
-import { Tracker } from "meteor/tracker";
 import { registerSchema } from "@reactioncommerce/schemas";
-import { createdAtAutoValue, shopIdAutoValue } from "./helpers";
+import { createdAtAutoValue } from "./helpers";
 import { Metafield } from "./metafield";
 import { createFactoryForSchema } from "/imports/test-utils/helpers/dataFactory";
 
@@ -72,7 +70,6 @@ export const Tag = new SimpleSchema({
   "shopId": {
     type: String,
     index: 1,
-    autoValue: shopIdAutoValue,
     label: "Tag shopId"
   },
   "createdAt": {
@@ -85,7 +82,7 @@ export const Tag = new SimpleSchema({
       return new Date();
     }
   }
-}, { check, tracker: Tracker });
+});
 
 registerSchema("Tag", Tag);
 createFactoryForSchema("Tag", Tag);

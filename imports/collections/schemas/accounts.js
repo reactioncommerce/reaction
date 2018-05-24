@@ -1,8 +1,6 @@
 import SimpleSchema from "simpl-schema";
-import { check } from "meteor/check";
-import { Tracker } from "meteor/tracker";
 import { registerSchema } from "@reactioncommerce/schemas";
-import { createdAtAutoValue, shopIdAutoValue, updatedAtAutoValue } from "./helpers";
+import { createdAtAutoValue, updatedAtAutoValue } from "./helpers";
 import { Address } from "./address";
 import { Metafield } from "./metafield";
 
@@ -22,7 +20,7 @@ const TaxSettings = new SimpleSchema({
     type: String,
     optional: true
   }
-}, { check, tracker: Tracker });
+});
 
 registerSchema("TaxSettings", TaxSettings);
 
@@ -78,7 +76,7 @@ export const Profile = new SimpleSchema({
     blackbox: true,
     optional: true
   }
-}, { check, tracker: Tracker });
+});
 
 registerSchema("Profile", Profile);
 
@@ -105,7 +103,7 @@ export const Email = new SimpleSchema({
     defaultValue: false,
     optional: true
   }
-}, { check, tracker: Tracker });
+});
 
 registerSchema("Email", Email);
 
@@ -146,7 +144,6 @@ export const Accounts = new SimpleSchema({
   },
   "shopId": {
     type: String,
-    autoValue: shopIdAutoValue,
     regEx: SimpleSchema.RegEx.Id,
     index: 1
   },
@@ -211,6 +208,6 @@ export const Accounts = new SimpleSchema({
     autoValue: updatedAtAutoValue,
     optional: true
   }
-}, { check, tracker: Tracker });
+});
 
 registerSchema("Accounts", Accounts);
