@@ -5,7 +5,7 @@ import { Meteor } from "meteor/meteor";
 import { Session } from "meteor/session";
 import { ReactionProduct } from "/lib/api";
 import { Products } from "/lib/collections";
-import PublishContainer from "/imports/plugins/core/revisions/client/containers/publishContainer";
+import PublishContainer from "/imports/plugins/core/catalog/client/containers/publishContainer";
 
 class GridProductPublishContainer extends Component {
   static propTypes = {
