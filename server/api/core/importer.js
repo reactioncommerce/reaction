@@ -446,7 +446,7 @@ Importer.object = function (collection, key, object) {
  * @param {Object[]} json An array containing the import documents
  * @param {string[]} keys Fields that should be used as the import key.
  * @param {Function} callback A callback accepting two parameters.
- * @param {Array} cbArgs TODO:
+ * @param {Array} cbArgs An array of extra callback arguments, mainly used to pass shopId to callbacks
  * The callback should accept a key document to consult the database as a first
  * parameter and an update document as the second parameter.
  * @returns {undefined}
@@ -455,6 +455,7 @@ Importer.process = function (json, keys, callback, cbArgs) {
   check(json, String);
   check(keys, Array);
   check(callback, Function);
+  check(cbArgs, Array);
 
   const array = EJSON.parse(json);
 

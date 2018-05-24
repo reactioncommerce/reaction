@@ -15,7 +15,7 @@ export default function loadData() {
     if (!shopId) {
       try {
         Logger.debug("Loading Shop Data");
-        Reaction.Importer.process(Assets.getText("data/Shops.json"), ["name"], Reaction.Importer.shop);
+        Reaction.Importer.process(Assets.getText("data/Shops.json"), ["name"], Reaction.Importer.shop, [shopId]);
         // ensure Shops are loaded first.
         Reaction.Importer.flush(Shops);
       } catch (error) {
