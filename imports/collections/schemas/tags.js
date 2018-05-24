@@ -1,6 +1,6 @@
 import SimpleSchema from "simpl-schema";
 import { registerSchema } from "@reactioncommerce/schemas";
-import { createdAtAutoValue, shopIdAutoValue } from "./helpers";
+import { createdAtAutoValue } from "./helpers";
 import { Metafield } from "./metafield";
 
 /**

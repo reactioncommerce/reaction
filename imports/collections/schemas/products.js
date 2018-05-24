@@ -1,8 +1,7 @@
-import Random from "@reactioncommerce/random";
 import SimpleSchema from "simpl-schema";
 import { Meteor } from "meteor/meteor";
 import { registerSchema } from "@reactioncommerce/schemas";
-import { ReactionProduct, getSlug } from "/lib/api";
+import { ReactionProduct } from "/lib/api";
 import { createdAtAutoValue, updatedAtAutoValue } from "./helpers";
 import { Event } from "./event";
 import { Metafield } from "./metafield";

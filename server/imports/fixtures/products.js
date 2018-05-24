@@ -220,7 +220,7 @@ export default function () {
     max: 12.99
   };
 
-  const productTitle = faker.commerce.productName()
+  const productTitle = faker.commerce.productName();
 
   const product = {
     title: productTitle,
