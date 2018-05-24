@@ -2,7 +2,6 @@ import SimpleSchema from "simpl-schema";
 import { registerSchema } from "@reactioncommerce/schemas";
 import { createdAtAutoValue } from "./helpers";
 import { Metafield } from "./metafield";
-import { createFactoryForSchema } from "/imports/test-utils/helpers/dataFactory";
 
 /**
  * @name Tag
@@ -85,4 +84,3 @@ export const Tag = new SimpleSchema({
 });
 
 registerSchema("Tag", Tag);
-createFactoryForSchema("Tag", Tag);
