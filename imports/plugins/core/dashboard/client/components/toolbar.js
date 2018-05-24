@@ -67,28 +67,6 @@ class PublishControls extends Component {
     }
   }
 
-  renderViewControls() {
-    if (this.props.showViewAsControls) {
-      return (
-        <FlatButton
-          label="Private"
-          i18nKeyLabel="app.private"
-          i18nKeyToggleOnLabel="app.public"
-          toggleOnLabel="Public"
-          icon="fa fa-eye-slash"
-          onIcon="fa fa-eye"
-          toggle={true}
-          value="public"
-          onValue="private"
-          toggleOn={this.isVisible === "public"}
-          onToggle={this.handleVisibilityChange}
-        />
-      );
-    }
-
-    return null;
-  }
-
   renderShopSelect() {
     // If a user has owner, admin, or marketplace permissions for more than one (1) shops
     // show the shop switcher to allow for easy switching between the shops
@@ -171,13 +149,8 @@ class PublishControls extends Component {
 
   renderCustomControls() {
     if (this.props.dashboardHeaderTemplate && this.props.hasCreateProductAccess) {
-      if (this.props.isEnabled) {
-        return [
-          <div className="hidden-xs" key="customControlsVerticaldivider"><VerticalDivider/></div>,
-          <Blaze key="customControls" template={this.props.dashboardHeaderTemplate} />
-        ];
-      }
       return [
+        <div className="hidden-xs" key="customControlsVerticaldivider"><VerticalDivider/></div>,
         <Blaze key="customControls" template={this.props.dashboardHeaderTemplate} />
       ];
     }

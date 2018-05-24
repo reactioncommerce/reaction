@@ -5,6 +5,8 @@ import { EJSON } from "meteor/ejson";
 import { Meteor } from "meteor/meteor";
 import { ReactionProduct } from "/lib/api";
 import { ProductRevision as Catalog } from "/imports/plugins/core/revisions/server/hooks";
+import { publishProductsToCatalog } from "/imports/plugins/core/catalog/server/methods/catalog";
+import { RevisionApi } from "/imports/plugins/core/revisions/lib/api/revisions";
 import { Hooks, Logger, Reaction } from "/server/api";
 import { MediaRecords, Products, Revisions, Tags } from "/lib/collections";
 import { Media } from "/imports/plugins/core/files/server";
@@ -675,16 +677,38 @@ Meteor.methods({
     // out if nothing to delete
     if (!Array.isArray(toDelete) || toDelete.length === 0) return false;
 
-    // Flag the variant and all its children as deleted in Revisions collection.
-    toDelete.forEach((product) => {
-      Hooks.Events.run("beforeRemoveCatalogProduct", product, { userId: this.userId });
-      Hooks.Events.run("afterRemoveCatalogProduct", this.userId, product);
-    });
+    if (RevisionApi.isRevisionControlEnabled()) {
+      // Flag the variant and all its children as deleted in Revisions collection.
+      // eslint-disable-next-line no-shadow
+      toDelete.forEach((variant) => {
+        Hooks.Events.run("beforeRemoveCatalogProduct", variant, { userId: this.userId });
+        Hooks.Events.run("afterRemoveCatalogProduct", this.userId, variant);
+      });
+    } else {
+      // eslint-disable-next-line no-shadow
+      toDelete.forEach((variant) => {
+        Products.update({
+          _id: variant._id
+        }, {
+          $set: {
+            isDeleted: true
+          }
+        }, {
+          bypassCollection2: true,
+          publish: true
+        });
+      });
+    }
 
     // After variant was removed from product, we need to recalculate all
     // denormalized fields
     const productId = toDelete[0].ancestors[0];
     toDenormalize.forEach((field) => denormalize(productId, field));
+
+    if (!RevisionApi.isRevisionControlEnabled()) {
+      // Publish variants that have been marked as deleted immediately.
+      publishProductsToCatalog(productId);
+    }
 
     Logger.debug(`Flagged variant and all its children as deleted.`);
 
@@ -921,25 +945,47 @@ Meteor.methods({
       }]
     }).fetch();
 
-    const ids = [];
-    productsWithVariants.map((doc) => {
-      ids.push(doc._id);
-      return ids;
-    });
+    const ids = productsWithVariants.map((doc) => doc._id);
+    let numFlaggedAsDeleted = 0;
+    if (RevisionApi.isRevisionControlEnabled()) {
+      // Flag the product and all its variants as deleted in the Revisions collection.
+      productsWithVariants.forEach((toArchiveProduct) => {
+        Hooks.Events.run("beforeRemoveCatalogProduct", toArchiveProduct, { userId: this.userId });
 
-    // Flag the product and all its variants as deleted in the Revisions collection.
-    productsWithVariants.forEach((toArchiveProduct) => {
-      Hooks.Events.run("beforeRemoveCatalogProduct", toArchiveProduct, { userId: this.userId });
+        Hooks.Events.run("afterRemoveCatalogProduct", this.userId, toArchiveProduct);
+      });
 
-      Hooks.Events.run("afterRemoveCatalogProduct", this.userId, toArchiveProduct);
-    });
+      numFlaggedAsDeleted = Revisions.find({
+        "documentId": {
+          $in: ids
+        },
+        "documentData.isDeleted": true
+      }).count();
+    } else {
+      // eslint-disable-next-line no-shadow
+      productsWithVariants.forEach((product) => {
+        Products.update({
+          _id: product._id
+        }, {
+          $set: {
+            isDeleted: true
+          }
+        }, {
+          bypassCollection2: true,
+          publish: true
+        });
+      });
+      numFlaggedAsDeleted = Products.find({
+        _id: {
+          $in: ids
+        },
+        isDeleted: true
+      }).count();
 
-    const numFlaggedAsDeleted = Revisions.find({
-      "documentId": {
-        $in: ids
-      },
-      "documentData.isDeleted": true
-    }).count();
+      // Publish products that have been marked as deleted immediately.
+      const products = productsWithVariants.filter((doc) => doc.type === "simple").map((doc) => doc._id);
+      publishProductsToCatalog(products);
+    }
 
     if (numFlaggedAsDeleted > 0) {
       // Flag associated MediaRecords as deleted.
@@ -955,10 +1001,10 @@ Meteor.methods({
           "metadata.isDeleted": true
         }
       });
-      return numFlaggedAsDeleted;
     }
 
     Logger.debug(`${numFlaggedAsDeleted} products have been flagged as deleted`);
+    return numFlaggedAsDeleted;
   },
 
   /**
@@ -1017,7 +1063,6 @@ Meteor.methods({
       update = EJSON.parse(`{"${field}":${stringValue}}`);
     }
 
-
     // we need to use sync mode here, to return correct error and result to UI
     let result;
 
@@ -1044,6 +1089,18 @@ Meteor.methods({
     if (result === 1) {
       if (type === "variant" && toDenormalize.indexOf(field) >= 0) {
         denormalize(doc.ancestors[0], field);
+      }
+      if (!RevisionApi.isRevisionControlEnabled()) {
+        let productId;
+        if (type === "variant") {
+          [productId] = doc.ancestors;
+        } else if (type === "simple") {
+          productId = _id;
+        }
+        if (productId) {
+          // Publish product changes immediately.
+          publishProductsToCatalog(productId);
+        }
       }
     }
     return result;
