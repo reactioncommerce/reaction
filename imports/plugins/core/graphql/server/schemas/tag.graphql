@@ -67,7 +67,8 @@ type TagConnection implements NodeConnection {
 }
 
 extend type Query {
-  tag(tagId: ID!): Tag
+  "Returns a tag from a provided tag ID or slug"
+  tag(slugOrId: String): Tag
 
   "Returns a paged list of tags for a shop. You must include a shopId when querying."
   tags(
