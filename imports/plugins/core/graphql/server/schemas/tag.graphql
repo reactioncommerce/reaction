@@ -39,8 +39,8 @@ type Tag implements Node & Deletable {
   "The date and time at which this tag was last updated"
   updatedAt: DateTime!
 
-  "A media object containing the hero image for a tag landing page"
-  media: ImageInfo
+  "A string containing the hero image url for a tag landing page"
+  heroMediaUrl: String
 }
 
 "The fields by which you are allowed to sort any query that returns a `TagConnection`"
