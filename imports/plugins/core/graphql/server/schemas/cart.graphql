@@ -1,0 +1,233 @@
+# Cart Schema
+"The cart holds selected items until order is placed."
+type Cart implements Node {
+  _id: ID!
+
+  # We're currently using User on the Cart.
+  # Enforce database uniqueness such that an account only has one cart.
+  "The account that owns the cart."
+  account: Account
+
+  # Unused until checkout implementation.
+  #billing: [Payment]! # TODO: What is this?
+
+  "TimeStamp at which the entity was created."
+  createdAt: DateTime!
+
+  # We want to change discounts but keeping this for now
+  # Unused until checkout implementation.
+  # "The total discount amount for the cart"
+  #discount: Float
+
+  # Only necessary until making an order. Order should take from here or from account email for user cart
+  # Unused until checkout implementation.
+  # "The email associated with the cart. For anonymous checkout"
+  #email: Email
+
+  "The items that have been added to the cart."
+  items: [CartItem]!
+
+  # session: Session! # Remove - Moving to sessionless API.
+
+  # Unused until checkout implementation.
+  #shipping: [Shipment]! # TODO: What is this?
+
+  "The shop associated with the cart."
+  shop: Shop!
+
+  # TODO: Is this the total tax? Calculated at runtime, or flattened?
+  # Unused until checkout implementation.
+  # "The total tax associated with the cart."
+  #tax: Float
+
+  # Unused until checkout implementation.
+  #taxRatesByShop: JSONObject # How is this used?
+
+  # Unused until checkout implementation.
+  #taxes: [JSONObject] # TODO: What is this?
+
+  # Undecided if token is necessary.
+  #"Secret token for anonymous carts, a token needed for requests"
+  #token: String
+
+  "TimeStamp at which the entity was last updated."
+  updatedAt: DateTime!
+
+  # Unused until checkout
+  #workflow: Workflow # Needs more consideration
+
+  # Read-only: Carts that don't have an account should be considered anonymous
+  # and should be cleaned up after some time. This should not be set explicitly
+  # on the cart but can be derived and add to the Cart as a read-only
+  # attribute (read, value from a function.) The cart expiration ttl can then be
+  # modified without having to modify cart records.
+  # This value should not be stored in the database.
+  "TimeStamp at which the cart will expire."
+  expiresAt: DateTime!
+}
+
+
+"Products are added to carts as a CartItem."
+type CartItem implements Node {
+  "A unique identifier for the type."
+  _id: ID!
+
+  # cartItemId: String # Remove. This is only used in order, not cart.
+
+  "User defined fields that can be used for any purpose."
+  metafields: [Metafield]
+
+  "Packing information such as item weight, height, length, and depth."
+  parcel: ShippingParcel # Should this be required?
+
+  # Should be product?
+  # Do we need "variant" information here as well?
+  # Do we need to track the catalog item as well? Does the customer need to know about the catalog?
+  "The product that was added in this cart item."
+  product: CatalogProductOrVariant! # TODO: This is the incorrect type. Fix it.
+
+  "The quantity of items that has been added to the cart."
+  quantity: Int!
+
+  # Unused until checkout implementation.
+  #shippingMethod: JSONObject # Any way around the blackbox?
+
+  # QUESTION: This implies that cart items can be from different shops.
+  # Is it possible that certain shops share a cart but other shops are not
+  # included in that sharing? How is that defined? Probably not applicable on
+  # the cart item but at the cart itself.
+  #
+  # TODO: shopId is not currently required but it should be made required to
+  # avoid issues on cart sharing reconfiguration.
+  "The shop associated with this cart item."
+  shop: Shop
+
+  # TODO: What is this? Any way around the blackbox?
+  # Unused until checkout implementation.
+  # taxData: JSONObject
+
+  # QUESTION: Is this calculated at run-time, this read-only?
+  # Unused until checkout implementation.
+  #taxRate: Float
+
+  "The display title of the item in the cart."
+  title: String
+
+  # TODO: Variant metadata (from attribute reflection) is needed on the cart item, but should be defined.
+
+  # What is this? Any way around the blackbox? Does it store info from the
+  # payment transaction?  Perhaps it should not be visible to the customer?
+  # Require special permissions.
+  # TODO: Security/Auth - Customers should not see this!
+  #transaction: JSONObject
+
+  # TODO: What is this? Simply denormalization? Can this attribute be fetched
+  # directly from the product now in GraphQL?
+  type: String
+}
+
+enum CartReconciliationMode {
+  merge
+  keepAccountCart
+  keepAnonymousCart
+}
+
+# Queries
+extend type Query {
+  "Finds a cart by the cart ID."
+  anonymousCartByCartId(cartId: ID!): Cart
+
+  # Access control should ensure that only authenticated users can find their own
+  # cart. Additionally, administrative roles can find carts.
+  # Shop ID is necessary if shops have separate carts but share the same account pool
+  "Find a cart for a given account ID."
+  accountCartByAccountId(accountId: ID!, shopId: ID!): Cart
+}
+
+input CreateCartInput {
+  "Array of items to add to new cart."
+  items: [CartItemInput]!  # NOTE: Don't allow creation of an empty cart
+
+  "ShopId association for the cart."
+  shopId: ID!              # NOTE: We'll require shopId though it's not in current code.
+}
+
+# Input for adding item(s) to a cart.
+# Do we need catalog item information? Maybe do this as part of the "analytics" event tracking.
+input CartItemInput {
+  "??"
+  productId: ID! # NOTE: This must be the variant, or "sellable" product!
+  "??"
+  variantId: ID
+  "Abitrary metadata."
+  metafields: [MetafieldInput]
+  "Quantity of specified product to be added to the cart."
+  quantity: Int!
+  "ShopId from which the product is added."
+  shopId: ID! # NOTE: Should we keep this? Can a product have either multiple ShopIds or no ShopId?
+}
+
+input AddCartItemInput {
+  cartId: ID!,
+  "Array of items to be added to the cart"
+  items: [CartItemInput]!
+}
+
+input RemoveCartItemsInput {
+  cartId: ID!,
+  "Array of items to remove from the cart."
+  cartItemIds: [ID]!
+}
+
+input UpdateCartItemInput {
+  cartItemId: ID!
+  "New absolute value for specified cart item's quantity. Not an incremental value."
+  quantity: Int!
+}
+
+input UpdateCartItemsQuantityInput {
+  cartId: ID!
+  "Array of cart item quantities to update."
+  items: [UpdateCartItemInput]!
+}
+
+extend type Mutation {
+  # Enforce that at least one item is provided so we don't create empty carts.
+  #
+  # IMPORTANT: CartID must be treated as (or more) securely as a session ID. We
+  # need to prevent brute-force cart id collisions.
+  #
+  #   See: https://www.owasp.org/index.php/Session_Management_Cheat_Sheet
+  #
+  #   * ID value must provide at least 64 bits of entropy (if a good PRNG is
+  #     used, this value is estimated to be half the length of the session ID).
+  #   * If a session ID with an entropy of 64 bits is used, it will take an
+  #     attacker at least 292 years to successfully guess a valid session ID,
+  #     assuming the attacker can try 10,000 guesses per second with 100,000
+  #     valid simultaneous sessions available in the web application [2].
+  #
+  "Create a new cart."
+  createCart(input: CreateCartInput!): Cart!
+
+  # TODO: Consider returning the connection for the following mutations to
+  # resolve questions of which type should be returned.
+
+  # Add an item to cart.
+  # If the item already already exists in the cart, then increment quantity.
+  # TODO: Consider returning connection?
+  "Add item(s) to a cart."
+  addCartItems(input: AddCartItemInput!): Cart! # CartItemConnection
+
+  # Once added to cart, items should be referenced by their cart item ID.
+  # Enforce that at least one item is in the list.
+  "Remove item(s) from a cart."
+  removeCartItems(input: RemoveCartItemsInput!): Cart! # CartItemConnection???
+
+  # If cart item input is set to 0, then remove the item.
+  "Update cart item(s) quantity. Use absolute quantity."
+  updateCartItemsQuantity(input: UpdateCartItemsQuantityInput!): Cart! # CartItemConnection
+
+  # Reconcile Cart
+  "Reconcile an anonymous cart with Account cart, if it exists."
+  reconcileCart(anonymousCartId: ID!, mode: CartReconciliationMode): Cart
+}
