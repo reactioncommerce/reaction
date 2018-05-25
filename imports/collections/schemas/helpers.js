@@ -1,7 +1,7 @@
 import Random from "@reactioncommerce/random";
 import { Meteor } from "meteor/meteor";
-import { Reaction } from "/lib/api";
-import { Shops } from "/lib/collections";
+// import { Reaction } from "/lib/api";
+// import { Shops } from "/lib/collections";
 
 /**
  * @name createdAtAutoValue
@@ -45,15 +45,15 @@ export function updatedAtAutoValue() {
  * @example autoValue: shopIdAutoValue
  * @return {String} current shopId
  */
-export function shopIdAutoValue() {
-  // we should always have a shopId
-  if (this.isSet && Meteor.isServer) {
-    return this.value;
-  } else if ((Meteor.isServer && !this.isUpdate) || (Meteor.isClient && this.isInsert)) {
-    return Reaction.getShopId();
-  }
-  return this.unset();
-}
+// export function shopIdAutoValue() {
+//   // we should always have a shopId
+//   if (this.isSet && Meteor.isServer) {
+//     return this.value;
+//   } else if ((Meteor.isServer && !this.isUpdate) || (Meteor.isClient && this.isInsert)) {
+//     return Reaction.getShopId();
+//   }
+//   return this.unset();
+// }
 
 /**
  * @name shopIdAutoValueForCart
@@ -63,21 +63,21 @@ export function shopIdAutoValue() {
  * @example autoValue: shopIdAutoValue
  * @return {String} shopId
  */
-export function shopIdAutoValueForCart() {
-  // we should always have a shopId
-  if (this.isSet && Meteor.isServer) {
-    return this.value;
-  } else if ((Meteor.isServer && !this.isUpdate) || (Meteor.isClient && this.isInsert)) {
-    let shopId = Reaction.getPrimaryShopId();
-    const marketplaceSettings = Reaction.getMarketplaceSettings();
+// export function shopIdAutoValueForCart() {
+//   // we should always have a shopId
+//   if (this.isSet && Meteor.isServer) {
+//     return this.value;
+//   } else if ((Meteor.isServer && !this.isUpdate) || (Meteor.isClient && this.isInsert)) {
+//     let shopId = Reaction.getPrimaryShopId();
+//     const marketplaceSettings = Reaction.getMarketplaceSettings();
 
-    if (marketplaceSettings && marketplaceSettings.public && marketplaceSettings.public.merchantCart === true) {
-      shopId = Reaction.getShopId();
-    }
-    return shopId;
-  }
-  return this.unset();
-}
+//     if (marketplaceSettings && marketplaceSettings.public && marketplaceSettings.public.merchantCart === true) {
+//       shopId = Reaction.getShopId();
+//     }
+//     return shopId;
+//   }
+//   return this.unset();
+// }
 
 /**
  * @name schemaIdAutoValue
@@ -90,8 +90,7 @@ export function shopIdAutoValueForCart() {
 export function schemaIdAutoValue() {
   if (this.isSet && Meteor.isServer) {
     return this.value;
-  } else if ((Meteor.isServer && this.operator !== "$pull") ||
-    (Meteor.isClient && this.isInsert)) {
+  } else if ((Meteor.isServer && this.operator !== "$pull") || (Meteor.isClient && this.isInsert)) {
     return Random.id();
   }
   return this.unset();
@@ -105,29 +104,29 @@ export function schemaIdAutoValue() {
  * @example autoValue: shopDefaultCountry
  * @return {String} country value from default shop
  */
-export function shopDefaultCountry() {
-  try {
-    // Check to see if this is client or server, and the type of update being performed
-    if (this.isSet && Meteor.isServer) {
-      return this.value;
-    } else if ((Meteor.isServer && !this.isUpdate) || (Meteor.isClient && this.isInsert)) {
-      // Find the current shop
-      const shop = Shops.findOne({
-        _id: Reaction.getShopId()
-      });
+// export function shopDefaultCountry() {
+//   try {
+//     // Check to see if this is client or server, and the type of update being performed
+//     if (this.isSet && Meteor.isServer) {
+//       return this.value;
+//     } else if ((Meteor.isServer && !this.isUpdate) || (Meteor.isClient && this.isInsert)) {
+//       // Find the current shop
+//       const shop = Shops.findOne({
+//         _id: Reaction.getShopId()
+//       });
 
-      // Find the current shops primary shipping address
-      if (shop && shop.addressBook) {
-        const defaultShippingAddress = shop.addressBook.find((address) => address.isShippingDefault === true);
+//       // Find the current shops primary shipping address
+//       if (shop && shop.addressBook) {
+//         const defaultShippingAddress = shop.addressBook.find((address) => address.isShippingDefault === true);
 
-        // return the shops country to auto-populate the Country of Origin field in the scheme
-        return defaultShippingAddress.country;
-      }
+//         // return the shops country to auto-populate the Country of Origin field in the scheme
+//         return defaultShippingAddress.country;
+//       }
 
-      return this.value;
-    }
-    return this.unset();
-  } catch (e) {
-    return this.value;
-  }
-}
+//       return this.value;
+//     }
+//     return this.unset();
+//   } catch (e) {
+//     return this.value;
+//   }
+// }
