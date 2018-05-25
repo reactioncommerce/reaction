@@ -12,20 +12,22 @@
  * @namespace Schemas
  */
 
+import "./schemaIndex";
+
 export * from "./accounts";
 export * from "./address";
 export * from "./assets";
 export * from "./catalog";
-export * from "./cart";
+// export * from "./cart";
 export * from "./emails";
-export * from "./inventory";
+// export * from "./inventory";
 export * from "./layouts";
 export * from "./logs";
 export * from "./metafield";
 export * from "./notifications";
-export * from "./orders";
+// export * from "./orders";
 export * from "./payments";
-export * from "./products";
+// export * from "./products";
 export * from "./registry";
 export * from "./revisions";
 export * from "./shipping";
