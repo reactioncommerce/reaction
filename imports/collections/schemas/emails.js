@@ -1,6 +1,4 @@
 import SimpleSchema from "simpl-schema";
-import { check } from "meteor/check";
-import { Tracker } from "meteor/tracker";
 import { registerSchema } from "@reactioncommerce/schemas";
 import { createdAtAutoValue, updatedAtAutoValue } from "./helpers";
 
@@ -54,6 +52,6 @@ export const Emails = new SimpleSchema({
     autoValue: updatedAtAutoValue,
     optional: true
   }
-}, { check, tracker: Tracker });
+});
 
 registerSchema("Emails", Emails);

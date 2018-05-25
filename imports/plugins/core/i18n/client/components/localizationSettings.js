@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Components } from "@reactioncommerce/reaction-components";
-import { Shop as ShopSchema } from "/lib/collections/schemas/shops";
+import { Shop as ShopSchema } from "/lib/collections/schemas";
 
 const PACKAGE_NAME = "reaction-i18n";
 

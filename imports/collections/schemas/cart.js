@@ -1,8 +1,6 @@
 import SimpleSchema from "simpl-schema";
-import { check } from "meteor/check";
-import { Tracker } from "meteor/tracker";
 import { registerSchema } from "@reactioncommerce/schemas";
-import { createdAtAutoValue, shopIdAutoValueForCart, updatedAtAutoValue } from "./helpers";
+import { createdAtAutoValue, updatedAtAutoValue } from "./helpers";
 import { Payment } from "./payments";
 import { Product, ProductVariant } from "./products";
 import { Shipment, ShippingParcel } from "./shipping";
@@ -39,7 +37,6 @@ export const CartItem = new SimpleSchema({
   },
   "shopId": {
     type: String,
-    autoValue: shopIdAutoValueForCart,
     index: 1,
     label: "Cart Item shopId",
     optional: true
@@ -98,7 +95,7 @@ export const CartItem = new SimpleSchema({
     optional: true,
     blackbox: true // @todo Revert this to schema at some point
   }
-}, { check, tracker: Tracker });
+});
 
 registerSchema("CartItem", CartItem);
 
@@ -117,7 +114,7 @@ export const CartItems = new SimpleSchema({
   "items.$": {
     type: CartItem
   }
-}, { check, tracker: Tracker });
+});
 
 registerSchema("CartItems", CartItems);
 
@@ -148,7 +145,6 @@ export const Cart = new SimpleSchema({
   },
   "shopId": {
     type: String,
-    autoValue: shopIdAutoValueForCart,
     index: 1,
     label: "Cart ShopId"
   },
@@ -241,6 +237,6 @@ export const Cart = new SimpleSchema({
     autoValue: updatedAtAutoValue,
     optional: true
   }
-}, { check, tracker: Tracker });
+});
 
 registerSchema("Cart", Cart);

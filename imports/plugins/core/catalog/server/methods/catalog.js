@@ -319,6 +319,7 @@ function flushQuantity(id) {
 function createProduct(props = null) {
   const _id = Products.insert(
     {
+      shopId: Reaction.getShopId(),
       type: "simple",
       ...props
     },
@@ -513,6 +514,7 @@ Meteor.methods({
     const assembledVariant = Object.assign(newVariant || {}, {
       _id: newVariantId,
       ancestors,
+      shopId: product.shopId,
       type: "variant"
     });
 

@@ -1,8 +1,6 @@
 import SimpleSchema from "simpl-schema";
-import { check } from "meteor/check";
-import { Tracker } from "meteor/tracker";
 import { registerSchema } from "@reactioncommerce/schemas";
-import { createdAtAutoValue, shopIdAutoValue, updatedAtAutoValue } from "./helpers";
+import { createdAtAutoValue, updatedAtAutoValue } from "./helpers";
 import { Document, Notes } from "./orders";
 import { Metafield } from "./metafield";
 import { Workflow } from "./workflow";
@@ -31,7 +29,6 @@ export const Inventory = new SimpleSchema({
   },
   "shopId": {
     type: String,
-    autoValue: shopIdAutoValue,
     index: 1,
     label: "Inventory ShopId"
   },
@@ -89,6 +86,6 @@ export const Inventory = new SimpleSchema({
     autoValue: updatedAtAutoValue,
     optional: true
   }
-}, { check, tracker: Tracker });
+});
 
 registerSchema("Inventory", Inventory);

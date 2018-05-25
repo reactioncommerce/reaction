@@ -41,7 +41,7 @@ describe("Group test", function () {
     shop = Factory.create("shop");
     user = getUser();
     // make the same user on Meteor.users available on Accounts
-    Accounts.upsert({ _id: user._id }, { $set: { userId: user._id } });
+    Accounts.upsert({ _id: user._id }, { $set: { shopId: shop._id, userId: user._id } });
   });
 
   afterEach(function () {
