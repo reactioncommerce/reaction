@@ -9,9 +9,9 @@ const getMockDoc = (schema, prefix, addId) => {
   const mockDoc = {};
   const model = schema._schema;
 
-  const seed = Array.prototype.reduce.call(docPrefix, (sum, char) => sum + char.charCodeAt(), 0);
-
-  faker.seed(seed);
+  // Not sure how the seed feature works with faker.js but with this set I would get the same _id for every mock that was created
+  // const seed = Array.prototype.reduce.call(docPrefix, (sum, char) => sum + char.charCodeAt(), 0);
+  // faker.seed(seed);
 
   if (process.env.NODE_ENV !== "jesttest" || !schema) {
     return mockDoc;
