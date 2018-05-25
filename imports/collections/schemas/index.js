@@ -29,7 +29,6 @@ export * from "./notifications";
 export * from "./payments";
 // export * from "./products";
 export * from "./registry";
-export * from "./revisions";
 export * from "./shipping";
 export * from "./shops";
 export * from "./groups";

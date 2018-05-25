@@ -80,6 +80,10 @@ export const Tag = new SimpleSchema({
     autoValue() {
       return new Date();
     }
+  },
+  "heroMediaUrl": {
+    type: String,
+    optional: true
   }
 });
 

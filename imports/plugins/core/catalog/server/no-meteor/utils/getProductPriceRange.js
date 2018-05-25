@@ -1,4 +1,4 @@
-import getPriceRange from "/imports/plugins/core/catalog/server/no-meteor/utils/getPriceRange";
+import getPriceRange from "./getPriceRange";
 import getVariants from "./getVariants";
 import getVariantPriceRange from "./getVariantPriceRange";
 
