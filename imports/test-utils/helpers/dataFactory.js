@@ -1,5 +1,3 @@
-// import { getMockDoc } from "simpl-schema-mockdoc";
-
 import _ from "lodash";
 import faker from "faker";
 import SimpleSchema from "simpl-schema";
@@ -11,19 +9,11 @@ const getMockDoc = (schema, prefix, addId) => {
   const mockDoc = {};
   const model = schema._schema;
 
-  // const seed = _.chain(docPrefix)
-  //   .split("")
-  //   .map((char) => char.charCodeAt())
-  //   .sum()
-  //       .value();
-
-  // const seed = _.flow(_.split(""), _.map((char) => char.charCodeAt()), _.sum())(docPrefix);
-
-  const seed = Array.prototype.reduce.cal(docPrefix, (sum, char) => sum + char.charCodeAt(), 0);
+  const seed = Array.prototype.reduce.call(docPrefix, (sum, char) => sum + char.charCodeAt(), 0);
 
   faker.seed(seed);
 
-  if (process.env.NODE_ENV !== "test" || !schema) {
+  if (process.env.NODE_ENV !== "jesttest" || !schema) {
     return mockDoc;
   }
 
@@ -143,7 +133,7 @@ const getMockDoc = (schema, prefix, addId) => {
 };
 
 const clearMockValues = (schema) => {
-  if (process.env.NODE_ENV === "test") {
+  if (process.env.NODE_ENV === "jesttest") {
     return schema;
   }
 
@@ -172,8 +162,6 @@ export function createFactoryForSchema(propName, schema) {
   if (Factory.hasOwnProperty(propName)) {
     throw new Error(`Factory already has a "${propName}" property`);
   }
-
-  console.log("factory created?", propName);
 
   Factory[propName] = {
     makeOne(props) {
