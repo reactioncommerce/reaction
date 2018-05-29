@@ -13,10 +13,6 @@ const getMockDoc = (schema, prefix, addId) => {
   // const seed = Array.prototype.reduce.call(docPrefix, (sum, char) => sum + char.charCodeAt(), 0);
   // faker.seed(seed);
 
-  if (process.env.NODE_ENV !== "jesttest" || !schema) {
-    return mockDoc;
-  }
-
   Object.keys(model).forEach((key) => {
     let fieldValue = null;
 
@@ -164,13 +160,20 @@ export function createFactoryForSchema(propName, schema) {
   }
 
   Factory[propName] = {
-    makeOne(props) {
+    makeOne(props, index) {
       const doc = getMockDoc(schema, "mock", true);
-      Object.assign(doc, props);
+      Object.keys(props).forEach((key) => {
+        const value = props[key];
+        if (typeof value === "function") {
+          doc[key] = value(index);
+        } else {
+          doc[key] = value;
+        }
+      });
       return doc;
     },
     makeMany(length, props) {
-      return Array.from({ length }).map(() => this.makeOne(props));
+      return Array.from({ length }).map((value, index) => this.makeOne(props, index));
     }
   };
 }
