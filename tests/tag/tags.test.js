@@ -13,7 +13,7 @@ for (let i = 100; i < 155; i += 1) {
   const tagPosition = i;
   tags.push({ _id: tagId, name: tagName, shopId: internalShopId, position: tagPosition });
 }
-const mockTags = Factory.Tag.makeMany(55, { shopId: internalShopId });
+const mockTags = Factory.Tag.makeMany(55, { shopId: internalShopId, _id: (i) => (i + 100).toString(), position: (i) => i + 100 });
 
 const tagsQuery = `($shopId: ID!, $after: ConnectionCursor, $before: ConnectionCursor, $first: ConnectionLimitInt, $last: ConnectionLimitInt) {
   tags(shopId: $shopId, after: $after, before: $before, first: $first, last: $last) {
@@ -134,6 +134,7 @@ test("works correctly when last goes before start", async () => {
 
 test("testing data factory", () => {
   const spec = true;
+
   console.log("factory tags", mockTags.length);
   expect(spec).toBe(false);
 });
