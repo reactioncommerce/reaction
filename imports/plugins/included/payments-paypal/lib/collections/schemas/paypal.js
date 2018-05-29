@@ -2,7 +2,7 @@ import SimpleSchema from "simpl-schema";
 import { check } from "meteor/check";
 import { Tracker } from "meteor/tracker";
 import { PackageConfig } from "/lib/collections/schemas/registry";
-import { registerSchema } from "@reactioncommerce/reaction-collections";
+import { registerSchema } from "@reactioncommerce/schemas";
 
 export const PaypalPackageConfig = PackageConfig.clone().extend({
   // Remove blackbox: true from settings obj
@@ -17,6 +17,10 @@ export const PaypalPackageConfig = PackageConfig.clone().extend({
     label: "Capture at time of Auth",
     defaultValue: false
   },
+  "settings.express": {
+    type: Object,
+    defaultValue: {}
+  },
   "settings.express.support": {
     type: Array,
     label: "Payment provider supported methods"
@@ -24,6 +28,10 @@ export const PaypalPackageConfig = PackageConfig.clone().extend({
   "settings.express.support.$": {
     type: String,
     allowedValues: ["Authorize", "De-authorize", "Capture", "Refund"]
+  },
+  "settings.payflow": {
+    type: Object,
+    defaultValue: {}
   },
   "settings.payflow.support": {
     type: Array,

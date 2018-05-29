@@ -1086,9 +1086,7 @@ Meteor.methods({
     if (existingTag) {
       const productCount = Products.find({
         _id: productId,
-        hashtags: {
-          $in: [existingTag._id]
-        }
+        hashtags: existingTag._id
       }).count();
       if (productCount > 0) {
         throw new Meteor.Error("server-error", "Existing Tag, Update Denied");

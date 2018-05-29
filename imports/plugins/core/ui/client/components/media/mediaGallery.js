@@ -112,7 +112,7 @@ class MediaGallery extends Component {
   }
 
   renderFeaturedMedia() {
-    const { editable, onMouseEnterMedia, onMoveMedia, onRemoveMedia } = this.props;
+    const { editable, onMouseEnterMedia, onMouseLeaveMedia, onMoveMedia, onRemoveMedia } = this.props;
     const { width, height } = this.state.dimensions;
 
     const media = this.featuredMedia;
@@ -138,6 +138,7 @@ class MediaGallery extends Component {
               mediaHeight={height}
               mediaWidth={width}
               onMouseEnter={onMouseEnterMedia}
+              onMouseLeave={onMouseLeaveMedia}
               onMove={onMoveMedia}
               onRemoveMedia={onRemoveMedia}
               source={this.featuredMedia}
@@ -150,7 +151,7 @@ class MediaGallery extends Component {
   }
 
   renderMediaThumbnails() {
-    const { editable, media: mediaList, onMouseEnterMedia, onMoveMedia, onRemoveMedia } = this.props;
+    const { editable, media: mediaList, onMouseEnterMedia, onMouseLeaveMedia, onMoveMedia, onRemoveMedia } = this.props;
 
     return (mediaList || []).map((media, index) => (
       <Components.MediaItem
@@ -158,6 +159,7 @@ class MediaGallery extends Component {
         key={media._id}
         index={index} // index prop is required for SortableItem HOC to work
         onMouseEnter={onMouseEnterMedia}
+        onMouseLeave={onMouseLeaveMedia}
         onMove={onMoveMedia}
         onRemoveMedia={onRemoveMedia}
         size="small"

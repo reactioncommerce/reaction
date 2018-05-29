@@ -298,36 +298,36 @@ describe("Publication", function () {
         });
       });
 
-      it("should return a product based on a regex", function (done) {
+      it("should not return a product if handle does not match exactly", function (done) {
         sandbox.stub(Reaction, "getShopId", () => shopId);
 
         const collector = new PublicationCollector({ userId: Random.id() });
 
         collector.collect("Product", "shopkins", (collections) => {
           const products = collections.Products;
-          const data = products[0];
-
-          expect(data.title).to.equal("Shopkins - Peachy");
-
+          if (products) {
+            expect(products.length).to.equal(0);
+          } else {
+            expect(products).to.be.undefined;
+          }
           done();
         });
       });
 
-      it("should not return a product based on a regex if it isn't visible", function (done) {
+      it("should not return a product based on exact handle match if it isn't visible", function (done) {
         sandbox.stub(Reaction, "getShopId", () => shopId);
         sandbox.stub(Roles, "userIsInRole", () => false);
 
         const collector = new PublicationCollector({ userId: Random.id() });
         let isDone = false;
 
-        collector.collect("Product", "my", (collections) => {
+        collector.collect("Product", "my-little-pony", (collections) => {
           const products = collections.Products;
           if (products) {
             expect(products.length).to.equal(0);
           } else {
             expect(products).to.be.undefined;
           }
-
 
           if (!isDone) {
             isDone = true;
@@ -336,7 +336,7 @@ describe("Publication", function () {
         });
       });
 
-      it("should return a product based on a regex to admin even if it isn't visible", function (done) {
+      it("should return a product to admin based on a exact handle match even if it isn't visible", function (done) {
         sandbox.stub(Reaction, "getShopId", () => shopId);
         sandbox.stub(Roles, "userIsInRole", () => true);
         sandbox.stub(Reaction, "hasPermission", () => true);
@@ -344,7 +344,7 @@ describe("Publication", function () {
         const collector = new PublicationCollector({ userId: Random.id() });
         let isDone = false;
 
-        collector.collect("Product", "my", (collections) => {
+        collector.collect("Product", "my-little-pony", (collections) => {
           const products = collections.Products;
           const data = products[0];
 

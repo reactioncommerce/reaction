@@ -2,7 +2,7 @@ import SimpleSchema from "simpl-schema";
 import { check } from "meteor/check";
 import { Tracker } from "meteor/tracker";
 import { shopIdAutoValue } from "/lib/collections/schemas/helpers";
-import { registerSchema } from "@reactioncommerce/reaction-collections";
+import { registerSchema } from "@reactioncommerce/schemas";
 
 /**
 * Taxes Schema

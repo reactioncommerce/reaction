@@ -2,8 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import classnames from "classnames";
 import accounting from "accounting-js";
-import { registerComponent } from "@reactioncommerce/reaction-components";
-
+import { Components, registerComponent } from "@reactioncommerce/reaction-components";
 
 class NumericInput extends Component {
   constructor(props) {
@@ -71,7 +70,7 @@ class NumericInput extends Component {
    * @param  {Event} event Event object
    * @return {void}
    */
-  onBlur = () => {
+  onBlur = (event) => {
     let { value } = this.state;
     if (value > this.props.maxValue) {
       value = this.props.maxValue;
@@ -80,6 +79,27 @@ class NumericInput extends Component {
       isEditing: false,
       value
     });
+    if (this.props.onBlur) {
+      const numberValue = this.unformat(value);
+      this.props.onBlur(event, numberValue, this.props.name);
+    }
+  }
+
+  /**
+   * onKeyDown
+   * @summary set the state when the value of the input is changed
+   * @param  {Event} event Event object
+   * @return {void}
+   */
+  onKeyDown(event) {
+    if (this.props.onKeyDown) {
+      this.props.onKeyDown(event, this.props.name);
+    }
+
+    if (this.props.onReturnKeyDown && event.keyCode === 13) {
+      const numberValue = this.unformat(event.target.value);
+      this.props.onReturnKeyDown(event, numberValue, this.props.name);
+    }
   }
 
   /**
@@ -124,15 +144,33 @@ class NumericInput extends Component {
 
     if (this.props.onChange) {
       const numberValue = this.unformat(value);
-      this.props.onChange(event, { value, numberValue });
+      this.props.onChange(event, numberValue, this.props.name);
     }
   }
 
   /**
-   * render
-   * @return {ReactElement} markup
+   * renderLabel
+   * @summary Render the label for the field if one is provided in props
+   * @return {ReactNode|null} react node or null
    */
-  render() {
+  renderLabel() {
+    if (this.props.label) {
+      return (
+        <label htmlFor={this.props.id}>
+          <Components.Translation defaultValue={this.props.label} i18nKey={this.props.i18nKeyLabel} />
+        </label>
+      );
+    }
+
+    return null;
+  }
+
+  /**
+   * renderField
+   * @summary Render input box or field
+   * @return {JSX} jsx template
+   */
+  renderField() {
     const { classNames } = this.props;
 
     if (this.props.isEditing === false) {
@@ -148,22 +186,34 @@ class NumericInput extends Component {
         </span>
       );
     }
-
     const fieldClassName = classnames({
       "form-control": true, // eslint-disable-line: quote-props
       ...(classNames.input || {})
     });
-
     return (
-      <div className="rui control numeric-input">
+      <div className="rui control numeric-input-field">
         <input
           className={fieldClassName}
           disabled={this.props.disabled}
           onFocus={this.onFocus}
           onBlur={this.onBlur}
+          ref="input"
           onChange={this.handleChange}
           value={this.displayValue}
         />
+      </div>
+    );
+  }
+
+  /**
+   * render
+   * @return {ReactElement} markup
+   */
+  render() {
+    return (
+      <div className="numeric-input">
+        {this.renderLabel()}
+        {this.renderField()}
       </div>
     );
   }
@@ -179,11 +229,18 @@ NumericInput.propTypes = {
   classNames: PropTypes.shape({}),
   disabled: PropTypes.bool,
   format: PropTypes.shape({
-    decimal: PropTypes.number
+    decimal: PropTypes.string
   }),
+  i18nKeyLabel: PropTypes.string,
+  id: PropTypes.string,
   isEditing: PropTypes.bool,
+  label: PropTypes.string,
   maxValue: PropTypes.number,
+  name: PropTypes.string,
+  onBlur: PropTypes.func,
   onChange: PropTypes.func,
+  onKeyDown: PropTypes.func,
+  onReturnKeyDown: PropTypes.func,
   value: PropTypes.number
 };
 

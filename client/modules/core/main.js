@@ -376,7 +376,8 @@ export default {
     if (Meteor.user()) {
       // "reaction" package settings should be synced to
       // the Accounts collection.
-      if (packageName in ["reaction"]) {
+      const syncedPackages = ["reaction"];
+      if (syncedPackages.indexOf(packageName) > -1) {
         Accounts.update(Meteor.userId(), {
           $set: {
             [`profile.preferences.${packageName}.${preference}`]: value
