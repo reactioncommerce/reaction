@@ -19,7 +19,7 @@
     "url": "https://github.com/reactioncommerce/reaction/issues"
   },
   "dependencies": {
-    "@babel/runtime": "7.0.0-beta.46",
+    "@babel/runtime": "7.0.0-beta.49",
     "@reactioncommerce/file-collections": "0.5.0",
     "@reactioncommerce/file-collections-sa-gridfs": "0.0.2",
     "@reactioncommerce/hooks": "1.0.2",
@@ -141,13 +141,13 @@
     "velocity-react": "^1.3.3"
   },
   "devDependencies": {
-    "@babel/cli": "7.0.0-beta.46",
-    "@babel/core": "7.0.0-beta.46",
-    "@babel/node": "7.0.0-beta.46",
-    "@babel/preset-env": "7.0.0-beta.46",
-    "@babel/preset-es2015": "7.0.0-beta.46",
-    "@babel/preset-react": "7.0.0-beta.46",
-    "@babel/preset-stage-2": "7.0.0-beta.46",
+    "@babel/cli": "7.0.0-beta.49",
+    "@babel/core": "7.0.0-beta.49",
+    "@babel/node": "7.0.0-beta.49",
+    "@babel/preset-env": "7.0.0-beta.49",
+    "@babel/preset-es2015": "7.0.0-beta.49",
+    "@babel/preset-react": "7.0.0-beta.49",
+    "@babel/preset-stage-2": "7.0.0-beta.49",
     "@reactioncommerce/eslint-config": "^1.0.1",
     "babel-core": "^7.0.0-bridge.0",
     "babel-eslint": "8.2.3",
@@ -158,7 +158,7 @@
     "babel-plugin-module-resolver": "3.1.1",
     "babel-plugin-rewire-exports": "0.3.0",
     "babel-plugin-transform-class-properties": "6.24.1",
-    "babel-preset-meteor": "7.0.0-beta.46-1",
+    "babel-preset-meteor": "7.0.0-beta.49",
     "chai": "^4.1.2",
     "enzyme": "^3.3.0",
     "enzyme-to-json": "^3.3.1",
