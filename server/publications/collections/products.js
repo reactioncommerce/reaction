@@ -302,14 +302,6 @@ Meteor.publish("Products", function (productScrollLimit = 24, productFilters, so
   check(sort, Match.OneOf(undefined, Object));
   check(editMode, Match.Maybe(Boolean));
 
-  // // Active shop
-  // const shopId = Reaction.getShopId();
-  // const primaryShopId = Reaction.getPrimaryShopId();
-
-  // // Don't publish if we're missing an active or primary shopId
-  // if (!shopId || !primaryShopId) {
-  //   return this.ready();
-  // }
 
   const selector = filterProducts(productFilters);
 

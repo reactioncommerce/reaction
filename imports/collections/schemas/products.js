@@ -1,11 +1,8 @@
-import Random from "@reactioncommerce/random";
 import SimpleSchema from "simpl-schema";
-import { check } from "meteor/check";
 import { Meteor } from "meteor/meteor";
-import { Tracker } from "meteor/tracker";
 import { registerSchema } from "@reactioncommerce/schemas";
-import { ReactionProduct, getSlug } from "/lib/api";
-import { createdAtAutoValue, shopIdAutoValue, shopDefaultCountry, updatedAtAutoValue } from "./helpers";
+import { ReactionProduct } from "/lib/api";
+import { createdAtAutoValue, updatedAtAutoValue } from "./helpers";
 import { Event } from "./event";
 import { Metafield } from "./metafield";
 import { ShippingParcel } from "./shipping";
@@ -45,7 +42,7 @@ export const VariantMedia = new SimpleSchema({
     type: Date,
     autoValue: createdAtAutoValue
   }
-}, { check, tracker: Tracker });
+});
 
 registerSchema("VariantMedia", VariantMedia);
 
@@ -82,7 +79,7 @@ export const ProductPosition = new SimpleSchema({
   updatedAt: {
     type: Date
   }
-}, { check, tracker: Tracker });
+});
 
 registerSchema("ProductPosition", ProductPosition);
 
@@ -281,7 +278,6 @@ export const ProductVariant = new SimpleSchema({
   },
   "shopId": {
     type: String,
-    autoValue: shopIdAutoValue,
     index: 1,
     label: "Variant ShopId"
   },
@@ -358,10 +354,9 @@ export const ProductVariant = new SimpleSchema({
   },
   "originCountry": {
     type: String,
-    optional: true,
-    autoValue: shopDefaultCountry
+    optional: true
   }
-}, { check, tracker: Tracker });
+});
 
 registerSchema("ProductVariant", ProductVariant);
 
@@ -388,7 +383,7 @@ export const PriceRange = new SimpleSchema({
     defaultValue: 0,
     optional: true
   }
-}, { check, tracker: Tracker });
+});
 
 registerSchema("PriceRange", PriceRange);
 
@@ -445,7 +440,6 @@ export const Product = new SimpleSchema({
   },
   "shopId": {
     type: String,
-    autoValue: shopIdAutoValue,
     index: 1,
     label: "Product ShopId"
   },
@@ -468,8 +462,7 @@ export const Product = new SimpleSchema({
   },
   "originCountry": {
     type: String,
-    optional: true,
-    autoValue: shopDefaultCountry
+    optional: true
   },
   "type": {
     label: "Type",
@@ -557,23 +550,7 @@ export const Product = new SimpleSchema({
   "handle": {
     type: String,
     optional: true,
-    index: 1,
-    autoValue() {
-      let slug = getSlug(this.value);
-
-      if (!slug && this.siblingField("title").value) {
-        slug = getSlug(this.siblingField("title").value);
-      } else if (!slug) {
-        slug = this.siblingField("_id").value || Random.id();
-      }
-      if (this.isInsert) {
-        return slug;
-      } else if (this.isUpsert) {
-        return {
-          $setOnInsert: slug
-        };
-      }
-    }
+    index: 1
   },
   "changedHandleWas": {
     type: String,
@@ -617,6 +594,6 @@ export const Product = new SimpleSchema({
     optional: true,
     defaultValue: {}
   }
-}, { check, tracker: Tracker });
+});
 
 registerSchema("Product", Product);

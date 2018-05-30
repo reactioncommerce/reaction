@@ -1,6 +1,4 @@
 import SimpleSchema from "simpl-schema";
-import { check } from "meteor/check";
-import { Tracker } from "meteor/tracker";
 import { registerSchema } from "@reactioncommerce/schemas";
 import { createdAtAutoValue, schemaIdAutoValue } from "./helpers";
 import { Address } from "./address";
@@ -43,7 +41,7 @@ export const PaymentItem = new SimpleSchema({
   variantId: {
     type: String
   }
-}, { check, tracker: Tracker });
+});
 
 registerSchema("PaymentItem", PaymentItem);
 
@@ -154,7 +152,7 @@ export const PaymentMethod = new SimpleSchema({
     type: String,
     optional: true
   }
-}, { check, tracker: Tracker });
+});
 
 registerSchema("PaymentMethod", PaymentMethod);
 
@@ -202,7 +200,7 @@ export const Invoice = new SimpleSchema({
   total: {
     type: Number
   }
-}, { check, tracker: Tracker });
+});
 
 registerSchema("Invoice", Invoice);
 
@@ -223,7 +221,7 @@ export const CurrencyExchangeRate = new SimpleSchema({
     type: Number,
     optional: true
   }
-}, { check, tracker: Tracker });
+});
 
 registerSchema("CurrencyExchangeRate", CurrencyExchangeRate);
 
@@ -266,7 +264,7 @@ export const Payment = new SimpleSchema({
     type: String,
     optional: true
   }
-}, { check, tracker: Tracker });
+});
 
 registerSchema("Payment", Payment);
 
@@ -298,6 +296,6 @@ export const Refund = new SimpleSchema({
     optional: true,
     blackbox: true
   }
-}, { check, tracker: Tracker });
+});
 
 registerSchema("Refund", Refund);

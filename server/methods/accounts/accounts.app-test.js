@@ -584,7 +584,7 @@ describe("Account Meteor method ", function () {
 
       const newUser = Factory.create("user");
       // create Account to go with new user
-      const newAccount = Factory.create("account", { _id: newUser.id, shopId: primaryShop.id });
+      const newAccount = Factory.create("account", { _id: newUser.id, shopId: primaryShop._id });
       // to resolve an issue in the onCreateUser hook, stub user creation
       sandbox.stub(MeteorAccount, "createUser", () => newUser._id);
       sandbox.stub(Accounts, "findOne", () => newAccount)
