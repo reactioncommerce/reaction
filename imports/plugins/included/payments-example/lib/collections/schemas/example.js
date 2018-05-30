@@ -4,6 +4,11 @@ import { Tracker } from "meteor/tracker";
 import { PackageConfig } from "/lib/collections/schemas/registry";
 import { registerSchema } from "@reactioncommerce/schemas";
 
+/**
+ * @name ExamplePackageConfig
+ * @memberof Schemas
+ * @type {SimpleSchema}
+ */
 export const ExamplePackageConfig = PackageConfig.clone().extend({
   // Remove blackbox: true from settings obj
   "settings": {
@@ -25,6 +30,12 @@ export const ExamplePackageConfig = PackageConfig.clone().extend({
 
 registerSchema("ExamplePackageConfig", ExamplePackageConfig);
 
+/**
+ * @name ExamplePayment
+ * @memberof Schemas
+ * @type {SimpleSchema}
+ * @summary ExamplePayment schema
+ */
 export const ExamplePayment = new SimpleSchema({
   payerName: {
     type: String,

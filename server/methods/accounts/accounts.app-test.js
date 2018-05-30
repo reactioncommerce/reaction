@@ -1,10 +1,10 @@
 /* eslint dot-notation: 0 */
 /* eslint prefer-arrow-callback:0 */
 import _ from "lodash";
+import Random from "@reactioncommerce/random";
 import { Meteor } from "meteor/meteor";
 import { Factory } from "meteor/dburles:factory";
 import { check, Match } from "meteor/check";
-import { Random } from "meteor/random";
 import { Accounts as MeteorAccount } from "meteor/accounts-base";
 import { expect } from "meteor/practicalmeteor:chai";
 import { sinon } from "meteor/practicalmeteor:sinon";
@@ -572,6 +572,31 @@ describe("Account Meteor method ", function () {
         })).to.not.throw(Meteor.Error, /Access denied/);
 
       return done();
+    });
+
+    it("creates a shop with the data provided", function () {
+      const primaryShop = getShop();
+      const name = Random.id();
+      const shopData = { name };
+
+      sandbox.stub(Reaction, "hasPermission", () => true);
+      sandbox.stub(Reaction, "getPrimaryShop", () => primaryShop);
+
+      const newUser = Factory.create("user");
+      // create Account to go with new user
+      const newAccount = Factory.create("account", { _id: newUser.id, shopId: primaryShop.id });
+      // to resolve an issue in the onCreateUser hook, stub user creation
+      sandbox.stub(MeteorAccount, "createUser", () => newUser._id);
+      sandbox.stub(Accounts, "findOne", () => newAccount)
+        .withArgs({ id: newUser._id });
+
+      Meteor.call("accounts/inviteShopOwner", {
+        email: "custom1@email.co",
+        name: "custom name"
+      }, shopData);
+
+      const newShopCount = Shops.find({ name }).count();
+      expect(newShopCount).to.equal(1);
     });
   });
 });

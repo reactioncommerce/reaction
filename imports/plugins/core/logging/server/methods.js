@@ -6,13 +6,13 @@ import { Reaction } from "/server/api";
 
 /**
  *
- * @namespace Methods/Logging
+ * @namespace Logging/Methods
  */
 
 /**
  * @name writeToLog
  * @method
- * @memberof Methods/Logging
+ * @memberof Logging/Methods
  * @summary Writes a log entry into log
  * @param  {String} logType Type
  * @param  {String} logLevel Level
@@ -38,7 +38,7 @@ export function writeToLog(logType, logLevel, logData, source = "client") {
 /**
  * @name logging/logError
  * @method
- * @memberof Methods/Logging
+ * @memberof Logging/Methods
  * @param  {String} logType Type
  * @param  {Object} logData Data
  * @return {null}
@@ -54,7 +54,7 @@ function logError(logType, logData) {
 /**
  * @name logging/logWarning
  * @method
- * @memberof Methods/Logging
+ * @memberof Logging/Methods
  * @param  {String} logType Type
  * @param  {Object} logData Data
  * @return {null}

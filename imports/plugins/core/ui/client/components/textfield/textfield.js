@@ -13,7 +13,7 @@ class TextField extends Component {
    */
   get value() {
     // if the props.value is not a number
-    // return ether the value or and empty string
+    // return either the value or and empty string
     if (isNaN(this.props.value)) {
       return this.props.value || "";
     }
@@ -56,6 +56,17 @@ class TextField extends Component {
     return undefined;
   }
 
+  getEventValue(event) {
+    if (this.props.type === "number") {
+      try {
+        return Number(event.target.value);
+      } catch (err) {
+        return event.target.value;
+      }
+    }
+    return event.target.value;
+  }
+
   /**
    * onValueChange
    * @summary set the state when the value of the input is changed
@@ -64,7 +75,7 @@ class TextField extends Component {
    */
   onChange = (event) => {
     if (this.props.onChange) {
-      this.props.onChange(event, event.target.value, this.props.name);
+      this.props.onChange(event, this.getEventValue(event), this.props.name);
     }
   }
 
@@ -76,7 +87,7 @@ class TextField extends Component {
    */
   onBlur = (event) => {
     if (this.props.onBlur) {
-      this.props.onBlur(event, event.target.value, this.props.name);
+      this.props.onBlur(event, this.getEventValue(event), this.props.name);
     }
   }
 
@@ -88,7 +99,7 @@ class TextField extends Component {
    */
   onFocus = (event) => {
     if (this.props.onFocus) {
-      this.props.onFocus(event, event.target.value, this.props.name);
+      this.props.onFocus(event, this.getEventValue(event), this.props.name);
     }
   }
 

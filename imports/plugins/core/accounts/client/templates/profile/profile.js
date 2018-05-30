@@ -7,6 +7,7 @@ import { Components } from "@reactioncommerce/reaction-components";
 
 /**
  * @method isOwnerOfProfile
+ * @memberof Accounts
  * @summary checks whether or not the user viewing this profile is also
  * its owner.
  * @since 1.5.0
@@ -21,6 +22,7 @@ function isOwnerOfProfile() {
 
 /**
  * @method getTargetAccount
+ * @memberof Accounts
  * @summary gets the account of the userId in the route, or the current user.
  * @since 1.5.0
  * @return {Object} - the account of the identified user.
@@ -32,9 +34,6 @@ function getTargetAccount() {
   return account;
 }
 
-/**
- * onCreated: Account Profile View
- */
 Template.accountProfile.onCreated(() => {
   const template = Template.instance();
 
@@ -47,15 +46,13 @@ Template.accountProfile.onCreated(() => {
   Reaction.hideActionView();
 });
 
-/**
- * Helpers: Account Profile View
- */
 Template.accountProfile.helpers({
   /**
    * @method doesUserExist
    * @summary confirms that a given userId belongs to an existing user.
    * @since 1.5.0
    * @return {Boolean} - whether or not a user with a given ID exists.
+   * @ignore
    */
   doesUserExist() {
     const targetUserId = Reaction.Router.getQueryParam("userId");
@@ -73,8 +70,8 @@ Template.accountProfile.helpers({
    * @summary checks whether or not the user viewing this profile is also
    * its owner.
    * @since 1.5.0
-   * @return {Boolean} - whether or not the current user is also this
-   * profile's owner.
+   * @return {Boolean} - whether or not the current user is also this profile's owner.
+   * @ignore
    */
   isOwnerOfProfile() {
     return isOwnerOfProfile();
@@ -85,6 +82,7 @@ Template.accountProfile.helpers({
    * @summary returns a component for updating a user's email.
    * @since 1.5.0
    * @return {Object} - contains the component for updating a user's email.
+   * @ignore
    */
   UpdateEmail() {
     return {
@@ -97,6 +95,7 @@ Template.accountProfile.helpers({
    * @summary returns a component that displays a user's avatar.
    * @since 1.5.0
    * @return {Object} - contains the component that displays a user's avatar.
+   * @ignore
    */
   ReactionAvatar() {
     const account = Collections.Accounts.findOne({ _id: Meteor.userId() });
@@ -119,6 +118,7 @@ Template.accountProfile.helpers({
    * @summary returns a component for updating a user's address.
    * @since 2.0.0
    * @return {Object} - contains the component for updating a user's address.
+   * @ignore
    */
   AddressBook() {
     return {
@@ -130,8 +130,8 @@ Template.accountProfile.helpers({
    * @method userHasPassword
    * @summary checks whether a user has set a password for his/her account.
    * @since 1.5.0
-   * @return {Boolean} - returns true if the current user has a password
-   * and false if otherwise.
+   * @return {Boolean} - returns true if the current user has a password and false if otherwise.
+   * @ignore
    */
   userHasPassword() {
     return Template.instance().userHasPassword.get();
@@ -142,6 +142,7 @@ Template.accountProfile.helpers({
    * @summary returns a user's order history, up to the 25 most recent ones.
    * @since 1.5.0
    * @return {Array|null} - an array of a user's orders.
+   * @ignore
    */
   userOrders() {
     const targetUserId = Reaction.Router.getQueryParam("userId") || Meteor.userId();
@@ -163,6 +164,7 @@ Template.accountProfile.helpers({
    * @summary returns the name of a user.
    * @since 1.5.0
    * @return {String} - the name of a given user.
+   * @ignore
    */
   displayName() {
     if (Reaction.Subscriptions && Reaction.Subscriptions.Account && Reaction.Subscriptions.Account.ready()) {
@@ -189,6 +191,7 @@ Template.accountProfile.helpers({
    * @summary returns a user's email.
    * @since 1.5.0
    * @return {String} - the email of a given user.
+   * @ignore
    */
   displayEmail() {
     if (Reaction.Subscriptions && Reaction.Subscriptions.Account && Reaction.Subscriptions.Account.ready()) {
@@ -206,8 +209,8 @@ Template.accountProfile.helpers({
    * @summary determines whether or not to show the button for signing up
    * as a merchant/seller.
    * @since 1.5.0
-   * @return {Boolean} - true if the merchant signup button is to be shown,
-   * and false if otherwise.
+   * @return {Boolean} - true if the merchant signup button is to be shown, and false if otherwise.
+   * @ignore
    */
   showMerchantSignup() {
     if (Reaction.Subscriptions && Reaction.Subscriptions.Account && Reaction.Subscriptions.Account.ready()) {

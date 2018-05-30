@@ -1,8 +1,9 @@
 import { encodeShopOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/shop";
 
 /**
- * @name primaryShopId
+ * @name "Query.primaryShopId"
  * @method
+ * @memberof Shop/GraphQL
  * @summary Gets the primary shop ID
  * @param {Object} parentObject - unused
  * @param {Object} args - unused

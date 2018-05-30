@@ -1,12 +1,12 @@
 /* eslint dot-notation: 0 */
 /* eslint prefer-arrow-callback:0 */
+import Random from "@reactioncommerce/random";
 import { Meteor } from "meteor/meteor";
-import { Random } from "meteor/random";
 import { expect } from "meteor/practicalmeteor:chai";
 import { Factory } from "meteor/dburles:factory";
 import { sinon, stubs, spies } from "meteor/practicalmeteor:sinon";
 import Fixtures from "/server/imports/fixtures";
-import { Reaction } from "/server/api";
+import { Reaction, Logger } from "/server/api";
 import { Shops } from "/lib/collections";
 
 Fixtures();
@@ -21,23 +21,20 @@ describe("Shop Methods", function () {
     stubs.restoreAll();
   });
 
-  it("shop factory should create a new shop", function (done) {
+  it("shop factory should create a new shop", function () {
     stubs.create("hasPermissionStub", Reaction, "hasPermission");
     stubs.hasPermissionStub.returns(true);
     spies.create("shopInsertSpy", Shops, "insert");
     Factory.create("shop");
     expect(spies.shopInsertSpy).to.have.been.called;
-    return done();
   });
 });
 
 describe("core shop methods", function () {
-  let shop;
   let sandbox;
 
   beforeEach(function () {
     sandbox = sinon.sandbox.create();
-    shop = Factory.create("shop");
   });
 
   afterEach(function () {
@@ -45,39 +42,78 @@ describe("core shop methods", function () {
   });
 
   describe("shop/createShop", function () {
+    let primaryShop;
+    let insertShopSpy;
+
     beforeEach(function () {
       Shops.remove({});
+
+      primaryShop = Factory.create("shop");
+      sandbox.stub(Reaction, "getPrimaryShop", () => primaryShop);
+
+      insertShopSpy = sandbox.spy(Shops, "insert");
     });
 
-    it("should throw 403 error by non admin", function (done) {
-      sandbox.stub(Reaction, "hasPermission", () => false);
-      const insertShopSpy = sandbox.spy(Shops, "insert");
-      function createShopFunc() {
-        return Meteor.call("shop/createShop");
-      }
-      expect(createShopFunc).to.throw(Meteor.Error, /Access Denied/);
-      expect(insertShopSpy).to.not.have.been.called;
-      return done();
+    describe("failure conditions", function () {
+      it("throws a 403 error by non admin", function () {
+        sandbox.stub(Reaction, "hasPermission", () => false);
+
+        expect(() => Meteor.call("shop/createShop"))
+          .to.throw(Meteor.Error, /Access Denied/);
+        expect(insertShopSpy).to.not.have.been.called;
+      });
     });
 
-    it("should create new shop for admin for userId and shopObject", function () {
-      this.timeout(5000);
-      sandbox.stub(Meteor, "user", () => ({
-        userId: "12345678",
-        emails: [{
-          address: "user@example.com",
-          provides: "default",
-          verified: true
-        }]
-      }));
-      const shopId = Random.id();
-      Factory.create("account", { _id: "12345678", shopId });
+    describe("success conditions", function () {
+      let userId;
+      let shopId;
+      let name;
 
-      sandbox.stub(Reaction, "hasPermission", () => true);
-      sandbox.stub(Reaction, "getPrimaryShopId", () => shopId);
-      Meteor.call("shop/createShop", "12345678", shop);
-      const newShopCount = Shops.find({ name: shop.name }).count();
-      expect(newShopCount).to.equal(1);
+      beforeEach(function () {
+        userId = Random.id();
+        shopId = Random.id();
+        name = Random.id();
+
+        Factory.create("account", { _id: userId, shopId });
+
+        sandbox.stub(Meteor, "user", () => ({
+          userId,
+          emails: [{
+            address: `${userId}@example.com`,
+            provides: "default",
+            verified: true
+          }]
+        }));
+        sandbox.stub(Reaction, "hasPermission", () => true);
+        sandbox.stub(Reaction, "getPrimaryShopId", () => shopId);
+
+        // a logging statement exists, stub it to keep the output clean
+        sandbox.stub(Logger, "info")
+          .withArgs(sinon.match(/Created shop/), sinon.match.string);
+      });
+
+      afterEach(function () {
+        const newShopCount = Shops.find({ name }).count();
+        expect(newShopCount).to.equal(1);
+      });
+
+      it("creates a new shop for admin for userId and a partial shopObject", function () {
+        const partialShop = { name };
+
+        Meteor.call("shop/createShop", userId, partialShop);
+      });
+
+      it("creates a new shop for admin for userId and a partial shopObject ignoring extraneous data", function () {
+        const extraneousData = Random.id();
+        const partialShop = { name, extraneousData };
+
+        Meteor.call("shop/createShop", userId, partialShop);
+
+        expect(insertShopSpy)
+          .to.have.been.calledWith(sinon.match({ name }));
+        expect(insertShopSpy)
+          .to.not.have.been.calledWith(sinon.match({ extraneousData }));
+      });
     });
   });
 });
