@@ -29,8 +29,9 @@ class InviteOwner extends Component {
     this.setState({ isLoading: true });
     const { name, email, alertId } = this.state;
     const alertOptions = { placement: alertId, id: alertId, autoHide: 4000 };
+    const shopData = {}; // TODO: add optional shop data to the form (maybe just name?)
 
-    Meteor.call("accounts/inviteShopOwner", { name, email }, (error, result) => {
+    Meteor.call("accounts/inviteShopOwner", { name, email }, shopData, (error, result) => {
       let message = "";
       if (error) {
         let messageKey;

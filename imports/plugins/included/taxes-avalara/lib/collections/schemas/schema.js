@@ -1,6 +1,6 @@
 import SimpleSchema from "simpl-schema";
 import { TaxPackageConfig } from "/imports/plugins/core/taxes/lib/collections/schemas";
-import { registerSchema } from "@reactioncommerce/reaction-collections";
+import { registerSchema } from "@reactioncommerce/schemas";
 
 /**
 * TaxPackageConfig Schema
@@ -42,6 +42,10 @@ export const AvalaraPackageConfig = TaxPackageConfig.clone().extend({
   "settings.avalara.shippingTaxCode": {
     label: "Shipping Tax Code",
     type: String
+  },
+  "settings.addressValidation": {
+    type: Object,
+    defaultValue: {}
   },
   "settings.addressValidation.enabled": {
     label: "Address Validation",

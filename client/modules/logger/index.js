@@ -1,5 +1,4 @@
-import { includes } from "lodash";
-import bunyan from "bunyan";
+import { bunyan } from "@reactioncommerce/logger";
 import { Meteor } from "meteor/meteor";
 
 /*
@@ -14,7 +13,7 @@ let level = Meteor.settings.public.REACTION_LOG_LEVEL || "WARN";
 
 level = level.toUpperCase();
 
-if (!includes(levels, level)) {
+if (!levels.includes(level)) {
   level = "WARN";
 }
 

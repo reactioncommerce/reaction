@@ -5,6 +5,7 @@
 .git
 .build.log
 Dockerfile
+Dockerfile-devserver
 .reaction/docker/reaction.*
 docs
 node_modules

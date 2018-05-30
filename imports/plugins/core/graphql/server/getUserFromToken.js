@@ -1,26 +1,37 @@
-import { Accounts } from "meteor/accounts-base";
-import { Meteor } from "meteor/meteor";
+import crypto from "crypto";
+import ReactionError from "./ReactionError";
+import tokenExpiration from "./tokenExpiration";
 
-async function getUserFromToken(loginToken) {
-  const hashedToken = Accounts._hashLoginToken(loginToken);
+// This is Meteor's Accounts._hashLoginToken
+function hashLoginToken(loginToken) {
+  const hash = crypto.createHash("sha256");
+  hash.update(loginToken);
+  return hash.digest("base64");
+}
+
+async function getUserFromToken(loginToken, context) {
+  const { collections } = context;
+  const { users } = collections;
+
+  const hashedToken = hashLoginToken(loginToken);
 
   // search for user from the database with hashedToken
   // note: no need for a fiber aware findOne
-  const currentUser = await Meteor.users.rawCollection().findOne({
+  const currentUser = await users.findOne({
     "services.resume.loginTokens.hashedToken": hashedToken
   });
 
-  if (!currentUser) throw new Error("Token invalid");
+  if (!currentUser) throw new ReactionError("access-denied", "Token invalid");
 
   // find the right login token because the user may have
   // several sessions logged in on different browsers/computers
   const tokenInformation = currentUser.services.resume.loginTokens.find((tokenInfo) => tokenInfo.hashedToken === hashedToken);
 
   // get token expiration date
-  const expiresAt = Accounts._tokenExpiration(tokenInformation.when);
+  const expiresAt = tokenExpiration(tokenInformation.when);
 
   const isExpired = expiresAt < new Date();
-  if (isExpired) throw new Error("Token expired");
+  if (isExpired) throw new ReactionError("access-denied", "Token expired");
 
   return currentUser;
 }
