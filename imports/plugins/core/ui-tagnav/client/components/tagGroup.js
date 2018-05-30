@@ -159,8 +159,8 @@ class TagGroup extends Component {
 }
 
 TagGroup.propTypes = {
-  blank: PropTypes.bool,
-  editable: PropTypes.bool,
+  blank: PropTypes.bool, // eslint-disable-line react/boolean-prop-naming
+  editable: PropTypes.bool, // eslint-disable-line react/boolean-prop-naming
   onNewTagSave: PropTypes.func,
   onTagRemove: PropTypes.func,
   tagGroupProps: PropTypes.object

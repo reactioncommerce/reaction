@@ -17,13 +17,13 @@ class OrderDashboard extends Component {
     handleClick: PropTypes.func,
     handleSelect: PropTypes.func,
     isLoading: PropTypes.object,
-    multipleSelect: PropTypes.bool,
+    multipleSelect: PropTypes.bool, // eslint-disable-line react/boolean-prop-naming
     onPageChange: PropTypes.func,
     onPageSizeChange: PropTypes.func,
     orders: PropTypes.array,
     pages: PropTypes.number,
     query: PropTypes.object,
-    renderFlowList: PropTypes.bool,
+    renderFlowList: PropTypes.bool, // eslint-disable-line react/boolean-prop-naming
     searchQuery: PropTypes.string,
     selectAllOrders: PropTypes.func,
     selectedItems: PropTypes.array,
