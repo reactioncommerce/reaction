@@ -32,7 +32,7 @@ const getMockDoc = (schema, prefix, addId) => {
       } else if (model[key].autoValue !== undefined) {
         fieldValue = model[key].autoValue.call({ operator: null });
       } else if (Array.isArray(defField.allowedValues)) {
-        fieldValue = defField.allowedValues[0];
+        fieldValue = defField.allowedValues[0]; // eslint-disable-line
       } else {
         throw new Error("Invalid");
       }
@@ -128,16 +128,16 @@ const getMockDoc = (schema, prefix, addId) => {
   return mockDoc;
 };
 
-const clearMockValues = (schema) => {
-  if (process.env.NODE_ENV === "jesttest") {
-    return schema;
-  }
+// const clearMockValues = (schema) => {
+//   if (process.env.NODE_ENV === "jesttest") {
+//     return schema;
+//   }
 
-  _.each(schema._schema, (field, key) => {
-    schema._schema[key] = _.omit(field, "mockValue");
-  });
-  return schema;
-};
+//   _.each(schema._schema, (field, key) => {
+//     schema._schema[key] = _.omit(field, "mockValue");
+//   });
+//   return schema;
+// };
 
 /**
  * @const {Object} Factory - todo

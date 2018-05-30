@@ -318,7 +318,6 @@ function flushQuantity(id) {
  * @return {Object} product - new product
  */
 function createProduct(props = null) {
-
   const finalProps = props || {};
   if (finalProps.type !== "variant" && !finalProps.handle) {
     if (typeof finalProps.title === "string" && finalProps.title.length) {
