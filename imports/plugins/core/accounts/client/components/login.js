@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import { Random } from "meteor/random";
 import PropTypes from "prop-types";
+import Random from "@reactioncommerce/random";
 import { Components, registerComponent } from "@reactioncommerce/reaction-components";
 
 class Login extends Component {

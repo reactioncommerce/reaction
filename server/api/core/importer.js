@@ -1,9 +1,9 @@
 import Hooks from "@reactioncommerce/hooks";
 import Logger from "@reactioncommerce/logger";
+import Random from "@reactioncommerce/random";
 import { Mongo, MongoInternals } from "meteor/mongo";
 import { EJSON } from "meteor/ejson";
 import { check, Match } from "meteor/check";
-import { Random } from "meteor/random";
 import * as Collections from "/lib/collections";
 
 /**

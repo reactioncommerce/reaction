@@ -53,6 +53,7 @@ export function productVariant(options = {}) {
     inventoryPolicy: faker.random.boolean(),
     lowInventoryWarningThreshold: _.random(1, 5),
     inventoryQuantity: _.random(0, 100),
+    isVisible: true,
     price: _.random(10, 1000),
     title: faker.commerce.productName(),
     optionTitle: faker.commerce.productName(),

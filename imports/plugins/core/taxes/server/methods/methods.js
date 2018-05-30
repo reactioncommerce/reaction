@@ -10,14 +10,14 @@ import { Logger } from "/server/api";
  * @file Methods for Taxes. Run these methods using `Meteor.call()`.
  *
  *
- * @namespace Methods/Taxes
+ * @namespace Taxes/Methods
 */
 
 export const methods = {
   /**
    * @name taxes/deleteRate
    * @method
-   * @memberof Methods/Taxes
+   * @memberof Taxes/Methods
    * @param  {String} taxId tax taxId to delete
    * @return {String} returns update/insert result
    */
@@ -35,7 +35,7 @@ export const methods = {
   /**
    * @name taxes/addRate
    * @method
-   * @memberof Methods/Taxes
+   * @memberof Taxes/Methods
    * @param  {Object} doc A Taxes document to be inserted
    * @param  {String} [docId] DEPRECATED. Existing ID to trigger an update. Use taxes/editRate method instead.
    * @return {String} Insert result
@@ -54,7 +54,7 @@ export const methods = {
   /**
    * @name taxes/editRate
    * @method
-   * @memberof Methods/Taxes
+   * @memberof Taxes/Methods
    * @param  {Object} details An object with _id and modifier props
    * @return {String} Update result
    */
@@ -72,7 +72,7 @@ export const methods = {
    * @name taxes/setRate
    * @summary Update the cart without hooks
    * @method
-   * @memberof Methods/Taxes
+   * @memberof Taxes/Methods
    * @param  {String} cartId cartId
    * @param  {Number} taxRate taxRate
    * @param  {Object} taxes taxes
@@ -94,7 +94,7 @@ export const methods = {
   /**
    * @name taxes/setRateByShopAndItem
    * @method
-   * @memberof Methods/Taxes
+   * @memberof Taxes/Methods
    * @summary Update the cart without hooks
    * @param  {String} cartId cartId
    * @param  {Object} options - Options object
@@ -169,7 +169,7 @@ export const methods = {
   /**
    * @name taxes/calculate
    * @method
-   * @memberof Methods/Taxes
+   * @memberof Taxes/Methods
    * @param  {String} cartId cartId
    * @return {Object}  returns tax object
    */

@@ -7,7 +7,7 @@ import { Components, registerComponent } from "@reactioncommerce/reaction-compon
  * It uses the fa-bars icon by default, and does not have click or hover states
  *
  * Use this button in places where you need a pre-styled button for drag handles
- *
+ * @memberof Components
  * @param {Object} props Props passed into component
  * @returns {node} component with pre-configured icon for dragging
  */

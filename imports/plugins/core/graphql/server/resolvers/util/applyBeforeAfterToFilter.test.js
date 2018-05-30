@@ -1,18 +1,18 @@
 import applyBeforeAfterToFilter from "./applyBeforeAfterToFilter";
 
 test("throws an error if sortBy is missing", () =>
-  expect(applyBeforeAfterToFilter({ sortBy: null })).rejects.toMatchSnapshot());
+  expect(() => applyBeforeAfterToFilter({ sortBy: null })).toThrowErrorMatchingSnapshot());
 
 test("throws an error if sortOrder is missing", () =>
-  expect(applyBeforeAfterToFilter({ sortOrder: null })).rejects.toMatchSnapshot());
+  expect(() => applyBeforeAfterToFilter({ sortOrder: null })).toThrowErrorMatchingSnapshot());
 
 test("throws an error if both before and after are set", () =>
-  expect(applyBeforeAfterToFilter({ after: "123", before: "123" })).rejects.toMatchSnapshot());
+  expect(() => applyBeforeAfterToFilter({ after: { _id: "123" }, before: { _id: "123" } })).toThrowErrorMatchingSnapshot());
 
 describe("after", () => {
-  test("alters filter correctly when sorting by _id ascending (default)", async () => {
+  test("alters filter correctly when sorting by _id ascending (default)", () => {
     const baseFilter = { _id: { $in: ["abc"] } };
-    const result = await applyBeforeAfterToFilter({ after: "cmVhY3Rpb24vc2hvcDoxMjM=", baseFilter });
+    const result = applyBeforeAfterToFilter({ after: { _id: "123" }, baseFilter });
 
     expect(result).toEqual({
       $and: [
@@ -22,9 +22,9 @@ describe("after", () => {
     });
   });
 
-  test("alters filter correctly when sorting by _id descending", async () => {
+  test("alters filter correctly when sorting by _id descending", () => {
     const baseFilter = { _id: { $in: ["abc"] } };
-    const result = await applyBeforeAfterToFilter({ after: "cmVhY3Rpb24vc2hvcDoxMjM=", baseFilter, sortOrder: "desc" });
+    const result = applyBeforeAfterToFilter({ after: { _id: "123" }, baseFilter, sortOrder: "desc" });
 
     expect(result).toEqual({
       $and: [
@@ -34,15 +34,12 @@ describe("after", () => {
     });
   });
 
-  test("alters filter correctly when sorting by a non-_id field ascending", async () => {
+  test("alters filter correctly when sorting by a non-_id field ascending", () => {
     const baseFilter = { _id: { $in: ["abc"] } };
     const name = "Some Name";
-    const result = await applyBeforeAfterToFilter({
-      after: "cmVhY3Rpb24vc2hvcDoxMjM=",
+    const result = applyBeforeAfterToFilter({
+      after: { _id: "123", name },
       baseFilter,
-      collection: {
-        findOne: () => ({ name })
-      },
       sortBy: "name"
     });
 
@@ -59,15 +56,12 @@ describe("after", () => {
     });
   });
 
-  test("alters filter correctly when sorting by a non-_id field descending", async () => {
+  test("alters filter correctly when sorting by a non-_id field descending", () => {
     const baseFilter = { _id: { $in: ["abc"] } };
     const name = "Some Name";
-    const result = await applyBeforeAfterToFilter({
-      after: "cmVhY3Rpb24vc2hvcDoxMjM=",
+    const result = applyBeforeAfterToFilter({
+      after: { _id: "123", name },
       baseFilter,
-      collection: {
-        findOne: () => ({ name })
-      },
       sortBy: "name",
       sortOrder: "desc"
     });
@@ -87,9 +81,9 @@ describe("after", () => {
 });
 
 describe("before", () => {
-  test("alters filter correctly when sorting by _id ascending (default)", async () => {
+  test("alters filter correctly when sorting by _id ascending (default)", () => {
     const baseFilter = { _id: { $in: ["abc"] } };
-    const result = await applyBeforeAfterToFilter({ before: "cmVhY3Rpb24vc2hvcDoxMjM=", baseFilter });
+    const result = applyBeforeAfterToFilter({ before: { _id: "123" }, baseFilter });
 
     expect(result).toEqual({
       $and: [
@@ -99,9 +93,9 @@ describe("before", () => {
     });
   });
 
-  test("alters filter correctly when sorting by _id descending", async () => {
+  test("alters filter correctly when sorting by _id descending", () => {
     const baseFilter = { _id: { $in: ["abc"] } };
-    const result = await applyBeforeAfterToFilter({ before: "cmVhY3Rpb24vc2hvcDoxMjM=", baseFilter, sortOrder: "desc" });
+    const result = applyBeforeAfterToFilter({ before: { _id: "123" }, baseFilter, sortOrder: "desc" });
 
     expect(result).toEqual({
       $and: [
@@ -111,15 +105,12 @@ describe("before", () => {
     });
   });
 
-  test("alters filter correctly when sorting by a non-_id field ascending", async () => {
+  test("alters filter correctly when sorting by a non-_id field ascending", () => {
     const baseFilter = { _id: { $in: ["abc"] } };
     const name = "Some Name";
-    const result = await applyBeforeAfterToFilter({
-      before: "cmVhY3Rpb24vc2hvcDoxMjM=",
+    const result = applyBeforeAfterToFilter({
+      before: { _id: "123", name },
       baseFilter,
-      collection: {
-        findOne: () => ({ name })
-      },
       sortBy: "name"
     });
 
@@ -136,15 +127,12 @@ describe("before", () => {
     });
   });
 
-  test("alters filter correctly when sorting by a non-_id field descending", async () => {
+  test("alters filter correctly when sorting by a non-_id field descending", () => {
     const baseFilter = { _id: { $in: ["abc"] } };
     const name = "Some Name";
-    const result = await applyBeforeAfterToFilter({
-      before: "cmVhY3Rpb24vc2hvcDoxMjM=",
+    const result = applyBeforeAfterToFilter({
+      before: { _id: "123", name },
       baseFilter,
-      collection: {
-        findOne: () => ({ name })
-      },
       sortBy: "name",
       sortOrder: "desc"
     });

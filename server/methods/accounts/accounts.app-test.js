@@ -1,10 +1,10 @@
 /* eslint dot-notation: 0 */
 /* eslint prefer-arrow-callback:0 */
 import _ from "lodash";
+import Random from "@reactioncommerce/random";
 import { Meteor } from "meteor/meteor";
 import { Factory } from "meteor/dburles:factory";
 import { check, Match } from "meteor/check";
-import { Random } from "meteor/random";
 import { Accounts as MeteorAccount } from "meteor/accounts-base";
 import { expect } from "meteor/practicalmeteor:chai";
 import { sinon } from "meteor/practicalmeteor:sinon";

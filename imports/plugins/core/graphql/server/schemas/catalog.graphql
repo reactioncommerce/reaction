@@ -20,6 +20,38 @@ type PriceRange {
   max: Float!
 }
 
+"The product price or price range for a specific currency"
+type ProductPricingInfo {
+  """
+  A comparison price value, usually MSRP. If `price` is null, this will also be null. That is,
+  only purchasable variants will have a `compareAtPrice`.
+  """
+  compareAtPrice: Float
+
+  "The code for the currency these pricing details applies to"
+  currency: Currency!
+
+  """
+  UI should display this price. If a product has multiple potential prices depending on selected
+  variants and options, then this is a price range string such as "$3.95 - $6.99". It includes the currency
+  symbols.
+  """
+  displayPrice: String!
+
+  "The price of the most expensive possible variant+option combination"
+  maxPrice: Float!
+
+  "The price of the least expensive possible variant+option combination"
+  minPrice: Float!
+
+  """
+  For variants with no options and for options, this will always be set to a price. For variants
+  with options and products, this will be `null`. There must be a price for a variant to be
+  added to a cart or purchased. Otherwise you would instead add one of its child options to a cart.
+  """
+  price: Float
+}
+
 "Holds metadata specific to a specific social network service"
 type SocialMetadata {
   "Which social network is this metadata for"
@@ -32,7 +64,6 @@ type SocialMetadata {
 "This interface represents the fields that are identical for both Products and Variants"
 interface CatalogProductOrVariant {
   barcode: String
-  compareAtPrice: Float
 
   # This should be required but we need to migrate existing data first
   createdAt: DateTime
@@ -69,9 +100,6 @@ type CatalogProduct implements CatalogProductOrVariant & Node {
   "The product barcode value, if it has one"
   barcode: String
 
-  "A comparison price value, assumed to be in the default shop currency"
-  compareAtPrice: Float
-
   "The date and time at which this CatalogProduct was created, which is when the related product was first published"
   createdAt: DateTime!
 
@@ -105,6 +133,9 @@ type CatalogProduct implements CatalogProductOrVariant & Node {
   "The quantity value below which `isLowQuantity` should be true"
   lowInventoryWarningThreshold: Int
 
+  "All media for this product and its variants"
+  media: [ImageInfo]
+
   "Arbitrary additional metadata about this product"
   metafields: [Metafield]
 
@@ -123,11 +154,11 @@ type CatalogProduct implements CatalogProductOrVariant & Node {
   "Dimensions and other information about the containers in which this product will be shipped"
   parcel: ShippingParcel
 
-  "The range of prices among all variants"
+  "The range of prices among all variants (Deprecated use Pricing instead)"
   price: PriceRange
 
-  "All media for this product and its variants"
-  media: [ImageInfo]
+  "Price and related information, per currency"
+  pricing: [ProductPricingInfo]!
 
   "The primary image"
   primaryImage: ImageInfo
@@ -191,14 +222,8 @@ type CatalogProductVariant implements CatalogProductOrVariant & Node {
   "The CatalogProductVariant ID. Do not assume that this is the same as the related variant ID. See `variantId` for that."
   _id: ID!
 
-  "The list of ancestor product or variant IDs, in order from top to bottom"
-  ancestorIds: [ID]!
-
   "The product variant barcode value, if it has one"
   barcode: String
-
-  "A comparison price value, assumed to be in the default shop currency"
-  compareAtPrice: Float
 
   "The date and time at which this CatalogProductVariant was created, which is when the related product was first published"
   createdAt: DateTime
@@ -236,14 +261,20 @@ type CatalogProductVariant implements CatalogProductOrVariant & Node {
   "The minimum quantity that must be added to a cart"
   minOrderQuantity: Int
 
+  "Child variants, if any"
+  options: [CatalogProductVariant]
+
   "An option title. If this is set and this variant has a CatalogProductVariant parent, treat this variant as an option"
   optionTitle: String
 
   "The country of origin"
   originCountry: String
 
-  "The price, in the default shop currency"
+  "The price, in the default shop currency (Deprecated use Pricing instead)"
   price: Float!
+
+  "Price and related information, per currency"
+  pricing: [ProductPricingInfo]!
 
   "The shop to which this product variant belongs"
   shop: Shop!
@@ -273,31 +304,12 @@ type CatalogProductVariant implements CatalogProductOrVariant & Node {
   width: Float
 }
 
-"A tag-specific page position by which you can sort catalog items"
-type CatalogItemPosition {
-  "Items with greater weight should be displayed larger"
-  displayWeight: Int!
-
-  "True if the item position is pinned"
-  isPinned: Boolean!
-
-  "A positive integer to use when sorting catalog items by default sort"
-  position: Int!
-
-  "Use these position and display weight rules when displaying filtered by this tag"
-  tagId: ID!
-
-  "The date and time at which this item position was last updated"
-  updatedAt: DateTime
-}
-
 """
 Catalog items are combined to create a catalog. Each item can represent a different type of content.
 """
 interface CatalogItem {
   _id: ID!
   shop: Shop!
-  positions: [CatalogItemPosition]!
   createdAt: DateTime
   updatedAt: DateTime
 }
@@ -309,9 +321,6 @@ type CatalogItemProduct implements CatalogItem & Node {
 
   "The shop to which this catalog belongs"
   shop: Shop!
-
-  "The manually set display positions and weights within the associated catalog, per tag filter"
-  positions: [CatalogItemPosition]!
 
   "The catalog product"
   product: CatalogProduct
@@ -330,9 +339,6 @@ type CatalogItemContent implements CatalogItem & Node {
 
   "The shop to which this catalog belongs"
   shop: Shop!
-
-  "The manually set display positions and weights within the associated catalog, per tag filter"
-  positions: [CatalogItemPosition]!
 
   "The date and time at which this CatalogItem was first created"
   createdAt: DateTime!
@@ -370,6 +376,7 @@ type Catalog implements Node {
 enum CatalogItemSortByField {
   _id
   createdAt
+  minPrice
   updatedAt
 }
 
@@ -388,7 +395,23 @@ extend type Query {
     last: ConnectionLimitInt,
     sortOrder: SortOrder = desc,
 
+    "Provide a Currency code if sortBy is minPrice"
+    sortByPriceCurrencyCode: String
+
     "By default, items are sorted by when they were created, newest first. Set this to sort by one of the other allowed fields"
     sortBy: CatalogItemSortByField = createdAt
   ): CatalogItemConnection
+  "Gets product from catalog"
+  catalogItemProduct(
+    "Provide either a product ID or slug"
+    slugOrId: String
+  ): CatalogItemProduct
+}
+
+extend type Mutation {
+  "Publish products to the Catalog collection by product ID"
+  publishProductsToCatalog(
+    "Array of Product ID"
+    productIds: [ID]!
+  ): [CatalogItemProduct]
 }

@@ -2,11 +2,11 @@ import { Discounts } from "/imports/plugins/core/discounts/lib/collections/schem
 import { registerSchema } from "@reactioncommerce/schemas";
 
 /**
-* Discount Codes Schema
-* @type {Object}
-* @desc schema that extends discount schema
-* with properties for discount codes.
-*/
+ * @name DiscountRates
+ * @memberof Schemas
+ * @type {SimpleSchema}
+ * @summary A schema that extends discounts schema with properties for discount rates.
+ */
 export const DiscountRates = Discounts.clone().extend({
   discountMethod: {
     label: "Calculation Method",

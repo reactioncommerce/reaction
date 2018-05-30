@@ -146,11 +146,10 @@ const wrapComponent = (Comp) => (
     }
 
     /**
-     * updateBulkStatusHelper
-     *
      * @summary return formatted shipping object to update state
      * @param {String} status - the shipping status to be set
      * @return {Object} the formatted shipping object
+     * @private
      */
     updateBulkStatusHelper = (status) => {
       const statusIndex = shippingStrings.indexOf(status);
@@ -161,11 +160,10 @@ const wrapComponent = (Comp) => (
     }
 
     /**
-     * updateBulkLoadingHelper
-     *
      * @summary return formatted isLoading object to update state
      * @param {String} status - the shipping status to be set
      * @return {Object} the formatted isLoading object
+     * @private
      */
     updateBulkLoadingHelper = (status) => {
       const statusIndex = shippingStrings.indexOf(status);
@@ -190,12 +188,11 @@ const wrapComponent = (Comp) => (
     }
 
     /**
-     * shippingStatusUpdateCall
-     *
      * @summary set selected order(s) to the provided shipping state
      * @param {Array} selectedOrders - array of selected orders
      * @param {String} status - the shipping status to be set
      * @return {null} no return value
+     * @private
      */
     shippingStatusUpdateCall = (selectedOrders, status) => {
       const filteredSelectedOrders = selectedOrders.filter((order) => order.shipping && Object.keys(getShippingInfo(order)).length);
@@ -579,13 +576,12 @@ const wrapComponent = (Comp) => (
     }
 
     /**
-     * setShippingStatus
-     *
      * @summary call the relevant method based on the provided shipping status
      * @param {String} status - the selected shipping status to be set
      * @param {Array} selectedOrdersIds - array of ids of the selected orders
      * @param {Array} orders - array of orders
      * @return {null} no return value
+     * @private
      */
     setShippingStatus = (status, selectedOrdersIds, orders) => {
       this.setState({
@@ -611,9 +607,10 @@ const wrapComponent = (Comp) => (
     }
 
     /**
-     * orderCreditMethod: Finds the credit record in order.billing for the active shop
+     * Finds the credit record in order.billing for the active shop
      * @param order: The order where to find the billing record in.
      * @return: The billing record with paymentMethod.method === credit of currently active shop
+     * @private
      */
     orderCreditMethod(order) {
       const creditBillingRecords = order.billing.filter((value) => value.paymentMethod.method === "credit");
