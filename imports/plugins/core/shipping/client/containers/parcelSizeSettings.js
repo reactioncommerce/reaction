@@ -1,6 +1,6 @@
 import { Meteor } from "meteor/meteor";
 import { registerComponent, composeWithTracker } from "@reactioncommerce/reaction-components";
-import { Reaction, i18next } from "/client/api/";
+import { Reaction, i18next, Logger } from "/client/api/";
 import { Shops } from "/lib/collections";
 import { ShippingParcel } from "/lib/collections/schemas";
 import { convertWeight, convertLength } from "/lib/api";
@@ -10,7 +10,7 @@ import ParcelSizeSettings from "../components/parcelSizeSettings";
  * @method saveDefaultSize
  * @summary call "shipping/updateParcelSize" method
  * @param {Object} size - size object to be saved
- * @since 2.0.0
+ * @since 1.1.12
  * @return {Function} callback
 */
 const saveDefaultSize = (size) => {
@@ -21,6 +21,8 @@ const saveDefaultSize = (size) => {
   try {
     ShippingParcel.validate(parcel);
   } catch (error) {
+    Logger.error(error);
+    Alerts.toast(i18next.t("shippingSettings.parcelSize.saveFailed"), "error");
     return;
   }
   Meteor.call("shipping/updateParcelSize", parcel, (error) => {
@@ -34,7 +36,7 @@ const saveDefaultSize = (size) => {
  * @method onCardExpand
  * @summary set "edit/focus" in current Reaction state
  * @param {String} cardName - card name to be set
- * @since 2.0.0
+ * @since 1.1.12
  * @return {Function} callback
 */
 const onCardExpand = (cardName) => {
@@ -44,7 +46,7 @@ const onCardExpand = (cardName) => {
 /**
  * @method getEditFocus
  * @summary get "edit/focus" value from current Reaction state
- * @since 2.0.0
+ * @since 1.1.12
 */
 const getEditFocus = () => Reaction.state.get("edit/focus");
 
@@ -53,7 +55,7 @@ const getEditFocus = () => Reaction.state.get("edit/focus");
  * @summary composer - reactive Tracker wrapped function
  * @param {Object} props
  * @param {Function} onData
- * @since 2.0.0
+ * @since 1.1.12
 */
 const composer = (props, onData) => {
   const shop = Shops.findOne({

@@ -68,7 +68,7 @@ export const methods = {
    * @method shipping/updateParcelSize
    * @summary update defaultParcelSize
    * @param {Object} parcel - size to be updated
-   * @since 2.0.0
+   * @since 1.1.12
   */
   "shipping/updateParcelSize"(parcel) {
     check(parcel, {
