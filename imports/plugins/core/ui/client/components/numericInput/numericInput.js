@@ -70,7 +70,7 @@ class NumericInput extends Component {
    * @param  {Event} event Event object
    * @return {void}
    */
-  onBlur = () => {
+  onBlur = (event) => {
     let { value } = this.state;
     if (value > this.props.maxValue) {
       value = this.props.maxValue;
