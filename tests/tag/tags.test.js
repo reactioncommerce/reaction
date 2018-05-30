@@ -6,13 +6,6 @@ jasmine.DEFAULT_TIMEOUT_INTERVAL = 60000;
 const internalShopId = "123";
 const opaqueShopId = "cmVhY3Rpb24vc2hvcDoxMjM="; // reaction/shop:123
 const shopName = "Test Shop";
-const tags = [];
-for (let i = 100; i < 155; i += 1) {
-  const tagName = i.toString();
-  const tagId = i.toString();
-  const tagPosition = i;
-  tags.push({ _id: tagId, name: tagName, shopId: internalShopId, position: tagPosition });
-}
 const mockTags = Factory.Tag.makeMany(55, { shopId: internalShopId, _id: (i) => (i + 100).toString(), position: (i) => i + 100 });
 
 const tagsQuery = `($shopId: ID!, $after: ConnectionCursor, $before: ConnectionCursor, $first: ConnectionLimitInt, $last: ConnectionLimitInt) {
@@ -129,12 +122,4 @@ test("works correctly when last goes before start", async () => {
   expect(result.tags.nodes.length).toBe(0);
   expect(result.tags.totalCount).toBe(55);
   expect(result.tags.pageInfo).toEqual({ endCursor: null, hasNextPage: true, hasPreviousPage: false, startCursor: null });
-});
-
-
-test("testing data factory", () => {
-  const spec = true;
-
-  console.log("factory tags", mockTags.length);
-  expect(spec).toBe(false);
 });
