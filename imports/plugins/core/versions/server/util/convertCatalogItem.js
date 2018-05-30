@@ -50,7 +50,30 @@ function xformVariant(variant, variantPriceInfo, shopCurrencyCode, updatedAt) {
   };
 }
 
-export default function convertCatalogItem(item, shop) {
+/**
+ * @method
+ * @summary Converts the old positions object into the new positions object
+ * @param {Object} positions The old positions object
+ * @param {Object[]} tags Array of tag objects with `_id` and `slug` props
+ * @private
+ * @return {Object} The new positions object
+ */
+function xformPositions(positions, tags) {
+  const newPositions = {};
+  Object.keys(positions).forEach((key) => {
+    let newKey;
+    const positionTag = tags.find((tag) => tag.slug === key || tag._id === key);
+    if (positionTag) {
+      newKey = positionTag._id;
+    } else {
+      newKey = "_default";
+    }
+    newPositions[newKey] = positions[key];
+  });
+  return newPositions;
+}
+
+export default function convertCatalogItem(item, shop, tags) {
   if (!shop) {
     Logger.info("Cannot update catalog item: shop not found");
     return false;
@@ -147,7 +170,7 @@ export default function convertCatalogItem(item, shop) {
     originCountry: item.originCountry,
     pageTitle: item.pageTitle,
     parcel: item.parcel,
-    positions: item.positions,
+    positions: xformPositions(item.positions, tags),
     price: item.price,
     pricing: {
       [shop.currency]: {

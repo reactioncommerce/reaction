@@ -50,7 +50,20 @@ const beforeDoc = {
   barcode: "barcode1",
   sku: "PROD_SKU",
   parcel: "PARCEL",
-  positions: {},
+  positions: {
+    "some shop": {
+      position: 1,
+      pinned: false,
+      weight: 2,
+      updatedAt: new Date("2018-05-26T14:43:26.282+0000")
+    },
+    "some-tag-slug": {
+      position: 2,
+      pinned: true,
+      weight: 1,
+      updatedAt: new Date("2018-05-26T15:43:26.282+0000")
+    }
+  },
   lowInventoryWarningThreshold: 2,
   metaDescription: "metaDescription",
   media: [
@@ -270,7 +283,20 @@ const afterDoc = {
     originCountry: "US",
     pageTitle: "This is a basic product. You can do a lot with it.",
     parcel: "PARCEL",
-    positions: {},
+    positions: {
+      _default: {
+        position: 1,
+        pinned: false,
+        weight: 2,
+        updatedAt: new Date("2018-05-26T14:43:26.282+0000")
+      },
+      rpjCvTBGjhBi2xdro: {
+        position: 2,
+        pinned: true,
+        weight: 1,
+        updatedAt: new Date("2018-05-26T15:43:26.282+0000")
+      }
+    },
     price: {
       range: "12.99 - 19.99",
       min: 12.99,
@@ -481,6 +507,14 @@ test("returns correctly converted doc", () => {
       }
     }
   };
-  const doc = convertCatalogItem(beforeDoc, shop);
+
+  const tags = [
+    {
+      _id: "rpjCvTBGjhBi2xdro",
+      slug: "some-tag-slug"
+    }
+  ];
+
+  const doc = convertCatalogItem(beforeDoc, shop, tags);
   expect(doc).toEqual(afterDoc);
 });
