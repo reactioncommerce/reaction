@@ -34,7 +34,7 @@ describe("Publication", function () {
     shopId = Random.id();
     merchantShopId = Random.id();
     primaryShopId = Random.id();
-
+    inactiveMerchantShopId = Random.id();
 
     sandbox = sinon.sandbox.create();
     sandbox.stub(Reaction, "getPrimaryShopId", () => primaryShopId);
