@@ -10,6 +10,7 @@ import { Media } from "/imports/plugins/core/files/server";
 import rawCollections from "/imports/collections/rawCollections";
 import getProductPriceRange from "../no-meteor/utils/getProductPriceRange";
 import getVariants from "../no-meteor/utils/getVariants";
+import hasChildVariant from "../no-meteor/utils/hasChildVariant";
 import isSoldOut from "../no-meteor/utils/isSoldOut";
 import isLowQuantity from "../no-meteor/utils/isLowQuantity";
 import isBackorder from "../no-meteor/utils/isBackorder";
@@ -976,11 +977,11 @@ Meteor.methods({
       throw new Meteor.Error("access-denied", "Access Denied");
     }
 
-    // if (field === "inventoryQuantity" && value === "") {
-    //   if (!Promise.await(hasChildVariant(_id, collection))) {
-    //     throw new Meteor.Error("invalid", "Inventory Quantity is required when no child variants");
-    //   }
-    // }
+    if (field === "inventoryQuantity" && value === "") {
+      if (!Promise.await(hasChildVariant(_id, rawCollections))) {
+        throw new Meteor.Error("invalid", "Inventory Quantity is required when no child variants");
+      }
+    }
 
     const { type } = doc;
     let update;
