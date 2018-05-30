@@ -148,7 +148,7 @@
     "@babel/preset-es2015": "7.0.0-beta.38",
     "@babel/preset-react": "7.0.0-beta.38",
     "@babel/preset-stage-2": "7.0.0-beta.38",
-    "@reactioncommerce/eslint-config": "^1.0.1",
+    "@reactioncommerce/eslint-config": "1.8.0",
     "babel-core": "^7.0.0-bridge.0",
     "babel-eslint": "^8.2.1",
     "babel-jest": "^22.4.1",
@@ -164,10 +164,11 @@
     "enzyme-to-json": "^3.3.1",
     "eslint": "^4.19.1",
     "eslint-import-resolver-meteor": "^0.4.0",
-    "eslint-plugin-import": "^2.8.0",
+    "eslint-plugin-import": "2.12.0",
     "eslint-plugin-jest": "^21.14.0",
     "eslint-plugin-jsx-a11y": "^6.0.3",
-    "eslint-plugin-react": "^7.7.0",
+    "eslint-plugin-promise": "3.8.0",
+    "eslint-plugin-react": "7.8.2",
     "find-free-port": "^1.2.0",
     "graphql.js": "^0.4.20",
     "jest": "^22.4.2",
@@ -309,19 +310,26 @@
   "eslintConfig": {
     "extends": "@reactioncommerce",
     "globals": {
+      "Alerts": true,
       "Assets": true,
       "jasmine": true,
       "jest/globals": true,
-      "Package": true,
-      "FS": true,
-      "Alerts": true
+      "Package": true
     },
     "settings": {
       "import/resolver": "meteor"
     },
-    "plugins": [
-      "jest"
-    ]
+    "rules": {
+      "valid-jsdoc": [
+        1,
+        {
+          "prefer": {
+            "arg": "param",
+            "argument": "param"
+          }
+        }
+      ]
+    }
   },
   "nodemonConfig": {
     "delay": "2000",
