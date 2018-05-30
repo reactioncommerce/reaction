@@ -25,12 +25,19 @@ function getShopsForItems(items) {
 Migrations.add({
   version: 25,
   up() {
-    // We moved everything to a `product` object, so checking for the existence of that
-    // seems like a good way to find everything we haven't converted yet.
     let items;
 
     do {
-      items = Catalog.find({ product: { $exists: false } }, { limit: LIMIT }).fetch();
+      items = Catalog.find({
+        // We moved everything to a `product` object, so checking for the existence of that
+        // seems like a good way to find everything we haven't converted yet.
+        product: { $exists: false }
+      }, {
+        limit: LIMIT,
+        sort: {
+          createdAt: 1
+        }
+      }).fetch();
 
       if (items.length) {
         const shops = getShopsForItems(items);

@@ -9,11 +9,11 @@ import getPriceRange from "/imports/plugins/core/catalog/server/no-meteor/utils/
  * @param {String} shopCurrencyCode The shop currency code for the shop to which this product belongs
  * @private
  */
-function xformVariant(variant, variantPriceInfo, shopCurrencyCode) {
+function xformVariant(variant, variantPriceInfo, shopCurrencyCode, updatedAt) {
   return {
     _id: variant._id,
     barcode: variant.barcode,
-    createdAt: variant.createdAt,
+    createdAt: variant.createdAt || updatedAt,
     height: variant.height,
     index: variant.index || 0,
     inventoryManagement: !!variant.inventoryManagement,
@@ -42,7 +42,7 @@ function xformVariant(variant, variantPriceInfo, shopCurrencyCode) {
     taxCode: variant.taxCode,
     taxDescription: variant.taxDescription,
     title: variant.title,
-    updatedAt: variant.updatedAt || variant.createdAt,
+    updatedAt: variant.updatedAt || variant.createdAt || updatedAt,
     // The _id prop could change whereas this should always point back to the source variant in Products collection
     variantId: variant._id,
     weight: variant.weight,
@@ -101,6 +101,8 @@ export default function convertCatalogItem(item, shop) {
     }
   });
 
+  const updatedAt = new Date();
+
   const prices = [];
   const catalogProductVariants = topVariants.map((variant) => {
     const variantOptions = options.get(variant._id);
@@ -113,11 +115,11 @@ export default function convertCatalogItem(item, shop) {
     }
 
     prices.push(priceInfo.min, priceInfo.max);
-    const newVariant = xformVariant(variant, priceInfo, shopCurrencyCode);
+    const newVariant = xformVariant(variant, priceInfo, shopCurrencyCode, updatedAt);
 
     if (variantOptions) {
       newVariant.options = variantOptions.map((option) =>
-        xformVariant(option, getPriceRange([option.price], shopCurrencyInfo), shopCurrencyCode));
+        xformVariant(option, getPriceRange([option.price], shopCurrencyInfo), shopCurrencyCode, updatedAt));
     }
     return newVariant;
   });
@@ -127,7 +129,7 @@ export default function convertCatalogItem(item, shop) {
   const catalogProduct = {
     _id: item._id,
     barcode: item.barcode,
-    createdAt: item.createdAt,
+    createdAt: item.createdAt || updatedAt,
     description: item.description,
     height: item.height,
     isBackorder: !!item.isBackorder,
@@ -174,7 +176,7 @@ export default function convertCatalogItem(item, shop) {
     taxDescription: item.taxDescription,
     title: item.title,
     type: "product-simple",
-    updatedAt: item.updatedAt || item.createdAt,
+    updatedAt: item.updatedAt || item.createdAt || updatedAt,
     variants: catalogProductVariants,
     vendor: item.vendor,
     weight: item.weight,
@@ -185,7 +187,7 @@ export default function convertCatalogItem(item, shop) {
     _id: item._id,
     product: catalogProduct,
     shopId: catalogProduct.shopId,
-    updatedAt: new Date(),
+    updatedAt,
     createdAt: item.createdAt
   };
 
