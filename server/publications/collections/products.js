@@ -87,17 +87,37 @@ const catalogProductFiltersSchema = new SimpleSchema({
   }
 });
 
-function filterProducts(productFilters) {
-  // if there are filter/params that don't match the schema
-  // validate, catch except but return no results
-  try {
-    if (productFilters) filters.validate(productFilters);
-  } catch (e) {
-    Logger.debug(e, "Invalid Product Filters");
+function applyShopsFilter(selector, shopIdsOrSlugs) {
+  // Active shop
+  const shopId = Reaction.getShopId();
+  const primaryShopId = Reaction.getPrimaryShopId();
+
+  // Don't publish if we're missing an active or primary shopId
+  if (!shopId || !primaryShopId) {
     return false;
   }
 
-  const shopIdsOrSlugs = productFilters && productFilters.shops;
+  let activeShopIds;
+  // if the current shop is the primary shop, get products from all shops
+  // otherwise, only list products from _this_ shop.
+  if (shopId === primaryShopId) {
+    activeShopIds = Shops.find({
+      $or: [
+        { "workflow.status": "active" },
+        { _id: primaryShopId }
+      ]
+    }, {
+      fields: {
+        _id: 1
+      }
+    }).fetch().map((activeShop) => activeShop._id);
+  } else {
+    activeShopIds = [shopId];
+  }
+
+  if (!activeShopIds.length) {
+    return false;
+  }
 
   if (shopIdsOrSlugs) {
     // Get all shopIds associated with the slug or Id
@@ -108,33 +128,48 @@ function filterProducts(productFilters) {
       }, {
         slug: { $in: shopIdsOrSlugs }
       }]
+    }, {
+      fields: {
+        _id: 1
+      }
     }).map((shop) => shop._id);
 
-    // If we found shops, update the productFilters
-    if (shopIds) {
-      productFilters.shops = shopIds;
-    } else {
-      return false;
-    }
+    activeShopIds = _.intersection(activeShopIds, shopIds);
+  }
+
+  if (activeShopIds.length) {
+    return {
+      ...selector,
+      shopId: { $in: activeShopIds }
+    };
+  }
+
+  return selector;
+}
+
+function filterProducts(productFilters) {
+  // if there are filter/params that don't match the schema
+  // validate, catch except but return no results
+  try {
+    if (productFilters) filters.validate(productFilters);
+  } catch (e) {
+    Logger.warn(e, "Invalid Product Filters");
+    return false;
   }
 
   // Init default selector - Everyone can see products that fit this selector
-  const selector = {
+  const baseSelector = {
     ancestors: [], // Lookup top-level products
     isDeleted: { $ne: true }, // by default, we don't publish deleted products
     isVisible: true // by default, only lookup visible products
   };
 
-  if (productFilters) {
-    // handle multiple shops
-    if (productFilters.shops) {
-      _.extend(selector, {
-        shopId: {
-          $in: productFilters.shops
-        }
-      });
-    }
+  const shopIdsOrSlugs = productFilters && productFilters.shops;
+  const selector = applyShopsFilter(baseSelector, shopIdsOrSlugs);
 
+  if (!selector) return false;
+
+  if (productFilters) {
     // filter by tags
     if (productFilters.tags) {
       _.extend(selector, {
@@ -267,17 +302,14 @@ Meteor.publish("Products", function (productScrollLimit = 24, productFilters, so
   check(sort, Match.OneOf(undefined, Object));
   check(editMode, Match.Maybe(Boolean));
 
-  // Active shop
-  const shopId = Reaction.getShopId();
-  const primaryShopId = Reaction.getPrimaryShopId();
+  // // Active shop
+  // const shopId = Reaction.getShopId();
+  // const primaryShopId = Reaction.getPrimaryShopId();
 
-  // Don't publish if we're missing an active or primary shopId
-  if (!shopId || !primaryShopId) {
-    return this.ready();
-  }
-
-  // Get a list of shopIds that this user has "createProduct" permissions for (owner permission is checked by default)
-  const userAdminShopIds = Reaction.getShopsWithRoles(["createProduct"], this.userId);
+  // // Don't publish if we're missing an active or primary shopId
+  // if (!shopId || !primaryShopId) {
+  //   return this.ready();
+  // }
 
   const selector = filterProducts(productFilters);
 
@@ -285,33 +317,18 @@ Meteor.publish("Products", function (productScrollLimit = 24, productFilters, so
     return this.ready();
   }
 
+  // Get a list of shopIds that this user has "createProduct" permissions for (owner permission is checked by default)
+  const userAdminShopIds = Reaction.getShopsWithRoles(["createProduct"], this.userId) || [];
+
   // We publish an admin version of this publication to admins of products who are in "Edit Mode"
   if (editMode) {
-    // userAdminShopIds is a list of shopIds that the user has createProduct or owner access for
-    if (!Array.isArray(userAdminShopIds) || userAdminShopIds.length === 0) {
+    // Limit to only shops we have "createProduct" role for
+    selector.shopId.$in = _.intersection(selector.shopId.$in, userAdminShopIds);
+    if (selector.shopId.$in.length === 0) {
       return this.ready();
     }
 
-    delete selector.isVisible;
-    selector.shopId = {
-      $in: userAdminShopIds
-    };
-  } else {
-    // Get active shop IDs to use for filtering
-    const activeShopsIds = Shops.find({
-      $or: [
-        { "workflow.status": "active" },
-        { _id: Reaction.getPrimaryShopId() }
-      ]
-    }, {
-      fields: {
-        _id: 1
-      }
-    }).map((activeShop) => activeShop._id);
-
-    selector.shopId = {
-      $in: activeShopsIds
-    };
+    delete selector.isVisible; // in edit mode, you should see all products
   }
 
   // Get the IDs of the first N (limit) top-level products that match the query
@@ -348,45 +365,21 @@ function filterCatalogItems(catalogFilters) {
   try {
     if (catalogFilters) catalogProductFiltersSchema.validate(catalogFilters);
   } catch (e) {
-    Logger.debug(e, "Invalid Catalog Product Filters");
+    Logger.warn(e, "Invalid Catalog Product Filters");
     return false;
   }
 
-  const shopIdsOrSlugs = catalogFilters && catalogFilters.shopIdsOrSlugs;
-
-  if (shopIdsOrSlugs) {
-    // Get all shopIds associated with the slug or Id
-    const shopIds = Shops.find({
-      "workflow.status": "active",
-      "$or": [{
-        _id: { $in: shopIdsOrSlugs }
-      }, {
-        slug: { $in: shopIdsOrSlugs }
-      }]
-    }).map((shop) => shop._id);
-
-    // If we found shops, update the productFilters
-    if (shopIds) {
-      catalogFilters.shopIds = shopIds;
-    } else {
-      return false;
-    }
-  }
-
   // Init default selector - Everyone can see products that fit this selector
-  const selector = {
+  const baseSelector = {
     "product.isDeleted": { $ne: true }, // by default, we don't publish deleted products
     "product.isVisible": true // by default, only lookup visible products
   };
 
-  if (!catalogFilters) return selector;
+  const { shopIdsOrSlugs } = catalogFilters || {};
+  const selector = applyShopsFilter(baseSelector, shopIdsOrSlugs);
 
-  // handle multiple shops
-  if (catalogFilters.shopIds) {
-    selector.shopId = {
-      $in: catalogFilters.shopIds
-    };
-  }
+  if (!selector) return false;
+  if (!catalogFilters) return selector;
 
   // filter by tags
   if (catalogFilters.tagIds) {
