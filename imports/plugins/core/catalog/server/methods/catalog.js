@@ -317,11 +317,21 @@ function flushQuantity(id) {
  * @return {Object} product - new product
  */
 function createProduct(props = null) {
+
+  const finalProps = props || {};
+  if (finalProps.type !== "variant" && !finalProps.handle) {
+    if (typeof finalProps.title === "string" && finalProps.title.length) {
+      finalProps.handle = Reaction.getSlug(finalProps.title);
+    } else {
+      finalProps.handle = Random.id();
+    }
+  }
+
   const _id = Products.insert(
     {
       shopId: Reaction.getShopId(),
       type: "simple",
-      ...props
+      ...finalProps
     },
     {
       validate: false
@@ -966,6 +976,12 @@ Meteor.methods({
       throw new Meteor.Error("access-denied", "Access Denied");
     }
 
+    // if (field === "inventoryQuantity" && value === "") {
+    //   if (!Promise.await(hasChildVariant(_id, collection))) {
+    //     throw new Meteor.Error("invalid", "Inventory Quantity is required when no child variants");
+    //   }
+    // }
+
     const { type } = doc;
     let update;
     // handle booleans with correct typing
@@ -976,7 +992,7 @@ Meteor.methods({
       update = {
         // TODO: write function to ensure new handle is unique.
         // Should be a call similar to the line below.
-        [field]: createHandle(value, _id) // handle should be unique
+        [field]: createHandle(Reaction.getSlug(value), _id) // handle should be unique
       };
     } else if (field === "title" && doc.handle === doc._id) {
       // update handle once title is set
@@ -992,7 +1008,6 @@ Meteor.methods({
 
     // we need to use sync mode here, to return correct error and result to UI
     let result;
-
     try {
       result = updateCatalogProduct(
         this.userId,
