@@ -226,8 +226,9 @@ jobs:
                 curl "$url" | ./jq '.base.ref' | tr -d '"'
               )
               echo "Target branch ${TARGET_BRANCH}"
+              echo "PR ${CIRCLE_PR_NUMBER"
             fi
-            if [[ ${TARGET_BRANCH} == "master" ]] || [ -z ${TARGET_BRANCH} ]; then
+            if [[ ${TARGET_BRANCH} == "master" ]] || [ ${TARGET_BRANCH} == "null" ]; then
               PATH=$PATH:$CIRCLE_WORKING_DIRECTORY/node_modules/.bin && \
                 snyk test
             else
