@@ -226,23 +226,21 @@ jobs:
               TARGET_BRANCH=$(
                 curl "$url" | ./jq '.base.ref' | tr -d '"'
               )
-              echo "Target branch ${TARGET_BRANCH}"
-              echo "PR ${CIRCLE_PR_NUMBER} ${CIRCLE_PULL_REQUEST}"
             fi
-            # if [[ ${TARGET_BRANCH} == "master" ]] || [ ${TARGET_BRANCH} == "null" ]; then
-            #   PATH=$PATH:$CIRCLE_WORKING_DIRECTORY/node_modules/.bin && \
-            #     snyk test
-            # else
-            #   git fetch origin ${CIRCLE_BRANCH}
-            #   git fetch origin ${TARGET_BRANCH}
-            #   if git diff ${CIRCLE_BRANCH}..${TARGET_BRANCH} package.json | grep diff; then
-            #     echo "package.json different. Running Snyk."
-            #     PATH=$PATH:$CIRCLE_WORKING_DIRECTORY/node_modules/.bin && \
-            #     snyk test
-            #   else
-            #     echo "package.json identical to target branch. Skipping Snyk."
-            #   fi
-            # fi
+            if [[ ${TARGET_BRANCH} == "master" ]] || [ ${TARGET_BRANCH} == "null" ]; then
+              PATH=$PATH:$CIRCLE_WORKING_DIRECTORY/node_modules/.bin && \
+                snyk test
+            else
+              git fetch origin ${CIRCLE_BRANCH}
+              git fetch origin ${TARGET_BRANCH}
+              if git diff ${CIRCLE_BRANCH}..${TARGET_BRANCH} package.json | grep diff; then
+                echo "package.json different. Running Snyk."
+                PATH=$PATH:$CIRCLE_WORKING_DIRECTORY/node_modules/.bin && \
+                snyk test
+              else
+                echo "package.json identical to target branch. Skipping Snyk."
+              fi
+            fi
 
 workflows:
   version: 2
