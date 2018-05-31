@@ -216,10 +216,6 @@ jobs:
             - v1-node-modules-{{ .Branch }}
             - v1-node-modules-master
       - run:
-          name: Set Target Branch
-          command: |
-
-      - run:
           name: Snyk Test
           command: |
             if [[ -n ${CIRCLE_PR_NUMBER} ]] ; then
@@ -243,7 +239,6 @@ jobs:
                 echo "package.json identical to target branch. Skipping Snyk."
               fi
             fi
-            echo "how did we end up here."
 
 workflows:
   version: 2
