@@ -20,7 +20,7 @@ jobs:
       - checkout
       - setup_remote_docker
       - restore_cache:
-          `name: Restoring Meteor cache
+          name: Restoring Meteor cache
           key: meteor
       - run:
           name: Install Meteor
