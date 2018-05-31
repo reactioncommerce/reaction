@@ -218,7 +218,7 @@ jobs:
       - run:
           name: Snyk Test
           command: |
-            if [[ -n ${CIRCLE_PR_NUMBER} ]]; then
+            if [ -n ${CIRCLE_PR_NUMBER} ]; then
               curl -L "https://github.com/stedolan/jq/releases/download/jq-1.5/jq-linux64" -o jq
               chmod +x jq
               url="https://api.github.com/repos/${DOCKER_REPOSITORY}/pulls/$CIRCLE_PR_NUMBER"
@@ -232,7 +232,7 @@ jobs:
             else
               git fetch origin ${CIRCLE_BRANCH}
               git fetch origin ${TARGET_BRANCH}
-              if git diff ${CIRCLE_BRANCH} ${TARGET_BRANCH} package.json | grep diff; then
+              if git diff ${CIRCLE_BRANCH}..${TARGET_BRANCH} package.json | grep diff; then
                 PATH=$PATH:$CIRCLE_WORKING_DIRECTORY/node_modules/.bin && \
                 snyk test
               else
