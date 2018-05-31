@@ -225,7 +225,8 @@ jobs:
               url="https://api.github.com/repos/${DOCKER_REPOSITORY}/pulls/$CIRCLE_PR_NUMBER"
               TARGET_BRANCH=$(curl "$url" | ./jq '.base.ref' | tr -d '"')
             fi
-            if [[ ${TARGET_BRANCH} == "master" ]] || [ ${TARGET_BRANCH} == "null" ]; then
+            # If target branch does not exist or is master, run snyk tests
+            if [ ${TARGET_BRANCH} == "master" ] || [ -z "${TARGET_BRANCH/[ ]*\n/}" ]; then
               PATH=$PATH:$CIRCLE_WORKING_DIRECTORY/node_modules/.bin && \
                 snyk test
             else
