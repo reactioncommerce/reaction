@@ -239,6 +239,8 @@ jobs:
               if $(git diff ${CIRCLE_BRANCH} ${TARGET_BRANCH} package.json | grep diff) ; then
                 PATH=$PATH:$CIRCLE_WORKING_DIRECTORY/node_modules/.bin && \
                 snyk test
+              else
+                echo "package.json identical to target branch. Skipping Snyk."
               fi
             fi
 
