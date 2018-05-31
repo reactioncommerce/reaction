@@ -632,6 +632,11 @@ export function inviteShopOwner(options, shopData) {
   check(shopData, Match.Maybe(Object));
   const { name, email } = options;
 
+  // given that we `export` this function, there is an expectation that it can
+  // be imported and used elsewhere in the code. the use of `this` in this
+  // method requires that the context be Meteor. Consider using a small
+  // function in the Meteor.method section below to pass any  Meteor-defined
+  // data (e.g., userId) as a parameter to allow for this method to be reused.
   if (!Reaction.hasPermission("admin", this.userId, Reaction.getPrimaryShopId())) {
     throw new Meteor.Error("access-denied", "Access denied");
   }
@@ -660,11 +665,13 @@ export function inviteShopOwner(options, shopData) {
 
   const emailLogo = Reaction.Email.getShopLogo(primaryShop);
   const token = Random.id();
-  const currentUser = Meteor.users.findOne(this.userId);
+  const currentUser = Meteor.user();
   const currentUserName = getCurrentUserName(currentUser);
   // uses primaryShop's data (name, address etc) in email copy sent to new merchant
   const dataForEmail = getDataForEmail({ shop: primaryShop, currentUserName, name, token, emailLogo });
 
+  // 1) this should only be for new users, right?
+  // 2) this doesn't happen automatically on new user creation?
   Meteor.users.update(userId, {
     $set: {
       "services.password.reset": { token, email, when: new Date() },
@@ -703,6 +710,13 @@ export function inviteShopMember(options) {
   check(name, String);
   check(groupId, String);
 
+  // given that we `export` this function, there is an expectation that it can
+  // be imported and used elsewhere in the code. the use of `this` in this
+  // method requires that the context be Meteor, and further, `this.unblock()`
+  // assumes that this is being run as a Meteor method. Consider using a small
+  // function in the Meteor.method section below to call unblock, and pass any
+  // Meteor-defined data (e.g., userId) as a parameter to allow for this method
+  // to be reused.
   this.unblock();
 
   const shop = Shops.findOne(shopId);
@@ -721,7 +735,7 @@ export function inviteShopMember(options) {
 
   const group = Groups.findOne({ _id: groupId }) || {};
 
-  // check to ensure that invitee has roles required to perform the invitation
+  // check to ensure that user has roles required to perform the invitation
   if (!Reaction.canInviteToGroup({ group, user: Meteor.user() })) {
     throw new Meteor.Error("access-denied", "Cannot invite to group");
   }
@@ -730,7 +744,7 @@ export function inviteShopMember(options) {
     throw new Meteor.Error("bad-request", "Cannot directly invite owner");
   }
 
-  const currentUser = Meteor.users.findOne(this.userId);
+  const currentUser = Meteor.user();
   const currentUserName = getCurrentUserName(currentUser);
   const emailLogo = Reaction.Email.getShopLogo(primaryShop);
   const user = Meteor.users.findOne({ "emails.address": email });
