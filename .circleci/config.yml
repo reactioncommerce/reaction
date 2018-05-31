@@ -243,6 +243,7 @@ jobs:
                 echo "package.json identical to target branch. Skipping Snyk."
               fi
             fi
+            echo "how did we end up here."
 
 workflows:
   version: 2
