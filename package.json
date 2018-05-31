@@ -3,7 +3,6 @@
   "description": "Reaction is a modern reactive, real-time event driven ecommerce platform.",
   "version": "1.12.0",
   "main": "main.js",
-  "example":  "example",
   "directories": {
     "test": "tests"
   },
