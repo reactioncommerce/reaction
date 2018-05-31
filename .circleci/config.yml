@@ -218,7 +218,7 @@ jobs:
       - run:
           name: Snyk Test
           command: |
-            CIRCLE_PR_NUMBER="${CIRCLE_PR_NUMBER:-${CIRCLE_PULL_REQUEST##*/}}
+            CIRCLE_PR_NUMBER="${CIRCLE_PR_NUMBER:-${CIRCLE_PULL_REQUEST##*/}}"
             if [ -n ${CIRCLE_PR_NUMBER} ]; then
               curl -L "https://github.com/stedolan/jq/releases/download/jq-1.5/jq-linux64" -o jq
               chmod +x jq
