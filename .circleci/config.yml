@@ -223,17 +223,13 @@ jobs:
               curl -L "https://github.com/stedolan/jq/releases/download/jq-1.5/jq-linux64" -o jq
               chmod +x jq
               url="https://api.github.com/repos/${DOCKER_REPOSITORY}/pulls/$CIRCLE_PR_NUMBER"
-              TARGET_BRANCH=$(
-                curl "$url" | ./jq '.base.ref' | tr -d '"'
-              )
+              TARGET_BRANCH=$(curl "$url" | ./jq '.base.ref' | tr -d '"')
             fi
             if [[ ${TARGET_BRANCH} == "master" ]] || [ ${TARGET_BRANCH} == "null" ]; then
               PATH=$PATH:$CIRCLE_WORKING_DIRECTORY/node_modules/.bin && \
                 snyk test
             else
-              git fetch origin ${CIRCLE_BRANCH}
-              git fetch origin ${TARGET_BRANCH}
-              if git diff ${CIRCLE_BRANCH}..${TARGET_BRANCH} package.json | grep diff; then
+              if git diff origin/$CIRCLE_BRANCH..origin/$TARGET_BRANCH package.json | grep diff; then
                 echo "package.json different. Running Snyk."
                 PATH=$PATH:$CIRCLE_WORKING_DIRECTORY/node_modules/.bin && \
                 snyk test
