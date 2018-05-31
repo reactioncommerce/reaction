@@ -232,7 +232,7 @@ jobs:
             else
               git fetch origin ${CIRCLE_BRANCH}
               git fetch origin ${TARGET_BRANCH}
-              if $(git diff ${CIRCLE_BRANCH} ${TARGET_BRANCH} package.json | grep diff); then
+              if git diff ${CIRCLE_BRANCH} ${TARGET_BRANCH} package.json | grep diff; then
                 PATH=$PATH:$CIRCLE_WORKING_DIRECTORY/node_modules/.bin && \
                 snyk test
               else
