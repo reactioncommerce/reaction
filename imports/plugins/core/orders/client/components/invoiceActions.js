@@ -42,11 +42,11 @@ class InvoiceActions extends Component {
     invoice: PropTypes.object,
     isCapturing: PropTypes.bool,
     isRefunding: PropTypes.bool,
-    paymentApproved: PropTypes.bool,
-    paymentCaptured: PropTypes.bool,
-    paymentPendingApproval: PropTypes.bool,
+    paymentApproved: PropTypes.bool, // eslint-disable-line react/boolean-prop-naming
+    paymentCaptured: PropTypes.bool, // eslint-disable-line react/boolean-prop-naming
+    paymentPendingApproval: PropTypes.bool, // eslint-disable-line react/boolean-prop-naming
     printOrder: PropTypes.string,
-    showAfterPaymentCaptured: PropTypes.bool
+    showAfterPaymentCaptured: PropTypes.bool // eslint-disable-line react/boolean-prop-naming
   }
 
   state = {

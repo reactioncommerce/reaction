@@ -17,7 +17,7 @@ import { Media } from "/imports/plugins/core/files/client";
 const wrapComponent = (Comp) => (
   class MediaGalleryContainer extends Component {
     static propTypes = {
-      editable: PropTypes.bool,
+      editable: PropTypes.bool, // eslint-disable-line react/boolean-prop-naming
       id: PropTypes.string,
       media: PropTypes.arrayOf(PropTypes.object),
       placement: PropTypes.string
@@ -172,6 +172,7 @@ const wrapComponent = (Comp) => (
               if (error) Alerts.toast(error.reason, "error");
               this.setState({ uploadProgress: null });
             });
+            return null;
           })
           .catch((error) => {
             this.setState({ uploadProgress: null });

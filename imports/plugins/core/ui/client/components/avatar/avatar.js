@@ -40,14 +40,14 @@ ReactionAvatar.propTypes = {
   className: PropTypes.string,
   color: PropTypes.string,
   colors: PropTypes.array,
-  currentUser: PropTypes.bool,
+  currentUser: PropTypes.bool, // eslint-disable-line react/boolean-prop-naming
   email: PropTypes.string,
   facebookId: PropTypes.string,
   fgColor: PropTypes.string,
   googleId: PropTypes.string,
   md5Email: PropTypes.string,
   name: PropTypes.string,
-  round: PropTypes.bool,
+  round: PropTypes.bool, // eslint-disable-line react/boolean-prop-naming
   size: PropTypes.number,
   skypeId: PropTypes.string,
   src: PropTypes.string,

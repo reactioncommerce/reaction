@@ -110,7 +110,7 @@ Metadata.defaultProps = {
 
 // Prop Types
 Metadata.propTypes = {
-  editable: PropTypes.bool,
+  editable: PropTypes.bool, // eslint-disable-line react/boolean-prop-naming
   metafields: PropTypes.arrayOf(PropTypes.object),
   newMetafield: PropTypes.object,
   onMetaChange: PropTypes.func,

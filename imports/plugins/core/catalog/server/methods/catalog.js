@@ -188,17 +188,14 @@ function copyMedia(newId, variantOldId, variantNewId) {
     "metadata.variantId": variantOldId
   })
     .then((fileRecords) => {
-      fileRecords.forEach((fileRecord) => {
-        // Copy File and insert directly, bypasing revision control
-        fileRecord
-          .fullClone({
-            productId: newId,
-            variantId: variantNewId
-          })
-          .catch((error) => {
-            Logger.error(`Error in copyMedia for product ${newId}`, error);
-          });
-      });
+      // Copy File and insert directly, bypassing revision control
+      const promises = fileRecords.map((fileRecord) => (
+        fileRecord.fullClone({
+          productId: newId,
+          variantId: variantNewId
+        })
+      ));
+      return Promise.all(promises);
     })
     .catch((error) => {
       Logger.error(`Error in copyMedia for product ${newId}`, error);
