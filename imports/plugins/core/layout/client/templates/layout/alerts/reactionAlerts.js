@@ -16,8 +16,7 @@ import { getRootNode } from "/imports/plugins/core/router/client/browserRouter.j
  */
 
 const getAlertWrapper = () => {
-  getRootNode();
-  const rootNode = document.getElementById("react-root");
+  const rootNode = getRootNode();
 
   rootNode.insertAdjacentHTML("beforebegin", "<div id='s-alert-wrapper'></div>");
   return document.getElementById("s-alert-wrapper");
