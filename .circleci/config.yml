@@ -225,14 +225,16 @@ jobs:
               TARGET_BRANCH=$(
                 curl "$url" | ./jq '.base.ref' | tr -d '"'
               )
+              echo "Target branch ${TARGET_BRANCH}"
             fi
-            if [[ ${TARGET_BRANCH} == "master" ]]; then
+            if [[ ${TARGET_BRANCH} == "master" ]] || [ -z ${TARGET_BRANCH} ]; then
               PATH=$PATH:$CIRCLE_WORKING_DIRECTORY/node_modules/.bin && \
                 snyk test
             else
               git fetch origin ${CIRCLE_BRANCH}
               git fetch origin ${TARGET_BRANCH}
               if git diff ${CIRCLE_BRANCH}..${TARGET_BRANCH} package.json | grep diff; then
+                echo "package.json different. Running Snyk."
                 PATH=$PATH:$CIRCLE_WORKING_DIRECTORY/node_modules/.bin && \
                 snyk test
               else
