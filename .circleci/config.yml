@@ -20,7 +20,7 @@ jobs:
       - checkout
       - setup_remote_docker
       - restore_cache:
-          name: Restoring Meteor cache
+          `name: Restoring Meteor cache
           key: meteor
       - run:
           name: Install Meteor
@@ -216,10 +216,31 @@ jobs:
             - v1-node-modules-{{ .Branch }}
             - v1-node-modules-master
       - run:
+          name: Set Target Branch
+          command: |
+
+      - run:
           name: Snyk Test
           command: |
-            PATH=$PATH:$CIRCLE_WORKING_DIRECTORY/node_modules/.bin && \
-              snyk test
+            if [[ -n ${CIRCLE_PR_NUMBER} ]] ; then
+              curl -L "https://github.com/stedolan/jq/releases/download/jq-1.5/jq-linux64" -o jq
+              chmod +x jq
+              url="https://api.github.com/repos/org/repo/pulls/$CIRCLE_PR_NUMBER?access_token=$GITHUB_TOKEN"
+              TARGET_BRANCH=$(
+                curl "$url" | ./jq '.base.ref' | tr -d '"'
+              )
+            fi
+            if [[ ${TARGET_BRANCH} == "master" ]]
+              PATH=$PATH:$CIRCLE_WORKING_DIRECTORY/node_modules/.bin && \
+                snyk test
+            else
+              git fetch origin ${CIRCLE_BRANCH}
+              git fetch origin ${TARGET_BRANCH}
+              if $(git diff ${CIRCLE_BRANCH} ${TARGET_BRANCH} package.json | grep diff) ; then
+                PATH=$PATH:$CIRCLE_WORKING_DIRECTORY/node_modules/.bin && \
+                snyk test
+              fi
+            fi
 
 workflows:
   version: 2
