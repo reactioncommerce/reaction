@@ -20,6 +20,7 @@
   },
   "dependencies": {
     "@babel/runtime": "7.0.0-beta.38",
+    "@reactioncommerce/data-factory": "^1.0.0",
     "@reactioncommerce/file-collections": "0.5.0",
     "@reactioncommerce/file-collections-sa-gridfs": "0.0.2",
     "@reactioncommerce/hooks": "1.0.2",
@@ -177,7 +178,6 @@
     "mongodb-memory-server": "^1.7.3",
     "nodemon": "^1.17.2",
     "react-addons-test-utils": "15.6.2",
-    "simpl-schema-mockdoc": "^1.0.5",
     "snyk": "^1.78.0"
   },
   "postcss": {
