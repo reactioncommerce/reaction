@@ -50,7 +50,7 @@ class AddToCartButton extends Component {
 
 AddToCartButton.propTypes = {
   cartQuantity: PropTypes.number,
-  editable: PropTypes.bool,
+  editable: PropTypes.bool, // eslint-disable-line react/boolean-prop-naming
   onAddToCart: PropTypes.func,
   onCartQuantityChange: PropTypes.func,
   onClick: PropTypes.func,

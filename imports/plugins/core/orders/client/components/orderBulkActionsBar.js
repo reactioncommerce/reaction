@@ -6,9 +6,9 @@ class OrderBulkActionsBar extends Component {
   static propTypes = {
     handleBulkPaymentCapture: PropTypes.func,
     isLoading: PropTypes.object,
-    multipleSelect: PropTypes.bool,
+    multipleSelect: PropTypes.bool, // eslint-disable-line react/boolean-prop-naming
     orders: PropTypes.array,
-    renderFlowList: PropTypes.bool,
+    renderFlowList: PropTypes.bool, // eslint-disable-line react/boolean-prop-naming
     selectAllOrders: PropTypes.func,
     selectedItems: PropTypes.array,
     setShippingStatus: PropTypes.func,

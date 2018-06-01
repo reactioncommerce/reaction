@@ -22,7 +22,7 @@ class TextField extends Component {
 
   /**
    * Getter: isValid
-   * @return {Boolean} true/false if field is valid from props.isValid or props.valitation[this.props.name].isValid
+   * @return {Boolean} true/false if field is valid from props.isValid or props.validation[this.props.name].isValid
    */
   get isValid() {
     const { isValid } = this.props;
@@ -276,7 +276,7 @@ class TextField extends Component {
 TextField.propTypes = {
   align: PropTypes.oneOf(["left", "center", "right", "justify"]),
   className: PropTypes.string,
-  disabled: PropTypes.bool,
+  disabled: PropTypes.bool, // eslint-disable-line react/boolean-prop-naming
   helpText: PropTypes.string,
   i18nKeyHelpText: PropTypes.string,
   i18nKeyLabel: PropTypes.string,
@@ -287,7 +287,7 @@ TextField.propTypes = {
   maxRows: PropTypes.number,
   maxValue: PropTypes.any,
   minValue: PropTypes.number,
-  multiline: PropTypes.bool,
+  multiline: PropTypes.bool, // eslint-disable-line react/boolean-prop-naming
   name: PropTypes.string,
   onBlur: PropTypes.func,
   onChange: PropTypes.func,

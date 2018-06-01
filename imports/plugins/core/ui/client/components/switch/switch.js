@@ -9,8 +9,8 @@ class Switch extends Component {
   }
 
   static propTypes = {
-    checked: PropTypes.bool,
-    disabled: PropTypes.bool,
+    checked: PropTypes.bool, // eslint-disable-line react/boolean-prop-naming
+    disabled: PropTypes.bool, // eslint-disable-line react/boolean-prop-naming
     helpText: PropTypes.string,
     i18nKeyHelpText: PropTypes.string,
     i18nKeyLabel: PropTypes.string,

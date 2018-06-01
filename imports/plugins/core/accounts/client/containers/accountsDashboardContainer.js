@@ -17,6 +17,7 @@ const handlers = {
             if (value) {
               return updateMethodCall(groupId);
             }
+            return null;
           })
           .finally(() => {
             if (onMethodDone) { onMethodDone(); }

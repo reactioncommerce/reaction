@@ -54,7 +54,7 @@ const wrapComponent = (Comp) => (
     static propTypes = {
       canLoadMoreProducts: PropTypes.bool,
       productsSubscription: PropTypes.object,
-      showNotFound: PropTypes.bool
+      showNotFound: PropTypes.bool // eslint-disable-line react/boolean-prop-naming
     };
 
     constructor(props) {

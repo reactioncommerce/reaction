@@ -113,7 +113,7 @@ Badge.propTypes = {
   className: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
   i18nKeyLabel: PropTypes.string,
   i18nKeyTooltip: PropTypes.string,
-  indicator: PropTypes.bool,
+  indicator: PropTypes.bool, // eslint-disable-line react/boolean-prop-naming
   label: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   status: PropTypes.string,
   tooltip: PropTypes.oneOfType([PropTypes.string, PropTypes.object, PropTypes.node]),
