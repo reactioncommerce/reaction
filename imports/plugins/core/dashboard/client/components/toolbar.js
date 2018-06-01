@@ -35,7 +35,8 @@ class PublishControls extends Component {
   }
 
   static defaultProps = {
-    showViewAsControls: true
+    showViewAsControls: true,
+    isEnabled: true
   }
 
   componentDidMount() {

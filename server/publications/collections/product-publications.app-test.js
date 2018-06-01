@@ -9,7 +9,6 @@ import { Reaction } from "/server/api";
 import * as Collections from "/lib/collections";
 import Fixtures from "/server/imports/fixtures";
 import { PublicationCollector } from "meteor/johanbrook:publication-collector";
-import { RevisionApi } from "/imports/plugins/core/revisions/lib/api/revisions";
 
 Fixtures();
 
@@ -25,7 +24,6 @@ describe("Publication", function () {
     createActiveShop({ _id: primaryShopId, shopType: "primary" });
 
     sandbox = sinon.sandbox.create();
-    sandbox.stub(RevisionApi, "isRevisionControlEnabled", () => true);
   });
 
   afterEach(function () {
@@ -54,6 +52,7 @@ describe("Publication", function () {
       Collections.Products.insert({
         ancestors: [],
         title: "My Little Pony",
+        handle: "my-little-pony",
         shopId,
         type: "simple",
         price: priceRangeA,
@@ -66,6 +65,7 @@ describe("Publication", function () {
       Collections.Products.insert({
         ancestors: [],
         title: "Shopkins - Peachy",
+        handle: "shopkins-peachy",
         shopId,
         price: priceRangeB,
         type: "simple",
@@ -78,6 +78,7 @@ describe("Publication", function () {
       Collections.Products.insert({
         ancestors: [],
         title: "Fresh Tomatoes",
+        handle: "fresh-tomatoes",
         shopId,
         price: priceRangeA,
         type: "simple",

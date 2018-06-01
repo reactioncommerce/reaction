@@ -513,20 +513,6 @@
           "isCommercial": "Đây là địa chỉ thương mại."
         }
       },
-      "revisions": {
-        "isDisabled": "kiểm soát sửa đổi được vô hiệu hóa. Mọi thay đổi sẽ được công bố ngay lập tức.",
-        "isEnabled": "kiểm soát sửa đổi được kích hoạt cho sản phẩm. Mọi thay đổi sẽ cần phải được công bố trước khi được rõ cho khách hàng.",
-        "unpublishedChanges": "Thay đổi chưa được công bố",
-        "publishChanges": "Xuất bản thay đổi",
-        "showChanges": "Hiện Thay đổi",
-        "hideChanges": "Ẩn Thay đổi",
-        "discardChanges": "Loại bỏ những thay đổi",
-        "changedPublished": "Thay đổi đăng thành công",
-        "changesDiscarded": "Thay đổi loại bỏ thành công",
-        "noChanges": "Không thay đổi",
-        "noChangesPublished": "Không có thay đổi để xuất bản",
-        "noChangesDiscarded": "Không có thay đổi để loại bỏ"
-      },
       "address": {
         "country": "Quốc gia",
         "fullName": "Họ và tên",

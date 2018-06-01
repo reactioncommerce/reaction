@@ -5,11 +5,11 @@ import { EJSON } from "meteor/ejson";
 import { Meteor } from "meteor/meteor";
 import { ReactionProduct } from "/lib/api";
 import { Hooks, Logger, Reaction } from "/server/api";
-import { MediaRecords, Products, Revisions, Tags } from "/lib/collections";
+import { MediaRecords, Products, Tags } from "/lib/collections";
 import { Media } from "/imports/plugins/core/files/server";
 import rawCollections from "/imports/collections/rawCollections";
-import getProductPriceRange from "/imports/plugins/core/revisions/server/no-meteor/utils/getProductPriceRange";
-import getVariants from "/imports/plugins/core/revisions/server/no-meteor/utils/getVariants";
+import getProductPriceRange from "../no-meteor/utils/getProductPriceRange";
+import getVariants from "../no-meteor/utils/getVariants";
 import isSoldOut from "../no-meteor/utils/isSoldOut";
 import isLowQuantity from "../no-meteor/utils/isLowQuantity";
 import isBackorder from "../no-meteor/utils/isBackorder";
@@ -188,7 +188,7 @@ function copyMedia(newId, variantOldId, variantNewId) {
     "metadata.variantId": variantOldId
   })
     .then((fileRecords) => {
-      // Copy File and insert directly, bypassing revision control
+      // Copy File and insert
       const promises = fileRecords.map((fileRecord) => (
         fileRecord.fullClone({
           productId: newId,
@@ -256,7 +256,6 @@ function denormalize(id, field) {
     }
   }
 
-  // TODO: Determine if product revision needs to be updated as well.
   Products.update(
     id,
     {
@@ -317,6 +316,7 @@ function flushQuantity(id) {
 function createProduct(props = null) {
   const _id = Products.insert(
     {
+      shopId: Reaction.getShopId(),
       type: "simple",
       ...props
     },
@@ -335,9 +335,7 @@ function createProduct(props = null) {
 /**
  * @function
  * @name updateCatalogProduct
- * @summary Updates a product's revision and conditionally updates
- * the underlying product.
- *
+ * @summary Updates a product document.
  * @param {String} userId - currently logged in user
  * @param {Object} selector - selector for product to update
  * @param {Object} modifier - Object describing what parts of the document to update.
@@ -347,23 +345,17 @@ function createProduct(props = null) {
 function updateCatalogProduct(userId, selector, modifier, validation) {
   const product = Products.findOne(selector);
 
-  const shouldUpdateProduct = Hooks.Events.run("beforeUpdateCatalogProduct", product, {
+  Hooks.Events.run("beforeUpdateCatalogProduct", product, {
     userId,
     modifier,
     validation
   });
 
-  if (shouldUpdateProduct) {
-    const result = Products.update(selector, modifier, validation);
+  const result = Products.update(selector, modifier, validation);
 
-    Hooks.Events.run("afterUpdateCatalogProduct", product, { modifier });
+  Hooks.Events.run("afterUpdateCatalogProduct", product, { modifier });
 
-    return result;
-  }
-
-  Logger.debug(`beforeUpdateCatalogProduct hook returned falsy, not updating catalog product`);
-
-  return false;
+  return result;
 }
 
 Meteor.methods({
@@ -393,8 +385,7 @@ Meteor.methods({
     }
 
     // Verify that this variant and any ancestors are not deleted.
-    // Child variants cannot be added if a parent product or product revision
-    // is marked as `{ isDeleted: true }`
+    // Child variants cannot be added if a parent product is marked as `{ isDeleted: true }`
     if (ReactionProduct.isAncestorDeleted(variant, true)) {
       throw new Meteor.Error("server-error", "Unable to create product variant");
     }
@@ -469,7 +460,6 @@ Meteor.methods({
 
       let newId;
       try {
-        Hooks.Events.run("beforeInsertCatalogProductInsertRevision", clone);
         newId = Products.insert(clone, { validate: false });
         const newProduct = Products.findOne(newId);
         Hooks.Events.run("afterInsertCatalogProduct", newProduct);
@@ -512,8 +502,7 @@ Meteor.methods({
     const { ancestors } = product;
 
     // Verify that the parent variant and any ancestors are not deleted.
-    // Child variants cannot be added if a parent product or product revision
-    // is marked as `{ isDeleted: true }`
+    // Child variants cannot be added if a parent product is marked as `{ isDeleted: true }`
     if (ReactionProduct.isAncestorDeleted(product, true)) {
       throw new Meteor.Error("server-error", "Unable to create product variant");
     }
@@ -522,6 +511,7 @@ Meteor.methods({
     const assembledVariant = Object.assign(newVariant || {}, {
       _id: newVariantId,
       ancestors,
+      shopId: product.shopId,
       type: "variant"
     });
 
@@ -540,10 +530,8 @@ Meteor.methods({
     }
 
     Hooks.Events.run("beforeInsertCatalogProduct", assembledVariant);
-    const _id = Products.insert(assembledVariant);
+    Products.insert(assembledVariant);
     Hooks.Events.run("afterInsertCatalogProduct", assembledVariant);
-
-    Hooks.Events.run("afterInsertCatalogProductInsertRevision", Products.findOne({ _id }));
 
     Logger.debug(`products/createVariant: created variant: ${newVariantId} for ${parentId}`);
 
@@ -646,9 +634,17 @@ Meteor.methods({
     // out if nothing to delete
     if (!Array.isArray(toDelete) || toDelete.length === 0) return false;
 
-    // Flag the variant and all its children as deleted in Revisions collection.
+    // Flag the variant and all its children as deleted.
     toDelete.forEach((product) => {
       Hooks.Events.run("beforeRemoveCatalogProduct", product, { userId: this.userId });
+      Products.update({
+        _id: product._id,
+        type: product.type
+      }, {
+        $set: {
+          isDeleted: true
+        }
+      });
       Hooks.Events.run("afterRemoveCatalogProduct", this.userId, product);
     });
 
@@ -757,7 +753,6 @@ Meteor.methods({
         newProduct.title = createTitle(newProduct.title, newProduct._id);
         newProduct.handle = createHandle(Reaction.getSlug(newProduct.title), newProduct._id);
       }
-      Hooks.Events.run("beforeInsertCatalogProductInsertRevision", newProduct);
       result = Products.insert(newProduct, { validate: false });
       Hooks.Events.run("afterInsertCatalogProduct", newProduct);
       results.push(result);
@@ -786,7 +781,6 @@ Meteor.methods({
         delete newVariant.createdAt;
         delete newVariant.publishedAt; // TODO can variant have this param?
 
-        Hooks.Events.run("beforeInsertCatalogProductInsertRevision", newVariant);
         result = Products.insert(newVariant, { validate: false });
         Hooks.Events.run("afterInsertCatalogProduct", newVariant);
         copyMedia(productNewId, variant._id, variantNewId);
@@ -819,26 +813,19 @@ Meteor.methods({
         throw new Meteor.Error("invalid-parameter", "Product should have a valid shopId");
       }
 
-      // Create product revision
-      Hooks.Events.run("beforeInsertCatalogProductInsertRevision", product);
-
       return Products.insert(product);
     }
 
+    // Create a product
     const newSimpleProduct = createProduct();
 
-    // Create simple product revision
-    Hooks.Events.run("afterInsertCatalogProductInsertRevision", newSimpleProduct);
-
-    const newVariant = createProduct({
+    // Create a product variant
+    createProduct({
       ancestors: [newSimpleProduct._id],
       price: 0.0,
       title: "",
       type: "variant" // needed for multi-schema
     });
-
-    // Create variant revision
-    Hooks.Events.run("afterInsertCatalogProductInsertRevision", newVariant);
 
     return newSimpleProduct._id;
   },
@@ -899,18 +886,25 @@ Meteor.methods({
       return ids;
     });
 
-    // Flag the product and all its variants as deleted in the Revisions collection.
+    // Flag the product and all of it's variants as deleted.
     productsWithVariants.forEach((toArchiveProduct) => {
       Hooks.Events.run("beforeRemoveCatalogProduct", toArchiveProduct, { userId: this.userId });
-
+      Products.update({
+        _id: toArchiveProduct._id,
+        type: toArchiveProduct.type
+      }, {
+        $set: {
+          isDeleted: true
+        }
+      });
       Hooks.Events.run("afterRemoveCatalogProduct", this.userId, toArchiveProduct);
     });
 
-    const numFlaggedAsDeleted = Revisions.find({
-      "documentId": {
+    const numFlaggedAsDeleted = Products.find({
+      _id: {
         $in: ids
       },
-      "documentData.isDeleted": true
+      isDeleted: true
     }).count();
 
     if (numFlaggedAsDeleted > 0) {
@@ -1014,7 +1008,6 @@ Meteor.methods({
     }
 
     // If we get a result from the product update,
-    // meaning the update went past revision control,
     // denormalize and attach results to top-level product
     if (result === 1) {
       if (type === "variant" && toDenormalize.indexOf(field) >= 0) {
