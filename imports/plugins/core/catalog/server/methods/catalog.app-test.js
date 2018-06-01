@@ -63,7 +63,7 @@ describe("core product methods", function () {
       expect(insertProductSpy).to.not.have.been.called;
     });
 
-    it("should clone variant by admin", function (done) {
+    it("should clone variant by admin", function () {
       sandbox.stub(Roles, "userIsInRole", () => true);
       const product = addProduct();
       let variants = Products.find({ ancestors: [product._id] }).fetch();
@@ -71,7 +71,6 @@ describe("core product methods", function () {
       Meteor.call("products/cloneVariant", product._id, variants[0]._id);
       variants = Products.find({ ancestors: [product._id] }).count();
       expect(variants).to.equal(2);
-      return done();
     });
 
     it("number of `child variants` between source and cloned `variants` should be equal", function () {
@@ -106,7 +105,7 @@ describe("core product methods", function () {
       expect(updateProductSpy).to.not.have.been.called;
     });
 
-    it("should create top level variant", function (done) {
+    it("should create top level variant", function () {
       sandbox.stub(Reaction, "hasPermission", () => true);
       const product = addProduct();
       let variants = Products.find({ ancestors: [product._id] }).fetch();
@@ -114,10 +113,9 @@ describe("core product methods", function () {
       Meteor.call("products/createVariant", product._id);
       variants = Products.find({ ancestors: [product._id] }).fetch();
       expect(variants.length).to.equal(2);
-      return done();
     });
 
-    it("should create option variant", function (done) {
+    it("should create option variant", function () {
       sandbox.stub(Reaction, "hasPermission", () => true);
       let options;
       const product = addProduct();
@@ -132,10 +130,9 @@ describe("core product methods", function () {
         ancestors: { $in: [variant._id] }
       }).fetch();
       expect(options.length).to.equal(3);
-      return done();
     });
 
-    it("should create variant with predefined object", function (done) {
+    it("should create variant with predefined object", function () {
       sandbox.stub(Reaction, "hasPermission", () => true);
       const product = addProduct();
       const newVariant = {
@@ -150,7 +147,6 @@ describe("core product methods", function () {
       const createdVariant = variants.filter((v) => v._id !== firstVariantId);
       expect(variants.length).to.equal(2);
       expect(createdVariant[0].title).to.equal("newVariant");
-      return done();
     });
   });
 
@@ -166,7 +162,7 @@ describe("core product methods", function () {
       expect(updateProductSpy).to.not.have.been.called;
     });
 
-    it("should not update individual variant by admin passing in full object", function (done) {
+    it("should not update individual variant by admin passing in full object", function () {
       sandbox.stub(Reaction, "hasPermission", () => true);
       const product = addProduct();
       let variant = Products.findOne({ ancestors: [product._id] });
@@ -176,11 +172,9 @@ describe("core product methods", function () {
       variant = Products.findOne({ ancestors: [product._id] });
       expect(variant.price).to.not.equal(7);
       expect(variant.title).to.not.equal("Updated Title");
-
-      return done();
     });
 
-    it("should update individual variant revision by admin passing in full object", function (done) {
+    it("should update individual variant revision by admin passing in full object", function () {
       sandbox.stub(Reaction, "hasPermission", () => true);
       const product = addProduct();
       const variant = Products.find({ ancestors: [product._id] }).fetch()[0];
@@ -190,8 +184,6 @@ describe("core product methods", function () {
       const variantRevision = Revisions.find({ documentId: variant._id }).fetch()[0];
       expect(variantRevision.documentData.price).to.equal(7);
       expect(variantRevision.documentData.title).to.equal("Updated Title");
-
-      return done();
     });
 
     it("should not update individual variant by admin passing in partial object", function () {
@@ -299,7 +291,7 @@ describe("core product methods", function () {
       expect(insertProductSpy).to.not.have.been.called;
     });
 
-    it("should clone product", function (done) {
+    it("should clone product", function () {
       sandbox.stub(Reaction, "hasPermission", () => true);
       sandbox.stub(Meteor.server.method_handlers, "inventory/register", function (...args) {
         check(args, [Match.Any]);
@@ -318,11 +310,9 @@ describe("core product methods", function () {
       expect(productCloned.handle).to.equal(`${product.handle}-copy`);
       expect(productCloned.pageTitle).to.equal(product.pageTitle);
       expect(productCloned.description).to.equal(product.description);
-
-      return done();
     });
 
-    it("product should be cloned with all variants and child variants with equal data, but not the same `_id`s", function (done) {
+    it("product should be cloned with all variants and child variants with equal data, but not the same `_id`s", function () {
       sandbox.stub(Reaction, "hasPermission", () => true);
       sandbox.stub(Meteor.server.method_handlers, "inventory/register", function (...args) {
         check(args, [Match.Any]);
@@ -344,10 +334,9 @@ describe("core product methods", function () {
       for (let i = 0; i < variants.length; i += 1) {
         expect(cloneVariants.some((clonedVariant) => clonedVariant.title === variants[i].title)).to.be.ok;
       }
-      return done();
     });
 
-    it("product group cloning should create the same number of new products", function (done) {
+    it("product group cloning should create the same number of new products", function () {
       sandbox.stub(Reaction, "hasPermission", () => true);
       sandbox.stub(Meteor.server.method_handlers, "inventory/register", function (...args) {
         check(args, [Match.Any]);
@@ -362,11 +351,9 @@ describe("core product methods", function () {
         type: "simple"
       }).fetch();
       expect(clones.length).to.equal(2);
-
-      return done();
     });
 
-    it("product group cloning should create the same number of cloned variants", function (done) {
+    it("product group cloning should create the same number of cloned variants", function () {
       sandbox.stub(Reaction, "hasPermission", () => true);
       sandbox.stub(Meteor.server.method_handlers, "inventory/register", function (...args) {
         check(args, [Match.Any]);
@@ -388,8 +375,6 @@ describe("core product methods", function () {
         ancestors: { $in: [clones[0]._id, clones[1]._id] }
       }).count();
       expect(clonedVariants).to.equal(variants);
-
-      return done();
     });
   });
 
@@ -824,26 +809,33 @@ describe("core product methods", function () {
   });
 
   describe("updateProductPosition", function () {
+    let product;
+    let tag;
+
     beforeEach(function () {
-      return Tags.remove({});
+      Tags.remove({});
+
+      product = addProduct();
+      tag = Factory.create("tag");
     });
 
     it("should throw 403 error by non admin", function () {
       sandbox.stub(Reaction, "hasPermission", () => false);
-      const product = addProduct();
-      const tag = Factory.create("tag");
       const updateProductSpy = sandbox.spy(Products, "update");
+
       expect(() => Meteor.call(
         "products/updateProductPosition",
         product._id, {}, tag._id
       )).to.throw(Meteor.Error, /Access Denied/);
+
       expect(updateProductSpy).to.not.have.been.called;
     });
 
-    it("should not update product position by admin", function (done) {
+    // this test appears to be the inverse of above. where the test above
+    // rejects non-admins, this one does not. I _think_ this check is covered
+    // by the tests below
+    it("should not update product position by admin", function () {
       sandbox.stub(Reaction, "hasPermission", () => true);
-      const product = addProduct();
-      const tag = Factory.create("tag");
       const position = {
         position: 0,
         weight: 0,
@@ -855,14 +847,10 @@ describe("core product methods", function () {
       )).to.not.throw(Meteor.Error, /Access Denied/);
       const updatedProduct = Products.findOne(product._id);
       expect(updatedProduct.positions).to.be.undefined;
-
-      return done();
     });
 
-    it("should update product revision position by admin", function (done) {
+    it("should update product revision position by admin", function () {
       sandbox.stub(Reaction, "hasPermission", () => true);
-      const product = addProduct();
-      const tag = Factory.create("tag");
       const position = {
         position: 0,
         weight: 0,
@@ -874,14 +862,10 @@ describe("core product methods", function () {
       )).to.not.throw(Meteor.Error, /Access Denied/);
       const updatedProductRevision = Revisions.findOne({ documentId: product._id });
       expect(updatedProductRevision.documentData.positions[tag._id].position).to.equal(0);
-
-      return done();
     });
 
-    it("should publish product position by admin", function (done) {
+    it("should publish product position by admin", function () {
       sandbox.stub(Reaction, "hasPermission", () => true);
-      const product = addProduct();
-      const tag = Factory.create("tag");
       const position = {
         position: 0,
         weight: 0,
@@ -894,8 +878,6 @@ describe("core product methods", function () {
       Meteor.call("revisions/publish", product._id);
       const updatedProduct = Products.findOne(product._id);
       expect(updatedProduct.positions[tag._id].position).to.equal(0);
-
-      return done();
     });
   });
 
@@ -989,7 +971,7 @@ describe("core product methods", function () {
       expect(updateProductSpy).to.not.have.been.called;
     });
 
-    it("should not add meta fields by admin", function (done) {
+    it("should not add meta fields by admin", function () {
       sandbox.stub(Reaction, "hasPermission", () => true);
       let product = addProduct();
       Meteor.call("products/updateMetaFields", product._id, {
@@ -998,11 +980,9 @@ describe("core product methods", function () {
       });
       product = Products.findOne(product._id);
       expect(product.metafields.length).to.be.equal(0);
-
-      return done();
     });
 
-    it("should add meta fields to product revision by admin", function (done) {
+    it("should add meta fields to product revision by admin", function () {
       sandbox.stub(Reaction, "hasPermission", () => true);
       const product = addProduct();
       Meteor.call("products/updateMetaFields", product._id, {
@@ -1012,11 +992,9 @@ describe("core product methods", function () {
       const productRevision = Revisions.findOne({ documentId: product._id });
       expect(productRevision.documentData.metafields[0].key).to.equal("Material");
       expect(productRevision.documentData.metafields[0].value).to.equal("Spandex");
-
-      return done();
     });
 
-    it("should publish add meta fields by admin", function (done) {
+    it("should publish add meta fields by admin", function () {
       sandbox.stub(Reaction, "hasPermission", () => true);
       let product = addProduct();
       Meteor.call("products/updateMetaFields", product._id, {
@@ -1027,8 +1005,6 @@ describe("core product methods", function () {
       product = Products.findOne(product._id);
       expect(product.metafields[0].key).to.equal("Material");
       expect(product.metafields[0].value).to.equal("Spandex");
-
-      return done();
     });
   });
 
@@ -1107,7 +1083,10 @@ describe("core product methods", function () {
         selector: { type: "simple" },
         validate: false
       });
-      expect(() => Meteor.call("products/publishProduct", product._id)).to.not.throw(Meteor.Error, /Access Denied/);
+
+      expect(() => Meteor.call("products/publishProduct", product._id))
+        .to.throw(Meteor.Error, /Bad Request/);
+
       product = Products.findOne(product._id);
       expect(product.isVisible).to.equal(isVisible);
     });

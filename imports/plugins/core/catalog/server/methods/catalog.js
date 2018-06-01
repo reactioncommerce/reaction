@@ -188,17 +188,14 @@ function copyMedia(newId, variantOldId, variantNewId) {
     "metadata.variantId": variantOldId
   })
     .then((fileRecords) => {
-      fileRecords.forEach((fileRecord) => {
-        // Copy File and insert directly, bypasing revision control
-        fileRecord
-          .fullClone({
-            productId: newId,
-            variantId: variantNewId
-          })
-          .catch((error) => {
-            Logger.error(`Error in copyMedia for product ${newId}`, error);
-          });
-      });
+      // Copy File and insert directly, bypassing revision control
+      const promises = fileRecords.map((fileRecord) => (
+        fileRecord.fullClone({
+          productId: newId,
+          variantId: variantNewId
+        })
+      ));
+      return Promise.all(promises);
     })
     .catch((error) => {
       Logger.error(`Error in copyMedia for product ${newId}`, error);
@@ -1467,7 +1464,7 @@ Meteor.methods({
     }).fetch();
     let variantValidator = true;
 
-    if (typeof product === "object" && product.title.length > 1) {
+    if (typeof product === "object" && product.title && product.title.length > 1) {
       if (variants.length > 0) {
         variants.forEach((variant) => {
           // if this is a top variant with children, we avoid it to check price

@@ -5,7 +5,7 @@ import { registerComponent } from "@reactioncommerce/reaction-components";
 
 class TabItem extends Component {
   static propTypes = {
-    active: PropTypes.bool,
+    active: PropTypes.bool, // eslint-disable-line react/boolean-prop-naming
     children: PropTypes.node,
     className: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
     href: PropTypes.string,

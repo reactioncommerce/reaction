@@ -154,12 +154,12 @@ class ProductField extends Component {
 
 ProductField.propTypes = {
   editContainerProps: PropTypes.object,
-  editable: PropTypes.bool,
+  editable: PropTypes.bool, // eslint-disable-line react/boolean-prop-naming
   element: PropTypes.node,
   fieldName: PropTypes.string,
   fieldTitle: PropTypes.string,
   itemProp: PropTypes.string,
-  multiline: PropTypes.bool,
+  multiline: PropTypes.bool, // eslint-disable-line react/boolean-prop-naming
   onProductFieldChange: PropTypes.func,
   product: PropTypes.object,
   textFieldProps: PropTypes.object
