@@ -60,7 +60,7 @@ describe("core product methods", function () {
       expect(insertProductSpy).to.not.have.been.called;
     });
 
-    it("should clone variant by admin", function (done) {
+    it("should clone variant by admin", function () {
       sandbox.stub(Roles, "userIsInRole", () => true);
       const product = addProduct();
       let variants = Products.find({ ancestors: [product._id] }).fetch();
@@ -68,7 +68,6 @@ describe("core product methods", function () {
       Meteor.call("products/cloneVariant", product._id, variants[0]._id);
       variants = Products.find({ ancestors: [product._id] }).count();
       expect(variants).to.equal(2);
-      return done();
     });
 
     it("number of `child variants` between source and cloned `variants` should be equal", function () {
@@ -103,7 +102,7 @@ describe("core product methods", function () {
       expect(updateProductSpy).to.not.have.been.called;
     });
 
-    it("should create top level variant", function (done) {
+    it("should create top level variant", function () {
       sandbox.stub(Reaction, "hasPermission", () => true);
       const product = addProduct();
       let variants = Products.find({ ancestors: [product._id] }).fetch();
@@ -111,10 +110,9 @@ describe("core product methods", function () {
       Meteor.call("products/createVariant", product._id);
       variants = Products.find({ ancestors: [product._id] }).fetch();
       expect(variants.length).to.equal(2);
-      return done();
     });
 
-    it("should create option variant", function (done) {
+    it("should create option variant", function () {
       sandbox.stub(Reaction, "hasPermission", () => true);
       let options;
       const product = addProduct();
@@ -129,10 +127,9 @@ describe("core product methods", function () {
         ancestors: { $in: [variant._id] }
       }).fetch();
       expect(options.length).to.equal(3);
-      return done();
     });
 
-    it("should create variant with predefined object", function (done) {
+    it("should create variant with predefined object", function () {
       sandbox.stub(Reaction, "hasPermission", () => true);
       const product = addProduct();
       const newVariant = {
@@ -147,7 +144,6 @@ describe("core product methods", function () {
       const createdVariant = variants.filter((v) => v._id !== firstVariantId);
       expect(variants.length).to.equal(2);
       expect(createdVariant[0].title).to.equal("newVariant");
-      return done();
     });
   });
 
@@ -230,7 +226,7 @@ describe("core product methods", function () {
       expect(insertProductSpy).to.not.have.been.called;
     });
 
-    it("should clone product", function (done) {
+    it("should clone product", function () {
       sandbox.stub(Reaction, "hasPermission", () => true);
       sandbox.stub(Meteor.server.method_handlers, "inventory/register", function (...args) {
         check(args, [Match.Any]);
@@ -249,11 +245,9 @@ describe("core product methods", function () {
       expect(productCloned.handle).to.equal(`${product.handle}-copy`);
       expect(productCloned.pageTitle).to.equal(product.pageTitle);
       expect(productCloned.description).to.equal(product.description);
-
-      return done();
     });
 
-    it("product should be cloned with all variants and child variants with equal data, but not the same `_id`s", function (done) {
+    it("product should be cloned with all variants and child variants with equal data, but not the same `_id`s", function () {
       sandbox.stub(Reaction, "hasPermission", () => true);
       sandbox.stub(Meteor.server.method_handlers, "inventory/register", function (...args) {
         check(args, [Match.Any]);
@@ -275,10 +269,9 @@ describe("core product methods", function () {
       for (let i = 0; i < variants.length; i += 1) {
         expect(cloneVariants.some((clonedVariant) => clonedVariant.title === variants[i].title)).to.be.ok;
       }
-      return done();
     });
 
-    it("product group cloning should create the same number of new products", function (done) {
+    it("product group cloning should create the same number of new products", function () {
       sandbox.stub(Reaction, "hasPermission", () => true);
       sandbox.stub(Meteor.server.method_handlers, "inventory/register", function (...args) {
         check(args, [Match.Any]);
@@ -293,11 +286,9 @@ describe("core product methods", function () {
         type: "simple"
       }).fetch();
       expect(clones.length).to.equal(2);
-
-      return done();
     });
 
-    it("product group cloning should create the same number of cloned variants", function (done) {
+    it("product group cloning should create the same number of cloned variants", function () {
       sandbox.stub(Reaction, "hasPermission", () => true);
       sandbox.stub(Meteor.server.method_handlers, "inventory/register", function (...args) {
         check(args, [Match.Any]);
@@ -319,8 +310,6 @@ describe("core product methods", function () {
         ancestors: { $in: [clones[0]._id, clones[1]._id] }
       }).count();
       expect(clonedVariants).to.equal(variants);
-
-      return done();
     });
   });
 
@@ -527,26 +516,30 @@ describe("core product methods", function () {
   });
 
   describe("updateProductPosition", function () {
+    let product;
+    let tag;
+
     beforeEach(function () {
-      return Tags.remove({});
+      Tags.remove({});
+
+      product = addProduct();
+      tag = Factory.create("tag");
     });
 
     it("should throw 403 error by non admin", function () {
       sandbox.stub(Reaction, "hasPermission", () => false);
-      const product = addProduct();
-      const tag = Factory.create("tag");
       const updateProductSpy = sandbox.spy(Products, "update");
+
       expect(() => Meteor.call(
         "products/updateProductPosition",
         product._id, {}, tag._id
       )).to.throw(Meteor.Error, /Access Denied/);
+
       expect(updateProductSpy).to.not.have.been.called;
     });
 
     it("should update product position by admin", function (done) {
       sandbox.stub(Reaction, "hasPermission", () => true);
-      const product = addProduct();
-      const tag = Factory.create("tag");
       const position = {
         position: 0,
         weight: 0,
@@ -652,7 +645,10 @@ describe("core product methods", function () {
         selector: { type: "simple" },
         validate: false
       });
-      expect(() => Meteor.call("products/publishProduct", product._id)).to.not.throw(Meteor.Error, /Access Denied/);
+
+      expect(() => Meteor.call("products/publishProduct", product._id))
+        .to.throw(Meteor.Error, /Bad Request/);
+
       product = Products.findOne(product._id);
       expect(product.isVisible).to.equal(isVisible);
     });

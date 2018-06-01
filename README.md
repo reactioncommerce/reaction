@@ -81,9 +81,7 @@ Learn more on how to [configure your project](https://docs.reactioncommerce.com/
 ## Contact the team
 
 -   [Security reporting instructions](https://docs.reactioncommerce.com/reaction-docs/master/reporting-vulnerabilities): Report security vulnerabilities to <mailto:security@reactioncommerce.com>.
--   [Reaction community calls](http://getrxn.io/2rcCal): Join our biweekly community calls every other Wednesday at 7AM PST/10AM EST.
--   Subscribe to our [Reaction Community Google Calendar](http://getrxn.io/2rcCal) to RSVP to the next call and check out the [agenda](https://docs.google.com/document/d/1PwenrammgQJpQfFoUUJZ96i_JJYCM_4glAjB1_ZzgwA/edit?usp=sharing).
--   [Reaction Action](http://getrxn.io/2rcCal): RSVP for the monthly Reaction Action livestreams.
+-   [Reaction Action](https://www.youtube.com/playlist?list=PLJ1TVRVOrm2NOKlILTQFvtG7J9h1anvOe): RSVP for the monthly Reaction Action livestreams.
 
 ## Contribute
 
