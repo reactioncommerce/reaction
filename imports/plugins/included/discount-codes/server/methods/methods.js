@@ -181,7 +181,7 @@ export const methods = {
     const result = Collection.update(
       { _id: id },
       { $set: { discount: currentDiscount }, $pull: { billing: { _id: codeId } } },
-      { multi: true }
+      { multi: true, getAutoValues: false } // See https://github.com/aldeed/meteor-collection2/issues/245 
     );
 
     // calculate discounts
