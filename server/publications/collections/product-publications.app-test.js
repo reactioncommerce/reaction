@@ -352,8 +352,6 @@ describe("Publication", function () {
           collector.collect("Products/grid", ({ Catalog }) => {
             const productIds = Catalog.map((c) => c.product._id);
 
-            console.log("TEST productIds", JSON.stringify(productIds));
-            console.log("TEST activeShopVisibleProductIds", JSON.stringify(activeShopVisibleProductIds));
             expect(productIds).to.have.members(activeShopVisibleProductIds);
           }).then(() => done(/* empty */), done);
         });
