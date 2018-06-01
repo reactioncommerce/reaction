@@ -291,17 +291,19 @@ function filterProducts(productFilters) {
 }
 
 /**
- * products publication
- * @param {Number} [productScrollLimit] - optional, defaults to 24
- * @param {Array} shops - array of shopId to retrieve product from.
- * @return {Object} return product cursor
+ * @summary Products publication
+ * @param {Number} [productScrollLimit] - Top-level product limit. Optional, defaults to 24
+ * @param {Object} [productFilters] - Optional filters to apply
+ * @param {Object} [sort] - Optional MongoDB sort object
+ * @param {Boolean} [editMode] - If true, will add a shopId filter limiting the results to shops
+ *   for which the logged in user has "createProduct" permission. Default is false.
+ * @return {MongoCursor|undefined} Products collection cursor, or undefined if none to publish
  */
-Meteor.publish("Products", function (productScrollLimit = 24, productFilters, sort = {}, editMode = true) {
+Meteor.publish("Products", function (productScrollLimit = 24, productFilters, sort = {}, editMode = false) {
   check(productScrollLimit, Number);
   check(productFilters, Match.OneOf(undefined, Object));
   check(sort, Match.OneOf(undefined, Object));
   check(editMode, Match.Maybe(Boolean));
-
 
   const selector = filterProducts(productFilters);
 
