@@ -216,6 +216,7 @@ function convertShipping(order, index) {
 
 /**
  * @summary Export an order to Shopify
+ * @memberof Helpers
  * @param {Object} doc - The order to convert
  * @returns {Promise.<Array>} - An array of exported orders
  */

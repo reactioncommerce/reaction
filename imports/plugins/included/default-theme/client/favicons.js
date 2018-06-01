@@ -57,10 +57,11 @@ const metaTags = [
 
 
 /**
- * Add a tag to the <head> of the page
+ * Add a tag to the `<head>` of the page
  * @param {String} type - tag type (link, meta, etc.)
  * @param {Object} details - key/value pairs for tag attributes
  * @return {undefined} no return value
+ * @private
  */
 function addTag(type, details) {
   let props = "";

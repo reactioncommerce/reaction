@@ -1,6 +1,6 @@
+import Random from "@reactioncommerce/random";
 import { Meteor } from "meteor/meteor";
 import { check, Match } from "meteor/check";
-import { Random } from "meteor/random";
 import { Shipping } from "/lib/collections";
 import { ShippingMethod } from "/lib/collections/schemas";
 import { Reaction } from "/server/api";
@@ -37,6 +37,7 @@ export const methods = {
     } else if (!Shipping.find({}).count()) { // There is no default provider, so add it
       const defaultProvider = Shipping.insert({
         name: "Default Shipping Provider",
+        shopId: Reaction.getShopId(),
         provider: {
           name: "flatRates",
           label: "Flat Rate"
@@ -64,7 +65,7 @@ export const methods = {
    * @return { Number } update result
    */
   "shipping/rates/update"(method) {
-    check(method, ShippingMethod);
+    ShippingMethod.validate(method);
     if (!Reaction.hasPermission(shippingRoles)) {
       throw new Meteor.Error("access-denied", "Access Denied");
     }
@@ -92,13 +93,22 @@ export const methods = {
       throw new Meteor.Error("access-denied", "Access Denied");
     }
 
-    return Shipping.update({
+    const rates = Shipping.findOne({ "methods._id": rateId });
+    const { methods: shippingMethods } = rates;
+    const updatedMethods = shippingMethods.filter((method) => method._id !== rateId);
+
+    // HACK: not sure why we need to do this.. but it works.
+    // Replaced a $pull which in theory is better, but was broken.
+    // Issue w/ pull was introduced during the simpl-schema update
+    const deleted = Shipping.update({
       "methods._id": rateId
     }, {
-      $pull: {
-        methods: { _id: rateId }
+      $set: {
+        methods: updatedMethods
       }
     });
+
+    return deleted;
   }
 };
 

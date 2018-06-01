@@ -3,11 +3,11 @@ import PropTypes from "prop-types";
 import { compose } from "recompose";
 import { registerComponent, composeWithTracker } from "@reactioncommerce/reaction-components";
 import { Session } from "meteor/session";
-import { Validation } from "@reactioncommerce/reaction-collections";
+import { Validation } from "@reactioncommerce/schemas";
 import { Reaction } from "/client/api";
 import GridItemControls from "../components/gridItemControls";
 import { ReactionProduct } from "/lib/api";
-import { ProductVariant } from "/lib/collections/schemas/products";
+import { ProductVariant } from "/lib/collections/schemas";
 
 const wrapComponent = (Comp) => (
   class GridItemControlsContainer extends Component {

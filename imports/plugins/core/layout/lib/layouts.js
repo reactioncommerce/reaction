@@ -1,8 +1,8 @@
-import { Import } from "/server/api/core/import";
+import { Importer } from "/server/api/core/importer";
 import { Shops } from "/lib/collections";
 
 export function registerLayout(layout) {
   Shops.find().forEach((shop) => {
-    Import.layout(layout, shop._id);
+    Importer.layout(layout, shop._id);
   });
 }

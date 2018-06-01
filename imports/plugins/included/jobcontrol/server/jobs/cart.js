@@ -1,4 +1,3 @@
-import later from "later";
 import { Job } from "/imports/plugins/core/job-collection/lib";
 import { Meteor } from "meteor/meteor";
 import { Accounts, Cart, Jobs } from "/lib/collections";
@@ -11,11 +10,10 @@ async function lazyLoadMoment() {
   moment = await import("moment");
 }
 
-
 /**
- * {Function} that fetches stale carts
  * @param {Object} olderThan older than date
  * @return {Object} stale carts
+ * @private
  */
 const getstaleCarts = (olderThan) => Cart.find({ updatedAt: { $lte: olderThan } }).fetch();
 
@@ -33,7 +31,7 @@ export function setupStaleCartHook() {
           backoff: "exponential" // delay by twice as long for each subsequent retry
         })
         .repeat({
-          schedule: later.parse.text("every day")
+          schedule: Jobs.later.parse.text("every day")
         })
         .save({
           cancelRepeats: true

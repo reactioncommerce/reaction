@@ -1,25 +1,28 @@
+import Random from "@reactioncommerce/random";
 import { Meteor } from "meteor/meteor";
 import { Match, check } from "meteor/check";
-import { Random } from "meteor/random";
 import { Reaction, Hooks } from "/server/api";
 import { Cart } from "/lib/collections";
 import { Discounts } from "/imports/plugins/core/discounts/lib/collections";
 import { DiscountCodes as DiscountSchema } from "../../lib/collections/schemas";
 
+/**
+ * @namespace Discounts/Codes/Methods
+ */
+
 // attach discount code specific schema
 Discounts.attachSchema(DiscountSchema, { selector: { discountMethod: "code" } });
 
-//
-// make all discount methods available
-//
 export const methods = {
   /**
-   * discounts/codes/discount
-   * calculates percentage off discount rates
    * we intentionally passed ids, instead
    * of the cart,discount Object
    * for a smaller request providing an
    * additional level of validation.
+   * @name discounts/codes/discount
+   * @method
+   * @memberof Discounts/Codes/Methods
+   * @summary calculates percentage off discount rates
    * @param  {String} cartId cartId
    * @param  {String} discountId discountId
    * @return {Number} returns discount total
@@ -38,10 +41,12 @@ export const methods = {
 
     return discount;
   },
+
   /**
-   * TODO discounts/codes/credit
-   * calculates a credit off cart
-   * for discount codes
+   * @name discounts/codes/credit
+   * @method
+   * @memberof Discounts/Codes/Methods
+   * @summary calculates a credit off cart for discount codes
    * @param  {String} cartId cartId
    * @param  {String} discountId discountId
    * @return {Number} returns discount total
@@ -54,9 +59,12 @@ export const methods = {
     ({ discount } = discountMethod);
     return discount;
   },
+
   /**
-   * TODO discounts/codes/sale
-   * calculates a new price for an item
+   * @name discounts/codes/sale
+   * @method
+   * @memberof Discounts/Codes/Methods
+   * @summary calculates a new price for an item
    * @param  {String} cartId cartId
    * @param  {String} discountId discountId
    * @return {Number} returns discount total
@@ -78,10 +86,12 @@ export const methods = {
 
     return discount;
   },
+
   /**
-   * TODO discounts/codes/shipping
-   * calculates a discount based on the value
-   * of a calculated shipping rate in the cart.
+   * @name discounts/codes/shipping
+   * @method
+   * @memberof Discounts/Codes/Methods
+   * @summary calculates a discount based on the value of a calculated shipping rate in the cart.
    * @param  {String} cartId cartId
    * @param  {String} discountId discountId
    * @return {Number} returns discount total
@@ -92,41 +102,58 @@ export const methods = {
     let discount = 0;
     const discountMethod = Discounts.findOne(discountId);
     const cart = Cart.findOne(cartId);
-
-    for (const shipping of cart.shipping) {
-      if (shipping.shipmentMethod && shipping.shipmentMethod.name === discountMethod.discount) {
-        discount += Math.max(0, shipping.shipmentMethod.rate);
+    if (cart.shipping && cart.shipping.length) {
+      for (const shipping of cart.shipping) {
+        if (shipping.shipmentMethod && shipping.shipmentMethod.name.toUpperCase() === discountMethod.discount.toUpperCase()) {
+          discount += Math.max(0, shipping.shipmentMethod.rate);
+        }
       }
     }
-
     return discount;
   },
-  /**
-   * discounts/addCode
-   * @param  {String} modifier update statement
-   * @param  {String} docId discount docId
-   * @param  {String} qty create this many additional codes
-   * @return {String} returns update/insert result
-   */
-  "discounts/addCode"(modifier, docId) {
-    check(modifier, Object);
-    check(docId, Match.OneOf(String, null, undefined));
 
-    // check permissions to add
-    if (!Reaction.hasPermission("discount-codes")) {
-      throw new Meteor.Error("access-denied", "Access Denied");
-    }
-    // if no doc, insert
-    if (!docId) {
-      return Discounts.insert(modifier);
-    }
-    // else update and return
-    return Discounts.update(docId, modifier);
-  },
   /**
-   * discounts/codes/remove
-   * removes discounts that have been previously applied
-   * to a cart.
+   * @name discounts/addCode
+   * @method
+   * @memberof Discounts/Codes/Methods
+   * @param  {Object} doc A Discounts document to be inserted
+   * @param  {String} [docId] DEPRECATED. Existing ID to trigger an update. Use discounts/editCode method instead.
+   * @return {String} Insert result
+   */
+  "discounts/addCode"(doc, docId) {
+    check(doc, Object); // actual schema validation happens during insert below
+
+    // Backward compatibility
+    check(docId, Match.Optional(String));
+    if (docId) return Meteor.call("discounts/editCode", { _id: docId, modifier: doc });
+
+    if (!Reaction.hasPermission("discount-codes")) throw new Meteor.Error("access-denied", "Access Denied");
+    doc.shopId = Reaction.getShopId();
+    return Discounts.insert(doc);
+  },
+
+  /**
+   * @name discounts/editCode
+   * @method
+   * @memberof Discounts/Codes/Methods
+   * @param  {Object} details An object with _id and modifier props
+   * @return {String} Update result
+   */
+  "discounts/editCode"(details) {
+    check(details, {
+      _id: String,
+      modifier: Object // actual schema validation happens during update below
+    });
+    if (!Reaction.hasPermission("discount-codes")) throw new Meteor.Error("access-denied", "Access Denied");
+    const { _id, modifier } = details;
+    return Discounts.update(_id, modifier);
+  },
+
+  /**
+   * @name discounts/codes/remove
+   * @method
+   * @memberof Discounts/Codes/Methods
+   * @summary removes discounts that have been previously applied to a cart.
    * @param  {String} id cart id of which to remove a code
    * @param  {String} codeId discount Id from cart.billing
    * @param  {String} collection collection (either Orders or Cart)
@@ -176,10 +203,12 @@ export const methods = {
 
     return result;
   },
+
   /**
-   * discounts/codes/apply
-   * checks validity of code conditions and then
-   * applies a discount as a paymentMethod to cart
+   * @name discounts/codes/apply
+   * @method
+   * @memberof Discounts/Codes/Methods
+   * @summary checks validity of code conditions and then applies a discount as a paymentMethod to cart
    * @param  {String} id cart/order id of which to remove a code
    * @param  {String} code valid discount code
    * @param  {String} collection collection (either Orders or Cart)

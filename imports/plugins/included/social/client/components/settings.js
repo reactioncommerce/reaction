@@ -5,7 +5,7 @@ import {
   SettingsCard,
   Form
 } from "/imports/plugins/core/ui/client/components";
-import { SocialPackageConfig } from "/lib/collections/schemas/social";
+import { SocialPackageConfig } from "/lib/collections/schemas";
 
 const socialProviders = [
   {
@@ -43,7 +43,7 @@ class SocialSettings extends Component {
   }
 
   getSchemaForField(provider, field) {
-    return SocialPackageConfig._schema[`settings.public.apps.${provider}.${field}`];
+    return SocialPackageConfig.getDefinition(`settings.public.apps.${provider}.${field}`);
   }
 
   handleSettingChange = (event, value, name) => {

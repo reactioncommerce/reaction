@@ -7,7 +7,6 @@ import { ReactionProduct } from "/lib/api";
 import { Products } from "/lib/collections";
 import { Countries } from "/client/collections";
 import { Reaction, i18next } from "/client/api";
-import { applyProductRevision } from "/lib/api/products";
 import VariantEdit from "../components/variantEdit";
 
 
@@ -72,14 +71,13 @@ function composer(props, onData) {
       _id: ReactionProduct.selectedTopVariant()._id
     });
 
-    const revisedVariant = applyProductRevision(variant);
-    const childVariants = ReactionProduct.getVariants(revisedVariant._id);
+    const childVariants = ReactionProduct.getVariants(variant._id);
 
     onData(null, {
       countries: Countries.find({}).fetch(),
       editFocus: Reaction.state.get("edit/focus"),
       childVariants,
-      variant: revisedVariant
+      variant
     });
   } else {
     onData(null, {

@@ -4,18 +4,21 @@ import { Meteor } from "meteor/meteor";
 import { Roles } from "meteor/alanning:roles";
 import { Reaction } from "/client/api";
 import { Packages, Shops } from "/lib/collections";
-import { Registry } from "/lib/collections/schemas/registry";
+
+/**
+ * @typedef optionHash
+ * @type {Object}
+ * @property {String} name - name of a package.
+ * @property {String} provides -purpose of this package as identified to the registry
+ * @property {String} container - filter registry entries for matching container.
+ * @property {String} shopId - filter to only display results matching shopId, not returned
+ * @property {String} template - filter registry entries for matching template
+ */
 
 /**
  * @method Apps
- * @typedef optionHash
- * @type {object}
- * @property {string} name - name of a package.
- * @property {string} provides -purpose of this package as identified to the registry
- * @property {string} container - filter registry entries for matching container.
- * @property {string} shopId - filter to only display results matching shopId, not returned
- * @property {string} template - filter registry entries for matching template
- * @return {optionHash} returns an array of filtered, structure reactionApps
+ * @param {optionHash} optionHash Option hash
+ * @return {Object[]} returns an array of filtered, structure reactionApps
  */
 export function Apps(optionHash) {
   const filter = {};
@@ -122,23 +125,17 @@ export function Apps(optionHash) {
         return false;
       }
 
-      const filterKeys = Object.keys(itemFilter);
       // Loop through all keys in the itemFilter
       // each filter item should match exactly with the property in the registry or
       // should be included in the array if that property is an array
-      return filterKeys.every((property) => {
-        // Check to see if the schema for this property is an array
-        // if so, we want to make sure that this item is included in the array
-        if (Array.isArray(Registry._schema[property].type())) {
-          // Check to see if the registry entry is an array.
-          // Legacy registry entries could exist that use a string even when the schema requires an array.
-          if (Array.isArray(item[property])) {
-            return item[property].includes(itemFilter[property]);
-          }
-        }
+      return Object.keys(itemFilter).every((property) => {
+        const filterVal = itemFilter[property];
+        const itemVal = item[property];
 
+        // Check to see if the registry entry is an array.
+        // Legacy registry entries could exist that use a string even when the schema requires an array.
         // If it's not an array, the filter should match exactly
-        return item[property] === itemFilter[property];
+        return Array.isArray(itemVal) ? itemVal.includes(filterVal) : itemVal === filterVal;
       });
     });
 
@@ -148,24 +145,18 @@ export function Apps(optionHash) {
   });
 
   // Sort apps by priority (registry.priority)
-  const sortedApps = reactionApps.sort((a, b) => a.priority - b.priority).slice();
-
-  return sortedApps;
+  return reactionApps.sort((a, b) => a.priority - b.priority).slice();
 }
 
 /**
  *
- * @method reactionApps
- * @memberof Templates
+ * @name reactionApps
+ * @memberof BlazeTemplateHelpers
  * @summary Return an array of filtered, structured `reactionApps` as a Template Helper
  * @example {{#each reactionApps provides="settings" name=packageName container=container}}
  * @example {{#each reactionApps provides="userAccountDropdown" enabled=true}}
- * @property {string} name - name of a package.
- * @property {string} provides -purpose of this package as identified to the registry
- * @property {string} container - filter registry entries for matching container.
- * @property {string} shopId - filter to only display results matching shopId, not returned
- * @property {string} template - filter registry entries for matching template
- * @return {optionHash} returns an array of filtered, structure reactionApps
+ * @param {optionHash} optionHash Option hash
+ * @return {Object[]} returns an array of filtered, structure reactionApps
  * ```[{
  *   enabled: true
  *   label: "Stripe"

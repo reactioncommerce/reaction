@@ -6,9 +6,9 @@ class OrderBulkActionsBar extends Component {
   static propTypes = {
     handleBulkPaymentCapture: PropTypes.func,
     isLoading: PropTypes.object,
-    multipleSelect: PropTypes.bool,
+    multipleSelect: PropTypes.bool, // eslint-disable-line react/boolean-prop-naming
     orders: PropTypes.array,
-    renderFlowList: PropTypes.bool,
+    renderFlowList: PropTypes.bool, // eslint-disable-line react/boolean-prop-naming
     selectAllOrders: PropTypes.func,
     selectedItems: PropTypes.array,
     setShippingStatus: PropTypes.func,
@@ -63,7 +63,7 @@ class OrderBulkActionsBar extends Component {
             onClick={this.handleListItemClick}
             listItemClassName={this.props.shipping.picked ? "selected" : ""}
           >
-            {this.props.shipping.picked ?
+            {this.props.shipping.picked && !this.props.isLoading.picked ?
               <div>
                 <Icon className="bulk-actions-icons" icon="fa fa-print"/>
                 <Icon className="bulk-actions-icons-select" icon="fa fa-check"/>
@@ -79,7 +79,7 @@ class OrderBulkActionsBar extends Component {
             onClick={this.handleListItemClick}
             listItemClassName={this.props.shipping.packed ? "selected" : ""}
           >
-            {this.props.shipping.packed ?
+            {this.props.shipping.packed && !this.props.isLoading.packed ?
               <Icon className="bulk-actions-icons-select" icon="fa fa-check"/>
               :
               this.renderLoadingSpinner("packed")
@@ -92,7 +92,7 @@ class OrderBulkActionsBar extends Component {
             onClick={this.handleListItemClick}
             listItemClassName={this.props.shipping.labeled ? "selected" : ""}
           >
-            {this.props.shipping.labeled ?
+            {this.props.shipping.labeled && !this.props.isLoading.labeled ?
               <div>
                 <Icon className="bulk-actions-icons" icon="fa fa-print"/>
                 <Icon className="bulk-actions-icons-select" icon="fa fa-check"/>
@@ -108,7 +108,7 @@ class OrderBulkActionsBar extends Component {
             onClick={this.handleListItemClick}
             listItemClassName={this.props.shipping.shipped ? "selected" : ""}
           >
-            {this.props.shipping.shipped ?
+            {this.props.shipping.shipped && !this.props.isLoading.shipped ?
               <div>
                 <Icon className="bulk-actions-icons" icon="fa fa-paper-plane-o" />
                 <Icon className="bulk-actions-icons-select" icon="fa fa-check"/>

@@ -2,33 +2,15 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import classnames from "classnames";
 import accounting from "accounting-js";
-import { registerComponent } from "@reactioncommerce/reaction-components";
-
-function setCaretPosition(ctrl, pos) {
-  if (ctrl.setSelectionRange) {
-    ctrl.focus();
-    ctrl.setSelectionRange(pos, pos);
-  } else if (ctrl.createTextRange) {
-    const range = ctrl.createTextRange();
-
-    range.collapse(true);
-    range.moveEnd("character", pos);
-    range.moveStart("character", pos);
-    range.select();
-  }
-}
+import { Components, registerComponent } from "@reactioncommerce/reaction-components";
 
 class NumericInput extends Component {
   constructor(props) {
     super(props);
-
-    // Set default state
     this.state = {
-      value: this.props.value
+      value: this.props.value,
+      isEditing: false
     };
-
-    // Bind event handlers
-    this.handleChange = this.handleChange.bind(this);
   }
 
   /**
@@ -37,66 +19,116 @@ class NumericInput extends Component {
    * @return {undefined}
    */
   componentWillReceiveProps(nextProps) {
-    this.setState({
-      value: nextProps.value
-    });
+    if (nextProps.value !== undefined && !this.state.isEditing) {
+      const value = this.format(nextProps.value);
+      this.setState({
+        value
+      });
+    }
   }
 
-  get moneyFormat() {
-    const moneyFormat = this.props.format || {};
-    // precision is mis-represented in accounting.js. Precision in this case is actually scale
-    // so we add the property for precision based on scale.
-    moneyFormat.precision = moneyFormat.scale !== undefined ? moneyFormat.scale : 2;
-
-    return moneyFormat;
-  }
-
+  /**
+   * Gets the displayed value. If in edit mode,
+   * the field's value is not formatted. If not in
+   * edit mode, the field gets formatted according to chosen locale.
+   * @returns {*}
+   */
   get displayValue() {
     const { value } = this.state;
-
-    if (typeof value === "number") {
-      if (this.props.format && this.props.format.scale === 0) {
-        return this.format(value * 100);
-      }
-      return this.format(value);
+    if (this.state.isEditing) {
+      return value;
     }
-
-    return 0;
-  }
-
-  get scale() {
-    const parts = this.state.value.split(".");
-
-    if (parts.length === 2) {
-      return parts[1].length;
-    }
-
-    return 0;
+    return this.format(value);
   }
 
   /**
-   * format a numeric string
-   * @param  {String} value Value to format
-   * @param  {Object} format Object containing settings for formatting value
-   * @return {String} Foramtted numeric string
+   * Format this inputs value to a numeric string
+   * @return {String} Formatted numeric string
    */
-  format(value, format) {
-    const moneyFormat = format || this.moneyFormat;
-
-    const decimal = moneyFormat.decimal || undefined;
-    const unformatedValue = this.unformat(value, decimal);
-
-    return accounting.formatMoney(unformatedValue, moneyFormat);
+  format(value) {
+    const moneyFormat = Object.assign({}, this.props.format);
+    if (this.state.isEditing) {
+      moneyFormat.symbol = ""; // No currency sign in edit mode
+    }
+    const unformattedValue = this.unformat(value);
+    const formatted = accounting.formatMoney(unformattedValue, moneyFormat).trim();
+    return formatted;
   }
 
   /**
-   * unformat numeric string
-   * @param  {String} value String value to unformat
-   * @param  {String} decimal String representing the decimal place
-   * @return {String} unformatted numeric string
+   * Get the field's value as rational number
+   * @param { Number } the field's value
    */
-  unformat(value, decimal) {
-    return accounting.unformat(value, decimal);
+  unformat(value) {
+    const unformattedValue = accounting.unformat(value, this.props.format.decimal);
+    return unformattedValue;
+  }
+
+  /**
+   * onBlur
+   * @summary set the state when the value of the input is changed
+   * @param  {Event} event Event object
+   * @return {void}
+   */
+  onBlur = (event) => {
+    let { value } = this.state;
+    if (value > this.props.maxValue) {
+      value = this.props.maxValue;
+    }
+    this.setState({
+      isEditing: false,
+      value
+    });
+    if (this.props.onBlur) {
+      const numberValue = this.unformat(value);
+      this.props.onBlur(event, numberValue, this.props.name);
+    }
+  }
+
+  /**
+   * onKeyDown
+   * @summary set the state when the value of the input is changed
+   * @param  {Event} event Event object
+   * @return {void}
+   */
+  onKeyDown(event) {
+    if (this.props.onKeyDown) {
+      this.props.onKeyDown(event, this.props.name);
+    }
+
+    if (this.props.onReturnKeyDown && event.keyCode === 13) {
+      const numberValue = this.unformat(event.target.value);
+      this.props.onReturnKeyDown(event, numberValue, this.props.name);
+    }
+  }
+
+  /**
+   * Selects the text of the passed input field
+   * @param ctrl
+   */
+  selectAll(ctrl) {
+    if (ctrl.setSelectionRange) {
+      ctrl.setSelectionRange(0, ctrl.value.length);
+    }
+  }
+
+  /**
+   * onFocus
+   * @summary set the state when the input is focused
+   * @param  {Event} event Event object
+   * @return {void}
+   */
+  onFocus = (event) => {
+    const { currentTarget } = event;
+    this.setState({
+      isEditing: true
+    }, () => {
+      this.setState({
+        value: this.format(this.state.value)
+      }, () => {
+        this.selectAll(currentTarget);
+      });
+    });
   }
 
   /**
@@ -104,34 +136,42 @@ class NumericInput extends Component {
    * @param  {SyntheticEvent} event Change event
    * @return {undefined}
    */
-  handleChange(event) {
-    const input = event.currentTarget;
+  handleChange = (event) => {
     const { value } = event.currentTarget;
-    let numberValue = this.unformat(value);
-
-    if (this.props.format.scale === 0) {
-      numberValue /= 100;
-    }
-
     this.setState({
-      value: numberValue,
-      caretPosition: input.selectionStart
-    }, () => {
-      setCaretPosition(input, Math.max(this.state.caretPosition, 0));
-
-      if (this.props.onChange) {
-        this.props.onChange(event, { value, numberValue });
-      }
+      value
     });
+
+    if (this.props.onChange) {
+      const numberValue = this.unformat(value);
+      this.props.onChange(event, numberValue, this.props.name);
+    }
   }
 
   /**
-   * render
-   * @return {ReactElement} markup
+   * renderLabel
+   * @summary Render the label for the field if one is provided in props
+   * @return {ReactNode|null} react node or null
    */
-  render() {
-    const { classNames } = this.props;
+  renderLabel() {
+    if (this.props.label) {
+      return (
+        <label htmlFor={this.props.id}>
+          <Components.Translation defaultValue={this.props.label} i18nKey={this.props.i18nKeyLabel} />
+        </label>
+      );
+    }
 
+    return null;
+  }
+
+  /**
+   * renderField
+   * @summary Render input box or field
+   * @return {JSX} jsx template
+   */
+  renderField() {
+    const { classNames } = this.props;
 
     if (this.props.isEditing === false) {
       const textValueClassName = classnames({
@@ -146,20 +186,34 @@ class NumericInput extends Component {
         </span>
       );
     }
-
     const fieldClassName = classnames({
       "form-control": true, // eslint-disable-line: quote-props
       ...(classNames.input || {})
     });
-
     return (
-      <div className="rui control numeric-input">
+      <div className="rui control numeric-input-field">
         <input
           className={fieldClassName}
           disabled={this.props.disabled}
+          onFocus={this.onFocus}
+          onBlur={this.onBlur}
+          ref="input"
           onChange={this.handleChange}
           value={this.displayValue}
         />
+      </div>
+    );
+  }
+
+  /**
+   * render
+   * @return {ReactElement} markup
+   */
+  render() {
+    return (
+      <div className="numeric-input">
+        {this.renderLabel()}
+        {this.renderField()}
       </div>
     );
   }
@@ -173,12 +227,20 @@ NumericInput.defaultProps = {
 
 NumericInput.propTypes = {
   classNames: PropTypes.shape({}),
-  disabled: PropTypes.bool,
+  disabled: PropTypes.bool, // eslint-disable-line react/boolean-prop-naming
   format: PropTypes.shape({
-    scale: PropTypes.number
+    decimal: PropTypes.string
   }),
+  i18nKeyLabel: PropTypes.string,
+  id: PropTypes.string,
   isEditing: PropTypes.bool,
+  label: PropTypes.string,
+  maxValue: PropTypes.number,
+  name: PropTypes.string,
+  onBlur: PropTypes.func,
   onChange: PropTypes.func,
+  onKeyDown: PropTypes.func,
+  onReturnKeyDown: PropTypes.func,
   value: PropTypes.number
 };
 

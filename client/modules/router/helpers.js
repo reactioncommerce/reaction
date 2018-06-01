@@ -4,7 +4,7 @@ import Router from "./main";
 
 /**
  * @method pathFor
- * @memberof Templates
+ * @memberof BlazeTemplateHelpers
  * @summary template helper to return path
  * @return {String} username
  */
@@ -12,7 +12,7 @@ Template.registerHelper("pathFor", Router.pathFor);
 
 /**
  * @method urlFor
- * @memberof Templates
+ * @memberof BlazeTemplateHelpers
  * @summary template helper to return absolute + path
  * @return {String} username
  */
@@ -20,7 +20,7 @@ Template.registerHelper("urlFor", (path, params) => Meteor.absoluteUrl(Router.pa
 
 /**
  * @method active
- * @memberof Templates
+ * @memberof BlazeTemplateHelpers
  * @summary template helper for `Router.isActiveClassName`
  * @return {String} username
  */

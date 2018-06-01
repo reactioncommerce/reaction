@@ -513,20 +513,6 @@
           "isCommercial": "Aceasta este o adresă comercială."
         }
       },
-      "revisions": {
-        "isDisabled": "Opțiunea „Revision control” este dezactivată. Orice schimbare va fi imediat publicată.",
-        "isEnabled": "Controlul revizie este activat pentru produse. Toate modificările vor fi trebui să fie publicate înainte de a fi vizibile pentru clienți.",
-        "unpublishedChanges": "Schimbări nepublicate",
-        "publishChanges": "Publicare schimbări",
-        "showChanges": "Expunere schimbări",
-        "hideChanges": "Ascundere modificări",
-        "discardChanges": "Eliminare schimbări",
-        "changedPublished": "Schimbările au fost publicate cu succes.",
-        "changesDiscarded": "Schimbări eliminate cu succes",
-        "noChanges": "Nicio schimbare",
-        "noChangesPublished": "Nu există modificări pentru publicare",
-        "noChangesDiscarded": "Nu există nicio schimbare de eliminat"
-      },
       "address": {
         "country": "Țară",
         "fullName": "Numele complet",

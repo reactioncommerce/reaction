@@ -57,10 +57,10 @@ class MenuItem extends Component {
 }
 
 MenuItem.propTypes = {
-  active: PropTypes.bool,
+  active: PropTypes.bool, // eslint-disable-line react/boolean-prop-naming
   children: PropTypes.node,
   className: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
-  disabled: PropTypes.bool,
+  disabled: PropTypes.bool, // eslint-disable-line react/boolean-prop-naming
   eventAction: PropTypes.string,
   i18nKeyLabel: PropTypes.string,
   i18nKeySelectedLabel: PropTypes.string,

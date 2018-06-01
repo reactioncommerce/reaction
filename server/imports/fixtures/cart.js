@@ -1,14 +1,15 @@
 import faker from "faker";
 import _ from "lodash";
+import Random from "@reactioncommerce/random";
 import { Factory } from "meteor/dburles:factory";
-import { Random } from "meteor/random";
 import { Cart, Products } from "/lib/collections";
 import { getShop } from "./shops";
 import { getAddress } from "./accounts";
 import { addProduct } from "./products";
 
 /**
- *
+ * @method getCartItem
+ * @memberof Fixtures
  * @param {Object} [options] - Options object (optional)
  * @param {string} [options._id] - id of CartItem
  * @param {string} [options.productId] - _id of product that item came from
@@ -39,6 +40,15 @@ export function getCartItem(options = {}) {
   return _.defaults(options, defaults);
 }
 
+/**
+ * @method getSingleCartItem
+ * @memberof Fixtures
+ * @param {Object} [options] - Options object (optional)
+ * @param {string} [options._id] - id of CartItem
+ * @param {string} [options.productId] - _id of product that item came from
+ * @param {string} [options.shopId] - _id of shop that item came from
+ * @returns {Object} - randomly generated cartItem/orderItem data object with only one cart item
+ */
 function getSingleCartItem(options = {}) {
   const cartItem = getCartItem(options);
   const quantity = options.cartQuantity || 1;
@@ -46,6 +56,13 @@ function getSingleCartItem(options = {}) {
   return cartItem;
 }
 
+/**
+ * @method createCart
+ * @memberof Fixtures
+ * @param  {String} productId ID of Product
+ * @param  {String} variantId ID of Product Variant
+ * @return {Object}           Inserted cart object
+ */
 export function createCart(productId, variantId) {
   const product = Products.findOne(productId);
   const variant = Products.findOne(variantId);
@@ -98,13 +115,53 @@ export function createCart(productId, variantId) {
   return insertedCart;
 }
 
-
 export default function () {
   /**
-   * Cart Factory
-   * @summary define cart Factory
+   * @name Cart
+   * @memberof Fixtures
+   * @summary Define cart Factory
+   * @example const cart = Factory.create("cartMultiItems");
+   * @property {string} shopId id - `getShop().id`
+   * @property {string} userId id - `Factory.get("user")`
+   * @property {string} sessionId - `Random.id()`
+   * @property {string} email - `faker.internet.email()`
+   * @property {Array} items - `[getCartItem(), getCartItem()]`
+   * @property {Array} shipping - `[
+     {
+       _id: Random.id(),
+       shopId: getShop()._id,
+       address: addressForOrder
+     }
+   ]`
+   * @property {Array} billing - `[
+     {
+       _id: Random.id(),
+       shopId: getShop()._id,
+       address: addressForOrder
+     }
+   ]`
+   * @property {Object} workflow - `{
+     status: "checkoutPayment",
+     workflow: [
+       "checkoutLogin",
+       "checkoutAddressBook",
+       "coreCheckoutShipping",
+       "checkoutReview",
+       "checkoutPayment"
+     ]
+   }`
+   * @property {Date} createdAt - `faker.date.past()`
+   * @property {Date} updatedAt - `new Date()`
+   * @description Types of Cart Factories:
+   * - `cart`: A cart with a user and two items
+   * - `cartToOrder`: A cart with shipping, billing info and at the Checkout workflow state
+   * - `anonymousCart`: An empty cart with an anonymous user
+   * - `cartOne`: A cart with one item
+   * - `cartTwo`: A cart with one item with quantity 2
+   * - `cartMultiItems`: A cart with two items, 1 each
+   * - `cartMultiShop`: A cart with two items, from different shops
+   * - `cartNoItems`: A cart with a user and no items
    */
-
   const cartNoItems = {
     shopId: getShop()._id,
     userId: Factory.get("user"),

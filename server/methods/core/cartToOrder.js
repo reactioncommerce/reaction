@@ -9,7 +9,7 @@ import { Hooks, Logger, Reaction } from "/server/api";
 /**
  * @name cart/copyCartToOrder
  * @method
- * @memberof Methods/Cart
+ * @memberof Cart/Methods
  * @summary Transform Cart to Order when a payment is processed.
  * We want to copy the cart over to an order object, and give the user a new empty
  * cart. Reusing the cart schema makes sense, but integrity of the order,
@@ -146,23 +146,18 @@ export function copyCartToOrder(cartId) {
   // Assign items to each shipping record based on the shopId of the item
   _.each(order.items, (item) => {
     const shippingRecord = order.shipping.find((sRecord) => sRecord.shopId === item.shopId);
+    const shipmentItem = {
+      _id: item._id,
+      productId: item.productId,
+      quantity: item.quantity,
+      shopId: item.shopId,
+      variantId: item.variants._id
+    };
     // If the shipment exists
     if (shippingRecord.items) {
-      shippingRecord.items.push({
-        _id: item._id,
-        productId: item.productId,
-        shopId: item.shopId,
-        variantId: item.variants._id
-      });
+      shippingRecord.items.push(shipmentItem);
     } else {
-      shippingRecord.items = [
-        {
-          _id: item._id,
-          productId: item.productId,
-          shopId: item.shopId,
-          variantId: item.variants._id
-        }
-      ];
+      shippingRecord.items = [shipmentItem];
     }
   });
 

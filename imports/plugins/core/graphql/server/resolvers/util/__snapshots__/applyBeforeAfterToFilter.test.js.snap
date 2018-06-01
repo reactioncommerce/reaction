@@ -1,0 +1,7 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`throws an error if both before and after are set 1`] = `"Including both 'after' and 'before' params is not allowed"`;
+
+exports[`throws an error if sortBy is missing 1`] = `"sortBy is required"`;
+
+exports[`throws an error if sortOrder is missing 1`] = `"sortOrder is required"`;

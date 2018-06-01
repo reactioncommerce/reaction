@@ -6,7 +6,6 @@ import { ReactiveDict } from "meteor/reactive-dict";
 import { Reaction } from "/client/api";
 import { Cart } from "/lib/collections";
 
-
 // Because we are duplicating shipment quotes across shipping records
 // we will get duplicate shipping quotes but we only want to diplay one
 // So this function eliminates duplicates
@@ -22,15 +21,12 @@ function uniqObjects(objs) {
   return uniqueBlobs.map((blob) => EJSON.parse(blob));
 }
 
-// cartShippingQuotes
-// returns multiple methods
 /**
- * cartShippingQuotes - returns a list of all the shipping costs/quotations
- * of each available shipping carrier like UPS, Fedex etc.
- * @param {Object} currentCart - The current cart that's about
- * to be checked out.
- * @returns {Array} - an array of the quotations of multiple shipping
- * carriers.
+ * @name cartShippingQuotes
+ * @summary returns a list of all the shipping costs/quotations of each available shipping carrier like UPS, Fedex etc.
+ * @param {Object} currentCart - The current cart that's about to be checked out.
+ * @returns {Array} - an array of the quotations of multiple shipping carriers.
+ * @private
  */
 function cartShippingQuotes(currentCart) {
   const cart = currentCart || Cart.findOne();
@@ -72,9 +68,10 @@ function shippingMethodsQueryStatus(currentCart) {
 }
 
 /**
- * cartShipmentMethods - gets current shipment methods.
- * @return {Array} - Returns multiple methods if more than one
- * carrier has been chosen.
+ * @name cartShipmentMethods
+ * @summary gets current shipment methods.
+ * @return {Array} - Returns multiple methods if more than one carrier has been chosen.
+ * @ignore
  */
 function cartShipmentMethods() {
   const cart = Cart.findOne();
@@ -201,6 +198,7 @@ Template.coreCheckoutShipping.helpers({
    * `merchantShippingRates` is enabled in marketplace
    * @method isAdmin
    * @return {Boolean} true if the user has admin access, otherwise false
+   * @ignore
    */
   isAdmin() {
     const marketplaceSettings = Reaction.marketplace;
@@ -220,14 +218,11 @@ Template.coreCheckoutShipping.events({
   "click .list-group-item"(event) {
     event.preventDefault();
     event.stopPropagation();
-    const self = this;
     const cart = Cart.findOne();
 
-    try {
-      Meteor.call("cart/setShipmentMethod", cart._id, self.method);
-    } catch (error) {
-      throw new Meteor.Error(error, "Cannot change methods while processing.");
-    }
+    Meteor.call("cart/setShipmentMethod", cart._id, this.method, (error) => {
+      if (error) throw new Meteor.Error("set-shipment-method-error", error.message);
+    });
   },
   "click [data-event-action=configure-shipping]"(event) {
     event.preventDefault();

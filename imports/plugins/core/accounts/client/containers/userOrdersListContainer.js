@@ -1,36 +1,8 @@
-import { compose, withProps } from "recompose";
+import { compose } from "recompose";
 import { Meteor } from "meteor/meteor";
 import { Router } from "/client/modules/router/";
-import { Media } from "/lib/collections";
 import { registerComponent, composeWithTracker } from "@reactioncommerce/reaction-components";
 import OrdersList from "../components/ordersList";
-
-
-const handlers = {};
-
-handlers.handleDisplayMedia = (item) => {
-  const variantId = item.variants._id;
-  const { productId } = item;
-
-  const variantImage = Media.findOne({
-    "metadata.variantId": variantId,
-    "metadata.productId": productId
-  });
-
-  if (variantImage) {
-    return variantImage;
-  }
-
-  const defaultImage = Media.findOne({
-    "metadata.productId": productId,
-    "metadata.priority": 0
-  });
-
-  if (defaultImage) {
-    return defaultImage;
-  }
-  return false;
-};
 
 function composer(props, onData) {
   // Get user order from props
@@ -44,7 +16,7 @@ function composer(props, onData) {
 
   if (orders.length > 0) {
     orders.map((order) => {
-      const imageSub = Meteor.subscribe("CartImages", order.items);
+      const imageSub = Meteor.subscribe("OrderImages", order._id);
       const orderSummary = {
         quantityTotal: order.getCount(),
         subtotal: order.getSubTotal(),
@@ -55,15 +27,13 @@ function composer(props, onData) {
         shipping: order.shipping
       };
       if (imageSub.ready()) {
-        const productImages = Media.find().fetch();
         const orderId = order._id;
         const orderInfo = {
           shops: order.getShopSummary(),
           order,
           orderId,
           orderSummary,
-          paymentMethods: order.getUniquePaymentMethods(),
-          productImages
+          paymentMethods: order.getUniquePaymentMethods()
         };
         allOrdersInfo.push(orderInfo);
       }
@@ -83,11 +53,7 @@ function composer(props, onData) {
 
 
 registerComponent("OrdersList", OrdersList, [
-  withProps(handlers),
   composeWithTracker(composer)
 ]);
 
-export default compose(
-  withProps(handlers),
-  composeWithTracker(composer)
-)(OrdersList);
+export default compose(composeWithTracker(composer))(OrdersList);

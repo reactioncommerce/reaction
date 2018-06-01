@@ -6,7 +6,8 @@ import { Session } from "meteor/session";
 import { Template } from "meteor/templating";
 
 /**
- * Reaction TagNav shared helpers
+ * @memberof Helpers
+ * @summary Reaction TagNav shared helpers
  * @type {Object}
  */
 export const TagHelpers = {
@@ -192,6 +193,6 @@ export const TagHelpers = {
  * @summary Template method to return subTags
  * @param parentTag {Object} Tag
  * @return {Array} Array of subtags or empty Array
- * @memberof Templates
+ * @memberof BlazeTemplateHelpers
  */
 Template.registerHelper("reactionSubTags", TagHelpers.subTags);

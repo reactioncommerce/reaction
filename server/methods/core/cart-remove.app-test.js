@@ -1,8 +1,8 @@
 /* eslint dot-notation: 0 */
 /* eslint prefer-arrow-callback:0 */
+import Random from "@reactioncommerce/random";
 import { Meteor } from "meteor/meteor";
 import { check, Match } from "meteor/check";
-import { Random } from "meteor/random";
 import { Factory } from "meteor/dburles:factory";
 import { assert, expect } from "meteor/practicalmeteor:chai";
 import { sinon } from "meteor/practicalmeteor:sinon";
@@ -52,10 +52,9 @@ describe("cart methods", function () {
       const cartItemId = cartFromCollection.items[0]._id;
       assert.equal(cartFromCollection.items.length, 2);
       Meteor.call("cart/removeFromCart", cartItemId);
-      // Expect Cart.update to be called twice, because cart/removeFromCart
-      // triggers a Hooks.Events which calls Cart.update.
-      assert.equal(updateSpy.callCount, 2, "update should be called one time");
-      Meteor._sleepForMs(1000);
+      // The cart/removeFromCart method will trigger the hook
+      // afterCartUpdateCalculateDiscount 4 times.
+      assert.equal(updateSpy.callCount, 4, "update should be called four times");
       const updatedCart = Collections.Cart.findOne(cart._id);
       assert.equal(updatedCart.items.length, 1, "there should be one item left in cart");
       return done();
@@ -75,7 +74,6 @@ describe("cart methods", function () {
       const cartFromCollection = Collections.Cart.findOne(cart._id);
       const cartItemId = cartFromCollection.items[0]._id;
       Meteor.call("cart/removeFromCart", cartItemId, 1);
-      Meteor._sleepForMs(500);
       const updatedCart = Collections.Cart.findOne(cart._id);
       expect(updatedCart.items[0].quantity).to.equal(1);
     });
@@ -95,7 +93,6 @@ describe("cart methods", function () {
       const cartItemId = cartFromCollection.items[0]._id;
       const originalQty = cartFromCollection.items[0].quantity;
       Meteor.call("cart/removeFromCart", cartItemId, originalQty);
-      Meteor._sleepForMs(500);
       const updatedCart = Collections.Cart.findOne(cart._id);
       expect(updatedCart.items.length).to.equal(0);
     });

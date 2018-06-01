@@ -1,5 +1,4 @@
 import { Meteor } from "meteor/meteor";
-import "./methods";
 import startup from "./startup";
 import { Logger } from "/server/api";
 

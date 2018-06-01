@@ -4,7 +4,7 @@ import { Reaction } from "/client/api";
 
 /**
  * @method hasPermission
- * @memberof Template
+ * @memberof BlazeTemplateHelpers
  * @summary check current user hasPermission, uses [alanning:meteor-roles](http://alanning.github.io/meteor-roles/classes/Roles.html)
  * @example {{hasPermission admin userId}}
  * @param  {String|Array} "permissions"
@@ -29,7 +29,7 @@ Template.registerHelper("hasPermission", (permissions, options) => {
 
 /**
  * @method hasOwnerAccess
- * @memberof Template
+ * @memberof BlazeTemplateHelpers
  * @summary check if user has owner access, uses [alanning:meteor-roles](http://alanning.github.io/meteor-roles/classes/Roles.html)
  * @return {Boolean} return true if owner
  */
@@ -37,7 +37,7 @@ Template.registerHelper("hasOwnerAccess", () => Reaction.hasOwnerAccess());
 
 /**
  * @method hasAdminAccess
- * @memberof Template
+ * @memberof BlazeTemplateHelpers
  * @summary check if user has admin access, uses [alanning:meteor-roles](http://alanning.github.io/meteor-roles/classes/Roles.html)
  * @return {Boolean} return true if admin
  */
@@ -45,7 +45,7 @@ Template.registerHelper("hasAdminAccess", () => Reaction.hasAdminAccess());
 
 /**
  * @method hasDashboardAccess
- * @memberof Template
+ * @memberof BlazeTemplateHelpers
  * @summary check if user has dashboard access, uses [alanning:meteor-roles](http://alanning.github.io/meteor-roles/classes/Roles.html)
  * @return {Boolean} return true if user has dashboard permission
  */
@@ -53,7 +53,7 @@ Template.registerHelper("hasDashboardAccess", () => Reaction.hasDashboardAccess(
 
 /**
  * @method allowGuestCheckout
- * @memberof Template
+ * @memberof BlazeTemplateHelpers
  * @summary check if guest users are allowed to checkout, uses [alanning:meteor-roles](http://alanning.github.io/meteor-roles/classes/Roles.html)
  * @return {Boolean} return true if shop has guest checkout enabled
  */

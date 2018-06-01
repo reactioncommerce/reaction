@@ -1,9 +1,9 @@
 import url from "url";
+import Random from "@reactioncommerce/random";
 import packageJson from "/package.json";
 import _, { merge, uniqWith } from "lodash";
 import { Meteor } from "meteor/meteor";
-import { check, Match } from "meteor/check";
-import { Random } from "meteor/random";
+import { check } from "meteor/check";
 import { Accounts } from "meteor/accounts-base";
 import { Roles } from "meteor/alanning:roles";
 import { EJSON } from "meteor/ejson";
@@ -14,6 +14,7 @@ import { registerTemplate } from "./templates";
 import { sendVerificationEmail } from "./accounts";
 import { getMailUrl } from "./email/config";
 import { createGroups } from "./groups";
+import ConnectionDataStore from "./connectionDataStore";
 
 /**
  * @file Server core methods
@@ -25,7 +26,6 @@ import { createGroups } from "./groups";
 const { Jobs, Packages, Shops, Accounts: AccountsCollection } = Collections;
 
 export default {
-
   init() {
     // run beforeCoreInit hooks
     Hooks.Events.run("beforeCoreInit");
@@ -51,7 +51,7 @@ export default {
 
     this.loadPackages();
     // process imports from packages and any hooked imports
-    this.Import.flush();
+    this.Importer.flush();
     this.createGroups();
     // timing is important, packages are rqd for initial permissions configuration.
     if (!Meteor.isAppTest) {
@@ -368,25 +368,57 @@ export default {
    * @name getShopId
    * @method
    * @memberof Core
-   * @summary Get shop ID
-   * @todo This should intelligently find the correct default shop Probably whatever the main shop is or marketplace
-   * @param  {String} userId User ID String
-   * @return {StringId}        active shop ID
+   * @summary Get shop ID, first by checking the current user's preferences
+   * then by getting the shop by the current domain.
+   * @todo should we return the Primary Shop if none found?
+   * @return {String} active shop ID
    */
-  getShopId(userId) {
-    check(userId, Match.Maybe(String));
-    const activeUserId = Meteor.call("reaction/getUserId");
-    if (activeUserId || userId) {
-      const activeShopId = this.getUserPreferences({
-        userId: activeUserId || userId,
-        packageName: "reaction",
-        preference: "activeShopId"
-      });
-      if (activeShopId) {
-        return activeShopId;
-      }
+  getShopId() {
+    // is there a stored value?
+    let shopId = ConnectionDataStore.get("shopId");
+
+    // if so, return it
+    if (shopId) {
+      return shopId;
     }
 
+    try {
+      // otherwise, find the shop by user settings
+      shopId = this.getUserShopId(Meteor.userId());
+    } catch (e) {
+      // `Meteor.userId` will raise an error when invoked outside of a method
+      // call or publication, i.e., at startup. That's ok here.
+    }
+
+    // if still not found, look up the shop by domain
+    if (!shopId) {
+      shopId = this.getShopIdByDomain();
+    }
+
+    // store the value for faster responses
+    ConnectionDataStore.set("shopId", shopId);
+
+    return shopId;
+  },
+
+  /**
+   * @name clearCache
+   * @method
+   * @memberof Core
+   * @summary allows the client to trigger an uncached lookup of the shopId.
+   *          this is useful when a user switches shops.
+   */
+  resetShopId() {
+    ConnectionDataStore.clear("shopId");
+  },
+
+  /**
+   * @name getShopIdByDomain
+   * @method
+   * @memberof Core
+   * @summary returns the shop which should be used given the current domain
+   */
+  getShopIdByDomain() {
     const domain = this.getDomain();
     const shop = Shops.find({
       domains: domain
@@ -396,7 +428,26 @@ export default {
         _id: 1
       }
     }).fetch()[0];
+
     return shop && shop._id;
+  },
+
+  /**
+   * @name getUserShopId
+   * @method
+   * @memberof Core
+   * @summary Get a user's shop ID, as stored in preferences
+   * @todo This should intelligently find the correct default shop Probably whatever the main shop is or marketplace
+   * @return {StringId}        active shop ID
+   */
+  getUserShopId(userId) {
+    check(userId, String);
+
+    return this.getUserPreferences({
+      userId,
+      packageName: "reaction",
+      preference: "activeShopId"
+    });
   },
 
   /**
@@ -449,12 +500,20 @@ export default {
    * @method
    * @memberof Core
    * @summary Get shop prefix for URL
-   * @return {String} String int he format of "/slug"
+   * @return {String} String in the format of "/shop/slug"
    */
   getShopPrefix() {
     const shopName = this.getShopName();
     const lowerCaseShopName = shopName.toLowerCase();
     const slug = this.getSlug(lowerCaseShopName);
+    const marketplace = Packages.findOne({
+      name: "reaction-marketplace",
+      shopId: this.getPrimaryShopId()
+    });
+
+    if (marketplace && marketplace.settings && marketplace.settings.public) {
+      return `${marketplace.settings.public.shopPrefix}/${slug}`;
+    }
     return `/${slug}`;
   },
 
@@ -503,6 +562,21 @@ export default {
     });
 
     return (shop && shop.currency) || "USD";
+  },
+
+  /**
+   * @name getShopCurrencies
+   * @method
+   * @memberof Core
+   * @summary Get all currencies available to a shop
+   * @return {Object} Shop currency or "USD"
+   */
+  getShopCurrencies() {
+    const shop = Shops.findOne({
+      _id: this.getShopId()
+    });
+
+    return shop && shop.currencies;
   },
 
   /**
@@ -596,14 +670,34 @@ export default {
   },
 
   /**
-   *  @name insertPackagesForShop
-   *  @method
-   *  @memberof Core
-   *  @summary insert Reaction packages into Packages collection registry for a new shop
-   *  Assigns owner roles for new packages
-   *  Imports layouts from packages
-   *  @param {String} shopId - the shopId to create packages for
-   *  @return {String} returns insert result
+   * @name setUserPreferences
+   * @method
+   * @memberof Core
+   * @summary save user preferences in the Accounts collection
+   * @param {String} packageName
+   * @param {String} preference
+   * @param {String} value
+   * @param {String} userId
+   * @return {Number} setPreferenceResult
+   */
+  setUserPreferences(packageName, preference, value, userId) {
+    const setPreferenceResult = AccountsCollection.update(userId, {
+      $set: {
+        [`profile.preferences.${packageName}.${preference}`]: value
+      }
+    });
+    return setPreferenceResult;
+  },
+
+  /**
+   * @name insertPackagesForShop
+   * @method
+   * @memberof Core
+   * @summary insert Reaction packages into Packages collection registry for a new shop
+   * - Assigns owner roles for new packages
+   * - Imports layouts from packages
+   * @param {String} shopId - the shopId to create packages for
+   * @return {String} returns insert result
    */
   insertPackagesForShop(shopId) {
     const layouts = [];
@@ -690,6 +784,9 @@ export default {
    */
   createDefaultAdminUser() {
     const shopId = this.getPrimaryShopId();
+    if (!shopId) {
+      throw new Error(`createDefaultAdminUser: getPrimaryShopId returned ${shopId}`);
+    }
 
     // if an admin user has already been created, we'll exit
     if (Roles.getUsersInRole("owner", shopId).count() !== 0) {
@@ -791,6 +888,14 @@ export default {
     // unless strict security is enabled, mark the admin's email as validated
     if (!isSecureSetup) {
       Meteor.users.update({
+        "_id": accountId,
+        "emails.address": options.email
+      }, {
+        $set: {
+          "emails.$.verified": true
+        }
+      });
+      Collections.Accounts.update({
         "_id": accountId,
         "emails.address": options.email
       }, {
@@ -930,7 +1035,7 @@ export default {
           }
         }
         // Import package data
-        this.Import.package(combinedSettings, shopId);
+        this.Importer.package(combinedSettings, shopId);
         return Logger.debug(`Initializing ${shop.name} ${pkgName}`);
       }));
 
@@ -938,7 +1043,7 @@ export default {
     const uniqLayouts = uniqWith(layouts, _.isEqual);
     // import layouts into Shops
     Shops.find().forEach((shop) => {
-      this.Import.layout(uniqLayouts, shop._id);
+      this.Importer.layout(uniqLayouts, shop._id);
     });
 
     //
@@ -970,7 +1075,6 @@ export default {
    * @summary Method for getting all schemas attached to a given collection
    * @deprecated by simpl-schema
    * @private
-   * @todo TODO: Remove collectionSchema method in favor of simpl-schema
    * @name collectionSchema
    * @param  {string} collection The mongo collection to get schemas for
    * @param  {Object} [selector] Optional selector for multi schema collections
@@ -979,37 +1083,26 @@ export default {
    *                  the collection or schema could not be found
    */
   collectionSchema(collection, selector) {
-    let selectorErrMsg = "";
-    if (selector) {
-      selectorErrMsg = `and selector ${selector}`;
-    }
+    Logger.warn("Reaction.collectionSchema is deprecated and will be removed" +
+      " in a future release. Use collection.simpleSchema(selector).");
+
+    const selectorErrMsg = selector ? `and selector ${selector}` : "";
     const errMsg = `Reaction.collectionSchema could not find schemas for ${collection} collection ${selectorErrMsg}`;
 
-    if (!Collections[collection] || !Collections[collection]._c2) {
+    const col = Collections[collection];
+    if (!col) {
       Logger.warn(errMsg);
       // Return false so we don't pass a check that uses a non-existant schema
       return false;
     }
 
-    const c2 = Collections[collection]._c2;
-
-    // if we have `_simpleSchemas` (plural), then this is a selector based schema
-    if (c2._simpleSchemas) {
-      const selectorKeys = Object.keys(selector);
-      const selectorSchema = c2._simpleSchemas.find((schema) =>
-        // Make sure that every key:value in our selector matches the key:value in the schema selector
-        selectorKeys.every((key) => selector[key] === schema.selector[key]));
-
-      if (!selectorSchema) {
-        Logger.warn(errMsg);
-        // Return false so we don't pass a check that uses a non-existant schema
-        return false;
-      }
-
-      // return a copy of the selector schema we found
-      return selectorSchema.schema;
+    const schema = col.simpleSchema(selector);
+    if (!schema) {
+      Logger.warn(errMsg);
+      // Return false so we don't pass a check that uses a non-existant schema
+      return false;
     }
 
-    return c2._simpleSchema;
+    return schema;
   }
 };

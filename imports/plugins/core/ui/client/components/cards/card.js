@@ -79,8 +79,8 @@ Card.defaultProps = {
 Card.propTypes = {
   children: PropTypes.node,
   className: PropTypes.string,
-  expandable: PropTypes.bool,
-  expanded: PropTypes.bool,
+  expandable: PropTypes.bool, // eslint-disable-line react/boolean-prop-naming
+  expanded: PropTypes.bool, // eslint-disable-line react/boolean-prop-naming
   name: PropTypes.string,
   onExpand: PropTypes.func,
   style: PropTypes.object

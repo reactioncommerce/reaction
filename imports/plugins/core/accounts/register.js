@@ -24,11 +24,11 @@ Reaction.registerPackage({
     workflow: "coreAccountsWorkflow",
     priority: 1
   }, {
-    route: "/account/profile/verify:email?",
+    route: "/account/profile/verify",
     label: "Account Verify",
     name: "account/verify",
     workflow: "coreAccountsWorkflow",
-    template: "verifyAccount"
+    template: "VerifyAccount"
   }, {
     label: "Account Settings",
     icon: "fa fa-sign-in",

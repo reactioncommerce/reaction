@@ -117,7 +117,7 @@ DropDownMenu.propTypes = {
   buttonElement: PropTypes.node,
   children: PropTypes.node,
   className: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
-  closeOnClick: PropTypes.bool,
+  closeOnClick: PropTypes.bool, // eslint-disable-line react/boolean-prop-naming
   constraints: PropTypes.array,
   isClickable: PropTypes.bool,
   isEnabled: PropTypes.bool,

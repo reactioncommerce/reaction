@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import _ from "lodash";
 import { Components, registerComponent } from "@reactioncommerce/reaction-components";
-import update from "react/lib/update";
+import update from "immutability-helper";
 import { TagHelpers } from "/imports/plugins/core/ui-tagnav/client/helpers";
 import { getTagIds } from "/lib/selectors/tags";
 import { Router } from "/client/api";
@@ -159,8 +159,8 @@ class TagGroup extends Component {
 }
 
 TagGroup.propTypes = {
-  blank: PropTypes.bool,
-  editable: PropTypes.bool,
+  blank: PropTypes.bool, // eslint-disable-line react/boolean-prop-naming
+  editable: PropTypes.bool, // eslint-disable-line react/boolean-prop-naming
   onNewTagSave: PropTypes.func,
   onTagRemove: PropTypes.func,
   tagGroupProps: PropTypes.object

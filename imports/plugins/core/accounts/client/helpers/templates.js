@@ -6,7 +6,7 @@ import * as Collections from "/lib/collections";
 
 /**
  * @method displayName
- * @memberof Templates
+ * @memberof BlazeTemplateHelpers
  * @summary Return a registered and logged in user's name or Guest
  * @return {String} username
  */

@@ -8,9 +8,9 @@ import * as Collections from "/lib/collections";
 /**
  * @name reactionTemplate
  * @summary use the reactionTemplate helper when you are using templates defined
- * as workflow templates in the package registery.Layout
+ * as workflow templates in the package registry.Layout
  * use "collection" on the layout to indicate a workflow source
- * @memberof Template
+ * @memberof BlazeTemplateHelpers
  * @description reactionTemplate provides templates as defined in ReactionRegistry.Layout
  * @param {Object} options - workflow defaults to "coreLayout/coreWorkflow"
  * @returns {Array} returns an array with labels, templates that match workflow

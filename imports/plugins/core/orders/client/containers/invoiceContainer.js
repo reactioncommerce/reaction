@@ -4,7 +4,8 @@ import accounting from "accounting-js";
 import _ from "lodash";
 import { Meteor } from "meteor/meteor";
 import { i18next, Logger, Reaction, formatPriceString } from "/client/api";
-import { Media, Packages } from "/lib/collections";
+import { Packages } from "/lib/collections";
+import { getPrimaryMediaForOrderItem } from "/lib/api";
 import { composeWithTracker, registerComponent } from "@reactioncommerce/reaction-components";
 import Invoice from "../components/invoice.js";
 import { getOrderRiskStatus, getOrderRiskBadge, getBillingInfo } from "../helpers";
@@ -60,30 +61,6 @@ class InvoiceContainer extends Component {
       popOverIsOpen: false
     });
   };
-
-  handleDisplayMedia = (item) => {
-    const variantId = item.variants._id;
-    const { productId } = item;
-
-    const variantImage = Media.findOne({
-      "metadata.variantId": variantId,
-      "metadata.productId": productId
-    });
-
-    if (variantImage) {
-      return variantImage;
-    }
-
-    const defaultImage = Media.findOne({
-      "metadata.productId": productId,
-      "metadata.priority": 0
-    });
-
-    if (defaultImage) {
-      return defaultImage;
-    }
-    return false;
-  }
 
   handleItemSelect = (lineItem) => {
     let { selectedItems, editedItems } = this.state;
@@ -182,7 +159,7 @@ class InvoiceContainer extends Component {
       if (refundedQuantity !== 0) {
         editedItems.push(isEdited);
       }
-    } else {
+    } else if (refundedQuantity !== 0) {
       editedItems.push({
         id: lineItem._id,
         title: lineItem.title,
@@ -194,35 +171,6 @@ class InvoiceContainer extends Component {
       editedItems,
       value
     });
-  }
-
-  /**
-   * Media - find media based on a product/variant
-   * @param  {Object} item object containing a product and variant id
-   * @return {Object|false} An object contianing the media or false
-   */
-  handleDisplayMedia = (item) => {
-    const variantId = item.variants._id;
-    const { productId } = item;
-
-    const variantImage = Media.findOne({
-      "metadata.variantId": variantId,
-      "metadata.productId": productId
-    });
-
-    if (variantImage) {
-      return variantImage;
-    }
-
-    const defaultImage = Media.findOne({
-      "metadata.productId": productId,
-      "metadata.priority": 0
-    });
-
-    if (defaultImage) {
-      return defaultImage;
-    }
-    return false;
   }
 
   getRefundedItemsInfo = () => {
@@ -483,7 +431,7 @@ class InvoiceContainer extends Component {
         togglePopOver={this.togglePopOver}
         handleInputChange={this.handleInputChange}
         handleItemSelect={this.handleItemSelect}
-        displayMedia={this.handleDisplayMedia}
+        displayMedia={getPrimaryMediaForOrderItem}
         toggleUpdating={this.toggleUpdating}
         handleRefundItems={this.handleRefundItems}
         getRefundedItemsInfo={this.getRefundedItemsInfo}
@@ -509,10 +457,10 @@ class InvoiceContainer extends Component {
 }
 
 /**
- * @method orderCreditMethod
  * @summary helper method to return the order payment object
  * @param {Object} order - object representing an order
  * @return {Object} object representing entire payment method
+ * @private
  */
 function orderCreditMethod(order) {
   const billingInfo = getBillingInfo(order);
@@ -527,6 +475,7 @@ function orderCreditMethod(order) {
  * @summary helper method to approve payment
  * @param {Object} order - object representing an order
  * @return {null} null
+ * @private
  */
 function approvePayment(order) {
   const paymentMethod = orderCreditMethod(order);
@@ -582,6 +531,7 @@ function approvePayment(order) {
  * @param {object} order - object representing an order
  * @param {function} onCancel - called on clicking cancel in alert dialog
  * @return {null} null
+ * @private
  */
 function capturePayments(order, onCancel) {
   const capture = () => {

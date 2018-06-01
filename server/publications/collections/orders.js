@@ -2,22 +2,23 @@ import { Meteor } from "meteor/meteor";
 import { check, Match } from "meteor/check";
 import { Roles } from "meteor/alanning:roles";
 import { ReactiveAggregate } from "./reactiveAggregate";
-import { Orders } from "/lib/collections";
+import { MediaRecords, Orders } from "/lib/collections";
+import { Counts } from "meteor/tmeasday:publish-counts";
 import { Reaction } from "/server/api";
-
 
 /**
  * A shared way of creating a projection
  * @param {String} shopId - shopId to filter records by
  * @param {Object} sort - An object containing a sort
  * @param {Number} limit - An optional limit of how many records to return
+ * @param {Object} query - An optional query to match
  * @returns {Array} An array of projection operators
  * @private
  */
-function createAggregate(shopId, sort = { createdAt: -1 }, limit = 0) {
+function createAggregate(shopId, sort = { createdAt: -1 }, limit = 0, query = {}, skip = 0) {
   // NOTE: in Mongo 3.4 using the $in operator will be supported for projection filters
   const aggregate = [
-    { $match: { "items.shopId": shopId } },
+    { $match: { "items.shopId": shopId, ...query } },
     {
       $project: {
         items: {
@@ -49,10 +50,13 @@ function createAggregate(shopId, sort = { createdAt: -1 }, limit = 0) {
         tax: 1,
         email: 1,
         createdAt: 1,
-        userId: 1
+        userId: 1,
+        taxCalculationFailed: 1,
+        bypassAddressValidation: 1
       }
     },
-    { $sort: sort }
+    { $sort: sort },
+    { $skip: skip }
   ];
 
   if (limit > 0) {
@@ -88,46 +92,15 @@ Meteor.publish("Orders", function () {
   }
 });
 
-/**
- * paginated orders
- */
 
-Meteor.publish("PaginatedOrders", function (limit) {
-  check(limit, Number);
-
-  if (this.userId === null) {
-    return this.ready();
-  }
-  const shopId = Reaction.getShopId(this.userId);
-  if (!shopId) {
-    return this.ready();
-  }
-  // return any order for which the shopId is attached to an item
-  const aggregateOptions = {
-    observeSelector: {
-      "items.shopId": shopId
-    }
-  };
-  const aggregate = createAggregate(shopId, { createdAt: -1 }, limit);
-
-  if (Roles.userIsInRole(this.userId, ["admin", "owner", "orders"], shopId)) {
-    ReactiveAggregate(this, Orders, aggregate, aggregateOptions);
-  } else {
-    return Orders.find({
-      shopId,
-      userId: this.userId
-    });
-  }
-});
-
-Meteor.publish("CustomPaginatedOrders", function (query, options) {
+Meteor.publish("PaginatedOrders", function (query, options) {
   check(query, Match.Optional(Object));
   check(options, Match.Optional(Object));
 
   if (this.userId === null) {
     return this.ready();
   }
-  const shopId = Reaction.getShopId(this.userId);
+  const shopId = Reaction.getUserShopId(this.userId) || Reaction.getShopId();
   if (!shopId) {
     return this.ready();
   }
@@ -138,8 +111,11 @@ Meteor.publish("CustomPaginatedOrders", function (query, options) {
       "items.shopId": shopId
     }
   };
-  const aggregate = createAggregate(shopId);
+  const limit = (options && options.limit) ? options.limit : 0;
+  const skip = (options && options.skip) ? options.skip : 0;
+  const aggregate = createAggregate(shopId, { createdAt: -1 }, limit, query, skip);
   if (Roles.userIsInRole(this.userId, ["admin", "owner", "orders"], shopId)) {
+    Counts.publish(this, "orders-count", Orders.find(), { noReady: true });
     ReactiveAggregate(this, Orders, aggregate, aggregateOptions);
   } else {
     return Orders.find({
@@ -185,5 +161,37 @@ Meteor.publish("CompletedCartOrder", function (userId, cartId) {
   return Orders.find({
     cartId,
     userId
+  });
+});
+
+Meteor.publish("OrderImages", (orderId) => {
+  check(orderId, Match.Optional(String));
+  if (!orderId) return [];
+
+  const order = Orders.findOne(orderId);
+  const { items: orderItems } = order || {};
+  if (!Array.isArray(orderItems)) return [];
+
+  // Ensure each of these are unique
+  const productIds = [...new Set(orderItems.map((item) => item.product._id))];
+  const variantIds = [...new Set(orderItems.map((item) => item.variants._id))];
+
+  // return image for each the top level product or the variant and let the client code decide which to display
+  return MediaRecords.find({
+    "$or": [
+      {
+        "metadata.productId": {
+          $in: productIds
+        }
+      },
+      {
+        "metadata.variantId": {
+          $in: variantIds
+        }
+      }
+    ],
+    "metadata.workflow": {
+      $nin: ["archived", "unpublished"]
+    }
   });
 });

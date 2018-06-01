@@ -1,10 +1,14 @@
-import { SimpleSchema } from "meteor/aldeed:simple-schema";
-import { registerSchema } from "@reactioncommerce/reaction-collections";
+import SimpleSchema from "simpl-schema";
+import { check } from "meteor/check";
+import { Tracker } from "meteor/tracker";
+import { registerSchema } from "@reactioncommerce/schemas";
 
 /**
-* TaxRates Schema
-*/
-
+ * @name TaxRates
+ * @memberof Schemas
+ * @type {SimpleSchema}
+ * @summary TaxRates schema
+ */
 export const TaxRates = new SimpleSchema({
   country: {
     type: String
@@ -17,10 +21,7 @@ export const TaxRates = new SimpleSchema({
     type: String,
     optional: true
   },
-  rate: {
-    type: Number,
-    decimal: true
-  }
-});
+  rate: Number
+}, { check, tracker: Tracker });
 
 registerSchema("TaxRates", TaxRates);

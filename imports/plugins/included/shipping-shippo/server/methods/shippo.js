@@ -57,15 +57,14 @@ function getTotalCartweight(cart) {
 function ratesParser(shippoRates, shippoDocs) {
   return shippoRates.map((rate) => {
     const rateAmount = parseFloat(rate.amount);
-    // const methodLabel = `${rate.provider} - ${rate.servicelevel_name}`;
     const reactionRate = {
       carrier: rate.provider,
       method: {
+        carrier: rate.provider,
         enabled: true,
+        handling: 0,
         label: rate.servicelevel_name,
         rate: rateAmount,
-        handling: 0,
-        carrier: rate.provider,
         settings: {
           // carrierAccount: rate.carrier_account,
           rateId: rate.object_id,
@@ -196,26 +195,30 @@ export const methods = {
    * Also inserts(and deletes if already exist) docs in the Shipping collection each of the
    * activated Carriers of the Shippo account.
    * This method is intended to be used mainly by Autoform.
-   * @param {Object} modifier - The Autoform's modifier string
-   * @param {String} _id - The id of the Shippo package that gets updated
-   * @return {Object} result - The object returned.
+   * @param  {Object} details An object with _id and modifier props
+   * @param  {String} [docId] DEPRECATED. The _id, if details is the modifier.
+   * @return {Object|Boolean} result - The object returned.
    * @return {String} {string("update"|"delete")} result.type - The type of updating happened.
    */
-  "shippo/updateApiKey"(modifier, _id) {
-    // Important server-side check for security and data integrity
-    check(modifier, ShippoPackageConfig);
-    check(_id, String);
+  "shippo/updateApiKey"(details, docId) {
+    check(details, Object);
+
+    // Backward compatibility
+    check(docId, Match.Optional(String));
+    const id = docId || details._id;
+    const modifier = docId ? details : details.modifier;
+
+    // Important server-side checks for security and data integrity
+    check(id, String);
+    ShippoPackageConfig.validate(modifier, { modifier: true });
 
     // Make sure user has proper rights to this package
-    const { shopId } = Packages.findOne(
-      { _id },
-      { field: { shopId: 1 } }
-    );
+    const { shopId } = Packages.findOne({ _id: id }, { field: { shopId: 1 } });
     if (shopId && Roles.userIsInRole(this.userId, shippingRoles, shopId)) {
       // If user wants to delete existing key
       if ({}.hasOwnProperty.call(modifier, "$unset")) {
         const customModifier = { $set: { "settings.apiKey": null } };
-        Packages.update(_id, customModifier);
+        Packages.update(id, customModifier);
         // remove shop's existing Shippo Providers from Shipping Collection
         removeShippoProviders(false, shopId);
 
@@ -228,7 +231,7 @@ export const methods = {
       // if not possible throws a relative Meteor Error (eg invalid_credentials)
       ShippoApi.methods.getAddressList.call({ apiKey });
       // if everything is ok proceed with the api key update
-      Packages.update(_id, modifier);
+      Packages.update(id, modifier);
       // remove shop's existing Shippo Providers from Shipping Collection
       removeShippoProviders(false, shopId);
 
@@ -330,7 +333,7 @@ export const methods = {
           Meteor.call("orders/shipmentDelivered", order);
         }
 
-        // A batch update might be better option. Unfortunately Reaction.import doesn't support
+        // A batch update might be better option. Unfortunately Reaction.importer doesn't support
         // .. Orders currently
         const orderUpdating = Orders.update({
           _id: order._id
@@ -447,6 +450,7 @@ export const methods = {
         errorDetails.message = "The 'shipping' property of this cart is either missing or incomplete.";
         return [[errorDetails], []];
       }
+
       const carrierAccounts = Object.keys(shippoDocs);
       let shippoShipment;
       try {
@@ -473,7 +477,8 @@ export const methods = {
         return [[errorData], [currentMethodInfo]];
       }
 
-      if (!shippoShipment.rates_list || shippoShipment.rates_list.length === 0) {
+      const shippoRates = shippoShipment.rates_list;
+      if (!shippoRates || shippoRates.length === 0) {
         const noShippingMethods = {
           requestStatus: "error",
           shippingProvider: "shippo",
@@ -488,9 +493,7 @@ export const methods = {
         return [[noShippingMethods], [currentMethodInfo]];
       }
 
-      const shippoRates = shippoShipment.rates_list;
       const reactionRates = ratesParser(shippoRates, shippoDocs);
-
       return [reactionRates, []];
     }
 

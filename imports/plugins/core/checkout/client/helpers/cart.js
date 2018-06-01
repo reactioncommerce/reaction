@@ -8,7 +8,7 @@ import { Template } from "meteor/templating";
  * are calculated by a transformation on the collection
  * and are available to use in template as cart.xxx
  * @example {{cart.getCount}}
- * @memberof Templates
+ * @memberof BlazeTemplateHelpers
  * @return {Object} returns inventory helpers
  */
 Template.registerHelper("cart", () => {
@@ -62,7 +62,7 @@ Template.registerHelper("cart", () => {
 
 /**
  * @method cartPayerName
- * @memberof Templates
+ * @memberof BlazeTemplateHelpers
  * @summary gets current cart billing address / payment name
  * @example {{>afFieldInput name="payerName" value=cartPayerName}}
  * @return {String} returns cart.billing[0].fullName

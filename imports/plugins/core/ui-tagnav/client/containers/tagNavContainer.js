@@ -1,5 +1,5 @@
 import _ from "lodash";
-import update from "react/lib/update";
+import update from "immutability-helper";
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { compose } from "recompose";
@@ -84,7 +84,7 @@ const wrapComponent = (Comp) => (
     static propTypes = {
       closeNavbar: PropTypes.func,
       editButton: PropTypes.node,
-      editable: PropTypes.bool,
+      editable: PropTypes.bool, // eslint-disable-line react/boolean-prop-naming
       hasEditRights: PropTypes.bool,
       isVisible: PropTypes.bool,
       tagIds: PropTypes.arrayOf(PropTypes.string),

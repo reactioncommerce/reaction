@@ -7,8 +7,8 @@ import "velocity-animate/velocity.ui";
 import { registerComponent } from "@reactioncommerce/reaction-components";
 import { i18next } from "/client/api";
 import { Button, Handle } from "/imports/plugins/core/ui/client/components";
+import { SortableItem } from "/imports/plugins/core/ui/client/containers";
 import { Router } from "@reactioncommerce/reaction-router";
-import { SortableItem } from "../../containers";
 
 class TagItem extends Component {
   componentWillReceiveProps(nextProps) {
@@ -304,12 +304,12 @@ class TagItem extends Component {
 }
 
 TagItem.propTypes = {
-  blank: PropTypes.bool,
+  blank: PropTypes.bool, // eslint-disable-line react/boolean-prop-naming
   connectDragSource: PropTypes.func,
   connectDropTarget: PropTypes.func,
-  draggable: PropTypes.bool,
-  editable: PropTypes.bool,
-  fullWidth: PropTypes.bool,
+  draggable: PropTypes.bool, // eslint-disable-line react/boolean-prop-naming
+  editable: PropTypes.bool, // eslint-disable-line react/boolean-prop-naming
+  fullWidth: PropTypes.bool, // eslint-disable-line react/boolean-prop-naming
   i18nKeyInputPlaceholder: PropTypes.string,
   index: PropTypes.number,
   inputPlaceholder: PropTypes.string,

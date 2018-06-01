@@ -1,14 +1,16 @@
-import { SimpleSchema } from "meteor/aldeed:simple-schema";
-import { PackageConfig } from "/lib/collections/schemas/registry";
-import { registerSchema } from "@reactioncommerce/reaction-collections";
-/*
- *  Meteor.settings.stripe =
- *    mode: false  #sandbox
- *    api_key: ""
- *  see: https://stripe.com/docs/api
- */
+import SimpleSchema from "simpl-schema";
+import { check } from "meteor/check";
+import { Tracker } from "meteor/tracker";
+import { PackageConfig } from "/lib/collections/schemas";
+import { registerSchema } from "@reactioncommerce/schemas";
 
-const StripeConnectAuthorizationCredentials = new SimpleSchema({
+/**
+ * @name StripeConnectAuthorizationCredentials
+ * @memberof Schemas
+ * @type {SimpleSchema}
+ * @see {@link https://stripe.com/docs/api}
+ */
+export const StripeConnectAuthorizationCredentials = new SimpleSchema({
   token_type: { // eslint-disable-line camelcase
     type: String
   },
@@ -30,52 +32,74 @@ const StripeConnectAuthorizationCredentials = new SimpleSchema({
   access_token: { // eslint-disable-line camelcase
     type: String
   }
-});
+}, { check, tracker: Tracker });
 
 registerSchema("StripeConnectAuthorizationCredentials", StripeConnectAuthorizationCredentials);
 
-export const StripePackageConfig = new SimpleSchema([
-  PackageConfig, {
-    "settings.mode": {
-      type: Boolean,
-      defaultValue: false
-    },
-    "settings.api_key": {
-      type: String,
-      label: "API Secret Key"
-    },
-    // This field only applies to marketplace style orders where a payment is taken on behalf of another store
-    "settings.applicationFee": {
-      type: Number,
-      label: "Percentage Application Fee",
-      optional: true,
-      defaultValue: 5
-    },
-    "settings.connectAuth": {
-      type: StripeConnectAuthorizationCredentials,
-      label: "Connect Authorization Credentials",
-      optional: true
-    },
-    "settings.reaction-stripe.support": {
-      type: Array,
-      label: "Payment provider supported methods"
-    },
-    "settings.reaction-stripe.support.$": {
-      type: String,
-      allowedValues: ["Authorize", "De-authorize", "Capture", "Refund"]
-    },
-
-    // Public Settings
-    "settings.public.client_id": {
-      type: String,
-      label: "Public Client ID",
-      optional: true
-    }
+/**
+ * @name StripePackageConfig
+ * @memberof Schemas
+ * @type {SimpleSchema}
+ */
+export const StripePackageConfig = PackageConfig.clone().extend({
+  // Remove blackbox: true from settings obj
+  "settings": {
+    type: Object,
+    optional: true,
+    blackbox: false,
+    defaultValue: {}
+  },
+  "settings.mode": {
+    type: Boolean,
+    defaultValue: false
+  },
+  "settings.api_key": {
+    type: String,
+    label: "API Secret Key"
+  },
+  // This field only applies to marketplace style orders where a payment is taken on behalf of another store
+  "settings.applicationFee": {
+    type: Number,
+    label: "Percentage Application Fee",
+    optional: true,
+    defaultValue: 5
+  },
+  "settings.connectAuth": {
+    type: StripeConnectAuthorizationCredentials,
+    label: "Connect Authorization Credentials",
+    optional: true
+  },
+  "settings.reaction-stripe": {
+    type: Object,
+    defaultValue: {}
+  },
+  "settings.reaction-stripe.support": {
+    type: Array,
+    label: "Payment provider supported methods"
+  },
+  "settings.reaction-stripe.support.$": {
+    type: String,
+    allowedValues: ["Authorize", "De-authorize", "Capture", "Refund"]
+  },
+  "settings.public": {
+    type: Object,
+    defaultValue: {}
+  },
+  // Public Settings
+  "settings.public.client_id": {
+    type: String,
+    label: "Public Client ID",
+    optional: true
   }
-]);
+});
 
 registerSchema("StripePackageConfig", StripePackageConfig);
 
+/**
+ * @name StripePayment
+ * @memberof Schemas
+ * @type {SimpleSchema}
+ */
 export const StripePayment = new SimpleSchema({
   payerName: {
     type: String,
@@ -102,6 +126,6 @@ export const StripePayment = new SimpleSchema({
     max: 4,
     label: "CVV"
   }
-});
+}, { check, tracker: Tracker });
 
 registerSchema("StripePayment", StripePayment);

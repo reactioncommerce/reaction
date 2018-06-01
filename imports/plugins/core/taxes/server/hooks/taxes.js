@@ -1,10 +1,5 @@
-import { indexOf } from "lodash";
 import { Meteor } from "meteor/meteor";
-import { Cart } from "/lib/collections";
-
-/**
- * Cart Hooks for Taxes
-*/
+import { Hooks } from "/server/api";
 
 /**
  * After cart update apply taxes.
@@ -12,13 +7,8 @@ import { Cart } from "/lib/collections";
  * we could have done this in the core/cart transform
  * but this way this file controls the events from
  * the core/taxes plugin.
+ * @private
  */
-Cart.after.update((userId, cart, fieldNames) => {
-  const trigger = ["discount", "billing", "shipping"];
-
-  for (const field of fieldNames) {
-    if (indexOf(trigger, field) !== -1) {
-      Meteor.call("taxes/calculate", cart._id);
-    }
-  }
+Hooks.Events.add("afterCartUpdateCalculateTaxes", (cartId) => {
+  Meteor.call("taxes/calculate", cartId);
 });

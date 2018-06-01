@@ -1,12 +1,12 @@
+import Log from "@reactioncommerce/logger";
 import Core from "./core";
 import * as Accounts from "./accounts";
 import * as AddDefaultRoles from "./addDefaultRoles";
 import * as AssignRoles from "./assignRoles";
 import * as Email from "./email";
 import Endpoints from "./endpoints";
-import * as Import from "./import";
+import * as Importer from "./importer";
 import * as LoadSettings from "./loadSettings";
-import Log from "../logger";
 import Router from "../router";
 import * as SetDomain from "./setDomain";
 import * as ShopName from "./shopName";
@@ -26,7 +26,7 @@ const Reaction = Object.assign(
   { Collections },
   { Email },
   { Endpoints },
-  Import,
+  Importer,
   LoadSettings,
   { Log },
   { Router },

@@ -1,0 +1,19 @@
+# This is a demo docker-compose file.
+# Usage: docker-compose -f docker-compose-demo.yml up [-d]
+
+version: '3.4'
+
+services:
+  reaction:
+    image: reactioncommerce/reaction:latest
+    depends_on:
+      - mongo
+    ports:
+      - "3000:3000"
+    environment:
+      ROOT_URL: "http://localhost"
+      MONGO_URL: "mongodb://mongo:27017/reaction"
+
+  mongo:
+    image: mongo:3.4
+    command: mongod --storageEngine=wiredTiger

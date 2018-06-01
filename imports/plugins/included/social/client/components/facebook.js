@@ -109,7 +109,7 @@ FacebookSocialButton.propTypes = {
   altIcon: PropTypes.string,
   media: PropTypes.string,
   settings: PropTypes.object,
-  showText: PropTypes.bool,
+  showText: PropTypes.bool, // eslint-disable-line react/boolean-prop-naming
   size: PropTypes.string,
   url: PropTypes.string
 };
