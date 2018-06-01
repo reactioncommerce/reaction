@@ -71,12 +71,14 @@ describe("Publication", function () {
     };
 
     beforeEach(function () {
+      this.timeout(15000);
       Collections.Products.remove({});
 
       // a product with price range A, and not visible
       const productId1 = Collections.Products.insert({
         ancestors: [],
         title: "My Little Pony",
+        handle: "my-little-pony",
         shopId,
         type: "simple",
         price: priceRangeA,
@@ -89,6 +91,7 @@ describe("Publication", function () {
       const productId2 = Collections.Products.insert({
         ancestors: [],
         title: "Shopkins - Peachy",
+        handle: "shopkins-peachy",
         shopId,
         price: priceRangeB,
         type: "simple",
@@ -101,6 +104,7 @@ describe("Publication", function () {
       const productId3 = Collections.Products.insert({
         ancestors: [],
         title: "Fresh Tomatoes",
+        handle: "fresh-tomatoes",
         shopId,
         price: priceRangeA,
         type: "simple",
@@ -113,6 +117,7 @@ describe("Publication", function () {
       const productId4 = Collections.Products.insert({
         ancestors: [],
         title: "Teddy Ruxpin",
+        handle: "teddy-ruxpin",
         shopId: merchantShopId,
         type: "simple",
         price: priceRangeA,
@@ -125,6 +130,7 @@ describe("Publication", function () {
       const productId5 = Collections.Products.insert({
         ancestors: [],
         title: "Garbage Pail Kids",
+        handle: "garbage-pail-kids",
         shopId: primaryShopId,
         type: "simple",
         price: priceRangeA,
@@ -138,6 +144,7 @@ describe("Publication", function () {
       Collections.Products.insert({
         ancestors: [],
         title: "Lite Bright",
+        handle: "lite-bright",
         shopId: inactiveMerchantShopId,
         type: "simple",
         price: priceRangeA,
@@ -147,7 +154,7 @@ describe("Publication", function () {
         isBackorder: false
       });
 
-      // helper arrays for writing expecations in tests
+      // helper arrays for writing expectations in tests
       merchantShop1ProductIds = [productId1, productId2, productId3];
       merchantShop1VisibleProductIds = [productId2, productId3];
       activeShopProductIds = [productId1, productId2, productId3, productId4, productId5];
@@ -165,7 +172,7 @@ describe("Publication", function () {
         sandbox.stub(Reaction, "hasPermission", () => true);
         sandbox.stub(Reaction, "getShopsWithRoles", () => [shopId, merchantShopId, primaryShopId]);
 
-        collector.collect("Products", 24, undefined, {}, ({ Products }) => {
+        collector.collect("Products", 24, undefined, {}, true, ({ Products }) => {
           const productIds = Products.map((p) => p._id);
 
           expect(productIds).to.have.members(activeShopProductIds);
@@ -179,7 +186,7 @@ describe("Publication", function () {
         sandbox.stub(Reaction, "hasPermission", () => true);
         sandbox.stub(Reaction, "getShopsWithRoles", () => [shopId, merchantShopId, primaryShopId]);
 
-        collector.collect("Products", 24, undefined, {}, ({ Products }) => {
+        collector.collect("Products", 24, undefined, {}, true, ({ Products }) => {
           const productIds = Products.map((p) => p._id);
 
           expect(productIds).to.have.members(merchantShop1ProductIds);
@@ -193,25 +200,10 @@ describe("Publication", function () {
         sandbox.stub(Reaction, "hasPermission", () => true);
         sandbox.stub(Reaction, "getShopsWithRoles", () => [shopId]);
 
-        collector.collect("Products", 24, undefined, {}, ({ Products }) => {
+        collector.collect("Products", 24, undefined, {}, true, ({ Products }) => {
           const productIds = Products.map((p) => p._id);
 
           expect(productIds).to.have.members(merchantShop1ProductIds);
-        }).then(() => done(/* empty */), done);
-      });
-
-      it("should have an expected product title", function (done) {
-        // setup
-        sandbox.stub(Reaction, "getShopId", () => shopId);
-        sandbox.stub(Roles, "userIsInRole", () => true);
-        sandbox.stub(Reaction, "hasPermission", () => true);
-        sandbox.stub(Reaction, "getShopsWithRoles", () => [shopId]);
-
-        collector.collect("Products", 24, undefined, {}, ({ Products }) => {
-          const data = Products[1];
-          const expectedTitles = ["My Little Pony", "Shopkins - Peachy"];
-
-          expect(expectedTitles.some((title) => title === data.title)).to.be.ok;
         }).then(() => done(/* empty */), done);
       });
 
@@ -341,7 +333,7 @@ describe("Publication", function () {
 
       describe("Shop conditions", function () {
         beforeEach(function () {
-          publishProducts();
+          return publishProducts();
         });
 
         it("returns products from the active shop", function (done) {
@@ -360,6 +352,8 @@ describe("Publication", function () {
           collector.collect("Products/grid", ({ Catalog }) => {
             const productIds = Catalog.map((c) => c.product._id);
 
+            console.log("TEST productIds", JSON.stringify(productIds));
+            console.log("TEST activeShopVisibleProductIds", JSON.stringify(activeShopVisibleProductIds));
             expect(productIds).to.have.members(activeShopVisibleProductIds);
           }).then(() => done(/* empty */), done);
         });
