@@ -71,6 +71,7 @@
     "immutability-helper": "^2.6.5",
     "immutable": "^3.8.2",
     "jquery-i18next": "^1.2.1",
+    "keycloak-js": "4.0.0-beta.1",
     "later": "^1.2.0",
     "libphonenumber-js": "^1.0.24",
     "lodash": "^4.17.5",
