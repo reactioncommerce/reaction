@@ -55,6 +55,11 @@ Reaction.registerPackage({
     label: "Profile",
     icon: "fa fa-user",
     provides: ["userAccountDropdown"]
+  }, {
+    route: "/auth",
+    template: "AuthPage",
+    name: "auth",
+    label: "Auth"
   }],
   layout: [{
     layout: "coreLayout",
