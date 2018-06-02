@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import Keycloak from "keycloak-js";
 import classnames from "classnames";
 import { Components, registerComponent } from "@reactioncommerce/reaction-components";
 
@@ -41,6 +42,23 @@ class SignIn extends Component {
     this.handleFieldChange = this.handleFieldChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
+
+  handleKeycloakLogin = () => {
+    const keycloak = new Keycloak({
+      realm: "default",
+      clientId: "reaction-meteor-client",
+      url: "http://localhost:8080/auth"
+    });
+
+    keycloak
+      .init({
+        flow: "implicit"
+      })
+      .success(() => {
+        keycloak.login({ redirectUri: "http://localhost:3000/auth" });
+      })
+      .error(() => {});
+  };
 
   handleFieldChange = (event, value, field) => {
     this.setState({
@@ -166,6 +184,19 @@ class SignIn extends Component {
           <div className="form-group">
             {this.renderSpinnerOnWait()}
           </div>
+
+          <Components.Divider />
+
+          <Components.Button
+            className="btn-block"
+            primary={true}
+            bezelStyle="solid"
+            i18nKeyLabel=""
+            label="Login with Keycloak"
+            onClick={this.handleKeycloakLogin}
+          />
+
+          <Components.Divider />
 
           <div className="form-group flex flex-justify-spaceBetween">
             <Components.Button
