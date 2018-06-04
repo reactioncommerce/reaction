@@ -1,7 +1,6 @@
-import React, { Component } from "react";
+import React from "react";
 import { Router } from "/client/modules/router";
-import Keycloak from "keycloak-js";
-import { Components, registerComponent } from "@reactioncommerce/reaction-components";
+import { registerComponent } from "@reactioncommerce/reaction-components";
 
 export function getUrlParams(urlhash = "") {
   return urlhash
@@ -14,29 +13,23 @@ export function getUrlParams(urlhash = "") {
     }, {});
 }
 
-class AuthPage extends Component {
-  constructor(props) {
-    super(props);
-  }
+const AuthPage = () => {
+  const authParams = getUrlParams(Router.current().payload.hash);
 
-  render() {
-    const authParams = getUrlParams(Router.current().payload.hash);
-    console.log(authParams);
-    return (
-      <div className="container">
-        <h3>Access Token</h3>
-        <p style={{ wordBreak: "break-all" }}>
-          {authParams.access_token}
-        </p>
+  return (
+    <div className="container">
+      <h3>Access Token</h3>
+      <p style={{ wordBreak: "break-all" }}>
+        {authParams.access_token}
+      </p>
 
-        <h3>ID Token</h3>
-        <p style={{ wordBreak: "break-all" }}>
-          {authParams.id_token}
-        </p>
-      </div>
-    );
-  }
-}
+      <h3>ID Token</h3>
+      <p style={{ wordBreak: "break-all" }}>
+        {authParams.id_token}
+      </p>
+    </div>
+  );
+};
 
 registerComponent("AuthPage", AuthPage);
 
