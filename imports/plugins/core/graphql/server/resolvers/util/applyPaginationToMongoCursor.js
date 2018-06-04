@@ -13,8 +13,8 @@
 export default async function applyPaginationToMongoCursor(cursor, { first, last } = {}, totalCount) {
   if (first && last) throw new Error("Request either `first` or `last` but not both");
 
-  // Enforce a `first: 50` limit if no user-supplied limit
-  const limit = first || last || 50;
+  // Enforce a `first: 20` limit if no user-supplied limit
+  const limit = first || last || 20;
 
   let skip = 0;
   if (last && totalCount > last) skip = totalCount - last;
