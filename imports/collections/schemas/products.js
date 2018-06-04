@@ -422,7 +422,8 @@ export const Product = new SimpleSchema({
   },
   "ancestors": {
     type: Array,
-    defaultValue: []
+    defaultValue: [],
+    index: 1
   },
   "ancestors.$": {
     type: String
@@ -562,7 +563,8 @@ export const Product = new SimpleSchema({
   },
   "createdAt": {
     type: Date,
-    autoValue: createdAtAutoValue
+    autoValue: createdAtAutoValue,
+    index: 1
   },
   "updatedAt": {
     type: Date,
