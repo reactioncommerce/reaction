@@ -192,7 +192,7 @@ class SignIn extends Component {
             primary={true}
             bezelStyle="solid"
             i18nKeyLabel=""
-            label="Login with Keycloak"
+            label="Sign in with Keycloak"
             onClick={this.handleKeycloakLogin}
           />
 

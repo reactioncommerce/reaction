@@ -19,7 +19,6 @@ class AuthPage extends Component {
     super(props);
   }
 
-
   render() {
     const authParams = getUrlParams(Router.current().payload.hash);
     console.log(authParams);
