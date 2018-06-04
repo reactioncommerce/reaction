@@ -5,7 +5,8 @@ import { Mongo, MongoInternals } from "meteor/mongo";
 // Add the aggregate function available in tbe raw collection to normal collections
 Mongo.Collection.prototype.aggregate = function (pipelines, options) {
   const coll = this._getCollection();
-  return Meteor.wrapAsync(coll.aggregate.bind(coll))(pipelines, options);
+  const aggregationCursor = Meteor.wrapAsync(coll.aggregate.bind(coll))(pipelines, options);
+  return Meteor.wrapAsync(aggregationCursor.toArray.bind(aggregationCursor));
 };
 
 // this group of methods were taken from https://github.com/meteorhacks/meteor-collection-utils
