@@ -1,5 +1,5 @@
-($shopIds: [ID]!, $first: ConnectionLimitInt = 1) {
-  catalogItems(first: $first, shopIds: $shopIds) {
+($shopIds: [ID]!, $first: ConnectionLimitInt, $sortBy: CatalogItemSortByField, $sortOrder: SortOrder, $sortByPriceCurrencyCode: String ) {
+  catalogItems(first: $first, shopIds: $shopIds, sortBy: $sortBy, sortOrder: $sortOrder, sortByPriceCurrencyCode: $sortByPriceCurrencyCode) {
     nodes {
       _id
       shop {
@@ -7,18 +7,10 @@
       }
       createdAt
       updatedAt
-      positions {
-        displayWeight
-        isPinned
-        position
-        tagId
-        updatedAt
-      }
       ... on CatalogItemProduct {
         product {
           _id
           barcode
-          compareAtPrice
           createdAt
           description
           height
@@ -47,10 +39,16 @@
             height
             weight
           }
-          price {
-            max
-            min
-            range
+          pricing {
+            currency {
+              _id
+              code
+            }
+            compareAtPrice
+            price
+            maxPrice
+            minPrice
+            displayPrice
           }
           media {
             toGrid
@@ -102,9 +100,7 @@
           updatedAt
           variants {
             _id
-            ancestorIds
             barcode
-            compareAtPrice
             createdAt
             height
             index
@@ -124,9 +120,65 @@
               key
             }
             minOrderQuantity
-            optionTitle
+            options {
+              _id
+              barcode
+              createdAt
+              height
+              index
+              inventoryManagement
+              inventoryPolicy
+              isLowQuantity
+              isSoldOut
+              isTaxable
+              length
+              lowInventoryWarningThreshold
+              metafields {
+                value
+                namespace
+                description
+                valueType
+                scope
+                key
+              }
+              minOrderQuantity
+              optionTitle
+              originCountry
+              pricing {
+                currency {
+                  _id
+                  code
+                }
+                compareAtPrice
+                price
+                maxPrice
+                minPrice
+                displayPrice
+              }
+              shop {
+                _id
+              }
+              sku
+              taxCode
+              taxDescription
+              title
+              updatedAt
+              variantId
+              weight
+              width
+            }
             originCountry
-            price
+            pricing {
+              currency {
+                _id
+                code
+              }
+              compareAtPrice
+              price
+              maxPrice
+              minPrice
+              displayPrice
+            }
             shop {
               _id
             }

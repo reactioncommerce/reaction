@@ -6,14 +6,20 @@ import { Media } from "/imports/plugins/core/files/server";
 import { RevisionApi } from "/imports/plugins/core/revisions/lib/api";
 
 /**
+ * Media-related Meteor methods
+ * @namespace Media/Methods
+ */
+
+/**
  * @method updateMediaMetadata
- * @memberof media
+ * @memberof Media/Methods
  * @summary updates media record in revision control.
  * @param {String} fileRecordId - _id of updated file record.
  * @param {Object} metadata - metadata from updated media file.
  * @return {Boolean}
+ * @private
  */
-export async function updateMediaMetadata(fileRecordId, metadata) {
+async function updateMediaMetadata(fileRecordId, metadata) {
   check(fileRecordId, String);
   check(metadata, Object);
   if (RevisionApi.isRevisionControlEnabled()) {
@@ -63,8 +69,9 @@ export async function updateMediaMetadata(fileRecordId, metadata) {
 }
 
 /**
- * @method insertMedia
- * @memberof media
+ * @name media/insert
+ * @method
+ * @memberof Media/Methods
  * @summary insert a new media record and add it to revision control.
  * @param {Object} fileRecord - document from file collection upload.
  * @return {String} - _id of the new inserted media record.
@@ -109,8 +116,9 @@ export async function insertMedia(fileRecord) {
 }
 
 /**
- * @method removeMedia
- * @memberof media
+ * @name media/remove
+ * @method
+ * @memberof Media/Methods
  * @summary removes media file and updates record in revision control.
  * @param {String} fileRecordId - _id of file record to be deleted.
  * @return {Boolean}
@@ -141,9 +149,10 @@ export async function removeMedia(fileRecordId) {
 }
 
 /**
- * updateMediaPriorities
+ * @name media/updatePriorities
+ * @method
+ * @memberof Media/Methods
  * @summary sorting media by array indexes
- * @type {Method}
  * @param {String[]} sortedMediaIDs
  * @return {Boolean} true
  */

@@ -86,9 +86,9 @@ class GooglePlusSocialButton extends Component {
 }
 
 GooglePlusSocialButton.propTypes = {
-  altIcon: PropTypes.bool,
+  altIcon: PropTypes.bool, // eslint-disable-line react/boolean-prop-naming
   settings: PropTypes.object,
-  showText: PropTypes.bool,
+  showText: PropTypes.bool, // eslint-disable-line react/boolean-prop-naming
   size: PropTypes.string,
   url: PropTypes.string
 };

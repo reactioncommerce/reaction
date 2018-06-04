@@ -136,8 +136,8 @@ Popover.propTypes = {
   onClick: PropTypes.func,
   onDisplayButtonClick: PropTypes.func,
   onRequestOpen: PropTypes.func,
-  showArrow: PropTypes.bool,
-  showDropdownButton: PropTypes.bool,
+  showArrow: PropTypes.bool, // eslint-disable-line react/boolean-prop-naming
+  showDropdownButton: PropTypes.bool, // eslint-disable-line react/boolean-prop-naming
   targetAttachment: PropTypes.string,
   tooltipContent: PropTypes.node
 };

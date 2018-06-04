@@ -7,6 +7,7 @@ import { DragSource, DropTarget } from "react-dnd";
  * @param {DragSourceConnector} connect An onject containing functions to assign roles to a component's DOM nodes
  * @param {DragSourceMonitor} monitor An object containing functions that return information about drag state
  * @return {Object} Props for drag source
+ * @private
  */
 function collectDropSource(connect, monitor) {
   return {

@@ -3,9 +3,10 @@ import { TaxPackageConfig } from "/imports/plugins/core/taxes/lib/collections/sc
 import { registerSchema } from "@reactioncommerce/schemas";
 
 /**
-* TaxPackageConfig Schema
-*/
-
+ * @name AvalaraPackageConfig
+ * @memberof Schemas
+ * @type {SimpleSchema}
+ */
 export const AvalaraPackageConfig = TaxPackageConfig.clone().extend({
   "settings.avalara": {
     type: Object,

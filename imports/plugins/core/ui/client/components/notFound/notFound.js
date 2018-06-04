@@ -5,6 +5,7 @@ import { Components, registerComponent } from "@reactioncommerce/reaction-compon
 import { Icon } from "../icon";
 
 /**
+ * @memberof Components
  * @summary React component for displaying a not-found view
  * @param {Object} props - React PropTypes
  * @property {String|Object} className - String className or `classnames` compatible object for the base wrapper

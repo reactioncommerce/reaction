@@ -227,7 +227,7 @@ NumericInput.defaultProps = {
 
 NumericInput.propTypes = {
   classNames: PropTypes.shape({}),
-  disabled: PropTypes.bool,
+  disabled: PropTypes.bool, // eslint-disable-line react/boolean-prop-naming
   format: PropTypes.shape({
     decimal: PropTypes.string
   }),

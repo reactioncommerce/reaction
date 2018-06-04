@@ -7,14 +7,17 @@ class AddressBookForm extends Component {
   static propTypes = {
     /**
      * add addess callback
+     * @ignore
      */
     add: PropTypes.func,
     /**
      * cancel address entry and render AddressBookGrid
+     * @ignore
      */
     cancel: PropTypes.func,
     /**
      * country options for select
+     * @ignore
      */
     countries: PropTypes.arrayOf(PropTypes.shape({
       label: PropTypes.string,
@@ -22,14 +25,17 @@ class AddressBookForm extends Component {
     })),
     /**
      * address object
+     * @ignore
      */
     editAddress: PropTypes.object,
     /**
      * has address in addressBook
+     * @ignore
      */
     hasAddress: PropTypes.bool,
     /**
      * regions by county
+     * @ignore
      */
     regionsByCountry: PropTypes.object
   }
@@ -121,6 +127,7 @@ class AddressBookForm extends Component {
    * @summary creates an array of region options for the regions select field.
    * @since 2.0.0
    * @param {String} country - country code "US" "CA" "JP"
+   * @ignore
    */
   setRegionOptions(country) {
     const { regionsByCountry, editAddress } = this.props;
@@ -176,6 +183,7 @@ class AddressBookForm extends Component {
    * @method onSubmit
    * @summary takes the entered address and adds or updates it to the addressBook.
    * @since 2.0.0
+   * @ignore
    */
   onSubmit = (event) => {
     event.preventDefault();
@@ -191,6 +199,7 @@ class AddressBookForm extends Component {
    * @method onFieldChange
    * @summary when field values change update the value in state
    * @since 2.0.0
+   * @ignore
    */
   onFieldChange = (event, value, name) => {
     const { fields } = this.state;
@@ -204,6 +213,7 @@ class AddressBookForm extends Component {
    * @method onSelectChange
    * @summary normalizes the select components onChange.
    * @since 2.0.0
+   * @ignore
    */
   onSelectChange = (value, name) => {
     // the reaction select component doesn't return
@@ -222,6 +232,7 @@ class AddressBookForm extends Component {
    * since a first address will always be the default shipping/billing address.
    * @since 2.0.0
    * @return {Object} - JSX and Checkbox components.
+   * @ignore
    */
   renderAddressOptions() {
     const { hasAddress } = this.props;
@@ -283,6 +294,7 @@ class AddressBookForm extends Component {
    * since the user needs to add a default address.
    * @since 2.0.0
    * @return {Object} - JSX
+   * @ignore
    */
   renderButtons() {
     const { cancel, hasAddress } = this.props;

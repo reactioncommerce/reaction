@@ -11,10 +11,9 @@ import { Logger, Reaction } from "/server/api";
  * https://github.com/aldeed/meteor-geocoder
  * The MIT License (MIT)
  * Copyright (c) 2014 Eric Dobbertin
+ * @ignore
  */
 
-//
-// init geocoder
 function GeoCoder(options) {
   let extra;
   const self = this;

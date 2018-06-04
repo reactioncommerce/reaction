@@ -11,8 +11,9 @@ import { registerSchema } from "@reactioncommerce/schemas";
 
 /**
  * @name ShopifyCustomer
- * @summary ShopifyCustomer schema attached to Accounts
+ * @memberof Schemas
  * @type {SimpleSchema}
+ * @summary ShopifyCustomer schema attached to Accounts
  * @property {Number} shopifyId Shopify ID
  */
 export const ShopifyCustomer = new SimpleSchema({

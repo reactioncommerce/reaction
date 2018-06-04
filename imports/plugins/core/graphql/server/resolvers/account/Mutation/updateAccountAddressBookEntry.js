@@ -2,8 +2,9 @@ import { decodeAccountOpaqueId } from "@reactioncommerce/reaction-graphql-xforms
 import { xformAddressInput } from "@reactioncommerce/reaction-graphql-xforms/address";
 
 /**
- * @name updateAccountAddressBookEntry
+ * @name "Mutation.updateAccountAddressBookEntry"
  * @method
+ * @memberof Accounts/GraphQL
  * @summary resolver for the updateAccountAddressBookEntry GraphQL mutation
  * @param {Object} _ - unused
  * @param {Object} args.input - an object of all mutation arguments that were sent by the client

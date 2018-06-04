@@ -50,10 +50,15 @@ class MediaUploader extends Component {
       promises.push(promise);
     });
 
-    Promise.all(promises).then(() => {
-      if (!this._isMounted) return;
-      this.setState({ isUploading: false });
-    });
+    Promise.all(promises)
+      .then(() => {
+        if (!this._isMounted) return null;
+        this.setState({ isUploading: false });
+        return null;
+      })
+      .catch((error) => {
+        Logger.error(error);
+      });
   };
 
   render() {

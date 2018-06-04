@@ -8,29 +8,38 @@ import { Orders, Products, Shops, Packages } from "/lib/collections";
 import { PaymentMethodArgument } from "/lib/collections/schemas";
 import { Logger, Hooks, Reaction } from "/server/api";
 import { Media } from "/imports/plugins/core/files/server";
-import { publishProductInventoryAdjustments } from "/imports/plugins/core/catalog/server/methods/catalog";
+import rawCollections from "/imports/collections/rawCollections";
+import updateCatalogProductInventoryStatus from "/imports/plugins/core/catalog/server/no-meteor/utils/updateCatalogProductInventoryStatus";
 
 /**
  * @name getPrimaryMediaForItem
+ * @method
  * @summary Gets the FileRecord for the primary media item associated with the variant or product
  *   for the given item. This is similar to a function in /lib/api/helpers, but that one uses
  *   Media.findOneLocal, which is only for browser code.
  * @param {Object} item Must have `productId` and/or `variantId` set to get back a result.
  * @return {FileRecord|null}
+ * @ignore
  */
 async function getPrimaryMediaForItem({ productId, variantId } = {}) {
   let result;
 
   if (variantId) {
-    result = await Media.findOne({
-      "metadata.variantId": variantId
-    }, { sort: { "metadata.priority": 1, "uploadedAt": 1 } });
+    result = await Media.findOne(
+      {
+        "metadata.variantId": variantId
+      },
+      { sort: { "metadata.priority": 1, "uploadedAt": 1 } }
+    );
   }
 
   if (!result && productId) {
-    result = await Media.findOne({
-      "metadata.productId": productId
-    }, { sort: { "metadata.priority": 1, "uploadedAt": 1 } });
+    result = await Media.findOne(
+      {
+        "metadata.productId": productId
+      },
+      { sort: { "metadata.priority": 1, "uploadedAt": 1 } }
+    );
   }
 
   return result || null;
@@ -56,18 +65,17 @@ function formatDateForEmail(date) {
   return `${paddedMonth}/${paddedDay}/${year}`; // return MM/DD/YYYY formatted string
 }
 
-
 /**
  * @file Methods for Orders.
  *
  *
- * @namespace Methods/Orders
-*/
+ * @namespace Orders/Methods
+ */
 
 /**
  * @name orderCreditMethod
  * @method
- * @memberof Methods/Orders
+ * @memberof Orders/Methods
  * @summary Helper to return the order credit object.
  * Credit paymentMethod on the order as per current active shop
  * @param  {Object} order order object
@@ -82,7 +90,7 @@ export function orderCreditMethod(order) {
 /**
  * @name orderDebitMethod
  * @method
- * @memberof Methods/Orders
+ * @memberof Orders/Methods
  * @summary Helper to return the order debit object
  * @param  {Object} order order object
  * @return {Object} returns entire payment method
@@ -96,7 +104,7 @@ export function orderDebitMethod(order) {
 /**
  * @name ordersInventoryAdjust
  * @method
- * @memberof Methods/Orders
+ * @memberof Orders/Methods
  * @summary Adjust inventory when an order is placed
  * @param {String} orderId - Add tracking to orderId
  * @todo Why are we waiting until someone with orders permissions does something to reduce quantity of
@@ -112,30 +120,34 @@ export function ordersInventoryAdjust(orderId) {
 
   const order = Orders.findOne(orderId);
   order.items.forEach((item) => {
-    Products.update({
-      _id: item.variants._id
-    }, {
-      $inc: {
-        inventoryQuantity: -item.quantity
+    Products.update(
+      {
+        _id: item.variants._id
+      },
+      {
+        $inc: {
+          inventoryQuantity: -item.quantity
+        }
+      },
+      {
+        publish: true,
+        selector: {
+          type: "variant"
+        }
       }
-    }, {
-      publish: true,
-      selector: {
-        type: "variant"
-      }
-    });
+    );
 
     Hooks.Events.run("afterUpdateCatalogProduct", item.variant);
 
     // Publish inventory updates to the Catalog
-    publishProductInventoryAdjustments(item.productId);
+    Promise.await(updateCatalogProductInventoryStatus(item.productId, rawCollections));
   });
 }
 
 /**
  * @name ordersInventoryAdjustByShop
  * @method
- * @memberof Methods/Orders
+ * @memberof Orders/Methods
  * @summary Adjust inventory for a particular shop when an order is approved
  * @todo Marketplace: Is there a reason to do this any other way? Can admins reduce for more than one shop?
  * @param {String} orderId - orderId
@@ -153,23 +165,27 @@ export function ordersInventoryAdjustByShop(orderId, shopId) {
   const order = Orders.findOne(orderId);
   order.items.forEach((item) => {
     if (item.shopId === shopId) {
-      Products.update({
-        _id: item.variants._id
-      }, {
-        $inc: {
-          inventoryQuantity: -item.quantity
+      Products.update(
+        {
+          _id: item.variants._id
+        },
+        {
+          $inc: {
+            inventoryQuantity: -item.quantity
+          }
+        },
+        {
+          publish: true,
+          selector: {
+            type: "variant"
+          }
         }
-      }, {
-        publish: true,
-        selector: {
-          type: "variant"
-        }
-      });
+      );
 
       Hooks.Events.run("afterUpdateCatalogProduct", item.variants);
 
       // Publish inventory updates to the Catalog
-      publishProductInventoryAdjustments(item.productId);
+      Promise.await(updateCatalogProductInventoryStatus(item.productId, rawCollections));
     }
   });
 }
@@ -177,7 +193,7 @@ export function ordersInventoryAdjustByShop(orderId, shopId) {
 /**
  * @name orderQuantityAdjust
  * @method
- * @memberof Methods/Orders
+ * @memberof Orders/Methods
  * @param  {String} orderId      orderId
  * @param  {Object} refundedItem refunded item
  * @return {null} no return value
@@ -195,12 +211,15 @@ export function orderQuantityAdjust(orderId, refundedItem) {
       const itemId = item._id;
       const newQuantity = item.quantity - refundedItem.refundedQuantity;
 
-      Orders.update({
-        _id: orderId,
-        items: { $elemMatch: { _id: itemId } }
-      }, {
-        $set: { "items.$.quantity": newQuantity }
-      });
+      Orders.update(
+        {
+          _id: orderId,
+          items: { $elemMatch: { _id: itemId } }
+        },
+        {
+          $set: { "items.$.quantity": newQuantity }
+        }
+      );
     }
   });
 }
@@ -209,7 +228,7 @@ export const methods = {
   /**
    * @name orders/shipmentPicked
    * @method
-   * @memberof Methods/Orders
+   * @memberof Orders/Methods
    * @summary update picking status
    * @param {Object} order - order object
    * @param {Object} shipment - shipment object
@@ -228,17 +247,21 @@ export const methods = {
 
     const result = Meteor.call("workflow/pushItemWorkflow", "coreOrderItemWorkflow/picked", order, itemIds);
     if (result === 1) {
-      return Orders.update({
-        "_id": order._id,
-        "shipping._id": shipment._id
-      }, {
-        $set: {
-          "shipping.$.workflow.status": "coreOrderWorkflow/picked"
+      return Orders.update(
+        {
+          "_id": order._id,
+          "shipping._id": shipment._id
         },
-        $push: {
-          "shipping.$.workflow.workflow": "coreOrderWorkflow/picked"
-        }
-      }, { bypassCollection2: true });
+        {
+          $set: {
+            "shipping.$.workflow.status": "coreOrderWorkflow/picked"
+          },
+          $push: {
+            "shipping.$.workflow.workflow": "coreOrderWorkflow/picked"
+          }
+        },
+        { bypassCollection2: true }
+      );
     }
     return result;
   },
@@ -246,7 +269,7 @@ export const methods = {
   /**
    * @name orders/shipmentPacked
    * @method
-   * @memberof Methods/Orders
+   * @memberof Orders/Methods
    * @summary update packing status
    * @param {Object} order - order object
    * @param {Object} shipment - shipment object
@@ -267,17 +290,21 @@ export const methods = {
 
     const result = Meteor.call("workflow/pushItemWorkflow", "coreOrderItemWorkflow/packed", order, itemIds);
     if (result === 1) {
-      return Orders.update({
-        "_id": order._id,
-        "shipping._id": shipment._id
-      }, {
-        $set: {
-          "shipping.$.workflow.status": "coreOrderWorkflow/packed"
+      return Orders.update(
+        {
+          "_id": order._id,
+          "shipping._id": shipment._id
         },
-        $push: {
-          "shipping.$.workflow.workflow": "coreOrderWorkflow/packed"
-        }
-      }, { bypassCollection2: true });
+        {
+          $set: {
+            "shipping.$.workflow.status": "coreOrderWorkflow/packed"
+          },
+          $push: {
+            "shipping.$.workflow.workflow": "coreOrderWorkflow/packed"
+          }
+        },
+        { bypassCollection2: true }
+      );
     }
     return result;
   },
@@ -285,7 +312,7 @@ export const methods = {
   /**
    * @name orders/shipmentLabeled
    * @method
-   * @memberof Methods/Orders
+   * @memberof Orders/Methods
    * @summary update labeling status
    * @param {Object} order - order object
    * @param {Object} shipment - shipment object
@@ -304,17 +331,21 @@ export const methods = {
 
     const result = Meteor.call("workflow/pushItemWorkflow", "coreOrderItemWorkflow/labeled", order, itemIds);
     if (result === 1) {
-      return Orders.update({
-        "_id": order._id,
-        "shipping._id": shipment._id
-      }, {
-        $set: {
-          "shipping.$.workflow.status": "coreOrderWorkflow/labeled"
+      return Orders.update(
+        {
+          "_id": order._id,
+          "shipping._id": shipment._id
         },
-        $push: {
-          "shipping.$.workflow.workflow": "coreOrderWorkflow/labeled"
-        }
-      }, { bypassCollection2: true });
+        {
+          $set: {
+            "shipping.$.workflow.status": "coreOrderWorkflow/labeled"
+          },
+          $push: {
+            "shipping.$.workflow.workflow": "coreOrderWorkflow/labeled"
+          }
+        },
+        { bypassCollection2: true }
+      );
     }
     return result;
   },
@@ -322,7 +353,7 @@ export const methods = {
   /**
    * @name orders/makeAdjustmentsToInvoice
    * @method
-   * @memberof Methods/Orders
+   * @memberof Orders/Methods
    * @summary Update the status of an invoice to allow adjustments to be made
    * @param {Object} order - order object
    * @return {Object} Mongo update
@@ -336,21 +367,24 @@ export const methods = {
 
     this.unblock(); // REVIEW: Why unblock here?
 
-    return Orders.update({
-      "_id": order._id,
-      "billing.shopId": Reaction.getShopId(),
-      "billing.paymentMethod.method": "credit"
-    }, {
-      $set: {
-        "billing.$.paymentMethod.status": "adjustments"
+    return Orders.update(
+      {
+        "_id": order._id,
+        "billing.shopId": Reaction.getShopId(),
+        "billing.paymentMethod.method": "credit"
+      },
+      {
+        $set: {
+          "billing.$.paymentMethod.status": "adjustments"
+        }
       }
-    });
+    );
   },
 
   /**
    * @name orders/approvePayment
    * @method
-   * @memberof Methods/Orders
+   * @memberof Orders/Methods
    * @summary Approve payment and apply any adjustments
    * @param {Object} order - order object
    * @return {Object} return this.processPayment result
@@ -377,19 +411,22 @@ export const methods = {
     // Updates flattened inventory count on variants in Products collection
     ordersInventoryAdjustByShop(order._id, shopId);
 
-    const result = Orders.update({
-      "_id": order._id,
-      "billing.shopId": shopId,
-      "billing.paymentMethod.method": "credit"
-    }, {
-      $set: {
-        "billing.$.paymentMethod.amount": total,
-        "billing.$.paymentMethod.status": "approved",
-        "billing.$.paymentMethod.mode": "capture",
-        "billing.$.invoice.discounts": discounts,
-        "billing.$.invoice.total": Number(total)
+    const result = Orders.update(
+      {
+        "_id": order._id,
+        "billing.shopId": shopId,
+        "billing.paymentMethod.method": "credit"
+      },
+      {
+        $set: {
+          "billing.$.paymentMethod.amount": total,
+          "billing.$.paymentMethod.status": "approved",
+          "billing.$.paymentMethod.mode": "capture",
+          "billing.$.invoice.discounts": discounts,
+          "billing.$.invoice.total": Number(total)
+        }
       }
-    });
+    );
 
     // Update search record
     Hooks.Events.run("afterUpdateOrderUpdateSearchRecord", order);
@@ -400,7 +437,7 @@ export const methods = {
   /**
    * @name orders/cancelOrder
    * @method
-   * @memberof Methods/Orders
+   * @memberof Orders/Methods
    * @summary Start the cancel order process
    * @param {Object} order - order object
    * @param {Boolean} returnToStock - condition to return product to stock
@@ -426,22 +463,26 @@ export const methods = {
       // in some instances which causes the order not to cancel
       order.items.forEach((item) => {
         if (Reaction.hasPermission("orders", Meteor.userId(), item.shopId)) {
-          Products.update({
-            _id: item.variants._id,
-            shopId: item.shopId
-          }, {
-            $inc: {
-              inventoryQuantity: +item.quantity
+          Products.update(
+            {
+              _id: item.variants._id,
+              shopId: item.shopId
+            },
+            {
+              $inc: {
+                inventoryQuantity: +item.quantity
+              }
+            },
+            {
+              bypassCollection2: true,
+              publish: true
             }
-          }, {
-            bypassCollection2: true,
-            publish: true
-          });
+          );
 
           Hooks.Events.run("afterUpdateCatalogProduct", item.variants);
 
           // Publish inventory updates to the Catalog
-          publishProductInventoryAdjustments(item.productId);
+          Promise.await(updateCatalogProductInventoryStatus(item.productId, rawCollections));
         }
       });
     }
@@ -459,8 +500,11 @@ export const methods = {
     const paymentMethodId = paymentMethod && paymentMethod.paymentPackageId;
     const paymentMethodName = paymentMethod && paymentMethod.paymentSettingsKey;
     const getPaymentMethod = Packages.findOne({ _id: paymentMethodId });
-    const isRefundable = getPaymentMethod && getPaymentMethod.settings && getPaymentMethod.settings[paymentMethodName]
-      && getPaymentMethod.settings[paymentMethodName].support.includes("Refund");
+    const isRefundable =
+      getPaymentMethod &&
+      getPaymentMethod.settings &&
+      getPaymentMethod.settings[paymentMethodName] &&
+      getPaymentMethod.settings[paymentMethodName].support.includes("Refund");
 
     if (isRefundable) {
       Meteor.call("orders/refunds/create", order._id, paymentMethod, Number(invoiceTotal));
@@ -477,25 +521,28 @@ export const methods = {
     // update item workflow
     Meteor.call("workflow/pushItemWorkflow", "coreOrderItemWorkflow/canceled", order, itemIds);
 
-    return Orders.update({
-      "_id": order._id,
-      "billing.shopId": Reaction.getShopId(),
-      "billing.paymentMethod.method": "credit"
-    }, {
-      $set: {
-        "workflow.status": "coreOrderWorkflow/canceled",
-        "billing.$.paymentMethod.mode": "cancel"
+    return Orders.update(
+      {
+        "_id": order._id,
+        "billing.shopId": Reaction.getShopId(),
+        "billing.paymentMethod.method": "credit"
       },
-      $push: {
-        "workflow.workflow": "coreOrderWorkflow/canceled"
+      {
+        $set: {
+          "workflow.status": "coreOrderWorkflow/canceled",
+          "billing.$.paymentMethod.mode": "cancel"
+        },
+        $push: {
+          "workflow.workflow": "coreOrderWorkflow/canceled"
+        }
       }
-    });
+    );
   },
 
   /**
    * @name orders/processPayment
    * @method
-   * @memberof Methods/Orders
+   * @memberof Orders/Methods
    * @summary trigger processPayment and workflow update
    * @param {Object} order - order object
    * @return {Object} return this.processPayment result
@@ -530,7 +577,7 @@ export const methods = {
   /**
    * @name orders/shipmentShipped
    * @method
-   * @memberof Methods/Orders
+   * @memberof Orders/Methods
    * @summary trigger shipmentShipped status and workflow update
    * @param {Object} order - order object
    * @param {Object} shipment - shipment object
@@ -561,7 +608,12 @@ export const methods = {
 
     if (workflowResult === 1) {
       // Move to completed status for items
-      completedItemsResult = Meteor.call("workflow/pushItemWorkflow", "coreOrderItemWorkflow/completed", order, itemIds);
+      completedItemsResult = Meteor.call(
+        "workflow/pushItemWorkflow",
+        "coreOrderItemWorkflow/completed",
+        order,
+        itemIds
+      );
 
       if (completedItemsResult === 1) {
         // Then try to mark order as completed.
@@ -576,17 +628,21 @@ export const methods = {
       Logger.warn("No order email found. No notification sent.");
     }
 
-    Orders.update({
-      "_id": order._id,
-      "shipping._id": shipment._id
-    }, {
-      $set: {
-        "shipping.$.workflow.status": "coreOrderWorkflow/shipped"
+    Orders.update(
+      {
+        "_id": order._id,
+        "shipping._id": shipment._id
       },
-      $push: {
-        "shipping.$.workflow.workflow": "coreOrderWorkflow/shipped"
-      }
-    }, { bypassCollection2: true });
+      {
+        $set: {
+          "shipping.$.workflow.status": "coreOrderWorkflow/shipped"
+        },
+        $push: {
+          "shipping.$.workflow.workflow": "coreOrderWorkflow/shipped"
+        }
+      },
+      { bypassCollection2: true }
+    );
 
     return {
       workflowResult,
@@ -598,7 +654,7 @@ export const methods = {
   /**
    * @name orders/shipmentDelivered
    * @method
-   * @memberof Methods/Orders
+   * @memberof Orders/Methods
    * @summary trigger shipmentShipped status and workflow update
    * @param {Object} order - order object
    * @return {Object} return workflow result
@@ -632,17 +688,21 @@ export const methods = {
 
     const isCompleted = order.items.every((item) => item.workflow.workflow && item.workflow.workflow.includes("coreOrderItemWorkflow/completed"));
 
-    Orders.update({
-      "_id": order._id,
-      "shipping._id": shipment._id
-    }, {
-      $set: {
-        "shipping.$.workflow.status": "coreOrderWorkflow/delivered"
+    Orders.update(
+      {
+        "_id": order._id,
+        "shipping._id": shipment._id
       },
-      $push: {
-        "shipping.$.workflow.workflow": "coreOrderWorkflow/delivered"
-      }
-    }, { bypassCollection2: true });
+      {
+        $set: {
+          "shipping.$.workflow.status": "coreOrderWorkflow/delivered"
+        },
+        $push: {
+          "shipping.$.workflow.workflow": "coreOrderWorkflow/delivered"
+        }
+      },
+      { bypassCollection2: true }
+    );
 
     if (isCompleted === true) {
       Hooks.Events.run("onOrderShipmentDelivered", order._id);
@@ -658,7 +718,7 @@ export const methods = {
   /**
    * @name orders/sendNotification
    * @method
-   * @memberof Methods/Orders
+   * @memberof Orders/Methods
    * @summary send order notification email
    * @param {Object} order - order object
    * @param {Object} action - send notification action
@@ -747,7 +807,10 @@ export const methods = {
           // Otherwise push the unique item into the combinedItems array
 
           // Add displayPrice to match user currency settings
-          orderItem.variants.displayPrice = accounting.formatMoney(orderItem.variants.price * userCurrencyExchangeRate, userCurrencyFormatting);
+          orderItem.variants.displayPrice = accounting.formatMoney(
+            orderItem.variants.price * userCurrencyExchangeRate,
+            userCurrencyFormatting
+          );
 
           combinedItems.push(orderItem);
 
@@ -822,8 +885,14 @@ export const methods = {
           taxes: accounting.formatMoney(taxes * userCurrencyExchangeRate, userCurrencyFormatting),
           discounts: accounting.formatMoney(discounts * userCurrencyExchangeRate, userCurrencyFormatting),
           refunds: accounting.formatMoney(refundTotal * userCurrencyExchangeRate, userCurrencyFormatting),
-          total: accounting.formatMoney((subtotal + shippingCost + taxes - discounts) * userCurrencyExchangeRate, userCurrencyFormatting),
-          adjustedTotal: accounting.formatMoney((amount - refundTotal) * userCurrencyExchangeRate, userCurrencyFormatting)
+          total: accounting.formatMoney(
+            (subtotal + shippingCost + taxes - discounts) * userCurrencyExchangeRate,
+            userCurrencyFormatting
+          ),
+          adjustedTotal: accounting.formatMoney(
+            (amount - refundTotal) * userCurrencyExchangeRate,
+            userCurrencyFormatting
+          )
         },
         combinedItems,
         orderDate: formatDateForEmail(order.createdAt),
@@ -841,7 +910,6 @@ export const methods = {
       };
 
       Logger.debug(`orders/sendNotification status: ${order.workflow.status}`);
-
 
       // handle missing root shop email
       if (!shop.emails[0].address) {
@@ -894,7 +962,7 @@ export const methods = {
    * @summary Adds tracking information to order without workflow update.
    * Call after any tracking code is generated
    * @method
-   * @memberof Methods/Orders
+   * @memberof Orders/Methods
    * @param {Object} order - An Order object
    * @param {Object} shipment - A Shipment object
    * @param {String} tracking - tracking id
@@ -910,20 +978,23 @@ export const methods = {
       throw new Meteor.Error("access-denied", "Access Denied");
     }
 
-    return Orders.update({
-      "_id": order._id,
-      "shipping._id": shipment._id
-    }, {
-      $set: {
-        "shipping.$.tracking": tracking
+    return Orders.update(
+      {
+        "_id": order._id,
+        "shipping._id": shipment._id
+      },
+      {
+        $set: {
+          "shipping.$.tracking": tracking
+        }
       }
-    });
+    );
   },
 
   /**
    * @name orders/addOrderEmail
    * @method
-   * @memberof Methods/Orders
+   * @memberof Orders/Methods
    * @summary Adds email to order, used for guest users
    * @param {String} cartId - add tracking to orderId
    * @param {String} email - valid email address
@@ -933,10 +1004,10 @@ export const methods = {
     check(cartId, String);
     check(email, String);
     /**
-    *Instead of checking the Orders permission, we should check if user is
-    *connected.This is only needed for guest where email is
-    *provided for tracking order progress.
-    */
+     *Instead of checking the Orders permission, we should check if user is
+     *connected.This is only needed for guest where email is
+     *provided for tracking order progress.
+     */
 
     if (!Meteor.userId()) {
       throw new Meteor.Error("access-denied", "Access Denied. You are not connected.");
@@ -948,7 +1019,7 @@ export const methods = {
   /**
    * @name orders/updateHistory
    * @method
-   * @memberof Methods/Orders
+   * @memberof Orders/Methods
    * @summary adds order history item for tracking and logging order updates
    * @param {String} orderId - add tracking to orderId
    * @param {String} event - workflow event
@@ -983,7 +1054,7 @@ export const methods = {
    * @summary Finalize any payment where mode is "authorize"
    * and status is "approved", reprocess as "capture"
    * @method
-   * @memberof Methods/Orders
+   * @memberof Orders/Methods
    * @param {String} orderId - add tracking to orderId
    * @return {null} no return value
    */
@@ -1027,19 +1098,22 @@ export const methods = {
       if (result && result.saved === true) {
         const metadata = Object.assign(bilingRecord.paymentMethod.metadata || {}, result.metadata || {});
 
-        Orders.update({
-          "_id": orderId,
-          "billing.paymentMethod.transactionId": transactionId
-        }, {
-          $set: {
-            "billing.$.paymentMethod.mode": "capture",
-            "billing.$.paymentMethod.status": "completed",
-            "billing.$.paymentMethod.metadata": metadata
+        Orders.update(
+          {
+            "_id": orderId,
+            "billing.paymentMethod.transactionId": transactionId
           },
-          $push: {
-            "billing.$.paymentMethod.transactions": result
+          {
+            $set: {
+              "billing.$.paymentMethod.mode": "capture",
+              "billing.$.paymentMethod.status": "completed",
+              "billing.$.paymentMethod.metadata": metadata
+            },
+            $push: {
+              "billing.$.paymentMethod.transactions": result
+            }
           }
-        });
+        );
 
         // event onOrderPaymentCaptured used for confirmation hooks
         // ie: confirmShippingMethodForOrder is triggered here
@@ -1053,18 +1127,21 @@ export const methods = {
         Logger.fatal("Failed to capture transaction.", order, paymentMethod.transactionId, error);
       }
 
-      Orders.update({
-        "_id": orderId,
-        "billing.paymentMethod.transactionId": transactionId
-      }, {
-        $set: {
-          "billing.$.paymentMethod.mode": "capture",
-          "billing.$.paymentMethod.status": "error"
+      Orders.update(
+        {
+          "_id": orderId,
+          "billing.paymentMethod.transactionId": transactionId
         },
-        $push: {
-          "billing.$.paymentMethod.transactions": result
+        {
+          $set: {
+            "billing.$.paymentMethod.mode": "capture",
+            "billing.$.paymentMethod.status": "error"
+          },
+          $push: {
+            "billing.$.paymentMethod.transactions": result
+          }
         }
-      });
+      );
 
       return { error: "orders/capturePayments: Failed to capture transaction" };
     }
@@ -1075,7 +1152,7 @@ export const methods = {
    * @summary loop through order's payments and find existing refunds.
    * Get a list of refunds for a particular payment method.
    * @method
-   * @memberof Methods/Orders
+   * @memberof Orders/Methods
    * @param {Object} order - order object
    * @return {Array} Array contains refund records
    */
@@ -1099,7 +1176,7 @@ export const methods = {
   /**
    * @name orders/refund/create
    * @method
-   * @memberof Methods/Orders
+   * @memberof Orders/Methods
    * @summary Apply a refund to an already captured order
    * @param {String} orderId - order object
    * @param {Object} paymentMethod - paymentMethod object
@@ -1145,7 +1222,12 @@ export const methods = {
       };
 
       if (result.saved === false) {
-        Logger.fatal("Attempt for de-authorize transaction failed", order._id, paymentMethod.transactionId, result.error);
+        Logger.fatal(
+          "Attempt for de-authorize transaction failed",
+          order._id,
+          paymentMethod.transactionId,
+          result.error
+        );
         throw new Meteor.Error("Attempt to de-authorize transaction failed", result.error);
       }
     } else if (orderMode === "capture") {
@@ -1162,16 +1244,19 @@ export const methods = {
       }
     }
 
-    Orders.update({
-      "_id": orderId,
-      "billing.shopId": Reaction.getShopId(),
-      "billing.paymentMethod.transactionId": transactionId
-    }, {
-      $set: {
-        "billing.$.paymentMethod.status": "refunded"
+    Orders.update(
+      {
+        "_id": orderId,
+        "billing.shopId": Reaction.getShopId(),
+        "billing.paymentMethod.transactionId": transactionId
       },
-      ...query
-    });
+      {
+        $set: {
+          "billing.$.paymentMethod.status": "refunded"
+        },
+        ...query
+      }
+    );
 
     Hooks.Events.run("onOrderRefundCreated", orderId);
 
@@ -1186,7 +1271,7 @@ export const methods = {
   /**
    * @name orders/refunds/refundItems
    * @method
-   * @memberof Methods/Orders
+   * @memberof Orders/Methods
    * @summary Apply a refund to line items
    * @param {String} orderId - order object
    * @param {Object} paymentMethod - paymentMethod object
@@ -1235,15 +1320,18 @@ export const methods = {
           refundedStatus = "partialRefund";
         }
 
-        Orders.update({
-          "_id": orderId,
-          "billing.shopId": Reaction.getShopId(),
-          "billing.paymentMethod.transactionId": transactionId
-        }, {
-          $set: {
-            "billing.$.paymentMethod.status": refundedStatus
+        Orders.update(
+          {
+            "_id": orderId,
+            "billing.shopId": Reaction.getShopId(),
+            "billing.paymentMethod.transactionId": transactionId
+          },
+          {
+            $set: {
+              "billing.$.paymentMethod.status": refundedStatus
+            }
           }
-        });
+        );
 
         Meteor.call("orders/sendNotification", order, "itemRefund");
 

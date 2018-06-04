@@ -14,11 +14,13 @@ import "./checkoutButton.html";
  *
  * This is the PayPal Express Checkout button that displays opens a popup,
  * provided by paypal.
+ * @ignore
  */
 
 /**
  * Checkout - Open PayPal Express popup
  * @return {undefined} no return value
+ * @private
  */
 function checkout() {
   paypal.checkout.initXO();
@@ -44,16 +46,12 @@ function checkout() {
  * Validate express checkout settings object
  * @param  {Object} settings Object containing "merchantId" and "mode":
  * @return {Boolean} true if valid, false otherwise
+ * @private
  */
 function expressCheckoutSettingsValid(settings) {
   return _.isEmpty(settings.merchantId) === false && _.isEmpty(settings.mode) === false;
 }
 
-/**
- * PayPal checkout onCreate
- * @param  {Function} function to execute when template is created
- * @return {undefined} no return value
- */
 Template.paypalCheckoutButton.onCreated(function () {
   Meteor.call("getExpressCheckoutSettings", (error, expressCheckoutSettings) => {
     if (!error) {
@@ -68,11 +66,6 @@ Template.paypalCheckoutButton.onCreated(function () {
   });
 });
 
-/**
- * PayPal checkout onRendered
- * @param  {Function} function to execute when template is rendered
- * @return {undefined} no return value
- */
 Template.paypalCheckoutButton.onRendered(function () {
   const element = this.$(".js-paypal-express-checkout")[0];
 
@@ -99,33 +92,24 @@ Template.paypalCheckoutButton.onRendered(function () {
   });
 });
 
-/**
- * PayPal checkout button helpers
- */
 Template.paypalCheckoutButton.helpers({
   expressCheckoutEnabled() {
     const expressCheckoutSettings = Session.get("expressCheckoutSettings");
     return expressCheckoutSettings !== undefined ? expressCheckoutSettings.enabled : undefined;
   },
+
   /**
    * Check for proper configuration of PayPal Express Checkout settings.
    * This function only validates that the required settings exist and are not empty.
    * @return {Boolean} true if properly configured, false otherwise
+   * @ignore
    */
   isConfigured() {
     return Template.instance().state.equals("isConfigured", true);
   }
 });
 
-/**
- * PayPal checkout button events
- */
 Template.paypalCheckoutButton.events({
-
-  /**
-   * Click Event: Express Checkout Button
-   * @return {undefined} no return value
-   */
   "click .js-paypal-express-checkout"() {
     return checkout();
   }
