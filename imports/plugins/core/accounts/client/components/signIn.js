@@ -22,6 +22,10 @@ class SignIn extends Component {
   static propTypes = {
     credentials: PropTypes.object,
     isLoading: PropTypes.bool,
+    keycloakClientID: PropTypes.string,
+    keycloakRealm: PropTypes.string,
+    keycloakRedirectUri: PropTypes.string,
+    keycloakServerUrl: PropTypes.string,
     loginFormMessages: PropTypes.func,
     messages: PropTypes.object,
     onError: PropTypes.func,
@@ -45,17 +49,15 @@ class SignIn extends Component {
 
   handleKeycloakLogin = () => {
     const keycloak = new Keycloak({
-      realm: "default",
-      clientId: "reaction-meteor-client",
-      url: "http://localhost:8080/auth"
+      realm: this.props.keycloakRealm,
+      clientId: this.props.keycloakClientID,
+      url: this.props.keycloakServerUrl
     });
 
     keycloak
-      .init({
-        flow: "implicit"
-      })
+      .init({ flow: "implicit" })
       .success(() => {
-        keycloak.login({ redirectUri: "http://localhost:3000/auth" });
+        keycloak.login({ redirectUri: this.props.keycloakRedirectUri });
       })
       .error(() => {});
   };

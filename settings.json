@@ -1,0 +1,8 @@
+{
+  "public": {
+    "keycloakClientID" : "reaction-meteor-frontend",
+    "keycloakServerUrl" : "http://localhost:8080/auth",
+    "keycloakRedirectUri" : "http://localhost:3000/auth",
+    "keycloakRealm" : "default"
+  }
+}
