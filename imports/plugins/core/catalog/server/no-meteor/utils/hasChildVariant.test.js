@@ -98,12 +98,6 @@ test("expect true when product has a child", async () => {
   expect(spec).toBe(true);
 });
 
-test("expect true when product variant has a child", async () => {
-  mockCollections.Products.findOne.mockReturnValueOnce(Promise.resolve(mockVariants[1]));
-  const spec = await hasChildVariant(internalVariantIds[0], mockCollections);
-  expect(spec).toBe(true);
-});
-
 test("expect false when product does not a child", async () => {
   mockCollections.Products.findOne.mockReturnValueOnce(Promise.resolve(null));
   const spec = await hasChildVariant(internalVariantIds[1], mockCollections);
