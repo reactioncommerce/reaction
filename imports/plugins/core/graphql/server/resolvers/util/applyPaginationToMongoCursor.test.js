@@ -7,13 +7,13 @@ beforeEach(() => {
 });
 
 test("with neither first nor last limits to first 50", async () => {
-  mockCursor.count.mockReturnValueOnce(Promise.resolve(51));
+  mockCursor.count.mockReturnValueOnce(Promise.resolve(21));
   const result = await applyPaginationToMongoCursor(mockCursor, undefined, 100);
   expect(result).toEqual({
     hasNextPage: true,
     hasPreviousPage: null
   });
-  expect(mockCursor.limit.mock.calls).toEqual([[51], [50]]);
+  expect(mockCursor.limit.mock.calls).toEqual([[21], [20]]);
   expect(mockCursor.skip).not.toHaveBeenCalled();
 });
 
