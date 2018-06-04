@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import Keycloak from "keycloak-js";
 import classnames from "classnames";
 import { Components, registerComponent } from "@reactioncommerce/reaction-components";
 
@@ -22,10 +21,6 @@ class SignIn extends Component {
   static propTypes = {
     credentials: PropTypes.object,
     isLoading: PropTypes.bool,
-    keycloakClientID: PropTypes.string,
-    keycloakRealm: PropTypes.string,
-    keycloakRedirectUri: PropTypes.string,
-    keycloakServerUrl: PropTypes.string,
     loginFormMessages: PropTypes.func,
     messages: PropTypes.object,
     onError: PropTypes.func,
@@ -46,21 +41,6 @@ class SignIn extends Component {
     this.handleFieldChange = this.handleFieldChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
-
-  handleKeycloakLogin = () => {
-    const keycloak = new Keycloak({
-      realm: this.props.keycloakRealm,
-      clientId: this.props.keycloakClientID,
-      url: this.props.keycloakServerUrl
-    });
-
-    keycloak
-      .init({ flow: "implicit" })
-      .success(() => {
-        keycloak.login({ redirectUri: this.props.keycloakRedirectUri });
-      })
-      .error(() => {});
-  };
 
   handleFieldChange = (event, value, field) => {
     this.setState({
@@ -188,16 +168,7 @@ class SignIn extends Component {
           </div>
 
           <Components.Divider />
-
-          <Components.Button
-            className="btn-block"
-            primary={true}
-            bezelStyle="solid"
-            i18nKeyLabel=""
-            label="Sign in with Keycloak"
-            onClick={this.handleKeycloakLogin}
-          />
-
+          <Components.KeycloakLoginButton {...this.props} />
           <Components.Divider />
 
           <div className="form-group flex flex-justify-spaceBetween">
