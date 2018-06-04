@@ -20,6 +20,7 @@
   },
   "dependencies": {
     "@babel/runtime": "7.0.0-beta.38",
+    "@reactioncommerce/data-factory": "^1.0.0",
     "@reactioncommerce/file-collections": "0.5.0",
     "@reactioncommerce/file-collections-sa-gridfs": "0.0.2",
     "@reactioncommerce/hooks": "1.0.2",
@@ -73,7 +74,7 @@
     "jquery-i18next": "^1.2.1",
     "later": "^1.2.0",
     "libphonenumber-js": "^1.0.24",
-    "lodash": "^4.17.5",
+    "lodash": "^4.17.10",
     "lodash.pick": "^4.4.0",
     "match-sorter": "^2.2.0",
     "meteor-node-stubs": "^0.3.2",

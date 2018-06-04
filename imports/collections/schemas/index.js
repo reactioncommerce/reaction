@@ -12,6 +12,8 @@
  * @namespace Schemas
  */
 
+import "./schemaIndex";
+
 export * from "./accounts";
 export * from "./address";
 export * from "./assets";

@@ -644,7 +644,7 @@ Meteor.methods({
 
     const tag = {
       name: tagName,
-      slug: Reaction.getSlug(tagName),
+      slug: getSlug(tagName),
       shopId: Reaction.getShopId(),
       isTopLevel,
       updatedAt: new Date(),
@@ -677,12 +677,12 @@ Meteor.methods({
     this.unblock();
 
     const newTag = {
-      slug: Reaction.getSlug(tagName),
+      slug: getSlug(tagName),
       name: tagName
     };
 
     const existingTag = Collections.Tags.findOne({
-      slug: Reaction.getSlug(tagName),
+      slug: getSlug(tagName),
       name: tagName
     });
 

@@ -1,7 +1,6 @@
 import SimpleSchema from "simpl-schema";
 import { Meteor } from "meteor/meteor";
 import { registerSchema } from "@reactioncommerce/schemas";
-import { ReactionProduct } from "/lib/api";
 import { createdAtAutoValue, updatedAtAutoValue } from "./helpers";
 import { Event } from "./event";
 import { Metafield } from "./metafield";
@@ -243,16 +242,7 @@ export const ProductVariant = new SimpleSchema({
     type: SimpleSchema.Integer,
     label: "Quantity",
     optional: true,
-    defaultValue: 0,
-    custom() {
-      if (Meteor.isClient) {
-        if (this.siblingField("type").value !== "inventory") {
-          if (ReactionProduct.checkChildVariants(this.docId) === 0 && !this.value) {
-            return SimpleSchema.ErrorTypes.REQUIRED;
-          }
-        }
-      }
-    }
+    defaultValue: 0
   },
   "minOrderQuantity": {
     label: "Minimum order quantity",
