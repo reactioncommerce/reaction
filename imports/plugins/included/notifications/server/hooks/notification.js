@@ -1,5 +1,5 @@
 import { Meteor } from "meteor/meteor";
-import { Orders } from "/lib/collections"; 
+import { Orders } from "/lib/collections";
 import { Logger, MethodHooks, Reaction } from "/server/api";
 
 const getAdminUserId = () => {
@@ -41,12 +41,14 @@ MethodHooks.after("cart/copyCartToOrder", (options) => {
     sendNotificationToAdmin(adminId);
   }
 
-  // Also send notification to shop owners excluding the admin 
-  const cartId = options.arguments[0]; 
-  const order = Orders.findOne({ cartId }); 
+  // Also send notification to shop owners excluding the admin
+  const cartId = options.arguments[0];
+  const order = Orders.findOne({ cartId });
+  const notifiedUsers = [];
   order.items.map((item) => Meteor.users.find({ [`roles.${item.shopId}`]: "owner" }).fetch().map(({ _id }) => {
-    if (_id !== adminId) {
-      sendNotificationToAdmin(_id); 
+    if (_id !== adminId && !notifiedUsers.includes(_id)) {
+      sendNotificationToAdmin(_id);
+      notifiedUsers.push(_id);
     }
     return _id;
   }));
