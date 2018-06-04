@@ -151,7 +151,7 @@ ChildVariant.propTypes = {
   isSelected: PropTypes.bool,
   media: PropTypes.arrayOf(PropTypes.object),
   onClick: PropTypes.func.isRequired,
-  soldOut: PropTypes.bool,
+  soldOut: PropTypes.bool, // eslint-disable-line react/boolean-prop-naming
   variant: PropTypes.object,
   visibilityButton: PropTypes.node
 };

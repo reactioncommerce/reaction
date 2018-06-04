@@ -170,9 +170,9 @@ TagList.defaultProps = {
 
 TagList.propTypes = {
   children: PropTypes.node,
-  draggable: PropTypes.bool,
-  editable: PropTypes.bool,
-  enableNewTagForm: PropTypes.bool,
+  draggable: PropTypes.bool, // eslint-disable-line react/boolean-prop-naming
+  editable: PropTypes.bool, // eslint-disable-line react/boolean-prop-naming
+  enableNewTagForm: PropTypes.bool, // eslint-disable-line react/boolean-prop-naming
   hasDropdownClassName: PropTypes.func,
   isTagNav: PropTypes.bool,
   navbarSelectedClassName: PropTypes.func,
@@ -190,7 +190,7 @@ TagList.propTypes = {
   onTagSort: PropTypes.func,
   onTagUpdate: PropTypes.func,
   parentTag: ReactionPropTypes.Tag,
-  showBookmark: PropTypes.bool,
+  showBookmark: PropTypes.bool, // eslint-disable-line react/boolean-prop-naming
   suggestions: PropTypes.arrayOf(PropTypes.object),
   tags: ReactionPropTypes.arrayOfTags
 };

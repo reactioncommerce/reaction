@@ -50,8 +50,8 @@ class LineItems extends Component {
     handleSelectAllItems: PropTypes.func,
     isRefunding: PropTypes.bool,
     order: PropTypes.object,
-    popOverIsOpen: PropTypes.bool,
-    selectAllItems: PropTypes.bool,
+    popOverIsOpen: PropTypes.bool, // eslint-disable-line react/boolean-prop-naming
+    selectAllItems: PropTypes.bool, // eslint-disable-line react/boolean-prop-naming
     selectedItems: PropTypes.array,
     uniqueItems: PropTypes.array
   }

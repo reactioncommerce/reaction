@@ -24,7 +24,7 @@ class PublishControls extends Component {
     onViewContextChange: PropTypes.func,
     onVisibilityChange: PropTypes.func,
     revisions: PropTypes.arrayOf(PropTypes.object),
-    showViewAsControls: PropTypes.bool,
+    showViewAsControls: PropTypes.bool, // eslint-disable-line react/boolean-prop-naming
     translation: PropTypes.shape({
       lang: PropTypes.string
     })

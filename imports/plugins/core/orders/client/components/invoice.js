@@ -28,14 +28,14 @@ class Invoice extends Component {
     */
   static propTypes = {
     canMakeAdjustments: PropTypes.bool,
-    discounts: PropTypes.bool,
+    discounts: PropTypes.bool, // eslint-disable-line react/boolean-prop-naming
     displayMedia: PropTypes.func,
     hasRefundingEnabled: PropTypes.bool,
     invoice: PropTypes.object,
     isFetching: PropTypes.bool,
     moment: PropTypes.func,
     order: PropTypes.object,
-    paymentCaptured: PropTypes.bool,
+    paymentCaptured: PropTypes.bool, // eslint-disable-line react/boolean-prop-naming
     refunds: PropTypes.array
   }
 

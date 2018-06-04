@@ -9,7 +9,7 @@ const Currency = ({ amount, priceRange, editable }) => (
 
 Currency.propTypes = {
   amount: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-  editable: PropTypes.bool,
+  editable: PropTypes.bool, // eslint-disable-line react/boolean-prop-naming
   priceRange: PropTypes.oneOfType([PropTypes.number, PropTypes.string])
 };
 

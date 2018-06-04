@@ -84,7 +84,7 @@ const wrapComponent = (Comp) => (
     static propTypes = {
       closeNavbar: PropTypes.func,
       editButton: PropTypes.node,
-      editable: PropTypes.bool,
+      editable: PropTypes.bool, // eslint-disable-line react/boolean-prop-naming
       hasEditRights: PropTypes.bool,
       isVisible: PropTypes.bool,
       tagIds: PropTypes.arrayOf(PropTypes.string),
