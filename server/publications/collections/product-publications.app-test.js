@@ -1,5 +1,6 @@
 /* eslint dot-notation: 0 */
 /* eslint prefer-arrow-callback:0 */
+/* eslint promise/no-callback-in-promise:0 */
 import Random from "@reactioncommerce/random";
 import { expect } from "meteor/practicalmeteor:chai";
 import { sinon } from "meteor/practicalmeteor:sinon";
@@ -173,10 +174,10 @@ describe("Publication", function () {
         sandbox.stub(Reaction, "getShopsWithRoles", () => [shopId, merchantShopId, primaryShopId]);
 
         collector.collect("Products", 24, undefined, {}, true, ({ Products }) => {
-          const productIds = Products.map((p) => p._id);
+          const productIds = Products.map((product) => product._id);
 
           expect(productIds).to.have.members(activeShopProductIds);
-        }).then(() => done(/* empty */), done);
+        }).then(() => done(/* empty */)).catch(done);
       });
 
       it("should return all products from the current shop to admins in a Merchant Shop", function (done) {
@@ -187,10 +188,10 @@ describe("Publication", function () {
         sandbox.stub(Reaction, "getShopsWithRoles", () => [shopId, merchantShopId, primaryShopId]);
 
         collector.collect("Products", 24, undefined, {}, true, ({ Products }) => {
-          const productIds = Products.map((p) => p._id);
+          const productIds = Products.map((product) => product._id);
 
           expect(productIds).to.have.members(merchantShop1ProductIds);
-        }).then(() => done(/* empty */), done);
+        }).then(() => done(/* empty */)).catch(done);
       });
 
       it("returns products from only the shops for which an admin has createProduct Role", function (done) {
@@ -201,10 +202,10 @@ describe("Publication", function () {
         sandbox.stub(Reaction, "getShopsWithRoles", () => [shopId]);
 
         collector.collect("Products", 24, undefined, {}, true, ({ Products }) => {
-          const productIds = Products.map((p) => p._id);
+          const productIds = Products.map((product) => product._id);
 
           expect(productIds).to.have.members(merchantShop1ProductIds);
-        }).then(() => done(/* empty */), done);
+        }).then(() => done(/* empty */)).catch(done);
       });
 
       it("should return only visible products to visitors", function (done) {
@@ -217,7 +218,7 @@ describe("Publication", function () {
 
           expect(Products.length).to.equal(2);
           expect(expectedTitles.some((title) => title === data.title)).to.be.ok;
-        }).then(() => done(/* empty */), done);
+        }).then(() => done(/* empty */)).catch(done);
       });
 
       it("should return only products matching query", function (done) {
@@ -230,7 +231,7 @@ describe("Publication", function () {
           const data = Products[0];
 
           expect(data.title).to.equal("Shopkins - Peachy");
-        }).then(() => done(/* empty */), done);
+        }).then(() => done(/* empty */)).catch(done);
       });
 
       it("should not return products not matching query", function (done) {
@@ -241,7 +242,7 @@ describe("Publication", function () {
 
         collector.collect("Products", productScrollLimit, filters, {}, ({ Products }) => {
           expect(Products.length).to.equal(0);
-        }).then(() => done(/* empty */), done);
+        }).then(() => done(/* empty */)).catch(done);
       });
 
       it("should return products in price.min query", function (done) {
@@ -252,7 +253,7 @@ describe("Publication", function () {
 
         collector.collect("Products", productScrollLimit, filters, {}, ({ Products }) => {
           expect(Products.length).to.equal(1);
-        }).then(() => done(/* empty */), done);
+        }).then(() => done(/* empty */)).catch(done);
       });
 
       it("should return products in price.max query", function (done) {
@@ -263,7 +264,7 @@ describe("Publication", function () {
 
         collector.collect("Products", productScrollLimit, filters, {}, ({ Products }) => {
           expect(Products.length).to.equal(2);
-        }).then(() => done(/* empty */), done);
+        }).then(() => done(/* empty */)).catch(done);
       });
 
       it("should return products in price.min - price.max range query", function (done) {
@@ -274,7 +275,7 @@ describe("Publication", function () {
 
         collector.collect("Products", productScrollLimit, filters, {}, ({ Products }) => {
           expect(Products.length).to.equal(2);
-        }).then(() => done(/* empty */), done);
+        }).then(() => done(/* empty */)).catch(done);
       });
 
       it("should return products where value is in price set query", function (done) {
@@ -285,7 +286,7 @@ describe("Publication", function () {
 
         collector.collect("Products", productScrollLimit, filters, {}, ({ Products }) => {
           expect(Products.length).to.equal(1);
-        }).then(() => done(/* empty */), done);
+        }).then(() => done(/* empty */)).catch(done);
       });
 
       it("should return products from all shops when multiple shops are provided", function (done) {
@@ -295,10 +296,10 @@ describe("Publication", function () {
         sandbox.stub(Roles, "userIsInRole", () => false);
 
         collector.collect("Products", productScrollLimit, filters, {}, ({ Products }) => {
-          const productIds = Products.map((p) => p._id);
+          const productIds = Products.map((product) => product._id);
 
           expect(productIds).to.have.members(activeMerchantProductIds);
-        }).then(() => done(/* empty */), done);
+        }).then(() => done(/* empty */)).catch(done);
       });
     });
 
@@ -312,10 +313,10 @@ describe("Publication", function () {
           sandbox.stub(Reaction, "getShopId", () => shopId);
 
           collector.collect("Products/grid", ({ Catalog }) => {
-            const productIds = Catalog.map((p) => p._id);
+            const productIds = Catalog.map((product) => product._id);
 
             expect(productIds).to.be.empty;
-          }).then(() => done(/* empty */), done);
+          }).then(() => done(/* empty */)).catch(done);
         });
 
         it("returns products from the Catalog", function (done) {
@@ -324,10 +325,10 @@ describe("Publication", function () {
           publishProducts();
 
           collector.collect("Products/grid", ({ Catalog }) => {
-            const productIds = Catalog.map((p) => p._id);
+            const productIds = Catalog.map((product) => product._id);
 
             expect(productIds).to.not.be.empty;
-          }).then(() => done(/* empty */), done);
+          }).then(() => done(/* empty */)).catch(done);
         });
       });
 
@@ -340,20 +341,20 @@ describe("Publication", function () {
           sandbox.stub(Reaction, "getShopId", () => shopId);
 
           collector.collect("Products/grid", ({ Catalog }) => {
-            const productIds = Catalog.map((c) => c.product._id);
+            const productIds = Catalog.map((item) => item.product._id);
 
             expect(productIds).to.have.members(merchantShop1VisibleProductIds);
-          }).then(() => done(/* empty */), done);
+          }).then(() => done(/* empty */)).catch(done);
         });
 
         it("returns all visible products from all active shops when the Primary Shop is active", function (done) {
           sandbox.stub(Reaction, "getShopId", () => primaryShopId);
 
           collector.collect("Products/grid", ({ Catalog }) => {
-            const productIds = Catalog.map((c) => c.product._id);
+            const productIds = Catalog.map((item) => item.product._id);
 
             expect(productIds).to.have.members(activeShopVisibleProductIds);
-          }).then(() => done(/* empty */), done);
+          }).then(() => done(/* empty */)).catch(done);
         });
 
         it("returns products from all shops when the Primary Shop is active, filtered by shop id", function (done) {
@@ -362,16 +363,19 @@ describe("Publication", function () {
           sandbox.stub(Reaction, "getShopId", () => primaryShopId);
 
           collector.collect("Products/grid", 24, filters, ({ Catalog }) => {
-            const productIds = Catalog.map((c) => c.product._id);
+            const productIds = Catalog.map((item) => item.product._id);
 
             expect(productIds).to.have.members(activeMerchantProductIds);
-          }).then(() => done(/* empty */), done);
+          }).then(() => done(/* empty */)).catch(done);
         });
       });
 
+      /**
+       * @summary Publishes all products in the database
+       * @returns {Promise<Boolean>} true on successful publish for all documents, false if one ore more fail to publish
+       */
       function publishProducts() {
-        const productIds =
-          Collections.Products.find({}).fetch().map((p) => p._id);
+        const productIds = Collections.Products.find({}).fetch().map((product) => product._id);
 
         return Promise.await(publishProductsToCatalog(productIds, collections));
       }
@@ -388,7 +392,7 @@ describe("Publication", function () {
           const data = Products[0];
 
           expect(data.title).to.equal(product.title);
-        }).then(() => done(/* empty */), done);
+        }).then(() => done(/* empty */)).catch(done);
       });
 
       it("should not return a product if handle does not match exactly", function (done) {
@@ -400,7 +404,7 @@ describe("Publication", function () {
           } else {
             expect(Products).to.be.undefined;
           }
-        }).then(() => done(/* empty */), done);
+        }).then(() => done(/* empty */)).catch(done);
       });
 
       it("should not return a product based on exact handle match if it isn't visible", function (done) {
@@ -413,7 +417,7 @@ describe("Publication", function () {
           } else {
             expect(Products).to.be.undefined;
           }
-        }).then(() => done(/* empty */), done);
+        }).then(() => done(/* empty */)).catch(done);
       });
 
       it("should return a product to admin based on a exact handle match even if it isn't visible", function (done) {
@@ -425,7 +429,7 @@ describe("Publication", function () {
           const data = Products[0];
 
           expect(data.title).to.equal("My Little Pony");
-        }).then(() => done(/* empty */), done);
+        }).then(() => done(/* empty */)).catch(done);
       });
     });
   });
