@@ -128,7 +128,9 @@ export function buildProductSearch(cb) {
 
   const rawProductSearchCollection = ProductSearch.rawCollection();
   rawProductSearchCollection.dropIndexes().catch(handleIndexUpdateFailures);
-  rawProductSearchCollection.createIndex(indexObject, weightObject, getSearchLanguage()).catch(handleIndexUpdateFailures);
+  const options = getSearchLanguage();
+  options.weights = weightObject;
+  rawProductSearchCollection.createIndex(indexObject, options).catch(handleIndexUpdateFailures);
   if (cb) {
     cb();
   }
@@ -143,7 +145,9 @@ export function buildEmptyProductSearch() {
   }
   const rawProductSearchCollection = ProductSearch.rawCollection();
   rawProductSearchCollection.dropIndexes().catch(handleIndexUpdateFailures);
-  rawProductSearchCollection.createIndex(indexObject, weightObject, getSearchLanguage()).catch(handleIndexUpdateFailures);
+  const options = getSearchLanguage();
+  options.weights = weightObject;
+  rawProductSearchCollection.createIndex(indexObject, options).catch(handleIndexUpdateFailures);
 }
 
 export function rebuildProductSearchIndex(cb) {
@@ -155,7 +159,9 @@ export function rebuildProductSearchIndex(cb) {
   }
   const rawProductSearchCollection = ProductSearch.rawCollection();
   rawProductSearchCollection.dropIndexes().catch(handleIndexUpdateFailures);
-  rawProductSearchCollection.createIndex(indexObject, weightObject, getSearchLanguage()).catch(handleIndexUpdateFailures);
+  const options = getSearchLanguage();
+  options.weights = weightObject;
+  rawProductSearchCollection.createIndex(indexObject, options).catch(handleIndexUpdateFailures);
   if (cb) {
     cb();
   }
@@ -169,7 +175,9 @@ export function ensureProductSearchIndex() {
     indexObject[field] = "text";
   }
   const rawProductSearchCollection = ProductSearch.rawCollection();
-  rawProductSearchCollection.createIndex(indexObject, weightObject, getSearchLanguage()).catch(handleIndexUpdateFailures);
+  const options = getSearchLanguage();
+  options.weights = weightObject;
+  rawProductSearchCollection.createIndex(indexObject, options).catch(handleIndexUpdateFailures);
 }
 
 export function buildOrderSearchRecord(orderId) {

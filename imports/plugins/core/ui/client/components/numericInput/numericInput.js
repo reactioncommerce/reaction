@@ -70,7 +70,7 @@ class NumericInput extends Component {
    * @param  {Event} event Event object
    * @return {void}
    */
-  onBlur = () => {
+  onBlur = (event) => {
     let { value } = this.state;
     if (value > this.props.maxValue) {
       value = this.props.maxValue;
@@ -227,7 +227,7 @@ NumericInput.defaultProps = {
 
 NumericInput.propTypes = {
   classNames: PropTypes.shape({}),
-  disabled: PropTypes.bool,
+  disabled: PropTypes.bool, // eslint-disable-line react/boolean-prop-naming
   format: PropTypes.shape({
     decimal: PropTypes.string
   }),

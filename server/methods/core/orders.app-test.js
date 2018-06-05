@@ -6,7 +6,7 @@ import { Factory } from "meteor/dburles:factory";
 import { expect } from "meteor/practicalmeteor:chai";
 import { sinon } from "meteor/practicalmeteor:sinon";
 import Fixtures from "/server/imports/fixtures";
-import { Reaction } from "/server/api";
+import { Reaction, Logger } from "/server/api";
 import { getShop } from "/server/imports/fixtures/shops";
 import { Orders, Notifications, Products, Shops } from "/lib/collections";
 import { Media } from "/imports/plugins/core/files/server";
@@ -551,6 +551,8 @@ describe("orders test", function () {
           saved: false
         };
       });
+
+      sandbox.stub(Logger, "fatal"); // since we expect this, let's keep the output clean
       Meteor.call("orders/capturePayments", order._id, () => {
         const orderPaymentMethod = billingObjectMethod(Orders.findOne({ _id: order._id })).paymentMethod;
         expect(orderPaymentMethod.mode).to.equal("capture");

@@ -513,20 +513,6 @@
           "isCommercial": "Esta es una dirección comercial"
         }
       },
-      "revisions": {
-        "isDisabled": "El control de revisión está deshabilitado Todos los cambios se publicarán de imediato.",
-        "isEnabled": "Revisión de control está habilitada para los productos. Se necesitan cualquier cambio que se publicará antes de ser visibles para los clientes.",
-        "unpublishedChanges": "Cambios sin publicar",
-        "publishChanges": "Publicar cambios",
-        "showChanges": "Mostrar cambios",
-        "hideChanges": "Ocultar cambios",
-        "discardChanges": "Descartar cambios",
-        "changedPublished": "Cambios publicados correctamente",
-        "changesDiscarded": "Los cambios se han descartado",
-        "noChanges": "Sin cambios",
-        "noChangesPublished": "No hay cambios para publicar",
-        "noChangesDiscarded": "No hay cambios que descartar"
-      },
       "address": {
         "country": "País",
         "fullName": "Nombre completo",

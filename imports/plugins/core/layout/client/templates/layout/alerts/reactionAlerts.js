@@ -16,8 +16,7 @@ import { getRootNode } from "/imports/plugins/core/router/client/browserRouter.j
  */
 
 const getAlertWrapper = () => {
-  getRootNode();
-  const rootNode = document.getElementById("react-root");
+  const rootNode = getRootNode();
 
   rootNode.insertAdjacentHTML("beforebegin", "<div id='s-alert-wrapper'></div>");
   return document.getElementById("s-alert-wrapper");
@@ -80,6 +79,7 @@ Object.assign(Alerts, {
         if (isConfirm === true && typeof messageOrCallback === "function") {
           messageOrCallback(isConfirm, false);
         }
+        return null;
       }, (dismiss) => {
         if (dismiss === "cancel" || dismiss === "esc" || dismiss === "overlay") {
           messageOrCallback(false, dismiss);
@@ -105,6 +105,7 @@ Object.assign(Alerts, {
       if (isConfirm === true && typeof callback === "function") {
         callback(isConfirm);
       }
+      return null;
     }).catch((err) => {
       if (err === "cancel" || err === "overlay" || err === "timer") {
         return undefined; // Silence error

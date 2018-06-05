@@ -21,7 +21,7 @@ class LoginInline extends Component {
   static propTypes = {
     continueAsGuest: PropTypes.func,
     handleEmailSubmit: PropTypes.func.isRequired,
-    renderEmailForm: PropTypes.bool
+    renderEmailForm: PropTypes.bool // eslint-disable-line react/boolean-prop-naming
   };
 
   constructor(props) {

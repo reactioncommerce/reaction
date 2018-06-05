@@ -65,47 +65,8 @@ class EditContainer extends Component {
   renderEditButton() {
     let status;
     let tooltip;
-    let hasChange = false;
 
-    if (this.props.data.__draft && this.props.field) {
-      const draft = this.props.data.__draft;
-
-      if (Array.isArray(draft.diff)) {
-        for (const diff of draft.diff) {
-          let hasChangedField = false;
-
-          if (Array.isArray(this.props.field)) {
-            if (this.props.field.indexOf(diff.path[0]) >= 0) {
-              hasChangedField = true;
-            }
-          } else if (typeof this.props.field === "string" && this.props.field === diff.path[0]) {
-            hasChangedField = true;
-          }
-
-          if (hasChangedField) {
-            status = "warning";
-
-            tooltip = (
-              <span>
-                <Components.Translation defaultValue="Unpublished Changes" i18nKey="revisions.unpublishedChanges" />
-              </span>
-            );
-
-            hasChange = true;
-          }
-        }
-      }
-    } else if (this.props.data.__draft) {
-      status = "warning";
-
-      tooltip = (
-        <span>
-          <Components.Translation defaultValue="Unpublished Changes" i18nKey="revisions.unpublishedChanges" />
-        </span>
-      );
-    }
-
-    if (this.props.autoHideEditButton && hasChange === false) {
+    if (this.props.autoHideEditButton) {
       return null;
     }
 
@@ -156,14 +117,14 @@ class EditContainer extends Component {
 }
 
 EditContainer.propTypes = {
-  autoHideEditButton: PropTypes.bool,
+  autoHideEditButton: PropTypes.bool, // eslint-disable-line react/boolean-prop-naming
   children: PropTypes.node,
   data: PropTypes.object,
   field: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
   hasPermission: PropTypes.bool,
   onEditButtonClick: PropTypes.func,
   onVisibilityButtonClick: PropTypes.func,
-  showsVisibilityButton: PropTypes.bool
+  showsVisibilityButton: PropTypes.bool // eslint-disable-line react/boolean-prop-naming
 };
 
 function composer(props, onData) {

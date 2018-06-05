@@ -52,7 +52,7 @@ Checkbox.defaultProps = {
 };
 
 Checkbox.propTypes = {
-  checked: PropTypes.bool,
+  checked: PropTypes.bool, // eslint-disable-line react/boolean-prop-naming
   className: PropTypes.string,
   i18nKeyLabel: PropTypes.string,
   id: PropTypes.string,

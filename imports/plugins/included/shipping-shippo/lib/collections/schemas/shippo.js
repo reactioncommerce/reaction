@@ -1,4 +1,4 @@
-import { PackageConfig } from "/lib/collections/schemas/registry";
+import { PackageConfig } from "/lib/collections/schemas";
 import { registerSchema } from "@reactioncommerce/schemas";
 
 /**

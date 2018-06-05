@@ -17,5 +17,5 @@ export default async function groups({ _id }, connectionArgs, context) {
   const dbShopId = decodeShopOpaqueId(_id);
   const query = await context.queries.accounts.groups(context, dbShopId);
 
-  return await getPaginatedResponse(query, connectionArgs);
+  return getPaginatedResponse(query, connectionArgs);
 }

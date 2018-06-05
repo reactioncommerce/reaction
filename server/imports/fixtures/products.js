@@ -1,9 +1,9 @@
 import faker from "faker";
 import _ from "lodash";
 import { Factory } from "meteor/dburles:factory";
+import { getSlug } from "server/api/core/utils";
 import { Products, Tags } from "/lib/collections";
 import { getShop } from "./shops";
-import { Hooks } from "/server/api";
 
 /**
  * @method metaField
@@ -99,14 +99,10 @@ export function productVariant(options = {}) {
  */
 export function addProduct(options = {}) {
   const product = Factory.create("product", options);
-  Hooks.Events.run("afterInsertCatalogProductInsertRevision", product);
   // top level variant
   const variant = Factory.create("variant", Object.assign({}, productVariant(options), { ancestors: [product._id] }));
-  Hooks.Events.run("afterInsertCatalogProductInsertRevision", variant);
-  const variant2 = Factory.create("variant", Object.assign({}, productVariant(options), { ancestors: [product._id, variant._id] }));
-  Hooks.Events.run("afterInsertCatalogProductInsertRevision", variant2);
-  const variant3 = Factory.create("variant", Object.assign({}, productVariant(options), { ancestors: [product._id, variant._id] }));
-  Hooks.Events.run("afterInsertCatalogProductInsertRevision", variant3);
+  Factory.create("variant", Object.assign({}, productVariant(options), { ancestors: [product._id, variant._id] }));
+  Factory.create("variant", Object.assign({}, productVariant(options), { ancestors: [product._id, variant._id] }));
   return product;
 }
 
@@ -119,10 +115,8 @@ export function addProduct(options = {}) {
  */
 export function addProductSingleVariant() {
   const product = Factory.create("product");
-  Hooks.Events.run("afterInsertCatalogProductInsertRevision", product);
   // top level variant
   const variant = Factory.create("variant", Object.assign({}, productVariant(), { ancestors: [product._id] }));
-  Hooks.Events.run("afterInsertCatalogProductInsertRevision", variant);
   return { product, variant };
 }
 
@@ -219,10 +213,13 @@ export default function () {
     max: 12.99
   };
 
+  const productTitle = faker.commerce.productName();
+
   const product = {
-    title: faker.commerce.productName(),
+    title: productTitle,
     pageTitle: faker.lorem.sentence(),
     description: faker.lorem.paragraph(),
+    handle: getSlug(productTitle),
     type: "simple",
     vendor: faker.company.companyName(),
     price: priceRange,
