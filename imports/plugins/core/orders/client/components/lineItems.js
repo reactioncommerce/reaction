@@ -261,6 +261,7 @@ class LineItems extends Component {
           }
         ]}
         showDropdownButton={false}
+        showShadow
       >
         {this.popOverContent()}
       </Components.Popover>
