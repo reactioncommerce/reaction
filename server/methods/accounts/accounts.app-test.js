@@ -71,7 +71,7 @@ describe("Account Meteor method ", function () {
   describe("addressBookAdd", function () {
     beforeEach(function () {
       const sessionId = Random.id(); // Required for creating a cart
-      // editing your address book also udpates your cart, so be sure there
+      // editing your address book also updates your cart, so be sure there
       // is a cart present
       Meteor.call("cart/createCart", fakeAccount.userId, sessionId);
     });
@@ -203,7 +203,7 @@ describe("Account Meteor method ", function () {
 
     beforeEach(function () {
       const sessionId = Random.id(); // Required for creating a cart
-      // editing your address book also udpates your cart, so be sure there
+      // editing your address book also updates your cart, so be sure there
       // is a cart present
       Meteor.call("cart/createCart", fakeAccount.userId, sessionId);
     });

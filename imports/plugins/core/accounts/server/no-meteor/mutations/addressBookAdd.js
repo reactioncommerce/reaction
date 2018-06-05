@@ -28,7 +28,7 @@ export default async function addressBookAdd(context, address, accountUserId) {
     if (!userHasPermission(["reaction-accounts"], account.shopId)) throw new Meteor.Error("access-denied", "Access denied");
   }
 
-  // required default id
+  // required default ID
   if (!address._id) address._id = Random.id();
 
   // if address got shipment or billing default, we need to update cart
@@ -98,7 +98,7 @@ export default async function addressBookAdd(context, address, accountUserId) {
     accountsUpdateQuery.$set.name = address.fullName;
   }
 
-  await Users.updateOne({ _id: userIdFromContext }, userUpdateQuery);
+  await Users.updateOne({ _id: userId }, userUpdateQuery);
 
   const result = await Accounts.updateOne({ userId }, accountsUpdateQuery);
 
