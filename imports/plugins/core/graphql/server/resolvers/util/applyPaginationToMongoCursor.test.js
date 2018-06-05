@@ -6,7 +6,7 @@ beforeEach(() => {
   mockCursor = getFakeMongoCursor("Test", new Array(100));
 });
 
-test("with neither first nor last limits to first 50", async () => {
+test("with neither first nor last limits to first 20", async () => {
   mockCursor.count.mockReturnValueOnce(Promise.resolve(21));
   const result = await applyPaginationToMongoCursor(mockCursor, undefined, 100);
   expect(result).toEqual({
