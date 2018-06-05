@@ -10,12 +10,6 @@ ENV PATH $PATH:/home/node/.meteor
 COPY --chown=node package-lock.json $APP_SOURCE_DIR/
 COPY --chown=node package.json $APP_SOURCE_DIR/
 
-
-# # Install jq, a lightweight and flexible command-line JSON processor.
-# We use it to determine the base branch of a PR so we can run diffs to conditionally run circle workflows
-RUN curl -L "https://github.com/stedolan/jq/releases/download/jq-1.5/jq-linux64" -o /home/node/jq
-RUN chmod +x /home/node/jq
-
 # Because Docker Compose uses a named volume for node_modules and named volumes are owned
 # by root by default, we have to initially create node_modules here with correct owner.
 # Without this NPM cannot write packages into node_modules later, when running in a container.
