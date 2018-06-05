@@ -25,7 +25,7 @@ function getShopsForItems(items) {
 function getTagsForItems(items) {
   const uniquePositionKeys = [];
   items.forEach(({ positions }) => {
-    Object.keys(positions).forEach((key) => {
+    Object.keys(positions || {}).forEach((key) => {
       if (uniquePositionKeys.indexOf(key) === -1) {
         uniquePositionKeys.push(key);
       }
