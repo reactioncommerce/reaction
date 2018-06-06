@@ -42,15 +42,20 @@ MethodHooks.after("cart/copyCartToOrder", (options) => {
   }
 
   // Also send notification to shop owners excluding the admin
+  // TODO: Rename sendNotificationToAdmin as it can be used to send
+  // notification to other shop owners as well
   const cartId = options.arguments[0];
   const order = Orders.findOne({ cartId });
   const notifiedUsers = [];
-  order.items.map((item) => Meteor.users.find({ [`roles.${item.shopId}`]: "owner" }).fetch().map(({ _id }) => {
-    if (_id !== adminId && !notifiedUsers.includes(_id)) {
-      sendNotificationToAdmin(_id);
-      notifiedUsers.push(_id);
-    }
-    return _id;
-  }));
+  order.items.forEach((item) => {
+    const users = Meteor.users.find({ [`roles.${item.shopId}`]: "owner" }).fetch();
+    users.forEach((user) => {
+      if (user._id !== adminId && !notifiedUsers.includes(user._id)) {
+        sendNotificationToAdmin(user._id);
+        notifiedUsers.push(user._id);
+      }
+    });
+  });
+  
   return options.result;
 });
