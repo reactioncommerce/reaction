@@ -25,9 +25,9 @@ const ToolbarGroup = (props) => {
 ToolbarGroup.propTypes = {
   children: PropTypes.node,
   className: PropTypes.oneOfType([PropTypes.object, PropTypes.string]),
-  firstChild: PropTypes.bool,
-  lastChild: PropTypes.bool,
-  visibleOnMobile: PropTypes.bool
+  firstChild: PropTypes.bool, // eslint-disable-line react/boolean-prop-naming
+  lastChild: PropTypes.bool, // eslint-disable-line react/boolean-prop-naming
+  visibleOnMobile: PropTypes.bool // eslint-disable-line react/boolean-prop-naming
 };
 
 registerComponent("ToolbarGroup", ToolbarGroup);

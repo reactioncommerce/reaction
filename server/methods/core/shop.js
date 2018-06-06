@@ -5,6 +5,7 @@ import { check, Match } from "meteor/check";
 import { HTTP } from "meteor/http";
 import { Job } from "/imports/plugins/core/job-collection/lib";
 import { GeoCoder, Hooks, Logger } from "/server/api";
+import { getSlug } from "/server/api/core/utils";
 import { Reaction } from "/lib/api";
 import * as Collections from "/lib/collections";
 import * as Schemas from "/lib/collections/schemas";
@@ -205,6 +206,7 @@ Meteor.methods({
 
     shop.emails = shopUser.emails;
     shop.addressBook = shopAccount.addressBook;
+    shop.slug = getSlug(shop.name);
 
     Collections.Shops.simpleSchema(shop).validate(shop);
 
@@ -642,7 +644,8 @@ Meteor.methods({
 
     const tag = {
       name: tagName,
-      slug: Reaction.getSlug(tagName),
+      slug: getSlug(tagName),
+      shopId: Reaction.getShopId(),
       isTopLevel,
       updatedAt: new Date(),
       createdAt: new Date()
@@ -674,12 +677,12 @@ Meteor.methods({
     this.unblock();
 
     const newTag = {
-      slug: Reaction.getSlug(tagName),
+      slug: getSlug(tagName),
       name: tagName
     };
 
     const existingTag = Collections.Tags.findOne({
-      slug: Reaction.getSlug(tagName),
+      slug: getSlug(tagName),
       name: tagName
     });
 

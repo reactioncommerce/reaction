@@ -7,7 +7,7 @@ import { Validation } from "@reactioncommerce/schemas";
 import { Reaction } from "/client/api";
 import GridItemControls from "../components/gridItemControls";
 import { ReactionProduct } from "/lib/api";
-import { ProductVariant } from "/lib/collections/schemas/products";
+import { ProductVariant } from "/lib/collections/schemas";
 
 const wrapComponent = (Comp) => (
   class GridItemControlsContainer extends Component {

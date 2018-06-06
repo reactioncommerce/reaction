@@ -41,7 +41,7 @@ const RolloverCheckbox = ({ children, checked, checkboxClassName, onChange, name
 
 RolloverCheckbox.propTypes = {
   checkboxClassName: PropTypes.string,
-  checked: PropTypes.bool,
+  checked: PropTypes.bool, // eslint-disable-line react/boolean-prop-naming
   children: PropTypes.node,
   className: PropTypes.string,
   name: PropTypes.string,

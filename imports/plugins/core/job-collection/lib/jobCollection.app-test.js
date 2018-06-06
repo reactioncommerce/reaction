@@ -19,6 +19,7 @@ const validJobDoc = (d) => Match.test(d, defaultColl.jobDocPattern);
 
 describe("JobCollection default constructor", function () {
   it("should be an instance of JobCollection", function () {
+    this.timeout(15000);
     expect(defaultColl, "JobCollection constructor failed").to.be.an.instanceOf(JobCollection);
     expect(defaultColl.root, "default root isn't 'queue'").to.equal("queue");
 
@@ -41,6 +42,8 @@ describe("JobCollection", function () {
   let testColl;
 
   before(function () {
+    this.timeout(10000);
+
     clientTestColl = new JobCollection("ClientTest", { idGeneration: "MONGO" });
     serverTestColl = new JobCollection("ServerTest", { idGeneration: "STRING" });
 
@@ -61,10 +64,12 @@ describe("JobCollection", function () {
   });
 
   it("should set permissions to allow admin on ClientTest", function () {
+    this.timeout(15000);
     expect(clientTestColl.allows.admin[0]()).to.equal(true);
   });
 
   it("should set polling interval", function () {
+    this.timeout(15000);
     let { interval } = clientTestColl;
     clientTestColl.promote(250);
     expect(interval, "clientTestColl interval not updated").to.not.equal(clientTestColl.interval);
@@ -75,6 +80,7 @@ describe("JobCollection", function () {
   });
 
   it("should run startJobServer on new job collection", function (done) {
+    this.timeout(15000);
     testColl.startJobServer(function (err, res) {
       if (err) { done(err); }
       expect(res, "startJobServer failed in callback result").to.equal(true);
@@ -87,6 +93,7 @@ describe("JobCollection", function () {
 
   if (Meteor.isServer) {
     it("should create a server-side job and see that it is added to the collection and runs", function (done) {
+      this.timeout(15000);
       const jobType = `TestJob_${Math.round(Math.random() * 1000000000)}`;
       const job = new Job(testColl, jobType, { some: "data" });
       assert.ok(validJobDoc(job.doc));
@@ -110,6 +117,7 @@ describe("JobCollection", function () {
   }
 
   it("should create a job and see that it is added to the collection and runs", function (done) {
+    this.timeout(15000);
     const jobType = `TestJob_${Math.round(Math.random() * 1000000000)}`;
     const job = new Job(testColl, jobType, { some: "data" });
     assert.ok(validJobDoc(job.doc));
@@ -128,6 +136,7 @@ describe("JobCollection", function () {
   });
 
   it("should create an invalid job and see that errors correctly propagate", function (done) {
+    this.timeout(15000);
     const jobType = `TestJob_${Math.round(Math.random() * 1000000000)}`;
     const job = new Job(testColl, jobType, { some: "data" });
 
@@ -164,6 +173,7 @@ describe("JobCollection", function () {
   });
 
   it("should create a job and then make a new doc with its document", function (done) {
+    this.timeout(15000);
     let job;
     const jobType = `TestJob_${Math.round(Math.random() * 1000000000)}`;
     const job2 = new Job(testColl, jobType, { some: "data" });
@@ -191,6 +201,7 @@ describe("JobCollection", function () {
   });
 
   it("should should create a repeating job that returns the _id of the next job", function (done) {
+    this.timeout(15000);
     let counter = 0;
     const jobType = `TestJob_${Math.round(Math.random() * 1000000000)}`;
     const job = new Job(testColl, jobType, { some: "data" }).repeat({ repeats: 1, wait: 250 });
@@ -229,6 +240,7 @@ describe("JobCollection", function () {
   });
 
   it("should have dependent jobs run in the correct order", function (done) {
+    this.timeout(15000);
     const jobType = `TestJob_${Math.round(Math.random() * 1000000000)}`;
     const job = new Job(testColl, jobType, { order: 1 });
     const job2 = new Job(testColl, jobType, { order: 2 });
@@ -256,6 +268,7 @@ describe("JobCollection", function () {
 
   if (Meteor.isServer) {
     it("should dry run of dependency check returns status object", function (done) {
+      this.timeout(15000);
       const jobType = `TestJob_${Math.round(Math.random() * 1000000000)}`;
       const job = new Job(testColl, jobType, { order: 1 });
       const job2 = new Job(testColl, jobType, { order: 2 });
@@ -290,6 +303,7 @@ describe("JobCollection", function () {
   }
 
   it("should have dependent job saved after completion of antecedent still runs", function (done) {
+    this.timeout(15000);
     const jobType = `TestJob_${Math.round(Math.random() * 1000000000)}`;
     const job = new Job(testColl, jobType, { order: 1 });
     const job2 = new Job(testColl, jobType, { order: 2 });
@@ -316,6 +330,7 @@ describe("JobCollection", function () {
   });
 
   it("should have dependent job saved after failure of antecedent is cancelled", function (done) {
+    this.timeout(15000);
     const jobType = `TestJob_${Math.round(Math.random() * 1000000000)}`;
     const job = new Job(testColl, jobType, { order: 1 });
     const job2 = new Job(testColl, jobType, { order: 2 });
@@ -339,6 +354,7 @@ describe("JobCollection", function () {
   });
 
   it("should have dependent job saved after cancelled antecedent is also cancelled", function (done) {
+    this.timeout(15000);
     const jobType = `TestJob_${Math.round(Math.random() * 1000000000)}`;
     const job = new Job(testColl, jobType, { order: 1 });
     const job2 = new Job(testColl, jobType, { order: 2 });
@@ -359,6 +375,7 @@ describe("JobCollection", function () {
   });
 
   it("should have dependent job saved after removed antecedent is cancelled", function (done) {
+    this.timeout(15000);
     const jobType = `TestJob_${Math.round(Math.random() * 1000000000)}`;
     const job = new Job(testColl, jobType, { order: 1 });
     const job2 = new Job(testColl, jobType, { order: 2 });
@@ -383,6 +400,7 @@ describe("JobCollection", function () {
   });
 
   it("should cancel succeeds for job without deps, with using option dependents: false", function (done) {
+    this.timeout(15000);
     const jobType = `TestJob_${Math.round(Math.random() * 1000000000)}`;
     const job = new Job(testColl, jobType, {});
     job.save(function (err2, res2) {
@@ -397,6 +415,7 @@ describe("JobCollection", function () {
   });
 
   it("should have dependent job with delayDeps is delayed", function (done) {
+    this.timeout(15000);
     const jobType = `TestJob_${Math.round(Math.random() * 1000000000)}`;
     const job = new Job(testColl, jobType, { order: 1 });
     const job2 = new Job(testColl, jobType, { order: 2 });
@@ -423,9 +442,10 @@ describe("JobCollection", function () {
         });
       });
     });
-  }).timeout(4000);
+  });
 
   it("should be dependent job with delayDeps is delayed", function (done) {
+    this.timeout(15000);
     const jobType = `TestJob_${Math.round(Math.random() * 1000000000)}`;
     const job = new Job(testColl, jobType, { order: 1 });
     const job2 = new Job(testColl, jobType, { order: 2 });
@@ -452,9 +472,10 @@ describe("JobCollection", function () {
         });
       });
     });
-  }).timeout(4000);
+  });
 
   it("Job priority is respected", function (done) {
+    this.timeout(15000);
     let counter = 0;
     const jobType = `TestJob_${Math.round(Math.random() * 1000000000)}`;
     const jobs = [];
@@ -486,6 +507,7 @@ describe("JobCollection", function () {
   });
 
   it("Job priority is respected", function (done) {
+    this.timeout(15000);
     let counter = 0;
     const jobType = `TestJob_${Math.round(Math.random() * 1000000000)}`;
     const jobs = [];
@@ -517,6 +539,7 @@ describe("JobCollection", function () {
   });
 
   it("A forever retrying job can be scheduled and run", function (done) {
+    this.timeout(15000);
     let counter = 0;
     const jobType = `TestJob_${Math.round(Math.random() * 1000000000)}`;
     const job = new Job(testColl, jobType, { some: "data" }).retry({ retries: testColl.forever, wait: 0 });
@@ -539,6 +562,7 @@ describe("JobCollection", function () {
   });
 
   it("Retrying job with exponential backoff", function (done) {
+    this.timeout(15000);
     let counter = 0;
     const jobType = `TestJob_${Math.round(Math.random() * 1000000000)}`;
     const job = new Job(testColl, jobType, { some: "data" }).retry({ retries: 2, wait: 200, backoff: "exponential" });
@@ -561,6 +585,7 @@ describe("JobCollection", function () {
   });
 
   it("should have a forever retrying job with 'until'", function (done) {
+    this.timeout(15000);
     const jobType = `TestJob_${Math.round(Math.random() * 1000000000)}`;
     const job = new Job(testColl, jobType, { some: "data" }).retry({ until: new Date(new Date().valueOf() + 1500), wait: 500 });
     job.save(function (err, res) {
@@ -580,9 +605,10 @@ describe("JobCollection", function () {
         2500
       );
     });
-  }).timeout(5000);
+  });
 
   it("should autofail and retry a job", function (done) {
+    this.timeout(15000);
     let counter = 0;
     const jobType = `TestJob_${Math.round(Math.random() * 1000000000)}`;
     const job = new Job(testColl, jobType, { some: "data" }).retry({ retries: 2, wait: 0 });
@@ -608,10 +634,11 @@ describe("JobCollection", function () {
         2500
       );
     });
-  }).timeout(5000);
+  });
 
   if (Meteor.isServer) {
     it("should save, cancel, restart, refresh: retries are correct.", function (done) {
+      this.timeout(15000);
       const jobType = `TestJob_${Math.round(Math.random() * 1000000000)}`;
       const j = new Job(testColl, jobType, { foo: "bar" });
       j.save();
@@ -623,6 +650,7 @@ describe("JobCollection", function () {
     });
 
     it("should add, cancel and remove a large number of jobs", function (done) {
+      this.timeout(15000);
       const count = 500;
       let c = count;
       const jobType = `TestJob_${Math.round(Math.random() * 1000000000)}`;
@@ -656,9 +684,10 @@ describe("JobCollection", function () {
         }
         return result;
       })();
-    }).timeout(5000);
+    });
 
     it("should have a forever repeating job with 'schedule' and 'until'", function (done) {
+      this.timeout(15000);
       let counter = 0;
       const jobType = `TestJob_${Math.round(Math.random() * 1000000000)}`;
       const job = new Job(testColl, jobType, { some: "data" })
@@ -695,10 +724,11 @@ describe("JobCollection", function () {
         ev = testColl.events.on("jobDone", listener);
         return ev;
       });
-    }).timeout(4000);
+    });
   }
 
   it("should run shutdownJobServer on the job collection", function (done) {
+    this.timeout(15000);
     testColl.shutdownJobServer({ timeout: 1 }, function (err, res) {
       if (err) { done(err); }
       expect(res, true, "shutdownJobServer failed in callback result");
@@ -711,6 +741,7 @@ describe("JobCollection", function () {
 
   if (Meteor.isClient) {
     it("should run startJobServer on remote job collection", function (done) {
+      this.timeout(15000);
       remoteServerTestColl.startJobServer(function (err, res) {
         if (err) { done(err); }
         expect(res, "startJobServer failed in callback result").to.equal(true);
@@ -719,6 +750,7 @@ describe("JobCollection", function () {
     });
 
     it("should create a job and see that it is added to a remote server collection and runs", function (done) {
+      this.timeout(15000);
       const jobType = `TestJob_${Math.round(Math.random() * 1000000000)}`;
       const job = new Job(remoteServerTestColl, jobType, { some: "data" });
       assert.ok(validJobDoc(job.doc));
@@ -735,6 +767,7 @@ describe("JobCollection", function () {
     });
 
     it("should run shutdownJobServer on remote job collection", function (done) {
+      this.timeout(15000);
       remoteServerTestColl.shutdownJobServer({ timeout: 1 }, function (err, res) {
         if (err) { done(err); }
         expect(res, "shutdownJobServer failed in callback result").to.equal(true);

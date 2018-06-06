@@ -49,6 +49,7 @@ export function withMoment(component) {
           this.setState({
             moment
           });
+          return null;
         })
         .catch((error) => {
           Logger.debug(error, "moment.js async import error");
@@ -74,6 +75,7 @@ export function withMomentTimezone(component) {
           this.setState({
             momentTimezone: moment.tz
           });
+          return null;
         })
         .catch((error) => {
           Logger.debug(error, "moment.js async import error");

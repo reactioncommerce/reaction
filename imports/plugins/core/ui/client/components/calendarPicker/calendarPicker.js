@@ -113,8 +113,8 @@ CalendarPicker.defaultProps = {
 };
 
 CalendarPicker.propTypes = {
-  autoFocusEndDate: PropTypes.bool,
-  enableOutsideDays: PropTypes.bool,
+  autoFocusEndDate: PropTypes.bool, // eslint-disable-line react/boolean-prop-naming
+  enableOutsideDays: PropTypes.bool, // eslint-disable-line react/boolean-prop-naming
   initialEndDate: PropTypes.object,
   initialStartDate: PropTypes.object,
   initialVisibleMonth: PropTypes.func,
@@ -122,7 +122,7 @@ CalendarPicker.propTypes = {
   isDayHighlighted: PropTypes.func,
   isOutsideRange: PropTypes.func,
   isRTL: PropTypes.bool,
-  keepOpenOnDateSelect: PropTypes.bool,
+  keepOpenOnDateSelect: PropTypes.bool, // eslint-disable-line react/boolean-prop-naming
   minimumNights: PropTypes.number,
   monthFormat: PropTypes.string,
   navNext: PropTypes.node,
@@ -134,7 +134,7 @@ CalendarPicker.propTypes = {
   onPrevMonthClick: PropTypes.func,
   renderCalendarInfo: PropTypes.func,
   renderDayContents: PropTypes.func,
-  withPortal: PropTypes.bool
+  withPortal: PropTypes.bool // eslint-disable-line react/boolean-prop-naming
 };
 
 registerComponent("CalendarPicker", CalendarPicker);
