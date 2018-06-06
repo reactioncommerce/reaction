@@ -1,3 +1,19 @@
+# v1.12.1
+## Bug Fixes
+- fix: handle products without positions obj .. Resolves #4299
+
+This release is a hotfix for #4299 which was discovered shortly after v1.12.0 was released.
+
+The issue was releated to a type error that was thrown during a migration:
+
+> If any documents in `Catalog` collection do not have a `positions` property, migration fails on startup on first start after migration to v1.12.0. The migration is left locked. The error message is:
+
+```
+0|reaction | TypeError: Cannot convert undefined or null to object
+0|reaction |     at Function.keys (<anonymous>)
+0|reaction |     at items.forEach (imports/plugins/core/versions/server/migrations/25_update_catalog_schema.js:28:12)
+```
+
 # v1.12.0
 
 ## Breaking changes
