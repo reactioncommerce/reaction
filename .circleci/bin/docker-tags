@@ -33,6 +33,7 @@ if [[ "$BRANCH" == "master" ]]; then
       | grep "^${SHA1}" \
       | sed -e 's,.* refs/tags/,,' -e 's/\^{}//' \
       | grep "^v[0-9]\\+\\.[0-9]\\+\\.[0-9]\\+$" \
+      | sed 's/v//g' \
       | sort \
   )
 
@@ -40,6 +41,7 @@ if [[ "$BRANCH" == "master" ]]; then
   HIGHEST_TAG=$( \
     git --no-pager tag \
       | grep "^v[0-9]\\+\\.[0-9]\\+\\.[0-9]\\+$" \
+      | sed 's/v//g' \
       | sort -r --version-sort \
       | head -n 1 \
   )
