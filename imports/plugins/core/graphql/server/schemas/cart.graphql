@@ -243,17 +243,60 @@ input CreateCartInput {
 # Input for adding item(s) to a cart.
 # Do we need catalog item information? Maybe do this as part of the "analytics" event tracking.
 input CartItemInput {
-  "??"
-  productId: ID! # NOTE: This must be the variant, or "sellable" product!
-  "??"
-  variantId: ID
+  "Date first added to cart"
+  addedAt: DateTime! # Should this be createdAt?
+
   "Abitrary metadata."
   metafields: [MetafieldInput]
-  "Quantity of specified product to be added to the cart."
+
+  "The product and chosen options"
+  productConfiguration: ProductConfigurationInput
+
   quantity: Int!
+
   "ShopId from which the product is added."
   shopId: ID! # NOTE: Should we keep this? Can a product have either multiple ShopIds or no ShopId?
+
+  "The current price of this item"
+  price: Float!
+
+  # QUESTION: What should properties should be included in the CurrencyInput schema?
+  "The currency for the `price` and `priceWhenAdded` fields"
+  priceCurrency: CurrencyInput!
+
+  "The price at which this item was listed when it was added to the cart"
+  priceWhenAdded: Float!
+
+  "Date last updated"
+  updatedAt: DateTime!
 }
+
+input ProductConfigurationInput {
+  "The Product ID"
+  productId: ID!
+
+  "The ProductVariant ID, if there is one"
+  productVariantId: ID
+
+  "An ordered list of product options/attributes that were selected"
+  options: [ProductOptionInput]
+
+  "A title for use in cart/orders that conveys the selected product's title + chosen options"
+  title: String!
+}
+
+"Chosen product option information"
+input ProductOptionInput {
+  "Option or attribute label - e.g. color"
+  label: String
+
+  "Option or attribute value - e.g. blue"
+  value: String
+
+  "Order of this option in the list of options, ascending."
+  position: Int
+}
+
 
 input AddCartItemInput {
   cartId: ID!,
