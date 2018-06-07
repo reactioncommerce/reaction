@@ -205,8 +205,7 @@ function composer(props, onData) {
     currentRoute: Router.current(),
     keycloakRealm: Meteor.settings.public.keycloakRealm,
     keycloakClientID: Meteor.settings.public.keycloakClientID,
-    keycloakServerUrl: Meteor.settings.public.keycloakServerUrl,
-    keycloakRedirectUri: Meteor.settings.public.keycloakRedirectUri
+    keycloakServerUrl: Meteor.settings.public.keycloakServerUrl
   });
 }
 

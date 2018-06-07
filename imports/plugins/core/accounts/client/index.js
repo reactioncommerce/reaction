@@ -23,7 +23,6 @@ export { default as UpdateEmail } from "./containers/updateEmail";
 export { default as UpdatePasswordOverlay } from "./components/updatePasswordOverlay";
 export { default as LoginInline } from "./components/loginInline";
 export { default as KeycloakLoginButton } from "./components/keycloakLoginButton";
-export { default as AuthPage } from "./components/authPage";
 
 export { default as AccountsDashboardContainer } from "./containers/accountsDashboardContainer";
 export { default as AddressBookContainer } from "./containers/addressBookContainer";

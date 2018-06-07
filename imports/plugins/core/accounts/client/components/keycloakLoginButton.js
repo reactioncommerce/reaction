@@ -1,29 +1,16 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import Keycloak from "keycloak-js";
 import { Components, registerComponent } from "@reactioncommerce/reaction-components";
 
 class KeycloakLoginButton extends Component {
   static propTypes = {
     keycloakClientID: PropTypes.string,
     keycloakRealm: PropTypes.string,
-    keycloakRedirectUri: PropTypes.string,
     keycloakServerUrl: PropTypes.string
   }
 
   handleKeycloakLogin = () => {
-    const keycloak = new Keycloak({
-      realm: this.props.keycloakRealm,
-      clientId: this.props.keycloakClientID,
-      url: this.props.keycloakServerUrl
-    });
-
-    keycloak
-      .init({ flow: "implicit" })
-      .success(() => {
-        keycloak.login({ redirectUri: this.props.keycloakRedirectUri });
-      })
-      .error(() => {});
+    window.keycloak.login({ redirectUri: window.location.href });
   };
 
   render() {

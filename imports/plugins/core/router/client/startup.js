@@ -8,6 +8,34 @@ import { Router } from "../lib";
 import { initBrowserRouter } from "./browserRouter";
 
 Meteor.startup(() => {
+  window.keycloak = new window.Keycloak({
+    realm: "default",
+    clientId: "reaction-meteor-frontend",
+    url: "http://localhost:8080/auth"
+  });
+
+  const { keycloak } = window;
+  const token = localStorage.getItem("reaction_kc_token");
+
+  keycloak
+    // NB: "login-required" causes a redirect to keycloak server; this has implications
+    // for anonymous users.
+    .init({ flow: "implicit", onLoad: "login-required", token })
+    .success((authenticated) => {
+      if (authenticated) {
+        localStorage.setItem("reaction_kc_token", keycloak.token);
+        keycloak
+          .loadUserProfile()
+          .success((profile) => {
+            Meteor.call("keycloak/auth", profile, (error, userId) => {
+              console.log({ error, userId });
+              Meteor.connection.setUserId(userId);
+            });
+          });
+      }
+    })
+    .error(() => {});
+
   loadRegisteredComponents();
 
   // Subscribe to router required publications
