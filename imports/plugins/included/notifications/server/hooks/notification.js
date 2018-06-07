@@ -56,6 +56,6 @@ MethodHooks.after("cart/copyCartToOrder", (options) => {
       }
     });
   });
-  
+
   return options.result;
 });
