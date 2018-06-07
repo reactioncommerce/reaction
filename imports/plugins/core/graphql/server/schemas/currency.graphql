@@ -23,3 +23,16 @@ type CurrencyEdge implements NodeEdge {
   cursor: ConnectionCursor!
   node: Currency
 }
+
+# QUESTION: What should properties should be included in the CurrencyInput schema?
+"Input schema for Currency"
+input CurrencyInput {
+  _id: ID!
+  code: String!
+  symbol: String!
+  format: String!
+  scale: Int
+  decimal: String
+  thousand: String
+  rate: Float
+}
