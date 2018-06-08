@@ -102,7 +102,14 @@ Meteor.publish("Packages", function (shopId) {
       }
       // observe and transform Package registry adds i18n and other meta data
       const observer = Packages.find({
-        shopId: myShopId
+        $or: [
+          { shopId: myShopId },
+          {
+            name: {
+              $in: ["reaction-social"]
+            }
+          }
+        ]
       }, options).observe({
         added(doc) {
           self.added("Packages", doc._id, transform(doc, self.userId));
