@@ -113,36 +113,8 @@ type ProductConfiguration {
   "The ProductVariant ID, if there is one"
   productVariantId: ID
 
-  ###
-  # FUTURE: The list of chosen options for all configurable attributes. This will be set if there is no
-  # `catalogProductVariantId` for a configurable product
-  ###
-  # This is based on if we would move toward my proposal of flattening options to become “configurable attributes”
-  # instead, and then support “dynamic variants”. So if I used a configurator to build a specific product configuration
-  # that was never pre-created as a specific variant with a sku, then my purchase would be defined not by a
-  # `productVariantId` but rather by an array of my chosen options for all configurable attributes.
-  #
-  # Say I had a simple T-shirt product, with configurable attributes of “size” and “color”, but I can make it any
-  # of millions of colors custom for you. The “color” option just has you enter a hex value. As the operator, I will
-  # not pre-create several million different variants. Instead, the shopper’s chosen “product configuration” will be
-  # defined as `{ productId: "123", productVariantId: null, options: [{ attributeId: "444", value: "small" },
-  # { attributeId: "555", value: "#000000" }], title: "Small #000000 T-shirt" }`
-  #
-  # So each of those attributeId/value combos is a `ProductOptionChoice`.
-  "An ordered list of product options/attributes that were selected"
-  options: [ProductOption]
-
   "A title for use in cart/orders that conveys the selected product's title + chosen options"
   title: String!
-}
-
-"Chosen product option information"
-type ProductOption {
-  "Option or attribute label - e.g. color"
-  label: String
-
-  "Option or attribute value - e.g. blue"
-  value: String
 }
 
 enum CartReconciliationMode {
@@ -209,25 +181,9 @@ input ProductConfigurationInput {
   "The ProductVariant ID"
   productVariantId: ID!
 
-  # "An ordered list of product options/attributes that were selected"
-  # options: [ProductOptionInput]
-
   "A title for use in cart/orders that conveys the selected product's title + chosen options"
   title: String!
 }
-
-"Chosen product option information"
-input ProductOptionInput {
-  "Option or attribute label - e.g. color"
-  label: String
-
-  "Option or attribute value - e.g. blue"
-  value: String
-
-  "Order of this option in the list of options, ascending."
-  position: Int
-}
-
 
 input AddCartItemsInput {
   "The cart ID"
