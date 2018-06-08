@@ -32,7 +32,7 @@ const wrapComponent = (Comp) => (
   class SearchModalContainer extends Component {
     static propTypes = {
       onClose: PropTypes.func,
-      open: PropTypes.bool
+      open: PropTypes.bool // eslint-disable-line react/boolean-prop-naming
     }
 
     constructor(props) {

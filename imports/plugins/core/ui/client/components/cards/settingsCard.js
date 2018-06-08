@@ -16,18 +16,18 @@ class SettingsCard extends Component {
 
   static propTypes = {
     children: PropTypes.node,
-    enabled: PropTypes.bool,
-    expanded: PropTypes.bool,
+    enabled: PropTypes.bool, // eslint-disable-line react/boolean-prop-naming
+    expanded: PropTypes.bool, // eslint-disable-line react/boolean-prop-naming
     i18nKeyTitle: PropTypes.string,
     icon: PropTypes.string,
     name: PropTypes.string,
     onExpand: PropTypes.func,
     onSwitchChange: PropTypes.func,
     packageName: PropTypes.string,
-    padded: PropTypes.bool,
+    padded: PropTypes.bool, // eslint-disable-line react/boolean-prop-naming
     preferences: PropTypes.object,
-    saveOpenStateToPreferences: PropTypes.bool,
-    showSwitch: PropTypes.bool,
+    saveOpenStateToPreferences: PropTypes.bool, // eslint-disable-line react/boolean-prop-naming
+    showSwitch: PropTypes.bool, // eslint-disable-line react/boolean-prop-naming
     template: PropTypes.any,
     title: PropTypes.string
   }

@@ -50,11 +50,6 @@ Template.taxSettings.helpers({
 });
 
 Template.taxSettings.events({
-  /**
-   * taxSettings settings update enabled status for tax service on change
-   * @param  {event} event    jQuery Event
-   * @return {void}
-   */
   "change input[name=enabled]": (event) => {
     const settingsKey = event.target.getAttribute("data-key");
     const packageId = event.target.getAttribute("data-id");
@@ -65,12 +60,6 @@ Template.taxSettings.events({
     // save tax registry updates
     Meteor.call("registry/update", packageId, settingsKey, fields);
   },
-
-  /**
-   * taxSettings settings show/hide secret key for a tax service
-   * @param  {event} event    jQuery Event
-   * @return {void}
-   */
   "click [data-event-action=showSecret]": (event) => {
     const button = Template.instance().$(event.currentTarget);
     const input = button.closest(".form-group").find("input[name=secret]");

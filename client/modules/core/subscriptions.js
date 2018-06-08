@@ -1,6 +1,6 @@
 import store from "store";
+import Random from "@reactioncommerce/random";
 import { Meteor } from "meteor/meteor";
-import { Random } from "meteor/random";
 import { Session } from "meteor/session";
 import { Tracker } from "meteor/tracker";
 import { SubsManager } from "meteor/meteorhacks:subs-manager";

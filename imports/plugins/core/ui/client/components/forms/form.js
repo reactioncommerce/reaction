@@ -26,9 +26,10 @@ class Form extends Component {
   * @property {Boolean} renderFromFields - this controls whether form is rendered from schema or from fields.
   * @property {Object} schema - the schema used for validation and rendering.
   * @return {Array} React propTypes
+  * @ignore
   */
   static propTypes = {
-    autoSave: PropTypes.bool,
+    autoSave: PropTypes.bool, // eslint-disable-line react/boolean-prop-naming
     doc: PropTypes.object,
     docPath: PropTypes.string,
     fields: PropTypes.object,
@@ -36,8 +37,8 @@ class Form extends Component {
     hideFields: PropTypes.arrayOf(PropTypes.string),
     name: PropTypes.string,
     onSubmit: PropTypes.func,
-    renderFromFields: PropTypes.bool,
-    schema: PropTypes.object
+    renderFromFields: PropTypes.bool, // eslint-disable-line react/boolean-prop-naming
+    schema: PropTypes.object // eslint-disable-line react/boolean-prop-naming
   }
 
   constructor(props) {

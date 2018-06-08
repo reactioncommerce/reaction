@@ -53,7 +53,7 @@ services:
       - reaction_node_modules:/opt/reaction/src/node_modules # do not link node_modules in, and persist it between dc up runs
 
   mongo:
-    image: mongo:3.4
+    image: mongo:3.6.3
     command: mongod --storageEngine=wiredTiger
     ports:
       - "27017:27017"

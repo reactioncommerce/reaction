@@ -6,13 +6,6 @@ import { Packages } from "/lib/collections";
 import { Reaction } from "/server/api";
 import { translateRegistry } from "/lib/api";
 
-/**
- * Packages contains user specific configuration
- * @summary  package publication settings, filtered by permissions
- * @param {Object} shopCursor - current shop object
- * @returns {Object} packagesCursor - current packages for shop
- */
-
 // for transforming packages before publication sets some defaults for the client and adds i18n while checking
 // privileged settings for enabled status.
 function transform(doc, userId) {
@@ -69,9 +62,6 @@ function transform(doc, userId) {
   return doc;
 }
 
-//
-//  Packages Publication
-//
 Meteor.publish("Packages", function (shopId) {
   check(shopId, Match.Maybe(String));
 

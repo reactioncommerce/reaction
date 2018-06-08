@@ -38,7 +38,7 @@ RUN meteor npm install --production
 ##############################################################################
 # final build stage - create the final production image
 ##############################################################################
-FROM node:8.9.4-slim
+FROM node:8.11.2-slim
 
 # Default environment variables
 ENV ROOT_URL "http://localhost"

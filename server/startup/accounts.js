@@ -1,6 +1,6 @@
 import _ from "lodash";
+import Random from "@reactioncommerce/random";
 import { Meteor } from "meteor/meteor";
-import { Random } from "meteor/random";
 import { Accounts } from "meteor/accounts-base";
 import * as Collections from "/lib/collections";
 import { Hooks, Logger, Reaction } from "/server/api";
@@ -162,7 +162,7 @@ export default function () {
       }
 
       // clone before adding roles
-      const account = Object.assign({}, user, additionals);
+      const account = Object.assign({ shopId }, user, additionals);
       account.userId = user._id;
       Collections.Accounts.insert(account);
       Hooks.Events.run("afterAccountsInsert", account.userId, user._id);

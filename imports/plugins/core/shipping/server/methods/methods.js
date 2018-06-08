@@ -6,14 +6,14 @@ import { shippingRoles } from "../lib/roles";
 
 /**
  *
- * @namespace Methods/Shipping
+ * @namespace Shipping/Methods
  */
 
 export const methods = {
   /**
    * @name shipping/status/refresh
    * @method
-   * @memberof Methods/Shipping
+   * @memberof Shipping/Methods
    * @todo This is a stub for future core processing
    * @summary Blank method. Serves as a place for Method Hooks,
    * in other shipping packages, like Shippo
@@ -31,7 +31,7 @@ export const methods = {
   /**
    * @name shipping/provider/toggle
    * @method
-   * @memberof Methods/Shipping
+   * @memberof Shipping/Methods
    * @example Meteor.call("shipping/provider/toggle", packageId, settingsKey)
    * @summary Toggle enabled provider
    * @param { String } packageId packageId

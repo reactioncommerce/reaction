@@ -28,14 +28,15 @@ class PublishControls extends Component {
     packageButtons: PropTypes.arrayOf(PropTypes.object),
     shopId: PropTypes.string,
     shops: PropTypes.arrayOf(PropTypes.object),
-    showViewAsControls: PropTypes.bool,
+    showViewAsControls: PropTypes.bool, // eslint-disable-line react/boolean-prop-naming
     translation: PropTypes.shape({
       lang: PropTypes.string
     })
   }
 
   static defaultProps = {
-    showViewAsControls: true
+    showViewAsControls: true,
+    isEnabled: true
   }
 
   componentDidMount() {

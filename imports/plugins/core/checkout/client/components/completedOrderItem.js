@@ -5,6 +5,7 @@ import { Components, registerComponent } from "@reactioncommerce/reaction-compon
 
 /**
  * @summary Shows the individual line items for a completed order
+ * @memberof Components
  * @param {Object} props - React PropTypes
  * @property {Object} item - An object representing each item on the order
  * @return {Node} React node containing each line item on an order

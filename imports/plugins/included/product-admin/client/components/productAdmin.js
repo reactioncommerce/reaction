@@ -425,7 +425,7 @@ class ProductAdmin extends Component {
 ProductAdmin.propTypes = {
   countries: PropTypes.arrayOf(PropTypes.object),
   editFocus: PropTypes.oneOfType([PropTypes.string, PropTypes.arrayOf(PropTypes.string)]),
-  editable: PropTypes.bool,
+  editable: PropTypes.bool, // eslint-disable-line react/boolean-prop-naming
   handleFieldBlur: PropTypes.func,
   handleFieldChange: PropTypes.func,
   handleProductFieldChange: PropTypes.func,

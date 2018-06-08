@@ -114,6 +114,7 @@ class AddressBook extends Component {
    * @summary setter for mode in state
    * @since 2.0.0
    * @param {String} mode - the mode to be set.
+   * @ignore
    */
   set mode(mode) {
     this.setState({
@@ -125,6 +126,7 @@ class AddressBook extends Component {
    * @method setEntryMode
    * @summary changes the mode to "entry"
    * @since 2.0.0
+   * @ignore
    */
   setEntryMode = () => {
     this.mode = "entry";
@@ -137,6 +139,7 @@ class AddressBook extends Component {
    * @param {String} newMode - new mode to be set
    * @param {String} editAddress - the address to be set for the form.
    * @return {Object} - address object.
+   * @ignore
    */
   switchMode = (newMode, editAddress) => {
     this.setState({
@@ -153,6 +156,7 @@ class AddressBook extends Component {
    * @since 2.0.0
    * @param {String} _id - address object _id.
    * @return {Object} - address object.
+   * @ignore
    */
   findAddress(_id) {
     const { addressBook } = this;
@@ -163,6 +167,7 @@ class AddressBook extends Component {
    * @method clearForm
    * @summary removes the editAddress from state this will clear the address book form.
    * @since 2.0.0
+   * @ignore
    */
   clearForm() {
     if (this.hasEditAddress) this.setState({ editAddress: {} });
@@ -173,6 +178,7 @@ class AddressBook extends Component {
    * @summary getter that returns the addressBook array if avalible on the props or an empty array.
    * @since 2.0.0
    * @return {Array} addressBook - array of address object or an empty array.
+   * @ignore
    */
   get addressBook() {
     let { addressBook } = this.props;
@@ -185,6 +191,7 @@ class AddressBook extends Component {
    * @summary getter that returns true if there is an editAddress in state.
    * @since 2.0.0
    * @return {Boolean}
+   * @ignore
    */
   get hasEditAddress() {
     const { editAddress } = this.state;
@@ -196,6 +203,7 @@ class AddressBook extends Component {
    * @summary getter that returns true if there is at least 1 address in the addressBook array.
    * @since 2.0.0
    * @return {Boolean}
+   * @ignore
    */
   get hasAddress() {
     const { addressBook } = this;
@@ -210,6 +218,7 @@ class AddressBook extends Component {
    * @since 2.0.0
    * @param {String} _id - address object _id.
    * @param {String} usage - the address usage "shipping" or "billing".
+   * @ignore
    */
   onSelect = (_id, usage) => {
     const { onError, updateAddress } = this.props;
@@ -231,6 +240,7 @@ class AddressBook extends Component {
    * @summary using the provided _id to call the removeAddress reducer that removes an address.
    * @since 2.0.0
    * @param {String} _id - address object _id.
+   * @ignore
    */
   onRemove = (_id) => {
     const { onError, removeAddress } = this.props;
@@ -242,6 +252,7 @@ class AddressBook extends Component {
    * @summary adds or updates an address in the addressBook.
    * @since 2.0.0
    * @param {Object} address - new or updated address object.
+   * @ignore
    */
   onAdd = (address, validateAddress = true) => {
     const { addAddress, onError, updateAddress } = this.props;
@@ -262,6 +273,7 @@ class AddressBook extends Component {
               mode: "grid"
             });
           }
+          return undefined;
         })
         .catch(onError);
     }
@@ -273,6 +285,7 @@ class AddressBook extends Component {
             validationResults: result
           });
         }
+        return undefined;
       })
       .catch(onError);
   }
@@ -284,6 +297,7 @@ class AddressBook extends Component {
    * @summary sets mode to "grid" and clears the address book form.
    * this will only be called from the address book form.
    * @since 2.0.0
+   * @ignore
    */
   onCancel = () => {
     this.mode = "grid";
@@ -295,6 +309,7 @@ class AddressBook extends Component {
    * @summary sets the address to be edited and makes the mode as "entry".
    * this will only be called form the address book grid.
    * @since 2.0.0
+   * @ignore
    */
   onEdit = (_id) => {
     const editAddress = this.findAddress(_id);
@@ -310,6 +325,7 @@ class AddressBook extends Component {
    * the address book is being called from checkout
    * @since 2.0.0
    * @return {Object} - JSX
+   * @ignore
    */
   renderCheckoutIcon() {
     const { checkout: { icon, position } } = this.props.heading;
@@ -322,6 +338,7 @@ class AddressBook extends Component {
    * based on where in the app this component is being used
    * @since 2.0.0
    * @return {Object} - JSX
+   * @ignore
    */
   renderHeading() {
     const { heading } = this.props;
@@ -341,6 +358,7 @@ class AddressBook extends Component {
    * renders an add address button if the grid is showiing.
    * @since 2.0.0
    * @return {Object} - JSX
+   * @ignore
    */
   renderControlBar() {
     const { mode } = this.state;
@@ -392,6 +410,7 @@ class AddressBook extends Component {
    * based on mode.
    * @since 2.0.0
    * @return {Object} - JSX and child component.
+   * @ignore
    */
   renderContent() {
     const { addressBook } = this;

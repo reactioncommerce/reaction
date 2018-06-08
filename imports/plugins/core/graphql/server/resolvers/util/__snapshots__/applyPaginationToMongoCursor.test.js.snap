@@ -1,0 +1,3 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`with both first and last, throws error 1`] = `"Request either \`first\` or \`last\` but not both"`;

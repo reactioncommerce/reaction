@@ -1,6 +1,6 @@
+import Random from "@reactioncommerce/random";
 import { Meteor } from "meteor/meteor";
 import { check, Match } from "meteor/check";
-import { Random } from "meteor/random";
 import { Shipping } from "/lib/collections";
 import { ShippingMethod } from "/lib/collections/schemas";
 import { Reaction } from "/server/api";
@@ -37,6 +37,7 @@ export const methods = {
     } else if (!Shipping.find({}).count()) { // There is no default provider, so add it
       const defaultProvider = Shipping.insert({
         name: "Default Shipping Provider",
+        shopId: Reaction.getShopId(),
         provider: {
           name: "flatRates",
           label: "Flat Rate"

@@ -21,15 +21,12 @@ function uniqObjects(objs) {
   return uniqueBlobs.map((blob) => EJSON.parse(blob));
 }
 
-// cartShippingQuotes
-// returns multiple methods
 /**
- * cartShippingQuotes - returns a list of all the shipping costs/quotations
- * of each available shipping carrier like UPS, Fedex etc.
- * @param {Object} currentCart - The current cart that's about
- * to be checked out.
- * @returns {Array} - an array of the quotations of multiple shipping
- * carriers.
+ * @name cartShippingQuotes
+ * @summary returns a list of all the shipping costs/quotations of each available shipping carrier like UPS, Fedex etc.
+ * @param {Object} currentCart - The current cart that's about to be checked out.
+ * @returns {Array} - an array of the quotations of multiple shipping carriers.
+ * @private
  */
 function cartShippingQuotes(currentCart) {
   const cart = currentCart || Cart.findOne();
@@ -71,9 +68,10 @@ function shippingMethodsQueryStatus(currentCart) {
 }
 
 /**
- * cartShipmentMethods - gets current shipment methods.
- * @return {Array} - Returns multiple methods if more than one
- * carrier has been chosen.
+ * @name cartShipmentMethods
+ * @summary gets current shipment methods.
+ * @return {Array} - Returns multiple methods if more than one carrier has been chosen.
+ * @ignore
  */
 function cartShipmentMethods() {
   const cart = Cart.findOne();
@@ -200,6 +198,7 @@ Template.coreCheckoutShipping.helpers({
    * `merchantShippingRates` is enabled in marketplace
    * @method isAdmin
    * @return {Boolean} true if the user has admin access, otherwise false
+   * @ignore
    */
   isAdmin() {
     const marketplaceSettings = Reaction.marketplace;

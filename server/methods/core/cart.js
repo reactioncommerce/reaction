@@ -1,8 +1,8 @@
 import _ from "lodash";
+import Random from "@reactioncommerce/random";
 import { Meteor } from "meteor/meteor";
 import { check, Match } from "meteor/check";
 import { Roles } from "meteor/alanning:roles";
-import { Random } from "meteor/random";
 import * as Collections from "/lib/collections";
 import { Hooks, Logger, Reaction } from "/server/api";
 import { PaymentMethodArgument } from "/lib/collections/schemas";
@@ -112,7 +112,7 @@ function removeShippingAddresses(cart) {
 /**
  * @file Methods for Cart - Use these methods by running `Meteor.call()`
  * @example Meteor.call("cart/createCart", this.userId, sessionId)
- * @namespace Methods/Cart
+ * @namespace Cart/Methods
  */
 
 Meteor.methods({
@@ -123,7 +123,7 @@ Meteor.methods({
    * When a user logs in that cart now belongs to that user and we use the a single user cart.
    * If they are logged in on more than one devices, regardless of session,the user cart will be used
    * If they had more than one cart, on more than one device,logged in at separate times then merge the carts
-   * @memberof Methods/Cart
+   * @memberof Cart/Methods
    * @param {String} cartId - cartId of the cart to merge matching session carts into.
    * @param {String} [currentSessionId] - current client session id
    * @todo I think this method should be moved out from methods to a Function Declaration to keep it more secure
@@ -252,7 +252,7 @@ Meteor.methods({
    * @method cart/createCart
    * @summary create new cart for user,
    * but all checks for current cart's existence should go before this method will be called, to keep it clean
-   * @memberof Methods/Cart
+   * @memberof Cart/Methods
    * @param {String} userId - userId to create cart for
    * @param {String} sessionId - current client session id
    * @todo I think this method should be moved out from methods to a Function Declaration to keep it more secure
@@ -284,6 +284,7 @@ Meteor.methods({
     // anonymous.
     const currentCartId = Collections.Cart.insert({
       sessionId,
+      shopId,
       userId
     });
     Logger.debug(`create cart: into new user cart. created: ${currentCartId} for user ${userId}`);
@@ -328,7 +329,7 @@ Meteor.methods({
    *  we want to break all relationships with the existing item.
    *  We want to fix price, qty, etc into history.
    *  However, we could check reactively for price /qty etc, adjustments on the original and notify them.
-   *  @memberof Methods/Cart
+   *  @memberof Cart/Methods
    *  @param {String} productId - productId to add to Cart
    *  @param {String} variantId - product variant _id
    *  @param {Number} [itemQty] - qty to add to cart
@@ -519,7 +520,7 @@ Meteor.methods({
 
   /**
    * @method cart/removeFromCart
-   * @memberof Methods/Cart
+   * @memberof Cart/Methods
    * @summary Removes or adjust quantity of a variant from the cart
    * @param {String} itemId - cart item _id
    * @param {Number} [quantity] - if provided will adjust increment by quantity
@@ -636,7 +637,7 @@ Meteor.methods({
 
   /**
    * @method cart/setShipmentMethod
-   * @memberof Methods/Cart
+   * @memberof Cart/Methods
    * @summary Saves method as order default
    * @param {String} cartId - cartId to apply shipmentMethod
    * @param {Object} method - shipmentMethod object
@@ -698,7 +699,7 @@ Meteor.methods({
 
   /**
    * @method cart/setUserCurrency
-   * @memberof Methods/Cart
+   * @memberof Cart/Methods
    * @summary Saves user currency in cart, to be paired with order/setCurrencyExhange
    * @param {String} cartId - cartId to apply setUserCurrency
    * @param {String} userCurrency - userCurrency to set to cart
@@ -759,7 +760,7 @@ Meteor.methods({
 
   /**
    * @method cart/resetShipmentMethod
-   * @memberof Methods/Cart
+   * @memberof Cart/Methods
    * @summary Removes `shipmentMethod` object from cart
    * @param {String} cartId - cart _id
    * @return {Number} update result
@@ -786,7 +787,7 @@ Meteor.methods({
 
   /**
    * @method cart/setShipmentAddress
-   * @memberof Methods/Cart
+   * @memberof Cart/Methods
    * @summary Adds address book to cart shipping
    * @param {String} cartId - cartId to apply shipmentMethod
    * @param {Object} address - addressBook object
@@ -939,7 +940,7 @@ Meteor.methods({
 
   /**
    * @method cart/setPaymentAddress
-   * @memberof Methods/Cart
+   * @memberof Cart/Methods
    * @summary Adds addressbook to cart payments
    * @param {String} cartId - cartId to apply payment address
    * @param {Object} address - addressBook object
@@ -1004,7 +1005,7 @@ Meteor.methods({
   /**
    * @method cart/unsetAddresses
    * @summary Removes address from cart.
-   * @memberof Methods/Cart
+   * @memberof Cart/Methods
    * @param {String} addressId - address._id
    * @param {String} userId - cart owner _id
    * @param {String} [type] - billing default or shipping default
@@ -1074,7 +1075,7 @@ Meteor.methods({
 
   /**
    * @method cart/submitPayment
-   * @memberof Methods/Cart
+   * @memberof Cart/Methods
    * @summary Saves a submitted payment to cart, triggers workflow and adds "paymentSubmitted" to cart workflow
    * Note: this method also has a client stub, that forwards to cartCompleted
    * @param {Object|Array} paymentMethods - an array of paymentMethods or (deprecated) a single paymentMethod object
@@ -1183,7 +1184,7 @@ Meteor.methods({
 
   /**
    * @method cart/setAnonymousUserEmail
-   * @memberof Methods/Cart
+   * @memberof Cart/Methods
    * @summary Assigns email to anonymous user's cart instance
    * @param {Object} userId - current user's Id
    * @param {String} email - email to set for anonymous user's cart instance

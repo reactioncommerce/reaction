@@ -279,10 +279,11 @@ export function resetRegisteredTemplates() {
  */
 export function initTemplates() {
   Hooks.Events.add("afterCoreInit", () => {
+    const shopId = Reaction.getShopId();
     Assets.find({ type: "template" }).forEach((t) => {
       Logger.debug(`Importing ${t.name} template`);
       if (t.content) {
-        Reaction.Importer.template(JSON.parse(t.content));
+        Reaction.Importer.template(JSON.parse(t.content), shopId);
       } else {
         Logger.debug(`No template content found for ${t.name} asset`);
       }

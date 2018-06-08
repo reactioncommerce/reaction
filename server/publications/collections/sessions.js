@@ -4,14 +4,13 @@ import { check, Match } from "meteor/check";
 import { Reaction } from "/server/api";
 
 /**
- * Reaction Server / amplify permanent sessions
- * If no id is passed we create a new session
- * Load the session
- * If no session is loaded, creates a new one
+ * @name ServerSessions
+ * @memberof Collections/ServerOnly
+ * @type {MongoCollection}
  */
-
 export const ServerSessions = new Mongo.Collection("Sessions");
 
+// Reaction Server / amplify permanent sessions
 Meteor.publish("Sessions", (sessionId) => {
   check(sessionId, Match.OneOf(String, null));
   const created = new Date().getTime();
