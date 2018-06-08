@@ -15,7 +15,7 @@ class ListItem extends Component {
     onClick: PropTypes.func,
     onSwitchChange: PropTypes.func,
     switchName: PropTypes.string,
-    switchOn: PropTypes.bool,
+    switchOn: PropTypes.bool, // eslint-disable-line react/boolean-prop-naming
     value: PropTypes.any
   }
 

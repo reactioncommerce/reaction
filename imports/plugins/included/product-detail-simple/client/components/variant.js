@@ -166,10 +166,10 @@ Variant.propTypes = {
   connectDropTarget: PropTypes.func,
   displayPrice: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   editButton: PropTypes.node,
-  editable: PropTypes.bool,
+  editable: PropTypes.bool, // eslint-disable-line react/boolean-prop-naming
   isSelected: PropTypes.bool,
   onClick: PropTypes.func,
-  soldOut: PropTypes.bool,
+  soldOut: PropTypes.bool, // eslint-disable-line react/boolean-prop-naming
   variant: PropTypes.object,
   visibilityButton: PropTypes.node
 };

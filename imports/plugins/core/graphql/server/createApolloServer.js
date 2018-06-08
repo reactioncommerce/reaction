@@ -14,10 +14,18 @@ const defaultServerConfig = {
   graphiqlPath: "/graphiql",
   // GraphiQL options (default: log the current user in your request)
   graphiqlOptions: {
-    passHeader: "'meteor-login-token': localStorage['Meteor.loginToken']"
+    passHeader: "'meteor-login-token': localStorage['Meteor.loginToken'] || ''"
   }
 };
 
+/**
+ * @name createApolloServer
+ * @method
+ * @memberof GraphQL
+ * @summary Creates an express app, adds graphql and optionally graphiql routes to it,
+ *   and the returns it.
+ * @returns {ExpressApp} The express app
+ */
 export default function createApolloServer(options = {}) {
   // the Meteor GraphQL server is an Express server
   const expressServer = express();

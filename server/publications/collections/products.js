@@ -71,10 +71,28 @@ const filters = new SimpleSchema({
 
 registerSchema("filters", filters);
 
+const catalogProductFiltersSchema = new SimpleSchema({
+  "shopIdsOrSlugs": {
+    type: Array,
+    optional: true
+  },
+  "shopIdsOrSlugs.$": String,
+  "tagIds": {
+    type: Array,
+    optional: true
+  },
+  "tagIds.$": String,
+  "query": {
+    type: String,
+    optional: true
+  }
+});
+
 /**
  * Broadens an existing selector to include all variants of the given top-level productIds
  * Additionally considers the tags product filter, if given
  * Can operate on the "Revisions" and the "Products" collection
+ * @memberof Helpers
  * @param collectionName {String} - "Revisions" or "Products"
  * @param selector {object} - the selector that should be extended
  * @param productFilters { object } - the product filter (e.g. orginating from query parameters)
@@ -160,7 +178,7 @@ function filterProducts(productFilters) {
   // Init default selector - Everyone can see products that fit this selector
   const selector = {
     ancestors: [], // Lookup top-level products
-    isDeleted: { $in: [null, false] }, // by default, we don't publish deleted products
+    isDeleted: { $ne: true }, // by default, we don't publish deleted products
     isVisible: true // by default, only lookup visible products
   };
 
@@ -324,8 +342,12 @@ Meteor.publish("Products", function (productScrollLimit = 24, productFilters, so
   const activeShopsIds = Shops.find({
     $or: [
       { "workflow.status": "active" },
-      { _id: Reaction.getPrimaryShopId() }
+      { _id: primaryShopId }
     ]
+  }, {
+    fields: {
+      _id: 1
+    }
   }).fetch().map((activeShop) => activeShop._id);
 
   const selector = filterProducts(productFilters);
@@ -343,13 +365,17 @@ Meteor.publish("Products", function (productScrollLimit = 24, productFilters, so
       $in: [true, false, null, undefined]
     };
     selector.shopId = {
-      $in: activeShopsIds
+      $in: userAdminShopIds
     };
 
     // Get _ids of top-level products
     const productIds = Products.find(selector, {
       sort,
       limit: productScrollLimit
+    }, {
+      fields: {
+        _id: 1
+      }
     }).map((product) => product._id);
 
 
@@ -416,14 +442,16 @@ Meteor.publish("Products", function (productScrollLimit = 24, productFilters, so
   const productIds = Products.find(selector, {
     sort,
     limit: productScrollLimit
+  }, {
+    fields: {
+      _id: 1
+    }
   }).map((product) => product._id);
 
-  let newSelector = { ...selector };
+  let newSelector = _.omit(selector, ["hashtags", "ancestors"]);
 
   // Remove hashtag filter from selector (hashtags are not applied to variants, we need to get variants)
   if (productFilters && Object.keys(productFilters).length === 0 && productFilters.constructor === Object) {
-    newSelector = _.omit(selector, ["hashtags", "ancestors"]);
-
     if (productFilters.tags) {
       // Re-configure selector to pick either Variants of one of the top-level products,
       // or the top-level products in the filter
@@ -471,8 +499,6 @@ Meteor.publish("Products", function (productScrollLimit = 24, productFilters, so
       });
     }
   } else {
-    newSelector = _.omit(selector, ["hashtags", "ancestors"]);
-
     _.extend(newSelector, {
       $or: [{
         ancestors: {
@@ -504,6 +530,78 @@ Meteor.publish("Products", function (productScrollLimit = 24, productFilters, so
   });
 });
 
+function filterCatalogItems(catalogFilters) {
+  // if there are filter/params that don't match the schema
+  // validate, catch except but return no results
+  try {
+    if (catalogFilters) catalogProductFiltersSchema.validate(catalogFilters);
+  } catch (e) {
+    Logger.debug(e, "Invalid Catalog Product Filters");
+    return false;
+  }
+
+  const shopIdsOrSlugs = catalogFilters && catalogFilters.shopIdsOrSlugs;
+
+  if (shopIdsOrSlugs) {
+    // Get all shopIds associated with the slug or Id
+    const shopIds = Shops.find({
+      "workflow.status": "active",
+      "$or": [{
+        _id: { $in: shopIdsOrSlugs }
+      }, {
+        slug: { $in: shopIdsOrSlugs }
+      }]
+    }).map((shop) => shop._id);
+
+    // If we found shops, update the productFilters
+    if (shopIds) {
+      catalogFilters.shopIds = shopIds;
+    } else {
+      return false;
+    }
+  }
+
+  // Init default selector - Everyone can see products that fit this selector
+  const selector = {
+    "product.isDeleted": { $ne: true }, // by default, we don't publish deleted products
+    "product.isVisible": true // by default, only lookup visible products
+  };
+
+  if (!catalogFilters) return selector;
+
+  // handle multiple shops
+  if (catalogFilters.shopIds) {
+    selector.shopId = {
+      $in: catalogFilters.shopIds
+    };
+  }
+
+  // filter by tags
+  if (catalogFilters.tagIds) {
+    selector["product.tagIds"] = {
+      $in: catalogFilters.tagIds
+    };
+  }
+
+  // filter by query
+  if (catalogFilters.query) {
+    const cond = {
+      $regex: catalogFilters.query,
+      $options: "i"
+    };
+
+    selector.$or = [{
+      title: cond
+    }, {
+      pageTitle: cond
+    }, {
+      description: cond
+    }];
+  }
+
+  return selector;
+}
+
 /**
  * @name Products/grid
  * @method
@@ -511,27 +609,31 @@ Meteor.publish("Products", function (productScrollLimit = 24, productFilters, so
  * @summary Publication method for a customer facing product grid
  * @param {number} productScrollLimit - product find limit
  * @param {object} productFilters - filters to be applied to the product find
- * @param {object} sort - sorting to be applied to the product find
  * @return {MongoCursor} Mongo cursor object of found products
  */
-Meteor.publish("Products/grid", function (productScrollLimit = 24, productFilters, sort = {}) {
+Meteor.publish("Products/grid", function (productScrollLimit = 24, productFilters) {
   check(productScrollLimit, Number);
   check(productFilters, Match.OneOf(undefined, Object));
-  check(sort, Match.OneOf(undefined, Object));
 
-  const newSelector = filterProducts(productFilters);
+  const newSelector = filterCatalogItems(productFilters);
 
   if (newSelector === false) {
     return this.ready();
   }
 
-  const productCursor = Catalog.find(newSelector, {
-    sort,
+  let tagIdForPosition = "_default";
+  if (productFilters && Array.isArray(productFilters.tagIds) && productFilters.tagIds.length) {
+    [tagIdForPosition] = productFilters.tagIds;
+  }
+
+  return Catalog.find(newSelector, {
+    sort: {
+      [`product.positions.${tagIdForPosition}.position`]: 1,
+      createdAt: -1
+    },
     limit: productScrollLimit,
     fields: {
       variants: 0
     }
   });
-
-  return productCursor;
 });

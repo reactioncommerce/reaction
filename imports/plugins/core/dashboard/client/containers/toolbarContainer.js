@@ -32,11 +32,12 @@ const handleAddProduct = () => {
 };
 
 /**
-* Handler that fires when the shop selector is changed
-* @param {Object} event - the `event` coming from the select change event
-* @param {String} shopId - The `value` coming from the select change event
-* @returns {undefined}
-*/
+ * @summary Handler that fires when the shop selector is changed
+ * @param {Object} event - the `event` coming from the select change event
+ * @param {String} shopId - The `value` coming from the select change event
+ * @returns {undefined}
+ * @private
+ */
 const handleShopSelectChange = (event, shopId) => {
   if (/^[A-Za-z0-9]{17}$/.test(shopId)) { // Make sure shopId is a valid ID
     Reaction.setShopId(shopId);

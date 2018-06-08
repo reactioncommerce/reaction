@@ -34,7 +34,7 @@ const wrapComponent = (Comp) => (
   class TagListContainer extends Component {
     static propTypes = {
       children: PropTypes.node,
-      editable: PropTypes.bool,
+      editable: PropTypes.bool, // eslint-disable-line react/boolean-prop-naming
       hasPermission: PropTypes.bool,
       product: PropTypes.object,
       tagIds: PropTypes.arrayOf(PropTypes.string),

@@ -12,7 +12,7 @@ class MediaItem extends Component {
     connectDragSource: PropTypes.func,
     connectDropTarget: PropTypes.func,
     defaultSource: PropTypes.string,
-    editable: PropTypes.bool,
+    editable: PropTypes.bool, // eslint-disable-line react/boolean-prop-naming
     mediaHeight: PropTypes.number,
     mediaWidth: PropTypes.number,
     onClick: PropTypes.func,
@@ -21,7 +21,7 @@ class MediaItem extends Component {
     onRemoveMedia: PropTypes.func,
     size: PropTypes.string,
     source: PropTypes.object,
-    zoomable: PropTypes.bool
+    zoomable: PropTypes.bool // eslint-disable-line react/boolean-prop-naming
   };
 
   static defaultProps = {

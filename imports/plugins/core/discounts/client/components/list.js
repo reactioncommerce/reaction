@@ -65,7 +65,7 @@ DiscountList.propTypes = {
   collection: PropTypes.string,
   id: PropTypes.string,
   listItems: PropTypes.array,
-  validatedInput: PropTypes.bool
+  validatedInput: PropTypes.bool // eslint-disable-line react/boolean-prop-naming
 };
 
 function composer(props, onData) {

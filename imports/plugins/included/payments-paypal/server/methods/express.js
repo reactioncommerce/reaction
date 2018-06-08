@@ -369,9 +369,10 @@ function parseResponse(response) {
 }
 
 /**
- * Parse PayPal's 'unique' Transaction Query response to look for refunds
+ * @summary Parse PayPal's 'unique' Transaction Query response to look for refunds
  * @param  {Object} response The response from PayPal
  * @return {Object} Refunds, normalized to an Array
+ * @private
  */
 function parseRefundReponse(response) {
   const paypalArray = [];

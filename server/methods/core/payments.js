@@ -1,5 +1,5 @@
+import Random from "@reactioncommerce/random";
 import { Meteor } from "meteor/meteor";
-import { Random } from "meteor/random";
 import { check } from "meteor/check";
 import { Reaction, Hooks } from "/server/api";
 
@@ -7,14 +7,14 @@ import { Reaction, Hooks } from "/server/api";
  * @file Methods for Payments. Run these methods using `Meteor.call()`.
  *
  *
- * @namespace Methods/Payments
+ * @namespace Payments/Methods
 */
 
 export const methods = {
   /**
    * @name payments/apply
    * @method
-   * @memberof Methods/Payments
+   * @memberof Payments/Methods
    * @example Meteor.call("payments/apply", id, paymentMethod, collection)
    * @summary Adds payment to order
    * @param {String} id - id

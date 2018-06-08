@@ -56,15 +56,16 @@ export function updateSettings(settings) {
 }
 
 /**
- * @function
  * @name publishCatalogProduct
- * @description Updates revision and publishes a product.
+ * @method
+ * @summary Updates revision and publishes a product.
  *
  * @param {String} userId - currently logged in user
  * @param {Object} selector - selector for product to update
  * @param {Object} modifier - Object describing what parts of the document to update.
  * @param {Object} validation - simple schema validation
  * @return {String} _id of updated document
+ * @private
  */
 function publishCatalogProduct(userId, selector, modifier, validation) {
   const product = Products.findOne(selector);

@@ -22,11 +22,11 @@ Tracker.autorun(() => {
 
 
 /**
- * loadMoreProducts
- * @summary whenever #productScrollLimitLoader becomes visible, retrieve more results
- * this basically runs this:
- * Session.set('productScrollLimit', Session.get('productScrollLimit') + ITEMS_INCREMENT);
+ * This basically runs this:
+ *   Session.set('productScrollLimit', Session.get('productScrollLimit') + ITEMS_INCREMENT);
+ * @summary whenever `#productScrollLimitLoader` becomes visible, retrieve more results.
  * @return {undefined}
+ * @private
  */
 function loadMoreProducts() {
   let threshold;
@@ -55,7 +55,7 @@ const wrapComponent = (Comp) => (
     static propTypes = {
       canLoadMoreProducts: PropTypes.bool,
       productsSubscription: PropTypes.object,
-      showNotFound: PropTypes.bool
+      showNotFound: PropTypes.bool // eslint-disable-line react/boolean-prop-naming
     };
 
     constructor(props) {
@@ -138,11 +138,10 @@ function composer(props, onData) {
     return;
   }
 
-  const currentTag = ReactionProduct.getTag();
+  const currentTagId = ReactionProduct.getTagIdForPosition();
 
   const sort = {
-    [`positions.${currentTag}.position`]: 1,
-    [`positions.${currentTag}.createdAt`]: 1,
+    [`positions.${currentTagId}.position`]: 1,
     createdAt: 1
   };
 
@@ -187,7 +186,7 @@ function composer(props, onData) {
     return applyProductRevision(product);
   });
 
-  const sortedProducts = ReactionProduct.sortProducts(products, currentTag);
+  const sortedProducts = ReactionProduct.sortProducts(products, currentTagId);
   Session.set("productGrid/products", sortedProducts);
 
   reactiveProductIds.set(productIds);

@@ -1,5 +1,5 @@
 import _ from "lodash";
-import { Random } from "meteor/random";
+import Random from "@reactioncommerce/random";
 import { Meteor } from "meteor/meteor";
 import { Accounts } from "meteor/accounts-base";
 import { SSR } from "meteor/meteorhacks:ssr";

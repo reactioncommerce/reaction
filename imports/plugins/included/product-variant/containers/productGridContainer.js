@@ -98,18 +98,18 @@ const wrapComponent = (Comp) => (
     }
 
     handleProductDrag = (dragIndex, hoverIndex) => {
-      const tag = ReactionProduct.getTag();
+      const tagId = ReactionProduct.getTagIdForPosition();
       const dragProductId = this.state.productIds[dragIndex];
       const hoverProductId = this.state.productIds[hoverIndex];
-      const dragProductWeight = _.get(this, `state.productsByKey[${dragProductId}].positions[${tag}].weight`, 0);
-      const dropProductWeight = _.get(this, `state.productsByKey[${hoverProductId}].positions[${tag}].weight`, 0);
+      const dragProductWeight = _.get(this, `state.productsByKey[${dragProductId}].positions[${tagId}].weight`, 0);
+      const dropProductWeight = _.get(this, `state.productsByKey[${hoverProductId}].positions[${tagId}].weight`, 0);
 
       const newState = update(this.state, {
         productsByKey: {
           [dragProductId]: {
             $merge: {
               positions: {
-                [tag]: {
+                [tagId]: {
                   weight: dropProductWeight
                 }
               }
@@ -118,7 +118,7 @@ const wrapComponent = (Comp) => (
           [hoverProductId]: {
             $merge: {
               positions: {
-                [tag]: {
+                [tagId]: {
                   weight: dragProductWeight
                 }
               }
@@ -137,11 +137,11 @@ const wrapComponent = (Comp) => (
     }
 
     handleProductDrop = () => {
-      const tag = ReactionProduct.getTag();
+      const tagId = ReactionProduct.getTagIdForPosition();
       this.state.productIds.map((productId, index) => {
         const position = { position: index, updatedAt: new Date() };
 
-        return Meteor.call("products/updateProductPosition", productId, position, tag, (error) => {
+        return Meteor.call("products/updateProductPosition", productId, position, tagId, (error) => {
           if (error) {
             Logger.error(error);
             throw new Meteor.Error("error-occurred", error);

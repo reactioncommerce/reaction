@@ -1,5 +1,12 @@
 /**
+ * Helper functions for use in Jest tests
+ * @namespace TestHelpers
+ */
+
+/**
  * @name getFakeMongoCursor
+ * @method
+ * @memberof TestHelpers
  * @param {String} collectionName - name of the collection
  * @param {Any} results - results to be returned as part of the cursor
  * @return {Object} fake cursor

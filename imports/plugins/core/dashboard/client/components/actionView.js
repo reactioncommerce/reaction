@@ -147,10 +147,10 @@ const getStyles = (props) => {
 class ActionView extends Component {
   static propTypes = {
     actionView: PropTypes.object,
-    actionViewIsOpen: PropTypes.bool,
+    actionViewIsOpen: PropTypes.bool, // eslint-disable-line react/boolean-prop-naming
     buttons: PropTypes.array,
     detailView: PropTypes.object,
-    detailViewIsOpen: PropTypes.bool,
+    detailViewIsOpen: PropTypes.bool, // eslint-disable-line react/boolean-prop-naming
     handleActionViewBack: PropTypes.func,
     handleActionViewClose: PropTypes.func,
     handleActionViewDetailBack: PropTypes.func,
