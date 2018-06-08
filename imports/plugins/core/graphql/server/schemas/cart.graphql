@@ -1,60 +1,26 @@
 # Cart Schema
 "The cart holds selected items until order is placed."
 type Cart implements Node {
+  "The Cart ID"
   _id: ID!
 
   # We're currently using User on the Cart.
   # Enforce database uniqueness such that an account only has one cart.
-  "The account that owns the cart."
+  "The account that owns the cart. Some carts are created for anonymus users. Anonymous carts have a null account."
   account: Account
 
-  # Unused until checkout implementation.
-  #billing: [Payment]! # TODO: What is this?
-
-  "TimeStamp at which the entity was created."
+  "The date and time at which the cart was created, which is when the first item was added to it."
   createdAt: DateTime!
 
-  # We want to change discounts but keeping this for now
-  # Unused until checkout implementation.
-  # "The total discount amount for the cart"
-  #discount: Float
-
-  # Only necessary until making an order. Order should take from here or from account email for user cart
-  # Unused until checkout implementation.
-  # "The email associated with the cart. For anonymous checkout"
-  #email: Email
-
-  "The items that have been added to the cart."
+  "The items that have been added to the cart. A cart is not created until the first item is added. Items can be removed from a cart, and a cart is not deleted if all items are removed from it. Because all items may have been removed, this may be an empty array."
   items: [CartItem]!
 
-  # session: Session! # Remove - Moving to sessionless API.
-
-  # Unused until checkout implementation.
-  #shipping: [Shipment]! # TODO: What is this?
-
-  "The shop associated with the cart."
+  "The shop that owns the cart."
   shop: Shop!
 
-  # TODO: Is this the total tax? Calculated at runtime, or flattened?
-  # Unused until checkout implementation.
-  # "The total tax associated with the cart."
-  #tax: Float
-
-  # Unused until checkout implementation.
-  #taxRatesByShop: JSONObject # How is this used?
-
-  # Unused until checkout implementation.
-  #taxes: [JSONObject] # TODO: What is this?
-
-  # Undecided if token is necessary.
-  #"Secret token for anonymous carts, a token needed for requests"
-  #token: String
-
-  "TimeStamp at which the entity was last updated."
+  # This value
+  "The date and time at which this cart was last updated."
   updatedAt: DateTime!
-
-  # Unused until checkout
-  #workflow: Workflow # Needs more consideration
 
   # Read-only: Carts that don't have an account should be considered anonymous
   # and should be cleaned up after some time. This should not be set explicitly
@@ -62,7 +28,8 @@ type Cart implements Node {
   # attribute (read, value from a function.) The cart expiration ttl can then be
   # modified without having to modify cart records.
   # This value should not be stored in the database.
-  "TimeStamp at which the cart will expire."
+  # Cart expiry is: updated_at + cart_expiry_threshold < now
+  "The date and time at which the cart will expire."
   expiresAt: DateTime!
 }
 
@@ -84,17 +51,20 @@ type CartItemEdge implements NodeEdge {
 A single item in a cart. The item contains information about an intended purchase.
 """
 type CartItem implements Node {
-  "A unique identifier for the type."
+  "The cart item ID"
   _id: ID!
 
-  "Date first added to cart"
+  "The date and time at which this item was added to the associated cart. If an item is added, removed, and then added again, this will reflect the most recent addition."
   addedAt: DateTime! # Should this be "createdAt" ?
 
-  "User defined fields that can be used for any purpose."
+  "The date and time at which the cart item was created. If an item is added, removed, and then added again, the original item is destroyed and this field will reflect the time it was created for the most recent addition."
+  createdAt: DateTime!
+
+  "Arbitrary additional metadata about this cart item."
   metafields: [Metafield]
 
   "Packing information such as item weight, height, length, and depth."
-  parcel: ShippingParcel # Should this be required?
+  parcel: ShippingParcel
 
   "The current price of the item"
   price: Float!
@@ -107,12 +77,10 @@ type CartItem implements Node {
   "The price at which this item was listed when it was added to the cart"
   priceWhenAdded: Float!
 
-  # QUESTION: Does productConfiguration satisfy this TODO?
-  # TODO: Variant metadata (from attribute reflection) is needed on the cart item, but should be defined.
   "The product and chosen options"
   productConfiguration: ProductConfiguration!
 
-  "The quantity of items that has been added to the cart."
+  "The quantity of this item that has been added to the cart. This must be a positive integer. Remove this `CartItem` from it's associated cart if you want `0` of this item."
   quantity: Int!
 
   # QUESTION: This implies that cart items can be from different shops.
@@ -131,42 +99,11 @@ type CartItem implements Node {
   "The type of product, used to display cart items differently"
   type: String
 
-  "Date last updated"
+  "The date and time at which this item was last updated"
   updatedAt: DateTime!
-
-  ###
-  # Removed
-  ###
-
-  # cartItemId: String # Remove. This is only used in order, not cart.
-
-  # This information moved to ProductConfiguration
-  # "The product that was added in this cart item."
-  # product: CatalogProductOrVariant! # TODO: This is the incorrect type. Fix it.
-
-  # Moved into ProductConfiguration
-  #"The display title of the item in the cart."
-  #title: String
-
-  # TODO: What is this? Any way around the blackbox?
-  # Unused until checkout implementation.
-  # taxData: JSONObject
-
-  # QUESTION: Is this calculated at run-time, this read-only?
-  # Unused until checkout implementation.
-  #taxRate: Float
-
-  # Unused until checkout implementation.
-  #shippingMethod: JSONObject # Any way around the blackbox?
-
-  # What is this? Any way around the blackbox? Does it store info from the
-  # payment transaction?  Perhaps it should not be visible to the customer?
-  # Require special permissions.
-  # TODO: Security/Auth - Customers should not see this!
-  #transaction: JSONObject
 }
 
-"Product configuration data for a cart item"
+"Product configuration data"
 type ProductConfiguration {
   # This is Product ID, but should not be used to couple the cart item or product configuration to the Product
   # We're adding Product to the cart which is why we're not using the CatalogProductId here
@@ -203,15 +140,9 @@ type ProductConfiguration {
 type ProductOption {
   "Option or attribute label - e.g. color"
   label: String
-  "Order of this option in the list of options, ascending."
-  position: Int
+
   "Option or attribute value - e.g. blue"
   value: String
-
-  # Future: we may implement an attribute service and permit configuration
-  # of attributes outside of the context of a Product
-  # "Attribute ID"
-  # attributeId: ID
 }
 
 enum CartReconciliationMode {
@@ -220,10 +151,13 @@ enum CartReconciliationMode {
   keepAnonymousCart
 }
 
+####################
 # Queries
+####################
+
 extend type Query {
-  "Finds a cart by the cart ID."
-  anonymousCartByCartId(cartId: ID!): Cart
+  "Finds a cart by the cart ID and anonymous cart token."
+  anonymousCartByCartId(cartId: ID!, token: String!): Cart
 
   # Access control should ensure that only authenticated users can find their own
   # cart. Additionally, administrative roles can find carts.
@@ -232,25 +166,29 @@ extend type Query {
   accountCartByAccountId(accountId: ID!, shopId: ID!): Cart
 }
 
+####################
+# Inputs
+####################
+
 input CreateCartInput {
   "Array of items to add to new cart."
   items: [CartItemInput]!  # NOTE: Don't allow creation of an empty cart
 
   "ShopId association for the cart."
   shopId: ID!              # NOTE: We'll require shopId though it's not in current code.
+
+  "An optional string identifying the mutation call, which will be returned in the response payload"
+  clientMutationId: String
 }
 
 # Input for adding item(s) to a cart.
 # Do we need catalog item information? Maybe do this as part of the "analytics" event tracking.
 input CartItemInput {
-  "Date first added to cart"
-  addedAt: DateTime! # Should this be createdAt?
-
-  "Abitrary metadata."
+  "Arbitrary additional metadata about this cart item."
   metafields: [MetafieldInput]
 
   "The product and chosen options"
-  productConfiguration: ProductConfigurationInput
+  productConfiguration: ProductConfigurationInput!
 
   quantity: Int!
 
@@ -260,26 +198,19 @@ input CartItemInput {
   "The current price of this item"
   price: Float!
 
-  # QUESTION: What should properties should be included in the CurrencyInput schema?
   "The currency for the `price` and `priceWhenAdded` fields"
-  priceCurrency: CurrencyInput!
-
-  "The price at which this item was listed when it was added to the cart"
-  priceWhenAdded: Float!
-
-  "Date last updated"
-  updatedAt: DateTime!
+  priceCurrency: String!
 }
 
 input ProductConfigurationInput {
   "The Product ID"
   productId: ID!
 
-  "The ProductVariant ID, if there is one"
-  productVariantId: ID
+  "The ProductVariant ID"
+  productVariantId: ID!
 
-  "An ordered list of product options/attributes that were selected"
-  options: [ProductOptionInput]
+  # "An ordered list of product options/attributes that were selected"
+  # options: [ProductOptionInput]
 
   "A title for use in cart/orders that conveys the selected product's title + chosen options"
   title: String!
@@ -298,16 +229,22 @@ input ProductOptionInput {
 }
 
 
-input AddCartItemInput {
+input AddCartItemsInput {
   cartId: ID!,
   "Array of items to be added to the cart"
   items: [CartItemInput]!
+
+  "An optional string identifying the mutation call, which will be returned in the response payload"
+  clientMutationId: String
 }
 
 input RemoveCartItemsInput {
   cartId: ID!,
   "Array of items to remove from the cart."
   cartItemIds: [ID]!
+
+  "An optional string identifying the mutation call, which will be returned in the response payload"
+  clientMutationId: String
 }
 
 input UpdateCartItemInput {
@@ -320,7 +257,83 @@ input UpdateCartItemsQuantityInput {
   cartId: ID!
   "Array of cart item quantities to update."
   items: [UpdateCartItemInput]!
+
+  "An optional string identifying the mutation call, which will be returned in the response payload"
+  clientMutationId: String
 }
+
+input ReconcileCartInput {
+  "An anonymous cart ID"
+  anonymousCartId: ID!
+
+  "An anonymous cart token"
+  anonymousCartToken: String!
+
+  "If both an anonymous cart and a cart for the authenticated account are found, how do we combine them? Default mode is `merge`, where all anonymous items are moved into the account cart along with existing account cart items, and quantities are combined."
+  mode: CartReconciliationMode
+
+  "An optional string identifying the mutation call, which will be returned in the response payload"
+  clientMutationId: String
+}
+
+
+####################
+# Payloads
+# These types are used as return values for mutation calls
+####################
+
+"The payload returned from the `createCart` mutation call"
+type CreateCartPayload {
+  "The modified cart"
+  cart: Cart!
+
+  "The same string you sent with the mutation params, for matching mutation calls with their responses"
+  clientMutationId: String
+}
+
+
+"The payload returned from the `addCartItems` mutation call"
+type AddCartItemsPayload {
+  "The modified cart"
+  cart: Cart!
+
+  "The same string you sent with the mutation params, for matching mutation calls with their responses"
+  clientMutationId: String
+}
+
+
+"The payload returned from the `removeCartItems` mutation call"
+type RemoveCartItemsPayload {
+  "The modified cart"
+  cart: Cart!
+
+  "The same string you sent with the mutation params, for matching mutation calls with their responses"
+  clientMutationId: String
+}
+
+
+"The payload returned from the `updateCartItems` mutation call"
+type UpdateCartItemsPayload {
+  "The modified cart"
+  cart: Cart!
+
+  "The same string you sent with the mutation params, for matching mutation calls with their responses"
+  clientMutationId: String
+}
+
+
+"The payload returned from the `reconcileCart` mutation call"
+type ReconcileCartPayload {
+  "The modified cart"
+  cart: Cart!
+
+  "The same string you sent with the mutation params, for matching mutation calls with their responses"
+  clientMutationId: String
+}
+
+####################
+# Mutations
+####################
 
 extend type Mutation {
   # Enforce that at least one item is provided so we don't create empty carts.
@@ -338,7 +351,7 @@ extend type Mutation {
   #     valid simultaneous sessions available in the web application [2].
   #
   "Create a new cart."
-  createCart(input: CreateCartInput!): Cart!
+  createCart(input: CreateCartInput!): CreateCartPayload!
 
   # TODO: Consider returning the connection for the following mutations to
   # resolve questions of which type should be returned.
@@ -347,18 +360,18 @@ extend type Mutation {
   # If the item already already exists in the cart, then increment quantity.
   # TODO: Consider returning connection?
   "Add item(s) to a cart."
-  addCartItems(input: AddCartItemInput!): Cart! # CartItemConnection
+  addCartItems(input: AddCartItemsInput!): AddCartItemsPayload!
 
   # Once added to cart, items should be referenced by their cart item ID.
   # Enforce that at least one item is in the list.
   "Remove item(s) from a cart."
-  removeCartItems(input: RemoveCartItemsInput!): Cart! # CartItemConnection???
+  removeCartItems(input: RemoveCartItemsInput!): RemoveCartItemsPayload!
 
   # If cart item input is set to 0, then remove the item.
   "Update cart item(s) quantity. Use absolute quantity."
-  updateCartItemsQuantity(input: UpdateCartItemsQuantityInput!): Cart! # CartItemConnection
+  updateCartItemsQuantity(input: UpdateCartItemsQuantityInput!): UpdateCartItemsPayload!
 
   # Reconcile Cart
   "Reconcile an anonymous cart with Account cart, if it exists."
-  reconcileCart(anonymousCartId: ID!, mode: CartReconciliationMode): Cart
+  reconcileCart(input: ReconcileCartInput!): ReconcileCartPayload!
 }
