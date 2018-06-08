@@ -192,10 +192,13 @@ export const methods = {
       Collection.update(selector, update);
     }
     // TODO: update a history record of transaction
+    // The Payment schema's currency defaultValue is adding {} to the $pull condition.
+    // If this issue is eventually fixed, autoValues can be re-enabled here
+    // See https://github.com/aldeed/simple-schema-js/issues/272
     const result = Collection.update(
       { _id: id },
       { $set: { discount: currentDiscount }, $pull: { billing: { _id: codeId } } },
-      { multi: true }
+      { multi: true, getAutoValues: false }
     );
 
     // calculate discounts
