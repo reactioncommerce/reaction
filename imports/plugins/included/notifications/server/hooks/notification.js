@@ -37,11 +37,8 @@ MethodHooks.after("cart/copyCartToOrder", (options) => {
 
   // Sending notification to admin
   const adminId = getAdminUserId();
-  if (adminId) {
-    sendNotificationToAdmin(adminId);
-  }
 
-  // Also send notification to shop owners excluding the admin
+  // Send notification to shop owners excluding the admin
   // TODO: Rename sendNotificationToAdmin as it can be used to send
   // notification to other shop owners as well
   const cartId = options.arguments[0];
@@ -56,6 +53,10 @@ MethodHooks.after("cart/copyCartToOrder", (options) => {
       }
     });
   });
+
+  if (adminId) {
+    return sendNotificationToAdmin(adminId);
+  }
 
   return options.result;
 });
