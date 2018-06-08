@@ -110,8 +110,8 @@ type ProductConfiguration {
   "The Product ID"
   productId: ID!
 
-  "The ProductVariant ID, if there is one"
-  productVariantId: ID
+  "The ProductVariant ID"
+  productVariantId: ID!
 
   "A title for use in cart/orders that conveys the selected product's title + chosen options"
   title: String!
@@ -147,7 +147,7 @@ input CreateCartInput {
   items: [CartItemInput]!  # NOTE: Don't allow creation of an empty cart
 
   "ShopId association for the cart."
-  shopId: ID!              # NOTE: We'll require shopId though it's not in current code.
+  shopId: ID! # NOTE: We'll require shopId though it's not in current code.
 
   "An optional string identifying the mutation call, which will be returned in the response payload"
   clientMutationId: String
