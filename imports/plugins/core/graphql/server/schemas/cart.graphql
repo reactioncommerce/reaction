@@ -230,7 +230,9 @@ input ProductOptionInput {
 
 
 input AddCartItemsInput {
-  cartId: ID!,
+  "The cart ID"
+  cartId: ID!
+
   "Array of items to be added to the cart"
   items: [CartItemInput]!
 
@@ -239,7 +241,9 @@ input AddCartItemsInput {
 }
 
 input RemoveCartItemsInput {
+  "The cart ID"
   cartId: ID!,
+
   "Array of items to remove from the cart."
   cartItemIds: [ID]!
 
@@ -248,13 +252,20 @@ input RemoveCartItemsInput {
 }
 
 input UpdateCartItemInput {
+  "The cart item ID"
   cartItemId: ID!
+
   "New absolute value for specified cart item's quantity. Not an incremental value."
   quantity: Int!
+
+  "An optional string identifying the mutation call, which will be returned in the response payload"
+  clientMutationId: String
 }
 
 input UpdateCartItemsQuantityInput {
+  "The cart ID"
   cartId: ID!
+
   "Array of cart item quantities to update."
   items: [UpdateCartItemInput]!
 
