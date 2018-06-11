@@ -111,6 +111,11 @@ docker-compose -f docker-compose-demo.yml up
 
 You can also use this file as starting point for your production docker-compose setup.
 
+## See it in action
+
+You can check our latest release in Heroku by simply clicking the button below.
+
+[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy)
 
 ### License
 
