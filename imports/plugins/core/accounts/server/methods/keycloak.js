@@ -7,12 +7,11 @@ Meteor.methods({
   "keycloak/auth"(keycloakProfile) {
     check(keycloakProfile, Object);
 
-    const id = keycloakProfile.attributes["reaction-meteor-id"][0];
+    const id = Array.isArray(keycloakProfile.attributes) && keycloakProfile.attributes["reaction-meteor-id"][0];
 
-    // debugging logs
-    console.log(JSON.stringify({ keycloakProfile }, null, 4));
-    console.log({ id });
-    //
+    if (!id) {
+      throw new Meteor.Error("access-denied", "User does not have reaction-meteor-id field");
+    }
 
     let account = Accounts.findOne({ userId: id });
 
@@ -26,8 +25,8 @@ Meteor.methods({
       account = Accounts.findOne({ userId: id });
     }
 
-    this.setUserId(account._id);
+    this.setUserId(account.userId);
 
-    return account._id;
+    return account.userId;
   }
 });
