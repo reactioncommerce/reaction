@@ -113,6 +113,9 @@ type ProductConfiguration {
   "The ProductVariant ID"
   productVariantId: ID!
 
+  "The product's slug"
+  productSlug: String
+
   "A title for use in cart/orders that conveys the selected product's title + chosen options"
   title: String!
 }
@@ -165,8 +168,10 @@ input CartItemInput {
   quantity: Int!
 
   "ShopId from which the product is added."
-  shopId: ID! # NOTE: Should we keep this? Can a product have either multiple ShopIds or no ShopId?
+  shopId: ID!
 
+  # Server to ensure that the client price is the same as the server price
+  # Inform customer that prices are different and offer to "add anyway" or "cancel" if not.
   "The current price of this item"
   price: Float!
 
@@ -180,9 +185,6 @@ input ProductConfigurationInput {
 
   "The ProductVariant ID"
   productVariantId: ID!
-
-  "A title for use in cart/orders that conveys the selected product's title + chosen options"
-  title: String!
 }
 
 input AddCartItemsInput {
