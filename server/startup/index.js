@@ -26,6 +26,11 @@ SimpleSchema.defineValidationErrorTransform((error) => {
 export default function startup() {
   const startTime = Date.now();
 
+  // for the user who wants to serve bundled js and css files from different URL
+  if (Meteor.settings.cdnPrefix) {
+    Meteor.startup(() => WebAppInternals.setBundledJsCssPrefix(Meteor.settings.cdnPrefix));
+  }
+
   Accounts();
   initTemplates();
   RegisterCore();
