@@ -15,12 +15,9 @@ Meteor.startup(() => {
   });
 
   const { keycloak } = window;
-  const token = localStorage.getItem("reaction_kc_token");
 
   keycloak
-    // NB: "login-required" causes a redirect to keycloak server; this has implications
-    // for anonymous users.
-    .init({ flow: "implicit", onLoad: "login-required", token })
+    .init({ flow: "implicit" })
     .success((authenticated) => {
       if (authenticated) {
         localStorage.setItem("reaction_kc_token", keycloak.token);
@@ -29,7 +26,6 @@ Meteor.startup(() => {
           .success((profile) => {
             Meteor.call("keycloak/auth", profile, (error, userId) => {
               console.log({ error, userId });
-              Meteor.connection.setUserId(userId);
             });
           });
       }
