@@ -58,6 +58,7 @@ class SmsSettings extends Component {
     return saveSettings(settings)
       .then((result) => {
         this.setState({ isSaving: false });
+        return result;
       })
       .catch((error) => {
         this.setState({ isSaving: false });
