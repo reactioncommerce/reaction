@@ -26,7 +26,8 @@ function getAccountOptions(isPayment) {
   const ref = Meteor.settings.authnet;
   const options = {
     login: getSettings(settings, ref, "api_id"),
-    tran_key: getSettings(settings, ref, "transaction_key")
+    tran_key: getSettings(settings, ref, "transaction_key"),
+    mode: getSettings(settings, ref, "mode")
   };
 
   if (!options.login) {
