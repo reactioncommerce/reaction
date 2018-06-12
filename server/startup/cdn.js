@@ -1,6 +1,6 @@
 import { Meteor } from "meteor/meteor";
 /**
- * Sets prefi for the user who wants to serve bundled js and css
+ * Sets prefix for the user who wants to serve bundled js and css
  * files from different URL
  *
  * @returns null
