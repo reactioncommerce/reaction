@@ -7,7 +7,7 @@
   "keywords": ["reaction", "e-commerce", "meteor"],
   "buildpacks": [
     {
-      "url": "https://github.com/Zanobo/reaction-buildpack.git"
+      "url": "https://github.com/reactioncommerce/reaction-buildpack.git"
     }
   ],
   "addons": [
@@ -19,7 +19,7 @@
   "env": {
     "TOOL_NODE_FLAGS": {
       "required": true,
-      "description": "Set memory limit to a high value",
+      "description": "Set memory limit to a sufficient value",
       "value": "--max-old-space-size=2048"
     },
     "ROOT_URL": {
