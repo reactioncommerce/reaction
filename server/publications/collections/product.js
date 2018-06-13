@@ -1,6 +1,6 @@
 import { Meteor } from "meteor/meteor";
 import { check, Match } from "meteor/check";
-import { Products, Shops } from "/lib/collections";
+import { Catalog, Products, Shops } from "/lib/collections";
 import { Logger, Reaction } from "/server/api";
 
 /**
@@ -64,7 +64,9 @@ Meteor.publish("Product", function (productIdOrHandle, shopIdOrSlug) {
     selector.isVisible = {
       $in: [true, false, undefined]
     };
+
+    return Products.find(selector);
   }
 
-  return Products.find(selector);
+  return Catalog.find(selector);
 });
