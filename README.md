@@ -113,7 +113,7 @@ You can also use this file as starting point for your production docker-compose 
 
 ## See it in action
 
-You can check our latest release in Heroku by simply clicking the button below. You will need to create a Heroku if you do not have one yet or log in using an existing account.
+You can check our latest release in Heroku by simply clicking the button below. You will need to create a Heroku account if you do not have one yet or log in using an existing account.
 
 [![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy)
 
