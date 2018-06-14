@@ -167,6 +167,10 @@ class SignIn extends Component {
             {this.renderSpinnerOnWait()}
           </div>
 
+          <Components.Divider />
+          <Components.KeycloakLoginButton {...this.props} />
+          <Components.Divider />
+
           <div className="form-group flex flex-justify-spaceBetween">
             <Components.Button
               tagName="span"

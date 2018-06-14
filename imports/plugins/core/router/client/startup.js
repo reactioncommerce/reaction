@@ -8,6 +8,30 @@ import { Router } from "../lib";
 import { initBrowserRouter } from "./browserRouter";
 
 Meteor.startup(() => {
+  window.keycloak = new window.Keycloak({
+    realm: "default",
+    clientId: "reaction-meteor-frontend",
+    url: "http://localhost:8080/auth"
+  });
+
+  const { keycloak } = window;
+
+  keycloak
+    .init({ flow: "implicit" })
+    .success((authenticated) => {
+      if (authenticated) {
+        localStorage.setItem("reaction_kc_token", keycloak.token);
+        keycloak
+          .loadUserProfile()
+          .success((profile) => {
+            Meteor.call("keycloak/auth", profile, (error, userId) => {
+              console.log({ error, userId });
+            });
+          });
+      }
+    })
+    .error(() => {});
+
   loadRegisteredComponents();
 
   // Subscribe to router required publications

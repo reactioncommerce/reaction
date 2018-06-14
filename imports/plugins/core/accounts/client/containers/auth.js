@@ -201,7 +201,12 @@ class AuthContainer extends Component {
 }
 
 function composer(props, onData) {
-  onData(null, { currentRoute: Router.current() });
+  onData(null, {
+    currentRoute: Router.current(),
+    keycloakRealm: Meteor.settings.public.keycloakRealm,
+    keycloakClientID: Meteor.settings.public.keycloakClientID,
+    keycloakServerUrl: Meteor.settings.public.keycloakServerUrl
+  });
 }
 
 registerComponent("AuthContainer", AuthContainer, composeWithTracker(composer));
