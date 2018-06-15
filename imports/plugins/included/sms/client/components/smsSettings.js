@@ -10,6 +10,17 @@ import Button from "@reactioncommerce/components/Button/v1";
 import Logger from "@reactioncommerce/logger";
 import { i18next } from "/client/api";
 
+const iconComponentStyles = {
+  fontSize: "1em",
+  verticalAlign: "middle"
+};
+
+const iconComponents = {
+  iconClear: (<i className="fa fa-times" style={iconComponentStyles} />),
+  iconError: (<i className="fa fa-exclamation-triangle" style={iconComponentStyles} />),
+  iconValid: (<i className="fa fa-check-circle" style={iconComponentStyles} />)
+};
+
 const smsProviders = [{
   label: "Twilio", value: "twilio"
 }, {
@@ -102,7 +113,7 @@ class SmsSettings extends Component {
                 label={i18next.t("admin.settings.phoneNumber", { defaultValue: "SMS Phone Number" })}
                 name="smsPhone"
               >
-                <TextInput name="smsPhone" />
+                <TextInput name="smsPhone" {...iconComponents} />
                 <ErrorsBlock names={["smsPhone"]} />
               </Field>
               <Field
@@ -110,7 +121,7 @@ class SmsSettings extends Component {
                 name="apiKey"
                 type="password"
               >
-                <TextInput name="apiKey" />
+                <TextInput name="apiKey" {...iconComponents} />
                 <ErrorsBlock names={["apiKey"]} />
               </Field>
               <Field
@@ -118,7 +129,7 @@ class SmsSettings extends Component {
                 name="apiToken"
                 type="password"
               >
-                <TextInput name="apiToken" />
+                <TextInput name="apiToken" {...iconComponents} />
                 <ErrorsBlock names={["apiToken"]} />
               </Field>
               <div className="pull-right">
