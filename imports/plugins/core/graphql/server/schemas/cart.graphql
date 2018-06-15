@@ -1,10 +1,8 @@
-# Cart Schema
 "The cart holds selected items until order is placed."
 type Cart implements Node {
   "The Cart ID"
   _id: ID!
 
-  # We're currently using User on the Cart.
   # Enforce database uniqueness such that an account only has one cart.
   "The account that owns the cart. Some carts are created for anonymus users. Anonymous carts have a null account."
   account: Account
@@ -13,12 +11,11 @@ type Cart implements Node {
   createdAt: DateTime!
 
   "The items that have been added to the cart. A cart is not created until the first item is added. Items can be removed from a cart, and a cart is not deleted if all items are removed from it. Because all items may have been removed, this may be an empty array."
-  items: [CartItem]!
+  items(after: ConnectionCursor, before: ConnectionCursor, first: ConnectionLimitInt, last: ConnectionLimitInt, sortOrder: SortOrder = desc, sortBy: CartItemsSortByField = addedAt): CartItemConnection
 
   "The shop that owns the cart."
   shop: Shop!
 
-  # This value
   "The date and time at which this cart was last updated."
   updatedAt: DateTime!
 
@@ -29,8 +26,13 @@ type Cart implements Node {
   # modified without having to modify cart records.
   # This value should not be stored in the database.
   # Cart expiry is: updated_at + cart_expiry_threshold < now
-  "The date and time at which the cart will expire."
-  expiresAt: DateTime!
+  "The date and time at which the cart will expire. Account carts usually do not expire, so they will have a null value here."
+  expiresAt: DateTime
+}
+
+enum CartItemsSortByField {
+  _id
+  addedAt
 }
 
 "Wraps a list of `CartItem`s, providing pagination cursors and information."
@@ -47,6 +49,14 @@ type CartItemEdge implements NodeEdge {
   node: CartItem
 }
 
+type CartItemAttribute {
+  "The attribute label, e.g., Color"
+  label: String!
+
+  "The attribute value, e.g., Blue"
+  value: String!
+}
+
 """
 A single item in a cart. The item contains information about an intended purchase.
 """
@@ -55,30 +65,47 @@ type CartItem implements Node {
   _id: ID!
 
   "The date and time at which this item was added to the associated cart. If an item is added, removed, and then added again, this will reflect the most recent addition."
-  addedAt: DateTime! # Should this be "createdAt" ?
+  addedAt: DateTime!
+
+  """
+  Additional attributes of the chosen item. For example, if this item is for a product, socks, where "blue" and "small"
+  options were chosen for some configurable attributes, then "color:blue" and "size:small" will be indicated here.
+  """
+  attributes: [CartItemAttribute]
 
   "The date and time at which the cart item was created. If an item is added, removed, and then added again, the original item is destroyed and this field will reflect the time it was created for the most recent addition."
   createdAt: DateTime!
 
+  """
+  The current quantity at the time of fetching this cart item. Use for displaying stock messages like "only 3 left!"
+  """
+  currentQuantity: Int
+
+  "The URL for a picture of the item"
+  imageUrl: String
+
   "Arbitrary additional metadata about this cart item."
   metafields: [Metafield]
 
-  "Packing information such as item weight, height, length, and depth."
+  "Packing information such as item weight, height, length, and depth. Used for calculating shipping rates."
   parcel: ShippingParcel
 
   "The current price of the item"
-  price: Float!
-
-  "The currency for the `price` and `priceWhenAdded` fields"
-  priceCurrency: Currency!
+  price: ProductPricingInfo!
 
   # This will permit us to perform calculations based on how the price has changed since
   # the item was added to the cart.
   "The price at which this item was listed when it was added to the cart"
-  priceWhenAdded: Float!
+  priceWhenAdded: ProductPricingInfo!
 
   "The product and chosen options"
   productConfiguration: ProductConfiguration!
+
+  "The product's slug"
+  productSlug: String
+
+  "The type of product, used to display cart items differently"
+  productType: String
 
   "The quantity of this item that has been added to the cart. This must be a positive integer. Remove this `CartItem` from it's associated cart if you want `0` of this item."
   quantity: Int!
@@ -87,17 +114,11 @@ type CartItem implements Node {
   # Is it possible that certain shops share a cart but other shops are not
   # included in that sharing? How is that defined? Probably not applicable on
   # the cart item but at the cart itself.
-  #
-  # TODO: shopId is not currently required but it should be made required to
-  # avoid issues on cart sharing reconfiguration.
   "The shop associated with this cart item."
-  shop: Shop
+  shop: Shop!
 
-  # TODO: What is this? Simply denormalization? Can this attribute be fetched
-  # directly from the product now in GraphQL?
-  # Should this be embedded within the productConfiguration
-  "The type of product, used to display cart items differently"
-  type: String
+  "A title for use in cart/orders that conveys the selected product's title + chosen options"
+  title: String!
 
   "The date and time at which this item was last updated"
   updatedAt: DateTime!
@@ -112,12 +133,6 @@ type ProductConfiguration {
 
   "The ProductVariant ID"
   productVariantId: ID!
-
-  "The product's slug"
-  productSlug: String
-
-  "A title for use in cart/orders that conveys the selected product's title + chosen options"
-  title: String!
 }
 
 enum CartReconciliationMode {
@@ -156,8 +171,6 @@ input CreateCartInput {
   clientMutationId: String
 }
 
-# Input for adding item(s) to a cart.
-# Do we need catalog item information? Maybe do this as part of the "analytics" event tracking.
 input CartItemInput {
   "Arbitrary additional metadata about this cart item."
   metafields: [MetafieldInput]
@@ -165,6 +178,7 @@ input CartItemInput {
   "The product and chosen options"
   productConfiguration: ProductConfigurationInput!
 
+  "The number of this item to add to the cart"
   quantity: Int!
 
   "ShopId from which the product is added."
@@ -215,9 +229,6 @@ input UpdateCartItemInput {
 
   "New absolute value for specified cart item's quantity. Not an incremental value."
   quantity: Int!
-
-  "An optional string identifying the mutation call, which will be returned in the response payload"
-  clientMutationId: String
 }
 
 input UpdateCartItemsQuantityInput {
@@ -282,7 +293,7 @@ type RemoveCartItemsPayload {
 
 
 "The payload returned from the `updateCartItems` mutation call"
-type UpdateCartItemsPayload {
+type UpdateCartItemsQuantityPayload {
   "The modified cart"
   cart: Cart!
 
@@ -322,12 +333,8 @@ extend type Mutation {
   "Create a new cart."
   createCart(input: CreateCartInput!): CreateCartPayload!
 
-  # TODO: Consider returning the connection for the following mutations to
-  # resolve questions of which type should be returned.
-
   # Add an item to cart.
   # If the item already already exists in the cart, then increment quantity.
-  # TODO: Consider returning connection?
   "Add item(s) to a cart."
   addCartItems(input: AddCartItemsInput!): AddCartItemsPayload!
 
@@ -338,7 +345,7 @@ extend type Mutation {
 
   # If cart item input is set to 0, then remove the item.
   "Update cart item(s) quantity. Use absolute quantity."
-  updateCartItemsQuantity(input: UpdateCartItemsQuantityInput!): UpdateCartItemsPayload!
+  updateCartItemsQuantity(input: UpdateCartItemsQuantityInput!): UpdateCartItemsQuantityPayload!
 
   # Reconcile Cart
   "Reconcile an anonymous cart with Account cart, if it exists."
