@@ -97,7 +97,7 @@ class CardForm extends Component {
         </div>
         <div className="row">
           <div className="col-xs-6">
-            <label>Expiry Date</label>
+            <label>Expiry date</label>
             <CardExpiryElement
               style={style}
               className="card-element"
@@ -113,7 +113,7 @@ class CardForm extends Component {
           </div>
         </div>
         <div className="row">
-          <label>Postal Code</label>
+          <label>Postal code</label>
           <PostalCodeElement
             style={style}
             className="card-element"
