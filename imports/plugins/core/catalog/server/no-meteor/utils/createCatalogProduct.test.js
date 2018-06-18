@@ -313,7 +313,7 @@ const mockCatalogProduct = {
   variants: [{
     _id: "875",
     barcode: "barcode",
-    createdAt: createdAt,
+    createdAt,
     height: 0,
     index: 0,
     inventoryManagement: true,
