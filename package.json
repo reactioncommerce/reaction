@@ -87,6 +87,7 @@
     "node-geocoder": "^3.22.0",
     "nodemailer-wellknown": "^0.2.3",
     "nouislider-algolia-fork": "^10.0.0",
+    "object-hash": "^1.3.0",
     "path-to-regexp": "^2.1.0",
     "paypal-rest-sdk": "^1.8.1",
     "prerender-node": "^2.7.4",
