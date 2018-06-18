@@ -15,7 +15,6 @@ export default async function publishProductToCatalog(product, collections) {
 
   // Create hash of all user-editable fields
   const hashedProduct = await hashProduct(product, collections);
-  console.log("hashedProduct", hashedProduct);
 
   const catalogProduct = await createCatalogProduct(hashedProduct, collections);
 
