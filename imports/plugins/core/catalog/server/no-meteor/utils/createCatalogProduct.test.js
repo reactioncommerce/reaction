@@ -450,7 +450,7 @@ afterAll(() => {
   restore$getCatalogProductMedia();
 });
 
-test("expect false if a product is not published to the catalog collection", async () => {
+test("convert product object to catalog object", async () => {
   mockCollections.Products.toArray.mockReturnValueOnce(Promise.resolve(mockVariants));
   mockCollections.Shops.findOne.mockReturnValueOnce(Promise.resolve(mockShop));
   mockCollections.Catalog.updateOne.mockReturnValueOnce(Promise.resolve({ result: { ok: 0 } }));
