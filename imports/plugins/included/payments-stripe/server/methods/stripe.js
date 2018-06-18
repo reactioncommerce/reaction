@@ -370,8 +370,7 @@ export const methods = {
       const paymentMethods = buildPaymentMethods({ token, cartItemsByShop, transactionsByShopId });
 
       // If successful, call cart/submitPayment and return success back to client.
-      Meteor.call("cart/submitPayment", paymentMethods);
-      return { success: true, transactions: transactionsByShopId };
+      return { success: true, transactions: transactionsByShopId, paymentMethods };
     } catch (error) {
       // If unsuccessful
       // return failure back to client if error is a standard stripe card error

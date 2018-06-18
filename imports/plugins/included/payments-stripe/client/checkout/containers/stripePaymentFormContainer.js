@@ -16,8 +16,12 @@ class StripePaymentFormContainer extends Component {
   render() {
     return (
       <StripeProvider apiKey={this.props.apiKey}>
-        <Elements>
-          <InjectedCardForm cartId={this.props.cartId} />
+        <Elements
+          fonts={[
+            { cssSrc: "https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,600,700" }
+          ]}
+        >
+          <InjectedCardForm cartId={this.props.cartId} postal={this.props.postal} />
         </Elements>
       </StripeProvider>
     );
@@ -30,11 +34,14 @@ function composer(props, onData) {
     name: "reaction-stripe",
     shopId: Reaction.getPrimaryShopId()
   });
-  const checkoutCart = Cart.findOne({ userId: Meteor.userId() });
+  const cart = Cart.findOne({ userId: Meteor.userId() });
+  const { billing: [{ address: { postal }}] } = cart;
+
   if (subscription.ready()) {
     onData(null, {
       apiKey: stripePackage.settings.public.publishable_key,
-      cartId: checkoutCart._id
+      cartId: cart._id,
+      postal
     });
   } else {
     onData(null, {});
