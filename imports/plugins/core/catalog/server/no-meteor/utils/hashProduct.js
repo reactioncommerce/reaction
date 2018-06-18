@@ -12,8 +12,16 @@ import Random from "@reactioncommerce/random";
 export default async function hashProduct(product, collections) {
   const { Products } = collections;
 
-  // we need to create a new product object to remove fields we don't want hashed
-  // Remove system created info
+  // Remove the following fields from the hash calculation
+  // createdAt and updatedAt because they are machine calculated / not manually updated
+  // hash, because we are using this to calculate the new hash
+  const skippedFields = ["hash", "createdAt", "updatedAt"];
+
+  // Remove the skipped fields from the product object before we calculate hash
+  skippedFields.forEach((field) => {
+    delete product[field];
+  });
+
   const productHash = hash(product);
 
   // Insert/update product document with hash field
@@ -34,10 +42,9 @@ export default async function hashProduct(product, collections) {
     { upsert: true }
   );
 
-  // Get updated product from database
-  const updatedProduct = await Products.findOne(product.productId);
-
   if (result && result.result && result.result.ok === 1) {
+    // If product was updated, get updated product from database
+    const updatedProduct = await Products.findOne(product.productId);
     return updatedProduct;
   }
 
