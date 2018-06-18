@@ -2,24 +2,16 @@ import React from "react";
 import PropTypes from "prop-types";
 import { DragSource, DropTarget } from "react-dnd";
 
-const cardSource = {
-  beginDrag(props) {
-    return {
-      index: props.index
-    };
-  }
-};
-
 /**
  * Specifies the props to inject into your component.
  * @param {DragSourceConnector} connect An onject containing functions to assign roles to a component's DOM nodes
  * @param {DragSourceMonitor} monitor An object containing functions that return information about drag state
  * @return {Object} Props for drag source
+ * @private
  */
 function collectDropSource(connect, monitor) {
   return {
     connectDragSource: connect.dragSource(),
-    connectDragPreview: connect.dragPreview(),
     isDragging: monitor.isDragging()
   };
 }
@@ -29,6 +21,15 @@ function collectDropTarget(connect) {
     connectDropTarget: connect.dropTarget()
   };
 }
+
+const cardSource = {
+  beginDrag(props) {
+    const { index } = props;
+    return {
+      index
+    };
+  }
+};
 
 const cardTarget = {
   hover(props, monitor) {
@@ -48,6 +49,9 @@ const cardTarget = {
     // but it's good here for the sake of performance
     // to avoid expensive index searches.
     monitor.getItem().index = hoverIndex;
+  },
+  drop(props) {
+    if (typeof props.onDrop === "function") props.onDrop();
   }
 };
 
@@ -61,7 +65,6 @@ export default function ComposeSortableItem(itemType) {
 
     SortableItem.propTypes = {
       // Injected by React DnD:
-      connectDragPreview: PropTypes.func.isRequired,
       connectDragSource: PropTypes.func.isRequired,
       connectDropTarget: PropTypes.func.isRequired,
       isDragging: PropTypes.bool.isRequired

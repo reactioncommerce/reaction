@@ -1,15 +1,26 @@
 import faker from "faker";
 import _ from "lodash";
+import Random from "@reactioncommerce/random";
 import { Meteor } from "meteor/meteor";
-import { Random } from "meteor/random";
 import { Factory } from "meteor/dburles:factory";
 import { getShop } from "./shops";
 
+/**
+ * @method getUser
+ * @memberof Fixtures
+ * @return {Object} Existing user or Factory user
+ */
 export function getUser() {
   const existingUser = Meteor.users.findOne();
   return existingUser || Factory.create("user");
 }
 
+/**
+ * @method getUsers
+ * @memberof Fixtures
+ * @param {Number} limit Default set to 2
+ * @return {Array} Array of existing users or Factory user
+ */
 export function getUsers(limit = 2) {
   const users = [];
   const existingUsers = Meteor.users.find({}, { limit }).fetch();
@@ -20,10 +31,28 @@ export function getUsers(limit = 2) {
   return users;
 }
 
-
 /**
- * User Factory
- * @summary define user Factory
+ * @name user
+ * @memberof Fixtures
+ * @summary Define user Factory
+ * @example const user1 = Factory.create("user");
+ * @description Types of User factories
+ * - `user` - A user
+ * - `registeredUser` - A user with a password, loginTokens and roles: `account/profile, guest, product, tag, index, cart/checkout, cart/completed`
+ * - `anonymous` - A user without an account with rules: `guest, anonymous, product, tag, index, cart/checkout, cart/completed`
+ * @property {String} username - `faker.internet.userName() + _.random(0, 1000)`
+ * @property {String} name - `faker.name.findName()`
+ * @property {Array} emails - `[{address: faker.internet.email(), verified: true}]`
+ * @property {Object} profile - `{
+   name: this.name,
+   email: faker.internet.email(),
+   profilePictureUrl: faker.image.imageUrl()
+ }`
+ * @property {String} gender - String: `"Male", "Female", "Either"`
+ * @property {String} description - `faker.lorem.paragraphs(3)`
+ * @property {Date} startTime - `calculatedStartTime`
+ * @property {Date} createdAt - `new Date()`
+ * @property {Object} roles - `{shopId: ["guest", "anonymous", "product"]}`
  */
 const user = {
   username() {

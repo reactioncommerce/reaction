@@ -1,13 +1,14 @@
 import { Logger } from "/server/api";
-import { PaymentMethod } from "/lib/collections/schemas";
+import { PaymentMethodArgument } from "/lib/collections/schemas";
 import { check } from "meteor/check";
 import { PayPal } from "../../lib/api"; // PayPal is the reaction api
 import { PayflowproApi } from "./payflowproApi";
 
-
 /**
- * payflowpro/payment/submit
- * Create and Submit a PayPal PayFlow transaction
+ * @name payflowpro/payment/submit
+ * @method
+ * @memberof Payment/PayflowPro/Methods
+ * @summary Create and Submit a PayPal PayFlow transaction
  * @param  {Object} transactionType transactionType
  * @param  {Object} cardData cardData object
  * @param  {Object} paymentData paymentData object
@@ -44,13 +45,18 @@ export function paymentSubmit(transactionType, cardData, paymentData) {
 
 
 /**
- * payflowpro/payment/capture
- * Capture an authorized PayPal PayFlow transaction
+ * @name payflowpro/payment/capture
+ * @method
+ * @memberof Payment/PayflowPro/Methods
+ * @summary Capture an authorized PayPal PayFlow transaction
  * @param  {Object} paymentMethod A PaymentMethod object
  * @return {Object} results from PayPal normalized
  */
 export function paymentCapture(paymentMethod) {
-  check(paymentMethod, PaymentMethod);
+  // Call both check and validate because by calling `clean`, the audit pkg
+  // thinks that we haven't checked paymentMethod arg
+  check(paymentMethod, Object);
+  PaymentMethodArgument.validate(PaymentMethodArgument.clean(paymentMethod));
 
   const paymentCaptureDetails = {
     authorizationId: paymentMethod.metadata.authorizationId,
@@ -77,15 +83,21 @@ export function paymentCapture(paymentMethod) {
 
 
 /**
- * createRefund
- * Refund PayPal PayFlow payment
+ * @name payflowpro/refund/create
+ * @method
+ * @memberof Payment/PayflowPro/Methods
+ * @summary Refund PayPal PayFlow payment
  * @param {Object} paymentMethod - Object containing everything about the transaction to be settled
  * @param {Number} amount - Amount to be refunded if not the entire amount
  * @return {Object} results - Object containing the results of the transaction
  */
 export function createRefund(paymentMethod, amount) {
-  check(paymentMethod, PaymentMethod);
   check(amount, Number);
+
+  // Call both check and validate because by calling `clean`, the audit pkg
+  // thinks that we haven't checked paymentMethod arg
+  check(paymentMethod, Object);
+  PaymentMethodArgument.validate(PaymentMethodArgument.clean(paymentMethod));
 
   const refundDetails = {
     captureId: paymentMethod.metadata.captureId,
@@ -112,14 +124,18 @@ export function createRefund(paymentMethod, amount) {
 
 
 /**
- * listRefunds
- * List all refunds for a PayPal PayFlow transaction
- * https://developers.braintreepayments.com/reference/request/transaction/find/node
+ * @name payflowpro/refund/list
+ * @method
+ * @memberof Payment/PayflowPro/Methods
+ * @summary List all refunds for a PayPal PayFlow transaction {@link https://developers.braintreepayments.com/reference/request/transaction/find/node}
  * @param {Object} paymentMethod - Object containing everything about the transaction to be settled
  * @return {Array} results - An array of refund objects for display in admin
  */
 export function listRefunds(paymentMethod) {
-  check(paymentMethod, PaymentMethod);
+  // Call both check and validate because by calling `clean`, the audit pkg
+  // thinks that we haven't checked paymentMethod arg
+  check(paymentMethod, Object);
+  PaymentMethodArgument.validate(PaymentMethodArgument.clean(paymentMethod));
 
   const refundListDetails = {
     transactionId: paymentMethod.metadata.transactionId
@@ -143,7 +159,13 @@ export function listRefunds(paymentMethod) {
   return result;
 }
 
-
+/**
+ * @name payflowpro/settings
+ * @method
+ * @memberof Payment/PayflowPro/Methods
+ * @summary Get Payflow settings
+ * @return {Object} Settings object with `mode` and `enabled` props
+ */
 export function getSettings() {
   const settings = PayPal.payflowAccountOptions();
   const payflowSettings = {

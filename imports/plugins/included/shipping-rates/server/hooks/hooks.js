@@ -1,4 +1,3 @@
-import { check } from "meteor/check";
 import { Meteor } from "meteor/meteor";
 import { Shipping, Packages } from "/lib/collections";
 import { Logger, Reaction, Hooks } from "/server/api";
@@ -15,9 +14,10 @@ import { Cart as CartSchema } from "/lib/collections/schemas";
  * be an updated list of shipping rates, and the second will contain info for
  * retrying this specific package if any errors occurred while retrieving the
  * shipping rates.
+ * @private
  */
 function getShippingRates(previousQueryResults, cart) {
-  check(cart, CartSchema);
+  CartSchema.validate(cart);
   const [rates, retrialTargets] = previousQueryResults;
   const shops = [];
   const products = cart.items;

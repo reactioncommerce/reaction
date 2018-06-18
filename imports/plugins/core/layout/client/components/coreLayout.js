@@ -62,7 +62,7 @@ class CoreLayout extends React.Component {
 }
 
 CoreLayout.propTypes = {
-  actionViewIsOpen: PropTypes.bool,
+  actionViewIsOpen: PropTypes.bool, // eslint-disable-line react/boolean-prop-naming
   data: PropTypes.object,
   structure: PropTypes.object
 };

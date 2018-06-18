@@ -46,6 +46,15 @@ cd reaction
 reaction
 ```
 
+You can also run the app locally using [`docker-compose`](https://docs.docker.com/compose/) by running:
+
+```sh
+docker-compose up
+```
+
+This will use the `docker-compose.yml` file. This can be used to evaluate the app locally (on all Operating Systems supported by Docker),
+however, for active local development or customization, it is better to run `reaction` outside of Docker for faster app builds.
+
 Learn more on how to [configure your project](https://docs.reactioncommerce.com/reaction-docs/master/configuration).
 
 # Get involved
@@ -72,9 +81,7 @@ Learn more on how to [configure your project](https://docs.reactioncommerce.com/
 ## Contact the team
 
 -   [Security reporting instructions](https://docs.reactioncommerce.com/reaction-docs/master/reporting-vulnerabilities): Report security vulnerabilities to <mailto:security@reactioncommerce.com>.
--   [Reaction community calls](http://getrxn.io/2rcCal): Join our biweekly community calls every other Wednesday at 7AM PST/10AM EST.
--   Subscribe to our [Reaction Community Google Calendar](http://getrxn.io/2rcCal) to RSVP to the next call and check out the [agenda](https://docs.google.com/document/d/1PwenrammgQJpQfFoUUJZ96i_JJYCM_4glAjB1_ZzgwA/edit?usp=sharing).
--   [Reaction Action](http://getrxn.io/2rcCal): RSVP for the monthly Reaction Action livestreams.
+-   [Reaction Action](https://www.youtube.com/playlist?list=PLJ1TVRVOrm2NOKlILTQFvtG7J9h1anvOe): RSVP for the monthly Reaction Action livestreams.
 
 ## Contribute
 
@@ -94,6 +101,16 @@ Get more details in our [Contributing Guide](https://docs.reactioncommerce.com/r
 ## Deploy on Docker
 
 We ensure that all releases are deployable as [Docker](https://hub.docker.com/r/reactioncommerce/reaction/) containers. While we don't regularly test other methods of deployment, our community has documented deployment strategies for AWS, [Digital Ocean](https://gist.github.com/jshimko/745ca66748846551692e24c267a56060), and Galaxy. For an introduction to Docker deployment, the [Reaction deployment guide](https://docs.reactioncommerce.com/reaction-docs/master/deploying) has detailed examples.
+
+We've included a demo [docker-compose file](https://github.com/reactioncommerce/reaction/blob/master/docker-compose-demo.yml) in the repository.
+It shows how to use `mongo` as a service with your Reaction app. It can be used to do a demo of your production build by running this command:
+
+```sh
+docker-compose -f docker-compose-demo.yml up
+```
+
+You can also use this file as starting point for your production docker-compose setup.
+
 
 ### License
 

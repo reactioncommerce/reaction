@@ -47,9 +47,21 @@ export function getOrderRiskStatus(order) {
   return riskLevel;
 }
 
+/*
+ * @method getTaxRiskStatus
+ * @private
+ * @summary Gets the tax status of the order.
+ * @param {object} order - order object
+ * @return {boolean} label - true if the tax was not submitted by user.
+ */
+export function getTaxRiskStatus(order) {
+  return order.taxCalculationFailed || order.bypassAddressValidation;
+}
+
 /**
- * filterWorkflowStatus
- *
+ * @name filterWorkflowStatus
+ * @method
+ * @memberof Helpers
  * @summary get query for a given filter
  * @param {String} filter - filter string to check against
  * @return {Object} query for the workflow status
@@ -108,8 +120,8 @@ export function filterWorkflowStatus(filter) {
 }
 
 /**
- * filterShippingStatus
- *
+ * @name filterShippingStatus
+ * @memberof Helpers
  * @summary get query for a given filter
  * @param {String} filter - filter string to check against
  * @return {Object} query for the shipping status
@@ -149,8 +161,8 @@ export function filterShippingStatus(filter) {
 }
 
 /**
- * getBillingInfo
- *
+ * @name getBillingInfo
+ * @memberof Helpers
  * @summary get proper billing object as per current active shop
  * @param {Object} order - order object to check against
  * @return {Object} proper billing object to use
@@ -161,8 +173,8 @@ export function getBillingInfo(order) {
 }
 
 /**
- * getShippingInfo
- *
+ * @name getShippingInfo
+ * @memberof Helpers
  * @summary get proper shipping object as per current active shop
  * @param {Object} order - order object to check against
  * @return {Object} proper shipping object to use

@@ -26,9 +26,10 @@ class Form extends Component {
   * @property {Boolean} renderFromFields - this controls whether form is rendered from schema or from fields.
   * @property {Object} schema - the schema used for validation and rendering.
   * @return {Array} React propTypes
+  * @ignore
   */
   static propTypes = {
-    autoSave: PropTypes.bool,
+    autoSave: PropTypes.bool, // eslint-disable-line react/boolean-prop-naming
     doc: PropTypes.object,
     docPath: PropTypes.string,
     fields: PropTypes.object,
@@ -36,8 +37,8 @@ class Form extends Component {
     hideFields: PropTypes.arrayOf(PropTypes.string),
     name: PropTypes.string,
     onSubmit: PropTypes.func,
-    renderFromFields: PropTypes.bool,
-    schema: PropTypes.object
+    renderFromFields: PropTypes.bool, // eslint-disable-line react/boolean-prop-naming
+    schema: PropTypes.object // eslint-disable-line react/boolean-prop-naming
   }
 
   constructor(props) {
@@ -82,7 +83,7 @@ class Form extends Component {
   }
 
   get schema() {
-    return this.props.schema._schema;
+    return this.props.schema.mergedSchema();
   }
 
   valueForField(fieldName) {
@@ -226,7 +227,7 @@ class Form extends Component {
     let fieldHasError = false;
 
     if (this.state.isValid === false) {
-      this.state.schema._invalidKeys
+      this.state.schema.validationErrors()
         .filter((v) => v.name === field.name)
         .forEach((validationError) => {
           const message = this.state.schema.keyErrorMessage(validationError.name);
@@ -255,14 +256,26 @@ class Form extends Component {
   }
 
   renderField(field, additionalFieldProps) {
+    const { schema } = this.props;
     const { fieldName } = field;
 
     if (this.isFieldHidden(fieldName) === false) {
-      const fieldSchema = this.schema[fieldName];
+      const fieldSchema = schema.getDefinition(fieldName);
+
+      // Get the type from the schema, as a typeof string
+      const fieldType = fieldSchema.type[0].type;
+      let fieldTypeString;
+      if (fieldType === "SimpleSchema.Integer") {
+        fieldTypeString = "number";
+      } else {
+        // This assumes that oneOf is not used for any schema types
+        fieldTypeString = typeof fieldType();
+      }
+
       const fieldProps = {
         ...fieldSchema,
         name: fieldName,
-        type: typeof fieldSchema.type(),
+        type: fieldTypeString,
         ...additionalFieldProps
       };
 

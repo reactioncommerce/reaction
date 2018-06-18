@@ -6,14 +6,14 @@ import Reaction from "../api";
 
 /**
  *
- * @namespace Methods/Discounts
+ * @namespace Discounts/Methods
  */
 
 export const methods = {
   /**
    * @name discounts/deleteRate
    * @method
-   * @memberof Methods/Discounts
+   * @memberof Discounts/Methods
    * @param  {String} discountId discount id to delete
    * @return {String} returns update/insert result
    */
@@ -25,13 +25,13 @@ export const methods = {
       throw new Meteor.Error("access-denied", "Access Denied");
     }
 
-    return Discounts.direct.remove({ _id: discountId });
+    return Discounts.remove({ _id: discountId });
   },
 
   /**
    * @name discounts/setRate
    * @method
-   * @memberof Methods/Discounts
+   * @memberof Discounts/Methods
    * @summary Update the cart discounts without hooks
    * @param  {String} cartId cartId
    * @param  {Number} discountRate discountRate
@@ -43,7 +43,7 @@ export const methods = {
     check(discountRate, Number);
     check(discounts, Match.Optional(Array));
 
-    return Cart.direct.update(cartId, {
+    return Cart.update(cartId, {
       $set: {
         discounts,
         discount: discountRate
@@ -54,7 +54,7 @@ export const methods = {
   /**
    * @name discounts/transaction
    * @method
-   * @memberof Methods/Discounts
+   * @memberof Discounts/Methods
    * @summary Applies a transaction to discounts for history
    * @param  {String} cartId cartId
    * @param  {String} discountId discountId
@@ -81,12 +81,12 @@ export const methods = {
   /**
    * @name discounts/calculate
    * @method
-   * @memberof Methods/Discounts
+   * @memberof Discounts/Methods
    * @param  {String} cart cartId
    * @return {Object}  returns discount object
    */
   "discounts/calculate"(cart) {
-    check(cart, Object); // Reaction.Schemas.Cart
+    Reaction.Schemas.Cart.validate(cart);
 
     let currentDiscount = 0;
     // what's going on here?

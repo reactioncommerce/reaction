@@ -4,7 +4,7 @@ import { compose } from "recompose";
 import { registerComponent } from "@reactioncommerce/reaction-components";
 import { Meteor } from "meteor/meteor";
 import { Session } from "meteor/session";
-import { Validation } from "@reactioncommerce/reaction-collections";
+import { Validation } from "@reactioncommerce/schemas";
 import { ReactionProduct } from "/lib/api";
 import { Packages } from "/lib/collections";
 import { Reaction, i18next } from "/client/api";
@@ -203,10 +203,10 @@ const wrapComponent = (Comp) => (
     }
 
     /**
-     * @method updateInventoryPolicyIfChildVariants
-     * @description update parent inventory policy if variant has children
+     * @summary update parent inventory policy if variant has children
      * @param {Object} variant product or variant document
      * @return {undefined} return nothing
+     * @private
      */
     updateInventoryPolicyIfChildVariants = (variant) => {
       // Get all siblings, including current variant

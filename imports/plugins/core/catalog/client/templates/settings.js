@@ -17,11 +17,6 @@ Template.catalogSettings.helpers({
 });
 
 Template.catalogSettings.events({
-  /**
-   * settings update enabled status for services on change
-   * @param  {event} event    jQuery Event
-   * @return {void}
-   */
   "change input[name=enabled]": (event) => {
     const settingsKey = event.target.getAttribute("data-key");
     const packageId = event.target.getAttribute("data-id");

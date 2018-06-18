@@ -1,3 +1,4 @@
+import Random from "@reactioncommerce/random";
 import { Meteor } from "meteor/meteor";
 import { check } from "meteor/check";
 import { Reaction, Hooks } from "/server/api";
@@ -6,14 +7,14 @@ import { Reaction, Hooks } from "/server/api";
  * @file Methods for Payments. Run these methods using `Meteor.call()`.
  *
  *
- * @namespace Methods/Payments
+ * @namespace Payments/Methods
 */
 
 export const methods = {
   /**
    * @name payments/apply
    * @method
-   * @memberof Methods/Payments
+   * @memberof Payments/Methods
    * @example Meteor.call("payments/apply", id, paymentMethod, collection)
    * @summary Adds payment to order
    * @param {String} id - id
@@ -27,14 +28,21 @@ export const methods = {
     check(collection, String);
     const Collection = Reaction.Collections[collection];
 
+    const cart = Collection.findOne(id);
+    // The first record holds the selected billing address
+    const billing = cart.billing[0];
+    const billingId = Random.id();
     const result = Collection.update({
       _id: id
     }, {
       $addToSet: {
-        billing: { paymentMethod }
+        billing: {
+          ...billing,
+          _id: billingId,
+          paymentMethod
+        }
       }
     });
-
     // calculate discounts
     Hooks.Events.run("afterCartUpdateCalculateDiscount", id);
 

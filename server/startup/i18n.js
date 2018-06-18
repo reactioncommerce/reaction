@@ -28,13 +28,14 @@ async function directoryExists(dirPath) {
 }
 
 /**
- * load a single translation object as an Asset
+ * @method loadTranslation
+ * @memberof i18n
+ * @summary Server method: Load a single translation object as an Asset
  * loadTranslation should generally be used
  * before startup, to ensure that Assets load.
  * @param  {Object} source a json i18next object
  * @return {Boolean} false if assets weren't loaded
  */
-
 export function loadTranslation(source) {
   try {
     if (!bulkAssetOp) bulkAssetOp = rawAssetsCollection.initializeUnorderedBulkOp();
@@ -58,8 +59,9 @@ export function loadTranslation(source) {
 }
 
 /**
- * load an array of translation objects
- * and import using loadTranslation
+ * @method loadTranslations
+ * @memberof i18n
+ * @summary Load an array of translation objects and import using loadTranslation
  * @param  {Object} sources array of i18next translations
  * @return {Boolean} false if assets weren't loaded
  */
@@ -67,6 +69,12 @@ export function loadTranslations(sources) {
   sources.forEach(loadTranslation);
 }
 
+/**
+ * @method flushTranslationLoad
+ * @memberof i18n
+ * @summary Execute the bulk asset operation
+ * @return {undefined} No return
+ */
 export async function flushTranslationLoad() {
   if (!bulkAssetOp) return Promise.resolve();
 
@@ -79,13 +87,13 @@ export async function flushTranslationLoad() {
 }
 
 /**
- * loadCoreTranslations imports i18n json
- * files from private/data/i18n
- * into the Assets collection
+ * @method loadCoreTranslations
+ * @memberof i18n
+ * @summary imports i18n json files from private/data/i18n into the Assets collection
  * Assets collection is processed with Reaction.Import
  * after all assets have been loaded.
+ * @async
  */
-
 export async function loadCoreTranslations() {
   const meteorPath = await fs.realpath(`${process.cwd()}/../`);
   const i18nFolder = `${meteorPath}/server/assets/app/data/i18n/`;
@@ -115,7 +123,9 @@ export async function loadCoreTranslations() {
 }
 
 /**
- * Reload translations for all shops
+ * @method reloadAllTranslations
+ * @memberof i18n
+ * @summary Reload translations for all shops
  * @return {undefined}
 */
 export function reloadAllTranslations() {
@@ -133,7 +143,9 @@ export function reloadAllTranslations() {
 }
 
 /**
- * Reload translations for specified shop
+ * @method reloadTranslationsForShop
+ * @memberof i18n
+ * @summary Reload translations for specified shop
  * @param {string} shopId - Shop Id to reset translations for
  * @return {undefined}
 */
@@ -151,6 +163,12 @@ export function reloadTranslationsForShop(shopId) {
   importAllTranslations();
 }
 
+/**
+ * @method importAllTranslations
+ * @memberof i18n
+ * @summary Imports all translations into Assets collection and Translation collection
+ * @return {undefined}
+ */
 export function importAllTranslations() {
   // Get count of all i18n assets
   const i18nAssetCount = Assets.find({ type: "i18n" }).count();
@@ -171,12 +189,12 @@ export function importAllTranslations() {
     Assets.find({ type: "i18n" }).forEach((t) => {
       Logger.debug(`Importing ${t.name} translation for "${t.ns}"`);
       if (t.content) {
-        Reaction.Import.process(t.content, ["i18n"], Reaction.Import.translation);
+        Reaction.Importer.process(t.content, ["i18n"], Reaction.Importer.translation);
       } else {
         Logger.debug(`No translation content found for ${t.name} - ${t.ns} asset`);
       }
     });
-    Reaction.Import.flush();
+    Reaction.Importer.flush();
 
     Logger.debug("All translation imported into translations collection from Assets.");
   } else {

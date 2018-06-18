@@ -71,7 +71,7 @@ class PaginationButtons extends Component {
 
 PaginationButtons.propTypes = {
   children: PropTypes.string,
-  disabled: PropTypes.bool,
+  disabled: PropTypes.bool, // eslint-disable-line react/boolean-prop-naming
   onClick: PropTypes.func
 };
 

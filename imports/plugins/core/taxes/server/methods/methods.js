@@ -9,14 +9,14 @@ import { Logger } from "/server/api";
  * @file Methods for Taxes. Run these methods using `Meteor.call()`.
  *
  *
- * @namespace Methods/Taxes
+ * @namespace Taxes/Methods
 */
 
 export const methods = {
   /**
    * @name taxes/deleteRate
    * @method
-   * @memberof Methods/Taxes
+   * @memberof Taxes/Methods
    * @param  {String} taxId tax taxId to delete
    * @return {String} returns update/insert result
    */
@@ -34,32 +34,44 @@ export const methods = {
   /**
    * @name taxes/addRate
    * @method
-   * @memberof Methods/Taxes
-   * @param  {String} modifier update statement
-   * @param  {String} docId    tax docId
-   * @return {String} returns update/insert result
+   * @memberof Taxes/Methods
+   * @param  {Object} doc A Taxes document to be inserted
+   * @param  {String} [docId] DEPRECATED. Existing ID to trigger an update. Use taxes/editRate method instead.
+   * @return {String} Insert result
    */
-  "taxes/addRate"(modifier, docId) {
-    check(modifier, Object);
-    check(docId, Match.OneOf(String, null, undefined));
+  "taxes/addRate"(doc, docId) {
+    check(doc, Object); // actual schema validation happens during insert below
 
-    // check permissions to add
-    if (!Reaction.hasPermission("taxes")) {
-      throw new Meteor.Error("access-denied", "Access Denied");
-    }
-    // if no doc, insert
-    if (!docId) {
-      return Taxes.insert(modifier);
-    }
-    // else update and return
-    return Taxes.update(docId, modifier);
+    // Backward compatibility
+    check(docId, Match.Optional(String));
+    if (docId) return Meteor.call("taxes/editRate", { _id: docId, modifier: doc });
+
+    if (!Reaction.hasPermission("taxes")) throw new Meteor.Error("access-denied", "Access Denied");
+    return Taxes.insert(doc);
+  },
+
+  /**
+   * @name taxes/editRate
+   * @method
+   * @memberof Taxes/Methods
+   * @param  {Object} details An object with _id and modifier props
+   * @return {String} Update result
+   */
+  "taxes/editRate"(details) {
+    check(details, {
+      _id: String,
+      modifier: Object // actual schema validation happens during update below
+    });
+    if (!Reaction.hasPermission("taxes")) throw new Meteor.Error("access-denied", "Access Denied");
+    const { _id, modifier } = details;
+    return Taxes.update(_id, modifier);
   },
 
   /**
    * @name taxes/setRate
    * @summary Update the cart without hooks
    * @method
-   * @memberof Methods/Taxes
+   * @memberof Taxes/Methods
    * @param  {String} cartId cartId
    * @param  {Number} taxRate taxRate
    * @param  {Object} taxes taxes
@@ -70,7 +82,7 @@ export const methods = {
     check(taxRate, Number);
     check(taxes, Match.Optional(Array));
 
-    return Cart.direct.update(cartId, {
+    return Cart.update(cartId, {
       $set: {
         taxes,
         tax: taxRate
@@ -81,7 +93,7 @@ export const methods = {
   /**
    * @name taxes/setRateByShopAndItem
    * @method
-   * @memberof Methods/Taxes
+   * @memberof Taxes/Methods
    * @summary Update the cart without hooks
    * @param  {String} cartId cartId
    * @param  {Object} options - Options object
@@ -102,7 +114,7 @@ export const methods = {
 
     const { cartTaxData, cartTaxRate, itemsWithTax, taxRatesByShop } = options;
 
-    return Cart.direct.update(cartId, {
+    return Cart.update(cartId, {
       $set: {
         taxes: cartTaxData,
         tax: cartTaxRate,
@@ -115,7 +127,7 @@ export const methods = {
   /**
    * @name taxes/calculate
    * @method
-   * @memberof Methods/Taxes
+   * @memberof Taxes/Methods
    * @param  {String} cartId cartId
    * @return {Object}  returns tax object
    */

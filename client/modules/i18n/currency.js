@@ -12,7 +12,7 @@ import { currencyDep } from "./main";
  * @param {Boolean} useDefaultShopCurrency - flag for displaying shop's currency in Admin view of PDP
  * @return {Object}  user currency or shop currency if none is found
  */
-function findCurrency(defaultCurrency, useDefaultShopCurrency) {
+export function findCurrency(defaultCurrency, useDefaultShopCurrency) {
   const shop = Shops.findOne(Reaction.getPrimaryShopId(), {
     fields: {
       currencies: 1,
@@ -38,7 +38,7 @@ function findCurrency(defaultCurrency, useDefaultShopCurrency) {
     }
     return userCurrency;
   }
-  return shopCurrency;
+  return shop.currencies[shopCurrency];
 }
 
 /**
@@ -89,7 +89,10 @@ export function formatPriceString(formatPrice, useDefaultShopCurrency) {
       if (typeof userCurrency.rate !== "number") {
         throw new Meteor.Error("invalid-exchange-rate", "Exchange rate is invalid");
       }
-      prices[i] *= userCurrency.rate;
+      // Only convert for non-admin view.
+      if (!defaultShopCurrency) {
+        prices[i] *= userCurrency.rate;
+      }
 
       price = _formatPrice(
         price, originalPrice, prices[i],
@@ -104,32 +107,6 @@ export function formatPriceString(formatPrice, useDefaultShopCurrency) {
     }
   }
   return price;
-}
-
-/**
- * @name formatNumber
- * @memberof i18n
- * @method
- * @param {String} currentPrice - current Price
- * @return {String} return formatted number
- */
-export function formatNumber(currentPrice) {
-  const locale = Reaction.Locale.get();
-  let price = currentPrice;
-  const format = Object.assign({}, locale.currency, {
-    format: "%v"
-  });
-  const shopFormat = Object.assign({}, locale.shopCurrency, {
-    format: "%v"
-  });
-
-  if (typeof locale.currency === "object" && locale.currency.rate) {
-    price = currentPrice * locale.currency.rate;
-    return accounting.formatMoney(price, format);
-  }
-
-  Logger.debug("currency error, fallback to shop currency");
-  return accounting.formatMoney(currentPrice, shopFormat);
 }
 
 /**

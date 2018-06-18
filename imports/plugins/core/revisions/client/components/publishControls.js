@@ -29,7 +29,7 @@ class PublishControls extends Component {
     onViewContextChange: PropTypes.func,
     onVisibilityChange: PropTypes.func,
     revisions: PropTypes.arrayOf(PropTypes.object),
-    showViewAsControls: PropTypes.bool,
+    showViewAsControls: PropTypes.bool, // eslint-disable-line react/boolean-prop-naming
     translation: PropTypes.shape({
       lang: PropTypes.string
     })
@@ -214,11 +214,13 @@ class PublishControls extends Component {
       buttonProps.i18nKeyLabel = "toolbar.publishAll";
     }
 
+    const isDisabled = Array.isArray(this.props.documentIds) && this.props.documentIds.length === 0;
+
     return (
       <div className="hidden-xs">
         <Button
           bezelStyle="outline"
-          disabled={this.hasChanges === false}
+          disabled={isDisabled}
           label="Publish"
           onClick={this.handlePublishClick}
           status="success"

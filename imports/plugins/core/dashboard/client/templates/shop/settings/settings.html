@@ -1,16 +1,4 @@
-<template name="shopBrandImageOption">
-  <img src="{{url}}" width="100%">
-  {{#card (cardProps this)}}
-    {{#with option}}
-      <div class="rui brand">
-        <img src="{{url}}" width="100%">
-      </div>
-    {{/with}}
-  {{/card}}
-</template>
-
 <template name="shopSettings">
-
   <div class="panel-group" id="shopSettingsAccordian" role="tablist" aria-multiselectable="true">
     <div class="panel panel-default">
       <div class="panel-heading">
@@ -33,8 +21,7 @@
           {{/autoForm}}
         </div>
         <div class="panel-body">
-          {{> select brandImageSelectProps}}
-          {{> upload onUpload=handleFileUpload}}
+          {{> React ShopBrandMediaManager}}
         </div>
         <div class="panel-body">
           {{#autoForm collection=Collections.Shops doc=shop id="shopEditForm" type="update"}}
@@ -123,7 +110,7 @@
       {{> afQuickField name='settings.google.apiKey'}}
       {{> afQuickField name='settings.cart.cleanupDurationDays' placeholder="older than 3 days"}}
       {{> shopSettingsSubmitButton}}
-      {{/autoForm}}
+    {{/autoForm}}
   </div>
 </template>
 

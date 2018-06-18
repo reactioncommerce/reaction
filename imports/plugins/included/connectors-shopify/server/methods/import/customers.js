@@ -1,7 +1,7 @@
 /* eslint camelcase: 0 */
+import Random from "@reactioncommerce/random";
 import Shopify from "shopify-api-node";
 import { Meteor } from "meteor/meteor";
-import { Random } from "meteor/random";
 import { check, Match } from "meteor/check";
 import { Hooks, Logger, Reaction } from "/server/api";
 import { Accounts } from "/lib/collections";
@@ -170,7 +170,10 @@ export const methods = {
             ids.push(reactionCustomerId);
 
             Accounts.update({ _id: reactionCustomerId }, { publish: true });
-            Hooks.Events.run("afterAccountsUpdate", Meteor.userId(), reactionCustomerId);
+            Hooks.Events.run("afterAccountsUpdate", Meteor.userId(), {
+              accountId: reactionCustomerId,
+              updatedFields: ["forceIndex"]
+            });
           } else { // customer already exists check
             Logger.info(`Customer ${shopifyCustomer.last_name} ${shopifyCustomer.id} already exists`);
           }

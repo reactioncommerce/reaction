@@ -6,17 +6,15 @@
 # often avoided and the false positive doesn't fail the CircleCI build.
 #
 # This will update npm deps which takes a while
-# cfs:tempstore: updating npm dependencies -- combined-stream...
-# cfs:gridfs: updating npm dependencies -- mongodb, gridfs-stream...
 
 set +e
 
-reaction test
+npm run test:app
 
 if [ $? -eq 0 ]; then
   echo "Reaction tests have passed!"
 else
   echo "Reaction tests failed. Trying one more time..."
   set -e
-  reaction test
+  npm run test:app
 fi

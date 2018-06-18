@@ -1,10 +1,11 @@
 import accounting from "accounting-js";
+import Random from "@reactioncommerce/random";
 import stripeNpm from "stripe";
 import { Meteor } from "meteor/meteor";
 import { check } from "meteor/check";
-import { Random } from "meteor/random";
 import { Reaction, Logger, Hooks } from "/server/api";
 import { Cart, Shops, Accounts, Packages } from "/lib/collections";
+import { PaymentMethodArgument } from "/lib/collections/schemas";
 
 function parseCardData(data) {
   return {
@@ -37,6 +38,7 @@ utils.getStripeApi = function (paymentPackageId) {
  * @summary Capture the results of a previous charge
  * @param {object} paymentMethod - Object containing info about the previous transaction
  * @returns {object} Object indicating the result, saved = true means success
+ * @private
  */
 function stripeCaptureCharge(paymentMethod) {
   let result;
@@ -75,10 +77,10 @@ function stripeCaptureCharge(paymentMethod) {
 }
 
 /**
- * normalizes the status of a transaction
- * @method normalizeStatus
+ * @summary normalizes the status of a transaction
  * @param  {object} transaction - The transaction that we need to normalize
  * @return {string} normalized status string - either failed, settled, or created
+ * @private
  */
 function normalizeStatus(transaction) {
   if (!transaction) {
@@ -100,10 +102,10 @@ function normalizeStatus(transaction) {
 }
 
 /**
- * normalizes the mode of a transaction
- * @method normalizeMode
+ * @summary normalizes the mode of a transaction
  * @param  {object} transaction The transaction that we need to normalize
  * @return {string} normalized status string - either failed, capture, or authorize
+ * @private
  */
 function normalizeMode(transaction) {
   if (!transaction) {
@@ -125,11 +127,10 @@ function normalizeMode(transaction) {
 }
 
 /**
- * @method normalizeRiskLevel
- * @private
  * @summary Normalizes the risk level response of a transaction to the values defined in paymentMethod schema
  * @param  {object} transaction - The transaction that we need to normalize
  * @return {string} normalized status string - either elevated, high, or normal
+ * @private
  */
 function normalizeRiskLevel(transaction) {
   if (!transaction) {
@@ -356,6 +357,7 @@ export const methods = {
            * @param {object} options.shopId the shopId
            * @todo Consider abstracting the application fee out of the Stripe implementation, into core payments
            * @returns {number} the application fee after having been through all hooks (must be returned by ever hook)
+           * @private
            */
           const applicationFee = Hooks.Events.run("onCalculateStripeApplicationFee", coreApplicationFee, {
             cart, // The cart
@@ -418,7 +420,10 @@ export const methods = {
    * @return {Object} results from Stripe normalized
    */
   "stripe/payment/capture"(paymentMethod) {
-    check(paymentMethod, Reaction.Schemas.PaymentMethod);
+    // Call both check and validate because by calling `clean`, the audit pkg
+    // thinks that we haven't checked paymentMethod arg
+    check(paymentMethod, Object);
+    PaymentMethodArgument.validate(PaymentMethodArgument.clean(paymentMethod));
 
     const captureDetails = {
       amount: formatForStripe(paymentMethod.amount)
@@ -444,9 +449,13 @@ export const methods = {
    * @return {Object} result
    */
   "stripe/refund/create"(paymentMethod, amount, reason = "requested_by_customer") {
-    check(paymentMethod, Reaction.Schemas.PaymentMethod);
     check(amount, Number);
     check(reason, String);
+
+    // Call both check and validate because by calling `clean`, the audit pkg
+    // thinks that we haven't checked paymentMethod arg
+    check(paymentMethod, Object);
+    PaymentMethodArgument.validate(PaymentMethodArgument.clean(paymentMethod));
 
     let result;
     try {
@@ -484,7 +493,11 @@ export const methods = {
    * @return {Object} result
    */
   "stripe/refund/list"(paymentMethod) {
-    check(paymentMethod, Reaction.Schemas.PaymentMethod);
+    // Call both check and validate because by calling `clean`, the audit pkg
+    // thinks that we haven't checked paymentMethod arg
+    check(paymentMethod, Object);
+    PaymentMethodArgument.validate(PaymentMethodArgument.clean(paymentMethod));
+
     const stripeKey = utils.getStripeApi(paymentMethod.paymentPackageId);
     const stripe = stripeNpm(stripeKey);
     let refundListResults;

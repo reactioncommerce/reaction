@@ -30,15 +30,12 @@ import { Logger, Reaction } from "/server/api";
 
 /**
  * @file Methods for Inventory. Run these methods using `Meteor.call()`
- *
- *
- * @namespace Methods/Inventory
 */
 Meteor.methods({
   /**
    * @name inventory/setStatus
    * @method
-   * @memberof Methods/Inventory
+   * @memberof Inventory/Methods
    * @summary Sets status from one status to a new status. Defaults to `new` to `reserved`
    * @example Meteor.call("inventory/backorder", reservation, backOrderQty);
    * @param  {Array} cartItems array of objects of type Schemas.CartItems
@@ -49,7 +46,7 @@ Meteor.methods({
    * @return {Number} returns reservationCount
    */
   "inventory/setStatus"(cartItems, status, currentStatus, notFoundStatus) {
-    check(cartItems, [Schemas.CartItem]);
+    Schemas.CartItem.validate(cartItems);
     check(status, Match.Optional(String));
     check(currentStatus, Match.Optional(String));
     check(notFoundStatus, Match.Optional(String));
@@ -151,7 +148,7 @@ Meteor.methods({
   /**
    * @name inventory/clearStatus
    * @method
-   * @memberof Methods/Inventory
+   * @memberof Inventory/Methods
    * @summary Used to reset status on inventory item (defaults to `new`)
    * @param  {Array} cartItems array of objects Schemas.CartItem
    * @param  {Array} status optional reset workflow.status, defaults to `new`
@@ -159,7 +156,7 @@ Meteor.methods({
    * @return {undefined} undefined
    */
   "inventory/clearStatus"(cartItems, status, currentStatus) {
-    check(cartItems, [Schemas.CartItem]);
+    Schemas.CartItem.validate(cartItems);
     check(status, Match.Optional(String)); // workflow status
     check(currentStatus, Match.Optional(String));
     this.unblock();
@@ -209,14 +206,14 @@ Meteor.methods({
   /**
    * @name inventory/clearReserve
    * @method
-   * @memberof Methods/Inventory
+   * @memberof Inventory/Methods
    * @example Meteor.call("inventory/clearReserve", cart.items)
    * @summary Resets `reserved` items to `new`
    * @param  {Array} cartItems array of objects Schemas.CartItem
    * @return {undefined}
    */
   "inventory/clearReserve"(cartItems) {
-    check(cartItems, [Schemas.CartItem]);
+    Schemas.CartItem.validate(cartItems);
     return Meteor.call("inventory/clearStatus", cartItems);
   },
 
@@ -225,12 +222,12 @@ Meteor.methods({
    * @summary Converts new items to reserved, or backorders
    * @method
    * @example Meteor.call("inventory/addReserve", cart.items)
-   * @memberof Methods/Inventory
+   * @memberof Inventory/Methods
    * @param  {Array} cartItems array of objects Schemas.CartItem
    * @return {undefined}
    */
   "inventory/addReserve"(cartItems) {
-    check(cartItems, [Schemas.CartItem]);
+    Schemas.CartItem.validate(cartItems);
     return Meteor.call("inventory/setStatus", cartItems);
   },
 
@@ -240,13 +237,13 @@ Meteor.methods({
    * but this could be used for inserting any custom inventory.
    * @method
    * A note on DDP Limits: As these are wide open we defined some {@link http://docs.meteor.com/#/full/ddpratelimiter ddp limiting rules}
-   * @memberof Methods/Inventory
+   * @memberof Inventory/Methods
    * @param {Object} reservation Schemas.Inventory
    * @param {Number} backOrderQty number of backorder items to create
    * @returns {Number} number of inserted backorder documents
    */
   "inventory/backorder"(reservation, backOrderQty) {
-    check(reservation, Schemas.Inventory);
+    Schemas.Inventory.validate(reservation);
     check(backOrderQty, Number);
     this.unblock();
 
@@ -302,13 +299,13 @@ Meteor.methods({
    * @name inventory/lowStock
    * @summary Send low stock warnings
    * @method
-   * @memberof Methods/Inventory
+   * @memberof Inventory/Methods
    * @param  {Object} product object type Product
    * @return {undefined}
    * @todo implement inventory/lowstock calculations
    */
   "inventory/lowStock"(product) {
-    check(product, Schemas.Product);
+    Schemas.Product.validate(product);
     // placeholder is here to give plugins a place to hook into
     Logger.debug("inventory/lowStock");
   },
@@ -317,12 +314,12 @@ Meteor.methods({
    * @name inventory/remove
    * @summary Delete an inventory item permanently
    * @method
-   * @memberof Methods/Inventory
+   * @memberof Inventory/Methods
    * @param  {Object} inventoryItem object type Schemas.Inventory
    * @return {String} return remove result
    */
   "inventory/remove"(inventoryItem) {
-    check(inventoryItem, Schemas.Inventory);
+    Schemas.Inventory.validate(inventoryItem);
     // user needs createProduct permission to adjust inventory
     // REVIEW: Should this be checking against shop permissions instead?
 
@@ -343,52 +340,52 @@ Meteor.methods({
   /**
    * @name inventory/shipped
    * @method
-   * @memberof Methods/Inventory
+   * @memberof Inventory/Methods
    * @summary Mark inventory as shipped
    * @param  {Array} cartItems array of objects Schemas.CartItem
    * @return {undefined}
    */
   "inventory/shipped"(cartItems) {
-    check(cartItems, [Schemas.CartItem]);
+    Schemas.CartItem.validate(cartItems);
     return Meteor.call("inventory/setStatus", cartItems, "shipped", "sold");
   },
 
   /**
    * @name inventory/sold
    * @method
-   * @memberof Methods/Inventory
+   * @memberof Inventory/Methods
    * @summary Mark inventory as sold
    * @param  {Array} cartItems array of objects Schemas.CartItem
    * @return {undefined}
    */
   "inventory/sold"(cartItems) {
-    check(cartItems, [Schemas.CartItem]);
+    Schemas.CartItem.validate(cartItems);
     return Meteor.call("inventory/setStatus", cartItems, "sold", "reserved");
   },
 
   /**
    * @name inventory/return
    * @method
-   * @memberof Methods/Inventory
+   * @memberof Inventory/Methods
    * @summary Mark inventory as returned
    * @param  {Array} cartItems array of objects Schemas.CartItem
    * @return {undefined}
    */
   "inventory/return"(cartItems) {
-    check(cartItems, [Schemas.CartItem]);
+    Schemas.CartItem.validate(cartItems);
     return Meteor.call("inventory/setStatus", cartItems, "return");
   },
 
   /**
    * @name inventory/returnToStock
    * @method
-   * @memberof Methods/Inventory
+   * @memberof Inventory/Methods
    * @summary Mark inventory as return and available for sale
    * @param  {Array} cartItems array of objects Schemas.CartItem
    * @return {undefined}
    */
   "inventory/returnToStock"(cartItems) {
-    check(cartItems, [Schemas.CartItem]);
+    Schemas.CartItem.validate(cartItems);
     return Meteor.call("inventory/clearStatus", cartItems, "new", "return");
   }
 });

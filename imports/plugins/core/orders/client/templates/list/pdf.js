@@ -28,7 +28,6 @@ Template.completedPDFLayout.onCreated(async function () {
     const order = Orders.findOne({
       _id: currentRoute.params.id
     });
-
     this.state.set({
       order
     });
@@ -42,7 +41,7 @@ Template.completedPDFLayout.helpers({
   },
   billing() {
     const order = Template.instance().state.get("order");
-    if (order && order.length) {
+    if (order && order.billing && order.billing.length) {
       return order.billing[0];
     }
 

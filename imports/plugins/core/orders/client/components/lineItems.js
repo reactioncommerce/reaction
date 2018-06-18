@@ -50,8 +50,8 @@ class LineItems extends Component {
     handleSelectAllItems: PropTypes.func,
     isRefunding: PropTypes.bool,
     order: PropTypes.object,
-    popOverIsOpen: PropTypes.bool,
-    selectAllItems: PropTypes.bool,
+    popOverIsOpen: PropTypes.bool, // eslint-disable-line react/boolean-prop-naming
+    selectAllItems: PropTypes.bool, // eslint-disable-line react/boolean-prop-naming
     selectedItems: PropTypes.array,
     uniqueItems: PropTypes.array
   }
@@ -59,18 +59,13 @@ class LineItems extends Component {
   displayMedia(uniqueItem) {
     const { displayMedia } = this.props;
 
-    if (displayMedia(uniqueItem)) {
-      return (
-        <Components.ProductImage
-          item={uniqueItem}
-          displayMedia={displayMedia}
-          size="thumbnail"
-          badge={false}
-        />
-      );
-    }
     return (
-      <img src= "/resources/placeholder.gif" alt="" />
+      <Components.ProductImage
+        item={uniqueItem}
+        displayMedia={displayMedia}
+        size="thumbnail"
+        badge={false}
+      />
     );
   }
 
