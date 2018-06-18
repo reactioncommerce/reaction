@@ -1,7 +1,7 @@
 ##############################################################################
 # meteor-dev stage - builds image for dev and used with docker-compose.yml
 ##############################################################################
-FROM reactioncommerce/base:v4.0.2 as meteor-dev
+FROM reactioncommerce/base:meteor-1.7.0.1 as meteor-dev
 
 LABEL maintainer="Reaction Commerce <architecture@reactioncommerce.com>"
 
@@ -15,7 +15,11 @@ COPY --chown=node package.json $APP_SOURCE_DIR/
 # Without this NPM cannot write packages into node_modules later, when running in a container.
 RUN mkdir "$APP_SOURCE_DIR/node_modules" && chown node "$APP_SOURCE_DIR/node_modules"
 
-RUN meteor npm install
+# Due to an async race condition issue when installing packages with the NPM version (v5.10.0)
+# in Meteor 1.7, we are switching to using the NPM version installed in the base image (v5.6.0).
+# This prevents the "write after end" errors seen with this command. This will be reverted when
+# Meteor updates to an NPM version without this issue.
+RUN npm install
 
 COPY --chown=node . $APP_SOURCE_DIR
 
@@ -32,7 +36,8 @@ RUN printf "\\n[-] Building Meteor application...\\n" \
 
 WORKDIR $APP_BUNDLE_DIR/bundle/programs/server/
 
-RUN meteor npm install --production
+# TODO: Revert to Meteor NPM. See comment above about Meteor1.7 NPM version issue
+RUN npm install --production
 
 
 ##############################################################################
