@@ -58,7 +58,7 @@ class CardForm extends Component {
           onResultReceived: (error, result) => {
             if (error || (result && result.error)) {
               this.setState({
-                errorMessage: error,
+                errorMessage: result.error.message,
                 submitMessage: resubmitMessage,
                 submitting: false
               });
