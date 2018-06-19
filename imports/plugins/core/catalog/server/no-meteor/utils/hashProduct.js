@@ -66,7 +66,7 @@ async function createProductHash(productId, collections) {
 export default async function hashProduct(productId, collections) {
   const { Products } = collections;
 
-  const productHash = createProductHash(productId, collections);
+  const productHash = await createProductHash(productId, collections);
 
   // Insert/update product document with hash field
   const result = await Products.updateOne(
