@@ -6,9 +6,13 @@ import Random from "@reactioncommerce/random";
  * @summary Create a hash of a product to compare for updates
  * @memberof Catalog
  * @param {Object} product - A product object
+ * @param {Object} collections - Raw mongo collections
  * @return {String} product hash
  */
-function createProductHash(product) {
+async function createProductHash(productId, collections) {
+  const { Products } = collections;
+  const product = await Products.findOne({ _id: productId });
+
   const hashableFields = {
     _id: product._id,
     ancestors: product.ancestors,
@@ -55,19 +59,19 @@ function createProductHash(product) {
  * @method hashProduct
  * @summary Create a hash of a product to compare for updates
  * @memberof Catalog
- * @param {Object} product - A product object
+ * @param {String} productId - A productId
  * @param {Object} collections - Raw mongo collections
  * @return {Object} updated product if successful, original product if unsuccessful
  */
-export default async function hashProduct(product, collections) {
+export default async function hashProduct(productId, collections) {
   const { Products } = collections;
 
-  const productHash = createProductHash(product);
+  const productHash = createProductHash(productId);
 
   // Insert/update product document with hash field
   const result = await Products.updateOne(
     {
-      _id: product._id
+      _id: productId
     },
     {
       $set: {
@@ -84,10 +88,10 @@ export default async function hashProduct(product, collections) {
 
   if (result && result.result && result.result.ok === 1) {
     // If product was updated, get updated product from database
-    const updatedProduct = await Products.findOne({ _id: product._id });
+    const updatedProduct = await Products.findOne({ _id: productId });
 
     return updatedProduct;
   }
 
-  return product;
+  return null;
 }

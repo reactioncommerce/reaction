@@ -337,12 +337,12 @@ afterAll(() => {
 test("hash was successfully created, get product hash", async () => {
   mockCollections.Products.updateOne.mockReturnValueOnce(Promise.resolve({ result: { ok: 1 } }));
   mockCollections.Products.findOne.mockReturnValueOnce(Promise.resolve(updatedMockProduct));
-  const spec = await hashProduct(mockProduct, mockCollections);
+  const spec = await hashProduct(mockProduct._id, mockCollections);
   expect(spec.hash).toEqual(expectedHash);
 });
 
 test("hash was not successfully created, return original product", async () => {
   mockCollections.Products.updateOne.mockReturnValueOnce(Promise.resolve({ result: { ok: 0 } }));
-  const spec = await hashProduct(mockProduct, mockCollections);
-  expect(spec).toEqual(mockProduct);
+  const spec = await hashProduct(mockProduct._id, mockCollections);
+  expect(spec).toEqual(null);
 });
