@@ -21,9 +21,13 @@ class CardForm extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      cardNumberErrorMessage: "",
+      CVVErrorMessage: "",
       errorMessage: "",
-      submitMessage: "Complete your order",
+      expDateErrorMessage: "",
       postal: props.postal,
+      postalErrorMessage: "",
+      submitMessage: "Complete your order",
       submitting: false
     };
   }
@@ -118,6 +122,13 @@ class CardForm extends Component {
     }
   }
 
+  displayErrorMessage = () => {
+    if (this.state.errorMessage) {
+      return (<div className="alert alert-danger">{this.state.errorMessage}</div>);
+    }
+    return null;
+  }
+
   render() {
     const style = {
       base: {
@@ -134,71 +145,83 @@ class CardForm extends Component {
         color: "#eb4d5c"
       }
     };
-
-    let errorMessageDiv = null;
-    if (this.state.errorMessage) {
-      errorMessageDiv = (<div className="alert alert-danger">{this.state.errorMessage}</div>);
-    }
+    const {
+      cardNumberErrorMessage,
+      expDateErrorMessage,
+      CVVErrorMessage,
+      postal,
+      postalErrorMessage,
+      submitMessage,
+      submitting
+    } = this.state;
 
     return (
       <form onSubmit={this.handleSubmit}>
         {/* eslint-disable jsx-a11y/label-has-for */}
         <div className="row">
-          <div className="form-group">
-            <label>Card number</label>
-            <CardNumberElement
-              style={style}
-              placeholder="XXXX XXXX XXXX XXXX"
-              className="stripe-card-element"
-              onChange={this.handleCardNumberChange}
-            />
-            <span className="help-block stripe-help-block">{this.state.cardNumberErrorMessage}</span>
+          <div className="col-md-12">
+            <div className="form-group">
+              <label className={cardNumberErrorMessage ? "stripe-label-error" : ""}>Card number</label>
+              <CardNumberElement
+                style={style}
+                placeholder="XXXX XXXX XXXX XXXX"
+                className="stripe-card-element"
+                onChange={this.handleCardNumberChange}
+              />
+              <span className="help-block stripe-help-block">{cardNumberErrorMessage}</span>
+            </div>
           </div>
         </div>
         <div className="row">
-          <div className="col-xs-6 stripe-exp-date-col">
+          <div className="col-xs-6">
             <div className="form-group">
-              <label>Expiry date</label>
+              <label className={expDateErrorMessage ? "stripe-label-error" : ""}>Expiry date</label>
               <CardExpiryElement
                 style={style}
                 className="stripe-card-element"
                 onChange={this.handleExpDateChange}
               />
-              <span className="help-block stripe-help-block">{this.state.expDateErrorMessage}</span>
+              <span className="help-block stripe-help-block">{expDateErrorMessage}</span>
             </div>
           </div>
-          <div className="col-xs-6 stripe-cvv-col">
+          <div className="col-xs-6">
             <div className="form-group">
-              <label>CVV</label>
+              <label className={CVVErrorMessage ? "stripe-label-error" : ""}>CVV</label>
               <CardCVCElement
                 style={style}
                 placeholder="CVV"
                 className="stripe-card-element"
                 onChange={this.handleCVVChange}
               />
-              <span className="help-block stripe-help-block">{this.state.CVVErrorMessage}</span>
+              <span className="help-block stripe-help-block">{CVVErrorMessage}</span>
             </div>
           </div>
         </div>
         <div className="row">
-          <div className="form-group">
-            <label>Postal code</label>
-            <PostalCodeElement
-              style={style}
-              className="stripe-card-element"
-              onChange={this.handlePostalChange}
-              value={this.state.postal}
-            />
-            <span className="help-block stripe-help-block">{this.state.postalErrorMessage}</span>
+          <div className="col-md-12">
+            <div className="form-group">
+              <label className={postalErrorMessage ? "stripe-label-error" : ""}>Postal code</label>
+              <PostalCodeElement
+                style={style}
+                className="stripe-card-element"
+                onChange={this.handlePostalChange}
+                value={postal}
+              />
+              <span className="help-block stripe-help-block">{postalErrorMessage}</span>
+            </div>
           </div>
         </div>
         <div className="row">
-          { errorMessageDiv }
+          <div className="col-md-12">
+            { this.displayErrorMessage() }
+          </div>
         </div>
         <div className="row">
-          <button className="rui btn btn-lg btn-cta btn-block btn-complete-order" disabled={this.state.submitting}>
-            { this.state.submitMessage }
-          </button>
+          <div className="col-md-12">
+            <button className="rui btn btn-lg btn-cta btn-block btn-complete-order" disabled={submitting}>
+              { submitMessage }
+            </button>
+          </div>
         </div>
       </form>
     );
