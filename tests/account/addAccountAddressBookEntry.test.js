@@ -18,22 +18,30 @@ afterAll(async () => {
   testApp.stop();
 });
 
+const accountInternalId = "123";
+const accountOpaqueId = "cmVhY3Rpb24vYWNjb3VudDoxMjM=";
+
 test("user can add an address to their own address book", async () => {
-  await testApp.setLoggedInUser({ _id: "123" });
+  await testApp.setLoggedInUser({ _id: accountInternalId });
 
   const address = Factory.Address.makeOne();
 
+  // These props are set by the server and not allowed on AddressInput
+  delete address._id;
+  delete address.failedValidation;
+
   let result;
   try {
-    result = await addAccountAddressBookEntry({ accountId: "123", address });
+    result = await addAccountAddressBookEntry({ accountId: accountOpaqueId, address });
   } catch (error) {
     expect(error).toBeUndefined();
     return;
   }
 
-  expect(result.account.addressBook.length).toBe(1);
-  expect(result.account.addressBook[0]).toEqual(address);
+  expect(result.addAccountAddressBookEntry.address).toEqual(address);
 
-  const account = await testApp.collections.Accounts.findOne({ _id: "123" });
-  expect(account.addressBook[0]).toEqual(address);
+  const account = await testApp.collections.Accounts.findOne({ userId: accountInternalId });
+  const savedAddress = account.profile.addressBook[0];
+  delete savedAddress._id;
+  expect(savedAddress).toEqual(address);
 });

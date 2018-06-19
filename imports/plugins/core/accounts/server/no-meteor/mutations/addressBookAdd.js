@@ -37,7 +37,7 @@ export default async function addressBookAdd(context, address, accountUserId) {
     const cart = await Cart.findOne({ userId });
 
     // If this user has a cart, first set the new shipping or payment address on the cart
-    if (typeof cart === "object") {
+    if (cart) {
       if (address.isShippingDefault) {
         context.callMeteorMethod("cart/setShipmentAddress", cart._id, address);
       }
@@ -95,7 +95,7 @@ export default async function addressBookAdd(context, address, accountUserId) {
   // adding for this account, set the name from the address.fullName.
   if (!account.name || get(account, "profile.addressBook.length", 0) === 0) {
     userUpdateQuery.$set.name = address.fullName;
-    accountsUpdateQuery.$set.name = address.fullName;
+    accountsUpdateQuery.$set = { name: address.fullName };
   }
 
   await Users.updateOne({ _id: userId }, userUpdateQuery);
@@ -103,7 +103,7 @@ export default async function addressBookAdd(context, address, accountUserId) {
   const result = await Accounts.updateOne({ userId }, accountsUpdateQuery);
 
   // If the address update was successful, then return the full updated address
-  if (result.numberAffected === 1) {
+  if (result.modifiedCount === 1) {
     // Find the account
     const updatedAccount = await Accounts.findOne({ userId });
 
