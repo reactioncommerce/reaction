@@ -3,7 +3,6 @@ import { registerComponent, composeWithTracker } from "@reactioncommerce/reactio
 import { Reaction, i18next, Logger } from "/client/api/";
 import { Shops } from "/lib/collections";
 import { ShippingParcel } from "/lib/collections/schemas";
-import { convertWeight, convertLength } from "/lib/api";
 import ParcelSizeSettings from "../components/parcelSizeSettings";
 
 /**
@@ -15,9 +14,6 @@ import ParcelSizeSettings from "../components/parcelSizeSettings";
 */
 const saveDefaultSize = (size) => {
   const parcel = ShippingParcel.clean(size);
-  Object.keys(parcel).forEach((key) => {
-    parcel[key] = Number(parcel[key]);
-  });
   try {
     ShippingParcel.validate(parcel);
   } catch (error) {
@@ -62,17 +58,7 @@ const composer = (props, onData) => {
     _id: Reaction.getShopId()
   });
   const { baseUOM, baseUOL } = shop;
-  let doc = shop.defaultParcelSize;
-  if (!doc) {
-    doc = {
-      weight: convertWeight("lb", baseUOM, 8),
-      height: convertLength("in", baseUOL, 6),
-      length: convertLength("in", baseUOL, 11.25),
-      width: convertLength("in", baseUOL, 8.75)
-    };
-    // Save default settings for the first time user.
-    saveDefaultSize(doc);
-  }
+  const doc = shop.defaultParcelSize;
   const formSettings = {
     shownFields: {
       weight: ShippingParcel._schema.weight,

@@ -13,13 +13,10 @@ Migrations.add({
         length: convertLength("in", shop.baseUOL, 11.25),
         width: convertLength("in", shop.baseUOL, 8.75)
       };
-      Shops.update({ _id: shop._id }, { $set: { defaultParcelSize } });
+      Shops.update({ _id: shop._id }, { $set: { defaultParcelSize } }, { bypassCollection2: true });
     });
   },
   down() {
-    const shops = Shops.find().fetch();
-    shops.forEach((shop) => {
-      Shops.update({ _id: shop._id }, { $unset: { defaultParcelSize: 1 } });
-    });
+    Shops.update({}, { $unset: { defaultParcelSize: 1 } }, { bypassCollection2: true, multi: true });
   }
 });

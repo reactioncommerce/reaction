@@ -475,15 +475,10 @@ Meteor.methods({
     }
     // Merge parcel with defaultParcel
     // so that all fields are filled.
-    if (defaultParcelSize) {
-      if (!parcel) {
-        parcel = defaultParcelSize;
-      } else {
-        Object.keys(parcel).forEach((key) => {
-          parcel[key] = parcel[key] || defaultParcelSize[key];
-        });
-      }
-    }
+    parcel = {
+      ...(defaultParcelSize || {}),
+      ...(parcel || {})
+    };
 
 
     // cart variant doesn't exist
