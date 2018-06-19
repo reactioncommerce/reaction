@@ -60,7 +60,7 @@ class TagGroupHeader extends Component {
 }
 
 TagGroupHeader.propTypes = {
-  editable: PropTypes.bool,
+  editable: PropTypes.bool, // eslint-disable-line react/boolean-prop-naming
   onTagClick: PropTypes.func,
   onTagRemove: PropTypes.func,
   onUpdateTag: PropTypes.func,

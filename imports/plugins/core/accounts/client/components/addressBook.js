@@ -273,6 +273,7 @@ class AddressBook extends Component {
               mode: "grid"
             });
           }
+          return undefined;
         })
         .catch(onError);
     }
@@ -284,6 +285,7 @@ class AddressBook extends Component {
             validationResults: result
           });
         }
+        return undefined;
       })
       .catch(onError);
   }

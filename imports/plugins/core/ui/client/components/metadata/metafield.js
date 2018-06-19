@@ -137,7 +137,7 @@ Metafield.defaultProps = {
 
 // Prop Types
 Metafield.propTypes = {
-  blank: PropTypes.bool,
+  blank: PropTypes.bool, // eslint-disable-line react/boolean-prop-naming
   detailInfoPlaceholder: PropTypes.func,
   detailNamePlaceholder: PropTypes.func,
   i18nKeyDetailInfo: PropTypes.func,

@@ -43,14 +43,14 @@ class OrderTable extends Component {
     isLoading: PropTypes.object,
     isOpen: PropTypes.bool,
     moment: PropTypes.func,
-    multipleSelect: PropTypes.bool,
+    multipleSelect: PropTypes.bool, // eslint-disable-line react/boolean-prop-naming
     onPageChange: PropTypes.func,
     onPageSizeChange: PropTypes.func,
     orders: PropTypes.array,
     page: PropTypes.number,
     pages: PropTypes.number,
     query: PropTypes.object,
-    renderFlowList: PropTypes.bool,
+    renderFlowList: PropTypes.bool, // eslint-disable-line react/boolean-prop-naming
     selectAllOrders: PropTypes.func,
     selectedItems: PropTypes.array,
     setShippingStatus: PropTypes.func,
