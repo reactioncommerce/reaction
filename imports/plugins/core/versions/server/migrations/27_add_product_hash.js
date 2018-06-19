@@ -1,6 +1,6 @@
 import { Migrations } from "meteor/percolate:migrations";
 import { Products } from "/lib/collections";
-import hashProduct from "/core/catalog/server/no-meteor/utils/hashProduct";
+import hashProduct from "/imports/plugins/core/catalog/server/no-meteor/utils/hashProduct";
 
 // Do this migration in batches of 200 to avoid memory issues
 const LIMIT = 200;
