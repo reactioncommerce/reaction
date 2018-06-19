@@ -1,21 +1,21 @@
-import GraphTester from "../GraphTester";
+import TestApp from "../TestApp";
 
 jasmine.DEFAULT_TIMEOUT_INTERVAL = 60000;
 
-let tester;
+let testApp;
 let viewerQuery;
 beforeAll(async () => {
-  tester = new GraphTester();
-  await tester.start();
+  testApp = new TestApp();
+  await testApp.start();
 
-  viewerQuery = tester.query(`{
+  viewerQuery = testApp.query(`{
     viewer {
       _id
     }
   }`);
 });
 
-afterAll(() => tester.stop());
+afterAll(() => testApp.stop());
 
 test("unauthenticated", async () => {
   const result = await viewerQuery();
@@ -25,7 +25,7 @@ test("unauthenticated", async () => {
 });
 
 test("authenticated", async () => {
-  await tester.setLoggedInUser({
+  await testApp.setLoggedInUser({
     _id: "123"
   });
 
@@ -36,5 +36,5 @@ test("authenticated", async () => {
     }
   });
 
-  await tester.clearLoggedInUser();
+  await testApp.clearLoggedInUser();
 });

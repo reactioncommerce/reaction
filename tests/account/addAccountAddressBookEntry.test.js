@@ -1,25 +1,25 @@
-import GraphTester from "../GraphTester";
+import TestApp from "../TestApp";
 import Factory from "/imports/test-utils/helpers/factory";
 import AddAccountAddressBookEntryMutation from "./AddAccountAddressBookEntryMutation.graphql";
 
 jasmine.DEFAULT_TIMEOUT_INTERVAL = 60000;
 
-let tester;
+let testApp;
 let addAccountAddressBookEntry;
 beforeAll(async () => {
-  tester = new GraphTester();
-  await tester.start();
-  await tester.insertPrimaryShop();
-  addAccountAddressBookEntry = tester.mutate(AddAccountAddressBookEntryMutation);
+  testApp = new TestApp();
+  await testApp.start();
+  await testApp.insertPrimaryShop();
+  addAccountAddressBookEntry = testApp.mutate(AddAccountAddressBookEntryMutation);
 });
 
 afterAll(async () => {
-  await tester.collections.Shops.remove({});
-  tester.stop();
+  await testApp.collections.Shops.remove({});
+  testApp.stop();
 });
 
 test("user can add an address to their own address book", async () => {
-  await tester.setLoggedInUser({ _id: "123" });
+  await testApp.setLoggedInUser({ _id: "123" });
 
   const address = Factory.Address.makeOne();
 
@@ -34,6 +34,6 @@ test("user can add an address to their own address book", async () => {
   expect(result.account.addressBook.length).toBe(1);
   expect(result.account.addressBook[0]).toEqual(address);
 
-  const account = await tester.collections.Accounts.findOne({ _id: "123" });
+  const account = await testApp.collections.Accounts.findOne({ _id: "123" });
   expect(account.addressBook[0]).toEqual(address);
 });

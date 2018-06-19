@@ -9,7 +9,7 @@ import setUpFileCollections from "../imports/plugins/core/files/server/no-meteor
 const loginToken = "LOGIN_TOKEN";
 const hashedToken = "5b4TxnA+4UFjJLDxvntNe8D6VXzVtiRXyKFo8mta+wU=";
 
-class GraphTester {
+class TestApp {
   constructor() {
     this.collections = {};
 
@@ -162,4 +162,4 @@ class GraphTester {
   }
 }
 
-export default GraphTester;
+export default TestApp;
