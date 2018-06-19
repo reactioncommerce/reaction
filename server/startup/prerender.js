@@ -11,6 +11,10 @@ export default function preRender() {
     }
     prerender.set("protocol", "https");
     WebApp.rawConnectHandlers.use(prerender);
-    Logger.info("Prerender Initialization finished.");
+    Logger.info("Prerender initialization finished.");
+  } else if (process.env.PRERENDER_TOKEN) {
+     Logger.error("Prerender initialization failed. Please set PRERENDER_SERVICE_URL in your environment variables.");
+  } else if (process.env.PRERENDER_SERVICE_URL) {
+     Logger.error("Prerender initialization failed. Please set PRERENDER_TOKEN in your environment variables.");
   }
 }
