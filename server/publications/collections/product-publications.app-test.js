@@ -383,6 +383,7 @@ describe("Publication", function () {
 
     describe("Product", function () {
       it("should return a product based on an id", function (done) {
+        this.timeout(10000);
         const product = Collections.Products.findOne({
           isVisible: true
         });
