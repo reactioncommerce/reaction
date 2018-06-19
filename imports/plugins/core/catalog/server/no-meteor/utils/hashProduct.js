@@ -2,16 +2,13 @@ import hash from "object-hash";
 import Random from "@reactioncommerce/random";
 
 /**
- * @method hashProduct
+ * @method createProductHash
  * @summary Create a hash of a product to compare for updates
  * @memberof Catalog
  * @param {Object} product - A product object
- * @param {Object} collections - Raw mongo collections
- * @return {Object} updated product if successful, original product if unsuccessful
+ * @return {String} product hash
  */
-export default async function hashProduct(product, collections) {
-  const { Products } = collections;
-
+function createProductHash(product) {
   // Remove the following fields from the hash calculation
   // createdAt and updatedAt because they are machine calculated / not manually updated
   // hash, because we are using this to calculate the new hash
@@ -22,7 +19,21 @@ export default async function hashProduct(product, collections) {
     delete product[field];
   });
 
-  const productHash = hash(product);
+  return hash(product);
+}
+
+/**
+ * @method hashProduct
+ * @summary Create a hash of a product to compare for updates
+ * @memberof Catalog
+ * @param {Object} product - A product object
+ * @param {Object} collections - Raw mongo collections
+ * @return {Object} updated product if successful, original product if unsuccessful
+ */
+export default async function hashProduct(product, collections) {
+  const { Products } = collections;
+
+  const productHash = createProductHash(product);
 
   // Insert/update product document with hash field
   const result = await Products.updateOne(
