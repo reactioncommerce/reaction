@@ -1,3 +1,5 @@
+const DEFAULT_LIMIT = 20;
+
 /**
  * Inspired by https://www.reindex.io/blog/relay-graphql-pagination-with-mongodb/
  * @name applyPaginationToMongoCursor
@@ -13,8 +15,8 @@
 export default async function applyPaginationToMongoCursor(cursor, { first, last } = {}, totalCount) {
   if (first && last) throw new Error("Request either `first` or `last` but not both");
 
-  // Enforce a `first: 50` limit if no user-supplied limit
-  const limit = first || last || 50;
+  // Enforce a `first: 20` limit if no user-supplied limit, using the DEFAULT_LIMIT
+  const limit = first || last || DEFAULT_LIMIT;
 
   let skip = 0;
   if (last && totalCount > last) skip = totalCount - last;
