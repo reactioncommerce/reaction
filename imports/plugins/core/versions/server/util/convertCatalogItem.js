@@ -60,7 +60,7 @@ function xformVariant(variant, variantPriceInfo, shopCurrencyCode, updatedAt) {
  */
 function xformPositions(positions, tags) {
   const newPositions = {};
-  Object.keys(positions).forEach((key) => {
+  Object.keys(positions || {}).forEach((key) => {
     let newKey;
     const positionTag = tags.find((tag) => tag.slug === key || tag._id === key);
     if (positionTag) {

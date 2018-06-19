@@ -1,6 +1,7 @@
 import account from "./account.graphql";
 import address from "./address.graphql";
 import base from "./base.graphql";
+import cart from "./cart.graphql";
 import catalog from "./catalog.graphql";
 import currency from "./currency.graphql";
 import email from "./email.graphql";
@@ -13,9 +14,10 @@ import shop from "./shop.graphql";
 import tag from "./tag.graphql";
 
 export default [
-  base,
   account,
   address,
+  base,
+  cart,
   catalog,
   currency,
   email,
