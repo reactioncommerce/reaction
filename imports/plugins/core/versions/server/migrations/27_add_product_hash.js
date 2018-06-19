@@ -1,5 +1,6 @@
 import { Migrations } from "meteor/percolate:migrations";
 import { Products } from "/lib/collections";
+import collections from "/imports/collections/rawCollections";
 import hashProduct from "/imports/plugins/core/catalog/server/no-meteor/utils/hashProduct";
 
 // Do this migration in batches of 200 to avoid memory issues
@@ -21,7 +22,7 @@ Migrations.add({
       }).fetch();
 
       if (products.length) {
-        products.forEach((product) => Promise.await(hashProduct(product, { Products })));
+        products.forEach((product) => Promise.await(hashProduct(product, collections)));
       }
     } while (products.length);
   }
