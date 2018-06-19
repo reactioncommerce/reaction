@@ -29,7 +29,7 @@ async function lazyLoadSlugify() {
     slugify = mod.slugify;
     slugify.config({
       replace:
-      replacementOptions
+        replacementOptions
     });
   }
 }
