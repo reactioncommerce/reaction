@@ -120,7 +120,6 @@ registerSchema("ProductPosition", ProductPosition);
  * @property {Event[]} eventLog optional, Variant Event Log
  * @property {Workflow} workflow optional
  * @property {String} originCountry optional
- * @property {String} hash optional
  */
 export const ProductVariant = new SimpleSchema({
   "_id": {
@@ -346,10 +345,6 @@ export const ProductVariant = new SimpleSchema({
   "originCountry": {
     type: String,
     optional: true
-  },
-  "hash": {
-    type: String,
-    optional: true
   }
 });
 
@@ -419,6 +414,7 @@ registerSchema("PriceRange", PriceRange);
  * @property {Date} publishedAt optional
  * @property {String} publishedScope optional
  * @property {Workflow} workflow optional
+ * @property {String} hash optional
  */
 export const Product = new SimpleSchema({
   "_id": {
@@ -588,6 +584,10 @@ export const Product = new SimpleSchema({
     type: Workflow,
     optional: true,
     defaultValue: {}
+  },
+  "hash": {
+    type: String,
+    optional: true
   }
 });
 
