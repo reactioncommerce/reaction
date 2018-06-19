@@ -587,7 +587,8 @@ export const Product = new SimpleSchema({
   },
   "hash": {
     type: String,
-    optional: true
+    optional: true,
+    defaultValue: ""
   }
 });
 
