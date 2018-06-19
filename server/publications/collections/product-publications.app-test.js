@@ -386,6 +386,8 @@ describe("Publication", function () {
         const product = Collections.Products.findOne({
           isVisible: true
         });
+        Promise.await(publishProductsToCatalog([product._id], collections));
+
         sandbox.stub(Reaction, "getShopId", () => shopId);
 
         collector.collect("Product", product._id, ({ Products }) => {
