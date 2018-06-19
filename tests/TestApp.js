@@ -2,12 +2,11 @@ import mongodb, { MongoClient } from "mongodb";
 import graphql from "graphql.js";
 import findFreePort from "find-free-port";
 import MongoDBMemoryServer from "mongodb-memory-server";
+import Random from "@reactioncommerce/random";
 import createApolloServer from "../imports/plugins/core/graphql/server/no-meteor/createApolloServer";
 import defineCollections from "../imports/collections/defineCollections";
+import hashLoginToken from "../imports/plugins/core/accounts/server/no-meteor/util/hashLoginToken";
 import setUpFileCollections from "../imports/plugins/core/files/server/no-meteor/setUpFileCollections";
-
-const loginToken = "LOGIN_TOKEN";
-const hashedToken = "5b4TxnA+4UFjJLDxvntNe8D6VXzVtiRXyKFo8mta+wU=";
 
 class TestApp {
   constructor() {
@@ -34,24 +33,43 @@ class TestApp {
 
   subscribe = (...args) => this.graphClient.subscribe(...args);
 
-  async setLoggedInUser(user = {}) {
-    if (!user._id) throw new Error("setLoggedInUser: user must have _id property set");
-
-    await this.collections.users.insert({
+  async createUserAndAccount(user = {}, globalRoles) {
+    await this.collections.users.insertOne({
       ...user,
+      roles: {
+        ...(user.roles || {}),
+        __global_roles__: globalRoles || [] // eslint-disable-line camelcase
+      },
       services: {
         resume: {
-          loginTokens: [
-            {
-              hashedToken,
-              when: new Date()
-            }
-          ]
+          loginTokens: []
         }
       }
     });
 
-    await this.collections.Accounts.insert({ ...user, userId: user._id });
+    await this.collections.Accounts.insertOne({ ...user, userId: user._id });
+  }
+
+  async setLoggedInUser(user = {}) {
+    if (!user._id) throw new Error("setLoggedInUser: user must have _id property set");
+
+    const loginToken = Random.id();
+    const hashedToken = hashLoginToken(loginToken);
+
+    const existing = await this.collections.users.findOne({ _id: user._id });
+    if (!existing) {
+      await this.createUserAndAccount(user);
+    }
+
+    // Set the hashed login token on the users document
+    await this.collections.users.updateOne({ _id: user._id }, {
+      $push: {
+        "services.resume.loginTokens": {
+          hashedToken,
+          when: new Date()
+        }
+      }
+    });
 
     this.userId = user._id;
     this.setLoginToken(loginToken);
@@ -59,16 +77,6 @@ class TestApp {
 
   async clearLoggedInUser() {
     this.clearLoginToken();
-    if (!this.userId) return;
-
-    await this.collections.users.remove({
-      _id: this.userId
-    });
-
-    await this.collections.Accounts.remove({
-      userId: this.userId
-    });
-
     this.userId = null;
   }
 

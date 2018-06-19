@@ -1,13 +1,6 @@
-import crypto from "crypto";
+import hashLoginToken from "../../../accounts/server/no-meteor/util/hashLoginToken";
 import ReactionError from "./ReactionError";
 import tokenExpiration from "./tokenExpiration";
-
-// This is Meteor's Accounts._hashLoginToken
-function hashLoginToken(loginToken) {
-  const hash = crypto.createHash("sha256");
-  hash.update(loginToken);
-  return hash.digest("base64");
-}
 
 /**
  * Given a login token and the current context, returns the user document
