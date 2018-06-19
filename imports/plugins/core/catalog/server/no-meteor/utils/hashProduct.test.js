@@ -189,7 +189,10 @@ const mockProduct = {
   mockVariants,
   vendor: "vendor",
   weight: 15.6,
-  width: 8.4
+  width: 8.4,
+  workflow: {
+    status: "new"
+  }
 };
 
 const updatedMockProduct = {
@@ -277,7 +280,10 @@ const updatedMockProduct = {
   mockVariants,
   vendor: "vendor",
   weight: 15.6,
-  width: 8.4
+  width: 8.4,
+  workflow: {
+    status: "new"
+  }
 };
 
 const expectedHash = "769f6d8004a2a2929d143ab242625b6c71f618d8";

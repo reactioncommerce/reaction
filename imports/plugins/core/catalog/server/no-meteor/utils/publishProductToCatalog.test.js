@@ -189,7 +189,10 @@ const mockProduct = {
   mockVariants,
   vendor: "vendor",
   weight: 15.6,
-  width: 8.4
+  width: 8.4,
+  workflow: {
+    status: "new"
+  }
 };
 
 const mockShop = {
