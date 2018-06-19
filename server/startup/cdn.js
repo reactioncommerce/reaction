@@ -1,11 +1,12 @@
 import { Meteor } from "meteor/meteor";
+
 /**
- * Sets prefi for the user who wants to serve bundled js and css
+ * Sets prefix for the user who wants to serve bundled js and css
  * files from different URL
  *
- * @returns null
+ * @return {null} null
  */
-export default function CDN() {
+export default function setupCdn() {
   if (Meteor.settings.cdnPrefix) {
     Meteor.startup(() => WebAppInternals.setBundledJsCssPrefix(Meteor.settings.cdnPrefix)); // eslint-disable-line no-undef
   }

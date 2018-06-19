@@ -9,7 +9,7 @@ import Prerender from "./prerender";
 import RateLimiters from "./rate-limits";
 import RegisterCore from "./register-core";
 import RegisterRouter from "./register-router";
-import CDN from "./cdn";
+import setupCdn from "./cdn";
 import { initTemplates } from "/server/api/core/templates";
 import { Reaction, Logger } from "/server/api";
 import { Shops } from "/lib/collections";
@@ -27,7 +27,7 @@ SimpleSchema.defineValidationErrorTransform((error) => {
 export default function startup() {
   const startTime = Date.now();
 
-  CDN();
+  setupCdn();
   Accounts();
   initTemplates();
   RegisterCore();
