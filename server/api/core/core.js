@@ -8,14 +8,14 @@ import { Accounts } from "meteor/accounts-base";
 import { Roles } from "meteor/alanning:roles";
 import { EJSON } from "meteor/ejson";
 import * as Collections from "/lib/collections";
-import { Hooks, Logger } from "/server/api";
+import { Reaction, Hooks, Logger } from "/server/api";
 import ProcessJobs from "/server/jobs";
 import { registerTemplate } from "./templates";
 import { sendVerificationEmail } from "./accounts";
 import { getMailUrl } from "./email/config";
 import { createGroups } from "./groups";
 import ConnectionDataStore from "./connectionDataStore";
-import Reaction from ".";
+
 
 /**
  * @file Server core methods
