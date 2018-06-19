@@ -1,4 +1,4 @@
-import { latinLangs, getShopLang } from "/lib/api/helpers";
+import { latinLangs, getShopLang, replacementOptions } from "/lib/api/helpers";
 
 // dynamic import of slugiy/transliteration.slugify
 let slugify;
@@ -22,21 +22,14 @@ async function lazyLoadSlugify() {
   // slugify is exported to modules.default while transliteration is exported to modules.slugify
   if (mod.default) {
     slugify = mod.default;
-    slugify.extend({
-      " ": "-", "$": "-dlr-", "&": "-n-", "`": "-opn-qte-", ":": "-cln-", "<": "-l-an-br-", ">": "-r-an-br-",
-      "[": "-l-sq-br-", "]": "-r-sq-br-", "{": "-l-cu-br-", "}": "-r-cu-br-", '"': "-qts-", "+": "-plus-", "#": "-otrp-",
-      "%": "-pct-", "@": "-at-", "/": "-sls-", ";": "-scl-", "=": "-eql-", "?": "-qstn-", "\\": "-bsl-", "^": "-crt-",
-      "|": "-or-", "~": "-tld-", ",": "-cma-"
-    });
+    slugify.extend(
+      replacementOptions
+    );
   } else {
     slugify = mod.slugify;
     slugify.config({
-      replace: {
-        " ": "-", "$": "-dlr-", "&": "-n-", "`": "-opn-qte-", ":": "-cln-", "<": "-l-an-br-", ">": "-r-an-br-",
-        "[": "-l-sq-br-", "]": "-r-sq-br-", "{": "-l-cu-br-", "}": "-r-cu-br-", '"': "-qts-", "+": "-plus-", "#": "-otrp-",
-        "%": "-pct-", "@": "-at-", "/": "-sls-", ";": "-scl-", "=": "-eql-", "?": "-qstn-", "\\": "-bsl-", "^": "-crt-",
-        "|": "-or-", "~": "-tld-", ",": "-cma-"
-      }
+      replace:
+      replacementOptions
     });
   }
 }
