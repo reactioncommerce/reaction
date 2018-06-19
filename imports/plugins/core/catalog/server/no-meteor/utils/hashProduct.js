@@ -37,9 +37,7 @@ export default async function hashProduct(product, collections) {
 
   // Insert/update product document with hash field
   const result = await Products.updateOne(
-    {
-      "product.productId": product.productId
-    },
+    product._id,
     {
       $set: {
         hash: productHash,
@@ -55,7 +53,8 @@ export default async function hashProduct(product, collections) {
 
   if (result && result.result && result.result.ok === 1) {
     // If product was updated, get updated product from database
-    const updatedProduct = await Products.findOne(product.productId);
+    const updatedProduct = await Products.findOne(product._id);
+
     return updatedProduct;
   }
 
