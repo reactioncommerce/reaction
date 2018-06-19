@@ -9,17 +9,46 @@ import Random from "@reactioncommerce/random";
  * @return {String} product hash
  */
 function createProductHash(product) {
-  // Remove the following fields from the hash calculation
-  // createdAt and updatedAt because they are machine calculated / not manually updated
-  // hash, because we are using this to calculate the new hash
-  const skippedFields = ["hash", "createdAt", "updatedAt"];
+  const hashableFields = {
+    _id: product._id,
+    ancestors: product.ancestors,
+    description: product.description,
+    facebookMsg: product.facebookMsg,
+    googleplusMsg: product.googleplusMsg,
+    handle: product.handle,
+    hashtags: product.hashtags,
+    isBackorder: product.isBackorder,
+    isDeleted: product.isDeleted,
+    isLowQuantity: product.isLowQuantity,
+    isSoldOut: product.isSoldOut,
+    isVisible: product.isVisible,
+    metaDescription: product.metaDescription,
+    metafields: product.metafields,
+    originCountry: product.originCountry,
+    pageTitle: product.pageTitle,
+    parcel: product.parcel,
+    pinterestMsg: product.pinterestMsg,
+    positions: product.positions,
+    productType: product.productType,
+    price: {
+      range: product.price.range,
+      min: product.price.min,
+      max: product.price.max
+    },
+    publishedScope: product.publishedScope,
+    requiresShipping: product.requiresShipping,
+    shopId: product.shopId,
+    template: product.template,
+    title: product.title,
+    twitterMsg: product.twitterMsg,
+    type: product.type,
+    vendor: product.vendor,
+    workflow: {
+      status: product.workflow.status
+    }
+  };
 
-  // Remove the skipped fields from the product object before we calculate hash
-  skippedFields.forEach((field) => {
-    delete product[field];
-  });
-
-  return hash(product);
+  return hash(hashableFields);
 }
 
 /**
