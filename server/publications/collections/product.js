@@ -111,13 +111,11 @@ Meteor.publish("Product", function (productIdOrHandle, shopIdOrSlug) {
 
   // Product data for customers visiting the PDP page
   const cursor = Catalog.find({
-    "product._id": productIdOrHandle
-    // "$or": [{
-
-    // } , {
-    //   "product.slug": productIdOrHandle
-    // }
-    //           ]
+    "$or": [{
+      "product._id": productIdOrHandle
+    }, {
+      "product.slug": productIdOrHandle
+    }]
     // "product.type": "product-simple",
     // "product.shopId": selector.shopId,
     // "product.isVisible": true,
