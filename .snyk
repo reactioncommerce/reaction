@@ -28,7 +28,7 @@ ignore:
         expires: 2018-06-30T00:00:00.000Z
   'npm:deep-extend:20180409':
     - '*':
-        reason: rc updated with latest version: https://github.com/dominictarr/rc - can't find rc in our dependencies
+        reason: rc updated with latest version - https://github.com/dominictarr/rc - can't find rc in our dependencies
         expires: 2018-06-30T00:00:00.000Z
   'npm:base64url:20180511':
    - '*':
