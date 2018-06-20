@@ -10,5 +10,6 @@
  * @return {Promise<Object>} user account object
  */
 export default function createdBy({ createdBy: createdByAccountId }, _, context) {
+  if (!createdByAccountId) return null;
   return context.queries.accounts.userAccount(context, createdByAccountId);
 }

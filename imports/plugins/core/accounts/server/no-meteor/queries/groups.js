@@ -18,8 +18,8 @@ export default async function groups(context, shopId) {
     return Groups.find({ shopId });
   }
 
-  const userAccount = Accounts.findOne({
-    _id: userId
+  const userAccount = await Accounts.findOne({
+    userId
   }, {
     projection: {
       groups: 1

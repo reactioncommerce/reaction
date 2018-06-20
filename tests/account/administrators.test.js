@@ -103,7 +103,11 @@ test("authenticated as admin", async () => {
   ];
 
   // Default sortBy is createdAt ascending
-  nodes.sort((item1, item2) => item1.createdAt - item2.createdAt);
+  nodes.sort((item1, item2) => {
+    if (item1.createdAt > item2.createdAt) return 1;
+    if (item1.createdAt < item2.createdAt) return -1;
+    return 0;
+  });
 
   const result = await administratorsQuery({ shopId: opaqueShopId });
   expect(result).toEqual({
