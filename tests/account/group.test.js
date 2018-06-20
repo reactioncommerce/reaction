@@ -1,6 +1,5 @@
 import { encodeAccountOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/account";
 import { encodeGroupOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/group";
-import { encodeShopOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/shop";
 import TestApp from "../TestApp";
 import GroupFullQuery from "./GroupFullQuery.graphql";
 import Factory from "/imports/test-utils/helpers/factory";
@@ -35,7 +34,6 @@ beforeAll(async () => {
   await testApp.start();
 
   const shopId = await testApp.insertPrimaryShop();
-  opaqueShopId = encodeShopOpaqueId(shopId);
 
   mockAdminAccount = Factory.Accounts.makeOne({
     roles: {
