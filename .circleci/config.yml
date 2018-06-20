@@ -193,6 +193,19 @@ jobs:
           name: Run Unit Tests
           command: npm run test:unit
 
+  test-integration:
+    <<: *defaults
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - v1-node-modules-{{ checksum "package.json" }}-{{ checksum "package-lock.json" }}
+            - v1-node-modules-{{ .Branch }}
+            - v1-node-modules-master
+      - run:
+          name: Run Integration Tests
+          command: npm run test:integration
+
   dockerfile-lint:
     <<: *defaults
     docker:
@@ -248,6 +261,9 @@ workflows:
           requires:
             - build
       - test-unit:
+          requires:
+            - build
+      - test-integration:
           requires:
             - build
       - eslint:
