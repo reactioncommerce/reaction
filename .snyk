@@ -28,8 +28,8 @@ ignore:
         expires: 2018-06-30T00:00:00.000Z
   'npm:deep-extend:20180409':
     - '*':
-        reason: No patch available https://github.com/unclechu/node-deep-extend/issues/41
-        expires: 2018-06-20T00:00:00.000Z
+        reason: rc updated with latest version: https://github.com/dominictarr/rc - can't find rc in our dependencies
+        expires: 2018-06-30T00:00:00.000Z
   'npm:base64url:20180511':
    - '*':
        reason: Twillio and nexmo will be removed soon, file-collections isn't using any google-cloud stuff so this vuln doesn't apply
