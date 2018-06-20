@@ -16,8 +16,8 @@ ignore:
         expires: '2018-07-26T20:23:03.274Z'
   'npm:lodash:20180130':
     - '*':
-        reason: no patch
-        expires: 2018-06-20T00:00:00.000Z
+        reason: 'Waiting on multiple dependencies to update'
+        expires: 2018-06-30T00:00:00.000Z
   'npm:tunnel-agent:20170305':
     - '*':
         reason: No patch and we do not use this optional package
