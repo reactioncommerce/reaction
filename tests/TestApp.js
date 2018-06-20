@@ -5,6 +5,7 @@ import MongoDBMemoryServer from "mongodb-memory-server";
 import Random from "@reactioncommerce/random";
 import createApolloServer from "../imports/plugins/core/graphql/server/no-meteor/createApolloServer";
 import defineCollections from "../imports/collections/defineCollections";
+import Factory from "/imports/test-utils/helpers/factory";
 import hashLoginToken from "../imports/plugins/core/accounts/server/no-meteor/util/hashLoginToken";
 import setUpFileCollections from "../imports/plugins/core/files/server/no-meteor/setUpFileCollections";
 
@@ -93,7 +94,7 @@ class TestApp {
     const domain = "shop.fake.site";
     process.env.ROOT_URL = `https://${domain}/`;
 
-    return this.collections.Shops.insert({
+    const mockShop = Factory.Shop.makeOne({
       currencies: {
         USD: {
           enabled: true,
@@ -101,11 +102,14 @@ class TestApp {
           symbol: "$"
         }
       },
-      currency: "USD",
       name: "Primary Shop",
       ...shopData,
       domains: [domain]
     });
+
+    const result = await this.collections.Shops.insertOne(mockShop);
+
+    return result.insertedId;
   }
 
   async startMongo() {

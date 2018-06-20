@@ -7,7 +7,6 @@ jasmine.DEFAULT_TIMEOUT_INTERVAL = 60000;
 const internalNonAdminAccountId = "123";
 const opaqueNonAdminAccountId = "cmVhY3Rpb24vYWNjb3VudDoxMjM=";
 const internalAdminAccountId = "456";
-const opaqueAdminAccountId = "cmVhY3Rpb24vYWNjb3VudDo0NTY=";
 const internalOtherAccountId = "789";
 const opaqueOtherAccountId = "cmVhY3Rpb24vYWNjb3VudDo3ODk=";
 
