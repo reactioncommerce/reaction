@@ -202,9 +202,17 @@ jobs:
             - v1-node-modules-{{ checksum "package.json" }}-{{ checksum "package-lock.json" }}
             - v1-node-modules-{{ .Branch }}
             - v1-node-modules-master
+      - restore_cache:
+          name: Restoring mongodb-memory-server MongoDB cache
+          key: mongodb-memory-server
       - run:
           name: Run Integration Tests
           command: npm run test:integration
+      - save_cache:
+          name: Saving mongodb-memory-server MongoDB cache
+          key: mongodb-memory-server
+          paths:
+            - ~/.mongodb-binaries
 
   dockerfile-lint:
     <<: *defaults
