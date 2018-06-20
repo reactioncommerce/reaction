@@ -115,8 +115,8 @@ Meteor.publish("Product", function (productIdOrHandle, shopIdOrSlug) {
       "product._id": productIdOrHandle
     }, {
       "product.slug": productIdOrHandle
-    }]
-    // "product.type": "product-simple",
+    }],
+    "product.type": "product-simple"
     // "product.shopId": selector.shopId,
     // "product.isVisible": true,
     // "product.isDeleted": { $in: [null, false] }
