@@ -1,17 +1,17 @@
 import SimpleSchema from "simpl-schema";
 import { check } from "meteor/check";
 import { Tracker } from "meteor/tracker";
-import { shopIdAutoValue } from "/lib/collections/schemas/helpers";
 import { registerSchema } from "@reactioncommerce/schemas";
 
 /**
-* Taxes Schema
-*/
-
+ * @name Taxes
+ * @memberof Schemas
+ * @type {SimpleSchema}
+ * @summary Taxes schema
+ */
 export const Taxes = new SimpleSchema({
   "shopId": {
     type: String,
-    autoValue: shopIdAutoValue,
     index: 1,
     label: "Taxes shopId"
   },

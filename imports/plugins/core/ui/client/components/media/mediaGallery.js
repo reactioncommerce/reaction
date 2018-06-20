@@ -8,7 +8,7 @@ import { Reaction } from "/client/api";
 
 class MediaGallery extends Component {
   static propTypes = {
-    editable: PropTypes.bool,
+    editable: PropTypes.bool, // eslint-disable-line react/boolean-prop-naming
     featuredMedia: PropTypes.object,
     media: PropTypes.arrayOf(PropTypes.object),
     mediaGalleryHeight: PropTypes.number,

@@ -21,16 +21,14 @@ async function lazyLoadNexmo() {
 }
 
 /**
- * @file Meteor methods for SMS. Run these methods using `Meteor.call()`.
- *
- *
- * @namespace Methods/SMS
-*/
+ * Meteor methods for SMS. Run these methods using `Meteor.call()`
+ * @namespace SMS/Methods
+ */
 Meteor.methods({
   /**
    * @name sms/saveSettings
    * @method
-   * @memberof Methods/SMS
+   * @memberof SMS/Methods
    * @summary This save the sms provider settings
    * @param {Object} settings - settings
    * @return {object} returns result
@@ -51,7 +49,7 @@ Meteor.methods({
   /**
    * @name sms/send
    * @method
-   * @memberof Methods/SMS
+   * @memberof SMS/Methods
    * @summary This send the sms to the user
    * @param {String} message - The message to send
    * @param {String} userId - The user to receive the message

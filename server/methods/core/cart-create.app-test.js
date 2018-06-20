@@ -1,8 +1,8 @@
 /* eslint dot-notation: 0 */
 /* eslint prefer-arrow-callback:0 */
+import Random from "@reactioncommerce/random";
 import { Meteor } from "meteor/meteor";
 import { check, Match } from "meteor/check";
-import { Random } from "meteor/random";
 import { Factory } from "meteor/dburles:factory";
 import { Reaction } from "/server/api";
 import { Cart, Products, Accounts } from "/lib/collections";
@@ -281,30 +281,30 @@ describe("Add/Create cart methods", function () {
 
       expect(function () {
         return Meteor.call("cart/unsetAddresses", 123456);
-      }).to.throw;
+      }).to.throw();
 
       expect(function () {
         return Meteor.call("cart/unsetAddresses", {});
-      }).to.throw;
+      }).to.throw();
 
       expect(function () {
         return Meteor.call("cart/unsetAddresses", null);
-      }).to.throw;
+      }).to.throw();
 
       expect(function () {
         return Meteor.call("cart/unsetAddresses");
-      }).to.throw;
+      }).to.throw();
 
       expect(function () {
         return Meteor.call("cart/unsetAddresses", "asdad", 123);
-      }).to.throw;
+      }).to.throw();
 
       // https://github.com/aldeed/meteor-simple-schema/issues/522
       expect(function () {
         return Meteor.call("accounts/addressBookRemove", () => {
           expect(true).to.be.true;
         });
-      }).to.not.throw;
+      }).to.not.throw();
 
       expect(accountUpdateStub).to.not.have.been.called;
       accountUpdateStub.restore();

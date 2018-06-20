@@ -1,7 +1,7 @@
 /* eslint dot-notation: 0 */
 /* eslint prefer-arrow-callback:0 */
+import Random from "@reactioncommerce/random";
 import { Meteor } from "meteor/meteor";
-import { Random } from "meteor/random";
 import { expect } from "meteor/practicalmeteor:chai";
 import { Factory } from "meteor/dburles:factory";
 import { sinon, stubs, spies } from "meteor/practicalmeteor:sinon";
@@ -98,12 +98,14 @@ describe("core shop methods", function () {
       });
 
       it("creates a new shop for admin for userId and a partial shopObject", function () {
+        this.timeout(15000);
         const partialShop = { name };
 
         Meteor.call("shop/createShop", userId, partialShop);
       });
 
       it("creates a new shop for admin for userId and a partial shopObject ignoring extraneous data", function () {
+        this.timeout(15000);
         const extraneousData = Random.id();
         const partialShop = { name, extraneousData };
 
@@ -120,6 +122,7 @@ describe("core shop methods", function () {
 
 describe("shop/changeLayouts", function () {
   it("should replace every layout with the new layout", function () {
+    this.timeout(15000);
     const shop = Factory.create("shop");
     Meteor.call("shop/changeLayouts", shop._id, "myNewLayout");
     const myShop = Shops.findOne(shop._id);

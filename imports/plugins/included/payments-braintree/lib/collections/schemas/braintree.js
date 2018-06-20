@@ -1,18 +1,15 @@
 import SimpleSchema from "simpl-schema";
 import { check } from "meteor/check";
 import { Tracker } from "meteor/tracker";
-import { PackageConfig } from "/lib/collections/schemas/registry";
+import { PackageConfig } from "/lib/collections/schemas";
 import { registerSchema } from "@reactioncommerce/schemas";
 
 /**
- *  Meteor.settings.braintree =
- *    mode: false  #sandbox
- *    merchant_id: ""
- *    public_key: ""
- *    private_key: ""
- *  see: https://developers.braintreepayments.com/javascript+node/reference
+ * @name BraintreePackageConfig
+ * @memberof Schemas
+ * @type {SimpleSchema}
+ * @see {@link https://developers.braintreepayments.com/javascript+node/reference}
  */
-
 export const BraintreePackageConfig = PackageConfig.clone().extend({
   // Remove blackbox: true from settings obj
   "settings": {
@@ -56,6 +53,12 @@ export const BraintreePackageConfig = PackageConfig.clone().extend({
 
 registerSchema("BraintreePackageConfig", BraintreePackageConfig);
 
+/**
+ * @name BraintreePayment
+ * @memberof Schemas
+ * @type {SimpleSchema}
+ * @summary BraintreePayment schema
+ */
 export const BraintreePayment = new SimpleSchema({
   payerName: {
     type: String,

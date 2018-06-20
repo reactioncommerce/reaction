@@ -1,30 +1,32 @@
 import tagsResolver from "./tags";
 import getFakeMongoCursor from "/imports/test-utils/helpers/getFakeMongoCursor";
+import Factory from "/imports/test-utils/helpers/factory";
 
 const base64ID = "cmVhY3Rpb24vc2hvcDoxMjM="; // reaction/shop:123
-
-const mockTags = [
-  { _id: "a1", name: "Men" },
-  { _id: "b2", name: "Women" },
-  { _id: "c3", name: "Children" }
-];
-
+const mockTags = Factory.Tag.makeMany(3, { _id: (i) => (i + 100).toString() });
 const mockTagsQuery = getFakeMongoCursor("Tags", mockTags);
 
 test("calls queries.tags and returns a partial connection", async () => {
-  const tags = jest.fn().mockName("queries.tags").mockReturnValueOnce(Promise.resolve(mockTagsQuery));
+  const tags = jest
+    .fn()
+    .mockName("queries.tags")
+    .mockReturnValueOnce(Promise.resolve(mockTagsQuery));
 
-  const result = await tagsResolver({}, { shopId: base64ID }, {
-    queries: { tags }
-  });
+  const result = await tagsResolver(
+    {},
+    { shopId: base64ID },
+    {
+      queries: { tags }
+    }
+  );
 
   expect(result).toEqual({
     nodes: mockTags,
     pageInfo: {
-      endCursor: "c3",
+      endCursor: "102",
       hasNextPage: false,
       hasPreviousPage: false,
-      startCursor: "a1"
+      startCursor: "100"
     },
     totalCount: 3
   });

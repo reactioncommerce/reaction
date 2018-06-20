@@ -11,7 +11,13 @@ import * as Collections from "/lib/collections";
 import * as Schemas from "/lib/collections/schemas";
 import { toCamelCase } from "/lib/api";
 
-// Lazyload moment-timezone.months
+/**
+ * @file Meteor Blaze Template helper methods - Use these helpers in Meteor Blaze templates with `{{ }}`
+ * Read more about Meteor Blaze helpers in the [Blaze Documentation](blazejs.org/api/templates.html#Template-registerHelper).
+ * @namespace BlazeTemplateHelpers
+ */
+
+// Lazily load moment-timezone.months
 const monthOptionsVar = new ReactiveVar([]);
 async function lazyLoadMonths() {
   if (monthOptionsVar.get().length) return;
@@ -47,11 +53,11 @@ Template.registerHelper("Collections", () => Collections);
 Template.registerHelper("Schemas", () => Schemas);
 
 /**
- * currentUser
+ * @method currentUser
+ * @memberof BlazeTemplateHelpers
  * @summary overrides Meteor Package.blaze currentUser method
  * @return {Boolean} returns true/null if user has registered
  */
-
 Template.registerHelper("currentUser", () => {
   if (typeof Reaction === "object") {
     const shopId = Reaction.getShopId();
@@ -67,11 +73,17 @@ Template.registerHelper("currentUser", () => {
   return null;
 });
 
-
+/**
+ * @method monthOptions
+ * @memberof BlazeTemplateHelpers
+ * @summary Get monthOptionsVar ReactiveVar
+ * @param {Boolean} [showDefaultOption]
+ * @return {Array} returns array of months
+ */
 Template.registerHelper("monthOptions", (showDefaultOption = true) => {
   const label = i18next.t("app.monthOptions", "Choose month");
 
-  // Call to get monthOptinosVar ReactiveVar
+  // Call to get monthOptionsVar ReactiveVar
   lazyLoadMonths();
   let monthOptions = [];
 
@@ -88,8 +100,10 @@ Template.registerHelper("monthOptions", (showDefaultOption = true) => {
 });
 
 /**
- * yearOptions
+ * @method yearOptions
+ * @memberof BlazeTemplateHelpers
  * @summary formats moment.js next 9 years into array for autoform selector
+ * @param {Boolean} [showDefaultOption]
  * @return {Array} returns array of years [value:, label:]
  */
 Template.registerHelper("yearOptions", (showDefaultOption = true) => {
@@ -115,7 +129,7 @@ Template.registerHelper("yearOptions", (showDefaultOption = true) => {
 });
 
 /**
- * camelToSpace
+ * @method camelToSpace
  * @summary convert a camelcased string to spaces
  * @param {String} str - camelcased string
  * @return {String} returns space formatted string
@@ -126,7 +140,8 @@ Template.registerHelper("camelToSpace", (str) => {
 });
 
 /**
- * toLowerCase
+ * @method toLowerCase
+ * @memberof BlazeTemplateHelpers
  * @summary convert a string to lower case
  * @param {String} str - string
  * @return {String} returns lowercased string
@@ -134,7 +149,8 @@ Template.registerHelper("camelToSpace", (str) => {
 Template.registerHelper("toLowerCase", (str) => str.toLowerCase());
 
 /**
- * toUpperCase
+ * @method toUpperCase
+ * @memberof BlazeTemplateHelpers
  * @summary convert a string to upper case
  * @param {String} str - string
  * @return {String} returns uppercased string
@@ -142,7 +158,8 @@ Template.registerHelper("toLowerCase", (str) => str.toLowerCase());
 Template.registerHelper("toUpperCase", (str) => str.toUpperCase());
 
 /**
- * capitalize
+ * @method capitalize
+ * @memberof BlazeTemplateHelpers
  * @summary capitalize first character of string
  * @param {String} str - string
  * @return {String} returns string with first letter capitalized
@@ -150,7 +167,8 @@ Template.registerHelper("toUpperCase", (str) => str.toUpperCase());
 Template.registerHelper("capitalize", (str) => str.charAt(0).toUpperCase() + str.slice(1));
 
 /**
- * toCamelCase
+ * @method toCamelCase
+ * @memberof BlazeTemplateHelpers
  * @summary camelCases a string
  * @param {String} str - string
  * @return {String|undefined} returns camelCased string
@@ -159,8 +177,10 @@ Template.registerHelper("toCamelCase", (str) => !!str && toCamelCase(str));
 
 
 /**
- * siteName
+ * @method siteName
+ * @memberof BlazeTemplateHelpers
  * @summary get the shop name
+ * @example <a href="{{pathFor 'index'}}"><span>{{siteName}}</span></a>
  * @return {String} returns site name
  */
 Template.registerHelper("siteName", () => {
@@ -168,14 +188,11 @@ Template.registerHelper("siteName", () => {
   return typeof shop === "object" && shop.name ? shop.name : "";
 });
 
-/*
- *  General helpers for template functionality
- */
-
 /**
- * condition
+ * @method condition
  * @summary conditional string comparison template helper
  * @example {{#if condition status "eq" ../value}}
+ * @memberof BlazeTemplateHelpers
  * @param {String} v1 - first variable to compare
  * @param {String} operator - eq,neq,ideq,or,lt,gt comparision operator
  * @param {String} v2 - second variable to compare
@@ -219,8 +236,13 @@ Template.registerHelper("condition", (v1, operator, v2) => {
 });
 
 /**
- * orElse
+ * @method orElse
  * @summary if this is true, or else this
+ * @memberof BlazeTemplateHelpers
+ * @example {{#if showCartIconWarning}}
+  <div class="badge badge-warning">!</div>
+  {{/if}}
+  <div class="badge">{{orElse cartCount 0}}</div>
  * @param {String} v1 - variable one
  * @param {String} v2 - variable two
  * @return {String} returns v1 || v2
@@ -228,8 +250,9 @@ Template.registerHelper("condition", (v1, operator, v2) => {
 Template.registerHelper("orElse", (v1, v2) => v1 || v2);
 
 /**
- * key_value
+ * @method key_value
  * @summary template helper pushing object key/value into array
+ * @memberof BlazeTemplateHelpers
  * @param {Object} context - object to parse into key / value
  * @return {Array} returns array[key:,value:]
  */
@@ -243,9 +266,10 @@ Template.registerHelper("key_value", (context) => {
 });
 
 /**
- * nl2br
+ * @method nl2br
  * @summary template helper nl2br - Converts new line (\n\r) to <br>
  * from http://phpjs.org/functions/nl2br:480
+ * @memberof BlazeTemplateHelpers
  * @param {String} text - text
  * @returns {String} returns formatted Spacebars.SafeString
  */
@@ -255,9 +279,10 @@ Template.registerHelper("nl2br", (text) => {
 });
 
 /**
- * pluralize
+ * @method pluralize
  * @summary general helper for plurization of strings
- * @example {{plurize "1 thing"}}
+ * @memberof BlazeTemplateHelpers
+ * @example {{pluralize "1 thing"}}
  * @param {String} nCount - number, ie "1 "
  * @param {String} pString - plural string ie " thing"
  * @todo adapt to, and use i18next

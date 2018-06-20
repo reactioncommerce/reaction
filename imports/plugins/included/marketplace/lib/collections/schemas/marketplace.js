@@ -1,10 +1,15 @@
 import SimpleSchema from "simpl-schema";
 import { check } from "meteor/check";
 import { Tracker } from "meteor/tracker";
-import { PackageConfig } from "/lib/collections/schemas/registry";
-import { Shop } from "/lib/collections/schemas/shops.js";
+import { PackageConfig, Shop } from "/lib/collections/schemas";
 import { registerSchema } from "@reactioncommerce/schemas";
 
+/**
+ * @name ShopTypes
+ * @memberof Schemas
+ * @type {SimpleSchema}
+ * @summary ShopTypes schema
+ */
 export const ShopTypes = new SimpleSchema({
   shopType: {
     type: String,
@@ -18,6 +23,12 @@ export const ShopTypes = new SimpleSchema({
 
 registerSchema("ShopTypes", ShopTypes);
 
+/**
+ * @name EnabledPackagesByShopType
+ * @memberof Schemas
+ * @type {SimpleSchema}
+ * @summary EnabledPackagesByShopType schema
+ */
 export const EnabledPackagesByShopType = new SimpleSchema({
   shopType: String,
   enabledPackages: [String]
@@ -25,6 +36,12 @@ export const EnabledPackagesByShopType = new SimpleSchema({
 
 registerSchema("EnabledPackagesByShopType", EnabledPackagesByShopType);
 
+/**
+ * @name MarketplacePackageConfig
+ * @memberof Schemas
+ * @type {SimpleSchema}
+ * @summary MarketplacePackageConfig schema
+ */
 export const MarketplacePackageConfig = PackageConfig.clone().extend({
   // Remove blackbox: true from settings obj
   "settings": {
@@ -136,7 +153,10 @@ export const MarketplacePackageConfig = PackageConfig.clone().extend({
 registerSchema("MarketplacePackageConfig", MarketplacePackageConfig);
 
 /**
- * Seller Shop Schema
+ * @name SellerShop
+ * @memberof Schemas
+ * @type {SimpleSchema}
+ * @summary SellerShop schema
  */
 export const SellerShop = Shop.clone().extend({
   stripeConnectSettings: {

@@ -1,10 +1,17 @@
 import { Meteor } from "meteor/meteor";
-import { Catalog } from "/lib/api";
 import { Inventory, Products } from "/lib/collections";
 import { Logger, Reaction } from "/server/api";
+import rawCollections from "/imports/collections/rawCollections";
+import getVariants from "/imports/plugins/core/catalog/server/no-meteor/utils/getVariants";
 
 /**
- * inventory/register
+ * @namespace Inventory/Methods
+ */
+
+/**
+ * @name inventory/register
+ * @method
+ * @memberof Inventory/Methods
  * @summary check a product and update Inventory collection with inventory documents.
  * @param {Object} product - valid Schemas.Product object
  * @return {Number} - returns the total amount of new inventory created
@@ -17,7 +24,7 @@ export function registerInventory(product) {
 
   let totalNewInventory = 0;
   const productId = type === "variant" ? product.ancestors[0] : product._id;
-  const variants = Catalog.getVariants(productId);
+  const variants = Promise.await(getVariants(productId, rawCollections));
 
   // we'll check each variant to see if it has been fully registered
   for (const variant of variants) {
@@ -46,7 +53,8 @@ export function registerInventory(product) {
           shopId: product.shopId,
           createdAt: new Date(),
           updatedAt: new Date(),
-          workflow: { // we add this line because `batchInsert` doesn't know
+          workflow: {
+            // we add this line because `batchInsert` doesn't know
             status: "new" // about SimpleSchema, so `defaultValue` will not
           }
         });
@@ -58,7 +66,8 @@ export function registerInventory(product) {
       const inventoryItem = execute();
       const inserted = inventoryItem.nInserted;
 
-      if (!inserted) { // or maybe `inventory.length === 0`?
+      if (!inserted) {
+        // or maybe `inventory.length === 0`?
         // throw new Meteor.Error("Inventory Anomaly Detected. Abort! Abort!");
         return totalNewInventory;
       }
@@ -70,6 +79,15 @@ export function registerInventory(product) {
   return totalNewInventory;
 }
 
+/**
+ * @name inventory/adjust
+ * @method
+ * @memberof Inventory/Methods
+ * @param {Object} product - valid Schemas.Product object
+ * @param {String} userId - ID of user who is adjusting
+ * @param {Object} context - Meteor method context
+ * @return {undefined} - No return
+ */
 function adjustInventory(product, userId, context) {
   // TODO: This can fail even if updateVariant succeeds.
   Products.simpleSchema(product).validate(product);
@@ -78,7 +96,7 @@ function adjustInventory(product, userId, context) {
 
   // calledByServer is only true if this method was triggered by the server, such as from a webhook.
   // there will be a null connection and no userId.
-  const calledByServer = (context && context.connection === null && !Meteor.userId());
+  const calledByServer = context && context.connection === null && !Meteor.userId();
   // if this method is calledByServer, skip permission check.
   // user needs createProduct permission to adjust inventory
   // REVIEW: Should this be checking shop permission instead?
@@ -107,15 +125,18 @@ function adjustInventory(product, userId, context) {
         // determine how many records to delete
         const removeQty = itemCount - variant.qty;
         // we're only going to delete records that are new
-        const removeInventory = Inventory.find({
-          "variantId": variant._id,
-          "workflow.status": "new"
-        }, {
-          sort: {
-            updatedAt: -1
+        const removeInventory = Inventory.find(
+          {
+            "variantId": variant._id,
+            "workflow.status": "new"
           },
-          limit: removeQty
-        }).fetch();
+          {
+            sort: {
+              updatedAt: -1
+            },
+            limit: removeQty
+          }
+        ).fetch();
 
         results = itemCount;
         // delete latest inventory "status:new" records
@@ -136,7 +157,8 @@ Meteor.methods({
     }
     registerInventory(product);
   },
-  "inventory/adjust"(product) { // TODO: this should be variant
+  "inventory/adjust"(product) {
+    // TODO: this should be variant
     Products.simpleSchema(product).validate(product);
     adjustInventory(product, this.userId, this);
   }

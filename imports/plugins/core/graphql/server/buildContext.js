@@ -2,7 +2,14 @@ import { curryN } from "ramda";
 import hasPermission from "/imports/plugins/core/accounts/server/no-meteor/hasPermission";
 import getShopIdForContext from "/imports/plugins/core/accounts/server/no-meteor/getShopIdForContext";
 
-// mutates the context object
+/**
+ * @name buildContext
+ * @method
+ * @memberof GraphQL
+ * @summary Mutates the provided context object, adding `user`, `userId`, `shopId`, and
+ *   `userHasPermission` properties.
+ * @returns {undefined} No return
+ */
 export default async function buildContext(context, user) {
   context.user = user || null;
   context.userId = (user && user._id) || null;

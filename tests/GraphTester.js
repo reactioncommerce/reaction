@@ -1,86 +1,37 @@
-import util from "util";
-import { merge } from "lodash";
+import mongodb, { MongoClient } from "mongodb";
 import graphql from "graphql.js";
 import findFreePort from "find-free-port";
-import Datastore from "nedb";
-import Cursor from "nedb/lib/cursor";
+import MongoDBMemoryServer from "mongodb-memory-server";
 import createApolloServer from "../imports/plugins/core/graphql/server/createApolloServer";
-import defineCollections from "../imports/plugins/core/graphql/server/defineCollections";
+import defineCollections from "../imports/collections/defineCollections";
+import setUpFileCollections from "../imports/plugins/core/files/server/no-meteor/setUpFileCollections";
 import methods from "../.reaction/devserver/methods";
+import mutations from "../imports/plugins/core/graphql/server/mutations";
 import queries from "../imports/plugins/core/graphql/server/queries";
 
 const loginToken = "LOGIN_TOKEN";
 const hashedToken = "5b4TxnA+4UFjJLDxvntNe8D6VXzVtiRXyKFo8mta+wU=";
 
-// nedb does not fully and correctly implement the latest
-// MongoDB Cursor schema, so we make some adjustments here
-Object.assign(Cursor.prototype, {
-  get cmd() {
-    return { query: this.query };
-  },
-  filter(query) {
-    merge(this.query, query);
-    return this;
-  },
-  get options() {
-    return {
-      db: {
-        collection: () => this.db,
-        databaseName: "reaction"
-      }
-    };
-  },
-  ns: "reaction.collection",
-  toArray() {
-    return util.promisify(this.exec.bind(this))();
-  },
-  clone() {
-    return new Cursor(this.db, this.query, this.execFn);
-  },
-  count() {
-    return util.promisify(this.exec.bind(this))();
-  }
-});
-
-// nedb does not have the Promise API, so we need to create it for everything we await
-[
-  "findOne",
-  "_insert",
-  "_update",
-  "_remove",
-  "count"
-].forEach((prop) => {
-  Datastore.prototype[prop] = util.promisify(Datastore.prototype[prop]);
-});
-
-function getLocalDb() {
-  const db = {};
-  db.collection = () => new Datastore();
-  return db;
-}
-
 class GraphTester {
   constructor() {
-    this.db = getLocalDb();
-
     this.collections = {};
-    defineCollections(this.db, this.collections);
 
     this.app = createApolloServer({
       context: {
         collections: this.collections,
         methods,
+        mutations,
         queries
       },
       debug: true
     });
   }
 
-  mutate = (...args) => this.graphClient.mutate(...args)
+  mutate = (...args) => this.graphClient.mutate(...args);
 
-  query = (...args) => this.graphClient.query(...args)
+  query = (...args) => this.graphClient.query(...args);
 
-  subscribe = (...args) => this.graphClient.subscribe(...args)
+  subscribe = (...args) => this.graphClient.subscribe(...args);
 
   async setLoggedInUser(user = {}) {
     if (!user._id) throw new Error("setLoggedInUser: user must have _id property set");
@@ -89,10 +40,12 @@ class GraphTester {
       ...user,
       services: {
         resume: {
-          loginTokens: [{
-            hashedToken,
-            when: new Date()
-          }]
+          loginTokens: [
+            {
+              hashedToken,
+              when: new Date()
+            }
+          ]
         }
       }
     });
@@ -126,6 +79,50 @@ class GraphTester {
     this.setLoginToken(null);
   }
 
+  async insertPrimaryShop(shopData) {
+    // Need shop domains and ROOT_URL set in order for `shopId` to be correctly set on GraphQL context
+    const domain = "shop.fake.site";
+    process.env.ROOT_URL = `https://${domain}/`;
+
+    return this.collections.Shops.insert({
+      currencies: {
+        USD: {
+          enabled: true,
+          format: "%s%v",
+          symbol: "$"
+        }
+      },
+      currency: "USD",
+      name: "Primary Shop",
+      ...shopData,
+      domains: [domain]
+    });
+  }
+
+  async startMongo() {
+    this.mongoServer = new MongoDBMemoryServer();
+    const mongoUri = await this.mongoServer.getConnectionString();
+    this.connection = await MongoClient.connect(mongoUri);
+    this.db = this.connection.db(await this.mongoServer.getDbName());
+
+    defineCollections(this.db, this.collections);
+
+    const { Media } = setUpFileCollections({
+      absoluteUrlPrefix: "http://fake.com",
+      db: this.db,
+      Logger: { info: console.info.bind(console) }, // eslint-disable-line no-console
+      MediaRecords: this.collections.MediaRecords,
+      mongodb
+    });
+
+    this.collections.Media = Media;
+  }
+
+  stopMongo() {
+    this.connection.close();
+    this.mongoServer.stop();
+  }
+
   async startServer() {
     const port = await findFreePort(4040);
     return new Promise((resolve, reject) => {
@@ -151,6 +148,16 @@ class GraphTester {
         }
       });
     });
+  }
+
+  async start() {
+    await this.startMongo();
+    await this.startServer();
+  }
+
+  async stop() {
+    this.stopMongo();
+    await this.stopServer();
   }
 }
 
