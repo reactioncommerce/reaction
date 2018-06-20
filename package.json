@@ -175,7 +175,7 @@
     "jest-junit": "^3.6.0",
     "js-yaml": "^3.10.0",
     "jsdoc": "^3.5.5",
-    "mongodb-memory-server": "^1.7.3",
+    "mongodb-memory-server": "1.8.0",
     "nodemon": "^1.17.2",
     "react-addons-test-utils": "15.6.2",
     "snyk": "^1.78.0"
