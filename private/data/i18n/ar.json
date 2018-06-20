@@ -513,20 +513,6 @@
           "isCommercial": "هذه عناوين تجارية"
         }
       },
-      "revisions": {
-        "isDisabled": ".مراجعة المراقبة  غير مفعل .أي تغيير سوف يتم نشره فوراً",
-        "isEnabled": "يتم تمكين مراجعة مراقبة للمنتجات. سوف يحتاج أي تغييرات على أن تنشر قبل أن يكون مرئيا للعملاء.",
-        "unpublishedChanges": "تغييرات غير منشورة",
-        "publishChanges": "تغييرات النشر",
-        "showChanges": "إظهار التغييرات",
-        "hideChanges": "إخفاء التغييرات",
-        "discardChanges": "التراجع عن التغييرات ",
-        "changedPublished": "تم نشر التغييرات بنجاح",
-        "changesDiscarded": "تم التراجع عن التغييرات بنجاح ",
-        "noChanges": "لا يوجد تغييرات",
-        "noChangesPublished": ".لا يوجد تغييرات لنشرها",
-        "noChangesDiscarded": "لايوجد تغييرات للتراجع عنها "
-      },
       "address": {
         "country": "البلد",
         "fullName": "الأسم كامل",

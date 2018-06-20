@@ -1,5 +1,5 @@
 import { registerSchema } from "@reactioncommerce/schemas";
-import { PackageConfig } from "/lib/collections/schemas/registry";
+import { PackageConfig } from "/lib/collections/schemas";
 import { Taxes } from "./taxes";
 
 /**

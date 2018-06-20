@@ -47,6 +47,7 @@ export const methods = {
     if (docId) return Meteor.call("taxes/editRate", { _id: docId, modifier: doc });
 
     if (!Reaction.hasPermission("taxes")) throw new Meteor.Error("access-denied", "Access Denied");
+    doc.shopId = Reaction.getShopId();
     return Taxes.insert(doc);
   },
 

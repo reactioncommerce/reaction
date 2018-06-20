@@ -5,7 +5,7 @@ import {
   SettingsCard,
   Form
 } from "/imports/plugins/core/ui/client/components";
-import { SocialPackageConfig } from "/lib/collections/schemas/social";
+import { SocialPackageConfig } from "/lib/collections/schemas";
 
 const socialProviders = [
   {

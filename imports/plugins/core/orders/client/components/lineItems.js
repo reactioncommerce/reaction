@@ -253,7 +253,7 @@ class LineItems extends Component {
         constraints={[
           {
             to: "scrollParent",
-            pin: true
+            pin: ["top", "bottom"]
           },
           {
             to: "window",
@@ -261,6 +261,7 @@ class LineItems extends Component {
           }
         ]}
         showDropdownButton={false}
+        showShadow
       >
         {this.popOverContent()}
       </Components.Popover>

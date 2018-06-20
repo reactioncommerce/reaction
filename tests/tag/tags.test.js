@@ -1,17 +1,12 @@
 import GraphTester from "../GraphTester";
+import Factory from "/imports/test-utils/helpers/factory";
 
 jasmine.DEFAULT_TIMEOUT_INTERVAL = 60000;
 
 const internalShopId = "123";
 const opaqueShopId = "cmVhY3Rpb24vc2hvcDoxMjM="; // reaction/shop:123
 const shopName = "Test Shop";
-const tags = [];
-for (let i = 100; i < 155; i += 1) {
-  const tagName = i.toString();
-  const tagId = i.toString();
-  const tagPosition = i;
-  tags.push({ _id: tagId, name: tagName, shopId: internalShopId, position: tagPosition });
-}
+const mockTags = Factory.Tag.makeMany(55, { shopId: internalShopId, _id: (i) => (i + 100).toString(), position: (i) => i + 100 });
 
 const tagsQuery = `($shopId: ID!, $after: ConnectionCursor, $before: ConnectionCursor, $first: ConnectionLimitInt, $last: ConnectionLimitInt) {
   tags(shopId: $shopId, after: $after, before: $before, first: $first, last: $last) {
@@ -37,7 +32,7 @@ beforeAll(async () => {
   query = tester.query(tagsQuery);
 
   await tester.insertPrimaryShop({ _id: internalShopId, name: shopName });
-  await Promise.all(tags.map((tag) => tester.collections.Tags.insert(tag)));
+  await Promise.all(mockTags.map((tag) => tester.collections.Tags.insert(tag)));
 });
 
 afterAll(() => tester.stop());

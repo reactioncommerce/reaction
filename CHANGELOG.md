@@ -14,7 +14,6 @@ The issue was releated to a type error that was thrown during a migration:
 0|reaction |     at items.forEach (imports/plugins/core/versions/server/migrations/25_update_catalog_schema.js:28:12)
 ```
 
-
 # v1.12.0
 
 ## Breaking changes
