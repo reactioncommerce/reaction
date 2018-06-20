@@ -109,6 +109,9 @@ Meteor.publish("Product", function (productIdOrHandle, shopIdOrSlug) {
     return Products.find(selector);
   }
 
+  if (!selector.shopId) {
+    selector.shopId = product.shopId;
+  }
   // Product data for customers visiting the PDP page
   const cursor = Catalog.find({
     "$or": [{
@@ -117,7 +120,7 @@ Meteor.publish("Product", function (productIdOrHandle, shopIdOrSlug) {
       "product.slug": productIdOrHandle
     }],
     "product.type": "product-simple",
-    // "product.shopId": selector.shopId
+    "product.shopId": selector.shopId,
     "product.isVisible": true,
     "product.isDeleted": { $in: [null, false] }
   });
