@@ -1,5 +1,5 @@
 import { Migrations } from "meteor/percolate:migrations";
-import { Products } from "/lib/collections";
+import { Catalog } from "/lib/collections";
 import collections from "/imports/collections/rawCollections";
 import hashProduct from "/imports/plugins/core/catalog/server/no-meteor/utils/hashProduct";
 
@@ -12,8 +12,8 @@ Migrations.add({
     let products;
 
     do {
-      products = Products.find({
-        type: "simple"
+      products = Catalog.find({
+        "product.type": "product-simple"
       }, {
         limit: LIMIT,
         sort: {
@@ -22,7 +22,7 @@ Migrations.add({
       }).fetch();
 
       if (products.length) {
-        products.forEach((product) => Promise.await(hashProduct(product, collections)));
+        products.forEach((product) => Promise.await(hashProduct(product.product._id, collections)));
       }
     } while (products.length);
   }
