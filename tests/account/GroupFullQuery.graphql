@@ -2,7 +2,9 @@
   group(id: $id) {
     _id
     createdAt
-    createdBy
+    createdBy {
+      _id
+    }
     description
     name
     permissions
