@@ -50,6 +50,13 @@ jobs:
           key: v1-node-modules-{{ .Branch }}-{{ epoch }}
           paths:
             - node_modules
+      # mongodb-memory-server installs Mongo binary on npm install, which we need
+      # later when we run Jest integration tests
+      - save_cache:
+          name: Saving mongodb-memory-server MongoDB cache
+          key: mongodb-memory-server
+          paths:
+            - ~/.mongodb-binaries
 
   docker-build:
     <<: *defaults
@@ -177,7 +184,7 @@ jobs:
           name: Load App Plugins
           command: reaction plugins load
       - run:
-          name: Run Integration Tests
+          name: Run Meteor Integration Tests
           command: .circleci/tests.sh
 
   test-unit:
@@ -208,11 +215,6 @@ jobs:
       - run:
           name: Run Integration Tests
           command: npm run test:integration
-      - save_cache:
-          name: Saving mongodb-memory-server MongoDB cache
-          key: mongodb-memory-server
-          paths:
-            - ~/.mongodb-binaries
 
   dockerfile-lint:
     <<: *defaults
