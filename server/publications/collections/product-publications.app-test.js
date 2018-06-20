@@ -388,7 +388,6 @@ describe("Publication", function () {
       });
 
       it("should return a product based on an id", function (done) {
-        this.timeout(25000);
         const product = Collections.Products.findOne({
           isVisible: true
         });
