@@ -4,7 +4,7 @@ import { Meteor } from "meteor/meteor";
 import { ReactiveDict } from "meteor/reactive-dict";
 import { Reaction } from "/client/api";
 import Logger from "/client/modules/logger";
-import { getPrimaryMediaForItem, ReactionProduct } from "/lib/api";
+import { Catalog, getPrimaryMediaForItem, ReactionProduct } from "/lib/api";
 import { Products } from "/lib/collections";
 import { isRevisionControlEnabled } from "/imports/plugins/core/revisions/lib/api";
 import { applyProductRevision } from "/lib/api/products";
@@ -56,10 +56,10 @@ Template.productSettings.helpers({
   itemWeightActive(weight) {
     const instance = Template.instance();
     const products = instance.state.get("products");
-    const tag = ReactionProduct.getTag();
+    const tagId = ReactionProduct.getTagIdForPosition();
 
     for (const product of products) {
-      const positions = (product.positions && product.positions[tag]) || {};
+      const positions = (product.positions && product.positions[tagId]) || {};
       const currentWeight = positions.weight || 0;
       if (currentWeight === weight) {
         return "active";
@@ -89,7 +89,7 @@ Template.productSettingsListItem.events({
 Template.productSettingsListItem.helpers({
   displayPrice() {
     if (this._id) {
-      return ReactionProduct.getProductPriceRange(this._id).range;
+      return Catalog.getProductPriceRange(this._id).range;
     }
     return null;
   },
@@ -154,9 +154,12 @@ Template.productSettings.events({
   },
   "click [data-event-action=changeProductWeight]"(event) {
     event.preventDefault();
-    const tag = ReactionProduct.getTag();
+    const tagId = ReactionProduct.getTagIdForPosition();
     for (const product of this.products) {
-      const weight = Template.instance().$(event.currentTarget).data("event-data") || 0;
+      const weight =
+        Template.instance()
+          .$(event.currentTarget)
+          .data("event-data") || 0;
       const positions = {
         weight,
         updatedAt: new Date()
@@ -164,15 +167,13 @@ Template.productSettings.events({
       /* eslint no-loop-func: 1 */
       //
       //
-      Meteor.call(
-        "products/updateProductPosition", product._id, positions, tag,
-        (error) => { // eslint-disable-line no-loop-func
-          if (error) {
-            Logger.warn(error);
-            throw new Meteor.Error("access-denied", error);
-          }
+      Meteor.call("products/updateProductPosition", product._id, positions, tagId, (error) => {
+        // eslint-disable-line no-loop-func
+        if (error) {
+          Logger.warn(error);
+          throw new Meteor.Error("access-denied", error);
         }
-      );
+      });
     }
   }
 });

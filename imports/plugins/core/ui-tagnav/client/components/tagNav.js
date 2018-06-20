@@ -138,7 +138,7 @@ TagNav.propTypes = {
   canEdit: PropTypes.bool,
   children: PropTypes.node,
   closeNavbar: PropTypes.func,
-  editable: PropTypes.bool,
+  editable: PropTypes.bool, // eslint-disable-line react/boolean-prop-naming
   handleShopSelectChange: PropTypes.func,
   navButtonStyles: PropTypes.object,
   navbarAnchor: PropTypes.string,

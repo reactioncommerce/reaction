@@ -162,8 +162,8 @@ SortableTablePagination.propTypes = {
   paginationStyle: PropTypes.object,
   previousText: PropTypes.string,
   rowsText: PropTypes.string,
-  showPageJump: PropTypes.bool,
-  showPageSizeOptions: PropTypes.bool
+  showPageJump: PropTypes.bool, // eslint-disable-line react/boolean-prop-naming
+  showPageSizeOptions: PropTypes.bool // eslint-disable-line react/boolean-prop-naming
 };
 
 export default SortableTablePagination;

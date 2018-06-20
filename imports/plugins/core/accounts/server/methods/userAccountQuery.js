@@ -3,6 +3,7 @@ import { Meteor } from "meteor/meteor";
 /**
  * @name userAccountQuery
  * @method
+ * @memberof Accounts/NoMeteorQueries
  * @summary query the Accounts collection and return user account data
  * @param {Object} context - an object containing the per-request state
  * @param {String} id - id of user to query

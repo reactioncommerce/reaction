@@ -156,14 +156,14 @@ class EditContainer extends Component {
 }
 
 EditContainer.propTypes = {
-  autoHideEditButton: PropTypes.bool,
+  autoHideEditButton: PropTypes.bool, // eslint-disable-line react/boolean-prop-naming
   children: PropTypes.node,
   data: PropTypes.object,
   field: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
   hasPermission: PropTypes.bool,
   onEditButtonClick: PropTypes.func,
   onVisibilityButtonClick: PropTypes.func,
-  showsVisibilityButton: PropTypes.bool
+  showsVisibilityButton: PropTypes.bool // eslint-disable-line react/boolean-prop-naming
 };
 
 function composer(props, onData) {

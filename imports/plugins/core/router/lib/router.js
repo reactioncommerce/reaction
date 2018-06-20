@@ -177,7 +177,6 @@ class Router {
 }
 
 /**
- * pathFor
  * @summary get current router path
  * @param {String} path - path to fetch
  * @param {Object} options - url params
@@ -339,11 +338,10 @@ Router.isActiveClassName = (routeName) => {
 };
 
 /**
- * hasRoutePermission
  * check if user has route permissions
- * @access private
  * @param  {Object} route - route context
  * @return {Boolean} returns `true` if user is allowed to see route, `false` otherwise
+ * @private
  */
 function hasRoutePermission(route) {
   const routeName = route.name;
@@ -355,12 +353,11 @@ function hasRoutePermission(route) {
 
 
 /**
- * getRegistryRouteName
- * assemble route name to be standard
- * prefix/package name + registry name or route
+ * assemble route name to be standard prefix/package name + registry name or route
  * @param  {String} packageName  [package name]
  * @param  {Object} registryItem [registry object]
  * @return {String}              [route name]
+ * @private
  */
 function getRegistryRouteName(packageName, registryItem) {
   let routeName;
@@ -381,11 +378,11 @@ function getRegistryRouteName(packageName, registryItem) {
 
 /**
  * selectLayout
- * @access private
  * @param {Object} layout - element of shops.layout array
  * @param {Object} setLayout - layout
  * @param {Object} setWorkflow - workflow
  * @returns {Object} layout - return object of template definitions for Blaze Layout
+ * @private
  */
 function selectLayout(layout, setLayout, setWorkflow) {
   const currentLayout = setLayout || Session.get("DEFAULT_LAYOUT") || "coreLayout";
@@ -397,15 +394,16 @@ function selectLayout(layout, setLayout, setWorkflow) {
 }
 
 /**
- * ReactionLayout
- * sets and returns reaction layout structure
- * @access public
+ * @name ReactionLayout
+ * @method
+ * @summary sets and returns reaction layout structure
  * @param {Object} options - this router context
  * @param {String} options.layout - string of shop.layout.layout (defaults to coreLayout)
  * @param {String} options.workflow - string of shop.layout.workflow (defaults to coreLayout)
  * @returns {Object} layout - return object of template definitions for Blaze Layout
+ * @private
  */
-export function ReactionLayout(options = {}) {
+function ReactionLayout(options = {}) {
   // Find a workflow layout to render
 
   // By default we'll use the primary shop for layouts

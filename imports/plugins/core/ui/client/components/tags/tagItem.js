@@ -304,12 +304,12 @@ class TagItem extends Component {
 }
 
 TagItem.propTypes = {
-  blank: PropTypes.bool,
+  blank: PropTypes.bool, // eslint-disable-line react/boolean-prop-naming
   connectDragSource: PropTypes.func,
   connectDropTarget: PropTypes.func,
-  draggable: PropTypes.bool,
-  editable: PropTypes.bool,
-  fullWidth: PropTypes.bool,
+  draggable: PropTypes.bool, // eslint-disable-line react/boolean-prop-naming
+  editable: PropTypes.bool, // eslint-disable-line react/boolean-prop-naming
+  fullWidth: PropTypes.bool, // eslint-disable-line react/boolean-prop-naming
   i18nKeyInputPlaceholder: PropTypes.string,
   index: PropTypes.number,
   inputPlaceholder: PropTypes.string,

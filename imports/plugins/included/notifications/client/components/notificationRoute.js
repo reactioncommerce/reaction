@@ -101,7 +101,7 @@ NotificationRoute.propTypes = {
   markOneAsRead: PropTypes.func,
   moment: PropTypes.func,
   notificationList: PropTypes.array,
-  showViewAll: PropTypes.bool,
+  showViewAll: PropTypes.bool, // eslint-disable-line react/boolean-prop-naming
   unread: PropTypes.number
 };
 

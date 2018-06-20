@@ -163,5 +163,5 @@ DiscountForm.propTypes = {
   collection: PropTypes.string,
   discount: PropTypes.string,
   id: PropTypes.string,
-  validatedInput: PropTypes.bool
+  validatedInput: PropTypes.bool // eslint-disable-line react/boolean-prop-naming
 };

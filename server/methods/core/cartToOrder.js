@@ -9,7 +9,7 @@ import { Hooks, Logger, Reaction } from "/server/api";
 /**
  * @name cart/copyCartToOrder
  * @method
- * @memberof Methods/Cart
+ * @memberof Cart/Methods
  * @summary Transform Cart to Order when a payment is processed.
  * We want to copy the cart over to an order object, and give the user a new empty
  * cart. Reusing the cart schema makes sense, but integrity of the order,

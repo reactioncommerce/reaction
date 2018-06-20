@@ -3,7 +3,7 @@ import { values } from "lodash";
 import SimpleSchema from "simpl-schema";
 import { Meteor } from "meteor/meteor";
 import { Tracker } from "meteor/tracker";
-import { Reaction } from "/client/api";
+import { Logger, Reaction } from "/client/api";
 
 /**
  * @file **Internationalization**
@@ -99,16 +99,19 @@ Meteor.startup(() => {
     if (Reaction.Subscriptions.PrimaryShop.ready() && merchantShopsReadyOrSkipped) {
       // use i18n detected language to getLocale info and set it client side
       Meteor.call("shop/getLocale", (error, result) => {
-        if (result) {
-          const locale = result;
-          locale.language = getBrowserLanguage();
-
-          Reaction.Locale.set(locale);
-          localeDep.changed();
-
-          // Stop the tracker
-          c.stop();
+        if (error || !result) {
+          Logger.error(error, "Unable to get shop locale");
+          return;
         }
+
+        const locale = result;
+        locale.language = getBrowserLanguage();
+
+        Reaction.Locale.set(locale);
+        localeDep.changed();
+
+        // Stop the tracker
+        c.stop();
       });
     }
   });

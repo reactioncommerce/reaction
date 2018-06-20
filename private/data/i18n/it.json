@@ -5,14 +5,14 @@
   "translation": {
     "core": {
       "languages": {
-        "select": "Seleziona lingua"
+        "select": "Seleziona la lingua"
       },
       "currencies": {
         "select": "Seleziona la valuta"
       },
       "admin": {
         "shortcut": {
-          "addProductLabel": "Aggiungi prodotto",
+          "addProductLabel": "Aggiungi un prodotto",
           "accountsLabel": "Conti"
         },
         "dashboard": {
@@ -23,7 +23,7 @@
           "routingTitle": "Routing",
           "routingDescription": "utilità di routing",
           "filtrationLabel": "Filtrazione",
-          "filtrationDescription": "Prodotti di filtrazione per reazione"
+          "filtrationDescription": "Filtrazione prodotti"
         },
         "groups": {
           "appearance": "Aspetto",
@@ -32,18 +32,18 @@
           "description": "Aggiungi una descrizione del prodotto",
           "core": "Nucleo",
           "remove": "Rimuovi",
-          "dashboard": "Cruscotto",
+          "dashboard": "Dashboard",
           "misc": "Varie",
-          "paymentMethod": "Provider di pagamento",
+          "paymentMethod": "Metodi di pagamento",
           "utilities": "Utilità"
         },
         "settings": {
           "accountSettingsLabel": "Impostazioni dell 'account",
           "accountSettingsTitle": "login Servizi",
-          "accountSettingsDescription": "L'autenticazione tramite i provider sociali",
+          "accountSettingsDescription": "Autenticazione tramite social",
           "saveSuccess": "Impostazioni aggiornate.",
           "saveFailed": "Impossibile aggiornare le impostazioni.",
-          "addShopMemberLabel": "Aggiungere negozio membro",
+          "addShopMemberLabel": "Aggiungere utenti",
           "permissionsSettingsLabel": "Permessi",
           "localizationAndI18NLabel": "Localizzazione e i18n"
         },
@@ -52,15 +52,15 @@
         }
       },
       "accounts": {
-        "addMember": "Aggiungi membro",
-        "shopMembers": "membri negozio",
+        "addMember": "Aggiungi utente",
+        "shopMembers": "Utenti negozio",
         "guests": "Ospiti"
       },
       "app": {
-        "add": "Aggiungere",
+        "add": "Aggiungi",
         "editMode": "Modalità Modifica",
         "createContent": "creazione di contenuti",
-        "auto": "Automobile",
+        "auto": "Auto",
         "save": "Salva",
         "saveAndContinue": "Salva e continua",
         "saveChanges": "Salva i cambiamenti",
@@ -70,7 +70,7 @@
         "error": "Errore",
         "submit": "Invia",
         "delete": "Elimina",
-        "deleted": "Soppresso",
+        "deleted": "Eliminato",
         "archive": "Archivio",
         "archived": "Archiviati",
         "create": "Crea",
@@ -81,11 +81,11 @@
         "toggleEditMode": "Edit Mode Toggle",
         "warning": "Oops!",
         "unauthorizedMessage": "Non sei autorizzato a visualizzare questo contenuto.",
-        "updateSettings": "Aggiorna impostazioni",
+        "updateSettings": "Aggiorna le impostazioni",
         "monthOptions": "Scegli mese",
         "yearOptions": "Scegli anno",
         "shopSettings": "Impostazioni negozio",
-        "dashboard": "Cruscotto",
+        "dashboard": "Dashboard",
         "print": "Stampa",
         "notFound": "Questa pagina non è stata trovata.",
         "pageNotFound": "Questa pagina non è stata trovata.",
@@ -98,7 +98,7 @@
         "public": "Pubblico",
         "shortcut": {
           "addProductLabel": "Aggiungi prodotto",
-          "accountsLabel": "Conti"
+          "accountsLabel": "Accounts"
         }
       },
       "searchSettings": {
@@ -116,34 +116,34 @@
         "accountSearchSettings": {
           "panelTitle": "Impostazioni account di ricerca"
         },
-        "noSettings": "Nessuna impostazione attualmente disponibili",
+        "noSettings": "Nessuna impostazione attualmente disponibile",
         "settingsSaved": "Impostazioni di ricerca salvate",
-        "settingsfailed": "aggiornamento Impostazioni di ricerca non è riuscita"
+        "settingsfailed": "Aggiornamento delle impostazioni di ricerca fallito"
       },
       "shopSettings": {
         "localization": "Localizzazione",
         "options": "Opzioni",
         "paymentMethods": "Modalità di pagamento",
         "externalServices": "Servizi esterni",
-        "shopLocalizationSettingsSaved": "impostazioni negozio di localizzazione salvate.",
-        "shopLocalizationSettingsFailed": "Negozio aggiornamento impostazioni di localizzazione non è riuscito.",
-        "shopPaymentMethodsSaved": "Negozio impostazioni Metodi di Pagamento salvate.",
-        "shopPaymentMethodsFailed": "Negozio aggiornamento impostazioni dei metodi di pagamento non è riuscita."
+        "shopLocalizationSettingsSaved": "Impostazioni di localizzazione del negozio salvate.",
+        "shopLocalizationSettingsFailed": "Aggiornamento impostazioni di localizzazione del negozio fallito.",
+        "shopPaymentMethodsSaved": "Impostazioni metodi di pagamento salvate.",
+        "shopPaymentMethodsFailed": "Aggiornamento impostazioni metodi di pagamento fallito."
       },
       "notifications": {
         "body": {
-          "noNotifications": "Non ci sono ancora le notifiche",
-          "markAllAsRead": "Segna tutti come letti",
-          "recent": "Recente",
+          "noNotifications": "Ancora nessuna notifica.",
+          "markAllAsRead": "Segna tutte come lette",
+          "recent": "Recenti",
           "viewAll": "Guarda tutto"
         },
         "messages": {
-          "orderCanceled": "Il tuo ordine è stato annullato.",
+          "orderCanceled": "Il vostro ordine è stato annullato.",
           "newOrder": "Il vostro ordine è in fase di elaborazione.",
           "forAdmin": "Hai un nuovo ordine.",
           "orderDelivered": "L'ordine è stato consegnato.",
           "orderProcessing": "Il vostro ordine è in fase di elaborazione.",
-          "orderShipped": "Il tuo ordine è stato spedito."
+          "orderShipped": "Il vostro ordine è stato spedito."
         }
       },
       "header": {
@@ -155,9 +155,9 @@
         "whenYouAreDone": "quando hai completato le modifiche.",
         "tags": "Tags",
         "tagsAdd": "Aggiungi tag",
-        "tagExists": "Variabile esiste già, o è vuoto.",
-        "tagInUse": "Tag è in uso e non può essere eliminato.",
-        "dropFiles": "Drop dei file da caricare",
+        "tagExists": "Il tag esiste già, o è vuoto.",
+        "tagInUse": "Questo tag è in uso e non può essere eliminato.",
+        "dropFiles": "Rilascia qui i file da caricare",
         "addInventory": "Aggiungi inventario",
         "barcode": "Codice a barre",
         "confirmDeleteBarcode": "Sei sicuro di voler eliminare il codice a barre",
@@ -171,7 +171,7 @@
         "addToCart": "Aggiungi al carrello",
         "chooseOptions": "Si prega di scegliere le opzioni prima di aggiungere al carrello",
         "outOfStock": "Spiacenti, quest'oggetto non è disponibile!",
-        "productArchiveError": "C'è stato un errore durante l'invio {{product}} agli archivi.",
+        "productArchiveError": "C'è stato un errore durante l'invio di {{product}} agli archivi.",
         "archiveErrorTheProduct": "il prodotto",
         "publishFirst": "Pubblica il prodotto prima di aggiungerlo al carrello.",
         "quantityAbbreviation": "Qtà",
@@ -183,10 +183,10 @@
         "limitedSupply": "limitata Fornitura",
         "publishProductVisible": "{{product}} è ora visibile",
         "publishProductHidden": "{{product}} è ora nascosto",
-        "clonedAlert": "Cloned {{product}}",
-        "clonedAlert_plural": "Cloned {{product}}",
-        "archivedAlert": "Archiviato {{product}}",
-        "archivedAlert_plural": "Archiviato {{product}}",
+        "clonedAlert": "{{product}} clonato",
+        "clonedAlert_plural": "{{product}} clonati",
+        "archivedAlert": "{{product}} archiviato",
+        "archivedAlert_plural": "{{product}} archiviati",
         "theProduct": "il prodotto",
         "theSelectedProducts": "i prodotti selezionati",
         "startTracking": "Inizio di monitoraggio",
@@ -200,7 +200,7 @@
         "tagName": "Nome tag",
         "addTag": "Aggiungi Tag",
         "updateTag": "Aggiornamento Tag",
-        "addGroupTag": "Aggiungere Group Tag",
+        "addGroupTag": "Aggiungi gruppo di Tag",
         "addSubTag": "Aggiungi Tag Sub",
         "removeTag": "Rimuovi tag",
         "createTag": "Crea tag"
@@ -210,8 +210,8 @@
         "productSettings": "Impostazioni prodotto",
         "product": "Prodotto",
         "size": "Dimensione",
-        "title": "Titolo prodotto",
-        "untitledProduct": "Senza titolo prodotto",
+        "title": "Nome prodotto",
+        "untitledProduct": "Prodotto senza nome",
         "parmalink": "Permalink",
         "pageTitle": "Titolo pagina prodotto",
         "vendor": "Venditore",
@@ -222,7 +222,7 @@
         "pinterestMsg": "Messaggio Pinterest",
         "googleplusMsg": "Messaggio Google+",
         "editVariant": "Modifica Variante",
-        "variantOptions": "Opzioni Variant",
+        "variantOptions": "Opzioni Varianti",
         "variantDetails": "variante Dettagli",
         "duplicateVariant": "Duplicare",
         "addVariantOption": "Aggiungi opzione",
@@ -232,7 +232,7 @@
         "removeVariantConfirm": "Sei sicuro di voler eliminare {{title}}",
         "restoreVariantConfirm": "Sei sicuro di voler ripristinare {{title}} dal cestino?",
         "restoreVariantFail": "Impossibile ripristinare {{title}}.",
-        "archiveVariantConfirm": "Sei sicuro che si desidera archiviare {{title}}",
+        "archiveVariantConfirm": "Sei sicuro di voler archiviare {{title}}",
         "thisVariant": "questa variante",
         "thisOption": "questa opzione",
         "duplicateProduct": "Duplica prodotto",
@@ -240,20 +240,20 @@
         "toggleSize": "Toggle Dimensioni",
         "archiveProduct": "Archivio prodotti",
         "restoreProduct": "Ripristino del prodotto dal Cestino",
-        "archiveThisProduct": "Archivia questo prodotto?",
-        "archiveSelectedProducts": "Archivio selezionato prodotti?",
+        "archiveThisProduct": "Archiviare questo prodotto?",
+        "archiveSelectedProducts": "Archiviare i prodotti selezionati?",
         "publish": "Pubblica",
         "moreOptions": "Più opzioni",
         "details": "Dettagli",
-        "noSelectedProducts": "Nessun prodotto selezionato. Usa il",
-        "orShiftCtrlCmd": " o spostamento | ctrl | cmd + click sui prodotti per selezionare più. Con spostamento è possibile selezionare un intervallo contiguo di prodotti.",
+        "noSelectedProducts": "Nessun prodotto selezionato. Usa il ",
+        "orShiftCtrlCmd": " o shift|ctrl|cmd + click sui prodotti per selezionarne molteplici. Con shift è possibile selezionare un intervallo contiguo di prodotti.",
         "makeVisible": "rendere visibile",
         "hideProduct": "Nascondi prodotto",
         "productIsVisible": "Il prodotto è visibile",
         "productIsNotVisible": "Il prodotto non è visibile"
       },
       "productVariant": {
-        "addVariantOptions": "Aggiungere opzioni per attivare 'Aggiungi al carrello' butto",
+        "addVariantOptions": "Aggiungere opzioni per attivaren il bottone 'Aggiungi al carrello'",
         "inventoryQuantity": "Quantità",
         "title": "Etichetta",
         "price": "Prezzo",
@@ -273,7 +273,7 @@
         "inventoryPolicy": "Nega quando esaurito",
         "inventoryPolicyLabel": "Non vendere la variante di prodotto quando non è in magazzino",
         "lowInventoryWarningThreshold": "Avvertire @",
-        "lowInventoryWarningThresholdLabel": "Avvertire la clientela che il prodotto sarà vicino a esaurito quando la quantità raggiunge la soglia successiva",
+        "lowInventoryWarningThresholdLabel": "Avvertire la clientela che il prodotto sarà vicino all'esaurimento quando la quantità raggiunge la soglia successiva",
         "originCountry": "Paese di origine",
         "selectTaxCode": "Seleziona Codice Fiscale"
       },
@@ -301,7 +301,7 @@
         "checkout": "Vai al checkout",
         "new": "Nuovo",
         "coreOrderWorkflow/created": "Creato",
-        "coreOrderWorkflow/processing": "lavorazione",
+        "coreOrderWorkflow/processing": "in lavorazione",
         "coreOrderWorkflow/completed": "Completato",
         "coreOrderWorkflow/canceled": "Annullato",
         "coreOrderWorkflow/picked": "raccolto",
@@ -331,22 +331,22 @@
         "cancelOrderLabel": "Annulla Ordine",
         "makeAdjustments": "Effettuare le regolazioni",
         "capturePayment": "Cattura pagamento",
-        "paymentCaptured": "pagamento Captured",
+        "paymentCaptured": "pagamento catturato",
         "capturedTotal": "catturato totale",
         "canceledLabel": "Annullato",
         "refundAmount": "Importo rimborsato",
         "cancelOrder": "Vuoi annullare questo ordine?",
         "applyRefundToThisOrder": "Applicare il rimborso di {{currencySymbol}}{{refund}} a questo ordine?",
         "applyRefundDuringCancelOrder": "Ciò restituisce il totale dell'ordine di {{currencySymbol}}{{invoiceTotal}}",
-        "cancelOrderThenRestock": "Sì, e riposare",
-        "cancelOrderNoRestock": "Sì, ma non ripieno",
+        "cancelOrderThenRestock": "Sì, e rifornire",
+        "cancelOrderNoRestock": "Sì, ma non rifornire",
         "applyRefund": "applicare rimborso",
         "refunding": "rimborso",
         "applyDiscount": "applicare Sconto",
         "adjustedTotal": "totale rettificato",
-        "invalidDiscount": "Lo sconto non può essere superiore a prezzo totale originale",
-        "fullDiscountWarning": "L'applicazione di uno sconto del 100% invaliderà / annullare l'ordine con il vostro fornitore di pagamento",
-        "invalidRefund": "Rimborso (s) totale non può essere superiore a totale rettificato",
+        "invalidDiscount": "Lo sconto non può essere superiore al prezzo totale originale",
+        "fullDiscountWarning": "L'applicazione di uno sconto del 100% invaliderà / annullerà l'ordine con il vostro fornitore di pagamento",
+        "invalidRefund": "Il rimborso (s) totale non può essere superiore al totale rettificato",
         "processor": "Processore",
         "placed": "collocato",
         "on": "su",
@@ -406,8 +406,8 @@
         "shipmentPacked": "Tutti gli oggetti Pranzo",
         "shipped": "Spedito",
         "delivered": "Consegnato",
-        "shippingNotifyCustomer": "Notifica il cliente che i loro articoli saranno la spedizione presto.",
-        "resendNotification": "Notifica della spedizione Rispedisci"
+        "shippingNotifyCustomer": "Notifica il cliente che i loro articoli saranno presto in spedizione.",
+        "resendNotification": "Rispedisci notifica della spedizione"
       },
       "orderWorkflow": {
         "orderDetails": "Dettagli ordine",
@@ -417,28 +417,28 @@
       },
       "cartCheckout": {
         "surprise": "Woah!",
-        "emptyCheckoutCart": "sembra che il carrello è vuoto!"
+        "emptyCheckoutCart": "sembra che il carrello sia vuoto!"
       },
       "cartCompleted": {
         "thankYou": "Grazie!",
-        "itemsFrom": "item (s) da",
+        "itemsFrom": "Oggetto (s) da",
         "yourOrderIsNow": "Il vostro ordine è ora",
         "summaryMessage": "Grazie per il vostro ordine.",
-        "submitted": "presentata",
-        "processing": "lavorazione",
+        "submitted": "inviato",
+        "processing": "in lavorazione",
         "completed": "completato",
-        "registerGuest": "Ciao! Aggiungere una e-mail e ricevere gli aggiornamenti di ordine.",
-        "trackYourDelivery": "aggiornamenti ordine verrà inviato a",
+        "registerGuest": "Ciao! Aggiungere una e-mail per ricevere gli aggiornamenti.",
+        "trackYourDelivery": "Gli aggiornamenti per l'ordine verranno inviati a",
         "noOrdersFound": "Nessun ordine trovato.",
         "adminMessage": "Stai visualizzando gli ordini come amministratore"
       },
       "checkoutLogin": {
-        "welcome": "Benvenuto, è così bello vederti.",
+        "welcome": "Benvenuto, è bello vederti!",
         "loginCompleted": "conto completato",
         "createOrLogin": "Crea un account o accedi",
         "guestOrLogin": "Entra o checkout come ospite",
         "continueAsGuest": "Continua come ospite",
-        "guestMessage": "È possibile checkout senza creare un account. Avrete la possibilità di creare un account in seguito.",
+        "guestMessage": "È possibile effettuare il checkout senza creare un account. Avrete la possibilità di creare un account in seguito.",
         "addEmail": "Aggiungi e-mail"
       },
       "addressBookGrid": {
@@ -446,13 +446,13 @@
         "chooseAddress": "Scegli indirizzo di spedizione e di fatturazione",
         "createDefault": "Crea il tuo indirizzo predefinito",
         "edit": "Modifica",
-        "removeAddress": "rimuovere Indirizzo",
+        "removeAddress": "rimuovi Indirizzo",
         "selectShippingAddress": "selezionare un indirizzo di spedizione",
         "selectBillingAddress": "Selezionare un indirizzo di fatturazione",
         "cantRemoveThisAddress": "Non è possibile rimuovere questo indirizzo: {{err}}"
       },
       "addressBookAdd": {
-        "addAddress": "Aggiungere una nuova voce indirizzo",
+        "addAddress": "Aggiungi un nuovo indirizzo",
         "createAddress": "Crea il tuo indirizzo predefinito",
         "failedToAddAddress": "Impossibile aggiungere l'indirizzo: {{err}}",
         "validatedAddress": "Le modifiche apportate al tuo indirizzo basano su convalida. Assicuratevi che questo è corretto"
@@ -468,12 +468,12 @@
       "corePackageConfig": {
         "settings": {
           "public": {
-            "allowGuestCheckout": "Consentire Ospite Checkout"
+            "allowGuestCheckout": "Permetti il checkout come Ospite"
           },
           "openexchangerates": {
             "appId": "Aprire Tassi di cambio App Id",
             "refreshPeriod": "Open scambio frequenze di aggiornamento periodo",
-            "refreshPeriodPlaceholder": "cioè ogni 1 ora"
+            "refreshPeriodPlaceholder": "per es. ogni 1 ora"
           },
           "google": {
             "clientId": "Google client ID",
@@ -484,14 +484,14 @@
       "shop": {
         "defaultPaymentMethod": "Metodo di pagamento predefinito",
         "name": "Nome",
-        "namePlaceholder": "Shop Name",
+        "namePlaceholder": "Nome del negozio",
         "description": "Descrizione",
-        "descriptionPlaceholder": "Descrivi la tua negozio per SEO",
+        "descriptionPlaceholder": "Descrivi il tuo negozio per SEO",
         "descriptionTooltip": "Descrizione Meta per SEO",
         "email": "Email",
-        "emailPlaceholder": "Contatto principale Email",
-        "keywords": "parole",
-        "keywordsPlaceholder": "Meta parole chiave per SEO",
+        "emailPlaceholder": "Principale Email",
+        "keywords": "keywords",
+        "keywordsPlaceholder": "Parole chiave per SEO",
         "language": "Lingua Base",
         "addressBook": {
           "company": "Società",

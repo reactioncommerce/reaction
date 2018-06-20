@@ -6,7 +6,6 @@ import { Meteor } from "meteor/meteor";
 import { Session } from "meteor/session";
 import { Reaction } from "/client/api";
 import { ITEMS_INCREMENT } from "/client/config/defaults";
-import { ReactionProduct } from "/lib/api";
 import { Catalog, Tags, Shops } from "/lib/collections";
 import ProductGridCustomer from "../components/customer/productGrid";
 
@@ -15,7 +14,7 @@ const wrapComponent = (Comp) => (
     static propTypes = {
       canLoadMoreProducts: PropTypes.bool,
       productsSubscription: PropTypes.object,
-      showNotFound: PropTypes.bool
+      showNotFound: PropTypes.bool // eslint-disable-line react/boolean-prop-naming
     };
 
     constructor(props) {
@@ -49,41 +48,37 @@ function composer(props, onData) {
 
   let canLoadMoreProducts = false;
 
+  const queryParams = {};
   const slug = Reaction.Router.getParam("slug");
   const shopIdOrSlug = Reaction.Router.getParam("shopSlug");
+  let tagIdForPosition = "_default";
 
-  const tag = Tags.findOne({ slug }) || Tags.findOne(slug);
-  const scrollLimit = Session.get("productScrollLimit");
-  let tags = {}; // this could be shop default implementation needed
-  let shopIds = {};
+  if (slug) {
+    const tag = Tags.findOne({ slug }) || Tags.findOne({ _id: slug });
 
-  if (tag) {
-    tags = { tags: [tag._id] };
+    // if we get an invalid slug, don't return all products
+    if (!tag) {
+      onData(null, {
+        showNotFound: true
+      });
+
+      return;
+    }
+    queryParams.tagIds = [tag._id];
+    tagIdForPosition = tag._id;
   }
 
   if (shopIdOrSlug) {
-    shopIds = { shops: [shopIdOrSlug] };
+    queryParams.shopIdsOrSlugs = [shopIdOrSlug];
   }
 
-  // if we get an invalid slug, don't return all products
-  if (!tag && slug) {
-    onData(null, {
-      showNotFound: true
-    });
-
-    return;
+  const queryString = Reaction.Router.current().query;
+  if (queryString) {
+    queryParams.query = queryString.query;
   }
 
-  const currentTag = ReactionProduct.getTag();
-
-  const sort = {
-    [`positions.${currentTag}.position`]: 1,
-    [`positions.${currentTag}.createdAt`]: 1,
-    createdAt: 1
-  };
-
-  const queryParams = Object.assign({}, tags, Reaction.Router.current().query, shopIds);
-  const productsSubscription = Meteor.subscribe("Products/grid", scrollLimit, queryParams, sort);
+  const scrollLimit = Session.get("productScrollLimit");
+  const productsSubscription = Meteor.subscribe("Products/grid", scrollLimit, queryParams);
 
   if (productsSubscription.ready()) {
     window.prerenderReady = true;
@@ -96,26 +91,35 @@ function composer(props, onData) {
     ]
   }).map((activeShop) => activeShop._id);
 
-  const productCursor = Catalog.find({
-    ancestors: [],
-    type: { $in: ["product-simple"] },
-    shopId: { $in: activeShopsIds }
+  const catalogCursor = Catalog.find({
+    "product.type": "product-simple",
+    "shopId": { $in: activeShopsIds }
   }, {
-    $sort: sort
+    $sort: {
+      [`product.positions.${tagIdForPosition}.position`]: 1,
+      createdAt: -1
+    }
   });
 
-  canLoadMoreProducts = productCursor.count() >= Session.get("productScrollLimit");
+  canLoadMoreProducts = catalogCursor.count() >= scrollLimit;
 
-  const products = productCursor.fetch();
+  const products = catalogCursor.map((catalogItem) => catalogItem.product);
+
+  const currentShop = Shops.findOne({
+    _id: Reaction.getPrimaryShopId()
+  });
+
   onData(null, {
     canLoadMoreProducts,
     products,
-    productsSubscription
+    productsSubscription,
+    shopCurrencyCode: currentShop.currency
   });
 }
 
 registerComponent("ProductsCustomer", ProductGridCustomer, [
-  composeWithTracker(composer)
+  composeWithTracker(composer),
+  wrapComponent
 ]);
 
 export default compose(

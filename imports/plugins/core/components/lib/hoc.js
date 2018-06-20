@@ -23,7 +23,7 @@ if (Meteor.isClient) {
  * @summary A wrapper to reactively inject the current user into a component
  * @param {Function|React.Component} component - the component to wrap
  * @return {Function} the new wrapped component with a "currentUser" prop
- * @memberof Components
+ * @memberof Components/Helpers
  */
 export function withCurrentUser(component) {
   return composeWithTracker((props, onData) => {
@@ -38,7 +38,7 @@ export function withCurrentUser(component) {
  * @summary A wrapper to reactively inject the moment package into a component
  * @param {Function|React.Component} component - the component to wrap
  * @return {Function} the new wrapped component with a "moment" prop
- * @memberof Components
+ * @memberof Components/Helpers
  */
 export function withMoment(component) {
   return lifecycle({
@@ -49,6 +49,7 @@ export function withMoment(component) {
           this.setState({
             moment
           });
+          return null;
         })
         .catch((error) => {
           Logger.debug(error, "moment.js async import error");
@@ -64,7 +65,7 @@ export function withMoment(component) {
  * @summary A wrapper to reactively inject the moment package into a component
  * @param {Function|React.Component} component - the component to wrap
  * @return {Function} the new wrapped component with a "moment" prop
- * @memberof Components
+ * @memberof Components/Helpers
  */
 export function withMomentTimezone(component) {
   return lifecycle({
@@ -74,6 +75,7 @@ export function withMomentTimezone(component) {
           this.setState({
             momentTimezone: moment.tz
           });
+          return null;
         })
         .catch((error) => {
           Logger.debug(error, "moment.js async import error");
@@ -90,7 +92,7 @@ export function withMomentTimezone(component) {
  * This assumes you have signed up and are not an anonymous user.
  * @param {Function|React.Component} component - the component to wrap
  * @return {Function} the new wrapped component with a "currentAccount" prop
- * @memberof Components
+ * @memberof Components/Helpers
  */
 export function withCurrentAccount(component) {
   return composeWithTracker((props, onData) => {
@@ -125,7 +127,7 @@ export function withCurrentAccount(component) {
  * Sets a boolean 'isAdmin' prop on the wrapped component.
  * @param {Function|React.Component} component - the component to wrap
  * @return {Function} the new wrapped component with an "isAdmin" prop
- * @memberof Components
+ * @memberof Components/Helpers
  */
 export function withIsAdmin(component) {
   return composeWithTracker((props, onData) => {
@@ -141,7 +143,7 @@ export function withIsAdmin(component) {
  * @param  {Array|String} roles String or array of strings of permissions to check. default: roles=["guest", "anonymous"]
  * @param  {String} group Slug title of a group to check against. Group option supercedes roles option. default: group="customer".
  * @return {Function} the new wrapped component with a "hasPermissions" prop
- * @memberof Components
+ * @memberof Components/Helpers
  */
 export function withPermissions({ roles = ["guest", "anonymous"], group }) {
   return composeWithTracker((props, onData) => {
@@ -177,7 +179,7 @@ export function withPermissions({ roles = ["guest", "anonymous"], group }) {
  * Sets a boolean 'isOwner' prop on the wrapped component.
  * @param {Function|React.Component} component - the component to wrap
  * @return {Function} the new wrapped component with an "isOwner" prop
- * @memberof Components
+ * @memberof Components/Helpers
  */
 export function withIsOwner(component) {
   return composeWithTracker((props, onData) => {

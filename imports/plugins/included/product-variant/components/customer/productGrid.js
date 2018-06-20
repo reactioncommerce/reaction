@@ -8,7 +8,8 @@ class ProductGrid extends Component {
     canLoadMoreProducts: PropTypes.bool,
     loadProducts: PropTypes.func,
     products: PropTypes.array,
-    productsSubscription: PropTypes.object
+    productsSubscription: PropTypes.object,
+    shopCurrencyCode: PropTypes.string.isRequired
   }
 
   componentDidMount() {
@@ -57,16 +58,17 @@ class ProductGrid extends Component {
 
   // render the product grid
   renderProductGrid() {
-    const { products } = this.props;
-    const currentTag = ReactionProduct.getTag();
+    const { products, shopCurrencyCode } = this.props;
+    const currentTagId = ReactionProduct.getTagIdForPosition();
 
     return (
       <div className="product-grid">
         <ul className="product-grid-list list-unstyled" id="product-grid-list">
           {products.map((product) => (
             <Components.ProductGridItemCustomer
+              shopCurrencyCode={shopCurrencyCode}
               product={product}
-              position={(product.positions && product.positions[currentTag]) || {}}
+              position={(product.positions && product.positions[currentTagId]) || {}}
               key={product._id}
             />
           ))}

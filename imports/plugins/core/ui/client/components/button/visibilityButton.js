@@ -9,6 +9,7 @@ import IconButton from "./iconButton";
  * Use this button in places where you need a pre-styled button for toggling visibility
  * states of components.
  *
+ * @memberof Components
  * @param {Object} props Props passed into component
  * @returns {IconButton} Retruns an IconButton component with pre-configured icons for visibility
  */

@@ -36,7 +36,7 @@ class RevisionControlSettings extends Component {
 }
 
 RevisionControlSettings.propTypes = {
-  checked: PropTypes.bool,
+  checked: PropTypes.bool, // eslint-disable-line react/boolean-prop-naming
   label: PropTypes.string,
   onUpdateSettings: PropTypes.func,
   settings: PropTypes.object

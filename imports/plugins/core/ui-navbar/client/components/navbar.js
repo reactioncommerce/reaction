@@ -6,7 +6,7 @@ class NavBar extends Component {
   static propTypes = {
     brandMedia: PropTypes.object,
     hasProperPermission: PropTypes.bool,
-    searchEnabled: PropTypes.bool,
+    searchEnabled: PropTypes.bool, // eslint-disable-line react/boolean-prop-naming
     shop: PropTypes.object,
     visibility: PropTypes.object.isRequired
   };

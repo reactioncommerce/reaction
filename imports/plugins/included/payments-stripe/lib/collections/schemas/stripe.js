@@ -3,14 +3,14 @@ import { check } from "meteor/check";
 import { Tracker } from "meteor/tracker";
 import { PackageConfig } from "/lib/collections/schemas/registry";
 import { registerSchema } from "@reactioncommerce/schemas";
-/*
- *  Meteor.settings.stripe =
- *    mode: false  #sandbox
- *    api_key: ""
- *  see: https://stripe.com/docs/api
- */
 
-const StripeConnectAuthorizationCredentials = new SimpleSchema({
+/**
+ * @name StripeConnectAuthorizationCredentials
+ * @memberof Schemas
+ * @type {SimpleSchema}
+ * @see {@link https://stripe.com/docs/api}
+ */
+export const StripeConnectAuthorizationCredentials = new SimpleSchema({
   token_type: { // eslint-disable-line camelcase
     type: String
   },
@@ -36,6 +36,11 @@ const StripeConnectAuthorizationCredentials = new SimpleSchema({
 
 registerSchema("StripeConnectAuthorizationCredentials", StripeConnectAuthorizationCredentials);
 
+/**
+ * @name StripePackageConfig
+ * @memberof Schemas
+ * @type {SimpleSchema}
+ */
 export const StripePackageConfig = PackageConfig.clone().extend({
   // Remove blackbox: true from settings obj
   "settings": {
@@ -64,6 +69,10 @@ export const StripePackageConfig = PackageConfig.clone().extend({
     label: "Connect Authorization Credentials",
     optional: true
   },
+  "settings.reaction-stripe": {
+    type: Object,
+    defaultValue: {}
+  },
   "settings.reaction-stripe.support": {
     type: Array,
     label: "Payment provider supported methods"
@@ -72,7 +81,10 @@ export const StripePackageConfig = PackageConfig.clone().extend({
     type: String,
     allowedValues: ["Authorize", "De-authorize", "Capture", "Refund"]
   },
-
+  "settings.public": {
+    type: Object,
+    defaultValue: {}
+  },
   // Public Settings
   "settings.public.client_id": {
     type: String,
@@ -83,6 +95,11 @@ export const StripePackageConfig = PackageConfig.clone().extend({
 
 registerSchema("StripePackageConfig", StripePackageConfig);
 
+/**
+ * @name StripePayment
+ * @memberof Schemas
+ * @type {SimpleSchema}
+ */
 export const StripePayment = new SimpleSchema({
   payerName: {
     type: String,
