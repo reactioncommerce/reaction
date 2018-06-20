@@ -12,6 +12,7 @@ import { Reaction } from "/server/api";
 import * as Collections from "/lib/collections";
 import Fixtures from "/server/imports/fixtures";
 import publishProductsToCatalog from "/imports/plugins/core/catalog/server/no-meteor/utils/publishProductsToCatalog";
+import publishProductToCatalog from "/imports/plugins/core/catalog/server/no-meteor/utils/publishProductToCatalog";
 import collections from "/imports/collections/rawCollections";
 
 Fixtures();
@@ -387,7 +388,7 @@ describe("Publication", function () {
         const product = Collections.Products.findOne({
           isVisible: true
         });
-        Promise.await(publishProductsToCatalog([product._id], collections));
+        Promise.await(publishProductToCatalog(product, collections));
 
         sandbox.stub(Reaction, "getShopId", () => shopId);
 
