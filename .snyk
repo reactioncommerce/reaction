@@ -5,7 +5,7 @@ ignore:
   'npm:hoek:20180212':
     - '*':
         reason: 'Possible false positive, waiting on requestjs to updated hawk version'
-        expires: 2018-06-20T00:00:00.000Z
+        expires: 2018-06-30T00:00:00.000Z
   'npm:shelljs:20140723':
     - eslint-config-react-tools > eslint-plugin-class-property > eslint > shelljs:
         reason: no patch available
