@@ -334,10 +334,11 @@ afterAll(() => {
   restore$getCatalogProductMedia();
 });
 
-test("hash was successfully created, get product hash", async () => {
+test("hash", async () => {
   mockCollections.Products.updateOne.mockReturnValueOnce(Promise.resolve({ result: { ok: 1 } }));
-  mockCollections.Products.findOne.mockReturnValueOnce(Promise.resolve(updatedMockProduct));
+  mockCollections.Products.findOne.mockReturnValue(Promise.resolve(updatedMockProduct));
   const spec = await hashProduct(mockProduct._id, mockCollections);
+
   expect(spec.hash).toEqual(expectedHash);
 });
 

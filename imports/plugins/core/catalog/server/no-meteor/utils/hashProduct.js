@@ -5,14 +5,10 @@ import Random from "@reactioncommerce/random";
  * @method createProductHash
  * @summary Create a hash of a product to compare for updates
  * @memberof Catalog
- * @param {Object} product - A product object
- * @param {Object} collections - Raw mongo collections
+ * @param {String} product - A product object
  * @return {String} product hash
  */
-async function createProductHash(productId, collections) {
-  const { Products } = collections;
-  const product = await Products.findOne({ _id: productId });
-
+function createProductHash(product) {
   const hashableFields = {
     _id: product._id,
     ancestors: product.ancestors,
@@ -66,7 +62,9 @@ async function createProductHash(productId, collections) {
 export default async function hashProduct(productId, collections) {
   const { Products } = collections;
 
-  const productHash = await createProductHash(productId, collections);
+  const product = await Products.findOne({ _id: productId });
+
+  const productHash = createProductHash(product, collections);
 
   // Insert/update product document with hash field
   const result = await Products.updateOne(
