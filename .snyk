@@ -29,7 +29,7 @@ ignore:
   'npm:stringstream:20180511':
     - '*':
         reason: Awaiting dependency updates of request 2.83.0 to gte 2.86
-        expires: 2018-06-20T00:00:00.000Z
+        expires: 2018-06-30T00:00:00.000Z
   'npm:deep-extend:20180409':
     - '*':
         reason: No patch available https://github.com/unclechu/node-deep-extend/issues/41
