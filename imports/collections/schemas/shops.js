@@ -7,7 +7,6 @@ import { Layout } from "./layouts";
 import { Metafield } from "./metafield";
 import { Workflow } from "./workflow";
 
-
 /**
  * @name CustomEmailSettings
  * @memberof Schemas
