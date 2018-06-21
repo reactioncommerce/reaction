@@ -3,7 +3,7 @@ import { Shops } from "/lib/collections";
 import { convertWeight, convertLength } from "/lib/api";
 
 Migrations.add({
-  version: 25,
+  version: 27,
   up() {
     const shops = Shops.find().fetch();
     shops.forEach((shop) => {
