@@ -36,7 +36,7 @@ class ProductDetail extends Component {
 
 ProductDetail.propTypes = {
   cartQuantity: PropTypes.number,
-  editable: PropTypes.bool,
+  editable: PropTypes.bool, // eslint-disable-line react/boolean-prop-naming
   hasAdminPermission: PropTypes.bool,
   layout: PropTypes.string,
   layoutName: PropTypes.string,

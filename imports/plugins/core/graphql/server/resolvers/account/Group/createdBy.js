@@ -1,6 +1,7 @@
 /**
- * @name createdBy
+ * @name "Group.createdBy"
  * @method
+ * @memberof Accounts/GraphQL
  * @summary query the Accounts collection and return user account data
  * @param {Object} args - an object of all arguments that were sent by the previous resolver
  * @param {Object} args.createdBy - a string account id

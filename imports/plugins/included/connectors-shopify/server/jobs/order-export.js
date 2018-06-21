@@ -36,6 +36,7 @@ export default () => {
       exportToShopify(order)
         .then((exportedOrders) => {
           Logger.debug("exported order(s)", exportedOrders);
+          return null;
         })
         .catch((error) => {
           Logger.error("Encountered error when exporting to shopify", error);

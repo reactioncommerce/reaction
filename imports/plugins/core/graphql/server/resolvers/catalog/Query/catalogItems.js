@@ -3,8 +3,9 @@ import { decodeShopOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/sh
 import { decodeTagOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/tag";
 
 /**
- * @name catalogItems
+ * @name "Query.catalogItems"
  * @method
+ * @memberof Catalog/GraphQL
  * @summary Get a list of catalogItems
  * @param {Object} _ - unused
  * @param {ConnectionArgs} args - an object of all arguments that were sent by the client
@@ -15,6 +16,13 @@ import { decodeTagOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/tag
  */
 export default async function catalogItems(_, args, context) {
   const { shopIds: opaqueShopIds, tagIds: opaqueTagIds, ...connectionArgs } = args;
+
+  if (connectionArgs.sortBy === "minPrice") {
+    if (typeof connectionArgs.sortByPriceCurrencyCode !== "string") {
+      throw new Error("sortByPriceCurrencyCode is required when sorting by minPrice");
+    }
+    connectionArgs.sortBy = `product.pricing.${connectionArgs.sortByPriceCurrencyCode}.minPrice`;
+  }
 
   const shopIds = opaqueShopIds && opaqueShopIds.map(decodeShopOpaqueId);
   const tagIds = opaqueTagIds && opaqueTagIds.map(decodeTagOpaqueId);

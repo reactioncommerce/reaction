@@ -11,13 +11,12 @@ import { Hooks } from "/server/api";
 */
 
 /**
- * @method beforeUpdateOrderWorkflow hook
- *
  * @summary Updates an order's workflow before persisting order.
  *
  * @param {Order} order - Order object, before any modifications
  * @param {Object} options - Includes userId, modifier and validation
  * @return {Boolean} true if document should be updated, false otherwise
+ * @private
 */
 Hooks.Events.add("beforeUpdateOrderWorkflow", (order, options) => {
   const { userId, modifier } = options;

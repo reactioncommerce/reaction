@@ -22,4 +22,6 @@ import "./21_clean_cart_shipment_method";
 import "./22_register_verify_account";
 import "./23_drop_tempstore_collections";
 import "./24_publish_all_existing_visible_products";
+import "./25_update_catalog_schema.js";
+import "./26_remove_revision_control";
 import "./27_default_parcel_size";

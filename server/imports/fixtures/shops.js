@@ -1,7 +1,7 @@
 import faker from "faker";
 import _ from "lodash";
+import Random from "@reactioncommerce/random";
 import { Factory } from "meteor/dburles:factory";
-import { Random } from "meteor/random";
 import { Shops } from "/lib/collections";
 
 /**
@@ -166,7 +166,7 @@ const shop = {
     enabled: true
   }],
   workflow: {
-    status: "active"
+    status: "new"
   },
   public: true,
   brandAssets: [

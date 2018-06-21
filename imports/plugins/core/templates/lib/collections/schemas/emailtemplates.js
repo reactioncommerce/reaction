@@ -2,18 +2,18 @@ import SimpleSchema from "simpl-schema";
 import { check } from "meteor/check";
 import { Tracker } from "meteor/tracker";
 import { Templates } from "/lib/collections";
-import { shopIdAutoValue } from "/lib/collections/schemas/helpers";
 import { registerSchema } from "@reactioncommerce/schemas";
 
 /**
- * EmailTemplates Schema
-*/
-
+ * @name EmailTemplates
+ * @memberof Schemas
+ * @type {SimpleSchema}
+ * @summary EmailTemplates schema
+ */
 export const EmailTemplates = new SimpleSchema({
   "shopId": {
     type: String,
     index: 1,
-    autoValue: shopIdAutoValue,
     label: "Template ShopId"
   },
   "name": {

@@ -1,14 +1,11 @@
 import { GraphQLScalarType } from "graphql";
 import { Kind } from "graphql/language";
 
-const MAX_LIMIT = 50;
+const MAX_LIMIT = 200;
 
 /**
- * @name parseValue
- * @method
- * @summary Adjusts value to be between 1 and MAX_LIMIT, inclusive
- * @param {Number} value An integer provided by the client for the requested limit
- * @returns The adjusted integer value.
+ * Adjusts value to be between 1 and MAX_LIMIT, inclusive
+ * @private
  */
 function parseValue(value) {
   // Note that we do not have to do isNaN(value) check here because GraphQLScalarType will not call this for isNaN.

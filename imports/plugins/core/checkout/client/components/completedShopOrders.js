@@ -5,6 +5,7 @@ import CompletedOrderItem from "./completedOrderItem";
 
 /**
  * @summary Displays the order breakdown for each Shop
+ * @memberof Components
  * @param {Object} props - React PropTypes
  * @property {String} shopName - The name of the shop
  * @property {Array} items - an array of individual items for this shop

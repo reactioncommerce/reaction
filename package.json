@@ -1,7 +1,7 @@
 {
   "name": "reaction",
   "description": "Reaction is a modern reactive, real-time event driven ecommerce platform.",
-  "version": "1.11.0",
+  "version": "1.14.0",
   "main": "main.js",
   "directories": {
     "test": "tests"
@@ -19,18 +19,19 @@
     "url": "https://github.com/reactioncommerce/reaction/issues"
   },
   "dependencies": {
-    "@babel/runtime": "7.0.0-beta.38",
-    "@reactioncommerce/file-collections": "^0.4.5",
-    "@reactioncommerce/file-collections-sa-gridfs": "0.0.1",
-    "@reactioncommerce/hooks": "^1.0.1",
-    "@reactioncommerce/job-queue": "^1.0.4",
-    "@reactioncommerce/logger": "^1.1.1",
-    "@reactioncommerce/nodemailer": "^5.0.5",
-    "@reactioncommerce/schemas": "^1.1.0",
+    "@babel/runtime": "7.0.0-beta.49",
+    "@reactioncommerce/data-factory": "^1.0.0",
+    "@reactioncommerce/file-collections": "0.5.0",
+    "@reactioncommerce/file-collections-sa-gridfs": "0.0.2",
+    "@reactioncommerce/hooks": "1.0.2",
+    "@reactioncommerce/job-queue": "1.0.4",
+    "@reactioncommerce/logger": "1.1.1",
+    "@reactioncommerce/nodemailer": "5.0.5",
+    "@reactioncommerce/random": "1.0.1",
+    "@reactioncommerce/schemas": "1.1.0",
     "accounting-js": "^1.1.1",
     "apollo-server-core": "1.3.2",
     "apollo-server-express": "1.3.2",
-    "authorize-net": "^1.1.1",
     "autoprefixer": "^7.2.5",
     "autosize": "^4.0.0",
     "body-parser": "^1.18.2",
@@ -50,7 +51,6 @@
     "dnd-core": "^2.5.4",
     "es6-error": "^4.1.1",
     "escape-string-regexp": "^1.0.5",
-    "eslint-import-resolver-meteor": "^0.4.0",
     "express": "4.16.2",
     "faker": "^4.1.0",
     "fibers": "^2.0.0",
@@ -73,10 +73,10 @@
     "jquery-i18next": "^1.2.1",
     "later": "^1.2.0",
     "libphonenumber-js": "^1.0.24",
-    "lodash": "^4.17.5",
+    "lodash": "^4.17.10",
     "lodash.pick": "^4.4.0",
     "match-sorter": "^2.2.0",
-    "meteor-node-stubs": "^0.3.2",
+    "meteor-node-stubs": "0.4.1",
     "moment": "^2.20.1",
     "moment-timezone": "^0.5.14",
     "mongodb": "^3.0.5",
@@ -141,42 +141,45 @@
     "velocity-react": "^1.3.3"
   },
   "devDependencies": {
-    "@babel/cli": "7.0.0-beta.38",
-    "@babel/core": "7.0.0-beta.38",
-    "@babel/node": "^7.0.0-beta.38",
-    "@babel/preset-env": "^7.0.0-beta.38",
-    "@babel/preset-es2015": "7.0.0-beta.38",
-    "@babel/preset-react": "7.0.0-beta.38",
-    "@babel/preset-stage-2": "7.0.0-beta.38",
-    "@reactioncommerce/eslint-config": "^1.0.1",
+    "@babel/cli": "7.0.0-beta.49",
+    "@babel/core": "7.0.0-beta.49",
+    "@babel/node": "7.0.0-beta.49",
+    "@babel/plugin-proposal-object-rest-spread": "7.0.0-beta.49",
+    "@babel/preset-env": "7.0.0-beta.49",
+    "@babel/preset-es2015": "7.0.0-beta.49",
+    "@babel/preset-react": "7.0.0-beta.49",
+    "@babel/preset-stage-2": "7.0.0-beta.49",
+    "@reactioncommerce/eslint-config": "1.8.0",
     "babel-core": "^7.0.0-bridge.0",
-    "babel-eslint": "^8.2.1",
-    "babel-jest": "^22.4.1",
-    "babel-plugin-dynamic-import-node": "^1.2.0",
-    "babel-plugin-inline-import": "^2.0.6",
-    "babel-plugin-lodash": "^3.3.2",
-    "babel-plugin-module-resolver": "^3.1.0",
-    "babel-plugin-rewire-exports": "^0.3.0",
-    "babel-plugin-transform-class-properties": "^6.24.1",
-    "babel-preset-meteor": "7.0.0-beta.38-1",
+    "babel-eslint": "8.2.3",
+    "babel-jest": "22.4.4",
+    "babel-plugin-dynamic-import-node": "1.2.0",
+    "babel-plugin-inline-import": "3.0.0",
+    "babel-plugin-lodash": "3.3.2",
+    "babel-plugin-module-resolver": "3.1.1",
+    "babel-plugin-rewire-exports": "0.3.0",
+    "babel-plugin-transform-class-properties": "6.24.1",
+    "babel-preset-meteor": "7.0.0-beta.49",
     "chai": "^4.1.2",
     "enzyme": "^3.3.0",
     "enzyme-to-json": "^3.3.1",
-    "eslint": "^4.18.1",
-    "eslint-plugin-import": "^2.8.0",
+    "eslint": "^4.19.1",
+    "eslint-import-resolver-meteor": "^0.4.0",
+    "eslint-plugin-import": "2.12.0",
     "eslint-plugin-jest": "^21.14.0",
     "eslint-plugin-jsx-a11y": "^6.0.3",
-    "eslint-plugin-react": "^7.7.0",
+    "eslint-plugin-promise": "3.8.0",
+    "eslint-plugin-react": "7.8.2",
     "find-free-port": "^1.2.0",
     "graphql.js": "^0.4.20",
     "jest": "^22.4.2",
     "jest-junit": "^3.6.0",
     "js-yaml": "^3.10.0",
     "jsdoc": "^3.5.5",
-    "nedb": "^1.8.0",
+    "mongodb-memory-server": "^1.7.3",
     "nodemon": "^1.17.2",
     "react-addons-test-utils": "15.6.2",
-    "snyk": "^1.71.0"
+    "snyk": "^1.78.0"
   },
   "postcss": {
     "plugins": {
@@ -188,13 +191,13 @@
     }
   },
   "scripts": {
-    "devserver": "NODE_ENV=devserver nodemon .reaction/devserver/index.js --exec babel-node",
+    "devserver": "NODE_ENV=devserver nodemon .reaction/devserver/index.js",
     "lint": "eslint .",
-    "test": "npm run test:unit && npm run test:app",
+    "test": "npm run test:unit && npm run test:integration && npm run test:app",
     "test:app": "meteor test --once --full-app --driver-package meteortesting:mocha",
     "test:app:watch": "TEST_WATCH=1 meteor test --full-app --driver-package meteortesting:mocha",
     "test:unit": "NODE_ENV=jesttest BABEL_DISABLE_CACHE=1 jest --no-cache --testPathIgnorePatterns /tests/",
-    "test:unit:watch": "NODE_ENV=jesttest BABEL_DISABLE_CACHE=1 jest --no-cache --watch",
+    "test:unit:watch": "NODE_ENV=jesttest BABEL_DISABLE_CACHE=1 jest --no-cache --testPathIgnorePatterns /tests/ --watch",
     "test:integration": "NODE_ENV=jesttest BABEL_DISABLE_CACHE=1 jest --no-cache /tests/",
     "test:integration:watch": "NODE_ENV=jesttest BABEL_DISABLE_CACHE=1 jest --no-cache --watch /tests/",
     "docs": "jsdoc . --configure .reaction/jsdoc/jsdoc.json --readme .reaction/jsdoc/templates/static/README.md"
@@ -242,7 +245,12 @@
               }
             }
           ],
-          "@babel/preset-stage-2"
+          [
+            "@babel/preset-stage-2",
+            {
+              "decoratorsLegacy": true
+            }
+          ]
         ],
         "plugins": [
           "babel-plugin-inline-import",
@@ -276,7 +284,12 @@
               }
             }
           ],
-          "@babel/preset-stage-2"
+          [
+            "@babel/preset-stage-2",
+            {
+              "decoratorsLegacy": true
+            }
+          ]
         ],
         "plugins": [
           "rewire-exports",
@@ -301,25 +314,42 @@
           ]
         ]
       }
-    },
-    "presets": []
+    }
   },
   "jest": {},
   "eslintConfig": {
     "extends": "@reactioncommerce",
     "globals": {
+      "Alerts": true,
       "Assets": true,
       "jasmine": true,
       "jest/globals": true,
-      "Package": true,
-      "FS": true,
-      "Alerts": true
+      "Package": true
     },
     "settings": {
       "import/resolver": "meteor"
     },
-    "plugins": [
-      "jest"
+    "rules": {
+      "valid-jsdoc": [
+        1,
+        {
+          "prefer": {
+            "arg": "param",
+            "argument": "param"
+          }
+        }
+      ]
+    }
+  },
+  "nodemonConfig": {
+    "delay": "2000",
+    "execMap": {
+      "js": "babel-node"
+    },
+    "ext": "js,json,graphql",
+    "watch": [
+      "imports",
+      ".reaction"
     ]
   }
 }

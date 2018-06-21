@@ -103,6 +103,7 @@ AutoForm.addHooks(null, {
  * @summary Checks if customerUsageType is set to "custom"
  * @param {String} formId - Id of the Autoform instance..
  * @returns {boolean} - true if Custom Entity Type is set
+ * @private
  */
 function isCustomValue(formId) {
   const formData = AutoForm.getFormValues(formId);

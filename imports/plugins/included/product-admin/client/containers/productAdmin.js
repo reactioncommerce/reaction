@@ -37,12 +37,7 @@ const wrapComponent = (Comp) => (
     }
 
     handleProductFieldSave = (productId, fieldName, value) => {
-      let updateValue = value;
-      // special case, slugify handles.
-      if (fieldName === "handle") {
-        updateValue = Reaction.getSlug(value);
-      }
-      Meteor.call("products/updateProductField", productId, fieldName, updateValue, (error) => {
+      Meteor.call("products/updateProductField", productId, fieldName, value, (error) => {
         if (error) {
           Alerts.toast(error.message, "error");
           this.forceUpdate();

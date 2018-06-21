@@ -14,6 +14,7 @@ import { Cart as CartSchema } from "/lib/collections/schemas";
  * be an updated list of shipping rates, and the second will contain info for
  * retrying this specific package if any errors occurred while retrieving the
  * shipping rates.
+ * @private
  */
 function getShippingRates(previousQueryResults, cart) {
   CartSchema.validate(cart);

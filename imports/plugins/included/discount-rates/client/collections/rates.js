@@ -2,7 +2,9 @@ import { Mongo } from "meteor/mongo";
 import { DiscountRates as DiscountSchema } from "../../lib/collections/schemas";
 
 /**
- * Client side collections
+ * @name DiscountRates
+ * @memberof Collections/ClientOnly
+ * @type {MongoCollection}
  */
 export const DiscountRates = new Mongo.Collection("DiscountRates");
 // attach discount code specific schema

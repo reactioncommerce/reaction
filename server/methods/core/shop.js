@@ -5,6 +5,7 @@ import { check, Match } from "meteor/check";
 import { HTTP } from "meteor/http";
 import { Job } from "/imports/plugins/core/job-collection/lib";
 import { GeoCoder, Hooks, Logger } from "/server/api";
+import { getSlug } from "/server/api/core/utils";
 import { Reaction } from "/lib/api";
 import * as Collections from "/lib/collections";
 import * as Schemas from "/lib/collections/schemas";
@@ -17,6 +18,7 @@ import * as Schemas from "/lib/collections/schemas";
  * @param {Object} shop - the shop to clone
  * @param {Object} partialShopData - any properties you'd like to override
  * @return {Object|null} The cloned shop object or null if a shop with that ID can't be found
+ * @private
  */
 function cloneShop(shop, partialShopData = {}) {
   // if a name is not provided, generate a unique name
@@ -59,8 +61,9 @@ function cloneShop(shop, partialShopData = {}) {
  * @param {String} userId - the user id on whose behalf we are performing this
  *                 action (defaults to Meteor.userId())
  * @return {Int} returns update result
+ * @private
  */
-export function updateShopBrandAssets(asset, shopId = Reaction.getShopId(), userId = Meteor.userId()) {
+function updateShopBrandAssets(asset, shopId = Reaction.getShopId(), userId = Meteor.userId()) {
   check(asset, {
     mediaId: String,
     type: String
@@ -110,13 +113,13 @@ export function updateShopBrandAssets(asset, shopId = Reaction.getShopId(), user
  * @file Meteor methods for Shop
  *
  *
- * @namespace Methods/Shop
+ * @namespace Shop/Methods
 */
 Meteor.methods({
   /**
    * @name shop/resetShopId
    * @method
-   * @memberof Methods/Shop
+   * @memberof Shop/Methods
    * @summary a way for the client to notifiy the server that the shop has
    *          changed. We could has provided #setShopId, however, the server
    *          has all the information it needs to determine this on its own,
@@ -129,7 +132,7 @@ Meteor.methods({
   /**
    * @name shop/createShop
    * @method
-   * @memberof Methods/Shop
+   * @memberof Shop/Methods
    * @param {String} shopAdminUserId - optionally create shop for provided userId
    * @param {Object} partialShopData - optionally provide a subset of shop data
    *                 which will be merged with properties from the primary shop
@@ -203,6 +206,7 @@ Meteor.methods({
 
     shop.emails = shopUser.emails;
     shop.addressBook = shopAccount.addressBook;
+    shop.slug = getSlug(shop.name);
 
     Collections.Shops.simpleSchema(shop).validate(shop);
 
@@ -256,7 +260,7 @@ Meteor.methods({
   /**
    * @name shop/getLocale
    * @method
-   * @memberof Methods/Shop
+   * @memberof Shop/Methods
    * @summary determine user's countryCode and return locale object
    * determine local currency and conversion rate from shop currency
    * @return {Object} returns user location and locale
@@ -367,7 +371,7 @@ Meteor.methods({
   /**
    * @name shop/getCurrencyRates
    * @method
-   * @memberof Methods/Shop
+   * @memberof Shop/Methods
    * @summary It returns the current exchange rate against the shop currency
    * usage: Meteor.call("shop/getCurrencyRates","USD")
    * @param {String} currency code
@@ -391,7 +395,7 @@ Meteor.methods({
   /**
    * @name shop/fetchCurrencyRate
    * @method
-   * @memberof Methods/Shop
+   * @memberof Shop/Methods
    * @summary fetch the latest currency rates from
    * https://openexchangerates.org
    * usage: Meteor.call("shop/fetchCurrencyRate")
@@ -482,7 +486,7 @@ Meteor.methods({
   /**
    * @name shop/flushCurrencyRate
    * @method
-   * @memberof Methods/Shop
+   * @memberof Shop/Methods
    * @description Method calls by cron job
    * @summary It removes exchange rates that are too old
    * usage: Meteor.call("shop/flushCurrencyRate")
@@ -537,7 +541,7 @@ Meteor.methods({
   /**
    * @name shop/updateShopExternalServices
    * @method
-   * @memberof Methods/Shop
+   * @memberof Shop/Methods
    * @description On submit OpenExchangeRatesForm handler
    * @summary we need to rerun fetch exchange rates job on every form submit,
    * that's why we update autoform type to "method-update"
@@ -588,7 +592,7 @@ Meteor.methods({
   /**
    * @name shop/locateAddress
    * @method
-   * @memberof Methods/Shop
+   * @memberof Shop/Methods
    * @summary determine user's full location for autopopulating addresses
    * @param {Number} latitude - latitude
    * @param {Number} longitude - longitude
@@ -620,7 +624,7 @@ Meteor.methods({
   /**
    * @name shop/createTag
    * @method
-   * @memberof Methods/Shop
+   * @memberof Shop/Methods
    * @summary creates new tag
    * @param {String} tagName - new tag name
    * @param {Boolean} isTopLevel - if true -- new tag will be created on top of
@@ -640,7 +644,8 @@ Meteor.methods({
 
     const tag = {
       name: tagName,
-      slug: Reaction.getSlug(tagName),
+      slug: getSlug(tagName),
+      shopId: Reaction.getShopId(),
       isTopLevel,
       updatedAt: new Date(),
       createdAt: new Date()
@@ -652,7 +657,7 @@ Meteor.methods({
   /**
    * @name shop/updateHeaderTags
    * @method
-   * @memberof Methods/Shop
+   * @memberof Shop/Methods
    * @summary method to insert or update tag with hierarchy
    * @param {String} tagName will insert, tagName + tagId will update existing
    * @param {String} tagId - tagId to update
@@ -672,12 +677,12 @@ Meteor.methods({
     this.unblock();
 
     const newTag = {
-      slug: Reaction.getSlug(tagName),
+      slug: getSlug(tagName),
       name: tagName
     };
 
     const existingTag = Collections.Tags.findOne({
-      slug: Reaction.getSlug(tagName),
+      slug: getSlug(tagName),
       name: tagName
     });
 
@@ -736,7 +741,7 @@ Meteor.methods({
   /**
    * @name shop/removeHeaderTag
    * @method
-   * @memberof Methods/Shop
+   * @memberof Shop/Methods
    * @param {String} tagId - method to remove tag navigation tags
    * @param {String} currentTagId - currentTagId
    * @return {String} returns remove result
@@ -774,7 +779,7 @@ Meteor.methods({
   /**
    * @name shop/hideHeaderTag
    * @method
-   * @memberof Methods/Shop
+   * @memberof Shop/Methods
    * @param {String} tagId - method to remove tag navigation tags
    * @return {String} returns remove result
    */
@@ -798,7 +803,7 @@ Meteor.methods({
   /**
    * @name shop/getWorkflow
    * @method
-   * @memberof Methods/Shop
+   * @memberof Shop/Methods
    * @summary gets the current shop workflows
    * @param {String} name - workflow name
    * @return {Array} returns workflow array
@@ -823,7 +828,7 @@ Meteor.methods({
   /**
    * @name shop/updateLanguageConfiguration
    * @method
-   * @memberof Methods/Shop
+   * @memberof Shop/Methods
    * @summary enable / disable a language
    * @param {String} language - language name | "all" to bulk enable / disable
    * @param {Boolean} enabled - true / false
@@ -886,7 +891,7 @@ Meteor.methods({
   /**
    * @name shop/updateCurrencyConfiguration
    * @method
-   * @memberof Methods/Shop
+   * @memberof Shop/Methods
    * @summary enable / disable a currency
    * @param {String} currency - currency name | "all" to bulk enable / disable
    * @param {Boolean} enabled - true / false
@@ -944,9 +949,9 @@ Meteor.methods({
   },
 
   /**
-   * @name shop/updateBrandAsset
+   * @name shop/updateBrandAssets
    * @method
-   * @memberof Methods/Shop
+   * @memberof Shop/Methods
    * @param {Object} asset - brand asset {mediaId: "", type, ""}
    * @return {Int} returns update result
    */
@@ -964,7 +969,7 @@ Meteor.methods({
   /**
    * @name shop/togglePackage
    * @method
-   * @memberof Methods/Shop
+   * @memberof Shop/Methods
    * @summary enable/disable Reaction package
    * @param {String} packageId - package _id
    * @param {Boolean} enabled - current package `enabled` state
@@ -987,7 +992,7 @@ Meteor.methods({
   /**
    * @name shop/changeLayout
    * @method
-   * @memberof Methods/Shop
+   * @memberof Shop/Methods
    * @summary Change the layout for all workflows so you can use a custom one
    * @param {String} shopId - the shop's ID
    * @param {String} newLayout - new layout to use
@@ -1009,7 +1014,7 @@ Meteor.methods({
   /**
    * @name shop/getBaseLanguage
    * @method
-   * @memberof Methods/Shop
+   * @memberof Shop/Methods
    * @summary Return the shop's base language ISO code
    * @return {String} ISO lang code
    */

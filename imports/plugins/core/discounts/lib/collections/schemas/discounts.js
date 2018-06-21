@@ -1,16 +1,16 @@
 import SimpleSchema from "simpl-schema";
 import { check } from "meteor/check";
 import { Tracker } from "meteor/tracker";
-import { shopIdAutoValue } from "/lib/collections/schemas/helpers";
 import { registerSchema } from "@reactioncommerce/schemas";
 
-// The Discounts Schema validates using multiple schemas
-// be sure to use `{ selector: { discountMethod: "code" } }`
-// to indicate which schema to apply in all updates
-
-/*
-* Discounts Tranaction History Schema
-*/
+/**
+ * The Discounts Schema validates using multiple schemas.
+ * Be sure to use `{ selector: { discountMethod: "code" } }` to indicate which schema to apply in all updates
+ * @name Transactions
+ * @memberof Schemas
+ * @type {SimpleSchema}
+ * @summary Discounts Tranaction History Schema
+ */
 export const Transactions = new SimpleSchema({
   cartId: {
     type: String,
@@ -28,14 +28,15 @@ export const Transactions = new SimpleSchema({
 
 registerSchema("Transactions", Transactions);
 
-/*
-* Discounts Schema
-*/
-
+/**
+ * @name Discounts
+ * @memberof Schemas
+ * @type {SimpleSchema}
+ * @summary Discounts schema
+ */
 export const Discounts = new SimpleSchema({
   "shopId": {
     type: String,
-    autoValue: shopIdAutoValue,
     index: 1,
     label: "Discounts shopId"
   },

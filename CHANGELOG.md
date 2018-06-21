@@ -1,3 +1,207 @@
+# v1.12.1
+## Bug Fixes
+- fix: handle products without positions obj .. Resolves #4299
+
+This release is a hotfix for #4299 which was discovered shortly after v1.12.0 was released.
+
+The issue was releated to a type error that was thrown during a migration:
+
+> If any documents in `Catalog` collection do not have a `positions` property, migration fails on startup on first start after migration to v1.12.0. The migration is left locked. The error message is:
+
+```
+0|reaction | TypeError: Cannot convert undefined or null to object
+0|reaction |     at Function.keys (<anonymous>)
+0|reaction |     at items.forEach (imports/plugins/core/versions/server/migrations/25_update_catalog_schema.js:28:12)
+```
+
+# v1.12.0
+
+## Breaking changes
+We've made some significant changes to the structure of the data that we publish to the Catalog in #4218. We have created an automated migration for these changes in #4272. If you have made other changes to the catalog in your app or in a plugin, this migration may not work out of the box for you. We'd recommend migrating a test or staging instance of your application with similar data before applying this update to your production application.
+
+From the PR notes to #4218, here's a list of the changes
+
+### Method argument change
+"products/updateProductPosition" method now takes a tag ID rather than tag name as its third argument
+
+### Media change
+
+The `media` property on catalog items is still an array of objects, but the structure of those objects has changed.
+
+BEFORE:
+```js
+{
+  metadata: {}, // the full metadata object from the Media doc
+  thumbnail: "", // a URL
+  small: "", // a URL
+  medium: "", // a URL
+  large: "", // a URL
+  image: "", // a URL
+}
+```
+
+AFTER:
+```js
+{
+  priority, // copied from metadata
+  toGrid, // copied from metadata
+  productId, // copied from metadata
+  variantId, // copied from metadata
+  URLs: {
+    thumbnail: "", // a URL
+    small: "", // a URL
+    medium: "", // a URL
+    large: "", // a URL
+    original: "", // a URL
+  }
+}
+```
+
+Also, the media array is now sorted in ascending `priority` order.
+
+### Deleted and hidden variants change
+
+When published to the catalog, the `variants` array on the catalog item now includes only those variants where `isDeleted` IS NOT true and `isVisible` IS true.
+
+### Product props separated from catalog item props
+
+Most product properties that were formerly on the catalog item itself are now moved to a `product` object property.
+
+### Explicit property copying
+
+Previously all product and variant props were blindly copied into the catalog item. Now, we explicitly copy only the props we want, sometimes changing their names.
+
+### Property name changes
+
+- `variant.taxable -> variant.isTaxable`
+- `variant.variantId` added, currently the same as variant._id but might not always be. A reference back to the variant in the Products collection.
+- `product.taxable -> product.isTaxable`
+- `product.productId` added, currently the same as product._id but might not always be. A reference back to the product in the Products collection.
+- `product.handle -> product.slug`
+- `product.hashtags -> product.tagIds`
+
+`product.twitterMsg` and `product.facebookMsg` and `product.googleplusMsg` and `product.pinterestMsg` are converted to a `product.socialMetadata` array like this:
+
+```js
+socialMetadata: [
+  { service: "twitter", message: product.twitterMsg },
+  { service: "facebook", message: product.facebookMsg },
+  { service: "googleplus", message: product.googleplusMsg },
+  { service: "pinterest", message: product.pinterestMsg }
+]
+```
+
+### New Pricing Object
+
+We've deprecated the `price` property on catalog products, variants, and options. There is a new property called `pricing`, which is a map keyed by currency code in MongoDB, and in GraphQL is converted to an array.
+
+The GraphQL schema:
+
+```graphql
+"The product price or price range for a specific currency"
+type ProductPricingInfo {
+  """
+  A comparison price value, usually MSRP. If `price` is null, this will also be null. That is,
+  only purchasable variants will have a `compareAtPrice`.
+  """
+  compareAtPrice: Float
+
+  "The code for the currency these pricing details applies to"
+  currency: Currency!
+
+  """
+  UI should display this price. If a product has multiple potential prices depending on selected
+  variants and options, then this is a price range string such as "$3.95 - $6.99". It includes the currency
+  symbols.
+  """
+  displayPrice: String!
+
+  "The price of the most expensive possible variant+option combination"
+  maxPrice: Float!
+
+  "The price of the least expensive possible variant+option combination"
+  minPrice: Float!
+
+  """
+  For variants with no options and for options, this will always be set to a price. For variants
+  with options and products, this will be `null`. There must be a price for a variant to be
+  added to a cart or purchased. Otherwise you would instead add one of its child options to a cart.
+  """
+  price: Float
+}
+```
+
+These are currently mapped as follows, but in the future you will be able to have different prices per currency that your shop supports.
+
+```js
+pricing: {
+      [shopCurrencyCode]: {
+        compareAtPrice: variant.compareAtPrice || null,
+        displayPrice: variantPriceInfo.range,
+        maxPrice: variantPriceInfo.max,
+        minPrice: variantPriceInfo.min,
+        price: typeof variant.price === "number" ? variant.price : null
+      }
+    },
+```
+
+### Catalog Item props
+
+All product props other than `positions` are now on the `product` object, so there are a few new properties on the catalog item itself:
+- _id (this is no longer the same as the product ID)
+- shopId (stays here AND on `product` obj)
+- createdAt
+- updatedAt
+
+### ReactionProduct.getTag
+
+The `ReactionProduct.getTag` helper function is renamed to `ReactionProduct.getTagIdForPosition` and returns the tag ID rather than name. If there's no tag in the route path, it returns "_default" rather than the lowercased shop name.
+
+## Meteor App
+ ### Features and Improvements
+ - feat: Catalog schema changes (#4218)
+ - feat: Catalog schema migration (#4272)
+
+### Bugfixes
+ - fix: Limit Products when in Edit Mode (#4256) .. Resolves #4254
+ - fix: added event param to onBlur method in numericInput component (#4251)
+ - fix: Load more products working now (#4233) .. Resolves #4090
+ - fix: show `.00` cents for whole-dollar amounts in price range (#4222)
+ - fix: get react root node correctly (#4172)
+
+### Tests
+ - Reduce Risk of Test False Positives (#4033)
+
+### Chores
+ - chore: Update to our latest eslint config (#4282)
+ - chore: resolve snyk issues (#4257)
+ - chore: Use NPM random package (#4208)
+
+## GraphQL Dev Server
+### Features and Improvements
+ - feat: catalog price sort (#4255) .. Resolves #4245
+ - feat: devserver improvements (#4220)
+ - feat: add description and name to shop query (#4209)
+ - feat: catalogItem GQL query (#4200) .. Resolves #4106
+ - feat: create connection/edge resolver helper (#4225)
+
+### Bugfixes
+ - fix: hasNextPage being false, even with a known next page (#4249)
+ - fix: improve hasNext/hasPrevious (#4231)
+ - fix: pagination (#4228)
+ - fix: first value pagination (#4204) .. Resolves #4186
+
+### Chores
+ - chore: access media through devserver app (#4216)
+
+## Docs
+ - docs: remove community calls from readme.md (#4279)
+ - docs: clean up jsdoc comments, namespace organization (#4213)
+
+
+## Contributors
+Thanks to @pmn4 for contributing to this release! 🎉
+
 # v1.11.0
 
 The major focus of `v1.11.0` has been on our GraphQL API. We've added most of the queries and mutations that are necessary for building a headless client to interact with `Accounts`. We're actively doing experiments on how we'll recommend connecting to this GraphQL client and we'll start publishing some of our initial client apps to interact with this GraphQL API in the near future.

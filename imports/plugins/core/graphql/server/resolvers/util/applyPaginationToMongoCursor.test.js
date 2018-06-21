@@ -1,87 +1,66 @@
 import applyPaginationToMongoCursor from "./applyPaginationToMongoCursor";
 import getFakeMongoCursor from "/imports/test-utils/helpers/getFakeMongoCursor";
 
-const mockCursor = getFakeMongoCursor("Test", new Array(100));
-
-test("with neither first nor last", () => {
-  mockCursor.count.mockReturnValueOnce(Promise.resolve(100));
-  expect(applyPaginationToMongoCursor(mockCursor)).resolves.toEqual({
-    pageInfo: {
-      hasNextPage: false,
-      hasPreviousPage: false
-    },
-    totalCount: 100
-  });
+let mockCursor;
+beforeEach(() => {
+  mockCursor = getFakeMongoCursor("Test", new Array(100));
 });
 
-test("with first and maybe more, returns hasNextPage true", () => {
-  mockCursor.count.mockReturnValueOnce(Promise.resolve(100));
+test("with neither first nor last limits to first 20", async () => {
+  mockCursor.count.mockReturnValueOnce(Promise.resolve(21));
+  const result = await applyPaginationToMongoCursor(mockCursor, undefined, 100);
+  expect(result).toEqual({
+    hasNextPage: true,
+    hasPreviousPage: null
+  });
+  expect(mockCursor.limit.mock.calls).toEqual([[21], [20]]);
+  expect(mockCursor.skip).not.toHaveBeenCalled();
+});
+
+test("with both first and last, throws error", () => {
+  expect(applyPaginationToMongoCursor(mockCursor, { first: 1, last: 1 }, 100)).rejects.toThrowErrorMatchingSnapshot();
+});
+
+test("with first and more, returns hasNextPage true", async () => {
+  mockCursor.count.mockReturnValueOnce(Promise.resolve(51));
+  const result = await applyPaginationToMongoCursor(mockCursor, { first: 50 }, 100);
+  expect(result).toEqual({
+    hasNextPage: true,
+    hasPreviousPage: null
+  });
+  expect(mockCursor.limit.mock.calls).toEqual([[51], [50]]);
+  expect(mockCursor.skip).not.toHaveBeenCalled();
+});
+
+test("with first and no more, returns hasNextPage false", async () => {
   mockCursor.count.mockReturnValueOnce(Promise.resolve(50));
-  expect(applyPaginationToMongoCursor(mockCursor, { first: 50 })).resolves.toEqual({
-    pageInfo: {
-      hasNextPage: true,
-      hasPreviousPage: false
-    },
-    totalCount: 100
+  const result = await applyPaginationToMongoCursor(mockCursor, { first: 50 }, 100);
+  expect(result).toEqual({
+    hasNextPage: false,
+    hasPreviousPage: null
   });
+  expect(mockCursor.limit.mock.calls).toEqual([[51], [50]]);
+  expect(mockCursor.skip).not.toHaveBeenCalled();
 });
 
-test("with first and definitely more, returns hasNextPage true", () => {
-  mockCursor.count.mockReturnValueOnce(Promise.resolve(100));
+test("with last and more, returns hasPreviousPage true", async () => {
+  mockCursor.count.mockReturnValueOnce(Promise.resolve(51));
+  const result = await applyPaginationToMongoCursor(mockCursor, { last: 50 }, 80);
+  expect(result).toEqual({
+    hasNextPage: null,
+    hasPreviousPage: true
+  });
+  expect(mockCursor.limit.mock.calls).toEqual([[51], [50]]);
+  expect(mockCursor.skip.mock.calls).toEqual([[29], [30]]);
+});
+
+test("with last and no more, returns hasPreviousPage false", async () => {
   mockCursor.count.mockReturnValueOnce(Promise.resolve(50));
-  expect(applyPaginationToMongoCursor(mockCursor, { first: 50 })).resolves.toEqual({
-    pageInfo: {
-      hasNextPage: true,
-      hasPreviousPage: false
-    },
-    totalCount: 100
+  const result = await applyPaginationToMongoCursor(mockCursor, { last: 50 }, 80);
+  expect(result).toEqual({
+    hasNextPage: null,
+    hasPreviousPage: false
   });
-});
-
-test("with first and no more, returns hasNextPage false", () => {
-  mockCursor.count.mockReturnValueOnce(Promise.resolve(100));
-  mockCursor.count.mockReturnValueOnce(Promise.resolve(40));
-  expect(applyPaginationToMongoCursor(mockCursor, { first: 50 })).resolves.toEqual({
-    pageInfo: {
-      hasNextPage: false,
-      hasPreviousPage: false
-    },
-    totalCount: 100
-  });
-});
-
-test("with last and maybe more, returns hasPreviousPage true", () => {
-  mockCursor.count.mockReturnValueOnce(Promise.resolve(100));
-  mockCursor.count.mockReturnValueOnce(Promise.resolve(50));
-  expect(applyPaginationToMongoCursor(mockCursor, { last: 50 })).resolves.toEqual({
-    pageInfo: {
-      hasNextPage: false,
-      hasPreviousPage: true
-    },
-    totalCount: 100
-  });
-});
-
-test("with last and definitely more, returns hasPreviousPage true", () => {
-  mockCursor.count.mockReturnValueOnce(Promise.resolve(100));
-  mockCursor.count.mockReturnValueOnce(Promise.resolve(50));
-  expect(applyPaginationToMongoCursor(mockCursor, { last: 50 })).resolves.toEqual({
-    pageInfo: {
-      hasNextPage: false,
-      hasPreviousPage: true
-    },
-    totalCount: 100
-  });
-});
-
-test("with last and no more, returns hasPreviousPage false", () => {
-  mockCursor.count.mockReturnValueOnce(Promise.resolve(100));
-  mockCursor.count.mockReturnValueOnce(Promise.resolve(40));
-  expect(applyPaginationToMongoCursor(mockCursor, { last: 50 })).resolves.toEqual({
-    pageInfo: {
-      hasNextPage: false,
-      hasPreviousPage: false
-    },
-    totalCount: 100
-  });
+  expect(mockCursor.limit.mock.calls).toEqual([[51], [50]]);
+  expect(mockCursor.skip.mock.calls).toEqual([[29], [30]]);
 });

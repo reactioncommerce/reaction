@@ -7,7 +7,7 @@ const MEDIA_PLACEHOLDER = "/resources/placeholder.gif";
 
 class ProductImage extends Component {
   static propTypes = {
-    badge: PropTypes.bool,
+    badge: PropTypes.bool, // eslint-disable-line react/boolean-prop-naming
     displayMedia: PropTypes.func.isRequired,
     item: PropTypes.shape({
       quantity: PropTypes.number,
