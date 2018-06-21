@@ -17,23 +17,16 @@ function zipSplit(pincode) {
   if (!result) return { zip4: null, zip5: null };
   return { zip4: result[1], zip5: result[2] };
 }
-
 /**
- * @name calculateTax
- * @summary gets tax from the API and updates the cart.
- * @method
- * @param  {Object} pkgSettings tax-cloud settings
- * @param  {Object} cartToCalc cart object from the database.
+ * @summary Create mapping of shops -> items
+ * @param {Array} items the list of items in cart
+ *
+ * @returns {Object} shopItemsMap map of shopid: [item1, item2]
  */
-function calculateTax(pkgSettings, cartToCalc) {
-  Logger.debug("TaxCloud triggered on taxes/calculate for cartId:", cartToCalc._id);
-  const url = "https://api.taxcloud.net/1.0/TaxCloud/Lookup";
-  const shopItemsMap = {};
-
+function getShopItems(items) {
   // format cart items to TaxCloud structure
+  const shopItemsMap = {};
   let index = 0;
-  const { items } = cartToCalc;
-  // Create mapping of shops -> items
   for (const cartItem of items) {
     // only processs taxable products
     if (cartItem.variants.taxable === true) {
@@ -51,131 +44,196 @@ function calculateTax(pkgSettings, cartToCalc) {
       shopItemsMap[cartItem.shopId].push(taxCloudItem);
     }
   }
+  return shopItemsMap;
+}
+/**
+ * @name makeRequest
+ * @summary make the requests object
+ * @param {String} shopId the shopId of the product
+ * @param {Object} cartToCalc current cart
+ * @param {Object} shippingAddressMap map of shop: address
+ * @param {Object} shopItemsMap map of shop: items
+ * @param {Object} shopsAddressMap map of shop: address
+ *
+ * @returns {Promise} promise of a request
+ */
+function makeRequest(shopId, cartToCalc, shippingAddressMap, shopItemsMap, shopsAddressMap) {
+  const taxCloudSettings = Reaction.getPackageSettingsWithOptions({ name: "taxes-taxcloud", shopId });
+  const { apiKey, apiLoginId } = taxCloudSettings.settings.taxcloud;
+  if (!apiKey || !apiLoginId) {
+    Logger.warn("TaxCloud API Key is required.");
+    return Promise.reject("TaxCloud API Key not present");
+  }
+  const url = "https://api.taxcloud.net/1.0/TaxCloud/Lookup";
+  const shopAddress = shopsAddressMap[shopId];
+  const { zip4: originZip4, zip5: originZip5 } = zipSplit(shopAddress.postal);
+  const origin = {
+    Address1: shopAddress.address1,
+    City: shopAddress.city,
+    State: shopAddress.region,
+    Zip5: originZip5,
+    Zip4: originZip4
+  };
+
+  const shippingAddress = shippingAddressMap[shopId];
+  const { zip4: destZip4, zip5: destZip5 } = zipSplit(shippingAddress.postal);
+  const destination = {
+    Address1: shippingAddress.address1,
+    City: shippingAddress.city,
+    State: shippingAddress.region,
+    Zip5: destZip5,
+    Zip4: destZip4
+  };
+  // request object
+  const request = {
+    headers: {
+      "accept": "application/json",
+      "content-type": "application/json"
+    },
+    data: {
+      apiKey,
+      apiLoginId,
+      customerID: cartToCalc.userId,
+      cartItems: shopItemsMap[shopId],
+      origin,
+      destination,
+      cartID: cartToCalc._id,
+      deliveredBySeller: false
+    }
+  };
+
+  return new Promise((resolve, reject) => {
+    HTTP.post(url, request, (error, response) => {
+      // ResponseType 3 is a successful call.
+      if (response.data.ResponseType !== 3) {
+        let errMsg = "Unable to access service. Check credentials.";
+        if (response && response.data.Messages[0].Message) {
+          errMsg = response.data.Messages[0].Message;
+        }
+        reject(errMsg);
+        throw new Error("Error from taxcloud API", errMsg);
+      }
+      resolve({
+        items: response.data.CartItemsResponse,
+        shopId
+      });
+    });
+  });
+}
+
+/**
+ * @name processResponse
+ * @summary gets the tax from the responses and updated the cart
+ * @param {Array} responsePromise array of promises for tax-cloud requests
+ * @param {Object} cartToCalc the cart object
+ * @returns {Promise} promise of all actions on the responses
+ */
+function processResponse(responsePromise, cartToCalc) {
+  if (!responsePromise || responsePromise.length === 0) {
+    // No items in the cart.
+    Meteor.call("taxes/setRate", cartToCalc._id, 0);
+    Meteor.call("accounts/markTaxCalculationFailed", false);
+    return Promise.resolve();
+  }
+  let totalTax = 0;
+  const subtotalsByShop = cartToCalc.getSubtotalByShop();
+  const subTotal = cartToCalc.getSubTotal();
+  return Promise.all(responsePromise)
+    .then((result) => {
+      result.forEach((res) => {
+        for (const item of res.items) {
+          totalTax += item.TaxAmount;
+          const cartPosition = item.CartItemIndex;
+          cartToCalc.items[cartPosition].taxRate = item.TaxAmount / subtotalsByShop[res.shopId];
+        }
+      });
+      // we should consider if we want percentage and dollar
+      // as this is assuming that subTotal actually contains everything
+      // taxable
+      Meteor.call("taxes/setRateByShopAndItem", cartToCalc._id, {
+        taxRatesByShop: undefined,
+        itemsWithTax: cartToCalc.items,
+        cartTaxRate: totalTax / subTotal,
+        cartTaxData: undefined
+      });
+      return Meteor.call("accounts/markTaxCalculationFailed", false);
+    })
+    .catch((error) => {
+    // No rates were fetched, set taxes to 0.
+      Meteor.call("taxes/setRate", cartToCalc._id, 0);
+      Meteor.call("accounts/markTaxCalculationFailed", true);
+      Logger.error("Error fetching tax rate from TaxCloud:", error);
+    });
+}
+
+/**
+ * @name getShopsAddressMap
+ * @summary return the mapping of shop: address
+ *          returns null if any shops doesn't has a address
+ * @param {object} shopItemsMap maps of shopsId: [items]
+ * @returns {object} map of shop:address
+ */
+function getShopsAddressMap(shopItemsMap) {
+  // Create a map of shopId -> shopAddress
+  const shopsList = Shops.find({ _id: { $in: Object.keys(shopItemsMap) } }, { _id: 1, addressBook: 1 }).fetch();
+  const shopsAddressMap = shopsList.reduce((addressMap, shop) => {
+    if (!shop || !shop.addressBook) {
+      return null;
+    }
+    [addressMap[shop._id]] = shop.addressBook;
+    return addressMap;
+  }, {});
+  return shopsAddressMap;
+}
+
+/**
+ * @name shippingAddressMap
+ * @summary return the mapping of shop: shipping-address
+ *          returns null if any user hasn't entered a address
+ * @param {object} cartToCalc current cart
+ * @returns {object} map of shop: shipping-address
+ */
+function getShippingAddressMap(cartToCalc) {
+  if (!cartToCalc.shipping || cartToCalc.items.length !== cartToCalc.shipping.length) {
+    return null;
+  }
   const shippingAddressMap = cartToCalc.shipping.reduce((addressMap, shipping) => {
+    if (!addressMap || !shipping.address) {
+      return null;
+    }
     if (!addressMap[shipping.shopId]) {
       addressMap[shipping.shopId] = shipping.address;
     }
     return addressMap;
   }, {});
-  // Create a map of shopId -> shopAddress
-  const shopsList = Shops.find({ _id: { $in: Object.keys(shopItemsMap) } }, { _id: 1, addressBook: 1 }).fetch();
-  let shopsHaveAddress = true;
-  const shopsAddressMap = shopsList.reduce((addressMap, shop) => {
-    if (!shop.addressBook) {
-      shopsHaveAddress = false;
-      return;
-    }
-    [addressMap[shop._id]] = shop.addressBook;
-    return addressMap;
-  }, {});
-  if (!shopsHaveAddress) {
-    // All the marketplace shops don't have address yet.
-    Logger.error("All the marketplace shops don't have address yet.");
+  return shippingAddressMap;
+}
+
+/**
+ * @name calculateTax
+ * @summary gets tax from the API and updates the cart.
+ * @param  {Object} pkgSettings tax-cloud settings
+ * @param  {Object} cartToCalc cart object from the database.
+ * @returns {undefined}
+ */
+function calculateTax(pkgSettings, cartToCalc) {
+  Logger.debug("TaxCloud triggered on taxes/calculate for cartId:", cartToCalc._id);
+  const { items } = cartToCalc;
+  const shopItemsMap = getShopItems(items);
+  const shippingAddressMap = getShippingAddressMap(cartToCalc);
+  const shopsAddressMap = getShopsAddressMap(shopItemsMap);
+  if (!shippingAddressMap) {
+    // User hasn't entered address yet
     return;
   }
-  let totalTax = 0;
-  const subtotalsByShop = cartToCalc.getSubtotalByShop();
-  const subTotal = cartToCalc.getSubTotal();
-  const responsePromise = [];
-  // For each shop get the tax on the products.
-  Object.keys(shopItemsMap).forEach((shopId) => {
-    const taxCloudSettings = Reaction.getPackageSettingsWithOptions({ name: "taxes-taxcloud", shopId });
-    const { apiKey, apiLoginId } = taxCloudSettings.settings.taxcloud;
-    if (!apiKey || !apiLoginId) {
-      Logger.warn("TaxCloud API Key is required.");
-    }
-    const shopAddress = shopsAddressMap[shopId];
-    const { zip4: originZip4, zip5: originZip5 } = zipSplit(shopAddress.postal);
-    const origin = {
-      Address1: shopAddress.address1,
-      City: shopAddress.city,
-      State: shopAddress.region,
-      Zip5: originZip5,
-      Zip4: originZip4
-    };
-
-    const shippingAddress = shippingAddressMap[shopId];
-    // User hasn't entered shipping address yet.
-    if (!shippingAddress) return;
-    const { zip4: destZip4, zip5: destZip5 } = zipSplit(shippingAddress.postal);
-    const destination = {
-      Address1: shippingAddress.address1,
-      City: shippingAddress.city,
-      State: shippingAddress.region,
-      Zip5: destZip5,
-      Zip4: destZip4
-    };
-
-    // request object
-    const request = {
-      headers: {
-        "accept": "application/json",
-        "content-type": "application/json"
-      },
-      data: {
-        apiKey,
-        apiLoginId,
-        customerID: cartToCalc.userId,
-        cartItems: shopItemsMap[shopId],
-        origin,
-        destination,
-        cartID: cartToCalc._id,
-        deliveredBySeller: false
-      }
-    };
-    // pushing all the requests to array.
-    responsePromise.push(new Promise((resolve, reject) => {
-      HTTP.post(url, request, (error, response) => {
-        // ResponseType 3 is a successful call.
-        if (response.data.ResponseType !== 3) {
-          let errMsg = "Unable to access service. Check credentials.";
-          if (response && response.data.Messages[0].Message) {
-            errMsg = response.data.Messages[0].Message;
-          }
-          reject(errMsg);
-          throw new Error("Error calling taxcloud API", errMsg);
-        }
-        resolve({
-          items: response.data.CartItemsResponse,
-          shopId
-        });
-      });
-    }));
-  });
-
-  if (responsePromise && responsePromise.length > 0) {
-    Promise.all(responsePromise)
-      .then((result) => {
-        result.forEach((res) => {
-          for (const item of res.items) {
-            totalTax += item.TaxAmount;
-            const cartPosition = item.CartItemIndex;
-            items[cartPosition].taxRate =
-          item.TaxAmount / subtotalsByShop[res.shopId];
-          }
-        });
-        // we should consider if we want percentage and dollar
-        // as this is assuming that subTotal actually contains everything
-        // taxable
-        Meteor.call("taxes/setRateByShopAndItem", cartToCalc._id, {
-          taxRatesByShop: undefined,
-          itemsWithTax: items,
-          cartTaxRate: totalTax / subTotal,
-          cartTaxData: undefined
-        });
-        Meteor.call("accounts/markTaxCalculationFailed", false);
-      })
-      .catch((error) => {
-        // No rates were fetched, set taxes to 0.
-        Meteor.call("taxes/setRate", cartToCalc._id, 0);
-        Meteor.call("accounts/markTaxCalculationFailed", true);
-        Logger.error("Error fetching tax rate from TaxCloud:", error);
-      });
-  } else {
-    // No items in the cart.
-    Meteor.call("taxes/setRate", cartToCalc._id, 0);
-    Meteor.call("accounts/markTaxCalculationFailed", false);
+  if (!shopsAddressMap) {
+    // All the marketplace shops don't have address yet.
+    Logger.error("All the marketplace shops don't have an address yet.");
+    return;
   }
+  // For each shop get the tax on the products.
+  const responsePromise = Object.keys(shopItemsMap).map((shopId) => makeRequest(shopId, cartToCalc, shippingAddressMap, shopItemsMap, shopsAddressMap));
+  processResponse(responsePromise, cartToCalc);
 }
 //
 // this entire method will run after the core/taxes
