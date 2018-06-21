@@ -8,6 +8,9 @@ This removes all code, hooks, collections, and packages related to revision cont
 **Breaking changes:**
  - Any custom packages that depend on the `Revision` control system.
  - Operators will no longer be able to "undo" changes to a product. Instead products are published through the catalog
+ - Any _unpublished_ changes to products will be lost when upgrading to `1.13.0`. In this release, it's possible that if you were to downgrade that you would see the unpublished changes again, but that may cause unexpected behavior. We recommend either publishing or discarding any changes to your products before upgrading to this release.
+ - Similarly, any products that have been created but not published will demonstrate unexpected behavior. To avoid this undesirable behavior, publish any newly created, unpublished products prior to upgrading to this release.
+
  - **All plugin authors** will need to update your `package.json` with a change to the babel config similar to what was done [here](https://github.com/reaction-contrib/meteor-authorize-net/commit/f19a5cf7591a17f426e67bd3737af5a4d1c7a64a)
 
 
