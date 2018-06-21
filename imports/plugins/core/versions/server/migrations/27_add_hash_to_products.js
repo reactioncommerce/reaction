@@ -1,7 +1,7 @@
 import { Migrations } from "meteor/percolate:migrations";
 import { Catalog } from "/lib/collections";
 import collections from "/imports/collections/rawCollections";
-import hashProduct from "/imports/plugins/core/catalog/server/no-meteor/utils/hashProduct";
+import hashProduct from "/imports/plugins/core/catalog/server/no-meteor/mutations/hashProduct";
 
 Migrations.add({
   version: 27,

@@ -1,6 +1,6 @@
 import Random from "@reactioncommerce/random";
+import hashProduct from "../mutations/hashProduct";
 import createCatalogProduct from "./createCatalogProduct";
-import hashProduct from "./hashProduct";
 
 /**
  * @method publishProductToCatalog
