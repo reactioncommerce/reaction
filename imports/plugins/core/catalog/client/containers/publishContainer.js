@@ -11,6 +11,7 @@ import { Reaction, i18next } from "/client/api";
  */
 class PublishContainer extends Component {
   publishToCatalog(collection, documentIds) {
+    Meteor.call("taxes/updateTaxCode", this.props.documents);
     Meteor.call(`catalog/publish/${collection}`, documentIds, (error, result) => {
       if (result) {
         Alerts.toast(i18next.t("admin.catalogProductPublishSuccess", { defaultValue: "Product published to catalog" }), "success");
