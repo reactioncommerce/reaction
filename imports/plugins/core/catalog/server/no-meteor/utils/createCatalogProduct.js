@@ -148,7 +148,6 @@ export default async function createCatalogProduct(product, collections) {
     barcode: product.barcode,
     createdAt: product.createdAt,
     description: product.description,
-    hash: product.hash,
     height: product.height,
     isBackorder: isBackorder(variants),
     isDeleted: !!product.isDeleted,
