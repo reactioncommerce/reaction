@@ -37,7 +37,7 @@ beforeAll(async () => {
 
 afterAll(() => tester.stop());
 
-test("get the first 50 tags when neither first or last is in query", async () => {
+test("get the first 20 tags when neither first or last is in query", async () => {
   let result;
   try {
     result = await query({ shopId: opaqueShopId });
@@ -46,9 +46,9 @@ test("get the first 50 tags when neither first or last is in query", async () =>
     return;
   }
 
-  expect(result.tags.nodes.length).toBe(50);
+  expect(result.tags.nodes.length).toBe(20);
   expect(result.tags.totalCount).toBe(55);
-  expect(result.tags.pageInfo).toEqual({ endCursor: "MTQ5", hasNextPage: true, hasPreviousPage: false, startCursor: "MTAw" });
+  expect(result.tags.pageInfo).toEqual({ endCursor: "MTE5", hasNextPage: true, hasPreviousPage: false, startCursor: "MTAw" });
 
   try {
     result = await query({ shopId: opaqueShopId, after: result.tags.pageInfo.endCursor });
@@ -57,9 +57,20 @@ test("get the first 50 tags when neither first or last is in query", async () =>
     return;
   }
 
-  expect(result.tags.nodes.length).toBe(5);
+  expect(result.tags.nodes.length).toBe(20);
   expect(result.tags.totalCount).toBe(55);
-  expect(result.tags.pageInfo).toEqual({ endCursor: "MTU0", hasNextPage: false, hasPreviousPage: true, startCursor: "MTUw" });
+  expect(result.tags.pageInfo).toEqual({ endCursor: "MTM5", hasNextPage: true, hasPreviousPage: true, startCursor: "MTIw" });
+
+  try {
+    result = await query({ shopId: opaqueShopId, after: result.tags.pageInfo.endCursor });
+  } catch (error) {
+    expect(error).toBeUndefined();
+    return;
+  }
+
+  expect(result.tags.nodes.length).toBe(15);
+  expect(result.tags.totalCount).toBe(55);
+  expect(result.tags.pageInfo).toEqual({ endCursor: "MTU0", hasNextPage: false, hasPreviousPage: true, startCursor: "MTQw" });
 
   // Ensure it's also correct when we pass `first: 5` explicitly
   try {
