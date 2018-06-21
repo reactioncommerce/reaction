@@ -11,7 +11,9 @@
     }
   ],
   "addons": [
-    "papertrail",
+    {
+      "plan": "logentries:le_tryit"
+    },
     {
       "plan": "mongolab:sandbox"
     }
