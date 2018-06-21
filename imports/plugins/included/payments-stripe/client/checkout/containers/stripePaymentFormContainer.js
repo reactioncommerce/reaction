@@ -1,16 +1,17 @@
-import { Meteor } from "meteor/meteor";
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import { Elements, StripeProvider } from "react-stripe-elements";
+import { Meteor } from "meteor/meteor";
 import { composeWithTracker } from "@reactioncommerce/reaction-components";
 import { Reaction } from "/client/api";
 import { Packages, Cart } from "/lib/collections";
-import { Elements, StripeProvider } from "react-stripe-elements";
 import InjectedCardForm from "./injectedCardForm";
 
 class StripePaymentFormContainer extends Component {
   static propTypes = {
     apiKey: PropTypes.string,
-    cartId: PropTypes.string
+    cartId: PropTypes.string,
+    postal: PropTypes.string
   }
 
   render() {
@@ -35,7 +36,7 @@ function composer(props, onData) {
     shopId: Reaction.getPrimaryShopId()
   });
   const cart = Cart.findOne({ userId: Meteor.userId() });
-  const { billing: [{ address: { postal }}] } = cart;
+  const { billing: [{ address: { postal } }] } = cart;
 
   if (subscription.ready()) {
     onData(null, {

@@ -1,4 +1,3 @@
-import { Meteor } from "meteor/meteor";
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import {
@@ -8,7 +7,7 @@ import {
   CardCVCElement,
   PostalCodeElement
 } from "react-stripe-elements";
-
+import { Meteor } from "meteor/meteor";
 import { Router } from "/client/api";
 
 class CardForm extends Component {
