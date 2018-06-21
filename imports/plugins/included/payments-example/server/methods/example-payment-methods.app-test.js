@@ -146,7 +146,7 @@ describe("Submit payment", function () {
     // Notice how you need to wrap this call in another function
     expect(function () {
       Meteor.call("exampleSubmit", "authorize", badCardData, paymentData);
-    }).to.throw;
+    }).to.throw();
   });
 });
 
@@ -182,7 +182,7 @@ describe("Capture payment", function () {
     });
     expect(function () {
       Meteor.call("example/payment/capture", "abc123");
-    }).to.throw;
+    }).to.throw();
   });
 });
 

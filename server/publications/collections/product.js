@@ -1,8 +1,7 @@
 import { Meteor } from "meteor/meteor";
 import { check, Match } from "meteor/check";
-import { Products, Revisions, Shops } from "/lib/collections";
+import { Products, Shops } from "/lib/collections";
 import { Logger, Reaction } from "/server/api";
-import { RevisionApi } from "/imports/plugins/core/revisions/lib/api/revisions";
 
 /**
  * product detail publication
@@ -22,10 +21,7 @@ Meteor.publish("Product", function (productIdOrHandle, shopIdOrSlug) {
     $or: [{
       _id: productIdOrHandle
     }, {
-      handle: {
-        $regex: productIdOrHandle,
-        $options: "i"
-      }
+      handle: productIdOrHandle
     }]
   };
 
@@ -68,54 +64,6 @@ Meteor.publish("Product", function (productIdOrHandle, shopIdOrSlug) {
     selector.isVisible = {
       $in: [true, false, undefined]
     };
-
-    if (RevisionApi.isRevisionControlEnabled()) {
-      const handle = Revisions.find({
-        "workflow.status": {
-          $nin: [
-            "revision/published"
-          ]
-        },
-        "$or": [
-          { "documentData._id": _id },
-          { "documentData.ancestors": _id }
-        ]
-      }).observe({
-        added: (revision) => {
-          this.added("Revisions", revision._id, revision);
-          if (revision.documentType === "product") {
-            // Check merge box (session collection view), if product is already in cache.
-            // If yes, we send a `changed`, otherwise `added`. I'm assuming
-            // that this._documents.Products is somewhat equivalent to the
-            // merge box Meteor.server.sessions[sessionId].getCollectionView("Products").documents
-            if (this._documents.Products && this._documents.Products[revision.documentId]) {
-              this.changed("Products", revision.documentId, { __revisions: [revision] });
-            } else {
-              this.added("Products", revision.documentId, { __revisions: [revision] });
-            }
-          }
-        },
-        changed: (revision) => {
-          this.changed("Revisions", revision._id, revision);
-          if (revision.documentType === "product") {
-            if (this._documents.Products && this._documents.Products[revision.documentId]) {
-              this.changed("Products", revision.documentId, { __revisions: [revision] });
-            }
-          }
-        },
-        removed: (revision) => {
-          this.removed("Revisions", revision._id);
-          if (revision.documentType === "product") {
-            if (this._documents.Products && this._documents.Products[revision.documentId]) {
-              this.changed("Products", revision.documentId, { __revisions: [] });
-            }
-          }
-        }
-      });
-      this.onStop(() => {
-        handle.stop();
-      });
-    }
   }
 
   return Products.find(selector);

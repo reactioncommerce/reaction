@@ -1,13 +1,12 @@
 import SimpleSchema from "simpl-schema";
 import { Discounts } from "/imports/plugins/core/discounts/lib/collections/schemas";
-import { registerSchema } from "@reactioncommerce/reaction-collections";
+import { registerSchema } from "@reactioncommerce/schemas";
 
 /**
-* Discount Codes Schema
-* @type {Object}
-* @desc schema that extends discount schema
-* with properties for discount codes.
-*/
+ * @name DiscountCodes
+ * @memberof Schemas
+ * @type {SimpleSchema}
+ */
 export const DiscountCodes = Discounts.clone().extend({
   "discountMethod": {
     label: "Method",

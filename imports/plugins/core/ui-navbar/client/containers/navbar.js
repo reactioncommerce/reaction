@@ -30,18 +30,18 @@ export function composer(props, onData) {
   }
 
   /**
-   * handleShopSelectChange
    * @method
    * @summary Handle change in selected shop
    * @param {script} event
    * @param {String} shopId - selected shopId
    * @since 1.5.8
    * @return {void}
-  */
+   * @private
+   */
   const handleShopSelectChange = (event, shopId) => {
-    // set shopId
     Reaction.setShopId(shopId);
   };
+
   if (searchPackage.length) {
     searchEnabled = true;
     searchTemplate = searchPackage[0].template;

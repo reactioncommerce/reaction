@@ -2,7 +2,7 @@ import SimpleSchema from "simpl-schema";
 import { check } from "meteor/check";
 import { Tracker } from "meteor/tracker";
 import { Products } from "/lib/collections";
-import { registerSchema } from "/imports/plugins/core/collections";
+import { registerSchema } from "@reactioncommerce/schemas";
 
 /**
  * @file ShopifyProduct
@@ -12,8 +12,9 @@ import { registerSchema } from "/imports/plugins/core/collections";
 
 /**
  * @name ShopifyProduct
- * @summary ShopifyProduct schema attached to Products type "simple" and "variant"
+ * @memberof Schemas
  * @type {SimpleSchema}
+ * @summary ShopifyProduct schema attached to Products type "simple" and "variant"
  * @property {Number} shopifyId Shopify ID
  */
 export const ShopifyProduct = new SimpleSchema({

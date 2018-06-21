@@ -1,12 +1,12 @@
 import { DiscountsPackageConfig } from "/imports/plugins/core/discounts/lib/collections/schemas";
-import { registerSchema } from "@reactioncommerce/reaction-collections";
+import { registerSchema } from "@reactioncommerce/schemas";
 
 /**
-* Discount Rates Package Config Schema
-* @type {Object}
-* @desc schema that extends discount schema
-* with properties for discount rates.
-*/
+ * @name DiscountRatesPackageConfig
+ * @memberof Schemas
+ * @type {SimpleSchema}
+ * @summary A schema that extends discount schema with properties for discount rates.
+ */
 export const DiscountRatesPackageConfig = DiscountsPackageConfig.clone().extend({
   "settings.rates": {
     type: Object,

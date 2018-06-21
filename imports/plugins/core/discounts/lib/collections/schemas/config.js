@@ -1,11 +1,12 @@
-import { registerSchema } from "@reactioncommerce/reaction-collections";
-import { PackageConfig } from "/lib/collections/schemas/registry";
+import { registerSchema } from "@reactioncommerce/schemas";
+import { PackageConfig } from "/lib/collections/schemas";
 import { Discounts } from "./discounts";
 
 /**
-* DiscountsPackageConfig Schema
-*/
-
+ * @name DiscountsPackageConfig
+ * @memberof Schemas
+ * @type {SimpleSchema}
+ */
 export const DiscountsPackageConfig = PackageConfig.clone().extend({
   // Remove blackbox: true from settings obj
   "settings": {

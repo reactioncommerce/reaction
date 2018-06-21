@@ -7,14 +7,17 @@ class AddressBookForm extends Component {
   static propTypes = {
     /**
      * add addess callback
+     * @ignore
      */
     add: PropTypes.func,
     /**
      * cancel address entry and render AddressBookGrid
+     * @ignore
      */
     cancel: PropTypes.func,
     /**
      * country options for select
+     * @ignore
      */
     countries: PropTypes.arrayOf(PropTypes.shape({
       label: PropTypes.string,
@@ -22,14 +25,17 @@ class AddressBookForm extends Component {
     })),
     /**
      * address object
+     * @ignore
      */
     editAddress: PropTypes.object,
     /**
      * has address in addressBook
+     * @ignore
      */
     hasAddress: PropTypes.bool,
     /**
      * regions by county
+     * @ignore
      */
     regionsByCountry: PropTypes.object
   }
@@ -80,11 +86,48 @@ class AddressBookForm extends Component {
   }
   // Address Book Form helpers
 
+  fieldLabelMap = {
+    region: {
+      label: "Region",
+      i18nKeyLabel: "address.region"
+    },
+    country: {
+      label: "Country",
+      i18nKeyLabel: "address.country"
+    },
+    fullName: {
+      label: "Full Name",
+      i18nKeyLabel: "address.fullName"
+    },
+    address1: {
+      label: "Address",
+      i18nKeyLabel: "address.address1"
+    },
+    address2: {
+      label: "Address",
+      i18nKeyLabel: "address.address2"
+    },
+    postal: {
+      label: "Postal",
+      i18nKeyLabel: "address.postal"
+    },
+    city: {
+      label: "City",
+      i18nKeyLabel: "address.city"
+    },
+    phone: {
+      label: "Phone",
+      i18nKeyLabel: "address.phone"
+    }
+  }
+
+
   /**
    * @method setRegionOptions
    * @summary creates an array of region options for the regions select field.
    * @since 2.0.0
    * @param {String} country - country code "US" "CA" "JP"
+   * @ignore
    */
   setRegionOptions(country) {
     const { regionsByCountry, editAddress } = this.props;
@@ -98,9 +141,40 @@ class AddressBookForm extends Component {
       // setting the fields region to be the
       // first region in options array
       const [firstRegion] = regions;
-      fields.region = firstRegion;
+      if (firstRegion !== null && typeof firstRegion === "object") {
+        fields.region = firstRegion.value;
+      } else {
+        fields.region = firstRegion;
+      }
       this.setState({ regions, fields });
     }
+  }
+
+  clientValidation = (enteredAddress) => {
+    const requiredFields = ["country", "fullName", "address1", "postal", "city", "region", "phone"];
+    const validation = { messages: {} };
+    let isValid = true;
+    Object.keys(enteredAddress).forEach((key) => {
+      if (enteredAddress[key] && typeof enteredAddress[key] === "string" && requiredFields.indexOf(key) > -1) {
+        enteredAddress[key] = enteredAddress[key].trim();
+      }
+      if (requiredFields.indexOf(key) > -1 && !enteredAddress[key]) {
+        validation.messages[key] = {
+          message: `${this.fieldLabelMap[key].label} is required`
+        };
+        isValid = false;
+      }
+    });
+    if (!isValid) {
+      this.setState({
+        validation
+      });
+    } else {
+      this.setState({
+        validation: undefined
+      });
+    }
+    return isValid;
   }
 
   // Address Book Form Actions
@@ -109,19 +183,23 @@ class AddressBookForm extends Component {
    * @method onSubmit
    * @summary takes the entered address and adds or updates it to the addressBook.
    * @since 2.0.0
+   * @ignore
    */
   onSubmit = (event) => {
     event.preventDefault();
     const { add } = this.props;
     const { fields: enteredAddress } = this.state; // fields object as enteredAddress
     // TODO: field validatiion
-    add(enteredAddress);
+    if (this.clientValidation(enteredAddress)) {
+      add(enteredAddress);
+    }
   }
 
   /**
    * @method onFieldChange
    * @summary when field values change update the value in state
    * @since 2.0.0
+   * @ignore
    */
   onFieldChange = (event, value, name) => {
     const { fields } = this.state;
@@ -135,6 +213,7 @@ class AddressBookForm extends Component {
    * @method onSelectChange
    * @summary normalizes the select components onChange.
    * @since 2.0.0
+   * @ignore
    */
   onSelectChange = (value, name) => {
     // the reaction select component doesn't return
@@ -153,6 +232,7 @@ class AddressBookForm extends Component {
    * since a first address will always be the default shipping/billing address.
    * @since 2.0.0
    * @return {Object} - JSX and Checkbox components.
+   * @ignore
    */
   renderAddressOptions() {
     const { hasAddress } = this.props;
@@ -214,6 +294,7 @@ class AddressBookForm extends Component {
    * since the user needs to add a default address.
    * @since 2.0.0
    * @return {Object} - JSX
+   * @ignore
    */
   renderButtons() {
     const { cancel, hasAddress } = this.props;
@@ -243,18 +324,19 @@ class AddressBookForm extends Component {
 
   render() {
     const { countries } = this.props;
-    const { regions, fields } = this.state;
+    const { regions, fields, validation } = this.state;
     let regionField;
     if (regions.length === 0) {
       // if no region optioins
       // render a TextField
       regionField = (
         <Components.TextField
-          i18nKeyLabel="address.region"
-          label="Region"
+          i18nKeyLabel={this.fieldLabelMap.region.i18nKeyLabel}
+          label={this.fieldLabelMap.region.label}
           name="region"
           onChange={this.onFieldChange}
           value={fields.region}
+          validation={validation}
         />
       );
     } else {
@@ -262,12 +344,13 @@ class AddressBookForm extends Component {
       // render a Select
       regionField = (
         <Components.Select
-          i18nKeyLabel="address.region"
-          label="Region"
+          i18nKeyLabel={this.fieldLabelMap.region.i18nKeyLabel}
+          label={this.fieldLabelMap.region.label}
           name="region"
           options={regions}
           onChange={this.onSelectChange}
           value={fields.region}
+          validation={validation}
         />
       );
     }
@@ -276,13 +359,14 @@ class AddressBookForm extends Component {
         <div className="row">
           <div className="col-md-6">
             <Components.Select
-              i18nKeyLabel="address.country"
-              label="Country"
+              i18nKeyLabel={this.fieldLabelMap.country.i18nKeyLabel}
+              label={this.fieldLabelMap.country.label}
               name="country"
               options={countries}
               onChange={this.onSelectChange}
               placeholder="Country"
               value={fields.country}
+              validation={validation}
             />
           </div>
         </div>
@@ -290,11 +374,12 @@ class AddressBookForm extends Component {
         <div className="row">
           <div className="col-md-6">
             <Components.TextField
-              i18nKeyLabel="address.fullName"
-              label="Full Name"
+              i18nKeyLabel={this.fieldLabelMap.fullName.i18nKeyLabel}
+              label={this.fieldLabelMap.fullName.label}
               name="fullName"
               onChange={this.onFieldChange}
               value={fields.fullName}
+              validation={validation}
             />
           </div>
         </div>
@@ -302,20 +387,22 @@ class AddressBookForm extends Component {
         <div className="row">
           <div className="col-md-6">
             <Components.TextField
-              i18nKeyLabel="address.address1"
-              label="Address"
+              i18nKeyLabel={this.fieldLabelMap.address1.i18nKeyLabel}
+              label={this.fieldLabelMap.address1.label}
               name="address1"
               onChange={this.onFieldChange}
               value={fields.address1}
+              validation={validation}
             />
           </div>
           <div className="col-md-6">
             <Components.TextField
-              i18nKeyLabel="address.address2"
-              label="Address"
+              i18nKeyLabel={this.fieldLabelMap.address2.i18nKeyLabel}
+              label={this.fieldLabelMap.address2.label}
               name="address2"
               onChange={this.onFieldChange}
               value={fields.address2}
+              validation={validation}
             />
           </div>
         </div>
@@ -323,20 +410,22 @@ class AddressBookForm extends Component {
         <div className="row">
           <div className="col-md-4">
             <Components.TextField
-              i18nKeyLabel="address.postal"
-              label="Postal"
+              i18nKeyLabel={this.fieldLabelMap.postal.i18nKeyLabel}
+              label={this.fieldLabelMap.postal.label}
               name="postal"
               onChange={this.onFieldChange}
               value={fields.postal}
+              validation={validation}
             />
           </div>
           <div className="col-md-4">
             <Components.TextField
-              i18nKeyLabel="address.city"
-              label="City"
+              i18nKeyLabel={this.fieldLabelMap.city.i18nKeyLabel}
+              label={this.fieldLabelMap.city.label}
               name="city"
               onChange={this.onFieldChange}
               value={fields.city}
+              validation={validation}
             />
           </div>
           <div className="col-md-4">
@@ -347,11 +436,12 @@ class AddressBookForm extends Component {
         <div className="row">
           <div className="col-md-4">
             <Components.TextField
-              i18nKeyLabel="address.phone"
-              label="Phone"
+              i18nKeyLabel={this.fieldLabelMap.phone.i18nKeyLabel}
+              label={this.fieldLabelMap.phone.label}
               name="phone"
               onChange={this.onFieldChange}
               value={fields.phone}
+              validation={validation}
             />
           </div>
         </div>

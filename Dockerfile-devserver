@@ -1,5 +1,5 @@
 # Builds a GraphQL development server without Meteor runtime dependencies.
-FROM node:8.9.4
+FROM node:8.11.2
 
 LABEL maintainer="Reaction Commerce <architecture@reactioncommerce.com>"
 
@@ -10,6 +10,12 @@ WORKDIR /app
 COPY --chown=node package.json .
 COPY --chown=node package-lock.json .
 
+# Because Docker Compose uses a named volume for node_modules and named volumes are owned
+# by root by default, we have to initially create node_modules here with correct owner.
+# Without this NPM cannot write packages into node_modules later, when running in a container.
+RUN mkdir /app/node_modules && chown node /app/node_modules
+
+RUN npm -v
 RUN npm install
 
 COPY --chown=node . .

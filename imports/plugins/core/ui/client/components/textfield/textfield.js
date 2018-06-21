@@ -13,7 +13,7 @@ class TextField extends Component {
    */
   get value() {
     // if the props.value is not a number
-    // return ether the value or and empty string
+    // return either the value or and empty string
     if (isNaN(this.props.value)) {
       return this.props.value || "";
     }
@@ -22,7 +22,7 @@ class TextField extends Component {
 
   /**
    * Getter: isValid
-   * @return {Boolean} true/false if field is valid from props.isValid or props.valitation[this.props.name].isValid
+   * @return {Boolean} true/false if field is valid from props.isValid or props.validation[this.props.name].isValid
    */
   get isValid() {
     const { isValid } = this.props;
@@ -56,6 +56,17 @@ class TextField extends Component {
     return undefined;
   }
 
+  getEventValue(event) {
+    if (this.props.type === "number") {
+      try {
+        return Number(event.target.value);
+      } catch (err) {
+        return event.target.value;
+      }
+    }
+    return event.target.value;
+  }
+
   /**
    * onValueChange
    * @summary set the state when the value of the input is changed
@@ -64,7 +75,7 @@ class TextField extends Component {
    */
   onChange = (event) => {
     if (this.props.onChange) {
-      this.props.onChange(event, event.target.value, this.props.name);
+      this.props.onChange(event, this.getEventValue(event), this.props.name);
     }
   }
 
@@ -76,7 +87,7 @@ class TextField extends Component {
    */
   onBlur = (event) => {
     if (this.props.onBlur) {
-      this.props.onBlur(event, event.target.value, this.props.name);
+      this.props.onBlur(event, this.getEventValue(event), this.props.name);
     }
   }
 
@@ -88,7 +99,7 @@ class TextField extends Component {
    */
   onFocus = (event) => {
     if (this.props.onFocus) {
-      this.props.onFocus(event, event.target.value, this.props.name);
+      this.props.onFocus(event, this.getEventValue(event), this.props.name);
     }
   }
 
@@ -265,7 +276,7 @@ class TextField extends Component {
 TextField.propTypes = {
   align: PropTypes.oneOf(["left", "center", "right", "justify"]),
   className: PropTypes.string,
-  disabled: PropTypes.bool,
+  disabled: PropTypes.bool, // eslint-disable-line react/boolean-prop-naming
   helpText: PropTypes.string,
   i18nKeyHelpText: PropTypes.string,
   i18nKeyLabel: PropTypes.string,
@@ -276,7 +287,7 @@ TextField.propTypes = {
   maxRows: PropTypes.number,
   maxValue: PropTypes.any,
   minValue: PropTypes.number,
-  multiline: PropTypes.bool,
+  multiline: PropTypes.bool, // eslint-disable-line react/boolean-prop-naming
   name: PropTypes.string,
   onBlur: PropTypes.func,
   onChange: PropTypes.func,

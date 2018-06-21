@@ -37,7 +37,7 @@ async function lazyLoadSlugify() {
  */
 export function getSlug(slugString) {
   let slug;
-  Promise.resolve(lazyLoadSlugify());
+  Promise.resolve(lazyLoadSlugify()); // eslint-disable-line promise/catch-or-return
   if (slugString && slugify) {
     slug = slugify(slugString.toLowerCase());
   } else {

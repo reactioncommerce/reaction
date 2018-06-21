@@ -3,10 +3,9 @@ import SimpleSchema from "simpl-schema";
 import { Meteor } from "meteor/meteor";
 import { Tracker } from "meteor/tracker";
 import { check, Match } from "meteor/check";
-import { registerSchema } from "@reactioncommerce/reaction-collections";
-import { Products, Shops, Revisions, Catalog } from "/lib/collections";
+import { registerSchema } from "@reactioncommerce/schemas";
+import { Products, Shops, Catalog } from "/lib/collections";
 import { Reaction, Logger } from "/server/api";
-import { RevisionApi } from "/imports/plugins/core/revisions/lib/api/revisions";
 
 //
 // define search filters as a schema so we can validate
@@ -71,72 +70,54 @@ const filters = new SimpleSchema({
 
 registerSchema("filters", filters);
 
-/**
- * Broadens an existing selector to include all variants of the given top-level productIds
- * Additionally considers the tags product filter, if given
- * Can operate on the "Revisions" and the "Products" collection
- * @param collectionName {String} - "Revisions" or "Products"
- * @param selector {object} - the selector that should be extended
- * @param productFilters { object } - the product filter (e.g. orginating from query parameters)
- * @param productIds {String[]} - the top-level productIds we want to get the variants of.
- */
-function extendSelectorWithVariants(collectionName, selector, productFilters, productIds) {
-  let prefix = "";
-
-  if (collectionName.toLowerCase() === "revisions") {
-    prefix = "documentData.";
-  } else if (collectionName.toLowerCase() !== "products") {
-    throw new Error(`Can't extend selector for collection ${collectionName}.`);
+const catalogProductFiltersSchema = new SimpleSchema({
+  "shopIdsOrSlugs": {
+    type: Array,
+    optional: true
+  },
+  "shopIdsOrSlugs.$": String,
+  "tagIds": {
+    type: Array,
+    optional: true
+  },
+  "tagIds.$": String,
+  "query": {
+    type: String,
+    optional: true
   }
+});
 
-  // Remove hashtag filter from selector (hashtags are not applied to variants, we need to get variants)
-  const newSelector = _.omit(selector, ["hashtags", "ancestors"]);
-  if (productFilters && productFilters.tags) {
-    // Re-configure selector to pick either Variants of one of the top-level products, or the top-level products in the filter
-    _.extend(newSelector, {
-      $or: [{
-        [`${prefix}ancestors`]: {
-          $in: productIds
-        }
-      }, {
-        $and: [{
-          [`${prefix}hashtags`]: {
-            $in: productFilters.tags
-          }
-        }, {
-          [`${prefix}_id`]: {
-            $in: productIds
-          }
-        }]
-      }]
-    });
-  } else {
-    _.extend(newSelector, {
-      $or: [{
-        [`${prefix}ancestors`]: {
-          $in: productIds
-        }
-      }, {
-        [`${prefix}_id`]: {
-          $in: productIds
-        }
-      }]
-    });
-  }
-  return newSelector;
-}
+function applyShopsFilter(selector, shopIdsOrSlugs) {
+  // Active shop
+  const shopId = Reaction.getShopId();
+  const primaryShopId = Reaction.getPrimaryShopId();
 
-function filterProducts(productFilters) {
-  // if there are filter/params that don't match the schema
-  // validate, catch except but return no results
-  try {
-    if (productFilters) filters.validate(productFilters);
-  } catch (e) {
-    Logger.debug(e, "Invalid Product Filters");
+  // Don't publish if we're missing an active or primary shopId
+  if (!shopId || !primaryShopId) {
     return false;
   }
 
-  const shopIdsOrSlugs = productFilters && productFilters.shops;
+  let activeShopIds;
+  // if the current shop is the primary shop, get products from all shops
+  // otherwise, only list products from _this_ shop.
+  if (shopId === primaryShopId) {
+    activeShopIds = Shops.find({
+      $or: [
+        { "workflow.status": "active" },
+        { _id: primaryShopId }
+      ]
+    }, {
+      fields: {
+        _id: 1
+      }
+    }).fetch().map((activeShop) => activeShop._id);
+  } else {
+    activeShopIds = [shopId];
+  }
+
+  if (!activeShopIds.length) {
+    return false;
+  }
 
   if (shopIdsOrSlugs) {
     // Get all shopIds associated with the slug or Id
@@ -147,33 +128,48 @@ function filterProducts(productFilters) {
       }, {
         slug: { $in: shopIdsOrSlugs }
       }]
+    }, {
+      fields: {
+        _id: 1
+      }
     }).map((shop) => shop._id);
 
-    // If we found shops, update the productFilters
-    if (shopIds) {
-      productFilters.shops = shopIds;
-    } else {
-      return false;
-    }
+    activeShopIds = _.intersection(activeShopIds, shopIds);
+  }
+
+  if (activeShopIds.length) {
+    return {
+      ...selector,
+      shopId: { $in: activeShopIds }
+    };
+  }
+
+  return selector;
+}
+
+function filterProducts(productFilters) {
+  // if there are filter/params that don't match the schema
+  // validate, catch except but return no results
+  try {
+    if (productFilters) filters.validate(productFilters);
+  } catch (e) {
+    Logger.warn(e, "Invalid Product Filters");
+    return false;
   }
 
   // Init default selector - Everyone can see products that fit this selector
-  const selector = {
+  const baseSelector = {
     ancestors: [], // Lookup top-level products
-    isDeleted: { $in: [null, false] }, // by default, we don't publish deleted products
+    isDeleted: { $ne: true }, // by default, we don't publish deleted products
     isVisible: true // by default, only lookup visible products
   };
 
-  if (productFilters) {
-    // handle multiple shops
-    if (productFilters.shops) {
-      _.extend(selector, {
-        shopId: {
-          $in: productFilters.shops
-        }
-      });
-    }
+  const shopIdsOrSlugs = productFilters && productFilters.shops;
+  const selector = applyShopsFilter(baseSelector, shopIdsOrSlugs);
 
+  if (!selector) return false;
+
+  if (productFilters) {
     // filter by tags
     if (productFilters.tags) {
       _.extend(selector, {
@@ -295,38 +291,19 @@ function filterProducts(productFilters) {
 }
 
 /**
- * products publication
- * @param {Number} [productScrollLimit] - optional, defaults to 24
- * @param {Array} shops - array of shopId to retrieve product from.
- * @return {Object} return product cursor
+ * @summary Products publication
+ * @param {Number} [productScrollLimit] - Top-level product limit. Optional, defaults to 24
+ * @param {Object} [productFilters] - Optional filters to apply
+ * @param {Object} [sort] - Optional MongoDB sort object
+ * @param {Boolean} [editMode] - If true, will add a shopId filter limiting the results to shops
+ *   for which the logged in user has "createProduct" permission. Default is false.
+ * @return {MongoCursor|undefined} Products collection cursor, or undefined if none to publish
  */
-Meteor.publish("Products", function (productScrollLimit = 24, productFilters, sort = {}, editMode = true) {
+Meteor.publish("Products", function (productScrollLimit = 24, productFilters, sort = {}, editMode = false) {
   check(productScrollLimit, Number);
   check(productFilters, Match.OneOf(undefined, Object));
   check(sort, Match.OneOf(undefined, Object));
   check(editMode, Match.Maybe(Boolean));
-
-  // TODO: Consider publishing the non-admin publication if a user is not in "edit mode" to see what is published
-
-  // Active shop
-  const shopId = Reaction.getShopId();
-  const primaryShopId = Reaction.getPrimaryShopId();
-
-  // Get a list of shopIds that this user has "createProduct" permissions for (owner permission is checked by default)
-  const userAdminShopIds = Reaction.getShopsWithRoles(["createProduct"], this.userId);
-
-  // Don't publish if we're missing an active or primary shopId
-  if (!shopId || !primaryShopId) {
-    return this.ready();
-  }
-
-  // Get active shop id's to use for filtering
-  const activeShopsIds = Shops.find({
-    $or: [
-      { "workflow.status": "active" },
-      { _id: Reaction.getPrimaryShopId() }
-    ]
-  }).fetch().map((activeShop) => activeShop._id);
 
   const selector = filterProducts(productFilters);
 
@@ -334,175 +311,95 @@ Meteor.publish("Products", function (productScrollLimit = 24, productFilters, so
     return this.ready();
   }
 
+  // Get a list of shopIds that this user has "createProduct" permissions for (owner permission is checked by default)
+  const userAdminShopIds = Reaction.getShopsWithRoles(["createProduct"], this.userId) || [];
+
   // We publish an admin version of this publication to admins of products who are in "Edit Mode"
-  // Authorized content curators for shops get special publication of the product
-  // with all relevant revisions all is one package
-  // userAdminShopIds is a list of shopIds that the user has createProduct or owner access for
-  if (editMode && userAdminShopIds && Array.isArray(userAdminShopIds) && userAdminShopIds.length > 0) {
-    selector.isVisible = {
-      $in: [true, false, null, undefined]
-    };
-    selector.shopId = {
-      $in: activeShopsIds
-    };
-
-    // Get _ids of top-level products
-    const productIds = Products.find(selector, {
-      sort,
-      limit: productScrollLimit
-    }).map((product) => product._id);
-
-
-    const productSelectorWithVariants = extendSelectorWithVariants("Products", selector, productFilters, productIds);
-
-    if (RevisionApi.isRevisionControlEnabled()) {
-      const revisionSelector = {
-        "workflow.status": {
-          $nin: [
-            "revision/published"
-          ]
-        }
-      };
-      const revisionSelectorWithVariants = extendSelectorWithVariants("Revisions", revisionSelector, productFilters, productIds);
-      const handle = Revisions.find(revisionSelectorWithVariants).observe({
-        added: (revision) => {
-          this.added("Revisions", revision._id, revision);
-          if (revision.documentType === "product") {
-            // Check merge box (session collection view), if product is already in cache.
-            // If yes, we send a `changed`, otherwise `added`. I'm assuming
-            // that this._documents.Products is somewhat equivalent to
-            // the merge box Meteor.server.sessions[sessionId].getCollectionView("Products").documents
-            if (this._documents.Products && this._documents.Products[revision.documentId]) {
-              this.changed("Products", revision.documentId, { __revisions: [revision] });
-            } else {
-              this.added("Products", revision.documentId, { __revisions: [revision] });
-            }
-          }
-        },
-        changed: (revision) => {
-          this.changed("Revisions", revision._id, revision);
-          if (revision.documentType === "product") {
-            if (this._documents.Products && this._documents.Products[revision.documentId]) {
-              this.changed("Products", revision.documentId, { __revisions: [revision] });
-            }
-          }
-        },
-        removed: (revision) => {
-          this.removed("Revisions", revision._id);
-          if (revision.documentType === "product") {
-            if (this._documents.Products && this._documents.Products[revision.documentId]) {
-              this.changed("Products", revision.documentId, { __revisions: [] });
-            }
-          }
-        }
-      });
-
-      this.onStop(() => {
-        handle.stop();
-      });
-
-      return Products.find(productSelectorWithVariants);
+  if (editMode) {
+    // Limit to only shops we have "createProduct" role for
+    selector.shopId.$in = _.intersection(selector.shopId.$in, userAdminShopIds);
+    if (selector.shopId.$in.length === 0) {
+      return this.ready();
     }
 
-    // Revision control is disabled, but is admin
-    return Products.find(productSelectorWithVariants, {
-      sort,
-      limit: productScrollLimit
-    });
+    delete selector.isVisible; // in edit mode, you should see all products
   }
 
-  // This is where the publication begins for non-admin users
-  // Get _ids of top-level products
+  // Get the IDs of the first N (limit) top-level products that match the query
   const productIds = Products.find(selector, {
     sort,
     limit: productScrollLimit
+  }, {
+    fields: {
+      _id: 1
+    }
   }).map((product) => product._id);
 
-  let newSelector = { ...selector };
-
-  // Remove hashtag filter from selector (hashtags are not applied to variants, we need to get variants)
-  if (productFilters && Object.keys(productFilters).length === 0 && productFilters.constructor === Object) {
-    newSelector = _.omit(selector, ["hashtags", "ancestors"]);
-
-    if (productFilters.tags) {
-      // Re-configure selector to pick either Variants of one of the top-level products,
-      // or the top-level products in the filter
-      _.extend(newSelector, {
-        $or: [{
-          ancestors: {
-            $in: productIds
-          }
-        }, {
-          $and: [{
-            hashtags: {
-              $in: productFilters.tags
-            }
-          }, {
-            _id: {
-              $in: productIds
-            }
-          }]
-        }]
-      });
-    }
-    // filter by query
-    if (productFilters.query) {
-      const cond = {
-        $regex: productFilters.query,
-        $options: "i"
-      };
-      _.extend(newSelector, {
-        $or: [{
-          title: cond
-        }, {
-          pageTitle: cond
-        }, {
-          description: cond
-        }, {
-          ancestors: {
-            $in: productIds
-          }
-        },
-        {
-          _id: {
-            $in: productIds
-          }
-        }]
-      });
-    }
-  } else {
-    newSelector = _.omit(selector, ["hashtags", "ancestors"]);
-
-    _.extend(newSelector, {
-      $or: [{
-        ancestors: {
-          $in: productIds
-        }
-      }, {
-        _id: {
-          $in: productIds
-        }
-      }]
-    });
-  }
-
-  // Adjust the selector to include only active shops
-  newSelector = {
-    ...newSelector,
-    shopId: {
-      $in: activeShopsIds
-    }
-  };
-
-  // Returning Complete product tree for top level products to avoid sold out warning.
-  return Products.find(newSelector, {
+  // Return a cursor for the matching products plus all their variants
+  return Products.find({
+    $or: [{
+      ancestors: {
+        $in: productIds
+      }
+    }, {
+      _id: {
+        $in: productIds
+      }
+    }]
+  }, {
     sort
-    // TODO: REVIEW Limiting final products publication for non-admins
-    // I think we shouldn't limit here, otherwise we are limited to 24 total products which
-    // could be far less than 24 top-level products
-    // limit: productScrollLimit
+    // We shouldn't limit here. Otherwise we are limited to 24 total products which
+    // could be far less than 24 top-level products.
   });
 });
+
+function filterCatalogItems(catalogFilters) {
+  // if there are filter/params that don't match the schema
+  // validate, catch except but return no results
+  try {
+    if (catalogFilters) catalogProductFiltersSchema.validate(catalogFilters);
+  } catch (e) {
+    Logger.warn(e, "Invalid Catalog Product Filters");
+    return false;
+  }
+
+  // Init default selector - Everyone can see products that fit this selector
+  const baseSelector = {
+    "product.isDeleted": { $ne: true }, // by default, we don't publish deleted products
+    "product.isVisible": true // by default, only lookup visible products
+  };
+
+  const { shopIdsOrSlugs } = catalogFilters || {};
+  const selector = applyShopsFilter(baseSelector, shopIdsOrSlugs);
+
+  if (!selector) return false;
+  if (!catalogFilters) return selector;
+
+  // filter by tags
+  if (catalogFilters.tagIds) {
+    selector["product.tagIds"] = {
+      $in: catalogFilters.tagIds
+    };
+  }
+
+  // filter by query
+  if (catalogFilters.query) {
+    const cond = {
+      $regex: catalogFilters.query,
+      $options: "i"
+    };
+
+    selector.$or = [{
+      title: cond
+    }, {
+      pageTitle: cond
+    }, {
+      description: cond
+    }];
+  }
+
+  return selector;
+}
 
 /**
  * @name Products/grid
@@ -511,27 +408,31 @@ Meteor.publish("Products", function (productScrollLimit = 24, productFilters, so
  * @summary Publication method for a customer facing product grid
  * @param {number} productScrollLimit - product find limit
  * @param {object} productFilters - filters to be applied to the product find
- * @param {object} sort - sorting to be applied to the product find
  * @return {MongoCursor} Mongo cursor object of found products
  */
-Meteor.publish("Products/grid", function (productScrollLimit = 24, productFilters, sort = {}) {
+Meteor.publish("Products/grid", function (productScrollLimit = 24, productFilters) {
   check(productScrollLimit, Number);
   check(productFilters, Match.OneOf(undefined, Object));
-  check(sort, Match.OneOf(undefined, Object));
 
-  const newSelector = filterProducts(productFilters);
+  const newSelector = filterCatalogItems(productFilters);
 
   if (newSelector === false) {
     return this.ready();
   }
 
-  const productCursor = Catalog.find(newSelector, {
-    sort,
+  let tagIdForPosition = "_default";
+  if (productFilters && Array.isArray(productFilters.tagIds) && productFilters.tagIds.length) {
+    [tagIdForPosition] = productFilters.tagIds;
+  }
+
+  return Catalog.find(newSelector, {
+    sort: {
+      [`product.positions.${tagIdForPosition}.position`]: 1,
+      createdAt: -1
+    },
     limit: productScrollLimit,
     fields: {
       variants: 0
     }
   });
-
-  return productCursor;
 });

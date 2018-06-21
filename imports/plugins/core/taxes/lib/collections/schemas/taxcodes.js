@@ -1,12 +1,14 @@
 import SimpleSchema from "simpl-schema";
 import { check } from "meteor/check";
 import { Tracker } from "meteor/tracker";
-import { registerSchema } from "@reactioncommerce/reaction-collections";
+import { registerSchema } from "@reactioncommerce/schemas";
 
 /**
-* TaxCodes Schema
-*/
-
+ * @name TaxCodes
+ * @memberof Schemas
+ * @type {SimpleSchema}
+ * @summary TaxCodes schema
+ */
 export const TaxCodes = new SimpleSchema({
   "id": {
     type: String,

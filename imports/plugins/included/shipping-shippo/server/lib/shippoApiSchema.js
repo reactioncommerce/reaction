@@ -2,8 +2,13 @@
 import SimpleSchema from "simpl-schema";
 import { check } from "meteor/check";
 import { Tracker } from "meteor/tracker";
-import { registerSchema } from "@reactioncommerce/reaction-collections";
+import { registerSchema } from "@reactioncommerce/schemas";
 
+/**
+ * @name addressSchema
+ * @memberof Schemas
+ * @type {SimpleSchema}
+ */
 export const addressSchema = new SimpleSchema({
   object_purpose: { type: String, allowedValues: ["QUOTE", "PURCHASE"] },
   name: { type: String, optional: true },
@@ -24,9 +29,14 @@ export const addressSchema = new SimpleSchema({
 
 registerSchema("addressSchema", addressSchema);
 
-// Overrides the properties required for purchasing labels/shipping.
-// we don't override the purpose because for some cases like getRatesForCart we don't want to
-// purchase Labels(purpose="QUOTE" but we want all the fields required for purchasing to be present.
+/**
+ * We don't override the purpose because for some cases like getRatesForCart we don't want to
+ * purchase Labels(purpose="QUOTE" but we want all the fields required for purchasing to be present.
+ * @name purchaseAddressSchema
+ * @memberof Schemas
+ * @type {SimpleSchema}
+ * @summary Overrides the properties required for purchasing labels/shipping
+ */
 export const purchaseAddressSchema = addressSchema.clone().extend({
   name: String,
   street1: String,
@@ -43,6 +53,11 @@ export const purchaseAddressSchema = addressSchema.clone().extend({
 
 registerSchema("purchaseAddressSchema", purchaseAddressSchema);
 
+/**
+ * @name parcelSchema
+ * @memberof Schemas
+ * @type {SimpleSchema}
+ */
 export const parcelSchema = new SimpleSchema({
   length: { type: Number, min: 0.0001 },
   width: { type: Number, min: 0.0001 },

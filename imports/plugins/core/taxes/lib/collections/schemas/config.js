@@ -1,11 +1,12 @@
-import { registerSchema } from "@reactioncommerce/reaction-collections";
-import { PackageConfig } from "/lib/collections/schemas/registry";
+import { registerSchema } from "@reactioncommerce/schemas";
+import { PackageConfig } from "/lib/collections/schemas";
 import { Taxes } from "./taxes";
 
 /**
-* TaxPackageConfig Schema
-*/
-
+ * @name TaxPackageConfig
+ * @memberof Schemas
+ * @type {SimpleSchema}
+ */
 export const TaxPackageConfig = PackageConfig.clone().extend({
   // Remove blackbox: true from settings obj
   "settings": {

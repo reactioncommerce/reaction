@@ -1,6 +1,6 @@
 import faker from "faker";
 import _ from "lodash";
-import { Random } from "meteor/random";
+import Random from "@reactioncommerce/random";
 import { Factory } from "meteor/dburles:factory";
 import { Orders, Products } from "/lib/collections";
 import { getShop } from "./shops";
@@ -99,6 +99,7 @@ export default function () {
   const shopId = getShopId();
   /**
    * @name order
+   * @memberof Fixtures
    * @summary Create an Order Factory
    * @example order = Factory.create("order")
    * @property {String} additionalField OrderItems - `faker.lorem.sentence()`

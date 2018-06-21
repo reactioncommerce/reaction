@@ -173,12 +173,12 @@ class VariantForm extends Component {
     const inverseValue = !value;
 
     this.setState(({ variant }) => ({
+      inventoryPolicy: inverseValue,
       variant: {
         ...variant,
         [field]: inverseValue
       }
     }));
-
 
     this.handleFieldBlur(event, inverseValue, field);
   }
@@ -306,6 +306,7 @@ class VariantForm extends Component {
             i18nKeyPlaceholder="0"
             placeholder="0"
             label="Quantity"
+            type="number"
             name="inventoryQuantity"
             ref="inventoryQuantityInput"
             value={this.props.onUpdateQuantityField(this.variant)}
@@ -325,6 +326,7 @@ class VariantForm extends Component {
           i18nKeyPlaceholder="0"
           placeholder="0"
           label="Quantity"
+          type="number"
           name="inventoryQuantity"
           ref="inventoryQuantityInput"
           value={this.variant.inventoryQuantity}
@@ -556,6 +558,7 @@ class VariantForm extends Component {
                 i18nKeyLabel="productVariant.lowInventoryWarningThreshold"
                 i18nKeyPlaceholder="0"
                 placeholder="0"
+                type="number"
                 label="Warn At"
                 name="lowInventoryWarningThreshold"
                 ref="lowInventoryWarningThresholdInput"

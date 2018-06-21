@@ -58,7 +58,7 @@ class ProductMetadata extends Component {
 
 ProductMetadata.propTypes = {
   editContainerProps: PropTypes.object,
-  editable: PropTypes.bool,
+  editable: PropTypes.bool, // eslint-disable-line react/boolean-prop-naming
   metafields: PropTypes.arrayOf(PropTypes.object),
   product: PropTypes.object
 };

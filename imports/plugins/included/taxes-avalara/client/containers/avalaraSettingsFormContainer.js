@@ -4,7 +4,7 @@ import { Reaction } from "/client/api";
 import { compose, withProps } from "recompose";
 import { AvalaraPackageConfig } from "../../lib/collections/schemas";
 import { AvalaraSettingsForm } from "../components";
-import { Logs as LogSchema } from "/lib/collections/schemas/logs";
+import { Logs as LogSchema } from "/lib/collections/schemas";
 import { Countries } from "/client/collections";
 
 /**

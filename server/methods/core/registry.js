@@ -9,14 +9,14 @@ import { mergeDeep } from "/lib/api";
  * @file Methods for Registry
  *
  *
- * @namespace Methods/Registry
+ * @namespace Registry/Methods
 */
 
 export const methods = {
   /**
    * @name registry/update
    * @method
-   * @memberof Methods/Registry
+   * @memberof Registry/Methods
    * @example Meteor.call("registry/update", packageId, settingsKey, fields)
    * @param  {String} packageId id of package
    * @param  {String} name      Name of package

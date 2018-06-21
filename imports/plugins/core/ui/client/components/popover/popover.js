@@ -103,7 +103,8 @@ class Popover extends Component {
       <TetherComponent
         style={{
           maxHeight: "100vh",
-          overflowY: "auto"
+          overflowY: "auto",
+          boxShadow: this.props.showShadow ? "0 0 4px 2px rgba(0, 0, 0, 0.16)" : "none"
         }}
         attachment={this.attachment}
         classPrefix="popover"
@@ -136,8 +137,9 @@ Popover.propTypes = {
   onClick: PropTypes.func,
   onDisplayButtonClick: PropTypes.func,
   onRequestOpen: PropTypes.func,
-  showArrow: PropTypes.bool,
-  showDropdownButton: PropTypes.bool,
+  showArrow: PropTypes.bool, // eslint-disable-line react/boolean-prop-naming
+  showDropdownButton: PropTypes.bool, // eslint-disable-line react/boolean-prop-naming
+  showShadow: PropTypes.bool, // eslint-disable-line react/boolean-prop-naming
   targetAttachment: PropTypes.string,
   tooltipContent: PropTypes.node
 };

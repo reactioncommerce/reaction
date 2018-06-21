@@ -10,14 +10,12 @@ import { Meteor } from "meteor/meteor";
 import MediaGallery from "../components/media/mediaGallery";
 import { Logger, Reaction } from "/client/api";
 import { ReactionProduct } from "/lib/api";
-import { Revisions } from "/lib/collections";
-import { isRevisionControlEnabled } from "/imports/plugins/core/revisions/lib/api";
 import { Media } from "/imports/plugins/core/files/client";
 
 const wrapComponent = (Comp) => (
   class MediaGalleryContainer extends Component {
     static propTypes = {
-      editable: PropTypes.bool,
+      editable: PropTypes.bool, // eslint-disable-line react/boolean-prop-naming
       id: PropTypes.string,
       media: PropTypes.arrayOf(PropTypes.object),
       placement: PropTypes.string
@@ -172,6 +170,7 @@ const wrapComponent = (Comp) => (
               if (error) Alerts.toast(error.reason, "error");
               this.setState({ uploadProgress: null });
             });
+            return null;
           })
           .catch((error) => {
             this.setState({ uploadProgress: null });
@@ -213,18 +212,6 @@ const wrapComponent = (Comp) => (
   }
 );
 
-function fetchMediaRevisions() {
-  const productId = ReactionProduct.selectedProductId();
-  const mediaRevisions = Revisions.find({
-    "parentDocument": productId,
-    "documentType": "image",
-    "workflow.status": {
-      $nin: ["revision/published"]
-    }
-  }).fetch();
-  return mediaRevisions;
-}
-
 // resort the media in
 function sortMedia(media) {
   const sortedMedia = _.sortBy(media, (m) => {
@@ -237,34 +224,9 @@ function sortMedia(media) {
   return sortedMedia;
 }
 
-// Search through revisions and if we find one for the image, stick it on the object
-function appendRevisionsToMedia(props, media) {
-  if (!isRevisionControlEnabled() || !Reaction.hasPermission(props.permission || ["createProduct"])) {
-    return media;
-  }
-  const mediaRevisions = fetchMediaRevisions();
-  const newMedia = [];
-  for (const image of media) {
-    image.revision = undefined;
-    for (const revision of mediaRevisions) {
-      if (revision.documentId === image._id) {
-        image.revision = revision;
-        image.metadata.priority = revision.documentData.priority;
-      }
-    }
-    newMedia.push(image);
-  }
-  return sortMedia(newMedia);
-}
-
 function composer(props, onData) {
-  let media;
   let editable;
   const viewAs = Reaction.getUserPreferences("reaction-dashboard", "viewAs", "administrator");
-
-  if (props.media) {
-    media = appendRevisionsToMedia(props, props.media);
-  }
 
   if (viewAs === "customer") {
     editable = false;
@@ -274,7 +236,7 @@ function composer(props, onData) {
 
   onData(null, {
     editable,
-    media
+    media: sortMedia(props.media)
   });
 }
 

@@ -1,10 +1,11 @@
 import { TaxPackageConfig } from "/imports/plugins/core/taxes/lib/collections/schemas";
-import { registerSchema } from "@reactioncommerce/reaction-collections";
+import { registerSchema } from "@reactioncommerce/schemas";
 
 /**
-* TaxPackageConfig Schema
-*/
-
+ * @name TaxCloudPackageConfig
+ * @memberof Schemas
+ * @type {SimpleSchema}
+ */
 export const TaxCloudPackageConfig = TaxPackageConfig.clone().extend({
   "settings.taxcloud": {
     type: Object,

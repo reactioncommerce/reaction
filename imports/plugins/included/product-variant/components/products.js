@@ -21,7 +21,7 @@ class Products extends Component {
     products: PropTypes.array,
     productsSubscription: PropTypes.object,
     ready: PropTypes.func,
-    showNotFound: PropTypes.bool
+    showNotFound: PropTypes.bool // eslint-disable-line react/boolean-prop-naming
   };
 
   /**

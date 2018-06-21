@@ -5,7 +5,10 @@ import { Mongo, MongoInternals } from "meteor/mongo";
 // Add the aggregate function available in tbe raw collection to normal collections
 Mongo.Collection.prototype.aggregate = function (pipelines, options) {
   const coll = this._getCollection();
-  return Meteor.wrapAsync(coll.aggregate.bind(coll))(pipelines, options);
+  const aggregateSync = Meteor.wrapAsync(coll.aggregate.bind(coll));
+  const aggregationCursor = aggregateSync(pipelines, options);
+  const aggregationCursorToArraySync = Meteor.wrapAsync(aggregationCursor.toArray.bind(aggregationCursor));
+  return aggregationCursorToArraySync();
 };
 
 // this group of methods were taken from https://github.com/meteorhacks/meteor-collection-utils
@@ -70,10 +73,17 @@ function wrapWithDb(mongoConn) {
  * @constructor
  */
 export function ReactiveAggregate(pub, collection, pipeline, options) {
+  let allowDiskUse = false;
+
+  if (process.env.MONGO_ALLOW_DISK_USE) {
+    allowDiskUse = true;
+  }
+
   const defaultOptions = {
     observeSelector: {},
     observeOptions: {},
-    clientCollection: collection._name
+    clientCollection: collection._name,
+    allowDiskUse
   };
   const pubOptions = Object.assign({}, defaultOptions, options);
 
@@ -88,7 +98,7 @@ export function ReactiveAggregate(pub, collection, pipeline, options) {
     }
 
     // add and update documents on the client
-    collection.aggregate(pipeline).forEach((doc) => {
+    collection.aggregate(pipeline, { allowDiskUse: pubOptions.allowDiskUse }).forEach((doc) => {
       if (!pub._ids[doc._id]) {
         pub.added(pubOptions.clientCollection, doc._id, doc);
       } else {

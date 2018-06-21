@@ -1,22 +1,10 @@
 import { Meteor } from "meteor/meteor";
-import { MongoInternals } from "meteor/mongo";
 import { WebApp } from "meteor/webapp";
 import createApolloServer from "./createApolloServer";
-import defineCollections from "./defineCollections";
-import methods from "./methods";
-import queries from "./queries";
-
-const collections = {};
-
-const { db } = MongoInternals.defaultRemoteCollectionDriver().mongo;
-defineCollections(db, collections);
+import { baseContext } from "./buildMeteorContext";
 
 const server = createApolloServer({
-  context: {
-    collections,
-    methods,
-    queries
-  },
+  context: baseContext,
   // XXX Eventually these should be from individual env variables instead
   debug: Meteor.isDevelopment,
   graphiql: Meteor.isDevelopment

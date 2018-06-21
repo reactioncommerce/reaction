@@ -15,12 +15,13 @@ services:
     build:
       context: .
       dockerfile: Dockerfile-devserver
-    command: ["npm", "run", "devserver"]
+    command: bash -c "npm install && npm run devserver"
     depends_on:
       - mongo
     environment:
       ROOT_URL: "http://localhost:3030"
       MONGO_URL: "mongodb://mongo:27017/reaction"
+      BABEL_DISABLE_CACHE: 1 # This is needed to pick up changes to .graphql files. See https://www.npmjs.com/package/babel-plugin-inline-import#caveats
     networks:
       default:
       reaction-api:
@@ -34,13 +35,14 @@ services:
     build:
       context: .
       target: meteor-dev
-    command: "reaction"
+    command: bash -c "npm install && reaction" #TODO; Revert to Meteor NPM. See comment in Dockerfile about Meteor1.7 NPM version issue.
     depends_on:
       - mongo
     environment:
       METEOR_DISABLE_OPTIMISTIC_CACHING: 1
       MONGO_URL: "mongodb://mongo:27017/reaction"
       ROOT_URL: "http://localhost:3000"
+      BABEL_DISABLE_CACHE: 1 # This is needed to pick up changes to .graphql files. See https://www.npmjs.com/package/babel-plugin-inline-import#caveats
     networks:
       default:
       reaction-api:
@@ -51,7 +53,7 @@ services:
       - reaction_node_modules:/opt/reaction/src/node_modules # do not link node_modules in, and persist it between dc up runs
 
   mongo:
-    image: mongo:3.4
+    image: mongo:3.6.3
     command: mongod --storageEngine=wiredTiger
     ports:
       - "27017:27017"

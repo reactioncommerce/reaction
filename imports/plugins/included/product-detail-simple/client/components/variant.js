@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import classnames from "classnames";
 import { Components, registerComponent } from "@reactioncommerce/reaction-components";
-import { Validation } from "@reactioncommerce/reaction-collections";
+import { Validation } from "@reactioncommerce/schemas";
 import { SortableItem } from "/imports/plugins/core/ui/client/containers";
 
 import { ReactionProduct } from "/lib/api";
@@ -41,49 +41,6 @@ class Variant extends Component {
 
   get price() {
     return this.props.displayPrice || this.props.variant.price;
-  }
-
-  renderInventoryStatus() {
-    const {
-      inventoryManagement,
-      inventoryPolicy
-    } = this.props.variant;
-
-    // If variant is sold out, show Sold Out badge
-    if (inventoryManagement && this.props.soldOut) {
-      if (inventoryPolicy) {
-        return (
-          <span className="variant-qty-sold-out badge badge-danger variant-badge-label">
-            <Components.Translation defaultValue="Sold Out!" i18nKey="productDetail.soldOut" />
-          </span>
-        );
-      }
-
-      return (
-        <span className="variant-qty-sold-out badge badge-info variant-badge-label">
-          <Components.Translation defaultValue="Backorder" i18nKey="productDetail.backOrder" />
-        </span>
-      );
-    }
-
-    // If Warning Threshold is met, show Limited Supply Badge
-    if (inventoryManagement && this.props.variant.lowInventoryWarningThreshold >= this.props.variant.inventoryTotal) {
-      if (inventoryPolicy) {
-        return (
-          <span className="variant-qty-sold-out badge badge-warning variant-badge-label">
-            <Components.Translation defaultValue="Limited Supply" i18nKey="productDetail.limitedSupply" />
-          </span>
-        );
-      }
-
-      return (
-        <span className="variant-qty-sold-out badge badge-info variant-badge-label">
-          <Components.Translation defaultValue="Backorder" i18nKey="productDetail.backOrder" />
-        </span>
-      );
-    }
-
-    return null;
   }
 
   renderDeletionStatus() {
@@ -165,7 +122,7 @@ class Variant extends Component {
     const variantElement = (
       <li
         className="variant-list-item"
-        id="variant-list-item-{variant._id}"
+        id={`variant-list-item-${variant._id}`}
         key={variant._id}
       >
         <div
@@ -188,7 +145,7 @@ class Variant extends Component {
 
           <div className="alerts">
             {this.renderDeletionStatus()}
-            {this.renderInventoryStatus()}
+            <Components.InventoryBadge className="variant-qty-sold-out variant-badge-label" {...this.props} />
             {this.renderValidationButton()}
             {this.props.editButton}
           </div>
@@ -209,10 +166,10 @@ Variant.propTypes = {
   connectDropTarget: PropTypes.func,
   displayPrice: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   editButton: PropTypes.node,
-  editable: PropTypes.bool,
+  editable: PropTypes.bool, // eslint-disable-line react/boolean-prop-naming
   isSelected: PropTypes.bool,
   onClick: PropTypes.func,
-  soldOut: PropTypes.bool,
+  soldOut: PropTypes.bool, // eslint-disable-line react/boolean-prop-naming
   variant: PropTypes.object,
   visibilityButton: PropTypes.node
 };

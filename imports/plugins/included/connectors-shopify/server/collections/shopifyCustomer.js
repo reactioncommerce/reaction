@@ -1,7 +1,7 @@
 /* eslint camelcase: 0 */
 import SimpleSchema from "simpl-schema";
 import { Accounts } from "/lib/collections";
-import { registerSchema } from "/imports/plugins/core/collections";
+import { registerSchema } from "@reactioncommerce/schemas";
 
 /**
  * @file ShopifyCustomer
@@ -11,8 +11,9 @@ import { registerSchema } from "/imports/plugins/core/collections";
 
 /**
  * @name ShopifyCustomer
- * @summary ShopifyCustomer schema attached to Accounts
+ * @memberof Schemas
  * @type {SimpleSchema}
+ * @summary ShopifyCustomer schema attached to Accounts
  * @property {Number} shopifyId Shopify ID
  */
 export const ShopifyCustomer = new SimpleSchema({

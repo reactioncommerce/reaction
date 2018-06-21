@@ -6,6 +6,7 @@ import ShopOrderSummary from "./shopOrderSummary";
 
 /**
  * @summary Display the summary/total information for an order
+ * @memberof Components
  * @param {Object} props - React PropTypes
  * @property {Array} shops - An array of summary information broken down by shop
  * @property {Object} orderSummary - An object representing the "bottom line" summary for the order

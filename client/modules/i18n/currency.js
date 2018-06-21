@@ -38,7 +38,7 @@ export function findCurrency(defaultCurrency, useDefaultShopCurrency) {
     }
     return userCurrency;
   }
-  return shopCurrency;
+  return shop.currencies[shopCurrency];
 }
 
 /**
@@ -107,32 +107,6 @@ export function formatPriceString(formatPrice, useDefaultShopCurrency) {
     }
   }
   return price;
-}
-
-/**
- * @name formatNumber
- * @memberof i18n
- * @method
- * @param {String} currentPrice - current Price
- * @return {String} return formatted number
- */
-export function formatNumber(currentPrice) {
-  const locale = Reaction.Locale.get();
-  let price = currentPrice;
-  const format = Object.assign({}, locale.currency, {
-    format: "%v"
-  });
-  const shopFormat = Object.assign({}, locale.shopCurrency, {
-    format: "%v"
-  });
-
-  if (typeof locale.currency === "object" && locale.currency.rate) {
-    price = currentPrice * locale.currency.rate;
-    return accounting.formatMoney(price, format);
-  }
-
-  Logger.debug("currency error, fallback to shop currency");
-  return accounting.formatMoney(currentPrice, shopFormat);
 }
 
 /**
