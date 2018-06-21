@@ -30,11 +30,8 @@ async function createProductHash(productToConvert, collections) {
     parcel: product.parcel,
     pinterestMsg: product.pinterestMsg,
     productType: product.productType,
-    price: {
-      range: product.price.range,
-      min: product.price.min,
-      max: product.price.max
-    },
+    price: product.price,
+    pricing: product.pricing,
     publishedScope: product.publishedScope,
     requiresShipping: product.requiresShipping,
     shopId: product.shopId,
