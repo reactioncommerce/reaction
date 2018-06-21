@@ -196,7 +196,7 @@ const mockProduct = {
 };
 
 const updatedMockProduct = {
-  hash: "769f6d8004a2a2929d143ab242625b6c71f618d8",
+  publishedProductHash: "769f6d8004a2a2929d143ab242625b6c71f618d8",
   _id: internalCatalogItemId,
   shopId: internalShopId,
   barcode: "barcode",
@@ -334,15 +334,15 @@ afterAll(() => {
   restore$getCatalogProductMedia();
 });
 
-test("hash", async () => {
+test("publishedProductHash", async () => {
   mockCollections.Products.updateOne.mockReturnValueOnce(Promise.resolve({ result: { ok: 1 } }));
   mockCollections.Products.findOne.mockReturnValue(Promise.resolve(updatedMockProduct));
   const spec = await hashProduct(mockProduct._id, mockCollections);
 
-  expect(spec.hash).toEqual(expectedHash);
+  expect(spec.publishedProductHash).toEqual(expectedHash);
 });
 
-test("hash was not successfully created, return original product", async () => {
+test("publishedProductHash was not successfully created, return original product", async () => {
   mockCollections.Products.updateOne.mockReturnValueOnce(Promise.resolve({ result: { ok: 0 } }));
   const spec = await hashProduct(mockProduct._id, mockCollections);
   expect(spec).toEqual(null);

@@ -73,7 +73,7 @@ export default async function hashProduct(productId, collections) {
     },
     {
       $set: {
-        hash: productHash,
+        publishedProductHash: productHash,
         updatedAt: new Date()
       }
     }

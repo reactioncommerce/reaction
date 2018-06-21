@@ -414,7 +414,7 @@ registerSchema("PriceRange", PriceRange);
  * @property {Date} publishedAt optional
  * @property {String} publishedScope optional
  * @property {Workflow} workflow optional
- * @property {String} hash optional
+ * @property {String} publishedProductHash optional
  */
 export const Product = new SimpleSchema({
   "_id": {
@@ -585,10 +585,9 @@ export const Product = new SimpleSchema({
     optional: true,
     defaultValue: {}
   },
-  "hash": {
+  "publishedProductHash": {
     type: String,
-    optional: true,
-    defaultValue: ""
+    optional: true
   }
 });
 
