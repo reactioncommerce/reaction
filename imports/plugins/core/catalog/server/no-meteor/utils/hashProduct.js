@@ -75,13 +75,8 @@ export default async function hashProduct(productId, collections) {
       $set: {
         hash: productHash,
         updatedAt: new Date()
-      },
-      $setOnInsert: {
-        _id: Random.id(),
-        createdAt: new Date()
       }
-    },
-    { upsert: true }
+    }
   );
 
   if (result && result.result && result.result.ok === 1) {
