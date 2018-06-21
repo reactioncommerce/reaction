@@ -57,7 +57,6 @@ const composer = (props, onData) => {
   const shop = Shops.findOne({
     _id: Reaction.getShopId()
   });
-  const { baseUOM, baseUOL } = shop;
   const doc = shop.defaultParcelSize;
   const formSettings = {
     shownFields: {
