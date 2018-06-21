@@ -2,10 +2,10 @@ import mockContext from "/imports/test-utils/helpers/mockContext";
 import {
   rewire as rewire$getCatalogProductMedia,
   restore as restore$getCatalogProductMedia
-} from "./getCatalogProductMedia";
-import { rewire as rewire$isBackorder, restore as restore$isBackorder } from "./isBackorder";
-import { rewire as rewire$isLowQuantity, restore as restore$isLowQuantity } from "./isLowQuantity";
-import { rewire as rewire$isSoldOut, restore as restore$isSoldOut } from "./isSoldOut";
+} from "../utils/getCatalogProductMedia";
+import { rewire as rewire$isBackorder, restore as restore$isBackorder } from "../utils/isBackorder";
+import { rewire as rewire$isLowQuantity, restore as restore$isLowQuantity } from "../utils/isLowQuantity";
+import { rewire as rewire$isSoldOut, restore as restore$isSoldOut } from "../utils/isSoldOut";
 import hashProduct from "./hashProduct";
 
 const mockCollections = { ...mockContext.collections };
