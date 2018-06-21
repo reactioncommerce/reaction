@@ -162,7 +162,7 @@ export default function () {
       }
 
       // clone before adding roles
-      const account = Object.assign({}, user, additionals);
+      const account = Object.assign({ shopId }, user, additionals);
       account.userId = user._id;
       Collections.Accounts.insert(account);
       Hooks.Events.run("afterAccountsInsert", account.userId, user._id);

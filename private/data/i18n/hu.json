@@ -513,20 +513,6 @@
           "isCommercial": "Céges cím."
         }
       },
-      "revisions": {
-        "isDisabled": "Revision szabályozás ki van kapcsolva. A módosításokat haladéktalanul közzé kell tenni.",
-        "isEnabled": "Revision szabályozás engedélyezve a termékek. A módosításokat közzé kell tenni, mielőtt láthatóvá az ügyfelek számára.",
-        "unpublishedChanges": "közzétett módosítások",
-        "publishChanges": "Módosítások közzététele",
-        "showChanges": "Változások megjelenítése",
-        "hideChanges": "Változások elrejtése",
-        "discardChanges": "Módosítások elvetése",
-        "changedPublished": "Változások közzététele sikeresen",
-        "changesDiscarded": "Változások sikeresen elvetve",
-        "noChanges": "Nincs változás",
-        "noChangesPublished": "Nincs változás közzétételére",
-        "noChangesDiscarded": "Nincs változás megválni"
-      },
       "address": {
         "country": "Ország",
         "fullName": "Teljes név",

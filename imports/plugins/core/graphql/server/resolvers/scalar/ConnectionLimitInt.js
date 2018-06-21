@@ -1,7 +1,7 @@
 import { GraphQLScalarType } from "graphql";
 import { Kind } from "graphql/language";
 
-const MAX_LIMIT = 50;
+const MAX_LIMIT = 200;
 
 /**
  * Adjusts value to be between 1 and MAX_LIMIT, inclusive

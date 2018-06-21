@@ -1,5 +1,5 @@
 # Builds a GraphQL development server without Meteor runtime dependencies.
-FROM node:8.9.4
+FROM node:8.11.2
 
 LABEL maintainer="Reaction Commerce <architecture@reactioncommerce.com>"
 
@@ -15,6 +15,7 @@ COPY --chown=node package-lock.json .
 # Without this NPM cannot write packages into node_modules later, when running in a container.
 RUN mkdir /app/node_modules && chown node /app/node_modules
 
+RUN npm -v
 RUN npm install
 
 COPY --chown=node . .

@@ -38,6 +38,9 @@ type Tag implements Node & Deletable {
 
   "The date and time at which this tag was last updated"
   updatedAt: DateTime!
+
+  "A string containing the hero image url for a tag landing page"
+  heroMediaUrl: String
 }
 
 "The fields by which you are allowed to sort any query that returns a `TagConnection`"
@@ -64,6 +67,9 @@ type TagConnection implements NodeConnection {
 }
 
 extend type Query {
+  "Returns a tag from a provided tag ID or slug"
+  tag(slugOrId: String): Tag
+
   "Returns a paged list of tags for a shop. You must include a shopId when querying."
   tags(
     "Only tags associated with this shop will be returned"
