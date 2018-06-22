@@ -3,6 +3,19 @@ scalar DateTime
 scalar JSONObject
 scalar Time
 
+enum DistanceUnit {
+  cm
+  ft
+  in
+}
+
+enum MassUnit {
+  g
+  kg
+  lb
+  oz
+}
+
 "A list of URLs for various sizes of an image"
 type ImageSizes {
   "Use this URL to get a large resolution file for this image"
