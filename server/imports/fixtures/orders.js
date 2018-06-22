@@ -12,11 +12,11 @@ import { addProduct } from "./products";
 /**
  * @method randomProcessor
  * @memberof Fixtures
- * @summary Return a random payment processor string, either: `"Stripe"`, `"Paypal"` or `"Braintree"`
+ * @summary Return a random payment processor string, either: `"Stripe"` `"Braintree"`
  * @return {String} Name of payment processor
  */
 export function randomProcessor() {
-  return _.sample(["Stripe", "Paypal", "Braintree"]);
+  return _.sample(["Stripe", "Braintree"]);
 }
 
 const itemIdOne = Random.id();
