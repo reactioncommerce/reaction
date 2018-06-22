@@ -1,7 +1,6 @@
 import { Meteor } from "meteor/meteor";
 import { HTTP } from "meteor/http";
 import { Reaction } from "server/api";
-import { Packages } from "/lib/collections";
 import { TaxCodes } from "/imports/plugins/core/taxes/lib/collections";
 
 
@@ -17,15 +16,35 @@ function buildTaxCode(code) {
     return {};
   }
   return {
-    id: code.id,
-    taxCode: code.id,
+    id: code.ticid || code.id,
+    taxCode: code.ticid || code.id,
     shopId: Reaction.getShopId(),
     taxCodeProvider: "taxes-taxcloud",
-    ssuta: code.ssuta,
-    parent: code.parent,
-    title: code.title,
+    ssuta: code.isSSUTA,
+    parent: code.parentTic,
+    title: code.description,
     label: code.label
+  };
+}
+
+/**
+ * @name getCodeMap
+ * @summary returns a mapping of codeIds to codes.
+ * @param {Array} code the list of tax-codes fetched
+ * @param {Object} codeMap map of codeId: code
+ * @returns {undefined} undefined
+ */
+function getCodeMap(code, codeMap) {
+  if (!code || !code.ticid) {
+    return;
   }
+  if (code.children) {
+    code.children.result.forEach((child) => {
+      getCodeMap(child, codeMap);
+    });
+  }
+  codeMap[code.ticid || code.id] = buildTaxCode(code);
+  return;
 }
 
 /**
@@ -44,21 +63,27 @@ Meteor.methods({
    * @returns {Array} An array of Tax code objects
    */
   "taxcloud/getTaxCodes"() {
-    const TAXCODE_SRC = "https://api.taxcloud.net/1.0/TaxCloud/GetTICs";
-    const taxCloudPackage = Reaction.getPackageSettingsWithOptions({
-      shopId: Reaction.getShopId(),
-      name: "taxes-taxcloud",
-      enabled: true
-    }).settings;
-    const taxCodes = HTTP.post(TAXCODE_SRC, {
-      data: { apiLoginID: taxCloudPackage.taxcloud.apiLoginId, apiKey: taxCloudPackage.taxcloud.apiKey }
-    });
-    console.log("********************", taxCodes);
+    const TAXCODE_SRC = "https://core.taxcloud.com/api/tics";
+    const taxCodes = HTTP.get(TAXCODE_SRC);
+
     if (!taxCodes) {
       throw new Meteor.Error("retrieval-failed", "Error getting tax codes");
     }
-    taxCodes.data.TICs.forEach((code) => {
-      Reaction.Importer.object(TaxCodes, { taxCode: code.TICID, shopId: Reaction.getShopId(), taxCodeProvider: "taxes-taxcloud" }, buildTaxCode(child.tic));
+    const codeMap = {};
+    taxCodes.data.result.forEach((code) => {
+      getCodeMap(code, codeMap);
+    });
+    Object.keys(codeMap).forEach((codeId) => {
+      const code = codeMap[codeId];
+      Reaction.Importer.object(
+        TaxCodes,
+        {
+          taxCode: code.taxCode,
+          shopId: code.shopId,
+          taxCodeProvider: code.taxCodeProvider
+        },
+        buildTaxCode(code)
+      );
     });
   }
 });

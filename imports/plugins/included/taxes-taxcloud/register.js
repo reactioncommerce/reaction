@@ -11,7 +11,7 @@ Reaction.registerPackage({
       apiLoginId: "",
       apiKey: "",
       refreshPeriod: "every 7 days",
-      taxCodeUrl: "https://taxcloud.net/tic/?format=json"
+      taxCodeUrl: "https://taxcloud.net/tic/json"
     },
     taxCodes: {
       getTaxCodeMethod: "taxcloud/getTaxCodes"

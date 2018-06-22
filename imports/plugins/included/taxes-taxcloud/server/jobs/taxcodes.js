@@ -21,7 +21,7 @@ function getJobConfig() {
 Hooks.Events.add("afterCoreInit", () => {
   const config = getJobConfig();
   const refreshPeriod = config.refreshPeriod || 0;
-  const taxCodeUrl = config.taxCodeUrl || "https://taxcloud.net/tic/?format=json";
+  const taxCodeUrl = config.taxCodeUrl || "https://taxcloud.net/tic/json";
 
   // set 0 to disable fetchTIC
   if (refreshPeriod !== 0) {
