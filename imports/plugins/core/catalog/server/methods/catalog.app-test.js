@@ -10,8 +10,8 @@ import { Products, Tags } from "/lib/collections";
 import { expect } from "meteor/practicalmeteor:chai";
 import { sinon } from "meteor/practicalmeteor:sinon";
 import { Roles } from "meteor/alanning:roles";
-import { addProduct, addProductSingleVariant } from "/server/imports/fixtures/products";
-import Fixtures from "/server/imports/fixtures";
+import { addProduct, addProductSingleVariant } from "/imports/plugins/core/core/server/fixtures/products";
+import Fixtures from "/imports/plugins/core/core/server/fixtures";
 
 Fixtures();
 

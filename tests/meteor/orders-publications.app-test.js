@@ -9,10 +9,10 @@ import { sinon } from "meteor/practicalmeteor:sinon";
 import { Roles } from "meteor/alanning:roles";
 import { PublicationCollector } from "meteor/johanbrook:publication-collector";
 
-import { getShop } from "/server/imports/fixtures/shops";
+import { getShop } from "/imports/plugins/core/core/server/fixtures/shops";
 import Reaction from "/server/api/core";
 import * as Collections from "/lib/collections";
-import Fixtures from "/server/imports/fixtures";
+import Fixtures from "/imports/plugins/core/core/server/fixtures";
 
 Fixtures();
 

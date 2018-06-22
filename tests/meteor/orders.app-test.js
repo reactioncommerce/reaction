@@ -6,9 +6,9 @@ import { check, Match } from "meteor/check";
 import { Factory } from "meteor/dburles:factory";
 import { expect } from "meteor/practicalmeteor:chai";
 import { sinon } from "meteor/practicalmeteor:sinon";
-import Fixtures from "/server/imports/fixtures";
+import Fixtures from "/imports/plugins/core/core/server/fixtures";
 import Reaction from "/server/api/core";
-import { getShop } from "/server/imports/fixtures/shops";
+import { getShop } from "/imports/plugins/core/core/server/fixtures/shops";
 import { Orders, Notifications, Products, Shops } from "/lib/collections";
 import { Media } from "/imports/plugins/core/files/server";
 

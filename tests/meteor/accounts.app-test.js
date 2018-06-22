@@ -12,8 +12,8 @@ import { sinon } from "meteor/practicalmeteor:sinon";
 import { SSR } from "meteor/meteorhacks:ssr";
 import { Accounts, Groups, Packages, Orders, Products, Shops, Cart } from "/lib/collections";
 import Reaction from "/server/api/core";
-import { getShop, getAddress } from "/server/imports/fixtures/shops";
-import Fixtures from "/server/imports/fixtures";
+import { getShop, getAddress } from "/imports/plugins/core/core/server/fixtures/shops";
+import Fixtures from "/imports/plugins/core/core/server/fixtures";
 
 Fixtures();
 

@@ -1,8 +1,8 @@
 // import { expect } from "meteor/practicalmeteor:chai";
-// import Fixtures from "/server/imports/fixtures";
+// import Fixtures from "/imports/plugins/core/core/server/fixtures";
 // import Reaction from "/server/api/core";
 // import { Packages } from "/lib/collections";
-// import { createCart } from "/server/imports/fixtures/cart";
+// import { createCart } from "/imports/plugins/core/core/server/fixtures/cart";
 // import taxCalc from "./taxCalc";
 //
 // Fixtures();

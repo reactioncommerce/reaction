@@ -6,8 +6,8 @@ import { expect } from "meteor/practicalmeteor:chai";
 import { sinon } from "meteor/practicalmeteor:sinon";
 import Reaction from "/server/api/core";
 import { Accounts, Groups } from "/lib/collections";
-import Fixtures from "/server/imports/fixtures";
-import { getUser } from "/server/imports/fixtures/users";
+import Fixtures from "/imports/plugins/core/core/server/fixtures";
+import { getUser } from "/imports/plugins/core/core/server/fixtures/users";
 
 Fixtures();
 

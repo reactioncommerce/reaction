@@ -6,8 +6,8 @@ import { Products, Inventory } from "/lib/collections";
 import Reaction from "/server/api/core";
 import { expect } from "meteor/practicalmeteor:chai";
 import { sinon } from "meteor/practicalmeteor:sinon";
-import { addProduct } from "/server/imports/fixtures/products";
-import Fixtures from "/server/imports/fixtures";
+import { addProduct } from "/imports/plugins/core/core/server/fixtures/products";
+import Fixtures from "/imports/plugins/core/core/server/fixtures";
 
 Fixtures();
 

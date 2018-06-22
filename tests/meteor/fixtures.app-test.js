@@ -7,9 +7,9 @@ import { sinon } from "meteor/practicalmeteor:sinon";
 
 import Reaction from "/server/api/core";
 import * as Collections from "/lib/collections";
-import Fixtures from "/server/imports/fixtures";
-import { addProductSingleVariant } from "/server/imports/fixtures/products";
-import { createCart } from "/server/imports/fixtures/cart";
+import Fixtures from "/imports/plugins/core/core/server/fixtures";
+import { addProductSingleVariant } from "/imports/plugins/core/core/server/fixtures/products";
+import { createCart } from "/imports/plugins/core/core/server/fixtures/cart";
 
 Fixtures();
 

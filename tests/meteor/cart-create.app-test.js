@@ -8,9 +8,9 @@ import Reaction from "/server/api/core";
 import { Cart, Products, Accounts } from "/lib/collections";
 import { expect } from "meteor/practicalmeteor:chai";
 import { sinon } from "meteor/practicalmeteor:sinon";
-import { getShop, getAddress } from "/server/imports/fixtures/shops";
-import { addProduct } from "/server/imports/fixtures/products";
-import Fixtures from "/server/imports/fixtures";
+import { getShop, getAddress } from "/imports/plugins/core/core/server/fixtures/shops";
+import { addProduct } from "/imports/plugins/core/core/server/fixtures/products";
+import Fixtures from "/imports/plugins/core/core/server/fixtures";
 
 Fixtures();
 

@@ -6,7 +6,7 @@ import { sinon } from "meteor/practicalmeteor:sinon";
 import Reaction from "/server/api/core";
 import { getSlug } from "/lib/api";
 import { Products, OrderSearch } from "/lib/collections";
-import Fixtures from "/server/imports/fixtures";
+import Fixtures from "/imports/plugins/core/core/server/fixtures";
 import {
   buildProductSearch,
   buildProductSearchRecord,
