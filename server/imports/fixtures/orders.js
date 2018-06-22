@@ -265,33 +265,4 @@ export default function () {
     createdAt: new Date(),
     updatedAt: new Date()
   });
-
-  /**
-   * @name authorizedApprovedPaypalOrder
-   * @summary Defines order factory which generates an authorized, approved, paypal order.
-   * @memberof Fixtures
-   * @property {Array} billing - Array of Billing objects
-   * @property {String} billing._id
-   * @property {String} billing.shopId
-   * @property {Object} billing.address - Address object
-   * @property {Object} billing.paymentMethod
-   * @property {String} billing.paymentMethod.processor "Paypal"
-   * @property {String} billing.paymentMethod.mode "authorize"
-   * @property {String} billing.paymentMethod.status "approved
-   */
-  Factory.define(
-    "authorizedApprovedPaypalOrder", Orders,
-    Factory.extend("order", {
-      billing: [{
-        _id: Random.id(),
-        shopId: getShopId(),
-        address: getAddress({ isBillingDefault: true }),
-        paymentMethod: paymentMethod({
-          processor: "Paypal",
-          mode: "authorize",
-          status: "approved"
-        })
-      }]
-    })
-  );
 }
