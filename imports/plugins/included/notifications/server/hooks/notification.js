@@ -44,15 +44,19 @@ MethodHooks.after("cart/copyCartToOrder", (options) => {
   const cartId = options.arguments[0];
   const order = Orders.findOne({ cartId });
   const notifiedUsers = [];
-  order.items.forEach((item) => {
-    const users = Meteor.users.find({ [`roles.${item.shopId}`]: "owner" }).fetch();
-    users.forEach((user) => {
-      if (user._id !== adminId && !notifiedUsers.includes(user._id)) {
-        sendNotificationToAdmin(user._id);
-        notifiedUsers.push(user._id);
+  if (order && order.items) {
+    order.items.forEach((item) => {
+      const users = Meteor.users.find({ [`roles.${item.shopId}`]: "owner" }).fetch();
+      if (users) {
+        users.forEach((user) => {
+          if (user._id !== adminId && !notifiedUsers.includes(user._id)) {
+            sendNotificationToAdmin(user._id);
+            notifiedUsers.push(user._id);
+          }
+        });
       }
     });
-  });
+  }
 
   if (adminId) {
     return sendNotificationToAdmin(adminId);
