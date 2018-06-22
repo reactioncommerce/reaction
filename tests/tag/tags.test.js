@@ -1,17 +1,12 @@
 import GraphTester from "../GraphTester";
+import Factory from "/imports/test-utils/helpers/factory";
 
 jasmine.DEFAULT_TIMEOUT_INTERVAL = 60000;
 
 const internalShopId = "123";
 const opaqueShopId = "cmVhY3Rpb24vc2hvcDoxMjM="; // reaction/shop:123
 const shopName = "Test Shop";
-const tags = [];
-for (let i = 100; i < 155; i += 1) {
-  const tagName = i.toString();
-  const tagId = i.toString();
-  const tagPosition = i;
-  tags.push({ _id: tagId, name: tagName, shopId: internalShopId, position: tagPosition });
-}
+const mockTags = Factory.Tag.makeMany(55, { shopId: internalShopId, _id: (i) => (i + 100).toString(), position: (i) => i + 100 });
 
 const tagsQuery = `($shopId: ID!, $after: ConnectionCursor, $before: ConnectionCursor, $first: ConnectionLimitInt, $last: ConnectionLimitInt) {
   tags(shopId: $shopId, after: $after, before: $before, first: $first, last: $last) {
@@ -37,12 +32,12 @@ beforeAll(async () => {
   query = tester.query(tagsQuery);
 
   await tester.insertPrimaryShop({ _id: internalShopId, name: shopName });
-  await Promise.all(tags.map((tag) => tester.collections.Tags.insert(tag)));
+  await Promise.all(mockTags.map((tag) => tester.collections.Tags.insert(tag)));
 });
 
 afterAll(() => tester.stop());
 
-test("get the first 50 tags when neither first or last is in query", async () => {
+test("get the first 20 tags when neither first or last is in query", async () => {
   let result;
   try {
     result = await query({ shopId: opaqueShopId });
@@ -51,9 +46,9 @@ test("get the first 50 tags when neither first or last is in query", async () =>
     return;
   }
 
-  expect(result.tags.nodes.length).toBe(50);
+  expect(result.tags.nodes.length).toBe(20);
   expect(result.tags.totalCount).toBe(55);
-  expect(result.tags.pageInfo).toEqual({ endCursor: "MTQ5", hasNextPage: true, hasPreviousPage: false, startCursor: "MTAw" });
+  expect(result.tags.pageInfo).toEqual({ endCursor: "MTE5", hasNextPage: true, hasPreviousPage: false, startCursor: "MTAw" });
 
   try {
     result = await query({ shopId: opaqueShopId, after: result.tags.pageInfo.endCursor });
@@ -62,9 +57,20 @@ test("get the first 50 tags when neither first or last is in query", async () =>
     return;
   }
 
-  expect(result.tags.nodes.length).toBe(5);
+  expect(result.tags.nodes.length).toBe(20);
   expect(result.tags.totalCount).toBe(55);
-  expect(result.tags.pageInfo).toEqual({ endCursor: "MTU0", hasNextPage: false, hasPreviousPage: true, startCursor: "MTUw" });
+  expect(result.tags.pageInfo).toEqual({ endCursor: "MTM5", hasNextPage: true, hasPreviousPage: true, startCursor: "MTIw" });
+
+  try {
+    result = await query({ shopId: opaqueShopId, after: result.tags.pageInfo.endCursor });
+  } catch (error) {
+    expect(error).toBeUndefined();
+    return;
+  }
+
+  expect(result.tags.nodes.length).toBe(15);
+  expect(result.tags.totalCount).toBe(55);
+  expect(result.tags.pageInfo).toEqual({ endCursor: "MTU0", hasNextPage: false, hasPreviousPage: true, startCursor: "MTQw" });
 
   // Ensure it's also correct when we pass `first: 5` explicitly
   try {
