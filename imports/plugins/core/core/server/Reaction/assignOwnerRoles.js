@@ -49,7 +49,7 @@ function getRouteName(packageName, registryItem) {
  * @param  {String} registry - registry object
  * @return {undefined}
  */
-export function assignOwnerRoles(shopId, pkgName, registry) {
+export default function assignOwnerRoles(shopId, pkgName, registry) {
   const defaultRoles = ["owner", "admin", "createProduct", "guest", pkgName];
   const globalRoles = defaultRoles;
 

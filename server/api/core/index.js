@@ -1,8 +1,5 @@
-import Log from "@reactioncommerce/logger";
 import Core from "./core";
 import * as Accounts from "./accounts";
-import * as AddDefaultRoles from "./addDefaultRoles";
-import * as AssignRoles from "./assignRoles";
 import Endpoints from "./endpoints";
 import * as Importer from "./importer";
 import * as LoadSettings from "./loadSettings";
@@ -20,14 +17,10 @@ import * as Schemas from "/lib/collections/schemas";
 export default {
   ...Core,
   Accounts,
-  ...AddDefaultRoles,
-  ...AssignRoles,
   Collections,
   Endpoints,
   ...Importer,
   ...LoadSettings,
-  Log,
-  Router: {},
   Schemas,
   ...SetDomain,
   ...ShopName,

@@ -13,7 +13,6 @@ import * as Collections from "/lib/collections";
 import ProcessJobs from "/server/jobs";
 import { registerTemplate } from "./templates";
 import sendVerificationEmail from "./sendVerificationEmail";
-import { getMailUrl } from "./email/config";
 import { createGroups } from "./groups";
 import ConnectionDataStore from "/imports/plugins/core/core/server/util/connectionDataStore";
 
@@ -223,20 +222,6 @@ export default {
    */
   getSellerShopId() {
     return Roles.getGroupsForUser(this.userId, "admin");
-  },
-
-  /**
-   * @name configureMailUrl
-   * @method
-   * @memberof Core
-   * @summary Reaction.configureMailUrl() is deprecated. Please use Reaction.Email.getMailUrl() instead
-   * @return {String} URL
-   * @deprecated
-   */
-  configureMailUrl() {
-    // maintained for legacy support
-    Logger.warn("Reaction.configureMailUrl() is deprecated. Please use Reaction.Email.getMailUrl() instead");
-    return getMailUrl();
   },
 
   /**

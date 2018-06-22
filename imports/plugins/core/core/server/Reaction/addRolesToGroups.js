@@ -65,7 +65,7 @@ function addRolesToUsersInGroups(options) {
  * @param {Object} options - See above for details
  * @returns {Number} result of Groups.update method (number of documents updated)
  */
-export function addRolesToGroups(options = { allShops: false, roles: [], shops: [], groups: ["guest"] }) {
+export default function addRolesToGroups(options = { allShops: false, roles: [], shops: [], groups: ["guest"] }) {
   check(options.roles, [String]);
   check(options.allShops, Match.Maybe(Boolean));
   check(options.shops, Match.Maybe([String]));
