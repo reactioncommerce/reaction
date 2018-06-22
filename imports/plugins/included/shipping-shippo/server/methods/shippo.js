@@ -30,15 +30,20 @@ function createShippoAddress(reactionAddress, email, purpose) {
   return shippoAddress;
 }
 
+/**
+ * @name createValidatedAddress
+ * @summary processes the response from the API and return it
+ * in a format that is consistent everywhere.
+ * @param {object} apiResult the result of the API call
+ * @returns {object} returns the validatedAddress and the errors in form of { validatedAddress: obj, errors: obj }
+ */
 function createValidatedAddress(apiResult) {
-  const formErrors = [];
+  let formErrors = [];
   if (apiResult.messages) {
-    apiResult.messages.forEach((message) => {
-      formErrors.push({
-        summary: message.code,
-        details: message.text
-      });
-    });
+    formErrors = apiResult.messages.map((message) => ({
+      summary: message.code,
+      details: message.text
+    }));
   }
   return {
     validatedAddress: {
@@ -392,7 +397,7 @@ export const methods = {
     const buyer = Accounts.findOne({ _id: this.userId }, { fields: { emails: 1 } });
 
     if (!address) {
-      const msg = "The 'shipping' property of this cart is either missing or incomplete.";
+      const msg = "No address to validate";
       Logger.error(msg);
       throw new Meteor.Error("address-validation-error", msg);
     }
@@ -422,7 +427,7 @@ export const methods = {
       return validateAddress;
     } catch (error) {
       Logger.error(error);
-      throw new Meteor.Error(error, "Shippo API error");
+      throw new Meteor.Error("Shippo API error", error);
     }
   },
 

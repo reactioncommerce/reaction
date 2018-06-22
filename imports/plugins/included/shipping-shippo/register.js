@@ -39,8 +39,7 @@ Reaction.registerPackage({
     label: "Shippo",
     icon: "fa fa-plane",
     name: "shipping/addressValidation/shippo",
-    provides: ["addressValidation"],
-    template: "shippoSettings"
+    provides: ["addressValidation"]
   }
     // WIP:
     // TODO: Review custom shipping in checkout, are layout handling this requirement
