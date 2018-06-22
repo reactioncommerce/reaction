@@ -1,7 +1,7 @@
 import { Meteor } from "meteor/meteor";
 import { check } from "meteor/check";
 import { MediaRecords } from "/lib/collections";
-import { Reaction } from "/server/api";
+import Reaction from "/server/api/core";
 
 /**
  * BrandAssets publication

@@ -2,7 +2,7 @@ import Logger from "@reactioncommerce/logger";
 import { Meteor } from "meteor/meteor";
 import { check } from "meteor/check";
 import { Sms } from "/lib/collections";
-import { Reaction } from "/server/api";
+import Reaction from "/server/api/core";
 import { formatPhoneNumber } from "/lib/api";
 
 // We lazy load these in order to shave a few seconds off the time

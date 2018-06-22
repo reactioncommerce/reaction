@@ -1,7 +1,7 @@
 import Logger from "@reactioncommerce/logger";
 import { Meteor } from "meteor/meteor";
 import { Products, Shipping, Tags, Shops } from "/lib/collections";
-import { Reaction } from "/server/api";
+import Reaction from "/server/api/core";
 import { Fixture } from "/server/api/core/importer";
 
 /**

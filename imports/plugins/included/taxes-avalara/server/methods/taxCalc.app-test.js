@@ -1,6 +1,6 @@
 // import { expect } from "meteor/practicalmeteor:chai";
 // import Fixtures from "/server/imports/fixtures";
-// import { Reaction } from "/server/api";
+// import Reaction from "/server/api/core";
 // import { Packages } from "/lib/collections";
 // import { createCart } from "/server/imports/fixtures/cart";
 // import taxCalc from "./taxCalc";

@@ -9,7 +9,7 @@ import { Roles } from "meteor/alanning:roles";
 import { SSR } from "meteor/meteorhacks:ssr";
 import { Accounts, Cart, Groups, Shops, Packages } from "/lib/collections";
 import * as Schemas from "/lib/collections/schemas";
-import { Reaction } from "/server/api";
+import Reaction from "/server/api/core";
 
 /**
  * @method sendUpdatedVerificationEmail

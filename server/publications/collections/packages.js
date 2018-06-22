@@ -3,7 +3,7 @@ import { Meteor } from "meteor/meteor";
 import { check, Match } from "meteor/check";
 import { Roles } from "meteor/alanning:roles";
 import { Packages } from "/lib/collections";
-import { Reaction } from "/server/api";
+import Reaction from "/server/api/core";
 import { translateRegistry } from "/lib/api";
 
 // for transforming packages before publication sets some defaults for the client and adds i18n while checking

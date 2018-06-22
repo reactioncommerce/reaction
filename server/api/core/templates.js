@@ -5,7 +5,7 @@ import ReactDOMServer from "react-dom/server";
 import Handlebars from "handlebars";
 import Immutable from "immutable";
 import { Assets, Templates } from "/lib/collections";
-import { Reaction } from "/server/api";
+import Reaction from "/server/api/core";
 
 let registeredTemplates = Immutable.OrderedMap();
 let templateCache = Immutable.Map();

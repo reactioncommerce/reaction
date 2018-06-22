@@ -1,4 +1,4 @@
-import { Reaction } from "/server/api";
+import Reaction from "/server/api/core";
 
 /**
  * @file Accounts core plugin: Manage how members sign into your shop

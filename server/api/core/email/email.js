@@ -2,7 +2,7 @@ import Logger from "@reactioncommerce/logger";
 import { Meteor } from "meteor/meteor";
 import { Job } from "/imports/plugins/core/job-collection/lib";
 import { Jobs, Templates } from "/lib/collections";
-import { Reaction } from "/server/api";
+import Reaction from "/server/api/core";
 import { Media } from "/imports/plugins/core/files/server";
 
 /**

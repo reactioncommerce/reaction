@@ -2,7 +2,7 @@ import _ from "lodash";
 import { Meteor } from "meteor/meteor";
 import { check } from "meteor/check";
 import { ServiceConfiguration } from "meteor/service-configuration";
-import { Reaction } from "/server/api";
+import Reaction from "/server/api/core";
 
 /**
  * @name accounts/updateServiceConfiguration

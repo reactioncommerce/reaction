@@ -1,4 +1,4 @@
-import { Reaction } from "/server/api";
+import Reaction from "/server/api/core";
 import { Packages } from "/lib/collections";
 
 const utils = {

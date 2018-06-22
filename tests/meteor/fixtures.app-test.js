@@ -5,7 +5,7 @@ import { check, Match } from "meteor/check";
 import { expect } from "meteor/practicalmeteor:chai";
 import { sinon } from "meteor/practicalmeteor:sinon";
 
-import { Reaction } from "/server/api";
+import Reaction from "/server/api/core";
 import * as Collections from "/lib/collections";
 import Fixtures from "/server/imports/fixtures";
 import { addProductSingleVariant } from "/server/imports/fixtures/products";

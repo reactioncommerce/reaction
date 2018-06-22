@@ -3,7 +3,7 @@ import getServiceConfig from "nodemailer-wellknown";
 import { Meteor } from "meteor/meteor";
 import { check, Match } from "meteor/check";
 import { Jobs, Packages } from "/lib/collections";
-import { Reaction } from "/server/api";
+import Reaction from "/server/api/core";
 
 /**
  * @file Methods for sending emails, retrying failed emails and verifying email configuration.

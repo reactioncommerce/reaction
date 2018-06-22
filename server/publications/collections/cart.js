@@ -1,7 +1,7 @@
 import { Meteor } from "meteor/meteor";
 import { check, Match } from "meteor/check";
 import { Cart, MediaRecords } from "/lib/collections";
-import { Reaction } from "/server/api";
+import Reaction from "/server/api/core";
 
 /**
  * cart

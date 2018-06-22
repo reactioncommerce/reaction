@@ -1,5 +1,5 @@
 /* eslint camelcase: 0 */
-import { Reaction } from "/server/api";
+import Reaction from "/server/api/core";
 
 Reaction.registerPackage({
   label: "BrainTree",

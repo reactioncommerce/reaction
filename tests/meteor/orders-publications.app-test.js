@@ -10,7 +10,7 @@ import { Roles } from "meteor/alanning:roles";
 import { PublicationCollector } from "meteor/johanbrook:publication-collector";
 
 import { getShop } from "/server/imports/fixtures/shops";
-import { Reaction } from "/server/api";
+import Reaction from "/server/api/core";
 import * as Collections from "/lib/collections";
 import Fixtures from "/server/imports/fixtures";
 

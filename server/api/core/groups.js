@@ -1,7 +1,7 @@
 import _ from "lodash";
 import Logger from "@reactioncommerce/logger";
 import { Roles } from "meteor/alanning:roles";
-import { Reaction } from "/server/api";
+import Reaction from "/server/api/core";
 import { Shops, Groups } from "/lib/collections";
 
 /**

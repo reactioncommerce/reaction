@@ -2,7 +2,7 @@ import Logger from "@reactioncommerce/logger";
 import { Meteor } from "meteor/meteor";
 import { HTTP } from "meteor/http";
 import { check } from "meteor/check";
-import { Reaction } from "/server/api";
+import Reaction from "/server/api/core";
 import { Packages } from "/lib/collections";
 
 export const methods = {

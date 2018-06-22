@@ -2,7 +2,7 @@ import Hooks from "@reactioncommerce/hooks";
 import Logger from "@reactioncommerce/logger";
 import { Meteor } from "meteor/meteor";
 import { Shipping, Packages } from "/lib/collections";
-import { Reaction } from "/server/api";
+import Reaction from "/server/api/core";
 import { Cart as CartSchema } from "/lib/collections/schemas";
 
 /**

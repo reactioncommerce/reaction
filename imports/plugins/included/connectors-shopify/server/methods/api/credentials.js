@@ -1,6 +1,6 @@
 import Shopify from "shopify-api-node";
 import { Meteor } from "meteor/meteor";
-import { Reaction } from "/server/api";
+import Reaction from "/server/api/core";
 import { connectorsRoles } from "../../lib/roles";
 import { getApiInfo } from "./api";
 

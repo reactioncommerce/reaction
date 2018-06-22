@@ -3,7 +3,7 @@ import Logger from "@reactioncommerce/logger";
 import { HTTP } from "meteor/http";
 import { Meteor } from "meteor/meteor";
 import { Packages } from "/lib/collections";
-import { Reaction } from "/server/api";
+import Reaction from "/server/api/core";
 
 /**
  * meteor-geocoder

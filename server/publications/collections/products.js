@@ -6,7 +6,7 @@ import { Tracker } from "meteor/tracker";
 import { check, Match } from "meteor/check";
 import { registerSchema } from "@reactioncommerce/schemas";
 import { Products, Shops, Catalog } from "/lib/collections";
-import { Reaction } from "/server/api";
+import Reaction from "/server/api/core";
 
 //
 // define search filters as a schema so we can validate

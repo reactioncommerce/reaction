@@ -1,4 +1,4 @@
-import { Reaction } from "/server/api";
+import Reaction from "/server/api/core";
 import { Importer } from "/server/api/core/importer";
 import * as Collections from "../../lib/collections";
 

@@ -1,7 +1,7 @@
 import { Meteor } from "meteor/meteor";
 import { check, Match } from "meteor/check";
 import { Translations } from "/lib/collections";
-import { Reaction } from "/server/api";
+import Reaction from "/server/api/core";
 import { reloadAllTranslations, reloadTranslationsForShop } from "/server/startup/i18n";
 
 Meteor.methods({

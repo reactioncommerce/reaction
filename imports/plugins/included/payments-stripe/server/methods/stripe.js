@@ -5,7 +5,7 @@ import Random from "@reactioncommerce/random";
 import stripeNpm from "stripe";
 import { Meteor } from "meteor/meteor";
 import { check } from "meteor/check";
-import { Reaction } from "/server/api";
+import Reaction from "/server/api/core";
 import { Cart, Shops, Accounts, Packages } from "/lib/collections";
 import { PaymentMethodArgument } from "/lib/collections/schemas";
 

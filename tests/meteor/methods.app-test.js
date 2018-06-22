@@ -5,7 +5,7 @@ import { Factory } from "meteor/dburles:factory";
 import { Shops, Tags } from "/lib/collections";
 import { expect } from "meteor/practicalmeteor:chai";
 import { sinon } from "meteor/practicalmeteor:sinon";
-import { Reaction } from "/server/api";
+import Reaction from "/server/api/core";
 
 describe("Server/Core", function () {
   let sandbox;

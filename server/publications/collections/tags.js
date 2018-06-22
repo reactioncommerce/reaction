@@ -1,6 +1,6 @@
 import { Meteor } from "meteor/meteor";
 import { Tags } from "/lib/collections";
-import { Reaction } from "/server/api";
+import Reaction from "/server/api/core";
 
 /**
  * tags

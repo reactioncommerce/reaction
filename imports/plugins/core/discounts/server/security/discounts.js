@@ -1,6 +1,6 @@
 import { Security } from "meteor/ongoworks:security";
 import { Discounts } from "../../lib/collections";
-import { Reaction } from "/server/api";
+import Reaction from "/server/api/core";
 
 //
 // Security definitions

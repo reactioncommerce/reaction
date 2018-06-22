@@ -3,7 +3,7 @@ import Logger from "@reactioncommerce/logger";
 import Shopify from "shopify-api-node";
 import { Job } from "/imports/plugins/core/job-collection/lib";
 import { Meteor } from "meteor/meteor";
-import { Reaction } from "/server/api";
+import Reaction from "/server/api/core";
 import { check, Match } from "meteor/check";
 import { Products, Jobs, Tags } from "/lib/collections";
 import { getApiInfo } from "../api/api";

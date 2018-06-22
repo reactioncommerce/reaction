@@ -8,7 +8,7 @@ import { check, Match } from "meteor/check";
 import { SSR } from "meteor/meteorhacks:ssr";
 import { Orders, Products, Shops, Packages } from "/lib/collections";
 import { PaymentMethodArgument } from "/lib/collections/schemas";
-import { Reaction } from "/server/api";
+import Reaction from "/server/api/core";
 import { Media } from "/imports/plugins/core/files/server";
 import rawCollections from "/imports/collections/rawCollections";
 import updateCatalogProductInventoryStatus from "/imports/plugins/core/catalog/server/no-meteor/utils/updateCatalogProductInventoryStatus";

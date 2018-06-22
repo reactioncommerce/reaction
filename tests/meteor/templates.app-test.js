@@ -1,7 +1,7 @@
 /* eslint prefer-arrow-callback:0 */
 import React from "react";
 import { expect } from "meteor/practicalmeteor:chai";
-import Reaction from "./";
+import Reaction from "/server/api/core";
 import {
   registerTemplate,
   getTemplateByName,
@@ -10,7 +10,7 @@ import {
   processTemplateInfoForMemoryCache,
   TEMPLATE_PARSER_REACT,
   TEMPLATE_PARSER_HANDLEBARS
-} from "./templates";
+} from "/server/api/core/templates";
 import { Templates } from "/lib/collections";
 
 

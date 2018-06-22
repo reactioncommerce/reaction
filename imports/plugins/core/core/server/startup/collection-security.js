@@ -2,7 +2,7 @@ import Hooks from "@reactioncommerce/hooks";
 import { Security } from "meteor/ongoworks:security";
 import { Roles } from "meteor/alanning:roles";
 import * as Collections from "/lib/collections";
-import { Reaction } from "/server/api";
+import Reaction from "/server/api/core";
 
 const {
   Accounts,

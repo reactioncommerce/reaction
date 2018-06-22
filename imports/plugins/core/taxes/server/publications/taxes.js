@@ -3,7 +3,7 @@ import { Match, check } from "meteor/check";
 import { Security } from "meteor/ongoworks:security";
 import { Counts } from "meteor/tmeasday:publish-counts";
 import { Taxes, TaxCodes } from "../../lib/collections";
-import { Reaction } from "/server/api";
+import Reaction from "/server/api/core";
 
 //
 // Security

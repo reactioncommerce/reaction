@@ -4,7 +4,7 @@ import Logger from "@reactioncommerce/logger";
 import { Roles } from "meteor/alanning:roles";
 import { check, Match } from "meteor/check";
 import { Meteor } from "meteor/meteor";
-import { Reaction } from "/server/api";
+import Reaction from "/server/api/core";
 import { Accounts, Groups } from "/lib/collections";
 import { getSlug } from "/lib/api";
 

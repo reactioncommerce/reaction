@@ -3,7 +3,7 @@ import Logger from "@reactioncommerce/logger";
 import _ from "lodash";
 import { Meteor } from "meteor/meteor";
 import { Shipping, Packages } from "/lib/collections";
-import { Reaction } from "/server/api";
+import Reaction from "/server/api/core";
 
 // callback ran on getShippingRates hook
 function getShippingRates(previousQueryResults, cart) {

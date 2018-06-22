@@ -8,7 +8,7 @@ import { HTTP } from "meteor/http";
 import { check } from "meteor/check";
 import { Shops, Accounts } from "/lib/collections";
 import { TaxCodes } from "/imports/plugins/core/taxes/lib/collections";
-import { Reaction } from "/server/api";
+import Reaction from "/server/api/core";
 import Avalogger from "./avalogger";
 
 const errorDetails = new SimpleSchema({

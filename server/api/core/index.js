@@ -14,6 +14,10 @@ import * as Utils from "./utils";
 import * as Collections from "/lib/collections";
 import * as Schemas from "/lib/collections/schemas";
 
+/**
+ * @namespace EventHooks
+ */
+
 // Reaction methods (server)
 
 const Router = {};

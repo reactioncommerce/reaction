@@ -3,7 +3,7 @@ import { Factory } from "meteor/dburles:factory";
 import { sinon } from "meteor/practicalmeteor:sinon";
 import { expect } from "meteor/practicalmeteor:chai";
 import { Shops, Groups } from "/lib/collections";
-import { Reaction } from "/server/api";
+import Reaction from "/server/api/core";
 
 describe("Server/API/Core", function () {
   let sandbox;

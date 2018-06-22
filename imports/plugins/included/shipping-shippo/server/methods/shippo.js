@@ -4,7 +4,7 @@ import _ from "lodash";
 import { Meteor } from "meteor/meteor";
 import { check, Match } from "meteor/check";
 import { Roles } from "meteor/alanning:roles";
-import { Reaction } from "/server/api";
+import Reaction from "/server/api/core";
 import { Packages, Accounts, Shops, Shipping, Cart, Orders } from "/lib/collections";
 import { ShippoPackageConfig } from "../../lib/collections/schemas";
 import { shippingRoles } from "../lib/roles";

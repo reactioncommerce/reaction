@@ -3,7 +3,7 @@ import Logger from "@reactioncommerce/logger";
 import { Meteor } from "meteor/meteor";
 import { Roles } from "meteor/alanning:roles";
 import { Migrations } from "meteor/percolate:migrations";
-import { Reaction } from "/server/api";
+import Reaction from "/server/api/core";
 import { Accounts, Groups, Shops } from "/lib/collections";
 
 /**

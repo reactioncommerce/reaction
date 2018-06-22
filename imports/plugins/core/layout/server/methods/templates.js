@@ -1,6 +1,6 @@
 import { check } from "meteor/check";
 import { Templates } from "/lib/collections";
-import { Reaction } from "/server/api";
+import Reaction from "/server/api/core";
 
 export function getTemplateByName(name, shopId) {
   check(name, String);

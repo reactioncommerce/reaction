@@ -6,7 +6,7 @@ import { Meteor } from "meteor/meteor";
 import { check, Match } from "meteor/check";
 import { Roles } from "meteor/alanning:roles";
 import * as Collections from "/lib/collections";
-import { Reaction } from "/server/api";
+import Reaction from "/server/api/core";
 import { PaymentMethodArgument } from "/lib/collections/schemas";
 
 /**

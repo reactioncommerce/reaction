@@ -8,7 +8,7 @@ import { Factory } from "meteor/dburles:factory";
 import { Roles } from "meteor/alanning:roles";
 import { PublicationCollector } from "meteor/johanbrook:publication-collector";
 import { createActiveShop } from "/server/imports/fixtures/shops";
-import { Reaction } from "/server/api";
+import Reaction from "/server/api/core";
 import * as Collections from "/lib/collections";
 import Fixtures from "/server/imports/fixtures";
 import publishProductsToCatalog from "/imports/plugins/core/catalog/server/no-meteor/utils/publishProductsToCatalog";

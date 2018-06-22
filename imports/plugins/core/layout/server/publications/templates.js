@@ -1,7 +1,7 @@
 import { Meteor } from "meteor/meteor";
 import { check, Match } from "meteor/check";
 import { Counts } from "meteor/tmeasday:publish-counts";
-import { Reaction } from "/server/api";
+import Reaction from "/server/api/core";
 import { Templates } from "/lib/collections";
 
 Meteor.publish("Templates", function (query, options) {

@@ -1,5 +1,5 @@
 import { Meteor } from "meteor/meteor";
-import { Reaction } from "/server/api";
+import Reaction from "/server/api/core";
 
 /**
  * @file Shopify connector api methods and helpers

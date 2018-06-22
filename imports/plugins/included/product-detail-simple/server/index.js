@@ -1,4 +1,4 @@
-import { Reaction } from "/server/api";
+import Reaction from "/server/api/core";
 import SimpleLayout from "../lib/layout/simple";
 import TwoColumnLayout from "../lib/layout/twoColumn";
 import "./i18n";

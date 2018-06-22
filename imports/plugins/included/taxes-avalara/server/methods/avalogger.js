@@ -1,7 +1,7 @@
 import { bunyan } from "@reactioncommerce/logger";
 import { Meteor } from "meteor/meteor";
 import { Logs } from "/lib/collections";
-import { Reaction } from "/server/api";
+import Reaction from "/server/api/core";
 
 const level = "INFO";
 

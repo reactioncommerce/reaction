@@ -9,7 +9,7 @@ import { WebApp } from "meteor/webapp";
 
 /**
  * @file Reaction Endpoints - This becomes Reaction.Endpoints and can be used in any server side code that
- * `imports { Reaction } from "/server/api"`
+ * `imports Reaction from "/server/api/core"`
  * Adapted from https://github.com/stubailo/meteor-rest/tree/master/packages/json-routes
  * @todo Add a rate limiter to our HTTP endpoint module
  * @namespace Endpoints
