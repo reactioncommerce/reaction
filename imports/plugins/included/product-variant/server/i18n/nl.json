@@ -5,23 +5,23 @@
     "reaction-product-variant": {
       "admin": {
         "helpText": {
-          "compareAtPrice": "Oorspronkelijke prijs of MSRP",
-          "optionInventoryQuantity": "Inventaris",
-          "optionTitle": "Wordt weergegeven op productdetailpagina",
-          "price": "Aankoopprijs",
-          "title": "Wordt weergegeven in winkelwagen, afrekenen en bestellingen",
-          "variantBackorderToggle": "Reserveordertoeslag wordt nu gecontroleerd door opties",
-          "variantInventoryQuantity": "Variant inventaris wordt nu gecontroleerd door opties"
+          "compareAtPrice": "Adviesprijs",
+          "optionInventoryQuantity": "Vooraaad",
+          "optionTitle": "Wordt weergegeven op de productpagina",
+          "price": "Inkoopprijs",
+          "title": "Wordt weergegeven in de winkelwagen, bij het afrekenen en besteloverzicht",
+          "variantBackorderToggle": "Backorders met varianten zijn nu configureerbaar",
+          "variantInventoryQuantity": "De voorraad van varianten zijn nu configureerbaar"
         },
         "tooltip": {
-          "validationError": "Validatie fout"
+          "validationError": "Validatiefout"
         }
       },
       "productGrid": {
         "noProductsFound": "Geen producten gevonden"
       },
       "productDetailEdit": {
-        "variantDetails": "variant Details"
+        "variantDetails": "Variantdetails"
       }
     }
   }

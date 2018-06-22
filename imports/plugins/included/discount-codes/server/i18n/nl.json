@@ -5,18 +5,18 @@
   "translation": {
     "reaction-discounts": {
       "checkoutPayment": {
-        "applyDiscount": "Solliciteren",
-        "discountError": "Sorry, was er een fout toe te passen korting."
+        "applyDiscount": "Korting toepassen",
+        "discountError": "Sorry, er is een fout opgetreden bij het toepassen van de korting."
       },
       "discounts": {
-        "enterItHere": "Heeft u een code? Voer het hier.",
+        "enterItHere": "Heeft u een code? Voer het hier in.",
         "discountLabel": "Kortingscode",
-        "submitted": "Discount opgeslagen en toegepast",
-        "applied": "toegepast",
-        "code": "code",
+        "submitted": "Korting opgeslagen en toegepast",
+        "applied": "Toegepast",
+        "code": "Code",
         "codeIsExpired": "Code is verlopen",
         "codeIsInvalid": "Code is ongeldig",
-        "multiShopError": "Kortingen kunnen niet worden toegepast op een multi-winkelwagentje of -bestelling"
+        "multiShopError": "Kortingen kunnen niet worden toegepast in een multishop"
       },
       "admin": {
         "paymentSettings": {
@@ -24,7 +24,7 @@
         },
         "settings": {
           "codesLabel": "codes",
-          "noCustomDiscountCodesFound": "Geen korting codes gevonden."
+          "noCustomDiscountCodesFound": "Geen kortingscodes gevonden."
         },
         "discountGrid": {
           "code": "Code",
@@ -32,7 +32,7 @@
             "method": "Berekening"
           },
           "conditions": {
-            "redemptionLimit": "Begrenzing"
+            "redemptionLimit": "Limiet"
           }
         }
       }

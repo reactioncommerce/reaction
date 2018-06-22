@@ -5,37 +5,37 @@
   "translation": {
     "reaction-taxes": {
       "settings": {
-        "apiLoginId": "Avalara API Inloggen ID",
-        "username": "Gebruikersnaam",
-        "password": "Wachtwoord",
-        "companyCode": "Bedrijfscode",
-        "shippingTaxCode": "Verzending Tax Code",
-        "mode": "productie Mode",
-        "performTaxCalculation": "Voer BTW-berekening",
+        "apiLoginId": "Avalara API Login ID",
+        "username": "Username",
+        "password": "Password",
+        "companyCode": "Company Code",
+        "shippingTaxCode": "Shipping Tax Code",
+        "mode": "Production Mode",
+        "performTaxCalculation": "Perform Tax Calculation",
         "addressValidation": "Address Validation",
-        "enableAddressValidationByCountry": "Inschakelen Address Validation per land",
+        "enableAddressValidationByCountry": "Enable Address Validation by Country",
         "enableLogging": "Enable Logging",
-        "logRetentionDuration": "Log Retention Duur",
-        "requestTimeout": "Verzoek time-out",
-        "commitDocuments": "commit Documenten",
-        "administratorsPanel": "Panel Administrator's",
-        "testCredentialsSuccess": "Connection Test Succes",
-        "testCredentialsFailed": "Connection Test mislukt, Controleer de geloofsbrieven",
-        "apiError": "Avalara niet juist geconfigureerd"
+        "logRetentionDuration": "Log Retention Duration",
+        "requestTimeout": "Request Timeout",
+        "commitDocuments": "Commit Documents",
+        "administratorsPanel": "Administrator's Panel",
+        "testCredentialsSuccess": "Connection Test Success",
+        "testCredentialsFailed": "Connection Test Failed, Check credentials",
+        "apiError": "Avalara not configured correctly"
       },
       "logGrid": {
-        "noLogsFound": "Geen logs gevonden",
+        "noLogsFound": "No logs found",
         "columns": {
           "data": {
             "request": {
               "data": {
-                "date": "Datum",
-                "type": "type document"
+                "date": "Date",
+                "type": "Document Type"
               }
             }
           },
-          "date": "Datum",
-          "docType": "type document"
+          "date": "Date",
+          "docType": "Document Type"
         }
       },
       "admin": {
@@ -46,14 +46,14 @@
         "dashboard": {
           "avalaraLabel": "Avalara",
           "avalaraTitle": "Avalara",
-          "avalaraDescription": "Avalara Belastingtarieven",
-          "testCredentials": "Test geloofsbrieven"
+          "avalaraDescription": "Avalara belastingtarieven",
+          "testCredentials": "Testgegevens"
         },
         "taxSettings": {
           "avalaraLabel": "Avalara",
           "avalaraSettingsLabel": "Avalara",
-          "formTitle": "tax-instellingen",
-          "entityCodeCustomLabel": "SET aangepaste waarde"
+          "formTitle": "Belastinginstellingen",
+          "entityCodeCustomLabel": "Aangepaste waarde gebruiken"
         }
       }
     }

@@ -6,14 +6,14 @@
     "reaction-discounts": {
       "admin": {
         "settings": {
-          "ratesLabel": "tarieven",
-          "noCustomDiscountRatesFound": "Geen disconteringsvoet gevonden.",
+          "ratesLabel": "Tarieven",
+          "noCustomDiscountRatesFound": "Geen aangepaste kortingstarieven gevonden.",
           "settingsSaveSuccess": "Instellingen succesvol opgeslagen.",
-          "settingsSaveFailure": "Kan instellingen op te slaan.",
-          "confirmRateDelete": "Bevestig discontovoet verwijdering."
+          "settingsSaveFailure": "Kan instellingen niet opslaan.",
+          "confirmRateDelete": "Bevestig de verwijdering van dit tarief."
         },
         "discountGrid": {
-          "label": "Etiket",
+          "label": "Label",
           "discountMethod": "Methode",
           "discount": "Korting"
         }

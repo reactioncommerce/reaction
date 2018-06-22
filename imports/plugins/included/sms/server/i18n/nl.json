@@ -7,22 +7,22 @@
         "dashboard": {
           "smsLabel": "SMS",
           "smsTitle": "SMS",
-          "smsDescription": "Bekendmakingen"
+          "smsDescription": "SMS-notificaties"
         },
         "settings": {
           "smsSettingsLabel": "SMS-instellingen",
           "smsProvider": "SMS Provider",
-          "providerName": "Provider naam",
+          "providerName": "Providernaam",
           "selectProvider": "Selecteer een SMS-provider",
           "phoneNumber": "SMS Telefoonnummer",
           "apiKey": "API Key",
           "apiToken": "API Token / Secret"
         },
         "alerts": {
-          "noApiKey": "Gelieve te voegen een API Key",
-          "noApiToken": "Gelieve te voegen een API TOKEN / Secret",
+          "noApiKey": "Voer een API key in",
+          "noApiToken": "Voer de API TOKEN en Secret in",
           "noSmsProvider": "Kies een SMS-provider",
-          "noSmsPhone": "Voeg dan het telefoonnummer in dat u van uw SMS provider",
+          "noSmsPhone": "Voeg dan het telefoonnummer toe van uw SMS provider",
           "saveSuccess": "SMS-instellingen opgeslagen"
         }
       }

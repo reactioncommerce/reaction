@@ -6,15 +6,15 @@
     "reaction-discounts": {
       "admin": {
         "settings": {
-          "discountsettingsLabel": "Discount Instellingen"
+          "discountsettingsLabel": "Kortingen"
         },
         "shortcut": {
           "discountsLabel": "Kortingen",
-          "discountsDescription": "Zorg voor promoties en kortingen."
+          "discountsDescription": "Kortingen en promoties."
         },
         "dashboard": {
           "discountsLabel": "Kortingen",
-          "discountsDescription": "Zorg voor promoties en kortingen."
+          "discountsDescription": "Kortingen en promoties."
         }
       }
     }

@@ -7,7 +7,7 @@
         "dashboard": {
           "smsLabel": "SMS",
           "smsTitle": "SMS",
-          "smsDescription": "Bekendmakingen"
+          "smsDescription": "SMS-notificaties"
         },
         "settings": {
           "smsSettingsLabel": "SMS-instellingen"

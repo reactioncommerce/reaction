@@ -17,13 +17,13 @@
         "paymentSettings": {
           "braintreeLabel": "Braintree",
           "braintreeSettingsLabel": "Braintree",
-          "braintreeCredentials": "geloofsbrieven toe te voegen aan te schakelen"
+          "braintreeCredentials": "Voer uw braintree-gegevens in om deze betaalmethode te kunnen gebruiken"
         }
       },
       "order": {
         "paymentProvider": {
           "braintree": {
-            "braintreeSettlementDelay": "Braintree geen restitutie mogelijk tot transacties worden afgewikkeld. Dit kan tot 24 uur duren. Probeer het later opnieuw."
+            "braintreeSettlementDelay": "Bij Braintree zijn terugbetalingen niet direct mogelijk. Gelieve tot 24 uur na het plaatsen van de bestelling te wachten."
           }
         }
       }

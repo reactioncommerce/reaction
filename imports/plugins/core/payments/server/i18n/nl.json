@@ -12,13 +12,13 @@
         "dashboard": {
           "paymentsLabel": "Betalingen",
           "paymentsTitle": "Betalingen",
-          "paymentsDescription": "betalingen configuratie"
+          "paymentsDescription": "Betalingsconfiguratie"
         },
         "settings": {
-          "paymentSettingsLabel": "betaling Instellingen"
+          "paymentSettingsLabel": "Betalingsconfiguratie"
         },
         "paymentSettings": {
-          "paymentMethod": "Default Provider"
+          "paymentMethod": "Standaardprovider"
         }
       },
       "checkoutPayment": {

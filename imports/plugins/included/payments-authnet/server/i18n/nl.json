@@ -17,8 +17,8 @@
         "paymentSettings": {
           "authorizenetLabel": "Authorize.net",
           "authorizenetSettingsLabel": "Authorize.net",
-          "authorizenetCredentials": "Heb je geen login-ID en Transaction Key?",
-          "authorizenetCredentialURL": "Krijg één van Authorize.net"
+          "authorizenetCredentials": "Heeft u geen login-ID en Transaction Key?",
+          "authorizenetCredentialURL": "Deze ontvangt u van Authorize.net"
         }
       }
     }

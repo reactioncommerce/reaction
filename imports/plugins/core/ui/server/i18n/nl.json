@@ -12,8 +12,8 @@
       },
       "reactionUI": {
         "editTheme": "Thema bewerken",
-        "duplicateTheme": "Duplicate Theme",
-        "duplicateThemeError": "Kon niet dupliceren thema",
+        "duplicateTheme": "Thema dupliceren",
+        "duplicateThemeError": "Kon thema niet dupliceren",
         "publishThemeError": "`Kon thema {{themeName}} niet publiceren",
         "components": {
           "navbar": "Navigatiebalk",
@@ -21,11 +21,11 @@
           "sortableTable": {
             "filterPlaceholder": "Filter data",
             "tableText": {
-              "noDataMessage": "geen resultaten gevonden",
-              "previousText": "Vorig",
+              "noDataMessage": "Geen resultaten gevonden",
+              "previousText": "Vorige",
               "nextText": "Volgende",
-              "loadingText": "Laden ...",
-              "noDataText": "geen resultaten gevonden",
+              "loadingText": "Laden...",
+              "noDataText": "Geen resultaten gevonden",
               "pageText": "Pagina",
               "ofText": "van",
               "rowsText": "rijen"

@@ -27,16 +27,16 @@
         }
       },
       "checkout": {
-        "completeYourOrder": "Vul uw bestelling",
+        "completeYourOrder": "Voltooi uw bestelling",
         "paymentMethod": {
           "PaypalExpress": "Paypal Express",
           "expressButtonLabel": "Betaal met PayPal",
-          "expressNotConfigured": "Paypal Express niet geconfigureerd.",
-          "expressNotAvailable": "Paypal Express niet beschikbaar",
-          "submitting": "Indienen",
-          "invalidCard": "Oeps! Credit Card nummer is ongeldig.",
+          "expressNotConfigured": "Paypal Express is niet geconfigureerd.",
+          "expressNotAvailable": "Paypal Express is niet beschikbaar",
+          "submitting": "Verzenden",
+          "invalidCard": "Oeps! Creditcardnummer is ongeldig.",
           "unknownError": "Oeps! Er is een onbekende fout opgetreden",
-          "resubmit": "opnieuw betaling"
+          "resubmit": "Opnieuw verzenden"
         }
       }
     }

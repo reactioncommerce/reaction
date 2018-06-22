@@ -7,10 +7,10 @@
         "dashboard": {
           "searchLabel": "Zoeken",
           "searchTitle": "Zoeken",
-          "searchDescription": "product zoeken"
+          "searchDescription": "Product zoeken"
         },
         "settings": {
-          "searchSettingsLabel": "Zoek instellingen"
+          "searchSettingsLabel": "Zoekinstellingen"
         }
       }
     }

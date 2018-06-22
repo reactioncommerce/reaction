@@ -8,12 +8,12 @@
           "productDetailsLabel": "Productdetails"
         },
         "inventoryAlerts": {
-          "adjustedQuantity": "Uw product hoeveelheid is aangepast aan de maximale hoeveelheid in voorraad"
+          "adjustedQuantity": "Uw producthoeveelheid is aangepast aan de maximale hoeveelheid dat nog op voorraad is"
         },
         "mediaGallery": {
           "deleteImage": "Klik om de afbeelding te verwijderen",
-          "addedImage": "Dit is een nieuwe afbeelding. Publiceer om wijzigingen op te slaan.",
-          "removedImage": "Afbeelding is verwijderd. Publiceer om wijzigingen op te slaan."
+          "addedImage": "Dit is een nieuwe afbeelding. Publiceer deze om de wijzigingen op te slaan.",
+          "removedImage": "De afbeelding is verwijderd. Publiceer deze om de wijzigingen op te slaan."
         }
       },
       "availableOptions": "Beschikbare opties"

@@ -7,7 +7,7 @@
         "dashboard": {
           "socialLabel": "sociaal",
           "socialTitle": "sociaal",
-          "socialDescription": "Sociale Channel configuratie"
+          "socialDescription": "Social-media kanalen"
         },
         "settings": {
           "public": {
@@ -16,25 +16,25 @@
                 "title": "Facebook",
                 "appId": "App ID",
                 "appSecret": "App Secret",
-                "profilePage": "Profiel pagina"
+                "profilePage": "Profielpagina"
               },
               "googleplus": {
                 "title": "Google+",
-                "profilePage": "Profiel pagina"
+                "profilePage": "Profielpagina"
               },
               "pinterest": {
                 "title": "Pinterest",
-                "profilePage": "Profiel pagina"
+                "profilePage": "Profielpagina"
               },
               "twitter": {
                 "title": "Twitter",
                 "username": "Gebruikersnaam",
-                "profilePage": "Profiel pagina"
+                "profilePage": "Profielpagina"
               }
             }
           },
-          "socialSettingsLabel": "sociale Instellingen",
-          "socialSettingsSaved": "Sociale instellingen opgeslagen"
+          "socialSettingsLabel": "Sociale media instellen",
+          "socialSettingsSaved": "De instellingen zijn opgeslagen"
         }
       }
     }

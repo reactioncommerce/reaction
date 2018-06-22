@@ -29,14 +29,14 @@
           }
         },
         "alerts": {
-          "shopGeneralSettingsSaved": "Shop algemene instellingen opgeslagen.",
-          "shopGeneralSettingsFailed": "Shop-update algemene instellingen is mislukt.",
-          "shopAddressSettingsSaved": "Shop-adres instellingen opgeslagen.",
-          "shopAddressSettingsFailed": "Shop-update-adres instellingen is mislukt.",
-          "shopExternalServicesSettingsSaved": "Shop buitendiensten instellingen opgeslagen.",
-          "shopExternalServicesSettingsFailed": "Shop-update buitendiensten instellingen is mislukt.",
-          "shopOptionsSettingsSaved": "Shop opties opgeslagen.",
-          "shopOptionsSettingsFailed": "Shop opties update is mislukt."
+          "shopGeneralSettingsSaved": "Algemene instellingen opgeslagen.",
+          "shopGeneralSettingsFailed": "Algemene instellingen opslaan is mislukt.",
+          "shopAddressSettingsSaved": "Instellingen opgeslagen.",
+          "shopAddressSettingsFailed": "Adresinstellingen opslaan is mislukt.",
+          "shopExternalServicesSettingsSaved": "Externe services zijn opgeslagen.",
+          "shopExternalServicesSettingsFailed": "Het opslaan van de externe services is mislukt.",
+          "shopOptionsSettingsSaved": "Instellingen bewaard.",
+          "shopOptionsSettingsFailed": "Het opslaan van de instellingen is mislukt."
         }
       }
     }

@@ -5,33 +5,33 @@
     "reaction-accounts": {
       "admin": {
         "dashboard": {
-          "accountsLabel": "Rekeningen",
-          "accountsTitle": "Rekeningen",
-          "accountsDescription": "Account instellingen"
+          "accountsLabel": "Accounts",
+          "accountsTitle": "Accounts",
+          "accountsDescription": "Accountinstellingen"
         },
         "settings": {
-          "continue": "Voortzetten",
+          "continue": "Verder",
           "cancel": "Annuleren",
           "changeOwner": "Wijzig eigenaar",
           "removeUser": "Verwijder gebruiker",
-          "createGroupSuccess": "Groep is succesvol opgericht",
+          "createGroupSuccess": "Groep is succesvol aangemaakt",
           "updateGroupSuccess": "Groep is succesvol bijgewerkt",
-          "createGroupError": "Fout bij het maken van een groep",
+          "createGroupError": "Fout bij het aanmaken van een groep",
           "updateGroupError": "Fout bij het bijwerken van de groep",
-          "changeShopOwnerWarn": "U gaat op de hoogte van de Winkel eigenaar. De huidige eigenaar wordt vervangen",
-          "changeMktOwnerWarn": "Je staat op het punt om de Marketplace-eigenaar te veranderen. De huidige eigenaar wordt vervangen",
-          "removeUserWarn": "U bent op het punt een gebruiker te verwijderen van een groep. De gebruiker zal de bijbehorende machtigingen verliezen",
-          "accountsSettingsLabel": "Rekeningen",
-          "accountsSettingsTitle": "Rekeningen",
-          "accountsSettingsDescription": "Account instellingen"
+          "changeShopOwnerWarn": "U staat op het punt om de eigenaar te wijzigen. De huidige eigenaar wordt vervangen",
+          "changeMktOwnerWarn": "U staat op het punt om de Marketplace-eigenaar te veranderen. De huidige eigenaar wordt vervangen",
+          "removeUserWarn": "U staat op het punt om een gebruiker te verwijderen uit een groep. De gebruiker zal de bijbehorende machtigingen verliezen",
+          "accountsSettingsLabel": "Accounts",
+          "accountsSettingsTitle": "Accounts",
+          "accountsSettingsDescription": "Accountinstellingen"
         },
         "groupsInvite": {
-          "name": "John Smith",
-          "email": "johnsmith@reactioncommerce.com",
-          "inviteOwnerError": "U kunt geen gebruiker als eigenaar uitnodigen. Bevorder een bestaande admin",
-          "groupRequired": "Een groep is verplicht een admin uit te nodigen",
+          "name": "Jan Smit",
+          "email": "jansmit@reactioncommerce.com",
+          "inviteOwnerError": "U kunt geen gebruiker als eigenaar uitnodigen. Upgrade een bestaande administrator",
+          "groupRequired": "Een groep is verplicht om een administrator uit te nodigen",
           "cannotInvite": "U kunt geen groep uitnodigen",
-          "unableToSendInvitationEmail": "Kan uitnodigings-e-mail niet verzenden",
+          "unableToSendInvitationEmail": "Kan uitnodigingse-mail niet verzenden",
           "errorSendingInvite": "Er is een fout opgetreden tijdens het verzenden van uitnodiging",
           "NeedToSetUsernameOrEmail": "Gebruikersnaam of e-mail is vereist"
         }

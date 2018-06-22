@@ -5,12 +5,12 @@
     "reaction-inventory": {
       "admin": {
         "dashboard": {
-          "inventoryLabel": "Inventaris",
-          "inventoryTitle": "Inventaris",
-          "inventoryDescription": "Inventory utilities"
+          "inventoryLabel": "Voorraad",
+          "inventoryTitle": "Voorraad",
+          "inventoryDescription": "Voorraad beheren"
         },
         "settings": {
-          "inventorySettingsLabel": "Inventory Instellingen"
+          "inventorySettingsLabel": "Voorraad-instellingen"
         }
       }
     }
