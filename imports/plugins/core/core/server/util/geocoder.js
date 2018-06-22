@@ -1,8 +1,9 @@
 import _ from "lodash";
+import Logger from "@reactioncommerce/logger";
 import { HTTP } from "meteor/http";
 import { Meteor } from "meteor/meteor";
 import { Packages } from "/lib/collections";
-import { Logger, Reaction } from "/server/api";
+import { Reaction } from "/server/api";
 
 /**
  * meteor-geocoder

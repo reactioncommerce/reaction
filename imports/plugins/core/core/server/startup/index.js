@@ -1,3 +1,4 @@
+import Logger from "@reactioncommerce/logger";
 import SimpleSchema from "simpl-schema";
 import { Meteor } from "meteor/meteor";
 import Accounts from "./accounts";
@@ -10,7 +11,7 @@ import RateLimiters from "./rate-limits";
 import RegisterCore from "./register-core";
 import RegisterRouter from "./register-router";
 import { initTemplates } from "/server/api/core/templates";
-import { Reaction, Logger } from "/server/api";
+import { Reaction } from "/server/api";
 import { Shops } from "/lib/collections";
 
 // This is needed so that it throws a Meteor.Error as `check()` would do

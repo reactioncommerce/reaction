@@ -1,8 +1,10 @@
-import { Meteor } from "meteor/meteor";
-import { check, Match } from "meteor/check";
 import _ from "lodash";
+import Hooks from "@reactioncommerce/hooks";
+import Logger from "@reactioncommerce/logger";
 import { Roles } from "meteor/alanning:roles";
-import { Reaction, Logger, Hooks } from "/server/api";
+import { check, Match } from "meteor/check";
+import { Meteor } from "meteor/meteor";
+import { Reaction } from "/server/api";
 import { Accounts, Groups } from "/lib/collections";
 import { getSlug } from "/lib/api";
 

@@ -1,12 +1,13 @@
 /* eslint dot-notation: 0 */
 /* eslint prefer-arrow-callback:0 */
+import Logger from "@reactioncommerce/logger";
 import Random from "@reactioncommerce/random";
 import { Meteor } from "meteor/meteor";
 import { expect } from "meteor/practicalmeteor:chai";
 import { Factory } from "meteor/dburles:factory";
 import { sinon, stubs, spies } from "meteor/practicalmeteor:sinon";
 import Fixtures from "/server/imports/fixtures";
-import { Reaction, Logger } from "/server/api";
+import { Reaction } from "/server/api";
 import { Shops } from "/lib/collections";
 
 Fixtures();

@@ -1,5 +1,5 @@
+import Logger from "@reactioncommerce/logger";
 import { Shops } from "/lib/collections";
-import { Logger } from "/server/api";
 
 /**
  * @method getRegistryDomain

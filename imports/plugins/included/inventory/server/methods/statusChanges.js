@@ -1,8 +1,9 @@
+import Logger from "@reactioncommerce/logger";
 import { Meteor } from "meteor/meteor";
 import { check, Match } from "meteor/check";
 import { Inventory } from "/lib/collections";
 import * as Schemas from "/lib/collections/schemas";
-import { Logger, Reaction } from "/server/api";
+import { Reaction } from "/server/api";
 
 // TODO statusChanges DDP limiting Disabled for now, needs more testing.
 

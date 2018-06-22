@@ -1,6 +1,7 @@
+import Logger from "@reactioncommerce/logger";
 import { Meteor } from "meteor/meteor";
 import { Inventory, Products } from "/lib/collections";
-import { Logger, Reaction } from "/server/api";
+import { Reaction } from "/server/api";
 import rawCollections from "/imports/collections/rawCollections";
 import getVariants from "/imports/plugins/core/catalog/server/no-meteor/utils/getVariants";
 

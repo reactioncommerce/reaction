@@ -1,10 +1,12 @@
 import _ from "lodash";
+import Hooks from "@reactioncommerce/hooks";
+import Logger from "@reactioncommerce/logger";
 import { Meteor } from "meteor/meteor";
 import { Roles } from "meteor/alanning:roles";
 import { check, Match } from "meteor/check";
 import { HTTP } from "meteor/http";
 import { Job } from "/imports/plugins/core/job-collection/lib";
-import { GeoCoder, Hooks, Logger } from "/server/api";
+import { GeoCoder } from "../util/geocoder";
 import { getSlug } from "/server/api/core/utils";
 import { Reaction } from "/lib/api";
 import * as Collections from "/lib/collections";

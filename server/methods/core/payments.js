@@ -1,7 +1,8 @@
+import Hooks from "@reactioncommerce/hooks";
 import Random from "@reactioncommerce/random";
 import { Meteor } from "meteor/meteor";
 import { check } from "meteor/check";
-import { Reaction, Hooks } from "/server/api";
+import { Reaction } from "/server/api";
 
 /**
  * @file Methods for Payments. Run these methods using `Meteor.call()`.

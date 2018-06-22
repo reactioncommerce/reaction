@@ -1,6 +1,7 @@
 /* eslint dot-notation: 0 */
 /* eslint prefer-arrow-callback:0 */
 import _ from "lodash";
+import Logger from "@reactioncommerce/logger";
 import Random from "@reactioncommerce/random";
 import { Meteor } from "meteor/meteor";
 import { Factory } from "meteor/dburles:factory";
@@ -10,7 +11,7 @@ import { expect } from "meteor/practicalmeteor:chai";
 import { sinon } from "meteor/practicalmeteor:sinon";
 import { SSR } from "meteor/meteorhacks:ssr";
 import { Accounts, Groups, Packages, Orders, Products, Shops, Cart } from "/lib/collections";
-import { Logger, Reaction } from "/server/api";
+import { Reaction } from "/server/api";
 import { getShop, getAddress } from "/server/imports/fixtures/shops";
 import Fixtures from "/server/imports/fixtures";
 

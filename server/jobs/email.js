@@ -1,7 +1,8 @@
+import Logger from "@reactioncommerce/logger";
 import nodemailer from "@reactioncommerce/nodemailer";
 import { Meteor } from "meteor/meteor";
 import { Emails, Jobs } from "/lib/collections";
-import { Reaction, Logger } from "/server/api";
+import { Reaction } from "/server/api";
 
 export default function () {
   /**

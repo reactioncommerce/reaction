@@ -1,6 +1,7 @@
+import Logger from "@reactioncommerce/logger";
 import { Meteor } from "meteor/meteor";
 import { Cart } from "/lib/collections";
-import { Logger, MethodHooks } from "/server/api";
+import MethodHooks from "/imports/plugins/core/core/server/method-hooks";
 // this needed to keep correct loading order. Methods should be loaded before hooks
 import "../cart";
 

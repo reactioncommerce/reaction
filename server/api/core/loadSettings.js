@@ -1,8 +1,8 @@
 import _ from "lodash";
+import Logger from "@reactioncommerce/logger";
 import { check } from "meteor/check";
 import { ServiceConfiguration } from "meteor/service-configuration";
 import { Packages } from "/lib/collections";
-import { Logger } from "/server/api";
 import { EJSON } from "meteor/ejson";
 
 /**

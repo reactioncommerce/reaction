@@ -1,4 +1,4 @@
-import { Logger } from "/server/api";
+import Logger from "@reactioncommerce/logger";
 import { PaymentMethodArgument } from "/lib/collections/schemas";
 import { check } from "meteor/check";
 import { PayPal } from "../../lib/api"; // PayPal is the reaction api

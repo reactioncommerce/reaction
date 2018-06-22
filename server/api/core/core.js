@@ -1,4 +1,6 @@
 import url from "url";
+import Hooks from "@reactioncommerce/hooks";
+import Logger from "@reactioncommerce/logger";
 import Random from "@reactioncommerce/random";
 import packageJson from "/package.json";
 import _, { merge, uniqWith } from "lodash";
@@ -8,10 +10,9 @@ import { Accounts } from "meteor/accounts-base";
 import { Roles } from "meteor/alanning:roles";
 import { EJSON } from "meteor/ejson";
 import * as Collections from "/lib/collections";
-import { Hooks, Logger } from "/server/api";
 import ProcessJobs from "/server/jobs";
 import { registerTemplate } from "./templates";
-import { sendVerificationEmail } from "./accounts";
+import sendVerificationEmail from "./sendVerificationEmail";
 import { getMailUrl } from "./email/config";
 import { createGroups } from "./groups";
 import ConnectionDataStore from "./connectionDataStore";

@@ -1,11 +1,12 @@
 import _ from "lodash";
+import Logger from "@reactioncommerce/logger";
 import SimpleSchema from "simpl-schema";
 import { Meteor } from "meteor/meteor";
 import { Tracker } from "meteor/tracker";
 import { check, Match } from "meteor/check";
 import { registerSchema } from "@reactioncommerce/schemas";
 import { Products, Shops, Catalog } from "/lib/collections";
-import { Reaction, Logger } from "/server/api";
+import { Reaction } from "/server/api";
 
 //
 // define search filters as a schema so we can validate

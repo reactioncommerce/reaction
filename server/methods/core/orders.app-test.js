@@ -1,4 +1,5 @@
 /* eslint prefer-arrow-callback:0 */
+import Logger from "@reactioncommerce/logger";
 import accounting from "accounting-js";
 import { Meteor } from "meteor/meteor";
 import { check, Match } from "meteor/check";
@@ -6,7 +7,7 @@ import { Factory } from "meteor/dburles:factory";
 import { expect } from "meteor/practicalmeteor:chai";
 import { sinon } from "meteor/practicalmeteor:sinon";
 import Fixtures from "/server/imports/fixtures";
-import { Reaction, Logger } from "/server/api";
+import { Reaction } from "/server/api";
 import { getShop } from "/server/imports/fixtures/shops";
 import { Orders, Notifications, Products, Shops } from "/lib/collections";
 import { Media } from "/imports/plugins/core/files/server";

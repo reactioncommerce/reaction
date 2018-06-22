@@ -1,8 +1,9 @@
+import Logger from "@reactioncommerce/logger";
 import nodemailer from "@reactioncommerce/nodemailer";
 import getServiceConfig from "nodemailer-wellknown";
 import url from "url";
 import { Meteor } from "meteor/meteor";
-import { Reaction, Logger } from "/server/api";
+import { Reaction } from "/server/api";
 
 
 /**

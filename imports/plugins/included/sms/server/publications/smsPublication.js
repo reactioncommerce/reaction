@@ -1,5 +1,6 @@
+import Logger from "@reactioncommerce/logger";
 import { Meteor } from "meteor/meteor";
-import { Reaction, Logger } from "/server/api";
+import { Reaction } from "/server/api";
 import { Sms } from "/lib/collections";
 
 /**

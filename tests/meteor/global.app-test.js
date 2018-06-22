@@ -1,6 +1,6 @@
+import Logger from "@reactioncommerce/logger";
 import { Meteor } from "meteor/meteor";
 import { Packages } from "/lib/collections";
-import { Logger } from "/server/api";
 
 before(function () {
   this.timeout(6000);

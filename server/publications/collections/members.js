@@ -1,9 +1,8 @@
+import Logger from "@reactioncommerce/logger";
 import { Meteor } from "meteor/meteor";
 import { EJSON } from "meteor/ejson";
-
 import { Roles } from "meteor/alanning:roles";
-
-import { Logger, Reaction } from "/server/api";
+import { Reaction } from "/server/api";
 
 /* eslint quote-props: 0 */
 /**

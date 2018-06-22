@@ -1,11 +1,12 @@
 /* eslint camelcase: 0 */
+import Logger from "@reactioncommerce/logger";
 import Braintree from "braintree";
 import accounting from "accounting-js";
 import Future from "fibers/future";
 import { Meteor } from "meteor/meteor";
 import { check } from "meteor/check";
 import { Packages } from "/lib/collections";
-import { Reaction, Logger } from "/server/api";
+import { Reaction } from "/server/api";
 
 let moment;
 async function lazyLoadMoment() {

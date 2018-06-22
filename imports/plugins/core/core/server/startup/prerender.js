@@ -1,6 +1,6 @@
+import Logger from "@reactioncommerce/logger";
 import prerender from "prerender-node";
 import { WebApp } from "meteor/webapp";
-import { Logger } from "/server/api";
 
 export default function preRender() {
   if (process.env.PRERENDER_TOKEN && process.env.PRERENDER_HOST) {

@@ -1,9 +1,11 @@
 import _ from "lodash";
+import Hooks from "@reactioncommerce/hooks";
+import Logger from "@reactioncommerce/logger";
 import Random from "@reactioncommerce/random";
 import { Meteor } from "meteor/meteor";
 import { Accounts } from "meteor/accounts-base";
 import * as Collections from "/lib/collections";
-import { Hooks, Logger, Reaction } from "/server/api";
+import { Reaction } from "/server/api";
 
 export default function () {
   /**

@@ -1,9 +1,11 @@
+import Hooks from "@reactioncommerce/hooks";
+import Logger from "@reactioncommerce/logger";
 import React from "react";
 import ReactDOMServer from "react-dom/server";
 import Handlebars from "handlebars";
 import Immutable from "immutable";
 import { Assets, Templates } from "/lib/collections";
-import { Hooks, Logger, Reaction } from "/server/api";
+import { Reaction } from "/server/api";
 
 let registeredTemplates = Immutable.OrderedMap();
 let templateCache = Immutable.Map();

@@ -1,6 +1,8 @@
+import Hooks from "@reactioncommerce/hooks";
+import Logger from "@reactioncommerce/logger";
 import { Meteor } from "meteor/meteor";
 import { Job } from "/imports/plugins/core/job-collection/lib";
-import { Hooks, Logger, Reaction } from "/server/api";
+import { Reaction } from "/server/api";
 import { Jobs, Packages } from "/lib/collections";
 
 // helper to fetch shippo config

@@ -1,4 +1,5 @@
-import { Reaction, Hooks } from "/server/api";
+import Hooks from "@reactioncommerce/hooks";
+import { Reaction } from "/server/api";
 
 Hooks.Events.add("afterCoreInit", () => {
   Reaction.addRolesToGroups({

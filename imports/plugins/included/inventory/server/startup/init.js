@@ -1,4 +1,5 @@
-import { Hooks, Logger } from "/server/api";
+import Hooks from "@reactioncommerce/hooks";
+import Logger from "@reactioncommerce/logger";
 import { Products, Inventory } from "/lib/collections";
 import { registerInventory } from "../methods/inventory";
 

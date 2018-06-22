@@ -1,7 +1,7 @@
+import Logger from "@reactioncommerce/logger";
 import { Meteor } from "meteor/meteor";
 import { check, Match } from "meteor/check";
 import { Accounts, Groups, Shops } from "/lib/collections";
-import { Logger } from "/server/api";
 
 /**
  * Private method which should only be called by addRolesToGroups to keep users in sync with updated groups

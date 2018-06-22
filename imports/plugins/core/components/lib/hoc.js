@@ -1,18 +1,16 @@
 import _ from "lodash";
+import Logger from "@reactioncommerce/logger";
 import { Meteor } from "meteor/meteor";
 import { Roles } from "meteor/alanning:roles";
 import { Accounts, Groups } from "/lib/collections";
 import { lifecycle } from "recompose";
 import { composeWithTracker } from "./composer";
 
-let Logger;
 let Reaction;
 
 if (Meteor.isClient) {
-  ({ Logger } = require("/client/api"));
   ({ Reaction } = require("/client/api"));
 } else {
-  ({ Logger } = require("/server/api"));
   ({ Reaction } = require("/server/api"));
 }
 

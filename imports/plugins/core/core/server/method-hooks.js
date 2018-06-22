@@ -8,7 +8,7 @@ import { Meteor } from "meteor/meteor";
  * @example MethodHooks.after('orders/orderCompleted', callback)
  * @namespace MethodHooks
  */
-export const MethodHooks = {};
+const MethodHooks = {};
 
 /**
  * @summary A collection of after hooks
@@ -191,3 +191,5 @@ MethodHooks.afterMethods = function (dict) {
     MethodHooks.after(k, v);
   });
 };
+
+export default MethodHooks;

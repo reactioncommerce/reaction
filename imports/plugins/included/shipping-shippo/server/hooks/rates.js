@@ -1,7 +1,9 @@
+import Hooks from "@reactioncommerce/hooks";
+import Logger from "@reactioncommerce/logger";
 import _ from "lodash";
 import { Meteor } from "meteor/meteor";
 import { Shipping, Packages } from "/lib/collections";
-import { Logger, Reaction, Hooks } from "/server/api";
+import { Reaction } from "/server/api";
 
 // callback ran on getShippingRates hook
 function getShippingRates(previousQueryResults, cart) {

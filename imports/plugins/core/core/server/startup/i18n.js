@@ -1,8 +1,9 @@
 import fsModule from "fs";
 import path from "path";
 import util from "util";
+import Logger from "@reactioncommerce/logger";
 import { Assets, Translations } from "/lib/collections";
-import { Logger, Reaction } from "/server/api";
+import { Reaction } from "/server/api";
 
 const fs = {
   readdir: util.promisify(fsModule.readdir),
