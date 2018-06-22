@@ -8,7 +8,7 @@ import {
   PostalCodeElement
 } from "react-stripe-elements";
 import { Meteor } from "meteor/meteor";
-import { Router } from "/client/api";
+import { Router } from "client/api";
 
 class CardForm extends Component {
   static propTypes = {
@@ -160,7 +160,12 @@ class CardForm extends Component {
         <div className="row">
           <div className="col-md-12">
             <div className="form-group">
-              <label className={cardNumberErrorMessage ? "stripe-label-error" : ""}>Card number</label>
+              <label
+                className={cardNumberErrorMessage ? "stripe-label-error" : ""}
+                data-i18n="checkout.formLabels.cardNumber"
+              >
+                Card number
+              </label>
               <CardNumberElement
                 style={style}
                 placeholder="XXXX XXXX XXXX XXXX"
@@ -174,7 +179,12 @@ class CardForm extends Component {
         <div className="row">
           <div className="col-xs-6">
             <div className="form-group">
-              <label className={expDateErrorMessage ? "stripe-label-error" : ""}>Expiry date</label>
+              <label
+                className={expDateErrorMessage ? "stripe-label-error" : ""}
+                data-i18n="checkout.formLabels.expDate"
+              >
+                Expiry date
+              </label>
               <CardExpiryElement
                 style={style}
                 className="stripe-card-element"
@@ -185,7 +195,12 @@ class CardForm extends Component {
           </div>
           <div className="col-xs-6">
             <div className="form-group">
-              <label className={CVVErrorMessage ? "stripe-label-error" : ""}>CVV</label>
+              <label
+                className={CVVErrorMessage ? "stripe-label-error" : ""}
+                data-i18n="checkout.formLabels.CVV"
+              >
+                CVV
+              </label>
               <CardCVCElement
                 style={style}
                 placeholder="CVV"
@@ -199,7 +214,12 @@ class CardForm extends Component {
         <div className="row">
           <div className="col-md-12">
             <div className="form-group">
-              <label className={postalErrorMessage ? "stripe-label-error" : ""}>Postal code</label>
+              <label
+                className={postalErrorMessage ? "stripe-label-error" : ""}
+                data-i18n="checkout.formLabels.postalCode"
+              >
+                Postal code
+              </label>
               <PostalCodeElement
                 style={style}
                 className="stripe-card-element"

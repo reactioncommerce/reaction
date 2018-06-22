@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { Elements, StripeProvider } from "react-stripe-elements";
 import { Meteor } from "meteor/meteor";
 import { composeWithTracker } from "@reactioncommerce/reaction-components";
-import { Reaction } from "/client/api";
+import { i18next, Reaction } from "/client/api";
 import { Packages, Cart } from "/lib/collections";
 import InjectedCardForm from "./injectedCardForm";
 
@@ -11,6 +11,7 @@ class StripePaymentFormContainer extends Component {
   static propTypes = {
     apiKey: PropTypes.string,
     cartId: PropTypes.string,
+    language: PropTypes.string,
     postal: PropTypes.string
   }
 
@@ -21,6 +22,7 @@ class StripePaymentFormContainer extends Component {
           fonts={[
             { cssSrc: "https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,600,700" }
           ]}
+          locale={this.props.language}
         >
           <InjectedCardForm cartId={this.props.cartId} postal={this.props.postal} />
         </Elements>
@@ -37,11 +39,11 @@ function composer(props, onData) {
   });
   const cart = Cart.findOne({ userId: Meteor.userId() });
   const { billing: [{ address: { postal } }] } = cart;
-
   if (subscription.ready()) {
     onData(null, {
       apiKey: stripePackage.settings.public.publishable_key,
       cartId: cart._id,
+      language: i18next.language,
       postal
     });
   } else {

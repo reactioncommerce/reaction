@@ -31,6 +31,14 @@
         "redirect": {
           "stripeConnectWaitingNote": "Will auto redirect in a couple seconds or click here."
         }
+      },
+      "checkout": {
+        "formLabels": {
+          "cardNumber": "Card number",
+          "expDate": "Expiry Date",
+          "CVV": "CVV",
+          "postalCode": "Postal code"
+        }
       }
     }
   }
