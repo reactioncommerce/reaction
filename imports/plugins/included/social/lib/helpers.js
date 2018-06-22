@@ -7,7 +7,7 @@ export function createSocialSettings(options) {
 
   const socialPackage = Packages.findOne({
     name: "reaction-social",
-    shopId: options.shopId || Reaction.getShopId()
+    shopId: Reaction.getShopId()
   });
 
   if (socialPackage) {

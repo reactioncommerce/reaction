@@ -55,7 +55,6 @@ function composer(props, onData) {
     placement: "productDetail",
     buttonClassName: "fa-lg",
     media: mediaUrl,
-    shopId: product.shopId,
     apps: {
       facebook: {
         description: product.facebookMsg || description,
