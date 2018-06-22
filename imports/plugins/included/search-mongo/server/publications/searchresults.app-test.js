@@ -165,6 +165,10 @@ describe("Order Search results", function () {
     });
   });
 
+  after(function () {
+    OrderSearch.remove({});
+  });
+
   describe("order search", function () {
     it("should match orders when searching by email", function () {
       const roleStub = sinon.stub(Reaction, "hasPermission", () => true);

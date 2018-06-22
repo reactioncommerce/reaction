@@ -513,20 +513,6 @@
           "isCommercial": "Questo è un indirizzo commerciale."
         }
       },
-      "revisions": {
-        "isDisabled": "controllo di revisione è disabilitato. Eventuali modifiche saranno pubblicate immediatamente.",
-        "isEnabled": "controllo di revisione è abilitato per i prodotti. saranno bisogno di alcuna modifica per essere pubblicato prima di essere visibile ai clienti.",
-        "unpublishedChanges": "Modifiche non pubblicati",
-        "publishChanges": "Pubblica modifiche",
-        "showChanges": "Mostra modifiche",
-        "hideChanges": "Nascondi le modifiche",
-        "discardChanges": "Non salvare le modifiche",
-        "changedPublished": "Modifiche pubblicato con successo",
-        "changesDiscarded": "Modifiche scartato con successo",
-        "noChanges": "Nessun cambiamento",
-        "noChangesPublished": "Non ci sono modifiche da pubblicare",
-        "noChangesDiscarded": "Non ci sono modifiche da scartare"
-      },
       "address": {
         "country": "Nazione",
         "fullName": "Nome e cognome",

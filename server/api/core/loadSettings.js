@@ -42,10 +42,7 @@ export function loadSettings(json) {
       exists = Packages.findOne({
         name: item.name
       });
-      //
-      // TODO migrate functionality to Reaction.Importer
-      // Reaction.Importer.package(item, shopId);
-      //
+
       // insert into the Packages collection
       if (exists) {
         result = Packages.upsert({
