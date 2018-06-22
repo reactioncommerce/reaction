@@ -196,7 +196,7 @@ jobs:
   dockerfile-lint:
     <<: *defaults
     docker:
-      - image: hadolint/hadolint
+      - image: hadolint/hadolint:v1.6.6-6-g254b4ff
     steps:
       - checkout
       - setup_remote_docker
@@ -218,8 +218,25 @@ jobs:
       - run:
           name: Snyk Test
           command: |
-            PATH=$PATH:$CIRCLE_WORKING_DIRECTORY/node_modules/.bin && \
-              snyk test
+            CIRCLE_PR_NUMBER="${CIRCLE_PR_NUMBER:-${CIRCLE_PULL_REQUEST##*/}}" # Determine PR number from pull request link
+            if [ -n ${CIRCLE_PR_NUMBER} ]; then
+              url="https://api.github.com/repos/${DOCKER_REPOSITORY}/pulls/$CIRCLE_PR_NUMBER" # Get PR from github API
+              TARGET_BRANCH=$(curl "$url" | jq '.base.ref' | tr -d '"') # Determine target/base branch from API response
+            fi
+            # If target branch does not exist or is master, run snyk tests
+            if [ ${TARGET_BRANCH} == "master" ] || [ -z "${TARGET_BRANCH/[ ]*\n/}" ]; then
+              PATH=$PATH:$CIRCLE_WORKING_DIRECTORY/node_modules/.bin && \
+                snyk test
+            else
+              # If package.json is different from the base branch, run snyk
+              if git diff origin/$CIRCLE_BRANCH..origin/$TARGET_BRANCH package.json | grep diff; then
+                echo "package.json different. Running Snyk."
+                PATH=$PATH:$CIRCLE_WORKING_DIRECTORY/node_modules/.bin && \
+                snyk test
+              else
+                echo "package.json identical to target branch. Skipping Snyk."
+              fi
+            fi
 
 workflows:
   version: 2

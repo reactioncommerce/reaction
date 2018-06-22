@@ -1,3 +1,85 @@
+# v1.13.0
+
+## Removal of Legacy Product Revision Control system
+The major change in this release is that we've removed the existing revision control system in favor of publishing Products to the Catalog. The existing revision control system contained some powerful ideas, but was complex and intertwined into many areas of the app that were not directly related to Product. By removing the old revision control system, we've paved the way to substantially improve product grid performance, especially for Operators and we've simplified the product publication logic.
+
+This removes all code, hooks, collections, and packages related to revision control.
+
+**Breaking changes:**
+ - Any custom packages that depend on the `Revision` control system.
+ - Operators will no longer be able to "undo" changes to a product. Instead products are published through the catalog
+ - Any _unpublished_ changes to products will be lost when upgrading to `1.13.0`. In this release, it's possible that if you were to downgrade that you would see the unpublished changes again, but that may cause unexpected behavior. We recommend either publishing or discarding any changes to your products before upgrading to this release.
+ - Similarly, any products that have been created but not published will demonstrate unexpected behavior. To avoid this undesirable behavior, publish any newly created, unpublished products prior to upgrading to this release.
+
+ - **All plugin authors** will need to update your `package.json` with a change to the babel config similar to what was done [here](https://github.com/reaction-contrib/meteor-authorize-net/commit/f19a5cf7591a17f426e67bd3737af5a4d1c7a64a)
+
+
+## Update to Meteor 1.7
+This update brings some enormous improvements to the amount of time it takes to rebuild the application in development after making a file change. In some (less than perfectly scientific) tests that I ran testing file changes between 1.7 and 1.6.1 I saw 50%-90% improvements in the reload time. Your experience may vary depending on how much you've customized Reaction, your computer specs, and your specific development setup, but I fully expect this to be a noticeable improvement for anyone working with Reaction.
+
+There are some [early](https://github.com/meteor/meteor/issues/9949) [reports](https://github.com/meteor/meteor/issues/9945) that the included update to the MongoDB driver may have [some kinks](https://github.com/meteor/meteor/issues/9944) to work out, so I'd follow those issues on Meteor's repo if that's a cause for concern for you. These reports are all coming from a single person, and we haven't experienced any of these issues in particular yet, but we'll be keeping an eye on them.
+
+##
+We ran into a few issues with `npm install` that we resolved in #4317. One product that came out of this investigation was some documentation for how to properly clean up and rebuild docker images in Reaction.
+
+To stop and clean up your images
+```sh
+  docker-compose down -v --rmi local --remove-orphans
+```
+
+To rebuild your Reaction images
+```sh
+  docker-compose up --build --force-recreate --renew-anon-volumes
+```
+
+If you only want to run Reaction and not the GraphQL DevServer
+```sh
+  docker-compose up --build --force-recreate --renew-anon-volumes reaction
+```
+
+If you only want to run the DevServer and not the Meteor app
+```sh
+  docker-compose up --build --force-recreate --renew-anon-volumes devserver
+```
+
+## Meteor App
+### Performance
+ - perf: remove revision control (#4238)
+ - perf: update to Meteor 1.7 (#4265)
+
+### Bug Fixes
+ - fix: Use catalog collection for PDP (#4324)
+ - fix: Import fixture data only if collections empty (#4327) .. Resolves #4326
+ - fix: Invalid class name: .variant-list-item-{variant._id} (#4217)
+ - fix: NPM build issue in Docker build (#4317)
+ - fix: add getAutoValues: false to discounts/codes/remove (#4288)
+ - fix: hadolint image version (#4306)
+ - fix: CI step failure to tag Docker image with latest release version (#4304)
+ - fix: admin products publication slowness (#4260)
+ - fix: remove inventoryPolicy check on low inventory (#4298)
+
+### Refactors
+ - refactor: non meteor schemas (#4266) .. Resolves #4263
+
+### Tests
+ - test: new mocks factory (#4276) .. Resolves #4246
+ - test: run snyk when package.json has changed or base is master (#4285)
+
+### Docs
+ - docs(jsdoc): document all Meteor Template helpers in 1 @namespace (#3841) .. Resolves #3840
+
+## GraphQL Dev Server
+### Features
+ - feat: add Media to Tag Schema and GraphQL query (#4270)
+
+### Chore
+ - chore: update default GraphQL query limit values (#4297)
+
+## Contributors
+Thanks to @mikeumus for contributing to this release. 🎉
+
+
+
 # v1.12.1
 ## Bug Fixes
 - fix: handle products without positions obj .. Resolves #4299
@@ -13,7 +95,6 @@ The issue was releated to a type error that was thrown during a migration:
 0|reaction |     at Function.keys (<anonymous>)
 0|reaction |     at items.forEach (imports/plugins/core/versions/server/migrations/25_update_catalog_schema.js:28:12)
 ```
-
 
 # v1.12.0
 

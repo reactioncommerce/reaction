@@ -173,12 +173,12 @@ class VariantForm extends Component {
     const inverseValue = !value;
 
     this.setState(({ variant }) => ({
+      inventoryPolicy: inverseValue,
       variant: {
         ...variant,
         [field]: inverseValue
       }
     }));
-
 
     this.handleFieldBlur(event, inverseValue, field);
   }

@@ -128,6 +128,7 @@ export const methods = {
     if (docId) return Meteor.call("discounts/editCode", { _id: docId, modifier: doc });
 
     if (!Reaction.hasPermission("discount-codes")) throw new Meteor.Error("access-denied", "Access Denied");
+    doc.shopId = Reaction.getShopId();
     return Discounts.insert(doc);
   },
 
@@ -191,10 +192,13 @@ export const methods = {
       Collection.update(selector, update);
     }
     // TODO: update a history record of transaction
+    // The Payment schema's currency defaultValue is adding {} to the $pull condition.
+    // If this issue is eventually fixed, autoValues can be re-enabled here
+    // See https://github.com/aldeed/simple-schema-js/issues/272
     const result = Collection.update(
       { _id: id },
       { $set: { discount: currentDiscount }, $pull: { billing: { _id: codeId } } },
-      { multi: true }
+      { multi: true, getAutoValues: false }
     );
 
     // calculate discounts
