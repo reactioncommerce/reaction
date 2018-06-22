@@ -1,15 +1,10 @@
 import Hooks from "@reactioncommerce/hooks";
 import Logger from "@reactioncommerce/logger";
-import React from "react";
-import ReactDOMServer from "react-dom/server";
-import Handlebars from "handlebars";
 import Immutable from "immutable";
-import { Assets, Templates } from "/lib/collections";
+import { Assets } from "/lib/collections";
 import Reaction from "/server/api/core";
 
 let registeredTemplates = Immutable.OrderedMap();
-let templateCache = Immutable.Map();
-let templateParsers = Immutable.Map();
 
 export const TEMPLATE_PARSER_REACT = "react";
 export const TEMPLATE_PARSER_HANDLEBARS = "handlebars";
@@ -87,39 +82,6 @@ export function registerTemplateForDatabase(templateInfo) {
 }
 
 /**
- * @name getTemplateByName
- * @method
- * @memberof Core
- * @param  {String} templateName Template name
- * @param  {String} shopId       Shop ID
- * @return {Object}              Template object
- */
-export function getTemplateByName(templateName, shopId) {
-  const registeredTemplate = registeredTemplates.get(shopId)[templateName];
-
-  if (registeredTemplate) {
-    return registeredTemplate;
-  }
-
-  const templateInfo = Templates.findOne({
-    name: templateName,
-    $or: [
-      // Attempt to find user editable / edited template first
-      {
-        isOriginalTemplate: false
-      },
-      // Fallback to the original templates
-      {
-        isOriginalTemplate: true
-      }
-    ],
-    shopId
-  });
-
-  return registerTemplateForMemoryCache(templateInfo);
-}
-
-/**
  * @name processTemplateInfoForMemoryCache
  * @method
  * @memberof Core
@@ -183,101 +145,11 @@ export function processTemplateInfoForDatabase(templateInfo) {
 }
 
 /**
- * @name registerTemplateParser
- * @method
- * @memberof Core
- * @param  {String} name Name of a parser, like React or Handlebars
- * @param  {Function} renderFunction Function
- * @return {null}
- */
-export function registerTemplateParser(name, renderFunction) {
-  templateParsers = templateParsers.set(name, renderFunction);
-}
-
-/**
- * @name renderTemplate
- * @method
- * @memberof Core
- * @param  {Object} templateInfo React or Handlebars
- * @param  {Object} [data={}]    Template data
- * @return {Object|false}        Returns React, Handlebars template or false
- */
-export function renderTemplate(templateInfo, data = {}) {
-  if (templateInfo.parser === TEMPLATE_PARSER_REACT) {
-    return null;
-  } else if (templateInfo.parser === TEMPLATE_PARSER_HANDLEBARS) {
-    return renderHandlebarsTemplate(templateInfo, data);
-  }
-
-  if (typeof templateParsers.get(name) === "function") {
-    return templateParsers.get(name)(templateInfo, data);
-  }
-
-  return false;
-}
-
-/**
- * @name compileHandlebarsTemplate
- * @method
- * @memberof Core
- * @summary Compile and cache Handlebars template
- * @param {String} name Name of template to register amd save to cache
- * @param {String} template markup
- * @return {Function} Compiled handlebars template.
- */
-export function compileHandlebarsTemplate(name, template) {
-  const compiledTemplate = Handlebars.compile(template);
-  templateCache = templateCache.set(name, compiledTemplate);
-  return compiledTemplate;
-}
-
-/**
- * @name renderHandlebarsTemplate
- * @method
- * @memberof Core
- * @summary Render Handlebars template
- * @param  {String} templateInfo Template info
- * @param  {Object} data         Data
- * @return {Object}              Handlebars template
- */
-export function renderHandlebarsTemplate(templateInfo, data) {
-  if (templateCache[templateInfo.name] === undefined) {
-    compileHandlebarsTemplate(templateInfo.name, templateInfo.template);
-  }
-
-  const compiledTemplate = templateCache.get(templateInfo.name);
-  return compiledTemplate(data);
-}
-
-/**
- * @name renderTemplateToStaticMarkup
- * @method
- * @memberof Core
- * @param  {Object} template React template name
- * @param  {Object} props    React props
- * @return {Object}          Static markup
- */
-export function renderTemplateToStaticMarkup(template, props) {
-  return ReactDOMServer.renderToStaticMarkup(React.createElement(template, props));
-}
-
-/**
- * @name resetRegisteredTemplates
- * @method
- * @memberof Core
- * @summary Reset regestered templates. This is mostly useful for aiding in unit testing
- * @return {Immutable.OrderedMap} immultable.js OrderedMap
- */
-export function resetRegisteredTemplates() {
-  registeredTemplates = Immutable.OrderedMap();
-}
-
-/**
  * @name initTemplates
  * @method
  * @memberof Core
  * @summary Hook to setup core Templates imports during Reaction init
- * @return {null}
+ * @return {null} Nothing
  */
 export function initTemplates() {
   Hooks.Events.add("afterCoreInit", () => {
@@ -295,20 +167,7 @@ export function initTemplates() {
 }
 
 export default {
-  get registeredTemplates() {
-    return registeredTemplates;
-  },
-  get templateCache() {
-    return templateCache;
-  },
-  get templateParsers() {
-    return templateParsers;
-  },
   registerTemplate,
-  getTemplateByName,
   processTemplateInfoForDatabase,
-  processTemplateInfoForMemoryCache,
-  compileHandlebarsTemplate,
-  renderHandlebarsTemplate,
-  renderTemplateToStaticMarkup
+  processTemplateInfoForMemoryCache
 };
