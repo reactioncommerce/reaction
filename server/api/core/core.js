@@ -15,7 +15,7 @@ import { registerTemplate } from "./templates";
 import sendVerificationEmail from "./sendVerificationEmail";
 import { getMailUrl } from "./email/config";
 import { createGroups } from "./groups";
-import ConnectionDataStore from "./connectionDataStore";
+import ConnectionDataStore from "/imports/plugins/core/core/server/util/connectionDataStore";
 
 /**
  * @file Server core methods

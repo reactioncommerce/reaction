@@ -1,71 +1,8 @@
 import Logger from "@reactioncommerce/logger";
-import nodemailer from "@reactioncommerce/nodemailer";
 import getServiceConfig from "nodemailer-wellknown";
 import url from "url";
 import { Meteor } from "meteor/meteor";
 import Reaction from "/server/api/core";
-
-
-/**
- * @method getMailUrl
- * @summary get the smtp URL for sending emails
- * There are 3 possible ways to set the email configuration and
- * the first value found will be used.
- * The priority order is:
- *   1. MAIL_URL environment variable
- *   2. Meteor settings (MAIL_URL key)
- *   3. Core shop settings from the database
- * @memberof Email
- * @example Reaction.Email.getMailUrl()
- * @return {String} returns an SMTP url if one of the settings have been set
- */
-export function getMailUrl() {
-  const shopSettings = Reaction.getShopSettings();
-
-  let shopMail;
-
-  if (shopSettings) {
-    shopMail = shopSettings.mail || {};
-  }
-
-  // get all possible mail settings
-  const processUrl = process.env.MAIL_URL;
-  const settingsUrl = Meteor.settings.MAIL_URL;
-  const { service, user, password, host, port } = shopMail;
-
-  let mailString;
-
-  // create a mail url from well-known provider settings (if they exist)
-  // https://github.com/nodemailer/nodemailer-wellknown
-  if (service && service !== "custom") {
-    const conf = getServiceConfig(service);
-
-    if (conf) {
-      // account for local test providers like Maildev
-      if (!conf.host) {
-        mailString = `smtp://localhost:${conf.port}`;
-      } else if (user && password) {
-        mailString = `smtp://${encodeURIComponent(user)}:${password}@${conf.host}:${conf.port}`;
-      }
-    }
-  }
-
-  // create a mail url from custom provider settings (if they exist)
-  if ((!service || service === "custom") && user && password && host && port) {
-    mailString = `smtp://${encodeURIComponent(user)}:${password}@${host}:${port}`;
-  }
-
-  // create the final url from the available options
-  const mailUrl = processUrl || settingsUrl || mailString;
-
-  if (!mailUrl) {
-    Logger.warn("Reaction.Email.getMailUrl() - no email provider configured");
-    return null;
-  }
-
-  return mailUrl;
-}
-
 
 /**
  * @method getMailConfig
@@ -74,7 +11,7 @@ export function getMailUrl() {
  * @example Reaction.Email.getMailConfig()
  * @return {{host: String, port: Number, secure: Boolean, auth: Object, logger: Boolean}} returns a config object
  */
-export function getMailConfig() {
+export default function getMailConfig() {
   const processUrl = process.env.MAIL_URL;
   const settingsUrl = Meteor.settings.MAIL_URL;
 
@@ -183,19 +120,4 @@ export function getMailConfig() {
     direct: true,
     logger: process.env.EMAIL_DEBUG === "true"
   };
-}
-
-
-/**
- * @method verifyConfig
- * @summary Verify a transporter configuration works
- * @see https://github.com/nodemailer/nodemailer#verify-smtp-connection-configuration
- * @memberof Email
- * @param {Object} config - a Nodemailer transporter config object
- * @param {Function} callback - optional callback with standard error/result args
- * @return {Promise} returns a Promise if no callback is provided
- */
-export function verifyConfig(config, callback) {
-  const transporter = nodemailer.createTransport(config);
-  return transporter.verify(callback);
 }

@@ -3,7 +3,7 @@ import { expect } from "meteor/practicalmeteor:chai";
 import { sinon } from "meteor/practicalmeteor:sinon";
 import { Shops } from "/lib/collections";
 import core from "./core";
-import ConnectionDataStore from "./connectionDataStore";
+import ConnectionDataStore from "/imports/plugins/core/core/server/util/connectionDataStore";
 
 describe("Server/API/Core", () => {
   let sandbox;
