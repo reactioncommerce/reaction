@@ -1,7 +1,48 @@
 import { Meteor } from "meteor/meteor";
 import { check, Match } from "meteor/check";
-import { Products, Shops } from "/lib/collections";
+import { Catalog, Products, Shops } from "/lib/collections";
 import { Logger, Reaction } from "/server/api";
+
+/**
+ * Flatten variant tree from a Catalog Item Product document
+ * @param {Object} product A Catalog Item Product document
+ * @returns {Array} Variant array
+ */
+function flattenCatalogProductVariants(product) {
+  const variants = [];
+
+  // Un-tree the variant tree
+  if (Array.isArray(product.variants)) {
+    // Loop over top-level variants
+    product.variants.forEach((variant) => {
+      if (Array.isArray(variant.options)) {
+        // Loop over variant options
+        variant.options.forEach((option) => {
+          variants.push({
+            ancestors: [
+              product.productId,
+              variant.variantId
+            ],
+            type: "variant",
+            isVisible: true,
+            ...option
+          });
+        });
+      }
+
+      variants.push({
+        ancestors: [
+          product.productId
+        ],
+        type: "variant",
+        isVisible: true,
+        ...variant
+      });
+    });
+  }
+
+  return variants;
+}
 
 /**
  * product detail publication
@@ -64,7 +105,50 @@ Meteor.publish("Product", function (productIdOrHandle, shopIdOrSlug) {
     selector.isVisible = {
       $in: [true, false, undefined]
     };
+
+    return Products.find(selector);
   }
 
-  return Products.find(selector);
+  if (!selector.shopId) {
+    selector.shopId = product.shopId;
+  }
+  // Product data for customers visiting the PDP page
+  const cursor = Catalog.find({
+    "$or": [{
+      "product._id": productIdOrHandle
+    }, {
+      "product.slug": productIdOrHandle
+    }],
+    "product.type": "product-simple",
+    "product.shopId": selector.shopId,
+    "product.isVisible": true,
+    "product.isDeleted": { $in: [null, false] }
+  });
+
+  const handle = cursor.observeChanges({
+    added: (id, { product: catalogProduct }) => {
+      this.added("Products", catalogProduct.productId, catalogProduct);
+      flattenCatalogProductVariants(catalogProduct).forEach((variant) => {
+        this.added("Products", variant.variantId, variant);
+      });
+    },
+    changed: (id, { product: catalogProduct }) => {
+      this.changed("Products", catalogProduct.productId, catalogProduct);
+      flattenCatalogProductVariants(product).forEach((variant) => {
+        this.changed("Products", variant.variantId, variant);
+      });
+    },
+    removed: (id, { product: catalogProduct }) => {
+      this.removed("Products", catalogProduct.productId, catalogProduct);
+      flattenCatalogProductVariants(product).forEach((variant) => {
+        this.removed("Products", variant.variantId, variant);
+      });
+    }
+  });
+
+  this.onStop(() => {
+    handle.stop();
+  });
+
+  return this.ready();
 });
