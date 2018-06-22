@@ -37,7 +37,6 @@
     "autosize": "^4.0.0",
     "body-parser": "^1.18.2",
     "bootstrap": "^3.3.7",
-    "braintree": "^2.7.0",
     "classnames": "^2.2.5",
     "connect": "^3.6.6",
     "connect-query": "^1.0.0",
