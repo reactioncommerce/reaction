@@ -16,17 +16,21 @@ import collections from "/imports/collections/rawCollections";
  * @summary Call this in a Meteor method that wraps a GraphQL mutation, to get a context
  *   to pass to the mutation.
  * @param {String} userId - The user ID for the current request
- * @return {Object}
+ * @return {Object} A GraphQL context object
  */
 export default async function getGraphQLContextInMeteorMethod(userId) {
-  const user = await collections.users.findOne({ _id: userId });
+  let user;
+  if (userId) {
+    user = await collections.users.findOne({ _id: userId });
+    if (!user) throw new Error(`No user found with ID ${userId}`);
+  }
 
   const meteorContext = { collections };
   await buildContext(meteorContext, user);
 
   // Since getGraphQLContextInMeteorMethod is to be called within a Meteor method with Meteor running,
   // we can pass through callMeteorMethod to Meteor.apply.
-  meteorContext.callMeteorMethod = (methodName, ...args) => Meteor.apply(name, args);
+  meteorContext.callMeteorMethod = (methodName, ...args) => Meteor.apply(methodName, args);
 
   return meteorContext;
 }
