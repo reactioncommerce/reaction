@@ -9,7 +9,7 @@ import { Shops } from "/lib/collections";
 import Reaction from "/server/api/core";
 
 /**
- * @method sendResetPasswordEmail
+ * @method sendResetEmail
  * @memberof Core
  * @summary Send an email with a link that the user can use to reset their password.
  * @param {String} userId - The id of the user to send email to.
@@ -18,7 +18,7 @@ import Reaction from "/server/api/core";
  *                 Defaults to the first email in the list.
  * @return {Job} - returns a sendEmail Job instance
  */
-async function sendResetPasswordEmail(userId, optionalEmail) {
+async function sendResetEmail(userId, optionalEmail) {
   // Make sure the user exists, and email is one of their addresses.
   const user = Meteor.users.findOne(userId);
 
@@ -116,27 +116,25 @@ async function sendResetPasswordEmail(userId, optionalEmail) {
  * @method
  * @example Meteor.call("accounts/sendResetPasswordEmail", options)
  * @summary Send reset password email
- * @param {Object} options
+ * @param {Object} options Options object
  * @param {String} options.email - email of user
- * @returns {false}
+ * @returns {undefined}
  */
-Meteor.methods({
-  "accounts/sendResetPasswordEmail"(options) {
-    check(options, {
-      email: String
-    });
+export default function sendResetPasswordEmail(options) {
+  check(options, {
+    email: String
+  });
 
-    const user = Accounts.findUserByEmail(options.email);
+  const user = Accounts.findUserByEmail(options.email);
 
-    if (!user) {
-      Logger.error("accounts/sendResetPasswordEmail - User not found");
-      throw new Meteor.Error("not-found", "User not found");
-    }
-
-    const emails = _.map(user.emails || [], "address");
-
-    const caseInsensitiveEmail = _.find(emails, (email) => email.toLowerCase() === options.email.toLowerCase());
-
-    sendResetPasswordEmail(user._id, caseInsensitiveEmail);
+  if (!user) {
+    Logger.error("accounts/sendResetPasswordEmail - User not found");
+    throw new Meteor.Error("not-found", "User not found");
   }
-});
+
+  const emails = _.map(user.emails || [], "address");
+
+  const caseInsensitiveEmail = _.find(emails, (email) => email.toLowerCase() === options.email.toLowerCase());
+
+  sendResetEmail(user._id, caseInsensitiveEmail);
+}
