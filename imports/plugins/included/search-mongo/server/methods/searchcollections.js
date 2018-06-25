@@ -2,7 +2,7 @@
 import Logger from "@reactioncommerce/logger";
 import { Meteor } from "meteor/meteor";
 import { check, Match } from "meteor/check";
-import Reaction from "/server/api/core";
+import Reaction from "/imports/plugins/core/core/server/Reaction";
 import { ProductSearch, OrderSearch, AccountSearch, Orders, Products, Accounts, Shops } from "/lib/collections";
 import utils from "./common";
 import { transformations } from "./transformations";

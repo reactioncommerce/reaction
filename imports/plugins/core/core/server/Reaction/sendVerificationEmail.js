@@ -4,8 +4,8 @@ import Random from "@reactioncommerce/random";
 import { Meteor } from "meteor/meteor";
 import { Accounts } from "meteor/accounts-base";
 import { SSR } from "meteor/meteorhacks:ssr";
-import Reaction from "/server/api/core";
-
+import Core from "./core";
+import Email from "./Email";
 
 /**
  * @method sendVerificationEmail
@@ -58,7 +58,7 @@ export default async function sendVerificationEmail(userId, email) {
     }
   });
 
-  const shopName = Reaction.getShopName();
+  const shopName = Core.getShopName();
   const url = Accounts.urls.verifyEmail(token);
   const copyrightDate = new Date().getFullYear();
 
@@ -94,7 +94,7 @@ export default async function sendVerificationEmail(userId, email) {
     userEmailAddress: address
   };
 
-  if (!Reaction.Email.getMailUrl()) {
+  if (!Email.getMailUrl()) {
     Logger.warn(`
 
   ***************************************************
@@ -113,12 +113,12 @@ export default async function sendVerificationEmail(userId, email) {
   const tpl = "accounts/verifyEmail";
   const subject = "accounts/verifyEmail/subject";
 
-  SSR.compileTemplate(tpl, Reaction.Email.getTemplate(tpl));
-  SSR.compileTemplate(subject, Reaction.Email.getSubject(tpl));
+  SSR.compileTemplate(tpl, Email.getTemplate(tpl));
+  SSR.compileTemplate(subject, Email.getSubject(tpl));
 
-  return Reaction.Email.send({
+  return Email.send({
     to: address,
-    from: Reaction.getShopEmail(),
+    from: Core.getShopEmail(),
     subject: SSR.render(subject, dataForEmail),
     html: SSR.render(tpl, dataForEmail)
   });

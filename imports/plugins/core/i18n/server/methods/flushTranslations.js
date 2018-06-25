@@ -1,6 +1,6 @@
 import { Meteor } from "meteor/meteor";
-import Reaction from "/server/api/core";
-import { reloadTranslationsForShop } from "/server/startup/i18n";
+import Reaction from "/imports/plugins/core/core/server/Reaction";
+import { reloadTranslationsForShop } from "/imports/plugins/core/core/server/startup/i18n";
 
 /**
  * @name i18n/flushTranslations

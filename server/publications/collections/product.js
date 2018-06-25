@@ -2,7 +2,7 @@ import Logger from "@reactioncommerce/logger";
 import { Meteor } from "meteor/meteor";
 import { check, Match } from "meteor/check";
 import { Catalog, Products, Shops } from "/lib/collections";
-import Reaction from "/server/api/core";
+import Reaction from "/imports/plugins/core/core/server/Reaction";
 
 /**
  * Flatten variant tree from a Catalog Item Product document

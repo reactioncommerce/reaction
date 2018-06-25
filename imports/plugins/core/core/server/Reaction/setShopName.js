@@ -9,7 +9,7 @@ import { Shops } from "/lib/collections";
  *  @summary when new shop is created, set shop name if REACTION_SHOP_NAME env var exists
  *  @returns {undefined} undefined
  */
-export function setShopName(shop) {
+export default function setShopName(shop) {
   const name = process.env.REACTION_SHOP_NAME;
   if (!name) return;
 

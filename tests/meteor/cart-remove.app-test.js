@@ -7,7 +7,7 @@ import { Factory } from "meteor/dburles:factory";
 import { assert, expect } from "meteor/practicalmeteor:chai";
 import { sinon } from "meteor/practicalmeteor:sinon";
 import { getShop } from "/imports/plugins/core/core/server/fixtures/shops";
-import Reaction from "/server/api/core";
+import Reaction from "/imports/plugins/core/core/server/Reaction";
 import * as Collections from "/lib/collections";
 import Fixtures from "/imports/plugins/core/core/server/fixtures";
 

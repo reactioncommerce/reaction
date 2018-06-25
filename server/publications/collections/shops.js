@@ -1,6 +1,6 @@
 import { Meteor } from "meteor/meteor";
 import { check } from "meteor/check";
-import Reaction from "/server/api/core";
+import Reaction from "/imports/plugins/core/core/server/Reaction";
 import { Shops } from "/lib/collections";
 
 // We should be able to publish just the enabled languages/currencies/

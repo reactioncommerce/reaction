@@ -1,7 +1,7 @@
 import Hooks from "@reactioncommerce/hooks";
 import Random from "@reactioncommerce/random";
 import { check } from "meteor/check";
-import Reaction from "/server/api/core";
+import Reaction from "/imports/plugins/core/core/server/Reaction";
 
 /**
  * @name payments/apply

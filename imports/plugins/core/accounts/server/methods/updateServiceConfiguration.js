@@ -1,7 +1,7 @@
 import _ from "lodash";
 import { check } from "meteor/check";
 import { ServiceConfiguration } from "meteor/service-configuration";
-import Reaction from "/server/api/core";
+import Reaction from "/imports/plugins/core/core/server/Reaction";
 
 /**
  * @name accounts/updateServiceConfiguration

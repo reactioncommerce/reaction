@@ -1,6 +1,6 @@
 import crypto from "crypto";
 import { Meteor } from "meteor/meteor";
-import Reaction from "/server/api/core";
+import Reaction from "/imports/plugins/core/core/server/Reaction";
 import { methods } from "../methods/sync/orders";
 
 /**

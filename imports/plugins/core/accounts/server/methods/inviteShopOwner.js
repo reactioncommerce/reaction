@@ -4,7 +4,7 @@ import { Meteor } from "meteor/meteor";
 import { Accounts as MeteorAccounts } from "meteor/accounts-base";
 import { check, Match } from "meteor/check";
 import { SSR } from "meteor/meteorhacks:ssr";
-import Reaction from "/server/api/core";
+import Reaction from "/imports/plugins/core/core/server/Reaction";
 import getCurrentUserName from "../no-meteor/util/getCurrentUserName";
 import getDataForEmail from "../util/getDataForEmail";
 

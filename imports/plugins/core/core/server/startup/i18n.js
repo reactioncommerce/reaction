@@ -3,7 +3,7 @@ import path from "path";
 import util from "util";
 import Logger from "@reactioncommerce/logger";
 import { Assets, Translations } from "/lib/collections";
-import Reaction from "/server/api/core";
+import Reaction from "/imports/plugins/core/core/server/Reaction";
 
 const fs = {
   readdir: util.promisify(fsModule.readdir),

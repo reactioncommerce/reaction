@@ -2,7 +2,7 @@ import Logger from "@reactioncommerce/logger";
 import { Meteor } from "meteor/meteor";
 import { EJSON } from "meteor/ejson";
 import { Roles } from "meteor/alanning:roles";
-import Reaction from "/server/api/core";
+import Reaction from "/imports/plugins/core/core/server/Reaction";
 
 /* eslint quote-props: 0 */
 /**

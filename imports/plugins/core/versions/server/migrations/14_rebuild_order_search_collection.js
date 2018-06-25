@@ -1,7 +1,7 @@
 import Logger from "@reactioncommerce/logger";
 import { Migrations } from "meteor/percolate:migrations";
 import { OrderSearch } from "/lib/collections";
-import Reaction from "/server/api/core";
+import Reaction from "/imports/plugins/core/core/server/Reaction";
 
 let buildOrderSearch;
 

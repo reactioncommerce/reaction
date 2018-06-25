@@ -1,7 +1,7 @@
 import { Groups } from "/lib/collections";
 import { Meteor } from "meteor/meteor";
 import { check } from "meteor/check";
-import Reaction from "/server/api/core";
+import Reaction from "/imports/plugins/core/core/server/Reaction";
 
 Meteor.publish("Groups", function (query = {}) {
   check(query, Object);

@@ -2,7 +2,7 @@ import Logger from "@reactioncommerce/logger";
 import getServiceConfig from "nodemailer-wellknown";
 import url from "url";
 import { Meteor } from "meteor/meteor";
-import Reaction from "/server/api/core";
+import Reaction from "/imports/plugins/core/core/server/Reaction";
 
 /**
  * @method getMailConfig

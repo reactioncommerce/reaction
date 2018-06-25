@@ -2,9 +2,12 @@ import Logger from "@reactioncommerce/logger";
 import nodemailer from "@reactioncommerce/nodemailer";
 import { Meteor } from "meteor/meteor";
 import { Emails, Jobs } from "/lib/collections";
-import Reaction from "/server/api/core";
+import Email from "./Email";
 
-export default function () {
+/**
+ * @returns {undefined}
+ */
+export default function processEmailJobs() {
   /**
    * Send Email job
    *
@@ -39,7 +42,7 @@ export default function () {
         upsert: true
       });
 
-      const config = Reaction.Email.getMailConfig();
+      const config = Email.getMailConfig();
 
       if (config.direct) {
         Emails.update({ jobId }, {

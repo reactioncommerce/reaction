@@ -11,7 +11,7 @@ import { expect } from "meteor/practicalmeteor:chai";
 import { sinon } from "meteor/practicalmeteor:sinon";
 import { SSR } from "meteor/meteorhacks:ssr";
 import { Accounts, Groups, Packages, Orders, Products, Shops, Cart } from "/lib/collections";
-import Reaction from "/server/api/core";
+import Reaction from "/imports/plugins/core/core/server/Reaction";
 import { getShop, getAddress } from "/imports/plugins/core/core/server/fixtures/shops";
 import Fixtures from "/imports/plugins/core/core/server/fixtures";
 

@@ -2,7 +2,7 @@ import _ from "lodash";
 import Logger from "@reactioncommerce/logger";
 import { check, Match } from "meteor/check";
 import { Meteor } from "meteor/meteor";
-import Reaction from "/server/api/core";
+import Reaction from "/imports/plugins/core/core/server/Reaction";
 import { Groups } from "/lib/collections";
 import { getSlug } from "/lib/api";
 

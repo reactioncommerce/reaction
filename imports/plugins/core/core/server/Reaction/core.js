@@ -10,11 +10,11 @@ import { Accounts } from "meteor/accounts-base";
 import { Roles } from "meteor/alanning:roles";
 import { EJSON } from "meteor/ejson";
 import * as Collections from "/lib/collections";
-import ProcessJobs from "/server/jobs";
-import { registerTemplate } from "./templates";
-import sendVerificationEmail from "./sendVerificationEmail";
-import { createGroups } from "./groups";
 import ConnectionDataStore from "/imports/plugins/core/core/server/util/connectionDataStore";
+import createGroups from "./createGroups";
+import processJobs from "./processJobs";
+import sendVerificationEmail from "./sendVerificationEmail";
+import { registerTemplate } from "./templates";
 
 /**
  * @file Server core methods
@@ -42,7 +42,7 @@ export default {
     // start job server
     Jobs.startJobServer(() => {
       Logger.info("JobServer started");
-      ProcessJobs();
+      processJobs();
       Hooks.Events.run("onJobServerStart");
     });
     if (process.env.VERBOSE_JOBS) {
@@ -52,7 +52,7 @@ export default {
     this.loadPackages();
     // process imports from packages and any hooked imports
     this.Importer.flush();
-    this.createGroups();
+    createGroups();
     // timing is important, packages are rqd for initial permissions configuration.
     if (!Meteor.isAppTest) {
       this.createDefaultAdminUser();

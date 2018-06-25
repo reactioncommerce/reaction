@@ -21,7 +21,7 @@ import { EJSON } from "meteor/ejson";
  * @example
  *  ReactionRegistry.loadSettings Assets.getText("settings/reaction.json")
  */
-export function loadSettings(json) {
+export default function loadSettings(json) {
   check(json, String);
   let exists;
   let service;

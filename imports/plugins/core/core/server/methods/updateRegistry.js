@@ -1,7 +1,7 @@
 import _ from "lodash";
 import { check } from "meteor/check";
 import { Packages } from "/lib/collections";
-import Reaction from "/server/api/core";
+import Reaction from "/imports/plugins/core/core/server/Reaction";
 import { mergeDeep } from "/lib/api";
 
 /**

@@ -4,7 +4,7 @@ import escapeStringRegex from "escape-string-regexp";
 import { Meteor } from "meteor/meteor";
 import { Roles } from "meteor/alanning:roles";
 import { check, Match } from "meteor/check";
-import Reaction from "/server/api/core";
+import Reaction from "/imports/plugins/core/core/server/Reaction";
 import { ProductSearch, OrderSearch, AccountSearch } from "/lib/collections";
 
 const supportedCollections = ["products", "orders", "accounts"];

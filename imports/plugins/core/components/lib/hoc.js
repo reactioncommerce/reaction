@@ -11,7 +11,7 @@ let Reaction;
 if (Meteor.isClient) {
   ({ Reaction } = require("/client/api"));
 } else {
-  Reaction = require("/server/api/core");
+  Reaction = require("/imports/plugins/core/core/server/Reaction");
 }
 
 

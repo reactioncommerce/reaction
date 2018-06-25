@@ -10,6 +10,6 @@ import { slugify } from "transliteration";
  * @param  {String} slugString - string to slugify
  * @return {String} slugified string
  */
-export function getSlug(slugString) {
+export default function getSlug(slugString) {
   return (typeof slugString === "string" && slugify(slugString)) || "";
 }

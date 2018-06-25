@@ -3,11 +3,10 @@ import { Match, check } from "meteor/check";
 import { Security } from "meteor/ongoworks:security";
 import { Counts } from "meteor/tmeasday:publish-counts";
 import { Taxes, TaxCodes } from "../../lib/collections";
-import Reaction from "/server/api/core";
+import Reaction from "/imports/plugins/core/core/server/Reaction";
 
 //
 // Security
-// import "/server/security/collections";
 // Security definitions
 //
 Security.permit(["insert", "update", "remove"]).collections([

@@ -3,7 +3,7 @@ import { Meteor } from "meteor/meteor";
 import { check, Match } from "meteor/check";
 import { Inventory } from "/lib/collections";
 import * as Schemas from "/lib/collections/schemas";
-import Reaction from "/server/api/core";
+import Reaction from "/imports/plugins/core/core/server/Reaction";
 
 // TODO statusChanges DDP limiting Disabled for now, needs more testing.
 

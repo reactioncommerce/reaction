@@ -1,5 +1,5 @@
 import Hooks from "@reactioncommerce/hooks";
-import Reaction from "/server/api/core";
+import Reaction from "/imports/plugins/core/core/server/Reaction";
 import { Accounts, Groups } from "/lib/collections";
 
 // set default admin user's account as "owner"

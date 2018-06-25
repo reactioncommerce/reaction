@@ -2,7 +2,7 @@ import Hooks from "@reactioncommerce/hooks";
 import { Meteor } from "meteor/meteor";
 import { check, Match } from "meteor/check";
 import { Accounts } from "/lib/collections";
-import Reaction from "/server/api/core";
+import Reaction from "/imports/plugins/core/core/server/Reaction";
 
 /**
  * @name accounts/addressBookRemove

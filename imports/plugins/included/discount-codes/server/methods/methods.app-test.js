@@ -6,7 +6,7 @@ import { expect } from "meteor/practicalmeteor:chai";
 import { sinon } from "meteor/practicalmeteor:sinon";
 import { Discounts } from "/imports/plugins/core/discounts/lib/collections";
 import { Cart } from "/lib/collections";
-import Reaction from "/server/api/core";
+import Reaction from "/imports/plugins/core/core/server/Reaction";
 
 const code = {
   discount: 12,

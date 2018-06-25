@@ -7,7 +7,7 @@ import { expect } from "meteor/practicalmeteor:chai";
 import { sinon } from "meteor/practicalmeteor:sinon";
 import { Roles } from "meteor/alanning:roles";
 import { getShop } from "/imports/plugins/core/core/server/fixtures/shops";
-import Reaction from "/server/api/core";
+import Reaction from "/imports/plugins/core/core/server/Reaction";
 import Fixtures from "/imports/plugins/core/core/server/fixtures";
 
 import "./members";

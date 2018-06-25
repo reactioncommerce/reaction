@@ -5,7 +5,7 @@ import Random from "@reactioncommerce/random";
 import Shopify from "shopify-api-node";
 import { Meteor } from "meteor/meteor";
 import { check, Match } from "meteor/check";
-import Reaction from "/server/api/core";
+import Reaction from "/imports/plugins/core/core/server/Reaction";
 import { Accounts } from "/lib/collections";
 import { getApiInfo } from "../api/api";
 import { connectorsRoles } from "../../lib/roles";

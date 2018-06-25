@@ -6,8 +6,7 @@ import { Roles } from "meteor/alanning:roles";
 import { Accounts, Groups, Shops } from "/lib/collections";
 import * as Schemas from "/lib/collections/schemas";
 import { Reaction } from "/lib/api";
-import { getSlug } from "/server/api/core/utils";
-
+import getSlug from "/imports/plugins/core/core/server/Reaction/getSlug";
 
 /**
  * @name cloneShop

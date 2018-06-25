@@ -10,8 +10,7 @@ import Prerender from "./prerender";
 import RateLimiters from "./rate-limits";
 import RegisterCore from "./register-core";
 import RegisterRouter from "./register-router";
-import { initTemplates } from "/server/api/core/templates";
-import Reaction from "/server/api/core";
+import Reaction from "/imports/plugins/core/core/server/Reaction";
 import { Shops } from "/lib/collections";
 
 // This is needed so that it throws a Meteor.Error as `check()` would do
@@ -28,7 +27,6 @@ export default function startup() {
   const startTime = Date.now();
 
   Accounts();
-  initTemplates();
   RegisterCore();
   RegisterRouter();
 

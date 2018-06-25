@@ -1,19 +1,6 @@
 import Logger from "@reactioncommerce/logger";
 import { Shops } from "/lib/collections";
-
-/**
- * @method getRegistryDomain
- * @memberof Core
- * @summary local helper for creating admin users
- * @param {String} requestUrl - url
- * @return {String} domain name stripped from requestUrl
- */
-export function getRegistryDomain(requestUrl) {
-  const url = requestUrl || process.env.ROOT_URL;
-  const domain = url.match(/^https?:\/\/([^/:?#]+)(?:[/:?#]|$)/i)[1];
-  return domain;
-}
-
+import getRegistryDomain from "./getRegistryDomain";
 
 /**
  * @method setDomain

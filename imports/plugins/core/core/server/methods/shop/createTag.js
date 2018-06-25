@@ -2,7 +2,7 @@ import { check } from "meteor/check";
 import { Meteor } from "meteor/meteor";
 import { Reaction } from "/lib/api";
 import { Tags } from "/lib/collections";
-import { getSlug } from "/server/api/core/utils";
+import getSlug from "/imports/plugins/core/core/server/Reaction/getSlug";
 
 /**
  * @name shop/createTag

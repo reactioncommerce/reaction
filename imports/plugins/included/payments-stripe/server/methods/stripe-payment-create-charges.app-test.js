@@ -8,7 +8,7 @@ import { sinon } from "meteor/practicalmeteor:sinon";
 import { Factory } from "meteor/dburles:factory";
 import { check, Match } from "meteor/check";
 
-import Reaction from "/server/api/core";
+import Reaction from "/imports/plugins/core/core/server/Reaction";
 import { methods } from "./stripe.js";
 
 

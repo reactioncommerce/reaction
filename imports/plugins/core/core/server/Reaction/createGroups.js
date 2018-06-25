@@ -1,7 +1,7 @@
 import _ from "lodash";
 import Logger from "@reactioncommerce/logger";
 import { Roles } from "meteor/alanning:roles";
-import Reaction from "/server/api/core";
+import Reaction from "/imports/plugins/core/core/server/Reaction";
 import { Shops, Groups } from "/lib/collections";
 
 /**
@@ -16,7 +16,7 @@ import { Shops, Groups } from "/lib/collections";
  * array of roles for the group (value)
  * @return {null}
  */
-export function createGroups(options = {}) {
+export default function createGroups(options = {}) {
   const { shopId } = options;
   let { roles } = options;
   const allGroups = Groups.find({}).fetch();

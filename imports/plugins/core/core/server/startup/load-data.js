@@ -1,8 +1,8 @@
 import Logger from "@reactioncommerce/logger";
 import { Meteor } from "meteor/meteor";
 import { Products, Shipping, Tags, Shops } from "/lib/collections";
-import Reaction from "/server/api/core";
-import { Fixture } from "/server/api/core/importer";
+import Reaction from "/imports/plugins/core/core/server/Reaction";
+import { Fixture, Importer } from "/imports/plugins/core/core/server/Reaction/importer";
 
 /**
  * Load fixture data into various collections if those collections are blank
@@ -21,9 +21,9 @@ export default function loadData() {
     if (!shopId) {
       try {
         Logger.debug("Loading Shop Data");
-        Reaction.Importer.process(Assets.getText("data/Shops.json"), ["name"], Reaction.Importer.shop, [shopId]);
+        Importer.process(Assets.getText("data/Shops.json"), ["name"], Importer.shop, [shopId]);
         // ensure Shops are loaded first.
-        Reaction.Importer.flush(Shops);
+        Importer.flush(Shops);
       } catch (error) {
         Logger.error(error, "Bypassing loading Shop default data");
       }
@@ -41,7 +41,7 @@ export default function loadData() {
     if (Shipping.find().count() === 0) {
       try {
         Logger.debug("Loading Shipping Data");
-        Fixture.process(Assets.getText("data/Shipping.json"), ["name"], Reaction.Importer.shipping, [shopId]);
+        Fixture.process(Assets.getText("data/Shipping.json"), ["name"], Importer.shipping, [shopId]);
       } catch (error) {
         Logger.error(error, "Bypassing loading Shipping default data.");
       }
@@ -51,7 +51,7 @@ export default function loadData() {
     if (Products.find().count() === 0) {
       try {
         Logger.debug("Loading Product Data");
-        Fixture.process(Assets.getText("data/Products.json"), ["title"], Reaction.Importer.product, [shopId]);
+        Fixture.process(Assets.getText("data/Products.json"), ["title"], Importer.product, [shopId]);
       } catch (error) {
         Logger.error(error, "Bypassing loading Products default data.");
       }
@@ -61,7 +61,7 @@ export default function loadData() {
     if (Tags.find().count() === 0) {
       try {
         Logger.debug("Loading Tag Data");
-        Fixture.process(Assets.getText("data/Tags.json"), ["name"], Reaction.Importer.tag, [shopId]);
+        Fixture.process(Assets.getText("data/Tags.json"), ["name"], Importer.tag, [shopId]);
       } catch (error) {
         Logger.error(error, "Bypassing loading Tags default data.");
       }

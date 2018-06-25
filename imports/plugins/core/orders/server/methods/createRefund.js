@@ -4,7 +4,7 @@ import { Meteor } from "meteor/meteor";
 import { check, Match } from "meteor/check";
 import { Orders, Packages } from "/lib/collections";
 import { PaymentMethodArgument } from "/lib/collections/schemas";
-import Reaction from "/server/api/core";
+import Reaction from "/imports/plugins/core/core/server/Reaction";
 
 /**
  * @name orders/refund/create

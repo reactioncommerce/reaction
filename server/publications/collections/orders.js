@@ -4,7 +4,7 @@ import { Roles } from "meteor/alanning:roles";
 import { ReactiveAggregate } from "./reactiveAggregate";
 import { MediaRecords, Orders } from "/lib/collections";
 import { Counts } from "meteor/tmeasday:publish-counts";
-import Reaction from "/server/api/core";
+import Reaction from "/imports/plugins/core/core/server/Reaction";
 
 /**
  * A shared way of creating a projection

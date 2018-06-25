@@ -1,6 +1,6 @@
 import Hooks from "@reactioncommerce/hooks";
 import { Job } from "/imports/plugins/core/job-collection/lib";
-import Reaction from "/server/api/core";
+import Reaction from "/imports/plugins/core/core/server/Reaction";
 import { Jobs } from "/lib/collections";
 
 

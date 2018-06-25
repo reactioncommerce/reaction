@@ -4,7 +4,7 @@ import Random from "@reactioncommerce/random";
 import { Mongo, MongoInternals } from "meteor/mongo";
 import { EJSON } from "meteor/ejson";
 import { check, Match } from "meteor/check";
-import { getSlug } from "/server/api/core/utils";
+import getSlug from "/imports/plugins/core/core/server/Reaction/getSlug";
 import * as Collections from "/lib/collections";
 
 /**
