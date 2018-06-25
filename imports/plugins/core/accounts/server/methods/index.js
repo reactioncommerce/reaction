@@ -5,6 +5,7 @@ import addUserPermissions from "./addUserPermissions";
 import createFallbackLoginToken from "./createFallbackLoginToken";
 import currentUserHasPassword from "./currentUserHasPassword";
 import getUserId from "./getUserId";
+import groupMethods from "./group";
 import inviteShopMember from "./inviteShopMember";
 import inviteShopOwner from "./inviteShopOwner";
 import markAddressValidationBypassed from "./markAddressValidationBypassed";
@@ -55,5 +56,6 @@ export default {
   "accounts/updateServiceConfiguration": updateServiceConfiguration,
   "accounts/validateAddress": validateAddress,
   "accounts/verifyAccount": verifyAccount,
-  "reaction/getUserId": getUserId
+  "reaction/getUserId": getUserId,
+  ...groupMethods
 };
