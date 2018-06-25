@@ -4,6 +4,7 @@ import addressBookUpdate from "./addressBookUpdate";
 import addUserPermissions from "./addUserPermissions";
 import createFallbackLoginToken from "./createFallbackLoginToken";
 import currentUserHasPassword from "./currentUserHasPassword";
+import getUserId from "./getUserId";
 import inviteShopMember from "./inviteShopMember";
 import inviteShopOwner from "./inviteShopOwner";
 import markAddressValidationBypassed from "./markAddressValidationBypassed";
@@ -26,6 +27,13 @@ import verifyAccount from "./verifyAccount";
  * @namespace Accounts/Methods
  */
 
+/**
+ * @file Meteor methods for Reaction
+ *
+ *
+ * @namespace Reaction/Methods
+*/
+
 export default {
   "accounts/addressBookAdd": addressBookAdd,
   "accounts/addressBookRemove": addressBookRemove,
@@ -46,5 +54,6 @@ export default {
   "accounts/updateEmailAddress": updateEmailAddress,
   "accounts/updateServiceConfiguration": updateServiceConfiguration,
   "accounts/validateAddress": validateAddress,
-  "accounts/verifyAccount": verifyAccount
+  "accounts/verifyAccount": verifyAccount,
+  "reaction/getUserId": getUserId
 };
