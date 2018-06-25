@@ -1,7 +1,7 @@
 ##############################################################################
 # meteor-dev stage - builds image for dev and used with docker-compose.yml
 ##############################################################################
-FROM reactioncommerce/base:meteor-1.7.0.1 as meteor-dev
+FROM reactioncommerce/base:v1.7.0.3-meteor as meteor-dev
 
 LABEL maintainer="Reaction Commerce <architecture@reactioncommerce.com>"
 
@@ -43,7 +43,7 @@ RUN npm install --production
 ##############################################################################
 # final build stage - create the final production image
 ##############################################################################
-FROM node:8.11.2-slim
+FROM node:8.11.3-slim
 
 # Default environment variables
 ENV ROOT_URL "http://localhost"
