@@ -30,6 +30,7 @@ test("properly mutates the context object without user", async () => {
       catalog: {
         catalogItemProduct: jasmine.any(Function),
         catalogItems: jasmine.any(Function),
+        tag: jasmine.any(Function),
         tags: jasmine.any(Function),
         tagsByIds: jasmine.any(Function)
       },
@@ -69,6 +70,7 @@ test("properly mutates the context object with user", async () => {
       catalog: {
         catalogItemProduct: jasmine.any(Function),
         catalogItems: jasmine.any(Function),
+        tag: jasmine.any(Function),
         tags: jasmine.any(Function),
         tagsByIds: jasmine.any(Function)
       },
