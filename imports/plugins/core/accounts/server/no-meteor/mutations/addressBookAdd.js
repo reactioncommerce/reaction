@@ -19,6 +19,11 @@ export default async function addressBookAdd(context, address, accountUserId) {
 
   const userId = accountUserId || userIdFromContext;
   const account = await Accounts.findOne({ userId });
+  console.log("accountUserId", accountUserId);
+  console.log("userIdFromContext", userIdFromContext);
+  console.log("account", account);
+  const all = await Accounts.find({}).toArray();
+  console.log("accounts", JSON.stringify(all, null, " "));
 
   if (!account) throw new Meteor.Error("not-found", "No account found");
 
