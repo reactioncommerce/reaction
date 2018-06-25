@@ -1,7 +1,7 @@
 import TestApp from "../TestApp";
 import Factory from "/imports/test-utils/helpers/factory";
 
-jasmine.DEFAULT_TIMEOUT_INTERVAL = 60000;
+jest.setTimeout(300000);
 
 const internalShopId = "123";
 const opaqueShopId = "cmVhY3Rpb24vc2hvcDoxMjM="; // reaction/shop:123

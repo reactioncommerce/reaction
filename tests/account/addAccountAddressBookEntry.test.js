@@ -2,7 +2,7 @@ import TestApp from "../TestApp";
 import Factory from "/imports/test-utils/helpers/factory";
 import AddAccountAddressBookEntryMutation from "./AddAccountAddressBookEntryMutation.graphql";
 
-jasmine.DEFAULT_TIMEOUT_INTERVAL = 60000;
+jest.setTimeout(300000);
 
 let testApp;
 let addAccountAddressBookEntry;

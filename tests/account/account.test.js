@@ -2,7 +2,7 @@ import TestApp from "../TestApp";
 import AccountFullQuery from "./AccountFullQuery.graphql";
 import Factory from "/imports/test-utils/helpers/factory";
 
-jasmine.DEFAULT_TIMEOUT_INTERVAL = 60000;
+jest.setTimeout(300000);
 
 const internalNonAdminAccountId = "123";
 const opaqueNonAdminAccountId = "cmVhY3Rpb24vYWNjb3VudDoxMjM=";

@@ -1,7 +1,7 @@
 import TestApp from "../TestApp";
 import PublishProductToCatalogMutation from "./PublishProductsToCatalogMutation.graphql";
 
-jasmine.DEFAULT_TIMEOUT_INTERVAL = 60000;
+jest.setTimeout(300000);
 
 const internalShopId = "123";
 const internalProductId = "999";

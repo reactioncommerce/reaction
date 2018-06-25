@@ -2,7 +2,7 @@ import TestApp from "../TestApp";
 import ViewerFullQuery from "./ViewerFullQuery.graphql";
 import Factory from "/imports/test-utils/helpers/factory";
 
-jasmine.DEFAULT_TIMEOUT_INTERVAL = 60000;
+jest.setTimeout(300000);
 
 let testApp;
 let viewerQuery;

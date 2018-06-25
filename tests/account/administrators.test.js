@@ -4,7 +4,7 @@ import TestApp from "../TestApp";
 import AdministratorsFullQuery from "./AdministratorsFullQuery.graphql";
 import Factory from "/imports/test-utils/helpers/factory";
 
-jasmine.DEFAULT_TIMEOUT_INTERVAL = 60000;
+jest.setTimeout(300000);
 
 /**
  * @param {Object} mongoAccount The Account document in MongoDB schema

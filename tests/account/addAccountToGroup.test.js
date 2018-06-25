@@ -8,7 +8,7 @@ test("addAccountToGroup", () => {});
 // import Factory from "/imports/test-utils/helpers/factory";
 // import AddAccountToGroupMutation from "./AddAccountToGroupMutation.graphql";
 
-// jasmine.DEFAULT_TIMEOUT_INTERVAL = 60000;
+// jest.setTimeout(300000);
 
 // let testApp;
 // let addAccountToGroup;

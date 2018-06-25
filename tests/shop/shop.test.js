@@ -1,7 +1,7 @@
 import { encodeShopOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/shop";
 import TestApp from "../TestApp";
 
-jasmine.DEFAULT_TIMEOUT_INTERVAL = 60000;
+jest.setTimeout(300000);
 
 let shopQuery;
 let shopId;

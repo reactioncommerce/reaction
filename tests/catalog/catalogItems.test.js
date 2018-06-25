@@ -12,7 +12,7 @@ import {
 // temp mocks
 import CatalogProductItemsFullQuery from "./CatalogProductItemsFullQuery.graphql";
 
-jasmine.DEFAULT_TIMEOUT_INTERVAL = 60000;
+jest.setTimeout(300000);
 
 let testApp;
 let query;

@@ -4,7 +4,7 @@ import TestApp from "../TestApp";
 import GroupFullQuery from "./GroupFullQuery.graphql";
 import Factory from "/imports/test-utils/helpers/factory";
 
-jasmine.DEFAULT_TIMEOUT_INTERVAL = 60000;
+jest.setTimeout(300000);
 
 /**
  * @param {Object} mongoGroup The Group document in MongoDB schema
