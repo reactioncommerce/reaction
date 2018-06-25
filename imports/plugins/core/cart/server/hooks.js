@@ -2,8 +2,6 @@ import Logger from "@reactioncommerce/logger";
 import { Meteor } from "meteor/meteor";
 import { Cart } from "/lib/collections";
 import MethodHooks from "/imports/plugins/core/core/server/method-hooks";
-// this needed to keep correct loading order. Methods should be loaded before hooks
-import "../cart";
 
 // // Meteor.after to call after
 MethodHooks.after("cart/submitPayment", (options) => {
@@ -36,7 +34,7 @@ MethodHooks.after("cart/submitPayment", (options) => {
       } else {
         throw new Meteor.Error(
           "server-error",
-          "An error occurred verifing payment method. Failed to save order."
+          "An error occurred verifying payment method. Failed to save order."
         );
       }
     }

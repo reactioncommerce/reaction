@@ -1,7 +1,5 @@
 import Logger from "@reactioncommerce/logger";
-import MethodHooks from "/imports/plugins/core/core/server/method-hooks";
-// this needed to keep correct loading order. Methods should be loaded before hooks
-import "../shop";
+import MethodHooks from "./method-hooks";
 
 MethodHooks.after("shop/createTag", (options) => {
   if (options.error) {
