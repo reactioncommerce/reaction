@@ -4,13 +4,6 @@ import { Packages } from "/lib/collections";
 import Reaction from "/server/api/core";
 
 /**
- * @file Methods for Packages.
- *
- *
- * @namespace Package/Methods
-*/
-
-/**
  * @method package/update
  * @memberof Package/Methods
  * @summary updates the data stored for a certain Package.
@@ -22,7 +15,7 @@ import Reaction from "/server/api/core";
  * @since 1.5.1
  * @return {Object} - returns an object with info about the update operation.
  */
-export function updatePackage(packageName, field, value) {
+export default function updatePackage(packageName, field, value) {
   check(packageName, String);
   check(field, String);
   check(value, Object);
@@ -46,7 +39,3 @@ export function updatePackage(packageName, field, value) {
   }
   return updateResult;
 }
-
-Meteor.methods({
-  "package/update": updatePackage
-});
