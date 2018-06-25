@@ -1,5 +1,6 @@
 import Hooks from "@reactioncommerce/hooks";
 import Logger from "@reactioncommerce/logger";
+import { Assets } from "/lib/collections";
 import MethodHooks from "./method-hooks";
 import Reaction from "./Reaction";
 

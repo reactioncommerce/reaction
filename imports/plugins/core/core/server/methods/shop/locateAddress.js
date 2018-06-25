@@ -1,5 +1,5 @@
 import { check, Match } from "meteor/check";
-import { GeoCoder } from "../../util/geocoder";
+import GeoCoder from "../../util/geocoder";
 
 /**
  * @name shop/locateAddress

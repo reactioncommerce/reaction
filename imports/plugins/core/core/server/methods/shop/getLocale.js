@@ -3,7 +3,7 @@ import Logger from "@reactioncommerce/logger";
 import { Meteor } from "meteor/meteor";
 import { Accounts, Shops } from "/lib/collections";
 import { Reaction } from "/lib/api";
-import { GeoCoder } from "../../util/geocoder";
+import GeoCoder from "../../util/geocoder";
 
 /**
  * @name shop/getLocale

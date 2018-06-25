@@ -10,7 +10,7 @@ import Prerender from "./prerender";
 import RateLimiters from "./rate-limits";
 import RegisterCore from "./register-core";
 import RegisterRouter from "./register-router";
-import Reaction from "/imports/plugins/core/core/server/Reaction";
+import Reaction from "../Reaction";
 import { Shops } from "/lib/collections";
 
 // This is needed so that it throws a Meteor.Error as `check()` would do

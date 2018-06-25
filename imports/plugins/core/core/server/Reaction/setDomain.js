@@ -8,7 +8,7 @@ import getRegistryDomain from "./getRegistryDomain";
  * @summary update the default shop url if ROOT_URL supplied is different from current
  * @return {String} returns insert result
  */
-export function setDomain() {
+export default function setDomain() {
   let currentDomain;
   // we automatically update the shop domain when ROOT_URL changes
   try {

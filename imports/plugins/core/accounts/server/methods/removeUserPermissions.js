@@ -14,7 +14,7 @@ import Reaction from "/imports/plugins/core/core/server/Reaction";
  * @param {String} [group] Optional name of group to restrict roles to.
  * @returns {Boolean} success/failure
  */
-export function removeUserPermissions(userId, permissions, group) {
+export default function removeUserPermissions(userId, permissions, group) {
   if (!Reaction.hasPermission("reaction-accounts", Meteor.userId(), group)) {
     throw new Meteor.Error("access-denied", "Access denied");
   }
