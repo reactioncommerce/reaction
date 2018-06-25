@@ -4,7 +4,7 @@ import { Meteor } from "meteor/meteor";
 import { Accounts, Cart, Jobs } from "/lib/collections";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
 import { Job } from "/imports/plugins/core/job-collection/lib";
-import { ServerSessions } from "/server/publications/collections/sessions";
+import { ServerSessions } from "/imports/plugins/core/core/server/publications/collections/sessions";
 
 let moment;
 async function lazyLoadMoment() {
