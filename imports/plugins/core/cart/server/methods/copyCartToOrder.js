@@ -21,7 +21,7 @@ import Reaction from "/server/api/core";
  * @param {String} cartId - cartId to transform to order
  * @return {String} returns orderId
  */
-export function copyCartToOrder(cartId) {
+export default function copyCartToOrder(cartId) {
   check(cartId, String);
   const cart = Collections.Cart.findOne(cartId);
 
@@ -216,7 +216,3 @@ export function copyCartToOrder(cartId) {
   // we should not have made it here, throw error
   throw new Meteor.Error("bad-request", "cart/copyCartToOrder: Invalid request");
 }
-
-Meteor.methods({
-  "cart/copyCartToOrder": copyCartToOrder
-});
