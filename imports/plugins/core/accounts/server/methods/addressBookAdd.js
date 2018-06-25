@@ -1,3 +1,4 @@
+import { Meteor } from "meteor/meteor";
 import { check, Match } from "meteor/check";
 import * as Schemas from "/lib/collections/schemas";
 import addressBookAddMutation from "../no-meteor/mutations/addressBookAdd";
@@ -19,6 +20,6 @@ export default function addressBookAdd(address, accountUserId) {
 
   this.unblock();
 
-  const context = Promise.await(getGraphQLContextInMeteorMethod(this.userId));
+  const context = Promise.await(getGraphQLContextInMeteorMethod(Meteor.userId()));
   return addressBookAddMutation(context, address, accountUserId);
 }
