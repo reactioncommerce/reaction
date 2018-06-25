@@ -4,7 +4,7 @@ import Random from "@reactioncommerce/random";
 import { Meteor } from "meteor/meteor";
 import { check, Match } from "meteor/check";
 import * as Collections from "/lib/collections";
-import Reaction from "/server/api/core";
+import Reaction from "/imports/plugins/core/core/server/Reaction";
 
 /**
  * @method quantityProcessing

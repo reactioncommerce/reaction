@@ -1,8 +1,8 @@
 import faker from "faker";
 import _ from "lodash";
 import { Factory } from "meteor/dburles:factory";
-import { getSlug } from "server/api/core/utils";
 import { Products, Tags } from "/lib/collections";
+import getSlug from "../Reaction/getSlug";
 import { getShop } from "./shops";
 
 /**

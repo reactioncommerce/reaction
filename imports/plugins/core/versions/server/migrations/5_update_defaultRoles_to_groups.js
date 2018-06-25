@@ -54,7 +54,6 @@ Migrations.add({
       const { defaultRoles, defaultVisitorRole } = shop;
       let ownerRoles = Roles.getAllRoles().fetch().map((role) => role.name);
 
-      // See detailed comment in `/server/api/core/groups.js`. The code here follows similar pattern.
       ownerRoles = ownerRoles.concat(Reaction.defaultCustomerRoles);
       ownerRoles = _.uniq(ownerRoles);
 
