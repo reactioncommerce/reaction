@@ -25,3 +25,4 @@ import "./24_publish_all_existing_visible_products";
 import "./25_update_catalog_schema.js";
 import "./26_remove_revision_control";
 import "./27_change_sms_template_name";
+import "./28_add_hash_to_products";

@@ -12,7 +12,7 @@ ignore:
         expires: '2018-07-26T20:23:03.274Z'
   'npm:lodash:20180130':
     - '*':
-        reason: no patch
+        reason: 'Waiting on multiple dependencies to update'
         expires: 2018-06-30T00:00:00.000Z
   'npm:tunnel-agent:20170305':
     - '*':
@@ -28,7 +28,7 @@ ignore:
         expires: 2018-06-30T00:00:00.000Z
   'npm:deep-extend:20180409':
     - '*':
-        reason: No patch available https://github.com/unclechu/node-deep-extend/issues/41
+        reason: rc updated with latest version - https://github.com/dominictarr/rc - can't find rc in our dependencies
         expires: 2018-06-30T00:00:00.000Z
   'npm:base64url:20180511':
    - '*':
