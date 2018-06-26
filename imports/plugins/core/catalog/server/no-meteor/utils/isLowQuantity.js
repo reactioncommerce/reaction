@@ -11,7 +11,7 @@ export default function isLowQuantity(variants) {
   const threshold = variants && variants.length && variants[0].lowInventoryWarningThreshold;
   const results = variants.map((variant) => {
     const quantity = getProductQuantity(variant, variants);
-    if (variant.inventoryManagement && variant.inventoryPolicy && quantity) {
+    if (variant.inventoryManagement && quantity) {
       return quantity <= threshold;
     }
     return false;

@@ -11,7 +11,7 @@ services:
     ports:
       - "3000:3000"
     environment:
-      ROOT_URL: "http://localhost"
+      ROOT_URL: "http://localhost:3000"
       MONGO_URL: "mongodb://mongo:27017/reaction"
 
   mongo:

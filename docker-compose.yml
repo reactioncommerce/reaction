@@ -35,7 +35,7 @@ services:
     build:
       context: .
       target: meteor-dev
-    command: bash -c "meteor npm install && reaction"
+    command: bash -c "npm install && reaction" #TODO; Revert to Meteor NPM. See comment in Dockerfile about Meteor1.7 NPM version issue.
     depends_on:
       - mongo
     environment:
@@ -53,7 +53,7 @@ services:
       - reaction_node_modules:/opt/reaction/src/node_modules # do not link node_modules in, and persist it between dc up runs
 
   mongo:
-    image: mongo:3.4
+    image: mongo:3.6.3
     command: mongod --storageEngine=wiredTiger
     ports:
       - "27017:27017"

@@ -1,3 +1,4 @@
+import { slugify } from "transliteration";
 import { latinLangs, getShopLang, replacementOptions } from "/lib/api/helpers";
 
 // dynamic import of slugiy/transliteration.slugify
@@ -45,12 +46,5 @@ async function lazyLoadSlugify() {
  * @return {String} slugified string
  */
 export function getSlug(slugString) {
-  let slug;
-  Promise.await(lazyLoadSlugify());
-  if (slugString && slugify) {
-    slug = slugify(slugString.toLowerCase());
-  } else {
-    slug = "";
-  }
-  return slug;
+  return (typeof slugString === "string" && slugify(slugString)) || "";
 }

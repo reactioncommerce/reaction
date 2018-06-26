@@ -8,7 +8,6 @@ import { expect } from "meteor/practicalmeteor:chai";
 import { sinon } from "meteor/practicalmeteor:sinon";
 import { addProduct } from "/server/imports/fixtures/products";
 import Fixtures from "/server/imports/fixtures";
-import { RevisionApi } from "/imports/plugins/core/revisions/lib/api/revisions";
 
 Fixtures();
 
@@ -41,7 +40,6 @@ describe("inventory method", function () {
 
   beforeEach(function () {
     sandbox = sinon.sandbox.create();
-    sandbox.stub(RevisionApi, "isRevisionControlEnabled", () => true);
     // again hack. w/o this we can't remove products from previous spec.
     Inventory.remove({}); // Empty Inventory
   });
