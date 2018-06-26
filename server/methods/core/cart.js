@@ -378,6 +378,51 @@ Meteor.methods({
       }
     });
 
+    // Customer adding a catalog product in the cart.
+    if (Reaction.hasPermission("createProduct", Reaction.getShopId()) === false) {
+      // Fetch the catalog product that should be added to the cart
+      const { product: catalogProduct } = Collections.Catalog.findOne({
+        $or: [
+          { "product._id": productId },
+          { "product.variants._id": variantId },
+          { "product.variants.options._id": variantId }
+        ]
+      });
+
+      // Merge the product document and the catalog product document.
+      // This is to ensure the inventory fields are available for inventory management,
+      // but also have the most up-to-date title, description, etc for cart and orders if needed.
+      product = {
+        ...product,
+        ...catalogProduct
+      };
+
+      // Merge the variant document and the catalog variant document.
+      for (const catalogVariant of catalogProduct.variants) {
+        // If the catalog variant has options, try to find a match
+        if (Array.isArray(catalogVariant.options)) {
+          const catalogVariantOption = catalogVariant.options.find((option) => option === variantId);
+
+          if (catalogVariantOption) {
+            variant = {
+              ...variant,
+              ...catalogVariantOption
+            };
+            break;
+          }
+        }
+
+        // Try to math the top level variant with supplied variant id
+        if (catalogVariant.variantId === variantId) {
+          variant = {
+            ...variant,
+            ...catalogVariant
+          };
+          break;
+        }
+      }
+    }
+
     // TODO: this lines still needed. We could uncomment them in future if
     // decide to not completely remove product data from this method
     // const product = Collections.Products.findOne(productId);

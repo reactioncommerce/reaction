@@ -152,8 +152,8 @@ function filterProducts(productFilters) {
   // validate, catch except but return no results
   try {
     if (productFilters) filters.validate(productFilters);
-  } catch (e) {
-    Logger.warn(e, "Invalid Product Filters");
+  } catch (error) {
+    Logger.warn(error, "Invalid Product Filters");
     return false;
   }
 
