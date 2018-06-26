@@ -2,11 +2,11 @@ import mockContext from "/imports/test-utils/helpers/mockContext";
 import {
   rewire as rewire$getCatalogProductMedia,
   restore as restore$getCatalogProductMedia
-} from "./getCatalogProductMedia";
-import { rewire as rewire$isBackorder, restore as restore$isBackorder } from "./isBackorder";
-import { rewire as rewire$isLowQuantity, restore as restore$isLowQuantity } from "./isLowQuantity";
-import { rewire as rewire$isSoldOut, restore as restore$isSoldOut } from "./isSoldOut";
-import publishProductToCatalog from "./publishProductToCatalog";
+} from "../utils/getCatalogProductMedia";
+import { rewire as rewire$isBackorder, restore as restore$isBackorder } from "../utils/isBackorder";
+import { rewire as rewire$isLowQuantity, restore as restore$isLowQuantity } from "../utils/isLowQuantity";
+import { rewire as rewire$isSoldOut, restore as restore$isSoldOut } from "../utils/isSoldOut";
+import hashProduct from "./hashProduct";
 
 const mockCollections = { ...mockContext.collections };
 
@@ -196,7 +196,7 @@ const mockProduct = {
 };
 
 const updatedMockProduct = {
-  hash: "769f6d8004a2a2929d143ab242625b6c71f618d8",
+  publishedProductHash: "769f6d8004a2a2929d143ab242625b6c71f618d8",
   _id: internalCatalogItemId,
   shopId: internalShopId,
   barcode: "barcode",
@@ -286,18 +286,9 @@ const updatedMockProduct = {
   }
 };
 
-const mockShop = {
-  currencies: {
-    USD: {
-      enabled: true,
-      format: "%s%v",
-      symbol: "$"
-    }
-  },
-  currency: "USD"
-};
+const expectedHash = "769f6d8004a2a2929d143ab242625b6c71f618d8";
 
-const mockGeCatalogProductMedia = jest
+const mockGetCatalogProductMedia = jest
   .fn()
   .mockName("getCatalogProductMedia")
   .mockReturnValue(Promise.resolve([
@@ -330,7 +321,7 @@ const mockIsSoldOut = jest
   .mockReturnValue(false);
 
 beforeAll(() => {
-  rewire$getCatalogProductMedia(mockGeCatalogProductMedia);
+  rewire$getCatalogProductMedia(mockGetCatalogProductMedia);
   rewire$isBackorder(mockIsBackorder);
   rewire$isLowQuantity(mockIsLowQuantity);
   rewire$isSoldOut(mockIsSoldOut);
@@ -343,19 +334,16 @@ afterAll(() => {
   restore$getCatalogProductMedia();
 });
 
-test("expect true if a product is published to the catalog collection", async () => {
-  mockCollections.Products.toArray.mockReturnValueOnce(Promise.resolve(mockVariants));
-  mockCollections.Shops.findOne.mockReturnValueOnce(Promise.resolve(mockShop));
+test("publishedProductHash", async () => {
+  mockCollections.Products.updateOne.mockReturnValueOnce(Promise.resolve({ result: { ok: 1 } }));
   mockCollections.Products.findOne.mockReturnValue(Promise.resolve(updatedMockProduct));
-  mockCollections.Catalog.updateOne.mockReturnValueOnce(Promise.resolve({ result: { ok: 1 } }));
-  const spec = await publishProductToCatalog(mockProduct, mockCollections);
-  expect(spec).toBe(true);
+  const spec = await hashProduct(mockProduct._id, mockCollections);
+
+  expect(spec.publishedProductHash).toEqual(expectedHash);
 });
 
-test("expect false if a product is not published to the catalog collection", async () => {
-  mockCollections.Products.toArray.mockReturnValueOnce(Promise.resolve(mockVariants));
-  mockCollections.Shops.findOne.mockReturnValueOnce(Promise.resolve(mockShop));
-  mockCollections.Catalog.updateOne.mockReturnValueOnce(Promise.resolve({ result: { ok: 0 } }));
-  const spec = await publishProductToCatalog(mockProduct, mockCollections);
-  expect(spec).toBe(false);
+test("publishedProductHash was not successfully created, return original product", async () => {
+  mockCollections.Products.updateOne.mockReturnValueOnce(Promise.resolve({ result: { ok: 0 } }));
+  const spec = await hashProduct(mockProduct._id, mockCollections);
+  expect(spec).toEqual(null);
 });

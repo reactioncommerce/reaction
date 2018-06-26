@@ -1,3 +1,36 @@
+# v1.14.0
+## Removing Optional Plugins
+As part of our focus simplifying the core Reaction application and improving performance, we've [made the decision to remove optional plugins from the core application](https://blog.reactioncommerce.com/the-road-ahead-product-updates-june-2018/). From our blog post on this topic:
+> It’s about quality over quantity. As a part of our initiative to simplify Reaction, we’re focusing on providing one reference application per feature and moving all others over to community-sponsored packages. We’ll be migrating packages, APIs, and schemas over to npm. It’s a standard approach to package management, one that improves the developer experience overall.
+
+Here’s how it will look:
+
+|Category|Reaction default(s)|Community package(s)|
+|---|---|---|
+|Payments|Stripe, example payment package|PayPal, Authorize.net, Braintree|
+|Taxes|Flat rate|Avalara, TaxCloud, TaxJar|
+|Shipping|Flat rate|Shippo|
+|Connectors|CSV connector|Shopify connector|
+
+## GraphQL DevServer
+### Features
+ - feat: GraphQL Cart Schema (#4307)
+
+## Meteor App
+### Features
+ - feat: Create product hash of published product properties (#4336)
+
+### Fixes
+ - fix: low quantity/sold out flags not saving correctly in db (#4342)
+ - fix: Scrolling to bottom adds more products to the view (#4243) .. Resolves #4090
+ - fix: for "react-addons-create-fragment should be removed" (#4164)
+ - fix: change session active product when adding new product (#4313)
+ - fix: missing styles on refund popover (#4300) .. Resolves #4005
+
+### Refactors
+ - refactor: Remove Authorize.net plugin (#4310)
+ - refactor: Use new Reaction component library components for the SMS settings form (#4318)
+
 # v1.13.0
 
 ## Removal of Legacy Product Revision Control system
