@@ -178,7 +178,7 @@
     "jest-junit": "^3.6.0",
     "js-yaml": "^3.10.0",
     "jsdoc": "^3.5.5",
-    "mongodb-memory-server": "^1.7.3",
+    "mongodb-memory-server": "1.8.0",
     "nodemon": "^1.17.2",
     "react-addons-test-utils": "15.6.2",
     "snyk": "^1.78.0"
@@ -202,6 +202,7 @@
     "test:unit:watch": "NODE_ENV=jesttest BABEL_DISABLE_CACHE=1 jest --no-cache --testPathIgnorePatterns /tests/ --watch",
     "test:integration": "NODE_ENV=jesttest BABEL_DISABLE_CACHE=1 jest --no-cache /tests/",
     "test:integration:watch": "NODE_ENV=jesttest BABEL_DISABLE_CACHE=1 jest --no-cache --watch /tests/",
+    "test:file": "NODE_ENV=jesttest BABEL_DISABLE_CACHE=1 jest --no-cache --watch",
     "docs": "jsdoc . --configure .reaction/jsdoc/jsdoc.json --readme .reaction/jsdoc/templates/static/README.md"
   },
   "babel": {
@@ -227,8 +228,8 @@
           "alias": {
             "@reactioncommerce/reaction-collections": "./imports/plugins/core/collections",
             "@reactioncommerce/reaction-components": "./imports/plugins/core/components/lib",
-            "@reactioncommerce/reaction-graphql-utils": "./imports/plugins/core/graphql/server/resolvers/util",
-            "@reactioncommerce/reaction-graphql-xforms": "./imports/plugins/core/graphql/server/resolvers/xforms",
+            "@reactioncommerce/reaction-graphql-utils": "./imports/plugins/core/graphql/server/no-meteor/resolvers/util",
+            "@reactioncommerce/reaction-graphql-xforms": "./imports/plugins/core/graphql/server/no-meteor/resolvers/xforms",
             "@reactioncommerce/reaction-router": "./imports/plugins/core/router/lib",
             "@reactioncommerce/reaction-ui": "./imports/plugins/core/ui/client/components",
             "underscore": "lodash"
@@ -265,8 +266,8 @@
               "alias": {
                 "@reactioncommerce/reaction-collections": "./imports/plugins/core/collections",
                 "@reactioncommerce/reaction-components": "./imports/plugins/core/components/lib",
-                "@reactioncommerce/reaction-graphql-utils": "./imports/plugins/core/graphql/server/resolvers/util",
-                "@reactioncommerce/reaction-graphql-xforms": "./imports/plugins/core/graphql/server/resolvers/xforms",
+                "@reactioncommerce/reaction-graphql-utils": "./imports/plugins/core/graphql/server/no-meteor/resolvers/util",
+                "@reactioncommerce/reaction-graphql-xforms": "./imports/plugins/core/graphql/server/no-meteor/resolvers/xforms",
                 "@reactioncommerce/reaction-router": "./imports/plugins/core/router/lib",
                 "@reactioncommerce/reaction-ui": "./imports/plugins/core/ui/client/components",
                 "meteor": "./.reaction/devserver/mockmeteor",
@@ -305,8 +306,8 @@
               "alias": {
                 "@reactioncommerce/reaction-collections": "./imports/plugins/core/collections",
                 "@reactioncommerce/reaction-components": "./imports/plugins/core/components/lib",
-                "@reactioncommerce/reaction-graphql-utils": "./imports/plugins/core/graphql/server/resolvers/util",
-                "@reactioncommerce/reaction-graphql-xforms": "./imports/plugins/core/graphql/server/resolvers/xforms",
+                "@reactioncommerce/reaction-graphql-utils": "./imports/plugins/core/graphql/server/no-meteor/resolvers/util",
+                "@reactioncommerce/reaction-graphql-xforms": "./imports/plugins/core/graphql/server/no-meteor/resolvers/xforms",
                 "@reactioncommerce/reaction-router": "./imports/plugins/core/router/lib",
                 "@reactioncommerce/reaction-ui": "./imports/plugins/core/ui/client/components",
                 "meteor": "./imports/test-utils/__mocks__/meteor",

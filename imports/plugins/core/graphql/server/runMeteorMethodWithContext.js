@@ -3,6 +3,10 @@ import { DDPCommon } from "meteor/ddp-common";
 import { Meteor } from "meteor/meteor";
 
 /**
+ * Use this function within a GraphQL request, within a running Meteor server,
+ * whenever you would normally do `Meteor.call` or `Meteor.apply` if you were
+ * in a DDP server method.
+ *
  * @name runMeteorMethodWithContext
  * @method
  * @memberof GraphQL

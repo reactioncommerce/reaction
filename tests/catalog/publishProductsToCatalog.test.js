@@ -1,7 +1,7 @@
-import GraphTester from "../GraphTester";
+import TestApp from "../TestApp";
 import PublishProductToCatalogMutation from "./PublishProductsToCatalogMutation.graphql";
 
-jasmine.DEFAULT_TIMEOUT_INTERVAL = 60000;
+jest.setTimeout(300000);
 
 const internalShopId = "123";
 const internalProductId = "999";
@@ -77,32 +77,32 @@ const mockCatalogItem = {
   }
 };
 
-let tester;
+let testApp;
 let mutate;
 beforeAll(async () => {
-  tester = new GraphTester();
-  await tester.start();
-  mutate = tester.mutate(PublishProductToCatalogMutation);
-  await tester.insertPrimaryShop({ _id: internalShopId, name: shopName });
-  await Promise.all(internalTagIds.map((_id) => tester.collections.Tags.insert({ _id, shopId: internalShopId })));
-  await tester.collections.Products.insert(mockProduct);
-  await tester.collections.Products.insert(mockVariant);
-  await tester.collections.Products.insert(mockOptionOne);
-  await tester.collections.Products.insert(mockOptionTwo);
-  await tester.setLoggedInUser({
+  testApp = new TestApp();
+  await testApp.start();
+  mutate = testApp.mutate(PublishProductToCatalogMutation);
+  await testApp.insertPrimaryShop({ _id: internalShopId, name: shopName });
+  await Promise.all(internalTagIds.map((_id) => testApp.collections.Tags.insert({ _id, shopId: internalShopId })));
+  await testApp.collections.Products.insert(mockProduct);
+  await testApp.collections.Products.insert(mockVariant);
+  await testApp.collections.Products.insert(mockOptionOne);
+  await testApp.collections.Products.insert(mockOptionTwo);
+  await testApp.setLoggedInUser({
     _id: "123",
     roles: { [internalShopId]: ["createProduct"] }
   });
 });
 
 afterAll(async () => {
-  await tester.collections.Shops.remove({ _id: internalShopId });
-  await tester.collections.Product.remove({ _id: internalProductId });
-  await tester.collections.Product.remove({ _id: internalVariantIds[0] });
-  await tester.collections.Product.remove({ _id: internalVariantIds[1] });
-  await tester.collections.Product.remove({ _id: internalVariantIds[2] });
-  await tester.clearLoggedInUser();
-  tester.stop();
+  await testApp.collections.Shops.remove({ _id: internalShopId });
+  await testApp.collections.Product.remove({ _id: internalProductId });
+  await testApp.collections.Product.remove({ _id: internalVariantIds[0] });
+  await testApp.collections.Product.remove({ _id: internalVariantIds[1] });
+  await testApp.collections.Product.remove({ _id: internalVariantIds[2] });
+  await testApp.clearLoggedInUser();
+  testApp.stop();
 });
 
 // publish new product to catalog
@@ -120,7 +120,7 @@ test("expect a CatalogItemProduct when a Product is published to the Catalog col
 // publish product updates to catalog
 test("expect an updated CatalogItemProduct when a Product is updated and republished to the Catalog", async () => {
   const updatedTitle = "Really Fake Product";
-  await tester.collections.Products.updateOne(
+  await testApp.collections.Products.updateOne(
     {
       _id: internalProductId
     },
@@ -146,7 +146,7 @@ test("expect an updated CatalogItemProduct when a Product is updated and republi
 // publish product variant updates to catalog
 test("expect an updated CatalogItemProduct when a Product Variant is updated and republished to the Catalog", async () => {
   const updatedTitle = "Really Fake Product Variant";
-  await tester.collections.Products.updateOne(
+  await testApp.collections.Products.updateOne(
     {
       _id: internalVariantIds[0]
     },
@@ -172,7 +172,7 @@ test("expect an updated CatalogItemProduct when a Product Variant is updated and
 // publish product variant option updates to catalog
 test("expect an updated CatalogItemProduct when a Product Variant Option is updated and republished to the Catalog", async () => {
   const updatedTitle = "Really Fake Product Option";
-  await tester.collections.Products.updateOne(
+  await testApp.collections.Products.updateOne(
     {
       _id: internalVariantIds[1]
     },
@@ -197,7 +197,7 @@ test("expect an updated CatalogItemProduct when a Product Variant Option is upda
 
 // publish deleted product option to catalog
 test("expect an updated CatalogItemProduct when a Product is marked as deleted and republished to the Catalog", async () => {
-  await tester.collections.Products.updateOne(
+  await testApp.collections.Products.updateOne(
     {
       _id: internalVariantIds[2]
     },
@@ -222,7 +222,7 @@ test("expect an updated CatalogItemProduct when a Product is marked as deleted a
 
 // publish deleted product to catalog
 test("expect an updated CatalogItemProduct when a Product is marked as deleted and republished to the Catalog", async () => {
-  await tester.collections.Products.updateOne(
+  await testApp.collections.Products.updateOne(
     {
       _id: internalProductId
     },
