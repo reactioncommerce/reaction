@@ -19,7 +19,7 @@
     "url": "https://github.com/reactioncommerce/reaction/issues"
   },
   "dependencies": {
-    "@babel/runtime": "7.0.0-beta.49",
+    "@babel/runtime": "^7.0.0-beta.49",
     "@reactioncommerce/data-factory": "^1.0.0",
     "@reactioncommerce/file-collections": "0.5.0",
     "@reactioncommerce/file-collections-sa-gridfs": "0.0.2",
