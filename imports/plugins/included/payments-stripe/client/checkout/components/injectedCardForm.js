@@ -32,14 +32,25 @@ class CardForm extends Component {
 
     /* eslint-disable camelcase */
     this.errorCodes = {
-      incomplete_number: i18next.t("checkout.errorMessages.incompleteNumber", "Your card number is incomplete."),
-      invalid_number: i18next.t("checkout.errorMessages.invalidNumber", "Your card number is invalid."),
-      incomplete_expiry: i18next.t("checkout.errorMessages.incompleteExpiry", "Your card's expiration date is incomplete."),
+      card_declined: i18next.t("checkout.errorMessages.cardDeclined", "Your card has been declined. Please use another card."),
+      country_unsupported: i18next.t("checkout.errorMessages.countryUnsupported", "Your country is not supported."),
+      expired_card: i18next.t("checkout.errorMessages.expiredCard", "Your card has expired. Please check the expiration date or use a different card."),
       incomplete_cvc: i18next.t("checkout.errorMessages.incompleteCVC", "Your card's security code is incomplete."),
+      incomplete_expiry: i18next.t("checkout.errorMessages.incompleteExpiry", "Your card's expiration date is incomplete."),
+      incomplete_number: i18next.t("checkout.errorMessages.incompleteNumber", "Your card number is incomplete."),
       incomplete_zip: i18next.t("checkout.errorMessages.incompleteZIP", "Your postal code is incomplete."),
-      invalid_expiry_year_past: i18next.t("checkout.errorMessages.incompleteExpiryYearPast", "Your card's expiration year is in the past."),
+      incorrect_cvc: i18next.t("checkout.errorMessages.incorrectCVC", "Your card's security code is incorrect."),
+      incorrect_number: i18next.t("checkout.errorMessages.incorrectNumber", "The card number is incorrect. Please check the card’s number or use a different card."),
+      incorrect_zip: i18next.t("checkout.errorMessages.incorrectZIP", "Your card's postal code is incorrect."),
+      invalid_cvc: i18next.t("checkout.errorMessages.invalidCVC", "Your card's CVC is invalid."),
+      invalid_expiry_month: i18next.t("checkout.errorMessages.invalidExpiryMonth", "Your card's expiration month is invalid."),
+      invalid_expiry_year: i18next.t("checkout.errorMessages.invalidExpiryYear", "Your card's expiration year is invalid."),
       invalid_expiry_month_past: i18next.t("checkout.errorMessages.incompleteExpiryMonthPast", "Your card's expiration date is in the past."),
-      incorrect_cvc: i18next.t("checkout.errorMessages.incorrectCVC", "Your card's security code is incorrect.")
+      invalid_expiry_year_past: i18next.t("checkout.errorMessages.incompleteExpiryYearPast", "Your card's expiration year is in the past."),
+      invalid_number: i18next.t("checkout.errorMessages.invalidNumber", "Your card number is invalid."),
+      postal_code_invalid: i18next.t("checkout.errorMessages.postalCodeInvalid", "Your card's postal code is invalid."),
+      state_unsupported: i18next.t("checkout.errorMessages.stateUnsupported", "Your state is not supported."),
+      whoops: i18next.t("checkout.errorMessages.whoops", "Whoops! Something went wrong. Please try again.")
     };
   }
 
@@ -73,7 +84,7 @@ class CardForm extends Component {
           onResultReceived: (error, result) => {
             if (error || (result && result.error)) {
               this.setState({
-                errorMessage: this.errorCodes[result.error.code] ? this.errorCodes[result.error.code] : result.error.message,
+                errorMessage: this.errorCodes[result.error.code] ? this.errorCodes[result.error.code] : result.error.whoops,
                 submitMessage: resubmitMessage,
                 submitting: false
               });
