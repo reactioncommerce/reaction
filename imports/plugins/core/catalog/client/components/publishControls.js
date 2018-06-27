@@ -327,6 +327,25 @@ class PublishControls extends Component {
     }
     return;
   }
+
+  renderChangesNotification = () => {
+    const publishedProductHash = (this.props && this.props.documents && this.props.documents[0] && this.props.documents[0].publishedProducthash) || null;
+    const currentProductHash = this.currentProductHash.get();
+
+    if (publishedProductHash !== currentProductHash) {
+      // We don't use the `<Icon>` component here as we do not have layered
+      // icons built in to the existing component
+      return (
+        <span className="fa-stack fa-lg" style={{ fontSize: 12, position: "absolute", top: "2px", right: "8px" }}>
+          <i className="fa fa-circle-o fa-stack-2x" style={{ color: "#ffffff" }} />
+          <i className="fa fa-circle fa-stack-1x fa-inverse" style={{ fontSize: "1.5em", color: "#f4c43c" }} />
+        </span>
+      );
+    }
+
+    return null;
+  }
+
   render() {
     return (
       <Components.ToolbarGroup lastChild={true}>
