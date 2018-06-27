@@ -187,7 +187,7 @@ describe("stripe/payment/createCharges", function () {
     sandbox.restore();
   });
 
-  it("should call stripe/payment/createCharges with the proper parameters and create an order", function (done) {
+  it("should create a charge with a valid token", function (done) {
     this.timeout(10000);
     // This is a pretty full payment => order integration test currently.
     // This test should probably be split into multiple parts
@@ -223,13 +223,12 @@ describe("stripe/payment/createCharges", function () {
       return testStripePkg;
     });
 
-    const cardData = {
-      cvv2: "345",
-      expire_month: "4",
-      expire_year: "2022",
-      name: "Test User",
-      number: "4242424242424242",
-      type: "visa"
+    const token = {
+      id: "tok_visa",
+      card: {
+        brand: "Visa",
+        last4: "4242"
+      }
     };
 
     // create a charge result object that has the cart total in stripe format (cents)
@@ -266,16 +265,9 @@ describe("stripe/payment/createCharges", function () {
       .post("/v1/customers", "email=test%40example.com")
       .reply(200, stripeCustomerResponse); // .log(console.log);
 
-    // Card data for adding a card source to a customer
-    const number = "source%5Bnumber%5D=4242424242424242";
-    const name = "source%5Bname%5D=Test%20User";
-    const cvc = "source%5Bcvc%5D=345";
-    const expiry = "source%5Bexp_month%5D=4&source%5Bexp_year%5D=2022";
-    const source = "source%5Bobject%5D=card";
-
     // Stripe Add Source To Customer Nock
     nock("https://api.stripe.com:443", { encodedQueryParams: true })
-      .post(`/v1/customers/${stripeCustomerResponse.id}/sources`, `${number}&${name}&${cvc}&${expiry}&${source}`)
+      .post(`/v1/customers/${stripeCustomerResponse.id}/sources`, `source=${token.id}`)
       .reply(200, stripeCustomerResponseWithSource); // .log(console.log);
 
     // If we were testing a multi-shop order, we'd need to nock the tokens API
@@ -291,7 +283,7 @@ describe("stripe/payment/createCharges", function () {
       .post("/v1/charges", `amount=${cart.getTotal() * 100}&capture=false&currency=USD&customer=${stripeCustomerResponse.id}`)
       .reply(200, chargeResult); // .log(console.log);
 
-    methods["stripe/payment/createCharges"]("authorize", cardData, cart._id)
+    methods["stripe/payment/createCharges"]("authorize", token, cart._id)
       .then((res) => {
         const transactionIds = Object.keys(res.transactions);
         const txId = transactionIds[0];
