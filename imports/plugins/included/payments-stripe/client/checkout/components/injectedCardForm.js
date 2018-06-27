@@ -8,7 +8,7 @@ import {
   PostalCodeElement
 } from "react-stripe-elements";
 import { Meteor } from "meteor/meteor";
-import { Router } from "client/api";
+import { i18next, Router } from "client/api";
 
 class CardForm extends Component {
   static propTypes = {

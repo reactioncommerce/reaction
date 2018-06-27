@@ -5,7 +5,7 @@ import { Meteor } from "meteor/meteor";
 import { composeWithTracker } from "@reactioncommerce/reaction-components";
 import { i18next, Reaction } from "/client/api";
 import { Packages, Cart } from "/lib/collections";
-import InjectedCardForm from "./injectedCardForm";
+import InjectedCardForm from "../components/injectedCardForm";
 
 class StripePaymentFormContainer extends Component {
   static propTypes = {
@@ -18,12 +18,7 @@ class StripePaymentFormContainer extends Component {
   render() {
     return (
       <StripeProvider apiKey={this.props.apiKey}>
-        <Elements
-          fonts={[
-            { cssSrc: "https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,600,700" }
-          ]}
-          locale={this.props.language}
-        >
+        <Elements fonts={[{ cssSrc: "https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,600,700" }]}>
           <InjectedCardForm cartId={this.props.cartId} postal={this.props.postal} />
         </Elements>
       </StripeProvider>
