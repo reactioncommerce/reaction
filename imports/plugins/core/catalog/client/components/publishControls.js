@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import { Meteor } from "meteor/meteor";
 import { ReactiveVar } from "meteor/reactive-var";
 import { Components } from "@reactioncommerce/reaction-components";
 import {
@@ -47,6 +48,12 @@ class PublishControls extends Component {
     this.handleToggleShowChanges = this.handleToggleShowChanges.bind(this);
     this.handlePublishClick = this.handlePublishClick.bind(this);
   }
+
+  componentDidMount() {
+    // Calculate current product has when component is rendered
+    this.renderHashCalculation();
+  }
+
 
   handleToggleShowChanges() {
     this.setState({
@@ -203,6 +210,7 @@ class PublishControls extends Component {
 
     return (
       <div className="hidden-xs">
+        {this.renderChangesNotification()}
         <Button
           bezelStyle="outline"
           disabled={isDisabled}
@@ -307,6 +315,18 @@ class PublishControls extends Component {
     );
   }
 
+  renderHashCalculation = () => {
+    const productDocument = this.props.documents && this.props.documents[0];
+
+    if (productDocument) {
+      Meteor.call("products/getpublishedProductHash", productDocument._id, (err, result) => {
+        if (result) {
+          this.currentProductHash.set(result);
+        }
+      });
+    }
+    return;
+  }
   render() {
     return (
       <Components.ToolbarGroup lastChild={true}>
