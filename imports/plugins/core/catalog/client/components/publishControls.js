@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import { ReactiveVar } from "meteor/reactive-var";
 import { Components } from "@reactioncommerce/reaction-components";
 import {
   Button,
@@ -40,6 +41,8 @@ class PublishControls extends Component {
     this.state = {
       showDiffs: false
     };
+
+    this.currentProductHash = new ReactiveVar([]);
 
     this.handleToggleShowChanges = this.handleToggleShowChanges.bind(this);
     this.handlePublishClick = this.handlePublishClick.bind(this);
