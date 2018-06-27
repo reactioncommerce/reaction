@@ -29,6 +29,18 @@ class CardForm extends Component {
       submitMessage: "Complete your order",
       submitting: false
     };
+
+    /* eslint-disable camelcase */
+    this.errorCodes = {
+      incomplete_number: i18next.t("checkout.errorMessages.incompleteNumber", "Your card number is incomplete."),
+      invalid_number: i18next.t("checkout.errorMessages.invalidNumber", "Your card number is invalid."),
+      incomplete_expiry: i18next.t("checkout.errorMessages.incompleteExpiry", "Your card's expiration date is incomplete."),
+      incomplete_cvc: i18next.t("checkout.errorMessages.incompleteCVC", "Your card's security code is incomplete."),
+      incomplete_zip: i18next.t("checkout.errorMessages.incompleteZIP", "Your postal code is incomplete."),
+      invalid_expiry_year_past: i18next.t("checkout.errorMessages.incompleteExpiryYearPast", "Your card's expiration year is in the past."),
+      invalid_expiry_month_past: i18next.t("checkout.errorMessages.incompleteExpiryMonthPast", "Your card's expiration date is in the past."),
+      incorrect_cvc: i18next.t("checkout.errorMessages.incorrectCVC", "Your card's security code is incorrect.")
+    };
   }
 
   handleSubmit = (ev) => {
@@ -61,7 +73,7 @@ class CardForm extends Component {
           onResultReceived: (error, result) => {
             if (error || (result && result.error)) {
               this.setState({
-                errorMessage: result.error.message,
+                errorMessage: this.errorCodes[result.error.code] ? this.errorCodes[result.error.code] : result.error.message,
                 submitMessage: resubmitMessage,
                 submitting: false
               });
@@ -88,7 +100,7 @@ class CardForm extends Component {
 
   handleCardNumberChange = (change) => {
     if (change && change.error) {
-      this.setState({ cardNumberErrorMessage: change.error.message });
+      this.setState({ cardNumberErrorMessage: this.errorCodes[change.error.code] ? this.errorCodes[change.error.code] : change.error.message });
     } else {
       this.setState({ cardNumberErrorMessage: "" });
     }
@@ -96,7 +108,7 @@ class CardForm extends Component {
 
   handleExpDateChange = (change) => {
     if (change && change.error) {
-      this.setState({ expDateErrorMessage: change.error.message });
+      this.setState({ expDateErrorMessage: this.errorCodes[change.error.code] ? this.errorCodes[change.error.code] : change.error.message });
     } else {
       this.setState({ expDateErrorMessage: "" });
     }
@@ -104,7 +116,7 @@ class CardForm extends Component {
 
   handleCVVChange = (change) => {
     if (change && change.error) {
-      this.setState({ CVVErrorMessage: change.error.message });
+      this.setState({ CVVErrorMessage: this.errorCodes[change.error.code] ? this.errorCodes[change.error.code] : change.error.message });
     } else {
       this.setState({ CVVErrorMessage: "" });
     }
@@ -115,7 +127,7 @@ class CardForm extends Component {
       this.setState({ postal: change.value });
     }
     if (change && change.error) {
-      this.setState({ postalErrorMessage: change.error.message });
+      this.setState({ postalErrorMessage: this.errorCodes[change.error.code] ? this.errorCodes[change.error.code] : change.error.message });
     } else {
       this.setState({ postalErrorMessage: "" });
     }

@@ -38,6 +38,27 @@
           "expDate": "Expiry Date",
           "CVV": "CVV",
           "postalCode": "Postal code"
+        },
+        "errorMessages": {
+          "cardDeclined": "Your card has been declined. Please use another card.",
+          "countryUnsupported": "Your country is not supported.",
+          "expiredCard": "Your card has expired. Please check the expiration date or use a different card.",
+          "incompleteCVC": "Your card's security code is incomplete.",
+          "incompleteExpiry": "Your card's expiration date is incomplete.",
+          "incompleteNumber": "Your card number is incomplete.",
+          "incompleteZIP": "Your postal code is incomplete.",
+          "incorrectCVC": "Your card's security code is incorrect.",
+          "incorrectNumber": "The card number is incorrect. Please check the card’s number or use a different card.",
+          "incorrectZIP": "Your card's postal code is incorrect.",
+          "invalidCVC": "Your card's CVC is invalid.",
+          "invalidExpiryMonth": "Your card's expiration month is invalid.",
+          "invalidExpiryYear": "Your card's expiration year is invalid.",
+          "incompleteExpiryMonthPast": "Your card's expiration date is in the past.",
+          "incompleteExpiryYearPast": "Your card's expiration year is in the past.",
+          "invalidNumber": "Your card number is invalid.",
+          "postalCodeInvalid": "Your card's postal code is invalid.",
+          "stateUnsupported": "Your state is not supported.",
+          "whoops": "Whoops! Something went wrong. Please try again."
         }
       }
     }
