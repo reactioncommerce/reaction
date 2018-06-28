@@ -49,12 +49,6 @@ class PublishControls extends Component {
     this.handlePublishClick = this.handlePublishClick.bind(this);
   }
 
-  componentDidMount() {
-    // Calculate current product has when component is rendered
-    this.renderHashCalculation();
-  }
-
-
   handleToggleShowChanges() {
     this.setState({
       showDiffs: !this.state.showDiffs
@@ -64,6 +58,9 @@ class PublishControls extends Component {
   handlePublishClick() {
     if (this.props.onPublishClick) {
       this.props.onPublishClick(this.props.revisions);
+
+      // Re-calculate hash after publishing
+      this.renderHashCalculation();
     }
   }
 
@@ -330,6 +327,7 @@ class PublishControls extends Component {
 
   renderChangesNotification = () => {
     const publishedProductHash = (this.props && this.props.documents && this.props.documents[0] && this.props.documents[0].publishedProducthash) || null;
+    this.renderHashCalculation();
     const currentProductHash = this.currentProductHash.get();
 
     if (publishedProductHash !== currentProductHash) {
