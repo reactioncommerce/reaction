@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import classnames from "classnames";
 import { Meteor } from "meteor/meteor";
 import { ReactiveVar } from "meteor/reactive-var";
 import { Components } from "@reactioncommerce/reaction-components";
@@ -332,18 +333,38 @@ class PublishControls extends Component {
     this.renderHashCalculation();
     const currentProductHash = this.currentProductHash.get();
 
-    if (publishedProductHash !== currentProductHash) {
-      // We don't use the `<Icon>` component here as we do not have layered
-      // icons built in to the existing component
-      return (
-        <span className="fa-stack fa-lg" style={{ fontSize: 12, position: "absolute", top: "2px", right: "8px" }}>
-          <i className="fa fa-circle-o fa-stack-2x" style={{ color: "#ffffff" }} />
-          <i className="fa fa-circle fa-stack-1x fa-inverse" style={{ fontSize: "1.5em", color: "#f4c43c" }} />
-        </span>
-      );
-    }
+    const hashIndicator = classnames({
+      "rui": true,
+      "hash-icon": true,
+      "fa-stack": true,
+      "fa-lg": true,
+      "hash-icon-visible": publishedProductHash !== currentProductHash,
+      "hash-icon-hidden": publishedProductHash === currentProductHash
+    });
 
-    return null;
+    const primaryIcon = classnames({
+      "fa": true,
+      "fa-stack-2x": true,
+      "fa-circle": isHashUpdating,
+      "fa-circle-o": !isHashUpdating
+    });
+
+    const secondaryIcon = classnames({
+      "fa": true,
+      "fa-stack-1x": true,
+      "fa-refresh": isHashUpdating,
+      "fa-circle": !isHashUpdating,
+      "fa-spin": isHashUpdating
+    });
+
+    // We don't use the `<Icon>` component here as we do not have layered
+    // icons built in to the existing component
+    return (
+      <span className={hashIndicator} style={{ fontSize: 12, position: "absolute", top: "2px", right: "8px" }}>
+        <i className={primaryIcon} style={{ color: "#ffffff" }} />
+        <i className={secondaryIcon} style={{ fontSize: "1.5em", color: "#f4c43c" }} />
+      </span>
+    );
   }
 
   render() {
