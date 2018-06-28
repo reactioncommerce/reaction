@@ -16,5 +16,6 @@ export function getSlug(slugString) {
     replace:
       replacementOptions
   });
+  console.log(slugify(slugString));
   return (typeof slugString === "string" && slugify(slugString)) || "";
 }

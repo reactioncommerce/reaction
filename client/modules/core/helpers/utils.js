@@ -23,14 +23,12 @@ async function lazyLoadSlugify() {
   // slugify is exported to modules.default while transliteration is exported to modules.slugify
   if (mod.default) {
     slugify = mod.default;
-    slugify.extend(
-      replacementOptions
-    );
+    slugify.extend(replacementOptions);
   } else {
-    slugify = mod.slugify;
+    ({ slugify } = mod);
     slugify.config({
       replace:
-      replacementOptions
+        replacementOptions
     });
   }
 }
@@ -51,6 +49,7 @@ export function getSlug(slugString) {
   Promise.resolve(lazyLoadSlugify()); // eslint-disable-line promise/catch-or-return
   if (slugString && slugify) {
     slug = slugify(slugString.toLowerCase());
+    console.log(slug);
   } else {
     slug = "";
   }
