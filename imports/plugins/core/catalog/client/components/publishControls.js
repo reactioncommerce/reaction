@@ -20,7 +20,6 @@ class PublishControls extends Component {
     documentIds: PropTypes.arrayOf(PropTypes.string),
     documents: PropTypes.arrayOf(PropTypes.object),
     isEnabled: PropTypes.bool,
-    isHashUpdating: PropTypes.bool,
     isPreview: PropTypes.bool,
     onAction: PropTypes.func,
     onAddProduct: PropTypes.func,
