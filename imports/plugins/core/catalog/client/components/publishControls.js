@@ -313,7 +313,7 @@ class PublishControls extends Component {
   }
 
   renderHashCalculation = () => {
-    const productDocument = this.props.documents && this.props.documents[0];
+    const productDocument = this.props && this.props.documents && this.props.documents[0];
 
     if (productDocument) {
       Meteor.call("products/getpublishedProductHash", productDocument._id, (err, result) => {
@@ -326,7 +326,9 @@ class PublishControls extends Component {
   }
 
   renderChangesNotification = () => {
-    const publishedProductHash = (this.props && this.props.documents && this.props.documents[0] && this.props.documents[0].publishedProducthash) || null;
+    const publishedProductHash = (this.props && this.props.documents && this.props.documents[0] && this.props.documents[0].publishedProductHash) || null;
+
+    // Calculate hash to compare
     this.renderHashCalculation();
     const currentProductHash = this.currentProductHash.get();
 
