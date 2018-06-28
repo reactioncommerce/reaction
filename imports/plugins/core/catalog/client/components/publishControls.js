@@ -332,6 +332,9 @@ class PublishControls extends Component {
 
     if (productDocument) {
       Meteor.call("products/getpublishedProductHash", productDocument._id, (err, result) => {
+        if (err) {
+          Alerts.toast(i18next.t("admin.catalogCalculateHashError", { err: err.reason }), "error");
+        }
         if (result) {
           this.currentProductHash.set(result);
         }
