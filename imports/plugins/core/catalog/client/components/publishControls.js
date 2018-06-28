@@ -228,7 +228,6 @@ class PublishControls extends Component {
           label="Publish"
           onClick={this.handlePublishClick}
           status="success"
-          tooltip={"This product has changes that need to be published before they are visible to your customers."}
           i18nKeyLabel="productDetailEdit.publish"
           {...buttonProps}
         />
