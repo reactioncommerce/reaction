@@ -1,14 +1,13 @@
 /* eslint camelcase: 0 */
 /* eslint prefer-arrow-callback:0 */
 import nock from "nock";
-
+import Random from "@reactioncommerce/random";
 import { Meteor } from "meteor/meteor";
 import { expect } from "meteor/practicalmeteor:chai";
 import { sinon } from "meteor/practicalmeteor:sinon";
 import { Factory } from "meteor/dburles:factory";
-import Random from "@reactioncommerce/random";
-import { Cart } from "lib/collections";
 import { Reaction } from "/server/api";
+import { Cart } from "/lib/collections";
 import { methods } from "./stripe.js";
 
 // Testing stripe using the npm Nock lib available here:
