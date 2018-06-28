@@ -223,7 +223,7 @@ class PublishControls extends Component {
       <div className="hidden-xs">
         {this.renderChangesNotification()}
         <Button
-          bezelStyle="outline"
+          bezelStyle="solid"
           disabled={isDisabled}
           label="Publish"
           onClick={this.handlePublishClick}
@@ -377,7 +377,7 @@ class PublishControls extends Component {
     // We don't use the `<Icon>` component here as we do not have layered
     // icons built in to the existing component
     return (
-      <span className={hashIndicator} style={{ fontSize: 12, position: "absolute", top: "2px", right: "8px" }}>
+      <span className={hashIndicator} style={{ fontSize: 11, position: "absolute", top: "2px", right: "4px" }}>
         <i className={primaryIcon} style={{ color: "#ffffff" }} />
         <i className={secondaryIcon} style={{ fontSize: "1.5em", color: "#f4c43c" }} />
       </span>
