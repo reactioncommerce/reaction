@@ -34,6 +34,9 @@ test("properly mutates the context object without user", async () => {
         tags: jasmine.any(Function),
         tagsByIds: jasmine.any(Function)
       },
+      cart: {
+        anonymousCartByCartId: jasmine.any(Function)
+      },
       shops: {
         shopById: jasmine.any(Function)
       }
@@ -73,6 +76,9 @@ test("properly mutates the context object with user", async () => {
         tag: jasmine.any(Function),
         tags: jasmine.any(Function),
         tagsByIds: jasmine.any(Function)
+      },
+      cart: {
+        anonymousCartByCartId: jasmine.any(Function)
       },
       shops: {
         shopById: jasmine.any(Function)
