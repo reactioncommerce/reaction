@@ -13,13 +13,14 @@ import {
 import { Translatable } from "/imports/plugins/core/ui/client/providers";
 
 /** TMP **/
-import { Reaction } from "/client/api";
+import { i18next, Reaction } from "/client/api";
 
 class PublishControls extends Component {
   static propTypes = {
     documentIds: PropTypes.arrayOf(PropTypes.string),
     documents: PropTypes.arrayOf(PropTypes.object),
     isEnabled: PropTypes.bool,
+    isHashUpdating: PropTypes.bool,
     isPreview: PropTypes.bool,
     onAction: PropTypes.func,
     onAddProduct: PropTypes.func,
@@ -40,14 +41,26 @@ class PublishControls extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      showDiffs: false
-    };
-
     this.currentProductHash = new ReactiveVar([]);
 
     this.handleToggleShowChanges = this.handleToggleShowChanges.bind(this);
     this.handlePublishClick = this.handlePublishClick.bind(this);
+  }
+
+  state = {
+    isHashUpdating: false,
+    showDiffs: false
+  };
+
+  componentWillReceiveProps() {
+    this.setState({
+      isHashUpdating: false
+    });
+  }
+
+  componentDidUpdate() {
+    // Re-calculate hash after publishing
+    this.renderHashCalculation();
   }
 
   handleToggleShowChanges() {
@@ -60,8 +73,9 @@ class PublishControls extends Component {
     if (this.props.onPublishClick) {
       this.props.onPublishClick(this.props.revisions);
 
-      // Re-calculate hash after publishing
-      this.renderHashCalculation();
+      this.setState({
+        isHashUpdating: true
+      });
     }
   }
 
@@ -328,6 +342,7 @@ class PublishControls extends Component {
 
   renderChangesNotification = () => {
     const publishedProductHash = (this.props && this.props.documents && this.props.documents[0] && this.props.documents[0].publishedProductHash) || null;
+    const { isHashUpdating } = this.state;
 
     // Calculate hash to compare
     this.renderHashCalculation();
