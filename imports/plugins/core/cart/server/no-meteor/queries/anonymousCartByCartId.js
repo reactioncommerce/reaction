@@ -1,7 +1,7 @@
 import { Meteor } from "meteor/meteor";
 
 /**
- * @name anoynymousCartbyCartId
+ * @name anonymousCartByCartId
  * @method
  * @memberof Cart/NoMeteorQueries
  * @summary Query the Cart collection for a cart with the provided cartId
@@ -11,7 +11,7 @@ import { Meteor } from "meteor/meteor";
  * @param {String} [params.token] - Anonymous cart token
  * @return {Object} - An anonymous cart.
  */
-export default async function anonymousCartByCartId(context, { cartId, token } = {}) {
+export default async function anonymousCartByCartId(context, { cartId } = {}) {
   const { collections } = context;
   const { Cart } = collections;
 
