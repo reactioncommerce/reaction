@@ -111,5 +111,21 @@ export default function submitPayment(paymentMethods) {
   // Calculate taxes
   Hooks.Events.run("afterCartUpdateCalculateTaxes", cartId);
 
-  return Collections.Cart.findOne(selector);
+  const updatedCart = Collections.Cart.findOne(selector);
+
+  // update workflow
+  Meteor.call("workflow/pushCartWorkflow", "coreCartWorkflow", "paymentSubmitted");
+
+  // create order
+  if (updatedCart && updatedCart.items && updatedCart.billing && updatedCart.billing[0].paymentMethod) {
+    Meteor.call("cart/copyCartToOrder", cart._id);
+  } else {
+    throw new Meteor.Error(
+      "server-error",
+      "An error occurred verifying payment method. Failed to save order."
+    );
+  }
+
+  // The cart has now been deleted by copyCartToOrder, but we'll return the one we have
+  return updatedCart;
 }
