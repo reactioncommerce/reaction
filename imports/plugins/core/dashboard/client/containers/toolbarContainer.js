@@ -5,7 +5,6 @@ import { composeWithTracker } from "@reactioncommerce/reaction-components";
 import { Reaction, i18next } from "/client/api";
 import { Tags, Shops } from "/lib/collections";
 import { AdminContextProvider } from "/imports/plugins/core/ui/client/providers";
-import { isRevisionControlEnabled } from "/imports/plugins/core/revisions/lib/api";
 
 const handleAddProduct = () => {
   Reaction.setUserPreferences("reaction-dashboard", "viewAs", "administrator");
@@ -22,6 +21,7 @@ const handleAddProduct = () => {
         if (currentTag) {
           Meteor.call("products/updateProductTags", productId, currentTag.name, currentTagId);
         }
+        Session.set("productGrid/selectedProducts", [productId]);
         // go to new product
         Reaction.Router.go("product", {
           handle: productId
@@ -81,7 +81,6 @@ function composer(props, onData) {
     packageButtons,
     dashboardHeaderTemplate: props.data.dashboardHeader,
     isPreview: Reaction.isPreview(),
-    isEnabled: isRevisionControlEnabled(),
     isActionViewAtRootView: Reaction.isActionViewAtRootView(),
     actionViewIsOpen: Reaction.isActionViewOpen(),
     hasCreateProductAccess: Reaction.hasPermission("createProduct", Meteor.userId(), Reaction.getShopId()),

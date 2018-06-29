@@ -1,7 +1,7 @@
 import SimpleSchema from "simpl-schema";
 import { check } from "meteor/check";
 import { Tracker } from "meteor/tracker";
-import { PackageConfig } from "/lib/collections/schemas/registry";
+import { PackageConfig } from "/lib/collections/schemas";
 import { registerSchema } from "@reactioncommerce/schemas";
 
 /**

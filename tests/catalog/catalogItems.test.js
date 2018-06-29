@@ -1,4 +1,4 @@
-import GraphTester from "../GraphTester";
+import TestApp from "../TestApp";
 // temp mocks
 import { internalShopId, opaqueShopId, shopName } from "../mocks/mockShop";
 import { internalTagIds } from "../mocks/mockTags";
@@ -12,24 +12,24 @@ import {
 // temp mocks
 import CatalogProductItemsFullQuery from "./CatalogProductItemsFullQuery.graphql";
 
-jasmine.DEFAULT_TIMEOUT_INTERVAL = 60000;
+jest.setTimeout(300000);
 
-let tester;
+let testApp;
 let query;
 beforeAll(async () => {
-  tester = new GraphTester();
-  await tester.start();
-  query = tester.query(CatalogProductItemsFullQuery);
-  await tester.insertPrimaryShop({ _id: internalShopId, name: shopName });
-  await Promise.all(internalTagIds.map((_id) => tester.collections.Tags.insert({ _id, shopId: internalShopId })));
-  await Promise.all(mockCatalogItems.map((mockCatalogItem) => tester.collections.Catalog.insert(mockCatalogItem)));
+  testApp = new TestApp();
+  await testApp.start();
+  query = testApp.query(CatalogProductItemsFullQuery);
+  await testApp.insertPrimaryShop({ _id: internalShopId, name: shopName });
+  await Promise.all(internalTagIds.map((_id) => testApp.collections.Tags.insert({ _id, shopId: internalShopId })));
+  await Promise.all(mockCatalogItems.map((mockCatalogItem) => testApp.collections.Catalog.insert(mockCatalogItem)));
 });
 
 afterAll(async () => {
-  await tester.collections.Shops.remove({ _id: internalShopId });
-  await tester.collections.Catalog.remove({ _id: internalCatalogItemIds[0] });
-  await tester.collections.Catalog.remove({ _id: internalCatalogItemIds[1] });
-  tester.stop();
+  await testApp.collections.Shops.remove({ _id: internalShopId });
+  await testApp.collections.Catalog.remove({ _id: internalCatalogItemIds[0] });
+  await testApp.collections.Catalog.remove({ _id: internalCatalogItemIds[1] });
+  testApp.stop();
 });
 
 test("get all items for shop", async () => {

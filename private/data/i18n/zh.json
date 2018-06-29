@@ -513,20 +513,6 @@
           "isCommercial": "这是商业地址。"
         }
       },
-      "revisions": {
-        "isDisabled": "版本控制已禁用。将立即发布任何更改。",
-        "isEnabled": "版本控制产品启用。任何更改都将是需要看到客户之前公布。",
-        "unpublishedChanges": "未发布更改",
-        "publishChanges": "发布更改",
-        "showChanges": "显示更改",
-        "hideChanges": "隐藏更改",
-        "discardChanges": "放弃更改",
-        "changedPublished": "更改已成功发布",
-        "changesDiscarded": "成功放弃更改",
-        "noChanges": "无更改",
-        "noChangesPublished": "没有要发布的更改",
-        "noChangesDiscarded": "没有需要放弃的更改"
-      },
       "address": {
         "country": "国家",
         "fullName": "姓名",

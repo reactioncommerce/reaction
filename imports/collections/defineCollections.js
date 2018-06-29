@@ -22,7 +22,6 @@ export default function defineCollections(db, collections) {
     Orders: db.collection("Orders"),
     Packages: db.collection("Packages"),
     Products: db.collection("Products"),
-    Revisions: db.collection("Revisions"),
     roles: db.collection("roles"),
     SellerShops: db.collection("SellerShops"),
     Shipping: db.collection("Shipping"),

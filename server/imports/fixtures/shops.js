@@ -160,7 +160,7 @@ const shop = {
     enabled: true
   }],
   workflow: {
-    status: "active"
+    status: "new"
   },
   public: true,
   brandAssets: [

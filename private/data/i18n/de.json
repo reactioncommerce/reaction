@@ -513,20 +513,6 @@
           "isCommercial": "This is a commercial address."
         }
       },
-      "revisions": {
-        "isDisabled": "Die Revisionsverwaltung ist deaktiviert. Jegliche Änderungen werden sofort veröffentlicht.",
-        "isEnabled": "Revisionskontrolle für Produkte aktiviert. Alle Änderungen werden müssen, bevor sie an den Kunden sichtbar veröffentlicht.",
-        "unpublishedChanges": "Unveröffentlichte Änderungen",
-        "publishChanges": "Änderungen veröffentlichen",
-        "showChanges": "Änderungen anzeigen",
-        "hideChanges": "Änderungen verbergen",
-        "discardChanges": "Änderungen verwerfen",
-        "changedPublished": "Die Änderungen wurden erfolgreich veröffentlicht",
-        "changesDiscarded": "Änderungen erfolgreich verworfen",
-        "noChanges": "Keine Änderungen",
-        "noChangesPublished": "Es gibt keine Änderungen zu veröffentlichen",
-        "noChangesDiscarded": "Keine zu verwerfenden Änderungen gefunden"
-      },
       "address": {
         "country": "Land",
         "fullName": "Vor- und Zuname",

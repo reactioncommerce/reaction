@@ -53,7 +53,7 @@ Meteor.methods({
    * @summary This send the sms to the user
    * @param {String} message - The message to send
    * @param {String} userId - The user to receive the message
-   * @param {String} shopId - The currenct shopId
+   * @param {String} shopId - The current shopId
    * @return {object} returns result
    */
   "sms/send": (message, userId, shopId) => {
