@@ -937,6 +937,8 @@ Meteor.methods({
       return numFlaggedAsDeleted;
     }
 
+    Hooks.Events.run("afterRemoveCatalogProduct", this.userId, product);
+
     Logger.debug(`${numFlaggedAsDeleted} products have been flagged as deleted`);
   },
 
