@@ -1,7 +1,7 @@
 import { decodeCatalogItemOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/catalogItem";
 
 /**
- * @name "Query.catalogItemProduct"
+ * @name Query.catalogItemProduct
  * @method
  * @memberof Catalog/GraphQL
  * @summary Get a CatalogItemProduct from the Catalog

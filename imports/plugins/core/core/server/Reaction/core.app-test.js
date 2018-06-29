@@ -129,7 +129,31 @@ describe("Server/API/Core", () => {
     });
   });
 
+  describe("#isShopPrimary", () => {
+    let primaryShopId;
+
+    beforeEach(() => {
+      primaryShopId = randomString();
+    });
+
+    it("is true when the current shop is the Primary Shop", () => {
+      sandbox.stub(core, "getShopId", () => primaryShopId);
+      sandbox.stub(core, "getPrimaryShopId", () => primaryShopId);
+
+      expect(core.isShopPrimary()).to.be.true;
+    });
+
+    it("is false when the current shop is a Merchant Shop", () => {
+      const shopId = `xxx${primaryShopId}xxx`;
+
+      sandbox.stub(core, "getShopId", () => shopId);
+      sandbox.stub(core, "getPrimaryShopId", () => primaryShopId);
+
+      expect(core.isShopPrimary()).to.be.false;
+    });
+  });
+
   function randomString() {
-    return new Date().getTime().toString();
+    return Math.random().toString(36);
   }
 });
