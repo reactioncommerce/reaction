@@ -1,10 +1,10 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { composeWithTracker } from "@reactioncommerce/reaction-components";
-import PublishControls from "../components/publishControls";
 import { Meteor } from "meteor/meteor";
-import TranslationProvider from "/imports/plugins/core/ui/client/providers/translationProvider";
+import { composeWithTracker } from "@reactioncommerce/reaction-components";
 import { Reaction, i18next } from "/client/api";
+import TranslationProvider from "/imports/plugins/core/ui/client/providers/translationProvider";
+import PublishControls from "../components/publishControls";
 
 /*
  * PublishContainer is a container component connected to Meteor data source.

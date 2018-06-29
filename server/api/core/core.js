@@ -413,6 +413,17 @@ export default {
   },
 
   /**
+   * @name isShopPrimary
+   * @summary Whether the current shop is the Primary Shop (vs a Merchant Shop)
+   * @method
+   * @memberof Core
+   * @return {Boolean}
+   */
+  isShopPrimary() {
+    return this.getShopId() === this.getPrimaryShopId();
+  },
+
+  /**
    * @name getShopIdByDomain
    * @method
    * @memberof Core

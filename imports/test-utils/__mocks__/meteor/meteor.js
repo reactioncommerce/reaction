@@ -1,16 +1,11 @@
-const findOneMock = jest.fn().mockName("Meteor.users.rawCollection().findOne");
+import ReactionError from "../../../../imports/plugins/core/graphql/server/no-meteor/ReactionError";
 
-class mockErrorClass {
-  constructor(error) {
-    this.error = error;
-    this.message = error;
-  }
-}
+const findOneMock = jest.fn().mockName("Meteor.users.rawCollection().findOne");
 
 export const Meteor = {
   apply: jest.fn().mockName("Meteor.apply"),
   call: jest.fn().mockName("Meteor.call"),
-  Error: mockErrorClass,
+  Error: ReactionError,
   isClient: false,
   isServer: true,
   methods: jest.fn().mockName("Meteor.methods"),
