@@ -618,9 +618,6 @@ Meteor.methods({
       }
 
       Logger.debug(`cart: deleted cart item variant id ${cartItem.variants._id}`);
-
-      // Clear inventory reservation
-      Meteor.call("inventory/clearReserve", [cartItem]);
       // Calculate discounts
       Hooks.Events.run("afterCartUpdateCalculateDiscount", cart._id);
       // TODO: HACK: When calling update shipping the changes to the cart have not taken place yet
@@ -664,7 +661,6 @@ Meteor.methods({
     // If quantity is provided, then set cartItem to it, so that quantity
     // provided will be cleared in the inventory.
     cartItem.quantity = quantity;
-    Meteor.call("inventory/clearReserve", [cartItem]);
     // Calculate discounts
     Hooks.Events.run("afterCartUpdateCalculateDiscount", cart._id);
     Logger.debug(`cart: removed variant ${cartItem._id} quantity of ${quantity}`);
