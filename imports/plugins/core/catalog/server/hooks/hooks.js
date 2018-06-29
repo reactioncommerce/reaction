@@ -9,7 +9,7 @@ import { Hooks } from "/server/api";
  * @private
  */
 Hooks.Events.add("afterRemoveCatalogProduct", (userId, doc) => {
-  // If this is a parent product, update the `Catalog` collection
+  // If this is a top level product, update the `Catalog` collection
   // to set `isDeleted` to true
   if (doc.type === "simple") {
     Catalog.update({
