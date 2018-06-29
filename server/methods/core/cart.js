@@ -503,6 +503,12 @@ Meteor.methods({
     // we need to get the parent of the option to check if parcel info is stored there
     const immediateAncestors = variant.ancestors.filter((ancestor) => ancestor !== product._id);
     const immediateAncestor = Collections.Products.findOne({ _id: immediateAncestors[0] });
+
+    // Get default parcel size from primary shop
+    const { defaultParcelSize } = Collections.Shops.findOne({
+      _id: product.shopId || Reaction.getShopId()
+    });
+
     let parcel = null;
     if (immediateAncestor) {
       if (immediateAncestor.weight || immediateAncestor.height || immediateAncestor.width || immediateAncestor.length) {
@@ -513,6 +519,14 @@ Meteor.methods({
     if (variant.weight || variant.height || variant.width || variant.length) {
       parcel = { weight: variant.weight, height: variant.height, width: variant.width, length: variant.length };
     }
+    // Merge parcel with defaultParcel
+    // so that all fields are filled.
+    parcel = {
+      ...(defaultParcelSize || {}),
+      ...(parcel || {})
+    };
+
+
     // cart variant doesn't exist
     let updateResult;
     const newItemId = Random.id();

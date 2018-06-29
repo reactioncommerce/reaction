@@ -75,6 +75,10 @@
           "deliveryBegin": "Shipping Est.",
           "deliveryEnd": "Delivery Est."
         }
+      },
+      "defaultParcelSize": {
+        "label": "Parcel Size",
+        "saveFailed": "Default parcel size not updated"
       }
     }
   }

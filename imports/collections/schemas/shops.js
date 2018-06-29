@@ -86,6 +86,36 @@ export const Currency = new SimpleSchema({
 registerSchema("Currency", Currency);
 
 /**
+ * @name ParcelSize
+ * @memberof schemas
+ * @type {SimpleSchema}
+ * @property {Number} weight default value: 8lb
+ * @property {Number} height default value: 6in
+ * @property {Number} length default value: 11.25in
+ * @property {Number} width default value: 8.75in
+ */
+export const ParcelSize = new SimpleSchema({
+  weight: {
+    type: Number,
+    min: 0
+  },
+  height: {
+    type: Number,
+    min: 0
+  },
+  length: {
+    type: Number,
+    min: 0
+  },
+  width: {
+    type: Number,
+    min: 0
+  }
+});
+
+registerSchema("ParcelSize", ParcelSize);
+
+/**
  * @name Locale
  * @memberof Schemas
  * @type {SimpleSchema}
@@ -421,6 +451,10 @@ export const Shop = new SimpleSchema({
   },
   "defaultSellerRoles.$": {
     type: String
+  },
+  "defaultParcelSize": {
+    type: ParcelSize,
+    optional: true
   },
   "layout": {
     type: Array,

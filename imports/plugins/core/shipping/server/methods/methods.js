@@ -1,6 +1,6 @@
 import { Meteor } from "meteor/meteor";
-import { check } from "meteor/check";
-import { Shipping, Packages } from "/lib/collections";
+import { check, Match } from "meteor/check";
+import { Shipping, Packages, Shops } from "/lib/collections";
 import { Reaction } from "/server/api";
 import { shippingRoles } from "../lib/roles";
 
@@ -62,6 +62,40 @@ export const methods = {
         });
       }
     }
+  },
+
+  /**
+   * @method shipping/updateParcelSize
+   * @summary update defaultParcelSize
+   * @param {Object} parcel - size to be updated
+   * @since 1.1.12
+  */
+  "shipping/updateParcelSize"(parcel) {
+    check(parcel, {
+      weight: Match.Optional(Number),
+      height: Match.Optional(Number),
+      length: Match.Optional(Number),
+      width: Match.Optional(Number)
+    });
+
+    if (!Reaction.hasPermission(shippingRoles)) {
+      throw new Meteor.Error("access-denied", "Access Denied");
+    }
+
+    const modifier = Object.keys(parcel).reduce((mod, key) => {
+      mod[`defaultParcelSize.${key}`] = parcel[key];
+      return mod;
+    }, {});
+
+    return Shops.update({
+      _id: Reaction.getShopId()
+    }, {
+      $set: modifier
+    }, (error) => {
+      if (error) {
+        throw new Meteor.Error("server-error", error.message);
+      }
+    });
   }
 };
 
