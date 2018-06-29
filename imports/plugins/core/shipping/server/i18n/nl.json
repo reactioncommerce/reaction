@@ -5,75 +5,75 @@
     "reaction-shipping": {
       "admin": {
         "dashboard": {
-          "shippingLabel": "Verzenden",
-          "shippingTitle": "Verzenden",
-          "shippingDescription": "Bieden verzendkosten"
+          "shippingLabel": "Verzendingen",
+          "shippingTitle": "Verzendingen",
+          "shippingDescription": "Verzendkosten configureren"
         },
         "settings": {
-          "shippingLabel": "Verzenden"
+          "shippingLabel": "Verzendingen"
         }
       },
       "checkoutShipping": {
-        "selectShippingOption": "Kies verzendoptie",
-        "noShippingMethods": "Geen verzendkosten methoden worden geconfigureerd.",
-        "contactAdmin": "Neem contact op met de winkelbeheerder.",
-        "configureNow": "Configureren nu.",
+        "selectShippingOption": "Kies verzendmethode",
+        "noShippingMethods": "Er zijn geen verzendmethoden geconfigureerd.",
+        "contactAdmin": "Neem contact op met de administrator.",
+        "configureNow": "Nu configureren.",
         "shipping": "Verzenden"
       },
       "shipping": {
-        "addShippingProvider": "Voeg scheepvaart provider",
-        "editShippingProvider": "Bewerken scheepvaart provider",
-        "addShippingMethod": "Voeg verzendmethode",
-        "editShippingMethod": "Bewerken verzendmethode",
-        "deleteShippingMethod": "Verwijder verzendmethode",
-        "noSettingsForThisView": "Geen instellingen voor dit standpunt",
-        "noShippingMethods": "Geen verzendkosten methoden worden geconfigureerd.",
-        "removeShippingMethodConfirm": "Bent u zeker dat u wilt {{method}} verwijderen?",
-        "removeShippingMethodTitle": "Verwijder Verzendmethode",
+        "addShippingProvider": "Vervoerder toevoegen",
+        "editShippingProvider": "Vervoerder bewerken",
+        "addShippingMethod": "Verzendmethode toevoegen",
+        "editShippingMethod": "Verzendmethode bewerken",
+        "deleteShippingMethod": "Verzendmethode verwijderen",
+        "noSettingsForThisView": "Er zijn geen instellingen voor deze weergave",
+        "noShippingMethods": "Er zijn geen verzendmethoden geconfigureerd.",
+        "removeShippingMethodConfirm": "Weet u zeker dat u {{method}} wilt verwijderen?",
+        "removeShippingMethodTitle": "Verzendmethode verwijderen",
         "shippingMethodDeleted": "Deze verzendmethode is verwijderd.",
-        "removeShippingProvider": "Verwijder Shipping Provider",
-        "removeShippingProviderConfirm": "Bent u zeker dat u wilt {{provider}} verwijderen?",
-        "shippingProviderSaved": "Shipping provider opgeslagen.",
-        "shippingProviderUpdated": "Verzending provider gegevens bijgewerkt.",
-        "shippingMethodRateAdded": "Verzendmethode snelheid toegevoegd.",
-        "shippingMethodRateUpdated": "Verzendmethode rate bijgewerkt.",
+        "removeShippingProvider": "Vervoerder verwijderen",
+        "removeShippingProviderConfirm": "Weet u zeker dat dat u {{provider}} wilt verwijderen?",
+        "shippingProviderSaved": "Vervoerder opgeslagen.",
+        "shippingProviderUpdated": "Vervoerder is bijgewerkt.",
+        "shippingMethodRateAdded": "Verzendmethode is opgeslagen.",
+        "shippingMethodRateUpdated": "Verzendmethode is bijgewerkt.",
         "name": "Naam",
-        "label": "Etiket",
+        "label": "Label",
         "group": "Groep",
         "cost": "Kosten",
-        "handling": "behandeling",
-        "rate": "Snelheid",
+        "handling": "Afhandelingskosten",
+        "rate": "Tarief",
         "enabled": "Ingeschakeld",
         "disabled": "Gehandicapte",
-        "addRate": "tarief toe te voegen",
-        "updateRate": "Update {{name}} rate",
-        "addNewCondition": "Voeg een nieuwe voorwaarde",
-        "deleteCondition": "Verwijder conditie",
+        "addRate": "Tarief toevoegen",
+        "updateRate": "Tarief {{name}} bijwerken",
+        "addNewCondition": "Voeg een nieuwe voorwaarde toe",
+        "deleteCondition": "Voorwaarde verwijderen",
         "provider": {
-          "name": "service Code",
-          "label": "openbare Label",
+          "name": "Servicecode",
+          "label": "Publieke naam",
           "enabled": "Ingeschakeld"
         }
       },
       "shippingMethod": {
-        "name": "methode Naam",
-        "label": "openbare Label",
+        "name": "Naam",
+        "label": "Publieke naam",
         "group": "Groep",
         "cost": "Kosten",
-        "handling": "behandeling",
-        "rate": "Snelheid",
+        "handling": "Afhandelingskosten",
+        "rate": "Tarief",
         "enabled": "Ingeschakeld",
-        "matchingCartRanges": "Matching winkelwagen Ranges",
+        "matchingCartRanges": "Van toepassing op",
         "validRanges": {
-          "begin": "Beginnen",
+          "begin": "Begin",
           "end": "Einde"
         },
-        "matchingLocales": "matching Locales",
+        "matchingLocales": "Van toepassing op",
         "validLocales": {
           "origination": "Van",
-          "destination": "Naar",
-          "deliveryBegin": "Shipping Est.",
-          "deliveryEnd": "Levering Est."
+          "destination": "Tot",
+          "deliveryBegin": "Geschatte verzenddatum",
+          "deliveryEnd": "Geschatte leverdatum"
         }
       }
     }

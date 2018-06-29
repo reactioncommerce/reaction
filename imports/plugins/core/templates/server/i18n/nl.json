@@ -6,11 +6,11 @@
     "reaction-templates": {
       "admin": {
         "settings": {
-          "templateSettingsLabel": "sjabloon Settings"
+          "templateSettingsLabel": "Sjablooninstellingen"
         }
       },
       "templateGrid": {
-        "noTemplatesFound": "Geen templates gevonden",
+        "noTemplatesFound": "Geen sjablonen gevonden",
         "columns": {
           "title": "Titel",
           "type": "Type",
@@ -19,15 +19,15 @@
       },
       "templateUpdateForm": {
         "emailTemplates": {
-          "updateEmailTemplate": "Update e-mail template"
+          "updateEmailTemplate": "E-mailsjablonen bijwerken"
         },
         "reactTemplates": {
-          "updateReactTemplate": "Update Reageer template",
-          "updateUnavailable": "Reageer templates kunnen niet worden bewerkt via deze interface"
+          "updateReactTemplate": "React-sjabloon bijwerken",
+          "updateUnavailable": "React-sjablonen kunnen via deze interface niet bijgewerkt worden"
         },
         "alerts": {
-          "templateUpdated": "Sjabloon succesvol bijgewerkt",
-          "failedToUpdate": "Mislukt sjabloon bij te werken: {{err}}"
+          "templateUpdated": "Sjablonen met succes bijgewerkt",
+          "failedToUpdate": "Niet gelukt om het sjabloon bij te werken: {{err}}"
         }
       }
     }

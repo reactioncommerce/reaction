@@ -1,96 +1,34 @@
 [{
-  "i18n": "nl",
-  "ns": "reaction-orders",
+  "language": "English",
+  "i18n": "en",
+  "ns": "reaction-payments",
   "translation": {
-    "reaction-orders": {
-      "notFound": "Bestelling niet gevonden",
-      "order": {
-        "applyRefundToThisOrder": "Solliciteer terugbetaling van {{currencySymbol}}{{refund}} deze bestelling?",
-        "applyRefundDuringCancelOrder": "Dit zal het bestelbedrag van {{currencySymbol}}{{invoiceTotal}} terugbetalen",
-        "cancelOrder": "Wilt u deze bestelling annuleren?",
-        "cancelOrderLabel": "Annuleer bestelling",
-        "cancelOrderThenRestock": "Ja, en opnieuw",
-        "cancelOrderNoRestock": "Ja, maar geen restocking"
-      },
+    "reaction-payments": {
       "admin": {
         "shortcut": {
-          "ordersLabel": "orders"
-        },
-        "orderRisk": {
-          "high": "Hoog risico",
-          "riskCapture": "Capture Order Met Risicostarief?",
-          "riskCaptureWarn": "Je staat op het punt om de bestelling vast te leggen met een ladingrisico. Bevestig voordat u verder gaat."
+          "paymentsLabel": "Betalingen",
+          "paymentsTitle": "Betalingen"
         },
         "dashboard": {
-          "ordersLabel": "orders",
-          "ordersTitle": "orders",
-          "ordersDescription": "Vervul uw bestellingen",
-          "clearSearch": "Duidelijk"
+          "paymentsLabel": "Betalingen",
+          "paymentsTitle": "Betalingen",
+          "paymentsDescription": "Betalingsconfiguratie"
         },
-        "orderWorkflow": {
-          "ordersList": {
-            "date": "Datum",
-            "orderId": "Order ID",
-            "total": "Totaal",
-            "emailNotFound": "E-mail niet beschikbaar"
-          },
-          "summary": {
-            "cardTitle": "Overzicht",
-            "copyOrderLink": "Kopieer Order Link"
-          },
-          "invoice": {
-            "cardTitle": "Factuur",
-            "adjustedTotal": "aangepaste Total",
-            "capturedTotal": "gevangen Totaal",
-            "refund": "Terugbetaling",
-            "refundLabel": "Voor terugbetaling",
-            "refundItem": "Items",
-            "refundItemAmount": "Totaal",
-            "refundTotal": "Restitutie Totaal"
-          },
-          "fulfillment": "Vervulling",
-          "orderDetails": "Bestel Details",
-          "shipmentTracking": "Verzending"
+        "settings": {
+          "paymentSettingsLabel": "Betaling"
         },
-        "table": {
-          "headers": {
-            "name": "Naam",
-            "email": "E-mailinstellingen",
-            "date": "Datum",
-            "id": "ID",
-            "total": "Totaal",
-            "shipping": "Verzenden",
-            "status": "Toestand"
-          },
-          "filter": {
-            "status": "Toestand",
-            "dateRange": "Datumbereik",
-            "shippingStatus": "Verzendstatus",
-            "new": "Nieuw",
-            "captured": "betaling Gevangen",
-            "shipped": "verzonden",
-            "completed": "Voltooid",
-            "canceled": "Geannuleerd",
-            "refunded": "terugbetaald"
-          },
-          "search": {
-            "clearSearch": "Duidelijk",
-            "placeholder": "Zoekopdrachten"
-          },
-          "data": {
-            "status": {
-              "new": "nieuwe",
-              "coreOrderWorkflow/created": "gemaakt",
-              "coreOrderWorkflow/processing": "Verwerken",
-              "coreOrderWorkflow/completed": "Voltooid",
-              "coreOrderWorkflow/canceled": "Geannuleerd",
-              "coreOrderWorkflow/picked": "uitgezocht",
-              "coreOrderWorkflow/packed": "overvol",
-              "coreOrderWorkflow/labeled": "geëtiketteerd",
-              "coreOrderWorkflow/shipped": "verzonden"
-            }
-          }
+        "paymentSettings": {
+          "paymentMethod": "Standaardprovider"
         }
+      },
+      "checkoutPayment": {
+        "addPaymentToCompleteOrder": "Selecteer een betaalmethode om de bestelling af te ronden",
+        "processingError": "Er is een probleem met uw betaling.",
+        "completeYourOrder": "Uw bestelling afronden",
+        "noPaymentMethods": "Er zijn geen betaalmethoden geconfigureerd.",
+        "contactAdmin": "Neem contact op met de klantenservice.",
+        "configureNow": "Nu configureren.",
+        "failedToPlaceOrder": "Niet gelukt om de bestelling te plaatsen."
       }
     }
   }

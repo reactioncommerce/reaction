@@ -11,34 +11,34 @@
         "dashboard": {
           "taxesLabel": "Belastingen",
           "taxesTitle": "Belastingen",
-          "taxesDescription": "tax configuratie"
+          "taxesDescription": "Belastingen configureren"
         },
         "taxGrid": {
           "taxCode": "Code",
-          "rate": "Snelheid",
+          "rate": "Tarief",
           "country": "Land",
           "region": "Regio",
-          "postal": "Post"
+          "postal": "Postcode"
         },
         "settings": {
-          "taxSettingsLabel": "tax-instellingen"
+          "taxSettingsLabel": "Belastinginstellingen"
         },
         "taxSettings": {
           "noCustomTaxRatesFound": "Geen aangepaste belastingtarieven gevonden.",
-          "shopCustomTaxRatesSaved": "Custom belastingtarief opgeslagen.",
-          "shopCustomTaxRatesFailed": "Fout bij het opslaan belastingtarief.",
-          "shopTaxMethodsSaved": "Opgeslagen belasting methode.",
-          "shopTaxMethodsAlreadySaved": "Belastingcodes al geladen",
-          "shopTaxMethodsFailed": "Mislukt het opslaan van fiscale methode.",
+          "shopCustomTaxRatesSaved": "Aangepast belastingtarief opgeslagen.",
+          "shopCustomTaxRatesFailed": "Fout bij het opslaan van het belastingtarief.",
+          "shopTaxMethodsSaved": "Belastingcode is opgeslagen.",
+          "shopTaxMethodsAlreadySaved": "Belastingcode is geladen",
+          "shopTaxMethodsFailed": "Get opslaan van de belastingcode is mislukt.",
           "customRatesLabel": "Aangepaste tarieven",
           "customRatesDescription": "Aangepaste tarieven",
           "taxCode": "BTW-code",
-          "taxShipping": "omvatten Shipping",
-          "taxRate": "Snelheid",
-          "discountsIncluded": "omvatten Kortingen",
-          "taxable": "belastbaar",
-          "nottaxable": "niet belastbaar",
-          "confirmRateDelete": "Bevestig belastingtarief verwijdering"
+          "taxShipping": "Inclusief verzending",
+          "taxRate": "Tarief",
+          "discountsIncluded": "Inclusief korting",
+          "taxable": "Belastbaar",
+          "nottaxable": "Niet belastbaar",
+          "confirmRateDelete": "Bevestig de verwijdering van dit tarief"
         }
       }
     }

@@ -7,16 +7,16 @@
         "limitedSupply": "Beperkte voorraad"
       },
       "cartCompleted": {
-        "yourCart": "Jouw winkelwagen",
-        "discountTotal": "Korting Totaal",
-        "orderTotal": "totale bestelling",
-        "fulfilledBy": "Vervuld door",
-        "quantityTotal": "Aantal Totaal",
+        "yourCart": "Uw winkelwagen",
+        "discountTotal": "Totaal korting",
+        "orderTotal": "Totaal bestelling",
+        "fulfilledBy": "Verzorgd door",
+        "quantityTotal": "Totaal aantal",
         "orderSubtotal": "Subtotaal",
         "orderShipping": "Verzenden",
-        "orderTax": "tax-instellingen",
-        "trackYourDelivery": "De updates worden verzonden naar",
-        "registerGuest": "Hallo! Voeg een email toe en ontvang bestelupdates"
+        "orderTax": "Belasting",
+        "trackYourDelivery": "De notificaties worden verzonden naar",
+        "registerGuest": "Hallo! Voeg een email toe en ontvang notificaties over uw bestelling"
       }
     }
   }

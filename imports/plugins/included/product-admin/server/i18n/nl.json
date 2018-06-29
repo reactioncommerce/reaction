@@ -5,13 +5,13 @@
     "reaction-product-admin": {
       "admin": {
         "settings": {
-          "productSettingsLabel": "productinstellingen",
+          "productSettingsLabel": "Productinstellingen",
           "productDetailsLabel": "Productdetails"
         }
       },
       "productDetailEdit": {
-        "template": "sjabloon Settings",
-        "templateSelectPlaceholder": "Selecteer een template"
+        "template": "Sjablooninstellingen",
+        "templateSelectPlaceholder": "Kies een sjabloon"
       }
     }
   }

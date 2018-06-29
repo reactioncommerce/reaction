@@ -11,15 +11,15 @@
         "dashboard": {
           "catalogLabel": "Catalogus",
           "catalogTitle": "Catalogus",
-          "catalogDescription": "Marketplace Catalog"
+          "catalogDescription": "Marketplace catalogus"
         },
         "settings": {
           "catalogSettingsLabel": "Catalogusinstellingen",
           "catalogSettingsTitle": "Catalogusinstellingen",
-          "catalogSettingsDescription": "Marketplace Catalog"
+          "catalogSettingsDescription": "Marketplace catalogus"
         },
         "catalogSettings": {
-          "productRevisionsLabel": "product revisies"
+          "productRevisionsLabel": "Productrevisies"
         }
       }
     }

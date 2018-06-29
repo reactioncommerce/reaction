@@ -7,22 +7,22 @@
         "dashboard": {
           "shippoLabel": "Shippo",
           "shippoTitle": "Shippo",
-          "shippoDescription": "Verzending labels en pakket tracking"
+          "shippoDescription": "Verzendlabels en pakketten tracken"
         },
         "shippingGrid": {
-          "carrier": "Carrier",
+          "carrier": "Vervoerder",
           "enabled": "Ingeschakeld"
         },
         "shippingSettings": {
-          "noCarriersFound": "Geen verzendkosten vervoerders geconfigureerd.",
-          "editApiKey": "Bewerken API Key",
-          "carrierSaved": "Carrier succesvol opgeslagen.",
-          "carrierFailed": "Fout updaten carrier.",
-          "refresh": "Vernieuwen methoden"
+          "noCarriersFound": "Geen verzendmethode geconfigureerd.",
+          "editApiKey": "API key bijwerken",
+          "carrierSaved": "Vervoerder succesvol opgeslagen.",
+          "carrierFailed": "Fout bij het bijwerken van de vervoerder.",
+          "refresh": "Verzendmethoden vernieuwen"
         }
       },
       "shippo": {
-        "connectedAndSaved": "Instellingen opgeslagen! Shippo API is nu ingeschakeld."
+        "connectedAndSaved": "Instellingen opgeslagen! De Shippo API is nu ingeschakeld."
       }
     }
   }

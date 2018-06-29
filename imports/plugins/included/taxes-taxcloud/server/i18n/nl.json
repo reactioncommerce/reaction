@@ -17,8 +17,8 @@
         "taxSettings": {
           "taxcloudLabel": "TaxCloud",
           "taxcloudSettingsLabel": "TaxCloud",
-          "taxcloudCredentials": "geloofsbrieven toe te voegen aan te schakelen",
-          "taxcloudGetCredentialsURL": "Haal ze hier"
+          "taxcloudCredentials": "Gegevens toevoegen of wijzigen",
+          "taxcloudGetCredentialsURL": "Haal ze hier op"
         }
       }
     }

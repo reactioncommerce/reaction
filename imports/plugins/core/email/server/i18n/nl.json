@@ -11,14 +11,14 @@
         },
         "logs": {
           "headers": {
-            "emailLogs": "E-mail Logs",
+            "emailLogs": "E-mail logboeken",
             "email": "E-mailinstellingen",
             "data": {
               "subject": "Onderwerp",
               "to": "Naar"
             },
             "sent": "Verzonden",
-            "status": "Toestand",
+            "status": "Status",
             "updated": "Verzonden"
           },
           "noEmails": "Er zijn nog geen e-mails verzonden",
@@ -33,12 +33,12 @@
           "emailSettingsTitle": "E-mailinstellingen",
           "emailSettingsDescription": "E-mailinstellingen",
           "fieldNotSet": "Niet ingesteld",
-          "status": "Toestand",
+          "status": "Status",
           "service": "Service",
           "user": "Gebruiker",
           "password": "Wachtwoord",
-          "host": "gastheer",
-          "port": "Haven",
+          "host": "Host",
+          "port": "Poort",
           "passwordShow": "Tonen",
           "passwordHide": "Verbergen"
         }
@@ -53,15 +53,15 @@
         },
         "settings": {
           "selectService": "Kies een service ...",
-          "custom": "gewoonte"
+          "custom": "Aangepast"
         },
         "logs": {
           "headers": {
-            "emailLogs": "E-mail Logs",
+            "emailLogs": "E-mail logboeken",
             "email": "E-mailinstellingen",
             "subject": "Onderwerp",
             "sent": "Verzonden",
-            "status": "Toestand"
+            "status": "Status"
           },
           "noEmails": "Er zijn nog geen e-mails verzonden",
           "limit": "Aantal",
@@ -74,15 +74,15 @@
           "missingService": "Kies een mailprovider dienst",
           "userPassRequired": "SMTP-gebruikersnaam en wachtwoord vereist zijn voor {{service}}",
           "allFieldsRequired": "Alle velden zijn verplicht voor een aangepaste service!",
-          "portNaN": "De haven moet een getal zijn!",
+          "portNaN": "Het poortnmmer moet een getal zijn!",
           "connectionFailed": "Verbinding mislukt!",
-          "saveAnyway": "Wilt u de instellingen toch te redden?",
+          "saveAnyway": "Wilt u de instellingen toch opslaan?",
           "saveSuccess": "Mail-instellingen opgeslagen.",
           "saveFailed": "Kan mail instellingen op te slaan. {{error}}",
-          "cantSendEmail": "Server Error: Kan geen email melding sturen.",
-          "emailSent": "E-mail melding verzonden.",
-          "addOrderEmailFailed": "Het toevoegen van e-mail naar bestelling mislukt",
-          "addCartEmailFailed": "Het toevoegen van e-mail naar cart is mislukt"
+          "cantSendEmail": "Server Error: Kan geen e-mail versturen.",
+          "emailSent": "E-mail verzonden.",
+          "addOrderEmailFailed": "Het toevoegen van e-mailadres voor bestelnotificaties is mislukt",
+          "addCartEmailFailed": "Het toevoegen van e-emailadres voor winkelwagen is mislukt"
         }
       }
     }

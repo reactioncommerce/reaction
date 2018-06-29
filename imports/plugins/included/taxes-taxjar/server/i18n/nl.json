@@ -17,8 +17,8 @@
         "taxSettings": {
           "taxjarLabel": "TaxJar",
           "taxjarSettingsLabel": "TaxJar",
-          "taxjarCredentials": "geloofsbrieven toe te voegen aan te schakelen",
-          "taxjarGetCredentialsURL": "Haal ze hier"
+          "taxjarCredentials": "Gegevens toevoegen of wijzigen",
+          "taxjarGetCredentialsURL": "Haal ze hier op"
         }
       }
     }

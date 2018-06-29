@@ -5,26 +5,26 @@
     "reaction-marketplace": {
       "marketplace": {
         "becomeSeller": "Word een verkoper",
-        "errorCannotCreateShop": "Kon geen winkel voor huidige gebruiker {{user}} maken",
-        "yourShopIsReady": "Uw winkel is nu klaar!"
+        "errorCannotCreateShop": "Kon geen winkel aanmaken voor {{user}}",
+        "yourShopIsReady": "Uw winkel is gereed!"
       },
       "marketplaceShops": {
         "headers": {
           "name": "Winkelnaam",
-          "emails": "Contact email",
-          "workflow": "Toestand"
+          "emails": "E-mailadres",
+          "workflow": "Status"
         }
       },
       "app": {
-        "shops": "winkels",
+        "shops": "Winkels",
         "myShop": "Mijn winkel"
       },
       "admin": {
         "connect": {
-          "stripeConnectNotEnabled": "Stripe Connect is niet ingeschakeld voor deze toepassing. Neem contact op met de beheerder.",
+          "stripeConnectNotEnabled": "Stripe Connect is niet ingeschakeld voor dit systeem. Neem contact op met de beheerder.",
           "shopEmailNotConfigured": "Configureer eerst uw winkel e-mail.",
           "shopAddressNotConfigured": "Configureer eerst uw winkeladres",
-          "shopNotActive": "Uw winkel is niet actief. Neem contact op met de eigenaar van de markt."
+          "shopNotActive": "Uw winkel is niet actief. Neem contact op met de eigenaar van de marktplaats."
         },
         "settings": {
           "dashboardMarketplaceSettingsSaved": "Marktplaatsinstellingen zijn succesvol opgeslagen!",

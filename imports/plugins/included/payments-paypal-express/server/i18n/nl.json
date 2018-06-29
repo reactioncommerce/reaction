@@ -14,32 +14,32 @@
           "paypalDescription": "PayPal-betalingen"
         },
         "paymentMethod": {
-          "expressLabel": "uitdrukken",
-          "creditCardLabel": "Credit card"
+          "expressLabel": "Express checkout",
+          "creditCardLabel": "Creditcard"
         },
         "paymentSettings": {
           "paypalLabel": "PayPal",
           "paypalSettingsLabel": "PayPal",
-          "paypalExpressCredentials": "Heeft een PayPal-gebruikersnaam, wachtwoord en handtekening niet?",
-          "paypalExpressGetCredentialsHere": "Krijg hier.",
-          "paypalPayflowCredentials": "Heb je geen PayPal-client-ID en geheime",
-          "paypalPayflowGetCredentialsHere": "Haal ze hier."
+          "paypalExpressCredentials": "Heeft u geen PayPal-gebruikersnaam, wachtwoord en handtekening?",
+          "paypalExpressGetCredentialsHere": "Haal ze hier op.",
+          "paypalPayflowCredentials": "Heeft u geen PayPal-client-ID en secret",
+          "paypalPayflowGetCredentialsHere": "Haal ze hier op."
         },
         "settings": {
-          "saveSuccess": "je instellingen zijn opgeslagen",
+          "saveSuccess": "Uw instellingen zijn opgeslagen",
           "saveFailed": "Er was een probleem bij het opslaan van uw instellingen"
         }
       },
       "checkout": {
-        "completeYourOrder": "Vul uw bestelling",
+        "completeYourOrder": "Voltooi uw bestelling",
         "paymentMethod": {
           "expressButtonLabel": "Betaal met PayPal",
-          "expressNotConfigured": "Paypal Express niet geconfigureerd.",
-          "expressNotAvailable": "Paypal Express niet beschikbaar",
-          "submitting": "Indienen",
-          "invalidCard": "Oeps! Credit Card nummer is ongeldig.",
+          "expressNotConfigured": "Paypal Express is niet geconfigureerd.",
+          "expressNotAvailable": "Paypal Express is niet beschikbaar",
+          "submitting": "Verzenden",
+          "invalidCard": "Oeps! Creditcardnummer is ongeldig.",
           "unknownError": "Oeps! Er is een onbekende fout opgetreden",
-          "resubmit": "opnieuw betaling"
+          "resubmit": "Opnieuw verzenden"
         }
       }
     }

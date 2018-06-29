@@ -6,20 +6,20 @@
     "reaction-payments": {
       "admin": {
         "shortcut": {
-          "examplePaymentProviderLabel": "voorbeeld Betaling",
-          "examplePaymentProviderTitle": "voorbeeld Betaling"
+          "examplePaymentProviderLabel": "Voorbeeldbetaling",
+          "examplePaymentProviderTitle": "Voorbeeldbetaling"
         },
         "dashboard": {
-          "examplePaymentProviderLabel": "voorbeeld Betaling",
-          "examplePaymentProviderTitle": "voorbeeld Betaling",
-          "examplePaymentProviderDescription": "Voorbeeld Payment Method"
+          "examplePaymentProviderLabel": "Voorbeeldbetaling",
+          "examplePaymentProviderTitle": "Voorbeeldbetaling",
+          "examplePaymentProviderDescription": "Voorbeeld betaalmethode"
         },
         "paymentSettings": {
-          "examplePaymentLabel": "voorbeeld Provider",
-          "examplePaymentSettingsLabel": "voorbeeld Betaling",
-          "exampleCredentials": "Dit is een voorbeeld betaalmethode setting.",
+          "examplePaymentLabel": "Voorbeeldprovider",
+          "examplePaymentSettingsLabel": "Voorbeeldbetaling",
+          "exampleCredentials": "Dit zijn de configuratieopties voor een voorbeeldbetaling.",
           "apiClientId": "API Client ID",
-          "supportedMethodsLabel": "Betaalmethoden ondersteunde methoden"
+          "supportedMethodsLabel": "Ondersteunde functionaliteit"
         }
       }
     }

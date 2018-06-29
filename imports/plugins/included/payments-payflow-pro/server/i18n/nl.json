@@ -5,7 +5,7 @@
   "translation": {
     "admin": {
       "settings": {
-        "saveSuccess": "je instellingen zijn opgeslagen",
+        "saveSuccess": "Uw instellingen zijn opgeslagen",
         "saveFailed": "Er was een probleem bij het opslaan van uw instellingen"
       }
     }
