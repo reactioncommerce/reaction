@@ -1,5 +1,14 @@
 # v1.13.1
 
+This release exclusively includes a patch update to Meteor from `1.7.0.1` to `1.7.0.3`
+
+This release should be installed by anyone on Reaction 1.13.0 and includes an important security update to Node, updating to version 8.11.3 of Node, which is an important security release.
+
+The underlying meteor-babel npm package has also been updated to version 7.0.0-beta.51.
+
+
+## Security
+- security: Update to Meteor 1.7.0.3 (#4368)
 
 # v1.13.0
 
