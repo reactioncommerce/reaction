@@ -10,15 +10,13 @@ import { formatPhoneNumber } from "/lib/api";
 let Twilio;
 async function lazyLoadTwilio() {
   if (Twilio) return;
-  const mod = await import("twilio");
-  Twilio = mod.default;
+  Twilio = await import("twilio");
 }
 
 let Nexmo;
 async function lazyLoadNexmo() {
   if (Nexmo) return;
-  const mod = await import("nexmo");
-  Nexmo = mod.default;
+  Nexmo = await import("nexmo");
 }
 
 /**
