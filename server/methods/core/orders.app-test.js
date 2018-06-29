@@ -48,13 +48,6 @@ describe("orders test", function () {
 
   beforeEach(function (done) {
     sandbox = sinon.sandbox.create();
-    sandbox.stub(Meteor.server.method_handlers, "inventory/register", function (...args) {
-      check(args, [Match.Any]);
-    });
-    sandbox.stub(Meteor.server.method_handlers, "inventory/sold", function (...args) {
-      check(args, [Match.Any]);
-    });
-
     order = Factory.create("order");
     sandbox.stub(Reaction, "getShopId", () => order.shopId);
     const { paymentMethod } = billingObjectMethod(order);
