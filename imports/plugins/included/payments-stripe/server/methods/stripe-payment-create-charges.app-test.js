@@ -211,8 +211,6 @@ describe("stripe/payment/createCharges", function () {
 
   beforeEach(function () {
     sandbox = sinon.sandbox.create();
-    // See below for deeper description of the nock lib used here.
-    // This method cleans up nocks that might have failed for any reason.
     nock.cleanAll();
   });
 
@@ -267,6 +265,19 @@ describe("stripe/payment/createCharges", function () {
       .then(() => done())
       .catch(done);
   });
+});
+
+describe("stripe/payment/createCharges", function () {
+  let sandbox;
+
+  beforeEach(function () {
+    sandbox = sinon.sandbox.create();
+    nock.cleanAll();
+  });
+
+  afterEach(function () {
+    sandbox.restore();
+  });
 
   it("should throw an error with an invalid api key", function (done) {
     this.timeout(10000);
@@ -298,6 +309,19 @@ describe("stripe/payment/createCharges", function () {
       Meteor.call("stripe/payment/createCharges", "authorize", validCardToken, cart._id);
     }).to.throw();
     return done();
+  });
+});
+
+describe("stripe/payment/createCharges", function () {
+  let sandbox;
+
+  beforeEach(function () {
+    sandbox = sinon.sandbox.create();
+    nock.cleanAll();
+  });
+
+  afterEach(function () {
+    sandbox.restore();
   });
 
   it("should be able to create multiple charges", function (done) {
