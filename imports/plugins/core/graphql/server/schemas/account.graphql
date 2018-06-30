@@ -248,7 +248,7 @@ extend type Query {
   viewer: Account
 
   "Returns the account with the provided ID"
-  account(id: ID!): Account
+  account(id: ID!): Account @uniqueIdArg(namespace: "account", argument: "id")
 
   """
   Returns a list of administrators for the shop with ID `shopId`, as a Relay-compatible connection.
