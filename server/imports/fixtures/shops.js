@@ -135,6 +135,12 @@ const shop = {
     uom: "kg",
     label: "Kilograms"
   }],
+  defaultParcelSize: {
+    weight: () => faker.random.number(),
+    length: () => faker.random.number(),
+    width: () => faker.random.number(),
+    height: () => faker.random.number()
+  },
   layout: [{
     layout: "coreLayout",
     workflow: "coreLayout",

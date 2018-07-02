@@ -162,8 +162,8 @@ Meteor.methods({
 
     // make sure user only belongs to one group per shop
     const allGroupsInShop = Groups.find({ shopId }).fetch().map((grp) => grp._id);
-    const user = Accounts.findOne({ _id: userId }) || {};
-    const currentUserGroups = user.groups || [];
+    const account = Accounts.findOne({ userId }) || {};
+    const currentUserGroups = account.groups || [];
     let newGroups = [];
     let currentUserGrpInShop;
     currentUserGroups.forEach((grp) => {
@@ -177,9 +177,9 @@ Meteor.methods({
 
     try {
       setUserPermissions({ _id: userId }, permissions, shopId);
-      Accounts.update({ _id: userId }, { $set: { groups: newGroups } });
+      Accounts.update({ userId }, { $set: { groups: newGroups } });
       Hooks.Events.run("afterAccountsUpdate", loggedInUserId, {
-        accountId: userId,
+        accountId: account._id,
         updatedFields: ["groups"]
       });
       if (slug === "owner") {

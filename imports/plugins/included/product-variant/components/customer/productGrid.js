@@ -25,7 +25,7 @@ class ProductGrid extends Component {
     const { canLoadMoreProducts, loadProducts } = this.props;
     const { scrollY, innerHeight } = window;
     const { body: { scrollHeight } } = document;
-    const atBottom = (innerHeight + scrollY === scrollHeight);
+    const atBottom = Math.abs(innerHeight + scrollY - scrollHeight) <= 1;
 
     if (canLoadMoreProducts && atBottom) {
       loadProducts(event);

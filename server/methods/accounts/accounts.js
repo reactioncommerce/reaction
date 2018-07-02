@@ -305,122 +305,6 @@ function currentUserHasPassword() {
 }
 
 /**
- * @name accounts/addressBookAdd
- * @memberof Accounts/Methods
- * @method
- * @summary Add new addresses to an account
- * @example Meteor.call("accounts/addressBookAdd", address, callBackFunction(error, result))
- * @param {Object} address - address
- * @param {String} [accountUserId] - `account.userId` used by admin to edit users
- * @return {Object} with updated address
- */
-export function addressBookAdd(address, accountUserId) {
-  Schemas.Address.validate(address);
-  check(accountUserId, Match.Optional(String));
-  // security, check for admin access. We don't need to check every user call
-  // here because we are calling `Meteor.userId` from within this Method.
-  if (typeof accountUserId === "string") { // if this will not be a String -
-    // `check` will not pass it.
-    if (Meteor.userId() !== accountUserId && !Reaction.hasPermission("reaction-accounts")) {
-      throw new Meteor.Error("access-denied", "Access denied");
-    }
-  }
-  this.unblock();
-
-  const userId = accountUserId || Meteor.userId();
-  const account = Accounts.findOne({
-    userId
-  });
-  // required default id
-  if (!address._id) {
-    address._id = Random.id();
-  }
-  // if address got shippment or billing default, we need to update cart
-  // addresses accordingly
-  if (address.isShippingDefault || address.isBillingDefault) {
-    const cart = Cart.findOne({ userId });
-    // if cart exists
-    // First amend the cart,
-    if (typeof cart === "object") {
-      if (address.isShippingDefault) {
-        Meteor.call("cart/setShipmentAddress", cart._id, address);
-      }
-      if (address.isBillingDefault) {
-        Meteor.call("cart/setPaymentAddress", cart._id, address);
-      }
-    }
-    // then change the address that has been affected
-    if (address.isShippingDefault) {
-      Accounts.update({
-        userId,
-        "profile.addressBook.isShippingDefault": true
-      }, {
-        $set: {
-          "profile.addressBook.$.isShippingDefault": false
-        }
-      });
-      Hooks.Events.run("afterAccountsUpdate", Meteor.userId(), {
-        accountId: account._id,
-        updatedFields: ["isShippingDefault"]
-      });
-    }
-    if (address.isBillingDefault) {
-      Accounts.update({
-        userId,
-        "profile.addressBook.isBillingDefault": true
-      }, {
-        $set: {
-          "profile.addressBook.$.isBillingDefault": false
-        }
-      });
-      Hooks.Events.run("afterAccountsUpdate", Meteor.userId(), {
-        accountId: account._id,
-        updatedFields: ["isBillingDefault"]
-      });
-    }
-  }
-
-  const userUpdateQuery = {
-    $set: {
-      "profile.addressBook": address
-    }
-  };
-  const accountsUpdateQuery = {
-    $set: {
-      shopId: Reaction.getShopId(),
-      userId
-    },
-    $addToSet: {
-      "profile.addressBook": address
-    }
-  };
-
-  if (!account.name || _.get(account, "profile.addressBook.length", 0) === 0) {
-    userUpdateQuery.$set.name = address.fullName;
-    accountsUpdateQuery.$set.name = address.fullName;
-  }
-
-  Meteor.users.update(Meteor.userId(), userUpdateQuery);
-
-  const result = Accounts.upsert({
-    userId
-  }, accountsUpdateQuery);
-
-  // If the address update was successful, then return the full updated addrtess
-  if (result.numberAffected === 1) {
-    // Find the account
-    const updatedAccount = Accounts.findOne({
-      userId
-    });
-
-    // Pull the updated address and return it
-    return updatedAccount.profile.addressBook.find((updatedAddress) => address._id === updatedAddress._id);
-  }
-
-  throw new Meteor.Error("server-error", "Unable to add address to account");
-}
-
-/**
  * @name accounts/addressBookUpdate
  * @memberof Accounts/Methods
  * @method
@@ -1152,7 +1036,6 @@ Meteor.methods({
   "accounts/verifyAccount": verifyAccount,
   "accounts/validateAddress": validateAddress,
   "accounts/currentUserHasPassword": currentUserHasPassword,
-  "accounts/addressBookAdd": addressBookAdd,
   "accounts/addressBookUpdate": addressBookUpdate,
   "accounts/addressBookRemove": addressBookRemove,
   "accounts/inviteShopMember": inviteShopMember,

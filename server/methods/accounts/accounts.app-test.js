@@ -71,7 +71,7 @@ describe("Account Meteor method ", function () {
   describe("addressBookAdd", function () {
     beforeEach(function () {
       const sessionId = Random.id(); // Required for creating a cart
-      // editing your address book also udpates your cart, so be sure there
+      // editing your address book also updates your cart, so be sure there
       // is a cart present
       Meteor.call("cart/createCart", fakeAccount.userId, sessionId);
     });
@@ -147,13 +147,13 @@ describe("Account Meteor method ", function () {
     });
 
     it("should not let non-Admin add address to another user", function () {
-      const account2 = Factory.create("account");
+      const account2 = Factory.create("account", { userId: Factory.create("user")._id });
       const updateAccountSpy = sandbox.spy(Accounts, "update");
       const upsertAccountSpy = sandbox.spy(Accounts, "upsert");
       expect(function () {
         return Meteor.call(
           "accounts/addressBookAdd", getAddress(),
-          account2._id
+          account2.userId
         );
       }).to.throw(Meteor.Error, /Access denied/);
       expect(updateAccountSpy).to.not.have.been.called;
@@ -188,22 +188,9 @@ describe("Account Meteor method ", function () {
   });
 
   describe("addressBookUpdate", function () {
-    let removeInventoryStub;
-
-    before(function () {
-      removeInventoryStub = sinon.stub(Meteor.server.method_handlers, "inventory/remove", function (...args) {
-        check(args, [Match.Any]);
-        return true;
-      });
-    });
-
-    after(function () {
-      removeInventoryStub.restore();
-    });
-
     beforeEach(function () {
       const sessionId = Random.id(); // Required for creating a cart
-      // editing your address book also udpates your cart, so be sure there
+      // editing your address book also updates your cart, so be sure there
       // is a cart present
       Meteor.call("cart/createCart", fakeAccount.userId, sessionId);
     });

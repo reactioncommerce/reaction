@@ -378,6 +378,51 @@ Meteor.methods({
       }
     });
 
+    // Customer adding a catalog product in the cart.
+    if (Reaction.hasPermission("createProduct", Reaction.getShopId()) === false) {
+      // Fetch the catalog product that should be added to the cart
+      const { product: catalogProduct } = Collections.Catalog.findOne({
+        $or: [
+          { "product._id": productId },
+          { "product.variants._id": variantId },
+          { "product.variants.options._id": variantId }
+        ]
+      });
+
+      // Merge the product document and the catalog product document.
+      // This is to ensure the inventory fields are available for inventory management,
+      // but also have the most up-to-date title, description, etc for cart and orders if needed.
+      product = {
+        ...product,
+        ...catalogProduct
+      };
+
+      // Merge the variant document and the catalog variant document.
+      for (const catalogVariant of catalogProduct.variants) {
+        // If the catalog variant has options, try to find a match
+        if (Array.isArray(catalogVariant.options)) {
+          const catalogVariantOption = catalogVariant.options.find((option) => option === variantId);
+
+          if (catalogVariantOption) {
+            variant = {
+              ...variant,
+              ...catalogVariantOption
+            };
+            break;
+          }
+        }
+
+        // Try to math the top level variant with supplied variant id
+        if (catalogVariant.variantId === variantId) {
+          variant = {
+            ...variant,
+            ...catalogVariant
+          };
+          break;
+        }
+      }
+    }
+
     // TODO: this lines still needed. We could uncomment them in future if
     // decide to not completely remove product data from this method
     // const product = Collections.Products.findOne(productId);
@@ -458,6 +503,12 @@ Meteor.methods({
     // we need to get the parent of the option to check if parcel info is stored there
     const immediateAncestors = variant.ancestors.filter((ancestor) => ancestor !== product._id);
     const immediateAncestor = Collections.Products.findOne({ _id: immediateAncestors[0] });
+
+    // Get default parcel size from primary shop
+    const { defaultParcelSize } = Collections.Shops.findOne({
+      _id: product.shopId || Reaction.getShopId()
+    });
+
     let parcel = null;
     if (immediateAncestor) {
       if (immediateAncestor.weight || immediateAncestor.height || immediateAncestor.width || immediateAncestor.length) {
@@ -468,6 +519,14 @@ Meteor.methods({
     if (variant.weight || variant.height || variant.width || variant.length) {
       parcel = { weight: variant.weight, height: variant.height, width: variant.width, length: variant.length };
     }
+    // Merge parcel with defaultParcel
+    // so that all fields are filled.
+    parcel = {
+      ...(defaultParcelSize || {}),
+      ...(parcel || {})
+    };
+
+
     // cart variant doesn't exist
     let updateResult;
     const newItemId = Random.id();
@@ -573,9 +632,6 @@ Meteor.methods({
       }
 
       Logger.debug(`cart: deleted cart item variant id ${cartItem.variants._id}`);
-
-      // Clear inventory reservation
-      Meteor.call("inventory/clearReserve", [cartItem]);
       // Calculate discounts
       Hooks.Events.run("afterCartUpdateCalculateDiscount", cart._id);
       // TODO: HACK: When calling update shipping the changes to the cart have not taken place yet
@@ -619,7 +675,6 @@ Meteor.methods({
     // If quantity is provided, then set cartItem to it, so that quantity
     // provided will be cleared in the inventory.
     cartItem.quantity = quantity;
-    Meteor.call("inventory/clearReserve", [cartItem]);
     // Calculate discounts
     Hooks.Events.run("afterCartUpdateCalculateDiscount", cart._id);
     Logger.debug(`cart: removed variant ${cartItem._id} quantity of ${quantity}`);

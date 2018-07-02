@@ -204,7 +204,7 @@ export default function () {
    */
   const base = {
     ancestors: [],
-    shopId: getShop()._id
+    shopId: () => getShop()._id
   };
 
   const priceRange = {
