@@ -260,8 +260,8 @@ ShippoApi.methods.validateAddress = new ValidatedMethod({
     const validateAddress = Meteor.wrapAsync(shippo.address.create, shippo.address);
 
     try {
-      const validatedAddressResult = validateAddress(address);
-      return validatedAddressResult;
+      const validatedAddress = validateAddress(address);
+      return validatedAddress;
     } catch (error) {
       Logger.error(error);
       return { errors: parseError(error) };

@@ -402,10 +402,8 @@ export const methods = {
       throw new Meteor.Error("address-validation-error", msg);
     }
 
-    const shop = Shops.findOne({ _id: Reaction.getShopId() }, { fields: { emails: 1 } });
-
     // TODO take a more elegant approach to guest checkout -> no email address
-    let email = shop.emails[0].address || "noreply@localhost";
+    let email = Reaction.getShopEmail() || "noreply@localhost";
 
     if (buyer.emails.length > 0) {
       if (buyer.emails[0].address) {
@@ -423,8 +421,8 @@ export const methods = {
       if (apiResult.errors) {
         return apiResult;
       }
-      const validateAddress = createValidatedAddress(apiResult);
-      return validateAddress;
+      const validatedAddress = createValidatedAddress(apiResult);
+      return validatedAddress;
     } catch (error) {
       Logger.error(error);
       throw new Meteor.Error("Shippo API error", error);
