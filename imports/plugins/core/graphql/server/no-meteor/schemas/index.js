@@ -3,6 +3,7 @@ import address from "./address.graphql";
 import base from "./base.graphql";
 import cart from "./cart.graphql";
 import catalog from "./catalog.graphql";
+import checkout from "./checkout.graphql";
 import currency from "./currency.graphql";
 import email from "./email.graphql";
 import group from "./group.graphql";
@@ -19,6 +20,7 @@ export default [
   base,
   cart,
   catalog,
+  checkout,
   currency,
   email,
   group,
