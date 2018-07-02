@@ -1,4 +1,3 @@
-
 import { Reaction } from "/server/api";
 
 Reaction.registerPackage({
