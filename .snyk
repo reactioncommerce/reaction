@@ -33,5 +33,5 @@ ignore:
   'npm:base64url:20180511':
    - '*':
        reason: Twillio and nexmo will be removed soon, file-collections isn't using any google-cloud stuff so this vuln doesn't apply
-       expires: 2018-06-30T00:00:00.000Z
+       expires: 2018-07-10T00:00:00.000Z
 patch: {}
