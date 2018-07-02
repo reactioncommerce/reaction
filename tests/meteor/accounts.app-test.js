@@ -189,19 +189,6 @@ describe("Account Meteor method ", function () {
   });
 
   describe("addressBookUpdate", function () {
-    let removeInventoryStub;
-
-    before(function () {
-      removeInventoryStub = sinon.stub(Meteor.server.method_handlers, "inventory/remove", function (...args) {
-        check(args, [Match.Any]);
-        return true;
-      });
-    });
-
-    after(function () {
-      removeInventoryStub.restore();
-    });
-
     beforeEach(function () {
       const sessionId = Random.id(); // Required for creating a cart
       // editing your address book also updates your cart, so be sure there

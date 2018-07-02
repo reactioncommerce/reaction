@@ -3,7 +3,6 @@
 /* eslint prefer-arrow-callback:0 */
 import _ from "lodash";
 import { Meteor } from "meteor/meteor";
-import { check, Match } from "meteor/check";
 import { Factory } from "meteor/dburles:factory";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
 import { Products, Tags } from "/lib/collections";
@@ -218,9 +217,6 @@ describe("core product methods", function () {
 
     it("should throw 403 error by non admin", function () {
       sandbox.stub(Reaction, "hasPermission", () => false);
-      sandbox.stub(Meteor.server.method_handlers, "inventory/remove", function (...args) {
-        check(args, [Match.Any]);
-      });
       const insertProductSpy = sandbox.spy(Products, "insert");
       expect(() => Meteor.call("products/cloneProduct", {})).to.throw(Meteor.Error, /Access Denied/);
       expect(insertProductSpy).to.not.have.been.called;
@@ -228,9 +224,6 @@ describe("core product methods", function () {
 
     it("should clone product", function () {
       sandbox.stub(Reaction, "hasPermission", () => true);
-      sandbox.stub(Meteor.server.method_handlers, "inventory/register", function (...args) {
-        check(args, [Match.Any]);
-      });
       const product = addProduct();
       expect(Products.find({ type: "simple" }).count()).to.equal(1);
       Meteor.call("products/cloneProduct", product);
@@ -249,9 +242,6 @@ describe("core product methods", function () {
 
     it("product should be cloned with all variants and child variants with equal data, but not the same `_id`s", function () {
       sandbox.stub(Reaction, "hasPermission", () => true);
-      sandbox.stub(Meteor.server.method_handlers, "inventory/register", function (...args) {
-        check(args, [Match.Any]);
-      });
       const product = addProduct();
       const variants = Products.find({ ancestors: { $in: [product._id] } }).fetch();
       expect(variants.length).to.equal(3);
@@ -273,9 +263,6 @@ describe("core product methods", function () {
 
     it("product group cloning should create the same number of new products", function () {
       sandbox.stub(Reaction, "hasPermission", () => true);
-      sandbox.stub(Meteor.server.method_handlers, "inventory/register", function (...args) {
-        check(args, [Match.Any]);
-      });
       const product = addProduct();
       const product2 = addProduct();
       Meteor.call("products/cloneProduct", [product, product2]);
@@ -290,9 +277,6 @@ describe("core product methods", function () {
 
     it("product group cloning should create the same number of cloned variants", function () {
       sandbox.stub(Reaction, "hasPermission", () => true);
-      sandbox.stub(Meteor.server.method_handlers, "inventory/register", function (...args) {
-        check(args, [Match.Any]);
-      });
       const product = addProduct();
       const product2 = addProduct();
       const variants = Products.find({

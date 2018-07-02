@@ -10,6 +10,7 @@ import Reaction from "/imports/plugins/core/core/server/Reaction";
 import { MediaRecords, Products, Tags } from "/lib/collections";
 import { Media } from "/imports/plugins/core/files/server";
 import rawCollections from "/imports/collections/rawCollections";
+import { createProductHash } from "../no-meteor/mutations/hashProduct";
 import getProductPriceRange from "../no-meteor/utils/getProductPriceRange";
 import getVariants from "../no-meteor/utils/getVariants";
 import hasChildVariant from "../no-meteor/utils/hasChildVariant";
@@ -1578,5 +1579,23 @@ Meteor.methods({
 
     // if collection updated we return new `isVisible` state
     return res === 1 && !product.isVisible;
+  },
+
+  /**
+   * @name products/getpublishedProductHash
+   * @memberof Methods/Products
+   * @method
+   * @summary hashes product information for comparison purposes
+   * @param {String} productId - the product _id of the product to hash
+   * @return {String} hash of product
+   */
+  "products/getpublishedProductHash"(productId) {
+    check(productId, String);
+
+    const product = Products.findOne({ _id: productId });
+
+    const productHash = createProductHash(product, rawCollections);
+
+    return productHash;
   }
 });
