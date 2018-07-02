@@ -1,4 +1,4 @@
-import { loadTranslations } from "/server/startup/i18n";
+import { loadTranslations } from "/imports/plugins/core/core/server/startup/i18n";
 
 import ar from "./ar.json";
 import bg from "./bg.json";

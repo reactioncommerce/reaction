@@ -4,13 +4,13 @@
 import _ from "lodash";
 import { Meteor } from "meteor/meteor";
 import { Factory } from "meteor/dburles:factory";
-import { Reaction } from "/server/api";
+import Reaction from "/imports/plugins/core/core/server/Reaction";
 import { Products, Tags } from "/lib/collections";
 import { expect } from "meteor/practicalmeteor:chai";
 import { sinon } from "meteor/practicalmeteor:sinon";
 import { Roles } from "meteor/alanning:roles";
-import { addProduct, addProductSingleVariant } from "/server/imports/fixtures/products";
-import Fixtures from "/server/imports/fixtures";
+import { addProduct, addProductSingleVariant } from "/imports/plugins/core/core/server/fixtures/products";
+import Fixtures from "/imports/plugins/core/core/server/fixtures";
 
 Fixtures();
 

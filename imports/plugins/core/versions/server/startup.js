@@ -1,4 +1,5 @@
-import { Hooks, Logger } from "/server/api";
+import Hooks from "@reactioncommerce/hooks";
+import Logger from "@reactioncommerce/logger";
 import { Migrations } from "meteor/percolate:migrations";
 
 function reactionLogger(opts) {

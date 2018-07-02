@@ -1,3 +1,4 @@
+import Logger from "@reactioncommerce/logger";
 import _ from "lodash";
 import accounting from "accounting-js";
 import { HTTP } from "meteor/http";
@@ -5,7 +6,6 @@ import { Meteor } from "meteor/meteor";
 import { check } from "meteor/check";
 import { PayPal } from "../../lib/api";
 import { Shops, Cart, Packages } from "/lib/collections";
-import { Logger } from "/server/api";
 import { PaymentMethodArgument } from "/lib/collections/schemas";
 
 let moment;

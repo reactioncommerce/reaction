@@ -1,8 +1,9 @@
+import Logger from "@reactioncommerce/logger";
 import PayFlow from "paypal-rest-sdk"; // PayFlow is PayPal PayFlow lib
 import accounting from "accounting-js";
 import _ from "lodash";
 import { Meteor } from "meteor/meteor";
-import { Reaction, Logger } from "/server/api";
+import Reaction from "/imports/plugins/core/core/server/Reaction";
 import { Shops } from "/lib/collections";
 import { PayPal } from "../../lib/api"; // PayPal is the reaction api
 
