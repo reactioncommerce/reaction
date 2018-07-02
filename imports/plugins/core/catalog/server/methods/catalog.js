@@ -937,6 +937,9 @@ Meteor.methods({
       return numFlaggedAsDeleted;
     }
 
+    // We need this hook here, in addition to the similar hook inside the `productsWithVariants.forEach` loop.
+    // The previous hook updates the data of a `variant` product (i.e. `type: variant`) only.
+    // This hook here updates the data of a parent product (i.e. `type: simple`).
     Hooks.Events.run("afterRemoveCatalogProduct", this.userId, product);
 
     Logger.debug(`${numFlaggedAsDeleted} products have been flagged as deleted`);
