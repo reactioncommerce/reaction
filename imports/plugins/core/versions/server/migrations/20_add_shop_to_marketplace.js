@@ -1,5 +1,5 @@
 import { Migrations } from "meteor/percolate:migrations";
-import { Reaction } from "/server/api";
+import Reaction from "/imports/plugins/core/core/server/Reaction";
 import { Packages } from "/lib/collections";
 
 // Migration file created for removing the admin role from shop manager group, and users in the group

@@ -3,7 +3,7 @@ import { check, Match } from "meteor/check";
 import { Roles } from "meteor/alanning:roles";
 import { Counts } from "meteor/tmeasday:publish-counts";
 import { Logs } from "/lib/collections";
-import { Reaction } from "/server/api";
+import Reaction from "/imports/plugins/core/core/server/Reaction";
 
 
 /**

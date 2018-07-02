@@ -1,5 +1,7 @@
+import Logger from "@reactioncommerce/logger";
 import { Meteor } from "meteor/meteor";
-import { Logger, MethodHooks, Reaction } from "/server/api";
+import MethodHooks from "/imports/plugins/core/core/server/method-hooks";
+import Reaction from "/imports/plugins/core/core/server/Reaction";
 
 const getAdminUserId = () => {
   // TODO validate with multiple show owners
