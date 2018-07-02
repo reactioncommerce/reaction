@@ -81,6 +81,7 @@ class CardForm extends Component {
           return;
         }
         Meteor.apply("stripe/payment/createCharges", ["authorize", payload.token, this.props.cartId], {
+          wait: true,
           onResultReceived: (error, result) => {
             if (error || (result && result.error)) {
               this.setState({
@@ -89,7 +90,6 @@ class CardForm extends Component {
                 submitting: false
               });
             } else {
-              Meteor.call("cart/submitPayment", result.paymentMethods);
               Router.go("cart/completed", {}, {
                 _id: this.props.cartId
               });

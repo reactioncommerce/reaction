@@ -259,7 +259,6 @@ describe("stripe/payment/createCharges", function () {
         const txId = transactionIds[0];
         expect(res.success).to.equal(true);
         expect(res.transactions[txId].amount).to.equal(cart.getTotal() * 100);
-        expect(res.paymentMethods[0].amount).to.equal(cart.getTotal() * 1);
         return null;
       })
       .then(() => done())
@@ -390,9 +389,6 @@ describe("stripe/payment/createCharges", function () {
         const transactionIds = Object.keys(res.transactions);
         for (const txId of transactionIds) {
           expect(res.transactions[txId].amount).to.equal(cartTotals[txId] * 100);
-        }
-        for (const paymentMethod of res.paymentMethods) {
-          expect(paymentMethod.amount).to.equal(cartTotals[paymentMethod.shopId] * 1);
         }
         return null;
       })
