@@ -1,6 +1,6 @@
 import { Meteor } from "meteor/meteor";
 import { HTTP } from "meteor/http";
-import { Reaction } from "server/api";
+import Reaction from "/imports/plugins/core/core/server/Reaction";
 import { TaxCodes } from "/imports/plugins/core/taxes/lib/collections";
 
 
