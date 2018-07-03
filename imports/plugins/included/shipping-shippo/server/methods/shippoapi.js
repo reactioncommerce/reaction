@@ -1,9 +1,9 @@
 /* eslint camelcase: 0 */
+import Logger from "@reactioncommerce/logger";
 import Shippo from "shippo";
 import SimpleSchema from "simpl-schema";
 import { Meteor } from "meteor/meteor";
 import { ValidatedMethod } from "meteor/mdg:validated-method";
-import { Logger } from "/server/api";
 import { purchaseAddressSchema, parcelSchema } from "../lib/shippoApiSchema";
 
 export const ShippoApi = {

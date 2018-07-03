@@ -1,10 +1,11 @@
+import Logger from "@reactioncommerce/logger";
 import _ from "lodash";
 import { Meteor } from "meteor/meteor";
 import { check, Match } from "meteor/check";
 import { Job } from "/imports/plugins/core/job-collection/lib";
 import { Packages, Jobs } from "/lib/collections";
 import { SearchPackageConfig } from "../../lib/collections/schemas";
-import { Logger, Reaction } from "/server/api";
+import Reaction from "/imports/plugins/core/core/server/Reaction";
 
 function fieldsChanged(changedFields, fieldType = "includes") {
   for (const field of changedFields) {

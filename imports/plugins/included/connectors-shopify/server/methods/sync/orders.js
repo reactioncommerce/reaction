@@ -1,5 +1,5 @@
+import Hooks from "@reactioncommerce/hooks";
 import { check } from "meteor/check";
-import { Hooks } from "/server/api";
 import { Products } from "/lib/collections";
 
 /**

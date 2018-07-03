@@ -4,12 +4,12 @@ import { WebApp } from "meteor/webapp";
 import { check } from "meteor/check";
 import { Security } from "meteor/ongoworks:security";
 import fetch from "node-fetch";
+import Logger from "@reactioncommerce/logger";
 import {
   MeteorFileCollection,
   RemoteUrlWorker,
   TempFileStoreWorker
 } from "@reactioncommerce/file-collections";
-import { Logger } from "/server/api";
 import { MediaRecords } from "/lib/collections";
 import setUpFileCollections from "./no-meteor/setUpFileCollections";
 

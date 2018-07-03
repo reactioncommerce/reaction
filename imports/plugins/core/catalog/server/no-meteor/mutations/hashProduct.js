@@ -9,7 +9,7 @@ import createCatalogProduct from "../utils/createCatalogProduct";
  * @param {Object} collections - Raw mongo collections
  * @return {String} product hash
  */
-async function createProductHash(productToConvert, collections) {
+export async function createProductHash(productToConvert, collections) {
   const product = await createCatalogProduct(productToConvert, collections);
 
   const hashableFields = {

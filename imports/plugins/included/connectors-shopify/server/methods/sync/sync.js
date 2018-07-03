@@ -1,6 +1,7 @@
+import Logger from "@reactioncommerce/logger";
 import { Meteor } from "meteor/meteor";
 import { check } from "meteor/check";
-import { Reaction, Logger } from "/server/api";
+import Reaction from "/imports/plugins/core/core/server/Reaction";
 
 /**
  * @file **Shopify Connector** - Methods for setting up and removing synchronization between a Shopify store and a Reaction shop
