@@ -3,6 +3,7 @@
 import nock from "nock";
 import Random from "@reactioncommerce/random";
 import { Meteor } from "meteor/meteor";
+import { check, Match } from "meteor/check";
 import { expect } from "meteor/practicalmeteor:chai";
 import { sinon } from "meteor/practicalmeteor:sinon";
 import { Factory } from "meteor/dburles:factory";
@@ -227,6 +228,18 @@ describe("stripe/payment/createCharges", function () {
       emails: [{ address: "test@example.com" }]
     });
 
+    sandbox.stub(Meteor, "userId", function () {
+      return cart.userId;
+    });
+
+    sandbox.stub(Meteor.server.method_handlers, "cart/createCart", function (...args) {
+      check(args, [Match.Any]);
+    });
+
+    sandbox.stub(Meteor.server.method_handlers, "orders/sendNotification", function (...args) {
+      check(args, [Match.Any]);
+    });
+
     sandbox.stub(Reaction, "getPrimaryShopId", function () {
       return cart.shopId;
     });
@@ -334,6 +347,18 @@ describe("stripe/payment/createCharges", function () {
     Factory.create("account", {
       _id: cart.userId,
       emails: [{ address: "test@example.com" }]
+    });
+
+    sandbox.stub(Meteor, "userId", function () {
+      return cart.userId;
+    });
+
+    sandbox.stub(Meteor.server.method_handlers, "cart/createCart", function (...args) {
+      check(args, [Match.Any]);
+    });
+
+    sandbox.stub(Meteor.server.method_handlers, "orders/sendNotification", function (...args) {
+      check(args, [Match.Any]);
     });
 
     sandbox.stub(Reaction, "getPrimaryShopId", function () {
