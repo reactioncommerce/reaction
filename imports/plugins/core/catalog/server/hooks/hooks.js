@@ -1,5 +1,5 @@
+import Hooks from "@reactioncommerce/hooks";
 import { Catalog } from "/lib/collections";
-import { Hooks } from "/server/api";
 
 /**
  * @summary archives product in the Catalog collection when it is archived in Products collection
