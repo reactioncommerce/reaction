@@ -229,7 +229,7 @@ function getShopsAddressMap(shopItemsMap) {
  * @returns {object} map of shop: shipping-address
  */
 function getShippingAddressMap(cartToCalc, numberOfShops) {
-  if (!cartToCalc.shipping || numberOfShops !== cartToCalc.shipping.length) {
+  if (!cartToCalc.shipping || cartToCalc.items.length !== cartToCalc.shipping.length) {
     return null;
   }
   const shippingAddressMap = cartToCalc.shipping.reduce((addressMap, shipping) => {
