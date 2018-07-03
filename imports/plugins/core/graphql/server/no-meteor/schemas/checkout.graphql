@@ -103,7 +103,7 @@ type SetShippingAddressPayload {
 }
 
 "Payment plugins should extend or override this"
-type PaymentDataInput {
+input PaymentDataInput {
   """
   Example: savedCardId. Other examples might be transaction IDs, wallet keys.
   Do not save full card details entered by a shopper here.
