@@ -1,5 +1,5 @@
+import Hooks from "@reactioncommerce/hooks";
 import { Meteor } from "meteor/meteor";
-import { Hooks } from "/server/api";
 
 /**
  * After cart update apply taxes.

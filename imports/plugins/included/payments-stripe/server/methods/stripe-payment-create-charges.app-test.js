@@ -7,8 +7,8 @@ import { check, Match } from "meteor/check";
 import { expect } from "meteor/practicalmeteor:chai";
 import { sinon } from "meteor/practicalmeteor:sinon";
 import { Factory } from "meteor/dburles:factory";
-import { Reaction } from "/server/api";
 import { Cart } from "/lib/collections";
+import Reaction from "/imports/plugins/core/core/server/Reaction";
 import { methods } from "./stripe.js";
 
 // Testing stripe using the npm Nock lib available here:
