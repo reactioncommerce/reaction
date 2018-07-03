@@ -1,6 +1,6 @@
 import { Meteor } from "meteor/meteor";
 import { Match, check } from "meteor/check";
-import { Reaction } from "/server/api";
+import Reaction from "/imports/plugins/core/core/server/Reaction";
 import { Discounts } from "/imports/plugins/core/discounts/lib/collections";
 import { DiscountRates as DiscountSchema } from "../../lib/collections/schemas";
 

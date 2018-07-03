@@ -1,60 +1,85 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import { Form } from "reacto-form";
 import { Components } from "@reactioncommerce/reaction-components";
-import { Meteor } from "meteor/meteor";
-import { Reaction } from "/client/api";
+import Field from "@reactioncommerce/components/Field/v1";
+import Select from "@reactioncommerce/components/Select/v1";
+import TextInput from "@reactioncommerce/components/TextInput/v1";
+import ErrorsBlock from "@reactioncommerce/components/ErrorsBlock/v1";
+import Button from "@reactioncommerce/components/Button/v1";
+import Logger from "@reactioncommerce/logger";
+import { i18next } from "/client/api";
+
+const iconComponentStyles = {
+  fontSize: "1em",
+  verticalAlign: "middle"
+};
+
+const iconComponents = {
+  iconClear: (<i className="fa fa-times" style={iconComponentStyles} />),
+  iconError: (<i className="fa fa-exclamation-triangle" style={iconComponentStyles} />),
+  iconValid: (<i className="fa fa-check-circle" style={iconComponentStyles} />)
+};
+
+const smsProviders = [{
+  label: "Twilio", value: "twilio"
+}, {
+  label: "Nexmo", value: "nexmo"
+}];
 
 class SmsSettings extends Component {
-  constructor(props) {
-    super(props);
+  static propTypes = {
+    saveSettings: PropTypes.func.isRequired,
+    settings: PropTypes.shape({
+      apiKey: PropTypes.string,
+      apiToken: PropTypes.string,
+      smsPhone: PropTypes.string,
+      smsProvider: PropTypes.string
+    })
+  };
 
-    this.state = {
-      settings: props.settings || {},
-      isSaving: false
-    };
-    this.handleStateChange = this.handleStateChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
-    this.handleSelect = this.handleSelect.bind(this);
-  }
+  static async validator(settings) {
+    const { apiKey, apiToken, smsProvider, smsPhone } = settings;
 
-  handleStateChange(e) {
-    const { settings } = this.state;
-    settings[e.target.name] = e.target.value;
-    this.setState({ settings });
-  }
-
-  handleSubmit(e) {
-    e.preventDefault();
-    const { saveSettings } = this.props;
-    const { settings } = this.state;
-    this.setState({ isSaving: true });
-    saveSettings(settings, () => this.setState({ isSaving: false }));
-  }
-
-  handleSelect(e) {
-    const { settings } = this.state;
-    settings.smsProvider = e;
-    this.setState({ settings });
-  }
-
-  handleProductFieldSave = (productId, fieldName, value) => {
-    let updateValue = value;
-    // special case, slugify handles.
-    if (fieldName === "handle") {
-      updateValue = Reaction.getSlug(value);
+    const errors = [];
+    if (!apiKey) {
+      errors.push({ message: i18next.t("admin.alerts.noApiKey"), name: "apiKey" });
     }
-    Meteor.call("products/updateProductField", productId, fieldName, updateValue);
+    if (!apiToken) {
+      errors.push({ message: i18next.t("admin.alerts.noApiToken"), name: "apiToken" });
+    }
+    if (!smsProvider) {
+      errors.push({ message: i18next.t("admin.alerts.noSmsProvider"), name: "smsProvider" });
+    }
+    if (!smsPhone) {
+      errors.push({ message: i18next.t("admin.alerts.noSmsPhone"), name: "smsPhone" });
+    }
+
+    return errors;
   }
 
+  state = {
+    isSaving: false
+  }
+
+  handleSubmit = (settings) => {
+    const { saveSettings } = this.props;
+
+    this.setState({ isSaving: true });
+    return saveSettings(settings)
+      .then((result) => {
+        this.setState({ isSaving: false });
+        return result;
+      })
+      .catch((error) => {
+        this.setState({ isSaving: false });
+        Logger.error(error);
+      });
+  };
 
   render() {
-    const { settings, isSaving } = this.state;
-
-    const smsProviders = [{
-      label: "Twilio", value: "twilio"
-    }, {
-      label: "Nexmo", value: "nexmo"
-    }];
+    const { settings } = this.props;
+    const { isSaving } = this.state;
 
     return (
       <Components.CardGroup>
@@ -65,69 +90,57 @@ class SmsSettings extends Component {
             title="SMS Provider"
           />
           <Components.CardBody expandable={true}>
-            <form onSubmit={this.handleSubmit}>
-              <Components.Select
-                clearable={false}
-                label="Provider Name"
-                i18nKeyLabel="admin.settings.providerName"
-                placeholder="Select an SMS provider"
-                i18nKeyPlaceholder="admin.settings.selectProvider"
+            <Form
+              logErrorsOnSubmit
+              onSubmit={this.handleSubmit}
+              ref={(ref) => { this.form = ref; }}
+              validator={SmsSettings.validator}
+              value={settings}
+            >
+              <Field
+                label={i18next.t("admin.settings.providerName", { defaultValue: "Provider Name" })}
                 name="smsProvider"
-                onChange={this.handleSelect}
-                options={smsProviders}
-                value={settings.smsProvider || ""}
-              />
-              <hr/>
-              <Components.TextField
-                label="SMS Phone Number"
-                type="text"
-                i18nKeyLabel="admin.settings.phoneNumber"
-                name="smsPhone"
-                value={settings.smsPhone || ""}
-                onChange={this.handleStateChange}
-              />
-              <Components.TextField
-                label="API Key"
-                type="password"
-                i18nKeyLabel="admin.settings.apiKey"
-                name="apiKey"
-                value={settings.apiKey || ""}
-                onChange={this.handleStateChange}
-              />
-              <Components.TextField
-                label="API Token/Secret"
-                type="password"
-                i18nKeyLabel="admin.settings.apiToken"
-                name="apiToken"
-                value={settings.apiToken || ""}
-                onChange={this.handleStateChange}
-              />
-              <Components.Button
-                bezelStyle="solid"
-                status="primary"
-                className="pull-right"
-                type="submit" disabled={isSaving}
               >
-                {isSaving ?
-                  <i className="fa fa-refresh fa-spin"/>
-                  : <span data-i18n="app.save">Save</span>}
-              </Components.Button>
-            </form>
+                <Select
+                  name="smsProvider"
+                  options={smsProviders}
+                  placeholder={i18next.t("admin.settings.selectProvider", { defaultValue: "Select an SMS provider" })}
+                />
+                <ErrorsBlock names={["smsProvider"]} />
+              </Field>
+              <hr/>
+              <Field
+                label={i18next.t("admin.settings.phoneNumber", { defaultValue: "SMS Phone Number" })}
+                name="smsPhone"
+              >
+                <TextInput name="smsPhone" {...iconComponents} />
+                <ErrorsBlock names={["smsPhone"]} />
+              </Field>
+              <Field
+                label={i18next.t("admin.settings.apiKey", { defaultValue: "API Key" })}
+                name="apiKey"
+                type="password"
+              >
+                <TextInput name="apiKey" {...iconComponents} />
+                <ErrorsBlock names={["apiKey"]} />
+              </Field>
+              <Field
+                label={i18next.t("admin.settings.apiToken", { defaultValue: "API Token/Secret" })}
+                name="apiToken"
+                type="password"
+              >
+                <TextInput name="apiToken" {...iconComponents} />
+                <ErrorsBlock names={["apiToken"]} />
+              </Field>
+              <div className="pull-right">
+                <Button isWaiting={isSaving} onClick={() => this.form.submit()}>{i18next.t("app.save", { defaultValue: "Save" })}</Button>
+              </div>
+            </Form>
           </Components.CardBody>
         </Components.Card>
       </Components.CardGroup>
     );
   }
 }
-
-SmsSettings.propTypes = {
-  saveSettings: PropTypes.func.isRequired,
-  settings: PropTypes.shape({
-    apiKey: PropTypes.string,
-    apiToken: PropTypes.string,
-    smsPhone: PropTypes.string,
-    smsProvider: PropTypes.string
-  })
-};
 
 export default SmsSettings;

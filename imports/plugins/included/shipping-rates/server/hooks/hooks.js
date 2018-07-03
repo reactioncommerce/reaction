@@ -1,6 +1,8 @@
+import Hooks from "@reactioncommerce/hooks";
+import Logger from "@reactioncommerce/logger";
 import { Meteor } from "meteor/meteor";
 import { Shipping, Packages } from "/lib/collections";
-import { Logger, Reaction, Hooks } from "/server/api";
+import Reaction from "/imports/plugins/core/core/server/Reaction";
 import { Cart as CartSchema } from "/lib/collections/schemas";
 
 /**

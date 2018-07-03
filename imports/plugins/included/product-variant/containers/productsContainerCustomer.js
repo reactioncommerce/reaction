@@ -84,16 +84,8 @@ function composer(props, onData) {
     window.prerenderReady = true;
   }
 
-  const activeShopsIds = Shops.find({
-    $or: [
-      { "workflow.status": "active" },
-      { _id: Reaction.getPrimaryShopId() }
-    ]
-  }).map((activeShop) => activeShop._id);
-
   const catalogCursor = Catalog.find({
-    "product.type": "product-simple",
-    "shopId": { $in: activeShopsIds }
+    "product.type": "product-simple"
   }, {
     $sort: {
       [`product.positions.${tagIdForPosition}.position`]: 1,

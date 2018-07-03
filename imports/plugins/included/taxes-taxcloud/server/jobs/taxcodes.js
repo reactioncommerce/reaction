@@ -1,8 +1,10 @@
+import Hooks from "@reactioncommerce/hooks";
+import Logger from "@reactioncommerce/logger";
 import { Meteor } from "meteor/meteor";
 import { Job } from "/imports/plugins/core/job-collection/lib";
 import { Jobs, Packages } from "/lib/collections";
-import { Hooks, Logger, Reaction } from "/server/api";
 import { TaxCodes } from "/imports/plugins/core/taxes/lib/collections";
+import Reaction from "/imports/plugins/core/core/server/Reaction";
 
 //
 // helper to fetch reaction-taxes config
