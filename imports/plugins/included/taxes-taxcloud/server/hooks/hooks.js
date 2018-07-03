@@ -68,6 +68,9 @@ function makeRequest(shopId, cartToCalc, shippingAddressMap, shopItemsMap, shops
   }
   const url = "https://api.taxcloud.net/1.0/TaxCloud/Lookup";
   const shopAddress = shopsAddressMap[shopId];
+  if (!shopAddress) {
+    return Promise.reject();
+  }
   const { zip4: originZip4, zip5: originZip5 } = zipSplit(shopAddress.postal);
   const origin = {
     Address1: shopAddress.address1,
@@ -79,6 +82,9 @@ function makeRequest(shopId, cartToCalc, shippingAddressMap, shopItemsMap, shops
   };
 
   const shippingAddress = shippingAddressMap[shopId];
+  if (!shippingAddress) {
+    return Promise.reject();
+  }
   const { zip4: destZip4, zip5: destZip5 } = zipSplit(shippingAddress.postal);
   const destination = {
     Address1: shippingAddress.address1,
@@ -186,6 +192,12 @@ function processResponse(responsePromise, cartToCalc) {
       // we should consider if we want percentage and dollar
       // as this is assuming that subTotal actually contains everything
       // taxable
+      console.log("Settings tax as ", {
+        taxRatesByShop,
+        itemsWithTax: cartToCalc.items,
+        cartTaxRate: totalTax / subTotal,
+        cartTaxData
+      })
       Meteor.call("taxes/setRateByShopAndItem", cartToCalc._id, {
         taxRatesByShop,
         itemsWithTax: cartToCalc.items,
@@ -196,7 +208,7 @@ function processResponse(responsePromise, cartToCalc) {
     })
     .catch((error) => {
     // No rates were fetched, set taxes to 0.
-      Meteor.call("taxes/setRate", cartToCalc._id, 0);
+      resetTaxes(cartToCalc);
       Meteor.call("accounts/markTaxCalculationFailed", true);
       Logger.error("Error fetching tax rate from TaxCloud:", error);
     });
@@ -230,8 +242,8 @@ function getShopsAddressMap(shopItemsMap) {
  * @param {number} numberOfShops number of unique shops in the cart.
  * @returns {object} map of shop: shipping-address
  */
-function getShippingAddressMap(cartToCalc, numberOfShops) {
-  if (!cartToCalc.shipping || cartToCalc.items.length !== cartToCalc.shipping.length) {
+function getShippingAddressMap(cartToCalc) {
+  if (!cartToCalc.shipping) {
     return null;
   }
   const shippingAddressMap = cartToCalc.shipping.reduce((addressMap, shipping) => {
@@ -249,29 +261,51 @@ function getShippingAddressMap(cartToCalc, numberOfShops) {
 /**
  * @name calculateTax
  * @summary gets tax from the API and updates the cart.
- * @param  {Object} pkgSettings tax-cloud settings
  * @param  {Object} cartToCalc cart object from the database.
  * @returns {undefined}
  */
-function calculateTax(pkgSettings, cartToCalc) {
+function calculateTax(cartToCalc) {
   Logger.debug("TaxCloud triggered on taxes/calculate for cartId:", cartToCalc._id);
   const { items } = cartToCalc;
   const shopItemsMap = getShopItems(items);
   const numberOfShops = Object.keys(shopItemsMap).length;
   const shippingAddressMap = getShippingAddressMap(cartToCalc, numberOfShops);
   const shopsAddressMap = getShopsAddressMap(shopItemsMap);
-  if (!shippingAddressMap) {
+  if (!shippingAddressMap || Object.keys(shippingAddressMap).length !== Object.keys(shopItemsMap).length) {
     // User hasn't entered address yet
+    resetTaxes(cartToCalc);
     return;
   }
   if (!shopsAddressMap) {
     // All the marketplace shops don't have address yet.
+    resetTaxes(cartToCalc);
     Logger.error("All the marketplace shops don't have an address yet.");
     return;
   }
   // For each shop get the tax on the products.
   const responsePromise = Object.keys(shopItemsMap).map((shopId) => makeRequest(shopId, cartToCalc, shippingAddressMap, shopItemsMap, shopsAddressMap));
   processResponse(responsePromise, cartToCalc);
+}
+
+/**
+ * @method resetTaxes
+ * @summary sets the tax = 0 and nullifies all tax related fields.
+ * @param {Object} cartToCalc the cart to calculate tax for
+ * @returns {undefined}
+ */
+function resetTaxes(cartToCalc) {
+  let items = [];
+  if (cartToCalc.items) {
+    items = cartToCalc.items.map((item) => {
+      item.taxRate = 0;
+    });
+  }
+  Meteor.call("taxes/setRateByShopAndItem", cartToCalc._id, {
+    taxRatesByShop: null,
+    itemsWithTax: items,
+    cartTaxRate: 0,
+    cartTaxData: null
+  });
 }
 //
 // this entire method will run after the core/taxes
@@ -288,7 +322,9 @@ MethodHooks.after("taxes/calculate", (options) => {
     const pkgSettings = Reaction.getPackageSettings("taxes-taxcloud");
     if (pkgSettings && pkgSettings.settings.taxcloud.enabled === true) {
       if (Array.isArray(cartToCalc.shipping) && cartToCalc.shipping.length > 0 && cartToCalc.items) {
-        calculateTax(pkgSettings, cartToCalc);
+        calculateTax(cartToCalc);
+      } else {
+        resetTaxes(cartToCalc);
       }
     }
   }
