@@ -108,7 +108,7 @@ export const methods = {
     check(cartId, String);
     check(options, {
       taxRatesByShop: Match.OneOf(undefined, null, Object),
-      itemsWithTax: [Object],
+      itemsWithTax: [Match.OneOf(Object, undefined)],
       cartTaxRate: Number,
       cartTaxData: Match.OneOf([Object], undefined, null)
     });

@@ -298,6 +298,7 @@ function resetTaxes(cartToCalc) {
   if (cartToCalc.items) {
     items = cartToCalc.items.map((item) => {
       item.taxRate = 0;
+      return item;
     });
   }
   Meteor.call("taxes/setRateByShopAndItem", cartToCalc._id, {
