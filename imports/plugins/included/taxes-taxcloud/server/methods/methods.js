@@ -17,7 +17,7 @@ function buildTaxCode(code) {
   }
   return {
     id: code.ticid || code.id,
-    taxCode: `${code.ticid || code.id}`,
+    taxCode: code.ticid || code.id,
     shopId: Reaction.getShopId(),
     taxCodeProvider: "taxes-taxcloud",
     ssuta: code.isSSUTA,
