@@ -17,7 +17,7 @@ function buildTaxCode(code) {
   }
   return {
     id: code.ticid || code.id,
-    taxCode: code.ticid || code.id,
+    taxCode: `${code.ticid}` || `${code.id}`,
     shopId: Reaction.getShopId(),
     taxCodeProvider: "taxes-taxcloud",
     ssuta: code.isSSUTA,
@@ -78,7 +78,7 @@ Meteor.methods({
       Reaction.Importer.object(
         TaxCodes,
         {
-          taxCode: code.taxCode,
+          taxCode: `${code.taxCode}`,
           shopId: code.shopId,
           taxCodeProvider: code.taxCodeProvider
         },
