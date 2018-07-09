@@ -129,7 +129,6 @@ export const methods = {
     if (docId) return Meteor.call("discounts/editCode", { _id: docId, modifier: doc });
 
     if (!Reaction.hasPermission("discount-codes")) throw new Meteor.Error("access-denied", "Access Denied");
-    console.log(doc);
     return Discounts.insert(doc);
   },
 
