@@ -1,4 +1,5 @@
 import os from "os";
+import Logger from "@reactioncommerce/logger";
 import _ from "lodash";
 import accounting from "accounting-js";
 import SimpleSchema from "simpl-schema";
@@ -7,7 +8,7 @@ import { HTTP } from "meteor/http";
 import { check } from "meteor/check";
 import { Shops, Accounts } from "/lib/collections";
 import { TaxCodes } from "/imports/plugins/core/taxes/lib/collections";
-import { Reaction, Logger } from "/server/api";
+import Reaction from "/imports/plugins/core/core/server/Reaction";
 import Avalogger from "./avalogger";
 
 const errorDetails = new SimpleSchema({

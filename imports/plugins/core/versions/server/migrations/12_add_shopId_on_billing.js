@@ -1,6 +1,6 @@
 import { Migrations } from "meteor/percolate:migrations";
 import { Cart, Orders } from "/lib/collections";
-import { Reaction } from "/server/api/";
+import Reaction from "/imports/plugins/core/core/server/Reaction";
 
 Migrations.add({
   version: 12,
