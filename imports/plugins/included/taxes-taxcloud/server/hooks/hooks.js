@@ -192,12 +192,6 @@ function processResponse(responsePromise, cartToCalc) {
       // we should consider if we want percentage and dollar
       // as this is assuming that subTotal actually contains everything
       // taxable
-      console.log("Settings tax as ", {
-        taxRatesByShop,
-        itemsWithTax: cartToCalc.items,
-        cartTaxRate: totalTax / subTotal,
-        cartTaxData
-      })
       Meteor.call("taxes/setRateByShopAndItem", cartToCalc._id, {
         taxRatesByShop,
         itemsWithTax: cartToCalc.items,
