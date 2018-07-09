@@ -337,7 +337,7 @@ export default {
   },
 
   /**
-   * @name hasDashboardAccessForAnyShop
+   * @name hasDashboardAccessForMultipleShops
    * @method
    * @memberof Core/Client
    * @summary - client permission check for any "owner", "admin", or "dashboard" permissions for more than one shop.
@@ -1049,6 +1049,24 @@ export default {
     });
 
     return marketplaceSettings && marketplaceSettings.settings;
+  },
+
+  /**
+   * @name getCartShopId
+   * @method
+   * @memberof Core
+   * @summary Get the correct shop ID to use for Cart collection
+   * @return {StringId} The primary or current shop ID, depending on merchantCart setting
+   */
+  getCartShopId() {
+    const marketplaceSettings = this.getMarketplaceSettings();
+    let shopId;
+    if (marketplaceSettings && marketplaceSettings.public && marketplaceSettings.public.merchantCart) {
+      shopId = this.getShopId();
+    } else {
+      shopId = this.getPrimaryShopId();
+    }
+    return shopId;
   }
 
 };
