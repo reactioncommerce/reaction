@@ -2,7 +2,7 @@ import { Meteor } from "meteor/meteor";
 import { HTTP } from "meteor/http";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
 import { TaxCodes } from "/imports/plugins/core/taxes/lib/collections";
-
+import { refreshJob } from "../jobs/taxcodes";
 
 /**
  * @name buildTaxCode
@@ -85,5 +85,14 @@ Meteor.methods({
         buildTaxCode(code)
       );
     });
+  },
+
+  /**
+   * @method taxcloud/updateRefreshJob
+   * @summary updates the refresh interval of the jobs
+   * @returns {undefined}
+   */
+  "taxcloud/updateRefreshJob"() {
+    refreshJob();
   }
 });

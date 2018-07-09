@@ -225,7 +225,8 @@ export const Cart = new SimpleSchema({
     optional: true
   },
   "taxes.$.details": {
-    type: String,
+    type: Object,
+    blackbox: true,
     optional: true
   },
   "taxRatesByShop": {

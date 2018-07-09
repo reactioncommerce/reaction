@@ -17,10 +17,7 @@ function getJobConfig() {
   return config.settings.taxcloud;
 }
 
-//
-// add job hook for "taxes/fetchTaxCloudTaxCodes"
-//
-Hooks.Events.add("afterCoreInit", () => {
+export function refreshJob() {
   const config = getJobConfig();
   const refreshPeriod = config.refreshPeriod || 0;
   const taxCodeUrl = config.taxCodeUrl || "https://taxcloud.net/tic/json";
@@ -44,6 +41,13 @@ Hooks.Events.add("afterCoreInit", () => {
         cancelRepeats: true
       });
   }
+}
+
+//
+// add job hook for "taxes/fetchTaxCloudTaxCodes"
+//
+Hooks.Events.add("afterCoreInit", () => {
+  refreshJob();
 });
 
 //
@@ -51,7 +55,7 @@ Hooks.Events.add("afterCoreInit", () => {
 // will trigger job to run
 // taxes/fetchTaxCloudTaxCodes
 //
-export default function () {
+export function getTaxCodes() {
   Jobs.processJobs(
     "taxcloud/getTaxCodes",
     {
