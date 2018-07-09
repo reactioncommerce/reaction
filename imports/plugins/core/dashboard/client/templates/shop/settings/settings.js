@@ -5,6 +5,7 @@ import { AutoForm } from "meteor/aldeed:autoform";
 import { Reaction, i18next } from "/client/api";
 import { Packages, Shops } from "/lib/collections";
 import { Media } from "/imports/plugins/core/files/client";
+import GenerateSitemapsButton from "/imports/plugins/included/sitemap-generator/components/GenerateSitemapsButton";
 import ShopBrandMediaManager from "./ShopBrandMediaManager";
 
 
@@ -157,5 +158,13 @@ Template.optionsShopSettings.helpers({
       name: "core",
       shopId: Reaction.getShopId()
     });
+  },
+
+  isPackageEnabled (name) {
+    return Reaction.isPackageEnabled(name);
+  },
+
+  GenerateSitemapsButton () {
+    return GenerateSitemapsButton;
   }
 });
