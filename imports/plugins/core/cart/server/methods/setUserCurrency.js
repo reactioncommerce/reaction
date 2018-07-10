@@ -3,6 +3,7 @@ import Logger from "@reactioncommerce/logger";
 import { Meteor } from "meteor/meteor";
 import { check } from "meteor/check";
 import * as Collections from "/lib/collections";
+import getCart from "/imports/plugins/core/cart/both/util/getCart";
 
 /**
  * @method cart/setUserCurrency
@@ -15,7 +16,8 @@ import * as Collections from "/lib/collections";
 export default function setUserCurrency(cartId, userCurrency) {
   check(cartId, String);
   check(userCurrency, String);
-  const cart = Collections.Cart.findOne({ _id: cartId });
+
+  const { cart } = getCart(cartId);
   if (!cart) {
     Logger.error(`Cart not found for user: ${this.userId}`);
     throw new Meteor.Error("not-found", "Cart not found for user with such id");

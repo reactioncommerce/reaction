@@ -4,6 +4,7 @@ import { Meteor } from "meteor/meteor";
 import { check } from "meteor/check";
 import * as Collections from "/lib/collections";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
+import getCart from "/imports/plugins/core/cart/both/util/getCart";
 
 /**
  * @method cart/setPaymentAddress
@@ -18,11 +19,7 @@ export default function setPaymentAddress(cartId, address) {
   check(cartId, String);
   Reaction.Schemas.Address.validate(address);
 
-  const cart = Collections.Cart.findOne({
-    _id: cartId,
-    userId: this.userId
-  });
-
+  const { cart } = getCart(cartId);
   if (!cart) {
     Logger.error(`Cart not found for user: ${this.userId}`);
     throw new Meteor.Error(
@@ -62,9 +59,6 @@ export default function setPaymentAddress(cartId, address) {
 
   // Calculate discounts
   Hooks.Events.run("afterCartUpdateCalculateDiscount", cartId);
-
-  // Calculate taxes
-  Hooks.Events.run("afterCartUpdateCalculateTaxes", cartId);
 
   return result;
 }

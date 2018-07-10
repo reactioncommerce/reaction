@@ -1,9 +1,9 @@
-import _ from "lodash";
 import Hooks from "@reactioncommerce/hooks";
 import Logger from "@reactioncommerce/logger";
 import { Meteor } from "meteor/meteor";
 import { check, Match } from "meteor/check";
 import * as Collections from "/lib/collections";
+import getCart from "/imports/plugins/core/cart/both/util/getCart";
 
 /**
  * @method cart/removeFromCart
@@ -17,8 +17,7 @@ export default function removeFromCart(itemId, quantity) {
   check(itemId, String);
   check(quantity, Match.Optional(Number));
 
-  const userId = Meteor.userId();
-  const cart = Collections.Cart.findOne({ userId });
+  const { cart } = getCart();
   if (!cart) {
     Logger.error(`Cart not found for user: ${this.userId}`);
     throw new Meteor.Error("not-found", "Cart not found for user with such id");
@@ -26,12 +25,12 @@ export default function removeFromCart(itemId, quantity) {
 
   let cartItem;
 
-  if (cart.items) {
-    cartItem = _.find(cart.items, (item) => item._id === itemId);
+  if (Array.isArray(cart.items)) {
+    cartItem = cart.items.find((item) => item._id === itemId);
   }
 
   // extra check of item exists
-  if (typeof cartItem !== "object") {
+  if (!cartItem) {
     Logger.error(`Unable to find an item: ${itemId} within the cart: ${cart._id}`);
     throw new Meteor.Error("not-found", "Unable to find an item with such id in cart.");
   }
@@ -59,22 +58,11 @@ export default function removeFromCart(itemId, quantity) {
       throw error;
     }
 
-    Logger.debug(`cart: deleted cart item variant id ${cartItem.variants._id}`);
+    Logger.debug(`cart: deleted cart item variant id ${cartItem.variantId}`);
 
-    // Calculate discounts
+    Hooks.Events.run("afterCartUpdate", cart._id);
     Hooks.Events.run("afterCartUpdateCalculateDiscount", cart._id);
-    // TODO: HACK: When calling update shipping the changes to the cart have not taken place yet
-    // TODO: But calling this findOne seems to force this record to update. Extra weird since we aren't
-    // TODO: passing the Cart but just the cartId and regrabbing it so you would think that would work but it does not
-    Collections.Cart.findOne(cart._id);
-    // refresh shipping quotes
-    Meteor.call("shipping/updateShipmentQuotes", cart._id);
-    // revert workflow
-    Meteor.call("workflow/revertCartWorkflow", "coreCheckoutShipping");
-    // reset selected shipment method
-    Meteor.call("cart/resetShipmentMethod", cart._id);
-    // Calculate taxes
-    Hooks.Events.run("afterCartUpdateCalculateTaxes", cart._id);
+
     return cartResult;
   }
 
@@ -104,17 +92,11 @@ export default function removeFromCart(itemId, quantity) {
   // If quantity is provided, then set cartItem to it, so that quantity
   // provided will be cleared in the inventory.
   cartItem.quantity = quantity;
-  // Calculate discounts
-  Hooks.Events.run("afterCartUpdateCalculateDiscount", cart._id);
+
   Logger.debug(`cart: removed variant ${cartItem._id} quantity of ${quantity}`);
-  // refresh shipping quotes
-  Meteor.call("shipping/updateShipmentQuotes", cart._id);
-  // revert workflow
-  Meteor.call("workflow/revertCartWorkflow", "coreCheckoutShipping");
-  // reset selected shipment method
-  Meteor.call("cart/resetShipmentMethod", cart._id);
-  // Calculate taxes
-  Hooks.Events.run("afterCartUpdateCalculateTaxes", cart._id);
+
+  Hooks.Events.run("afterCartUpdate", cart._id);
+  Hooks.Events.run("afterCartUpdateCalculateDiscount", cart._id);
 
   return cartResult;
 }
