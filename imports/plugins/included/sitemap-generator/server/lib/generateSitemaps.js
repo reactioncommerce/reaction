@@ -98,7 +98,8 @@ export default function generateSitemaps(shopIds = [], urlsPerSitemap = DEFAULT_
  * @returns {String} - Generated XML
  */
 function generateIndexXML(urls) {
-  let xml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>";
+  let xml = `<?xml version="1.0" encoding="UTF-8"?>
+    <sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">`;
 
   urls.forEach((url) => {
     xml += `
@@ -123,7 +124,8 @@ function generateIndexXML(urls) {
  * @returns {undefined}
  */
 function generateSitemapXML(urls, currentPage, urlsPerSitemap) {
-  let xml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>";
+  let xml = `<?xml version="1.0" encoding="UTF-8"?>
+    <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">`;
 
   const startIndex = (currentPage - 1) * urlsPerSitemap;
   const endIndex = startIndex + urlsPerSitemap;
