@@ -11,12 +11,10 @@ import { registerSchema } from "@reactioncommerce/schemas";
  */
 export const SitemapsSchema = new SimpleSchema({
   shopId: {
-    type: String,
-    index: 1
+    type: String
   },
   handle: {
-    type: String,
-    index: 1
+    type: String
   },
   xml: {
     type: String
