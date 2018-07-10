@@ -314,8 +314,9 @@ function composer(props, onData) {
     // Get the product tags
     if (product) {
       let tags;
-      if (_.isArray(product.hashtags)) {
-        tags = _.map(product.hashtags, (id) => Tags.findOne(id));
+      const hashTags = product.hashtags || product.tagIds;
+      if (_.isArray(hashTags)) {
+        tags = _.map(hashTags, (id) => Tags.findOne(id));
       }
 
       Meteor.subscribe("ProductMedia", product._id);
