@@ -2,6 +2,7 @@ import SimpleSchema from "simpl-schema";
 import { registerSchema } from "@reactioncommerce/schemas";
 import { createdAtAutoValue } from "./helpers";
 import { Cart, CartItem } from "./cart";
+import { Product, ProductVariant } from "./products";
 import { Workflow } from "./workflow";
 
 /**
@@ -107,16 +108,11 @@ registerSchema("Notes", Notes);
  * @memberof Schemas
  * @summary CartItem + some additional properties
  * @type {SimpleSchema}
- * @property {String} additionalField optional
  * @property {Workflow} workflow optional
  * @property {History[]} history optional
  * @property {Document[]} documents optional
 */
 export const OrderItem = new SimpleSchema({
-  "additionalField": {
-    type: String,
-    optional: true
-  },
   "workflow": {
     type: Workflow,
     optional: true,
@@ -135,6 +131,12 @@ export const OrderItem = new SimpleSchema({
   },
   "documents.$": {
     type: Document
+  },
+  "product": {
+    type: Product
+  },
+  "variants": {
+    type: ProductVariant
   }
 });
 
@@ -181,7 +183,7 @@ registerSchema("OrderTransaction", OrderTransaction);
  * @memberof Schemas
  * @type {SimpleSchema}
  * @summary Order ties a User to a Cart and an array of History, Documents, Notes, Items and OrderTransactions.
- * @property {String} userId required
+ * @property {String} accountId optional
  * @property {String} cartId optional
  * @property {History[]} history optional
  * @property {Document[]} documents optional
@@ -190,9 +192,9 @@ registerSchema("OrderTransaction", OrderTransaction);
  * @property {OrderTransaction[]} transactions optional
  */
 export const Order = new SimpleSchema({
-  "userId": {
+  "accountId": {
     type: String,
-    unique: false
+    optional: true
   },
   "cartId": {
     type: String,
@@ -241,10 +243,15 @@ export const Order = new SimpleSchema({
     type: Array,
     optional: true
   },
-  "exportHistory.$": ExportHistory
+  "exportHistory.$": ExportHistory,
+  "workflow": {
+    type: Workflow,
+    optional: true,
+    defaultValue: {}
+  }
 });
 
 registerSchema("Order", Order);
 
-export const OrderDocument = Cart.clone().extend(Order).extend(OrderItem);
+export const OrderDocument = Cart.clone().extend(Order);
 registerSchema("OrderDocument", OrderDocument);
