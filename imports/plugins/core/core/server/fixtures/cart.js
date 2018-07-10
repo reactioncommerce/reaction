@@ -2,6 +2,8 @@ import faker from "faker";
 import _ from "lodash";
 import Random from "@reactioncommerce/random";
 import { Factory } from "meteor/dburles:factory";
+import rawCollections from "/imports/collections/rawCollections";
+import publishProductToCatalog from "/imports/plugins/core/catalog/server/no-meteor/utils/publishProductToCatalog";
 import { Cart, Products } from "/lib/collections";
 import { getShop } from "./shops";
 import { getAddress } from "./accounts";
@@ -21,6 +23,7 @@ import { addProduct } from "./products";
  */
 export function getCartItem(options = {}) {
   const product = addProduct();
+  Promise.await(publishProductToCatalog(product, rawCollections));
   const variant = Products.findOne({ ancestors: [product._id] });
   const childVariants = Products.find({
     ancestors: [
