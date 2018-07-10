@@ -54,19 +54,19 @@ Template.coreOrderShippingTracking.events({
     });
 
     // send notification to order owner
-    const { userId } = template.order;
+    const { accountId } = template.order;
     const type = "orderShipped";
     const prefix = Reaction.getShopPrefix();
     const url = `${prefix}/notifications`;
     const sms = true;
-    Meteor.call("notification/send", userId, type, url, sms);
+    Meteor.call("notification/send", accountId, type, url, sms);
 
     // Meteor.call("workflow/pushOrderShipmentWorkflow", "coreOrderShipmentWorkflow", "orderShipped", this._id);
   },
 
   "click [data-event-action=resendNotification]"() {
     const template = Template.instance();
-    Meteor.call("orders/sendNotification", template.order, "shipped", (error) => {
+    Meteor.call("orders/sendNotification", template.order._id, "shipped", (error) => {
       if (error) {
         Alerts.toast(i18next.t("mail.alerts.cantSendEmail"), "error");
       } else {

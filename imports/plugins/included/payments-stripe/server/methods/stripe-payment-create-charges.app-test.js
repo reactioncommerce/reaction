@@ -1,16 +1,14 @@
 /* eslint camelcase: 0 */
 /* eslint prefer-arrow-callback:0 */
 import nock from "nock";
-
 import { Meteor } from "meteor/meteor";
 import { expect } from "meteor/practicalmeteor:chai";
 import { sinon } from "meteor/practicalmeteor:sinon";
 import { Factory } from "meteor/dburles:factory";
 import { check, Match } from "meteor/check";
-
+import { Accounts } from "/lib/collections";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
 import { methods } from "./stripe.js";
-
 
 const testStripePkg = {
   _id: "dLubvXeAciAY3ECD9",
@@ -194,15 +192,16 @@ describe("stripe/payment/createCharges", function () {
     // Each part should probably isolate downstream methods that get called
     // such as copyCartToOrder, etc
     const cart = Factory.create("cartToOrder");
-    Factory.create("account", {
-      _id: cart.userId,
-      emails: [{ address: "test@example.com" }]
+    Accounts.update({ _id: cart.accountId }, {
+      $set: {
+        emails: [{ address: "test@example.com" }],
+        userId: Factory.create("user")._id
+      }
     });
+    const account = Accounts.findOne({ _id: cart.accountId });
 
     // Set Meteor userId to the cart userId
-    sandbox.stub(Meteor, "userId", function () {
-      return cart.userId;
-    });
+    sandbox.stub(Meteor, "userId", () => account.userId);
 
     sandbox.stub(Meteor.server.method_handlers, "cart/createCart", function (...args) {
       check(args, [Match.Any]);

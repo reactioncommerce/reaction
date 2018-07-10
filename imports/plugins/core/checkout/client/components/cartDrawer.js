@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import { Components } from "@reactioncommerce/reaction-components";
 
-const CartDrawer = ({ productItems, pdpPath, handleRemoveItem, handleCheckout, handleImage, handleLowInventory, handleShowProduct }) => (
+const CartDrawer = ({ productItems, pdpPath, handleRemoveItem, handleCheckout, handleImage, handleShowProduct }) => (
   <div>
     <div className="cart-drawer-swiper-container">
       <div className="cart-drawer-swiper-wrapper">
@@ -14,7 +14,6 @@ const CartDrawer = ({ productItems, pdpPath, handleRemoveItem, handleCheckout, h
             <Components.CartItems
               item={item}
               pdpPath={pdpPath}
-              handleLowInventory={handleLowInventory}
               handleImage={handleImage}
               handleRemoveItem={handleRemoveItem}
               handleShowProduct={handleShowProduct}
@@ -44,7 +43,6 @@ const CartDrawer = ({ productItems, pdpPath, handleRemoveItem, handleCheckout, h
 CartDrawer.propTypes = {
   handleCheckout: PropTypes.func,
   handleImage: PropTypes.func,
-  handleLowInventory: PropTypes.func,
   handleRemoveItem: PropTypes.func,
   handleShowProduct: PropTypes.func,
   pdpPath: PropTypes.func,

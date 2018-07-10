@@ -5,7 +5,8 @@ import { Meteor } from "meteor/meteor";
 import { check, Match } from "meteor/check";
 import { Roles } from "meteor/alanning:roles";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
-import { Packages, Accounts, Shops, Shipping, Cart, Orders } from "/lib/collections";
+import { Packages, Accounts, Shops, Shipping, Orders } from "/lib/collections";
+import getCart from "/imports/plugins/core/cart/both/util/getCart";
 import { ShippoPackageConfig } from "../../lib/collections/schemas";
 import { shippingRoles } from "../lib/roles";
 import { ShippoApi } from "./shippoapi";
@@ -287,8 +288,8 @@ export const methods = {
     if (orderId) {
       // return a specific order
       shippoOrders = Orders.find({
-        shopId,
-        orderId
+        _id: orderId,
+        shopId
       });
     } else {
       // Find the orders of the shop that have shippo provider, tracking number, that are shipped
@@ -299,7 +300,7 @@ export const methods = {
         "shipping.0.tracking": { $exists: true },
         "shipping.0.shipped": true,
         "shipping.0.delivered": { $ne: true }
-        // For now we don' t have logic for returned products
+        // For now we don't have logic for returned products
       });
     }
 
@@ -394,123 +395,123 @@ export const methods = {
       isRetry = true;
     }
 
-    const cart = Cart.findOne(cartId);
-    if (cart && cart.userId === this.userId) { // confirm user has the right
-      let shippoAddressTo;
-      let shippoParcel;
-      const purpose = "PURCHASE";
-
-      const shop = Shops.findOne({
-        _id: cart.shopId
-      }, {
-        field: {
-          addressBook: 1,
-          emails: 1,
-          unitsOfMeasure: { $elemMatch: { default: true } }
-        }
-      });
-
-      const apiKey = getApiKey(cart.shopId);
-      // If for a weird reason Shop hasn't a Shippo Api key anymore return no-rates.
-      if (!apiKey) {
-        // In this case, and some similar ones below, there's no need
-        // for a retry.
-        errorDetails.message = "No Shippo API key was found in this cart.";
-        return [[errorDetails], []];
-      }
-      // TODO create a shipping address book record for shop.
-      const shippoAddressFrom = createShippoAddress(shop.addressBook[0], shop.emails[0].address, purpose);
-      // product in the cart has to have parcel property with the dimensions
-      if (cart.items && cart.items[0] && cart.items[0].parcel) {
-        const unitOfMeasure = (shop && shop.baseUOM) || "kg";
-        const unitOfLength = (shop && shop.baseUOL) || "cm";
-        const cartWeight = getTotalCartweight(cart);
-        shippoParcel = createShippoParcel(cart.items[0].parcel, cartWeight, unitOfMeasure, unitOfLength);
-      } else {
-        errorDetails.message = "This cart has no items, or the first item has no 'parcel' property.";
-        return [[errorDetails], []];
-      }
-
-      const buyer = Accounts.findOne({
-        _id: this.userId
-      }, {
-        field: { emails: 1 }
-      });
-      // check that there is address available in cart
-      if (cart.shipping && cart.shipping[0] && cart.shipping[0].address) {
-        // TODO take a more elegant approach to guest checkout -> no email address
-        // add Logger.trace if this smells
-        let email = shop.emails[0].address || "noreply@localhost";
-        if (buyer.emails.length > 0) {
-          if (buyer.emails[0].address) {
-            email = buyer.emails[0].address;
-          }
-        }
-        shippoAddressTo = createShippoAddress(cart.shipping[0].address, email, purpose);
-      } else {
-        errorDetails.message = "The 'shipping' property of this cart is either missing or incomplete.";
-        return [[errorDetails], []];
-      }
-
-      const carrierAccounts = Object.keys(shippoDocs);
-      let shippoShipment;
-      try {
-        shippoShipment = ShippoApi.methods.createShipment.call({
-          shippoAddressFrom,
-          shippoAddressTo,
-          shippoParcel,
-          purpose,
-          carrierAccounts,
-          apiKey
-        });
-      } catch (error) {
-        const errorData = {
-          requestStatus: "error",
-          shippingProvider: "shippo",
-          message: error.message
-        };
-
-        if (isRetry) {
-          errorDetails.message = "The Shippo API call has failed again.";
-          return [[errorDetails], []];
-        }
-
-        return [[errorData], [currentMethodInfo]];
-      }
-
-      const shippoRates = shippoShipment.rates_list;
-      if (!shippoRates || shippoRates.length === 0) {
-        const noShippingMethods = {
-          requestStatus: "error",
-          shippingProvider: "shippo",
-          message: "Couldn't find any shipping methods. Try using another address."
-        };
-
-        if (isRetry) {
-          errorDetails.message = "Didn't get any shipping methods. The Shippo API call has failed again.";
-          return [[errorDetails], []];
-        }
-
-        return [[noShippingMethods], [currentMethodInfo]];
-      }
-
-      const reactionRates = ratesParser(shippoRates, shippoDocs);
-      return [reactionRates, []];
+    const { cart } = getCart(cartId);
+    if (!cart) {
+      errorDetails.message = "Error. Your cart is either undefined or has the wrong userId.";
+      return [[errorDetails], []];
     }
 
-    errorDetails.message = "Error. Your cart is either undefined or has the wrong userId.";
-    return [[errorDetails], []];
+    let shippoAddressTo;
+    let shippoParcel;
+    const purpose = "PURCHASE";
+
+    const shop = Shops.findOne({
+      _id: cart.shopId
+    }, {
+      field: {
+        addressBook: 1,
+        emails: 1,
+        unitsOfMeasure: { $elemMatch: { default: true } }
+      }
+    });
+
+    const apiKey = getApiKey(cart.shopId);
+    // If for a weird reason Shop hasn't a Shippo Api key anymore return no-rates.
+    if (!apiKey) {
+      // In this case, and some similar ones below, there's no need
+      // for a retry.
+      errorDetails.message = "No Shippo API key was found in this cart.";
+      return [[errorDetails], []];
+    }
+    // TODO create a shipping address book record for shop.
+    const shippoAddressFrom = createShippoAddress(shop.addressBook[0], shop.emails[0].address, purpose);
+    // product in the cart has to have parcel property with the dimensions
+    if (cart.items && cart.items[0] && cart.items[0].parcel) {
+      const unitOfMeasure = (shop && shop.baseUOM) || "kg";
+      const unitOfLength = (shop && shop.baseUOL) || "cm";
+      const cartWeight = getTotalCartweight(cart);
+      shippoParcel = createShippoParcel(cart.items[0].parcel, cartWeight, unitOfMeasure, unitOfLength);
+    } else {
+      errorDetails.message = "This cart has no items, or the first item has no 'parcel' property.";
+      return [[errorDetails], []];
+    }
+
+    const buyer = Accounts.findOne({
+      _id: this.userId
+    }, {
+      field: { emails: 1 }
+    });
+    // check that there is address available in cart
+    if (cart.shipping && cart.shipping[0] && cart.shipping[0].address) {
+      // TODO take a more elegant approach to guest checkout -> no email address
+      // add Logger.trace if this smells
+      let email = shop.emails[0].address || "noreply@localhost";
+      if (buyer.emails.length > 0) {
+        if (buyer.emails[0].address) {
+          email = buyer.emails[0].address;
+        }
+      }
+      shippoAddressTo = createShippoAddress(cart.shipping[0].address, email, purpose);
+    } else {
+      errorDetails.message = "The 'shipping' property of this cart is either missing or incomplete.";
+      return [[errorDetails], []];
+    }
+
+    const carrierAccounts = Object.keys(shippoDocs);
+    let shippoShipment;
+    try {
+      shippoShipment = ShippoApi.methods.createShipment.call({
+        shippoAddressFrom,
+        shippoAddressTo,
+        shippoParcel,
+        purpose,
+        carrierAccounts,
+        apiKey
+      });
+    } catch (error) {
+      const errorData = {
+        requestStatus: "error",
+        shippingProvider: "shippo",
+        message: error.message
+      };
+
+      if (isRetry) {
+        errorDetails.message = "The Shippo API call has failed again.";
+        return [[errorDetails], []];
+      }
+
+      return [[errorData], [currentMethodInfo]];
+    }
+
+    const shippoRates = shippoShipment.rates_list;
+    if (!shippoRates || shippoRates.length === 0) {
+      const noShippingMethods = {
+        requestStatus: "error",
+        shippingProvider: "shippo",
+        message: "Couldn't find any shipping methods. Try using another address."
+      };
+
+      if (isRetry) {
+        errorDetails.message = "Didn't get any shipping methods. The Shippo API call has failed again.";
+        return [[errorDetails], []];
+      }
+
+      return [[noShippingMethods], [currentMethodInfo]];
+    }
+
+    const reactionRates = ratesParser(shippoRates, shippoDocs);
+    return [reactionRates, []];
   },
 
   /**
    * Confirms Shippo order based on buyer's choice at the time of purchase
    * and supplies the order doc with the tracking and label infos
-   * @param {String} orderId - The id of the ordered that labels are purchased for
-   * @return {Boolean} result - True if procedure completed succesfully,otherwise false
+   * @param {String} orderId - The ID of the order that labels are purchased for
+   * @return {Boolean} result - True if procedure completed successfully, otherwise false
    */
   "shippo/confirmShippingMethodForOrder"(orderId) {
     check(orderId, String);
-    const order = Orders.findOne(orderId);
+    const order = Orders.findOne({ _id: orderId });
     // Make sure user has permissions in the shop's order
     if (Roles.userIsInRole(this.userId, shippingRoles, order.shopId)) {
       const orderShipment = order.shipping[0];

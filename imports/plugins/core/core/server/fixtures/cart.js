@@ -30,12 +30,23 @@ export function getCartItem(options = {}) {
   const selectedOption = Random.choice(childVariants);
   const defaults = {
     _id: Random.id(),
+    addedAt: new Date(),
+    createdAt: new Date(),
+    isTaxable: false,
+    optionTitle: selectedOption.optionTitle,
+    priceWhenAdded: {
+      amount: selectedOption.price,
+      currencyCode: "USD"
+    },
     productId: product._id,
+    productSlug: product.handle,
+    productType: product.type,
     shopId: options.shopId || getShop()._id,
     quantity: _.random(1, selectedOption.inventoryQuantity),
-    product,
-    variants: selectedOption,
-    title: product.title
+    title: product.title,
+    updatedAt: new Date(),
+    variantId: selectedOption._id,
+    variantTitle: selectedOption.title
   };
   return _.defaults(options, defaults);
 }
@@ -67,22 +78,34 @@ export function createCart(productId, variantId) {
   const product = Products.findOne(productId);
   const variant = Products.findOne(variantId);
   const user = Factory.create("user");
+  const account = Factory.create("account", { userId: user._id });
   const cartItem = {
     _id: Random.id(),
+    addedAt: new Date(),
+    createdAt: new Date(),
+    isTaxable: false,
+    optionTitle: variant.optionTitle,
+    priceWhenAdded: {
+      amount: variant.price,
+      currencyCode: "USD"
+    },
     productId: product._id,
+    productSlug: product.handle,
+    productType: product.type,
     shopId: getShop()._id,
-    quantity: 1,
-    product,
-    variants: variant,
-    title: product.title
+    quantity: _.random(1, variant.inventoryQuantity),
+    title: product.title,
+    updatedAt: new Date(),
+    variantId: variant._id,
+    variantTitle: variant.title
   };
 
   const cart = {
     shopId: getShop()._id,
-    userId: user._id,
-    sessionId: Random.id(),
+    accountId: account._id,
     email: faker.internet.email(),
     items: [cartItem],
+    currencyCode: "USD",
     shipping: [
       {
         _id: Random.id(),
@@ -111,7 +134,7 @@ export function createCart(productId, variantId) {
     updatedAt: new Date()
   };
   const newCartId = Cart.insert(cart);
-  const insertedCart = Cart.findOne(newCartId);
+  const insertedCart = Cart.findOne({ _id: newCartId });
   return insertedCart;
 }
 
@@ -122,7 +145,7 @@ export default function () {
    * @summary Define cart Factory
    * @example const cart = Factory.create("cartMultiItems");
    * @property {string} shopId id - `getShop().id`
-   * @property {string} userId id - `Factory.get("user")`
+   * @property {string} accountId id - `Factory.get("account")`
    * @property {string} sessionId - `Random.id()`
    * @property {string} email - `faker.internet.email()`
    * @property {Array} items - `[getCartItem(), getCartItem()]`
@@ -164,8 +187,8 @@ export default function () {
    */
   const cartNoItems = {
     shopId: getShop()._id,
-    userId: Factory.get("user"),
-    sessionId: Random.id(),
+    accountId: Factory.get("account", { userId: Factory.get("user") }),
+    currencyCode: "USD",
     email: faker.internet.email(),
     items: [],
     shipping: [],
@@ -180,8 +203,8 @@ export default function () {
 
   const cart = {
     shopId: getShop()._id,
-    userId: Factory.get("user"),
-    sessionId: Random.id(),
+    accountId: Factory.get("account"),
+    currencyCode: "USD",
     email: faker.internet.email(),
     items: [
       getCartItem(),
@@ -247,7 +270,7 @@ export default function () {
   };
 
   const anonymousCart = {
-    userId: Factory.get("anonymous")
+    accountId: Factory.get("account", { userId: Factory.get("anonymous") })
   };
 
   Factory.define("cart", Cart, Object.assign({}, cart));

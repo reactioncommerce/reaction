@@ -7,7 +7,11 @@ import { Accounts } from "meteor/accounts-base";
 import * as Collections from "/lib/collections";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
 
-export default function () {
+/**
+ * @summary Account server startup code
+ * @returns {undefined}
+ */
+export default function startup() {
   /**
    * Make sure initial admin user has verified their
    * email before allowing them to login.
@@ -75,7 +79,7 @@ export default function () {
    * only to be used for authentication.
    * - defaultVisitorRole
    * - defaultRoles
-   * can be overriden from Shops
+   * can be overridden from Shops
    *
    * @see: http://docs.meteor.com/#/full/accounts_oncreateuser
    */
@@ -91,21 +95,6 @@ export default function () {
     // init default user roles
     // we won't create users unless we have a shop.
     if (shopId) {
-      // retain language when user has defined a language
-      // perhaps should be treated as additionals
-      // or in onLogin below, or in the anonymous method options
-      if (!(Meteor.users.find().count() === 0)) { // dont set on inital admin
-        if (!user.profile) user.profile = {};
-        const currentUser = Meteor.user(user);
-        if (currentUser && currentUser.profile) {
-          if (currentUser.profile.lang && !user.profile.lang) {
-            user.profile.lang = currentUser.profile.lang;
-          }
-          if (currentUser.profile.currency && !user.profile.currency) {
-            user.profile.currency = currentUser.profile.currency;
-          }
-        }
-      }
       // if we don't have user.services we're an anonymous user
       if (!user.services) {
         const group = Collections.Groups.findOne({ slug: "guest", shopId });
@@ -232,9 +221,8 @@ export default function () {
       if (options.methodName === "createUser") return true;
 
       // onLogin, we want to merge session cart into user cart.
-      const cart = Collections.Cart.findOne({
-        userId: options.user._id
-      });
+      const account = Collections.Accounts.findOne({ userId: options.user._id }, { fields: { _id: 1 } });
+      const cart = Collections.Cart.findOne({ accountId: account._id });
 
       // for a rare use cases
       if (typeof cart !== "object") return false;

@@ -1,4 +1,3 @@
-import Hooks from "@reactioncommerce/hooks";
 import { check } from "meteor/check";
 import { Products } from "/lib/collections";
 
@@ -61,7 +60,6 @@ export const methods = {
           }
         }
       }, { selector: { type: "variant" }, publish: true });
-      Hooks.Events.run("afterUpdateCatalogProduct", variant);
     });
   }
 };

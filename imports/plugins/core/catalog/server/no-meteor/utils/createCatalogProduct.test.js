@@ -208,7 +208,6 @@ const mockCatalogProduct = {
   barcode: "barcode",
   createdAt,
   description: "description",
-  hash: undefined,
   height: 11.23,
   isBackorder: false,
   isDeleted: false,
@@ -240,7 +239,6 @@ const mockCatalogProduct = {
     value: "value",
     valueType: "valueType"
   }],
-  minOrderQuantity: 5,
   originCountry: "originCountry",
   pageTitle: "pageTitle",
   parcel: {

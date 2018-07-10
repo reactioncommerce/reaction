@@ -1,9 +1,11 @@
 import store from "store";
+import Logger from "@reactioncommerce/logger";
 import Random from "@reactioncommerce/random";
 import { Meteor } from "meteor/meteor";
 import { Session } from "meteor/session";
 import { Tracker } from "meteor/tracker";
 import { SubsManager } from "meteor/meteorhacks:subs-manager";
+import { Cart } from "/lib/collections";
 import Reaction from "./main";
 
 export const Subscriptions = {};
@@ -11,8 +13,6 @@ export const Subscriptions = {};
 // Subscription Manager
 // See: https://github.com/kadirahq/subs-manager
 Subscriptions.Manager = new SubsManager();
-
-Subscriptions.Account = Subscriptions.Manager.subscribe("Accounts", Meteor.userId());
 
 /*
  * Reaction.session
@@ -38,7 +38,6 @@ Subscriptions.PrimaryShop = Subscriptions.Manager.subscribe("PrimaryShop");
 Subscriptions.MerchantShops = Subscriptions.Manager.subscribe("MerchantShops");
 
 // This Packages subscription is used for the Active shop's packages
-// // Init sub here so we have a "ready" state
 Subscriptions.Packages = Subscriptions.Manager.subscribe("Packages");
 
 // This packages subscription is used for the Primary Shop's packages
@@ -52,6 +51,8 @@ Subscriptions.Tags = Subscriptions.Manager.subscribe("Tags");
 Subscriptions.Groups = Subscriptions.Manager.subscribe("Groups");
 
 Subscriptions.BrandAssets = Subscriptions.Manager.subscribe("BrandAssets");
+
+Subscriptions.Cart = Subscriptions.Manager.subscribe("Cart");
 
 /**
  * Subscriptions that need to reload on new sessions
@@ -75,22 +76,35 @@ Tracker.autorun(() => {
   Subscriptions.Sessions = Meteor.subscribe("Sessions", Session.get("sessionId"));
 });
 
-// @see http://guide.meteor.com/data-loading.html#changing-arguments
 Tracker.autorun(() => {
-  let sessionId;
-  // we really don't need to track the sessionId here
-  Tracker.nonreactive(() => {
-    sessionId = Session.get("sessionId");
-  });
-  Subscriptions.Cart = Subscriptions.Manager.subscribe("Cart", sessionId, Meteor.userId());
+  Subscriptions.Account = Subscriptions.Manager.subscribe("Accounts", Meteor.userId());
   Subscriptions.UserProfile = Meteor.subscribe("UserProfile", Meteor.userId());
+});
+
+Tracker.autorun(() => {
+  if (Subscriptions.Cart.ready()) {
+    const cartCount = Cart.find({}).count();
+    const sessionId = Session.get("sessionId");
+    if (cartCount === 0 && sessionId) {
+      Meteor.call("cart/createCart", sessionId, (error) => {
+        // cart-found error can happen due to timing issues. We don't worry about it
+        // and assume that the account cart will get published to us soon.
+        if (error.error !== "cart-found") {
+          Logger.error(error.message);
+        }
+      });
+    } else if (cartCount > 1) {
+      Logger.warn("Multiple carts received. Expected just one.");
+    }
+  }
 });
 
 Tracker.autorun(() => {
   // Reload Packages sub if shopId changes
   // We have a persistent subscription to the primary shop's packages,
   // so don't refresh sub if we're updating to primaryShopId sub
-  if (Reaction.getShopId() && Reaction.getShopId() !== Reaction.getPrimaryShopId()) {
-    Subscriptions.Packages = Subscriptions.Manager.subscribe("Packages", Reaction.getShopId());
+  const shopId = Reaction.getShopId();
+  if (shopId && shopId !== Reaction.getPrimaryShopId()) {
+    Subscriptions.Packages = Subscriptions.Manager.subscribe("Packages", shopId);
   }
 });

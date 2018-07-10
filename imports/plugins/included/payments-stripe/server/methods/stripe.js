@@ -170,7 +170,7 @@ function buildPaymentMethods(options) {
       const cartItems = cartItemsByShop[shopId].map((item) => ({
         _id: item._id,
         productId: item.productId,
-        variantId: item.variants._id,
+        variantId: item.variantId,
         shopId,
         quantity: item.quantity
       }));
@@ -238,7 +238,7 @@ export const methods = {
 
     // Must have an email
     const cart = Cart.findOne({ _id: cartId });
-    const customerAccount = Accounts.findOne({ _id: cart.userId });
+    const customerAccount = Accounts.findOne({ _id: cart.accountId });
     let customerEmail;
 
     if (!customerAccount || !Array.isArray(customerAccount.emails)) {

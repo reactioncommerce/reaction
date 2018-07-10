@@ -20,7 +20,7 @@ import { getApiInfo } from "../api";
  */
 function convertOrderToShopifyOrder(doc, index, shopId, existingCustomer = undefined) {
   check(existingCustomer, Match.OneOf(Object, undefined));
-  const order = Orders.findOne(doc._id); // only this object has the original transforms defined
+  const order = Orders.findOne({ _id: doc._id }); // only this object has the original transforms defined
   const paymentType = order.billing[index].method;
   const itemsForShop = order.getItemsByShop()[shopId];
   const shopifyOrder = {};
@@ -45,7 +45,7 @@ function convertOrderToShopifyOrder(doc, index, shopId, existingCustomer = undef
   shopifyOrder.subtotal_price = order.getSubtotalByShop()[shopId];
   shopifyOrder.token = order._id;
   shopifyOrder.total_discounts = order.getDiscountsByShop()[shopId];
-  shopifyOrder.total_line_item_price = order.getItemsByShop()[shopId].reduce((total, item) => total + (item.variants.price * item.quantity), 0);
+  shopifyOrder.total_line_item_price = order.getItemsByShop()[shopId].reduce((total, item) => total + (item.priceWhenAdded.amount * item.quantity), 0);
   shopifyOrder.total_price = order.getTotalByShop()[shopId];
   shopifyOrder.total_tax = order.getTaxesByShop()[shopId];
   shopifyOrder.total_weight = shopifyOrder.line_items.reduce((sum, item) => sum + (item.grams * item.quantity), 0);
@@ -102,12 +102,12 @@ function convertLineItems(items, order) {
     if (item.variants.sku) { // this doesn't appear to be written anywhere but it's in the schema
       lineItem.sku = item.variants.sku;
     }
-    lineItem.title = item.product.title;
-    lineItem.variant_id = item.variants._id;
-    lineItem.variant_title = item.variants.title;
+    lineItem.title = item.title;
+    lineItem.variant_id = item.variantId;
+    lineItem.variant_title = item.variantTitle;
     lineItem.vendor = item.product.vendor;
-    lineItem.taxable = item.variants.taxable;
-    lineItem.price = item.variants.price;
+    lineItem.taxable = item.isTaxable;
+    lineItem.price = item.priceWhenAdded.amount;
     if (order.taxes) {
       lineItem.tax_lines = [];
       // when using Avalara we get tax detail
@@ -126,7 +126,7 @@ function convertLineItems(items, order) {
     if (item.taxData) {
       lineItem.tax_lines = [{
         title: item.taxData.taxCode,
-        price: accounting.toFixed((item.taxData.rate / 100) * item.variants.price, 2),
+        price: accounting.toFixed((item.taxData.rate / 100) * item.priceWhenAdded.amount, 2),
         rate: item.taxData.rate / 100
       }];
     }

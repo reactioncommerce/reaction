@@ -77,14 +77,14 @@ class InvoiceContainer extends Component {
 
       if (isEdited) {
         editedItems = editedItems.filter((item) => item.id !== lineItem._id);
-        isEdited.refundedTotal = lineItem.variants.price * adjustedQuantity;
+        isEdited.refundedTotal = lineItem.priceWhenAdded.amount * adjustedQuantity;
         isEdited.refundedQuantity = adjustedQuantity;
         editedItems.push(isEdited);
       } else {
         editedItems.push({
           id: lineItem._id,
           title: lineItem.title,
-          refundedTotal: lineItem.variants.price * lineItem.quantity,
+          refundedTotal: lineItem.priceWhenAdded.amount * lineItem.quantity,
           refundedQuantity: lineItem.quantity
         });
       }
@@ -131,7 +131,7 @@ class InvoiceContainer extends Component {
         updateEditedItems.push({
           id: item._id,
           title: item.title,
-          refundedTotal: item.variants.price * item.quantity,
+          refundedTotal: item.priceWhenAdded.amount * item.quantity,
           refundedQuantity: item.quantity
         });
         return item._id;
@@ -154,7 +154,7 @@ class InvoiceContainer extends Component {
 
     if (isEdited) {
       editedItems = editedItems.filter((item) => item.id !== lineItem._id);
-      isEdited.refundedTotal = lineItem.variants.price * refundedQuantity;
+      isEdited.refundedTotal = lineItem.priceWhenAdded.amount * refundedQuantity;
       isEdited.refundedQuantity = refundedQuantity;
       if (refundedQuantity !== 0) {
         editedItems.push(isEdited);
@@ -163,7 +163,7 @@ class InvoiceContainer extends Component {
       editedItems.push({
         id: lineItem._id,
         title: lineItem.title,
-        refundedTotal: lineItem.variants.price * refundedQuantity,
+        refundedTotal: lineItem.priceWhenAdded.amount * refundedQuantity,
         refundedQuantity
       });
     }

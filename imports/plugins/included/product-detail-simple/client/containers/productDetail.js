@@ -81,7 +81,7 @@ const wrapComponent = (Comp) =>
 
         if (this.props.storedCart && this.props.storedCart.items) {
           this.props.storedCart.items.forEach((item) => {
-            if (item.variants._id === currentVariant._id) {
+            if (item.variantId === currentVariant._id) {
               storedQuantity = item.quantity;
             }
           });

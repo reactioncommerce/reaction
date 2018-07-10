@@ -31,7 +31,7 @@ export default () => {
   }, (job, callback) => {
     Logger.info("Starting exportOrders job");
     const { orderId } = job.data;
-    const order = Orders.findOne(orderId);
+    const order = Orders.findOne({ _id: orderId });
     try {
       exportToShopify(order)
         .then((exportedOrders) => {

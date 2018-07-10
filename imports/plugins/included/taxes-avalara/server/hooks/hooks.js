@@ -33,7 +33,7 @@ function markCartTax(value = true) {
 
 MethodHooks.after("taxes/calculate", (options) => {
   const cartId = options.arguments[0];
-  const cartToCalc = Cart.findOne(cartId);
+  const cartToCalc = Cart.findOne({ _id: cartId });
   if (cartToCalc.bypassAddressValidation) {
     // User bypassed address validation so we can't calc taxes so don't even try
     return options.result;
@@ -85,7 +85,7 @@ MethodHooks.after("orders/refunds/create", (options) => {
   const pkg = taxCalc.getPackageData();
   if (pkg && pkg.settings.avalara.enabled && pkg.settings.avalara.performTaxCalculation) {
     const orderId = options.arguments[0];
-    const order = Orders.findOne(orderId);
+    const order = Orders.findOne({ _id: orderId });
     const refundAmount = options.arguments[2];
     taxCalc.reportRefund(order, refundAmount, (result) => {
       if (result) {

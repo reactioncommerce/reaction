@@ -7,8 +7,8 @@ import { Shops, Cart, Packages } from "/lib/collections";
 //
 // this entire method will run after the core/taxes
 // plugin runs the taxes/calculate method
-// it overrwites any previous tax calculation
-// tax methods precendence is determined by
+// it overwrites any previous tax calculation
+// tax methods precedence is determined by
 // load order of plugins
 //
 MethodHooks.after("taxes/calculate", (options) => {
@@ -16,7 +16,7 @@ MethodHooks.after("taxes/calculate", (options) => {
   let origin = {};
 
   const cartId = options.arguments[0];
-  const cartToCalc = Cart.findOne(cartId);
+  const cartToCalc = Cart.findOne({ _id: cartId });
   if (cartToCalc) {
     const { shopId } = cartToCalc;
     const shop = Shops.findOne(shopId);
@@ -65,13 +65,13 @@ MethodHooks.after("taxes/calculate", (options) => {
             // format cart items to TaxCloud structure
             let index = 0;
             for (const items of cartToCalc.items) {
-              // only processs taxable products
-              if (items.variants.taxable === true) {
+              // only process taxable products
+              if (items.isTaxable) {
                 const item = {
                   Index: index,
-                  ItemID: items.variants._id,
+                  ItemID: items.variantId,
                   TIC: "00000",
-                  Price: items.variants.price,
+                  Price: items.priceWhenAdded.amount,
                   Qty: items.quantity
                 };
                 index += 1;

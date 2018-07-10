@@ -43,7 +43,7 @@ export const methods = {
     check(discountRate, Number);
     check(discounts, Match.Optional(Array));
 
-    return Cart.update(cartId, {
+    return Cart.update({ _id: cartId }, {
       $set: {
         discounts,
         discount: discountRate

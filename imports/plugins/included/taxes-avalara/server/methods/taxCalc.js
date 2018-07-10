@@ -113,12 +113,12 @@ function getAuthData(packageData = taxCalc.getPackageData()) {
 
 /**
  * @summary Get exempt tax settings to pass to REST API
- * @param {String} userId id of user to find settings
+ * @param {String} accountId id of user to find settings
  * @returns {Object} containing exemptCode and customerUsageType
  * @private
  */
-function getTaxSettings(userId) {
-  return _.get(Accounts.findOne({ _id: userId }), "taxSettings");
+function getTaxSettings(accountId) {
+  return _.get(Accounts.findOne({ _id: accountId }), "taxSettings");
 }
 
 /**
@@ -326,8 +326,8 @@ taxCalc.getEntityCodes = function () {
 taxCalc.calcTaxable = function (cart) {
   let subTotal = 0;
   for (const item of cart.items) {
-    if (item.variants.taxable) {
-      subTotal += (item.variants.price * item.quantity);
+    if (item.isTaxable) {
+      subTotal += (item.priceWhenAdded.amount * item.quantity);
     }
   }
   return subTotal;
@@ -495,14 +495,14 @@ function cartToSalesOrder(cart) {
   let lineItems = [];
   if (cart.items) {
     lineItems = cart.items.reduce((items, item) => {
-      if (item.variants.taxable) {
+      if (item.isTaxable) {
         const itemObj = {
           number: item._id,
           itemCode: item.productId,
           quantity: item.quantity,
-          amount: item.variants.price * item.quantity,
+          amount: item.priceWhenAdded.amount * item.quantity,
           description: item.taxDescription || item.title,
-          taxCode: item.variants.taxCode
+          taxCode: item.taxCode
         };
         items.push(itemObj);
       }
@@ -523,7 +523,7 @@ function cartToSalesOrder(cart) {
   const salesOrder = {
     companyCode,
     type: "SalesOrder",
-    customerCode: cart.userId,
+    customerCode: cart.accountId,
     date: cartDate,
     currencyCode,
     addresses: {
@@ -573,7 +573,7 @@ taxCalc.estimateCart = function (cart, callback) {
   check(callback, Function);
 
   if (cart.items && cart.shipping && cart.shipping[0] && cart.shipping[0].address) {
-    const salesOrder = Object.assign({}, cartToSalesOrder(cart), getTaxSettings(cart.userId));
+    const salesOrder = Object.assign({}, cartToSalesOrder(cart), getTaxSettings(cart.accountId));
     const baseUrl = getUrl();
     const requestUrl = `${baseUrl}transactions/create`;
     const result = avaPost(requestUrl, { data: salesOrder });
@@ -611,14 +611,14 @@ function orderToSalesInvoice(order) {
   Promise.await(lazyLoadMoment());
   const orderDate = moment(order.createdAt).format();
   const lineItems = order.items.reduce((items, item) => {
-    if (item.variants.taxable) {
+    if (item.isTaxable) {
       const itemObj = {
         number: item._id,
         itemCode: item.productId,
         quantity: item.quantity,
-        amount: item.variants.price * item.quantity,
+        amount: item.priceWhenAdded.amount * item.quantity,
         description: item.taxDescription || item.title,
-        taxCode: item.variants.taxCode
+        taxCode: item.taxCode
       };
       items.push(itemObj);
     }
@@ -641,7 +641,7 @@ function orderToSalesInvoice(order) {
     type: documentType,
     commit: commitDocuments,
     code: order._id,
-    customerCode: order.userId,
+    customerCode: order.accountId,
     date: orderDate,
     currencyCode,
     addresses: {
@@ -684,11 +684,11 @@ function orderToSalesInvoice(order) {
  * @param {Function} callback callback when using async version
  * @returns {Object} result Result of SalesInvoice call
  */
-taxCalc.recordOrder = function (order, callback) {
+taxCalc.recordOrder = function recordOrder(order, callback) {
   check(callback, Function);
   // unlike the other functions, we expect this to always be called asynchronously
   if (order && order.shipping && order.shipping[0].address) {
-    const salesOrder = Object.assign({}, orderToSalesInvoice(order), getTaxSettings(order.userId));
+    const salesOrder = Object.assign({}, orderToSalesInvoice(order), getTaxSettings(order.accountId));
     const baseUrl = getUrl();
     const requestUrl = `${baseUrl}transactions/create`;
     try {

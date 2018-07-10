@@ -24,7 +24,7 @@ Template.coreOrderWorkflow.helpers({
   order() {
     const id = this.order ? this.order._id : Reaction.Router.getQueryParam("_id");
     if (id) {
-      return Orders.findOne(id);
+      return Orders.findOne({ _id: id });
     }
     return false;
   },

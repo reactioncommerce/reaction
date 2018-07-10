@@ -4,11 +4,9 @@ import { Template } from "meteor/templating";
 import { AutoForm } from "meteor/aldeed:autoform";
 import { $ } from "meteor/jquery";
 import { getCardType } from "/client/modules/core/helpers/globals";
-import { Router } from "/client/api";
-import { Cart, Orders } from "/lib/collections";
+import { Reaction, Router } from "/client/api";
+import getCart from "/imports/plugins/core/cart/both/util/getCart";
 import { StripePayment } from "../../lib/collections/schemas";
-
-let submitting = false;
 
 //
 // local helpers
@@ -75,38 +73,20 @@ Template.stripePaymentForm.helpers({
   }
 });
 
-// This creates an autorun block that monitors the CompletedCartOrder subscription
-// and once an order for the cart we're checking out with is available,
-// We trigger a Router.go to the cart/completed page.
-Template.stripePaymentForm.onCreated(function () {
-  // we need to cache the current "checkoutCart" because a new cart is created during copyCartToOrder
-  const checkoutCart = Cart.findOne({ userId: Meteor.userId() });
-  const orderSub = Meteor.subscribe("CompletedCartOrder", Meteor.userId(), checkoutCart._id);
-  // Watch the orders subscription, once the order is created redirect to cart/completed
-  this.autorun(() => {
-    if (orderSub.ready()) {
-      const order = Orders.findOne({ cartId: checkoutCart._id });
-      if (order) {
-        Router.go("cart/completed", {}, { _id: checkoutCart._id });
-      }
-    }
-  });
-});
-
 //
 // autoform handling
 //
 AutoForm.addHooks("stripe-payment-form", {
   onSubmit(doc) {
-    submitting = true;
+    Reaction.isSubmittingCheckoutPayment = true;
     hidePaymentAlert();
     const { template } = this;
-    const cart = Cart.findOne({ userId: Meteor.userId() });
+    const { cart } = getCart();
 
     // validate card data
     // also validated on server
     if (!validCardNumber(doc.cardNumber)) {
-      submitting = false;
+      Reaction.isSubmittingCheckoutPayment = false;
       const error = { message: "Your card number is incorrect" };
       handleStripeSubmitError(error);
       uiEnd(template, "Resubmit payment");
@@ -114,7 +94,7 @@ AutoForm.addHooks("stripe-payment-form", {
     }
 
     if (!validExpireMonth(doc.expireMonth) || !validExpireYear(doc.expireYear)) {
-      submitting = false;
+      Reaction.isSubmittingCheckoutPayment = false;
       const error = { message: "Your expiration date is incorrect" };
       handleStripeSubmitError(error);
       uiEnd(template, "Resubmit payment");
@@ -122,7 +102,7 @@ AutoForm.addHooks("stripe-payment-form", {
     }
 
     if (!validCVV(doc.cvv)) {
-      submitting = false;
+      Reaction.isSubmittingCheckoutPayment = false;
       const error = { message: "Your cvv is incorrect" };
       handleStripeSubmitError(error);
       uiEnd(template, "Resubmit payment");
@@ -143,16 +123,17 @@ AutoForm.addHooks("stripe-payment-form", {
     // that happens when we wait for the cart subscription to update before forwarding
     Meteor.apply("stripe/payment/createCharges", ["authorize", cardData, cart._id], {
       onResultReceived: (error, result) => {
-        submitting = false;
-        if (error) {
-          handleStripeSubmitError(error);
-          uiEnd(template, "Resubmit payment");
-        } else if (result.success) {
+        if (result && result.success) {
           Router.go("cart/completed", {}, {
             _id: cart._id
           });
+          // This prevents the "no items" empty state from appearing for the checkout route
+          // after the purchased cart has been deleted, just prior to routing to /completed.
+          // Therefore, keep it after the Router.go.
+          Reaction.isSubmittingCheckoutPayment = false;
         } else {
-          handleStripeSubmitError(result.error);
+          Reaction.isSubmittingCheckoutPayment = false;
+          handleStripeSubmitError(error || result.error);
           uiEnd(template, "Resubmit payment");
         }
       }
@@ -165,7 +146,7 @@ AutoForm.addHooks("stripe-payment-form", {
     return this.template.$("#btn-processing").removeClass("hidden");
   },
   endSubmit() {
-    if (!submitting) {
+    if (!Reaction.isSubmittingCheckoutPayment) {
       return uiEnd(this.template, "Complete your order");
     }
   }
