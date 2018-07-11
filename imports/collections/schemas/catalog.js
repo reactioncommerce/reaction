@@ -29,6 +29,7 @@ import { ShippingParcel } from "./shipping";
  * @property {String} pageTitle optional
  * @property {ShippingParcel} parcel optional
  * @property {Object} positions optional
+ * @property {PriceRange} price optional
  * @property {ImageInfo} primaryImage optional
  * @property {String} productId required
  * @property {String} productType optional
@@ -49,7 +50,6 @@ import { ShippingParcel } from "./shipping";
  *
  *
  * ---------- TODO
- * @property {?????} price optional
  * @property {?????} pricing optional
  * @property {?????} variants optional
  *
@@ -175,14 +175,15 @@ export const Catalog = new SimpleSchema({
     blackbox: true,
     optional: true
   },
-  //
-  //
-  //
-  //
-  //
   "price": {
-
+    type: PriceRange,
+    optional: true
   },
+  //
+  //
+  //
+  //
+  //
   "pricing": {
 
   },
@@ -338,6 +339,29 @@ export const ImageInfo = new SimpleSchema({
   },
   "URLs": {
     //TODO: what do I do here?
+  }
+});
+
+/**
+ * @name PriceRange
+ * @memberof Schemas
+ * @type {SimpleSchema}
+ * @property {Number} max required
+ * @property {Number} min required
+ * @property {String} range required
+ */
+export const PriceRange = new SimpleSchema({
+  "max": {
+    type: Number,
+    label: "Max price"
+  },
+  "min": {
+    type: Number,
+    label: "Min price"
+  },
+  "range": {
+    type: String,
+    label: "Price range"
   }
 });
 
