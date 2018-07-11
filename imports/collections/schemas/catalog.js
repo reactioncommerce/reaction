@@ -5,6 +5,348 @@ import { Metafield } from "./metafield";
 import { ShippingParcel } from "./shipping";
 
 /**
+ * @name ImageSizes
+ * @memberof Schemas
+ * @type {SimpleSchema}
+ * @property {String} large optional
+ * @property {String} medium optional
+ * @property {String} original optional
+ * @property {String} small optional
+ * @property {String} thumbnail optional
+ */
+export const ImageSizes = new SimpleSchema({
+  large: {
+    type: String,
+    label: "Large",
+    optional: true
+  },
+  medium: {
+    type: String,
+    label: "Medium",
+    optional: true
+  },
+  original: {
+    type: String,
+    label: "Original",
+    optional: true
+  },
+  small: {
+    type: String,
+    label: "Small",
+    optional: true
+  },
+  thumbnail: {
+    type: String,
+    label: "Thumbnail",
+    optional: true
+  }
+});
+
+/**
+ * @name ImageInfo
+ * @memberof Schemas
+ * @type {SimpleSchema}
+ * @property {Number} priority required
+ * @property {String} productId required
+ * @property {Number} toGrid required
+ * @property {String} variantId required
+ * @property {ImageSizes} URLs required
+ */
+export const ImageInfo = new SimpleSchema({
+  priority: {
+    type: Number,
+    defaultValue: 0
+  },
+  productId: {
+    type: String,
+    label: "Product Id"
+  },
+  toGrid: {
+    type: Number,
+    defaultValue: 0
+  },
+  variantId: {
+    type: String,
+    label: "Variant Id"
+  },
+  URLs: {
+    type: ImageSizes
+  }
+});
+
+/**
+ * @name CatalogPriceRange
+ * @memberof Schemas
+ * @type {SimpleSchema}
+ * @property {Number} max required
+ * @property {Number} min required
+ * @property {String} range required
+ */
+export const CatalogPriceRange = new SimpleSchema({
+  max: {
+    type: Number,
+    label: "Max price"
+  },
+  min: {
+    type: Number,
+    label: "Min price"
+  },
+  range: {
+    type: String,
+    label: "Price range"
+  }
+});
+
+/**
+ * @name ProductPricingInfoByCurrency
+ * @memberof Schemas
+ * @type {SimpleSchema}
+ * @property {Number} compareAtPrice optional
+ * @property {Number} compareAtPrice optional
+ * @property {Number} compareAtPrice optional
+ * @property {Number} compareAtPrice optional
+ * @property {Number} compareAtPrice optional
+ * @property {Currency} currency required
+ * @property {String} displayPrice required
+ * @property {Number} maxPrice required
+ * @property {Number} minPrice required
+ * @property {Number} price optional
+ */
+export const ProductPricingInfoByCurrency = new SimpleSchema({
+  compareAtPrice: {
+    type: Number,
+    label: "Compare at price",
+    optional: true
+  },
+  displayPrice: {
+    type: String,
+    label: "Display price"
+  },
+  maxPrice: {
+    type: Number,
+    label: "Max price"
+  },
+  minPrice: {
+    type: Number,
+    label: "Min price"
+  },
+  price: {
+    type: Number,
+    label: "Price",
+    optional: true
+  }
+});
+
+/**
+ * @name SocialMetadata
+ * @memberof Schemas
+ * @type {SimpleSchema}
+ * @property {String} message required
+ * @property {String} service required
+ */
+export const SocialMetadata = new SimpleSchema({
+  message: {
+    type: String,
+    label: "Message",
+    optional: true
+  },
+  service: {
+    type: String,
+    label: "Service",
+    optional: true
+  }
+});
+
+/**
+ * @name CatalogProductVariant
+ * @memberof Schemas
+ * @type {SimpleSchema}
+ * @property {String} _id required
+ * @property {String} barcode optional
+ * @property {Date} createdAt optional
+ * @property {Number} height optional, default value: `0`
+ * @property {Number} index required
+ * @property {Boolean} inventoryManagement required
+ * @property {Boolean} inventoryPolicy required
+ * @property {Boolean} isLowQuantity required
+ * @property {Boolean} isSoldOut required
+ * @property {Boolean} isTaxable required, default value: `false`
+ * @property {Number} length optional, default value: `0`
+ * @property {Number} lowInventoryWarningThreshold optional, default value: `0`
+ * @property {Metafield[]} metafields optional
+ * @property {Number} minOrderQuantity optional, default value: `1`
+ * @property {String} optionTitle optional
+ * @property {String} originCountry optional
+ * @property {CatalogPriceRange} price required
+ * @property {ProductPricingInfoByCurrency{}} pricing required
+ * @property {String} shopId required
+ * @property {String} sku optional
+ * @property {String} taxCode optional, default value: `"0000"`
+ * @property {String} taxDescription optional
+ * @property {String} title optional
+ * @property {Date} updatedAt optional
+ * @property {String} variantId required
+ * @property {Number} weight optional, default value: `0`
+ * @property {Number} width optional, default value: `0`
+ */
+export const CatalogProductVariant = new SimpleSchema({
+  "_id": {
+    type: String,
+    label: "Catalog product variant Id"
+  },
+  "barcode": {
+    type: String,
+    label: "Barcode",
+    optional: true
+  },
+  "createdAt": {
+    type: Date,
+    label: "Date/time this variant was created at",
+    optional: true
+  },
+  "height": {
+    type: Number,
+    label: "Height",
+    min: 0,
+    optional: true,
+    defaultValue: 0
+  },
+  "index": {
+    type: SimpleSchema.Integer,
+    label: "The position of this variant among other variants at the same level of the product-variant-option hierarchy"
+  },
+  "inventoryManagement": {
+    type: Boolean,
+    label: "True if inventory management is enabled for this variant"
+  },
+  "inventoryPolicy": {
+    type: Boolean,
+    label: "True if inventory policy is enabled for this variant"
+  },
+  "isLowQuantity": {
+    type: Boolean,
+    label: "Indicates that the product quantity is too low"
+  },
+  "isSoldOut": {
+    type: Boolean,
+    label: "Indicates when the product quantity is zero"
+  },
+  "isTaxable": {
+    type: Boolean,
+    label: "Indicates if a product is taxable",
+    index: 1,
+    defaultValue: false
+  },
+  "length": {
+    type: Number,
+    label: "Length",
+    min: 0,
+    optional: true,
+    defaultValue: 0
+  },
+  "lowInventoryWarningThreshold": {
+    type: SimpleSchema.Integer,
+    label: "Warn at",
+    min: 0,
+    optional: true,
+    defaultValue: 0
+  },
+  "metafields": {
+    type: Array,
+    label: "Metafields",
+    optional: true
+  },
+  "metafields.$": {
+    type: Metafield
+  },
+  "minOrderQuantity": {
+    type: SimpleSchema.Integer,
+    label: "Minimum quantity per item in an order",
+    defaultValue: 1,
+    optional: true
+  },
+  "optionTitle": {
+    type: String,
+    label: "Option title",
+    optional: true
+  },
+  "originCountry": {
+    type: String,
+    label: "Origin country",
+    optional: true
+  },
+  "price": {
+    type: Number
+  },
+  "pricing": {
+    type: Object,
+    label: "Pricing"
+  },
+  "pricing.$": {
+    type: ProductPricingInfoByCurrency
+  },
+  "shopId": {
+    type: String,
+    label: "Product ShopId",
+    index: 1
+  },
+  "sku": {
+    type: String,
+    label: "SKU",
+    optional: true
+  },
+  "taxCode": {
+    type: String,
+    label: "Tax Code",
+    defaultValue: "0000",
+    optional: true
+  },
+  "taxDescription": {
+    type: String,
+    label: "Tax Description",
+    optional: true
+  },
+  "title": {
+    type: String,
+    label: "Product Title",
+    defaultValue: "",
+    optional: true
+  },
+  "updatedAt": {
+    type: Date,
+    label: "Updated at",
+    autoValue: updatedAtAutoValue,
+    optional: true
+  },
+  "variantId": {
+    type: String,
+    label: "Variant ID"
+  },
+  "weight": {
+    type: Number,
+    label: "Weight",
+    min: 0,
+    optional: true,
+    defaultValue: 0,
+    custom() {
+      if (Meteor.isClient) {
+        if (!(this.siblingField("type").value === "inventory" || this.value ||
+          this.value === 0)) {
+          return SimpleSchema.ErrorTypes.REQUIRED;
+        }
+      }
+    }
+  },
+  "width": {
+    type: Number,
+    label: "Width",
+    min: 0,
+    optional: true,
+    defaultValue: 0
+  }
+});
+
+/**
  * @name Catalog
  * @memberof Schemas
  * @type {SimpleSchema}
@@ -29,7 +371,7 @@ import { ShippingParcel } from "./shipping";
  * @property {String} pageTitle optional
  * @property {ShippingParcel} parcel optional
  * @property {Object} positions optional
- * @property {PriceRange} price optional
+ * @property {CatalogPriceRange} price optional
  * @property {ProductPricingInfoByCurrency{}} pricing required
  * @property {ImageInfo} primaryImage optional
  * @property {String} productId required
@@ -80,7 +422,7 @@ export const Catalog = new SimpleSchema({
   },
   "isBackorder": {
     type: Boolean,
-    label: "Indicates when the seller has allowed the sale of product which is not in stock",
+    label: "Indicates when the seller has allowed the sale of product which is not in stock"
   },
   "isDeleted": {
     type: Boolean,
@@ -90,11 +432,11 @@ export const Catalog = new SimpleSchema({
   },
   "isLowQuantity": {
     type: Boolean,
-    label: "Indicates that the product quantity is too low",
+    label: "Indicates that the product quantity is too low"
   },
   "isSoldOut": {
     type: Boolean,
-    label: "Indicates when the product quantity is zero",
+    label: "Indicates when the product quantity is zero"
   },
   "isTaxable": {
     type: Boolean,
@@ -171,12 +513,12 @@ export const Catalog = new SimpleSchema({
     optional: true
   },
   "price": {
-    type: PriceRange,
+    type: CatalogPriceRange,
     optional: true
   },
   "pricing": {
     type: Object,
-    label: "Pricing",
+    label: "Pricing"
   },
   "pricing.$": {
     type: ProductPricingInfoByCurrency
@@ -196,10 +538,10 @@ export const Catalog = new SimpleSchema({
     optional: true
   },
   "requiresShipping": {
-     type: Boolean,
-     label: "Require a shipping address",
-     defaultValue: true
-   },
+    type: Boolean,
+    label: "Require a shipping address",
+    defaultValue: true
+  },
   "shopId": {
     type: String,
     label: "Product ShopId",
@@ -264,7 +606,7 @@ export const Catalog = new SimpleSchema({
     optional: true
   },
   "variants.$": {
-    type: CatalogProductVariants
+    type: CatalogProductVariant
   },
   "vendor": {
     type: String,
@@ -292,347 +634,5 @@ export const Catalog = new SimpleSchema({
     min: 0,
     optional: true,
     defaultValue: 0
-  },
-});
-
-/**
- * @name CatalogProductVariant
- * @memberof Schemas
- * @type {SimpleSchema}
- * @property {String} _id required
- * @property {String} barcode optional
- * @property {Date} createdAt optional
- * @property {Number} height optional, default value: `0`
- * @property {Number} index required
- * @property {Boolean} inventoryManagement required
- * @property {Boolean} inventoryPolicy required
- * @property {Boolean} isLowQuantity required
- * @property {Boolean} isSoldOut required
- * @property {Boolean} isTaxable required, default value: `false`
- * @property {Number} length optional, default value: `0`
- * @property {Number} lowInventoryWarningThreshold optional, default value: `0`
- * @property {Metafield[]} metafields optional
- * @property {Number} minOrderQuantity optional, default value: `1`
- * @property {String} optionTitle optional
- * @property {String} originCountry optional
- * @property {PriceRange} price required
- * @property {ProductPricingInfoByCurrency{}} pricing required
- * @property {String} shopId required
- * @property {String} sku optional
- * @property {String} taxCode optional, default value: `"0000"`
- * @property {String} taxDescription optional
- * @property {String} title optional
- * @property {Date} updatedAt optional
- * @property {String} variantId required
- * @property {Number} weight optional, default value: `0`
- * @property {Number} width optional, default value: `0`
- */
-export const CatalogProductVariant = new SimpleSchema({
-  "_id": {
-    type: String,
-    label: "Catalog product variant Id"
-  },
-  "barcode": {
-    type: String,
-    label: "Barcode",
-    optional: true
-  },
-  "createdAt": {
-    type: Date,
-    label: "Date/time this variant was created at",
-    optional: true
-  },
-  "height": {
-    type: Number,
-    label: "Height",
-    min: 0,
-    optional: true,
-    defaultValue: 0
-  },
-  "index": {
-    type: SimpleSchema.Integer,
-    label: "The position of this variant among other variants at the same level of the product-variant-option hierarchy"
-  },
-  "inventoryManagement": {
-    type: Boolean,
-    label: "True if inventory management is enabled for this variant",
-  },
-  "inventoryPolicy": {
-    type: Boolean,
-    label: "True if inventory policy is enabled for this variant",
-  },
-  "isLowQuantity": {
-    type: Boolean,
-    label: "Indicates that the product quantity is too low",
-  },
-  "isSoldOut": {
-    type: Boolean,
-    label: "Indicates when the product quantity is zero",
-  },
-  "isTaxable": {
-    type: Boolean,
-    label: "Indicates if a product is taxable",
-    index: 1,
-    defaultValue: false
-  },
-  "length": {
-    type: Number,
-    label: "Length",
-    min: 0,
-    optional: true,
-    defaultValue: 0
-  },
-  "lowInventoryWarningThreshold": {
-    type: SimpleSchema.Integer,
-    label: "Warn at",
-    min: 0,
-    optional: true,
-    defaultValue: 0
-  },
-  "metafields": {
-    type: Array,
-    label: "Metafields",
-    optional: true
-  },
-  "metafields.$": {
-    type: Metafield
-  },
-  "minOrderQuantity": {
-    type: SimpleSchema.Integer,
-    label: "Minimum quantity per item in an order",
-    defaultValue: 1,
-    optional: true
-  },
-  "optionTitle": {
-    type: String,
-    label: "Option title",
-    optional: true
-  },
-  "originCountry": {
-    type: String,
-    label: "Origin country",
-    optional: true
-  },
-  "price": {
-    type: Number
-  },
-  "pricing": {
-    type: Object,
-    label: "Pricing",
-  },
-  "pricing.$": {
-    type: ProductPricingInfoByCurrency
-  },
-  "shopId": {
-    type: String,
-    label: "Product ShopId",
-    index: 1
-  },
-  "sku": {
-    type: String,
-    label: "SKU",
-    optional: true
-  },
-  "taxCode": {
-    type: String,
-    label: "Tax Code",
-    defaultValue: "0000",
-    optional: true
-  },
-  "taxDescription": {
-    type: String,
-    label: "Tax Description",
-    optional: true
-  },
-  "title": {
-    type: String,
-    label: "Product Title",
-    defaultValue: "",
-    optional: true
-  },
-  "updatedAt": {
-    type: Date,
-    label: "Updated at",
-    autoValue: updatedAtAutoValue,
-    optional: true
-  },
-  "variantId": {
-    type: String,
-    label: "Variant ID",
-  },
-  "weight": {
-    type: Number,
-    label: "Weight",
-    min: 0,
-    optional: true,
-    defaultValue: 0,
-    custom() {
-      if (Meteor.isClient) {
-        if (!(this.siblingField("type").value === "inventory" || this.value ||
-          this.value === 0)) {
-          return SimpleSchema.ErrorTypes.REQUIRED;
-        }
-      }
-    }
-  },
-  "width": {
-    type: Number,
-    label: "Width",
-    min: 0,
-    optional: true,
-    defaultValue: 0
-  },
-});
-
-/**
- * @name ImageInfo
- * @memberof Schemas
- * @type {SimpleSchema}
- * @property {Number} priority required
- * @property {String} productId required
- * @property {Number} toGrid required
- * @property {String} variantId required
- * @property {ImageSizes} URLs required
- */
-export const ImageInfo = new SimpleSchema({
-  "priority": {
-    type: Number,
-    defaultValue: 0
-  },
-  "productId": {
-    type: String,
-    label: "Product Id"
-  },
-  "toGrid": {
-    type: Number,
-    defaultValue: 0
-  },
-  "variantId": {
-    type: String,
-    label: "Variant Id"
-  },
-  "URLs": {
-    type: ImageSizes
-  }
-});
-
-/**
- * @name ImageSizes
- * @memberof Schemas
- * @type {SimpleSchema}
- * @property {String} large optional
- * @property {String} medium optional
- * @property {String} original optional
- * @property {String} small optional
- * @property {String} thumbnail optional
- */
-export const ImageSizes = new SimpleSchema({
-  "large": {
-    type: String,
-    label: "Large",
-    optional: true
-  },
-  "medium": {
-    type: String,
-    label: "Medium",
-    optional: true
-  },
-  "original": {
-    type: String,
-    label: "Original",
-    optional: true
-  },
-  "small": {
-    type: String,
-    label: "Small",
-    optional: true
-  },
-  "thumbnail": {
-    type: String,
-    label: "Thumbnail",
-    optional: true
-  },
-});
-
-/**
- * @name PriceRange
- * @memberof Schemas
- * @type {SimpleSchema}
- * @property {Number} max required
- * @property {Number} min required
- * @property {String} range required
- */
-export const PriceRange = new SimpleSchema({
-  "max": {
-    type: Number,
-    label: "Max price"
-  },
-  "min": {
-    type: Number,
-    label: "Min price"
-  },
-  "range": {
-    type: String,
-    label: "Price range"
-  }
-});
-
-/**
- * @name ProductPricingInfoByCurrency
- * @memberof Schemas
- * @type {SimpleSchema}
- * @property {Number} compareAtPrice optional
- * @property {Number} compareAtPrice optional
- * @property {Number} compareAtPrice optional
- * @property {Number} compareAtPrice optional
- * @property {Number} compareAtPrice optional
- * @property {Currency} currency required
- * @property {String} displayPrice required
- * @property {Number} maxPrice required
- * @property {Number} minPrice required
- * @property {Number} price optional
- */
-export const ProductPricingInfoByCurrency = new SimpleSchema({
-  "compareAtPrice": {
-    type: Number,
-    label: "Compare at price",
-    optional: true
-  },
-  "displayPrice": {
-    type: String,
-    label: "Display price"
-  },
-  "maxPrice": {
-    type: Number,
-    label: "Max price"
-  },
-  "minPrice": {
-    type: Number,
-    label: "Min price"
-  },
-  "price": {
-    type: Number,
-    label: "Price",
-    optional: true
-  }
-});
-
-/**
- * @name SocialMetadata
- * @memberof Schemas
- * @type {SimpleSchema}
- * @property {String} message required
- * @property {String} service required
- */
-export const SocialMetadata = new SimpleSchema({
-  "message": {
-    type: String,
-    label: "Message",
-    optional: true
-  },
-  "service": {
-    type: String,
-    label: "Service",
-    optional: true
   }
 });
