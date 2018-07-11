@@ -601,7 +601,7 @@ export const ProductPricingInfoByCurrency = new SimpleSchema({
   "displayPrice": {
     type: String,
     label: "Display price"
-  }
+  },
   "maxPrice": {
     type: Number,
     label: "Max price"
