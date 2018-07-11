@@ -35,6 +35,7 @@ import { ShippingParcel } from "./shipping";
  * @property {String} shopId required
  * @property {String} sku optional
  * @property {String} slug optional
+ * @property {SocialMetadata[]} socialMetadata optional
  * @property {Array} tagIds optional
  * @property {String} taxCode optional, default value: `"0000"`
  * @property {String} taxDescription optional
@@ -50,7 +51,6 @@ import { ShippingParcel } from "./shipping";
  * @property {?????} media optional
  * @property {?????} price optional
  * @property {?????} pricing optional
- * @property {?????} socialMetadata optional
  * @property {?????} variants optional
  *
  *
@@ -229,19 +229,14 @@ export const Catalog = new SimpleSchema({
     optional: true,
     index: 1
   },
-  //
-  //
-  //
-  //
-  //
-  "socialMetaData": {
-
+  "socialMetadata": {
+    type: Array,
+    label: "Social Metadata",
+    optional: true
   },
-  //
-  //
-  //
-  //
-  //
+  "socialMetadata.$": {
+    type: SocialMetadata
+  },
   "tagIds": {
     type: Array,
     label: "Hashtags",
@@ -343,5 +338,25 @@ export const ImageInfo = new SimpleSchema({
   },
   "URLs": {
     //TODO: what do I do here?
+  }
+});
+
+/**
+ * @name SocialMetadata
+ * @memberof Schemas
+ * @type {SimpleSchema}
+ * @property {String} message required
+ * @property {String} service required
+ */
+export const SocialMetadata = new SimpleSchema({
+  "message": {
+    type: String,
+    label: "Message",
+    optional: true
+  },
+  "service": {
+    type: String,
+    label: "Service",
+    optional: true
   }
 });
