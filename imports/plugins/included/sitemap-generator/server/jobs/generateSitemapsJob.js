@@ -5,6 +5,11 @@ import Reaction from "/imports/plugins/core/core/server/Reaction";
 import { Job } from "/imports/plugins/core/job-collection/lib";
 import generateSitemaps from "../lib/generateSitemaps";
 
+/**
+ * @name generateSitemapsJob
+ * @summary Initializes and processes a job that regenerates XML sitemaps
+ * @returns {undefined}
+ */
 export default function generateSitemapsJob() {
   const jobId = "sitemaps/generate";
 
@@ -12,7 +17,7 @@ export default function generateSitemapsJob() {
   Hooks.Events.add("afterCoreInit", () => {
     const settings = Reaction.getShopSettings();
     const { sitemaps } = settings;
-    const refreshPeriod = sitemaps && sitemaps.refreshPeriod || "every 24 hours";
+    const refreshPeriod = (sitemaps && sitemaps.refreshPeriod) || "every 24 hours";
 
     Logger.debug(`Adding ${jobId} to JobControl. Refresh ${refreshPeriod}`);
 
@@ -31,7 +36,7 @@ export default function generateSitemapsJob() {
   });
 
   // Function that processes job
-  const job = Jobs.processJobs(jobId, {
+  const sitemapGenerationJob = Jobs.processJobs(jobId, {
     pollInterval: 60 * 60 * 1000, // backup polling, see observer below
     workTimeout: 180 * 1000
   }, (job, callback) => {
@@ -41,7 +46,7 @@ export default function generateSitemapsJob() {
     Logger.debug(doneMessage);
     job.done(doneMessage, { repeatId: true });
     callback();
-  })
+  });
 
   // Observer that triggers processing of job when ready
   Jobs.find({
@@ -49,7 +54,7 @@ export default function generateSitemapsJob() {
     status: "ready"
   }).observe({
     added() {
-      return job.trigger();
+      return sitemapGenerationJob.trigger();
     }
   });
 }
