@@ -46,41 +46,13 @@ export default function generateSitemaps(shopIds = [], urlsPerSitemap = DEFAULT_
     }, { fields: { handle: 1 } }).map((product) => `BASE_URL/product/${product.handle}`);
 
     // Build and save XML for sitemaps
-    const sitemapIndexUrls = [];
-    // Basic pages
-    for (let currentPage = 1; currentPage <= Math.ceil(basicUrls.length / urlsPerSitemap); currentPage += 1) {
-      Sitemaps.insert({
-        shopId,
-        xml: generateSitemapXML(basicUrls, currentPage, urlsPerSitemap),
-        handle: `sitemap-pages-${currentPage}.xml`,
-        createdAt: new Date()
-      });
-      sitemapIndexUrls.push(`BASE_URL/sitemap-pages-${currentPage}.xml`);
-    }
+    const sitemapIndexUrls = [
+      ...buildPaginatedSitemaps('pages', basicUrls),
+      ...buildPaginatedSitemaps('tags', tagUrls),
+      ...buildPaginatedSitemaps('products', productUrls)
+    ];
 
-    // Tags
-    for (let currentPage = 1; currentPage <= Math.ceil(tagUrls.length / urlsPerSitemap); currentPage += 1) {
-      Sitemaps.insert({
-        shopId,
-        xml: generateSitemapXML(tagUrls, currentPage, urlsPerSitemap),
-        handle: `sitemap-tags-${currentPage}.xml`,
-        createdAt: new Date()
-      });
-      sitemapIndexUrls.push(`BASE_URL/sitemap-tags-${currentPage}.xml`);
-    }
-
-    // Product detail pages
-    for (let currentPage = 1; currentPage <= Math.ceil(productUrls.length / urlsPerSitemap); currentPage += 1) {
-      Sitemaps.insert({
-        shopId,
-        xml: generateSitemapXML(productUrls, currentPage, urlsPerSitemap),
-        handle: `sitemap-products-${currentPage}.xml`,
-        createdAt: new Date()
-      });
-      sitemapIndexUrls.push(`BASE_URL/sitemap-products-${currentPage}.xml`);
-    }
-
-    // Sitemap index
+    // Build and save sitemap index
     Sitemaps.insert({
       shopId,
       xml: generateIndexXML(sitemapIndexUrls),
@@ -88,6 +60,34 @@ export default function generateSitemaps(shopIds = [], urlsPerSitemap = DEFAULT_
       createdAt: new Date()
     });
   });
+}
+
+/**
+ * @name buildPaginatedSitemaps
+ * @summary Builds paginated sitemaps, saves to Sitemaps collection, and returns URLs to add to sitemap index
+ * @private
+ * @param {String} typeHandle - type of sitemap, i.e. "pages", "tags", "products"
+ * @param {Array} urls - Array of URL strings
+ * @param {Number} urlsPerSitemap - Max # of URLs per sitemap
+ */
+function buildPaginatedSitemaps (typeHandle, urls, urlsPerSitemap) {
+  const sitemapUrls = [];
+
+  for (let currentPage = 1; currentPage <= Math.ceil(urls.length / urlsPerSitemap); currentPage += 1) {
+    const startIndex = (currentPage - 1) * urlsPerSitemap;
+    const endIndex = startIndex + urlsPerSitemap;
+    const sitemapPageUrls = urls.slice(startIndex, endIndex);
+
+    Sitemaps.insert({
+      shopId,
+      xml: generateSitemapXML(sitemapPageUrls),
+      handle: `sitemap-${typeHandle}-${currentPage}.xml`,
+      createdAt: new Date()
+    });
+    sitemapIndexUrls.push(`BASE_URL/sitemap-${typeHandle}-${currentPage}.xml`);
+  }
+
+  return sitemapUrls;
 }
 
 /**
@@ -119,19 +119,13 @@ function generateIndexXML(urls) {
  * @summary Generates & returns XML for a sitemap document
  * @private
  * @param {Array} urls - Array of URL strings
- * @param {Number} currentPage - Starting at 1, current page to generate sitemap XML for
- * @param {Number} urlsPerSitemap - Max # of URLs for this sitemap
- * @returns {undefined}
+ * @returns {String} - Generated XML
  */
-function generateSitemapXML(urls, currentPage, urlsPerSitemap) {
+function generateSitemapXML(urls) {
   let xml = `<?xml version="1.0" encoding="UTF-8"?>
     <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">`;
 
-  const startIndex = (currentPage - 1) * urlsPerSitemap;
-  const endIndex = startIndex + urlsPerSitemap;
-  const sitemapPageUrls = urls.slice(startIndex, endIndex);
-
-  sitemapPageUrls.forEach((url) => {
+  urls.forEach((url) => {
     xml += `
       <url>
         <loc>URL</loc>

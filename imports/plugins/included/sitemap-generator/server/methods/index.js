@@ -5,7 +5,7 @@ import generateSitemaps from "../lib/generateSitemaps";
 export default {
 
   /**
-   * @name generateSitemaps
+   * @name sitemaps/generate
    * @summary Generates & stores sitemap documents for primary shop
    * @memberof Methods/Sitemaps
    * @returns {undefined}
