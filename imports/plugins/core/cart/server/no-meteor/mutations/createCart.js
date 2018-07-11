@@ -83,11 +83,7 @@ export default async function createCart(context, input) {
     }
   };
 
-  try {
   CartSchema.validate(newCart);
-  } catch(error) {
-    console.log(error);
-  }
 
   const { ops, result } = await Cart.insertOne(newCart);
 
