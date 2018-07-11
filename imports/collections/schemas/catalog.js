@@ -294,6 +294,7 @@ export const Catalog = new SimpleSchema({
     defaultValue: 0
   },
 });
+
 /**
  * @name ImageInfo
  * @memberof Schemas
@@ -302,7 +303,7 @@ export const Catalog = new SimpleSchema({
  * @property {String} productId required
  * @property {Number} toGrid required
  * @property {String} variantId required
- * @property {TODO} URLs required
+ * @property {ImageSizes} URLs required
  */
 export const ImageInfo = new SimpleSchema({
   "priority": {
@@ -322,8 +323,46 @@ export const ImageInfo = new SimpleSchema({
     label: "Variant Id"
   },
   "URLs": {
-    //TODO: what do I do here?
+    type: ImageSizes
   }
+});
+
+/**
+ * @name ImageSizes
+ * @memberof Schemas
+ * @type {SimpleSchema}
+ * @property {String} large optional
+ * @property {String} medium optional
+ * @property {String} original optional
+ * @property {String} small optional
+ * @property {String} thumbnail optional
+ */
+export const ImageSizes = new SimpleSchema({
+  "large": {
+    type: String,
+    label: "Large",
+    optional: true
+  },
+  "medium": {
+    type: String,
+    label: "Medium",
+    optional: true
+  },
+  "original": {
+    type: String,
+    label: "Original",
+    optional: true
+  },
+  "small": {
+    type: String,
+    label: "Small",
+    optional: true
+  },
+  "thumbnail": {
+    type: String,
+    label: "Thumbnail",
+    optional: true
+  },
 });
 
 /**
