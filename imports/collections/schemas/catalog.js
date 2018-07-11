@@ -30,6 +30,7 @@ import { ShippingParcel } from "./shipping";
  * @property {ShippingParcel} parcel optional
  * @property {Object} positions optional
  * @property {PriceRange} price optional
+ * @property {ProductPricingInfoByCurrency{}} pricing required
  * @property {ImageInfo} primaryImage optional
  * @property {String} productId required
  * @property {String} productType optional
@@ -50,7 +51,6 @@ import { ShippingParcel } from "./shipping";
  *
  *
  * ---------- TODO
- * @property {?????} pricing optional
  * @property {?????} variants optional
  *
  *
@@ -179,19 +179,13 @@ export const Catalog = new SimpleSchema({
     type: PriceRange,
     optional: true
   },
-  //
-  //
-  //
-  //
-  //
   "pricing": {
-
+    type: Object,
+    label: "Pricing",
   },
-    //
-  //
-  //
-  //
-  //
+  "pricing.$": {
+    type: ProductPricingInfoByCurrency
+  },
   "primaryImage": {
     type: ImageInfo,
     label: "Primary Image",
@@ -269,19 +263,9 @@ export const Catalog = new SimpleSchema({
     label: "Updated at",
     autoValue: updatedAtAutoValue
   },
-  //
-  //
-  //
-  //
-  //
   "variants": {
 
   },
-  //
-  //
-  //
-  //
-  //
   "vendor": {
     type: String,
     label: "Vendor",
@@ -362,6 +346,46 @@ export const PriceRange = new SimpleSchema({
   "range": {
     type: String,
     label: "Price range"
+  }
+});
+
+/**
+ * @name ProductPricingInfoByCurrency
+ * @memberof Schemas
+ * @type {SimpleSchema}
+ * @property {Number} compareAtPrice optional
+ * @property {Number} compareAtPrice optional
+ * @property {Number} compareAtPrice optional
+ * @property {Number} compareAtPrice optional
+ * @property {Number} compareAtPrice optional
+ * @property {Currency} currency required
+ * @property {String} displayPrice required
+ * @property {Number} maxPrice required
+ * @property {Number} minPrice required
+ * @property {Number} price optional
+ */
+export const ProductPricingInfoByCurrency = new SimpleSchema({
+  "compareAtPrice": {
+    type: Number,
+    label: "Compare at price",
+    optional: true
+  },
+  "displayPrice": {
+    type: String,
+    label: "Display price"
+  }
+  "maxPrice": {
+    type: Number,
+    label: "Max price"
+  },
+  "minPrice": {
+    type: Number,
+    label: "Min price"
+  },
+  "price": {
+    type: Number,
+    label: "Price",
+    optional: true
   }
 });
 
