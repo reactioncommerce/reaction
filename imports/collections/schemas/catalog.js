@@ -352,7 +352,7 @@ export const CatalogProductVariant = new SimpleSchema({
   "index": {
     type: SimpleSchema.Integer,
     label: "The position of this variant among other variants at the same level of the product-variant-option hierarchy"
-  }
+  },
   "inventoryManagement": {
     type: Boolean,
     label: "True if inventory management is enabled for this variant",
