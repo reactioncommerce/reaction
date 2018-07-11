@@ -42,18 +42,13 @@ import { ShippingParcel } from "./shipping";
  * @property {Array} tagIds optional
  * @property {String} taxCode optional, default value: `"0000"`
  * @property {String} taxDescription optional
- * @property {String} title required
+ * @property {String} title optional
  * @property {String} type required, default value: `product-simple`
  * @property {Date} updatedAt optional
+ * @property {CatalogProductVariant[]} variants optional
  * @property {String} vendor optional
  * @property {Number} weight optional, default value: `0`
  * @property {Number} width optional, default value: `0`
- *
- *
- * ---------- TODO
- * @property {?????} variants optional
- *
- *
  */
 export const Catalog = new SimpleSchema({
   "_id": {
@@ -264,12 +259,206 @@ export const Catalog = new SimpleSchema({
     autoValue: updatedAtAutoValue
   },
   "variants": {
-
+    type: Array,
+    label: "Product Variants",
+    optional: true
+  },
+  "variants.$": {
+    type: CatalogProductVariants
   },
   "vendor": {
     type: String,
     label: "Vendor",
     optional: true
+  },
+  "weight": {
+    type: Number,
+    label: "Weight",
+    min: 0,
+    optional: true,
+    defaultValue: 0,
+    custom() {
+      if (Meteor.isClient) {
+        if (!(this.siblingField("type").value === "inventory" || this.value ||
+          this.value === 0)) {
+          return SimpleSchema.ErrorTypes.REQUIRED;
+        }
+      }
+    }
+  },
+  "width": {
+    type: Number,
+    label: "Width",
+    min: 0,
+    optional: true,
+    defaultValue: 0
+  },
+});
+
+/**
+ * @name CatalogProductVariant
+ * @memberof Schemas
+ * @type {SimpleSchema}
+ * @property {String} _id required
+ * @property {String} barcode optional
+ * @property {Date} createdAt optional
+ * @property {Number} height optional, default value: `0`
+ * @property {Number} index required
+ * @property {Boolean} inventoryManagement required
+ * @property {Boolean} inventoryPolicy required
+ * @property {Boolean} isLowQuantity required
+ * @property {Boolean} isSoldOut required
+ * @property {Boolean} isTaxable required, default value: `false`
+ * @property {Number} length optional, default value: `0`
+ * @property {Number} lowInventoryWarningThreshold optional, default value: `0`
+ * @property {Metafield[]} metafields optional
+ * @property {Number} minOrderQuantity optional, default value: `1`
+ * @property {String} optionTitle optional
+ * @property {String} originCountry optional
+ * @property {PriceRange} price required
+ * @property {ProductPricingInfoByCurrency{}} pricing required
+ * @property {String} shopId required
+ * @property {String} sku optional
+ * @property {String} taxCode optional, default value: `"0000"`
+ * @property {String} taxDescription optional
+ * @property {String} title optional
+ * @property {Date} updatedAt optional
+ * @property {String} variantId required
+ * @property {Number} weight optional, default value: `0`
+ * @property {Number} width optional, default value: `0`
+ */
+export const CatalogProductVariant = new SimpleSchema({
+  "_id": {
+    type: String,
+    label: "Catalog product variant Id"
+  },
+  "barcode": {
+    type: String,
+    label: "Barcode",
+    optional: true
+  },
+  "createdAt": {
+    type: Date,
+    label: "Date/time this variant was created at",
+    optional: true
+  },
+  "height": {
+    type: Number,
+    label: "Height",
+    min: 0,
+    optional: true,
+    defaultValue: 0
+  },
+  "index": {
+    type: SimpleSchema.Integer,
+    label: "The position of this variant among other variants at the same level of the product-variant-option hierarchy"
+  }
+  "inventoryManagement": {
+    type: Boolean,
+    label: "True if inventory management is enabled for this variant",
+  },
+  "inventoryPolicy": {
+    type: Boolean,
+    label: "True if inventory policy is enabled for this variant",
+  },
+  "isLowQuantity": {
+    type: Boolean,
+    label: "Indicates that the product quantity is too low",
+  },
+  "isSoldOut": {
+    type: Boolean,
+    label: "Indicates when the product quantity is zero",
+  },
+  "isTaxable": {
+    type: Boolean,
+    label: "Indicates if a product is taxable",
+    index: 1,
+    defaultValue: false
+  },
+  "length": {
+    type: Number,
+    label: "Length",
+    min: 0,
+    optional: true,
+    defaultValue: 0
+  },
+  "lowInventoryWarningThreshold": {
+    type: SimpleSchema.Integer,
+    label: "Warn at",
+    min: 0,
+    optional: true,
+    defaultValue: 0
+  },
+  "metafields": {
+    type: Array,
+    label: "Metafields",
+    optional: true
+  },
+  "metafields.$": {
+    type: Metafield
+  },
+  "minOrderQuantity": {
+    type: SimpleSchema.Integer,
+    label: "Minimum quantity per item in an order",
+    defaultValue: 1,
+    optional: true
+  },
+  "optionTitle": {
+    type: String,
+    label: "Option title",
+    optional: true
+  },
+  "originCountry": {
+    type: String,
+    label: "Origin country",
+    optional: true
+  },
+  "price": {
+    type: Number
+  },
+  "pricing": {
+    type: Object,
+    label: "Pricing",
+  },
+  "pricing.$": {
+    type: ProductPricingInfoByCurrency
+  },
+  "shopId": {
+    type: String,
+    label: "Product ShopId",
+    index: 1
+  },
+  "sku": {
+    type: String,
+    label: "SKU",
+    optional: true
+  },
+  "taxCode": {
+    type: String,
+    label: "Tax Code",
+    defaultValue: "0000",
+    optional: true
+  },
+  "taxDescription": {
+    type: String,
+    label: "Tax Description",
+    optional: true
+  },
+  "title": {
+    type: String,
+    label: "Product Title",
+    defaultValue: "",
+    optional: true
+  },
+  "updatedAt": {
+    type: Date,
+    label: "Updated at",
+    autoValue: updatedAtAutoValue,
+    optional: true
+  },
+  "variantId": {
+    type: String,
+    label: "Variant ID",
   },
   "weight": {
     type: Number,
