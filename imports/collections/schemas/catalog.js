@@ -151,7 +151,8 @@ export const Catalog = new SimpleSchema({
   "minOrderQuantity": {
     type: Number,
     label: "Minimum quantity per item in an order",
-    defaultValue: 1
+    defaultValue: 1,
+    optional: true
   },
   "originCountry": {
     type: String,
@@ -237,6 +238,9 @@ export const Catalog = new SimpleSchema({
     label: "Hashtags",
     optional: true
   },
+  "tagIds.$": {
+    type: String
+  },
   "taxCode": {
     type: String,
     label: "Tax Code",
@@ -251,7 +255,8 @@ export const Catalog = new SimpleSchema({
   "title": {
     type: String,
     label: "Product Title",
-    defaultValue: ""
+    defaultValue: "",
+    optional: true
   },
   "type": {
     type: String,
