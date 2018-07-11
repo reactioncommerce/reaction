@@ -28,6 +28,7 @@ import { ShippingParcel } from "./shipping";
  * @property {String} pageTitle optional
  * @property {ShippingParcel} parcel optional
  * @property {Object} positions optional
+ * @property {ImageInfo} primaryImage optional
  * @property {String} productId required
  * @property {String} productType optional
  * @property {Boolean} requiresShipping optional, default value: `true`, Require a shipping address
@@ -49,7 +50,6 @@ import { ShippingParcel } from "./shipping";
  * @property {?????} media optional
  * @property {?????} price optional
  * @property {?????} pricing optional
- * @property {?????} primaryImage optional
  * @property {?????} socialMetadata optional
  * @property {?????} variants optional
  *
@@ -190,14 +190,16 @@ export const Catalog = new SimpleSchema({
   "pricing": {
 
   },
+    //
+  //
+  //
+  //
+  //
   "primaryImage": {
-
+    type: ImageInfo,
+    label: "Primary Image",
+    optional: true
   },
-  //
-  //
-  //
-  //
-  //
   "productId": {
     type: String,
     label: "Product Id"
@@ -311,4 +313,35 @@ export const Catalog = new SimpleSchema({
     optional: true,
     defaultValue: 0
   },
+});
+/**
+ * @name ImageInfo
+ * @memberof Schemas
+ * @type {SimpleSchema}
+ * @property {Number} priority required
+ * @property {String} productId required
+ * @property {Number} toGrid required
+ * @property {String} variantId required
+ * @property {TODO} URLs required
+ */
+export const ImageInfo = new SimpleSchema({
+  "priority": {
+    type: Number,
+    defaultValue: 0
+  },
+  "productId": {
+    type: String,
+    label: "Product Id"
+  },
+  "toGrid": {
+    type: Number,
+    defaultValue: 0
+  },
+  "variantId": {
+    type: String,
+    label: "Variant Id"
+  },
+  "URLs": {
+    //TODO: what do I do here?
+  }
 });
