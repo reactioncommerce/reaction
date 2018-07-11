@@ -1,0 +1,13 @@
+[{
+  "i18n": "en",
+  "ns": "reaction-sitemap-generator",
+  "translation": {
+    "reaction-sitemap-generator": {
+      "shopSettings": {
+        "refreshSitemapsNow": "Refresh sitemaps now",
+        "sitemapRefreshInitiated": "Sitemap refresh initiated.",
+        "sitemapRefreshFailed": "Sitemap refresh failed."
+      }
+    }
+  }
+}]
