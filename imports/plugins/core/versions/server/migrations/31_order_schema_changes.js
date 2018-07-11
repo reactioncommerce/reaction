@@ -117,7 +117,11 @@ function convertOrderDown(order) {
 Migrations.add({
   version: 31,
   up() {
-    Promise.await(Orders.rawCollection().dropIndex("c2_userId"));
+    try {
+      Promise.await(Orders.rawCollection().dropIndex("c2_userId"));
+    } catch (error) {
+      // This may fail if the index doesn't exist, which is what we want anyway
+    }
 
     let orders;
 

@@ -123,7 +123,11 @@ function convertCartDown(cart) {
 Migrations.add({
   version: 30,
   up() {
-    Promise.await(Cart.rawCollection().dropIndex("c2_userId"));
+    try {
+      Promise.await(Cart.rawCollection().dropIndex("c2_userId"));
+    } catch (error) {
+      // This may fail if the index doesn't exist, which is what we want anyway
+    }
 
     let carts;
 
