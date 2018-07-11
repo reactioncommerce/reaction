@@ -21,6 +21,7 @@ import { ShippingParcel } from "./shipping";
  * @property {Boolean} isVisible required, default value: `false`
  * @property {Number} length optional, default value: `0`
  * @property {Number} lowInventoryWarningThreshold optional, default value: `0`
+ * @property {ImageInfo[]} media optional
  * @property {Metafield[]} metafields optional
  * @property {String} metaDescription optional
  * @property {Number} minOrderQuantity required, default value: `1`
@@ -48,7 +49,6 @@ import { ShippingParcel } from "./shipping";
  *
  *
  * ---------- TODO
- * @property {?????} media optional
  * @property {?????} price optional
  * @property {?????} pricing optional
  * @property {?????} variants optional
@@ -127,19 +127,14 @@ export const Catalog = new SimpleSchema({
     optional: true,
     defaultValue: 0
   },
-  //
-  //
-  //
-  //
-  //
   "media": {
-
+    type: Array,
+    label: "Media",
+    optional: true
   },
-  //
-  //
-  //
-  //
-  //
+  "media.$": {
+    type: ImageInfo
+  },
   "metafields": {
     type: Array,
     label: "Metafields",
