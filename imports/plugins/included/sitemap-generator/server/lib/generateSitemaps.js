@@ -47,9 +47,9 @@ export default function generateSitemaps(shopIds = [], urlsPerSitemap = DEFAULT_
 
     // Build and save XML for sitemaps
     const sitemapIndexUrls = [
-      ...buildPaginatedSitemaps('pages', basicUrls),
-      ...buildPaginatedSitemaps('tags', tagUrls),
-      ...buildPaginatedSitemaps('products', productUrls)
+      ...buildPaginatedSitemaps(shopId, "pages", basicUrls, urlsPerSitemap),
+      ...buildPaginatedSitemaps(shopId, "tags", tagUrls, urlsPerSitemap),
+      ...buildPaginatedSitemaps(shopId, "products", productUrls, urlsPerSitemap)
     ];
 
     // Build and save sitemap index
@@ -66,11 +66,13 @@ export default function generateSitemaps(shopIds = [], urlsPerSitemap = DEFAULT_
  * @name buildPaginatedSitemaps
  * @summary Builds paginated sitemaps, saves to Sitemaps collection, and returns URLs to add to sitemap index
  * @private
+ * @param {String} shopId - _id of shop sitemaps are for
  * @param {String} typeHandle - type of sitemap, i.e. "pages", "tags", "products"
  * @param {Array} urls - Array of URL strings
  * @param {Number} urlsPerSitemap - Max # of URLs per sitemap
+ * @returns {Array} - URLs of sitemaps, to add to sitemap index
  */
-function buildPaginatedSitemaps (typeHandle, urls, urlsPerSitemap) {
+function buildPaginatedSitemaps(shopId, typeHandle, urls, urlsPerSitemap) {
   const sitemapUrls = [];
 
   for (let currentPage = 1; currentPage <= Math.ceil(urls.length / urlsPerSitemap); currentPage += 1) {
@@ -84,7 +86,7 @@ function buildPaginatedSitemaps (typeHandle, urls, urlsPerSitemap) {
       handle: `sitemap-${typeHandle}-${currentPage}.xml`,
       createdAt: new Date()
     });
-    sitemapIndexUrls.push(`BASE_URL/sitemap-${typeHandle}-${currentPage}.xml`);
+    sitemapUrls.push(`BASE_URL/sitemap-${typeHandle}-${currentPage}.xml`);
   }
 
   return sitemapUrls;
