@@ -1,10 +1,11 @@
 import { Meteor } from "meteor/meteor";
 import Hooks from "@reactioncommerce/hooks";
+import Logger from "@reactioncommerce/logger";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
 import { Products, Shops, Tags } from "/lib/collections";
 import { Sitemaps } from "../../lib/collections/Sitemaps";
 
-const DEFAULT_URLS_PER_SITEMAP = 50000;
+const DEFAULT_URLS_PER_SITEMAP = 1000;
 
 /**
  * @name generateSitemaps
@@ -14,6 +15,9 @@ const DEFAULT_URLS_PER_SITEMAP = 50000;
  * @returns {undefined}
  */
 export default function generateSitemaps(shopIds = [], urlsPerSitemap = DEFAULT_URLS_PER_SITEMAP) {
+  Logger.debug("Generating sitemaps");
+  const timeStart = new Date();
+
   // Add primary shop _id if none provided
   if (shopIds.length === 0) {
     shopIds.push(Reaction.getPrimaryShopId());
@@ -60,6 +64,10 @@ export default function generateSitemaps(shopIds = [], urlsPerSitemap = DEFAULT_
       createdAt: new Date()
     });
   });
+
+  const timeEnd = new Date();
+  const timeDiff = timeEnd.getTime() - timeStart.getTime();
+  Logger.debug(`Sitemap generation complete. Took ${timeDiff}ms`);
 }
 
 /**

@@ -1,6 +1,7 @@
 import { Meteor } from "meteor/meteor";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
-import generateSitemaps from "../lib/generateSitemaps";
+import { Jobs } from "/lib/collections";
+import { Job } from "/imports/plugins/core/job-collection/lib";
 
 export default {
 
@@ -17,6 +18,6 @@ export default {
 
     this.unblock();
 
-    generateSitemaps();
+    new Job(Jobs, "sitemaps/generate", {}).save({ cancelRepeats: true });
   }
 };
