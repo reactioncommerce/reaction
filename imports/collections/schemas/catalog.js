@@ -1,5 +1,4 @@
 import SimpleSchema from "simpl-schema";
-import { Meteor } from "meteor/meteor";
 import { Metafield } from "./metafield";
 import { ShippingParcel } from "./shipping";
 
