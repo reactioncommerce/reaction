@@ -613,7 +613,7 @@ export const Catalog = new SimpleSchema({
     type: Date,
     label: "Date/time this product was created at",
     index: 1
-  }
+  },
   "shopId": {
     type: String,
     label: "Product ShopId",
