@@ -3,28 +3,7 @@ import Logger from "@reactioncommerce/logger";
 import { Job } from "/imports/plugins/core/job-collection/lib";
 import { Jobs } from "/lib/collections";
 import { ImportJobs } from "../../lib/collections";
-
-
-/**
- * @summary TODO
- * @param {Function} callback - TODO
- * @returns {Object} the callback
- * @private
- */
-function saveDataFromFile(callback) {
-  const pkgData = taxCalc.getPackageData();
-  if (pkgData && pkgData.settings.avalara.enabled) {
-    const saveDuration = pkgData.settings.avalara.logRetentionDuration;
-    const olderThan = moment().subtract(saveDuration, "days");
-    const result = Logs.remove({
-      date: {
-        $lt: olderThan
-      }
-    });
-    Logger.debug(`Removed ${result} Avalara log records`);
-  }
-  callback();
-}
+import { processImportFile } from "../utils/importFile";
 
 /**
  * @summary TODO
@@ -61,7 +40,7 @@ export function addFileImportJob(fileImportId = "") {
       pollInterval: 30 * 1000,
       workTimeout: 180 * 1000
     },
-    (job, callback) => {
+    async (job, callback) => {
       let importJob;
       if (fileImportId) {
         importJob = ImportJobs.findOne({ _id: fileImportId, status: "new" });
@@ -69,20 +48,17 @@ export function addFileImportJob(fileImportId = "") {
         importJob = ImportJobs.findOne({ status: "new" });
       }
       if (importJob) {
-        Logger.info(`Running file import ${fileImportId}`);
-      }
-      saveDataFromFile((error) => {
-        if (error) {
+        Logger.info(`Running file import ${importJob._id}`);
+        try {
+          await processImportFile(importJob);
+          const success = `File import for ${importJob._id}$ successful`;
+          Logger.info(success);
+          callback();
+        } catch (error) {
           job.done(error.toString());
           callback();
-        } else {
-          const success = `File import for `{importJob.id}` successful`;
-          Logger.info(success);
-          job.done(success);
-          callback();
         }
-      });
-      callback();
+      }
     }
   );
 }
