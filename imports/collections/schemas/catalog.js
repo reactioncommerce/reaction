@@ -1,6 +1,5 @@
 import SimpleSchema from "simpl-schema";
 import { Meteor } from "meteor/meteor";
-import { createdAtAutoValue, updatedAtAutoValue } from "./helpers";
 import { Metafield } from "./metafield";
 import { ShippingParcel } from "./shipping";
 
@@ -316,7 +315,6 @@ export const CatalogProductVariant = new SimpleSchema({
   "updatedAt": {
     type: Date,
     label: "Updated at",
-    autoValue: updatedAtAutoValue,
     optional: true
   },
   "variantId": {
@@ -398,7 +396,6 @@ export const Catalog = new SimpleSchema({
   "createdAt": {
     type: Date,
     label: "Date/time this product was created at",
-    autoValue: createdAtAutoValue,
     index: 1
   },
   "description": {
@@ -591,7 +588,6 @@ export const Catalog = new SimpleSchema({
   "updatedAt": {
     type: Date,
     label: "Updated at",
-    autoValue: updatedAtAutoValue
   },
   "variants": {
     type: Array,
