@@ -560,7 +560,7 @@ export const Catalog = new SimpleSchema({
     optional: true
   },
   "variants.$": {
-    type: CatalogProductVariant
+    type: CatalogVariantSchema
   },
   "vendor": {
     type: String,
