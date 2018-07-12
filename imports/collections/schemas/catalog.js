@@ -49,7 +49,7 @@ export const ImageSizes = new SimpleSchema({
  * @property {Number} priority required
  * @property {String} productId required
  * @property {Number} toGrid required
- * @property {String} variantId required
+ * @property {String} variantId optional
  * @property {ImageSizes} URLs required
  */
 export const ImageInfo = new SimpleSchema({
@@ -67,7 +67,8 @@ export const ImageInfo = new SimpleSchema({
   },
   variantId: {
     type: String,
-    label: "Variant Id"
+    label: "Variant Id",
+    optional: true
   },
   URLs: {
     type: ImageSizes
