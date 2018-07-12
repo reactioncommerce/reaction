@@ -9,7 +9,7 @@ import { Tracker } from "meteor/tracker";
 import { Reaction } from "/client/api";
 import { ITEMS_INCREMENT } from "/client/config/defaults";
 import { ReactionProduct } from "/lib/api";
-import { Products, Tags, Shops } from "/lib/collections";
+import { Products, Tags } from "/lib/collections";
 import ProductsComponent from "../components/products";
 
 const reactiveProductIds = new ReactiveVar([], (oldVal, newVal) => JSON.stringify(oldVal.sort()) === JSON.stringify(newVal.sort()));
@@ -161,17 +161,9 @@ function composer(props, onData) {
     window.prerenderReady = true;
   }
 
-  const activeShopsIds = Shops.find({
-    $or: [
-      { "workflow.status": "active" },
-      { _id: Reaction.getPrimaryShopId() }
-    ]
-  }).map((activeShop) => activeShop._id);
-
   const productCursor = Products.find({
     ancestors: [],
-    type: { $in: ["simple"] },
-    shopId: { $in: activeShopsIds }
+    type: { $in: ["simple"] }
   });
 
   const products = productCursor.fetch();
