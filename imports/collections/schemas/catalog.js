@@ -312,7 +312,7 @@ const CatalogVariantSchema = VariantBaseSchema.clone().extend({
 })
 
 /**
- * @name Catalog
+ * @name CatalogProduct
  * @memberof Schemas
  * @type {SimpleSchema}
  * @property {String} _id required
@@ -357,7 +357,7 @@ const CatalogVariantSchema = VariantBaseSchema.clone().extend({
  * @property {Number} weight optional, default value: `0`
  * @property {Number} width optional, default value: `0`
  */
-export const Catalog = new SimpleSchema({
+export const CatalogProduct = new SimpleSchema({
   "_id": {
     type: String,
     label: "Product Id"
@@ -587,5 +587,40 @@ export const Catalog = new SimpleSchema({
     min: 0,
     optional: true,
     defaultValue: 0
+  }
+});
+
+/**
+ * @name Catalog
+ * @memberof Schemas
+ * @type {SimpleSchema}
+ * @property {String} _id required
+ * @property {Object} product required optional
+ * @property {Date} createdAt required
+ * @property {String} shopId required
+ * @property {Date} updatedAt required
+ */
+export const Catalog = new SimpleSchema({
+  "_id": {
+    type: String,
+    label: "Product Id"
+  },
+  "product": {
+    type: Object,
+    label: CatalogProduct,
+  },
+  "createdAt": {
+    type: Date,
+    label: "Date/time this product was created at",
+    index: 1
+  }
+  "shopId": {
+    type: String,
+    label: "Product ShopId",
+    index: 1
+  },
+  "updatedAt": {
+    type: Date,
+    label: "Updated at",
   }
 });
