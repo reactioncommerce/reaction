@@ -329,14 +329,6 @@ export const CatalogProductVariant = new SimpleSchema({
     min: 0,
     optional: true,
     defaultValue: 0,
-    custom() {
-      if (Meteor.isClient) {
-        if (!(this.siblingField("type").value === "inventory" || this.value ||
-          this.value === 0)) {
-          return SimpleSchema.ErrorTypes.REQUIRED;
-        }
-      }
-    }
   },
   "width": {
     type: Number,
@@ -619,15 +611,7 @@ export const Catalog = new SimpleSchema({
     label: "Weight",
     min: 0,
     optional: true,
-    defaultValue: 0,
-    custom() {
-      if (Meteor.isClient) {
-        if (!(this.siblingField("type").value === "inventory" || this.value ||
-          this.value === 0)) {
-          return SimpleSchema.ErrorTypes.REQUIRED;
-        }
-      }
-    }
+    defaultValue: 0
   },
   "width": {
     type: Number,
