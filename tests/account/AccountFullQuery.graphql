@@ -1,0 +1,45 @@
+($id: ID!) {
+  account(id: $id) {
+    _id
+    addressBook {
+      nodes {
+        address1
+      }
+    }
+    createdAt
+    currency {
+      code
+    }
+    emailRecords {
+      address
+      verified
+    }
+    groups {
+      nodes {
+        _id
+        description
+        name
+        permissions
+      }
+    }
+    metafields {
+      key
+      scope
+      namespace
+      description
+      value
+      valueType
+    }
+    name
+    note
+    preferences
+    shop {
+      _id
+    }
+    taxSettings {
+      exemptionNo
+      customerUsageType
+    }
+    updatedAt
+  }
+}

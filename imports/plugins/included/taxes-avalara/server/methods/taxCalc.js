@@ -1,4 +1,5 @@
 import os from "os";
+import Logger from "@reactioncommerce/logger";
 import _ from "lodash";
 import accounting from "accounting-js";
 import { Meteor } from "meteor/meteor";
@@ -7,7 +8,7 @@ import { check } from "meteor/check";
 import { Shops, Accounts } from "/lib/collections";
 import { ErrorObject } from "/lib/collections/schemas";
 import { TaxCodes } from "/imports/plugins/core/taxes/lib/collections";
-import { Reaction, Logger } from "/server/api";
+import Reaction from "/imports/plugins/core/core/server/Reaction";
 import Avalogger from "./avalogger";
 
 let moment;

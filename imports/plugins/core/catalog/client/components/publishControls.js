@@ -1,5 +1,8 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import classnames from "classnames";
+import { Meteor } from "meteor/meteor";
+import { ReactiveVar } from "meteor/reactive-var";
 import { Components } from "@reactioncommerce/reaction-components";
 import {
   Button,
@@ -10,7 +13,7 @@ import {
 import { Translatable } from "/imports/plugins/core/ui/client/providers";
 
 /** TMP **/
-import { Reaction } from "/client/api";
+import { i18next, Reaction } from "/client/api";
 
 class PublishControls extends Component {
   static propTypes = {
@@ -37,12 +40,26 @@ class PublishControls extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      showDiffs: false
-    };
+    this.currentProductHash = new ReactiveVar([]);
 
     this.handleToggleShowChanges = this.handleToggleShowChanges.bind(this);
     this.handlePublishClick = this.handlePublishClick.bind(this);
+  }
+
+  state = {
+    isHashUpdating: false,
+    showDiffs: false
+  };
+
+  componentWillReceiveProps() {
+    this.setState({
+      isHashUpdating: false
+    });
+  }
+
+  componentDidUpdate() {
+    // Re-calculate hash after publishing
+    this.renderHashCalculation();
   }
 
   handleToggleShowChanges() {
@@ -54,6 +71,10 @@ class PublishControls extends Component {
   handlePublishClick() {
     if (this.props.onPublishClick) {
       this.props.onPublishClick(this.props.revisions);
+
+      this.setState({
+        isHashUpdating: true
+      });
     }
   }
 
@@ -200,13 +221,13 @@ class PublishControls extends Component {
 
     return (
       <div className="hidden-xs">
+        {this.renderChangesNotification()}
         <Button
-          bezelStyle="outline"
+          bezelStyle="solid"
           disabled={isDisabled}
           label="Publish"
           onClick={this.handlePublishClick}
           status="success"
-          tooltip={"This product has changes that need to be published before they are visible to your customers."}
           i18nKeyLabel="productDetailEdit.publish"
           {...buttonProps}
         />
@@ -301,6 +322,64 @@ class PublishControls extends Component {
         tooltip={"Add Product"}
         onClick={this.props.onAddProduct}
       />
+    );
+  }
+
+  renderHashCalculation = () => {
+    const productDocument = this.props && this.props.documents && this.props.documents[0];
+
+    if (productDocument) {
+      Meteor.call("products/getpublishedProductHash", productDocument._id, (err, result) => {
+        if (err) {
+          Alerts.toast(i18next.t("admin.catalogCalculateHashError", { err: err.reason }), "error");
+        }
+        if (result) {
+          this.currentProductHash.set(result);
+        }
+      });
+    }
+    return;
+  }
+
+  renderChangesNotification = () => {
+    const publishedProductHash = (this.props && this.props.documents && this.props.documents[0] && this.props.documents[0].publishedProductHash) || null;
+    const { isHashUpdating } = this.state;
+
+    // Calculate hash to compare
+    this.renderHashCalculation();
+    const currentProductHash = this.currentProductHash.get();
+
+    const hashIndicator = classnames({
+      "rui": true,
+      "hash-icon": true,
+      "fa-stack": true,
+      "fa-lg": true,
+      "hash-icon-visible": publishedProductHash !== currentProductHash,
+      "hash-icon-hidden": publishedProductHash === currentProductHash
+    });
+
+    const primaryIcon = classnames({
+      "fa": true,
+      "fa-stack-2x": true,
+      "fa-circle": isHashUpdating,
+      "fa-circle-o": !isHashUpdating
+    });
+
+    const secondaryIcon = classnames({
+      "fa": true,
+      "fa-stack-1x": true,
+      "fa-refresh": isHashUpdating,
+      "fa-circle": !isHashUpdating,
+      "fa-spin": isHashUpdating
+    });
+
+    // We don't use the `<Icon>` component here as we do not have layered
+    // icons built in to the existing component
+    return (
+      <span className={hashIndicator} style={{ fontSize: 11, position: "absolute", top: "2px", right: "4px" }}>
+        <i className={primaryIcon} style={{ color: "#ffffff" }} />
+        <i className={secondaryIcon} style={{ fontSize: "1.5em", color: "#f4c43c" }} />
+      </span>
     );
   }
 

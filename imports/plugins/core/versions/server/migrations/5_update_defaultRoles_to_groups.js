@@ -1,8 +1,9 @@
 import _ from "lodash";
+import Logger from "@reactioncommerce/logger";
 import { Meteor } from "meteor/meteor";
 import { Roles } from "meteor/alanning:roles";
 import { Migrations } from "meteor/percolate:migrations";
-import { Reaction, Logger } from "/server/api";
+import Reaction from "/imports/plugins/core/core/server/Reaction";
 import { Accounts, Groups, Shops } from "/lib/collections";
 
 /**
@@ -53,7 +54,6 @@ Migrations.add({
       const { defaultRoles, defaultVisitorRole } = shop;
       let ownerRoles = Roles.getAllRoles().fetch().map((role) => role.name);
 
-      // See detailed comment in `/server/api/core/groups.js`. The code here follows similar pattern.
       ownerRoles = ownerRoles.concat(Reaction.defaultCustomerRoles);
       ownerRoles = _.uniq(ownerRoles);
 

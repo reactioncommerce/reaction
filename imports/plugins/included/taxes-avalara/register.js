@@ -1,4 +1,4 @@
-import { Reaction } from "/server/api";
+import Reaction from "/imports/plugins/core/core/server/Reaction";
 
 Reaction.registerPackage({
   label: "Avalara",
@@ -19,7 +19,7 @@ Reaction.registerPackage({
       logRetentionDuration: 30
     },
     addressValidation: {
-      enabled: false,
+      enabled: true,
       countryList: ["US", "CA"],
       addressValidationMethod: "avalara/addressValidation"
     },

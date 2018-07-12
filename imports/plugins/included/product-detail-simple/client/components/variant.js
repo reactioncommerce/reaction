@@ -21,7 +21,7 @@ class Variant extends Component {
     };
   }
 
-  componentWillMount() {
+  componentDidMount() {
     this.variantValidation();
   }
 
@@ -56,7 +56,9 @@ class Variant extends Component {
   }
 
   renderValidationButton = () => {
-    if (this.state.selfValidation.isValid === false) {
+    if (this.props.editable === false) {
+      return null;
+    } else if (this.state.selfValidation.isValid === false) {
       return (
         <Components.Badge
           status="danger"
@@ -65,8 +67,7 @@ class Variant extends Component {
           i18nKeyTooltip={"admin.tooltip.validationError"}
         />
       );
-    }
-    if (this.state.invalidVariant.length) {
+    } else if (this.state.invalidVariant.length) {
       return (
         <Components.Badge
           status="danger"
@@ -76,6 +77,8 @@ class Variant extends Component {
         />
       );
     }
+
+    return null;
   }
 
   variantValidation = () => {

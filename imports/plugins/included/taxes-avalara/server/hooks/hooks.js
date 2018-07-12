@@ -1,5 +1,6 @@
+import Logger from "@reactioncommerce/logger";
 import { Meteor } from "meteor/meteor";
-import { Logger, MethodHooks } from "/server/api";
+import MethodHooks from "/imports/plugins/core/core/server/method-hooks";
 import { Cart, Orders } from "/lib/collections";
 import taxCalc from "../methods/taxCalc";
 

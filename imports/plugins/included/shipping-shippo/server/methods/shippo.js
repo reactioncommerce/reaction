@@ -1,9 +1,11 @@
 /* eslint camelcase: 0 */
+import Hooks from "@reactioncommerce/hooks";
+import Logger from "@reactioncommerce/logger";
 import _ from "lodash";
 import { Meteor } from "meteor/meteor";
 import { check, Match } from "meteor/check";
 import { Roles } from "meteor/alanning:roles";
-import { Reaction, Hooks, Logger } from "/server/api";
+import Reaction from "/imports/plugins/core/core/server/Reaction";
 import { Packages, Accounts, Shops, Shipping, Cart, Orders } from "/lib/collections";
 import { ShippoPackageConfig } from "../../lib/collections/schemas";
 import { shippingRoles } from "../lib/roles";
