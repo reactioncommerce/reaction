@@ -352,11 +352,32 @@ type CreateCartPayload {
 
 "The payload returned from the `addCartItems` mutation call"
 type AddCartItemsPayload {
-  "The modified cart"
-  cart: Cart!
+  """
+  The modified cart. You should check `incorrectPriceFailures` and `minOrderQuantityFailures` for
+  information necessary to display errors to the shopper. Some items may not have been added.
+  """
+  cart: Cart
 
   "The same string you sent with the mutation params, for matching mutation calls with their responses"
   clientMutationId: String
+
+  """
+  Clients should check to see if any items failed to be added due to the price not matching the current price.
+  In general, a user interface should display the correct current prices to the shopper, confirm that they still
+  want to add the items, and then call `createCart` or `addCartItems` to do so.
+
+  Note that this field will always exist but may be an empty array if there were no failures of this type.
+  """
+  incorrectPriceFailures: [IncorrectPriceFailureDetails]!
+
+  """
+  Clients should check to see if any items failed to be added due to quantity being below the minimum order
+  quantity defined for the product variant. In general, a user interface should display the minimum order
+  quantity to the shopper and allow them to add that quantity or greater.
+
+  Note that this field will always exist but may be an empty array if there were no failures of this type.
+  """
+  minOrderQuantityFailures: [MinOrderQuantityFailureDetails]!
 }
 
 "The payload returned from the `removeCartItems` mutation call"
