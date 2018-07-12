@@ -68,7 +68,8 @@ function composer(props, onData) {
   const preferences = Reaction.getUserPreferences("reaction-social", "settingsCards", {});
 
   const socialPackage = Packages.findOne({
-    name: "reaction-social"
+    name: "reaction-social",
+    shopId: Reaction.getShopId()
   });
 
   if (subscription.ready()) {

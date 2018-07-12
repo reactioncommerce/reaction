@@ -49,6 +49,7 @@
         resetOnSuccess=true
       }}
         <div>
+          {{> afFieldInput name='shopId' value=shopId type='hidden' }}
           {{> afQuickField name='country' options=countryOptions class='form-control'}}
 
           <label class="control-label">{{afFieldLabelText name='region'}}</label>

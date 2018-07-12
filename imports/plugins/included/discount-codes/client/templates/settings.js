@@ -99,7 +99,7 @@ Template.customDiscountCodes.helpers({
       component: SortableTable,
       publication: "DiscountCodes",
       collection: DiscountCodes,
-      matchingResultsCount: "discounts-count",
+      matchingResultsCount: "discount-codes-count",
       showFilter: true,
       rowMetadata: customRowMetaData,
       filteredFields,
