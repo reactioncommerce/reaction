@@ -1,5 +1,5 @@
 import store from "store";
-import Logger from "@reactioncommerce/logger";
+import Logger from "/client/modules/logger";
 import Random from "@reactioncommerce/random";
 import { Meteor } from "meteor/meteor";
 import { Session } from "meteor/session";
