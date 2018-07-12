@@ -1,7 +1,8 @@
+import Logger from "@reactioncommerce/logger";
 import { Meteor } from "meteor/meteor";
 import { check } from "meteor/check";
 import { Sms } from "/lib/collections";
-import { Reaction, Logger } from "/server/api";
+import Reaction from "/imports/plugins/core/core/server/Reaction";
 import { formatPhoneNumber } from "/lib/api";
 
 // We lazy load these in order to shave a few seconds off the time
@@ -9,15 +10,13 @@ import { formatPhoneNumber } from "/lib/api";
 let Twilio;
 async function lazyLoadTwilio() {
   if (Twilio) return;
-  const mod = await import("twilio");
-  Twilio = mod.default;
+  Twilio = await import("twilio");
 }
 
 let Nexmo;
 async function lazyLoadNexmo() {
   if (Nexmo) return;
-  const mod = await import("nexmo");
-  Nexmo = mod.default;
+  Nexmo = await import("nexmo");
 }
 
 /**

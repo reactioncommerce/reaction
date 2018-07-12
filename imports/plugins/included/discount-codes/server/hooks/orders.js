@@ -1,6 +1,6 @@
 import { Meteor } from "meteor/meteor";
 import { Cart } from "/lib/collections";
-import { MethodHooks } from "/server/api";
+import MethodHooks from "/imports/plugins/core/core/server/method-hooks";
 
 // this hook runs before a cart is converted to an order
 // it looks at any discounts that have been applied to the cart

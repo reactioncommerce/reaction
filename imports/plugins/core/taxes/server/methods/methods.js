@@ -1,10 +1,10 @@
+import Logger from "@reactioncommerce/logger";
 import { Meteor } from "meteor/meteor";
 import { Match, check } from "meteor/check";
 import { Catalog } from "/lib/api";
 import { Cart, Packages, Products } from "/lib/collections";
 import { Taxes } from "../../lib/collections";
 import Reaction from "../api";
-import { Logger } from "/server/api";
 
 /**
  * @file Methods for Taxes. Run these methods using `Meteor.call()`.

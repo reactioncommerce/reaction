@@ -1,6 +1,6 @@
+import Logger from "@reactioncommerce/logger";
 import { Meteor } from "meteor/meteor";
 import { Migrations } from "meteor/percolate:migrations";
-import { Logger } from "/server/api";
 import { Accounts, Groups, Shops } from "/lib/collections";
 
 // Migration file created for removing the admin role from shop manager group, and users in the group
