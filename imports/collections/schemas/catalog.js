@@ -98,46 +98,6 @@ export const CatalogPriceRange = new SimpleSchema({
 });
 
 /**
- * @name ProductPricingInfoByCurrency
- * @memberof Schemas
- * @type {SimpleSchema}
- * @property {Number} compareAtPrice optional
- * @property {Number} compareAtPrice optional
- * @property {Number} compareAtPrice optional
- * @property {Number} compareAtPrice optional
- * @property {Number} compareAtPrice optional
- * @property {Currency} currency required
- * @property {String} displayPrice required
- * @property {Number} maxPrice required
- * @property {Number} minPrice required
- * @property {Number} price optional
- */
-export const ProductPricingInfoByCurrency = new SimpleSchema({
-  compareAtPrice: {
-    type: Number,
-    label: "Compare at price",
-    optional: true
-  },
-  displayPrice: {
-    type: String,
-    label: "Display price"
-  },
-  maxPrice: {
-    type: Number,
-    label: "Max price"
-  },
-  minPrice: {
-    type: Number,
-    label: "Min price"
-  },
-  price: {
-    type: Number,
-    label: "Price",
-    optional: true
-  }
-});
-
-/**
  * @name SocialMetadata
  * @memberof Schemas
  * @type {SimpleSchema}
@@ -178,7 +138,7 @@ export const SocialMetadata = new SimpleSchema({
  * @property {String} optionTitle optional
  * @property {String} originCountry optional
  * @property {CatalogPriceRange} price required
- * @property {ProductPricingInfoByCurrency{}} pricing required
+ * @property {Object} pricing required
  * @property {String} shopId required
  * @property {String} sku optional
  * @property {String} taxCode optional, default value: `"0000"`
@@ -279,10 +239,8 @@ export const CatalogProductVariant = new SimpleSchema({
   },
   "pricing": {
     type: Object,
+    blackbox: true,
     label: "Pricing"
-  },
-  "pricing.$": {
-    type: ProductPricingInfoByCurrency
   },
   "shopId": {
     type: String,
@@ -361,7 +319,7 @@ export const CatalogProductVariant = new SimpleSchema({
  * @property {ShippingParcel} parcel optional
  * @property {Object} positions optional
  * @property {CatalogPriceRange} price optional
- * @property {ProductPricingInfoByCurrency{}} pricing required
+ * @property {Object} pricing required
  * @property {ImageInfo} primaryImage optional
  * @property {String} productId required
  * @property {String} productType optional
@@ -506,10 +464,8 @@ export const Catalog = new SimpleSchema({
   },
   "pricing": {
     type: Object,
+    blackbox: true,
     label: "Pricing"
-  },
-  "pricing.$": {
-    type: ProductPricingInfoByCurrency
   },
   "primaryImage": {
     type: ImageInfo,
