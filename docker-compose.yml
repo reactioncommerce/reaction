@@ -37,10 +37,11 @@ services:
       target: meteor-dev
     command: bash -c "npm install && reaction" #TODO; Revert to Meteor NPM. See comment in Dockerfile about Meteor1.7 NPM version issue.
     depends_on:
-      - mongo
+      - mongo-init-replica
     environment:
       METEOR_DISABLE_OPTIMISTIC_CACHING: 1
       MONGO_URL: "mongodb://mongo:27017/reaction"
+      MONGO_OPLOG_URL: "mongodb://mongo:27017/local"
       ROOT_URL: "http://localhost:3000"
       BABEL_DISABLE_CACHE: 1 # This is needed to pick up changes to .graphql files. See https://www.npmjs.com/package/babel-plugin-inline-import#caveats
     networks:
@@ -54,11 +55,18 @@ services:
 
   mongo:
     image: mongo:3.6.3
-    command: mongod --storageEngine=wiredTiger
+    command: mongod --oplogSize 128 --replSet rs0 --storageEngine=wiredTiger
     ports:
       - "27017:27017"
     volumes:
       - mongo-db:/data/db
+
+  # This container's job is just to run the command to initialize the replica set. It will stop after doing that.
+  mongo-init-replica:
+    image: mongo:3.6.3
+    command: 'mongo mongo/reaction --eval "rs.initiate({ _id: ''rs0'', members: [ { _id: 0, host: ''localhost:27017'' } ]})"'
+    depends_on:
+      - mongo
 
 volumes:
   devserver_node_modules:

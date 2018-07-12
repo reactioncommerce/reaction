@@ -1,3 +1,5 @@
+import Hooks from "@reactioncommerce/hooks";
+import Logger from "@reactioncommerce/logger";
 import _ from "lodash";
 import { Meteor } from "meteor/meteor";
 import { Products, ProductSearch, OrderSearch, AccountSearch } from "/lib/collections";
@@ -7,7 +9,6 @@ import {
   buildOrderSearchRecord,
   buildProductSearchRecord
 } from "../methods/searchcollections";
-import { Hooks, Logger } from "/server/api";
 
 Hooks.Events.add("afterAccountsInsert", (userId, accountId) => {
   if (AccountSearch && !Meteor.isAppTest) {

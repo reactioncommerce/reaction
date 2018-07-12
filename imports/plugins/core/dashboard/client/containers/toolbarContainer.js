@@ -21,6 +21,7 @@ const handleAddProduct = () => {
         if (currentTag) {
           Meteor.call("products/updateProductTags", productId, currentTag.name, currentTagId);
         }
+        Session.set("productGrid/selectedProducts", [productId]);
         // go to new product
         Reaction.Router.go("product", {
           handle: productId

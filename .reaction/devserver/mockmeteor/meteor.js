@@ -1,4 +1,4 @@
-import ReactionError from "../../../imports/plugins/core/graphql/server/ReactionError";
+import ReactionError from "../../../imports/plugins/core/graphql/server/no-meteor/ReactionError";
 
 export const Meteor = {
   Error: ReactionError,

@@ -1,10 +1,10 @@
 /* eslint camelcase: 0 */
+import Logger from "@reactioncommerce/logger";
 import accounting from "accounting-js";
 import Shopify from "shopify-api-node";
 import { parse, format } from "libphonenumber-js";
 import { Meteor } from "meteor/meteor";
 import { check, Match } from "meteor/check";
-import { Logger } from "/server/api";
 import { convertWeight } from "/lib/api";
 import { Orders, Shops } from "/lib/collections";
 import { getApiInfo } from "../api";

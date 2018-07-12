@@ -1,7 +1,7 @@
-import GraphTester from "../GraphTester";
+import TestApp from "../TestApp";
 import CatalogItemProductFullQuery from "./CatalogItemProductFullQuery.graphql";
 
-jasmine.DEFAULT_TIMEOUT_INTERVAL = 60000;
+jest.setTimeout(300000);
 
 const internalShopId = "123";
 const opaqueShopId = "cmVhY3Rpb24vc2hvcDoxMjM="; // reaction/shop:123
@@ -449,21 +449,21 @@ const expectedItemsResponse = {
   }
 };
 
-let tester;
+let testApp;
 let query;
 beforeAll(async () => {
-  tester = new GraphTester();
-  await tester.start();
-  query = tester.query(CatalogItemProductFullQuery);
-  await tester.insertPrimaryShop({ _id: internalShopId, name: shopName });
-  await Promise.all(internalTagIds.map((_id) => tester.collections.Tags.insert({ _id, shopId: internalShopId })));
-  await tester.collections.Catalog.insert(mockCatalogItem);
+  testApp = new TestApp();
+  await testApp.start();
+  query = testApp.query(CatalogItemProductFullQuery);
+  await testApp.insertPrimaryShop({ _id: internalShopId, name: shopName });
+  await Promise.all(internalTagIds.map((_id) => testApp.collections.Tags.insert({ _id, shopId: internalShopId })));
+  await testApp.collections.Catalog.insert(mockCatalogItem);
 });
 
 afterAll(async () => {
-  await tester.collections.Shops.remove({ _id: internalShopId });
-  await tester.collections.Catalog.remove({ _id: internalCatalogItemId });
-  tester.stop();
+  await testApp.collections.Shops.remove({ _id: internalShopId });
+  await testApp.collections.Catalog.remove({ _id: internalCatalogItemId });
+  testApp.stop();
 });
 
 test("get a catalog product by slug", async () => {
