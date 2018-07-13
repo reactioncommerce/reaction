@@ -577,6 +577,7 @@ function capturePayments(order, onCancel) {
 const composer = (props, onData) => {
   const { order, refunds } = props;
 
+  const shopId = Reaction.getShopId();
   const shopBilling = getBillingInfo(order);
   const creditMethod = orderCreditMethod(order);
 
@@ -601,9 +602,9 @@ const composer = (props, onData) => {
   }
   adjustedTotal = Math.abs(paymentMethod && paymentMethod.amount - refundTotal);
 
-  // get invoice
+  // get invoice for the current shop
   const invoice = Object.assign({}, shopBilling.invoice, {
-    totalItems: _.sumBy(order.items, (o) => o.quantity)
+    totalItems: _.sumBy(order.items, (item) => (item.shopId === shopId ? item.quantity : 0))
   });
 
   // get discounts
@@ -627,7 +628,11 @@ const composer = (props, onData) => {
   // get unique lineItems
   const shipment = props.currentData.fulfillment;
 
-  const uniqueItems = order.items.map((item) => {
+  const uniqueItems = order.items.reduce((result, item) => {
+    // If the items are not of this shop, skip them
+    if (item.shopId !== shopId) {
+      return result;
+    }
     const shipping = shipment && shipment.shipmentMethod;
     item.shipping = shipping;
     if (order.taxes !== undefined) {
@@ -638,8 +643,9 @@ const composer = (props, onData) => {
         item.taxDetail = taxDetail;
       }
     }
-    return item;
-  });
+    result.push(item);
+    return result;
+  }, []);
 
   // print order
   const printOrder = Reaction.Router.pathFor("dashboard/pdf/orders", {

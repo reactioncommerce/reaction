@@ -34,7 +34,7 @@ export const TaxCloudPackageConfig = TaxPackageConfig.clone().extend({
   "settings.taxcloud.taxCodeUrl": {
     type: String,
     label: "TaxCode API Url",
-    defaultValue: "https://taxcloud.net/tic/?format=json",
+    defaultValue: "https://taxcloud.net/tic/json",
     optional: true
   }
 });
