@@ -32,33 +32,35 @@ class CardForm extends Component {
 
     /* eslint-disable camelcase */
     this.errorCodes = {
-      card_declined: i18next.t("checkout.errorMessages.cardDeclined", "Your card has been declined. Please use another card."),
-      country_unsupported: i18next.t("checkout.errorMessages.countryUnsupported", "Your country is not supported."),
-      expired_card: i18next.t("checkout.errorMessages.expiredCard", "Your card has expired. Please check the expiration date or use a different card."),
-      incomplete_cvc: i18next.t("checkout.errorMessages.incompleteCVC", "Your card's security code is incomplete."),
-      incomplete_expiry: i18next.t("checkout.errorMessages.incompleteExpiry", "Your card's expiration date is incomplete."),
-      incomplete_number: i18next.t("checkout.errorMessages.incompleteNumber", "Your card number is incomplete."),
-      incomplete_zip: i18next.t("checkout.errorMessages.incompleteZIP", "Your postal code is incomplete."),
-      incorrect_cvc: i18next.t("checkout.errorMessages.incorrectCVC", "Your card's security code is incorrect."),
-      incorrect_number: i18next.t("checkout.errorMessages.incorrectNumber", "The card number is incorrect. Please check the card’s number or use a different card."),
-      incorrect_zip: i18next.t("checkout.errorMessages.incorrectZIP", "Your card's postal code is incorrect."),
-      invalid_cvc: i18next.t("checkout.errorMessages.invalidCVC", "Your card's CVC is invalid."),
-      invalid_expiry_month: i18next.t("checkout.errorMessages.invalidExpiryMonth", "Your card's expiration month is invalid."),
-      invalid_expiry_year: i18next.t("checkout.errorMessages.invalidExpiryYear", "Your card's expiration year is invalid."),
-      invalid_expiry_month_past: i18next.t("checkout.errorMessages.incompleteExpiryMonthPast", "Your card's expiration date is in the past."),
-      invalid_expiry_year_past: i18next.t("checkout.errorMessages.incompleteExpiryYearPast", "Your card's expiration year is in the past."),
-      invalid_number: i18next.t("checkout.errorMessages.invalidNumber", "Your card number is invalid."),
-      postal_code_invalid: i18next.t("checkout.errorMessages.postalCodeInvalid", "Your card's postal code is invalid."),
-      state_unsupported: i18next.t("checkout.errorMessages.stateUnsupported", "Your state is not supported."),
-      whoops: i18next.t("checkout.errorMessages.whoops", "Whoops! Something went wrong. Please try again.")
+      card_declined: i18next.t("checkout.errorMessages.cardDeclined"),
+      country_unsupported: i18next.t("checkout.errorMessages.countryUnsupported"),
+      expired_card: i18next.t("checkout.errorMessages.expiredCard"),
+      incomplete_cvc: i18next.t("checkout.errorMessages.incompleteCVC"),
+      incomplete_expiry: i18next.t("checkout.errorMessages.incompleteExpiry"),
+      incomplete_number: i18next.t("checkout.errorMessages.incompleteNumber"),
+      incomplete_zip: i18next.t("checkout.errorMessages.incompleteZIP"),
+      incorrect_cvc: i18next.t("checkout.errorMessages.incorrectCVC"),
+      incorrect_number: i18next.t("checkout.errorMessages.incorrectNumber"),
+      incorrect_zip: i18next.t("checkout.errorMessages.incorrectZIP"),
+      invalid_cvc: i18next.t("checkout.errorMessages.invalidCVC"),
+      invalid_expiry_month: i18next.t("checkout.errorMessages.invalidExpiryMonth"),
+      invalid_expiry_year: i18next.t("checkout.errorMessages.invalidExpiryYear"),
+      invalid_expiry_month_past: i18next.t("checkout.errorMessages.incompleteExpiryMonthPast"),
+      invalid_expiry_year_past: i18next.t("checkout.errorMessages.incompleteExpiryYearPast"),
+      invalid_number: i18next.t("checkout.errorMessages.invalidNumber"),
+      postal_code_invalid: i18next.t("checkout.errorMessages.postalCodeInvalid"),
+      state_unsupported: i18next.t("checkout.errorMessages.stateUnsupported"),
+      whoops: i18next.t("checkout.errorMessages.whoops")
     };
   }
 
   handleSubmit = (ev) => {
+    const { cardNumberErrorMessage, expDateErrorMessage, CVVErrorMessage, postalErrorMessage } = this.state;
+    const { stripe, cartId } = this.props;
     const resubmitMessage = "Resubmit payment";
     ev.preventDefault();
 
-    if (this.state.cardNumberErrorMessage || this.state.expDateErrorMessage || this.state.CVVErrorMessage || this.state.postalErrorMessage) {
+    if (cardNumberErrorMessage || expDateErrorMessage || CVVErrorMessage || postalErrorMessage) {
       return;
     }
 
@@ -66,8 +68,8 @@ class CardForm extends Component {
       submitMessage: "Submitting...",
       submitting: true
     });
-    if (this.props.stripe) {
-      this.props.stripe.createToken().then((payload) => {
+    if (stripe) {
+      stripe.createToken().then((payload) => {
         if (payload.error) {
           this.setState({
             errorMessage: "",
@@ -80,7 +82,7 @@ class CardForm extends Component {
           }
           return;
         }
-        Meteor.apply("stripe/payment/createCharges", ["authorize", payload.token, this.props.cartId], {
+        Meteor.apply("stripe/payment/createCharges", ["authorize", payload.token, cartId], {
           wait: true,
           onResultReceived: (error, result) => {
             if (error || (result && result.error)) {
@@ -91,7 +93,7 @@ class CardForm extends Component {
               });
             } else {
               Router.go("cart/completed", {}, {
-                _id: this.props.cartId
+                _id: cartId
               });
             }
           }
@@ -109,8 +111,10 @@ class CardForm extends Component {
     return;
   };
 
+  changeHasError = (change) => (change && change.error);
+
   handleCardNumberChange = (change) => {
-    if (change && change.error) {
+    if (this.changeHasError(change)) {
       this.setState({ cardNumberErrorMessage: this.errorCodes[change.error.code] ? this.errorCodes[change.error.code] : change.error.message });
     } else {
       this.setState({ cardNumberErrorMessage: "" });
@@ -118,7 +122,7 @@ class CardForm extends Component {
   }
 
   handleExpDateChange = (change) => {
-    if (change && change.error) {
+    if (this.changeHasError(change)) {
       this.setState({ expDateErrorMessage: this.errorCodes[change.error.code] ? this.errorCodes[change.error.code] : change.error.message });
     } else {
       this.setState({ expDateErrorMessage: "" });
@@ -126,7 +130,7 @@ class CardForm extends Component {
   }
 
   handleCVVChange = (change) => {
-    if (change && change.error) {
+    if (this.changeHasError(change)) {
       this.setState({ CVVErrorMessage: this.errorCodes[change.error.code] ? this.errorCodes[change.error.code] : change.error.message });
     } else {
       this.setState({ CVVErrorMessage: "" });
@@ -137,7 +141,7 @@ class CardForm extends Component {
     if (change && change.value !== undefined) {
       this.setState({ postal: change.value });
     }
-    if (change && change.error) {
+    if (this.changeHasError(change)) {
       this.setState({ postalErrorMessage: this.errorCodes[change.error.code] ? this.errorCodes[change.error.code] : change.error.message });
     } else {
       this.setState({ postalErrorMessage: "" });
@@ -145,8 +149,9 @@ class CardForm extends Component {
   }
 
   displayErrorMessage = () => {
-    if (this.state.errorMessage) {
-      return (<div className="alert alert-danger">{this.state.errorMessage}</div>);
+    const { errorMessage } = this.state;
+    if (errorMessage) {
+      return (<div className="alert alert-danger">{errorMessage}</div>);
     }
     return null;
   }
