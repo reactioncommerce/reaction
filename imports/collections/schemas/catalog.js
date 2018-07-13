@@ -281,7 +281,7 @@ export const VariantBaseSchema = new SimpleSchema({
     label: "Weight",
     min: 0,
     optional: true,
-    defaultValue: 0,
+    defaultValue: 0
   },
   "width": {
     type: Number,
@@ -307,8 +307,8 @@ const CatalogVariantSchema = VariantBaseSchema.clone().extend({
   },
   "options.$": {
     type: VariantBaseSchema
-  },
-})
+  }
+});
 
 /**
  * @name CatalogProduct
@@ -558,7 +558,7 @@ export const CatalogProduct = new SimpleSchema({
   },
   "updatedAt": {
     type: Date,
-    label: "Updated at",
+    label: "Updated at"
   },
   "variants": {
     type: Array,
@@ -600,26 +600,26 @@ export const CatalogProduct = new SimpleSchema({
  * @property {Date} updatedAt required
  */
 export const Catalog = new SimpleSchema({
-  "_id": {
+  _id: {
     type: String,
     label: "Product Id"
   },
-  "product": {
+  product: {
     type: Object,
-    label: CatalogProduct,
+    label: CatalogProduct
   },
-  "createdAt": {
+  createdAt: {
     type: Date,
     label: "Date/time this product was created at",
     index: 1
   },
-  "shopId": {
+  shopId: {
     type: String,
     label: "Product ShopId",
     index: 1
   },
-  "updatedAt": {
+  updatedAt: {
     type: Date,
-    label: "Updated at",
+    label: "Updated at"
   }
 });
