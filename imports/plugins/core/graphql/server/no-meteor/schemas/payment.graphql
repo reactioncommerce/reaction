@@ -1,19 +1,29 @@
-"Payment plugins should extend or override this"
-type PaymentMethodData {
-  """
-  Example: savedCardId. Other examples might be transaction IDs, wallet keys.
-  Do not save full card details entered by a shopper here.
-  """
-  savedCardId: String
+"Payment plugins will extend or override this"
+enum PaymentMethodName {
+  example
+  exampleSavedCard
 }
+
+"An example"
+type ExamplePaymentMethodData {
+  example: String!
+}
+
+"An example"
+type ExampleSavedCardPaymentMethodData {
+  cardId: String!
+  cardDisplayName: String!
+}
+
+union PaymentMethodData = ExamplePaymentMethodData | ExampleSavedCardPaymentMethodData
 
 "Describes a payment method"
 type PaymentMethod {
-  "The payment method type. Any valid type that has been registered by a payment plugin. e.g., saved_card"
-  type: String!
-
-  "Data for this method"
+  "Data for this method. The data format differs for each method"
   data: PaymentMethodData
+
+  "The payment method name. Any valid name that has been registered by a payment plugin. e.g., saved_card"
+  name: PaymentMethodName!
 }
 
 extend type Query {
