@@ -1,21 +1,22 @@
 import _ from "lodash";
+import Hooks from "@reactioncommerce/hooks";
+import Logger from "@reactioncommerce/logger";
 import { Meteor } from "meteor/meteor";
 import { Roles } from "meteor/alanning:roles";
 import { check, Match } from "meteor/check";
 import { Cart, Orders, Packages, Groups } from "/lib/collections";
-import { Hooks, Logger, Reaction } from "/server/api";
+import Reaction from "/imports/plugins/core/core/server/Reaction";
 
 /* eslint no-shadow: 0 */
 
 /**
- * @method updateOrderWorkflow
  * @summary Updates a hook to update orders status before updating an order.
- *
  * @param {String} userId - currently logged in user
  * @param {Object} selector - selector for product to update
  * @param {Object} modifier - Object describing what parts of the document to update.
  * @param {Object} validation
  * @return {String} _id of updated document
+ * @private
  */
 function updateOrderWorkflow(userId, selector, modifier, validation) {
   const order = Orders.findOne(selector);
@@ -40,12 +41,13 @@ function updateOrderWorkflow(userId, selector, modifier, validation) {
  * @file Methods for Workflow. Run these methods using `Meteor.call()`.
  * @example Meteor.call("workflow/pushCartWorkflow", "coreCartWorkflow", "checkoutLogin");
  *
- * @namespace Methods/Workflow
-*/
+ * @namespace Workflow/Methods
+ */
+
 Meteor.methods({
   /**
    * @name workflow/pushCartWorkflow
-   * @memberof Methods/Workflow
+   * @memberof Workflow/Methods
    * @method
    * @example Meteor.call("workflow/pushCartWorkflow", "coreCartWorkflow", "checkoutLogin");
    * @summary updates cart workflow status
@@ -244,7 +246,7 @@ Meteor.methods({
 
   /**
    * @name workflow/revertCartWorkflow
-   * @memberof Methods/Workflow
+   * @memberof Workflow/Methods
    * @method
    * @summary if something was changed on the previous `cartWorkflow` steps,
    * we need to revert to this step to renew the order
@@ -290,7 +292,7 @@ Meteor.methods({
    * Step 2 (this method) of the "workflow/pushOrderWorkflow" flow; Try to update the current status
    *
    * @method
-   * @memberof Methods/Workflow
+   * @memberof Workflow/Methods
    * @param  {String} workflow workflow to push to
    * @param  {String} status - Workflow status
    * @param  {Order} order - Schemas.Order, an order object
@@ -331,7 +333,7 @@ Meteor.methods({
    * @description Push the status as the current workflow step, move the current status to completed worflow steps
    * @summary Pull a previous order status
    * @method
-   * @memberof Methods/Workflow
+   * @memberof Workflow/Methods
    * @param  {String} workflow workflow to push to
    * @param  {String} status - Workflow status
    * @param  {Order} order - Schemas.Order, an order object
@@ -365,7 +367,7 @@ Meteor.methods({
   /**
    * @name workflow/pushItemWorkflow
    * @method
-   * @memberof Methods/Workflow
+   * @memberof Workflow/Methods
    * @param  {String} status  Workflow status
    * @param  {Object} order   Schemas.Order, an order object
    * @param  {String[]} itemIds Array of item IDs

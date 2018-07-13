@@ -1,18 +1,19 @@
+import Logger from "@reactioncommerce/logger";
 import { Meteor } from "meteor/meteor";
 import { check, Match } from "meteor/check";
-import { Reaction, Logger } from "/server/api";
+import Reaction from "/imports/plugins/core/core/server/Reaction";
 import { Notifications, Packages } from "/lib/collections";
 
 /**
  * @file Methods for Notifications. Run these methods using `Meteor.call()`.
  *
  *
- * @namespace Methods/Notification
+ * @namespace Notification/Methods
 */
 Meteor.methods({
   /**
   * @name notification/send
-  * @memberof Methods/Notification
+  * @memberof Notification/Methods
   * @method
   * @summary This send a notification to a user
   * @param {String} userId - The user
@@ -69,7 +70,7 @@ Meteor.methods({
 
   /**
    * @name notification/markOneAsRead
-   * @memberof Methods/Notification
+   * @memberof Notification/Methods
    * @method
    * @summary This marks all user's notification as ready
    * @param {String} id - The notification id
@@ -87,7 +88,7 @@ Meteor.methods({
 
   /**
    * @name notification/delete
-   * @memberof Methods/Notification
+   * @memberof Notification/Methods
    * @method
    * @summary This deletes a notification
    * @param {String} id - The notification id

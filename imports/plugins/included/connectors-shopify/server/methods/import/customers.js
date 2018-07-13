@@ -1,9 +1,11 @@
 /* eslint camelcase: 0 */
+import Hooks from "@reactioncommerce/hooks";
+import Logger from "@reactioncommerce/logger";
+import Random from "@reactioncommerce/random";
 import Shopify from "shopify-api-node";
 import { Meteor } from "meteor/meteor";
-import { Random } from "meteor/random";
 import { check, Match } from "meteor/check";
-import { Hooks, Logger, Reaction } from "/server/api";
+import Reaction from "/imports/plugins/core/core/server/Reaction";
 import { Accounts } from "/lib/collections";
 import { getApiInfo } from "../api/api";
 import { connectorsRoles } from "../../lib/roles";

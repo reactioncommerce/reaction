@@ -1,19 +1,19 @@
 import { Meteor } from "meteor/meteor";
 import { check } from "meteor/check";
 import { Packages } from "/lib/collections";
-import { Reaction } from "/server/api";
+import Reaction from "/imports/plugins/core/core/server/Reaction";
 import { connectorsRoles } from "../lib/roles";
 
 /**
  *
- * @namespace Methods/Connectors
+ * @namespace Connectors/Methods
  */
 
 export const methods = {
   /**
    * @name connectors/connection/toggle
    * @method
-   * @memberof Methods/Connectors
+   * @memberof Connectors/Methods
    * @example Meteor.call("connectors/connection/toggle", packageId, settingsKey)
    * @summary Toggle enabled connection
    * @param { String } packageId - packageId

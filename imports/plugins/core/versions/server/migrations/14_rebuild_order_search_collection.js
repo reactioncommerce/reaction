@@ -1,6 +1,7 @@
+import Logger from "@reactioncommerce/logger";
 import { Migrations } from "meteor/percolate:migrations";
 import { OrderSearch } from "/lib/collections";
-import { Reaction, Logger } from "/server/api";
+import Reaction from "/imports/plugins/core/core/server/Reaction";
 
 let buildOrderSearch;
 
@@ -17,23 +18,25 @@ async function loadSearchRecordBuilderIfItExists() {
   }
 }
 
-loadSearchRecordBuilderIfItExists().then(() => Migrations.add({
-  // Migrations 12 and 13 introduced changes on Orders, so we need to rebuild the search collection
-  version: 14,
-  up() {
-    OrderSearch.remove({});
+loadSearchRecordBuilderIfItExists()
+  .then(() => Migrations.add({
+    // Migrations 12 and 13 introduced changes on Orders, so we need to rebuild the search collection
+    version: 14,
+    up() {
+      OrderSearch.remove({});
 
-    if (buildOrderSearch) {
-      buildOrderSearch();
-    }
-  },
-  down() {
-    // whether we are going up or down we just want to update the search collections
-    // to match whatever the current code in the build methods are.
-    OrderSearch.remove({});
+      if (buildOrderSearch) {
+        buildOrderSearch();
+      }
+    },
+    down() {
+      // whether we are going up or down we just want to update the search collections
+      // to match whatever the current code in the build methods are.
+      OrderSearch.remove({});
 
-    if (buildOrderSearch) {
-      buildOrderSearch();
+      if (buildOrderSearch) {
+        buildOrderSearch();
+      }
     }
-  }
-}), (err) => Logger.warn(`Failed to run version migration step 14. Received error: ${err}.`));
+  }))
+  .catch((err) => Logger.warn(`Failed to run version migration step 14. Received error: ${err}.`));

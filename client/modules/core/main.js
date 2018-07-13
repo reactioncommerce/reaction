@@ -15,6 +15,11 @@ import { Packages, Shops, Accounts } from "/lib/collections";
 import { Router } from "/client/modules/router";
 import { DomainsMixin } from "./domains";
 
+/**
+ * Reaction core namespace for client code
+ * @namespace Core/Client
+ */
+
 // Global, private state object for client side
 // This is placed outside the main object to make it a private variable.
 // access using `Reaction.state`
@@ -23,18 +28,43 @@ const reactionState = new ReactiveDict();
 export const userPrefs = new ReactiveVar(undefined, (val, newVal) => JSON.stringify(val) === JSON.stringify(newVal));
 
 const deps = new Map();
-/**
- * Reaction namespace
- * Global reaction shop permissions methods and shop initialization
- */
+
 export default {
   ...DomainsMixin,
-  _shopId: new ReactiveVar(null), // The active shop
-  _primaryShopId: new ReactiveVar(null), // The first shop created
-  marketplace: { _ready: false }, // Marketplace Settings
 
+  /**
+   * @summary The active shop
+   * @memberof Core/Client
+   * @private
+   */
+  _shopId: new ReactiveVar(null),
+
+  /**
+   * @summary The first shop created
+   * @memberof Core/Client
+   * @private
+   */
+  _primaryShopId: new ReactiveVar(null),
+
+  /**
+   * @summary Marketplace Settings
+   * @memberof Core/Client
+   * @private
+   */
+  marketplace: { _ready: false },
+
+  /**
+   * @summary Current locale
+   * @memberof Core/Client
+   * @type {ReactiveVar}
+   */
   Locale: new ReactiveVar({}),
 
+  /**
+   * @summary Initialization code
+   * @memberof Core/Client
+   * @method
+   */
   init() {
     Tracker.autorun(() => {
       // marketplaceSettings come over on the PrimaryShopPackages subscription
@@ -157,16 +187,19 @@ export default {
     });
   },
 
-  // Return global "reactionState" Reactive Dict
+  /**
+   * @summary Return global "reactionState" Reactive Dict
+   * @memberof Core/Client
+   */
   get state() {
     return reactionState;
   },
 
   /**
-   * hasPermission - client
-   * client permissions checks
-   * hasPermission exists on both the server and the client.
-   *
+   * @name hasPermission
+   * @summary client permissions checks. hasPermission exists on both the server and the client.
+   * @method
+   * @memberof Core/Client
    * @param {String | Array} checkPermissions -String or Array of permissions if empty, defaults to "admin, owner"
    * @param {String} checkUserId - userId, defaults to Meteor.userId()
    * @param {String} checkGroup group - default to shopId
@@ -278,9 +311,10 @@ export default {
 
 
   /**
-   * hasDashboardAccessForAnyShop - client
-   * client permission check for any "owner", "admin", or "dashboard" permissions for any shop.
-   *
+   * @name hasDashboardAccessForAnyShop
+   * @summary client permission check for any "owner", "admin", or "dashboard" permissions for any shop.
+   * @method
+   * @memberof Core/Client
    * @todo This could be faster with a dedicated hasAdminDashboard boolean on the user object
    * @param { Object } options - options object that can be passed a user and/or a set of permissions
    * @return {Boolean} Boolean - true if has dashboard access for any shop
@@ -302,7 +336,9 @@ export default {
   },
 
   /**
-   * hasDashboardAccessForAnyShop - client
+   * @name hasDashboardAccessForAnyShop
+   * @method
+   * @memberof Core/Client
    * @summary - client permission check for any "owner", "admin", or "dashboard" permissions for more than one shop.
    * @return {Boolean} Boolean - true if has dashboard access for more than one shop
    */
@@ -311,6 +347,11 @@ export default {
     return Array.isArray(adminShopIds) && adminShopIds.length > 1;
   },
 
+  /**
+   * @name hasOwnerAccess
+   * @method
+   * @memberof Core/Client
+   */
   hasOwnerAccess() {
     const ownerPermissions = ["owner"];
     return this.hasPermission(ownerPermissions);
@@ -319,10 +360,11 @@ export default {
   /**
    * Checks to see if the user has admin permissions. If a shopId is optionally
    * passed in, we check for that shopId, otherwise we check against the default
-   * @method hasAdminAccess
+   * @name hasAdminAccess
+   * @method
+   * @memberof Core/Client
    * @param  {string} [shopId] Optional shopId to check access against
-   * @return {Boolean} true if the user has admin or owner permission,
-   *                   otherwise false
+   * @return {Boolean} true if the user has admin or owner permission, otherwise false
    */
   hasAdminAccess(shopId) {
     const adminPermissions = ["owner", "admin"];
@@ -332,15 +374,30 @@ export default {
     return this.hasPermission(adminPermissions);
   },
 
+  /**
+   * @name hasDashboardAccess
+   * @method
+   * @memberof Core/Client
+   */
   hasDashboardAccess() {
     const dashboardPermissions = ["owner", "admin", "dashboard"];
     return this.hasPermission(dashboardPermissions);
   },
 
+  /**
+   * @name hasShopSwitcherAccess
+   * @method
+   * @memberof Core/Client
+   */
   hasShopSwitcherAccess() {
     return this.hasDashboardAccessForMultipleShops();
   },
 
+  /**
+   * @name getSellerShopId
+   * @method
+   * @memberof Core/Client
+   */
   getSellerShopId(userId = Meteor.userId(), noFallback = false) {
     if (userId) {
       const group = Roles.getGroupsForUser(userId, "admin")[0];
@@ -356,6 +413,11 @@ export default {
     return this.getShopId();
   },
 
+  /**
+   * @name getUserPreferences
+   * @method
+   * @memberof Core/Client
+   */
   getUserPreferences(packageName, preference, defaultValue) {
     getDep(`${packageName}.${preference}`).depend();
     if (Meteor.user()) {
@@ -369,6 +431,11 @@ export default {
     return defaultValue || undefined;
   },
 
+  /**
+   * @name setUserPreferences
+   * @method
+   * @memberof Core/Client
+   */
   setUserPreferences(packageName, preference, value) {
     getDep(`${packageName}.${preference}`).changed();
     // User preferences are not stored in Meteor.user().profile
@@ -390,6 +457,11 @@ export default {
     return store.set(packageName, packageSettings);
   },
 
+  /**
+   * @name updateUserPreferences
+   * @method
+   * @memberof Core/Client
+   */
   updateUserPreferences(packageName, preference, values) {
     const currentPreference = this.getUserPreferences(packageName, preference, {});
     return this.setUserPreferences(packageName, preference, {
@@ -398,20 +470,40 @@ export default {
     });
   },
 
-  // primaryShopId is the first created shop. In a marketplace setting it's
-  // the shop that controls the marketplace and can see all other shops.
+  /**
+   * primaryShopId is the first created shop. In a marketplace setting it's
+   * the shop that controls the marketplace and can see all other shops.
+   * @name primaryShopId
+   * @memberof Core/Client
+   */
   get primaryShopId() {
     return this._primaryShopId.get();
   },
 
+  /**
+   * primaryShopId is the first created shop. In a marketplace setting it's
+   * the shop that controls the marketplace and can see all other shops.
+   * @name primaryShopId
+   * @memberof Core/Client
+   */
   set primaryShopId(shopId) {
     this._primaryShopId.set(shopId);
   },
 
+  /**
+   * @name getPrimaryShopId
+   * @method
+   * @memberof Core/Client
+   */
   getPrimaryShopId() {
     return this.primaryShopId;
   },
 
+  /**
+   * @name getPrimaryShopName
+   * @method
+   * @memberof Core/Client
+   */
   getPrimaryShopName() {
     const shopId = this.getPrimaryShopId();
     const shop = Shops.findOne({
@@ -426,11 +518,21 @@ export default {
     return "";
   },
 
-  // Primary Shop should probably not have a prefix (or should it be /shop?)
+  /**
+   * Primary Shop should probably not have a prefix (or should it be /shop?)
+   * @name getPrimaryShopPrefix
+   * @method
+   * @memberof Core/Client
+   */
   getPrimaryShopPrefix() {
     return `/${this.getSlug(this.getPrimaryShopName().toLowerCase())}`;
   },
 
+  /**
+   * @name getPrimaryShopSettings
+   * @method
+   * @memberof Core/Client
+   */
   getPrimaryShopSettings() {
     const settings = Packages.findOne({
       name: "core",
@@ -439,6 +541,11 @@ export default {
     return settings.settings || {};
   },
 
+  /**
+   * @name getPrimaryShopCurrency
+   * @method
+   * @memberof Core/Client
+   */
   getPrimaryShopCurrency() {
     const shop = Shops.findOne({
       _id: this.getPrimaryShopId()
@@ -447,21 +554,48 @@ export default {
     return (shop && shop.currency) || "USD";
   },
 
-  // shopId refers to the active shop. For most shoppers this will be the same
-  // as the primary shop, but for administrators this will usually be the shop
-  // they administer.
+  /**
+   * shopId refers to the active shop. For most shoppers this will be the same
+   * as the primary shop, but for administrators this will usually be the shop
+   * they administer.
+   * @name shopId
+   * @memberof Core/Client
+   */
   get shopId() {
     return this._shopId.get();
   },
 
+  /**
+   * shopId refers to the active shop. For most shoppers this will be the same
+   * as the primary shop, but for administrators this will usually be the shop
+   * they administer.
+   * @name getShopId
+   * @method
+   * @memberof Core/Client
+   */
   getShopId() {
     return this.shopId || this.getUserPreferences("reaction", "activeShopId");
   },
 
+  /**
+   * shopId refers to the active shop. For most shoppers this will be the same
+   * as the primary shop, but for administrators this will usually be the shop
+   * they administer.
+   * @name shopId
+   * @memberof Core/Client
+   */
   set shopId(id) {
     this._shopId.set(id);
   },
 
+  /**
+   * shopId refers to the active shop. For most shoppers this will be the same
+   * as the primary shop, but for administrators this will usually be the shop
+   * they administer.
+   * @name setShopId
+   * @method
+   * @memberof Core/Client
+   */
   setShopId(id) {
     if (!id || this.shopId === id) { return; }
 
@@ -472,7 +606,18 @@ export default {
   },
 
   /**
-   * getShopName
+   * @name isShopPrimary
+   * @summary Whether the current shop is the Primary Shop (vs a Merchant Shop)
+   * @return {Boolean}
+   */
+  isShopPrimary() {
+    return this.getShopId() === this.getPrimaryShopId();
+  },
+
+  /**
+   * @name getShopName
+   * @method
+   * @memberof Core/Client
    * @summary gets name of shop by provided shopId, or current active shop if shopId is not provided
    * @param {String} providedShopID - shopId of shop to return name of
    * @return {String} - shop name
@@ -485,6 +630,11 @@ export default {
     return shop && shop.name;
   },
 
+  /**
+   * @name getShopPrefix
+   * @method
+   * @memberof Core/Client
+   */
   getShopPrefix() {
     const shopName = this.getShopName();
     if (shopName) {
@@ -496,6 +646,11 @@ export default {
     }
   },
 
+  /**
+   * @name getShopSettings
+   * @method
+   * @memberof Core/Client
+   */
   getShopSettings() {
     const settings = Packages.findOne({
       name: "core",
@@ -504,14 +659,11 @@ export default {
     return settings.settings || {};
   },
 
-  getShopCurrency() {
-    const shop = Shops.findOne({
-      _id: this.shopId
-    });
-
-    return (shop && shop.currency) || "USD";
-  },
-
+  /**
+   * @name isPreview
+   * @method
+   * @memberof Core/Client
+   */
   isPreview() {
     const viewAs = this.getUserPreferences("reaction-dashboard", "viewAs", "administrator");
 
@@ -522,6 +674,11 @@ export default {
     return false;
   },
 
+  /**
+   * @name getPackageSettings
+   * @method
+   * @memberof Core/Client
+   */
   getPackageSettings(name) {
     const shopId = this.getShopId();
     const query = { name };
@@ -533,18 +690,32 @@ export default {
     return Packages.findOne(query);
   },
 
+  /**
+   * @name getPackageSettingsWithOptions
+   * @method
+   * @memberof Core/Client
+   */
   getPackageSettingsWithOptions(options) {
     const query = options;
     return Packages.findOne(query);
   },
 
+  /**
+   * @name allowGuestCheckout
+   * @method
+   * @memberof Core/Client
+   */
   allowGuestCheckout() {
     const settings = this.getShopSettings();
     // we can disable in admin, let's check.
     return !!(settings.public && settings.public.allowGuestCheckout);
   },
+
   /**
-   * canInviteToGroup - client (similar to server/api canInviteToGroup)
+   * (similar to server/api canInviteToGroup)
+   * @name canInviteToGroup
+   * @method
+   * @memberof Core/Client
    * @summary checks if the user making the request is allowed to make invitation to that group
    * @param {Object} options -
    * @param {Object} options.group - group to invite to
@@ -569,9 +740,11 @@ export default {
     // we are not using Reaction.hasPermission here because it returns true if the user has at least one
     return _.difference(groupPermissions, userPermissions).length === 0;
   },
+
   /**
-   * @description showActionView
-   *
+   * @name showActionView
+   * @method
+   * @memberof Core/Client
    * @param {String} viewData {label, template, data}
    * @returns {String} Session "admin/showActionView"
    */
@@ -580,14 +753,29 @@ export default {
     this.setActionView(viewData);
   },
 
+  /**
+   * @name isActionViewOpen
+   * @method
+   * @memberof Core/Client
+   */
   isActionViewOpen() {
     return Session.equals("admin/showActionView", true);
   },
 
+  /**
+   * @name isActionViewDetailOpen
+   * @method
+   * @memberof Core/Client
+   */
   isActionViewDetailOpen() {
     return Session.equals("admin/showActionViewDetail", true);
   },
 
+  /**
+   * @name setActionView
+   * @method
+   * @memberof Core/Client
+   */
   setActionView(viewData) {
     this.hideActionViewDetail();
     if (viewData) {
@@ -613,6 +801,11 @@ export default {
     }
   },
 
+  /**
+   * @name pushActionView
+   * @method
+   * @memberof Core/Client
+   */
   pushActionView(viewData) {
     Session.set("admin/showActionView", true);
 
@@ -632,6 +825,11 @@ export default {
     }
   },
 
+  /**
+   * @name isActionViewAtRootView
+   * @method
+   * @memberof Core/Client
+   */
   isActionViewAtRootView() {
     const actionViewStack = Session.get("admin/actionView");
 
@@ -642,6 +840,11 @@ export default {
     return false;
   },
 
+  /**
+   * @name popActionView
+   * @method
+   * @memberof Core/Client
+   */
   popActionView() {
     const actionViewStack = Session.get("admin/actionView");
     actionViewStack.pop();
@@ -651,6 +854,11 @@ export default {
     this.setActionViewDetail({}, { open: false });
   },
 
+  /**
+   * @name setActionViewDetail
+   * @method
+   * @memberof Core/Client
+   */
   setActionViewDetail(viewData, options = {}) {
     const { open } = options;
 
@@ -659,6 +867,11 @@ export default {
     Session.set("admin/detailView", [viewData]);
   },
 
+  /**
+   * @name pushActionViewDetail
+   * @method
+   * @memberof Core/Client
+   */
   pushActionViewDetail(viewData) {
     Session.set("admin/showActionView", true);
     Session.set("admin/showActionViewDetail", true);
@@ -671,6 +884,11 @@ export default {
     }
   },
 
+  /**
+   * @name popActionViewDetail
+   * @method
+   * @memberof Core/Client
+   */
   popActionViewDetail() {
     const detailViewStack = Session.get("admin/detailView");
     detailViewStack.pop();
@@ -678,6 +896,11 @@ export default {
     Session.set("admin/detailView", detailViewStack);
   },
 
+  /**
+   * @name isActionViewDetailAtRootView
+   * @method
+   * @memberof Core/Client
+   */
   isActionViewDetailAtRootView() {
     const actionViewDetailStack = Session.get("admin/detailView");
 
@@ -688,6 +911,11 @@ export default {
     return false;
   },
 
+  /**
+   * @name getActionView
+   * @method
+   * @memberof Core/Client
+   */
   getActionView() {
     const actionViewStack = Session.get("admin/actionView");
 
@@ -698,6 +926,11 @@ export default {
     return {};
   },
 
+  /**
+   * @name getActionViewDetail
+   * @method
+   * @memberof Core/Client
+   */
   getActionViewDetail() {
     const detailViewStack = Session.get("admin/detailView");
 
@@ -708,16 +941,31 @@ export default {
     return {};
   },
 
+  /**
+   * @name hideActionView
+   * @method
+   * @memberof Core/Client
+   */
   hideActionView() {
     Session.set("admin/showActionView", false);
     this.clearActionView();
   },
 
+  /**
+   * @name hideActionViewDetail
+   * @method
+   * @memberof Core/Client
+   */
   hideActionViewDetail() {
     Session.set("admin/showActionViewDetail", false);
     this.clearActionViewDetail();
   },
 
+  /**
+   * @name clearActionView
+   * @method
+   * @memberof Core/Client
+   */
   clearActionView() {
     Session.set("admin/actionView", [{
       label: "",
@@ -729,6 +977,11 @@ export default {
     }]);
   },
 
+  /**
+   * @name clearActionViewDetail
+   * @method
+   * @memberof Core/Client
+   */
   clearActionViewDetail() {
     Session.set("admin/detailView", [{
       label: "",
@@ -736,12 +989,22 @@ export default {
     }]);
   },
 
+  /**
+   * @name getCurrentTag
+   * @method
+   * @memberof Core/Client
+   */
   getCurrentTag() {
     if (this.Router.getRouteName() === "tag") {
       return this.Router.current().params.slug;
     }
   },
 
+  /**
+   * @name getRegistryForCurrentRoute
+   * @method
+   * @memberof Core/Client
+   */
   getRegistryForCurrentRoute(provides = "dashboard") {
     this.Router.watchPathChange();
     const currentRouteName = this.Router.getRouteName();
@@ -771,9 +1034,10 @@ export default {
   },
 
   /**
-   * getMarketplaceSettingsFromPackages finds the enabled `reaction-marketplace` package for
-   * the primary shop and returns the settings
-   * @method getMarketplaceSettingsFromPackages
+   * @name getMarketplaceSettings
+   * @method
+   * @memberof Core/Client
+   * @summary finds the enabled `reaction-marketplace` package for the primary shop and returns the settings
    * @return {Object} The marketplace settings from the primary shop or undefined
    */
   getMarketplaceSettings() {
@@ -789,11 +1053,13 @@ export default {
 };
 
 /**
- * createCountryCollection
  * Create a client-side only collection of Countries for a dropdown form
  * properly sorted*
+ * @name createCountryCollection
+ * @method
  * @param {Object} countries -  The countries array on the Shop collection
  * @returns {Array} countryOptions - Sorted array of countries
+ * @private
  */
 function createCountryCollection(countries) {
   check(countries, Object);
@@ -824,11 +1090,13 @@ function createCountryCollection(countries) {
 }
 
 /**
- * getDep
  * Gets the dependency for the key if available, else creates
  * a new dependency for the key and returns it.
+ * @name getDep
+ * @method
  * @param {String} -  The key to get the dependency for
  * @returns {Tracker.Dependency}
+ * @private
  */
 function getDep(key) {
   if (!deps.has(key)) {

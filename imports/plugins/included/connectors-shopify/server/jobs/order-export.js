@@ -1,5 +1,5 @@
+import Logger from "@reactioncommerce/logger";
 import { Orders, Jobs } from "/lib/collections";
-import { Logger } from "/server/api";
 import { exportToShopify } from "../methods/export/orders";
 
 /**
@@ -36,6 +36,7 @@ export default () => {
       exportToShopify(order)
         .then((exportedOrders) => {
           Logger.debug("exported order(s)", exportedOrders);
+          return null;
         })
         .catch((error) => {
           Logger.error("Encountered error when exporting to shopify", error);

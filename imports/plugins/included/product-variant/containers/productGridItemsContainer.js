@@ -73,8 +73,8 @@ const wrapComponent = (Comp) => (
     }
 
     positions = () => {
-      const tag = ReactionProduct.getTag();
-      return (this.props.product.positions && this.props.product.positions[tag]) || {};
+      const tagId = ReactionProduct.getTagIdForPosition();
+      return (this.props.product.positions && this.props.product.positions[tagId]) || {};
     }
 
     weightClass = () => {

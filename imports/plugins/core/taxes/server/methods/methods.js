@@ -1,22 +1,23 @@
+import Logger from "@reactioncommerce/logger";
 import { Meteor } from "meteor/meteor";
 import { Match, check } from "meteor/check";
-import { Cart, Packages } from "/lib/collections";
+import { Catalog } from "/lib/api";
+import { Cart, Packages, Products } from "/lib/collections";
 import { Taxes } from "../../lib/collections";
 import Reaction from "../api";
-import { Logger } from "/server/api";
 
 /**
  * @file Methods for Taxes. Run these methods using `Meteor.call()`.
  *
  *
- * @namespace Methods/Taxes
+ * @namespace Taxes/Methods
 */
 
 export const methods = {
   /**
    * @name taxes/deleteRate
    * @method
-   * @memberof Methods/Taxes
+   * @memberof Taxes/Methods
    * @param  {String} taxId tax taxId to delete
    * @return {String} returns update/insert result
    */
@@ -34,7 +35,7 @@ export const methods = {
   /**
    * @name taxes/addRate
    * @method
-   * @memberof Methods/Taxes
+   * @memberof Taxes/Methods
    * @param  {Object} doc A Taxes document to be inserted
    * @param  {String} [docId] DEPRECATED. Existing ID to trigger an update. Use taxes/editRate method instead.
    * @return {String} Insert result
@@ -47,13 +48,14 @@ export const methods = {
     if (docId) return Meteor.call("taxes/editRate", { _id: docId, modifier: doc });
 
     if (!Reaction.hasPermission("taxes")) throw new Meteor.Error("access-denied", "Access Denied");
+    doc.shopId = Reaction.getShopId();
     return Taxes.insert(doc);
   },
 
   /**
    * @name taxes/editRate
    * @method
-   * @memberof Methods/Taxes
+   * @memberof Taxes/Methods
    * @param  {Object} details An object with _id and modifier props
    * @return {String} Update result
    */
@@ -71,7 +73,7 @@ export const methods = {
    * @name taxes/setRate
    * @summary Update the cart without hooks
    * @method
-   * @memberof Methods/Taxes
+   * @memberof Taxes/Methods
    * @param  {String} cartId cartId
    * @param  {Number} taxRate taxRate
    * @param  {Object} taxes taxes
@@ -93,7 +95,7 @@ export const methods = {
   /**
    * @name taxes/setRateByShopAndItem
    * @method
-   * @memberof Methods/Taxes
+   * @memberof Taxes/Methods
    * @summary Update the cart without hooks
    * @param  {String} cartId cartId
    * @param  {Object} options - Options object
@@ -106,8 +108,8 @@ export const methods = {
   "taxes/setRateByShopAndItem"(cartId, options) {
     check(cartId, String);
     check(options, {
-      taxRatesByShop: Object,
-      itemsWithTax: [Object],
+      taxRatesByShop: Match.OneOf(undefined, null, Object),
+      itemsWithTax: [Match.OneOf(Object, undefined)],
       cartTaxRate: Number,
       cartTaxData: Match.OneOf([Object], undefined, null)
     });
@@ -125,9 +127,50 @@ export const methods = {
   },
 
   /**
-   * @name taxes/calculate
+   * @name "taxes/updateTaxCode"
    * @method
    * @memberof Methods/Taxes
+   * @summary updates the taxcode on all options of a product.
+   * @param  {String} products array of products to be updated.
+   * @return {Number} returns number of options updated
+   */
+  "taxes/updateTaxCode"(products) {
+    check(products, Array);
+
+    // check permissions to create product
+    // to check if user can update the product
+    if (!Reaction.hasPermission("createProduct")) {
+      throw new Meteor.Error("access-denied", "Access Denied");
+    }
+
+    // number of options that get updated.
+    let updatedOptions = 0;
+
+    products.forEach((product) => {
+      let variants = [product];
+      if (product.type === "simple") {
+        variants = Catalog.getVariants(product._id);
+      }
+      variants.forEach((variant) => {
+        const options = Catalog.getVariants(variant._id);
+        options.forEach((option) => {
+          updatedOptions += Products.update({
+            _id: option._id
+          }, {
+            $set: {
+              taxCode: variant.taxCode
+            }
+          }, { selector: { type: "variant" }, publish: true });
+        });
+      });
+    });
+    return updatedOptions;
+  },
+
+  /**
+   * @name taxes/calculate
+   * @method
+   * @memberof Taxes/Methods
    * @param  {String} cartId cartId
    * @return {Object}  returns tax object
    */
@@ -237,12 +280,6 @@ export const methods = {
           });
         } // end custom rates
       } // end shippingAddress calculation
-    } else {
-      // we are here because the custom rate package is disabled.
-      // we're going to set an inital rate of 0
-      // all methods that trigger when taxes/calculate will
-      // recalculate this rate as needed.
-      Meteor.call("taxes/setRate", cartToCalc._id, cartTaxRate);
     }
   } // end taxes/calculate
 };

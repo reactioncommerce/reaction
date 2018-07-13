@@ -6,20 +6,20 @@ import { compose } from "recompose";
 import { Components, registerComponent, composeWithTracker } from "@reactioncommerce/reaction-components";
 import { $ } from "meteor/jquery";
 import { Meteor } from "meteor/meteor";
-import { ReactionProduct } from "/lib/api";
+import { Catalog, ReactionProduct } from "/lib/api";
 import { Reaction, i18next, Logger } from "/client/api";
 import { Tags, Cart } from "/lib/collections";
 import { ProductDetail } from "../components";
 import { SocialContainer, VariantListContainer } from "./";
 import { Media } from "/imports/plugins/core/files/client";
 
-const wrapComponent = (Comp) => (
+const wrapComponent = (Comp) =>
   class ProductDetailContainer extends Component {
     static propTypes = {
       media: PropTypes.arrayOf(PropTypes.object),
       product: PropTypes.object,
       storedCart: PropTypes.object
-    }
+    };
 
     constructor(props) {
       super(props);
@@ -45,7 +45,7 @@ const wrapComponent = (Comp) => (
       this.setState({
         cartQuantity: Math.max(quantity, 1)
       });
-    }
+    };
 
     handleAddToCart = () => {
       let productId;
@@ -105,7 +105,12 @@ const wrapComponent = (Comp) => (
           totalQuantity = maxQuantity;
         }
 
-        if (currentVariant.inventoryPolicy && totalQuantity > maxQuantity && storedQuantity < maxQuantity && quantity < maxQuantity) {
+        if (
+          currentVariant.inventoryPolicy &&
+          totalQuantity > maxQuantity &&
+          storedQuantity < maxQuantity &&
+          quantity < maxQuantity
+        ) {
           Alerts.inline("Your product quantity has been adjusted to the max quantity in stock", "warning", {
             placement: "productDetail",
             i18nKey: "admin.inventoryAlerts.adjustedQuantity",
@@ -154,9 +159,12 @@ const wrapComponent = (Comp) => (
           ReactionProduct.setCurrentVariant(null);
           // qtyField.val(1);
           // scroll to top on cart add
-          $("html,body").animate({
-            scrollTop: 0
-          }, 0);
+          $("html,body").animate(
+            {
+              scrollTop: 0
+            },
+            0
+          );
           // slide out label
           const addToCartText = i18next.t("productDetail.addedToCart");
           const addToCartTitle = currentVariant.title || "";
@@ -202,7 +210,7 @@ const wrapComponent = (Comp) => (
       }
 
       return null;
-    }
+    };
 
     handleSlideOut(alertWidth, direction, oppositeDirection) {
       // Animate slide out
@@ -212,23 +220,29 @@ const wrapComponent = (Comp) => (
           [oppositeDirection]: "auto",
           [direction]: -alertWidth
         })
-        .animate({
-          [oppositeDirection]: "auto",
-          [direction]: 0
-        }, 600);
+        .animate(
+          {
+            [oppositeDirection]: "auto",
+            [direction]: 0
+          },
+          600
+        );
     }
 
     handleSlideIn(alertWidth, direction, oppositeDirection) {
       // Animate slide in
-      return $(".cart-alert").animate({
-        [oppositeDirection]: "auto",
-        [direction]: -alertWidth
-      }, {
-        duration: 600,
-        complete() {
-          $(".cart-alert").hide();
+      return $(".cart-alert").animate(
+        {
+          [oppositeDirection]: "auto",
+          [direction]: -alertWidth
+        },
+        {
+          duration: 600,
+          complete() {
+            $(".cart-alert").hide();
+          }
         }
-      });
+      );
     }
 
     handleProductFieldChange = (productId, fieldName, value) => {
@@ -238,23 +252,21 @@ const wrapComponent = (Comp) => (
           this.forceUpdate();
         }
       });
-    }
+    };
 
     handleViewContextChange = (event, value) => {
       Reaction.Router.setQueryParams({ as: value });
-    }
+    };
 
     handleDeleteProduct = () => {
       ReactionProduct.archiveProduct(this.props.product);
-    }
+    };
 
     render() {
       const { media, product } = this.props;
 
       if (_.isEmpty(product)) {
-        return (
-          <Components.ProductNotFound />
-        );
+        return <Components.ProductNotFound />;
       }
 
       return (
@@ -274,8 +286,7 @@ const wrapComponent = (Comp) => (
         </StyleRoot>
       );
     }
-  }
-);
+  };
 
 function composer(props, onData) {
   const tagSub = Meteor.subscribe("Tags");
@@ -289,8 +300,7 @@ function composer(props, onData) {
   if (productId) {
     productSub = Meteor.subscribe("Product", productId, shopIdOrSlug);
   }
-  if (productSub && productSub.ready()
-    && tagSub.ready() && Reaction.Subscriptions.Cart.ready()) {
+  if (productSub && productSub.ready() && tagSub.ready() && Reaction.Subscriptions.Cart.ready()) {
     const product = ReactionProduct.setProduct(productId, variantId);
     if (Reaction.hasPermission("createProduct")) {
       if (!Reaction.getActionView() && Reaction.isActionViewOpen() === true) {
@@ -305,7 +315,7 @@ function composer(props, onData) {
     if (product) {
       let tags;
       if (_.isArray(product.hashtags)) {
-        tags = _.map(product.hashtags, (id) => Tags.findOne(id));
+        tags = Tags.find({ _id: { $in: product.hashtags } }).fetch();
       }
 
       Meteor.subscribe("ProductMedia", product._id);
@@ -315,25 +325,31 @@ function composer(props, onData) {
 
       if (selectedVariant) {
         // Find the media for the selected variant
-        mediaArray = Media.findLocal({
-          "metadata.variantId": selectedVariant._id
-        }, {
-          sort: {
-            "metadata.priority": 1
+        mediaArray = Media.findLocal(
+          {
+            "metadata.variantId": selectedVariant._id
+          },
+          {
+            sort: {
+              "metadata.priority": 1
+            }
           }
-        });
+        );
 
         // If no media found, broaden the search to include other media from parents
         if (Array.isArray(mediaArray) && mediaArray.length === 0 && selectedVariant.ancestors) {
           // Loop through ancestors in reverse to find a variant that has media to use
           for (const ancestor of selectedVariant.ancestors.reverse()) {
-            const media = Media.findLocal({
-              "metadata.variantId": ancestor
-            }, {
-              sort: {
-                "metadata.priority": 1
+            const media = Media.findLocal(
+              {
+                "metadata.variantId": ancestor
+              },
+              {
+                sort: {
+                  "metadata.priority": 1
+                }
               }
-            });
+            );
 
             // If we found some media, then stop here
             if (Array.isArray(media) && media.length) {
@@ -352,7 +368,7 @@ function composer(props, onData) {
           priceRange = selectedVariant.price;
         } else {
           // otherwise we want to show child variants price range
-          priceRange = ReactionProduct.getVariantPriceRange();
+          priceRange = Catalog.getVariantPriceRange(ReactionProduct.selectedVariant()._id);
         }
       }
 
@@ -393,13 +409,7 @@ function composer(props, onData) {
   }
 }
 
-registerComponent("ProductDetail", ProductDetail, [
-  composeWithTracker(composer),
-  wrapComponent
-]);
+registerComponent("ProductDetail", ProductDetail, [composeWithTracker(composer), wrapComponent]);
 
 // Decorate component and export
-export default compose(
-  composeWithTracker(composer),
-  wrapComponent
-)(ProductDetail);
+export default compose(composeWithTracker(composer), wrapComponent)(ProductDetail);

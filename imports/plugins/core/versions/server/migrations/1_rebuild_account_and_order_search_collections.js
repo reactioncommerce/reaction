@@ -1,6 +1,7 @@
+import Logger from "@reactioncommerce/logger";
 import { Migrations } from "meteor/percolate:migrations";
 import { OrderSearch, AccountSearch } from "/lib/collections";
-import { Reaction, Logger } from "/server/api";
+import Reaction from "/imports/plugins/core/core/server/Reaction";
 
 let buildOrderSearch;
 let buildAccountSearch;
@@ -21,32 +22,34 @@ async function loadSearchRecordBuilderIfItExists() {
   }
 }
 
-loadSearchRecordBuilderIfItExists().then(() => Migrations.add({
-  version: 1,
-  up() {
-    OrderSearch.remove({});
-    AccountSearch.remove({});
+loadSearchRecordBuilderIfItExists()
+  .then(() => Migrations.add({
+    version: 1,
+    up() {
+      OrderSearch.remove({});
+      AccountSearch.remove({});
 
-    if (buildOrderSearch) {
-      buildOrderSearch();
-    }
+      if (buildOrderSearch) {
+        buildOrderSearch();
+      }
 
-    if (buildAccountSearch) {
-      buildAccountSearch();
-    }
-  },
-  down() {
-    // whether we are going up or down we just want to update the search collections
-    // to match whatever the current code in the build methods are.
-    OrderSearch.remove({});
-    AccountSearch.remove({});
+      if (buildAccountSearch) {
+        buildAccountSearch();
+      }
+    },
+    down() {
+      // whether we are going up or down we just want to update the search collections
+      // to match whatever the current code in the build methods are.
+      OrderSearch.remove({});
+      AccountSearch.remove({});
 
-    if (buildOrderSearch) {
-      buildOrderSearch();
-    }
+      if (buildOrderSearch) {
+        buildOrderSearch();
+      }
 
-    if (buildAccountSearch) {
-      buildAccountSearch();
+      if (buildAccountSearch) {
+        buildAccountSearch();
+      }
     }
-  }
-}), (err) => Logger.warn(`Failed to run version migration step 1. Received error: ${err}.`));
+  }))
+  .catch((err) => Logger.warn(`Failed to run version migration step 1. Received error: ${err}.`));

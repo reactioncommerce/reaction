@@ -1,7 +1,8 @@
+import Hooks from "@reactioncommerce/hooks";
+import Logger from "@reactioncommerce/logger";
 import { Meteor } from "meteor/meteor";
 import { Job } from "/imports/plugins/core/job-collection/lib";
 import { Jobs, Logs } from "/lib/collections";
-import { Hooks, Logger } from "/server/api";
 import taxCalc from "../methods/taxCalc";
 
 let moment;
@@ -14,6 +15,7 @@ async function lazyLoadMoment() {
  * @summary Remove logs older than the configured number of days
  * @param {Function} callback - function to call when process complete
  * @returns {Number} results of remmoval query
+ * @private
  */
 function cleanupAvalaraJobs(callback) {
   Promise.await(lazyLoadMoment());

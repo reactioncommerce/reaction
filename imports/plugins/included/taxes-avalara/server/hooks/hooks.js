@@ -1,5 +1,6 @@
+import Logger from "@reactioncommerce/logger";
 import { Meteor } from "meteor/meteor";
-import { Logger, MethodHooks } from "/server/api";
+import MethodHooks from "/imports/plugins/core/core/server/method-hooks";
 import { Cart, Orders } from "/lib/collections";
 import taxCalc from "../methods/taxCalc";
 
@@ -17,9 +18,9 @@ function linesToTaxes(lines) {
 }
 /**
  * @method markCartTax
- * @summary Calls the method accounts/markTaxCalculationFailed
- * through meteor.
+ * @summary Calls the method accounts/markTaxCalculationFailed through Meteor.
  * @param {Boolean} value - the value to be set
+ * @private
  */
 function markCartTax(value = true) {
   Meteor.call("accounts/markTaxCalculationFailed", value, (error) => {

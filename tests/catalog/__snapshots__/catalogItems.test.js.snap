@@ -1,0 +1,3 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`expect error when sortByPriceCurrencyCode is not provided while sortBy is minPrice 1`] = `"sortByPriceCurrencyCode is required when sorting by minPrice"`;

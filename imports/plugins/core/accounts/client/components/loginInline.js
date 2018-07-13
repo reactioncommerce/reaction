@@ -21,7 +21,7 @@ class LoginInline extends Component {
   static propTypes = {
     continueAsGuest: PropTypes.func,
     handleEmailSubmit: PropTypes.func.isRequired,
-    renderEmailForm: PropTypes.bool
+    renderEmailForm: PropTypes.bool // eslint-disable-line react/boolean-prop-naming
   };
 
   constructor(props) {
@@ -40,6 +40,7 @@ class LoginInline extends Component {
    * @param {String} value - the new value for the field
    * @param {String} field - which field to modify it's value
    * @return {undefined} undefined
+   * @private
    */
   handleFieldChange = (event, value, field) => {
     this.setState({

@@ -1,3 +1,360 @@
+# v1.14.0
+## Removing Optional Plugins
+As part of our focus simplifying the core Reaction application and improving performance, we've [made the decision to remove optional plugins from the core application](https://blog.reactioncommerce.com/the-road-ahead-product-updates-june-2018/). From our blog post on this topic:
+> It’s about quality over quantity. As a part of our initiative to simplify Reaction, we’re focusing on providing one reference application per feature and moving all others over to community-sponsored packages. We’ll be migrating packages, APIs, and schemas over to npm. It’s a standard approach to package management, one that improves the developer experience overall.
+
+Here’s how it will look:
+
+|Category|Reaction default(s)|Community package(s)|
+|---|---|---|
+|Payments|Stripe, example payment package|PayPal, Authorize.net, Braintree|
+|Taxes|Flat rate|Avalara, TaxCloud, TaxJar|
+|Shipping|Flat rate|Shippo|
+|Connectors|CSV connector|Shopify connector|
+
+## GraphQL DevServer
+### Features
+ - feat: GraphQL Cart Schema (#4307)
+ - feat: Add anonymousCartByCartId GraphQL query (#4382)
+ - feat: Meteor-free addressBookAdd method and GraphQL plugin reorg (#4167)
+
+## Meteor App
+### Features
+ - (Feat) Create deploy to heroku button (#4320)
+ - feat: enable oplog in development Docker Compose config (#4420)
+ - feat: Create product hash of published product properties (#4336)
+ - feat: added CDN settings to reaction (#4316)
+ - feat: Indicator to notify of pending product changes not yet published to catalog (#4383)
+ - feat(marketplace): Limit Tags Publication to Those for the Current Shop (#4206)
+ - feat: add robots.txt file (#4370)
+
+### Fixes
+ - fix: low quantity/sold out flags not saving correctly in db (#4342)
+ - fix: Scrolling to bottom adds more products to the view (#4243) .. Resolves #4090
+ - fix: remove react-addons-create-fragment (#4164)
+ - fix: change session active product when adding new product (#4313)
+ - fix: missing styles on refund popover (#4300) .. Resolves #4005
+ - fix: fix permissions of shop social settings (#4312)
+ - fix: Archived products not being removed from Catalog (#4392)
+ - fix: Default settings for parcel size (#4083)
+ - fix: Update prerender.js (#4331)
+ - fix(marketplace): Product Visibility for Marketplace Shops (#4259) .. Resolves #4092
+ - fix: mislabeled schema (#4371)
+
+### Refactors
+ - refactor: Use new Reaction component library components for the SMS settings form (#4318)
+ - refactor: Remove "Catalog" from menu (#4385)
+ - refactor: Move all /server files to plugins (#4366)
+
+### Plugin Migration
+ - refactor: Remove Authorize.net plugin (#4310)
+ - refactor: Remove Paypal plugin (#4339)
+ - refactor: Remove Braintree plugin (#4351)
+ - refactor: Remove disabled TaxJar plugin (#4348)
+ - refactor: Remove inventory package (#4388)
+
+## Contributors
+Thanks to @pmn4 for contributing to this release :tada:
+
+
+# v1.13.1
+
+This release exclusively includes a patch update to Meteor from `1.7.0.1` to `1.7.0.3`
+
+This release should be installed by anyone on Reaction 1.13.0 and includes an important security update to Node, updating to version 8.11.3 of Node, which is an important security release.
+
+The underlying meteor-babel npm package has also been updated to version 7.0.0-beta.51.
+
+
+## Security
+- security: Update to Meteor 1.7.0.3 (#4368)
+
+# v1.13.0
+
+## Removal of Legacy Product Revision Control system
+The major change in this release is that we've removed the existing revision control system in favor of publishing Products to the Catalog. The existing revision control system contained some powerful ideas, but was complex and intertwined into many areas of the app that were not directly related to Product. By removing the old revision control system, we've paved the way to substantially improve product grid performance, especially for Operators and we've simplified the product publication logic.
+
+This removes all code, hooks, collections, and packages related to revision control.
+
+**Breaking changes:**
+ - Any custom packages that depend on the `Revision` control system.
+ - Operators will no longer be able to "undo" changes to a product. Instead products are published through the catalog
+ - Any _unpublished_ changes to products will be lost when upgrading to `1.13.0`. In this release, it's possible that if you were to downgrade that you would see the unpublished changes again, but that may cause unexpected behavior. We recommend either publishing or discarding any changes to your products before upgrading to this release.
+ - Similarly, any products that have been created but not published will demonstrate unexpected behavior. To avoid this undesirable behavior, publish any newly created, unpublished products prior to upgrading to this release.
+
+ - **All plugin authors** will need to update your `package.json` with a change to the babel config similar to what was done [here](https://github.com/reaction-contrib/meteor-authorize-net/commit/f19a5cf7591a17f426e67bd3737af5a4d1c7a64a)
+
+
+## Update to Meteor 1.7
+This update brings some enormous improvements to the amount of time it takes to rebuild the application in development after making a file change. In some (less than perfectly scientific) tests that I ran testing file changes between 1.7 and 1.6.1 I saw 50%-90% improvements in the reload time. Your experience may vary depending on how much you've customized Reaction, your computer specs, and your specific development setup, but I fully expect this to be a noticeable improvement for anyone working with Reaction.
+
+There are some [early](https://github.com/meteor/meteor/issues/9949) [reports](https://github.com/meteor/meteor/issues/9945) that the included update to the MongoDB driver may have [some kinks](https://github.com/meteor/meteor/issues/9944) to work out, so I'd follow those issues on Meteor's repo if that's a cause for concern for you. These reports are all coming from a single person, and we haven't experienced any of these issues in particular yet, but we'll be keeping an eye on them.
+
+##
+We ran into a few issues with `npm install` that we resolved in #4317. One product that came out of this investigation was some documentation for how to properly clean up and rebuild docker images in Reaction.
+
+To stop and clean up your images
+```sh
+  docker-compose down -v --rmi local --remove-orphans
+```
+
+To rebuild your Reaction images
+```sh
+  docker-compose up --build --force-recreate --renew-anon-volumes
+```
+
+If you only want to run Reaction and not the GraphQL DevServer
+```sh
+  docker-compose up --build --force-recreate --renew-anon-volumes reaction
+```
+
+If you only want to run the DevServer and not the Meteor app
+```sh
+  docker-compose up --build --force-recreate --renew-anon-volumes devserver
+```
+
+## Meteor App
+### Performance
+ - perf: remove revision control (#4238)
+ - perf: update to Meteor 1.7 (#4265)
+
+### Bug Fixes
+ - fix: Use catalog collection for PDP (#4324)
+ - fix: Import fixture data only if collections empty (#4327) .. Resolves #4326
+ - fix: Invalid class name: .variant-list-item-{variant._id} (#4217)
+ - fix: NPM build issue in Docker build (#4317)
+ - fix: add getAutoValues: false to discounts/codes/remove (#4288)
+ - fix: hadolint image version (#4306)
+ - fix: CI step failure to tag Docker image with latest release version (#4304)
+ - fix: admin products publication slowness (#4260)
+ - fix: remove inventoryPolicy check on low inventory (#4298)
+
+### Refactors
+ - refactor: non meteor schemas (#4266) .. Resolves #4263
+
+### Tests
+ - test: new mocks factory (#4276) .. Resolves #4246
+ - test: run snyk when package.json has changed or base is master (#4285)
+
+### Docs
+ - docs(jsdoc): document all Meteor Template helpers in 1 @namespace (#3841) .. Resolves #3840
+
+## GraphQL Dev Server
+### Features
+ - feat: add Media to Tag Schema and GraphQL query (#4270)
+
+### Chore
+ - chore: update default GraphQL query limit values (#4297)
+
+## Contributors
+Thanks to @mikeumus for contributing to this release. 🎉
+
+
+
+# v1.12.1
+## Bug Fixes
+- fix: handle products without positions obj .. Resolves #4299
+
+This release is a hotfix for #4299 which was discovered shortly after v1.12.0 was released.
+
+The issue was releated to a type error that was thrown during a migration:
+
+> If any documents in `Catalog` collection do not have a `positions` property, migration fails on startup on first start after migration to v1.12.0. The migration is left locked. The error message is:
+
+```
+0|reaction | TypeError: Cannot convert undefined or null to object
+0|reaction |     at Function.keys (<anonymous>)
+0|reaction |     at items.forEach (imports/plugins/core/versions/server/migrations/25_update_catalog_schema.js:28:12)
+```
+
+# v1.12.0
+
+## Breaking changes
+We've made some significant changes to the structure of the data that we publish to the Catalog in #4218. We have created an automated migration for these changes in #4272. If you have made other changes to the catalog in your app or in a plugin, this migration may not work out of the box for you. We'd recommend migrating a test or staging instance of your application with similar data before applying this update to your production application.
+
+From the PR notes to #4218, here's a list of the changes
+
+### Method argument change
+"products/updateProductPosition" method now takes a tag ID rather than tag name as its third argument
+
+### Media change
+
+The `media` property on catalog items is still an array of objects, but the structure of those objects has changed.
+
+BEFORE:
+```js
+{
+  metadata: {}, // the full metadata object from the Media doc
+  thumbnail: "", // a URL
+  small: "", // a URL
+  medium: "", // a URL
+  large: "", // a URL
+  image: "", // a URL
+}
+```
+
+AFTER:
+```js
+{
+  priority, // copied from metadata
+  toGrid, // copied from metadata
+  productId, // copied from metadata
+  variantId, // copied from metadata
+  URLs: {
+    thumbnail: "", // a URL
+    small: "", // a URL
+    medium: "", // a URL
+    large: "", // a URL
+    original: "", // a URL
+  }
+}
+```
+
+Also, the media array is now sorted in ascending `priority` order.
+
+### Deleted and hidden variants change
+
+When published to the catalog, the `variants` array on the catalog item now includes only those variants where `isDeleted` IS NOT true and `isVisible` IS true.
+
+### Product props separated from catalog item props
+
+Most product properties that were formerly on the catalog item itself are now moved to a `product` object property.
+
+### Explicit property copying
+
+Previously all product and variant props were blindly copied into the catalog item. Now, we explicitly copy only the props we want, sometimes changing their names.
+
+### Property name changes
+
+- `variant.taxable -> variant.isTaxable`
+- `variant.variantId` added, currently the same as variant._id but might not always be. A reference back to the variant in the Products collection.
+- `product.taxable -> product.isTaxable`
+- `product.productId` added, currently the same as product._id but might not always be. A reference back to the product in the Products collection.
+- `product.handle -> product.slug`
+- `product.hashtags -> product.tagIds`
+
+`product.twitterMsg` and `product.facebookMsg` and `product.googleplusMsg` and `product.pinterestMsg` are converted to a `product.socialMetadata` array like this:
+
+```js
+socialMetadata: [
+  { service: "twitter", message: product.twitterMsg },
+  { service: "facebook", message: product.facebookMsg },
+  { service: "googleplus", message: product.googleplusMsg },
+  { service: "pinterest", message: product.pinterestMsg }
+]
+```
+
+### New Pricing Object
+
+We've deprecated the `price` property on catalog products, variants, and options. There is a new property called `pricing`, which is a map keyed by currency code in MongoDB, and in GraphQL is converted to an array.
+
+The GraphQL schema:
+
+```graphql
+"The product price or price range for a specific currency"
+type ProductPricingInfo {
+  """
+  A comparison price value, usually MSRP. If `price` is null, this will also be null. That is,
+  only purchasable variants will have a `compareAtPrice`.
+  """
+  compareAtPrice: Float
+
+  "The code for the currency these pricing details applies to"
+  currency: Currency!
+
+  """
+  UI should display this price. If a product has multiple potential prices depending on selected
+  variants and options, then this is a price range string such as "$3.95 - $6.99". It includes the currency
+  symbols.
+  """
+  displayPrice: String!
+
+  "The price of the most expensive possible variant+option combination"
+  maxPrice: Float!
+
+  "The price of the least expensive possible variant+option combination"
+  minPrice: Float!
+
+  """
+  For variants with no options and for options, this will always be set to a price. For variants
+  with options and products, this will be `null`. There must be a price for a variant to be
+  added to a cart or purchased. Otherwise you would instead add one of its child options to a cart.
+  """
+  price: Float
+}
+```
+
+These are currently mapped as follows, but in the future you will be able to have different prices per currency that your shop supports.
+
+```js
+pricing: {
+      [shopCurrencyCode]: {
+        compareAtPrice: variant.compareAtPrice || null,
+        displayPrice: variantPriceInfo.range,
+        maxPrice: variantPriceInfo.max,
+        minPrice: variantPriceInfo.min,
+        price: typeof variant.price === "number" ? variant.price : null
+      }
+    },
+```
+
+### Catalog Item props
+
+All product props other than `positions` are now on the `product` object, so there are a few new properties on the catalog item itself:
+- _id (this is no longer the same as the product ID)
+- shopId (stays here AND on `product` obj)
+- createdAt
+- updatedAt
+
+### ReactionProduct.getTag
+
+The `ReactionProduct.getTag` helper function is renamed to `ReactionProduct.getTagIdForPosition` and returns the tag ID rather than name. If there's no tag in the route path, it returns "_default" rather than the lowercased shop name.
+
+## Meteor App
+ ### Features and Improvements
+ - feat: Catalog schema changes (#4218)
+ - feat: Catalog schema migration (#4272)
+
+### Bugfixes
+ - fix: Limit Products when in Edit Mode (#4256) .. Resolves #4254
+ - fix: added event param to onBlur method in numericInput component (#4251)
+ - fix: Load more products working now (#4233) .. Resolves #4090
+ - fix: show `.00` cents for whole-dollar amounts in price range (#4222)
+ - fix: get react root node correctly (#4172)
+
+### Tests
+ - Reduce Risk of Test False Positives (#4033)
+
+### Chores
+ - chore: Update to our latest eslint config (#4282)
+ - chore: resolve snyk issues (#4257)
+ - chore: Use NPM random package (#4208)
+
+## GraphQL Dev Server
+### Features and Improvements
+ - feat: catalog price sort (#4255) .. Resolves #4245
+ - feat: devserver improvements (#4220)
+ - feat: add description and name to shop query (#4209)
+ - feat: catalogItem GQL query (#4200) .. Resolves #4106
+ - feat: create connection/edge resolver helper (#4225)
+
+### Bugfixes
+ - fix: hasNextPage being false, even with a known next page (#4249)
+ - fix: improve hasNext/hasPrevious (#4231)
+ - fix: pagination (#4228)
+ - fix: first value pagination (#4204) .. Resolves #4186
+
+### Chores
+ - chore: access media through devserver app (#4216)
+
+## Docs
+ - docs: remove community calls from readme.md (#4279)
+ - docs: clean up jsdoc comments, namespace organization (#4213)
+
+
+## Contributors
+Thanks to @pmn4 for contributing to this release! 🎉
+
 # v1.11.0
 
 The major focus of `v1.11.0` has been on our GraphQL API. We've added most of the queries and mutations that are necessary for building a headless client to interact with `Accounts`. We're actively doing experiments on how we'll recommend connecting to this GraphQL client and we'll start publishing some of our initial client apps to interact with this GraphQL API in the near future.

@@ -59,7 +59,7 @@ class ProductTags extends Component {
 
 ProductTags.propTypes = {
   editButton: PropTypes.node,
-  editable: PropTypes.bool,
+  editable: PropTypes.bool, // eslint-disable-line react/boolean-prop-naming
   product: PropTypes.object,
   tags: PropTypes.arrayOf(PropTypes.object)
 };

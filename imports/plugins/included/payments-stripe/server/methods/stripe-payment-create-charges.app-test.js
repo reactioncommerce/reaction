@@ -8,7 +8,7 @@ import { sinon } from "meteor/practicalmeteor:sinon";
 import { Factory } from "meteor/dburles:factory";
 import { check, Match } from "meteor/check";
 
-import { Reaction } from "/server/api";
+import Reaction from "/imports/plugins/core/core/server/Reaction";
 import { methods } from "./stripe.js";
 
 
@@ -291,12 +291,16 @@ describe("stripe/payment/createCharges", function () {
       .post("/v1/charges", `amount=${cart.getTotal() * 100}&capture=false&currency=USD&customer=${stripeCustomerResponse.id}`)
       .reply(200, chargeResult); // .log(console.log);
 
-    methods["stripe/payment/createCharges"]("authorize", cardData, cart._id).then((res) => {
-      const transactionIds = Object.keys(res.transactions);
-      const txId = transactionIds[0];
-      expect(res.success).to.equal(true);
-      expect(res.transactions[txId].amount).to.equal(cart.getTotal() * 100);
-    }).then(() => done(), done);
+    methods["stripe/payment/createCharges"]("authorize", cardData, cart._id)
+      .then((res) => {
+        const transactionIds = Object.keys(res.transactions);
+        const txId = transactionIds[0];
+        expect(res.success).to.equal(true);
+        expect(res.transactions[txId].amount).to.equal(cart.getTotal() * 100);
+        return null;
+      })
+      .then(() => done())
+      .catch(done);
   });
 });
 

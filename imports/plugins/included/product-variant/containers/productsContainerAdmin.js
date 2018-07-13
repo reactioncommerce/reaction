@@ -9,7 +9,6 @@ import { Tracker } from "meteor/tracker";
 import { Reaction } from "/client/api";
 import { ITEMS_INCREMENT } from "/client/config/defaults";
 import { ReactionProduct } from "/lib/api";
-import { applyProductRevision, resubscribeAfterCloning } from "/lib/api/products";
 import { Products, Tags, Shops } from "/lib/collections";
 import ProductsComponent from "../components/products";
 
@@ -22,11 +21,11 @@ Tracker.autorun(() => {
 
 
 /**
- * loadMoreProducts
- * @summary whenever #productScrollLimitLoader becomes visible, retrieve more results
- * this basically runs this:
- * Session.set('productScrollLimit', Session.get('productScrollLimit') + ITEMS_INCREMENT);
+ * This basically runs this:
+ *   Session.set('productScrollLimit', Session.get('productScrollLimit') + ITEMS_INCREMENT);
+ * @summary whenever `#productScrollLimitLoader` becomes visible, retrieve more results.
  * @return {undefined}
+ * @private
  */
 function loadMoreProducts() {
   let threshold;
@@ -55,7 +54,7 @@ const wrapComponent = (Comp) => (
     static propTypes = {
       canLoadMoreProducts: PropTypes.bool,
       productsSubscription: PropTypes.object,
-      showNotFound: PropTypes.bool
+      showNotFound: PropTypes.bool // eslint-disable-line react/boolean-prop-naming
     };
 
     constructor(props) {
@@ -138,11 +137,10 @@ function composer(props, onData) {
     return;
   }
 
-  const currentTag = ReactionProduct.getTag();
+  const currentTagId = ReactionProduct.getTagIdForPosition();
 
   const sort = {
-    [`positions.${currentTag}.position`]: 1,
-    [`positions.${currentTag}.createdAt`]: 1,
+    [`positions.${currentTagId}.position`]: 1,
     createdAt: 1
   };
 
@@ -158,10 +156,6 @@ function composer(props, onData) {
 
   const queryParams = Object.assign({}, tags, Reaction.Router.current().query, shopIds);
   const productsSubscription = Meteor.subscribe("Products", scrollLimit, queryParams, sort, editMode);
-  if (resubscribeAfterCloning.get()) {
-    resubscribeAfterCloning.set(false);
-    productsSubscription.stop();
-  }
 
   if (productsSubscription.ready()) {
     window.prerenderReady = true;
@@ -180,14 +174,10 @@ function composer(props, onData) {
     shopId: { $in: activeShopsIds }
   });
 
-  const productIds = [];
-  const products = productCursor.map((product) => {
-    productIds.push(product._id);
+  const products = productCursor.fetch();
+  const productIds = productCursor.map((product) => product._id);
 
-    return applyProductRevision(product);
-  });
-
-  const sortedProducts = ReactionProduct.sortProducts(products, currentTag);
+  const sortedProducts = ReactionProduct.sortProducts(products, currentTagId);
   Session.set("productGrid/products", sortedProducts);
 
   reactiveProductIds.set(productIds);

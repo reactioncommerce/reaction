@@ -1,0 +1,33 @@
+{
+  "name": "Reaction Commerce",
+  "description": "Reaction is a modern reactive, real-time event driven ecommerce platform.",
+  "repository": "https://github.com/reactioncommerce/reaction",
+  "logo": "https://avatars1.githubusercontent.com/u/5605462?s=200&v=4",
+  "website": "https://www.reactioncommerce.com",
+  "keywords": ["reaction", "e-commerce", "meteor"],
+  "buildpacks": [
+    {
+      "url": "https://github.com/reactioncommerce/reaction-buildpack.git"
+    }
+  ],
+  "addons": [
+    {
+      "plan": "logentries:le_tryit"
+    },
+    {
+      "plan": "mongolab:sandbox"
+    }
+  ],
+  "env": {
+    "TOOL_NODE_FLAGS": {
+      "required": true,
+      "description": "Set memory limit to a sufficient value",
+      "value": "--max-old-space-size=2048"
+    },
+    "ROOT_URL": {
+      "required": true,
+      "description": "Your app's URL",
+      "value": "https://app-name.herokuapp.com"
+    }
+  }
+}

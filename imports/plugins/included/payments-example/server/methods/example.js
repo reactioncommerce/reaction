@@ -3,7 +3,7 @@
 import { Meteor } from "meteor/meteor";
 import { check } from "meteor/check";
 // reaction modules
-import { Logger } from "/server/api";
+import Logger from "@reactioncommerce/logger";
 import { ValidCardNumber, ValidExpireMonth, ValidExpireYear, ValidCVV } from "/lib/api";
 import { ExampleApi } from "./exampleapi";
 import { PaymentMethodArgument } from "/lib/collections/schemas";
@@ -27,10 +27,17 @@ import { PaymentMethodArgument } from "/lib/collections/schemas";
 //   };
 // }
 
+/**
+ * Meteor methods for Example Payment Plugin. Run these methods using `Meteor.call()`
+ * @namespace Payment/Example/Methods
+ */
+
 
 Meteor.methods({
   /**
    * Submit a card for Authorization
+   * @method
+   * @memberof Payment/Example/Methods
    * @param  {Object} transactionType authorize or capture
    * @param  {Object} cardData card Details
    * @param  {Object} paymentData The details of the Payment Needed
@@ -85,6 +92,8 @@ Meteor.methods({
 
   /**
    * Capture a Charge
+   * @method
+   * @memberof Payment/Example/Methods
    * @param {Object} paymentMethod Object containing data about the transaction to capture
    * @return {Object} results normalized
    */
@@ -108,6 +117,8 @@ Meteor.methods({
 
   /**
    * Create a refund
+   * @method
+   * @memberof Payment/Example/Methods
    * @param  {Object} paymentMethod object
    * @param  {Number} amount The amount to be refunded
    * @return {Object} result
@@ -134,6 +145,8 @@ Meteor.methods({
 
   /**
    * List refunds
+   * @method
+   * @memberof Payment/Example/Methods
    * @param  {Object} paymentMethod Object containing the pertinant data
    * @return {Object} result
    */

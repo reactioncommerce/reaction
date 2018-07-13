@@ -34,7 +34,7 @@ const wrapComponent = (Comp) => (
   class TagListContainer extends Component {
     static propTypes = {
       children: PropTypes.node,
-      editable: PropTypes.bool,
+      editable: PropTypes.bool, // eslint-disable-line react/boolean-prop-naming
       hasPermission: PropTypes.bool,
       product: PropTypes.object,
       tagIds: PropTypes.arrayOf(PropTypes.string),
@@ -241,7 +241,7 @@ function composer(props, onData) {
 
   if (props.product) {
     if (_.isArray(props.product.hashtags)) {
-      tags = _.map(props.product.hashtags, (id) => Tags.findOne(id));
+      tags = Tags.find({ _id: { $in: props.product.hashtags } }).fetch();
     }
   }
 

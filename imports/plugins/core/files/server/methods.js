@@ -1,149 +1,85 @@
 import { Meteor } from "meteor/meteor";
 import { check } from "meteor/check";
-import { Hooks, Reaction } from "/server/api";
-import { MediaRecords, Revisions } from "/lib/collections";
-import { Media } from "/imports/plugins/core/files/server";
-import { RevisionApi } from "/imports/plugins/core/revisions/lib/api";
+import Reaction from "/imports/plugins/core/core/server/Reaction";
+import { MediaRecords } from "/lib/collections";
+
+/**
+ * Media-related Meteor methods
+ * @namespace Media/Methods
+ */
 
 /**
  * @method updateMediaMetadata
- * @memberof media
- * @summary updates media record in revision control.
+ * @memberof Media/Methods
+ * @summary Updates a media record.
  * @param {String} fileRecordId - _id of updated file record.
  * @param {Object} metadata - metadata from updated media file.
  * @return {Boolean}
+ * @private
  */
-export async function updateMediaMetadata(fileRecordId, metadata) {
+async function updateMediaMetadata(fileRecordId, metadata) {
   check(fileRecordId, String);
   check(metadata, Object);
-  if (RevisionApi.isRevisionControlEnabled()) {
-    if (metadata.productId) {
-      const existingRevision = Revisions.findOne({
-        "documentId": fileRecordId,
-        "workflow.status": {
-          $nin: [
-            "revision/published"
-          ]
-        }
-      });
-      if (existingRevision) {
-        const updatedMetadata = Object.assign({}, existingRevision.documentData, metadata);
-        // Special case where if we have both added and reordered images before publishing we don't want to overwrite
-        // the workflow status since it would be "unpublished"
-        if (existingRevision.documentData.workflow === "published" || existingRevision.changeType === "insert") {
-          updatedMetadata.workflow = "published";
-        }
-        Revisions.update({ _id: existingRevision._id }, {
-          $set: {
-            documentData: updatedMetadata
-          }
-        });
-        Hooks.Events.run("afterRevisionsUpdate", Meteor.userId(), {
-          ...existingRevision,
-          documentData: updatedMetadata
-        });
-      } else {
-        Revisions.insert({
-          documentId: fileRecordId,
-          documentData: metadata,
-          documentType: "image",
-          parentDocument: metadata.productId,
-          changeType: "update",
-          workflow: {
-            status: "revision/update"
-          }
-        });
-      }
 
-      return false;
+  const result = MediaRecords.update({
+    _id: fileRecordId
+  }, {
+    $set: {
+      metadata
     }
-  }
-  // for non-product images, just ignore and keep on moving
-  return true;
+  });
+
+  return result === 1;
 }
 
 /**
- * @method insertMedia
- * @memberof media
- * @summary insert a new media record and add it to revision control.
+ * @name media/insert
+ * @method
+ * @memberof Media/Methods
+ * @summary Insert a new media record.
  * @param {Object} fileRecord - document from file collection upload.
  * @return {String} - _id of the new inserted media record.
  */
 export async function insertMedia(fileRecord) {
   check(fileRecord, Object);
-  const mediaRecordId = await MediaRecords.insert(fileRecord);
-
-  if (RevisionApi.isRevisionControlEnabled() && fileRecord.metadata.workflow !== "published") {
-    if (fileRecord.metadata.productId) {
-      const revisionMetadata = Object.assign({}, fileRecord.metadata);
-      revisionMetadata.workflow = "published";
-      Revisions.insert({
-        documentId: mediaRecordId,
-        documentData: revisionMetadata,
-        documentType: "image",
-        parentDocument: fileRecord.metadata.productId,
-        changeType: "insert",
-        workflow: {
-          status: "revision/update"
-        }
-      });
-      MediaRecords.update({
-        _id: mediaRecordId
-      }, {
-        $set: {
-          "metadata.workflow": "unpublished"
-        }
-      });
-    } else {
-      MediaRecords.update({
-        _id: mediaRecordId
-      }, {
-        $set: {
-          "metadata.workflow": "published"
-        }
-      });
+  const mediaRecordId = await MediaRecords.insert({
+    ...fileRecord,
+    metadata: {
+      ...fileRecord.metadata,
+      workflow: "published"
     }
-  }
+  });
 
   return mediaRecordId;
 }
 
 /**
- * @method removeMedia
- * @memberof media
- * @summary removes media file and updates record in revision control.
+ * @name media/remove
+ * @method
+ * @memberof Media/Methods
+ * @summary Unpublish a media record by updating it's workflow
  * @param {String} fileRecordId - _id of file record to be deleted.
  * @return {Boolean}
  */
 export async function removeMedia(fileRecordId) {
   check(fileRecordId, String);
-  const { metadata } = MediaRecords.findOne({ _id: fileRecordId });
-  if (RevisionApi.isRevisionControlEnabled() && metadata.workflow && metadata.workflow === "unpublished") {
-    Revisions.remove({
-      documentId: fileRecordId
-    });
-    Media.remove(fileRecordId);
-    return true;
-  } else if (metadata.productId) {
-    Revisions.insert({
-      documentId: fileRecordId,
-      documentData: metadata,
-      documentType: "image",
-      parentDocument: metadata.productId,
-      changeType: "remove",
-      workflow: {
-        status: "revision/update"
-      }
-    });
-    return true;
-  }
-  return false;
+
+  const result = MediaRecords.update({
+    _id: fileRecordId
+  }, {
+    $set: {
+      "metadata.workflow": "archived"
+    }
+  });
+
+  return result === 1;
 }
 
 /**
- * updateMediaPriorities
+ * @name media/updatePriorities
+ * @method
+ * @memberof Media/Methods
  * @summary sorting media by array indexes
- * @type {Method}
  * @param {String[]} sortedMediaIDs
  * @return {Boolean} true
  */

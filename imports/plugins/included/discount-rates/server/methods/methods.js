@@ -1,22 +1,25 @@
 import { Meteor } from "meteor/meteor";
 import { Match, check } from "meteor/check";
-import { Reaction } from "/server/api";
+import Reaction from "/imports/plugins/core/core/server/Reaction";
 import { Discounts } from "/imports/plugins/core/discounts/lib/collections";
 import { DiscountRates as DiscountSchema } from "../../lib/collections/schemas";
+
+/**
+ * @namespace Discounts/Rates/Methods
+ */
 
 // attach discount code specific schema
 Discounts.attachSchema(DiscountSchema, { selector: { discountMethod: "rate" } });
 
-//
-// make all discount methods available
-//
 export const methods = {
   /**
-   * discounts/rates/amount
-   * for discount rates
+   * @name discounts/rates/amount
+   * @summary for discount rates
+   * @method
+   * @memberof Discounts/Rates/Methods
    * @param  {String} cartId cartId
    * @param  {String} rateId rateid
-   * @return {Number} returns discount total
+   * @return {Number} discount total
    */
   "discounts/rates/amount"(cartId, rateId) {
     check(cartId, String);
@@ -38,6 +41,7 @@ export const methods = {
   /**
    * @name discounts/addRate
    * @method
+   * @memberof Discounts/Rates/Methods
    * @param  {Object} doc A Discounts document to be inserted
    * @param  {String} [docId] DEPRECATED. Existing ID to trigger an update. Use discounts/editCode method instead.
    * @return {String} Insert result
@@ -50,12 +54,14 @@ export const methods = {
     if (docId) return Meteor.call("discounts/editRate", { _id: docId, modifier: doc });
 
     if (!Reaction.hasPermission("discount-rates")) throw new Meteor.Error("access-denied", "Access Denied");
+    doc.shopId = Reaction.getShopId();
     return Discounts.insert(doc);
   },
 
   /**
    * @name discounts/editRate
    * @method
+   * @memberof Discounts/Rates/Methods
    * @param  {Object} details An object with _id and modifier props
    * @return {String} Update result
    */

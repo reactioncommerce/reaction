@@ -1,5 +1,5 @@
 import _ from "lodash";
-import { Reaction } from "/server/api";
+import Reaction from "/imports/plugins/core/core/server/Reaction";
 
 const DefaultSocialApp = {
   profilePage: "",

@@ -3,10 +3,10 @@ import faker from "faker";
 import { Factory } from "meteor/dburles:factory";
 import { expect } from "meteor/practicalmeteor:chai";
 import { sinon } from "meteor/practicalmeteor:sinon";
-import { Reaction } from "/server/api";
+import Reaction from "/imports/plugins/core/core/server/Reaction";
 import { getSlug } from "/lib/api";
 import { Products, OrderSearch } from "/lib/collections";
-import Fixtures from "/server/imports/fixtures";
+import Fixtures from "/imports/plugins/core/core/server/fixtures";
 import {
   buildProductSearch,
   buildProductSearchRecord,
@@ -163,6 +163,10 @@ describe("Order Search results", function () {
       billingName: "Bill Name",
       userEmails: ["test@example.com"]
     });
+  });
+
+  after(function () {
+    OrderSearch.remove({});
   });
 
   describe("order search", function () {

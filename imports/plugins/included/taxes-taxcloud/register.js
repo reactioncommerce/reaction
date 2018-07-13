@@ -1,4 +1,4 @@
-import { Reaction } from "/server/api";
+import Reaction from "/imports/plugins/core/core/server/Reaction";
 
 Reaction.registerPackage({
   label: "Taxes",
@@ -11,7 +11,7 @@ Reaction.registerPackage({
       apiLoginId: "",
       apiKey: "",
       refreshPeriod: "every 7 days",
-      taxCodeUrl: "https://taxcloud.net/tic/?format=json"
+      taxCodeUrl: "https://taxcloud.net/tic/json"
     },
     taxCodes: {
       getTaxCodeMethod: "taxcloud/getTaxCodes"

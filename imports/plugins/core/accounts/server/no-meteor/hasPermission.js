@@ -1,14 +1,16 @@
+import { curryN } from "ramda";
+
 const GLOBAL_GROUP = "__global_roles__";
 
 /**
  * @name hasPermission
  * @method
- * @memberof Core
+ * @memberof Accounts
  * @param {Object} user - The user object, with `roles` property, to check.
  * @param {String[]} permissions - Array of permission strings. The account must have at least one of them either globally or for the roleGroup.
  * @param {String} [roleGroup] - The shop ID for which the permissions are needed, or a more specific roles group. If not set,
  *   only global roles will be checked.
- * @return {Promise<Boolean>} True if the account with ID accountId has at least one of the requested permissions in the roleGroup group
+ * @return {Boolean} True if the account with ID accountId has at least one of the requested permissions in the roleGroup group
  */
 export default function hasPermission(user, permissions, roleGroup) {
   if (!user || !user.roles) return false;
@@ -39,3 +41,5 @@ export default function hasPermission(user, permissions, roleGroup) {
 
   return false;
 }
+
+export const getHasPermissionFunctionForUser = curryN(2, hasPermission);

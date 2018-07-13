@@ -444,20 +444,6 @@
           "isCommercial": "האם זו כתובת מסחרית?"
         }
       },
-      "revisions": {
-        "isDisabled": "ניהול הגרסאות מושבת. כל השינויים יפורסמו באופן מידי.",
-        "isEnabled": "ניהול גרסאות מופעל עבור המוצרים. יש לפרסם את כל השינויים לפני שיהפכו להיות גלויים עבור הלקוחות.",
-        "unpublishedChanges": "שינויים שלא פורסמו",
-        "publishChanges": "פרסם שינויים",
-        "showChanges": "הצג שינויים",
-        "hideChanges": "הסתר שינויים",
-        "discardChanges": "בטל שינויים",
-        "changedPublished": "השינויים פורסמו בהצלחה",
-        "changesDiscarded": "השינויים בוטלו בהצלחה",
-        "noChanges": "אין שינויים",
-        "noChangesPublished": "אין שינויים לפרסום",
-        "noChangesDiscarded": "אין שינויים הניתנים לביטול"
-      },
       "address": {
         "country": "ארץ",
         "fullName": "שם פרטי ומשפחה",

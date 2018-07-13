@@ -6,42 +6,20 @@ import { Reaction } from "/client/api";
 import { Packages, Shops } from "/lib/collections";
 
 /**
- *
- * reactionApps
- *   provides="<where matching registry provides is this >"
- *   enabled=true <false for disabled packages>
- *   context= true filter templates to current route
- *   returns matching package registry objects
- *   @example {{#each reactionApps provides="settings" name=packageName container=container}}
- *   @example {{#each reactionApps provides="userAccountDropdown" enabled=true}}
- *   @example
- *     {{#each reactionApps provides="social" name="reaction-social"}}
- *         {{> Template.dynamic template=template data=customSocialSettings }}
- *     {{/each}}
- *
- *   @typedef optionHash
- *   @type {object}
- *   @property {string} name - name of a package.
- *   @property {string} provides -purpose of this package as identified to the registry
- *   @property {string} container - filter registry entries for matching container.
- *   @property {string} shopId - filter to only display results matching shopId, not returned
- *   @property {string} template - filter registry entries for matching template
- *   @type {optionHash}
- *
- *  @return {optionHash} returns an array of filtered, structure reactionApps
- *  [{
- *   enabled: true
- *   label: "Stripe"
- *   name: "reaction-stripe"
- *   packageId: "QqkGsQCDRhg2LSn8J"
- *   priority: 1
- *   provides: "paymentMethod"
- *   template: "stripePaymentForm"
- *   etc: "additional properties as defined in Packages.registry"
- *   ...
- *  }]
+ * @typedef optionHash
+ * @type {Object}
+ * @property {String} name - name of a package.
+ * @property {String} provides -purpose of this package as identified to the registry
+ * @property {String} container - filter registry entries for matching container.
+ * @property {String} shopId - filter to only display results matching shopId, not returned
+ * @property {String} template - filter registry entries for matching template
  */
 
+/**
+ * @method Apps
+ * @param {optionHash} optionHash Option hash
+ * @return {Object[]} returns an array of filtered, structure reactionApps
+ */
 export function Apps(optionHash) {
   const filter = {};
   const registryFilter = {};
@@ -170,5 +148,25 @@ export function Apps(optionHash) {
   return reactionApps.sort((a, b) => a.priority - b.priority).slice();
 }
 
-// Register global template helper
+/**
+ *
+ * @name reactionApps
+ * @memberof BlazeTemplateHelpers
+ * @summary Return an array of filtered, structured `reactionApps` as a Template Helper
+ * @example {{#each reactionApps provides="settings" name=packageName container=container}}
+ * @example {{#each reactionApps provides="userAccountDropdown" enabled=true}}
+ * @param {optionHash} optionHash Option hash
+ * @return {Object[]} returns an array of filtered, structure reactionApps
+ * ```[{
+ *   enabled: true
+ *   label: "Stripe"
+ *   name: "reaction-stripe"
+ *   packageId: "QqkGsQCDRhg2LSn8J"
+ *   priority: 1
+ *   provides: "paymentMethod"
+ *   template: "stripePaymentForm"
+ *   etc: "additional properties as defined in Packages.registry"
+ *   ...
+ *  }]```
+ */
 Template.registerHelper("reactionApps", (optionHash) => Reaction.Apps(optionHash));

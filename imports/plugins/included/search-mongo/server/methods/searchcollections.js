@@ -1,7 +1,8 @@
 /* eslint camelcase: 0 */
+import Logger from "@reactioncommerce/logger";
 import { Meteor } from "meteor/meteor";
 import { check, Match } from "meteor/check";
-import { Reaction, Logger } from "/server/api";
+import Reaction from "/imports/plugins/core/core/server/Reaction";
 import { ProductSearch, OrderSearch, AccountSearch, Orders, Products, Accounts, Shops } from "/lib/collections";
 import utils from "./common";
 import { transformations } from "./transformations";
@@ -59,12 +60,12 @@ function getSearchLanguage() {
 }
 
 /**
- * handleIndexUpdateFailures
  * When using Collection.rawCollection() methods that return a Promise,
  * handle the errors in a catch. However, ignore errors with altering indexes
  * before a collection exists.
  * @param  {Error} error an error object returned from a Promise rejection
  * @return {undefined}   doesn't return anything
+ * @private
  */
 function handleIndexUpdateFailures(error) {
   // If we get an error from the Mongo driver because something tried to drop a
@@ -128,7 +129,9 @@ export function buildProductSearch(cb) {
 
   const rawProductSearchCollection = ProductSearch.rawCollection();
   rawProductSearchCollection.dropIndexes().catch(handleIndexUpdateFailures);
-  rawProductSearchCollection.createIndex(indexObject, weightObject, getSearchLanguage()).catch(handleIndexUpdateFailures);
+  const options = getSearchLanguage();
+  options.weights = weightObject;
+  rawProductSearchCollection.createIndex(indexObject, options).catch(handleIndexUpdateFailures);
   if (cb) {
     cb();
   }
@@ -143,7 +146,9 @@ export function buildEmptyProductSearch() {
   }
   const rawProductSearchCollection = ProductSearch.rawCollection();
   rawProductSearchCollection.dropIndexes().catch(handleIndexUpdateFailures);
-  rawProductSearchCollection.createIndex(indexObject, weightObject, getSearchLanguage()).catch(handleIndexUpdateFailures);
+  const options = getSearchLanguage();
+  options.weights = weightObject;
+  rawProductSearchCollection.createIndex(indexObject, options).catch(handleIndexUpdateFailures);
 }
 
 export function rebuildProductSearchIndex(cb) {
@@ -155,7 +160,9 @@ export function rebuildProductSearchIndex(cb) {
   }
   const rawProductSearchCollection = ProductSearch.rawCollection();
   rawProductSearchCollection.dropIndexes().catch(handleIndexUpdateFailures);
-  rawProductSearchCollection.createIndex(indexObject, weightObject, getSearchLanguage()).catch(handleIndexUpdateFailures);
+  const options = getSearchLanguage();
+  options.weights = weightObject;
+  rawProductSearchCollection.createIndex(indexObject, options).catch(handleIndexUpdateFailures);
   if (cb) {
     cb();
   }
@@ -169,7 +176,9 @@ export function ensureProductSearchIndex() {
     indexObject[field] = "text";
   }
   const rawProductSearchCollection = ProductSearch.rawCollection();
-  rawProductSearchCollection.createIndex(indexObject, weightObject, getSearchLanguage()).catch(handleIndexUpdateFailures);
+  const options = getSearchLanguage();
+  options.weights = weightObject;
+  rawProductSearchCollection.createIndex(indexObject, options).catch(handleIndexUpdateFailures);
 }
 
 export function buildOrderSearchRecord(orderId) {

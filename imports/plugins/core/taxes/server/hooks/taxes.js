@@ -1,9 +1,5 @@
+import Hooks from "@reactioncommerce/hooks";
 import { Meteor } from "meteor/meteor";
-import { Hooks } from "/server/api";
-
-/**
- * Cart Hooks for Taxes
-*/
 
 /**
  * After cart update apply taxes.
@@ -11,8 +7,8 @@ import { Hooks } from "/server/api";
  * we could have done this in the core/cart transform
  * but this way this file controls the events from
  * the core/taxes plugin.
+ * @private
  */
-
 Hooks.Events.add("afterCartUpdateCalculateTaxes", (cartId) => {
   Meteor.call("taxes/calculate", cartId);
 });
