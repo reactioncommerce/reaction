@@ -14,10 +14,6 @@ import createGroups from "./createGroups";
 import processJobs from "./processJobs";
 import sendVerificationEmail from "./sendVerificationEmail";
 import { registerTemplate } from "./templates";
-import { sendVerificationEmail } from "./accounts";
-import { getMailUrl } from "./email/config";
-import { createGroups } from "./groups";
-import ConnectionDataStore from "./connectionDataStore";
 import { AbsoluteUrlMixin } from "./absoluteUrl";
 
 /**
@@ -79,7 +75,6 @@ export default {
     const registeredPackage = this.Packages[packageInfo.name];
     return registeredPackage;
   },
-
   defaultCustomerRoles: ["guest", "account/profile", "product", "tag", "index", "cart/checkout", "cart/completed"],
   defaultVisitorRoles: ["anonymous", "guest", "product", "tag", "index", "cart/checkout", "cart/completed"],
   createGroups,

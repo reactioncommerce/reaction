@@ -13,11 +13,11 @@ export const AbsoluteUrlMixin = {
       DDP._CurrentMethodInvocation.get() ||
       DDP._CurrentPublicationInvocation.get();
 
-    if (!invocation) { return; }
+    if (!invocation) { return null; }
 
     const { connection } = invocation;
 
-    if (!connection) { return; }
+    if (!connection) { return null; }
 
     return connection.httpHeaders.host;
   },
@@ -26,14 +26,15 @@ export const AbsoluteUrlMixin = {
    * absoluteUrl
    * @summary a wrapper method for Meteor.absoluteUrl which sets the rootUrl to
    * the current URL (instead of defaulting to ROOT_URL)
-   * @param {String} [path] A path to append to the root URL. Do not include a leading "`/`".
+   * @param {String} [pathOrOptions] A path to append to the root URL. Do not include a leading "`/`".
    *                                 absoluteUrl can be called with a single
    *                                 parameter, where pathOrOptions can be the
    *                                 path (String) or the options (Object)
-   * @param {Object} [options]
+   * @param {Object} [options] Optional options
    * @param {Boolean} options.secure Create an HTTPS URL.
    * @param {Boolean} options.replaceLocalhost Replace localhost with 127.0.0.1. Useful for services that don't recognize localhost as a domain name.
    * @param {String} options.rootUrl Override the default ROOT_URL from the server environment. For example: "`http://foo.example.com`"
+   * @return {String} - the constructed URL
    */
   absoluteUrl(pathOrOptions, options) {
     let path;

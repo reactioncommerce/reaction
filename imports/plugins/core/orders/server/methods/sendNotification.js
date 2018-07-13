@@ -162,7 +162,7 @@ export default function sendNotification(order, action) {
         combinedItems.push(orderItem);
 
         // Placeholder image if there is no product image
-        orderItem.placeholderImage = `${Meteor.absoluteUrl()}resources/placeholder.gif`;
+        orderItem.placeholderImage = `${Reaction.absoluteUrl()}resources/placeholder.gif`;
 
         // variant image
         const variantImage = Promise.await(getPrimaryMediaForItem({
@@ -188,7 +188,7 @@ export default function sendNotification(order, action) {
       // Shop Data
       shop,
       contactEmail: shop.emails[0].address,
-      homepage: Meteor.absoluteUrl(),
+      homepage: Reaction.absoluteUrl(),
       emailLogo,
       copyrightDate,
       legalName: _.get(shop, "addressBook[0].company"),
@@ -203,17 +203,17 @@ export default function sendNotification(order, action) {
         display: true,
         facebook: {
           display: true,
-          icon: `${Meteor.absoluteUrl()}resources/email-templates/facebook-icon.png`,
+          icon: `${Reaction.absoluteUrl()}resources/email-templates/facebook-icon.png`,
           link: "https://www.facebook.com"
         },
         googlePlus: {
           display: true,
-          icon: `${Meteor.absoluteUrl()}resources/email-templates/google-plus-icon.png`,
+          icon: `${Reaction.absoluteUrl()}resources/email-templates/google-plus-icon.png`,
           link: "https://plus.google.com"
         },
         twitter: {
           display: true,
-          icon: `${Meteor.absoluteUrl()}resources/email-templates/twitter-icon.png`,
+          icon: `${Reaction.absoluteUrl()}resources/email-templates/twitter-icon.png`,
           link: "https://www.twitter.com"
         }
       },

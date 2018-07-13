@@ -21,7 +21,7 @@ describe("AbsoluteUrlMixin", () => {
     let path;
     let connectionHost;
     let rootUrl;
-    let meteorRoolUrl;
+    let meteorRootUrl;
 
     beforeEach(() => {
       // commonly used test vars
@@ -30,14 +30,14 @@ describe("AbsoluteUrlMixin", () => {
       rootUrl = `https://${randomString()}.reactioncommerce.com`;
 
       // mocking Meteor
-      meteorRoolUrl = Meteor.absoluteUrl.defaultOptions.rootUrl;
+      meteorRootUrl = Meteor.absoluteUrl.defaultOptions.rootUrl;
       // this is a round-about way of mocking $ROOT_URL
       Meteor.absoluteUrl.defaultOptions.rootUrl = rootUrl;
     });
 
     afterEach(() => {
       // restore Meteor
-      Meteor.absoluteUrl.defaultOptions.rootUrl = meteorRoolUrl;
+      Meteor.absoluteUrl.defaultOptions.rootUrl = meteorRootUrl;
     });
 
     it("wraps Meteor.absoluteUrl", () => {
