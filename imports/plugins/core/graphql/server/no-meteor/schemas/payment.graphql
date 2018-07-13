@@ -32,8 +32,8 @@ extend type Query {
   active/inactive, IP/region, shop, etc. To get the full list, use the `paymentMethods`
   query with proper authorization.
   """
-  availablePaymentMethods(shopId: ID!): [PaymentMethod]
+  availablePaymentMethods(shopId: ID!): [PaymentMethod]!
 
   "Get a full list of all payment methods"
-  paymentMethods(shopId: ID!): [PaymentMethod]
+  paymentMethods(shopId: ID!): [PaymentMethod]!
 }
