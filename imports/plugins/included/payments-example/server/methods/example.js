@@ -3,7 +3,7 @@
 import { Meteor } from "meteor/meteor";
 import { check } from "meteor/check";
 // reaction modules
-import { Logger } from "/server/api";
+import Logger from "@reactioncommerce/logger";
 import { ValidCardNumber, ValidExpireMonth, ValidExpireYear, ValidCVV } from "/lib/api";
 import { ExampleApi } from "./exampleapi";
 import { PaymentMethodArgument } from "/lib/collections/schemas";

@@ -1,7 +1,8 @@
+import Logger from "@reactioncommerce/logger";
 import Shopify from "shopify-api-node";
 import { Meteor } from "meteor/meteor";
 import { check, Match } from "meteor/check";
-import { Reaction, Logger } from "/server/api";
+import Reaction from "/imports/plugins/core/core/server/Reaction";
 import { connectorsRoles } from "../../lib/roles";
 import { getApiInfo } from "./api";
 

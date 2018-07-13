@@ -51,6 +51,13 @@ jobs:
           key: ${GLOBAL_CACHE_VERSION}-node-modules-{{ .Branch }}-{{ epoch }}
           paths:
             - node_modules
+      # mongodb-memory-server installs Mongo binary on npm install, which we need
+      # later when we run Jest integration tests
+      - save_cache:
+          name: Saving mongodb-memory-server MongoDB cache
+          key: mongodb-memory-server
+          paths:
+            - ~/.mongodb-binaries
 
   docker-build:
     <<: *defaults
@@ -178,7 +185,7 @@ jobs:
           name: Load App Plugins
           command: reaction plugins load
       - run:
-          name: Run Integration Tests
+          name: Run Meteor Integration Tests
           command: .circleci/tests.sh
 
   test-unit:
@@ -193,6 +200,22 @@ jobs:
       - run:
           name: Run Unit Tests
           command: npm run test:unit
+
+  test-integration:
+    <<: *defaults
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - v1-node-modules-{{ checksum "package.json" }}-{{ checksum "package-lock.json" }}
+            - v1-node-modules-{{ .Branch }}
+            - v1-node-modules-master
+      - restore_cache:
+          name: Restoring mongodb-memory-server MongoDB cache
+          key: mongodb-memory-server
+      - run:
+          name: Run Integration Tests
+          command: npm run test:integration
 
   dockerfile-lint:
     <<: *defaults
@@ -251,6 +274,10 @@ workflows:
       - test-unit:
           requires:
             - build
+      # TODO uncomment and figure out why they always fail on CI
+      # - test-integration:
+      #     requires:
+      #       - build
       - eslint:
           requires:
             - build

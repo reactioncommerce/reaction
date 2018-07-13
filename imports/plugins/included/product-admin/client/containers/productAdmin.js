@@ -105,7 +105,7 @@ function composer(props, onData) {
 
   if (product) {
     if (_.isArray(product.hashtags)) {
-      tags = _.map(product.hashtags, (id) => Tags.findOne(id));
+      tags = Tags.find({ _id: { $in: product.hashtags } }).fetch();
     }
 
     const selectedVariant = ReactionProduct.selectedVariant();
