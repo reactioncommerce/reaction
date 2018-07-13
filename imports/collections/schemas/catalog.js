@@ -602,7 +602,7 @@ export const CatalogProduct = new SimpleSchema({
 export const Catalog = new SimpleSchema({
   _id: {
     type: String,
-    label: "Product Id"
+    label: "Catalog item ID"
   },
   product: {
     type: Object,
