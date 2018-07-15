@@ -13,6 +13,8 @@ import Logger from "/client/modules/logger";
 import { ReactionProduct } from "/lib/api";
 import ProductGrid from "../components/productGrid";
 
+const ACTION_VIEW_TEMPLATE = "productSettings";
+
 const wrapComponent = (Comp) => (
   class ProductGridContainer extends Component {
     static propTypes = {
@@ -41,7 +43,13 @@ const wrapComponent = (Comp) => (
 
       if (Array.isArray(selectedProducts) && _.isEmpty(selectedProducts)) {
         Reaction.setUserPreferences("reaction-product-variant", "selectedGridItems", undefined);
-        return Reaction.hideActionView();
+
+        const actionView = Reaction.getActionView();
+
+        // if some other action view is open, do not hide it
+        if (actionView.template === ACTION_VIEW_TEMPLATE) {
+          return Reaction.hideActionView();
+        }
       }
 
 
@@ -54,7 +62,7 @@ const wrapComponent = (Comp) => (
           Reaction.showActionView({
             label: "Grid Settings",
             i18nKeyLabel: "gridSettingsPanel.title",
-            template: "productSettings",
+            template: ACTION_VIEW_TEMPLATE,
             type: "product",
             data: { products: filteredProducts }
           });
