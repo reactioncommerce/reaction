@@ -50,7 +50,7 @@ const wrapComponent = (Comp) => (
         if (actionView.template === ACTION_VIEW_TEMPLATE) {
           Reaction.hideActionView();
         }
-        
+
         return;
       }
 
