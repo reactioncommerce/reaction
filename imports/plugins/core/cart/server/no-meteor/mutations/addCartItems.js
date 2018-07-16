@@ -8,7 +8,7 @@ import addCartItemsUtil from "../util/addCartItems";
  * @method addCartItems
  * @summary Add one or more items to a cart
  * @param {Object} context -  an object containing the per-request state
- * @param {Object} input - AddCartItemsInput object
+ * @param {Object} input - mutation input
  * @param {Object} [options] - Options
  * @param {Boolean} [options.skipPriceCheck] - For backwards compatibility, set to `true` to skip checking price.
  *   Skipping this is not recommended for new code.
