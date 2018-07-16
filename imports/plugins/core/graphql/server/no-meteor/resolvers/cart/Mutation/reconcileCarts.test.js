@@ -1,7 +1,13 @@
 import reconcileCarts from "./reconcileCarts";
 
+const internalAnonymousCartId = "555";
+const opaqueAnonymousCartId = "cmVhY3Rpb24vY2FydDo1NTU=";
+const anonymousCartToken = "TOKEN";
+
 test("correctly passes through to mutations.cart.reconcileCarts", async () => {
-  const fakeResult = { /* TODO */ };
+  const fakeResult = {
+    cart: { _id: "123" }
+  };
 
   const mockMutation = jest.fn().mockName("mutations.cart.reconcileCarts");
   mockMutation.mockReturnValueOnce(Promise.resolve(fakeResult));
@@ -15,13 +21,21 @@ test("correctly passes through to mutations.cart.reconcileCarts", async () => {
 
   const result = await reconcileCarts(null, {
     input: {
-      /* TODO */
-      clientMutationId: "clientMutationId"
+      anonymousCartId: opaqueAnonymousCartId,
+      anonymousCartToken,
+      clientMutationId: "clientMutationId",
+      mode: "merge"
     }
   }, context);
 
   expect(result).toEqual({
-    renameMe: fakeResult,
+    cart: { _id: "123" },
     clientMutationId: "clientMutationId"
+  });
+
+  expect(mockMutation).toHaveBeenCalledWith(context, {
+    anonymousCartId: internalAnonymousCartId,
+    anonymousCartToken,
+    mode: "merge"
   });
 });

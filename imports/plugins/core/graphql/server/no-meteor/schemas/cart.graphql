@@ -275,15 +275,15 @@ input ReconcileCartsInput {
   "An anonymous cart token"
   anonymousCartToken: String!
 
+  "An optional string identifying the mutation call, which will be returned in the response payload"
+  clientMutationId: String
+
   """
   If both an anonymous cart and a cart for the authenticated account are found, how do we combine them?
   Default mode is `merge`, where all anonymous items are moved into the account cart along with existing
   account cart items, and quantities are combined.
   """
   mode: CartReconciliationMode
-
-  "An optional string identifying the mutation call, which will be returned in the response payload"
-  clientMutationId: String
 }
 
 ####################
