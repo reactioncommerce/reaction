@@ -1,0 +1,14 @@
+($id: ID!) {
+  group(id: $id) {
+    _id
+    createdAt
+    createdBy {
+      _id
+    }
+    description
+    name
+    permissions
+    slug
+    updatedAt
+  }
+}

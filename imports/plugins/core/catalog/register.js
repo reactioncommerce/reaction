@@ -1,4 +1,4 @@
-import { Reaction } from "/server/api";
+import Reaction from "/imports/plugins/core/core/server/Reaction";
 
 Reaction.registerPackage({
   label: "Catalog",
@@ -7,21 +7,5 @@ Reaction.registerPackage({
   autoEnable: true,
   settings: {
     name: "Catalog"
-  },
-  registry: [
-    {
-      provides: ["dashboard"],
-      label: "Catalog",
-      description: "Product catalog",
-      icon: "fa fa-book",
-      container: "core"
-    },
-    {
-      label: "Catalog Settings",
-      icon: "fa fa-book",
-      name: "catalog/settings",
-      provides: ["settings"],
-      template: "catalogSettings"
-    }
-  ]
+  }
 });

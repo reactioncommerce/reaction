@@ -132,7 +132,7 @@ export const Accounts = new SimpleSchema({
     type: String,
     regEx: SimpleSchema.RegEx.Id,
     index: 1,
-    label: "Accounts ShopId"
+    label: "Accounts userId"
   },
   "sessions": {
     type: Array,

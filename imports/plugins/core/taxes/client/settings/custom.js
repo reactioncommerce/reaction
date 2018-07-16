@@ -158,6 +158,9 @@ Template.customTaxRates.helpers({
         tax.country = shop.addressBook[0].country;
       }
     }
+    if (!tax.shopId) {
+      tax.shopId = shop._id;
+    }
     return tax;
   },
   taxCodes() {
