@@ -42,10 +42,10 @@ function getValidator() {
     }
     return true;
   });
-
-
-  const methodName = geoCoder.settings.addressValidation.addressValidationMethod;
-  return methodName;
+  if (geoCoder && geoCoder.settings && geoCoder.settings.addressValidation) {
+    return geoCoder.settings.addressValidation.addressValidationMethod;
+  }
+  return null;
 }
 
 /**
