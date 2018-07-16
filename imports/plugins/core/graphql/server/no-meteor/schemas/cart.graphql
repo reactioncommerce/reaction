@@ -284,6 +284,9 @@ input ReconcileCartsInput {
   account cart items, and quantities are combined.
   """
   mode: CartReconciliationMode
+
+  "The ID of the shop that owns both carts"
+  shopId: ID!
 }
 
 ####################
@@ -409,6 +412,6 @@ extend type Mutation {
   "Update cart item(s) quantity. Use absolute quantity."
   updateCartItemsQuantity(input: UpdateCartItemsQuantityInput!): UpdateCartItemsQuantityPayload!
 
-  "Reconcile an anonymous cart with the account cart"
+  "Reconcile an anonymous cart with the current account cart for the same shop"
   reconcileCarts(input: ReconcileCartsInput!): ReconcileCartsPayload!
 }

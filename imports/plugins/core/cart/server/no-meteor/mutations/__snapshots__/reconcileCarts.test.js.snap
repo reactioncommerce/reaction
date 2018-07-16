@@ -1,0 +1,13 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`when missing anonymousCartId, throws 1`] = `"anonymousCartId is required"`;
+
+exports[`when missing anonymousCartToken, throws 1`] = `"anonymousCartToken is required"`;
+
+exports[`when missing shopId, throws 1`] = `"shopId is required"`;
+
+exports[`when no matching anonymous cart is found, throws 1`] = `"Anonymous cart not found"`;
+
+exports[`when not authenticated, throw access denied 1`] = `"Access Denied"`;
+
+exports[`when unknown mode is passed, throws 1`] = `"mode must be keepAccountCart, keepAnonymousCart, or merge"`;

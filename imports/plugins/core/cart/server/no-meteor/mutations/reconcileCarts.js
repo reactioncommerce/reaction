@@ -1,159 +1,9 @@
-import Random from "@reactioncommerce/random";
 import { Meteor } from "meteor/meteor";
-import { Cart as CartSchema } from "/imports/collections/schemas";
 import hashLoginToken from "/imports/plugins/core/accounts/server/no-meteor/util/hashLoginToken";
-import addCartItems from "../util/addCartItems";
-
-/**
- * @summary Delete anon cart and return accountCart
- * @private
- * @param {Object} accountCart The account cart document
- * @param {Object} anonymousCartSelector The MongoDB selector for the anonymous cart
- * @param {MongoDB.Collection} Cart The Cart collection
- * @return {Object} The account cart
- */
-async function handleKeepAccountCart({ accountCart, anonymousCartSelector, Cart }) {
-  const { deletedCount } = await Cart.deleteOne(anonymousCartSelector);
-  if (deletedCount === 0) throw new Meteor.Error("server-error", "Unable to delete anonymous cart");
-  return accountCart;
-}
-
-/**
- * @summary Update account cart to have only the anonymous cart items, delete anonymous
- *   cart, and return updated accountCart.
- * @todo When we add a "save for later" / "wish list" feature, we may want to update this
- *   to move existing account cart items to there.
- * @private
- * @param {Object} accountCart The account cart document
- * @param {Object} accountCartSelector The MongoDB selector for the account cart
- * @param {Object} anonymousCart The anonymous cart document
- * @param {Object} anonymousCartSelector The MongoDB selector for the anonymous cart
- * @param {MongoDB.Collection} Cart The Cart collection
- * @return {Object} The account cart
- */
-async function handleKeepAnonymousCart({ accountCart, accountCartSelector, anonymousCart, anonymousCartSelector, Cart }) {
-  const updatedAt = new Date();
-
-  const modifier = {
-    $set: {
-      items: anonymousCart.items,
-      updatedAt
-    }
-  };
-  CartSchema.validate(modifier, { modifier: true });
-
-  const { modifiedCount } = await Cart.updateOne(accountCartSelector, modifier);
-  if (modifiedCount === 0) throw new Meteor.Error("server-error", "Unable to update cart");
-
-  const { deletedCount } = await Cart.deleteOne(anonymousCartSelector);
-  if (deletedCount === 0) throw new Meteor.Error("server-error", "Unable to delete anonymous cart");
-
-  return {
-    ...accountCart,
-    items: anonymousCart.items,
-    updatedAt
-  };
-}
-
-/**
- * @summary Update account cart to have only the anonymous cart items, delete anonymous
- *   cart, and return updated accountCart.
- * @todo When we add a "save for later" / "wish list" feature, we may want to update this
- *   to move existing account cart items to there.
- * @private
- * @param {Object} accountCart The account cart document
- * @param {Object} accountCartSelector The MongoDB selector for the account cart
- * @param {Object} anonymousCart The anonymous cart document
- * @param {Object} anonymousCartSelector The MongoDB selector for the anonymous cart
- * @param {Object} collections A map of MongoDB collection instances
- * @return {Object} The account cart
- */
-async function handleMergeCarts({ accountCart, accountCartSelector, anonymousCart, anonymousCartSelector, collections }) {
-  const { Cart } = collections;
-
-  // Convert item schema to input item schema
-  const itemsInput = (anonymousCart.items || []).map((item) => ({
-    metafields: item.metafields,
-    productConfiguration: {
-      productId: item.productId,
-      productVariantId: item.variantId
-    },
-    quantity: item.quantity
-  }));
-
-  // Merge the item lists
-  const { updatedItemList: items } = await addCartItems(collections, accountCart.items, itemsInput, { skipPriceCheck: true });
-
-  // Update account cart
-  const updatedAt = new Date();
-
-  const modifier = {
-    $set: {
-      items,
-      updatedAt
-    }
-  };
-  CartSchema.validate(modifier, { modifier: true });
-
-  const { modifiedCount } = await Cart.updateOne(accountCartSelector, modifier);
-  if (modifiedCount === 0) throw new Meteor.Error("server-error", "Unable to update cart");
-
-  // Delete anonymous cart
-  const { deletedCount } = await Cart.deleteOne(anonymousCartSelector);
-  if (deletedCount === 0) throw new Meteor.Error("server-error", "Unable to delete anonymous cart");
-
-  return {
-    ...accountCart,
-    items,
-    updatedAt
-  };
-}
-
-/**
- * @summary Copy items from an anonymous cart into a new account cart, and then delete the
- *   anonymous cart.
- * @private
- * @param {String} accountId The account ID to associate with the new account cart
- * @param {Object} anonymousCart The anonymous cart document
- * @param {Object} anonymousCartSelector The MongoDB selector for the anonymous cart
- * @param {MongoDB.Collection} Cart The Cart collection
- * @param {String} shopId The shop ID to associate with the new account cart
- * @return {Object} The new account cart
- */
-async function handleConvertAnonymousCartToNewAccountCart({ accountId, anonymousCart, anonymousCartSelector, Cart, shopId }) {
-  const createdAt = new Date();
-  const newCart = {
-    _id: Random.id(),
-    accountId,
-    anonymousAccessToken: null,
-    // We will set this billing currency stuff right away because historical Meteor code did it.
-    // If this turns out to not be necessary, we should remove it.
-    billing: [
-      {
-        _id: Random.id(),
-        currency: { userCurrency: anonymousCart.currencyCode }
-      }
-    ],
-    currencyCode: anonymousCart.currencyCode,
-    createdAt,
-    items: anonymousCart.items,
-    shopId,
-    updatedAt: createdAt,
-    workflow: {
-      status: "new"
-    }
-  };
-
-  CartSchema.validate(newCart);
-
-  const { ops, result } = await Cart.insertOne(newCart);
-  if (result.ok !== 1) throw new Meteor.Error("server-error", "Unable to create account cart");
-
-  const { deletedCount } = await Cart.deleteOne(anonymousCartSelector);
-  if (deletedCount === 0) throw new Meteor.Error("server-error", "Unable to delete anonymous cart");
-
-  return ops[0];
-}
+import convertAnonymousCartToNewAccountCart from "./convertAnonymousCartToNewAccountCart";
+import reconcileCartsKeepAccountCart from "./reconcileCartsKeepAccountCart";
+import reconcileCartsKeepAnonymousCart from "./reconcileCartsKeepAnonymousCart";
+import reconcileCartsMerge from "./reconcileCartsMerge";
 
 /**
  * @method reconcileCarts
@@ -197,17 +47,17 @@ export default async function reconcileCarts(context, input) {
     switch (mode) {
       case "keepAccountCart":
         return {
-          cart: handleKeepAccountCart({ accountCart, anonymousCartSelector, Cart })
+          cart: await reconcileCartsKeepAccountCart({ accountCart, anonymousCartSelector, Cart })
         };
 
       case "keepAnonymousCart":
         return {
-          cart: handleKeepAnonymousCart({ accountCart, accountCartSelector, anonymousCart, anonymousCartSelector, Cart })
+          cart: await reconcileCartsKeepAnonymousCart({ accountCart, accountCartSelector, anonymousCart, anonymousCartSelector, Cart })
         };
 
       case "merge":
         return {
-          cart: handleMergeCarts({ accountCart, accountCartSelector, anonymousCart, anonymousCartSelector, collections })
+          cart: await reconcileCartsMerge({ accountCart, accountCartSelector, anonymousCart, anonymousCartSelector, collections })
         };
 
       default:
@@ -217,6 +67,6 @@ export default async function reconcileCarts(context, input) {
 
   // We have only an anonymous cart, so convert it to an account cart
   return {
-    cart: handleConvertAnonymousCartToNewAccountCart({ accountId, anonymousCart, anonymousCartSelector, Cart, shopId })
+    cart: await convertAnonymousCartToNewAccountCart({ accountId, anonymousCart, anonymousCartSelector, Cart, shopId })
   };
 }
