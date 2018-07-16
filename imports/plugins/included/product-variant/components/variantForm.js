@@ -54,7 +54,7 @@ class VariantForm extends Component {
 
   componentWillReceiveProps(nextProps) {
     const nextVariant = nextProps.variant || {};
-    const currentVariant = this.props.variant || {};
+    const currentVariant = this.state.variant || {};
 
     if (_.isEqual(nextVariant, currentVariant) === false) {
       for (const fieldName of fieldNames) {

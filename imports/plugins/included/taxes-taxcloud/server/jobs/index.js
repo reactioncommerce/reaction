@@ -1,4 +1,4 @@
-import fetchTaxCloudTaxCodes from "./taxcodes";
+import { getTaxCodes } from "./taxcodes";
 
 // Start "taxes/fetchTaxCloudTaxCodes" job
-fetchTaxCloudTaxCodes();
+getTaxCodes();
