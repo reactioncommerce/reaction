@@ -33,6 +33,16 @@ const handlers = {
         );
         return;
       }
+      // Update the changes made to refresh interval to the jobs
+      // in the database
+      Meteor.call("taxcloud/updateRefreshJob", (err) => {
+        if (err) {
+          Alerts.toast(
+            i18next.t("admin.update.jobUpdateFailed", { defaultValue: "Failed to update job settings, job will updated on next restart" }),
+            "error"
+          );
+        }
+      });
       Alerts.toast(
         i18next.t("admin.update.updateSucceeded", { defaultValue: "TaxCloud settings updated." }),
         "success"
@@ -44,11 +54,11 @@ const handlers = {
 const composer = (props, onData) => {
   const shownFields = {
     "settings.taxcloud.apiKey": TaxCloudPackageConfig._schema["settings.taxcloud.apiKey"],
-    "settings.taxcloud.apiLoginId": TaxCloudPackageConfig._schema["settings.taxcloud.apiLoginId"]
+    "settings.taxcloud.apiLoginId": TaxCloudPackageConfig._schema["settings.taxcloud.apiLoginId"],
+    "settings.taxcloud.refreshPeriod": TaxCloudPackageConfig._schema["settings.taxcloud.refreshPeriod"]
   };
   const hiddenFields = [
     "settings.taxcloud.enabled",
-    "settings.taxcloud.refreshPeriod",
     "settings.taxcloud.taxCodeUrl"
   ];
 

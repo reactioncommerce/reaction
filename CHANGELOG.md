@@ -15,21 +15,59 @@ Here’s how it will look:
 ## GraphQL DevServer
 ### Features
  - feat: GraphQL Cart Schema (#4307)
+ - feat: Add anonymousCartByCartId GraphQL query (#4382)
+ - feat: Meteor-free addressBookAdd method and GraphQL plugin reorg (#4167)
 
 ## Meteor App
 ### Features
+ - (Feat) Create deploy to heroku button (#4320)
+ - feat: enable oplog in development Docker Compose config (#4420)
  - feat: Create product hash of published product properties (#4336)
+ - feat: added CDN settings to reaction (#4316)
+ - feat: Indicator to notify of pending product changes not yet published to catalog (#4383)
+ - feat(marketplace): Limit Tags Publication to Those for the Current Shop (#4206)
+ - feat: add robots.txt file (#4370)
 
 ### Fixes
  - fix: low quantity/sold out flags not saving correctly in db (#4342)
  - fix: Scrolling to bottom adds more products to the view (#4243) .. Resolves #4090
- - fix: for "react-addons-create-fragment should be removed" (#4164)
+ - fix: remove react-addons-create-fragment (#4164)
  - fix: change session active product when adding new product (#4313)
  - fix: missing styles on refund popover (#4300) .. Resolves #4005
+ - fix: fix permissions of shop social settings (#4312)
+ - fix: Archived products not being removed from Catalog (#4392)
+ - fix: Default settings for parcel size (#4083)
+ - fix: Update prerender.js (#4331)
+ - fix(marketplace): Product Visibility for Marketplace Shops (#4259) .. Resolves #4092
+ - fix: mislabeled schema (#4371)
 
 ### Refactors
- - refactor: Remove Authorize.net plugin (#4310)
  - refactor: Use new Reaction component library components for the SMS settings form (#4318)
+ - refactor: Remove "Catalog" from menu (#4385)
+ - refactor: Move all /server files to plugins (#4366)
+
+### Plugin Migration
+ - refactor: Remove Authorize.net plugin (#4310)
+ - refactor: Remove Paypal plugin (#4339)
+ - refactor: Remove Braintree plugin (#4351)
+ - refactor: Remove disabled TaxJar plugin (#4348)
+ - refactor: Remove inventory package (#4388)
+
+## Contributors
+Thanks to @pmn4 for contributing to this release :tada:
+
+
+# v1.13.1
+
+This release exclusively includes a patch update to Meteor from `1.7.0.1` to `1.7.0.3`
+
+This release should be installed by anyone on Reaction 1.13.0 and includes an important security update to Node, updating to version 8.11.3 of Node, which is an important security release.
+
+The underlying meteor-babel npm package has also been updated to version 7.0.0-beta.51.
+
+
+## Security
+- security: Update to Meteor 1.7.0.3 (#4368)
 
 # v1.13.0
 
