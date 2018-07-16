@@ -20,6 +20,7 @@ export default async function convertAnonymousCartToNewAccountCart({
   shopId
 }) {
   const createdAt = new Date();
+  const currencyCode = anonymousCart.currencyCode || "USD";
   const newCart = {
     _id: Random.id(),
     accountId,
@@ -29,10 +30,10 @@ export default async function convertAnonymousCartToNewAccountCart({
     billing: [
       {
         _id: Random.id(),
-        currency: { userCurrency: anonymousCart.currencyCode }
+        currency: { userCurrency: currencyCode }
       }
     ],
-    currencyCode: anonymousCart.currencyCode,
+    currencyCode,
     createdAt,
     items: anonymousCart.items,
     shopId,
