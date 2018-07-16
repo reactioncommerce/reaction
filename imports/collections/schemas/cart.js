@@ -32,7 +32,7 @@ const Money = new SimpleSchema({
  * @property {Object} shippingMethod Shipping Method associated with this item
  * @property {String} shopId Cart Item shopId
  * @property {Object} taxData optional blackbox
- * @property {Number} taxRate optional
+ * @property {Number} taxRate optional totalTax/subTotal of the item
  * @property {String} title Cart Item title
  * @property {Object} transaction Transaction associated with this item
  * @property {String} updatedAt required
@@ -231,8 +231,33 @@ export const Cart = new SimpleSchema({
     optional: true
   },
   "taxes.$": {
+    type: Object
+  },
+  "taxes.$.lineNumber": {
+    type: String
+  },
+  "taxes.$.discountAmount": {
+    type: Number,
+    optional: true
+  },
+  "taxes.$.taxable": {
+    type: Boolean,
+    optional: true
+  },
+  "taxes.$.tax": {
+    type: Number
+  },
+  "taxes.$.taxableAmount": {
+    type: Number
+  },
+  "taxes.$.taxCode": {
+    type: String,
+    optional: true
+  },
+  "taxes.$.details": {
     type: Object,
-    blackbox: true
+    blackbox: true,
+    optional: true
   },
   "taxRatesByShop": {
     type: Object,

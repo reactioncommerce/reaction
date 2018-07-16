@@ -1,7 +1,8 @@
 import Logger from "@reactioncommerce/logger";
 import { Meteor } from "meteor/meteor";
 import { Match, check } from "meteor/check";
-import { Cart, Packages } from "/lib/collections";
+import { Catalog } from "/lib/api";
+import { Cart, Packages, Products } from "/lib/collections";
 import { Taxes } from "../../lib/collections";
 import Reaction from "../api";
 
@@ -107,8 +108,8 @@ export const methods = {
   "taxes/setRateByShopAndItem"(cartId, options) {
     check(cartId, String);
     check(options, {
-      taxRatesByShop: Object,
-      itemsWithTax: [Object],
+      taxRatesByShop: Match.OneOf(undefined, null, Object),
+      itemsWithTax: [Match.OneOf(Object, undefined)],
       cartTaxRate: Number,
       cartTaxData: Match.OneOf([Object], undefined, null)
     });
@@ -123,6 +124,47 @@ export const methods = {
         taxRatesByShop
       }
     });
+  },
+
+  /**
+   * @name "taxes/updateTaxCode"
+   * @method
+   * @memberof Methods/Taxes
+   * @summary updates the taxcode on all options of a product.
+   * @param  {String} products array of products to be updated.
+   * @return {Number} returns number of options updated
+   */
+  "taxes/updateTaxCode"(products) {
+    check(products, Array);
+
+    // check permissions to create product
+    // to check if user can update the product
+    if (!Reaction.hasPermission("createProduct")) {
+      throw new Meteor.Error("access-denied", "Access Denied");
+    }
+
+    // number of options that get updated.
+    let updatedOptions = 0;
+
+    products.forEach((product) => {
+      let variants = [product];
+      if (product.type === "simple") {
+        variants = Catalog.getVariants(product._id);
+      }
+      variants.forEach((variant) => {
+        const options = Catalog.getVariants(variant._id);
+        options.forEach((option) => {
+          updatedOptions += Products.update({
+            _id: option._id
+          }, {
+            $set: {
+              taxCode: variant.taxCode
+            }
+          }, { selector: { type: "variant" }, publish: true });
+        });
+      });
+    });
+    return updatedOptions;
   },
 
   /**
@@ -238,12 +280,6 @@ export const methods = {
           });
         } // end custom rates
       } // end shippingAddress calculation
-    } else {
-      // we are here because the custom rate package is disabled.
-      // we're going to set an inital rate of 0
-      // all methods that trigger when taxes/calculate will
-      // recalculate this rate as needed.
-      Meteor.call("taxes/setRate", cartToCalc._id, cartTaxRate);
     }
   } // end taxes/calculate
 };

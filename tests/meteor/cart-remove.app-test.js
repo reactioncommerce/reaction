@@ -64,8 +64,8 @@ describe("cart methods", function () {
       assert.equal(cartFromCollection.items.length, 2);
       Meteor.call("cart/removeFromCart", cartItemId);
       // The cart/removeFromCart method will trigger the hook
-      // afterCartUpdateCalculateDiscount 4 times.
-      assert.equal(updateSpy.callCount, 4, "update should be called four times");
+      // afterCartUpdateCalculateDiscount 2 times.
+      assert.equal(updateSpy.callCount, 2, "update should be called two times");
       const updatedCart = Collections.Cart.findOne({ _id: cart._id });
       assert.equal(updatedCart.items.length, 1, "there should be one item left in cart");
       return done();

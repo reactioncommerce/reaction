@@ -1,4 +1,6 @@
 import Random from "@reactioncommerce/random";
+import * as Schemas from "/imports/collections/schemas";
+import Logger from "@reactioncommerce/logger";
 import hashProduct from "../mutations/hashProduct";
 import createCatalogProduct from "./createCatalogProduct";
 
@@ -19,22 +21,31 @@ export default async function publishProductToCatalog(product, collections) {
   // Convert Product schema object to Catalog schema object
   const catalogProduct = await createCatalogProduct(hashedProduct, collections);
 
+  const modifier = {
+    $set: {
+      product: catalogProduct,
+      shopId: catalogProduct.shopId,
+      updatedAt: new Date()
+    },
+    $setOnInsert: {
+      _id: Random.id(),
+      createdAt: new Date()
+    }
+  };
+
+  // Check against catalog schema
+  try {
+    Schemas.Catalog.validate(modifier, { modifier: true });
+  } catch (err) {
+    Logger.error(err);
+  }
+
   // Insert/update catalog document
   const result = await Catalog.updateOne(
     {
       "product.productId": catalogProduct.productId
     },
-    {
-      $set: {
-        product: catalogProduct,
-        shopId: catalogProduct.shopId,
-        updatedAt: new Date()
-      },
-      $setOnInsert: {
-        _id: Random.id(),
-        createdAt: new Date()
-      }
-    },
+    modifier,
     { upsert: true }
   );
 
