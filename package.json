@@ -115,7 +115,7 @@
     "react-router-dom": "^4.2.2",
     "react-s-alert": "^1.4.1",
     "react-select": "^1.2.1",
-    "react-stripe-elements": "^2.0.0",
+    "react-stripe-elements": "^2.0.1",
     "react-table": "^6.7.6",
     "react-taco-table": "^0.5.1",
     "react-tether": "^0.6.1",
