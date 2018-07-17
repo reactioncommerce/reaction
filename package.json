@@ -102,7 +102,7 @@
     "react-dates": "^16.3.6",
     "react-dnd": "^2.5.4",
     "react-dnd-html5-backend": "^2.5.4",
-    "react-dom": "16.2.0",
+    "react-dom": "16.4.1",
     "react-dropzone": "^4.2.7",
     "react-helmet": "^5.2.0",
     "react-image-magnify": "^2.4.1",
