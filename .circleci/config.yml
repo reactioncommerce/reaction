@@ -243,10 +243,16 @@ jobs:
           name: Snyk Test
           command: |
             CIRCLE_PR_NUMBER="${CIRCLE_PR_NUMBER:-${CIRCLE_PULL_REQUEST##*/}}" # Determine PR number from pull request link
-            if [ -n ${CIRCLE_PR_NUMBER} ]; then
+            if [[ -v CIRCLE_PR_NUMBER ]] && [ -n ${CIRCLE_PR_NUMBER} ]; then
               url="https://api.github.com/repos/${DOCKER_REPOSITORY}/pulls/$CIRCLE_PR_NUMBER" # Get PR from github API
               TARGET_BRANCH=$(curl "$url" | jq '.base.ref' | tr -d '"') # Determine target/base branch from API response
             fi
+
+            if [ -z "${TARGET_BRANCH}" ] || [  ${TARGET_BRANCH} == "null" ]; then
+              echo "Not a PR. Skipping Snyk."
+              exit 0
+            fi
+
             # If target branch does not exist or is master, run snyk tests
             if [ ${TARGET_BRANCH} == "master" ] || [ -z "${TARGET_BRANCH/[ ]*\n/}" ]; then
               PATH=$PATH:$CIRCLE_WORKING_DIRECTORY/node_modules/.bin && \
@@ -283,6 +289,8 @@ workflows:
             - build
       - docker-build:
           context: reaction-build-read
+          requires:
+            - snyk-security
       - docker-push:
           context: reaction-publish-docker
           requires:
