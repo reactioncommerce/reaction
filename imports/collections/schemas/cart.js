@@ -28,6 +28,7 @@ const Money = new SimpleSchema({
  * @property {String} productId required
  * @property {String} productSlug Product slug
  * @property {String} productType Product type
+ * @property {String} productVendor Product vendor
  * @property {Number} quantity required
  * @property {Object} shippingMethod Shipping Method associated with this item
  * @property {String} shopId Cart Item shopId
@@ -75,6 +76,11 @@ export const CartItem = new SimpleSchema({
   },
   "productType": {
     label: "Product Type",
+    type: String,
+    optional: true
+  },
+  "productVendor": {
+    label: "Product Vendor",
     type: String,
     optional: true
   },

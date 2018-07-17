@@ -77,6 +77,7 @@ export default async function addCartItems(collections, currentItems, inputItems
       },
       productId,
       productSlug: catalogProduct.slug,
+      productVendor: catalogProduct.vendor,
       productType: catalogProduct.type,
       quantity,
       shopId: catalogProduct.shopId,

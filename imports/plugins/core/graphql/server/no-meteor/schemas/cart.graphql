@@ -122,6 +122,9 @@ type CartItem implements Node {
   "The type of product, used to display cart items differently"
   productType: String
 
+  "The product vendor"
+  productVendor: String
+
   "The quantity of this item that has been added to the cart. This must be a positive integer. Remove this `CartItem` from it's associated cart if you want `0` of this item."
   quantity: Int!
 
