@@ -184,12 +184,12 @@ const handlers = {
  */
 function composer(props, onData) {
   const userId = Meteor.userId();
-  const handle = Meteor.subscribe("Accounts", userId);
-  if (!handle.ready()) {
+  const account = Collections.Accounts.findOne({ userId });
+  if (!account) {
+    // Subscription not ready
     return;
   }
 
-  const account = Collections.Accounts.findOne({ userId });
   const { addressBook } = account.profile;
   const countries = Countries.find().fetch();
   const shop = Collections.Shops.findOne();

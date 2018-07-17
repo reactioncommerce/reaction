@@ -14,6 +14,8 @@ export const Subscriptions = {};
 // See: https://github.com/kadirahq/subs-manager
 Subscriptions.Manager = new SubsManager();
 
+Subscriptions.Account = Subscriptions.Manager.subscribe("Accounts");
+
 /*
  * Reaction.session
  * Create persistent sessions for users
@@ -77,7 +79,6 @@ Tracker.autorun(() => {
 });
 
 Tracker.autorun(() => {
-  Subscriptions.Account = Subscriptions.Manager.subscribe("Accounts", Meteor.userId());
   Subscriptions.UserProfile = Meteor.subscribe("UserProfile", Meteor.userId());
 });
 
