@@ -22,7 +22,8 @@
         },
         "update": {
           "updateSucceeded": "TaxCloud settings updated.",
-          "updateFailed": "Failed to update TaxCloud settings."
+          "updateFailed": "Failed to update TaxCloud settings.",
+          "jobUpdateFailed": "Failed to update job settings, job will updated on next restart"
         }
       }
     }

@@ -3,6 +3,7 @@ import Logger from "@reactioncommerce/logger";
 import { Meteor } from "meteor/meteor";
 import { Job } from "/imports/plugins/core/job-collection/lib";
 import { Jobs, Packages } from "/lib/collections";
+import { TaxCodes } from "/imports/plugins/core/taxes/lib/collections";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
 
 //
@@ -16,13 +17,10 @@ function getJobConfig() {
   return config.settings.taxcloud;
 }
 
-//
-// add job hook for "taxes/fetchTaxCloudTaxCodes"
-//
-Hooks.Events.add("afterCoreInit", () => {
+export function refreshJob() {
   const config = getJobConfig();
   const refreshPeriod = config.refreshPeriod || 0;
-  const taxCodeUrl = config.taxCodeUrl || "https://taxcloud.net/tic/?format=json";
+  const taxCodeUrl = config.taxCodeUrl || "https://taxcloud.net/tic/json";
 
   // set 0 to disable fetchTIC
   if (refreshPeriod !== 0) {
@@ -43,6 +41,13 @@ Hooks.Events.add("afterCoreInit", () => {
         cancelRepeats: true
       });
   }
+}
+
+//
+// add job hook for "taxes/fetchTaxCloudTaxCodes"
+//
+Hooks.Events.add("afterCoreInit", () => {
+  refreshJob();
 });
 
 //
@@ -50,7 +55,7 @@ Hooks.Events.add("afterCoreInit", () => {
 // will trigger job to run
 // taxes/fetchTaxCloudTaxCodes
 //
-export default function () {
+export function getTaxCodes() {
   Jobs.processJobs(
     "taxcloud/getTaxCodes",
     {
@@ -69,7 +74,7 @@ export default function () {
         } else {
           // we should always return "completed" job here, because errors are fine
           const success = "Latest TaxCloud TaxCodes were fetched successfully.";
-          Reaction.Importer.flush();
+          Reaction.Importer.flush(TaxCodes);
           Logger.debug(success);
 
           job.done(success, { repeatId: true });

@@ -22,7 +22,7 @@ Meteor.publish("Accounts", function (userId) {
   }
 
   const nonAdminGroups = Collections.Groups.find({
-    name: { $in: ["guest"] },
+    name: { $in: ["guest", "customer"] },
     shopId
   }, {
     fields: { _id: 1 }

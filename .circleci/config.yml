@@ -8,6 +8,7 @@ defaults: &defaults
     - DOCKER_REPOSITORY: "reactioncommerce/reaction"
     - DOCKER_NAMESPACE: "reactioncommerce"
     - DOCKER_NAME: "reaction"
+    - GLOBAL_CACHE_VERSION: "v2"
     - TOOL_NODE_FLAGS: "--max-old-space-size=4096"
   working_directory: ~/reaction-app
   docker:
@@ -21,7 +22,7 @@ jobs:
       - setup_remote_docker
       - restore_cache:
           name: Restoring Meteor cache
-          key: meteor
+          key: ${GLOBAL_CACHE_VERSION}-meteor
       - run:
           name: Install Meteor
           command: |
@@ -34,7 +35,7 @@ jobs:
             fi
       - save_cache:
           name: Saving Meteor to cache
-          key: meteor
+          key: ${GLOBAL_CACHE_VERSION}-meteor-{{ epoch }}
           paths:
             - ~/.meteor
       - run:
@@ -43,11 +44,11 @@ jobs:
       # Store node_modules dependency cache.
       # Saved with package.json checksum and timestamped branch name keys.
       - save_cache:
-          key: v1-node-modules-{{ checksum "package.json" }}-{{ checksum "package-lock.json" }}
+          key: ${GLOBAL_CACHE_VERSION}-node-modules-{{ checksum "package.json" }}-{{ checksum "package-lock.json" }}
           paths:
             - node_modules
       - save_cache:
-          key: v1-node-modules-{{ .Branch }}-{{ epoch }}
+          key: ${GLOBAL_CACHE_VERSION}-node-modules-{{ .Branch }}-{{ epoch }}
           paths:
             - node_modules
       # mongodb-memory-server installs Mongo binary on npm install, which we need
@@ -153,9 +154,9 @@ jobs:
       - checkout
       - restore_cache:
           keys:
-            - v1-node-modules-{{ checksum "package.json" }}-{{ checksum "package-lock.json" }}
-            - v1-node-modules-{{ .Branch }}
-            - v1-node-modules-master
+            - ${GLOBAL_CACHE_VERSION}-node-modules-{{ checksum "package.json" }}-{{ checksum "package-lock.json" }}
+            - ${GLOBAL_CACHE_VERSION}-node-modules-{{ .Branch }}
+            - ${GLOBAL_CACHE_VERSION}-node-modules-master
       - run:
           name: Run Lint
           command: |
@@ -167,16 +168,16 @@ jobs:
       - checkout
       - restore_cache:
           name: Restoring Meteor cache
-          key: meteor
+          key: ${GLOBAL_CACHE_VERSION}-meteor
       - run:
           name: Link Restored Meteor
           command: sudo ln -s ~/.meteor/meteor /usr/local/bin/meteor
       - restore_cache:
           # Fall back to less specific caches
           keys:
-            - v1-node-modules-{{ checksum "package.json" }}-{{ checksum "package-lock.json" }}
-            - v1-node-modules-{{ .Branch }}
-            - v1-node-modules-master
+            - ${GLOBAL_CACHE_VERSION}-node-modules-{{ checksum "package.json" }}-{{ checksum "package-lock.json" }}
+            - ${GLOBAL_CACHE_VERSION}-node-modules-{{ .Branch }}
+            - ${GLOBAL_CACHE_VERSION}-node-modules-master
       - run:
           name: Install Reaction CLI
           command: sudo npm install -g reaction-cli
@@ -193,9 +194,9 @@ jobs:
       - checkout
       - restore_cache:
           keys:
-            - v1-node-modules-{{ checksum "package.json" }}-{{ checksum "package-lock.json" }}
-            - v1-node-modules-{{ .Branch }}
-            - v1-node-modules-master
+            - ${GLOBAL_CACHE_VERSION}-node-modules-{{ checksum "package.json" }}-{{ checksum "package-lock.json" }}
+            - ${GLOBAL_CACHE_VERSION}-node-modules-{{ .Branch }}
+            - ${GLOBAL_CACHE_VERSION}-node-modules-master
       - run:
           name: Run Unit Tests
           command: npm run test:unit
@@ -235,9 +236,9 @@ jobs:
       - setup_remote_docker
       - restore_cache:
           keys:
-            - v1-node-modules-{{ checksum "package.json" }}-{{ checksum "package-lock.json" }}
-            - v1-node-modules-{{ .Branch }}
-            - v1-node-modules-master
+            - ${GLOBAL_CACHE_VERSION}-node-modules-{{ checksum "package.json" }}-{{ checksum "package-lock.json" }}
+            - ${GLOBAL_CACHE_VERSION}-node-modules-{{ .Branch }}
+            - ${GLOBAL_CACHE_VERSION}-node-modules-master
       - run:
           name: Snyk Test
           command: |

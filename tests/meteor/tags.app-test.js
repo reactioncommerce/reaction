@@ -4,9 +4,9 @@ import { Factory } from "meteor/dburles:factory";
 import { sinon } from "meteor/practicalmeteor:sinon";
 import { PublicationCollector } from "meteor/johanbrook:publication-collector";
 import * as Collections from "/lib/collections";
-import { Reaction } from "/server/api";
-import Fixtures from "/server/imports/fixtures";
-import { createActiveShop } from "/server/imports/fixtures/shops";
+import Fixtures from "/imports/plugins/core/core/server/fixtures";
+import Reaction from "/imports/plugins/core/core/server/Reaction";
+import { createActiveShop } from "/imports/plugins/core/core/server/fixtures/shops";
 
 Fixtures();
 

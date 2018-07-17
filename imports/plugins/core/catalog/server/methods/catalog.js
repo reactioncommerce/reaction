@@ -524,6 +524,7 @@ Meteor.methods({
     const assembledVariant = Object.assign(newVariant || {}, {
       _id: newVariantId,
       ancestors,
+      taxCode: product.taxCode,
       shopId: product.shopId,
       type: "variant"
     });
@@ -629,7 +630,7 @@ Meteor.methods({
     const selector = {
       // Don't "archive" variants that are already marked deleted.
       isDeleted: {
-        $in: [false, undefined]
+        $ne: true
       },
       $or: [
         {
@@ -877,7 +878,7 @@ Meteor.methods({
     const productsWithVariants = Products.find({
       // Don't "archive" products that are already marked deleted.
       isDeleted: {
-        $in: [false, undefined]
+        $ne: true
       },
       $or: [
         {
