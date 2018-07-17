@@ -1,37 +1,16 @@
 # Snyk (https://snyk.io) policy file, patches or ignores known vulnerabilities.
-version: v1.12.0
+version: v1.11.0
 # ignores vulnerabilities until expiry date; change duration by modifying expiry date
 ignore:
-  'npm:hoek:20180212':
-    - '*':
-        reason: 'Possible false positive, waiting on requestjs to updated hawk version'
-        expires: 2018-07-10T00:00:00.000Z
   'npm:bootstrap:20160627':
     - bootstrap:
         reason: We're not going to update to Bootstrap 4 any time soon
-        expires: '2018-07-26T20:23:03.274Z'
-  'npm:lodash:20180130':
+        expires: '2018-08-26T20:23:03.274Z'
+  'npm:hoek:20180212':
     - '*':
-        reason: 'Waiting on multiple dependencies to update'
-        expires: 2018-07-10T00:00:00.000Z
+      reason: "No direct dependency upgrade available. Issue filed here: https://github.com/tus/tus-node-server/issues/119"
+      expires: '2018-08-26T20:23:03.274Z'
   'npm:tunnel-agent:20170305':
     - '*':
-        reason: No patch and we do not use this optional package
-        expires: '2018-07-10T19:14:36.152Z'
-  'npm:ua-parser-js:20180227':
-    - '*':
-        reason: Waiting on fbjs to update to the latest ua-parser-js version
-        expires: 2018-07-10T00:00:00.000Z
-  'npm:stringstream:20180511':
-    - '*':
-        reason: Awaiting dependency updates of request 2.83.0 to gte 2.86
-        expires: 2018-07-10T00:00:00.000Z
-  'npm:deep-extend:20180409':
-    - '*':
-        reason: rc updated with latest version - https://github.com/dominictarr/rc - can't find rc in our dependencies
-        expires: 2018-07-10T00:00:00.000Z
-  'npm:base64url:20180511':
-   - '*':
-       reason: Twillio and nexmo will be removed soon, file-collections isn't using any google-cloud stuff so this vuln doesn't apply
-       expires: 2018-07-10T00:00:00.000Z
-patch: {}
+      reason: "No direct dependency upgrade available. Issue filed here: https://github.com/tus/tus-node-server/issues/119"
+      expires: '2018-08-26T20:23:03.274Z'
