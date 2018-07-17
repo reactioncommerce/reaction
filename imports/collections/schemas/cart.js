@@ -19,7 +19,7 @@ const Money = new SimpleSchema({
  * @type {SimpleSchema}
  * @property {String} _id required
  * @property {String} addedAt required
- * @property {String} cartItemId Seems strange here but has to be here since we share schemas between Cart and Order
+ * @property {String} cartItemId Has to be here since we share schemas between Cart and Order
  * @property {String} createdAt required
  * @property {Metafield[]} metafields
  * @property {String} optionTitle optionTitle from the selected variant
