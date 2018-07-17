@@ -1,4 +1,3 @@
-import Logger from "@reactioncommerce/logger";
 import { Meteor } from "meteor/meteor";
 import { check, Match } from "meteor/check";
 import getCart from "/imports/plugins/core/cart/both/util/getCart";
@@ -25,11 +24,7 @@ export default function addToCart(productId, variantId, quantity, additionalOpti
   check(quantity, Match.Optional(Number));
   check(additionalOptions, Match.Optional(Object));
 
-  const { cart } = getCart();
-  if (!cart) {
-    Logger.error(`Cart not found for user: ${this.userId}`);
-    throw new Meteor.Error("not-found", "Cart not found for user with such id");
-  }
+  const { cart } = getCart(null, { throwIfNotFound: true });
 
   const items = [{
     price: {

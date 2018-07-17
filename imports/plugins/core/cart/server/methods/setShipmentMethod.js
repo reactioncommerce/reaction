@@ -18,14 +18,7 @@ export default function setShipmentMethod(cartId, method) {
   check(cartId, String);
   Reaction.Schemas.ShippingMethod.validate(method);
 
-  const { cart } = getCart(cartId);
-  if (!cart) {
-    Logger.error(`Cart not found for user: ${this.userId}`);
-    throw new Meteor.Error(
-      "not-found",
-      "Cart not found for user with such id"
-    );
-  }
+  const { cart } = getCart(cartId, { throwIfNotFound: true });
 
   // Sets all shipping methods to the one selected
   // TODO: Accept an object of shopId to method map to ship via different methods per shop

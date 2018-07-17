@@ -82,6 +82,7 @@ AutoForm.addHooks("stripe-payment-form", {
     hidePaymentAlert();
     const { template } = this;
     const { cart } = getCart();
+    if (!cart) return false;
 
     // validate card data
     // also validated on server

@@ -17,7 +17,7 @@ import { PaymentMethodArgument } from "/lib/collections/schemas";
 export default function submitPayment(paymentMethods) {
   PaymentMethodArgument.validate(paymentMethods);
 
-  const { cart } = getCart();
+  const { cart } = getCart(null, { throwIfNotFound: true });
   const cartId = cart._id;
 
   const cartShipping = cart.getShippingTotal();

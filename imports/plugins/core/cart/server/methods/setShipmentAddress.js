@@ -18,14 +18,7 @@ export default function setShipmentAddress(cartId, address) {
   check(cartId, String);
   Reaction.Schemas.Address.validate(address);
 
-  const { cart } = getCart(cartId);
-  if (!cart) {
-    Logger.error(`Cart not found for user: ${this.userId}`);
-    throw new Meteor.Error(
-      "not-found",
-      "Cart not found for user with such id"
-    );
-  }
+  const { cart } = getCart(cartId, { throwIfNotFound: true });
 
   let selector;
   let update;
