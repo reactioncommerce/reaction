@@ -92,8 +92,6 @@
     "query-parse": "^2.0.0",
     "radium": "^0.22.0",
     "ramda": "^0.25.0",
-    "react-addons-pure-render-mixin": "15.6.2",
-    "react-addons-shallow-compare": "^15.6.2",
     "react": "16.4.1",
     "react-autosuggest": "^9.3.3",
     "react-avatar": "^2.5.1",
