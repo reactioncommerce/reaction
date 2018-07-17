@@ -1,9 +1,16 @@
 # Snyk (https://snyk.io) policy file, patches or ignores known vulnerabilities.
-version: v1.12.0
+version: v1.11.0
 # ignores vulnerabilities until expiry date; change duration by modifying expiry date
 ignore:
   'npm:bootstrap:20160627':
     - bootstrap:
         reason: We're not going to update to Bootstrap 4 any time soon
         expires: '2018-08-26T20:23:03.274Z'
-patch: {}
+  'npm:hoek:20180212':
+    - '*':
+      reason: "No direct dependency upgrade available. Issue filed here: https://github.com/tus/tus-node-server/issues/119"
+      expires: '2018-08-26T20:23:03.274Z'
+  'npm:tunnel-agent:20170305':
+    - '*':
+      reason: "No direct dependency upgrade available. Issue filed here: https://github.com/tus/tus-node-server/issues/119"
+      expires: '2018-08-26T20:23:03.274Z'
