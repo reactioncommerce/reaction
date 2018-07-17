@@ -29,6 +29,7 @@ export default async function addCartItems(collections, currentItems, inputItems
     // will have only one item, so we can skip that optimization for now in favor of cleaner code.
     const {
       catalogProduct,
+      parentVariant,
       variant: chosenVariant
     } = await findProductAndVariant(collections, productId, productVariantId);
 
@@ -65,8 +66,17 @@ export default async function addCartItems(collections, currentItems, inputItems
     // checks at the time of placing the order will ensure that unavailable items are
     // not ordered unless back-ordering is enabled.
 
+    // Until we do a more complete attributes revamp, we'll do our best to fudge attributes here.
+    // The main issue is we do not have labels.
+    const attributes = [];
+    if (parentVariant) {
+      attributes.push({ value: parentVariant.optionTitle || parentVariant.title });
+    }
+    attributes.push({ value: chosenVariant.optionTitle || chosenVariant.title });
+
     const cartItem = {
       _id: Random.id(),
+      attributes,
       isTaxable: chosenVariant.taxable || false,
       metafields,
       optionTitle: chosenVariant.optionTitle,

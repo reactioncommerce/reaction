@@ -51,10 +51,10 @@ type CartItemEdge implements NodeEdge {
 
 type CartItemAttribute {
   "The attribute label, e.g., Color"
-  label: String!
+  label: String
 
   "The attribute value, e.g., Blue"
-  value: String!
+  value: String
 }
 
 """
@@ -77,6 +77,12 @@ type CartItem implements Node {
   options were chosen for some configurable attributes, then "color:blue" and "size:small" will be indicated here.
   """
   attributes: [CartItemAttribute]
+
+  "The current comparison (e.g., MSRP) price of the item"
+  compareAtPrice: Money
+
+  "The quantity of this item currently available to order"
+  currentQuantity: Int
 
   """
   The date and time at which the cart item was created. If an item is added, removed, and then added again,

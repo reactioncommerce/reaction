@@ -14,11 +14,30 @@ const Money = new SimpleSchema({
 });
 
 /**
+ * @name CartItemAttribute
+ * @memberof Schemas
+ * @type {SimpleSchema}
+ * @property {String} label optional
+ * @property {String} value optional
+ */
+const CartItemAttribute = new SimpleSchema({
+  label: {
+    type: String,
+    optional: true
+  },
+  value: {
+    type: String,
+    optional: true
+  }
+});
+
+/**
  * @name CartItem
  * @memberof Schemas
  * @type {SimpleSchema}
  * @property {String} _id required
  * @property {String} addedAt required
+ * @property {CartItemAttribute[]} attributes Attributes of this item
  * @property {String} cartItemId Has to be here since we share schemas between Cart and Order
  * @property {String} createdAt required
  * @property {Metafield[]} metafields
@@ -43,6 +62,11 @@ const Money = new SimpleSchema({
 export const CartItem = new SimpleSchema({
   "_id": String,
   "addedAt": Date,
+  "attributes": {
+    type: Array,
+    optional: true
+  },
+  "attributes.$": CartItemAttribute,
   "cartItemId": {
     type: String,
     optional: true

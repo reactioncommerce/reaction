@@ -23,10 +23,10 @@ export default async function findProductAndVariant(collections, productId, vari
 
   const catalogProduct = catalogProductItem.product;
 
-  const variant = findVariantInCatalogProduct(catalogProduct, variantId);
+  const { parentVariant, variant } = findVariantInCatalogProduct(catalogProduct, variantId);
   if (!variant) {
     throw new Meteor.Error("invalid-param", `Product with ID ${productId} has no variant with ID ${variantId}`);
   }
 
-  return { catalogProductItem, catalogProduct, variant };
+  return { catalogProductItem, catalogProduct, parentVariant, variant };
 }
