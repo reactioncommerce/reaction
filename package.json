@@ -39,7 +39,6 @@
     "bootstrap": "^3.3.7",
     "classnames": "^2.2.5",
     "connect": "^3.6.6",
-    "connect-query": "^1.0.0",
     "connect-route": "^0.1.5",
     "copy-to-clipboard": "^3.0.8",
     "core-js": "^2.5.3",
