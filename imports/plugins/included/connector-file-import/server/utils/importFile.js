@@ -1,4 +1,3 @@
-// import collections from "/imports/collections/rawCollections";
 import fs from "fs";
 import csv from "csv";
 
@@ -26,7 +25,6 @@ export function readCSVFile(filePath, delimiter = ",") {
   });
 }
 
-
 /**
  * @summary TODO
  * @param {Object} importFile - TODO
@@ -34,7 +32,7 @@ export function readCSVFile(filePath, delimiter = ",") {
  * @returns {Array} the callback
  * @private
  */
-export async function processImportFile(importFile, schema) {
+export async function processImportFile(importFile, importableSchema) {
   /*
   * importFile: {
   *   "type": "local",

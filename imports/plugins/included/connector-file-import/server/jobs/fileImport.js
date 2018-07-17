@@ -1,5 +1,6 @@
 import Hooks from "@reactioncommerce/hooks";
 import Logger from "@reactioncommerce/logger";
+import ImportableCollections from "@reactioncommerce/reaction-import-connectors";
 import { Job } from "/imports/plugins/core/job-collection/lib";
 import { Jobs } from "/lib/collections";
 import { ImportJobs } from "../../lib/collections";
@@ -41,6 +42,7 @@ export function addFileImportJob(fileImportId = "") {
       workTimeout: 180 * 1000
     },
     async (job, callback) => {
+      console.log(ImportableCollections);
       let importJob;
       if (fileImportId) {
         importJob = ImportJobs.findOne({ _id: fileImportId, status: "new" });

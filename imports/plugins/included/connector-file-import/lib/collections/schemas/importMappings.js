@@ -7,20 +7,20 @@ import { registerSchema } from "@reactioncommerce/schemas";
  * @type {SimpleSchema}
  */
 export const ImportMappings = new SimpleSchema({
-  "_id": {
+  _id: {
     type: String,
     optional: true
   },
-  "shopId": {
+  shopId: {
     type: String,
     index: 1,
     label: "Shop"
   },
-  "collection": {
+  collection: {
     type: String,
     label: "Collection"
   },
-  "mapping": {
+  mapping: {
     label: "Mapping",
     type: Object,
     blackbox: true,
