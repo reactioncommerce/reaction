@@ -164,7 +164,7 @@
     "eslint-import-resolver-meteor": "^0.4.0",
     "eslint-plugin-import": "2.12.0",
     "eslint-plugin-jest": "^21.14.0",
-    "eslint-plugin-jsx-a11y": "^6.0.3",
+    "eslint-plugin-jsx-a11y": "6.1.1",
     "eslint-plugin-promise": "3.8.0",
     "eslint-plugin-react": "7.8.2",
     "find-free-port": "^1.2.0",
