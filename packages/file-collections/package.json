@@ -43,8 +43,8 @@
     "debug": "^3.1.0",
     "path-parser": "^4.0.4",
     "query-string": "^5.1.0",
-    "tus-js-client": "^1.4.5",
-    "tus-node-server": "^0.2.8"
+    "tus-js-client": "^1.5.1",
+    "tus-node-server": "^0.2.11"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
