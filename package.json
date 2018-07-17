@@ -79,7 +79,6 @@
     "moment": "^2.20.1",
     "moment-timezone": "^0.5.14",
     "mongodb": "^3.0.5",
-    "nexmo": "^2.2.0",
     "nock": "^9.1.6",
     "node-fetch": "^2.0.0",
     "node-geocoder": "^3.22.0",
@@ -134,7 +133,6 @@
     "tether-drop": "^1.4.2",
     "tether-tooltip": "^1.2.0",
     "transliteration": "github:reactioncommerce/transliteration",
-    "twilio": "^3.11.3",
     "url": "^0.11.0",
     "velocity-animate": "^1.5.1",
     "velocity-react": "^1.3.3"
