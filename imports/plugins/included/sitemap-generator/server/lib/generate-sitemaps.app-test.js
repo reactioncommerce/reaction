@@ -4,8 +4,8 @@ import { Factory } from "meteor/dburles:factory";
 import { sinon } from "meteor/practicalmeteor:sinon";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
 import { Products, Shops, Tags } from "/lib/collections";
-import { Sitemaps } from "../../lib/collections/Sitemaps";
-import generateSitemaps from "./generateSitemaps";
+import { Sitemaps } from "../../lib/collections/sitemaps";
+import generateSitemaps from "./generate-sitemaps";
 
 describe("generateSitemaps", () => {
   let sandbox;

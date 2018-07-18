@@ -1,5 +1,5 @@
 import { Meteor } from "meteor/meteor";
-import { Sitemaps } from "../../lib/collections/Sitemaps";
+import { Sitemaps } from "../../lib/collections/sitemaps";
 
 /**
  * @name getSitemapXML

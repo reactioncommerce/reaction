@@ -1,5 +1,5 @@
 import Reaction from "/imports/plugins/core/core/server/Reaction";
-import getSitemapXML from "../lib/getSitemapXML";
+import getSitemapXML from "../lib/get-sitemap-xml";
 
 /**
  * @name handleSitemapRoutes

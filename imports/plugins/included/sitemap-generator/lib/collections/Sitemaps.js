@@ -1,5 +1,5 @@
 import { Mongo } from "meteor/mongo";
-import { SitemapsSchema } from "./schemas/SitemapsSchema";
+import { SitemapsSchema } from "./schemas/sitemaps-schema";
 
 /**
  * @name Sitemaps

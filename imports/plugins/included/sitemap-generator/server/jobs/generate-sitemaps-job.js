@@ -3,7 +3,7 @@ import Logger from "@reactioncommerce/logger";
 import { Jobs } from "/lib/collections";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
 import { Job } from "/imports/plugins/core/job-collection/lib";
-import generateSitemaps from "../lib/generateSitemaps";
+import generateSitemaps from "../lib/generate-sitemaps";
 
 /**
  * @name generateSitemapsJob

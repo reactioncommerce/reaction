@@ -3,7 +3,7 @@ import Hooks from "@reactioncommerce/hooks";
 import Logger from "@reactioncommerce/logger";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
 import { Products, Shops, Tags } from "/lib/collections";
-import { Sitemaps } from "../../lib/collections/Sitemaps";
+import { Sitemaps } from "../../lib/collections/sitemaps";
 
 const DEFAULT_URLS_PER_SITEMAP = 1000;
 
