@@ -314,7 +314,8 @@ export const CorePackageConfig = PackageConfig.clone().extend({
   },
   "settings.cart": {
     type: Object,
-    defaultValue: {}
+    defaultValue: {},
+    optional: true
   },
   "settings.cart.cleanupDurationDays": {
     type: String,
