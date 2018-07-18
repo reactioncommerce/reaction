@@ -1,5 +1,4 @@
 import _ from "lodash";
-import "moment/min/locales.min.js";
 import { Meteor } from "meteor/meteor";
 import { Template } from "meteor/templating";
 import { Accounts } from "meteor/accounts-base";
@@ -21,6 +20,8 @@ import { toCamelCase } from "/lib/api";
 const monthOptionsVar = new ReactiveVar([]);
 async function lazyLoadMonths() {
   if (monthOptionsVar.get().length) return;
+
+  await import("moment/min/locales.min.js");
   const { locale, months } = await import("moment-timezone");
 
   let lang = i18next.language;
