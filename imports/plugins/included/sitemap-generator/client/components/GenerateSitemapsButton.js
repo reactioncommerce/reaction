@@ -1,5 +1,5 @@
-import { Meteor } from "meteor/meteor";
 import React, { Component } from "react";
+import { Meteor } from "meteor/meteor";
 import { i18next } from "/client/api";
 import { Translation } from "/imports/plugins/core/ui/client/components";
 
