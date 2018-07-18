@@ -1,4 +1,3 @@
-import _ from "lodash";
 import { Meteor } from "meteor/meteor";
 import { Template } from "meteor/templating";
 import { AutoForm } from "meteor/aldeed:autoform";
@@ -35,7 +34,7 @@ Template.shopSettings.helpers({
     });
 
     let selectedMediaId;
-    if (shop && _.isArray(shop.brandAssets)) {
+    if (shop && Array.isArray(shop.brandAssets)) {
       selectedMediaId = shop.brandAssets[0].mediaId;
     }
 
@@ -160,11 +159,11 @@ Template.optionsShopSettings.helpers({
     });
   },
 
-  isPackageEnabled (name) {
+  isPackageEnabled(name) {
     return Reaction.isPackageEnabled(name);
   },
 
-  GenerateSitemapsButton () {
+  GenerateSitemapsButton() {
     return GenerateSitemapsButton;
   }
 });
