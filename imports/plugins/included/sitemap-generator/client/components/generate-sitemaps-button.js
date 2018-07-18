@@ -8,13 +8,9 @@ export default class GenerateSitemapsButton extends Component {
     event.preventDefault();
     Meteor.call("sitemaps/generate", (error) => {
       if (error) {
-        Alerts.toast(i18next.t("shopSettings.sitemapRefreshFailed", {
-          defaultValue: "Sitemap refresh failed."
-        }), "error");
+        Alerts.toast(`${i18next.t("shopSettings.sitemapRefreshFailed")}: ${error}`, "error");
       } else {
-        Alerts.toast(i18next.t("shopSettings.sitemapRefreshInitiated", {
-          defaultValue: "Sitemap refresh initiated."
-        }), "success");
+        Alerts.toast(i18next.t("shopSettings.sitemapRefreshInitiated"), "success");
       }
     });
   };
