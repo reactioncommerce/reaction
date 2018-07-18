@@ -8,8 +8,11 @@ import { registerSchema } from "@reactioncommerce/schemas";
  */
 export const ImportMappings = new SimpleSchema({
   _id: {
+    type: String
+  },
+  reference: {
     type: String,
-    optional: true
+    label: "Mapping Reference"
   },
   shopId: {
     type: String,

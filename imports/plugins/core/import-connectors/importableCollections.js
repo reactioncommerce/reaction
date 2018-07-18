@@ -42,7 +42,10 @@ export function registerImportableCollection(impColl) {
   } catch (error) {
     throw error;
   }
-  ImportableCollections[impColl.collection] = impColl.importSchema;
+  ImportableCollections[impColl.collection] = {
+    importSchema: impColl.importSchema,
+    label: impColl.label
+  };
   return true;
 }
 
@@ -68,4 +71,21 @@ export function readCSVFile(filePath) {
         reject(error);
       });
   });
+}
+
+/**
+ * @summary TODO
+ * @returns {Array} the callback
+ */
+export function getImportableCollectionsOptions() {
+  const options = [];
+  for (const coll in ImportableCollections) {
+    if (ImportableCollections[coll]) {
+      options.push({
+        label: ImportableCollections[coll].label,
+        value: coll
+      });
+    }
+  }
+  return options;
 }
