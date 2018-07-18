@@ -184,7 +184,6 @@ class CardForm extends Component {
 
     return (
       <form onSubmit={this.handleSubmit}>
-        {/* eslint-disable jsx-a11y/label-has-for */}
         <div className="row">
           <div className="col-md-12">
             <div className="form-group">
