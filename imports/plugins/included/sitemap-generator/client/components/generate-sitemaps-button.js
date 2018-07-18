@@ -22,7 +22,7 @@ export default class GenerateSitemapsButton extends Component {
   render() {
     return (
       <div className="clearfix">
-        <button type="submit" className="btn btn-default pull-left" onClick={this.handleClick}>
+        <button type="button" className="btn btn-default pull-left" onClick={this.handleClick}>
           <i className="rui font-icon fa fa-refresh" />&nbsp;
           <Translation defaultValue="Refresh sitemaps now" i18nKey={"shopSettings.refreshSitemapsNow"} />
         </button>
