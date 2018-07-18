@@ -16,6 +16,5 @@ export const Meteor = {
     rawCollection: () => ({
       findOne: findOneMock
     })
-  },
-  absoluteUrl: jest.fn().mockName("Meteor.absoluteUrl")
+  }
 };

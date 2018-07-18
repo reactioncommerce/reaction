@@ -1,6 +1,6 @@
 import url from "url";
-import { Meteor } from "meteor/meteor";
 import { DDP } from "meteor/ddp-client";
+import { composeUrl } from "/lib/core/url-common";
 
 export const AbsoluteUrlMixin = {
   /**
@@ -30,41 +30,41 @@ export const AbsoluteUrlMixin = {
    *                                 absoluteUrl can be called with a single
    *                                 parameter, where pathOrOptions can be the
    *                                 path (String) or the options (Object)
-   * @param {Object} [options] Optional options
-   * @param {Boolean} options.secure Create an HTTPS URL.
-   * @param {Boolean} options.replaceLocalhost Replace localhost with 127.0.0.1. Useful for services that don't recognize localhost as a domain name.
-   * @param {String} options.rootUrl Override the default ROOT_URL from the server environment. For example: "`http://foo.example.com`"
+   * @param {Object} [optionalOptions] Optional options
+   * @param {Boolean} optionalOptions.secure Create an HTTPS URL.
+   * @param {Boolean} optionalOptions.replaceLocalhost Replace localhost with 127.0.0.1. Useful for services that don't recognize localhost as a domain name.
+   * @param {String} optionalOptions.rootUrl Override the default ROOT_URL from the server environment. For example: "`http://foo.example.com`"
    * @return {String} - the constructed URL
    */
-  absoluteUrl(pathOrOptions, options) {
+  absoluteUrl(pathOrOptions, optionalOptions) {
     let path;
-    let opts;
+    let options;
     // path is optional
-    if (!options && typeof pathOrOptions === "object") {
+    if (!optionalOptions && typeof pathOrOptions === "object") {
       path = undefined;
-      opts = Object.assign({}, pathOrOptions);
+      options = Object.assign({}, pathOrOptions);
     } else {
       path = pathOrOptions;
-      opts = Object.assign({}, options);
+      options = Object.assign({}, optionalOptions);
     }
 
-    const hasRootUrl = "rootUrl" in opts;
+    const hasRootUrl = "rootUrl" in options;
 
     if (!hasRootUrl) {
       const domain = this.connectionDomain();
 
       if (domain) {
-        // Meteor.absoluteUrl will default to http unless the scheme is set on
-        // rootUrl. the "connection domain" does not inform us of ssl, so we
-        // use Meteor.rootUrl to inform us (i.e., if this is returning "http://"
-        // update your $ROOT_URL)
-        const rootUrl = url.parse(Meteor.absoluteUrl.defaultOptions.rootUrl);
+        // composeUrl will default to http unless the scheme is set on rootUrl.
+        // the "connection domain" does not inform us of ssl, so we use
+        // composeUrl.defaultOptions.rootUrl to inform us (i.e., if this is
+        // returning "http://" update your $ROOT_URL)
+        const rootUrl = url.parse(composeUrl.defaultOptions.rootUrl);
         rootUrl.host = domain;
-        opts.rootUrl = rootUrl.format();
+        options.rootUrl = rootUrl.format();
       }
     }
 
-    return Meteor.absoluteUrl(path, opts);
+    return composeUrl(path, options);
   },
 
   /**

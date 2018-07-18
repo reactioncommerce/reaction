@@ -1,5 +1,5 @@
 import url from "url";
-import { Meteor } from "meteor/meteor";
+import { composeUrl } from "/lib/core/url-common";
 
 export const DomainsMixin = {
   shopDomain() {
@@ -8,31 +8,37 @@ export const DomainsMixin = {
 
   /**
    * absoluteUrl
-   * @summary a wrapper method for Meteor.absoluteUrl which sets the rootUrl to
-   * the current URL (instead of defaulting to ROOT_URL)
-   * @param {String} [pathOrOptions] A path to append to the root URL. Do not include a leading "`/`".
-   *                                 absoluteUrl can be called with a single
-   *                                 parameter, where pathOrOptions can be the
-   *                                 path (String) or the options (Object)
-   * @param {Object} [options]
-   * @param {Boolean} options.secure Create an HTTPS URL.
-   * @param {Boolean} options.replaceLocalhost Replace localhost with 127.0.0.1. Useful for services that don't recognize localhost as a domain name.
-   * @param {String} options.rootUrl Override the default ROOT_URL from the server environment. For example: "`http://foo.example.com`"
+   * @summary a wrapper method for composeUrl (formerly Meteor.absoluteUrl)
+   * which sets the rootUrl to the current URL (instead of defaulting to
+   * ROOT_URL)
+   * @param {String} [pathOrOptions] A path to append to the root URL. Do not
+   *                 include a leading "`/`". absoluteUrl can be called with a
+   *                 single parameter, where pathOrOptions can be the path
+   *                 (String) or the options (Object)
+   * @param {Object} [optionalOptions] Optional options
+   * @param {Boolean} optionalOptions.secure Create an HTTPS URL.
+   * @param {Boolean} optionalOptions.replaceLocalhost Replace localhost with
+   *                  127.0.0.1. Useful for services that don't recognize
+   *                  localhost as a domain name.
+   * @param {String} optionalOptions.rootUrl Override the default ROOT_URL from
+   *                 the server environment.
+   *                 For example: "`http://foo.example.com`"
    * @return {String} URL for the given path and options
    */
-  absoluteUrl(pathOrOptions, options) {
+  absoluteUrl(pathOrOptions, optionalOptions) {
     let path;
-    let opts;
+    let options;
+
     // path is optional
-    if (!options && typeof pathOrOptions === "object") {
+    if (!optionalOptions && typeof pathOrOptions === "object") {
       path = undefined;
-      opts = Object.assign({}, pathOrOptions);
+      options = Object.assign({}, pathOrOptions);
     } else {
       path = pathOrOptions;
-      opts = Object.assign({}, options);
+      options = Object.assign({}, optionalOptions);
     }
 
-    const hasRootUrl = "rootUrl" in opts;
+    const hasRootUrl = "rootUrl" in options;
 
     // presumably, you could simply access window.location.href here, but when
     // we get to server-side rendering, it is better to use a variable that gets
@@ -40,23 +46,26 @@ export const DomainsMixin = {
     const domain = this.shopDomain();
 
     if (!hasRootUrl && domain) {
-      // unfortunately, the scheme/protocal is not available here, so let's
+      // unfortunately, the scheme/protocol is not available here, so let's
       // get it from the default Meteor absoluteUrl options, then replace the
       // host
-      const rootUrl = url.parse(Meteor.absoluteUrl.defaultOptions.rootUrl);
+      const rootUrl = url.parse(composeUrl.defaultOptions.rootUrl);
       rootUrl.host = domain;
-      opts.rootUrl = rootUrl.format();
+      options.rootUrl = rootUrl.format();
     }
 
-    return Meteor.absoluteUrl(path, opts);
+    return composeUrl(path, options);
   },
 
   /**
    * getDomain
    * @summary extracts the domain name from the absoluteUrl.
-   * @param {Object} [options] inheritied from absoluteUrl
-   * @param {Boolean} options.replaceLocalhost Replace localhost with 127.0.0.1. Useful for services that don't recognize localhost as a domain name.
-   * @param {String} options.rootUrl Override the default ROOT_URL from the server environment. For example: "`http://foo.example.com`"
+   * @param {Object} [options] inherited from absoluteUrl
+   * @param {Boolean} options.replaceLocalhost Replace localhost with 127.0.0.1.
+   *                  Useful for services that don't recognize localhost as a
+   *                  domain name.
+   * @param {String} options.rootUrl Override the default ROOT_URL from the
+   *                 server environment. For example: "`http://foo.example.com`"
    * @return {String} Domain/hostname for the given options
    */
   getDomain(options) {

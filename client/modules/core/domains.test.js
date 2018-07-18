@@ -1,5 +1,6 @@
-import { Meteor } from "meteor/meteor";
+jest.mock("/lib/core/url-common");
 
+import { composeUrl } from "/lib/core/url-common";
 import { DomainsMixin } from "./domains";
 
 describe("DomainsMixin", () => {
@@ -17,39 +18,39 @@ describe("DomainsMixin", () => {
       // mocking $ROOT_URL
       const ROOT_URL = `https://${randomString()}.reactioncommerce.com`;
 
-      if (!Meteor.absoluteUrl.defaultOptions) {
-        Meteor.absoluteUrl.defaultOptions = {};
+      if (!composeUrl.defaultOptions) {
+        composeUrl.defaultOptions = {};
       }
-      Meteor.absoluteUrl.defaultOptions.rootUrl = ROOT_URL;
+      composeUrl.defaultOptions.rootUrl = ROOT_URL;
     });
 
     describe("before the domain is set", () => {
-      test("wraps Meteor.absoluteUrl without parameters", () => {
+      test("wraps composeUrl without parameters", () => {
         DomainsMixin.absoluteUrl();
 
-        expect(Meteor.absoluteUrl).toHaveBeenCalledWith(undefined, {});
+        expect(composeUrl).toHaveBeenCalledWith(undefined, {});
       });
 
-      test("wraps Meteor.absoluteUrl with path only", () => {
+      test("wraps composeUrl with path only", () => {
         DomainsMixin.absoluteUrl(path);
 
-        expect(Meteor.absoluteUrl).toHaveBeenCalledWith(path, {});
+        expect(composeUrl).toHaveBeenCalledWith(path, {});
       });
 
-      test("wraps Meteor.absoluteUrl with options only", () => {
+      test("wraps composeUrl with options only", () => {
         const options = { a: 1, b: 2 };
 
         DomainsMixin.absoluteUrl(options);
 
-        expect(Meteor.absoluteUrl).toHaveBeenCalledWith(undefined, options);
+        expect(composeUrl).toHaveBeenCalledWith(undefined, options);
       });
 
-      test("wraps Meteor.absoluteUrl both a path and options", () => {
+      test("wraps composeUrl both a path and options", () => {
         const options = { a: 1, b: 2 };
 
         DomainsMixin.absoluteUrl(path, options);
 
-        expect(Meteor.absoluteUrl).toHaveBeenCalledWith(path, options);
+        expect(composeUrl).toHaveBeenCalledWith(path, options);
       });
     });
 
@@ -61,7 +62,7 @@ describe("DomainsMixin", () => {
       });
 
       test("uses the current connection's host", () => {
-        expect(Meteor.absoluteUrl)
+        expect(composeUrl)
           .toHaveBeenCalledWith(undefined, expect.objectContaining({
             rootUrl: expect.stringContaining(connectionHost)
           }));
@@ -69,7 +70,7 @@ describe("DomainsMixin", () => {
 
       test("uses $ROOT_URL's protocol/scheme", () => {
         // this would he http:// if $ROOT_URL had not used https://
-        expect(Meteor.absoluteUrl)
+        expect(composeUrl)
           .toHaveBeenCalledWith(undefined, expect.objectContaining({
             rootUrl: expect.stringMatching(/^https:\/\//)
           }));

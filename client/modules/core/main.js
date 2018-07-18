@@ -130,7 +130,7 @@ export default {
     return Tracker.autorun(() => {
       let shop;
       if (this.Subscriptions.MerchantShops.ready()) {
-        // if we don't have an active shopId, try to retreive it from the userPreferences object
+        // if we don't have an active shopId, try to retrieve it from the userPreferences object
         // and set the shop from the storedShopId
         if (!this.shopId) {
           const storedShopId = this.getUserPreferences("reaction", "activeShopId");

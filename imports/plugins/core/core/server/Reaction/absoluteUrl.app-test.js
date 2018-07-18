@@ -1,9 +1,9 @@
-import { Meteor } from "meteor/meteor";
 import { DDP } from "meteor/ddp-client";
 
 import { expect } from "meteor/practicalmeteor:chai";
 import { sinon } from "meteor/practicalmeteor:sinon";
 
+import { composeUrl } from "/lib/core/url-common";
 import core from "./core";
 
 describe("AbsoluteUrlMixin", () => {
@@ -30,25 +30,14 @@ describe("AbsoluteUrlMixin", () => {
       rootUrl = `https://${randomString()}.reactioncommerce.com`;
 
       // mocking Meteor
-      meteorRootUrl = Meteor.absoluteUrl.defaultOptions.rootUrl;
+      meteorRootUrl = composeUrl.defaultOptions.rootUrl;
       // this is a round-about way of mocking $ROOT_URL
-      Meteor.absoluteUrl.defaultOptions.rootUrl = rootUrl;
+      composeUrl.defaultOptions.rootUrl = rootUrl;
     });
 
     afterEach(() => {
       // restore Meteor
-      Meteor.absoluteUrl.defaultOptions.rootUrl = meteorRootUrl;
-    });
-
-    it("wraps Meteor.absoluteUrl", () => {
-      const options = { rootUrl }; // passing rootUrl will skip some internal logic
-
-      const fnMeteorAbsoluteUrl =
-        sandbox.spy(Meteor, "absoluteUrl").withArgs(path, options);
-
-      core.absoluteUrl(path, options);
-
-      expect(fnMeteorAbsoluteUrl).to.have.been.called;
+      composeUrl.defaultOptions.rootUrl = meteorRootUrl;
     });
 
     describe("outside of a connection", () => {
@@ -79,7 +68,7 @@ describe("AbsoluteUrlMixin", () => {
       });
     });
 
-    it("accepts options the same way Meteor.absoluteUrl does", () => {
+    it("accepts options the same way composeUrl does", () => {
       const options = {
         secure: true,
         replaceLocalhost: true,
@@ -87,7 +76,7 @@ describe("AbsoluteUrlMixin", () => {
       };
 
       const reactionVersion = core.absoluteUrl(path, options);
-      const meteorVersion = Meteor.absoluteUrl(path, options);
+      const meteorVersion = composeUrl(path, options);
 
       expect(reactionVersion).to.equal(meteorVersion);
     });
