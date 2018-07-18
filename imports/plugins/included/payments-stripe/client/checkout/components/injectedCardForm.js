@@ -191,6 +191,7 @@ class CardForm extends Component {
               <label
                 className={cardNumberErrorMessage ? "stripe-label-error" : ""}
                 data-i18n="checkout.formLabels.cardNumber"
+                htmlFor="injected-stripe-card-number-element"
               >
                 Card number
               </label>
@@ -199,6 +200,7 @@ class CardForm extends Component {
                 placeholder="XXXX XXXX XXXX XXXX"
                 className="stripe-card-element"
                 onChange={this.handleCardNumberChange}
+                id="injected-stripe-card-number-element"
               />
               <span className="help-block stripe-help-block">{cardNumberErrorMessage}</span>
             </div>
@@ -210,6 +212,7 @@ class CardForm extends Component {
               <label
                 className={expDateErrorMessage ? "stripe-label-error" : ""}
                 data-i18n="checkout.formLabels.expDate"
+                htmlFor="injected-stripe-card-expiry-element"
               >
                 Expiry date
               </label>
@@ -217,6 +220,7 @@ class CardForm extends Component {
                 style={style}
                 className="stripe-card-element"
                 onChange={this.handleExpDateChange}
+                id="injected-stripe-card-expiry-element"
               />
               <span className="help-block stripe-help-block">{expDateErrorMessage}</span>
             </div>
@@ -226,6 +230,7 @@ class CardForm extends Component {
               <label
                 className={CVVErrorMessage ? "stripe-label-error" : ""}
                 data-i18n="checkout.formLabels.CVV"
+                htmlFor="injected-stripe-card-cvv-element"
               >
                 CVV
               </label>
@@ -234,6 +239,7 @@ class CardForm extends Component {
                 placeholder="CVV"
                 className="stripe-card-element"
                 onChange={this.handleCVVChange}
+                id="injected-stripe-card-cvv-element"
               />
               <span className="help-block stripe-help-block">{CVVErrorMessage}</span>
             </div>
@@ -245,6 +251,7 @@ class CardForm extends Component {
               <label
                 className={postalErrorMessage ? "stripe-label-error" : ""}
                 data-i18n="checkout.formLabels.postalCode"
+                htmlFor="injected-stripe-card-postal-element"
               >
                 Postal code
               </label>
@@ -253,6 +260,7 @@ class CardForm extends Component {
                 className="stripe-card-element"
                 onChange={this.handlePostalChange}
                 value={postal}
+                id="injected-stripe-card-cvv-element"
               />
               <span className="help-block stripe-help-block">{postalErrorMessage}</span>
             </div>
