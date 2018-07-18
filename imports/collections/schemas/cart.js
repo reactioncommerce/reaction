@@ -24,7 +24,7 @@ import { Metafield } from "./metafield";
  * @property {String} cartItemId Seems strange here but has to be here since we share schemas between Cart and Order
  * @property {Object} transaction Transaction associated with this item
  * @property {Object} taxData optional blackbox
- * @property {Number} taxRate optional
+ * @property {Number} taxRate optional totalTax/subTotal of the item
  * @property {Object} shippingMethod Shipping Method associated with this item
  */
 export const CartItem = new SimpleSchema({
@@ -201,8 +201,33 @@ export const Cart = new SimpleSchema({
     optional: true
   },
   "taxes.$": {
+    type: Object
+  },
+  "taxes.$.lineNumber": {
+    type: String
+  },
+  "taxes.$.discountAmount": {
+    type: Number,
+    optional: true
+  },
+  "taxes.$.taxable": {
+    type: Boolean,
+    optional: true
+  },
+  "taxes.$.tax": {
+    type: Number
+  },
+  "taxes.$.taxableAmount": {
+    type: Number
+  },
+  "taxes.$.taxCode": {
+    type: String,
+    optional: true
+  },
+  "taxes.$.details": {
     type: Object,
-    blackbox: true
+    blackbox: true,
+    optional: true
   },
   "taxRatesByShop": {
     type: Object,
