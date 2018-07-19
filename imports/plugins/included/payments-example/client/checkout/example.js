@@ -89,9 +89,9 @@ AutoForm.addHooks("example-payment-form", {
           transactions: []
         };
         paymentMethod.transactions.push(transaction.response);
-        Meteor.call("cart/submitPayment", paymentMethod, (error) => {
-          if (error) {
-            Logger.error(error);
+        Meteor.call("cart/submitPayment", paymentMethod, (err) => {
+          if (err) {
+            Logger.error(err);
             return;
           }
 

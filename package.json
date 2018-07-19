@@ -329,14 +329,15 @@
     },
     "rules": {
       "valid-jsdoc": [
-        1,
+        "warn",
         {
           "prefer": {
             "arg": "param",
             "argument": "param"
           }
         }
-      ]
+      ],
+      "jsx-a11y/label-has-for": "off"
     }
   },
   "nodemonConfig": {
