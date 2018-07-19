@@ -52,47 +52,6 @@ export const methods = {
   },
 
   /**
-   * @name discounts/deleteRate
-   * @method
-   * @memberof Discounts/Methods
-   * @param  {String} discountId discount id to delete
-   * @return {String} returns update/insert result
-   */
-  "discounts/deleteRate"(discountId) {
-    check(discountId, String);
-
-    // check permissions to delete
-    if (!Reaction.hasPermission("discounts")) {
-      throw new Meteor.Error("access-denied", "Access Denied");
-    }
-
-    return Discounts.remove({ _id: discountId });
-  },
-
-  /**
-   * @name discounts/setRate
-   * @method
-   * @memberof Discounts/Methods
-   * @summary Update the cart discounts without hooks
-   * @param  {String} cartId cartId
-   * @param  {Number} discountRate discountRate
-   * @param  {Object} discounts discounts
-   * @return {Number} returns update result
-   */
-  "discounts/setRate"(cartId, discountRate, discounts) {
-    check(cartId, String);
-    check(discountRate, Number);
-    check(discounts, Match.Optional(Array));
-
-    return Cart.update(cartId, {
-      $set: {
-        discounts,
-        discount: discountRate
-      }
-    });
-  },
-
-  /**
    * @name discounts/addRate
    * @method
    * @memberof Discounts/Rates/Methods
