@@ -606,7 +606,7 @@ export const Catalog = new SimpleSchema({
   },
   product: {
     type: CatalogProduct,
-    optional: true
+    label: "Product object of Catalog product data"
   },
   createdAt: {
     type: Date,
