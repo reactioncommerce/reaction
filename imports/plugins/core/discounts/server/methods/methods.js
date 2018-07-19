@@ -1,5 +1,6 @@
 import { Meteor } from "meteor/meteor";
-import { check } from "meteor/check";
+import { Match, check } from "meteor/check";
+import { Cart } from "/lib/collections";
 import { Discounts } from "../../lib/collections";
 import Reaction from "../api";
 
@@ -9,6 +10,84 @@ import Reaction from "../api";
  */
 
 export const methods = {
+  /**
+   * @name discounts/deleteRate
+   * @method
+   * @memberof Discounts/Methods
+   * @param  {String} discountId discount id to delete
+   * @return {String} returns update/insert result
+   */
+  "discounts/deleteRate"(discountId) {
+    check(discountId, String);
+
+    // check permissions to delete
+    if (!Reaction.hasPermission("discounts")) {
+      throw new Meteor.Error("access-denied", "Access Denied");
+    }
+
+    return Discounts.remove({ _id: discountId });
+  },
+
+  /**
+   * @name discounts/setRate
+   * @method
+   * @memberof Discounts/Methods
+   * @summary Update the cart discounts without hooks
+   * @param  {String} cartId cartId
+   * @param  {Number} discountRate discountRate
+   * @param  {Object} discounts discounts
+   * @return {Number} returns update result
+   */
+  "discounts/setRate"(cartId, discountRate, discounts) {
+    check(cartId, String);
+    check(discountRate, Number);
+    check(discounts, Match.Optional(Array));
+
+    return Cart.update(cartId, {
+      $set: {
+        discounts,
+        discount: discountRate
+      }
+    });
+  },
+
+  /**
+   * @name discounts/addRate
+   * @method
+   * @memberof Discounts/Rates/Methods
+   * @param  {Object} doc A Discounts document to be inserted
+   * @param  {String} [docId] DEPRECATED. Existing ID to trigger an update. Use discounts/editCode method instead.
+   * @return {String} Insert result
+   */
+  "discounts/addRate"(doc, docId) {
+    check(doc, Object); // actual schema validation happens during insert below
+
+    // Backward compatibility
+    check(docId, Match.Optional(String));
+    if (docId) return Meteor.call("discounts/editRate", { _id: docId, modifier: doc });
+
+    if (!Reaction.hasPermission("discount-rates")) throw new Meteor.Error("access-denied", "Access Denied");
+    doc.shopId = Reaction.getShopId();
+    return Discounts.insert(doc);
+  },
+
+  /**
+   * @name discounts/editRate
+   * @method
+   * @memberof Discounts/Rates/Methods
+   * @param  {Object} details An object with _id and modifier props
+   * @return {String} Update result
+   */
+  "discounts/editRate"(details) {
+    check(details, {
+      _id: String,
+      modifier: Object // actual schema validation happens during update below
+    });
+    if (!Reaction.hasPermission("discount-rates")) throw new Meteor.Error("access-denied", "Access Denied");
+    const { _id, modifier } = details;
+    return Discounts.update(_id, modifier);
+  },
+
   /**
    * @name discounts/transaction
    * @method
