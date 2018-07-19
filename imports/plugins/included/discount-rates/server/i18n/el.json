@@ -1,0 +1,23 @@
+[{
+  "language": "Greek",
+  "i18n": "el",
+  "ns": "discount-rates",
+  "translation": {
+    "reaction-discounts": {
+      "admin": {
+        "settings": {
+          "ratesLabel": "Τιμές",
+          "noCustomDiscountRatesFound": "Δεν βρέθηκαν προεξοφλητικά επιτόκια.",
+          "settingsSaveSuccess": "Οι ρυθμίσεις αποθηκεύτηκαν με επιτυχία.",
+          "settingsSaveFailure": "Αποτυχία για να αποθηκεύσετε τις ρυθμίσεις.",
+          "confirmRateDelete": "Επιβεβαιώστε τη διαγραφή προεξοφλητικό επιτόκιο."
+        },
+        "discountGrid": {
+          "label": "Επιγραφή",
+          "discountMethod": "Μέθοδος",
+          "discount": "Εκπτωση"
+        }
+      }
+    }
+  }
+}]

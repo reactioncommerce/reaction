@@ -1,0 +1,23 @@
+[{
+  "language": "German",
+  "i18n": "de",
+  "ns": "discount-rates",
+  "translation": {
+    "reaction-discounts": {
+      "admin": {
+        "settings": {
+          "ratesLabel": "Preise",
+          "noCustomDiscountRatesFound": "Keine Diskontsätze gefunden.",
+          "settingsSaveSuccess": "Einstellungen erfolgreich gespeichert.",
+          "settingsSaveFailure": "Fehlgeschlagen Einstellungen zu speichern.",
+          "confirmRateDelete": "Bestätigen Sie den Discount-Code Löschen."
+        },
+        "discountGrid": {
+          "label": "Etikette",
+          "discountMethod": "Verfahren",
+          "discount": "Rabatt"
+        }
+      }
+    }
+  }
+}]

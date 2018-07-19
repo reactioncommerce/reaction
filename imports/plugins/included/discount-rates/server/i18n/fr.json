@@ -1,0 +1,23 @@
+[{
+  "language": "French",
+  "i18n": "fr",
+  "ns": "discount-rates",
+  "translation": {
+    "reaction-discounts": {
+      "admin": {
+        "settings": {
+          "ratesLabel": "Tarifs",
+          "noCustomDiscountRatesFound": "Aucun taux d'actualisation trouvés.",
+          "settingsSaveSuccess": "Paramètres sauvegardés avec succès.",
+          "settingsSaveFailure": "Impossible d'enregistrer les paramètres.",
+          "confirmRateDelete": "Confirmez la suppression de réduction de taux."
+        },
+        "discountGrid": {
+          "label": "Étiquette",
+          "discountMethod": "Méthode",
+          "discount": "Remise"
+        }
+      }
+    }
+  }
+}]

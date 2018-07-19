@@ -1,0 +1,23 @@
+[{
+  "language": "English",
+  "i18n": "en",
+  "ns": "discount-rates",
+  "translation": {
+    "reaction-discounts": {
+      "admin": {
+        "settings": {
+          "ratesLabel": "Rates",
+          "noCustomDiscountRatesFound": "No discount rates found.",
+          "settingsSaveSuccess": "Settings saved successfully.",
+          "settingsSaveFailure": "Failed to save settings.",
+          "confirmRateDelete": "Confirm discount rate deletion."
+        },
+        "discountGrid": {
+          "label": "Label",
+          "discountMethod": "Method",
+          "discount": "Discount"
+        }
+      }
+    }
+  }
+}]

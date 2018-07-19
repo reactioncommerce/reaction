@@ -1,0 +1,23 @@
+[{
+  "language": "Vietnamese",
+  "i18n": "vi",
+  "ns": "discount-rates",
+  "translation": {
+    "reaction-discounts": {
+      "admin": {
+        "settings": {
+          "ratesLabel": "Giá",
+          "noCustomDiscountRatesFound": "Không tìm thấy tỷ lệ chiết khấu.",
+          "settingsSaveSuccess": "Cài đặt lưu thành công.",
+          "settingsSaveFailure": "Không lưu cài đặt.",
+          "confirmRateDelete": "Xác nhận xóa suất chiết khấu."
+        },
+        "discountGrid": {
+          "label": "Nhãn",
+          "discountMethod": "phương pháp",
+          "discount": "Giảm giá"
+        }
+      }
+    }
+  }
+}]

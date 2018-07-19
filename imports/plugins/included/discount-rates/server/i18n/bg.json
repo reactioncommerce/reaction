@@ -1,0 +1,23 @@
+[{
+  "language": "Bulgarian",
+  "i18n": "bg",
+  "ns": "discount-rates",
+  "translation": {
+    "reaction-discounts": {
+      "admin": {
+        "settings": {
+          "ratesLabel": "Цените",
+          "noCustomDiscountRatesFound": "Няма намерени намаления.",
+          "settingsSaveSuccess": "Настройките са запазени успешно.",
+          "settingsSaveFailure": "Неуспех да запазите настройките.",
+          "confirmRateDelete": "Потвърдете отстъпка заличаване скорост."
+        },
+        "discountGrid": {
+          "label": "Етикет",
+          "discountMethod": "метод",
+          "discount": "отстъпка"
+        }
+      }
+    }
+  }
+}]

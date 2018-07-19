@@ -1,0 +1,23 @@
+[{
+  "language": "Hebrew",
+  "i18n": "he",
+  "ns": "discount-rates",
+  "translation": {
+    "reaction-discounts": {
+      "admin": {
+        "settings": {
+          "ratesLabel": "אחוזים",
+          "noCustomDiscountRatesFound": "לא נמצאו אחוזי הנחה.",
+          "settingsSaveSuccess": "ההגדרות נשמרו בהצלחה.",
+          "settingsSaveFailure": "שמירת ההגדרות נכשלה.",
+          "confirmRateDelete": "אשר את מחיקת  אחוז ההנחה."
+        },
+        "discountGrid": {
+          "label": "תווית",
+          "discountMethod": "שיטה",
+          "discount": "הנחה"
+        }
+      }
+    }
+  }
+}]
