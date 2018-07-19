@@ -11,6 +11,10 @@ Reaction.registerPackage({
     },
     // todo: move all settings in shippo subfield
     apiKey: "",
+    addressValidation: {
+      enabled: true,
+      addressValidationMethod: "shippo/addressValidation"
+    },
     refreshPeriod: "every 2 hours"
   },
   registry: [{
@@ -31,6 +35,11 @@ Reaction.registerPackage({
     provides: ["shippingSettings"],
     container: "connection",
     template: "shippoSettings"
+  }, {
+    label: "Shippo",
+    icon: "fa fa-plane",
+    name: "shipping/addressValidation/shippo",
+    provides: ["addressValidation"]
   }
     // WIP:
     // TODO: Review custom shipping in checkout, are layout handling this requirement

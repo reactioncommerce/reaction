@@ -1032,7 +1032,7 @@ Meteor.methods({
         denormalize(doc.ancestors[0], field);
       }
     }
-    return result;
+    return update;
   },
 
   /**

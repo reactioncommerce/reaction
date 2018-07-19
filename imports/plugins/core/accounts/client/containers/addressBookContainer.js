@@ -27,7 +27,7 @@ function callValidateAddress(address) {
       } else if (result.validated === false && !result.suggestedAddress) {
         reject(i18next.t("addressBookAdd.failedToUpdateAddress", { err: "Unable to fetch corrected address" }));
       } else if (result.validated === false && result.suggestedAddress && result.formErrors && result.formErrors.length > 0) {
-        reject(i18next.t("addressBookAdd.failedToUpdateAddress", { err: result.formErrors[0].summary }));
+        reject(i18next.t("addressBookAdd.failedToUpdateAddress", { err: result.formErrors[result.formErrors.length - 1].details }));
       } else {
         resolve(result);
       }
