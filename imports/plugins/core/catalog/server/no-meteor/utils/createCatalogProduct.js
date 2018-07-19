@@ -12,12 +12,13 @@ import isSoldOut from "./isSoldOut";
  * @param {Object} variantPriceInfo The result of calling getPriceRange for this price or all child prices
  * @param {String} shopCurrencyCode The shop currency code for the shop to which this product belongs
  * @private
+ * @returns {Object} The transformed variant
  */
 function xformVariant(variant, variantPriceInfo, shopCurrencyCode) {
   return {
     _id: variant._id,
     barcode: variant.barcode,
-    createdAt: variant.createdAt,
+    createdAt: variant.createdAt || new Date(),
     height: variant.height,
     index: variant.index || 0,
     inventoryManagement: !!variant.inventoryManagement,
@@ -46,7 +47,7 @@ function xformVariant(variant, variantPriceInfo, shopCurrencyCode) {
     taxCode: variant.taxCode,
     taxDescription: variant.taxDescription,
     title: variant.title,
-    updatedAt: variant.updatedAt || variant.createdAt,
+    updatedAt: variant.updatedAt || variant.createdAt || new Date(),
     // The _id prop could change whereas this should always point back to the source variant in Products collection
     variantId: variant._id,
     weight: variant.weight,
@@ -146,7 +147,7 @@ export default async function createCatalogProduct(product, collections) {
     // We want to explicitly map everything so that new properties added to product are not published to a catalog unless we want them
     _id: product._id,
     barcode: product.barcode,
-    createdAt: product.createdAt,
+    createdAt: product.createdAt || new Date(),
     description: product.description,
     height: product.height,
     isBackorder: isBackorder(variants),
@@ -194,7 +195,7 @@ export default async function createCatalogProduct(product, collections) {
     taxDescription: product.taxDescription,
     title: product.title,
     type: "product-simple",
-    updatedAt: product.updatedAt || product.createdAt,
+    updatedAt: product.updatedAt || product.createdAt || new Date(),
     variants: catalogProductVariants,
     vendor: product.vendor,
     weight: product.weight,

@@ -610,7 +610,7 @@ export const Catalog = new SimpleSchema({
   },
   createdAt: {
     type: Date,
-    label: "Date/time this product was created at",
+    label: "Date/time this catalog item was created at",
     index: 1
   },
   shopId: {
