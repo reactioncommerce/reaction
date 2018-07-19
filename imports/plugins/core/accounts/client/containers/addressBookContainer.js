@@ -108,7 +108,7 @@ const handlers = {
             reject(i18next.t("addressBookAdd.failedToAddAddress", { err: "Unable to fetch corrected address" }));
             return;
           } else if (result.validated === false && result.suggestedAddress && result.formErrors && result.formErrors.length > 0) {
-            reject(i18next.t("addressBookAdd.failedToAddAddress", { err: result.formErrors[0].summary }));
+            reject(i18next.t("addressBookAdd.failedToAddAddress", { err: result.formErrors[result.formErrors.length - 1].details }));
             return;
           } else if (result.validated === false && result.suggestedAddress) {
             resolve(result);

@@ -113,3 +113,32 @@ export const Address = new SimpleSchema({
 });
 
 registerSchema("Address", Address);
+
+
+const ErrorDetails = new SimpleSchema({
+  message: {
+    type: String
+  },
+  description: {
+    type: String,
+    optional: true
+  }
+});
+
+// Validate that whenever we return an error we return the same format
+export const ErrorObject = new SimpleSchema({
+  "type": {
+    type: String
+  },
+  "errorCode": {
+    type: Number
+  },
+  "errorDetails": {
+    type: Array,
+    optional: true
+  },
+  "errorDetails.$": {
+    type: ErrorDetails,
+    optional: true
+  }
+});
