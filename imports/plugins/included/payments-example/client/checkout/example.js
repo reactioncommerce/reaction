@@ -3,7 +3,7 @@ import { Meteor } from "meteor/meteor";
 import { Template } from "meteor/templating";
 import { AutoForm } from "meteor/aldeed:autoform";
 import { $ } from "meteor/jquery";
-import { Reaction } from "/client/api";
+import { Logger, Reaction, Router } from "/client/api";
 import { Cart, Shops, Packages } from "/lib/collections";
 import { Example } from "../../lib/api";
 import { ExamplePayment } from "../../lib/collections/schemas";
@@ -61,8 +61,9 @@ AutoForm.addHooks("example-payment-form", {
       name: "example-paymentmethod",
       shopId: Reaction.getShopId()
     });
+    const cart = Cart.findOne();
     Example.authorize(form, {
-      total: Cart.findOne().getTotal(),
+      total: cart.getTotal(),
       currency: Shops.findOne().currency
     }, (error, transaction) => {
       submitting = false;
@@ -88,7 +89,16 @@ AutoForm.addHooks("example-payment-form", {
           transactions: []
         };
         paymentMethod.transactions.push(transaction.response);
-        Meteor.call("cart/submitPayment", paymentMethod);
+        Meteor.call("cart/submitPayment", paymentMethod, (error) => {
+          if (error) {
+            Logger.error(error);
+            return;
+          }
+
+          Router.go("cart/completed", {}, {
+            _id: cart._id
+          });
+        });
       } else {
         handleExampleSubmitError(transaction.error);
         uiEnd(template, "Resubmit payment");
