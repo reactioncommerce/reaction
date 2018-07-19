@@ -18,16 +18,19 @@ import { toCamelCase } from "/lib/api";
 
 // Lazily load moment-timezone.months
 const monthOptionsVar = new ReactiveVar([]);
+const monthOptionsLangVar = new ReactiveVar("");
 async function lazyLoadMonths() {
-  if (monthOptionsVar.get().length) return;
-
-  await import("moment/min/locales.min.js");
-  const { locale, months } = await import("moment-timezone");
-
   let lang = i18next.language;
   if (lang === "zh") {
     lang = "zh-cn";
   }
+
+  const areMonthsAlreadyLoaded = monthOptionsVar.get().length;
+  const hasLanguageNotChanged = monthOptionsLangVar.get() === lang;
+  if (areMonthsAlreadyLoaded && hasLanguageNotChanged) return;
+
+  await import("moment/min/locales.min.js");
+  const { locale, months } = await import("moment-timezone");
 
   locale(lang);
 
@@ -47,6 +50,7 @@ async function lazyLoadMonths() {
   }
 
   monthOptionsVar.set(monthOptions);
+  monthOptionsLangVar.set(lang);
 }
 
 Template.registerHelper("Collections", () => Collections);
