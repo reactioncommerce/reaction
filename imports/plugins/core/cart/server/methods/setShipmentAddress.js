@@ -25,7 +25,7 @@ export default function setShipmentAddress(cartId, address) {
   let updated = false; // if we update inline set to true, otherwise fault to update at the end
   // We have two behaviors depending on if we have existing shipping records and if we
   // have items in the cart.
-  if (cart.shipping && cart.shipping.length > 0 && cart.items) {
+  if (cart.shipping && cart.shipping.length > 0 && cart.items && cart.items.length > 0) {
     // if we have shipping records and cart.items, update each one by shop
     const shopIds = Object.keys(cart.getItemsByShop());
     shopIds.forEach((shopId) => {
@@ -47,7 +47,8 @@ export default function setShipmentAddress(cartId, address) {
         throw new Meteor.Error(error, "An error occurred adding the address");
       }
     });
-  } else if (!cart.items) { // if no items in cart just add or modify one record for the carts shop
+  } else if (!cart.items || cart.items.length === 0) {
+    // if no items in cart just add or modify one record for the carts shop
     // add a shipping record if it doesn't exist
     if (!cart.shipping) {
       selector = {
