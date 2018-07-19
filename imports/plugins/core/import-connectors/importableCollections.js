@@ -89,3 +89,26 @@ export function getImportableCollectionsOptions() {
   }
   return options;
 }
+
+/**
+ * @summary TODO
+ * @param {String} item - TODO
+ * @returns {String} item - the callback
+ */
+export function itemOrEmptyString(item) {
+  return item || item === 0 ? item : "";
+}
+
+export function arrayToCSVRow(arrayRow) {
+  const csvRow = arrayRow.map((item) => `"${itemOrEmptyString(item)}"`);
+  return `${csvRow.join(",")}\r\n`;
+}
+
+export function getDefaultCSVFileHeader(collection) {
+  let headers = [];
+  const desiredImpColl = ImportableCollections[collection];
+  if (desiredImpColl) {
+    headers = desiredImpColl.importSchema.map((field) => field.label);
+  }
+  return arrayToCSVRow(headers);
+}

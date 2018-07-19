@@ -8,6 +8,11 @@ export const ProductsImpColl = {
       key: "_id",
       saveToField: "_id",
       label: "ID"
+    },
+    {
+      key: "title",
+      saveToField: "title",
+      label: "Title"
     }
   ]
 };
@@ -22,7 +27,13 @@ export const TagsImpColl = {
       key: "_id",
       saveToField: "_id",
       label: "ID"
+    },
+    {
+      key: "name",
+      saveToField: "name",
+      label: "Name"
     }
+
   ]
 };
 
