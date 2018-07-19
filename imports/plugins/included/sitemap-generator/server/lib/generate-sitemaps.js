@@ -25,44 +25,7 @@ export default function generateSitemaps(shopIds = [], urlsPerSitemap = DEFAULT_
 
   // Generate sitemaps for each shop
   shopIds.forEach((shopId) => {
-    const shop = Shops.findOne({ _id: shopId }, { fields: { _id: 1 } });
-    if (!shop) {
-      throw new Meteor.Error("not-found", `Shop ${shopId} not found`);
-    }
-
-    // Delete existing sitemap documents for shop
-    Sitemaps.remove({ shopId });
-
-    // Allow custom shops to add arbitrary URLs to the sitemap
-    const basicUrls = Hooks.Events.run("onGenerateSitemap", ["BASE_URL"]);
-
-    // Get URLs for visible tags and products
-    const tagUrls = Tags.find({
-      shopId,
-      isVisible: true,
-      isDeleted: false
-    }, { fields: { slug: 1 } }).map((tag) => `BASE_URL/tag/${tag.slug}`);
-    const productUrls = Products.find({
-      shopId,
-      type: "simple",
-      isVisible: true,
-      isDeleted: false
-    }, { fields: { handle: 1 } }).map((product) => `BASE_URL/product/${product.handle}`);
-
-    // Build and save XML for sitemaps
-    const sitemapIndexUrls = [
-      ...buildPaginatedSitemaps(shopId, "pages", basicUrls, urlsPerSitemap),
-      ...buildPaginatedSitemaps(shopId, "tags", tagUrls, urlsPerSitemap),
-      ...buildPaginatedSitemaps(shopId, "products", productUrls, urlsPerSitemap)
-    ];
-
-    // Build and save sitemap index
-    Sitemaps.insert({
-      shopId,
-      xml: generateIndexXML(sitemapIndexUrls),
-      handle: "sitemap.xml",
-      createdAt: new Date()
-    });
+    generateSitemapsForShop(shopId, urlsPerSitemap);
   });
 
   const timeEnd = new Date();
@@ -71,52 +34,195 @@ export default function generateSitemaps(shopIds = [], urlsPerSitemap = DEFAULT_
 }
 
 /**
- * @name buildPaginatedSitemaps
- * @summary Builds paginated sitemaps, saves to Sitemaps collection, and returns URLs to add to sitemap index
+ * @name generateSitemapsForShop
+ * @private
+ * @summary Creates and stores the sitemaps for a single shop, if any need to be regenerated,
+ * meaning a product/tag has been updated, or a new custom URL is provided via the onGenerateSitemap hook
+ * @param {String} shopId - _id of shop to generate sitemaps for
+ * @param {Number} urlsPerSitemap - Max # of URLs per sitemap
+ * @returns {undefined}
+ */
+function generateSitemapsForShop(shopId, urlsPerSitemap) {
+  const shop = Shops.findOne({ _id: shopId }, { fields: { _id: 1 } });
+  if (!shop) {
+    throw new Meteor.Error("not-found", `Shop ${shopId} not found`);
+  }
+
+  const sitemapIndex = Sitemaps.findOne({ shopId, handle: "sitemap.xml" });
+  const hasNoSitemap = typeof sitemapIndex === "undefined";
+  const sitemapIndexItems = [];
+
+  // Generate sitemaps for basic pages
+  // Allow custom shops to add arbitrary URLs to the sitemap
+  const pageSitemapItems = Hooks.Events.run("onGenerateSitemap", [
+    {
+      url: "BASE_URL",
+      lastModDate: new Date() // Always assume homepage has updated each time generation runs
+    }
+  ]);
+  const pageSitemaps = rebuildPaginatedSitemaps(shopId, "pages", pageSitemapItems, urlsPerSitemap);
+  sitemapIndexItems.push(...pageSitemaps);
+
+  // Regenerate tag sitemaps, if a tag has been created or updated since last generation
+  const selector = { updatedAt: { $gt: sitemapIndex && sitemapIndex.createdAt } };
+  const options = { fields: { _id: 1 } };
+  const shouldRegenTagSitemaps = hasNoSitemap || !!Tags.findOne(selector, options);
+  if (shouldRegenTagSitemaps) {
+    const tagSitemapItems = getTagSitemapItems(shopId);
+    const tagSitemaps = rebuildPaginatedSitemaps(shopId, "tags", tagSitemapItems, urlsPerSitemap);
+    sitemapIndexItems.push(...tagSitemaps);
+  } else {
+    // Load existing tag sitemaps for index
+    sitemapIndexItems.push(...getExistingSitemapsForIndex(shopId, "tags"));
+  }
+
+  // Do the same for products
+  const shouldRegenProductSitemaps = hasNoSitemap || !!Products.findOne(selector, options);
+  if (shouldRegenProductSitemaps) {
+    const productSitemapItems = getProductSitemapItems(shopId);
+    const productSitemaps = rebuildPaginatedSitemaps(shopId, "products", productSitemapItems, urlsPerSitemap);
+    sitemapIndexItems.push(...productSitemaps);
+  } else {
+    sitemapIndexItems.push(...getExistingSitemapsForIndex(shopId, "products"));
+  }
+
+  // Regenerate sitemap index
+  Sitemaps.remove({ shopId, handle: "sitemap.xml" });
+  Sitemaps.insert({
+    shopId,
+    xml: generateIndexXML(sitemapIndexItems),
+    handle: "sitemap.xml",
+    createdAt: new Date()
+  });
+}
+
+/**
+ * @name rebuildPaginatedSitemaps
+ * @summary Deletes old sitemaps for type, builds new paginated sitemaps, saves to collection, and returns URLs to add
+ *  to sitemap index
  * @private
  * @param {String} shopId - _id of shop sitemaps are for
  * @param {String} typeHandle - type of sitemap, i.e. "pages", "tags", "products"
- * @param {Array} urls - Array of URL strings
+ * @param {Object[]} items - Array of items to add to generated sitemaps
+ * @param {String} items[].url - URL of page
+ * @param {Date} items[].lastModDate - Last time page was updated
  * @param {Number} urlsPerSitemap - Max # of URLs per sitemap
- * @returns {Array} - URLs of sitemaps, to add to sitemap index
+ * @returns {Object[]} - Array of items to add to sitemap index
  */
-function buildPaginatedSitemaps(shopId, typeHandle, urls, urlsPerSitemap) {
-  const sitemapUrls = [];
+function rebuildPaginatedSitemaps(shopId, typeHandle, items, urlsPerSitemap) {
+  // Remove old sitemaps for type
+  Sitemaps.remove({ shopId, handle: { $regex: new RegExp(`^sitemap-${typeHandle}`) } });
 
-  for (let currentPage = 1; currentPage <= Math.ceil(urls.length / urlsPerSitemap); currentPage += 1) {
+  const sitemapIndexItems = [];
+
+  for (let currentPage = 1; currentPage <= Math.ceil(items.length / urlsPerSitemap); currentPage += 1) {
     const startIndex = (currentPage - 1) * urlsPerSitemap;
     const endIndex = startIndex + urlsPerSitemap;
-    const sitemapPageUrls = urls.slice(startIndex, endIndex);
+    const sitemapPageItems = items.slice(startIndex, endIndex);
 
     Sitemaps.insert({
       shopId,
-      xml: generateSitemapXML(sitemapPageUrls),
+      xml: generateSitemapXML(sitemapPageItems),
       handle: `sitemap-${typeHandle}-${currentPage}.xml`,
       createdAt: new Date()
     });
-    sitemapUrls.push(`BASE_URL/sitemap-${typeHandle}-${currentPage}.xml`);
+
+    sitemapIndexItems.push({
+      url: `BASE_URL/sitemap-${typeHandle}-${currentPage}.xml`,
+      lastModDate: new Date()
+    });
   }
 
-  return sitemapUrls;
+  return sitemapIndexItems;
+}
+
+/**
+ * @name getTagSitemapItems
+ * @private
+ * @summary Loads visible tags and returns an array of items to add to the tags sitemap
+ * @param {String} shopId - _id of shop to load tags from
+ * @returns {Object[]} - Array of objects w/ url & lastModDate properties
+ */
+function getTagSitemapItems(shopId) {
+  return Tags.find({
+    shopId,
+    isVisible: true,
+    isDeleted: false
+  }, { fields: { slug: 1, updatedAt: 1 } }).map((tag) => {
+    const { slug, updatedAt } = tag;
+    return {
+      url: `BASE_URL/tag/${slug}`,
+      lastModDate: updatedAt
+    };
+  });
+}
+
+/**
+ * @name getProductSitemapItems
+ * @private
+ * @summary Loads visible products and returns an array of items to add to the products sitemap
+ * @param {String} shopId - _id of shop to load products from
+ * @returns {Object[]} - Array of objects w/ url & lastModDate properties
+ */
+function getProductSitemapItems(shopId) {
+  return Products.find({
+    shopId,
+    type: "simple",
+    isVisible: true,
+    isDeleted: false
+  }, { fields: { handle: 1, updatedAt: 1 } }).map((product) => {
+    const { handle, updatedAt } = product;
+    return {
+      url: `BASE_URL/product/${handle}`,
+      lastModDate: updatedAt
+    };
+  });
+}
+
+/**
+ * @name getExistingSitemapsForIndex
+ * @private
+ * @summary Loads existing sitemaps by type and returns an array of items for the sitemap index
+ * @param {String} shopId - _id of shop sitemaps are for
+ * @param {String} typeHandle - type of sitemaps to load, i.e. "products", "pages", or "tags"
+ * @returns {Object[]} - Array of objects w/ url & lastModDate properties
+ */
+function getExistingSitemapsForIndex(shopId, typeHandle) {
+  return Sitemaps.find({
+    shopId,
+    handle: { $regex: new RegExp(`^sitemap-${typeHandle}`) }
+  }, { fields: { handle: 1, createdAt: 1 } }).map((sitemap) => {
+    const { handle, createdAt } = sitemap;
+    return {
+      url: `BASE_URL/${handle}`,
+      lastModDate: createdAt
+    };
+  });
 }
 
 /**
  * @name generateIndexXML
  * @summary Generates & returns XML for a sitemap index (doc that points to sitemaps)
  * @private
- * @param {Array} urls - Array of URL strings
+ * @param {Object[]} items - Array of items to add to sitemap index
+ * @param {String} items[].url - URL of page
+ * @param {Date} items[].lastModDate - Last time sitemap was updated
  * @returns {String} - Generated XML
  */
-function generateIndexXML(urls) {
+function generateIndexXML(items) {
   let xml = `<?xml version="1.0" encoding="UTF-8"?>
     <sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">`;
 
-  urls.forEach((url) => {
+  items.forEach((item) => {
+    const { url, lastModDate } = item;
+    const lastMod = getLastModStr(lastModDate);
     xml += `
       <sitemap>
         <loc>URL</loc>
         <lastmod>LAST_MOD</lastmod>
-      </sitemap>`.replace("URL", url);
+      </sitemap>`
+      .replace("URL", url)
+      .replace("LAST_MOD", lastMod);
   });
 
   xml += "\n</sitemapindex>";
@@ -125,24 +231,41 @@ function generateIndexXML(urls) {
 }
 
 /**
+ * @name getLastModStr
+ * @private
+ * @summary Given a date, returns a formatted date string
+ * @param {Date} date - Date to format
+ * @returns {String} - in the format of YYYY-MM-DD
+ */
+function getLastModStr(date) {
+  return `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
+}
+
+/**
  * @name generateSitemapXML
  * @summary Generates & returns XML for a sitemap document
  * @private
- * @param {Array} urls - Array of URL strings
+ * @param {Object[]} items - Array of items to add to sitemap
+ * @param {String} items[].url - URL of page
+ * @param {Date} items[].lastModDate - Last time page was updated
  * @returns {String} - Generated XML
  */
-function generateSitemapXML(urls) {
+function generateSitemapXML(items) {
   let xml = `<?xml version="1.0" encoding="UTF-8"?>
     <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">`;
 
-  urls.forEach((url) => {
+  items.forEach((item) => {
+    const { url, lastModDate } = item;
+    const lastMod = getLastModStr(lastModDate);
     xml += `
       <url>
         <loc>URL</loc>
         <lastmod>LAST_MOD</lastmod>
         <changefreq>daily</changefreq>
         <priority>0.8</priority>
-      </url>`.replace("URL", url);
+      </url>`
+      .replace("URL", url)
+      .replace("LAST_MOD", lastMod);
   });
 
   xml += "\n</urlset>";

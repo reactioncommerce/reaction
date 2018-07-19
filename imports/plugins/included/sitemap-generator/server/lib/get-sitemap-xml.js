@@ -24,10 +24,5 @@ export default function getSitemapXML(shopId, handle) {
   const urlNoTrailingSlash = Meteor.absoluteUrl().slice(0, -1);
   xml = xml.replace(/BASE_URL/g, urlNoTrailingSlash);
 
-  // Replace LAST_MOD with today's date
-  const now = new Date();
-  const lastMod = `${now.getFullYear()}-${now.getMonth() + 1}-${now.getDate()}`;
-  xml = xml.replace(/LAST_MOD/g, lastMod);
-
   return xml;
 }
