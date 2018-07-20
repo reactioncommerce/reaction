@@ -1,15 +1,76 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { compose } from "recompose";
+import { Query } from "react-apollo";
+import gql from "graphql-tag";
 import { registerComponent, composeWithTracker } from "@reactioncommerce/reaction-components";
 import { Meteor } from "meteor/meteor";
 import { Session } from "meteor/session";
 import { Reaction } from "/client/api";
 import { ITEMS_INCREMENT } from "/client/config/defaults";
 import { Catalog, Tags, Shops } from "/lib/collections";
+import withPrimaryShopId from "/imports/plugins/core/graphql/client/hocs/withPrimaryShopId";
+import { loadMore } from "/imports/plugins/core/graphql/lib/helpers/pagination";
 import ProductGridCustomer from "../components/customer/productGrid";
+import withCatalogItems from "../hocs/withCatalogItems";
 
-const wrapComponent = (Comp) => (
+class ProductsContainerCustomer extends Component {
+  static propTypes = {
+    shopId: PropTypes.string,
+    catalogItems: PropTypes.object,
+    fetchMore: PropTypes.func.isRequired,
+  };
+
+  constructor(props) {
+    super(props);
+    window.prerenderReady = false;
+    this.state = {
+      isLoading: false
+    };
+  }
+
+  handleLoadProducts = () => {
+    this.setState({ isLoading: true });
+    const { catalogItems, fetchMore } = this.props;
+    const { pageInfo } = catalogItems;
+    loadMore({
+      queryName: "catalogItems",
+      fetchMore,
+      pageInfo,
+      limit: ITEMS_INCREMENT
+    }, () => {
+      this.setState({ isLoading: false });
+    });
+  };
+
+  render() {
+    const { catalogItems, fetchMore } = this.props;
+    const { isLoading } = this.state;
+    const { pageInfo } = catalogItems;
+    const { hasNextPage } = pageInfo;
+    const products = catalogItems.edges.map((edge) => {
+      return edge.node.product;
+    });
+
+    return (
+      <ProductGridCustomer
+        canLoadMoreProducts={hasNextPage}
+        showNotFound={false}
+        isLoading={isLoading}
+        loadProducts={this.handleLoadProducts}
+        products={products}
+        shopCurrencyCode={Reaction.getPrimaryShopCurrency()}
+      />
+    );
+  }
+}
+
+registerComponent("ProductsCustomer", ProductsContainerCustomer, [
+  withPrimaryShopId,
+  withCatalogItems
+]);
+
+  /*
   class ProductsContainer extends Component {
     static propTypes = {
       canLoadMoreProducts: PropTypes.bool,
@@ -117,4 +178,4 @@ registerComponent("ProductsCustomer", ProductGridCustomer, [
 export default compose(
   composeWithTracker(composer),
   wrapComponent
-)(ProductGridCustomer);
+)(ProductGridCustomer);*/

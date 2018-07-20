@@ -14,7 +14,7 @@ class ProductGridItem extends Component {
       isLowQuantity: PropTypes.bool,
       isSoldOut: PropTypes.bool,
       media: PropTypes.arrayOf(PropTypes.object),
-      pricing: PropTypes.object,
+      pricing: PropTypes.array,
       primaryImage: PropTypes.object,
       slug: PropTypes.string,
       title: PropTypes.string
@@ -144,7 +144,7 @@ class ProductGridItem extends Component {
 
   renderGridContent() {
     const { product, shopCurrencyCode } = this.props;
-
+    const pricing = product.pricing.find((price) => price.currency.code === shopCurrencyCode);
     return (
       <div className="grid-content">
         <a
@@ -157,7 +157,7 @@ class ProductGridItem extends Component {
         >
           <div className="overlay">
             <div className="overlay-title">{product.title}</div>
-            <div className="currency-symbol">{product.pricing[shopCurrencyCode].displayPrice}</div>
+            <div className="currency-symbol">{pricing.displayPrice}</div>
           </div>
         </a>
       </div>

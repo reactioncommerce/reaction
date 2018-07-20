@@ -8,7 +8,7 @@ class ProductGrid extends Component {
     canLoadMoreProducts: PropTypes.bool,
     loadProducts: PropTypes.func,
     products: PropTypes.array,
-    productsSubscription: PropTypes.object,
+    isLoading: PropTypes.bool.isRequired,
     shopCurrencyCode: PropTypes.string.isRequired
   }
 
@@ -34,18 +34,18 @@ class ProductGrid extends Component {
 
   // render the loading spinner
   renderLoadingSpinner() {
-    const { productsSubscription: { ready } } = this.props;
+    const { isLoading } = this.props;
     // if the products catalog is not ready
     // show the loading spinner
-    if (!ready()) return <Components.Loading />;
+    if (isLoading) return <Components.Loading />;
   }
 
   // render the No Products Found message
   renderNotFound() {
-    const { products, productsSubscription: { ready } } = this.props;
+    const { products, isLoading } = this.props;
     // if the products subscription is ready & the products array is undefined or empty
     // show the Not Found message
-    if (ready() && (!Array.isArray(products) || !products.length)) {
+    if (isLoading === false && (!Array.isArray(products) || !products.length)) {
       return (
         <Components.NotFound
           i18nKeyTitle="productGrid.noProductsFound"
