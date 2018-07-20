@@ -1,8 +1,8 @@
 import Velocity from "velocity-animate";
 import { compose, withProps } from "recompose";
 import { registerComponent, composeWithTracker } from "@reactioncommerce/reaction-components";
-import { Cart } from "/lib/collections";
 import { Reaction } from "/client/api";
+import getCart from "/imports/plugins/core/cart/both/util/getCart";
 import CartIcon from "../components/cartIcon";
 
 const handlers = {
@@ -16,12 +16,8 @@ const handlers = {
 };
 
 const composer = (props, onData) => {
-  const subscription = Reaction.Subscriptions.Cart;
-
-  if (subscription.ready()) {
-    const cart = Cart.findOne();
-    onData(null, { cart });
-  }
+  const { cart } = getCart();
+  onData(null, { cart });
 };
 
 registerComponent("CartIcon", CartIcon, [

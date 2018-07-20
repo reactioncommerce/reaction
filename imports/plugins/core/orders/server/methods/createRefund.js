@@ -5,6 +5,7 @@ import { check, Match } from "meteor/check";
 import { Orders, Packages } from "/lib/collections";
 import { PaymentMethodArgument } from "/lib/collections/schemas";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
+import sendOrderEmail from "../util/sendOrderEmail";
 
 /**
  * @name orders/refund/create
@@ -32,7 +33,7 @@ export default function createRefund(orderId, paymentMethod, amount, sendEmail =
     throw new Meteor.Error("access-denied", "Access Denied");
   }
   const processor = paymentMethod.processor.toLowerCase();
-  const order = Orders.findOne(orderId);
+  const order = Orders.findOne({ _id: orderId });
   const { transactionId } = paymentMethod;
 
   const packageId = paymentMethod.paymentPackageId;
@@ -95,8 +96,8 @@ export default function createRefund(orderId, paymentMethod, amount, sendEmail =
 
   // Send email to notify customer of a refund
   if (checkSupportedMethods.includes("De-authorize")) {
-    Meteor.call("orders/sendNotification", order);
+    sendOrderEmail(order);
   } else if (orderMode === "capture" && sendEmail) {
-    Meteor.call("orders/sendNotification", order, "refunded");
+    sendOrderEmail(order, "refunded");
   }
 }

@@ -4,6 +4,8 @@ import { createdAtAutoValue, updatedAtAutoValue } from "./helpers";
 import { Address } from "./address";
 import { Metafield } from "./metafield";
 
+SimpleSchema.extendOptions(["mockValue"]);
+
 /**
  * @name TaxSettings
  * @memberof Schemas
@@ -68,7 +70,8 @@ export const Profile = new SimpleSchema({
   "currency": {
     label: "User Currency",
     type: String,
-    optional: true
+    optional: true,
+    mockValue: null
   },
   "preferences": {
     label: "User preferences",

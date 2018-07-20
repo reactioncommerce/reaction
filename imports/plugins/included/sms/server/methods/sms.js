@@ -1,7 +1,7 @@
 import Logger from "@reactioncommerce/logger";
 import { Meteor } from "meteor/meteor";
 import { check } from "meteor/check";
-import { Sms } from "/lib/collections";
+import { Accounts, Sms } from "/lib/collections";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
 import { formatPhoneNumber } from "/lib/api";
 
@@ -51,19 +51,19 @@ Meteor.methods({
    * @memberof SMS/Methods
    * @summary This send the sms to the user
    * @param {String} message - The message to send
-   * @param {String} userId - The user to receive the message
+   * @param {String} accountId - The account to receive the message
    * @param {String} shopId - The current shopId
    * @return {object} returns result
    */
-  "sms/send": (message, userId, shopId) => {
+  "sms/send": (message, accountId, shopId) => {
     check(message, String);
-    check(userId, String);
+    check(accountId, String);
     check(shopId, String);
 
-    const user = Meteor.users.findOne(userId);
-    if (!user) return;
+    const account = Accounts.findOne({ _id: accountId });
+    if (!account) return;
 
-    const addressBook = user.profile && user.profile.addressBook;
+    const addressBook = account.profile && account.profile.addressBook;
 
     // check for addressBook phone
     const phone = addressBook && addressBook.phone;

@@ -2,7 +2,7 @@ import { Meteor } from "meteor/meteor";
 import { check, Match } from "meteor/check";
 import { Roles } from "meteor/alanning:roles";
 import { ReactiveAggregate } from "./reactiveAggregate";
-import { MediaRecords, Orders } from "/lib/collections";
+import { Accounts, MediaRecords, Orders } from "/lib/collections";
 import { Counts } from "meteor/tmeasday:publish-counts";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
 
@@ -50,7 +50,7 @@ function createAggregate(shopId, sort = { createdAt: -1 }, limit = 0, query = {}
         tax: 1,
         email: 1,
         createdAt: 1,
-        userId: 1,
+        accountId: 1,
         taxCalculationFailed: 1,
         bypassAddressValidation: 1
       }
@@ -85,9 +85,10 @@ Meteor.publish("Orders", function () {
   if (Roles.userIsInRole(this.userId, ["admin", "owner", "orders"], shopId)) {
     ReactiveAggregate(this, Orders, aggregate, aggregateOptions);
   } else {
+    const account = Accounts.findOne({ userId: this.userId });
     return Orders.find({
-      shopId,
-      userId: this.userId
+      accountId: account._id,
+      shopId
     });
   }
 });
@@ -118,9 +119,10 @@ Meteor.publish("PaginatedOrders", function (query, options) {
     Counts.publish(this, "orders-count", Orders.find(), { noReady: true });
     ReactiveAggregate(this, Orders, aggregate, aggregateOptions);
   } else {
+    const account = Accounts.findOne({ userId: this.userId });
     return Orders.find({
-      shopId,
-      userId: this.userId
+      accountId: account._id,
+      shopId
     });
   }
 });
@@ -128,53 +130,58 @@ Meteor.publish("PaginatedOrders", function (query, options) {
 /**
  * account orders
  */
-Meteor.publish("AccountOrders", function (userId, currentShopId) {
-  check(userId, String);
-  check(currentShopId, Match.OptionalOrNull(String));
+Meteor.publish("AccountOrders", function (accountId) {
+  check(accountId, String);
 
-  if (this.userId === "") {
-    return this.ready();
-  }
-  const shopId = currentShopId || Reaction.getShopId();
+  const shopId = Reaction.getShopId();
   if (!shopId) {
     return this.ready();
   }
+
+  const account = this.userId ? Accounts.findOne({ userId: this.userId }) : null;
+  const contextAccountId = account && account._id;
+  if (accountId !== contextAccountId && !Reaction.hasPermission("orders", Meteor.userId(), shopId)) {
+    return this.ready();
+  }
+
   return Orders.find({
-    userId,
+    accountId,
     shopId
+  }, {
+    sort: {
+      createdAt: -1
+    },
+    limit: 25
   });
 });
 
 /**
  * completed cart order
  */
-Meteor.publish("CompletedCartOrder", function (userId, cartId) {
-  check(userId, Match.OneOf(String, null));
+Meteor.publish("CompletedCartOrder", (cartId) => {
   check(cartId, String);
-  if (this.userId === null) {
-    return this.ready();
-  }
-  if (typeof userId === "string" && userId !== this.userId) {
-    return this.ready();
-  }
+
+  const userId = Meteor.userId();
+  const account = userId ? Accounts.findOne({ userId }) : null;
+  const accountId = account && account._id;
 
   return Orders.find({
-    cartId,
-    userId
-  });
+    accountId,
+    cartId
+  }, { limit: 1 });
 });
 
 Meteor.publish("OrderImages", (orderId) => {
   check(orderId, Match.Optional(String));
   if (!orderId) return [];
 
-  const order = Orders.findOne(orderId);
+  const order = Orders.findOne({ _id: orderId });
   const { items: orderItems } = order || {};
   if (!Array.isArray(orderItems)) return [];
 
   // Ensure each of these are unique
-  const productIds = [...new Set(orderItems.map((item) => item.product._id))];
-  const variantIds = [...new Set(orderItems.map((item) => item.variants._id))];
+  const productIds = [...new Set(orderItems.map((item) => item.productId))];
+  const variantIds = [...new Set(orderItems.map((item) => item.variantId))];
 
   // return image for each the top level product or the variant and let the client code decide which to display
   return MediaRecords.find({

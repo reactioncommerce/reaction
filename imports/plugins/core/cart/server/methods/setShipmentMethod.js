@@ -4,6 +4,7 @@ import { Meteor } from "meteor/meteor";
 import { check } from "meteor/check";
 import * as Collections from "/lib/collections";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
+import getCart from "/imports/plugins/core/cart/both/util/getCart";
 
 /**
  * @method cart/setShipmentMethod
@@ -17,18 +18,7 @@ export default function setShipmentMethod(cartId, method) {
   check(cartId, String);
   Reaction.Schemas.ShippingMethod.validate(method);
 
-  // get current cart
-  const cart = Collections.Cart.findOne({
-    _id: cartId,
-    userId: Meteor.userId()
-  });
-  if (!cart) {
-    Logger.error(`Cart not found for user: ${this.userId}`);
-    throw new Meteor.Error(
-      "not-found",
-      "Cart not found for user with such id"
-    );
-  }
+  const { cart } = getCart(cartId, { throwIfNotFound: true });
 
   // Sets all shipping methods to the one selected
   // TODO: Accept an object of shopId to method map to ship via different methods per shop

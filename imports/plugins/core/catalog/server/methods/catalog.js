@@ -366,7 +366,7 @@ function updateCatalogProduct(userId, selector, modifier, validation) {
 
   const result = Products.update(selector, modifier, validation);
 
-  Hooks.Events.run("afterUpdateCatalogProduct", product, { modifier });
+  Hooks.Events.run("afterUpdateCatalogProduct", product._id, { modifier });
 
   return result;
 }
@@ -731,7 +731,6 @@ Meteor.methods({
       const newAncestors = [];
       ancestors.map((oldId) => {
         const pair = getIds(oldId);
-        // TODO do we always have newId on this step?
         newAncestors.push(pair[0].newId);
         return newAncestors;
       });

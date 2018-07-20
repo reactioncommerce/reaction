@@ -1,7 +1,7 @@
 import { setTimeout } from "timers";
 import { compose } from "recompose";
 import { registerComponent, composeWithTracker } from "@reactioncommerce/reaction-components";
-import { Cart } from "/lib/collections";
+import getCart from "/imports/plugins/core/cart/both/util/getCart";
 import CartSubTotal from "../components/cartSubTotal";
 
 function composer(props, onData) {
@@ -12,7 +12,7 @@ function composer(props, onData) {
   let stopped = false;
   setTimeout(() => {
     if (stopped) return;
-    const cart = Cart.findOne();
+    const { cart } = getCart();
     if (cart) {
       onData(null, {
         cartSubTotal: cart.getSubTotal(),

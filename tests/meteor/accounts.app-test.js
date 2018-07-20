@@ -74,7 +74,7 @@ describe("Account Meteor method ", function () {
       const sessionId = Random.id(); // Required for creating a cart
       // editing your address book also updates your cart, so be sure there
       // is a cart present
-      Meteor.call("cart/createCart", fakeAccount.userId, sessionId);
+      Meteor.call("cart/createCart", sessionId);
     });
 
     it("should allow user to add new addresses", function () {
@@ -181,7 +181,7 @@ describe("Account Meteor method ", function () {
         Meteor.call("accounts/addressBookAdd", newAddress);
 
         // now we need to get address ids from cart and compare their
-        const cart = Cart.findOne({ userId: fakeAccount.userId });
+        const cart = Cart.findOne({ accountId: fakeAccount._id });
         expect(cart.shipping[0].address._id).to.equal(newAddress._id);
         expect(cart.billing[0].address._id).to.equal(newAddress._id);
       }
@@ -193,7 +193,7 @@ describe("Account Meteor method ", function () {
       const sessionId = Random.id(); // Required for creating a cart
       // editing your address book also updates your cart, so be sure there
       // is a cart present
-      Meteor.call("cart/createCart", fakeAccount.userId, sessionId);
+      Meteor.call("cart/createCart", sessionId);
     });
 
     it("should allow user to edit addresses", function () {
@@ -282,7 +282,7 @@ describe("Account Meteor method ", function () {
       });
       Meteor.call("accounts/addressBookUpdate", address);
 
-      let cart = Cart.findOne({ userId: fakeAccount.userId });
+      let cart = Cart.findOne({ accountId: fakeAccount._id });
       // "cart/unsetAddresses" unsets cart.type.address, not cart.type,
       // so we ensure that either cart.type (if the address was never
       // created) or cart.type.address (if it had been unset) are now undefined
@@ -294,7 +294,7 @@ describe("Account Meteor method ", function () {
         isBillingDefault: true
       });
       Meteor.call("accounts/addressBookUpdate", address);
-      cart = Cart.findOne({ userId: fakeAccount.userId });
+      cart = Cart.findOne({ accountId: fakeAccount._id });
       expect(cart).to.not.be.undefined;
 
       expect(cart.billing[0].address._id).to.equal(address._id);
@@ -335,7 +335,7 @@ describe("Account Meteor method ", function () {
     );
 
     it("should update cart default addresses via `type` argument", function () {
-      const { userId } = fakeAccount;
+      const { accountId } = fakeAccount;
       // clean account
       Meteor.call(
         "accounts/addressBookRemove",
@@ -355,7 +355,7 @@ describe("Account Meteor method ", function () {
 
       Meteor.call("accounts/addressBookUpdate", address, null, "isBillingDefault");
       Meteor.call("accounts/addressBookUpdate", address, null, "isShippingDefault");
-      const cart = Cart.findOne({ userId });
+      const cart = Cart.findOne({ accountId });
       expect(cart.billing[0].address._id).to.equal(address._id);
       expect(cart.shipping[0].address._id).to.equal(address._id);
     });
@@ -364,9 +364,9 @@ describe("Account Meteor method ", function () {
   describe("addressBookRemove", function () {
     beforeEach(function () {
       const sessionId = Random.id(); // Required for creating a cart
-      // editing your address book also udpates your cart, so be sure there
+      // editing your address book also updates your cart, so be sure there
       // is a cart present
-      Meteor.call("cart/createCart", fakeAccount.userId, sessionId);
+      Meteor.call("cart/createCart", sessionId);
     });
 
     it("should allow user to remove address", function () {
