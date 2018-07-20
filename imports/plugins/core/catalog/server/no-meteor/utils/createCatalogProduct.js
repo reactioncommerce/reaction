@@ -12,10 +12,13 @@ import isSoldOut from "./isSoldOut";
  * @param {Object} variant The variant from Products collection
  * @param {Object} variantPriceInfo The result of calling getPriceRange for this price or all child prices
  * @param {String} shopCurrencyCode The shop currency code for the shop to which this product belongs
+ * @param {Object} collections Raw mongo collections
  * @private
  * @returns {Object} The transformed variant
  */
-function xformVariant(variant, variantPriceInfo, shopCurrencyCode) {
+async function xformVariant(variant, variantPriceInfo, shopCurrencyCode, collections) {
+  const catalogVariantMedia = await getCatalogVariantMedia(variant._id, collections);
+  const primaryImage = catalogVariantMedia.find(({ toGrid }) => toGrid === 1) || null;
   return {
     _id: variant._id,
     barcode: variant.barcode,
@@ -29,6 +32,7 @@ function xformVariant(variant, variantPriceInfo, shopCurrencyCode) {
     isTaxable: !!variant.taxable,
     length: variant.length,
     lowInventoryWarningThreshold: variant.lowInventoryWarningThreshold,
+    media: catalogVariantMedia,
     metafields: variant.metafields,
     minOrderQuantity: variant.minOrderQuantity,
     optionTitle: variant.optionTitle,
@@ -43,6 +47,7 @@ function xformVariant(variant, variantPriceInfo, shopCurrencyCode) {
         price: typeof variant.price === "number" ? variant.price : null
       }
     },
+    primaryImage,
     shopId: variant.shopId,
     sku: variant.sku,
     taxCode: variant.taxCode,
