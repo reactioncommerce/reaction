@@ -6,7 +6,7 @@ const mockMediaUrl = jest
   .fn()
   .mockName("fileRecord.url")
   .mockImplementation(({ store }) => `${store}/path/to/image.jpg`);
-const mockProductId = "999";
+const mockVariantId = "345";
 const mockMediaArray = [
   {
     metadata: {
@@ -58,6 +58,6 @@ const mockCatalogProductMediaArray = [
 
 test("expect to pass", async () => {
   mockCollections.Media.find.mockReturnValueOnce(Promise.resolve(mockMediaArray));
-  const spec = await getCatalogVariantMedia(mockProductId, mockCollections);
+  const spec = await getCatalogVariantMedia(mockVariantId, mockCollections);
   expect(spec).toEqual(mockCatalogProductMediaArray);
 });
