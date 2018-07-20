@@ -7,6 +7,9 @@ type Cart implements Node {
   "The account that owns the cart. Some carts are created for anonymus users. Anonymous carts have a null account."
   account: Account
 
+  "Holds all information collected for a cart during checkout"
+  checkout: Checkout
+
   "The date and time at which the cart was created, which is when the first item was added to it."
   createdAt: DateTime!
 
