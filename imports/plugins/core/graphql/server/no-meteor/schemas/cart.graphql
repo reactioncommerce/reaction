@@ -54,10 +54,10 @@ type CartItemEdge implements NodeEdge {
 
 type CartItemAttribute {
   "The attribute label, e.g., Color"
-  label: String!
+  label: String
 
   "The attribute value, e.g., Blue"
-  value: String!
+  value: String
 }
 
 """
@@ -67,39 +67,60 @@ type CartItem implements Node {
   "The cart item ID"
   _id: ID!
 
-  "The date and time at which this item was added to the associated cart. If an item is added, removed, and then added again, this will reflect the most recent addition."
+  """"
+  The date and time at which this item was first added to the associated cart.
+  If an item is added, removed, and then added again, this will reflect the most recent addition.
+  However, if an item is added twice, the quantity will increase but this date will remain
+  the initial added date.
+  """
   addedAt: DateTime!
 
   """
-  Additional attributes of the chosen item. For example, if this item is for a product, socks, where "blue" and "small"
+  FUTURE. Additional attributes of the chosen item. For example, if this item is for a product, socks, where "blue" and "small"
   options were chosen for some configurable attributes, then "color:blue" and "size:small" will be indicated here.
   """
   attributes: [CartItemAttribute]
 
-  "The date and time at which the cart item was created. If an item is added, removed, and then added again, the original item is destroyed and this field will reflect the time it was created for the most recent addition."
-  createdAt: DateTime!
+  "The current comparison (e.g., MSRP) price of the item"
+  compareAtPrice: Money
 
-  """
-  The current quantity at the time of fetching this cart item. Use for displaying stock messages like "only 3 left!"
-  """
+  "The quantity of this item currently available to order"
   currentQuantity: Int
 
-  "The URL for a picture of the item"
-  imageUrl: String
+  """
+  The date and time at which the cart item was created. If an item is added, removed, and then added again,
+  the original item is destroyed and this field will reflect the time it was created for the most recent addition.
+  """
+  createdAt: DateTime!
+
+  "The URLs for a picture of the item in various sizes"
+  imageURLs: ImageSizes
+
+  "Is this item currently backordered?"
+  isBackorder: Boolean!
+
+  "Is this item quantity available currently below it's low quantity threshold?"
+  isLowQuantity: Boolean!
+
+  "Is this item currently sold out?"
+  isSoldOut: Boolean!
 
   "Arbitrary additional metadata about this cart item."
   metafields: [Metafield]
+
+  "The selected variant optionTitle"
+  optionTitle: String
 
   "Packing information such as item weight, height, length, and depth. Used for calculating shipping rates."
   parcel: ShippingParcel
 
   "The current price of the item"
-  price: ProductPricingInfo!
+  price: Money!
 
   # This will permit us to perform calculations based on how the price has changed since
   # the item was added to the cart.
   "The price at which this item was listed when it was added to the cart"
-  priceWhenAdded: ProductPricingInfo!
+  priceWhenAdded: Money!
 
   "The product and chosen options"
   productConfiguration: ProductConfiguration!
@@ -109,6 +130,9 @@ type CartItem implements Node {
 
   "The type of product, used to display cart items differently"
   productType: String
+
+  "The product vendor"
+  productVendor: String
 
   "The quantity of this item that has been added to the cart. This must be a positive integer. Remove this `CartItem` from it's associated cart if you want `0` of this item."
   quantity: Int!
@@ -125,6 +149,9 @@ type CartItem implements Node {
 
   "The date and time at which this item was last updated"
   updatedAt: DateTime!
+
+  "The selected variant title"
+  variantTitle: String
 }
 
 "Product configuration data"
@@ -163,6 +190,7 @@ extend type Query {
 # Inputs
 ####################
 
+"The input necessary to create a cart"
 input CreateCartInput {
   "Array of items to add to new cart."
   items: [CartItemInput]!  # NOTE: Don't allow creation of an empty cart
@@ -174,28 +202,25 @@ input CreateCartInput {
   clientMutationId: String
 }
 
+"Information about an item to add to a cart"
 input CartItemInput {
   "Arbitrary additional metadata about this cart item."
   metafields: [MetafieldInput]
+
+  """
+  The price of this item, for validating that this matches the actual price in the system,
+  in case the client has stale data.
+  """
+  price: MoneyInput!
 
   "The product and chosen options"
   productConfiguration: ProductConfigurationInput!
 
   "The number of this item to add to the cart"
   quantity: Int!
-
-  "ShopId from which the product is added."
-  shopId: ID!
-
-  # Server to ensure that the client price is the same as the server price
-  # Inform customer that prices are different and offer to "add anyway" or "cancel" if not.
-  "The current price of this item"
-  price: Float!
-
-  "The currency for the `price` and `priceWhenAdded` fields"
-  priceCurrency: String!
 }
 
+"Input that defines a single configuration of a product"
 input ProductConfigurationInput {
   "The Product ID"
   productId: ID!
@@ -208,22 +233,28 @@ input AddCartItemsInput {
   "The cart ID"
   cartId: ID!
 
+  "An optional string identifying the mutation call, which will be returned in the response payload"
+  clientMutationId: String
+
   "Array of items to be added to the cart"
   items: [CartItemInput]!
 
-  "An optional string identifying the mutation call, which will be returned in the response payload"
-  clientMutationId: String
+  "If this cart is anonymous, provide the `token` that was returned in the `CreateCartPayload`"
+  token: String
 }
 
 input RemoveCartItemsInput {
   "The cart ID"
-  cartId: ID!,
+  cartId: ID!
 
   "Array of items to remove from the cart."
   cartItemIds: [ID]!
 
   "An optional string identifying the mutation call, which will be returned in the response payload"
   clientMutationId: String
+
+  "If this cart is anonymous, provide the `token` that was returned in the `CreateCartPayload`"
+  token: String
 }
 
 input UpdateCartItemInput {
@@ -238,11 +269,14 @@ input UpdateCartItemsQuantityInput {
   "The cart ID"
   cartId: ID!
 
+  "An optional string identifying the mutation call, which will be returned in the response payload"
+  clientMutationId: String
+
   "Array of cart item quantities to update."
   items: [UpdateCartItemInput]!
 
-  "An optional string identifying the mutation call, which will be returned in the response payload"
-  clientMutationId: String
+  "If this cart is anonymous, provide the `token` that was returned in the `CreateCartPayload`"
+  token: String
 }
 
 input ReconcileCartInput {
@@ -259,31 +293,104 @@ input ReconcileCartInput {
   clientMutationId: String
 }
 
-
 ####################
 # Payloads
 # These types are used as return values for mutation calls
 ####################
 
+"Details about a CartItemInput that failed to be added to a cart due to a price mismatch"
+type IncorrectPriceFailureDetails {
+  "The current price in the system for this product configuration in the requested currency"
+  currentPrice: Money!
+
+  "The productConfiguration that was provided with the CartItemInput that caused this failure"
+  productConfiguration: ProductConfiguration!
+
+  "The price that was provided with the CartItemInput that caused this failure"
+  providedPrice: Money!
+}
+
+"Details about a CartItemInput that failed to be added to a cart due to a quantity error"
+type MinOrderQuantityFailureDetails {
+  "The minimum quantity that can be added to a cart"
+  minOrderQuantity: Int!
+
+  "The productConfiguration that was provided with the CartItemInput that caused this failure"
+  productConfiguration: ProductConfiguration!
+
+  "The quantity that was provided with the CartItemInput that caused this failure"
+  quantity: Int!
+}
+
 "The payload returned from the `createCart` mutation call"
 type CreateCartPayload {
-  "The modified cart"
-  cart: Cart!
+  """
+  The created cart, if at least one item could be added. Otherwise null, and you should check
+  `incorrectPriceFailures` and `minOrderQuantityFailures` for information necessary to display
+  errors to the shopper.
+  """
+  cart: Cart
 
   "The same string you sent with the mutation params, for matching mutation calls with their responses"
   clientMutationId: String
-}
 
+  """
+  Clients should check to see if any items failed to be added due to the price not matching the current price.
+  In general, a user interface should display the correct current prices to the shopper, confirm that they still
+  want to add the items, and then call `createCart` or `addCartItems` to do so.
+
+  Note that this field will always exist but may be an empty array if there were no failures of this type.
+  """
+  incorrectPriceFailures: [IncorrectPriceFailureDetails]!
+
+  """
+  Clients should check to see if any items failed to be added due to quantity being below the minimum order
+  quantity defined for the product variant. In general, a user interface should display the minimum order
+  quantity to the shopper and allow them to add that quantity or greater.
+
+  Note that this field will always exist but may be an empty array if there were no failures of this type.
+  """
+  minOrderQuantityFailures: [MinOrderQuantityFailureDetails]!
+
+  """
+  If no identity token is provided with the request, then this mutation will create an anonymous cart. All
+  anonymous carts have a token associated with them, which allows the client that created the cart to access
+  that cart in the future. This is the only time this token is returned, so clients must store this securely
+  in some type of local storage solution, and then send it along with all future anonymous cart queries and
+  mutations.
+  """
+  token: String
+}
 
 "The payload returned from the `addCartItems` mutation call"
 type AddCartItemsPayload {
-  "The modified cart"
-  cart: Cart!
+  """
+  The modified cart. You should check `incorrectPriceFailures` and `minOrderQuantityFailures` for
+  information necessary to display errors to the shopper. Some items may not have been added.
+  """
+  cart: Cart
 
   "The same string you sent with the mutation params, for matching mutation calls with their responses"
   clientMutationId: String
-}
 
+  """
+  Clients should check to see if any items failed to be added due to the price not matching the current price.
+  In general, a user interface should display the correct current prices to the shopper, confirm that they still
+  want to add the items, and then call `createCart` or `addCartItems` to do so.
+
+  Note that this field will always exist but may be an empty array if there were no failures of this type.
+  """
+  incorrectPriceFailures: [IncorrectPriceFailureDetails]!
+
+  """
+  Clients should check to see if any items failed to be added due to quantity being below the minimum order
+  quantity defined for the product variant. In general, a user interface should display the minimum order
+  quantity to the shopper and allow them to add that quantity or greater.
+
+  Note that this field will always exist but may be an empty array if there were no failures of this type.
+  """
+  minOrderQuantityFailures: [MinOrderQuantityFailureDetails]!
+}
 
 "The payload returned from the `removeCartItems` mutation call"
 type RemoveCartItemsPayload {
@@ -294,7 +401,6 @@ type RemoveCartItemsPayload {
   clientMutationId: String
 }
 
-
 "The payload returned from the `updateCartItems` mutation call"
 type UpdateCartItemsQuantityPayload {
   "The modified cart"
@@ -303,7 +409,6 @@ type UpdateCartItemsQuantityPayload {
   "The same string you sent with the mutation params, for matching mutation calls with their responses"
   clientMutationId: String
 }
-
 
 "The payload returned from the `reconcileCart` mutation call"
 type ReconcileCartPayload {
@@ -319,30 +424,12 @@ type ReconcileCartPayload {
 ####################
 
 extend type Mutation {
-  # Enforce that at least one item is provided so we don't create empty carts.
-  #
-  # IMPORTANT: CartID must be treated as (or more) securely as a session ID. We
-  # need to prevent brute-force cart id collisions.
-  #
-  #   See: https://www.owasp.org/index.php/Session_Management_Cheat_Sheet
-  #
-  #   * ID value must provide at least 64 bits of entropy (if a good PRNG is
-  #     used, this value is estimated to be half the length of the session ID).
-  #   * If a session ID with an entropy of 64 bits is used, it will take an
-  #     attacker at least 292 years to successfully guess a valid session ID,
-  #     assuming the attacker can try 10,000 guesses per second with 100,000
-  #     valid simultaneous sessions available in the web application [2].
-  #
   "Create a new cart."
   createCart(input: CreateCartInput!): CreateCartPayload!
 
-  # Add an item to cart.
-  # If the item already already exists in the cart, then increment quantity.
   "Add item(s) to a cart."
   addCartItems(input: AddCartItemsInput!): AddCartItemsPayload!
 
-  # Once added to cart, items should be referenced by their cart item ID.
-  # Enforce that at least one item is in the list.
   "Remove item(s) from a cart."
   removeCartItems(input: RemoveCartItemsInput!): RemoveCartItemsPayload!
 
@@ -350,7 +437,6 @@ extend type Mutation {
   "Update cart item(s) quantity. Use absolute quantity."
   updateCartItemsQuantity(input: UpdateCartItemsQuantityInput!): UpdateCartItemsQuantityPayload!
 
-  # Reconcile Cart
   "Reconcile an anonymous cart with Account cart, if it exists."
   reconcileCart(input: ReconcileCartInput!): ReconcileCartPayload!
 }

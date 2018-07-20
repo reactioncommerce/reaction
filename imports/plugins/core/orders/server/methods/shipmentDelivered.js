@@ -1,9 +1,9 @@
 import Hooks from "@reactioncommerce/hooks";
-import Logger from "@reactioncommerce/logger";
 import { Meteor } from "meteor/meteor";
 import { check } from "meteor/check";
 import { Orders } from "/lib/collections";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
+import sendOrderEmail from "../util/sendOrderEmail";
 
 /**
  * @name orders/shipmentDelivered
@@ -25,15 +25,7 @@ export default function shipmentDelivered(order) {
 
   const shipment = order.shipping.find((shipping) => shipping.shopId === Reaction.getShopId());
 
-  if (order.email) {
-    Meteor.call("orders/sendNotification", order, (err) => {
-      if (err) {
-        Logger.error(err, "orders/shipmentDelivered: Failed to send notification");
-      }
-    });
-  } else {
-    Logger.warn("No order email found. No notification sent.");
-  }
+  sendOrderEmail(order);
 
   const itemIds = shipment.items.map((item) => item._id);
 

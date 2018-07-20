@@ -4,6 +4,7 @@ import { Meteor } from "meteor/meteor";
 import { check } from "meteor/check";
 import { Orders } from "/lib/collections";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
+import sendOrderEmail from "../util/sendOrderEmail";
 
 /**
  * @name orders/shipmentShipped
@@ -52,12 +53,7 @@ export default function shipmentShipped(order, shipment) {
     }
   }
 
-  if (order.email) {
-    Meteor.call("orders/sendNotification", order, "shipped");
-  } else {
-    // TODO: add to order history that no email was sent
-    Logger.warn("No order email found. No notification sent.");
-  }
+  sendOrderEmail(order, "shipped");
 
   Orders.update(
     {

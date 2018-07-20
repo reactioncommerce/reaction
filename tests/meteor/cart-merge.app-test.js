@@ -10,6 +10,7 @@ import { getShop } from "/imports/plugins/core/core/server/fixtures/shops";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
 import * as Collections from "/lib/collections";
 import Fixtures from "/imports/plugins/core/core/server/fixtures";
+import hashLoginToken from "/imports/plugins/core/accounts/server/no-meteor/util/hashLoginToken";
 
 Fixtures();
 
@@ -20,6 +21,10 @@ describe("Merge Cart function ", function () {
   let originals;
   let sandbox;
   let pushCartWorkflowStub;
+  let user;
+  let account;
+  let userId;
+  let accountId;
 
   before(function () {
     originals = {
@@ -37,6 +42,11 @@ describe("Merge Cart function ", function () {
       check(args, [Match.Any]);
       return true;
     });
+
+    user = Factory.create("user");
+    account = Factory.create("account", { userId: user._id });
+    userId = user._id;
+    accountId = account._id;
   });
 
   after(function () {
@@ -64,16 +74,16 @@ describe("Merge Cart function ", function () {
   it("should merge all anonymous carts into existent `normal` user cart per session, when logged in", function () {
     sandbox.stub(Reaction, "getShopId", () => shop._id);
     let anonymousCart = Factory.create("anonymousCart");
-    let cart = Factory.create("cart");
+    let cart = Factory.create("cart", { accountId });
     let cartCount = Collections.Cart.find().count();
     expect(cartCount).to.equal(2);
-    spyOnMethod("mergeCart", cart.userId);
+    spyOnMethod("mergeCart", userId);
     const cartRemoveSpy = sandbox.spy(Collections.Cart, "remove");
-    Collections.Cart.update({}, { $set: { sessionId } });
+    Collections.Cart.update({}, { $set: { anonymousAccessToken: hashLoginToken(sessionId) } });
     const mergeResult = Meteor.call("cart/mergeCart", cart._id, sessionId);
     expect(mergeResult).to.be.ok;
-    anonymousCart = Collections.Cart.findOne(anonymousCart._id);
-    cart = Collections.Cart.findOne(cart._id);
+    anonymousCart = Collections.Cart.findOne({ _id: anonymousCart._id });
+    cart = Collections.Cart.findOne({ _id: cart._id });
     cartCount = Collections.Cart.find().count();
     expect(cartCount).to.equal(1);
     expect(cartRemoveSpy).to.have.been.called;
@@ -90,14 +100,14 @@ describe("Merge Cart function ", function () {
     const initialCartQty = cart.items[0].quantity;
     Collections.Cart.update({
       "_id": anonymousCart._id, "items._id": anonymousCart.items[0]._id
-    }, { $set: { "items.$.variants._id": cart.items[0].variants_id } });
-    spyOnMethod("mergeCart", cart.userId);
+    }, { $set: { "items.$.variantId": cart.items[0].variantId } });
+    spyOnMethod("mergeCart", userId);
     const cartRemoveSpy = sandbox.spy(Collections.Cart, "remove");
-    Collections.Cart.update({}, { $set: { sessionId } });
+    Collections.Cart.update({}, { $set: { anonymousAccessToken: hashLoginToken(sessionId) } });
     const mergeResult = Meteor.call("cart/mergeCart", cart._id, sessionId);
     expect(mergeResult).to.be.ok;
-    const anonymousCartAfterMerge = Collections.Cart.findOne(anonymousCart._id);
-    cart = Collections.Cart.findOne(cart._id);
+    const anonymousCartAfterMerge = Collections.Cart.findOne({ _id: anonymousCart._id });
+    cart = Collections.Cart.findOne({ _id: cart._id });
     cartCount = Collections.Cart.find().count();
     expect(cartCount).to.equal(1);
     expect(cartRemoveSpy).to.have.been.called;
@@ -110,7 +120,7 @@ describe("Merge Cart function ", function () {
       return shop._id;
     });
     const cart = Factory.create("anonymousCart");
-    spyOnMethod("mergeCart", cart.userId);
+    spyOnMethod("mergeCart", userId);
     const cartId = cart._id;
     // now we try to merge two anonymous carts. We expect to see `false`
     // result

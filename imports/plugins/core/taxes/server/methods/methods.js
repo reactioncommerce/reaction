@@ -84,7 +84,7 @@ export const methods = {
     check(taxRate, Number);
     check(taxes, Match.Optional(Array));
 
-    return Cart.update(cartId, {
+    return Cart.update({ _id: cartId }, {
       $set: {
         taxes,
         tax: taxRate
@@ -116,7 +116,7 @@ export const methods = {
 
     const { cartTaxData, cartTaxRate, itemsWithTax, taxRatesByShop } = options;
 
-    return Cart.update(cartId, {
+    return Cart.update({ _id: cartId }, {
       $set: {
         taxes: cartTaxData,
         tax: cartTaxRate,
@@ -176,7 +176,7 @@ export const methods = {
    */
   "taxes/calculate"(cartId) {
     check(cartId, String);
-    const cartToCalc = Cart.findOne(cartId);
+    const cartToCalc = Cart.findOne({ _id: cartId });
     const cartShopId = cartToCalc.shopId;
     let cartTaxRate = 0;
 
@@ -248,15 +248,15 @@ export const methods = {
             item.taxData = undefined;
             const shopTaxData = taxDataByShop[item.shopId];
 
-            // only process taxble products and skip if there is no shopTaxData
-            if (shopTaxData && item.variants.taxable === true) {
+            // only process taxable products and skip if there is no shopTaxData
+            if (shopTaxData && item.isTaxable) {
               const shopTaxRate = shopTaxData.rate / 100;
 
               // If we have tax rates for this shop
               if (shopTaxData && shopTaxRate) {
                 item.taxData = shopTaxData;
                 item.taxRate = shopTaxRate;
-                item.subtotal = item.variants.price * item.quantity;
+                item.subtotal = item.priceWhenAdded.amount * item.quantity;
                 item.tax = item.subtotal * item.taxRate;
               }
               totalTax += item.tax;

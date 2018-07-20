@@ -34,7 +34,7 @@ export default async function addressBookAdd(context, address, accountUserId) {
   // if address got shipment or billing default, we need to update cart
   // addresses accordingly
   if (address.isShippingDefault || address.isBillingDefault) {
-    const cart = await Cart.findOne({ userId });
+    const cart = await Cart.findOne({ accountId: account._id });
 
     // If this user has a cart, first set the new shipping or payment address on the cart
     if (cart) {

@@ -7,7 +7,7 @@ import MethodHooks from "/imports/plugins/core/core/server/method-hooks";
 // and updates the discount document with a transaction history
 MethodHooks.before("cart/copyCartToOrder", (options) => {
   const cartId = options.arguments[0];
-  const cart = Cart.findOne(cartId);
+  const cart = Cart.findOne({ _id: cartId });
   // record that discounts have been applied to order
   if (cart && cart.billing) {
     for (const billing of cart.billing) {

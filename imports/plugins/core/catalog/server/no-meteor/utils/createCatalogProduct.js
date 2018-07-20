@@ -161,7 +161,6 @@ export default async function createCatalogProduct(product, collections) {
     media: catalogProductMedia,
     metafields: product.metafields,
     metaDescription: product.metaDescription,
-    minOrderQuantity: product.minOrderQuantity,
     originCountry: product.originCountry,
     pageTitle: product.pageTitle,
     parcel: product.parcel,

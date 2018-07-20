@@ -221,15 +221,18 @@ describe("stripe/payment/createCharges", function () {
 
   it("should create a charge with valid api key and card token", function (done) {
     this.timeout(10000);
-    const cart = Factory.create("cartToOrder");
 
-    Factory.create("account", {
-      _id: cart.userId,
-      emails: [{ address: "test@example.com" }]
+    const user = Factory.create("user");
+    const account = Factory.create("account", {
+      emails: [{ address: "test@example.com" }],
+      userId: user._id
     });
+    const accountId = account._id;
+
+    const cart = Factory.create("cartToOrder", { accountId });
 
     sandbox.stub(Meteor, "userId", function () {
-      return cart.userId;
+      return user._id;
     });
 
     sandbox.stub(Meteor.server.method_handlers, "cart/createCart", function (...args) {
@@ -293,12 +296,15 @@ describe("stripe/payment/createCharges", function () {
 
   it("should throw an error with an invalid api key", function (done) {
     this.timeout(10000);
-    const cart = Factory.create("cartToOrder");
 
-    Factory.create("account", {
-      _id: cart.userId,
-      emails: [{ address: "test@example.com" }]
+    const user = Factory.create("user");
+    const account = Factory.create("account", {
+      emails: [{ address: "test@example.com" }],
+      userId: user._id
     });
+    const accountId = account._id;
+
+    const cart = Factory.create("cartToOrder", { accountId });
 
     sandbox.stub(Reaction, "getPrimaryShopId", function () {
       return cart.shopId;
@@ -338,19 +344,22 @@ describe("stripe/payment/createCharges", function () {
 
   it("should be able to create multiple charges", function (done) {
     this.timeout(10000);
-    let cart = Factory.create("cartMultiShop");
+
+    const user = Factory.create("user");
+    const account = Factory.create("account", {
+      emails: [{ address: "test@example.com" }],
+      userId: user._id
+    });
+    const accountId = account._id;
+
+    let cart = Factory.create("cartMultiShop", { accountId });
     // Assign shipping for the second shop
     Meteor.call("shipping/updateShipmentQuotes", cart._id);
     // Reload cart to fetch the shipping costs updated from the shipping/updateShipmentQuotes
     cart = Cart.findOne({ _id: cart._id });
 
-    Factory.create("account", {
-      _id: cart.userId,
-      emails: [{ address: "test@example.com" }]
-    });
-
     sandbox.stub(Meteor, "userId", function () {
-      return cart.userId;
+      return user._id;
     });
 
     sandbox.stub(Meteor.server.method_handlers, "cart/createCart", function (...args) {

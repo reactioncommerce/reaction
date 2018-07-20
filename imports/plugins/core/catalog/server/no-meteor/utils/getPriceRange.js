@@ -5,10 +5,10 @@ import accounting from "accounting-js";
  * API and accounting.js API.
  * @param {Number} price - A price (float)
  * @param {Object} [currencyInfo] - A currency object in Reaction schema
- * @returns Formatted currency string such as "$15.99". If `currencyInfo` is not provided,
+ * @returns {String} Formatted currency string such as "$15.99". If `currencyInfo` is not provided,
  *   returns `accounting.toFixed(price, 2)`.
  */
-function formatMoney(price, currencyInfo) {
+export function formatMoney(price, currencyInfo) {
   // Implementation of toFixed() that treats floats more like decimal values than binary,
   // fixing inconsistent precision rounding in JavaScript (where some .05 values round up,
   // while others round down):
@@ -22,7 +22,7 @@ function formatMoney(price, currencyInfo) {
 
   const currencyFormatSettings = { ...currencyInfo };
 
-  // Precision is mis-used in accounting js. Scale is the propery term for number
+  // Precision is mis-used in accounting js. Scale is the proper term for number
   // of decimal places. Let's adjust it here so accounting.js does not break.
   if (typeof currencyInfo.scale === "number") {
     currencyFormatSettings.precision = currencyInfo.scale;

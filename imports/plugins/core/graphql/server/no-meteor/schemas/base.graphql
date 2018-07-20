@@ -72,6 +72,15 @@ type Money {
   displayAmount: String!
 }
 
+"Represents input for some amount of a single currency"
+input MoneyInput {
+  "The numeric amount"
+  amount: Float!
+
+  "The currency code, for interpreting the `amount`"
+  currencyCode: String!
+}
+
 "Mutations have side effects, such as mutating data or triggering a task"
 type Mutation {
   echo(str: String): String

@@ -1,4 +1,5 @@
 import { Meteor } from "meteor/meteor";
+import hashLoginToken from "/imports/plugins/core/accounts/server/no-meteor/util/hashLoginToken";
 
 /**
  * @name anonymousCartByCartId
@@ -11,7 +12,7 @@ import { Meteor } from "meteor/meteor";
  * @param {String} [params.token] - Anonymous cart token
  * @return {Object} - An anonymous cart.
  */
-export default async function anonymousCartByCartId(context, { cartId } = {}) {
+export default async function anonymousCartByCartId(context, { cartId, token } = {}) {
   const { collections } = context;
   const { Cart } = collections;
 
@@ -19,11 +20,8 @@ export default async function anonymousCartByCartId(context, { cartId } = {}) {
     throw new Meteor.Error("invalid-param", "You must provide a cartId");
   }
 
-  // TODO: Use token
-
-  const query = {
-    _id: cartId
-  };
-
-  return Cart.findOne(query);
+  return Cart.findOne({
+    _id: cartId,
+    anonymousAccessToken: hashLoginToken(token)
+  });
 }
