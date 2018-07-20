@@ -37,10 +37,14 @@ const wrapComponent = (Comp) => (
     }
 
     handleProductFieldSave = (productId, fieldName, value) => {
-      Meteor.call("products/updateProductField", productId, fieldName, value, (error) => {
+      Meteor.call("products/updateProductField", productId, fieldName, value, (error, result) => {
         if (error) {
           Alerts.toast(error.message, "error");
           this.forceUpdate();
+        } else if (result.handle) {
+          Reaction.Router.go("product", {
+            handle: result.handle
+          });
         }
       });
     }

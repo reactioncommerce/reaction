@@ -41,7 +41,7 @@ describe("Fixtures:", function () {
   it("CartOne fixture should create a cart with one item with a quantity of one", function () {
     const cartOne = Factory.create("cartOne");
     expect(cartOne).to.not.be.undefined;
-    const createdCart = Collections.Cart.findOne(cartOne._id);
+    const createdCart = Collections.Cart.findOne({ _id: cartOne._id });
     expect(createdCart).to.not.be.undefined;
     expect(createdCart.items.length).to.equal(1);
     expect(createdCart.items[0].quantity).to.equal(1);
@@ -50,7 +50,7 @@ describe("Fixtures:", function () {
   it("CartTwo fixture should create a cart with one item with a quantity of two", function () {
     const cartOne = Factory.create("cartTwo");
     expect(cartOne).to.not.be.undefined;
-    const createdCart = Collections.Cart.findOne(cartOne._id);
+    const createdCart = Collections.Cart.findOne({ _id: cartOne._id });
     expect(createdCart).to.not.be.undefined;
     expect(createdCart.items.length).to.equal(1);
     expect(createdCart.items[0].quantity).to.equal(2);
@@ -60,7 +60,7 @@ describe("Fixtures:", function () {
     const { product, variant } = addProductSingleVariant();
     const cart = createCart(product._id, variant._id);
     expect(cart).to.not.be.undefined;
-    const createdCart = Collections.Cart.findOne(cart._id);
+    const createdCart = Collections.Cart.findOne({ _id: cart._id });
     expect(createdCart).to.not.be.undefined;
     expect(createdCart.items.length).to.equal(1);
   });

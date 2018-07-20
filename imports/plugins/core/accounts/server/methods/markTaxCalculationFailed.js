@@ -1,6 +1,6 @@
 import { Meteor } from "meteor/meteor";
 import { check } from "meteor/check";
-import { Cart } from "/lib/collections";
+import { Accounts, Cart } from "/lib/collections";
 
 /**
  * @name accounts/markTaxCalculationFailed
@@ -13,6 +13,7 @@ import { Cart } from "/lib/collections";
 export default function markTaxCalculationFailed(value = true) {
   check(value, Boolean);
   const userId = Meteor.userId();
-  const updateResult = Cart.update({ userId }, { $set: { taxCalculationFailed: value } });
+  const account = Accounts.findOne({ userId }, { fields: { _id: 1 } });
+  const updateResult = Cart.update({ accountId: account._id }, { $set: { taxCalculationFailed: value } });
   return updateResult;
 }

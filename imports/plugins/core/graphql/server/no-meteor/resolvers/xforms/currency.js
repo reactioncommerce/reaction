@@ -1,5 +1,6 @@
 import { assoc, compose, map, toPairs } from "ramda";
 import { Meteor } from "meteor/meteor";
+import CurrencyDefinitions from "/imports/plugins/core/core/lib/CurrencyDefinitions";
 import { namespaces } from "@reactioncommerce/reaction-graphql-utils";
 import { assocInternalId, assocOpaqueId, decodeOpaqueIdForNamespace, encodeOpaqueId } from "./id";
 
@@ -30,25 +31,17 @@ export function getXformedCurrenciesByShop(shop) {
   return xformLegacyCurrencies(shop.currencies);
 }
 
-// retrive all currencies from the Shops collection and xform them
-async function getXformedCurrenciesByShopId(context, shopId) {
-  const shop = await context.collections.Shops.findOne({ _id: shopId });
-  return getXformedCurrenciesByShop(shop);
-}
-
 /**
  * @name getXformedCurrencyByCode
  * @method
  * @memberof GraphQL/Transforms
  * @summary Get an individual transformed currency
- * @param {Object} context Context object with `collections` on it
- * @param {String} shopId A shop ID
  * @param {String} code The code that must match the `currency.code`
  * @return {Object} A Currency object
  */
-export async function getXformedCurrencyByCode(context, shopId, code) {
+export async function getXformedCurrencyByCode(code) {
   if (!code) return null;
-  if (!shopId) throw new Meteor.Error("invalid", "shopId is required to build a Currency object");
-  const allCurrencies = await getXformedCurrenciesByShopId(context, shopId);
-  return allCurrencies.find((currency) => currency.code === code);
+  const entry = CurrencyDefinitions[code];
+  if (!entry) throw new Meteor.Error("invalid", `No currency definition found for ${code}`);
+  return xformCurrencyEntry([code, entry]);
 }

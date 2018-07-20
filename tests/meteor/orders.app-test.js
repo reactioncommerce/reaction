@@ -105,7 +105,7 @@ describe("orders test", function () {
     });
 
     it("should increase inventory with number of items canceled when returnToStock option is selected", function () {
-      const orderItemId = order.items[0].variants._id;
+      const orderItemId = order.items[0].variantId;
       sandbox.stub(Reaction, "hasPermission", () => true); // Mock user permissions
 
       const { inventoryQuantity } = Products.findOne({ _id: orderItemId }) || {};
@@ -129,7 +129,7 @@ describe("orders test", function () {
     });
 
     it("should NOT increase/decrease inventory when returnToStock option is false", function () {
-      const orderItemId = order.items[0].variants._id;
+      const orderItemId = order.items[0].variantId;
       sandbox.stub(Reaction, "hasPermission", () => true); // Mock user permissions
 
       // approve the order (inventory decreases)
@@ -407,10 +407,10 @@ describe("orders test", function () {
   });
 
   describe("orders/sendNotification", function () {
-    it("should return access denied if userId is not availble", function () {
+    it("should return access denied if userId is not available", function () {
       spyOnMethod("sendNotification");
       function sendNotification() {
-        return Meteor.call("orders/sendNotification", order);
+        return Meteor.call("orders/sendNotification", order._id);
       }
       expect(sendNotification).to.throw(Meteor.error, /Access Denied/);
     });
@@ -422,7 +422,7 @@ describe("orders test", function () {
         url: () => "/stub/url"
       }));
       sandbox.stub(Shops, "findOne", () => shop);
-      const result = Meteor.call("orders/sendNotification", order);
+      const result = Meteor.call("orders/sendNotification", order._id);
       expect(result).to.be.true;
     });
   });

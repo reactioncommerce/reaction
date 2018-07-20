@@ -26,12 +26,12 @@ function ordersInventoryAdjustByShop(orderId, shopId) {
     throw new Meteor.Error("access-denied", "Access Denied");
   }
 
-  const order = Orders.findOne(orderId);
+  const order = Orders.findOne({ _id: orderId });
   order.items.forEach((item) => {
     if (item.shopId === shopId) {
       Products.update(
         {
-          _id: item.variants._id
+          _id: item.variantId
         },
         {
           $inc: {
@@ -45,8 +45,6 @@ function ordersInventoryAdjustByShop(orderId, shopId) {
           }
         }
       );
-
-      Hooks.Events.run("afterUpdateCatalogProduct", item.variants);
 
       // Publish inventory updates to the Catalog
       Promise.await(updateCatalogProductInventoryStatus(item.productId, rawCollections));

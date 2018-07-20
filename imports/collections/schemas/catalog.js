@@ -605,12 +605,12 @@ export const Catalog = new SimpleSchema({
     label: "Catalog item ID"
   },
   product: {
-    type: Object,
-    label: CatalogProduct
+    type: CatalogProduct,
+    optional: true
   },
   createdAt: {
     type: Date,
-    label: "Date/time this product was created at",
+    label: "Date/time this catalog item was created at",
     index: 1
   },
   shopId: {
