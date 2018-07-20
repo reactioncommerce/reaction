@@ -144,7 +144,7 @@ export default async function createCatalogProduct(product, collections) {
 
       if (variantOptions) {
         newVariant.options = variantOptions.map((option) =>
-          xformVariant(option, getPriceRange([option.price], shopCurrencyInfo), shopCurrencyCode), collections);
+          xformVariant(option, getPriceRange([option.price], shopCurrencyInfo), shopCurrencyCode, collections));
       }
       return newVariant;
     });
