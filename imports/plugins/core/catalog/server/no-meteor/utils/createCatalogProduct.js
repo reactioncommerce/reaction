@@ -19,6 +19,7 @@ import isSoldOut from "./isSoldOut";
 async function xformVariant(variant, variantPriceInfo, shopCurrencyCode, collections) {
   const catalogVariantMedia = await getCatalogVariantMedia(variant._id, collections);
   const primaryImage = catalogVariantMedia.find(({ toGrid }) => toGrid === 1) || null;
+
   return {
     _id: variant._id,
     barcode: variant.barcode,
@@ -139,11 +140,11 @@ export default async function createCatalogProduct(product, collections) {
       }
 
       prices.push(priceInfo.min, priceInfo.max);
-      const newVariant = xformVariant(variant, priceInfo, shopCurrencyCode);
+      const newVariant = xformVariant(variant, priceInfo, shopCurrencyCode, collections);
 
       if (variantOptions) {
         newVariant.options = variantOptions.map((option) =>
-          xformVariant(option, getPriceRange([option.price], shopCurrencyInfo), shopCurrencyCode));
+          xformVariant(option, getPriceRange([option.price], shopCurrencyInfo), shopCurrencyCode), collections);
       }
       return newVariant;
     });
