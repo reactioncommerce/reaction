@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import ReactDOM from "react-dom";
 import { matchPath } from "react-router";
 import { Router as ReactRouter } from "react-router-dom";
+import { ApolloProvider } from "react-apollo";
 import equal from "deep-equal";
 import pathToRegexp from "path-to-regexp";
 import queryParse from "query-parse";
@@ -13,6 +14,7 @@ import { Reaction } from "/client/api";
 import { TranslationProvider } from "/imports/plugins/core/ui/client/providers";
 import { MetaData } from "/lib/api/router/metadata";
 import { Router } from "../lib";
+import initApollo from "./initApollo";
 
 const { history } = Router;
 
@@ -144,6 +146,8 @@ export function getRootNode() {
 }
 
 export function initBrowserRouter() {
+  const apolloClient = initApollo();
+
   Router.initPackageRoutes({
     reactionContext: Reaction,
     indexRoute: Session.get("INDEX_OPTIONS") || {}
@@ -154,11 +158,14 @@ export function initBrowserRouter() {
   Tracker.autorun((computation) => {
     if (Router.ready()) {
       ReactDOM.render((
-        <BrowserRouter history={history}>
-          <TranslationProvider>
-            <Components.App children={Router.reactComponents} />
-          </TranslationProvider>
-        </BrowserRouter>), getRootNode());
+        <ApolloProvider client={apolloClient}>
+          <BrowserRouter history={history}>
+            <TranslationProvider>
+              <Components.App children={Router.reactComponents} />
+            </TranslationProvider>
+          </BrowserRouter>
+        </ApolloProvider>
+      ), getRootNode());
 
       computation.stop();
     }
