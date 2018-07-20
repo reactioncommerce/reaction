@@ -1,5 +1,6 @@
 import Logger from "@reactioncommerce/logger";
 import getCatalogProductMedia from "./getCatalogProductMedia";
+import getCatalogVariantMedia from "./getCatalogVariantMedia";
 import getPriceRange from "./getPriceRange";
 import isBackorder from "./isBackorder";
 import isLowQuantity from "./isLowQuantity";
