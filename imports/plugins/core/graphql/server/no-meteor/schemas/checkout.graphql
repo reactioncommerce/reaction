@@ -85,40 +85,45 @@ type SelectedPaymentMethodInfo {
   method: PaymentMethod!
 }
 
-# Currently GraphQL does not support input unions.
-# See https://github.com/graphql/graphql-js/issues/207
-# Leaving these here but using JSONObject for now
-
 # "An example"
-# input ExamplePaymentMethodInputDataInput {
-#   example: String!
-# }
+input ExampleSavedCardPaymentMethodInputDataInput {
+  cvc: String!
+}
 
-# "An example"
-# input ExampleSavedCardPaymentMethodInputDataInput {
-#   cvc: String!
-# }
-
-# union PaymentMethodInputDataInput = ExamplePaymentMethodInputDataInput | ExampleSavedCardPaymentMethodInputDataInput
-
-"The payment method to use for the whole order amount"
-input SetPaymentInput {
+"Input when setting the example saved card payment method as the payment method for the cart"
+input SetExampleSavedCardPaymentMethodOnCartInput {
   "An optional string identifying the mutation call, which will be returned in the response payload"
   clientMutationId: String
 
   """
   The shopper-provided data needed to complete the payment using this method
   """
-  inputData: JSONObject! # PaymentMethodInputDataInput
+  inputData: ExampleSavedCardPaymentMethodInputDataInput!
 
   "The payment method data. Copy from PaymentMethod.data of the chosen method."
   methodData: String!
-
-  "The payment method name. Copy from PaymentMethod.name of the chosen method."
-  methodName: String!
 }
 
-"The response from the `setPayment` mutation"
+# "An example"
+input ExamplePaymentMethodInputDataInput {
+  example: String!
+}
+
+"Input when setting the example payment method as the payment method for the cart"
+input SetExamplePaymentMethodOnCartInput {
+  "An optional string identifying the mutation call, which will be returned in the response payload"
+  clientMutationId: String
+
+  """
+  The shopper-provided data needed to complete the payment using this method
+  """
+  inputData: ExamplePaymentMethodInputDataInput!
+
+  "The payment method data. Copy from PaymentMethod.data of the chosen method."
+  methodData: String!
+}
+
+"The response from one of the mutations that sets the payment method for a cart"
 type SetPaymentPayload {
   "The updated Cart"
   cart: Cart!
@@ -131,18 +136,18 @@ type SetPaymentPayload {
 ## General
 ########################
 
-"A summary of the totals and other costs for this order"
+"A summary of the totals for this order"
 type OrderSummary {
   "The total price of all chosen fulfillment methods"
-  fulfillment: Money!
+  fulfillmentTotal: Money!
 
   "The combined prices of all cart items"
-  subtotal: Money!
+  itemTotal: Money!
 
-  "The estimated tax that has not already been included in the item prices"
-  tax: Money!
+  "The total estimated tax that has not already been included in the item prices"
+  taxTotal: Money!
 
-  "The sum of `subtotal`, `fulfillment`, and `tax`"
+  "The sum of `itemTotal`, `fulfillmentTotal`, and `taxTotal`"
   total: Money!
 }
 
@@ -154,7 +159,7 @@ type Checkout {
   "One or more payment methods selected by the shopper during checkout"
   selectedPaymentMethods: [SelectedPaymentMethodInfo]!
 
-  "A summary of the totals and other costs for this order"
+  "A summary of the totals for this order"
   summary: OrderSummary!
 }
 
@@ -162,8 +167,11 @@ extend type Mutation {
   "Set the shipping address for all fulfillment groups"
   setShippingAddress(input: SetShippingAddressInput!): SetShippingAddressPayload!
 
-  "Set the payment method and data for the full order amount"
-  setPayment(input: SetPaymentInput!): SetPaymentPayload!
+  "Set the example payment method as the way the user has chosen to pay for a cart"
+  setExamplePaymentMethodOnCart(input: SetExamplePaymentMethodOnCartInput!): SetPaymentPayload!
+
+  "Set the example saved card payment method as the way the user has chosen to pay for a cart"
+  setExampleSavedCardPaymentMethodOnCart(input: SetExampleSavedCardPaymentMethodOnCartInput!): SetPaymentPayload!
 
   # Maybe add later
   # addPayment(input: AddPaymentInput!): AddPaymentPayload!
