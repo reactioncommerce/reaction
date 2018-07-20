@@ -81,7 +81,7 @@ const wrapComponent = (Comp) =>
 
         if (this.props.storedCart && this.props.storedCart.items) {
           this.props.storedCart.items.forEach((item) => {
-            if (item.variants._id === currentVariant._id) {
+            if (item.variantId === currentVariant._id) {
               storedQuantity = item.quantity;
             }
           });
@@ -138,26 +138,65 @@ const wrapComponent = (Comp) =>
         } else {
           productId = currentProduct._id;
 
+          const onAddToCartSuccess = () => {
+            // Reset cart quantity on success
+            this.handleCartQuantityChange(null, 1);
+
+            this.setState(({ productClick }) => ({
+              productClick: productClick + 1
+            }));
+
+            // slide out label
+            const addToCartText = i18next.t("productDetail.addedToCart");
+            const addToCartTitle = currentVariant.title || "";
+            // Grab and cache the width of the alert to be used in animation
+            const alertWidth = $(".cart-alert").width();
+            const direction = i18next.dir() === "rtl" ? "left" : "right";
+            const oppositeDirection = i18next.dir() === "rtl" ? "right" : "left";
+            if ($(".cart-alert").css("display") === "none") {
+              $("#spin").addClass("hidden");
+              $(".cart-alert-text").text(`${quantity} ${addToCartTitle} ${addToCartText}`);
+              this.handleSlideOut(alertWidth, direction, oppositeDirection);
+              this.animationTimeOut = setTimeout(() => {
+                this.handleSlideIn(alertWidth, direction, oppositeDirection);
+              }, 4000);
+            } else {
+              clearTimeout(this.textTimeOut);
+
+              // hides text and display spinner
+              $(".cart-alert-text").hide();
+              $("#spin").removeClass("hidden");
+
+              this.textTimeOut = setTimeout(() => {
+                $("#spin").addClass("hidden");
+                $(".cart-alert-text").text(`${this.state.productClick * quantity} ${addToCartTitle} ${addToCartText}`);
+                $(".cart-alert-text").fadeIn("slow");
+                if (this._isMounted) {
+                  this.setState({ productClick: 0 });
+                }
+              }, 2000);
+
+              clearTimeout(this.animationTimeOut);
+              this.animationTimeOut = setTimeout(() => {
+                this.handleSlideIn(alertWidth, direction, oppositeDirection);
+              }, 4000);
+            }
+          };
+
           if (productId) {
             Meteor.call("cart/addToCart", productId, currentVariant._id, quantity, (error) => {
               if (error) {
-                Logger.error(error, "Failed to add to cart.");
-                return error;
+                Logger.error(error);
+                Alerts.toast(error.message, "error");
+                return;
               }
-              // Reset cart quantity on success
-              this.handleCartQuantityChange(null, 1);
 
-              this.setState(({ productClick }) => ({
-                productClick: productClick + 1
-              }));
-
-              return true;
+              onAddToCartSuccess();
             });
           }
 
-          // template.$(".variant-select-option").removeClass("active");
           ReactionProduct.setCurrentVariant(null);
-          // qtyField.val(1);
+
           // scroll to top on cart add
           $("html,body").animate(
             {
@@ -165,41 +204,6 @@ const wrapComponent = (Comp) =>
             },
             0
           );
-          // slide out label
-          const addToCartText = i18next.t("productDetail.addedToCart");
-          const addToCartTitle = currentVariant.title || "";
-          // Grab and cache the width of the alert to be used in animation
-          const alertWidth = $(".cart-alert").width();
-          const direction = i18next.dir() === "rtl" ? "left" : "right";
-          const oppositeDirection = i18next.dir() === "rtl" ? "right" : "left";
-          if ($(".cart-alert").css("display") === "none") {
-            $("#spin").addClass("hidden");
-            $(".cart-alert-text").text(`${quantity} ${addToCartTitle} ${addToCartText}`);
-            this.handleSlideOut(alertWidth, direction, oppositeDirection);
-            this.animationTimeOut = setTimeout(() => {
-              this.handleSlideIn(alertWidth, direction, oppositeDirection);
-            }, 4000);
-          } else {
-            clearTimeout(this.textTimeOut);
-
-            // hides text and display spinner
-            $(".cart-alert-text").hide();
-            $("#spin").removeClass("hidden");
-
-            this.textTimeOut = setTimeout(() => {
-              $("#spin").addClass("hidden");
-              $(".cart-alert-text").text(`${this.state.productClick * quantity} ${addToCartTitle} ${addToCartText}`);
-              $(".cart-alert-text").fadeIn("slow");
-              if (this._isMounted) {
-                this.setState({ productClick: 0 });
-              }
-            }, 2000);
-
-            clearTimeout(this.animationTimeOut);
-            this.animationTimeOut = setTimeout(() => {
-              this.handleSlideIn(alertWidth, direction, oppositeDirection);
-            }, 4000);
-          }
         }
       } else {
         Alerts.inline("Select an option before adding to cart", "warning", {
@@ -314,8 +318,9 @@ function composer(props, onData) {
     // Get the product tags
     if (product) {
       let tags;
-      if (_.isArray(product.hashtags)) {
-        tags = Tags.find({ _id: { $in: product.hashtags } }).fetch();
+      const hashTags = product.hashtags || product.tagIds;
+      if (_.isArray(hashTags)) {
+        tags = Tags.find({ _id: { $in: hashTags } }).fetch();
       }
 
       Meteor.subscribe("ProductMedia", product._id);

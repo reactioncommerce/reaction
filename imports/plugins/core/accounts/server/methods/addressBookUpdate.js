@@ -51,7 +51,7 @@ export default function addressBookUpdate(address, accountUserId, type) {
     oldAddress.isShippingDefault || oldAddress.isBillingDefault) {
     // Find user cart
     // Cart should exist to this moment, so we don't need to to verify its existence.
-    const cart = Cart.findOne({ userId });
+    const cart = Cart.findOne({ accountId: account._id });
 
     // If isShippingDefault address has changed
     if (oldAddress.isShippingDefault !== address.isShippingDefault) {
@@ -112,7 +112,7 @@ export default function addressBookUpdate(address, accountUserId, type) {
   }
 
   // Update the Meteor.users collection with new address info
-  Meteor.users.update(Meteor.userId(), userUpdateQuery);
+  Meteor.users.update({ _id: userId }, userUpdateQuery);
 
   // Update the Reaction Accounts collection with new address info
   const updatedAccountResult = Accounts.update({
@@ -134,7 +134,7 @@ export default function addressBookUpdate(address, accountUserId, type) {
     updatedFields
   });
 
-  // If the address update was successful, then return the full updated addrtess
+  // If the address update was successful, then return the full updated address
   if (updatedAccountResult === 1) {
     // Find the account
     const updatedAccount = Accounts.findOne({

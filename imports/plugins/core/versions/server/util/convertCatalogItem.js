@@ -7,7 +7,9 @@ import getPriceRange from "/imports/plugins/core/catalog/server/no-meteor/utils/
  * @param {Object} variant The variant from Products collection
  * @param {Object} variantPriceInfo The result of calling getPriceRange for this price or all child prices
  * @param {String} shopCurrencyCode The shop currency code for the shop to which this product belongs
+ * @param {Date} updatedAt The date to use for updatedAt
  * @private
+ * @returns {Object} The transformed variant/option document
  */
 function xformVariant(variant, variantPriceInfo, shopCurrencyCode, updatedAt) {
   return {
@@ -73,6 +75,12 @@ function xformPositions(positions, tags) {
   return newPositions;
 }
 
+/**
+ * @param {Object} item The catalog item to transform
+ * @param {Object} shop The shop document
+ * @param {Object[]} tags Array of tag documents
+ * @returns {Object} The converted item document
+ */
 export default function convertCatalogItem(item, shop, tags) {
   if (!shop) {
     Logger.info("Cannot update catalog item: shop not found");
@@ -101,7 +109,7 @@ export default function convertCatalogItem(item, shop, tags) {
         }
       };
     })
-    .sort((a, b) => a.priority - b.priority);
+    .sort((itemA, itemB) => itemA.priority - itemB.priority);
 
   const primaryImage = catalogProductMedia.find(({ toGrid }) => toGrid === 1) || null;
 

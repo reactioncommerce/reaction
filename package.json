@@ -86,22 +86,20 @@
     "nouislider-algolia-fork": "^10.0.0",
     "object-hash": "^1.3.0",
     "path-to-regexp": "^2.1.0",
-    "prerender-node": "^2.7.4",
-    "prop-types": "^15.6.0",
+    "prerender-node": "3.1.1",
+    "prop-types": "15.6.2",
     "query-parse": "^2.0.0",
     "radium": "^0.22.0",
     "ramda": "^0.25.0",
-    "react": "16.2.0",
-    "react-addons-pure-render-mixin": "15.6.2",
-    "react-addons-shallow-compare": "^15.6.2",
+    "react": "16.4.1",
     "react-autosuggest": "^9.3.3",
     "react-avatar": "^2.5.1",
     "react-color": "^2.13.8",
     "react-copy-to-clipboard": "^5.0.1",
-    "react-dates": "^16.3.6",
+    "react-dates": "17.1.0",
     "react-dnd": "^2.5.4",
     "react-dnd-html5-backend": "^2.5.4",
-    "react-dom": "16.2.0",
+    "react-dom": "16.4.1",
     "react-dropzone": "^4.2.7",
     "react-helmet": "^5.2.0",
     "react-image-magnify": "^2.4.1",
@@ -113,6 +111,7 @@
     "react-router-dom": "^4.2.2",
     "react-s-alert": "^1.4.1",
     "react-select": "^1.2.1",
+    "react-stripe-elements": "^2.0.1",
     "react-table": "^6.7.6",
     "react-taco-table": "^0.5.1",
     "react-tether": "^0.6.1",
@@ -120,9 +119,8 @@
     "reacto-form": "0.0.2",
     "recompose": "^0.26.0",
     "shallowequal": "^1.0.2",
-    "sharp": "^0.19.0",
+    "sharp": "0.20.5",
     "shippo": "^1.3.1",
-    "shopify-api-node": "^2.10.2",
     "simpl-schema": "1.5.0",
     "slugify": "^1.2.9",
     "sortablejs": "^1.7.0",
@@ -135,7 +133,7 @@
     "transliteration": "github:reactioncommerce/transliteration",
     "url": "^0.11.0",
     "velocity-animate": "^1.5.1",
-    "velocity-react": "^1.3.3"
+    "velocity-react": "1.4.1"
   },
   "devDependencies": {
     "@babel/cli": "7.0.0-beta.49",
@@ -146,7 +144,7 @@
     "@babel/preset-es2015": "7.0.0-beta.49",
     "@babel/preset-react": "7.0.0-beta.49",
     "@babel/preset-stage-2": "7.0.0-beta.49",
-    "@reactioncommerce/eslint-config": "1.8.0",
+    "@reactioncommerce/eslint-config": "1.9.0",
     "babel-core": "^7.0.0-bridge.0",
     "babel-eslint": "8.2.3",
     "babel-jest": "22.4.4",
@@ -164,7 +162,7 @@
     "eslint-import-resolver-meteor": "^0.4.0",
     "eslint-plugin-import": "2.12.0",
     "eslint-plugin-jest": "^21.14.0",
-    "eslint-plugin-jsx-a11y": "^6.0.3",
+    "eslint-plugin-jsx-a11y": "6.1.1",
     "eslint-plugin-promise": "3.8.0",
     "eslint-plugin-react": "7.8.2",
     "find-free-port": "^1.2.0",
@@ -329,14 +327,15 @@
     },
     "rules": {
       "valid-jsdoc": [
-        1,
+        "warn",
         {
           "prefer": {
             "arg": "param",
             "argument": "param"
           }
         }
-      ]
+      ],
+      "jsx-a11y/label-has-for": "off"
     }
   },
   "nodemonConfig": {

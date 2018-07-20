@@ -4,6 +4,7 @@ import Shippo from "shippo";
 import SimpleSchema from "simpl-schema";
 import { Meteor } from "meteor/meteor";
 import { ValidatedMethod } from "meteor/mdg:validated-method";
+import { ErrorObject } from "/lib/collections/schemas";
 import { purchaseAddressSchema, parcelSchema } from "../lib/shippoApiSchema";
 
 export const ShippoApi = {
@@ -207,6 +208,63 @@ ShippoApi.methods.getTransaction = new ValidatedMethod({
     } catch (error) {
       Logger.error(error.message);
       throw new Meteor.Error("server-error", error.message);
+    }
+  }
+});
+
+
+/**
+ * @summary: Break Shippo error object into consistent format
+ * @param {Object} error The error result from Shippo
+ * @returns {Object} Error object with code and errorDetails
+ */
+function parseError(error) {
+  let errorData;
+  // Not able to get to shippo API
+  if (error && error.detail && error.detail.code === "ENOTFOUND") {
+    errorData = {
+      errorCode: 503,
+      type: "apiFailure",
+      errorDetails: [{ message: error.message, description: error.description }]
+    };
+  } else {
+    Logger.error(error, "Unknown Error");
+  }
+  const errorObjectContext = ErrorObject.newContext();
+  // No Generic errors ever
+  errorObjectContext.validate(errorData);
+  if (!errorObjectContext.isValid()) {
+    throw new Meteor.Error("invalid-return", "Returning invalid Error results");
+  }
+  return errorData;
+}
+
+/**
+ * Tries to validate a address using Shippo API
+ * @see https://goshippo.com/docs/address-validation
+ * @param {Object} parameter - ValidatedMethod's parameter
+ * @param {Object} parameter.address - The address to validate
+ * @param {String} parameter.apiKey - The Test or Live Token required
+ * for authentication by Shippo's api
+ * @return {Object} result.validation_results - The validation results from Shippo
+ * */
+ShippoApi.methods.validateAddress = new ValidatedMethod({
+  name: "ShippoApi.methods.validateAddress",
+  validate: new SimpleSchema({
+    address: purchaseAddressSchema,
+    apiKey: String
+  }).validator(),
+  run({ address, apiKey }) {
+    const shippo = new Shippo(apiKey);
+
+    const validateAddress = Meteor.wrapAsync(shippo.address.create, shippo.address);
+
+    try {
+      const validatedAddress = validateAddress(address);
+      return validatedAddress;
+    } catch (error) {
+      Logger.error(error);
+      return { errors: parseError(error) };
     }
   }
 });

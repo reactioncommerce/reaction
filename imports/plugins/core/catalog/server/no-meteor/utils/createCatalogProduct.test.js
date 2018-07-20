@@ -69,6 +69,7 @@ const mockVariants = [
     _id: internalVariantIds[1],
     ancestors: [internalCatalogProductId, internalVariantIds[0]],
     barcode: "barcode",
+    createdAt,
     height: 2,
     index: 0,
     inventoryManagement: true,
@@ -99,6 +100,7 @@ const mockVariants = [
     taxCode: "0000",
     taxDescription: "taxDescription",
     title: "One pound bag",
+    updatedAt,
     variantId: internalVariantIds[1],
     weight: 2,
     width: 2
@@ -208,7 +210,6 @@ const mockCatalogProduct = {
   barcode: "barcode",
   createdAt,
   description: "description",
-  hash: undefined,
   height: 11.23,
   isBackorder: false,
   isDeleted: false,
@@ -240,7 +241,6 @@ const mockCatalogProduct = {
     value: "value",
     valueType: "valueType"
   }],
-  minOrderQuantity: 5,
   originCountry: "originCountry",
   pageTitle: "pageTitle",
   parcel: {
@@ -336,7 +336,7 @@ const mockCatalogProduct = {
     options: [{
       _id: "874",
       barcode: "barcode",
-      createdAt: undefined,
+      createdAt,
       height: 2,
       index: 0,
       inventoryManagement: true,
@@ -372,7 +372,7 @@ const mockCatalogProduct = {
       taxCode: "0000",
       taxDescription: "taxDescription",
       title: "One pound bag",
-      updatedAt: undefined,
+      updatedAt,
       variantId: "874",
       weight: 2,
       width: 2

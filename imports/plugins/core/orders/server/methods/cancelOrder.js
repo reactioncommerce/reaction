@@ -1,4 +1,3 @@
-import Hooks from "@reactioncommerce/hooks";
 import Logger from "@reactioncommerce/logger";
 import { Meteor } from "meteor/meteor";
 import { check } from "meteor/check";
@@ -39,7 +38,7 @@ export default function cancelOrder(order, returnToStock) {
       if (Reaction.hasPermission("orders", Meteor.userId(), item.shopId)) {
         Products.update(
           {
-            _id: item.variants._id,
+            _id: item.variantId,
             shopId: item.shopId
           },
           {
@@ -52,8 +51,6 @@ export default function cancelOrder(order, returnToStock) {
             publish: true
           }
         );
-
-        Hooks.Events.run("afterUpdateCatalogProduct", item.variants);
 
         // Publish inventory updates to the Catalog
         Promise.await(updateCatalogProductInventoryStatus(item.productId, rawCollections));
@@ -88,7 +85,7 @@ export default function cancelOrder(order, returnToStock) {
   const prefix = Reaction.getShopPrefix();
   const url = `${prefix}/notifications`;
   const sms = true;
-  Meteor.call("notification/send", order.userId, "orderCanceled", url, sms, (err) => {
+  Meteor.call("notification/send", order.accountId, "orderCanceled", url, sms, (err) => {
     if (err) Logger.error(err);
   });
 

@@ -3,6 +3,7 @@ import Logger from "@reactioncommerce/logger";
 import { Meteor } from "meteor/meteor";
 import * as Collections from "/lib/collections";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
+import getCart from "/imports/plugins/core/cart/both/util/getCart";
 import { PaymentMethodArgument } from "/lib/collections/schemas";
 
 /**
@@ -16,10 +17,7 @@ import { PaymentMethodArgument } from "/lib/collections/schemas";
 export default function submitPayment(paymentMethods) {
   PaymentMethodArgument.validate(paymentMethods);
 
-  const cart = Collections.Cart.findOne({
-    userId: Meteor.userId()
-  });
-
+  const { cart } = getCart(null, { throwIfNotFound: true });
   const cartId = cart._id;
 
   const cartShipping = cart.getShippingTotal();
@@ -107,9 +105,6 @@ export default function submitPayment(paymentMethods) {
 
   // Calculate discounts
   Hooks.Events.run("afterCartUpdateCalculateDiscount", cartId);
-
-  // Calculate taxes
-  Hooks.Events.run("afterCartUpdateCalculateTaxes", cartId);
 
   const updatedCart = Collections.Cart.findOne(selector);
 

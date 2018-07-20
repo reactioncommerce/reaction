@@ -22,9 +22,6 @@ function removeShippingAddresses(cart) {
 
   // Calculate discounts
   Hooks.Events.run("afterCartUpdateCalculateDiscount", cart._id);
-
-  // Calculate taxes
-  Hooks.Events.run("afterCartUpdateCalculateTaxes", cart._id);
 }
 
 /**
@@ -48,8 +45,9 @@ export default function unsetAddresses(addressId, userId, type) {
   let needToUpdate = false;
   // we need to revert the workflow after a "shipping" address was removed
   let isShippingDeleting = false;
+  const account = Collections.Accounts.findOne({ userId }, { fields: { _id: 1 } });
   const cart = Collections.Cart.findOne({
-    userId
+    accountId: account._id
   });
   const selector = {
     _id: cart._id

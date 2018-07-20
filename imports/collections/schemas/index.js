@@ -13,6 +13,7 @@
  */
 
 import "./schemaIndex";
+import "./schemaErrors";
 
 export * from "./accounts";
 export * from "./address";
