@@ -1,5 +1,5 @@
 import { Template } from "meteor/templating";
-import { Meteor } from "meteor/meteor";
+import { Reaction } from "/client/api";
 import Router from "./main";
 
 /**
@@ -16,7 +16,7 @@ Template.registerHelper("pathFor", Router.pathFor);
  * @summary template helper to return absolute + path
  * @return {String} username
  */
-Template.registerHelper("urlFor", (path, params) => Meteor.absoluteUrl(Router.pathFor(path, params).substr(1)));
+Template.registerHelper("urlFor", (path, params) => Reaction.absoluteUrl(Router.pathFor(path, params).substr(1)));
 
 /**
  * @method active
