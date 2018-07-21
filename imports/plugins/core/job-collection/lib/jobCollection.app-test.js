@@ -7,7 +7,6 @@ import { Meteor } from "meteor/meteor";
 import { assert, expect } from "meteor/practicalmeteor:chai";
 import { Match } from "meteor/check";
 import { DDP } from "meteor/ddp";
-import Reaction from "/imports/plugins/core/core/server/Reaction";
 import { Job, JobCollection } from "./";
 
 let remoteServerTestColl;
@@ -52,7 +51,7 @@ describe("JobCollection", function () {
       const remoteTestColl = new JobCollection("RemoteTest", { idGeneration: "STRING" });
       remoteTestColl.allow({ admin() { return true; } });
     } else {
-      const remoteConnection = DDP.connect(Reaction.absoluteUrl());
+      const remoteConnection = DDP.connect(Meteor.absoluteUrl());
       remoteServerTestColl = new JobCollection("RemoteTest", { idGeneration: "STRING", connection: remoteConnection });
     }
 
