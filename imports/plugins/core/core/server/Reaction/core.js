@@ -1,3 +1,4 @@
+import url from "url";
 import Hooks from "@reactioncommerce/hooks";
 import Logger from "@reactioncommerce/logger";
 import Random from "@reactioncommerce/random";
@@ -14,7 +15,6 @@ import createGroups from "./createGroups";
 import processJobs from "./processJobs";
 import sendVerificationEmail from "./sendVerificationEmail";
 import { registerTemplate } from "./templates";
-import { AbsoluteUrlMixin } from "./absoluteUrl";
 
 /**
  * @file Server core methods
@@ -26,8 +26,6 @@ import { AbsoluteUrlMixin } from "./absoluteUrl";
 const { Jobs, Packages, Shops, Accounts: AccountsCollection } = Collections;
 
 export default {
-  ...AbsoluteUrlMixin,
-
   init() {
     // run beforeCoreInit hooks
     Hooks.Events.run("beforeCoreInit");
@@ -465,6 +463,17 @@ export default {
       shopId = this.getPrimaryShopId();
     }
     return shopId;
+  },
+
+  /**
+   * @name getDomain
+   * @method
+   * @memberof Core
+   * @summary Get shop domain for URL
+   * @return {String} Shop domain
+   */
+  getDomain() {
+    return url.parse(Meteor.absoluteUrl()).hostname;
   },
 
   /**

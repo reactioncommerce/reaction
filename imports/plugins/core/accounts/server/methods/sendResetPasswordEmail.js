@@ -62,7 +62,7 @@ async function sendResetEmail(userId, optionalEmail) {
     // Shop Data
     shop,
     contactEmail: shop.emails[0].address,
-    homepage: Reaction.absoluteUrl(),
+    homepage: Meteor.absoluteUrl(),
     emailLogo,
     copyrightDate,
     legalName: _.get(shop, "addressBook[0].company"),
@@ -77,17 +77,17 @@ async function sendResetEmail(userId, optionalEmail) {
       display: true,
       facebook: {
         display: true,
-        icon: `${Reaction.absoluteUrl()}resources/email-templates/facebook-icon.png`,
+        icon: `${Meteor.absoluteUrl()}resources/email-templates/facebook-icon.png`,
         link: "https://www.facebook.com"
       },
       googlePlus: {
         display: true,
-        icon: `${Reaction.absoluteUrl()}resources/email-templates/google-plus-icon.png`,
+        icon: `${Meteor.absoluteUrl()}resources/email-templates/google-plus-icon.png`,
         link: "https://plus.google.com"
       },
       twitter: {
         display: true,
-        icon: `${Reaction.absoluteUrl()}resources/email-templates/twitter-icon.png`,
+        icon: `${Meteor.absoluteUrl()}resources/email-templates/twitter-icon.png`,
         link: "https://www.twitter.com"
       }
     },
