@@ -30,6 +30,10 @@ class ProductsContainerCustomer extends Component {
   }
 
   handleLoadProducts = () => {
+    if (this.state.isLoading) {
+      return;
+    }
+    
     this.setState({ isLoading: true });
     const { catalogItems, fetchMore } = this.props;
     const { pageInfo } = catalogItems;
