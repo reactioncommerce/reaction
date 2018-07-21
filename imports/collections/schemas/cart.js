@@ -14,12 +14,31 @@ const Money = new SimpleSchema({
 });
 
 /**
+ * @name CartItemAttribute
+ * @memberof Schemas
+ * @type {SimpleSchema}
+ * @property {String} label optional
+ * @property {String} value optional
+ */
+const CartItemAttribute = new SimpleSchema({
+  label: {
+    type: String,
+    optional: true
+  },
+  value: {
+    type: String,
+    optional: true
+  }
+});
+
+/**
  * @name CartItem
  * @memberof Schemas
  * @type {SimpleSchema}
  * @property {String} _id required
  * @property {String} addedAt required
- * @property {String} cartItemId Seems strange here but has to be here since we share schemas between Cart and Order
+ * @property {CartItemAttribute[]} attributes Attributes of this item
+ * @property {String} cartItemId Has to be here since we share schemas between Cart and Order
  * @property {String} createdAt required
  * @property {Metafield[]} metafields
  * @property {String} optionTitle optionTitle from the selected variant
@@ -28,11 +47,12 @@ const Money = new SimpleSchema({
  * @property {String} productId required
  * @property {String} productSlug Product slug
  * @property {String} productType Product type
+ * @property {String} productVendor Product vendor
  * @property {Number} quantity required
  * @property {Object} shippingMethod Shipping Method associated with this item
  * @property {String} shopId Cart Item shopId
  * @property {Object} taxData optional blackbox
- * @property {Number} taxRate optional
+ * @property {Number} taxRate optional totalTax/subTotal of the item
  * @property {String} title Cart Item title
  * @property {Object} transaction Transaction associated with this item
  * @property {String} updatedAt required
@@ -42,6 +62,11 @@ const Money = new SimpleSchema({
 export const CartItem = new SimpleSchema({
   "_id": String,
   "addedAt": Date,
+  "attributes": {
+    type: Array,
+    optional: true
+  },
+  "attributes.$": CartItemAttribute,
   "cartItemId": {
     type: String,
     optional: true
@@ -75,6 +100,11 @@ export const CartItem = new SimpleSchema({
   },
   "productType": {
     label: "Product Type",
+    type: String,
+    optional: true
+  },
+  "productVendor": {
+    label: "Product Vendor",
     type: String,
     optional: true
   },
@@ -231,8 +261,33 @@ export const Cart = new SimpleSchema({
     optional: true
   },
   "taxes.$": {
+    type: Object
+  },
+  "taxes.$.lineNumber": {
+    type: String
+  },
+  "taxes.$.discountAmount": {
+    type: Number,
+    optional: true
+  },
+  "taxes.$.taxable": {
+    type: Boolean,
+    optional: true
+  },
+  "taxes.$.tax": {
+    type: Number
+  },
+  "taxes.$.taxableAmount": {
+    type: Number
+  },
+  "taxes.$.taxCode": {
+    type: String,
+    optional: true
+  },
+  "taxes.$.details": {
     type: Object,
-    blackbox: true
+    blackbox: true,
+    optional: true
   },
   "taxRatesByShop": {
     type: Object,

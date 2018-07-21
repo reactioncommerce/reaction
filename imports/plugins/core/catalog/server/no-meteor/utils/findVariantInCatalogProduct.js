@@ -1,11 +1,14 @@
 /**
  * @param {Object} catalogProduct - The `product` property of a Catalog Item
  * @param {String} variantId - The variantId to look for
- * @returns {Object|undefined} The variant or option object with that variantId. It will
+ * @returns {Object} Object with `variant` and `parentVariant` props.
+ *   `variant` is the variant or option object with the requested variantId. It will
  *   also have a `parcel` object added to it, with inheritance from parent variant for options.
+ *   If `variant` is an option, `parentVariant` will be set to the parent variant.
  */
 export default function findVariantInCatalogProduct(catalogProduct, variantId) {
-  let foundVariant;
+  let foundVariant = null;
+  let parentVariant = null;
 
   catalogProduct.variants.forEach((variant) => {
     if (variant.options && variant.options.length) {
@@ -22,6 +25,10 @@ export default function findVariantInCatalogProduct(catalogProduct, variantId) {
             ...option,
             parcel
           };
+          parentVariant = {
+            ...variant
+          };
+          delete parentVariant.options;
         }
       });
     } else if (variant.variantId === variantId) {
@@ -36,5 +43,5 @@ export default function findVariantInCatalogProduct(catalogProduct, variantId) {
     }
   });
 
-  return foundVariant;
+  return { parentVariant, variant: foundVariant };
 }

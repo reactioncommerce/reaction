@@ -54,10 +54,11 @@ registerSchema("History", History);
  * @name ExportHistory
  * @memberof Schemas
  * @type {SimpleSchema}
- * @property {String} required Whether the export attempt succeeded or failed
- * @property {Date} required Date the export was attempted
- * @property {String} required Name of the export method (e.g. CSV, Shopify)
- * @property {String} optional The identifier for this order on the remote system
+ * @property {String} status (required) Whether the export attempt succeeded or failed
+ * @property {Date} dateAttempted (required) Date the export was attempted
+ * @property {String} exportMethod (required) Name of the export method (e.g. CSV, Shopify)
+ * @property {String} destinationIdentifier The identifier for this order on the remote system
+ * @property {String} shopId (required) The shop ID
  */
 export const ExportHistory = new SimpleSchema({
   status: {
@@ -111,6 +112,8 @@ registerSchema("Notes", Notes);
  * @property {Workflow} workflow optional
  * @property {History[]} history optional
  * @property {Document[]} documents optional
+ * @property {Object} product (required) The full Product document for the top-level product, at the time of order
+ * @property {Object} variants (required) The full Product document for the ordered variant, at the time of order
 */
 export const OrderItem = new SimpleSchema({
   "workflow": {
@@ -188,8 +191,12 @@ registerSchema("OrderTransaction", OrderTransaction);
  * @property {History[]} history optional
  * @property {Document[]} documents optional
  * @property {Notes[]} notes optional
+ * @property {Boolean} taxCalculationFailed Did we fail to calculate the tax?
+ * @property {Boolean} bypassAddressValidation Did the user bypass address validation?
  * @property {OrderItem[]} items optional
  * @property {OrderTransaction[]} transactions optional
+ * @property {Object[]} exportHistory optional
+ * @property {Workflow} workflow optional
  */
 export const Order = new SimpleSchema({
   "accountId": {

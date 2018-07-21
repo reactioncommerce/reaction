@@ -27,7 +27,7 @@ function callValidateAddress(address) {
       } else if (result.validated === false && !result.suggestedAddress) {
         reject(i18next.t("addressBookAdd.failedToUpdateAddress", { err: "Unable to fetch corrected address" }));
       } else if (result.validated === false && result.suggestedAddress && result.formErrors && result.formErrors.length > 0) {
-        reject(i18next.t("addressBookAdd.failedToUpdateAddress", { err: result.formErrors[0].summary }));
+        reject(i18next.t("addressBookAdd.failedToUpdateAddress", { err: result.formErrors[result.formErrors.length - 1].details }));
       } else {
         resolve(result);
       }
@@ -184,12 +184,12 @@ const handlers = {
  */
 function composer(props, onData) {
   const userId = Meteor.userId();
-  const handle = Meteor.subscribe("Accounts", userId);
-  if (!handle.ready()) {
+  const account = Collections.Accounts.findOne({ userId });
+  if (!account) {
+    // Subscription not ready
     return;
   }
 
-  const account = Collections.Accounts.findOne({ userId });
   const { addressBook } = account.profile;
   const countries = Countries.find().fetch();
   const shop = Collections.Shops.findOne();

@@ -13,7 +13,7 @@ import { Jobs } from "/lib/collections";
     from: 'me@example.com',
     to: 'you@example.com',
     subject: 'RE: new email API',
-    html: SSR.render('some-name', { shopUrl: Meteor.absoluteUrl() })
+    html: SSR.render('some-name', { shopUrl: Reaction.absoluteUrl() })
   });
  * @param  {Object} options - object containing to/from/subject/html String keys
  * @return {Boolean} returns job object

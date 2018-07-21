@@ -524,6 +524,7 @@ Meteor.methods({
     const assembledVariant = Object.assign(newVariant || {}, {
       _id: newVariantId,
       ancestors,
+      taxCode: product.taxCode,
       shopId: product.shopId,
       type: "variant"
     });
@@ -1031,7 +1032,7 @@ Meteor.methods({
         denormalize(doc.ancestors[0], field);
       }
     }
-    return result;
+    return update;
   },
 
   /**

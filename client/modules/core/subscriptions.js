@@ -2,10 +2,11 @@ import store from "store";
 import Logger from "/client/modules/logger";
 import Random from "@reactioncommerce/random";
 import { Meteor } from "meteor/meteor";
+import { ReactiveVar } from "meteor/reactive-var";
 import { Session } from "meteor/session";
 import { Tracker } from "meteor/tracker";
 import { SubsManager } from "meteor/meteorhacks:subs-manager";
-import { Cart } from "/lib/collections";
+import { Accounts, Cart } from "/lib/collections";
 import Reaction from "./main";
 
 export const Subscriptions = {};
@@ -13,6 +14,8 @@ export const Subscriptions = {};
 // Subscription Manager
 // See: https://github.com/kadirahq/subs-manager
 Subscriptions.Manager = new SubsManager();
+
+Subscriptions.Account = Subscriptions.Manager.subscribe("Accounts");
 
 /*
  * Reaction.session
@@ -52,7 +55,17 @@ Subscriptions.Groups = Subscriptions.Manager.subscribe("Groups");
 
 Subscriptions.BrandAssets = Subscriptions.Manager.subscribe("BrandAssets");
 
-Subscriptions.Cart = Subscriptions.Manager.subscribe("Cart");
+const cartSubCreated = new ReactiveVar(false);
+Tracker.autorun(() => {
+  const userId = Meteor.userId();
+  if (!userId) return;
+
+  const account = Accounts.findOne({ userId });
+  if (account) {
+    Subscriptions.Cart = Subscriptions.Manager.subscribe("Cart", account._id);
+    cartSubCreated.set(true);
+  }
+});
 
 /**
  * Subscriptions that need to reload on new sessions
@@ -77,19 +90,18 @@ Tracker.autorun(() => {
 });
 
 Tracker.autorun(() => {
-  Subscriptions.Account = Subscriptions.Manager.subscribe("Accounts", Meteor.userId());
   Subscriptions.UserProfile = Meteor.subscribe("UserProfile", Meteor.userId());
 });
 
 Tracker.autorun(() => {
-  if (Subscriptions.Cart.ready()) {
+  if (cartSubCreated.get() && Subscriptions.Cart.ready()) {
     const cartCount = Cart.find({}).count();
     const sessionId = Session.get("sessionId");
     if (cartCount === 0 && sessionId) {
       Meteor.call("cart/createCart", sessionId, (error) => {
         // cart-found error can happen due to timing issues. We don't worry about it
         // and assume that the account cart will get published to us soon.
-        if (error.error !== "cart-found") {
+        if (error && error.error !== "cart-found") {
           Logger.error(error.message);
         }
       });

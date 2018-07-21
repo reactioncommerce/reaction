@@ -17,11 +17,7 @@ export default function setUserCurrency(cartId, userCurrency) {
   check(cartId, String);
   check(userCurrency, String);
 
-  const { cart } = getCart(cartId);
-  if (!cart) {
-    Logger.error(`Cart not found for user: ${this.userId}`);
-    throw new Meteor.Error("not-found", "Cart not found for user with such id");
-  }
+  const { cart } = getCart(cartId, { throwIfNotFound: true });
 
   const userCurrencyString = {
     userCurrency

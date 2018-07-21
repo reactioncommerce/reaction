@@ -7,3 +7,21 @@ type ShippingParcel {
   height: Float
   weight: Float
 }
+
+# type QuoteGroup {
+#   items: [CartItem]!
+
+#   shippingAddress: Address!
+
+#   # passed by servers only?
+#   fromAddress: Address
+# }
+
+# input GetAvailableFulfillmentQuotesInput {
+#   groups: [QuoteGroup]
+# }
+
+# extend type Mutation {
+#   getAvailableFulfillmentMethods # TODO
+#   getAvailableFulfillmentQuotes(input: GetAvailableFulfillmentQuotesInput!): GetAvailableFulfillmentQuotesPayload!
+# }
