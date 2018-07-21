@@ -82,7 +82,7 @@ export default function inviteShopMember(options) {
     Meteor.call("group/addUser", userId, groupId);
 
     // do not send token, as no password reset is needed
-    const url = Reaction.absoluteUrl();
+    const url = Meteor.absoluteUrl();
 
     // use primaryShop's data (name, address etc) in email copy sent to new shop manager
     dataForEmail = getDataForEmail({ shop: primaryShop, currentUserName, name, emailLogo, url });
