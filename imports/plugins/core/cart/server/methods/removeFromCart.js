@@ -17,11 +17,7 @@ export default function removeFromCart(itemId, quantity) {
   check(itemId, String);
   check(quantity, Match.Optional(Number));
 
-  const { cart } = getCart();
-  if (!cart) {
-    Logger.error(`Cart not found for user: ${this.userId}`);
-    throw new Meteor.Error("not-found", "Cart not found for user with such id");
-  }
+  const { cart } = getCart(null, { throwIfNotFound: true });
 
   let cartItem;
 

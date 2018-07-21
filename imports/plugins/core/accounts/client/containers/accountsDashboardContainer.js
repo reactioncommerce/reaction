@@ -91,10 +91,9 @@ const handlers = {
 
 const composer = (props, onData) => {
   const shopId = Reaction.getShopId();
-  const adminUserSub = Meteor.subscribe("Accounts", null);
   const grpSub = Meteor.subscribe("Groups", { shopId });
 
-  if (adminUserSub.ready() && grpSub.ready()) {
+  if (Reaction.Subscriptions.Account.ready() && grpSub.ready()) {
     const groups = Groups.find({
       shopId: Reaction.getShopId()
     }).fetch();
@@ -107,7 +106,7 @@ const composer = (props, onData) => {
 
     const adminUsers = Meteor.users.find(adminQuery, { fields: { _id: 1 } }).fetch();
     const ids = adminUsers.map((user) => user._id);
-    const accounts = Accounts.find({ _id: { $in: ids } }).fetch();
+    const accounts = Accounts.find({ userId: { $in: ids } }).fetch();
     const adminGroups = groups.reduce((admGrps, group) => {
       if (group.slug !== "customer" && group.slug !== "guest") {
         admGrps.push(group);

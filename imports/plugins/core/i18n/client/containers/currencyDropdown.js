@@ -15,6 +15,7 @@ const handlers = {
     Meteor.call("accounts/setProfileCurrency", currencyName);
 
     const { cart } = getCart();
+    if (!cart) return;
 
     // Attach changed currency to this users cart
     Meteor.call("cart/setUserCurrency", cart._id, currencyName);

@@ -27,25 +27,25 @@ function getValidator() {
   if (geoCoders.length === 1) {
     [geoCoder] = geoCoders;
   }
-  // If there are two, we default to the one that is not the Reaction one
-  if (geoCoders.length === 2) {
-    geoCoder = geoCoders.find((coder) => !coder.name.includes("reaction"));
-  }
 
-  // check if addressValidation is enabled but the package is disabled, don't do address validation
-  let registryName;
-  for (const registry of geoCoder.registry) {
-    if (registry.provides && registry.provides.includes("addressValidation")) {
-      registryName = registry.name;
+  geoCoder = geoCoders.find((gC) => {
+    // check if addressValidation is enabled but the package is disabled, don't do address validation
+    let registryName;
+    for (const registry of gC.registry) {
+      if (registry.provides && registry.provides.includes("addressValidation")) {
+        registryName = registry.name;
+      }
     }
+    const packageKey = registryName.split("/")[2]; // "taxes/addressValidation/{packageKey}"
+    if (!_.get(gC.settings[packageKey], "enabled")) {
+      return false;
+    }
+    return true;
+  });
+  if (geoCoder && geoCoder.settings && geoCoder.settings.addressValidation) {
+    return geoCoder.settings.addressValidation.addressValidationMethod;
   }
-  const packageKey = registryName.split("/")[2]; // "taxes/addressValidation/{packageKey}"
-  if (!_.get(geoCoder.settings[packageKey], "enabled")) {
-    return "";
-  }
-
-  const methodName = geoCoder.settings.addressValidation.addressValidationMethod;
-  return methodName;
+  return null;
 }
 
 /**

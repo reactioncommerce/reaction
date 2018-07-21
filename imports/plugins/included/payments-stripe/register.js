@@ -18,6 +18,7 @@ Reaction.registerPackage({
       ]
     },
     "public": {
+      publishable_key: "",
       client_id: ""
     },
     "connectAuth": {}

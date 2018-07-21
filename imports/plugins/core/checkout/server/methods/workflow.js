@@ -4,7 +4,7 @@ import Logger from "@reactioncommerce/logger";
 import { Meteor } from "meteor/meteor";
 import { Roles } from "meteor/alanning:roles";
 import { check, Match } from "meteor/check";
-import { Accounts, Cart, Orders, Packages, Groups } from "/lib/collections";
+import { Cart, Orders, Packages, Groups } from "/lib/collections";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
 import getCart from "/imports/plugins/core/cart/both/util/getCart";
 
@@ -76,17 +76,17 @@ Meteor.methods({
     // when `this.userId` will be null, that's why we have a third argument in
     // this method - `cartId`. So, we can't completely rely on `Meteor.userId()`
     // here.
-    const { cart: currentCart } = getCart(cartId);
+    const { account, cart: currentCart } = getCart(cartId);
     if (!currentCart) return [];
+
+    const shopId = Reaction.getShopId();
 
     // TODO doc this
     const currentWorkflowStatus = currentCart.workflow.status;
     const packages = Packages.find({
-      "shopId": Reaction.getShopId(),
+      shopId,
       "layout.workflow": workflow
     });
-
-    const account = Accounts.findOne({ _id: currentCart.accountId });
 
     // loop through packages and set the defaultPackageWorkflows
     packages.forEach((reactionPackage) => {
@@ -101,19 +101,14 @@ Meteor.methods({
           if (typeof layout.audience !== "object") {
             const defaultRoles = Groups.findOne({
               slug: "customer",
-              shopId: Reaction.getShopId()
+              shopId
             }).permissions;
             layout.audience = defaultRoles;
           }
           // check permissions so you don't have to on template. For a case, when
           // this method calls indirectly from publication method, we do this
           // check which is looks not pretty secure
-          let hasPermission;
-          if (typeof Meteor.userId() !== "string") {
-            hasPermission = Roles.userIsInRole(account.userId, layout.audience, Reaction.getShopId());
-          } else {
-            hasPermission = Roles.userIsInRole(Meteor.userId(), layout.audience, Reaction.getShopId());
-          }
+          const hasPermission = account ? Roles.userIsInRole(account.userId, layout.audience, shopId) : false;
 
           if (hasPermission && !layout.layout) {
             defaultPackageWorkflows.push(layout);

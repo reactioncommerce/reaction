@@ -7,6 +7,9 @@ type Cart implements Node {
   "The account that owns the cart. Some carts are created for anonymus users. Anonymous carts have a null account."
   account: Account
 
+  "Holds all information collected for a cart during checkout"
+  checkout: Checkout
+
   "The date and time at which the cart was created, which is when the first item was added to it."
   createdAt: DateTime!
 
@@ -51,10 +54,10 @@ type CartItemEdge implements NodeEdge {
 
 type CartItemAttribute {
   "The attribute label, e.g., Color"
-  label: String!
+  label: String
 
   "The attribute value, e.g., Blue"
-  value: String!
+  value: String
 }
 
 """
@@ -77,6 +80,12 @@ type CartItem implements Node {
   options were chosen for some configurable attributes, then "color:blue" and "size:small" will be indicated here.
   """
   attributes: [CartItemAttribute]
+
+  "The current comparison (e.g., MSRP) price of the item"
+  compareAtPrice: Money
+
+  "The quantity of this item currently available to order"
+  currentQuantity: Int
 
   """
   The date and time at which the cart item was created. If an item is added, removed, and then added again,
@@ -121,6 +130,9 @@ type CartItem implements Node {
 
   "The type of product, used to display cart items differently"
   productType: String
+
+  "The product vendor"
+  productVendor: String
 
   "The quantity of this item that has been added to the cart. This must be a positive integer. Remove this `CartItem` from it's associated cart if you want `0` of this item."
   quantity: Int!
@@ -352,11 +364,32 @@ type CreateCartPayload {
 
 "The payload returned from the `addCartItems` mutation call"
 type AddCartItemsPayload {
-  "The modified cart"
-  cart: Cart!
+  """
+  The modified cart. You should check `incorrectPriceFailures` and `minOrderQuantityFailures` for
+  information necessary to display errors to the shopper. Some items may not have been added.
+  """
+  cart: Cart
 
   "The same string you sent with the mutation params, for matching mutation calls with their responses"
   clientMutationId: String
+
+  """
+  Clients should check to see if any items failed to be added due to the price not matching the current price.
+  In general, a user interface should display the correct current prices to the shopper, confirm that they still
+  want to add the items, and then call `createCart` or `addCartItems` to do so.
+
+  Note that this field will always exist but may be an empty array if there were no failures of this type.
+  """
+  incorrectPriceFailures: [IncorrectPriceFailureDetails]!
+
+  """
+  Clients should check to see if any items failed to be added due to quantity being below the minimum order
+  quantity defined for the product variant. In general, a user interface should display the minimum order
+  quantity to the shopper and allow them to add that quantity or greater.
+
+  Note that this field will always exist but may be an empty array if there were no failures of this type.
+  """
+  minOrderQuantityFailures: [MinOrderQuantityFailureDetails]!
 }
 
 "The payload returned from the `removeCartItems` mutation call"

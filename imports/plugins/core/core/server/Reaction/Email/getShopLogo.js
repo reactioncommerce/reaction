@@ -1,4 +1,4 @@
-import { Meteor } from "meteor/meteor";
+import Reaction from "/imports/plugins/core/core/server/Reaction";
 import { Media } from "/imports/plugins/core/files/server";
 
 /**
@@ -15,5 +15,5 @@ export default function getShopLogo(shop) {
     const fileRecord = brandAsset && Promise.await(Media.findOne(brandAsset.mediaId));
     emailLogo = fileRecord && fileRecord.url({ absolute: true, store: "medium" });
   }
-  return emailLogo || `${Meteor.absoluteUrl()}resources/email-templates/shop-logo.png`;
+  return emailLogo || `${Reaction.absoluteUrl()}resources/email-templates/shop-logo.png`;
 }

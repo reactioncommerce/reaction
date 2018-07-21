@@ -28,6 +28,7 @@ function getConvertOrderItemUp(currencyCode) {
       productId: item.productId || (chosenProduct && chosenProduct._id),
       productSlug: chosenProduct && (chosenProduct.slug || chosenProduct.handle),
       productType: item.type || (chosenProduct && chosenProduct.type),
+      productVendor: chosenProduct && chosenProduct.vendor,
       shopId: item.shopId || (chosenProduct && chosenProduct.shopId),
       taxCode: chosenVariant && chosenVariant.taxCode,
       title: item.title || (chosenProduct && chosenProduct.title) || "Unknown Item",
@@ -83,6 +84,7 @@ function convertOrderItemDown(item) {
   delete newItem.priceWhenAdded;
   delete newItem.productSlug;
   delete newItem.productType;
+  delete newItem.productVendor;
   delete newItem.optionTitle;
   delete newItem.taxCode;
   delete newItem.variantId;

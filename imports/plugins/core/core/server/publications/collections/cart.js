@@ -3,20 +3,26 @@ import { Meteor } from "meteor/meteor";
 import { check, Match } from "meteor/check";
 import { Accounts, Cart, MediaRecords } from "/lib/collections";
 
-Meteor.publish("Cart", function (shopId) {
+Meteor.publish("Cart", function (accountId, shopId) {
+  check(accountId, String);
   check(shopId, Match.Optional(String));
 
-  if (!this.userId) {
-    Logger.warn("Cart publication called without a user context. No cart will be published.");
+  const userId = Meteor.userId();
+  if (!userId) {
+    Logger.debug("Cart publication called without a user context. No cart will be published.");
     return this.ready();
   }
 
-  const account = Accounts.findOne({ userId: this.userId }, { fields: { _id: 1 } });
+  const account = Accounts.findOne({ userId }, { fields: { _id: 1 } });
   if (!account) {
-    Logger.warn(`Cart publication called without an account for user with ID ${this.userId}. No cart will be published.`);
+    Logger.debug(`Cart publication called without an account for user with ID ${userId}. No cart will be published.`);
     return this.ready();
   }
-  const accountId = account._id;
+
+  // You can only see your own carts
+  if (accountId !== account._id) {
+    return this.ready();
+  }
 
   // exclude these fields from the client cart
   const fields = {

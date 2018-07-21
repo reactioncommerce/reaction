@@ -43,7 +43,7 @@ function xformCartItem(catalogItems, cartItem) {
   }
 
   const catalogProduct = catalogItem.product;
-  const variant = findVariantInCatalogProduct(catalogProduct, variantId);
+  const { variant } = findVariantInCatalogProduct(catalogProduct, variantId);
   if (!variant) {
     throw new Meteor.Error("invalid-param", `Product with ID ${productId} has no variant with ID ${variantId}`);
   }
@@ -61,6 +61,11 @@ function xformCartItem(catalogItems, cartItem) {
 
   return {
     ...cartItem,
+    compareAtPrice: {
+      amount: variantPriceInfo.compareAtPrice,
+      currencyCode
+    },
+    currentQuantity: variant.quantity,
     imageURLs: media && media.URLs,
     isBackorder: variant.isBackorder || false,
     isLowQuantity: variant.isLowQuantity || false,
