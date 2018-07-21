@@ -136,8 +136,8 @@ export default async function createCatalogProduct(product, collections) {
       } else {
         priceInfo = getPriceRange([variant.price], shopCurrencyInfo);
       }
-
       prices.push(priceInfo.min, priceInfo.max);
+
       const variantMedia = catalogProductMedia.filter((media) => media.variantId === variant._id);
 
       const newVariant = xformVariant(variant, priceInfo, shopCurrencyCode, variantMedia);
