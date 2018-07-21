@@ -31,7 +31,7 @@ export default async function reconcileCarts(context, input) {
   if (!shopId) throw new Meteor.Error("invalid-param", "shopId is required");
 
   const accountCartSelector = { accountId, shopId };
-  const anonymousCartSelector = { _id: anonymousCartId, shopId, token: hashLoginToken(anonymousCartToken) };
+  const anonymousCartSelector = { _id: anonymousCartId, shopId, anonymousAccessToken: hashLoginToken(anonymousCartToken) };
 
   const carts = await Cart.find({
     $or: [accountCartSelector, anonymousCartSelector]
