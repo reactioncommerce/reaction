@@ -11,11 +11,13 @@ import isSoldOut from "./isSoldOut";
  * @param {Object} variant The variant from Products collection
  * @param {Object} variantPriceInfo The result of calling getPriceRange for this price or all child prices
  * @param {String} shopCurrencyCode The shop currency code for the shop to which this product belongs
- * @param {Object} collections Raw mongo collections
+ * @param {Object} variantMedia Media for this specific variant
  * @private
  * @returns {Object} The transformed variant
  */
 export function xformVariant(variant, variantPriceInfo, shopCurrencyCode, variantMedia) {
+  const primaryImage = variantMedia.find(({ toGrid }) => toGrid === 1) || null;
+
   return {
     _id: variant._id,
     barcode: variant.barcode,
@@ -135,15 +137,16 @@ export default async function createCatalogProduct(product, collections) {
         priceInfo = getPriceRange([variant.price], shopCurrencyInfo);
       }
 
-      const variantMedia = catalogProductMedia.filter((media) => media.variantId === variant._id);
       prices.push(priceInfo.min, priceInfo.max);
+      const variantMedia = catalogProductMedia.filter((media) => media.variantId === variant._id);
+
       const newVariant = xformVariant(variant, priceInfo, shopCurrencyCode, variantMedia);
 
       if (variantOptions) {
-        newVariant.options = variantOptions.map((option) =>
-          xformVariant(option, getPriceRange([option.price], shopCurrencyInfo), shopCurrencyCode, collections));
+        newVariant.options = variantOptions.map((option) => {
           const optionMedia = catalogProductMedia.filter((media) => media.variantId === option._id);
           return xformVariant(option, getPriceRange([option.price], shopCurrencyInfo), shopCurrencyCode, optionMedia);
+        });
       }
       return newVariant;
     });
