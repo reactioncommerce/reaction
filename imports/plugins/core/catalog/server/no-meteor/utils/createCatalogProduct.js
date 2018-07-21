@@ -1,6 +1,5 @@
 import Logger from "@reactioncommerce/logger";
 import getCatalogProductMedia from "./getCatalogProductMedia";
-import getCatalogVariantMedia from "./getCatalogVariantMedia";
 import getPriceRange from "./getPriceRange";
 import isBackorder from "./isBackorder";
 import isLowQuantity from "./isLowQuantity";
@@ -16,10 +15,7 @@ import isSoldOut from "./isSoldOut";
  * @private
  * @returns {Object} The transformed variant
  */
-async function xformVariant(variant, variantPriceInfo, shopCurrencyCode, collections) {
-  const catalogVariantMedia = await getCatalogVariantMedia(variant._id, collections);
-  const primaryImage = catalogVariantMedia.find(({ toGrid }) => toGrid === 1) || null;
-
+export function xformVariant(variant, variantPriceInfo, shopCurrencyCode, variantMedia) {
   return {
     _id: variant._id,
     barcode: variant.barcode,
@@ -33,7 +29,7 @@ async function xformVariant(variant, variantPriceInfo, shopCurrencyCode, collect
     isTaxable: !!variant.taxable,
     length: variant.length,
     lowInventoryWarningThreshold: variant.lowInventoryWarningThreshold,
-    media: catalogVariantMedia,
+    media: variantMedia,
     metafields: variant.metafields,
     minOrderQuantity: variant.minOrderQuantity,
     optionTitle: variant.optionTitle,
@@ -139,12 +135,15 @@ export default async function createCatalogProduct(product, collections) {
         priceInfo = getPriceRange([variant.price], shopCurrencyInfo);
       }
 
+      const variantMedia = catalogProductMedia.filter((media) => media.variantId === variant._id);
       prices.push(priceInfo.min, priceInfo.max);
-      const newVariant = xformVariant(variant, priceInfo, shopCurrencyCode, collections);
+      const newVariant = xformVariant(variant, priceInfo, shopCurrencyCode, variantMedia);
 
       if (variantOptions) {
         newVariant.options = variantOptions.map((option) =>
           xformVariant(option, getPriceRange([option.price], shopCurrencyInfo), shopCurrencyCode, collections));
+          const optionMedia = catalogProductMedia.filter((media) => media.variantId === option._id);
+          return xformVariant(option, getPriceRange([option.price], shopCurrencyInfo), shopCurrencyCode, optionMedia);
       }
       return newVariant;
     });
