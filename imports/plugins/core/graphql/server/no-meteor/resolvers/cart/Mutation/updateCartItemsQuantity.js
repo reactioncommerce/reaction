@@ -1,3 +1,5 @@
+import { decodeCartItemOpaqueId, decodeCartOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/cart";
+
 /**
  * @name "Mutation.updateCartItemsQuantity"
  * @method
@@ -15,11 +17,16 @@
  * @return {Promise<Object>} UpdateCartItemsQuantityPayload
  */
 export default async function updateCartItemsQuantity(parentResult, { input }, context) {
-  const { clientMutationId = null } = input;
-  // TODO: decode incoming IDs here
-  const renameMe = await context.mutations.cart.updateCartItemsQuantity(context);
-  return {
-    renameMe,
-    clientMutationId
-  };
+  const { cartId: opaqueCartId, clientMutationId = null, items: itemsInput, token } = input;
+
+  const cartId = decodeCartOpaqueId(opaqueCartId);
+  const items = itemsInput.map((item) => ({ cartItemId: decodeCartItemOpaqueId(item.cartItemId), quantity: item.quantity }));
+
+  const { cart } = await context.mutations.cart.updateCartItemsQuantity(context, {
+    cartId,
+    items,
+    token
+  });
+
+  return { cart, clientMutationId };
 }
