@@ -1,3 +1,4 @@
+import Hooks from "@reactioncommerce/hooks";
 import SimpleSchema from "simpl-schema";
 import { Meteor } from "meteor/meteor";
 import hashLoginToken from "/imports/plugins/core/accounts/server/no-meteor/util/hashLoginToken";
@@ -76,6 +77,9 @@ export default async function updateCartItemsQuantity(context, input) {
 
   const cart = await Cart.findOne(selector);
   if (!cart) throw new Meteor.Error("not-found", "Cart not found");
+
+  Hooks.Events.run("afterCartUpdate", cart._id);
+  Hooks.Events.run("afterCartUpdateCalculateDiscount", cart._id);
 
   return { cart };
 }
