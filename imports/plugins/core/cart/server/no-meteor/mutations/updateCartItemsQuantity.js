@@ -53,12 +53,12 @@ export default async function updateCartItemsQuantity(context, input) {
   const removeItemsModifier = { $pull: { items: { $or: [] } } };
   const arrayFilters = [];
 
-  items.forEach((item) => {
+  items.forEach((item, index) => {
     if (item.quantity === 0) {
       removeItemsModifier.$pull.items.$or.push({ _id: item.cartItemId });
     } else {
-      modifier.$set[`items.$[${item.cartItemId}].quantity`] = item.quantity;
-      arrayFilters.push({ [`${item.cartItemId}._id`]: item.cartItemId });
+      modifier.$set[`items.$[elem${index}].quantity`] = item.quantity;
+      arrayFilters.push({ [`elem${index}._id`]: item.cartItemId });
     }
   });
 
