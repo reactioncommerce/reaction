@@ -10,98 +10,69 @@ import { Reaction } from "/client/api";
 import { ITEMS_INCREMENT } from "/client/config/defaults";
 import { Catalog, Tags, Shops } from "/lib/collections";
 import withPrimaryShopId from "/imports/plugins/core/graphql/client/hocs/withPrimaryShopId";
+import withTag from "/imports/plugins/core/graphql/client/hocs/withTag";
 import { loadMore } from "/imports/plugins/core/graphql/lib/helpers/pagination";
 import ProductGridCustomer from "../components/customer/productGrid";
 import withCatalogItems from "../hocs/withCatalogItems";
 
-class ProductsContainerCustomer extends Component {
-  static propTypes = {
-    shopId: PropTypes.string,
-    catalogItems: PropTypes.object,
-    fetchMore: PropTypes.func.isRequired,
-  };
-
-  constructor(props) {
-    super(props);
-    window.prerenderReady = false;
-    this.state = {
-      isLoading: false
-    };
-  }
-
-  handleLoadProducts = () => {
-    if (this.state.isLoading) {
-      return;
-    }
-    
-    this.setState({ isLoading: true });
-    const { catalogItems, fetchMore } = this.props;
-    const { pageInfo } = catalogItems;
-    loadMore({
-      queryName: "catalogItems",
-      fetchMore,
-      pageInfo,
-      limit: ITEMS_INCREMENT
-    }, () => {
-      this.setState({ isLoading: false });
-    });
-  };
-
-  render() {
-    const { catalogItems, fetchMore } = this.props;
-    const { isLoading } = this.state;
-    const { pageInfo } = catalogItems;
-    const { hasNextPage } = pageInfo;
-    const products = catalogItems.edges.map((edge) => {
-      return edge.node.product;
-    });
-
-    return (
-      <ProductGridCustomer
-        canLoadMoreProducts={hasNextPage}
-        showNotFound={false}
-        isLoading={isLoading}
-        loadProducts={this.handleLoadProducts}
-        products={products}
-        shopCurrencyCode={Reaction.getPrimaryShopCurrency()}
-      />
-    );
-  }
-}
-
-registerComponent("ProductsCustomer", ProductsContainerCustomer, [
-  withPrimaryShopId,
-  withCatalogItems
-]);
-
-  /*
-  class ProductsContainer extends Component {
+const wrapComponent = (Comp) => (
+  class ProductsContainerCustomer extends Component {
     static propTypes = {
-      canLoadMoreProducts: PropTypes.bool,
-      productsSubscription: PropTypes.object,
-      showNotFound: PropTypes.bool // eslint-disable-line react/boolean-prop-naming
+      showNotFound: PropTypes.bool,
+      catalogItems: PropTypes.object,
+      fetchMore: PropTypes.func,
     };
 
     constructor(props) {
       super(props);
       this.state = {
-        initialLoad: true
+        isLoading: false
       };
     }
 
-    loadProducts = () => {
-      this.setState({
-        initialLoad: false
-      });
-      // load in the next set of products
-      Session.set("productScrollLimit", Session.get("productScrollLimit") + ITEMS_INCREMENT || 24);
+    componentDidMount() {
+      window.prerenderReady = true;
     }
 
+    handleLoadProducts = () => {
+      if (this.state.isLoading) {
+        return;
+      }
+
+      this.setState({ isLoading: true });
+
+      const { catalogItems, fetchMore } = this.props;
+      const { pageInfo } = catalogItems;
+
+      loadMore({
+        queryName: "catalogItems",
+        fetchMore,
+        pageInfo,
+        limit: ITEMS_INCREMENT
+      }, () => {
+        this.setState({ isLoading: false });
+      });
+    };
+
     render() {
+      const { showNotFound, catalogItems = {}, fetchMore } = this.props;
+      const { isLoading } = this.state;
+
+      const { pageInfo = {} } = catalogItems;
+      const { hasNextPage } = pageInfo;
+      const products = (catalogItems.edges || []).map((edge) => {
+        return edge.node.product;
+      });
+
       return (
         <Comp
           {...this.props}
-          loadProducts={this.loadProducts}
+          showNotFound={showNotFound}
+          canLoadMoreProducts={hasNextPage}
+          isLoading={isLoading}
+          loadProducts={this.handleLoadProducts}
+          products={products}
+          shopCurrencyCode={Reaction.getPrimaryShopCurrency()}
         />
       );
     }
@@ -111,75 +82,47 @@ registerComponent("ProductsCustomer", ProductsContainerCustomer, [
 function composer(props, onData) {
   window.prerenderReady = false;
 
-  let canLoadMoreProducts = false;
+  if (!Meteor.userId()) {
+    return;
+  }
 
-  const queryParams = {};
-  const slug = Reaction.Router.getParam("slug");
-  const shopIdOrSlug = Reaction.Router.getParam("shopSlug");
-  let tagIdForPosition = "_default";
-
-  if (slug) {
-    const tag = Tags.findOne({ slug }) || Tags.findOne({ _id: slug });
-
-    // if we get an invalid slug, don't return all products
+  const tagSlugOrId = Reaction.Router.getParam("slug");
+  if (tagSlugOrId) {
+    const tag = Tags.findOne({ slug: tagSlugOrId }) || Tags.findOne({ _id: tagSlugOrId });
     if (!tag) {
       onData(null, {
-        showNotFound: true
+        showNotFound: true,
+        // Skip loading GraphQL data via HOCs (withPrimaryShopId, withTag, withCatalogItems, etc),
+        // since we are going to render the 404 view
+        skip: true
       });
-
       return;
     }
-    queryParams.tagIds = [tag._id];
-    tagIdForPosition = tag._id;
   }
 
-  if (shopIdOrSlug) {
-    queryParams.shopIdsOrSlugs = [shopIdOrSlug];
-  }
+  // TODO multi-shop support - const shopIdOrSlug = Reaction.Router.getParam("shopSlug");
+  // Currently no way to get a shop's graphql ID by mongo _id or slug
 
-  const queryString = Reaction.Router.current().query;
-  if (queryString) {
-    queryParams.query = queryString.query;
-  }
+  // TODO graphql custom tag sort - $sort: { [`product.positions.${tagIdForPosition}.position`]: 1 }
 
-  const scrollLimit = Session.get("productScrollLimit");
-  const productsSubscription = Meteor.subscribe("Products/grid", scrollLimit, queryParams);
+  // TODO graphql title query support - const queryString = Reaction.Router.current().query;
 
-  if (productsSubscription.ready()) {
-    window.prerenderReady = true;
-  }
-
-  const catalogCursor = Catalog.find({
-    "product.type": "product-simple"
-  }, {
-    $sort: {
-      [`product.positions.${tagIdForPosition}.position`]: 1,
-      createdAt: -1
-    }
-  });
-
-  canLoadMoreProducts = catalogCursor.count() >= scrollLimit;
-
-  const products = catalogCursor.map((catalogItem) => catalogItem.product);
-
-  const currentShop = Shops.findOne({
-    _id: Reaction.getPrimaryShopId()
-  });
-
-  onData(null, {
-    canLoadMoreProducts,
-    products,
-    productsSubscription,
-    shopCurrencyCode: currentShop.currency
-  });
+  onData(null, { tagSlugOrId });
 }
+
 
 registerComponent("ProductsCustomer", ProductGridCustomer, [
   composeWithTracker(composer),
+  withPrimaryShopId,
+  withTag,
+  withCatalogItems,
   wrapComponent
 ]);
 
 export default compose(
   composeWithTracker(composer),
+  withPrimaryShopId,
+  withTag,
+  withCatalogItems,
   wrapComponent
-)(ProductGridCustomer);*/
+)(ProductGridCustomer);

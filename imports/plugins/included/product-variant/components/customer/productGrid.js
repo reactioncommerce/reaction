@@ -20,14 +20,14 @@ class ProductGrid extends Component {
     window.removeEventListener("scroll", this.loadMoreProducts);
   }
 
-  // load more products to the grid
+  // Load more products when user is close (80%) to the bottom
   loadMoreProducts = (event) => {
     const { canLoadMoreProducts, loadProducts } = this.props;
-    const { scrollY, innerHeight } = window;
-    const { body: { scrollHeight } } = document;
-    const atBottom = Math.abs(innerHeight + scrollY - scrollHeight) <= 1;
-
-    if (canLoadMoreProducts && atBottom) {
+    const { documentElement } = document;
+    const { scrollTop, scrollHeight, clientHeight } = documentElement;
+    const scrollPercent = (scrollTop) / (scrollHeight - clientHeight) * 100;
+    const isCloseToBottom = scrollPercent >= 80;
+    if (canLoadMoreProducts && isCloseToBottom) {
       loadProducts(event);
     }
   }
