@@ -1,9 +1,19 @@
 import addCartItems from "./addCartItems";
+import convertAnonymousCartToNewAccountCart from "./convertAnonymousCartToNewAccountCart";
 import createCart from "./createCart";
 import reconcileCarts from "./reconcileCarts";
+import reconcileCartsKeepAccountCart from "./reconcileCartsKeepAccountCart";
+import reconcileCartsKeepAnonymousCart from "./reconcileCartsKeepAnonymousCart";
+import reconcileCartsMerge from "./reconcileCartsMerge";
+import updateCartItemsQuantity from "./updateCartItemsQuantity";
 
 export default {
   addCartItems,
+  convertAnonymousCartToNewAccountCart,
   createCart,
-  reconcileCarts
+  reconcileCarts,
+  reconcileCartsKeepAccountCart,
+  reconcileCartsKeepAnonymousCart,
+  reconcileCartsMerge,
+  updateCartItemsQuantity
 };
