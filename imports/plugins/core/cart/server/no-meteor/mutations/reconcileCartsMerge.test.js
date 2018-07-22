@@ -86,7 +86,6 @@ test("merges anonymous cart items into account cart items, deletes anonymous car
 
 test("throws if deleteOne fails", async () => {
   Cart.deleteOne.mockReturnValueOnce(Promise.resolve({ deletedCount: 0 }));
-  Cart.updateOne.mockReturnValueOnce(Promise.resolve({ modifiedCount: 1 }));
 
   const promise = reconcileCartsMerge({
     accountCart,

@@ -9,10 +9,6 @@ const dbCart = {
 test("updates the quantity of multiple items in account cart", async () => {
   mockContext.collections.Cart.findOne.mockReturnValueOnce(Promise.resolve(dbCart));
 
-  mockContext.collections.Cart.updateOne.mockReturnValueOnce(Promise.resolve({
-    modifiedCount: 1
-  }));
-
   const result = await updateCartItemsQuantity(mockContext, {
     cartId: "cartId",
     items: [
@@ -32,13 +28,13 @@ test("updates the quantity of multiple items in account cart", async () => {
     accountId: "FAKE_ACCOUNT_ID"
   }, {
     $set: {
-      "items.$[cartItemId1].quantity": 1,
-      "items.$[cartItemId2].quantity": 2
+      "items.$[elem0].quantity": 1,
+      "items.$[elem1].quantity": 2
     }
   }, {
     arrayFilters: [
-      { "cartItemId1._id": "cartItemId1" },
-      { "cartItemId2._id": "cartItemId2" }
+      { "elem0._id": "cartItemId1" },
+      { "elem1._id": "cartItemId2" }
     ]
   });
 
@@ -56,10 +52,6 @@ test("updates the quantity of multiple items in anonymous cart", async () => {
   const hashedToken = "+YED6SF/CZIIVp0pXBsnbxghNIY2wmjIVLsqCG4AN80=";
 
   mockContext.collections.Cart.findOne.mockReturnValueOnce(Promise.resolve(dbCart));
-
-  mockContext.collections.Cart.updateOne.mockReturnValueOnce(Promise.resolve({
-    modifiedCount: 1
-  }));
 
   const cachedAccountId = mockContext.accountId;
   mockContext.accountId = null;
@@ -84,13 +76,13 @@ test("updates the quantity of multiple items in anonymous cart", async () => {
     anonymousAccessToken: hashedToken
   }, {
     $set: {
-      "items.$[cartItemId1].quantity": 1,
-      "items.$[cartItemId2].quantity": 2
+      "items.$[elem0].quantity": 1,
+      "items.$[elem1].quantity": 2
     }
   }, {
     arrayFilters: [
-      { "cartItemId1._id": "cartItemId1" },
-      { "cartItemId2._id": "cartItemId2" }
+      { "elem0._id": "cartItemId1" },
+      { "elem1._id": "cartItemId2" }
     ]
   });
 
@@ -128,10 +120,6 @@ test("throws when no account and no token passed", async () => {
 test("removes an item if quantity is 0", async () => {
   mockContext.collections.Cart.findOne.mockReturnValueOnce(Promise.resolve(dbCart));
 
-  mockContext.collections.Cart.updateOne.mockReturnValue(Promise.resolve({
-    modifiedCount: 1
-  }));
-
   const result = await updateCartItemsQuantity(mockContext, {
     cartId: "cartId",
     items: [
@@ -151,11 +139,11 @@ test("removes an item if quantity is 0", async () => {
     accountId: "FAKE_ACCOUNT_ID"
   }, {
     $set: {
-      "items.$[cartItemId2].quantity": 2
+      "items.$[elem1].quantity": 2
     }
   }, {
     arrayFilters: [
-      { "cartItemId2._id": "cartItemId2" }
+      { "elem1._id": "cartItemId2" }
     ]
   });
 
