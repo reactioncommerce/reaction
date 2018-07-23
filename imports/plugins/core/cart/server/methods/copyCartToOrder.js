@@ -1,12 +1,13 @@
-import _ from "lodash";
 import Hooks from "@reactioncommerce/hooks";
 import Logger from "@reactioncommerce/logger";
 import { Meteor } from "meteor/meteor";
 import { check } from "meteor/check";
-import { Roles } from "meteor/alanning:roles";
-import * as Collections from "/lib/collections";
+import { Cart, Orders } from "/lib/collections";
+import rawCollections from "/imports/collections/rawCollections";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
-
+import getCart from "/imports/plugins/core/cart/both/util/getCart";
+import sendOrderEmail from "/imports/plugins/core/orders/server/util/sendOrderEmail";
+import findProductAndVariant from "/imports/plugins/core/catalog/server/no-meteor/utils/findProductAndVariant";
 
 /**
  * @name cart/copyCartToOrder
@@ -23,18 +24,14 @@ import Reaction from "/imports/plugins/core/core/server/Reaction";
  */
 export default function copyCartToOrder(cartId) {
   check(cartId, String);
-  const cart = Collections.Cart.findOne(cartId);
 
-  // security check - method can only be called on own cart
-  if (cart.userId !== Meteor.userId()) {
+  const { account, cart } = getCart(cartId);
+  if (!cart) {
     throw new Meteor.Error("access-denied", "Access Denied");
   }
 
   // Init new order object from existing cart
   const order = Object.assign({}, cart);
-
-  // get sessionId from cart while cart is fresh
-  const { sessionId } = cart;
 
   // If there are no order items, throw an error. We won't create an empty order
   if (!order.items || order.items.length === 0) {
@@ -51,14 +48,10 @@ export default function copyCartToOrder(cartId) {
   order.cartId = cart._id;
 
   // This block assigns an existing user's email associated with their account to this order
-  // We copied order from cart, so this userId and email are coming from the existing cart
-  if (order.userId && !order.email) {
-    // If we have a userId, but do _not_ have an email associated with this order
-    // we need to go find the account associated with this userId
-    const account = Collections.Accounts.findOne(order.userId);
-
+  // We copied order from cart, so this accountId and email are coming from the existing cart
+  if (order.accountId && !order.email) {
     // Check to make sure that the account exists and has an emails field
-    if (typeof account === "object" && account.emails) {
+    if (account && account.emails) {
       for (const email of account.emails) {
         // If a user has specified an alternate "order" email address, use that
         if (email.provides === "orders") {
@@ -73,10 +66,7 @@ export default function copyCartToOrder(cartId) {
     }
   }
 
-  // The schema will provide default values for these fields in our new order
-  // so we'll delete the values copied from the cart
-  delete order.createdAt; // autovalues from cart
-  delete order.updatedAt;
+  // These will get new values or are not needed
   delete order.getCount;
   delete order.getShippingTotal;
   delete order.getSubTotal;
@@ -85,6 +75,9 @@ export default function copyCartToOrder(cartId) {
   delete order.getTotal;
   delete order._id;
 
+  const now = new Date();
+  order.createdAt = now;
+  order.updatedAt = now;
 
   // Create a shipping record for each shop on the order
   if (Array.isArray(order.shipping)) {
@@ -136,31 +129,36 @@ export default function copyCartToOrder(cartId) {
   }
 
   order.items = order.items.map((item) => {
+    const {
+      catalogProduct,
+      variant: chosenVariant
+    } = Promise.await(findProductAndVariant(rawCollections, item.productId, item.variantId));
+
+    item.product = catalogProduct;
     item.shippingMethod = order.shipping[order.shipping.length - 1];
+    item.variants = chosenVariant;
     item.workflow = {
       status: "new",
       workflow: ["coreOrderWorkflow/created"]
     };
 
-    return item;
-  });
-
-  // Assign items to each shipping record based on the shopId of the item
-  _.each(order.items, (item) => {
-    const shippingRecord = order.shipping.find((sRecord) => sRecord.shopId === item.shopId);
+    // While we're looping, assign items to each shipping record based on the shopId of the item
     const shipmentItem = {
       _id: item._id,
       productId: item.productId,
       quantity: item.quantity,
       shopId: item.shopId,
-      variantId: item.variants._id
+      variantId: item.variantId
     };
     // If the shipment exists
+    const shippingRecord = order.shipping.find((sRecord) => sRecord.shopId === item.shopId);
     if (shippingRecord.items) {
       shippingRecord.items.push(shipmentItem);
     } else {
       shippingRecord.items = [shipmentItem];
     }
+
+    return item;
   });
 
   order.billing[0].currency.exchangeRate = exchangeRate;
@@ -168,51 +166,14 @@ export default function copyCartToOrder(cartId) {
   order.workflow.workflow = ["coreOrderWorkflow/created"];
 
   // insert new reaction order
-  const orderId = Collections.Orders.insert(order);
+  const orderId = Orders.insert(order);
   Hooks.Events.run("afterOrderInsert", order);
 
-  if (orderId) {
-    Collections.Cart.remove({
-      _id: order.cartId
-    });
-    // create a new cart for the user
-    // even though this should be caught by
-    // subscription handler, it's not always working
-    const newCartExists = Collections.Cart.find({ userId: order.userId });
-    if (newCartExists.count() === 0) {
-      Meteor.call("cart/createCart", this.userId, sessionId);
+  Cart.remove({ _id: order.cartId });
 
-      // reset the checkout workflow to the beginning for an anonymous user.
-      // Using `Roles.userIsInRole` here because currently `Reaction.hasPermission("anonymous")`
-      // will not return the correct result for actual anonymous users
-      if (Roles.userIsInRole(currentUser, "anonymous", Reaction.getShopId())) {
-        Meteor.call("workflow/pushCartWorkflow", "coreCartWorkflow", "checkoutLogin");
-      } else {
-        // after recreate new cart we need to make it looks like previous by
-        // updating `cart/workflow/status` to "coreCheckoutShipping"
-        // by calling `workflow/pushCartWorkflow` three times. This is the only
-        // way to do that without refactoring of `workflow/pushCartWorkflow`
-        Meteor.call("workflow/pushCartWorkflow", "coreCartWorkflow", "checkoutLogin");
-        Meteor.call("workflow/pushCartWorkflow", "coreCartWorkflow", "checkoutAddressBook");
-        Meteor.call("workflow/pushCartWorkflow", "coreCartWorkflow", "coreCheckoutShipping");
-      }
-    }
+  Logger.info(`Transitioned cart ${cartId} to order ${orderId}`);
 
-    Logger.info(`Transitioned cart ${cartId} to order ${orderId}`);
-    // catch send notification, we don't want
-    // to block because of notification errors
+  sendOrderEmail(order);
 
-    if (order.email) {
-      Meteor.call("orders/sendNotification", Collections.Orders.findOne(orderId), (err) => {
-        if (err) {
-          Logger.error(err, `Error in orders/sendNotification for order ${orderId}`);
-        }
-      });
-    }
-
-    // order success
-    return orderId;
-  }
-  // we should not have made it here, throw error
-  throw new Meteor.Error("bad-request", "cart/copyCartToOrder: Invalid request");
+  return orderId;
 }

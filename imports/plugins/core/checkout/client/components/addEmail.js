@@ -54,12 +54,8 @@ class AddEmail extends Component {
       if (err) {
         Alerts.toast(i18next.t("mail.alerts.cantSendEmail"), "error");
       } else {
-        // we need to re-grab order here so it has the email
-        const order = Orders.findOne({
-          userId: Meteor.userId(),
-          cartId
-        });
-        Meteor.call("orders/sendNotification", order, (error) => {
+        const order = Orders.findOne({ cartId });
+        Meteor.call("orders/sendNotification", order._id, (error) => {
           if (!error) {
             Alerts.toast(i18next.t("mail.alerts.emailSent"), "success");
             this.setState({

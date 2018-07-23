@@ -1,10 +1,10 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Elements, StripeProvider } from "react-stripe-elements";
-import { Meteor } from "meteor/meteor";
 import { composeWithTracker } from "@reactioncommerce/reaction-components";
 import { i18next, Reaction } from "/client/api";
-import { Packages, Cart } from "/lib/collections";
+import { Packages } from "/lib/collections";
+import getCart from "/imports/plugins/core/cart/both/util/getCart";
 import InjectedCardForm from "../components/injectedCardForm";
 
 class StripePaymentFormContainer extends Component {
@@ -32,7 +32,10 @@ function composer(props, onData) {
     name: "reaction-stripe",
     shopId: Reaction.getPrimaryShopId()
   });
-  const cart = Cart.findOne({ userId: Meteor.userId() });
+
+  const { cart } = getCart();
+  if (!cart) return;
+
   const { billing: [{ address: { postal } }] } = cart;
   if (subscription.ready()) {
     onData(null, {

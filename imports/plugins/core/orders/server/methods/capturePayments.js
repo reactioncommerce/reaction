@@ -21,7 +21,7 @@ export default function capturePayments(orderId) {
     throw new Meteor.Error("access-denied", "Access Denied");
   }
   const shopId = Reaction.getShopId(); // the shopId of the current user, i.e. merchant
-  const order = Orders.findOne(orderId);
+  const order = Orders.findOne({ _id: orderId });
   // find the appropriate shipping record by shop
   const shippingRecord = order.shipping.find((sRecord) => sRecord.shopId === shopId);
   const itemIds = shippingRecord.items.map((item) => item._id);

@@ -301,16 +301,16 @@ function updateShippingRecordByShop(cart, rates) {
 export default function updateShipmentQuotesMethod(cartId) {
   check(cartId, String);
   if (!cartId) {
-    return [];
+    return;
   }
   this.unblock();
-  let cart = Cart.findOne(cartId);
+  let cart = Cart.findOne({ _id: cartId });
   CartSchema.validate(cart);
 
   if (cart) {
     if (!cart.shipping || cart.shipping.length === 0) {
       addAddresses(cart);
-      cart = Cart.findOne(cartId);
+      cart = Cart.findOne({ _id: cartId });
     }
     const rates = Meteor.call("shipping/getShippingRates", cart);
     updateShippingRecordByShop(cart, rates);

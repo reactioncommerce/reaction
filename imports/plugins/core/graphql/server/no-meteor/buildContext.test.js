@@ -1,4 +1,6 @@
 import mockContext from "/imports/test-utils/helpers/mockContext";
+import mutations from "./mutations";
+import queries from "./queries";
 import buildContext from "./buildContext";
 
 const fakeUser = {
@@ -10,37 +12,8 @@ test("properly mutates the context object without user", async () => {
   await buildContext(context, undefined);
   expect(context).toEqual({
     collections: mockContext.collections,
-    mutations: {
-      accounts: {
-        addressBookAdd: jasmine.any(Function)
-      },
-      catalog: {
-        publishProducts: jasmine.any(Function)
-      }
-    },
-    queries: {
-      accounts: {
-        group: jasmine.any(Function),
-        groups: jasmine.any(Function),
-        primaryShopId: jasmine.any(Function),
-        roles: jasmine.any(Function),
-        shopAdministrators: jasmine.any(Function),
-        userAccount: jasmine.any(Function)
-      },
-      catalog: {
-        catalogItemProduct: jasmine.any(Function),
-        catalogItems: jasmine.any(Function),
-        tag: jasmine.any(Function),
-        tags: jasmine.any(Function),
-        tagsByIds: jasmine.any(Function)
-      },
-      cart: {
-        anonymousCartByCartId: jasmine.any(Function)
-      },
-      shops: {
-        shopById: jasmine.any(Function)
-      }
-    },
+    mutations,
+    queries,
     shopId: null,
     user: null,
     userHasPermission: jasmine.any(Function),
@@ -49,41 +22,17 @@ test("properly mutates the context object without user", async () => {
 });
 
 test("properly mutates the context object with user", async () => {
+  const mockAccount = { _id: "accountId", userId: fakeUser._id };
+  mockContext.collections.Accounts.findOne.mockReturnValueOnce(Promise.resolve(mockAccount));
+
   const context = { collections: mockContext.collections };
   await buildContext(context, fakeUser);
   expect(context).toEqual({
+    account: mockAccount,
+    accountId: mockAccount._id,
     collections: mockContext.collections,
-    mutations: {
-      accounts: {
-        addressBookAdd: jasmine.any(Function)
-      },
-      catalog: {
-        publishProducts: jasmine.any(Function)
-      }
-    },
-    queries: {
-      accounts: {
-        group: jasmine.any(Function),
-        groups: jasmine.any(Function),
-        primaryShopId: jasmine.any(Function),
-        roles: jasmine.any(Function),
-        shopAdministrators: jasmine.any(Function),
-        userAccount: jasmine.any(Function)
-      },
-      catalog: {
-        catalogItemProduct: jasmine.any(Function),
-        catalogItems: jasmine.any(Function),
-        tag: jasmine.any(Function),
-        tags: jasmine.any(Function),
-        tagsByIds: jasmine.any(Function)
-      },
-      cart: {
-        anonymousCartByCartId: jasmine.any(Function)
-      },
-      shops: {
-        shopById: jasmine.any(Function)
-      }
-    },
+    mutations,
+    queries,
     shopId: null,
     user: fakeUser,
     userHasPermission: jasmine.any(Function),

@@ -1,3 +1,6 @@
+import Cart from "./Cart";
+import CartItem from "./CartItem";
+import Mutation from "./Mutation";
 import Query from "./Query";
 
 /**
@@ -6,5 +9,8 @@ import Query from "./Query";
  */
 
 export default {
+  Cart,
+  CartItem,
+  Mutation,
   Query
 };

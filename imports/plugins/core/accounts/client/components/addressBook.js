@@ -90,14 +90,8 @@ class AddressBook extends Component {
 
     // if the new addressBook array is empty and
     // the address book form is not active
-    if (addressBook.length === 0 && mode !== "entry") {
+    if (addressBook.length === 0) {
       mode = "entry";
-    }
-
-    // if the new addressBook array is not empty but
-    // the address book form is active
-    if (addressBook.length !== 0 && mode !== "grid") {
-      mode = "grid";
     }
 
     if (!this.props.initMode && nextProps.initMode) {
@@ -283,6 +277,10 @@ class AddressBook extends Component {
           this.setState({
             mode: "review",
             validationResults: result
+          });
+        } else {
+          this.setState({
+            mode: "grid"
           });
         }
         return undefined;

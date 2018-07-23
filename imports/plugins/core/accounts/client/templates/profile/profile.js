@@ -146,10 +146,12 @@ Template.accountProfile.helpers({
    */
   userOrders() {
     const targetUserId = Reaction.Router.getQueryParam("userId") || Meteor.userId();
-    const orderSub = Meteor.subscribe("AccountOrders", targetUserId);
+    const account = Collections.Accounts.findOne({ userId: targetUserId });
+    const accountId = (account && account._id) || targetUserId;
+    const orderSub = Meteor.subscribe("AccountOrders", accountId);
     if (orderSub.ready()) {
       return Collections.Orders.find({
-        userId: targetUserId
+        accountId
       }, {
         sort: {
           createdAt: -1

@@ -67,8 +67,8 @@ async function sendUpdatedVerificationEmail(userId, email) {
   const dataForEmail = {
     // Reaction Information
     contactEmail: "hello@reactioncommerce.com",
-    homepage: Meteor.absoluteUrl(),
-    emailLogo: `${Meteor.absoluteUrl()}resources/placeholder.gif`,
+    homepage: Reaction.absoluteUrl(),
+    emailLogo: `${Reaction.absoluteUrl()}resources/placeholder.gif`,
     copyrightDate,
     legalName: "Reaction Commerce",
     physicalAddress: {

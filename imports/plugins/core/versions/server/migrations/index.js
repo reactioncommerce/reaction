@@ -27,3 +27,6 @@ import "./26_remove_revision_control";
 import "./27_change_sms_template_name";
 import "./28_add_hash_to_products";
 import "./29_default_parcel_size";
+import "./30_cart_schema_changes";
+import "./31_order_schema_changes";
+import "./32_publish_all_existing_visible_products";

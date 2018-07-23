@@ -77,12 +77,10 @@ Hooks.Events.add("afterRemoveProduct", (doc) => {
  * after product update rebuild product search record
  * @private
  */
-Hooks.Events.add("afterUpdateCatalogProduct", (doc, options) => {
+Hooks.Events.add("afterUpdateCatalogProduct", (productId, options) => {
   // Find the most recent version of the product document based on
   // the passed in doc._id
-  const productDocument = Products.findOne({
-    _id: doc._id
-  });
+  const productDocument = Products.findOne({ _id: productId });
 
   // If this hook is ran without options, then this callback
   // should no be executed.
@@ -94,7 +92,6 @@ Hooks.Events.add("afterUpdateCatalogProduct", (doc, options) => {
   const topLevelFieldNames = Object.getOwnPropertyNames(allProps);
 
   if (ProductSearch && !Meteor.isAppTest && productDocument.type === "simple") {
-    const productId = productDocument._id;
     const { fieldSet } = getSearchParameters();
     const modifiedFields = _.intersection(fieldSet, topLevelFieldNames);
     if (modifiedFields.length) {
