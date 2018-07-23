@@ -1,13 +1,12 @@
 import React from "react";
-import { PropTypes } from "prop-types";
+import PropTypes from "prop-types";
 import { Query } from "react-apollo";
-import getTag from "/imports/plugins/core/graphql/client/queries/getTag";
+import getPrimaryShopId from "../queries/getPrimaryShopId";
 
 export default (Component) => {
   return class extends React.Component {
     static propTypes = {
-      skip: PropTypes.bool, // Whether to skip this HOC's GraphQL query & data
-      tagSlugOrId: PropTypes.string
+      skip: PropTypes.bool // Whether to skip this HOC's GraphQL query & data
     };
 
     constructor (props) {
@@ -15,24 +14,23 @@ export default (Component) => {
     }
 
     render() {
-      const { skip, tagSlugOrId } = this.props;
+      const { skip } = this.props;
 
-      if (skip || !tagSlugOrId) {
+      if (skip) {
         return (
           <Component {...this.props} />
         );
       }
 
-      const variables = { slugOrId: tagSlugOrId };
       return (
-        <Query query={getTag} variables={variables}>
+        <Query query={getPrimaryShopId}>
           {({ loading, error, data }) => {
             if (loading) return null;
 
-            const { tag } = data;
+            const { primaryShopId } = data;
 
             return (
-              <Component {...this.props} tag={tag} />
+              <Component {...this.props} shopId={primaryShopId} />
             );
           }}
         </Query>

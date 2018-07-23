@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { Query } from "react-apollo";
-import getCatalogItems from "../client/queries/getCatalogItems";
+import getCatalogItems from "../queries/getCatalogItems";
 
 export default (Component) => {
   return class extends React.Component {

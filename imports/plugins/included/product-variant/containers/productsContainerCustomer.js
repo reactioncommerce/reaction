@@ -8,11 +8,12 @@ import { Session } from "meteor/session";
 import { Reaction } from "/client/api";
 import { ITEMS_INCREMENT } from "/client/config/defaults";
 import { Catalog, Tags, Shops } from "/lib/collections";
-import withPrimaryShopId from "/imports/plugins/core/graphql/client/hocs/withPrimaryShopId";
-import withTag from "/imports/plugins/core/graphql/client/hocs/withTag";
 import { loadMore } from "/imports/plugins/core/graphql/lib/helpers/pagination";
+import withCatalogItems from "imports/plugins/core/graphql/lib/hocs/withCatalogItems";
+import withPrimaryShopId from "/imports/plugins/core/graphql/lib/hocs/withPrimaryShopId";
+import withTag from "/imports/plugins/core/graphql/lib/hocs/withTag";
 import ProductGridCustomer from "../components/customer/productGrid";
-import withCatalogItems from "../hocs/withCatalogItems";
+
 
 const wrapComponent = (Comp) => (
   class ProductsContainerCustomer extends Component {
