@@ -13,6 +13,7 @@ import { Countries } from "/client/collections";
 import { localeDep } from "/client/modules/i18n";
 import { Packages, Shops, Accounts } from "/lib/collections";
 import { Router } from "/client/modules/router";
+import { DomainsMixin } from "./domains";
 
 /**
  * Reaction core namespace for client code
@@ -29,6 +30,8 @@ export const userPrefs = new ReactiveVar(undefined, (val, newVal) => JSON.string
 const deps = new Map();
 
 export default {
+  ...DomainsMixin,
+
   /**
    * @summary The active shop
    * @memberof Core/Client
@@ -126,11 +129,7 @@ export default {
     return Tracker.autorun(() => {
       let shop;
       if (this.Subscriptions.MerchantShops.ready()) {
-        // get domain (e.g localhost) from absolute url (e.g http://localhost:3000/)
-        const [, , host] = Meteor.absoluteUrl().split("/");
-        const [domain] = host.split(":");
-
-        // if we don't have an active shopId, try to retreive it from the userPreferences object
+        // if we don't have an active shopId, try to retrieve it from the userPreferences object
         // and set the shop from the storedShopId
         if (!this.shopId) {
           const storedShopId = this.getUserPreferences("reaction", "activeShopId");
@@ -140,7 +139,7 @@ export default {
             });
           } else {
             shop = Shops.findOne({
-              domains: domain
+              domains: this.getDomain()
             });
           }
         }
