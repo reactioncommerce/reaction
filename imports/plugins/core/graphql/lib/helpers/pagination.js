@@ -6,6 +6,7 @@
  * @param {Object} args.pageInfo Page info from GraphQL result
  * @param {Object} args.limit Limit
  * @param {Object} args.fetchMore fetchMore function
+ * @param {Function} callback Function to execute when fetchMore returns
  * @returns {Object} GraphQL result with new items appended
  */
 export const loadMore = ({ queryName, pageInfo, limit, fetchMore }, callback) => {
@@ -31,7 +32,7 @@ export const loadMore = ({ queryName, pageInfo, limit, fetchMore }, callback) =>
       if (items.edges.length) {
         const edges = [
           ...previousResult[queryName].edges,
-          ...fetchMoreResult[queryName].edges,
+          ...fetchMoreResult[queryName].edges
         ];
         return {
           [queryName]: {

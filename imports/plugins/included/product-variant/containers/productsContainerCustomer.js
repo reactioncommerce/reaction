@@ -1,13 +1,11 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { Query } from "react-apollo";
 import { compose } from "recompose";
 import { registerComponent, composeWithTracker } from "@reactioncommerce/reaction-components";
 import { Meteor } from "meteor/meteor";
-import { Session } from "meteor/session";
 import { Reaction } from "/client/api";
 import { ITEMS_INCREMENT } from "/client/config/defaults";
-import { Catalog, Tags, Shops } from "/lib/collections";
+import { Tags } from "/lib/collections";
 import { loadMore } from "/imports/plugins/core/graphql/lib/helpers/pagination";
 import withCatalogItems from "imports/plugins/core/graphql/lib/hocs/withCatalogItems";
 import withPrimaryShopId from "/imports/plugins/core/graphql/lib/hocs/withPrimaryShopId";
@@ -18,9 +16,9 @@ import ProductGridCustomer from "../components/customer/productGrid";
 const wrapComponent = (Comp) => (
   class ProductsContainerCustomer extends Component {
     static propTypes = {
-      showNotFound: PropTypes.bool,
       catalogItems: PropTypes.object,
       fetchMore: PropTypes.func,
+      shouldShowNotFound: PropTypes.bool
     };
 
     constructor(props) {
@@ -55,17 +53,17 @@ const wrapComponent = (Comp) => (
     };
 
     render() {
-      const { showNotFound, catalogItems = {}, fetchMore } = this.props;
+      const { shouldShowNotFound, catalogItems = {} } = this.props;
       const { isLoading } = this.state;
 
       const { pageInfo = {} } = catalogItems;
       const { hasNextPage } = pageInfo;
-      const products = (catalogItems.edges || []).map((edge) => edge.node.product );
+      const products = (catalogItems.edges || []).map((edge) => edge.node.product);
 
       return (
         <Comp
           {...this.props}
-          showNotFound={showNotFound}
+          showNotFound={shouldShowNotFound}
           canLoadMoreProducts={hasNextPage}
           isLoading={isLoading}
           loadProducts={this.handleLoadProducts}
@@ -77,6 +75,15 @@ const wrapComponent = (Comp) => (
   }
 );
 
+/**
+ * @name composer
+ * @private
+ * @summary Sets up tagSlugOrId prop that is passed to withTag GraphQL HOC,
+ *  unless tag not found, in which case sets skips GraphQL HOCs and shows not found view
+ * @param {Object} props - Props passed down from parent components
+ * @param {Function} onData - Callback to execute with props
+ * @returns {undefined}
+ */
 function composer(props, onData) {
   window.prerenderReady = false;
 
@@ -89,10 +96,10 @@ function composer(props, onData) {
     const tag = Tags.findOne({ slug: tagSlugOrId }) || Tags.findOne({ _id: tagSlugOrId });
     if (!tag) {
       onData(null, {
-        showNotFound: true,
+        shouldShowNotFound: true,
         // Skip loading GraphQL data via HOCs (withPrimaryShopId, withTag, withCatalogItems, etc),
         // since we are going to render the 404 view
-        skip: true
+        shouldSkipGraphql: true
       });
       return;
     }

@@ -3,20 +3,16 @@ import PropTypes from "prop-types";
 import { Query } from "react-apollo";
 import getPrimaryShopId from "../queries/getPrimaryShopId";
 
-export default (Component) => {
-  return class extends React.Component {
+export default (Component) => (
+  class PrimaryShopId extends React.Component {
     static propTypes = {
-      skip: PropTypes.bool // Whether to skip this HOC's GraphQL query & data
+      shouldSkipGraphql: PropTypes.bool // Whether to skip this HOC's GraphQL query & data
     };
 
-    constructor (props) {
-      super(props);
-    }
-
     render() {
-      const { skip } = this.props;
+      const { shouldSkipGraphql } = this.props;
 
-      if (skip) {
+      if (shouldSkipGraphql) {
         return (
           <Component {...this.props} />
         );
@@ -24,7 +20,7 @@ export default (Component) => {
 
       return (
         <Query query={getPrimaryShopId}>
-          {({ loading, error, data }) => {
+          {({ loading, data }) => {
             if (loading) return null;
 
             const { primaryShopId } = data;
@@ -37,4 +33,4 @@ export default (Component) => {
       );
     }
   }
-}
+);
