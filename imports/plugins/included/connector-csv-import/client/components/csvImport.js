@@ -3,10 +3,12 @@ import React, { Component } from "react";
 import Dropzone from "react-dropzone";
 import PropTypes from "prop-types";
 import { Components } from "@reactioncommerce/reaction-components";
-import { FileRecord } from "@reactioncommerce/file-collections";
+// import { FileRecord } from "@reactioncommerce/file-collections";
 import { Meteor } from "meteor/meteor";
-import { Logger } from "/client/api";
-import { Media } from "/imports/plugins/core/files/client";
+import { getFieldMatchingRelevantData } from "@reactioncommerce/reaction-import-connectors";
+import FieldMatching from "./fieldMatching";
+// import { Logger } from "/client/api";
+// import { ImportFiles } from "/imports/plugins/core/connectors-new/client";
 
 class CSVImport extends Component {
   constructor(props) {
@@ -21,12 +23,13 @@ class CSVImport extends Component {
       hasHeader: importJob && importJob.hasHeader,
       importJob,
       importMappingOptions,
-      isUploading: false
+      isUploading: false,
+      header: [],
+      sampleData: []
     };
   }
 
   componentWillReceiveProps(nextProps) {
-    console.log({ nextProps: nextProps.importJob, state: this.state.importJob, props: this.props.importJob });
     if (this.props.importJob && !nextProps.importJob) {
       this.setState({ importMappingOptions: [] });
     }
@@ -148,84 +151,122 @@ class CSVImport extends Component {
     return this.state.importJob || this.props.importJob || {};
   }
 
-  uploadFiles = (acceptedFiles) => {
+  saveFileToState = (acceptedFiles) => {
     const filesArray = Array.from(acceptedFiles);
     if (filesArray.length === 0) return;
-    this.setState({ isUploading: true });
-    const promises = [];
-    filesArray.forEach((browserFile) => {
-      const fileRecord = FileRecord.fromFile(browserFile);
-      const promise = fileRecord.upload({})
-        // We insert only AFTER the server has confirmed that all chunks were uploaded
-        .then(() => Media.insert(fileRecord))
-        .catch((error) => {
-          Logger.error(error);
-        });
-      promises.push(promise);
+    const csvFile = filesArray[0];
+    this.setState({ csvFile });
+    const promise = new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsText(csvFile);
+      reader.onload = () => {
+        if (reader.result) {
+          resolve(getFieldMatchingRelevantData(reader.result));
+        } else {
+          reject(Error("Failed reading CSV to text."));
+        }
+      };
     });
-    Promise.all(promises)
-      .then(() => {
-        this.setState({ isUploading: false });
-        return null;
-      })
-      .catch((error) => {
-        Logger.error(error);
+    promise.then((result) => {
+      this.setState({
+        header: result.header,
+        sampleData: result.sampleData
       });
+      return;
+    }).catch((err) => {
+      throw err;
+    });
+  }
+
+  renderCSVFileName() {
+    if (this.state.csvFile) {
+      return (<span>{this.state.csvFile.name}</span>);
+    }
+    return null;
+  }
+
+  renderFieldMatching() {
+    const { header, sampleData } = this.state;
+    if (sampleData.length > 0) {
+      console.log("RENDERRING SAMPLE DATAA", sampleData);
+      return (
+        <FieldMatching
+          header={header}
+          sampleData={sampleData}
+        />
+      );
+    }
+    return null;
   }
 
   render() {
     const { impCollOptions } = this.props;
-    const { isUploading } = this.state;
     return (
       <div className="container">
-        <Components.Select
-          clearable={false}
-          label="What data will you import?"
-          name="collection"
-          onChange={this.handleSelectChange}
-          options={impCollOptions}
-          placeholder="Select the data type"
-          value={(this.importJob && this.importJob.collection) || ""}
-        />
-        <Components.TextField
-          label="Import Reference"
-          name="reference"
-          onBlur={this.handleFieldBlur}
-          onChange={this.handleFieldChange}
-          onReturnKeyDown={this.handleFieldBlur}
-          ref="referenceInput"
-          value={this.importJob.reference}
-        />
-        <Components.Select
-          clearable={false}
-          label="Select a mapping template."
-          name="importMapping"
-          onChange={this.handleSelectChange}
-          options={this.state.importMappingOptions}
-          value={(this.importJob && this.importJob.importMapping) || "default"}
-        />
-        {this.renderDownloadSampleCSVFile()}
-        <Dropzone
-          accept="text/csv, application/csv"
-          className="rui button btn btn-default btn-block"
-          multiple={false}
-          disabled={!!isUploading}
-          onDrop={this.uploadFiles}
-        >
-          <div className="contents">
-            {!!isUploading && <div style={{ marginLeft: "auto", marginRight: "auto" }}><Components.CircularProgress indeterminate={true} /></div>}
-            {!isUploading && <span className="title">
-              <Components.Translation defaultValue="Click or drop file here" i18nKey="mediaUploader.dropFiles" />
-            </span>}
+        <div className="row">
+          <div className="col-sm-12 col-md-6">
+            <Components.Select
+              clearable={false}
+              label="What data will you import?"
+              name="collection"
+              onChange={this.handleSelectChange}
+              options={impCollOptions}
+              placeholder="Select the data type"
+              value={(this.importJob && this.importJob.collection) || ""}
+            />
+            <Components.Select
+              clearable={false}
+              label="Select a mapping template."
+              name="importMapping"
+              onChange={this.handleSelectChange}
+              options={this.state.importMappingOptions}
+              value={(this.importJob && this.importJob.importMapping) || "default"}
+            />
+            {this.renderDownloadSampleCSVFile()}
           </div>
-        </Dropzone>
-        <Components.Switch
-          name="hasHeader"
-          label={"First row contains column names?"}
-          onLabel={"First row contains column names?"}
-          checked={this.state.hasHeader}
-          onChange={this.handleHasHeaderChange}
-        />
+          <div className="col-sm-12 col-md-6">
+            <Components.TextField
+              label="Import Reference"
+              name="reference"
+              onBlur={this.handleFieldBlur}
+              onChange={this.handleFieldChange}
+              onReturnKeyDown={this.handleFieldBlur}
+              ref="referenceInput"
+              value={this.importJob.reference}
+            />
+            <Dropzone
+              accept="text/csv, application/csv"
+              className="rui button btn btn-default btn-block"
+              multiple={false}
+              onDrop={this.saveFileToState}
+            >
+              <div className="contents">
+                <div>
+                  <i className="fa fa-3x fa-upload"/>
+                </div>
+                <div>
+                  <Components.Translation defaultValue="Click or drop file here" i18nKey="mediaUploader.dropFiles" />
+                </div>
+                {this.renderCSVFileName()}
+              </div>
+            </Dropzone>
+            <Components.Switch
+              name="hasHeader"
+              label={"First row contains column names?"}
+              onLabel={"First row contains column names?"}
+              checked={this.state.hasHeader}
+              onChange={this.handleHasHeaderChange}
+            />
+          </div>
+        </div>
+        <div className="row">
+          <Components.Button
+            className="btn btn-primary"
+            bezelStyle="solid"
+            label="Next"
+          />
+        </div>
+        {this.renderFieldMatching()}
       </div>
     );
   }
