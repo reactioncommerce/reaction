@@ -1,4 +1,4 @@
-import { Importer } from "/server/api/core/importer";
+import { Importer } from "/imports/plugins/core/core/server/Reaction/importer";
 import { Shops } from "/lib/collections";
 
 export function registerLayout(layout) {

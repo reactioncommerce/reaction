@@ -1,12 +1,76 @@
 import { compose, withProps } from "recompose";
+import { registerComponent, composeWithTracker } from "@reactioncommerce/reaction-components";
 import { Meteor } from "meteor/meteor";
 import { Template } from "meteor/templating";
 import { i18next, Logger } from "/client/api";
 import { Countries } from "/client/collections";
 import * as Collections from "/lib/collections";
-import { registerComponent, composeWithTracker } from "@reactioncommerce/reaction-components";
+import getCart from "/imports/plugins/core/cart/both/util/getCart";
 import AddressBook from "../components/addressBook";
 
+/**
+ * @private
+ * @param {Object} address - address to be validated.
+ * @returns {Promise} Promise
+ */
+function callValidateAddress(address) {
+  return new Promise((resolve, reject) => {
+    Meteor.call("accounts/validateAddress", address, (error, result) => {
+      if (error || !result) {
+        let errorMessage = (error && error.message) || "Validation Failed";
+        if (error && error.error === "validation-error" && Array.isArray(error.details) && error.details.length) {
+          Logger.error(error);
+          // Add details of first invalid field from SimpleSchema
+          errorMessage = error.details[0].message;
+        }
+        reject(i18next.t("addressBookAdd.failedToUpdateAddress", { err: errorMessage }));
+      } else if (result.validated === false && !result.suggestedAddress) {
+        reject(i18next.t("addressBookAdd.failedToUpdateAddress", { err: "Unable to fetch corrected address" }));
+      } else if (result.validated === false && result.suggestedAddress && result.formErrors && result.formErrors.length > 0) {
+        reject(i18next.t("addressBookAdd.failedToUpdateAddress", { err: result.formErrors[result.formErrors.length - 1].details }));
+      } else {
+        resolve(result);
+      }
+    });
+  });
+}
+
+/**
+ * @private
+ * @param {Object} address - address to be added
+ * @returns {undefined}
+ */
+function callAddAddress(address) {
+  return new Promise((resolve, reject) => {
+    Meteor.call("accounts/addressBookAdd", address, (err, res) => {
+      if (err || !res) {
+        err && Logger.error(err);
+        reject(i18next.t("addressBookAdd.failedToAddAddress", { err: err && err.message }));
+      } else {
+        resolve(res);
+      }
+    });
+  });
+}
+
+/**
+ * @private
+ * @param {Object} address - address to be updated.
+ * @param {String} property - property to be updated.
+ * @returns {undefined}
+ */
+function callUpdateAddress(address, property) {
+  return new Promise((resolve, reject) => {
+    Meteor.call("accounts/addressBookUpdate", address, null, property, (err, res) => {
+      if (err || !res) {
+        err && Logger.error(err);
+        reject(i18next.t("addressBookEdit.somethingWentWrong", { err: err && err.message }));
+      } else {
+        resolve(res);
+      }
+    });
+  });
+}
 
 const handlers = {
   /**
@@ -16,49 +80,21 @@ const handlers = {
    * @summary helper function that validates and updates an address in the account's addressBook via a meteor method.
    * @since 2.0.0
    * @param {Object} address - address to be updated.
-   * @param{String} property - property to be updated.
-   * @return {Promise}
+   * @param {String} property - property to be updated.
+   * @param {Boolean} [validateAddress] - Should validate first? Default is true
+   * @return {Promise} Promise
    */
   updateAddress(address, property, validateAddress = true) {
-    return new Promise((resolve, reject) => {
-      if (validateAddress) {
-        Meteor.call("accounts/validateAddress", address, (error, result) => {
-          if (error || !result) {
-            let errorMessage = (error && error.message) || "Validation Failed";
-            if (error && error.error === "validation-error" && Array.isArray(error.details) && error.details.length) {
-              // Add details of first invalid field from SimpleSchema
-              errorMessage = error.details[0].message;
-            }
-            reject(i18next.t("addressBookAdd.failedToUpdateAddress", { err: errorMessage }));
-            return;
-          } else if (result.validated === false && !result.suggestedAddress) {
-            reject(i18next.t("addressBookAdd.failedToUpdateAddress", { err: "Unable to fetch corrected address" }));
-            return;
-          } else if (result.validated === false && result.suggestedAddress && result.formErrors && result.formErrors.length > 0) {
-            reject(i18next.t("addressBookAdd.failedToUpdateAddress", { err: result.formErrors[0].summary }));
-            return;
-          } else if (result.validated === false && result.suggestedAddress) {
-            resolve(result);
-            return;
-          }
-          Meteor.call("accounts/addressBookUpdate", address, null, property, (err, res) => {
-            if (err || !res) {
-              reject(i18next.t("addressBookGrid.somethingWentWrong", { err: err.message }));
-            } else {
-              resolve(res);
-            }
-          });
-          return;
-        });
-      }
-      Meteor.call("accounts/addressBookUpdate", address, null, property, (err, res) => {
-        if (err || !res) {
-          reject(i18next.t("addressBookGrid.somethingWentWrong", { err: err.message }));
-        } else {
-          resolve(res);
+    if (validateAddress) {
+      return callValidateAddress(address).then((result) => {
+        if (result.validated) {
+          return callUpdateAddress(address, property);
         }
+        return result;
       });
-    });
+    }
+
+    return callUpdateAddress(address, property);
   },
 
   /**
@@ -68,7 +104,7 @@ const handlers = {
    * @summary helper function that updates an address in the account's addressBook via a meteor method.
    * @since 2.0.0
    * @param {String} _id - _id of address to be removed.
-   * @return {Promise}
+   * @return {Promise} Promise
    */
   removeAddress(_id) {
     return new Promise((resolve, reject) => {
@@ -89,48 +125,21 @@ const handlers = {
    * @summary helper function that validates and adds an address in the account's addressBook via a meteor method.
    * @since 2.0.0
    * @param {Object} address - address to be added.
-   * @return {Promise}
+   * @param {Boolean} [validateAddress] - Should validate first? Default is true
+   * @return {Promise} Promise
    */
   addAddress(address, validateAddress = true) {
-    return new Promise((resolve, reject) => {
-    // This address was tried for validation
-      if (validateAddress) {
-        Meteor.call("accounts/validateAddress", address, (error, result) => {
-          if (error || !result) {
-            let errorMessage = (error && error.message) || "Validation Failed";
-            if (error && error.error === "validation-error" && Array.isArray(error.details) && error.details.length) {
-              // Add details of first invalid field from SimpleSchema
-              errorMessage = error.details[0].message;
-            }
-            reject(i18next.t("addressBookAdd.failedToAddAddress", { err: errorMessage }));
-            return;
-          } else if (result.validated === false && !result.suggestedAddress) {
-            reject(i18next.t("addressBookAdd.failedToAddAddress", { err: "Unable to fetch corrected address" }));
-            return;
-          } else if (result.validated === false && result.suggestedAddress && result.formErrors && result.formErrors.length > 0) {
-            reject(i18next.t("addressBookAdd.failedToAddAddress", { err: result.formErrors[0].summary }));
-            return;
-          } else if (result.validated === false && result.suggestedAddress) {
-            resolve(result);
-            return;
-          }
-          Meteor.call("accounts/addressBookAdd", address, (err, res) => {
-            if (err || !res) {
-              reject(i18next.t("addressBookAdd.failedToAddAddress", { err: err.message }));
-            } else {
-              resolve(res);
-            }
-          });
-        });
-      } else {
-        Meteor.call("accounts/addressBookAdd", address, (err, res) => {
-          if (err || !res) reject(i18next.t("addressBookAdd.failedToAddAddress", { err: err.message }));
-          if (res) resolve(res);
-        });
-      }
-    });
-  },
+    if (validateAddress) {
+      return callValidateAddress(address).then((result) => {
+        if (result.validated) {
+          return callAddAddress(address);
+        }
+        return result;
+      });
+    }
 
+    return callAddAddress(address);
+  },
 
   markCart(address, isEnteredSelected) {
     if (!isEnteredSelected) {
@@ -160,18 +169,27 @@ const handlers = {
    * @summary helper function that shows an error message in an alert toast.
    * @since 2.0.0
    * @param {Object} errorMessage - error message object.
+   * @returns {undefined}
    */
   onError(errorMessage) {
     Alerts.toast(errorMessage, "error");
   }
 };
 
+/**
+ * @private
+ * @param {Object} props Props
+ * @param {Function} onData Call this to update props
+ * @returns {undefined}
+ */
 function composer(props, onData) {
-  const handle = Meteor.subscribe("Accounts", Meteor.userId());
-  if (!handle.ready()) {
+  const userId = Meteor.userId();
+  const account = Collections.Accounts.findOne({ userId });
+  if (!account) {
+    // Subscription not ready
     return;
   }
-  const account = Collections.Accounts.findOne({ _id: Meteor.userId() });
+
   const { addressBook } = account.profile;
   const countries = Countries.find().fetch();
   const shop = Collections.Shops.findOne();
@@ -182,12 +200,12 @@ function composer(props, onData) {
     const { states } = shopCountries[key] || {};
     const regions = [];
     if (states) {
-      // states is an object that needs to be convered
+      // states is an object that needs to be converted
       // to an array of region labels and values
-      Object.keys(states).forEach((i) => {
+      Object.keys(states).forEach((index) => {
         regions.push({
-          label: states[i].name,
-          value: i
+          label: states[index].name,
+          value: index
         });
       });
     }
@@ -195,7 +213,9 @@ function composer(props, onData) {
   });
   // The initial mode for addressBook
   let initMode;
-  const cart = Collections.Cart.findOne();
+  const { cart } = getCart();
+  if (!cart) return;
+
   // If we have passed the address step, show the grid
   if (cart.workflow.status !== "checkoutAddressBook") {
     initMode = "grid";

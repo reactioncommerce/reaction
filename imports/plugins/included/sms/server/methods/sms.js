@@ -1,7 +1,8 @@
+import Logger from "@reactioncommerce/logger";
 import { Meteor } from "meteor/meteor";
 import { check } from "meteor/check";
-import { Sms } from "/lib/collections";
-import { Reaction, Logger } from "/server/api";
+import { Accounts, Sms } from "/lib/collections";
+import Reaction from "/imports/plugins/core/core/server/Reaction";
 import { formatPhoneNumber } from "/lib/api";
 
 // We lazy load these in order to shave a few seconds off the time
@@ -9,15 +10,13 @@ import { formatPhoneNumber } from "/lib/api";
 let Twilio;
 async function lazyLoadTwilio() {
   if (Twilio) return;
-  const mod = await import("twilio");
-  Twilio = mod.default;
+  Twilio = await import("twilio");
 }
 
 let Nexmo;
 async function lazyLoadNexmo() {
   if (Nexmo) return;
-  const mod = await import("nexmo");
-  Nexmo = mod.default;
+  Nexmo = await import("nexmo");
 }
 
 /**
@@ -52,19 +51,19 @@ Meteor.methods({
    * @memberof SMS/Methods
    * @summary This send the sms to the user
    * @param {String} message - The message to send
-   * @param {String} userId - The user to receive the message
-   * @param {String} shopId - The currenct shopId
+   * @param {String} accountId - The account to receive the message
+   * @param {String} shopId - The current shopId
    * @return {object} returns result
    */
-  "sms/send": (message, userId, shopId) => {
+  "sms/send": (message, accountId, shopId) => {
     check(message, String);
-    check(userId, String);
+    check(accountId, String);
     check(shopId, String);
 
-    const user = Meteor.users.findOne(userId);
-    if (!user) return;
+    const account = Accounts.findOne({ _id: accountId });
+    if (!account) return;
 
-    const addressBook = user.profile && user.profile.addressBook;
+    const addressBook = account.profile && account.profile.addressBook;
 
     // check for addressBook phone
     const phone = addressBook && addressBook.phone;

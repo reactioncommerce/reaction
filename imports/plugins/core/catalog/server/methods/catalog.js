@@ -1,13 +1,16 @@
 import _ from "lodash";
+import Hooks from "@reactioncommerce/hooks";
+import Logger from "@reactioncommerce/logger";
 import Random from "@reactioncommerce/random";
 import { check, Match } from "meteor/check";
 import { EJSON } from "meteor/ejson";
 import { Meteor } from "meteor/meteor";
 import { ReactionProduct } from "/lib/api";
-import { Hooks, Logger, Reaction } from "/server/api";
+import Reaction from "/imports/plugins/core/core/server/Reaction";
 import { MediaRecords, Products, Tags } from "/lib/collections";
 import { Media } from "/imports/plugins/core/files/server";
 import rawCollections from "/imports/collections/rawCollections";
+import { createProductHash } from "../no-meteor/mutations/hashProduct";
 import getProductPriceRange from "../no-meteor/utils/getProductPriceRange";
 import getVariants from "../no-meteor/utils/getVariants";
 import hasChildVariant from "../no-meteor/utils/hasChildVariant";
@@ -363,7 +366,7 @@ function updateCatalogProduct(userId, selector, modifier, validation) {
 
   const result = Products.update(selector, modifier, validation);
 
-  Hooks.Events.run("afterUpdateCatalogProduct", product, { modifier });
+  Hooks.Events.run("afterUpdateCatalogProduct", product._id, { modifier });
 
   return result;
 }
@@ -521,6 +524,7 @@ Meteor.methods({
     const assembledVariant = Object.assign(newVariant || {}, {
       _id: newVariantId,
       ancestors,
+      taxCode: product.taxCode,
       shopId: product.shopId,
       type: "variant"
     });
@@ -626,7 +630,7 @@ Meteor.methods({
     const selector = {
       // Don't "archive" variants that are already marked deleted.
       isDeleted: {
-        $in: [false, undefined]
+        $ne: true
       },
       $or: [
         {
@@ -727,7 +731,6 @@ Meteor.methods({
       const newAncestors = [];
       ancestors.map((oldId) => {
         const pair = getIds(oldId);
-        // TODO do we always have newId on this step?
         newAncestors.push(pair[0].newId);
         return newAncestors;
       });
@@ -874,7 +877,7 @@ Meteor.methods({
     const productsWithVariants = Products.find({
       // Don't "archive" products that are already marked deleted.
       isDeleted: {
-        $in: [false, undefined]
+        $ne: true
       },
       $or: [
         {
@@ -1029,7 +1032,7 @@ Meteor.methods({
         denormalize(doc.ancestors[0], field);
       }
     }
-    return result;
+    return update;
   },
 
   /**
@@ -1576,5 +1579,23 @@ Meteor.methods({
 
     // if collection updated we return new `isVisible` state
     return res === 1 && !product.isVisible;
+  },
+
+  /**
+   * @name products/getpublishedProductHash
+   * @memberof Methods/Products
+   * @method
+   * @summary hashes product information for comparison purposes
+   * @param {String} productId - the product _id of the product to hash
+   * @return {String} hash of product
+   */
+  "products/getpublishedProductHash"(productId) {
+    check(productId, String);
+
+    const product = Products.findOne({ _id: productId });
+
+    const productHash = createProductHash(product, rawCollections);
+
+    return productHash;
   }
 });

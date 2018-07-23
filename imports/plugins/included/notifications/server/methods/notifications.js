@@ -1,6 +1,7 @@
+import Logger from "@reactioncommerce/logger";
 import { Meteor } from "meteor/meteor";
 import { check, Match } from "meteor/check";
-import { Reaction, Logger } from "/server/api";
+import Reaction from "/imports/plugins/core/core/server/Reaction";
 import { Notifications, Packages } from "/lib/collections";
 
 /**
@@ -14,20 +15,20 @@ Meteor.methods({
   * @name notification/send
   * @memberof Notification/Methods
   * @method
-  * @summary This send a notification to a user
-  * @param {String} userId - The user
+  * @summary This send a notification to an account
+  * @param {String} accountId - The account to notify
   * @param {String} type - The type of Notification
   * @param {String} url - url link
   * @param {Boolean} sms - sms enabled check.
   * @param {String} details - details of the Notification
   * @return {Object} returns result
   */
-  "notification/send"(userId, type, url, sms, details) {
-    check(userId, String);
+  "notification/send"(accountId, type, url, sms, details) {
+    check(accountId, String);
     check(type, String);
+    check(url, String);
     check(sms, Boolean);
     check(details, Match.OptionalOrNull(String));
-    check(url, String);
 
     const values = {};
     const types = {
@@ -39,9 +40,9 @@ Meteor.methods({
       orderShipped: "Your order has been shipped."
     };
 
-    if (userId && type && url) {
+    if (accountId && type && url) {
       values.type = type;
-      values.to = userId;
+      values.to = accountId;
       values.url = url;
       values.message = types[type];
       values.hasDetails = false;
@@ -54,7 +55,7 @@ Meteor.methods({
     if (sms) {
       const result = Packages.findOne({ name: "reaction-sms", shopId: Reaction.getShopId() });
       if (result && result.enabled) {
-        Meteor.call("sms/send", values.message, userId, Reaction.getShopId(), (error) => {
+        Meteor.call("sms/send", values.message, accountId, Reaction.getShopId(), (error) => {
           if (error) {
             Logger.warn("Error: error occured while sending sms", error);
           }
@@ -63,7 +64,7 @@ Meteor.methods({
         Logger.debug("Sms is not enabled");
       }
     }
-    Logger.debug(`Sending notification to ${userId}`);
+    Logger.debug(`Sending notification to account ${accountId}`);
     return Notifications.insert(values);
   },
 

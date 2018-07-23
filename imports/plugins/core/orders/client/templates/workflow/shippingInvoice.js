@@ -34,7 +34,7 @@ Template.coreOrderShippingInvoice.onCreated(function () {
 
   this.autorun(() => {
     const currentData = Template.currentData();
-    const order = Orders.findOne(currentData.orderId);
+    const order = Orders.findOne({ _id: currentData.orderId });
     const shop = Shops.findOne({});
 
     this.state.set("order", order);

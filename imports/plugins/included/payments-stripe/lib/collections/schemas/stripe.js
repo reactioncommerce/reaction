@@ -90,42 +90,12 @@ export const StripePackageConfig = PackageConfig.clone().extend({
     type: String,
     label: "Public Client ID",
     optional: true
+  },
+  "settings.public.publishable_key": {
+    type: String,
+    label: "Publishable Key",
+    optional: true
   }
 });
 
 registerSchema("StripePackageConfig", StripePackageConfig);
-
-/**
- * @name StripePayment
- * @memberof Schemas
- * @type {SimpleSchema}
- */
-export const StripePayment = new SimpleSchema({
-  payerName: {
-    type: String,
-    label: "Cardholder name"
-  },
-  cardNumber: {
-    type: String,
-    min: 13,
-    max: 16,
-    label: "Card number"
-  },
-  expireMonth: {
-    type: String,
-    max: 2,
-    label: "Expiration month"
-  },
-  expireYear: {
-    type: String,
-    max: 4,
-    label: "Expiration year"
-  },
-  cvv: {
-    type: String,
-    max: 4,
-    label: "CVV"
-  }
-}, { check, tracker: Tracker });
-
-registerSchema("StripePayment", StripePayment);

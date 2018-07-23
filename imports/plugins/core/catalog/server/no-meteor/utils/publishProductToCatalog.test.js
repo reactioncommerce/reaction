@@ -189,7 +189,101 @@ const mockProduct = {
   mockVariants,
   vendor: "vendor",
   weight: 15.6,
-  width: 8.4
+  width: 8.4,
+  workflow: {
+    status: "new"
+  }
+};
+
+const updatedMockProduct = {
+  hash: "769f6d8004a2a2929d143ab242625b6c71f618d8",
+  _id: internalCatalogItemId,
+  shopId: internalShopId,
+  barcode: "barcode",
+  createdAt,
+  description: "description",
+  facebookMsg: "facebookMessage",
+  fulfillmentService: "fulfillmentService",
+  googleplusMsg: "googlePlusMessage",
+  height: 11.23,
+  isBackorder: false,
+  isLowQuantity: false,
+  isSoldOut: false,
+  length: 5.67,
+  lowInventoryWarningThreshold: 2,
+  metafields: [
+    {
+      value: "value",
+      namespace: "namespace",
+      description: "description",
+      valueType: "valueType",
+      scope: "scope",
+      key: "key"
+    }
+  ],
+  metaDescription: "metaDescription",
+  minOrderQuantity: 5,
+  originCountry: "originCountry",
+  pageTitle: "pageTitle",
+  parcel: {
+    containers: "containers",
+    length: 4.44,
+    width: 5.55,
+    height: 6.66,
+    weight: 7.77
+  },
+  pinterestMsg: "pinterestMessage",
+  positions: {
+    _default: {
+      weight: 1,
+      position: 1,
+      pinned: true,
+      updatedAt: positionUpdatedAt.toISOString()
+    }
+  },
+  price: {
+    max: 5.99,
+    min: 2.99,
+    range: "2.99 - 5.99"
+  },
+  media: [
+    {
+      metadata: {
+        toGrid: 1,
+        priority: 1,
+        productId: internalProductId,
+        variantId: null
+      },
+      thumbnail: "http://localhost/thumbnail",
+      small: "http://localhost/small",
+      medium: "http://localhost/medium",
+      large: "http://localhost/large",
+      image: "http://localhost/original"
+    }
+  ],
+  productId: internalProductId,
+  productType: "productType",
+  requiresShipping: true,
+  shop: {
+    _id: opaqueShopId
+  },
+  sku: "ABC123",
+  handle: productSlug,
+  hashtags: internalTagIds,
+  taxCode: "taxCode",
+  taxDescription: "taxDescription",
+  taxable: false,
+  title: "Fake Product Title",
+  twitterMsg: "twitterMessage",
+  type: "product-simple",
+  updatedAt,
+  mockVariants,
+  vendor: "vendor",
+  weight: 15.6,
+  width: 8.4,
+  workflow: {
+    status: "new"
+  }
 };
 
 const mockShop = {
@@ -252,6 +346,7 @@ afterAll(() => {
 test("expect true if a product is published to the catalog collection", async () => {
   mockCollections.Products.toArray.mockReturnValueOnce(Promise.resolve(mockVariants));
   mockCollections.Shops.findOne.mockReturnValueOnce(Promise.resolve(mockShop));
+  mockCollections.Products.findOne.mockReturnValue(Promise.resolve(updatedMockProduct));
   mockCollections.Catalog.updateOne.mockReturnValueOnce(Promise.resolve({ result: { ok: 1 } }));
   const spec = await publishProductToCatalog(mockProduct, mockCollections);
   expect(spec).toBe(true);

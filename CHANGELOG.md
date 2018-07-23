@@ -1,5 +1,100 @@
+# v1.14.0
+## Removing Optional Plugins
+As part of our focus simplifying the core Reaction application and improving performance, we've [made the decision to remove optional plugins from the core application](https://blog.reactioncommerce.com/the-road-ahead-product-updates-june-2018/). From our blog post on this topic:
+> It’s about quality over quantity. As a part of our initiative to simplify Reaction, we’re focusing on providing one reference application per feature and moving all others over to community-sponsored packages. We’ll be migrating packages, APIs, and schemas over to npm. It’s a standard approach to package management, one that improves the developer experience overall.
+
+Here’s how it will look:
+
+|Category|Reaction default(s)|Community package(s)|
+|---|---|---|
+|Payments|Stripe, example payment package|PayPal, Authorize.net, Braintree|
+|Taxes|Flat rate|Avalara, TaxCloud, TaxJar|
+|Shipping|Flat rate|Shippo|
+|Connectors|CSV connector|Shopify connector|
+
+## GraphQL Cart and Checkout
+
+## GraphQL DevServer
+### Features
+ - feat: GraphQL Cart Schema (#4307)
+ - feat: GraphQL Cart checkout schemas (#4390)
+ - feat: Add anonymousCartByCartId GraphQL query (#4382)
+ - feat: createCart mutation, addCartItems mutation, and related cart/order schema changes (#4412)
+ - feat: Meteor-free addressBookAdd method and GraphQL plugin reorg (#4167)
+
+
+## Meteor App
+### Features
+ - feat: Shippo address validation (#4086)
+ - feat: Use token to create Stripe charges (#4325)
+ - feat: Create deploy to heroku button (#4320)
+ - feat: enable oplog in development Docker Compose config (#4420)
+ - feat: Create product hash of published product properties (#4336)
+ - feat: added CDN settings to reaction (#4316)
+ - feat: Indicator to notify of pending product changes not yet published to catalog (#4383)
+ - feat(marketplace): Limit Tags Publication to Those for the Current Shop (#4206)
+ - feat: add robots.txt file (#4370)
+
+### Fixes
+ - fix: update and pin to latest version of sharp package (#4466)
+ - fix: Use hashtags and tagIds to form tags obj (#4415) .. Resolves #4414
+ - fix: Marketplace Settings (#4334) .. Resolves #4333
+ - fix: update dependencies (#4444)
+ - fix: Invalidate circleci caches (#4432)
+ - fix: changing product handle throws 404 (#4403)  Resolves #4023
+ - fix: Tax and inventory toggle switches do not work (#4445)  Resolves #4401
+ - fix: Taxcloud with marketplace setup. (#4140) Resolves #4089
+ - fix: Options now have parent's taxCode (#4182)  Resolves #4141
+ - fix(marketplace): also send notification to shop owners upon order creation (#4295)
+ - fix: not publishing customer accounts (#4402) .. Resolves #4374
+ - fix: Can't save discount codes (#4410) .. Resolves #4408
+ - fix: Discount Codes React Table Not Rendering Correctly (#4411) .. Resolves #4247
+ - fix: Unable to save custom tax rate (#4405) .. Resolves #4396
+ - fix: low quantity/sold out flags not saving correctly in db (#4342)
+ - fix: Scrolling to bottom adds more products to the view (#4243) .. Resolves #4090
+ - fix: remove react-addons-create-fragment (#4164)
+ - fix: change session active product when adding new product (#4313)
+ - fix: missing styles on refund popover (#4300) .. Resolves #4005
+ - fix: fix permissions of shop social settings (#4312)
+ - fix: Archived products not being removed from Catalog (#4392)
+ - fix: Default settings for parcel size (#4083)
+ - fix: Update prerender.js (#4331)
+ - fix(marketplace): Product Visibility for Marketplace Shops (#4259) .. Resolves #4092
+ - fix: mislabeled schema (#4371)
+
+### Refactors
+ - refactor: Use new Reaction component library components for the SMS settings form (#4318)
+ - refactor: Remove "Catalog" from menu (#4385)
+ - refactor: Move all /server files to plugins (#4366)
+ - refactor: Update Catalog Schema (#4421)
+
+### Plugin Migration
+ - refactor: Remove Shopify plugin (#4395)
+ - refactor: Remove TaxCloud plugin (#4428)
+ - refactor: Remove Avalara plugin (#4398)
+ - refactor: Remove Authorize.net plugin (#4310)
+ - refactor: Remove Paypal plugin (#4339)
+ - refactor: Remove Braintree plugin (#4351)
+ - refactor: Remove disabled TaxJar plugin (#4348)
+ - refactor: Remove inventory package (#4388)
+ - refactor: Remove shipping-shippo plugin (#4460)
+
+
+## Contributors
+Thanks to @pmn4 and @hrath2015 for contributing to this release :tada:
+
+
 # v1.13.1
 
+This release exclusively includes a patch update to Meteor from `1.7.0.1` to `1.7.0.3`
+
+This release should be installed by anyone on Reaction 1.13.0 and includes an important security update to Node, updating to version 8.11.3 of Node, which is an important security release.
+
+The underlying meteor-babel npm package has also been updated to version 7.0.0-beta.51.
+
+
+## Security
+- security: Update to Meteor 1.7.0.3 (#4368)
 
 # v1.13.0
 
