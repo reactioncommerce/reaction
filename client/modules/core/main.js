@@ -87,8 +87,7 @@ export default {
         });
 
         if (shop) {
-          this.primaryShopId = shop._id;
-          this.primaryShopName = shop.name;
+          this._primaryShopId.set(shop._id);
 
           // We'll initialize locale and currency for the primary shop unless
           // marketplace settings exist and merchantLocale is set to true
@@ -482,22 +481,12 @@ export default {
   },
 
   /**
-   * primaryShopId is the first created shop. In a marketplace setting it's
-   * the shop that controls the marketplace and can see all other shops.
-   * @name primaryShopId
-   * @memberof Core/Client
-   */
-  set primaryShopId(shopId) {
-    this._primaryShopId.set(shopId);
-  },
-
-  /**
    * @name getPrimaryShopId
    * @method
    * @memberof Core/Client
    */
   getPrimaryShopId() {
-    return this.primaryShopId;
+    return this._primaryShopId.get();
   },
 
   /**
