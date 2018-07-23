@@ -1,8 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { compose } from "recompose";
 import { Query } from "react-apollo";
-import gql from "graphql-tag";
+import { compose } from "recompose";
 import { registerComponent, composeWithTracker } from "@reactioncommerce/reaction-components";
 import { Meteor } from "meteor/meteor";
 import { Session } from "meteor/session";
@@ -60,9 +59,7 @@ const wrapComponent = (Comp) => (
 
       const { pageInfo = {} } = catalogItems;
       const { hasNextPage } = pageInfo;
-      const products = (catalogItems.edges || []).map((edge) => {
-        return edge.node.product;
-      });
+      const products = (catalogItems.edges || []).map((edge) => edge.node.product );
 
       return (
         <Comp
