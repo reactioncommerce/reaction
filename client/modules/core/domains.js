@@ -3,7 +3,8 @@ import { composeUrl } from "/lib/core/url-common";
 
 export const DomainsMixin = {
   shopDomain() {
-    return document.location.hostname;
+    // We must use host rather than hostname in order to get the port, too, if present
+    return document.location.host;
   },
 
   /**
