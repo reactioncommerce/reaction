@@ -1,0 +1,23 @@
+[{
+  "language": "Burmese",
+  "i18n": "my",
+  "ns": "discount-rates",
+  "translation": {
+    "reaction-discounts": {
+      "admin": {
+        "settings": {
+          "ratesLabel": "နှုန်းများ",
+          "noCustomDiscountRatesFound": "အဘယ်သူမျှမလျှော့စျေးနှုန်းများတွေ့ရှိခဲ့ပါတယ်။",
+          "settingsSaveSuccess": "က Settings ကိုအောင်မြင်စွာကယ်လွှတ်တော်မူ၏။",
+          "settingsSaveFailure": "settings ကိုကယ်ဖို့မအောင်မြင်ပါ။",
+          "confirmRateDelete": "လျှော့စျေးနှုန်းကိုပယ်ဖျက်ရေးအတည်ပြုပါ။"
+        },
+        "discountGrid": {
+          "label": "တံဆိပ်",
+          "discountMethod": "နည်းလမ်း",
+          "discount": "လျှော့စျေး"
+        }
+      }
+    }
+  }
+}]

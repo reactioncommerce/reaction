@@ -1,0 +1,23 @@
+[{
+  "language": "Arabic",
+  "i18n": "ar",
+  "ns": "discount-rates",
+  "translation": {
+    "reaction-discounts": {
+      "admin": {
+        "settings": {
+          "ratesLabel": "معدلات",
+          "noCustomDiscountRatesFound": "لم يتم العثور على أسعار الخصم.",
+          "settingsSaveSuccess": "إعدادات حفظ بنجاح.",
+          "settingsSaveFailure": "فشل لحفظ الإعدادات.",
+          "confirmRateDelete": "تأكيد الخصم الحذف معدل."
+        },
+        "discountGrid": {
+          "label": "ملصق",
+          "discountMethod": "طريقة",
+          "discount": "خصم"
+        }
+      }
+    }
+  }
+}]

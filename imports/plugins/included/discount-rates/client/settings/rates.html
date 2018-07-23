@@ -1,0 +1,66 @@
+<template name="customDiscountRates">
+  <div>
+    {{> React discountGrid }}
+  </div>
+
+  <div class="pull-right">
+    {{> React editButton }}
+  </div>
+
+  {{#if instance.state.get 'isEditing'}}
+    <div>
+    {{#if instance.state.get 'editingId'}}
+
+      {{#autoForm
+        schema=discountRateSchema
+        type="method-update"
+        meteormethod="discounts/editRate"
+        doc=discountRate
+        id="discount-rates-update-form"
+        resetOnSuccess=true
+      }}
+        <div>
+          {{> afQuickField name='label' class='form-control' placeholder="Public Label"}}
+          {{> afQuickField name='description' class='form-control' placeholder="description"}}
+          {{> afQuickField name='discount' class='form-control'}}
+          {{> afQuickField name='discountMethod' type="hidden"}}
+
+        </div>
+        {{> discountSettingsSubmitButton instance=instance}}
+      {{/autoForm}}
+
+    {{else}}
+
+      {{#autoForm
+        schema=discountRateSchema
+        type="method"
+        meteormethod="discounts/addRate"
+        id="discount-rates-insert-form"
+        doc=discountRate
+        resetOnSuccess=true
+      }}
+        <div>
+          {{> afQuickField name='label' class='form-control' placeholder="Public Label"}}
+          {{> afQuickField name='description' class='form-control' placeholder="description"}}
+          {{> afQuickField name='discount' class='form-control'}}
+          {{> afQuickField name='discountMethod' type="hidden" value="rate"}}
+        </div>
+        {{> discountSettingsSubmitButton instance=instance}}
+      {{/autoForm}}
+    {{/if}}
+    </div>
+  {{/if}}
+</template>
+
+
+<template name="discountSettingsSubmitButton">
+   <div class="clearfix">
+    <div class="pull-right">
+      <button type="button" class="btn btn-primary cancel" data-i18n="app.cancel">Cancel</button>
+      {{#if instance.state.get 'editingId'}}
+      <button type="button" class="btn btn-primary delete" data-i18n="app.delete">Delete</button>
+      {{/if}}
+      <button type="submit" class="btn btn-primary" data-i18n="app.saveChanges">Save Changes</button>
+    </div>
+  </div>
+</template>

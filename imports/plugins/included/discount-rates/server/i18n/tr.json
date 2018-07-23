@@ -1,0 +1,23 @@
+[{
+  "language": "Turkish",
+  "i18n": "tr",
+  "ns": "discount-rates",
+  "translation": {
+    "reaction-discounts": {
+      "admin": {
+        "settings": {
+          "ratesLabel": "oranlar",
+          "noCustomDiscountRatesFound": "Hiçbir indirim oranları bulunamadı.",
+          "settingsSaveSuccess": "Ayarlar başarıyla kaydedildi.",
+          "settingsSaveFailure": "ayarları kaydedilemedi.",
+          "confirmRateDelete": "iskonto oranı silme işlemini onaylayın."
+        },
+        "discountGrid": {
+          "label": "Etiket",
+          "discountMethod": "Yöntem",
+          "discount": "İndirim"
+        }
+      }
+    }
+  }
+}]

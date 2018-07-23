@@ -1,0 +1,23 @@
+[{
+  "language": "Swedish",
+  "i18n": "sv",
+  "ns": "discount-rates",
+  "translation": {
+    "reaction-discounts": {
+      "admin": {
+        "settings": {
+          "ratesLabel": "rates",
+          "noCustomDiscountRatesFound": "Inga diskonteringsräntor hittades.",
+          "settingsSaveSuccess": "Inställningar sparats.",
+          "settingsSaveFailure": "Det gick inte att spara inställningarna.",
+          "confirmRateDelete": "Bekräfta borttagning diskonteringsränta."
+        },
+        "discountGrid": {
+          "label": "Etikett",
+          "discountMethod": "Metod",
+          "discount": "Rabatt"
+        }
+      }
+    }
+  }
+}]

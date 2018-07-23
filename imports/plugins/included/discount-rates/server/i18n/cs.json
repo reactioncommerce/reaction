@@ -1,0 +1,23 @@
+[{
+  "language": "Czech",
+  "i18n": "cs",
+  "ns": "discount-rates",
+  "translation": {
+    "reaction-discounts": {
+      "admin": {
+        "settings": {
+          "ratesLabel": "sazby",
+          "noCustomDiscountRatesFound": "Nebyla nalezena žádná diskontní sazby.",
+          "settingsSaveSuccess": "Nastavení úspěšně uloženo.",
+          "settingsSaveFailure": "Nepodařilo se uložit nastavení.",
+          "confirmRateDelete": "Potvrdit smazání diskontní sazby."
+        },
+        "discountGrid": {
+          "label": "Označení",
+          "discountMethod": "Metoda",
+          "discount": "Sleva"
+        }
+      }
+    }
+  }
+}]
