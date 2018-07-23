@@ -3,7 +3,8 @@ import { Meteor } from "meteor/meteor";
 import { Match } from "meteor/check";
 import { Reaction } from "/client/api";
 import { registerComponent, composeWithTracker } from "@reactioncommerce/reaction-components";
-import { Cart, Shops, Accounts } from "/lib/collections";
+import { Shops, Accounts } from "/lib/collections";
+import getCart from "/imports/plugins/core/cart/both/util/getCart";
 import CurrencyDropdown from "../components/currencyDropdown";
 
 const handlers = {
@@ -13,7 +14,8 @@ const handlers = {
     // update Accounts with the selected currency
     Meteor.call("accounts/setProfileCurrency", currencyName);
 
-    const cart = Cart.findOne({ userId: Meteor.userId() });
+    const { cart } = getCart();
+    if (!cart) return;
 
     // Attach changed currency to this users cart
     Meteor.call("cart/setUserCurrency", cart._id, currencyName);

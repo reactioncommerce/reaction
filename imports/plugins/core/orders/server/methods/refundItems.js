@@ -5,6 +5,7 @@ import { check } from "meteor/check";
 import { Orders } from "/lib/collections";
 import { PaymentMethodArgument } from "/lib/collections/schemas";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
+import sendOrderEmail from "../util/sendOrderEmail";
 
 /**
  * @name orderQuantityAdjust
@@ -21,7 +22,7 @@ function orderQuantityAdjust(orderId, refundedItem) {
     throw new Meteor.Error("access-denied", "Access Denied");
   }
 
-  const order = Orders.findOne(orderId);
+  const order = Orders.findOne({ _id: orderId });
   order.items.forEach((item) => {
     if (item._id === refundedItem.id) {
       const itemId = item._id;
@@ -65,7 +66,7 @@ export default function refundItemsMethod(orderId, paymentMethod, refundItemsInf
   }
 
   const fut = new Future();
-  const order = Orders.findOne(orderId);
+  const order = Orders.findOne({ _id: orderId });
   const { transactionId } = paymentMethod;
   const amount = refundItemsInfo.total;
   const { quantity } = refundItemsInfo;
@@ -105,7 +106,7 @@ export default function refundItemsMethod(orderId, paymentMethod, refundItemsInf
         }
       );
 
-      Meteor.call("orders/sendNotification", order, "itemRefund");
+      sendOrderEmail(order, "itemRefund");
 
       fut.return({
         refund: true,

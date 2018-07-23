@@ -1,10 +1,11 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Meteor } from "meteor/meteor";
+import { Session } from "meteor/session";
 import { Reaction, i18next } from "/client/api";
 import { registerComponent, composeWithTracker } from "@reactioncommerce/reaction-components";
 import LoginInline from "../components/loginInline";
-import { Cart } from "/lib/collections";
+import getCart from "/imports/plugins/core/cart/both/util/getCart";
 
 class LoginInlineContainer extends Component {
   static propTypes = {
@@ -32,9 +33,7 @@ class LoginInlineContainer extends Component {
         // Do not bother to try to advance workflow if we can't go beyond login.
         return;
       }
-      const cart = Cart.findOne({
-        userId: Meteor.userId()
-      });
+      const { cart } = getCart();
       // If there's already a billing and shipping address selected, push beyond address book
       if (cart && cart.billing[0] && cart.billing[0].address
         && cart.shipping[0] && cart.shipping[0].address) {
@@ -64,8 +63,8 @@ class LoginInlineContainer extends Component {
    */
   handleEmailSubmit = (event, email) => {
     event.preventDefault();
-    const userId = Meteor.userId();
-    Meteor.call("cart/setAnonymousUserEmail", userId, email, (error) => {
+    const { cart } = getCart();
+    Meteor.call("cart/setAnonymousUserEmail", cart._id, Session.get("sessionId"), email, (error) => {
       if (error) {
         Alerts.toast(i18next.t("mail.alerts.addCartEmailFailed"), "error");
       } else {

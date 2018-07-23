@@ -20,9 +20,9 @@ const CompletedOrderItem = ({ item }) => (
         badge={false}
       />
     </div>
-    <div className="order-details-title">{item.product.title}<p>{item.variants.title}</p></div>
+    <div className="order-details-title">{item.title}<p>{item.variantTitle}</p></div>
     <div className="order-details-quantity"><span>{item.quantity}</span></div>
-    <div className="order-details-price"><Components.Currency amount={item.variants.price} /></div>
+    <div className="order-details-price"><Components.Currency amount={item.priceWhenAdded.amount} /></div>
   </div>
 );
 

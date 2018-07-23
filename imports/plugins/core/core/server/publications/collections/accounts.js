@@ -8,11 +8,10 @@ import Reaction from "/imports/plugins/core/core/server/Reaction";
  * accounts
  */
 
-Meteor.publish("Accounts", function (userId) {
-  check(userId, Match.OneOf(String, null));
-  // we could additionally make checks of useId defined, but this could lead to
-  // situation when user will may not have time to get an account
-  if (this.userId === null) {
+Meteor.publish("Accounts", function () {
+  const userId = Meteor.userId();
+
+  if (!userId) {
     return this.ready();
   }
 
@@ -29,13 +28,13 @@ Meteor.publish("Accounts", function (userId) {
   }).fetch().map((group) => group._id);
 
   // global admin can get all accounts
-  if (Roles.userIsInRole(this.userId, ["owner"], Roles.GLOBAL_GROUP)) {
+  if (Roles.userIsInRole(userId, ["owner"], Roles.GLOBAL_GROUP)) {
     return Collections.Accounts.find({
       groups: { $nin: nonAdminGroups }
     });
 
   // shop admin gets accounts for just this shop
-  } else if (Roles.userIsInRole(this.userId, ["admin", "owner", "reaction-accounts"], shopId)) {
+  } else if (Roles.userIsInRole(userId, ["admin", "owner", "reaction-accounts"], shopId)) {
     return Collections.Accounts.find({
       groups: { $nin: nonAdminGroups },
       shopId
@@ -43,9 +42,7 @@ Meteor.publish("Accounts", function (userId) {
   }
 
   // regular users should get just their account
-  return Collections.Accounts.find({
-    userId: this.userId
-  });
+  return Collections.Accounts.find({ userId });
 });
 
 /**

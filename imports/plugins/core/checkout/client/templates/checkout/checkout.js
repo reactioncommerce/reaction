@@ -1,7 +1,7 @@
-import { Reaction } from "/client/api";
-import { Cart } from "/lib/collections";
 import { Meteor } from "meteor/meteor";
 import { Template } from "meteor/templating";
+import { Reaction } from "/client/api";
+import getCart from "/imports/plugins/core/cart/both/util/getCart";
 import "./checkout.html";
 
 //
@@ -11,29 +11,25 @@ import "./checkout.html";
 
 Template.cartCheckout.helpers({
   cart() {
-    if (Reaction.Subscriptions.Cart.ready()) {
-      return Cart.findOne();
-    }
-    return {};
+    const { cart } = getCart();
+    return cart || {};
   },
-  cartCount() {
-    const cart = Cart.findOne();
-    if (cart.items && cart.items.length > 0) {
-      return true;
-    }
-    return false;
-  }
+  cartHasItems() {
+    const { cart } = getCart();
+    return (cart && cart.items && cart.items.length > 0) || false;
+  },
+  isSubmittingCheckoutPayment: () => Reaction.isSubmittingCheckoutPayment
 });
 
 
-Template.cartCheckout.onCreated(() => {
-  if (Reaction.Subscriptions.Cart.ready()) {
-    const cart = Cart.findOne();
+Template.cartCheckout.onCreated(function onCreated() {
+  this.autorun(() => {
+    const { cart } = getCart();
     if (cart && cart.workflow && cart.workflow.status === "new") {
       // if user logged in as normal user, we must pass it through the first stage
       Meteor.call("workflow/pushCartWorkflow", "coreCartWorkflow", "checkoutLogin", cart._id);
     }
-  }
+  });
 });
 
 /**
@@ -43,10 +39,7 @@ Template.cartCheckout.onCreated(() => {
  */
 Template.checkoutSteps.helpers({
   isCompleted() {
-    if (this.status === true) {
-      return this.status;
-    }
-    return false;
+    return this.status === true;
   },
 
   isPending() {
@@ -63,7 +56,6 @@ Template.checkoutSteps.helpers({
 Template.checkoutStepBadge.helpers({
   checkoutStepBadgeClass() {
     const workflowStep = Template.instance().data;
-    // let currentStatus = Cart.findOne().workflow.status;
     if (workflowStep.status === true || workflowStep.status === this.template) {
       return "active";
     }

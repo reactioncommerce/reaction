@@ -1,7 +1,6 @@
-import url from "url";
-import { Meteor } from "meteor/meteor";
 import { BrowserPolicy } from "meteor/browser-policy-common";
 import { WebApp } from "meteor/webapp";
+import { Reaction } from "/lib/api";
 
 /**
  * Set headers for Reaction CDN
@@ -29,7 +28,7 @@ if (process.env.NODE_ENV === "development") {
 }
 
 // get current hostname of app
-const { hostname } = url.parse(Meteor.absoluteUrl());
+const hostname = Reaction.getDomain();
 
 // allow websockets (Safari fails without this)
 BrowserPolicy.content.allowConnectOrigin(`ws://${hostname}`);

@@ -69,6 +69,7 @@ const mockVariants = [
     _id: internalVariantIds[1],
     ancestors: [internalCatalogProductId, internalVariantIds[0]],
     barcode: "barcode",
+    createdAt,
     height: 2,
     index: 0,
     inventoryManagement: true,
@@ -99,6 +100,7 @@ const mockVariants = [
     taxCode: "0000",
     taxDescription: "taxDescription",
     title: "One pound bag",
+    updatedAt,
     variantId: internalVariantIds[1],
     weight: 2,
     width: 2
@@ -208,7 +210,6 @@ const mockCatalogProduct = {
   barcode: "barcode",
   createdAt,
   description: "description",
-  hash: undefined,
   height: 11.23,
   isBackorder: false,
   isDeleted: false,
@@ -240,7 +241,6 @@ const mockCatalogProduct = {
     value: "value",
     valueType: "valueType"
   }],
-  minOrderQuantity: 5,
   originCountry: "originCountry",
   pageTitle: "pageTitle",
   parcel: {
@@ -323,6 +323,7 @@ const mockCatalogProduct = {
     isTaxable: true,
     length: 0,
     lowInventoryWarningThreshold: 0,
+    media: [],
     metafields: [{
       description: "description",
       key: "key",
@@ -336,7 +337,7 @@ const mockCatalogProduct = {
     options: [{
       _id: "874",
       barcode: "barcode",
-      createdAt: undefined,
+      createdAt,
       height: 2,
       index: 0,
       inventoryManagement: true,
@@ -346,6 +347,19 @@ const mockCatalogProduct = {
       isTaxable: true,
       length: 2,
       lowInventoryWarningThreshold: 0,
+      media: [{
+        URLs: {
+          large: "large/path/to/image.jpg",
+          medium: "medium/path/to/image.jpg",
+          original: "image/path/to/image.jpg",
+          small: "small/path/to/image.jpg",
+          thumbnail: "thumbnail/path/to/image.jpg"
+        },
+        priority: 1,
+        productId: "999",
+        toGrid: 1,
+        variantId: "874"
+      }],
       metafields: [{
         description: "description",
         key: "key",
@@ -367,12 +381,25 @@ const mockCatalogProduct = {
           price: 992
         }
       },
+      primaryImage: {
+        URLs: {
+          large: "large/path/to/image.jpg",
+          medium: "medium/path/to/image.jpg",
+          original: "image/path/to/image.jpg",
+          small: "small/path/to/image.jpg",
+          thumbnail: "thumbnail/path/to/image.jpg"
+        },
+        priority: 1,
+        productId: "999",
+        toGrid: 1,
+        variantId: "874"
+      },
       shopId: "123",
       sku: "sku",
       taxCode: "0000",
       taxDescription: "taxDescription",
       title: "One pound bag",
-      updatedAt: undefined,
+      updatedAt,
       variantId: "874",
       weight: 2,
       width: 2
@@ -388,6 +415,7 @@ const mockCatalogProduct = {
         price: 0
       }
     },
+    primaryImage: null,
     shopId: "123",
     sku: "sku",
     taxCode: "0000",

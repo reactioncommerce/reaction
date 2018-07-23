@@ -52,6 +52,23 @@ export const methods = {
   },
 
   /**
+   * @name discounts/editRate
+   * @method
+   * @memberof Discounts/Rates/Methods
+   * @param  {Object} details An object with _id and modifier props
+   * @return {String} Update result
+   */
+  "discounts/editRate"(details) {
+    check(details, {
+      _id: String,
+      modifier: Object // actual schema validation happens during update below
+    });
+    if (!Reaction.hasPermission("discount-rates")) throw new Meteor.Error("access-denied", "Access Denied");
+    const { _id, modifier } = details;
+    return Discounts.update(_id, modifier);
+  },
+
+  /**
    * @name discounts/transaction
    * @method
    * @memberof Discounts/Methods
