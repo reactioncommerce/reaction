@@ -19,6 +19,12 @@ import { toCamelCase } from "/lib/api";
 // Lazily load moment-timezone.months
 const monthOptionsVar = new ReactiveVar([]);
 const monthOptionsLangVar = new ReactiveVar("");
+
+/**
+ * @name lazyLoadMonths
+ * @summary Dynamically imports MomentJS locales and returns an array of months in user's language.
+ * @returns {Object[]} Array of objects with value and label properties
+ */
 async function lazyLoadMonths() {
   let lang = i18next.language;
   if (lang === "zh") {
@@ -123,7 +129,7 @@ Template.registerHelper("yearOptions", (showDefaultOption = true) => {
   }
 
   let year = new Date().getFullYear();
-  for (let i = 1; i < 9; i += 1) {
+  for (let inc = 1; inc < 9; inc += 1) {
     yearOptions.push({
       value: year,
       label: year
