@@ -1,6 +1,6 @@
 import { Meteor } from "meteor/meteor";
-import Reaction from "/imports/plugins/core/core/server/Reaction";
 import { Jobs } from "/lib/collections";
+import Reaction from "/imports/plugins/core/core/server/Reaction";
 import { Job } from "/imports/plugins/core/job-collection/lib";
 
 /**

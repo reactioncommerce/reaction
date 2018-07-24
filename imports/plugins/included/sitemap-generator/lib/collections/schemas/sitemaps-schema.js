@@ -1,7 +1,7 @@
 import SimpleSchema from "simpl-schema";
+import { registerSchema } from "@reactioncommerce/schemas";
 import { check } from "meteor/check";
 import { Tracker } from "meteor/tracker";
-import { registerSchema } from "@reactioncommerce/schemas";
 
 /**
  * @name SitemapsSchema
