@@ -5,7 +5,7 @@
     "reaction-sitemap-generator": {
       "shopSettings": {
         "refreshSitemapsNow": "Refresh sitemaps now",
-        "sitemapRefreshInitiated": "Sitemap refresh initiated",
+        "sitemapRefreshInitiated": "Sitemap refresh started. Should complete within a couple minutes",
         "sitemapRefreshFailed": "Sitemap refresh failed"
       }
     }
