@@ -189,52 +189,25 @@ export default function startup() {
 
   /**
    * Accounts.onLogin event
-   * let's remove "anonymous" role, if the login type isn't "anonymous"
-   * @param {Object} options - user account creation options
-   * @fires "cart/mergeCart" Method
+   * @param {Object} opts - user account creation options
    */
   Accounts.onLogin((opts) => {
     // run onLogin hooks
     // (the options object must be returned by all callbacks)
     const options = Hooks.Events.run("onLogin", opts);
 
-    // remove anonymous role
-    // all users are guest, but anonymous user don't have profile access
-    // or ability to order history, etc. so ensure its removed upon login.
+    // The first time an "anonymous" user logs in for real, remove their "anonymous" role.
+    // Anonymous users don't have profile access or ability to see order history, etc.
     if (options.type !== "anonymous" && options.type !== "resume") {
-      const update = {
-        $pullAll: {}
-      };
+      const userId = options.user._id;
 
-      update.$pullAll[`roles.${Reaction.getShopId()}`] = ["anonymous"];
-
-      Meteor.users.update({
-        _id: options.user._id
-      }, update, {
-        multi: true
+      Meteor.users.update({ _id: userId }, {
+        $pullAll: {
+          [`roles.${Reaction.getShopId()}`]: ["anonymous"]
+        }
       });
-      // debug info
-      Logger.debug(`removed anonymous role from user: ${options.user._id}`);
 
-      // do not call `cart/mergeCart` on methodName === `createUser`, because
-      // in this case `cart/mergeCart` calls from cart publication
-      if (options.methodName === "createUser") return true;
-
-      // onLogin, we want to merge session cart into user cart.
-      const account = Collections.Accounts.findOne({ userId: options.user._id }, { fields: { _id: 1 } });
-      const cart = Collections.Cart.findOne({ accountId: account._id });
-
-      // for a rare use cases
-      if (typeof cart !== "object") return false;
-      // in current version currentSessionId will be available for anonymous
-      // users only, because it is unknown for me how to pass sessionId when user
-      // logged in
-      let currentSessionId;
-      if (options.methodArguments && options.methodArguments.length === 1 && options.methodArguments[0].sessionId) {
-        currentSessionId = options.methodArguments[0].sessionId;
-      }
-      // changing of workflow status from now happens within `cart/mergeCart`
-      return Meteor.call("cart/mergeCart", cart._id, currentSessionId);
+      Logger.debug(`removed anonymous role from user: ${userId}`);
     }
   });
 }

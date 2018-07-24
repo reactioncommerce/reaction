@@ -1,8 +1,8 @@
 import Hooks from "@reactioncommerce/hooks";
 import Logger from "@reactioncommerce/logger";
 import { Meteor } from "meteor/meteor";
-import { check, Match } from "meteor/check";
-import { Accounts, Cart } from "/lib/collections";
+import { check } from "meteor/check";
+import { Cart } from "/lib/collections";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
 import getCart from "/imports/plugins/core/cart/both/util/getCart";
 import hashLoginToken from "/imports/plugins/core/accounts/server/no-meteor/util/hashLoginToken";
@@ -18,25 +18,29 @@ import reconcileCarts from "../no-meteor/mutations/reconcileCarts";
  * If they had more than one cart, on more than one device,logged in at separate times then merge the carts
  * @memberof Cart/Methods
  * @param {String} cartId - cartId of the cart to merge matching session carts into.
- * @param {String} [currentSessionId] - current client session id
+ * @param {String} sessionId - The session ID for the anonymous cart to pull items from
  * @return {Object|Boolean} cartId - cartId on success or false
  */
-export default function mergeCart(cartId, currentSessionId) {
+export default function mergeCart(cartId, sessionId) {
   check(cartId, String);
-  // currentSessionId sometimes come in as false. e.g from Accounts.onLogin
-  check(currentSessionId, Match.Optional(String));
+  check(sessionId, String);
 
   // we don't process current cart, but merge into it.
   const { account, cart: accountCart } = getCart(cartId);
-  if (!accountCart) {
+  if (!accountCart || !account) {
+    if (!accountCart) {
+      Logger.error(`mergeCart: [Access Denied] Cart with ID ${cartId} was not found`);
+    }
+    const userId = Meteor.userId();
+    if (!userId) {
+      Logger.error("mergeCart: [Access Denied] No user ID");
+    } else if (!account) {
+      Logger.error(`mergeCart: [Access Denied] No account found with userId ${userId}`);
+    }
+
     throw new Meteor.Error("access-denied", "Access Denied");
   }
 
-  // persistent sessions, see: publications/sessions.js
-  // this is the last place where we still need `Reaction.sessionId`.
-  // The use case is: on user log in. I don't know how pass `sessionId` down
-  // at that moment.
-  const sessionId = currentSessionId || Reaction.sessionId;
   const shopId = Reaction.getCartShopId();
 
   // If things are working properly, there should be only one.
@@ -58,15 +62,6 @@ export default function mergeCart(cartId, currentSessionId) {
     mode: "merge",
     shopId
   }));
-
-  // Destroy the anonymous user and account
-  const sessionAccount = Accounts.findOne({ _id: sessionCart.accountId });
-  if (sessionAccount) {
-    Accounts.remove({ _id: sessionAccount._id });
-    Hooks.Events.run("afterAccountsRemove", this.userId, sessionAccount._id);
-    Meteor.users.remove({ _id: sessionAccount.userId });
-    Logger.debug(`merge cart: delete cart ${sessionCart._id} and anonymous account: ${sessionAccount._id}`);
-  }
 
   // Calculate discounts
   Hooks.Events.run("afterCartUpdateCalculateDiscount", accountCart._id);
