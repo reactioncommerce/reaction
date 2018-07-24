@@ -114,7 +114,7 @@ function generateSitemapsForShop(shopId, urlsPerSitemap) {
  *  to sitemap index
  * @private
  * @param {String} shopId - _id of shop sitemaps are for
- * @param {Object} options
+ * @param {Object} options - Options
  * @param {String} options.typeHandle - type of sitemap, i.e. "pages", "tags", "products"
  * @param {Object[]} options.items - Array of items to add to generated sitemaps
  * @param {String} options.items[].url - URL of page

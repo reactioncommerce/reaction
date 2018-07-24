@@ -1,12 +1,11 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { Meteor } from "meteor/meteor";
 import { Translation } from "/imports/plugins/core/ui/client/components";
 
 export default class SitemapControls extends Component {
   static propTypes = {
-    onGenerateClick: PropTypes.func.isRequired,
-    lastGenerationDate: PropTypes.string
+    lastGenerationDate: PropTypes.string,
+    onGenerateClick: PropTypes.func.isRequired
   };
 
   render() {
