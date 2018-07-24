@@ -60,7 +60,11 @@ function generateSitemapsForShop(shopId, urlsPerSitemap) {
       lastModDate: new Date() // Always assume homepage has updated each time generation runs
     }
   ]);
-  const pageSitemaps = rebuildPaginatedSitemaps(shopId, "pages", pageSitemapItems, urlsPerSitemap);
+  const pageSitemaps = rebuildPaginatedSitemaps(shopId, {
+    typeHandle: "pages",
+    items: pageSitemapItems,
+    urlsPerSitemap
+  });
   sitemapIndexItems.push(...pageSitemaps);
 
   // Regenerate tag sitemaps, if a tag has been created or updated since last generation
@@ -69,7 +73,11 @@ function generateSitemapsForShop(shopId, urlsPerSitemap) {
   const shouldRegenTagSitemaps = hasNoSitemap || !!Tags.findOne(selector, options);
   if (shouldRegenTagSitemaps) {
     const tagSitemapItems = getTagSitemapItems(shopId);
-    const tagSitemaps = rebuildPaginatedSitemaps(shopId, "tags", tagSitemapItems, urlsPerSitemap);
+    const tagSitemaps = rebuildPaginatedSitemaps(shopId, {
+      typeHandle: "tags",
+      items: tagSitemapItems,
+      urlsPerSitemap
+    });
     sitemapIndexItems.push(...tagSitemaps);
   } else {
     // Load existing tag sitemaps for index
@@ -80,7 +88,11 @@ function generateSitemapsForShop(shopId, urlsPerSitemap) {
   const shouldRegenProductSitemaps = hasNoSitemap || !!Products.findOne(selector, options);
   if (shouldRegenProductSitemaps) {
     const productSitemapItems = getProductSitemapItems(shopId);
-    const productSitemaps = rebuildPaginatedSitemaps(shopId, "products", productSitemapItems, urlsPerSitemap);
+    const productSitemaps = rebuildPaginatedSitemaps(shopId, {
+      typeHandle: "products",
+      items: productSitemapItems,
+      urlsPerSitemap
+    });
     sitemapIndexItems.push(...productSitemaps);
   } else {
     sitemapIndexItems.push(...getExistingSitemapsForIndex(shopId, "products"));
@@ -98,18 +110,19 @@ function generateSitemapsForShop(shopId, urlsPerSitemap) {
 
 /**
  * @name rebuildPaginatedSitemaps
- * @summary Deletes old sitemaps for type, builds new paginated sitemaps, saves to collection, and returns URLs to add
+ * @summary Deletes old sitemaps for type, builds new paginated sitemaps, saves to collection, and returns items to add
  *  to sitemap index
  * @private
  * @param {String} shopId - _id of shop sitemaps are for
- * @param {String} typeHandle - type of sitemap, i.e. "pages", "tags", "products"
- * @param {Object[]} items - Array of items to add to generated sitemaps
- * @param {String} items[].url - URL of page
- * @param {Date} items[].lastModDate - Last time page was updated
- * @param {Number} urlsPerSitemap - Max # of URLs per sitemap
+ * @param {Object} options
+ * @param {String} options.typeHandle - type of sitemap, i.e. "pages", "tags", "products"
+ * @param {Object[]} options.items - Array of items to add to generated sitemaps
+ * @param {String} options.items[].url - URL of page
+ * @param {Date} options.items[].lastModDate - Last time page was updated
+ * @param {Number} options.urlsPerSitemap - Max # of URLs per sitemap
  * @returns {Object[]} - Array of items to add to sitemap index
  */
-function rebuildPaginatedSitemaps(shopId, typeHandle, items, urlsPerSitemap) {
+function rebuildPaginatedSitemaps(shopId, { typeHandle, items, urlsPerSitemap }) {
   // Remove old sitemaps for type
   Sitemaps.remove({ shopId, handle: { $regex: new RegExp(`^sitemap-${typeHandle}`) } });
 
