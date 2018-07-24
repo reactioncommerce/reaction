@@ -28,7 +28,6 @@ const items = [
 
 test("inserts a cart with the existing cart's items and returns it", async () => {
   Cart.insertOne.mockReturnValueOnce(Promise.resolve({ ops: [mockCart], result: { ok: 1 } }));
-  Cart.deleteOne.mockReturnValueOnce(Promise.resolve({ deletedCount: 1 }));
 
   const result = await convertAnonymousCartToNewAccountCart({
     accountId,

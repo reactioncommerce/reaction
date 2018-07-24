@@ -50,9 +50,6 @@ const items = [
 ];
 
 test("merges anonymous cart items into account cart items, deletes anonymous cart, and returns updated account cart", async () => {
-  Cart.deleteOne.mockReturnValueOnce(Promise.resolve({ deletedCount: 1 }));
-  Cart.updateOne.mockReturnValueOnce(Promise.resolve({ modifiedCount: 1 }));
-
   const updatedItems = [
     {
       ...items[0],
@@ -89,7 +86,6 @@ test("merges anonymous cart items into account cart items, deletes anonymous car
 
 test("throws if deleteOne fails", async () => {
   Cart.deleteOne.mockReturnValueOnce(Promise.resolve({ deletedCount: 0 }));
-  Cart.updateOne.mockReturnValueOnce(Promise.resolve({ modifiedCount: 1 }));
 
   const promise = reconcileCartsMerge({
     accountCart,

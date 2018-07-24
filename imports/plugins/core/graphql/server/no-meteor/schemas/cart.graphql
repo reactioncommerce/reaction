@@ -441,8 +441,7 @@ extend type Mutation {
   "Remove item(s) from a cart."
   removeCartItems(input: RemoveCartItemsInput!): RemoveCartItemsPayload!
 
-  # If cart item input is set to 0, then remove the item.
-  "Update cart item(s) quantity. Use absolute quantity."
+  "Update cart item(s) quantity. Use absolute quantity. If updating to 0, the item will be removed."
   updateCartItemsQuantity(input: UpdateCartItemsQuantityInput!): UpdateCartItemsQuantityPayload!
 
   "Reconcile an anonymous cart with the current account cart for the same shop"

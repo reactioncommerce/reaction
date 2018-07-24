@@ -7,8 +7,6 @@ const accountCart = { _id: "ACCOUNT_CART", accountId };
 const anonymousCartSelector = { _id: "123" };
 
 test("deletes the anonymous cart and returns the account cart", async () => {
-  Cart.deleteOne.mockReturnValueOnce(Promise.resolve({ deletedCount: 1 }));
-
   const result = await reconcileCartsKeepAccountCart({
     accountCart,
     anonymousCartSelector,
