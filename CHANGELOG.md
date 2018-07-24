@@ -12,15 +12,22 @@ Here’s how it will look:
 |Shipping|Flat rate|Shippo|
 |Connectors|CSV connector|Shopify connector|
 
+## GraphQL Cart and Checkout
+
 ## GraphQL DevServer
 ### Features
  - feat: GraphQL Cart Schema (#4307)
+ - feat: GraphQL Cart checkout schemas (#4390)
  - feat: Add anonymousCartByCartId GraphQL query (#4382)
+ - feat: createCart mutation, addCartItems mutation, and related cart/order schema changes (#4412)
  - feat: Meteor-free addressBookAdd method and GraphQL plugin reorg (#4167)
+
 
 ## Meteor App
 ### Features
- - (Feat) Create deploy to heroku button (#4320)
+ - feat: Shippo address validation (#4086)
+ - feat: Use token to create Stripe charges (#4325)
+ - feat: Create deploy to heroku button (#4320)
  - feat: enable oplog in development Docker Compose config (#4420)
  - feat: Create product hash of published product properties (#4336)
  - feat: added CDN settings to reaction (#4316)
@@ -29,6 +36,20 @@ Here’s how it will look:
  - feat: add robots.txt file (#4370)
 
 ### Fixes
+ - fix: update and pin to latest version of sharp package (#4466)
+ - fix: Use hashtags and tagIds to form tags obj (#4415) .. Resolves #4414
+ - fix: Marketplace Settings (#4334) .. Resolves #4333
+ - fix: update dependencies (#4444)
+ - fix: Invalidate circleci caches (#4432)
+ - fix: changing product handle throws 404 (#4403)  Resolves #4023
+ - fix: Tax and inventory toggle switches do not work (#4445)  Resolves #4401
+ - fix: Taxcloud with marketplace setup. (#4140) Resolves #4089
+ - fix: Options now have parent's taxCode (#4182)  Resolves #4141
+ - fix(marketplace): also send notification to shop owners upon order creation (#4295)
+ - fix: not publishing customer accounts (#4402) .. Resolves #4374
+ - fix: Can't save discount codes (#4410) .. Resolves #4408
+ - fix: Discount Codes React Table Not Rendering Correctly (#4411) .. Resolves #4247
+ - fix: Unable to save custom tax rate (#4405) .. Resolves #4396
  - fix: low quantity/sold out flags not saving correctly in db (#4342)
  - fix: Scrolling to bottom adds more products to the view (#4243) .. Resolves #4090
  - fix: remove react-addons-create-fragment (#4164)
@@ -45,16 +66,22 @@ Here’s how it will look:
  - refactor: Use new Reaction component library components for the SMS settings form (#4318)
  - refactor: Remove "Catalog" from menu (#4385)
  - refactor: Move all /server files to plugins (#4366)
+ - refactor: Update Catalog Schema (#4421)
 
 ### Plugin Migration
+ - refactor: Remove Shopify plugin (#4395)
+ - refactor: Remove TaxCloud plugin (#4428)
+ - refactor: Remove Avalara plugin (#4398)
  - refactor: Remove Authorize.net plugin (#4310)
  - refactor: Remove Paypal plugin (#4339)
  - refactor: Remove Braintree plugin (#4351)
  - refactor: Remove disabled TaxJar plugin (#4348)
  - refactor: Remove inventory package (#4388)
+ - refactor: Remove shipping-shippo plugin (#4460)
+
 
 ## Contributors
-Thanks to @pmn4 for contributing to this release :tada:
+Thanks to @pmn4 and @hrath2015 for contributing to this release :tada:
 
 
 # v1.13.1

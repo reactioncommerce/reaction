@@ -1,4 +1,5 @@
 const mockContext = {
+  accountId: "FAKE_ACCOUNT_ID",
   collections: {},
   shopId: "FAKE_SHOP_ID",
   userHasPermission: jest.fn().mockName("userHasPermission"),
