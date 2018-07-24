@@ -279,18 +279,26 @@ input UpdateCartItemsQuantityInput {
   token: String
 }
 
-input ReconcileCartInput {
+"Input for the `reconcileCarts` mutation call"
+input ReconcileCartsInput {
   "An anonymous cart ID"
   anonymousCartId: ID!
 
   "An anonymous cart token"
   anonymousCartToken: String!
 
-  "If both an anonymous cart and a cart for the authenticated account are found, how do we combine them? Default mode is `merge`, where all anonymous items are moved into the account cart along with existing account cart items, and quantities are combined."
-  mode: CartReconciliationMode
-
   "An optional string identifying the mutation call, which will be returned in the response payload"
   clientMutationId: String
+
+  """
+  If both an anonymous cart and a cart for the authenticated account are found, how do we combine them?
+  Default mode is `merge`, where all anonymous items are moved into the account cart along with existing
+  account cart items, and quantities are combined.
+  """
+  mode: CartReconciliationMode
+
+  "The ID of the shop that owns both carts"
+  shopId: ID!
 }
 
 ####################
@@ -410,9 +418,9 @@ type UpdateCartItemsQuantityPayload {
   clientMutationId: String
 }
 
-"The payload returned from the `reconcileCart` mutation call"
-type ReconcileCartPayload {
-  "The modified cart"
+"The payload returned from the `reconcileCarts` mutation call"
+type ReconcileCartsPayload {
+  "The account cart, potentially modified"
   cart: Cart!
 
   "The same string you sent with the mutation params, for matching mutation calls with their responses"
@@ -437,6 +445,6 @@ extend type Mutation {
   "Update cart item(s) quantity. Use absolute quantity."
   updateCartItemsQuantity(input: UpdateCartItemsQuantityInput!): UpdateCartItemsQuantityPayload!
 
-  "Reconcile an anonymous cart with Account cart, if it exists."
-  reconcileCart(input: ReconcileCartInput!): ReconcileCartPayload!
+  "Reconcile an anonymous cart with the current account cart for the same shop"
+  reconcileCarts(input: ReconcileCartsInput!): ReconcileCartsPayload!
 }
