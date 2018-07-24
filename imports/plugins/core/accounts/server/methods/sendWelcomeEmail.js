@@ -54,17 +54,17 @@ export default function sendWelcomeEmail(shopId, userId, token) {
       display: true,
       facebook: {
         display: true,
-        icon: `${Meteor.absoluteUrl()}resources/email-templates/facebook-icon.png`,
+        icon: `${Reaction.absoluteUrl()}resources/email-templates/facebook-icon.png`,
         link: "https://www.facebook.com"
       },
       googlePlus: {
         display: true,
-        icon: `${Meteor.absoluteUrl()}resources/email-templates/google-plus-icon.png`,
+        icon: `${Reaction.absoluteUrl()}resources/email-templates/google-plus-icon.png`,
         link: "https://plus.google.com"
       },
       twitter: {
         display: true,
-        icon: `${Meteor.absoluteUrl()}resources/email-templates/twitter-icon.png`,
+        icon: `${Reaction.absoluteUrl()}resources/email-templates/twitter-icon.png`,
         link: "https://www.twitter.com"
       }
     },

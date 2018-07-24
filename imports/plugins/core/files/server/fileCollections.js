@@ -10,6 +10,7 @@ import {
   RemoteUrlWorker,
   TempFileStoreWorker
 } from "@reactioncommerce/file-collections";
+import { AbsoluteUrlMixin } from "/imports/plugins/core/core/server/Reaction/absoluteUrl";
 import { MediaRecords } from "/lib/collections";
 import setUpFileCollections from "./no-meteor/setUpFileCollections";
 
@@ -27,7 +28,7 @@ const {
   stores,
   tempStore
 } = setUpFileCollections({
-  absoluteUrlPrefix: Meteor.absoluteUrl(),
+  absoluteUrlPrefix: AbsoluteUrlMixin.absoluteUrl(),
   db,
   Logger,
   MediaRecords: MediaRecords.rawCollection(),

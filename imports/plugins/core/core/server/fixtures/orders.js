@@ -102,15 +102,13 @@ export default function () {
    * @memberof Fixtures
    * @summary Create an Order Factory
    * @example order = Factory.create("order")
-   * @property {String} additionalField OrderItems - `faker.lorem.sentence()`
    * @property {String} status OrderItems - `faker.lorem.sentence(3)`
    * @property {Array} history OrderItems History - `[]`
    * @property {Array} documents OrderItems Document - `[]`
    * @property {String} cartId Order - `Random.id()`
    * @property {Array} notes Order - `[]`
    * @property {String} shopId Cart - `shopId`
-   * @property {String} shopId.userId Cart - `userId`
-   * @property {String} shopId.sessionId Cart - `"Session"`
+   * @property {String} shopId.accountId Cart - `accountId`
    * @property {String} shopId.email Cart - `faker.internet.email()`
    * @property {String} shopId.workflow Cart - Object
    * @property {String} shopId.workflow.status Cart - `"new"`
@@ -155,7 +153,6 @@ export default function () {
    */
   Factory.define("order", Orders, {
     // Schemas.OrderItems
-    additionalField: faker.lorem.sentence(),
     status: faker.lorem.sentence(3),
     history: [],
     documents: [],
@@ -166,8 +163,7 @@ export default function () {
 
     // Schemas.Cart
     shopId,
-    userId: getUserId(),
-    sessionId: "Session",
+    accountId: Random.id(),
     email: faker.internet.email(),
     workflow: {
       status: "new",

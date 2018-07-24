@@ -6,6 +6,7 @@ import { Roles } from "meteor/alanning:roles";
 import { check, Match } from "meteor/check";
 import { Cart, Orders, Packages, Groups } from "/lib/collections";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
+import getCart from "/imports/plugins/core/cart/both/util/getCart";
 
 /* eslint no-shadow: 0 */
 
@@ -66,7 +67,6 @@ Meteor.methods({
     check(cartId, Match.Optional(String));
     this.unblock();
 
-    let currentCart;
     const defaultPackageWorkflows = [];
     let nextWorkflowStep = {
       template: ""
@@ -76,19 +76,15 @@ Meteor.methods({
     // when `this.userId` will be null, that's why we have a third argument in
     // this method - `cartId`. So, we can't completely rely on `Meteor.userId()`
     // here.
-    if (typeof cartId === "string") {
-      currentCart = Cart.findOne(cartId);
-    } else {
-      currentCart = Cart.findOne({
-        userId: this.userId
-      });
-    }
-    // exit if a cart doesn't exist.
+    const { account, cart: currentCart } = getCart(cartId);
     if (!currentCart) return [];
+
+    const shopId = Reaction.getShopId();
+
     // TODO doc this
     const currentWorkflowStatus = currentCart.workflow.status;
     const packages = Packages.find({
-      "shopId": Reaction.getShopId(),
+      shopId,
       "layout.workflow": workflow
     });
 
@@ -105,19 +101,14 @@ Meteor.methods({
           if (typeof layout.audience !== "object") {
             const defaultRoles = Groups.findOne({
               slug: "customer",
-              shopId: Reaction.getShopId()
+              shopId
             }).permissions;
             layout.audience = defaultRoles;
           }
           // check permissions so you don't have to on template. For a case, when
           // this method calls indirectly from publication method, we do this
           // check which is looks not pretty secure
-          let hasPermission;
-          if (typeof Meteor.userId() !== "string") {
-            hasPermission = Roles.userIsInRole(currentCart.userId, layout.audience, Reaction.getShopId());
-          } else {
-            hasPermission = Roles.userIsInRole(Meteor.userId(), layout.audience, Reaction.getShopId());
-          }
+          const hasPermission = account ? Roles.userIsInRole(account.userId, layout.audience, shopId) : false;
 
           if (hasPermission && !layout.layout) {
             defaultPackageWorkflows.push(layout);
@@ -185,7 +176,7 @@ Meteor.methods({
       Logger.debug(`######## Condition One #########:
         initialise the ${currentCart._id} ${workflow}:
         ${defaultPackageWorkflows[0].template}`);
-      const result = Cart.update(currentCart._id, {
+      const result = Cart.update({ _id: currentCart._id }, {
         $set: {
           "workflow.status": defaultPackageWorkflows[0].template
         }
@@ -202,7 +193,7 @@ Meteor.methods({
       templateProcessedinWorkflow === false) {
       Logger.debug("######## Condition Two #########: set status to: ", nextWorkflowStep.template);
 
-      return Cart.update(currentCart._id, {
+      return Cart.update({ _id: currentCart._id }, {
         $set: {
           "workflow.status": nextWorkflowStep.template
         },
@@ -221,7 +212,7 @@ Meteor.methods({
         `######## Condition Three #########: complete workflow ${currentWorkflowStatus} updates and move to: `,
         nextWorkflowStep.template
       );
-      return Cart.update(currentCart._id, {
+      return Cart.update({ _id: currentCart._id }, {
         $set: {
           "workflow.status": nextWorkflowStep.template
         },
@@ -258,9 +249,7 @@ Meteor.methods({
     check(newWorkflowStatus, String);
     this.unblock();
 
-    const cart = Cart.findOne({
-      userId: this.userId
-    });
+    const { cart } = getCart();
 
     if (!cart || typeof cart.workflow !== "object") return false;
     if (typeof cart.workflow.workflow !== "object") return false;
@@ -273,7 +262,7 @@ Meteor.methods({
     // remove all steps that further `newWorkflowStatus` and itself
     const resetedWorkflow = workflow.slice(0, resetToIndex);
 
-    return Cart.update(cart._id, {
+    return Cart.update({ _id: cart._id }, {
       $set: {
         "workflow.status": newWorkflowStatus,
         "workflow.workflow": resetedWorkflow

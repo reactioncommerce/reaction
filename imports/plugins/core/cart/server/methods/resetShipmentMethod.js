@@ -1,7 +1,6 @@
-import Logger from "@reactioncommerce/logger";
-import { Meteor } from "meteor/meteor";
 import { check } from "meteor/check";
 import * as Collections from "/lib/collections";
+import getCart from "/imports/plugins/core/cart/both/util/getCart";
 
 /**
  * @method cart/resetShipmentMethod
@@ -13,17 +12,7 @@ import * as Collections from "/lib/collections";
 export default function resetShipmentMethod(cartId) {
   check(cartId, String);
 
-  const cart = Collections.Cart.findOne({
-    _id: cartId,
-    userId: this.userId
-  });
-  if (!cart) {
-    Logger.error(`Cart not found for user: ${this.userId}`);
-    throw new Meteor.Error(
-      "not-found",
-      `Cart: ${cartId} not found for user: ${this.userId}`
-    );
-  }
+  getCart(cartId, { throwIfNotFound: true });
 
   return Collections.Cart.update({ _id: cartId }, {
     $unset: { "shipping.0.shipmentMethod": "" }

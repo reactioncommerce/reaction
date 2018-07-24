@@ -29,6 +29,7 @@ describe("Cart Publication", function () {
     // user carts merging. We need registered users for here.
     const user = Factory.create("registeredUser");
     const userId = user._id;
+    const account = Factory.create("account", { userId });
     Reaction.sessionId = Random.id();
     const { sessionId } = Reaction;
     const thisContext = {
@@ -37,6 +38,9 @@ describe("Cart Publication", function () {
 
     beforeEach(() => {
       Collections.Cart.remove({});
+      sandbox.stub(Meteor, "userId", () => userId);
+      sandbox.stub(Reaction, "getShopId", () => shop._id);
+      sandbox.stub(Reaction, "getPrimaryShopId", () => shop._id);
     });
 
     afterEach(() => {
@@ -44,15 +48,8 @@ describe("Cart Publication", function () {
     });
 
     it("should return a cart cursor", function () {
-      const account = Factory.create("account");
-      sandbox.stub(Meteor, "userId", function () {
-        return account.userId;
-      });
-      sandbox.stub(Reaction, "getShopId", () => shop._id);
-      sandbox.stub(Reaction, "getPrimaryShopId", () => shop._id);
       Collections.Cart.insert({
-        sessionId,
-        userId,
+        accountId: account._id,
         shopId: shop._id
       });
       const cartPub = Meteor.server.publish_handlers["Cart"];
@@ -62,21 +59,18 @@ describe("Cart Publication", function () {
     });
 
     it("should return only one cart in cursor", function () {
-      sandbox.stub(Reaction, "getShopId", () => shop._id);
-      sandbox.stub(Reaction, "getPrimaryShopId", () => shop._id);
-      sandbox.stub(Meteor, "userId", () => user._id);
       const user2 = Factory.create("registeredUser");
+      const account2 = Factory.create("account", { userId: user2._id });
+
       Collections.Cart.insert({
-        sessionId,
-        userId,
+        accountId: account._id,
         shopId: shop._id
       });
       Collections.Cart.insert({
-        sessionId,
-        userId: user2._id,
+        accountId: account2._id,
         shopId: shop._id
       });
-      // Meteor.call("cart/createCart", user2._id, sessionId);
+
       expect(Collections.Cart.find().count()).to.equal(2); // ensure we've added 2 carts
       const cartPub = Meteor.server.publish_handlers["Cart"];
       const cursor = cartPub.apply(thisContext, [sessionId]);
