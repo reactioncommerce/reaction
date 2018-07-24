@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { compose } from "recompose";
 import { registerComponent, composeWithTracker } from "@reactioncommerce/reaction-components";
-import { getImportableCollectionsOptions } from "@reactioncommerce/reaction-import-connectors";
+import { getImportableCollectionsOptions, getDefaultMappingForCollection } from "@reactioncommerce/reaction-import-connectors";
 import { Meteor } from "meteor/meteor";
 import { Reaction } from "/client/api";
 import { ImportJobs, ImportMappings } from "../../lib/collections";
@@ -38,14 +38,24 @@ const wrapComponent = (Comp) => (
 
 function composer(props, onData) {
   if (Meteor.subscribe("ImportJobs").ready() && Meteor.subscribe("ImportMappings").ready()) {
+    const userId = Meteor.userId();
     const impCollOptions = getImportableCollectionsOptions();
     const shopId = Reaction.getShopId();
-    const importJob = ImportJobs.findOne({ shopId, status: "New" });
+    const importJob = ImportJobs.findOne({ userId, shopId, status: "New" });
     const importMappings = ImportMappings.find({ shopId }).fetch();
+    let selectedMapping = {}; // Mapping will be humanized column name to technical field name
+    if (importJob && importJob.importMapping) {
+      if (importJob.importMapping === "default") {
+        selectedMapping = getDefaultMappingForCollection(importJob.collection);
+      } else if (importJob.importMapping !== "create") {
+        selectedMapping = ImportMappings.findOne(importJob.importMapping).mapping;
+      }
+    }
     return onData(null, {
       impCollOptions,
       importJob,
-      importMappings
+      importMappings,
+      selectedMapping
     });
   }
 }

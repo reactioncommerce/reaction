@@ -42,7 +42,12 @@ export const methods = {
 
     if (!_id) {
       const shopId = Reaction.getShopId();
-      ImportJobs.insert(Object.assign(update, { shopId, status: "New", importMapping: "default" }));
+      ImportJobs.insert(Object.assign(update, {
+        shopId,
+        status: "New",
+        importMapping: "default",
+        userId: Meteor.userId()
+      }));
       return true;
     }
 

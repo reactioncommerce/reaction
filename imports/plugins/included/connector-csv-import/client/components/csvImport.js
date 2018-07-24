@@ -3,9 +3,10 @@ import React, { Component } from "react";
 import Dropzone from "react-dropzone";
 import PropTypes from "prop-types";
 import { Components } from "@reactioncommerce/reaction-components";
+import Button from "@reactioncommerce/components/Button/v1";
 // import { FileRecord } from "@reactioncommerce/file-collections";
 import { Meteor } from "meteor/meteor";
-import { getFieldMatchingRelevantData } from "@reactioncommerce/reaction-import-connectors";
+import { getFieldMatchingRelevantData, getFieldOptionsForCollection } from "@reactioncommerce/reaction-import-connectors";
 import FieldMatching from "./fieldMatching";
 // import { Logger } from "/client/api";
 // import { ImportFiles } from "/imports/plugins/core/connectors-new/client";
@@ -14,17 +15,23 @@ class CSVImport extends Component {
   constructor(props) {
     super(props);
     const { importJob, importMappings } = this.props;
+
+    // importMappingOptions are used as the options list for the template selection dropdown
+
     const importMappingOptions = this.buildImportMappingOptions(
       (importJob && importJob.collection) || "",
       importMappings
     );
-    // const isUploading = importJob && importJob.collection;
+
     this.state = {
-      hasHeader: importJob && importJob.hasHeader,
+      errorMessages: [],
+      fieldMappingByUser: props.selectedMapping, // { CSV column name to importCollection.importSchema.$.key }
+      hasHeader: importJob && importJob.hasHeader, // if CSV has header or not as indicated by user
+      header: [], // CSV column names
       importJob,
       importMappingOptions,
-      isUploading: false,
-      header: [],
+      isSubmitting: false,
+      newMappingName: "",
       sampleData: []
     };
   }
@@ -46,7 +53,16 @@ class CSVImport extends Component {
         importMappingOptions = importMappings.filter((mapping) => (mapping.collection === collection))
           .map((mapping) => ({ value: mapping._id, label: mapping.reference }));
       }
-      importMappingOptions.push({ value: "default", label: "Default" });
+      importMappingOptions = importMappingOptions.concat([
+        {
+          value: "default",
+          label: `Default ${collection} mapping`
+        },
+        {
+          value: "create",
+          label: "Create new mapping"
+        }
+      ]);
     }
     return importMappingOptions;
   }
@@ -114,6 +130,10 @@ class CSVImport extends Component {
 
       this.setState(newState);
     }
+  }
+
+  handleMappingNameFieldChange = (event, value) => {
+    this.setState({ newMappingName: value });
   }
 
   handleFieldBlur = (event, value, field) => {
@@ -185,22 +205,61 @@ class CSVImport extends Component {
     return null;
   }
 
+  matchFields = (fieldKey, columnName) => {
+    const fieldMappingByUser = Object.assign({}, this.state.fieldMappingByUser);
+    fieldMappingByUser[columnName] = fieldKey;
+    this.setState({ fieldMappingByUser });
+  }
+
   renderFieldMatching() {
-    const { header, sampleData } = this.state;
+    const { header, sampleData, fieldMappingByUser } = this.state;
+
+    let fieldOptions = [];
+    if (this.importJob && this.importJob.collection) {
+      fieldOptions = getFieldOptionsForCollection(this.importJob.collection);
+    }
     if (sampleData.length > 0) {
-      console.log("RENDERRING SAMPLE DATAA", sampleData);
       return (
         <FieldMatching
           header={header}
           sampleData={sampleData}
+          fieldOptions={fieldOptions}
+          selectedMapping={fieldMappingByUser}
+          matchFields={this.matchFields}
         />
       );
     }
     return null;
   }
 
+  onImportJobSubmit = () => {
+    const { newMappingName, fieldMappingByUser, importJob } = this.state;
+    const errorMessages = [];
+    if (importJob.importMapping === "create" && !newMappingName) {
+      errorMessages.push("Please provide a name for the new mapping.");
+    }
+    if (errorMessages) {
+      this.setState({ errorMessages });
+    } else {
+      this.setState({ isSubmitting: true });
+    }
+  }
+
+  renderErrorMessages() {
+    const { errorMessages } = this.state;
+    if (errorMessages.length > 0) {
+      return (
+        <div className="alert alert-danger">
+          {errorMessages.map((message) => (<p>{message}</p>))}
+        </div>
+      );
+    }
+    return null;
+  }
+
   render() {
-    const { impCollOptions } = this.props;
+    const { impCollOptions, onImportJobSubmit } = this.props;
+    const { errorMessages, isSubmitting } = this.state;
     return (
       <div className="container">
         <div className="row">
@@ -266,7 +325,28 @@ class CSVImport extends Component {
             label="Next"
           />
         </div>
-        {this.renderFieldMatching()}
+        <div className="row">
+          <div className="col-sm-12 col-md-6">
+            {this.renderFieldMatching()}
+          </div>
+          <div className="col-sm-12 col-md-6">
+            {this.renderErrorMessages()}
+            <Components.TextField
+              label="Save this as a new mapping"
+              name="mappingeName"
+              onChange={this.handleMappingNameFieldChange}
+              value={this.state.newMappingName}
+            />
+            <Button
+              className="btn btn-primary"
+              bezelStyle="solid"
+              isWaiting={isSubmitting}
+              onClick={this.onImportJobSubmit}
+            >
+              Done
+            </Button>
+          </div>
+        </div>
       </div>
     );
   }
@@ -275,8 +355,9 @@ class CSVImport extends Component {
 CSVImport.propTypes = {
   impCollOptions: PropTypes.arrayOf(PropTypes.object),
   importJob: PropTypes.object,
-  isUploading: PropTypes.bool,
-  onImportJobFieldSave: PropTypes.func
+  isSubmitting: PropTypes.bool,
+  onImportJobFieldSave: PropTypes.func,
+  selectedMapping: PropTypes.object
 };
 
 export default CSVImport;

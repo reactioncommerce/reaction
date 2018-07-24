@@ -37,6 +37,11 @@ export const ImportJobs = new SimpleSchema({
     index: 1,
     label: "Shop"
   },
+  userId: {
+    type: String,
+    optional: true,
+    label: "User"
+  },
   method: {
     type: String,
     optional: true,

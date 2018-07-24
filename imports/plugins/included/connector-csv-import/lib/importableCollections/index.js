@@ -32,8 +32,22 @@ export const TagsImpColl = {
       key: "name",
       saveToField: "name",
       label: "Name"
+    },
+    {
+      key: "isVisible",
+      saveToField: "isVisble",
+      label: "Is Visible"
+    },
+    {
+      key: "slug",
+      saveToField: "slug",
+      label: "Slug"
+    },
+    {
+      key: "relatedTagIds",
+      saveToField: "relatedTagIds",
+      label: "Related Tags"
     }
-
   ]
 };
 

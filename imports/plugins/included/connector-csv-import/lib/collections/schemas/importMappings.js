@@ -28,7 +28,7 @@ export const ImportMappings = new SimpleSchema({
     type: Object,
     blackbox: true,
     optional: true
-  }
+  } // Mapping will be humanized column name to technical field name
 });
 
 registerSchema("ImportMappings", ImportMappings);

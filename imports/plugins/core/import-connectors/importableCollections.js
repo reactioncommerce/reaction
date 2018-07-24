@@ -1,7 +1,27 @@
 import fs from "fs";
 import csv from "csv";
 
-// This will contain all importable collections registered in different Reaction plugins
+/** This will contain all importable collections registered in different Reaction plugins
+ * Example value:
+ * {
+ *   "Products": {
+ *     "label": "Products",
+ *     "importSchema": [
+ *       {
+ *         "key": "id",
+ *         "saveToField": "_id",
+ *         "label": "ID"
+ *       }
+ *     ]
+ *   },
+ *   "Tags": {
+ *      ...
+ *   },
+ *   "DsicountCodes": {
+ *   }
+ * }
+ */
+
 export const ImportableCollections = {};
 
 /**
@@ -89,6 +109,36 @@ export function getImportableCollectionsOptions() {
   }
   return options;
 }
+
+/**
+ * @summary TODO
+ * @returns {Array} the callback
+ */
+export function getFieldOptionsForCollection(collection) {
+  let options = [{
+    label: "Ignore",
+    value: "ignore"
+  }];
+  const fieldOptions = ImportableCollections[collection].importSchema.map((field) => ({ label: field.label, value: field.key }));
+  options = options.concat(fieldOptions);
+  return options;
+}
+
+/**
+ * @summary Get default mapping for a given collection
+ * @param {String} collection collection name
+ * @returns {Object} just a mapping of field key to field label
+ */
+export function getDefaultMappingForCollection(collection) {
+  const mapping = {};
+  if (ImportableCollections[collection] && ImportableCollections[collection].importSchema) {
+    for (const field of ImportableCollections[collection].importSchema) {
+      mapping[field.label] = field.key;
+    }
+  }
+  return mapping;
+}
+
 
 /**
  * @summary TODO
