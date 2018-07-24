@@ -112,7 +112,7 @@
       {{> afQuickField name='settings.sitemaps.refreshPeriod' placeholder="every 24 hours"}}
       {{#if isPackageEnabled "reaction-sitemap-generator"}}
         <div>
-          {{> React component=GenerateSitemapsButton}}
+          {{> React component=SitemapControlsContainer}}
         </div>
       {{/if}}
       {{> shopSettingsSubmitButton}}
