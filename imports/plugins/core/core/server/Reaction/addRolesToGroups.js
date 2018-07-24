@@ -1,6 +1,6 @@
+import Logger from "@reactioncommerce/logger";
 import { Meteor } from "meteor/meteor";
 import { check, Match } from "meteor/check";
-import Logger from "@reactioncommerce/logger";
 import { Accounts, Groups } from "/lib/collections";
 
 /**
@@ -76,19 +76,35 @@ function addRolesToGroupAndUsers({ _id, shopId, name }, roles) {
 
   const maxAccountsPerUpdate = 100000;
   const accountSelector = { groups: _id };
-  const accountOptions = { fields: { _id: 1 } };
-  const numAccounts = Accounts.find(accountSelector, accountOptions).count();
+  const numAccounts = Accounts.find(accountSelector).count();
   if (numAccounts === 0) {
     Logger.debug("No users need roles updated");
+    return;
   }
+
   Logger.debug(`Number of users to add roles to: ${numAccounts}`);
   const numQueriesNeeded = Math.ceil(numAccounts / maxAccountsPerUpdate);
   Logger.debug(`Number of updates needed: ${numQueriesNeeded}`);
+
+  const accountOptions = {
+    fields: { _id: 1 },
+    sort: { _id: 1 },
+    limit: maxAccountsPerUpdate
+  };
+  let lastUserIdUpdated = "";
+
   for (let inc = 0; inc < numQueriesNeeded; inc += 1) {
     Logger.debug(`Processing user role update #${inc + 1} of ${numQueriesNeeded} for ${name} group`);
-    accountOptions.skip = inc * maxAccountsPerUpdate;
-    accountOptions.limit = maxAccountsPerUpdate;
+
+    if (lastUserIdUpdated) {
+      accountSelector._id = {
+        $gt: lastUserIdUpdated
+      };
+    }
+
     const userIds = Accounts.find(accountSelector, accountOptions).map((account) => account._id);
+    lastUserIdUpdated = userIds[userIds.length - 1];
+
     const selector = { _id: { $in: userIds } };
     const modifier = {
       $addToSet: {
