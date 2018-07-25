@@ -120,6 +120,15 @@ jobs:
               echo "No deploy for forks"
             fi
 
+  deploy-to-ecs:
+    <<: *defaults
+    steps:
+      - checkout
+      - run:
+          name: Deploy new task definition and update service in ECS
+          command: |
+            .circleci/bin/ecs-deploy.sh
+
   deploy-docs:
     <<: *defaults
     steps:
@@ -268,9 +277,9 @@ workflows:
     jobs:
       - build
       - dockerfile-lint
-      - test-app:
-          requires:
-            - build
+      #- test-app:
+      #    requires:
+      #      - build
       - test-unit:
           requires:
             - build
@@ -287,10 +296,13 @@ workflows:
           context: reaction-publish-docker
           requires:
             - docker-build
+      - deploy-to-ecs:
+          requires:
+            - docker-push
       - deploy-docs:
           requires:
             - test-unit
-            - test-app
+      #      - test-app
             - docker-build
           filters:
             branches:
