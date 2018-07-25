@@ -6,9 +6,9 @@ import { ReactionProduct } from "/lib/api";
 class ProductGrid extends Component {
   static propTypes = {
     canLoadMoreProducts: PropTypes.bool,
+    isLoading: PropTypes.bool.isRequired,
     loadProducts: PropTypes.func,
     products: PropTypes.array,
-    isLoading: PropTypes.bool.isRequired,
     shopCurrencyCode: PropTypes.string.isRequired
   }
 
@@ -38,6 +38,8 @@ class ProductGrid extends Component {
     // if the products catalog is not ready
     // show the loading spinner
     if (isLoading) return <Components.Loading />;
+
+    return null;
   }
 
   // render the No Products Found message
@@ -54,6 +56,8 @@ class ProductGrid extends Component {
         />
       );
     }
+
+    return null;
   }
 
   // render the product grid

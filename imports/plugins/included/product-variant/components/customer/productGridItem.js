@@ -122,7 +122,7 @@ class ProductGridItem extends Component {
 
     // if product is not medium weight
     // or the media array is empty exit
-    if (weight !== 1 || (!media || media.length === 0)) return;
+    if (weight !== 1 || (!media || media.length === 0)) return null;
 
     // creating an additional madia array with
     // the 2nd, 3rd and 4th images returned

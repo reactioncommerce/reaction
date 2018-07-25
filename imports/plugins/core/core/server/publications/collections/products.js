@@ -5,7 +5,7 @@ import { Meteor } from "meteor/meteor";
 import { Tracker } from "meteor/tracker";
 import { check, Match } from "meteor/check";
 import { registerSchema } from "@reactioncommerce/schemas";
-import { Products, Shops, Catalog } from "/lib/collections";
+import { Products, Shops } from "/lib/collections";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
 
 //
@@ -71,23 +71,14 @@ const filters = new SimpleSchema({
 
 registerSchema("filters", filters);
 
-const catalogProductFiltersSchema = new SimpleSchema({
-  "shopIdsOrSlugs": {
-    type: Array,
-    optional: true
-  },
-  "shopIdsOrSlugs.$": String,
-  "tagIds": {
-    type: Array,
-    optional: true
-  },
-  "tagIds.$": String,
-  "query": {
-    type: String,
-    optional: true
-  }
-});
-
+/**
+ * @name applyShopsFilter
+ * @summary Builds selector for shops
+ * @private
+ * @param {Object} selector - Current selector
+ * @param {Array} shopIdsOrSlugs - Shop _ids or slugs to filter for
+ * @return {Object} updated selector with shop filters
+ */
 function applyShopsFilter(selector, shopIdsOrSlugs) {
   // Active shop
   const shopId = Reaction.getShopId();
@@ -148,6 +139,13 @@ function applyShopsFilter(selector, shopIdsOrSlugs) {
   return selector;
 }
 
+/**
+ * @name filterProducts
+ * @summary Builds a selector for Products collection, given a set of filters
+ * @private
+ * @param {Object} productFilters - See filters schema above
+ * @return {Object} Selector
+ */
 function filterProducts(productFilters) {
   // if there are filter/params that don't match the schema
   // validate, catch except but return no results

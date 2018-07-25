@@ -2,10 +2,8 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { compose } from "recompose";
 import { registerComponent, composeWithTracker } from "@reactioncommerce/reaction-components";
-import { Meteor } from "meteor/meteor";
 import { Reaction } from "/client/api";
 import { ITEMS_INCREMENT } from "/client/config/defaults";
-import { Tags } from "/lib/collections";
 import { loadMore } from "/imports/plugins/core/graphql/lib/helpers/pagination";
 import withCatalogItems from "imports/plugins/core/graphql/lib/hocs/withCatalogItems";
 import withPrimaryShopId from "/imports/plugins/core/graphql/lib/hocs/withPrimaryShopId";
@@ -15,9 +13,10 @@ import ProductGridCustomer from "../components/customer/productGrid";
 const wrapComponent = (Comp) => (
   class ProductsContainerCustomer extends Component {
     static propTypes = {
-      tag: PropTypes.object,
       catalogItems: PropTypes.object,
-      fetchMore: PropTypes.func
+      fetchMore: PropTypes.func,
+      tag: PropTypes.object,
+      tagSlugOrId: PropTypes.string
     };
 
     constructor(props) {
@@ -31,7 +30,7 @@ const wrapComponent = (Comp) => (
       window.prerenderReady = true;
     }
 
-    handleLoadProducts = () => {
+    loadProducts = () => {
       if (this.state.isLoading) {
         return;
       }
@@ -64,7 +63,7 @@ const wrapComponent = (Comp) => (
           showNotFound={!!(tagSlugOrId && tag === null)}
           canLoadMoreProducts={hasNextPage}
           isLoading={isLoading}
-          loadProducts={this.handleLoadProducts}
+          loadProducts={this.loadProducts}
           products={products}
           shopCurrencyCode={Reaction.getPrimaryShopCurrency()}
         />
