@@ -30,6 +30,13 @@ function getErrorFormatter(context = {}) {
       Logger.error(eventObj);
 
       if (typeof originalError.error === "string") type = originalError.error;
+
+      if (type === "validation-error" && originalError.details && originalError.details.length) {
+        err.message = originalError.details[0].message;
+        err.details = originalError.details;
+      } else {
+        err.message = "Invalid input";
+      }
     }
 
     // Add a `type` prop to our `errors` response object for client parsing

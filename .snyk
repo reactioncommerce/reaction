@@ -18,3 +18,7 @@ ignore:
     - '*':
       reason: "PR Accepted to tus-node-server which will resolve this vulnerability https://github.com/tus/tus-node-server/pull/120"
       expires: '2018-08-26T20:23:03.274Z'
+  'npm:extend:20180424':
+    - '*':
+      reason: "extend and request have updated, waiting on twillio and a few other packages to update to the latest requestpackage"
+      expires: '2018-08-26T20:23:03.274Z'
