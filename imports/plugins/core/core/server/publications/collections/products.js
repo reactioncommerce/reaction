@@ -368,6 +368,7 @@ function filterCatalogItems(catalogFilters) {
   const baseSelector = {
     "product.isDeleted": { $ne: true }, // by default, we don't publish deleted products
     "product.isVisible": true // by default, only lookup visible products
+    "product.variants": { $ne: [] } // if no variant, then do not publish
   };
 
   const { shopIdsOrSlugs } = catalogFilters || {};
