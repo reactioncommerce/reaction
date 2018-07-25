@@ -1,5 +1,6 @@
 import hash from "object-hash";
 import createCatalogProduct from "../utils/createCatalogProduct";
+import getTopLevelProduct from "../utils/getTopLevelProduct";
 
 /**
  * @method createProductHash
@@ -58,6 +59,7 @@ export default async function hashProduct(productId, collections) {
   const { Products } = collections;
 
   const product = await Products.findOne({ _id: productId });
+  const product = await getTopLevelProduct(productId, collections);
 
   const productHash = await createProductHash(product, collections);
 
