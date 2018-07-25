@@ -26,7 +26,7 @@ class FieldMatchingColumn extends Component {
             <td width="50%">
               <Components.Select
                 clearable={false}
-                name={mappingKey}
+                name={`${mappingKey}`}
                 onChange={this.handleSelectChange}
                 options={fieldOptions}
                 value={selectedField}

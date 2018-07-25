@@ -82,7 +82,44 @@ export const methods = {
     const doc = ImportMappings.findOne(importMapping);
     const headers = Object.keys(doc.mapping).map((field) => field);
     return arrayToCSVRow(headers);
+  },
+
+  /**
+   * @name importJobs/createMapping
+   * @method
+   * @memberof importJobs/Methods
+   * @param {String} importJobId TODO
+   * @param {String} name TODO
+   * @param {String} mapping TODO
+   * @return {undefined}
+   */
+  "importJobs/createMapping"(importJobId, name, mapping) {
+    check(importJobId, String);
+    check(name, String);
+    check(mapping, Object);
+    // TODO: Check permission ???
+    const importJob = ImportJobs.findOne(importJobId);
+    const shopId = Reaction.getShopId();
+    const imporMappingId = ImportMappings.insert({
+      name,
+      shopId,
+      collection: importJob.collection,
+      mapping
+    });
+    ImportJobs.update(importJobId, { $set: { importMapping: imporMappingId, mapping } });
+  },
+
+  "importJobs/updateMapping"(importJobId, updateMapping, mapping) {
+    check(importJobId, String);
+    check(updateMapping, Boolean);
+    check(mapping, Object);
+    const importJob = ImportJobs.findOne(importJobId);
+    if (updateMapping) {
+      ImportMappings.update(importJob.importMapping, { $set: { mapping } });
+    }
+    ImportJobs.update(importJobId, { $set: { mapping } });
   }
+
 };
 
 Meteor.methods(methods);

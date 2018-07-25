@@ -51,7 +51,13 @@ export const ImportJobs = new SimpleSchema({
     type: String,
     optional: true,
     label: "Status"
-  }
+  },
+  mapping: {
+    label: "Mapping",
+    type: Object,
+    blackbox: true,
+    optional: true
+  } // Mapping will be humanized column name to technical field name
 });
 
 registerSchema("ImportJobs", ImportJobs);

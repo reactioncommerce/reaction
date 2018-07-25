@@ -2,6 +2,7 @@ import update from "immutability-helper";
 import Dropzone from "react-dropzone";
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import { getFieldMatchingRelevantData } from "@reactioncommerce/reaction-import-connectors";
 import { Components } from "@reactioncommerce/reaction-components";
 import Button from "@reactioncommerce/components/Button/v1";
 import { Meteor } from "meteor/meteor";
@@ -13,11 +14,10 @@ class InitialScreen extends Component {
     const { importJob, importMappings } = props;
     const importMappingOptions = this.buildImportMappingOptions(importJob, importMappings);
     this.state = {
+      csvFile: {},
       errorMessages: [],
-      fileName: "",
       importJob,
-      importMappingOptions,
-      csvFile: {}
+      importMappingOptions
     };
   }
 
@@ -46,7 +46,8 @@ class InitialScreen extends Component {
   }
 
   handleNextButtonClick = () => {
-    const { importJob, fileName } = this.state;
+    const { onChangeActiveScreen, updateHeaderAndSampleData } = this.props;
+    const { csvFile, importJob } = this.state;
     const errorMessages = [];
     if (!importJob.collection) {
       errorMessages.push("Please pick a data type.");
@@ -57,14 +58,31 @@ class InitialScreen extends Component {
     if (!importJob.name) {
       errorMessages.push("Please provide a reference.");
     }
-    if (!fileName) {
+    if (!csvFile.name) {
       errorMessages.push("Please upload a file.");
     }
-    if (errorMessages.length === 0) {
-      this.props.onChangeActiveScreen("mapping");
-    } else {
+    if (errorMessages.length > 0) {
       this.setState({ errorMessages });
+      return;
     }
+    const promise = new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsText(csvFile);
+      reader.onload = () => {
+        if (reader.result) {
+          resolve(getFieldMatchingRelevantData(reader.result, importJob.hasHeader));
+        } else {
+          reject(Error("Failed reading CSV to text."));
+        }
+      };
+    });
+    promise.then((result) => {
+      updateHeaderAndSampleData(result.header, result.sampleData);
+      onChangeActiveScreen("mapping");
+      return;
+    }).catch((err) => {
+      throw err;
+    });
   }
 
   handleFieldBlur = (event, value, field) => {
@@ -121,7 +139,7 @@ class InitialScreen extends Component {
     const filesArray = Array.from(acceptedFiles);
     if (filesArray.length === 0) return;
     const csvFile = filesArray[0];
-    this.setState({ fileName: csvFile.name });
+    this.setState({ csvFile });
     this.props.onFileUpload(csvFile);
   }
 
@@ -142,9 +160,9 @@ class InitialScreen extends Component {
   }
 
   renderCSVFileName() {
-    const { fileName } = this.state;
-    if (fileName) {
-      return (<span>{fileName}</span>);
+    const { csvFile: { name } } = this.state;
+    if (name) {
+      return (<span>{name}</span>);
     }
     return null;
   }
@@ -154,7 +172,7 @@ class InitialScreen extends Component {
     if (errorMessages.length > 0) {
       return (
         <div className="alert alert-danger">
-          {errorMessages.map((message) => (<p>{message}</p>))}
+          {errorMessages.map((message, index) => (<p key={index}>{message}</p>))}
         </div>
       );
     }
@@ -238,7 +256,8 @@ InitialScreen.propTypes = {
   importMappings: PropTypes.arrayOf(PropTypes.object),
   onChangeActiveScreen: PropTypes.func,
   onFileUpload: PropTypes.func,
-  onImportJobFieldSave: PropTypes.func
+  onImportJobFieldSave: PropTypes.func,
+  updateHeaderAndSampleData: PropTypes.func
 };
 
 export default InitialScreen;

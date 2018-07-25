@@ -3,7 +3,9 @@ import PropTypes from "prop-types";
 import { getFieldOptionsForCollection } from "@reactioncommerce/reaction-import-connectors";
 import { Components } from "@reactioncommerce/reaction-components";
 import Button from "@reactioncommerce/components/Button/v1";
+import { Meteor } from "meteor/meteor";
 import FieldMatchingColumn from "./fieldMatchingColumn";
+
 
 class MappingScreen extends Component {
   constructor(props) {
@@ -17,11 +19,13 @@ class MappingScreen extends Component {
       errorMessages: [],
       fieldOptions,
       fieldMappingByUser: selectedMapping,
-      newMappingName: ""
+      newMappingName: "",
+      updateMapping: false
     };
   }
 
-  handleDoneButtonClick = () => {
+  validateMapping = () => {
+    // TODO: Validate that a field is mapped to only one CSV column
     const { header, importJob, sampleData } = this.props;
     const { newMappingName, fieldMappingByUser } = this.state;
     const errorMessages = [];
@@ -39,11 +43,40 @@ class MappingScreen extends Component {
         errorMessages.push(`Column ${colTitle} is neither mapped nor ignored.`);
       }
     }
+    return errorMessages;
+  }
+
+  finalizeMapping = () => {
+    const mapping = {};
+    const { header, importJob, sampleData } = this.props;
+    const { fieldMappingByUser } = this.state;
+    for (let colNumber = 0; colNumber < sampleData.length; colNumber += 1) {
+      if (importJob.hasHeader) {
+        mapping[header[colNumber]] = fieldMappingByUser[header[colNumber]];
+      } else {
+        mapping[`${colNumber}`] = fieldMappingByUser[`${colNumber}`];
+      }
+    }
+    return mapping;
+  }
+
+  handleDoneButtonClick = () => {
+    const errorMessages = this.validateMapping();
     if (errorMessages.length > 0) {
       this.setState({ errorMessages });
-    } else {
-      this.props.onChangeActiveScreen("success");
+      return;
     }
+
+    const { newMappingName, updateMapping } = this.state;
+    const { importJob } = this.props;
+
+    const finalMapping = this.finalizeMapping();
+    if (importJob.importMapping === "create") {
+      Meteor.call("importJobs/createMapping", importJob._id, newMappingName, finalMapping);
+    } else {
+      Meteor.call("importJobs/updateMapping", importJob._id, updateMapping, finalMapping);
+    }
+    this.props.onChangeActiveScreen("success");
   }
 
   handleBackButtonClick = () => {

@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { getFieldMatchingRelevantData } from "@reactioncommerce/reaction-import-connectors";
 import InitialScreen from "./initialScreen";
 import MappingScreen from "./mappingScreen";
 import SuccessScreen from "./successScreen";
@@ -21,28 +20,11 @@ class CSVImportAdmin extends Component {
   }
 
   handleFileUpload = (csvFile) => {
-    const { importJob: { hasHeader } } = this.props;
-    const promise = new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.readAsText(csvFile);
-      reader.onload = () => {
-        if (reader.result) {
-          resolve(getFieldMatchingRelevantData(reader.result, hasHeader));
-        } else {
-          reject(Error("Failed reading CSV to text."));
-        }
-      };
-    });
-    promise.then((result) => {
-      this.setState({
-        csvFile,
-        header: result.header,
-        sampleData: result.sampleData
-      });
-      return;
-    }).catch((err) => {
-      throw err;
-    });
+    this.setState({ csvFile });
+  }
+
+  updateHeaderAndSampleData = (header, sampleData) => {
+    this.setState({ header, sampleData });
   }
 
   renderActiveScreen() {
@@ -57,6 +39,7 @@ class CSVImportAdmin extends Component {
           importMappings={importMappings}
           onChangeActiveScreen={this.onChangeActiveScreen}
           onImportJobFieldSave={onImportJobFieldSave}
+          updateHeaderAndSampleData={this.updateHeaderAndSampleData}
         />
       );
     } else if (activeScreen === "mapping") {

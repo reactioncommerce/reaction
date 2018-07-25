@@ -8,7 +8,9 @@ import { registerSchema } from "@reactioncommerce/schemas";
  */
 export const ImportMappings = new SimpleSchema({
   _id: {
-    type: String
+    type: String,
+    optional: true,
+    label: "ID"
   },
   name: {
     type: String,
