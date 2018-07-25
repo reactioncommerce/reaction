@@ -10,7 +10,7 @@ import Reaction from "/imports/plugins/core/core/server/Reaction";
 import { MediaRecords, Products, Tags } from "/lib/collections";
 import { Media } from "/imports/plugins/core/files/server";
 import rawCollections from "/imports/collections/rawCollections";
-import { createProductHash } from "../no-meteor/mutations/hashProduct";
+import hashProduct, { createProductHash } from "../no-meteor/mutations/hashProduct";
 import getProductPriceRange from "../no-meteor/utils/getProductPriceRange";
 import getVariants from "../no-meteor/utils/getVariants";
 import hasChildVariant from "../no-meteor/utils/hasChildVariant";
@@ -355,7 +355,7 @@ function createProduct(props = null) {
  * @param {Object} validation - simple schema validation options
  * @return {String} _id of updated document
  */
-function updateCatalogProduct(userId, selector, modifier, validation) {
+async function updateCatalogProduct(userId, selector, modifier, validation) {
   const product = Products.findOne(selector);
 
   Hooks.Events.run("beforeUpdateCatalogProduct", product, {
@@ -365,6 +365,8 @@ function updateCatalogProduct(userId, selector, modifier, validation) {
   });
 
   const result = Products.update(selector, modifier, validation);
+
+  await hashProduct(product._id, rawCollections, false);
 
   Hooks.Events.run("afterUpdateCatalogProduct", product._id, { modifier });
 
