@@ -6,7 +6,7 @@ import { getImportableCollectionsOptions, getDefaultMappingForCollection } from 
 import { Meteor } from "meteor/meteor";
 import { Reaction } from "/client/api";
 import { ImportJobs, ImportMappings } from "../../lib/collections";
-import { CSVImport } from "../components";
+import { CSVImportAdmin } from "../components";
 
 const wrapComponent = (Comp) => (
   class CSVImportContainer extends Component {
@@ -41,13 +41,16 @@ function composer(props, onData) {
     const userId = Meteor.userId();
     const impCollOptions = getImportableCollectionsOptions();
     const shopId = Reaction.getShopId();
-    const importJob = ImportJobs.findOne({ userId, shopId, status: "New" });
-    const importMappings = ImportMappings.find({ shopId }).fetch();
+    const importJob = ImportJobs.findOne({ userId, shopId, status: "New" }) || {};
+    let importMappings = [];
+    if (importJob.collection) {
+      importMappings = ImportMappings.find({ shopId, collection: importJob.collection }).fetch();
+    }
     let selectedMapping = {}; // Mapping will be humanized column name to technical field name
     if (importJob && importJob.importMapping) {
-      if (importJob.importMapping === "default") {
+      if (importJob.importMapping === "create") {
         selectedMapping = getDefaultMappingForCollection(importJob.collection);
-      } else if (importJob.importMapping !== "create") {
+      } else {
         selectedMapping = ImportMappings.findOne(importJob.importMapping).mapping;
       }
     }
@@ -60,7 +63,7 @@ function composer(props, onData) {
   }
 }
 
-registerComponent("CSVImport", CSVImport, [
+registerComponent("CSVImport", CSVImportAdmin, [
   composeWithTracker(composer),
   wrapComponent
 ]);
@@ -69,4 +72,4 @@ registerComponent("CSVImport", CSVImport, [
 export default compose(
   composeWithTracker(composer),
   wrapComponent
-)(CSVImport);
+)(CSVImportAdmin);

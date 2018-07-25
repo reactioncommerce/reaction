@@ -10,7 +10,7 @@ export const ImportMappings = new SimpleSchema({
   _id: {
     type: String
   },
-  reference: {
+  name: {
     type: String,
     label: "Mapping Reference"
   },

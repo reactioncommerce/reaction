@@ -45,7 +45,7 @@ export const methods = {
       ImportJobs.insert(Object.assign(update, {
         shopId,
         status: "New",
-        importMapping: "default",
+        importMapping: "create",
         userId: Meteor.userId()
       }));
       return true;

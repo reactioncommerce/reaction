@@ -333,6 +333,12 @@
       "import/resolver": "meteor"
     },
     "rules": {
+      "react/no-deprecated": "off",
+      "require-jsdoc": ["error", {
+        "require": {
+          "FunctionDeclaration": false
+        }
+      }],
       "valid-jsdoc": [
         1,
         {

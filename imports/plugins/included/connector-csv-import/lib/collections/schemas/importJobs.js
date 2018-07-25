@@ -12,7 +12,7 @@ export const ImportJobs = new SimpleSchema({
     optional: true,
     label: "ID"
   },
-  reference: {
+  name: {
     type: String,
     optional: true,
     label: "Import Reference"
