@@ -31,7 +31,7 @@
     "@reactioncommerce/random": "1.0.1",
     "@reactioncommerce/schemas": "1.1.0",
     "accounting-js": "^1.1.1",
-    "apollo-cache-inmemory": "^1.2.5",
+    "apollo-cache-inmemory": "1.2.5",
     "apollo-client": "2.3.5",
     "apollo-link": "1.2.2",
     "apollo-link-http": "1.5.4",
