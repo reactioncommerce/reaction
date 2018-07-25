@@ -323,6 +323,7 @@ const mockCatalogProduct = {
     isTaxable: true,
     length: 0,
     lowInventoryWarningThreshold: 0,
+    media: [],
     metafields: [{
       description: "description",
       key: "key",
@@ -346,6 +347,19 @@ const mockCatalogProduct = {
       isTaxable: true,
       length: 2,
       lowInventoryWarningThreshold: 0,
+      media: [{
+        URLs: {
+          large: "large/path/to/image.jpg",
+          medium: "medium/path/to/image.jpg",
+          original: "image/path/to/image.jpg",
+          small: "small/path/to/image.jpg",
+          thumbnail: "thumbnail/path/to/image.jpg"
+        },
+        priority: 1,
+        productId: "999",
+        toGrid: 1,
+        variantId: "874"
+      }],
       metafields: [{
         description: "description",
         key: "key",
@@ -366,6 +380,19 @@ const mockCatalogProduct = {
           minPrice: 992,
           price: 992
         }
+      },
+      primaryImage: {
+        URLs: {
+          large: "large/path/to/image.jpg",
+          medium: "medium/path/to/image.jpg",
+          original: "image/path/to/image.jpg",
+          small: "small/path/to/image.jpg",
+          thumbnail: "thumbnail/path/to/image.jpg"
+        },
+        priority: 1,
+        productId: "999",
+        toGrid: 1,
+        variantId: "874"
       },
       shopId: "123",
       sku: "sku",
@@ -388,6 +415,7 @@ const mockCatalogProduct = {
         price: 0
       }
     },
+    primaryImage: null,
     shopId: "123",
     sku: "sku",
     taxCode: "0000",

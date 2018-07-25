@@ -1,3 +1,4 @@
+import Logger from "@reactioncommerce/logger";
 import { Meteor } from "meteor/meteor";
 import { check, Match } from "meteor/check";
 import { Roles } from "meteor/alanning:roles";
@@ -39,7 +40,12 @@ export default function createCartMethod(sessionId) {
 
   // Merge all anonymous carts into the new account cart
   if (!anonymousUser && sessionId) {
-    Meteor.call("cart/mergeCart", cart._id, sessionId);
+    // Do this async because we don't need the client to know if it failed
+    Meteor.call("cart/mergeCart", cart._id, sessionId, (error) => {
+      if (error) {
+        Logger.error(`Error merging cart for session ${sessionId} into new account cart ${cart._id}`, error);
+      }
+    });
   }
 
   return cart._id;

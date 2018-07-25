@@ -1,6 +1,28 @@
 import Random from "@reactioncommerce/random";
+import SimpleSchema from "simpl-schema";
 import { Meteor } from "meteor/meteor";
 import findProductAndVariant from "/imports/plugins/core/catalog/server/no-meteor/utils/findProductAndVariant";
+
+const inputItemSchema = new SimpleSchema({
+  "metafields": {
+    type: Array,
+    optional: true
+  },
+  "metafields.$": {
+    type: Object,
+    blackbox: true
+  },
+  "productConfiguration": Object,
+  "productConfiguration.productId": String,
+  "productConfiguration.productVariantId": String,
+  "quantity": SimpleSchema.Integer,
+  "price": Object,
+  "price.currencyCode": String,
+  "price.amount": {
+    type: Number,
+    optional: true
+  }
+});
 
 /**
  * @summary Given a list of current cart items and a list of items a shopper wants
@@ -14,6 +36,8 @@ import findProductAndVariant from "/imports/plugins/core/catalog/server/no-meteo
  * @return {Object} Object with `incorrectPriceFailures` and `minOrderQuantityFailures` and `updatedItemList` props
  */
 export default async function addCartItems(collections, currentItems, inputItems, options = {}) {
+  inputItemSchema.validate(inputItems);
+
   const incorrectPriceFailures = [];
   const minOrderQuantityFailures = [];
   const updatedItemList = currentItems.slice(0);

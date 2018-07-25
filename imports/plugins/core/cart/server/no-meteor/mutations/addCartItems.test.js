@@ -21,10 +21,6 @@ test("add an item to an existing anonymous cart", async () => {
     items: []
   }));
 
-  mockContext.collections.Cart.updateOne.mockReturnValueOnce(Promise.resolve({
-    modifiedCount: 1
-  }));
-
   const result = await addCartItems(mockContext, {
     cartId: "cartId",
     items,

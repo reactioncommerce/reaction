@@ -10,7 +10,7 @@ import hashLoginToken from "/imports/plugins/core/accounts/server/no-meteor/util
  * @param {Object} params - request parameters
  * @param {String} [params.cartId] - Cart id to include
  * @param {String} [params.token] - Anonymous cart token
- * @return {Object} - An anonymous cart.
+ * @return {Promise<Object>|undefined} - A Cart document, if one is found
  */
 export default async function anonymousCartByCartId(context, { cartId, token } = {}) {
   const { collections } = context;

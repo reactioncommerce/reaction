@@ -255,6 +255,9 @@ type CatalogProductVariant implements CatalogProductOrVariant & Node {
   "The quantity value below which `isLowQuantity` should be true"
   lowInventoryWarningThreshold: Int
 
+  "All media for this variant / option"
+  media: [ImageInfo]
+
   "Arbitrary additional metadata about this product"
   metafields: [Metafield]
 
@@ -275,6 +278,9 @@ type CatalogProductVariant implements CatalogProductOrVariant & Node {
 
   "Price and related information, per currency"
   pricing: [ProductPricingInfo]!
+
+  "The primary image of this variant / option"
+  primaryImage: ImageInfo
 
   "The shop to which this product variant belongs"
   shop: Shop!

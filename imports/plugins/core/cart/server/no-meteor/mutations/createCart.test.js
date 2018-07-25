@@ -33,6 +33,9 @@ const items = [{
 }];
 
 test("creates an anonymous cart if no user is logged in", async () => {
+  const originalAccountId = mockContext.accountId;
+  mockContext.accountId = null;
+
   mockContext.collections.Catalog.findOne.mockReturnValueOnce(Promise.resolve({
     _id: "catalogId",
     product: {
@@ -106,6 +109,8 @@ test("creates an anonymous cart if no user is logged in", async () => {
     minOrderQuantityFailures: [],
     token: jasmine.any(String)
   });
+
+  mockContext.accountId = originalAccountId;
 });
 
 test("creates an account cart if logged in");
