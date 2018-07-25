@@ -29,3 +29,4 @@ import "./28_add_hash_to_products";
 import "./29_default_parcel_size";
 import "./30_cart_schema_changes";
 import "./31_order_schema_changes";
+import "./32_publish_all_existing_visible_products";

@@ -94,7 +94,10 @@ Tracker.autorun(() => {
 });
 
 Tracker.autorun(() => {
-  if (cartSubCreated.get() && Subscriptions.Cart.ready()) {
+  // Need to wait until we have a user ID because createCart calls mergeCart which requires logged in user.
+  // Without this, we'll get errors right after logout.
+  const userId = Meteor.userId();
+  if (userId && cartSubCreated.get() && Subscriptions.Cart.ready()) {
     const cartCount = Cart.find({}).count();
     const sessionId = Session.get("sessionId");
     if (cartCount === 0 && sessionId) {

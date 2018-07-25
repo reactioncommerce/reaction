@@ -132,12 +132,14 @@ export const SocialMetadata = new SimpleSchema({
  * @property {Boolean} isTaxable required, default value: `false`
  * @property {Number} length optional, default value: `0`
  * @property {Number} lowInventoryWarningThreshold optional, default value: `0`
+ * @property {ImageInfo[]} media optional
  * @property {Metafield[]} metafields optional
  * @property {Number} minOrderQuantity optional, default value: `1`
  * @property {String} optionTitle optional
  * @property {String} originCountry optional
  * @property {CatalogPriceRange} price required
  * @property {Object} pricing required
+ * @property {ImageInfo} primaryImage optional
  * @property {String} shopId required
  * @property {String} sku optional
  * @property {String} taxCode optional, default value: `"0000"`
@@ -209,6 +211,14 @@ export const VariantBaseSchema = new SimpleSchema({
     optional: true,
     defaultValue: 0
   },
+  "media": {
+    type: Array,
+    label: "Media",
+    optional: true
+  },
+  "media.$": {
+    type: ImageInfo
+  },
   "metafields": {
     type: Array,
     label: "Metafields",
@@ -240,6 +250,11 @@ export const VariantBaseSchema = new SimpleSchema({
     type: Object,
     blackbox: true,
     label: "Pricing"
+  },
+  "primaryImage": {
+    type: ImageInfo,
+    label: "Primary Image",
+    optional: true
   },
   "shopId": {
     type: String,
