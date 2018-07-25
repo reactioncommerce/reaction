@@ -40,8 +40,6 @@ class PublishControls extends Component {
   constructor(props) {
     super(props);
 
-    this.currentProductHash = new ReactiveVar([]);
-
     this.handleToggleShowChanges = this.handleToggleShowChanges.bind(this);
     this.handlePublishClick = this.handlePublishClick.bind(this);
   }
@@ -55,11 +53,6 @@ class PublishControls extends Component {
     this.setState({
       isHashUpdating: false
     });
-  }
-
-  componentDidUpdate() {
-    // Re-calculate hash after publishing
-    this.renderHashCalculation();
   }
 
   handleToggleShowChanges() {
@@ -280,29 +273,10 @@ class PublishControls extends Component {
     );
   }
 
-  renderHashCalculation = () => {
-    const productDocument = this.props && this.props.documents && this.props.documents[0];
-
-    if (productDocument) {
-      Meteor.call("products/getpublishedProductHash", productDocument._id, (err, result) => {
-        if (err) {
-          Alerts.toast(i18next.t("admin.catalogCalculateHashError", { err: err.reason }), "error");
-        }
-        if (result) {
-          this.currentProductHash.set(result);
-        }
-      });
-    }
-    return;
-  }
 
   renderChangesNotification = () => {
     const publishedProductHash = (this.props && this.props.documents && this.props.documents[0] && this.props.documents[0].publishedProductHash) || null;
     const { isHashUpdating } = this.state;
-
-    // Calculate hash to compare
-    this.renderHashCalculation();
-    const currentProductHash = this.currentProductHash.get();
 
     const hashIndicator = classnames({
       "rui": true,
