@@ -84,10 +84,6 @@ const wrapComponent = (Comp) => (
 function composer(props, onData) {
   window.prerenderReady = false;
 
-  if (!Meteor.userId()) {
-    return;
-  }
-
   const tagSlugOrId = Reaction.Router.getParam("slug");
 
   // TODO multi-shop support - const shopIdOrSlug = Reaction.Router.getParam("shopSlug");
