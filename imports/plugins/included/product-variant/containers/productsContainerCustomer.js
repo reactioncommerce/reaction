@@ -12,13 +12,12 @@ import withPrimaryShopId from "/imports/plugins/core/graphql/lib/hocs/withPrimar
 import withTag from "/imports/plugins/core/graphql/lib/hocs/withTag";
 import ProductGridCustomer from "../components/customer/productGrid";
 
-
 const wrapComponent = (Comp) => (
   class ProductsContainerCustomer extends Component {
     static propTypes = {
+      tag: PropTypes.object,
       catalogItems: PropTypes.object,
-      fetchMore: PropTypes.func,
-      shouldShowNotFound: PropTypes.bool
+      fetchMore: PropTypes.func
     };
 
     constructor(props) {
@@ -53,9 +52,8 @@ const wrapComponent = (Comp) => (
     };
 
     render() {
-      const { shouldShowNotFound, catalogItems = {} } = this.props;
+      const { tagSlugOrId, tag, catalogItems = {} } = this.props;
       const { isLoading } = this.state;
-
       const { pageInfo = {} } = catalogItems;
       const { hasNextPage } = pageInfo;
       const products = (catalogItems.edges || []).map((edge) => edge.node.product);
@@ -63,7 +61,7 @@ const wrapComponent = (Comp) => (
       return (
         <Comp
           {...this.props}
-          showNotFound={shouldShowNotFound}
+          showNotFound={!!(tagSlugOrId && tag === null)}
           canLoadMoreProducts={hasNextPage}
           isLoading={isLoading}
           loadProducts={this.handleLoadProducts}
@@ -78,8 +76,7 @@ const wrapComponent = (Comp) => (
 /**
  * @name composer
  * @private
- * @summary Sets up tagSlugOrId prop that is passed to withTag GraphQL HOC,
- *  unless tag not found, in which case sets skips GraphQL HOCs and shows not found view
+ * @summary Loads tag slug or _id from browser and passes it to GraphQL HOCs
  * @param {Object} props - Props passed down from parent components
  * @param {Function} onData - Callback to execute with props
  * @returns {undefined}
@@ -92,23 +89,9 @@ function composer(props, onData) {
   }
 
   const tagSlugOrId = Reaction.Router.getParam("slug");
-  if (tagSlugOrId) {
-    const tag = Tags.findOne({ slug: tagSlugOrId }) || Tags.findOne({ _id: tagSlugOrId });
-    if (!tag) {
-      onData(null, {
-        shouldShowNotFound: true,
-        // Skip loading GraphQL data via HOCs (withPrimaryShopId, withTag, withCatalogItems, etc),
-        // since we are going to render the 404 view
-        shouldSkipGraphql: true
-      });
-      return;
-    }
-  }
 
   // TODO multi-shop support - const shopIdOrSlug = Reaction.Router.getParam("shopSlug");
   // Currently no way to get a shop's graphql ID by mongo _id or slug
-
-  // TODO graphql custom tag sort - $sort: { [`product.positions.${tagIdForPosition}.position`]: 1 }
 
   // TODO graphql title query support - const queryString = Reaction.Router.current().query;
 

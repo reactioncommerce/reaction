@@ -26,9 +26,15 @@ export default (Component) => (
             if (loading) return null;
 
             const { tag } = data;
+            const props = { ...this.props, tag };
+
+            if (tag === null) {
+              // Tag not found, skip any other GraphQL HOCs that rely on data from this one
+              props.shouldSkipGraphql = true;
+            }
 
             return (
-              <Component {...this.props} tag={tag} />
+              <Component {...props} />
             );
           }}
         </Query>
