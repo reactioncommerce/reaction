@@ -41,7 +41,10 @@ export default function generateSitemapsJob() {
     workTimeout: 180 * 1000
   }, (job, callback) => {
     Logger.debug(`Processing ${jobId} job`);
-    generateSitemaps();
+
+    const { notifyUserId = "" } = job.data;
+    generateSitemaps({ notifyUserId });
+
     const doneMessage = `${jobId} job done`;
     Logger.debug(doneMessage);
     job.done(doneMessage, { repeatId: true });

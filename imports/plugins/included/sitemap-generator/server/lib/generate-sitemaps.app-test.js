@@ -27,7 +27,7 @@ describe("generateSitemaps", () => {
   });
 
   it("should throw not-found error if invalid shopId is passed", () => {
-    expect(() => generateSitemaps(["FAKE_SHOP_ID"])).to.throw(Meteor.Error, /not-found/);
+    expect(() => generateSitemaps({ shopIds: ["FAKE_SHOP_ID"] })).to.throw(Meteor.Error, /not-found/);
   });
 
   it("should generate the correct number of sitemap documents", () => {
@@ -37,7 +37,7 @@ describe("generateSitemaps", () => {
     Factory.create("tag", { shopId });
     Factory.create("product", { shopId });
 
-    generateSitemaps([], 1); // 1 URL per sitemap
+    generateSitemaps({ urlsPerSitemap: 1 }); // 1 URL per sitemap
 
     /**
      * At this point, we should have the following sitemaps:
@@ -58,7 +58,7 @@ describe("generateSitemaps", () => {
 
     Factory.create("product", { shopId });
 
-    generateSitemaps([], 1); // 1 URL per sitemap
+    generateSitemaps({ urlsPerSitemap: 1 }); // 1 URL per sitemap
 
     const sitemap = Sitemaps.findOne({});
     expect(sitemap).to.be.an("object");
@@ -75,7 +75,7 @@ describe("generateSitemaps", () => {
     Factory.create("tag", { shopId, isVisible: false, isDeleted: true });
     Factory.create("product", { shopId, isVisible: false, isDeleted: true });
 
-    generateSitemaps([], 1); // 1 URL per sitemap
+    generateSitemaps({ urlsPerSitemap: 1 }); // 1 URL per sitemap
 
     const sitemapsCount = Sitemaps.find({ shopId }).count();
     expect(sitemapsCount).to.equal(4);
@@ -95,7 +95,7 @@ describe("generateSitemaps", () => {
       Factory.create("tag", shopFields);
     }
 
-    generateSitemaps([], 2); // 2 URLs per sitemap
+    generateSitemaps({ urlsPerSitemap: 2 }); // 2 URLs per sitemap
 
     /**
      * @name expectLocTagCount

@@ -1,7 +1,7 @@
 import { Meteor } from "meteor/meteor";
 import Hooks from "@reactioncommerce/hooks";
 import Logger from "@reactioncommerce/logger";
-import { Products, Shops, Tags } from "/lib/collections";
+import { Notifications, Products, Shops, Tags } from "/lib/collections";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
 import { Sitemaps } from "../../lib/collections/sitemaps";
 
@@ -10,11 +10,13 @@ const DEFAULT_URLS_PER_SITEMAP = 1000;
 /**
  * @name generateSitemaps
  * @summary Generates & stores sitemap documents for one or more shops, without Meteor method context
- * @param {Array} [shopIds] - _id of shops to generate sitemaps for. Defaults to primary shop _id
- * @param {Number} [urlsPerSitemap] - Max # of URLs per sitemap
+ * @param {Object} options - Options
+ * @param {Array} [options.shopIds] - _id of shops to generate sitemaps for. Defaults to primary shop _id
+ * @param {String} [options.notifyUserId] - Optional user _id to notify via notifications UI
+ * @param {Number} [options.urlsPerSitemap] - Max # of URLs per sitemap
  * @returns {undefined}
  */
-export default function generateSitemaps(shopIds = [], urlsPerSitemap = DEFAULT_URLS_PER_SITEMAP) {
+export default function generateSitemaps({ shopIds = [], notifyUserId = "", urlsPerSitemap = DEFAULT_URLS_PER_SITEMAP }) {
   Logger.debug("Generating sitemaps");
   const timeStart = new Date();
 
@@ -27,6 +29,17 @@ export default function generateSitemaps(shopIds = [], urlsPerSitemap = DEFAULT_
   shopIds.forEach((shopId) => {
     generateSitemapsForShop(shopId, urlsPerSitemap);
   });
+
+  // Notify user, if manually generated
+  if (notifyUserId) {
+    Notifications.insert({
+      to: notifyUserId,
+      type: "sitemapGenerated",
+      message: "Sitemap refresh has finished",
+      hasDetails: false,
+      url: Reaction.absoluteUrl()
+    });
+  }
 
   const timeEnd = new Date();
   const timeDiff = timeEnd.getTime() - timeStart.getTime();

@@ -16,5 +16,7 @@ export default function generateSitemapsMethod() {
 
   this.unblock();
 
-  new Job(Jobs, "sitemaps/generate", {}).save({ cancelRepeats: true });
+  new Job(Jobs, "sitemaps/generate", {
+    notifyUserId: this.userId
+  }).save({ cancelRepeats: true });
 }
