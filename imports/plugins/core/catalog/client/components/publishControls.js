@@ -1,8 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import classnames from "classnames";
-import { Meteor } from "meteor/meteor";
-import { ReactiveVar } from "meteor/reactive-var";
 import { Components } from "@reactioncommerce/reaction-components";
 import {
   Button,
@@ -13,7 +11,7 @@ import {
 import { Translatable } from "/imports/plugins/core/ui/client/providers";
 
 /** TMP **/
-import { i18next, Reaction } from "/client/api";
+import { Reaction } from "/client/api";
 
 class PublishControls extends Component {
   static propTypes = {
