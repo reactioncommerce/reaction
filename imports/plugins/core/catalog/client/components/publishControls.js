@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import classnames from "classnames";
@@ -275,6 +276,7 @@ class PublishControls extends Component {
 
 
   renderChangesNotification = () => {
+    const currentProductHash = (this.props && this.props.documents && this.props.documents[0] && this.props.documents[0].currentProductHash) || null;
     const publishedProductHash = (this.props && this.props.documents && this.props.documents[0] && this.props.documents[0].publishedProductHash) || null;
     const { isHashUpdating } = this.state;
 
@@ -283,8 +285,8 @@ class PublishControls extends Component {
       "hash-icon": true,
       "fa-stack": true,
       "fa-lg": true,
-      "hash-icon-visible": publishedProductHash !== currentProductHash,
-      "hash-icon-hidden": publishedProductHash === currentProductHash
+      "hash-icon-visible": currentProductHash !== publishedProductHash,
+      "hash-icon-hidden": currentProductHash === publishedProductHash
     });
 
     const primaryIcon = classnames({
