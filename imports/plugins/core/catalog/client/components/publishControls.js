@@ -164,51 +164,6 @@ class PublishControls extends Component {
     return "private";
   }
 
-  /**
-   * Getter hasChanges
-   * @return {Boolean} one or more revision has changes
-   */
-  get hasChanges() {
-    // Verify we even have any revision at all
-    if (this.hasRevisions) {
-      // Loop through all revisions to determine if they have changes
-      const diffHasActualChanges = this.props.revisions.map((revision) => {
-        // We probably do have chnages to publish
-        // Note: Sometimes "updatedAt" will cause false positives, but just incase, lets
-        // enable the publish button anyway.
-        if ((Array.isArray(revision.diff) && revision.diff.length) || revision.documentType !== "product") {
-          return true;
-        }
-
-        // If all else fails, we will disable the button
-        return false;
-      });
-
-      // If even one revision has changes we should enable the publish button
-      return diffHasActualChanges.some((element) => element === true);
-    }
-
-    // No revisions, no publishing
-    return false;
-  }
-
-  renderDeletionStatus() {
-    if (this.hasChanges) {
-      if (this.primaryRevision && this.primaryRevision.documentData.isDeleted) {
-        return (
-          <Button
-            label="Archived"
-            onClick={this.handleRestore}
-            status="danger"
-            i18nKeyLabel="app.archived"
-          />
-        );
-      }
-    }
-
-    return null;
-  }
-
   renderPublishButton() {
     const buttonProps = {};
 
@@ -386,7 +341,6 @@ class PublishControls extends Component {
   render() {
     return (
       <Components.ToolbarGroup lastChild={true}>
-        {this.renderDeletionStatus()}
         {this.renderArchiveButton()}
         {this.renderViewControls()}
         {this.renderPublishButton()}
