@@ -4,6 +4,7 @@ import { HttpLink } from 'apollo-link-http';
 import { InMemoryCache } from 'apollo-cache-inmemory';
 import { Meteor } from 'meteor/meteor';
 import { Accounts } from 'meteor/accounts-base';
+import { Reaction } from "/client/api";
 
 export const meteorAccountsLink = new ApolloLink((operation, forward) => {
   const token = Accounts._storedLoginToken();
@@ -20,7 +21,7 @@ export const meteorAccountsLink = new ApolloLink((operation, forward) => {
 
 export default function initApollo() {
   return new ApolloClient({
-    link: meteorAccountsLink.concat(new HttpLink({ uri: Meteor.absoluteUrl('graphql-alpha') })),
+    link: meteorAccountsLink.concat(new HttpLink({ uri: Reaction.absoluteUrl('graphql-alpha') })),
     cache: new InMemoryCache()
   });
 }
