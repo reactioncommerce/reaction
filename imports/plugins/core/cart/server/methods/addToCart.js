@@ -51,6 +51,9 @@ export default function addToCart(productId, variantId, quantity, additionalOpti
     items
   }, { skipPriceCheck: true }));
 
+  // Never send the hashed token to a client
+  delete updatedCart.anonymousAccessToken;
+
   return {
     cart: updatedCart,
     incorrectPriceFailures,
