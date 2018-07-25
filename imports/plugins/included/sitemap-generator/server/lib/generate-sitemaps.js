@@ -35,7 +35,7 @@ export default function generateSitemaps({ shopIds = [], notifyUserId = "", urls
     Notifications.insert({
       to: notifyUserId,
       type: "sitemapGenerated",
-      message: "Sitemap refresh has finished",
+      message: "Sitemap refresh is complete",
       hasDetails: false,
       url: Reaction.absoluteUrl()
     });
