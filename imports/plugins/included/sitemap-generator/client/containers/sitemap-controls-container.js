@@ -1,10 +1,6 @@
 import React, { Component } from "react";
-import PropTypes from "prop-types";
-import { compose } from "recompose";
-import { composeWithTracker } from "@reactioncommerce/reaction-components";
 import { Meteor } from "meteor/meteor";
 import { i18next } from "/client/api";
-import { Sitemaps } from "../../lib/collections/sitemaps";
 import SitemapControls from "../components/sitemap-controls";
 
 class SitemapControlsContainer extends Component {
