@@ -277,9 +277,9 @@ workflows:
     jobs:
       - build
       - dockerfile-lint
-      #- test-app:
-      #    requires:
-      #      - build
+      - test-app:
+          requires:
+            - build
       - test-unit:
           requires:
             - build
@@ -302,7 +302,7 @@ workflows:
       - deploy-docs:
           requires:
             - test-unit
-      #      - test-app
+            - test-app
             - docker-build
           filters:
             branches:
