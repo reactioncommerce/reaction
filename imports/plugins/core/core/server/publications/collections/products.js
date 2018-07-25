@@ -367,7 +367,7 @@ function filterCatalogItems(catalogFilters) {
   // Init default selector - Everyone can see products that fit this selector
   const baseSelector = {
     "product.isDeleted": { $ne: true }, // by default, we don't publish deleted products
-    "product.isVisible": true // by default, only lookup visible products
+    "product.isVisible": true, // by default, only lookup visible products
     "product.variants": { $ne: [] } // if no variant, then do not publish
   };
 
