@@ -20,5 +20,5 @@ fi
 
 aws s3 cp --recursive s3://${S3_ECS_DEPLOY_BUCKET}/devops .
 
-cd devops/aws/app
+cd aws/app
 ./update-app-stack.sh core-service
