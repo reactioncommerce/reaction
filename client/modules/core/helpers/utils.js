@@ -9,15 +9,15 @@ async function lazyLoadSlugify() {
   // if slugify has been loaded but the language has changed
   // to be a non latin based language then load transliteration
   if (slugify && slugify.name === "replace" && latinLangs.indexOf(lang) === -1) {
-    mod = await import("transliteration");
+    mod = await import("transliteration").default;
   } else if (slugify) {
     // if slugify/transliteration is loaded and no lang change
     return;
   } else if (latinLangs.indexOf(lang) >= 0) {
     // if the shops language use latin based chars load slugify else load transliterations's slugify
-    mod = await import("slugify");
+    mod = await import("slugify").default;
   } else {
-    mod = await import("transliteration");
+    mod = await import("transliteration").default;
   }
 
   // slugify is exported to modules.default while transliteration is exported to modules.slugify
