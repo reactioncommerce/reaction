@@ -7,6 +7,7 @@ Meteor.methods({
   "catalog/publish/products"(productIds) {
     check(productIds, [String]);
     const context = Promise.await(getGraphQLContextInMeteorMethod(this.userId));
-    return publishProductsMutation(context, productIds);
+    const result = Promise.await(publishProductsMutation(context, productIds));
+    return result;
   }
 });
