@@ -1,3 +1,4 @@
+import { Meteor } from "meteor/meteor";
 import Hooks from "@reactioncommerce/hooks";
 import Logger from "@reactioncommerce/logger";
 import { Migrations } from "meteor/percolate:migrations";
@@ -16,5 +17,13 @@ Migrations.config({
 });
 
 Hooks.Events.add("afterCoreInit", () => {
-  Migrations.migrateTo("latest");
+  const currentMigrationVersion = Migrations._getControl().version;
+  const highestAvailableVersion = Migrations._list[Migrations._list.length - 1].version;
+
+  if (currentMigrationVersion > highestAvailableVersion) {
+    Logger.warn(`You are running a Reaction version with migration version (${highestAvailableVersion}) below your currrent DB migration state (${currentMigrationVersion})`);
+    Migrations._setControl({ locked: false, version: highestAvailableVersion });
+  } else {
+    Migrations.migrateTo("latest");
+  }
 });
