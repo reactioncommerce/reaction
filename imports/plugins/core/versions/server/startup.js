@@ -21,7 +21,7 @@ Hooks.Events.add("afterCoreInit", () => {
   const highestAvailableVersion = Migrations._list[Migrations._list.length - 1].version;
 
   if (currentMigrationVersion > highestAvailableVersion) {
-    Logger.warn(`You are running a Reaction version with migration version (${highestAvailableVersion}) below your currrent DB migration state (${currentMigrationVersion})`);
+    Logger.warn(`You are running a Reaction install with migration version (${highestAvailableVersion}) below your current DB migration state (${currentMigrationVersion})`);
     Migrations._setControl({ locked: false, version: highestAvailableVersion });
   } else if (!Meteor.isTest) {
     Migrations.migrateTo("latest");
