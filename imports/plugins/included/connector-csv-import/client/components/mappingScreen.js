@@ -2,9 +2,12 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { getFieldOptionsForCollection } from "@reactioncommerce/reaction-import-connectors";
 import { Components } from "@reactioncommerce/reaction-components";
+import { FileRecord } from "@reactioncommerce/file-collections";
 import Button from "@reactioncommerce/components/Button/v1";
 import { Meteor } from "meteor/meteor";
+import { Logger } from "/client/api";
 import FieldMatchingColumn from "./fieldMatchingColumn";
+import { ImportFiles } from "/imports/plugins/core/connectors-new/client";
 
 
 class MappingScreen extends Component {
@@ -19,6 +22,7 @@ class MappingScreen extends Component {
       errorMessages: [],
       fieldOptions,
       fieldMappingByUser: selectedMapping,
+      isSubmitting: false,
       newMappingName: "",
       updateMapping: false
     };
@@ -61,14 +65,16 @@ class MappingScreen extends Component {
   }
 
   handleDoneButtonClick = () => {
+    this.setState({ isSubmitting: true });
     const errorMessages = this.validateMapping();
     if (errorMessages.length > 0) {
       this.setState({ errorMessages });
+      this.setState({ isSubmitting: false });
       return;
     }
 
     const { newMappingName, updateMapping } = this.state;
-    const { importJob } = this.props;
+    const { csvFile, importJob } = this.props;
 
     const finalMapping = this.finalizeMapping();
     if (importJob.importMapping === "create") {
@@ -76,7 +82,21 @@ class MappingScreen extends Component {
     } else {
       Meteor.call("importJobs/updateMapping", importJob._id, updateMapping, finalMapping);
     }
-    this.props.onChangeActiveScreen("success");
+    const fileRecord = FileRecord.fromFile(csvFile);
+    fileRecord.metadata = { importJobId: importJob._id };
+    const promise = fileRecord.upload({ endpoint: "/imports/uploads" })
+      .then(() => ImportFiles.insert(fileRecord))
+      .catch((error) => {
+        throw error;
+      });
+    promise.then(() => {
+      Meteor.call("importJobs/setStatusToPending", importJob._id);
+      this.setState({ isSubmitting: false });
+      this.props.onChangeActiveScreen("success");
+      return;
+    }).catch((err) => {
+      Logger.error(err);
+    });
   }
 
   handleBackButtonClick = () => {
@@ -159,6 +179,7 @@ class MappingScreen extends Component {
   }
 
   render() {
+    const { isSubmitting } = this.state;
     return (
       <div>
         <div className="row">
@@ -178,6 +199,7 @@ class MappingScreen extends Component {
             <Button
               className="btn btn-primary"
               bezelStyle="solid"
+              isWaiting={isSubmitting}
               onClick={this.handleDoneButtonClick}
             >
               Done
@@ -190,6 +212,7 @@ class MappingScreen extends Component {
 }
 
 MappingScreen.propTypes = {
+  csvFile: PropTypes.object,
   header: PropTypes.array,
   importJob: PropTypes.object,
   onChangeActiveScreen: PropTypes.func,

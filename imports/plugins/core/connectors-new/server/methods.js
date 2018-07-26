@@ -1,6 +1,6 @@
 import { Meteor } from "meteor/meteor";
 import { check } from "meteor/check";
-import { MeteorImportFiles } from "./importFileCollections";
+import { ImportFiles } from "./importFileCollections";
 
 /**
  * Media-related Meteor methods
@@ -17,14 +17,8 @@ import { MeteorImportFiles } from "./importFileCollections";
  */
 export async function insertImportFile(fileRecord) {
   check(fileRecord, Object);
-  const importFileId = await MeteorImportFiles.insert({
-    ...fileRecord,
-    metadata: {
-      ...fileRecord.metadata,
-      workflow: "published"
-    }
-  });
-
+  console.log(fileRecord);
+  const importFileId = await ImportFiles.insert(fileRecord);
   return importFileId;
 }
 

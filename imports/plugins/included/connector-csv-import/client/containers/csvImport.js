@@ -41,6 +41,7 @@ function composer(props, onData) {
     const userId = Meteor.userId();
     const impCollOptions = getImportableCollectionsOptions();
     const shopId = Reaction.getShopId();
+    const importJobs = ImportJobs.find({ shopId }).fetch();
     const importJob = ImportJobs.findOne({ userId, shopId, status: "New" }) || {};
     let importMappings = [];
     if (importJob.collection) {
@@ -57,6 +58,7 @@ function composer(props, onData) {
     return onData(null, {
       impCollOptions,
       importJob,
+      importJobs,
       importMappings,
       selectedMapping
     });

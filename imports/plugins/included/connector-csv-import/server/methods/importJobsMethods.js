@@ -118,6 +118,11 @@ export const methods = {
       ImportMappings.update(importJob.importMapping, { $set: { mapping } });
     }
     ImportJobs.update(importJobId, { $set: { mapping } });
+  },
+
+  "importJobs/setStatusToPending"(importJobId) {
+    check(importJobId, String);
+    ImportJobs.update(importJobId, { $set: { status: "pending", uploadedAt: new Date() } });
   }
 
 };
