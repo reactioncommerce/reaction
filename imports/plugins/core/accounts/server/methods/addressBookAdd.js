@@ -21,5 +21,6 @@ export default function addressBookAdd(address, accountUserId) {
   this.unblock();
 
   const context = Promise.await(getGraphQLContextInMeteorMethod(Meteor.userId()));
-  return addressBookAddMutation(context, address, accountUserId);
+  const result = Promise.await(addressBookAddMutation(context, address, accountUserId));
+  return result;
 }
