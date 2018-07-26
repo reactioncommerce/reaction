@@ -299,6 +299,9 @@ workflows:
       - deploy-to-ecs:
           requires:
             - docker-push
+          filters:
+            branches:
+              only: /^release-1\.14\.\d+$/
       - deploy-docs:
           requires:
             - test-unit
