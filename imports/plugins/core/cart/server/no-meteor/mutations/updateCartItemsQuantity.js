@@ -1,6 +1,5 @@
 import Hooks from "@reactioncommerce/hooks";
 import SimpleSchema from "simpl-schema";
-import { Meteor } from "meteor/meteor";
 import ReactionError from "/imports/plugins/core/graphql/server/no-meteor/ReactionError";
 import hashLoginToken from "/imports/plugins/core/accounts/server/no-meteor/util/hashLoginToken";
 
