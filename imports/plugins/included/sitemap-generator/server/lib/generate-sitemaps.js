@@ -37,7 +37,7 @@ export default function generateSitemaps({ shopIds = [], notifyUserId = "", urls
       type: "sitemapGenerated",
       message: "Sitemap refresh is complete",
       hasDetails: false,
-      url: Reaction.absoluteUrl()
+      url: `/sitemap.xml`
     });
   }
 
