@@ -1,5 +1,6 @@
 import { Meteor } from "meteor/meteor";
 import { Match, check } from "meteor/check";
+import ReactionError from "/imports/plugins/core/graphql/server/no-meteor/ReactionError";
 import { Cart } from "/lib/collections";
 import { Discounts } from "../../lib/collections";
 import Reaction from "../api";
@@ -22,7 +23,7 @@ export const methods = {
 
     // check permissions to delete
     if (!Reaction.hasPermission("discounts")) {
-      throw new Meteor.Error("access-denied", "Access Denied");
+      throw new ReactionError("access-denied", "Access Denied");
     }
 
     return Discounts.remove({ _id: discountId });
@@ -63,7 +64,7 @@ export const methods = {
       _id: String,
       modifier: Object // actual schema validation happens during update below
     });
-    if (!Reaction.hasPermission("discount-rates")) throw new Meteor.Error("access-denied", "Access Denied");
+    if (!Reaction.hasPermission("discount-rates")) throw new ReactionError("access-denied", "Access Denied");
     const { _id, modifier } = details;
     return Discounts.update(_id, modifier);
   },
