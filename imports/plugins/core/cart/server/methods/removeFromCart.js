@@ -1,7 +1,7 @@
 import Logger from "@reactioncommerce/logger";
-import { Meteor } from "meteor/meteor";
 import { check, Match } from "meteor/check";
 import getCart from "/imports/plugins/core/cart/both/util/getCart";
+import ReactionError from "/imports/plugins/core/graphql/server/no-meteor/ReactionError";
 import getGraphQLContextInMeteorMethod from "/imports/plugins/core/graphql/server/getGraphQLContextInMeteorMethod";
 import updateCartItemsQuantity from "../no-meteor/mutations/updateCartItemsQuantity";
 
@@ -28,7 +28,7 @@ export default function removeFromCart(cartItemId, quantityDecrement) {
   // extra check of item exists
   if (!cartItem) {
     Logger.error(`Unable to find an item: ${cartItemId} within the cart: ${cart._id}`);
-    throw new Meteor.Error("not-found", "Unable to find an item with such ID in cart.");
+    throw new ReactionError("not-found", "Unable to find an item with such ID in cart.");
   }
 
   let quantity;
