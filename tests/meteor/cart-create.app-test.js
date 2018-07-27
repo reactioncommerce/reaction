@@ -4,6 +4,7 @@ import Random from "@reactioncommerce/random";
 import { Meteor } from "meteor/meteor";
 import { check, Match } from "meteor/check";
 import { Factory } from "meteor/dburles:factory";
+import ReactionError from "/imports/plugins/core/graphql/server/no-meteor/ReactionError";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
 import { Cart, Products, Accounts } from "/lib/collections";
 import { expect } from "meteor/practicalmeteor:chai";
@@ -145,7 +146,7 @@ describe("Add/Create cart methods", function () {
       function addToCartFunc() {
         return Meteor.call("cart/addToCart", productId, variantId, quantity);
       }
-      expect(addToCartFunc).to.throw(Meteor.Error, /Cart not found/);
+      expect(addToCartFunc).to.throw(ReactionError, /Cart not found/);
       return done();
     });
 
@@ -154,7 +155,7 @@ describe("Add/Create cart methods", function () {
       function addToCartFunc() {
         return Meteor.call("cart/addToCart", "fakeProductId", variantId, quantity);
       }
-      expect(addToCartFunc).to.throw(Meteor.Error, "Product with such id was not found [not-found]");
+      expect(addToCartFunc).to.throw(ReactionError, "Product with such id was not found [not-found]");
       return done();
     });
   });
@@ -186,7 +187,7 @@ describe("Add/Create cart methods", function () {
       function copyCartFunc() {
         return Meteor.call("cart/copyCartToOrder", cart._id);
       }
-      expect(copyCartFunc).to.throw(Meteor.Error, /Access Denied/);
+      expect(copyCartFunc).to.throw(ReactionError, /Access Denied/);
       return done();
     });
 
@@ -210,7 +211,7 @@ describe("Add/Create cart methods", function () {
       function copyCartFunc() {
         return Meteor.call("cart/copyCartToOrder", cartId);
       }
-      expect(copyCartFunc).to.throw(Meteor.Error, /Missing cart items/);
+      expect(copyCartFunc).to.throw(ReactionError, /Missing cart items/);
       return done();
     });
 
@@ -223,7 +224,7 @@ describe("Add/Create cart methods", function () {
       function copyCartFunc() {
         return Meteor.call("cart/copyCartToOrder", cart._id);
       }
-      expect(copyCartFunc).to.throw(Meteor.Error, /Invalid request/);
+      expect(copyCartFunc).to.throw(ReactionError, /Invalid request/);
       expect(insertStub).to.have.been.called;
     });
 
@@ -241,7 +242,7 @@ describe("Add/Create cart methods", function () {
         return Meteor.call("cart/copyCartToOrder", cart._id);
       }
 
-      expect(copyCartFunc).to.throw(Meteor.Error, /Invalid request/);
+      expect(copyCartFunc).to.throw(ReactionError, /Invalid request/);
       expect(insertStub).to.have.been.called;
       return done();
     });

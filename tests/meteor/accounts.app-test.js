@@ -10,6 +10,7 @@ import { Accounts as MeteorAccounts } from "meteor/accounts-base";
 import { expect } from "meteor/practicalmeteor:chai";
 import { sinon } from "meteor/practicalmeteor:sinon";
 import { SSR } from "meteor/meteorhacks:ssr";
+import ReactionError from "/imports/plugins/core/graphql/server/no-meteor/ReactionError";
 import { Accounts, Groups, Packages, Orders, Products, Shops, Cart } from "/lib/collections";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
 import { getShop, getAddress } from "/imports/plugins/core/core/server/fixtures/shops";
@@ -156,7 +157,7 @@ describe("Account Meteor method ", function () {
           "accounts/addressBookAdd", getAddress(),
           account2.userId
         );
-      }).to.throw(Meteor.Error, /Access denied/);
+      }).to.throw(ReactionError, /Access denied/);
       expect(updateAccountSpy).to.not.have.been.called;
       expect(upsertAccountSpy).to.not.have.been.called;
     });
@@ -267,7 +268,7 @@ describe("Account Meteor method ", function () {
       const accountUpdateSpy = sandbox.spy(Accounts, "update");
 
       expect(() => Meteor.call("accounts/addressBookUpdate", getAddress(), account2._id))
-        .to.throw(Meteor.Error, /Access denied/);
+        .to.throw(ReactionError, /Access denied/);
 
       expect(accountUpdateSpy).to.not.have.been.called;
     });
@@ -427,7 +428,7 @@ describe("Account Meteor method ", function () {
       expect(() => Meteor.call(
         "accounts/addressBookRemove",
         address2._id, account2.userId
-      )).to.throw(Meteor.Error, /Access denied/);
+      )).to.throw(ReactionError, /Access denied/);
       expect(accountUpdateSpy).to.not.have.been.called;
     });
 
@@ -443,7 +444,7 @@ describe("Account Meteor method ", function () {
 
     it("should throw an error if address does not exist to remove", function () {
       expect(() => Meteor.call("accounts/addressBookRemove", "asdasdasd"))
-        .to.throw(Meteor.Error, /Unable to remove address from account/);
+        .to.throw(ReactionError, /Unable to remove address from account/);
     });
   });
 
@@ -487,14 +488,14 @@ describe("Account Meteor method ", function () {
       sandbox.stub(Logger, "error") // since we expect this, let's keep the output clean
         .withArgs(sinon.match(/reaction-accounts permissions/));
 
-      expect(callDescribed).to.throw(Meteor.Error, /Access denied/);
+      expect(callDescribed).to.throw(ReactionError, /Access denied/);
       expect(createUserSpy).to.not.have.been.called;
     });
 
     it("ensures the user has invite permission for this group/shop", function () {
       stubPermissioning({ hasPermission: true, canInviteToGroup: false });
 
-      expect(callDescribed).to.throw(Meteor.Error, /Cannot invite/);
+      expect(callDescribed).to.throw(ReactionError, /Cannot invite/);
       expect(createUserSpy).to.not.have.been.called;
     });
 
@@ -502,7 +503,7 @@ describe("Account Meteor method ", function () {
       group.slug = "owner";
       stubPermissioning({ hasPermission: true, canInviteToGroup: true });
 
-      expect(callDescribed).to.throw(Meteor.Error, /invite owner/);
+      expect(callDescribed).to.throw(ReactionError, /invite owner/);
       expect(createUserSpy).to.not.have.been.called;
     });
 
@@ -583,7 +584,7 @@ describe("Account Meteor method ", function () {
     it("requires admin permission", function () {
       stubPermissioning({ hasPermission: false });
 
-      expect(callDescribed).to.throw(Meteor.Error, /Access denied/);
+      expect(callDescribed).to.throw(ReactionError, /Access denied/);
       expect(createUserSpy).to.not.have.been.called;
     });
 

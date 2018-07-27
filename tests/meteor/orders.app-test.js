@@ -6,6 +6,7 @@ import { check, Match } from "meteor/check";
 import { Factory } from "meteor/dburles:factory";
 import { expect } from "meteor/practicalmeteor:chai";
 import { sinon } from "meteor/practicalmeteor:sinon";
+import ReactionError from "/imports/plugins/core/graphql/server/no-meteor/ReactionError";
 import Fixtures from "/imports/plugins/core/core/server/fixtures";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
 import { getShop } from "/imports/plugins/core/core/server/fixtures/shops";
@@ -101,7 +102,7 @@ describe("orders test", function () {
       function cancelOrder() {
         return Meteor.call("orders/cancelOrder", order, returnToStock);
       }
-      expect(cancelOrder).to.throw(Meteor.Error, /Access Denied/);
+      expect(cancelOrder).to.throw(ReactionError, /Access Denied/);
     });
 
     it("should increase inventory with number of items canceled when returnToStock option is selected", function () {
@@ -185,7 +186,7 @@ describe("orders test", function () {
       function shipmentPicked() {
         return Meteor.call("orders/shipmentPicked", order, shipment);
       }
-      expect(shipmentPicked).to.throw(Meteor.Error, /Access Denied/);
+      expect(shipmentPicked).to.throw(ReactionError, /Access Denied/);
     });
 
     it("should update the order item workflow status to coreOrderItemWorkflow/picked", function () {
@@ -216,7 +217,7 @@ describe("orders test", function () {
       function shipmentPacked() {
         return Meteor.call("orders/shipmentPacked", order, shipment);
       }
-      expect(shipmentPacked).to.throw(Meteor.Error, /Access Denied/);
+      expect(shipmentPacked).to.throw(ReactionError, /Access Denied/);
     });
 
     it("should update the order item workflow status to coreOrderItemWorkflow/packed", function () {
@@ -247,7 +248,7 @@ describe("orders test", function () {
       function shipmentLabeled() {
         return Meteor.call("orders/shipmentLabeled", order, shipment);
       }
-      expect(shipmentLabeled).to.throw(Meteor.Error, /Access Denied/);
+      expect(shipmentLabeled).to.throw(ReactionError, /Access Denied/);
     });
 
     it("should update the order item workflow status to coreOrderItemWorkflow/labeled", function () {
@@ -277,7 +278,7 @@ describe("orders test", function () {
       function makeAdjustmentsToInvoice() {
         return Meteor.call("orders/makeAdjustmentsToInvoice", order);
       }
-      expect(makeAdjustmentsToInvoice).to.throw(Meteor.Error, /Access Denied/);
+      expect(makeAdjustmentsToInvoice).to.throw(ReactionError, /Access Denied/);
     });
 
     it("should make adjustment to the invoice", function () {
@@ -296,7 +297,7 @@ describe("orders test", function () {
       function approvePayment() {
         return Meteor.call("orders/approvePayment", order);
       }
-      expect(approvePayment).to.throw(Meteor.Error, /Access Denied/);
+      expect(approvePayment).to.throw(ReactionError, /Access Denied/);
     });
 
     it("should approve payment", function () {
@@ -325,7 +326,7 @@ describe("orders test", function () {
       function shipmentShipped() {
         return Meteor.call("orders/shipmentShipped", order, shipment);
       }
-      expect(shipmentShipped).to.throw(Meteor.Error, /Access Denied/);
+      expect(shipmentShipped).to.throw(ReactionError, /Access Denied/);
     });
 
     it("should update the order item workflow status to coreOrderItemWorkflow/completed", function () {
@@ -378,7 +379,7 @@ describe("orders test", function () {
       function shipmentDelivered() {
         return Meteor.call("orders/shipmentDelivered", order);
       }
-      expect(shipmentDelivered).to.throw(Meteor.Error, /Access Denied/);
+      expect(shipmentDelivered).to.throw(ReactionError, /Access Denied/);
     });
 
     it("should update the order item workflow status to coreOrderItemWorkflow/completed", function () {
@@ -412,7 +413,7 @@ describe("orders test", function () {
       function sendNotification() {
         return Meteor.call("orders/sendNotification", order._id);
       }
-      expect(sendNotification).to.throw(Meteor.error, /Access Denied/);
+      expect(sendNotification).to.throw(ReactionError, /Access Denied/);
     });
 
     it("should send email notification", function () {
@@ -436,7 +437,7 @@ describe("orders test", function () {
         const trackingValue = "2340FLKD104309";
         return Meteor.call("orders/updateShipmentTracking", order, shipment, trackingValue);
       }
-      expect(updateShipmentTracking).to.throw(Meteor.error, /Access Denied/);
+      expect(updateShipmentTracking).to.throw(ReactionError, /Access Denied/);
     });
 
     it("should update the order tracking value", function () {
@@ -457,7 +458,7 @@ describe("orders test", function () {
         const email = "sample@email.com";
         return Meteor.call("orders/addOrderEmail", order.cartId, email);
       }
-      expect(addOrderEmail).to.throw(Meteor.error, /Access Denied. You are not connected./);
+      expect(addOrderEmail).to.throw(ReactionError, /Access Denied. You are not connected./);
     });
 
     it("should add the email to the order", function () {
@@ -477,7 +478,7 @@ describe("orders test", function () {
         const trackingValue = "65TFYTGFCHCUJVR66";
         return Meteor.call("orders/updateHistory", order._id, "Tracking added", trackingValue);
       }
-      expect(updateHistory).to.throw(Meteor.error, /Access Denied/);
+      expect(updateHistory).to.throw(ReactionError, /Access Denied/);
     });
 
     it("should update the order history for the item", function () {
@@ -513,7 +514,7 @@ describe("orders test", function () {
       function capturePayments() {
         return Meteor.call("orders/capturePayments", order._id);
       }
-      expect(capturePayments).to.throw(Meteor.error, /Access Denied/);
+      expect(capturePayments).to.throw(ReactionError, /Access Denied/);
     });
 
     it("should update the order item workflow to coreOrderItemWorkflow/captured", function () {
@@ -582,7 +583,7 @@ describe("orders test", function () {
         const amount = 5.20;
         return Meteor.call("orders/refunds/create", order._id, billing.paymentMethod, amount);
       }
-      expect(refundsCreate).to.throw(Meteor.error, /Access Denied/);
+      expect(refundsCreate).to.throw(ReactionError, /Access Denied/);
     });
 
     it("should update the order as refunded", function () {
@@ -615,7 +616,7 @@ describe("orders test", function () {
         };
         return Meteor.call("orders/refunds/refundItems", order._id, billing.paymentMethod, refundItemsInfo);
       }
-      expect(refundItems).to.throw(Meteor.error, /Access Denied/);
+      expect(refundItems).to.throw(ReactionError, /Access Denied/);
     });
 
     it("should update the order as partially refunded if not all of items in the order are refunded", function () {
