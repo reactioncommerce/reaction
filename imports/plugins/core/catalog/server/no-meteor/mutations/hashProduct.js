@@ -1,5 +1,6 @@
 import hash from "object-hash";
 import createCatalogProduct from "../utils/createCatalogProduct";
+import getTopLevelProduct from "../utils/getTopLevelProduct";
 
 /**
  * @method createProductHash
@@ -52,23 +53,32 @@ export async function createProductHash(productToConvert, collections) {
  * @memberof Catalog
  * @param {String} productId - A productId
  * @param {Object} collections - Raw mongo collections
+ * @param {Boolean} isPublished - Is product published to catalog
  * @return {Object} updated product if successful, original product if unsuccessful
  */
-export default async function hashProduct(productId, collections) {
+export default async function hashProduct(productId, collections, isPublished = true) {
   const { Products } = collections;
 
-  const product = await Products.findOne({ _id: productId });
+  const product = await getTopLevelProduct(productId, collections);
 
   const productHash = await createProductHash(product, collections);
 
   // Insert/update product document with hash field
+  const hashFields = {
+    currentProductHash: productHash
+  };
+
+  if (isPublished) {
+    hashFields.publishedProductHash = productHash;
+  }
+
   const result = await Products.updateOne(
     {
-      _id: productId
+      _id: product._id
     },
     {
       $set: {
-        publishedProductHash: productHash,
+        ...hashFields,
         updatedAt: new Date()
       }
     }
@@ -76,7 +86,7 @@ export default async function hashProduct(productId, collections) {
 
   if (result && result.result && result.result.ok === 1) {
     // If product was updated, get updated product from database
-    const updatedProduct = await Products.findOne({ _id: productId });
+    const updatedProduct = await Products.findOne({ _id: product._id });
 
     return updatedProduct;
   }
