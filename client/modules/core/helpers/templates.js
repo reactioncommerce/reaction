@@ -6,6 +6,7 @@ import { Accounts } from "meteor/accounts-base";
 import { Spacebars } from "meteor/spacebars";
 import { ReactiveVar } from "meteor/reactive-var";
 import { Roles } from "meteor/alanning:roles";
+import ReactionError from "/imports/plugins/core/graphql/server/no-meteor/ReactionError";
 import { i18next, Reaction } from "/client/api";
 import * as Collections from "/lib/collections";
 import * as Schemas from "/lib/collections/schemas";
@@ -231,7 +232,7 @@ Template.registerHelper("condition", (v1, operator, v2) => {
     case "gte":
       return v1 >= v2;
     default:
-      throw new Meteor.Error("undefined-operator", `Undefined conditional operator ${operator}`);
+      throw new ReactionError("undefined-operator", `Undefined conditional operator ${operator}`);
   }
 });
 
