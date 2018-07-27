@@ -355,7 +355,7 @@ function createProduct(props = null) {
  * @param {Object} validation - simple schema validation options
  * @return {String} _id of updated document
  */
-async function updateCatalogProduct(userId, selector, modifier, validation) {
+function updateCatalogProduct(userId, selector, modifier, validation) {
   const product = Products.findOne(selector);
 
   Hooks.Events.run("beforeUpdateCatalogProduct", product, {
@@ -366,7 +366,7 @@ async function updateCatalogProduct(userId, selector, modifier, validation) {
 
   const result = Products.update(selector, modifier, validation);
 
-  await hashProduct(product._id, rawCollections, false);
+  hashProduct(product._id, rawCollections, false);
 
   Hooks.Events.run("afterUpdateCatalogProduct", product._id, { modifier });
 
