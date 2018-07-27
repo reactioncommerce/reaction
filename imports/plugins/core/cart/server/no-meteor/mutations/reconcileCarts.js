@@ -1,4 +1,4 @@
-import { Meteor } from "meteor/meteor";
+import ReactionError from "/imports/plugins/core/graphql/server/no-meteor/ReactionError";
 import hashLoginToken from "/imports/plugins/core/accounts/server/no-meteor/util/hashLoginToken";
 import convertAnonymousCartToNewAccountCart from "./convertAnonymousCartToNewAccountCart";
 import reconcileCartsKeepAccountCart from "./reconcileCartsKeepAccountCart";
@@ -25,10 +25,10 @@ export default async function reconcileCarts(context, input) {
   const { Cart } = collections;
   const { anonymousCartId, anonymousCartToken, mode = "merge", shopId } = input;
 
-  if (!accountId) throw new Meteor.Error("access-denied", "Access Denied");
-  if (!anonymousCartId) throw new Meteor.Error("invalid-param", "anonymousCartId is required");
-  if (!anonymousCartToken) throw new Meteor.Error("invalid-param", "anonymousCartToken is required");
-  if (!shopId) throw new Meteor.Error("invalid-param", "shopId is required");
+  if (!accountId) throw new ReactionError("access-denied", "Access Denied");
+  if (!anonymousCartId) throw new ReactionError("invalid-param", "anonymousCartId is required");
+  if (!anonymousCartToken) throw new ReactionError("invalid-param", "anonymousCartToken is required");
+  if (!shopId) throw new ReactionError("invalid-param", "shopId is required");
 
   const accountCartSelector = { accountId, shopId };
   const anonymousCartSelector = { _id: anonymousCartId, shopId, anonymousAccessToken: hashLoginToken(anonymousCartToken) };
@@ -38,7 +38,7 @@ export default async function reconcileCarts(context, input) {
   }).toArray();
 
   const anonymousCart = carts.find((cart) => cart._id === anonymousCartId);
-  if (!anonymousCart) throw new Meteor.Error("not-found", "Anonymous cart not found");
+  if (!anonymousCart) throw new ReactionError("not-found", "Anonymous cart not found");
 
   const accountCart = carts.find((cart) => cart.accountId === accountId);
 
@@ -61,7 +61,7 @@ export default async function reconcileCarts(context, input) {
         };
 
       default:
-        throw new Meteor.Error("invalid-param", "mode must be keepAccountCart, keepAnonymousCart, or merge");
+        throw new ReactionError("invalid-param", "mode must be keepAccountCart, keepAnonymousCart, or merge");
     }
   }
 

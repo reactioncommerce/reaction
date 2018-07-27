@@ -1,4 +1,4 @@
-import { Meteor } from "meteor/meteor";
+import ReactionError from "/imports/plugins/core/graphql/server/no-meteor/ReactionError";
 import { Cart as CartSchema } from "/imports/collections/schemas";
 
 /**
@@ -31,10 +31,10 @@ export default async function reconcileCartsKeepAnonymousCart({
   CartSchema.validate(modifier, { modifier: true });
 
   const { modifiedCount } = await Cart.updateOne(accountCartSelector, modifier);
-  if (modifiedCount === 0) throw new Meteor.Error("server-error", "Unable to update cart");
+  if (modifiedCount === 0) throw new ReactionError("server-error", "Unable to update cart");
 
   const { deletedCount } = await Cart.deleteOne(anonymousCartSelector);
-  if (deletedCount === 0) throw new Meteor.Error("server-error", "Unable to delete anonymous cart");
+  if (deletedCount === 0) throw new ReactionError("server-error", "Unable to delete anonymous cart");
 
   return {
     ...accountCart,

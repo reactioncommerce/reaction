@@ -1,6 +1,6 @@
 import Random from "@reactioncommerce/random";
 import SimpleSchema from "simpl-schema";
-import { Meteor } from "meteor/meteor";
+import ReactionError from "/imports/plugins/core/graphql/server/no-meteor/ReactionError";
 import findProductAndVariant from "/imports/plugins/core/catalog/server/no-meteor/utils/findProductAndVariant";
 
 const inputItemSchema = new SimpleSchema({
@@ -59,7 +59,7 @@ export default async function addCartItems(collections, currentItems, inputItems
 
     const variantPriceInfo = chosenVariant.pricing[price.currencyCode];
     if (!variantPriceInfo) {
-      throw new Meteor.Error("invalid-param", `This product variant does not have a price for ${price.currencyCode}`);
+      throw new ReactionError("invalid-param", `This product variant does not have a price for ${price.currencyCode}`);
     }
 
     if (options.skipPriceCheck !== true && variantPriceInfo.price !== price.amount) {
