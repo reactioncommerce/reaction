@@ -4,6 +4,7 @@ import { Meteor } from "meteor/meteor";
 import { check } from "meteor/check";
 import { Cart } from "/lib/collections";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
+import ReactionError from "/imports/plugins/core/graphql/server/no-meteor/ReactionError";
 import getCart from "/imports/plugins/core/cart/both/util/getCart";
 import hashLoginToken from "/imports/plugins/core/accounts/server/no-meteor/util/hashLoginToken";
 import getGraphQLContextInMeteorMethod from "/imports/plugins/core/graphql/server/getGraphQLContextInMeteorMethod";
@@ -38,7 +39,7 @@ export default function mergeCart(cartId, sessionId) {
       Logger.error(`mergeCart: [Access Denied] No account found with userId ${userId}`);
     }
 
-    throw new Meteor.Error("access-denied", "Access Denied");
+    throw new ReactionError("access-denied", "Access Denied");
   }
 
   const shopId = Reaction.getCartShopId();
@@ -51,7 +52,7 @@ export default function mergeCart(cartId, sessionId) {
   });
 
   if (!sessionCart) {
-    throw new Meteor.Error("not-found", `No cart found with token ${sessionId}`);
+    throw new ReactionError("not-found", `No cart found with token ${sessionId}`);
   }
 
   // Pass through to the new mutation function at this point

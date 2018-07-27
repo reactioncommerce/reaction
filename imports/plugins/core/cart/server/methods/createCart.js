@@ -3,6 +3,7 @@ import { Meteor } from "meteor/meteor";
 import { check, Match } from "meteor/check";
 import { Roles } from "meteor/alanning:roles";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
+import ReactionError from "/imports/plugins/core/graphql/server/no-meteor/ReactionError";
 import getGraphQLContextInMeteorMethod from "/imports/plugins/core/graphql/server/getGraphQLContextInMeteorMethod";
 import createCart from "../no-meteor/mutations/createCart";
 
@@ -19,7 +20,7 @@ export default function createCartMethod(sessionId) {
 
   const shopId = Reaction.getCartShopId();
   if (!shopId) {
-    throw new Meteor.Error("invalid-param", "No shop ID found");
+    throw new ReactionError("invalid-param", "No shop ID found");
   }
 
   // check if user has `anonymous` role.( this is a visitor)
@@ -27,7 +28,7 @@ export default function createCartMethod(sessionId) {
   const anonymousUser = Roles.userIsInRole(userId, "anonymous", shopId);
 
   if (anonymousUser && !sessionId) {
-    throw new Meteor.Error("invalid-param", "sessionId is required for anonymous cart creation");
+    throw new ReactionError("invalid-param", "sessionId is required for anonymous cart creation");
   }
 
   const context = Promise.await(getGraphQLContextInMeteorMethod(userId));
