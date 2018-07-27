@@ -1,5 +1,5 @@
 import Hooks from "@reactioncommerce/hooks";
-import { Meteor } from "meteor/meteor";
+import ReactionError from "/imports/plugins/core/graphql/server/no-meteor/ReactionError";
 import { Cart as CartSchema } from "/imports/collections/schemas";
 import hashLoginToken from "/imports/plugins/core/accounts/server/no-meteor/util/hashLoginToken";
 import addCartItemsUtil from "../util/addCartItems";
@@ -29,7 +29,7 @@ export default async function addCartItems(context, input, options = {}) {
   } else {
     // Anonymous cart
     if (!token) {
-      throw new Meteor.Error("not-found", "Cart not found");
+      throw new ReactionError("not-found", "Cart not found");
     }
 
     selector = { _id: cartId, anonymousAccessToken: hashLoginToken(token) };
@@ -37,7 +37,7 @@ export default async function addCartItems(context, input, options = {}) {
 
   const cart = await Cart.findOne(selector);
   if (!cart) {
-    throw new Meteor.Error("not-found", "Cart not found");
+    throw new ReactionError("not-found", "Cart not found");
   }
 
   const {
@@ -60,7 +60,7 @@ export default async function addCartItems(context, input, options = {}) {
     _id: cart._id
   }, modifier);
 
-  if (modifiedCount !== 1) throw new Meteor.Error("server-error", "Unable to update cart");
+  if (modifiedCount !== 1) throw new ReactionError("server-error", "Unable to update cart");
 
   const updatedCart = {
     ...cart,
