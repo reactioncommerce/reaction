@@ -1,6 +1,7 @@
 import Hooks from "@reactioncommerce/hooks";
 import SimpleSchema from "simpl-schema";
 import { Meteor } from "meteor/meteor";
+import ReactionError from "/imports/plugins/core/graphql/server/no-meteor/ReactionError";
 import hashLoginToken from "/imports/plugins/core/accounts/server/no-meteor/util/hashLoginToken";
 
 const inputSchema = new SimpleSchema({
@@ -46,7 +47,7 @@ export default async function updateCartItemsQuantity(context, input) {
   } else if (accountId) {
     selector.accountId = accountId;
   } else {
-    throw new Meteor.Error("invalid-param", "A token is required when updating an anonymous cart");
+    throw new ReactionError("invalid-param", "A token is required when updating an anonymous cart");
   }
 
   const modifier = { $set: {} };
@@ -64,7 +65,7 @@ export default async function updateCartItemsQuantity(context, input) {
 
   if (Object.keys(modifier.$set).length > 0) {
     const { modifiedCount } = await Cart.updateOne(selector, modifier, { arrayFilters });
-    if (modifiedCount === 0) throw new Meteor.Error("not-found", "Cart not found");
+    if (modifiedCount === 0) throw new ReactionError("not-found", "Cart not found");
   }
 
   // If any items had zero quantity, we will now remove them in a separate Cart update.
@@ -72,11 +73,11 @@ export default async function updateCartItemsQuantity(context, input) {
   // will not allow updates of `items` in two different operators in the same modifier.
   if (removeItemsModifier.$pull.items.$or.length > 0) {
     const { modifiedCount } = await Cart.updateOne(selector, removeItemsModifier);
-    if (modifiedCount === 0) throw new Meteor.Error("not-found", "Cart not found");
+    if (modifiedCount === 0) throw new ReactionError("not-found", "Cart not found");
   }
 
   const cart = await Cart.findOne(selector);
-  if (!cart) throw new Meteor.Error("not-found", "Cart not found");
+  if (!cart) throw new ReactionError("not-found", "Cart not found");
 
   Hooks.Events.run("afterCartUpdate", cart._id);
   Hooks.Events.run("afterCartUpdateCalculateDiscount", cart._id);
