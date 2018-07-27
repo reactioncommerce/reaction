@@ -4,7 +4,7 @@ import { AutoForm } from "meteor/aldeed:autoform";
 import { Reaction, i18next } from "/client/api";
 import { Packages, Shops } from "/lib/collections";
 import { Media } from "/imports/plugins/core/files/client";
-import SitemapControlsContainer from "/imports/plugins/included/sitemap-generator/client/containers/sitemap-controls-container";
+import SitemapSettingsContainer from "/imports/plugins/included/sitemap-generator/client/containers/sitemap-settings-container";
 import ShopBrandMediaManager from "./ShopBrandMediaManager";
 
 
@@ -163,7 +163,7 @@ Template.optionsShopSettings.helpers({
     return Reaction.isPackageEnabled(name);
   },
 
-  SitemapControlsContainer() {
-    return SitemapControlsContainer;
+  SitemapSettingsContainer() {
+    return SitemapSettingsContainer;
   }
 });

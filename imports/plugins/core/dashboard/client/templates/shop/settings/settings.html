@@ -109,10 +109,9 @@
       {{> afQuickField name='settings.google.clientId'}}
       {{> afQuickField name='settings.google.apiKey'}}
       {{> afQuickField name='settings.cart.cleanupDurationDays' placeholder="older than 3 days"}}
-      {{> afQuickField name='settings.sitemaps.refreshPeriod' placeholder="every 24 hours"}}
       {{#if isPackageEnabled "reaction-sitemap-generator"}}
         <div>
-          {{> React component=SitemapControlsContainer}}
+          {{> React component=SitemapSettingsContainer packageData=packageData}}
         </div>
       {{/if}}
       {{> shopSettingsSubmitButton}}
