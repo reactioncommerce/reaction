@@ -8,9 +8,13 @@ class SitemapControlsContainer extends Component {
     event.preventDefault();
     Meteor.call("sitemaps/generate", (error) => {
       if (error) {
-        Alerts.toast(`${i18next.t("shopSettings.sitemapRefreshFailed")}: ${error}`, "error");
+        Alerts.toast(`${i18next.t("shopSettings.sitemapRefreshFailed", {
+          defaultValue: "Sitemap refresh failed"
+        })}: ${error}`, "error");
       } else {
-        Alerts.toast(i18next.t("shopSettings.sitemapRefreshInitiated"), "success");
+        Alerts.toast(i18next.t("shopSettings.sitemapRefreshInitiated", {
+          defaultValue: "Refreshing the sitemap can take up to 5 minutes. You will be notified when it is completed."
+        }), "success");
       }
     });
   };
