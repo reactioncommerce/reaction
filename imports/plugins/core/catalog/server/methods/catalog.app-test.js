@@ -632,7 +632,7 @@ describe("core product methods", function () {
       });
 
       expect(() => Meteor.call("products/publishProduct", product._id))
-        .to.throw(Meteor.Error, /Bad Request/);
+        .to.throw(ReactionError, /Bad Request/);
 
       product = Products.findOne(product._id);
       expect(product.isVisible).to.equal(isVisible);
