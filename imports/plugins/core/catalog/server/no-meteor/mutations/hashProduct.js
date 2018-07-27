@@ -53,7 +53,7 @@ export async function createProductHash(productToConvert, collections) {
  * @memberof Catalog
  * @param {String} productId - A productId
  * @param {Object} collections - Raw mongo collections
- * @param {Object} isPublished - Is product published to catalog
+ * @param {Boolean} isPublished - Is product published to catalog
  * @return {Object} updated product if successful, original product if unsuccessful
  */
 export default async function hashProduct(productId, collections, isPublished = true) {
