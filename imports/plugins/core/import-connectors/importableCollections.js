@@ -62,10 +62,7 @@ export function registerImportableCollection(impColl) {
   } catch (error) {
     throw error;
   }
-  ImportableCollections[impColl.collection] = {
-    importSchema: impColl.importSchema,
-    label: impColl.label
-  };
+  ImportableCollections[impColl.collection] = impColl;
   return true;
 }
 
@@ -162,3 +159,68 @@ export function getDefaultCSVFileHeader(collection) {
   }
   return arrayToCSVRow(headers);
 }
+
+function chunkData(data) {
+  const chunks = [];
+  const chunkSize = 1000;
+  for (let i = 0; i < data.length; i += chunkSize) {
+    chunks.push(data.slice(i, i + chunkSize));
+  }
+  return chunks;
+}
+
+function validateItem(doc, importSchema) {
+  const errors = [];
+  for (const field in doc) {
+    if (doc[field] !== undefined) {
+      const value = doc[field];
+      const importSchemaField = importSchema.find(({ key }) => field === key);
+      if (importSchemaField && !importSchemaField.optional && !value) {
+        errors.push(`${field} is required.`);
+      }
+    }
+  }
+  return errors;
+}
+
+async function parseRawObjects(data, mapping, impColl) {
+  const options = await impColl.collectionCallback();
+  const validData = [];
+  const withErrorData = [];
+  data.forEach((item, index) => {
+    const newDoc = {};
+    for (const field in item) {
+      if (mapping[field] !== "ignore") {
+        newDoc[mapping[field]] = item[field];
+      }
+    }
+    const errors = validateItem(newDoc, impColl.importSchema);
+    if (errors.length > 0) {
+      item.errors = errors;
+      item.rowNumber = index;
+      withErrorData.push(item);
+      return;
+    }
+    if (typeof impColl.rowCallback === "function") {
+      Object.assign(newDoc, impColl.rowCallback(newDoc, options));
+    }
+    validData.push(newDoc);
+    return;
+  });
+  return { validData, withErrorData };
+}
+
+export const saveCSVToDB = (importJob, data) => new Promise((resolve, reject) => {
+  const { collection, mapping } = importJob;
+  const impColl = ImportableCollections[collection];
+  parseRawObjects(data, mapping, impColl)
+    .then((res) => {
+      const { validData, withErrorData } = res;
+      const dataChunks = chunkData(validData);
+      dataChunks.forEach((dataChunk) => impColl.rawCollection.insertMany(dataChunk));
+      return resolve(withErrorData);
+    })
+    .catch((error) => {
+      reject(error);
+    });
+});

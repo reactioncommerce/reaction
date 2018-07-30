@@ -1,5 +1,3 @@
-import { registerImportableCollection } from "@reactioncommerce/reaction-import-connectors";
-
 export const ProductsImpColl = {
   collection: "Products",
   label: "Products",
@@ -17,8 +15,6 @@ export const ProductsImpColl = {
   ]
 };
 
-registerImportableCollection(ProductsImpColl);
-
 export const TagsImpColl = {
   collection: "Tags",
   label: "Tags",
@@ -26,7 +22,8 @@ export const TagsImpColl = {
     {
       key: "_id",
       saveToField: "_id",
-      label: "ID"
+      label: "ID",
+      optional: true
     },
     {
       key: "name",
@@ -36,19 +33,20 @@ export const TagsImpColl = {
     {
       key: "isVisible",
       saveToField: "isVisble",
-      label: "Is Visible"
+      label: "Is Visible",
+      optional: true
     },
     {
       key: "slug",
       saveToField: "slug",
-      label: "Slug"
+      label: "Slug",
+      optional: true
     },
     {
       key: "relatedTagIds",
       saveToField: "relatedTagIds",
-      label: "Related Tags"
+      label: "Related Tags",
+      optional: true
     }
   ]
 };
-
-registerImportableCollection(TagsImpColl);

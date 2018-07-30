@@ -42,7 +42,7 @@ function composer(props, onData) {
     const impCollOptions = getImportableCollectionsOptions();
     const shopId = Reaction.getShopId();
     const importJobs = ImportJobs.find({ shopId }).fetch();
-    const importJob = ImportJobs.findOne({ userId, shopId, status: "New" }) || {};
+    const importJob = ImportJobs.findOne({ userId, shopId, status: "new" }) || {};
     let importMappings = [];
     if (importJob.collection) {
       importMappings = ImportMappings.find({ shopId, collection: importJob.collection }).fetch();

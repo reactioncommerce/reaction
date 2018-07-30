@@ -119,9 +119,6 @@ class InitialScreen extends Component {
     const { importJob } = this.state;
     const importJobId = importJob._id || "";
     onImportJobFieldSave(importJobId, field, value);
-    if (field === "collection") {
-      onImportJobFieldSave(importJobId, "importMapping", "create");
-    }
   }
 
   downloadSampleCSVFile = () => {

@@ -26,7 +26,6 @@ export const methods = {
     check(_id, String);
     check(field, String);
     check(value, Match.OneOf(String, Object, Array, Boolean, Number));
-
     // Must have importJobs permission
     if (!Reaction.hasPermission("importJobs")) {
       throw new Meteor.Error("access-denied", "Access Denied");
@@ -44,7 +43,7 @@ export const methods = {
       const shopId = Reaction.getShopId();
       ImportJobs.insert(Object.assign(update, {
         shopId,
-        status: "New",
+        status: "new",
         importMapping: "create",
         userId: Meteor.userId()
       }));
@@ -56,6 +55,9 @@ export const methods = {
       throw new Meteor.Error("not-found", "Import job not found");
     } else if (!Reaction.hasPermission("importJobs", this.userId, doc.shopId)) {
       throw new Meteor.Error("access-denied", "Access Denied");
+    }
+    if (field === "collection") {
+      update = Object.assign(update, { imporMapping: "create" });
     }
     try {
       ImportJobs.update(_id, { $set: update });
@@ -76,7 +78,7 @@ export const methods = {
   "importJobs/getSampleCSVFileHeader"(collection, importMapping) {
     check(collection, String);
     check(importMapping, String);
-    if (importMapping === "default") {
+    if (importMapping === "create") {
       return getDefaultCSVFileHeader(collection);
     }
     const doc = ImportMappings.findOne(importMapping);
@@ -124,7 +126,6 @@ export const methods = {
     check(importJobId, String);
     ImportJobs.update(importJobId, { $set: { status: "pending", uploadedAt: new Date() } });
   }
-
 };
 
 Meteor.methods(methods);
