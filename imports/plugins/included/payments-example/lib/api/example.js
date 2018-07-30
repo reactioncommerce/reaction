@@ -1,5 +1,6 @@
 import { Meteor } from "meteor/meteor";
 import { Packages } from "/lib/collections";
+import ReactionError from "/imports/plguins/core/graphql/server/no-meteor/ReactionError";
 
 export const Example = {
   accountOptions() {
@@ -7,7 +8,7 @@ export const Example = {
       name: "reaction-paymentmethod"
     });
     if (!settings.apiKey) {
-      throw new Meteor.Error("invalid-credentials", "Invalid Credentials");
+      throw new ReactionError("invalid-credentials", "Invalid Credentials");
     }
     return settings.apiKey;
   },

@@ -3,6 +3,7 @@ import { Template } from "meteor/templating";
 import { Meteor } from "meteor/meteor";
 import { ReactiveDict } from "meteor/reactive-dict";
 import { Reaction } from "/client/api";
+import ReactionError from "/imports/plguins/core/graphql/server/no-meteor/ReactionError";
 import Logger from "/client/modules/logger";
 import { Catalog, getPrimaryMediaForItem, ReactionProduct } from "/lib/api";
 import { Products } from "/lib/collections";
@@ -159,7 +160,7 @@ Template.productSettings.events({
         // eslint-disable-line no-loop-func
         if (error) {
           Logger.warn(error);
-          throw new Meteor.Error("access-denied", error);
+          throw new ReactionError("access-denied", error);
         }
       });
     }

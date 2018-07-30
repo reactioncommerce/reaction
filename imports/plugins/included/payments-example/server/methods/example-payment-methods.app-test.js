@@ -2,6 +2,7 @@
 import { Meteor } from "meteor/meteor";
 import { expect } from "meteor/practicalmeteor:chai";
 import { sinon } from "meteor/practicalmeteor:sinon";
+import ReactionError from "/imports/plguins/core/graphql/server/no-meteor/ReactionError";
 
 import { ExampleApi, RISKY_TEST_CARD } from "./exampleapi";
 
@@ -178,7 +179,7 @@ describe("Capture payment", function () {
 
   it("should throw an error if transaction ID is not found", function () {
     sandbox.stub(ExampleApi.methods, "capture", function () {
-      throw new Meteor.Error("not-found", "Not Found");
+      throw new ReactionError("not-found", "Not Found");
     });
     expect(function () {
       Meteor.call("example/payment/capture", "abc123");
@@ -212,13 +213,13 @@ describe("Refund", function () {
 
   it("should throw an error if transaction ID is not found", function () {
     sandbox.stub(ExampleApi.methods.refund, "call", function () {
-      throw new Meteor.Error("not-found", "Not Found");
+      throw new ReactionError("not-found", "Not Found");
     });
     const transactionId = "abc1234";
     paymentMethod.transactionId = transactionId;
     expect(function () {
       Meteor.call("example/refund/create", paymentMethod, 19.99);
-    }).to.throw(Meteor.Error, /Not Found/);
+    }).to.throw(ReactionError, /Not Found/);
   });
 });
 
@@ -245,9 +246,8 @@ describe("List Refunds", function () {
 
   it("should throw an error if transaction ID is not found", function () {
     sandbox.stub(ExampleApi.methods, "refunds", function () {
-      throw new Meteor.Error("not-found", "Not Found");
+      throw new ReactionError("not-found", "Not Found");
     });
-    expect(() => Meteor.call("example/refund/list", paymentMethod)).to.throw(Meteor.Error, /Not Found/);
+    expect(() => Meteor.call("example/refund/list", paymentMethod)).to.throw(ReactionError, /Not Found/);
   });
 });
-

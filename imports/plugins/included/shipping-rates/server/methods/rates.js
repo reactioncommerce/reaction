@@ -4,6 +4,7 @@ import { check, Match } from "meteor/check";
 import { Shipping } from "/lib/collections";
 import { ShippingMethod } from "/lib/collections/schemas";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
+import ReactionError from "/imports/plguins/core/graphql/server/no-meteor/ReactionError";
 import { shippingRoles } from "../lib/roles";
 
 export const methods = {
@@ -26,7 +27,7 @@ export const methods = {
       enabled: Boolean
     });
     if (!Reaction.hasPermission(shippingRoles)) {
-      throw new Meteor.Error("access-denied", "Access Denied");
+      throw new ReactionError("access-denied", "Access Denied");
     }
     // a little trickery
     // we passed in the providerId
@@ -45,7 +46,7 @@ export const methods = {
       });
       providerId = defaultProvider;
     } else {
-      throw new Meteor.Error("bad-provider-id", "No Provider ID provided when adding methods");
+      throw new ReactionError("bad-provider-id", "No Provider ID provided when adding methods");
     }
 
     rate._id = Random.id();
@@ -67,7 +68,7 @@ export const methods = {
   "shipping/rates/update"(method) {
     ShippingMethod.validate(method);
     if (!Reaction.hasPermission(shippingRoles)) {
-      throw new Meteor.Error("access-denied", "Access Denied");
+      throw new ReactionError("access-denied", "Access Denied");
     }
     const methodId = method._id;
 
@@ -90,7 +91,7 @@ export const methods = {
     check(rateId, String);
 
     if (!Reaction.hasPermission(shippingRoles)) {
-      throw new Meteor.Error("access-denied", "Access Denied");
+      throw new ReactionError("access-denied", "Access Denied");
     }
 
     const rates = Shipping.findOne({ "methods._id": rateId });

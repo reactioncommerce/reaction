@@ -1,8 +1,8 @@
 import Hooks from "@reactioncommerce/hooks";
 import Logger from "@reactioncommerce/logger";
-import { Meteor } from "meteor/meteor";
 import { Shipping, Packages } from "/lib/collections";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
+import ReactionError from "/imports/plguins/core/graphql/server/no-meteor/ReactionError";
 import { Cart as CartSchema } from "/lib/collections/schemas";
 
 /**
@@ -79,7 +79,7 @@ function getShippingRates(previousQueryResults, cart) {
   if (merchantShippingRates) {
     // TODO this needs to be rewritten to handle getting rates from each shops that's represented on the order
     Logger.fatal("Multiple shipping providers is currently not supported");
-    throw new Meteor.Error("not-implemented", "Multiple shipping providers is currently not supported");
+    throw new ReactionError("not-implemented", "Multiple shipping providers is currently not supported");
   } else {
     pkgData = Packages.findOne({
       name: "reaction-shipping-rates",

@@ -7,6 +7,7 @@ import { Components, composeWithTracker, registerComponent } from "@reactioncomm
 import { Meteor } from "meteor/meteor";
 import { Session } from "meteor/session";
 import { Reaction } from "/client/api";
+import ReactionError from "/imports/plguins/core/graphql/server/no-meteor/ReactionError";
 import { Media } from "/imports/plugins/core/files/client";
 import Logger from "/client/modules/logger";
 import { ReactionProduct } from "/lib/api";
@@ -144,7 +145,7 @@ const wrapComponent = (Comp) => (
         return Meteor.call("products/updateProductPosition", productId, position, tagId, (error) => {
           if (error) {
             Logger.error(error);
-            throw new Meteor.Error("error-occurred", error);
+            throw new ReactionError("error-occurred", error);
           }
         });
       });

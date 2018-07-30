@@ -2,6 +2,7 @@ import { Meteor } from "meteor/meteor";
 import { check, Match } from "meteor/check";
 import { Packages } from "/lib/collections";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
+import ReactionError from "/imports/plguins/core/graphql/server/no-meteor/ReactionError";
 
 export function updateSocialSetting(provider, field, value) {
   check(provider, String);
@@ -9,7 +10,7 @@ export function updateSocialSetting(provider, field, value) {
   check(value, Match.OneOf(String, Boolean));
 
   if (!Reaction.hasPermission(["reaction-social"])) {
-    throw new Meteor.Error("access-denied", "Access Denied");
+    throw new ReactionError("access-denied", "Access Denied");
   }
 
   return Packages.update({
@@ -26,7 +27,7 @@ export function updateSocialSettings(values) {
   check(values, Match.OneOf(Object, String, Boolean, Number, null, undefined));
 
   if (!Reaction.hasPermission(["reaction-social"])) {
-    throw new Meteor.Error("access-denied", "Access Denied");
+    throw new ReactionError("access-denied", "Access Denied");
   }
 
   return Packages.update({

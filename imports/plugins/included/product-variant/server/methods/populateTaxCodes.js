@@ -1,5 +1,6 @@
 import { Meteor } from "meteor/meteor";
 import { check } from "meteor/check";
+import ReactionError from "/imports/plguins/core/graphql/server/no-meteor/ReactionError";
 import { TaxCodes } from "/imports/plugins/core/taxes/lib/collections";
 
 const taxCodes = {};
@@ -30,7 +31,7 @@ taxCodes.populateTaxCodes = function (shopId, code, providerName) {
       children: code.children || []
     });
   } catch (err) {
-    throw new Meteor.Error("Error populating TaxCodes collection", err);
+    throw new ReactionError("Error populating TaxCodes collection", err);
   }
 };
 

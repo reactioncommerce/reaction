@@ -6,6 +6,7 @@ import { Job } from "/imports/plugins/core/job-collection/lib";
 import { Packages, Jobs } from "/lib/collections";
 import { SearchPackageConfig } from "../../lib/collections/schemas";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
+import ReactionError from "/imports/plguins/core/graphql/server/no-meteor/ReactionError";
 
 function fieldsChanged(changedFields, fieldType = "includes") {
   for (const field of changedFields) {
@@ -50,7 +51,7 @@ Meteor.methods({
     }
     // must have core permissions
     if (!Reaction.hasPermission("core")) {
-      throw new Meteor.Error("access-denied", "Access Denied");
+      throw new ReactionError("access-denied", "Access Denied");
     }
     let rebuildJob;
     if (fieldsChanged(changedSettings)) {
