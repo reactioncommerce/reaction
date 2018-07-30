@@ -1,4 +1,4 @@
-import { Meteor } from "meteor/meteor";
+import ReactionError from "/imports/plugins/core/graphql/server/no-meteor/ReactionError";
 
 /**
  * @name catalogItemProduct
@@ -17,7 +17,7 @@ export default async function catalogItemProduct(context, { _id, slug } = {}) {
   const { Catalog } = collections;
 
   if (!_id && !slug) {
-    throw new Meteor.Error("invalid-param", "You must provide a product slug or product id");
+    throw new ReactionError("invalid-param", "You must provide a product slug or product id");
   }
 
   const query = {
