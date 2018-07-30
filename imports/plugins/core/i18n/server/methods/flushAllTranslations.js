@@ -1,5 +1,6 @@
 import { Meteor } from "meteor/meteor";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
+import ReactionError from "/imports/plugins/core/graphql/server/no-meteor/ReactionError";
 import { reloadAllTranslations } from "/imports/plugins/core/core/server/startup/i18n";
 
 /**
@@ -12,7 +13,7 @@ import { reloadAllTranslations } from "/imports/plugins/core/core/server/startup
  */
 export default function flushAllTranslations() {
   if (!Reaction.hasPermission("admin", Meteor.userId(), Reaction.getPrimaryShopId())) {
-    throw new Meteor.Error("access-denied", "Access Denied");
+    throw new ReactionError("access-denied", "Access Denied");
   }
 
   reloadAllTranslations();
