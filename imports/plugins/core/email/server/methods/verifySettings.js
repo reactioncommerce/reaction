@@ -3,6 +3,7 @@ import getServiceConfig from "nodemailer-wellknown";
 import { Meteor } from "meteor/meteor";
 import { check, Match } from "meteor/check";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
+import ReactionError from "/imports/plugins/core/graphql/server/no-meteor/ReactionError";
 
 /**
  * @name email/verifySettings
@@ -15,7 +16,7 @@ import Reaction from "/imports/plugins/core/core/server/Reaction";
 export default function verifySettings(settings) {
   if (!Reaction.hasPermission(["owner", "admin", "dashboard"], this.userId)) {
     Logger.error("email/verifySettings: Access Denied");
-    throw new Meteor.Error("access-denied", "Access Denied");
+    throw new ReactionError("access-denied", "Access Denied");
   }
 
   this.unblock();
@@ -55,6 +56,6 @@ export default function verifySettings(settings) {
     return Meteor.wrapAsync(Email.verifyConfig)(conf);
   } catch (e) {
     Logger.error(e);
-    throw new Meteor.Error(e.responseCode, e.response);
+    throw new ReactionError(e.responseCode, e.response);
   }
 }
