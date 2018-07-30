@@ -1,6 +1,7 @@
 import Logger from "@reactioncommerce/logger";
 import { Meteor } from "meteor/meteor";
 import { check } from "meteor/check";
+import ReactionError from "/imports/plugins/core/graphql/server/no-meteor/ReactionError";
 import { Orders, Products, Packages } from "/lib/collections";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
 import rawCollections from "/imports/collections/rawCollections";
@@ -23,7 +24,7 @@ export default function cancelOrder(order, returnToStock) {
   // REVIEW: Only marketplace admins should be able to cancel entire order?
   // Unless order is entirely contained in a single shop? Do we need a switch on marketplace owner dashboard?
   if (!Reaction.hasPermission("orders")) {
-    throw new Meteor.Error("access-denied", "Access Denied");
+    throw new ReactionError("access-denied", "Access Denied");
   }
 
   // Inventory is removed from stock only once an order has been approved

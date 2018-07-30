@@ -4,6 +4,7 @@ import { Meteor } from "meteor/meteor";
 import { check } from "meteor/check";
 import { Orders } from "/lib/collections";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
+import ReactionError from "/imports/plugins/core/graphql/server/no-meteor/ReactionError";
 
 /**
  * @name orders/capturePayments
@@ -18,7 +19,7 @@ export default function capturePayments(orderId) {
   check(orderId, String);
   // REVIEW: For marketplace implementations who should be able to capture payments?
   if (!Reaction.hasPermission("orders")) {
-    throw new Meteor.Error("access-denied", "Access Denied");
+    throw new ReactionError("access-denied", "Access Denied");
   }
   const shopId = Reaction.getShopId(); // the shopId of the current user, i.e. merchant
   const order = Orders.findOne({ _id: orderId });

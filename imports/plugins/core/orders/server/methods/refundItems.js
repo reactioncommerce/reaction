@@ -5,6 +5,7 @@ import { check } from "meteor/check";
 import { Orders } from "/lib/collections";
 import { PaymentMethodArgument } from "/lib/collections/schemas";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
+import ReactionError from "/imports/plugins/core/graphql/server/no-meteor/ReactionError";
 import sendOrderEmail from "../util/sendOrderEmail";
 
 /**
@@ -19,7 +20,7 @@ function orderQuantityAdjust(orderId, refundedItem) {
   check(orderId, String);
 
   if (!Reaction.hasPermission("orders")) {
-    throw new Meteor.Error("access-denied", "Access Denied");
+    throw new ReactionError("access-denied", "Access Denied");
   }
 
   const order = Orders.findOne({ _id: orderId });
@@ -62,7 +63,7 @@ export default function refundItemsMethod(orderId, paymentMethod, refundItemsInf
 
   // REVIEW: For marketplace implementations, who can refund? Just the marketplace?
   if (!Reaction.hasPermission("orders")) {
-    throw new Meteor.Error("access-denied", "Access Denied");
+    throw new ReactionError("access-denied", "Access Denied");
   }
 
   const fut = new Future();

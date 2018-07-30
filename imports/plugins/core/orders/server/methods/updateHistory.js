@@ -2,6 +2,7 @@ import { Meteor } from "meteor/meteor";
 import { check, Match } from "meteor/check";
 import { Orders } from "/lib/collections";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
+import ReactionError from "/imports/plugins/core/graphql/server/no-meteor/ReactionError";
 
 /**
  * @name orders/updateHistory
@@ -21,7 +22,7 @@ export default function updateHistory(orderId, event, value) {
   // REVIEW: For marketplace implementations
   // This should be possible for anyone with permission to act on the order
   if (!Reaction.hasPermission("orders")) {
-    throw new Meteor.Error("access-denied", "Access Denied");
+    throw new ReactionError("access-denied", "Access Denied");
   }
 
   return Orders.update(orderId, {

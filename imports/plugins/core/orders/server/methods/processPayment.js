@@ -1,6 +1,7 @@
 import { Meteor } from "meteor/meteor";
 import { check } from "meteor/check";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
+import ReactionError from "/imports/plugins/core/graphql/server/no-meteor/ReactionError";
 
 /**
  * @name orders/processPayment
@@ -16,7 +17,7 @@ export default function processPayment(order) {
   // REVIEW: Who should have access to process payment in marketplace?
   // Probably just the shop owner for now?
   if (!Reaction.hasPermission("orders")) {
-    throw new Meteor.Error("access-denied", "Access Denied");
+    throw new ReactionError("access-denied", "Access Denied");
   }
 
   this.unblock();

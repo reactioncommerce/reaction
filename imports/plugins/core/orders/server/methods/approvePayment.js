@@ -1,7 +1,7 @@
 import Hooks from "@reactioncommerce/hooks";
 import accounting from "accounting-js";
-import { Meteor } from "meteor/meteor";
 import { check } from "meteor/check";
+import ReactionError from "/imports/plugins/core/graphql/server/no-meteor/ReactionError";
 import { Orders, Products } from "/lib/collections";
 import rawCollections from "/imports/collections/rawCollections";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
@@ -23,7 +23,7 @@ function ordersInventoryAdjustByShop(orderId, shopId) {
   check(shopId, String);
 
   if (!Reaction.hasPermission("orders")) {
-    throw new Meteor.Error("access-denied", "Access Denied");
+    throw new ReactionError("access-denied", "Access Denied");
   }
 
   const order = Orders.findOne({ _id: orderId });
@@ -67,7 +67,7 @@ export default function approvePayment(order) {
   // REVIEW: Who should have access to do this for a marketplace?
   // Do we have/need a shopId on each order?
   if (!Reaction.hasPermission("orders")) {
-    throw new Meteor.Error("access-denied", "Access Denied");
+    throw new ReactionError("access-denied", "Access Denied");
   }
 
   this.unblock(); // REVIEW: why unblock here?

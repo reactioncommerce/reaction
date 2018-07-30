@@ -3,6 +3,7 @@ import { Meteor } from "meteor/meteor";
 import { check } from "meteor/check";
 import { Orders } from "/lib/collections";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
+import ReactionError from "/imports/plugins/core/graphql/server/no-meteor/ReactionError";
 import sendOrderEmail from "../util/sendOrderEmail";
 
 /**
@@ -18,7 +19,7 @@ export default function shipmentDelivered(order) {
 
   // REVIEW: this should be callable from the server via callback from Shippo or other webhook
   if (!Reaction.hasPermission("orders")) {
-    throw new Meteor.Error("access-denied", "Access Denied");
+    throw new ReactionError("access-denied", "Access Denied");
   }
 
   this.unblock();

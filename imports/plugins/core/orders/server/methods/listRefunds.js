@@ -1,6 +1,7 @@
 import { Meteor } from "meteor/meteor";
 import { check } from "meteor/check";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
+import ReactionError from "/imports/plugins/core/graphql/server/no-meteor/ReactionError";
 
 /**
  * @name orders/refund/list
@@ -15,7 +16,7 @@ export default function listRefunds(order) {
   check(order, Object);
 
   if (!this.userId === order.userId && !Reaction.hasPermission("orders")) {
-    throw new Meteor.Error("access-denied", "Access Denied");
+    throw new ReactionError("access-denied", "Access Denied");
   }
 
   const refunds = [];
