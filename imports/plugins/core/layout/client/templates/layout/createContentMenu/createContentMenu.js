@@ -1,4 +1,5 @@
 import { Reaction } from "/client/api";
+import ReactionError from "/imports/plugins/core/graphql/server/no-meteor/ReactionError";
 import { Tags } from "/lib/collections";
 import { Meteor } from "meteor/meteor";
 import { Session } from "meteor/session";
@@ -19,7 +20,7 @@ Template.createContentMenu.helpers({
               let currentTagId;
 
               if (error) {
-                throw new Meteor.Error("create-product-error", error);
+                throw new ReactionError("create-product-error", error);
               } else if (productId) {
                 currentTagId = Session.get("currentTag");
                 currentTag = Tags.findOne(currentTagId);
