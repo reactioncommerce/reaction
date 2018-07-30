@@ -1,7 +1,7 @@
-import { Meteor } from "meteor/meteor";
 import { check, Match } from "meteor/check";
 import { Shops } from "/lib/collections";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
+import ReactionError from "/imports/plguins/core/graphql/server/no-meteor/ReactionError";
 import { shippingRoles } from "../lib/roles";
 
 /**
@@ -20,7 +20,7 @@ export default function updateParcelSize(parcel) {
   });
 
   if (!Reaction.hasPermission(shippingRoles)) {
-    throw new Meteor.Error("access-denied", "Access Denied");
+    throw new ReactionError("access-denied", "Access Denied");
   }
 
   const modifier = Object.keys(parcel).reduce((mod, key) => {
@@ -34,7 +34,7 @@ export default function updateParcelSize(parcel) {
     $set: modifier
   }, (error) => {
     if (error) {
-      throw new Meteor.Error("server-error", error.message);
+      throw new ReactionError("server-error", error.message);
     }
   });
 }
