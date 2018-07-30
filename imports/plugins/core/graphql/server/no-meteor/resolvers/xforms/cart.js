@@ -1,5 +1,5 @@
 import { namespaces } from "@reactioncommerce/reaction-graphql-utils";
-import { Meteor } from "meteor/meteor";
+import ReactionError from "/imports/plugins/core/graphql/server/no-meteor/ReactionError";
 import findVariantInCatalogProduct from "/imports/plugins/core/catalog/server/no-meteor/utils/findVariantInCatalogProduct";
 import { assocInternalId, assocOpaqueId, decodeOpaqueIdForNamespace, encodeOpaqueId } from "./id";
 import { decodeProductOpaqueId } from "./product";
@@ -39,18 +39,18 @@ function xformCartItem(catalogItems, cartItem) {
 
   const catalogItem = catalogItems.find((cItem) => cItem.product.productId === productId);
   if (!catalogItem) {
-    throw new Meteor.Error("not-found", `CatalogProduct with product ID ${productId} not found`);
+    throw new ReactionError("not-found", `CatalogProduct with product ID ${productId} not found`);
   }
 
   const catalogProduct = catalogItem.product;
   const { variant } = findVariantInCatalogProduct(catalogProduct, variantId);
   if (!variant) {
-    throw new Meteor.Error("invalid-param", `Product with ID ${productId} has no variant with ID ${variantId}`);
+    throw new ReactionError("invalid-param", `Product with ID ${productId} has no variant with ID ${variantId}`);
   }
 
   const variantPriceInfo = variant.pricing[currencyCode];
   if (!variantPriceInfo) {
-    throw new Meteor.Error("invalid-param", `This product variant does not have a price for ${currencyCode}`);
+    throw new ReactionError("invalid-param", `This product variant does not have a price for ${currencyCode}`);
   }
 
   let media;
