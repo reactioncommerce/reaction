@@ -16,52 +16,48 @@ import Reaction from "/imports/plugins/core/core/server/Reaction";
  * @private
  */
 function createAggregate(shopId, sort = { createdAt: -1 }, limit = 0, query = {}, skip = 0) {
-  // NOTE: in Mongo 3.4 using the $in operator will be supported for projection filters
-  const aggregate = [
-    { $match: { "items.shopId": shopId, ...query } },
-    {
-      $project: {
-        items: {
-          $filter: {
-            input: "$items",
-            as: "item",
-            cond: { $eq: ["$$item.shopId", shopId] }
-          }
-        },
-        billing: {
-          $filter: {
-            input: "$billing",
-            as: "billing",
-            cond: { $eq: ["$$billing.shopId", shopId] }
-          }
-        },
-        shipping: {
-          $filter: {
-            input: "$shipping",
-            as: "shipping",
-            cond: { $eq: ["$$shipping.shopId", shopId] }
-          }
-        },
-        cartId: 1,
-        sessionId: 1,
-        shopId: 1, // workflow is still stored at the top level and used to showing status
-        workflow: 1,
-        discount: 1,
-        tax: 1,
-        email: 1,
-        createdAt: 1,
-        accountId: 1,
-        taxCalculationFailed: 1,
-        bypassAddressValidation: 1
-      }
-    },
-    { $sort: sort },
-    { $skip: skip }
-  ];
+  const aggregate = [{ $match: { "items.shopId": shopId, ...query } }];
 
-  if (limit > 0) {
-    aggregate.push({ $limit: limit });
-  }
+  if (sort) aggregate.push({ $sort: sort });
+  if (skip > 0) aggregate.push({ $skip: skip });
+  if (limit > 0) aggregate.push({ $limit: limit });
+
+  // NOTE: in Mongo 3.4 using the $in operator will be supported for projection filters
+  aggregate.push({
+    $project: {
+      items: {
+        $filter: {
+          input: "$items",
+          as: "item",
+          cond: { $eq: ["$$item.shopId", shopId] }
+        }
+      },
+      billing: {
+        $filter: {
+          input: "$billing",
+          as: "billing",
+          cond: { $eq: ["$$billing.shopId", shopId] }
+        }
+      },
+      shipping: {
+        $filter: {
+          input: "$shipping",
+          as: "shipping",
+          cond: { $eq: ["$$shipping.shopId", shopId] }
+        }
+      },
+      cartId: 1,
+      sessionId: 1,
+      shopId: 1, // workflow is still stored at the top level and used to showing status
+      workflow: 1,
+      discount: 1,
+      tax: 1,
+      email: 1,
+      createdAt: 1,
+      accountId: 1
+    }
+  });
+
   return aggregate;
 }
 
