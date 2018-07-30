@@ -2,6 +2,7 @@ import Hooks from "@reactioncommerce/hooks";
 import Logger from "@reactioncommerce/logger";
 import { Meteor } from "meteor/meteor";
 import { check, Match } from "meteor/check";
+import ReactionError from "/imports/plugins/core/graphql/server/no-meteor/ReactionError";
 import * as Collections from "/lib/collections";
 
 /**
@@ -81,7 +82,7 @@ export default function unsetAddresses(addressId, userId, type) {
       Collections.Cart.update(selector, update);
     } catch (e) {
       Logger.error(e);
-      throw new Meteor.Error("server-error", "Error updating cart");
+      throw new ReactionError("server-error", "Error updating cart");
     }
 
     // Calculate discounts

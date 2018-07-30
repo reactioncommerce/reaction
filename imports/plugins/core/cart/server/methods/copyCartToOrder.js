@@ -2,6 +2,7 @@ import Hooks from "@reactioncommerce/hooks";
 import Logger from "@reactioncommerce/logger";
 import { Meteor } from "meteor/meteor";
 import { check } from "meteor/check";
+import ReactionError from "/imports/plugins/core/graphql/server/no-meteor/ReactionError";
 import { Cart, Orders } from "/lib/collections";
 import rawCollections from "/imports/collections/rawCollections";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
@@ -27,7 +28,7 @@ export default function copyCartToOrder(cartId) {
 
   const { account, cart } = getCart(cartId);
   if (!cart) {
-    throw new Meteor.Error("access-denied", "Access Denied");
+    throw new ReactionError("access-denied", "Access Denied");
   }
 
   // Init new order object from existing cart
@@ -37,7 +38,7 @@ export default function copyCartToOrder(cartId) {
   if (!order.items || order.items.length === 0) {
     const msg = "An error occurred saving the order. Missing cart items.";
     Logger.error(msg);
-    throw new Meteor.Error("error-occurred", msg);
+    throw new ReactionError("error-occurred", msg);
   }
 
   // Debug only message to identify the current cartId

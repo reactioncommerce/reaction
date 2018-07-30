@@ -3,6 +3,7 @@ import Logger from "@reactioncommerce/logger";
 import { Meteor } from "meteor/meteor";
 import * as Collections from "/lib/collections";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
+import ReactionError from "/imports/plugins/core/graphql/server/no-meteor/ReactionError";
 import getCart from "/imports/plugins/core/cart/both/util/getCart";
 import { PaymentMethodArgument } from "/lib/collections/schemas";
 
@@ -100,7 +101,7 @@ export default function submitPayment(paymentMethods) {
     Collections.Cart.update(selector, update);
   } catch (error) {
     Logger.error(error);
-    throw new Meteor.Error("server-error", "An error occurred saving the order");
+    throw new ReactionError("server-error", "An error occurred saving the order");
   }
 
   // Calculate discounts
@@ -115,7 +116,7 @@ export default function submitPayment(paymentMethods) {
   if (updatedCart && updatedCart.items && updatedCart.billing && updatedCart.billing[0].paymentMethod) {
     Meteor.call("cart/copyCartToOrder", cart._id);
   } else {
-    throw new Meteor.Error(
+    throw new ReactionError(
       "server-error",
       "An error occurred verifying payment method. Failed to save order."
     );

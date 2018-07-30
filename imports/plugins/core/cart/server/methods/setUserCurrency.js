@@ -2,6 +2,7 @@ import Hooks from "@reactioncommerce/hooks";
 import Logger from "@reactioncommerce/logger";
 import { Meteor } from "meteor/meteor";
 import { check } from "meteor/check";
+import ReactionError from "/imports/plugins/core/graphql/server/no-meteor/ReactionError";
 import * as Collections from "/lib/collections";
 import getCart from "/imports/plugins/core/cart/both/util/getCart";
 
@@ -54,7 +55,7 @@ export default function setUserCurrency(cartId, userCurrency) {
     Collections.Cart.update(selector, update);
   } catch (error) {
     Logger.error(error);
-    throw new Meteor.Error("server-error", "An error occurred adding the currency");
+    throw new ReactionError("server-error", "An error occurred adding the currency");
   }
 
   // Calculate discounts

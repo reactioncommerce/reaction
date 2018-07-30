@@ -1,5 +1,6 @@
 import Logger from "@reactioncommerce/logger";
 import { Meteor } from "meteor/meteor";
+import ReactionError from "/imports/plugins/core/graphql/server/no-meteor/ReactionError";
 import { Accounts, Cart } from "/lib/collections";
 
 let Reaction;
@@ -28,7 +29,7 @@ export default function getCart(cartId, { throwIfNotFound = false } = {}) {
   if ((!account && !cartId) || !shopId) {
     if (throwIfNotFound) {
       Logger.error(`Cart not found for user with ID ${userId}`);
-      throw new Meteor.Error("not-found", "Cart not found");
+      throw new ReactionError("not-found", "Cart not found");
     }
 
     return { account, cart: null };
@@ -42,7 +43,7 @@ export default function getCart(cartId, { throwIfNotFound = false } = {}) {
 
   if (!cart && throwIfNotFound) {
     Logger.error(`Cart not found for user with ID ${userId}`);
-    throw new Meteor.Error("not-found", "Cart not found");
+    throw new ReactionError("not-found", "Cart not found");
   }
 
   return { account, cart };
