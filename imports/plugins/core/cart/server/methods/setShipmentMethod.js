@@ -4,6 +4,7 @@ import { Meteor } from "meteor/meteor";
 import { check } from "meteor/check";
 import * as Collections from "/lib/collections";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
+import ReactionError from "/imports/plugins/core/graphql/server/no-meteor/ReactionError";
 import getCart from "/imports/plugins/core/cart/both/util/getCart";
 
 /**
@@ -46,7 +47,7 @@ export default function setShipmentMethod(cartId, method) {
     Collections.Cart.update({ _id: cartId }, update);
   } catch (error) {
     Logger.error(error, `Error adding rates to cart ${cartId}`);
-    throw new Meteor.Error("server-error", "An error occurred saving the order", error);
+    throw new ReactionError("server-error", "An error occurred saving the order", error);
   }
 
 
