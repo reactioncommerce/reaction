@@ -3,6 +3,7 @@ import { Template } from "meteor/templating";
 import { ReactiveDict } from "meteor/reactive-dict";
 import { Meteor } from "meteor/meteor";
 import { Reaction, i18next } from "/client/api";
+import ReactionError from "/imports/plugins/core/graphql/server/no-meteor/ReactionError";
 
 function pkgPermissions(pkg) {
   // if (Reaction.hasPermission("dashboard")) {
@@ -72,7 +73,7 @@ function disableReactionPackage(reactionPackage) {
             "success"
           );
         } else if (error) {
-          throw new Meteor.Error("error-disabling-package", error);
+          throw new ReactionError("error-disabling-package", error);
         }
       });
     }

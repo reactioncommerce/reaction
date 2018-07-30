@@ -3,6 +3,7 @@ import { Meteor } from "meteor/meteor";
 import { Session } from "meteor/session";
 import { composeWithTracker } from "@reactioncommerce/reaction-components";
 import { Reaction, i18next } from "/client/api";
+import ReactionError from "/imports/plugins/core/graphql/server/no-meteor/ReactionError";
 import { Tags, Shops } from "/lib/collections";
 import { AdminContextProvider } from "/imports/plugins/core/ui/client/providers";
 
@@ -14,7 +15,7 @@ const handleAddProduct = () => {
       let currentTagId;
 
       if (error) {
-        throw new Meteor.Error("create-product-error", error);
+        throw new ReactionError("create-product-error", error);
       } else if (productId) {
         currentTagId = Session.get("currentTag");
         currentTag = Tags.findOne(currentTagId);
