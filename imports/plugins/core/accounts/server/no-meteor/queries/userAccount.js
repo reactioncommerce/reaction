@@ -1,4 +1,4 @@
-import { Meteor } from "meteor/meteor";
+import ReactionError from "/imports/plugins/core/graphql/server/no-meteor/ReactionError";
 
 /**
  * @name userAccount
@@ -14,11 +14,11 @@ export default async function userAccountQuery(context, id) {
   const { Accounts } = collections;
 
   const userAccount = await Accounts.findOne({ _id: id });
-  if (!userAccount) throw new Meteor.Error("not-found", "No account found");
+  if (!userAccount) throw new ReactionError("not-found", "No account found");
 
   // Check to make sure current user has permissions to view queried user
   if (userId !== id && !userHasPermission(["reaction-accounts"], userAccount.shopId)) {
-    throw new Meteor.Error("access-denied", "User does not have permission");
+    throw new ReactionError("access-denied", "User does not have permission");
   }
 
   return userAccount;

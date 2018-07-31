@@ -1,4 +1,4 @@
-import { Meteor } from "meteor/meteor";
+import ReactionError from "/imports/plugins/core/graphql/server/no-meteor/ReactionError";
 
 /**
  * @name shopAdministrators
@@ -13,7 +13,7 @@ export default async function shopAdministratorsQuery(context, id) {
   const { collections, userHasPermission } = context;
   const { Accounts, users: Users } = collections;
 
-  if (!userHasPermission(["owner", "admin"], id)) throw new Meteor.Error("access-denied", "User does not have permission");
+  if (!userHasPermission(["owner", "admin"], id)) throw new ReactionError("access-denied", "User does not have permission");
 
   const users = await Users.find({
     [`roles.${id}`]: "admin"

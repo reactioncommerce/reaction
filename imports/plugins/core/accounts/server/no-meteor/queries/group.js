@@ -1,4 +1,4 @@
-import { Meteor } from "meteor/meteor";
+import ReactionError from "/imports/plugins/core/graphql/server/no-meteor/ReactionError";
 
 /**
  * @name group
@@ -14,7 +14,7 @@ export default async function groupQuery(context, id) {
   const { Accounts, Groups } = collections;
 
   const group = await Groups.findOne({ _id: id });
-  if (!group) throw new Meteor.Error("not-found", "There is no group with this ID");
+  if (!group) throw new ReactionError("not-found", "There is no group with this ID");
 
   // If the user has sufficient permissions, then allow them to find any group by ID
   if (userHasPermission(["owner", "admin", "reaction-accounts"], group.shopId)) return group;
@@ -30,7 +30,7 @@ export default async function groupQuery(context, id) {
   });
 
   // If user is not found, throw an error
-  if (!userAccount) throw new Meteor.Error("access-denied", "User does not have permissions to view groups");
+  if (!userAccount) throw new ReactionError("access-denied", "User does not have permissions to view groups");
 
   return group;
 }

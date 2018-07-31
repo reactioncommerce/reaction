@@ -1,4 +1,4 @@
-import { Meteor } from "meteor/meteor";
+import ReactionError from "/imports/plugins/core/graphql/server/no-meteor/ReactionError";
 
 /**
  * @name roles
@@ -14,7 +14,7 @@ export default async function rolesQuery(context) {
   const { roles } = collections;
 
   if (!userHasPermission(["owner", "admin"], contextShopId)) {
-    throw new Meteor.Error("access-denied", "User does not have permissions to view roles");
+    throw new ReactionError("access-denied", "User does not have permissions to view roles");
   }
 
   return roles.find({});
