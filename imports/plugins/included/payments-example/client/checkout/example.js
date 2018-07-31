@@ -4,7 +4,9 @@ import { Template } from "meteor/templating";
 import { AutoForm } from "meteor/aldeed:autoform";
 import { $ } from "meteor/jquery";
 import { Logger, Reaction, Router } from "/client/api";
-import { Cart, Shops, Packages } from "/lib/collections";
+import { Shops, Packages } from "/lib/collections";
+import getCart from "/imports/plugins/core/cart/client/util/getCart";
+import { unstoreAnonymousCart } from "/imports/plugins/core/cart/client/util/anonymousCarts";
 import { Example } from "../../lib/api";
 import { ExamplePayment } from "../../lib/collections/schemas";
 
@@ -61,7 +63,7 @@ AutoForm.addHooks("example-payment-form", {
       name: "example-paymentmethod",
       shopId: Reaction.getShopId()
     });
-    const cart = Cart.findOne();
+    const { cart, token: cartToken } = getCart();
     Example.authorize(form, {
       total: cart.getTotal(),
       currency: Shops.findOne().currency
@@ -89,10 +91,15 @@ AutoForm.addHooks("example-payment-form", {
           transactions: []
         };
         paymentMethod.transactions.push(transaction.response);
-        Meteor.call("cart/submitPayment", paymentMethod, (err) => {
+        Meteor.call("cart/submitPayment", cart._id, cartToken, paymentMethod, (err) => {
           if (err) {
             Logger.error(err);
             return;
+          }
+
+          // If there wasn't an error, the cart has been deleted.
+          if (cartToken) {
+            unstoreAnonymousCart(cart._id);
           }
 
           Router.go("cart/completed", {}, {
