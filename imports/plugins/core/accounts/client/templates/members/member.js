@@ -5,6 +5,7 @@ import { Meteor } from "meteor/meteor";
 import { Template } from "meteor/templating";
 import { $ } from "meteor/jquery";
 import { Roles } from "meteor/alanning:roles";
+import ReactionError from "/imports/plugins/core/graphql/server/no-meteor/ReactionError";
 import AccountsDashboard from "/imports/plugins/core/accounts/client/containers/accountsDashboardContainer";
 import { Components } from "@reactioncommerce/reaction-components";
 
@@ -162,7 +163,7 @@ Template.memberSettings.events({
     const permissions = [];
     const member = template.data;
     if (!this.shopId) {
-      throw new Meteor.Error("invalid-parameter", "Shop is required");
+      throw new ReactionError("invalid-parameter", "Shop is required");
     }
     if (self.name) {
       permissions.push(self.name);

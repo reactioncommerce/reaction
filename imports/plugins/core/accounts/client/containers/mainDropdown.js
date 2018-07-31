@@ -5,6 +5,7 @@ import { Roles } from "meteor/alanning:roles";
 import { Session } from "meteor/session";
 import { registerComponent, composeWithTracker, withCurrentAccount } from "@reactioncommerce/reaction-components";
 import { i18nextDep, i18next, Reaction, Logger } from "/client/api";
+import ReactionError from "/imports/plugins/core/graphql/server/no-meteor/ReactionError";
 import { Tags } from "/lib/collections";
 import { getUserAvatar } from "/imports/plugins/core/accounts/client/helpers/helpers";
 import MainDropdown from "../components/mainDropdown";
@@ -69,7 +70,7 @@ function handleChange(event, value) {
       let currentTagId;
 
       if (error) {
-        throw new Meteor.Error("create-product-error", error);
+        throw new ReactionError("create-product-error", error);
       } else if (productId) {
         currentTagId = Session.get("currentTag");
         currentTag = Tags.findOne(currentTagId);
