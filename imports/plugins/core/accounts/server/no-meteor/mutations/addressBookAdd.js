@@ -15,7 +15,7 @@ import { get } from "lodash";
  */
 export default async function addressBookAdd(context, address, accountUserId) {
   const { collections, userHasPermission, userId: userIdFromContext } = context;
-  const { Accounts, Cart, users: Users } = collections;
+  const { Accounts, users: Users } = collections;
 
   const userId = accountUserId || userIdFromContext;
   const account = await Accounts.findOne({ userId });
@@ -34,18 +34,6 @@ export default async function addressBookAdd(context, address, accountUserId) {
   // if address got shipment or billing default, we need to update cart
   // addresses accordingly
   if (address.isShippingDefault || address.isBillingDefault) {
-    const cart = await Cart.findOne({ accountId: account._id });
-
-    // If this user has a cart, first set the new shipping or payment address on the cart
-    if (cart) {
-      if (address.isShippingDefault) {
-        context.callMeteorMethod("cart/setShipmentAddress", cart._id, address);
-      }
-      if (address.isBillingDefault) {
-        context.callMeteorMethod("cart/setPaymentAddress", cart._id, address);
-      }
-    }
-
     // then change the address that has been affected
     if (address.isShippingDefault) {
       await Accounts.updateOne({
