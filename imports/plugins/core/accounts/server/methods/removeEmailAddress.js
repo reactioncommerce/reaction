@@ -8,6 +8,7 @@ import { check } from "meteor/check";
 import { SSR } from "meteor/meteorhacks:ssr";
 import { Accounts } from "/lib/collections";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
+import ReactionError from "/imports/plugins/core/graphql/server/no-meteor/ReactionError";
 
 /**
  * @method sendUpdatedVerificationEmail
@@ -25,7 +26,7 @@ async function sendUpdatedVerificationEmail(userId, email) {
 
   if (!user) {
     Logger.error("sendVerificationEmail - User not found");
-    throw new Meteor.Error("not-found", "User not found");
+    throw new ReactionError("not-found", "User not found");
   }
 
   let address = email;
@@ -39,7 +40,7 @@ async function sendUpdatedVerificationEmail(userId, email) {
     if (!address) {
       const msg = "No unverified email addresses found.";
       Logger.error(msg);
-      throw new Meteor.Error("not-found", msg);
+      throw new ReactionError("not-found", msg);
     }
   }
 
@@ -47,7 +48,7 @@ async function sendUpdatedVerificationEmail(userId, email) {
   if (!address || !user.emails || !(user.emails.map((mailInfo) => mailInfo.address).includes(address))) {
     const msg = "Email not found for user";
     Logger.error(msg);
-    throw new Meteor.Error("not-found", msg);
+    throw new ReactionError("not-found", msg);
   }
 
   const token = Random.secret();

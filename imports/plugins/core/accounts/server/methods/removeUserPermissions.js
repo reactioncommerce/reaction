@@ -3,6 +3,7 @@ import { Meteor } from "meteor/meteor";
 import { check, Match } from "meteor/check";
 import { Roles } from "meteor/alanning:roles";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
+import ReactionError from "/imports/plugins/core/graphql/server/no-meteor/ReactionError";
 
 /**
  * @name accounts/removeUserPermissions
@@ -16,7 +17,7 @@ import Reaction from "/imports/plugins/core/core/server/Reaction";
  */
 export default function removeUserPermissions(userId, permissions, group) {
   if (!Reaction.hasPermission("reaction-accounts", Meteor.userId(), group)) {
-    throw new Meteor.Error("access-denied", "Access denied");
+    throw new ReactionError("access-denied", "Access denied");
   }
   check(userId, String);
   check(permissions, Match.OneOf(String, Array));
@@ -26,6 +27,6 @@ export default function removeUserPermissions(userId, permissions, group) {
     return Roles.removeUsersFromRoles(userId, permissions, group);
   } catch (error) {
     Logger.error(error);
-    throw new Meteor.Error("access-denied", "Access Denied");
+    throw new ReactionError("access-denied", "Access Denied");
   }
 }

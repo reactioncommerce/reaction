@@ -7,6 +7,7 @@ import { check } from "meteor/check";
 import { SSR } from "meteor/meteorhacks:ssr";
 import { Accounts, Groups, Shops } from "/lib/collections";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
+import ReactionError from "/imports/plugins/core/graphql/server/no-meteor/ReactionError";
 import getCurrentUserName from "../no-meteor/util/getCurrentUserName";
 import getDataForEmail from "../util/getDataForEmail";
 
@@ -51,18 +52,18 @@ export default function inviteShopMember(options) {
 
   if (!Reaction.hasPermission("reaction-accounts", this.userId, shopId)) {
     Logger.error(`User ${this.userId} does not have reaction-accounts permissions`);
-    throw new Meteor.Error("access-denied", "Access denied");
+    throw new ReactionError("access-denied", "Access denied");
   }
 
   const group = Groups.findOne({ _id: groupId }) || {};
 
   // check to ensure that user has roles required to perform the invitation
   if (!Reaction.canInviteToGroup({ group, user: Meteor.user() })) {
-    throw new Meteor.Error("access-denied", "Cannot invite to group");
+    throw new ReactionError("access-denied", "Cannot invite to group");
   }
 
   if (group.slug === "owner") {
-    throw new Meteor.Error("bad-request", "Cannot directly invite owner");
+    throw new ReactionError("bad-request", "Cannot directly invite owner");
   }
 
   const currentUser = Meteor.user();

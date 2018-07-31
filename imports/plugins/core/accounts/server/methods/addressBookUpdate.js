@@ -5,6 +5,7 @@ import { check, Match } from "meteor/check";
 import { Accounts, Cart } from "/lib/collections";
 import * as Schemas from "/lib/collections/schemas";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
+import ReactionError from "/imports/plugins/core/graphql/server/no-meteor/ReactionError";
 
 /**
  * @name accounts/addressBookUpdate
@@ -25,7 +26,7 @@ export default function addressBookUpdate(address, accountUserId, type) {
   if (typeof accountUserId === "string") { // if this will not be a String -
     // `check` will not pass it.
     if (Meteor.userId() !== accountUserId && !Reaction.hasPermission("reaction-accounts")) {
-      throw new Meteor.Error("access-denied", "Access denied");
+      throw new ReactionError("access-denied", "Access denied");
     }
   }
   this.unblock();
@@ -36,7 +37,7 @@ export default function addressBookUpdate(address, accountUserId, type) {
   const account = Accounts.findOne({ userId });
   const oldAddress = (account.profile.addressBook || []).find((addr) => addr._id === address._id);
 
-  if (!oldAddress) throw new Meteor.Error("not-found", `No existing address found with ID ${address._id}`);
+  if (!oldAddress) throw new ReactionError("not-found", `No existing address found with ID ${address._id}`);
 
   // Set new address to be default for `type`
   if (typeof type === "string") {
@@ -145,5 +146,5 @@ export default function addressBookUpdate(address, accountUserId, type) {
     return updatedAccount.profile.addressBook.find((updatedAddress) => address._id === updatedAddress._id);
   }
 
-  throw new Meteor.Error("server-error", "Unable to update account address");
+  throw new ReactionError("server-error", "Unable to update account address");
 }

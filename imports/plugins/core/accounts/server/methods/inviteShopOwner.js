@@ -5,6 +5,7 @@ import { Accounts as MeteorAccounts } from "meteor/accounts-base";
 import { check, Match } from "meteor/check";
 import { SSR } from "meteor/meteorhacks:ssr";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
+import ReactionError from "/imports/plugins/core/graphql/server/no-meteor/ReactionError";
 import getCurrentUserName from "../no-meteor/util/getCurrentUserName";
 import getDataForEmail from "../util/getDataForEmail";
 
@@ -32,7 +33,7 @@ export default function inviteShopOwner(options, shopData) {
   // function in the Meteor.method section below to pass any  Meteor-defined
   // data (e.g., userId) as a parameter to allow for this method to be reused.
   if (!Reaction.hasPermission("admin", this.userId, Reaction.getPrimaryShopId())) {
-    throw new Meteor.Error("access-denied", "Access denied");
+    throw new ReactionError("access-denied", "Access denied");
   }
   const user = Meteor.users.findOne({ "emails.address": email });
   let userId;

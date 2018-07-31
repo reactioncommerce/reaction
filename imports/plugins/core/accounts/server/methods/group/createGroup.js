@@ -3,6 +3,7 @@ import Logger from "@reactioncommerce/logger";
 import { check, Match } from "meteor/check";
 import { Meteor } from "meteor/meteor";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
+import ReactionError from "/imports/plugins/core/graphql/server/no-meteor/ReactionError";
 import { Groups } from "/lib/collections";
 import { getSlug } from "/lib/api";
 
@@ -30,7 +31,7 @@ export default function createGroup(groupData, shopId) {
   // we are limiting group method actions to only users with admin roles
   // this also include shop owners, since they have the `admin` role in their Roles.GLOBAL_GROUP
   if (!Reaction.hasPermission("admin", Meteor.userId(), shopId)) {
-    throw new Meteor.Error("access-denied", "Access Denied");
+    throw new ReactionError("access-denied", "Access Denied");
   }
 
   const defaultCustomerGroupForShop = Groups.findOne({ slug: "customer", shopId }) || {};
@@ -48,13 +49,13 @@ export default function createGroup(groupData, shopId) {
   // ensure one group type per shop
   const groupExists = Groups.findOne({ slug: newGroupData.slug, shopId });
   if (groupExists) {
-    throw new Meteor.Error("conflict", "Group already exist for this shop");
+    throw new ReactionError("conflict", "Group already exist for this shop");
   }
   try {
     _id = Groups.insert(newGroupData);
   } catch (error) {
     Logger.error(error);
-    throw new Meteor.Error("invalid-parameter", "Bad request");
+    throw new ReactionError("invalid-parameter", "Bad request");
   }
 
   return { status: 200, group: Groups.findOne({ _id }) };
