@@ -63,7 +63,7 @@ export default function addRolesToGroups(options = { allShops: false, roles: [],
 /**
  * @name addRolesToGroupAndUsers
  * @private
- * @summary Adds the given roles to the given group, and updates users if necessary
+ * @summary Adds the given roles to the given group and updates users, if necessary
  * @param {Object} group - Group to add roles to, and update users for
  * @param {String} group._id - Group's _id
  * @param {String} group.shopId - _id of shop group belongs to
@@ -94,7 +94,7 @@ function addRolesToGroupAndUsers({ _id, shopId, name }, roles) {
   let lastUserIdUpdated = "";
 
   for (let inc = 0; inc < numQueriesNeeded; inc += 1) {
-    Logger.debug(`Processing user role update #${inc + 1} of ${numQueriesNeeded} for ${name} group`);
+    Logger.debug(`Processing user role update #${inc + 1} of ${numQueriesNeeded} for ${name} group, ${roles} roles`);
 
     if (lastUserIdUpdated) {
       accountSelector._id = {
@@ -103,18 +103,21 @@ function addRolesToGroupAndUsers({ _id, shopId, name }, roles) {
     }
 
     const userIds = Accounts.find(accountSelector, accountOptions).map((account) => account._id);
-    lastUserIdUpdated = userIds[userIds.length - 1];
-
-    const selector = { _id: { $in: userIds } };
-    const modifier = {
+    const firstUserIdInBatch = userIds[0];
+    const lastUserIdInBatch = userIds[userIds.length - 1];
+    const userSelector = { _id: { $gte: firstUserIdInBatch, $lte: lastUserIdInBatch } };
+    const userModifier = {
       $addToSet: {
         [`roles.${shopId}`]: {
           $each: roles
         }
       }
     };
-    Meteor.users.update(selector, modifier, { multi: true });
+
+    Meteor.users.update(userSelector, userModifier, { multi: true });
+
+    lastUserIdUpdated = lastUserIdInBatch;
   }
 
-  Logger.debug(`addRolesToGroupAndUsers completed for ${name} group`);
+  Logger.debug(`addRolesToGroupAndUsers completed for ${name} group, ${roles} roles`);
 }
