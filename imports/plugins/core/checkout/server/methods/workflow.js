@@ -2,11 +2,9 @@ import _ from "lodash";
 import Hooks from "@reactioncommerce/hooks";
 import Logger from "@reactioncommerce/logger";
 import { Meteor } from "meteor/meteor";
-import { Roles } from "meteor/alanning:roles";
 import { check, Match } from "meteor/check";
 import { Cart, Orders, Packages, Groups } from "/lib/collections";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
-import getCart from "/imports/plugins/core/cart/both/util/getCart";
 
 /* eslint no-shadow: 0 */
 
@@ -64,7 +62,7 @@ Meteor.methods({
   "workflow/pushCartWorkflow"(workflow, newWorkflowStatus, cartId) {
     check(workflow, String);
     check(newWorkflowStatus, String);
-    check(cartId, Match.Optional(String));
+    check(cartId, String);
     this.unblock();
 
     const defaultPackageWorkflows = [];
@@ -72,12 +70,11 @@ Meteor.methods({
       template: ""
     };
 
-    // This method could be called indirectly from publication method in a time
-    // when `this.userId` will be null, that's why we have a third argument in
-    // this method - `cartId`. So, we can't completely rely on `Meteor.userId()`
-    // here.
-    const { account, cart: currentCart } = getCart(cartId);
-    if (!currentCart) return [];
+    const currentCart = Cart.findOne({ _id: cartId });
+    if (!currentCart) {
+      Logger.error(`pushCartWorkflow: Cart with ID ${cartId} not found`);
+      throw new Meteor.Error("not-found", "Cart not found");
+    }
 
     const shopId = Reaction.getShopId();
 
@@ -105,12 +102,7 @@ Meteor.methods({
             }).permissions;
             layout.audience = defaultRoles;
           }
-          // check permissions so you don't have to on template. For a case, when
-          // this method calls indirectly from publication method, we do this
-          // check which is looks not pretty secure
-          const hasPermission = account ? Roles.userIsInRole(account.userId, layout.audience, shopId) : false;
-
-          if (hasPermission && !layout.layout) {
+          if (!layout.layout) {
             defaultPackageWorkflows.push(layout);
           }
         });
@@ -245,13 +237,18 @@ Meteor.methods({
    * @todo need tests
    * @return {Number|Boolean} cart update results
    */
-  "workflow/revertCartWorkflow"(newWorkflowStatus) {
+  "workflow/revertCartWorkflow"(newWorkflowStatus, cartId) {
     check(newWorkflowStatus, String);
+    check(cartId, String);
     this.unblock();
 
-    const { cart } = getCart();
+    const cart = Cart.findOne({ _id: cartId });
+    if (!cart) {
+      Logger.error(`revertCartWorkflow: Cart with ID ${cartId} not found`);
+      throw new Meteor.Error("not-found", "Cart not found");
+    }
 
-    if (!cart || typeof cart.workflow !== "object") return false;
+    if (typeof cart.workflow !== "object") return false;
     if (typeof cart.workflow.workflow !== "object") return false;
 
     const { workflow } = cart.workflow;

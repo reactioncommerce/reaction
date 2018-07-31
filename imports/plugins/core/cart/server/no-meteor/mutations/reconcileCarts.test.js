@@ -131,17 +131,6 @@ test("when missing anonymousCartToken, throws", async () => {
   return expect(promise).rejects.toThrowErrorMatchingSnapshot();
 });
 
-test("when missing shopId, throws", async () => {
-  mockContext.accountId = accountId;
-
-  const promise = reconcileCarts(mockContext, {
-    anonymousCartId,
-    anonymousCartToken
-  });
-
-  return expect(promise).rejects.toThrowErrorMatchingSnapshot();
-});
-
 test("when no matching anonymous cart is found, throws", async () => {
   mockContext.accountId = accountId;
   mockContext.collections.Cart.toArray.mockReturnValueOnce(Promise.resolve([mockCarts[1]]));
