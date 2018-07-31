@@ -44,9 +44,6 @@ function validateImportableCollection(impColl) {
     if (typeof field.label !== "string") {
       throw TypeError("Label is required for an importSchema field.");
     }
-    if (typeof field.saveToField !== "string") {
-      throw TypeError("saveToField is required for an importSchema field.");
-    }
   });
   return true;
 }
@@ -210,12 +207,24 @@ async function parseRawObjects(data, mapping, impColl) {
   return { validData, withErrorData };
 }
 
+function removeIgnoreOnSaveFields(data, importSchema) {
+  const fieldsToRemove = importSchema.filter((field) => field.ignoreOnSave);
+  if (fieldsToRemove.length === 0) {
+    return data;
+  }
+  return data.map((item) => {
+    fieldsToRemove.forEach((fieldToRemove) => delete item[fieldToRemove.key]);
+    return item;
+  });
+}
+
 export async function saveCSVToDB(importJob, data) {
   const { collection, mapping } = importJob;
   const impColl = ImportableCollections[collection];
   const insertPromises = [];
   const parsedData = await parseRawObjects(data, mapping, impColl);
-  const dataChunks = chunkData(parsedData.validData);
+  const cleanedValidData = removeIgnoreOnSaveFields(parsedData.validData, impColl.importSchema);
+  const dataChunks = chunkData(cleanedValidData);
   dataChunks.forEach((dataChunk) => insertPromises.push(impColl.rawCollection.insertMany(dataChunk)));
   await Promise.all(insertPromises);
   impColl.afterInsertCallback(parsedData.validData);

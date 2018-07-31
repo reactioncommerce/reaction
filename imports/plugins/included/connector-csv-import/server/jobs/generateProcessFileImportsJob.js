@@ -32,9 +32,9 @@ async function processFileImport() {
     try {
       const csvRows = await getCSVRows;
       const withErrorData = await saveCSVToDB(pendingImportJob, csvRows);
-      console.log(withErrorData);
       ImportJobs.update(pendingImportJob._id, { $set: { status: "done" } });
     } catch (error) {
+      Logger.error(error);
       ImportJobs.update(pendingImportJob._id, { $set: { status: "fileRejected" } });
     }
   }

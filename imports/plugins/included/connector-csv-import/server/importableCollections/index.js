@@ -1,7 +1,6 @@
 import { registerImportableCollection } from "@reactioncommerce/reaction-import-connectors";
 import Random from "@reactioncommerce/random";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
-import Logger from "@reactioncommerce/logger";
 import rawCollections from "/imports/collections/rawCollections";
 import { ProductsImpColl, TagsImpColl } from "../../lib/importableCollections";
 

@@ -4,12 +4,10 @@ export const ProductsImpColl = {
   importSchema: [
     {
       key: "_id",
-      saveToField: "_id",
       label: "ID"
     },
     {
       key: "title",
-      saveToField: "title",
       label: "Title"
     }
   ]
@@ -21,7 +19,6 @@ export const TagsImpColl = {
   importSchema: [
     {
       key: "_id",
-      saveToField: "_id",
       label: "ID",
       optional: true
     },
@@ -32,21 +29,19 @@ export const TagsImpColl = {
     },
     {
       key: "isVisible",
-      saveToField: "isVisble",
       label: "Is Visible",
       optional: true
     },
     {
       key: "slug",
-      saveToField: "slug",
       label: "Slug",
       optional: true
     },
     {
       key: "parentTag",
-      saveToField: "parentTag",
       label: "Parent Tag",
-      optional: true
+      optional: true,
+      ignoreOnSave: true
     }
   ]
 };
