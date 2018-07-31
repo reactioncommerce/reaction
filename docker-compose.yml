@@ -15,7 +15,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile-devserver
-    command: bash -c "npm install && npm run devserver"
+    command: bash -c "echo 'Starting Reaction Node server...' && npm install && npm run devserver"
     depends_on:
       - mongo
     environment:

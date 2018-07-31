@@ -8,7 +8,7 @@ import addCartItems from "../util/addCartItems";
  * @method createCart
  * @summary Create a new cart for a shop with an initial list of items in it.
  * @param {Object} context - an object containing the per-request state
- * @param {Object} input - the necessary input data
+ * @param {Object} input - mutation input
  * @param {String} input.items - An array of cart items to add to the new cart. Must not be empty.
  * @param {String} input.shopId - The ID of the shop that will own this cart
  * @param {Boolean} [input.shouldCreateWithoutItems] - Create even if `items` is empty or becomes empty
