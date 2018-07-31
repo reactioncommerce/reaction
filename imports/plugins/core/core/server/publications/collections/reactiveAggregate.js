@@ -1,5 +1,6 @@
 import { Meteor } from "meteor/meteor";
 import { Mongo, MongoInternals } from "meteor/mongo";
+import ReactionError from "/imports/plugins/core/graphql/server/no-meteor/ReactionError";
 
 // This code taken from https://github.com/meteorhacks/meteor-aggregate
 // Add the aggregate function available in tbe raw collection to normal collections
@@ -123,7 +124,7 @@ export function ReactiveAggregate(pub, collection, pipeline, options) {
     changed: update,
     removed: update,
     error(error) {
-      throw new Meteor.Error("server-error", `Encountered an error while observing ${collection._name}`, error);
+      throw new ReactionError("server-error", `Encountered an error while observing ${collection._name}`, error);
     }
   });
   // observeChanges() will immediately fire an "added" event for each document in the query

@@ -1,6 +1,7 @@
 import { Meteor } from "meteor/meteor";
 import { check } from "meteor/check";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
+import ReactionError from "/imports/plugins/core/graphql/server/no-meteor/ReactionError";
 import { Shops } from "/lib/collections";
 
 // We should be able to publish just the enabled languages/currencies/
@@ -16,7 +17,7 @@ Meteor.publish("MerchantShops", function (shopsOfUser = Reaction.getShopsForUser
 
   // Check if user has permissions for those shops
   if (Reaction.hasPermissionForAll(["admin"], this.userId, shopsOfUser)) {
-    throw new Meteor.Error("access-denied", "Shops requested don't belong to user");
+    throw new ReactionError("access-denied", "Shops requested don't belong to user");
   }
 
   const domain = Reaction.getDomain();
