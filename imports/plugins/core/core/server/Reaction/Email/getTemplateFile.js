@@ -1,5 +1,5 @@
 import Logger from "@reactioncommerce/logger";
-import { Meteor } from "meteor/meteor";
+import ReactionError from "/imports/plugins/core/graphql/server/no-meteor/ReactionError";
 
 /**
  * @method getTemplateFile
@@ -11,7 +11,7 @@ export default function getTemplateFile(file) {
   if (typeof file !== "string") {
     const msg = "Reaction.Email.getTemplateFile() requires a template name";
     Logger.error(msg);
-    throw new Meteor.Error("invalid-parameter", msg);
+    throw new ReactionError("invalid-parameter", msg);
   }
 
   try {
