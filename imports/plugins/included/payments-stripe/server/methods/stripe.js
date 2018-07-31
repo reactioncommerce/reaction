@@ -412,8 +412,6 @@ export const methods = {
       amount: formatForStripe(paymentMethod.amount)
     };
 
-    console.log("Capture Stripe Payment!!!! ======================", captureDetails);
-
     // 100% discounts are not valid when using Stripe
     // If discount is 100%, capture 100% and then refund 100% of transaction
     if (captureDetails.amount === accounting.unformat(0)) {
