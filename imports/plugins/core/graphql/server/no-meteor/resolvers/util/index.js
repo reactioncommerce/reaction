@@ -8,4 +8,5 @@ export { default as getConnectionTypeResolvers } from "./getConnectionTypeResolv
 export { default as getPaginatedResponse } from "./getPaginatedResponse";
 export { default as namespaces } from "./namespaces";
 export { default as optimizeIdOnly } from "./optimizeIdOnly";
+export { default as resolveAccountFromAccountId } from "./resolveAccountFromAccountId";
 export { default as resolveShopFromShopId } from "./resolveShopFromShopId";

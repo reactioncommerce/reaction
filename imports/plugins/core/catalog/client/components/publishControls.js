@@ -1,8 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import classnames from "classnames";
-import { Meteor } from "meteor/meteor";
-import { ReactiveVar } from "meteor/reactive-var";
 import { Components } from "@reactioncommerce/reaction-components";
 import {
   Button,
@@ -13,7 +11,7 @@ import {
 import { Translatable } from "/imports/plugins/core/ui/client/providers";
 
 /** TMP **/
-import { i18next, Reaction } from "/client/api";
+import { Reaction } from "/client/api";
 
 class PublishControls extends Component {
   static propTypes = {
@@ -40,8 +38,6 @@ class PublishControls extends Component {
   constructor(props) {
     super(props);
 
-    this.currentProductHash = new ReactiveVar([]);
-
     this.handleToggleShowChanges = this.handleToggleShowChanges.bind(this);
     this.handlePublishClick = this.handlePublishClick.bind(this);
   }
@@ -55,11 +51,6 @@ class PublishControls extends Component {
     this.setState({
       isHashUpdating: false
     });
-  }
-
-  componentDidUpdate() {
-    // Re-calculate hash after publishing
-    this.renderHashCalculation();
   }
 
   handleToggleShowChanges() {
@@ -162,51 +153,6 @@ class PublishControls extends Component {
     }
 
     return "private";
-  }
-
-  /**
-   * Getter hasChanges
-   * @return {Boolean} one or more revision has changes
-   */
-  get hasChanges() {
-    // Verify we even have any revision at all
-    if (this.hasRevisions) {
-      // Loop through all revisions to determine if they have changes
-      const diffHasActualChanges = this.props.revisions.map((revision) => {
-        // We probably do have chnages to publish
-        // Note: Sometimes "updatedAt" will cause false positives, but just incase, lets
-        // enable the publish button anyway.
-        if ((Array.isArray(revision.diff) && revision.diff.length) || revision.documentType !== "product") {
-          return true;
-        }
-
-        // If all else fails, we will disable the button
-        return false;
-      });
-
-      // If even one revision has changes we should enable the publish button
-      return diffHasActualChanges.some((element) => element === true);
-    }
-
-    // No revisions, no publishing
-    return false;
-  }
-
-  renderDeletionStatus() {
-    if (this.hasChanges) {
-      if (this.primaryRevision && this.primaryRevision.documentData.isDeleted) {
-        return (
-          <Button
-            label="Archived"
-            onClick={this.handleRestore}
-            status="danger"
-            i18nKeyLabel="app.archived"
-          />
-        );
-      }
-    }
-
-    return null;
   }
 
   renderPublishButton() {
@@ -325,37 +271,19 @@ class PublishControls extends Component {
     );
   }
 
-  renderHashCalculation = () => {
-    const productDocument = this.props && this.props.documents && this.props.documents[0];
-
-    if (productDocument) {
-      Meteor.call("products/getpublishedProductHash", productDocument._id, (err, result) => {
-        if (err) {
-          Alerts.toast(i18next.t("admin.catalogCalculateHashError", { err: err.reason }), "error");
-        }
-        if (result) {
-          this.currentProductHash.set(result);
-        }
-      });
-    }
-    return;
-  }
 
   renderChangesNotification = () => {
+    const currentProductHash = (this.props && this.props.documents && this.props.documents[0] && this.props.documents[0].currentProductHash) || null;
     const publishedProductHash = (this.props && this.props.documents && this.props.documents[0] && this.props.documents[0].publishedProductHash) || null;
     const { isHashUpdating } = this.state;
-
-    // Calculate hash to compare
-    this.renderHashCalculation();
-    const currentProductHash = this.currentProductHash.get();
 
     const hashIndicator = classnames({
       "rui": true,
       "hash-icon": true,
       "fa-stack": true,
       "fa-lg": true,
-      "hash-icon-visible": publishedProductHash !== currentProductHash,
-      "hash-icon-hidden": publishedProductHash === currentProductHash
+      "hash-icon-visible": currentProductHash !== publishedProductHash,
+      "hash-icon-hidden": currentProductHash === publishedProductHash
     });
 
     const primaryIcon = classnames({
@@ -386,7 +314,6 @@ class PublishControls extends Component {
   render() {
     return (
       <Components.ToolbarGroup lastChild={true}>
-        {this.renderDeletionStatus()}
         {this.renderArchiveButton()}
         {this.renderViewControls()}
         {this.renderPublishButton()}
