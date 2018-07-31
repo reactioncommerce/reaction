@@ -1,19 +1,16 @@
 import { Meteor } from "meteor/meteor";
 import { Template } from "meteor/templating";
 import { Reaction } from "/client/api";
-import { Cart } from "/lib/collections";
-
-
-/**
- * checkoutLoginCompleted
- * returns true if we've already past this stage,
- * or if the user is a guest but not anonymous
- */
+import getCart from "/imports/plugins/core/cart/client/util/getCart";
 
 Template.checkoutLogin.helpers({
+  /**
+   * @returns {Boolean} true if it's an account cart or already has an email
+   */
   checkoutLoginCompleted() {
-    const self = this;
-    const cart = Cart.findOne();
+    const { cart } = getCart();
+    if (!cart) return false;
+
     if (cart && cart.workflow) {
       const currentStatus = cart.workflow.status;
       const guestUser = Reaction.hasPermission("guest", Meteor.user());
@@ -22,10 +19,11 @@ Template.checkoutLogin.helpers({
       // you are only NOT anonymous if you sign up or have supply an email. Hence
       // we check only that the user is at least guest before moving to next step.
       // since sign up users can still have guest permission.
-      if (currentStatus !== self.template && guestUser === true) {
+      if (currentStatus !== this.template && guestUser === true) {
         return true;
       }
     }
+
     return false;
   }
 });

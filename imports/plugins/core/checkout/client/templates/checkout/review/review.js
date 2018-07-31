@@ -1,6 +1,7 @@
 import "./review.html";
 import { Meteor } from "meteor/meteor";
 import { Template } from "meteor/templating";
+import getCart from "/imports/plugins/core/cart/client/util/getCart";
 import CartSubTotals from "../../../containers/cartSubTotalContainer";
 
 /**
@@ -9,7 +10,10 @@ import CartSubTotals from "../../../containers/cartSubTotalContainer";
 */
 
 Template.checkoutReview.onRendered(() => {
-  Meteor.call("workflow/pushCartWorkflow", "coreCartWorkflow", "checkoutReview");
+  const { cart } = getCart();
+  if (cart) {
+    Meteor.call("workflow/pushCartWorkflow", "coreCartWorkflow", "checkoutReview", cart._id);
+  }
 });
 
 Template.checkoutReview.helpers({

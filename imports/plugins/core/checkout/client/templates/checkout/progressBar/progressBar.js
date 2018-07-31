@@ -1,6 +1,6 @@
 import _ from "lodash";
-import { Cart } from "/lib/collections";
 import { Template } from "meteor/templating";
+import getCart from "/imports/plugins/core/cart/client/util/getCart";
 
 /**
  * checkoutProgressBar helpers
@@ -9,7 +9,10 @@ import { Template } from "meteor/templating";
 
 Template.checkoutProgressBar.helpers({
   progressbarStatusClass() {
-    const cartWorkflow = Cart.findOne().workflow;
+    const { cart } = getCart();
+    if (!cart) return "";
+
+    const cartWorkflow = cart.workflow;
     const thisStep = cartWorkflow.status === this.template; // active
     const previouslyVisited = _.includes(cartWorkflow.workflow, this.template);
 
