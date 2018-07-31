@@ -210,17 +210,14 @@ async function parseRawObjects(data, mapping, impColl) {
   return { validData, withErrorData };
 }
 
-export const saveCSVToDB = (importJob, data) => new Promise((resolve, reject) => {
+export async function saveCSVToDB(importJob, data) {
   const { collection, mapping } = importJob;
   const impColl = ImportableCollections[collection];
-  parseRawObjects(data, mapping, impColl)
-    .then((res) => {
-      const { validData, withErrorData } = res;
-      const dataChunks = chunkData(validData);
-      dataChunks.forEach((dataChunk) => impColl.rawCollection.insertMany(dataChunk));
-      return resolve(withErrorData);
-    })
-    .catch((error) => {
-      reject(error);
-    });
-});
+  const insertPromises = [];
+  const parsedData = await parseRawObjects(data, mapping, impColl);
+  const dataChunks = chunkData(parsedData.validData);
+  dataChunks.forEach((dataChunk) => insertPromises.push(impColl.rawCollection.insertMany(dataChunk)));
+  await Promise.all(insertPromises);
+  impColl.afterInsertCallback(parsedData.validData);
+  return parsedData.withErrorData;
+}

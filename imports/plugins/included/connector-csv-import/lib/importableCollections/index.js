@@ -43,9 +43,9 @@ export const TagsImpColl = {
       optional: true
     },
     {
-      key: "relatedTagIds",
-      saveToField: "relatedTagIds",
-      label: "Related Tags",
+      key: "parentTag",
+      saveToField: "parentTag",
+      label: "Parent Tag",
       optional: true
     }
   ]
