@@ -1,8 +1,8 @@
 import _ from "lodash";
 import Logger from "@reactioncommerce/logger";
 import { HTTP } from "meteor/http";
-import { Meteor } from "meteor/meteor";
 import { Reaction } from "/lib/api";
+import ReactionError from "/imports/plugins/core/graphql/server/no-meteor/ReactionError";
 import { Packages, Shops } from "/lib/collections";
 
 /**
@@ -44,12 +44,12 @@ export default function fetchCurrencyRate() {
   // with current rates from Open Exchange Rates
   // warn if we don't have app_id
   if (!shopSettings.settings.openexchangerates) {
-    throw new Meteor.Error(
+    throw new ReactionError(
       "not-configured",
       "Open Exchange Rates not configured. Configure for current rates."
     );
   } else if (!shopSettings.settings.openexchangerates.appId) {
-    throw new Meteor.Error(
+    throw new ReactionError(
       "not-configured",
       "Open Exchange Rates AppId not configured. Configure for current rates."
     );
@@ -71,10 +71,10 @@ export default function fetchCurrencyRate() {
     } catch (error) {
       if (error.error) {
         Logger.error(error.message);
-        throw new Meteor.Error("server-error", error.message);
+        throw new ReactionError("server-error", error.message);
       } else {
         // https://openexchangerates.org/documentation#errors
-        throw new Meteor.Error("server-error", error.response.data.description);
+        throw new ReactionError("server-error", error.response.data.description);
       }
     }
 

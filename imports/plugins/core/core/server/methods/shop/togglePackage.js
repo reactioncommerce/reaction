@@ -1,6 +1,6 @@
 import { check } from "meteor/check";
-import { Meteor } from "meteor/meteor";
 import { Reaction } from "/lib/api";
+import ReactionError from "/imports/plugins/core/graphql/server/no-meteor/ReactionError";
 import { Packages } from "/lib/collections";
 
 /**
@@ -17,7 +17,7 @@ export default function togglePackage(packageId, enabled) {
   check(enabled, Boolean);
 
   if (!Reaction.hasAdminAccess()) {
-    throw new Meteor.Error("access-denied", "Access Denied");
+    throw new ReactionError("access-denied", "Access Denied");
   }
 
   return Packages.update(packageId, {

@@ -3,6 +3,7 @@ import Logger from "@reactioncommerce/logger";
 import { Meteor } from "meteor/meteor";
 import { Accounts, Shops } from "/lib/collections";
 import { Reaction } from "/lib/api";
+import ReactionError from "/imports/plugins/core/graphql/server/no-meteor/ReactionError";
 import GeoCoder from "../../util/geocoder";
 
 /**
@@ -38,7 +39,7 @@ export default function getLocale() {
   });
 
   if (!shop) {
-    throw new Meteor.Error("not-found", "Failed to find shop data. Unable to determine locale.");
+    throw new ReactionError("not-found", "Failed to find shop data. Unable to determine locale.");
   }
   // configure default defaultCountryCode
   // fallback to shop settings

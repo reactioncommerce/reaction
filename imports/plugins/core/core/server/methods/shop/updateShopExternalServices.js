@@ -1,6 +1,6 @@
 import { check } from "meteor/check";
-import { Meteor } from "meteor/meteor";
 import { Reaction } from "/lib/api";
+import ReactionError from "/imports/plugins/core/graphql/server/no-meteor/ReactionError";
 import { Jobs, Packages } from "/lib/collections";
 import * as Schemas from "/lib/collections/schemas";
 import { Job } from "/imports/plugins/core/job-collection/lib";
@@ -28,7 +28,7 @@ export default function updateShopExternalServices(details) {
 
   // must have core permissions
   if (!Reaction.hasPermission("core")) {
-    throw new Meteor.Error("access-denied", "Access Denied");
+    throw new ReactionError("access-denied", "Access Denied");
   }
   this.unblock();
 

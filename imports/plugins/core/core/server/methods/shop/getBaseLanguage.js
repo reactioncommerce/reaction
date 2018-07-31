@@ -1,5 +1,5 @@
-import { Meteor } from "meteor/meteor";
 import { Reaction } from "/lib/api";
+import ReactionError from "/imports/plugins/core/graphql/server/no-meteor/ReactionError";
 import { Shops } from "/lib/collections";
 
 /**
@@ -11,7 +11,7 @@ import { Shops } from "/lib/collections";
  */
 export default function getBaseLanguage() {
   if (!Reaction.hasPermission()) {
-    throw new Meteor.Error("access-denied", "Access Denied");
+    throw new ReactionError("access-denied", "Access Denied");
   }
   const shopId = Reaction.getShopId();
   return Shops.findOne(shopId).language;

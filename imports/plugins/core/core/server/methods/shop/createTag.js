@@ -1,6 +1,6 @@
 import { check } from "meteor/check";
-import { Meteor } from "meteor/meteor";
 import { Reaction } from "/lib/api";
+import ReactionError from "/imports/plugins/core/graphql/server/no-meteor/ReactionError";
 import { Tags } from "/lib/collections";
 import getSlug from "/imports/plugins/core/core/server/Reaction/getSlug";
 
@@ -22,7 +22,7 @@ export default function createTag(tagName, isTopLevel) {
 
   // must have 'core' permissions
   if (!Reaction.hasPermission("core")) {
-    throw new Meteor.Error("access-denied", "Access Denied");
+    throw new ReactionError("access-denied", "Access Denied");
   }
 
   const tag = {
