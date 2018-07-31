@@ -4,9 +4,10 @@ import { compose } from "recompose";
 import { registerComponent, composeWithTracker } from "@reactioncommerce/reaction-components";
 import { Reaction } from "/client/api";
 import { ITEMS_INCREMENT } from "/client/config/defaults";
+import { Shops } from "/lib/collections";
 import { loadMore } from "/imports/plugins/core/graphql/lib/helpers/pagination";
 import withCatalogItems from "imports/plugins/core/graphql/lib/hocs/withCatalogItems";
-import withPrimaryShopId from "/imports/plugins/core/graphql/lib/hocs/withPrimaryShopId";
+import withShopId from "/imports/plugins/core/graphql/lib/hocs/withShopId";
 import withTag from "/imports/plugins/core/graphql/lib/hocs/withTag";
 import ProductGridCustomer from "../components/customer/productGrid";
 
@@ -83,20 +84,27 @@ const wrapComponent = (Comp) => (
 function composer(props, onData) {
   window.prerenderReady = false;
 
+  // Get active shop's slug
+  const shopId = Reaction.getShopId();
+  const shop = Shops.findOne({ _id: shopId });
+  if (!shop) {
+    return;
+  }
+  const { slug: shopSlug } = shop;
+
+  // Get tag slug from URL
   const tagSlugOrId = Reaction.Router.getParam("slug");
 
-  // TODO multi-shop support - const shopIdOrSlug = Reaction.Router.getParam("shopSlug");
-  // Currently no way to get a shop's graphql ID by mongo _id or slug
-
-  // TODO graphql title query support - const queryString = Reaction.Router.current().query;
-
-  onData(null, { tagSlugOrId });
+  // Pass arguments to GraphQL HOCs
+  onData(null, {
+    shopSlug,
+    tagSlugOrId
+  });
 }
-
 
 registerComponent("ProductsCustomer", ProductGridCustomer, [
   composeWithTracker(composer),
-  withPrimaryShopId,
+  withShopId,
   withTag,
   withCatalogItems,
   wrapComponent
@@ -104,7 +112,7 @@ registerComponent("ProductsCustomer", ProductGridCustomer, [
 
 export default compose(
   composeWithTracker(composer),
-  withPrimaryShopId,
+  withShopId,
   withTag,
   withCatalogItems,
   wrapComponent
