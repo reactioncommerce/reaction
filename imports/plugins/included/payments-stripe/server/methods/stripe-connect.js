@@ -3,7 +3,7 @@ import { Meteor } from "meteor/meteor";
 import { HTTP } from "meteor/http";
 import { check } from "meteor/check";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
-import ReactionError from "/imports/plguins/core/graphql/server/no-meteor/ReactionError";
+import ReactionError from "/imports/plugins/core/graphql/server/no-meteor/ReactionError";
 import { Packages } from "/lib/collections";
 
 export const methods = {

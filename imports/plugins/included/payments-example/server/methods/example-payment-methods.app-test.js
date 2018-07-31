@@ -2,7 +2,7 @@
 import { Meteor } from "meteor/meteor";
 import { expect } from "meteor/practicalmeteor:chai";
 import { sinon } from "meteor/practicalmeteor:sinon";
-import ReactionError from "/imports/plguins/core/graphql/server/no-meteor/ReactionError";
+import ReactionError from "/imports/plugins/core/graphql/server/no-meteor/ReactionError";
 
 import { ExampleApi, RISKY_TEST_CARD } from "./exampleapi";
 
