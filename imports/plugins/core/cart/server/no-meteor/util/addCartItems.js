@@ -1,6 +1,6 @@
 import Random from "@reactioncommerce/random";
 import SimpleSchema from "simpl-schema";
-import ReactionError from "/imports/plugins/core/graphql/lib/ReactionError";
+import ReactionError from "@reactioncommerce/reaction-error";
 import findProductAndVariant from "/imports/plugins/core/catalog/server/no-meteor/utils/findProductAndVariant";
 
 const inputItemSchema = new SimpleSchema({

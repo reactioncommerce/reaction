@@ -3,7 +3,7 @@ import Logger from "@reactioncommerce/logger";
 import { Meteor } from "meteor/meteor";
 import { Accounts, Shops } from "/lib/collections";
 import { Reaction } from "/lib/api";
-import ReactionError from "/imports/plugins/core/graphql/lib/ReactionError";
+import ReactionError from "@reactioncommerce/reaction-error";
 import GeoCoder from "../../util/geocoder";
 
 /**

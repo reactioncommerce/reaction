@@ -1,7 +1,7 @@
 import Hooks from "@reactioncommerce/hooks";
 import Logger from "@reactioncommerce/logger";
 import { check } from "meteor/check";
-import ReactionError from "/imports/plugins/core/graphql/lib/ReactionError";
+import ReactionError from "@reactioncommerce/reaction-error";
 import * as Collections from "/lib/collections";
 import getCart from "/imports/plugins/core/cart/both/util/getCart";
 

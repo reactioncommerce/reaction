@@ -1,6 +1,6 @@
 import Hooks from "@reactioncommerce/hooks";
 import SimpleSchema from "simpl-schema";
-import ReactionError from "/imports/plugins/core/graphql/lib/ReactionError";
+import ReactionError from "@reactioncommerce/reaction-error";
 import hashLoginToken from "/imports/plugins/core/accounts/server/no-meteor/util/hashLoginToken";
 
 const inputSchema = new SimpleSchema({

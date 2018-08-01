@@ -1,7 +1,7 @@
 import { Meteor } from "meteor/meteor";
 import { check } from "meteor/check";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
-import ReactionError from "/imports/plugins/core/graphql/lib/ReactionError";
+import ReactionError from "@reactioncommerce/reaction-error";
 import { Shops } from "/lib/collections";
 
 // We should be able to publish just the enabled languages/currencies/

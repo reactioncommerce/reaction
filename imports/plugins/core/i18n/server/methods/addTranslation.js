@@ -1,5 +1,5 @@
 import { check, Match } from "meteor/check";
-import ReactionError from "/imports/plugins/core/graphql/lib/ReactionError";
+import ReactionError from "@reactioncommerce/reaction-error";
 import { Translations } from "/lib/collections";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
 

@@ -2,7 +2,7 @@ import Logger from "@reactioncommerce/logger";
 import { check } from "meteor/check";
 import { Jobs } from "/lib/collections";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
-import ReactionError from "/imports/plugins/core/graphql/lib/ReactionError";
+import ReactionError from "@reactioncommerce/reaction-error";
 
 /**
  * @name email/retryFailed

@@ -3,7 +3,7 @@ import Hooks from "@reactioncommerce/hooks";
 import Logger from "@reactioncommerce/logger";
 import Random from "@reactioncommerce/random";
 import { Meteor } from "meteor/meteor";
-import ReactionError from "/imports/plugins/core/graphql/lib/ReactionError";
+import ReactionError from "@reactioncommerce/reaction-error";
 import { Accounts } from "meteor/accounts-base";
 import * as Collections from "/lib/collections";
 import Reaction from "/imports/plugins/core/core/server/Reaction";

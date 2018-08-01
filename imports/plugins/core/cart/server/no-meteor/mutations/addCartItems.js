@@ -1,5 +1,5 @@
 import Hooks from "@reactioncommerce/hooks";
-import ReactionError from "/imports/plugins/core/graphql/lib/ReactionError";
+import ReactionError from "@reactioncommerce/reaction-error";
 import { Cart as CartSchema } from "/imports/collections/schemas";
 import hashLoginToken from "/imports/plugins/core/accounts/server/no-meteor/util/hashLoginToken";
 import addCartItemsUtil from "../util/addCartItems";

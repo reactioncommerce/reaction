@@ -4,7 +4,7 @@ import { EJSON } from "meteor/ejson";
 import { Template } from "meteor/templating";
 import { ReactiveDict } from "meteor/reactive-dict";
 import { Reaction } from "/client/api";
-import ReactionError from "/imports/plugins/core/graphql/lib/ReactionError";
+import ReactionError from "@reactioncommerce/reaction-error";
 import Logger from "/client/modules/logger";
 import { Cart } from "/lib/collections";
 

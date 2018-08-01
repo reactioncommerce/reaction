@@ -6,7 +6,7 @@ import { check, Match } from "meteor/check";
 import { Factory } from "meteor/dburles:factory";
 import { assert, expect } from "meteor/practicalmeteor:chai";
 import { sinon } from "meteor/practicalmeteor:sinon";
-import ReactionError from "/imports/plugins/core/graphql/lib/ReactionError";
+import ReactionError from "@reactioncommerce/reaction-error";
 import { getShop } from "/imports/plugins/core/core/server/fixtures/shops";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
 import * as Collections from "/lib/collections";

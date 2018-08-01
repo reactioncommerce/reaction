@@ -7,7 +7,7 @@ import { EJSON } from "meteor/ejson";
 import { Meteor } from "meteor/meteor";
 import { ReactionProduct } from "/lib/api";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
-import ReactionError from "/imports/plugins/core/graphql/lib/ReactionError";
+import ReactionError from "@reactioncommerce/reaction-error";
 import { MediaRecords, Products, Tags } from "/lib/collections";
 import { Media } from "/imports/plugins/core/files/server";
 import rawCollections from "/imports/collections/rawCollections";

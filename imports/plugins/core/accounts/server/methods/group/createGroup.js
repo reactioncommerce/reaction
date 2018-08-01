@@ -3,7 +3,7 @@ import Logger from "@reactioncommerce/logger";
 import { check, Match } from "meteor/check";
 import { Meteor } from "meteor/meteor";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
-import ReactionError from "/imports/plugins/core/graphql/lib/ReactionError";
+import ReactionError from "@reactioncommerce/reaction-error";
 import { Groups } from "/lib/collections";
 import { getSlug } from "/lib/api";
 

@@ -1,7 +1,7 @@
 import { check } from "meteor/check";
 import { Meteor } from "meteor/meteor";
 import { Reaction } from "/lib/api";
-import ReactionError from "/imports/plugins/core/graphql/lib/ReactionError";
+import ReactionError from "@reactioncommerce/reaction-error";
 import { Shops } from "/lib/collections";
 
 /**

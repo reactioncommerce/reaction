@@ -5,7 +5,7 @@ import { Accounts } from "meteor/accounts-base";
 import { Spacebars } from "meteor/spacebars";
 import { ReactiveVar } from "meteor/reactive-var";
 import { Roles } from "meteor/alanning:roles";
-import ReactionError from "/imports/plugins/core/graphql/lib/ReactionError";
+import ReactionError from "@reactioncommerce/reaction-error";
 import { i18next, Reaction } from "/client/api";
 import * as Collections from "/lib/collections";
 import * as Schemas from "/lib/collections/schemas";

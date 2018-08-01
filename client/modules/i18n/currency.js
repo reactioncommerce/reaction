@@ -1,7 +1,7 @@
 import accounting from "accounting-js";
 import { Meteor } from "meteor/meteor";
 import { Reaction, Logger } from "/client/api";
-import ReactionError from "/imports/plugins/core/graphql/lib/ReactionError";
+import ReactionError from "@reactioncommerce/reaction-error";
 import { Shops, Accounts } from "/lib/collections";
 import { currencyDep } from "./main";
 

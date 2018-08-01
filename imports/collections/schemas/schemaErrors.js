@@ -1,5 +1,5 @@
 import SimpleSchema from "simpl-schema";
-import ReactionError from "/imports/plugins/core/graphql/lib/ReactionError";
+import ReactionError from "@reactioncommerce/reaction-error";
 
 // This is needed so that it throws a ReactionError as `check()` would do
 // when we call schema.validate() in a Meteor method.

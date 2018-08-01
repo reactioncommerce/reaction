@@ -1,4 +1,4 @@
-import ReactionError from "/imports/plugins/core/graphql/lib/ReactionError";
+import ReactionError from "@reactioncommerce/reaction-error";
 
 /**
  * @summary Delete anon cart and return accountCart

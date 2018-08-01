@@ -9,7 +9,7 @@ import { Products, Tags } from "/lib/collections";
 import { expect } from "meteor/practicalmeteor:chai";
 import { sinon } from "meteor/practicalmeteor:sinon";
 import { Roles } from "meteor/alanning:roles";
-import ReactionError from "/imports/plugins/core/graphql/lib/ReactionError";
+import ReactionError from "@reactioncommerce/reaction-error";
 import { addProduct, addProductSingleVariant } from "/imports/plugins/core/core/server/fixtures/products";
 import Fixtures from "/imports/plugins/core/core/server/fixtures";
 

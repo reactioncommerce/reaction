@@ -1,5 +1,5 @@
 import { assoc, compose, map, toPairs } from "ramda";
-import ReactionError from "/imports/plugins/core/graphql/lib/ReactionError";
+import ReactionError from "@reactioncommerce/reaction-error";
 import CurrencyDefinitions from "/imports/plugins/core/core/lib/CurrencyDefinitions";
 import { namespaces } from "@reactioncommerce/reaction-graphql-utils";
 import { assocInternalId, assocOpaqueId, decodeOpaqueIdForNamespace, encodeOpaqueId } from "./id";

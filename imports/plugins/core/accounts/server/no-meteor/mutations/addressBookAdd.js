@@ -1,7 +1,7 @@
 import Hooks from "@reactioncommerce/hooks";
 import Random from "@reactioncommerce/random";
 import { get } from "lodash";
-import ReactionError from "/imports/plugins/core/graphql/lib/ReactionError";
+import ReactionError from "@reactioncommerce/reaction-error";
 
 /**
  * @name accounts/addressBookAdd

@@ -4,7 +4,7 @@ import { Factory } from "meteor/dburles:factory";
 import { Roles } from "meteor/alanning:roles";
 import { Translations } from "/lib/collections";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
-import ReactionError from "/imports/plugins/core/graphql/lib/ReactionError";
+import ReactionError from "@reactioncommerce/reaction-error";
 import { expect } from "meteor/practicalmeteor:chai";
 import { sinon } from "meteor/practicalmeteor:sinon";
 import Fixtures from "/imports/plugins/core/core/server/fixtures";

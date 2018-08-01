@@ -5,7 +5,7 @@ import { Catalog } from "/lib/api";
 import { Cart, Packages, Products } from "/lib/collections";
 import { Taxes } from "../../lib/collections";
 import Reaction from "../api";
-import ReactionError from "/imports/plugins/core/graphql/lib/ReactionError";
+import ReactionError from "@reactioncommerce/reaction-error";
 
 /**
  * @file Methods for Taxes. Run these methods using `Meteor.call()`.

@@ -3,7 +3,7 @@ import { Meteor } from "meteor/meteor";
 import { Session } from "meteor/session";
 import { composeWithTracker } from "@reactioncommerce/reaction-components";
 import { Reaction, i18next } from "/client/api";
-import ReactionError from "/imports/plugins/core/graphql/lib/ReactionError";
+import ReactionError from "@reactioncommerce/reaction-error";
 import { Tags, Shops } from "/lib/collections";
 import { AdminContextProvider } from "/imports/plugins/core/ui/client/providers";
 

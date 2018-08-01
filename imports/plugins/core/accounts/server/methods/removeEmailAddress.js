@@ -8,7 +8,7 @@ import { check } from "meteor/check";
 import { SSR } from "meteor/meteorhacks:ssr";
 import { Accounts } from "/lib/collections";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
-import ReactionError from "/imports/plugins/core/graphql/lib/ReactionError";
+import ReactionError from "@reactioncommerce/reaction-error";
 
 /**
  * @method sendUpdatedVerificationEmail

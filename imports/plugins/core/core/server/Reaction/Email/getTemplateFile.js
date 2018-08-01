@@ -1,5 +1,5 @@
 import Logger from "@reactioncommerce/logger";
-import ReactionError from "/imports/plugins/core/graphql/lib/ReactionError";
+import ReactionError from "@reactioncommerce/reaction-error";
 
 /**
  * @method getTemplateFile

@@ -1,6 +1,6 @@
 import Logger from "@reactioncommerce/logger";
 import { Meteor } from "meteor/meteor";
-import ReactionError from "/imports/plugins/core/graphql/lib/ReactionError";
+import ReactionError from "@reactioncommerce/reaction-error";
 import { Accounts, Cart } from "/lib/collections";
 
 let Reaction;

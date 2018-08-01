@@ -2,7 +2,7 @@ import _ from "lodash";
 import Logger from "@reactioncommerce/logger";
 import { HTTP } from "meteor/http";
 import { Reaction } from "/lib/api";
-import ReactionError from "/imports/plugins/core/graphql/lib/ReactionError";
+import ReactionError from "@reactioncommerce/reaction-error";
 import { Packages, Shops } from "/lib/collections";
 
 /**

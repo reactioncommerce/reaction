@@ -4,7 +4,7 @@ import { check, Match } from "meteor/check";
 import { Shipping } from "/lib/collections";
 import { ShippingMethod } from "/lib/collections/schemas";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
-import ReactionError from "/imports/plugins/core/graphql/lib/ReactionError";
+import ReactionError from "@reactioncommerce/reaction-error";
 import { shippingRoles } from "../lib/roles";
 
 export const methods = {

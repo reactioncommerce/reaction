@@ -3,7 +3,7 @@ import getServiceConfig from "nodemailer-wellknown";
 import { Meteor } from "meteor/meteor";
 import { check, Match } from "meteor/check";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
-import ReactionError from "/imports/plugins/core/graphql/lib/ReactionError";
+import ReactionError from "@reactioncommerce/reaction-error";
 
 /**
  * @name email/verifySettings
