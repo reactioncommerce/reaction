@@ -69,7 +69,7 @@ const wrapComponent = (Comp) => (
           {...this.props}
           showNotFound={!!(tagSlugOrId && tag === null)}
           canLoadMoreProducts={hasNextPage}
-          isLoading={isLoadingCatalogItems || isLoadingMore}
+          isLoading={isLoadingCatalogItems || isLoadingMore || false}
           loadProducts={this.loadProducts}
           products={products}
           shopCurrencyCode={Reaction.getPrimaryShopCurrency()}
