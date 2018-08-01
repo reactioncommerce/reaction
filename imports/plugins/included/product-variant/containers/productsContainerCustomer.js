@@ -9,7 +9,7 @@ import { Shops } from "/lib/collections";
 import { loadMore } from "/imports/plugins/core/graphql/lib/helpers/pagination";
 import withCatalogItems from "imports/plugins/core/graphql/lib/hocs/withCatalogItems";
 import withShopId from "/imports/plugins/core/graphql/lib/hocs/withShopId";
-import withTag from "/imports/plugins/core/graphql/lib/hocs/withTag";
+import withTagId from "/imports/plugins/core/graphql/lib/hocs/withTagId";
 import ProductGridCustomer from "../components/customer/productGrid";
 
 const wrapComponent = (Comp) => (
@@ -116,7 +116,7 @@ function composer(props, onData) {
 registerComponent("ProductsCustomer", ProductGridCustomer, [
   composeWithTracker(composer),
   withShopId,
-  withTag,
+  withTagId,
   withCatalogItems,
   wrapComponent
 ]);
@@ -124,7 +124,7 @@ registerComponent("ProductsCustomer", ProductGridCustomer, [
 export default compose(
   composeWithTracker(composer),
   withShopId,
-  withTag,
+  withTagId,
   withCatalogItems,
   wrapComponent
 )(ProductGridCustomer);

@@ -30,8 +30,9 @@ export default (Component) => (
 
             if (loading === false) {
               const { tag } = data;
-              if (tag) {
-                props.tag = tag;
+              const { _id } = tag || {};
+              if (_id) {
+                props.tagId = _id;
               } else {
                 // Tag not found, skip any other GraphQL HOCs that rely on data from this one
                 props.shouldSkipGraphql = true;

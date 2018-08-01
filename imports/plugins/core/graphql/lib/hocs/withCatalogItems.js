@@ -8,11 +8,11 @@ export default (Component) => (
     static propTypes = {
       shopId: PropTypes.string,
       shouldSkipGraphql: PropTypes.bool, // Whether to skip this HOC's GraphQL query & data
-      tag: PropTypes.object
+      tagId: PropTypes.string
     };
 
     render() {
-      const { shouldSkipGraphql, shopId, tag } = this.props;
+      const { shouldSkipGraphql, shopId, tagId } = this.props;
 
       if (shouldSkipGraphql || !shopId) {
         return (
@@ -22,8 +22,8 @@ export default (Component) => (
 
       const variables = { shopId };
 
-      if (tag) {
-        variables.tagIds = [tag._id];
+      if (tagId) {
+        variables.tagIds = [tagId];
       }
 
       return (
