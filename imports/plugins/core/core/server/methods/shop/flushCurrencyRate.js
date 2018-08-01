@@ -1,6 +1,6 @@
 import _ from "lodash";
 import { Reaction } from "/lib/api";
-import ReactionError from "/imports/plugins/core/graphql/server/no-meteor/ReactionError";
+import ReactionError from "/imports/plugins/core/graphql/lib/ReactionError";
 import { Shops } from "/lib/collections";
 
 /**

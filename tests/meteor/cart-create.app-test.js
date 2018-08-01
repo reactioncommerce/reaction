@@ -4,7 +4,7 @@ import Random from "@reactioncommerce/random";
 import { Meteor } from "meteor/meteor";
 import { check, Match } from "meteor/check";
 import { Factory } from "meteor/dburles:factory";
-import ReactionError from "/imports/plugins/core/graphql/server/no-meteor/ReactionError";
+import ReactionError from "/imports/plugins/core/graphql/lib/ReactionError";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
 import { Cart, Products, Accounts } from "/lib/collections";
 import { expect } from "meteor/practicalmeteor:chai";

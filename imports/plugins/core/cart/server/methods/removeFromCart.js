@@ -1,7 +1,7 @@
 import Logger from "@reactioncommerce/logger";
 import { check, Match } from "meteor/check";
 import getCart from "/imports/plugins/core/cart/both/util/getCart";
-import ReactionError from "/imports/plugins/core/graphql/server/no-meteor/ReactionError";
+import ReactionError from "/imports/plugins/core/graphql/lib/ReactionError";
 import getGraphQLContextInMeteorMethod from "/imports/plugins/core/graphql/server/getGraphQLContextInMeteorMethod";
 import updateCartItemsQuantity from "../no-meteor/mutations/updateCartItemsQuantity";
 

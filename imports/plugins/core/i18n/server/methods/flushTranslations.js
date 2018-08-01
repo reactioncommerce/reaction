@@ -1,5 +1,5 @@
 import Reaction from "/imports/plugins/core/core/server/Reaction";
-import ReactionError from "/imports/plugins/core/graphql/server/no-meteor/ReactionError";
+import ReactionError from "/imports/plugins/core/graphql/lib/ReactionError";
 import { reloadTranslationsForShop } from "/imports/plugins/core/core/server/startup/i18n";
 
 /**

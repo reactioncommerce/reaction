@@ -1,6 +1,6 @@
 import { Meteor } from "meteor/meteor";
 import { Packages } from "/lib/collections";
-import ReactionError from "/imports/plguins/core/graphql/server/no-meteor/ReactionError";
+import ReactionError from "/imports/plugins/core/graphql/lib/ReactionError";
 
 export const Example = {
   accountOptions() {

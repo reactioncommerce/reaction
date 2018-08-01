@@ -1,6 +1,6 @@
 import { uniq } from "lodash";
 import Logger from "@reactioncommerce/logger";
-import ReactionError from "/imports/plugins/core/graphql/server/no-meteor/ReactionError";
+import ReactionError from "/imports/plugins/core/graphql/lib/ReactionError";
 import publishProductsToCatalog from "../utils/publishProductsToCatalog";
 
 /**

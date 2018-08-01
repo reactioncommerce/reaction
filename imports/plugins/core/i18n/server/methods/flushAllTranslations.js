@@ -1,6 +1,6 @@
 import { Meteor } from "meteor/meteor";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
-import ReactionError from "/imports/plugins/core/graphql/server/no-meteor/ReactionError";
+import ReactionError from "/imports/plugins/core/graphql/lib/ReactionError";
 import { reloadAllTranslations } from "/imports/plugins/core/core/server/startup/i18n";
 
 /**

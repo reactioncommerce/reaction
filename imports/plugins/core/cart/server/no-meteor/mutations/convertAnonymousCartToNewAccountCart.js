@@ -1,5 +1,5 @@
 import Random from "@reactioncommerce/random";
-import ReactionError from "/imports/plugins/core/graphql/server/no-meteor/ReactionError";
+import ReactionError from "/imports/plugins/core/graphql/lib/ReactionError";
 import { Cart as CartSchema } from "/imports/collections/schemas";
 
 /**

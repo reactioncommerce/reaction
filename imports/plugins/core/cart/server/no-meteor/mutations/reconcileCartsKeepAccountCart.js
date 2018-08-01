@@ -1,4 +1,4 @@
-import ReactionError from "/imports/plugins/core/graphql/server/no-meteor/ReactionError";
+import ReactionError from "/imports/plugins/core/graphql/lib/ReactionError";
 
 /**
  * @summary Delete anon cart and return accountCart

@@ -5,7 +5,7 @@ import { check, Match } from "meteor/check";
 import { Accounts, Cart } from "/lib/collections";
 import * as Schemas from "/lib/collections/schemas";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
-import ReactionError from "/imports/plugins/core/graphql/server/no-meteor/ReactionError";
+import ReactionError from "/imports/plugins/core/graphql/lib/ReactionError";
 
 /**
  * @name accounts/addressBookUpdate

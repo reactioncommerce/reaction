@@ -7,7 +7,7 @@ import { check } from "meteor/check";
 import { SSR } from "meteor/meteorhacks:ssr";
 import { Accounts, Groups, Shops } from "/lib/collections";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
-import ReactionError from "/imports/plugins/core/graphql/server/no-meteor/ReactionError";
+import ReactionError from "/imports/plugins/core/graphql/lib/ReactionError";
 import getCurrentUserName from "../no-meteor/util/getCurrentUserName";
 import getDataForEmail from "../util/getDataForEmail";
 

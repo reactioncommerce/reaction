@@ -4,7 +4,7 @@ import { Roles } from "meteor/alanning:roles";
 import { check } from "meteor/check";
 import { Meteor } from "meteor/meteor";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
-import ReactionError from "/imports/plugins/core/graphql/server/no-meteor/ReactionError";
+import ReactionError from "/imports/plugins/core/graphql/lib/ReactionError";
 import { Accounts, Groups } from "/lib/collections";
 import setUserPermissions from "../../util/setUserPermissions";
 

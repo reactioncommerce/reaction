@@ -1,6 +1,6 @@
 import { Meteor } from "meteor/meteor";
 import { Match, check } from "meteor/check";
-import ReactionError from "/imports/plugins/core/graphql/server/no-meteor/ReactionError";
+import ReactionError from "/imports/plugins/core/graphql/lib/ReactionError";
 import { Cart } from "/lib/collections";
 import { Discounts } from "../../lib/collections";
 import Reaction from "../api";

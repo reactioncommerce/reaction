@@ -5,7 +5,7 @@ import { check } from "meteor/check";
 import { Orders } from "/lib/collections";
 import { PaymentMethodArgument } from "/lib/collections/schemas";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
-import ReactionError from "/imports/plugins/core/graphql/server/no-meteor/ReactionError";
+import ReactionError from "/imports/plugins/core/graphql/lib/ReactionError";
 import sendOrderEmail from "../util/sendOrderEmail";
 
 /**

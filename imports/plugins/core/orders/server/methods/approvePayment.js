@@ -1,7 +1,7 @@
 import Hooks from "@reactioncommerce/hooks";
 import accounting from "accounting-js";
 import { check } from "meteor/check";
-import ReactionError from "/imports/plugins/core/graphql/server/no-meteor/ReactionError";
+import ReactionError from "/imports/plugins/core/graphql/lib/ReactionError";
 import { Orders, Products } from "/lib/collections";
 import rawCollections from "/imports/collections/rawCollections";
 import Reaction from "/imports/plugins/core/core/server/Reaction";

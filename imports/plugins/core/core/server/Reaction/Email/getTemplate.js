@@ -1,7 +1,7 @@
 import Logger from "@reactioncommerce/logger";
 import { Templates } from "/lib/collections";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
-import ReactionError from "/imports/plugins/core/graphql/server/no-meteor/ReactionError";
+import ReactionError from "/imports/plugins/core/graphql/lib/ReactionError";
 import getTemplateFile from "./getTemplateFile";
 
 /**

@@ -3,7 +3,7 @@ import { Template } from "meteor/templating";
 import { Meteor } from "meteor/meteor";
 import { ReactiveDict } from "meteor/reactive-dict";
 import { Reaction } from "/client/api";
-import ReactionError from "/imports/plguins/core/graphql/server/no-meteor/ReactionError";
+import ReactionError from "/imports/plugins/core/graphql/lib/ReactionError";
 import Logger from "/client/modules/logger";
 import { Catalog, getPrimaryMediaForItem, ReactionProduct } from "/lib/api";
 import { Products } from "/lib/collections";

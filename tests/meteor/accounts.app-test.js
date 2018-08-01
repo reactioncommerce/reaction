@@ -10,7 +10,7 @@ import { Accounts as MeteorAccounts } from "meteor/accounts-base";
 import { expect } from "meteor/practicalmeteor:chai";
 import { sinon } from "meteor/practicalmeteor:sinon";
 import { SSR } from "meteor/meteorhacks:ssr";
-import ReactionError from "/imports/plugins/core/graphql/server/no-meteor/ReactionError";
+import ReactionError from "/imports/plugins/core/graphql/lib/ReactionError";
 import { Accounts, Groups, Packages, Orders, Products, Shops, Cart } from "/lib/collections";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
 import { getShop, getAddress } from "/imports/plugins/core/core/server/fixtures/shops";

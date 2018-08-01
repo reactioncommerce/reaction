@@ -8,7 +8,7 @@ import { Factory } from "meteor/dburles:factory";
 import { sinon, stubs, spies } from "meteor/practicalmeteor:sinon";
 import Fixtures from "/imports/plugins/core/core/server/fixtures";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
-import ReactionError from "/imports/plugins/core/graphql/server/no-meteor/ReactionError";
+import ReactionError from "/imports/plugins/core/graphql/lib/ReactionError";
 import { Shops } from "/lib/collections";
 
 Fixtures();

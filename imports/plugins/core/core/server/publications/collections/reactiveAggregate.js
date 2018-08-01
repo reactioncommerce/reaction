@@ -1,6 +1,6 @@
 import { Meteor } from "meteor/meteor";
 import { Mongo, MongoInternals } from "meteor/mongo";
-import ReactionError from "/imports/plugins/core/graphql/server/no-meteor/ReactionError";
+import ReactionError from "/imports/plugins/core/graphql/lib/ReactionError";
 
 // This code taken from https://github.com/meteorhacks/meteor-aggregate
 // Add the aggregate function available in tbe raw collection to normal collections

@@ -3,7 +3,7 @@ import Logger from "@reactioncommerce/logger";
 import { Meteor } from "meteor/meteor";
 import * as Collections from "/lib/collections";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
-import ReactionError from "/imports/plugins/core/graphql/server/no-meteor/ReactionError";
+import ReactionError from "/imports/plugins/core/graphql/lib/ReactionError";
 import getCart from "/imports/plugins/core/cart/both/util/getCart";
 import { PaymentMethodArgument } from "/lib/collections/schemas";
 

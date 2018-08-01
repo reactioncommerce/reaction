@@ -1,4 +1,4 @@
-import ReactionError from "/imports/plugins/core/graphql/server/no-meteor/ReactionError";
+import ReactionError from "/imports/plugins/core/graphql/lib/ReactionError";
 import hashLoginToken from "/imports/plugins/core/accounts/server/no-meteor/util/hashLoginToken";
 import convertAnonymousCartToNewAccountCart from "./convertAnonymousCartToNewAccountCart";
 import reconcileCartsKeepAccountCart from "./reconcileCartsKeepAccountCart";

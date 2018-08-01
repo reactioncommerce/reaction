@@ -5,7 +5,7 @@ import { Meteor } from "meteor/meteor";
 import { Template } from "meteor/templating";
 import { $ } from "meteor/jquery";
 import { Roles } from "meteor/alanning:roles";
-import ReactionError from "/imports/plugins/core/graphql/server/no-meteor/ReactionError";
+import ReactionError from "/imports/plugins/core/graphql/lib/ReactionError";
 import AccountsDashboard from "/imports/plugins/core/accounts/client/containers/accountsDashboardContainer";
 import { Components } from "@reactioncommerce/reaction-components";
 
