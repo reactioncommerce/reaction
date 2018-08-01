@@ -4,9 +4,9 @@ import { Meteor } from "meteor/meteor";
 import { check, Match } from "meteor/check";
 import { Job } from "/imports/plugins/core/job-collection/lib";
 import { Packages, Jobs } from "/lib/collections";
+import ReactionError from "@reactioncommerce/reaction-error";
 import { SearchPackageConfig } from "../../lib/collections/schemas";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
-import ReactionError from "@reactioncommerce/reaction-error";
 
 function fieldsChanged(changedFields, fieldType = "includes") {
   for (const field of changedFields) {
