@@ -23,10 +23,9 @@ export default (Component) => (
       return (
         <Query query={getTag} variables={variables}>
           {({ loading, data }) => {
-
             const props = {
               ...this.props,
-              isLoadingTag: loading,
+              isLoadingTag: loading
             };
 
             if (loading === false) {

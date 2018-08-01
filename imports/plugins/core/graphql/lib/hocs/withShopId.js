@@ -31,7 +31,7 @@ export default (Component) => (
 
             if (loading === false) {
               const { shopBySlug } = data;
-              const { _id } = shopBySlug;
+              const { _id } = shopBySlug || {};
               if (_id) {
                 props.shopId = _id;
               } else {

@@ -1,7 +1,7 @@
-import React, { Component } from "react";
+import React from "react";
 import { mount } from "enzyme";
 import { MockedProvider } from "react-apollo/test-utils";
-import waitUntilDataLoaded from "/imports/test-utils/helpers/waitUntilLoaded";
+import waitForTruthyProp from "/imports/test-utils/helpers/waitForTruthyProp";
 import getPrimaryShopId from "../queries/getPrimaryShopId";
 import withPrimaryShopId from "./withPrimaryShopId";
 
@@ -19,13 +19,13 @@ test("renders child component with correct shop id", async () => {
     }
   }];
 
-  const wrapper = mount(
+  const wrapper = mount((
     <MockedProvider mocks={mocks}>
       <TestComponent />
     </MockedProvider>
-  );
+  ));
 
-  await waitUntilDataLoaded(wrapper, "MockComponent", "isLoadingPrimaryShopId");
+  await waitForTruthyProp(wrapper, "MockComponent", "isLoadingPrimaryShopId");
 
   expect(wrapper.find("MockComponent").prop("shopId")).toBe(fakeOpaqueShopId);
 });
