@@ -83,7 +83,7 @@ class MappingScreen extends Component {
       Meteor.call("importJobs/updateMapping", importJob._id, updateMapping, finalMapping);
     }
     const fileRecord = FileRecord.fromFile(csvFile);
-    fileRecord.metadata = { importJobId: importJob._id };
+    fileRecord.metadata = { importJobId: importJob._id, type: "upload" };
     const promise = fileRecord.upload({ endpoint: "/imports/uploads" })
       .then(() => ImportFiles.insert(fileRecord))
       .catch((error) => {

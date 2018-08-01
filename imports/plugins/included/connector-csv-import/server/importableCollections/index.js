@@ -38,26 +38,28 @@ const tagsRowCallback = (item, options) => {
   return res;
 };
 
-const tagsAfterInsertCallback = (items) => {
-  items.forEach(async (item) => {
-    if (item.parentTag) {
-      const parentTag = await rawCollections.Tags.findOne({ name: item.parentTag });
-      const currentTag = await rawCollections.Tags.findOne({ name: item.name });
-      if (parentTag) {
-        rawCollections.Tags.update({ _id: parentTag._id }, {
-          $push: {
-            relatedTagIds: currentTag._id
-          }
-        });
-        rawCollections.Tags.update({ _id: currentTag._id }, {
-          $set: {
-            isTopLevel: false
-          }
-        });
-      }
+async function tagsAfterInsertCallback(item) {
+  if (item.parentTag) {
+    const parentTag = await rawCollections.Tags.findOne({ name: item.parentTag });
+    const currentTag = await rawCollections.Tags.findOne({ name: item.name });
+    console.log("Parent tag", parentTag);
+    if (parentTag) {
+      rawCollections.Tags.update({ _id: parentTag._id }, {
+        $push: {
+          relatedTagIds: currentTag._id
+        }
+      });
+      rawCollections.Tags.update({ _id: currentTag._id }, {
+        $set: {
+          isTopLevel: false
+        }
+      });
+    } else {
+      console.log("Has error");
+      throw Error(`Parent tag ${item.parentTag} not found.`);
     }
-  });
-};
+  }
+}
 
 const ServerTagsImpColl = Object.assign(TagsImpColl, {
   rawCollection: rawCollections.Tags,

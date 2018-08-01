@@ -6,6 +6,7 @@ import { WebApp } from "meteor/webapp";
 import { check } from "meteor/check";
 import fetch from "node-fetch";
 import {
+  FileDownloadManager,
   RemoteUrlWorker,
   MeteorFileCollection,
   MongoFileCollection,
@@ -61,6 +62,17 @@ const NoMeteorImportFiles = new MongoFileCollection("ImportFiles", {
   stores,
   tempStore
 });
+
+const downloadManager = new FileDownloadManager({
+  collections: [ImportFiles],
+  headers: {
+    get: {
+      "Cache-Control": "public, max-age=31536000"
+    }
+  }
+});
+
+WebApp.connectHandlers.use("/imports/errorFiles", downloadManager.connectHandler);
 
 const remoteUrlWorker = new RemoteUrlWorker({ fetch, fileCollections: [ImportFiles] });
 remoteUrlWorker.start();

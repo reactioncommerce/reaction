@@ -186,6 +186,7 @@ async function parseRawObjects(data, mapping, impColl) {
   const withErrorData = [];
   data.forEach((item, index) => {
     const newDoc = {};
+    newDoc.rowNumber = index;
     for (const field in item) {
       if (mapping[field] !== "ignore") {
         newDoc[mapping[field]] = item[field];
@@ -193,28 +194,26 @@ async function parseRawObjects(data, mapping, impColl) {
     }
     const errors = validateItem(newDoc, impColl.importSchema);
     if (errors.length > 0) {
-      item.errors = errors;
-      item.rowNumber = index;
-      withErrorData.push(item);
+      withErrorData.push({ rowNumber: index, errors });
       return;
     }
     if (typeof impColl.rowCallback === "function") {
       Object.assign(newDoc, impColl.rowCallback(newDoc, options));
     }
     validData.push(newDoc);
-    return;
   });
   return { validData, withErrorData };
 }
 
-function removeIgnoreOnSaveFields(data, importSchema) {
+function removeIgnoreOnSaveFieldsAndRowNumber(data, importSchema) {
   const fieldsToRemove = importSchema.filter((field) => field.ignoreOnSave);
-  if (fieldsToRemove.length === 0) {
-    return data;
-  }
   return data.map((item) => {
-    fieldsToRemove.forEach((fieldToRemove) => delete item[fieldToRemove.key]);
-    return item;
+    const itemClone = Object.assign({}, item);
+    delete itemClone.rowNumber;
+    fieldsToRemove.forEach((fieldToRemove) => {
+      delete itemClone[fieldToRemove.key];
+    });
+    return itemClone;
   });
 }
 
@@ -222,11 +221,21 @@ export async function saveCSVToDB(importJob, data) {
   const { collection, mapping } = importJob;
   const impColl = ImportableCollections[collection];
   const insertPromises = [];
-  const parsedData = await parseRawObjects(data, mapping, impColl);
-  const cleanedValidData = removeIgnoreOnSaveFields(parsedData.validData, impColl.importSchema);
+  const { validData, withErrorData } = await parseRawObjects(data, mapping, impColl);
+  const cleanedValidData = removeIgnoreOnSaveFieldsAndRowNumber(validData, impColl.importSchema);
   const dataChunks = chunkData(cleanedValidData);
   dataChunks.forEach((dataChunk) => insertPromises.push(impColl.rawCollection.insertMany(dataChunk)));
   await Promise.all(insertPromises);
-  impColl.afterInsertCallback(parsedData.validData);
-  return parsedData.withErrorData;
+  for (const item of validData) {
+    try {
+      await impColl.afterInsertCallback(item); // eslint-disable-line no-await-in-loop
+    } catch (error) {
+      withErrorData.push({
+        rowNumber: item.rowNumber,
+        errors: [error.message],
+        saved: true
+      });
+    }
+  }
+  return withErrorData;
 }
