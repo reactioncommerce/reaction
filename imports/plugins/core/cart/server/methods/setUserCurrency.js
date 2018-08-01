@@ -1,6 +1,5 @@
 import Hooks from "@reactioncommerce/hooks";
 import Logger from "@reactioncommerce/logger";
-import { Meteor } from "meteor/meteor";
 import { check } from "meteor/check";
 import ReactionError from "/imports/plugins/core/graphql/lib/ReactionError";
 import * as Collections from "/lib/collections";

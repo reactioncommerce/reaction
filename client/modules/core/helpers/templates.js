@@ -1,6 +1,5 @@
 import _ from "lodash";
 import "moment/min/locales.min.js";
-import { Meteor } from "meteor/meteor";
 import { Template } from "meteor/templating";
 import { Accounts } from "meteor/accounts-base";
 import { Spacebars } from "meteor/spacebars";
@@ -262,8 +261,7 @@ Template.registerHelper("key_value", (context) => {
     result.push({
       key,
       value
-    })
-  );
+    }));
   return result;
 });
 
