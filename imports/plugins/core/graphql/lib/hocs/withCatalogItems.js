@@ -14,7 +14,7 @@ export default (Component) => (
     render() {
       const { shouldSkipGraphql, shopId, tag } = this.props;
 
-      if (shouldSkipGraphql) {
+      if (shouldSkipGraphql || !shopId) {
         return (
           <Component {...this.props} />
         );
@@ -29,12 +29,19 @@ export default (Component) => (
       return (
         <Query query={getCatalogItems} variables={variables}>
           {({ loading, data, fetchMore }) => {
-            if (loading) return null;
+            const props = {
+              ...this.props,
+              isLoadingCatalogItems: loading,
+              fetchMore
+            };
 
-            const { catalogItems } = data;
+            if (loading === false) {
+              const { catalogItems } = data;
+              props.catalogItems = catalogItems;
+            }
 
             return (
-              <Component {...this.props} catalogItems={catalogItems} fetchMore={fetchMore} />
+              <Component {...props} />
             );
           }}
         </Query>

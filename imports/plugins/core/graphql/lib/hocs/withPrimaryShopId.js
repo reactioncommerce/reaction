@@ -21,12 +21,18 @@ export default (Component) => (
       return (
         <Query query={getPrimaryShopId}>
           {({ loading, data }) => {
-            if (loading) return null;
+            const props = {
+              ...this.props,
+              isLoadingPrimaryShopId: loading
+            };
 
-            const { primaryShopId } = data;
+            if (loading === false) {
+              const { primaryShopId } = data;
+              props.shopId = primaryShopId;
+            }
 
             return (
-              <Component {...this.props} shopId={primaryShopId} />
+              <Component {...props} />
             );
           }}
         </Query>

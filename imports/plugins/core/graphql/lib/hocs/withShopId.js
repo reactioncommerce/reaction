@@ -24,13 +24,24 @@ export default (Component) => (
       return (
         <Query query={getShopId} variables={variables}>
           {({ loading, data }) => {
-            if (loading) return null;
+            const props = {
+              ...this.props,
+              isLoadingShopId: loading
+            };
 
-            const { shopBySlug } = data;
-            const { _id } = shopBySlug;
+            if (loading === false) {
+              const { shopBySlug } = data;
+              const { _id } = shopBySlug;
+              if (_id) {
+                props.shopId = _id;
+              } else {
+                // Shop by slug not found, skip any other HOCs that relied on shopId
+                props.shouldSkipGraphql = true;
+              }
+            }
 
             return (
-              <Component {...this.props} shopId={_id} />
+              <Component {...props} />
             );
           }}
         </Query>

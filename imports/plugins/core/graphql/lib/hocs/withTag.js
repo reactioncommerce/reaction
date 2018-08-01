@@ -23,14 +23,20 @@ export default (Component) => (
       return (
         <Query query={getTag} variables={variables}>
           {({ loading, data }) => {
-            if (loading) return null;
 
-            const { tag } = data;
-            const props = { ...this.props, tag };
+            const props = {
+              ...this.props,
+              isLoadingTag: loading,
+            };
 
-            if (tag === null) {
-              // Tag not found, skip any other GraphQL HOCs that rely on data from this one
-              props.shouldSkipGraphql = true;
+            if (loading === false) {
+              const { tag } = data;
+              if (tag) {
+                props.tag = tag;
+              } else {
+                // Tag not found, skip any other GraphQL HOCs that rely on data from this one
+                props.shouldSkipGraphql = true;
+              }
             }
 
             return (

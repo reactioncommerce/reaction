@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { compose } from "recompose";
 import { registerComponent, composeWithTracker } from "@reactioncommerce/reaction-components";
+import { Meteor } from "meteor/meteor";
 import { Reaction } from "/client/api";
 import { ITEMS_INCREMENT } from "/client/config/defaults";
 import { Shops } from "/lib/collections";
@@ -32,11 +33,11 @@ const wrapComponent = (Comp) => (
     }
 
     loadProducts = () => {
-      if (this.state.isLoading) {
+      if (this.state.isLoadingMore) {
         return;
       }
 
-      this.setState({ isLoading: true });
+      this.setState({ isLoadingMore: true });
 
       const { catalogItems, fetchMore } = this.props;
       const { pageInfo } = catalogItems;
@@ -47,13 +48,18 @@ const wrapComponent = (Comp) => (
         pageInfo,
         limit: ITEMS_INCREMENT
       }, () => {
-        this.setState({ isLoading: false });
+        this.setState({ isLoadingMore: false });
       });
     };
 
     render() {
-      const { tagSlugOrId, tag, catalogItems = {} } = this.props;
-      const { isLoading } = this.state;
+      const {
+        tagSlugOrId,
+        tag,
+        catalogItems = {},
+        isLoadingCatalogItems
+      } = this.props;
+      const { isLoadingMore } = this.state;
       const { pageInfo = {} } = catalogItems;
       const { hasNextPage } = pageInfo;
       const products = (catalogItems.edges || []).map((edge) => edge.node.product);
@@ -63,7 +69,7 @@ const wrapComponent = (Comp) => (
           {...this.props}
           showNotFound={!!(tagSlugOrId && tag === null)}
           canLoadMoreProducts={hasNextPage}
-          isLoading={isLoading}
+          isLoading={isLoadingCatalogItems || isLoadingMore}
           loadProducts={this.loadProducts}
           products={products}
           shopCurrencyCode={Reaction.getPrimaryShopCurrency()}
@@ -83,6 +89,11 @@ const wrapComponent = (Comp) => (
  */
 function composer(props, onData) {
   window.prerenderReady = false;
+
+  // Prevent loading GraphQL HOCs if we don't have a user account yet. All users (even anonymous) have accounts
+  if (!Meteor.user()) {
+    return;
+  }
 
   // Get active shop's slug
   const shopId = Reaction.getShopId();
