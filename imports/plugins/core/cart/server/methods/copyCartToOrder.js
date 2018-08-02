@@ -1,5 +1,5 @@
 import Hooks from "@reactioncommerce/hooks";
-import Logger from "@reactioncommerce/logger"
+import Logger from "@reactioncommerce/logger";
 import ReactionError from "@reactioncommerce/reaction-error";
 import { Meteor } from "meteor/meteor";
 import { check, Match } from "meteor/check";
