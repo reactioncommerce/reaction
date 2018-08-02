@@ -37,7 +37,7 @@ export default (Component) => (
 
             if (loading === false) {
               const { catalogItems } = data;
-              props.catalogItems = catalogItems;
+              props.catalogItems = catalogItems || {};
             }
 
             return (
