@@ -12,11 +12,13 @@ import getGraphQLContextInMeteorMethod from "/imports/plugins/core/graphql/serve
  * @example Meteor.call("accounts/addressBookAdd", address, callBackFunction(error, result))
  * @param {Object} address - address
  * @param {String} [accountUserId] - `account.userId` used by admin to edit users
+ * @param {String} [cartId] - The cart ID, if adding an address during checkout
  * @return {Object} with updated address
  */
-export default function addressBookAdd(address, accountUserId) {
+export default function addressBookAdd(address, accountUserId, cartId) {
   Schemas.Address.validate(address);
   check(accountUserId, Match.Maybe(String));
+  check(cartId, Match.Maybe(String));
 
   this.unblock();
 

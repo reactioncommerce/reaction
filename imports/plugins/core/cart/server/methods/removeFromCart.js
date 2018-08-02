@@ -1,7 +1,7 @@
 import Logger from "@reactioncommerce/logger";
 import { Meteor } from "meteor/meteor";
 import { check, Match } from "meteor/check";
-import getCart from "/imports/plugins/core/cart/both/util/getCart";
+import getCart from "/imports/plugins/core/cart/server/util/getCart";
 import getGraphQLContextInMeteorMethod from "/imports/plugins/core/graphql/server/getGraphQLContextInMeteorMethod";
 import updateCartItemsQuantity from "../no-meteor/mutations/updateCartItemsQuantity";
 
@@ -9,15 +9,19 @@ import updateCartItemsQuantity from "../no-meteor/mutations/updateCartItemsQuant
  * @method cart/removeFromCart
  * @memberof Cart/Methods
  * @summary Removes or adjust quantity of a variant from the cart
+ * @param {String} cartId - Cart ID
+ * @param {String} [cartToken] - Token for cart, if it's anonymous
  * @param {String} cartItemId - cart item _id
  * @param {Number} [quantityDecrement] - if provided will decrement quantity by quantityDecrement
  * @returns {Object} An object with `cart` property set to the updated Cart document
  */
-export default function removeFromCart(cartItemId, quantityDecrement) {
+export default function removeFromCart(cartId, cartToken, cartItemId, quantityDecrement) {
+  check(cartId, String);
+  check(cartToken, Match.Maybe(String));
   check(cartItemId, String);
   check(quantityDecrement, Match.Optional(Number));
 
-  const { account, cart } = getCart(null, { throwIfNotFound: true });
+  const { account, cart } = getCart(null, { cartToken, throwIfNotFound: true });
 
   let cartItem;
 

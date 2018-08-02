@@ -4,7 +4,7 @@ import accounting from "accounting-js";
 import Random from "@reactioncommerce/random";
 import stripeNpm from "stripe";
 import { Meteor } from "meteor/meteor";
-import { check } from "meteor/check";
+import { check, Match } from "meteor/check";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
 import { Cart, Shops, Accounts, Packages } from "/lib/collections";
 import { PaymentMethodArgument } from "/lib/collections/schemas";
@@ -197,10 +197,11 @@ function buildPaymentMethods(options) {
 }
 
 export const methods = {
-  async "stripe/payment/createCharges"(transactionType, token, cartId) {
+  async "stripe/payment/createCharges"(transactionType, token, cartId, cartToken) {
     check(transactionType, String);
     check(token, Object);
     check(cartId, String);
+    check(cartToken, Match.Maybe(String));
 
     const primaryShopId = Reaction.getPrimaryShopId();
 
@@ -218,22 +219,19 @@ export const methods = {
 
     // Must have an email
     const cart = Cart.findOne({ _id: cartId });
-    const customerAccount = Accounts.findOne({ _id: cart.accountId });
-    let customerEmail;
-
-    if (!customerAccount || !Array.isArray(customerAccount.emails)) {
-      // TODO: Is it okay to create random email here if anonymous?
-      Logger.Error("cart email missing!");
-      throw new Meteor.Error("invalid-parameter", "Email is required for marketplace checkouts.");
+    let customerEmail = cart.email;
+    if (!customerEmail) {
+      const customerAccount = Accounts.findOne({ _id: cart.accountId });
+      if (customerAccount) {
+        const defaultEmail = (customerAccount.emails || []).find((email) => email.provides === "default");
+        if (defaultEmail) {
+          customerEmail = defaultEmail.address;
+        }
+      }
     }
 
-    const defaultEmail = customerAccount.emails.find((email) => email.provides === "default");
-    if (defaultEmail) {
-      customerEmail = defaultEmail.address;
-    } else if (!defaultEmail) {
-      customerEmail = cart.email;
-    } else {
-      throw new Meteor.Error("invalid-parameter", "Customer does not have default email");
+    if (!customerEmail) {
+      throw new Meteor.Error("invalid-parameter", "No email associated with the cart");
     }
 
     // Initialize stripe api lib
@@ -372,7 +370,7 @@ export const methods = {
       const paymentMethods = buildPaymentMethods({ token, cartItemsByShop, transactionsByShopId });
 
       // If successful, call cart/submitPayment and return success back to client.
-      Meteor.call("cart/submitPayment", paymentMethods);
+      Meteor.call("cart/submitPayment", cartId, cartToken, paymentMethods);
       return { success: true, transactions: transactionsByShopId };
     } catch (error) {
       // If unsuccessful

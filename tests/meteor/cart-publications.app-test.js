@@ -1,6 +1,5 @@
 /* eslint dot-notation: 0 */
 /* eslint prefer-arrow-callback:0 */
-import Random from "@reactioncommerce/random";
 import { Meteor } from "meteor/meteor";
 import { Factory } from "meteor/dburles:factory";
 import { expect } from "meteor/practicalmeteor:chai";
@@ -30,8 +29,6 @@ describe("Cart Publication", function () {
     const user = Factory.create("registeredUser");
     const userId = user._id;
     const account = Factory.create("account", { userId });
-    Reaction.sessionId = Random.id();
-    const { sessionId } = Reaction;
     const thisContext = {
       userId
     };
@@ -53,7 +50,7 @@ describe("Cart Publication", function () {
         shopId: shop._id
       });
       const cartPub = Meteor.server.publish_handlers["Cart"];
-      const cursor = cartPub.apply(thisContext, [sessionId]);
+      const cursor = cartPub.apply(thisContext, []);
       const data = cursor.fetch()[0];
       expect(data.userId).to.equal(userId);
     });
@@ -73,7 +70,7 @@ describe("Cart Publication", function () {
 
       expect(Collections.Cart.find().count()).to.equal(2); // ensure we've added 2 carts
       const cartPub = Meteor.server.publish_handlers["Cart"];
-      const cursor = cartPub.apply(thisContext, [sessionId]);
+      const cursor = cartPub.apply(thisContext, []);
       const data = cursor.fetch();
       expect(data).to.be.an("array");
       expect(data.length).to.equal(1);

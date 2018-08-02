@@ -4,13 +4,14 @@ import { Elements, StripeProvider } from "react-stripe-elements";
 import { composeWithTracker } from "@reactioncommerce/reaction-components";
 import { i18next, Reaction } from "/client/api";
 import { Packages } from "/lib/collections";
-import getCart from "/imports/plugins/core/cart/both/util/getCart";
+import getCart from "/imports/plugins/core/cart/client/util/getCart";
 import InjectedCardForm from "../components/injectedCardForm";
 
 class StripePaymentFormContainer extends Component {
   static propTypes = {
     apiKey: PropTypes.string,
     cartId: PropTypes.string,
+    cartToken: PropTypes.string,
     language: PropTypes.string,
     postal: PropTypes.string
   }
@@ -19,7 +20,7 @@ class StripePaymentFormContainer extends Component {
     return (
       <StripeProvider apiKey={this.props.apiKey}>
         <Elements fonts={[{ cssSrc: "https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,600,700" }]}>
-          <InjectedCardForm cartId={this.props.cartId} postal={this.props.postal} />
+          <InjectedCardForm cartId={this.props.cartId} cartToken={this.props.cartToken} postal={this.props.postal} />
         </Elements>
       </StripeProvider>
     );
@@ -33,7 +34,7 @@ function composer(props, onData) {
     shopId: Reaction.getPrimaryShopId()
   });
 
-  const { cart } = getCart();
+  const { cart, token } = getCart();
   if (!cart) return;
 
   const { billing: [{ address: { postal } }] } = cart;
@@ -41,6 +42,7 @@ function composer(props, onData) {
     onData(null, {
       apiKey: stripePackage.settings.public.publishable_key,
       cartId: cart._id,
+      cartToken: token,
       language: i18next.language,
       postal
     });

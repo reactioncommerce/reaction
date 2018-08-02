@@ -1,11 +1,11 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Meteor } from "meteor/meteor";
-import { Session } from "meteor/session";
-import { Reaction, i18next } from "/client/api";
 import { registerComponent, composeWithTracker } from "@reactioncommerce/reaction-components";
+import { Reaction, i18next } from "/client/api";
+import getCart from "/imports/plugins/core/cart/client/util/getCart";
+import { getAnonymousCartsReactive } from "/imports/plugins/core/cart/client/util/anonymousCarts";
 import LoginInline from "../components/loginInline";
-import getCart from "/imports/plugins/core/cart/both/util/getCart";
 
 class LoginInlineContainer extends Component {
   static propTypes = {
@@ -28,18 +28,21 @@ class LoginInlineContainer extends Component {
   }
 
   pushCartWorkflow = () => {
-    Meteor.call("workflow/pushCartWorkflow", "coreCartWorkflow", "checkoutLogin", (error) => {
-      if (error) {
-        // Do not bother to try to advance workflow if we can't go beyond login.
-        return;
-      }
-      const { cart } = getCart();
-      // If there's already a billing and shipping address selected, push beyond address book
-      if (cart && cart.billing[0] && cart.billing[0].address
-        && cart.shipping[0] && cart.shipping[0].address) {
-        Meteor.call("workflow/pushCartWorkflow", "coreCartWorkflow", "checkoutAddressBook");
-      }
-    });
+    const { cart } = getCart();
+    if (cart) {
+      Meteor.call("workflow/pushCartWorkflow", "coreCartWorkflow", "checkoutLogin", cart._id, (error) => {
+        if (error) {
+          // Do not bother to try to advance workflow if we can't go beyond login.
+          return;
+        }
+        // If there's already a billing and shipping address selected, push beyond address book
+        const { cart: updatedCart } = getCart();
+        if (updatedCart && updatedCart.billing[0] && updatedCart.billing[0].address
+          && updatedCart.shipping[0] && updatedCart.shipping[0].address) {
+          Meteor.call("workflow/pushCartWorkflow", "coreCartWorkflow", "checkoutAddressBook", updatedCart._id);
+        }
+      });
+    }
   }
 
   continueAsGuest = (event) => {
@@ -64,13 +67,17 @@ class LoginInlineContainer extends Component {
   handleEmailSubmit = (event, email) => {
     event.preventDefault();
     const { cart } = getCart();
-    Meteor.call("cart/setAnonymousUserEmail", cart._id, Session.get("sessionId"), email, (error) => {
-      if (error) {
-        Alerts.toast(i18next.t("mail.alerts.addCartEmailFailed"), "error");
-      } else {
-        this.pushCartWorkflow();
-      }
-    });
+    if (cart) {
+      const anonymousCarts = getAnonymousCartsReactive();
+      const cartInfo = anonymousCarts.find((anonymousCart) => anonymousCart._id === cart._id);
+      Meteor.call("cart/setAnonymousUserEmail", cart._id, cartInfo.token, email, (error) => {
+        if (error) {
+          Alerts.toast(i18next.t("mail.alerts.addCartEmailFailed"), "error");
+        } else {
+          this.pushCartWorkflow();
+        }
+      });
+    }
   }
 
   render() {

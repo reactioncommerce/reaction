@@ -149,7 +149,6 @@ export default function () {
    * @example const cart = Factory.create("cartMultiItems");
    * @property {string} shopId id - `getShop().id`
    * @property {string} accountId id - `Factory.get("account")`
-   * @property {string} sessionId - `Random.id()`
    * @property {string} email - `faker.internet.email()`
    * @property {Array} items - `[getCartItem(), getCartItem()]`
    * @property {Array} shipping - `[

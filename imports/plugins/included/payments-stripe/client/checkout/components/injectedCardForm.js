@@ -8,11 +8,13 @@ import {
   PostalCodeElement
 } from "react-stripe-elements";
 import { Meteor } from "meteor/meteor";
-import { i18next, Router } from "client/api";
+import { i18next, Router } from "/client/api";
+import { unstoreAnonymousCart } from "/imports/plugins/core/cart/client/util/anonymousCarts";
 
 class CardForm extends Component {
   static propTypes = {
     cartId: PropTypes.string,
+    cartToken: PropTypes.string,
     postal: PropTypes.string,
     stripe: PropTypes.object
   }
@@ -56,7 +58,7 @@ class CardForm extends Component {
 
   handleSubmit = (ev) => {
     const { cardNumberErrorMessage, expDateErrorMessage, CVVErrorMessage, postalErrorMessage } = this.state;
-    const { stripe, cartId } = this.props;
+    const { stripe, cartId, cartToken } = this.props;
     const resubmitMessage = "Resubmit payment";
     ev.preventDefault();
 
@@ -82,16 +84,27 @@ class CardForm extends Component {
           }
           return;
         }
-        Meteor.apply("stripe/payment/createCharges", ["authorize", payload.token, cartId], {
+        Meteor.apply("stripe/payment/createCharges", ["authorize", payload.token, cartId, cartToken], {
           wait: true,
           onResultReceived: (error, result) => {
             if (error || (result && result.error)) {
+              let errorMessage;
+              if (error) {
+                errorMessage = error.message;
+              } else {
+                errorMessage = this.errorCodes[result.error.code] ? this.errorCodes[result.error.code] : result.error.whoops;
+              }
               this.setState({
-                errorMessage: this.errorCodes[result.error.code] ? this.errorCodes[result.error.code] : result.error.whoops,
+                errorMessage,
                 submitMessage: resubmitMessage,
                 submitting: false
               });
             } else {
+              // If there wasn't an error, the cart has been deleted.
+              if (cartToken) {
+                unstoreAnonymousCart(cartId);
+              }
+
               Router.go("cart/completed", {}, {
                 _id: cartId
               });

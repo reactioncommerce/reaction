@@ -9,7 +9,6 @@ import "./collections/packages";
 import "./collections/product";
 import "./collections/products";
 import "./collections/reactiveAggregate";
-import "./collections/sessions";
 import "./collections/shipping";
 import "./collections/shops";
 import "./collections/tags";
