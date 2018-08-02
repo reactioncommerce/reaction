@@ -4,7 +4,7 @@ import { Template } from "meteor/templating";
 import { Reaction } from "/client/api";
 import Logger from "/client/modules/logger";
 import * as Collections from "/lib/collections";
-import getCart from "/imports/plugins/core/cart/both/util/getCart";
+import getCart from "/imports/plugins/core/cart/client/util/getCart";
 
 /**
  * @name reactionTemplate

@@ -1,7 +1,7 @@
 import { setTimeout } from "timers";
 import { compose } from "recompose";
 import { registerComponent, composeWithTracker } from "@reactioncommerce/reaction-components";
-import getCart from "/imports/plugins/core/cart/both/util/getCart";
+import getCart from "/imports/plugins/core/cart/client/util/getCart";
 import CartSubTotal from "../components/cartSubTotal";
 
 function composer(props, onData) {

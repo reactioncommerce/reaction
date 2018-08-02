@@ -1,6 +1,5 @@
-import Logger from "@reactioncommerce/logger";
 import { Meteor } from "meteor/meteor";
-import { check, Match } from "meteor/check";
+import { check } from "meteor/check";
 import { Roles } from "meteor/alanning:roles";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
 import getGraphQLContextInMeteorMethod from "/imports/plugins/core/graphql/server/getGraphQLContextInMeteorMethod";
@@ -10,43 +9,40 @@ import createCart from "../no-meteor/mutations/createCart";
  * @method cart/createCart
  * @summary create new cart for user
  * @memberof Cart/Methods
- * @param {String} sessionId - current client session ID (backwards compatibility with old Meteor client code)
- *   If provided, used as the `anonymousAccessToken` for non-account carts
- * @returns {String} The ID of the created cart
+ * @param {Object[]} items - An array of cart items to add to the new cart. Must not be empty.
+ * @returns {Object} The object returned by createCart mutation
  */
-export default function createCartMethod(sessionId) {
-  check(sessionId, Match.Maybe(String));
+export default function createCartMethod(items) {
+  check(items, [Object]);
 
   const shopId = Reaction.getCartShopId();
   if (!shopId) {
     throw new Meteor.Error("invalid-param", "No shop ID found");
   }
 
-  // check if user has `anonymous` role.( this is a visitor)
+  // In Meteor app we always have a user, but it may have "anonymous" role, meaning
+  // it was auto-created as a kind of session. If so, we fool the createCart mutation
+  // into thinking there is no user so that it will create an anonymous cart.
   const userId = Meteor.userId();
   const anonymousUser = Roles.userIsInRole(userId, "anonymous", shopId);
+  const userIdForContext = anonymousUser ? null : userId;
 
-  if (anonymousUser && !sessionId) {
-    throw new Meteor.Error("invalid-param", "sessionId is required for anonymous cart creation");
+  const context = Promise.await(getGraphQLContextInMeteorMethod(userIdForContext));
+  const result = Promise.await(createCart(context, { items, shopId }));
+
+  const { cart } = result;
+
+  // If we created an account cart, push workflow to address book step
+  if (cart && userIdForContext) {
+    Meteor.call(
+      "workflow/pushCartWorkflow", "coreCartWorkflow",
+      "checkoutLogin", cart._id
+    );
+    Meteor.call(
+      "workflow/pushCartWorkflow", "coreCartWorkflow",
+      "checkoutAddressBook", cart._id
+    );
   }
 
-  const context = Promise.await(getGraphQLContextInMeteorMethod(userId));
-  const { cart } = Promise.await(createCart(context, {
-    anonymousAccessTokenFromClient: anonymousUser ? sessionId : null,
-    items: [],
-    shopId,
-    shouldCreateWithoutItems: true
-  }));
-
-  // Merge all anonymous carts into the new account cart
-  if (!anonymousUser && sessionId) {
-    // Do this async because we don't need the client to know if it failed
-    Meteor.call("cart/mergeCart", cart._id, sessionId, (error) => {
-      if (error) {
-        Logger.error(`Error merging cart for session ${sessionId} into new account cart ${cart._id}`, error);
-      }
-    });
-  }
-
-  return cart._id;
+  return result;
 }

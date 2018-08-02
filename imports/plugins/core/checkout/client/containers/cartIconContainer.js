@@ -2,7 +2,7 @@ import Velocity from "velocity-animate";
 import { compose, withProps } from "recompose";
 import { registerComponent, composeWithTracker } from "@reactioncommerce/reaction-components";
 import { Reaction } from "/client/api";
-import getCart from "/imports/plugins/core/cart/both/util/getCart";
+import getCart from "/imports/plugins/core/cart/client/util/getCart";
 import CartIcon from "../components/cartIcon";
 
 const handlers = {

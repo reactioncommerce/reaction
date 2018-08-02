@@ -1,40 +1,48 @@
-import Logger from "@reactioncommerce/logger";
 import { Meteor } from "meteor/meteor";
 import { check, Match } from "meteor/check";
 import { Accounts, Cart, MediaRecords } from "/lib/collections";
+import hashLoginToken from "/imports/plugins/core/accounts/server/no-meteor/util/hashLoginToken";
 
-Meteor.publish("Cart", function (accountId, shopId) {
-  check(accountId, String);
-  check(shopId, Match.Optional(String));
+Meteor.publish("Cart", function (accountId, anonymousCarts, shopId) {
+  check(accountId, Match.Maybe(String));
+  check(anonymousCarts, Match.Maybe([Object]));
+  check(shopId, Match.Maybe(String));
 
   const userId = Meteor.userId();
-  if (!userId) {
-    Logger.debug("Cart publication called without a user context. No cart will be published.");
-    return this.ready();
+  let account;
+  if (userId) {
+    account = Accounts.findOne({ userId }, { fields: { _id: 1 } });
   }
 
-  const account = Accounts.findOne({ userId }, { fields: { _id: 1 } });
-  if (!account) {
-    Logger.debug(`Cart publication called without an account for user with ID ${userId}. No cart will be published.`);
-    return this.ready();
-  }
+  const selectorOr = [];
 
   // You can only see your own carts
-  if (accountId !== account._id) {
-    return this.ready();
+  if (account && account._id === accountId) {
+    const accountSelector = { accountId };
+    if (shopId) {
+      accountSelector.shopId = shopId;
+    }
+    selectorOr.push(accountSelector);
   }
+
+  if (Array.isArray(anonymousCarts)) {
+    anonymousCarts.forEach((anonymousCart) => {
+      selectorOr.push({
+        _id: anonymousCart._id,
+        anonymousAccessToken: hashLoginToken(anonymousCart.token)
+      });
+    });
+  }
+
+  if (selectorOr.length === 0) return this.ready();
 
   // exclude these fields from the client cart
   const fields = {
+    anonymousAccessToken: 0,
     taxes: 0
   };
 
-  const selector = { accountId };
-  if (shopId) {
-    selector.shopId = shopId;
-  }
-
-  return Cart.find(selector, { fields });
+  return Cart.find({ $or: selectorOr }, { fields });
 });
 
 Meteor.publish("CartImages", (cartId) => {

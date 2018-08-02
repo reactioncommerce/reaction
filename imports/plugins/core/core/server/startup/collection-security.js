@@ -6,7 +6,6 @@ import Reaction from "/imports/plugins/core/core/server/Reaction";
 
 const {
   Accounts,
-  Cart,
   Packages,
   Emails,
   Jobs,
@@ -106,14 +105,6 @@ export default function () {
     }
   });
 
-  // todo do we need this?
-  Security.defineMethod("ifSessionIdMatches", {
-    fetch: [],
-    deny(type, arg, userId, doc) {
-      return doc.sessionId !== Reaction.sessionId;
-    }
-  });
-
   /**
    * Define all security rules
    */
@@ -167,20 +158,6 @@ export default function () {
     .ifHasRoleForActiveShop({ role: ["admin", "owner"] })
     .ifShopIdMatches()
     .exceptProps(["shopId"])
-    .allowInClientCode();
-
-  /*
-   * Can update cart from client. Must insert/remove carts using
-   * server methods.
-   * Can update all session carts if not logged in or user cart if logged in as that user
-   * XXX should verify session match, but doesn't seem possible? Might have to move all cart updates to server methods, too?
-   */
-
-  Cart.permit(["insert", "update", "remove"])
-    .ifHasRoleForActiveShop({ role: ["anonymous", "guest"] })
-    .ifShopIdMatches()
-    .ifUserIdMatches()
-    .ifSessionIdMatches()
     .allowInClientCode();
 
   /*
