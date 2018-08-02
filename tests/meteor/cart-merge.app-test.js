@@ -6,6 +6,7 @@ import { Factory } from "meteor/dburles:factory";
 import { check, Match } from "meteor/check";
 import { expect } from "meteor/practicalmeteor:chai";
 import { sinon } from "meteor/practicalmeteor:sinon";
+import ReactionError from "@reactioncommerce/reaction-error";
 import { getShop } from "/imports/plugins/core/core/server/fixtures/shops";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
 import * as Collections from "/lib/collections";
@@ -131,7 +132,7 @@ describe("Merge Cart function ", function () {
     function mergeCartFunction() {
       Meteor.call("cart/mergeCart", "non-existent-id", "123", "123");
     }
-    expect(mergeCartFunction).to.throw(Meteor.Error, /Access Denied/);
+    expect(mergeCartFunction).to.throw(ReactionError, /Access Denied/);
     return done();
   });
 
@@ -141,7 +142,7 @@ describe("Merge Cart function ", function () {
     function mergeCartFunction() {
       return Meteor.call("cart/mergeCart", cart._id, "123", "123");
     }
-    expect(mergeCartFunction).to.throw(Meteor.Error, /Access Denied/);
+    expect(mergeCartFunction).to.throw(ReactionError, /Access Denied/);
     return done();
   });
 });

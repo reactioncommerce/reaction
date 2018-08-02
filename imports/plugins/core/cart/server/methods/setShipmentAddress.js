@@ -4,7 +4,9 @@ import { Meteor } from "meteor/meteor";
 import { check, Match } from "meteor/check";
 import { Cart } from "/lib/collections";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
+import ReactionError from "@reactioncommerce/reaction-error";
 import getCart from "/imports/plugins/core/cart/server/util/getCart";
+
 
 /**
  * @method cart/setShipmentAddress
@@ -46,7 +48,7 @@ export default function setShipmentAddress(cartId, cartToken, address) {
         updated = true;
       } catch (error) {
         Logger.error(error, "An error occurred adding the address");
-        throw new Meteor.Error(error, "An error occurred adding the address");
+        throw new ReactionError(error, "An error occurred adding the address");
       }
     });
   } else if (!cart.items || cart.items.length === 0) {
@@ -70,7 +72,7 @@ export default function setShipmentAddress(cartId, cartToken, address) {
         updated = true;
       } catch (error) {
         Logger.error(error);
-        throw new Meteor.Error("server-error", "An error occurred adding the address");
+        throw new ReactionError("server-error", "An error occurred adding the address");
       }
     } else {
       // modify an existing record if we have one already
@@ -109,7 +111,7 @@ export default function setShipmentAddress(cartId, cartToken, address) {
       Cart.update(selector, update);
     } catch (error) {
       Logger.error(error);
-      throw new Meteor.Error("server-error", "An error occurred adding the address");
+      throw new ReactionError("server-error", "An error occurred adding the address");
     }
   }
 
@@ -122,7 +124,7 @@ export default function setShipmentAddress(cartId, cartToken, address) {
   Hooks.Events.run("afterCartUpdateCalculateDiscount", cartId);
 
   if (typeof cart.workflow !== "object") {
-    throw new Meteor.Error(
+    throw new ReactionError(
       "server-error",
       "Cart workflow object not detected."
     );

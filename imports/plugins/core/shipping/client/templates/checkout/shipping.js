@@ -4,6 +4,7 @@ import { EJSON } from "meteor/ejson";
 import { Template } from "meteor/templating";
 import { ReactiveDict } from "meteor/reactive-dict";
 import { Reaction } from "/client/api";
+import ReactionError from "@reactioncommerce/reaction-error";
 import Logger from "/client/modules/logger";
 import getCart from "/imports/plugins/core/cart/client/util/getCart";
 
@@ -186,7 +187,7 @@ Template.coreCheckoutShipping.events({
     const { cart, token } = getCart();
 
     Meteor.call("cart/setShipmentMethod", cart._id, token, this.method, (error) => {
-      if (error) throw new Meteor.Error("set-shipment-method-error", error.message);
+      if (error) throw new ReactionError("set-shipment-method-error", error.message);
     });
   },
   "click [data-event-action=configure-shipping]"(event) {

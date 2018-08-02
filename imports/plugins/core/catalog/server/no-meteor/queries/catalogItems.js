@@ -1,4 +1,4 @@
-import { Meteor } from "meteor/meteor";
+import ReactionError from "@reactioncommerce/reaction-error";
 
 /**
  * @name catalogItems
@@ -16,7 +16,7 @@ export default async function catalogItems(context, { shopIds, tagIds } = {}) {
   const { Catalog } = collections;
 
   if ((!shopIds || shopIds.length === 0) && (!tagIds || tagIds.length === 0)) {
-    throw new Meteor.Error("invalid-param", "You must provide tagIds or shopIds or both");
+    throw new ReactionError("invalid-param", "You must provide tagIds or shopIds or both");
   }
 
   const query = {

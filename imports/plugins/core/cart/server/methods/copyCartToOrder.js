@@ -1,5 +1,6 @@
 import Hooks from "@reactioncommerce/hooks";
 import Logger from "@reactioncommerce/logger";
+import ReactionError from "@reactioncommerce/reaction-error";
 import { Meteor } from "meteor/meteor";
 import { check, Match } from "meteor/check";
 import { Accounts, Cart, Orders } from "/lib/collections";
@@ -36,7 +37,7 @@ export default function copyCartToOrder(cartId, cartToken) {
   if (!order.items || order.items.length === 0) {
     const msg = "An error occurred saving the order. Missing cart items.";
     Logger.error(msg);
-    throw new Meteor.Error("error-occurred", msg);
+    throw new ReactionError("error-occurred", msg);
   }
 
   // Debug only message to identify the current cartId

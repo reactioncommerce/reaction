@@ -1,7 +1,7 @@
-import { Meteor } from "meteor/meteor";
 import Hooks from "@reactioncommerce/hooks";
 import Random from "@reactioncommerce/random";
 import { get } from "lodash";
+import ReactionError from "@reactioncommerce/reaction-error";
 
 /**
  * @name accounts/addressBookAdd
@@ -20,12 +20,12 @@ export default async function addressBookAdd(context, address, accountUserId) {
   const userId = accountUserId || userIdFromContext;
   const account = await Accounts.findOne({ userId });
 
-  if (!account) throw new Meteor.Error("not-found", "No account found");
+  if (!account) throw new ReactionError("not-found", "No account found");
 
   // security, check for admin access. We don't need to check every user call
   // here because we are calling `Meteor.userId` from within this Method.
   if (typeof accountUserId === "string" && userIdFromContext !== accountUserId) {
-    if (!userHasPermission(["reaction-accounts"], account.shopId)) throw new Meteor.Error("access-denied", "Access denied");
+    if (!userHasPermission(["reaction-accounts"], account.shopId)) throw new ReactionError("access-denied", "Access denied");
   }
 
   // required default ID
@@ -99,5 +99,5 @@ export default async function addressBookAdd(context, address, accountUserId) {
     return updatedAccount.profile.addressBook.find((updatedAddress) => address._id === updatedAddress._id);
   }
 
-  throw new Meteor.Error("server-error", "Unable to add address to account");
+  throw new ReactionError("server-error", "Unable to add address to account");
 }

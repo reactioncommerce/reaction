@@ -2,6 +2,7 @@ import Logger from "@reactioncommerce/logger";
 import { check } from "meteor/check";
 import { Meteor } from "meteor/meteor";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
+import ReactionError from "@reactioncommerce/reaction-error";
 import { Accounts, Groups } from "/lib/collections";
 import setUserPermissions from "../../util/setUserPermissions";
 
@@ -27,7 +28,7 @@ export default function updateGroup(groupId, newGroupData, shopId) {
   // we are limiting group method actions to only users with admin roles
   // this also include shop owners, since they have the `admin` role in their Roles.GLOBAL_GROUP
   if (!Reaction.hasPermission("admin", Meteor.userId(), shopId)) {
-    throw new Meteor.Error("access-denied", "Access Denied");
+    throw new ReactionError("access-denied", "Access Denied");
   }
 
   // 1. Update the group data
@@ -38,7 +39,7 @@ export default function updateGroup(groupId, newGroupData, shopId) {
 
   // prevent edits on owner. Owner groups is the default containing all roles, and as such should be untouched
   if (group.slug === "owner") {
-    throw new Meteor.Error("invalid-parameter", "Bad request");
+    throw new ReactionError("invalid-parameter", "Bad request");
   }
 
   Groups.update({ _id: groupId, shopId }, { $set: update });
@@ -56,5 +57,5 @@ export default function updateGroup(groupId, newGroupData, shopId) {
     return { status: 200, group: Groups.findOne({ _id: groupId }) };
   }
   Logger.error(error);
-  throw new Meteor.Error("server-error", "Update not successful");
+  throw new ReactionError("server-error", "Update not successful");
 }

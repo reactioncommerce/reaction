@@ -2,6 +2,7 @@ import Logger from "@reactioncommerce/logger";
 import { check, Match } from "meteor/check";
 import { Meteor } from "meteor/meteor";
 import { Reaction } from "/lib/api";
+import ReactionError from "@reactioncommerce/reaction-error";
 import { Tags } from "/lib/collections";
 import getSlug from "/imports/plugins/core/core/server/Reaction/getSlug";
 
@@ -23,7 +24,7 @@ export default function updateHeaderTags(tagName, tagId, currentTagId) {
   let newTagId = {};
   // must have 'core' permissions
   if (!Reaction.hasPermission("core")) {
-    throw new Meteor.Error("access-denied", "Access Denied");
+    throw new ReactionError("access-denied", "Access Denied");
   }
   this.unblock();
 
@@ -86,5 +87,5 @@ export default function updateHeaderTags(tagName, tagId, currentTagId) {
   // TODO: refactor this. unnecessary check
   if (typeof newTagId === "string" && !currentTagId) return true;
 
-  throw new Meteor.Error("access-denied", "Failed to update header tags.");
+  throw new ReactionError("access-denied", "Failed to update header tags.");
 }

@@ -8,6 +8,7 @@ import { Factory } from "meteor/dburles:factory";
 import { sinon, stubs, spies } from "meteor/practicalmeteor:sinon";
 import Fixtures from "/imports/plugins/core/core/server/fixtures";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
+import ReactionError from "@reactioncommerce/reaction-error";
 import { Shops } from "/lib/collections";
 
 Fixtures();
@@ -60,7 +61,7 @@ describe("core shop methods", function () {
         sandbox.stub(Reaction, "hasPermission", () => false);
 
         expect(() => Meteor.call("shop/createShop"))
-          .to.throw(Meteor.Error, /Access Denied/);
+          .to.throw(ReactionError, /Access Denied/);
         expect(insertShopSpy).to.not.have.been.called;
       });
     });

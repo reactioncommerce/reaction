@@ -4,6 +4,7 @@ import { Meteor } from "meteor/meteor";
 import { check } from "meteor/check";
 import { Orders } from "/lib/collections";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
+import ReactionError from "@reactioncommerce/reaction-error";
 import sendOrderEmail from "../util/sendOrderEmail";
 
 /**
@@ -23,7 +24,7 @@ export default function shipmentShipped(order, shipment) {
   // Should be anyone who has product in an order.
   if (!Reaction.hasPermission("orders")) {
     Logger.error("User does not have 'orders' permissions");
-    throw new Meteor.Error("access-denied", "Access Denied");
+    throw new ReactionError("access-denied", "Access Denied");
   }
 
   this.unblock();
