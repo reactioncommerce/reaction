@@ -78,7 +78,7 @@ MethodHooks._initializeHook = function (mapping, methodName, hookFunction) {
 
     // Call the before hooks
     const beforeHooks = MethodHooks._beforeHooks[methodName] || [];
-    for (beforeHook of beforeHooks) {
+    for (const beforeHook of beforeHooks) {
       beforeResult = Promise.await(beforeHook.call(this, {
         result: undefined,
         error: undefined,
@@ -106,7 +106,7 @@ MethodHooks._initializeHook = function (mapping, methodName, hookFunction) {
     // Call after hooks, providing the result and the original arguments
     const afterHooks = MethodHooks._afterHooks[methodName] || [];
     hooksProcessed = 0;
-    for (afterHook of afterHooks) {
+    for (const afterHook of afterHooks) {
       const hookResult = Promise.await(afterHook.call(this, {
         result: methodResult,
         error: methodError,
@@ -176,8 +176,8 @@ MethodHooks.after = function (methodName, afterFunction) {
  * @return {String} - returns transformed data, Ignored for before hooks
  */
 MethodHooks.beforeMethods = function (dict) {
-  _.each(dict, (v, k) => {
-    MethodHooks.before(k, v);
+  _.each(dict, (val, key) => {
+    MethodHooks.before(key, val);
   });
 };
 
@@ -189,8 +189,8 @@ MethodHooks.beforeMethods = function (dict) {
  * @return {String} - returns transformed data, Passed as the methodResult to subsequent method hooks.
  */
 MethodHooks.afterMethods = function (dict) {
-  _.each(dict, (v, k) => {
-    MethodHooks.after(k, v);
+  _.each(dict, (val, key) => {
+    MethodHooks.after(key, val);
   });
 };
 
