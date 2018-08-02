@@ -57,19 +57,22 @@ const wrapComponent = (Comp) => (
         tagSlugOrId,
         tag,
         catalogItems = {},
+        isLoadingShopId,
+        isLoadingTagId,
         isLoadingCatalogItems
       } = this.props;
       const { isLoadingMore } = this.state;
       const { pageInfo = {} } = catalogItems;
       const { hasNextPage } = pageInfo;
       const products = (catalogItems.edges || []).map((edge) => edge.node.product);
+      const isLoadingData = isLoadingShopId || isLoadingTagId || isLoadingCatalogItems;
 
       return (
         <Comp
           {...this.props}
           showNotFound={!!(tagSlugOrId && tag === null)}
           canLoadMoreProducts={hasNextPage}
-          isLoading={isLoadingCatalogItems || isLoadingMore || false}
+          isLoading={isLoadingData || isLoadingMore || false}
           loadProducts={this.loadProducts}
           products={products}
           shopCurrencyCode={Reaction.getPrimaryShopCurrency()}
