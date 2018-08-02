@@ -1,5 +1,5 @@
 /**
- * @name "Query.shopBySlug"
+ * @name Query.shopBySlug
  * @method
  * @memberof Shop/GraphQL
  * @summary query the Shops collection and return shop data

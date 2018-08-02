@@ -17,6 +17,9 @@ const wrapComponent = (Comp) => (
     static propTypes = {
       catalogItems: PropTypes.object,
       fetchMore: PropTypes.func,
+      isLoadingCatalogItems: PropTypes.bool,
+      isLoadingShopId: PropTypes.bool,
+      isLoadingTagId: PropTypes.bool,
       tag: PropTypes.object,
       tagSlugOrId: PropTypes.string
     };

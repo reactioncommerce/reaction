@@ -9,51 +9,51 @@ const fakeOpaqueShopId = "cmVhY3Rpb24vc2hvcDpKOEJocTN1VHRkZ3daeDNyeg==";
 const fakeOpaqueTagId = "cmVhY3Rpb24vdGFnOnJwakN2VEJHamhCaTJ4ZHJv";
 const fakeCatalogItemsConnection = {
   __typename: "CatalogItemConnection",
-  "totalCount": 1,
-  "pageInfo": {
-    "endCursor": "N3l4bmdxZm13TUFrQVR5SzU=",
-    "startCursor": "N3l4bmdxZm13TUFrQVR5SzU=",
-    "hasNextPage": false,
-    "hasPreviousPage": false,
+  totalCount: 1,
+  pageInfo: {
+    endCursor: "N3l4bmdxZm13TUFrQVR5SzU=",
+    startCursor: "N3l4bmdxZm13TUFrQVR5SzU=",
+    hasNextPage: false,
+    hasPreviousPage: false,
     __typename: "PageInfo"
   },
-  "edges": [
+  edges: [
     {
-      "__typename": "CatalogItemEdge",
-      "cursor": "N3l4bmdxZm13TUFrQVR5SzU=",
-      "node": {
-        "__typename": "CatalogItemProduct",
-        "_id": "cmVhY3Rpb24vY2F0YWxvZ0l0ZW06N3l4bmdxZm13TUFrQVR5SzU=",
-        "product": {
-          "__typename": "CatalogProduct",
-          "_id": "cmVhY3Rpb24vY2F0YWxvZ1Byb2R1Y3Q6QkNUTVo2SFR4RlNwcEpFU2s=",
-          "title": "Basic Reaction Producdts",
-          "slug": "basic-reaction-product",
-          "description": "Sign in as administrator to edit.\nYou can clone this product from the product grid.\nYou can upload images click or drag in image box on the left here.\nTag this product below, and then add tag in navigation.\nClick the bookmark in the tag to set product url.\nOption variants, price, quantity, and child variants are created by clicking on the variant below, clone the variant to add more options.\nDetails can be added below the image for more specific product information.\n Login next to the cart, and then click the dashboard icon for more tools.",
-          "vendor": "Example Manufacturer",
-          "isLowQuantity": false,
-          "isSoldOut": false,
-          "isBackorder": false,
-          "shop": {
-            "__typename": "Shop",
-            "currency": {
-              "__typename": "Currency",
-              "code": "USD"
+      __typename: "CatalogItemEdge",
+      cursor: "N3l4bmdxZm13TUFrQVR5SzU=",
+      node: {
+        __typename: "CatalogItemProduct",
+        _id: "cmVhY3Rpb24vY2F0YWxvZ0l0ZW06N3l4bmdxZm13TUFrQVR5SzU=",
+        product: {
+          __typename: "CatalogProduct",
+          _id: "cmVhY3Rpb24vY2F0YWxvZ1Byb2R1Y3Q6QkNUTVo2SFR4RlNwcEpFU2s=",
+          title: "Basic Reaction Producdts",
+          slug: "basic-reaction-product",
+          description: "Sign in as administrator to edit.",
+          vendor: "Example Manufacturer",
+          isLowQuantity: false,
+          isSoldOut: false,
+          isBackorder: false,
+          shop: {
+            __typename: "Shop",
+            currency: {
+              __typename: "Currency",
+              code: "USD"
             }
           },
-          "pricing": [
+          pricing: [
             {
-              "__typename": "ProductPricingInfo",
-              "currency": {
-                "__typename": "Currency",
-                "code": "USD"
+              __typename: "ProductPricingInfo",
+              currency: {
+                __typename: "Currency",
+                code: "USD"
               },
-              "displayPrice": "$12.99 - $19.99",
-              "minPrice": 12.99,
-              "maxPrice": 19.99
+              displayPrice: "$12.99 - $19.99",
+              minPrice: 12.99,
+              maxPrice: 19.99
             }
           ],
-          "primaryImage": null
+          primaryImage: null
         }
       }
     }
@@ -112,7 +112,6 @@ test("renders child component with correct catalogItems connection", async () =>
     },
     edges: [
       {
-        cursor,
         node: {
           _id
         }
