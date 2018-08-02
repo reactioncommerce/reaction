@@ -1,0 +1,79 @@
+import React from "react";
+import { mount } from "enzyme";
+import { MockedProvider } from "react-apollo/test-utils";
+import waitForFalseyProp from "/imports/test-utils/helpers/waitForFalseyProp";
+import getCatalogItems from "../queries/getCatalogItems";
+import withTagId from "./withTagId";
+
+const fakeOpaqueTagId = "cmVhY3Rpb24vc2hvcDpKOEJocTN1VHRkZ3daeDNyeg==";
+const MockComponent = () => <div>Mock</div>;
+const TestComponent = withTagId(MockComponent);
+const mocks = [
+  {
+    request: {
+      query: getTagId,
+      variables: {
+        slugOrId: "shop"
+      }
+    },
+    result: {
+      data: {
+        tag: {
+          _id: fakeOpaqueTagId
+        }
+      }
+    }
+  },
+  {
+    request: {
+      query: getTagId,
+      variables: {
+        slugOrId: "fakeSlug"
+      }
+    },
+    result: {
+      data: {
+        tag: null
+      }
+    }
+  }
+];
+
+
+test("renders child component with correct tag id", async () => {
+  const wrapper = mount((
+    <MockedProvider mocks={mocks} addTypename={false}>
+      <TestComponent tagSlugOrId="shop" />
+    </MockedProvider>
+  ));
+
+  await waitForFalseyProp(wrapper, "MockComponent", "isLoadingTagId");
+
+  expect(wrapper.find("MockComponent").prop("tagId")).toBe(fakeOpaqueTagId);
+});
+
+test("doesn't query GraphQL if no tagSlug is provided", async () => {
+  const wrapper = mount((
+    <MockedProvider mocks={mocks} addTypename={false}>
+      <TestComponent />
+    </MockedProvider>
+  ));
+
+  const mockComponentInstance = wrapper.find("MockComponent");
+  expect(mockComponentInstance.prop("tagId")).toBe(undefined);
+  expect(mockComponentInstance.prop("isLoadingTagId")).toBe(undefined);
+});
+
+test("passes shouldSkipGraphql to child component if invalid tagSlug is provided", async () => {
+  const wrapper = mount((
+    <MockedProvider mocks={mocks} addTypename={false}>
+      <TestComponent tagSlugOrId="fakeSlug" />
+    </MockedProvider>
+  ));
+
+  await waitForFalseyProp(wrapper, "MockComponent", "isLoadingTagId");
+
+  const mockComponentInstance = wrapper.find("MockComponent");
+  expect(mockComponentInstance.prop("tagId")).toBe(undefined);
+  expect(mockComponentInstance.prop("shouldSkipGraphql")).toBe(true);
+});

@@ -1,7 +1,7 @@
 import React from "react";
 import { PropTypes } from "prop-types";
 import { Query } from "react-apollo";
-import getTag from "../queries/getTag";
+import getTagId from "../queries/getTagId";
 
 export default (Component) => (
   class Tag extends React.Component {
@@ -21,11 +21,11 @@ export default (Component) => (
 
       const variables = { slugOrId: tagSlugOrId };
       return (
-        <Query query={getTag} variables={variables}>
+        <Query query={getTagId} variables={variables}>
           {({ loading, data }) => {
             const props = {
               ...this.props,
-              isLoadingTag: loading
+              isLoadingTagId: loading
             };
 
             if (loading === false) {

@@ -1,7 +1,7 @@
 import React from "react";
 import { mount } from "enzyme";
 import { MockedProvider } from "react-apollo/test-utils";
-import waitForTruthyProp from "/imports/test-utils/helpers/waitForTruthyProp";
+import waitForFalseyProp from "/imports/test-utils/helpers/waitForFalseyProp";
 import getShopId from "../queries/getShopId";
 import withShopId from "./withShopId";
 
@@ -46,7 +46,7 @@ test("renders child component with correct shop id", async () => {
     </MockedProvider>
   ));
 
-  await waitForTruthyProp(wrapper, "MockComponent", "isLoadingShopId");
+  await waitForFalseyProp(wrapper, "MockComponent", "isLoadingShopId");
 
   expect(wrapper.find("MockComponent").prop("shopId")).toBe(fakeOpaqueShopId);
 });
@@ -63,14 +63,14 @@ test("doesn't query GraphQL if no shopSlug is provided", () => {
   expect(mockComponentInstance.prop("isLoadingShopId")).toBe(undefined);
 });
 
-test("skips child GraphQL HOCs if invalid shopSlug is provided", async () => {
+test("passes shouldSkipGraphql to child component if invalid shopSlug is provided", async () => {
   const wrapper = mount((
     <MockedProvider mocks={mocks} addTypename={false}>
       <TestComponent shopSlug="fakeSlug" />
     </MockedProvider>
   ));
 
-  await waitForTruthyProp(wrapper, "MockComponent", "isLoadingShopId");
+  await waitForFalseyProp(wrapper, "MockComponent", "isLoadingShopId");
 
   const mockComponentInstance = wrapper.find("MockComponent");
   expect(mockComponentInstance.prop("shopId")).toBe(undefined);

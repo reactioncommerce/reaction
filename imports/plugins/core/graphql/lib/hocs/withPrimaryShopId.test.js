@@ -1,7 +1,7 @@
 import React from "react";
 import { mount } from "enzyme";
 import { MockedProvider } from "react-apollo/test-utils";
-import waitForTruthyProp from "/imports/test-utils/helpers/waitForTruthyProp";
+import waitForFalseyProp from "/imports/test-utils/helpers/waitForFalseyProp";
 import getPrimaryShopId from "../queries/getPrimaryShopId";
 import withPrimaryShopId from "./withPrimaryShopId";
 
@@ -25,7 +25,7 @@ test("renders child component with correct shop id", async () => {
     </MockedProvider>
   ));
 
-  await waitForTruthyProp(wrapper, "MockComponent", "isLoadingPrimaryShopId");
+  await waitForFalseyProp(wrapper, "MockComponent", "isLoadingPrimaryShopId");
 
   expect(wrapper.find("MockComponent").prop("shopId")).toBe(fakeOpaqueShopId);
 });
