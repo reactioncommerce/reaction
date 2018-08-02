@@ -5,7 +5,7 @@ import { Template } from "meteor/templating";
 import { i18next, Logger } from "/client/api";
 import { Countries } from "/client/collections";
 import * as Collections from "/lib/collections";
-import getCart from "/imports/plugins/core/cart/both/util/getCart";
+import getCart from "/imports/plugins/core/cart/client/util/getCart";
 import AddressBook from "../components/addressBook";
 
 /**
@@ -23,11 +23,11 @@ function callValidateAddress(address) {
           // Add details of first invalid field from SimpleSchema
           errorMessage = error.details[0].message;
         }
-        reject(i18next.t("addressBookAdd.failedToUpdateAddress", { err: errorMessage }));
+        reject(i18next.t("addressBookEdit.somethingWentWrong", { err: errorMessage }));
       } else if (result.validated === false && !result.suggestedAddress) {
-        reject(i18next.t("addressBookAdd.failedToUpdateAddress", { err: "Unable to fetch corrected address" }));
+        reject(i18next.t("addressBookEdit.somethingWentWrong", { err: "Unable to fetch corrected address" }));
       } else if (result.validated === false && result.suggestedAddress && result.formErrors && result.formErrors.length > 0) {
-        reject(i18next.t("addressBookAdd.failedToUpdateAddress", { err: result.formErrors[result.formErrors.length - 1].details }));
+        reject(i18next.t("addressBookEdit.somethingWentWrong", { err: result.formErrors[result.formErrors.length - 1].details }));
       } else {
         resolve(result);
       }
@@ -42,12 +42,61 @@ function callValidateAddress(address) {
  */
 function callAddAddress(address) {
   return new Promise((resolve, reject) => {
-    Meteor.call("accounts/addressBookAdd", address, (err, res) => {
-      if (err || !res) {
+    const { cart } = getCart();
+    Meteor.call("accounts/addressBookAdd", address, null, cart && cart._id, (err, addedAddress) => {
+      if (err || !addedAddress) {
         err && Logger.error(err);
         reject(i18next.t("addressBookAdd.failedToAddAddress", { err: err && err.message }));
       } else {
-        resolve(res);
+        resolve(addedAddress);
+      }
+    });
+  });
+}
+
+/**
+ * @private
+ * @param {Object} address - address to be added
+ * @returns {undefined}
+ */
+function callSetShipmentAddress(address) {
+  return new Promise((resolve, reject) => {
+    const { cart, token } = getCart();
+    if (!cart) {
+      resolve(address);
+      return;
+    }
+
+    Meteor.call("cart/setShipmentAddress", cart._id, token, address, (err, res) => {
+      if (err || !res) {
+        err && Logger.error(err);
+        reject(i18next.t("addressBookEdit.somethingWentWrong", { err: err && err.message }));
+      } else {
+        resolve(address);
+      }
+    });
+  });
+}
+
+/**
+ * @private
+ * @param {Object} address - address to be added
+ * @returns {undefined}
+ */
+function callSetPaymentAddress(address) {
+  return new Promise((resolve, reject) => {
+    const { cart, token } = getCart();
+    if (!cart) {
+      resolve(address);
+      return;
+    }
+
+    Meteor.call("cart/setPaymentAddress", cart._id, token, address, (err, res) => {
+      if (err || !res) {
+        err && Logger.error(err);
+        reject(i18next.t("addressBookEdit.somethingWentWrong", { err: err && err.message }));
+      } else {
+        resolve(address);
       }
     });
   });
@@ -61,15 +110,65 @@ function callAddAddress(address) {
  */
 function callUpdateAddress(address, property) {
   return new Promise((resolve, reject) => {
-    Meteor.call("accounts/addressBookUpdate", address, null, property, (err, res) => {
+    Meteor.call("accounts/addressBookUpdate", address, null, property, (err, updatedAddress) => {
+      if (err || !updatedAddress) {
+        err && Logger.error(err);
+        reject(i18next.t("addressBookEdit.somethingWentWrong", { err: err && err.message }));
+      } else {
+        resolve(updatedAddress);
+      }
+    });
+  });
+}
+
+/**
+ * @private
+ * @param {String} addressId - ID of address to remove from cart
+ * @param {String} type - "billing" or "shipping"
+ * @returns {<Promise>Object} Result
+ */
+function callUnsetAddress(addressId, type) {
+  return new Promise((resolve, reject) => {
+    const { cart, token } = getCart();
+    if (!cart) {
+      resolve();
+      return;
+    }
+
+    Meteor.call("cart/unsetAddresses", cart && cart._id, token, addressId, type, (err, res) => {
       if (err || !res) {
         err && Logger.error(err);
         reject(i18next.t("addressBookEdit.somethingWentWrong", { err: err && err.message }));
       } else {
-        resolve(res);
+        resolve();
       }
     });
   });
+}
+
+/**
+ * @summary Update shipping or billing address for cart
+ * @param {Object} updatedAddress Address
+ * @returns {<Promise>Boolean[]} Resolves with 0 or more results
+ */
+function updateCartAddresses(updatedAddress) {
+  const promises = [];
+
+  if (updatedAddress) {
+    if (updatedAddress.isShippingDefault) {
+      promises.push(callSetShipmentAddress(updatedAddress));
+    } else {
+      promises.push(callUnsetAddress(updatedAddress._id, "shipping"));
+    }
+
+    if (updatedAddress.isBillingDefault) {
+      promises.push(callSetPaymentAddress(updatedAddress));
+    } else {
+      promises.push(callUnsetAddress(updatedAddress._id, "billing"));
+    }
+  }
+
+  return Promise.all(promises);
 }
 
 const handlers = {
@@ -86,15 +185,17 @@ const handlers = {
    */
   updateAddress(address, property, validateAddress = true) {
     if (validateAddress) {
-      return callValidateAddress(address).then((result) => {
-        if (result.validated) {
-          return callUpdateAddress(address, property);
-        }
-        return result;
-      });
+      return callValidateAddress(address)
+        .then((result) => {
+          if (result.validated) {
+            return callUpdateAddress(address, property);
+          }
+          return null;
+        })
+        .then(updateCartAddresses);
     }
 
-    return callUpdateAddress(address, property);
+    return callUpdateAddress(address, property).then(updateCartAddresses);
   },
 
   /**
@@ -130,15 +231,17 @@ const handlers = {
    */
   addAddress(address, validateAddress = true) {
     if (validateAddress) {
-      return callValidateAddress(address).then((result) => {
-        if (result.validated) {
-          return callAddAddress(address);
-        }
-        return result;
-      });
+      return callValidateAddress(address)
+        .then((result) => {
+          if (result.validated) {
+            return callAddAddress(address);
+          }
+          return result;
+        })
+        .then(updateCartAddresses);
     }
 
-    return callAddAddress(address);
+    return callAddAddress(address).then(updateCartAddresses);
   },
 
   markCart(address, isEnteredSelected) {
@@ -211,15 +314,15 @@ function composer(props, onData) {
     }
     regionsByCountry[key] = regions;
   });
+
   // The initial mode for addressBook
+  // If we have passed the address step, show the grid
   let initMode;
   const { cart } = getCart();
-  if (!cart) return;
-
-  // If we have passed the address step, show the grid
-  if (cart.workflow.status !== "checkoutAddressBook") {
+  if (!cart || !cart.workflow || cart.workflow.status !== "checkoutAddressBook") {
     initMode = "grid";
   }
+
   // AddressBook heading will be different in different views
   // If the view template that's using the AddressBook has a
   // heading object, set it as the AddressBook heading

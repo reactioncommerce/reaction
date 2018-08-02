@@ -14,7 +14,7 @@ import unsetAddresses from "./unsetAddresses";
 
 /**
  * @file Methods for Cart - Use these methods by running `Meteor.call()`
- * @example Meteor.call("cart/createCart", this.userId, sessionId)
+ * @example Meteor.call("cart/createCart")
  * @namespace Cart/Methods
  */
 

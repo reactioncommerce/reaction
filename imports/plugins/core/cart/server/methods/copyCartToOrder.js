@@ -1,12 +1,12 @@
 import Hooks from "@reactioncommerce/hooks";
-import Logger from "@reactioncommerce/logger";
-import { Meteor } from "meteor/meteor";
-import { check } from "meteor/check";
+import Logger from "@reactioncommerce/logger"
 import ReactionError from "@reactioncommerce/reaction-error";
-import { Cart, Orders } from "/lib/collections";
+import { Meteor } from "meteor/meteor";
+import { check, Match } from "meteor/check";
+import { Accounts, Cart, Orders } from "/lib/collections";
 import rawCollections from "/imports/collections/rawCollections";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
-import getCart from "/imports/plugins/core/cart/both/util/getCart";
+import getCart from "/imports/plugins/core/cart/server/util/getCart";
 import sendOrderEmail from "/imports/plugins/core/orders/server/util/sendOrderEmail";
 import findProductAndVariant from "/imports/plugins/core/catalog/server/no-meteor/utils/findProductAndVariant";
 
@@ -21,15 +21,14 @@ import findProductAndVariant from "/imports/plugins/core/catalog/server/no-meteo
  * @todo  Partial order processing, shopId processing
  * @todo  Review Security on this method
  * @param {String} cartId - cartId to transform to order
+ * @param {String} [cartToken] - Token for cart, if it's anonymous
  * @return {String} returns orderId
  */
-export default function copyCartToOrder(cartId) {
+export default function copyCartToOrder(cartId, cartToken) {
   check(cartId, String);
+  check(cartToken, Match.Maybe(String));
 
-  const { account, cart } = getCart(cartId);
-  if (!cart) {
-    throw new ReactionError("access-denied", "Access Denied");
-  }
+  const { cart } = getCart(cartId, { cartToken, throwIfNotFound: true });
 
   // Init new order object from existing cart
   const order = Object.assign({}, cart);
@@ -47,6 +46,18 @@ export default function copyCartToOrder(cartId) {
   // Set our new order's cartId to existing cart._id
   // We'll get a new _id for our order
   order.cartId = cart._id;
+
+  // Get the current user and their account
+  const currentUser = Meteor.user();
+  let account = null;
+  if (currentUser) {
+    account = Accounts.findOne({ userId: currentUser._id }, { fields: { _id: 1, emails: 1 } });
+  }
+
+  // Anonymous carts do not have an accountId prop, but we'll set it to the anonymous account for the order
+  if (!order.accountId && account) {
+    order.accountId = account._id;
+  }
 
   // This block assigns an existing user's email associated with their account to this order
   // We copied order from cart, so this accountId and email are coming from the existing cart
@@ -68,6 +79,8 @@ export default function copyCartToOrder(cartId) {
   }
 
   // These will get new values or are not needed
+  delete order.anonymousAccessToken;
+  delete order.bypassAddressValidation;
   delete order.getCount;
   delete order.getShippingTotal;
   delete order.getSubTotal;
@@ -103,7 +116,6 @@ export default function copyCartToOrder(cartId) {
 
   // Add current exchange rate into order.billing.currency
   // If user currency === shop currency, exchange rate = 1.0
-  const currentUser = Meteor.user();
   let userCurrency = Reaction.getShopCurrency();
   let exchangeRate = "1.00";
 

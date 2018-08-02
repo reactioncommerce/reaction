@@ -27,8 +27,6 @@ describe("Account Meteor method ", function () {
 
   before(function () {
     originals["mergeCart"] = Meteor.server.method_handlers["cart/mergeCart"];
-    originals["setShipmentAddress"] = Meteor.server.method_handlers["cart/setShipmentAddress"];
-    originals["setPaymentAddress"] = Meteor.server.method_handlers["cart/setPaymentAddress"];
   });
 
   after(() => {
@@ -72,10 +70,9 @@ describe("Account Meteor method ", function () {
 
   describe("addressBookAdd", function () {
     beforeEach(function () {
-      const sessionId = Random.id(); // Required for creating a cart
       // editing your address book also updates your cart, so be sure there
       // is a cart present
-      Meteor.call("cart/createCart", sessionId);
+      Meteor.call("cart/createCart");
     });
 
     it("should allow user to add new addresses", function () {
@@ -191,10 +188,9 @@ describe("Account Meteor method ", function () {
 
   describe("addressBookUpdate", function () {
     beforeEach(function () {
-      const sessionId = Random.id(); // Required for creating a cart
       // editing your address book also updates your cart, so be sure there
       // is a cart present
-      Meteor.call("cart/createCart", sessionId);
+      Meteor.call("cart/createCart");
     });
 
     it("should allow user to edit addresses", function () {
@@ -272,102 +268,13 @@ describe("Account Meteor method ", function () {
 
       expect(accountUpdateSpy).to.not.have.been.called;
     });
-
-    it("enabling isShipping/BillingDefault properties should add this address to cart", function () {
-      // first we need to disable defaults, because we already have some
-      // random defaults in account, but cart is clean. This is test only
-      // situation.
-      let address = Object.assign({}, fakeAccount.profile.addressBook[0], {
-        isShippingDefault: false,
-        isBillingDefault: false
-      });
-      Meteor.call("accounts/addressBookUpdate", address);
-
-      let cart = Cart.findOne({ accountId: fakeAccount._id });
-      // "cart/unsetAddresses" unsets cart.type.address, not cart.type,
-      // so we ensure that either cart.type (if the address was never
-      // created) or cart.type.address (if it had been unset) are now undefined
-      expect(cart.billing && cart.billing.address).to.be.undefined;
-      expect(cart.shipping && cart.shipping.address).to.be.undefined;
-
-      address = Object.assign({}, fakeAccount.profile.addressBook[0], {
-        isShippingDefault: true,
-        isBillingDefault: true
-      });
-      Meteor.call("accounts/addressBookUpdate", address);
-      cart = Cart.findOne({ accountId: fakeAccount._id });
-      expect(cart).to.not.be.undefined;
-
-      expect(cart.billing[0].address._id).to.equal(address._id);
-      expect(cart.shipping[0].address._id).to.equal(address._id);
-    });
-
-    it(
-      "should disable isShipping/BillingDefault properties inside sibling" +
-      " address if we enable them while editing",
-      function () {
-        // cart was created without any default addresses, we need to add one
-        let address = Object.assign({}, fakeAccount.profile.addressBook[0], {
-          isShippingDefault: true,
-          isBillingDefault: true
-        });
-        Meteor.call("accounts/addressBookUpdate", address);
-
-        // we add new address with disabled defaults
-        address = Object.assign({}, getAddress(), {
-          _id: Random.id(),
-          isShippingDefault: false,
-          isBillingDefault: false
-        });
-        Meteor.call("accounts/addressBookAdd", address);
-        // now we can test edit
-        Object.assign(address, {
-          isShippingDefault: true,
-          isBillingDefault: true
-        });
-
-        Meteor.call("accounts/addressBookUpdate", address, null, "isBillingDefault");
-        Meteor.call("accounts/addressBookUpdate", address, null, "isShippingDefault");
-        const account = Accounts.findOne({ _id: fakeAccount._id });
-
-        expect(account.profile.addressBook[0].isBillingDefault).to.be.false;
-        expect(account.profile.addressBook[0].isShippingDefault).to.be.false;
-      }
-    );
-
-    it("should update cart default addresses via `type` argument", function () {
-      const { accountId } = fakeAccount;
-      // clean account
-      Meteor.call(
-        "accounts/addressBookRemove",
-        fakeAccount.profile.addressBook[0]._id
-      );
-      // preparation
-      let address = Object.assign({}, getAddress(), {
-        _id: Random.id(),
-        isShippingDefault: false,
-        isBillingDefault: false
-      });
-      Meteor.call("accounts/addressBookAdd", address);
-      address = Object.assign(address, {
-        isShippingDefault: true,
-        isBillingDefault: true
-      });
-
-      Meteor.call("accounts/addressBookUpdate", address, null, "isBillingDefault");
-      Meteor.call("accounts/addressBookUpdate", address, null, "isShippingDefault");
-      const cart = Cart.findOne({ accountId });
-      expect(cart.billing[0].address._id).to.equal(address._id);
-      expect(cart.shipping[0].address._id).to.equal(address._id);
-    });
   });
 
   describe("addressBookRemove", function () {
     beforeEach(function () {
-      const sessionId = Random.id(); // Required for creating a cart
       // editing your address book also updates your cart, so be sure there
       // is a cart present
-      Meteor.call("cart/createCart", sessionId);
+      Meteor.call("cart/createCart");
     });
 
     it("should allow user to remove address", function () {
@@ -430,16 +337,6 @@ describe("Account Meteor method ", function () {
         address2._id, account2.userId
       )).to.throw(ReactionError, /Access denied/);
       expect(accountUpdateSpy).to.not.have.been.called;
-    });
-
-    it("should call `cart/unsetAddresses` Method", function () {
-      const address = fakeAccount.profile.addressBook[0];
-      const cartUnsetSpy = sandbox.spy(Meteor.server.method_handlers, "cart/unsetAddresses");
-
-      Meteor.call("accounts/addressBookRemove", address._id);
-      expect(cartUnsetSpy).to.have.been.called;
-      expect(cartUnsetSpy.args[0][0]).to.equal(address._id);
-      expect(cartUnsetSpy.args[0][1]).to.equal(fakeAccount.userId);
     });
 
     it("should throw an error if address does not exist to remove", function () {

@@ -147,7 +147,6 @@
     "babel-core": "^7.0.0-bridge.0",
     "babel-eslint": "8.2.3",
     "babel-jest": "22.4.4",
-    "babel-plugin-dynamic-import-node": "1.2.0",
     "babel-plugin-inline-import": "3.0.0",
     "babel-plugin-lodash": "3.3.2",
     "babel-plugin-module-resolver": "3.1.1",
@@ -188,8 +187,8 @@
     "devserver": "NODE_ENV=devserver nodemon .reaction/devserver/index.js",
     "lint": "eslint .",
     "test": "npm run test:unit && npm run test:integration && npm run test:app",
-    "test:app": "meteor test --once --full-app --driver-package meteortesting:mocha",
-    "test:app:watch": "TEST_WATCH=1 meteor test --full-app --driver-package meteortesting:mocha",
+    "test:app": "MONGO_URL='' TEST_CLIENT=0 meteor test --once --full-app --driver-package meteortesting:mocha",
+    "test:app:watch": "MONGO_URL='' TEST_CLIENT=0 TEST_WATCH=1 meteor test --full-app --driver-package meteortesting:mocha",
     "test:unit": "NODE_ENV=jesttest BABEL_DISABLE_CACHE=1 jest --no-cache --testPathIgnorePatterns /tests/",
     "test:unit:watch": "NODE_ENV=jesttest BABEL_DISABLE_CACHE=1 jest --no-cache --testPathIgnorePatterns /tests/ --watch",
     "test:integration": "NODE_ENV=jesttest BABEL_DISABLE_CACHE=1 jest --no-cache /tests/",
@@ -200,7 +199,6 @@
   "babel": {
     "plugins": [
       "transform-class-properties",
-      "dynamic-import-node",
       "babel-plugin-inline-import",
       [
         "lodash",

@@ -11,6 +11,7 @@ import { expect } from "meteor/practicalmeteor:chai";
 import { sinon } from "meteor/practicalmeteor:sinon";
 import { getShop, getAddress } from "/imports/plugins/core/core/server/fixtures/shops";
 import { addProduct } from "/imports/plugins/core/core/server/fixtures/products";
+import hashLoginToken from "/imports/plugins/core/accounts/server/no-meteor/util/hashLoginToken";
 import Fixtures from "/imports/plugins/core/core/server/fixtures";
 
 Fixtures();
@@ -21,8 +22,6 @@ describe("Add/Create cart methods", function () {
   const shop = getShop();
   const accountId = account._id;
   const userId = user._id;
-  Reaction.sessionId = Random.id();
-  const { sessionId } = Reaction;
   let sandbox;
   let originals;
 
@@ -32,8 +31,6 @@ describe("Add/Create cart methods", function () {
       createCart: Meteor.server.method_handlers["cart/createCart"],
       copyCartToOrder: Meteor.server.method_handlers["cart/copyCartToOrder"],
       addToCart: Meteor.server.method_handlers["cart/addToCart"],
-      setShipmentAddress: Meteor.server.method_handlers["cart/setShipmentAddress"],
-      setPaymentAddress: Meteor.server.method_handlers["cart/setPaymentAddress"],
       setAnonymousUserEmail: Meteor.server.method_handlers["cart/setAnonymousUserEmail"]
     };
   });
@@ -68,7 +65,7 @@ describe("Add/Create cart methods", function () {
       sandbox.stub(Reaction, "getPrimaryShopId", () => shop._id);
       sandbox.stub(Meteor, "userId", () => userId);
       const cartInsertSpy = sandbox.spy(Cart, "insert");
-      const cartId = Meteor.call("cart/createCart", sessionId);
+      const cartId = Meteor.call("cart/createCart");
       const cart = Cart.findOne({ accountId });
       expect(cartInsertSpy).to.have.been.called;
       expect(cartId).to.equal(cart._id);
@@ -130,7 +127,7 @@ describe("Add/Create cart methods", function () {
       sandbox.stub(Reaction, "getShopId", () => shop._id);
       sandbox.stub(Meteor, "userId", () => userId);
       spyOnMethod("addToCart", userId);
-      const cartId = Meteor.call("cart/createCart", sessionId);
+      const cartId = Meteor.call("cart/createCart");
 
       Meteor.call("cart/addToCart", productId, variantId, quantity);
       // add a second item of same variant
@@ -166,15 +163,16 @@ describe("Add/Create cart methods", function () {
     });
 
     it("should add an email to an anonymous cart", function () {
+      const token = Random.secret();
       const cart = Factory.create("cart", {
         email: undefined,
-        sessionId
+        anonymousAccessToken: hashLoginToken(token)
       });
 
       spyOnMethod("setAnonymousUserEmail", null);
 
       const email = "anon@email.com";
-      Meteor.call("cart/setAnonymousUserEmail", cart._id, sessionId, email);
+      Meteor.call("cart/setAnonymousUserEmail", cart._id, token, email);
       const updatedCart = Cart.findOne({ _id: cart._id });
       expect(updatedCart.email).to.equal(email);
     });
@@ -207,7 +205,7 @@ describe("Add/Create cart methods", function () {
         };
       });
       spyOnMethod("copyCartToOrder", user1._id);
-      const cartId = Meteor.call("cart/createCart", sessionId);
+      const cartId = Meteor.call("cart/createCart");
       function copyCartFunc() {
         return Meteor.call("cart/copyCartToOrder", cartId);
       }
@@ -261,15 +259,15 @@ describe("Add/Create cart methods", function () {
         isBillingDefault: true
       });
 
-      Meteor.call("cart/setPaymentAddress", cartId, address);
-      Meteor.call("cart/setShipmentAddress", cartId, address);
+      Meteor.call("cart/setPaymentAddress", cartId, null, address);
+      Meteor.call("cart/setShipmentAddress", cartId, null, address);
       cart = Cart.findOne({ _id: cartId });
       expect(cart).not.to.be.undefined;
       expect(cart.shipping[0].address._id).to.equal(address._id);
       expect(cart.billing[0].address._id).to.equal(address._id);
 
       // our Method checking
-      Meteor.call("cart/unsetAddresses", address._id, userId);
+      Meteor.call("cart/unsetAddresses", cartId, null, address._id);
 
       cart = Cart.findOne({ _id: cartId });
       expect(cart).to.not.be.undefined;
@@ -324,15 +322,15 @@ describe("Add/Create cart methods", function () {
         isShippingDefault: true,
         isBillingDefault: true
       });
-      Meteor.call("cart/setPaymentAddress", cartId, address);
-      Meteor.call("cart/setShipmentAddress", cartId, address);
+      Meteor.call("cart/setPaymentAddress", cartId, null, address);
+      Meteor.call("cart/setShipmentAddress", cartId, null, address);
       cart = Cart.findOne({ _id: cartId });
 
       expect(cart.shipping[0].address._id).to.equal(address._id);
       expect(cart.billing[0].address._id).to.equal(address._id);
 
-      Meteor.call("cart/unsetAddresses", address._id, userId, "billing");
-      Meteor.call("cart/unsetAddresses", address._id, userId, "shipping");
+      Meteor.call("cart/unsetAddresses", cartId, null, address._id, "billing");
+      Meteor.call("cart/unsetAddresses", cartId, null, address._id, "shipping");
 
       cart = Cart.findOne({ _id: cartId });
 

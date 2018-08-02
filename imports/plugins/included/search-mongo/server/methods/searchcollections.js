@@ -10,7 +10,7 @@ import { transformations } from "./transformations";
 let moment;
 async function lazyLoadMoment() {
   if (moment) return;
-  moment = await import("moment");
+  moment = await import("moment").default;
 }
 
 const requiredFields = {};

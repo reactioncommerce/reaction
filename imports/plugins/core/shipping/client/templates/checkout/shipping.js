@@ -6,7 +6,7 @@ import { ReactiveDict } from "meteor/reactive-dict";
 import { Reaction } from "/client/api";
 import ReactionError from "@reactioncommerce/reaction-error";
 import Logger from "/client/modules/logger";
-import { Cart } from "/lib/collections";
+import getCart from "/imports/plugins/core/cart/client/util/getCart";
 
 // Because we are duplicating shipment quotes across shipping records
 // we will get duplicate shipping quotes but we only want to diplay one
@@ -30,7 +30,7 @@ function uniqObjects(objs) {
  * @private
  */
 function cartShippingQuotes() {
-  const cart = Cart.findOne();
+  const { cart } = getCart();
   const shipmentQuotes = [];
   if (cart && cart.shipping) {
     for (const shipping of cart.shipping) {
@@ -46,7 +46,7 @@ function cartShippingQuotes() {
 }
 
 function shippingMethodsQueryStatus() {
-  const cart = Cart.findOne();
+  const { cart } = getCart();
   let queryStatus;
   let failingShippingProvider;
 
@@ -72,7 +72,7 @@ function shippingMethodsQueryStatus() {
  * @ignore
  */
 function cartShipmentMethods() {
-  const cart = Cart.findOne();
+  const { cart } = getCart();
   const shipmentMethods = [];
   if (cart && cart.shipping) {
     for (const shipping of cart.shipping) {
@@ -184,10 +184,15 @@ Template.coreCheckoutShipping.events({
   "click .list-group-item"(event) {
     event.preventDefault();
     event.stopPropagation();
-    const cart = Cart.findOne();
+    const { cart, token } = getCart();
 
+<<<<<<< HEAD
     Meteor.call("cart/setShipmentMethod", cart._id, this.method, (error) => {
       if (error) throw new ReactionError("set-shipment-method-error", error.message);
+=======
+    Meteor.call("cart/setShipmentMethod", cart._id, token, this.method, (error) => {
+      if (error) throw new Meteor.Error("set-shipment-method-error", error.message);
+>>>>>>> release-1.15.0
     });
   },
   "click [data-event-action=configure-shipping]"(event) {

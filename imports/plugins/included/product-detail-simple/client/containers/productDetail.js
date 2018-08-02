@@ -8,10 +8,12 @@ import { $ } from "meteor/jquery";
 import { Meteor } from "meteor/meteor";
 import { Catalog, ReactionProduct } from "/lib/api";
 import { Reaction, i18next, Logger } from "/client/api";
-import { Tags, Cart } from "/lib/collections";
+import { Shops, Tags } from "/lib/collections";
 import { ProductDetail } from "../components";
 import { SocialContainer, VariantListContainer } from "./";
 import { Media } from "/imports/plugins/core/files/client";
+import { getAnonymousCartsReactive, storeAnonymousCart } from "/imports/plugins/core/cart/client/util/anonymousCarts";
+import getCart from "/imports/plugins/core/cart/client/util/getCart";
 
 const wrapComponent = (Comp) =>
   class ProductDetailContainer extends Component {
@@ -184,15 +186,68 @@ const wrapComponent = (Comp) =>
           };
 
           if (productId) {
-            Meteor.call("cart/addToCart", productId, currentVariant._id, quantity, (error) => {
-              if (error) {
-                Logger.error(error);
-                Alerts.toast(error.message, "error");
-                return;
-              }
+            const shop = Shops.findOne(Reaction.getPrimaryShopId());
+            const shopCurrency = (shop && shop.currency) || "USD";
 
-              onAddToCartSuccess();
-            });
+            const items = [{
+              price: {
+                amount: currentVariant.price,
+                currencyCode: shopCurrency
+              },
+              productConfiguration: {
+                productId,
+                productVariantId: currentVariant._id
+              },
+              quantity: quantity || 1
+            }];
+
+            const { cart } = getCart();
+            if (cart) {
+              const storedCarts = getAnonymousCartsReactive();
+              let token = null;
+              if (storedCarts && storedCarts.length) {
+                token = storedCarts[0].token; // eslint-disable-line prefer-destructuring
+              }
+              Meteor.call("cart/addToCart", cart._id, token, items, (error) => {
+                if (error) {
+                  Logger.error(error);
+                  Alerts.toast(error.message, "error");
+                  return;
+                }
+
+                onAddToCartSuccess();
+              });
+            } else {
+              Meteor.call("cart/createCart", items, (error, result) => {
+                if (error) {
+                  Logger.error(error);
+                  Alerts.toast(error.message, "error");
+                  return;
+                }
+
+                const {
+                  cart: createdCart,
+                  incorrectPriceFailures,
+                  minOrderQuantityFailures,
+                  token
+                } = result;
+
+                if (incorrectPriceFailures.length) {
+                  Logger.info("incorrectPriceFailures", incorrectPriceFailures);
+                  Alerts.toast("Prices have changed. Please refresh the page.", "error");
+                } else if (minOrderQuantityFailures.length) {
+                  Logger.info("minOrderQuantityFailures", minOrderQuantityFailures);
+                  Alerts.toast(`You must order at least ${minOrderQuantityFailures[0].minOrderQuantity} of this item`, "error");
+                }
+
+                if (createdCart) {
+                  if (token) {
+                    storeAnonymousCart({ _id: createdCart._id, shopId: shop && shop._id, token });
+                  }
+                  onAddToCartSuccess();
+                }
+              });
+            }
           }
 
           ReactionProduct.setCurrentVariant(null);
@@ -373,7 +428,7 @@ function composer(props, onData) {
           priceRange = selectedVariant.price;
         } else {
           // otherwise we want to show child variants price range
-          priceRange = Catalog.getVariantPriceRange(ReactionProduct.selectedVariant()._id);
+          priceRange = Catalog.getVariantPriceRange(selectedVariant._id);
         }
       }
 
@@ -393,7 +448,7 @@ function composer(props, onData) {
 
       const topVariants = ReactionProduct.getTopVariants();
 
-      const storedCart = Cart.findOne();
+      const { cart: storedCart } = getCart();
 
       onData(null, {
         variants: topVariants,

@@ -1,5 +1,5 @@
 import { Template } from "meteor/templating";
-import getCart from "/imports/plugins/core/cart/both/util/getCart";
+import getCart from "/imports/plugins/core/cart/client/util/getCart";
 
 /**
  * @method cart

@@ -8,7 +8,7 @@ import { Job } from "/imports/plugins/core/job-collection/lib";
 let moment;
 async function lazyLoadMoment() {
   if (moment) return;
-  moment = await import("moment");
+  moment = await import("moment").default;
 }
 
 /**

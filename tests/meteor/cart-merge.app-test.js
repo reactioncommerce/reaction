@@ -17,8 +17,6 @@ Fixtures();
 
 describe("Merge Cart function ", function () {
   const shop = getShop();
-  Reaction.sessionId = Random.id();
-  const { sessionId } = Reaction;
   let originals;
   let sandbox;
   let pushCartWorkflowStub;
@@ -31,9 +29,7 @@ describe("Merge Cart function ", function () {
     originals = {
       mergeCart: Meteor.server.method_handlers["cart/mergeCart"],
       copyCartToOrder: Meteor.server.method_handlers["cart/copyCartToOrder"],
-      addToCart: Meteor.server.method_handlers["cart/addToCart"],
-      setShipmentAddress: Meteor.server.method_handlers["cart/setShipmentAddress"],
-      setPaymentAddress: Meteor.server.method_handlers["cart/setPaymentAddress"]
+      addToCart: Meteor.server.method_handlers["cart/addToCart"]
     };
 
     Collections.Products.remove({});
@@ -80,8 +76,9 @@ describe("Merge Cart function ", function () {
     expect(cartCount).to.equal(2);
     spyOnMethod("mergeCart", userId);
     const cartRemoveSpy = sandbox.spy(Collections.Cart, "remove");
-    Collections.Cart.update({}, { $set: { anonymousAccessToken: hashLoginToken(sessionId) } });
-    const mergeResult = Meteor.call("cart/mergeCart", cart._id, sessionId);
+    const token = Random.id();
+    Collections.Cart.update({ _id: cart }, { $set: { anonymousAccessToken: hashLoginToken(token) } });
+    const mergeResult = Meteor.call("cart/mergeCart", cart._id, anonymousCart, token);
     expect(mergeResult).to.be.ok;
     anonymousCart = Collections.Cart.findOne({ _id: anonymousCart._id });
     cart = Collections.Cart.findOne({ _id: cart._id });
@@ -104,8 +101,9 @@ describe("Merge Cart function ", function () {
     }, { $set: { "items.$.variantId": cart.items[0].variantId } });
     spyOnMethod("mergeCart", userId);
     const cartRemoveSpy = sandbox.spy(Collections.Cart, "remove");
-    Collections.Cart.update({}, { $set: { anonymousAccessToken: hashLoginToken(sessionId) } });
-    const mergeResult = Meteor.call("cart/mergeCart", cart._id, sessionId);
+    const token = Random.id();
+    Collections.Cart.update({ _id: cart._id }, { $set: { anonymousAccessToken: hashLoginToken(token) } });
+    const mergeResult = Meteor.call("cart/mergeCart", cart._id, anonymousCart._id, token);
     expect(mergeResult).to.be.ok;
     const anonymousCartAfterMerge = Collections.Cart.findOne({ _id: anonymousCart._id });
     cart = Collections.Cart.findOne({ _id: cart._id });
@@ -132,7 +130,7 @@ describe("Merge Cart function ", function () {
   it("should throw an error if cart doesn't exist", function (done) {
     spyOnMethod("mergeCart", "someIdHere");
     function mergeCartFunction() {
-      Meteor.call("cart/mergeCart", "non-existent-id", sessionId);
+      Meteor.call("cart/mergeCart", "non-existent-id", "123", "123");
     }
     expect(mergeCartFunction).to.throw(ReactionError, /Access Denied/);
     return done();
@@ -142,7 +140,7 @@ describe("Merge Cart function ", function () {
     const cart = Factory.create("cart");
     spyOnMethod("mergeCart", "someIdHere");
     function mergeCartFunction() {
-      return Meteor.call("cart/mergeCart", cart._id, "someSessionId");
+      return Meteor.call("cart/mergeCart", cart._id, "123", "123");
     }
     expect(mergeCartFunction).to.throw(ReactionError, /Access Denied/);
     return done();

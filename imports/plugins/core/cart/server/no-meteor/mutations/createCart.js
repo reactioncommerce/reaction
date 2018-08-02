@@ -14,9 +14,6 @@ import addCartItems from "../util/addCartItems";
  * @param {Boolean} [input.shouldCreateWithoutItems] - Create even if `items` is empty or becomes empty
  *   due to price mismatches? Default is false. This is for backwards compatibility with old Meteor code
  *   that creates the cart prior to adding items and should not be set to `true` in new code.
- * @param {String} [input.anonymousAccessTokenFromClient] - For backwards compatibility with old Meteor
- *   code that generates a session ID on the client, this can be passed in and used as the
- *   anonymousAccessToken on the new cart.
  * @return {Promise<Object>} An object with `cart`, `minOrderQuantityFailures`, and `incorrectPriceFailures` properties.
  *   `cart` will be null if all prices were incorrect. If at least one item could be added,
  *   then the cart will have been created and returned, but `incorrectPriceFailures` and
@@ -24,7 +21,7 @@ import addCartItems from "../util/addCartItems";
  *   optionally retry with the correct price or quantity.
  */
 export default async function createCart(context, input) {
-  const { anonymousAccessTokenFromClient, items, shopId, shouldCreateWithoutItems = false } = input;
+  const { items, shopId, shouldCreateWithoutItems = false } = input;
   const { collections, accountId = null } = context;
   const { Cart, Shops } = collections;
 
@@ -52,8 +49,8 @@ export default async function createCart(context, input) {
     return { cart: null, incorrectPriceFailures, minOrderQuantityFailures, token: null };
   }
 
-  let anonymousAccessToken = anonymousAccessTokenFromClient || null;
-  if (!anonymousAccessToken && !accountId) {
+  let anonymousAccessToken = null;
+  if (!accountId) {
     anonymousAccessToken = Random.secret();
   }
 

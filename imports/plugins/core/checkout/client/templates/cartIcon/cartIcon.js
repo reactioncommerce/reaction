@@ -1,7 +1,7 @@
 import { $ } from "meteor/jquery";
 import { Template } from "meteor/templating";
 import { Reaction } from "/client/api";
-import getCart from "/imports/plugins/core/cart/both/util/getCart";
+import getCart from "/imports/plugins/core/cart/client/util/getCart";
 
 /**
  * cartIcon helpers

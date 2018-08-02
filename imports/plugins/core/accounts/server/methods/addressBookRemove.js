@@ -29,8 +29,6 @@ export default function addressBookRemove(addressId, accountUserId) {
 
   const userId = accountUserId || Meteor.userId();
   const account = Accounts.findOne({ userId });
-  // remove this address in cart, if used, before completely removing
-  Meteor.call("cart/unsetAddresses", addressId, userId);
 
   const updatedAccountResult = Accounts.update({
     userId,

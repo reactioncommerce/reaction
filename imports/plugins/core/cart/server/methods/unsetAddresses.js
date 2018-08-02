@@ -4,6 +4,7 @@ import { Meteor } from "meteor/meteor";
 import { check, Match } from "meteor/check";
 import ReactionError from "@reactioncommerce/reaction-error";
 import * as Collections from "/lib/collections";
+import getCart from "/imports/plugins/core/cart/server/util/getCart";
 
 /**
  * @method removeShippingAddresses
@@ -29,30 +30,28 @@ function removeShippingAddresses(cart) {
  * @method cart/unsetAddresses
  * @summary Removes address from cart.
  * @memberof Cart/Methods
+ * @param {String} cartId - Cart ID
+ * @param {String} [cartToken] - Cart token, if anonymous
  * @param {String} addressId - address._id
- * @param {String} userId - cart owner _id
  * @param {String} [type] - billing default or shipping default
  * @since 0.10.1
  * @todo Check if no more address in cart as shipping, we should reset `cartWorkflow` to second step
  * @return {Number|Object|Boolean} The number of removed documents or
  * error object or `false` if we don't need to update cart
  */
-export default function unsetAddresses(addressId, userId, type) {
+export default function unsetAddresses(cartId, cartToken, addressId, type) {
+  check(cartId, String);
+  check(cartToken, Match.Maybe(String));
   check(addressId, String);
-  check(userId, String);
   check(type, Match.Optional(String));
 
   // do we actually need to change anything?
   let needToUpdate = false;
   // we need to revert the workflow after a "shipping" address was removed
   let isShippingDeleting = false;
-  const account = Collections.Accounts.findOne({ userId }, { fields: { _id: 1 } });
-  const cart = Collections.Cart.findOne({
-    accountId: account._id
-  });
-  const selector = {
-    _id: cart._id
-  };
+
+  const { cart } = getCart(cartId, { cartToken, throwIfNotFound: true });
+
   const update = { $unset: {} };
   // user could turn off the checkbox in address to not to be default, then we
   // receive `type` arg
@@ -79,19 +78,19 @@ export default function unsetAddresses(addressId, userId, type) {
 
   if (needToUpdate) {
     try {
-      Collections.Cart.update(selector, update);
-    } catch (e) {
-      Logger.error(e);
+      Collections.Cart.update({ _id: cartId }, update);
+    } catch (error) {
+      Logger.error(error);
       throw new ReactionError("server-error", "Error updating cart");
     }
 
     // Calculate discounts
-    Hooks.Events.run("afterCartUpdateCalculateDiscount", cart._id);
+    Hooks.Events.run("afterCartUpdateCalculateDiscount", cartId);
 
     if (isShippingDeleting) {
       // if we remove shipping address from cart, we need to revert
       // `cartWorkflow` to the `checkoutAddressBook` step.
-      Meteor.call("workflow/revertCartWorkflow", "checkoutAddressBook");
+      Meteor.call("workflow/revertCartWorkflow", "checkoutAddressBook", cartId);
     }
   }
   return true;

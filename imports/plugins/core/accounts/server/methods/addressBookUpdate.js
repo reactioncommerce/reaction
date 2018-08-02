@@ -2,7 +2,7 @@ import _ from "lodash";
 import Hooks from "@reactioncommerce/hooks";
 import { Meteor } from "meteor/meteor";
 import { check, Match } from "meteor/check";
-import { Accounts, Cart } from "/lib/collections";
+import { Accounts } from "/lib/collections";
 import * as Schemas from "/lib/collections/schemas";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
 import ReactionError from "@reactioncommerce/reaction-error";
@@ -19,8 +19,9 @@ import ReactionError from "@reactioncommerce/reaction-error";
  */
 export default function addressBookUpdate(address, accountUserId, type) {
   Schemas.Address.validate(address);
-  check(accountUserId, Match.OneOf(String, null, undefined));
+  check(accountUserId, Match.Maybe(String));
   check(type, Match.Maybe(String));
+
   // security, check for admin access. We don't need to check every user call
   // here because we are calling `Meteor.userId` from within this Method.
   if (typeof accountUserId === "string") { // if this will not be a String -
@@ -42,45 +43,6 @@ export default function addressBookUpdate(address, accountUserId, type) {
   // Set new address to be default for `type`
   if (typeof type === "string") {
     Object.assign(address, { [type]: true });
-  }
-
-  // We want the cart addresses to be updated when current default address
-  // (shipping or Billing) are different than the previous one, but also
-  // when the current default address(ship or bill) gets edited(so Current and Previous default are the same).
-  // This check can be simplified to :
-  if (address.isShippingDefault || address.isBillingDefault ||
-    oldAddress.isShippingDefault || oldAddress.isBillingDefault) {
-    // Find user cart
-    // Cart should exist to this moment, so we don't need to to verify its existence.
-    const cart = Cart.findOne({ accountId: account._id });
-
-    // If isShippingDefault address has changed
-    if (oldAddress.isShippingDefault !== address.isShippingDefault) {
-      // Update the cart to use new default shipping address
-      if (address.isShippingDefault) {
-        Meteor.call("cart/setShipmentAddress", cart._id, address);
-      } else {
-        // If the new address is not the shipping default, remove it from the cart
-        Meteor.call("cart/unsetAddresses", address._id, userId, "shipping");
-      }
-    } else if (address.isShippingDefault && oldAddress.isShippingDefault) {
-      // If shipping address was edited, but isShippingDefault status not changed, update the cart address
-      Meteor.call("cart/setShipmentAddress", cart._id, address);
-    }
-
-    // If isBillingDefault address has changed
-    if (oldAddress.isBillingDefault !== address.isBillingDefault) {
-      // Update the cart to use new default billing address
-      if (address.isBillingDefault) {
-        Meteor.call("cart/setPaymentAddress", cart._id, address);
-      } else {
-        // If the new address is not the shipping default, remove it from the cart
-        Meteor.call("cart/unsetAddresses", address._id, userId, "billing");
-      }
-    } else if (address.isBillingDefault && oldAddress.isBillingDefault) {
-      // If shipping address was edited, but isShippingDefault status not changed, update the cart address
-      Meteor.call("cart/setPaymentAddress", cart._id, address);
-    }
   }
 
   // Update all other to set the default type to false

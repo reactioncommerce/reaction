@@ -1,25 +1,28 @@
 import Hooks from "@reactioncommerce/hooks";
 import Logger from "@reactioncommerce/logger";
 import { Meteor } from "meteor/meteor";
-import { check } from "meteor/check";
+import { check, Match } from "meteor/check";
 import { Cart } from "/lib/collections";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
 import ReactionError from "@reactioncommerce/reaction-error";
-import getCart from "/imports/plugins/core/cart/both/util/getCart";
+import getCart from "/imports/plugins/core/cart/server/util/getCart";
+
 
 /**
  * @method cart/setShipmentAddress
  * @memberof Cart/Methods
  * @summary Adds address book to cart shipping
  * @param {String} cartId - cartId to apply shipmentMethod
+ * @param {String} [cartToken] - Token for cart, if it's anonymous
  * @param {Object} address - addressBook object
  * @return {Number} update result
  */
-export default function setShipmentAddress(cartId, address) {
+export default function setShipmentAddress(cartId, cartToken, address) {
   check(cartId, String);
+  check(cartToken, Match.Maybe(String));
   Reaction.Schemas.Address.validate(address);
 
-  const { cart } = getCart(cartId, { throwIfNotFound: true });
+  const { cart } = getCart(cartId, { cartToken, throwIfNotFound: true });
 
   let selector;
   let update;
@@ -133,7 +136,7 @@ export default function setShipmentAddress(cartId, address) {
     cart.workflow.workflow.length < 2) {
     Meteor.call(
       "workflow/pushCartWorkflow", "coreCartWorkflow",
-      "coreCheckoutShipping"
+      "coreCheckoutShipping", cart._id
     );
   }
 
@@ -142,7 +145,7 @@ export default function setShipmentAddress(cartId, address) {
   if (typeof cart.workflow.workflow === "object" &&
     cart.workflow.workflow.length > 2) { // "2" index of
     // `coreCheckoutShipping`
-    Meteor.call("workflow/revertCartWorkflow", "coreCheckoutShipping");
+    Meteor.call("workflow/revertCartWorkflow", "coreCheckoutShipping", cart._id);
   }
 
   return true;

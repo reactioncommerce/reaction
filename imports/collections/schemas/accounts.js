@@ -190,7 +190,8 @@ export const Accounts = new SimpleSchema({
   "groups": {
     type: Array, // groupIds that user belongs to
     optional: true,
-    defaultValue: []
+    defaultValue: [],
+    index: 1
   },
   "groups.$": {
     type: String

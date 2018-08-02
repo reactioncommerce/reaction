@@ -42,11 +42,9 @@ export function withMoment(component) {
   return lifecycle({
     componentDidMount() {
       import("moment")
-        .then((moment) => {
+        .then(({ default: moment }) => {
           moment.locale(Reaction.Locale.get().language);
-          this.setState({
-            moment
-          });
+          this.setState({ moment });
           return null;
         })
         .catch((error) => {
@@ -69,10 +67,8 @@ export function withMomentTimezone(component) {
   return lifecycle({
     componentDidMount() {
       import("moment-timezone")
-        .then((moment) => {
-          this.setState({
-            momentTimezone: moment.tz
-          });
+        .then(({ default: moment }) => {
+          this.setState({ momentTimezone: moment.tz });
           return null;
         })
         .catch((error) => {

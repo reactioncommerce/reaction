@@ -1,13 +1,12 @@
-import store from "store";
 import Logger from "/client/modules/logger";
-import Random from "@reactioncommerce/random";
 import { Meteor } from "meteor/meteor";
 import { ReactiveVar } from "meteor/reactive-var";
-import { Session } from "meteor/session";
 import { Tracker } from "meteor/tracker";
 import { SubsManager } from "meteor/meteorhacks:subs-manager";
-import { Accounts, Cart } from "/lib/collections";
+import { Roles } from "meteor/alanning:roles";
+import { Accounts } from "/lib/collections";
 import Reaction from "./main";
+import { getAnonymousCartsReactive, unstoreAnonymousCart } from "/imports/plugins/core/cart/client/util/anonymousCarts";
 
 export const Subscriptions = {};
 
@@ -15,24 +14,15 @@ export const Subscriptions = {};
 // See: https://github.com/kadirahq/subs-manager
 Subscriptions.Manager = new SubsManager();
 
-Subscriptions.Account = Subscriptions.Manager.subscribe("Accounts");
-
-/*
- * Reaction.session
- * Create persistent sessions for users
- * The server returns only one record, so findOne will return that record
- * Stores into client session all data contained in server session
- * supports reactivity when server changes `newSession`
- * Stores the server session id into local storage / cookies
- *
- * Also localStorage session could be set from the client-side. This could
- * happen when user flush browser's cache, for example.
- * @see https://github.com/reactioncommerce/reaction/issues/609#issuecomment-166389252
- */
-
 /**
  * General Subscriptions
  */
+
+Tracker.autorun(() => {
+  const userId = Meteor.userId();
+  Subscriptions.Account = Subscriptions.Manager.subscribe("Accounts");
+  Subscriptions.UserProfile = Meteor.subscribe("UserProfile", userId);
+});
 
 // Primary shop subscription
 Subscriptions.PrimaryShop = Subscriptions.Manager.subscribe("PrimaryShop");
@@ -61,55 +51,71 @@ Tracker.autorun(() => {
   if (!userId) return;
 
   const account = Accounts.findOne({ userId });
-  if (account) {
-    Subscriptions.Cart = Subscriptions.Manager.subscribe("Cart", account._id);
-    cartSubCreated.set(true);
-  }
+  const anonymousCarts = getAnonymousCartsReactive();
+  Subscriptions.Cart = Subscriptions.Manager.subscribe("Cart", account && account._id, anonymousCarts);
+  cartSubCreated.set(true);
 });
 
 /**
- * Subscriptions that need to reload on new sessions
+ * @summary Wraps mergeCart method with a Promise
+ * @private
+ * @param {String} _id ID of an anonymous cart
+ * @param {String} token Token for this anonymous cart
+ * @returns {Promise} Undefined
  */
-Tracker.autorun(() => {
-  // we are trying to track both amplify and Session.get here, but the problem
-  // is - we can't track amplify. It just not tracked. So, to track amplify we
-  // are using dirty hack inside Accounts.loginWithAnonymous method.
-  const sessionId = store.get("Reaction.session");
-  let newSession;
-  Tracker.nonreactive(() => {
-    newSession = Random.id();
+function mergeCart(_id, token) {
+  return new Promise((resolve, reject) => {
+    Meteor.call("cart/mergeCart", _id, token, (error) => {
+      if (error) {
+        reject(error);
+      } else {
+        resolve();
+      }
+    });
   });
-  if (typeof sessionId !== "string") {
-    store.set("Reaction.session", newSession);
-    Session.set("sessionId", newSession);
-  }
-  if (typeof Session.get("sessionId") !== "string") {
-    Session.set("sessionId", store.get("Reaction.session"));
-  }
-  Subscriptions.Sessions = Meteor.subscribe("Sessions", Session.get("sessionId"));
-});
+}
 
+// If ever we end up being logged in but also having an anonymous cart,
+// call the mergeCart function to merge it into an account cart and destroy
+let isMerging = false;
 Tracker.autorun(() => {
-  Subscriptions.UserProfile = Meteor.subscribe("UserProfile", Meteor.userId());
-});
-
-Tracker.autorun(() => {
-  // Need to wait until we have a user ID because createCart calls mergeCart which requires logged in user.
-  // Without this, we'll get errors right after logout.
   const userId = Meteor.userId();
-  if (userId && cartSubCreated.get() && Subscriptions.Cart.ready()) {
-    const cartCount = Cart.find({}).count();
-    const sessionId = Session.get("sessionId");
-    if (cartCount === 0 && sessionId) {
-      Meteor.call("cart/createCart", sessionId, (error) => {
-        // cart-found error can happen due to timing issues. We don't worry about it
-        // and assume that the account cart will get published to us soon.
-        if (error && error.error !== "cart-found") {
-          Logger.error(error.message);
-        }
-      });
-    } else if (cartCount > 1) {
-      Logger.warn("Multiple carts received. Expected just one.");
+  if (!userId) return;
+
+  const shopId = Reaction.getCartShopId();
+  if (!shopId) return; // could be waiting for subscription
+
+  const isAnonymousUser = Roles.userIsInRole(userId, "anonymous", shopId);
+  if (!isAnonymousUser && cartSubCreated.get() && Subscriptions.Cart.ready() && !isMerging) {
+    const anonymousCarts = getAnonymousCartsReactive();
+
+    if (anonymousCarts && anonymousCarts.length) {
+      isMerging = true;
+
+      const promises = anonymousCarts.map(({ _id, token }) => (
+        mergeCart(_id, token)
+          .then(() => {
+            unstoreAnonymousCart(_id);
+            return null;
+          })
+          .catch((error) => {
+            // If we have cached an anonymous cart ID that no longer exists, we can just remove it
+            if (error.message && error.message.includes("Anonymous cart not found")) {
+              unstoreAnonymousCart(_id);
+            } else {
+              Logger.error(error.message);
+            }
+          })
+      ));
+
+      Promise.all(promises)
+        .then(() => {
+          isMerging = false;
+          return null;
+        })
+        .catch(() => {
+          isMerging = false;
+        });
     }
   }
 });

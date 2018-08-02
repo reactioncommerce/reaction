@@ -1,3 +1,4 @@
+import Logger from "@reactioncommerce/logger";
 import ReactionError from "@reactioncommerce/reaction-error";
 import hashLoginToken from "/imports/plugins/core/accounts/server/no-meteor/util/hashLoginToken";
 import convertAnonymousCartToNewAccountCart from "./convertAnonymousCartToNewAccountCart";
@@ -17,21 +18,19 @@ import reconcileCartsMerge from "./reconcileCartsMerge";
  * @param {String} input.anonymousCartId - The anonymous cart ID
  * @param {String} input.anonymousCartToken - The anonymous cart token
  * @param {String} [input.mode] - The reconciliation mode, "merge", "keepAccountCart", or "keepAnonymousCart". Default "merge"
- * @param {String} shopId - The ID of the shop that owns both carts
  * @return {Promise<Object>} Object in which `cart` property is set to the updated account cart
  */
 export default async function reconcileCarts(context, input) {
-  const { accountId, collections } = context;
+  const { accountId, collections, user } = context;
   const { Cart } = collections;
-  const { anonymousCartId, anonymousCartToken, mode = "merge", shopId } = input;
+  const { anonymousCartId, anonymousCartToken, mode = "merge" } = input;
 
   if (!accountId) throw new ReactionError("access-denied", "Access Denied");
   if (!anonymousCartId) throw new ReactionError("invalid-param", "anonymousCartId is required");
   if (!anonymousCartToken) throw new ReactionError("invalid-param", "anonymousCartToken is required");
-  if (!shopId) throw new ReactionError("invalid-param", "shopId is required");
 
-  const accountCartSelector = { accountId, shopId };
-  const anonymousCartSelector = { _id: anonymousCartId, shopId, anonymousAccessToken: hashLoginToken(anonymousCartToken) };
+  const accountCartSelector = { accountId };
+  const anonymousCartSelector = { _id: anonymousCartId, anonymousAccessToken: hashLoginToken(anonymousCartToken) };
 
   const carts = await Cart.find({
     $or: [accountCartSelector, anonymousCartSelector]
@@ -40,7 +39,18 @@ export default async function reconcileCarts(context, input) {
   const anonymousCart = carts.find((cart) => cart._id === anonymousCartId);
   if (!anonymousCart) throw new ReactionError("not-found", "Anonymous cart not found");
 
-  const accountCart = carts.find((cart) => cart.accountId === accountId);
+  const { shopId } = anonymousCart;
+
+  // In the Meteor app, there are accounts for anonymous users. This check can be removed someday.
+  // Don't use `userHasPermission` for this check because that always returns true if there
+  // is "owner" role. We want to know explicitly whether they have the "anonymous" role.
+  const roles = (user.roles && user.roles[shopId]) || [];
+  if (roles.indexOf("anonymous") !== -1) {
+    Logger.warn("reconcileCarts called by an anonymous user. Check client code.");
+    throw new ReactionError("access-denied", "Access Denied");
+  }
+
+  const accountCart = carts.find((cart) => cart.accountId === accountId && cart.shopId === shopId);
 
   if (accountCart) {
     // We have both carts, so reconcile them according to "mode"
@@ -67,6 +77,12 @@ export default async function reconcileCarts(context, input) {
 
   // We have only an anonymous cart, so convert it to an account cart
   return {
-    cart: await convertAnonymousCartToNewAccountCart({ accountId, anonymousCart, anonymousCartSelector, Cart, shopId })
+    cart: await convertAnonymousCartToNewAccountCart({
+      accountId,
+      anonymousCart,
+      anonymousCartSelector,
+      Cart,
+      shopId
+    })
   };
 }
