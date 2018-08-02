@@ -88,8 +88,14 @@ class CardForm extends Component {
           wait: true,
           onResultReceived: (error, result) => {
             if (error || (result && result.error)) {
+              let errorMessage;
+              if (error) {
+                errorMessage = error.message;
+              } else {
+                errorMessage = this.errorCodes[result.error.code] ? this.errorCodes[result.error.code] : result.error.whoops;
+              }
               this.setState({
-                errorMessage: this.errorCodes[result.error.code] ? this.errorCodes[result.error.code] : result.error.whoops,
+                errorMessage,
                 submitMessage: resubmitMessage,
                 submitting: false
               });
