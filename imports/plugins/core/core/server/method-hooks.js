@@ -74,21 +74,20 @@ MethodHooks._initializeHook = function (mapping, methodName, hookFunction) {
     // Get arguments you can mutate
     const args = _.toArray(inputArgs);
     let beforeResult;
-    // Call the before hooks
+    let hooksProcessed = 0;
 
-    const beforeHooks = MethodHooks._beforeHooks[methodName];
-    _.each(beforeHooks, (beforeHook, hooksProcessed) => {
-      beforeResult = beforeHook.call(this, {
+    // Call the before hooks
+    const beforeHooks = MethodHooks._beforeHooks[methodName] || [];
+    for (beforeHook of beforeHooks) {
+      beforeResult = Promise.await(beforeHook.call(this, {
         result: undefined,
         error: undefined,
         arguments: args,
         hooksProcessed
-      });
+      }));
 
-      if (beforeResult === false) {
-        return false;
-      }
-    });
+      hooksProcessed += 1;
+    }
 
     if (beforeResult === false) {
       return false;
@@ -99,27 +98,30 @@ MethodHooks._initializeHook = function (mapping, methodName, hookFunction) {
     // Call the main method body
     // check(args, Match.Any);
     try {
-      methodResult = MethodHooks._originalMethodHandlers[methodName].apply(this, args);
+      methodResult = Promise.await(MethodHooks._originalMethodHandlers[methodName].apply(this, args));
     } catch (error) {
       methodError = error;
     }
 
     // Call after hooks, providing the result and the original arguments
-    const afterHooks = MethodHooks._afterHooks[methodName];
-    _.each(afterHooks, (afterHook, hooksProcessed) => {
-      const hookResult = afterHook.call(this, {
+    const afterHooks = MethodHooks._afterHooks[methodName] || [];
+    hooksProcessed = 0;
+    for (afterHook of afterHooks) {
+      const hookResult = Promise.await(afterHook.call(this, {
         result: methodResult,
         error: methodError,
         arguments: args,
         hooksProcessed
-      });
+      }));
       // If the after hook did not return a value and the methodResult is not undefined, warn and fix
-      if (_.isUndefined(hookResult) && !_.isUndefined(methodResult)) {
+      if (hookResult === undefined && methodResult !== undefined) {
         Meteor._debug("Expected the after hook to return a value.");
       } else {
         methodResult = hookResult;
       }
-    });
+
+      hooksProcessed += 1;
+    }
 
     // If an error was thrown, throw it after the after hooks. Ought to include the correct stack information
     if (methodError) {
