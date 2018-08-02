@@ -50,7 +50,7 @@ export default function copyCartToOrder(cartId, cartToken) {
   const currentUser = Meteor.user();
   let account = null;
   if (currentUser) {
-    account = Accounts.findOne({ userId: currentUser._id }, { fields: { _id: 1 } });
+    account = Accounts.findOne({ userId: currentUser._id }, { fields: { _id: 1, emails: 1 } });
   }
 
   // Anonymous carts do not have an accountId prop, but we'll set it to the anonymous account for the order
@@ -78,6 +78,8 @@ export default function copyCartToOrder(cartId, cartToken) {
   }
 
   // These will get new values or are not needed
+  delete order.anonymousAccessToken;
+  delete order.bypassAddressValidation;
   delete order.getCount;
   delete order.getShippingTotal;
   delete order.getSubTotal;
