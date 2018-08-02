@@ -17,7 +17,12 @@ Reaction.registerPackage({
       template: "dashboardConnector",
       name: "dashboardProductImporter",
       workflow: "connectorWorkflow",
-      priority: 2
+      priority: 2,
+      meta: {
+        actionView: {
+          dashboardSize: "md"
+        }
+      }
     }
   ],
   layout: [{

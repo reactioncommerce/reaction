@@ -56,6 +56,10 @@ export const ImportJobs = new SimpleSchema({
     type: Date,
     optional: true
   },
+  completedAt: {
+    type: Date,
+    optional: true
+  },
   mapping: {
     label: "Mapping",
     type: Object,
