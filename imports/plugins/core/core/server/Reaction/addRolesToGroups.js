@@ -1,55 +1,7 @@
 import Logger from "@reactioncommerce/logger";
 import { Meteor } from "meteor/meteor";
 import { check, Match } from "meteor/check";
-import { Accounts, Groups, Shops } from "/lib/collections";
-
-/**
- * Private method which should only be called by addRolesToGroups to keep users in sync with updated groups
- * @private
- * @method addRolesToUsersInGroups
- * @param  {object} options object that contains the query selector for groups and roles to add to users
- * @returns {void}
- */
-function addRolesToUsersInGroups(options) {
-  const { query, roles } = { ...options };
-
-  if (!query.shopId) {
-    const shops = Shops.find({}).fetch();
-    const shopIds = shops.map((shop) => shop._id);
-    query.shopId = {
-      $in: shopIds
-    };
-  }
-
-  const groupsToUpdate = Groups.find(query, { fields: { _id: 1, shopId: 1 } }).fetch();
-  // We need a list of groups => shops to determine which users get which updates
-  const groupAndShopIds = groupsToUpdate.map((group) => ({
-    id: group._id,
-    shopId: group.shopId
-  }));
-
-  // We perform one update for each groupId and return a count of the number of updates performed
-  groupAndShopIds.forEach((group) => {
-    // Find all accounts with this group
-    const accounts = Accounts.find({ groups: group.id }, { fields: { _id: 1 } }).fetch();
-    // Get a list of all userIds in those accounts
-    const userIds = accounts.map((account) => account._id);
-    // We're going to update all users with an _id that matched
-    const selector = { _id: { $in: userIds } };
-
-    // Build our update operation - add new roles to set for the shop associated with this group.
-    const operation = {
-      $addToSet: {
-        [`roles.${group.shopId}`]: {
-          $each: roles
-        }
-      }
-    };
-
-    // Update users
-    Meteor.users.update(selector, operation, { multi: true });
-  });
-}
+import { Accounts, Groups } from "/lib/collections";
 
 /**
  * @name addRolesToGroups
@@ -77,17 +29,95 @@ export default function addRolesToGroups(options = { allShops: false, roles: [],
       $in: groups
     }
   };
-  const multi = { multi: true };
 
   if (!allShops) {
-    // if we're not updating for all shops, we should only update for the shops passed in.
+    // If we're not updating for all shops, we should only update for the shops passed in.
     query.shopId = { $in: shops || [] };
     Logger.debug(`Adding Roles: ${roles} to Groups: ${groups} for shops: ${shops}`);
   } else {
     Logger.debug(`Adding Roles: ${roles} to Groups: ${groups} for all shops`);
   }
 
-  addRolesToUsersInGroups({ query, roles });
+  // Check if each group already has the roles. If so, skip updates for group & its users
+  Groups.find(query).forEach((group) => {
+    let areRolesInGroup = true;
+    roles.forEach((role) => {
+      if (group.permissions.includes(role) === false) {
+        Logger.debug(`Role ${role} is not in ${group.name} group`);
+        areRolesInGroup = false;
+      }
+    });
 
-  return Groups.update(query, { $addToSet: { permissions: { $each: roles } } }, multi);
+    if (areRolesInGroup === false) {
+      Logger.debug(`Adding roles (${roles}) to ${group.name} group (${group._id})`);
+      // Run heaviest queries asynchronously in the background
+      Meteor.defer(() => {
+        addRolesToGroupAndUsers(group, roles);
+      });
+    } else {
+      Logger.debug(`Skipping roles already assigned to ${group.name} group and its users`);
+    }
+  });
+}
+
+/**
+ * @name addRolesToGroupAndUsers
+ * @private
+ * @summary Adds the given roles to the given group and updates users, if necessary
+ * @param {Object} group - Group to add roles to, and update users for
+ * @param {String} group._id - Group's _id
+ * @param {String} group.shopId - _id of shop group belongs to
+ * @param {String} group.name - Name of group
+ * @param {Array} roles - Array of roles/permissions (strings)
+ * @returns {undefined} Nothing
+ */
+function addRolesToGroupAndUsers({ _id, shopId, name }, roles) {
+  Groups.update({ _id }, { $addToSet: { permissions: { $each: roles } } });
+
+  const maxAccountsPerUpdate = 100000;
+  const accountSelector = { groups: _id };
+  const numAccounts = Accounts.find(accountSelector).count();
+  if (numAccounts === 0) {
+    Logger.debug("No users need roles updated");
+    return;
+  }
+
+  Logger.debug(`Number of users to add roles to: ${numAccounts}`);
+  const numQueriesNeeded = Math.ceil(numAccounts / maxAccountsPerUpdate);
+  Logger.debug(`Number of updates needed: ${numQueriesNeeded}`);
+
+  const accountOptions = {
+    fields: { _id: 1 },
+    sort: { _id: 1 },
+    limit: maxAccountsPerUpdate
+  };
+  let lastUserIdUpdated = "";
+
+  for (let inc = 0; inc < numQueriesNeeded; inc += 1) {
+    Logger.debug(`Processing user role update #${inc + 1} of ${numQueriesNeeded} for ${name} group, ${roles} roles`);
+
+    if (lastUserIdUpdated) {
+      accountSelector._id = {
+        $gt: lastUserIdUpdated
+      };
+    }
+
+    const userIds = Accounts.find(accountSelector, accountOptions).map((account) => account._id);
+    const firstUserIdInBatch = userIds[0];
+    const lastUserIdInBatch = userIds[userIds.length - 1];
+    const userSelector = { _id: { $gte: firstUserIdInBatch, $lte: lastUserIdInBatch } };
+    const userModifier = {
+      $addToSet: {
+        [`roles.${shopId}`]: {
+          $each: roles
+        }
+      }
+    };
+
+    Meteor.users.update(userSelector, userModifier, { multi: true });
+
+    lastUserIdUpdated = lastUserIdInBatch;
+  }
+
+  Logger.debug(`addRolesToGroupAndUsers completed for ${name} group, ${roles} roles`);
 }
