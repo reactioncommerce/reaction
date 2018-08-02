@@ -186,13 +186,8 @@ Template.coreCheckoutShipping.events({
     event.stopPropagation();
     const { cart, token } = getCart();
 
-<<<<<<< HEAD
-    Meteor.call("cart/setShipmentMethod", cart._id, this.method, (error) => {
-      if (error) throw new ReactionError("set-shipment-method-error", error.message);
-=======
     Meteor.call("cart/setShipmentMethod", cart._id, token, this.method, (error) => {
-      if (error) throw new Meteor.Error("set-shipment-method-error", error.message);
->>>>>>> release-1.15.0
+      if (error) throw new ReactionError("set-shipment-method-error", error.message);
     });
   },
   "click [data-event-action=configure-shipping]"(event) {

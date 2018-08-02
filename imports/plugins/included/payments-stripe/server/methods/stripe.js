@@ -220,24 +220,7 @@ export const methods = {
 
     // Must have an email
     const cart = Cart.findOne({ _id: cartId });
-<<<<<<< HEAD
-    const customerAccount = Accounts.findOne({ _id: cart.accountId });
-    let customerEmail;
 
-    if (!customerAccount || !Array.isArray(customerAccount.emails)) {
-      // TODO: Is it okay to create random email here if anonymous?
-      Logger.Error("cart email missing!");
-      throw new ReactionError("invalid-parameter", "Email is required for marketplace checkouts.");
-    }
-
-    const defaultEmail = customerAccount.emails.find((email) => email.provides === "default");
-    if (defaultEmail) {
-      customerEmail = defaultEmail.address;
-    } else if (!defaultEmail) {
-      customerEmail = cart.email;
-    } else {
-      throw new ReactionError("invalid-parameter", "Customer does not have default email");
-=======
     let customerEmail = cart.email;
     if (!customerEmail) {
       const customerAccount = Accounts.findOne({ _id: cart.accountId });
@@ -250,8 +233,7 @@ export const methods = {
     }
 
     if (!customerEmail) {
-      throw new Meteor.Error("invalid-parameter", "No email associated with the cart");
->>>>>>> release-1.15.0
+      throw new ReactionError("invalid-parameter", "No email associated with the cart");
     }
 
     // Initialize stripe api lib
