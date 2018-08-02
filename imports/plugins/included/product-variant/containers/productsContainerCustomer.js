@@ -27,7 +27,7 @@ const wrapComponent = (Comp) => (
     constructor(props) {
       super(props);
       this.state = {
-        isLoading: false
+        isLoadingMore: false
       };
     }
 
