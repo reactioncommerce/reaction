@@ -1,6 +1,6 @@
 import { Readable } from "stream";
 import { FileRecord } from "@reactioncommerce/file-collections";
-import { ImportFiles } from "/imports/plugins/core/connectors-new/server";
+import { ImportFiles } from "/imports/plugins/core/connectors/server";
 
 export default async function saveCSVFile(csvString, options) {
   const { importJob } = options;

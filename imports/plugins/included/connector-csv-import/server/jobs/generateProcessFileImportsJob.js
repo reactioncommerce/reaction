@@ -6,7 +6,7 @@ import { Meteor } from "meteor/meteor";
 import { Job } from "/imports/plugins/core/job-collection/lib";
 import { Jobs } from "/lib/collections";
 import { ImportJobs } from "../../lib/collections";
-import { NoMeteorImportFiles, saveCSVFile } from "/imports/plugins/core/connectors-new/server";
+import { NoMeteorImportFiles, saveCSVFile } from "/imports/plugins/core/connectors/server";
 
 
 async function processFileImport() {

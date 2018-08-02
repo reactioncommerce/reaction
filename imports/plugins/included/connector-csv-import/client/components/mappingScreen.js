@@ -7,7 +7,7 @@ import Button from "@reactioncommerce/components/Button/v1";
 import { Meteor } from "meteor/meteor";
 import { Logger } from "/client/api";
 import FieldMatchingColumn from "./fieldMatchingColumn";
-import { ImportFiles } from "/imports/plugins/core/connectors-new/client";
+import { ImportFiles } from "/imports/plugins/core/connectors/client";
 
 
 class MappingScreen extends Component {

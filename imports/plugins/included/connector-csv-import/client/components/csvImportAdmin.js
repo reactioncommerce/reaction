@@ -101,7 +101,7 @@ class CSVImportAdmin extends Component {
 
   render() {
     return (
-      <div className="container">
+      <div>
         {this.renderActiveScreen()}
         {this.renderImportJobsTable()}
       </div>

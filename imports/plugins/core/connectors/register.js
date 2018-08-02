@@ -1,9 +1,9 @@
 import Reaction from "/imports/plugins/core/core/server/Reaction";
 
 Reaction.registerPackage({
-  label: "New Connector", // TODO: Rename
-  name: "connectors-new", // TODO: Rename
-  icon: "fa fa-cloud-upload", // TODO: Change
+  label: "Connectors",
+  name: "connectors",
+  icon: "fa fa-cloud-upload",
   autoEnable: true,
   settings: {},
   registry: [
@@ -12,7 +12,7 @@ Reaction.registerPackage({
       label: "Connectors",
       description: "Update database in bulk",
       route: "/dashboard/connectors",
-      icon: "fa fa-cloud-upload", // TODO: Change
+      icon: "fa fa-cloud-upload",
       container: "core",
       template: "dashboardConnector",
       name: "dashboardProductImporter",
