@@ -60,6 +60,27 @@ type ImageInfo {
   URLs: ImageSizes
 }
 
+"Represents some amount of a single currency"
+type Money {
+  "The numeric amount"
+  amount: Float!
+
+  "The currency, for interpreting the `amount`"
+  currency: Currency!
+
+  "The display amount, with any currency symbols and decimal places already added"
+  displayAmount: String!
+}
+
+"Represents input for some amount of a single currency"
+input MoneyInput {
+  "The numeric amount"
+  amount: Float!
+
+  "The currency code, for interpreting the `amount`"
+  currencyCode: String!
+}
+
 "Mutations have side effects, such as mutating data or triggering a task"
 type Mutation {
   echo(str: String): String

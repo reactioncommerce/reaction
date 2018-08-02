@@ -20,7 +20,7 @@ export default function processEmailJobs() {
     payload: 20
   }, (jobs, callback) => {
     jobs.forEach((job) => {
-      const { from, to, subject, html } = job.data;
+      const { from, to, subject, html, ...optionalEmailFields } = job.data;
 
       if (!from || !to || !subject || !html) {
         const msg = "Email job requires an options object with to/from/subject/html.";
@@ -36,7 +36,8 @@ export default function processEmailJobs() {
           to,
           subject,
           html,
-          status: "processing"
+          status: "processing",
+          ...optionalEmailFields
         }
       }, {
         upsert: true
@@ -59,7 +60,7 @@ export default function processEmailJobs() {
 
       const transport = nodemailer.createTransport(config);
 
-      transport.sendMail({ from, to, subject, html }, Meteor.bindEnvironment((error) => {
+      transport.sendMail({ from, to, subject, html, ...optionalEmailFields }, Meteor.bindEnvironment((error) => {
         if (error) {
           Emails.update({ jobId }, {
             $set: {

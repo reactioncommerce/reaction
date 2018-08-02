@@ -4,6 +4,7 @@ import Random from "@reactioncommerce/random";
 import { Meteor } from "meteor/meteor";
 import { Accounts } from "meteor/accounts-base";
 import { SSR } from "meteor/meteorhacks:ssr";
+import Reaction from "/imports/plugins/core/core/server/Reaction";
 import Core from "./core";
 import Email from "./Email";
 
@@ -65,8 +66,8 @@ export default async function sendVerificationEmail(userId, email) {
   const dataForEmail = {
     // Reaction Information
     contactEmail: "hello@reactioncommerce.com",
-    homepage: Meteor.absoluteUrl(),
-    emailLogo: `${Meteor.absoluteUrl()}resources/placeholder.gif`,
+    homepage: Reaction.absoluteUrl(),
+    emailLogo: `${Reaction.absoluteUrl()}resources/placeholder.gif`,
     copyrightDate,
     legalName: "Reaction Commerce",
     physicalAddress: {

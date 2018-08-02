@@ -1,9 +1,9 @@
 import Swiper from "swiper";
 import { Components } from "@reactioncommerce/reaction-components";
 import { $ } from "meteor/jquery";
-import { Cart } from "/lib/collections";
 import { Session } from "meteor/session";
 import { Template } from "meteor/templating";
+import getCart from "/imports/plugins/core/cart/client/util/getCart";
 
 /**
  * cartDrawer helpers
@@ -18,11 +18,11 @@ Template.cartDrawer.helpers({
       return null;
     }
 
-    const storedCart = Cart.findOne();
+    const { cart } = getCart();
     let count = 0;
 
-    if (typeof storedCart === "object" && storedCart.items) {
-      for (const items of storedCart.items) {
+    if (cart && cart.items) {
+      for (const items of cart.items) {
         count += items.quantity;
       }
     }

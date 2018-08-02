@@ -1,25 +1,25 @@
 import Hooks from "@reactioncommerce/hooks";
 import Logger from "@reactioncommerce/logger";
 import { Meteor } from "meteor/meteor";
-import { check } from "meteor/check";
+import { check, Match } from "meteor/check";
 import * as Collections from "/lib/collections";
+import getCart from "/imports/plugins/core/cart/server/util/getCart";
 
 /**
  * @method cart/setUserCurrency
  * @memberof Cart/Methods
- * @summary Saves user currency in cart, to be paired with order/setCurrencyExhange
+ * @summary Saves user currency in cart, to be paired with order/setCurrencyExchange
  * @param {String} cartId - cartId to apply setUserCurrency
+ * @param {String} [cartToken] - Token for cart, if it's anonymous
  * @param {String} userCurrency - userCurrency to set to cart
  * @return {Number} update result
  */
-export default function setUserCurrency(cartId, userCurrency) {
+export default function setUserCurrency(cartId, cartToken, userCurrency) {
   check(cartId, String);
+  check(cartToken, Match.Maybe(String));
   check(userCurrency, String);
-  const cart = Collections.Cart.findOne({ _id: cartId });
-  if (!cart) {
-    Logger.error(`Cart not found for user: ${this.userId}`);
-    throw new Meteor.Error("not-found", "Cart not found for user with such id");
-  }
+
+  const { cart } = getCart(cartId, { cartToken, throwIfNotFound: true });
 
   const userCurrencyString = {
     userCurrency

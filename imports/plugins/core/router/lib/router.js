@@ -70,7 +70,7 @@ class Router {
 
   /**
    * Triggers reactively on router ready state changed
-   * @return {Boolean} Router initalization state
+   * @return {Boolean} Router initialization state
    */
   static ready() {
     routerReadyDependency.depend();
@@ -201,7 +201,7 @@ Router.pathFor = (path, options = {}) => {
   if (foundPath) {
     // Pull the hash out of options
     //
-    // This is becuase of Spacebars that we have hash.
+    // This is because of Spacebars that we have hash.
     // Spacebars takes all params passed into a template tag and places
     // them into the options.hash object. This will also include any `query` params
     const hash = (options && options.hash) || {};
@@ -568,165 +568,153 @@ Router.initPackageRoutes = (options) => {
 
   const routeDefinitions = [];
 
-  // prefixing isnt necessary if we only have one shop
-  // but we need to bypass the current
-  // subscription to determine this.
-  const shopSub = Meteor.subscribe("shopsCount");
+  // Default layouts
+  const indexLayout = ReactionLayout(options.indexRoute);
+  const notFoundLayout = ReactionLayout({ template: "notFound" });
 
-  Tracker.autorun((shopSubWaitFor) => {
-    if (shopSub.ready()) {
-      shopSubWaitFor.stop();
-      // using tmeasday:publish-counts
-
-      // Default layouts
-      const indexLayout = ReactionLayout(options.indexRoute);
-      const notFoundLayout = ReactionLayout({ template: "notFound" });
-
-      // Index route
-      routeDefinitions.push({
-        route: "/",
-        name: "index",
-        options: {
-          name: "index",
-          ...options.indexRoute,
-          theme: indexLayout.theme,
-          component: indexLayout.component,
-          structure: indexLayout.structure
-        }
-      });
-
-      routeDefinitions.push({
-        route: `${marketplaceSettings.shopPrefix}/:shopSlug`,
-        name: "index",
-        options: {
-          name: "index",
-          type: "shop-prefix",
-          ...options.indexRoute,
-          theme: indexLayout.theme,
-          component: indexLayout.component,
-          structure: indexLayout.structure
-        }
-      });
-
-      // Not-found route
-      routeDefinitions.push({
-        route: "/not-found",
-        name: "not-found",
-        options: {
-          name: "not-found",
-          ...notFoundLayout.indexRoute,
-          theme: notFoundLayout.theme,
-          component: notFoundLayout.component,
-          structure: notFoundLayout.structure
-        }
-      });
-
-      // get package registry route configurations
-      for (const pkg of pkgs) {
-        const newRoutes = [];
-        // pkg registry
-        if (pkg.registry && pkg.enabled) {
-          const registry = Array.from(pkg.registry);
-          for (const registryItem of registry) {
-            // registryItems
-            if (registryItem.route) {
-              const {
-                meta,
-                route,
-                permissions,
-                template,
-                layout,
-                workflow
-                // provides
-              } = registryItem;
-
-              const name = getRegistryRouteName(pkg.name, registryItem);
-
-              // define new route
-              // we could allow the options to be passed in the registry if we need to be more flexible
-              const reactionLayout = ReactionLayout({ template, workflow, layout, permissions });
-              const newRouteConfig = {
-                route,
-                name,
-                options: {
-                  meta,
-                  name,
-                  template,
-                  layout,
-                  triggersEnter: Router.Hooks.get("onEnter", name),
-                  triggersExit: Router.Hooks.get("onExit", name),
-                  component: reactionLayout.component,
-                  theme: reactionLayout.theme,
-                  structure: reactionLayout.structure
-                }
-              };
-              newRoutes.push({
-                ...newRouteConfig,
-                route: `/shop/:shopSlug${route}`,
-                options: {
-                  ...newRouteConfig.options,
-                  type: "shop-prefix"
-                }
-              });
-              // push new routes
-              newRoutes.push(newRouteConfig);
-            } // end registryItems
-          } // end package.registry
-
-          //
-          // add group and routes to routing table
-          //
-          for (const route of newRoutes) {
-            // allow overriding of prefix in route definitions
-            // define an "absolute" url by excluding "/"
-            route.group = {};
-
-            if (route.route.substring(0, 1) !== "/") {
-              route.route = `/${route.route}`;
-              route.group.prefix = "";
-            }
-
-            routeDefinitions.push(route);
-          }
-        }
-      } // end package loop
-
-      // Uniq-ify routes
-      // Take all route definitions in the order that were received, and reverse it.
-      // Routes defined later, like in the case of custom routes will then have a
-      // higher precedence. Any duplicates after the first instance will be removed.
-      //
-      // TODO: In the future, sort by priority
-      // TODO: Allow duplicated routes with a prefix / suffix / flag
-      const uniqRoutes = uniqBy(routeDefinitions.reverse(), "route");
-      const reactRouterRoutes = uniqRoutes.map((route, index) => (
-        <Route
-          key={`${route.name}-${index}`}
-          path={route.route}
-          exact={true}
-          render={route.options.component}
-        />
-      ));
-
-      // Last route, if no other route is matched, this one will be the not-found view
-      // Note: This is last becuase all other routes must at-least attempt a match
-      // before falling back to this not-found route.
-      reactRouterRoutes.push((
-        <Route
-          key="not-found"
-          render={notFoundLayout.component}
-        />
-      ));
-
-      // Finish initialization
-      Router._initialized = true;
-      Router.reactComponents = reactRouterRoutes;
-      Router._routes = uniqRoutes;
-
-      // Trigger a reactive refresh to re-render routes
-      routerReadyDependency.changed();
+  // Index route
+  routeDefinitions.push({
+    route: "/",
+    name: "index",
+    options: {
+      name: "index",
+      ...options.indexRoute,
+      theme: indexLayout.theme,
+      component: indexLayout.component,
+      structure: indexLayout.structure
     }
   });
+
+  routeDefinitions.push({
+    route: `${marketplaceSettings.shopPrefix}/:shopSlug`,
+    name: "index",
+    options: {
+      name: "index",
+      type: "shop-prefix",
+      ...options.indexRoute,
+      theme: indexLayout.theme,
+      component: indexLayout.component,
+      structure: indexLayout.structure
+    }
+  });
+
+  // Not-found route
+  routeDefinitions.push({
+    route: "/not-found",
+    name: "not-found",
+    options: {
+      name: "not-found",
+      ...notFoundLayout.indexRoute,
+      theme: notFoundLayout.theme,
+      component: notFoundLayout.component,
+      structure: notFoundLayout.structure
+    }
+  });
+
+  // get package registry route configurations
+  for (const pkg of pkgs) {
+    const newRoutes = [];
+    // pkg registry
+    if (pkg.registry && pkg.enabled) {
+      const registry = Array.from(pkg.registry);
+      for (const registryItem of registry) {
+        // registryItems
+        if (registryItem.route) {
+          const {
+            meta,
+            route,
+            permissions,
+            template,
+            layout,
+            workflow
+            // provides
+          } = registryItem;
+
+          const name = getRegistryRouteName(pkg.name, registryItem);
+
+          // define new route
+          // we could allow the options to be passed in the registry if we need to be more flexible
+          const reactionLayout = ReactionLayout({ template, workflow, layout, permissions });
+          const newRouteConfig = {
+            route,
+            name,
+            options: {
+              meta,
+              name,
+              template,
+              layout,
+              triggersEnter: Router.Hooks.get("onEnter", name),
+              triggersExit: Router.Hooks.get("onExit", name),
+              component: reactionLayout.component,
+              theme: reactionLayout.theme,
+              structure: reactionLayout.structure
+            }
+          };
+          newRoutes.push({
+            ...newRouteConfig,
+            route: `/shop/:shopSlug${route}`,
+            options: {
+              ...newRouteConfig.options,
+              type: "shop-prefix"
+            }
+          });
+          // push new routes
+          newRoutes.push(newRouteConfig);
+        } // end registryItems
+      } // end package.registry
+
+      //
+      // add group and routes to routing table
+      //
+      for (const route of newRoutes) {
+        // allow overriding of prefix in route definitions
+        // define an "absolute" url by excluding "/"
+        route.group = {};
+
+        if (route.route.substring(0, 1) !== "/") {
+          route.route = `/${route.route}`;
+          route.group.prefix = "";
+        }
+
+        routeDefinitions.push(route);
+      }
+    }
+  } // end package loop
+
+  // Uniq-ify routes
+  // Take all route definitions in the order that were received, and reverse it.
+  // Routes defined later, like in the case of custom routes will then have a
+  // higher precedence. Any duplicates after the first instance will be removed.
+  //
+  // TODO: In the future, sort by priority
+  // TODO: Allow duplicated routes with a prefix / suffix / flag
+  const uniqRoutes = uniqBy(routeDefinitions.reverse(), "route");
+  const reactRouterRoutes = uniqRoutes.map((route, index) => (
+    <Route
+      key={`${route.name}-${index}`}
+      path={route.route}
+      exact={true}
+      render={route.options.component}
+    />
+  ));
+
+  // Last route, if no other route is matched, this one will be the not-found view
+  // Note: This is last because all other routes must at-least attempt a match
+  // before falling back to this not-found route.
+  reactRouterRoutes.push((
+    <Route
+      key="not-found"
+      render={notFoundLayout.component}
+    />
+  ));
+
+  // Finish initialization
+  Router._initialized = true;
+  Router.reactComponents = reactRouterRoutes;
+  Router._routes = uniqRoutes;
+
+  // Trigger a reactive refresh to re-render routes
+  routerReadyDependency.changed();
 };
 
 

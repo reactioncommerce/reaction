@@ -1,43 +1,33 @@
 import Hooks from "@reactioncommerce/hooks";
 import Logger from "@reactioncommerce/logger";
 import { Meteor } from "meteor/meteor";
-import { check } from "meteor/check";
-import * as Collections from "/lib/collections";
+import { check, Match } from "meteor/check";
+import { Cart } from "/lib/collections";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
+import getCart from "/imports/plugins/core/cart/server/util/getCart";
 
 /**
  * @method cart/setShipmentAddress
  * @memberof Cart/Methods
  * @summary Adds address book to cart shipping
  * @param {String} cartId - cartId to apply shipmentMethod
+ * @param {String} [cartToken] - Token for cart, if it's anonymous
  * @param {Object} address - addressBook object
  * @return {Number} update result
  */
-export default function setShipmentAddress(cartId, address) {
+export default function setShipmentAddress(cartId, cartToken, address) {
   check(cartId, String);
+  check(cartToken, Match.Maybe(String));
   Reaction.Schemas.Address.validate(address);
 
-  const cart = Collections.Cart.findOne({
-    _id: cartId,
-    userId: this.userId
-  });
-  if (!cart) {
-    Logger.error(`Cart not found for user: ${this.userId}`);
-    throw new Meteor.Error(
-      "not-found",
-      "Cart not found for user with such id"
-    );
-  }
-  // TODO: When we have a front end for doing more than one address
-  // TODO: we need to not use the same address for every record
-  // TODO: this is a temporary workaround so that we have a valid address
-  // TODO: for every shipping record
+  const { cart } = getCart(cartId, { cartToken, throwIfNotFound: true });
+
   let selector;
   let update;
   let updated = false; // if we update inline set to true, otherwise fault to update at the end
   // We have two behaviors depending on if we have existing shipping records and if we
   // have items in the cart.
-  if (cart.shipping && cart.shipping.length > 0 && cart.items) {
+  if (cart.shipping && cart.shipping.length > 0 && cart.items && cart.items.length > 0) {
     // if we have shipping records and cart.items, update each one by shop
     const shopIds = Object.keys(cart.getItemsByShop());
     shopIds.forEach((shopId) => {
@@ -52,14 +42,15 @@ export default function setShipmentAddress(cartId, address) {
         }
       };
       try {
-        Collections.Cart.update(selector, update);
+        Cart.update(selector, update);
         updated = true;
       } catch (error) {
         Logger.error(error, "An error occurred adding the address");
         throw new Meteor.Error(error, "An error occurred adding the address");
       }
     });
-  } else if (!cart.items) { // if no items in cart just add or modify one record for the carts shop
+  } else if (!cart.items || cart.items.length === 0) {
+    // if no items in cart just add or modify one record for the carts shop
     // add a shipping record if it doesn't exist
     if (!cart.shipping) {
       selector = {
@@ -75,7 +66,7 @@ export default function setShipmentAddress(cartId, address) {
       };
 
       try {
-        Collections.Cart.update(selector, update);
+        Cart.update(selector, update);
         updated = true;
       } catch (error) {
         Logger.error(error);
@@ -115,20 +106,20 @@ export default function setShipmentAddress(cartId, address) {
   if (!updated) {
     // if we didn't do one of the inline updates, then run the update here
     try {
-      Collections.Cart.update(selector, update);
+      Cart.update(selector, update);
     } catch (error) {
       Logger.error(error);
       throw new Meteor.Error("server-error", "An error occurred adding the address");
     }
   }
-  // refresh shipping quotes
-  Meteor.call("shipping/updateShipmentQuotes", cartId);
 
-  // Calculate discounts
+  try {
+    Meteor.call("shipping/updateShipmentQuotes", cartId);
+  } catch (error) {
+    Logger.error(`Error calling shipping/updateShipmentQuotes method in setShipmentAddress method for cart with ID ${cartId}`, error);
+  }
+
   Hooks.Events.run("afterCartUpdateCalculateDiscount", cartId);
-
-  // Calculate taxes
-  Hooks.Events.run("afterCartUpdateCalculateTaxes", cartId);
 
   if (typeof cart.workflow !== "object") {
     throw new Meteor.Error(
@@ -143,7 +134,7 @@ export default function setShipmentAddress(cartId, address) {
     cart.workflow.workflow.length < 2) {
     Meteor.call(
       "workflow/pushCartWorkflow", "coreCartWorkflow",
-      "coreCheckoutShipping"
+      "coreCheckoutShipping", cart._id
     );
   }
 
@@ -152,7 +143,7 @@ export default function setShipmentAddress(cartId, address) {
   if (typeof cart.workflow.workflow === "object" &&
     cart.workflow.workflow.length > 2) { // "2" index of
     // `coreCheckoutShipping`
-    Meteor.call("workflow/revertCartWorkflow", "coreCheckoutShipping");
+    Meteor.call("workflow/revertCartWorkflow", "coreCheckoutShipping", cart._id);
   }
 
   return true;

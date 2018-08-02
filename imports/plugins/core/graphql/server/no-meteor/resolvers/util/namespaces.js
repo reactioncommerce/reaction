@@ -5,6 +5,7 @@ export default {
   CatalogProduct: "reaction/catalogProduct",
   CatalogProductVariant: "reaction/catalogProductVariant",
   Cart: "reaction/cart",
+  CartItem: "reaction/cartItem",
   Currency: "reaction/currency",
   Group: "reaction/group",
   Product: "reaction/product",

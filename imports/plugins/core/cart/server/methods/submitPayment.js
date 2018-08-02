@@ -1,8 +1,10 @@
 import Hooks from "@reactioncommerce/hooks";
 import Logger from "@reactioncommerce/logger";
 import { Meteor } from "meteor/meteor";
+import { check, Match } from "meteor/check";
 import * as Collections from "/lib/collections";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
+import getCart from "/imports/plugins/core/cart/server/util/getCart";
 import { PaymentMethodArgument } from "/lib/collections/schemas";
 
 /**
@@ -10,17 +12,17 @@ import { PaymentMethodArgument } from "/lib/collections/schemas";
  * @memberof Cart/Methods
  * @summary Saves a submitted payment to cart, triggers workflow and adds "paymentSubmitted" to cart workflow
  * Note: this method also has a client stub, that forwards to cartCompleted
+ * @param {String} cartId - The cart ID
+ * @param {String} [cartToken] - The cart token, if it's anonymous
  * @param {Object|Array} paymentMethods - an array of paymentMethods or (deprecated) a single paymentMethod object
  * @return {String} returns update result
  */
-export default function submitPayment(paymentMethods) {
+export default function submitPayment(cartId, cartToken, paymentMethods) {
+  check(cartId, String);
+  check(cartToken, Match.Maybe(String));
   PaymentMethodArgument.validate(paymentMethods);
 
-  const cart = Collections.Cart.findOne({
-    userId: Meteor.userId()
-  });
-
-  const cartId = cart._id;
+  const { cart } = getCart(cartId, { cartToken, throwIfNotFound: true });
 
   const cartShipping = cart.getShippingTotal();
   const cartShippingByShop = cart.getShippingTotalByShop();
@@ -108,17 +110,14 @@ export default function submitPayment(paymentMethods) {
   // Calculate discounts
   Hooks.Events.run("afterCartUpdateCalculateDiscount", cartId);
 
-  // Calculate taxes
-  Hooks.Events.run("afterCartUpdateCalculateTaxes", cartId);
-
   const updatedCart = Collections.Cart.findOne(selector);
 
   // update workflow
-  Meteor.call("workflow/pushCartWorkflow", "coreCartWorkflow", "paymentSubmitted");
+  Meteor.call("workflow/pushCartWorkflow", "coreCartWorkflow", "paymentSubmitted", cartId);
 
   // create order
   if (updatedCart && updatedCart.items && updatedCart.billing && updatedCart.billing[0].paymentMethod) {
-    Meteor.call("cart/copyCartToOrder", cart._id);
+    Meteor.call("cart/copyCartToOrder", cart._id, cartToken);
   } else {
     throw new Meteor.Error(
       "server-error",

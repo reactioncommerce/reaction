@@ -1,0 +1,5 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`throws if deleteOne fails 1`] = `"Unable to delete anonymous cart"`;
+
+exports[`throws if updateOne fails 1`] = `"Unable to update cart"`;

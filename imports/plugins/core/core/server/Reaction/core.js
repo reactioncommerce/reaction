@@ -1,4 +1,3 @@
-import url from "url";
 import Hooks from "@reactioncommerce/hooks";
 import Logger from "@reactioncommerce/logger";
 import Random from "@reactioncommerce/random";
@@ -15,6 +14,7 @@ import createGroups from "./createGroups";
 import processJobs from "./processJobs";
 import sendVerificationEmail from "./sendVerificationEmail";
 import { registerTemplate } from "./templates";
+import { AbsoluteUrlMixin } from "./absoluteUrl";
 
 /**
  * @file Server core methods
@@ -26,6 +26,8 @@ import { registerTemplate } from "./templates";
 const { Jobs, Packages, Shops, Accounts: AccountsCollection } = Collections;
 
 export default {
+  ...AbsoluteUrlMixin,
+
   init() {
     // run beforeCoreInit hooks
     Hooks.Events.run("beforeCoreInit");
@@ -448,14 +450,21 @@ export default {
   },
 
   /**
-   * @name getDomain
+   * @name getCartShopId
    * @method
    * @memberof Core
-   * @summary Get shop domain for URL
-   * @return {String} Shop domain
+   * @summary Get the correct shop ID to use for Cart collection
+   * @return {StringId} The primary or current shop ID, depending on merchantCart setting
    */
-  getDomain() {
-    return url.parse(Meteor.absoluteUrl()).hostname;
+  getCartShopId() {
+    const marketplaceSettings = this.getMarketplaceSettings();
+    let shopId;
+    if (marketplaceSettings && marketplaceSettings.public && marketplaceSettings.public.merchantCart) {
+      shopId = this.getShopId();
+    } else {
+      shopId = this.getPrimaryShopId();
+    }
+    return shopId;
   },
 
   /**

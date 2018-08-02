@@ -585,6 +585,10 @@ export const Product = new SimpleSchema({
     optional: true,
     defaultValue: {}
   },
+  "currentProductHash": {
+    type: String,
+    optional: true
+  },
   "publishedProductHash": {
     type: String,
     optional: true

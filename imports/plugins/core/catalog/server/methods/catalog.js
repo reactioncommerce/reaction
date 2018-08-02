@@ -10,7 +10,7 @@ import Reaction from "/imports/plugins/core/core/server/Reaction";
 import { MediaRecords, Products, Tags } from "/lib/collections";
 import { Media } from "/imports/plugins/core/files/server";
 import rawCollections from "/imports/collections/rawCollections";
-import { createProductHash } from "../no-meteor/mutations/hashProduct";
+import hashProduct, { createProductHash } from "../no-meteor/mutations/hashProduct";
 import getProductPriceRange from "../no-meteor/utils/getProductPriceRange";
 import getVariants from "../no-meteor/utils/getVariants";
 import hasChildVariant from "../no-meteor/utils/hasChildVariant";
@@ -366,7 +366,9 @@ function updateCatalogProduct(userId, selector, modifier, validation) {
 
   const result = Products.update(selector, modifier, validation);
 
-  Hooks.Events.run("afterUpdateCatalogProduct", product, { modifier });
+  hashProduct(product._id, rawCollections, false);
+
+  Hooks.Events.run("afterUpdateCatalogProduct", product._id, { modifier });
 
   return result;
 }
@@ -524,6 +526,7 @@ Meteor.methods({
     const assembledVariant = Object.assign(newVariant || {}, {
       _id: newVariantId,
       ancestors,
+      taxCode: product.taxCode,
       shopId: product.shopId,
       type: "variant"
     });
@@ -730,7 +733,6 @@ Meteor.methods({
       const newAncestors = [];
       ancestors.map((oldId) => {
         const pair = getIds(oldId);
-        // TODO do we always have newId on this step?
         newAncestors.push(pair[0].newId);
         return newAncestors;
       });
@@ -1032,7 +1034,7 @@ Meteor.methods({
         denormalize(doc.ancestors[0], field);
       }
     }
-    return result;
+    return update;
   },
 
   /**

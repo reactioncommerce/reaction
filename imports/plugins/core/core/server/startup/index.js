@@ -1,6 +1,4 @@
 import Logger from "@reactioncommerce/logger";
-import SimpleSchema from "simpl-schema";
-import { Meteor } from "meteor/meteor";
 import Accounts from "./accounts";
 import "./browser-policy";
 import CollectionSecurity from "./collection-security";
@@ -10,22 +8,14 @@ import Prerender from "./prerender";
 import RateLimiters from "./rate-limits";
 import RegisterCore from "./register-core";
 import RegisterRouter from "./register-router";
+import setupCdn from "./cdn";
 import Reaction from "../Reaction";
 import { Shops } from "/lib/collections";
-
-// This is needed so that it throws a Meteor.Error as `check()` would do
-// when we call schema.validate() in a Meteor method.
-// https://github.com/aldeed/node-simple-schema/#customize-the-error-that-is-thrown
-SimpleSchema.defineValidationErrorTransform((error) => {
-  const ddpError = new Meteor.Error(error.message);
-  ddpError.error = "validation-error";
-  ddpError.details = error.details;
-  return ddpError;
-});
 
 export default function startup() {
   const startTime = Date.now();
 
+  setupCdn();
   Accounts();
   RegisterCore();
   RegisterRouter();

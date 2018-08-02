@@ -17,7 +17,7 @@ Template.completedPDFLayout.onCreated(async function () {
   });
 
   this.readyVar = new ReactiveVar(false);
-  this.moment = await import("moment");
+  this.moment = await import("moment").default;
   this.readyVar.set(true);
 
   const currentRoute = Router.current();

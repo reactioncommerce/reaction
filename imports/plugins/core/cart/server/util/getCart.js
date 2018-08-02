@@ -1,0 +1,55 @@
+import Logger from "@reactioncommerce/logger";
+import { Meteor } from "meteor/meteor";
+import { Accounts, Cart } from "/lib/collections";
+import Reaction from "/imports/plugins/core/core/server/Reaction";
+import hashLoginToken from "/imports/plugins/core/accounts/server/no-meteor/util/hashLoginToken";
+
+/**
+ * @summary Gets the current cart. Assumes a calling context where Meteor.userId() works. It works
+ *   in all client code, in server methods, and in server publications.
+ * @param {String} [cartId] Limit the search by this cart ID if provided.
+ * @param {Object} [options] Options
+ * @param {String} [options.cartToken] Cart token, required if it's an anonymous cart
+ * @param {Boolean} [options.throwIfNotFound] Default false. Throw a not-found error rather than return null `cart`
+ * @returns {Object} An object with `cart` (the cart for the current account)
+ *   and `account` (the account document in case the calling code needs it without another request)
+ */
+export default function getCart(cartId, { cartToken, throwIfNotFound = false } = {}) {
+  const shopId = Reaction.getCartShopId();
+  if (!shopId) {
+    throw new Meteor.Error("not-found", "Cart not found");
+  }
+
+  const userId = Meteor.userId();
+  let account = null;
+  const selector = { shopId };
+  if (cartId) {
+    selector._id = cartId;
+  }
+
+  if (cartToken) {
+    selector.anonymousAccessToken = hashLoginToken(cartToken);
+  } else {
+    account = (userId && Accounts.findOne({ userId })) || null;
+
+    if (!account) {
+      if (throwIfNotFound) {
+        Logger.error(`Cart not found for user with ID ${userId}`);
+        throw new Meteor.Error("not-found", "Cart not found");
+      }
+
+      return { account, cart: null };
+    }
+
+    selector.accountId = account._id;
+  }
+
+  const cart = Cart.findOne(selector) || null;
+
+  if (!cart && throwIfNotFound) {
+    Logger.error(`Cart not found for user with ID ${userId}`);
+    throw new Meteor.Error("not-found", "Cart not found");
+  }
+
+  return { account, cart };
+}

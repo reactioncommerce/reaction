@@ -77,14 +77,14 @@ class InvoiceContainer extends Component {
 
       if (isEdited) {
         editedItems = editedItems.filter((item) => item.id !== lineItem._id);
-        isEdited.refundedTotal = lineItem.variants.price * adjustedQuantity;
+        isEdited.refundedTotal = lineItem.priceWhenAdded.amount * adjustedQuantity;
         isEdited.refundedQuantity = adjustedQuantity;
         editedItems.push(isEdited);
       } else {
         editedItems.push({
           id: lineItem._id,
           title: lineItem.title,
-          refundedTotal: lineItem.variants.price * lineItem.quantity,
+          refundedTotal: lineItem.priceWhenAdded.amount * lineItem.quantity,
           refundedQuantity: lineItem.quantity
         });
       }
@@ -131,7 +131,7 @@ class InvoiceContainer extends Component {
         updateEditedItems.push({
           id: item._id,
           title: item.title,
-          refundedTotal: item.variants.price * item.quantity,
+          refundedTotal: item.priceWhenAdded.amount * item.quantity,
           refundedQuantity: item.quantity
         });
         return item._id;
@@ -154,7 +154,7 @@ class InvoiceContainer extends Component {
 
     if (isEdited) {
       editedItems = editedItems.filter((item) => item.id !== lineItem._id);
-      isEdited.refundedTotal = lineItem.variants.price * refundedQuantity;
+      isEdited.refundedTotal = lineItem.priceWhenAdded.amount * refundedQuantity;
       isEdited.refundedQuantity = refundedQuantity;
       if (refundedQuantity !== 0) {
         editedItems.push(isEdited);
@@ -163,7 +163,7 @@ class InvoiceContainer extends Component {
       editedItems.push({
         id: lineItem._id,
         title: lineItem.title,
-        refundedTotal: lineItem.variants.price * refundedQuantity,
+        refundedTotal: lineItem.priceWhenAdded.amount * refundedQuantity,
         refundedQuantity
       });
     }
@@ -577,6 +577,7 @@ function capturePayments(order, onCancel) {
 const composer = (props, onData) => {
   const { order, refunds } = props;
 
+  const shopId = Reaction.getShopId();
   const shopBilling = getBillingInfo(order);
   const creditMethod = orderCreditMethod(order);
 
@@ -601,9 +602,9 @@ const composer = (props, onData) => {
   }
   adjustedTotal = Math.abs(paymentMethod && paymentMethod.amount - refundTotal);
 
-  // get invoice
+  // get invoice for the current shop
   const invoice = Object.assign({}, shopBilling.invoice, {
-    totalItems: _.sumBy(order.items, (o) => o.quantity)
+    totalItems: _.sumBy(order.items, (item) => (item.shopId === shopId ? item.quantity : 0))
   });
 
   // get discounts
@@ -627,7 +628,11 @@ const composer = (props, onData) => {
   // get unique lineItems
   const shipment = props.currentData.fulfillment;
 
-  const uniqueItems = order.items.map((item) => {
+  const uniqueItems = order.items.reduce((result, item) => {
+    // If the items are not of this shop, skip them
+    if (item.shopId !== shopId) {
+      return result;
+    }
     const shipping = shipment && shipment.shipmentMethod;
     item.shipping = shipping;
     if (order.taxes !== undefined) {
@@ -638,8 +643,9 @@ const composer = (props, onData) => {
         item.taxDetail = taxDetail;
       }
     }
-    return item;
-  });
+    result.push(item);
+    return result;
+  }, []);
 
   // print order
   const printOrder = Reaction.Router.pathFor("dashboard/pdf/orders", {
