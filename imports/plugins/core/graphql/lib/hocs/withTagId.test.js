@@ -5,7 +5,7 @@ import waitForFalseyProp from "/imports/test-utils/helpers/waitForFalseyProp";
 import getTagId from "../queries/getTagId";
 import withTagId from "./withTagId";
 
-const fakeOpaqueTagId = "cmVhY3Rpb24vc2hvcDpKOEJocTN1VHRkZ3daeDNyeg==";
+const fakeOpaqueTagId = "cmVhY3Rpb24vdGFnOnJwakN2VEJHamhCaTJ4ZHJv";
 const MockComponent = () => <div>Mock</div>;
 const TestComponent = withTagId(MockComponent);
 const mocks = [
