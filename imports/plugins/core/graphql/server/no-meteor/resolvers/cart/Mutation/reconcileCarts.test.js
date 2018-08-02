@@ -1,7 +1,5 @@
 import reconcileCarts from "./reconcileCarts";
 
-const shopId = "123";
-const opaqueShopId = "cmVhY3Rpb24vc2hvcDoxMjM=";
 const internalAnonymousCartId = "555";
 const opaqueAnonymousCartId = "cmVhY3Rpb24vY2FydDo1NTU=";
 const anonymousCartToken = "TOKEN";
@@ -26,8 +24,7 @@ test("correctly passes through to mutations.cart.reconcileCarts", async () => {
       anonymousCartId: opaqueAnonymousCartId,
       anonymousCartToken,
       clientMutationId: "clientMutationId",
-      mode: "merge",
-      shopId: opaqueShopId
+      mode: "merge"
     }
   }, context);
 
@@ -39,7 +36,6 @@ test("correctly passes through to mutations.cart.reconcileCarts", async () => {
   expect(mockMutation).toHaveBeenCalledWith(context, {
     anonymousCartId: internalAnonymousCartId,
     anonymousCartToken,
-    mode: "merge",
-    shopId
+    mode: "merge"
   });
 });

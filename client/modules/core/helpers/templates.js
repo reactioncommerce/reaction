@@ -1,5 +1,4 @@
 import _ from "lodash";
-import "moment/min/locales.min.js";
 import { Meteor } from "meteor/meteor";
 import { Template } from "meteor/templating";
 import { Accounts } from "meteor/accounts-base";
@@ -19,14 +18,25 @@ import { toCamelCase } from "/lib/api";
 
 // Lazily load moment-timezone.months
 const monthOptionsVar = new ReactiveVar([]);
-async function lazyLoadMonths() {
-  if (monthOptionsVar.get().length) return;
-  const { locale, months } = await import("moment-timezone");
+const monthOptionsLangVar = new ReactiveVar("");
 
+/**
+ * @name lazyLoadMonths
+ * @summary Dynamically imports MomentJS locales and returns an array of months in user's language.
+ * @returns {Object[]} Array of objects with value and label properties
+ */
+async function lazyLoadMonths() {
   let lang = i18next.language;
   if (lang === "zh") {
     lang = "zh-cn";
   }
+
+  const areMonthsAlreadyLoaded = monthOptionsVar.get().length;
+  const hasLanguageNotChanged = monthOptionsLangVar.get() === lang;
+  if (areMonthsAlreadyLoaded && hasLanguageNotChanged) return;
+
+  await import("moment/min/locales.min.js");
+  const { locale, months } = await import("moment-timezone");
 
   locale(lang);
 
@@ -46,6 +56,7 @@ async function lazyLoadMonths() {
   }
 
   monthOptionsVar.set(monthOptions);
+  monthOptionsLangVar.set(lang);
 }
 
 Template.registerHelper("Collections", () => Collections);
@@ -118,7 +129,7 @@ Template.registerHelper("yearOptions", (showDefaultOption = true) => {
   }
 
   let year = new Date().getFullYear();
-  for (let i = 1; i < 9; i += 1) {
+  for (let inc = 1; inc < 9; inc += 1) {
     yearOptions.push({
       value: year,
       label: year

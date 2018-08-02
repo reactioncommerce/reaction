@@ -229,7 +229,7 @@ describe("stripe/payment/createCharges", function () {
     });
     const accountId = account._id;
 
-    const cart = Factory.create("cartToOrder", { accountId });
+    const cart = Factory.create("cartToOrder", { accountId, email: null });
 
     sandbox.stub(Meteor, "userId", function () {
       return user._id;
@@ -352,7 +352,7 @@ describe("stripe/payment/createCharges", function () {
     });
     const accountId = account._id;
 
-    let cart = Factory.create("cartMultiShop", { accountId });
+    let cart = Factory.create("cartMultiShop", { accountId, email: null });
     // Assign shipping for the second shop
     Meteor.call("shipping/updateShipmentQuotes", cart._id);
     // Reload cart to fetch the shipping costs updated from the shipping/updateShipmentQuotes

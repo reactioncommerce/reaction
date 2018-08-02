@@ -1,7 +1,7 @@
 import { Meteor } from "meteor/meteor";
 import { Template } from "meteor/templating";
 import { Reaction } from "/client/api";
-import getCart from "/imports/plugins/core/cart/both/util/getCart";
+import getCart from "/imports/plugins/core/cart/client/util/getCart";
 import "./checkout.html";
 
 //
@@ -12,7 +12,7 @@ import "./checkout.html";
 Template.cartCheckout.helpers({
   cart() {
     const { cart } = getCart();
-    return cart || {};
+    return cart;
   },
   cartHasItems() {
     const { cart } = getCart();

@@ -29,6 +29,7 @@ const mockCarts = [
 
 test("when mode is keepAccountCart, returns the result of reconcileCartsKeepAccountCart", async () => {
   mockContext.accountId = accountId;
+  mockContext.user = { accountId, roles: ["guest"] };
   mockContext.collections.Cart.toArray.mockReturnValueOnce(Promise.resolve(mockCarts));
 
   const result = await reconcileCarts(mockContext, {
@@ -43,6 +44,7 @@ test("when mode is keepAccountCart, returns the result of reconcileCartsKeepAcco
 
 test("when mode is keepAnonymousCart, returns the result of reconcileCartsKeepAnonymousCart", async () => {
   mockContext.accountId = accountId;
+  mockContext.user = { accountId, roles: ["guest"] };
   mockContext.collections.Cart.toArray.mockReturnValueOnce(Promise.resolve(mockCarts));
 
   const result = await reconcileCarts(mockContext, {
@@ -57,6 +59,7 @@ test("when mode is keepAnonymousCart, returns the result of reconcileCartsKeepAn
 
 test("when mode is merge, returns the result of reconcileCartsMerge", async () => {
   mockContext.accountId = accountId;
+  mockContext.user = { accountId, roles: ["guest"] };
   mockContext.collections.Cart.toArray.mockReturnValueOnce(Promise.resolve(mockCarts));
 
   const result = await reconcileCarts(mockContext, {
@@ -71,6 +74,7 @@ test("when mode is merge, returns the result of reconcileCartsMerge", async () =
 
 test("when mode is undefined, returns the result of reconcileCartsMerge", async () => {
   mockContext.accountId = accountId;
+  mockContext.user = { accountId, roles: ["guest"] };
   mockContext.collections.Cart.toArray.mockReturnValueOnce(Promise.resolve(mockCarts));
 
   const result = await reconcileCarts(mockContext, {
@@ -84,6 +88,7 @@ test("when mode is undefined, returns the result of reconcileCartsMerge", async 
 
 test("when there is no account cart yet, returns the result of convertAnonymousCartToNewAccountCart", async () => {
   mockContext.accountId = accountId;
+  mockContext.user = { accountId, roles: ["guest"] };
   mockContext.collections.Cart.toArray.mockReturnValueOnce(Promise.resolve([mockCarts[0]]));
 
   const result = await reconcileCarts(mockContext, {
@@ -99,6 +104,7 @@ test("when there is no account cart yet, returns the result of convertAnonymousC
 
 test("when not authenticated, throw access denied", async () => {
   mockContext.accountId = null;
+  mockContext.user = null;
 
   const promise = reconcileCarts(mockContext, {
     anonymousCartId,
@@ -111,6 +117,7 @@ test("when not authenticated, throw access denied", async () => {
 
 test("when missing anonymousCartId, throws", async () => {
   mockContext.accountId = accountId;
+  mockContext.user = { accountId, roles: ["guest"] };
 
   const promise = reconcileCarts(mockContext, {
     anonymousCartToken,
@@ -122,6 +129,7 @@ test("when missing anonymousCartId, throws", async () => {
 
 test("when missing anonymousCartToken, throws", async () => {
   mockContext.accountId = accountId;
+  mockContext.user = { accountId, roles: ["guest"] };
 
   const promise = reconcileCarts(mockContext, {
     anonymousCartId,
@@ -131,19 +139,9 @@ test("when missing anonymousCartToken, throws", async () => {
   return expect(promise).rejects.toThrowErrorMatchingSnapshot();
 });
 
-test("when missing shopId, throws", async () => {
-  mockContext.accountId = accountId;
-
-  const promise = reconcileCarts(mockContext, {
-    anonymousCartId,
-    anonymousCartToken
-  });
-
-  return expect(promise).rejects.toThrowErrorMatchingSnapshot();
-});
-
 test("when no matching anonymous cart is found, throws", async () => {
   mockContext.accountId = accountId;
+  mockContext.user = { accountId, roles: ["guest"] };
   mockContext.collections.Cart.toArray.mockReturnValueOnce(Promise.resolve([mockCarts[1]]));
 
   const promise = reconcileCarts(mockContext, {
@@ -157,6 +155,7 @@ test("when no matching anonymous cart is found, throws", async () => {
 
 test("when unknown mode is passed, throws", async () => {
   mockContext.accountId = accountId;
+  mockContext.user = { accountId, roles: ["guest"] };
   mockContext.collections.Cart.toArray.mockReturnValueOnce(Promise.resolve(mockCarts));
 
   const promise = reconcileCarts(mockContext, {

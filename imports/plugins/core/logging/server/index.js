@@ -1,2 +1,0 @@
-import "./publications";
-import "./methods";

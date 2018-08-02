@@ -356,19 +356,19 @@ class ActionView extends Component {
         display: "flex",
         position: "absolute",
         left: 20,
-        opaticy: 1
+        opacity: 1
       },
       duration: 200
     };
   }
 
-  get backButtonLeaveAnimaton() {
+  get backButtonLeaveAnimation() {
     return {
       animation: {
         display: "flex",
         position: "absolute",
         left: -30,
-        opaticy: 0
+        opacity: 0
       },
       duration: 200
 
@@ -421,7 +421,7 @@ class ActionView extends Component {
           <div style={this.styles.header} className="header">
             <VelocityTransitionGroup
               enter={this.backButtonEnterAnimation}
-              leave={this.backButtonLeaveAnimaton}
+              leave={this.backButtonLeaveAnimation}
             >
               {this.renderDetailViewBackButton()}
             </VelocityTransitionGroup>
@@ -445,7 +445,6 @@ class ActionView extends Component {
             {this.renderDetailComponent()}
           </div>
         </div>
-
       );
     }
   }

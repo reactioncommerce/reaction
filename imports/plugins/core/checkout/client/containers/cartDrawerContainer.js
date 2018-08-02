@@ -5,7 +5,7 @@ import { Session } from "meteor/session";
 import { Meteor } from "meteor/meteor";
 import { getPrimaryMediaForOrderItem, ReactionProduct } from "/lib/api";
 import { Reaction } from "/client/api";
-import getCart from "/imports/plugins/core/cart/both/util/getCart";
+import getCart from "/imports/plugins/core/cart/client/util/getCart";
 import CartDrawer from "../components/cartDrawer";
 
 // event handlers to pass in as props
@@ -42,7 +42,10 @@ const handlers = {
     event.stopPropagation();
     event.preventDefault();
     const cartItemElement = $(event.target).closest(".cart-drawer-swiper-slide");
-    cartItemElement.fadeOut(500, () => Meteor.call("cart/removeFromCart", item._id));
+    const { cart, token } = getCart();
+    if (!cart) return;
+
+    cartItemElement.fadeOut(500, () => Meteor.call("cart/removeFromCart", cart._id, token, item._id));
   },
 
   handleCheckout() {
