@@ -1,6 +1,7 @@
 import _ from "lodash";
 import Logger from "@reactioncommerce/logger";
 import { Meteor } from "meteor/meteor";
+import { Match } from "meteor/check";
 
 /**
  * @file **Method Hooks for Meteor** - Use a hook to run something before or after a method on the server
@@ -88,6 +89,11 @@ MethodHooks._initializeHook = function (mapping, methodName, hookFunction) {
       }));
 
       hooksProcessed += 1;
+
+      if (beforeResult === false) {
+        check(args, [Match.Any]);
+        return false;
+      }
     }
 
     let methodResult;
