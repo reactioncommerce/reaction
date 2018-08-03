@@ -102,12 +102,20 @@ function composer(props, onData) {
   }
 
   // Get active shop's slug
-  const shopId = Reaction.getShopId();
-  const shop = Shops.findOne({ _id: shopId });
-  if (!shop) {
-    return;
+  const internalShopId = Reaction.getShopId();
+  const pathShopSlug = Reaction.Router.getParam("shopSlug");
+  let shopSlug;
+  if (pathShopSlug) {
+    // User viewing /shop/SLUG
+    shopSlug = pathShopSlug;
+  } else {
+    // User viewing primary shop or SLUG.domain.com
+    const shop = Shops.findOne({ _id: internalShopId });
+    if (!shop) {
+      return;
+    }
+    shopSlug = shop.slug;
   }
-  const { slug: shopSlug } = shop;
 
   // Get tag slug from URL
   const tagSlugOrId = Reaction.Router.getParam("slug");
