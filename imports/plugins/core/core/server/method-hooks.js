@@ -1,4 +1,5 @@
 import _ from "lodash";
+import Logger from "@reactioncommerce/logger";
 import { Meteor } from "meteor/meteor";
 
 /**
@@ -86,12 +87,13 @@ MethodHooks._initializeHook = function (mapping, methodName, hookFunction) {
         hooksProcessed
       }));
 
+      if (beforeResult === false) {
+        return false;
+      }
+
       hooksProcessed += 1;
     }
 
-    if (beforeResult === false) {
-      return false;
-    }
     let methodResult;
     let methodError;
 
@@ -115,7 +117,7 @@ MethodHooks._initializeHook = function (mapping, methodName, hookFunction) {
       }));
       // If the after hook did not return a value and the methodResult is not undefined, warn and fix
       if (hookResult === undefined && methodResult !== undefined) {
-        Meteor._debug("Expected the after hook to return a value.");
+        Logger.warn("Expected the after hook to return a value.");
       } else {
         methodResult = hookResult;
       }
