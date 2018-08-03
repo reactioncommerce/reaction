@@ -229,6 +229,7 @@
             "@reactioncommerce/reaction-graphql-xforms": "./imports/plugins/core/graphql/server/no-meteor/resolvers/xforms",
             "@reactioncommerce/reaction-router": "./imports/plugins/core/router/lib",
             "@reactioncommerce/reaction-ui": "./imports/plugins/core/ui/client/components",
+            "@reactioncommerce/reaction-error": "./imports/utils/ReactionError.js",
             "underscore": "lodash"
           }
         }
@@ -267,6 +268,7 @@
                 "@reactioncommerce/reaction-graphql-xforms": "./imports/plugins/core/graphql/server/no-meteor/resolvers/xforms",
                 "@reactioncommerce/reaction-router": "./imports/plugins/core/router/lib",
                 "@reactioncommerce/reaction-ui": "./imports/plugins/core/ui/client/components",
+                "@reactioncommerce/reaction-error": "./imports/utils/ReactionError.js",
                 "meteor": "./.reaction/devserver/mockmeteor",
                 "underscore": "lodash"
               }
@@ -310,6 +312,7 @@
                 "@reactioncommerce/reaction-graphql-xforms": "./imports/plugins/core/graphql/server/no-meteor/resolvers/xforms",
                 "@reactioncommerce/reaction-router": "./imports/plugins/core/router/lib",
                 "@reactioncommerce/reaction-ui": "./imports/plugins/core/ui/client/components",
+                "@reactioncommerce/reaction-error": "./imports/utils/ReactionError.js",
                 "meteor": "./imports/test-utils/__mocks__/meteor",
                 "underscore": "lodash"
               }

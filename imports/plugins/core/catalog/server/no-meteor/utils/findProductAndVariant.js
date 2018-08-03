@@ -1,4 +1,4 @@
-import { Meteor } from "meteor/meteor";
+import ReactionError from "@reactioncommerce/reaction-error";
 import findVariantInCatalogProduct from "./findVariantInCatalogProduct";
 
 /**
@@ -18,14 +18,14 @@ export default async function findProductAndVariant(collections, productId, vari
   });
 
   if (!catalogProductItem) {
-    throw new Meteor.Error("not-found", `CatalogProduct with product ID ${productId} not found`);
+    throw new ReactionError("not-found", `CatalogProduct with product ID ${productId} not found`);
   }
 
   const catalogProduct = catalogProductItem.product;
 
   const { parentVariant, variant } = findVariantInCatalogProduct(catalogProduct, variantId);
   if (!variant) {
-    throw new Meteor.Error("invalid-param", `Product with ID ${productId} has no variant with ID ${variantId}`);
+    throw new ReactionError("invalid-param", `Product with ID ${productId} has no variant with ID ${variantId}`);
   }
 
   return { catalogProductItem, catalogProduct, parentVariant, variant };

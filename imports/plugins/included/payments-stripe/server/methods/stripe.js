@@ -6,6 +6,7 @@ import stripeNpm from "stripe";
 import { Meteor } from "meteor/meteor";
 import { check, Match } from "meteor/check";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
+import ReactionError from "@reactioncommerce/reaction-error";
 import { Cart, Shops, Accounts, Packages } from "/lib/collections";
 import { PaymentMethodArgument } from "/lib/collections/schemas";
 
@@ -75,7 +76,7 @@ function stripeCaptureCharge(paymentMethod) {
  */
 function normalizeStatus(transaction) {
   if (!transaction) {
-    throw new Meteor.Error("invalid-parameter", "normalizeStatus requires a transaction");
+    throw new ReactionError("invalid-parameter", "normalizeStatus requires a transaction");
   }
 
   // if this transaction failed, mode is "failed"
@@ -100,7 +101,7 @@ function normalizeStatus(transaction) {
  */
 function normalizeMode(transaction) {
   if (!transaction) {
-    throw new Meteor.Error("invalid-parameter", "normalizeMode requires a transaction");
+    throw new ReactionError("invalid-parameter", "normalizeMode requires a transaction");
   }
 
   // if this transaction failed, mode is "failed"
@@ -125,7 +126,7 @@ function normalizeMode(transaction) {
  */
 function normalizeRiskLevel(transaction) {
   if (!transaction) {
-    throw new Meteor.Error("invalid-parameter", "normalizeRiskLevel requires a transaction");
+    throw new ReactionError("invalid-parameter", "normalizeRiskLevel requires a transaction");
   }
 
   const outcome = transaction.outcome && transaction.outcome.risk_level;
@@ -146,7 +147,7 @@ function normalizeRiskLevel(transaction) {
 function buildPaymentMethods(options) {
   const { token, cartItemsByShop, transactionsByShopId } = options;
   if (!transactionsByShopId) {
-    throw new Meteor.Error("invalid-parameter", "Creating a payment method log requries transaction data");
+    throw new ReactionError("invalid-parameter", "Creating a payment method log requries transaction data");
   }
 
   const shopIds = Object.keys(transactionsByShopId);
@@ -212,13 +213,14 @@ export const methods = {
 
     if (!stripePkg || !stripePkg.settings || !stripePkg.settings.api_key) {
       // Fail if we can't find a Stripe API key
-      throw new Meteor.Error("not-configured", "Attempted to create multiple stripe charges, but stripe was not configured properly.");
+      throw new ReactionError("not-configured", "Attempted to create multiple stripe charges, but stripe was not configured properly.");
     }
 
     const capture = transactionType === "capture";
 
     // Must have an email
     const cart = Cart.findOne({ _id: cartId });
+
     let customerEmail = cart.email;
     if (!customerEmail) {
       const customerAccount = Accounts.findOne({ _id: cart.accountId });
@@ -231,7 +233,7 @@ export const methods = {
     }
 
     if (!customerEmail) {
-      throw new Meteor.Error("invalid-parameter", "No email associated with the cart");
+      throw new ReactionError("invalid-parameter", "No email associated with the cart");
     }
 
     // Initialize stripe api lib
@@ -304,7 +306,7 @@ export const methods = {
             !merchantStripePkg.settings ||
             !merchantStripePkg.settings.connectAuth ||
             !merchantStripePkg.settings.connectAuth.stripe_user_id) {
-            throw new Meteor.Error("server-error", `Error processing payment for merchant with shopId ${shopId}`);
+            throw new ReactionError("server-error", `Error processing payment for merchant with shopId ${shopId}`);
           }
 
           // get stripe account for this shop
@@ -390,7 +392,7 @@ export const methods = {
       // If we get an unexpected error, log and return a censored error message
       Logger.error(`Received unexpected error type: ${error.rawType}`);
       Logger.error(error);
-      throw new Meteor.Error("server-error", "An unexpected error occurred while creating multiple stripe charges");
+      throw new ReactionError("server-error", "An unexpected error occurred while creating multiple stripe charges");
     }
   },
   /**

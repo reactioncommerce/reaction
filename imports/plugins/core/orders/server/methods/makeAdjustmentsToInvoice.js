@@ -1,7 +1,7 @@
-import { Meteor } from "meteor/meteor";
 import { check } from "meteor/check";
 import { Orders } from "/lib/collections";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
+import ReactionError from "@reactioncommerce/reaction-error";
 
 /**
  * @name orders/makeAdjustmentsToInvoice
@@ -15,7 +15,7 @@ export default function makeAdjustmentsToInvoice(order) {
   check(order, Object);
 
   if (!Reaction.hasPermission("orders")) {
-    throw new Meteor.Error("access-denied", "Access Denied");
+    throw new ReactionError("access-denied", "Access Denied");
   }
 
   this.unblock(); // REVIEW: Why unblock here?

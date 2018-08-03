@@ -3,6 +3,7 @@ import { Meteor } from "meteor/meteor";
 import { check, Match } from "meteor/check";
 import { Accounts } from "/lib/collections";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
+import ReactionError from "@reactioncommerce/reaction-error";
 
 /**
  * @name accounts/addressBookRemove
@@ -21,7 +22,7 @@ export default function addressBookRemove(addressId, accountUserId) {
   if (typeof accountUserId === "string") { // if this will not be a String -
     // `check` will not pass it.
     if (Meteor.userId() !== accountUserId && !Reaction.hasPermission("reaction-accounts")) {
-      throw new Meteor.Error("access-denied", "Access denied");
+      throw new ReactionError("access-denied", "Access denied");
     }
   }
   this.unblock();
@@ -52,5 +53,5 @@ export default function addressBookRemove(addressId, accountUserId) {
     return account.profile.addressBook.find((removedAddress) => addressId === removedAddress._id);
   }
 
-  throw new Meteor.Error("server-error", "Unable to remove address from account");
+  throw new ReactionError("server-error", "Unable to remove address from account");
 }

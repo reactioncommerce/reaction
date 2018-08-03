@@ -1,5 +1,5 @@
 import Logger from "@reactioncommerce/logger";
-import { Meteor } from "meteor/meteor";
+import ReactionError from "@reactioncommerce/reaction-error";
 import hashLoginToken from "/imports/plugins/core/accounts/server/no-meteor/util/hashLoginToken";
 import convertAnonymousCartToNewAccountCart from "./convertAnonymousCartToNewAccountCart";
 import reconcileCartsKeepAccountCart from "./reconcileCartsKeepAccountCart";
@@ -25,9 +25,9 @@ export default async function reconcileCarts(context, input) {
   const { Cart } = collections;
   const { anonymousCartId, anonymousCartToken, mode = "merge" } = input;
 
-  if (!accountId) throw new Meteor.Error("access-denied", "Access Denied");
-  if (!anonymousCartId) throw new Meteor.Error("invalid-param", "anonymousCartId is required");
-  if (!anonymousCartToken) throw new Meteor.Error("invalid-param", "anonymousCartToken is required");
+  if (!accountId) throw new ReactionError("access-denied", "Access Denied");
+  if (!anonymousCartId) throw new ReactionError("invalid-param", "anonymousCartId is required");
+  if (!anonymousCartToken) throw new ReactionError("invalid-param", "anonymousCartToken is required");
 
   const accountCartSelector = { accountId };
   const anonymousCartSelector = { _id: anonymousCartId, anonymousAccessToken: hashLoginToken(anonymousCartToken) };
@@ -37,7 +37,7 @@ export default async function reconcileCarts(context, input) {
   }).toArray();
 
   const anonymousCart = carts.find((cart) => cart._id === anonymousCartId);
-  if (!anonymousCart) throw new Meteor.Error("not-found", "Anonymous cart not found");
+  if (!anonymousCart) throw new ReactionError("not-found", "Anonymous cart not found");
 
   const { shopId } = anonymousCart;
 
@@ -47,7 +47,7 @@ export default async function reconcileCarts(context, input) {
   const roles = (user.roles && user.roles[shopId]) || [];
   if (roles.indexOf("anonymous") !== -1) {
     Logger.warn("reconcileCarts called by an anonymous user. Check client code.");
-    throw new Meteor.Error("access-denied", "Access Denied");
+    throw new ReactionError("access-denied", "Access Denied");
   }
 
   const accountCart = carts.find((cart) => cart.accountId === accountId && cart.shopId === shopId);
@@ -71,7 +71,7 @@ export default async function reconcileCarts(context, input) {
         };
 
       default:
-        throw new Meteor.Error("invalid-param", "mode must be keepAccountCart, keepAnonymousCart, or merge");
+        throw new ReactionError("invalid-param", "mode must be keepAccountCart, keepAnonymousCart, or merge");
     }
   }
 

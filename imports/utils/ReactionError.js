@@ -12,5 +12,16 @@ export default class ReactionError extends ExtendableError {
     super(message);
     this.eventData = eventData;
     this.error = error;
+    // Newer versions of DDP use this property to signify that an error
+    // can be sent back and reconstructed on the calling client.
+    this.isClientSafe = true;
+    // DDP expects this to be in a property named `reason`
+    this.reason = message;
+    // DDP expects this to be in a property named `details`
+    this.details = eventData;
+  }
+
+  clone() {
+    return new ReactionError(this.error, this.reason, this.eventData);
   }
 }
