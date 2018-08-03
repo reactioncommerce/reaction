@@ -7,7 +7,7 @@ import CartPanel from "../components/cartPanel";
 
 const handlers = {
   checkout() {
-    $("#cart-drawer-container").fadeOut();
+    document.querySelector("#cart-drawer-container").classList.remove("opened");
     Session.set("displayCart", false);
     return Reaction.Router.go("cart/checkout");
   }

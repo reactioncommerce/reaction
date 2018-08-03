@@ -45,23 +45,21 @@ Template.openCartDrawer.onRendered(() => {
    */
 
   let swiper;
-
-  $("#cart-drawer-container").fadeIn(() => {
-    if (!swiper) {
-      swiper = new Swiper(".cart-drawer-swiper-container", {
-        direction: "horizontal",
-        setWrapperSize: true,
-        loop: false,
-        grabCursor: true,
-        slidesPerView: "auto",
-        wrapperClass: "cart-drawer-swiper-wrapper",
-        slideClass: "cart-drawer-swiper-slide",
-        slideActiveClass: "cart-drawer-swiper-slide-active",
-        pagination: ".cart-drawer-pagination",
-        paginationClickable: true
-      });
-    }
-  });
+  document.querySelector("#cart-drawer-container").classList.add("opened");
+  if (!swiper) {
+    swiper = new Swiper(".cart-drawer-swiper-container", {
+      direction: "horizontal",
+      setWrapperSize: true,
+      loop: false,
+      grabCursor: true,
+      slidesPerView: "auto",
+      wrapperClass: "cart-drawer-swiper-wrapper",
+      slideClass: "cart-drawer-swiper-slide",
+      slideActiveClass: "cart-drawer-swiper-slide-active",
+      pagination: ".cart-drawer-pagination",
+      paginationClickable: true
+    });
+  }
 });
 
 Template.openCartDrawer.helpers({
@@ -70,7 +68,7 @@ Template.openCartDrawer.helpers({
   }
 });
 
-Template.emptyCartDrawer.onRendered(() => $("#cart-drawer-container").fadeIn());
+Template.emptyCartDrawer.onRendered(() => document.querySelector("#cart-drawer-container").classList.add("opened"));
 
 Template.emptyCartDrawer.helpers({
   EmptyCartDrawer() {

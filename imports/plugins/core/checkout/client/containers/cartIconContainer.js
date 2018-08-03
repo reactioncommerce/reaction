@@ -8,10 +8,8 @@ import CartIcon from "../components/cartIcon";
 const handlers = {
   handleClick(e) {
     e.preventDefault();
-    const cartDrawer = document.querySelector("#cart-drawer-container");
-    Velocity(cartDrawer, { opacity: 1 }, 300, () => {
-      Reaction.toggleSession("displayCart");
-    });
+    document.querySelector("#cart-drawer-container").classList.toggle("opened");
+    Reaction.toggleSession("displayCart");
   }
 };
 
