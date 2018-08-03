@@ -87,10 +87,6 @@ MethodHooks._initializeHook = function (mapping, methodName, hookFunction) {
         hooksProcessed
       }));
 
-      if (beforeResult === false) {
-        return false;
-      }
-
       hooksProcessed += 1;
     }
 
