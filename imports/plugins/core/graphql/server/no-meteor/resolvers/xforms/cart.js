@@ -30,10 +30,11 @@ export function decodeCartItemsOpaqueIds(items) {
 
 /**
  * @param {Object[]} catalogItems Array of CatalogItem docs from the db
+ * @param {Object[]} products Array of Product docs from the db
  * @param {Object} cartItem CartItem
  * @return {Object} Same object with GraphQL-only props added
  */
-function xformCartItem(catalogItems, cartItem) {
+function xformCartItem(catalogItems, products, cartItem) {
   const { priceWhenAdded, productId, variantId } = cartItem;
   const { currencyCode } = priceWhenAdded;
 
@@ -59,13 +60,15 @@ function xformCartItem(catalogItems, cartItem) {
     if (!media) [media] = catalogProduct.media;
   }
 
+  const variantSourceProduct = products.find((product) => product._id === variantId);
+
   return {
     ...cartItem,
     compareAtPrice: {
       amount: variantPriceInfo.compareAtPrice,
       currencyCode
     },
-    currentQuantity: variant.quantity,
+    currentQuantity: variantSourceProduct && variantSourceProduct.inventoryQuantity,
     imageURLs: media && media.URLs,
     isBackorder: variant.isBackorder || false,
     isLowQuantity: variant.isLowQuantity || false,
@@ -87,7 +90,7 @@ function xformCartItem(catalogItems, cartItem) {
  * @return {Object[]} Same array with GraphQL-only props added
  */
 export async function xformCartItems(collections, items) {
-  const { Catalog } = collections;
+  const { Catalog, Products } = collections;
 
   const productIds = items.map((item) => item.productId);
 
@@ -100,5 +103,11 @@ export async function xformCartItems(collections, items) {
     "isDeleted": { $ne: true }
   }).toArray();
 
-  return items.map((item) => xformCartItem(catalogItems, item));
+  const products = await Products.find({
+    ancestors: {
+      $in: productIds
+    }
+  }).toArray();
+
+  return items.map((item) => xformCartItem(catalogItems, products, item));
 }
