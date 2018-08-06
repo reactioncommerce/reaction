@@ -2,12 +2,12 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import classnames from "classnames";
 import _ from "lodash";
-import Velocity from "velocity-animate";
-import "velocity-animate/velocity.ui";
 import { Components } from "@reactioncommerce/reaction-components";
 import { findCurrency } from "/client/api";
+import { highlightVariantInput } from "/imports/plugins/core/ui/client/helpers/animations";
 
 const fieldNames = [
+  "optionTitle",
   "title",
   "originCountry",
   "compareAtPrice",
@@ -107,13 +107,7 @@ class VariantForm extends Component {
 
     if (fieldRef) {
       const { input } = fieldRef.refs;
-      const isFieldValid = this.props.validation.isFieldValid(fieldName);
-      const flashColor = isFieldValid ? "#f0fff4" : "#ffeeef";
-
-      Velocity.RunSequence([
-        { e: input, p: { backgroundColor: flashColor }, o: { duration: 200 } },
-        { e: input, p: { backgroundColor: "#fff" }, o: { duration: 100 } }
-      ]);
+      highlightVariantInput(input);
     }
   }
 

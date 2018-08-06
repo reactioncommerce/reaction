@@ -1,11 +1,9 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import classnames from "classnames";
-import Velocity from "velocity-animate";
-import "velocity-animate/velocity.ui";
 import { Components, registerComponent } from "@reactioncommerce/reaction-components";
-
 import { Reaction } from "client/api";
+import { highlightInput } from "/imports/plugins/core/ui/client/helpers/animations";
 
 class ProductField extends Component {
   state = {
@@ -19,11 +17,7 @@ class ProductField extends Component {
       }, () => {
         if (this._input && this._input.refs.input) {
           const { input } = this._input.refs;
-
-          Velocity.RunSequence([
-            { e: input, p: { backgroundColor: "#e2f2e2" }, o: { duration: 200 } },
-            { e: input, p: { backgroundColor: "#fff" }, o: { duration: 100 } }
-          ]);
+          highlightInput(input);
         }
       });
     } else {

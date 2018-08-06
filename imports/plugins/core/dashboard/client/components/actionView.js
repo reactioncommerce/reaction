@@ -4,8 +4,6 @@ import classnames from "classnames";
 import Blaze from "meteor/gadicc:blaze-react-component";
 import { Admin } from "/imports/plugins/core/ui/client/providers";
 import Radium from "radium";
-import "velocity-animate";
-import "velocity-animate/velocity.ui";
 import { VelocityTransitionGroup } from "velocity-react";
 import debounce from "lodash/debounce";
 import {
