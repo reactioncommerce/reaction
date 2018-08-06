@@ -14,7 +14,12 @@ class ProductGridItem extends Component {
       isLowQuantity: PropTypes.bool,
       isSoldOut: PropTypes.bool,
       media: PropTypes.arrayOf(PropTypes.object),
-      pricing: PropTypes.array,
+      pricing: PropTypes.arrayOf(PropTypes.shape({
+        currency: PropTypes.shape({
+          code: PropTypes.string
+        }),
+        displayPrice: PropTypes.string
+      })),
       primaryImage: PropTypes.object,
       slug: PropTypes.string,
       title: PropTypes.string
