@@ -68,7 +68,6 @@ class Metafield extends Component {
   }
 
   handleValueBlur = (event) => {
-
     const valueInput = this.refs.valueInput.refs.input;
 
     if (this.state.inputOriginalValue !== valueInput.value) {

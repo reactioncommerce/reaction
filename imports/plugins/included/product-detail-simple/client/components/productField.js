@@ -10,7 +10,7 @@ class ProductField extends Component {
     value: this.value
   }
 
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) { // eslint-disable-line camelcase
     if (nextProps.product[this.fieldName] !== this.props.product[this.fieldName]) {
       this.setState({
         value: nextProps.product[this.fieldName]

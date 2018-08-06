@@ -36,6 +36,7 @@ const handlers = {
         }
       });
     }
+    return "";
   },
 
   handleRemoveItem(event, item) {
@@ -55,7 +56,14 @@ const handlers = {
   }
 };
 
-// reactive Tracker wrapped function
+/**
+ * @name composer
+ * @private
+ * @summary Reactive Tracker wrapped function
+ * @param {Object} props - React props
+ * @param {Function} onData - Function to call when data is ready
+ * @returns {undefined}
+ */
 function composer(props, onData) {
   const { cart } = getCart();
   if (!cart) return;

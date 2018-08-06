@@ -52,7 +52,7 @@ class VariantForm extends Component {
     };
   }
 
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) { // eslint-disable-line camelcase
     const nextVariant = nextProps.variant || {};
     const currentVariant = this.props.variant || {};
 
@@ -251,6 +251,8 @@ class VariantForm extends Component {
         </div>
       );
     }
+
+    return null;
   }
 
   renderInventoryPolicyField() {

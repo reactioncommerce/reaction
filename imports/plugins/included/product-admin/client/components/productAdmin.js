@@ -44,7 +44,7 @@ class ProductAdmin extends Component {
     };
   }
 
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) { // eslint-disable-line camelcase
     const nextProduct = nextProps.product || {};
     const currentProduct = this.props.product || {};
 

@@ -1,9 +1,15 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { $ } from "meteor/jquery";
 import { Components, registerComponent } from "@reactioncommerce/reaction-components";
 import { Reaction } from "/client/api";
 
+/**
+ * @name handleKeepShopping
+ * @private
+ * @summary Closes cart drawer so user can continue shopping
+ * @param {Object} event - JS event
+ * @returns {undefined}
+ */
 function handleKeepShopping(event) {
   event.stopPropagation();
   event.preventDefault();

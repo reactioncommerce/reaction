@@ -5,8 +5,8 @@ import getCart from "/imports/plugins/core/cart/client/util/getCart";
 import CartIcon from "../components/cartIcon";
 
 const handlers = {
-  handleClick(e) {
-    e.preventDefault();
+  handleClick(event) {
+    event.preventDefault();
     document.querySelector("#cart-drawer-container").classList.toggle("opened");
     Reaction.toggleSession("displayCart");
   }

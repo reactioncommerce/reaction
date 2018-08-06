@@ -228,7 +228,7 @@ class ActionView extends Component {
             {React.createElement(component, this.props.actionView.data)}
           </div>
         );
-      } catch (e) {
+      } catch (error) {
         return (
           <div style={this.styles.masterView} className="master">
             <Blaze
@@ -445,6 +445,8 @@ class ActionView extends Component {
         </div>
       );
     }
+
+    return null;
   }
 
   renderActionView() {
