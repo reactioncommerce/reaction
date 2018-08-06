@@ -1,6 +1,8 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { Query } from "react-apollo";
+import { ITEMS_INCREMENT } from "/client/config/defaults";
+import { loadMore } from "/imports/plugins/core/graphql/lib/helpers/pagination";
 import getCatalogItems from "../queries/getCatalogItems";
 
 export default (Component) => (
@@ -29,15 +31,30 @@ export default (Component) => (
       return (
         <Query query={getCatalogItems} variables={variables}>
           {({ loading, data, fetchMore }) => {
+            const { catalogItems = {} } = data;
             const props = {
               ...this.props,
               isLoadingCatalogItems: loading,
-              fetchMore
+              catalogItems: [],
+              hasMoreCatalogItems: false
             };
 
             if (loading === false) {
-              const { catalogItems } = data;
-              props.catalogItems = catalogItems || {};
+              props.catalogItems = (catalogItems.edges || []).map((edge) => edge.node.product);
+
+              const { pageInfo } = catalogItems;
+              if (pageInfo) {
+                const { hasNextPage } = pageInfo;
+                props.hasMoreCatalogItems = hasNextPage;
+                props.loadMoreCatalogItems = (callback) => {
+                  loadMore({
+                    queryName: "catalogItems",
+                    fetchMore,
+                    pageInfo,
+                    limit: ITEMS_INCREMENT
+                  }, callback);
+                };
+              }
             }
 
             return (
