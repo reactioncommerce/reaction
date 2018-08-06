@@ -5,6 +5,7 @@ import { check, Match } from "meteor/check";
 import { Orders, Packages } from "/lib/collections";
 import { PaymentMethodArgument } from "/lib/collections/schemas";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
+import ReactionError from "@reactioncommerce/reaction-error";
 import sendOrderEmail from "../util/sendOrderEmail";
 
 /**
@@ -30,7 +31,7 @@ export default function createRefund(orderId, paymentMethod, amount, sendEmail =
 
   // REVIEW: For marketplace implementations, who can refund? Just the marketplace?
   if (!Reaction.hasPermission("orders")) {
-    throw new Meteor.Error("access-denied", "Access Denied");
+    throw new ReactionError("access-denied", "Access Denied");
   }
   const processor = paymentMethod.processor.toLowerCase();
   const order = Orders.findOne({ _id: orderId });
@@ -62,7 +63,7 @@ export default function createRefund(orderId, paymentMethod, amount, sendEmail =
         paymentMethod.transactionId,
         result.error
       );
-      throw new Meteor.Error("Attempt to de-authorize transaction failed", result.error);
+      throw new ReactionError("Attempt to de-authorize transaction failed", result.error);
     }
   } else if (orderMode === "capture") {
     result = Meteor.call(`${processor}/refund/create`, paymentMethod, amount);
@@ -74,7 +75,7 @@ export default function createRefund(orderId, paymentMethod, amount, sendEmail =
 
     if (result.saved === false) {
       Logger.fatal("Attempt for refund transaction failed", order._id, paymentMethod.transactionId, result.error);
-      throw new Meteor.Error("Attempt to refund transaction failed", result.error);
+      throw new ReactionError("Attempt to refund transaction failed", result.error);
     }
   }
 

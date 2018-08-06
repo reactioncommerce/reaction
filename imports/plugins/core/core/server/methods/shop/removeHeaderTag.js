@@ -1,6 +1,6 @@
 import { check } from "meteor/check";
-import { Meteor } from "meteor/meteor";
 import { Reaction } from "/lib/api";
+import ReactionError from "@reactioncommerce/reaction-error";
 import { Tags, Products } from "/lib/collections";
 
 /**
@@ -16,7 +16,7 @@ export default function removeHeaderTag(tagId, currentTagId) {
   check(currentTagId, String);
   // must have core permissions
   if (!Reaction.hasPermission("core")) {
-    throw new Meteor.Error("access-denied", "Access Denied");
+    throw new ReactionError("access-denied", "Access Denied");
   }
   this.unblock();
   // remove from related tag use
@@ -38,5 +38,5 @@ export default function removeHeaderTag(tagId, currentTagId) {
     return Tags.remove(tagId);
   }
   // unable to delete anything
-  throw new Meteor.Error("access-denied", "Unable to delete tags that are in use.");
+  throw new ReactionError("access-denied", "Unable to delete tags that are in use.");
 }

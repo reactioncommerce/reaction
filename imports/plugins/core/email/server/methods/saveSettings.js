@@ -1,8 +1,8 @@
 import Logger from "@reactioncommerce/logger";
-import { Meteor } from "meteor/meteor";
 import { check, Match } from "meteor/check";
 import { Packages } from "/lib/collections";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
+import ReactionError from "@reactioncommerce/reaction-error";
 
 /**
  * @name email/saveSettings
@@ -15,7 +15,7 @@ import Reaction from "/imports/plugins/core/core/server/Reaction";
 export default function saveSettings(settings) {
   if (!Reaction.hasPermission(["owner", "admin", "dashboard"], this.userId)) {
     Logger.error("email/saveSettings: Access Denied");
-    throw new Meteor.Error("access-denied", "Access Denied");
+    throw new ReactionError("access-denied", "Access Denied");
   }
 
   check(settings, {

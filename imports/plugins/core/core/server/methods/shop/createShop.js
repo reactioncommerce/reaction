@@ -6,6 +6,7 @@ import { Roles } from "meteor/alanning:roles";
 import { Accounts, Groups, Shops } from "/lib/collections";
 import * as Schemas from "/lib/collections/schemas";
 import { Reaction } from "/lib/api";
+import ReactionError from "@reactioncommerce/reaction-error";
 import getSlug from "/imports/plugins/core/core/server/Reaction/getSlug";
 
 /**
@@ -84,24 +85,24 @@ export default function createShop(shopAdminUserId, partialShopData) {
 
   // must have owner access to create new shops when marketplace is disabled
   if (!hasPrimaryShopOwnerPermission && !allowMerchantShopCreation) {
-    throw new Meteor.Error("access-denied", "Access Denied");
+    throw new ReactionError("access-denied", "Access Denied");
   }
 
   // Non-admin users may only create shops for themselves
   if (!hasPrimaryShopOwnerPermission && shopAdminUserId !== Meteor.userId()) {
-    throw new Meteor.Error("access-denied", "Access Denied");
+    throw new ReactionError("access-denied", "Access Denied");
   }
 
   // Anonymous users should never be permitted to create a shop
   if (!hasPrimaryShopOwnerPermission &&
       Reaction.hasPermission("anonymous", Meteor.userId(), Reaction.getPrimaryShopId())) {
-    throw new Meteor.Error("access-denied", "Access Denied");
+    throw new ReactionError("access-denied", "Access Denied");
   }
 
   const currentUser = Meteor.user();
   const currentAccount = Accounts.findOne({ _id: currentUser._id });
   if (!currentUser) {
-    throw new Meteor.Error("server-error", "Unable to create shop without a user");
+    throw new ReactionError("server-error", "Unable to create shop without a user");
   }
 
   let shopUser = currentUser;
@@ -117,7 +118,7 @@ export default function createShop(shopAdminUserId, partialShopData) {
 
   // Disallow creation of multiple shops, even for marketplace owners
   if (shopAccount.shopId !== primaryShopId) {
-    throw new Meteor.Error(
+    throw new ReactionError(
       "operation-not-permitted",
       "This user already has a shop. Each user may only have one shop."
     );

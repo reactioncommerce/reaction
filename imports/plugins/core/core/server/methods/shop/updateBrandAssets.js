@@ -1,6 +1,7 @@
 import { check } from "meteor/check";
 import { Meteor } from "meteor/meteor";
 import { Reaction } from "/lib/api";
+import ReactionError from "@reactioncommerce/reaction-error";
 import { Shops } from "/lib/collections";
 
 /**
@@ -23,7 +24,7 @@ function updateShopBrandAssets(asset, shopId = Reaction.getShopId(), userId = Me
 
   // must have core permissions
   if (!Reaction.hasPermission("core", userId, shopId)) {
-    throw new Meteor.Error("access-denied", "Access Denied");
+    throw new ReactionError("access-denied", "Access Denied");
   }
 
   // Does our shop contain the brand asset we're trying to add

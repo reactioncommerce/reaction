@@ -7,6 +7,7 @@ import { Meteor } from "meteor/meteor";
 import { SSR } from "meteor/meteorhacks:ssr";
 import { Shops } from "/lib/collections";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
+import ReactionError from "@reactioncommerce/reaction-error";
 
 /**
  * @method sendResetEmail
@@ -24,7 +25,7 @@ async function sendResetEmail(userId, optionalEmail) {
 
   if (!user) {
     Logger.error("sendResetPasswordEmail - User not found");
-    throw new Meteor.Error("not-found", "User not found");
+    throw new ReactionError("not-found", "User not found");
   }
 
   let email = optionalEmail;
@@ -37,7 +38,7 @@ async function sendResetEmail(userId, optionalEmail) {
   // make sure we have a valid email
   if (!email || !user.emails || !user.emails.map((mailInfo) => mailInfo.address).includes(email)) {
     Logger.error("sendResetPasswordEmail - Email not found");
-    throw new Meteor.Error("not-found", "Email not found");
+    throw new ReactionError("not-found", "Email not found");
   }
 
   // Create token for password reset
@@ -129,7 +130,7 @@ export default function sendResetPasswordEmail(options) {
 
   if (!user) {
     Logger.error("accounts/sendResetPasswordEmail - User not found");
-    throw new Meteor.Error("not-found", "User not found");
+    throw new ReactionError("not-found", "User not found");
   }
 
   const emails = _.map(user.emails || [], "address");

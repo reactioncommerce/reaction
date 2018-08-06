@@ -1,6 +1,6 @@
-import { Meteor } from "meteor/meteor";
 import { uniq } from "lodash";
 import Logger from "@reactioncommerce/logger";
+import ReactionError from "@reactioncommerce/reaction-error";
 import publishProductsToCatalog from "../utils/publishProductsToCatalog";
 
 /**
@@ -24,7 +24,7 @@ export default async function publishProducts(context, productIds) {
   ).toArray();
 
   if (products.length !== productIds.length) {
-    throw new Meteor.Error("not-found", "Some products not found");
+    throw new ReactionError("not-found", "Some products not found");
   }
 
   // Only allow users to publish products for shops they permissions to createProductsFor
@@ -34,7 +34,7 @@ export default async function publishProducts(context, productIds) {
     const uniqueShopIds = uniq(products.map((product) => product.shopId));
     uniqueShopIds.forEach((shopId) => {
       if (!userHasPermission(["createProduct"], shopId)) {
-        throw new Meteor.Error("access-denied", "Access Denied");
+        throw new ReactionError("access-denied", "Access Denied");
       }
     });
   }
@@ -42,7 +42,7 @@ export default async function publishProducts(context, productIds) {
   const success = await publishProductsToCatalog(productIds, collections);
   if (!success) {
     Logger.error("Some Products could not be published to the Catalog.");
-    throw new Meteor.Error("server-error", "Some Products could not be published to the Catalog.");
+    throw new ReactionError("server-error", "Some Products could not be published to the Catalog.");
   }
   return Catalog.find({ "product.productId": { $in: productIds } }).toArray();
 }
