@@ -131,7 +131,6 @@
     "tether-tooltip": "^1.2.0",
     "transliteration": "github:reactioncommerce/transliteration",
     "url": "^0.11.0",
-    "velocity-animate": "^1.5.1",
     "velocity-react": "1.4.1"
   },
   "devDependencies": {
