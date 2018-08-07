@@ -198,8 +198,10 @@ function xformCartFulfillmentGroup(fulfillmentGroup, cart) {
 function xformCartPayments(payment, cart, cartTotal, paymentMethods) {
   const { _id, address, paymentMethod } = payment;
 
+  if (!paymentMethod) return null;
+
   // Get the name, since only the ID is stored right now
-  const paymentMethodPkg = paymentMethods.find((method) => method._id === payment.paymentMethod.paymentPackageId);
+  const paymentMethodPkg = paymentMethods.find((method) => method._id === paymentMethod.paymentPackageId);
   let methodName = paymentMethodPkg && paymentMethodPkg.name;
   if (typeof methodName === "string") methodName = methodName.replace(/-/g, "");
 
@@ -238,7 +240,7 @@ export async function xformCartCheckout(collections, cart) {
   // shippingTotal is shipmentMethod.rate for each item, summed
   // handlingTotal is shipmentMethod.handling for each item, summed
   // If there are no selected shipping methods, fulfillmentTotal should be null
-  const fulfillmentGroups = cart.shipping || [];
+  let fulfillmentGroups = cart.shipping || [];
   let fulfillmentTotal = null;
   if (fulfillmentGroups.length > 0) {
     let shippingTotal = 0;
@@ -285,6 +287,9 @@ export async function xformCartCheckout(collections, cart) {
     };
   }
 
+  fulfillmentGroups = fulfillmentGroups.map((fulfillmentGroup) => xformCartFulfillmentGroup(fulfillmentGroup, cart));
+  fulfillmentGroups = fulfillmentGroups.filter((payment) => !!payment); // filter out nulls
+
   // Get packages providing payment methods for the cart shop.
   // Convert them into a map of package IDs to names.
   // We only need to do this because only the ID is stored in the cart
@@ -294,9 +299,12 @@ export async function xformCartCheckout(collections, cart) {
     "shopId": cart.shopId
   }).toArray();
 
+  let payments = (cart.billing || []).map((payment) => xformCartPayments(payment, cart, total, paymentMethods));
+  payments = payments.filter((payment) => !!payment); // filter out nulls
+
   return {
-    fulfillmentGroups: fulfillmentGroups.map((fulfillmentGroup) => xformCartFulfillmentGroup(fulfillmentGroup, cart)),
-    payments: (cart.billing || []).map((payment) => xformCartPayments(payment, cart, total, paymentMethods)),
+    fulfillmentGroups,
+    payments,
     summary: {
       discountTotal: {
         amount: discountTotal,
