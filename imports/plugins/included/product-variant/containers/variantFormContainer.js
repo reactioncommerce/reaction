@@ -190,6 +190,10 @@ const wrapComponent = (Comp) => (
           if (fieldName === "inventoryPolicy") {
             this.updateInventoryPolicyIfChildVariants(variant);
           }
+
+          if (fieldName === "lowInventoryWarningThreshold") {
+            this.updateLowInventoryThresholdIfChildVariants(variant);
+          }
         });
       }
     }
