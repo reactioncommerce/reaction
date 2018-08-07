@@ -209,14 +209,14 @@ function xformCartPayments(payment, cart, cartTotal, paymentMethods) {
     _id,
     amount: {
       amount: paymentMethod.amount,
-      currencyCode: paymentMethod.currency
+      currencyCode: cart.currencyCode
     },
     createdAt: paymentMethod.createdAt,
     data: {
       methodName, // GraphQL resolver uses this to figure out which of the union types this is
       billingAddress: address
     },
-    displayName: `${paymentMethod.processor || ""} ${paymentMethod.storedCard || ""}`.trim(),
+    displayName: paymentMethod.storedCard || "",
     isAuthorized: (paymentMethod.status === "created" && paymentMethod.mode === "authorize"),
     method: {
       name: methodName,
