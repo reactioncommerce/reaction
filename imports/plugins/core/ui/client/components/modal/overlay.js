@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { VelocityTransitionGroup } from "velocity-react";
 import Radium from "radium";
 import classnames from "classnames";
 import { registerComponent } from "@reactioncommerce/reaction-components";
@@ -30,6 +29,7 @@ class Overlay extends Component {
   };
 
   state = {
+    VelocityTransitionGroup: undefined,
     enterAnimation: {
       animation: { opacity: 1 },
       duration: 200
@@ -60,6 +60,16 @@ class Overlay extends Component {
   }
 
   render() {
+    const { VelocityTransitionGroup } = this.state;
+    if (VelocityTransitionGroup === undefined) {
+      import("velocity-react").then((module) => {
+        this.setState({
+          VelocityTransitionGroup: module.VelocityTransitionGroup
+        });
+      });
+      return null;
+    }
+
     return (
       <VelocityTransitionGroup
         enter={this.state.enterAnimation}

@@ -4,7 +4,6 @@ import classnames from "classnames";
 import Blaze from "meteor/gadicc:blaze-react-component";
 import { Admin } from "/imports/plugins/core/ui/client/providers";
 import Radium from "radium";
-import { VelocityTransitionGroup } from "velocity-react";
 import debounce from "lodash/debounce";
 import {
   IconButton,
@@ -163,6 +162,7 @@ class ActionView extends Component {
     super(props);
 
     this.state = {
+      VelocityTransitionGroup: undefined,
       isMobile: this.isMobile,
       enterAnimation: {
         animation: { translateX: 0 },
@@ -405,6 +405,7 @@ class ActionView extends Component {
 
   renderDetailView() {
     const { actionView } = this.props;
+    const { VelocityTransitionGroup } = this.state;
 
     const baseClassName = classnames({
       "rui": true,
@@ -450,6 +451,7 @@ class ActionView extends Component {
   }
 
   renderActionView() {
+    const { VelocityTransitionGroup } = this.state;
     const baseClassName = classnames({
       "rui": true,
       "admin": true,
@@ -488,6 +490,16 @@ class ActionView extends Component {
   }
 
   render() {
+    const { VelocityTransitionGroup } = this.state;
+    if (VelocityTransitionGroup === undefined) {
+      import("velocity-react").then((module) => {
+        this.setState({
+          VelocityTransitionGroup: module.VelocityTransitionGroup
+        });
+      });
+      return null;
+    }
+
     const isRtl = document.querySelector("html").className === "rtl";
     return (
       <div>

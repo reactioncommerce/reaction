@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { VelocityTransitionGroup } from "velocity-react";
 import Radium from "radium";
 import classnames from "classnames";
 import { registerComponent } from "@reactioncommerce/reaction-components";
@@ -21,6 +20,10 @@ class CardBody extends Component {
     children: PropTypes.node,
     expanded: PropTypes.bool, // eslint-disable-line react/boolean-prop-naming
     padded: PropTypes.bool // eslint-disable-line react/boolean-prop-naming
+  };
+
+  state = {
+    VelocityTransitionGroup: undefined
   };
 
   renderCard() {
@@ -47,6 +50,16 @@ class CardBody extends Component {
   }
 
   render() {
+    const { VelocityTransitionGroup } = this.state;
+    if (VelocityTransitionGroup === undefined) {
+      import("velocity-react").then((module) => {
+        this.setState({
+          VelocityTransitionGroup: module.VelocityTransitionGroup
+        });
+      });
+      return null;
+    }
+    
     return (
       <VelocityTransitionGroup
         enter={{ animation: "slideDown" }}
