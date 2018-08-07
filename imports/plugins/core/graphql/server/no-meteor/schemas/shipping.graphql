@@ -8,20 +8,30 @@ type ShippingParcel {
   weight: Float
 }
 
-# type QuoteGroup {
-#   items: [CartItem]!
+enum FulfillmentType {
+  shipping
+}
 
-#   shippingAddress: Address!
+"""
+A single fulfillment method. Fulfillment methods are shown to shoppers along with a quote for them,
+and the shopper chooses one method per fulfillment group per cart during checkout.
+"""
+type FulfillmentMethod implements Node {
+  "The fulfillment method ID"
+  _id: ID!
 
-#   # passed by servers only?
-#   fromAddress: Address
-# }
+  "A carrier name"
+  carrier: String
 
-# input GetAvailableFulfillmentQuotesInput {
-#   groups: [QuoteGroup]
-# }
+  "The name of this method, for display in the user interface"
+  displayName: String!
 
-# extend type Mutation {
-#   getAvailableFulfillmentMethods # TODO
-#   getAvailableFulfillmentQuotes(input: GetAvailableFulfillmentQuotesInput!): GetAvailableFulfillmentQuotesPayload!
-# }
+  "The fulfillment types for which this method may be used. For example, \"shipping\" or \"digital\"."
+  fulfillmentTypes: [FulfillmentType]!
+
+  "The group to which this method belongs"
+  group: String
+
+  "The name of this method, a unique identifier"
+  name: String!
+}

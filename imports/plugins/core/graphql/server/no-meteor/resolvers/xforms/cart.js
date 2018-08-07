@@ -14,6 +14,16 @@ export const assocCartItemOpaqueId = assocOpaqueId(namespaces.CartItem);
 export const decodeCartItemOpaqueId = decodeOpaqueIdForNamespace(namespaces.CartItem);
 export const encodeCartItemOpaqueId = encodeOpaqueId(namespaces.CartItem);
 
+export const assocCartPaymentInternalId = assocInternalId(namespaces.CartPayment);
+export const assocCartPaymentOpaqueId = assocOpaqueId(namespaces.CartPayment);
+export const decodeCartPaymentOpaqueId = decodeOpaqueIdForNamespace(namespaces.CartPayment);
+export const encodeCartPaymentOpaqueId = encodeOpaqueId(namespaces.CartPayment);
+
+export const assocFulfillmentGroupInternalId = assocInternalId(namespaces.FulfillmentGroup);
+export const assocFulfillmentGroupOpaqueId = assocOpaqueId(namespaces.FulfillmentGroup);
+export const decodeFulfillmentGroupOpaqueId = decodeOpaqueIdForNamespace(namespaces.FulfillmentGroup);
+export const encodeFulfillmentGroupOpaqueId = encodeOpaqueId(namespaces.FulfillmentGroup);
+
 /**
  * @param {Object[]} items Array of CartItemInput
  * @return {Object[]} Same array with all IDs transformed to internal
@@ -110,4 +120,198 @@ export async function xformCartItems(collections, items) {
   }).toArray();
 
   return items.map((item) => xformCartItem(catalogItems, products, item));
+}
+
+/**
+ * @summary Transform a single fulfillment group
+ * @param {Object} fulfillmentGroup Fulfillment group
+ * @param {Object} cart Full cart document, with items already transformed
+ * @returns {Object} Transformed group
+ */
+function xformCartFulfillmentGroup(fulfillmentGroup, cart) {
+  const availableFulfillmentOptions = (fulfillmentGroup.shipmentQuotes || []).map((option) => ({
+    fulfillmentMethod: {
+      _id: option.method._id,
+      carrier: option.method.carrier || null,
+      displayName: option.method.label || option.method.name,
+      group: option.method.group || null,
+      name: option.method.name,
+      // For now, this is always shipping. Revisit when adding download, pickup, etc. types
+      fulfillmentTypes: ["shipping"]
+    },
+    handlingPrice: {
+      amount: option.handling || 0,
+      currencyCode: cart.currencyCode
+    },
+    price: {
+      amount: option.rate || 0,
+      currencyCode: cart.currencyCode
+    }
+  }));
+
+  let selectedFulfillmentOption = null;
+  if (fulfillmentGroup.shipmentMethod) {
+    selectedFulfillmentOption = {
+      fulfillmentMethod: {
+        _id: fulfillmentGroup.shipmentMethod._id,
+        carrier: fulfillmentGroup.shipmentMethod.carrier || null,
+        displayName: fulfillmentGroup.shipmentMethod.label || fulfillmentGroup.shipmentMethod.name,
+        group: fulfillmentGroup.shipmentMethod.group || null,
+        name: fulfillmentGroup.shipmentMethod.name,
+        // For now, this is always shipping. Revisit when adding download, pickup, etc. types
+        fulfillmentTypes: ["shipping"]
+      },
+      handlingPrice: {
+        amount: fulfillmentGroup.shipmentMethod.handling || 0,
+        currencyCode: cart.currencyCode
+      },
+      price: {
+        amount: fulfillmentGroup.shipmentMethod.rate || 0,
+        currencyCode: cart.currencyCode
+      }
+    };
+  }
+
+  return {
+    _id: fulfillmentGroup._id,
+    availableFulfillmentOptions,
+    data: {
+      shippingAddress: fulfillmentGroup.address
+    },
+    // For now, we only ever set one fulfillment group, so it has all of the items.
+    // Revisit when the UI supports breaking into multiple groups.
+    items: cart.items || [],
+    selectedFulfillmentOption,
+    // For now, this is always shipping. Revisit when adding download, pickup, etc. types
+    type: "shipping"
+  };
+}
+
+/**
+ * @summary Transform a single fulfillment group
+ * @param {Object} payment A payment object
+ * @param {Object} cart Full cart document, with items already transformed
+ * @param {Number} cartTotal The calculated total price of the cart
+ * @param {Object[]} paymentMethods Payment method packages
+ * @returns {Object} Transformed payment
+ */
+function xformCartPayments(payment, cart, cartTotal, paymentMethods) {
+  const { _id, address, paymentMethod } = payment;
+
+  // Get the name, since only the ID is stored right now
+  const paymentMethodPkg = paymentMethods.find((method) => method._id === payment.paymentMethod.paymentPackageId);
+  let methodName = paymentMethodPkg && paymentMethodPkg.name;
+  if (typeof methodName === "string") methodName = methodName.replace(/-/g, "");
+
+  return {
+    _id,
+    amount: {
+      amount: paymentMethod.amount,
+      currencyCode: paymentMethod.currency
+    },
+    createdAt: paymentMethod.createdAt,
+    data: {
+      methodName, // GraphQL resolver uses this to figure out which of the union types this is
+      billingAddress: address
+    },
+    displayName: `${paymentMethod.processor || ""} ${paymentMethod.storedCard || ""}`.trim(),
+    isAuthorized: (paymentMethod.status === "created" && paymentMethod.mode === "authorize"),
+    method: {
+      name: methodName,
+      data: {
+        methodName, // GraphQL resolver uses this to figure out which of the union types this is
+        example: "example"
+      }
+    }
+  };
+}
+
+/**
+ * @param {Object} collections Map of Mongo collections
+ * @param {Object} cart Cart document
+ * @returns {Object} Checkout object
+ */
+export async function xformCartCheckout(collections, cart) {
+  // itemTotal is qty * amount for each item, summed
+  const itemTotal = (cart.items || []).reduce((sum, item) => (sum + (item.quantity * item.priceWhenAdded.amount)), 0);
+
+  // shippingTotal is shipmentMethod.rate for each item, summed
+  // handlingTotal is shipmentMethod.handling for each item, summed
+  // If there are no selected shipping methods, fulfillmentTotal should be null
+  const fulfillmentGroups = cart.shipping || [];
+  let fulfillmentTotal = null;
+  if (fulfillmentGroups.length > 0) {
+    let shippingTotal = 0;
+    let handlingTotal = 0;
+
+    let hasNoSelectedShipmentMethods = true;
+    fulfillmentGroups.forEach((fulfillmentGroup) => {
+      if (fulfillmentGroup.shipmentMethod) {
+        hasNoSelectedShipmentMethods = false;
+        shippingTotal += fulfillmentGroup.shipmentMethod.rate || 0;
+        handlingTotal += fulfillmentGroup.shipmentMethod.handling || 0;
+      }
+    });
+
+    if (!hasNoSelectedShipmentMethods) {
+      fulfillmentTotal = shippingTotal + handlingTotal;
+    }
+  }
+
+  // taxTotal is itemTotal * effective tax ratio
+  // If it's null or undefined, we assume it has not been calculated and keep as null.
+  let taxTotal = null;
+  if (typeof cart.tax === "number") {
+    taxTotal = itemTotal * cart.tax;
+  }
+
+  const discountTotal = cart.discount || 0;
+
+  const total = Math.max(0, itemTotal + fulfillmentTotal + taxTotal - discountTotal);
+
+  let fulfillmentTotalMoneyObject = null;
+  if (fulfillmentTotal !== null) {
+    fulfillmentTotalMoneyObject = {
+      amount: fulfillmentTotal,
+      currencyCode: cart.currencyCode
+    };
+  }
+
+  let taxTotalMoneyObject = null;
+  if (taxTotal !== null) {
+    taxTotalMoneyObject = {
+      amount: taxTotal,
+      currencyCode: cart.currencyCode
+    };
+  }
+
+  // Get packages providing payment methods for the cart shop.
+  // Convert them into a map of package IDs to names.
+  // We only need to do this because only the ID is stored in the cart
+  // but GraphQL needs the name. We should update to store the method name eventually.
+  const paymentMethods = await collections.Packages.find({
+    "registry.provides": "paymentMethod",
+    "shopId": cart.shopId
+  }).toArray();
+
+  return {
+    fulfillmentGroups: fulfillmentGroups.map((fulfillmentGroup) => xformCartFulfillmentGroup(fulfillmentGroup, cart)),
+    payments: (cart.billing || []).map((payment) => xformCartPayments(payment, cart, total, paymentMethods)),
+    summary: {
+      discountTotal: {
+        amount: discountTotal,
+        currencyCode: cart.currencyCode
+      },
+      fulfillmentTotal: fulfillmentTotalMoneyObject,
+      itemTotal: {
+        amount: itemTotal,
+        currencyCode: cart.currencyCode
+      },
+      taxTotal: taxTotalMoneyObject,
+      total: {
+        amount: total,
+        currencyCode: cart.currencyCode
+      }
+    }
+  };
 }
