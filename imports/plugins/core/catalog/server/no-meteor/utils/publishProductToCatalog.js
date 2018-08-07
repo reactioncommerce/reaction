@@ -40,12 +40,7 @@ export default async function publishProductToCatalog(product, collections) {
     }
   };
 
-  // Check against catalog schema
-  try {
-    Schemas.Catalog.validate(modifier, { modifier: true });
-  } catch (err) {
-    Logger.error(err);
-  }
+  Schemas.Catalog.validate(modifier, { modifier: true });
 
   // Insert/update catalog document
   const result = await Catalog.updateOne(
