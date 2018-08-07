@@ -240,6 +240,19 @@ const wrapComponent = (Comp) => (
       }
     }
 
+    updateLowInventoryThresholdIfChildVariants = (variant) => {
+      // Check to see if this variant has options attached to it
+      const variantOptions = ReactionProduct.getVariants(variant._id);
+
+      if (variantOptions && variantOptions.length !== 0) {
+        variantOptions.forEach((option) => Meteor.call("products/updateProductField", option._id, "lowInventoryWarningThreshold", variant.lowInventoryWarningThreshold, (error) => {
+          if (error) {
+            Alerts.toast(error.message, "error");
+          }
+        }));
+      }
+    }
+
     updateQuantityIfChildVariants = (variant) => {
       if (this.hasChildVariants(variant)) {
         const variantQuantity = ReactionProduct.getVariantQuantity(variant);
