@@ -4,9 +4,20 @@
 
 "Information needed by the fulfillment type to properly fulfill the order"
 type FulfillmentData {
-  # Set Address._id to optional reference passed when setting the shippingAddress
   "The mailing address to which this fulfillment group should be shipped"
   shippingAddress: Address
+}
+
+"A fulfillment option for a cart fulfillment group, which is a method with an associated price"
+type FulfillmentOption {
+  "The fulfillment method this pricing is for"
+  fulfillmentMethod: FulfillmentMethod
+
+  "The additional amount charged for handling"
+  handlingPrice: Money!
+
+  "The base price charged"
+  price: Money!
 }
 
 """
@@ -17,6 +28,13 @@ type FulfillmentGroup implements Node {
   "The fulfillment ID"
   _id: ID!
 
+  """
+  The list of fulfillment options from which the shopper may choose. This list is created by taking
+  the full list of registered fulfillment methods, keeping only those that match the fulfillment `type`
+  of this group, and then calculating a price and handlingPrice for each based on the `items` in this group.
+  """
+  availableFulfillmentOptions: [FulfillmentOption]!
+
   "Information needed by the fulfillment type to properly fulfill the order"
   data: FulfillmentData
 
@@ -24,24 +42,84 @@ type FulfillmentGroup implements Node {
   "The items that are included in this fulfillment group"
   items: [CartItem]!
 
-  "The fulfillment type. Any valid type that has been registered by a fulfillment plugin."
-  type: String!
+  "The fulfillment method selected by a shopper for this group, with its associated price"
+  selectedFulfillmentOption: FulfillmentOption
+
+  "The fulfillment type. Any valid type that has been registered by a fulfillment plugin. Examples: \"shipping\", \"digital\""
+  type: FulfillmentType!
 }
 
-"Input needed when setting a shipping address"
-input SetShippingAddressInput {
+"Input needed when setting the shipping address on a cart"
+input SetShippingAddressOnCartInput {
   "The shipping address"
   address: AddressInput!
 
   "If set, this will be saved as the Address._id. Otherwise an ID will be generated."
   addressId: String
 
+  "The cart to set shipping address on"
+  cartId: ID!
+
+  "The token for the cart, required if it is an anonymous cart"
+  cartToken: String
+
   "An optional string identifying the mutation call, which will be returned in the response payload"
   clientMutationId: String
 }
 
-"The response from the `setShippingAddress` mutation"
-type SetShippingAddressPayload {
+"The response from the `setShippingAddressOnCart` mutation"
+type SetShippingAddressOnCartPayload {
+  "The updated Cart"
+  cart: Cart!
+
+  "The same string you sent with the mutation params, for matching mutation calls with their responses"
+  clientMutationId: String
+}
+
+"A request to update the available fulfillment options for a single fulfillment group"
+input UpdateFulfillmentOptionsForGroupInput {
+  "The cart to update fulfillment options for"
+  cartId: ID!
+
+  "The token for the cart, required if it is an anonymous cart"
+  cartToken: String
+
+  "An optional string identifying the mutation call, which will be returned in the response payload"
+  clientMutationId: String
+
+  "The group to update fulfillment options for"
+  fulfillmentGroupId: ID!
+}
+
+"The response from the `updateFulfillmentOptionsForGroup` mutation"
+type UpdateFulfillmentOptionsForGroupPayload {
+  "The updated Cart"
+  cart: Cart!
+
+  "The same string you sent with the mutation params, for matching mutation calls with their responses"
+  clientMutationId: String
+}
+
+"Input needed to select a fulfillment option for a single fulfillment group on a cart"
+input SelectFulfillmentOptionForGroupInput {
+  "The cart to select this option for"
+  cartId: ID!
+
+  "The token for the cart, required if it is an anonymous cart"
+  cartToken: String
+
+  "An optional string identifying the mutation call, which will be returned in the response payload"
+  clientMutationId: String
+
+  "The group to select this option for"
+  fulfillmentGroupId: ID!
+
+  "The fulfillment method ID from the option the shopper selected"
+  fulfillmentMethodId: ID!
+}
+
+"The response from the `selectFulfillmentOptionForGroup` mutation"
+type SelectFulfillmentOptionForGroupPayload {
   "The updated Cart"
   cart: Cart!
 
@@ -55,7 +133,8 @@ type SetShippingAddressPayload {
 
 "An example"
 type ExamplePaymentMethodInputData {
-  example: String!
+  "The billing address entered by the shopper"
+  billingAddress: Address!
 }
 
 "An example"
@@ -67,31 +146,50 @@ union PaymentMethodInputData = ExamplePaymentMethodInputData | ExampleSavedCardP
 
 """
 Information about a payment method that has been chosen by a shopper,
-and how much of the order total should be applied to it
+and how much of the cart total should be applied to it
 """
-type SelectedPaymentMethodInfo {
+type CartPayment implements Node {
+  "The CartPayment ID"
+  _id: ID!
+
   """
   The amount that will be applied to this payment method. If there are multiple payment methods applied to the
-  order, this may be less than the order total.
+  cart, this may be less than the cart total.
   """
   amount: Money!
 
+  "The date and time at which this payment was created"
+  createdAt: DateTime!
+
   """
-  The shopper-provided data needed to complete the payment using this method
+  The shopper-provided data needed to complete the payment using this method.
+  For example, a billing address, store credit code, stored credit card ID, etc.
   """
   data: PaymentMethodInputData
+
+  "Use this identifier when showing this payment in a user interface"
+  displayName: String!
+
+  "Has this payment been authorized?"
+  isAuthorized: Boolean!
 
   "The payment method"
   method: PaymentMethod!
 }
 
-# "An example"
+"An example"
 input ExampleSavedCardPaymentMethodInputDataInput {
   cvc: String!
 }
 
 "Input when setting the example saved card payment method as the payment method for the cart"
-input SetExampleSavedCardPaymentMethodOnCartInput {
+input SetExampleSavedCardPaymentOnCartInput {
+  "The cart to set shipping address on"
+  cartId: ID!
+
+  "The token for the cart, required if it is an anonymous cart"
+  cartToken: String
+
   "An optional string identifying the mutation call, which will be returned in the response payload"
   clientMutationId: String
 
@@ -104,13 +202,20 @@ input SetExampleSavedCardPaymentMethodOnCartInput {
   methodData: String!
 }
 
-# "An example"
+"An example"
 input ExamplePaymentMethodInputDataInput {
-  example: String!
+  "The billing address entered by the shopper"
+  billingAddress: AddressInput!
 }
 
 "Input when setting the example payment method as the payment method for the cart"
-input SetExamplePaymentMethodOnCartInput {
+input SetExamplePaymentOnCartInput {
+  "The cart to set shipping address on"
+  cartId: ID!
+
+  "The token for the cart, required if it is an anonymous cart"
+  cartToken: String
+
   "An optional string identifying the mutation call, which will be returned in the response payload"
   clientMutationId: String
 
@@ -138,16 +243,27 @@ type SetPaymentPayload {
 
 "A summary of the totals for this order"
 type OrderSummary {
-  "The total price of all chosen fulfillment methods"
-  fulfillmentTotal: Money!
+  "The total of all discounts applied, as a positive number"
+  discountTotal: Money!
+
+  """
+  The total price of all chosen fulfillment methods. This may be null, and there is a difference
+  between null and 0. Null means "not able to calculate", such as when no fulfillment method has
+  been selected for some fulfillment groups.
+  """
+  fulfillmentTotal: Money
 
   "The combined prices of all cart items"
   itemTotal: Money!
 
-  "The total estimated tax that has not already been included in the item prices"
-  taxTotal: Money!
+  """
+  The total estimated tax that has not already been included in the item prices. This may be null,
+  and there is a difference between null and 0. Null means "not able to calculate", such as when no
+  fulfillment methods have been selected or there is some other issue with the tax service.
+  """
+  taxTotal: Money
 
-  "The sum of `itemTotal`, `fulfillmentTotal`, and `taxTotal`"
+  "The sum of `itemTotal`, `fulfillmentTotal`, and `taxTotal`, minus `discountTotal`"
   total: Money!
 }
 
@@ -156,24 +272,32 @@ type Checkout {
   "One or more fulfillment groups, for example, mapping certain items to certain shipping addresses"
   fulfillmentGroups: [FulfillmentGroup]!
 
-  "One or more payment methods selected by the shopper during checkout"
-  selectedPaymentMethods: [SelectedPaymentMethodInfo]!
+  "One or more payments added by the shopper during checkout"
+  payments: [CartPayment]!
 
   "A summary of the totals for this order"
   summary: OrderSummary!
 }
 
 extend type Mutation {
+  "Select a fulfillment option from the `availableFulfillmentOptions` list for a fulfillment group"
+  selectFulfillmentOptionForGroup(input: SelectFulfillmentOptionForGroupInput!): SelectFulfillmentOptionForGroupPayload!
+
   "Set the shipping address for all fulfillment groups"
-  setShippingAddress(input: SetShippingAddressInput!): SetShippingAddressPayload!
+  setShippingAddressOnCart(input: SetShippingAddressOnCartInput!): SetShippingAddressOnCartPayload!
 
   "Set the example payment method as the way the user has chosen to pay for a cart"
-  setExamplePaymentMethodOnCart(input: SetExamplePaymentMethodOnCartInput!): SetPaymentPayload!
+  setExamplePaymentOnCart(input: SetExamplePaymentOnCartInput!): SetPaymentPayload!
 
   "Set the example saved card payment method as the way the user has chosen to pay for a cart"
-  setExampleSavedCardPaymentMethodOnCart(input: SetExampleSavedCardPaymentMethodOnCartInput!): SetPaymentPayload!
+  setExampleSavedCardPaymentOnCart(input: SetExampleSavedCardPaymentOnCartInput!): SetPaymentPayload!
 
-  # Maybe add later
-  # addPayment(input: AddPaymentInput!): AddPaymentPayload!
-  # removePayment(input: RemovePaymentInput!): RemovePaymentPayload!
+  """
+  Clients should call this as necessary during checkout to update the `availableFulfillmentOptions`
+  property for all fulfillment groups of the cart with fresh price quotes. These need to be
+  recalculated every time the items in that group change. When the order is placed, the chosen
+  option for each group will have its prices recalculated one last time. If the prices do not match,
+  order creation will fail.
+  """
+  updateFulfillmentOptionsForGroup(input: UpdateFulfillmentOptionsForGroupInput!): UpdateFulfillmentOptionsForGroupPayload!
 }
