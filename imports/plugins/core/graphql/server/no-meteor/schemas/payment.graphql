@@ -1,7 +1,8 @@
 "Payment plugins will extend or override this"
 enum PaymentMethodName {
-  example
-  exampleSavedCard
+  discountcodes
+  examplepaymentmethod
+  reactionstripe
 }
 
 "An example"
