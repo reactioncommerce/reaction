@@ -20,9 +20,5 @@ ignore:
       expires: '2018-08-26T20:23:03.274Z'
   'npm:chownr:20180731':
     - '*':
-      reason: "extend and request have updated, waiting on twillio and a few other packages to update to the latest requestpackage"
-      expires: '2018-08-26T20:23:03.274Z'
-  'npm:chownr:20180731':
-    - '*':
       reason: "Known bug https://github.com/isaacs/chownr/issues/14, unknown time to patch"
-      expires: '2018-08-30T20:23:03.274Z'
+      expires: '2018-08-30T20:23:03.274Z'd
