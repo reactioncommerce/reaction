@@ -45,7 +45,7 @@ jobs:
           name: Build dist bundle
           command: meteor build --directory ../build/
       - run:
-          name: Check .js size
+          name: Check .js file size
           command: |
             maxSize=2964687
             size=$( wc -c ../build/bundle/programs/web.browser/*.js | awk '{$1=$1};1' | cut -d " " -f 1 )
@@ -56,7 +56,7 @@ jobs:
               echo "The js file size is" $size
             fi
       - run:
-          name: Check .css size
+          name: Check .css file size
           command: |
             maxSize=24888
             size=$( wc -c ../build/bundle/programs/web.browser/*.css | awk '{$1=$1};1' | cut -d " " -f 1 )
