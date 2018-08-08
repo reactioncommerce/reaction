@@ -47,7 +47,7 @@ jobs:
       - run:
           name: Check .js size
           command: |
-            maxSize=1468006
+            maxSize=2964687
             size=$( wc -c ../build/bundle/programs/web.browser/*.js | awk '{$1=$1};1' | cut -d " " -f 1 )
             if [[ $size -gt $maxSize ]]; then
               echo "The production js file has size" $size "which exceeds limit of" $maxSize 1>&2
@@ -58,7 +58,7 @@ jobs:
       - run:
           name: Check .css size
           command: |
-            maxSize=64208
+            maxSize=199588
             size=$( wc -c ../build/bundle/programs/web.browser/*.css | awk '{$1=$1};1' | cut -d " " -f 1 )
             if [[ $size -gt $maxSize ]]; then
               echo "The production js file has size" $size "which exceeds limit of" $maxSize 1>&2
