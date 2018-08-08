@@ -6,9 +6,9 @@ import { ReactionProduct } from "/lib/api";
 class ProductGrid extends Component {
   static propTypes = {
     canLoadMoreProducts: PropTypes.bool,
+    isLoading: PropTypes.bool.isRequired,
     loadProducts: PropTypes.func,
     products: PropTypes.array,
-    productsSubscription: PropTypes.object,
     shopCurrencyCode: PropTypes.string.isRequired
   }
 
@@ -20,32 +20,34 @@ class ProductGrid extends Component {
     window.removeEventListener("scroll", this.loadMoreProducts);
   }
 
-  // load more products to the grid
+  // Load more products when user is close (80%) to the bottom
   loadMoreProducts = (event) => {
     const { canLoadMoreProducts, loadProducts } = this.props;
-    const { scrollY, innerHeight } = window;
-    const { body: { scrollHeight } } = document;
-    const atBottom = Math.abs(innerHeight + scrollY - scrollHeight) <= 1;
-
-    if (canLoadMoreProducts && atBottom) {
+    const { documentElement } = document;
+    const { scrollTop, scrollHeight, clientHeight } = documentElement;
+    const scrollPercent = (scrollTop) / (scrollHeight - clientHeight) * 100;
+    const isCloseToBottom = scrollPercent >= 80;
+    if (canLoadMoreProducts && isCloseToBottom) {
       loadProducts(event);
     }
   }
 
   // render the loading spinner
   renderLoadingSpinner() {
-    const { productsSubscription: { ready } } = this.props;
+    const { isLoading } = this.props;
     // if the products catalog is not ready
     // show the loading spinner
-    if (!ready()) return <Components.Loading />;
+    if (isLoading) return <Components.Loading />;
+
+    return null;
   }
 
   // render the No Products Found message
   renderNotFound() {
-    const { products, productsSubscription: { ready } } = this.props;
+    const { products, isLoading } = this.props;
     // if the products subscription is ready & the products array is undefined or empty
     // show the Not Found message
-    if (ready() && (!Array.isArray(products) || !products.length)) {
+    if (isLoading === false && (!Array.isArray(products) || !products.length)) {
       return (
         <Components.NotFound
           i18nKeyTitle="productGrid.noProductsFound"
@@ -54,6 +56,8 @@ class ProductGrid extends Component {
         />
       );
     }
+
+    return null;
   }
 
   // render the product grid
