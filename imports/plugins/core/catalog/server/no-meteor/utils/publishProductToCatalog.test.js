@@ -6,6 +6,7 @@ import {
 import { rewire as rewire$isBackorder, restore as restore$isBackorder } from "./isBackorder";
 import { rewire as rewire$isLowQuantity, restore as restore$isLowQuantity } from "./isLowQuantity";
 import { rewire as rewire$isSoldOut, restore as restore$isSoldOut } from "./isSoldOut";
+import { rewire as rewire$createCatalogProduct, restore as restore$createCatalogProduct } from "./createCatalogProduct";
 import publishProductToCatalog from "./publishProductToCatalog";
 
 const mockCollections = { ...mockContext.collections };
@@ -328,12 +329,17 @@ const mockIsSoldOut = jest
   .fn()
   .mockName("isSoldOut")
   .mockReturnValue(false);
+const mockCreateCatalogProduct = jest
+  .fn()
+  .mockName("createCatalogProduct")
+  .mockReturnValue(mockProduct);
 
 beforeAll(() => {
   rewire$getCatalogProductMedia(mockGeCatalogProductMedia);
   rewire$isBackorder(mockIsBackorder);
   rewire$isLowQuantity(mockIsLowQuantity);
   rewire$isSoldOut(mockIsSoldOut);
+  rewire$createCatalogProduct(mockCreateCatalogProduct);
 });
 
 afterAll(() => {
@@ -341,6 +347,7 @@ afterAll(() => {
   restore$isLowQuantity();
   restore$isSoldOut();
   restore$getCatalogProductMedia();
+  restore$createCatalogProduct();
 });
 
 test("expect true if a product is published to the catalog collection", async () => {
