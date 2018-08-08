@@ -1,5 +1,5 @@
 # v1.14.0
-## Removing Optional Plugins
+## Removing Optional Plugins | BREAKING CHANGE
 As part of our focus simplifying the core Reaction application and improving performance, we've [made the decision to remove optional plugins from the core application](https://blog.reactioncommerce.com/the-road-ahead-product-updates-june-2018/). From our blog post on this topic:
 > It’s about quality over quantity. As a part of our initiative to simplify Reaction, we’re focusing on providing one reference application per feature and moving all others over to community-sponsored packages. We’ll be migrating packages, APIs, and schemas over to npm. It’s a standard approach to package management, one that improves the developer experience overall.
 
@@ -12,7 +12,59 @@ Here’s how it will look:
 |Shipping|Flat rate|Shippo|
 |Connectors|CSV connector|Shopify connector|
 
-## GraphQL Cart and Checkout
+As the first step of this process we've moved a number of packages from the https://github.com/reactioncommerce/reaction repo to independent repositories in the new https://github.com/reaction-contrib organization. You can install these packages by following the instructions located inside of each new repository. Once installed they should work as they did in v1.13. Any issues you have with updating these packages should be filed in the repos created for these packages and not in the core Reaction repo going forward. If you're interested in contributing to or helping to maintain any of the packages that we've moved to reaction-contrib, please reach out to @zenweasel and he can get you setup.
+
+The list of packages that have been removed in this release is as follows:
+  - Shopify
+  - TaxCloud
+  - Avalara
+  - Authorize.net
+  - Paypal
+  - Braintree
+  - TaxJar
+  - Advanced Inventory Management
+  - Shippo
+  - SMS
+  - Discount Rates (unused, not the same as our current discount codes)
+
+This work is listed as a breaking change. If your application relies on any of these packages, you will have to install them independently of Reaction going forward. This Release will not destroy data associated with these plugins, so you should be able to safely update without losing information. However, please be sure to test this for your specific application before deploying to production and as always, backup your data before updating versions.
+
+## GraphQL Cart
+This release contains the Cart and Checkout GraphQL schemas along with several cart queries and mutations. We're starting to make some changes to the core cart schemas for Reaction and the process that we use to create and identify carts.
+
+One of these changes is when we create a cart for a customer. To this point, we've created a cart document for each and every visitor to a Reaction storefront. Going forward we'll be creating carts on demand. This means that a customer will not have a cart associated with them until they first add a product to the cart. This is how we've architected the GraphQL API to work and we've made some changes to the legacy Reaction cart system to put it in sync.
+
+We're signifincantly adjusting the Cart schema as well. The best way to understand all of this will be to read through the updated GraphQL Cart Schema in #4307 and #4390 but I'll try to note some things to be aware of going forward.
+
+A cart will have either an account associated with it or may be anonymous.
+
+A cart will have an array of items associated with them. As we will be lazy in creating carts, when the cart is created this array of items will have at least one item in it. We do not destory carts if a customer removes all items from a cart, so it is possible that there will be an empty array of items inside of a cart.
+
+One of the major changes to carts is related to how we store information necessary to create an order from a cart. We're introducing a new field `checkout` to the cart schema which you can dig into in #4309. This will be where fulfillment information, payment information, addresses and any other information necessary to process a checkout will be stored.
+
+Recognizing the need to be able to handle orders which have items that require different types of fulfillment, we're organizing items into what we're calling "Fulfillment Groups." The most basic example is that a fulfillment group could be a group of items that is getting shipped to a specific address. For an order with `n` items, there can exist up to `n` fulfillment groups within that cart. This specific release doesn't introduce any new functionality for adding new types of fulfillment groups or splitting a single cart into multiple fulfillments, but it does lay the groundwork for splitting orders, creating new fulfillment types such as an in store pickup, ship to store, digital downloads, or generated license keys.
+
+We're currently mapping this new GraphQL Schema to the existing Reaction Simple Schema, but will be transitioning to
+
+A cart will still be associated with a single shop. This is consistent with current behavior.
+
+There are two GraphQL Queries for fetching carts, one for getting anonymous carts `anonymousCartByCartId` and one for getting account carts `accountCartByAccountId`
+
+This release introduces GraphQL Mutations for creating carts, adding items to carts, removing items from carts, updating cart items, and reconciling carts when a customer with an anonymous cart logs into an account.
+
+`ReconcileCarts` is a new method which replaces and extends our previous `mergeCarts` method with additional functionality. ReconcileCarts has 3 modes: `merge`, `keepAnonymousCart`, and `keepAccountCart`. `merge` is the default mode and works identically to how the existing `mergeCarts` method works, where the anonymous cart is combined with the account cart, items are deduped, and quantities are incremented to match the combined qty of the items in the carts. `keepAnonymousCart` will keep only the items and the checkout information in the anonymous cart, and `keepAccountCart` will do the same but for the Account Cart.
+
+
+## Breaking Changes
+- Removal of previously included ancillary packages listed in the "Removing Optional Plugins" section
+
+- Carts and Orders no longer have userId. They now have accountId. Core client code has been updated, but custom code will need to look up the account for the user and then look up the cart or order from that.
+
+- The CartItem SimpleSchema no longer includes variants and product, i.e., the entire variant and product objects are not copied to the cart item. Instead, certain properties that are needed are copied directly to the CartItem object. For example, item.productSlug. See the updated schema.
+
+- The signature of the "cart/setAnonymousUserEmail" method has changed. It now takes cartId, token arguments. The client code that calls it has been updated, but any custom code calling it will need to be updated.
+
+
 
 ## GraphQL DevServer
 ### Features
@@ -21,6 +73,11 @@ Here’s how it will look:
  - feat: Add anonymousCartByCartId GraphQL query (#4382)
  - feat: createCart mutation, addCartItems mutation, and related cart/order schema changes (#4412)
  - feat: Meteor-free addressBookAdd method and GraphQL plugin reorg (#4167)
+ - feat: Add `resolveAccountFromAccountId` resolver (#4495)
+ - feat: remove cart items (#4474)
+ - feat: update cart items quantity (#4472)
+ - feat: create reconcileCarts mutation (#4443)
+ - feat: Add accountCartByAccountId resolver (#4427)
 
 
 ## Meteor App
@@ -34,6 +91,8 @@ Here’s how it will look:
  - feat: Indicator to notify of pending product changes not yet published to catalog (#4383)
  - feat(marketplace): Limit Tags Publication to Those for the Current Shop (#4206)
  - feat: add robots.txt file (#4370)
+ - feat: Remove account from anon carts, don't use session for carts (#4496)
+ - feat(marketplace): Consideration for Marketplace Shops on Different URLs (#3332)
 
 ### Fixes
  - fix: update and pin to latest version of sharp package (#4466)
@@ -61,12 +120,23 @@ Here’s how it will look:
  - fix: Update prerender.js (#4331)
  - fix(marketplace): Product Visibility for Marketplace Shops (#4259) .. Resolves #4092
  - fix: mislabeled schema (#4371)
+ - fix: ActionView Component Typos (#4439)
+ - fix: Cannot set replyTo or other field options when using Reaction.Email.send (#4380) .. Resolves #4343
+ - fix: migration error preventing app startup (#4491)
+ - fix: add media information to Variants and Options (#4468)
+ - fix: Publish button infinite loop bug (#4488)
+ - fix: client errors related to domain lookup changes (#4471)
+
+### Performance
+ - perf: Dynamically import Moment locales to reduce client bundle size (#4455) .. Resolves #4454
+ - perf: Improve app startup time when large number of Accounts/Users exists (#4449) .. Resolves #4384
 
 ### Refactors
  - refactor: Use new Reaction component library components for the SMS settings form (#4318)
  - refactor: Remove "Catalog" from menu (#4385)
  - refactor: Move all /server files to plugins (#4366)
  - refactor: Update Catalog Schema (#4421)
+ - refactor: remove unused logging (#4476)
 
 ### Plugin Migration
  - refactor: Remove Shopify plugin (#4395)
@@ -78,7 +148,12 @@ Here’s how it will look:
  - refactor: Remove disabled TaxJar plugin (#4348)
  - refactor: Remove inventory package (#4388)
  - refactor: Remove shipping-shippo plugin (#4460)
+ - refactor: Remove SMS plugin (#4451)
+ - refactor: Remove unused discount-rates plugin (#4458)
 
+### Chores
+ - chore: CircleCI step for deploying to an existing ECS cluster (#4487)
+ - chore: make the snyk-security step a dependency for the docker-build step; s… (#4446)
 
 ## Contributors
 Thanks to @pmn4 and @hrath2015 for contributing to this release :tada:
