@@ -1,5 +1,5 @@
 # v1.14.0
-## Removing Optional Plugins | BREAKING CHANGE
+## Removing Optional Plugins
 As part of our focus simplifying the core Reaction application and improving performance, we've [made the decision to remove optional plugins from the core application](https://blog.reactioncommerce.com/the-road-ahead-product-updates-june-2018/). From our blog post on this topic:
 > It’s about quality over quantity. As a part of our initiative to simplify Reaction, we’re focusing on providing one reference application per feature and moving all others over to community-sponsored packages. We’ll be migrating packages, APIs, and schemas over to npm. It’s a standard approach to package management, one that improves the developer experience overall.
 
@@ -26,6 +26,7 @@ The list of packages that have been removed in this release is as follows:
   - Shippo
   - SMS
   - Discount Rates (unused, not the same as our current discount codes)
+  - Logging (unused by core application)
 
 This work is listed as a breaking change. If your application relies on any of these packages, you will have to install them independently of Reaction going forward. This Release will not destroy data associated with these plugins, so you should be able to safely update without losing information. However, please be sure to test this for your specific application before deploying to production and as always, backup your data before updating versions.
 
@@ -56,15 +57,50 @@ This release introduces GraphQL Mutations for creating carts, adding items to ca
 
 
 ## Breaking Changes
-- Removal of previously included ancillary packages listed in the "Removing Optional Plugins" section
+### Meteor App
+#### File Organization
+- We've moved all files from `/server` into plugins. All imports with paths that begin with /server will need to be changed for any custom code or community plugins. See the file changes in https://github.com/reactioncommerce/reaction/pull/4366/files to see examples of changing import paths from `/server` to relevant plugin paths.
 
+#### Cart
+- A cart is not created until items are added. Previously a cart was created for all users, including anonymous users, immediately if one was not found. This is not a breaking change for the core app, but any custom plugins may have code that will need to be updated to handle the possibility of there not being a cart.
+- Update the signature of most cart methods to take an optional cartToken string param. Update all places that call these methods to pass in the token for anonymous carts.
 - Carts and Orders no longer have userId. They now have accountId. Core client code has been updated, but custom code will need to look up the account for the user and then look up the cart or order from that.
-
 - The CartItem SimpleSchema no longer includes variants and product, i.e., the entire variant and product objects are not copied to the cart item. Instead, certain properties that are needed are copied directly to the CartItem object. For example, item.productSlug. See the updated schema.
-
+- `cart/removeCart` Meteor method behavior is the same as before, but the return value is now `{ cart }`
 - The signature of the "cart/setAnonymousUserEmail" method has changed. It now takes cartId, token arguments. The client code that calls it has been updated, but any custom code calling it will need to be updated.
+- Accounts.loginWithAnonymous is no longer available to client code. This was only used in one place, and similar logic has replaced it in that spot.
+- workflow/pushCartWorkflow and workflow/revertCartWorkflow methods now require that you pass in the cartId rather than guessing which cart you intend.
+- In general, be aware that cart.accountId may now be null. Previously, it would be set even for anonymous carts, to the account for the user with "anonymous" role. For now, order.accountId is still set after an anonymous order is placed.
+- The "Reaction.sessionId" stored ID is now used only for auto-login of anonymous users. It is not used by any of the cart code. Also, the "Sessions" collection is no longer written to or published to clients. It will not be dropped automatically, but you can drop it if you no longer need it.
 
+#### Checkout
+- Stripe checkout now uses [Stripe Elements](https://stripe.com/elements) - for more details see #4325
 
+#### Tags
+- We're now limiting the tags publication to show only tags from the current active shop. This is more of a clarification of how this was supposed to work, but if you depended on all tags being published, this will cause unexpected behavior. See #4206 for specific changes.
+
+#### Other
+- Removal of previously included ancillary packages listed in the "Removing Optional Plugins" section
+- The function `createCatalogProduct` has been moved into it's own file. This function was not being exported and should not create any issues, but be aware.
+- The Catalog schema has been changed. It was in a "use at your own risk" state before this, but if you've been using it you may have to migrate some data
+- We've removed the core plugin `Logging` which was used only by the Avalara plugin to this point. If you relied on this plugin, you'll need to reinstall it.
+
+### GraphQL
+- In the GraphQL context, there is no longer a methods object. Instead you can call any method with context.callMeteorMethod(name, ...args).
+- In the GraphQL context, context.queries is now namespaced by which plugin the queries come from. For example, context.queries.userAccount is now context.queries.accounts.userAccount.
+
+## Notable Features
+### Deploy to Heroku Button
+We've added a deploy to Heroku button which should appear in the project readme now. You can now deploy Reaction to Heroku by clicking the "Deploy to Heroku" button and then filling out hte information required by Heroku.
+
+### Hashing Products
+We're now hashing products to determine when a product changes that have not been published to the Catalog. This shows up as an indicator on the publish button when viewing a product that has unpublished changes.
+
+### Serve js and css from CDN
+We now provide an option to serve the bundled javascript and css files from a CDN. See #4316 for more information.
+
+### robots.txt
+We've added a permissive default `robots.txt` file. This file permits all bots to crawl and disallows bots from crawling `/resources`
 
 ## GraphQL DevServer
 ### Features
@@ -136,7 +172,6 @@ This release introduces GraphQL Mutations for creating carts, adding items to ca
  - refactor: Remove "Catalog" from menu (#4385)
  - refactor: Move all /server files to plugins (#4366)
  - refactor: Update Catalog Schema (#4421)
- - refactor: remove unused logging (#4476)
 
 ### Plugin Migration
  - refactor: Remove Shopify plugin (#4395)
@@ -150,6 +185,7 @@ This release introduces GraphQL Mutations for creating carts, adding items to ca
  - refactor: Remove shipping-shippo plugin (#4460)
  - refactor: Remove SMS plugin (#4451)
  - refactor: Remove unused discount-rates plugin (#4458)
+ - refactor: remove unused logging (#4476)
 
 ### Chores
  - chore: CircleCI step for deploying to an existing ECS cluster (#4487)
