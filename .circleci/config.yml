@@ -53,18 +53,18 @@ jobs:
               echo "The production js file has size" $size "which exceeds limit of" $maxSize 1>&2
               exit 3
             else
-              echo "Reduce the js file limit to" $size
+              echo "The js file size is" $size
             fi
       - run:
           name: Check .css size
           command: |
-            maxSize=199588
+            maxSize=24888
             size=$( wc -c ../build/bundle/programs/web.browser/*.css | awk '{$1=$1};1' | cut -d " " -f 1 )
             if [[ $size -gt $maxSize ]]; then
               echo "The production js file has size" $size "which exceeds limit of" $maxSize 1>&2
               exit 3
             else
-              echo "Reduce the css file limit to" $size
+              echo "The css file size is" $size
             fi
       # Store node_modules dependency cache.
       # Saved with package.json checksum and timestamped branch name keys.
