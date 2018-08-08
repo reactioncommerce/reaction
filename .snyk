@@ -21,4 +21,4 @@ ignore:
   'npm:chownr:20180731':
     - '*':
       reason: "Known bug https://github.com/isaacs/chownr/issues/14, unknown time to patch"
-      expires: '2018-08-30T20:23:03.274Z'd
+      expires: '2018-08-30T20:23:03.274Z'
