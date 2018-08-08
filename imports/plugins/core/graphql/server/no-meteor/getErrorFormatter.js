@@ -35,7 +35,7 @@ function getErrorFormatter(context = {}) {
         err.message = originalError.details[0].message;
         err.details = originalError.details;
       } else {
-        err.message = "Invalid input";
+        err.message = originalError.message;
       }
     }
 
