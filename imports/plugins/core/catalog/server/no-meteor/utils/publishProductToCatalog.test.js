@@ -6,6 +6,7 @@ import {
 import { rewire as rewire$isBackorder, restore as restore$isBackorder } from "./isBackorder";
 import { rewire as rewire$isLowQuantity, restore as restore$isLowQuantity } from "./isLowQuantity";
 import { rewire as rewire$isSoldOut, restore as restore$isSoldOut } from "./isSoldOut";
+import { rewire as rewire$createCatalogProduct, restore as restore$createCatalogProduct } from "./createCatalogProduct";
 import publishProductToCatalog from "./publishProductToCatalog";
 
 const mockCollections = { ...mockContext.collections };
@@ -13,7 +14,6 @@ const mockCollections = { ...mockContext.collections };
 const internalShopId = "123";
 const opaqueShopId = "cmVhY3Rpb24vc2hvcDoxMjM="; // reaction/shop:123
 const internalCatalogItemId = "999";
-const internalCatalogProductId = "999";
 const internalProductId = "999";
 const internalTagIds = ["923", "924"];
 const internalVariantIds = ["875", "874"];
@@ -27,7 +27,6 @@ const positionUpdatedAt = new Date("2018-04-15T15:34:28.043Z");
 const mockVariants = [
   {
     _id: internalVariantIds[0],
-    ancestors: [internalCatalogProductId],
     barcode: "barcode",
     createdAt,
     height: 0,
@@ -36,8 +35,7 @@ const mockVariants = [
     inventoryPolicy: false,
     isLowQuantity: true,
     isSoldOut: false,
-    isDeleted: false,
-    isVisible: true,
+    isTaxable: false,
     length: 0,
     lowInventoryWarningThreshold: 0,
     metafields: [
@@ -54,9 +52,11 @@ const mockVariants = [
     optionTitle: "Untitled Option",
     originCountry: "US",
     price: 0,
+    pricing: {
+      blackbox: true
+    },
     shopId: internalShopId,
     sku: "sku",
-    taxable: true,
     taxCode: "0000",
     taxDescription: "taxDescription",
     title: "Small Concrete Pizza",
@@ -66,19 +66,18 @@ const mockVariants = [
     width: 0
   },
   {
-    _id: internalVariantIds[1],
-    ancestors: [internalCatalogProductId, internalVariantIds[0]],
+    _id: internalVariantIds[0],
     barcode: "barcode",
-    height: 2,
+    createdAt,
+    height: 0,
     index: 0,
     inventoryManagement: true,
-    inventoryPolicy: true,
+    inventoryPolicy: false,
     isLowQuantity: true,
     isSoldOut: false,
-    isDeleted: false,
-    isVisible: true,
-    length: 2,
-    lowInventoryWarningThreshold: 0,
+    isTaxable: false,
+    length: 5,
+    lowInventoryWarningThreshold: 8,
     metafields: [
       {
         value: "value",
@@ -89,16 +88,19 @@ const mockVariants = [
         key: "key"
       }
     ],
-    minOrderQuantity: 0,
-    optionTitle: "Awesome Soft Bike",
+    minOrderQuantity: 5,
+    optionTitle: "Untitled Option 2",
     originCountry: "US",
-    price: 992.0,
+    price: 2.99,
+    pricing: {
+      blackbox: true
+    },
     shopId: internalShopId,
     sku: "sku",
-    taxable: true,
     taxCode: "0000",
     taxDescription: "taxDescription",
-    title: "One pound bag",
+    title: "Small Concrete Pizza",
+    updatedAt,
     variantId: internalVariantIds[1],
     weight: 2,
     width: 2
@@ -107,17 +109,16 @@ const mockVariants = [
 
 const mockProduct = {
   _id: internalCatalogItemId,
-  shopId: internalShopId,
-  barcode: "barcode",
+  barcode: "abc123",
   createdAt,
-  description: "description",
-  facebookMsg: "facebookMessage",
-  fulfillmentService: "fulfillmentService",
-  googleplusMsg: "googlePlusMessage",
+  description: "Mock product description",
   height: 11.23,
   isBackorder: false,
+  isDeleted: false,
   isLowQuantity: false,
   isSoldOut: false,
+  isTaxable: false,
+  isVisible: true,
   length: 5.67,
   lowInventoryWarningThreshold: 2,
   metafields: [
@@ -141,7 +142,6 @@ const mockProduct = {
     height: 6.66,
     weight: 7.77
   },
-  pinterestMsg: "pinterestMessage",
   positions: {
     _default: {
       weight: 1,
@@ -155,44 +155,24 @@ const mockProduct = {
     min: 2.99,
     range: "2.99 - 5.99"
   },
-  media: [
-    {
-      metadata: {
-        toGrid: 1,
-        priority: 1,
-        productId: internalProductId,
-        variantId: null
-      },
-      thumbnail: "http://localhost/thumbnail",
-      small: "http://localhost/small",
-      medium: "http://localhost/medium",
-      large: "http://localhost/large",
-      image: "http://localhost/original"
-    }
-  ],
+  pricing: {
+    blackbox: true
+  },
   productId: internalProductId,
   productType: "productType",
   requiresShipping: true,
-  shop: {
-    _id: opaqueShopId
-  },
+  shopId: internalShopId,
   sku: "ABC123",
-  handle: productSlug,
-  hashtags: internalTagIds,
+  slug: "mock-product-slug",
   taxCode: "taxCode",
   taxDescription: "taxDescription",
-  taxable: false,
   title: "Fake Product Title",
-  twitterMsg: "twitterMessage",
   type: "product-simple",
   updatedAt,
-  mockVariants,
+  variants: mockVariants,
   vendor: "vendor",
   weight: 15.6,
-  width: 8.4,
-  workflow: {
-    status: "new"
-  }
+  width: 8.4
 };
 
 const updatedMockProduct = {
@@ -277,7 +257,7 @@ const updatedMockProduct = {
   twitterMsg: "twitterMessage",
   type: "product-simple",
   updatedAt,
-  mockVariants,
+  variants: mockVariants,
   vendor: "vendor",
   weight: 15.6,
   width: 8.4,
@@ -328,12 +308,17 @@ const mockIsSoldOut = jest
   .fn()
   .mockName("isSoldOut")
   .mockReturnValue(false);
+const mockCreateCatalogProduct = jest
+  .fn()
+  .mockName("createCatalogProduct")
+  .mockReturnValue(mockProduct);
 
 beforeAll(() => {
   rewire$getCatalogProductMedia(mockGeCatalogProductMedia);
   rewire$isBackorder(mockIsBackorder);
   rewire$isLowQuantity(mockIsLowQuantity);
   rewire$isSoldOut(mockIsSoldOut);
+  rewire$createCatalogProduct(mockCreateCatalogProduct);
 });
 
 afterAll(() => {
@@ -341,6 +326,7 @@ afterAll(() => {
   restore$isLowQuantity();
   restore$isSoldOut();
   restore$getCatalogProductMedia();
+  restore$createCatalogProduct();
 });
 
 test("expect true if a product is published to the catalog collection", async () => {
