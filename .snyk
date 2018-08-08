@@ -20,5 +20,10 @@ ignore:
       expires: '2018-08-26T20:23:03.274Z'
   'npm:chownr:20180731':
     - '*':
+<<<<<<< HEAD
       reason: "waiting on chownr to resolve issue"
       expires: '2018-09-01T20:23:03.274Z'
+=======
+      reason: "Known bug https://github.com/isaacs/chownr/issues/14, unknown time to patch"
+      expires: '2018-08-30T20:23:03.274Z'
+>>>>>>> c992d0ff282b8bf8bcb1f63c2a6031959240e90d
