@@ -14,7 +14,6 @@ const mockCollections = { ...mockContext.collections };
 const internalShopId = "123";
 const opaqueShopId = "cmVhY3Rpb24vc2hvcDoxMjM="; // reaction/shop:123
 const internalCatalogItemId = "999";
-const internalCatalogProductId = "999";
 const internalProductId = "999";
 const internalTagIds = ["923", "924"];
 const internalVariantIds = ["875", "874"];
