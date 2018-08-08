@@ -39,7 +39,7 @@ export default (Component) => (
               hasMoreCatalogItems: false
             };
 
-            if (loading === false) {
+            if (loading === false && catalogItems) {
               props.catalogItems = (catalogItems.edges || []).map((edge) => edge.node.product);
 
               const { pageInfo } = catalogItems;
