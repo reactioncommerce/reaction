@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import classnames from "classnames";
+import Logger from "@reactioncommerce/logger";
+import { getComponent } from "@reactioncommerce/reaction-components";
 import Blaze from "meteor/gadicc:blaze-react-component";
 import { Admin } from "/imports/plugins/core/ui/client/providers";
 import Radium from "radium";
@@ -10,8 +12,6 @@ import {
   Translation,
   Overlay
 } from "/imports/plugins/core/ui/client/components";
-import { getComponent } from "@reactioncommerce/reaction-components";
-
 
 const getStyles = (props) => {
   const minWidth = Math.min(props.viewportWidth, 400);
@@ -492,11 +492,16 @@ class ActionView extends Component {
   render() {
     const { VelocityTransitionGroup } = this.state;
     if (VelocityTransitionGroup === undefined) {
-      import("velocity-react").then((module) => {
-        this.setState({
-          VelocityTransitionGroup: module.VelocityTransitionGroup
+      import("velocity-react")
+        .then((module) => {
+          this.setState({
+            VelocityTransitionGroup: module.VelocityTransitionGroup
+          });
+          return module;
+        })
+        .catch((error) => {
+          Logger.error(error.message, "Unable to load velocity-react");
         });
-      });
       return null;
     }
 

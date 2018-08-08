@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import Radium from "radium";
 import classnames from "classnames";
 import { registerComponent } from "@reactioncommerce/reaction-components";
+import Logger from "@reactioncommerce/logger";
 
 const styles = {
   base: {
@@ -62,11 +63,16 @@ class Overlay extends Component {
   render() {
     const { VelocityTransitionGroup } = this.state;
     if (VelocityTransitionGroup === undefined) {
-      import("velocity-react").then((module) => {
-        this.setState({
-          VelocityTransitionGroup: module.VelocityTransitionGroup
+      import("velocity-react")
+        .then((module) => {
+          this.setState({
+            VelocityTransitionGroup: module.VelocityTransitionGroup
+          });
+          return module;
+        })
+        .catch((error) => {
+          Logger.error(error.message, "Unable to load velocity-react");
         });
-      });
       return null;
     }
 
