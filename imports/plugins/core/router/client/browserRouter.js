@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import ReactDOM from "react-dom";
 import { matchPath } from "react-router";
 import { Router as ReactRouter } from "react-router-dom";
+import { ApolloProvider } from "react-apollo";
 import equal from "deep-equal";
 import pathToRegexp from "path-to-regexp";
 import queryParse from "query-parse";
@@ -11,6 +12,7 @@ import { Tracker } from "meteor/tracker";
 import { Components } from "@reactioncommerce/reaction-components";
 import { Reaction } from "/client/api";
 import { TranslationProvider } from "/imports/plugins/core/ui/client/providers";
+import initApollo from "/imports/plugins/core/graphql/lib/helpers/initApollo";
 import { MetaData } from "/lib/api/router/metadata";
 import { Router } from "../lib";
 
@@ -27,7 +29,7 @@ class BrowserRouter extends Component {
     store: PropTypes.object
   }
 
-  componentWillMount() {
+  UNSAFE_componentWillMount() { // eslint-disable-line camelcase
     this.unsubscribeFromHistory = history.listen(this.handleLocationChange);
     this.handleLocationChange(history.location);
   }
@@ -128,6 +130,11 @@ class BrowserRouter extends Component {
   }
 }
 
+/**
+ * @name getRootNode
+ * @summary Loads and returns element for #react-root
+ * @returns {Object} DOM element for #react-root
+ */
 export function getRootNode() {
   let rootNode = document.getElementById("react-root");
 
@@ -143,7 +150,14 @@ export function getRootNode() {
   return rootNode;
 }
 
+/**
+ * @name initBrowserRouter
+ * @summary Renders app inside of Apollo and React Router HOCs
+ * @returns {undefined}
+ */
 export function initBrowserRouter() {
+  const apolloClient = initApollo();
+
   Router.initPackageRoutes({
     reactionContext: Reaction,
     indexRoute: Session.get("INDEX_OPTIONS") || {}
@@ -153,12 +167,18 @@ export function initBrowserRouter() {
 
   Tracker.autorun((computation) => {
     if (Router.ready()) {
-      ReactDOM.render((
-        <BrowserRouter history={history}>
-          <TranslationProvider>
-            <Components.App children={Router.reactComponents} />
-          </TranslationProvider>
-        </BrowserRouter>), getRootNode());
+      ReactDOM.render(
+        (
+          <ApolloProvider client={apolloClient}>
+            <BrowserRouter history={history}>
+              <TranslationProvider>
+                <Components.App children={Router.reactComponents} />
+              </TranslationProvider>
+            </BrowserRouter>
+          </ApolloProvider>
+        ),
+        getRootNode()
+      );
 
       computation.stop();
     }
