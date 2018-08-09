@@ -24,8 +24,8 @@ export default function capturePayments(orderId) {
   const shopId = Reaction.getShopId(); // the shopId of the current user, i.e. merchant
   const order = Orders.findOne({ _id: orderId });
   // find the appropriate shipping record by shop
-  const shippingRecord = order.shipping.find((sRecord) => sRecord.shopId === shopId);
-  const itemIds = shippingRecord.items.map((item) => item._id);
+  const fulfillmentGroup = order.shipping.find((sRecord) => sRecord.shopId === shopId);
+  const { itemIds } = fulfillmentGroup;
 
   Meteor.call("workflow/pushItemWorkflow", "coreOrderItemWorkflow/captured", order, itemIds);
 
