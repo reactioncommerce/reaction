@@ -1,11 +1,12 @@
+import Hooks from "@reactioncommerce/hooks";
+import Logger from "@reactioncommerce/logger";
 import { Job } from "/imports/plugins/core/job-collection/lib";
 import { Jobs } from "/lib/collections";
-import { Hooks, Logger } from "/server/api";
 
 let moment;
 async function lazyLoadMoment() {
   if (moment) return;
-  moment = await import("moment");
+  moment = await import("moment").default;
 }
 
 export function addCleanupJobControlHook() {

@@ -32,7 +32,7 @@ export const createdAt = new Date("2018-04-16T15:34:28.043Z");
 export const updatedAt = new Date("2018-04-17T15:34:28.043Z");
 
 /**
- * mock internal catalog product varaint options
+ * mock internal catalog product variant options
  */
 export const mockInternalCatalogOptions = [
   {

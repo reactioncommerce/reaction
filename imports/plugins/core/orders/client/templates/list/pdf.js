@@ -1,3 +1,4 @@
+import Logger from "@reactioncommerce/logger";
 import { Template } from "meteor/templating";
 import { Reaction, Router } from "/client/api";
 import { Orders } from "/lib/collections";
@@ -9,7 +10,7 @@ import { ReactiveVar } from "meteor/reactive-var";
 * inheritsHelpersFrom dashboardOrdersList
 * Uses the browser print function.
 */
-Template.completedPDFLayout.onCreated(async function () {
+Template.completedPDFLayout.onCreated(function () {
   this.state = new ReactiveDict();
   this.state.setDefault({
     order: {},
@@ -17,8 +18,15 @@ Template.completedPDFLayout.onCreated(async function () {
   });
 
   this.readyVar = new ReactiveVar(false);
-  this.moment = await import("moment");
-  this.readyVar.set(true);
+
+  import("moment")
+    .then((module) => {
+      this.moment = module.default;
+      return this.readyVar.set(true);
+    })
+    .catch((error) => {
+      Logger.error(error, "Unable to load moment");
+    });
 
   const currentRoute = Router.current();
 
@@ -49,9 +57,12 @@ Template.completedPDFLayout.helpers({
   },
   dateFormat(context, block) {
     const { moment } = Template.instance();
-    moment.locale(Reaction.Locale.get().language);
-    const f = block.hash.format || "MMM DD, YYYY hh:mm:ss A";
-    return moment(context).format(f);
+    if (moment) {
+      moment.locale(Reaction.Locale.get().language);
+      const format = block.hash.format || "MMM DD, YYYY hh:mm:ss A";
+      return moment(context).format(format);
+    }
+    return "";
   },
   ready() {
     return Template.instance().readyVar.get();

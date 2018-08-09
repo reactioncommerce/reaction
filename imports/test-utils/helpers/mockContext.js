@@ -1,4 +1,5 @@
 const mockContext = {
+  accountId: "FAKE_ACCOUNT_ID",
   collections: {},
   shopId: "FAKE_SHOP_ID",
   userHasPermission: jest.fn().mockName("userHasPermission"),
@@ -41,7 +42,9 @@ const mockContext = {
     update() {
       throw new Error("update mongo method is deprecated, use updateOne or updateMany");
     },
-    deleteOne: jest.fn().mockName(`${collectionName}.deleteOne`),
+    deleteOne: jest.fn().mockName(`${collectionName}.deleteOne`).mockReturnValue(Promise.resolve({
+      deletedCount: 1
+    })),
     deleteMany: jest.fn().mockName(`${collectionName}.deleteMany`),
     find: jest
       .fn()
@@ -51,7 +54,9 @@ const mockContext = {
     insertOne: jest.fn().mockName(`${collectionName}.insertOne`),
     insertMany: jest.fn().mockName(`${collectionName}.insertMany`),
     toArray: jest.fn().mockName(`${collectionName}.toArray`),
-    updateOne: jest.fn().mockName(`${collectionName}.updateOne`),
+    updateOne: jest.fn().mockName(`${collectionName}.updateOne`).mockReturnValue(Promise.resolve({
+      modifiedCount: 1
+    })),
     updateMany: jest.fn().mockName(`${collectionName}.updateMany`)
   };
 });

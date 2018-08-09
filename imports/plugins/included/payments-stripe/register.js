@@ -1,5 +1,5 @@
 /* eslint camelcase: 0 */
-import { Reaction } from "/server/api";
+import Reaction from "/imports/plugins/core/core/server/Reaction";
 
 Reaction.registerPackage({
   label: "Stripe",
@@ -18,6 +18,7 @@ Reaction.registerPackage({
       ]
     },
     "public": {
+      publishable_key: "",
       client_id: ""
     },
     "connectAuth": {}

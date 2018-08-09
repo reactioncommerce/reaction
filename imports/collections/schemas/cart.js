@@ -1,70 +1,87 @@
 import SimpleSchema from "simpl-schema";
 import { registerSchema } from "@reactioncommerce/schemas";
-import { createdAtAutoValue, updatedAtAutoValue } from "./helpers";
 import { Payment } from "./payments";
-import { Product, ProductVariant } from "./products";
 import { Shipment, ShippingParcel } from "./shipping";
 import { Workflow } from "./workflow";
 import { Metafield } from "./metafield";
+
+const Money = new SimpleSchema({
+  currencyCode: String,
+  amount: {
+    type: Number,
+    min: 0
+  }
+});
+
+/**
+ * @name CartItemAttribute
+ * @memberof Schemas
+ * @type {SimpleSchema}
+ * @property {String} label optional
+ * @property {String} value optional
+ */
+const CartItemAttribute = new SimpleSchema({
+  label: {
+    type: String,
+    optional: true
+  },
+  value: {
+    type: String,
+    optional: true
+  }
+});
 
 /**
  * @name CartItem
  * @memberof Schemas
  * @type {SimpleSchema}
  * @property {String} _id required
- * @property {String} productId required
- * @property {String} shopId, Cart Item shopId
- * @property {Number} quantity required
- * @property {Product} product required
- * @property {ProductVariant} variants required
+ * @property {String} addedAt required
+ * @property {CartItemAttribute[]} attributes Attributes of this item
+ * @property {String} cartItemId Has to be here since we share schemas between Cart and Order
+ * @property {String} createdAt required
  * @property {Metafield[]} metafields
- * @property {String} title Cart Item title
- * @property {String} type, Product type
+ * @property {String} optionTitle optionTitle from the selected variant
  * @property {ShippingParcel} parcel Currently, parcel is in simple product schema. Need to include it here as well.
- * @property {String} cartItemId Seems strange here but has to be here since we share schemas between Cart and Order
- * @property {Object} transaction Transaction associated with this item
- * @property {Object} taxData optional blackbox
- * @property {Number} taxRate optional
+ * @property {Money} priceWhenAdded The price+currency at the moment this item was added to this cart
+ * @property {String} productId required
+ * @property {String} productSlug Product slug
+ * @property {String} productType Product type
+ * @property {String} productVendor Product vendor
+ * @property {Number} quantity required
  * @property {Object} shippingMethod Shipping Method associated with this item
+ * @property {String} shopId Cart Item shopId
+ * @property {Object} taxData optional blackbox
+ * @property {Number} taxRate optional totalTax/subTotal of the item
+ * @property {String} title Cart Item title
+ * @property {Object} transaction Transaction associated with this item
+ * @property {String} updatedAt required
+ * @property {String} variantId required
+ * @property {String} variantTitle Title from the selected variant
  */
 export const CartItem = new SimpleSchema({
-  "_id": {
-    type: String
-  },
-  "productId": {
-    type: String,
-    index: 1
-  },
-  "shopId": {
-    type: String,
-    index: 1,
-    label: "Cart Item shopId",
+  "_id": String,
+  "addedAt": Date,
+  "attributes": {
+    type: Array,
     optional: true
   },
-  "quantity": {
-    label: "Quantity",
-    type: SimpleSchema.Integer,
-    min: 0
+  "attributes.$": CartItemAttribute,
+  "cartItemId": {
+    type: String,
+    optional: true
   },
-  "product": {
-    type: Product
-  },
-  "variants": {
-    type: ProductVariant
+  "createdAt": Date,
+  "isTaxable": {
+    type: Boolean,
+    defaultValue: false
   },
   "metafields": {
     type: Array,
     optional: true
   },
-  "metafields.$": {
-    type: Metafield
-  },
-  "title": {
-    type: String,
-    label: "CartItem Title"
-  },
-  "type": {
-    label: "Product Type",
+  "metafields.$": Metafield,
+  "optionTitle": {
     type: String,
     optional: true
   },
@@ -72,14 +89,43 @@ export const CartItem = new SimpleSchema({
     type: ShippingParcel,
     optional: true
   },
-  "cartItemId": {
+  "priceWhenAdded": Money,
+  "productId": {
+    type: String,
+    index: 1
+  },
+  "productSlug": {
     type: String,
     optional: true
   },
-  "transaction": {
+  "productType": {
+    label: "Product Type",
+    type: String,
+    optional: true
+  },
+  "productVendor": {
+    label: "Product Vendor",
+    type: String,
+    optional: true
+  },
+  "quantity": {
+    label: "Quantity",
+    type: SimpleSchema.Integer,
+    min: 0
+  },
+  "shippingMethod": {
     type: Object,
     optional: true,
-    blackbox: true
+    blackbox: true // @todo Revert this to schema at some point
+  },
+  "shopId": {
+    type: String,
+    index: 1,
+    label: "Cart Item shopId"
+  },
+  "taxCode": {
+    type: String,
+    optional: true
   },
   "taxData": {
     type: Object,
@@ -90,10 +136,24 @@ export const CartItem = new SimpleSchema({
     type: Number,
     optional: true
   },
-  "shippingMethod": {
+  "title": {
+    type: String,
+    label: "CartItem Title"
+  },
+  "transaction": {
     type: Object,
     optional: true,
-    blackbox: true // @todo Revert this to schema at some point
+    blackbox: true
+  },
+  "updatedAt": Date,
+  "variantId": {
+    type: String,
+    index: 1,
+    optional: true
+  },
+  "variantTitle": {
+    type: String,
+    optional: true
   }
 });
 
@@ -124,12 +184,13 @@ registerSchema("CartItems", CartItems);
  * @type {SimpleSchema}
  * @property {String} _id required for check of users' carts
  * @property {String} shopId required, Cart ShopId
- * @property {String} userId required
- * @property {String} sessionId required
+ * @property {String} accountId Account ID for account carts, or null for anonymous
+ * @property {String} anonymousAccessToken Token for accessing anonymous carts, null for account carts
  * @property {String} email optional
  * @property {CartItem[]} items Array of CartItem optional
  * @property {Shipment[]} shipping Array of Shipment optional, blackbox
  * @property {Payment[]} billing Array of Payment optional, blackbox
+ * @property {String} sessionId Optional and deprecated
  * @property {Number} tax tax rate
  * @property {Object[]} taxes Array of objects optional
  * @property {Object} taxRatesByShop optional
@@ -148,22 +209,21 @@ export const Cart = new SimpleSchema({
     index: 1,
     label: "Cart ShopId"
   },
-  "userId": {
+  "accountId": {
     type: String,
-    unique: true,
-    autoValue() {
-      if (this.isInsert || this.isUpdate) {
-        if (!this.isFromTrustedCode) {
-          return this.userId;
-        }
-      } else {
-        this.unset();
-      }
-    }
+    index: 1,
+    optional: true
   },
+  "anonymousAccessToken": {
+    type: String,
+    index: 1,
+    optional: true
+  },
+  "currencyCode": String,
   "sessionId": {
     type: String,
-    index: 1
+    index: 1,
+    optional: true
   },
   "email": {
     type: String,
@@ -201,8 +261,33 @@ export const Cart = new SimpleSchema({
     optional: true
   },
   "taxes.$": {
+    type: Object
+  },
+  "taxes.$.lineNumber": {
+    type: String
+  },
+  "taxes.$.discountAmount": {
+    type: Number,
+    optional: true
+  },
+  "taxes.$.taxable": {
+    type: Boolean,
+    optional: true
+  },
+  "taxes.$.tax": {
+    type: Number
+  },
+  "taxes.$.taxableAmount": {
+    type: Number
+  },
+  "taxes.$.taxCode": {
+    type: String,
+    optional: true
+  },
+  "taxes.$.details": {
     type: Object,
-    blackbox: true
+    blackbox: true,
+    optional: true
   },
   "taxRatesByShop": {
     type: Object,
@@ -229,12 +314,10 @@ export const Cart = new SimpleSchema({
     defaultValue: {}
   },
   "createdAt": {
-    type: Date,
-    autoValue: createdAtAutoValue
+    type: Date
   },
   "updatedAt": {
     type: Date,
-    autoValue: updatedAtAutoValue,
     optional: true
   }
 });

@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import classnames from "classnames";
 import { Components } from "@reactioncommerce/reaction-components";
 import {
   Button,
@@ -37,12 +38,19 @@ class PublishControls extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      showDiffs: false
-    };
-
     this.handleToggleShowChanges = this.handleToggleShowChanges.bind(this);
     this.handlePublishClick = this.handlePublishClick.bind(this);
+  }
+
+  state = {
+    isHashUpdating: false,
+    showDiffs: false
+  };
+
+  componentWillReceiveProps() {
+    this.setState({
+      isHashUpdating: false
+    });
   }
 
   handleToggleShowChanges() {
@@ -54,6 +62,10 @@ class PublishControls extends Component {
   handlePublishClick() {
     if (this.props.onPublishClick) {
       this.props.onPublishClick(this.props.revisions);
+
+      this.setState({
+        isHashUpdating: true
+      });
     }
   }
 
@@ -143,51 +155,6 @@ class PublishControls extends Component {
     return "private";
   }
 
-  /**
-   * Getter hasChanges
-   * @return {Boolean} one or more revision has changes
-   */
-  get hasChanges() {
-    // Verify we even have any revision at all
-    if (this.hasRevisions) {
-      // Loop through all revisions to determine if they have changes
-      const diffHasActualChanges = this.props.revisions.map((revision) => {
-        // We probably do have chnages to publish
-        // Note: Sometimes "updatedAt" will cause false positives, but just incase, lets
-        // enable the publish button anyway.
-        if ((Array.isArray(revision.diff) && revision.diff.length) || revision.documentType !== "product") {
-          return true;
-        }
-
-        // If all else fails, we will disable the button
-        return false;
-      });
-
-      // If even one revision has changes we should enable the publish button
-      return diffHasActualChanges.some((element) => element === true);
-    }
-
-    // No revisions, no publishing
-    return false;
-  }
-
-  renderDeletionStatus() {
-    if (this.hasChanges) {
-      if (this.primaryRevision && this.primaryRevision.documentData.isDeleted) {
-        return (
-          <Button
-            label="Archived"
-            onClick={this.handleRestore}
-            status="danger"
-            i18nKeyLabel="app.archived"
-          />
-        );
-      }
-    }
-
-    return null;
-  }
-
   renderPublishButton() {
     const buttonProps = {};
 
@@ -200,13 +167,13 @@ class PublishControls extends Component {
 
     return (
       <div className="hidden-xs">
+        {this.renderChangesNotification()}
         <Button
-          bezelStyle="outline"
+          bezelStyle="solid"
           disabled={isDisabled}
           label="Publish"
           onClick={this.handlePublishClick}
           status="success"
-          tooltip={"This product has changes that need to be published before they are visible to your customers."}
           i18nKeyLabel="productDetailEdit.publish"
           {...buttonProps}
         />
@@ -304,10 +271,49 @@ class PublishControls extends Component {
     );
   }
 
+
+  renderChangesNotification = () => {
+    const currentProductHash = (this.props && this.props.documents && this.props.documents[0] && this.props.documents[0].currentProductHash) || null;
+    const publishedProductHash = (this.props && this.props.documents && this.props.documents[0] && this.props.documents[0].publishedProductHash) || null;
+    const { isHashUpdating } = this.state;
+
+    const hashIndicator = classnames({
+      "rui": true,
+      "hash-icon": true,
+      "fa-stack": true,
+      "fa-lg": true,
+      "hash-icon-visible": currentProductHash !== publishedProductHash,
+      "hash-icon-hidden": currentProductHash === publishedProductHash
+    });
+
+    const primaryIcon = classnames({
+      "fa": true,
+      "fa-stack-2x": true,
+      "fa-circle": isHashUpdating,
+      "fa-circle-o": !isHashUpdating
+    });
+
+    const secondaryIcon = classnames({
+      "fa": true,
+      "fa-stack-1x": true,
+      "fa-refresh": isHashUpdating,
+      "fa-circle": !isHashUpdating,
+      "fa-spin": isHashUpdating
+    });
+
+    // We don't use the `<Icon>` component here as we do not have layered
+    // icons built in to the existing component
+    return (
+      <span className={hashIndicator} style={{ fontSize: 11, position: "absolute", top: "2px", right: "4px" }}>
+        <i className={primaryIcon} style={{ color: "#ffffff" }} />
+        <i className={secondaryIcon} style={{ fontSize: "1.5em", color: "#f4c43c" }} />
+      </span>
+    );
+  }
+
   render() {
     return (
       <Components.ToolbarGroup lastChild={true}>
-        {this.renderDeletionStatus()}
         {this.renderArchiveButton()}
         {this.renderViewControls()}
         {this.renderPublishButton()}

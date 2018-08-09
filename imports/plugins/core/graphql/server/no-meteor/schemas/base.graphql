@@ -1,0 +1,92 @@
+scalar Date
+scalar DateTime
+scalar JSONObject
+scalar Time
+
+enum DistanceUnit {
+  cm
+  ft
+  in
+}
+
+enum MassUnit {
+  g
+  kg
+  lb
+  oz
+}
+
+"A list of URLs for various sizes of an image"
+type ImageSizes {
+  "Use this URL to get a large resolution file for this image"
+  large: String
+
+  "Use this URL to get a medium resolution file for this image"
+  medium: String
+
+  """
+  Use this URL to get this image with its original resolution as uploaded. This may not be
+  the true original size if there is a hard cap on how big image files can be.
+  """
+  original: String
+
+  "Use this URL to get a small resolution file for this image"
+  small: String
+
+  "Use this URL to get a thumbnail resolution file for this image"
+  thumbnail: String
+}
+
+type ImageInfo {
+  """
+  If greater than 0, then this image should be used for the product grid. The number indicates which position
+  within the product grid item, for grid weights that show multiple images.
+  """
+  toGrid: Int
+
+  """
+  Sort by priority ascending when displaying more than one image for a product in a user interface.
+  This is an integer with 1 being the first / highest priority image.
+  """
+  priority: Int
+
+  "The related product ID"
+  productId: ID
+
+  "The related variant ID, if linked with a particular variant"
+  variantId: ID
+
+  "A list of URLs for various size files of this image"
+  URLs: ImageSizes
+}
+
+"Represents some amount of a single currency"
+type Money {
+  "The numeric amount"
+  amount: Float!
+
+  "The currency, for interpreting the `amount`"
+  currency: Currency!
+
+  "The display amount, with any currency symbols and decimal places already added"
+  displayAmount: String!
+}
+
+"Represents input for some amount of a single currency"
+input MoneyInput {
+  "The numeric amount"
+  amount: Float!
+
+  "The currency code, for interpreting the `amount`"
+  currencyCode: String!
+}
+
+"Mutations have side effects, such as mutating data or triggering a task"
+type Mutation {
+  echo(str: String): String
+}
+
+"Queries return all requested data, without any side effects"
+type Query {
+  ping: String!
+}

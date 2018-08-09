@@ -1,1 +1,0 @@
-export { AuthNet } from "./authnet";

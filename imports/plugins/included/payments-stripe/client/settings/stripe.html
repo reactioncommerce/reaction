@@ -10,6 +10,7 @@
     <div>
       {{#autoForm collection=Collections.Packages schema=StripePackageConfig doc=packageData type="update" id="stripe-update-form"}}
         {{>afQuickField name='settings.api_key'}}
+        {{>afQuickField name='settings.public.publishable_key'}}
         {{#if marketplaceEnabled}}
           <br>
           <span data-i18n="admin.paymentSettings.stripeClientIdWarning">The Client ID is a <strong>PUBLIC</strong> field. Please ensure you're using the `client_id` found on the </span>

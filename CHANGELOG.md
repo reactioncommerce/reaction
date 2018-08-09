@@ -1,3 +1,576 @@
+# v1.14.0
+## Removing Optional Plugins
+As part of our focus simplifying the core Reaction application and improving performance, we've [made the decision to remove optional plugins from the core application](https://blog.reactioncommerce.com/the-road-ahead-product-updates-june-2018/). From our blog post on this topic:
+> It’s about quality over quantity. As a part of our initiative to simplify Reaction, we’re focusing on providing one reference application per feature and moving all others over to community-sponsored packages. We’ll be migrating packages, APIs, and schemas over to npm. It’s a standard approach to package management, one that improves the developer experience overall.
+
+Here’s how it will look:
+
+|Category|Reaction default(s)|Community package(s)|
+|---|---|---|
+|Payments|Stripe, example payment package|PayPal, Authorize.net, Braintree|
+|Taxes|Flat rate|Avalara, TaxCloud, TaxJar|
+|Shipping|Flat rate|Shippo|
+|Connectors|CSV connector|Shopify connector|
+
+As the first step of this process we've moved a number of packages from the https://github.com/reactioncommerce/reaction repo to independent repositories in the new https://github.com/reaction-contrib organization. You can install these packages by following the instructions located inside of each new repository. Once installed they should work as they did in v1.13. Any issues you have with updating these packages should be filed in the repos created for these packages and not in the core Reaction repo going forward. If you're interested in contributing to or helping to maintain any of the packages that we've moved to reaction-contrib, please reach out to @zenweasel and he can get you setup.
+
+The list of packages that have been removed in this release is as follows:
+  - Shopify
+  - TaxCloud
+  - Avalara
+  - Authorize.net
+  - Paypal
+  - Braintree
+  - TaxJar
+  - Advanced Inventory Management
+  - Shippo
+  - SMS
+  - Discount Rates (unused, not the same as our current discount codes)
+  - Logging (unused by core application)
+
+This work is listed as a breaking change. If your application relies on any of these packages, you will have to install them independently of Reaction going forward. This Release will not destroy data associated with these plugins, so you should be able to safely update without losing information. However, please be sure to test this for your specific application before deploying to production and as always, backup your data before updating versions.
+
+## GraphQL Cart
+This release contains the Cart and Checkout GraphQL schemas along with several cart queries and mutations. We're starting to make some changes to the core cart schemas for Reaction and the process that we use to create and identify carts.
+
+One of these changes is when we create a cart for a customer. To this point, we've created a cart document for each and every visitor to a Reaction storefront. Going forward we'll be creating carts on demand. This means that a customer will not have a cart associated with them until they first add a product to the cart. This is how we've architected the GraphQL API to work and we've made some changes to the legacy Reaction cart system to put it in sync.
+
+We're signifincantly adjusting the Cart schema as well. The best way to understand all of this will be to read through the updated GraphQL Cart Schema in #4307 and #4390 but I'll try to note some things to be aware of going forward.
+
+A cart will have either an account associated with it or may be anonymous.
+
+A cart will have an array of items associated with them. As we will be lazy in creating carts, when the cart is created this array of items will have at least one item in it. We do not destory carts if a customer removes all items from a cart, so it is possible that there will be an empty array of items inside of a cart.
+
+One of the major changes to carts is related to how we store information necessary to create an order from a cart. We're introducing a new field `checkout` to the cart schema which you can dig into in #4309. This will be where fulfillment information, payment information, addresses and any other information necessary to process a checkout will be stored.
+
+Recognizing the need to be able to handle orders which have items that require different types of fulfillment, we're organizing items into what we're calling "Fulfillment Groups." The most basic example is that a fulfillment group could be a group of items that is getting shipped to a specific address. For an order with `n` items, there can exist up to `n` fulfillment groups within that cart. This specific release doesn't introduce any new functionality for adding new types of fulfillment groups or splitting a single cart into multiple fulfillments, but it does lay the groundwork for splitting orders, creating new fulfillment types such as an in store pickup, ship to store, digital downloads, or generated license keys.
+
+We're currently mapping this new GraphQL Schema to the existing Reaction Simple Schema, but will be transitioning to
+
+A cart will still be associated with a single shop. This is consistent with current behavior.
+
+There are two GraphQL Queries for fetching carts, one for getting anonymous carts `anonymousCartByCartId` and one for getting account carts `accountCartByAccountId`
+
+This release introduces GraphQL Mutations for creating carts, adding items to carts, removing items from carts, updating cart items, and reconciling carts when a customer with an anonymous cart logs into an account.
+
+`ReconcileCarts` is a new method which replaces and extends our previous `mergeCarts` method with additional functionality. ReconcileCarts has 3 modes: `merge`, `keepAnonymousCart`, and `keepAccountCart`. `merge` is the default mode and works identically to how the existing `mergeCarts` method works, where the anonymous cart is combined with the account cart, items are deduped, and quantities are incremented to match the combined qty of the items in the carts. `keepAnonymousCart` will keep only the items and the checkout information in the anonymous cart, and `keepAccountCart` will do the same but for the Account Cart.
+
+
+## Breaking Changes
+### Meteor App
+#### File Organization
+- We've moved all files from `/server` into plugins. All imports with paths that begin with /server will need to be changed for any custom code or community plugins. See the file changes in https://github.com/reactioncommerce/reaction/pull/4366/files to see examples of changing import paths from `/server` to relevant plugin paths.
+
+#### Cart
+- A cart is not created until items are added. Previously a cart was created for all users, including anonymous users, immediately if one was not found. This is not a breaking change for the core app, but any custom plugins may have code that will need to be updated to handle the possibility of there not being a cart.
+- Update the signature of most cart methods to take an optional cartToken string param. Update all places that call these methods to pass in the token for anonymous carts.
+- Carts and Orders no longer have userId. They now have accountId. Core client code has been updated, but custom code will need to look up the account for the user and then look up the cart or order from that.
+- The CartItem SimpleSchema no longer includes variants and product, i.e., the entire variant and product objects are not copied to the cart item. Instead, certain properties that are needed are copied directly to the CartItem object. For example, item.productSlug. See the updated schema.
+- `cart/removeCart` Meteor method behavior is the same as before, but the return value is now `{ cart }`
+- The signature of the "cart/setAnonymousUserEmail" method has changed. It now takes cartId, token arguments. The client code that calls it has been updated, but any custom code calling it will need to be updated.
+- Accounts.loginWithAnonymous is no longer available to client code. This was only used in one place, and similar logic has replaced it in that spot.
+- workflow/pushCartWorkflow and workflow/revertCartWorkflow methods now require that you pass in the cartId rather than guessing which cart you intend.
+- In general, be aware that cart.accountId may now be null. Previously, it would be set even for anonymous carts, to the account for the user with "anonymous" role. For now, order.accountId is still set after an anonymous order is placed.
+- The "Reaction.sessionId" stored ID is now used only for auto-login of anonymous users. It is not used by any of the cart code. Also, the "Sessions" collection is no longer written to or published to clients. It will not be dropped automatically, but you can drop it if you no longer need it.
+
+#### Checkout
+- Stripe checkout now uses [Stripe Elements](https://stripe.com/elements) - for more details see #4325
+
+#### Tags
+- We're now limiting the tags publication to show only tags from the current active shop. This is more of a clarification of how this was supposed to work, but if you depended on all tags being published, this will cause unexpected behavior. See #4206 for specific changes.
+
+#### Other
+- Removal of previously included ancillary packages listed in the "Removing Optional Plugins" section
+- The function `createCatalogProduct` has been moved into it's own file. This function was not being exported and should not create any issues, but be aware.
+- The Catalog schema has been changed. It was in a "use at your own risk" state before this, but if you've been using it you may have to migrate some data
+- We've removed the core plugin `Logging` which was used only by the Avalara plugin to this point. If you relied on this plugin, you'll need to reinstall it.
+
+### GraphQL
+- In the GraphQL context, there is no longer a methods object. Instead you can call any method with context.callMeteorMethod(name, ...args).
+- In the GraphQL context, context.queries is now namespaced by which plugin the queries come from. For example, context.queries.userAccount is now context.queries.accounts.userAccount.
+
+## Notable Features
+### Deploy to Heroku Button
+We've added a deploy to Heroku button which should appear in the project readme now. You can now deploy Reaction to Heroku by clicking the "Deploy to Heroku" button and then filling out hte information required by Heroku.
+
+### Hashing Products
+We're now hashing products to determine when a product changes that have not been published to the Catalog. This shows up as an indicator on the publish button when viewing a product that has unpublished changes.
+
+### Serve js and css from CDN
+We now provide an option to serve the bundled javascript and css files from a CDN. See #4316 for more information.
+
+### robots.txt
+We've added a permissive default `robots.txt` file. This file permits all bots to crawl and disallows bots from crawling `/resources`
+
+## GraphQL DevServer
+### Features
+ - feat: GraphQL Cart Schema (#4307)
+ - feat: GraphQL Cart checkout schemas (#4390)
+ - feat: Add anonymousCartByCartId GraphQL query (#4382)
+ - feat: createCart mutation, addCartItems mutation, and related cart/order schema changes (#4412)
+ - feat: Meteor-free addressBookAdd method and GraphQL plugin reorg (#4167)
+ - feat: Add `resolveAccountFromAccountId` resolver (#4495)
+ - feat: remove cart items (#4474)
+ - feat: update cart items quantity (#4472)
+ - feat: create reconcileCarts mutation (#4443)
+ - feat: Add accountCartByAccountId resolver (#4427)
+
+
+## Meteor App
+### Features
+ - feat: Shippo address validation (#4086)
+ - feat: Use token to create Stripe charges (#4325)
+ - feat: Create deploy to heroku button (#4320)
+ - feat: enable oplog in development Docker Compose config (#4420)
+ - feat: Create product hash of published product properties (#4336)
+ - feat: added CDN settings to reaction (#4316)
+ - feat: Indicator to notify of pending product changes not yet published to catalog (#4383)
+ - feat(marketplace): Limit Tags Publication to Those for the Current Shop (#4206)
+ - feat: add robots.txt file (#4370)
+ - feat: Remove account from anon carts, don't use session for carts (#4496)
+ - feat(marketplace): Consideration for Marketplace Shops on Different URLs (#3332)
+
+### Fixes
+ - fix: update and pin to latest version of sharp package (#4466)
+ - fix: Use hashtags and tagIds to form tags obj (#4415) .. Resolves #4414
+ - fix: Marketplace Settings (#4334) .. Resolves #4333
+ - fix: update dependencies (#4444)
+ - fix: Invalidate circleci caches (#4432)
+ - fix: changing product handle throws 404 (#4403)  Resolves #4023
+ - fix: Tax and inventory toggle switches do not work (#4445)  Resolves #4401
+ - fix: Taxcloud with marketplace setup. (#4140) Resolves #4089
+ - fix: Options now have parent's taxCode (#4182)  Resolves #4141
+ - fix(marketplace): also send notification to shop owners upon order creation (#4295)
+ - fix: not publishing customer accounts (#4402) .. Resolves #4374
+ - fix: Can't save discount codes (#4410) .. Resolves #4408
+ - fix: Discount Codes React Table Not Rendering Correctly (#4411) .. Resolves #4247
+ - fix: Unable to save custom tax rate (#4405) .. Resolves #4396
+ - fix: low quantity/sold out flags not saving correctly in db (#4342)
+ - fix: Scrolling to bottom adds more products to the view (#4243) .. Resolves #4090
+ - fix: remove react-addons-create-fragment (#4164)
+ - fix: change session active product when adding new product (#4313)
+ - fix: missing styles on refund popover (#4300) .. Resolves #4005
+ - fix: fix permissions of shop social settings (#4312)
+ - fix: Archived products not being removed from Catalog (#4392)
+ - fix: Default settings for parcel size (#4083)
+ - fix: Update prerender.js (#4331)
+ - fix(marketplace): Product Visibility for Marketplace Shops (#4259) .. Resolves #4092
+ - fix: mislabeled schema (#4371)
+ - fix: ActionView Component Typos (#4439)
+ - fix: Cannot set replyTo or other field options when using Reaction.Email.send (#4380) .. Resolves #4343
+ - fix: migration error preventing app startup (#4491)
+ - fix: add media information to Variants and Options (#4468)
+ - fix: Publish button infinite loop bug (#4488)
+ - fix: client errors related to domain lookup changes (#4471)
+
+### Performance
+ - perf: Dynamically import Moment locales to reduce client bundle size (#4455) .. Resolves #4454
+ - perf: Improve app startup time when large number of Accounts/Users exists (#4449) .. Resolves #4384
+
+### Refactors
+ - refactor: Use new Reaction component library components for the SMS settings form (#4318)
+ - refactor: Remove "Catalog" from menu (#4385)
+ - refactor: Move all /server files to plugins (#4366)
+ - refactor: Update Catalog Schema (#4421)
+
+### Plugin Migration
+ - refactor: Remove Shopify plugin (#4395)
+ - refactor: Remove TaxCloud plugin (#4428)
+ - refactor: Remove Avalara plugin (#4398)
+ - refactor: Remove Authorize.net plugin (#4310)
+ - refactor: Remove Paypal plugin (#4339)
+ - refactor: Remove Braintree plugin (#4351)
+ - refactor: Remove disabled TaxJar plugin (#4348)
+ - refactor: Remove inventory package (#4388)
+ - refactor: Remove shipping-shippo plugin (#4460)
+ - refactor: Remove SMS plugin (#4451)
+ - refactor: Remove unused discount-rates plugin (#4458)
+ - refactor: remove unused logging (#4476)
+
+### Chores
+ - chore: CircleCI step for deploying to an existing ECS cluster (#4487)
+ - chore: make the snyk-security step a dependency for the docker-build step; s… (#4446)
+
+## Contributors
+Thanks to @pmn4 and @hrath2015 for contributing to this release :tada:
+
+## NPM Package Version Changes
+This is a list of all new, changed, and removed dependencies that exist in our dependency graph for a production build. This does _not_ include dev dependencies.
+### New Dependencies
+```
+@babel/helper-module-imports@7.0.0-beta.51
+@babel/types@7.0.0-beta.51
+@emotion/babel-utils@0.6.7
+@emotion/hash@0.6.5
+@emotion/memoize@0.6.5
+@emotion/serialize@0.8.5
+@emotion/stylis@0.6.12
+@emotion/unitless@0.6.5
+@emotion/utils@0.7.3
+@reactioncommerce/components@0.2.0
+@types/graphql@0.12.6
+abbrev@1.1.1
+aproba@1.2.0
+are-we-there-yet@1.1.5
+argparse@1.0.10
+array.prototype.flat@1.2.1
+babel-code-frame@6.26.0
+babel-core@6.26.3
+babel-core@6.26.3
+babel-generator@6.26.1
+babel-helpers@6.24.1
+babel-messages@6.23.0
+babel-plugin-emotion@9.2.6
+babel-plugin-macros@2.3.0
+babel-plugin-syntax-jsx@6.18.0
+babel-register@6.26.0
+babel-template@6.26.0
+babel-traverse@6.26.0
+babel-types@6.26.0
+babylon@6.18.0
+bl@1.2.2
+buffer-alloc-unsafe@1.1.0
+buffer-alloc@1.2.0
+buffer-fill@1.0.0
+check-error@1.0.2
+console-control-strings@1.1.0
+convert-source-map@1.5.1
+cosmiconfig@4.0.0
+create-emotion@9.2.6
+css-color-keywords@1.0.0
+css-to-react-native@2.2.1
+csstype@2.5.5
+deep-extend@0.6.0
+delegates@1.0.0
+detect-indent@4.0.0
+emotion@9.2.6
+esprima@4.0.1
+esutils@2.0.2
+expand-template@1.1.1
+find-root@1.1.0
+fs-constants@1.0.0
+fs-copy-file-sync@1.1.1
+gauge@2.7.4
+get-func-name@2.0.0
+github-from-package@0.0.0
+globals@9.18.0
+has-unicode@2.0.1
+home-or-tmp@2.0.0
+ini@1.3.5
+is-directory@0.3.1
+is-finite@1.0.2
+js-yaml@3.12.0
+jsesc@1.3.0
+json-parse-better-errors@1.0.2
+json5@0.5.1
+lodash.debounce@4.0.8
+lodash.isequal@4.5.0
+lodash.topath@4.5.2
+lodash.uniqueid@4.0.1
+lodash.unset@4.5.2
+node-abi@2.4.3
+noop-logger@0.1.1
+nopt@1.0.10
+npmlog@4.1.2
+object-hash@1.3.0
+object-is@1.0.1
+os-homedir@1.0.2
+os-tmpdir@1.0.2
+p-try@1.0.0
+pathval@1.1.0
+prebuild-install@4.0.0
+private@0.1.8
+raf@3.4.0
+rc@1.2.8
+react-is@16.4.1
+react-lifecycles-compat@3.0.4
+react-outside-click-handler@1.2.0
+react-stripe-elements@2.0.1
+reacto-form@0.0.2
+reflect.ownkeys@0.2.0
+repeating@2.0.1
+require-from-string@2.0.2
+safer-buffer@2.1.2
+saslprep@1.0.0
+slash@1.0.0
+spdx-correct@3.0.0
+spdx-exceptions@2.1.0
+sprintf-js@1.0.3
+strip-json-comments@2.0.1
+styled-components@3.3.3
+stylis@3.5.3
+stylis-rule-sheet@0.0.10
+tar-fs@1.16.3
+tar-stream@1.6.1
+to-buffer@1.1.1
+to-fast-properties@1.0.3
+to-fast-properties@2.0.0
+touch@1.0.0
+trim-right@1.0.1
+which-pm-runs@1.0.0
+wide-align@1.1.3
+```
+
+### Updated Dependencies
+```
+ansi-styles@3.2.1
+apollo-cache-control@0.0.10
+apollo-link@1.2.2
+apollo-server-module-graphiql@1.4.0
+apollo-tracing@0.1.4
+apollo-utilities@1.0.16
+async@2.6.1
+attr-accept@1.1.3
+autosize@4.0.2
+aws4@1.7.0
+base64-js@1.3.0
+bcrypt-pbkdf@1.0.2
+body-parser@1.18.3
+bowser@1.9.4
+brace-expansion@1.1.11
+bson@1.0.9
+buffer-from@1.1.0
+buffer-from@1.1.0
+buffer@5.1.0
+camelcase@4.1.0
+caniuse-lite@1.0.30000865
+chai@4.1.2
+chalk@2.4.1
+classnames@2.2.6
+clone@2.1.1
+color-convert@1.9.2
+color-name@1.1.1
+color@3.0.0
+combined-stream@1.0.6
+commander@2.16.0
+concat-stream@1.6.2
+configstore@3.1.2
+consolidated-events@2.0.2
+css-in-js-utils@2.0.1
+cuid@2.1.1
+d3-color@1.2.0
+d3-format@1.3.0
+d3-interpolate@1.2.0
+d3-scale-chromatic@1.3.0
+d3-scale@1.0.7
+d3-time-format@2.1.1
+d3-time@1.0.8
+debug@3.1.0
+deep-eql@3.0.1
+direction@1.0.2
+disposables@1.0.2
+dnd-core@2.6.0
+dom-helpers@3.3.1
+dom7@2.0.7
+dtrace-provider@0.8.7
+duplexify@3.6.0
+ecdsa-sig-formatter@1.0.10
+electron-to-chromium@1.3.52
+error-ex@1.3.2
+es-abstract@1.12.0
+extend@3.0.2
+fast-deep-equal@1.1.0
+fbjs@0.8.17
+fibers@2.0.2
+form-data@2.3.2
+get-caller-file@1.0.3
+get-node-dimensions@1.2.1
+graphql-extensions@0.0.10
+graphql-fields@1.1.0
+graphql-relay@0.5.5
+has-flag@1.0.0
+has@1.0.3
+hoist-non-react-statics@2.5.5
+hosted-git-info@2.7.1
+http-errors@1.6.3
+i18next-browser-languagedetector@2.2.2
+iconv-lite@0.4.23
+ieee754@1.1.12
+immutability-helper@2.7.1
+inline-style-prefixer@4.0.2
+invariant@2.2.4
+is-arrayish@0.3.2
+is-callable@1.1.4
+js-tokens@4.0.0
+jwa@1.1.6
+jws@3.1.5
+libphonenumber-js@1.2.21
+lodash-es@4.17.10
+loose-envify@1.4.0
+lru-cache@4.1.3
+make-dir@1.3.0
+match-sorter@2.2.3
+material-colors@1.2.6
+mime-db@1.35.0
+mime-types@2.1.19
+mimic-fn@1.2.0
+mimic-response@1.0.1
+minimist@1.2.0
+minipass@2.3.3
+moment-timezone@0.5.21
+moment@2.22.2
+mongodb-core@3.1.0
+mongodb@3.1.1
+nan@2.10.0
+nock@9.4.2
+node-fetch@2.1.2
+node-loggly-bulk@2.2.3
+object-keys@1.0.12
+object-keys@1.0.12
+p-limit@1.3.0
+parse-json@4.0.0
+path-parser@4.2.0
+path-to-regexp@2.2.1
+pify@2.3.0
+postcss@6.0.23
+prerender-node@3.1.1
+process-nextick-args@2.0.0
+prop-types-exact@1.2.0
+prop-types@15.6.2
+propagate@1.0.0
+pump@1.0.3
+pumpify@1.5.1
+qs@6.5.2
+query-string@5.1.1
+radium@0.22.1
+raw-body@2.3.3
+react-autosuggest@9.3.4
+react-autowhatever@10.1.2
+react-color@2.14.1
+react-cursor-position@2.4.1
+react-dates@17.1.0
+react-dnd-html5-backend@2.6.0
+react-dnd@2.6.0
+react-dropzone@4.2.13
+react-image-magnify@2.7.0
+react-loadable@5.4.0
+react-moment-proptypes@1.6.0
+react-portal@4.1.5
+react-router-dom@4.3.1
+react-router@4.3.1
+react-select@2.0.0-beta.7
+react-side-effect@1.1.5
+react-table@6.8.6
+react-transition-group@2.4.0
+react-with-styles-interface-css@4.0.3
+react-with-styles@3.2.1
+reaction@1.14.0 /Users/spencer/reaction/reaction
+readable-stream@2.3.6
+request@2.87.0
+resize-observer-polyfill@1.5.0
+retry-request@3.3.2
+safe-buffer@5.1.2
+safe-json-stringify@1.2.0
+search-params@2.1.3
+semver@5.5.0
+shallowequal@1.1.0
+sharp@0.20.5
+simple-get@2.8.1
+slugify@1.3.1
+source-map-support@0.5.6
+source-map@0.7.3
+spdx-expression-parse@3.0.0
+spdx-license-ids@3.0.0
+sshpk@1.14.2
+stable@0.1.8
+statuses@1.5.0
+string-width@1.0.2
+string_decoder@1.1.1
+stringstream@0.0.6
+stripe@5.10.0
+supports-color@5.4.0
+sweetalert2@7.25.6
+swiper@4.3.3
+symbol-observable@1.2.0
+tar@4.4.4
+tether@1.4.4
+tough-cookie@2.3.4
+type-detect@4.0.8
+type-is@1.6.16
+ua-parser-js@0.7.18
+underscore@1.9.1
+uuid@3.3.2
+validate-npm-package-license@3.0.3
+velocity-react@1.4.1
+warning@4.0.1
+whatwg-fetch@2.0.4
+which@1.3.1
+wordwrap@0.0.3
+zen-observable-ts@0.8.9
+zen-observable@0.8.8
+```
+
+### Removed Dependencies
+```
+42-cent-base
+42-cent-util
+@braintree/wrap-promise
+@sindresorhus/is
+@types/node
+UNMET PEER DEPENDENCY graphql@^0.10.0 || ^0.11.0 || ^0.12.0
+aphrodite
+array.prototype.flatten
+authorize-net
+base64url
+braintree
+buffer-crc32
+cacheable-request
+chain-function
+clone-response
+connect-query
+dateformat
+debuglog
+deprecate
+duplexer3
+from2
+got
+has-symbol-support-x
+has-to-string-tag-x
+http-cache-semantics
+into-stream
+is-object
+is-plain-obj
+is-retry-allowed
+isemail
+isurl
+joi
+json-buffer
+json-stable-stringify
+jsonify
+jsonwebtoken
+keyv
+lodash.isboolean
+lodash.isinteger
+lodash.isnumber
+lodash.once
+lowercase-keys
+nexmo
+normalize-url
+p-cancelable
+p-is-promise
+p-timeout
+paypal-rest-sdk
+pop-iterate
+prepend-http
+q
+react-addons-create-fragment
+react-addons-pure-render-mixin
+responselike
+rootpath
+scmp
+shippo
+shopify-api-node
+sort-keys
+stopcock
+string-hash
+timed-out
+topo
+twilio
+url-parse-lax
+url-to-options
+weak-map
+```
+
 # v1.13.1
 
 This release exclusively includes a patch update to Meteor from `1.7.0.1` to `1.7.0.3`
