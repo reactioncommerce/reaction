@@ -138,7 +138,7 @@ export default function defineOrders() {
    * @property {Object} billing.paymentMethod - Billing - Payment Method
    * @property {String} billing.paymentMethod.method - `"credit"`
    * @property {String} billing.paymentMethod.processor - `"Example"`
-   * @property {String} billing.paymentMethod.storedCard - `"Mastercard 2346"`
+   * @property {String} billing.paymentMethod.storedCard - `"MasterCard 2346"`
    * @property {String} billing.paymentMethod.paymentPackageId - `getPkgData("example-paymentmethod")._id`
    * @property {String} paymentSettingsKey - `"example-paymentmethod"`
    * @property {String} mode - `"authorize"`
@@ -228,7 +228,7 @@ export default function defineOrders() {
       paymentMethod: paymentMethod({
         method: "credit",
         processor: "Example",
-        storedCard: "Mastercard 2346",
+        storedCard: "MasterCard 2346",
         paymentPackageId: getPkgData("example-paymentmethod") ? getPkgData("example-paymentmethod")._id : "uiwneiwknekwewe",
         paymentSettingsKey: "example-paymentmethod",
         mode: "authorize",
