@@ -59,7 +59,7 @@ const handlers = {
 /**
  * @name composer
  * @private
- * @summary Reactive Tracker wrapped function
+ * @summary Subscribes to images for products in cart & passes cart products to CartDrawer
  * @param {Object} props - React props
  * @param {Function} onData - Function to call when data is ready
  * @returns {undefined}
