@@ -399,6 +399,7 @@ class ActionView extends Component {
   }
 
   renderActionView() {
+    const { CSSTransitionGroup } = this.state;
     const baseClassName = classnames({
       "rui": true,
       "admin": true,
