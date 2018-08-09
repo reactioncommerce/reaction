@@ -93,26 +93,15 @@ export default function copyCartToOrder(cartId, cartToken) {
   order.createdAt = now;
   order.updatedAt = now;
 
-  // Create a shipping record for each shop on the order
-  if (Array.isArray(order.shipping)) {
-    if (order.shipping.length > 0) {
-      const shippingRecords = [];
-      order.shipping.map((shippingRecord) => {
-        const billingRecord = order.billing.find((billing) => billing.shopId === shippingRecord.shopId);
-        shippingRecord.paymentId = billingRecord._id;
-        shippingRecord.items = [];
-        shippingRecord.items.packed = false;
-        shippingRecord.items.shipped = false;
-        shippingRecord.items.delivered = false;
-        shippingRecord.workflow = { status: "new", workflow: ["coreOrderWorkflow/notStarted"] };
-        shippingRecords.push(shippingRecord);
-        return shippingRecords;
-      });
-      order.shipping = shippingRecords;
-    }
-  } else { // if not - create it
-    order.shipping = [];
-  }
+  // Add paymentId and workflow to each fulfillment group
+  order.shipping = (order.shipping || []).map((shippingRecord) => {
+    const billingRecord = order.billing.find((billing) => billing.shopId === shippingRecord.shopId);
+    return {
+      ...shippingRecord,
+      paymentId: billingRecord._id,
+      workflow: { status: "new", workflow: ["coreOrderWorkflow/notStarted"] }
+    };
+  });
 
   // Add current exchange rate into order.billing.currency
   // If user currency === shop currency, exchange rate = 1.0
@@ -154,22 +143,6 @@ export default function copyCartToOrder(cartId, cartToken) {
       status: "new",
       workflow: ["coreOrderWorkflow/created"]
     };
-
-    // While we're looping, assign items to each shipping record based on the shopId of the item
-    const shipmentItem = {
-      _id: item._id,
-      productId: item.productId,
-      quantity: item.quantity,
-      shopId: item.shopId,
-      variantId: item.variantId
-    };
-    // If the shipment exists
-    const shippingRecord = order.shipping.find((sRecord) => sRecord.shopId === item.shopId);
-    if (shippingRecord.items) {
-      shippingRecord.items.push(shipmentItem);
-    } else {
-      shippingRecord.items = [shipmentItem];
-    }
 
     return item;
   });

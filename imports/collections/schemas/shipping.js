@@ -251,7 +251,7 @@ registerSchema("ShippoShipment", ShippoShipment);
  * @memberof Schemas
  * @type {SimpleSchema}
  * @summary Status of a query/consumption of a shipping provider's API (e.g Shippo) for shipping quotations.
- * @description Shipping quotations are the costs from different shipping methods like Fedex, DHL etc of
+ * @description Shipping quotations are the costs from different shipping methods like FedEx, DHL etc of
  * shipping one or more items to a particular place in a given amount of time.)
  * @property {String} requestStatus optional, default value: `noRequestsYet`
  * @property {String} shippingProvider optional
@@ -382,7 +382,7 @@ registerSchema("Shipment", Shipment);
  * @name ShippoShippingProvider Schema
  * @summary Specific properties for use with Shippo.
  * @description We don't use ShippingProvider service* fields because
- * Shippo is on level higher service than simple carrier's ,e.g Fedex api.
+ * Shippo is on level higher service than simple carrier's ,e.g FedEx api.
  * @memberof Schemas
  * @type {SimpleSchema}
  * @property {String} carrierAccountId optional
