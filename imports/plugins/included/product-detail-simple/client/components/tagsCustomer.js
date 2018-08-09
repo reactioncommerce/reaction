@@ -1,16 +1,11 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import classnames from "classnames";
+import { Components, registerComponent } from "@reactioncommerce/reaction-components";
 import { Router } from "@reactioncommerce/reaction-router";
 
-class TagsCustomer extends Component {
+class ProductTagsCustomer extends Component {
   renderTagsList() {
     const { tags } = this.props;
-    const baseClassName = classnames({
-      rui: true,
-      tag: true,
-      link: true
-    });
     return tags.map((tag, index) => {
       const url = Router.pathFor("tag", {
         hash: {
@@ -19,28 +14,30 @@ class TagsCustomer extends Component {
       });
       return (
         <div key={index}>
-          <a className={baseClassName} href={url}>{tag.name}</a>
+          <a className="rui tag link" href={url}>{tag.name}</a>
         </div>
       );
     });
   }
 
   render() {
-    const classes = classnames({
-      rui: true,
-      tags: true
-    });
-
     return (
-      <div className={classes}>
-        {this.renderTagsList()}
+      <div className="pdp product-tags">
+        <h3 className="tags-header">
+          <Components.Translation defaultValue="Tags" i18nKey="productDetail.tags" />
+        </h3>
+        <div className="rui tags">
+          {this.renderTagsList()}
+        </div>
       </div>
     );
   }
 }
 
-TagsCustomer.propTypes = {
+ProductTagsCustomer.propTypes = {
   tags: PropTypes.arrayOf(PropTypes.object)
 };
 
-export default TagsCustomer;
+export default ProductTagsCustomer;
+
+registerComponent("ProductTagsCustomer", ProductTagsCustomer);
