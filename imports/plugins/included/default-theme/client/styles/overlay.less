@@ -1,0 +1,14 @@
+// Overlay opacity animation
+.rui.overlay {
+  &.fade-in-out-enter {
+    opacity: 0;
+  }
+  &.fade-in-out-enter-active {
+    opacity: 1;
+    transition: opacity 200ms;
+  }
+  &.fade-in-out-leave-active {
+    opacity: 0;
+    transition: opacity 200ms;
+  }
+}

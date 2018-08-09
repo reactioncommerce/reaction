@@ -63,7 +63,9 @@ html:not(.rtl) .rui.admin.action-view {
   flex: 0 0 auto;
   flex-direction: column;
   align-items: center;
-  // justify-content: center;
+  // Disable horizontal scrollbar, and vertical unless needed
+  overflow-x: hidden;
+  overflow-y: auto;
 
   min-width: @admin-controls-menu-width;
   width: @admin-controls-menu-width;
@@ -78,6 +80,30 @@ html:not(.rtl) .rui.admin.action-view {
     border-top: 1px solid @border-color;
   }
 }
+
+// Admin action pane slide in/out animation
+.admin.rui.action-view-pane {
+  &.slide-in-out-enter {
+    transform: translateX(100%);
+  }
+  &.slide-in-out-rtl-enter {
+    transform: translateX(-100%);
+  }
+  &.slide-in-out-enter-active, &.slide-in-out-rtl-enter-active {
+    transform: translateX(0%);
+    transition: transform 200ms ease-in-out;
+  }
+  &.slide-in-out-leave-active {
+    transform: translateX(100%);
+    transition: transform 200ms ease-in-out;
+  }
+  &.slide-in-out-rtl-leave-active {
+    transform: translateX(-100%);
+    transition: transform 200ms ease-in-out;
+  }
+}
+
+// Admin detail pane (i.e. order detail) sidebar slide in/out animation
 
 .admin-shortcut-bar nav {
   flex-direction: column;

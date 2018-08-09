@@ -30,7 +30,7 @@ class Overlay extends Component {
   };
 
   state = {
-    VelocityTransitionGroup: undefined,
+    CSSTransitionGroup: undefined,
     enterAnimation: {
       animation: { opacity: 1 },
       duration: 200
@@ -44,7 +44,8 @@ class Overlay extends Component {
   renderOverlay() {
     if (this.props.isVisible) {
       const baseClassName = classnames({
-        rui: true
+        rui: true,
+        overlay: true
       });
 
       return (
@@ -53,6 +54,7 @@ class Overlay extends Component {
           className={baseClassName}
           style={styles.base}
           onClick={this.props.onClick}
+          key="overlay"
         />
       );
     }
@@ -61,28 +63,30 @@ class Overlay extends Component {
   }
 
   render() {
-    const { VelocityTransitionGroup } = this.state;
-    if (VelocityTransitionGroup === undefined) {
-      import("velocity-react")
+    const { CSSTransitionGroup } = this.state;
+    if (CSSTransitionGroup === undefined) {
+      import("react-transition-group")
         .then((module) => {
           this.setState({
-            VelocityTransitionGroup: module.VelocityTransitionGroup
+            CSSTransitionGroup: module.CSSTransitionGroup
           });
           return module;
         })
         .catch((error) => {
-          Logger.error(error.message, "Unable to load velocity-react");
+          Logger.error(error.message, "Unable to load react-transition-group");
         });
+
       return null;
     }
-
+    
     return (
-      <VelocityTransitionGroup
-        enter={this.state.enterAnimation}
-        leave={this.state.leaveAnimation}
+      <CSSTransitionGroup
+        transitionName="fade-in-out"
+        transitionEnterTimeout={200}
+        transitionLeaveTimeout={200}
       >
         {this.renderOverlay()}
-      </VelocityTransitionGroup>
+      </CSSTransitionGroup>
     );
   }
 }

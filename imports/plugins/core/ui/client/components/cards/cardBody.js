@@ -24,18 +24,37 @@ class CardBody extends Component {
   };
 
   state = {
-    VelocityTransitionGroup: undefined
+    AnimateHeight: undefined
   };
 
-  renderCard() {
-    if (this.props.expanded) {
-      const baseClassName = classnames({
-        "rui": true,
-        "panel-body": true,
-        "no-padding": this.props.padded === false
-      });
+  render() {
+    const { AnimateHeight } = this.state;
+    if (AnimateHeight === undefined) {
+      import("react-animate-height")
+        .then((module) => {
+          this.setState({
+            AnimateHeight: module.default
+          });
+          return module;
+        })
+        .catch((error) => {
+          Logger.error(error.message, "Unable to load react-animate-height");
+        });
+      return null;
+    }
 
-      return (
+    const baseClassName = classnames({
+      "rui": true,
+      "panel-body": true,
+      "no-padding": this.props.padded === false
+    });
+    const height = this.props.expanded && "auto" || 0;
+
+    return (
+      <AnimateHeight
+        duration={200}
+        height={height}
+      >
         <div
           className={baseClassName}
           style={[
@@ -44,35 +63,7 @@ class CardBody extends Component {
         >
           {this.props.children}
         </div>
-      );
-    }
-
-    return null;
-  }
-
-  render() {
-    const { VelocityTransitionGroup } = this.state;
-    if (VelocityTransitionGroup === undefined) {
-      import("velocity-react")
-        .then((module) => {
-          this.setState({
-            VelocityTransitionGroup: module.VelocityTransitionGroup
-          });
-          return module;
-        })
-        .catch((error) => {
-          Logger.error(error.message, "Unable to load velocity-react");
-        });
-      return null;
-    }
-
-    return (
-      <VelocityTransitionGroup
-        enter={{ animation: "slideDown" }}
-        leave={{ animation: "slideUp" }}
-      >
-        {this.renderCard()}
-      </VelocityTransitionGroup>
+      </AnimateHeight>
     );
   }
 }
