@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import _ from "lodash";
 import { Meteor } from "meteor/meteor";
 import { composeWithTracker, withMoment } from "@reactioncommerce/reaction-components";
 import { Orders } from "/lib/collections";
@@ -24,8 +23,8 @@ class OrderSummaryContainer extends Component {
 
   dateFormat = (context, block) => {
     const { moment } = this.props;
-    const f = block || "MMM DD, YYYY hh:mm:ss A";
-    return (moment && moment(context).format(f)) || context.toLocaleString();
+    const formatString = block || "MMM DD, YYYY hh:mm:ss A";
+    return (moment && moment(context).format(formatString)) || context.toLocaleString();
   }
 
   tracking = () => {
