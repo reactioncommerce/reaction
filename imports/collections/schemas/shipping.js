@@ -185,46 +185,6 @@ export const ShipmentQuote = new SimpleSchema({
 registerSchema("ShipmentQuote", ShipmentQuote);
 
 /**
- * @name ShipmentItem
- * @memberof Schemas
- * @type {SimpleSchema}
- * @summary Populate with order.items that are added to a shipment
- * @property {String} _id Shipment Line Item optional
- * @property {String} productId required
- * @property {String} shopId Shipment Item ShopId optional
- * @property {Number} quantity required
- * @property {String} variantId required
- */
-export const ShipmentItem = new SimpleSchema({
-  _id: {
-    type: String,
-    label: "Shipment Line Item",
-    optional: true,
-    autoValue: schemaIdAutoValue
-  },
-  productId: {
-    type: String,
-    index: 1
-  },
-  shopId: {
-    type: String,
-    index: 1,
-    label: "Shipment Item ShopId",
-    optional: true
-  },
-  quantity: {
-    label: "Quantity",
-    type: SimpleSchema.Integer,
-    min: 0
-  },
-  variantId: {
-    type: String
-  }
-});
-
-registerSchema("ShipmentItem", ShipmentItem);
-
-/**
  * @name ShippingParcel
  * @memberof Schemas
  * @type {SimpleSchema}
@@ -334,7 +294,6 @@ registerSchema("ShipmentQuotesQueryStatus", ShipmentQuotesQueryStatus);
  * @property {ShipmentQuotesQueryStatus} shipmentQuotesQueryStatus optional
  * @property {String} tracking optional
  * @property {ShippingParcel} parcel optional
- * @property {ShipmentItem[]} items optional
  * @property {Workflow} workflow optional
  * @property {Invoice} invoice optional
  * @property {Object[]} transactions optional
@@ -383,14 +342,6 @@ export const Shipment = new SimpleSchema({
   },
   "parcel": {
     type: ShippingParcel,
-    optional: true
-  },
-  "items": {
-    type: Array,
-    optional: true
-  },
-  "items.$": {
-    type: ShipmentItem,
     optional: true
   },
   "workflow": {
