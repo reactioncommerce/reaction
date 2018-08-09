@@ -2,8 +2,8 @@ import { Migrations } from "meteor/percolate:migrations";
 import { Orders } from "/lib/collections";
 
 /**
- * Going up, migrates order.shipping.$.items -> order.shipping.$.itemIds.
- * Going down, migrates order.shipping.$.itemIds -> order.shipping.$.items
+ * Going up, migrates order.shipping.$.items -> order.shipping.$.itemIds and adds type
+ * Going down, migrates order.shipping.$.itemIds -> order.shipping.$.items and adds type
  */
 
 Migrations.add({
@@ -14,7 +14,8 @@ Migrations.add({
         const itemIds = (group.items || []).map((item) => item._id);
         const newGroup = {
           ...group,
-          itemIds
+          itemIds,
+          type: "shipping"
         };
         delete newGroup.items;
         return newGroup;
@@ -45,6 +46,7 @@ Migrations.add({
           items
         };
         delete newGroup.itemIds;
+        delete newGroup.type;
         return newGroup;
       });
 
