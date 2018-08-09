@@ -293,6 +293,7 @@ registerSchema("ShipmentQuotesQueryStatus", ShipmentQuotesQueryStatus);
  * @property {ShipmentQuote[]} shipmentQuotes optional
  * @property {ShipmentQuotesQueryStatus} shipmentQuotesQueryStatus optional
  * @property {String} tracking optional
+ * @property {String} type The fulfillment type. Currently only "shipping" supported
  * @property {ShippingParcel} parcel optional
  * @property {Workflow} workflow optional
  * @property {Invoice} invoice optional
@@ -341,6 +342,11 @@ export const Shipment = new SimpleSchema({
   "tracking": {
     type: String,
     optional: true
+  },
+  "type": {
+    type: String,
+    allowedValues: ["shipping"],
+    defaultValue: "shipping"
   },
   "parcel": {
     type: ShippingParcel,
