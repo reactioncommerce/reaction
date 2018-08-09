@@ -296,6 +296,8 @@ registerSchema("ShipmentQuotesQueryStatus", ShipmentQuotesQueryStatus);
  * @property {ShippingParcel} parcel optional
  * @property {Workflow} workflow optional
  * @property {Invoice} invoice optional
+ * @property {String[]} itemIds Required on an order but not on a cart, this is set to a denormalized
+ *   list of item IDs when a cart is converted to an order
  * @property {Object[]} transactions optional
  * @property {String} shippingLabelUrl For printable Shipping label
  * @property {String} customsLabelUrl For customs printable label
@@ -353,6 +355,11 @@ export const Shipment = new SimpleSchema({
     type: Invoice,
     optional: true
   },
+  "itemIds": {
+    type: Array,
+    optional: true
+  },
+  "itemIds.$": String,
   "transactions": {
     type: Array,
     optional: true

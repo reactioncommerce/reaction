@@ -98,6 +98,7 @@ export default function copyCartToOrder(cartId, cartToken) {
     const billingRecord = order.billing.find((billing) => billing.shopId === shippingRecord.shopId);
     return {
       ...shippingRecord,
+      itemIds: [],
       paymentId: billingRecord._id,
       workflow: { status: "new", workflow: ["coreOrderWorkflow/notStarted"] }
     };
@@ -136,8 +137,13 @@ export default function copyCartToOrder(cartId, cartToken) {
       variant: chosenVariant
     } = Promise.await(findProductAndVariant(rawCollections, item.productId, item.variantId));
 
+    const fulfillmentGroup = order.shipping.find((group) => group.shopId === item.shopId);
+
+    // This is a convenient place to push into the itemIds array on the fulfillment group
+    fulfillmentGroup.itemIds.push(item._id);
+
     item.product = catalogProduct;
-    item.shippingMethod = order.shipping[order.shipping.length - 1];
+    item.shippingMethod = fulfillmentGroup;
     item.variants = chosenVariant;
     item.workflow = {
       status: "new",
