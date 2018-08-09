@@ -13,6 +13,11 @@ Template.coreOrderShippingTracking.onCreated(() => {
   template.orderDep = new Tracker.Dependency();
   template.showTrackingEditForm = ReactiveVar(false);
 
+  /**
+   * @param {String} orderId Order ID
+   * @param {String} shipmentId Shipment ID
+   * @returns {Object} The order document
+   */
   function getOrder(orderId, shipmentId) {
     template.orderDep.depend();
     return Orders.findOne({

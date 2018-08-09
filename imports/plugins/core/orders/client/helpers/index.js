@@ -1,6 +1,6 @@
 import { Reaction } from "/client/api";
 
-/*
+/**
  * @method getOrderRiskBadge
  * @private
  * @summary Selects appropriate color badge (e.g  danger, warning) value based on risk level
@@ -22,7 +22,7 @@ export function getOrderRiskBadge(riskLevel) {
   return label;
 }
 
-/*
+/**
  * @method getOrderRiskStatus
  * @private
  * @summary Gets the risk label on the paymentMethod object for a shop on an order.
@@ -47,7 +47,7 @@ export function getOrderRiskStatus(order) {
   return riskLevel;
 }
 
-/*
+/**
  * @method getTaxRiskStatus
  * @private
  * @summary Gets the tax status of the order.

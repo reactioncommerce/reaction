@@ -48,8 +48,8 @@ export default function capturePayments(orderId) {
     let error;
     try {
       result = Meteor.call(`${processor}/payment/capture`, paymentMethod);
-    } catch (e) {
-      error = e;
+    } catch (err) {
+      error = err;
     }
 
     if (result && result.saved === true) {
@@ -102,4 +102,6 @@ export default function capturePayments(orderId) {
 
     return { error: "orders/capturePayments: Failed to capture transaction" };
   }
+
+  return { error: null, result: null };
 }
