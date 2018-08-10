@@ -83,27 +83,27 @@ html:not(.rtl) .rui.admin.action-view {
 
 // Admin action pane slide in/out animation
 .admin.rui.action-view-pane {
-  &.slide-in-out-enter {
-    transform: translateX(100%);
-  }
-  &.slide-in-out-rtl-enter {
-    transform: translateX(-100%);
-  }
-  &.slide-in-out-enter-active, &.slide-in-out-rtl-enter-active {
-    transform: translateX(0%);
-    transition: transform 200ms ease-in-out;
-  }
+  &.slide-in-out-enter,
   &.slide-in-out-leave-active {
     transform: translateX(100%);
-    transition: transform 200ms ease-in-out;
   }
+  &.slide-in-out-rtl-enter,
   &.slide-in-out-rtl-leave-active {
     transform: translateX(-100%);
+  }
+
+  &.slide-in-out-enter-active,
+  &.slide-in-out-rtl-enter-active,
+  &.slide-in-out-leave-active,
+  &.slide-in-out-rtl-leave-active {
     transition: transform 200ms ease-in-out;
   }
-}
 
-// Admin detail pane (i.e. order detail) sidebar slide in/out animation
+  &.slide-in-out-enter-active,
+  &.slide-in-out-rtl-enter-active {
+    transform: translateX(0%);
+  }
+}
 
 .admin-shortcut-bar nav {
   flex-direction: column;
