@@ -1,8 +1,8 @@
 import React, { Component } from "react";
+import { compose } from "recompose";
 import PropTypes from "prop-types";
 import classnames from "classnames";
-import Logger from "@reactioncommerce/logger";
-import { getComponent } from "@reactioncommerce/reaction-components";
+import { getComponent, withCSSTransitionGroup } from "@reactioncommerce/reaction-components";
 import Blaze from "meteor/gadicc:blaze-react-component";
 import { Admin } from "/imports/plugins/core/ui/client/providers";
 import Radium from "radium";
@@ -145,6 +145,7 @@ class ActionView extends Component {
     actionView: PropTypes.object,
     actionViewIsOpen: PropTypes.bool, // eslint-disable-line react/boolean-prop-naming
     buttons: PropTypes.array,
+    CSSTransitionGroup: PropTypes.func,
     detailView: PropTypes.object,
     detailViewIsOpen: PropTypes.bool, // eslint-disable-line react/boolean-prop-naming
     handleActionViewBack: PropTypes.func,
@@ -161,7 +162,6 @@ class ActionView extends Component {
     super(props);
 
     this.state = {
-      CSSTransitionGroup: undefined,
       isMobile: this.isMobile,
       enterAnimationForDetailView: {
         animation: { width: 400 },
@@ -399,7 +399,8 @@ class ActionView extends Component {
   }
 
   renderActionView() {
-    const { CSSTransitionGroup } = this.state;
+    const { CSSTransitionGroup } = this.props;
+
     const baseClassName = classnames({
       "rui": true,
       "admin": true,
@@ -441,19 +442,8 @@ class ActionView extends Component {
   }
 
   render() {
-    const { CSSTransitionGroup } = this.state;
+    const { CSSTransitionGroup } = this.props;
     if (CSSTransitionGroup === undefined) {
-      import("react-transition-group")
-        .then((module) => {
-          this.setState({
-            CSSTransitionGroup: module.CSSTransitionGroup
-          });
-          return module;
-        })
-        .catch((error) => {
-          Logger.error(error.message, "Unable to load react-transition-group");
-        });
-
       return null;
     }
 
@@ -476,4 +466,9 @@ class ActionView extends Component {
   }
 }
 
-export default Admin()(Radium(ActionView));
+export default Admin()(
+  compose(
+    withCSSTransitionGroup,
+    Radium
+  )(ActionView)
+);

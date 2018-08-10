@@ -45,8 +45,11 @@ class ProductAdmin extends Component {
   }
 
   UNSAFE_componentWillReceiveProps(nextProps) { // eslint-disable-line camelcase
-    const nextProduct = nextProps.product || {};
-    const currentProduct = this.props.product || {};
+    if (nextProps.product === undefined || this.props.product === undefined) {
+      return;
+    }
+    const nextProduct = nextProps.product;
+    const currentProduct = this.props.product;
 
     if (!isEqual(nextProduct, currentProduct)) {
       for (const fieldName of fieldNames) {

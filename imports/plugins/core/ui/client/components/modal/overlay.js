@@ -1,9 +1,9 @@
 import React, { Component } from "react";
+import { compose } from "recompose";
 import PropTypes from "prop-types";
 import Radium from "radium";
 import classnames from "classnames";
-import { registerComponent } from "@reactioncommerce/reaction-components";
-import Logger from "@reactioncommerce/logger";
+import { registerComponent, withCSSTransitionGroup } from "@reactioncommerce/reaction-components";
 
 const styles = {
   base: {
@@ -25,12 +25,12 @@ class Overlay extends Component {
 
   static propTypes = {
     children: PropTypes.node,
+    CSSTransitionGroup: PropTypes.func,
     isVisible: PropTypes.bool,
     onClick: PropTypes.func
   };
 
   state = {
-    CSSTransitionGroup: undefined,
     enterAnimation: {
       animation: { opacity: 1 },
       duration: 200
@@ -63,22 +63,11 @@ class Overlay extends Component {
   }
 
   render() {
-    const { CSSTransitionGroup } = this.state;
+    const { CSSTransitionGroup } = this.props;
     if (CSSTransitionGroup === undefined) {
-      import("react-transition-group")
-        .then((module) => {
-          this.setState({
-            CSSTransitionGroup: module.CSSTransitionGroup
-          });
-          return module;
-        })
-        .catch((error) => {
-          Logger.error(error.message, "Unable to load react-transition-group");
-        });
-
       return null;
     }
-    
+
     return (
       <CSSTransitionGroup
         transitionName="fade-in-out"
@@ -91,6 +80,12 @@ class Overlay extends Component {
   }
 }
 
-registerComponent("Overlay", Overlay, Radium);
+registerComponent("Overlay", Overlay, [
+  withCSSTransitionGroup,
+  Radium
+]);
 
-export default Radium(Overlay);
+export default compose(
+  withCSSTransitionGroup,
+  Radium
+)(Overlay);

@@ -177,3 +177,51 @@ export function withIsOwner(component) {
     onData(null, { isOwner: Reaction.hasOwnerAccess() });
   })(component);
 }
+
+/**
+ * @name withCSSTransitionGroup
+ * @method
+ * @summary A wrapper to reactively inject react-transition-group's <CSSTransitionGroup /> into a component
+ * @param {Function|React.Component} component - the component to wrap
+ * @memberof Components/Helpers
+ */
+export function withCSSTransitionGroup(component) {
+  return lifecycle({
+    componentDidMount() {
+      import("react-transition-group")
+        .then((module) => {
+          this.setState({
+            CSSTransitionGroup: module.CSSTransitionGroup
+          });
+          return null;
+        })
+        .catch((error) => {
+          Logger.error(error.message, "Unable to load react-transition-group");
+        });
+    }
+  })(component);
+}
+
+/**
+ * @name withVelocityTransitionGroup
+ * @method
+ * @summary A wrapper to reactively inject velocity-react's <VelocityTransitionGroup /> into a component
+ * @param {Function|React.Component} component - the component to wrap
+ * @memberof Components/Helpers
+ */
+export function withVelocityTransitionGroup(component) {
+  return lifecycle({
+    componentDidMount() {
+      import("velocity-react")
+        .then((module) => {
+          this.setState({
+            VelocityTransitionGroup: module.VelocityTransitionGroup
+          });
+          return null;
+        })
+        .catch((error) => {
+          Logger.error(error.message, "Unable to load velocty-react");
+        });
+    }
+  })(component);
+}
