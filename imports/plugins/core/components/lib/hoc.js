@@ -190,14 +190,23 @@ export function withCSSTransitionGroup(component) {
     componentDidMount() {
       import("react-transition-group")
         .then((module) => {
+          if (this.willUnmount == true) {
+            return null;
+          }
+
           this.setState({
             CSSTransitionGroup: module.CSSTransitionGroup
           });
+
           return null;
         })
         .catch((error) => {
           Logger.error(error.message, "Unable to load react-transition-group");
         });
+    },
+    componentWillUnmount() {
+      // Prevent dynamic import from setting state if component is about to unmount
+      this.willUnmount = true;
     }
   })(component);
 }
@@ -214,14 +223,23 @@ export function withVelocityTransitionGroup(component) {
     componentDidMount() {
       import("velocity-react")
         .then((module) => {
+          if (this.willUnmount == true) {
+            return null;
+          }
+
           this.setState({
             VelocityTransitionGroup: module.VelocityTransitionGroup
           });
+          
           return null;
         })
         .catch((error) => {
           Logger.error(error.message, "Unable to load velocty-react");
         });
+    },
+    componentWillUnmount() {
+      // Prevent dynamic import from setting state if component is about to unmount
+      this.willUnmount = true;
     }
   })(component);
 }
