@@ -19,6 +19,9 @@ type Cart implements Node {
   "The shop that owns the cart."
   shop: Shop!
 
+  "Total quantity of all items in the cart"
+  totalItemQuantity: Int
+
   "The date and time at which this cart was last updated."
   updatedAt: DateTime!
 
