@@ -159,6 +159,8 @@ export function withPermissions({ roles = ["guest", "anonymous"], group }) {
 
       onData(null, { hasPermissions });
     }
+
+    return null;
   });
 }
 
@@ -183,6 +185,7 @@ export function withIsOwner(component) {
  * @method
  * @summary A wrapper to reactively inject react-transition-group's <CSSTransitionGroup /> into a component
  * @param {Function|React.Component} component - the component to wrap
+ * @return {Function} the new wrapped component with a "CSSTransitionGroup" prop
  * @memberof Components/Helpers
  */
 export function withCSSTransitionGroup(component) {
@@ -190,7 +193,7 @@ export function withCSSTransitionGroup(component) {
     componentDidMount() {
       import("react-transition-group")
         .then((module) => {
-          if (this.willUnmount == true) {
+          if (this.willUnmount === true) {
             return null;
           }
 
@@ -216,6 +219,7 @@ export function withCSSTransitionGroup(component) {
  * @method
  * @summary A wrapper to reactively inject velocity-react's <VelocityTransitionGroup /> into a component
  * @param {Function|React.Component} component - the component to wrap
+ * @return {Function} the new wrapped component with a "VelocityTransitionGroup" prop
  * @memberof Components/Helpers
  */
 export function withVelocityTransitionGroup(component) {
@@ -223,14 +227,14 @@ export function withVelocityTransitionGroup(component) {
     componentDidMount() {
       import("velocity-react")
         .then((module) => {
-          if (this.willUnmount == true) {
+          if (this.willUnmount === true) {
             return null;
           }
 
           this.setState({
             VelocityTransitionGroup: module.VelocityTransitionGroup
           });
-          
+
           return null;
         })
         .catch((error) => {

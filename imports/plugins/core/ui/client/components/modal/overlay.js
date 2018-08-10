@@ -24,8 +24,8 @@ class Overlay extends Component {
   };
 
   static propTypes = {
-    children: PropTypes.node,
     CSSTransitionGroup: PropTypes.func,
+    children: PropTypes.node,
     isVisible: PropTypes.bool,
     onClick: PropTypes.func
   };

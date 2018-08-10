@@ -142,10 +142,10 @@ const getStyles = (props) => {
 
 class ActionView extends Component {
   static propTypes = {
+    CSSTransitionGroup: PropTypes.func,
     actionView: PropTypes.object,
     actionViewIsOpen: PropTypes.bool, // eslint-disable-line react/boolean-prop-naming
     buttons: PropTypes.array,
-    CSSTransitionGroup: PropTypes.func,
     detailView: PropTypes.object,
     detailViewIsOpen: PropTypes.bool, // eslint-disable-line react/boolean-prop-naming
     handleActionViewBack: PropTypes.func,
@@ -421,7 +421,7 @@ class ActionView extends Component {
             onClick={this.props.handleActionViewDetailClose}
           />
           <CSSTransitionGroup
-            transitionName={`slide-in-out${isRtl && "-rtl" || ""}`}
+            transitionName={`slide-in-out${(isRtl && "-rtl") || ""}`}
             transitionEnterTimeout={200}
             transitionLeaveTimeout={200}
           >
@@ -451,7 +451,7 @@ class ActionView extends Component {
     return (
       <div>
         <CSSTransitionGroup
-          transitionName={`slide-in-out${isRtl && "-rtl" || ""}`}
+          transitionName={`slide-in-out${(isRtl && "-rtl") || ""}`}
           transitionEnterTimeout={200}
           transitionLeaveTimeout={200}
         >
@@ -466,9 +466,7 @@ class ActionView extends Component {
   }
 }
 
-export default Admin()(
-  compose(
-    withCSSTransitionGroup,
-    Radium
-  )(ActionView)
-);
+export default Admin()(compose(
+  withCSSTransitionGroup,
+  Radium
+)(ActionView));
