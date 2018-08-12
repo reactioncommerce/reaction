@@ -1,9 +1,9 @@
-import Hooks from "@reactioncommerce/hooks";
 import Logger from "@reactioncommerce/logger";
 import { Meteor } from "meteor/meteor";
 import { check } from "meteor/check";
 import { Cart, Accounts } from "/lib/collections";
 import { Cart as CartSchema } from "/lib/collections/schemas";
+import appEvents from "/imports/plugins/core/core/server/appEvents";
 
 /**
  * @name getDefaultAddress
@@ -81,9 +81,6 @@ function pruneShippingRecordsByShop(cart) {
         }
       );
     }
-
-    // Calculate discounts
-    Hooks.Events.run("afterCartUpdateCalculateDiscount", cartId);
   }
 }
 
@@ -117,8 +114,6 @@ function normalizeAddresses(cart) {
         }
       };
       Cart.update(selector, update);
-      // Calculate discounts
-      Hooks.Events.run("afterCartUpdateCalculateDiscount", cartId);
     });
   }
 }
@@ -151,9 +146,6 @@ function createShipmentQuotes(cartId, shopId, rates) {
     Logger.warn(`Error in setting shipping query status to "pending" for ${cartId}`, error);
     throw error;
   }
-
-  // Calculate discounts
-  Hooks.Events.run("afterCartUpdateCalculateDiscount", cartId);
 
   Logger.debug(`Success in setting shipping query status to "pending" for ${cartId}`, rates);
 
@@ -210,9 +202,6 @@ function updateShipmentQuotes(cartId, rates, selector) {
     Logger.warn(`Error in setting shipping query status to "pending" for ${cartId}`, error);
     throw error;
   }
-
-  // Calculate discounts
-  Hooks.Events.run("afterCartUpdateCalculateDiscount", cartId);
 
   Logger.debug(`Success in setting shipping query status to "pending" for ${cartId}`, rates);
 
@@ -279,9 +268,6 @@ function updateShippingRecordByShop(cart, rates) {
       throw error;
     }
 
-    // Calculate discounts
-    Hooks.Events.run("afterCartUpdateCalculateDiscount", cartId);
-
     Logger.debug(`Success updating rates for cart ${cartId}`, rates);
   });
 
@@ -314,5 +300,8 @@ export default function updateShipmentQuotesMethod(cartId) {
     }
     const rates = Meteor.call("shipping/getShippingRates", cart);
     updateShippingRecordByShop(cart, rates);
+
+    const updatedCart = Cart.findOne({ _id: cartId });
+    Promise.await(appEvents.emit("afterCartUpdate", cartId, updatedCart));
   }
 }

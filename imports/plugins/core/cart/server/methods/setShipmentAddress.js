@@ -1,4 +1,3 @@
-import Hooks from "@reactioncommerce/hooks";
 import Logger from "@reactioncommerce/logger";
 import { Meteor } from "meteor/meteor";
 import { check, Match } from "meteor/check";
@@ -6,7 +5,7 @@ import { Cart } from "/lib/collections";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
 import ReactionError from "@reactioncommerce/reaction-error";
 import getCart from "/imports/plugins/core/cart/server/util/getCart";
-
+import appEvents from "/imports/plugins/core/core/server/appEvents";
 
 /**
  * @method cart/setShipmentAddress
@@ -121,7 +120,9 @@ export default function setShipmentAddress(cartId, cartToken, address) {
     Logger.error(`Error calling shipping/updateShipmentQuotes method in setShipmentAddress method for cart with ID ${cartId}`, error);
   }
 
-  Hooks.Events.run("afterCartUpdateCalculateDiscount", cartId);
+  const updatedCart = Cart.findOne({ _id: cartId });
+
+  Promise.await(appEvents.emit("afterCartUpdate", cartId, updatedCart));
 
   if (typeof cart.workflow !== "object") {
     throw new ReactionError(

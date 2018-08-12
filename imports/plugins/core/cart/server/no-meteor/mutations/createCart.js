@@ -1,3 +1,4 @@
+import Hooks from "@reactioncommerce/hooks";
 import Random from "@reactioncommerce/random";
 import ReactionError from "@reactioncommerce/reaction-error";
 import hashLoginToken from "/imports/plugins/core/accounts/server/no-meteor/util/hashLoginToken";
@@ -82,9 +83,11 @@ export default async function createCart(context, input) {
 
   CartSchema.validate(newCart);
 
-  const { ops, result } = await Cart.insertOne(newCart);
+  const { result } = await Cart.insertOne(newCart);
 
   if (result.ok !== 1) throw new ReactionError("server-error", "Unable to create cart");
 
-  return { cart: ops[0], incorrectPriceFailures, minOrderQuantityFailures, token: anonymousAccessToken };
+  Hooks.Events.run("afterCartCreate", newCart);
+
+  return { cart: newCart, incorrectPriceFailures, minOrderQuantityFailures, token: anonymousAccessToken };
 }

@@ -1,9 +1,21 @@
-import Hooks from "@reactioncommerce/hooks";
 import Logger from "@reactioncommerce/logger";
 import { Meteor } from "meteor/meteor";
 import { Cart } from "/lib/collections";
+import appEvents from "/imports/plugins/core/core/server/appEvents";
 
-Hooks.Events.add("afterCartUpdate", (cartId) => {
+appEvents.on("afterCartUpdate", (cartId, cart) => {
+  if (!cartId) {
+    throw new Error("afterCartUpdate hook run with no cartId argument");
+  }
+
+  if (typeof cartId !== "string") {
+    throw new Error("afterCartUpdate hook run with non-string cartId argument");
+  }
+
+  if (!cart) {
+    throw new Error("afterCartUpdate hook run with no cart argument");
+  }
+
   // refresh shipping quotes
   try {
     Meteor.call("shipping/updateShipmentQuotes", cartId);
@@ -19,7 +31,12 @@ Hooks.Events.add("afterCartUpdate", (cartId) => {
   }
 
   // reset selected shipment method
-  Cart.update({ _id: cartId }, {
-    $unset: { "shipping.0.shipmentMethod": "" }
-  });
+  if (cart.shipping && cart.shipping[0] && cart.shipping[0].shipmentMethod) {
+    Cart.update({ _id: cartId }, {
+      $unset: { "shipping.0.shipmentMethod": "" }
+    });
+
+    const updatedCart = Cart.findOne({ _id: cartId });
+    Promise.await(appEvents.emit("afterCartUpdate", cartId, updatedCart));
+  }
 });
