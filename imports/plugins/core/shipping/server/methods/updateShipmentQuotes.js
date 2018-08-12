@@ -1,3 +1,4 @@
+import { isEqual } from "lodash";
 import Logger from "@reactioncommerce/logger";
 import { Meteor } from "meteor/meteor";
 import { check } from "meteor/check";
@@ -302,6 +303,9 @@ export default function updateShipmentQuotesMethod(cartId) {
     updateShippingRecordByShop(cart, rates);
 
     const updatedCart = Cart.findOne({ _id: cartId });
-    Promise.await(appEvents.emit("afterCartUpdate", cartId, updatedCart));
+
+    if (!isEqual(updatedCart.shipping, cart.shipping)) {
+      Promise.await(appEvents.emit("afterCartUpdate", cartId, updatedCart));
+    }
   }
 }

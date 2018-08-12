@@ -23,7 +23,7 @@ function determineInitialGroupForItem(currentGroups, supportedFulfillmentTypes, 
 export default function startup({ appEvents, collections }) {
   const { Cart } = collections;
 
-  appEvents.on("afterCartUpdate", async (cartId, updatedCart) => {
+  const handler = async (cartId, updatedCart) => {
     if (!cartId) {
       throw new Error("afterCartUpdate hook run with no cartId argument");
     }
@@ -76,5 +76,8 @@ export default function startup({ appEvents, collections }) {
 
     const { modifiedCount } = await Cart.updateOne({ _id: cartId }, modifier);
     if (modifiedCount === 0) throw new ReactionError("server-error", "Failed to update cart");
-  });
+  };
+
+  appEvents.on("afterCartUpdate", handler);
+  appEvents.on("afterCartCreate", (cart) => handler(cart._id, cart));
 }
