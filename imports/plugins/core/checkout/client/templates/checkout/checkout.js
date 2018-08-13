@@ -3,6 +3,7 @@ import { Meteor } from "meteor/meteor";
 import { Template } from "meteor/templating";
 import { Reaction } from "/client/api";
 import getCart from "/imports/plugins/core/cart/client/util/getCart";
+import simpleGraphQLClient from "/imports/plugins/core/graphql/lib/helpers/simpleClient";
 import "./checkout.html";
 
 //
@@ -39,7 +40,13 @@ Template.cartCheckout.onCreated(function onCreated() {
       if (!_.isEqual(previousCartShipping, partialShipping)) {
         previousCartShipping = partialShipping;
         partialShipping.forEach(({ _id }) => {
-          Meteor.call("shipping/updateShipmentQuotes", cart._id, _id, token);
+          simpleGraphQLClient.mutations.updateFulfillmentOptionsForGroup({
+            input: {
+              cartId: cart._id,
+              cartToken: token,
+              fulfillmentGroupId: _id
+            }
+          });
         });
       }
     }

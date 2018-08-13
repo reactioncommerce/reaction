@@ -9,7 +9,8 @@ import { sinon } from "meteor/practicalmeteor:sinon";
 import { Factory } from "meteor/dburles:factory";
 import { Cart } from "/lib/collections";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
-import { methods } from "./stripe.js";
+import simpleGraphQLClient from "/imports/plugins/core/graphql/lib/helpers/simpleClient";
+import { methods } from "./stripe";
 
 // Testing stripe using the npm Nock lib available here:
 // NPM: https://www.npmjs.com/package/nock
@@ -357,9 +358,16 @@ describe("stripe/payment/createCharges", function () {
     });
 
     let cart = Factory.create("cartMultiShop", { accountId, email: null });
+
     // Assign shipping for the second shop
-    Meteor.call("shipping/updateShipmentQuotes", cart._id, cart.shipping[0]._id);
-    // Reload cart to fetch the shipping costs updated from the shipping/updateShipmentQuotes
+    Promise.await(simpleGraphQLClient.mutations.updateFulfillmentOptionsForGroup({
+      input: {
+        cartId: cart._id,
+        fulfillmentGroupId: cart.shipping[0]._id
+      }
+    }));
+
+    // Reload cart to fetch the shipping costs we just updated
     cart = Cart.findOne({ _id: cart._id });
 
     sandbox.stub(Meteor.server.method_handlers, "cart/createCart", function (...args) {
