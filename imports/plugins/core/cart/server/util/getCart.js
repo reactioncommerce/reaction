@@ -3,7 +3,7 @@ import { Meteor } from "meteor/meteor";
 import ReactionError from "@reactioncommerce/reaction-error";
 import { Accounts, Cart } from "/lib/collections";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
-import hashLoginToken from "/imports/plugins/core/accounts/server/no-meteor/util/hashLoginToken";
+import { hashLoginToken } from "/imports/core-server";
 
 /**
  * @summary Gets the current cart. Assumes a calling context where Meteor.userId() works. It works

@@ -1,6 +1,6 @@
 import { Migrations } from "meteor/percolate:migrations";
 import { Accounts, Cart } from "/lib/collections";
-import hashLoginToken from "/imports/plugins/core/accounts/server/no-meteor/util/hashLoginToken";
+import { hashLoginToken } from "/imports/core-server";
 
 // Do this migration in batches of 200 to avoid memory issues
 const LIMIT = 200;

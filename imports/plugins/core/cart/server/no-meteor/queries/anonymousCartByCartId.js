@@ -1,5 +1,5 @@
 import ReactionError from "@reactioncommerce/reaction-error";
-import hashLoginToken from "/imports/plugins/core/accounts/server/no-meteor/util/hashLoginToken";
+import { hashLoginToken } from "/imports/core-server";
 
 /**
  * @name anonymousCartByCartId

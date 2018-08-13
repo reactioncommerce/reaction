@@ -1,4 +1,4 @@
-import hashLoginToken from "/imports/plugins/core/accounts/server/no-meteor/util/hashLoginToken";
+import { hashLoginToken } from "/imports/core-server";
 import ReactionError from "@reactioncommerce/reaction-error";
 import tokenExpiration from "./tokenExpiration";
 

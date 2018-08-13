@@ -1,6 +1,6 @@
 import Random from "@reactioncommerce/random";
 import ReactionError from "@reactioncommerce/reaction-error";
-import hashLoginToken from "/imports/plugins/core/accounts/server/no-meteor/util/hashLoginToken";
+import { hashLoginToken } from "/imports/core-server";
 import { Cart as CartSchema } from "/imports/collections/schemas";
 import addCartItems from "../util/addCartItems";
 

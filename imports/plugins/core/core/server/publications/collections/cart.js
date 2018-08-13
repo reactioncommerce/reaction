@@ -1,7 +1,7 @@
 import { Meteor } from "meteor/meteor";
 import { check, Match } from "meteor/check";
 import { Accounts, Cart, MediaRecords } from "/lib/collections";
-import hashLoginToken from "/imports/plugins/core/accounts/server/no-meteor/util/hashLoginToken";
+import { hashLoginToken } from "/imports/core-server";
 
 Meteor.publish("Cart", function (accountId, anonymousCarts, shopId) {
   check(accountId, Match.Maybe(String));

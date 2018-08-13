@@ -1,6 +1,6 @@
 import { check } from "meteor/check";
 import { Cart } from "/lib/collections";
-import hashLoginToken from "/imports/plugins/core/accounts/server/no-meteor/util/hashLoginToken";
+import { hashLoginToken } from "/imports/core-server";
 import appEvents from "/imports/plugins/core/core/server/appEvents";
 
 /**

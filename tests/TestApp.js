@@ -6,8 +6,8 @@ import Random from "@reactioncommerce/random";
 import appEvents from "../imports/plugins/core/core/server/appEvents";
 import createApolloServer from "../imports/plugins/core/graphql/server/no-meteor/createApolloServer";
 import defineCollections from "../imports/collections/defineCollections";
-import Factory from "/imports/test-utils/helpers/factory";
-import hashLoginToken from "../imports/plugins/core/accounts/server/no-meteor/util/hashLoginToken";
+import Factory from "../imports/test-utils/helpers/factory";
+import { hashLoginToken } from "../imports/core-server";
 import setUpFileCollections from "../imports/plugins/core/files/server/no-meteor/setUpFileCollections";
 
 class TestApp {

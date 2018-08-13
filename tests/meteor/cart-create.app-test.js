@@ -11,7 +11,7 @@ import { expect } from "meteor/practicalmeteor:chai";
 import { sinon } from "meteor/practicalmeteor:sinon";
 import { getShop, getAddress } from "/imports/plugins/core/core/server/fixtures/shops";
 import { addProduct } from "/imports/plugins/core/core/server/fixtures/products";
-import hashLoginToken from "/imports/plugins/core/accounts/server/no-meteor/util/hashLoginToken";
+import { hashLoginToken } from "/imports/core-server";
 import Fixtures from "/imports/plugins/core/core/server/fixtures";
 
 Fixtures();
