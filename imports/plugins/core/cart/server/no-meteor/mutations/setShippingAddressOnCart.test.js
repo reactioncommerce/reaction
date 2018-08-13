@@ -11,7 +11,7 @@ jest.mock("../util/getCartById", () => jest.fn().mockImplementation(() => Promis
   }]
 })));
 
-const address = Factory.Address.makeOne();
+const address = Factory.Address.makeOne({ _id: undefined });
 
 test("expect to return a cart that has address added to all shipping fulfillment groups", async () => {
   const result = await setShippingAddressOnCart(mockContext, {
@@ -23,7 +23,10 @@ test("expect to return a cart that has address added to all shipping fulfillment
       _id: "cartId",
       shipping: [{
         _id: "group1",
-        address,
+        address: {
+          ...address,
+          _id: jasmine.any(String)
+        },
         itemIds: ["123"],
         type: "shipping"
       }],
