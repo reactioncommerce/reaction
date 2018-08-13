@@ -1,5 +1,3 @@
-import Hooks from "@reactioncommerce/hooks";
-import Logger from "@reactioncommerce/logger";
 import { Meteor } from "meteor/meteor";
 import { check, Match } from "meteor/check";
 import { Roles } from "meteor/alanning:roles";
@@ -42,17 +40,17 @@ export default function setShipmentAddress(cartId, cartToken, address) {
     cartToken
   }));
 
-  const { cart } = result;
+  let { cart } = result;
 
   // We now ask clients to call this when necessary to avoid calling it when not needed, but the Meteor
   // client still relies on it being called here, and on the workflow updates below this.
-  try {
-    Meteor.call("shipping/updateShipmentQuotes", cartId);
-  } catch (error) {
-    Logger.error(`Error calling shipping/updateShipmentQuotes method in setShipmentAddress method for cart with ID ${cartId}`, error);
+  if (cart.shipping && cart.shipping.length) {
+    ({ cart } = Promise.await(context.mutations.fulfillment.updateFulfillmentOptionsForGroup(context, {
+      cartId,
+      cartToken,
+      fulfillmentGroupId: cart.shipping[0]._id
+    })));
   }
-
-  Hooks.Events.run("afterCartUpdateCalculateDiscount", cartId);
 
   if (typeof cart.workflow !== "object") {
     throw new ReactionError(

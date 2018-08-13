@@ -33,8 +33,6 @@ export default function mergeCart(anonymousCartId, anonymousCartToken) {
   if (accountCartWorkflow && accountCartWorkflow.workflow) {
     if (accountCartWorkflow.workflow.length > 2) {
       Meteor.call("workflow/revertCartWorkflow", "coreCheckoutShipping", cart._id);
-      // refresh shipping quotes
-      Meteor.call("shipping/updateShipmentQuotes", cartId);
     }
   } else if (accountCartWorkflow && accountCartWorkflow.status === "new") {
     // to call `workflow/pushCartWorkflow` two times is the only way to move
