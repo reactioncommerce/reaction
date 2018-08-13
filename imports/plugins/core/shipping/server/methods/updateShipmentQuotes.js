@@ -1,4 +1,5 @@
-import { check } from "meteor/check";
+import { Meteor } from "meteor/meteor";
+import { check, Match } from "meteor/check";
 import getGraphQLContextInMeteorMethod from "/imports/plugins/core/graphql/server/getGraphQLContextInMeteorMethod";
 
 /**
@@ -13,9 +14,11 @@ import getGraphQLContextInMeteorMethod from "/imports/plugins/core/graphql/serve
  */
 export default function updateShipmentQuotesMethod(cartId, fulfillmentGroupId, cartToken) {
   check(cartId, String);
+  check(fulfillmentGroupId, String);
+  check(cartToken, Match.Maybe(String));
   this.unblock();
 
-  const context = Promise.await(getGraphQLContextInMeteorMethod(this.userId));
+  const context = Promise.await(getGraphQLContextInMeteorMethod(Meteor.userId()));
   return context.mutations.fulfillment.updateFulfillmentOptionsForGroup(context, {
     cartId,
     cartToken,
