@@ -169,7 +169,7 @@ jobs:
       - run:
           name: Run Lint
           command: |
-            npm run lint
+            npm run lint -- --quiet
 
   test-app:
     <<: *defaults
