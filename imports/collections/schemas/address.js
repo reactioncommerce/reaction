@@ -93,12 +93,14 @@ export const Address = new SimpleSchema({
   "isBillingDefault": {
     label: "Make this your default billing address?",
     type: Boolean,
-    defaultValue: false
+    defaultValue: false,
+    optional: true
   },
   "isShippingDefault": {
     label: "Make this your default shipping address?",
     type: Boolean,
-    defaultValue: false
+    defaultValue: false,
+    optional: true
   },
   "failedValidation": {
     label: "Failed validation",

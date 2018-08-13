@@ -1,4 +1,5 @@
 import SimpleSchema from "simpl-schema";
+import Random from "@reactioncommerce/random";
 import ReactionError from "@reactioncommerce/reaction-error";
 import { Address as AddressSchema } from "/imports/collections/schemas";
 import getCartById from "../util/getCartById";
@@ -29,9 +30,7 @@ export default async function setShippingAddressOnCart(context, input) {
   inputSchema.validate(cleanedInput);
 
   const { address, addressId, cartId, cartToken } = cleanedInput;
-  if (addressId) {
-    address._id = addressId;
-  }
+  address._id = addressId || Random.id();
 
   const cart = await getCartById(context, cartId, { cartToken, throwIfNotFound: true });
 
