@@ -48,6 +48,7 @@
     "core-js": "^2.5.3",
     "cors": "2.8.4",
     "country-data": "^0.0.31",
+    "csv": "^3.1.0",
     "cuid": "^2.1.0",
     "deep-diff": "^0.3.8",
     "deep-equal": "^1.0.1",
@@ -225,6 +226,7 @@
           "alias": {
             "@reactioncommerce/reaction-collections": "./imports/plugins/core/collections",
             "@reactioncommerce/reaction-components": "./imports/plugins/core/components/lib",
+            "@reactioncommerce/reaction-import-connectors": "./imports/plugins/core/import-connectors",
             "@reactioncommerce/reaction-graphql-utils": "./imports/plugins/core/graphql/server/no-meteor/resolvers/util",
             "@reactioncommerce/reaction-graphql-xforms": "./imports/plugins/core/graphql/server/no-meteor/resolvers/xforms",
             "@reactioncommerce/reaction-router": "./imports/plugins/core/router/lib",
@@ -338,6 +340,15 @@
       "import/resolver": "meteor"
     },
     "rules": {
+      "react/no-deprecated": "off",
+      "require-jsdoc": [
+        "error",
+        {
+          "require": {
+            "FunctionDeclaration": false
+          }
+        }
+      ],
       "valid-jsdoc": [
         "warn",
         {
