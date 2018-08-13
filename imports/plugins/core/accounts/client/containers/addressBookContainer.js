@@ -125,7 +125,7 @@ function callUpdateAddress(address, property) {
  * @private
  * @param {String} addressId - ID of address to remove from cart
  * @param {String} type - "billing" or "shipping"
- * @returns {<Promise>Object} Result
+ * @returns {Promise<Object>} Result
  */
 function callUnsetAddress(addressId, type) {
   return new Promise((resolve, reject) => {
@@ -149,7 +149,7 @@ function callUnsetAddress(addressId, type) {
 /**
  * @summary Update shipping or billing address for cart
  * @param {Object} updatedAddress Address
- * @returns {<Promise>Boolean[]} Resolves with 0 or more results
+ * @returns {Promise<Boolean[]>} Resolves with 0 or more results
  */
 function updateCartAddresses(updatedAddress) {
   const promises = [];
