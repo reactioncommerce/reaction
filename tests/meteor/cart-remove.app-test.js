@@ -56,9 +56,6 @@ describe("cart methods", function () {
       sandbox.stub(Meteor.server.method_handlers, "cart/resetShipmentMethod", function (...args) {
         check(args, [Match.Any]);
       });
-      sandbox.stub(Meteor.server.method_handlers, "shipping/updateShipmentQuotes", function (...args) {
-        check(args, [Match.Any]);
-      });
       const updateSpy = sandbox.spy(Collections.Cart, "update");
       const cartFromCollection = Collections.Cart.findOne({ _id: cart._id });
       const cartItemId = cartFromCollection.items[0]._id;
@@ -76,9 +73,6 @@ describe("cart methods", function () {
       sandbox.stub(Meteor.server.method_handlers, "cart/resetShipmentMethod", function (...args) {
         check(args, [Match.Any]);
       });
-      sandbox.stub(Meteor.server.method_handlers, "shipping/updateShipmentQuotes", function (...args) {
-        check(args, [Match.Any]);
-      });
       const cart = Factory.create("cartTwo", { accountId });
       sandbox.stub(Reaction, "getShopId", () => shop._id);
       sandbox.stub(Meteor, "userId", () => userId);
@@ -91,9 +85,6 @@ describe("cart methods", function () {
 
     it("should remove cart item when quantity is decreased to zero", function () {
       sandbox.stub(Meteor.server.method_handlers, "cart/resetShipmentMethod", function (...args) {
-        check(args, [Match.Any]);
-      });
-      sandbox.stub(Meteor.server.method_handlers, "shipping/updateShipmentQuotes", function (...args) {
         check(args, [Match.Any]);
       });
       const cart = Factory.create("cartOne", { accountId });
