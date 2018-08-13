@@ -5,6 +5,7 @@ import { Factory } from "meteor/dburles:factory";
 import { expect } from "meteor/practicalmeteor:chai";
 import { sinon } from "meteor/practicalmeteor:sinon";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
+import ReactionError from "@reactioncommerce/reaction-error";
 import { Accounts, Groups } from "/lib/collections";
 import Fixtures from "/imports/plugins/core/core/server/fixtures";
 import { getUser } from "/imports/plugins/core/core/server/fixtures/users";
@@ -77,7 +78,7 @@ describe("Group test", function () {
 
     expect(() => {
       Meteor.call("group/createGroup", sampleGroup, shop._id);
-    }).to.throw(Meteor.Error, /Group already exist for this shop/);
+    }).to.throw(ReactionError, /Group already exist for this shop/);
   });
 
   it("should check admin access before creating a group", function () {
@@ -88,7 +89,7 @@ describe("Group test", function () {
       return Meteor.call("group/createGroup", sampleGroup, shop._id);
     }
 
-    expect(createGroup).to.throw(Meteor.Error, /Access Denied/);
+    expect(createGroup).to.throw(ReactionError, /Access Denied/);
   });
 
   it("should add a user to a group successfully and reference the id on the user account", function () {

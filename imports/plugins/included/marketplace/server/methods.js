@@ -1,6 +1,7 @@
 import { Meteor } from "meteor/meteor";
 import { check } from "meteor/check";
 import { Reaction } from "/lib/api";
+import ReactionError from "@reactioncommerce/reaction-error";
 import { Shops } from "/lib/collections";
 import { SHOP_WORKFLOW_STATUS_ACTIVE, SHOP_WORKFLOW_STATUS_DISABLED } from "../lib/constants";
 
@@ -14,11 +15,11 @@ export function marketplaceUpdateShopWorkflow(shopId, workflowStatus) {
   check(workflowStatus, String);
 
   if (shopId === Reaction.getPrimaryShopId()) {
-    throw new Meteor.Error("access-denied", "Cannot change shop status");
+    throw new ReactionError("access-denied", "Cannot change shop status");
   }
 
   if (!Reaction.hasPermission("admin", this.userId, Reaction.getPrimaryShopId())) {
-    throw new Meteor.Error("access-denied", "Cannot change shop status");
+    throw new ReactionError("access-denied", "Cannot change shop status");
   }
 
   if (status.includes(workflowStatus)) {
@@ -31,11 +32,11 @@ export function marketplaceUpdateShopWorkflow(shopId, workflowStatus) {
         }
       });
     } catch (error) {
-      throw new Meteor.Error("server-error", error.message);
+      throw new ReactionError("server-error", error.message);
     }
   }
 
-  throw new Meteor.Error("server-error", "Workflow status could not be updated, should be 'active' or 'disabled'");
+  throw new ReactionError("server-error", "Workflow status could not be updated, should be 'active' or 'disabled'");
 }
 
 Meteor.methods({

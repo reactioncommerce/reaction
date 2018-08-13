@@ -1,8 +1,8 @@
 import Logger from "@reactioncommerce/logger";
-import { Meteor } from "meteor/meteor";
 import { check } from "meteor/check";
 import { Jobs } from "/lib/collections";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
+import ReactionError from "@reactioncommerce/reaction-error";
 
 /**
  * @name email/retryFailed
@@ -15,7 +15,7 @@ import Reaction from "/imports/plugins/core/core/server/Reaction";
 export default function retryFailed(jobId) {
   if (!Reaction.hasPermission(["owner", "admin", "reaction-email"], this.userId)) {
     Logger.error("email/retryFailed: Access Denied");
-    throw new Meteor.Error("access-denied", "Access Denied");
+    throw new ReactionError("access-denied", "Access Denied");
   }
 
   check(jobId, String);

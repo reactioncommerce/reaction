@@ -1,4 +1,4 @@
-import { Meteor } from "meteor/meteor";
+import ReactionError from "@reactioncommerce/reaction-error";
 
 /**
  * @summary Delete anon cart and return accountCart
@@ -9,6 +9,6 @@ import { Meteor } from "meteor/meteor";
  */
 export default async function reconcileCartsKeepAccountCart({ accountCart, anonymousCartSelector, Cart }) {
   const { deletedCount } = await Cart.deleteOne(anonymousCartSelector);
-  if (deletedCount === 0) throw new Meteor.Error("server-error", "Unable to delete anonymous cart");
+  if (deletedCount === 0) throw new ReactionError("server-error", "Unable to delete anonymous cart");
   return accountCart;
 }

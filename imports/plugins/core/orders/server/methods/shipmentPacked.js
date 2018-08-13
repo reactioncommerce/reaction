@@ -2,6 +2,7 @@ import { Meteor } from "meteor/meteor";
 import { check } from "meteor/check";
 import { Orders } from "/lib/collections";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
+import ReactionError from "@reactioncommerce/reaction-error";
 
 /**
  * @name orders/shipmentPacked
@@ -19,7 +20,7 @@ export default function shipmentPacked(order, shipment) {
   // REVIEW: who should have permission to do this in a marketplace setting?
   // Do we need to update the order schema to reflect multiple packers / shipments?
   if (!Reaction.hasPermission("orders")) {
-    throw new Meteor.Error("access-denied", "Access Denied");
+    throw new ReactionError("access-denied", "Access Denied");
   }
 
   // Set the status of the items as packed

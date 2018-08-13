@@ -3,6 +3,7 @@ import Random from "@reactioncommerce/random";
 import { Meteor } from "meteor/meteor";
 import { Match, check } from "meteor/check";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
+import ReactionError from "@reactioncommerce/reaction-error";
 import { Cart } from "/lib/collections";
 import { Discounts } from "/imports/plugins/core/discounts/lib/collections";
 import { DiscountCodes as DiscountSchema } from "../../lib/collections/schemas";
@@ -128,7 +129,7 @@ export const methods = {
     check(docId, Match.Optional(String));
     if (docId) return Meteor.call("discounts/editCode", { _id: docId, modifier: doc });
 
-    if (!Reaction.hasPermission("discount-codes")) throw new Meteor.Error("access-denied", "Access Denied");
+    if (!Reaction.hasPermission("discount-codes")) throw new ReactionError("access-denied", "Access Denied");
     doc.shopId = Reaction.getShopId();
     return Discounts.insert(doc);
   },
@@ -145,7 +146,7 @@ export const methods = {
       _id: String,
       modifier: Object // actual schema validation happens during update below
     });
-    if (!Reaction.hasPermission("discount-codes")) throw new Meteor.Error("access-denied", "Access Denied");
+    if (!Reaction.hasPermission("discount-codes")) throw new ReactionError("access-denied", "Access Denied");
     const { _id, modifier } = details;
     return Discounts.update(_id, modifier);
   },
@@ -245,7 +246,7 @@ export const methods = {
     const participatingShops = Object.keys(uniqueShopObj);
 
     if (participatingShops.length > 1) {
-      throw new Meteor.Error("not-implemented", "discounts.multiShopError", "Discounts cannot be applied to a multi-shop cart or order");
+      throw new ReactionError("not-implemented", "discounts.multiShopError", "Discounts cannot be applied to a multi-shop cart or order");
     }
 
     // TODO: add  conditions: conditions

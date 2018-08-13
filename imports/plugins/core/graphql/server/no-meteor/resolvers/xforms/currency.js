@@ -1,5 +1,5 @@
 import { assoc, compose, map, toPairs } from "ramda";
-import { Meteor } from "meteor/meteor";
+import ReactionError from "@reactioncommerce/reaction-error";
 import CurrencyDefinitions from "/imports/plugins/core/core/lib/CurrencyDefinitions";
 import { namespaces } from "@reactioncommerce/reaction-graphql-utils";
 import { assocInternalId, assocOpaqueId, decodeOpaqueIdForNamespace, encodeOpaqueId } from "./id";
@@ -42,6 +42,6 @@ export function getXformedCurrenciesByShop(shop) {
 export async function getXformedCurrencyByCode(code) {
   if (!code) return null;
   const entry = CurrencyDefinitions[code];
-  if (!entry) throw new Meteor.Error("invalid", `No currency definition found for ${code}`);
+  if (!entry) throw new ReactionError("invalid", `No currency definition found for ${code}`);
   return xformCurrencyEntry([code, entry]);
 }

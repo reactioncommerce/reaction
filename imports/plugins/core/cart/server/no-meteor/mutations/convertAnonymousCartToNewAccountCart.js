@@ -1,5 +1,5 @@
 import Random from "@reactioncommerce/random";
-import { Meteor } from "meteor/meteor";
+import ReactionError from "@reactioncommerce/reaction-error";
 import { Cart as CartSchema } from "/imports/collections/schemas";
 
 /**
@@ -46,10 +46,10 @@ export default async function convertAnonymousCartToNewAccountCart({
   CartSchema.validate(newCart);
 
   const { ops, result } = await Cart.insertOne(newCart);
-  if (result.ok !== 1) throw new Meteor.Error("server-error", "Unable to create account cart");
+  if (result.ok !== 1) throw new ReactionError("server-error", "Unable to create account cart");
 
   const { deletedCount } = await Cart.deleteOne(anonymousCartSelector);
-  if (deletedCount === 0) throw new Meteor.Error("server-error", "Unable to delete anonymous cart");
+  if (deletedCount === 0) throw new ReactionError("server-error", "Unable to delete anonymous cart");
 
   return ops[0];
 }

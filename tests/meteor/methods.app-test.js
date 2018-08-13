@@ -6,6 +6,7 @@ import { Shops, Tags } from "/lib/collections";
 import { expect } from "meteor/practicalmeteor:chai";
 import { sinon } from "meteor/practicalmeteor:sinon";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
+import ReactionError from "@reactioncommerce/reaction-error";
 
 describe("Server/Core", function () {
   let sandbox;
@@ -31,7 +32,7 @@ describe("Server/Core", function () {
       function removeTagFunc() {
         return Meteor.call("shop/removeHeaderTag", tag._id, currentTag._id);
       }
-      expect(removeTagFunc).to.throw(Meteor.Error, /Access Denied/);
+      expect(removeTagFunc).to.throw(ReactionError, /Access Denied/);
       expect(tagUpdateSpy).to.not.have.been.called;
       expect(tagRemoveSpy).to.not.have.been.called;
       return done();
@@ -61,7 +62,7 @@ describe("Server/Core", function () {
       sandbox.spy(Tags, "insert");
       expect(function () {
         return Meteor.call("shop/createTag", "testTag", true);
-      }).to.throw(Meteor.Error, /Access Denied/);
+      }).to.throw(ReactionError, /Access Denied/);
       expect(Tags.insert).not.to.have.been.called;
     });
 
@@ -86,7 +87,7 @@ describe("Server/Core", function () {
       function updateTagFunc() {
         return Meteor.call("shop/updateHeaderTags", tag._id);
       }
-      expect(updateTagFunc).to.throw(Meteor.Error, /Access Denied/);
+      expect(updateTagFunc).to.throw(ReactionError, /Access Denied/);
       expect(Tags.update).not.to.have.been.called;
       return done();
     });

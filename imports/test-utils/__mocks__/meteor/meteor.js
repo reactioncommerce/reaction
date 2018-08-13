@@ -1,4 +1,4 @@
-import ReactionError from "../../../../imports/plugins/core/graphql/server/no-meteor/ReactionError";
+import ReactionError from "@reactioncommerce/reaction-error";
 
 const findOneMock = jest.fn().mockName("Meteor.users.rawCollection().findOne");
 

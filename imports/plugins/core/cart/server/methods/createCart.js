@@ -2,6 +2,7 @@ import { Meteor } from "meteor/meteor";
 import { check } from "meteor/check";
 import { Roles } from "meteor/alanning:roles";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
+import ReactionError from "@reactioncommerce/reaction-error";
 import getGraphQLContextInMeteorMethod from "/imports/plugins/core/graphql/server/getGraphQLContextInMeteorMethod";
 import createCart from "../no-meteor/mutations/createCart";
 
@@ -17,7 +18,7 @@ export default function createCartMethod(items) {
 
   const shopId = Reaction.getCartShopId();
   if (!shopId) {
-    throw new Meteor.Error("invalid-param", "No shop ID found");
+    throw new ReactionError("invalid-param", "No shop ID found");
   }
 
   // In Meteor app we always have a user, but it may have "anonymous" role, meaning

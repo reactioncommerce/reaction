@@ -1,7 +1,7 @@
-import { Meteor } from "meteor/meteor";
 import { check } from "meteor/check";
 import { Shipping, Packages } from "/lib/collections";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
+import ReactionError from "@reactioncommerce/reaction-error";
 import { shippingRoles } from "../lib/roles";
 
 /**
@@ -18,7 +18,7 @@ export default function providerToggle(packageId, provider) {
   check(packageId, String);
   check(provider, String);
   if (!Reaction.hasPermission(shippingRoles)) {
-    throw new Meteor.Error("access-denied", "Access Denied");
+    throw new ReactionError("access-denied", "Access Denied");
   }
   const pkg = Packages.findOne(packageId);
   if (pkg && pkg.settings[provider]) {
