@@ -87,15 +87,18 @@ export const Address = new SimpleSchema({
   },
   "isCommercial": {
     label: "This is a commercial address.",
-    type: Boolean
+    type: Boolean,
+    defaultValue: false
   },
   "isBillingDefault": {
     label: "Make this your default billing address?",
-    type: Boolean
+    type: Boolean,
+    defaultValue: false
   },
   "isShippingDefault": {
     label: "Make this your default shipping address?",
-    type: Boolean
+    type: Boolean,
+    defaultValue: false
   },
   "failedValidation": {
     label: "Failed validation",
