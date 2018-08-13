@@ -3,7 +3,7 @@ import account from "./account";
 import catalog from "./catalog";
 import cart from "./cart";
 import core from "./core";
-import fulfillment from "./fulfillment";
+import { graphqlResolvers as fulfillment } from "/imports/services/fulfillment";
 import ping from "./ping";
 import product from "./product";
 import scalar from "./scalar";

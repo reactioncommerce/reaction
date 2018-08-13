@@ -1,5 +1,5 @@
 import Logger from "@reactioncommerce/logger";
-import { getRegisteredFunctionsForType } from "/imports/core-server";
+import rateFunctions from "../rateFunctions";
 
 /**
  * @name getShippingRates
@@ -17,8 +17,6 @@ export default async function getShippingRates(cart, context) {
   if (!cart.items || !cart.items.length) {
     return rates;
   }
-
-  const rateFunctions = getRegisteredFunctionsForType("getShippingPrices");
 
   let promises = rateFunctions.map((rateFunction) => rateFunction(context, cart, [rates, retrialTargets]));
   await Promise.all(promises);

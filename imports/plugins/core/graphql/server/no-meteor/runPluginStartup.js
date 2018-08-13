@@ -1,6 +1,5 @@
 import { registerFunction } from "/imports/core-server";
-import shippingRatesStartup from "/imports/plugins/included/shipping-rates/server/no-meteor/startup";
-import shippingStartup from "/imports/plugins/core/shipping/server/no-meteor/startup";
+import { startup as shippingServiceStartup } from "/imports/services/fulfillment";
 
 /**
  * @param {Object} context Context object with appEvents and collections
@@ -11,6 +10,5 @@ export default function runPluginStartup(context) {
     ...context,
     registerFunction
   };
-  shippingRatesStartup(expandedContext);
-  shippingStartup(expandedContext);
+  shippingServiceStartup(expandedContext);
 }

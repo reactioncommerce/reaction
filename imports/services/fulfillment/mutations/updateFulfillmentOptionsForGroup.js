@@ -1,7 +1,7 @@
 import { isEqual } from "lodash";
 import SimpleSchema from "simpl-schema";
 import ReactionError from "@reactioncommerce/reaction-error";
-import getCartById from "../../../../cart/server/no-meteor/util/getCartById";
+import getCartById from "../util/getCartById";
 import getShippingRates from "../util/getShippingRates";
 
 const inputSchema = new SimpleSchema({
