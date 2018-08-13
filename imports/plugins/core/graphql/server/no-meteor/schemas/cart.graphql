@@ -20,7 +20,7 @@ type Cart implements Node {
   shop: Shop!
 
   "Total quantity of all items in the cart"
-  totalItemQuantity: Int
+  totalItemQuantity: Int!
 
   "The date and time at which this cart was last updated."
   updatedAt: DateTime!
