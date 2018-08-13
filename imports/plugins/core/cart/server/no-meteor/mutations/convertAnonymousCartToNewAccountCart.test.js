@@ -2,7 +2,6 @@ import mockContext from "/imports/test-utils/helpers/mockContext";
 import convertAnonymousCartToNewAccountCart from "./convertAnonymousCartToNewAccountCart";
 
 const { Cart } = mockContext.collections;
-const mockCart = { _id: "mockCart" };
 const currencyCode = "GBP";
 const accountId = "accountId";
 const anonymousCartSelector = { _id: "123" };
@@ -27,7 +26,7 @@ const items = [
 ];
 
 test("inserts a cart with the existing cart's items and returns it", async () => {
-  Cart.insertOne.mockReturnValueOnce(Promise.resolve({ ops: [mockCart], result: { ok: 1 } }));
+  Cart.insertOne.mockReturnValueOnce(Promise.resolve({ result: { ok: 1 } }));
 
   const result = await convertAnonymousCartToNewAccountCart({
     accountId,
@@ -40,7 +39,7 @@ test("inserts a cart with the existing cart's items and returns it", async () =>
     shopId
   });
 
-  expect(Cart.insertOne).toHaveBeenCalledWith({
+  const newCart = {
     _id: jasmine.any(String),
     accountId,
     anonymousAccessToken: null,
@@ -60,15 +59,17 @@ test("inserts a cart with the existing cart's items and returns it", async () =>
     workflow: {
       status: "new"
     }
-  });
+  };
+
+  expect(Cart.insertOne).toHaveBeenCalledWith(newCart);
 
   expect(Cart.deleteOne).toHaveBeenCalledWith(anonymousCartSelector);
 
-  expect(result).toEqual(mockCart);
+  expect(result).toEqual(newCart);
 });
 
 test("throws if insertOne fails", async () => {
-  Cart.insertOne.mockReturnValueOnce(Promise.resolve({ ops: [mockCart], result: { ok: 0 } }));
+  Cart.insertOne.mockReturnValueOnce(Promise.resolve({ result: { ok: 0 } }));
 
   const promise = convertAnonymousCartToNewAccountCart({
     accountId,
@@ -85,7 +86,7 @@ test("throws if insertOne fails", async () => {
 });
 
 test("throws if deleteOne fails", async () => {
-  Cart.insertOne.mockReturnValueOnce(Promise.resolve({ ops: [mockCart], result: { ok: 1 } }));
+  Cart.insertOne.mockReturnValueOnce(Promise.resolve({ result: { ok: 1 } }));
   Cart.deleteOne.mockReturnValueOnce(Promise.resolve({ deletedCount: 0 }));
 
   const promise = convertAnonymousCartToNewAccountCart({

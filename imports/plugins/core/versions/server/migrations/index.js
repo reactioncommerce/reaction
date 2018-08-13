@@ -32,3 +32,4 @@ import "./31_order_schema_changes";
 import "./32_publish_all_existing_visible_products";
 import "./33_change_products_template_name";
 import "./34_remove_order_shipping_items";
+import "./35_add_type_to_carts";

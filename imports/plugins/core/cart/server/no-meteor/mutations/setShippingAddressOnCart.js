@@ -6,7 +6,7 @@ import Logger from "@reactioncommerce/logger";
  * @param {Object} context -  an object containing the per-request state
  * @return {Promise<Object>} TODO
  */
-export default async function setShippingAddressOnCart(context) {
+export default async function setShippingAddressOnCart() {
   Logger.info("setShippingAddressOnCart mutation is not yet implemented");
   return null;
 }

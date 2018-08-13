@@ -3,7 +3,7 @@ import { Orders } from "/lib/collections";
 
 /**
  * Going up, migrates order.shipping.$.items -> order.shipping.$.itemIds and adds type
- * Going down, migrates order.shipping.$.itemIds -> order.shipping.$.items and adds type
+ * Going down, migrates order.shipping.$.itemIds -> order.shipping.$.items and removes type
  */
 
 Migrations.add({

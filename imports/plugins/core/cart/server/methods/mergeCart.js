@@ -1,4 +1,3 @@
-import Hooks from "@reactioncommerce/hooks";
 import { Meteor } from "meteor/meteor";
 import { check } from "meteor/check";
 import getGraphQLContextInMeteorMethod from "/imports/plugins/core/graphql/server/getGraphQLContextInMeteorMethod";
@@ -29,9 +28,6 @@ export default function mergeCart(anonymousCartId, anonymousCartToken) {
   }));
 
   const cartId = cart._id;
-
-  // Calculate discounts
-  Hooks.Events.run("afterCartUpdateCalculateDiscount", cartId);
 
   const accountCartWorkflow = cart.workflow;
   if (accountCartWorkflow && accountCartWorkflow.workflow) {
