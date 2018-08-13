@@ -1,3 +1,4 @@
+import { isEqual } from "lodash";
 import SimpleSchema from "simpl-schema";
 import ReactionError from "@reactioncommerce/reaction-error";
 import getCartById from "../../../../cart/server/no-meteor/util/getCartById";
@@ -13,41 +14,40 @@ const inputSchema = new SimpleSchema({
 });
 
 /**
- * @name getFulfillmentUpdateModifier
+ * @name getShipmentQuotesQueryStatus
  * @param  {Array} rates    Rate array
- * @return {Object|null} A MongoDB modifier or null if no update should happen
+ * @return {Object} An object with `shipmentQuotes` and `shipmentQuotesQueryStatus` on it
  * @private
  */
-function getFulfillmentUpdateModifier(rates) {
-  let update = null;
-
-  if (rates.length === 1 && rates[0].requestStatus === "error") {
-    const errorDetails = rates[0];
-    update = {
-      $set: {
-        "shipping.$.shipmentQuotes": [],
-        "shipping.$.shipmentQuotesQueryStatus": {
-          requestStatus: errorDetails.requestStatus,
-          shippingProvider: errorDetails.shippingProvider,
-          message: errorDetails.message
-        }
+function getShipmentQuotesQueryStatus(rates) {
+  if (rates.length === 0) {
+    return {
+      shipmentQuotes: [],
+      shipmentQuotesQueryStatus: {
+        requestStatus: "pending"
       }
     };
   }
 
-  if (rates.length > 0 && rates[0].requestStatus === undefined) {
-    update = {
-      $set: {
-        "shipping.$.shipmentQuotes": rates,
-        "shipping.$.shipmentQuotesQueryStatus": {
-          requestStatus: "success",
-          numOfShippingMethodsFound: rates.length
-        }
+  const firstRateItem = rates[0];
+  if (firstRateItem.requestStatus === "error") {
+    return {
+      shipmentQuotes: [],
+      shipmentQuotesQueryStatus: {
+        requestStatus: firstRateItem.requestStatus,
+        shippingProvider: firstRateItem.shippingProvider,
+        message: firstRateItem.message
       }
     };
   }
 
-  return update;
+  return {
+    shipmentQuotes: rates,
+    shipmentQuotesQueryStatus: {
+      requestStatus: "success",
+      numOfShippingMethodsFound: rates.length
+    }
+  };
 }
 
 /**
@@ -76,25 +76,25 @@ export default async function updateFulfillmentOptionsForGroup(context, input) {
   // In the future we want to do this async and subscribe to the results
   const rates = await getShippingRates(cart, context);
 
-  let modifier = getFulfillmentUpdateModifier(rates);
-  if (!modifier) {
-    modifier = {
+  const { shipmentQuotes, shipmentQuotesQueryStatus } = getShipmentQuotesQueryStatus(rates);
+
+  if (!isEqual(shipmentQuotes, fulfillmentGroup.shipmentQuotes) || !isEqual(shipmentQuotesQueryStatus, fulfillmentGroup.shipmentQuotesQueryStatus)) {
+    const { matchedCount } = await Cart.updateOne({
+      "_id": cartId,
+      "shipping._id": fulfillmentGroupId
+    }, {
       $set: {
-        "shipping.$.shipmentQuotesQueryStatus": {
-          requestStatus: "pending"
-        }
+        "shipping.$.shipmentQuotes": shipmentQuotes,
+        "shipping.$.shipmentQuotesQueryStatus": shipmentQuotesQueryStatus
       }
-    };
+    });
+    if (matchedCount !== 1) throw new ReactionError("server-error", "Unable to update cart");
+
+    const updatedCart = await Cart.findOne({ _id: cartId });
+    await appEvents.emit("afterCartUpdate", cartId, updatedCart);
+
+    return { cart: updatedCart };
   }
 
-  const { modifiedCount } = await Cart.updateOne({
-    "_id": cartId,
-    "shipping._id": fulfillmentGroupId
-  }, modifier);
-  if (modifiedCount !== 1) throw new ReactionError("server-error", "Unable to update cart");
-
-  const updatedCart = await Cart.findOne({ _id: cartId });
-  await appEvents.emit("afterCartUpdate", cartId, updatedCart);
-
-  return { cart: updatedCart };
+  return { cart };
 }

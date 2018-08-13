@@ -41,6 +41,7 @@ test("updates cart properly for empty rates", async () => {
     "shipping._id": "group1"
   }, {
     $set: {
+      "shipping.$.shipmentQuotes": [],
       "shipping.$.shipmentQuotesQueryStatus": { requestStatus: "pending" }
     }
   });
