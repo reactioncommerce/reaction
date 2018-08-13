@@ -1,3 +1,7 @@
+# v1.14.1
+## Patch release
+
+
 # v1.14.0
 ## Removing Optional Plugins
 As part of our focus simplifying the core Reaction application and improving performance, we've [made the decision to remove optional plugins from the core application](https://blog.reactioncommerce.com/the-road-ahead-product-updates-june-2018/). From our blog post on this topic:
@@ -28,7 +32,7 @@ The list of packages that have been removed in this release is as follows:
   - Discount Rates (unused, not the same as our current discount codes)
   - Logging (unused by core application)
 
-This work is listed as a breaking change. If your application relies on any of these packages, you will have to install them independently of Reaction going forward. This Release will not destroy data associated with these plugins, so you should be able to safely update without losing information. However, please be sure to test this for your specific application before deploying to production and as always, backup your data before updating versions.
+This work is listed as a breaking change. If your application relies on any of these packages, you will have to install them independently of Reaction going forward. This release will not destroy data associated with these plugins, so you should be able to safely update without losing information. However, please be sure to test this for your specific application before deploying to production and as always, backup your data before updating versions.
 
 ## GraphQL Cart
 This release contains the Cart and Checkout GraphQL schemas along with several cart queries and mutations. We're starting to make some changes to the core cart schemas for Reaction and the process that we use to create and identify carts.
@@ -45,7 +49,7 @@ One of the major changes to carts is related to how we store information necessa
 
 Recognizing the need to be able to handle orders which have items that require different types of fulfillment, we're organizing items into what we're calling "Fulfillment Groups." The most basic example is that a fulfillment group could be a group of items that is getting shipped to a specific address. For an order with `n` items, there can exist up to `n` fulfillment groups within that cart. This specific release doesn't introduce any new functionality for adding new types of fulfillment groups or splitting a single cart into multiple fulfillments, but it does lay the groundwork for splitting orders, creating new fulfillment types such as an in store pickup, ship to store, digital downloads, or generated license keys.
 
-We're currently mapping this new GraphQL Schema to the existing Reaction Simple Schema, but will be transitioning to
+We're currently mapping this new GraphQL Schema to the existing Reaction Simple Schema, but will be transitioning all of our existing schemas to match (more or less) our new GraphQL schemas going forward.
 
 A cart will still be associated with a single shop. This is consistent with current behavior.
 
@@ -570,6 +574,17 @@ url-parse-lax
 url-to-options
 weak-map
 ```
+
+## Metrics
+You don't improve what you don't measure. In efforts to improve the size of our bundles, the time to first paint, time to interactive, and overall performance of our applications, we're starting to report on bundle size and some performance metrics in every release. With effort and persistence, we'll see these numbers improve over time.
+
+### Bundle Size
+We measure bundle size by building the application using `meteor build` and then measuring the js and css bundle size with the command `wc -c /path/to/js-bundle-file.js`
+
+**JS Modern Browsers:** 4872kb
+**JS Legacy Browsers:** 5104kb
+**CSS All Browsers:** 392kb
+
 
 # v1.13.1
 
