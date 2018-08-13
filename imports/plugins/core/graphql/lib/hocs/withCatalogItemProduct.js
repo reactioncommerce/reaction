@@ -1,13 +1,15 @@
-import React from "react";
+import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Query } from "react-apollo";
 import getCatalogItemProduct from "../queries/getCatalogItemProduct";
 
-export default (Component) => (
-  class CatalogItemProduct extends React.Component {
+export default (Comp) => (
+
+  class CatalogItemProduct extends Component {
     static propTypes = {
       productId: PropTypes.string,
-      shouldSkipGraphql: PropTypes.bool
+      shouldSkipGraphql: PropTypes.bool,
+      uiStore: PropTypes.object
     };
 
     render() {
@@ -35,14 +37,13 @@ export default (Component) => (
               const { product } = catalogItemProduct || {};
               if (product) {
                 props.product = product;
-                props.tags = product.tags.nodes;
               } else {
                 props.shouldSkipGraphql = true;
               }
             }
 
             return (
-              <Component {...props} />
+              <Comp {...props} />
             );
           }}
         </Query>

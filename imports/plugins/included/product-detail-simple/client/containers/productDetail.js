@@ -323,7 +323,6 @@ const wrapComponent = (Comp) =>
 
     render() {
       const { media, product } = this.props;
-      console.log(media);
 
       if (_.isEmpty(product)) {
         return <Components.ProductNotFound />;
@@ -432,7 +431,6 @@ function composer(props, onData) {
           priceRange = Catalog.getVariantPriceRange(selectedVariant._id);
         }
       }
-
       let productRevision;
 
       if (revisionType === "published") {

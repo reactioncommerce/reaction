@@ -15,12 +15,12 @@ export default function twoColumnCustomer() {
       children: [
         // Media Gallery
         {
-          component: "MediaGalleryContainer"
+          component: "MediaGalleryCustomer"
         },
 
         // Tags
         {
-          component: "ProductTags"
+          component: "ProductTagsCustomer"
         },
 
         // Metadata
@@ -116,7 +116,7 @@ export default function twoColumnCustomer() {
               },
               children: [
                 {
-                  component: "PriceRange"
+                  component: "PriceRangeCustomer"
                 }
               ]
             },
@@ -164,7 +164,7 @@ export default function twoColumnCustomer() {
 
         // Variant List
         {
-          component: "VariantListContainer"
+          component: "VariantListCustomer"
         },
 
         // Divider

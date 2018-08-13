@@ -81,6 +81,8 @@
     "lodash.pick": "^4.4.0",
     "match-sorter": "^2.2.0",
     "meteor-node-stubs": "0.4.1",
+    "mobx": "^5.0.3",
+    "mobx-react": "^5.2.3",
     "moment": "^2.20.1",
     "moment-timezone": "^0.5.14",
     "mongodb": "^3.0.5",
@@ -144,6 +146,7 @@
     "@babel/cli": "7.0.0-beta.49",
     "@babel/core": "7.0.0-beta.49",
     "@babel/node": "7.0.0-beta.49",
+    "@babel/plugin-proposal-decorators": "^7.0.0-rc.1",
     "@babel/plugin-proposal-object-rest-spread": "7.0.0-beta.49",
     "@babel/preset-env": "7.0.0-beta.49",
     "@babel/preset-es2015": "7.0.0-beta.49",
@@ -158,6 +161,7 @@
     "babel-plugin-module-resolver": "3.1.1",
     "babel-plugin-rewire-exports": "0.3.0",
     "babel-plugin-transform-class-properties": "6.24.1",
+    "babel-plugin-transform-decorators-legacy": "^1.3.5",
     "babel-preset-meteor": "7.0.0-beta.49",
     "chai": "^4.1.2",
     "enzyme": "^3.3.0",
@@ -205,8 +209,9 @@
   },
   "babel": {
     "plugins": [
-      "transform-class-properties",
       "babel-plugin-inline-import",
+      "transform-class-properties",
+      "transform-decorators-legacy",
       [
         "lodash",
         {
@@ -255,6 +260,8 @@
         ],
         "plugins": [
           "babel-plugin-inline-import",
+          "transform-class-properties",
+          "transform-decorators-legacy",
           [
             "module-resolver",
             {
@@ -299,6 +306,14 @@
         "plugins": [
           "rewire-exports",
           "babel-plugin-inline-import",
+          "transform-class-properties",
+          "transform-decorators-legacy",
+          [
+            "@babel/plugin-proposal-decorators", 
+            {
+              "legacy": true 
+              }
+          ],
           [
             "module-resolver",
             {

@@ -67,7 +67,7 @@ export default function simpleCustomer() {
       children: [
         // Media Gallery
         {
-          component: "MediaGalleryContainer"
+          component: "MediaGalleryCustomer"
         },
 
         // Tags
@@ -117,7 +117,7 @@ export default function simpleCustomer() {
               },
               children: [
                 {
-                  component: "PriceRange"
+                  component: "PriceRangeCustomer"
                 }
               ]
             },
@@ -165,7 +165,7 @@ export default function simpleCustomer() {
 
         // Variant List
         {
-          component: "VariantListContainer"
+          component: "VariantListCustomer"
         },
 
         // Divider
