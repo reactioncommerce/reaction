@@ -2,16 +2,17 @@ import { check, Match } from "meteor/check";
 import { Shops } from "/lib/collections";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
 import ReactionError from "@reactioncommerce/reaction-error";
-import { shippingRoles } from "../lib/roles";
+
+const shippingRoles = ["admin", "owner", "shipping"];
 
 /**
- * @method shipping/updateParcelSize
- * @summary update defaultParcelSize
+ * @method shop/updateDefaultParcelSize
+ * @summary update defaultParcelSize for a shop
  * @param {Object} parcel - size to be updated
  * @since 1.1.12
  * @returns {Object} The update call result
 */
-export default function updateParcelSize(parcel) {
+export default function updateDefaultParcelSize(parcel) {
   check(parcel, {
     weight: Match.Optional(Number),
     height: Match.Optional(Number),

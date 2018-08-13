@@ -35,7 +35,7 @@ const wrapComponent = (Comp) => (
           length: convertLength(shop.baseUOL, doc.baseUOL, shop.defaultParcelSize.length),
           width: convertLength(shop.baseUOL, doc.baseUOL, shop.defaultParcelSize.width)
         };
-        Meteor.call("shipping/updateParcelSize", parcelSize);
+        Meteor.call("shop/updateDefaultParcelSize", parcelSize);
       }
       Shops.update({
         _id: doc._id
