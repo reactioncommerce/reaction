@@ -20,25 +20,20 @@ const wrapComponent = (Comp) =>
 
     constructor(props) {
       super(props);
-      this.state = {
-        selectedVariantId: "",
-        selectedOptionId: ""
-      };
-    }
-
-    UNSAFE_componentWillReceiveProps(nextProps) { // eslint-disable-line camelcase
-      const { product } = nextProps;
-      if (!this.props.product && product) {
-        this.selectVariant(product.variants[0]);
+      // Component is reconstructed when product is received from graphql HOC
+      let selectedVariantId;
+      const { product } = props;
+      if (product && product.variants && product.variants.length > 0) {
+        selectedVariantId = product.variants[0]._id;
       }
+      this.state = {
+        cartQuantity: 1,
+        selectedVariantId
+      };
     }
 
     selectVariant = (variant, selectedOptionId) => {
       const selectedVariantId = variant._id;
-      // const selectedOptionId = optionId;
-      // if (!selectedOptionId && variant.options && variant.options.length) {
-      //   selectedOptionId = variant.options[0]._id;
-      // }
       this.setState({
         selectedVariantId,
         selectedOptionId
@@ -57,6 +52,16 @@ const wrapComponent = (Comp) =>
       this.selectVariant(variant, option._id);
     };
 
+    handleCartQuantityChange = (event, quantity) => {
+      this.setState({
+        cartQuantity: Math.max(quantity, 1)
+      });
+    };
+
+    handleAddToCart = () => {
+      console.log("Added to cart");
+    }
+
     getDisplayPriceOfSelectedVariantOrOption() {
       const { product } = this.props;
       const { selectedVariantId, selectedOptionId } = this.state;
@@ -73,7 +78,8 @@ const wrapComponent = (Comp) =>
 
     render() {
       const { product, isLoading } = this.props;
-      const { selectedVariantId, selectedOptionId } = this.state;
+      const { cartQuantity, selectedVariantId, selectedOptionId } = this.state;
+
       if (_.isEmpty(product) && !isLoading) {
         return <Components.ProductNotFound />;
       } else if (isLoading) {
@@ -94,9 +100,12 @@ const wrapComponent = (Comp) =>
           <Comp
             layout={template}
             {...this.props}
+            cartQuantity={cartQuantity}
             displayPrice={displayPrice}
             tags={product.tags.nodes}
             template={template}
+            onAddToCart={this.handleAddToCart}
+            onCartQuantityChange={this.handleCartQuantityChange}
             onSelectOption={this.handleSelectOption}
             onSelectVariant={this.handleSelectVariant}
             selectedVariantId={selectedVariantId}

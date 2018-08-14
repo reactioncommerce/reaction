@@ -26,19 +26,11 @@ class AddToCartButtonCustomer extends Component {
           <button
             className="input-group-addon add-to-cart-text js-add-to-cart"
             data-i18n="productDetail.addToCart"
-            onClick={this.props.onClick || this.props.onAddToCart}
+            onClick={this.props.onAddToCart}
           >
             <Components.Translation defaultValue="Add to cart" i18nKey="productDetail.addToCart" />
           </button>
         </div>
-      );
-    }
-
-    if (this.props.editable && this.hasVariants === false) {
-      return (
-        <Components.Alert>
-          <Components.Translation defaultValue="Add options to enable 'Add to Cart' button" i18nKey="productVariant.addVariantOptions" />
-        </Components.Alert>
       );
     }
     return null;
@@ -47,10 +39,8 @@ class AddToCartButtonCustomer extends Component {
 
 AddToCartButtonCustomer.propTypes = {
   cartQuantity: PropTypes.number,
-  editable: PropTypes.bool, // eslint-disable-line react/boolean-prop-naming
   onAddToCart: PropTypes.func,
   onCartQuantityChange: PropTypes.func,
-  onClick: PropTypes.func,
   product: PropTypes.object
 };
 
