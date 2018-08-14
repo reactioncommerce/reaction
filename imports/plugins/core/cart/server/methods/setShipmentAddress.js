@@ -12,7 +12,7 @@ import setShippingAddressOnCart from "../no-meteor/mutations/setShippingAddressO
  * @method cart/setShipmentAddress
  * @memberof Cart/Methods
  * @summary Adds address book to cart shipping
- * @param {String} cartId - cartId to apply shipmentMethod
+ * @param {String} cartId - The ID of the cart on which to set shipping address
  * @param {String} [cartToken] - Token for cart, if it's anonymous
  * @param {Object} address - addressBook object
  * @return {Number} update result
