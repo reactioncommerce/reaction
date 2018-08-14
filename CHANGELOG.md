@@ -1,6 +1,18 @@
 # v1.14.1
 ## Patch release
+Resolves issues found after releasing `1.14.0` - one causing jsdoc to fail during CI builds for the `master` branch, and another where method hooks were running incorrectly occasionally for `catalog/publish/products` and `accoutns/addressBookAdd`. See specific PRs for more details.
 
+## Meteor App
+### Bugfixes
+ - fix: Ensure method hooks always run with correct timing (before and after method) (#4537) .. Resolves #4437
+ - fix: jsdoc promise returns (#4539)
+ - fix: Null Guarding in GroupsTableCell (#4440)
+
+ ## Contributors
+Thanks to @pmn4 for contributing to this release :tada:
+
+## NPM Package Version Changes
+There are no dependency changes in this release
 
 # v1.14.0
 ## Removing Optional Plugins
