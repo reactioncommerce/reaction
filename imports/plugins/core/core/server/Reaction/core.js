@@ -15,6 +15,7 @@ import processJobs from "./processJobs";
 import sendVerificationEmail from "./sendVerificationEmail";
 import { registerTemplate } from "./templates";
 import { AbsoluteUrlMixin } from "./absoluteUrl";
+import getSlug from "./getSlug";
 
 /**
  * @file Server core methods
@@ -281,7 +282,7 @@ export default {
    * @return {String} Prefix in the format of "/<slug>"
    */
   getPrimaryShopPrefix() {
-    return `/${this.getSlug(this.getPrimaryShopName().toLowerCase())}`;
+    return `/${getSlug(this.getPrimaryShopName().toLowerCase())}`;
   },
 
   /**
@@ -511,7 +512,7 @@ export default {
   getShopPrefix() {
     const shopName = this.getShopName();
     const lowerCaseShopName = shopName.toLowerCase();
-    const slug = this.getSlug(lowerCaseShopName);
+    const slug = getSlug(lowerCaseShopName);
     const marketplace = Packages.findOne({
       name: "reaction-marketplace",
       shopId: this.getPrimaryShopId()

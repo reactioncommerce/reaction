@@ -155,6 +155,16 @@ describe("Server/API/Core", () => {
     });
   });
 
+  describe.only("#getPrimaryShopPrefix", () => {
+    it("slugifies the shop's prefix", () => {
+      const primaryShopName = "Mix of Chars & 123s";
+
+      sandbox.stub(core, "getPrimaryShopName").returns(primaryShopName);
+
+      expect(core.getPrimaryShopPrefix()).to.equal("/mix-of-chars-123s");
+    });
+  });
+
   function randomString() {
     return Math.random().toString(36);
   }
