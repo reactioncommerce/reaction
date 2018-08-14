@@ -1,5 +1,7 @@
 import _ from "lodash";
+import Logger from "@reactioncommerce/logger";
 import { Meteor } from "meteor/meteor";
+import { Match } from "meteor/check";
 
 /**
  * @file **Method Hooks for Meteor** - Use a hook to run something before or after a method on the server
@@ -74,52 +76,56 @@ MethodHooks._initializeHook = function (mapping, methodName, hookFunction) {
     // Get arguments you can mutate
     const args = _.toArray(inputArgs);
     let beforeResult;
-    // Call the before hooks
+    let hooksProcessed = 0;
 
-    const beforeHooks = MethodHooks._beforeHooks[methodName];
-    _.each(beforeHooks, (beforeHook, hooksProcessed) => {
-      beforeResult = beforeHook.call(this, {
+    // Call the before hooks
+    const beforeHooks = MethodHooks._beforeHooks[methodName] || [];
+    for (const beforeHook of beforeHooks) {
+      beforeResult = Promise.await(beforeHook.call(this, {
         result: undefined,
         error: undefined,
         arguments: args,
         hooksProcessed
-      });
+      }));
+
+      hooksProcessed += 1;
 
       if (beforeResult === false) {
+        check(args, [Match.Any]);
         return false;
       }
-    });
-
-    if (beforeResult === false) {
-      return false;
     }
+
     let methodResult;
     let methodError;
 
     // Call the main method body
     // check(args, Match.Any);
     try {
-      methodResult = MethodHooks._originalMethodHandlers[methodName].apply(this, args);
+      methodResult = Promise.await(MethodHooks._originalMethodHandlers[methodName].apply(this, args));
     } catch (error) {
       methodError = error;
     }
 
     // Call after hooks, providing the result and the original arguments
-    const afterHooks = MethodHooks._afterHooks[methodName];
-    _.each(afterHooks, (afterHook, hooksProcessed) => {
-      const hookResult = afterHook.call(this, {
+    const afterHooks = MethodHooks._afterHooks[methodName] || [];
+    hooksProcessed = 0;
+    for (const afterHook of afterHooks) {
+      const hookResult = Promise.await(afterHook.call(this, {
         result: methodResult,
         error: methodError,
         arguments: args,
         hooksProcessed
-      });
+      }));
       // If the after hook did not return a value and the methodResult is not undefined, warn and fix
-      if (_.isUndefined(hookResult) && !_.isUndefined(methodResult)) {
-        Meteor._debug("Expected the after hook to return a value.");
+      if (hookResult === undefined && methodResult !== undefined) {
+        Logger.warn("Expected the after hook to return a value.");
       } else {
         methodResult = hookResult;
       }
-    });
+
+      hooksProcessed += 1;
+    }
 
     // If an error was thrown, throw it after the after hooks. Ought to include the correct stack information
     if (methodError) {
@@ -174,8 +180,8 @@ MethodHooks.after = function (methodName, afterFunction) {
  * @return {String} - returns transformed data, Ignored for before hooks
  */
 MethodHooks.beforeMethods = function (dict) {
-  _.each(dict, (v, k) => {
-    MethodHooks.before(k, v);
+  _.each(dict, (val, key) => {
+    MethodHooks.before(key, val);
   });
 };
 
@@ -187,8 +193,8 @@ MethodHooks.beforeMethods = function (dict) {
  * @return {String} - returns transformed data, Passed as the methodResult to subsequent method hooks.
  */
 MethodHooks.afterMethods = function (dict) {
-  _.each(dict, (v, k) => {
-    MethodHooks.after(k, v);
+  _.each(dict, (val, key) => {
+    MethodHooks.after(key, val);
   });
 };
 
