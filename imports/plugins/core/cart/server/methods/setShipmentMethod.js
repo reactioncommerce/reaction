@@ -1,12 +1,11 @@
-import Hooks from "@reactioncommerce/hooks";
 import Logger from "@reactioncommerce/logger";
 import { Meteor } from "meteor/meteor";
 import { check, Match } from "meteor/check";
-import * as Collections from "/lib/collections";
+import { Cart } from "/lib/collections";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
 import ReactionError from "@reactioncommerce/reaction-error";
 import getCart from "/imports/plugins/core/cart/server/util/getCart";
-
+import appEvents from "/imports/plugins/core/core/server/appEvents";
 
 /**
  * @method cart/setShipmentMethod
@@ -47,15 +46,15 @@ export default function setShipmentMethod(cartId, cartToken, method) {
 
   // update or insert method
   try {
-    Collections.Cart.update({ _id: cartId }, update);
+    Cart.update({ _id: cartId }, update);
   } catch (error) {
     Logger.error(error, `Error adding rates to cart ${cartId}`);
     throw new ReactionError("server-error", "An error occurred saving the order", error);
   }
 
+  const updatedCart = Cart.findOne({ _id: cartId });
 
-  // Calculate discounts
-  Hooks.Events.run("afterCartUpdateCalculateDiscount", cart._id);
+  Promise.await(appEvents.emit("afterCartUpdate", updatedCart._id, updatedCart));
 
   // this will transition to review
   return Meteor.call("workflow/pushCartWorkflow", "coreCartWorkflow", "coreCheckoutShipping", cart._id);

@@ -1,6 +1,7 @@
 import { check, Match } from "meteor/check";
-import * as Collections from "/lib/collections";
+import { Cart } from "/lib/collections";
 import getCart from "/imports/plugins/core/cart/server/util/getCart";
+import appEvents from "/imports/plugins/core/core/server/appEvents";
 
 /**
  * @method cart/resetShipmentMethod
@@ -14,9 +15,14 @@ export default function resetShipmentMethod(cartId, cartToken) {
   check(cartId, String);
   check(cartToken, Match.Maybe(String));
 
-  getCart(cartId, { cartToken, throwIfNotFound: true });
+  const { cart } = getCart(cartId, { cartToken, throwIfNotFound: true });
 
-  return Collections.Cart.update({ _id: cartId }, {
+  const result = Cart.update({ _id: cartId }, {
     $unset: { "shipping.0.shipmentMethod": "" }
   });
+
+  delete cart.shipping[0].shipmentMethod;
+  Promise.await(appEvents.emit("afterCartUpdate", cartId, cart));
+
+  return result;
 }

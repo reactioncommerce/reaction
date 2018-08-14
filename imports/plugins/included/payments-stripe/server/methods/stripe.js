@@ -21,7 +21,8 @@ function unformatFromStripe(amount) {
 export const utils = {};
 
 utils.getStripeApi = function (paymentPackageId) {
-  const stripePackage = Packages.findOne(paymentPackageId);
+  const stripePackage = Packages.findOne({ _id: paymentPackageId });
+  if (!stripePackage) throw new Error(`No package found with paymentPackageId ${paymentPackageId}`);
   const stripeKey = stripePackage.settings.api_key || stripePackage.settings.connectAuth.access_token;
   return stripeKey;
 };

@@ -1,4 +1,3 @@
-import Hooks from "@reactioncommerce/hooks";
 import SimpleSchema from "simpl-schema";
 import ReactionError from "@reactioncommerce/reaction-error";
 import hashLoginToken from "/imports/plugins/core/accounts/server/no-meteor/util/hashLoginToken";
@@ -36,7 +35,7 @@ const inputSchema = new SimpleSchema({
 export default async function updateCartItemsQuantity(context, input) {
   inputSchema.validate(input || {});
 
-  const { accountId, collections } = context;
+  const { accountId, appEvents, collections } = context;
   const { Cart } = collections;
   const { cartId, items, token } = input;
 
@@ -78,8 +77,7 @@ export default async function updateCartItemsQuantity(context, input) {
   const cart = await Cart.findOne(selector);
   if (!cart) throw new ReactionError("not-found", "Cart not found");
 
-  Hooks.Events.run("afterCartUpdate", cart._id);
-  Hooks.Events.run("afterCartUpdateCalculateDiscount", cart._id);
+  await appEvents.emit("afterCartUpdate", cart._id, cart);
 
   return { cart };
 }
