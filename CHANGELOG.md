@@ -1,3 +1,39 @@
+# v1.15.0
+## GraphQL Checkout
+Placeholder for release notes about GraphQL Checkout
+
+## Breaking Changes
+  - If a plugin adds an "afterCartUpdate" hook, it will no longer be called. Change the plugin code to use appEvents.on("afterCartUpdate" instead. (#4535)
+  - If a plugin creates or updates a cart, be sure it calls appEvents.emit("afterCartCreate") or appEvents.emit("afterCartUpdate"), respectively, passing the proper arguments. If you do this within an appEvents.on hook for the same event, be sure to wrap the call in conditional logic to avoid an infinite loop. (#4535)
+  - Any non-core plugins that are expecting the items property to be there. Such plugins should be updated to use a combination of itemIds and the main items list. (#4497)
+
+
+## GraphQL DevServer
+### Features
+ - feat(GraphQL): update fulfillment options for group (#4538)
+ - feat(GraphQL): Add resolver for Cart.totalItemQuantity (#4533)
+ - feat(GraphQL): add resolver for Cart.checkout (#4507)
+
+## Fixes
+ - fix(GraphQL): Fix CartItem.currentQuantity (#4508)
+
+## Meteor App
+### Features
+ - feat: Convert product grid to consume GraphQL data (#4481) .. Resolves #4480
+
+### Fixes
+ - fix: for sidebar unable to be opened (edge condition) (#4546) .. Resolves #4545
+ - fix(marketplace): Default to Primary Shop when no domains match (#4544)
+ - fix: sync lowInventoryThreshold number between variants and child options (#4519)
+ - fix: Product prices showing as $NaN.undefined on the customer product grid (#4518)
+
+### Refactor
+ - refactor: Refactor cart / fulfillment hooks (#4535)
+ - refactor fulfillment items (#4531)
+ - refactor: 4477 nnnnat reaction error (#4494)
+ - refactor: Dynamically import Swiper to reduce client bundle size (#4515) .. Resolves #4514
+
+
 # v1.14.1
 ## Patch release
 Resolves issues found after releasing `1.14.0` - one causing jsdoc to fail during CI builds for the `master` branch, and another where method hooks were running incorrectly occasionally for `catalog/publish/products` and `accoutns/addressBookAdd`. See specific PRs for more details.
