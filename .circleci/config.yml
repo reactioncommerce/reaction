@@ -41,6 +41,31 @@ jobs:
       - run:
           name: Meteor NPM Install
           command: meteor npm install
+      - run:
+          name: Build dist bundle
+          command: meteor build --directory ../build/
+      - run:
+          name: Check .js file size
+          command: |
+            maxSize=2964687
+            size=$( wc -c ../build/bundle/programs/web.browser/*.js | awk '{$1=$1};1' | cut -d " " -f 1 )
+            if [[ $size -gt $maxSize ]]; then
+              echo "The production js file has size" $size "which exceeds limit of" $maxSize 1>&2
+              exit 3
+            else
+              echo "The js file size is" $size
+            fi
+      - run:
+          name: Check .css file size
+          command: |
+            maxSize=24888
+            size=$( wc -c ../build/bundle/programs/web.browser/*.css | awk '{$1=$1};1' | cut -d " " -f 1 )
+            if [[ $size -gt $maxSize ]]; then
+              echo "The production js file has size" $size "which exceeds limit of" $maxSize 1>&2
+              exit 3
+            else
+              echo "The css file size is" $size
+            fi
       # Store node_modules dependency cache.
       # Saved with package.json checksum and timestamped branch name keys.
       - save_cache:
@@ -58,6 +83,7 @@ jobs:
           key: mongodb-memory-server
           paths:
             - ~/.mongodb-binaries
+      
 
   docker-build:
     <<: *defaults
