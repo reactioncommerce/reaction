@@ -3,7 +3,7 @@ import { compose } from "recompose";
 import PropTypes from "prop-types";
 import Radium from "radium";
 import classnames from "classnames";
-import { registerComponent, withVelocityTransitionGroup } from "@reactioncommerce/reaction-components";
+import { registerComponent, withAnimateHeight } from "@reactioncommerce/reaction-components";
 
 const styles = {
   noPadding: {
@@ -18,58 +18,48 @@ class CardBody extends Component {
   };
 
   static propTypes = {
-    VelocityTransitionGroup: PropTypes.func,
+    AnimateHeight: PropTypes.func,
     children: PropTypes.node,
     expanded: PropTypes.bool, // eslint-disable-line react/boolean-prop-naming
     padded: PropTypes.bool // eslint-disable-line react/boolean-prop-naming
   };
 
-  renderCard() {
-    if (this.props.expanded) {
-      const baseClassName = classnames({
-        "rui": true,
-        "panel-body": true,
-        "no-padding": this.props.padded === false
-      });
-
-      return (
-        <div
-          className={baseClassName}
-          style={[
-            this.props.padded === false ? styles.noPadding : undefined
-          ]}
-        >
-          {this.props.children}
-        </div>
-      );
-    }
-
-    return null;
-  }
-
   render() {
-    const { VelocityTransitionGroup } = this.props;
-    if (VelocityTransitionGroup === undefined) {
+    const { AnimateHeight } = this.props;
+    if (!AnimateHeight) {
       return null;
     }
+    const baseClassName = classnames({
+      "rui": true,
+      "panel-body": true,
+      "no-padding": this.props.padded === false
+    });
+    const height = this.props.expanded && "auto" || 0;
 
     return (
-      <VelocityTransitionGroup
-        enter={{ animation: "slideDown", duration: 200 }}
-        leave={{ animation: "slideUp", duration: 200 }}
+      <AnimateHeight
+        duration={200}
+        height={height}
       >
-        {this.renderCard()}
-      </VelocityTransitionGroup>
+      <div
+        className={baseClassName}
+        style={[
+          this.props.padded === false ? styles.noPadding : undefined
+        ]}
+      >
+        {this.props.children}
+      </div>
+      </AnimateHeight>
     );
   }
 }
 
 registerComponent("CardBody", CardBody, [
-  withVelocityTransitionGroup,
+  withAnimateHeight,
   Radium
 ]);
 
 export default compose(
-  withVelocityTransitionGroup,
+  withAnimateHeight,
   Radium
 )(CardBody);

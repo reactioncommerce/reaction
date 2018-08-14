@@ -215,30 +215,30 @@ export function withCSSTransitionGroup(component) {
 }
 
 /**
- * @name withVelocityTransitionGroup
+ * @name withAnimateHeight
  * @method
- * @summary A wrapper to reactively inject velocity-react's <VelocityTransitionGroup /> into a component
+ * @summary A wrapper to reactively inject react-animate-height's <AnimateHeight /> into a component
  * @param {Function|React.Component} component - the component to wrap
- * @return {Function} the new wrapped component with a "VelocityTransitionGroup" prop
+ * @return {Function} the new wrapped component with a "AnimateHeight" prop
  * @memberof Components/Helpers
  */
-export function withVelocityTransitionGroup(component) {
+export function withAnimateHeight(component) {
   return lifecycle({
     componentDidMount() {
-      import("velocity-react")
+      import("react-animate-height")
         .then((module) => {
           if (this.willUnmount === true) {
             return null;
           }
 
           this.setState({
-            VelocityTransitionGroup: module.VelocityTransitionGroup
+            AnimateHeight: module.default
           });
 
           return null;
         })
         .catch((error) => {
-          Logger.error(error.message, "Unable to load velocty-react");
+          Logger.error(error.message, "Unable to load react-animate-height");
         });
     },
     componentWillUnmount() {
