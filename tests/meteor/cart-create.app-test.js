@@ -79,7 +79,6 @@ describe("Add/Create cart methods", function () {
     let variantId;
     let permissionStub;
     let resetShipmentStub;
-    let updateShipmentQuoteStub;
 
     before(function () {
       permissionStub = sinon.stub(Reaction, "hasPermission", function () {
@@ -87,10 +86,6 @@ describe("Add/Create cart methods", function () {
       });
 
       resetShipmentStub = sinon.stub(Meteor.server.method_handlers, "cart/resetShipmentMethod", function (...args) {
-        check(args, [Match.Any]);
-        return true;
-      });
-      updateShipmentQuoteStub = sinon.stub(Meteor.server.method_handlers, "shipping/updateShipmentQuotes", function (...args) {
         check(args, [Match.Any]);
         return true;
       });
@@ -105,7 +100,6 @@ describe("Add/Create cart methods", function () {
     after(function () {
       permissionStub.restore();
       resetShipmentStub.restore();
-      updateShipmentQuoteStub.restore();
     });
 
     beforeEach(function () {
