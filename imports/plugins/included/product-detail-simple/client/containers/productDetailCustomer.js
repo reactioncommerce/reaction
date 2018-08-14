@@ -3,103 +3,77 @@ import PropTypes from "prop-types";
 import _ from "lodash";
 import { compose } from "recompose";
 import { StyleRoot } from "radium";
-import { inject, observer } from "mobx-react";
 import { Components, registerComponent, composeWithTracker } from "@reactioncommerce/reaction-components";
 import { Meteor } from "meteor/meteor";
 import { Reaction } from "/client/api";
 import withCatalogItemProduct from "/imports/plugins/core/graphql/lib/hocs/withCatalogItemProduct";
+import getDisplayPriceByCurrency from "../../lib/helpers/getDisplayPriceByCurrency";
 import { ProductDetailCustomer } from "../components";
 
-/**
- *
- * @method getDisplayPrice
- * @summary Gets the display price per given pricing array from a product, variant, or option
- * @param {Array} pricingArr - An array of pricing info
- * @param {Array} currencyCode - Selected currency of customer
- * @return {String} - Display price of a product, variant, or option
- */
-function getDisplayPrice(pricingArr, currencyCode = "USD") {
-  const currencyPricing = pricingArr.filter((pricing) => pricing.currency.code === currencyCode);
-  return currencyPricing[0].displayPrice;
-}
-
 const wrapComponent = (Comp) =>
-  @inject("uiStore")
-  @observer
   class ProductDetailCustomerContainer extends Component {
     static propTypes = {
       isLoading: PropTypes.bool,
       product: PropTypes.object,
-      template: PropTypes.string,
-      uiStore: PropTypes.object
+      template: PropTypes.string
     };
 
+    constructor(props) {
+      super(props);
+      this.state = {
+        selectedVariantId: "",
+        selectedOptionId: ""
+      };
+    }
+
     UNSAFE_componentWillReceiveProps(nextProps) { // eslint-disable-line camelcase
-      const { uiStore } = this.props;
       const { product } = nextProps;
       if (!this.props.product && product) {
-        uiStore.setPDPSelectedVariantId("", "");
+        this.selectVariant(product.variants[0]);
       }
     }
 
-    componentWillReact() {
-      console.log(this.props.uiStore);
-    }
-
-    selectVariant(variant, optionId) {
-      const { uiStore } = this.props;
-
-      // Select the variant, and if it has options, the first option
-      const variantId = variant._id;
-      let selectOptionId = optionId;
-      if (!selectOptionId && variant.options && variant.options.length) {
-        selectOptionId = variant.options[0]._id;
-      }
-      uiStore.setPDPSelectedVariantId(variantId, selectOptionId);
-      console.log(`new selected variant is ${uiStore.pdpSelectedVariantId}`);
+    selectVariant = (variant, selectedOptionId) => {
+      const selectedVariantId = variant._id;
+      // const selectedOptionId = optionId;
+      // if (!selectedOptionId && variant.options && variant.options.length) {
+      //   selectedOptionId = variant.options[0]._id;
+      // }
+      this.setState({
+        selectedVariantId,
+        selectedOptionId
+      });
     }
 
     handleSelectVariant = (variant) => {
       this.selectVariant(variant);
-    };
+    }
 
     handleSelectOption = (option) => {
-      const { product, uiStore } = this.props;
-
+      const { product } = this.props;
+      const { selectedVariantId } = this.state;
       // If we are clicking an option, it must be for the current selected variant
-      const variant = product.variants.find((vnt) => vnt._id === uiStore.pdpSelectedVariantId);
-
+      const variant = product.variants.find((vnt) => vnt._id === selectedVariantId);
       this.selectVariant(variant, option._id);
     };
 
-    getPriceRange() {
-      const {
-        product,
-        uiStore: {
-          pdpSelectedVariantId,
-          pdpSelectedOptionId
-        }
-      } = this.props;
-      if (!pdpSelectedVariantId) {
-        return getDisplayPrice(product.pricing);
+    getDisplayPriceOfSelectedVariantOrOption() {
+      const { product } = this.props;
+      const { selectedVariantId, selectedOptionId } = this.state;
+      if (!selectedVariantId) {
+        return getDisplayPriceByCurrency(product.pricing);
       }
-      const selectedVariant = product.variants.filter((variant) => variant._id === pdpSelectedVariantId);
-      if (!pdpSelectedOptionId) {
-        return getDisplayPrice(selectedVariant.pricing);
+      const selectedVariant = product.variants.find((variant) => variant._id === selectedVariantId);
+      if (!selectedOptionId) {
+        return getDisplayPriceByCurrency(selectedVariant.pricing);
       }
-      const selectedOption = selectedVariant.options.filter((option) => option._id === pdpSelectedOptionId);
-      return getDisplayPrice(selectedOption.pricing);
+      const selectedOption = selectedVariant.options.find((option) => option._id === selectedOptionId);
+      return getDisplayPriceByCurrency(selectedOption.pricing);
     }
 
     render() {
-      const {
-        product,
-        isLoading,
-        uiStore: {
-          pdpSelectedVariantId
-        }
-      } = this.props;
-      console.log(this.props.uiStore.pdpSelectedVariantId);
+      const { product, isLoading } = this.props;
+      const { selectedVariantId, selectedOptionId } = this.state;
       if (_.isEmpty(product) && !isLoading) {
         return <Components.ProductNotFound />;
       } else if (isLoading) {
@@ -114,18 +88,19 @@ const wrapComponent = (Comp) =>
         template = `${product.template}Customer`;
       }
 
-      const priceRange = this.getPriceRange();
+      const displayPrice = this.getDisplayPriceOfSelectedVariantOrOption();
       return (
         <StyleRoot>
           <Comp
             layout={template}
             {...this.props}
-            priceRange={priceRange}
+            displayPrice={displayPrice}
             tags={product.tags.nodes}
             template={template}
             onSelectOption={this.handleSelectOption}
             onSelectVariant={this.handleSelectVariant}
-            selectedVariant={pdpSelectedVariantId}
+            selectedVariantId={selectedVariantId}
+            selectedOptionId={selectedOptionId}
           />
         </StyleRoot>
       );

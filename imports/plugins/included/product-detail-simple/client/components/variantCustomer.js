@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import classnames from "classnames";
+import getDisplayPriceByCurrency from "../../lib/helpers/getDisplayPriceByCurrency";
 
 class VariantCustomer extends Component {
   handleOnKeyUp = (event) => {
@@ -11,17 +12,17 @@ class VariantCustomer extends Component {
     }
   }
 
-  handleClick= () => {
+  handleClick = () => {
     const { onSelectVariant, variant } = this.props;
     onSelectVariant(variant);
   }
 
   render() {
-    const { variant } = this.props;
+    const { selectedVariantId, variant } = this.props;
     const classes = classnames({
       "variant-detail": true,
       "variant-button": true,
-      "variant-detail-selected": false
+      "variant-detail-selected": variant._id === selectedVariantId
     });
 
     return (
@@ -36,6 +37,11 @@ class VariantCustomer extends Component {
           <div className="title">
             <span className="variant-title">{variant.title}</span>
           </div>
+          <div className="actions">
+            <span className="variant-price">
+              <span itemProp="price">{getDisplayPriceByCurrency(variant.pricing)}</span>
+            </span>
+          </div>
         </div>
       </div>
     );
@@ -44,6 +50,7 @@ class VariantCustomer extends Component {
 
 VariantCustomer.propTypes = {
   onSelectVariant: PropTypes.func,
+  selectedVariantId: PropTypes.string,
   uiStore: PropTypes.object,
   variant: PropTypes.object
 };

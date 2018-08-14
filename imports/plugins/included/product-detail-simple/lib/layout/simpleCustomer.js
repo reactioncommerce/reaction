@@ -183,7 +183,7 @@ export default function simpleCustomer() {
 
         // Add to cart button
         {
-          component: "AddToCartButton",
+          component: "AddToCartButtonCustomer",
           props: {
             style: {
               paddingTop: 20

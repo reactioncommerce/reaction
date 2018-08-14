@@ -4,12 +4,12 @@ import { registerComponent } from "@reactioncommerce/reaction-components";
 
 const PriceRangeCustomer = (props) => (
   <div className="pdp price-range">
-    <span itemProp="price">{props.priceRange}</span>
+    <span itemProp="price">{props.displayPrice}</span>
   </div>
 );
 
 PriceRangeCustomer.propTypes = {
-  priceRange: PropTypes.string
+  displayPrice: PropTypes.string
 };
 
 registerComponent("PriceRangeCustomer", PriceRangeCustomer);

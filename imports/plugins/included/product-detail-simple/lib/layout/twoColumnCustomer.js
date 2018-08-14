@@ -182,7 +182,7 @@ export default function twoColumnCustomer() {
 
         // Add to cart button
         {
-          component: "AddToCartButton",
+          component: "AddToCartButtonCustomer",
           props: {
             style: {
               paddingTop: 20

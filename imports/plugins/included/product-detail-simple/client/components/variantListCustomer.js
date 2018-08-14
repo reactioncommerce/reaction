@@ -6,32 +6,37 @@ import VariantCustomer from "./variantCustomer";
 
 class VariantListCustomer extends Component {
   renderVariants() {
-    const { product: { variants }, onSelectVariant } = this.props;
+    const { product: { variants }, selectedVariantId, onSelectVariant } = this.props;
     if (variants) {
       return variants.map((variant, index) => (
         <VariantCustomer
           role="button"
           key={variant._id}
-          displayPrice={variant.pricing[0].displayPrice}
           index={index}
           variant={variant}
           onSelectVariant={onSelectVariant}
+          selectedVariantId={selectedVariantId}
         />
       ));
     }
     return null;
   }
 
-  renderChildVariants() {
-    const { product: { variants: [{ options }] } } = this.props;
+  handleSelectOption = (option) => {
+    const { onSelectOption } = this.props;
+    onSelectOption(option);
+  }
 
-    if (options.length) {
-      const renderOptions = options.map((option, index) => {
+  renderChildVariants() {
+    const { product, selectedVariantId, selectedOptionId } = this.props;
+    const selectedVariant = product.variants.find((variant) => variant._id === selectedVariantId);
+    if (selectedVariant && selectedVariant.options && selectedVariant.options.length) {
+      const renderOptions = selectedVariant.options.map((option, index) => {
         const classes = classnames({
           "btn": true,
           "btn-default": true,
           "variant-button": true,
-          "variant-detail-selected": false
+          "variant-detail-selected": option._id === selectedOptionId
         });
 
         return (
@@ -39,6 +44,7 @@ class VariantListCustomer extends Component {
             <button
               className={classes}
               type="button"
+              onClick={() => this.handleSelectOption(option)}
             >
               <img
                 alt=""
@@ -76,8 +82,11 @@ class VariantListCustomer extends Component {
 }
 
 VariantListCustomer.propTypes = {
+  onSelectOption: PropTypes.func,
   onSelectVariant: PropTypes.func,
-  product: PropTypes.object
+  product: PropTypes.object,
+  selectedOptionId: PropTypes.string,
+  selectedVariantId: PropTypes.string
 };
 
 registerComponent("VariantListCustomer", VariantListCustomer);

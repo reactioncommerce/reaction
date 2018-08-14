@@ -13,13 +13,11 @@ import { Components } from "@reactioncommerce/reaction-components";
 import { Reaction } from "/client/api";
 import { TranslationProvider } from "/imports/plugins/core/ui/client/providers";
 import initApollo from "/imports/plugins/core/graphql/lib/helpers/initApollo";
-import withMobX from "/imports/plugins/core/stores/withMobX";
 import { MetaData } from "/lib/api/router/metadata";
 import { Router } from "../lib";
 
 const { history } = Router;
 
-@withMobX
 class BrowserRouter extends Component {
   static propTypes = {
     children: PropTypes.node,
