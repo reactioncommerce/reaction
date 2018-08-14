@@ -34,21 +34,21 @@ class CardBody extends Component {
       "panel-body": true,
       "no-padding": this.props.padded === false
     });
-    const height = this.props.expanded && "auto" || 0;
+    const height = (this.props.expanded && "auto") || 0;
 
     return (
       <AnimateHeight
         duration={200}
         height={height}
       >
-      <div
-        className={baseClassName}
-        style={[
-          this.props.padded === false ? styles.noPadding : undefined
-        ]}
-      >
-        {this.props.children}
-      </div>
+        <div
+          className={baseClassName}
+          style={[
+            this.props.padded === false ? styles.noPadding : undefined
+          ]}
+        >
+          {this.props.children}
+        </div>
       </AnimateHeight>
     );
   }
