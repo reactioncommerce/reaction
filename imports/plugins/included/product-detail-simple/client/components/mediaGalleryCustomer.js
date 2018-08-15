@@ -11,49 +11,75 @@ class MediaGalleryCustomer extends Component {
       dimensions: {
         width: -1,
         height: -1
+      },
+      featuredMediaDimensions: {
+        width: -1,
+        height: -1
       }
     };
   }
 
-  getMedia() {
-    const { product, selectedOptionId, selectedVariantId } = this.props;
-    if (product && selectedVariantId) {
-      const selectedVariant = product.variants.find((variant) => variant._id === selectedVariantId);
-      if (selectedVariant.primaryImage) {
-        let featuredImage = selectedVariant.primaryImage;
-        let mediaList = selectedVariant.media;
-        if (selectedOptionId) {
-          const selectedOption = selectedVariant.options.find((option) => option._id === selectedOptionId);
-          if (selectedOption.primaryImage) {
-            featuredImage = selectedOption.primaryImage;
-            mediaList = selectedOption.media;
-          }
-        }
-        return { media: mediaList, featuredImage };
-      }
-    }
-    return {};
-  }
-  renderFeaturedMedia(featuredImage) {
-    if (!featuredImage) {
+  renderFeaturedMedia(featuredMedia) {
+    const { featuredMediaDimensions: { width, height } } = this.state;
+    if (!featuredMedia) {
       return <MediaItemCustomer />;
     }
-    return <MediaItemCustomer source={featuredImage} size="large" isZoomable />;
+    return (
+      <Measure
+        bounds
+        onResize={(contentRect) => {
+          const dimensions = { ...contentRect.bounds };
+          // We get React warnings in console when the bounds height comes in as zero
+          if (dimensions.height === 0) dimensions.height = -1;
+          this.setState({
+            featuredMediaDimensions: {
+              height: dimensions.height,
+              width: dimensions.width
+            }
+          });
+        }}
+      >
+        {({ measureRef }) =>
+          <div ref={measureRef}>
+            <MediaItemCustomer
+              mediaHeight={height}
+              mediaWidth={width}
+              source={this.featuredMedia}
+              size="large"
+              isZoomable
+            />
+          </div>
+        }
+      </Measure>
+    );
   }
 
   renderMediaThumbnails(media) {
+    const { onSelectFeaturedMedia } = this.props;
     return (media || []).map((mediaItem) => (
       <MediaItemCustomer
-        key={mediaItem._id}
+        key={mediaItem.priority}
         size="small"
         source={mediaItem}
+        onSelectFeaturedMedia={onSelectFeaturedMedia}
       />
     ));
   }
 
+  get featuredMedia() {
+    const { featuredMedia, media } = this.props;
+    if (!featuredMedia && media && media.length > 0) {
+      return media[0];
+    }
+    return featuredMedia;
+  }
+
+  handleMouseLeave = () => {
+    this.props.onSelectFeaturedMedia(null);
+  }
   render() {
-    const { dimensions: { height, width } } = this.state;
-    const { featuredImage, media } = this.getMedia();
+    const { dimensions: { width } } = this.state;
+    const { media } = this.props;
     return (
       <Measure
         bounds
@@ -62,11 +88,11 @@ class MediaGalleryCustomer extends Component {
         }}
       >
         {({ measureRef }) =>
-          <div ref={measureRef}>
+          <div ref={measureRef} onMouseLeave={this.handleMouseLeave}>
             <div className="rui media-gallery">
               <div className="rui gallery">
                 <div className="featuredImage" style={{ height: width }}>
-                  {this.renderFeaturedMedia(featuredImage)}
+                  {this.renderFeaturedMedia(this.featuredMedia)}
                 </div>
                 <div className="rui gallery-thumbnails">
                   {this.renderMediaThumbnails(media)}
@@ -81,6 +107,9 @@ class MediaGalleryCustomer extends Component {
 }
 
 MediaGalleryCustomer.propTypes = {
+  featuredMedia: PropTypes.object,
+  media: PropTypes.arrayOf(PropTypes.object),
+  onSelectFeaturedMedia: PropTypes.func,
   product: PropTypes.object,
   selectedOptionId: PropTypes.string,
   selectedVariantId: PropTypes.string

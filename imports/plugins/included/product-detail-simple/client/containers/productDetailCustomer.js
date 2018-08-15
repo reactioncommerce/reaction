@@ -22,22 +22,42 @@ const wrapComponent = (Comp) =>
       super(props);
       // Component is reconstructed when product is received from graphql HOC
       let selectedVariantId;
+      let mediaList;
       const { product } = props;
       if (product && product.variants && product.variants.length > 0) {
         selectedVariantId = product.variants[0]._id;
+        mediaList = product.variants[0].media;
       }
       this.state = {
         cartQuantity: 1,
+        featuredMedia: null,
+        media: mediaList,
         selectedVariantId
       };
     }
 
     selectVariant = (variant, selectedOptionId) => {
       const selectedVariantId = variant._id;
+      let mediaList;
+      if (variant.primaryImage) {
+        mediaList = variant.media;
+        if (selectedOptionId) {
+          const selectedOption = variant.options.find((option) => option._id === selectedOptionId);
+          if (selectedOption.primaryImage) {
+            mediaList = selectedOption.media;
+          }
+        }
+      }
       this.setState({
+        featuredMedia: null,
+        media: mediaList,
         selectedVariantId,
         selectedOptionId
       });
+    }
+
+    handleSelectFeaturedMedia = (media) => {
+      this.setState({ featuredMedia: media });
     }
 
     handleSelectVariant = (variant) => {
@@ -59,7 +79,7 @@ const wrapComponent = (Comp) =>
     };
 
     handleAddToCart = () => {
-      console.log("Added to cart");
+      console.log("Added to cart. Use graphql here");
     }
 
     getDisplayPriceOfSelectedVariantOrOption() {
@@ -78,7 +98,7 @@ const wrapComponent = (Comp) =>
 
     render() {
       const { product, isLoading } = this.props;
-      const { cartQuantity, selectedVariantId, selectedOptionId } = this.state;
+      const { cartQuantity, media, featuredMedia, selectedVariantId, selectedOptionId } = this.state;
 
       if (_.isEmpty(product) && !isLoading) {
         return <Components.ProductNotFound />;
@@ -102,10 +122,13 @@ const wrapComponent = (Comp) =>
             {...this.props}
             cartQuantity={cartQuantity}
             displayPrice={displayPrice}
+            media={media}
+            featuredMedia={featuredMedia}
             tags={product.tags.nodes}
             template={template}
             onAddToCart={this.handleAddToCart}
             onCartQuantityChange={this.handleCartQuantityChange}
+            onSelectFeaturedMedia={this.handleSelectFeaturedMedia}
             onSelectOption={this.handleSelectOption}
             onSelectVariant={this.handleSelectVariant}
             selectedVariantId={selectedVariantId}
