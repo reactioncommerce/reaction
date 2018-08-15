@@ -46,7 +46,7 @@ export function createProduct(isVisible = true, title) {
         value: "Rubber"
       }
     ],
-    requiresShipping: true,
+    supportedFulfillmentTypes: ["shipping"],
     hashtags: [],
     isVisible,
     handle: productSlug,

@@ -195,7 +195,7 @@ export default function () {
    * @property {Boolean} isSoldOut `false`
    * @property {Boolean} isBackorder `false`
    * @property {Array} metafields `[]`
-   * @property {Boolean} requiresShipping `true`
+   * @property {String[]} supportedFulfillmentTypes - ["shipping"]
    * @property {Array} hashtags `[]`
    * @property {Boolean} isVisible `true`
    * @property {Date} publishedAt `new Date()`
@@ -227,8 +227,7 @@ export default function () {
     isSoldOut: false,
     isBackorder: false,
     metafields: [],
-    requiresShipping: true,
-    // parcel: ?,
+    supportedFulfillmentTypes: ["shipping"],
     hashtags: [],
     isVisible: true,
     publishedAt: new Date(),
