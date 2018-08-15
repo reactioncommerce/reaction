@@ -323,3 +323,13 @@ export async function xformCartCheckout(collections, cart) {
     }
   };
 }
+
+/**
+ * @param {Object} collections Map of Mongo collections
+ * @param {Object} items Cart items
+ * @returns {Number} Total quantity of all items in the cart
+ */
+export async function xformTotalItemQuantity(collections, items) {
+  // Total item quantity comes from the sum of the quantities of each item
+  return (items || []).reduce((sum, item) => (sum + item.quantity), 0);
+}

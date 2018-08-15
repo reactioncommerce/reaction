@@ -65,8 +65,7 @@ export default function cancelOrder(order, returnToStock) {
   let { paymentMethod } = orderCreditMethod(order);
   paymentMethod = Object.assign(paymentMethod, { amount: Number(paymentMethod.amount) });
   const invoiceTotal = billingRecord.invoice.total;
-  const shipment = shippingRecord;
-  const itemIds = shipment.items.map((item) => item._id);
+  const { itemIds } = shippingRecord;
 
   // refund payment to customer
   const paymentMethodId = paymentMethod && paymentMethod.paymentPackageId;

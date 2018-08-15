@@ -1,9 +1,10 @@
 import Logger from "@reactioncommerce/logger";
+import ReactionError from "@reactioncommerce/reaction-error";
 import { Meteor } from "meteor/meteor";
 import { Match, check } from "meteor/check";
 import { Catalog } from "/lib/api";
 import { Cart, Packages, Products } from "/lib/collections";
-import ReactionError from "@reactioncommerce/reaction-error";
+import appEvents from "/imports/plugins/core/core/server/appEvents";
 import { Taxes } from "../../lib/collections";
 import Reaction from "../api";
 
@@ -85,12 +86,17 @@ export const methods = {
     check(taxRate, Number);
     check(taxes, Match.Optional(Array));
 
-    return Cart.update({ _id: cartId }, {
+    const result = Cart.update({ _id: cartId }, {
       $set: {
         taxes,
         tax: taxRate
       }
     });
+
+    const updatedCart = Cart.findOne({ _id: cartId });
+    Promise.await(appEvents.emit("afterCartUpdate", cartId, updatedCart));
+
+    return result;
   },
 
   /**
@@ -117,7 +123,7 @@ export const methods = {
 
     const { cartTaxData, cartTaxRate, itemsWithTax, taxRatesByShop } = options;
 
-    return Cart.update({ _id: cartId }, {
+    const result = Cart.update({ _id: cartId }, {
       $set: {
         taxes: cartTaxData,
         tax: cartTaxRate,
@@ -125,13 +131,18 @@ export const methods = {
         taxRatesByShop
       }
     });
+
+    const updatedCart = Cart.findOne({ _id: cartId });
+    Promise.await(appEvents.emit("afterCartUpdate", cartId, updatedCart));
+
+    return result;
   },
 
   /**
    * @name "taxes/updateTaxCode"
    * @method
    * @memberof Methods/Taxes
-   * @summary updates the taxcode on all options of a product.
+   * @summary updates the tax code on all options of a product.
    * @param  {String} products array of products to be updated.
    * @return {Number} returns number of options updated
    */

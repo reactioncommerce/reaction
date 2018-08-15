@@ -1,5 +1,6 @@
 import ReactionError from "@reactioncommerce/reaction-error";
 import { Cart as CartSchema } from "/imports/collections/schemas";
+import appEvents from "/imports/plugins/core/core/server/appEvents";
 import addCartItems from "../util/addCartItems";
 
 /**
@@ -53,13 +54,17 @@ export default async function reconcileCartsMerge({
   const { modifiedCount } = await Cart.updateOne(accountCartSelector, modifier);
   if (modifiedCount === 0) throw new ReactionError("server-error", "Unable to update cart");
 
-  // Delete anonymous cart
-  const { deletedCount } = await Cart.deleteOne(anonymousCartSelector);
-  if (deletedCount === 0) throw new ReactionError("server-error", "Unable to delete anonymous cart");
-
-  return {
+  const updatedCart = {
     ...accountCart,
     items,
     updatedAt
   };
+
+  await appEvents.emit("afterCartUpdate", updatedCart._id, updatedCart);
+
+  // Delete anonymous cart
+  const { deletedCount } = await Cart.deleteOne(anonymousCartSelector);
+  if (deletedCount === 0) throw new ReactionError("server-error", "Unable to delete anonymous cart");
+
+  return updatedCart;
 }

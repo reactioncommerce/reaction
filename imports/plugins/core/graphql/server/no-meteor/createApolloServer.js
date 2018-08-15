@@ -5,6 +5,7 @@ import { graphqlExpress, graphiqlExpress } from "apollo-server-express";
 import buildContext from "./buildContext";
 import getErrorFormatter from "./getErrorFormatter";
 import meteorTokenMiddleware from "./meteorTokenMiddleware";
+import runPluginStartup from "./runPluginStartup";
 import schema from "./schema";
 
 const defaultServerConfig = {
@@ -78,6 +79,9 @@ export default function createApolloServer(options = {}) {
       })
     );
   }
+
+  // For now this is a convenient place to do this, but move it eventually.
+  runPluginStartup(contextFromOptions);
 
   return expressServer;
 }

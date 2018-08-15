@@ -1,6 +1,7 @@
 import { check } from "meteor/check";
 import { Cart } from "/lib/collections";
 import hashLoginToken from "/imports/plugins/core/accounts/server/no-meteor/util/hashLoginToken";
+import appEvents from "/imports/plugins/core/core/server/appEvents";
 
 /**
  * @method cart/setAnonymousUserEmail
@@ -16,10 +17,19 @@ export default function setAnonymousUserEmail(cartId, anonymousAccessToken, emai
   check(anonymousAccessToken, String);
   check(email, String);
 
-  return Cart.update({
+  const result = Cart.update({
     _id: cartId,
     anonymousAccessToken: hashLoginToken(anonymousAccessToken)
   }, {
     $set: { email }
   });
+
+  const updatedCart = Cart.findOne({
+    _id: cartId,
+    anonymousAccessToken: hashLoginToken(anonymousAccessToken)
+  });
+
+  Promise.await(appEvents.emit("afterCartUpdate", updatedCart._id, updatedCart));
+
+  return result;
 }

@@ -1,4 +1,3 @@
-import Hooks from "@reactioncommerce/hooks";
 import ReactionError from "@reactioncommerce/reaction-error";
 import { Cart as CartSchema } from "/imports/collections/schemas";
 import hashLoginToken from "/imports/plugins/core/accounts/server/no-meteor/util/hashLoginToken";
@@ -19,7 +18,7 @@ import addCartItemsUtil from "../util/addCartItems";
  */
 export default async function addCartItems(context, input, options = {}) {
   const { cartId, items, token } = input;
-  const { collections, accountId = null } = context;
+  const { appEvents, collections, accountId = null } = context;
   const { Cart } = collections;
 
   let selector;
@@ -67,8 +66,7 @@ export default async function addCartItems(context, input, options = {}) {
     items: updatedItemList,
     updatedAt
   };
-  Hooks.Events.run("afterCartUpdate", cart._id, updatedCart);
-  Hooks.Events.run("afterCartUpdateCalculateDiscount", cart._id);
+  await appEvents.emit("afterCartUpdate", cart._id, updatedCart);
 
   return { cart: updatedCart, incorrectPriceFailures, minOrderQuantityFailures };
 }

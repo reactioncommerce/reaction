@@ -185,46 +185,6 @@ export const ShipmentQuote = new SimpleSchema({
 registerSchema("ShipmentQuote", ShipmentQuote);
 
 /**
- * @name ShipmentItem
- * @memberof Schemas
- * @type {SimpleSchema}
- * @summary Populate with order.items that are added to a shipment
- * @property {String} _id Shipment Line Item optional
- * @property {String} productId required
- * @property {String} shopId Shipment Item ShopId optional
- * @property {Number} quantity required
- * @property {String} variantId required
- */
-export const ShipmentItem = new SimpleSchema({
-  _id: {
-    type: String,
-    label: "Shipment Line Item",
-    optional: true,
-    autoValue: schemaIdAutoValue
-  },
-  productId: {
-    type: String,
-    index: 1
-  },
-  shopId: {
-    type: String,
-    index: 1,
-    label: "Shipment Item ShopId",
-    optional: true
-  },
-  quantity: {
-    label: "Quantity",
-    type: SimpleSchema.Integer,
-    min: 0
-  },
-  variantId: {
-    type: String
-  }
-});
-
-registerSchema("ShipmentItem", ShipmentItem);
-
-/**
  * @name ShippingParcel
  * @memberof Schemas
  * @type {SimpleSchema}
@@ -291,7 +251,7 @@ registerSchema("ShippoShipment", ShippoShipment);
  * @memberof Schemas
  * @type {SimpleSchema}
  * @summary Status of a query/consumption of a shipping provider's API (e.g Shippo) for shipping quotations.
- * @description Shipping quotations are the costs from different shipping methods like Fedex, DHL etc of
+ * @description Shipping quotations are the costs from different shipping methods like FedEx, DHL etc of
  * shipping one or more items to a particular place in a given amount of time.)
  * @property {String} requestStatus optional, default value: `noRequestsYet`
  * @property {String} shippingProvider optional
@@ -333,10 +293,12 @@ registerSchema("ShipmentQuotesQueryStatus", ShipmentQuotesQueryStatus);
  * @property {ShipmentQuote[]} shipmentQuotes optional
  * @property {ShipmentQuotesQueryStatus} shipmentQuotesQueryStatus optional
  * @property {String} tracking optional
+ * @property {String} type The fulfillment type. Currently only "shipping" supported
  * @property {ShippingParcel} parcel optional
- * @property {ShipmentItem[]} items optional
  * @property {Workflow} workflow optional
  * @property {Invoice} invoice optional
+ * @property {String[]} itemIds Required on an order but not on a cart, this is set to a denormalized
+ *   list of item IDs when a cart is converted to an order
  * @property {Object[]} transactions optional
  * @property {String} shippingLabelUrl For printable Shipping label
  * @property {String} customsLabelUrl For customs printable label
@@ -381,16 +343,13 @@ export const Shipment = new SimpleSchema({
     type: String,
     optional: true
   },
+  "type": {
+    type: String,
+    allowedValues: ["shipping"],
+    defaultValue: "shipping"
+  },
   "parcel": {
     type: ShippingParcel,
-    optional: true
-  },
-  "items": {
-    type: Array,
-    optional: true
-  },
-  "items.$": {
-    type: ShipmentItem,
     optional: true
   },
   "workflow": {
@@ -402,6 +361,11 @@ export const Shipment = new SimpleSchema({
     type: Invoice,
     optional: true
   },
+  "itemIds": {
+    type: Array,
+    optional: true
+  },
+  "itemIds.$": String,
   "transactions": {
     type: Array,
     optional: true
@@ -431,7 +395,7 @@ registerSchema("Shipment", Shipment);
  * @name ShippoShippingProvider Schema
  * @summary Specific properties for use with Shippo.
  * @description We don't use ShippingProvider service* fields because
- * Shippo is on level higher service than simple carrier's ,e.g Fedex api.
+ * Shippo is on level higher service than simple carrier's ,e.g FedEx api.
  * @memberof Schemas
  * @type {SimpleSchema}
  * @property {String} carrierAccountId optional
