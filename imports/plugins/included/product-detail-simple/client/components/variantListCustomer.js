@@ -8,7 +8,7 @@ class VariantListCustomer extends Component {
   renderVariants() {
     const { product: { variants }, selectedVariantId, onSelectVariant } = this.props;
     if (variants) {
-      return variants.map((variant, index) => (
+      const renderVariantsList = variants.map((variant, index) => (
         <VariantCustomer
           role="button"
           key={variant._id}
@@ -18,6 +18,14 @@ class VariantListCustomer extends Component {
           selectedVariantId={selectedVariantId}
         />
       ));
+      return [
+        <Components.Divider
+          i18nKeyLabel="productDetail.options"
+          key="dividerWithLabel"
+          label="Options"
+        />,
+        renderVariantsList
+      ];
     }
     return null;
   }

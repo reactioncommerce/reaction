@@ -9,12 +9,20 @@ import { Reaction } from "/client/api";
 import withCatalogItemProduct from "/imports/plugins/core/graphql/lib/hocs/withCatalogItemProduct";
 import getDisplayPriceByCurrency from "../../lib/helpers/getDisplayPriceByCurrency";
 import { ProductDetailCustomer } from "../components";
+import withAddCartItems from "/imports/plugins/core/graphql/lib/hocs/withAddCartItems";
+import withCreateCart from "/imports/plugins/core/graphql/lib/hocs/withCreateCart";
+import withPrimaryShopId from "/imports/plugins/core/graphql/lib/hocs/withPrimaryShopId";
+import getCart from "/imports/plugins/core/cart/client/util/getCart";
 
 const wrapComponent = (Comp) =>
   class ProductDetailCustomerContainer extends Component {
     static propTypes = {
+      addCartItems: PropTypes.func,
+      createCart: PropTypes.func,
       isLoading: PropTypes.bool,
       product: PropTypes.object,
+      shopId: PropTypes.string,
+      storedCart: PropTypes.object,
       template: PropTypes.string
     };
 
@@ -79,7 +87,35 @@ const wrapComponent = (Comp) =>
     };
 
     handleAddToCart = () => {
-      console.log("Added to cart. Use graphql here");
+      const { addCartItems, createCart, product, shopId, storedCart } = this.props;
+      const { cartQuantity, selectedVariantId, selectedOptionId } = this.state;
+      let selectedOption;
+      const selectedVariant = product.variants.find((variant) => variant._id === selectedVariantId);
+      if (selectedOptionId) {
+        selectedOption = selectedVariant.find((option) => option._id === selectedOptionId);
+      }
+      const selectedVariantOrOption = selectedOption || selectedVariant;
+      if (selectedVariant.options && !selectedOptionId) {
+        Alerts.inline("Please choose an option before adding to cart", "warning", {
+          placement: "productDetail",
+          i18nKey: "productDetail.chooseOptions",
+          autoHide: 10000
+        });
+      }
+      const items = [{
+        price: {
+          amount: selectedVariantOrOption.pricing[0].price, // TODO: this should be picked by currency code
+          currencyCode: "USD"
+        },
+        productConfiguration: {
+          productId: product.productId,
+          productVariantId: selectedVariantOrOption.variantId
+        },
+        quantity: cartQuantity
+      }];
+      if (!storedCart) {
+        createCart({ variables: { input: { items, shopId } } });
+      }
     }
 
     getDisplayPriceOfSelectedVariantOrOption() {
@@ -154,15 +190,20 @@ function composer(props, onData) {
   }
 
   const productId = Reaction.Router.getParam("handle");
+  const { cart: storedCart } = getCart();
 
   onData(null, {
-    productId
+    productId,
+    storedCart
   });
 }
 
 registerComponent("ProductDetailCustomer", ProductDetailCustomer, [
   composeWithTracker(composer),
   withCatalogItemProduct,
+  withAddCartItems,
+  withCreateCart,
+  withPrimaryShopId,
   wrapComponent
 ]);
 
@@ -170,5 +211,8 @@ registerComponent("ProductDetailCustomer", ProductDetailCustomer, [
 export default compose(
   composeWithTracker(composer),
   withCatalogItemProduct,
+  withAddCartItems,
+  withCreateCart,
+  withPrimaryShopId,
   wrapComponent
 )(ProductDetailCustomer);

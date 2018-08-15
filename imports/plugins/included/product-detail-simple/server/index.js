@@ -17,8 +17,9 @@ Reaction.registerTemplate({
 
 Reaction.registerTemplate({
   name: "productDetailSimpleCustomer",
-  title: "Product Detail Simple Layout",
+  title: "Product Detail Simple Layout Customer",
   type: "react",
+  enabled: false,
   templateFor: ["pdp"],
   permissions: ["admin", "owner"],
   audience: ["anonymous", "guest"],
@@ -38,6 +39,7 @@ Reaction.registerTemplate({
   name: "productDetailTwoColumnCustomer",
   title: "Product Detail Two Column Layout Customer",
   type: "react",
+  enabled: false,
   templateFor: ["pdp"],
   audience: ["anonymous", "guest"],
   template: TwoColumnLayoutCustomer()

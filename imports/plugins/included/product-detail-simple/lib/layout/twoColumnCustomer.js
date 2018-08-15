@@ -25,7 +25,7 @@ export default function twoColumnCustomer() {
 
         // Metadata
         {
-          component: "ProductMetadata"
+          component: "ProductMetadataCustomer"
         }
       ]
     },
@@ -61,7 +61,7 @@ export default function twoColumnCustomer() {
           children: [
             // Title
             {
-              component: "ProductField",
+              component: "ProductFieldCustomer",
               // Example, you can set permissions components that are children of a block
               permissions: ["admin"],
               audience: ["guest", "anonymous"],
@@ -78,7 +78,7 @@ export default function twoColumnCustomer() {
 
             // PageTitle
             {
-              component: "ProductField",
+              component: "ProductFieldCustomer",
               permissions: ["admin"],
               audience: ["guest", "anonymous"],
               props: {
@@ -139,7 +139,7 @@ export default function twoColumnCustomer() {
 
         // Vendor
         {
-          component: "ProductField",
+          component: "ProductFieldCustomer",
           props: {
             fieldName: "vendor",
             fieldTitle: "Vendor",
@@ -150,7 +150,7 @@ export default function twoColumnCustomer() {
           }
         },
         {
-          component: "ProductField",
+          component: "ProductFieldCustomer",
           props: {
             fieldName: "description",
             fieldTitle: "Description",

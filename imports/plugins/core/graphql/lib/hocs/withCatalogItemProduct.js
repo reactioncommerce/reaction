@@ -8,8 +8,7 @@ export default (Comp) => (
   class CatalogItemProduct extends Component {
     static propTypes = {
       productId: PropTypes.string,
-      shouldSkipGraphql: PropTypes.bool,
-      uiStore: PropTypes.object
+      shouldSkipGraphql: PropTypes.bool
     };
 
     render() {
