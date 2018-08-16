@@ -34,3 +34,4 @@ import "./33_change_products_template_name";
 import "./34_remove_order_shipping_items";
 import "./35_add_type_to_carts";
 import "./36_convert_requiresShipping";
+import "./37_change_shipping_rate_settings_template_name";
