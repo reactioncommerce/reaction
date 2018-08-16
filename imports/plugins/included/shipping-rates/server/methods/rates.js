@@ -12,46 +12,41 @@ export const methods = {
    * shipping/rates/add
    * add new shipping flat rate methods
    * @summary insert shipping method for a flat rate provider
-   * @param { Object } rate a valid ShippingMethod object
-   * @return { Number } insert result
+   * @param {Object} rate a valid ShippingMethod object
+   * @param {String} providerId A shipping provider ID
+   * @return {Number} insert result
    */
-  "shipping/rates/add"(rate) {
+  "shipping/rates/add"(rate, providerId) {
     check(rate, {
-      _id: Match.Optional(String),
       name: String,
       label: String,
       group: String,
-      cost: Match.Optional(Number),
-      handling: Match.Optional(Number),
+      cost: Match.OneOf(Number, null, undefined),
+      handling: Number,
       rate: Number,
       enabled: Boolean
     });
+
     if (!Reaction.hasPermission(shippingRoles)) {
       throw new ReactionError("access-denied", "Access Denied");
     }
-    // a little trickery
-    // we passed in the providerId
-    // as _id, perhaps cleanup
-    let providerId;
-    if (rate._id) {
-      providerId = rate._id;
-    } else if (!Shipping.find({}).count()) { // There is no default provider, so add it
-      const defaultProvider = Shipping.insert({
+
+    const shopId = Reaction.getShopId();
+    if (!Shipping.findOne({ "provider.name": "flatRates", shopId })) {
+      Shipping.insert({
         name: "Default Shipping Provider",
-        shopId: Reaction.getShopId(),
+        shopId,
         provider: {
           name: "flatRates",
           label: "Flat Rate"
         }
       });
-      providerId = defaultProvider;
-    } else {
-      throw new ReactionError("bad-provider-id", "No Provider ID provided when adding methods");
     }
 
     rate._id = Random.id();
     return Shipping.update({
-      _id: providerId
+      shopId,
+      "provider.name": "flatRates"
     }, {
       $addToSet: {
         methods: rate

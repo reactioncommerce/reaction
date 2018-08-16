@@ -1,11 +1,37 @@
+import SimpleSchema from "simpl-schema";
 import { $ } from "meteor/jquery";
 import { Meteor } from "meteor/meteor";
 import { Template } from "meteor/templating";
 import { ReactiveDict } from "meteor/reactive-dict";
-import { AutoForm } from "meteor/aldeed:autoform";
 import { Shipping } from "/lib/collections";
-import { i18next } from "/client/api";
+import { formatPriceString, i18next } from "/client/api";
 import { IconButton, Loading, SortableTable } from "/imports/plugins/core/ui/client/components";
+import ShippingMethodForm from "../../../components/ShippingMethodForm";
+
+const fulfillmentMethodFormSchema = new SimpleSchema({
+  "name": String,
+  "label": String,
+  "group": {
+    type: String,
+    allowedValues: ["Free", "Ground", "One Day", "Priority"]
+  },
+  "cost": {
+    type: Number,
+    optional: true
+  },
+  "handling": {
+    type: Number,
+    min: 0
+  },
+  "rate": {
+    type: Number,
+    min: 0
+  },
+  "enabled": Boolean
+});
+
+const fulfillmentMethodValidator = fulfillmentMethodFormSchema.getFormValidator();
+const groupOptions = fulfillmentMethodFormSchema.getAllowedValuesForKey("group").map((groupName) => ({ label: groupName, value: groupName }));
 
 Template.shippingRatesSettings.onCreated(function () {
   this.autorun(() => {
@@ -87,30 +113,31 @@ Template.shippingRatesSettings.helpers({
     // filter and extract shipping methods
     // from flat rate shipping provider
     function transform(results) {
-      const result = [];
-      for (const method of results) {
-        if (method.provider && method.provider.name === "flatRates") {
-          result.push(method.methods);
-        }
-      }
-      return result[0];
+      const provider = results.find((shippingRecord) => shippingRecord.provider && shippingRecord.provider.name === "flatRates");
+      if (!provider) return [];
+
+      return (provider.methods || []).map((method) => ({
+        ...method,
+        rate: formatPriceString(method.rate)
+      }));
     }
 
     // return shipping Grid
     return {
-      component: SortableTable,
-      publication: "Shipping",
-      transform,
       collection: Shipping,
-      matchingResultsCount: "shipping-count",
-      showFilter: true,
-      rowMetadata: customRowMetaData,
-      filteredFields,
+      columnMetadata: customColumnMetadata,
       columns: filteredFields,
+      component: SortableTable,
+      externalLoadingComponent: Loading,
+      filteredFields,
+      matchingResultsCount: "shipping-count",
       noDataMessage,
       onRowClick: editRow,
-      columnMetadata: customColumnMetadata,
-      externalLoadingComponent: Loading
+      publication: "Shipping",
+      rowMetadata: customRowMetaData,
+      showFilter: true,
+      tableClassName: "-striped -highlight shippingGrid",
+      transform
     };
   },
 
@@ -119,103 +146,118 @@ Template.shippingRatesSettings.helpers({
     return instance;
   },
 
-  shippingRate() {
+  shippingMethodForm() {
     const instance = Template.instance();
     const id = instance.state.get("editingId");
-    const providerRates = Shipping.findOne({ "provider.name": "flatRates" }) || {};
-    let rate = {};
-    if (providerRates && providerRates.methods) {
-      if (id) {
-        for (const method of providerRates.methods) {
-          if (method._id === id) {
-            rate = method;
+
+    let methodDoc = null;
+    if (id) {
+      const providerRates = Shipping.findOne({ "provider.name": "flatRates" });
+      if (providerRates && providerRates.methods) {
+        methodDoc = providerRates.methods.find((method) => method._id === id);
+        // We don't yet have a NumberInput, so we'll make these strings for now.
+        // Remove this and switch to NumberInput once we have it.
+        if (methodDoc) {
+          methodDoc = {
+            ...methodDoc,
+            cost: typeof methodDoc.cost === "number" ? methodDoc.cost.toString() : methodDoc.cost,
+            handling: typeof methodDoc.handling === "number" ? methodDoc.handling.toString() : methodDoc.handling,
+            rate: typeof methodDoc.rate === "number" ? methodDoc.rate.toString() : methodDoc.rate
+          };
+        }
+      }
+    }
+
+    // We set the labels in here so that the error messages have the correct matching label.
+    // We can't set them in top-level code because translations are not loaded yet.
+    fulfillmentMethodFormSchema.labels({
+      cost: i18next.t("shippingMethod.cost"),
+      enabled: i18next.t("shippingMethod.enabled"),
+      group: i18next.t("shippingMethod.group"),
+      handling: i18next.t("shippingMethod.handling"),
+      label: i18next.t("shippingMethod.label"),
+      name: i18next.t("shippingMethod.name"),
+      rate: i18next.t("shippingMethod.rate")
+    });
+
+    return {
+      component: ShippingMethodForm,
+      groupOptions,
+      isEditing: !!id,
+      methodDoc,
+      onCancel() {
+        instance.state.set({
+          isEditing: false,
+          editingId: null
+        });
+      },
+      onDelete() {
+        const confirmTitle = i18next.t("admin.shippingSettings.confirmRateDelete");
+        const confirmButtonText = i18next.t("app.delete");
+        // confirm delete
+        Alerts.alert({
+          title: confirmTitle,
+          type: "warning",
+          showCancelButton: true,
+          confirmButtonText
+        }, (isConfirm) => {
+          if (isConfirm) {
+            if (id) {
+              Meteor.call("shipping/rates/delete", id, (error) => {
+                if (error) {
+                  Alerts.toast(`${i18next.t("admin.shippingSettings.rateFailed")} ${error}`, "error");
+                  return;
+                }
+                instance.state.set({
+                  isEditing: false,
+                  editingId: null
+                });
+                Alerts.toast(i18next.t("shipping.shippingMethodDeleted"), "success");
+              });
+            }
           }
-        }
-      } else {
-        // a little trick to provide _id for insert
-        rate._id = providerRates._id;
-      }
-    }
-    return rate;
-  }
-});
+        });
+      },
+      validator(doc) {
+        return fulfillmentMethodValidator(fulfillmentMethodFormSchema.clean(doc));
+      },
+      onSubmit(doc) {
+        // We don't yet have a NumberInput, so we'll make these strings for now.
+        // Remove this and switch to NumberInput once we have it.
+        const cleanedDoc = fulfillmentMethodFormSchema.clean(doc);
 
-//
-// on submit lets clear the form state
-//
-Template.shippingRatesSettings.events({
-  "submit #shipping-rates-update-form"() {
-    const instance = Template.instance();
-    instance.state.set({
-      isEditing: false,
-      editingId: null
-    });
-  },
-  "submit #shipping-rates-insert-form"() {
-    const instance = Template.instance();
-    instance.state.set({
-      isEditing: true,
-      editingId: null
-    });
-  },
-  "click .cancel, .shipping-grid-row .active"() {
-    const instance = Template.instance();
-    // remove active rows from grid
-    instance.state.set({
-      isEditing: false,
-      editingId: null
-    });
-    // ugly hack
-    $(".shipping-grid-row").removeClass("active");
-  },
-  "click .delete"() {
-    const confirmTitle = i18next.t("admin.shippingSettings.confirmRateDelete");
-    const confirmButtonText = i18next.t("app.delete");
-    const instance = Template.instance();
-    const id = instance.state.get("editingId");
-    // confirm delete
-    Alerts.alert({
-      title: confirmTitle,
-      type: "warning",
-      showCancelButton: true,
-      confirmButtonText
-    }, (isConfirm) => {
-      if (isConfirm) {
-        if (id) {
-          Meteor.call("shipping/rates/delete", id);
-          instance.state.set({
-            isEditing: false,
-            editingId: null
-          });
-        }
+        return new Promise((resolve, reject) => {
+          if (id) {
+            Meteor.call("shipping/rates/update", { ...cleanedDoc, _id: id }, (error) => {
+              if (error) {
+                Alerts.toast(`${i18next.t("admin.shippingSettings.rateFailed")} ${error}`, "error");
+                resolve({ ok: false });
+                return;
+              }
+              instance.state.set({
+                isEditing: false,
+                editingId: null
+              });
+              Alerts.toast(i18next.t("admin.shippingSettings.rateSaved"), "success");
+              resolve();
+            });
+          } else {
+            Meteor.call("shipping/rates/add", cleanedDoc, (error) => {
+              if (error) {
+                Alerts.toast(`${i18next.t("admin.shippingSettings.rateFailed")} ${error}`, "error");
+                resolve({ ok: false });
+                return;
+              }
+              instance.state.set({
+                isEditing: true,
+                editingId: null
+              });
+              Alerts.toast(i18next.t("admin.shippingSettings.rateSaved"), "success");
+              resolve();
+            });
+          }
+        });
       }
-    });
-  },
-  "click .shipping-grid-row"(event) {
-    // toggle all rows off, then add our active row
-    $(".shipping-grid-row").removeClass("active");
-    Template.instance().$(event.currentTarget).addClass("active");
-  }
-});
-
-//
-// Hooks for update and insert forms
-//
-AutoForm.hooks({
-  "shipping-rates-update-form": {
-    onSuccess() {
-      return Alerts.toast(i18next.t("admin.shippingSettings.rateSaved"), "success");
-    },
-    onError(operation, error) {
-      return Alerts.toast(`${i18next.t("admin.shippingSettings.rateFailed")} ${error}`, "error");
-    }
-  },
-  "shipping-rates-insert-form": {
-    onSuccess() {
-      return Alerts.toast(i18next.t("admin.shippingSettings.rateSaved"), "success");
-    },
-    onError(operation, error) {
-      return Alerts.toast(`${i18next.t("admin.shippingSettings.rateFailed")} ${error}`, "error");
-    }
+    };
   }
 });
