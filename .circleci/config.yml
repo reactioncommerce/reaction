@@ -47,7 +47,7 @@ jobs:
       - run:
           name: Check .js file size
           command: |
-            maxSize=2964687
+            maxSize=2967000
             size=$( wc -c ../build/bundle/programs/web.browser/*.js | awk '{$1=$1};1' | cut -d " " -f 1 )
             if [[ $size -gt $maxSize ]]; then
               echo "The production js file has size" $size "which exceeds limit of" $maxSize 1>&2
@@ -83,7 +83,7 @@ jobs:
           key: mongodb-memory-server
           paths:
             - ~/.mongodb-binaries
-      
+
 
   docker-build:
     <<: *defaults
