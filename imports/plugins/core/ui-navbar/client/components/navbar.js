@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Components } from "@reactioncommerce/reaction-components";
+import { Reaction } from "/client/api";
 
 class NavBar extends Component {
   static propTypes = {
@@ -131,9 +132,10 @@ class NavBar extends Component {
   }
 
   renderTagNav() {
+    const Comp = Reaction.hasAdminAccess() ? Components.TagNav : Components.TagNavCustomer
     return (
       <header className="menu" role="banner">
-        <Components.TagNav
+        <Comp
           isVisible={this.state.navBarVisible}
           closeNavbar={this.handleCloseNavbar}
           {...this.props}
@@ -142,7 +144,7 @@ class NavBar extends Component {
           {this.renderNotificationIcon()}
           {this.renderLanguage()}
           {this.renderCurrency()}
-        </Components.TagNav>
+        </Comp>
       </header>
     );
   }
