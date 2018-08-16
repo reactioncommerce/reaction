@@ -13,10 +13,9 @@ export const methods = {
    * add new shipping flat rate methods
    * @summary insert shipping method for a flat rate provider
    * @param {Object} rate a valid ShippingMethod object
-   * @param {String} providerId A shipping provider ID
    * @return {Number} insert result
    */
-  "shipping/rates/add"(rate, providerId) {
+  "shipping/rates/add"(rate) {
     check(rate, {
       name: String,
       label: String,
