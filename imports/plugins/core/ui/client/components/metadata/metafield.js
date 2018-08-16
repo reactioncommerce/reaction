@@ -64,6 +64,7 @@ class Metafield extends Component {
   };
 
   highlightInput = (inputRef) => {
+    this.setState({ inputOriginalValue: inputRef.value });
     highlightInput(inputRef);
   }
 
