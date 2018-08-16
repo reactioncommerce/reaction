@@ -252,9 +252,10 @@ export default {
    */
   getPrimaryShopId() {
     const primaryShop = this.getPrimaryShop();
-    if (primaryShop) {
-      return primaryShop._id;
-    }
+
+    if (!primaryShop) { return null; }
+
+    return primaryShop._id;
   },
 
   /**
@@ -373,7 +374,7 @@ export default {
     try {
       // otherwise, find the shop by user settings
       shopId = this.getUserShopId(Meteor.userId());
-    } catch (e) {
+    } catch (_e) {
       // `Meteor.userId` will raise an error when invoked outside of a method
       // call or publication, i.e., at startup. That's ok here.
     }
@@ -381,6 +382,14 @@ export default {
     // if still not found, look up the shop by domain
     if (!shopId) {
       shopId = this.getShopIdByDomain();
+    }
+
+    // use the primary shop id by default
+    if (!shopId) {
+      const domain = this.connectionDomain();
+      Logger.warn(`No shop matching domain '${domain}'. Defaulting to Primary Shop.`);
+
+      shopId = this.getPrimaryShopId();
     }
 
     // store the value for faster responses
@@ -395,6 +404,7 @@ export default {
    * @memberof Core
    * @summary allows the client to trigger an uncached lookup of the shopId.
    *          this is useful when a user switches shops.
+   * @return {undefined}
    */
   resetShopId() {
     ConnectionDataStore.clear("shopId");
@@ -405,7 +415,7 @@ export default {
    * @summary Whether the current shop is the Primary Shop (vs a Merchant Shop)
    * @method
    * @memberof Core
-   * @return {Boolean}
+   * @return {Boolean} whether shop is flagged as primary
    */
   isShopPrimary() {
     return this.getShopId() === this.getPrimaryShopId();
@@ -415,7 +425,8 @@ export default {
    * @name getShopIdByDomain
    * @method
    * @memberof Core
-   * @summary returns the shop which should be used given the current domain
+   * @summary searches for a shop which should be used given the current domain
+   * @return {StringId} shopId
    */
   getShopIdByDomain() {
     const domain = this.getDomain();
@@ -437,7 +448,8 @@ export default {
    * @memberof Core
    * @summary Get a user's shop ID, as stored in preferences
    * @todo This should intelligently find the correct default shop Probably whatever the main shop is or marketplace
-   * @return {StringId}        active shop ID
+   * @param {String} userId (probably Meteor.userId())
+   * @return {StringId} active shop ID
    */
   getUserShopId(userId) {
     check(userId, String);
@@ -732,7 +744,7 @@ export default {
     // for each shop, we're loading packages in a unique registry
     // Object.keys(pkgConfigs).forEach((pkgName) => {
     for (const packageName in packages) {
-      // Guard to prvent unexpected `for in` behavior
+      // Guard to prevent unexpected `for in` behavior
       if ({}.hasOwnProperty.call(packages, packageName)) {
         const config = packages[packageName];
         this.assignOwnerRoles(shopId, packageName, config.registry);

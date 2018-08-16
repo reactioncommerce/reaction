@@ -1,3 +1,55 @@
+# v1.15.0
+## GraphQL Checkout
+Placeholder for release notes about GraphQL Checkout
+
+## Breaking Changes
+  - If a plugin adds an "afterCartUpdate" hook, it will no longer be called. Change the plugin code to use appEvents.on("afterCartUpdate" instead. (#4535)
+  - If a plugin creates or updates a cart, be sure it calls appEvents.emit("afterCartCreate") or appEvents.emit("afterCartUpdate"), respectively, passing the proper arguments. If you do this within an appEvents.on hook for the same event, be sure to wrap the call in conditional logic to avoid an infinite loop. (#4535)
+  - Any non-core plugins that are expecting the items property to be there. Such plugins should be updated to use a combination of itemIds and the main items list. (#4497)
+
+
+## GraphQL DevServer
+### Features
+ - feat(GraphQL): update fulfillment options for group (#4538)
+ - feat(GraphQL): Add resolver for Cart.totalItemQuantity (#4533)
+ - feat(GraphQL): add resolver for Cart.checkout (#4507)
+
+## Fixes
+ - fix(GraphQL): Fix CartItem.currentQuantity (#4508)
+
+## Meteor App
+### Features
+ - feat: Convert product grid to consume GraphQL data (#4481) .. Resolves #4480
+
+### Fixes
+ - fix: for sidebar unable to be opened (edge condition) (#4546) .. Resolves #4545
+ - fix(marketplace): Default to Primary Shop when no domains match (#4544)
+ - fix: sync lowInventoryThreshold number between variants and child options (#4519)
+ - fix: Product prices showing as $NaN.undefined on the customer product grid (#4518)
+
+### Refactor
+ - refactor: Refactor cart / fulfillment hooks (#4535)
+ - refactor fulfillment items (#4531)
+ - refactor: 4477 nnnnat reaction error (#4494)
+ - refactor: Dynamically import Swiper to reduce client bundle size (#4515) .. Resolves #4514
+
+
+# v1.14.1
+## Patch release
+Resolves issues found after releasing `1.14.0` - one causing jsdoc to fail during CI builds for the `master` branch, and another where method hooks were running incorrectly occasionally for `catalog/publish/products` and `accoutns/addressBookAdd`. See specific PRs for more details.
+
+## Meteor App
+### Bugfixes
+ - fix: Ensure method hooks always run with correct timing (before and after method) (#4537) .. Resolves #4437
+ - fix: jsdoc promise returns (#4539)
+ - fix: Null Guarding in GroupsTableCell (#4440)
+
+ ## Contributors
+Thanks to @pmn4 for contributing to this release :tada:
+
+## NPM Package Version Changes
+There are no dependency changes in this release
+
 # v1.14.0
 ## Removing Optional Plugins
 As part of our focus simplifying the core Reaction application and improving performance, we've [made the decision to remove optional plugins from the core application](https://blog.reactioncommerce.com/the-road-ahead-product-updates-june-2018/). From our blog post on this topic:
@@ -28,7 +80,7 @@ The list of packages that have been removed in this release is as follows:
   - Discount Rates (unused, not the same as our current discount codes)
   - Logging (unused by core application)
 
-This work is listed as a breaking change. If your application relies on any of these packages, you will have to install them independently of Reaction going forward. This Release will not destroy data associated with these plugins, so you should be able to safely update without losing information. However, please be sure to test this for your specific application before deploying to production and as always, backup your data before updating versions.
+This work is listed as a breaking change. If your application relies on any of these packages, you will have to install them independently of Reaction going forward. This release will not destroy data associated with these plugins, so you should be able to safely update without losing information. However, please be sure to test this for your specific application before deploying to production and as always, backup your data before updating versions.
 
 ## GraphQL Cart
 This release contains the Cart and Checkout GraphQL schemas along with several cart queries and mutations. We're starting to make some changes to the core cart schemas for Reaction and the process that we use to create and identify carts.
@@ -45,7 +97,7 @@ One of the major changes to carts is related to how we store information necessa
 
 Recognizing the need to be able to handle orders which have items that require different types of fulfillment, we're organizing items into what we're calling "Fulfillment Groups." The most basic example is that a fulfillment group could be a group of items that is getting shipped to a specific address. For an order with `n` items, there can exist up to `n` fulfillment groups within that cart. This specific release doesn't introduce any new functionality for adding new types of fulfillment groups or splitting a single cart into multiple fulfillments, but it does lay the groundwork for splitting orders, creating new fulfillment types such as an in store pickup, ship to store, digital downloads, or generated license keys.
 
-We're currently mapping this new GraphQL Schema to the existing Reaction Simple Schema, but will be transitioning to
+We're currently mapping this new GraphQL Schema to the existing Reaction Simple Schema, but will be transitioning all of our existing schemas to match (more or less) our new GraphQL schemas going forward.
 
 A cart will still be associated with a single shop. This is consistent with current behavior.
 
@@ -570,6 +622,17 @@ url-parse-lax
 url-to-options
 weak-map
 ```
+
+## Metrics
+You don't improve what you don't measure. In efforts to improve the size of our bundles, the time to first paint, time to interactive, and overall performance of our applications, we're starting to report on bundle size and some performance metrics in every release. With effort and persistence, we'll see these numbers improve over time.
+
+### Bundle Size
+We measure bundle size by building the application using `meteor build` and then measuring the js and css bundle size with the command `wc -c /path/to/js-bundle-file.js`
+
+**JS Modern Browsers:** 4872kb
+**JS Legacy Browsers:** 5104kb
+**CSS All Browsers:** 392kb
+
 
 # v1.13.1
 

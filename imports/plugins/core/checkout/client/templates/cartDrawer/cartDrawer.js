@@ -1,5 +1,5 @@
-import Swiper from "swiper";
 import { Components } from "@reactioncommerce/reaction-components";
+import Logger from "@reactioncommerce/logger";
 import { Session } from "meteor/session";
 import { Template } from "meteor/templating";
 import getCart from "/imports/plugins/core/cart/client/util/getCart";
@@ -46,18 +46,26 @@ Template.openCartDrawer.onRendered(() => {
   let swiper;
   document.querySelector("#cart-drawer-container").classList.add("opened");
   if (!swiper) {
-    swiper = new Swiper(".cart-drawer-swiper-container", {
-      direction: "horizontal",
-      setWrapperSize: true,
-      loop: false,
-      grabCursor: true,
-      slidesPerView: "auto",
-      wrapperClass: "cart-drawer-swiper-wrapper",
-      slideClass: "cart-drawer-swiper-slide",
-      slideActiveClass: "cart-drawer-swiper-slide-active",
-      pagination: ".cart-drawer-pagination",
-      paginationClickable: true
-    });
+    import("swiper")
+      .then((module) => {
+        const Swiper = module.default;
+        swiper = new Swiper(".cart-drawer-swiper-container", {
+          direction: "horizontal",
+          setWrapperSize: true,
+          loop: false,
+          grabCursor: true,
+          slidesPerView: "auto",
+          wrapperClass: "cart-drawer-swiper-wrapper",
+          slideClass: "cart-drawer-swiper-slide",
+          slideActiveClass: "cart-drawer-swiper-slide-active",
+          pagination: ".cart-drawer-pagination",
+          paginationClickable: true
+        });
+        return swiper;
+      })
+      .catch((error) => {
+        Logger.error(error.message, "Unable to load Swiper module");
+      });
   }
 });
 

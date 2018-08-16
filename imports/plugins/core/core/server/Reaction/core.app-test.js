@@ -4,6 +4,7 @@ import { expect } from "meteor/practicalmeteor:chai";
 import { sinon } from "meteor/practicalmeteor:sinon";
 import { Shops } from "/lib/collections";
 
+import Logger from "@reactioncommerce/logger";
 import core from "./core";
 import ConnectionDataStore from "/imports/plugins/core/core/server/util/connectionDataStore";
 
@@ -50,8 +51,7 @@ describe("Server/API/Core", () => {
       sandbox.stub(Meteor, "userId").returns(userId);
 
       const fnGetUserShopId =
-        // sandbox.stub(core, "getUserShopId").withArgs(userId).returns(shop._id);
-        sandbox.stub(core, "getUserShopId").returns(shop._id);
+        sandbox.stub(core, "getUserShopId").withArgs(userId).returns(shop._id);
 
       expect(core.getShopId()).to.equal(shop._id);
       expect(fnGetUserShopId.called).to.be.true;
@@ -65,6 +65,20 @@ describe("Server/API/Core", () => {
 
       expect(core.getShopId()).to.equal(shop._id);
       expect(fnGetShopIdByDomain.called).to.be.true;
+    });
+
+    it("defaults to the Primary Shop", () => {
+      const primaryShopId = randomString();
+      const fnGetPrimaryShopId =
+        sandbox.stub(core, "getPrimaryShopId").returns(primaryShopId);
+      const fnLogger =
+        sandbox.stub(Logger, "warn").withArgs(sinon.match(/No shop matching/));
+      sandbox.stub(Meteor, "userId").returns(null);
+      sandbox.stub(core, "getShopIdByDomain").returns(null);
+
+      expect(core.getShopId()).to.equal(primaryShopId);
+      expect(fnGetPrimaryShopId.called).to.be.true;
+      expect(fnLogger.called).to.be.true;
     });
 
     it("caches the shopId for subsequent calls", () => {

@@ -1,4 +1,3 @@
-import getShippingRates from "./getShippingRates";
 import providerToggle from "./providerToggle";
 import statusRefresh from "./statusRefresh";
 import updateParcelSize from "./updateParcelSize";
@@ -13,7 +12,6 @@ import updateShipmentQuotes from "./updateShipmentQuotes";
 */
 
 export default {
-  "shipping/getShippingRates": getShippingRates,
   "shipping/provider/toggle": providerToggle,
   "shipping/status/refresh": statusRefresh,
   "shipping/updateParcelSize": updateParcelSize,

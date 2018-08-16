@@ -1,7 +1,7 @@
 {
   "name": "reaction",
   "description": "Reaction is a modern reactive, real-time event driven ecommerce platform.",
-  "version": "1.14.0",
+  "version": "1.15.0",
   "main": "main.js",
   "directories": {
     "test": "tests"
@@ -76,7 +76,7 @@
     "immutable": "^3.8.2",
     "jquery-i18next": "^1.2.1",
     "later": "^1.2.0",
-    "libphonenumber-js": "^1.0.24",
+    "libphonenumber-js": "1.4.2",
     "lodash": "^4.17.10",
     "lodash.pick": "^4.4.0",
     "match-sorter": "^2.2.0",
