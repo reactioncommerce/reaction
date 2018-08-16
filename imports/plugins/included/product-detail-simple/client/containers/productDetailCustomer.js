@@ -28,7 +28,9 @@ const wrapComponent = (Comp) =>
 
     constructor(props) {
       super(props);
-      // Component is reconstructed when product is received from graphql HOC
+      // If PDP is accessed through a page refresh, component is reconstructed
+      // when product is received from graphql HOC
+      // componentDidUpdate will not be called, so media and selectedVariant should be set here
       let selectedVariantId;
       let mediaList;
       const { product } = props;
@@ -42,6 +44,15 @@ const wrapComponent = (Comp) =>
         media: mediaList,
         selectedVariantId
       };
+    }
+
+    componentDidUpdate(_, prevState) {
+      // If accessed by clicking from product grid, component is not reconstructed
+      // so selectedVariant should be set here
+      const { product } = this.props;
+      if (this.props.product && prevState && !prevState.selectedVariantId) {
+        this.handleSelectVariant(product.variants[0]);
+      }
     }
 
     selectVariant = (variant, selectedOptionId) => {
