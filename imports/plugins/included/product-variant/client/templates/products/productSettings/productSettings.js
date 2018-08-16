@@ -6,8 +6,6 @@ import { Reaction } from "/client/api";
 import Logger from "/client/modules/logger";
 import { Catalog, getPrimaryMediaForItem, ReactionProduct } from "/lib/api";
 import { Products } from "/lib/collections";
-import { isRevisionControlEnabled } from "/imports/plugins/core/revisions/lib/api";
-import { applyProductRevision } from "/lib/api/products";
 
 function updateVariantProductField(variants, field, value) {
   return variants.map((variant) => Meteor.call("products/updateProductField", variant._id, field, value));
@@ -30,7 +28,7 @@ Template.productSettings.onCreated(function () {
         _id: {
           $in: productIds
         }
-      }).map((product) => applyProductRevision(product));
+      }).fetch();
 
       this.state.set("productIds", productIds);
       this.state.set("products", products);
@@ -122,28 +120,18 @@ Template.productSettings.events({
     const instance = Template.instance();
     const products = instance.state.get("products") || [];
 
-    if (isRevisionControlEnabled()) {
-      for (const product of products) {
-        // Update the visibility using the first selected product to determine the proper
-        // visibility toggle. This is to ensure that all selected products will become visible or not visible
-        // at the same time so it's not confusing.
-        Meteor.call("products/updateProductField", product._id, "isVisible", !products[0].isVisible);
-        // update the variants visibility
-        const variants = Products.find({
-          ancestors: {
-            $in: [product._id]
-          }
-        });
-        updateVariantProductField(variants, "isVisible", !products[0].isVisible);
-      }
-    } else {
-      // The legacy behavior will bulk toggle visibilty of each product seperatly.
-      //
-      // Example:
-      // If you selected 10 products, and 5 were visible and 5 were not visible, and then
-      // clicked the visibility button, 5 products would switched from not visible to visible, and the other 5
-      // would be swiched from visible to not visible.
-      ReactionProduct.publishProduct(products);
+    for (const product of products) {
+      // Update the visibility using the first selected product to determine the proper
+      // visibility toggle. This is to ensure that all selected products will become visible or not visible
+      // at the same time so it's not confusing.
+      Meteor.call("products/updateProductField", product._id, "isVisible", !products[0].isVisible);
+      // update the variants visibility
+      const variants = Products.find({
+        ancestors: {
+          $in: [product._id]
+        }
+      });
+      updateVariantProductField(variants, "isVisible", !products[0].isVisible);
     }
   },
   "click [data-event-action=cloneProduct]"() {

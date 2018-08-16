@@ -4,14 +4,15 @@ import { Template } from "meteor/templating";
 import { Reaction } from "/client/api";
 import Logger from "/client/modules/logger";
 import * as Collections from "/lib/collections";
+import getCart from "/imports/plugins/core/cart/client/util/getCart";
 
 /**
- * reactionTemplate helper
- * use the reactionTemplate helper when you are using templates defined
- * as workflow templates in the package registery.Layout
+ * @name reactionTemplate
+ * @summary use the reactionTemplate helper when you are using templates defined
+ * as workflow templates in the package registry.Layout
  * use "collection" on the layout to indicate a workflow source
- *
- * @summary reactionTemplate provides templates as defined in ReactionRegistry.Layout
+ * @memberof BlazeTemplateHelpers
+ * @description reactionTemplate provides templates as defined in ReactionRegistry.Layout
  * @param {Object} options - workflow defaults to "coreLayout/coreWorkflow"
  * @returns {Array} returns an array with labels, templates that match workflow
  */
@@ -50,10 +51,8 @@ Template.registerHelper("reactionTemplate", (options) => {
   if (Template.currentData() && Template.currentData()._id) {
     currentId = Template.currentData()._id;
   } else {
-    const currentCart = Collections.Cart.findOne({
-      userId: Meteor.userId()
-    });
-    currentId = currentCart && currentCart._id;
+    const { cart } = getCart();
+    currentId = cart && cart._id;
   }
   // we'll get current cart status by default, as the most common case
   // TODO: expand query options
@@ -62,7 +61,11 @@ Template.registerHelper("reactionTemplate", (options) => {
   // The currentCollection must have workflow schema attached.
   // layoutConfigCollection is the collection defined in Shops.workflow
   const workflowTargetCollection = Collections[layoutConfigCollection];
-  const currentCollection = workflowTargetCollection.findOne(currentId);
+  const currentCollection = workflowTargetCollection.findOne({ _id: currentId });
+  if (!currentCollection || !currentCollection.workflow) {
+    return reactionTemplates;
+  }
+
   const currentStatus = currentCollection.workflow.status;
   const currentCollectionWorkflow = currentCollection.workflow.workflow;
   const packages = Collections.Packages.find({
@@ -102,5 +105,6 @@ Template.registerHelper("reactionTemplate", (options) => {
       }
     }
   });
+
   return reactionTemplates;
 });

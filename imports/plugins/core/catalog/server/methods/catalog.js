@@ -1,15 +1,19 @@
 import _ from "lodash";
+import Hooks from "@reactioncommerce/hooks";
+import Logger from "@reactioncommerce/logger";
 import Random from "@reactioncommerce/random";
 import { check, Match } from "meteor/check";
 import { EJSON } from "meteor/ejson";
 import { Meteor } from "meteor/meteor";
 import { ReactionProduct } from "/lib/api";
-import { Hooks, Logger, Reaction } from "/server/api";
-import { MediaRecords, Products, Revisions, Tags } from "/lib/collections";
+import Reaction from "/imports/plugins/core/core/server/Reaction";
+import { MediaRecords, Products, Tags } from "/lib/collections";
 import { Media } from "/imports/plugins/core/files/server";
 import rawCollections from "/imports/collections/rawCollections";
-import getProductPriceRange from "/imports/plugins/core/revisions/server/no-meteor/utils/getProductPriceRange";
-import getVariants from "/imports/plugins/core/revisions/server/no-meteor/utils/getVariants";
+import hashProduct, { createProductHash } from "../no-meteor/mutations/hashProduct";
+import getProductPriceRange from "../no-meteor/utils/getProductPriceRange";
+import getVariants from "../no-meteor/utils/getVariants";
+import hasChildVariant from "../no-meteor/utils/hasChildVariant";
 import isSoldOut from "../no-meteor/utils/isSoldOut";
 import isLowQuantity from "../no-meteor/utils/isLowQuantity";
 import isBackorder from "../no-meteor/utils/isBackorder";
@@ -188,7 +192,7 @@ function copyMedia(newId, variantOldId, variantNewId) {
     "metadata.variantId": variantOldId
   })
     .then((fileRecords) => {
-      // Copy File and insert directly, bypassing revision control
+      // Copy File and insert
       const promises = fileRecords.map((fileRecord) => (
         fileRecord.fullClone({
           productId: newId,
@@ -256,7 +260,6 @@ function denormalize(id, field) {
     }
   }
 
-  // TODO: Determine if product revision needs to be updated as well.
   Products.update(
     id,
     {
@@ -315,10 +318,20 @@ function flushQuantity(id) {
  * @return {Object} product - new product
  */
 function createProduct(props = null) {
+  const finalProps = props || {};
+  if (finalProps.type !== "variant" && !finalProps.handle) {
+    if (typeof finalProps.title === "string" && finalProps.title.length) {
+      finalProps.handle = Reaction.getSlug(finalProps.title);
+    } else {
+      finalProps.handle = Random.id();
+    }
+  }
+
   const _id = Products.insert(
     {
+      shopId: Reaction.getShopId(),
       type: "simple",
-      ...props
+      ...finalProps
     },
     {
       validate: false
@@ -335,9 +348,7 @@ function createProduct(props = null) {
 /**
  * @function
  * @name updateCatalogProduct
- * @summary Updates a product's revision and conditionally updates
- * the underlying product.
- *
+ * @summary Updates a product document.
  * @param {String} userId - currently logged in user
  * @param {Object} selector - selector for product to update
  * @param {Object} modifier - Object describing what parts of the document to update.
@@ -347,23 +358,19 @@ function createProduct(props = null) {
 function updateCatalogProduct(userId, selector, modifier, validation) {
   const product = Products.findOne(selector);
 
-  const shouldUpdateProduct = Hooks.Events.run("beforeUpdateCatalogProduct", product, {
+  Hooks.Events.run("beforeUpdateCatalogProduct", product, {
     userId,
     modifier,
     validation
   });
 
-  if (shouldUpdateProduct) {
-    const result = Products.update(selector, modifier, validation);
+  const result = Products.update(selector, modifier, validation);
 
-    Hooks.Events.run("afterUpdateCatalogProduct", product, { modifier });
+  hashProduct(product._id, rawCollections, false);
 
-    return result;
-  }
+  Hooks.Events.run("afterUpdateCatalogProduct", product._id, { modifier });
 
-  Logger.debug(`beforeUpdateCatalogProduct hook returned falsy, not updating catalog product`);
-
-  return false;
+  return result;
 }
 
 Meteor.methods({
@@ -393,8 +400,7 @@ Meteor.methods({
     }
 
     // Verify that this variant and any ancestors are not deleted.
-    // Child variants cannot be added if a parent product or product revision
-    // is marked as `{ isDeleted: true }`
+    // Child variants cannot be added if a parent product is marked as `{ isDeleted: true }`
     if (ReactionProduct.isAncestorDeleted(variant, true)) {
       throw new Meteor.Error("server-error", "Unable to create product variant");
     }
@@ -469,7 +475,6 @@ Meteor.methods({
 
       let newId;
       try {
-        Hooks.Events.run("beforeInsertCatalogProductInsertRevision", clone);
         newId = Products.insert(clone, { validate: false });
         const newProduct = Products.findOne(newId);
         Hooks.Events.run("afterInsertCatalogProduct", newProduct);
@@ -512,8 +517,7 @@ Meteor.methods({
     const { ancestors } = product;
 
     // Verify that the parent variant and any ancestors are not deleted.
-    // Child variants cannot be added if a parent product or product revision
-    // is marked as `{ isDeleted: true }`
+    // Child variants cannot be added if a parent product is marked as `{ isDeleted: true }`
     if (ReactionProduct.isAncestorDeleted(product, true)) {
       throw new Meteor.Error("server-error", "Unable to create product variant");
     }
@@ -522,6 +526,8 @@ Meteor.methods({
     const assembledVariant = Object.assign(newVariant || {}, {
       _id: newVariantId,
       ancestors,
+      taxCode: product.taxCode,
+      shopId: product.shopId,
       type: "variant"
     });
 
@@ -540,10 +546,8 @@ Meteor.methods({
     }
 
     Hooks.Events.run("beforeInsertCatalogProduct", assembledVariant);
-    const _id = Products.insert(assembledVariant);
+    Products.insert(assembledVariant);
     Hooks.Events.run("afterInsertCatalogProduct", assembledVariant);
-
-    Hooks.Events.run("afterInsertCatalogProductInsertRevision", Products.findOne({ _id }));
 
     Logger.debug(`products/createVariant: created variant: ${newVariantId} for ${parentId}`);
 
@@ -628,7 +632,7 @@ Meteor.methods({
     const selector = {
       // Don't "archive" variants that are already marked deleted.
       isDeleted: {
-        $in: [false, undefined]
+        $ne: true
       },
       $or: [
         {
@@ -646,9 +650,17 @@ Meteor.methods({
     // out if nothing to delete
     if (!Array.isArray(toDelete) || toDelete.length === 0) return false;
 
-    // Flag the variant and all its children as deleted in Revisions collection.
+    // Flag the variant and all its children as deleted.
     toDelete.forEach((product) => {
       Hooks.Events.run("beforeRemoveCatalogProduct", product, { userId: this.userId });
+      Products.update({
+        _id: product._id,
+        type: product.type
+      }, {
+        $set: {
+          isDeleted: true
+        }
+      });
       Hooks.Events.run("afterRemoveCatalogProduct", this.userId, product);
     });
 
@@ -721,7 +733,6 @@ Meteor.methods({
       const newAncestors = [];
       ancestors.map((oldId) => {
         const pair = getIds(oldId);
-        // TODO do we always have newId on this step?
         newAncestors.push(pair[0].newId);
         return newAncestors;
       });
@@ -757,7 +768,6 @@ Meteor.methods({
         newProduct.title = createTitle(newProduct.title, newProduct._id);
         newProduct.handle = createHandle(Reaction.getSlug(newProduct.title), newProduct._id);
       }
-      Hooks.Events.run("beforeInsertCatalogProductInsertRevision", newProduct);
       result = Products.insert(newProduct, { validate: false });
       Hooks.Events.run("afterInsertCatalogProduct", newProduct);
       results.push(result);
@@ -786,7 +796,6 @@ Meteor.methods({
         delete newVariant.createdAt;
         delete newVariant.publishedAt; // TODO can variant have this param?
 
-        Hooks.Events.run("beforeInsertCatalogProductInsertRevision", newVariant);
         result = Products.insert(newVariant, { validate: false });
         Hooks.Events.run("afterInsertCatalogProduct", newVariant);
         copyMedia(productNewId, variant._id, variantNewId);
@@ -819,26 +828,19 @@ Meteor.methods({
         throw new Meteor.Error("invalid-parameter", "Product should have a valid shopId");
       }
 
-      // Create product revision
-      Hooks.Events.run("beforeInsertCatalogProductInsertRevision", product);
-
       return Products.insert(product);
     }
 
+    // Create a product
     const newSimpleProduct = createProduct();
 
-    // Create simple product revision
-    Hooks.Events.run("afterInsertCatalogProductInsertRevision", newSimpleProduct);
-
-    const newVariant = createProduct({
+    // Create a product variant
+    createProduct({
       ancestors: [newSimpleProduct._id],
       price: 0.0,
       title: "",
       type: "variant" // needed for multi-schema
     });
-
-    // Create variant revision
-    Hooks.Events.run("afterInsertCatalogProductInsertRevision", newVariant);
 
     return newSimpleProduct._id;
   },
@@ -877,7 +879,7 @@ Meteor.methods({
     const productsWithVariants = Products.find({
       // Don't "archive" products that are already marked deleted.
       isDeleted: {
-        $in: [false, undefined]
+        $ne: true
       },
       $or: [
         {
@@ -899,18 +901,25 @@ Meteor.methods({
       return ids;
     });
 
-    // Flag the product and all its variants as deleted in the Revisions collection.
+    // Flag the product and all of it's variants as deleted.
     productsWithVariants.forEach((toArchiveProduct) => {
       Hooks.Events.run("beforeRemoveCatalogProduct", toArchiveProduct, { userId: this.userId });
-
+      Products.update({
+        _id: toArchiveProduct._id,
+        type: toArchiveProduct.type
+      }, {
+        $set: {
+          isDeleted: true
+        }
+      });
       Hooks.Events.run("afterRemoveCatalogProduct", this.userId, toArchiveProduct);
     });
 
-    const numFlaggedAsDeleted = Revisions.find({
-      "documentId": {
+    const numFlaggedAsDeleted = Products.find({
+      _id: {
         $in: ids
       },
-      "documentData.isDeleted": true
+      isDeleted: true
     }).count();
 
     if (numFlaggedAsDeleted > 0) {
@@ -969,6 +978,12 @@ Meteor.methods({
       throw new Meteor.Error("access-denied", "Access Denied");
     }
 
+    if (field === "inventoryQuantity" && value === "") {
+      if (!Promise.await(hasChildVariant(_id, rawCollections))) {
+        throw new Meteor.Error("invalid", "Inventory Quantity is required when no child variants");
+      }
+    }
+
     const { type } = doc;
     let update;
     // handle booleans with correct typing
@@ -979,7 +994,7 @@ Meteor.methods({
       update = {
         // TODO: write function to ensure new handle is unique.
         // Should be a call similar to the line below.
-        [field]: createHandle(value, _id) // handle should be unique
+        [field]: createHandle(Reaction.getSlug(value), _id) // handle should be unique
       };
     } else if (field === "title" && doc.handle === doc._id) {
       // update handle once title is set
@@ -995,7 +1010,6 @@ Meteor.methods({
 
     // we need to use sync mode here, to return correct error and result to UI
     let result;
-
     try {
       result = updateCatalogProduct(
         this.userId,
@@ -1014,14 +1028,13 @@ Meteor.methods({
     }
 
     // If we get a result from the product update,
-    // meaning the update went past revision control,
     // denormalize and attach results to top-level product
     if (result === 1) {
       if (type === "variant" && toDenormalize.indexOf(field) >= 0) {
         denormalize(doc.ancestors[0], field);
       }
     }
-    return result;
+    return update;
   },
 
   /**
@@ -1568,5 +1581,23 @@ Meteor.methods({
 
     // if collection updated we return new `isVisible` state
     return res === 1 && !product.isVisible;
+  },
+
+  /**
+   * @name products/getpublishedProductHash
+   * @memberof Methods/Products
+   * @method
+   * @summary hashes product information for comparison purposes
+   * @param {String} productId - the product _id of the product to hash
+   * @return {String} hash of product
+   */
+  "products/getpublishedProductHash"(productId) {
+    check(productId, String);
+
+    const product = Products.findOne({ _id: productId });
+
+    const productHash = createProductHash(product, rawCollections);
+
+    return productHash;
   }
 });

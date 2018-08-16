@@ -54,7 +54,7 @@ class VariantForm extends Component {
 
   componentWillReceiveProps(nextProps) {
     const nextVariant = nextProps.variant || {};
-    const currentVariant = this.state.variant || {};
+    const currentVariant = this.props.variant || {};
 
     if (_.isEqual(nextVariant, currentVariant) === false) {
       for (const fieldName of fieldNames) {
@@ -173,12 +173,12 @@ class VariantForm extends Component {
     const inverseValue = !value;
 
     this.setState(({ variant }) => ({
+      inventoryPolicy: inverseValue,
       variant: {
         ...variant,
         [field]: inverseValue
       }
     }));
-
 
     this.handleFieldBlur(event, inverseValue, field);
   }

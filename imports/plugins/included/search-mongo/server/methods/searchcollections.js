@@ -1,7 +1,8 @@
 /* eslint camelcase: 0 */
+import Logger from "@reactioncommerce/logger";
 import { Meteor } from "meteor/meteor";
 import { check, Match } from "meteor/check";
-import { Reaction, Logger } from "/server/api";
+import Reaction from "/imports/plugins/core/core/server/Reaction";
 import { ProductSearch, OrderSearch, AccountSearch, Orders, Products, Accounts, Shops } from "/lib/collections";
 import utils from "./common";
 import { transformations } from "./transformations";
@@ -9,7 +10,7 @@ import { transformations } from "./transformations";
 let moment;
 async function lazyLoadMoment() {
   if (moment) return;
-  moment = await import("moment");
+  moment = await import("moment").default;
 }
 
 const requiredFields = {};
@@ -128,7 +129,9 @@ export function buildProductSearch(cb) {
 
   const rawProductSearchCollection = ProductSearch.rawCollection();
   rawProductSearchCollection.dropIndexes().catch(handleIndexUpdateFailures);
-  rawProductSearchCollection.createIndex(indexObject, weightObject, getSearchLanguage()).catch(handleIndexUpdateFailures);
+  const options = getSearchLanguage();
+  options.weights = weightObject;
+  rawProductSearchCollection.createIndex(indexObject, options).catch(handleIndexUpdateFailures);
   if (cb) {
     cb();
   }
@@ -143,7 +146,9 @@ export function buildEmptyProductSearch() {
   }
   const rawProductSearchCollection = ProductSearch.rawCollection();
   rawProductSearchCollection.dropIndexes().catch(handleIndexUpdateFailures);
-  rawProductSearchCollection.createIndex(indexObject, weightObject, getSearchLanguage()).catch(handleIndexUpdateFailures);
+  const options = getSearchLanguage();
+  options.weights = weightObject;
+  rawProductSearchCollection.createIndex(indexObject, options).catch(handleIndexUpdateFailures);
 }
 
 export function rebuildProductSearchIndex(cb) {
@@ -155,7 +160,9 @@ export function rebuildProductSearchIndex(cb) {
   }
   const rawProductSearchCollection = ProductSearch.rawCollection();
   rawProductSearchCollection.dropIndexes().catch(handleIndexUpdateFailures);
-  rawProductSearchCollection.createIndex(indexObject, weightObject, getSearchLanguage()).catch(handleIndexUpdateFailures);
+  const options = getSearchLanguage();
+  options.weights = weightObject;
+  rawProductSearchCollection.createIndex(indexObject, options).catch(handleIndexUpdateFailures);
   if (cb) {
     cb();
   }
@@ -169,11 +176,13 @@ export function ensureProductSearchIndex() {
     indexObject[field] = "text";
   }
   const rawProductSearchCollection = ProductSearch.rawCollection();
-  rawProductSearchCollection.createIndex(indexObject, weightObject, getSearchLanguage()).catch(handleIndexUpdateFailures);
+  const options = getSearchLanguage();
+  options.weights = weightObject;
+  rawProductSearchCollection.createIndex(indexObject, options).catch(handleIndexUpdateFailures);
 }
 
 export function buildOrderSearchRecord(orderId) {
-  const order = Orders.findOne(orderId);
+  const order = Orders.findOne({ _id: orderId });
   const user = Meteor.users.findOne(order.userId);
   const anonymousUserEmail = order.email;
 
@@ -238,9 +247,9 @@ export function buildOrderSearchRecord(orderId) {
   }
   orderSearch.product = {};
   orderSearch.variants = {};
-  orderSearch.product.title = order.items.map((item) => item.product && item.product.title);
-  orderSearch.variants.title = order.items.map((item) => item.variants && item.variants.title);
-  orderSearch.variants.optionTitle = order.items.map((item) => item.variants && item.variants.optionTitle);
+  orderSearch.product.title = order.items.map((item) => item.title);
+  orderSearch.variants.title = order.items.map((item) => item.variantTitle);
+  orderSearch.variants.optionTitle = order.items.map((item) => item.optionTitle);
 
   try {
     OrderSearch.upsert(orderId, { $set: { ...orderSearch } });

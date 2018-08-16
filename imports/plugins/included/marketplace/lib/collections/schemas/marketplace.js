@@ -1,8 +1,7 @@
 import SimpleSchema from "simpl-schema";
 import { check } from "meteor/check";
 import { Tracker } from "meteor/tracker";
-import { PackageConfig } from "/lib/collections/schemas/registry";
-import { Shop } from "/lib/collections/schemas/shops.js";
+import { PackageConfig, Shop } from "/lib/collections/schemas";
 import { registerSchema } from "@reactioncommerce/schemas";
 
 /**
@@ -64,10 +63,10 @@ export const MarketplacePackageConfig = PackageConfig.clone().extend({
     type: Array,
     defaultValue: [{
       shopType: "merchant",
-      active: true
+      enabled: true
     }, {
       shopType: "affiliate",
-      active: false
+      enabled: false
     }]
   },
   "settings.shops.enabledShopTypes.$": {

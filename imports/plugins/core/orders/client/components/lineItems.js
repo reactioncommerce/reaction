@@ -83,7 +83,7 @@ class LineItems extends Component {
 
           <div className="order-item-details">
             <div className="order-detail-title">
-              {uniqueItem.title} <br/><small>{uniqueItem.variants.title}</small>
+              {uniqueItem.title} <br/><small>{uniqueItem.variantTitle}</small>
             </div>
           </div>
 
@@ -93,7 +93,7 @@ class LineItems extends Component {
 
           <div className="order-detail-price">
             <div className="invoice-details" style={{ marginRight: 15 }}>
-              <strong>{formatPriceString(uniqueItem.variants.price)}</strong>
+              <strong>{formatPriceString(uniqueItem.priceWhenAdded.amount)}</strong>
             </div>
           </div>
 
@@ -127,7 +127,7 @@ class LineItems extends Component {
 
           <div className="order-item-details">
             <div className="order-detail-title">
-              {uniqueItem.title} <br/><small>{uniqueItem.variants.title}</small>
+              {uniqueItem.title} <br/><small>{uniqueItem.variantTitle}</small>
             </div>
           </div>
 
@@ -145,7 +145,7 @@ class LineItems extends Component {
 
           <div className="order-detail-price">
             <div className="invoice-details" style={{ marginRight: 15 }}>
-              <strong>{formatPriceString(uniqueItem.variants.price)}</strong>
+              <strong>{formatPriceString(uniqueItem.priceWhenAdded.amount)}</strong>
             </div>
           </div>
 
@@ -187,7 +187,7 @@ class LineItems extends Component {
               i18nKey="cartSubTotals.subtotal"
             />
           </b>
-          <span><b>{formatPriceString(uniqueItem.variants.price * uniqueItem.quantity)}</b></span>
+          <span><b>{formatPriceString(uniqueItem.priceWhenAdded.amount * uniqueItem.quantity)}</b></span>
         </div>
       </div>
     );
@@ -253,7 +253,7 @@ class LineItems extends Component {
         constraints={[
           {
             to: "scrollParent",
-            pin: true
+            pin: ["top", "bottom"]
           },
           {
             to: "window",
@@ -261,6 +261,7 @@ class LineItems extends Component {
           }
         ]}
         showDropdownButton={false}
+        showShadow
       >
         {this.popOverContent()}
       </Components.Popover>

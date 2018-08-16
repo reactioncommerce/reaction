@@ -1,19 +1,17 @@
 import _ from "lodash";
+import Logger from "@reactioncommerce/logger";
 import { Meteor } from "meteor/meteor";
 import { Roles } from "meteor/alanning:roles";
 import { Accounts, Groups } from "/lib/collections";
 import { lifecycle } from "recompose";
 import { composeWithTracker } from "./composer";
 
-let Logger;
 let Reaction;
 
 if (Meteor.isClient) {
-  ({ Logger } = require("/client/api"));
   ({ Reaction } = require("/client/api"));
 } else {
-  ({ Logger } = require("/server/api"));
-  ({ Reaction } = require("/server/api"));
+  Reaction = require("/imports/plugins/core/core/server/Reaction").default;
 }
 
 
@@ -44,11 +42,9 @@ export function withMoment(component) {
   return lifecycle({
     componentDidMount() {
       import("moment")
-        .then((moment) => {
+        .then(({ default: moment }) => {
           moment.locale(Reaction.Locale.get().language);
-          this.setState({
-            moment
-          });
+          this.setState({ moment });
           return null;
         })
         .catch((error) => {
@@ -71,10 +67,8 @@ export function withMomentTimezone(component) {
   return lifecycle({
     componentDidMount() {
       import("moment-timezone")
-        .then((moment) => {
-          this.setState({
-            momentTimezone: moment.tz
-          });
+        .then(({ default: moment }) => {
+          this.setState({ momentTimezone: moment.tz });
           return null;
         })
         .catch((error) => {
@@ -99,23 +93,20 @@ export function withCurrentAccount(component) {
     const shopId = Reaction.getShopId();
     const user = Meteor.user();
 
-    if (!shopId || !user) {
-      return null;
-    }
+    if (!shopId || !user) return;
 
-    const accSub = Meteor.subscribe("Accounts", user._id);
-    if (accSub.ready()) {
-      // shoppers should always be guests
-      const isGuest = Reaction.hasPermission("guest");
-      // but if a user has never logged in then they are anonymous
-      const isAnonymous = Roles.userIsInRole(user, "anonymous", shopId);
-      // this check for "anonymous" uses userIsInRole instead of hasPermission because hasPermission
-      // always return `true` when logged in as the owner.
-      // But in this case, the anonymous check should be false when a user is logged in
-      const account = Accounts.findOne(user._id);
+    const account = Accounts.findOne({ userId: user._id });
+    if (!account) return;
 
-      onData(null, { currentAccount: isGuest && !isAnonymous && account });
-    }
+    // shoppers should always be guests
+    const isGuest = Reaction.hasPermission("guest");
+    // but if a user has never logged in then they are anonymous
+    const isAnonymous = Roles.userIsInRole(user, "anonymous", shopId);
+    // this check for "anonymous" uses userIsInRole instead of hasPermission because hasPermission
+    // always return `true` when logged in as the owner.
+    // But in this case, the anonymous check should be false when a user is logged in
+
+    onData(null, { currentAccount: isGuest && !isAnonymous && account });
   }, false)(component);
 }
 

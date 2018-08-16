@@ -513,20 +513,6 @@
           "isCommercial": "To je komercialna naslov."
         }
       },
-      "revisions": {
-        "isDisabled": "Nadzor Revizija je onemogočeno. Vse spremembe bodo objavljene takoj.",
-        "isEnabled": "Nadzor Revizija je omogočen za izdelke. Vse spremembe bo treba objaviti, preden se vidno strankam.",
-        "unpublishedChanges": "neobjavljene spremembe",
-        "publishChanges": "objavi spremembe",
-        "showChanges": "prikaži spremembe",
-        "hideChanges": "Skrij spremembe",
-        "discardChanges": "Zavreči spremembe",
-        "changedPublished": "Spremembe so bile uspešno objavljeno",
-        "changesDiscarded": "Spremembe uspešno zavreči",
-        "noChanges": "ni spremembe",
-        "noChangesPublished": "Ni spremembe objavijo",
-        "noChangesDiscarded": "Ni sprememb za zavržke"
-      },
       "address": {
         "country": "Država",
         "fullName": "Polno ime",

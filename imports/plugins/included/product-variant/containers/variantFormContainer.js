@@ -9,7 +9,7 @@ import { ReactionProduct } from "/lib/api";
 import { Packages } from "/lib/collections";
 import { Reaction, i18next } from "/client/api";
 import { TaxCodes } from "/imports/plugins/core/taxes/lib/collections";
-import { ProductVariant } from "/lib/collections/schemas/products";
+import { ProductVariant } from "/lib/collections/schemas";
 import VariantForm from "../components/variantForm";
 
 const wrapComponent = (Comp) => (
@@ -86,7 +86,7 @@ const wrapComponent = (Comp) => (
       const codes = TaxCodes.find({
         shopId,
         taxCodeProvider: provider.name
-      });
+      }).fetch();
 
       codes.forEach((code) => {
         taxCodesArray.push({

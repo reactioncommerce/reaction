@@ -3,9 +3,9 @@ import { registerComponent, composeWithTracker } from "@reactioncommerce/reactio
 import { $ } from "meteor/jquery";
 import { Session } from "meteor/session";
 import { Meteor } from "meteor/meteor";
-import { Cart } from "/lib/collections";
 import { getPrimaryMediaForOrderItem, ReactionProduct } from "/lib/api";
 import { Reaction } from "/client/api";
+import getCart from "/imports/plugins/core/cart/client/util/getCart";
 import CartDrawer from "../components/cartDrawer";
 
 // event handlers to pass in as props
@@ -15,39 +15,24 @@ const handlers = {
     return media && media.url({ store: "small" });
   },
 
-  /**
-  * showLowInventoryWarning
-  * @param {Object} productItem - product item object
-  * @return {Boolean} return true if low inventory on variant
-  */
-  handleLowInventory(productItem) {
-    const { variants } = productItem;
-    if (variants && variants.inventoryPolicy &&
-      variants.lowInventoryWarningThreshold) {
-      return variants.inventoryQuantity <=
-        variants.lowInventoryWarningThreshold;
-    }
-    return false;
-  },
-
   handleShowProduct(productItem) {
     if (productItem) {
       Reaction.Router.go("product", {
         handle: productItem.productId,
-        variantId: productItem.variants._id
+        variantId: productItem.variantId
       });
 
-      ReactionProduct.setCurrentVariant(productItem.variants._id);
+      ReactionProduct.setCurrentVariant(productItem.variantId);
     }
   },
 
   pdpPath(productItem) {
     if (productItem) {
-      const handle = productItem.productId;
+      const handle = productItem.productSlug || productItem.productId;
       return Reaction.Router.pathFor("product", {
         hash: {
           handle,
-          variantId: productItem.variants._id
+          variantId: productItem.variantId
         }
       });
     }
@@ -57,7 +42,10 @@ const handlers = {
     event.stopPropagation();
     event.preventDefault();
     const cartItemElement = $(event.target).closest(".cart-drawer-swiper-slide");
-    cartItemElement.fadeOut(500, () => Meteor.call("cart/removeFromCart", item._id));
+    const { cart, token } = getCart();
+    if (!cart) return;
+
+    cartItemElement.fadeOut(500, () => Meteor.call("cart/removeFromCart", cart._id, token, item._id));
   },
 
   handleCheckout() {
@@ -69,9 +57,7 @@ const handlers = {
 
 // reactive Tracker wrapped function
 function composer(props, onData) {
-  const userId = Meteor.userId();
-  const shopId = Reaction.marketplace.merchantCarts ? Reaction.getShopId() : Reaction.getPrimaryShopId();
-  const cart = Cart.findOne({ userId, shopId });
+  const { cart } = getCart();
   if (!cart) return;
 
   Meteor.subscribe("CartImages", cart._id);

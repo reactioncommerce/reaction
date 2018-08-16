@@ -1,22 +1,13 @@
+import Hooks from "@reactioncommerce/hooks";
+import Logger from "@reactioncommerce/logger";
 import accounting from "accounting-js";
 import Random from "@reactioncommerce/random";
 import stripeNpm from "stripe";
 import { Meteor } from "meteor/meteor";
-import { check } from "meteor/check";
-import { Reaction, Logger, Hooks } from "/server/api";
+import { check, Match } from "meteor/check";
+import Reaction from "/imports/plugins/core/core/server/Reaction";
 import { Cart, Shops, Accounts, Packages } from "/lib/collections";
 import { PaymentMethodArgument } from "/lib/collections/schemas";
-
-function parseCardData(data) {
-  return {
-    number: data.number,
-    name: data.name,
-    cvc: data.cvv2,
-    exp_month: data.expire_month, // eslint-disable-line camelcase
-    exp_year: data.expire_year // eslint-disable-line camelcase
-  };
-}
-
 
 // Stripe uses a "Decimal-less" format so 10.00 becomes 1000
 function formatForStripe(amount) {
@@ -153,13 +144,13 @@ function normalizeRiskLevel(transaction) {
 
 
 function buildPaymentMethods(options) {
-  const { cardData, cartItemsByShop, transactionsByShopId } = options;
+  const { token, cartItemsByShop, transactionsByShopId } = options;
   if (!transactionsByShopId) {
     throw new Meteor.Error("invalid-parameter", "Creating a payment method log requries transaction data");
   }
 
   const shopIds = Object.keys(transactionsByShopId);
-  const storedCard = `${cardData.type.charAt(0).toUpperCase() + cardData.type.slice(1)} ${cardData.number.slice(-4)}`;
+  const storedCard = `${token.card.brand} ${token.card.last4}`;
   const paymentMethods = [];
 
 
@@ -168,7 +159,7 @@ function buildPaymentMethods(options) {
       const cartItems = cartItemsByShop[shopId].map((item) => ({
         _id: item._id,
         productId: item.productId,
-        variantId: item.variants._id,
+        variantId: item.variantId,
         shopId,
         quantity: item.quantity
       }));
@@ -206,17 +197,11 @@ function buildPaymentMethods(options) {
 }
 
 export const methods = {
-  async "stripe/payment/createCharges"(transactionType, cardData, cartId) {
+  async "stripe/payment/createCharges"(transactionType, token, cartId, cartToken) {
     check(transactionType, String);
-    check(cardData, {
-      name: String,
-      number: String,
-      expire_month: String, // eslint-disable-line camelcase
-      expire_year: String, // eslint-disable-line camelcase
-      cvv2: String,
-      type: String
-    });
+    check(token, Object);
     check(cartId, String);
+    check(cartToken, Match.Maybe(String));
 
     const primaryShopId = Reaction.getPrimaryShopId();
 
@@ -224,8 +209,6 @@ export const methods = {
       shopId: primaryShopId,
       name: "reaction-stripe"
     });
-
-    const card = parseCardData(cardData);
 
     if (!stripePkg || !stripePkg.settings || !stripePkg.settings.api_key) {
       // Fail if we can't find a Stripe API key
@@ -236,22 +219,19 @@ export const methods = {
 
     // Must have an email
     const cart = Cart.findOne({ _id: cartId });
-    const customerAccount = Accounts.findOne({ _id: cart.userId });
-    let customerEmail;
-
-    if (!customerAccount || !Array.isArray(customerAccount.emails)) {
-      // TODO: Is it okay to create random email here if anonymous?
-      Logger.Error("cart email missing!");
-      throw new Meteor.Error("invalid-parameter", "Email is required for marketplace checkouts.");
+    let customerEmail = cart.email;
+    if (!customerEmail) {
+      const customerAccount = Accounts.findOne({ _id: cart.accountId });
+      if (customerAccount) {
+        const defaultEmail = (customerAccount.emails || []).find((email) => email.provides === "default");
+        if (defaultEmail) {
+          customerEmail = defaultEmail.address;
+        }
+      }
     }
 
-    const defaultEmail = customerAccount.emails.find((email) => email.provides === "default");
-    if (defaultEmail) {
-      customerEmail = defaultEmail.address;
-    } else if (!defaultEmail) {
-      customerEmail = cart.email;
-    } else {
-      throw new Meteor.Error("invalid-parameter", "Customer does not have default email");
+    if (!customerEmail) {
+      throw new Meteor.Error("invalid-parameter", "No email associated with the cart");
     }
 
     // Initialize stripe api lib
@@ -279,7 +259,7 @@ export const methods = {
       const customer = Promise.await(stripe.customers.create({
         email: customerEmail
       }).then((cust) => {
-        const customerCard = stripe.customers.createSource(cust.id, { source: { ...card, object: "card" } });
+        const customerCard = stripe.customers.createSource(cust.id, { source: token.id });
         return customerCard;
       }));
 
@@ -332,12 +312,12 @@ export const methods = {
           stripeOptions.stripe_account = stripeUserId; // eslint-disable-line camelcase
 
           // Create token from our customer object to use with merchant shop
-          const token = Promise.await(stripe.tokens.create({
+          const customerToken = Promise.await(stripe.tokens.create({
             customer: customer.customer
           }, stripeOptions));
 
           // TODO: Add description to charge in Stripe
-          stripeCharge.source = token.id;
+          stripeCharge.source = customerToken.id;
 
           // Get the set application fee from the dashboard
           const dashboardAppFee = stripePkg.settings.applicationFee || 0;
@@ -387,10 +367,10 @@ export const methods = {
       const cartItemsByShop = cart.getItemsByShop();
 
       // Build paymentMethods from transactions, card data and cart items
-      const paymentMethods = buildPaymentMethods({ cardData, cartItemsByShop, transactionsByShopId });
+      const paymentMethods = buildPaymentMethods({ token, cartItemsByShop, transactionsByShopId });
 
       // If successful, call cart/submitPayment and return success back to client.
-      Meteor.call("cart/submitPayment", paymentMethods);
+      Meteor.call("cart/submitPayment", cartId, cartToken, paymentMethods);
       return { success: true, transactions: transactionsByShopId };
     } catch (error) {
       // If unsuccessful

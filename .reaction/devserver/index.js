@@ -1,11 +1,8 @@
 import express from "express";
 import mongodb, { MongoClient } from "mongodb";
-import createApolloServer from "../../imports/plugins/core/graphql/server/createApolloServer";
+import createApolloServer from "../../imports/plugins/core/graphql/server/no-meteor/createApolloServer";
 import defineCollections from "../../imports/collections/defineCollections";
-import mutations from "../../imports/plugins/core/graphql/server/mutations";
-import queries from "../../imports/plugins/core/graphql/server/queries";
 import setUpFileCollections from "../../imports/plugins/core/files/server/no-meteor/setUpFileCollections";
-import methods from "./methods";
 
 const { MONGO_URL, ROOT_URL } = process.env;
 if (!MONGO_URL) throw new Error("You must set MONGO_URL");
@@ -45,12 +42,13 @@ MongoClient.connect(dbUrl, (error, client) => {
    * the API changes through the Meteor app in case there are any differences.
    */
   const app = createApolloServer({
-    context: {
-      collections,
-      methods,
-      mutations,
-      queries
+    addCallMeteorMethod(context) {
+      context.callMeteorMethod = (name) => {
+        console.warn(`The "${name}" Meteor method was called. The method has not yet been converted to a mutation that works outside of Meteor. If you are relying on a side effect or return value from this method, you may notice unexpected behavior.`);
+        return null;
+      };
     },
+    context: { collections },
     debug: true,
     graphiql: true
   });

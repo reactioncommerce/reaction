@@ -1,7 +1,8 @@
+import Hooks from "@reactioncommerce/hooks";
 import Random from "@reactioncommerce/random";
 import { Meteor } from "meteor/meteor";
 import { Match, check } from "meteor/check";
-import { Reaction, Hooks } from "/server/api";
+import Reaction from "/imports/plugins/core/core/server/Reaction";
 import { Cart } from "/lib/collections";
 import { Discounts } from "/imports/plugins/core/discounts/lib/collections";
 import { DiscountCodes as DiscountSchema } from "../../lib/collections/schemas";
@@ -32,10 +33,10 @@ export const methods = {
     check(discountId, String);
     let discount = 0;
     const discountMethod = Discounts.findOne(discountId);
-    const cart = Cart.findOne(cartId);
+    const cart = Cart.findOne({ _id: cartId });
 
     for (const item of cart.items) {
-      const preDiscount = item.quantity * item.variants.price;
+      const preDiscount = item.quantity * item.priceWhenAdded.amount;
       discount += preDiscount * discountMethod.discount / 100;
     }
 
@@ -74,11 +75,11 @@ export const methods = {
     check(discountId, String);
     let discount = 0;
     const discountMethod = Discounts.findOne(discountId);
-    const cart = Cart.findOne(cartId);
+    const cart = Cart.findOne({ _id: cartId });
 
     // TODO add item specific conditions to sale calculations.
     for (const item of cart.items) {
-      const preDiscountItemTotal = item.quantity * item.variants.price;
+      const preDiscountItemTotal = item.quantity * item.priceWhenAdded.amount;
       const salePriceItemTotal = item.quantity * discountMethod.discount;
       // we if the sale is below 0, we won't discount at all. that's invalid.
       discount += Math.max(0, preDiscountItemTotal - salePriceItemTotal);
@@ -101,7 +102,7 @@ export const methods = {
     check(discountId, String);
     let discount = 0;
     const discountMethod = Discounts.findOne(discountId);
-    const cart = Cart.findOne(cartId);
+    const cart = Cart.findOne({ _id: cartId });
     if (cart.shipping && cart.shipping.length) {
       for (const shipping of cart.shipping) {
         if (shipping.shipmentMethod && shipping.shipmentMethod.name.toUpperCase() === discountMethod.discount.toUpperCase()) {
@@ -128,6 +129,7 @@ export const methods = {
     if (docId) return Meteor.call("discounts/editCode", { _id: docId, modifier: doc });
 
     if (!Reaction.hasPermission("discount-codes")) throw new Meteor.Error("access-denied", "Access Denied");
+    doc.shopId = Reaction.getShopId();
     return Discounts.insert(doc);
   },
 
@@ -191,10 +193,13 @@ export const methods = {
       Collection.update(selector, update);
     }
     // TODO: update a history record of transaction
+    // The Payment schema's currency defaultValue is adding {} to the $pull condition.
+    // If this issue is eventually fixed, autoValues can be re-enabled here
+    // See https://github.com/aldeed/simple-schema-js/issues/272
     const result = Collection.update(
       { _id: id },
       { $set: { discount: currentDiscount }, $pull: { billing: { _id: codeId } } },
-      { multi: true }
+      { multi: true, getAutoValues: false }
     );
 
     // calculate discounts

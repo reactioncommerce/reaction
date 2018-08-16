@@ -1,6 +1,5 @@
 <template name="cartCheckout">
-  {{#if cartCount}}
-
+  {{#if cartHasItems}}
     <div class="checkout-progress">
       <div class="container">
         {{>checkoutProgressBar}}
@@ -25,7 +24,9 @@
       </div>
     </div>
   {{else}}
-    {{> emptyCheckoutCart}}
+    {{#unless isSubmittingCheckoutPayment}}
+      {{> emptyCheckoutCart}}
+    {{/unless}}
   {{/if}}
 </template>
 
@@ -34,7 +35,7 @@
 <template name="checkoutSteps">
     {{#if isPending }}
 
-    <div class="checkout-step">
+      <div class="checkout-step">
         {{> Template.dynamic template=template}}
       </div>
 

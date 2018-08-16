@@ -1,10 +1,12 @@
-import store from "store";
-import Random from "@reactioncommerce/random";
+import Logger from "/client/modules/logger";
 import { Meteor } from "meteor/meteor";
-import { Session } from "meteor/session";
+import { ReactiveVar } from "meteor/reactive-var";
 import { Tracker } from "meteor/tracker";
 import { SubsManager } from "meteor/meteorhacks:subs-manager";
+import { Roles } from "meteor/alanning:roles";
+import { Accounts } from "/lib/collections";
 import Reaction from "./main";
+import { getAnonymousCartsReactive, unstoreAnonymousCart } from "/imports/plugins/core/cart/client/util/anonymousCarts";
 
 export const Subscriptions = {};
 
@@ -12,24 +14,15 @@ export const Subscriptions = {};
 // See: https://github.com/kadirahq/subs-manager
 Subscriptions.Manager = new SubsManager();
 
-Subscriptions.Account = Subscriptions.Manager.subscribe("Accounts", Meteor.userId());
-
-/*
- * Reaction.session
- * Create persistent sessions for users
- * The server returns only one record, so findOne will return that record
- * Stores into client session all data contained in server session
- * supports reactivity when server changes `newSession`
- * Stores the server session id into local storage / cookies
- *
- * Also localStorage session could be set from the client-side. This could
- * happen when user flush browser's cache, for example.
- * @see https://github.com/reactioncommerce/reaction/issues/609#issuecomment-166389252
- */
-
 /**
  * General Subscriptions
  */
+
+Tracker.autorun(() => {
+  const userId = Meteor.userId();
+  Subscriptions.Account = Subscriptions.Manager.subscribe("Accounts");
+  Subscriptions.UserProfile = Meteor.subscribe("UserProfile", userId);
+});
 
 // Primary shop subscription
 Subscriptions.PrimaryShop = Subscriptions.Manager.subscribe("PrimaryShop");
@@ -38,7 +31,6 @@ Subscriptions.PrimaryShop = Subscriptions.Manager.subscribe("PrimaryShop");
 Subscriptions.MerchantShops = Subscriptions.Manager.subscribe("MerchantShops");
 
 // This Packages subscription is used for the Active shop's packages
-// // Init sub here so we have a "ready" state
 Subscriptions.Packages = Subscriptions.Manager.subscribe("Packages");
 
 // This packages subscription is used for the Primary Shop's packages
@@ -53,44 +45,87 @@ Subscriptions.Groups = Subscriptions.Manager.subscribe("Groups");
 
 Subscriptions.BrandAssets = Subscriptions.Manager.subscribe("BrandAssets");
 
-/**
- * Subscriptions that need to reload on new sessions
- */
+const cartSubCreated = new ReactiveVar(false);
 Tracker.autorun(() => {
-  // we are trying to track both amplify and Session.get here, but the problem
-  // is - we can't track amplify. It just not tracked. So, to track amplify we
-  // are using dirty hack inside Accounts.loginWithAnonymous method.
-  const sessionId = store.get("Reaction.session");
-  let newSession;
-  Tracker.nonreactive(() => {
-    newSession = Random.id();
-  });
-  if (typeof sessionId !== "string") {
-    store.set("Reaction.session", newSession);
-    Session.set("sessionId", newSession);
-  }
-  if (typeof Session.get("sessionId") !== "string") {
-    Session.set("sessionId", store.get("Reaction.session"));
-  }
-  Subscriptions.Sessions = Meteor.subscribe("Sessions", Session.get("sessionId"));
+  const userId = Meteor.userId();
+  if (!userId) return;
+
+  const account = Accounts.findOne({ userId });
+  const anonymousCarts = getAnonymousCartsReactive();
+  Subscriptions.Cart = Subscriptions.Manager.subscribe("Cart", account && account._id, anonymousCarts);
+  cartSubCreated.set(true);
 });
 
-// @see http://guide.meteor.com/data-loading.html#changing-arguments
-Tracker.autorun(() => {
-  let sessionId;
-  // we really don't need to track the sessionId here
-  Tracker.nonreactive(() => {
-    sessionId = Session.get("sessionId");
+/**
+ * @summary Wraps mergeCart method with a Promise
+ * @private
+ * @param {String} _id ID of an anonymous cart
+ * @param {String} token Token for this anonymous cart
+ * @returns {Promise} Undefined
+ */
+function mergeCart(_id, token) {
+  return new Promise((resolve, reject) => {
+    Meteor.call("cart/mergeCart", _id, token, (error) => {
+      if (error) {
+        reject(error);
+      } else {
+        resolve();
+      }
+    });
   });
-  Subscriptions.Cart = Subscriptions.Manager.subscribe("Cart", sessionId, Meteor.userId());
-  Subscriptions.UserProfile = Meteor.subscribe("UserProfile", Meteor.userId());
+}
+
+// If ever we end up being logged in but also having an anonymous cart,
+// call the mergeCart function to merge it into an account cart and destroy
+let isMerging = false;
+Tracker.autorun(() => {
+  const userId = Meteor.userId();
+  if (!userId) return;
+
+  const shopId = Reaction.getCartShopId();
+  if (!shopId) return; // could be waiting for subscription
+
+  const isAnonymousUser = Roles.userIsInRole(userId, "anonymous", shopId);
+  if (!isAnonymousUser && cartSubCreated.get() && Subscriptions.Cart.ready() && !isMerging) {
+    const anonymousCarts = getAnonymousCartsReactive();
+
+    if (anonymousCarts && anonymousCarts.length) {
+      isMerging = true;
+
+      const promises = anonymousCarts.map(({ _id, token }) => (
+        mergeCart(_id, token)
+          .then(() => {
+            unstoreAnonymousCart(_id);
+            return null;
+          })
+          .catch((error) => {
+            // If we have cached an anonymous cart ID that no longer exists, we can just remove it
+            if (error.message && error.message.includes("Anonymous cart not found")) {
+              unstoreAnonymousCart(_id);
+            } else {
+              Logger.error(error.message);
+            }
+          })
+      ));
+
+      Promise.all(promises)
+        .then(() => {
+          isMerging = false;
+          return null;
+        })
+        .catch(() => {
+          isMerging = false;
+        });
+    }
+  }
 });
 
 Tracker.autorun(() => {
   // Reload Packages sub if shopId changes
   // We have a persistent subscription to the primary shop's packages,
   // so don't refresh sub if we're updating to primaryShopId sub
-  if (Reaction.getShopId() && Reaction.getShopId() !== Reaction.getPrimaryShopId()) {
-    Subscriptions.Packages = Subscriptions.Manager.subscribe("Packages", Reaction.getShopId());
+  const shopId = Reaction.getShopId();
+  if (shopId && shopId !== Reaction.getPrimaryShopId()) {
+    Subscriptions.Packages = Subscriptions.Manager.subscribe("Packages", shopId);
   }
 });

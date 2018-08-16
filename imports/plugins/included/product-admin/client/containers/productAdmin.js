@@ -37,15 +37,14 @@ const wrapComponent = (Comp) => (
     }
 
     handleProductFieldSave = (productId, fieldName, value) => {
-      let updateValue = value;
-      // special case, slugify handles.
-      if (fieldName === "handle") {
-        updateValue = Reaction.getSlug(value);
-      }
-      Meteor.call("products/updateProductField", productId, fieldName, updateValue, (error) => {
+      Meteor.call("products/updateProductField", productId, fieldName, value, (error, result) => {
         if (error) {
           Alerts.toast(error.message, "error");
           this.forceUpdate();
+        } else if (result.handle) {
+          Reaction.Router.go("product", {
+            handle: result.handle
+          });
         }
       });
     }
@@ -110,7 +109,7 @@ function composer(props, onData) {
 
   if (product) {
     if (_.isArray(product.hashtags)) {
-      tags = _.map(product.hashtags, (id) => Tags.findOne(id));
+      tags = Tags.find({ _id: { $in: product.hashtags } }).fetch();
     }
 
     const selectedVariant = ReactionProduct.selectedVariant();

@@ -1,6 +1,6 @@
+import Hooks from "@reactioncommerce/hooks";
 import { Meteor } from "meteor/meteor";
 import { Cart } from "/lib/collections";
-import { Hooks } from "/server/api";
 
 Hooks.Events.add("afterCartUpdateCalculateDiscount", (cartId) => {
   if (cartId) {

@@ -1,17 +1,27 @@
 import { Template } from "meteor/templating";
-import { Meteor } from "meteor/meteor";
+import { Reaction } from "/client/api";
 import Router from "./main";
 
-//
-// pathFor
-// template helper to return path
-//
+/**
+ * @method pathFor
+ * @memberof BlazeTemplateHelpers
+ * @summary template helper to return path
+ * @return {String} username
+ */
 Template.registerHelper("pathFor", Router.pathFor);
 
-//
-// urlFor
-// template helper to return absolute + path
-//
-Template.registerHelper("urlFor", (path, params) => Meteor.absoluteUrl(Router.pathFor(path, params).substr(1)));
+/**
+ * @method urlFor
+ * @memberof BlazeTemplateHelpers
+ * @summary template helper to return absolute + path
+ * @return {String} username
+ */
+Template.registerHelper("urlFor", (path, params) => Reaction.absoluteUrl(Router.pathFor(path, params).substr(1)));
 
+/**
+ * @method active
+ * @memberof BlazeTemplateHelpers
+ * @summary template helper for `Router.isActiveClassName`
+ * @return {String} username
+ */
 Template.registerHelper("active", Router.isActiveClassName);

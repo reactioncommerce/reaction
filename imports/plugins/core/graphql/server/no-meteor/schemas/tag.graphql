@@ -1,0 +1,93 @@
+"Represents a single tag"
+type Tag implements Node & Deletable {
+  "The tag ID"
+  _id: ID!
+
+  "The date and time at which this tag was created"
+  createdAt: DateTime!
+
+  """
+  If `true`, this object should be considered deleted. Soft deleted objects are not
+  returned in query results unless you explicitly ask for them.
+  """
+  isDeleted: Boolean!
+
+  "If `true`, this tag should be shown at the top level of the tag hierarchy"
+  isTopLevel: Boolean!
+
+  "Arbitrary additional metadata about this tag"
+  metafields: [Metafield]
+
+  "The display name for the tag. This is unique within a given shop."
+  name: String!
+
+  "The tag's position relative to other tags at the same level of the tag hierarchy"
+  position: Int
+
+  "A list of the IDs of tags that have this tag as their parent in the tag hierarchy, in the user-defined order"
+  subTagIds: [ID]!
+
+  "A paged list of tags that have this tag as their parent in the tag hierarchy. Currently only three levels are supported."
+  subTags(after: ConnectionCursor, before: ConnectionCursor, first: ConnectionLimitInt, last: ConnectionLimitInt, sortOrder: SortOrder = asc, sortBy: TagSortByField = position): TagConnection
+
+  "The shop to which this tag belongs"
+  shop: Shop!
+
+  "A unique URL-safe string representing this tag for links"
+  slug: String
+
+  "The date and time at which this tag was last updated"
+  updatedAt: DateTime!
+
+  "A string containing the hero image url for a tag landing page"
+  heroMediaUrl: String
+}
+
+"The fields by which you are allowed to sort any query that returns a `TagConnection`"
+enum TagSortByField {
+  _id
+  createdAt
+  name
+  position
+  updatedAt
+}
+
+"A connection edge in which each node is a `Tag` object"
+type TagEdge implements NodeEdge {
+  cursor: ConnectionCursor!
+  node: Tag
+}
+
+"Wraps a list of `Tags`, providing pagination cursors and information."
+type TagConnection implements NodeConnection {
+  edges: [TagEdge]
+  nodes: [Tag]
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
+extend type Query {
+  "Returns a tag from a provided tag ID or slug"
+  tag(slugOrId: String): Tag
+
+  "Returns a paged list of tags for a shop. You must include a shopId when querying."
+  tags(
+    "Only tags associated with this shop will be returned"
+    shopId: ID!,
+
+    "If set, the query will return only top-level tags or only non-top-level tags. By default, both types of tags are returned."
+    isTopLevel: Boolean,
+
+    "Set to true if you want soft deleted tags to be included in the response"
+    shouldIncludeDeleted: Boolean = false,
+
+    after: ConnectionCursor,
+    before: ConnectionCursor,
+    first: ConnectionLimitInt,
+    last: ConnectionLimitInt,
+    sortOrder: SortOrder = asc,
+
+    "By default, tags are sorted by position. Set this to sort by one of the other allowed fields"
+    sortBy: TagSortByField = position
+  ): TagConnection
+}

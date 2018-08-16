@@ -1,5 +1,5 @@
-import { Reaction } from "/server/api";
-import { Importer } from "/server/api/core/importer";
+import Reaction from "/imports/plugins/core/core/server/Reaction";
+import { Importer } from "/imports/plugins/core/core/server/Reaction/importer";
 import * as Collections from "../../lib/collections";
 
 // plugin Import helpers
