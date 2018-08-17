@@ -11,7 +11,7 @@ import metafield from "./metafield.graphql";
 import node from "./node.graphql";
 import payment from "./payment.graphql";
 import role from "./role.graphql";
-import { graphqlSchemas as fulfillmentSchemas } from "/imports/services/fulfillment";
+import fulfillmentService from "/imports/services/fulfillment";
 import shop from "./shop.graphql";
 import tag from "./tag.graphql";
 
@@ -24,7 +24,7 @@ export default [
   checkout,
   currency,
   email,
-  ...fulfillmentSchemas,
+  ...fulfillmentService.graphqlSchemas,
   group,
   metafield,
   node,

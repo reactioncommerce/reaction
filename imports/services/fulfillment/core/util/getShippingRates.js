@@ -1,16 +1,16 @@
 import Logger from "@reactioncommerce/logger";
-import rateFunctions from "../rateFunctions";
 
 /**
  * @name getShippingRates
  * @method
  * @summary Just gets rates, without updating anything
+ * @param {Function[]} shippingPricesFunctions - Function list
  * @param {Object} cart - cart object
  * @param {Object} context - Context
  * @return {Array} return updated rates in cart
  * @private
  */
-export default async function getShippingRates(cart, context) {
+export default async function getShippingRates(shippingPricesFunctions, cart, context) {
   const rates = [];
   const retrialTargets = [];
   // must have items to calculate shipping
@@ -18,12 +18,12 @@ export default async function getShippingRates(cart, context) {
     return rates;
   }
 
-  let promises = rateFunctions.map((rateFunction) => rateFunction(context, cart, [rates, retrialTargets]));
+  let promises = shippingPricesFunctions.map((rateFunction) => rateFunction(context, cart, [rates, retrialTargets]));
   await Promise.all(promises);
 
   // Try once more.
   if (retrialTargets.length > 0) {
-    promises = rateFunctions.map((rateFunction) => rateFunction(context, cart, [rates, retrialTargets]));
+    promises = shippingPricesFunctions.map((rateFunction) => rateFunction(context, cart, [rates, retrialTargets]));
     await Promise.all(promises);
 
     if (retrialTargets.length > 0) {

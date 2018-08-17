@@ -2,7 +2,7 @@ import { isEqual } from "lodash";
 import SimpleSchema from "simpl-schema";
 import ReactionError from "@reactioncommerce/reaction-error";
 import getCartById from "../util/getCartById";
-import getShippingRates from "../util/getShippingRates";
+import app from "../..";
 
 const inputSchema = new SimpleSchema({
   cartId: String,
@@ -74,7 +74,7 @@ export default async function updateFulfillmentOptionsForGroup(context, input) {
   if (!fulfillmentGroup) throw new ReactionError("not-found", `Fulfillment group with ID ${fulfillmentGroupId} not found in cart with ID ${cartId}`);
 
   // In the future we want to do this async and subscribe to the results
-  const rates = await getShippingRates(cart, context);
+  const rates = await app.getShippingPrices(cart, context);
 
   const { shipmentQuotes, shipmentQuotesQueryStatus } = getShipmentQuotesQueryStatus(rates);
 

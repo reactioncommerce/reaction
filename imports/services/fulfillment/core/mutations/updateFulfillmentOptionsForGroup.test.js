@@ -1,9 +1,9 @@
 import Factory from "/imports/test-utils/helpers/factory";
 import mockContext from "/imports/test-utils/helpers/mockContext";
-import { rewire as rewire$getShippingRates, restore as restore$getShippingRates } from "../util/getShippingRates";
+import { rewire as rewire$app, restore as restore$app } from "../..";
 import updateFulfillmentOptionsForGroup from "./updateFulfillmentOptionsForGroup";
 
-jest.mock("../../../../cart/server/no-meteor/util/getCartById", () => jest.fn().mockImplementation(() => Promise.resolve({
+jest.mock("../util/getCartById", () => jest.fn().mockImplementation(() => Promise.resolve({
   _id: "cartId",
   shipping: [{
     _id: "group1",
@@ -17,14 +17,16 @@ const fakeQuote = Factory.ShipmentQuote.makeOne();
 const mockGetShippingRates = jest.fn().mockName("getShippingRates");
 
 beforeAll(() => {
-  rewire$getShippingRates(mockGetShippingRates);
+  rewire$app({
+    getShippingPrices: mockGetShippingRates
+  });
 });
 
 beforeEach(() => {
   mockGetShippingRates.mockClear();
 });
 
-afterAll(restore$getShippingRates);
+afterAll(restore$app);
 
 test("updates cart properly for empty rates", async () => {
   mockGetShippingRates.mockReturnValueOnce(Promise.resolve([]));

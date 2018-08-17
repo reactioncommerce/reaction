@@ -3,14 +3,14 @@ import account from "./account";
 import catalog from "./catalog";
 import cart from "./cart";
 import core from "./core";
-import { graphqlResolvers as fulfillment } from "/imports/services/fulfillment";
+import fulfillmentService from "/imports/services/fulfillment";
 import ping from "./ping";
 import product from "./product";
 import scalar from "./scalar";
 import shop from "./shop";
 import tag from "./tag";
 
-export default merge({}, account, cart, catalog, core, fulfillment, ping, product, scalar, shop, tag);
+export default merge({}, account, cart, catalog, core, fulfillmentService.graphqlResolvers, ping, product, scalar, shop, tag);
 
 /**
  * Arguments passed by the client for a query
