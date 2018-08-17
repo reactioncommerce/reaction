@@ -33,7 +33,7 @@ const handlers = {
           Alerts.toast(i18next.t("admin.groups.addUserError", { err: err.message }), "error");
         }
         if (!err) {
-          Alerts.toast(i18next.t("admin.groups.addUserSuccess"), "success");
+          Alerts.toast(i18next.t(account.name+" is added Successfully"), "success");
         }
         if (onMethodDone) { onMethodDone(); }
       });
