@@ -29,7 +29,7 @@ class CardBody extends Component {
     if (!AnimateHeight) {
       return null;
     }
-    
+
     const baseClassName = classnames({
       "rui": true,
       "panel-body": true,

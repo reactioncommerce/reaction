@@ -1,5 +1,4 @@
 import _ from "lodash";
-import React, { Component } from "react";
 import Logger from "@reactioncommerce/logger";
 import { Meteor } from "meteor/meteor";
 import { Roles } from "meteor/alanning:roles";
