@@ -1,4 +1,5 @@
 import _ from "lodash";
+import React, { Component } from "react";
 import Logger from "@reactioncommerce/logger";
 import { Meteor } from "meteor/meteor";
 import { Roles } from "meteor/alanning:roles";
@@ -217,7 +218,8 @@ export function withCSSTransitionGroup(component) {
 /**
  * @name withAnimateHeight
  * @method
- * @summary A wrapper to reactively inject react-animate-height's <AnimateHeight /> into a component
+ * @summary A wrapper that reactively injects an extended version of react-animate-height's <AnimateHeight />
+ *  into a component.
  * @param {Function|React.Component} component - the component to wrap
  * @return {Function} the new wrapped component with a "AnimateHeight" prop
  * @memberof Components/Helpers
@@ -227,12 +229,29 @@ export function withAnimateHeight(component) {
     componentDidMount() {
       import("react-animate-height")
         .then((module) => {
-          if (this.willUnmount === true) {
+          if (this.willUnmount) {
             return null;
           }
 
+          // Extend AnimateHeight so that setState can't be called when component is unmounted (prevents memory leak)
+          const AnimateHeight = module.default;
+          class ExtendedAnimateHeight extends AnimateHeight {
+            componentWillUnmount() {
+              this.willUnmount = true;
+              super.componentWillUnmount();
+            }
+
+            setState(partialState, callback) {
+              if (this.willUnmount) {
+                return;
+              }
+              super.setState(partialState, callback);
+            }
+          }
+
+          // Pass extended AnimateHeight to child component
           this.setState({
-            AnimateHeight: module.default
+            AnimateHeight: ExtendedAnimateHeight
           });
 
           return null;
