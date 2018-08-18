@@ -192,7 +192,6 @@ export default function convertCatalogItem(item, shop, tags) {
     primaryImage,
     productId: item._id,
     productType: item.productType,
-    requiresShipping: !!item.requiresShipping,
     shopId: item.shopId,
     sku: item.sku,
     slug: item.handle,
@@ -202,6 +201,7 @@ export default function convertCatalogItem(item, shop, tags) {
       { service: "googleplus", message: item.googleplusMsg },
       { service: "pinterest", message: item.pinterestMsg }
     ],
+    supportedFulfillmentTypes: item.supportedFulfillmentTypes,
     tagIds: item.hashtags,
     taxCode: item.taxCode,
     taxDescription: item.taxDescription,

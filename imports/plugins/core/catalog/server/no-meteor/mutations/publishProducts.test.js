@@ -171,11 +171,11 @@ const mockProduct = {
   ],
   productId: internalProductId,
   productType: "productType",
-  requiresShipping: true,
   shop: {
     _id: opaqueShopId
   },
   sku: "ABC123",
+  supportedFulfillmentTypes: ["shipping"],
   handle: productSlug,
   hashtags: internalTagIds,
   taxCode: "taxCode",
@@ -380,7 +380,6 @@ const expectedItemsResponse = {
             }
           },
           productType: "productType",
-          requiresShipping: true,
           shop: {
             _id: opaqueShopId
           },
@@ -392,6 +391,7 @@ const expectedItemsResponse = {
             { service: "googleplus", message: "googlePlusMessage" },
             { service: "pinterest", message: "pinterestMessage" }
           ],
+          supportedFulfillmentTypes: ["shipping"],
           tagIds: opaqueTagIds,
           tags: {
             nodes: [{ _id: opaqueTagIds[0] }, { _id: opaqueTagIds[1] }]

@@ -169,11 +169,11 @@ const mockProduct = {
   ],
   productId: internalProductId,
   productType: "productType",
-  requiresShipping: true,
   shop: {
     _id: opaqueShopId
   },
   sku: "ABC123",
+  supportedFulfillmentTypes: ["shipping"],
   handle: productSlug,
   hashtags: internalTagIds,
   taxCode: "taxCode",

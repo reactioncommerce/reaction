@@ -9,12 +9,14 @@ import pathToRegexp from "path-to-regexp";
 import queryParse from "query-parse";
 import { Session } from "meteor/session";
 import { Tracker } from "meteor/tracker";
+import { ComponentsProvider } from "@reactioncommerce/components-context";
 import { Components } from "@reactioncommerce/reaction-components";
 import { Reaction } from "/client/api";
 import { TranslationProvider } from "/imports/plugins/core/ui/client/providers";
 import initApollo from "/imports/plugins/core/graphql/lib/helpers/initApollo";
 import { MetaData } from "/lib/api/router/metadata";
 import { Router } from "../lib";
+import appComponents from "./appComponents";
 
 const { history } = Router;
 
@@ -172,7 +174,9 @@ export function initBrowserRouter() {
           <ApolloProvider client={apolloClient}>
             <BrowserRouter history={history}>
               <TranslationProvider>
-                <Components.App children={Router.reactComponents} />
+                <ComponentsProvider value={appComponents}>
+                  <Components.App children={Router.reactComponents} />
+                </ComponentsProvider>
               </TranslationProvider>
             </BrowserRouter>
           </ApolloProvider>

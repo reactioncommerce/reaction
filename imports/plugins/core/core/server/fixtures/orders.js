@@ -129,7 +129,7 @@ export default function defineOrders() {
    * @property {Object} shopId.items.variants Cart - Product - variants
    * @property {Object} shopId.items.workflow Cart - Product - Object
    * @property {String} shopId.items.workflow.status Cart - Product - `"new"`
-   * @property {Boolean} requiresShipping - `true`
+   * @property {String[]} supportedFulfillmentTypes - ["shipping"]
    * @property {Array} shipping - Shipping - `[{}]`
    * @property {String[]} itemIds
    * @property {Array} billing - Billing - `[]`
@@ -215,7 +215,7 @@ export default function defineOrders() {
         }
       }];
     },
-    requiresShipping: true,
+    supportedFulfillmentTypes: ["shipping"],
     shipping: [{
       shopId,
       address: getAddress({ isShippingDefault: true }),

@@ -20,7 +20,8 @@
   },
   "dependencies": {
     "@babel/runtime": "7.0.0-beta.49",
-    "@reactioncommerce/components": "0.2.0",
+    "@reactioncommerce/components": "0.21.0",
+    "@reactioncommerce/components-context": "1.0.0",
     "@reactioncommerce/data-factory": "^1.0.0",
     "@reactioncommerce/file-collections": "0.5.0",
     "@reactioncommerce/file-collections-sa-gridfs": "0.0.2",
@@ -131,6 +132,7 @@
     "sortablejs": "^1.7.0",
     "store": "^2.0.12",
     "stripe": "^5.4.0",
+    "styled-components": "3.4.2",
     "sweetalert2": "^7.12.3",
     "swiper": "^4.1.0",
     "tether-drop": "^1.4.2",
