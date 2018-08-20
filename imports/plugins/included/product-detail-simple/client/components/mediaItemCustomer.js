@@ -50,7 +50,9 @@ class MediaItemCustomer extends Component {
 
   handleSelectFeaturedMedia = () => {
     const { isZoomable, source, onSelectFeaturedMedia } = this.props;
-    if (!isZoomable) {
+    // Mouse enter, key press, click should trigger changinging featured media
+    // if media item is not the featured media itself and source images exist
+    if (!isZoomable && source) {
       onSelectFeaturedMedia(source);
     }
   }

@@ -7,6 +7,6 @@
  * @return {String} - Display price of a product, variant, or option
  */
 export default function getDisplayPriceByCurrency(pricingArr, currencyCode = "USD") {
-  const currencyPricing = pricingArr.filter((pricing) => pricing.currency.code === currencyCode);
-  return currencyPricing[0].displayPrice;
+  const currencyPricing = pricingArr.find((pricing) => pricing.currency.code === currencyCode);
+  return currencyPricing.displayPrice;
 }

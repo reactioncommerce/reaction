@@ -4,7 +4,7 @@ import { Components, registerComponent } from "@reactioncommerce/reaction-compon
 
 class ProductMetadataCustomer extends Component {
   render() {
-    const { product: { metafields } } = this.props;
+    const { catalogItemProduct: { metafields } } = this.props;
     if (metafields.length > 0) {
       return (
         <div className="pdp product-metadata">
@@ -30,7 +30,7 @@ class ProductMetadataCustomer extends Component {
 }
 
 ProductMetadataCustomer.propTypes = {
-  product: PropTypes.object
+  catalogItemProduct: PropTypes.object
 };
 
 registerComponent("ProductMetadataCustomer", ProductMetadataCustomer);

@@ -12,17 +12,21 @@ import { ProductDetailCustomer } from "../components";
 import withAddCartItems from "/imports/plugins/core/graphql/lib/hocs/withAddCartItems";
 import withCreateCart from "/imports/plugins/core/graphql/lib/hocs/withCreateCart";
 import withPrimaryShopId from "/imports/plugins/core/graphql/lib/hocs/withPrimaryShopId";
-import getCart from "/imports/plugins/core/cart/client/util/getCart";
+import withViewer from "/imports/plugins/core/graphql/lib/hocs/withViewer";
+import withAccountCart from "/imports/plugins//core/graphql/lib/hocs/withAccountCart";
+
 
 const wrapComponent = (Comp) =>
   class ProductDetailCustomerContainer extends Component {
     static propTypes = {
       addCartItems: PropTypes.func,
+      addCartItemsData: PropTypes.object,
+      cartData: PropTypes.object,
+      catalogItemProduct: PropTypes.object,
       createCart: PropTypes.func,
-      isLoading: PropTypes.bool,
-      product: PropTypes.object,
+      createCartData: PropTypes.object,
+      isLoadingCatalogItemProduct: PropTypes.bool,
       shopId: PropTypes.string,
-      storedCart: PropTypes.object,
       template: PropTypes.string
     };
 
@@ -33,7 +37,7 @@ const wrapComponent = (Comp) =>
       // componentDidUpdate will not be called, so media and selectedVariant should be set here
       let selectedVariantId;
       let mediaList;
-      const { product } = props;
+      const { catalogItemProduct: product } = props;
       if (product && product.variants && product.variants.length > 0) {
         selectedVariantId = product.variants[0]._id;
         mediaList = product.variants[0].media;
@@ -49,8 +53,8 @@ const wrapComponent = (Comp) =>
     componentDidUpdate(_, prevState) {
       // If accessed by clicking from product grid, component is not reconstructed
       // so selectedVariant should be set here
-      const { product } = this.props;
-      if (this.props.product && prevState && !prevState.selectedVariantId) {
+      const { catalogItemProduct: product } = this.props;
+      if (product && prevState && !prevState.selectedVariantId) {
         this.handleSelectVariant(product.variants[0]);
       }
     }
@@ -84,7 +88,7 @@ const wrapComponent = (Comp) =>
     }
 
     handleSelectOption = (option) => {
-      const { product } = this.props;
+      const { catalogItemProduct: product } = this.props;
       const { selectedVariantId } = this.state;
       // If we are clicking an option, it must be for the current selected variant
       const variant = product.variants.find((vnt) => vnt._id === selectedVariantId);
@@ -98,14 +102,13 @@ const wrapComponent = (Comp) =>
     };
 
     handleAddToCart = () => {
-      const { addCartItems, createCart, product, shopId, storedCart } = this.props;
+      const { addCartItems, createCart, catalogItemProduct: product, shopId, cartData } = this.props;
       const { cartQuantity, selectedVariantId, selectedOptionId } = this.state;
       let selectedOption;
       const selectedVariant = product.variants.find((variant) => variant._id === selectedVariantId);
       if (selectedOptionId) {
-        selectedOption = selectedVariant.find((option) => option._id === selectedOptionId);
+        selectedOption = selectedVariant.options.find((option) => option._id === selectedOptionId);
       }
-      const selectedVariantOrOption = selectedOption || selectedVariant;
       if (selectedVariant.options && !selectedOptionId) {
         Alerts.inline("Please choose an option before adding to cart", "warning", {
           placement: "productDetail",
@@ -113,10 +116,27 @@ const wrapComponent = (Comp) =>
           autoHide: 10000
         });
       }
+
+      const selectedVariantOrOption = selectedOption || selectedVariant;
+
+      if (selectedVariantOrOption.isSoldOut) {
+        Alerts.inline("Sorry, this item is out of stock!", "warning", {
+          placement: "productDetail",
+          i18nKey: "productDetail.outOfStock",
+          autoHide: 10000
+        });
+        return [];
+      }
+
+      // TODO: There needs to be some logic to check if customer added an item
+      // with quantity greater than current quantity of an item
+
+      const currencyCode = "USD"; // TODO: Fetch this from some global state?
+      const currencyPricing = selectedVariantOrOption.pricing.find((pricing) => pricing.currency.code === currencyCode);
       const items = [{
         price: {
-          amount: selectedVariantOrOption.pricing[0].price, // TODO: this should be picked by currency code
-          currencyCode: "USD"
+          amount: currencyPricing.price, // TODO: this should be picked by currency code
+          currencyCode
         },
         productConfiguration: {
           productId: product.productId,
@@ -124,13 +144,15 @@ const wrapComponent = (Comp) =>
         },
         quantity: cartQuantity
       }];
-      if (!storedCart) {
+      if (!cartData) {
         createCart({ variables: { input: { items, shopId } } });
+      } else {
+        addCartItems({ variables: { input: { items, cartId: cartData._id } } });
       }
     }
 
     getDisplayPriceOfSelectedVariantOrOption() {
-      const { product } = this.props;
+      const { catalogItemProduct: product } = this.props;
       const { selectedVariantId, selectedOptionId } = this.state;
       if (!selectedVariantId) {
         return getDisplayPriceByCurrency(product.pricing);
@@ -144,7 +166,7 @@ const wrapComponent = (Comp) =>
     }
 
     render() {
-      const { product, isLoading } = this.props;
+      const { catalogItemProduct: product, isLoadingCatalogItemProduct: isLoading } = this.props;
       const { cartQuantity, media, featuredMedia, selectedVariantId, selectedOptionId } = this.state;
 
       if (_.isEmpty(product) && !isLoading) {
@@ -201,29 +223,31 @@ function composer(props, onData) {
   }
 
   const productId = Reaction.Router.getParam("handle");
-  const { cart: storedCart } = getCart();
 
   onData(null, {
-    productId,
-    storedCart
+    productId
   });
 }
 
 registerComponent("ProductDetailCustomer", ProductDetailCustomer, [
   composeWithTracker(composer),
+  withPrimaryShopId,
+  withViewer,
+  withAccountCart,
   withCatalogItemProduct,
   withAddCartItems,
   withCreateCart,
-  withPrimaryShopId,
   wrapComponent
 ]);
 
 // Decorate component and export
 export default compose(
   composeWithTracker(composer),
+  withPrimaryShopId,
+  withViewer,
+  withAccountCart,
   withCatalogItemProduct,
   withAddCartItems,
   withCreateCart,
-  withPrimaryShopId,
   wrapComponent
 )(ProductDetailCustomer);

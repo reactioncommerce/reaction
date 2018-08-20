@@ -26,16 +26,16 @@ export default (Comp) => (
         <Query query={getCatalogItemProduct} variables={variables}>
           {({ loading, data }) => {
             const props = {
-              isLoading: true,
+              isLoadingCatalogItemProduct: true,
               ...this.props
             };
 
             if (loading === false) {
-              props.isLoading = false;
+              props.isLoadingCatalogItemProduct = false;
               const { catalogItemProduct } = data;
               const { product } = catalogItemProduct || {};
               if (product) {
-                props.product = product;
+                props.catalogItemProduct = product;
               } else {
                 props.shouldSkipGraphql = true;
               }

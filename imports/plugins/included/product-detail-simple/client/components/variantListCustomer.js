@@ -6,7 +6,7 @@ import VariantCustomer from "./variantCustomer";
 
 class VariantListCustomer extends Component {
   renderVariants() {
-    const { product: { variants }, selectedVariantId, onSelectVariant } = this.props;
+    const { catalogItemProduct: { variants }, selectedVariantId, onSelectVariant } = this.props;
     if (variants) {
       const renderVariantsList = variants.map((variant, index) => (
         <VariantCustomer
@@ -36,7 +36,7 @@ class VariantListCustomer extends Component {
   }
 
   renderChildVariants() {
-    const { product, selectedVariantId, selectedOptionId } = this.props;
+    const { catalogItemProduct: product, selectedVariantId, selectedOptionId } = this.props;
     const selectedVariant = product.variants.find((variant) => variant._id === selectedVariantId);
     if (selectedVariant && selectedVariant.options && selectedVariant.options.length) {
       const renderOptions = selectedVariant.options.map((option, index) => {
@@ -90,9 +90,9 @@ class VariantListCustomer extends Component {
 }
 
 VariantListCustomer.propTypes = {
+  catalogItemProduct: PropTypes.object,
   onSelectOption: PropTypes.func,
   onSelectVariant: PropTypes.func,
-  product: PropTypes.object,
   selectedOptionId: PropTypes.string,
   selectedVariantId: PropTypes.string
 };

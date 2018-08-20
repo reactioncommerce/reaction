@@ -7,9 +7,11 @@ export default (Comp) => (
     render() {
       return (
         <Mutation mutation={addCartItemsMutation} onError={() => undefined}>
-          {(addCartItems) => (
+          {(addCartItems, { data, loading }) => (
             <Comp
               {...this.props}
+              addCartItemsData={data}
+              isLoadingAddCartItems={loading}
               addCartItems={addCartItems}
             />
           )}

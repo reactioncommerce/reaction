@@ -5,7 +5,7 @@ import { registerComponent } from "@reactioncommerce/reaction-components";
 
 class ProductFieldCustomer extends Component {
   render() {
-    const { element, fieldName, itemProp, product } = this.props;
+    const { catalogItemProduct: product, element, fieldName, itemProp } = this.props;
     const classNames = classnames({
       pdp: true,
       field: true,
@@ -29,10 +29,10 @@ class ProductFieldCustomer extends Component {
 }
 
 ProductFieldCustomer.propTypes = {
+  catalogItemProduct: PropTypes.object,
   element: PropTypes.node,
   fieldName: PropTypes.string,
-  itemProp: PropTypes.string,
-  product: PropTypes.object
+  itemProp: PropTypes.string
 };
 
 registerComponent("ProductFieldCustomer", ProductFieldCustomer);

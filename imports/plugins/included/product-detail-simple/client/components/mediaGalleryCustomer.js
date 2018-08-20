@@ -77,6 +77,7 @@ class MediaGalleryCustomer extends Component {
   handleMouseLeave = () => {
     this.props.onSelectFeaturedMedia(null);
   }
+
   render() {
     const { dimensions: { width } } = this.state;
     const { media } = this.props;
@@ -110,7 +111,6 @@ MediaGalleryCustomer.propTypes = {
   featuredMedia: PropTypes.object,
   media: PropTypes.arrayOf(PropTypes.object),
   onSelectFeaturedMedia: PropTypes.func,
-  product: PropTypes.object,
   selectedOptionId: PropTypes.string,
   selectedVariantId: PropTypes.string
 };

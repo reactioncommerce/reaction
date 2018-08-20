@@ -10,7 +10,7 @@ class AddToCartButtonCustomer extends Component {
   }
 
   render() {
-    const { product: { variants } } = this.props;
+    const { catalogItemProduct: { variants } } = this.props;
     if (variants && variants.length > 0) {
       return (
         <div className="pdp add-to-cart block">
@@ -41,7 +41,7 @@ AddToCartButtonCustomer.propTypes = {
   cartQuantity: PropTypes.number,
   onAddToCart: PropTypes.func,
   onCartQuantityChange: PropTypes.func,
-  product: PropTypes.object
+  catalogItemProduct: PropTypes.object
 };
 
 registerComponent("AddToCartButtonCustomer", AddToCartButtonCustomer);
