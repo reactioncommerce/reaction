@@ -7,14 +7,13 @@ import { Components, registerComponent, composeWithTracker } from "@reactioncomm
 import { Meteor } from "meteor/meteor";
 import { Reaction } from "/client/api";
 import withCatalogItemProduct from "/imports/plugins/core/graphql/lib/hocs/withCatalogItemProduct";
-import getDisplayPriceByCurrency from "../../lib/helpers/getDisplayPriceByCurrency";
-import { ProductDetailCustomer } from "../components";
 import withAddCartItems from "/imports/plugins/core/graphql/lib/hocs/withAddCartItems";
 import withCreateCart from "/imports/plugins/core/graphql/lib/hocs/withCreateCart";
 import withPrimaryShopId from "/imports/plugins/core/graphql/lib/hocs/withPrimaryShopId";
 import withViewer from "/imports/plugins/core/graphql/lib/hocs/withViewer";
 import withAccountCart from "/imports/plugins//core/graphql/lib/hocs/withAccountCart";
-
+import getDisplayPriceByCurrency from "../../lib/helpers/getDisplayPriceByCurrency";
+import { ProductDetailCustomer } from "../components";
 
 const wrapComponent = (Comp) =>
   class ProductDetailCustomerContainer extends Component {

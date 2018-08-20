@@ -56,9 +56,12 @@ export function composer(props, onData) {
 
   const hasProperPermission = Reaction.hasPermission("account/profile");
 
+  const isAdmin = Reaction.hasAdminAccess();
+
   onData(null, {
     shop,
     brandMedia,
+    isAdmin,
     searchEnabled,
     searchTemplate,
     hasProperPermission,

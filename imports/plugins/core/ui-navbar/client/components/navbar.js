@@ -6,6 +6,7 @@ class NavBar extends Component {
   static propTypes = {
     brandMedia: PropTypes.object,
     hasProperPermission: PropTypes.bool,
+    isAdmin: PropTypes.bool,
     searchEnabled: PropTypes.bool, // eslint-disable-line react/boolean-prop-naming
     shop: PropTypes.object,
     visibility: PropTypes.object.isRequired
@@ -105,15 +106,24 @@ class NavBar extends Component {
     }
   }
 
+  renderCartPanel() {
+    if (this.props.isAdmin) {
+      return (
+        <div className="cart-alert">
+          <Components.CartPanel />
+        </div>
+      );
+    }
+    return <Components.CartPanelCustomer />;
+  }
+
   renderCartContainerAndPanel() {
     return (
       <div className="cart-container">
         <div className="cart">
           <Components.CartIcon />
         </div>
-        <div className="cart-alert">
-          <Components.CartPanel />
-        </div>
+        {this.renderCartPanel()}
       </div>
     );
   }

@@ -1,8 +1,40 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import { Session } from "meteor/session";
+import { i18next } from "/client/api";
 import { Components, registerComponent } from "@reactioncommerce/reaction-components";
 
 class AddToCartButtonCustomer extends Component {
+  componentDidUpdate(prevProps) {
+    const {
+      cartQuantity,
+      catalogItemProduct: product,
+      isLoadingAddCartItems,
+      isLoadingCreateCart,
+      selectedOptionId,
+      selectedVariantId,
+      onCartQuantityChange
+    } = this.props;
+
+    if ((prevProps.isLoadingAddCartItems && !isLoadingAddCartItems) || (prevProps.isLoadingCreateCart && !isLoadingCreateCart)) {
+      onCartQuantityChange(null, 1);
+
+      let selectedOption;
+      const selectedVariant = product.variants.find((variant) => variant._id === selectedVariantId);
+      if (selectedOptionId) {
+        selectedOption = selectedVariant.options.find((option) => option._id === selectedOptionId);
+      }
+      const selectedVariantOrOption = selectedOption || selectedVariant;
+      const addToCartText = i18next.t("productDetail.addedToCart");
+      const addToCartTitle = selectedVariantOrOption.title;
+      Session.set("cartAlertMessage", `${cartQuantity} ${addToCartTitle} ${addToCartText}`);
+      const cartAlertWidth = document.querySelector(".cart-alert-customer").clientWidth;
+      Session.set("cartAlertWidth", cartAlertWidth);
+      Session.set("isCartAlertVisible", true);
+      setTimeout(() => Session.set("isCartAlertVisible", false), 2000);
+    }
+  }
+
   handleCartQuantityChange = (event) => {
     if (this.props.onCartQuantityChange) {
       this.props.onCartQuantityChange(event, event.target.value);
@@ -39,9 +71,13 @@ class AddToCartButtonCustomer extends Component {
 
 AddToCartButtonCustomer.propTypes = {
   cartQuantity: PropTypes.number,
+  catalogItemProduct: PropTypes.object,
+  isLoadingAddCartItems: PropTypes.bool,
+  isLoadingCreateCart: PropTypes.bool,
   onAddToCart: PropTypes.func,
   onCartQuantityChange: PropTypes.func,
-  catalogItemProduct: PropTypes.object
+  selectedOptionId: PropTypes.string,
+  selectedVariantId: PropTypes.string
 };
 
 registerComponent("AddToCartButtonCustomer", AddToCartButtonCustomer);
