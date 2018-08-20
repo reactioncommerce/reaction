@@ -1,8 +1,8 @@
-import Hooks from "@reactioncommerce/hooks";
 import { check, Match } from "meteor/check";
-import * as Collections from "/lib/collections";
+import { Cart } from "/lib/collections";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
 import getCart from "/imports/plugins/core/cart/server/util/getCart";
+import appEvents from "/imports/plugins/core/core/server/appEvents";
 
 /**
  * @method cart/setPaymentAddress
@@ -48,10 +48,11 @@ export default function setPaymentAddress(cartId, cartToken, address) {
     };
   }
 
-  const result = Collections.Cart.update(selector, update);
+  const result = Cart.update(selector, update);
 
-  // Calculate discounts
-  Hooks.Events.run("afterCartUpdateCalculateDiscount", cartId);
+  const updatedCart = Cart.findOne({ _id: cartId });
+
+  Promise.await(appEvents.emit("afterCartUpdate", updatedCart._id, updatedCart));
 
   return result;
 }

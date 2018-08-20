@@ -1,4 +1,3 @@
-import Hooks from "@reactioncommerce/hooks";
 import { Meteor } from "meteor/meteor";
 import { check } from "meteor/check";
 import getGraphQLContextInMeteorMethod from "/imports/plugins/core/graphql/server/getGraphQLContextInMeteorMethod";
@@ -30,15 +29,10 @@ export default function mergeCart(anonymousCartId, anonymousCartToken) {
 
   const cartId = cart._id;
 
-  // Calculate discounts
-  Hooks.Events.run("afterCartUpdateCalculateDiscount", cartId);
-
   const accountCartWorkflow = cart.workflow;
   if (accountCartWorkflow && accountCartWorkflow.workflow) {
     if (accountCartWorkflow.workflow.length > 2) {
       Meteor.call("workflow/revertCartWorkflow", "coreCheckoutShipping", cart._id);
-      // refresh shipping quotes
-      Meteor.call("shipping/updateShipmentQuotes", cartId);
     }
   } else if (accountCartWorkflow && accountCartWorkflow.status === "new") {
     // to call `workflow/pushCartWorkflow` two times is the only way to move

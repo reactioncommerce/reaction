@@ -10,7 +10,7 @@ Migrations.add({
       $set: {
         "layout.$.structure.template": "Products"
       }
-    }, { bypassCollection2: true });
+    }, { bypassCollection2: true, multi: true });
 
     Packages.update({
       "registry.template": "products"
@@ -18,7 +18,7 @@ Migrations.add({
       $set: {
         "registry.$.template": "Products"
       }
-    }, { bypassCollection2: true });
+    }, { bypassCollection2: true, multi: true });
   },
   down() {
     Packages.update({
@@ -27,7 +27,7 @@ Migrations.add({
       $set: {
         "layout.$.structure.template": "products"
       }
-    }, { bypassCollection2: true });
+    }, { bypassCollection2: true, multi: true });
 
     Packages.update({
       "registry.template": "Products"
@@ -35,6 +35,6 @@ Migrations.add({
       $set: {
         "registry.$.template": "products"
       }
-    }, { bypassCollection2: true });
+    }, { bypassCollection2: true, multi: true });
   }
 });

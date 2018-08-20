@@ -102,30 +102,9 @@ test("renders child component with correct catalogItems connection", async () =>
   await waitForFalseyProp(wrapper, "MockComponent", "isLoadingCatalogItems");
 
   const catalogItems = wrapper.find("MockComponent").prop("catalogItems");
-  expect(typeof catalogItems).toBe("object");
-
-  const {
-    totalCount,
-    pageInfo: {
-      startCursor,
-      endCursor
-    },
-    edges: [
-      {
-        node: {
-          _id
-        }
-      }
-    ]
-  } = fakeCatalogItemsConnection;
-
-  expect(catalogItems.totalCount).toBe(totalCount);
-  expect(typeof catalogItems.pageInfo).toBe("object");
-  expect(catalogItems.pageInfo.startCursor).toBe(startCursor);
-  expect(catalogItems.pageInfo.endCursor).toBe(endCursor);
-  expect(Array.isArray(catalogItems.edges)).toBe(true);
-  expect(typeof catalogItems.edges[0].node).toBe("object");
-  expect(catalogItems.edges[0].node._id).toBe(_id);
+  expect(Array.isArray(catalogItems)).toBe(true);
+  expect(catalogItems.length).toBe(1);
+  expect(catalogItems[0]._id).toBe(fakeCatalogItemsConnection.edges[0].node.product._id);
 });
 
 test("doesn't query GraphQL if no shopId is provided", async () => {
@@ -140,7 +119,7 @@ test("doesn't query GraphQL if no shopId is provided", async () => {
   expect(mockComponentInstance.prop("isLoadingCatalogItems")).toBe(undefined);
 });
 
-test("returns an empty object for catalogItems if invalid shopId is provided", async () => {
+test("returns an empty array for catalogItems if invalid shopId is provided", async () => {
   const wrapper = mount((
     <MockedProvider mocks={mocks}>
       <TestComponent shopId="invalidShopId" />
@@ -150,5 +129,5 @@ test("returns an empty object for catalogItems if invalid shopId is provided", a
   await waitForFalseyProp(wrapper, "MockComponent", "isLoadingCatalogItems");
 
   const mockComponentInstance = wrapper.find("MockComponent");
-  expect(mockComponentInstance.prop("catalogItems")).toEqual({});
+  expect(mockComponentInstance.prop("catalogItems")).toEqual([]);
 });

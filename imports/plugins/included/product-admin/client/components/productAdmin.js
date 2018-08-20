@@ -1,11 +1,10 @@
 import { isEqual } from "lodash";
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import Velocity from "velocity-animate";
-import "velocity-animate/velocity.ui";
 import { Components } from "@reactioncommerce/reaction-components";
 import { Router } from "/client/api";
 import update from "immutability-helper";
+import { highlightInput } from "/imports/plugins/core/ui/client/helpers/animations";
 
 const fieldNames = [
   "title",
@@ -45,9 +44,12 @@ class ProductAdmin extends Component {
     };
   }
 
-  componentWillReceiveProps(nextProps) {
-    const nextProduct = nextProps.product || {};
-    const currentProduct = this.props.product || {};
+  UNSAFE_componentWillReceiveProps(nextProps) { // eslint-disable-line camelcase
+    if (nextProps.product === undefined || this.props.product === undefined) {
+      return;
+    }
+    const nextProduct = nextProps.product;
+    const currentProduct = this.props.product;
 
     if (!isEqual(nextProduct, currentProduct)) {
       for (const fieldName of fieldNames) {
@@ -97,11 +99,7 @@ class ProductAdmin extends Component {
 
     if (fieldRef) {
       const { input } = fieldRef.refs;
-
-      Velocity.RunSequence([
-        { e: input, p: { backgroundColor: "#e2f2e2" }, o: { duration: 200 } },
-        { e: input, p: { backgroundColor: "#fff" }, o: { duration: 100 } }
-      ]);
+      highlightInput(input);
     }
   }
 

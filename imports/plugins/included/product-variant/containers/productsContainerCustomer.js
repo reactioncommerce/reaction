@@ -4,9 +4,7 @@ import { compose } from "recompose";
 import { registerComponent, composeWithTracker } from "@reactioncommerce/reaction-components";
 import { Meteor } from "meteor/meteor";
 import { Reaction } from "/client/api";
-import { ITEMS_INCREMENT } from "/client/config/defaults";
 import { Shops } from "/lib/collections";
-import { loadMore } from "/imports/plugins/core/graphql/lib/helpers/pagination";
 import withCatalogItems from "imports/plugins/core/graphql/lib/hocs/withCatalogItems";
 import withShopId from "/imports/plugins/core/graphql/lib/hocs/withShopId";
 import withTagId from "/imports/plugins/core/graphql/lib/hocs/withTagId";
@@ -15,11 +13,12 @@ import ProductGridCustomer from "../components/customer/productGrid";
 const wrapComponent = (Comp) => (
   class ProductsContainerCustomer extends Component {
     static propTypes = {
-      catalogItems: PropTypes.object,
-      fetchMore: PropTypes.func,
+      catalogItems: PropTypes.array,
+      hasMoreCatalogItems: PropTypes.bool,
       isLoadingCatalogItems: PropTypes.bool,
       isLoadingShopId: PropTypes.bool,
       isLoadingTagId: PropTypes.bool,
+      loadMoreCatalogItems: PropTypes.func,
       tag: PropTypes.object,
       tagSlugOrId: PropTypes.string
     };
@@ -42,42 +41,34 @@ const wrapComponent = (Comp) => (
 
       this.setState({ isLoadingMore: true });
 
-      const { catalogItems, fetchMore } = this.props;
-      const { pageInfo } = catalogItems;
+      const { loadMoreCatalogItems } = this.props;
 
-      loadMore({
-        queryName: "catalogItems",
-        fetchMore,
-        pageInfo,
-        limit: ITEMS_INCREMENT
-      }, () => {
-        this.setState({ isLoadingMore: false });
-      });
+      loadMoreCatalogItems(() => this.setState({ isLoadingMore: false }));
     };
 
     render() {
       const {
         tagSlugOrId,
         tag,
-        catalogItems = {},
+        catalogItems = [],
         isLoadingShopId,
         isLoadingTagId,
-        isLoadingCatalogItems
+        isLoadingCatalogItems,
+        hasMoreCatalogItems
       } = this.props;
       const { isLoadingMore } = this.state;
-      const { pageInfo = {} } = catalogItems;
-      const { hasNextPage } = pageInfo;
-      const products = (catalogItems.edges || []).map((edge) => edge.node.product);
       const isLoadingData = isLoadingShopId || isLoadingTagId || isLoadingCatalogItems;
+      const isLoading = isLoadingData || isLoadingMore || false;
+      const shouldShowNotFound = isLoading === false && (!!(tagSlugOrId && tag === null));
 
       return (
         <Comp
           {...this.props}
-          showNotFound={!!(tagSlugOrId && tag === null)}
-          canLoadMoreProducts={hasNextPage}
-          isLoading={isLoadingData || isLoadingMore || false}
+          showNotFound={shouldShowNotFound}
+          canLoadMoreProducts={hasMoreCatalogItems}
+          isLoading={isLoading}
           loadProducts={this.loadProducts}
-          products={products}
+          products={catalogItems}
           shopCurrencyCode={Reaction.getPrimaryShopCurrency()}
         />
       );

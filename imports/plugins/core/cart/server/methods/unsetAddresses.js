@@ -1,10 +1,10 @@
-import Hooks from "@reactioncommerce/hooks";
 import Logger from "@reactioncommerce/logger";
 import { Meteor } from "meteor/meteor";
 import { check, Match } from "meteor/check";
 import ReactionError from "@reactioncommerce/reaction-error";
-import * as Collections from "/lib/collections";
+import { Cart } from "/lib/collections";
 import getCart from "/imports/plugins/core/cart/server/util/getCart";
+import appEvents from "/imports/plugins/core/core/server/appEvents";
 
 /**
  * @method removeShippingAddresses
@@ -16,14 +16,11 @@ import getCart from "/imports/plugins/core/cart/server/util/getCart";
 function removeShippingAddresses(cart) {
   const cartShipping = cart.shipping;
   cartShipping.map((sRecord) => delete sRecord.address);
-  Collections.Cart.update({
+  Cart.update({
     _id: cart._id
   }, {
     $set: { shipping: cartShipping }
   });
-
-  // Calculate discounts
-  Hooks.Events.run("afterCartUpdateCalculateDiscount", cart._id);
 }
 
 /**
@@ -78,20 +75,23 @@ export default function unsetAddresses(cartId, cartToken, addressId, type) {
 
   if (needToUpdate) {
     try {
-      Collections.Cart.update({ _id: cartId }, update);
+      Cart.update({ _id: cartId }, update);
     } catch (error) {
       Logger.error(error);
       throw new ReactionError("server-error", "Error updating cart");
     }
+  }
 
-    // Calculate discounts
-    Hooks.Events.run("afterCartUpdateCalculateDiscount", cartId);
-
+  if (needToUpdate || isShippingDeleting) {
     if (isShippingDeleting) {
       // if we remove shipping address from cart, we need to revert
       // `cartWorkflow` to the `checkoutAddressBook` step.
       Meteor.call("workflow/revertCartWorkflow", "checkoutAddressBook", cartId);
     }
+
+    const updatedCart = Cart.findOne({ _id: cartId });
+    Promise.await(appEvents.emit("afterCartUpdate", cartId, updatedCart));
   }
+
   return true;
 }
