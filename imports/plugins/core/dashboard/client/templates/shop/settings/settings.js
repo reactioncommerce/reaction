@@ -1,10 +1,10 @@
-import _ from "lodash";
 import { Meteor } from "meteor/meteor";
 import { Template } from "meteor/templating";
 import { AutoForm } from "meteor/aldeed:autoform";
 import { Reaction, i18next } from "/client/api";
 import { Packages, Shops } from "/lib/collections";
 import { Media } from "/imports/plugins/core/files/client";
+import SitemapSettingsContainer from "/imports/plugins/included/sitemap-generator/client/containers/sitemap-settings-container";
 import ShopBrandMediaManager from "./ShopBrandMediaManager";
 
 
@@ -34,7 +34,7 @@ Template.shopSettings.helpers({
     });
 
     let selectedMediaId;
-    if (shop && _.isArray(shop.brandAssets)) {
+    if (shop && Array.isArray(shop.brandAssets)) {
       selectedMediaId = shop.brandAssets[0].mediaId;
     }
 
@@ -157,5 +157,13 @@ Template.optionsShopSettings.helpers({
       name: "core",
       shopId: Reaction.getShopId()
     });
+  },
+
+  isPackageEnabled(name) {
+    return Reaction.isPackageEnabled(name);
+  },
+
+  SitemapSettingsContainer() {
+    return SitemapSettingsContainer;
   }
 });
