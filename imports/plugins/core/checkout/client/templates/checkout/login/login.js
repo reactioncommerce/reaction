@@ -1,5 +1,6 @@
 import { Meteor } from "meteor/meteor";
 import { Template } from "meteor/templating";
+import { Components } from "@reactioncommerce/reaction-components";
 import { Reaction } from "/client/api";
 import getCart from "/imports/plugins/core/cart/client/util/getCart";
 
@@ -25,5 +26,10 @@ Template.checkoutLogin.helpers({
     }
 
     return false;
+  },
+  loginInlineComponent() {
+    return {
+      component: Components.LoginInline
+    };
   }
 });
