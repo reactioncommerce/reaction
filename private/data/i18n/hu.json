@@ -35,7 +35,8 @@
           "dashboard": "Műszerfal",
           "misc": "Egyéb",
           "paymentMethod": "fizetési szolgáltatók",
-          "utilities": "segédprogramok"
+          "utilities": "segédprogramok",
+          "addUserSuccess":"A felhasználó sikeresen hozzá lett adva"
         },
         "settings": {
           "accountSettingsLabel": "Fiók beállítások",

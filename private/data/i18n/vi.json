@@ -35,7 +35,8 @@
           "dashboard": "bảng điều khiển",
           "misc": "misc",
           "paymentMethod": "Nhà cung cấp thanh toán",
-          "utilities": "tiện ích"
+          "utilities": "tiện ích",
+          "addUserSuccess":"Người dùng đã được thêm thành công"
         },
         "settings": {
           "accountSettingsLabel": "Thiết lập tài khoản",

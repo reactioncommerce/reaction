@@ -35,7 +35,8 @@
           "dashboard": "Ταμπλό",
           "misc": "Διάφορα",
           "paymentMethod": "οι πάροχοι υπηρεσιών πληρωμών",
-          "utilities": "Utilities"
+          "utilities": "Utilities",
+          "addUserSuccess":"Ο χρήστης προστέθηκε με επιτυχία"
         },
         "settings": {
           "accountSettingsLabel": "Ρυθμίσεις λογαριασμού",

@@ -35,7 +35,8 @@
           "dashboard": "Bord",
           "misc": "Diverse",
           "paymentMethod": "Furnizorii plăți",
-          "utilities": "Utilitare"
+          "utilities": "Utilitare",
+          "addUserSuccess":"Utilizatorul a fost adăugat cu succes"
         },
         "settings": {
           "accountSettingsLabel": "Setările contului",

@@ -35,7 +35,8 @@
           "dashboard": "Nadzorna plošča",
           "misc": "Razno",
           "paymentMethod": "Ponudniki plačilnih",
-          "utilities": "Pripomočki"
+          "utilities": "Pripomočki",
+          "addUserSuccess":"Uporabnik je bil uspešno dodan"
         },
         "settings": {
           "accountSettingsLabel": "Nastavitve računa",

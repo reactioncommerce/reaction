@@ -35,7 +35,8 @@
           "dashboard": "仪表板",
           "misc": "杂项",
           "paymentMethod": "支付服务提供商",
-          "utilities": "实用程序"
+          "utilities": "实用程序",
+          "addUserSuccess":"用户已成功添加"
         },
         "settings": {
           "accountSettingsLabel": "账户设置",

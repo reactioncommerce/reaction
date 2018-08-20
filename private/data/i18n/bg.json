@@ -35,7 +35,8 @@
           "dashboard": "Табло",
           "misc": "Разни",
           "paymentMethod": "доставчици на платежни",
-          "utilities": "комунални услуги"
+          "utilities": "комунални услуги",
+          "addUserSuccess":"Потребителят бе добавен успешно"
         },
         "settings": {
           "accountSettingsLabel": "Настройки на профила",

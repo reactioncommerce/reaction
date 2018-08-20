@@ -35,7 +35,8 @@
           "dashboard": "لوحة المعلومات",
           "misc": "متنوع",
           "paymentMethod": "مزود الدفعة",
-          "utilities": "أدوات مساعدة"
+          "utilities": "أدوات مساعدة",
+          "addUserSuccess":"تمت إضافة المستخدم بنجاح"  
         },
         "settings": {
           "accountSettingsLabel": "إعدادات الحساب",

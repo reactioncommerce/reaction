@@ -35,7 +35,8 @@
           "dashboard": "Gösterge paneli",
           "misc": "Çeşitli",
           "paymentMethod": "Ödeme Sağlayıcıları",
-          "utilities": "Kamu hizmetleri"
+          "utilities": "Kamu hizmetleri",
+          "addUserSuccess":"Kullanıcı başarıyla eklendi"
         },
         "settings": {
           "accountSettingsLabel": "Hesap Ayarları",
