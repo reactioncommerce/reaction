@@ -16,10 +16,11 @@ import getViewer from "../queries/getViewer";
       }
        return (
         <Query query={getViewer}>
-          {({ loading, error, data }) => {
+          {({ loading, error, data, refetch }) => {
             const props = {
               ...this.props,
-              isLoadingViewerId: loading
+              isLoadingViewerId: loading,
+              refetchViewer: refetch
             };
              if (loading === false) {
               const { viewer } = data;
