@@ -87,7 +87,7 @@ class TagNav extends Component {
         </div>
         {this.renderShopSelect()}
         <div className="navbar-items">
-          <Components.TagList
+          <Components.TagListCustomer
             product={this.props.product}
             hasDropdownClassName={this.props.hasDropdownClassName}
             navbarSelectedClassName={this.props.navbarSelectedClassName}
@@ -100,15 +100,14 @@ class TagNav extends Component {
             enableNewTagForm={false}
           >
             <div className="dropdown-container">
-              <Components.TagGroup
+              <Components.TagGroupCustomer
               {...this.props}
-              editable={false}
               tagGroupProps={this.tagGroupProps(this.state.selectedTag || {})}
               onTagMouseOut={this.handleTagMouseOut}
               onTagMouseOver={this.handleTagMouseOver}
               />
             </div>
-          </Components.TagList>
+          </Components.TagListCustomer>
         </div>
       </div>
     );

@@ -1,6 +1,9 @@
 export { default as TagGroup } from "./components/tagGroup";
+export { default as TagGroupCustomer } from "./components/tagGroupCustomer";
 export { default as TagGroupBody } from "./components/tagGroupBody";
+export { default as TagGroupBodyCustomer } from "./components/tagGroupBodyCustomer";
 export { default as TagGroupHeader } from "./components/tagGroupHeader";
+export { default as TagGroupHeaderCustomer } from "./components/tagGroupHeaderCustomer";
 export { default as TagNav } from "./components/tagNav";
 export { default as TagNavContainer } from "./containers/tagNavContainer";
 export { default as TagNavCustomerContainer } from "./containers/tagNavCustomerContainer";

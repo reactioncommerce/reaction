@@ -6,3 +6,4 @@ export { default as InventoryBadgeContainer } from "./inventoryBadge";
 export { default as SortableItem } from "./sortableItem";
 export { default as MediaGalleryContainer } from "./mediaGallery";
 export { default as TagListContainer } from "./tagListContainer";
+export { default as TagListContainerCustomer } from "./tagListContainerCustomer";

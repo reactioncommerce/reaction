@@ -1,5 +1,5 @@
 import React from "react";
-import NavBar from "../components/navbar";
+import NavBarAdmin from "../components/navbarAdmin";
 
 const NavBarCheckout = (props, context) => {
   const visibility = {
@@ -17,7 +17,7 @@ const NavBarCheckout = (props, context) => {
     ...props,
     visibility
   };
-  return React.createElement(NavBar, newProps, context);
+  return React.createElement(NavBarAdmin, newProps, context);
 };
 
 export default NavBarCheckout;

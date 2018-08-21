@@ -17,6 +17,14 @@ export const TagHelpers = {
     return newArray;
   },
 
+  subTagsCustomer(parentTag) {
+    if (parentTag.subTags && Array.isArray(parentTag.subTags.nodes) && parentTag.subTags.nodes.length > 0) {
+      return parentTag.subTags.nodes
+    }
+    return [];
+  },
+
+
   subTags(parentTag) {
     if (_.isArray(parentTag.relatedTagIds)) {
       const tags = Tags.find({

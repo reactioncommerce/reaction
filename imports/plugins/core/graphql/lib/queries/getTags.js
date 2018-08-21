@@ -15,7 +15,16 @@ export default gql`
             name,
             slug,
             heroMediaUrl,
-            position
+            position,
+            subTags {
+              nodes {
+                _id,
+                name,
+                slug,
+                heroMediaUrl,
+                position,
+              }
+            }
           }
         },
       }

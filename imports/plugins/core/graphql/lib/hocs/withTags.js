@@ -29,10 +29,13 @@ export default (Component) => (
           {({ loading, error, data }) => {
             const props = {
               ...this.props,
-              isLoadingTags: loading
+              isLoading: loading
             };
 
-            if (loading === false && data) {
+            if (loading === false) {
+              if (!data) {
+                return <Component {...props} shouldSkipGraphql />
+              }
               let { tags: { nodes: tags} } = data;
               // tags = _.cloneDeep(tags);
               _.sortBy(tags, this.props.sortBy || "position"); // puts tags without position at end of array

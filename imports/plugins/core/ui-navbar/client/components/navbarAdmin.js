@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { Components } from "@reactioncommerce/reaction-components";
 import { Reaction } from "/client/api";
 
-class NavBar extends Component {
+class NavBarAdmin extends Component {
   static propTypes = {
     brandMedia: PropTypes.object,
     hasProperPermission: PropTypes.bool,
@@ -166,4 +166,4 @@ class NavBar extends Component {
   }
 }
 
-export default NavBar;
+export default NavBarAdmin;

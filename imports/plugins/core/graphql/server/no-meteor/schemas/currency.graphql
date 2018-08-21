@@ -4,6 +4,7 @@ type Currency implements Node {
   code: String!
   symbol: String!
   format: String!
+  enabled: Boolean!
   scale: Int
   decimal: String
   thousand: String
