@@ -1,16 +1,10 @@
-import graphqlSchema from "./core/schema.graphql";
-import graphqlResolvers from "./core/resolvers";
-import ReactionService from "./ReactionService";
 import configurePlugins from "./configurePlugins";
-import startup from "./core/startup";
+import { graphqlResolvers, graphqlSchemas, ReactionFulfillmentService } from "./core";
 
-const app = new ReactionService({
-  graphqlResolvers,
-  graphqlSchemas: [graphqlSchema]
-});
+const app = new ReactionFulfillmentService({ graphqlResolvers, graphqlSchemas });
 configurePlugins(app);
 app.start();
 
-startup();
-
 export default app;
+
+export { startup } from "./core";
