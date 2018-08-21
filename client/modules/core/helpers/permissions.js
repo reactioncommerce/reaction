@@ -7,7 +7,7 @@ import { Reaction } from "/client/api";
  * @summary check current user hasPermission, uses [alanning:meteor-roles](http://alanning.github.io/meteor-roles/classes/Roles.html)
  * @example {{hasPermission admin userId}}
  * @param  {String|Array} "permissions"
- * @param  {String} checkUserId - optional Meteor.userId, default to current
+ * @param  {String} options - object
  * @return {Boolean}
  */
 Template.registerHelper("hasPermission", (permissions, options) => {
