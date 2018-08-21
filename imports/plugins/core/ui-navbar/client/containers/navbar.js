@@ -1,5 +1,5 @@
 import { Components, registerComponent, composeWithTracker } from "@reactioncommerce/reaction-components";
-import React, { Component } from "react";
+import React from "react";
 import PropTypes from "prop-types";
 import { compose } from "recompose";
 import { Reaction } from "/client/api";

@@ -1,11 +1,9 @@
 import _ from "lodash";
-import update from "immutability-helper";
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { compose } from "recompose";
 import { Components, registerComponent, composeWithTracker } from "@reactioncommerce/reaction-components";
 import { Reaction, Router } from "/client/api";
-import { TagHelpers } from "/imports/plugins/core/ui-tagnav/client/helpers";
 import withTags from "/imports/plugins/core/graphql/lib/hocs/withTags";
 import withShopId from "/imports/plugins/core/graphql/lib/hocs/withShopId";
 import TagNavCustomer from "../components/tagNavCustomer";
@@ -85,7 +83,7 @@ const wrapComponent = (Comp) => (
         tagIds: props.tagIds || [],
         tagsByKey: props.tagsByKey || {},
         selectedTag: null,
-        [NavbarStates.Visible]: props.isVisible,
+        [NavbarStates.Visible]: props.isVisible
       };
 
       this.onWindowResize = this.onWindowResize.bind(this);
@@ -106,7 +104,7 @@ const wrapComponent = (Comp) => (
         }
       });
 
-      const { tagIds = [], tagsByKey = {} , isVisible } = nextProps;
+      const { tagIds = [], tagsByKey = {}, isVisible } = nextProps;
       this.setState({
         [NavbarStates.Visible]: isVisible,
         tagIds,
@@ -247,7 +245,7 @@ const wrapComponent = (Comp) => (
     }
 
     hasDropdownClassName(tag) {
-        if (TagNavHelpers.hasSubTagsForOne(tag)) {
+      if (TagNavHelpers.hasSubTagsForOne(tag)) {
         return "has-dropdown";
       }
       return "";

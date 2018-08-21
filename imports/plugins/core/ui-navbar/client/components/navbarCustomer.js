@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Components } from "@reactioncommerce/reaction-components";
-import { Reaction } from "/client/api";
 
 class NavBarCustomer extends Component {
   static propTypes = {

@@ -1,6 +1,5 @@
 import _ from "lodash";
 import React, { Component } from "react";
-import update from "immutability-helper";
 import PropTypes from "prop-types";
 import { Components, registerComponent } from "@reactioncommerce/reaction-components";
 
@@ -54,7 +53,7 @@ class TagGroupBodyCustomer extends Component {
 }
 
 TagGroupBodyCustomer.propTypes = {
-  tagGroupBodyProps: PropTypes.object,
+  tagGroupBodyProps: PropTypes.object
 };
 
 registerComponent("TagGroupBodyCustomer", TagGroupBodyCustomer);

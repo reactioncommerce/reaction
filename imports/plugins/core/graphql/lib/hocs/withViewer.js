@@ -2,27 +2,28 @@ import React from "react";
 import PropTypes from "prop-types";
 import { Query } from "react-apollo";
 import getViewer from "../queries/getViewer";
- export default (Component) => (
+
+export default (Component) => (
   class ViewerId extends React.Component {
     static propTypes = {
       shouldSkipGraphql: PropTypes.bool // Whether to skip this HOC's GraphQL query & data
     };
-     render() {
+    render() {
       const { shouldSkipGraphql } = this.props;
       if (shouldSkipGraphql) {
         return (
           <Component {...this.props} />
         );
       }
-       return (
+      return (
         <Query query={getViewer}>
-          {({ loading, error, data, refetch }) => {
+          {({ loading, data, refetch }) => {
             const props = {
               ...this.props,
               isLoadingViewerId: loading,
               refetchViewer: refetch
             };
-             if (loading === false) {
+            if (loading === false) {
               const { viewer } = data;
               if (viewer) {
                 props.viewer = viewer;
@@ -31,7 +32,7 @@ import getViewer from "../queries/getViewer";
                 props.shouldSkipGraphql = true;
               }
             }
-             return (
+            return (
               <Component {...props} />
             );
           }}

@@ -101,10 +101,10 @@ class TagNav extends Component {
           >
             <div className="dropdown-container">
               <Components.TagGroupCustomer
-              {...this.props}
-              tagGroupProps={this.tagGroupProps(this.state.selectedTag || {})}
-              onTagMouseOut={this.handleTagMouseOut}
-              onTagMouseOver={this.handleTagMouseOver}
+                {...this.props}
+                tagGroupProps={this.tagGroupProps(this.state.selectedTag || {})}
+                onTagMouseOut={this.handleTagMouseOut}
+                onTagMouseOver={this.handleTagMouseOver}
               />
             </div>
           </Components.TagListCustomer>

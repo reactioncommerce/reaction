@@ -1,7 +1,6 @@
 import { compose, withProps } from "recompose";
 import React, { Component } from "react";
 import { Meteor } from "meteor/meteor";
-import { Match } from "meteor/check";
 import { Reaction } from "/client/api";
 import { registerComponent, composeWithTracker } from "@reactioncommerce/reaction-components";
 import withShop from "/imports/plugins/core/graphql/lib/hocs/withShop";
@@ -19,7 +18,7 @@ const handlers = {
     Meteor.call("accounts/setProfileCurrency", currencyName, this.refetchViewer);
     const { cart, token } = getCart();
     if (!cart) return;
-    
+
     // Attach changed currency to this users cart
     Meteor.call("cart/setUserCurrency", cart._id, token, currencyName);
   }
@@ -34,7 +33,7 @@ const wrapComponent = (Comp) => (
       const profileCurrency = user && user.currency;
       if (shop && shop.currency) {
         const locale = Reaction.Locale.get();
-        
+
         if (profileCurrency && profileCurrency.code && profileCurrency.symbol) {
           currentCurrency = `${profileCurrency.code} ${profileCurrency.symbol}`;
         } else if (locale && locale.currency && locale.currency.enabled) {
@@ -60,7 +59,7 @@ const wrapComponent = (Comp) => (
           }
         });
       }
-      
+
       return (
         <div>
           <Comp
@@ -74,7 +73,7 @@ const wrapComponent = (Comp) => (
   }
 );
 
-const composer = (props, onData) => {  
+const composer = (props, onData) => {
   onData(null, { ...props, shopSlug: getSlug(Reaction.getShopName().toLowerCase()) });
 };
 

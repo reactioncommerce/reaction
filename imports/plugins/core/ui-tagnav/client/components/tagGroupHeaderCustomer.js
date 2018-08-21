@@ -29,7 +29,7 @@ class TagGroupHeaderCustomer extends Component {
 
 TagGroupHeaderCustomer.propTypes = {
   parentTag: PropTypes.object,
-  tag: PropTypes.object,
+  tag: PropTypes.object
 };
 
 registerComponent("TagGroupHeaderCustomer", TagGroupHeaderCustomer);

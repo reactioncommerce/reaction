@@ -37,7 +37,7 @@ export function composer(props, onData) {
   });
 }
 
-registerComponent("NavBarCustomer", NavBarCustomer, [ composeWithTracker(composer), withShopId, withShop ]);
+registerComponent("NavBarCustomer", NavBarCustomer, [composeWithTracker(composer), withShopId, withShop]);
 
 export default compose(
   composeWithTracker(composer),

@@ -23,7 +23,7 @@ export default (Component) => (
 
       return (
         <Query query={getShop} variables={variables}>
-          {({ loading, error, data }) => {
+          {({ loading, data }) => {
             const props = {
               ...this.props,
               isLoading: loading

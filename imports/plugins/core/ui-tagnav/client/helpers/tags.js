@@ -19,7 +19,7 @@ export const TagHelpers = {
 
   subTagsCustomer(parentTag) {
     if (parentTag.subTags && Array.isArray(parentTag.subTags.nodes) && parentTag.subTags.nodes.length > 0) {
-      return parentTag.subTags.nodes
+      return parentTag.subTags.nodes;
     }
     return [];
   },

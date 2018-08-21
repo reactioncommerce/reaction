@@ -5,7 +5,6 @@ import { registerComponent } from "@reactioncommerce/reaction-components";
 import { Router } from "@reactioncommerce/reaction-router";
 
 class TagItemCustomer extends Component {
-
   get tag() {
     return this.props.tag || {
       name: ""

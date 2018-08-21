@@ -132,7 +132,7 @@ class NavBarAdmin extends Component {
   }
 
   renderTagNav() {
-    const Comp = Reaction.hasAdminAccess() ? Components.TagNav : Components.TagNavCustomer
+    const Comp = Reaction.hasAdminAccess() ? Components.TagNav : Components.TagNavCustomer;
     return (
       <header className="menu" role="banner">
         <Comp

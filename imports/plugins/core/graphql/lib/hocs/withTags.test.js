@@ -34,7 +34,7 @@ const mocks = [
   },
   {
     request: {
-      query: getTagId,
+      query: getTags,
       variables: {
       }
     },

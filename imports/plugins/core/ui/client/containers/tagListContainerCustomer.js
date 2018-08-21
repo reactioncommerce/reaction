@@ -1,15 +1,11 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import _ from "lodash";
-import update from "immutability-helper";
 import { compose } from "recompose";
-import { registerComponent, composeWithTracker, Components } from "@reactioncommerce/reaction-components";
-import { Meteor } from "meteor/meteor";
-import { Reaction, i18next } from "/client/api";
+import { registerComponent, composeWithTracker } from "@reactioncommerce/reaction-components";
 import TagListCustomer from "../components/tags/tagListCustomer";
 import { Tags } from "/lib/collections";
 import { getTagIds } from "/lib/selectors/tags";
-
 
 const wrapComponent = (Comp) => (
   class TagListContainer extends Component {
@@ -20,22 +16,6 @@ const wrapComponent = (Comp) => (
       tagIds: PropTypes.arrayOf(PropTypes.string),
       tagsAsArray: PropTypes.arrayOf(PropTypes.object),
       tagsByKey: PropTypes.object
-    }
-
-    constructor(props) {
-      super(props);
-
-      this.state = {
-        tagIds: props.tagIds || [],
-        tagsByKey: props.tagsByKey || {},
-      };
-    }
-
-    componentWillReceiveProps(nextProps) {
-      this.setState({
-        tagIds: nextProps.tagIds || [],
-        tagsByKey: nextProps.tagsByKey || {}
-      });
     }
 
     get productId() {
@@ -84,7 +64,7 @@ function composer(props, onData) {
     isProductTags: props.product !== undefined,
     tagIds: getTagIds({ tags }),
     tagsByKey,
-    tagsAsArray: tags,
+    tagsAsArray: tags
   });
 }
 
