@@ -4,6 +4,7 @@ import appEvents from "../../imports/plugins/core/core/server/appEvents";
 import createApolloServer from "../../imports/plugins/core/graphql/server/no-meteor/createApolloServer";
 import defineCollections from "../../imports/collections/defineCollections";
 import setUpFileCollections from "../../imports/plugins/core/files/server/no-meteor/setUpFileCollections";
+import { startup as fulfillmentServiceStartup } from "../../imports/services/fulfillment";
 
 const { MONGO_URL, ROOT_URL } = process.env;
 if (!MONGO_URL) throw new Error("You must set MONGO_URL");
@@ -19,7 +20,7 @@ let db;
 
 const collections = {};
 
-MongoClient.connect(dbUrl, (error, client) => {
+MongoClient.connect(dbUrl, { useNewUrlParser: true }, (error, client) => {
   if (error) throw error;
   console.info("Connected to MongoDB");
   mongoClient = client;
@@ -37,6 +38,11 @@ MongoClient.connect(dbUrl, (error, client) => {
   // Make the Media collection available to resolvers
   collections.Media = Media;
 
+  const baseContext = { appEvents, collections };
+
+  // Run startup functions for each service
+  fulfillmentServiceStartup(baseContext);
+
   /**
    * This is a server for development of the GraphQL API without needing
    * to run Meteor. After finishing development, you should still test
@@ -49,7 +55,7 @@ MongoClient.connect(dbUrl, (error, client) => {
         return null;
       };
     },
-    context: { appEvents, collections },
+    context: baseContext,
     debug: true,
     graphiql: true
   });

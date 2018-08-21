@@ -9,6 +9,7 @@ import defineCollections from "../imports/collections/defineCollections";
 import Factory from "../imports/test-utils/helpers/factory";
 import { hashLoginToken } from "../imports/core-server";
 import setUpFileCollections from "../imports/plugins/core/files/server/no-meteor/setUpFileCollections";
+import { startup as fulfillmentServiceStartup } from "../imports/services/fulfillment";
 
 class TestApp {
   constructor() {
@@ -167,6 +168,11 @@ class TestApp {
 
   async start() {
     await this.startMongo();
+
+    // Run startup functions for each service
+    const context = { appEvents, collections: this.collections };
+    await fulfillmentServiceStartup(context);
+
     await this.startServer();
   }
 
