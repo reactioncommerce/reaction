@@ -13,6 +13,6 @@ export default {
   pricing,
   tagIds,
   tags,
-  media: (node) => node.media.map(mediaItem => xformProductMedia(mediaItem)),
+  media: (node) => node.media.map((mediaItem) => xformProductMedia(mediaItem)),
   primaryImage: (node) => xformProductMedia(node.primaryImage)
 };

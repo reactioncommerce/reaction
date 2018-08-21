@@ -12,7 +12,7 @@ export const encodeCatalogProductOpaqueId = encodeOpaqueId(namespaces.CatalogPro
  * @method
  * @memberof GraphQL/Transforms
  * @param {Object} mediaItem object from a catalog product
- * @return transformed product media array
+ * @return {Object} transformed product media item
  */
 export function xformProductMedia(mediaItem) {
   if (!mediaItem) return null;
@@ -21,8 +21,8 @@ export function xformProductMedia(mediaItem) {
   const absoluteUrl = process.env.ROOT_URL.slice(0, -1);
 
   return {
-    priority: priority,
-    toGrid: toGrid,
+    priority,
+    toGrid,
     productId: encodeProductOpaqueId(productId),
     variantId: encodeProductOpaqueId(variantId),
     URLs: {
