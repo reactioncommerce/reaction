@@ -1,5 +1,4 @@
 import { namespaces } from "@reactioncommerce/reaction-graphql-utils";
-import Reaction from "/imports/plugins/core/core/server/Reaction";
 import { encodeProductOpaqueId } from "./product";
 import { assocInternalId, assocOpaqueId, decodeOpaqueIdForNamespace, encodeOpaqueId } from "./id";
 
@@ -19,8 +18,8 @@ export function xformProductMedia(mediaItem) {
   if (!mediaItem) return null;
 
   const { priority, toGrid, productId, variantId, URLs: { large, medium, original, small, thumbnail } } = mediaItem;
-  const absoluteUrl = Reaction.absoluteUrl().slice(0, -1);
-  
+  const absoluteUrl = process.env.ROOT_URL.slice(0, -1);
+
   return {
     priority: priority,
     toGrid: toGrid,
