@@ -1,4 +1,3 @@
-import { Meteor } from "meteor/meteor";
 import { Template } from "meteor/templating";
 import { Reaction } from "/client/api";
 
@@ -12,8 +11,7 @@ import { Reaction } from "/client/api";
  * @return {Boolean}
  */
 Template.registerHelper("hasPermission", (permissions, options) => {
-  // default to checking this.userId
-  const loggedInUser = Meteor.userId();
+  const loggedInUser = Reaction.getUserId();
   const shopId = Reaction.getShopId();
   // we don't necessarily need to check here
   // as these same checks and defaults are

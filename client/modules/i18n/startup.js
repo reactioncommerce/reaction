@@ -91,7 +91,7 @@ Meteor.startup(() => {
   // We need to ensure fine-grained reactivity on only the profile.lang because
   // user.profile changed frequently and causes excessive reruns
   Tracker.autorun(() => {
-    const userId = Meteor.userId();
+    const userId = Reaction.getUserId();
     const user = userId && Meteor.users.findOne(userId, { fields: { profile: 1 } });
     userProfileLanguage.set((user && user.profile && user.profile.lang) || null);
   });
