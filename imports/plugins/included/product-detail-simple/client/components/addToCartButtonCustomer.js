@@ -28,8 +28,6 @@ class AddToCartButtonCustomer extends Component {
       const addToCartText = i18next.t("productDetail.addedToCart");
       const addToCartTitle = selectedVariantOrOption.title;
       Session.set("cartAlertMessage", `${cartQuantity} ${addToCartTitle} ${addToCartText}`);
-      const cartAlertWidth = document.querySelector(".cart-alert-customer").clientWidth;
-      Session.set("cartAlertWidth", cartAlertWidth);
       Session.set("isCartAlertVisible", true);
       setTimeout(() => Session.set("isCartAlertVisible", false), 2000);
     }

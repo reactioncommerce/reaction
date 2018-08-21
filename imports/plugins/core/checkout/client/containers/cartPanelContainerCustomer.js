@@ -12,8 +12,7 @@ const wrapComponent = (Comp) => {
       cartAlertMessage: PropTypes.string,
       cartAlertWidth: PropTypes.number,
       direction: PropTypes.string,
-      isCartAlertVisible: PropTypes.bool,
-      shouldDisplaySpinner: PropTypes.bool
+      isCartAlertVisible: PropTypes.bool
     };
 
     checkout() {
@@ -23,11 +22,8 @@ const wrapComponent = (Comp) => {
     }
 
     render() {
-      const { cartAlertMessage, cartAlertWidth, direction, isCartAlertVisible, shouldDisplaySpinner } = this.props;
-      let width = 225;
-      if (cartAlertWidth > 225) {
-        width = 252;
-      }
+      const { cartAlertMessage, direction, isCartAlertVisible } = this.props;
+      const width = 300;
       const style = {
         right: -width,
         left: "auto",
@@ -52,7 +48,6 @@ const wrapComponent = (Comp) => {
         <div className="cart-alert-customer" style={style}>
           <Comp
             cartAlertMessage={cartAlertMessage}
-            shouldDisplaySpinner={shouldDisplaySpinner}
             checkout={this.checkout}
             {...this.props}
           />
@@ -73,17 +68,13 @@ const wrapComponent = (Comp) => {
  */
 function composer(props, onData) {
   const cartAlertMessage = Session.get("cartAlertMessage");
-  const cartAlertWidth = Session.get("cartAlertWidth");
   const isCartAlertVisible = Session.get("isCartAlertVisible");
-  const shouldDisplaySpinner = Session.get("cartAlertShouldDisplaySpinner");
   const direction = i18next.dir();
 
   onData(null, {
     cartAlertMessage,
-    cartAlertWidth,
     direction,
-    isCartAlertVisible,
-    shouldDisplaySpinner
+    isCartAlertVisible
   });
 }
 

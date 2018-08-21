@@ -147,10 +147,8 @@ const wrapComponent = (Comp) =>
       }];
       if (!cartData) {
         createCart({ variables: { input: { items, shopId } } });
-        refetchCartData();
       } else {
         addCartItems({ variables: { input: { items, cartId: cartData._id } } });
-        refetchCartData();
       }
     }
 
