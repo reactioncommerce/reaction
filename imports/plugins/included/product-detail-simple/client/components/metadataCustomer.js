@@ -5,7 +5,7 @@ import { Components, registerComponent } from "@reactioncommerce/reaction-compon
 class ProductMetadataCustomer extends Component {
   render() {
     const { catalogItemProduct: { metafields } } = this.props;
-    if (metafields.length > 0) {
+    if (metafields && metafields.length > 0) {
       return (
         <div className="pdp product-metadata">
           <h3 className="meta-header">

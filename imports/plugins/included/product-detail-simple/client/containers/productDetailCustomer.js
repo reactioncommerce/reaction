@@ -25,6 +25,7 @@ const wrapComponent = (Comp) =>
       createCart: PropTypes.func,
       createCartData: PropTypes.object,
       isLoadingCatalogItemProduct: PropTypes.bool,
+      refetchCartData: PropTypes.func,
       shopId: PropTypes.string,
       template: PropTypes.string
     };
@@ -101,7 +102,7 @@ const wrapComponent = (Comp) =>
     };
 
     handleAddToCart = () => {
-      const { addCartItems, createCart, catalogItemProduct: product, shopId, cartData } = this.props;
+      const { addCartItems, createCart, catalogItemProduct: product, refetchCartData, shopId, cartData } = this.props;
       const { cartQuantity, selectedVariantId, selectedOptionId } = this.state;
       let selectedOption;
       const selectedVariant = product.variants.find((variant) => variant._id === selectedVariantId);
@@ -114,6 +115,7 @@ const wrapComponent = (Comp) =>
           i18nKey: "productDetail.chooseOptions",
           autoHide: 10000
         });
+        return [];
       }
 
       const selectedVariantOrOption = selectedOption || selectedVariant;
@@ -145,8 +147,10 @@ const wrapComponent = (Comp) =>
       }];
       if (!cartData) {
         createCart({ variables: { input: { items, shopId } } });
+        refetchCartData();
       } else {
         addCartItems({ variables: { input: { items, cartId: cartData._id } } });
+        refetchCartData();
       }
     }
 

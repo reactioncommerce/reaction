@@ -25,7 +25,7 @@ export default (Component) => (
 
       return (
         <Query query={getAccountCart} variables={variables}>
-          {({ loading, data }) => {
+          {({ loading, data, refetch }) => {
             const props = {
               ...this.props,
               isLoadingAccountCart: loading
@@ -34,6 +34,7 @@ export default (Component) => (
             if (loading === false) {
               const { cart } = data;
               props.cartData = cart;
+              props.refetchCartData = refetch;
             }
 
             return (
