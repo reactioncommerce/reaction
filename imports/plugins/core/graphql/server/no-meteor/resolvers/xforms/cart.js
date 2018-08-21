@@ -3,6 +3,7 @@ import ReactionError from "@reactioncommerce/reaction-error";
 import findVariantInCatalogProduct from "/imports/plugins/core/catalog/server/no-meteor/utils/findVariantInCatalogProduct";
 import { assocInternalId, assocOpaqueId, decodeOpaqueIdForNamespace, encodeOpaqueId } from "./id";
 import { decodeProductOpaqueId } from "./product";
+import { xformProductMedia } from "./catalogProduct";
 
 export const assocCartInternalId = assocInternalId(namespaces.Cart);
 export const assocCartOpaqueId = assocOpaqueId(namespaces.Cart);
@@ -68,6 +69,7 @@ function xformCartItem(catalogItems, products, cartItem) {
   if (catalogProduct.media) {
     media = catalogProduct.media.find((mediaItem) => mediaItem.variantId === variantId);
     if (!media) [media] = catalogProduct.media;
+    media = xformProductMedia(media);
   }
 
   const variantSourceProduct = products.find((product) => product._id === variantId);

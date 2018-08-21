@@ -1,4 +1,5 @@
 import { namespaces } from "@reactioncommerce/reaction-graphql-utils";
+import Reaction from "/imports/plugins/core/core/server/Reaction";
 import { encodeProductOpaqueId } from "./product";
 import { assocInternalId, assocOpaqueId, decodeOpaqueIdForNamespace, encodeOpaqueId } from "./id";
 
@@ -17,19 +18,20 @@ export const encodeCatalogProductOpaqueId = encodeOpaqueId(namespaces.CatalogPro
 export function xformProductMedia(mediaItem) {
   if (!mediaItem) return null;
 
-  const { metadata, large, medium, image, small, thumbnail } = mediaItem;
-
+  const { priority, toGrid, productId, variantId, URLs: { large, medium, original, small, thumbnail } } = mediaItem;
+  const absoluteUrl = Reaction.absoluteUrl().slice(0, -1);
+  
   return {
-    priority: metadata && metadata.priority,
-    toGrid: metadata && metadata.toGrid,
-    productId: encodeProductOpaqueId(metadata && metadata.productId),
-    variantId: encodeProductOpaqueId(metadata && metadata.variantId),
+    priority: priority,
+    toGrid: toGrid,
+    productId: encodeProductOpaqueId(productId),
+    variantId: encodeProductOpaqueId(variantId),
     URLs: {
-      large,
-      medium,
-      original: image,
-      small,
-      thumbnail
+      large: `${absoluteUrl}${large}`,
+      medium: `${absoluteUrl}${medium}`,
+      original: `${absoluteUrl}${original}`,
+      small: `${absoluteUrl}${small}`,
+      thumbnail: `${absoluteUrl}${thumbnail}`
     }
   };
 }
