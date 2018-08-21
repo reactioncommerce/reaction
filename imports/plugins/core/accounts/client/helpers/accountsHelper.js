@@ -1,4 +1,3 @@
-import { Meteor } from "meteor/meteor";
 import _ from "lodash";
 import { Reaction } from "/client/api";
 import * as Collections from "/lib/collections";
@@ -62,7 +61,7 @@ export function getInvitableGroups(groups) {
  */
 export function getDefaultUserInviteGroup(groups) {
   let result;
-  const user = Collections.Accounts.findOne({ userId: Meteor.userId() });
+  const user = Collections.Accounts.findOne({ userId: Reaction.getUserId() });
   result = groups.find((grp) => user && user.groups.indexOf(grp._id) > -1);
 
   if (result && result.slug === "owner") {

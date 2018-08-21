@@ -1,5 +1,4 @@
 import { Template } from "meteor/templating";
-import { Meteor } from "meteor/meteor";
 import { FileRecord } from "@reactioncommerce/file-collections";
 import { Logger, Reaction } from "/client/api";
 import { Products } from "/lib/collections";

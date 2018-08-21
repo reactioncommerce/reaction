@@ -1,4 +1,3 @@
-import { Meteor } from "meteor/meteor";
 import { check, Match } from "meteor/check";
 import { Orders } from "/lib/collections";
 import Reaction from "/imports/plugins/core/core/server/Reaction";

@@ -1,5 +1,4 @@
 import { registerComponent, composeWithTracker } from "@reactioncommerce/reaction-components";
-import { Meteor } from "meteor/meteor";
 import { Accounts } from "/lib/collections";
 import { Reaction } from "/client/api";
 import { ReactionAvatar } from "../components/avatar";

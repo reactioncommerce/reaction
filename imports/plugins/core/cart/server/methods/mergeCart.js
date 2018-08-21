@@ -2,6 +2,7 @@ import { Meteor } from "meteor/meteor";
 import { check } from "meteor/check";
 import getGraphQLContextInMeteorMethod from "/imports/plugins/core/graphql/server/getGraphQLContextInMeteorMethod";
 import reconcileCarts from "../no-meteor/mutations/reconcileCarts";
+import Reaction from "/imports/plugins/core/core/server/Reaction";
 
 /**
  * @method cart/mergeCart
@@ -20,7 +21,7 @@ export default function mergeCart(anonymousCartId, anonymousCartToken) {
   check(anonymousCartToken, String);
 
   // Pass through to the new mutation function at this point
-  const context = Promise.await(getGraphQLContextInMeteorMethod(Meteor.userId()));
+  const context = Promise.await(getGraphQLContextInMeteorMethod(Reaction.getUserId()));
   const { cart } = Promise.await(reconcileCarts(context, {
     anonymousCartId,
     anonymousCartToken,
