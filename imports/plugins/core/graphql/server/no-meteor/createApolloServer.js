@@ -44,7 +44,7 @@ export default function createApolloServer(options = {}) {
       const context = { ...contextFromOptions };
 
       // meteorTokenMiddleware will have set req.user if there is one
-      await buildContext(context, req.user);
+      await buildContext(context, req);
 
       addCallMeteorMethod(context);
 

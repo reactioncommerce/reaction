@@ -1,0 +1,5 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`throws error if no host header is provided 1`] = `"getAbsoluteUrl requires 'host' from request headers"`;
+
+exports[`throws error if no origin header is provided 1`] = `"getAbsoluteUrl requires 'origin' from request headers"`;

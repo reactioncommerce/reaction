@@ -1,5 +1,6 @@
 import { getHasPermissionFunctionForUser } from "/imports/plugins/core/accounts/server/no-meteor/hasPermission";
 import getShopIdForContext from "/imports/plugins/core/accounts/server/no-meteor/getShopIdForContext";
+import getAbsoluteUrl from "/imports/plugins/core/core/server/util/getAbsoluteUrl";
 import mutations from "./mutations";
 import queries from "./queries";
 
@@ -10,10 +11,16 @@ import queries from "./queries";
  * @summary Mutates the provided context object, adding `user`, `userId`, `shopId`, and
  *   `userHasPermission` properties.
  * @param {Object} context - A context object on which to set additional context properties
- * @param {Object} [user] - The user who authenticated this request, if applicable
+ * @param {Object} request - Request object
+ * @param {Object} request.headers - HTTP headers on request
+ * @param {String} request.headers.origin - Where the request originated from
+ * @param {String} request.headers.host - Host request was made for
+ * @param {Object} [request.user] - The user who authenticated this request, if applicable
  * @returns {undefined} No return
  */
-export default async function buildContext(context, user) {
+export default async function buildContext(context, request) {
+  const { user, headers } = request;
+
   context.mutations = mutations;
   context.queries = queries;
 
@@ -32,4 +39,6 @@ export default async function buildContext(context, user) {
 
   // Add a curried hasPermission tied to the current user (or to no user)
   context.userHasPermission = getHasPermissionFunctionForUser(context.user);
+
+  context.getAbsoluteUrl = () => getAbsoluteUrl(headers);
 }

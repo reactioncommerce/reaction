@@ -6,7 +6,7 @@ import publishProductsMutation from "../no-meteor/mutations/publishProducts";
 Meteor.methods({
   "catalog/publish/products"(productIds) {
     check(productIds, [String]);
-    const context = Promise.await(getGraphQLContextInMeteorMethod(this.userId));
+    const context = Promise.await(getGraphQLContextInMeteorMethod(this.userId, this.connection));
     return publishProductsMutation(context, productIds);
   }
 });
