@@ -10,9 +10,10 @@ import withCatalogItemProduct from "/imports/plugins/core/graphql/lib/hocs/withC
 import withAddCartItems from "/imports/plugins/core/graphql/lib/hocs/withAddCartItems";
 import withCreateCart from "/imports/plugins/core/graphql/lib/hocs/withCreateCart";
 import withPrimaryShopId from "/imports/plugins/core/graphql/lib/hocs/withPrimaryShopId";
+import withShop from "/imports/plugins/core/graphql/lib/hocs/withShop";
 import withViewer from "/imports/plugins/core/graphql/lib/hocs/withViewer";
 import withAccountCart from "/imports/plugins//core/graphql/lib/hocs/withAccountCart";
-import getDisplayPriceByCurrency from "../../lib/helpers/getDisplayPriceByCurrency";
+import getDisplayPriceByCurrency from "../util/getDisplayPriceByCurrency";
 import { ProductDetailCustomer } from "../components";
 
 const wrapComponent = (Comp) =>
@@ -26,6 +27,7 @@ const wrapComponent = (Comp) =>
       createCartData: PropTypes.object,
       isLoadingCatalogItemProduct: PropTypes.bool,
       refetchCartData: PropTypes.func,
+      shop: PropTypes.object,
       shopId: PropTypes.string,
       template: PropTypes.string
     };
@@ -50,7 +52,7 @@ const wrapComponent = (Comp) =>
       };
     }
 
-    componentDidUpdate(_, prevState) {
+    componentDidUpdate(prevProps, prevState) {
       // If accessed by clicking from product grid, component is not reconstructed
       // so selectedVariant should be set here
       const { catalogItemProduct: product } = this.props;
@@ -102,7 +104,7 @@ const wrapComponent = (Comp) =>
     };
 
     handleAddToCart = () => {
-      const { addCartItems, createCart, catalogItemProduct: product, refetchCartData, shopId, cartData } = this.props;
+      const { addCartItems, createCart, catalogItemProduct: product, shop, shopId, cartData } = this.props;
       const { cartQuantity, selectedVariantId, selectedOptionId } = this.state;
       let selectedOption;
       const selectedVariant = product.variants.find((variant) => variant._id === selectedVariantId);
@@ -115,7 +117,7 @@ const wrapComponent = (Comp) =>
           i18nKey: "productDetail.chooseOptions",
           autoHide: 10000
         });
-        return [];
+        return;
       }
 
       const selectedVariantOrOption = selectedOption || selectedVariant;
@@ -126,13 +128,13 @@ const wrapComponent = (Comp) =>
           i18nKey: "productDetail.outOfStock",
           autoHide: 10000
         });
-        return [];
+        return;
       }
 
       // TODO: There needs to be some logic to check if customer added an item
       // with quantity greater than current quantity of an item
 
-      const currencyCode = "USD"; // TODO: Fetch this from some global state?
+      const currencyCode = shop.currency.code;
       const currencyPricing = selectedVariantOrOption.pricing.find((pricing) => pricing.currency.code === currencyCode);
       const items = [{
         price: {
@@ -233,6 +235,7 @@ function composer(props, onData) {
 registerComponent("ProductDetailCustomer", ProductDetailCustomer, [
   composeWithTracker(composer),
   withPrimaryShopId,
+  withShop,
   withViewer,
   withAccountCart,
   withCatalogItemProduct,
@@ -245,6 +248,7 @@ registerComponent("ProductDetailCustomer", ProductDetailCustomer, [
 export default compose(
   composeWithTracker(composer),
   withPrimaryShopId,
+  withShop,
   withViewer,
   withAccountCart,
   withCatalogItemProduct,

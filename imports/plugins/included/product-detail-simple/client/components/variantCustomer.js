@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import classnames from "classnames";
-import getDisplayPriceByCurrency from "../../lib/helpers/getDisplayPriceByCurrency";
+import getDisplayPriceByCurrency from "../util/getDisplayPriceByCurrency";
 
 class VariantCustomer extends Component {
   handleOnKeyUp = (event) => {
