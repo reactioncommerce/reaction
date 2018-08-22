@@ -19,6 +19,11 @@ export default function getDisplayPriceByCurrency(pricingArr, currencyCode = "US
   const { price, minPrice, maxPrice } = shopCurrencyPricing;
   if (price > 0) {
     return formatPriceString(price);
+  } else if (minPrice > 0) {
+    if (minPrice === maxPrice) {
+      return formatPriceString(minPrice);
+    }
+    return formatPriceString(`${minPrice} - ${maxPrice}`);
   }
-  return formatPriceString(`${minPrice} - ${maxPrice}`);
+  return "";
 }

@@ -3,7 +3,6 @@ import PropTypes from "prop-types";
 import { Query } from "react-apollo";
 import getAccountCart from "../queries/getAccountCart";
 
-// TODO: Cart has to be paginated
 export default (Component) => (
   class AccountCart extends React.Component {
     static propTypes = {
@@ -25,7 +24,7 @@ export default (Component) => (
 
       return (
         <Query query={getAccountCart} variables={variables}>
-          {({ loading, data, refetch }) => {
+          {({ loading, data, refetch, fetchMore }) => {
             const props = {
               ...this.props,
               isLoadingAccountCart: loading
@@ -33,7 +32,45 @@ export default (Component) => (
 
             if (loading === false) {
               const { cart } = data;
-              props.cartData = cart;
+              const { items: cartItems, _id } = cart || {};
+              props.cartItems = ((cartItems && cartItems.edges) || []).map((edge) => edge.node);
+              props.cartId = _id;
+              const { pageInfo } = cartItems || {};
+              if (pageInfo) {
+                const { hasNextPage, endCursor } = pageInfo;
+                props.hasMoreCartItems = hasNextPage;
+                props.loadMoreCartItems = () => {
+                  fetchMore({
+                    variables: {
+                      itemsAfterCursor: endCursor
+                    },
+                    updateQuery: (previousResult, { fetchMoreResult }) => {
+                      const { cart: fetchMoreCart } = fetchMoreResult;
+                      // Check for additional items from result
+                      if (fetchMoreCart && fetchMoreCart.items && Array.isArray(fetchMoreCart.items.edges) && fetchMoreCart.items.edges.length) {
+                        // Merge previous cart items with next cart items
+                        return {
+                          ...fetchMoreResult,
+                          cart: {
+                            ...fetchMoreCart,
+                            items: {
+                              __typename: previousResult.cart.items.__typename,
+                              pageInfo: fetchMoreCart.items.pageInfo,
+                              edges: [
+                                ...previousResult.cart.items.edges,
+                                ...fetchMoreCart.items.edges
+                              ]
+                            }
+                          }
+                        };
+                      }
+
+                      // Send the previous result if the new result contains no additional data
+                      return previousResult;
+                    }
+                  });
+                };
+              }
               props.refetchCartData = refetch;
             }
 

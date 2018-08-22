@@ -21,11 +21,14 @@ const wrapComponent = (Comp) =>
     static propTypes = {
       addCartItems: PropTypes.func,
       addCartItemsData: PropTypes.object,
-      cartData: PropTypes.object,
+      cartId: PropTypes.string,
+      cartItems: PropTypes.arrayOf(PropTypes.object),
       catalogItemProduct: PropTypes.object,
       createCart: PropTypes.func,
       createCartData: PropTypes.object,
+      hasMoreCartItems: PropTypes.bool,
       isLoadingCatalogItemProduct: PropTypes.bool,
+      loadMoreCartItems: PropTypes.func,
       refetchCartData: PropTypes.func,
       shop: PropTypes.object,
       shopId: PropTypes.string,
@@ -52,12 +55,22 @@ const wrapComponent = (Comp) =>
       };
     }
 
+    componentDidMount() {
+      const { hasMoreCartItems, loadMoreCartItems } = this.props;
+      if (hasMoreCartItems) {
+        loadMoreCartItems();
+      }
+    }
+
     componentDidUpdate(prevProps, prevState) {
       // If accessed by clicking from product grid, component is not reconstructed
       // so selectedVariant should be set here
-      const { catalogItemProduct: product } = this.props;
+      const { catalogItemProduct: product, loadMoreCartItems } = this.props;
       if (product && prevState && !prevState.selectedVariantId) {
         this.handleSelectVariant(product.variants[0]);
+      }
+      if (prevProps.hasMoreCartItems) {
+        loadMoreCartItems();
       }
     }
 
@@ -104,7 +117,7 @@ const wrapComponent = (Comp) =>
     };
 
     handleAddToCart = () => {
-      const { addCartItems, createCart, catalogItemProduct: product, shop, shopId, cartData } = this.props;
+      const { addCartItems, cartId, createCart, catalogItemProduct: product, shop, shopId } = this.props;
       const { cartQuantity, selectedVariantId, selectedOptionId } = this.state;
       let selectedOption;
       const selectedVariant = product.variants.find((variant) => variant._id === selectedVariantId);
@@ -147,16 +160,19 @@ const wrapComponent = (Comp) =>
         },
         quantity: cartQuantity
       }];
-      if (!cartData) {
+      if (!cartId) {
         createCart({ variables: { input: { items, shopId } } });
       } else {
-        addCartItems({ variables: { input: { items, cartId: cartData._id } } });
+        addCartItems({ variables: { input: { items, cartId } } });
       }
     }
 
     getDisplayPriceOfSelectedVariantOrOption() {
       const { catalogItemProduct: product } = this.props;
       const { selectedVariantId, selectedOptionId } = this.state;
+      if (!product) {
+        return "";
+      }
       if (!selectedVariantId) {
         return getDisplayPriceByCurrency(product.pricing);
       }
@@ -187,6 +203,7 @@ const wrapComponent = (Comp) =>
       }
 
       const displayPrice = this.getDisplayPriceOfSelectedVariantOrOption();
+
       return (
         <StyleRoot>
           <Comp
