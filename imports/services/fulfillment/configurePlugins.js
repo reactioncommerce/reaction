@@ -1,4 +1,4 @@
-import { getShippingPrices } from "./plugins/flat-rate";
+import { getShippingPrices, graphqlResolvers, graphqlSchemas } from "./plugins/flat-rate";
 
 /**
  * @summary Configure the Reaction app using plugins here
@@ -6,10 +6,10 @@ import { getShippingPrices } from "./plugins/flat-rate";
  * @returns {undefined}
  */
 export default function configurePlugins(app) {
-  // app.graphqlSchemas.push(pluginSchema)
-
   /**
-   * Add shipping price functions from plugins here
+   * Plug in the Flat Rate Plugin
    */
+  app.addGraphqlSchemas(graphqlSchemas);
+  app.addGraphqlResolvers(graphqlResolvers);
   app.addShippingPricesFunction(getShippingPrices);
 }
