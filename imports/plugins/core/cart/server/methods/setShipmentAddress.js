@@ -6,7 +6,7 @@ import { Address as AddressSchema } from "/imports/collections/schemas";
 import ReactionError from "@reactioncommerce/reaction-error";
 import getGraphQLContextInMeteorMethod from "/imports/plugins/core/graphql/server/getGraphQLContextInMeteorMethod";
 import setShippingAddressOnCart from "../no-meteor/mutations/setShippingAddressOnCart";
-
+import updateFulfillmentOptionsForGroup from "/imports/services/fulfillment/core/mutations/updateFulfillmentOptionsForGroup";
 
 /**
  * @method cart/setShipmentAddress
@@ -45,7 +45,7 @@ export default function setShipmentAddress(cartId, cartToken, address) {
   // We now ask clients to call this when necessary to avoid calling it when not needed, but the Meteor
   // client still relies on it being called here, and on the workflow updates below this.
   if (cart.shipping && cart.shipping.length) {
-    ({ cart } = Promise.await(context.mutations.fulfillment.updateFulfillmentOptionsForGroup(context, {
+    ({ cart } = Promise.await(updateFulfillmentOptionsForGroup(context, {
       cartId,
       cartToken,
       fulfillmentGroupId: cart.shipping[0]._id
