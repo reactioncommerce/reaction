@@ -1,20 +1,17 @@
 import React, { Component } from "react";
+import { compose } from "recompose";
 import PropTypes from "prop-types";
 import classnames from "classnames";
+import { getComponent, withCSSTransitionGroup } from "@reactioncommerce/reaction-components";
 import Blaze from "meteor/gadicc:blaze-react-component";
 import { Admin } from "/imports/plugins/core/ui/client/providers";
 import Radium from "radium";
-import "velocity-animate";
-import "velocity-animate/velocity.ui";
-import { VelocityTransitionGroup } from "velocity-react";
 import debounce from "lodash/debounce";
 import {
   IconButton,
   Translation,
   Overlay
 } from "/imports/plugins/core/ui/client/components";
-import { getComponent } from "@reactioncommerce/reaction-components";
-
 
 const getStyles = (props) => {
   const minWidth = Math.min(props.viewportWidth, 400);
@@ -66,7 +63,6 @@ const getStyles = (props) => {
       "flex": "0 0 auto",
       "backgroundColor": "white",
       "overflow": "hidden",
-      "transition": "width 300ms cubic-bezier(0.455, 0.03, 0.515, 0.955))",
       "zIndex": 1050,
       "@media only screen and (max-width: 949px)": {
         width: "auto",
@@ -146,6 +142,7 @@ const getStyles = (props) => {
 
 class ActionView extends Component {
   static propTypes = {
+    CSSTransitionGroup: PropTypes.func,
     actionView: PropTypes.object,
     actionViewIsOpen: PropTypes.bool, // eslint-disable-line react/boolean-prop-naming
     buttons: PropTypes.array,
@@ -166,26 +163,6 @@ class ActionView extends Component {
 
     this.state = {
       isMobile: this.isMobile,
-      enterAnimation: {
-        animation: { translateX: 0 },
-        duration: 200,
-        easing: "easeInOutQuad"
-      },
-      leaveAnimation: {
-        animation: { translateX: 400 },
-        duration: 200,
-        easing: "easeInOutQuad"
-      },
-      rtlEnterAnimation: {
-        animation: { translateX: ["0%", "-100%"] },
-        duration: 200,
-        easing: "easeInOutQuad"
-      },
-      rtlLeaveAnimation: {
-        animation: { translateX: "-100%" },
-        duration: 200,
-        easing: "easeInOutQuad"
-      },
       enterAnimationForDetailView: {
         animation: { width: 400 },
         duration: 200,
@@ -230,7 +207,7 @@ class ActionView extends Component {
             {React.createElement(component, this.props.actionView.data)}
           </div>
         );
-      } catch (e) {
+      } catch (error) {
         return (
           <div style={this.styles.masterView} className="master">
             <Blaze
@@ -350,31 +327,6 @@ class ActionView extends Component {
     return getStyles(this.props);
   }
 
-  get backButtonEnterAnimation() {
-    return {
-      animation: {
-        display: "flex",
-        position: "absolute",
-        left: 20,
-        opacity: 1
-      },
-      duration: 200
-    };
-  }
-
-  get backButtonLeaveAnimation() {
-    return {
-      animation: {
-        display: "flex",
-        position: "absolute",
-        left: -30,
-        opacity: 0
-      },
-      duration: 200
-
-    };
-  }
-
   renderMasterView() {
     const { actionView } = this.props;
 
@@ -417,14 +369,9 @@ class ActionView extends Component {
 
     if (this.props.detailViewIsOpen) {
       return (
-        <div className={baseClassName} style={this.styles.detailViewPanel}>
+        <div className={baseClassName} style={this.styles.detailViewPanel} key="detail-view">
           <div style={this.styles.header} className="header">
-            <VelocityTransitionGroup
-              enter={this.backButtonEnterAnimation}
-              leave={this.backButtonLeaveAnimation}
-            >
-              {this.renderDetailViewBackButton()}
-            </VelocityTransitionGroup>
+            {this.renderDetailViewBackButton()}
 
             <div style={this.styles.heading} className="heading">
               <h3 className="title" style={this.styles.title}>
@@ -447,9 +394,13 @@ class ActionView extends Component {
         </div>
       );
     }
+
+    return null;
   }
 
   renderActionView() {
+    const { CSSTransitionGroup } = this.props;
+
     const baseClassName = classnames({
       "rui": true,
       "admin": true,
@@ -459,20 +410,23 @@ class ActionView extends Component {
     });
 
     if (this.props.actionViewIsOpen) {
+      const isRtl = document.querySelector("html").className === "rtl";
+
       return (
-        <div style={this.styles.base} className={baseClassName} role="complementary">
+        <div style={this.styles.base} className={baseClassName} role="complementary" key="action-view">
 
           {this.renderMasterView()}
           <Overlay
             isVisible={this.showDetailViewOverlay}
             onClick={this.props.handleActionViewDetailClose}
           />
-          <VelocityTransitionGroup
-            enter={this.state.enterAnimationForDetailView}
-            leave={this.state.leaveAnimationForDetailView}
+          <CSSTransitionGroup
+            transitionName={`slide-in-out${(isRtl && "-rtl") || ""}`}
+            transitionEnterTimeout={200}
+            transitionLeaveTimeout={200}
           >
             {this.renderDetailView()}
-          </VelocityTransitionGroup>
+          </CSSTransitionGroup>
 
 
           <div className="admin-controls-footer">
@@ -488,16 +442,21 @@ class ActionView extends Component {
   }
 
   render() {
+    const { CSSTransitionGroup } = this.props;
+    if (CSSTransitionGroup === undefined) {
+      return null;
+    }
+
     const isRtl = document.querySelector("html").className === "rtl";
     return (
       <div>
-        <VelocityTransitionGroup
-          enter={isRtl ? this.state.rtlEnterAnimation : this.state.enterAnimation}
-          leave={isRtl ? this.state.rtlLeaveAnimation : this.state.leaveAnimation}
+        <CSSTransitionGroup
+          transitionName={`slide-in-out${(isRtl && "-rtl") || ""}`}
+          transitionEnterTimeout={200}
+          transitionLeaveTimeout={200}
         >
           {this.renderActionView()}
-        </VelocityTransitionGroup>
-
+        </CSSTransitionGroup>
         <Overlay
           isVisible={this.showOverlay}
           onClick={this.props.handleActionViewClose}
@@ -507,4 +466,7 @@ class ActionView extends Component {
   }
 }
 
-export default Admin()(Radium(ActionView));
+export default Admin()(compose(
+  withCSSTransitionGroup,
+  Radium
+)(ActionView));

@@ -1,4 +1,3 @@
-import { $ } from "meteor/jquery";
 import { Template } from "meteor/templating";
 import { Reaction } from "/client/api";
 import getCart from "/imports/plugins/core/cart/client/util/getCart";
@@ -16,6 +15,7 @@ Template.cartIcon.helpers({
 
 Template.cartIcon.events({
   "click .cart-icon"() {
-    return $("#cart-drawer-container").fadeOut(300, () => Reaction.toggleSession("displayCart"));
+    document.querySelector("#cart-drawer-container").classList.remove("opened");
+    Reaction.toggleSession("displayCart");
   }
 });
