@@ -40,12 +40,13 @@ export function decodeCartItemsOpaqueIds(items) {
 }
 
 /**
+ * @param {Object} context - an object containing the per-request state
  * @param {Object[]} catalogItems Array of CatalogItem docs from the db
  * @param {Object[]} products Array of Product docs from the db
  * @param {Object} cartItem CartItem
  * @return {Object} Same object with GraphQL-only props added
  */
-function xformCartItem(catalogItems, products, cartItem) {
+function xformCartItem(context, catalogItems, products, cartItem) {
   const { priceWhenAdded, productId, variantId } = cartItem;
   const { currencyCode } = priceWhenAdded;
 
@@ -69,7 +70,7 @@ function xformCartItem(catalogItems, products, cartItem) {
   if (catalogProduct.media) {
     media = catalogProduct.media.find((mediaItem) => mediaItem.variantId === variantId);
     if (!media) [media] = catalogProduct.media;
-    media = xformProductMedia(media);
+    media = xformProductMedia(media, context);
   }
 
   const variantSourceProduct = products.find((product) => product._id === variantId);
@@ -97,11 +98,12 @@ function xformCartItem(catalogItems, products, cartItem) {
 }
 
 /**
- * @param {Object} collections Map of raw collections
+ * @param {Object} context - an object containing the per-request state
  * @param {Object[]} items Array of CartItem
  * @return {Object[]} Same array with GraphQL-only props added
  */
-export async function xformCartItems(collections, items) {
+export async function xformCartItems(context, items) {
+  const { collections } = context;
   const { Catalog, Products } = collections;
 
   const productIds = items.map((item) => item.productId);
@@ -121,7 +123,7 @@ export async function xformCartItems(collections, items) {
     }
   }).toArray();
 
-  return items.map((item) => xformCartItem(catalogItems, products, item));
+  return items.map((item) => xformCartItem(context, catalogItems, products, item));
 }
 
 /**
