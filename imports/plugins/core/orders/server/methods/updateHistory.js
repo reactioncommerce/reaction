@@ -29,7 +29,7 @@ export default function updateHistory(orderId, event, value) {
       history: {
         event,
         value,
-        userId: Meteor.userId(),
+        userId: Reaction.getUserId(),
         updatedAt: new Date()
       }
     }

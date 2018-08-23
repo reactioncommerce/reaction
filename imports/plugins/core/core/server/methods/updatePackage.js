@@ -20,7 +20,7 @@ export default function updatePackage(packageName, field, value) {
   check(field, String);
   check(value, Object);
 
-  const userId = Meteor.userId();
+  const userId = Reaction.getUserId();
   const shopId = Reaction.getShopId();
   if (!Reaction.hasPermission([packageName], userId, shopId)) {
     throw new ReactionError("access-denied", `Access Denied. You don't have permissions for the ${packageName} package.`);

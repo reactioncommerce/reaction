@@ -14,6 +14,7 @@ import { Tracker } from "meteor/tracker";
 import { Packages, Shops } from "/lib/collections";
 import { getComponent } from "@reactioncommerce/reaction-components/components";
 import Hooks from "./hooks";
+import { Reaction } from "/lib/api";
 
 // Using a ternary operator here to avoid a mutable export - open to suggestions for a better way to do this
 export const history = Meteor.isClient ? createBrowserHistory() : createMemoryHistory();
@@ -348,7 +349,7 @@ function hasRoutePermission(route) {
 
   return routeName === "index" ||
     routeName === "not-found" ||
-    Router.Reaction.hasPermission(route.permissions, Meteor.userId());
+    Router.Reaction.hasPermission(route.permissions, Reaction.getUserId());
 }
 
 
@@ -515,7 +516,7 @@ function ReactionLayout(options = {}) {
       // If the current route is unauthorized, and is not the "not-found" route,
       // then override the template to use the default unauthorized template
       if (hasRoutePermission({ ...route, permissions }) === false && route.name !== "not-found" && !Meteor.user()) {
-        if (!Router.Reaction.hasPermission(route.permissions, Meteor.userId())) {
+        if (!Router.Reaction.hasPermission(route.permissions, Reaction.getUserId())) {
           structure.template = "unauthorized";
         }
         return false;

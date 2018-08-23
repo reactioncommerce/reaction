@@ -15,7 +15,7 @@ const composer = (props, onData) => {
 
   // If there is no email provided, no query param provide, and the avatar is for the current user, find their account
   if (!email && !account && props.currentUser) {
-    account = Accounts.findOne(Meteor.userId());
+    account = Accounts.findOne(Reaction.getUserId());
   }
 
   // If we now have an account, and that account has an email address, return it
