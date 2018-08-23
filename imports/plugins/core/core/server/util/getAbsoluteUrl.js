@@ -6,6 +6,7 @@ import ReactionError from "@reactioncommerce/reaction-error";
  * @summary Returns the absolute/base URL for where a request was made, using the request's headers
  * @param {Object} requestHeaders Headers sent with original request
  * @param {String} requestHeaders.host Domain (including port) request was made to
+ * @param {String} protocol URL protocol to use
  * @returns {String} protocol://hostname[:port]/
  */
 export default function getAbsoluteUrl(requestHeaders, protocol) {
