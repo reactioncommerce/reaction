@@ -33,7 +33,7 @@ export default function setShipmentAddress(cartId, cartToken, address) {
   const anonymousUser = Roles.userIsInRole(userId, "anonymous", shopId);
   const userIdForContext = anonymousUser ? null : userId;
 
-  const context = Promise.await(getGraphQLContextInMeteorMethod(userIdForContext, this.connection));
+  const context = Promise.await(getGraphQLContextInMeteorMethod(userIdForContext));
   const result = Promise.await(setShippingAddressOnCart(context, {
     address,
     cartId,

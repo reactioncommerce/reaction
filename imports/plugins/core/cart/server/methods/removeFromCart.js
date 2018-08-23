@@ -43,7 +43,7 @@ export default function removeFromCart(cartId, cartToken, cartItemId, quantityDe
   }
 
   // Pass through to the new mutation function
-  const context = Promise.await(getGraphQLContextInMeteorMethod(account.userId, this.connection));
+  const context = Promise.await(getGraphQLContextInMeteorMethod(account.userId));
   const { cart: updatedCart } = Promise.await(updateCartItemsQuantity(context, {
     cartId: cart._id,
     items: [

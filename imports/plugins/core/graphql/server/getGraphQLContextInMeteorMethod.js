@@ -1,5 +1,4 @@
 import { Meteor } from "meteor/meteor";
-import Reaction from "/imports/plugins/core/core/server/Reaction";
 import appEvents from "/imports/plugins/core/core/server/appEvents";
 import buildContext from "./no-meteor/buildContext";
 import collections from "/imports/collections/rawCollections";
@@ -18,10 +17,9 @@ import collections from "/imports/collections/rawCollections";
  * @summary Call this in a Meteor method that wraps a GraphQL mutation, to get a context
  *   to pass to the mutation.
  * @param {String} userId - The user ID for the current request
- * @param {Object} methodConnection - this.connection called from within a Meteor method
  * @return {Object} A GraphQL context object
  */
-export default async function getGraphQLContextInMeteorMethod(userId, methodConnection) {
+export default async function getGraphQLContextInMeteorMethod(userId) {
   let user;
   if (userId) {
     user = await collections.users.findOne({ _id: userId });
@@ -30,11 +28,7 @@ export default async function getGraphQLContextInMeteorMethod(userId, methodConn
 
   const meteorContext = { appEvents, collections };
 
-  const { httpHeaders } = methodConnection;
-  const request = {
-    user,
-    headers: httpHeaders
-  };
+  const request = { user };
 
   await buildContext(meteorContext, request);
 

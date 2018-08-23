@@ -1,15 +1,21 @@
 import getAbsoluteUrl from "./getAbsoluteUrl";
 
-test("returns empty string if no host header is provided", () => {
-  const requestHeaders = {};
-
-  expect(getAbsoluteUrl(requestHeaders, "http")).toBe("");
-});
-
-test("returns the correct absolute url", () => {
-  const requestHeaders = {
-    host: "localhost:3000"
+test("returns process.env.ROOT_URL with trailing slash if set", () => {
+  process.env.ROOT_URL = "http://localhost:3000";
+  const request = {
+    protocol: "https",
+    hostname: "reaction-api"
   };
 
-  expect(getAbsoluteUrl(requestHeaders, "https")).toBe("https://localhost:3000/");
+  expect(getAbsoluteUrl(request)).toBe("http://localhost:3000/");
+});
+
+test("returns correct URL if process.env.ROOT_URL is not set", () => {
+  process.env.ROOT_URL = "";
+  const request = {
+    protocol: "https",
+    hostname: "abc.com"
+  };
+
+  expect(getAbsoluteUrl(request)).toBe("https://abc.com/");
 });

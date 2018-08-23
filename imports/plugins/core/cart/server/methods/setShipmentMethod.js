@@ -41,7 +41,7 @@ export default function setShipmentMethod(cartId, cartToken, methodId) {
   const anonymousUser = Roles.userIsInRole(userId, "anonymous", shopId);
   const userIdForContext = anonymousUser ? null : userId;
 
-  const context = Promise.await(getGraphQLContextInMeteorMethod(userIdForContext, this.connection));
+  const context = Promise.await(getGraphQLContextInMeteorMethod(userIdForContext));
   const result = Promise.await(selectFulfillmentOptionForGroup(context, {
     cartId,
     cartToken,

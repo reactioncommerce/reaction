@@ -20,7 +20,7 @@ export default function mergeCart(anonymousCartId, anonymousCartToken) {
   check(anonymousCartToken, String);
 
   // Pass through to the new mutation function at this point
-  const context = Promise.await(getGraphQLContextInMeteorMethod(Meteor.userId(), this.connection));
+  const context = Promise.await(getGraphQLContextInMeteorMethod(Meteor.userId()));
   const { cart } = Promise.await(reconcileCarts(context, {
     anonymousCartId,
     anonymousCartToken,

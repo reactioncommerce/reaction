@@ -1,22 +1,20 @@
-import url from "url";
 import ReactionError from "@reactioncommerce/reaction-error";
 
 /**
  * @name getAbsoluteUrl
- * @summary Returns the absolute/base URL for where a request was made, using the request's headers
- * @param {Object} requestHeaders Headers sent with original request
- * @param {String} requestHeaders.host Domain (including port) request was made to
- * @param {String} protocol URL protocol to use
- * @returns {String} protocol://hostname[:port]/
+ * @summary Returns the absolute/base URL, returning process.env.ROOT_URL if set,
+ *  otherwise using the request's protocol & hostname
+ * @param {Object} request Express request object
+ * @param {Object} request.hostname Hostname derived from Host or X-Forwarded-Host heaer
+ * @param {String} request.protocol Either http or https
+ * @returns {String} URL
  */
-export default function getAbsoluteUrl(requestHeaders, protocol) {
-  let { host = "" } = requestHeaders;
-
-  if (host === "") {
-    return "";
+export default function getAbsoluteUrl(request) {
+  const { ROOT_URL } = process.env;
+  if (ROOT_URL) {
+    return `${ROOT_URL}/`;
   }
 
-  host = host.replace("reaction-api", "localhost");
-
-  return `${protocol}://${host}/`;
+  const { hostname, protocol } = request;
+  return `${protocol}://${hostname}/`;
 }

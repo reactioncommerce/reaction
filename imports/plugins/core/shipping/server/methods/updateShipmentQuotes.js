@@ -18,7 +18,7 @@ export default function updateShipmentQuotesMethod(cartId, fulfillmentGroupId, c
   check(cartToken, Match.Maybe(String));
   this.unblock();
 
-  const context = Promise.await(getGraphQLContextInMeteorMethod(Meteor.userId(), this.connection));
+  const context = Promise.await(getGraphQLContextInMeteorMethod(Meteor.userId()));
   return context.mutations.fulfillment.updateFulfillmentOptionsForGroup(context, {
     cartId,
     cartToken,
