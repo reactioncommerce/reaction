@@ -1,15 +1,19 @@
 import _ from "lodash";
 import React, { Component } from "react";
+import { ApolloConsumer } from "react-apollo";
 import PropTypes from "prop-types";
 import { Components, registerComponent, composeWithTracker } from "@reactioncommerce/reaction-components";
 import { Meteor } from "meteor/meteor";
 import { Accounts } from "meteor/accounts-base";
 import { Router } from "/client/api";
-import { ServiceConfigHelper, LoginFormSharedHelpers } from "../helpers";
 import { LoginFormValidation } from "/lib/api";
+import withAuthConsumer from "/imports/plugins/core/stores/client/hoc/withAuthConsumer";
+import getViewer from "/imports/plugins/core/graphql/lib/queries/getViewer";
+import { ServiceConfigHelper, LoginFormSharedHelpers } from "../helpers";
 
 class AuthContainer extends Component {
   static propTypes = {
+    ctxSetViewerId: PropTypes.func,
     currentRoute: PropTypes.object,
     currentView: PropTypes.string,
     formMessages: PropTypes.object
@@ -33,9 +37,8 @@ class AuthContainer extends Component {
     this.hasPasswordService = this.hasPasswordService.bind(this);
   }
 
-  handleFormSubmit = (event, email, password) => {
+  handleFormSubmit = (getViewerQuery) => (event, email, password) => {
     event.preventDefault();
-
     this.setState({
       isLoading: true
     });
@@ -65,7 +68,7 @@ class AuthContainer extends Component {
     }
 
     if (this.props.currentView === "loginFormSignInView") {
-      Meteor.loginWithPassword(username, pword, (error) => {
+      Meteor.loginWithPassword(username, pword, async (error) => {
         if (error) {
           this.setState({
             isLoading: false,
@@ -75,6 +78,8 @@ class AuthContainer extends Component {
           });
         } else {
           Router.go(this.props.currentRoute.route.path);
+          const { data } = await getViewerQuery();
+          this.props.ctxSetViewerId(data.viewer._id);
         }
       });
     } else if (this.props.currentView === "loginFormSignUpView") {
@@ -83,7 +88,7 @@ class AuthContainer extends Component {
         password: pword
       };
 
-      Accounts.createUser(newUserData, (error) => {
+      Accounts.createUser(newUserData, async (error) => {
         if (error) {
           this.setState({
             isLoading: false,
@@ -93,6 +98,8 @@ class AuthContainer extends Component {
           });
         } else {
           Router.go(this.props.currentRoute.route.path);
+          const { data } = await getViewerQuery();
+          this.props.ctxSetViewerId(data.viewer._id);
         }
       });
     }
@@ -157,12 +164,12 @@ class AuthContainer extends Component {
 
   hasPasswordService = () => !!Package["accounts-password"]
 
-  renderAuthView() {
+  renderAuthView(client) {
     if (this.props.currentView === "loginFormSignInView") {
       return (
         <Components.SignIn
           {...this.props}
-          onFormSubmit={this.handleFormSubmit}
+          onFormSubmit={this.handleFormSubmit(client)}
           messages={this.state.formMessages}
           onError={this.hasError}
           loginFormMessages={this.formMessages}
@@ -171,15 +178,25 @@ class AuthContainer extends Component {
       );
     } else if (this.props.currentView === "loginFormSignUpView") {
       return (
-        <Components.SignUp
-          {...this.props}
-          onFormSubmit={this.handleFormSubmit}
-          messages={this.state.formMessages}
-          onError={this.hasError}
-          loginFormMessages={this.formMessages}
-          hasPasswordService={this.hasPasswordService}
-          isLoading={this.state.isLoading}
-        />
+        <ApolloConsumer>
+          {(client) => {
+            const getViewerQuery = client.query({
+              query: getViewer
+            });
+            return (
+              <Components.SignUp
+                {...this.props}
+                onFormSubmit={this.handleFormSubmit(getViewerQuery)}
+                messages={this.state.formMessages}
+                onError={this.hasError}
+                loginFormMessages={this.formMessages}
+                hasPasswordService={this.hasPasswordService}
+                isLoading={this.state.isLoading}
+              />
+            );
+          }}
+
+        </ApolloConsumer>
       );
     }
   }
@@ -204,6 +221,6 @@ function composer(props, onData) {
   onData(null, { currentRoute: Router.current() });
 }
 
-registerComponent("AuthContainer", AuthContainer, composeWithTracker(composer));
+registerComponent("AuthContainer", AuthContainer, composeWithTracker(composer, withAuthConsumer));
 
-export default composeWithTracker(composer)(AuthContainer);
+export default composeWithTracker(composer, withAuthConsumer)(AuthContainer);
