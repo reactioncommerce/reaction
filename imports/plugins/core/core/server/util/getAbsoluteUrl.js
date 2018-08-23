@@ -1,5 +1,3 @@
-import ReactionError from "@reactioncommerce/reaction-error";
-
 /**
  * @name getAbsoluteUrl
  * @summary Returns the absolute/base URL, returning process.env.ROOT_URL if set,

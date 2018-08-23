@@ -18,7 +18,7 @@ import queries from "./queries";
  * @returns {undefined} No return
  */
 export default async function buildContext(context, request) {
-  const { user, headers } = request;
+  const { user } = request;
 
   context.mutations = mutations;
   context.queries = queries;
