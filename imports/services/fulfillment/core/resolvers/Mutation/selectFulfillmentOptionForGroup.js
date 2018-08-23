@@ -1,5 +1,6 @@
 import { decodeCartOpaqueId, decodeFulfillmentGroupOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/cart";
 import { decodeFulfillmentMethodOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/fulfillment";
+import selectFulfillmentOptionForGroupMutation from "../../mutations/selectFulfillmentOptionForGroup";
 
 /**
  * @name "Mutation.selectFulfillmentOptionForGroup"
@@ -29,7 +30,7 @@ export default async function selectFulfillmentOptionForGroup(parentResult, { in
   const fulfillmentGroupId = decodeFulfillmentGroupOpaqueId(opaqueFulfillmentGroupId);
   const fulfillmentMethodId = decodeFulfillmentMethodOpaqueId(opaqueFulfillmentMethodId);
 
-  const { cart } = await context.mutations.fulfillment.selectFulfillmentOptionForGroup(context, {
+  const { cart } = await selectFulfillmentOptionForGroupMutation(context, {
     cartId,
     cartToken,
     fulfillmentGroupId,
