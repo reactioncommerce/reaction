@@ -3,118 +3,133 @@ import PropTypes from "prop-types";
 import { compose } from "recompose";
 import { registerComponent, composeWithTracker } from "@reactioncommerce/reaction-components";
 import { Meteor } from "meteor/meteor";
-import { Session } from "meteor/session";
 import { Reaction } from "/client/api";
-import { ITEMS_INCREMENT } from "/client/config/defaults";
-import { Catalog, Tags, Shops } from "/lib/collections";
+import { Shops } from "/lib/collections";
+import withCatalogItems from "imports/plugins/core/graphql/lib/hocs/withCatalogItems";
+import withShopId from "/imports/plugins/core/graphql/lib/hocs/withShopId";
+import withTagId from "/imports/plugins/core/graphql/lib/hocs/withTagId";
 import ProductGridCustomer from "../components/customer/productGrid";
 
 const wrapComponent = (Comp) => (
-  class ProductsContainer extends Component {
+  class ProductsContainerCustomer extends Component {
     static propTypes = {
-      canLoadMoreProducts: PropTypes.bool,
-      productsSubscription: PropTypes.object,
-      showNotFound: PropTypes.bool // eslint-disable-line react/boolean-prop-naming
+      catalogItems: PropTypes.array,
+      hasMoreCatalogItems: PropTypes.bool,
+      isLoadingCatalogItems: PropTypes.bool,
+      isLoadingShopId: PropTypes.bool,
+      isLoadingTagId: PropTypes.bool,
+      loadMoreCatalogItems: PropTypes.func,
+      tag: PropTypes.object,
+      tagSlugOrId: PropTypes.string
     };
 
     constructor(props) {
       super(props);
       this.state = {
-        initialLoad: true
+        isLoadingMore: false
       };
     }
 
-    loadProducts = () => {
-      this.setState({
-        initialLoad: false
-      });
-      // load in the next set of products
-      Session.set("productScrollLimit", Session.get("productScrollLimit") + ITEMS_INCREMENT || 24);
+    componentDidMount() {
+      window.prerenderReady = true;
     }
 
+    loadProducts = () => {
+      if (this.state.isLoadingMore) {
+        return;
+      }
+
+      this.setState({ isLoadingMore: true });
+
+      const { loadMoreCatalogItems } = this.props;
+
+      loadMoreCatalogItems(() => this.setState({ isLoadingMore: false }));
+    };
+
     render() {
+      const {
+        tagSlugOrId,
+        tag,
+        catalogItems = [],
+        isLoadingShopId,
+        isLoadingTagId,
+        isLoadingCatalogItems,
+        hasMoreCatalogItems
+      } = this.props;
+      const { isLoadingMore } = this.state;
+      const isLoadingData = isLoadingShopId || isLoadingTagId || isLoadingCatalogItems;
+      const isLoading = isLoadingData || isLoadingMore || false;
+      const shouldShowNotFound = isLoading === false && (!!(tagSlugOrId && tag === null));
+
       return (
         <Comp
           {...this.props}
+          showNotFound={shouldShowNotFound}
+          canLoadMoreProducts={hasMoreCatalogItems}
+          isLoading={isLoading}
           loadProducts={this.loadProducts}
+          products={catalogItems}
+          shopCurrencyCode={Reaction.getPrimaryShopCurrency()}
         />
       );
     }
   }
 );
 
+/**
+ * @name composer
+ * @private
+ * @summary Loads tag slug or _id from browser and passes it to GraphQL HOCs
+ * @param {Object} props - Props passed down from parent components
+ * @param {Function} onData - Callback to execute with props
+ * @returns {undefined}
+ */
 function composer(props, onData) {
   window.prerenderReady = false;
 
-  let canLoadMoreProducts = false;
+  // Prevent loading GraphQL HOCs if we don't have a user account yet. All users (even anonymous) have accounts
+  if (!Meteor.user()) {
+    return;
+  }
 
-  const queryParams = {};
-  const slug = Reaction.Router.getParam("slug");
-  const shopIdOrSlug = Reaction.Router.getParam("shopSlug");
-  let tagIdForPosition = "_default";
-
-  if (slug) {
-    const tag = Tags.findOne({ slug }) || Tags.findOne({ _id: slug });
-
-    // if we get an invalid slug, don't return all products
-    if (!tag) {
-      onData(null, {
-        showNotFound: true
-      });
-
+  // Get active shop's slug
+  const internalShopId = Reaction.getShopId();
+  const pathShopSlug = Reaction.Router.getParam("shopSlug");
+  let shopSlug;
+  if (pathShopSlug) {
+    // User viewing /shop/SLUG
+    shopSlug = pathShopSlug;
+  } else {
+    // User viewing primary shop or SLUG.domain.com
+    const shop = Shops.findOne({ _id: internalShopId });
+    if (!shop) {
       return;
     }
-    queryParams.tagIds = [tag._id];
-    tagIdForPosition = tag._id;
+    shopSlug = shop.slug;
   }
 
-  if (shopIdOrSlug) {
-    queryParams.shopIdsOrSlugs = [shopIdOrSlug];
-  }
+  // Get tag slug from URL
+  const tagSlugOrId = Reaction.Router.getParam("slug");
 
-  const queryString = Reaction.Router.current().query;
-  if (queryString) {
-    queryParams.query = queryString.query;
-  }
-
-  const scrollLimit = Session.get("productScrollLimit");
-  const productsSubscription = Meteor.subscribe("Products/grid", scrollLimit, queryParams);
-
-  if (productsSubscription.ready()) {
-    window.prerenderReady = true;
-  }
-
-  const catalogCursor = Catalog.find({
-    "product.type": "product-simple"
-  }, {
-    $sort: {
-      [`product.positions.${tagIdForPosition}.position`]: 1,
-      createdAt: -1
-    }
-  });
-
-  canLoadMoreProducts = catalogCursor.count() >= scrollLimit;
-
-  const products = catalogCursor.map((catalogItem) => catalogItem.product);
-
-  const currentShop = Shops.findOne({
-    _id: Reaction.getPrimaryShopId()
-  });
-
+  // Pass arguments to GraphQL HOCs
   onData(null, {
-    canLoadMoreProducts,
-    products,
-    productsSubscription,
-    shopCurrencyCode: currentShop.currency
+    shopSlug,
+    tagSlugOrId
   });
 }
 
 registerComponent("ProductsCustomer", ProductGridCustomer, [
   composeWithTracker(composer),
+  withShopId,
+  withTagId,
+  withCatalogItems,
   wrapComponent
 ]);
 
 export default compose(
   composeWithTracker(composer),
+  withShopId,
+  withTagId,
+  withCatalogItems,
   wrapComponent
 )(ProductGridCustomer);

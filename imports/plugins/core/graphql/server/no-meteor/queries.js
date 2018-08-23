@@ -7,6 +7,7 @@ export default {
   catalog,
   cart,
   shops: {
-    shopById: (context, _id) => context.collections.Shops.findOne({ _id })
+    shopById: (context, _id) => context.collections.Shops.findOne({ _id }),
+    shopBySlug: (context, slug) => context.collections.Shops.findOne({ slug })
   }
 };

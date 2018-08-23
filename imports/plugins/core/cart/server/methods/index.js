@@ -3,8 +3,6 @@ import copyCartToOrder from "./copyCartToOrder";
 import createCart from "./createCart";
 import mergeCart from "./mergeCart";
 import removeFromCart from "./removeFromCart";
-import resetShipmentMethod from "./resetShipmentMethod";
-import setAnonymousUserEmail from "./setAnonymousUserEmail";
 import setPaymentAddress from "./setPaymentAddress";
 import setShipmentAddress from "./setShipmentAddress";
 import setShipmentMethod from "./setShipmentMethod";
@@ -24,8 +22,6 @@ export default {
   "cart/createCart": createCart,
   "cart/mergeCart": mergeCart,
   "cart/removeFromCart": removeFromCart,
-  "cart/resetShipmentMethod": resetShipmentMethod,
-  "cart/setAnonymousUserEmail": setAnonymousUserEmail,
   "cart/setPaymentAddress": setPaymentAddress,
   "cart/setShipmentAddress": setShipmentAddress,
   "cart/setShipmentMethod": setShipmentMethod,

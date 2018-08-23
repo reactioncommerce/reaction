@@ -39,14 +39,15 @@ const wrapComponent = (Comp) => (
       const selectedProducts = Reaction.getUserPreferences("reaction-product-variant", "selectedGridItems");
       const { products } = this;
 
-      if (_.isEmpty(selectedProducts)) {
+      if (Array.isArray(selectedProducts) && _.isEmpty(selectedProducts)) {
+        Reaction.setUserPreferences("reaction-product-variant", "selectedGridItems", undefined);
         return Reaction.hideActionView();
       }
 
-      // Save the selected items to the Session
-      Session.set("productGrid/selectedProducts", _.uniq(selectedProducts));
 
-      if (products) {
+      if (products && selectedProducts) {
+        // Save the selected items to the Session
+        Session.set("productGrid/selectedProducts", _.uniq(selectedProducts));
         const filteredProducts = products.filter((product) => selectedProducts.includes(product._id));
 
         if (Reaction.isPreview() === false) {
@@ -80,12 +81,11 @@ const wrapComponent = (Comp) => (
 
       Reaction.setUserPreferences("reaction-product-variant", "selectedGridItems", selectedProducts);
 
-      // Save the selected items to the Session
-      Session.set("productGrid/selectedProducts", _.uniq(selectedProducts));
-
       const { products } = this;
 
-      if (products) {
+      if (products && selectedProducts) {
+        // Save the selected items to the Session
+        Session.set("productGrid/selectedProducts", _.uniq(selectedProducts));
         const filteredProducts = products.filter((product) => selectedProducts.includes(product._id));
 
         Reaction.showActionView({

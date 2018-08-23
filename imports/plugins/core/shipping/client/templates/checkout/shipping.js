@@ -65,23 +65,6 @@ function shippingMethodsQueryStatus() {
   return [queryStatus, failingShippingProvider];
 }
 
-/**
- * @name cartShipmentMethods
- * @summary gets current shipment methods.
- * @return {Array} - Returns multiple methods if more than one carrier has been chosen.
- * @ignore
- */
-function cartShipmentMethods() {
-  const { cart } = getCart();
-  const shipmentMethods = [];
-  if (cart && cart.shipping) {
-    for (const shipping of cart.shipping) {
-      shipmentMethods.push(shipping.shipmentMethod);
-    }
-  }
-  return shipmentMethods;
-}
-
 function enabledShipping() {
   const enabledShippingArr = [];
   const apps = Reaction.Apps({
@@ -140,17 +123,16 @@ Template.coreCheckoutShipping.helpers({
     return enabledShipping().length > 0;
   },
 
-  // helper to display currently selected shipmentMethod
+  // helper to display currently selected fulfillment option
   isSelected() {
-    const self = this;
-    const shipmentMethods = cartShipmentMethods();
+    if (!this.method) return null;
 
-    for (const method of shipmentMethods) {
-      // if there is already a selected method, set active
-      if (_.isEqual(self.method, method)) {
-        return "active";
-      }
-    }
+    const { cart } = getCart();
+    if (!cart) return null;
+
+    const match = (cart.shipping || []).find((group) => group.shipmentMethod && group.shipmentMethod._id === this.method._id);
+    if (match) return "active";
+
     return null;
   },
 
@@ -186,7 +168,7 @@ Template.coreCheckoutShipping.events({
     event.stopPropagation();
     const { cart, token } = getCart();
 
-    Meteor.call("cart/setShipmentMethod", cart._id, token, this.method, (error) => {
+    Meteor.call("cart/setShipmentMethod", cart._id, token, this.method._id, (error) => {
       if (error) throw new ReactionError("set-shipment-method-error", error.message);
     });
   },

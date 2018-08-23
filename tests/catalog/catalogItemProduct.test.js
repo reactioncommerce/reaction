@@ -201,7 +201,6 @@ const mockCatalogProduct = {
     }
   },
   productType: "productType",
-  requiresShipping: true,
   shopId: internalShopId,
   sku: "ABC123",
   slug: productSlug,
@@ -211,6 +210,7 @@ const mockCatalogProduct = {
     { service: "googleplus", message: "googlePlusMessage" },
     { service: "pinterest", message: "pinterestMessage" }
   ],
+  supportedFulfillmentTypes: ["shipping"],
   tagIds: internalTagIds,
   taxCode: "taxCode",
   taxDescription: "taxDescription",
@@ -421,7 +421,6 @@ const expectedItemsResponse = {
         }
       },
       productType: "productType",
-      requiresShipping: true,
       shop: {
         _id: opaqueShopId
       },
@@ -433,6 +432,7 @@ const expectedItemsResponse = {
         { service: "googleplus", message: "googlePlusMessage" },
         { service: "pinterest", message: "pinterestMessage" }
       ],
+      supportedFulfillmentTypes: ["shipping"],
       tagIds: opaqueTagIds,
       tags: {
         nodes: [{ _id: opaqueTagIds[0] }, { _id: opaqueTagIds[1] }]

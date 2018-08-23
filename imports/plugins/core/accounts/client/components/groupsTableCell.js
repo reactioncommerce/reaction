@@ -17,7 +17,7 @@ const GroupsTableCell = (props) => {
     moment
   } = props;
 
-  const email = _.get(account, "emails[0].address");
+  const email = _.get(account, "emails[0].address", "");
   const groups = adminGroups;
   const userAvatar = getUserAvatar(account);
   const createdAt = (moment && moment(account.createdAt).format("MMM Do")) || account.createdAt.toLocaleString();

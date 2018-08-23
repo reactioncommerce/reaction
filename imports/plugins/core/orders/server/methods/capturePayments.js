@@ -24,8 +24,8 @@ export default function capturePayments(orderId) {
   const shopId = Reaction.getShopId(); // the shopId of the current user, i.e. merchant
   const order = Orders.findOne({ _id: orderId });
   // find the appropriate shipping record by shop
-  const shippingRecord = order.shipping.find((sRecord) => sRecord.shopId === shopId);
-  const itemIds = shippingRecord.items.map((item) => item._id);
+  const fulfillmentGroup = order.shipping.find((sRecord) => sRecord.shopId === shopId);
+  const { itemIds } = fulfillmentGroup;
 
   Meteor.call("workflow/pushItemWorkflow", "coreOrderItemWorkflow/captured", order, itemIds);
 
@@ -48,8 +48,8 @@ export default function capturePayments(orderId) {
     let error;
     try {
       result = Meteor.call(`${processor}/payment/capture`, paymentMethod);
-    } catch (e) {
-      error = e;
+    } catch (err) {
+      error = err;
     }
 
     if (result && result.saved === true) {
@@ -102,4 +102,6 @@ export default function capturePayments(orderId) {
 
     return { error: "orders/capturePayments: Failed to capture transaction" };
   }
+
+  return { error: null, result: null };
 }

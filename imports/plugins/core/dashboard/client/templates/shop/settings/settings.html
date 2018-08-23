@@ -109,6 +109,11 @@
       {{> afQuickField name='settings.google.clientId'}}
       {{> afQuickField name='settings.google.apiKey'}}
       {{> afQuickField name='settings.cart.cleanupDurationDays' placeholder="older than 3 days"}}
+      {{#if isPackageEnabled "reaction-sitemap-generator"}}
+        <div>
+          {{> React component=SitemapSettingsContainer packageData=packageData}}
+        </div>
+      {{/if}}
       {{> shopSettingsSubmitButton}}
     {{/autoForm}}
   </div>

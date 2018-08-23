@@ -13,12 +13,12 @@ import sendOrderEmail from "../util/sendOrderEmail";
  * @memberof Orders/Methods
  * @summary trigger shipmentShipped status and workflow update
  * @param {Object} order - order object
- * @param {Object} shipment - shipment object
+ * @param {Object} fulfillmentGroup - fulfillmentGroup object
  * @return {Object} return results of several operations
  */
-export default function shipmentShipped(order, shipment) {
+export default function shipmentShipped(order, fulfillmentGroup) {
   check(order, Object);
-  check(shipment, Object);
+  check(fulfillmentGroup, Object);
 
   // TODO: Who should have access to ship shipments in a marketplace setting
   // Should be anyone who has product in an order.
@@ -32,7 +32,7 @@ export default function shipmentShipped(order, shipment) {
   let completedItemsResult;
   let completedOrderResult;
 
-  const itemIds = shipment.items.map((item) => item._id);
+  const { itemIds } = fulfillmentGroup;
 
   // TODO: In the future, this could be handled by shipping delivery status
   // REVIEW: This hook seems to run before the shipment has been marked as shipped
@@ -59,7 +59,7 @@ export default function shipmentShipped(order, shipment) {
   Orders.update(
     {
       "_id": order._id,
-      "shipping._id": shipment._id
+      "shipping._id": fulfillmentGroup._id
     },
     {
       $set: {

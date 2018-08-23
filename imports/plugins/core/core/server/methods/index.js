@@ -1,3 +1,4 @@
+import getOpaqueIdFromInternalId from "./getOpaqueIdFromInternalId";
 import updatePackage from "./updatePackage";
 import updateRegistry from "./updateRegistry";
 import shopMethods from "./shop";
@@ -18,6 +19,7 @@ import shopMethods from "./shop";
 
 export default {
   ...shopMethods,
+  getOpaqueIdFromInternalId,
   "package/update": updatePackage,
   "registry/update": updateRegistry
 };

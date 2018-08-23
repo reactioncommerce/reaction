@@ -352,15 +352,15 @@ describe("stripe/payment/createCharges", function () {
     });
     const accountId = account._id;
 
-    let cart = Factory.create("cartMultiShop", { accountId, email: null });
-    // Assign shipping for the second shop
-    Meteor.call("shipping/updateShipmentQuotes", cart._id);
-    // Reload cart to fetch the shipping costs updated from the shipping/updateShipmentQuotes
-    cart = Cart.findOne({ _id: cart._id });
-
     sandbox.stub(Meteor, "userId", function () {
       return user._id;
     });
+
+    let cart = Factory.create("cartMultiShop", { accountId, email: null });
+    // Assign shipping for the second shop
+    Meteor.call("shipping/updateShipmentQuotes", cart._id, cart.shipping[0]._id);
+    // Reload cart to fetch the shipping costs updated from the shipping/updateShipmentQuotes
+    cart = Cart.findOne({ _id: cart._id });
 
     sandbox.stub(Meteor.server.method_handlers, "cart/createCart", function (...args) {
       check(args, [Match.Any]);

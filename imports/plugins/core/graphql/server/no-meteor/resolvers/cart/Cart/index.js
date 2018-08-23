@@ -2,11 +2,13 @@ import { encodeCartOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/ca
 import { resolveAccountFromAccountId, resolveShopFromShopId } from "@reactioncommerce/reaction-graphql-utils";
 import checkout from "./checkout";
 import items from "./items";
+import totalItemQuantity from "./totalItemQuantity";
 
 export default {
   _id: (node) => encodeCartOpaqueId(node._id),
   account: resolveAccountFromAccountId,
   checkout,
   items,
-  shop: resolveShopFromShopId
+  shop: resolveShopFromShopId,
+  totalItemQuantity
 };

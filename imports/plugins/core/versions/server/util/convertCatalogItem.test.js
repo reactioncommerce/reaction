@@ -35,7 +35,7 @@ const beforeDoc = {
   updatedAt: new Date("2018-05-24T14:43:26.282+0000"),
   vendor: "Example Manufacturer",
   originCountry: "US",
-  requiresShipping: true,
+  supportedFulfillmentTypes: ["shipping"],
   handle: "example-product",
   isDeleted: false,
   template: "productDetailSimple",
@@ -326,7 +326,6 @@ const afterDoc = {
     },
     productId: "BCTMZ6HTxFSppJESk",
     productType: "productType",
-    requiresShipping: true,
     shopId: "J8Bhq3uTtdgwZx3rz",
     sku: "PROD_SKU",
     slug: "example-product",
@@ -348,6 +347,7 @@ const afterDoc = {
         service: "pinterest"
       }
     ],
+    supportedFulfillmentTypes: ["shipping"],
     tagIds: [
       "rpjCvTBGjhBi2xdro",
       "cseCBSSrJ3t8HQSNP"
