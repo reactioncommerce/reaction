@@ -2,10 +2,11 @@ import { compose, withProps } from "recompose";
 import { registerComponent, composeWithTracker } from "@reactioncommerce/reaction-components";
 import { Meteor } from "meteor/meteor";
 import { Notifications } from "/lib/collections";
+import { Reaction } from "/client/api";
 import { Notification } from "../components";
 
 function composer(props, onData) {
-  if (Meteor.subscribe("Notification", Meteor.userId()).ready()) {
+  if (Meteor.subscribe("Notification", Reaction.getUserId()).ready()) {
     const notificationList = Notifications.find({}, { sort: { timeSent: -1 }, limit: 5 }).fetch();
     const unread = Notifications.find({ status: "unread" }).count();
 
