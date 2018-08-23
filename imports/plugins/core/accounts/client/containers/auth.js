@@ -164,7 +164,7 @@ class AuthContainer extends Component {
 
   hasPasswordService = () => !!Package["accounts-password"]
 
-  renderAuthView(client) {
+  renderAuthView() {
     if (this.props.currentView === "loginFormSignInView") {
       return (
         <Components.SignIn
