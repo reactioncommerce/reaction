@@ -40,8 +40,6 @@ import "./templates/accounts.html";
 import "./templates/dashboard/dashboard.html";
 import "./templates/dashboard/dashboard.js";
 import "./templates/dropdown/helpers";
-import "./templates/inline/inline.html";
-import "./templates/inline/inline.js";
 import "./templates/login/loginForm.html";
 import "./templates/login/loginForm.js";
 import "./templates/members/member.html";
