@@ -14,5 +14,12 @@ export default {
   tagIds,
   tags,
   media: (node, args, context) => node.media.map((mediaItem) => xformProductMedia(mediaItem, context)),
-  primaryImage: (node, args, context) => xformProductMedia(node.primaryImage, context)
+  primaryImage: (node, args, context) => xformProductMedia(node.primaryImage, context),
+  variants: (node, args, context) => {
+    return node.variants.map((variant) => {
+      variant.media = variant.media.map((mediaItem) => xformProductMedia(mediaItem, context));
+      variant.primaryImage = xformProductMedia(variant.primaryImage, context);
+      return variant;
+    });
+  }
 };
