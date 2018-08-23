@@ -13,7 +13,6 @@ import queries from "./queries";
  * @param {Object} context - A context object on which to set additional context properties
  * @param {Object} request - Request object
  * @param {Object} request.headers - HTTP headers on request
- * @param {String} request.headers.origin - Where the request originated from
  * @param {String} request.headers.host - Host request was made for
  * @param {Object} [request.user] - The user who authenticated this request, if applicable
  * @returns {undefined} No return
@@ -40,5 +39,5 @@ export default async function buildContext(context, request) {
   // Add a curried hasPermission tied to the current user (or to no user)
   context.userHasPermission = getHasPermissionFunctionForUser(context.user);
 
-  context.getAbsoluteUrl = () => getAbsoluteUrl(headers);
+  context.getAbsoluteUrl = () => getAbsoluteUrl(headers, request.protocol);
 }

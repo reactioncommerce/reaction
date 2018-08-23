@@ -33,10 +33,7 @@ export default async function getGraphQLContextInMeteorMethod(userId, methodConn
   const { httpHeaders } = methodConnection;
   const request = {
     user,
-    headers: {
-      origin: Reaction.absoluteUrl().slice(0, -1),
-      ...httpHeaders
-    }
+    headers: httpHeaders
   };
 
   await buildContext(meteorContext, request);
