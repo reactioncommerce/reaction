@@ -24,7 +24,7 @@ const handlers = {
 
 const composer = (props, onData) => {
   const anonymousCart = store.get("Reaction.anonymousCarts") || [{}];
-  const [ { _id: cartId, token } ] = anonymousCart;
+  const [{ _id: cartId, token }] = anonymousCart;
   onData(null, { shopSlug: getSlug(Reaction.getShopName().toLowerCase()), cartId: encodeOpaqueId(namespaces.Cart)(cartId), token });
 };
 

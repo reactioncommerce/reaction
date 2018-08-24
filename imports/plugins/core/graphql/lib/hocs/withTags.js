@@ -49,7 +49,7 @@ export default (Component) => (
                   limit: 200,
                   fetchMore
                 });
-                return <Component {...props} isLoading={true}/>
+                return <Component {...props} isLoading={true}/>;
               }
               const { tags: { edges } } = data;
               const tags = edges.map((edge) => edge.node);

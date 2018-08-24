@@ -17,7 +17,6 @@ import getMongoSort from "./getMongoSort";
  * @return {Promise<Object>} `{ nodes, pageInfo, totalCount }`
  */
 async function getPaginatedResponse(mongoCursor, args) {
-  console.log(args);
   const { sortBy, sortOrder } = args;
   const baseFilter = mongoCursor.cmd.query;
 

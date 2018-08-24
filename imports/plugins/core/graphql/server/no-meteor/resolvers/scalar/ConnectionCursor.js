@@ -1,7 +1,7 @@
 import { GraphQLScalarType } from "graphql";
 import { Kind } from "graphql/language";
 
-const toCursor = (value) => (value ? (Buffer.isBuffer(value.id) ? Buffer.from(value.id).toString("base64"): Buffer.from(value).toString("base64")) : null);
+const toCursor = (value) => (value ? Buffer.from(value).toString("base64") : null);
 const fromCursor = (cursor) => (cursor ? Buffer.from(cursor, "base64").toString("utf8") : null);
 
 const description = `

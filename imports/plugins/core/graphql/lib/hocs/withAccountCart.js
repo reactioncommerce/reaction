@@ -2,29 +2,30 @@ import React from "react";
 import PropTypes from "prop-types";
 import { Query } from "react-apollo";
 import getAccountCart from "../queries/getAccountCart";
- export default (Component) => (
+
+export default (Component) => (
   class AccountCart extends React.Component {
     static propTypes = {
       shopId: PropTypes.string,
       shouldSkipGraphql: PropTypes.bool, // Whether to skip this HOC's GraphQL query & data
       viewerId: PropTypes.string
     };
-     render() {
+    render() {
       const { shopId, viewerId, shouldSkipGraphql } = this.props;
-       if (shouldSkipGraphql || !shopId || !viewerId) {
+      if (shouldSkipGraphql || !shopId || !viewerId) {
         return (
           <Component {...this.props} />
         );
       }
-       const variables = { accountId: viewerId, shopId };
-       return (
+      const variables = { accountId: viewerId, shopId };
+      return (
         <Query query={getAccountCart} variables={variables} pollInterval={500} fetchPolicy={"network-only"}>
           {({ loading, data, refetch, fetchMore }) => {
             const props = {
               ...this.props,
               isLoadingAccountCart: loading
             };
-             if (loading === false) {
+            if (loading === false) {
               const { cart } = data;
               const { items: cartItems, _id } = cart || {};
               props.cartItems = ((cartItems && cartItems.edges) || []).map((edge) => edge.node);
@@ -53,12 +54,12 @@ import getAccountCart from "../queries/getAccountCart";
                               edges: [
                                 ...previousResult.cart.items.edges,
                                 ...fetchMoreCart.items.edges
-                              ],
+                              ]
                             }
                           }
                         };
                       }
-                       // Send the previous result if the new result contains no additional data
+                      // Send the previous result if the new result contains no additional data
                       return previousResult;
                     }
                   });
@@ -66,7 +67,7 @@ import getAccountCart from "../queries/getAccountCart";
               }
               props.refetchCartData = refetch;
             }
-             return (
+            return (
               <Component {...props} />
             );
           }}

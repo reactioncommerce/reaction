@@ -1,8 +1,7 @@
 import { compose, withProps } from "recompose";
 import { Meteor } from "meteor/meteor";
 import React from "react";
-import { Components } from "@reactioncommerce/reaction-components";
-import { registerComponent, composeWithTracker } from "@reactioncommerce/reaction-components";
+import { registerComponent, composeWithTracker, Components } from "@reactioncommerce/reaction-components";
 import { i18nextDep, i18next, Reaction, Logger } from "/client/api";
 import MainDropdownCustomer from "../components/mainDropdownCustomer";
 import withViewer from "/imports/plugins/core/graphql/lib/hocs/withViewer";
@@ -42,14 +41,14 @@ const composer = ({ viewer, refetchViewer }, onData) => {
 
   const handleChange = (event, value) => {
     event.preventDefault();
-  
+
     if (value === "logout") {
       return Meteor.logout((error) => {
         refetchViewer();
         if (error) {
           Logger.error(error, "Failed to logout.");
         }
-  
+
         // Resets the app to show the primary shop as the active shop when a user logs out.
         // When an admin user is switching back and forth between shops, the app will keep the
         // activeShopId as the last shop visited. If an admin user logs out, the app will stay on that shop
@@ -57,12 +56,12 @@ const composer = ({ viewer, refetchViewer }, onData) => {
         Reaction.setShopId(Reaction.getPrimaryShopId());
       });
     }
-  
+
     if (value.route || value.name) {
       const route = value.name || value.route;
       return Reaction.Router.go(route);
     }
-  }
+  };
 
   onData(null, {
     userImage,

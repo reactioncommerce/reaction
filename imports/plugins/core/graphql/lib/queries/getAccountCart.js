@@ -1,5 +1,6 @@
 import gql from "graphql-tag";
- export default gql`
+
+export default gql`
   query cart($accountId: ID!, $shopId: ID!, $itemsAfterCursor: ConnectionCursor) {
     cart: accountCartByAccountId(accountId: $accountId, shopId: $shopId) {
       _id

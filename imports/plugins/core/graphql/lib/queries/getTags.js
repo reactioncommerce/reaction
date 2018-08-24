@@ -21,8 +21,8 @@ export default gql`
                 heroMediaUrl,
                 position,
                 subTags (after: 200) {
-                  edges {
-                  	cursor
+                    edges {
+                    cursor
                     node {
                       _id,
                       name,
@@ -36,7 +36,7 @@ export default gql`
                     startCursor,
                     hasNextPage,
                     hasPreviousPage,
-                	}
+                  }
                 }
                 
               }

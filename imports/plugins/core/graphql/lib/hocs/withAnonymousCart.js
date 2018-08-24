@@ -10,11 +10,11 @@ export default (Component) => (
       shouldSkipGraphql: PropTypes.bool, // Whether to skip this HOC's GraphQL query & data
       viewerId: PropTypes.string
     };
-     render() {
+    render() {
       const { shouldSkipGraphql, cartId, token } = this.props;
       if (shouldSkipGraphql || !cartId || !token) {
         return (
-         <Component {...this.props} />
+          <Component {...this.props} />
         );
       }
       const variables = { cartId, token };
@@ -25,7 +25,7 @@ export default (Component) => (
               ...this.props,
               isLoadingAnonymousCart: loading
             };
-             if (loading === false) {
+            if (loading === false) {
               const { cart } = data;
               const { items: cartItems, _id } = cart || {};
               props.cartItems = ((cartItems && cartItems.edges) || []).map((edge) => edge.node);
@@ -54,12 +54,12 @@ export default (Component) => (
                               edges: [
                                 ...previousResult.cart.items.edges,
                                 ...fetchMoreCart.items.edges
-                              ],
+                              ]
                             }
                           }
                         };
                       }
-                       // Send the previous result if the new result contains no additional data
+                      // Send the previous result if the new result contains no additional data
                       return previousResult;
                     }
                   });
@@ -67,7 +67,7 @@ export default (Component) => (
               }
               props.refetchCartData = refetch;
             }
-             return (
+            return (
               <Component {...props} />
             );
           }}
