@@ -3,12 +3,13 @@
  * @summary Combines and returns the given root URL and path
  * @param {String} rootUrl URL ending with /
  * @param {String} path Path that may or may not start with /
- * @returns {String}
+ * @returns {String} Full URL
  */
 export default function getAbsoluteUrl(rootUrl, path = "") {
+  let pathNoSlash = path;
   if (path.startsWith("/")) {
-    path = path.slice(1);
+    pathNoSlash = path.slice(1);
   }
 
-  return `${rootUrl}${path}`;
+  return `${rootUrl}${pathNoSlash}`;
 }
