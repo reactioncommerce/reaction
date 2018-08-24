@@ -1,21 +1,13 @@
 import getAbsoluteUrl from "./getAbsoluteUrl";
 
-test("returns process.env.ROOT_URL with trailing slash if set", () => {
-  process.env.ROOT_URL = "http://localhost:3000";
-  const request = {
-    protocol: "https",
-    hostname: "reaction-api"
-  };
-
-  expect(getAbsoluteUrl(request)).toBe("http://localhost:3000/");
+test("returns the correct URL when given an empty path", () => {
+  const rootUrl = "http://localhost:3000/";
+  const path = "";
+  expect(getAbsoluteUrl(rootUrl, path)).toBe(rootUrl);
 });
 
-test("returns correct URL if process.env.ROOT_URL is not set", () => {
-  process.env.ROOT_URL = "";
-  const request = {
-    protocol: "https",
-    hostname: "abc.com"
-  };
-
-  expect(getAbsoluteUrl(request)).toBe("https://abc.com/");
+test("returns the correct URL when given a path", () => {
+  const rootUrl = "http://localhost:3000/";
+  const path = "/media/test.jpg";
+  expect(getAbsoluteUrl(rootUrl, path)).toBe("http://localhost:3000/media/test.jpg");
 });

@@ -1,18 +1,14 @@
 /**
  * @name getAbsoluteUrl
- * @summary Returns the absolute/base URL, returning process.env.ROOT_URL if set,
- *  otherwise using the request's protocol & hostname
- * @param {Object} request Express request object
- * @param {Object} request.hostname Hostname derived from Host or X-Forwarded-Host heaer
- * @param {String} request.protocol Either http or https
- * @returns {String} URL
+ * @summary Combines and returns the given root URL and path
+ * @param {String} rootUrl URL ending with /
+ * @param {String} path Path that may or may not start with /
+ * @returns {String}
  */
-export default function getAbsoluteUrl(request) {
-  const { ROOT_URL } = process.env;
-  if (ROOT_URL) {
-    return `${ROOT_URL}/`;
+export default function getAbsoluteUrl(rootUrl, path = "") {
+  if (path.startsWith("/")) {
+    path = path.slice(1);
   }
 
-  const { hostname, protocol } = request;
-  return `${protocol}://${hostname}/`;
+  return `${rootUrl}${path}`;
 }

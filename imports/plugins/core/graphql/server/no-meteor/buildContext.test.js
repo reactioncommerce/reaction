@@ -8,6 +8,7 @@ const fakeUser = {
 };
 
 test("properly mutates the context object without user", async () => {
+  process.env.ROOT_URL = "http://localhost:3000";
   const context = { collections: mockContext.collections };
   await buildContext(context, { user: undefined });
   expect(context).toEqual({
@@ -18,11 +19,13 @@ test("properly mutates the context object without user", async () => {
     user: null,
     userHasPermission: jasmine.any(Function),
     userId: null,
+    rootUrl: "http://localhost:3000/",
     getAbsoluteUrl: jasmine.any(Function)
   });
 });
 
 test("properly mutates the context object with user", async () => {
+  process.env.ROOT_URL = "https://localhost:3000";
   const mockAccount = { _id: "accountId", userId: fakeUser._id };
   mockContext.collections.Accounts.findOne.mockReturnValueOnce(Promise.resolve(mockAccount));
 
@@ -38,6 +41,7 @@ test("properly mutates the context object with user", async () => {
     user: fakeUser,
     userHasPermission: jasmine.any(Function),
     userId: fakeUser._id,
+    rootUrl: "https://localhost:3000/",
     getAbsoluteUrl: jasmine.any(Function)
   });
 

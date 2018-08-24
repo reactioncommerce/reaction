@@ -19,7 +19,6 @@ export function xformProductMedia(mediaItem, context) {
   if (!mediaItem) return null;
 
   const { priority, toGrid, productId, variantId, URLs: { large, medium, original, small, thumbnail } } = mediaItem;
-  const absoluteUrl = context.getAbsoluteUrl().slice(0, -1);
 
   return {
     priority,
@@ -27,11 +26,11 @@ export function xformProductMedia(mediaItem, context) {
     productId: encodeProductOpaqueId(productId),
     variantId: encodeProductOpaqueId(variantId),
     URLs: {
-      large: `${absoluteUrl}${large}`,
-      medium: `${absoluteUrl}${medium}`,
-      original: `${absoluteUrl}${original}`,
-      small: `${absoluteUrl}${small}`,
-      thumbnail: `${absoluteUrl}${thumbnail}`
+      large: context.getAbsoluteUrl(large),
+      medium: context.getAbsoluteUrl(medium),
+      original: context.getAbsoluteUrl(original),
+      small: context.getAbsoluteUrl(small),
+      thumbnail: context.getAbsoluteUrl(thumbnail)
     }
   };
 }
