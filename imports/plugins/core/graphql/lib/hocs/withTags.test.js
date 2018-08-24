@@ -21,13 +21,17 @@ const mocks = [
     result: {
       data: {
         tags: {
-          nodes: [{
-            _id: "cmVhY3Rpb24vdGFnOnJwakN2VEJHamhCaTJ4ZHJv",
-            name: "Shop",
-            subTagIds: [],
-            slug: "shop",
-            heroMediaUrl: null
-          }]
+          edges: [
+            {
+              node: {
+                _id: "cmVhY3Rpb24vdGFnOnJwakN2VEJHamhCaTJ4ZHJv",
+                name: "Shop",
+                subTagIds: [],
+                slug: "shop",
+                heroMediaUrl: null
+              }
+            }
+          ]
         }
       }
     }

@@ -132,10 +132,9 @@ class NavBarAdmin extends Component {
   }
 
   renderTagNav() {
-    const Comp = Reaction.hasAdminAccess() ? Components.TagNav : Components.TagNavCustomer;
     return (
       <header className="menu" role="banner">
-        <Comp
+        <Components.TagNav
           isVisible={this.state.navBarVisible}
           closeNavbar={this.handleCloseNavbar}
           {...this.props}
@@ -144,7 +143,7 @@ class NavBarAdmin extends Component {
           {this.renderNotificationIcon()}
           {this.renderLanguage()}
           {this.renderCurrency()}
-        </Comp>
+        </Components.TagNav>
       </header>
     );
   }

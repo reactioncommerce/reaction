@@ -50,7 +50,7 @@ class NavBarCustomer extends Component {
   renderLanguage() {
     return (
       <div className="languages">
-        <Components.LanguageDropdown />
+        <Components.LanguageDropdownCustomer />
       </div>
     );
   }
@@ -109,7 +109,7 @@ class NavBarCustomer extends Component {
     return (
       <div className="cart-container">
         <div className="cart">
-          <Components.CartIcon />
+          <Components.CartIconCustomer />
         </div>
         <div className="cart-alert">
           <Components.CartPanel />
@@ -120,7 +120,7 @@ class NavBarCustomer extends Component {
 
   renderMainDropdown() {
     return (
-      <Components.MainDropdown />
+      <Components.MainDropdownCustomer />
     );
   }
 

@@ -7,6 +7,7 @@ import checkout from "./checkout.graphql";
 import currency from "./currency.graphql";
 import email from "./email.graphql";
 import group from "./group.graphql";
+import language from "./language.graphql";
 import metafield from "./metafield.graphql";
 import node from "./node.graphql";
 import payment from "./payment.graphql";
@@ -25,6 +26,7 @@ export default [
   currency,
   email,
   group,
+  language,
   metafield,
   node,
   payment,

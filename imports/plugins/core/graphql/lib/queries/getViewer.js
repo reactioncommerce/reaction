@@ -4,6 +4,12 @@ export default gql`
   query viewerQuery {
     viewer {
       _id,
+      name,
+      emailRecords {
+        provides
+        address
+        verified
+      },
       currency {
         _id, 
         code

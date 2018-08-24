@@ -52,14 +52,14 @@ const TagNavHelpers = {
     const foundTag = this.tagById(tagId, tags);
 
     if (foundTag) {
-      if (foundTag.subTags && Array.isArray(foundTag.subTags.nodes) && foundTag.subTags.nodes.length > 0) {
+      if (foundTag.subTags && Array.isArray(foundTag.subTags.edges) && foundTag.subTags.edges.length > 0) {
         return true;
       }
     }
     return false;
   },
   hasSubTagsForOne(tag) {
-    return tag && tag.subTags && Array.isArray(tag.subTags.nodes) && tag.subTags.nodes.length > 0;
+    return tag && tag.subTags && Array.isArray(tag.subTags.edges) && tag.subTags.edges.length > 0;
   }
 };
 

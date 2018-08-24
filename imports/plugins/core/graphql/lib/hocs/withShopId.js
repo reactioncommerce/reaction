@@ -29,7 +29,7 @@ export default (Component) => (
               isLoadingShopId: loading
             };
 
-            if (loading === false) {
+            if (loading === false && data) {
               const { shopBySlug } = data;
               const { _id } = shopBySlug || {};
               if (_id) {

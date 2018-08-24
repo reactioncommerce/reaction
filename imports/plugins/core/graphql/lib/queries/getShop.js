@@ -6,6 +6,12 @@ export default gql`
       _id,
       description,
       name,
+      languages {
+        label
+        enabled
+        i18n
+      },
+      language,
       currency {
         _id, 
         code

@@ -18,8 +18,8 @@ export const TagHelpers = {
   },
 
   subTagsCustomer(parentTag) {
-    if (parentTag.subTags && Array.isArray(parentTag.subTags.nodes) && parentTag.subTags.nodes.length > 0) {
-      return parentTag.subTags.nodes;
+    if (parentTag.subTags && Array.isArray(parentTag.subTags.edges) && parentTag.subTags.edges.length > 0) {
+      return parentTag.subTags.edges.map((edge) => edge.node);
     }
     return [];
   },

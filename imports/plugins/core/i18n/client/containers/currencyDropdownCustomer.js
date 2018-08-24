@@ -6,6 +6,7 @@ import { registerComponent, composeWithTracker } from "@reactioncommerce/reactio
 import withShop from "/imports/plugins/core/graphql/lib/hocs/withShop";
 import withShopId from "/imports/plugins/core/graphql/lib/hocs/withShopId";
 import withViewer from "/imports/plugins/core/graphql/lib/hocs/withViewer";
+import withChangeCurrency from "/imports/plugins/core/graphql/lib/hocs/withChangeCurrency";
 import getCart from "/imports/plugins/core/cart/client/util/getCart";
 import { getSlug } from "/lib/api";
 import CurrencyDropdown from "../components/currencyDropdown";
@@ -13,14 +14,16 @@ import CurrencyDropdown from "../components/currencyDropdown";
 const handlers = {
   handleChange(value) {
     const currency = value.split(" ");
-    const currencyName = currency[0];
+    const currencyCode = currency[0];
     // update Accounts with the selected currency
-    Meteor.call("accounts/setProfileCurrency", currencyName, this.refetchViewer);
+    // Meteor.call("accounts/setProfileCurrency", currencyName, this.refetchViewer);
+    this.changeCurrency({ variables: { input: { accountId: this.viewer._id, currencyCode } } });
+
     const { cart, token } = getCart();
     if (!cart) return;
 
     // Attach changed currency to this users cart
-    Meteor.call("cart/setUserCurrency", cart._id, token, currencyName);
+    Meteor.call("cart/setUserCurrency", cart._id, token, currencyCode);
   }
 };
 
@@ -83,6 +86,7 @@ registerComponent("CurrencyDropdownCustomer", CurrencyDropdown, [
   withShopId,
   withShop,
   withViewer,
+  withChangeCurrency,
   wrapComponent
 ]);
 
@@ -92,5 +96,6 @@ export default compose(
   withShopId,
   withShop,
   withViewer,
+  withChangeCurrency,
   wrapComponent
 )(CurrencyDropdown);

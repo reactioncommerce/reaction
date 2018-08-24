@@ -54,7 +54,7 @@ class TagNav extends Component {
   }
 
   tagGroupProps = (tag) => {
-    const subTagGroups = (tag && tag.subTags) ? tag.subTags.nodes : [];
+    const subTagGroups = (tag && tag.subTags) ? tag.subTags.edges.map((edge) => edge.node) : [];
     const tagsByKey = {};
 
     if (Array.isArray(subTagGroups)) {

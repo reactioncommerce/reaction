@@ -3,7 +3,6 @@ import PropTypes from "prop-types";
 import _ from "lodash";
 import classnames from "classnames";
 import { Components } from "@reactioncommerce/reaction-components";
-import { PropTypes as ReactionPropTypes } from "/lib/api";
 
 class TagListCustomer extends Component {
   displayName = "Tag List (TagList)";
@@ -11,7 +10,7 @@ class TagListCustomer extends Component {
   /**
    * Handle tag mouse out events and pass them up the component chain
    * @param  {Event} event Event object
-   * @param  {Tag} tag Reaction.Schemas.Tag - a tag object
+   * @param  {Tag} tag a tag object
    * @return {void} no return value
    */
   handleTagMouseOut = (event, tag) => {
@@ -23,7 +22,7 @@ class TagListCustomer extends Component {
   /**
    * Handle tag mouse over events and pass them up the component chain
    * @param  {Event} event Event object
-   * @param  {Tag} tag Reaction.Schemas.Tag - a tag object
+   * @param  {Tag} tag a tag object
    * @return {void} no return value
    */
   handleTagMouseOver = (event, tag) => {
@@ -121,9 +120,9 @@ TagListCustomer.propTypes = {
   onTagClick: PropTypes.func,
   onTagMouseOut: PropTypes.func,
   onTagMouseOver: PropTypes.func,
-  parentTag: ReactionPropTypes.Tag,
+  parentTag: PropTypes.object,
   showBookmark: PropTypes.bool, // eslint-disable-line react/boolean-prop-naming
-  tags: ReactionPropTypes.arrayOfTags
+  tags: PropTypes.array
 };
 
 export default TagListCustomer;

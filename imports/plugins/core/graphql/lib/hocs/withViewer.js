@@ -20,13 +20,14 @@ export default (Component) => (
           {({ loading, data, refetch }) => {
             const props = {
               ...this.props,
-              isLoadingViewerId: loading,
+              isLoadingViewer: loading,
               refetchViewer: refetch
             };
             if (loading === false) {
               const { viewer } = data;
               if (viewer) {
                 props.viewer = viewer;
+                props.viewerId = viewer._id;
               } else {
                 // Shop by slug not found, skip any other HOCs that relied on shopId
                 props.shouldSkipGraphql = true;

@@ -1,0 +1,11 @@
+"Represents a language"
+type Language {
+  "The language name"
+  label: String!
+
+  "The language code"
+  i18n: String!
+
+  "Is the language enabled by admin"
+  enabled: Boolean!
+}

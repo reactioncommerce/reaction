@@ -22,6 +22,11 @@ type Shop implements Node {
   "Returns shop name"
   name: String
 
+  languages: [Language]
+
+  "Returns the shop language"
+  language: String!
+
   "Returns a list of roles for this shop, as a Relay-compatible connection."
   roles(after: ConnectionCursor, before: ConnectionCursor, first: ConnectionLimitInt, last: ConnectionLimitInt, sortOrder: SortOrder = asc, sortBy: RoleSortByField = name): RoleConnection
 

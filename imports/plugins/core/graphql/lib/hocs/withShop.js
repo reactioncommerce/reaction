@@ -29,7 +29,7 @@ export default (Component) => (
               isLoading: loading
             };
 
-            if (loading === false) {
+            if (loading === false && data) {
               const { shop } = data;
               if (shop) {
                 props.shop = shop;
