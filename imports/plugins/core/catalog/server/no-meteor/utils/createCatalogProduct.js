@@ -188,7 +188,6 @@ export default async function createCatalogProduct(product, collections) {
     // The _id prop could change whereas this should always point back to the source product in Products collection
     productId: product._id,
     productType: product.productType,
-    requiresShipping: !!product.requiresShipping,
     shopId: product.shopId,
     sku: product.sku,
     slug: product.handle,
@@ -198,6 +197,7 @@ export default async function createCatalogProduct(product, collections) {
       { service: "googleplus", message: product.googleplusMsg },
       { service: "pinterest", message: product.pinterestMsg }
     ],
+    supportedFulfillmentTypes: product.supportedFulfillmentTypes,
     tagIds: product.hashtags,
     taxCode: product.taxCode,
     taxDescription: product.taxDescription,

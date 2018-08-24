@@ -1,60 +1,56 @@
-import Hooks from "@reactioncommerce/hooks";
-import Logger from "@reactioncommerce/logger";
 import { Meteor } from "meteor/meteor";
 import { check, Match } from "meteor/check";
-import * as Collections from "/lib/collections";
+import { Roles } from "meteor/alanning:roles";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
+import ReactionError from "@reactioncommerce/reaction-error";
 import getCart from "/imports/plugins/core/cart/server/util/getCart";
+import getGraphQLContextInMeteorMethod from "/imports/plugins/core/graphql/server/getGraphQLContextInMeteorMethod";
+import selectFulfillmentOptionForGroup from "/imports/plugins/core/shipping/server/no-meteor/mutations/selectFulfillmentOptionForGroup";
 
 /**
  * @method cart/setShipmentMethod
  * @memberof Cart/Methods
  * @summary Saves method as order default
- * @param {String} cartId - cartId to apply shipmentMethod
+ * @param {String} cartId - cartId to apply shipment method
  * @param {String} [cartToken] - Token for cart, if it's anonymous
- * @param {Object} method - shipmentMethod object
- * @return {Number} return Mongo update result
+ * @param {String} methodId - The selected method ID
+ * @return {undefined}
  */
-export default function setShipmentMethod(cartId, cartToken, method) {
+export default function setShipmentMethod(cartId, cartToken, methodId) {
   check(cartId, String);
   check(cartToken, Match.Maybe(String));
-  Reaction.Schemas.ShippingMethod.validate(method);
+  check(methodId, String);
 
   const { cart } = getCart(cartId, { cartToken, throwIfNotFound: true });
 
-  // Sets all shipping methods to the one selected
-  // TODO: Accept an object of shopId to method map to ship via different methods per shop
-  let update;
-  // if we have an existing item update it, otherwise add to set.
-  if (cart.shipping) {
-    const shipping = cart.shipping.map((shipRecord) => ({
-      ...shipRecord,
-      shipmentMethod: method
-    }));
-    update = { $set: { shipping } };
-  } else {
-    update = {
-      $addToSet: {
-        shipping: {
-          shipmentMethod: method,
-          shopId: cart.shopId
-        }
-      }
-    };
+  // For old Meteor code, we'll assume there's exactly one fulfillment group
+  // of type "shipping".
+  const group = (cart.shipping || []).find((grp) => grp.type === "shipping");
+  if (!group) {
+    throw new ReactionError("not-found", "Cart has no fulfillment group with type 'shipping'");
   }
 
-  // update or insert method
-  try {
-    Collections.Cart.update({ _id: cartId }, update);
-  } catch (error) {
-    Logger.error(error, `Error adding rates to cart ${cartId}`);
-    throw new Meteor.Error("server-error", "An error occurred saving the order", error);
+  const shopId = Reaction.getCartShopId();
+  if (!shopId) {
+    throw new ReactionError("invalid-param", "No shop ID found");
   }
 
+  // In Meteor app we always have a user, but it may have "anonymous" role, meaning
+  // it was auto-created as a kind of session.
+  const userId = Meteor.userId();
+  const anonymousUser = Roles.userIsInRole(userId, "anonymous", shopId);
+  const userIdForContext = anonymousUser ? null : userId;
 
-  // Calculate discounts
-  Hooks.Events.run("afterCartUpdateCalculateDiscount", cart._id);
+  const context = Promise.await(getGraphQLContextInMeteorMethod(userIdForContext));
+  const result = Promise.await(selectFulfillmentOptionForGroup(context, {
+    cartId,
+    cartToken,
+    fulfillmentGroupId: group._id,
+    fulfillmentMethodId: methodId
+  }));
 
   // this will transition to review
-  return Meteor.call("workflow/pushCartWorkflow", "coreCartWorkflow", "coreCheckoutShipping", cart._id);
+  Meteor.call("workflow/pushCartWorkflow", "coreCartWorkflow", "coreCheckoutShipping", cartId);
+
+  return result;
 }

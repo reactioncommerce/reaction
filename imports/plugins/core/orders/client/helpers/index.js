@@ -1,9 +1,9 @@
 import { Reaction } from "/client/api";
 
-/*
+/**
  * @method getOrderRiskBadge
  * @private
- * @summary Selects appropriate color badge (e.g  danger, warning) value based on risklevel
+ * @summary Selects appropriate color badge (e.g  danger, warning) value based on risk level
  * @param {string} riskLevel - risk level value on the paymentMethod
  * @return {string} label - style color class based on risk level
  */
@@ -22,13 +22,13 @@ export function getOrderRiskBadge(riskLevel) {
   return label;
 }
 
-/*
+/**
  * @method getOrderRiskStatus
  * @private
  * @summary Gets the risk label on the paymentMethod object for a shop on an order.
- * An empty string is returned if the value is "normal" becuase we don't flag a normal charge
+ * An empty string is returned if the value is "normal" because we don't flag a normal charge
  * @param {object} order - order object
- * @return {string} label - risklevel value (if risklevel is not normal)
+ * @return {string} label - risk level value (if risk level is not normal)
  */
 export function getOrderRiskStatus(order) {
   const billingForShop = order.billing.find((billing) => billing.shopId === Reaction.getShopId());
@@ -47,7 +47,7 @@ export function getOrderRiskStatus(order) {
   return riskLevel;
 }
 
-/*
+/**
  * @method getTaxRiskStatus
  * @private
  * @summary Gets the tax status of the order.

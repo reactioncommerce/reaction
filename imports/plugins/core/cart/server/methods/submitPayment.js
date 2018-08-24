@@ -1,10 +1,11 @@
-import Hooks from "@reactioncommerce/hooks";
 import Logger from "@reactioncommerce/logger";
 import { Meteor } from "meteor/meteor";
 import { check, Match } from "meteor/check";
-import * as Collections from "/lib/collections";
+import { Cart } from "/lib/collections";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
+import ReactionError from "@reactioncommerce/reaction-error";
 import getCart from "/imports/plugins/core/cart/server/util/getCart";
+import appEvents from "/imports/plugins/core/core/server/appEvents";
 import { PaymentMethodArgument } from "/lib/collections/schemas";
 
 /**
@@ -101,25 +102,24 @@ export default function submitPayment(cartId, cartToken, paymentMethods) {
   };
 
   try {
-    Collections.Cart.update(selector, update);
+    Cart.update(selector, update);
   } catch (error) {
     Logger.error(error);
-    throw new Meteor.Error("server-error", "An error occurred saving the order");
+    throw new ReactionError("server-error", "An error occurred saving the order");
   }
 
-  // Calculate discounts
-  Hooks.Events.run("afterCartUpdateCalculateDiscount", cartId);
-
-  const updatedCart = Collections.Cart.findOne(selector);
+  const updatedCart = Cart.findOne({ _id: cartId });
 
   // update workflow
   Meteor.call("workflow/pushCartWorkflow", "coreCartWorkflow", "paymentSubmitted", cartId);
+
+  Promise.await(appEvents.emit("afterCartUpdate", cartId, updatedCart));
 
   // create order
   if (updatedCart && updatedCart.items && updatedCart.billing && updatedCart.billing[0].paymentMethod) {
     Meteor.call("cart/copyCartToOrder", cart._id, cartToken);
   } else {
-    throw new Meteor.Error(
+    throw new ReactionError(
       "server-error",
       "An error occurred verifying payment method. Failed to save order."
     );

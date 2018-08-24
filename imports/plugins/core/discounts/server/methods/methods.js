@@ -1,6 +1,8 @@
 import { Meteor } from "meteor/meteor";
 import { Match, check } from "meteor/check";
+import ReactionError from "@reactioncommerce/reaction-error";
 import { Cart } from "/lib/collections";
+import appEvents from "/imports/plugins/core/core/server/appEvents";
 import { Discounts } from "../../lib/collections";
 import Reaction from "../api";
 
@@ -22,7 +24,7 @@ export const methods = {
 
     // check permissions to delete
     if (!Reaction.hasPermission("discounts")) {
-      throw new Meteor.Error("access-denied", "Access Denied");
+      throw new ReactionError("access-denied", "Access Denied");
     }
 
     return Discounts.remove({ _id: discountId });
@@ -43,12 +45,17 @@ export const methods = {
     check(discountRate, Number);
     check(discounts, Match.Optional(Array));
 
-    return Cart.update(cartId, {
+    const result = Cart.update({ _id: cartId }, {
       $set: {
         discounts,
         discount: discountRate
       }
     });
+
+    const updatedCart = Cart.findOne({ _id: cartId });
+    Promise.await(appEvents.emit("afterCartUpdate", cartId, updatedCart));
+
+    return result;
   },
 
   /**
@@ -63,7 +70,7 @@ export const methods = {
       _id: String,
       modifier: Object // actual schema validation happens during update below
     });
-    if (!Reaction.hasPermission("discount-rates")) throw new Meteor.Error("access-denied", "Access Denied");
+    if (!Reaction.hasPermission("discount-rates")) throw new ReactionError("access-denied", "Access Denied");
     const { _id, modifier } = details;
     return Discounts.update(_id, modifier);
   },

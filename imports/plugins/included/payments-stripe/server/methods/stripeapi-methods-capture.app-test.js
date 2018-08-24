@@ -150,11 +150,10 @@ describe("stripe/payment/capture", function () {
       return "sk_fake_fake";
     });
 
-    Meteor.call("stripe/payment/capture", paymentMethod, function (error, result) {
-      expect(error.message).to.equal("[Transaction ID is required]");
+    Meteor.call("stripe/payment/capture", paymentMethod, function ({ details: error }, result) {
+      expect(error[0].message).to.equal("Transaction ID is required");
       expect(result).to.be.undefined;
       done();
     });
   });
 });
-

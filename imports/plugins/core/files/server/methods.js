@@ -1,6 +1,7 @@
 import { Meteor } from "meteor/meteor";
 import { check } from "meteor/check";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
+import ReactionError from "@reactioncommerce/reaction-error";
 import { MediaRecords } from "/lib/collections";
 
 /**
@@ -87,7 +88,7 @@ export function updateMediaPriorities(sortedMediaIDs) {
   check(sortedMediaIDs, [String]);
 
   if (!Reaction.hasPermission("createProduct")) {
-    throw new Meteor.Error("access-denied", "Access Denied");
+    throw new ReactionError("access-denied", "Access Denied");
   }
 
   // Check to be sure product linked with each media belongs to the current user's current shop
@@ -99,12 +100,12 @@ export function updateMediaPriorities(sortedMediaIDs) {
 
   sortedMediaRecords.forEach((mediaRecord) => {
     if (!mediaRecord.metadata || mediaRecord.metadata.shopId !== shopId) {
-      throw new Meteor.Error("access-denied", `Access Denied. No access to shop ${mediaRecord.metadata.shopId}`);
+      throw new ReactionError("access-denied", `Access Denied. No access to shop ${mediaRecord.metadata.shopId}`);
     }
   });
 
   if (sortedMediaRecords.length !== sortedMediaIDs.length) {
-    throw new Meteor.Error("not-found", "At least one ID in sortedMediaIDs does not exist");
+    throw new ReactionError("not-found", "At least one ID in sortedMediaIDs does not exist");
   }
 
   sortedMediaIDs.forEach((_id, index) => {

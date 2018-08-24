@@ -1,9 +1,9 @@
-import Hooks from "@reactioncommerce/hooks";
 import Logger from "@reactioncommerce/logger";
-import { Meteor } from "meteor/meteor";
+import ReactionError from "@reactioncommerce/reaction-error";
 import { check, Match } from "meteor/check";
-import * as Collections from "/lib/collections";
+import { Cart } from "/lib/collections";
 import getCart from "/imports/plugins/core/cart/server/util/getCart";
+import appEvents from "/imports/plugins/core/core/server/appEvents";
 
 /**
  * @method cart/setUserCurrency
@@ -53,14 +53,15 @@ export default function setUserCurrency(cartId, cartToken, userCurrency) {
 
   // add / or set the shipping address
   try {
-    Collections.Cart.update(selector, update);
+    Cart.update(selector, update);
   } catch (error) {
     Logger.error(error);
-    throw new Meteor.Error("server-error", "An error occurred adding the currency");
+    throw new ReactionError("server-error", "An error occurred adding the currency");
   }
 
-  // Calculate discounts
-  Hooks.Events.run("afterCartUpdateCalculateDiscount", cart._id);
+  const updatedCart = Cart.findOne({ _id: cartId });
+
+  Promise.await(appEvents.emit("afterCartUpdate", cartId, updatedCart));
 
   return true;
 }

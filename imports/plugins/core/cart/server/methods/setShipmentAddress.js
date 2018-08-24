@@ -1,16 +1,18 @@
-import Hooks from "@reactioncommerce/hooks";
-import Logger from "@reactioncommerce/logger";
 import { Meteor } from "meteor/meteor";
 import { check, Match } from "meteor/check";
-import { Cart } from "/lib/collections";
+import { Roles } from "meteor/alanning:roles";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
-import getCart from "/imports/plugins/core/cart/server/util/getCart";
+import { Address as AddressSchema } from "/imports/collections/schemas";
+import ReactionError from "@reactioncommerce/reaction-error";
+import getGraphQLContextInMeteorMethod from "/imports/plugins/core/graphql/server/getGraphQLContextInMeteorMethod";
+import setShippingAddressOnCart from "../no-meteor/mutations/setShippingAddressOnCart";
+
 
 /**
  * @method cart/setShipmentAddress
  * @memberof Cart/Methods
  * @summary Adds address book to cart shipping
- * @param {String} cartId - cartId to apply shipmentMethod
+ * @param {String} cartId - The ID of the cart on which to set shipping address
  * @param {String} [cartToken] - Token for cart, if it's anonymous
  * @param {Object} address - addressBook object
  * @return {Number} update result
@@ -18,111 +20,40 @@ import getCart from "/imports/plugins/core/cart/server/util/getCart";
 export default function setShipmentAddress(cartId, cartToken, address) {
   check(cartId, String);
   check(cartToken, Match.Maybe(String));
-  Reaction.Schemas.Address.validate(address);
+  AddressSchema.validate(address);
 
-  const { cart } = getCart(cartId, { cartToken, throwIfNotFound: true });
-
-  let selector;
-  let update;
-  let updated = false; // if we update inline set to true, otherwise fault to update at the end
-  // We have two behaviors depending on if we have existing shipping records and if we
-  // have items in the cart.
-  if (cart.shipping && cart.shipping.length > 0 && cart.items && cart.items.length > 0) {
-    // if we have shipping records and cart.items, update each one by shop
-    const shopIds = Object.keys(cart.getItemsByShop());
-    shopIds.forEach((shopId) => {
-      selector = {
-        "_id": cartId,
-        "shipping.shopId": shopId
-      };
-
-      update = {
-        $set: {
-          "shipping.$.address": address
-        }
-      };
-      try {
-        Cart.update(selector, update);
-        updated = true;
-      } catch (error) {
-        Logger.error(error, "An error occurred adding the address");
-        throw new Meteor.Error(error, "An error occurred adding the address");
-      }
-    });
-  } else if (!cart.items || cart.items.length === 0) {
-    // if no items in cart just add or modify one record for the carts shop
-    // add a shipping record if it doesn't exist
-    if (!cart.shipping) {
-      selector = {
-        _id: cartId
-      };
-      update = {
-        $push: {
-          shipping: {
-            address,
-            shopId: cart.shopId
-          }
-        }
-      };
-
-      try {
-        Cart.update(selector, update);
-        updated = true;
-      } catch (error) {
-        Logger.error(error);
-        throw new Meteor.Error("server-error", "An error occurred adding the address");
-      }
-    } else {
-      // modify an existing record if we have one already
-      selector = {
-        "_id": cartId,
-        "shipping.shopId": cart.shopId
-      };
-
-      update = {
-        $set: {
-          "shipping.$.address": address
-        }
-      };
-    }
-  } else {
-    // if we have items in the cart but we didn't have existing shipping records
-    // add a record for each shop that's represented in the items
-    const shopIds = Object.keys(cart.getItemsByShop());
-    shopIds.forEach((shopId) => {
-      selector = {
-        _id: cartId
-      };
-      update = {
-        $addToSet: {
-          shipping: {
-            address,
-            shopId
-          }
-        }
-      };
-    });
-  }
-  if (!updated) {
-    // if we didn't do one of the inline updates, then run the update here
-    try {
-      Cart.update(selector, update);
-    } catch (error) {
-      Logger.error(error);
-      throw new Meteor.Error("server-error", "An error occurred adding the address");
-    }
+  const shopId = Reaction.getCartShopId();
+  if (!shopId) {
+    throw new ReactionError("invalid-param", "No shop ID found");
   }
 
-  try {
-    Meteor.call("shipping/updateShipmentQuotes", cartId);
-  } catch (error) {
-    Logger.error(`Error calling shipping/updateShipmentQuotes method in setShipmentAddress method for cart with ID ${cartId}`, error);
-  }
+  // In Meteor app we always have a user, but it may have "anonymous" role, meaning
+  // it was auto-created as a kind of session.
+  const userId = Meteor.userId();
+  const anonymousUser = Roles.userIsInRole(userId, "anonymous", shopId);
+  const userIdForContext = anonymousUser ? null : userId;
 
-  Hooks.Events.run("afterCartUpdateCalculateDiscount", cartId);
+  const context = Promise.await(getGraphQLContextInMeteorMethod(userIdForContext));
+  const result = Promise.await(setShippingAddressOnCart(context, {
+    address,
+    cartId,
+    cartToken
+  }));
+
+  let { cart } = result;
+
+  // We now ask clients to call this when necessary to avoid calling it when not needed, but the Meteor
+  // client still relies on it being called here, and on the workflow updates below this.
+  if (cart.shipping && cart.shipping.length) {
+    ({ cart } = Promise.await(context.mutations.fulfillment.updateFulfillmentOptionsForGroup(context, {
+      cartId,
+      cartToken,
+      fulfillmentGroupId: cart.shipping[0]._id
+    })));
+  }
 
   if (typeof cart.workflow !== "object") {
-    throw new Meteor.Error(
+    throw new ReactionError(
       "server-error",
       "Cart workflow object not detected."
     );
@@ -134,7 +65,7 @@ export default function setShipmentAddress(cartId, cartToken, address) {
     cart.workflow.workflow.length < 2) {
     Meteor.call(
       "workflow/pushCartWorkflow", "coreCartWorkflow",
-      "coreCheckoutShipping", cart._id
+      "coreCheckoutShipping", cartId
     );
   }
 
@@ -143,8 +74,8 @@ export default function setShipmentAddress(cartId, cartToken, address) {
   if (typeof cart.workflow.workflow === "object" &&
     cart.workflow.workflow.length > 2) { // "2" index of
     // `coreCheckoutShipping`
-    Meteor.call("workflow/revertCartWorkflow", "coreCheckoutShipping", cart._id);
+    Meteor.call("workflow/revertCartWorkflow", "coreCheckoutShipping", cartId);
   }
 
-  return true;
+  return result;
 }

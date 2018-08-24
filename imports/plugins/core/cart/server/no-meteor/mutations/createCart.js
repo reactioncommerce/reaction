@@ -1,5 +1,5 @@
 import Random from "@reactioncommerce/random";
-import { Meteor } from "meteor/meteor";
+import ReactionError from "@reactioncommerce/reaction-error";
 import hashLoginToken from "/imports/plugins/core/accounts/server/no-meteor/util/hashLoginToken";
 import { Cart as CartSchema } from "/imports/collections/schemas";
 import addCartItems from "../util/addCartItems";
@@ -22,11 +22,11 @@ import addCartItems from "../util/addCartItems";
  */
 export default async function createCart(context, input) {
   const { items, shopId, shouldCreateWithoutItems = false } = input;
-  const { collections, accountId = null } = context;
+  const { appEvents, collections, accountId = null } = context;
   const { Cart, Shops } = collections;
 
   if (shouldCreateWithoutItems !== true && (!Array.isArray(items) || !items.length)) {
-    throw new Meteor.Error("invalid-param", "A cart may not be created without at least one item in it");
+    throw new ReactionError("invalid-param", "A cart may not be created without at least one item in it");
   }
 
   // If we have an accountId and that account already has a cart for this shop, throw
@@ -34,7 +34,7 @@ export default async function createCart(context, input) {
     const existingCart = await Cart.findOne({ accountId, shopId }, { projection: { _id: 1 } });
 
     if (existingCart) {
-      throw new Meteor.Error("cart-found", "Each account may have only one cart per shop at a time");
+      throw new ReactionError("cart-found", "Each account may have only one cart per shop at a time");
     }
   }
 
@@ -82,9 +82,11 @@ export default async function createCart(context, input) {
 
   CartSchema.validate(newCart);
 
-  const { ops, result } = await Cart.insertOne(newCart);
+  const { result } = await Cart.insertOne(newCart);
 
-  if (result.ok !== 1) throw new Meteor.Error("server-error", "Unable to create cart");
+  if (result.ok !== 1) throw new ReactionError("server-error", "Unable to create cart");
 
-  return { cart: ops[0], incorrectPriceFailures, minOrderQuantityFailures, token: anonymousAccessToken };
+  await appEvents.emit("afterCartCreate", newCart);
+
+  return { cart: newCart, incorrectPriceFailures, minOrderQuantityFailures, token: anonymousAccessToken };
 }

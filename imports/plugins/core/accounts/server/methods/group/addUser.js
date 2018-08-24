@@ -4,6 +4,7 @@ import { Roles } from "meteor/alanning:roles";
 import { check } from "meteor/check";
 import { Meteor } from "meteor/meteor";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
+import ReactionError from "@reactioncommerce/reaction-error";
 import { Accounts, Groups } from "/lib/collections";
 import setUserPermissions from "../../util/setUserPermissions";
 
@@ -45,20 +46,20 @@ export default function addUser(userId, groupId) {
   // we are limiting group method actions to only users with admin roles
   // this also include shop owners, since they have the `admin` role in their Roles.GLOBAL_GROUP
   if (!Reaction.hasPermission("admin", loggedInUserId, shopId)) {
-    throw new Meteor.Error("access-denied", "Access Denied");
+    throw new ReactionError("access-denied", "Access Denied");
   }
 
   // Users with `owner` and/or `admin` roles can invite to any group
   // Also a user with `admin` can invite to only groups they have permissions that are a superset of
   // See details of canInvite method in core (i.e Reaction.canInviteToGroup)
   if (!canInvite) {
-    throw new Meteor.Error("access-denied", "Access Denied");
+    throw new ReactionError("access-denied", "Access Denied");
   }
 
   if (slug === "owner") {
     // if adding a user to the owner group, check that the request is done by current owner
     if (!Reaction.hasPermission("owner", Meteor.userId(), shopId)) {
-      throw new Meteor.Error("access-denied", "Access Denied");
+      throw new ReactionError("access-denied", "Access Denied");
     }
   }
 
@@ -96,6 +97,6 @@ export default function addUser(userId, groupId) {
     return Groups.findOne({ _id: groupId });
   } catch (error) {
     Logger.error(error);
-    throw new Meteor.Error("server-error", "Could not add user");
+    throw new ReactionError("server-error", "Could not add user");
   }
 }

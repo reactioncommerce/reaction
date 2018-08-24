@@ -3,6 +3,7 @@ import Logger from "@reactioncommerce/logger";
 import { check } from "meteor/check";
 import { Meteor } from "meteor/meteor";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
+import ReactionError from "@reactioncommerce/reaction-error";
 import { Accounts, Groups } from "/lib/collections";
 import setUserPermissions from "../../util/setUserPermissions";
 
@@ -28,11 +29,11 @@ export default function removeUser(userId, groupId) {
   // we are limiting group method actions to only users with admin roles
   // this also include shop owners, since they have the `admin` role in their Roles.GLOBAL_GROUP
   if (!Reaction.hasPermission("admin", Meteor.userId(), shopId)) {
-    throw new Meteor.Error("access-denied", "Access Denied");
+    throw new ReactionError("access-denied", "Access Denied");
   }
 
   if (!user) {
-    throw new Meteor.Error("invalid-parameter", "Could not find user");
+    throw new ReactionError("invalid-parameter", "Could not find user");
   }
 
   try {
@@ -45,6 +46,6 @@ export default function removeUser(userId, groupId) {
     return defaultCustomerGroupForShop;
   } catch (error) {
     Logger.error(error);
-    throw new Meteor.Error("server-error", "Could not add user");
+    throw new ReactionError("server-error", "Could not add user");
   }
 }

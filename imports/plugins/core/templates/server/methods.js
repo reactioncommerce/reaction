@@ -1,6 +1,7 @@
 import { Meteor } from "meteor/meteor";
 import { check } from "meteor/check";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
+import ReactionError from "@reactioncommerce/reaction-error";
 import { Templates } from "/lib/collections";
 
 /**
@@ -30,7 +31,7 @@ export const methods = {
 
     // Check that this user has permission to update templates for the active shop
     if (!Reaction.hasPermission("reaction-templates", userId, shopId)) {
-      throw new Meteor.Error("access-denied", "Access Denied");
+      throw new ReactionError("access-denied", "Access Denied");
     }
 
     return Templates.update({

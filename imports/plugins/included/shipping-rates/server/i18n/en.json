@@ -6,10 +6,10 @@
       "admin": {
         "shippingSettings": {
           "flatRateLabel": "Flat Rate",
-          "confirmRateDelete": "Delete rate?",
-          "rateSaved": "Flat rate saved.",
-          "rateFailed": "Flat rate update failed.",
-          "noRatesFound": "No rates found."
+          "confirmRateDelete": "Delete this fulfillment method?",
+          "rateSaved": "Fulfillment method saved",
+          "rateFailed": "Fulfillment method update failed",
+          "noRatesFound": "No flat rate fulfillment methods found"
         },
         "shippingGrid": {
           "name": "Name",

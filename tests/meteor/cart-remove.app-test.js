@@ -2,10 +2,10 @@
 /* eslint prefer-arrow-callback:0 */
 import Random from "@reactioncommerce/random";
 import { Meteor } from "meteor/meteor";
-import { check, Match } from "meteor/check";
 import { Factory } from "meteor/dburles:factory";
 import { assert, expect } from "meteor/practicalmeteor:chai";
 import { sinon } from "meteor/practicalmeteor:sinon";
+import ReactionError from "@reactioncommerce/reaction-error";
 import { getShop } from "/imports/plugins/core/core/server/fixtures/shops";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
 import * as Collections from "/lib/collections";
@@ -52,12 +52,6 @@ describe("cart methods", function () {
       const cart = Factory.create("cart", { accountId });
       sandbox.stub(Reaction, "getShopId", () => shop._id);
       sandbox.stub(Meteor, "userId", () => userId);
-      sandbox.stub(Meteor.server.method_handlers, "cart/resetShipmentMethod", function (...args) {
-        check(args, [Match.Any]);
-      });
-      sandbox.stub(Meteor.server.method_handlers, "shipping/updateShipmentQuotes", function (...args) {
-        check(args, [Match.Any]);
-      });
       const updateSpy = sandbox.spy(Collections.Cart, "update");
       const cartFromCollection = Collections.Cart.findOne({ _id: cart._id });
       const cartItemId = cartFromCollection.items[0]._id;
@@ -72,12 +66,6 @@ describe("cart methods", function () {
     });
 
     it("should decrease the quantity when called with a quantity", function () {
-      sandbox.stub(Meteor.server.method_handlers, "cart/resetShipmentMethod", function (...args) {
-        check(args, [Match.Any]);
-      });
-      sandbox.stub(Meteor.server.method_handlers, "shipping/updateShipmentQuotes", function (...args) {
-        check(args, [Match.Any]);
-      });
       const cart = Factory.create("cartTwo", { accountId });
       sandbox.stub(Reaction, "getShopId", () => shop._id);
       sandbox.stub(Meteor, "userId", () => userId);
@@ -89,12 +77,6 @@ describe("cart methods", function () {
     });
 
     it("should remove cart item when quantity is decreased to zero", function () {
-      sandbox.stub(Meteor.server.method_handlers, "cart/resetShipmentMethod", function (...args) {
-        check(args, [Match.Any]);
-      });
-      sandbox.stub(Meteor.server.method_handlers, "shipping/updateShipmentQuotes", function (...args) {
-        check(args, [Match.Any]);
-      });
       const cart = Factory.create("cartOne", { accountId });
       sandbox.stub(Reaction, "getShopId", () => shop._id);
       sandbox.stub(Meteor, "userId", () => userId);
@@ -115,7 +97,7 @@ describe("cart methods", function () {
       function removeFromCartFunc() {
         return Meteor.call("cart/removeFromCart", cartItemId);
       }
-      expect(removeFromCartFunc).to.throw(Meteor.Error, /not-found/);
+      expect(removeFromCartFunc).to.throw(ReactionError, /not-found/);
       return done();
     });
 
@@ -126,7 +108,7 @@ describe("cart methods", function () {
       function removeFromCartFunc() {
         return Meteor.call("cart/removeFromCart", cartItemId);
       }
-      expect(removeFromCartFunc).to.throw(Meteor.Error, /not-found/);
+      expect(removeFromCartFunc).to.throw(ReactionError, /not-found/);
       return done();
     });
   });

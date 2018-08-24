@@ -1,9 +1,10 @@
-import Hooks from "@reactioncommerce/hooks";
 import Random from "@reactioncommerce/random";
 import { Meteor } from "meteor/meteor";
 import { Match, check } from "meteor/check";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
+import ReactionError from "@reactioncommerce/reaction-error";
 import { Cart } from "/lib/collections";
+import appEvents from "/imports/plugins/core/core/server/appEvents";
 import { Discounts } from "/imports/plugins/core/discounts/lib/collections";
 import { DiscountCodes as DiscountSchema } from "../../lib/collections/schemas";
 
@@ -128,7 +129,7 @@ export const methods = {
     check(docId, Match.Optional(String));
     if (docId) return Meteor.call("discounts/editCode", { _id: docId, modifier: doc });
 
-    if (!Reaction.hasPermission("discount-codes")) throw new Meteor.Error("access-denied", "Access Denied");
+    if (!Reaction.hasPermission("discount-codes")) throw new ReactionError("access-denied", "Access Denied");
     doc.shopId = Reaction.getShopId();
     return Discounts.insert(doc);
   },
@@ -145,7 +146,7 @@ export const methods = {
       _id: String,
       modifier: Object // actual schema validation happens during update below
     });
-    if (!Reaction.hasPermission("discount-codes")) throw new Meteor.Error("access-denied", "Access Denied");
+    if (!Reaction.hasPermission("discount-codes")) throw new ReactionError("access-denied", "Access Denied");
     const { _id, modifier } = details;
     return Discounts.update(_id, modifier);
   },
@@ -193,7 +194,7 @@ export const methods = {
       Collection.update(selector, update);
     }
     // TODO: update a history record of transaction
-    // The Payment schema's currency defaultValue is adding {} to the $pull condition.
+    // The Payment schema currency defaultValue is adding {} to the $pull condition.
     // If this issue is eventually fixed, autoValues can be re-enabled here
     // See https://github.com/aldeed/simple-schema-js/issues/272
     const result = Collection.update(
@@ -202,8 +203,10 @@ export const methods = {
       { multi: true, getAutoValues: false }
     );
 
-    // calculate discounts
-    Hooks.Events.run("afterCartUpdateCalculateDiscount", id);
+    if (collection === "Cart") {
+      const updatedCart = Collection.findOne({ _id: id });
+      Promise.await(appEvents.emit("afterCartUpdate", id, updatedCart));
+    }
 
     return result;
   },
@@ -245,7 +248,7 @@ export const methods = {
     const participatingShops = Object.keys(uniqueShopObj);
 
     if (participatingShops.length > 1) {
-      throw new Meteor.Error("not-implemented", "discounts.multiShopError", "Discounts cannot be applied to a multi-shop cart or order");
+      throw new ReactionError("not-implemented", "discounts.multiShopError", "Discounts cannot be applied to a multi-shop cart or order");
     }
 
     // TODO: add  conditions: conditions
@@ -266,9 +269,9 @@ export const methods = {
 
       // existing usage count
       if (discount.transactions) {
-        const users = Array.from(discount.transactions, (t) => t.userId);
-        const transactionCount = new Map([...new Set(users)].map((x) => [x, users.filter((y) => y === x).length]));
-        const orders = Array.from(discount.transactions, (t) => t.cartId);
+        const users = Array.from(discount.transactions, (trans) => trans.userId);
+        const transactionCount = new Map([...new Set(users)].map((userX) => [userX, users.filter((userY) => userY === userX).length]));
+        const orders = Array.from(discount.transactions, (trans) => trans.cartId);
         userCount = transactionCount.get(Meteor.userId());
         orderCount = orders.length;
       }

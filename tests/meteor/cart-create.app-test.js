@@ -4,13 +4,13 @@ import Random from "@reactioncommerce/random";
 import { Meteor } from "meteor/meteor";
 import { check, Match } from "meteor/check";
 import { Factory } from "meteor/dburles:factory";
+import ReactionError from "@reactioncommerce/reaction-error";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
 import { Cart, Products, Accounts } from "/lib/collections";
 import { expect } from "meteor/practicalmeteor:chai";
 import { sinon } from "meteor/practicalmeteor:sinon";
 import { getShop, getAddress } from "/imports/plugins/core/core/server/fixtures/shops";
 import { addProduct } from "/imports/plugins/core/core/server/fixtures/products";
-import hashLoginToken from "/imports/plugins/core/accounts/server/no-meteor/util/hashLoginToken";
 import Fixtures from "/imports/plugins/core/core/server/fixtures";
 
 Fixtures();
@@ -29,8 +29,7 @@ describe("Add/Create cart methods", function () {
       mergeCart: Meteor.server.method_handlers["cart/mergeCart"],
       createCart: Meteor.server.method_handlers["cart/createCart"],
       copyCartToOrder: Meteor.server.method_handlers["cart/copyCartToOrder"],
-      addToCart: Meteor.server.method_handlers["cart/addToCart"],
-      setAnonymousUserEmail: Meteor.server.method_handlers["cart/setAnonymousUserEmail"]
+      addToCart: Meteor.server.method_handlers["cart/addToCart"]
     };
   });
 
@@ -77,20 +76,9 @@ describe("Add/Create cart methods", function () {
     let productId;
     let variantId;
     let permissionStub;
-    let resetShipmentStub;
-    let updateShipmentQuoteStub;
 
     before(function () {
       permissionStub = sinon.stub(Reaction, "hasPermission", function () {
-        return true;
-      });
-
-      resetShipmentStub = sinon.stub(Meteor.server.method_handlers, "cart/resetShipmentMethod", function (...args) {
-        check(args, [Match.Any]);
-        return true;
-      });
-      updateShipmentQuoteStub = sinon.stub(Meteor.server.method_handlers, "shipping/updateShipmentQuotes", function (...args) {
-        check(args, [Match.Any]);
         return true;
       });
 
@@ -103,8 +91,6 @@ describe("Add/Create cart methods", function () {
 
     after(function () {
       permissionStub.restore();
-      resetShipmentStub.restore();
-      updateShipmentQuoteStub.restore();
     });
 
     beforeEach(function () {
@@ -142,7 +128,7 @@ describe("Add/Create cart methods", function () {
       function addToCartFunc() {
         return Meteor.call("cart/addToCart", productId, variantId, quantity);
       }
-      expect(addToCartFunc).to.throw(Meteor.Error, /Cart not found/);
+      expect(addToCartFunc).to.throw(ReactionError, /Cart not found/);
       return done();
     });
 
@@ -151,29 +137,8 @@ describe("Add/Create cart methods", function () {
       function addToCartFunc() {
         return Meteor.call("cart/addToCart", "fakeProductId", variantId, quantity);
       }
-      expect(addToCartFunc).to.throw(Meteor.Error, "Product with such id was not found [not-found]");
+      expect(addToCartFunc).to.throw(ReactionError, "Product with such id was not found [not-found]");
       return done();
-    });
-  });
-
-  describe("cart/setAnonymousUserEmail", function () {
-    beforeEach(function () {
-      Cart.remove({});
-    });
-
-    it("should add an email to an anonymous cart", function () {
-      const token = Random.secret();
-      const cart = Factory.create("cart", {
-        email: undefined,
-        anonymousAccessToken: hashLoginToken(token)
-      });
-
-      spyOnMethod("setAnonymousUserEmail", null);
-
-      const email = "anon@email.com";
-      Meteor.call("cart/setAnonymousUserEmail", cart._id, token, email);
-      const updatedCart = Cart.findOne({ _id: cart._id });
-      expect(updatedCart.email).to.equal(email);
     });
   });
 
@@ -184,7 +149,7 @@ describe("Add/Create cart methods", function () {
       function copyCartFunc() {
         return Meteor.call("cart/copyCartToOrder", cart._id);
       }
-      expect(copyCartFunc).to.throw(Meteor.Error, /Access Denied/);
+      expect(copyCartFunc).to.throw(ReactionError, /Access Denied/);
       return done();
     });
 
@@ -208,7 +173,7 @@ describe("Add/Create cart methods", function () {
       function copyCartFunc() {
         return Meteor.call("cart/copyCartToOrder", cartId);
       }
-      expect(copyCartFunc).to.throw(Meteor.Error, /Missing cart items/);
+      expect(copyCartFunc).to.throw(ReactionError, /Missing cart items/);
       return done();
     });
 
@@ -221,7 +186,7 @@ describe("Add/Create cart methods", function () {
       function copyCartFunc() {
         return Meteor.call("cart/copyCartToOrder", cart._id);
       }
-      expect(copyCartFunc).to.throw(Meteor.Error, /Invalid request/);
+      expect(copyCartFunc).to.throw(ReactionError, /Invalid request/);
       expect(insertStub).to.have.been.called;
     });
 
@@ -239,7 +204,7 @@ describe("Add/Create cart methods", function () {
         return Meteor.call("cart/copyCartToOrder", cart._id);
       }
 
-      expect(copyCartFunc).to.throw(Meteor.Error, /Invalid request/);
+      expect(copyCartFunc).to.throw(ReactionError, /Invalid request/);
       expect(insertStub).to.have.been.called;
       return done();
     });

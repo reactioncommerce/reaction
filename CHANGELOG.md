@@ -1,3 +1,69 @@
+# v1.15.0
+
+## Sitemap Generator
+A sitemap generator plugin that creates and stores XML for a sitemap index, as well as sitemaps for tag pages, PDPs, and arbitrary URLs that can be added via an event hook.
+
+There is a recurring job that runs every 24 hours (the specific interval can be changed) that generates the sitemaps. There is also a button to manually trigger a refresh, at Dashboard -> Shop -> Options - along with a notification that appears when it's completed.
+
+## Use our GraphQL API for the Product Grid within the Meteor App
+As part of our push towards our GraphQL API, we've started to leverage the API inside of our existing Meteor app. This release converts our customer facing product grid from using Meteor Pub/Sub to consuming data from our GraphQL API instead. This is the first step in an ongoing initiative to start using the GraphQL API inside of our existing monolithic commerce application. See #4481 for a list of files changed.
+
+## GraphQL Checkout
+This release includes the first set of GraphQL APIs designed for stepping through a checkout. While we've started to consume this API within our Storefront Starter Kit, these APIs should be treated as unstable and subject to change. We've added mutations for setting an anonymous email - `setEmailOnAnonymousCart` and selecting fulfillment options - `selectFulfillmentOptionForGroup`.
+
+**A note on fulfillment options**
+Fulfillment options are what we're calling what used to be shipment options. In order to prepare ourselves for several types of fulfillment that do not necessarily include shipping, we're updating the checkout through order models, methods, and now our GraphQL API to be capable of grouping items into "Fulfillment Groups". This opens the door for several new types of fulfillments down the line such as In Store Pickup, Digital Downloads, Digital Key Generation, and anything else you can think up. We're not actively building any of these different fulfillment types into core, but want to ensure that it's possible and there's a clear direction to do so.
+
+## Breaking Changes
+  - If a plugin adds an "afterCartUpdate" hook, it will no longer be called. Change the plugin code to use appEvents.on("afterCartUpdate" instead. (#4535)
+  - If a plugin creates or updates a cart, be sure it calls appEvents.emit("afterCartCreate") or appEvents.emit("afterCartUpdate"), respectively, passing the proper arguments. If you do this within an appEvents.on hook for the same event, be sure to wrap the call in conditional logic to avoid an infinite loop. (#4535)
+  - We've refactored the `Shipment` schema to remove the `items` property. This will cause a breaking change for plugins expecting the items property to be there. Such plugins should be updated to use a combination of itemIds and the main items list. (#4531)
+  - Removed `requiresShipping` prop from products and catalog products. This has been replaced by an array `supportedFulfillmentTypes`. Reaction's core admin interface did not provide a method for setting this prop, and we've left the `supportedFulfillmentTypes` out of the exiting operator interface. This change will emable us to show a "Shipping"/"Pick Up" selector for other items down the road. Will also permit creation of digital fulfillment types, etc. (#4554)
+  - The last argument of the setShipmentMethod Meteor method now expects just the method ID rather than the whole method object. Core client code has been updated, but you should update any custom code that calls this method.
+  - Removed the resetShipmentMethod Meteor method
+  - The `cart/setAnonymousUserEmail` Meteor method is removed. This does not break any core behavior, but it might require updates to any custom plugins.
+
+
+## GraphQL DevServer
+### Features
+ - feat(GraphQL): update fulfillment options for group (#4538)
+ - feat(GraphQL): Add resolver for Cart.totalItemQuantity (#4533)
+ - feat(GraphQL): add resolver for Cart.checkout (#4507)
+ - feat(GraphQL): Replace "cart/setAnonymousUserEmail" Meteor method with setEmailOnAnonymousCart mutation (#4564)
+ - feat(GraphQL): Implement selectFulfillmentOptionForGroup mutation (#4548)
+
+## Fixes
+ - fix(GraphQL): Fix CartItem.currentQuantity (#4508)
+
+## Meteor App
+### Features
+ - feat: Convert product grid to consume GraphQL data (#4481) .. Resolves #4480
+ - feat: Fulfillment improvements (#4554)
+ - feat: Plugin for auto-generated sitemaps (#4413) .. Resolves #4353
+
+### Performance
+ - perf: improve orders sub speed by rearranging pipeline (#4555)
+ - perf: Move formatPhoneNumber (and libphonenumber-js) server-side to reduce client bundle (#4517) .. Resolves #4516
+
+### Fixes
+ - fix: for sidebar unable to be opened (edge condition) (#4546) .. Resolves #4545
+ - fix(marketplace): Default to Primary Shop when no domains match (#4544)
+ - fix: sync lowInventoryThreshold number between variants and child options (#4519)
+ - fix: Product prices showing as $NaN.undefined on the customer product grid (#4518)
+
+### Refactor
+ - refactor: Refactor cart / fulfillment hooks (#4535)
+ - refactor fulfillment items (#4531)
+ - refactor: resolve reaction error (#4494) .. Resolves #4477
+ - refactor: Dynamically import Swiper to reduce client bundle size (#4515) .. Resolves #4514
+
+### Chores
+ - chore: Added production bundle size check to CircleCI (#4521)
+
+### Contributors
+ - Thanks to @pmn4 for contributing to this release :tada:
+
+
 # v1.14.1
 ## Patch release
 Resolves issues found after releasing `1.14.0` - one causing jsdoc to fail during CI builds for the `master` branch, and another where method hooks were running incorrectly occasionally for `catalog/publish/products` and `accoutns/addressBookAdd`. See specific PRs for more details.

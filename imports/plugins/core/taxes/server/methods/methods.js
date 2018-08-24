@@ -1,8 +1,10 @@
 import Logger from "@reactioncommerce/logger";
+import ReactionError from "@reactioncommerce/reaction-error";
 import { Meteor } from "meteor/meteor";
 import { Match, check } from "meteor/check";
 import { Catalog } from "/lib/api";
 import { Cart, Packages, Products } from "/lib/collections";
+import appEvents from "/imports/plugins/core/core/server/appEvents";
 import { Taxes } from "../../lib/collections";
 import Reaction from "../api";
 
@@ -26,7 +28,7 @@ export const methods = {
 
     // check permissions to delete
     if (!Reaction.hasPermission("taxes")) {
-      throw new Meteor.Error("access-denied", "Access Denied");
+      throw new ReactionError("access-denied", "Access Denied");
     }
 
     return Taxes.remove(taxId);
@@ -47,7 +49,7 @@ export const methods = {
     check(docId, Match.Optional(String));
     if (docId) return Meteor.call("taxes/editRate", { _id: docId, modifier: doc });
 
-    if (!Reaction.hasPermission("taxes")) throw new Meteor.Error("access-denied", "Access Denied");
+    if (!Reaction.hasPermission("taxes")) throw new ReactionError("access-denied", "Access Denied");
     doc.shopId = Reaction.getShopId();
     return Taxes.insert(doc);
   },
@@ -64,7 +66,7 @@ export const methods = {
       _id: String,
       modifier: Object // actual schema validation happens during update below
     });
-    if (!Reaction.hasPermission("taxes")) throw new Meteor.Error("access-denied", "Access Denied");
+    if (!Reaction.hasPermission("taxes")) throw new ReactionError("access-denied", "Access Denied");
     const { _id, modifier } = details;
     return Taxes.update(_id, modifier);
   },
@@ -84,12 +86,17 @@ export const methods = {
     check(taxRate, Number);
     check(taxes, Match.Optional(Array));
 
-    return Cart.update({ _id: cartId }, {
+    const result = Cart.update({ _id: cartId }, {
       $set: {
         taxes,
         tax: taxRate
       }
     });
+
+    const updatedCart = Cart.findOne({ _id: cartId });
+    Promise.await(appEvents.emit("afterCartUpdate", cartId, updatedCart));
+
+    return result;
   },
 
   /**
@@ -116,7 +123,7 @@ export const methods = {
 
     const { cartTaxData, cartTaxRate, itemsWithTax, taxRatesByShop } = options;
 
-    return Cart.update({ _id: cartId }, {
+    const result = Cart.update({ _id: cartId }, {
       $set: {
         taxes: cartTaxData,
         tax: cartTaxRate,
@@ -124,13 +131,18 @@ export const methods = {
         taxRatesByShop
       }
     });
+
+    const updatedCart = Cart.findOne({ _id: cartId });
+    Promise.await(appEvents.emit("afterCartUpdate", cartId, updatedCart));
+
+    return result;
   },
 
   /**
    * @name "taxes/updateTaxCode"
    * @method
    * @memberof Methods/Taxes
-   * @summary updates the taxcode on all options of a product.
+   * @summary updates the tax code on all options of a product.
    * @param  {String} products array of products to be updated.
    * @return {Number} returns number of options updated
    */
@@ -140,7 +152,7 @@ export const methods = {
     // check permissions to create product
     // to check if user can update the product
     if (!Reaction.hasPermission("createProduct")) {
-      throw new Meteor.Error("access-denied", "Access Denied");
+      throw new ReactionError("access-denied", "Access Denied");
     }
 
     // number of options that get updated.

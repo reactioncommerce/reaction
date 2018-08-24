@@ -14,7 +14,12 @@ class ProductGridItem extends Component {
       isLowQuantity: PropTypes.bool,
       isSoldOut: PropTypes.bool,
       media: PropTypes.arrayOf(PropTypes.object),
-      pricing: PropTypes.object,
+      pricing: PropTypes.arrayOf(PropTypes.shape({
+        currency: PropTypes.shape({
+          code: PropTypes.string
+        }),
+        displayPrice: PropTypes.string
+      })),
       primaryImage: PropTypes.object,
       slug: PropTypes.string,
       title: PropTypes.string
@@ -122,7 +127,7 @@ class ProductGridItem extends Component {
 
     // if product is not medium weight
     // or the media array is empty exit
-    if (weight !== 1 || (!media || media.length === 0)) return;
+    if (weight !== 1 || (!media || media.length === 0)) return null;
 
     // creating an additional madia array with
     // the 2nd, 3rd and 4th images returned
@@ -144,7 +149,7 @@ class ProductGridItem extends Component {
 
   renderGridContent() {
     const { product, shopCurrencyCode } = this.props;
-
+    const pricing = product.pricing.find((price) => price.currency.code === shopCurrencyCode);
     return (
       <div className="grid-content">
         <a
@@ -157,7 +162,7 @@ class ProductGridItem extends Component {
         >
           <div className="overlay">
             <div className="overlay-title">{product.title}</div>
-            <div className="currency-symbol">{product.pricing[shopCurrencyCode].displayPrice}</div>
+            <div className="currency-symbol">{pricing.displayPrice}</div>
           </div>
         </a>
       </div>

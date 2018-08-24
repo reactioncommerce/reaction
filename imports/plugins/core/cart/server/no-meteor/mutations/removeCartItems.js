@@ -1,6 +1,5 @@
-import Hooks from "@reactioncommerce/hooks";
 import SimpleSchema from "simpl-schema";
-import { Meteor } from "meteor/meteor";
+import ReactionError from "@reactioncommerce/reaction-error";
 import hashLoginToken from "/imports/plugins/core/accounts/server/no-meteor/util/hashLoginToken";
 
 const inputSchema = new SimpleSchema({
@@ -29,7 +28,7 @@ const inputSchema = new SimpleSchema({
 export default async function removeCartItems(context, input) {
   inputSchema.validate(input || {});
 
-  const { accountId, collections } = context;
+  const { accountId, appEvents, collections } = context;
   const { Cart } = collections;
   const { cartId, cartItemIds, token } = input;
 
@@ -39,7 +38,7 @@ export default async function removeCartItems(context, input) {
   } else if (accountId) {
     selector.accountId = accountId;
   } else {
-    throw new Meteor.Error("invalid-param", "A token is required when updating an anonymous cart");
+    throw new ReactionError("invalid-param", "A token is required when updating an anonymous cart");
   }
 
   const { modifiedCount } = await Cart.updateOne(selector, {
@@ -49,13 +48,12 @@ export default async function removeCartItems(context, input) {
       }
     }
   });
-  if (modifiedCount === 0) throw new Meteor.Error("not-found", "Cart not found or provided items are not in the cart");
+  if (modifiedCount === 0) throw new ReactionError("not-found", "Cart not found or provided items are not in the cart");
 
   const cart = await Cart.findOne(selector);
-  if (!cart) throw new Meteor.Error("not-found", "Cart not found");
+  if (!cart) throw new ReactionError("not-found", "Cart not found");
 
-  Hooks.Events.run("afterCartUpdate", cart._id);
-  Hooks.Events.run("afterCartUpdateCalculateDiscount", cart._id);
+  await appEvents.emit("afterCartUpdate", cart._id, cart);
 
   return { cart };
 }

@@ -1,6 +1,7 @@
 import { Meteor } from "meteor/meteor";
 import { check } from "meteor/check";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
+import ReactionError from "@reactioncommerce/reaction-error";
 
 /**
  * @name orders/processPayment
@@ -16,7 +17,7 @@ export default function processPayment(order) {
   // REVIEW: Who should have access to process payment in marketplace?
   // Probably just the shop owner for now?
   if (!Reaction.hasPermission("orders")) {
-    throw new Meteor.Error("access-denied", "Access Denied");
+    throw new ReactionError("access-denied", "Access Denied");
   }
 
   this.unblock();
@@ -25,9 +26,9 @@ export default function processPayment(order) {
     if (result) {
       Meteor.call("workflow/pushOrderWorkflow", "coreOrderWorkflow", "coreProcessPayment", order._id);
 
-      const shippingRecord = order.shipping.find((shipping) => shipping.shopId === Reaction.getShopId());
+      const fulfillmentGroup = order.shipping.find((shipping) => shipping.shopId === Reaction.getShopId());
       // Set the status of the items as shipped
-      const itemIds = shippingRecord.items.map((item) => item._id);
+      const { itemIds } = fulfillmentGroup;
 
       Meteor.call("workflow/pushItemWorkflow", "coreOrderItemWorkflow/captured", order, itemIds);
 

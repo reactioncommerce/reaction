@@ -83,6 +83,9 @@ extend type Query {
   "Returns a shop by ID"
   shop(id: ID!): Shop
 
+  "Returns a shop by slug"
+  shopBySlug(slug: String!): Shop
+
   "Returns the ID of the primary shop for the domain"
   primaryShopId: ID
 }
