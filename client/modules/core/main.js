@@ -13,6 +13,7 @@ import { Countries } from "/client/collections";
 import { localeDep } from "/client/modules/i18n";
 import { Packages, Shops, Accounts } from "/lib/collections";
 import { Router } from "/client/modules/router";
+import { uiStore } from "/imports/plugins/core/ui/client/stores";
 import { DomainsMixin } from "./domains";
 
 /**
@@ -735,10 +736,10 @@ export default {
    * @method
    * @memberof Core/Client
    * @param {String} viewData {label, template, data}
-   * @returns {String} Session "admin/showActionView"
+   * @returns {Undefined}
    */
   showActionView(viewData) {
-    Session.set("admin/showActionView", true);
+    uiStore.showActionView();
     this.setActionView(viewData);
   },
 
@@ -748,7 +749,7 @@ export default {
    * @memberof Core/Client
    */
   isActionViewOpen() {
-    return Session.equals("admin/showActionView", true);
+    return uiStore.isActionViewOpen;
   },
 
   /**
@@ -757,7 +758,7 @@ export default {
    * @memberof Core/Client
    */
   isActionViewDetailOpen() {
-    return Session.equals("admin/showActionViewDetail", true);
+    return uiStore.isActionViewDetailOpen;
   },
 
   /**
@@ -796,7 +797,7 @@ export default {
    * @memberof Core/Client
    */
   pushActionView(viewData) {
-    Session.set("admin/showActionView", true);
+    uiStore.showActionView();
 
     const actionViewStack = Session.get("admin/actionView");
 
@@ -851,8 +852,18 @@ export default {
   setActionViewDetail(viewData, options = {}) {
     const { open } = options;
 
-    Session.set("admin/showActionView", true);
-    Session.set("admin/showActionViewDetail", typeof open === "boolean" ? open : true);
+    uiStore.showActionView();
+
+    if (typeof open === "boolean") {
+      if (open) {
+        uiStore.showActionViewDetail();
+      } else {
+        uiStore.hideActionViewDetail();
+      }
+    } else {
+      uiStore.showActionViewDetail();
+    }
+
     Session.set("admin/detailView", [viewData]);
   },
 
@@ -862,8 +873,8 @@ export default {
    * @memberof Core/Client
    */
   pushActionViewDetail(viewData) {
-    Session.set("admin/showActionView", true);
-    Session.set("admin/showActionViewDetail", true);
+    uiStore.showActionView();
+    uiStore.showActionViewDetail();
 
     const detailViewStack = Session.get("admin/detailView");
 
@@ -936,7 +947,7 @@ export default {
    * @memberof Core/Client
    */
   hideActionView() {
-    Session.set("admin/showActionView", false);
+    uiStore.hideActionView();
     this.clearActionView();
   },
 
@@ -946,7 +957,7 @@ export default {
    * @memberof Core/Client
    */
   hideActionViewDetail() {
-    Session.set("admin/showActionViewDetail", false);
+    uiStore.hideActionViewDetail();
     this.clearActionViewDetail();
   },
 

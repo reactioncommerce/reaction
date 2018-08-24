@@ -82,6 +82,8 @@
     "lodash.pick": "^4.4.0",
     "match-sorter": "^2.2.0",
     "meteor-node-stubs": "0.4.1",
+    "mobx": "5.0.4",
+    "mobx-react": "5.2.5",
     "moment": "^2.20.1",
     "moment-timezone": "^0.5.14",
     "mongodb": "^3.0.5",
