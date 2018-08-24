@@ -18,6 +18,15 @@ export default {
   variants: (node, args, context) => node.variants.map((variant) => {
     variant.media = variant.media.map((mediaItem) => xformProductMedia(mediaItem, context));
     variant.primaryImage = xformProductMedia(variant.primaryImage, context);
+
+    if (variant.options) {
+      variant.options = variant.options.map((option) => {
+        option.media = option.media.map((mediaItem) => xformProductMedia(mediaItem, context));
+        option.primaryImage = xformProductMedia(option.primaryImage, context);
+        return option;
+      });
+    }
+
     return variant;
   })
 };
