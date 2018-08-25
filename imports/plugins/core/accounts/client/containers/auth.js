@@ -167,14 +167,23 @@ class AuthContainer extends Component {
   renderAuthView() {
     if (this.props.currentView === "loginFormSignInView") {
       return (
-        <Components.SignIn
-          {...this.props}
-          onFormSubmit={this.handleFormSubmit(client)}
-          messages={this.state.formMessages}
-          onError={this.hasError}
-          loginFormMessages={this.formMessages}
-          isLoading={this.state.isLoading}
-        />
+        <ApolloConsumer>
+          {(client) => {
+            const getViewerQuery = client.query({
+              query: getViewer
+            });
+            return (
+              <Components.SignIn
+                {...this.props}
+                onFormSubmit={this.handleFormSubmit(getViewerQuery)}
+                messages={this.state.formMessages}
+                onError={this.hasError}
+                loginFormMessages={this.formMessages}
+                isLoading={this.state.isLoading}
+              />
+            );
+          }}
+        </ApolloConsumer>
       );
     } else if (this.props.currentView === "loginFormSignUpView") {
       return (
@@ -195,7 +204,6 @@ class AuthContainer extends Component {
               />
             );
           }}
-
         </ApolloConsumer>
       );
     }
