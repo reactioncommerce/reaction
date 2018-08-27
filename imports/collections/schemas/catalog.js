@@ -355,11 +355,11 @@ const CatalogVariantSchema = VariantBaseSchema.clone().extend({
  * @property {ImageInfo} primaryImage optional
  * @property {String} productId required
  * @property {String} productType optional
- * @property {Boolean} requiresShipping optional, default value: `true`, Require a shipping address
  * @property {String} shopId required
  * @property {String} sku optional
  * @property {String} slug optional
  * @property {SocialMetadata[]} socialMetadata optional
+ * @property {String[]} supportedFulfillmentTypes Types of fulfillment ("shipping", "pickup", etc) allowed for this product
  * @property {Array} tagIds optional
  * @property {String} taxCode optional, default value: `"0000"`
  * @property {String} taxDescription optional
@@ -513,11 +513,6 @@ export const CatalogProduct = new SimpleSchema({
     label: "Product type",
     optional: true
   },
-  "requiresShipping": {
-    type: Boolean,
-    label: "Require a shipping address",
-    defaultValue: true
-  },
   "shopId": {
     type: String,
     label: "Product ShopId",
@@ -541,6 +536,12 @@ export const CatalogProduct = new SimpleSchema({
   "socialMetadata.$": {
     type: SocialMetadata
   },
+  "supportedFulfillmentTypes": {
+    type: Array,
+    label: "Supported fulfillment types",
+    defaultValue: ["shipping"]
+  },
+  "supportedFulfillmentTypes.$": String,
   "tagIds": {
     type: Array,
     label: "Hashtags",

@@ -429,7 +429,6 @@ export const mockInternalCatalogProducts = [
       }
     },
     productType: "productType",
-    requiresShipping: true,
     shopId: internalShopId,
     sku: "ABC123",
     slug: "fake-product",
@@ -439,6 +438,7 @@ export const mockInternalCatalogProducts = [
       { service: "googleplus", message: "googlePlusMessage" },
       { service: "pinterest", message: "pinterestMessage" }
     ],
+    supportedFulfillmentTypes: ["shipping"],
     tagIds: internalTagIds,
     taxCode: "taxCode",
     taxDescription: "taxDescription",
@@ -528,7 +528,6 @@ export const mockInternalCatalogProducts = [
       }
     },
     productType: "productType",
-    requiresShipping: true,
     shopId: internalShopId,
     sku: "ABC123",
     slug: "another-fake-product",
@@ -538,6 +537,7 @@ export const mockInternalCatalogProducts = [
       { service: "googleplus", message: "googlePlusMessage" },
       { service: "pinterest", message: "pinterestMessage" }
     ],
+    supportedFulfillmentTypes: ["shipping"],
     tagIds: internalTagIds,
     taxCode: "taxCode",
     taxDescription: "taxDescription",
@@ -638,7 +638,6 @@ export const mockExternalCatalogProducts = [
         }
       },
       productType: "productType",
-      requiresShipping: true,
       shop: {
         _id: opaqueShopId
       },
@@ -650,6 +649,7 @@ export const mockExternalCatalogProducts = [
         { service: "googleplus", message: "googlePlusMessage" },
         { service: "pinterest", message: "pinterestMessage" }
       ],
+      supportedFulfillmentTypes: ["shipping"],
       tagIds: opaqueTagIds,
       tags: {
         nodes: [{ _id: opaqueTagIds[0] }, { _id: opaqueTagIds[1] }]
@@ -747,7 +747,6 @@ export const mockExternalCatalogProducts = [
         }
       },
       productType: "productType",
-      requiresShipping: true,
       shop: {
         _id: opaqueShopId
       },
@@ -759,6 +758,7 @@ export const mockExternalCatalogProducts = [
         { service: "googleplus", message: "googlePlusMessage" },
         { service: "pinterest", message: "pinterestMessage" }
       ],
+      supportedFulfillmentTypes: ["shipping"],
       tagIds: opaqueTagIds,
       tags: {
         nodes: [{ _id: opaqueTagIds[0] }, { _id: opaqueTagIds[1] }]

@@ -11,7 +11,7 @@ import selectFulfillmentOptionForGroup from "/imports/plugins/core/shipping/serv
  * @method cart/setShipmentMethod
  * @memberof Cart/Methods
  * @summary Saves method as order default
- * @param {String} cartId - cartId to apply shipmentMethod
+ * @param {String} cartId - cartId to apply shipment method
  * @param {String} [cartToken] - Token for cart, if it's anonymous
  * @param {String} methodId - The selected method ID
  * @return {undefined}

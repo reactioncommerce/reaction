@@ -307,6 +307,24 @@ input ReconcileCartsInput {
   shopId: ID!
 }
 
+"Input for the `setEmailOnAnonymousCart` mutation call"
+input SetEmailOnAnonymousCartInput {
+  "An anonymous cart ID"
+  cartId: ID!
+
+  "An optional string identifying the mutation call, which will be returned in the response payload"
+  clientMutationId: String
+
+  """
+  The email address to associate with this cart. This address is used for order communication and
+  other fulfillment purposes.
+  """
+  email: String!
+
+  "Provide the `token` that was returned in the `CreateCartPayload`"
+  token: String!
+}
+
 ####################
 # Payloads
 # These types are used as return values for mutation calls
@@ -415,7 +433,7 @@ type RemoveCartItemsPayload {
   clientMutationId: String
 }
 
-"The payload returned from the `updateCartItems` mutation call"
+"The payload returned from the `updateCartItemsQuantity` mutation call"
 type UpdateCartItemsQuantityPayload {
   "The modified cart"
   cart: Cart!
@@ -433,23 +451,35 @@ type ReconcileCartsPayload {
   clientMutationId: String
 }
 
+"The payload returned from the `setEmailOnAnonymousCart` mutation call"
+type SetEmailOnAnonymousCartPayload {
+  "The modified cart"
+  cart: Cart!
+
+  "The same string you sent with the mutation params, for matching mutation calls with their responses"
+  clientMutationId: String
+}
+
 ####################
 # Mutations
 ####################
 
 extend type Mutation {
-  "Create a new cart."
-  createCart(input: CreateCartInput!): CreateCartPayload!
-
-  "Add item(s) to a cart."
+  "Add item(s) to a cart"
   addCartItems(input: AddCartItemsInput!): AddCartItemsPayload!
 
-  "Remove item(s) from a cart."
-  removeCartItems(input: RemoveCartItemsInput!): RemoveCartItemsPayload!
-
-  "Update cart item(s) quantity. Use absolute quantity. If updating to 0, the item will be removed."
-  updateCartItemsQuantity(input: UpdateCartItemsQuantityInput!): UpdateCartItemsQuantityPayload!
+  "Create a new cart"
+  createCart(input: CreateCartInput!): CreateCartPayload!
 
   "Reconcile an anonymous cart with the current account cart for the same shop"
   reconcileCarts(input: ReconcileCartsInput!): ReconcileCartsPayload!
+
+  "Remove item(s) from a cart"
+  removeCartItems(input: RemoveCartItemsInput!): RemoveCartItemsPayload!
+
+  "Set the email address for an anonymous cart"
+  setEmailOnAnonymousCart(input: SetEmailOnAnonymousCartInput!): SetEmailOnAnonymousCartPayload!
+
+  "Update cart item(s) quantity. Use absolute quantity. If updating to 0, the item will be removed."
+  updateCartItemsQuantity(input: UpdateCartItemsQuantityInput!): UpdateCartItemsQuantityPayload!
 }
