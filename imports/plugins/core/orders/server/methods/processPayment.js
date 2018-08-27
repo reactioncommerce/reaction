@@ -26,9 +26,9 @@ export default function processPayment(order) {
     if (result) {
       Meteor.call("workflow/pushOrderWorkflow", "coreOrderWorkflow", "coreProcessPayment", order._id);
 
-      const shippingRecord = order.shipping.find((shipping) => shipping.shopId === Reaction.getShopId());
+      const fulfillmentGroup = order.shipping.find((shipping) => shipping.shopId === Reaction.getShopId());
       // Set the status of the items as shipped
-      const itemIds = shippingRecord.items.map((item) => item._id);
+      const { itemIds } = fulfillmentGroup;
 
       Meteor.call("workflow/pushItemWorkflow", "coreOrderItemWorkflow/captured", order, itemIds);
 

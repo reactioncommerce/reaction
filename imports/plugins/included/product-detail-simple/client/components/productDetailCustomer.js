@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import PropTypes from "prop-types";
 import { Components } from "@reactioncommerce/reaction-components";
 import { ReactionLayout } from "/imports/plugins/core/layout/lib";
 
@@ -20,5 +21,9 @@ class ProductDetailCustomer extends Component {
     );
   }
 }
+
+ProductDetailCustomer.propTypes = {
+  layout: PropTypes.string
+};
 
 export default ProductDetailCustomer;

@@ -19,7 +19,7 @@ export default (Component) => (
         );
       }
 
-      const variables = { id: shopId };
+      const variables = { shopId };
 
       return (
         <Query query={getShop} variables={variables}>

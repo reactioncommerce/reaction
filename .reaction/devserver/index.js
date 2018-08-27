@@ -1,5 +1,6 @@
 import express from "express";
 import mongodb, { MongoClient } from "mongodb";
+import appEvents from "../../imports/plugins/core/core/server/appEvents";
 import createApolloServer from "../../imports/plugins/core/graphql/server/no-meteor/createApolloServer";
 import defineCollections from "../../imports/collections/defineCollections";
 import setUpFileCollections from "../../imports/plugins/core/files/server/no-meteor/setUpFileCollections";
@@ -48,7 +49,7 @@ MongoClient.connect(dbUrl, (error, client) => {
         return null;
       };
     },
-    context: { collections },
+    context: { appEvents, collections },
     debug: true,
     graphiql: true
   });

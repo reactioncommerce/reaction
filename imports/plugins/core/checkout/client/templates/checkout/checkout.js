@@ -1,3 +1,4 @@
+import _ from "lodash";
 import { Meteor } from "meteor/meteor";
 import { Template } from "meteor/templating";
 import { Reaction } from "/client/api";
@@ -23,11 +24,24 @@ Template.cartCheckout.helpers({
 
 
 Template.cartCheckout.onCreated(function onCreated() {
+  let previousCartShipping;
   this.autorun(() => {
-    const { cart } = getCart();
+    const { cart, token } = getCart();
     if (cart && cart.workflow && cart.workflow.status === "new") {
       // if user logged in as normal user, we must pass it through the first stage
       Meteor.call("workflow/pushCartWorkflow", "coreCartWorkflow", "checkoutLogin", cart._id);
+    }
+
+    if (cart) {
+      const partialShipping = (cart.shipping || [])
+        .filter((group) => group.type === "shipping")
+        .map(({ _id, address, itemIds, shopId, type }) => ({ _id, address, itemIds, shopId, type }));
+      if (!_.isEqual(previousCartShipping, partialShipping)) {
+        previousCartShipping = partialShipping;
+        partialShipping.forEach(({ _id }) => {
+          Meteor.call("shipping/updateShipmentQuotes", cart._id, _id, token);
+        });
+      }
     }
   });
 });

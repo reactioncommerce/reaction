@@ -1,4 +1,5 @@
 import FulfillmentMethod from "./FulfillmentMethod";
+import Mutation from "./Mutation";
 
 /**
  * Fulfillment related GraphQL resolvers
@@ -6,5 +7,6 @@ import FulfillmentMethod from "./FulfillmentMethod";
  */
 
 export default {
-  FulfillmentMethod
+  FulfillmentMethod,
+  Mutation
 };

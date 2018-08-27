@@ -15,17 +15,17 @@ export default function twoColumnCustomer() {
       children: [
         // Media Gallery
         {
-          component: "MediaGalleryContainer"
+          component: "MediaGalleryCustomer"
         },
 
         // Tags
         {
-          component: "ProductTags"
+          component: "ProductTagsCustomer"
         },
 
         // Metadata
         {
-          component: "ProductMetadata"
+          component: "ProductMetadataCustomer"
         }
       ]
     },
@@ -61,7 +61,7 @@ export default function twoColumnCustomer() {
           children: [
             // Title
             {
-              component: "ProductField",
+              component: "ProductFieldCustomer",
               // Example, you can set permissions components that are children of a block
               permissions: ["admin"],
               audience: ["guest", "anonymous"],
@@ -78,7 +78,7 @@ export default function twoColumnCustomer() {
 
             // PageTitle
             {
-              component: "ProductField",
+              component: "ProductFieldCustomer",
               permissions: ["admin"],
               audience: ["guest", "anonymous"],
               props: {
@@ -116,7 +116,7 @@ export default function twoColumnCustomer() {
               },
               children: [
                 {
-                  component: "PriceRange"
+                  component: "PriceRangeCustomer"
                 }
               ]
             },
@@ -139,7 +139,7 @@ export default function twoColumnCustomer() {
 
         // Vendor
         {
-          component: "ProductField",
+          component: "ProductFieldCustomer",
           props: {
             fieldName: "vendor",
             fieldTitle: "Vendor",
@@ -150,7 +150,7 @@ export default function twoColumnCustomer() {
           }
         },
         {
-          component: "ProductField",
+          component: "ProductFieldCustomer",
           props: {
             fieldName: "description",
             fieldTitle: "Description",
@@ -164,7 +164,7 @@ export default function twoColumnCustomer() {
 
         // Variant List
         {
-          component: "VariantListContainer"
+          component: "VariantListCustomer"
         },
 
         // Divider
@@ -182,7 +182,7 @@ export default function twoColumnCustomer() {
 
         // Add to cart button
         {
-          component: "AddToCartButton",
+          component: "AddToCartButtonCustomer",
           props: {
             style: {
               paddingTop: 20

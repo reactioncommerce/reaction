@@ -6,6 +6,7 @@ import reconcileCartsKeepAccountCart from "./reconcileCartsKeepAccountCart";
 import reconcileCartsKeepAnonymousCart from "./reconcileCartsKeepAnonymousCart";
 import reconcileCartsMerge from "./reconcileCartsMerge";
 import removeCartItems from "./removeCartItems";
+import setShippingAddressOnCart from "./setShippingAddressOnCart";
 import updateCartItemsQuantity from "./updateCartItemsQuantity";
 
 export default {
@@ -17,5 +18,6 @@ export default {
   reconcileCartsKeepAnonymousCart,
   reconcileCartsMerge,
   removeCartItems,
+  setShippingAddressOnCart,
   updateCartItemsQuantity
 };

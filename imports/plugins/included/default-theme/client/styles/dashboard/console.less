@@ -63,7 +63,9 @@ html:not(.rtl) .rui.admin.action-view {
   flex: 0 0 auto;
   flex-direction: column;
   align-items: center;
-  // justify-content: center;
+  // Disable horizontal scrollbar, and vertical unless needed
+  overflow-x: hidden;
+  overflow-y: auto;
 
   min-width: @admin-controls-menu-width;
   width: @admin-controls-menu-width;
@@ -76,6 +78,30 @@ html:not(.rtl) .rui.admin.action-view {
     order: 2;
     min-width: 100%;
     border-top: 1px solid @border-color;
+  }
+}
+
+// Admin action pane slide in/out animation
+.admin.rui.action-view-pane {
+  &.slide-in-out-enter,
+  &.slide-in-out-leave-active {
+    transform: translateX(100%);
+  }
+  &.slide-in-out-rtl-enter,
+  &.slide-in-out-rtl-leave-active {
+    transform: translateX(-100%);
+  }
+
+  &.slide-in-out-enter-active,
+  &.slide-in-out-rtl-enter-active,
+  &.slide-in-out-leave-active,
+  &.slide-in-out-rtl-leave-active {
+    transition: transform 200ms ease-in-out;
+  }
+
+  &.slide-in-out-enter-active,
+  &.slide-in-out-rtl-enter-active {
+    transform: translateX(0%);
   }
 }
 

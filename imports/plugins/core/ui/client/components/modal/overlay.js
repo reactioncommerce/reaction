@@ -1,9 +1,9 @@
 import React, { Component } from "react";
+import { compose } from "recompose";
 import PropTypes from "prop-types";
-import { VelocityTransitionGroup } from "velocity-react";
 import Radium from "radium";
 import classnames from "classnames";
-import { registerComponent } from "@reactioncommerce/reaction-components";
+import { registerComponent, withCSSTransitionGroup } from "@reactioncommerce/reaction-components";
 
 const styles = {
   base: {
@@ -24,6 +24,7 @@ class Overlay extends Component {
   };
 
   static propTypes = {
+    CSSTransitionGroup: PropTypes.func,
     children: PropTypes.node,
     isVisible: PropTypes.bool,
     onClick: PropTypes.func
@@ -43,7 +44,8 @@ class Overlay extends Component {
   renderOverlay() {
     if (this.props.isVisible) {
       const baseClassName = classnames({
-        rui: true
+        rui: true,
+        overlay: true
       });
 
       return (
@@ -52,6 +54,7 @@ class Overlay extends Component {
           className={baseClassName}
           style={styles.base}
           onClick={this.props.onClick}
+          key="overlay"
         />
       );
     }
@@ -60,17 +63,29 @@ class Overlay extends Component {
   }
 
   render() {
+    const { CSSTransitionGroup } = this.props;
+    if (CSSTransitionGroup === undefined) {
+      return null;
+    }
+
     return (
-      <VelocityTransitionGroup
-        enter={this.state.enterAnimation}
-        leave={this.state.leaveAnimation}
+      <CSSTransitionGroup
+        transitionName="fade-in-out"
+        transitionEnterTimeout={200}
+        transitionLeaveTimeout={200}
       >
         {this.renderOverlay()}
-      </VelocityTransitionGroup>
+      </CSSTransitionGroup>
     );
   }
 }
 
-registerComponent("Overlay", Overlay, Radium);
+registerComponent("Overlay", Overlay, [
+  withCSSTransitionGroup,
+  Radium
+]);
 
-export default Radium(Overlay);
+export default compose(
+  withCSSTransitionGroup,
+  Radium
+)(Overlay);

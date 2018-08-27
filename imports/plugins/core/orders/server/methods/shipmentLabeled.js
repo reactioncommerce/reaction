@@ -10,26 +10,26 @@ import ReactionError from "@reactioncommerce/reaction-error";
  * @memberof Orders/Methods
  * @summary update labeling status
  * @param {Object} order - order object
- * @param {Object} shipment - shipment object
+ * @param {Object} fulfillmentGroup - fulfillmentGroup object
  * @return {Object} return workflow result
  */
-export default function shipmentLabeled(order, shipment) {
+export default function shipmentLabeled(order, fulfillmentGroup) {
   check(order, Object);
-  check(shipment, Object);
+  check(fulfillmentGroup, Object);
 
   if (!Reaction.hasPermission("orders")) {
     throw new ReactionError("access-denied", "Access Denied");
   }
 
   // Set the status of the items as labeled
-  const itemIds = shipment.items.map((item) => item._id);
+  const { itemIds } = fulfillmentGroup;
 
   const result = Meteor.call("workflow/pushItemWorkflow", "coreOrderItemWorkflow/labeled", order, itemIds);
   if (result === 1) {
     return Orders.update(
       {
         "_id": order._id,
-        "shipping._id": shipment._id
+        "shipping._id": fulfillmentGroup._id
       },
       {
         $set: {

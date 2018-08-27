@@ -13,6 +13,11 @@ Template.coreOrderShippingTracking.onCreated(() => {
   template.orderDep = new Tracker.Dependency();
   template.showTrackingEditForm = ReactiveVar(false);
 
+  /**
+   * @param {String} orderId Order ID
+   * @param {String} shipmentId Shipment ID
+   * @returns {Object} The order document
+   */
   function getOrder(orderId, shipmentId) {
     template.orderDep.depend();
     return Orders.findOne({
@@ -118,61 +123,53 @@ Template.coreOrderShippingTracking.helpers({
     return false;
   },
   isShipped() {
-    const currentData = Template.currentData();
+    const { fulfillment } = Template.currentData();
     const { order } = Template.instance();
 
-    const shippedItems = currentData.fulfillment && currentData.fulfillment.items.every((shipmentItem) => {
-      const fullItem = order.items.find((orderItem) => {
-        if (orderItem._id === shipmentItem._id) {
-          return true;
-        }
-        return false;
-      });
+    if (!fulfillment) return false;
 
-      return !fullItem.workflow.workflow.includes("coreOrderItemWorkflow/shipped");
+    return order.items.every((item) => {
+      if (fulfillment.itemIds.indexOf(item._id) === -1) {
+        // The item is not in this shipment so we don't care
+        return true;
+      }
+
+      return item.workflow && Array.isArray(item.workflow.workflow) &&
+        item.workflow.workflow.indexOf("coreOrderItemWorkflow/shipped") > -1;
     });
-
-    return shippedItems;
   },
 
   isNotCanceled() {
-    const currentData = Template.currentData();
+    const { fulfillment } = Template.currentData();
     const { order } = Template.instance();
 
-    const canceledItems = currentData.fulfillment && currentData.fulfillment.items.every((shipmentItem) => {
-      const fullItem = order.items.find((orderItem) => {
-        if (orderItem._id === shipmentItem._id) {
-          return true;
-        }
-        return false;
-      });
+    if (!fulfillment) return false;
 
-      return fullItem.workflow.status !== "coreOrderItemWorkflow/canceled";
+    return order.items.every((item) => {
+      if (fulfillment.itemIds.indexOf(item._id) === -1) {
+        // The item is not in this shipment so we don't care
+        return true;
+      }
+
+      return !item.workflow || item.workflow.status !== "coreOrderItemWorkflow/canceled";
     });
-
-    return canceledItems;
   },
 
   isCompleted() {
-    const currentData = Template.currentData();
+    const { fulfillment } = Template.currentData();
     const { order } = Template.instance();
 
-    const completedItems = currentData.fulfillment && currentData.fulfillment.items.every((shipmentItem) => {
-      const fullItem = order.items.find((orderItem) => {
-        if (orderItem._id === shipmentItem._id) {
-          return true;
-        }
-        return false;
-      });
+    if (!fulfillment) return false;
 
-      if (Array.isArray(fullItem.workflow.workflow)) {
-        return fullItem.workflow.workflow.includes("coreOrderItemWorkflow/completed");
+    return order.items.every((item) => {
+      if (fulfillment.itemIds.indexOf(item._id) === -1) {
+        // The item is not in this shipment so we don't care
+        return true;
       }
 
-      return false;
+      return item.workflow && Array.isArray(item.workflow.workflow) &&
+        item.workflow.workflow.indexOf("coreOrderItemWorkflow/completed") > -1;
     });
-
-    return completedItems;
   },
 
   editTracking() {

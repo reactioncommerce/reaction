@@ -70,6 +70,8 @@ export default gql`
           title
           optionTitle
           index
+          isLowQuantity
+          isSoldOut
           pricing {
             price
             currency {

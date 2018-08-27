@@ -24,11 +24,11 @@ export default function shipmentDelivered(order) {
 
   this.unblock();
 
-  const shipment = order.shipping.find((shipping) => shipping.shopId === Reaction.getShopId());
+  const fulfillmentGroup = order.shipping.find((shipping) => shipping.shopId === Reaction.getShopId());
 
   sendOrderEmail(order);
 
-  const itemIds = shipment.items.map((item) => item._id);
+  const { itemIds } = fulfillmentGroup;
 
   Meteor.call("workflow/pushItemWorkflow", "coreOrderItemWorkflow/delivered", order, itemIds);
   Meteor.call("workflow/pushItemWorkflow", "coreOrderItemWorkflow/completed", order, itemIds);
@@ -38,7 +38,7 @@ export default function shipmentDelivered(order) {
   Orders.update(
     {
       "_id": order._id,
-      "shipping._id": shipment._id
+      "shipping._id": fulfillmentGroup._id
     },
     {
       $set: {

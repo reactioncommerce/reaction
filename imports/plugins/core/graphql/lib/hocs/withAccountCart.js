@@ -25,6 +25,7 @@ export default (Component) => (
               ...this.props,
               isLoadingAccountCart: loading
             };
+
             if (loading === false) {
               const { cart } = data;
               const { items: cartItems, _id } = cart || {};

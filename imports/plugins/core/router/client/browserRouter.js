@@ -155,6 +155,7 @@ export function getRootNode() {
  * @summary Renders app inside of Apollo and React Router HOCs
  * @returns {undefined}
  */
+
 export function initBrowserRouter() {
   const apolloClient = initApollo();
 

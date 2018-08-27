@@ -1,10 +1,10 @@
-import Hooks from "@reactioncommerce/hooks";
 import Random from "@reactioncommerce/random";
 import { Meteor } from "meteor/meteor";
 import { Match, check } from "meteor/check";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
 import ReactionError from "@reactioncommerce/reaction-error";
 import { Cart } from "/lib/collections";
+import appEvents from "/imports/plugins/core/core/server/appEvents";
 import { Discounts } from "/imports/plugins/core/discounts/lib/collections";
 import { DiscountCodes as DiscountSchema } from "../../lib/collections/schemas";
 
@@ -194,7 +194,7 @@ export const methods = {
       Collection.update(selector, update);
     }
     // TODO: update a history record of transaction
-    // The Payment schema's currency defaultValue is adding {} to the $pull condition.
+    // The Payment schema currency defaultValue is adding {} to the $pull condition.
     // If this issue is eventually fixed, autoValues can be re-enabled here
     // See https://github.com/aldeed/simple-schema-js/issues/272
     const result = Collection.update(
@@ -203,8 +203,10 @@ export const methods = {
       { multi: true, getAutoValues: false }
     );
 
-    // calculate discounts
-    Hooks.Events.run("afterCartUpdateCalculateDiscount", id);
+    if (collection === "Cart") {
+      const updatedCart = Collection.findOne({ _id: id });
+      Promise.await(appEvents.emit("afterCartUpdate", id, updatedCart));
+    }
 
     return result;
   },
@@ -267,9 +269,9 @@ export const methods = {
 
       // existing usage count
       if (discount.transactions) {
-        const users = Array.from(discount.transactions, (t) => t.userId);
-        const transactionCount = new Map([...new Set(users)].map((x) => [x, users.filter((y) => y === x).length]));
-        const orders = Array.from(discount.transactions, (t) => t.cartId);
+        const users = Array.from(discount.transactions, (trans) => trans.userId);
+        const transactionCount = new Map([...new Set(users)].map((userX) => [userX, users.filter((userY) => userY === userX).length]));
+        const orders = Array.from(discount.transactions, (trans) => trans.cartId);
         userCount = transactionCount.get(Meteor.userId());
         orderCount = orders.length;
       }

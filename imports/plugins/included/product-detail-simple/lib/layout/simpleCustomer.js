@@ -13,7 +13,7 @@ export default function simpleCustomer() {
       children: [
         // Title
         {
-          component: "ProductField",
+          component: "ProductFieldCustomer",
           // Example, you can set permissions components that are children of a block
           permissions: ["admin"],
           audience: ["guest", "anonymous"],
@@ -30,7 +30,7 @@ export default function simpleCustomer() {
 
         // PageTitle
         {
-          component: "ProductField",
+          component: "ProductFieldCustomer",
           permissions: ["admin"],
           audience: ["guest", "anonymous"],
           props: {
@@ -67,7 +67,7 @@ export default function simpleCustomer() {
       children: [
         // Media Gallery
         {
-          component: "MediaGalleryContainer"
+          component: "MediaGalleryCustomer"
         },
 
         // Tags
@@ -77,7 +77,7 @@ export default function simpleCustomer() {
 
         // Metadata
         {
-          component: "ProductMetadata"
+          component: "ProductMetadataCustomer"
         }
       ]
     },
@@ -117,7 +117,7 @@ export default function simpleCustomer() {
               },
               children: [
                 {
-                  component: "PriceRange"
+                  component: "PriceRangeCustomer"
                 }
               ]
             },
@@ -140,7 +140,7 @@ export default function simpleCustomer() {
 
         // Vendor
         {
-          component: "ProductField",
+          component: "ProductFieldCustomer",
           props: {
             fieldName: "vendor",
             fieldTitle: "Vendor",
@@ -151,7 +151,7 @@ export default function simpleCustomer() {
           }
         },
         {
-          component: "ProductField",
+          component: "ProductFieldCustomer",
           props: {
             fieldName: "description",
             fieldTitle: "Description",
@@ -165,7 +165,7 @@ export default function simpleCustomer() {
 
         // Variant List
         {
-          component: "VariantListContainer"
+          component: "VariantListCustomer"
         },
 
         // Divider
@@ -183,7 +183,7 @@ export default function simpleCustomer() {
 
         // Add to cart button
         {
-          component: "AddToCartButton",
+          component: "AddToCartButtonCustomer",
           props: {
             style: {
               paddingTop: 20

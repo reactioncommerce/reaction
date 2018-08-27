@@ -122,7 +122,6 @@ class MediaItem extends Component {
 
   getSource = (size) => {
     const { defaultSource, source } = this.props;
-
     return (source && source.url({ store: size })) || defaultSource;
   };
 

@@ -8,6 +8,7 @@ export default (Component) => (
     static propTypes = {
       shouldSkipGraphql: PropTypes.bool // Whether to skip this HOC's GraphQL query & data
     };
+
     render() {
       const { shouldSkipGraphql } = this.props;
       if (shouldSkipGraphql) {
@@ -33,6 +34,7 @@ export default (Component) => (
                 props.shouldSkipGraphql = true;
               }
             }
+
             return (
               <Component {...props} />
             );

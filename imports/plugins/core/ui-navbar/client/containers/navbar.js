@@ -18,6 +18,8 @@ NavBarContainer.propTypes = {
 function composer(props, onData) {
   const isAdmin = Reaction.hasAdminAccess();
 
+  const isAdmin = Reaction.hasAdminAccess();
+
   onData(null, {
     isAdmin
   });

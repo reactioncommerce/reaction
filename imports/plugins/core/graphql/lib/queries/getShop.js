@@ -1,8 +1,8 @@
 import gql from "graphql-tag";
 
 export default gql`
-  query getShop($id: ID!) {
-    shop(id: $id) {
+  query getShop($shopId: ID!) {
+    shop(id: $shopId) {
       _id,
       description,
       name,
