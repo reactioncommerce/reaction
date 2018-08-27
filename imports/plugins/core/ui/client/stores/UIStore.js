@@ -87,13 +87,7 @@ decorate(UIStore, {
   isActionViewDetailOpen: observable,
   actionViewStack: observable,
   actionDetailViewStack: observable,
-
-  /**
-   * Computed values
-   */
-  actionViews: computed,
-  actionDetailViews: computed,
-
+  
   /**
    * Actions
    */
