@@ -68,7 +68,7 @@ const wrapComponent = (Comp) => {
  */
 function composer(props, onData) {
   const cartAlertMessage = Session.get("cartAlertMessage");
-  const isCartAlertVisible = Session.get("isCartAlertVisible");
+  const isCartAlertVisible = Session.equals("isCartAlertVisible", true);
   const direction = i18next.dir();
 
   onData(null, {

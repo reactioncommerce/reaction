@@ -8,12 +8,12 @@ export default (Comp) => (
     render() {
       return (
         <Mutation mutation={changeCurrency} onError={() => undefined} onCompleted={this.props.refetchViewer}>
-          {(changeCurrency, { data, loading }) => (
+          {(changeCurrencyResult, { data, loading }) => (
             <Comp
               {...this.props}
               changeLanguageData={data}
               isLoadingChangeLanguage={loading}
-              changeCurrency={changeCurrency}
+              changeCurrency={changeCurrencyResult}
             />
           )}
         </Mutation>

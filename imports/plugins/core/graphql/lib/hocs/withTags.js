@@ -32,7 +32,7 @@ export default (Component) => (
 
       return (
         <Query query={getTags} variables={variables}>
-          {({ loading, data, error, fetchMore }) => {
+          {({ loading, data, fetchMore }) => {
             const props = {
               ...this.props,
               isLoading: loading

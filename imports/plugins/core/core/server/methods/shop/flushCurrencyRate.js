@@ -30,7 +30,7 @@ export default function flushCurrencyRate() {
       currencies: 1
     }
   });
-  const { updatedAt } = shop.currencies;
+  const updatedAt = shop.currenciesUpdatedAt;
 
   // if updatedAt is not a Date(), then there is no rates yet
   if (typeof updatedAt !== "object") {

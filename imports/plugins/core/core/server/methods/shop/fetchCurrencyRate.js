@@ -84,7 +84,7 @@ export default function fetchCurrencyRate() {
       if (exchangeRates[currencyKey] !== undefined) {
         const rateUpdate = {
           // this needed for shop/flushCurrencyRates Method
-          "currencies.updatedAt": new Date(rateResults.data.timestamp * 1000)
+          currenciesUpdatedAt: new Date(rateResults.data.timestamp * 1000)
         };
         const collectionKey = `currencies.${currencyKey}.rate`;
         rateUpdate[collectionKey] = exchangeRates[currencyKey];

@@ -24,7 +24,7 @@ export default (Component) => (
               isLoadingViewer: loading,
               refetchViewer: refetch
             };
-            if (loading === false) {
+            if (loading === false && data) {
               const { viewer } = data;
               if (viewer) {
                 props.viewer = viewer;

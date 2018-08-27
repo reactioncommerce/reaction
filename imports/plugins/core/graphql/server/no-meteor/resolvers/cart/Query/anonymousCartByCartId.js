@@ -1,5 +1,4 @@
 import { decodeCartOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/cart";
-import { encodeCartOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/cart";
 
 /**
  * @name Query.anonymousCartByCartId
@@ -15,8 +14,6 @@ import { encodeCartOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/ca
  */
 export default async function anonymousCartByCartId(parentResult, args, context) {
   let { cartId, token } = args;
-  // console.log(encodeCartOpaqueId(cartId));
-  // cartId = encodeCartOpaqueId(cartaId);
 
   return context.queries.cart.anonymousCartByCartId(context, {
     cartId: decodeCartOpaqueId(cartId),

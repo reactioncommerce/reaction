@@ -112,7 +112,7 @@ class NavBarCustomer extends Component {
           <Components.CartIconCustomer />
         </div>
         <div className="cart-alert">
-          <Components.CartPanel />
+          <Components.CartPanelCustomer />
         </div>
       </div>
     );

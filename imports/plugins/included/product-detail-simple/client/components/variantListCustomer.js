@@ -46,6 +46,7 @@ class VariantListCustomer extends Component {
           "variant-button": true,
           "variant-detail-selected": option._id === selectedOptionId
         });
+        const src = (option.media && option.media.length > 0) ? option.media[0].URLs.large : undefined;
 
         return (
           <div className="variant-select-option" key={index}>
@@ -57,7 +58,7 @@ class VariantListCustomer extends Component {
               <img
                 alt=""
                 className="img-responsive"
-                src={option.media[0].URLs.large}
+                src={src}
               />
               <span className="title">{option.optionTitle}</span>
             </button>

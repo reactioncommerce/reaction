@@ -107,14 +107,11 @@ class NavBarAdmin extends Component {
   }
 
   renderCartPanel() {
-    if (this.props.isAdmin) {
-      return (
-        <div className="cart-alert">
-          <Components.CartPanel />
-        </div>
-      );
-    }
-    return <Components.CartPanelCustomer />;
+    return (
+      <div className="cart-alert">
+        <Components.CartPanel />
+      </div>
+    );
   }
 
   renderCartContainerAndPanel() {
