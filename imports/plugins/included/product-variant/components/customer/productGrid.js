@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Components } from "@reactioncommerce/reaction-components";
+import CatalogGrid from "@reactioncommerce/components/CatalogGrid/v1";
 import { ReactionProduct } from "/lib/api";
 
 class ProductGrid extends Component {
@@ -63,19 +64,14 @@ class ProductGrid extends Component {
   // render the product grid
   renderProductGrid() {
     const { products, shopCurrencyCode } = this.props;
-    const currentTagId = ReactionProduct.getTagIdForPosition();
 
     return (
       <div className="product-grid">
         <ul className="product-grid-list list-unstyled" id="product-grid-list">
-          {products.map((product) => (
-            <Components.ProductGridItemCustomer
-              shopCurrencyCode={shopCurrencyCode}
-              product={product}
-              position={(product.positions && product.positions[currentTagId]) || {}}
-              key={product._id}
-            />
-          ))}
+          <CatalogGrid
+            currencyCode={shopCurrencyCode}
+            products={products}
+          />
         </ul>
       </div>
     );
@@ -83,7 +79,7 @@ class ProductGrid extends Component {
 
   render() {
     return (
-      <div className="container-main">
+      <div className="container-grid">
         {this.renderProductGrid()}
         {this.renderLoadingSpinner()}
         {this.renderNotFound()}
