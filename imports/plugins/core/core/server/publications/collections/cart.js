@@ -2,13 +2,14 @@ import { Meteor } from "meteor/meteor";
 import { check, Match } from "meteor/check";
 import { Accounts, Cart, MediaRecords } from "/lib/collections";
 import hashLoginToken from "/imports/plugins/core/accounts/server/no-meteor/util/hashLoginToken";
+import Reaction from "/imports/plugins/core/core/server/Reaction";
 
 Meteor.publish("Cart", function (accountId, anonymousCarts, shopId) {
   check(accountId, Match.Maybe(String));
   check(anonymousCarts, Match.Maybe([Object]));
   check(shopId, Match.Maybe(String));
 
-  const userId = Meteor.userId();
+  const userId = Reaction.getUserId();
   let account;
   if (userId) {
     account = Accounts.findOne({ userId }, { fields: { _id: 1 } });

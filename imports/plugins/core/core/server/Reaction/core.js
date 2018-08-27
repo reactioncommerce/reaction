@@ -15,6 +15,7 @@ import processJobs from "./processJobs";
 import sendVerificationEmail from "./sendVerificationEmail";
 import { registerTemplate } from "./templates";
 import { AbsoluteUrlMixin } from "./absoluteUrl";
+import { getUserId } from "./accountUtils";
 
 /**
  * @file Server core methods
@@ -99,7 +100,7 @@ export default {
     const groupPermissions = group.permissions;
 
     // granting invitation right for user with `owner` role in a shop
-    if (this.hasPermission(["owner"], Meteor.userId(), group.shopId)) {
+    if (this.hasPermission(["owner"], getUserId(), group.shopId)) {
       return true;
     }
 
@@ -123,11 +124,11 @@ export default {
    * @memberof Core
    * @summary server permissions checks hasPermission exists on both the server and the client.
    * @param {String | Array} checkPermissions -String or Array of permissions if empty, defaults to "admin, owner"
-   * @param {String} userId - userId, defaults to Meteor.userId()
+   * @param {String} userId - userId, defaults to logged in userId
    * @param {String} checkGroup group - default to shopId
    * @return {Boolean} Boolean - true if has permission
    */
-  hasPermission(checkPermissions, userId = Meteor.userId(), checkGroup = this.getShopId()) {
+  hasPermission(checkPermissions, userId = getUserId(), checkGroup = this.getShopId()) {
     // check(checkPermissions, Match.OneOf(String, Array)); check(userId, String); check(checkGroup,
     // Match.Optional(String));
     let permissions;
@@ -192,11 +193,11 @@ export default {
    * @method
    * @memberof Core
    * @param  {array} roles an array of roles to check. Will return a shopId if the user has _any_ of the roles
-   * @param  {string} [userId=Meteor.userId()] Optional userId, defaults to Meteor.userId()
+   * @param  {string} userId Optional userId, defaults to logged in userId
    *                                           Must pass this.userId from publications to avoid error!
    * @return {array} Array of shopIds that the user has at least one of the given set of roles for
    */
-  getShopsWithRoles(roles, userId = Meteor.userId()) {
+  getShopsWithRoles(roles, userId = getUserId()) {
     // Owner permission for a shop superceeds grantable permissions, so we always check for owner permissions as well
     roles.push("owner");
 
@@ -373,9 +374,9 @@ export default {
 
     try {
       // otherwise, find the shop by user settings
-      shopId = this.getUserShopId(Meteor.userId());
+      shopId = this.getUserShopId(getUserId());
     } catch (_e) {
-      // `Meteor.userId` will raise an error when invoked outside of a method
+      // an error when invoked outside of a method
       // call or publication, i.e., at startup. That's ok here.
     }
 
@@ -448,7 +449,7 @@ export default {
    * @memberof Core
    * @summary Get a user's shop ID, as stored in preferences
    * @todo This should intelligently find the correct default shop Probably whatever the main shop is or marketplace
-   * @param {String} userId (probably Meteor.userId())
+   * @param {String} userId (probably logged in userId)
    * @return {StringId} active shop ID
    */
   getUserShopId(userId) {
