@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Components } from "@reactioncommerce/reaction-components";
 import CatalogGrid from "@reactioncommerce/components/CatalogGrid/v1";
-import { ReactionProduct } from "/lib/api";
 
 class ProductGrid extends Component {
   static propTypes = {
