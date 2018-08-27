@@ -9,6 +9,7 @@ import { Countries } from "/client/collections";
 import { Reaction, i18next } from "/client/api";
 import VariantEdit from "../components/variantEdit";
 
+let didComponentUnmount = false;
 
 const wrapComponent = (Comp) => (
   class VariantEditContainer extends Component {
@@ -18,6 +19,14 @@ const wrapComponent = (Comp) => (
       editFocus: PropTypes.string,
       variant: PropTypes.object
     };
+
+    componentDidMount() {
+      didComponentUnmount = false;
+    }
+
+    componentWillUnmount() {
+      didComponentUnmount = true;
+    }
 
     handleCreateNewChildVariant(variant) {
       Meteor.call("products/createVariant", variant._id, (error, result) => {
@@ -73,17 +82,21 @@ function composer(props, onData) {
 
     const childVariants = ReactionProduct.getVariants(variant._id);
 
-    onData(null, {
-      countries: Countries.find({}).fetch(),
-      editFocus: Reaction.state.get("edit/focus"),
-      childVariants,
-      variant
-    });
+    if (didComponentUnmount === false) {
+      onData(null, {
+        countries: Countries.find({}).fetch(),
+        editFocus: Reaction.state.get("edit/focus"),
+        childVariants,
+        variant
+      });
+    }
   } else {
     onData(null, {
       countries: Countries.find({}).fetch()
     });
   }
+
+  didComponentUnmount = false;
 }
 
 

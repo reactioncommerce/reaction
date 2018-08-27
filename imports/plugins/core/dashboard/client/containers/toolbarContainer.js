@@ -1,4 +1,5 @@
 import React from "react";
+import { autorun } from "mobx";
 import { Meteor } from "meteor/meteor";
 import { Session } from "meteor/session";
 import { composeWithTracker } from "@reactioncommerce/reaction-components";
@@ -78,20 +79,26 @@ function composer(props, onData) {
     }
   }
 
-  onData(null, {
-    packageButtons,
-    dashboardHeaderTemplate: props.data.dashboardHeader,
-    isPreview: Reaction.isPreview(),
-    isActionViewAtRootView: Reaction.isActionViewAtRootView(),
-    actionViewIsOpen: Reaction.isActionViewOpen(),
-    hasCreateProductAccess: Reaction.hasPermission("createProduct", Meteor.userId(), Reaction.getShopId()),
-    shopId: Reaction.getShopId(),
-    shops,
+  autorun(() => {
+    // Mobx observables
+    const isActionViewAtRootView = Reaction.isActionViewAtRootView();
+    const actionViewIsOpen = Reaction.isActionViewOpen();
 
-    // Callbacks
-    onAddProduct: handleAddProduct,
-    onShopSelectChange: handleShopSelectChange,
-    onViewContextChange: props.handleViewContextChange
+    onData(null, {
+      packageButtons,
+      dashboardHeaderTemplate: props.data.dashboardHeader,
+      isPreview: Reaction.isPreview(),
+      isActionViewAtRootView,
+      actionViewIsOpen,
+      hasCreateProductAccess: Reaction.hasPermission("createProduct", Meteor.userId(), Reaction.getShopId()),
+      shopId: Reaction.getShopId(),
+      shops,
+
+      // Callbacks
+      onAddProduct: handleAddProduct,
+      onShopSelectChange: handleShopSelectChange,
+      onViewContextChange: props.handleViewContextChange
+    });
   });
 }
 

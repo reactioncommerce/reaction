@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import { autorun } from "mobx";
 import { Session } from "meteor/session";
 import { Meteor } from "meteor/meteor";
 import { composeWithTracker, Components } from "@reactioncommerce/reaction-components";
@@ -201,15 +202,17 @@ function composer(props, onData) {
     editable = Reaction.hasPermission(["createProduct"]);
   }
 
-  onData(null, {
-    variants: getTopVariants(),
-    variantIsSelected,
-    variantIsInActionView,
-    childVariants,
-    childVariantMedia,
-    displayPrice: (variantId) => Catalog.getVariantPriceRange(variantId),
-    isSoldOut,
-    editable
+  autorun(() => {
+    onData(null, {
+      variants: getTopVariants(),
+      variantIsSelected,
+      variantIsInActionView,
+      childVariants,
+      childVariantMedia,
+      displayPrice: (variantId) => Catalog.getVariantPriceRange(variantId),
+      isSoldOut,
+      editable
+    });
   });
 }
 

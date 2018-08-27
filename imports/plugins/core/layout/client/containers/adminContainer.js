@@ -1,3 +1,4 @@
+import { autorun } from "mobx";
 import { composeWithTracker } from "@reactioncommerce/reaction-components";
 import { Reaction } from "/client/api";
 
@@ -30,11 +31,13 @@ function composer(props, onData) {
     tooltipPosition: "left middle"
   });
 
-  onData(null, {
-    actionView: Reaction.getActionView(),
-    data: props.data,
-    buttons: items,
-    actionViewIsOpen: Reaction.isActionViewOpen()
+  autorun(() => {
+    onData(null, {
+      actionView: Reaction.getActionView(),
+      data: props.data,
+      buttons: items,
+      actionViewIsOpen: Reaction.isActionViewOpen()
+    });
   });
 }
 

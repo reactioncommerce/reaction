@@ -1,13 +1,16 @@
 import { compose } from "recompose";
+import { autorun } from "mobx";
 import { registerComponent, composeWithTracker } from "@reactioncommerce/reaction-components";
 import { Reaction, Router } from "/client/api";
 import { App } from "../components";
 
 function composer(props, onData) {
-  onData(null, {
-    isActionViewOpen: Reaction.isActionViewOpen(),
-    hasDashboardAccess: Reaction.hasDashboardAccessForAnyShop(),
-    currentRoute: Router.current()
+  autorun(() => {
+    onData(null, {
+      isActionViewOpen: Reaction.isActionViewOpen(),
+      hasDashboardAccess: Reaction.hasDashboardAccessForAnyShop(),
+      currentRoute: Router.current()
+    });
   });
 }
 

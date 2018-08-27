@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import _ from "lodash";
 import { StyleRoot } from "radium";
 import { compose } from "recompose";
+import { autorun } from "mobx";
 import { Components, registerComponent, composeWithTracker } from "@reactioncommerce/reaction-components";
 import { $ } from "meteor/jquery";
 import { Meteor } from "meteor/meteor";
@@ -362,12 +363,14 @@ function composer(props, onData) {
   if (productSub && productSub.ready() && tagSub.ready() && Reaction.Subscriptions.Cart && Reaction.Subscriptions.Cart.ready()) {
     const product = ReactionProduct.setProduct(productId, variantId);
     if (Reaction.hasPermission("createProduct")) {
-      if (!Reaction.getActionView() && Reaction.isActionViewOpen() === true) {
-        Reaction.setActionView({
-          template: "productAdmin",
-          data: product
-        });
-      }
+      autorun(() => {
+        if (!Reaction.getActionView() && Reaction.isActionViewOpen() === true) {
+          Reaction.setActionView({
+            template: "productAdmin",
+            data: product
+          });
+        }
+      });
     }
 
     // Get the product tags

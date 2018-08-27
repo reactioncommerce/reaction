@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { compose } from "recompose";
+import { autorun } from "mobx";
 import { registerComponent, composeWithTracker } from "@reactioncommerce/reaction-components";
 import { Meteor } from "meteor/meteor";
 import { ReactiveVar } from "meteor/reactive-var";
@@ -184,10 +185,12 @@ function composer(props, onData) {
 
   canLoadMoreProducts = productCursor.count() >= Session.get("productScrollLimit");
 
-  const isActionViewOpen = Reaction.isActionViewOpen();
-  if (isActionViewOpen === false) {
-    Session.set("productGrid/selectedProducts", []);
-  }
+  autorun(() => {
+    const isActionViewOpen = Reaction.isActionViewOpen();
+    if (isActionViewOpen === false) {
+      Session.set("productGrid/selectedProducts", []);
+    }
+  });
 
   onData(null, {
     canLoadMoreProducts,

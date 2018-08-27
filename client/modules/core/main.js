@@ -2,7 +2,6 @@ import _ from "lodash";
 import store from "store";
 import { Accounts as MeteorAccounts } from "meteor/accounts-base";
 import { Meteor } from "meteor/meteor";
-import { Session } from "meteor/session";
 import { check } from "meteor/check";
 import { Tracker } from "meteor/tracker";
 import { ReactiveVar } from "meteor/reactive-var";
@@ -777,7 +776,7 @@ export default {
         viewStack = [viewData];
       }
 
-      Session.set("admin/actionView", viewStack);
+      uiStore.setActionViews(viewStack);
     } else {
       const registryItem = this.getRegistryForCurrentRoute("settings");
 
@@ -799,11 +798,11 @@ export default {
   pushActionView(viewData) {
     uiStore.showActionView();
 
-    const actionViewStack = Session.get("admin/actionView");
+    const { actionViewStack } = uiStore;
 
     if (viewData) {
       actionViewStack.push(viewData);
-      Session.set("admin/actionView", actionViewStack);
+      uiStore.setActionViews(actionViewStack);
     } else {
       const registryItem = this.getRegistryForCurrentRoute("settings");
 
@@ -821,7 +820,7 @@ export default {
    * @memberof Core/Client
    */
   isActionViewAtRootView() {
-    const actionViewStack = Session.get("admin/actionView");
+    const { actionViewStack } = uiStore;
 
     if (Array.isArray(actionViewStack) && actionViewStack.length === 1) {
       return true;
@@ -836,10 +835,9 @@ export default {
    * @memberof Core/Client
    */
   popActionView() {
-    const actionViewStack = Session.get("admin/actionView");
-    actionViewStack.pop();
+    const { actionViewStack } = uiStore;
 
-    Session.set("admin/actionView", actionViewStack);
+    actionViewStack.pop();
 
     this.setActionViewDetail({}, { open: false });
   },
@@ -854,17 +852,13 @@ export default {
 
     uiStore.showActionView();
 
-    if (typeof open === "boolean") {
-      if (open) {
-        uiStore.showActionViewDetail();
-      } else {
-        uiStore.hideActionViewDetail();
-      }
-    } else {
+    if (open === true || open !== false) {
       uiStore.showActionViewDetail();
+    } else if (open === false) {
+      uiStore.hideActionViewDetail();
     }
 
-    Session.set("admin/detailView", [viewData]);
+    uiStore.setActionDetailViews([viewData]);
   },
 
   /**
@@ -876,11 +870,11 @@ export default {
     uiStore.showActionView();
     uiStore.showActionViewDetail();
 
-    const detailViewStack = Session.get("admin/detailView");
+    const detailViewStack = uiStore.actionDetailViewStack;
 
     if (viewData) {
       detailViewStack.push(viewData);
-      Session.set("admin/detailView", detailViewStack);
+      uiStore.setActionDetailViews(detailViewStack);
     }
   },
 
@@ -890,10 +884,8 @@ export default {
    * @memberof Core/Client
    */
   popActionViewDetail() {
-    const detailViewStack = Session.get("admin/detailView");
+    const detailViewStack = uiStore.actionDetailViewStack;
     detailViewStack.pop();
-
-    Session.set("admin/detailView", detailViewStack);
   },
 
   /**
@@ -902,7 +894,7 @@ export default {
    * @memberof Core/Client
    */
   isActionViewDetailAtRootView() {
-    const actionViewDetailStack = Session.get("admin/detailView");
+    const actionViewDetailStack = uiStore.actionDetailViewStack;
 
     if (Array.isArray(actionViewDetailStack) && actionViewDetailStack.length === 1) {
       return true;
@@ -917,7 +909,7 @@ export default {
    * @memberof Core/Client
    */
   getActionView() {
-    const actionViewStack = Session.get("admin/actionView");
+    const actionViewStack = uiStore.actionViewStack.slice();
 
     if (Array.isArray(actionViewStack) && actionViewStack.length) {
       return actionViewStack.pop();
@@ -932,7 +924,7 @@ export default {
    * @memberof Core/Client
    */
   getActionViewDetail() {
-    const detailViewStack = Session.get("admin/detailView");
+    const detailViewStack = uiStore.actionDetailViewStack.slice();
 
     if (Array.isArray(detailViewStack) && detailViewStack.length) {
       return detailViewStack.pop();
@@ -967,11 +959,11 @@ export default {
    * @memberof Core/Client
    */
   clearActionView() {
-    Session.set("admin/actionView", [{
+    uiStore.setActionViews([{
       label: "",
       i18nKeyLabel: ""
     }]);
-    Session.set("admin/detailView", [{
+    uiStore.setActionDetailViews([{
       label: "",
       i18nKeyLabel: ""
     }]);
@@ -983,7 +975,7 @@ export default {
    * @memberof Core/Client
    */
   clearActionViewDetail() {
-    Session.set("admin/detailView", [{
+    uiStore.setActionDetailViews([{
       label: "",
       i18nKeyLabel: ""
     }]);

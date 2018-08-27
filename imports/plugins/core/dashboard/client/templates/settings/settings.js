@@ -1,4 +1,5 @@
 import _ from "lodash";
+import { autorun } from "mobx";
 import { Template } from "meteor/templating";
 import { Reaction } from "/client/api";
 import { Packages } from "/lib/collections";
@@ -10,13 +11,9 @@ Template.settingsHeader.helpers({
    * @return {Object} Registry entry for item
    * @ignore
    */
-  registry() {
-    return Reaction.getActionView() || {};
-  },
+  registry: autorun(() => Reaction.getActionView() || {}),
 
-  isActionViewAtRootView() {
-    return Reaction.isActionViewAtRootView();
-  },
+  isActionViewAtRootView: autorun(() => Reaction.isActionViewAtRootView()),
 
   /**
    * thisApp
