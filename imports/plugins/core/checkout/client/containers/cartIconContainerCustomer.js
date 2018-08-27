@@ -2,8 +2,8 @@ import Velocity from "velocity-animate";
 import store from "store";
 import { compose, withProps } from "recompose";
 import { registerComponent, composeWithTracker } from "@reactioncommerce/reaction-components";
-import { encodeCartOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/cart";
-import { namespaces } from "@reactioncommerce/reaction-graphql-utils";
+// import { encodeCartOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/cart";
+// import { namespaces } from "@reactioncommerce/reaction-graphql-utils";
 import { Reaction } from "/client/api";
 import CartIconCustomer from "../components/cartIconCustomer";
 import withAccountCart from "/imports/plugins/core/graphql/lib/hocs/withAccountCart";
@@ -25,7 +25,7 @@ const handlers = {
 const composer = (props, onData) => {
   const anonymousCart = store.get("Reaction.anonymousCarts") || [{}];
   const [{ _id: cartId, token }] = anonymousCart;
-  onData(null, { shopSlug: getSlug(Reaction.getShopName().toLowerCase()), cartId: encodeOpaqueId(namespaces.Cart)(cartId), token });
+  onData(null, { shopSlug: getSlug(Reaction.getShopName().toLowerCase()), cartId, token });
 };
 
 registerComponent("CartIconCustomer", CartIconCustomer, [

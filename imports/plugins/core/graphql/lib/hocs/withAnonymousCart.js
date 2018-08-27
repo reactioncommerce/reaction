@@ -19,13 +19,13 @@ export default (Component) => (
       }
       const variables = { cartId, token };
       return (
-        <Query query={getAnonymousCart} variables={variables} pollInterval={500} fetchPolicy={"network-only"}>
+        <Query query={getAnonymousCart} variables={variables} fetchPolicy={"network-only"}>
           {({ loading, data, error, refetch, fetchMore }) => {
             const props = {
               ...this.props,
               isLoadingAnonymousCart: loading
             };
-            if (loading === false) {
+            if (loading === false && data) {
               const { cart } = data;
               const { items: cartItems, _id } = cart || {};
               props.cartItems = ((cartItems && cartItems.edges) || []).map((edge) => edge.node);

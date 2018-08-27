@@ -19,7 +19,7 @@ export default (Component) => (
       }
       const variables = { accountId: viewerId, shopId };
       return (
-        <Query query={getAccountCart} variables={variables} pollInterval={500} fetchPolicy={"network-only"}>
+        <Query query={getAccountCart} variables={variables} fetchPolicy={"network-only"}>
           {({ loading, data, refetch, fetchMore }) => {
             const props = {
               ...this.props,
