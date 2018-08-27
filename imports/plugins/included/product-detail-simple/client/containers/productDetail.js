@@ -323,6 +323,7 @@ const wrapComponent = (Comp) =>
 
     render() {
       const { media, product } = this.props;
+      console.log(media);
 
       if (_.isEmpty(product)) {
         return <Components.ProductNotFound />;

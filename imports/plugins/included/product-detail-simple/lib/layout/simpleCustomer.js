@@ -1,5 +1,5 @@
 
-export default function simple() {
+export default function simpleCustomer() {
   return [
 
     // Header block (Full Width)
@@ -72,7 +72,7 @@ export default function simple() {
 
         // Tags
         {
-          component: "ProductTags"
+          component: "ProductTagsCustomer"
         },
 
         // Metadata

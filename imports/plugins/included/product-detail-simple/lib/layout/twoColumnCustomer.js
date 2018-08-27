@@ -1,55 +1,9 @@
 
-export default function simple() {
+export default function twoColumnCustomer() {
   return [
-
-    // Header block (Full Width)
-    {
-      type: "block",
-      columns: 12,
-      element: "header",
-      className: "pdp header",
-      permissions: ["admin"], // Permissions for staff
-      audience: ["guest", "anonymous"], // Permissions for customers
-      children: [
-        // Title
-        {
-          component: "ProductField",
-          // Example, you can set permissions components that are children of a block
-          permissions: ["admin"],
-          audience: ["guest", "anonymous"],
-          props: {
-            fieldName: "title",
-            fieldTitle: "Title",
-            element: "h1",
-            textFieldProps: {
-              i18nKeyPlaceholder: "productDetailEdit.title",
-              placeholder: "Title"
-            }
-          }
-        },
-
-        // PageTitle
-        {
-          component: "ProductField",
-          permissions: ["admin"],
-          audience: ["guest", "anonymous"],
-          props: {
-            // editable: this.editable,
-            fieldName: "pageTitle",
-            fieldTitle: "SubTitle",
-            element: "h2",
-            textFieldProps: {
-              i18nKeyPlaceholder: "productDetailEdit.pageTitle",
-              placeholder: "Subtitle"
-            }
-          }
-        }
-      ]
-    },
-
     // Media block
     // Contains
-    // - Medai Gallery
+    // - Media Gallery
     // - Tags
     // - Details
     {
@@ -58,12 +12,6 @@ export default function simple() {
       size: "half",
       permissions: ["admin"],
       audience: ["guest", "anonymous"],
-      style: {
-        "@media  only screen and (max-width: 921px)": {
-          minWidth: "100%",
-          maxWidth: "100%"
-        }
-      },
       children: [
         // Media Gallery
         {
@@ -82,20 +30,71 @@ export default function simple() {
       ]
     },
 
-    // Variant block
+    // Product Details Block
+    // Contains
+    // - Title
+    // - Subtitle
+    // - Price
+    // - Social
+    // - Vendor
+    // - Description
+    // - Variants
+    // - Add to Cart button
     {
       type: "block",
       columns: 6,
       size: "half",
+      style: {
+        display: "block"
+      },
       permissions: ["admin"],
       audience: ["guest", "anonymous"],
-      style: {
-        "@media  only screen and (max-width: 921px)": {
-          minWidth: "100%",
-          maxWidth: "100%"
-        }
-      },
       children: [
+        // Header block (Full Width)
+        {
+          type: "block",
+          columns: 12,
+          element: "header",
+          className: "pdp header",
+          permissions: ["admin"], // Permissions for staff
+          audience: ["guest", "anonymous"], // Permissions for customers
+          children: [
+            // Title
+            {
+              component: "ProductField",
+              // Example, you can set permissions components that are children of a block
+              permissions: ["admin"],
+              audience: ["guest", "anonymous"],
+              props: {
+                fieldName: "title",
+                fieldTitle: "Title",
+                element: "h1",
+                textFieldProps: {
+                  i18nKeyPlaceholder: "productDetailEdit.title",
+                  placeholder: "Title"
+                }
+              }
+            },
+
+            // PageTitle
+            {
+              component: "ProductField",
+              permissions: ["admin"],
+              audience: ["guest", "anonymous"],
+              props: {
+                // editable: this.editable,
+                fieldName: "pageTitle",
+                fieldTitle: "SubTitle",
+                element: "h2",
+                textFieldProps: {
+                  i18nKeyPlaceholder: "productDetailEdit.pageTitle",
+                  placeholder: "Subtitle"
+                }
+              }
+            }
+          ]
+        },
+
         // Price /  Social Buttons split
         {
           axis: "horizontal",
