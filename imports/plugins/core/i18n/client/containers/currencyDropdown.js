@@ -44,7 +44,7 @@ const composer = (props, onData) => {
     });
 
     const user = Accounts.findOne({
-      _id: Meteor.userId()
+      _id: Reaction.getUserId()
     });
     const profileCurrency = user && user.profile && user.profile.currency;
 

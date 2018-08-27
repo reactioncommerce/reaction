@@ -37,7 +37,7 @@ function displayName(displayUser) {
 
 function getAdminShortcutIcons() {
   // get shortcuts with audience permissions based on user roles
-  const roles = Roles.getRolesForUser(Meteor.userId(), Reaction.getShopId());
+  const roles = Roles.getRolesForUser(Reaction.getUserId(), Reaction.getShopId());
 
   return {
     provides: "shortcut",

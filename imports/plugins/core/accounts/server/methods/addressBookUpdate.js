@@ -22,18 +22,16 @@ export default function addressBookUpdate(address, accountUserId, type) {
   check(accountUserId, Match.Maybe(String));
   check(type, Match.Maybe(String));
 
-  // security, check for admin access. We don't need to check every user call
-  // here because we are calling `Meteor.userId` from within this Method.
-  if (typeof accountUserId === "string") { // if this will not be a String -
-    // `check` will not pass it.
-    if (Meteor.userId() !== accountUserId && !Reaction.hasPermission("reaction-accounts")) {
+  // security check for admin access
+  if (typeof accountUserId === "string") {
+    if (Reaction.getUserId() !== accountUserId && !Reaction.hasPermission("reaction-accounts")) {
       throw new ReactionError("access-denied", "Access denied");
     }
   }
   this.unblock();
 
   // If no userId is provided, use the current user
-  const userId = accountUserId || Meteor.userId();
+  const userId = accountUserId || Reaction.getUserId();
   // Find old state of isShippingDefault & isBillingDefault to compare and reflect in cart
   const account = Accounts.findOne({ userId });
   const oldAddress = (account.profile.addressBook || []).find((addr) => addr._id === address._id);
@@ -92,7 +90,7 @@ export default function addressBookUpdate(address, accountUserId, type) {
   });
 
   // Run afterAccountsUpdate hook to update Accounts Search
-  Hooks.Events.run("afterAccountsUpdate", Meteor.userId(), {
+  Hooks.Events.run("afterAccountsUpdate", userId, {
     accountId: account._id,
     updatedFields
   });

@@ -90,7 +90,7 @@ export const methods = {
 
     const transaction = {
       cartId,
-      userId: Meteor.userId(),
+      userId: Reaction.getUserId(),
       appliedAt: new Date()
     };
     // double duty validation, plus we need the method

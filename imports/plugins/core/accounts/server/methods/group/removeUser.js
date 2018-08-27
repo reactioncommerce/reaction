@@ -1,7 +1,6 @@
 import Hooks from "@reactioncommerce/hooks";
 import Logger from "@reactioncommerce/logger";
 import { check } from "meteor/check";
-import { Meteor } from "meteor/meteor";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
 import ReactionError from "@reactioncommerce/reaction-error";
 import { Accounts, Groups } from "/lib/collections";
@@ -28,7 +27,7 @@ export default function removeUser(userId, groupId) {
 
   // we are limiting group method actions to only users with admin roles
   // this also include shop owners, since they have the `admin` role in their Roles.GLOBAL_GROUP
-  if (!Reaction.hasPermission("admin", Meteor.userId(), shopId)) {
+  if (!Reaction.hasPermission("admin", Reaction.getUserId(), shopId)) {
     throw new ReactionError("access-denied", "Access Denied");
   }
 
@@ -39,7 +38,7 @@ export default function removeUser(userId, groupId) {
   try {
     setUserPermissions(user, defaultCustomerGroupForShop.permissions, shopId);
     Accounts.update({ _id: userId, groups: groupId }, { $set: { "groups.$": defaultCustomerGroupForShop._id } }); // replace the old id with new id
-    Hooks.Events.run("afterAccountsUpdate", Meteor.userId(), {
+    Hooks.Events.run("afterAccountsUpdate", Reaction.getUserId(), {
       accountId: userId,
       updatedFields: ["groups"]
     });

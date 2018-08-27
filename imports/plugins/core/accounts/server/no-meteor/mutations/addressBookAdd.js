@@ -22,8 +22,7 @@ export default async function addressBookAdd(context, address, accountUserId) {
 
   if (!account) throw new ReactionError("not-found", "No account found");
 
-  // security, check for admin access. We don't need to check every user call
-  // here because we are calling `Meteor.userId` from within this Method.
+  // Security check for admin access
   if (typeof accountUserId === "string" && userIdFromContext !== accountUserId) {
     if (!userHasPermission(["reaction-accounts"], account.shopId)) throw new ReactionError("access-denied", "Access denied");
   }

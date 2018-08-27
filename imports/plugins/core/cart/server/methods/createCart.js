@@ -24,7 +24,7 @@ export default function createCartMethod(items) {
   // In Meteor app we always have a user, but it may have "anonymous" role, meaning
   // it was auto-created as a kind of session. If so, we fool the createCart mutation
   // into thinking there is no user so that it will create an anonymous cart.
-  const userId = Meteor.userId();
+  const userId = Reaction.getUserId();
   const anonymousUser = Roles.userIsInRole(userId, "anonymous", shopId);
   const userIdForContext = anonymousUser ? null : userId;
 

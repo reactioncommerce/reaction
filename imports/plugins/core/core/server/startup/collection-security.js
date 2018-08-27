@@ -46,7 +46,7 @@ export default function () {
       if (!arg) throw new Error("ifHasRole security rule method requires an argument");
       if (arg.role) {
         // Note: userId is passed to getShopId to ensure that it returns the correct shop based on the User Preference
-        // if not passed, getShopId can default to primaryShopId if Meteor.userId is not available in the context the code is run
+        // if not passed, getShopId can default to primaryShopId if userId is not available in the context the code is run
         const shopId = Reaction.getUserShopId(userId) || Reaction.getShopId();
 
         return Roles.userIsInRole(userId, arg.role, shopId);
@@ -61,7 +61,7 @@ export default function () {
     fetch: [],
     deny(type, arg, userId, doc) {
       // Note: userId is passed to getShopId to ensure that it returns the correct shop based on the User Preference
-      // if not passed, getShopId can default to primaryShopId if Meteor.userId is not available in the context the code is run
+      // if not passed, getShopId can default to primaryShopId if userId is not available in the context the code is run
       const shopId = Reaction.getUserShopId(userId) || Reaction.getShopId();
 
       return doc.shopId !== shopId;
@@ -73,7 +73,7 @@ export default function () {
     fetch: [],
     deny(type, arg, userId, doc) {
       // Note: userId is passed to getShopId to ensure that it returns the correct shop based on the User Preference
-      // if not passed, getShopId can default to primaryShopId if Meteor.userId is not available in the context the code is run
+      // if not passed, getShopId can default to primaryShopId if userId is not available in the context the code is run
       const shopId = Reaction.getUserShopId(userId) || Reaction.getShopId();
 
       return doc._id !== shopId;
@@ -84,7 +84,7 @@ export default function () {
     fetch: [],
     deny(type, arg, userId, doc) {
       // Note: userId is passed to getShopId to ensure that it returns the correct shop based on the User Preference
-      // if not passed, getShopId can default to primaryShopId if Meteor.userId is not available in the context the code is run
+      // if not passed, getShopId can default to primaryShopId if userId is not available in the context the code is run
       const shopId = Reaction.getUserShopId(userId) || Reaction.getShopId();
 
       return doc.metadata.shopId !== shopId;

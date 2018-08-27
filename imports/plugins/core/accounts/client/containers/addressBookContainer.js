@@ -2,7 +2,7 @@ import { compose, withProps } from "recompose";
 import { registerComponent, composeWithTracker } from "@reactioncommerce/reaction-components";
 import { Meteor } from "meteor/meteor";
 import { Template } from "meteor/templating";
-import { i18next, Logger } from "/client/api";
+import { i18next, Logger, Reaction } from "/client/api";
 import { Countries } from "/client/collections";
 import * as Collections from "/lib/collections";
 import getCart from "/imports/plugins/core/cart/client/util/getCart";
@@ -286,7 +286,7 @@ const handlers = {
  * @returns {undefined}
  */
 function composer(props, onData) {
-  const userId = Meteor.userId();
+  const userId = Reaction.getUserId();
   const account = Collections.Accounts.findOne({ userId });
   if (!account) {
     // Subscription not ready

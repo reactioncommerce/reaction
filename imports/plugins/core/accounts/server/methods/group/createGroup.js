@@ -1,7 +1,6 @@
 import _ from "lodash";
 import Logger from "@reactioncommerce/logger";
 import { check, Match } from "meteor/check";
-import { Meteor } from "meteor/meteor";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
 import ReactionError from "@reactioncommerce/reaction-error";
 import { Groups } from "/lib/collections";
@@ -30,7 +29,7 @@ export default function createGroup(groupData, shopId) {
 
   // we are limiting group method actions to only users with admin roles
   // this also include shop owners, since they have the `admin` role in their Roles.GLOBAL_GROUP
-  if (!Reaction.hasPermission("admin", Meteor.userId(), shopId)) {
+  if (!Reaction.hasPermission("admin", Reaction.getUserId(), shopId)) {
     throw new ReactionError("access-denied", "Access Denied");
   }
 
