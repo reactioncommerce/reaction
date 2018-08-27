@@ -1,4 +1,4 @@
-import { observable, computed, action, decorate } from "mobx";
+import { observable, action, decorate } from "mobx";
 
 /**
  * @class UIStore
@@ -87,7 +87,7 @@ decorate(UIStore, {
   isActionViewDetailOpen: observable,
   actionViewStack: observable,
   actionDetailViewStack: observable,
-  
+
   /**
    * Actions
    */
