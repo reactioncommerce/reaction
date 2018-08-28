@@ -21,6 +21,14 @@ class S3Settings extends Component {
     });
   }
 
+  handleTestForImport = () => {
+    this.props.onTestForImport();
+  }
+
+  handleTestForExport = () => {
+    this.props.onTestForExport();
+  }
+
   handleFieldChange = (event, value, field) => {
     const { pkg } = this.state;
     const newSettings = {};
@@ -87,7 +95,7 @@ class S3Settings extends Component {
           <Components.Button
             className="btn btn-default"
             bezelStyle="solid"
-            onClick={this.testForImport}
+            onClick={this.handleTestForImport}
             i18nKeyLabel="admin.dashboard.testImport"
             label="Test For Import"
             style={{ marginRight: "20px" }}
@@ -95,7 +103,7 @@ class S3Settings extends Component {
           <Components.Button
             className="btn btn-default"
             bezelStyle="solid"
-            onClick={this.testForExport}
+            onClick={this.handleTestForExport}
             i18nKeyLabel="admin.dashboard.testExport"
             label="Test For Export"
           />
@@ -107,6 +115,8 @@ class S3Settings extends Component {
 
 S3Settings.propTypes = {
   onSubmit: PropTypes.func,
+  onTestForExport: PropTypes.func,
+  onTestForImport: PropTypes.func,
   pkg: PropTypes.object
 };
 

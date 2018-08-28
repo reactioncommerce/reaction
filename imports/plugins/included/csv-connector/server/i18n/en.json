@@ -23,7 +23,15 @@
         "alerts": {
           "portNaN": "The port must be a number!",
           "s3SettingsSaved": "S3 settings saved.",
-          "sftpSettingsSaved": "SFTP settings saved."
+          "s3CredentialsValid": "Your S3 credentials are valid." ,
+          "s3CredentialsInvalid": "Your S3 credentials are invalid." ,
+          "s3CredentialsInvalidForImport": "Your S3 credentials are invalid for import." ,
+          "s3CredentialsInvalidForExport": "Your S3 credentials are invalid for export." ,
+          "sftpSettingsSaved": "SFTP settings saved.",
+          "sftpCredentialsValid": "Your SFTP credentials are valid." ,
+          "sftpCredentialsInvalid": "Your SFTP credentials are invalid." ,
+          "sftpCredentialsInvalidForImport": "Your SFTP credentials are invalid for import." ,
+          "sftpCredentialsInvalidForExport": "Your SFTP credentials are invalid for export."
         }
       }
     }

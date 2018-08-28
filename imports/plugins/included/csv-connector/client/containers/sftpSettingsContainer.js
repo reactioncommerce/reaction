@@ -12,9 +12,9 @@ const wrapComponent = (Comp) => (
     handleSubmit = (values) => {
       Meteor.call("csvConnector/updateSFTPSettings", values, (error) => {
         if (error) {
-          Alert(i18next.t("app.error"), error.message, "error");
+          return Alert(i18next.t("app.error"), error.message, "error");
         }
-        Alert(i18next.t("app.success"), i18next.t("admin.alerts.sftpSettingsSaved"), "success");
+        return Alert(i18next.t("app.success"), i18next.t("admin.alerts.sftpSettingsSaved"), "success");
       });
     }
 

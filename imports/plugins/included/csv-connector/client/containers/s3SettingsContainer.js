@@ -12,16 +12,36 @@ const wrapComponent = (Comp) => (
     handleSubmit = (values) => {
       Meteor.call("csvConnector/updateS3Settings", values, (error) => {
         if (error) {
-          Alert(i18next.t("app.error"), error.message, "error");
+          return Alert(i18next.t("app.error"), error.message, "error");
         }
+        return Alert(i18next.t("app.success"), i18next.t("admin.alerts.s3SettingsSaved"), "success");
       });
-      Alert(i18next.t("app.success"), i18next.t("admin.alerts.s3SettingsSaved"), "success");
+    }
+
+    handleTestForExport = () => {
+      Meteor.call("csvConnector/s3TestForExport", (error, result) => {
+        if (error) {
+          return Alert(i18next.t("app.error"), i18next.t("admin.alerts.s3CredentialsInvalidForExport"), "error");
+        }
+        return Alert(i18next.t("app.success"), i18next.t("admin.alerts.s3SettingsValid"), "success");
+      });
+    }
+
+    handleTestForImport = () => {
+      Meteor.call("csvConnector/s3TestForImport", (error) => {
+        if (error) {
+          return Alert(i18next.t("app.error"), i18next.t("admin.alerts.s3CredentialsInvalidForImport"), "error");
+        }
+        return Alert(i18next.t("app.success"), i18next.t("admin.alerts.s3SettingsValid"), "success");
+      });
     }
 
     render() {
       return (
         <Comp
           onSubmit={this.handleSubmit}
+          onTestForImport={this.handleTestForImport}
+          onTestForExport={this.handleTestForExport}
           {...this.props}
         />
       );

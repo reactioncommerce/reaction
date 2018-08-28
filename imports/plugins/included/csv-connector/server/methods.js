@@ -1,3 +1,5 @@
+import S3 from "aws-sdk/clients/s3";
+import { Readable } from "stream";
 import { Meteor } from "meteor/meteor";
 import { check } from "meteor/check";
 import { EJSON } from "meteor/ejson";
@@ -10,7 +12,7 @@ export const methods = {
    * @summary Updates S3 Settings
    * @method
    * @param  {Object} values - Object with field names as key and field values as value
-   * @return {undefined}
+   * @return {Promise} - Promise
    */
   "csvConnector/updateS3Settings"(values) {
     check(values, Object);
@@ -33,7 +35,7 @@ export const methods = {
    * @summary Updates SFTP Settings
    * @method
    * @param  {Object} values - Object with field names as key and field values as value
-   * @return {undefined}
+   * @return {Promise} - Promise
    */
   "csvConnector/updateSFTPSettings"(values) {
     check(values, Object);
@@ -50,6 +52,69 @@ export const methods = {
     const stringValue = EJSON.stringify(values);
     const update = EJSON.parse(stringValue);
     return Packages.update({ name: "connector-settings-sftp" }, { $set: { settings: update } });
+  },
+
+  /**
+   * @name csvConnector/s3TestForExport
+   * @summary Tests S3 credentials for write access
+   * @method
+   * @return {Boolean} - true if S3 credentials have write access
+   */
+  "csvConnector/s3TestForExport"() {
+    // must have core permissions
+    if (!Reaction.hasPermission("core")) {
+      throw new Meteor.Error("access-denied", "Access Denied");
+    }
+
+    const pkg = Packages.findOne({ name: "connector-settings-aws-s3" });
+    const { settings: { accessKey, secretAccessKey, bucket } } = pkg || {};
+    const S3Config = new S3({
+      accessKeyId: accessKey,
+      secretAccessKey
+    });
+    return new Promise((resolve, reject) => {
+      const stream = new Readable();
+      stream.push("This is just a sample CSV export file from Reaction.");
+      stream.push(null);
+      S3Config.upload({ Bucket: bucket, Key: "ReactionCSVExport--TestOnly.txt", Body: stream }, (error, result) => {
+        if (result) {
+          resolve(true);
+          return;
+        }
+        reject(error);
+        return;
+      });
+    });
+  },
+
+  /**
+   * @name csvConnector/s3TestForImport
+   * @summary Tests S3 credentials for read access
+   * @method
+   * @return {Boolean} - true if S3 credentials have read access
+   */
+  "csvConnector/s3TestForImport"() {
+    // must have core permissions
+    if (!Reaction.hasPermission("core")) {
+      throw new Meteor.Error("access-denied", "Access Denied");
+    }
+    const pkg = Packages.findOne({ name: "connector-settings-aws-s3" });
+    const { settings: { accessKey, secretAccessKey, bucket } } = pkg || {};
+    const S3Config = new S3({
+      accessKeyId: accessKey,
+      secretAccessKey
+    });
+    // Check read access
+    return new Promise((resolve, reject) => {
+      S3Config.getObject({ Bucket: bucket, Key: "test.txt" }, (error, result) => {
+        if (result || (error && error.code === "NoSuchKey")) {
+          resolve(true);
+          return;
+        }
+        reject(error);
+        return;
+      });
+    });
   }
 };
 
