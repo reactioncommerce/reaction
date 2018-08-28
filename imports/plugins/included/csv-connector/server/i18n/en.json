@@ -1,0 +1,31 @@
+[{
+  "i18n": "en",
+  "ns": "csv-connector",
+  "translation": {
+    "connectors": {
+      "admin": {
+        "dashboard": {
+          "csvConnector": "CSV Connector",
+          "S3Settings": "AWS S3 Settings",
+          "s3AccessKey": "Access Key",
+          "s3SecretAccessKey": "Secret Access Key",
+          "s3Bucket": "Bucket",
+          "s3Save": "Save Changes",
+          "sftpSettings": "SFTP Settings",
+          "sftpIPAddress": "IP Address",
+          "sftpPort": "Port",
+          "sftpUsername": "Username",
+          "sftpPassword": "Password",
+          "sftpSave": "Save Changes",
+          "testImport": "Test for Import",
+          "testExport": "Test for Export"
+        },
+        "alerts": {
+          "portNaN": "The port must be a number!",
+          "s3SettingsSaved": "S3 settings saved.",
+          "sftpSettingsSaved": "SFTP settings saved."
+        }
+      }
+    }
+  }
+}]
