@@ -126,12 +126,16 @@ export default {
    * @param {String | Array} checkPermissions -String or Array of permissions if empty, defaults to "admin, owner"
    * @param {String} userId - userId, defaults to logged in userId
    * @param {String} checkGroup group - default to shopId
+   * @param {Object} options - options object containing additional flags
+   * @param {Boolean} options.appendOwner - Set to false to avoid owner role being appended to checkPermissions
    * @return {Boolean} Boolean - true if has permission
    */
-  hasPermission(checkPermissions, userId = getUserId(), checkGroup = this.getShopId()) {
+  hasPermission(checkPermissions, userId = getUserId(), checkGroup = this.getShopId(), options = {}) {
     // check(checkPermissions, Match.OneOf(String, Array)); check(userId, String); check(checkGroup,
     // Match.Optional(String));
     let permissions;
+    // set default behavior to grant owner global access
+    if (options.appendOwner === undefined) options.appendOwner = true;
     // default group to the shop or global if shop isn't defined for some reason.
     let group;
     if (checkGroup !== undefined && typeof checkGroup === "string") {
@@ -142,16 +146,14 @@ export default {
 
     // permissions can be either a string or an array we'll force it into an array and use that
     if (checkPermissions === undefined) {
-      permissions = ["owner"];
+      permissions = [];
     } else if (typeof checkPermissions === "string") {
       permissions = [checkPermissions];
     } else {
       permissions = checkPermissions;
     }
 
-    // if the user has admin, owner permissions we'll always check if those roles are enough
-    permissions.push("owner");
-    permissions = _.uniq(permissions);
+    if (options.appendOwner) permissions.push("owner");
 
     // return if user has permissions in the group
     return Roles.userIsInRole(userId, permissions, group);

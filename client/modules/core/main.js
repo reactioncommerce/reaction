@@ -203,10 +203,14 @@ export default {
    * @param {String | Array} checkPermissions -String or Array of permissions if empty, defaults to "admin, owner"
    * @param {String} checkUserId - userId, defaults to logged in user ID
    * @param {String} checkGroup group - default to shopId
+   * @param {Object} options - options object containing additional flags
+   * @param {Boolean} options.appendOwner - Set to false to avoid owner role being appended to checkPermissions
    * @return {Boolean} Boolean - true if has permission
    */
-  hasPermission(checkPermissions, checkUserId, checkGroup) {
+  hasPermission(checkPermissions, checkUserId, checkGroup, options = {}) {
     let group;
+    // set default behavior to grant owner global access
+    if (options.appendOwner === undefined) options.appendOwner = true;
     // default group to the shop or global if shop isn't defined for some reason.
     if (checkGroup !== undefined && typeof checkGroup === "string") {
       group = checkGroup;
@@ -214,7 +218,7 @@ export default {
       group = this.getShopId() || Roles.GLOBAL_GROUP;
     }
 
-    let permissions = ["owner"];
+    let permissions = [];
     let id = "";
     const userId = checkUserId || getUserId();
     //
@@ -226,22 +230,16 @@ export default {
       // permissions can be either a string or an array
       // we'll force it into an array and use that
       if (checkPermissions === undefined) {
-        permissions = ["owner"];
+        permissions = [];
       } else if (typeof checkPermissions === "string") {
         permissions = [checkPermissions];
       } else {
         permissions = checkPermissions;
       }
-      // if the user has owner permissions we'll always check if those roles are enough
       // By adding the "owner" role to the permissions list, we are making hasPermission always return
-      // true for "owners". This gives owners global access.
-      // TODO: Review this way of granting global access for owners
-      permissions.push("owner");
-      permissions = _.uniq(permissions);
+      // true for "owners". This gives owners global access. (except if prevented with appendOwner flag)
+      if (options.appendOwner) permissions.push("owner");
 
-      //
-      // return if user has permissions in the group
-      //
       if (Roles.userIsInRole(userId, permissions, group)) {
         return true;
       }
