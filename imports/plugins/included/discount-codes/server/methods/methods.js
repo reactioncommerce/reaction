@@ -298,7 +298,28 @@ export const methods = {
         amount: discount.discount, // pre-process to amount.
         status: "created"
       };
-      return Meteor.call("payments/apply", id, paymentMethod, collection);
+
+      // The first record holds the selected billing address
+      const billing = objectToApplyDiscount.billing[0];
+      const billingId = Random.id();
+      const result = Collection.update({
+        _id: id
+      }, {
+        $addToSet: {
+          billing: {
+            ...billing,
+            _id: billingId,
+            paymentMethod
+          }
+        }
+      });
+
+      if (collection === "Cart") {
+        const updatedCart = Collection.findOne({ _id: id });
+        Promise.await(appEvents.emit("afterCartUpdate", id, updatedCart));
+      }
+
+      return result;
     }
   }
 };
