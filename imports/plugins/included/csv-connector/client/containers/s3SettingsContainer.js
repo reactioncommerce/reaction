@@ -19,7 +19,7 @@ const wrapComponent = (Comp) => (
     }
 
     handleTestForExport = () => {
-      Meteor.call("csvConnector/s3TestForExport", (error, result) => {
+      Meteor.call("csvConnector/s3TestForExport", (error) => {
         if (error) {
           return Alert(i18next.t("app.error"), i18next.t("admin.alerts.s3CredentialsInvalidForExport"), "error");
         }

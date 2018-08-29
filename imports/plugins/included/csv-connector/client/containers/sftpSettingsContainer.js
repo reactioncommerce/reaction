@@ -18,10 +18,20 @@ const wrapComponent = (Comp) => (
       });
     }
 
+    handleTestForImportAndExport = () => {
+      Meteor.call("csvConnector/sftpTestForImportAndExport", (error) => {
+        if (error) {
+          return Alert(i18next.t("app.error"), i18next.t("admin.alerts.sftpCredentialsInvalid"), "error");
+        }
+        return Alert(i18next.t("app.success"), i18next.t("admin.alerts.sftpSettingsValid"), "success");
+      });
+    }
+
     render() {
       return (
         <Comp
           onSubmit={this.handleSubmit}
+          onTestForImportAndExport={this.handleTestForImportAndExport}
           {...this.props}
         />
       );

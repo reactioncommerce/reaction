@@ -1,4 +1,5 @@
 import S3 from "aws-sdk/clients/s3";
+import Client from "ssh2-sftp-client";
 import { Readable } from "stream";
 import { Meteor } from "meteor/meteor";
 import { check } from "meteor/check";
@@ -58,7 +59,7 @@ export const methods = {
    * @name csvConnector/s3TestForExport
    * @summary Tests S3 credentials for write access
    * @method
-   * @return {Boolean} - true if S3 credentials have write access
+   * @return {Promise} - Promise
    */
   "csvConnector/s3TestForExport"() {
     // must have core permissions
@@ -91,7 +92,7 @@ export const methods = {
    * @name csvConnector/s3TestForImport
    * @summary Tests S3 credentials for read access
    * @method
-   * @return {Boolean} - true if S3 credentials have read access
+   * @return {Promise} - Promise
    */
   "csvConnector/s3TestForImport"() {
     // must have core permissions
@@ -114,6 +115,31 @@ export const methods = {
         reject(error);
         return;
       });
+    });
+  },
+
+  /**
+   * @name csvConnector/sftpTestForImportAndExport
+   * @summary Tests SFTP credentials for access
+   * @method
+   * @return {Promise} - Promise
+   */
+  "csvConnector/sftpTestForImportAndExport"() {
+    // must have core permissions
+    if (!Reaction.hasPermission("core")) {
+      throw new Meteor.Error("access-denied", "Access Denied");
+    }
+    const pkg = Packages.findOne({ name: "connector-settings-sftp" });
+    const { settings: { ipAddress, port, username, password } } = pkg || {};
+    console.log(ipAddress, port, username, password);
+    const sftpClient = new Client();
+    sftpClient.connect({
+      host: ipAddress,
+      port: `${port}`,
+      username,
+      password
+    }).then(() => sftpClient.list("/")).then((data) => console.log(data)).catch((error) => {
+      console.log(error);
     });
   }
 };

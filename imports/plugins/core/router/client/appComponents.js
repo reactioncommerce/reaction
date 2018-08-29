@@ -5,8 +5,10 @@ import Field from "@reactioncommerce/components/Field/v1";
 import PhoneNumberInput from "@reactioncommerce/components/PhoneNumberInput/v1";
 import Price from "@reactioncommerce/components/Price/v1";
 import Select from "@reactioncommerce/components/Select/v1";
-import spinner from "@reactioncommerce/components/utils/spinner";
+import spinner from "@reactioncommerce/components/svg/spinner";
 import TextInput from "@reactioncommerce/components/TextInput/v1";
+import SelectableItem from "@reactioncommerce/components/SelectableItem/v1";
+import SelectableList from "@reactioncommerce/components/SelectableItem/v1";
 
 /* eslint-disable max-len */
 
@@ -72,6 +74,8 @@ export default {
   PhoneNumberInput,
   Price,
   Select,
+  SelectableItem,
+  SelectableList,
   spinner,
   TextInput
 };

@@ -32,6 +32,10 @@ class SFTPSettings extends Component {
     });
   }
 
+  handleTestForImportAndExport = () => {
+    this.props.onTestForImportAndExport();
+  }
+
   handleFieldChange = (event, value, field) => {
     const { pkg } = this.state;
     const newSettings = {};
@@ -112,17 +116,9 @@ class SFTPSettings extends Component {
           <Components.Button
             className="btn btn-default"
             bezelStyle="solid"
-            onClick={this.testForImport}
-            i18nKeyLabel="admin.dashboard.testImport"
-            label="Test For Import"
-            style={{ marginRight: "20px" }}
-          />
-          <Components.Button
-            className="btn btn-default"
-            bezelStyle="solid"
-            onClick={this.testForExport}
-            i18nKeyLabel="admin.dashboard.testExport"
-            label="Test For Export"
+            onClick={this.handleTestForImportAndExport}
+            i18nKeyLabel="admin.dashboard.sftpTest"
+            label="Test For Import and Export"
           />
         </div>
       </form>
@@ -132,6 +128,7 @@ class SFTPSettings extends Component {
 
 SFTPSettings.propTypes = {
   onSubmit: PropTypes.func,
+  onTestForImportAndExport: PropTypes.func,
   pkg: PropTypes.object
 };
 

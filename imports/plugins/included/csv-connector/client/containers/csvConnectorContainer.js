@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { Components, registerComponent } from "@reactioncommerce/reaction-components";
+import { DetailScreen, StartScreen } from "../components";
 import S3SettingsContainer from "./s3SettingsContainer";
 import SFTPSettingsContainer from "./sftpSettingsContainer";
 
@@ -7,7 +8,12 @@ export default class CSVConnectorContainer extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      activeScreen: "start",
       expanded: true,
+      fileUpload: {},
+      jobItem: {
+        jobType: "import"
+      },
       showSettings: false
     };
   }
@@ -18,6 +24,28 @@ export default class CSVConnectorContainer extends Component {
 
   handleCardExpand = () => {
     this.setState({ expanded: !this.state.expanded });
+  }
+
+  handleSetActiveScreen = (activeScreen) => {
+    this.setState({ activeScreen });
+  }
+
+  handleSetJobItemField = (field, value) => {
+    const { jobItem } = this.state;
+    const newValue = {};
+    newValue[field] = value;
+    const newJobItem = {
+      ...jobItem,
+      ...newValue
+    };
+    this.setState({ jobItem: newJobItem });
+  }
+
+  handleFileUpload = (acceptedFiles) => {
+    const filesArray = Array.from(acceptedFiles);
+    if (filesArray.length === 0) return;
+    const fileUpload = filesArray[0];
+    this.setState({ fileUpload });
   }
 
   renderSettings() {
@@ -44,6 +72,33 @@ export default class CSVConnectorContainer extends Component {
     return null;
   }
 
+  renderJobItemScreen() {
+    const { activeScreen, fileUpload: { name: fileName }, jobItem, showSettings } = this.state;
+    if (showSettings) {
+      return null;
+    }
+    if (activeScreen === "start") {
+      return (
+        <StartScreen
+          onSetActiveScreen={this.handleSetActiveScreen}
+          onSetJobItemField={this.handleSetJobItemField}
+          jobItem={jobItem}
+        />
+      );
+    } else if (activeScreen === "detail") {
+      return (
+        <DetailScreen
+          fileName={fileName || ""}
+          jobItem={jobItem}
+          onFileUpload={this.handleFileUpload}
+          onSetActiveScreen={this.handleSetActiveScreen}
+          onSetJobItemField={this.handleSetJobItemField}
+        />
+      );
+    }
+    return null;
+  }
+
   render() {
     const { expanded } = this.state;
     return (
@@ -62,6 +117,7 @@ export default class CSVConnectorContainer extends Component {
                 onClick={this.toggleSettings}
               />
             </div>
+            {this.renderJobItemScreen()}
             {this.renderSettings()}
           </Components.CardBody>
         </Components.Card>
