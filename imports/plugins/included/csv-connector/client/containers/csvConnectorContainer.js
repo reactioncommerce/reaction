@@ -14,59 +14,153 @@ class CSVConnectorContainer extends Component {
     this.state = {
       activeScreen: "start",
       dataTypeOptions: getDataTypeOptions(),
+      errors: {},
       expanded: true,
-      fileUpload: {},
       jobItem: {
-        jobType: "import"
+        jobType: "import",
+        fileUpload: ""
       },
+      mappingName: "",
       mappingOptions: [],
       showSettings: false
     };
+  }
+
+  getValidationErrors() {
+    const { activeScreen, jobItem } = this.state;
+    const { collection, fileUpload, name } = jobItem;
+    const errors = {};
+    if (activeScreen === "detail") {
+      if (!name) {
+        errors.name = [{ name: "name", message: "Job name is required." }];
+      } else {
+        errors.name = [];
+      }
+      if (!collection) {
+        errors.collection = [{ name: "collection", message: "Data type is required." }];
+      } else {
+        errors.collection = [];
+      }
+      if (!fileUpload.name) {
+        errors.fileUpload = [{ name: "fileUpload", message: "File is required." }];
+      } else {
+        errors.fileUpload = [];
+      }
+    }
+    return errors;
   }
 
   handleCardExpand = () => {
     this.setState({ expanded: !this.state.expanded });
   }
 
-  handleFileUpload = (acceptedFiles) => {
-    const filesArray = Array.from(acceptedFiles);
-    if (filesArray.length === 0) return;
-    const fileUpload = filesArray[0];
-    this.setState({ fileUpload });
-  }
+  handleSetActiveScreen = (activeScreen, validate = true) => {
+    // When clicking back, there's no need to validate form
+    if (validate) {
+      const errors = this.getValidationErrors();
 
-  handleSetActiveScreen = (activeScreen) => {
-    this.setState({ activeScreen });
+      // If any field has validation error, return right away
+      for (const field in errors) {
+        if (errors[field].length > 0) {
+          return this.setState({ errors });
+        }
+      }
+    }
+    return this.setState({ activeScreen });
   }
 
   handleSetJobItemField = (field, value) => {
-    const { jobItem } = this.state;
+    const { errors, jobItem, mappingOptions } = this.state;
     const newValue = {};
     newValue[field] = value;
+
+    if (field === "collection") {
+      if (value) {
+        const mappings = Mappings.find({ collection: value }).fetch();
+        const newMappingOptions = mappings.map((mapping) => ({ value: mapping._id, label: mapping.name }));
+        newMappingOptions.push({
+          value: "create",
+          label: "Create new mapping"
+        });
+        this.setState({ mappingOptions: newMappingOptions });
+        newValue.mappingId = newMappingOptions[0].value;
+      } else {
+        this.setState({ mappingOptions: [] });
+        newValue.mappingId = "";
+      }
+    }
+
+    if (field === "mappingId") {
+      if (value === "create" || mappingOptions.length === 0) {
+        this.setState({ mappingName: "" });
+      } else {
+        const selectedMapping = mappingOptions.find((option) => option.value === value);
+        this.setState({ mappingName: selectedMapping.label });
+      }
+    }
+
     const newJobItem = {
       ...jobItem,
       ...newValue
     };
 
-    this.setState({ jobItem: newJobItem });
-
-    if (field === "collection") {
-      const mappings = Mappings.find({ collection: value }).fetch();
-      const mappingOptions = mappings.map((mapping) => ({ value: mapping._id, label: mapping.name }));
-      mappingOptions.push({
-        value: "create",
-        label: "Create new mapping"
-      });
-      this.setState({ mappingOptions });
-    }
+    this.setState({ jobItem: newJobItem }, () => {
+      if (errors[field]) { // means that the field already had validation error before
+        const newErrors = this.getValidationErrors();
+        this.setState({ errors: newErrors });
+      }
+    });
   }
 
   handleSubmitJobItem = () => {
     return;
   }
 
-  toggleSettings = () => {
-    this.setState({ showSettings: !this.state.showSettings });
+  renderJobItemScreen() {
+    const {
+      activeScreen,
+      errors,
+      dataTypeOptions,
+      jobItem,
+      mappingName,
+      mappingOptions,
+      showSettings
+    } = this.state;
+
+    if (showSettings) {
+      return null;
+    }
+
+    if (activeScreen === "start") {
+      return (
+        <StartScreen
+          onSetActiveScreen={this.handleSetActiveScreen}
+          onSetJobItemField={this.handleSetJobItemField}
+          jobItem={jobItem}
+        />
+      );
+    } else if (activeScreen === "detail") {
+      return (
+        <DetailScreen
+          dataTypeOptions={dataTypeOptions}
+          errors={errors}
+          jobItem={jobItem}
+          mappingOptions={mappingOptions}
+          onDone={this.handleSubmitJobItem}
+          onSetActiveScreen={this.handleSetActiveScreen}
+          onSetJobItemField={this.handleSetJobItemField}
+        />
+      );
+    }
+    return (
+      <MappingScreen
+        jobItem={jobItem}
+        mappingName={mappingName}
+        onDone={this.handleSubmitJobItem}
+        onSetActiveScreen={this.handleSetActiveScreen}
+        onSetJobItemField={this.handleSetJobItemField}
+      />
+    );
   }
 
   renderSettings() {
@@ -93,51 +187,23 @@ class CSVConnectorContainer extends Component {
     return null;
   }
 
-  renderJobItemScreen() {
-    const {
-      activeScreen,
-      dataTypeOptions,
-      fileUpload: {
-        name: fileName
-      },
-      jobItem,
-      mappingOptions,
-      showSettings
-    } = this.state;
-
-    if (showSettings) {
-      return null;
-    }
-
-    if (activeScreen === "start") {
+  renderSettingsButton() {
+    const { activeScreen, showSettings } = this.state;
+    if (showSettings || activeScreen === "start") {
       return (
-        <StartScreen
-          onSetActiveScreen={this.handleSetActiveScreen}
-          onSetJobItemField={this.handleSetJobItemField}
-          jobItem={jobItem}
-        />
-      );
-    } else if (activeScreen === "detail") {
-      return (
-        <DetailScreen
-          dataTypeOptions={dataTypeOptions}
-          fileName={fileName || ""}
-          jobItem={jobItem}
-          mappingOptions={mappingOptions}
-          onDone={this.handleSubmitJobItem}
-          onFileUpload={this.handleFileUpload}
-          onSetActiveScreen={this.handleSetActiveScreen}
-          onSetJobItemField={this.handleSetJobItemField}
-        />
+        <div className="pull-right">
+          <Components.IconButton
+            icon="fa fa-gear"
+            onClick={this.toggleSettings}
+          />
+        </div>
       );
     }
-    return (
-      <MappingScreen
-        jobItem={jobItem}
-        onDone={this.handleSubmitJobItem}
-        onSetActiveScreen={this.handleSetActiveScreen}
-      />
-    );
+    return null;
+  }
+
+  toggleSettings = () => {
+    this.setState({ showSettings: !this.state.showSettings });
   }
 
   render() {
@@ -152,14 +218,11 @@ class CSVConnectorContainer extends Component {
             actAsExpander
           />
           <Components.CardBody expandable>
-            <div className="pull-right">
-              <Components.IconButton
-                icon="fa fa-gear"
-                onClick={this.toggleSettings}
-              />
+            <div className="csv-connector">
+              {this.renderSettingsButton()}
+              {this.renderJobItemScreen()}
+              {this.renderSettings()}
             </div>
-            {this.renderJobItemScreen()}
-            {this.renderSettings()}
           </Components.CardBody>
         </Components.Card>
       </Components.CardGroup>
@@ -183,4 +246,4 @@ registerComponent("CSVConnector", CSVConnectorContainer, [
   composeWithTracker(composer)
 ]);
 
-export default compose(composeWithTracker(composer), )(CSVConnectorContainer);
+export default compose(composeWithTracker(composer))(CSVConnectorContainer);

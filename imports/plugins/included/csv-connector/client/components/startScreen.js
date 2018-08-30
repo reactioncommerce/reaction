@@ -30,17 +30,15 @@ class StartScreen extends Component {
       <div>
         <div className="row">
           <h4>Start a new job</h4>
-          <div className="selectable-list">
-            <SelectableList
-              components={{
-                SelectableItem: (listProps) => (<SelectableItem item={listProps.item} />)
-              }}
-              options={jobTypeOptions}
-              name="jobType"
-              value={jobType}
-              onChange={this.handleChangeJobType}
-            />
-          </div>
+          <SelectableList
+            components={{
+              SelectableItem: (listProps) => (<SelectableItem item={listProps.item} />)
+            }}
+            options={jobTypeOptions}
+            name="jobType"
+            value={jobType}
+            onChange={this.handleChangeJobType}
+          />
         </div>
         <div className="row pull-right mt20 mb20">
           <Button onClick={this.handleClickNext}>Next</Button>
