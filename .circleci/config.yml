@@ -62,60 +62,9 @@ jobs:
             - packages/file-collections-sa-gridfs/node_modules
           key: v1-dependencies-{{ checksum "packages/file-collections-sa-gridfs/package.json" }}
 
-  deploy:
-    docker:
-      - image: circleci/node:8.6.0
-
-    working_directory: ~/repo
-
-    steps:
-      - checkout
-
-      - restore_cache:
-          keys:
-            - v1-dependencies-{{ checksum "package.json" }}
-            # fallback to using the latest cache if no exact match is found
-            - v1-dependencies-
-
-      - restore_cache:
-          keys:
-            - v1-dependencies-{{ checksum "packages/file-collections/package.json" }}
-            # fallback to using the latest cache if no exact match is found
-            - v1-dependencies-
-
-      - restore_cache:
-          keys:
-            - v1-dependencies-{{ checksum "packages/file-collections-sa-base/package.json" }}
-            # fallback to using the latest cache if no exact match is found
-            - v1-dependencies-
-
-      - restore_cache:
-          keys:
-            - v1-dependencies-{{ checksum "packages/file-collections-sa-gridfs/package.json" }}
-            # fallback to using the latest cache if no exact match is found
-            - v1-dependencies-
-
-      - run: echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/.npmrc
-
-      - run:
-          name: Publish to NPM and GitHub
-          command: npx lerna publish --conventional-commits --yes
-          environment:
-            GIT_AUTHOR_EMAIL: rc-publisher@reactioncommerce.com
-            GIT_AUTHOR_NAME: rc-publisher
-            GIT_COMMITTER_EMAIL: rc-publisher@reactioncommerce.com
-            GIT_COMMITTER_NAME: rc-publisher
-
 workflows:
   version: 2
   build_deploy:
     jobs:
       - build:
           context: reaction-publish-semantic-release
-      - deploy:
-          context: reaction-publish-semantic-release
-          requires:
-            - build
-          filters:
-            branches:
-              only: master
