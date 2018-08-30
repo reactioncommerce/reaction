@@ -3,12 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-<a name="0.5.0"></a>
-# [0.5.0](https://github.com/reactioncommerce/reaction-file-collections/compare/@reactioncommerce/file-collections@0.4.5...@reactioncommerce/file-collections@0.5.0) (2018-08-30)
+<a name="0.6.0"></a>
+## [0.6.0](https://github.com/reactioncommerce/reaction-file-collections/compare/@reactioncommerce/file-collections@0.5.0...@reactioncommerce/file-collections@0.6.0) (2018-08-30)
 
 
 ### Bug Fixes
 
+* update tus-node-server to 0.3.1 ([77607ff](https://github.com/reactioncommerce/reaction-file-collections/commit/77607ff))
 * **file-collection:** update and pin tus deps ([5fac24a](https://github.com/reactioncommerce/reaction-file-collections/commit/5fac24a))
 * update tus-node-server to 0.3.0 ([7484839](https://github.com/reactioncommerce/reaction-file-collections/commit/7484839))
 
