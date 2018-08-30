@@ -131,7 +131,6 @@ export const methods = {
     }
     const pkg = Packages.findOne({ name: "connector-settings-sftp" });
     const { settings: { ipAddress, port, username, password } } = pkg || {};
-    console.log(ipAddress, port, username, password);
     const sftpClient = new Client();
     sftpClient.connect({
       host: ipAddress,

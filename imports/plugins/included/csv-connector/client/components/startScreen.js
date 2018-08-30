@@ -14,7 +14,7 @@ class StartScreen extends Component {
   }
 
   render() {
-    const { jobItem: { jobType }, onSetActiveScreen } = this.props;
+    const { jobItem: { jobType } } = this.props;
     const jobTypeOptions = [{
       id: "import",
       label: "Import from CSV",
@@ -28,19 +28,21 @@ class StartScreen extends Component {
 
     return (
       <div>
-        <h4>Start a new job</h4>
-        <div className="selectable-list">
-          <SelectableList
-            components={{
-              SelectableItem: (listProps) => (<SelectableItem item={listProps.item} />)
-            }}
-            options={jobTypeOptions}
-            name="jobType"
-            value={jobType}
-            onChange={this.handleChangeJobType}
-          />
+        <div className="row">
+          <h4>Start a new job</h4>
+          <div className="selectable-list">
+            <SelectableList
+              components={{
+                SelectableItem: (listProps) => (<SelectableItem item={listProps.item} />)
+              }}
+              options={jobTypeOptions}
+              name="jobType"
+              value={jobType}
+              onChange={this.handleChangeJobType}
+            />
+          </div>
         </div>
-        <div className="pull-right">
+        <div className="row pull-right mt20 mb20">
           <Button onClick={this.handleClickNext}>Next</Button>
         </div>
       </div>

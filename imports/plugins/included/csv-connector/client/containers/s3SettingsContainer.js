@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import PropTypes from "prop-types";
 import { compose } from "recompose";
 import Alert from "sweetalert2";
 import { composeWithTracker } from "@reactioncommerce/reaction-components";
@@ -9,7 +10,34 @@ import { S3Settings } from "../components";
 
 const wrapComponent = (Comp) => (
   class S3SettingsContainer extends Component {
-    handleSubmit = (values) => {
+    static propTypes = {
+      pkg: PropTypes.object
+    }
+
+    constructor(props) {
+      super(props);
+      this.state = {
+        currentPkg: props.pkg
+      };
+    }
+
+    handleFieldChange = (value, field) => {
+      const { currentPkg } = this.state;
+      const newSettings = {};
+      newSettings[field] = value;
+      const newPkg = {
+        ...currentPkg,
+        settings: {
+          ...currentPkg.settings,
+          ...newSettings
+        }
+      };
+      this.setState({ currentPkg: newPkg });
+    }
+
+    handleSubmit = () => {
+      const { currentPkg: { settings: { accessKey, secretAccessKey, bucket } } } = this.state;
+      const values = { accessKey, bucket, secretAccessKey };
       Meteor.call("csvConnector/updateS3Settings", values, (error) => {
         if (error) {
           return Alert(i18next.t("app.error"), error.message, "error");
@@ -37,8 +65,11 @@ const wrapComponent = (Comp) => (
     }
 
     render() {
+      const { currentPkg } = this.state;
       return (
         <Comp
+          currentPkg={currentPkg}
+          onFieldChange={this.handleFieldChange}
           onSubmit={this.handleSubmit}
           onTestForImport={this.handleTestForImport}
           onTestForExport={this.handleTestForExport}

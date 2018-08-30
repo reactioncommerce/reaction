@@ -3,22 +3,9 @@ import PropTypes from "prop-types";
 import { Components } from "@reactioncommerce/reaction-components";
 
 class S3Settings extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      pkg: props.pkg
-    };
-  }
-
   handleSubmit = (event) => {
-    const { onSubmit } = this.props;
     event.preventDefault();
-    const { pkg: { settings: { accessKey, secretAccessKey, bucket } } } = this.state;
-    onSubmit({
-      accessKey,
-      secretAccessKey,
-      bucket
-    });
+    this.props.onSubmit();
   }
 
   handleTestForImport = () => {
@@ -30,21 +17,11 @@ class S3Settings extends Component {
   }
 
   handleFieldChange = (event, value, field) => {
-    const { pkg } = this.state;
-    const newSettings = {};
-    newSettings[field] = value;
-    const newPkg = {
-      ...pkg,
-      settings: {
-        ...pkg.settings,
-        ...newSettings
-      }
-    };
-    this.setState({ pkg: newPkg });
+    this.props.onFieldChange(value, field);
   }
 
   render() {
-    const { pkg } = this.state;
+    const { currentPkg: pkg } = this.props;
     return (
       <form onSubmit={this.handleSubmit}>
         <div className="row" style={{ margin: "20px 0" }}>
@@ -114,10 +91,11 @@ class S3Settings extends Component {
 }
 
 S3Settings.propTypes = {
+  currentPkg: PropTypes.object,
+  onFieldChange: PropTypes.func,
   onSubmit: PropTypes.func,
   onTestForExport: PropTypes.func,
-  onTestForImport: PropTypes.func,
-  pkg: PropTypes.object
+  onTestForImport: PropTypes.func
 };
 
 export default S3Settings;

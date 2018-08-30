@@ -1,29 +1,38 @@
 import React, { Component } from "react";
-import { Components, registerComponent } from "@reactioncommerce/reaction-components";
-import { DetailScreen, StartScreen } from "../components";
+import { compose } from "recompose";
+import { Components, composeWithTracker, registerComponent } from "@reactioncommerce/reaction-components";
+import { Meteor } from "meteor/meteor";
+import { Mappings } from "../../lib/collections";
+import { getDataTypeOptions } from "../../lib/common/conversionMaps";
+import { DetailScreen, MappingScreen, StartScreen } from "../components";
 import S3SettingsContainer from "./s3SettingsContainer";
 import SFTPSettingsContainer from "./sftpSettingsContainer";
 
-export default class CSVConnectorContainer extends Component {
+class CSVConnectorContainer extends Component {
   constructor(props) {
     super(props);
     this.state = {
       activeScreen: "start",
+      dataTypeOptions: getDataTypeOptions(),
       expanded: true,
       fileUpload: {},
       jobItem: {
         jobType: "import"
       },
+      mappingOptions: [],
       showSettings: false
     };
   }
 
-  toggleSettings = () => {
-    this.setState({ showSettings: !this.state.showSettings });
-  }
-
   handleCardExpand = () => {
     this.setState({ expanded: !this.state.expanded });
+  }
+
+  handleFileUpload = (acceptedFiles) => {
+    const filesArray = Array.from(acceptedFiles);
+    if (filesArray.length === 0) return;
+    const fileUpload = filesArray[0];
+    this.setState({ fileUpload });
   }
 
   handleSetActiveScreen = (activeScreen) => {
@@ -38,14 +47,26 @@ export default class CSVConnectorContainer extends Component {
       ...jobItem,
       ...newValue
     };
+
     this.setState({ jobItem: newJobItem });
+
+    if (field === "collection") {
+      const mappings = Mappings.find({ collection: value }).fetch();
+      const mappingOptions = mappings.map((mapping) => ({ value: mapping._id, label: mapping.name }));
+      mappingOptions.push({
+        value: "create",
+        label: "Create new mapping"
+      });
+      this.setState({ mappingOptions });
+    }
   }
 
-  handleFileUpload = (acceptedFiles) => {
-    const filesArray = Array.from(acceptedFiles);
-    if (filesArray.length === 0) return;
-    const fileUpload = filesArray[0];
-    this.setState({ fileUpload });
+  handleSubmitJobItem = () => {
+    return;
+  }
+
+  toggleSettings = () => {
+    this.setState({ showSettings: !this.state.showSettings });
   }
 
   renderSettings() {
@@ -73,10 +94,21 @@ export default class CSVConnectorContainer extends Component {
   }
 
   renderJobItemScreen() {
-    const { activeScreen, fileUpload: { name: fileName }, jobItem, showSettings } = this.state;
+    const {
+      activeScreen,
+      dataTypeOptions,
+      fileUpload: {
+        name: fileName
+      },
+      jobItem,
+      mappingOptions,
+      showSettings
+    } = this.state;
+
     if (showSettings) {
       return null;
     }
+
     if (activeScreen === "start") {
       return (
         <StartScreen
@@ -88,15 +120,24 @@ export default class CSVConnectorContainer extends Component {
     } else if (activeScreen === "detail") {
       return (
         <DetailScreen
+          dataTypeOptions={dataTypeOptions}
           fileName={fileName || ""}
           jobItem={jobItem}
+          mappingOptions={mappingOptions}
+          onDone={this.handleSubmitJobItem}
           onFileUpload={this.handleFileUpload}
           onSetActiveScreen={this.handleSetActiveScreen}
           onSetJobItemField={this.handleSetJobItemField}
         />
       );
     }
-    return null;
+    return (
+      <MappingScreen
+        jobItem={jobItem}
+        onDone={this.handleSubmitJobItem}
+        onSetActiveScreen={this.handleSetActiveScreen}
+      />
+    );
   }
 
   render() {
@@ -126,4 +167,20 @@ export default class CSVConnectorContainer extends Component {
   }
 }
 
-registerComponent("CSVConnector", CSVConnectorContainer);
+/**
+ * @name composer
+ * @summary Subscribes the container to Mappings
+ * @param {Object} props - Props passed down from parent components
+ * @param {Function} onData - Callback to execute with props
+ * @returns {undefined}
+ */
+function composer(props, onData) {
+  Meteor.subscribe("Mappings").ready();
+  return onData(null, { ...props });
+}
+
+registerComponent("CSVConnector", CSVConnectorContainer, [
+  composeWithTracker(composer)
+]);
+
+export default compose(composeWithTracker(composer), )(CSVConnectorContainer);

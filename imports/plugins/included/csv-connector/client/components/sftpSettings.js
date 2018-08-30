@@ -5,31 +5,9 @@ import { Components } from "@reactioncommerce/reaction-components";
 import { i18next } from "/client/api";
 
 class SFTPSettings extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      pkg: props.pkg
-    };
-  }
-
   handleSubmit = (event) => {
-    const { onSubmit } = this.props;
     event.preventDefault();
-    const { pkg: { settings: { ipAddress, port, username, password } } } = this.state;
-
-    const numPort = Number(port);
-
-    if (isNaN(numPort)) {
-      Alert(i18next.t("app.error"), i18next.t("admin.alerts.portNaN"), "error");
-      return;
-    }
-
-    onSubmit({
-      ipAddress,
-      port: numPort,
-      username,
-      password
-    });
+    this.props.onSubmit();
   }
 
   handleTestForImportAndExport = () => {
@@ -37,21 +15,11 @@ class SFTPSettings extends Component {
   }
 
   handleFieldChange = (event, value, field) => {
-    const { pkg } = this.state;
-    const newSettings = {};
-    newSettings[field] = value;
-    const newPkg = {
-      ...pkg,
-      settings: {
-        ...pkg.settings,
-        ...newSettings
-      }
-    };
-    this.setState({ pkg: newPkg });
+    this.props.onFieldChange(value, field);
   }
 
   render() {
-    const { pkg } = this.state;
+    const { currentPkg: pkg } = this.props;
     return (
       <form onSubmit={this.handleSubmit}>
         <div className="row" style={{ margin: "20px 0" }}>
@@ -127,9 +95,10 @@ class SFTPSettings extends Component {
 }
 
 SFTPSettings.propTypes = {
+  currentPkg: PropTypes.object,
+  onFieldChange: PropTypes.func,
   onSubmit: PropTypes.func,
-  onTestForImportAndExport: PropTypes.func,
-  pkg: PropTypes.object
+  onTestForImportAndExport: PropTypes.func
 };
 
 export default SFTPSettings;

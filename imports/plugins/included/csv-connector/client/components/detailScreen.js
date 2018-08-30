@@ -7,59 +7,62 @@ import SelectableList from "@reactioncommerce/components/SelectableList/v1";
 import SelectableItem from "@reactioncommerce/components/SelectableItem/v1";
 
 class DetailScreen extends Component {
-  handleClickBack = () => {
-    this.props.onSetActiveScreen("start");
-  }
-
-  handleClickNext = () => {
-    this.props.onSetActiveScreen("detail");
+  handleChangeFileSource = (value) => {
+    this.props.onSetJobItemField("fileSource", value);
   }
 
   handleChangeJobSubType = (value) => {
     this.props.onSetJobItemField("jobSubType", value);
   }
 
-  handleChangeFileSource = (value) => {
-    this.props.onSetJobItemField("fileSource", value);
+  handleClickBack = () => {
+    this.props.onSetActiveScreen("start");
+  }
+
+  handleClickDone = () => {
+    this.props.onDone();
+  }
+
+  handleClickNext = () => {
+    this.props.onSetActiveScreen("mapping");
+  }
+
+  handleFieldChange = (event, value, field) => {
+    this.props.onSetJobItemField(field, value);
   }
 
   handleFileUpload = (acceptedFiles) => {
     this.props.onFileUpload(acceptedFiles);
   }
 
-  renderJobTypeText() {
-    const { jobItem: { jobType } } = this.props;
-    if (jobType === "import") {
-      return <h4>Import</h4>;
-    }
-    return <h4>Export</h4>;
+  handleSelectChange = (value, field) => {
+    this.props.onSetJobItemField(field, value);
   }
 
-  renderJobSubTypeSelection() {
-    const { jobItem: { jobSubType } } = this.props;
-    const jobSubTypeOptions = [{
-      id: "new",
-      label: "New job",
-      value: "new"
-    },
-    {
-      id: "fromPrevious",
-      label: "From previous job",
-      value: "fromPrevious"
-    }];
+  renderDataTypeSelection() {
+    const { dataTypeOptions, jobItem: { collection } } = this.props;
     return (
-      <div className="selectable-list">
-        <SelectableList
-          components={{
-            SelectableItem: (listProps) => (<SelectableItem item={listProps.item} />)
-          }}
-          options={jobSubTypeOptions}
-          name="jobSubType"
-          value={jobSubType || "new"}
-          onChange={this.handleChangeJobSubType}
-        />
-      </div>
+      <Components.Select
+        clearable
+        label="Data type"
+        name="collection"
+        onChange={this.handleSelectChange}
+        options={dataTypeOptions}
+        value={collection || ""}
+      />
     );
+  }
+
+  renderFileName() {
+    const { fileName } = this.props;
+    if (fileName) {
+      if (fileName.length < 30) {
+        return (<span>{fileName}</span>);
+      }
+      const subFileName = `...${fileName.substring(fileName.length - 27, fileName.length)}`;
+      return (<span>{subFileName}</span>);
+    }
+    return null;
   }
 
   renderFileSourceSelection() {
@@ -97,18 +100,6 @@ class DetailScreen extends Component {
     );
   }
 
-  renderFileName() {
-    const { fileName } = this.props;
-    if (fileName) {
-      if (fileName.length < 30) {
-        return (<span>{fileName}</span>);
-      }
-      const subFileName = `...${fileName.substring(fileName.length - 27, fileName.length)}`;
-      return (<span>{subFileName}</span>);
-    }
-    return null;
-  }
-
   renderFileUpload() {
     const { jobItem: { jobType, fileSource } } = this.props;
     if (jobType === "import" && fileSource === "manual") {
@@ -137,6 +128,77 @@ class DetailScreen extends Component {
     return null;
   }
 
+  renderJobName() {
+    const { jobItem: { name } } = this.props;
+    return (
+      <Components.TextField
+        i18nKeyLabel="admin.dashboard.jobName"
+        label="Job name"
+        name="name"
+        onChange={this.handleFieldChange}
+        ref="nameInput"
+        value={name || ""}
+      />
+    );
+  }
+
+  renderJobSubTypeSelection() {
+    const { jobItem: { jobSubType } } = this.props;
+    const jobSubTypeOptions = [{
+      id: "new",
+      label: "New job",
+      value: "new"
+    },
+    {
+      id: "fromPrevious",
+      label: "From previous job",
+      value: "fromPrevious"
+    }];
+    return (
+      <div className="selectable-list">
+        <SelectableList
+          components={{
+            SelectableItem: (listProps) => (<SelectableItem item={listProps.item} />)
+          }}
+          options={jobSubTypeOptions}
+          name="jobSubType"
+          value={jobSubType || "new"}
+          onChange={this.handleChangeJobSubType}
+        />
+      </div>
+    );
+  }
+
+  renderJobTypeText() {
+    const { jobItem: { jobType } } = this.props;
+    if (jobType === "import") {
+      return <h4>Import</h4>;
+    }
+    return <h4>Export</h4>;
+  }
+
+  renderMappingSelection() {
+    const { mappingOptions, jobItem: { mappingId } } = this.props;
+    return (
+      <Components.Select
+        clearable={false}
+        label="Choose a mapping template"
+        name="mappingId"
+        onChange={this.handleSelectChange}
+        options={mappingOptions}
+        value={mappingId || "create"}
+      />
+    );
+  }
+
+  renderNextOrDoneButton() {
+    const { jobItem: { fileSource, jobType } } = this.props;
+    if (jobType === "import" && fileSource === "manual") {
+      return <Button onClick={this.handleClickNext}>Next</Button>;
+    }
+    return <Button onClick={this.handleClickDone}>Done</Button>;
+  }
+
   render() {
     return (
       <div>
@@ -147,10 +209,15 @@ class DetailScreen extends Component {
             {this.renderFileSourceSelection()}
             {this.renderFileUpload()}
           </div>
+          <div className="col-sm-12 col-md-6">
+            {this.renderDataTypeSelection()}
+            {this.renderMappingSelection()}
+            {this.renderJobName()}
+          </div>
         </div>
-        <div className="row pull-right">
+        <div className="row pull-right mt20 mb20">
           <Button actionType="secondary" onClick={this.handleClickBack} className="mr20">Back</Button>
-          <Button onClick={this.handleClickNext}>Next</Button>
+          {this.renderNextOrDoneButton()}
         </div>
       </div>
     );
@@ -158,8 +225,11 @@ class DetailScreen extends Component {
 }
 
 DetailScreen.propTypes = {
+  dataTypeOptions: PropTypes.arrayOf(PropTypes.object),
   fileName: PropTypes.string,
   jobItem: PropTypes.object,
+  mappingOptions: PropTypes.arrayOf(PropTypes.object),
+  onDone: PropTypes.func,
   onFileUpload: PropTypes.func,
   onSetActiveScreen: PropTypes.func,
   onSetJobItemField: PropTypes.func
