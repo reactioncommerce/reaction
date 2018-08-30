@@ -3,6 +3,33 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.5.0"></a>
+# [0.5.0](https://github.com/reactioncommerce/reaction-file-collections/compare/@reactioncommerce/file-collections@0.4.5...@reactioncommerce/file-collections@0.5.0) (2018-08-30)
+
+
+### Bug Fixes
+
+* **file-collection:** update and pin tus deps ([5fac24a](https://github.com/reactioncommerce/reaction-file-collections/commit/5fac24a))
+* update tus-node-server to 0.3.0 ([7484839](https://github.com/reactioncommerce/reaction-file-collections/commit/7484839))
+
+
+
+<a name="0.5.0"></a>
+# 0.5.0 (2018-04-26)
+
+
+### Bug Fixes
+
+* download handler now works correctly when filename contains a `+` ([4db1bf3](https://github.com/reactioncommerce/reaction-file-collections/commit/4db1bf3)), closes [#6](https://github.com/reactioncommerce/reaction-file-collections/issues/6)
+
+
+### Features
+
+* add MongoFileCollection class ([299d635](https://github.com/reactioncommerce/reaction-file-collections/commit/299d635))
+
+
+
+
 <a name="0.4.5"></a>
 ## [0.4.5](https://github.com/reactioncommerce/reaction-file-collections/compare/@reactioncommerce/file-collections@0.4.4...@reactioncommerce/file-collections@0.4.5) (2018-03-06)
 
