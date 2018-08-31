@@ -1,7 +1,6 @@
 import _ from "lodash";
 import Logger from "@reactioncommerce/logger";
 import { Meteor } from "meteor/meteor";
-import { Roles } from "meteor/alanning:roles";
 import { Accounts, Groups } from "/lib/collections";
 import { lifecycle } from "recompose";
 import { composeWithTracker } from "./composer";
@@ -101,10 +100,7 @@ export function withCurrentAccount(component) {
     // shoppers should always be guests
     const isGuest = Reaction.hasPermission("guest");
     // but if a user has never logged in then they are anonymous
-    const isAnonymous = Roles.userIsInRole(user, "anonymous", shopId);
-    // this check for "anonymous" uses userIsInRole instead of hasPermission because hasPermission
-    // always return `true` when logged in as the owner.
-    // But in this case, the anonymous check should be false when a user is logged in
+    const isAnonymous = Reaction.hasPermission("anonymous", user._id, shopId, { appendOwner: false });
 
     onData(null, { currentAccount: isGuest && !isAnonymous && account });
   }, false)(component);
