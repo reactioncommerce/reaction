@@ -1,9 +1,8 @@
 import Hooks from "@reactioncommerce/hooks";
 import { Security } from "meteor/ongoworks:security";
-import { Roles } from "meteor/alanning:roles";
 import * as Collections from "/lib/collections";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
-
+/* eslint-disable require-jsdoc */
 const {
   Accounts,
   Packages,
@@ -49,9 +48,9 @@ export default function () {
         // if not passed, getShopId can default to primaryShopId if userId is not available in the context the code is run
         const shopId = Reaction.getUserShopId(userId) || Reaction.getShopId();
 
-        return Roles.userIsInRole(userId, arg.role, shopId);
+        return Reaction.hasPermission(arg.role, userId, shopId);
       }
-      return Roles.userIsInRole(userId, arg);
+      return Reaction.hasPermission(arg, userId);
     }
   });
 
