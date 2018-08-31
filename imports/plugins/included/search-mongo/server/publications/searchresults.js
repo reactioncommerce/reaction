@@ -2,7 +2,6 @@ import Logger from "@reactioncommerce/logger";
 import _ from "lodash";
 import escapeStringRegex from "escape-string-regexp";
 import { Meteor } from "meteor/meteor";
-import { Roles } from "meteor/alanning:roles";
 import { check, Match } from "meteor/check";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
 import { ProductSearch, OrderSearch, AccountSearch } from "/lib/collections";
@@ -18,7 +17,7 @@ function getProductFindTerm(searchTerm, searchTags, userId) {
   if (searchTags.length) {
     findTerm.hashtags = { $all: searchTags };
   }
-  if (!Roles.userIsInRole(userId, ["admin", "owner"], shopId)) {
+  if (!Reaction.hasPermission(["admin", "owner"], userId, shopId)) {
     findTerm.isVisible = true;
   }
   // Deletes the shopId field from "findTerm" for primary shop
