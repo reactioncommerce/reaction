@@ -53,7 +53,6 @@
     "deep-diff": "^0.3.8",
     "deep-equal": "^1.0.1",
     "dnd-core": "^2.5.4",
-    "es6-error": "^4.1.1",
     "escape-string-regexp": "^1.0.5",
     "express": "4.16.2",
     "faker": "^4.1.0",
