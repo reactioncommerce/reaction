@@ -6,7 +6,6 @@ class NavBarAdmin extends Component {
   static propTypes = {
     brandMedia: PropTypes.object,
     hasProperPermission: PropTypes.bool,
-    isAdmin: PropTypes.bool,
     searchEnabled: PropTypes.bool, // eslint-disable-line react/boolean-prop-naming
     shop: PropTypes.object,
     visibility: PropTypes.object.isRequired
@@ -106,21 +105,15 @@ class NavBarAdmin extends Component {
     }
   }
 
-  renderCartPanel() {
-    return (
-      <div className="cart-alert">
-        <Components.CartPanel />
-      </div>
-    );
-  }
-
   renderCartContainerAndPanel() {
     return (
       <div className="cart-container">
         <div className="cart">
           <Components.CartIcon />
         </div>
-        {this.renderCartPanel()}
+        <div className="cart-alert">
+          <Components.CartPanel />
+        </div>
       </div>
     );
   }
@@ -154,18 +147,37 @@ class NavBarAdmin extends Component {
     );
   }
 
+  renderCartDrawer() {
+    if (!Session.equals("displayCart", true)) {
+      return (
+        <div id="cart-drawer-container"> 
+        </div>
+      );
+    }
+    return (
+      <div id="cart-drawer-container" className="opened"> 
+        <Components.CartDrawerAdmin className="reaction-cart-drawer" {...this.props}/>
+      </div>
+    );
+  }
+
   render() {
     return (
-      <div className="rui navbar">
-        {this.props.visibility.hamburger && this.renderHamburgerButton()}
-        {this.props.visibility.brand && this.renderBrand()}
-        {this.props.visibility.tags && this.renderTagNav()}
-        {this.props.visibility.search && this.renderSearchButton()}
-        {this.props.visibility.notifications && this.renderNotificationIcon()}
-        {this.props.visibility.languages && this.renderLanguage()}
-        {this.props.visibility.currency && this.renderCurrency()}
-        {this.props.visibility.mainDropdown && this.renderMainDropdown()}
-        {this.props.visibility.cartContainer && this.renderCartContainerAndPanel()}
+      <div>
+        <div className="rui navbar">
+          {this.props.visibility.hamburger && this.renderHamburgerButton()}
+          {this.props.visibility.brand && this.renderBrand()}
+          {this.props.visibility.tags && this.renderTagNav()}
+          {this.props.visibility.search && this.renderSearchButton()}
+          {this.props.visibility.notifications && this.renderNotificationIcon()}
+          {this.props.visibility.languages && this.renderLanguage()}
+          {this.props.visibility.currency && this.renderCurrency()}
+          {this.props.visibility.mainDropdown && this.renderMainDropdown()}
+          {this.props.visibility.cartContainer && this.renderCartContainerAndPanel()}
+        </div>
+        <div>
+          {this.renderCartDrawer()}
+        </div>
       </div>
     );
   }

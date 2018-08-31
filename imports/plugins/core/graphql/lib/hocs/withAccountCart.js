@@ -19,7 +19,7 @@ export default (Component) => (
       }
       const variables = { accountId: viewerId, shopId };
       return (
-        <Query query={getAccountCart} variables={variables} fetchPolicy={"network-only"}>
+        <Query query={getAccountCart} variables={variables}>
           {({ loading, data, refetch, fetchMore }) => {
             const props = {
               ...this.props,
@@ -29,6 +29,7 @@ export default (Component) => (
             if (loading === false) {
               const { cart } = data;
               const { items: cartItems, _id } = cart || {};
+              props.cart = cart;
               props.cartItems = ((cartItems && cartItems.edges) || []).map((edge) => edge.node);
               props.cartId = _id;
               const { pageInfo } = cartItems || {};

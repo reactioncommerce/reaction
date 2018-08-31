@@ -31,7 +31,7 @@ type Tag implements Node & Deletable {
   subTags(after: ConnectionCursor, before: ConnectionCursor, first: ConnectionLimitInt, last: ConnectionLimitInt, sortOrder: SortOrder = asc, sortBy: TagSortByField = position): TagConnection
 
   "The shop to which this tag belongs"
-  shop: Shop
+  shop: Shop!
 
   "A unique URL-safe string representing this tag for links"
   slug: String

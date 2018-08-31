@@ -11,7 +11,7 @@ export default gql`
           slug,
           heroMediaUrl,
           position,
-          subTags (after: 200) {
+          subTags (first: $first) {
             edges {
               cursor
               node {
@@ -20,7 +20,7 @@ export default gql`
                 slug,
                 heroMediaUrl,
                 position,
-                subTags (after: 200) {
+                subTags (first: $first) {
                     edges {
                     cursor
                     node {

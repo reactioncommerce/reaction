@@ -15,7 +15,7 @@ import isSoldOut from "./isSoldOut";
  * @private
  * @returns {Object} The transformed variant
  */
-export function xformVariant(variant, variantPriceInfo, shopCurrencyCode, variantMedia) {
+export function xformVariant(variant, variantPriceInfo, shopCurrencyCode, variantMedia, variantOptions) {
   const primaryImage = variantMedia.find(({ toGrid }) => toGrid === 1) || null;
 
   return {
@@ -27,7 +27,7 @@ export function xformVariant(variant, variantPriceInfo, shopCurrencyCode, varian
     inventoryManagement: !!variant.inventoryManagement,
     inventoryPolicy: !!variant.inventoryPolicy,
     isLowQuantity: !!variant.isLowQuantity,
-    isSoldOut: !!variant.isSoldOut,
+    isSoldOut: isSoldOut(variantOptions || variant),
     isTaxable: !!variant.taxable,
     length: variant.length,
     lowInventoryWarningThreshold: variant.lowInventoryWarningThreshold,
@@ -140,7 +140,7 @@ export default async function createCatalogProduct(product, collections) {
 
       const variantMedia = catalogProductMedia.filter((media) => media.variantId === variant._id);
 
-      const newVariant = xformVariant(variant, priceInfo, shopCurrencyCode, variantMedia);
+      const newVariant = xformVariant(variant, priceInfo, shopCurrencyCode, variantMedia, variantOptions);
 
       if (variantOptions) {
         newVariant.options = variantOptions.map((option) => {
@@ -197,7 +197,7 @@ export default async function createCatalogProduct(product, collections) {
       { service: "googleplus", message: product.googleplusMsg },
       { service: "pinterest", message: product.pinterestMsg }
     ],
-    supportedFulfillmentTypes: product.supportedFulfillmentTypes,
+    supportedFulfillmentTypes: product.supportedFulfillmentTypes || ["shipping"],
     tagIds: product.hashtags,
     taxCode: product.taxCode,
     taxDescription: product.taxDescription,

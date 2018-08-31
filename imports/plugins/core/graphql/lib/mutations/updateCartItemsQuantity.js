@@ -1,42 +1,21 @@
 import gql from "graphql-tag";
 
 export default gql`
-  query cart($accountId: ID!, $shopId: ID!, $itemsAfterCursor: ConnectionCursor) {
-    cart: accountCartByAccountId(accountId: $accountId, shopId: $shopId) {
-      _id
-      createdAt
-      shop {
+  mutation updateCartItemsQuantity($input: UpdateCartItemsQuantityInput!) {
+    updateCartItemsQuantity(input: $input) {
+      cart {
         _id
-      }
-      updatedAt
-      expiresAt
-      totalItemQuantity
-      checkout {
-        summary {
-          discountTotal {
-            amount
-          }
-          fulfillmentTotal {
-            amount
-          }
-          itemTotal {
-            amount
-          }
-          taxTotal {
-            amount
-          }
-          total {
-            amount
-          }
+        account {
+          _id
         }
-      }
-      items(first: 20, after: $itemsAfterCursor) {
-        pageInfo {
-          hasNextPage
-          endCursor
+        createdAt
+        shop {
+          _id
         }
-        edges {
-          node {
+        updatedAt
+        expiresAt
+        items {
+          nodes {
             _id
             productConfiguration {
               productId
@@ -92,13 +71,10 @@ export default gql`
             variantTitle
             optionTitle
             updatedAt
-            currentQuantity
           }
         }
       }
-      account {
-        _id
-      }
+      clientMutationId
     }
   }
 `;

@@ -1,9 +1,9 @@
 import { registerComponent, composeWithTracker } from "@reactioncommerce/reaction-components";
 import { Meteor } from "meteor/meteor";
 import { Reaction } from "/client/api";
-import NavBarAdmin from "../components/navbarAdmin";
 import { Shops } from "/lib/collections";
 import { Media } from "/imports/plugins/core/files/client";
+import NavBarAdmin from "../components/navbarAdmin";
 
 export function composer(props, onData) {
   const shopSub = Meteor.subscribe("MerchantShops", Reaction.getShopsForUser(["admin"]));

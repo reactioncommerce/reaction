@@ -63,7 +63,7 @@ class BrowserRouter extends Component {
     if (foundPath) {
       const keys = [];
       const re = pathToRegexp(foundPath.route, keys); // Create parser with route regex
-      const values = re.exec(location.pathname); // Process values
+      const values = re.exec(decodeURIComponent(location.pathname)); // Process values
 
       // Create params object
       keys.forEach((key, index) => {
@@ -157,7 +157,6 @@ export function getRootNode() {
  * @summary Renders app inside of Apollo and React Router HOCs
  * @returns {undefined}
  */
-
 export function initBrowserRouter() {
   const apolloClient = initApollo();
 

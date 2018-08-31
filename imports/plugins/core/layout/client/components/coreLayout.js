@@ -49,8 +49,6 @@ class CoreLayout extends React.Component {
 
         {this.headerComponent}
 
-        <Blaze template="cartDrawer" className="reaction-cart-drawer" />
-
         <main>
           {mainNode}
         </main>

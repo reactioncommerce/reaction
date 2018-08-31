@@ -22,7 +22,7 @@ class VariantCustomer extends Component {
     const classes = classnames({
       "variant-detail": true,
       "variant-button": true,
-      "variant-detail-selected": variant._id === selectedVariantId
+      "variant-detail-selected": variant.variantId === selectedVariantId
     });
 
     return (

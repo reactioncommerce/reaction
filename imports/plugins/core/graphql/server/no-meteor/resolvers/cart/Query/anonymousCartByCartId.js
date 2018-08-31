@@ -13,7 +13,7 @@ import { decodeCartOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/ca
  * @return {Promise<Object>|undefined} A Cart object
  */
 export default async function anonymousCartByCartId(parentResult, args, context) {
-  let { cartId, token } = args;
+  const { cartId, token } = args;
 
   return context.queries.cart.anonymousCartByCartId(context, {
     cartId: decodeCartOpaqueId(cartId),

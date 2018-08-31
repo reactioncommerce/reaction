@@ -40,18 +40,38 @@ const wrapComponent = (Comp) =>
       // If PDP is accessed through a page refresh, component is reconstructed
       // when product is received from graphql HOC
       // componentDidUpdate will not be called, so media and selectedVariant should be set here
+      let selectedVariant;
       let selectedVariantId;
+      let selectedOptionId;
       let mediaList;
+      let featuredMedia;
       const { catalogItemProduct: product } = props;
-      if (product && product.variants && product.variants.length > 0) {
-        selectedVariantId = product.variants[0]._id;
-        mediaList = product.variants[0].media;
+      if (props.variantId && product && product.variants && product.variants.length > 0) {
+        const variants = product.variants;
+        // Check if any option is selected
+        for (const variant of variants) {
+          if (variant.options && variant.options.length > 0) {
+            const selectedOption = variant.options.find((option) => option.variantId === props.variantId);
+            if (selectedOption) {
+              selectedVariant = variant;
+              selectedOptionId = selectedOption.variantId;
+              featuredMedia = selectedOption.media ? selectedOption.media[0] : null;
+            }
+            break;
+          }
+        }
+        if (!selectedVariant) {
+          selectedVariant = product.variants[0]
+        }
+        selectedVariantId = selectedVariant.variantId;
+        mediaList = selectedVariant.media;
       }
       this.state = {
         cartQuantity: 1,
-        featuredMedia: null,
+        featuredMedia,
         media: mediaList,
-        selectedVariantId
+        selectedVariantId,
+        selectedOptionId
       };
     }
 
@@ -66,28 +86,54 @@ const wrapComponent = (Comp) =>
       // If accessed by clicking from product grid, component is not reconstructed
       // so selectedVariant should be set here
       const { catalogItemProduct: product, loadMoreCartItems } = this.props;
-      if (product && prevState && !prevState.selectedVariantId) {
-        this.handleSelectVariant(product.variants[0]);
-      }
       if (prevProps.hasMoreCartItems) {
         loadMoreCartItems();
+      }
+      if (product && prevState && !prevState.selectedVariantId) {
+        let selectedVariant;
+        let selectedOptionId;
+        if (this.props.variantId && product.variants && product.variants.length > 0) {
+          const variants = product.variants;
+          // Check if any option is selected
+          for (const variant of variants) {
+            if (variant.options && variant.options.length > 0) {
+              const selectedOption = variant.options.find((option) => option.variantId === this.props.variantId);
+              if (selectedOption) {
+                selectedVariant = variant;
+                selectedOptionId = selectedOption.variantId;
+                break;
+              }
+            }
+          }
+          if (!selectedVariant) {
+            selectedVariant = product.variants[0]
+          }
+        }
+        this.handleSelectVariant(selectedVariant, selectedOptionId);
       }
     }
 
     selectVariant = (variant, selectedOptionId) => {
-      const selectedVariantId = variant._id;
+      if (!variant) {
+        return;
+      }
+      const selectedVariantId = variant.variantId;
       let mediaList;
+      let featuredMedia;
       if (variant.primaryImage) {
         mediaList = variant.media;
         if (selectedOptionId) {
-          const selectedOption = variant.options.find((option) => option._id === selectedOptionId);
+          const selectedOption = variant.options.find((option) => option.variantId === selectedOptionId);
           if (selectedOption.primaryImage) {
             mediaList = selectedOption.media;
+            if (selectedOption.media && selectedOption.media.length > 0) {
+              featuredMedia = selectedOption.media[0]
+            }
           }
         }
       }
       this.setState({
-        featuredMedia: null,
+        featuredMedia,
         media: mediaList,
         selectedVariantId,
         selectedOptionId
@@ -98,16 +144,16 @@ const wrapComponent = (Comp) =>
       this.setState({ featuredMedia: media });
     }
 
-    handleSelectVariant = (variant) => {
-      this.selectVariant(variant);
+    handleSelectVariant = (variant, optionId) => {
+      this.selectVariant(variant, optionId);
     }
 
     handleSelectOption = (option) => {
       const { catalogItemProduct: product } = this.props;
       const { selectedVariantId } = this.state;
       // If we are clicking an option, it must be for the current selected variant
-      const variant = product.variants.find((vnt) => vnt._id === selectedVariantId);
-      this.selectVariant(variant, option._id);
+      const variant = product.variants.find((vnt) => vnt.variantId === selectedVariantId);
+      this.selectVariant(variant, option.variantId);
     };
 
     handleCartQuantityChange = (event, quantity) => {
@@ -120,11 +166,11 @@ const wrapComponent = (Comp) =>
       const { addCartItems, cartId, createCart, catalogItemProduct: product, shop, shopId } = this.props;
       const { cartQuantity, selectedVariantId, selectedOptionId } = this.state;
       let selectedOption;
-      const selectedVariant = product.variants.find((variant) => variant._id === selectedVariantId);
+      const selectedVariant = product.variants.find((variant) => variant.variantId === selectedVariantId);
       if (selectedOptionId) {
-        selectedOption = selectedVariant.options.find((option) => option._id === selectedOptionId);
+        selectedOption = selectedVariant.options.find((option) => option.variantId === selectedOptionId);
       }
-      if (selectedVariant.options && !selectedOptionId) {
+      if (selectedVariant && selectedVariant.options && !selectedOptionId) {
         Alerts.inline("Please choose an option before adding to cart", "warning", {
           placement: "productDetail",
           i18nKey: "productDetail.chooseOptions",
@@ -176,11 +222,11 @@ const wrapComponent = (Comp) =>
       if (!selectedVariantId) {
         return getDisplayPriceByCurrency(product.pricing);
       }
-      const selectedVariant = product.variants.find((variant) => variant._id === selectedVariantId);
+      const selectedVariant = product.variants.find((variant) => variant.variantId === selectedVariantId);
       if (!selectedOptionId) {
         return getDisplayPriceByCurrency(selectedVariant.pricing);
       }
-      const selectedOption = selectedVariant.options.find((option) => option._id === selectedOptionId);
+      const selectedOption = selectedVariant.options.find((option) => option.variantId === selectedOptionId);
       return getDisplayPriceByCurrency(selectedOption.pricing);
     }
 
@@ -243,9 +289,11 @@ function composer(props, onData) {
   }
 
   const productId = Reaction.Router.getParam("handle");
+  const variantId = Reaction.Router.getParam("variantId");
 
   onData(null, {
-    productId
+    productId,
+    variantId
   });
 }
 

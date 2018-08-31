@@ -11,7 +11,7 @@ class VariantListCustomer extends Component {
       const renderVariantsList = variants.map((variant, index) => (
         <VariantCustomer
           role="button"
-          key={variant._id}
+          key={variant.variantId}
           index={index}
           variant={variant}
           onSelectVariant={onSelectVariant}
@@ -37,14 +37,14 @@ class VariantListCustomer extends Component {
 
   renderChildVariants() {
     const { catalogItemProduct: product, selectedVariantId, selectedOptionId } = this.props;
-    const selectedVariant = product.variants.find((variant) => variant._id === selectedVariantId);
+    const selectedVariant = product.variants.find((variant) => variant.variantId === selectedVariantId);
     if (selectedVariant && selectedVariant.options && selectedVariant.options.length) {
       const renderOptions = selectedVariant.options.map((option, index) => {
         const classes = classnames({
           "btn": true,
           "btn-default": true,
           "variant-button": true,
-          "variant-detail-selected": option._id === selectedOptionId
+          "variant-detail-selected": option.variantId === selectedOptionId
         });
         const src = (option.media && option.media.length > 0) ? option.media[0].URLs.large : undefined;
 

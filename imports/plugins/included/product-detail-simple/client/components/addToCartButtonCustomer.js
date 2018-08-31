@@ -20,9 +20,9 @@ class AddToCartButtonCustomer extends Component {
       onCartQuantityChange(null, 1);
 
       let selectedOption;
-      const selectedVariant = product.variants.find((variant) => variant._id === selectedVariantId);
+      const selectedVariant = product.variants.find((variant) => variant.variantId === selectedVariantId);
       if (selectedOptionId) {
-        selectedOption = selectedVariant.options.find((option) => option._id === selectedOptionId);
+        selectedOption = selectedVariant.options.find((option) => option.variantId === selectedOptionId);
       }
       const selectedVariantOrOption = selectedOption || selectedVariant;
       const addToCartText = i18next.t("productDetail.addedToCart");

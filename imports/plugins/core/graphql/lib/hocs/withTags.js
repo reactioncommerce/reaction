@@ -12,8 +12,6 @@ export default (Component) => (
       shouldSkipGraphql: PropTypes.bool // Whether to skip this HOC's GraphQL query & data
     };
 
-    static ITEMS_INCREMENT = 200;
-
     render() {
       const { shouldSkipGraphql, shopId } = this.props;
 
@@ -46,7 +44,7 @@ export default (Component) => (
                 loadMore({
                   queryName: "tags",
                   pageInfo: data.tags.pageInfo,
-                  limit: 200,
+                  first: 200,
                   fetchMore
                 });
                 return <Component {...props} isLoading={true}/>;

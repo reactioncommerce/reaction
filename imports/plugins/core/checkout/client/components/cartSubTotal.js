@@ -6,11 +6,26 @@ import { Components } from "@reactioncommerce/reaction-components";
 class CartSubTotal extends Component {
   static propTypes = {
     cartCount: PropTypes.number,
-    cartDiscount: PropTypes.string,
-    cartShipping: PropTypes.string,
-    cartSubTotal: PropTypes.string,
-    cartTaxes: PropTypes.string,
-    cartTotal: PropTypes.string,
+    cartDiscount: PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.number
+    ]),
+    cartShipping: PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.number
+    ]),
+    cartSubTotal: PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.number
+    ]),
+    cartTaxes: PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.number
+    ]),
+    cartTotal: PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.number
+    ]),
     isLoading: PropTypes.bool
   }
 

@@ -2,12 +2,12 @@ import React from "react";
 import PropTypes from "prop-types";
 import { Components } from "@reactioncommerce/reaction-components";
 
-const CartDrawer = ({ productItems, pdpPath, handleRemoveItem, handleCheckout, handleImage, handleShowProduct }) => (
+const FilledCartDrawer = ({ productItems, pdpPath, handleRemoveItem, handleCheckout, handleImage, handleShowProduct, cart }) => (
   <div>
     <div className="cart-drawer-swiper-container">
       <div className="cart-drawer-swiper-wrapper">
         <div className="cart-drawer-swiper-slide">
-          <Components.CartSubTotal />
+          <Components.CartSubTotalCustomer cart={cart} />
         </div>
         {productItems.map((item) => (
           <div className="cart-drawer-swiper-slide" key={item._id}>
@@ -40,7 +40,7 @@ const CartDrawer = ({ productItems, pdpPath, handleRemoveItem, handleCheckout, h
   </div>
 );
 
-CartDrawer.propTypes = {
+FilledCartDrawer.propTypes = {
   handleCheckout: PropTypes.func,
   handleImage: PropTypes.func,
   handleRemoveItem: PropTypes.func,
@@ -49,4 +49,4 @@ CartDrawer.propTypes = {
   productItems: PropTypes.array
 };
 
-export default CartDrawer;
+export default FilledCartDrawer;

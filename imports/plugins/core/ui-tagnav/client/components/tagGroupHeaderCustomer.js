@@ -3,19 +3,11 @@ import PropTypes from "prop-types";
 import { Components, registerComponent } from "@reactioncommerce/reaction-components";
 
 class TagGroupHeaderCustomer extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      suggestions: [],
-      tag: this.props.tag
-    };
-  }
-
   render() {
     return (
       <div className="header">
         <Components.TagItemCustomer
-          tag={this.state.tag}
+          tag={this.props.tag}
           parentTag={this.props.parentTag}
           selectable={true}
           className="js-tagNav-item"

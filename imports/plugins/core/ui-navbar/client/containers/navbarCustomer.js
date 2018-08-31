@@ -1,11 +1,13 @@
 import { registerComponent, composeWithTracker } from "@reactioncommerce/reaction-components";
 import { compose } from "recompose";
 import { Reaction } from "/client/api";
-import NavBarCustomer from "../components/navbarCustomer";
 import { Media } from "/imports/plugins/core/files/client";
 import withShop from "/imports/plugins/core/graphql/lib/hocs/withShop";
 import withShopId from "/imports/plugins/core/graphql/lib/hocs/withShopId";
+import withViewer from "/imports/plugins/core/graphql/lib/hocs/withViewer";
+import withAccountCart from "/imports/plugins/core/graphql/lib/hocs/withAccountCart";
 import { getSlug } from "/lib/api";
+import NavBarCustomer from "../components/navbarCustomer";
 
 export function composer(props, onData) {
   const { shop } = props;
@@ -37,10 +39,18 @@ export function composer(props, onData) {
   });
 }
 
-registerComponent("NavBarCustomer", NavBarCustomer, [composeWithTracker(composer), withShopId, withShop]);
+registerComponent("NavBarCustomer", NavBarCustomer, [
+  composeWithTracker(composer),
+  withShopId,
+  withShop, 
+  withViewer,
+  withAccountCart]
+);
 
 export default compose(
   composeWithTracker(composer),
   withShopId,
   withShop,
+  withViewer,
+  withAccountCart,
 )(NavBarCustomer);

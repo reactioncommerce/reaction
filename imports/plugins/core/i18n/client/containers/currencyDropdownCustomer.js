@@ -16,7 +16,6 @@ const handlers = {
     const currency = value.split(" ");
     const currencyCode = currency[0];
     // update Accounts with the selected currency
-    // Meteor.call("accounts/setProfileCurrency", currencyName, this.refetchViewer);
     this.changeCurrency({ variables: { input: { accountId: this.viewer._id, currencyCode } } });
 
     const { cart, token } = getCart();

@@ -6,7 +6,7 @@ import { Meteor } from "meteor/meteor";
 import { getPrimaryMediaForOrderItem, ReactionProduct } from "/lib/api";
 import { Reaction } from "/client/api";
 import getCart from "/imports/plugins/core/cart/client/util/getCart";
-import CartDrawer from "../components/cartDrawer";
+import FilledCartDrawer from "../components/filledCartDrawer";
 
 // event handlers to pass in as props
 const handlers = {
@@ -77,7 +77,7 @@ function composer(props, onData) {
 }
 
 // register the containers
-registerComponent("CartDrawer", CartDrawer, [
+registerComponent("FilledCartDrawerAdmin", FilledCartDrawer, [
   withProps(handlers),
   composeWithTracker(composer)
 ]);
@@ -85,4 +85,4 @@ registerComponent("CartDrawer", CartDrawer, [
 export default compose(
   withProps(handlers),
   composeWithTracker(composer)
-)(CartDrawer);
+)(FilledCartDrawer);

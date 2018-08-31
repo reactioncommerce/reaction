@@ -147,18 +147,37 @@ class NavBarCustomer extends Component {
     );
   }
 
+  renderCartDrawer() {
+    if (!Session.equals("displayCart", true)) {
+      return (
+        <div id="cart-drawer-container"> 
+        </div>
+      );
+    }
+    return (
+      <div id="cart-drawer-container" className="opened"> 
+        <Components.CartDrawerCustomer className="reaction-cart-drawer" {...this.props}/>
+      </div>
+    );
+  }
+
   render() {
     return (
-      <div className="rui navbar">
-        {this.props.visibility.hamburger && this.renderHamburgerButton()}
-        {this.props.visibility.brand && this.renderBrand()}
-        {this.props.visibility.tags && this.renderTagNav()}
-        {this.props.visibility.search && this.renderSearchButton()}
-        {this.props.visibility.notifications && this.renderNotificationIcon()}
-        {this.props.visibility.languages && this.renderLanguage()}
-        {this.props.visibility.currency && this.renderCurrency()}
-        {this.props.visibility.mainDropdown && this.renderMainDropdown()}
-        {this.props.visibility.cartContainer && this.renderCartContainerAndPanel()}
+      <div>
+        <div className="rui navbar">
+          {this.props.visibility.hamburger && this.renderHamburgerButton()}
+          {this.props.visibility.brand && this.renderBrand()}
+          {this.props.visibility.tags && this.renderTagNav()}
+          {this.props.visibility.search && this.renderSearchButton()}
+          {this.props.visibility.notifications && this.renderNotificationIcon()}
+          {this.props.visibility.languages && this.renderLanguage()}
+          {this.props.visibility.currency && this.renderCurrency()}
+          {this.props.visibility.mainDropdown && this.renderMainDropdown()}
+          {this.props.visibility.cartContainer && this.renderCartContainerAndPanel()}
+        </div>
+        <div>
+          {this.renderCartDrawer()}
+        </div>
       </div>
     );
   }
