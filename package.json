@@ -23,7 +23,7 @@
     "@reactioncommerce/components": "0.21.0",
     "@reactioncommerce/components-context": "1.0.0",
     "@reactioncommerce/data-factory": "^1.0.0",
-    "@reactioncommerce/file-collections": "0.5.0",
+    "@reactioncommerce/file-collections": "0.6.0",
     "@reactioncommerce/file-collections-sa-gridfs": "0.0.2",
     "@reactioncommerce/hooks": "1.0.2",
     "@reactioncommerce/job-queue": "1.0.4",
