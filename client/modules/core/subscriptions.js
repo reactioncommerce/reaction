@@ -3,7 +3,6 @@ import { Meteor } from "meteor/meteor";
 import { ReactiveVar } from "meteor/reactive-var";
 import { Tracker } from "meteor/tracker";
 import { SubsManager } from "meteor/meteorhacks:subs-manager";
-import { Roles } from "meteor/alanning:roles";
 import { Accounts } from "/lib/collections";
 import Reaction from "./main";
 import { getUserId } from "./helpers/utils";
@@ -20,9 +19,7 @@ Subscriptions.Manager = new SubsManager();
  */
 
 Tracker.autorun(() => {
-  const userId = getUserId();
   Subscriptions.Account = Subscriptions.Manager.subscribe("Accounts");
-  Subscriptions.UserProfile = Meteor.subscribe("UserProfile", userId);
 });
 
 // Primary shop subscription
@@ -86,7 +83,7 @@ Tracker.autorun(() => {
   const shopId = Reaction.getCartShopId();
   if (!shopId) return; // could be waiting for subscription
 
-  const isAnonymousUser = Roles.userIsInRole(userId, "anonymous", shopId);
+  const isAnonymousUser = Reaction.hasPermission("anonymous", userId, shopId, { appendOwner: false });
   if (!isAnonymousUser && cartSubCreated.get() && Subscriptions.Cart.ready() && !isMerging) {
     const anonymousCarts = getAnonymousCartsReactive();
 

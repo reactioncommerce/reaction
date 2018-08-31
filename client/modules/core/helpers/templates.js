@@ -3,7 +3,6 @@ import { Template } from "meteor/templating";
 import { Accounts } from "meteor/accounts-base";
 import { Spacebars } from "meteor/spacebars";
 import { ReactiveVar } from "meteor/reactive-var";
-import { Roles } from "meteor/alanning:roles";
 import ReactionError from "@reactioncommerce/reaction-error";
 import { i18next, Reaction } from "/client/api";
 import * as Collections from "/lib/collections";
@@ -75,9 +74,9 @@ Template.registerHelper("currentUser", () => {
     const user = Accounts.user();
     if (!shopId || typeof user !== "object") return null;
     // shoppers should always be guests
-    const isGuest = Roles.userIsInRole(user, "guest", shopId);
+    const isGuest = Reaction.hasPermission("guest", user._id, shopId);
     // but if a user has never logged in then they are anonymous
-    const isAnonymous = Roles.userIsInRole(user, "anonymous", shopId);
+    const isAnonymous = Reaction.hasPermission("anonymous", user._id, shopId, { appendOwner: false });
 
     return isGuest && !isAnonymous ? user : null;
   }

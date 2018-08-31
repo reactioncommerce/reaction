@@ -1,6 +1,5 @@
 import _ from "lodash";
 import { Template } from "meteor/templating";
-import { Roles } from "meteor/alanning:roles";
 import { Reaction } from "/client/api";
 import { Packages, Shops } from "/lib/collections";
 
@@ -94,7 +93,7 @@ export function Apps(optionHash) {
           // This checks that the registry item contains a permissions matches with the user's permission for the shop
           const hasPermissionToRegistryItem = item.permissions.indexOf(permission) > -1;
           // This checks that the user's permission set have the right value that is on the registry item
-          const hasRoleAccessForShop = Roles.userIsInRole(getUserId(), permission, Reaction.getShopId());
+          const hasRoleAccessForShop = Reaction.hasPermission(permission, getUserId(), Reaction.getShopId());
 
           // both checks must pass for access to be granted
           if (hasPermissionToRegistryItem && hasRoleAccessForShop) {
