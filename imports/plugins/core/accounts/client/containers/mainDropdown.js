@@ -14,6 +14,7 @@ function displayName(displayUser) {
   i18nextDep.depend();
 
   const user = displayUser || Accounts.user();
+  const shopId = Reaction.getShopId();
 
   if (user) {
     if (user.name) {
@@ -24,12 +25,7 @@ function displayName(displayUser) {
       return user.profile.name;
     }
 
-    // todo: previous check was user.services !== "anonymous", "resume". Is this
-    // new check covers previous check?
-    if (Roles.userIsInRole(
-      user._id || user.userId, "account/profile",
-      Reaction.getShopId()
-    )) {
+    if (Reaction.hasPermission("account/profile", user._id || user.userId, shopId, { appendOwner: false })) {
       return i18next.t("accountsUI.guest", { defaultValue: "Guest" });
     }
   }

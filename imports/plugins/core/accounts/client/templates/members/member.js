@@ -39,7 +39,7 @@ Template.member.events({
 Template.memberSettings.helpers({
   isOwnerDisabled() {
     if (Reaction.getUserId() === this.userId) {
-      if (Roles.userIsInRole(this.userId, "owner", this.shopId)) {
+      if (Reaction.hasPermission("owner", this.userId, this.shopId)) {
         return true;
       }
     }
@@ -48,10 +48,7 @@ Template.memberSettings.helpers({
     return Reaction.getUserId();
   },
   hasPermissionChecked(permission, userId) {
-    if (userId && Roles.userIsInRole(userId, permission, this.shopId || Roles.userIsInRole(
-      userId, permission,
-      Roles.GLOBAL_GROUP
-    ))) {
+    if (userId && Reaction.hasPermission(permission, userId, this.shopId)) {
       return "checked";
     }
   },

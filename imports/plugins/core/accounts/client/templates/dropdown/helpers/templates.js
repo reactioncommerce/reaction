@@ -1,6 +1,5 @@
 import { Template } from "meteor/templating";
 import { Accounts } from "meteor/accounts-base";
-import { Roles } from "meteor/alanning:roles";
 import { Reaction, i18next, i18nextDep } from "/client/api";
 
 /**
@@ -11,7 +10,7 @@ import { Reaction, i18next, i18nextDep } from "/client/api";
  */
 Template.registerHelper("displayName", (displayUser) => {
   i18nextDep.depend();
-
+  const shopId = Reaction.getShopId();
   const user = displayUser || Accounts.user();
   if (user) {
     if (user.profile && user.profile.name) {
@@ -20,9 +19,7 @@ Template.registerHelper("displayName", (displayUser) => {
       return user.username;
     }
 
-    // todo: previous check was user.services !== "anonymous", "resume". Is this
-    // new check covers previous check?
-    if (Roles.userIsInRole(user._id || user.userId, "account/profile", Reaction.getShopId())) {
+    if (Reaction.hasPermission("account/profile", user._id || user.userId, shopId)) {
       return i18next.t("accountsUI.guest", { defaultValue: "Guest" });
     }
   }

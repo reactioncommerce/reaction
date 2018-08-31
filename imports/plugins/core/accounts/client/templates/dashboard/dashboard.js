@@ -2,7 +2,6 @@ import _ from "lodash";
 import { Components } from "@reactioncommerce/reaction-components";
 import { Meteor } from "meteor/meteor";
 import { Template } from "meteor/templating";
-import { Roles } from "meteor/alanning:roles";
 import { ServiceConfiguration } from "meteor/service-configuration";
 import { Reaction, i18next } from "/client/api";
 import * as Collections from "/lib/collections";
@@ -64,17 +63,17 @@ Template.accountsDashboard.helpers({
           }
           // member.user = user;
           member.username = user.username;
-          member.isAdmin = Roles.userIsInRole(user._id, "admin", shopId);
+          member.isAdmin = Reaction.hasPermission("admin", user._id, shopId);
           member.roles = user.roles;
           member.services = user.services;
 
-          if (Roles.userIsInRole(member.userId, "owner", shopId)) {
+          if (Reaction.hasPermission("owner", member.userId, shopId)) {
             member.role = "owner";
-          } else if (Roles.userIsInRole(member.userId, "admin", shopId)) {
+          } else if (Reaction.hasPermission("admin", member.userId, shopId)) {
             member.role = "admin";
-          } else if (Roles.userIsInRole(member.userId, "dashboard", shopId)) {
+          } else if (Reaction.hasPermission("dashboard", member.userId, shopId)) {
             member.role = "dashboard";
-          } else if (Roles.userIsInRole(member.userId, "guest", shopId)) {
+          } else if (Reaction.hasPermission("guest", member.userId, shopId)) {
             member.role = "guest";
           }
 
