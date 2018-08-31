@@ -1,6 +1,5 @@
 import { Meteor } from "meteor/meteor";
 import { check, Match } from "meteor/check";
-import { Roles } from "meteor/alanning:roles";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
 import ReactionError from "@reactioncommerce/reaction-error";
 import getCart from "/imports/plugins/core/cart/server/util/getCart";
@@ -38,7 +37,7 @@ export default function setShipmentMethod(cartId, cartToken, methodId) {
   // In Meteor app we always have a user, but it may have "anonymous" role, meaning
   // it was auto-created as a kind of session.
   const userId = Reaction.getUserId();
-  const anonymousUser = Roles.userIsInRole(userId, "anonymous", shopId);
+  const anonymousUser = Reaction.hasPermission("anonymous", userId, shopId, { appendOwner: false });
   const userIdForContext = anonymousUser ? null : userId;
 
   const context = Promise.await(getGraphQLContextInMeteorMethod(userIdForContext));

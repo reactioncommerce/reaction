@@ -1,6 +1,5 @@
 import { Meteor } from "meteor/meteor";
 import { check, Match } from "meteor/check";
-import { Roles } from "meteor/alanning:roles";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
 import getGraphQLContextInMeteorMethod from "/imports/plugins/core/graphql/server/getGraphQLContextInMeteorMethod";
 import addCartItems from "../no-meteor/mutations/addCartItems";
@@ -32,7 +31,7 @@ export default function addToCart(cartId, token, items) {
   // it was auto-created as a kind of session. If so, we fool the createCart mutation
   // into thinking there is no user so that it will create an anonymous cart.
   const userId = Reaction.getUserId();
-  const anonymousUser = Roles.userIsInRole(userId, "anonymous", shopId);
+  const anonymousUser = Reaction.hasPermission("anonymous", userId, shopId, { appendOwner: false });
   const userIdForContext = anonymousUser ? null : userId;
 
   const context = Promise.await(getGraphQLContextInMeteorMethod(userIdForContext));
