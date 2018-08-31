@@ -1,7 +1,6 @@
 import _ from "lodash";
 import { Meteor } from "meteor/meteor";
 import { check, Match } from "meteor/check";
-import { Roles } from "meteor/alanning:roles";
 import { Packages } from "/lib/collections";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
 import { translateRegistry } from "/lib/api";
@@ -22,7 +21,8 @@ function transform(doc, userId) {
   permissions = _.uniq(permissions);
 
   // check for admin,owner or package permissions to view settings
-  const hasAdmin = Roles.userIsInRole(userId, permissions, doc.shopId);
+
+  const hasAdmin = Reaction.hasPermission(permissions, userId, doc.shopId);
 
   if (doc.registry) {
     for (let registry of doc.registry) {
@@ -93,11 +93,7 @@ Meteor.publish("Packages", function (shopId) {
     // we should always have a shop
     if (myShopId) {
       // if admin user, return all shop properties
-      if (Roles.userIsInRole(self.userId, [
-        "dashboard", "owner", "admin"
-      ], Reaction.getShopId() || Roles.userIsInRole(self.userId, [
-        "owner", "admin"
-      ], Roles.GLOBAL_GROUP))) {
+      if (Reaction.hasPermission(["dashboard", "owner", "admin"], self.userId, Reaction.getShopId())) {
         options = {};
       }
       // observe and transform Package registry adds i18n and other meta data

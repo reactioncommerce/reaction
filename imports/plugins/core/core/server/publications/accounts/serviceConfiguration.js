@@ -1,7 +1,6 @@
 import { ServiceConfiguration } from "meteor/service-configuration";
 import { Meteor } from "meteor/meteor";
 import { check, Match } from "meteor/check";
-import { Roles } from "meteor/alanning:roles";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
 
 /**
@@ -15,10 +14,7 @@ Meteor.publish("ServiceConfiguration", function (checkUserId) {
     return this.ready();
   }
   // Admins and account managers can manage the login methods for the shop
-  if (Roles.userIsInRole(
-    this.userId, ["owner", "admin", "dashboard/accounts"],
-    Reaction.getShopId()
-  )) {
+  if (Reaction.hasPermission(["owner", "admin", "dashboard/accounts"], this.userId, Reaction.getShopId())) {
     return ServiceConfiguration.configurations.find({}, {
       fields: {
         secret: 1

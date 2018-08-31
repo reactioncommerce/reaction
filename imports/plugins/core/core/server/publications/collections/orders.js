@@ -1,6 +1,5 @@
 import { Meteor } from "meteor/meteor";
 import { check, Match } from "meteor/check";
-import { Roles } from "meteor/alanning:roles";
 import { ReactiveAggregate } from "./reactiveAggregate";
 import { Accounts, MediaRecords, Orders } from "/lib/collections";
 import { Counts } from "meteor/tmeasday:publish-counts";
@@ -80,7 +79,7 @@ Meteor.publish("Orders", function () {
   };
   const aggregate = createAggregate(shopId);
 
-  if (Roles.userIsInRole(this.userId, ["admin", "owner", "orders"], shopId)) {
+  if (Reaction.hasPermission(["admin", "owner", "orders"], this.userId, shopId)) {
     ReactiveAggregate(this, Orders, aggregate, aggregateOptions);
   } else {
     const account = Accounts.findOne({ userId: this.userId });
@@ -113,7 +112,8 @@ Meteor.publish("PaginatedOrders", function (query, options) {
   const limit = (options && options.limit) ? options.limit : 0;
   const skip = (options && options.skip) ? options.skip : 0;
   const aggregate = createAggregate(shopId, { createdAt: -1 }, limit, query, skip);
-  if (Roles.userIsInRole(this.userId, ["admin", "owner", "orders"], shopId)) {
+
+  if (Reaction.hasPermission(["admin", "owner", "orders"], this.userId, shopId)) {
     Counts.publish(this, "orders-count", Orders.find(), { noReady: true });
     ReactiveAggregate(this, Orders, aggregate, aggregateOptions);
   } else {

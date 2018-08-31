@@ -1,7 +1,6 @@
 import Logger from "@reactioncommerce/logger";
 import { Meteor } from "meteor/meteor";
 import { EJSON } from "meteor/ejson";
-import { Roles } from "meteor/alanning:roles";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
 
 /* eslint quote-props: 0 */
@@ -23,7 +22,7 @@ Meteor.publish("ShopMembers", function () {
     return this.ready();
   }
 
-  if (Roles.userIsInRole(this.userId, readPermissions, shopId)) {
+  if (Reaction.hasPermission(readPermissions, this.userId, shopId)) {
     // seems like we can't use "`" inside db.call directly
     // do not add comments or otherwise format this query
     const selector = `{"roles.${shopId}": {"$nin": ["anonymous"]}}`;
