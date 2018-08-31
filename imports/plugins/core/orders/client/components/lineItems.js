@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { isEmpty } from "lodash";
 import classnames from "classnames";
-import { Roles } from "meteor/alanning:roles";
 import { formatPriceString, Reaction } from "/client/api";
 import { Components, registerComponent } from "@reactioncommerce/reaction-components";
 
@@ -343,7 +342,7 @@ class LineItems extends Component {
         ))}
 
         {
-          Roles.userIsInRole(Reaction.getUserId(), ["orders", "dashboard/orders"], Reaction.getShopId()) &&
+          Reaction.hasPermission(["orders", "dashboard/orders"], Reaction.getUserId(), Reaction.getShopId()) &&
           this.renderPopOver()
         }
       </Components.Button>
