@@ -20,7 +20,7 @@
   },
   "dependencies": {
     "@babel/runtime": "7.0.0-beta.49",
-    "@reactioncommerce/components": "0.30.3",
+    "@reactioncommerce/components": "0.34.0",
     "@reactioncommerce/components-context": "1.0.0",
     "@reactioncommerce/data-factory": "^1.0.0",
     "@reactioncommerce/file-collections": "0.6.0",

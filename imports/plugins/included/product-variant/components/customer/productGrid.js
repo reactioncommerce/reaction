@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Components } from "@reactioncommerce/reaction-components";
 import CatalogGrid from "@reactioncommerce/components/CatalogGrid/v1";
+import { i18next } from "/client/api";
 
 class ProductGrid extends Component {
   static propTypes = {
@@ -63,6 +64,11 @@ class ProductGrid extends Component {
   // render the product grid
   renderProductGrid() {
     const { products, shopCurrencyCode } = this.props;
+    const badgeLabels = {
+      BACKORDER: i18next.t("productDetail.backOrder", "Backorder"),
+      LOW_QUANTITY: i18next.t("productDetail.limitedSupply", "Limited Supply"),
+      SOLD_OUT: i18next.t("productDetail.soldOut", "Sold Out!")
+    };
 
     return (
       <div className="product-grid">
@@ -70,6 +76,7 @@ class ProductGrid extends Component {
           <CatalogGrid
             currencyCode={shopCurrencyCode}
             products={products}
+            badgeLabels={badgeLabels}
           />
         </ul>
       </div>
