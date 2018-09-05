@@ -123,7 +123,7 @@
     "react-taco-table": "^0.5.1",
     "react-tether": "^0.6.1",
     "react-textarea-autosize": "^5.2.1",
-    "react-transition-group": "1.2.1",
+    "react-transition-group": "2.4.0",
     "reacto-form": "0.0.2",
     "recompose": "^0.26.0",
     "shallowequal": "^1.0.2",
