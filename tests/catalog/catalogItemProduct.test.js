@@ -179,11 +179,11 @@ const mockCatalogProduct = {
       productId: internalProductId,
       variantId: null,
       URLs: {
-        thumbnail: "http://localhost/thumbnail",
-        small: "http://localhost/small",
-        medium: "http://localhost/medium",
-        large: "http://localhost/large",
-        original: "http://localhost/original"
+        thumbnail: "/thumbnail",
+        small: "/small",
+        medium: "/medium",
+        large: "/large",
+        original: "/original"
       }
     }
   ],
@@ -193,11 +193,11 @@ const mockCatalogProduct = {
     productId: internalProductId,
     variantId: null,
     URLs: {
-      thumbnail: "http://localhost/thumbnail",
-      small: "http://localhost/small",
-      medium: "http://localhost/medium",
-      large: "http://localhost/large",
-      original: "http://localhost/original"
+      thumbnail: "/thumbnail",
+      small: "/small",
+      medium: "/medium",
+      large: "/large",
+      original: "/original"
     }
   },
   productType: "productType",
@@ -399,11 +399,11 @@ const expectedItemsResponse = {
           productId: opaqueProductId,
           variantId: null,
           URLs: {
-            thumbnail: "http://localhost/thumbnail",
-            small: "http://localhost/small",
-            medium: "http://localhost/medium",
-            large: "http://localhost/large",
-            original: "http://localhost/original"
+            thumbnail: "https://shop.fake.site/thumbnail",
+            small: "https://shop.fake.site/small",
+            medium: "https://shop.fake.site/medium",
+            large: "https://shop.fake.site/large",
+            original: "https://shop.fake.site/original"
           }
         }
       ],
@@ -413,11 +413,11 @@ const expectedItemsResponse = {
         productId: opaqueProductId,
         variantId: null,
         URLs: {
-          thumbnail: "http://localhost/thumbnail",
-          small: "http://localhost/small",
-          medium: "http://localhost/medium",
-          large: "http://localhost/large",
-          original: "http://localhost/original"
+          thumbnail: "https://shop.fake.site/thumbnail",
+          small: "https://shop.fake.site/small",
+          medium: "https://shop.fake.site/medium",
+          large: "https://shop.fake.site/large",
+          original: "https://shop.fake.site/original"
         }
       },
       productType: "productType",

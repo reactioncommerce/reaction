@@ -36,6 +36,7 @@ export default function addToCart(cartId, token, items) {
   const userIdForContext = anonymousUser ? null : userId;
 
   const context = Promise.await(getGraphQLContextInMeteorMethod(userIdForContext));
+
   const {
     cart: updatedCart,
     incorrectPriceFailures,
