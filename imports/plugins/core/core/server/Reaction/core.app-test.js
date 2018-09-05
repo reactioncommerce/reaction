@@ -155,7 +155,7 @@ describe("Server/API/Core", () => {
     });
   });
 
-  describe.only("#getPrimaryShopPrefix", () => {
+  describe("#getPrimaryShopPrefix", () => {
     it("slugifies the shop's prefix", () => {
       const primaryShopName = "Mix of Chars & 123s";
 
