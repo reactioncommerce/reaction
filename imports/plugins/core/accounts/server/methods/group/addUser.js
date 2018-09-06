@@ -4,6 +4,7 @@ import { Roles } from "meteor/alanning:roles";
 import { check } from "meteor/check";
 import { Meteor } from "meteor/meteor";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
+import ReactionError from "@reactioncommerce/reaction-error";
 import { Accounts, Groups } from "/lib/collections";
 import setUserPermissions from "../../util/setUserPermissions";
 
@@ -20,7 +21,7 @@ function changeMarketplaceOwner({ userId, permissions }) {
   // give global marketplace role to new owner
   Roles.setUserRoles(userId, permissions, Roles.GLOBAL_GROUP);
   // remove global from previous owner
-  Meteor.users.update({ _id: Meteor.userId() }, { $unset: { [`roles.${Roles.GLOBAL_GROUP}`]: "" } });
+  Meteor.users.update({ _id: Reaction.getUserId() }, { $unset: { [`roles.${Roles.GLOBAL_GROUP}`]: "" } });
 }
 
 /**
@@ -39,26 +40,26 @@ export default function addUser(userId, groupId) {
   check(groupId, String);
   const group = Groups.findOne({ _id: groupId }) || {};
   const { permissions, shopId, slug } = group;
-  const loggedInUserId = Meteor.userId();
+  const loggedInUserId = Reaction.getUserId();
   const canInvite = Reaction.canInviteToGroup({ group });
 
   // we are limiting group method actions to only users with admin roles
   // this also include shop owners, since they have the `admin` role in their Roles.GLOBAL_GROUP
   if (!Reaction.hasPermission("admin", loggedInUserId, shopId)) {
-    throw new Meteor.Error("access-denied", "Access Denied");
+    throw new ReactionError("access-denied", "Access Denied");
   }
 
   // Users with `owner` and/or `admin` roles can invite to any group
   // Also a user with `admin` can invite to only groups they have permissions that are a superset of
   // See details of canInvite method in core (i.e Reaction.canInviteToGroup)
   if (!canInvite) {
-    throw new Meteor.Error("access-denied", "Access Denied");
+    throw new ReactionError("access-denied", "Access Denied");
   }
 
   if (slug === "owner") {
     // if adding a user to the owner group, check that the request is done by current owner
-    if (!Reaction.hasPermission("owner", Meteor.userId(), shopId)) {
-      throw new Meteor.Error("access-denied", "Access Denied");
+    if (!Reaction.hasPermission("owner", Reaction.getUserId(), shopId)) {
+      throw new ReactionError("access-denied", "Access Denied");
     }
   }
 
@@ -89,13 +90,13 @@ export default function addUser(userId, groupId) {
         changeMarketplaceOwner({ userId, permissions });
       }
       // remove current shop owner after setting another admin as the new owner
-      Meteor.call("group/addUser", Meteor.userId(), currentUserGrpInShop);
+      Meteor.call("group/addUser", Reaction.getUserId(), currentUserGrpInShop);
     }
 
     // Return the group the account as added to
     return Groups.findOne({ _id: groupId });
   } catch (error) {
     Logger.error(error);
-    throw new Meteor.Error("server-error", "Could not add user");
+    throw new ReactionError("server-error", "Could not add user");
   }
 }

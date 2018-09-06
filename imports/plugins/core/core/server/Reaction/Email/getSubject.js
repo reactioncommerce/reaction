@@ -1,7 +1,7 @@
 import Logger from "@reactioncommerce/logger";
-import { Meteor } from "meteor/meteor";
 import { Templates } from "/lib/collections";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
+import ReactionError from "@reactioncommerce/reaction-error";
 
 /**
  * @method getSubject
@@ -16,7 +16,7 @@ export default function getSubject(template) {
   if (typeof template !== "string") {
     const msg = "Reaction.Email.getSubject() requires a template name";
     Logger.error(msg);
-    throw new Meteor.Error("invalid-parameter", msg);
+    throw new ReactionError("invalid-parameter", msg);
   }
 
   // set default

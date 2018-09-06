@@ -4,6 +4,7 @@ import { Meteor } from "meteor/meteor";
 import { check } from "meteor/check";
 import { Orders } from "/lib/collections";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
+import ReactionError from "@reactioncommerce/reaction-error";
 
 /**
  * @name orders/capturePayments
@@ -18,13 +19,13 @@ export default function capturePayments(orderId) {
   check(orderId, String);
   // REVIEW: For marketplace implementations who should be able to capture payments?
   if (!Reaction.hasPermission("orders")) {
-    throw new Meteor.Error("access-denied", "Access Denied");
+    throw new ReactionError("access-denied", "Access Denied");
   }
   const shopId = Reaction.getShopId(); // the shopId of the current user, i.e. merchant
   const order = Orders.findOne({ _id: orderId });
   // find the appropriate shipping record by shop
-  const shippingRecord = order.shipping.find((sRecord) => sRecord.shopId === shopId);
-  const itemIds = shippingRecord.items.map((item) => item._id);
+  const fulfillmentGroup = order.shipping.find((sRecord) => sRecord.shopId === shopId);
+  const { itemIds } = fulfillmentGroup;
 
   Meteor.call("workflow/pushItemWorkflow", "coreOrderItemWorkflow/captured", order, itemIds);
 
@@ -47,8 +48,8 @@ export default function capturePayments(orderId) {
     let error;
     try {
       result = Meteor.call(`${processor}/payment/capture`, paymentMethod);
-    } catch (e) {
-      error = e;
+    } catch (err) {
+      error = err;
     }
 
     if (result && result.saved === true) {
@@ -101,4 +102,6 @@ export default function capturePayments(orderId) {
 
     return { error: "orders/capturePayments: Failed to capture transaction" };
   }
+
+  return { error: null, result: null };
 }

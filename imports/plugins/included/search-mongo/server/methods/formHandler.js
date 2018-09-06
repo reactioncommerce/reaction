@@ -4,6 +4,7 @@ import { Meteor } from "meteor/meteor";
 import { check, Match } from "meteor/check";
 import { Job } from "/imports/plugins/core/job-collection/lib";
 import { Packages, Jobs } from "/lib/collections";
+import ReactionError from "@reactioncommerce/reaction-error";
 import { SearchPackageConfig } from "../../lib/collections/schemas";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
 
@@ -50,7 +51,7 @@ Meteor.methods({
     }
     // must have core permissions
     if (!Reaction.hasPermission("core")) {
-      throw new Meteor.Error("access-denied", "Access Denied");
+      throw new ReactionError("access-denied", "Access Denied");
     }
     let rebuildJob;
     if (fieldsChanged(changedSettings)) {

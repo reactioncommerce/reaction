@@ -174,11 +174,11 @@ const mockProduct = {
   ],
   productId: internalProductId,
   productType: "productType",
-  requiresShipping: true,
   shop: {
     _id: opaqueShopId
   },
   sku: "ABC123",
+  supportedFulfillmentTypes: ["shipping"],
   handle: productSlug,
   hashtags: internalTagIds,
   taxCode: "taxCode",
@@ -287,7 +287,6 @@ const mockCatalogProduct = {
   },
   productId: "999",
   productType: "productType",
-  requiresShipping: true,
   shopId: "123",
   sku: "ABC123",
   slug: "fake-product",
@@ -304,6 +303,7 @@ const mockCatalogProduct = {
     message: "pinterestMessage",
     service: "pinterest"
   }],
+  supportedFulfillmentTypes: ["shipping"],
   tagIds: ["923", "924"],
   taxCode: "taxCode",
   taxDescription: "taxDescription",

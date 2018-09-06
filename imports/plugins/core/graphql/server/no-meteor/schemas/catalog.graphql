@@ -169,12 +169,6 @@ type CatalogProduct implements CatalogProductOrVariant & Node {
   "An arbitrary product type value, such as from an external system"
   productType: String
 
-  """
-  Is this a product that needs to be shipped? For example, if no products in a shopper's cart require shipping,
-  then a checkout flow may choose not to require entry of a shipping address.
-  """
-  requiresShipping: Boolean!
-
   "The shop to which this product belongs"
   shop: Shop!
 
@@ -186,6 +180,9 @@ type CatalogProduct implements CatalogProductOrVariant & Node {
 
   "Holds metadata specific to a specific social network service"
   socialMetadata: [SocialMetadata]
+
+  "When a shopper purchases this product, what types of fulfillment can they choose from?"
+  supportedFulfillmentTypes: [FulfillmentType]!
 
   "The list of tag IDs that have been applied to this product"
   tagIds: [ID]

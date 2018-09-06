@@ -7,6 +7,7 @@ import { Components, composeWithTracker, registerComponent } from "@reactioncomm
 import { Meteor } from "meteor/meteor";
 import { Session } from "meteor/session";
 import { Reaction } from "/client/api";
+import ReactionError from "@reactioncommerce/reaction-error";
 import { Media } from "/imports/plugins/core/files/client";
 import Logger from "/client/modules/logger";
 import { ReactionProduct } from "/lib/api";
@@ -34,18 +35,19 @@ const wrapComponent = (Comp) => (
       };
     }
 
-    componentWillMount() {
+    UNSAFE_componentWillMount() { // eslint-disable-line camelcase
       const selectedProducts = Reaction.getUserPreferences("reaction-product-variant", "selectedGridItems");
       const { products } = this;
 
-      if (_.isEmpty(selectedProducts)) {
+      if (Array.isArray(selectedProducts) && _.isEmpty(selectedProducts)) {
+        Reaction.setUserPreferences("reaction-product-variant", "selectedGridItems", undefined);
         return Reaction.hideActionView();
       }
 
-      // Save the selected items to the Session
-      Session.set("productGrid/selectedProducts", _.uniq(selectedProducts));
 
-      if (products) {
+      if (products && selectedProducts) {
+        // Save the selected items to the Session
+        Session.set("productGrid/selectedProducts", _.uniq(selectedProducts));
         const filteredProducts = products.filter((product) => selectedProducts.includes(product._id));
 
         if (Reaction.isPreview() === false) {
@@ -58,9 +60,11 @@ const wrapComponent = (Comp) => (
           });
         }
       }
+
+      return null;
     }
 
-    componentWillReceiveProps = (nextProps) => {
+    UNSAFE_componentWillReceiveProps = (nextProps) => { // eslint-disable-line camelcase
       this.setState({
         products: nextProps.products,
         productIds: nextProps.productIds,
@@ -79,12 +83,11 @@ const wrapComponent = (Comp) => (
 
       Reaction.setUserPreferences("reaction-product-variant", "selectedGridItems", selectedProducts);
 
-      // Save the selected items to the Session
-      Session.set("productGrid/selectedProducts", _.uniq(selectedProducts));
-
       const { products } = this;
 
-      if (products) {
+      if (products && selectedProducts) {
+        // Save the selected items to the Session
+        Session.set("productGrid/selectedProducts", _.uniq(selectedProducts));
         const filteredProducts = products.filter((product) => selectedProducts.includes(product._id));
 
         Reaction.showActionView({
@@ -144,7 +147,7 @@ const wrapComponent = (Comp) => (
         return Meteor.call("products/updateProductPosition", productId, position, tagId, (error) => {
           if (error) {
             Logger.error(error);
-            throw new Meteor.Error("error-occurred", error);
+            throw new ReactionError("error-occurred", error);
           }
         });
       });
@@ -173,6 +176,13 @@ const wrapComponent = (Comp) => (
   }
 );
 
+/**
+ * @name composer
+ * @summary Builds productMediaById object and passes to child component
+ * @param {Object} props - Props passed down from parent components
+ * @param {Function} onData - Callback to execute with props
+ * @returns {undefined}
+ */
 function composer(props, onData) {
   // Instantiate an object for use as a map. This object does not inherit prototype or methods from `Object`
   const productMediaById = Object.create(null);

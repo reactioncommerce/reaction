@@ -1,4 +1,3 @@
-import { Meteor } from "meteor/meteor";
 import React from "react";
 import _ from "lodash";
 import PropTypes from "prop-types";
@@ -17,7 +16,7 @@ const GroupsTableCell = (props) => {
     moment
   } = props;
 
-  const email = _.get(account, "emails[0].address");
+  const email = _.get(account, "emails[0].address", "");
   const groups = adminGroups;
   const userAvatar = getUserAvatar(account);
   const createdAt = (moment && moment(account.createdAt).format("MMM Do")) || account.createdAt.toLocaleString();
@@ -54,7 +53,7 @@ const GroupsTableCell = (props) => {
   if (columnName === "dropdown") {
     const groupName = <span className="group-dropdown">{_.startCase(groups[0].name)}</span>;
     const ownerGroup = groups.find((grp) => grp.slug === "owner") || {};
-    const hasOwnerAccess = Reaction.hasPermission("owner", Meteor.userId(), Reaction.getShopId());
+    const hasOwnerAccess = Reaction.hasPermission("owner", Reaction.getUserId(), Reaction.getShopId());
 
     if (groups.length === 1) {
       return groupName;

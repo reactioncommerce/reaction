@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import _ from "lodash";
 import { Meteor } from "meteor/meteor";
 import { composeWithTracker, withMoment } from "@reactioncommerce/reaction-components";
 import { Orders } from "/lib/collections";
@@ -24,8 +23,8 @@ class OrderSummaryContainer extends Component {
 
   dateFormat = (context, block) => {
     const { moment } = this.props;
-    const f = block || "MMM DD, YYYY hh:mm:ss A";
-    return (moment && moment(context).format(f)) || context.toLocaleString();
+    const formatString = block || "MMM DD, YYYY hh:mm:ss A";
+    return (moment && moment(context).format(formatString)) || context.toLocaleString();
   }
 
   tracking = () => {
@@ -49,26 +48,14 @@ class OrderSummaryContainer extends Component {
       };
     }
 
-    const shipped = _.every(shipment.items, (shipmentItem) => {
-      for (const fullItem of order.items) {
-        if (fullItem._id === shipmentItem._id) {
-          if (fullItem.workflow) {
-            if (_.isArray(fullItem.workflow.workflow)) {
-              return _.includes(fullItem.workflow.workflow, "coreOrderItemWorkflow/completed");
-            }
-          }
-        }
+    const shipped = order.items.every((item) => {
+      if (shipment.itemIds.indexOf(item._id) === -1) {
+        // The item is not in this shipment so we don't care
+        return true;
       }
-    });
 
-    const canceled = _.every(shipment.items, (shipmentItem) => {
-      for (const fullItem of order.items) {
-        if (fullItem._id === shipmentItem._id) {
-          if (fullItem.workflow) {
-            return fullItem.workflow.status === "coreOrderItemWorkflow/canceled";
-          }
-        }
-      }
+      return item.workflow && Array.isArray(item.workflow.workflow) &&
+        item.workflow.workflow.indexOf("coreOrderItemWorkflow/shipped") > -1;
     });
 
     if (shipped) {
@@ -79,6 +66,15 @@ class OrderSummaryContainer extends Component {
         label: i18next.t("orderShipping.shipped")
       };
     }
+
+    const canceled = order.items.every((item) => {
+      if (shipment.itemIds.indexOf(item._id) === -1) {
+        // The item is not in this shipment so we don't care
+        return true;
+      }
+
+      return item.workflow && item.workflow.status === "coreOrderItemWorkflow/canceled";
+    });
 
     if (canceled) {
       return {

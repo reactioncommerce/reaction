@@ -4,9 +4,6 @@ import "./templates/products/productGrid/publishControls.js";
 import "./templates/products/productSettings/productSettings.html";
 import "./templates/products/productSettings/productSettings.js";
 
-import "./templates/products/products.html";
-import "./templates/products/products.js";
-
 import "./templates/products/variantForm.html";
 import "./templates/products/variantForm.js";
 

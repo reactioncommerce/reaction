@@ -29,7 +29,7 @@ Reaction.registerPackage({
       label: "Flat Rate",
       description: "Provide shipping rates",
       icon: "fa fa-truck",
-      template: "shippingRatesSettings"
+      template: "ShippingRatesSettings"
     },
     {
       template: "flatRateCheckoutShipping",

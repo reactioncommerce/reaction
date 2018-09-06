@@ -136,7 +136,7 @@ const wrapComponent = (Comp) => (
       }
       const variantId = variant._id;
       const shopId = ReactionProduct.selectedProduct().shopId || Reaction.getShopId();
-      const userId = Meteor.userId();
+      const userId = Reaction.getUserId();
       let count = Media.findLocal({
         "metadata.variantId": variantId
       }).length;

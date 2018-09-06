@@ -1,5 +1,5 @@
-import { Meteor } from "meteor/meteor";
 import { check, Match } from "meteor/check";
+import ReactionError from "@reactioncommerce/reaction-error";
 import { Translations } from "/lib/collections";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
 
@@ -27,7 +27,7 @@ export default function addTranslation(lng, namespace, key, message) {
   }
 
   if (!Reaction.hasAdminAccess()) {
-    throw new Meteor.Error("access-denied", "Access Denied");
+    throw new ReactionError("access-denied", "Access Denied");
   }
   const tran = `
     "i18n": "${i18n}",

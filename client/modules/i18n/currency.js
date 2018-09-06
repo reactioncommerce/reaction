@@ -1,6 +1,6 @@
 import accounting from "accounting-js";
-import { Meteor } from "meteor/meteor";
 import { Reaction, Logger } from "/client/api";
+import ReactionError from "@reactioncommerce/reaction-error";
 import { Shops, Accounts } from "/lib/collections";
 import { currencyDep } from "./main";
 
@@ -22,7 +22,7 @@ export function findCurrency(defaultCurrency, useDefaultShopCurrency) {
 
   const shopCurrency = (shop && shop.currency) || "USD";
   const user = Accounts.findOne({
-    _id: Meteor.userId()
+    _id: Reaction.getUserId()
   });
   const profileCurrency = user && user.profile && user.profile.currency;
   if (typeof shop === "object" && shop.currencies && profileCurrency) {
@@ -87,7 +87,7 @@ export function formatPriceString(formatPrice, useDefaultShopCurrency) {
       // we know the locale, but we don"t know exchange rate. In that case we
       // should return to default shop currency
       if (typeof userCurrency.rate !== "number") {
-        throw new Meteor.Error("invalid-exchange-rate", "Exchange rate is invalid");
+        throw new ReactionError("invalid-exchange-rate", "Exchange rate is invalid");
       }
       // Only convert for non-admin view.
       if (!defaultShopCurrency) {

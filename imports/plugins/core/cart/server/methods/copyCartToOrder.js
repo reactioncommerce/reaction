@@ -1,5 +1,6 @@
 import Hooks from "@reactioncommerce/hooks";
 import Logger from "@reactioncommerce/logger";
+import ReactionError from "@reactioncommerce/reaction-error";
 import { Meteor } from "meteor/meteor";
 import { check, Match } from "meteor/check";
 import { Accounts, Cart, Orders } from "/lib/collections";
@@ -36,7 +37,7 @@ export default function copyCartToOrder(cartId, cartToken) {
   if (!order.items || order.items.length === 0) {
     const msg = "An error occurred saving the order. Missing cart items.";
     Logger.error(msg);
-    throw new Meteor.Error("error-occurred", msg);
+    throw new ReactionError("error-occurred", msg);
   }
 
   // Debug only message to identify the current cartId
@@ -92,26 +93,16 @@ export default function copyCartToOrder(cartId, cartToken) {
   order.createdAt = now;
   order.updatedAt = now;
 
-  // Create a shipping record for each shop on the order
-  if (Array.isArray(order.shipping)) {
-    if (order.shipping.length > 0) {
-      const shippingRecords = [];
-      order.shipping.map((shippingRecord) => {
-        const billingRecord = order.billing.find((billing) => billing.shopId === shippingRecord.shopId);
-        shippingRecord.paymentId = billingRecord._id;
-        shippingRecord.items = [];
-        shippingRecord.items.packed = false;
-        shippingRecord.items.shipped = false;
-        shippingRecord.items.delivered = false;
-        shippingRecord.workflow = { status: "new", workflow: ["coreOrderWorkflow/notStarted"] };
-        shippingRecords.push(shippingRecord);
-        return shippingRecords;
-      });
-      order.shipping = shippingRecords;
-    }
-  } else { // if not - create it
-    order.shipping = [];
-  }
+  // Add paymentId and workflow to each fulfillment group
+  order.shipping = (order.shipping || []).map((shippingRecord) => {
+    const billingRecord = order.billing.find((billing) => billing.shopId === shippingRecord.shopId);
+    return {
+      ...shippingRecord,
+      itemIds: [],
+      paymentId: billingRecord._id,
+      workflow: { status: "new", workflow: ["coreOrderWorkflow/notStarted"] }
+    };
+  });
 
   // Add current exchange rate into order.billing.currency
   // If user currency === shop currency, exchange rate = 1.0
@@ -146,29 +137,18 @@ export default function copyCartToOrder(cartId, cartToken) {
       variant: chosenVariant
     } = Promise.await(findProductAndVariant(rawCollections, item.productId, item.variantId));
 
+    const fulfillmentGroup = order.shipping.find((group) => group.shopId === item.shopId);
+
+    // This is a convenient place to push into the itemIds array on the fulfillment group
+    fulfillmentGroup.itemIds.push(item._id);
+
     item.product = catalogProduct;
-    item.shippingMethod = order.shipping[order.shipping.length - 1];
+    item.shippingMethod = fulfillmentGroup;
     item.variants = chosenVariant;
     item.workflow = {
       status: "new",
       workflow: ["coreOrderWorkflow/created"]
     };
-
-    // While we're looping, assign items to each shipping record based on the shopId of the item
-    const shipmentItem = {
-      _id: item._id,
-      productId: item.productId,
-      quantity: item.quantity,
-      shopId: item.shopId,
-      variantId: item.variantId
-    };
-    // If the shipment exists
-    const shippingRecord = order.shipping.find((sRecord) => sRecord.shopId === item.shopId);
-    if (shippingRecord.items) {
-      shippingRecord.items.push(shipmentItem);
-    } else {
-      shippingRecord.items = [shipmentItem];
-    }
 
     return item;
   });

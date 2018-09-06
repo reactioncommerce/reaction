@@ -30,3 +30,8 @@ import "./29_default_parcel_size";
 import "./30_cart_schema_changes";
 import "./31_order_schema_changes";
 import "./32_publish_all_existing_visible_products";
+import "./33_change_products_template_name";
+import "./34_remove_order_shipping_items";
+import "./35_add_type_to_carts";
+import "./36_convert_requiresShipping";
+import "./37_change_shipping_rate_settings_template_name";

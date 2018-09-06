@@ -1,1 +1,1 @@
-import "./templates";
+export { default as ShippingRatesSettings } from "../containers/ShippingRatesSettings";

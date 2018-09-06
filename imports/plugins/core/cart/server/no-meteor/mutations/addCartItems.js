@@ -1,5 +1,4 @@
-import Hooks from "@reactioncommerce/hooks";
-import { Meteor } from "meteor/meteor";
+import ReactionError from "@reactioncommerce/reaction-error";
 import { Cart as CartSchema } from "/imports/collections/schemas";
 import hashLoginToken from "/imports/plugins/core/accounts/server/no-meteor/util/hashLoginToken";
 import addCartItemsUtil from "../util/addCartItems";
@@ -19,7 +18,7 @@ import addCartItemsUtil from "../util/addCartItems";
  */
 export default async function addCartItems(context, input, options = {}) {
   const { cartId, items, token } = input;
-  const { collections, accountId = null } = context;
+  const { appEvents, collections, accountId = null } = context;
   const { Cart } = collections;
 
   let selector;
@@ -29,7 +28,7 @@ export default async function addCartItems(context, input, options = {}) {
   } else {
     // Anonymous cart
     if (!token) {
-      throw new Meteor.Error("not-found", "Cart not found");
+      throw new ReactionError("not-found", "Cart not found");
     }
 
     selector = { _id: cartId, anonymousAccessToken: hashLoginToken(token) };
@@ -37,7 +36,7 @@ export default async function addCartItems(context, input, options = {}) {
 
   const cart = await Cart.findOne(selector);
   if (!cart) {
-    throw new Meteor.Error("not-found", "Cart not found");
+    throw new ReactionError("not-found", "Cart not found");
   }
 
   const {
@@ -60,15 +59,14 @@ export default async function addCartItems(context, input, options = {}) {
     _id: cart._id
   }, modifier);
 
-  if (modifiedCount !== 1) throw new Meteor.Error("server-error", "Unable to update cart");
+  if (modifiedCount !== 1) throw new ReactionError("server-error", "Unable to update cart");
 
   const updatedCart = {
     ...cart,
     items: updatedItemList,
     updatedAt
   };
-  Hooks.Events.run("afterCartUpdate", cart._id, updatedCart);
-  Hooks.Events.run("afterCartUpdateCalculateDiscount", cart._id);
+  await appEvents.emit("afterCartUpdate", cart._id, updatedCart);
 
   return { cart: updatedCart, incorrectPriceFailures, minOrderQuantityFailures };
 }

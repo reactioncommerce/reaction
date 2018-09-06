@@ -397,7 +397,7 @@ registerSchema("PriceRange", PriceRange);
  * @property {Boolean} isLowQuantity denormalized, true when at least 1 variant is below `lowInventoryWarningThreshold`
  * @property {Boolean} isSoldOut denormalized, Indicates when all variants `inventoryQuantity` is zero
  * @property {Boolean} isBackorder denormalized, `true` if product not in stock, but customers anyway could order it
- * @property {Boolean} requiresShipping default value: `true`, Require a shipping address
+ * @property {String[]} supportedFulfillmentTypes Types of fulfillment ("shipping", "pickup", etc) allowed for this product
  * @property {ShippingParcel} parcel optional
  * @property {String[]} hashtags optional
  * @property {String} twitterMsg optional
@@ -496,12 +496,12 @@ export const Product = new SimpleSchema({
     type: Boolean,
     optional: true
   },
-  "requiresShipping": {
-    label: "Require a shipping address",
-    type: Boolean,
-    defaultValue: true,
-    optional: true
+  "supportedFulfillmentTypes": {
+    type: Array,
+    label: "Supported fulfillment types",
+    defaultValue: ["shipping"]
   },
+  "supportedFulfillmentTypes.$": String,
   "parcel": {
     type: ShippingParcel,
     optional: true

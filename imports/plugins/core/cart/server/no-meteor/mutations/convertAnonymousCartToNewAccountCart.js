@@ -1,6 +1,7 @@
 import Random from "@reactioncommerce/random";
-import { Meteor } from "meteor/meteor";
+import ReactionError from "@reactioncommerce/reaction-error";
 import { Cart as CartSchema } from "/imports/collections/schemas";
+import appEvents from "/imports/plugins/core/core/server/appEvents";
 
 /**
  * @summary Copy items from an anonymous cart into a new account cart, and then delete the
@@ -45,11 +46,13 @@ export default async function convertAnonymousCartToNewAccountCart({
 
   CartSchema.validate(newCart);
 
-  const { ops, result } = await Cart.insertOne(newCart);
-  if (result.ok !== 1) throw new Meteor.Error("server-error", "Unable to create account cart");
+  const { result } = await Cart.insertOne(newCart);
+  if (result.ok !== 1) throw new ReactionError("server-error", "Unable to create account cart");
+
+  await appEvents.emit("afterCartCreate", newCart);
 
   const { deletedCount } = await Cart.deleteOne(anonymousCartSelector);
-  if (deletedCount === 0) throw new Meteor.Error("server-error", "Unable to delete anonymous cart");
+  if (deletedCount === 0) throw new ReactionError("server-error", "Unable to delete anonymous cart");
 
-  return ops[0];
+  return newCart;
 }

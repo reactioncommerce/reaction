@@ -3,6 +3,7 @@ import { Meteor } from "meteor/meteor";
 import { Session } from "meteor/session";
 import { composeWithTracker } from "@reactioncommerce/reaction-components";
 import { Reaction, i18next } from "/client/api";
+import ReactionError from "@reactioncommerce/reaction-error";
 import { Tags, Shops } from "/lib/collections";
 import { AdminContextProvider } from "/imports/plugins/core/ui/client/providers";
 
@@ -14,7 +15,7 @@ const handleAddProduct = () => {
       let currentTagId;
 
       if (error) {
-        throw new Meteor.Error("create-product-error", error);
+        throw new ReactionError("create-product-error", error);
       } else if (productId) {
         currentTagId = Session.get("currentTag");
         currentTag = Tags.findOne(currentTagId);
@@ -58,7 +59,7 @@ function composer(props, onData) {
     const registryItems = Reaction.Apps({ provides: "settings", container: "dashboard" });
 
     for (const item of registryItems) {
-      if (Reaction.hasPermission(item.route, Meteor.userId())) {
+      if (Reaction.hasPermission(item.route, Reaction.getUserId())) {
         let { icon } = item;
         if (!item.icon && item.provides && item.provides.includes("settings")) {
           icon = "gear";
@@ -83,7 +84,7 @@ function composer(props, onData) {
     isPreview: Reaction.isPreview(),
     isActionViewAtRootView: Reaction.isActionViewAtRootView(),
     actionViewIsOpen: Reaction.isActionViewOpen(),
-    hasCreateProductAccess: Reaction.hasPermission("createProduct", Meteor.userId(), Reaction.getShopId()),
+    hasCreateProductAccess: Reaction.hasPermission("createProduct", Reaction.getUserId(), Reaction.getShopId()),
     shopId: Reaction.getShopId(),
     shops,
 

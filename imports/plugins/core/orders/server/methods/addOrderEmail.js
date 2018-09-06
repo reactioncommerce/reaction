@@ -1,6 +1,7 @@
-import { Meteor } from "meteor/meteor";
 import { check } from "meteor/check";
+import ReactionError from "@reactioncommerce/reaction-error";
 import { Orders } from "/lib/collections";
+import Reaction from "/imports/plugins/core/core/server/Reaction";
 
 /**
  * @name orders/addOrderEmail
@@ -20,8 +21,8 @@ export default function addOrderEmail(cartId, email) {
     *provided for tracking order progress.
     */
 
-  if (!Meteor.userId()) {
-    throw new Meteor.Error("access-denied", "Access Denied. You are not connected.");
+  if (!Reaction.getUserId()) {
+    throw new ReactionError("access-denied", "Access Denied. You are not connected.");
   }
 
   return Orders.update({ cartId }, { $set: { email } });

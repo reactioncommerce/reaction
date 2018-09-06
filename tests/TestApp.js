@@ -3,6 +3,7 @@ import graphql from "graphql.js";
 import findFreePort from "find-free-port";
 import MongoDBMemoryServer from "mongodb-memory-server";
 import Random from "@reactioncommerce/random";
+import appEvents from "../imports/plugins/core/core/server/appEvents";
 import createApolloServer from "../imports/plugins/core/graphql/server/no-meteor/createApolloServer";
 import defineCollections from "../imports/collections/defineCollections";
 import Factory from "/imports/test-utils/helpers/factory";
@@ -22,6 +23,7 @@ class TestApp {
         };
       },
       context: {
+        appEvents,
         collections: this.collections
       },
       debug: true

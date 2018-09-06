@@ -2,7 +2,7 @@ import { compose, withProps } from "recompose";
 import { registerComponent, composeWithTracker } from "@reactioncommerce/reaction-components";
 import { Meteor } from "meteor/meteor";
 import { Template } from "meteor/templating";
-import { i18next, Logger } from "/client/api";
+import { i18next, Logger, Reaction } from "/client/api";
 import { Countries } from "/client/collections";
 import * as Collections from "/lib/collections";
 import getCart from "/imports/plugins/core/cart/client/util/getCart";
@@ -125,7 +125,7 @@ function callUpdateAddress(address, property) {
  * @private
  * @param {String} addressId - ID of address to remove from cart
  * @param {String} type - "billing" or "shipping"
- * @returns {<Promise>Object} Result
+ * @returns {Promise<Object>} Result
  */
 function callUnsetAddress(addressId, type) {
   return new Promise((resolve, reject) => {
@@ -149,7 +149,7 @@ function callUnsetAddress(addressId, type) {
 /**
  * @summary Update shipping or billing address for cart
  * @param {Object} updatedAddress Address
- * @returns {<Promise>Boolean[]} Resolves with 0 or more results
+ * @returns {Promise<Boolean[]>} Resolves with 0 or more results
  */
 function updateCartAddresses(updatedAddress) {
   const promises = [];
@@ -286,7 +286,7 @@ const handlers = {
  * @returns {undefined}
  */
 function composer(props, onData) {
-  const userId = Meteor.userId();
+  const userId = Reaction.getUserId();
   const account = Collections.Accounts.findOne({ userId });
   if (!account) {
     // Subscription not ready

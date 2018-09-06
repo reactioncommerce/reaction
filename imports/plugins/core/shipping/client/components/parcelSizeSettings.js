@@ -66,7 +66,7 @@ class ParcelSizeSettings extends Component {
             <Components.CardHeader
               actAsExpander={true}
               i18nKeyTitle="defaultParcelSize.label"
-              title="Parcel Size"
+              title="Default Parcel Size"
             />
             <Components.CardBody expandable={true}>
               <Components.Form

@@ -3,6 +3,7 @@ import Logger from "@reactioncommerce/logger";
 import { Meteor } from "meteor/meteor";
 import { Accounts, Shops } from "/lib/collections";
 import { Reaction } from "/lib/api";
+import ReactionError from "@reactioncommerce/reaction-error";
 import GeoCoder from "../../util/geocoder";
 
 /**
@@ -38,7 +39,7 @@ export default function getLocale() {
   });
 
   if (!shop) {
-    throw new Meteor.Error("not-found", "Failed to find shop data. Unable to determine locale.");
+    throw new ReactionError("not-found", "Failed to find shop data. Unable to determine locale.");
   }
   // configure default defaultCountryCode
   // fallback to shop settings
@@ -94,7 +95,7 @@ export default function getLocale() {
   });
 
   // adjust user currency
-  const account = Accounts.findOne({ userId: Meteor.userId() });
+  const account = Accounts.findOne({ userId: Reaction.getUserId() });
   let profileCurrency = account && account.profile && account.profile.currency;
   if (account && !profileCurrency) {
     [localeCurrency] = localeCurrency;

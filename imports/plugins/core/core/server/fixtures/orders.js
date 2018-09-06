@@ -55,7 +55,8 @@ export function randomMode() {
  * @method paymentMethod
  * @memberof Fixtures
  * @summary Create Payment Method object
- * @return {Object}     Payment method object
+ * @param {Object} doc Override props
+ * @return {Object} Payment method object
  * @property {String} processor - `randomProcessor()`
  * @property {String} storedCard - `"4242424242424242"`
  * @property {String} transactionId - `Random.id()`
@@ -95,8 +96,14 @@ export function getShopId() {
   return getShop()._id;
 }
 
-export default function () {
+/**
+ * @method defineOrders
+ * @memberof Fixtures
+ * @return {undefined}
+ */
+export default function defineOrders() {
   const shopId = getShopId();
+
   /**
    * @name order
    * @memberof Fixtures
@@ -122,20 +129,16 @@ export default function () {
    * @property {Object} shopId.items.variants Cart - Product - variants
    * @property {Object} shopId.items.workflow Cart - Product - Object
    * @property {String} shopId.items.workflow.status Cart - Product - `"new"`
-   * @property {Boolean} requiresShipping - `true`
+   * @property {String[]} supportedFulfillmentTypes - ["shipping"]
    * @property {Array} shipping - Shipping - `[{}]`
-   * @property {Object} items - Shipping - `Object`
-   * @property {String} item._id - Shipping - `itemIdOne`
-   * @property {String} item.productId - Shipping - `Random.id()`
-   * @property {String} item.variantId - Shipping - `Random.id()`
-   * @property {Boolean} item.packed - Shipping - `false`
+   * @property {String[]} itemIds
    * @property {Array} billing - Billing - `[]`
    * @property {String} billing._id - Billing - `Random.id()`
    * @property {Object} billing.address - Billing - Address object
    * @property {Object} billing.paymentMethod - Billing - Payment Method
    * @property {String} billing.paymentMethod.method - `"credit"`
    * @property {String} billing.paymentMethod.processor - `"Example"`
-   * @property {String} billing.paymentMethod.storedCard - `"Mastercard 2346"`
+   * @property {String} billing.paymentMethod.storedCard - `"MasterCard 2346"`
    * @property {String} billing.paymentMethod.paymentPackageId - `getPkgData("example-paymentmethod")._id`
    * @property {String} paymentSettingsKey - `"example-paymentmethod"`
    * @property {String} mode - `"authorize"`
@@ -212,28 +215,11 @@ export default function () {
         }
       }];
     },
-    requiresShipping: true,
+    supportedFulfillmentTypes: ["shipping"],
     shipping: [{
       shopId,
       address: getAddress({ isShippingDefault: true }),
-      items: [
-        {
-          _id: itemIdOne,
-          productId: Random.id(),
-          quantity: 1,
-          shopId,
-          variantId: Random.id(),
-          packed: false
-        },
-        {
-          _id: itemIdTwo,
-          productId: Random.id(),
-          quantity: 1,
-          shopId,
-          variantId: Random.id(),
-          packed: false
-        }
-      ]
+      itemIds: [itemIdOne, itemIdTwo]
     }], // Shipping Schema
     billing: [{
       _id: Random.id(),
@@ -242,7 +228,7 @@ export default function () {
       paymentMethod: paymentMethod({
         method: "credit",
         processor: "Example",
-        storedCard: "Mastercard 2346",
+        storedCard: "MasterCard 2346",
         paymentPackageId: getPkgData("example-paymentmethod") ? getPkgData("example-paymentmethod")._id : "uiwneiwknekwewe",
         paymentSettingsKey: "example-paymentmethod",
         mode: "authorize",
