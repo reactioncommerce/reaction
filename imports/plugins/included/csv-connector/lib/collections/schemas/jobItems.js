@@ -22,6 +22,11 @@ export const JobItems = new SimpleSchema({
     optional: true,
     label: "Job type"
   },
+  jobSubType: {
+    type: String,
+    optional: true,
+    label: "Job Sub-type"
+  },
   parentJobId: {
     type: String,
     optional: true,
@@ -38,6 +43,26 @@ export const JobItems = new SimpleSchema({
     optional: true,
     label: "Mapping"
   }, // can be "default" or Mapping._id
+  fileSource: {
+    type: String,
+    optional: true,
+    label: "File source"
+  },
+  newMappingName: {
+    type: String,
+    optional: true,
+    label: "New mapping name"
+  },
+  saveMappingAction: {
+    type: String,
+    optional: true,
+    label: "Save mapping action"
+  },
+  shouldSaveToNewMapping: {
+    type: Boolean,
+    optional: true,
+    label: "Save to new mapping?"
+  },
   hasHeader: {
     type: Boolean,
     optional: true,
@@ -52,11 +77,6 @@ export const JobItems = new SimpleSchema({
     type: String,
     optional: true,
     label: "User"
-  },
-  fileSource: {
-    type: String,
-    optional: true,
-    label: "File source"
   },
   status: {
     type: String,

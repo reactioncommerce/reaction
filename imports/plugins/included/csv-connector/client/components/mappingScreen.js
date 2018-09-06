@@ -133,7 +133,7 @@ class MappingScreen extends Component {
               errors={newMappingNameErrors}
               id="newMappingNameInput"
               name="newMappingName"
-              value={newMappingName || ""}
+              value={newMappingName}
               onChanging={this.handleChangeNewMappingName}
             />
             <ErrorsBlock errors={newMappingNameErrors} />
@@ -202,10 +202,12 @@ class MappingScreen extends Component {
 
   render() {
     const {
+      errors,
       fieldOptions,
       hasHeader,
       mappingByUser,
       onSetMappingByUser,
+      onSetMappingByUserError,
       sampleData
     } = this.props;
     return (
@@ -225,10 +227,12 @@ class MappingScreen extends Component {
           </div>
           <div className="col-sm-12 col-md-7">
             <MappingTable
+              errors={errors}
               fieldOptions={fieldOptions}
               hasHeader={hasHeader}
               mappingByUser={mappingByUser}
               onSetMappingByUser={onSetMappingByUser}
+              onSetMappingByUserError={onSetMappingByUserError}
               sampleData={sampleData}
             />
           </div>
@@ -256,6 +260,7 @@ MappingScreen.propTypes = {
   onSetField: PropTypes.func,
   onSetFieldMapping: PropTypes.func,
   onSetMappingByUser: PropTypes.func,
+  onSetMappingByUserError: PropTypes.func,
   onSetSampleData: PropTypes.func,
   sampleData: PropTypes.object,
   saveMappingAction: PropTypes.string,

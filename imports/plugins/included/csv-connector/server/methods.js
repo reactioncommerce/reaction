@@ -1,11 +1,12 @@
+import { Readable } from "stream";
 import S3 from "aws-sdk/clients/s3";
 import Client from "ssh2-sftp-client";
-import { Readable } from "stream";
 import { Meteor } from "meteor/meteor";
 import { check } from "meteor/check";
 import { EJSON } from "meteor/ejson";
 import { Reaction } from "/lib/api";
 import { Packages } from "/lib/collections";
+import { JobItems } from "../lib/collections";
 
 export const methods = {
   /**
@@ -124,7 +125,7 @@ export const methods = {
    * @method
    * @return {Promise} - Promise
    */
-  "csvConnector/sftpTestForImportAndExport"() {
+  async "csvConnector/sftpTestForImportAndExport"() {
     // must have core permissions
     if (!Reaction.hasPermission("core")) {
       throw new Meteor.Error("access-denied", "Access Denied");
@@ -132,14 +133,51 @@ export const methods = {
     const pkg = Packages.findOne({ name: "connector-settings-sftp" });
     const { settings: { ipAddress, port, username, password } } = pkg || {};
     const sftpClient = new Client();
-    sftpClient.connect({
-      host: ipAddress,
-      port: `${port}`,
-      username,
-      password
-    }).then(() => sftpClient.list("/")).then((data) => console.log(data)).catch((error) => {
-      console.log(error);
+    return new Promise((resolve, reject) => {
+      sftpClient.connect({
+        host: ipAddress,
+        port: `${port}`,
+        username,
+        password
+      }).then(() => resolve(true)).catch((error) => reject(error));
     });
+  },
+
+  "csvConnector/saveJobItem"(values) {
+    check(values, Object);
+    const {
+      collection,
+      fileSource,
+      hasHeader,
+      jobSubType,
+      jobType,
+      mappingByUser,
+      mappingId,
+      name,
+      newMappingName,
+      saveMappingAction,
+      shouldSaveToNewMapping
+    } = values;
+    const shopId = Reaction.getShopId();
+
+    const jobItemId = JobItems.insert({
+      collection,
+      fileSource,
+      hasHeader,
+      jobSubType,
+      jobType,
+      mapping: mappingByUser,
+      mappingId,
+      name,
+      newMappingName,
+      saveMappingAction,
+      shopId,
+      shouldSaveToNewMapping,
+      status: "pending",
+      uploadedAt: new Date(),
+      userId: Meteor.userId()
+    });
+    return jobItemId;
   }
 };
 

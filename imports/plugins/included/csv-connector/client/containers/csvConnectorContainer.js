@@ -1,11 +1,16 @@
 import React, { Component } from "react";
 import { compose } from "recompose";
 import Papa from "papaparse";
+import Alert from "sweetalert2";
 import { Components, composeWithTracker, registerComponent } from "@reactioncommerce/reaction-components";
+import { FileRecord } from "@reactioncommerce/file-collections";
 import { Meteor } from "meteor/meteor";
+import Logger from "/client/modules/logger";
+import { i18next } from "/client/api";
 import { Mappings } from "../../lib/collections";
 import { getDataTypeOptions, getDefaultMappingForCollection, getFieldOptionsForCollection } from "../../lib/common/conversionMaps";
 import { DetailScreen, MappingScreen, StartScreen } from "../components";
+import { JobFiles } from "../jobFiles";
 import S3SettingsContainer from "./s3SettingsContainer";
 import SFTPSettingsContainer from "./sftpSettingsContainer";
 
@@ -22,6 +27,7 @@ class CSVConnectorContainer extends Component {
       fileSource: "",
       fileUpload: {},
       hasHeader: false,
+      isSubmitting: false,
       jobSubType: "create",
       jobType: "import",
       mappingId: "",
@@ -77,7 +83,15 @@ class CSVConnectorContainer extends Component {
   }
 
   getValidationErrors() {
-    const { activeScreen, fileUpload, name } = this.state;
+    const {
+      activeScreen,
+      fileUpload,
+      mappingId,
+      name,
+      newMappingName,
+      saveMappingAction,
+      shouldSaveToNewMapping
+    } = this.state;
     const errors = {};
     if (activeScreen === "detail") {
       if (!name) {
@@ -89,6 +103,16 @@ class CSVConnectorContainer extends Component {
         errors.fileUpload = [{ name: "fileUpload", message: "File is required." }];
       } else {
         errors.fileUpload = [];
+      }
+    } else if (activeScreen === "mapping") {
+      if ((mappingId === "create" && shouldSaveToNewMapping) || (mappingId !== "create" && saveMappingAction === "create")) {
+        if (!newMappingName) {
+          errors.newMappingName = [{ name: "newMappingName", message: "New name is required." }];
+        } else {
+          errors.newMappingName = [];
+        }
+      } else {
+        errors.newMappingName = [];
       }
     }
     return errors;
@@ -161,18 +185,89 @@ class CSVConnectorContainer extends Component {
     this.setState({ mappingByUser });
   }
 
-  handleSetSampleData = async () => {
-    const rows = await this.getCSVFilePreviewRows();
-    try {
-      const sampleData = this.getSampleData(rows);
-      this.setState({ sampleData });
-    } catch (error) {
-      this.setState({ sampleData: {} });
-    }
+  handleSetMappingByUserError = (error) => {
+    const { errors } = this.state;
+    const mappingByUserError = { mappingByUser: error };
+    this.setState({
+      errors: {
+        ...errors,
+        ...mappingByUserError
+      }
+    });
   }
 
-  handleSubmitJobItem = () => {
-    return;
+  handleSetSampleData = async () => {
+    let sampleData = {};
+    try {
+      const rows = await this.getCSVFilePreviewRows();
+      sampleData = this.getSampleData(rows);
+    } catch (error) {
+      Logger.error(error);
+    }
+    this.setState({ sampleData });
+  }
+
+  handleSubmitJobItem = async () => {
+    const {
+      collection,
+      fileSource,
+      fileUpload,
+      hasHeader,
+      jobSubType,
+      jobType,
+      mappingByUser,
+      mappingId,
+      name,
+      newMappingName,
+      saveMappingAction,
+      shouldSaveToNewMapping
+    } = this.state;
+    const errors = this.getValidationErrors();
+
+    // If any field has validation error, return right away
+    for (const field in errors) {
+      if (errors[field].length > 0) {
+        return this.setState({ errors });
+      }
+    }
+
+    this.setState({ isSubmitting: true });
+
+    const jobItemValues = {
+      collection,
+      fileSource,
+      hasHeader,
+      jobSubType,
+      jobType,
+      mappingByUser,
+      mappingId,
+      name,
+      newMappingName,
+      saveMappingAction,
+      shouldSaveToNewMapping
+    };
+    let jobItemId;
+    try {
+      jobItemId = await new Promise((resolve, reject) => {
+        Meteor.call("csvConnector/saveJobItem", jobItemValues, (error, jobItemId) => {
+          if (error) {
+            return reject(error);
+          }
+          return resolve(jobItemId);
+        });
+      });
+    } catch (error) {
+      return Alert(i18next.t("app.error"), error.message, "error");
+    }
+
+    const fileRecord = FileRecord.fromFile(fileUpload);
+    fileRecord.metadata = { jobItemId, type: "upload" };
+    fileRecord.upload({ endpoint: "/jobs/uploads" })
+      .then(() => JobFiles.insert(fileRecord))
+      .then(() => {
+        this.setState({ isSubmitting: false });
+        return Alert(i18next.t("app.success"), i18next.t("admin.alerts.jobItemSaved"), "success");
+      }).catch((error) => Alert(i18next.t("app.error"), error.message, "error"));
   }
 
   renderJobItemScreen() {
@@ -192,6 +287,7 @@ class CSVConnectorContainer extends Component {
       mappingName,
       mappingOptions,
       name,
+      newMappingName,
       sampleData,
       saveMappingAction,
       selectedMapping,
@@ -241,10 +337,12 @@ class CSVConnectorContainer extends Component {
         mappingByUser={mappingByUser}
         mappingId={mappingId}
         mappingName={mappingName}
+        newMappingName={newMappingName}
         onDone={this.handleSubmitJobItem}
         onSetActiveScreen={this.handleSetActiveScreen}
         onSetField={this.handleSetField}
         onSetMappingByUser={this.handleSetMappingByUser}
+        onSetMappingByUserError={this.handleSetMappingByUserError}
         onSetSampleData={this.handleSetSampleData}
         sampleData={sampleData}
         saveMappingAction={saveMappingAction}

@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import _ from "lodash";
+import ErrorsBlock from "@reactioncommerce/components/ErrorsBlock/v1";
 import Select from "@reactioncommerce/components/Select/v1";
 
 
@@ -8,6 +9,23 @@ class MappingTable extends Component {
   constructor(props) {
     super(props);
     this.state = props.mappingByUser;
+  }
+
+  componentDidMount() {
+    const { onSetMappingByUserError, sampleData } = this.props;
+    // validate the file uploaded here
+    let error;
+    const field = "mappingByUser";
+    if (_.isEmpty(sampleData)) {
+      error = [{ name: field, message: "We encountered a problem reading your file. Please upload another file." }];
+    } else if (this.sampleDataHasNoContent()) {
+      error = [{ name: field, message: "We encountered a problem reading your file. Please upload another file." }];
+    }
+    if (error) {
+      onSetMappingByUserError(error);
+    } else {
+      onSetMappingByUserError([]);
+    }
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -24,9 +42,31 @@ class MappingTable extends Component {
     this.setState({ [col]: value });
   }
 
+  sampleDataHasNoContent() {
+    const { sampleData } = this.props;
+    if (_.isEqual(sampleData, { "": [] })) {
+      return true;
+    }
+    return false;
+  }
+
   renderMatchFieldsRow() {
-    const { fieldOptions, hasHeader, sampleData } = this.props;
+    const {
+      errors: { mappingByUser: mappingByUserErrors },
+      fieldOptions,
+      hasHeader,
+      sampleData
+    } = this.props;
     const rows = [];
+    if (mappingByUserErrors && mappingByUserErrors.length > 0) {
+      return (
+        <tr>
+          <td colSpan="2">
+            <ErrorsBlock errors={mappingByUserErrors} />
+          </td>
+        </tr>
+      );
+    }
     for (const col in sampleData) {
       if (col in sampleData) {
         let colName = col;
@@ -61,14 +101,6 @@ class MappingTable extends Component {
   }
 
   render() {
-    const { sampleData, mappingByUser } = this.props;
-    if (_.isEmpty(sampleData)) {
-      return (
-        <div className="alert alert-danger">
-          <p>We encountered a problem reading your file. Please upload another file.</p>
-        </div>
-      );
-    }
     return (
       <div className="csv-table-container">
         <table className="table csv-table">
@@ -88,10 +120,12 @@ class MappingTable extends Component {
 }
 
 MappingTable.propTypes = {
+  errors: PropTypes.object,
   fieldOptions: PropTypes.arrayOf(PropTypes.object),
   hasHeader: PropTypes.bool,
   mappingByUser: PropTypes.object,
   onSetMappingByUser: PropTypes.func,
+  onSetMappingByUserError: PropTypes.func,
   sampleData: PropTypes.object
 };
 
