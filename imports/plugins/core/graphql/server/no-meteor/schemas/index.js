@@ -11,7 +11,7 @@ import metafield from "./metafield.graphql";
 import node from "./node.graphql";
 import payment from "./payment.graphql";
 import role from "./role.graphql";
-import fulfillmentService from "/imports/services/fulfillment";
+import fulfillmentService from "/imports/node-app/services/fulfillment";
 import shop from "./shop.graphql";
 import tag from "./tag.graphql";
 

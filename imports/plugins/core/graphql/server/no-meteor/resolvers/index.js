@@ -3,7 +3,7 @@ import account from "./account";
 import catalog from "./catalog";
 import cart from "./cart";
 import core from "./core";
-import fulfillmentService from "/imports/services/fulfillment";
+import fulfillmentService from "/imports/node-app/services/fulfillment";
 import ping from "./ping";
 import product from "./product";
 import scalar from "./scalar";

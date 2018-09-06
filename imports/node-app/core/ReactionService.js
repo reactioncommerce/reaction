@@ -2,8 +2,8 @@ import { merge } from "lodash";
 
 export default class ReactionService {
   constructor({
-    graphqlResolvers,
-    graphqlSchemas,
+    graphqlResolvers = {},
+    graphqlSchemas = [],
     startup
   } = {}) {
     this.graphqlResolvers = {};

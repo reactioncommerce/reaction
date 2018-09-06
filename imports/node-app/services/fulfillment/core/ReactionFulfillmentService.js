@@ -1,4 +1,4 @@
-import ReactionService from "/imports/core-server/ReactionService";
+import ReactionService from "/imports/node-app/core/ReactionService";
 import getShippingRates from "./util/getShippingRates";
 
 export default class ReactionFulfillmentService extends ReactionService {
