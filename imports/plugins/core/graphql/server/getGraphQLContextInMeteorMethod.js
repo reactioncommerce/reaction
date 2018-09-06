@@ -27,7 +27,10 @@ export default async function getGraphQLContextInMeteorMethod(userId) {
   }
 
   const meteorContext = { appEvents, collections };
-  await buildContext(meteorContext, user);
+
+  const request = { user };
+
+  await buildContext(meteorContext, request);
 
   // Since getGraphQLContextInMeteorMethod is to be called within a Meteor method with Meteor running,
   // we can pass through callMeteorMethod to Meteor.apply.

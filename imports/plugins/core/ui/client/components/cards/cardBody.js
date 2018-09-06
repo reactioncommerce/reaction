@@ -1,9 +1,9 @@
 import React, { Component } from "react";
+import { compose } from "recompose";
 import PropTypes from "prop-types";
-import { VelocityTransitionGroup } from "velocity-react";
 import Radium from "radium";
 import classnames from "classnames";
-import { registerComponent } from "@reactioncommerce/reaction-components";
+import { registerComponent, withAnimateHeight } from "@reactioncommerce/reaction-components";
 
 const styles = {
   noPadding: {
@@ -18,20 +18,30 @@ class CardBody extends Component {
   };
 
   static propTypes = {
+    AnimateHeight: PropTypes.func,
     children: PropTypes.node,
     expanded: PropTypes.bool, // eslint-disable-line react/boolean-prop-naming
     padded: PropTypes.bool // eslint-disable-line react/boolean-prop-naming
   };
 
-  renderCard() {
-    if (this.props.expanded) {
-      const baseClassName = classnames({
-        "rui": true,
-        "panel-body": true,
-        "no-padding": this.props.padded === false
-      });
+  render() {
+    const { AnimateHeight } = this.props;
+    if (!AnimateHeight) {
+      return null;
+    }
 
-      return (
+    const baseClassName = classnames({
+      "rui": true,
+      "panel-body": true,
+      "no-padding": this.props.padded === false
+    });
+    const height = (this.props.expanded && "auto") || 0;
+
+    return (
+      <AnimateHeight
+        duration={200}
+        height={height}
+      >
         <div
           className={baseClassName}
           style={[
@@ -40,24 +50,17 @@ class CardBody extends Component {
         >
           {this.props.children}
         </div>
-      );
-    }
-
-    return null;
-  }
-
-  render() {
-    return (
-      <VelocityTransitionGroup
-        enter={{ animation: "slideDown" }}
-        leave={{ animation: "slideUp" }}
-      >
-        {this.renderCard()}
-      </VelocityTransitionGroup>
+      </AnimateHeight>
     );
   }
 }
 
-registerComponent("CardBody", CardBody, Radium);
+registerComponent("CardBody", CardBody, [
+  withAnimateHeight,
+  Radium
+]);
 
-export default Radium(CardBody);
+export default compose(
+  withAnimateHeight,
+  Radium
+)(CardBody);

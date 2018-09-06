@@ -272,7 +272,7 @@ export const methods = {
         const users = Array.from(discount.transactions, (trans) => trans.userId);
         const transactionCount = new Map([...new Set(users)].map((userX) => [userX, users.filter((userY) => userY === userX).length]));
         const orders = Array.from(discount.transactions, (trans) => trans.cartId);
-        userCount = transactionCount.get(Meteor.userId());
+        userCount = transactionCount.get(Reaction.getUserId());
         orderCount = orders.length;
       }
       // check limits
