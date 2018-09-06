@@ -6,7 +6,7 @@ import Reaction from "/imports/plugins/core/core/server/Reaction";
 import { hashLoginToken } from "/imports/core-server";
 
 /**
- * @summary Gets the current cart. Assumes a calling context where Meteor.userId() works. It works
+ * @summary Gets the current cart. Assumes a calling context where logged in userID can be retrieved. It works
  *   in all client code, in server methods, and in server publications.
  * @param {String} [cartId] Limit the search by this cart ID if provided.
  * @param {Object} [options] Options
@@ -21,7 +21,7 @@ export default function getCart(cartId, { cartToken, throwIfNotFound = false } =
     throw new Meteor.Error("not-found", "Cart not found");
   }
 
-  const userId = Meteor.userId();
+  const userId = Reaction.getUserId();
   let account = null;
   const selector = { shopId };
   if (cartId) {

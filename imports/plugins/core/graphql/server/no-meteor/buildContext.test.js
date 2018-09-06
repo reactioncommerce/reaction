@@ -8,8 +8,9 @@ const fakeUser = {
 };
 
 test("properly mutates the context object without user", async () => {
+  process.env.ROOT_URL = "http://localhost:3000";
   const context = { collections: mockContext.collections };
-  await buildContext(context, undefined);
+  await buildContext(context, { user: undefined });
   expect(context).toEqual({
     collections: mockContext.collections,
     mutations,
@@ -17,16 +18,19 @@ test("properly mutates the context object without user", async () => {
     shopId: null,
     user: null,
     userHasPermission: jasmine.any(Function),
-    userId: null
+    userId: null,
+    rootUrl: "http://localhost:3000/",
+    getAbsoluteUrl: jasmine.any(Function)
   });
 });
 
 test("properly mutates the context object with user", async () => {
+  process.env.ROOT_URL = "https://localhost:3000";
   const mockAccount = { _id: "accountId", userId: fakeUser._id };
   mockContext.collections.Accounts.findOne.mockReturnValueOnce(Promise.resolve(mockAccount));
 
   const context = { collections: mockContext.collections };
-  await buildContext(context, fakeUser);
+  await buildContext(context, { user: fakeUser });
   expect(context).toEqual({
     account: mockAccount,
     accountId: mockAccount._id,
@@ -36,7 +40,9 @@ test("properly mutates the context object with user", async () => {
     shopId: null,
     user: fakeUser,
     userHasPermission: jasmine.any(Function),
-    userId: fakeUser._id
+    userId: fakeUser._id,
+    rootUrl: "https://localhost:3000/",
+    getAbsoluteUrl: jasmine.any(Function)
   });
 
   // Make sure the hasPermission currying works with one arg

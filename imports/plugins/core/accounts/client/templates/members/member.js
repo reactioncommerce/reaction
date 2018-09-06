@@ -38,14 +38,14 @@ Template.member.events({
 
 Template.memberSettings.helpers({
   isOwnerDisabled() {
-    if (Meteor.userId() === this.userId) {
+    if (Reaction.getUserId() === this.userId) {
       if (Roles.userIsInRole(this.userId, "owner", this.shopId)) {
         return true;
       }
     }
   },
   userId() {
-    return Meteor.userId();
+    return Reaction.getUserId();
   },
   hasPermissionChecked(permission, userId) {
     if (userId && Roles.userIsInRole(userId, permission, this.shopId || Roles.userIsInRole(

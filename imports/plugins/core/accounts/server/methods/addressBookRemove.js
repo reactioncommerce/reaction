@@ -1,5 +1,4 @@
 import Hooks from "@reactioncommerce/hooks";
-import { Meteor } from "meteor/meteor";
 import { check, Match } from "meteor/check";
 import { Accounts } from "/lib/collections";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
@@ -17,17 +16,15 @@ import ReactionError from "@reactioncommerce/reaction-error";
 export default function addressBookRemove(addressId, accountUserId) {
   check(addressId, String);
   check(accountUserId, Match.Optional(String));
-  // security, check for admin access. We don't need to check every user call
-  // here because we are calling `Meteor.userId` from within this Method.
-  if (typeof accountUserId === "string") { // if this will not be a String -
-    // `check` will not pass it.
-    if (Meteor.userId() !== accountUserId && !Reaction.hasPermission("reaction-accounts")) {
+
+  if (typeof accountUserId === "string") {
+    if (Reaction.getUserId() !== accountUserId && !Reaction.hasPermission("reaction-accounts")) {
       throw new ReactionError("access-denied", "Access denied");
     }
   }
   this.unblock();
 
-  const userId = accountUserId || Meteor.userId();
+  const userId = accountUserId || Reaction.getUserId();
   const account = Accounts.findOne({ userId });
 
   const updatedAccountResult = Accounts.update({
@@ -42,12 +39,12 @@ export default function addressBookRemove(addressId, accountUserId) {
   }, { bypassCollection2: true });
 
   // forceIndex when removing an address
-  Hooks.Events.run("afterAccountsUpdate", Meteor.userId(), {
+  Hooks.Events.run("afterAccountsUpdate", userId, {
     accountId: account._id,
     updatedFields: ["forceIndex"]
   });
 
-  // If the address remove was successful, then return the removed addrtess
+  // If the address remove was successful, then return the removed address
   if (updatedAccountResult === 1) {
     // Pull the address from the account before it was updated and return it
     return account.profile.addressBook.find((removedAddress) => addressId === removedAddress._id);

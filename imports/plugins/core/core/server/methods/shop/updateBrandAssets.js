@@ -1,5 +1,4 @@
 import { check } from "meteor/check";
-import { Meteor } from "meteor/meteor";
 import { Reaction } from "/lib/api";
 import ReactionError from "@reactioncommerce/reaction-error";
 import { Shops } from "/lib/collections";
@@ -11,11 +10,11 @@ import { Shops } from "/lib/collections";
  * @param {String} shopId - the shop id corresponding to the shop for which
  *                 the asset should be applied (defaults to Reaction.getShopId())
  * @param {String} userId - the user id on whose behalf we are performing this
- *                 action (defaults to Meteor.userId())
+ *                 action (defaults to logged in user ID)
  * @return {Int} returns update result
  * @private
  */
-function updateShopBrandAssets(asset, shopId = Reaction.getShopId(), userId = Meteor.userId()) {
+function updateShopBrandAssets(asset, shopId = Reaction.getShopId(), userId = Reaction.getUserId) {
   check(asset, {
     mediaId: String,
     type: String

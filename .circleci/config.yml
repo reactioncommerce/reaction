@@ -335,7 +335,7 @@ workflows:
             - docker-push
           filters:
             branches:
-              only: /^release-1\.15\.\d+$/
+              only: /^release-1\.16\.\d+$/
       - deploy-docs:
           requires:
             - test-unit

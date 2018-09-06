@@ -37,7 +37,7 @@ export default function setShipmentMethod(cartId, cartToken, methodId) {
 
   // In Meteor app we always have a user, but it may have "anonymous" role, meaning
   // it was auto-created as a kind of session.
-  const userId = Meteor.userId();
+  const userId = Reaction.getUserId();
   const anonymousUser = Roles.userIsInRole(userId, "anonymous", shopId);
   const userIdForContext = anonymousUser ? null : userId;
 
