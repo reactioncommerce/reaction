@@ -2,11 +2,10 @@ import cors from "cors";
 import bodyParser from "body-parser";
 import express from "express";
 import { graphqlExpress, graphiqlExpress } from "apollo-server-express";
-import buildContext from "./buildContext";
-import getErrorFormatter from "./getErrorFormatter";
-import meteorTokenMiddleware from "./meteorTokenMiddleware";
-import runPluginStartup from "./runPluginStartup";
-import schema from "./schema";
+import buildContext from "./util/buildContext";
+import getErrorFormatter from "./util/getErrorFormatter";
+import meteorTokenMiddleware from "./util/meteorTokenMiddleware";
+import schema from "/imports/plugins/core/graphql/server/no-meteor/schema";
 
 const defaultServerConfig = {
   // graphql endpoint
@@ -80,9 +79,6 @@ export default function createApolloServer(options = {}) {
       })
     );
   }
-
-  // For now this is a convenient place to do this, but move it eventually.
-  runPluginStartup(contextFromOptions);
 
   return expressServer;
 }

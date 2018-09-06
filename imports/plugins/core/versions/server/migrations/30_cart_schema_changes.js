@@ -1,6 +1,6 @@
 import { Migrations } from "meteor/percolate:migrations";
 import { Accounts, Cart } from "/lib/collections";
-import { hashLoginToken } from "/imports/core-server";
+import hashLoginToken from "/imports/node-app/core/util/hashLoginToken";
 
 // Do this migration in batches of 200 to avoid memory issues
 const LIMIT = 200;

@@ -1,6 +1,6 @@
 import mockContext from "/imports/test-utils/helpers/mockContext";
-import mutations from "./mutations";
-import queries from "./queries";
+import mutations from "/imports/plugins/core/graphql/server/no-meteor/mutations";
+import queries from "/imports/plugins/core/graphql/server/no-meteor/queries";
 import buildContext from "./buildContext";
 
 const fakeUser = {

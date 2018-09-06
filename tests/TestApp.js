@@ -7,9 +7,8 @@ import appEvents from "../imports/plugins/core/core/server/appEvents";
 import createApolloServer from "../imports/plugins/core/graphql/server/no-meteor/createApolloServer";
 import defineCollections from "../imports/collections/defineCollections";
 import Factory from "../imports/test-utils/helpers/factory";
-import { hashLoginToken } from "../imports/core-server";
-import setUpFileCollections from "../imports/plugins/core/files/server/no-meteor/setUpFileCollections";
-import { startup as fulfillmentServiceStartup } from "../imports/services/fulfillment";
+import hashLoginToken from "../imports/node-app/core/util/hashLoginToken";
+import setUpFileCollections from "../imports/services/files/setUpFileCollections";
 
 class TestApp {
   constructor() {
@@ -168,11 +167,6 @@ class TestApp {
 
   async start() {
     await this.startMongo();
-
-    // Run startup functions for each service
-    const context = { appEvents, collections: this.collections };
-    await fulfillmentServiceStartup(context);
-
     await this.startServer();
   }
 

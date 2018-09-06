@@ -11,7 +11,7 @@ import { getShop } from "/imports/plugins/core/core/server/fixtures/shops";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
 import * as Collections from "/lib/collections";
 import Fixtures from "/imports/plugins/core/core/server/fixtures";
-import { hashLoginToken } from "/imports/core-server";
+import hashLoginToken from "/imports/node-app/core/util/hashLoginToken";
 
 Fixtures();
 

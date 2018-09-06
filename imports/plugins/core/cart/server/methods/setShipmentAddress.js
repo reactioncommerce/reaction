@@ -6,7 +6,7 @@ import { Address as AddressSchema } from "/imports/collections/schemas";
 import ReactionError from "@reactioncommerce/reaction-error";
 import getGraphQLContextInMeteorMethod from "/imports/plugins/core/graphql/server/getGraphQLContextInMeteorMethod";
 import setShippingAddressOnCart from "../no-meteor/mutations/setShippingAddressOnCart";
-import updateFulfillmentOptionsForGroup from "/imports/services/fulfillment/core/mutations/updateFulfillmentOptionsForGroup";
+import updateFulfillmentOptionsForGroup from "/imports/node-app/services/fulfillment/core/mutations/updateFulfillmentOptionsForGroup";
 
 /**
  * @method cart/setShipmentAddress

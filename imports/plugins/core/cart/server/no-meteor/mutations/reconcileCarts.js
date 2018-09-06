@@ -1,6 +1,6 @@
 import Logger from "@reactioncommerce/logger";
 import ReactionError from "@reactioncommerce/reaction-error";
-import { hashLoginToken } from "/imports/core-server";
+import hashLoginToken from "/imports/node-app/core/util/hashLoginToken";
 import convertAnonymousCartToNewAccountCart from "./convertAnonymousCartToNewAccountCart";
 import reconcileCartsKeepAccountCart from "./reconcileCartsKeepAccountCart";
 import reconcileCartsKeepAnonymousCart from "./reconcileCartsKeepAnonymousCart";

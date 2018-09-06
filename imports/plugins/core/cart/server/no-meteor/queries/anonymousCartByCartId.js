@@ -1,5 +1,5 @@
 import ReactionError from "@reactioncommerce/reaction-error";
-import { hashLoginToken } from "/imports/core-server";
+import hashLoginToken from "/imports/node-app/core/util/hashLoginToken";
 
 /**
  * @name anonymousCartByCartId

@@ -3,13 +3,16 @@ import { merge } from "lodash";
 export default class ReactionService {
   constructor({
     graphqlResolvers,
-    graphqlSchemas
+    graphqlSchemas,
+    startup
   } = {}) {
     this.graphqlResolvers = {};
     this.graphqlSchemas = [];
 
     this.addGraphqlResolvers(graphqlResolvers);
     this.addGraphqlSchemas(graphqlSchemas);
+
+    this.startup = typeof startup === "function" ? startup : () => {};
   }
 
   addGraphqlResolvers(resolvers) {

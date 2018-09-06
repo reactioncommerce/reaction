@@ -1,5 +1,5 @@
-import { hashLoginToken } from "/imports/core-server";
 import ReactionError from "@reactioncommerce/reaction-error";
+import hashLoginToken from "./hashLoginToken";
 import tokenExpiration from "./tokenExpiration";
 
 /**

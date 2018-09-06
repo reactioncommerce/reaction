@@ -12,7 +12,7 @@ import {
 } from "@reactioncommerce/file-collections";
 import { AbsoluteUrlMixin } from "/imports/plugins/core/core/server/Reaction/absoluteUrl";
 import { MediaRecords } from "/lib/collections";
-import setUpFileCollections from "./no-meteor/setUpFileCollections";
+import setUpFileCollections from "/imports/services/files/setUpFileCollections";
 
 /**
  * Functions and objects related to file upload, download, and storage

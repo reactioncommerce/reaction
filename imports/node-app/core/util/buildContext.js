@@ -2,8 +2,8 @@ import { getHasPermissionFunctionForUser } from "/imports/plugins/core/accounts/
 import getShopIdForContext from "/imports/plugins/core/accounts/server/no-meteor/getShopIdForContext";
 import getRootUrl from "/imports/plugins/core/core/server/util/getRootUrl";
 import getAbsoluteUrl from "/imports/plugins/core/core/server/util/getAbsoluteUrl";
-import mutations from "./mutations";
-import queries from "./queries";
+import mutations from "/imports/plugins/core/graphql/server/no-meteor/mutations";
+import queries from "/imports/plugins/core/graphql/server/no-meteor/queries";
 
 /**
  * @name buildContext
