@@ -192,7 +192,8 @@
     }
   },
   "scripts": {
-    "devserver": "NODE_ENV=devserver nodemon .reaction/devserver/index.js",
+    "devserver": "npm run reaction-node",
+    "reaction-node": "NODE_ENV=reaction-node nodemon ./imports/node-app/index.js",
     "lint": "eslint .",
     "test": "npm run test:unit && npm run test:integration && npm run test:app",
     "test:app": "MONGO_URL='' TEST_CLIENT=0 meteor test --once --full-app --driver-package meteortesting:mocha",
@@ -237,7 +238,7 @@
       ]
     ],
     "env": {
-      "devserver": {
+      "reaction-node": {
         "presets": [
           [
             "@babel/env",
@@ -270,7 +271,7 @@
                 "@reactioncommerce/reaction-router": "./imports/plugins/core/router/lib",
                 "@reactioncommerce/reaction-ui": "./imports/plugins/core/ui/client/components",
                 "@reactioncommerce/reaction-error": "./imports/utils/ReactionError.js",
-                "meteor": "./.reaction/devserver/mockmeteor",
+                "meteor": "./imports/node-app/mockmeteor",
                 "underscore": "lodash"
               }
             }
