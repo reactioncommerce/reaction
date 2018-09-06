@@ -1,7 +1,7 @@
 import graphql from "graphql.js";
 import { Accounts } from "meteor/accounts-base";
-import { Reaction } from "/client/api";
-import updateFulfillmentOptionsForGroup from "./mutations/updateFulfillmentOptionsForGroup";
+import { Reaction } from "/client/modules/core";
+import updateFulfillmentOptionsForGroup from "../mutations/updateFulfillmentOptionsForGroup";
 
 /**
  * In React components, you should use Apollo. This client is available for Blaze
