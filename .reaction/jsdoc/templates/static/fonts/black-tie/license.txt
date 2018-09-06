@@ -1,0 +1,103 @@
+Black Tie License
+
+This license (“Agreement”) is a legal contract between you (“Licensee”) and Fonticons (“Licensor”).
+By purchasing, downloading, using, or copying any image or part thereof, from the internet or by any other method, of
+any icons, symbols, or pictograms (“Product”) licensed by Fonticons, you automatically agree to the following terms and
+conditions:
+
+Definitions
+“Product” is defined as any part or whole of one or more icons, symbols, or pictographic images in vector, raster,
+and/or font formats. “Webfont” is defined as font software that has been created, optimized, translated or otherwise
+modified for use by means of transmitting via the Internet for use in the viewing of text on a website. By way of
+explanation, not limitation, such uses can be implemented by means of the CSS @font-face rule. Other technology or
+software implementations used to effect similar results may apply and such uses or methods shall be governed by this
+Agreement.
+
+Grant of Agreement
+Number of Users Licensor grants the Licensee a non-exclusive license to use the Product. The maximum number of
+simultaneous users is limited to five (5). All users must belong to the same company or household purchasing the
+Product.
+
+Embedding You may embed the licensed fonts into documents you send to third parties. Such documents may be viewed and
+printed (but not edited) by the recipients.
+
+You may embed the licensed fonts into software, including but not limited to websites and mobile applications. However,
+you may not redistribute or transfer the Product to end users or third parties through your software or by any means. An
+additional license is required if the software permits editing of text by end users or third parties.
+
+Back-up You may make a reasonable number of back-up copies of the Product for archival purposes only. Copies must
+contain the same documentation, copyright, trademark, and other proprietary notices that appear on, in, or with the
+Product.
+
+Service Bureaus You may take a digitized copy of the Product used in a particular document to a commercial print or
+service bureau for outputting this (a) particular document (this document must not be edited by the printer or service
+bureau). In the event of any modifications to the document or use of the Product for other purposes, the printer or
+service bureau must purchase its own Product license.
+
+Copying Except for Embedding and Service Bureaus, you may not copy the Product or allow third parties to copy the
+Product. Any copy of the Product must contain the same copyright, trademark, and other proprietary information as the
+originals.
+
+Modifications You may import characters from the font as graphical objects into a drawing program and modify such
+graphical objects.
+
+You may not modify, adapt, translate, reverse engineer, decompile, disassemble, or create derivative works based on the
+licensed font itself without Fonticons’s prior written consent.
+
+Transfer of License
+Except as expressly provided herein, you may not give, rent, or lease the Product or parts of it to third parties. You
+may transfer all your rights to use the Product and Documentation to another person or legal entity provided that:
+
+  - The Transferee accepts and agrees in writing (with copy to Licensee) to be bound by all the terms and conditions of
+    this Agreement, and
+  - You destroy all copies of the Product and Documentation, including all copies stored in the memory of a hardware
+    device. Without limiting the generality of the foregoing, you agree that you will not distribute or disseminate all
+    or any part of the Product through any online service.
+
+Refund Policy
+No refund will be offered for products once sold. Because they are digital files, all symbols are not refundable or
+exchangeable. However files can be replaced if damaged or lost.
+
+Copyright
+The font and the accompanying materials are copyrighted and contain proprietary information and trade secrets belonging
+to the designer owning the font. Unauthorized copying of the Product (even if modified, merged, or included with other
+software), or of the written materials, is expressly forbidden. You may be held legally responsible for any infringement
+of the foundry’s intellectual property rights that is caused or encouraged by your failure to abide by the terms of this
+Agreement.
+
+Disclaimer & Warranty
+All licensed Products are provided ‘as-is’ without warranty of any kind, either expressed or implied. Licensor is not
+liable for any damages arising out of any defects in the materials. You agree to hold Licensor harmless for any result
+that may occur during the course of using, or inability to use these licensed Products. In no event shall Licensor be
+liable for any damages including, but not limited to, direct, indirect, special, incidental or consequential damages or
+other losses arising out of the use of or inability to use the Products.
+
+Reserved Rights
+We reserve rights to change the prices of the Product and to update the Product without prior notice and at our sole
+discretion. We reserve the rights to make changes to this Agreement without any prior notice at our sole discretion. Any
+such changes will be reflected on this page.
+
+Governing Law & General Provisions
+This Agreement will be governed by the laws in force in the United States of America and Massachusetts excluding the
+application of its conflicts of law rules. This agreement will not be governed by the United Nations Convention of
+Contracts for the International Sale of Goods, the application of which is expressly excluded. If any part of this
+Agreement is found void and unenforceable, it will not affect the validity of the balance of the Agreement, which shall
+remain valid and enforceable according to its terms. You agree that the Product(s) will not be shipped, transferred, or
+exported into any country or used in any manner prohibited by export administration legislation or any other export
+laws, restrictions, or regulations.
+
+Termination
+Fonticons has the right to terminate your license immediately if you fail to comply with any term of this Agreement.
+Upon termination, you must destroy the original and any copies of the Product and Documentation.
+
+Font Awesome Brands License
+  - The Font Awesome Brands font is open source and under the same license as the Font Awesome fonts.
+  - Applies to all desktop and web font files in the following directory: black-tie/fonts/brands/.
+  - License: SIL OFL 1.1
+  - URL: http://scripts.sil.org/OFL
+
+Code License
+  - All Black Tie code is open source and under the same license as the Font Awesome code.
+  - Applies to all CSS, Less, and Sass files in the following directories: black-tie/css/, black-tie/less/, and black-tie/scss/.
+  - License: MIT License
+  - URL: http://opensource.org/licenses/mit-license.html

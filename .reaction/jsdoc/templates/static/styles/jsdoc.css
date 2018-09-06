@@ -1,4 +1,29 @@
-@import url(https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,600,700);
+@font-face {
+    font-family: 'PostGrotesk-Light';
+    src: url('/fonts/post-grotesk/PostGrotesk-Light.eot');
+    src: url('/fonts/post-grotesk/PostGrotesk-Light.woff') format('woff'), url('/fonts/post-grotesk/PostGrotesk-Light.svg') format('svg');
+    font-weight: 300
+}
+
+@font-face {
+    font-family: 'PostGrotesk';
+    src: url('/fonts/post-grotesk/PostGrotesk-Medium.eot');
+    src: url('/fonts/post-grotesk/PostGrotesk-Medium.woff') format('woff'), url('/fonts/post-grotesk/PostGrotesk-Medium.svg') format('svg');
+    font-weight: normal
+}
+
+@font-face {
+    font-family: 'PostGrotesk-Bold';
+    src: url('/fonts/post-grotesk/PostGrotesk-Bold.eot');
+    src: url('/fonts/post-grotesk/PostGrotesk-Bold.woff') format('woff'), url('/fonts/post-grotesk/PostGrotesk-Bold.svg') format('svg');
+    font-weight: bold
+}
+
+@font-face {
+    font-family: 'PostGrotesk-Book';
+    src: url('/fonts/post-grotesk/PostGrotesk-Book.eot');
+    src: url('/fonts/post-grotesk/PostGrotesk-Book.woff') format('woff'), url('/fonts/post-grotesk/PostGrotesk-Book.svg') format('svg');
+}
 
 * {
   box-sizing: border-box
@@ -13,10 +38,12 @@ body {
 body {
   background-color: white;
   color: #4d4e53;
-  font-family: "Source Sans Pro", "Helvetica Neue", Helvetica, sans-serif;
+  font-family: "PostGrotesk-Book", "Helvetica Neue", Helvetica, sans-serif;
   font-size: 16px;
   line-height: 160%;
   margin: 0 auto;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
 }
 
 a,
@@ -48,8 +75,8 @@ h4,
 h5,
 h6 {
   color: #000;
-  font-weight: 400;
-  font-family: "Source Sans Pro", "Helvetica Neue", Helvetica, sans-serif;
+  font-weight: 500;
+  font-family: "PostGrotesk-Bold", "Helvetica Neue", Helvetica, sans-serif;
   margin: 0;
 }
 
@@ -154,17 +181,14 @@ section {
 }
 
 nav h3 {
-  font-size: 16px;
-  text-transform: uppercase;
+  font-size: 14px;
   letter-spacing: normal;
-  font-weight: 600;
   line-height: 24px;
   padding: 0;
   color: #000;
 }
 
 nav ul {
-  font-family: "Source Sans Pro", "Helvetica Neue", Helvetica, sans-serif;
   font-size: 100%;
   line-height: 17px;
   padding: 0;
@@ -172,25 +196,37 @@ nav ul {
   list-style-type: none;
 }
 
+nav li {
+  font-size: 100%;
+  line-height: 1.5;
+  padding: 0;
+  list-style-type: none;
+  font-size: 16px;
+}
+
 nav ul a,
 nav ul a:active {
-  font-family: "Source Sans Pro", "Helvetica Neue", Helvetica, sans-serif;
-  line-height: 18px;
-  padding: 0.2rem 0.4rem;
+  font-family: "PostGrotesk-light", sans-serif;
+  font-weight: 400;
+  line-height: 21px;
+  letter-spacing: .4px;
+  display: inline-block;
+  font-size: 14px;
+  color: #052a4e;
+}
+
+nav  a:hover:after {
+  width: 100%;
+}
+
+nav a:after {
+  content: "";
   display: block;
-  font-size: 14.4px;
-  font-weight: 400;
-}
-
-nav > ul > li > a {
-  font-size: 14.4px;
-  font-weight: 400;
-  padding: 0.2rem 0.4rem;
-}
-
-nav a:hover {
-  background: #e4faff;
-  text-decoration: none;
+  width: 0;
+  height: 2px;
+  background: #a7edff;
+  transition: width .3s;
+  margin-top: -3px;
 }
 
 nav a:hover {
@@ -199,10 +235,6 @@ nav a:hover {
 
 nav a:active {
   color: #fd8283;
-}
-
-nav > ul {
-  padding: 0 10px;
 }
 
 nav ul ul {
