@@ -2,7 +2,7 @@ import { Meteor } from "meteor/meteor";
 import { WebApp } from "meteor/webapp";
 import appEvents from "/imports/plugins/core/core/server/appEvents";
 import collections from "/imports/collections/rawCollections";
-import createApolloServer from "./no-meteor/createApolloServer";
+import createApolloServer from "/imports/node-app/core/createApolloServer";
 import runPluginStartup from "./no-meteor/runPluginStartup";
 import runMeteorMethodWithContext from "./runMeteorMethodWithContext";
 

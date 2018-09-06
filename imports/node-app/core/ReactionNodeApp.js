@@ -1,7 +1,7 @@
 import { MongoClient } from "mongodb";
 import appEvents from "../imports/plugins/core/core/server/appEvents";
-import createApolloServer from "../imports/plugins/core/graphql/server/no-meteor/createApolloServer";
-import defineCollections from "../collections/defineCollections";
+import createApolloServer from "./createApolloServer";
+import defineCollections from "./util/defineCollections";
 import { getRegisteredFunctionsForType, registerFunction } from "./util/registerFunction";
 
 export default class ReactionNodeApp {
