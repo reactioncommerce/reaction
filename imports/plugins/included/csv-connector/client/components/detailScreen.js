@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import Dropzone from "react-dropzone";
 import { Components } from "@reactioncommerce/reaction-components";
 import Button from "@reactioncommerce/components/Button/v1";
+import Checkbox from "@reactioncommerce/components/Checkbox/v1";
 import ErrorsBlock from "@reactioncommerce/components/ErrorsBlock/v1";
 import Field from "@reactioncommerce/components/Field/v1";
 import Select from "@reactioncommerce/components/Select/v1";
@@ -12,33 +13,38 @@ import TextInput from "@reactioncommerce/components/TextInput/v1";
 
 class DetailScreen extends Component {
   componentDidMount() {
-    const { jobItem: { fileSource, jobType, jobSubType } } = this.props;
-    if (jobType === "import" && !jobSubType) {
-      this.props.onSetJobItemField("jobSubType", "create");
-    }
-    if (jobType === "import" && !fileSource) {
-      this.props.onSetJobItemField("fileSource", "manual");
+    const {
+      collection,
+      dataTypeOptions,
+      onSetField
+    } = this.props;
+    if (!collection && dataTypeOptions.length > 0) {
+      onSetField("collection", dataTypeOptions[0].value);
     }
   }
 
   handleChangeDataType = (value) => {
-    this.props.onSetJobItemField("collection", value);
+    this.props.onSetField("collection", value);
   }
 
   handleChangeFileSource = (value) => {
-    this.props.onSetJobItemField("fileSource", value);
+    this.props.onSetField("fileSource", value);
+  }
+
+  handleChangeHasHeader = (value) => {
+    this.props.onSetField("hasHeader", value);
   }
 
   handleChangeJobName = (value) => {
-    this.props.onSetJobItemField("name", value);
+    this.props.onSetField("name", value);
   }
 
   handleChangeJobSubType = (value) => {
-    this.props.onSetJobItemField("jobSubType", value);
+    this.props.onSetField("jobSubType", value);
   }
 
   handleChangeMappingId = (value) => {
-    this.props.onSetJobItemField("mappingId", value);
+    this.props.onSetField("mappingId", value);
   }
 
   handleClickBack = () => {
@@ -56,34 +62,25 @@ class DetailScreen extends Component {
   handleFileUpload = (acceptedFiles) => {
     const filesArray = Array.from(acceptedFiles);
     if (filesArray.length === 0) return;
-    this.props.onSetJobItemField("fileUpload", filesArray[0]);
-  }
-
-  handleSelectChange = (value, field) => {
-    this.props.onSetJobItemField(field, value);
+    this.props.onSetField("fileUpload", filesArray[0]);
   }
 
   renderDataTypeSelection() {
-    const { errors: { collection: dataTypeErrors }, dataTypeOptions, jobItem: { collection } } = this.props;
+    const { collection, dataTypeOptions } = this.props;
     return (
-      <Field errors={dataTypeErrors} name="collection" label="Data type" labelFor="collectionInput">
-        <Select
-          id="collectionInput"
-          name="collection"
-          options={dataTypeOptions}
-          value={collection || ""}
-          onChange={this.handleChangeDataType}
-          errors={dataTypeErrors}
-          isSearchable
-          isClearable
-        />
-        <ErrorsBlock errors={dataTypeErrors} />
-      </Field>
+      <Select
+        id="collectionInput"
+        name="collection"
+        options={dataTypeOptions}
+        value={collection || ""}
+        onChange={this.handleChangeDataType}
+        isSearchable
+      />
     );
   }
 
   renderFileName() {
-    const { jobItem: { fileUpload: { name: fileName } } } = this.props;
+    const { fileUpload: { name: fileName } } = this.props;
     if (fileName) {
       if (fileName.length < 30) {
         return (<span>{fileName}</span>);
@@ -95,7 +92,7 @@ class DetailScreen extends Component {
   }
 
   renderFileSourceSelection() {
-    const { jobItem: { fileSource } } = this.props;
+    const { fileSource } = this.props;
     const fileSourceOptions = [{
       id: "manual",
       label: "Manual",
@@ -128,7 +125,7 @@ class DetailScreen extends Component {
   }
 
   renderFileUpload() {
-    const { errors: { fileUpload: fileUploadErrors }, jobItem: { jobType, fileSource } } = this.props;
+    const { errors: { fileUpload: fileUploadErrors }, jobType, fileSource } = this.props;
     if (jobType === "import" && fileSource === "manual") {
       return (
         <div className="mt20 ml20 mr20">
@@ -158,8 +155,22 @@ class DetailScreen extends Component {
     return null;
   }
 
+  renderHasHeader() {
+    const { hasHeader } = this.props;
+    return (
+      <div className="mt20">
+        <Checkbox
+          label="First row contains column names?"
+          name="hasHeader"
+          onChange={this.handleChangeHasHeader}
+          value={hasHeader}
+        />
+      </div>
+    );
+  }
+
   renderJobName() {
-    const { errors: { name: jobNameErrors }, jobItem: { name } } = this.props;
+    const { errors: { name: jobNameErrors }, name } = this.props;
     return (
       <Field errors={jobNameErrors} name="name" label="Job name" labelFor="jobNameInput">
         <TextInput
@@ -167,7 +178,7 @@ class DetailScreen extends Component {
           id="jobNameInput"
           name="name"
           value={name || ""}
-          onChange={this.handleChangeJobName}
+          onChanging={this.handleChangeJobName}
         />
         <ErrorsBlock errors={jobNameErrors} />
       </Field>
@@ -175,7 +186,7 @@ class DetailScreen extends Component {
   }
 
   renderJobSubTypeSelection() {
-    const { jobItem: { jobSubType } } = this.props;
+    const { jobSubType } = this.props;
     const jobSubTypeOptions = [{
       id: "create",
       label: "New job",
@@ -200,7 +211,7 @@ class DetailScreen extends Component {
   }
 
   renderJobTypeText() {
-    const { jobItem: { jobType } } = this.props;
+    const { jobType } = this.props;
     if (jobType === "import") {
       return <h4>Import</h4>;
     }
@@ -208,7 +219,7 @@ class DetailScreen extends Component {
   }
 
   renderMappingSelection() {
-    const { mappingOptions, jobItem: { mappingId } } = this.props;
+    const { mappingOptions, mappingId } = this.props;
     return (
       <Field name="mappingId" label="Choose a mapping template" labelFor="mappingIdInput">
         <Select
@@ -224,7 +235,7 @@ class DetailScreen extends Component {
   }
 
   renderNextOrDoneButton() {
-    const { jobItem: { fileSource, jobType } } = this.props;
+    const { fileSource, jobType } = this.props;
     if (jobType === "import" && fileSource === "manual") {
       return <Button onClick={this.handleClickNext}>Next</Button>;
     }
@@ -235,11 +246,16 @@ class DetailScreen extends Component {
     return (
       <div>
         <div className="row">
-          <div className="col-sm-12 col-md-6">
+          <div className="col-md-12">
             {this.renderJobTypeText()}
+          </div>
+        </div>
+        <div className="row">
+          <div className="col-sm-12 col-md-6">
             {this.renderJobSubTypeSelection()}
             {this.renderFileSourceSelection()}
             {this.renderFileUpload()}
+            {this.renderHasHeader()}
           </div>
           <div className="col-sm-12 col-md-6">
             {this.renderDataTypeSelection()}
@@ -257,13 +273,20 @@ class DetailScreen extends Component {
 }
 
 DetailScreen.propTypes = {
+  collection: PropTypes.string,
   dataTypeOptions: PropTypes.arrayOf(PropTypes.object),
   errors: PropTypes.object,
-  jobItem: PropTypes.object,
+  fileSource: PropTypes.string,
+  fileUpload: PropTypes.object,
+  hasHeader: PropTypes.bool,
+  jobSubType: PropTypes.string,
+  jobType: PropTypes.string,
+  mappingId: PropTypes.string,
   mappingOptions: PropTypes.arrayOf(PropTypes.object),
+  name: PropTypes.string,
   onDone: PropTypes.func,
   onSetActiveScreen: PropTypes.func,
-  onSetJobItemField: PropTypes.func
+  onSetField: PropTypes.func
 };
 
 export default DetailScreen;

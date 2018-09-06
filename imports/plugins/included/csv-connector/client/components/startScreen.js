@@ -10,11 +10,11 @@ class StartScreen extends Component {
   }
 
   handleChangeJobType = (value) => {
-    this.props.onSetJobItemField("jobType", value);
+    this.props.onSetField("jobType", value);
   }
 
   render() {
-    const { jobItem: { jobType } } = this.props;
+    const { jobType } = this.props;
     const jobTypeOptions = [{
       id: "import",
       label: "Import from CSV",
@@ -49,9 +49,9 @@ class StartScreen extends Component {
 }
 
 StartScreen.propTypes = {
-  jobItem: PropTypes.object,
+  jobType: PropTypes.string,
   onSetActiveScreen: PropTypes.func,
-  onSetJobItemField: PropTypes.func
+  onSetField: PropTypes.func
 };
 
 export default StartScreen;

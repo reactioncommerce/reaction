@@ -54,3 +54,29 @@ export function getDataTypeOptions() {
   }
   return options;
 }
+
+/**
+ * @name getDefaultMappingForCollection
+ * @summary Get default mapping for a selected data type
+ * @param {String} collection - value from getDataTypeOptions
+ * @returns {Object} the mapping
+ */
+export function getDefaultMappingForCollection(collection) {
+  const mapping = {};
+  ConversionMaps[collection].fields.forEach((field) => {
+    mapping[field.label] = field.key;
+  });
+  return { mapping };
+}
+
+/**
+ * @name getFieldOptionsForCollection
+ * @summary Gets fields from conversion map for fields matching in UI
+ * @param {String} collection - value from getDataTypeOptions
+ * @returns {Array} array of options
+ */
+export function getFieldOptionsForCollection(collection) {
+  const fieldOptions = ConversionMaps[collection].fields.map((field) => ({ label: field.label, value: field.key }));
+  fieldOptions.push({ label: "Ignore", value: "ignore" });
+  return fieldOptions;
+}

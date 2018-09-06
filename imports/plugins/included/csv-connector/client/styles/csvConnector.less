@@ -22,12 +22,58 @@
   margin-top: 20px;
 }
 
-.csv-connector label {
-  font-weight: 400;
-  color: #333;
-  -webkit-font-smoothing: antialiased;
+.csv-connector {
+  label {
+    font-weight: 400;
+    color: #333;
+    -webkit-font-smoothing: antialiased;
+  }
+  .has-error {
+    label {
+      color: #cd3f4c;
+    }
+  }
+  .error {
+    color: #cd3f4c;
+  }
 }
 
-.csv-connector .has-error label {
-  color: #cd3f4c;
+.csv-table-container {
+  display: block;  
+  overflow-y: scroll;
+  max-height: 100vh;
+  .csv-table {
+    border: 1px solid #ccc;
+    -webkit-font-smoothing: antialiased;
+    thead {
+      background-color: #fafafa;
+      tr {
+        th {
+          border-bottom: 1px solid #ccc; // overwrite boostrap style
+          border: 1px solid #ccc;
+        }
+      }
+    }
+    tbody {
+      tr {
+        td {
+          border-top: none;
+          padding-bottom: 20px;
+          .csv-col-name {
+            border: 1px solid #ccc;
+            background: #fafafa;
+            height: 38px; // select component height
+            padding: 2px 8px;
+            position: relative;
+            p {
+              position: absolute;
+              top: 50%;
+              transform: perspective(1px) translateY(-50%);
+              color: #333; // select component color
+            }
+          }
+        }
+      }
+    }
+  }  
 }

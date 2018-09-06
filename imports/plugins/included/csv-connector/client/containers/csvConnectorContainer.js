@@ -1,9 +1,10 @@
 import React, { Component } from "react";
 import { compose } from "recompose";
+import Papa from "papaparse";
 import { Components, composeWithTracker, registerComponent } from "@reactioncommerce/reaction-components";
 import { Meteor } from "meteor/meteor";
 import { Mappings } from "../../lib/collections";
-import { getDataTypeOptions } from "../../lib/common/conversionMaps";
+import { getDataTypeOptions, getDefaultMappingForCollection, getFieldOptionsForCollection } from "../../lib/common/conversionMaps";
 import { DetailScreen, MappingScreen, StartScreen } from "../components";
 import S3SettingsContainer from "./s3SettingsContainer";
 import SFTPSettingsContainer from "./sftpSettingsContainer";
@@ -13,33 +14,76 @@ class CSVConnectorContainer extends Component {
     super(props);
     this.state = {
       activeScreen: "start",
+      collection: "",
       dataTypeOptions: getDataTypeOptions(),
       errors: {},
       expanded: true,
-      jobItem: {
-        jobType: "import",
-        fileUpload: ""
-      },
-      mappingName: "",
+      fieldOptions: [],
+      fileSource: "",
+      fileUpload: {},
+      hasHeader: false,
+      jobSubType: "create",
+      jobType: "import",
+      mappingId: "",
       mappingOptions: [],
+      mappingByUser: {},
+      name: "",
+      selectedMapping: {},
       showSettings: false
     };
   }
 
+  getCSVFilePreviewRows() {
+    const { fileUpload, hasHeader } = this.state;
+    let previewCount = 3;
+    if (hasHeader) {
+      previewCount = 4;
+    }
+    return new Promise((resolve, reject) => {
+      Papa.parse(fileUpload, {
+        preview: previewCount,
+        complete: (results) => {
+          if (results.errors.length > 0) {
+            reject(results.errors);
+            return;
+          }
+          resolve(results.data);
+        }
+      });
+    });
+  }
+
+  getSampleData(rows) {
+    const { hasHeader } = this.state;
+    const sampleData = {};
+    if (rows.length > 0) {
+      let startRow = 0;
+      if (hasHeader) {
+        startRow = 1;
+      }
+      for (let i = 0; i < rows[0].length; i += 1) {
+        let colName = i;
+        if (hasHeader) {
+          colName = rows[0][i];
+        }
+        const data = [];
+        for (let j = startRow; j < rows.length; j += 1) {
+          data.push(rows[j][i]);
+        }
+        sampleData[colName] = data;
+      }
+    }
+    return sampleData;
+  }
+
   getValidationErrors() {
-    const { activeScreen, jobItem } = this.state;
-    const { collection, fileUpload, name } = jobItem;
+    const { activeScreen, fileUpload, name } = this.state;
     const errors = {};
     if (activeScreen === "detail") {
       if (!name) {
         errors.name = [{ name: "name", message: "Job name is required." }];
       } else {
         errors.name = [];
-      }
-      if (!collection) {
-        errors.collection = [{ name: "collection", message: "Data type is required." }];
-      } else {
-        errors.collection = [];
       }
       if (!fileUpload.name) {
         errors.fileUpload = [{ name: "fileUpload", message: "File is required." }];
@@ -66,50 +110,65 @@ class CSVConnectorContainer extends Component {
         }
       }
     }
+
     return this.setState({ activeScreen });
   }
 
-  handleSetJobItemField = (field, value) => {
-    const { errors, jobItem, mappingOptions } = this.state;
-    const newValue = {};
-    newValue[field] = value;
-
-    if (field === "collection") {
-      if (value) {
-        const mappings = Mappings.find({ collection: value }).fetch();
-        const newMappingOptions = mappings.map((mapping) => ({ value: mapping._id, label: mapping.name }));
-        newMappingOptions.push({
-          value: "create",
-          label: "Create new mapping"
-        });
-        this.setState({ mappingOptions: newMappingOptions });
-        newValue.mappingId = newMappingOptions[0].value;
-      } else {
-        this.setState({ mappingOptions: [] });
-        newValue.mappingId = "";
-      }
+  handleSetField = (field, value) => {
+    if (value === this.state[field]) {
+      return;
+    }
+    const { collection } = this.state;
+    let mappingId;
+    this.updateField(field, value);
+    if (field === "collection" && collection !== value) {
+      const mappings = Mappings.find({ collection: value }).fetch();
+      const newMappingOptions = mappings.map((mapping) => ({ value: mapping._id, label: mapping.name }));
+      newMappingOptions.push({
+        value: "create",
+        label: "Create new mapping"
+      });
+      this.setState({ mappingOptions: newMappingOptions });
+      mappingId = newMappingOptions[0].value;
+      this.updateField("mappingId", mappingId);
     }
 
     if (field === "mappingId") {
-      if (value === "create" || mappingOptions.length === 0) {
-        this.setState({ mappingName: "" });
-      } else {
-        const selectedMapping = mappingOptions.find((option) => option.value === value);
-        this.setState({ mappingName: selectedMapping.label });
-      }
+      mappingId = value;
     }
 
-    const newJobItem = {
-      ...jobItem,
-      ...newValue
-    };
-
-    this.setState({ jobItem: newJobItem }, () => {
-      if (errors[field]) { // means that the field already had validation error before
-        const newErrors = this.getValidationErrors();
-        this.setState({ errors: newErrors });
+    const currentCollection = field === "collection" ? value : collection;
+    if (mappingId && currentCollection) {
+      const fieldOptions = getFieldOptionsForCollection(currentCollection);
+      this.setState({ fieldOptions });
+      if (mappingId === "create") {
+        const defaultMapping = getDefaultMappingForCollection(currentCollection);
+        this.setState({
+          selectedMapping: defaultMapping,
+          mappingByUser: defaultMapping.mapping
+        });
+      } else {
+        const selectedMapping = Mappings.findOne({ _id: mappingId });
+        this.setState({
+          selectedMapping,
+          mappingByUser: selectedMapping.mapping
+        });
       }
-    });
+    }
+  }
+
+  handleSetMappingByUser = (mappingByUser) => {
+    this.setState({ mappingByUser });
+  }
+
+  handleSetSampleData = async () => {
+    const rows = await this.getCSVFilePreviewRows();
+    try {
+      const sampleData = this.getSampleData(rows);
+      this.setState({ sampleData });
+    } catch (error) {
+      this.setState({ sampleData: {} });
+    }
   }
 
   handleSubmitJobItem = () => {
@@ -119,12 +178,25 @@ class CSVConnectorContainer extends Component {
   renderJobItemScreen() {
     const {
       activeScreen,
+      collection,
       errors,
       dataTypeOptions,
-      jobItem,
+      fieldOptions,
+      fileSource,
+      fileUpload,
+      hasHeader,
+      jobType,
+      jobSubType,
+      mappingByUser,
+      mappingId,
       mappingName,
       mappingOptions,
-      showSettings
+      name,
+      sampleData,
+      saveMappingAction,
+      selectedMapping,
+      showSettings,
+      shouldSaveToNewMapping
     } = this.state;
 
     if (showSettings) {
@@ -135,30 +207,49 @@ class CSVConnectorContainer extends Component {
       return (
         <StartScreen
           onSetActiveScreen={this.handleSetActiveScreen}
-          onSetJobItemField={this.handleSetJobItemField}
-          jobItem={jobItem}
+          onSetField={this.handleSetField}
+          jobType={jobType}
         />
       );
     } else if (activeScreen === "detail") {
       return (
         <DetailScreen
+          collection={collection}
           dataTypeOptions={dataTypeOptions}
           errors={errors}
-          jobItem={jobItem}
+          fileSource={fileSource}
+          fileUpload={fileUpload}
+          hasHeader={hasHeader}
+          jobSubType={jobSubType}
+          jobType={jobType}
+          mappingId={mappingId}
           mappingOptions={mappingOptions}
+          name={name}
           onDone={this.handleSubmitJobItem}
           onSetActiveScreen={this.handleSetActiveScreen}
-          onSetJobItemField={this.handleSetJobItemField}
+          onSetField={this.handleSetField}
         />
       );
     }
+
     return (
       <MappingScreen
-        jobItem={jobItem}
+        errors={errors}
+        fieldOptions={fieldOptions}
+        fileUpload={fileUpload}
+        hasHeader={hasHeader}
+        mappingByUser={mappingByUser}
+        mappingId={mappingId}
         mappingName={mappingName}
         onDone={this.handleSubmitJobItem}
         onSetActiveScreen={this.handleSetActiveScreen}
-        onSetJobItemField={this.handleSetJobItemField}
+        onSetField={this.handleSetField}
+        onSetMappingByUser={this.handleSetMappingByUser}
+        onSetSampleData={this.handleSetSampleData}
+        sampleData={sampleData}
+        saveMappingAction={saveMappingAction}
+        selectedMapping={selectedMapping}
+        shouldSaveToNewMapping={shouldSaveToNewMapping}
       />
     );
   }
@@ -204,6 +295,17 @@ class CSVConnectorContainer extends Component {
 
   toggleSettings = () => {
     this.setState({ showSettings: !this.state.showSettings });
+  }
+
+  updateField = (field, value) => {
+    const { errors } = this.state;
+
+    this.setState({ [field]: value }, () => {
+      if (errors[field]) { // means that the field already had validation error before
+        const newErrors = this.getValidationErrors();
+        this.setState({ errors: newErrors });
+      }
+    });
   }
 
   render() {
