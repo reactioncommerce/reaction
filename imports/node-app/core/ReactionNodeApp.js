@@ -1,5 +1,5 @@
 import { MongoClient } from "mongodb";
-import appEvents from "../imports/plugins/core/core/server/appEvents";
+import appEvents from "./util/appEvents";
 import createApolloServer from "./createApolloServer";
 import defineCollections from "./util/defineCollections";
 import { getRegisteredFunctionsForType, registerFunction } from "./util/registerFunction";

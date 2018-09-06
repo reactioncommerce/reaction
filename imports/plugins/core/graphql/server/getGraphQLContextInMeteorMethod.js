@@ -1,5 +1,5 @@
 import { Meteor } from "meteor/meteor";
-import appEvents from "/imports/plugins/core/core/server/appEvents";
+import appEvents from "/imports/node-app/core/util/appEvents";
 import buildContext from "./no-meteor/buildContext";
 import collections from "/imports/collections/rawCollections";
 

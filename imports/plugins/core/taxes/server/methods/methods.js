@@ -4,7 +4,7 @@ import { Meteor } from "meteor/meteor";
 import { Match, check } from "meteor/check";
 import { Catalog } from "/lib/api";
 import { Cart, Packages, Products } from "/lib/collections";
-import appEvents from "/imports/plugins/core/core/server/appEvents";
+import appEvents from "/imports/node-app/core/util/appEvents";
 import { Taxes } from "../../lib/collections";
 import Reaction from "../api";
 

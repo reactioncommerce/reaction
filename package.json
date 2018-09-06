@@ -359,8 +359,7 @@
     },
     "ext": "js,json,graphql",
     "watch": [
-      "imports",
-      ".reaction"
+      "imports"
     ]
   }
 }
