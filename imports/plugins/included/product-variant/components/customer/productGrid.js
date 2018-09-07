@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import debounce from "lodash/debounce";
 import { Components } from "@reactioncommerce/reaction-components";
 import CatalogGrid from "@reactioncommerce/components/CatalogGrid/v1";
 import { i18next } from "/client/api";
@@ -20,25 +21,29 @@ class ProductGrid extends Component {
   }
 
   componentDidMount() {
-    this.trackListViewed();
+    const { products } = this.props;
+    if (products && products.length) {
+      this.trackListViewed();
+    }
+
     window.addEventListener("scroll", this.loadMoreProducts);
   }
 
   componentDidUpdate() {
-    this.trackListViewed();
+    const { products } = this.props;
+    if (products && products.length) {
+      this.trackListViewed();
+    }
   }
 
   componentWillUnmount() {
     window.removeEventListener("scroll", this.loadMoreProducts);
   }
 
-  trackListViewed = () => {
+  trackListViewed = debounce(() => {
     const { tracking, products, tag } = this.props;
-
-    if (Array.isArray(products) && products.length) {
-      trackProductListViewed(tracking, { products, tag });
-    }
-  };
+    trackProductListViewed(tracking, { products, tag });
+  }, 1000);
 
   // Load more products when user is close (80%) to the bottom
   loadMoreProducts = (event) => {
