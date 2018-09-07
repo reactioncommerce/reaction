@@ -1,5 +1,4 @@
 import { getRegisteredFunctionsForType, registerFunction } from "/imports/node-app/core/util/registerFunction";
-import filesService from "/imports/node-app/services/files";
 import fulfillmentService from "/imports/node-app/services/fulfillment";
 
 /**
@@ -13,6 +12,5 @@ export default async function runPluginStartup(context) {
     registerFunction
   };
 
-  await filesService.startup(expandedContext);
   await fulfillmentService.startup(expandedContext);
 }
