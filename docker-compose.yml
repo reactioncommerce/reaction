@@ -5,9 +5,9 @@
 version: '3.4'
 
 networks:
-  reaction-api:
+  graphql:
     external:
-      name: reaction-api
+      name: graphql.reaction.localhost
 
 services:
 
@@ -24,7 +24,7 @@ services:
       BABEL_DISABLE_CACHE: 1 # This is needed to pick up changes to .graphql files. See https://www.npmjs.com/package/babel-plugin-inline-import#caveats
     networks:
       default:
-      reaction-api:
+      graphql:
     ports:
       - "3030:3030"
     volumes:
@@ -46,7 +46,7 @@ services:
       BABEL_DISABLE_CACHE: 1 # This is needed to pick up changes to .graphql files. See https://www.npmjs.com/package/babel-plugin-inline-import#caveats
     networks:
       default:
-      reaction-api:
+      graphql:
     ports:
       - "3000:3000"
     volumes:
