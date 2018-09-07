@@ -1,5 +1,4 @@
 import Logger from "@reactioncommerce/logger";
-import mongodb from "mongodb";
 import setUpFileCollections from "./setUpFileCollections";
 
 /**
@@ -15,7 +14,7 @@ export default function startup({ app, collections }) {
     db: app.db,
     Logger,
     MediaRecords: collections.MediaRecords,
-    mongodb
+    mongodb: app.mongodb
   });
 
   // Make the Media collection available to resolvers

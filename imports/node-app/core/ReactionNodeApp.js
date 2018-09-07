@@ -1,4 +1,4 @@
-import { MongoClient } from "mongodb";
+import mongodb, { MongoClient } from "mongodb";
 import appEvents from "./util/appEvents";
 import createApolloServer from "./createApolloServer";
 import defineCollections from "./util/defineCollections";
@@ -15,6 +15,8 @@ export default class ReactionNodeApp {
       getRegisteredFunctionsForType,
       registerFunction
     };
+
+    this.mongodb = mongodb;
 
     this.expressApp = createApolloServer({
       addCallMeteorMethod(context) {
