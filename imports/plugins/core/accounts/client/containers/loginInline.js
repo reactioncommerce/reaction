@@ -90,7 +90,8 @@ class LoginInlineContainer extends Component {
             renderEmailForm={this.state.renderEmailForm}
             handleEmailSubmit={(event, email) => {
               event.preventDefault();
-              Meteor.call("getOpaqueIdFromInternalId", "Cart", cart._id, (error, opaqueCartId) => {
+              Meteor.call("getOpaqueIdFromInternalId", [{ namespace: "Cart", id: cart._id }], (error, opaqueIds) => {
+                const [opaqueCartId] = opaqueIds;
                 if (error || !opaqueCartId) {
                   Logger.error(error || "No opaque cart ID returned");
                   return;

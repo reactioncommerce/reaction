@@ -1,4 +1,5 @@
 import _ from "lodash";
+import Logger from "/client/modules/logger";
 import { Meteor } from "meteor/meteor";
 import { Template } from "meteor/templating";
 import { Reaction } from "/client/api";
@@ -39,13 +40,27 @@ Template.cartCheckout.onCreated(function onCreated() {
         .map(({ _id, address, itemIds, shopId, type }) => ({ _id, address, itemIds, shopId, type }));
       if (!_.isEqual(previousCartShipping, partialShipping)) {
         previousCartShipping = partialShipping;
+
+        const methodInput = [{ namespace: "Cart", id: cart._id }];
         partialShipping.forEach(({ _id }) => {
-          simpleGraphQLClient.mutations.updateFulfillmentOptionsForGroup({
-            input: {
-              cartId: cart._id,
-              cartToken: token,
-              fulfillmentGroupId: _id
-            }
+          methodInput.push({ namespace: "FulfillmentGroup", id: _id });
+        });
+
+        Meteor.call("getOpaqueIdFromInternalId", methodInput, (error, opaqueIds) => {
+          if (error || !opaqueIds) {
+            Logger.error(error || "No opaque IDs returned");
+            return;
+          }
+          const [opaqueCartId, ...opaqueGroupIds] = opaqueIds;
+
+          opaqueGroupIds.forEach((fulfillmentGroupId) => {
+            simpleGraphQLClient.mutations.updateFulfillmentOptionsForGroup({
+              input: {
+                cartId: opaqueCartId,
+                cartToken: token,
+                fulfillmentGroupId
+              }
+            });
           });
         });
       }
