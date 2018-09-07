@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { compose } from "recompose";
-import { registerComponent, composeWithTracker } from "@reactioncommerce/reaction-components";
+import { registerComponent, composeWithTracker, withTracking } from "@reactioncommerce/reaction-components";
 import { Meteor } from "meteor/meteor";
 import { Reaction } from "/client/api";
 import { Shops } from "/lib/collections";
@@ -70,6 +70,7 @@ const wrapComponent = (Comp) => (
           loadProducts={this.loadProducts}
           products={catalogItems}
           shopCurrencyCode={Reaction.getPrimaryShopCurrency()}
+          tag={tag}
         />
       );
     }
@@ -123,7 +124,8 @@ registerComponent("ProductsCustomer", ProductGridCustomer, [
   withShopId,
   withTagId,
   withCatalogItems,
-  wrapComponent
+  wrapComponent,
+  withTracking
 ]);
 
 export default compose(
@@ -131,5 +133,6 @@ export default compose(
   withShopId,
   withTagId,
   withCatalogItems,
-  wrapComponent
+  wrapComponent,
+  withTracking
 )(ProductGridCustomer);

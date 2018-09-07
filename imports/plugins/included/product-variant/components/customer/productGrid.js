@@ -3,6 +3,8 @@ import PropTypes from "prop-types";
 import { Components } from "@reactioncommerce/reaction-components";
 import CatalogGrid from "@reactioncommerce/components/CatalogGrid/v1";
 import { i18next } from "/client/api";
+import trackProductClicked from "/imports/plugins/core/ui/client/tracking/trackProductClicked";
+import trackProductListViewed from "/imports/plugins/core/ui/client/tracking/trackProductListViewed";
 
 class ProductGrid extends Component {
   static propTypes = {
@@ -10,16 +12,33 @@ class ProductGrid extends Component {
     isLoading: PropTypes.bool.isRequired,
     loadProducts: PropTypes.func,
     products: PropTypes.array,
-    shopCurrencyCode: PropTypes.string.isRequired
+    shopCurrencyCode: PropTypes.string.isRequired,
+    tag: PropTypes.shape({
+      _id: PropTypes.string,
+      name: PropTypes.string
+    })
   }
 
   componentDidMount() {
+    this.trackListViewed();
     window.addEventListener("scroll", this.loadMoreProducts);
+  }
+
+  componentDidUpdate() {
+    this.trackListViewed();
   }
 
   componentWillUnmount() {
     window.removeEventListener("scroll", this.loadMoreProducts);
   }
+
+  trackListViewed = () => {
+    const { tracking, products, tag } = this.props;
+
+    if (Array.isArray(products) && products.length) {
+      trackProductListViewed(tracking, { products, tag });
+    }
+  };
 
   // Load more products when user is close (80%) to the bottom
   loadMoreProducts = (event) => {
@@ -61,6 +80,11 @@ class ProductGrid extends Component {
     return null;
   }
 
+  onItemClick = (event, product) => {
+    const { tracking } = this.props;
+    trackProductClicked(tracking, product);
+  };
+
   // render the product grid
   renderProductGrid() {
     const { products, shopCurrencyCode } = this.props;
@@ -77,6 +101,7 @@ class ProductGrid extends Component {
             currencyCode={shopCurrencyCode}
             products={products}
             badgeLabels={badgeLabels}
+            onItemClick={this.onItemClick}
           />
         </ul>
       </div>
