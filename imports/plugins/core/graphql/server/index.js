@@ -1,5 +1,6 @@
 import { Meteor } from "meteor/meteor";
 import { WebApp } from "meteor/webapp";
+import Logger from "@reactioncommerce/logger";
 import appEvents from "/imports/node-app/core/util/appEvents";
 import collections from "/imports/collections/rawCollections";
 import createApolloServer from "/imports/node-app/core/createApolloServer";
@@ -8,7 +9,9 @@ import runMeteorMethodWithContext from "./runMeteorMethodWithContext";
 
 const baseContext = { appEvents, collections };
 
-runPluginStartup(baseContext);
+runPluginStartup(baseContext).catch((error) => {
+  Logger.error("Error in runPluginStartup:", error);
+});
 
 const server = createApolloServer({
   addCallMeteorMethod(context) {
