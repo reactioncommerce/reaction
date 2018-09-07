@@ -1,9 +1,11 @@
 import _ from "lodash";
+import { lifecycle } from "recompose";
+import track from "react-tracking";
 import Logger from "@reactioncommerce/logger";
 import { Meteor } from "meteor/meteor";
 import { Roles } from "meteor/alanning:roles";
 import { Accounts, Groups } from "/lib/collections";
-import { lifecycle } from "recompose";
+import dispatch from "/imports/plugins/core/ui/client/tracking/dispatch";
 import { composeWithTracker } from "./composer";
 
 let Reaction;
@@ -264,4 +266,16 @@ export function withAnimateHeight(component) {
       this.willUnmount = true;
     }
   })(component);
+}
+
+/**
+ * @name withTracking
+ * @method
+ * @summary A wrapper HOC that injects react-tracking into a component.
+ * @param {Function|React.Component} component - the component to wrap
+ * @return {Function} the new wrapped component with a "tracking" prop
+ * @memberof Components/Helpers
+ */
+export function withTracking(component) {
+  return track({}, { dispatch })(component);
 }
