@@ -171,9 +171,9 @@ class MappingScreen extends Component {
       value: "update"
     },
     {
-      id: "pass",
+      id: "none",
       label: "Do not update current mapping template",
-      value: "pass"
+      value: "none"
     }];
 
     return (

@@ -18,9 +18,17 @@
           "sftpPassword": "Password",
           "sftpSave": "Save Changes",
           "testImport": "Test for Import",
-          "testExport": "Test for Export"
+          "testExport": "Test for Export",
+          "header": {
+            "name": "Name",
+            "jobType": "Type",
+            "collection": "Collection",
+            "uploadedAt": "Uploaded",
+            "status": "Status"
+          }
         },
         "alerts": {
+          "jobItemRemoved": "Job item successfully removed",
           "portNaN": "The port must be a number!",
           "s3SettingsSaved": "S3 settings saved.",
           "s3CredentialsValid": "Your S3 credentials are valid." ,

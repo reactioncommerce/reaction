@@ -5,11 +5,12 @@ import Alert from "sweetalert2";
 import { Components, composeWithTracker, registerComponent } from "@reactioncommerce/reaction-components";
 import { FileRecord } from "@reactioncommerce/file-collections";
 import { Meteor } from "meteor/meteor";
+import { SortableTable } from "/imports/plugins/core/ui/client/components";
 import Logger from "/client/modules/logger";
 import { i18next } from "/client/api";
-import { Mappings } from "../../lib/collections";
+import { JobItems, Mappings } from "../../lib/collections";
 import { getDataTypeOptions, getDefaultMappingForCollection, getFieldOptionsForCollection } from "../../lib/common/conversionMaps";
-import { DetailScreen, MappingScreen, StartScreen } from "../components";
+import { DetailScreen, JobItemTableColumn, MappingScreen, StartScreen } from "../components";
 import { JobFiles } from "../jobFiles";
 import S3SettingsContainer from "./s3SettingsContainer";
 import SFTPSettingsContainer from "./sftpSettingsContainer";
@@ -17,7 +18,7 @@ import SFTPSettingsContainer from "./sftpSettingsContainer";
 class CSVConnectorContainer extends Component {
   constructor(props) {
     super(props);
-    this.state = {
+    this.defaultState = {
       activeScreen: "start",
       collection: "",
       dataTypeOptions: getDataTypeOptions(),
@@ -34,9 +35,13 @@ class CSVConnectorContainer extends Component {
       mappingOptions: [],
       mappingByUser: {},
       name: "",
+      newMappingName: "",
+      saveMappingAction: "none",
       selectedMapping: {},
+      shouldSaveToNewMapping: false,
       showSettings: false
     };
+    this.state = this.defaultState;
   }
 
   getCSVFilePreviewRows() {
@@ -249,11 +254,11 @@ class CSVConnectorContainer extends Component {
     let jobItemId;
     try {
       jobItemId = await new Promise((resolve, reject) => {
-        Meteor.call("csvConnector/saveJobItem", jobItemValues, (error, jobItemId) => {
+        Meteor.call("csvConnector/saveJobItem", jobItemValues, (error, newJobItemId) => {
           if (error) {
             return reject(error);
           }
-          return resolve(jobItemId);
+          return resolve(newJobItemId);
         });
       });
     } catch (error) {
@@ -265,9 +270,10 @@ class CSVConnectorContainer extends Component {
     fileRecord.upload({ endpoint: "/jobs/uploads" })
       .then(() => JobFiles.insert(fileRecord))
       .then(() => {
-        this.setState({ isSubmitting: false });
-        return Alert(i18next.t("app.success"), i18next.t("admin.alerts.jobItemSaved"), "success");
+        Alert(i18next.t("app.success"), i18next.t("admin.alerts.jobItemSaved"), "success");
+        return this.setState(this.defaultState);
       }).catch((error) => Alert(i18next.t("app.error"), error.message, "error"));
+    return jobItemId;
   }
 
   renderJobItemScreen() {
@@ -352,6 +358,63 @@ class CSVConnectorContainer extends Component {
     );
   }
 
+  renderJobsList() {
+    const { activeScreen, showSettings } = this.state;
+    const customRowMetaData = {
+      bodyCssClassName: () => "job-item-grid-row"
+    };
+    const filteredFields = ["name", "jobType", "collection", "uploadedAt", "status"];
+    const columns = ["name", "jobType", "collection", "uploadedAt", "status", "delete"];
+    const customColumnMetadata = [];
+
+    columns.forEach((field) => {
+      let style;
+      let width;
+      let Header;
+
+      if (field !== "name") {
+        style = { textAlign: "center" };
+      }
+
+      if (field !== "delete") {
+        Header = i18next.t(`admin.dashboard.header.${field}`);
+      } else {
+        width = 40;
+      }
+
+      const columnMeta = {
+        accessor: field,
+        Header,
+        Cell: (row) => (
+          <JobItemTableColumn row={row} />
+        ),
+        style,
+        width
+      };
+      customColumnMetadata.push(columnMeta);
+    });
+
+    if (!showSettings && activeScreen === "start") {
+      return (
+        <div className="mt100">
+          <h4>CSV Jobs Status</h4>
+          <SortableTable
+            publication="JobItems"
+            collection={JobItems}
+            columns={columns}
+            matchingResultsCount="job-items-count"
+            showFilter={true}
+            filteredFields={filteredFields}
+            rowMetadata={customRowMetaData}
+            columnMetadata={customColumnMetadata}
+            externalLoadingComponent={Components.Loading}
+          />
+        </div>
+      );
+    }
+    return null;
+  }
+
   renderSettings() {
     const { showSettings } = this.state;
     if (showSettings) {
@@ -421,6 +484,7 @@ class CSVConnectorContainer extends Component {
             <div className="csv-connector">
               {this.renderSettingsButton()}
               {this.renderJobItemScreen()}
+              {this.renderJobsList()}
               {this.renderSettings()}
             </div>
           </Components.CardBody>
@@ -435,9 +499,10 @@ class CSVConnectorContainer extends Component {
  * @summary Subscribes the container to Mappings
  * @param {Object} props - Props passed down from parent components
  * @param {Function} onData - Callback to execute with props
- * @returns {undefined}
+ * @returns {Function} callback to append props
  */
 function composer(props, onData) {
+  Meteor.subscribe("JobItems").ready();
   Meteor.subscribe("Mappings").ready();
   return onData(null, { ...props });
 }

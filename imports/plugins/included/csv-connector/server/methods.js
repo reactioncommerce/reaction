@@ -7,6 +7,7 @@ import { EJSON } from "meteor/ejson";
 import { Reaction } from "/lib/api";
 import { Packages } from "/lib/collections";
 import { JobItems } from "../lib/collections";
+import { JobFiles } from "./jobFileCollections";
 
 export const methods = {
   /**
@@ -143,6 +144,13 @@ export const methods = {
     });
   },
 
+  /**
+   * @name csvConnector/saveJobItem
+   * @summary Saves a job item to the database
+   * @method
+   * @param {Object} values - job item values
+   * @return {String} - new job item ID
+   */
   "csvConnector/saveJobItem"(values) {
     check(values, Object);
     const {
@@ -178,6 +186,27 @@ export const methods = {
       userId: Meteor.userId()
     });
     return jobItemId;
+  },
+
+  /**
+   * @name csvConnector/removeJobItem
+   * @summary Removes a job item from the database, provided that job item is not in progress
+   * @method
+   * @param {String} jobItemId - job item values
+   * @return {Boolean} - if deletion is successful
+   */
+  "csvConnector/removeJobItem"(jobItemId) {
+    check(jobItemId, String);
+    const jobItem = JobItems.findOne({ _id: jobItemId });
+    const { status } = jobItem;
+    if (status === "inProgress") {
+      throw new Meteor.Error("invalid", "Job item is in progress and can't be deleted.");
+    }
+    JobItems.remove({ _id: jobItemId });
+
+    // TODO: Remove file from database if job item is pending
+
+    return true;
   }
 };
 

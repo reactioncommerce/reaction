@@ -11,20 +11,22 @@ class MappingTable extends Component {
     this.state = props.mappingByUser;
   }
 
-  componentDidMount() {
+  componentDidUpdate(prevProps) {
     const { onSetMappingByUserError, sampleData } = this.props;
-    // validate the file uploaded here
-    let error;
-    const field = "mappingByUser";
-    if (_.isEmpty(sampleData)) {
-      error = [{ name: field, message: "We encountered a problem reading your file. Please upload another file." }];
-    } else if (this.sampleDataHasNoContent()) {
-      error = [{ name: field, message: "We encountered a problem reading your file. Please upload another file." }];
-    }
-    if (error) {
-      onSetMappingByUserError(error);
-    } else {
-      onSetMappingByUserError([]);
+    if (!_.isEqual(prevProps.sampleData, sampleData)) {
+      // validate the file uploaded here
+      let error;
+      const field = "mappingByUser";
+      if (_.isEmpty(sampleData)) {
+        error = [{ name: field, message: "We encountered a problem reading your file. Please upload another file." }];
+      } else if (this.sampleDataHasNoContent()) {
+        error = [{ name: field, message: "We encountered a problem reading your file. Please upload another file." }];
+      }
+      if (error) {
+        onSetMappingByUserError(error);
+      } else {
+        onSetMappingByUserError([]);
+      }
     }
   }
 
