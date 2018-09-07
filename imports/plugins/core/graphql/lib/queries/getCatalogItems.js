@@ -46,6 +46,7 @@ export default gql`
                   small
                   medium
                   large
+                  original
                 }
               }
             }
