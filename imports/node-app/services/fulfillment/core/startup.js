@@ -69,10 +69,12 @@ export default function startup({ appEvents, collections }) {
 
     if (!didModifyGroups) return;
 
-    const modifier = { $set: { updatedAt: new Date() } };
-    if (didModifyGroups) {
-      modifier.$set.shipping = currentGroups;
-    }
+    const modifier = {
+      $set: {
+        shipping: currentGroups,
+        updatedAt: new Date()
+      }
+    };
 
     const { modifiedCount } = await Cart.updateOne({ _id: cartId }, modifier);
     if (modifiedCount === 0) throw new ReactionError("server-error", "Failed to update cart");
