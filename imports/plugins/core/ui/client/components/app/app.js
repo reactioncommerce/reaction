@@ -1,12 +1,14 @@
 import { Switch } from "react-router-dom";
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 import PropTypes from "prop-types";
+import Helmet from "react-helmet";
 import classnames from "classnames";
 import ToolbarContainer from "/imports/plugins/core/dashboard/client/containers/toolbarContainer";
 import Toolbar from "/imports/plugins/core/dashboard/client/components/toolbar";
 import { ActionViewContainer, PackageListContainer } from "/imports/plugins/core/dashboard/client/containers";
 import { ActionView, ShortcutBar } from "/imports/plugins/core/dashboard/client/components";
 import { Reaction } from "/client/api";
+import analyticsProviders from "/imports/plugins/core/ui/client/analyticsProviders";
 
 const ConnectedToolbarComponent = ToolbarContainer(Toolbar);
 const ConnectedAdminViewComponent = ActionViewContainer(ActionView);
@@ -101,6 +103,29 @@ class App extends Component {
     );
   }
 
+  renderAnalyticsScripts() {
+    let analyticsScripts = [];
+    analyticsProviders.forEach((provider) => {
+      const script = provider.renderScript();
+      if (script) {
+        analyticsScripts.push({
+          type: "text/javascript",
+          innerHTML: script
+        });
+      }
+    });
+
+    if (analyticsScripts.length === 0) {
+      return null;
+    }
+
+    return (
+      <Fragment>
+        <Helmet script={analyticsScripts} />
+      </Fragment>
+    )
+  }
+
   render() {
     const pageClassName = classnames({
       "admin": true,
@@ -115,14 +140,17 @@ class App extends Component {
     }
 
     return (
-      <div
-        className={pageClassName}
-        style={styles.customerApp}
-      >
-        <Switch>
-          {this.props.children}
-        </Switch>
-      </div>
+      <Fragment>
+        {this.renderAnalyticsScripts()}
+        <div
+          className={pageClassName}
+          style={styles.customerApp}
+        >
+          <Switch>
+            {this.props.children}
+          </Switch>
+        </div>
+      </Fragment>
     );
   }
 }
