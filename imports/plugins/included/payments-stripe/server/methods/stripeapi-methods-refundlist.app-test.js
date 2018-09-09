@@ -21,9 +21,8 @@ describe("stripe/refunds/list", function () {
     "formatted list of refunds", function (done) {
     const paymentMethod = {
       processor: "Stripe",
-      storedCard: "Visa 4242",
-      paymentPackageId: "vrXutd72c2m7Lenqw",
-      paymentSettingsKey: "reaction-stripe",
+      displayName: "Visa 4242",
+      paymentPluginName: "reaction-stripe",
       method: "credit",
       transactionId: "ch_17iCSlBXXkbZQs3xUpRw24mL",
       amount: 19.99,

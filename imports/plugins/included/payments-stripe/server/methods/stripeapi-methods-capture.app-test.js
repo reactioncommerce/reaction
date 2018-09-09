@@ -81,12 +81,10 @@ describe("stripe/payment/capture", function () {
   });
 
   it("should call StripeApi.methods.captureCharge with the proper parameters and return saved = true", function (done) {
-    const paymentPackageId = Random.id();
     const paymentMethod = {
       processor: "Stripe",
-      storedCard: "Visa 4242",
-      paymentPackageId,
-      paymentSettingsKey: "reaction-stripe",
+      displayName: "Visa 4242",
+      paymentPluginName: "reaction-stripe",
       method: "credit",
       transactionId: "ch_17hZ4wBXXkbZQs3xL5JhlSgS",
       amount: 19.99,
@@ -131,9 +129,8 @@ describe("stripe/payment/capture", function () {
   it("should should return an error if transactionId is not available", function (done) {
     const paymentMethod = {
       processor: "Stripe",
-      storedCard: "Visa 4242",
-      paymentPackageId: "vrXutd72c2m7Lenqw",
-      paymentSettingsKey: "reaction-stripe",
+      displayName: "Visa 4242",
+      paymentPluginName: "reaction-stripe",
       method: "credit",
       amount: 19.99,
       status: "approved",

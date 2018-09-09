@@ -1,50 +1,55 @@
-import Hooks from "@reactioncommerce/hooks";
 import Logger from "@reactioncommerce/logger";
 import accounting from "accounting-js";
-import Random from "@reactioncommerce/random";
 import stripeNpm from "stripe";
 import { Meteor } from "meteor/meteor";
-import { check, Match } from "meteor/check";
-import Reaction from "/imports/plugins/core/core/server/Reaction";
-import ReactionError from "@reactioncommerce/reaction-error";
-import { Cart, Shops, Accounts, Packages } from "/lib/collections";
-import { PaymentMethodArgument } from "/lib/collections/schemas";
+import { check } from "meteor/check";
+import { Packages } from "/lib/collections";
 
-// Stripe uses a "Decimal-less" format so 10.00 becomes 1000
+/**
+ * @summary Stripe uses a "Decimal-less" format so 10.00 becomes 1000
+ * @param {Number} amount Non-Stripe amount
+ * @returns {Number} Stripe amount
+ */
 function formatForStripe(amount) {
   return Math.round(amount * 100);
 }
+
+/**
+ * @summary Stripe uses a "Decimal-less" format so 10.00 becomes 1000
+ * @param {Number} amount Stripe amount
+ * @returns {Number} Non-Stripe amount
+ */
 function unformatFromStripe(amount) {
   return (amount / 100);
 }
 
 export const utils = {};
 
-utils.getStripeApi = function (paymentPackageId) {
-  const stripePackage = Packages.findOne({ _id: paymentPackageId });
-  if (!stripePackage) throw new Error(`No package found with paymentPackageId ${paymentPackageId}`);
+utils.getStripeApi = function (paymentPluginName, shopId) {
+  const stripePackage = Packages.findOne({ name: paymentPluginName, shopId });
+  if (!stripePackage) throw new Error(`No package found with name ${paymentPluginName}`);
   const stripeKey = stripePackage.settings.api_key || stripePackage.settings.connectAuth.access_token;
   return stripeKey;
 };
 
 /**
  * @summary Capture the results of a previous charge
- * @param {object} paymentMethod - Object containing info about the previous transaction
+ * @param {object} payment - Object containing info about the previous transaction
  * @returns {object} Object indicating the result, saved = true means success
  * @private
  */
-function stripeCaptureCharge(paymentMethod) {
+function stripeCaptureCharge(payment) {
   let result;
   const captureDetails = {
-    amount: formatForStripe(paymentMethod.amount)
+    amount: formatForStripe(payment.amount)
   };
 
 
-  const stripeKey = utils.getStripeApi(paymentMethod.paymentPackageId);
+  const stripeKey = utils.getStripeApi(payment.paymentPluginName, payment.shopId);
   const stripe = stripeNpm(stripeKey);
 
   try {
-    const capturePromise = stripe.charges.capture(paymentMethod.transactionId, captureDetails);
+    const capturePromise = stripe.charges.capture(payment.transactionId, captureDetails);
     const captureResult = Promise.await(capturePromise);
 
     if (captureResult.status === "succeeded") {
@@ -69,333 +74,7 @@ function stripeCaptureCharge(paymentMethod) {
   return result;
 }
 
-/**
- * @summary normalizes the status of a transaction
- * @param  {object} transaction - The transaction that we need to normalize
- * @return {string} normalized status string - either failed, settled, or created
- * @private
- */
-function normalizeStatus(transaction) {
-  if (!transaction) {
-    throw new ReactionError("invalid-parameter", "normalizeStatus requires a transaction");
-  }
-
-  // if this transaction failed, mode is "failed"
-  if (transaction.failure_code) {
-    return "failed";
-  }
-
-  // if this transaction was captured, status is "settled"
-  if (transaction.captured) { // Transaction was authorized but not captured
-    return "settled";
-  }
-
-  // Otherwise status is "created"
-  return "created";
-}
-
-/**
- * @summary normalizes the mode of a transaction
- * @param  {object} transaction The transaction that we need to normalize
- * @return {string} normalized status string - either failed, capture, or authorize
- * @private
- */
-function normalizeMode(transaction) {
-  if (!transaction) {
-    throw new ReactionError("invalid-parameter", "normalizeMode requires a transaction");
-  }
-
-  // if this transaction failed, mode is "failed"
-  if (transaction.failure_code) {
-    return "failed";
-  }
-
-  // If this transaction was captured, mode is "capture"
-  if (transaction.captured) {
-    return "capture";
-  }
-
-  // Anything else, mode is "authorize"
-  return "authorize";
-}
-
-/**
- * @summary Normalizes the risk level response of a transaction to the values defined in paymentMethod schema
- * @param  {object} transaction - The transaction that we need to normalize
- * @return {string} normalized status string - either elevated, high, or normal
- * @private
- */
-function normalizeRiskLevel(transaction) {
-  if (!transaction) {
-    throw new ReactionError("invalid-parameter", "normalizeRiskLevel requires a transaction");
-  }
-
-  const outcome = transaction.outcome && transaction.outcome.risk_level;
-
-  if (outcome === "elevated") {
-    return "elevated";
-  }
-
-  if (outcome === "highest") {
-    return "high";
-  }
-
-  // default to normal if no other flagged
-  return "normal";
-}
-
-
-function buildPaymentMethods(options) {
-  const { token, cartItemsByShop, transactionsByShopId } = options;
-  if (!transactionsByShopId) {
-    throw new ReactionError("invalid-parameter", "Creating a payment method log requries transaction data");
-  }
-
-  const shopIds = Object.keys(transactionsByShopId);
-  const storedCard = `${token.card.brand} ${token.card.last4}`;
-  const paymentMethods = [];
-
-
-  shopIds.forEach((shopId) => {
-    if (transactionsByShopId[shopId]) {
-      const cartItems = cartItemsByShop[shopId].map((item) => ({
-        _id: item._id,
-        productId: item.productId,
-        variantId: item.variantId,
-        shopId,
-        quantity: item.quantity
-      }));
-
-      // we need to grab this per shop to get the API key
-      const packageData = Packages.findOne({
-        name: "reaction-stripe",
-        shopId
-      });
-
-      const paymentMethod = {
-        processor: "Stripe",
-        storedCard,
-        method: "credit",
-        paymentPackageId: packageData._id,
-        // TODO: REVIEW WITH AARON - why is paymentSettings key important
-        // and why is it just defined on the client?
-        paymentSettingsKey: packageData.name.split("/").splice(-1)[0],
-        transactionId: transactionsByShopId[shopId].id,
-        amount: transactionsByShopId[shopId].amount * 0.01,
-        status: normalizeStatus(transactionsByShopId[shopId]),
-        mode: normalizeMode(transactionsByShopId[shopId]),
-        riskLevel: normalizeRiskLevel(transactionsByShopId[shopId]),
-        createdAt: new Date(transactionsByShopId[shopId].created),
-        transactions: [],
-        items: cartItems,
-        shopId
-      };
-      paymentMethod.transactions.push(transactionsByShopId[shopId]);
-      paymentMethods.push(paymentMethod);
-    }
-  });
-
-  return paymentMethods;
-}
-
 export const methods = {
-  async "stripe/payment/createCharges"(transactionType, token, cartId, cartToken) {
-    check(transactionType, String);
-    check(token, Object);
-    check(cartId, String);
-    check(cartToken, Match.Maybe(String));
-
-    const primaryShopId = Reaction.getPrimaryShopId();
-
-    const stripePkg = Reaction.getPackageSettingsWithOptions({
-      shopId: primaryShopId,
-      name: "reaction-stripe"
-    });
-
-    if (!stripePkg || !stripePkg.settings || !stripePkg.settings.api_key) {
-      // Fail if we can't find a Stripe API key
-      throw new ReactionError("not-configured", "Attempted to create multiple stripe charges, but stripe was not configured properly.");
-    }
-
-    const capture = transactionType === "capture";
-
-    // Must have an email
-    const cart = Cart.findOne({ _id: cartId });
-
-    let customerEmail = cart.email;
-    if (!customerEmail) {
-      const customerAccount = Accounts.findOne({ _id: cart.accountId });
-      if (customerAccount) {
-        const defaultEmail = (customerAccount.emails || []).find((email) => email.provides === "default");
-        if (defaultEmail) {
-          customerEmail = defaultEmail.address;
-        }
-      }
-    }
-
-    if (!customerEmail) {
-      throw new ReactionError("invalid-parameter", "No email associated with the cart");
-    }
-
-    // Initialize stripe api lib
-    const stripeApiKey = stripePkg.settings.api_key;
-    const stripe = stripeNpm(stripeApiKey);
-
-    // get array of shopIds that exist in this cart
-    const shopIds = cart.items.reduce((uniqueShopIds, item) => {
-      if (uniqueShopIds.indexOf(item.shopId) === -1) {
-        uniqueShopIds.push(item.shopId);
-      }
-      return uniqueShopIds;
-    }, []);
-
-    const transactionsByShopId = {};
-
-    // TODO: If there is only one transactionsByShopId and the shopId is primaryShopId -
-    // Create a standard charge and bypass creating a customer for this charge
-    const primaryShop = Shops.findOne({ _id: primaryShopId });
-    const { currency } = primaryShop;
-
-    try {
-      // Creates a customer object, adds a source via the card data
-      // and waits for the promise to resolve
-      const customer = Promise.await(stripe.customers.create({
-        email: customerEmail
-      }).then((cust) => {
-        const customerCard = stripe.customers.createSource(cust.id, { source: token.id });
-        return customerCard;
-      }));
-
-      // Get cart totals for each Shop
-      const cartTotals = cart.getTotalByShop();
-      const cartSubtotals = cart.getSubtotalByShop();
-
-      // Loop through all shopIds represented in cart
-      shopIds.forEach((shopId) => {
-        // TODO: If shopId is primaryShopId - create a non-connect charge with the
-        // stripe customer object
-
-        const isPrimaryShop = shopId === primaryShopId;
-
-        let merchantStripePkg;
-        // Initialize options - this is where idempotency_key
-        // and, if using connect, stripe_account go
-        const stripeOptions = {};
-        const stripeCharge = {
-          amount: formatForStripe(cartTotals[shopId]),
-          capture,
-          currency
-          // TODO: add product metadata to stripe charge
-        };
-
-        if (isPrimaryShop) {
-          // If this is the primary shop, we can make a direct charge to the
-          // customer object we just created.
-          stripeCharge.customer = customer.customer;
-        } else {
-          // If this is a merchant shop, we need to tokenize the customer
-          // and charge the token with the merchant id
-          merchantStripePkg = Reaction.getPackageSettingsWithOptions({
-            shopId,
-            name: "reaction-stripe"
-          });
-
-          // If this merchant doesn't have stripe setup, fail.
-          // We should _never_ get to this point, because
-          // this will not roll back the entire transaction
-          if (!merchantStripePkg ||
-            !merchantStripePkg.settings ||
-            !merchantStripePkg.settings.connectAuth ||
-            !merchantStripePkg.settings.connectAuth.stripe_user_id) {
-            throw new ReactionError("server-error", `Error processing payment for merchant with shopId ${shopId}`);
-          }
-
-          // get stripe account for this shop
-          const stripeUserId = merchantStripePkg.settings.connectAuth.stripe_user_id;
-          stripeOptions.stripe_account = stripeUserId; // eslint-disable-line camelcase
-
-          // Create token from our customer object to use with merchant shop
-          const customerToken = Promise.await(stripe.tokens.create({
-            customer: customer.customer
-          }, stripeOptions));
-
-          // TODO: Add description to charge in Stripe
-          stripeCharge.source = customerToken.id;
-
-          // Get the set application fee from the dashboard
-          const dashboardAppFee = stripePkg.settings.applicationFee || 0;
-          const percentAppFee = dashboardAppFee / 100; // Convert whole number app fee to percentage
-
-          // Initialize applicationFee - this can be adjusted by the onCalculateStripeApplicationFee event hook
-          const coreApplicationFee = formatForStripe(cartSubtotals[shopId] * percentAppFee);
-
-          /**
-           * Hook for affecting the application fee charged. Any hooks that `add` "onCalculateStripeApplicationFee" will
-           * run here
-           * @module hooks/payments/stripe
-           * @method onCalculateStripeApplicationFee
-           * @param {number} applicationFee the exact application fee in cents (must be returned by every hook)
-           * @param {object} options object containing properties passed into the hook
-           * @param {object} options.cart the cart object
-           * @param {object} options.shopId the shopId
-           * @todo Consider abstracting the application fee out of the Stripe implementation, into core payments
-           * @returns {number} the application fee after having been through all hooks (must be returned by ever hook)
-           * @private
-           */
-          const applicationFee = Hooks.Events.run("onCalculateStripeApplicationFee", coreApplicationFee, {
-            cart, // The cart
-            shopId // currentShopId
-          });
-
-          // TODO: Consider discounts when determining application fee
-
-          // Charge the application fee created by hooks. If it doesn't exist, that means that a hook has fouled up
-          // the application fee. Review hooks and plugins.
-          // Fall back to the application fee that comes from the stripe dashboard when hook based app fee is undefined
-          // eslint-disable-next-line camelcase
-          stripeCharge.application_fee = applicationFee || coreApplicationFee;
-        }
-
-        // We should only do this once per shop per cart
-        stripeOptions.idempotency_key = `${shopId}${cart._id}${Random.id()}`; // eslint-disable-line camelcase
-
-        // Create a charge with the options set above
-        const charge = Promise.await(stripe.charges.create(stripeCharge, stripeOptions));
-
-        transactionsByShopId[shopId] = charge;
-      });
-
-
-      // get cartItemsByShop to build paymentMethods
-      const cartItemsByShop = cart.getItemsByShop();
-
-      // Build paymentMethods from transactions, card data and cart items
-      const paymentMethods = buildPaymentMethods({ token, cartItemsByShop, transactionsByShopId });
-
-      // If successful, call cart/submitPayment and return success back to client.
-      Meteor.call("cart/submitPayment", cartId, cartToken, paymentMethods);
-      return { success: true, transactions: transactionsByShopId };
-    } catch (error) {
-      // If unsuccessful
-      // return failure back to client if error is a standard stripe card error
-      if (error.rawType === "card_error") {
-        return {
-          success: false,
-          error: {
-            message: error.message,
-            code: error.code,
-            type: error.type,
-            rawType: error.rawType,
-            detail: error.detail
-          }
-        };
-      }
-      // If we get an unexpected error, log and return a censored error message
-      Logger.error(`Received unexpected error type: ${error.rawType}`);
-      Logger.error(error);
-      throw new ReactionError("server-error", "An unexpected error occurred while creating multiple stripe charges");
-    }
-  },
   /**
    * Capture a Stripe charge
    * @see https://stripe.com/docs/api#capture_charge
@@ -403,10 +82,7 @@ export const methods = {
    * @return {Object} results from Stripe normalized
    */
   "stripe/payment/capture"(paymentMethod) {
-    // Call both check and validate because by calling `clean`, the audit pkg
-    // thinks that we haven't checked paymentMethod arg
     check(paymentMethod, Object);
-    PaymentMethodArgument.validate(PaymentMethodArgument.clean(paymentMethod));
 
     const captureDetails = {
       amount: formatForStripe(paymentMethod.amount)
@@ -432,17 +108,13 @@ export const methods = {
    * @return {Object} result
    */
   "stripe/refund/create"(paymentMethod, amount, reason = "requested_by_customer") {
+    check(paymentMethod, Object);
     check(amount, Number);
     check(reason, String);
 
-    // Call both check and validate because by calling `clean`, the audit pkg
-    // thinks that we haven't checked paymentMethod arg
-    check(paymentMethod, Object);
-    PaymentMethodArgument.validate(PaymentMethodArgument.clean(paymentMethod));
-
     let result;
     try {
-      const stripeKey = utils.getStripeApi(paymentMethod.paymentPackageId);
+      const stripeKey = utils.getStripeApi(paymentMethod.paymentPluginName, paymentMethod.shopId);
       const stripe = stripeNpm(stripeKey);
       const refundPromise = stripe.refunds.create({ charge: paymentMethod.transactionId, amount: formatForStripe(amount) });
       const refundResult = Promise.await(refundPromise);
@@ -476,12 +148,9 @@ export const methods = {
    * @return {Object} result
    */
   "stripe/refund/list"(paymentMethod) {
-    // Call both check and validate because by calling `clean`, the audit pkg
-    // thinks that we haven't checked paymentMethod arg
     check(paymentMethod, Object);
-    PaymentMethodArgument.validate(PaymentMethodArgument.clean(paymentMethod));
 
-    const stripeKey = utils.getStripeApi(paymentMethod.paymentPackageId);
+    const stripeKey = utils.getStripeApi(paymentMethod.paymentPluginName, paymentMethod.shopId);
     const stripe = stripeNpm(stripeKey);
     let refundListResults;
     try {
