@@ -1,3 +1,60 @@
+extend type Query {
+  """
+  Get a list of all payment methods available during a checkout. This may filter by auth,
+  active/inactive, IP/region, shop, etc. To get the full list, use the `paymentMethods`
+  query with proper authorization.
+  """
+  availablePaymentMethods(shopId: ID!): [PaymentMethod]!
+
+  "Get a full list of all payment methods"
+  paymentMethods(shopId: ID!): [PaymentMethod]!
+}
+
+extend type Mutation {
+  """
+  Use this mutation to apply a Stripe payment token to a cart, to pay for the items in the cart.
+  The payment will be authorized and will only be applied if authorization is successful.
+  """
+  placeMarketplaceOrderWithStripeCardPayment(input: PlaceMarketplaceOrderWithStripeCardPaymentInput!): PlaceOrderPayload!
+
+  """
+  Use this mutation to apply a Stripe payment token to a cart, to pay for the items in the cart.
+  The payment will be authorized and will only be applied if authorization is successful.
+  """
+  placeOrderWithStripeCardPayment(input: PlaceOrderWithStripeCardPaymentInput!): PlaceOrderPayload!
+}
+
+input StripeCardPaymentInput {
+  "The billing address entered by the shopper"
+  billingAddress: AddressInput!
+
+  "If set, this will be saved as the Address._id. Otherwise an ID will be generated. For tracking whether this is from a saved address."
+  billingAddressId: ID
+
+  "The `token.id` of a token created by Stripe.js, representing a credit card"
+  stripeTokenId: String!
+}
+
+"Input for the placeOrderWithStripeCardPayment mutation"
+input PlaceOrderWithStripeCardPaymentInput {
+  "An optional string identifying the mutation call, which will be returned in the response payload"
+  clientMutationId: String
+
+  "The order to be placed, if payment is accepted"
+  order: OrderInput!
+
+  "The information necessary to pay. Collect this information from the shopper during a checkout flow."
+  payment: StripeCardPaymentInput!
+}
+
+"Data for a Stripe card payment"
+type StripeCardPaymentData {
+  "The Stripe charge ID"
+  chargeId: String!
+}
+
+extend union PaymentData = StripeCardPaymentData
+
 "Payment plugins will extend or override this"
 enum PaymentMethodName {
   discountcodes
@@ -10,13 +67,7 @@ type ExamplePaymentMethodData {
   example: String!
 }
 
-"An example"
-type ExampleSavedCardPaymentMethodData {
-  cardId: String!
-  cardDisplayName: String!
-}
-
-union PaymentMethodData = ExamplePaymentMethodData | ExampleSavedCardPaymentMethodData
+union PaymentMethodData = ExamplePaymentMethodData
 
 "Describes a payment method"
 type PaymentMethod {
@@ -27,14 +78,25 @@ type PaymentMethod {
   name: PaymentMethodName!
 }
 
-extend type Query {
-  """
-  Get a list of all payment methods available during a checkout. This may filter by auth,
-  active/inactive, IP/region, shop, etc. To get the full list, use the `paymentMethods`
-  query with proper authorization.
-  """
-  availablePaymentMethods(shopId: ID!): [PaymentMethod]!
+input MarketplaceStripeCardPaymentInput {
+  "The billing address entered by the shopper"
+  billingAddress: AddressInput!
 
-  "Get a full list of all payment methods"
-  paymentMethods(shopId: ID!): [PaymentMethod]!
+  "If set, this will be saved as the Address._id. Otherwise an ID will be generated. For tracking whether this is from a saved address."
+  billingAddressId: ID
+
+  "The `token.id` of a token created by Stripe.js, representing a credit card"
+  stripeTokenId: String!
+}
+
+"Input for the placeMarketplaceOrderWithStripeCardPayment mutation"
+input PlaceMarketplaceOrderWithStripeCardPaymentInput {
+  "An optional string identifying the mutation call, which will be returned in the response payload"
+  clientMutationId: String
+
+  "The order to be placed, if payment is accepted"
+  order: OrderInput!
+
+  "The information necessary to pay. Collect this information from the shopper during a checkout flow."
+  payment: MarketplaceStripeCardPaymentInput!
 }

@@ -9,6 +9,7 @@ import email from "./email.graphql";
 import group from "./group.graphql";
 import metafield from "./metafield.graphql";
 import node from "./node.graphql";
+import order from "./order.graphql";
 import payment from "./payment.graphql";
 import role from "./role.graphql";
 import shipping from "./shipping.graphql";
@@ -27,6 +28,7 @@ export default [
   group,
   metafield,
   node,
+  order,
   payment,
   role,
   shipping,

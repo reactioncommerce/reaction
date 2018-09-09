@@ -199,10 +199,10 @@ extend type Query {
 "The input necessary to create a cart"
 input CreateCartInput {
   "Array of items to add to new cart."
-  items: [CartItemInput]!  # NOTE: Don't allow creation of an empty cart
+  items: [CartItemInput]!
 
   "ShopId association for the cart."
-  shopId: ID! # NOTE: We'll require shopId though it's not in current code.
+  shopId: ID!
 
   "An optional string identifying the mutation call, which will be returned in the response payload"
   clientMutationId: String

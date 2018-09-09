@@ -1,0 +1,169 @@
+extend type Query {
+  "Get an order by its ID"
+  orderById(id: ID!): Order
+
+  "Get all orders for a single account, optionally limited to certain shop IDs"
+  ordersByAccountId(accountId: ID!, shopIds: [ID]): [Order]!
+}
+
+"An order"
+type Order implements Node {
+  "The Order ID"
+  _id: ID!
+
+  # Enforce database uniqueness such that an account only has one cart.
+  "The account that owns the cart. Some carts are created for anonymus users. Anonymous carts have a null account."
+  account: Account
+
+  "The ID of the cart that created this order"
+  cartId: ID
+
+  "One or more fulfillment groups, for example, mapping certain items to certain shipping addresses"
+  fulfillmentGroups: [FulfillmentGroup]!
+
+  "One or more payments added by the shopper during checkout"
+  payments: [CartPayment]!
+
+  "A summary of the totals for this order"
+  summary: OrderSummary!
+
+  "The date and time at which the cart was created, which is when the first item was added to it."
+  createdAt: DateTime!
+
+  "An email address that has been associated with the cart"
+  email: String
+
+  "The items that have been added to the cart. A cart is not created until the first item is added. Items can be removed from a cart, and a cart is not deleted if all items are removed from it. Because all items may have been removed, this may be an empty array."
+  items(after: ConnectionCursor, before: ConnectionCursor, first: ConnectionLimitInt, last: ConnectionLimitInt, sortOrder: SortOrder = desc, sortBy: CartItemsSortByField = addedAt): CartItemConnection
+
+  "Notes about the order"
+  notes: [OrderNote]!
+
+  "The shop that owns the cart."
+  shop: Shop!
+
+  "Total quantity of all items in the cart"
+  totalItemQuantity: Int!
+
+  "The date and time at which this cart was last updated."
+  updatedAt: DateTime!
+}
+
+type OrderNote {
+  account: Account!
+
+  content: String!
+
+  createdAt: DateTime!
+
+  updatedAt: DateTime!
+}
+
+"""
+Information about a payment method that has been chosen by a shopper,
+and how much of the cart total should be applied to it
+"""
+type OrderPayment implements Node {
+  "The OrderPayment ID"
+  _id: ID!
+
+  """
+  The amount that will be applied to this payment method. If there are multiple payment methods applied to the
+  cart, this may be less than the cart total.
+  """
+  amount: Money!
+
+  "The date and time at which this payment was created"
+  createdAt: DateTime!
+
+  """
+  The shopper-provided data needed to complete the payment using this method.
+  For example, a billing address, store credit code, stored credit card ID, etc.
+  """
+  data: PaymentData
+
+  "Use this identifier when showing this payment in a user interface"
+  displayName: String!
+
+  "The payment method"
+  method: PaymentMethod!
+}
+
+# Questions
+# - do we need workflow/status on item
+# - can we keep payment objects the same between cart and order?
+
+input OrderFulfillmentGroupItemInput {
+  "The date and time at which this item was first added to the source cart, if this is something you want to track"
+  addedAt: Date
+
+  """
+  The price of the item, in the `order.currencyCode` currency. This value is not trusted; the actual price
+  is confirmed by the Order service. However, providing this value prevents an order being created for an
+  amount that does not match what was shown to the shopper in order preview.
+  """
+  price: Float!
+
+  "The product and chosen options"
+  productConfiguration: ProductConfigurationInput!
+
+  "The desired quantity of this item. This must be a positive integer."
+  quantity: Int!
+}
+
+input OrderFulfillmentGroupInput {
+  "The list of items to be ordered"
+  items: [OrderFulfillmentGroupItemInput]!
+
+  "The ID of the fulfillment method to be used for this order group"
+  selectedFulfillmentMethodId: ID!
+
+  """
+  The total price of the items, fulfillment, and taxes, for this group, less any discounts, in the
+  `order.currencyCode` currency. This value is not trusted; the actual total is calculated by the
+  Order service. However, providing this value prevents an order being created for an amount that
+  does not match what was shown to the shopper in order preview.
+  """
+  totalPrice: Float!
+}
+
+input OrderInput {
+  """
+  The ID of the cart that is becoming an order. This is optional, and you can create an order without ever
+  creating a cart. If you do have a cart, there are two good reasons to provide this. First, it serves as a
+  reference. Second, it allows the Cart service to automatically delete the related cart after the order is
+  created.
+  """
+  cartId: String
+
+  "The code for the currency in which all values are being provided"
+  currencyCode: String!
+
+  """
+  An email address to use for order tracking and correspondence. If a logged in user is placing an order,
+  we recommend that you use their "orders" email address, if they have one, or their default email address.
+  Or you can ask them to provide any email address.
+  """
+  email: String!
+
+  """
+  One or more fulfillment groups for the order. These are the actual orders that need to be fulfilled,
+  separate by shop, fulfillment type, and shipping origin or destination.
+  """
+  fulfillmentGroups: [OrderFulfillmentGroupInput]!
+
+  """
+  The shop through which the order should be placed. Payment settings from this shop will be used. Note that
+  each fulfillment group also has a shop ID, which represents the shop that needs to fulfill that part of the
+  order, and those shop IDs may or may not match this one.
+  """
+  shopId: String!
+}
+
+type PlaceOrderPayload {
+  "Orders that were created"
+  orders: [Order]!
+
+  "If you are not logged in, this will be a token that can be used for future requests"
+  token: String
+}

@@ -132,17 +132,11 @@ type SelectFulfillmentOptionForGroupPayload {
 ########################
 
 "An example"
-type ExamplePaymentMethodInputData {
-  "The billing address entered by the shopper"
-  billingAddress: Address!
+type ExamplePaymentData {
+  example: String!
 }
 
-"An example"
-type ExampleSavedCardPaymentMethodInputData {
-  cvc: String!
-}
-
-union PaymentMethodInputData = ExamplePaymentMethodInputData | ExampleSavedCardPaymentMethodInputData
+union PaymentData = ExamplePaymentData
 
 """
 Information about a payment method that has been chosen by a shopper,
@@ -158,6 +152,12 @@ type CartPayment implements Node {
   """
   amount: Money!
 
+  "The billing address entered by the shopper"
+  billingAddress: Address
+
+  "If this was a card payment, the brand of the card. Use this for displaying card brand logos."
+  cardBrand: String
+
   "The date and time at which this payment was created"
   createdAt: DateTime!
 
@@ -165,51 +165,20 @@ type CartPayment implements Node {
   The shopper-provided data needed to complete the payment using this method.
   For example, a billing address, store credit code, stored credit card ID, etc.
   """
-  data: PaymentMethodInputData
+  data: PaymentData
 
   "Use this identifier when showing this payment in a user interface"
   displayName: String!
-
-  "Has this payment been authorized?"
-  isAuthorized: Boolean!
 
   "The payment method"
   method: PaymentMethod!
 }
 
-"An example"
-input ExampleSavedCardPaymentMethodInputDataInput {
-  cvc: String!
-}
-
-"Input when setting the example saved card payment method as the payment method for the cart"
-input SetExampleSavedCardPaymentOnCartInput {
-  "The cart to set shipping address on"
-  cartId: ID!
-
-  "The token for the cart, required if it is an anonymous cart"
-  cartToken: String
-
-  "An optional string identifying the mutation call, which will be returned in the response payload"
-  clientMutationId: String
-
-  """
-  The shopper-provided data needed to complete the payment using this method
-  """
-  inputData: ExampleSavedCardPaymentMethodInputDataInput!
-
-  "The payment method data. Copy from PaymentMethod.data of the chosen method."
-  methodData: String!
-}
-
-"An example"
-input ExamplePaymentMethodInputDataInput {
-  "The billing address entered by the shopper"
-  billingAddress: AddressInput!
-}
-
 "Input when setting the example payment method as the payment method for the cart"
 input SetExamplePaymentOnCartInput {
+  "The billing address entered by the shopper"
+  billingAddress: AddressInput!
+
   "The cart to set shipping address on"
   cartId: ID!
 
@@ -218,14 +187,6 @@ input SetExamplePaymentOnCartInput {
 
   "An optional string identifying the mutation call, which will be returned in the response payload"
   clientMutationId: String
-
-  """
-  The shopper-provided data needed to complete the payment using this method
-  """
-  inputData: ExamplePaymentMethodInputDataInput!
-
-  "The payment method data. Copy from PaymentMethod.data of the chosen method."
-  methodData: String!
 }
 
 "The response from one of the mutations that sets the payment method for a cart"
@@ -288,9 +249,6 @@ extend type Mutation {
 
   "Set the example payment method as the way the user has chosen to pay for a cart"
   setExamplePaymentOnCart(input: SetExamplePaymentOnCartInput!): SetPaymentPayload!
-
-  "Set the example saved card payment method as the way the user has chosen to pay for a cart"
-  setExampleSavedCardPaymentOnCart(input: SetExampleSavedCardPaymentOnCartInput!): SetPaymentPayload!
 
   """
   Clients should call this as necessary during checkout to update the `availableFulfillmentOptions`
