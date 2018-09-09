@@ -4,7 +4,7 @@ import { Reaction } from "/client/api";
  * @method getOrderRiskBadge
  * @private
  * @summary Selects appropriate color badge (e.g  danger, warning) value based on risk level
- * @param {string} riskLevel - risk level value on the paymentMethod
+ * @param {string} riskLevel - risk level value on the payment
  * @return {string} label - style color class based on risk level
  */
 export function getOrderRiskBadge(riskLevel) {
@@ -25,15 +25,14 @@ export function getOrderRiskBadge(riskLevel) {
 /**
  * @method getOrderRiskStatus
  * @private
- * @summary Gets the risk label on the paymentMethod object for a shop on an order.
+ * @summary Gets the risk label on the payment object for a shop on an order.
  * An empty string is returned if the value is "normal" because we don't flag a normal charge
  * @param {object} order - order object
  * @return {string} label - risk level value (if risk level is not normal)
  */
 export function getOrderRiskStatus(order) {
-  const billingForShop = order.billing.find((billing) => billing.shopId === Reaction.getShopId());
-  const paymentMethod = (billingForShop && billingForShop.paymentMethod) || {};
-  const { riskLevel } = paymentMethod;
+  const groupForShop = order.shipping.find((group) => group.shopId === Reaction.getShopId());
+  const { riskLevel } = groupForShop.payment;
 
   // normal transactions do not need to be flagged
   if (riskLevel === "normal") {
@@ -81,14 +80,14 @@ export function filterWorkflowStatus(filter) {
     case "approved":
       query = {
         "workflow.status": "coreOrderWorkflow/processing",
-        "billing.paymentMethod.status": "approved"
+        "shipping.payment.status": "approved"
       };
       break;
 
     // Orders that have been captured
     case "captured":
       query = {
-        "billing.paymentMethod.status": "completed",
+        "shipping.payment.status": "completed",
         "shipping.shipped": false
       };
       break;
@@ -161,15 +160,14 @@ export function filterShippingStatus(filter) {
 }
 
 /**
- * @name getBillingInfo
+ * @name getPaymentForCurrentShop
  * @memberof Helpers
- * @summary get proper billing object as per current active shop
+ * @summary get proper payment object as per current active shop
  * @param {Object} order - order object to check against
- * @return {Object} proper billing object to use
+ * @return {Object} proper payment object to use
  */
-export function getBillingInfo(order) {
-  const billingInfo = order && order.billing && order.billing.find((billing) => billing && (billing.shopId === Reaction.getShopId()));
-  return billingInfo || {};
+export function getPaymentForCurrentShop(order) {
+  return getShippingInfo(order).payment || {};
 }
 
 /**
@@ -180,6 +178,6 @@ export function getBillingInfo(order) {
  * @return {Object} proper shipping object to use
  */
 export function getShippingInfo(order) {
-  const shippingInfo = order && order.shipping && order.shipping.find((shipping) => shipping && shipping.shopId === Reaction.getShopId());
+  const shippingInfo = order && order.shipping && order.shipping.find((group) => group.shopId === Reaction.getShopId());
   return shippingInfo || {};
 }

@@ -195,35 +195,22 @@ function xformCartFulfillmentGroup(fulfillmentGroup, cart) {
  * @param {Object[]} paymentMethods Payment method packages
  * @returns {Object} Transformed payment
  */
-function xformCartPayments(payment, cart, cartTotal, paymentMethods) {
-  const { _id, address, paymentMethod } = payment;
-
-  if (!paymentMethod) return null;
-
-  // Get the name, since only the ID is stored right now
-  const paymentMethodPkg = paymentMethods.find((method) => method._id === paymentMethod.paymentPackageId);
-  let methodName = paymentMethodPkg && paymentMethodPkg.name;
-  if (typeof methodName === "string") methodName = methodName.replace(/-/g, "");
+function xformCartPayments(payment, cart) {
+  const { _id, address, amount, cardBrand, createdAt, data, displayName, name: methodName } = payment;
 
   return {
     _id,
     amount: {
-      amount: paymentMethod.amount,
+      amount,
       currencyCode: cart.currencyCode
     },
-    createdAt: paymentMethod.createdAt,
-    data: {
-      methodName, // GraphQL resolver uses this to figure out which of the union types this is
-      billingAddress: address
-    },
-    displayName: paymentMethod.storedCard || "",
-    isAuthorized: (paymentMethod.status === "created" && paymentMethod.mode === "authorize"),
+    billingAddress: address,
+    cardBrand,
+    createdAt,
+    data,
+    displayName,
     method: {
-      name: methodName,
-      data: {
-        methodName, // GraphQL resolver uses this to figure out which of the union types this is
-        example: "example"
-      }
+      name: methodName
     }
   };
 }
@@ -290,16 +277,7 @@ export async function xformCartCheckout(collections, cart) {
   fulfillmentGroups = fulfillmentGroups.map((fulfillmentGroup) => xformCartFulfillmentGroup(fulfillmentGroup, cart));
   fulfillmentGroups = fulfillmentGroups.filter((payment) => !!payment); // filter out nulls
 
-  // Get packages providing payment methods for the cart shop.
-  // Convert them into a map of package IDs to names.
-  // We only need to do this because only the ID is stored in the cart
-  // but GraphQL needs the name. We should update to store the method name eventually.
-  const paymentMethods = await collections.Packages.find({
-    "registry.provides": "paymentMethod",
-    "shopId": cart.shopId
-  }).toArray();
-
-  let payments = (cart.billing || []).map((payment) => xformCartPayments(payment, cart, total, paymentMethods));
+  let payments = (cart.billing || []).map((payment) => xformCartPayments(payment, cart));
   payments = payments.filter((payment) => !!payment); // filter out nulls
 
   return {

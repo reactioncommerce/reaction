@@ -85,16 +85,16 @@ export default function approvePayment(order) {
   const result = Orders.update(
     {
       "_id": order._id,
-      "billing.shopId": shopId,
-      "billing.paymentMethod.method": "credit"
+      "shipping.shopId": shopId,
+      "shipping.payment.method": "credit"
     },
     {
       $set: {
-        "billing.$.paymentMethod.amount": total,
-        "billing.$.paymentMethod.status": "approved",
-        "billing.$.paymentMethod.mode": "capture",
-        "billing.$.invoice.discounts": discounts,
-        "billing.$.invoice.total": Number(total)
+        "shipping.$.payment.amount": total,
+        "shipping.$.payment.status": "approved",
+        "shipping.$.payment.mode": "capture",
+        "shipping.$.payment.invoice.discounts": discounts,
+        "shipping.$.payment.invoice.total": Number(total)
       }
     }
   );

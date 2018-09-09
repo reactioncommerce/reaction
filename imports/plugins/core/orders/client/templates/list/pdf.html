@@ -18,7 +18,7 @@
 
         body {
           margin: 0;
-          padding 0 !important;
+          padding: 0 !important;
           min-width: 768px;
         }
 
@@ -86,10 +86,10 @@
 
     <br>
     <h3>Payment</h3>
-    {{#with billing.paymentMethod }}
-      <div style="margin-top:1em"><h4>{{processor}}</h4></div>
-      <div>{{storedCard}}</div>
-      <div>Ref: {{transactionId}}</div>
+    {{#with billing}}
+      <div style="margin-top:1em"><h4>{{paymentMethod.processor}}</h4></div>
+      <div>{{displayName}}</div>
+      <div>Ref: {{paymentMethod.transactionId}}</div>
     {{/with}}
 
     <h2 style='margin-top:2em'>ITEMS</h2>

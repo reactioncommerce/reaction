@@ -87,7 +87,7 @@ export default function sendOrderEmail(order, action) {
   let discounts = 0;
   let amount = 0;
   let address = {};
-  let paymentMethod = {};
+  let displayName = "";
   let shippingAddress = {};
   let tracking;
   let carrier = "";
@@ -97,8 +97,7 @@ export default function sendOrderEmail(order, action) {
     taxes += Number.parseFloat(billingRecord.invoice.taxes);
     discounts += Number.parseFloat(billingRecord.invoice.discounts);
     amount += billingRecord.paymentMethod.amount;
-    ({ address } = billingRecord);
-    ({ paymentMethod } = billingRecord);
+    ({ address, displayName } = billingRecord);
   }
 
   for (const shippingRecord of order.shipping) {
@@ -211,7 +210,7 @@ export default function sendOrderEmail(order, action) {
         region: address.region,
         postal: address.postal
       },
-      paymentMethod: paymentMethod.storedCard || paymentMethod.processor,
+      paymentMethod: displayName,
       subtotal: accounting.formatMoney(subtotal * userCurrencyExchangeRate, userCurrencyFormatting),
       shipping: accounting.formatMoney(shippingCost * userCurrencyExchangeRate, userCurrencyFormatting),
       taxes: accounting.formatMoney(taxes * userCurrencyExchangeRate, userCurrencyFormatting),

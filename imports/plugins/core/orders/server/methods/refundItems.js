@@ -3,7 +3,6 @@ import Future from "fibers/future";
 import { Meteor } from "meteor/meteor";
 import { check } from "meteor/check";
 import { Orders } from "/lib/collections";
-import { PaymentMethodArgument } from "/lib/collections/schemas";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
 import ReactionError from "@reactioncommerce/reaction-error";
 import sendOrderEmail from "../util/sendOrderEmail";
@@ -48,18 +47,14 @@ function orderQuantityAdjust(orderId, refundedItem) {
  * @memberof Orders/Methods
  * @summary Apply a refund to line items
  * @param {String} orderId - order object
- * @param {Object} paymentMethod - paymentMethod object
+ * @param {String} paymentId - ID of payment to refund
  * @param {Object} refundItemsInfo - info about refund items
  * @return {Object} refund boolean and result/error value
  */
-export default function refundItemsMethod(orderId, paymentMethod, refundItemsInfo) {
+export default function refundItemsMethod(orderId, paymentId, refundItemsInfo) {
   check(orderId, String);
+  check(paymentId, String);
   check(refundItemsInfo, Object);
-
-  // Call both check and validate because by calling `clean`, the audit pkg
-  // thinks that we haven't checked paymentMethod arg
-  check(paymentMethod, Object);
-  PaymentMethodArgument.validate(PaymentMethodArgument.clean(paymentMethod));
 
   // REVIEW: For marketplace implementations, who can refund? Just the marketplace?
   if (!Reaction.hasPermission("orders")) {
@@ -68,16 +63,13 @@ export default function refundItemsMethod(orderId, paymentMethod, refundItemsInf
 
   const fut = new Future();
   const order = Orders.findOne({ _id: orderId });
-  const { transactionId } = paymentMethod;
-  const amount = refundItemsInfo.total;
-  const { quantity } = refundItemsInfo;
-  const refundItems = refundItemsInfo.items;
+  const { items: refundItems, quantity, total: amount } = refundItemsInfo;
   const originalQuantity = order.items.reduce((acc, item) => acc + item.quantity, 0);
 
   // refund payment to customer
-  Meteor.call("orders/refunds/create", order._id, paymentMethod, Number(amount), false, (error, result) => {
+  Meteor.call("orders/refunds/create", order._id, paymentId, Number(amount), false, (error, result) => {
     if (error) {
-      Logger.fatal("Attempt for refund transaction failed", order._id, paymentMethod.transactionId, error);
+      Logger.fatal("Attempt for refund transaction failed", order._id, paymentId, error);
       fut.return({
         refund: false,
         error
@@ -97,12 +89,11 @@ export default function refundItemsMethod(orderId, paymentMethod, refundItemsInf
       Orders.update(
         {
           "_id": orderId,
-          "billing.shopId": Reaction.getShopId(),
-          "billing.paymentMethod.transactionId": transactionId
+          "shipping.payment._id": paymentId
         },
         {
           $set: {
-            "billing.$.paymentMethod.status": refundedStatus
+            "shipping.$.payment.status": refundedStatus
           }
         }
       );

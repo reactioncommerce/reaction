@@ -5,6 +5,7 @@ import ReactionError from "@reactioncommerce/reaction-error";
 import { Orders, Products, Packages } from "/lib/collections";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
 import rawCollections from "/imports/collections/rawCollections";
+import createNotification from "/imports/plugins/included/notifications/server/no-meteor/createNotification";
 import updateCatalogProductInventoryStatus from "/imports/plugins/core/catalog/server/no-meteor/utils/updateCatalogProductInventoryStatus";
 import orderCreditMethod from "../util/orderCreditMethod";
 
@@ -28,9 +29,9 @@ export default function cancelOrder(order, returnToStock) {
   }
 
   // Inventory is removed from stock only once an order has been approved
-  // This is indicated by order.billing.$.paymentMethod.status being anything other than `created`
+  // This is indicated by payment.status being anything other than `created`
   // We need to check to make sure the inventory has been removed before we return it to stock
-  const orderIsApproved = order.billing.find((status) => status.paymentMethod.status !== "created");
+  const orderIsApproved = order.shipping.find((group) => group.payment.status !== "created");
 
   if (returnToStock && orderIsApproved) {
     // Run this Product update inline instead of using ordersInventoryAdjust because the collection hooks fail
@@ -59,34 +60,30 @@ export default function cancelOrder(order, returnToStock) {
     });
   }
 
-  const billingRecord = order.billing.find((billing) => billing.shopId === Reaction.getShopId());
+  const { _id: paymentId, invoice, paymentPluginName } = orderCreditMethod(order);
   const shippingRecord = order.shipping.find((shipping) => shipping.shopId === Reaction.getShopId());
-
-  let { paymentMethod } = orderCreditMethod(order);
-  paymentMethod = Object.assign(paymentMethod, { amount: Number(paymentMethod.amount) });
-  const invoiceTotal = billingRecord.invoice.total;
   const { itemIds } = shippingRecord;
 
+  const invoiceTotal = invoice.total;
+
   // refund payment to customer
-  const paymentMethodId = paymentMethod && paymentMethod.paymentPackageId;
-  const paymentMethodName = paymentMethod && paymentMethod.paymentSettingsKey;
-  const getPaymentMethod = Packages.findOne({ _id: paymentMethodId });
+  const paymentPlugin = Packages.findOne({ name: paymentPluginName, shopId: order.shopId });
   const isRefundable =
-    getPaymentMethod &&
-    getPaymentMethod.settings &&
-    getPaymentMethod.settings[paymentMethodName] &&
-    getPaymentMethod.settings[paymentMethodName].support.includes("Refund");
+    paymentPlugin &&
+    paymentPlugin.settings &&
+    paymentPlugin.settings[paymentPluginName] &&
+    paymentPlugin.settings[paymentPluginName].support.includes("Refund");
 
   if (isRefundable) {
-    Meteor.call("orders/refunds/create", order._id, paymentMethod, Number(invoiceTotal));
+    Meteor.call("orders/refunds/create", order._id, paymentId, Number(invoiceTotal));
   }
 
   // send notification to user
+  const { accountId } = order;
   const prefix = Reaction.getShopPrefix();
   const url = `${prefix}/notifications`;
-  const sms = true;
-  Meteor.call("notification/send", order.accountId, "orderCanceled", url, sms, (err) => {
-    if (err) Logger.error(err);
+  createNotification(rawCollections, { accountId, type: "orderCanceled", url }).catch((error) => {
+    Logger.error("Error in createNotification within shipmentShipped", error);
   });
 
   // update item workflow
@@ -95,13 +92,13 @@ export default function cancelOrder(order, returnToStock) {
   return Orders.update(
     {
       "_id": order._id,
-      "billing.shopId": Reaction.getShopId(),
-      "billing.paymentMethod.method": "credit"
+      "shipping.shopId": Reaction.getShopId(),
+      "shipping.payment.method": "credit"
     },
     {
       $set: {
         "workflow.status": "coreOrderWorkflow/canceled",
-        "billing.$.paymentMethod.mode": "cancel"
+        "shipping.$.payment.mode": "cancel"
       },
       $push: {
         "workflow.workflow": "coreOrderWorkflow/canceled"

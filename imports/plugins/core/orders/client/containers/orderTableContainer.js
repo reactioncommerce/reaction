@@ -607,15 +607,14 @@ const wrapComponent = (Comp) => (
     }
 
     /**
-     * Finds the credit record in order.billing for the active shop
-     * @param order: The order where to find the billing record in.
-     * @return: The billing record with paymentMethod.method === credit of currently active shop
+     * @summary Finds the credit record in order for the active shop
+     * @param {Object} order The order where to find the payment record in.
+     * @returns {Object} The payment record with method === credit of currently active shop
      * @private
      */
     orderCreditMethod(order) {
-      const creditBillingRecords = order.billing.filter((value) => value.paymentMethod.method === "credit");
-      const billingRecord = creditBillingRecords.find((billing) => billing.shopId === Reaction.getShopId());
-      return billingRecord;
+      const creditGroup = order.shipping.find((group) => group.shopId === Reaction.getShopId() && group.payment.method === "credit");
+      return (creditGroup && creditGroup.payment) || {};
     }
 
     handleBulkPaymentCapture = (selectedOrdersIds, orders) => {
@@ -647,8 +646,8 @@ const wrapComponent = (Comp) => (
       // "orders/approvePayment" method to receive an array of orders as a param.
       selectedOrders.forEach((order) => {
         // Only capture orders which are not captured yet (but possibly are already approved)
-        const billingRecord = this.orderCreditMethod(order);
-        if (billingRecord.paymentMethod.mode === "capture" && billingRecord.paymentMethod.status === "completed") {
+        const { mode: paymentMode, status: paymentStatus } = this.orderCreditMethod(order);
+        if (paymentMode === "capture" && paymentStatus === "completed") {
           done();
           return;
         }
@@ -659,7 +658,7 @@ const wrapComponent = (Comp) => (
                 capturePayment: false
               }
             });
-            Alerts.toast(`An error occured while approving the payment: ${approvePaymentError}`, "error");
+            Alerts.toast(`An error occurred while approving the payment: ${approvePaymentError}`, "error");
           } else {
             // TODO: send these orders in batch as an array. This would entail re-writing the
             // "orders/capturePayments" method to receive an array of orders as a param.
@@ -670,7 +669,7 @@ const wrapComponent = (Comp) => (
                     capturePayment: false
                   }
                 });
-                Alerts.toast(`An error occured while capturing the payment: ${capturePaymentError}`, "error");
+                Alerts.toast(`An error occurred while capturing the payment: ${capturePaymentError}`, "error");
               }
               done();
             });
