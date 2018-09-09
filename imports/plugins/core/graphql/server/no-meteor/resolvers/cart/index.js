@@ -17,15 +17,13 @@ export default {
   FulfillmentGroup,
   Mutation,
   PaymentMethodData: {
-    __resolveType() {
-      // obj.methodName should match PaymentMethodName enum
-      return "ExamplePaymentMethodData"; // Temporary, until we implement this
+    __resolveType(obj) {
+      return obj.gqlType;
     }
   },
-  PaymentMethodInputData: {
-    __resolveType() {
-      // obj.methodName should match PaymentMethodName enum
-      return "ExamplePaymentMethodInputData"; // Temporary, until we implement this
+  PaymentData: {
+    __resolveType(obj) {
+      return obj.gqlType;
     }
   },
   Query
