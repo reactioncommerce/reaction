@@ -2,9 +2,9 @@ import Logger from "@reactioncommerce/logger";
 import ReactionError from "@reactioncommerce/reaction-error";
 
 /**
- * @summary Returns a list of shipping rates based on the items in a cart.
+ * @summary Returns a list of shipping rates based on the items in a fulfillment group.
  * @param {Object} context - Context
- * @param {Object} cart - details about the purchase a user wants to make.
+ * @param {Object} fulfillmentGroup - details about the purchase a user wants to make.
  * @param {Array} [previousQueryResults] - an array of shipping rates and
  * info about failed calls to the APIs of some shipping methods providers
  * e.g Shippo.
@@ -14,7 +14,7 @@ import ReactionError from "@reactioncommerce/reaction-error";
  * shipping rates.
  * @private
  */
-export default async function getShippingPrices(context, cart, previousQueryResults = []) {
+export default async function getShippingPrices(context, fulfillmentGroup, previousQueryResults = []) {
   const { collections } = context;
   const { Packages, Shipping } = collections;
   const [rates = [], retrialTargets = []] = previousQueryResults;
@@ -32,36 +32,15 @@ export default async function getShippingPrices(context, cart, previousQueryResu
     }
   }
 
-  // Verify that we have shipping records
-  if (!cart.shipping || !cart.shipping.length) {
-    const errorDetails = {
-      requestStatus: "error",
-      shippingProvider: "flat-rate-shipping",
-      message: "this cart is missing shipping records"
-    };
-    return [[errorDetails], []];
-  }
-
   // Verify that we have a valid address to work with
   let shippingErrorDetails;
-  if (cart.shipping.find((shippingRecord) => !shippingRecord.address)) {
+  if (!fulfillmentGroup.address) {
     shippingErrorDetails = {
       requestStatus: "error",
       shippingProvider: "flat-rate-shipping",
-      message: "The address property on one or more shipping records are incomplete"
+      message: "Fulfillment group is missing a shipping address"
     };
     return [[shippingErrorDetails], []];
-  }
-
-  // Validate that we have valid items to work with. We should never get here since we filter for this
-  // at the cart level
-  if (!cart.items || !cart.items.length) {
-    const errorDetails = {
-      requestStatus: "error",
-      shippingProvider: "flat-rate-shipping",
-      message: "this cart has no items"
-    };
-    return [[errorDetails], []];
   }
 
   let merchantShippingRates = false;
@@ -88,12 +67,8 @@ export default async function getShippingPrices(context, cart, previousQueryResu
     return [rates, retrialTargets];
   }
 
-  const itemShopIds = cart.shipping.filter((group) => group.type === "shipping").map((group) => group.shopId);
-
   const shippingRateDocs = await Shipping.find({
-    "shopId": {
-      $in: itemShopIds
-    },
+    "shopId": fulfillmentGroup.shopId,
     "provider.enabled": true
   }).toArray();
 
@@ -118,8 +93,10 @@ export default async function getShippingPrices(context, cart, previousQueryResu
       const rate = method.rate + method.handling;
       rates.push({
         carrier,
+        handlingPrice: method.handling,
         method,
         rate,
+        shippingPrice: method.rate,
         shopId: doc.shopId
       });
     }
