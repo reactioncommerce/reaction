@@ -1,5 +1,5 @@
 import { registerFunction } from "/imports/core-server";
-import shippingRatesStartup from "/imports/plugins/included/shipping-rates/server/no-meteor/startup";
+import discountsStartup from "/imports/plugins/core/discounts/server/no-meteor/startup";
 import shippingStartup from "/imports/plugins/core/shipping/server/no-meteor/startup";
 import searchStartup from "/imports/plugins/included/search-mongo/server/no-meteor/startup";
 
@@ -12,6 +12,7 @@ export default function runPluginStartup(context) {
     ...context,
     registerFunction
   };
+  discountsStartup(expandedContext);
   searchStartup(expandedContext);
   shippingRatesStartup(expandedContext);
   shippingStartup(expandedContext);
