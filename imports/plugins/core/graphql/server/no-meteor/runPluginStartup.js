@@ -1,16 +1,16 @@
-import { registerFunction } from "/imports/core-server";
-import shippingRatesStartup from "/imports/plugins/included/shipping-rates/server/no-meteor/startup";
-import shippingStartup from "/imports/plugins/core/shipping/server/no-meteor/startup";
+import { getRegisteredFunctionsForType, registerFunction } from "/imports/node-app/core/util/registerFunction";
+import fulfillmentService from "/imports/node-app/services/fulfillment";
 
 /**
  * @param {Object} context Context object with appEvents and collections
  * @returns {undefined}
  */
-export default function runPluginStartup(context) {
+export default async function runPluginStartup(context) {
   const expandedContext = {
     ...context,
+    getRegisteredFunctionsForType,
     registerFunction
   };
-  shippingRatesStartup(expandedContext);
-  shippingStartup(expandedContext);
+
+  await fulfillmentService.startup(expandedContext);
 }

@@ -65,6 +65,7 @@
     "graphql-relay": "^0.5.4",
     "graphql-tag": "2.9.2",
     "graphql-tools": "2.21.0",
+    "graphql.js": "0.4.20",
     "handlebars": "^4.0.11",
     "history": "^4.7.2",
     "hoist-non-react-statics": "^2.3.1",
@@ -172,7 +173,6 @@
     "eslint-plugin-promise": "3.8.0",
     "eslint-plugin-react": "7.8.2",
     "find-free-port": "^1.2.0",
-    "graphql.js": "^0.4.20",
     "jest": "^22.4.2",
     "jest-junit": "^3.6.0",
     "js-yaml": "^3.10.0",
@@ -192,7 +192,8 @@
     }
   },
   "scripts": {
-    "devserver": "NODE_ENV=devserver nodemon .reaction/devserver/index.js",
+    "devserver": "npm run reaction-node",
+    "reaction-node": "NODE_ENV=reaction-node nodemon ./imports/node-app/index.js",
     "lint": "eslint .",
     "test": "npm run test:unit && npm run test:integration && npm run test:app",
     "test:app": "MONGO_URL='' TEST_CLIENT=0 meteor test --once --full-app --driver-package meteortesting:mocha",
@@ -237,7 +238,7 @@
       ]
     ],
     "env": {
-      "devserver": {
+      "reaction-node": {
         "presets": [
           [
             "@babel/env",
@@ -270,7 +271,7 @@
                 "@reactioncommerce/reaction-router": "./imports/plugins/core/router/lib",
                 "@reactioncommerce/reaction-ui": "./imports/plugins/core/ui/client/components",
                 "@reactioncommerce/reaction-error": "./imports/utils/ReactionError.js",
-                "meteor": "./.reaction/devserver/mockmeteor",
+                "meteor": "./imports/node-app/mockmeteor",
                 "underscore": "lodash"
               }
             }
@@ -358,8 +359,7 @@
     },
     "ext": "js,json,graphql",
     "watch": [
-      "imports",
-      ".reaction"
+      "imports"
     ]
   }
 }

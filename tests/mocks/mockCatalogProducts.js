@@ -3,7 +3,7 @@ import { internalTagIds, opaqueTagIds } from "./mockTags";
 
 /**
  *
- * @todo TEMP mocks these will be removed in favor of a fixture/facotry solution
+ * @todo TEMP mocks these will be removed in favor of a fixture/factory solution
  */
 
 export const internalProductIds = ["999", "222"];
@@ -130,7 +130,7 @@ export const mockInternalCatalogOptions = [
 ];
 
 /**
- * mock external catalog product varaint options
+ * mock external catalog product variant options
  */
 export const mockExternalCatalogOptions = [
   {
@@ -407,11 +407,11 @@ export const mockInternalCatalogProducts = [
         productId: internalProductIds[0],
         variantId: null,
         URLs: {
-          thumbnail: "http://localhost/thumbnail",
-          small: "http://localhost/small",
-          medium: "http://localhost/medium",
-          large: "http://localhost/large",
-          original: "http://localhost/original"
+          thumbnail: "thumbnail",
+          small: "small",
+          medium: "medium",
+          large: "large",
+          original: "original"
         }
       }
     ],
@@ -421,11 +421,11 @@ export const mockInternalCatalogProducts = [
       productId: internalProductIds[0],
       variantId: null,
       URLs: {
-        thumbnail: "http://localhost/thumbnail",
-        small: "http://localhost/small",
-        medium: "http://localhost/medium",
-        large: "http://localhost/large",
-        original: "http://localhost/original"
+        thumbnail: "thumbnail",
+        small: "small",
+        medium: "medium",
+        large: "large",
+        original: "original"
       }
     },
     productType: "productType",
@@ -506,11 +506,11 @@ export const mockInternalCatalogProducts = [
         productId: internalProductIds[1],
         variantId: null,
         URLs: {
-          thumbnail: "http://localhost/thumbnail",
-          small: "http://localhost/small",
-          medium: "http://localhost/medium",
-          large: "http://localhost/large",
-          original: "http://localhost/original"
+          thumbnail: "thumbnail",
+          small: "small",
+          medium: "medium",
+          large: "large",
+          original: "original"
         }
       }
     ],
@@ -520,11 +520,11 @@ export const mockInternalCatalogProducts = [
       productId: internalProductIds[1],
       variantId: null,
       URLs: {
-        thumbnail: "http://localhost/thumbnail",
-        small: "http://localhost/small",
-        medium: "http://localhost/medium",
-        large: "http://localhost/large",
-        original: "http://localhost/original"
+        thumbnail: "thumbnail",
+        small: "small",
+        medium: "medium",
+        large: "large",
+        original: "original"
       }
     },
     productType: "productType",
@@ -616,11 +616,11 @@ export const mockExternalCatalogProducts = [
           productId: opaqueProductIds[0],
           variantId: null,
           URLs: {
-            thumbnail: "http://localhost/thumbnail",
-            small: "http://localhost/small",
-            medium: "http://localhost/medium",
-            large: "http://localhost/large",
-            original: "http://localhost/original"
+            thumbnail: "https://shop.fake.site/thumbnail",
+            small: "https://shop.fake.site/small",
+            medium: "https://shop.fake.site/medium",
+            large: "https://shop.fake.site/large",
+            original: "https://shop.fake.site/original"
           }
         }
       ],
@@ -630,11 +630,11 @@ export const mockExternalCatalogProducts = [
         productId: opaqueProductIds[0],
         variantId: null,
         URLs: {
-          thumbnail: "http://localhost/thumbnail",
-          small: "http://localhost/small",
-          medium: "http://localhost/medium",
-          large: "http://localhost/large",
-          original: "http://localhost/original"
+          thumbnail: "https://shop.fake.site/thumbnail",
+          small: "https://shop.fake.site/small",
+          medium: "https://shop.fake.site/medium",
+          large: "https://shop.fake.site/large",
+          original: "https://shop.fake.site/original"
         }
       },
       productType: "productType",
@@ -725,11 +725,11 @@ export const mockExternalCatalogProducts = [
           productId: opaqueProductIds[1],
           variantId: null,
           URLs: {
-            thumbnail: "http://localhost/thumbnail",
-            small: "http://localhost/small",
-            medium: "http://localhost/medium",
-            large: "http://localhost/large",
-            original: "http://localhost/original"
+            thumbnail: "https://shop.fake.site/thumbnail",
+            small: "https://shop.fake.site/small",
+            medium: "https://shop.fake.site/medium",
+            large: "https://shop.fake.site/large",
+            original: "https://shop.fake.site/original"
           }
         }
       ],
@@ -739,11 +739,11 @@ export const mockExternalCatalogProducts = [
         productId: opaqueProductIds[1],
         variantId: null,
         URLs: {
-          thumbnail: "http://localhost/thumbnail",
-          small: "http://localhost/small",
-          medium: "http://localhost/medium",
-          large: "http://localhost/large",
-          original: "http://localhost/original"
+          thumbnail: "https://shop.fake.site/thumbnail",
+          small: "https://shop.fake.site/small",
+          medium: "https://shop.fake.site/medium",
+          large: "https://shop.fake.site/large",
+          original: "https://shop.fake.site/original"
         }
       },
       productType: "productType",

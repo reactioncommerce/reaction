@@ -5,7 +5,8 @@ import { Shipping } from "/lib/collections";
 import { ShippingMethod } from "/lib/collections/schemas";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
 import ReactionError from "@reactioncommerce/reaction-error";
-import { shippingRoles } from "../lib/roles";
+
+const shippingRoles = ["admin", "owner", "shipping", "reaction-shippo"];
 
 export const methods = {
   /**
