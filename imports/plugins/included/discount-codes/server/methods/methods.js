@@ -17,104 +17,6 @@ Discounts.attachSchema(DiscountSchema, { selector: { discountMethod: "code" } })
 
 export const methods = {
   /**
-   * we intentionally passed ids, instead
-   * of the cart,discount Object
-   * for a smaller request providing an
-   * additional level of validation.
-   * @name discounts/codes/discount
-   * @method
-   * @memberof Discounts/Codes/Methods
-   * @summary calculates percentage off discount rates
-   * @param  {String} cartId cartId
-   * @param  {String} discountId discountId
-   * @return {Number} returns discount total
-   */
-  "discounts/codes/discount"(cartId, discountId) {
-    check(cartId, String);
-    check(discountId, String);
-    let discount = 0;
-    const discountMethod = Discounts.findOne(discountId);
-    const cart = Cart.findOne({ _id: cartId });
-
-    for (const item of cart.items) {
-      const preDiscount = item.quantity * item.priceWhenAdded.amount;
-      discount += preDiscount * discountMethod.discount / 100;
-    }
-
-    return discount;
-  },
-
-  /**
-   * @name discounts/codes/credit
-   * @method
-   * @memberof Discounts/Codes/Methods
-   * @summary calculates a credit off cart for discount codes
-   * @param  {String} cartId cartId
-   * @param  {String} discountId discountId
-   * @return {Number} returns discount total
-   */
-  "discounts/codes/credit"(cartId, discountId) {
-    check(cartId, String);
-    check(discountId, String);
-    let discount = 0;
-    const discountMethod = Discounts.findOne(discountId);
-    ({ discount } = discountMethod);
-    return discount;
-  },
-
-  /**
-   * @name discounts/codes/sale
-   * @method
-   * @memberof Discounts/Codes/Methods
-   * @summary calculates a new price for an item
-   * @param  {String} cartId cartId
-   * @param  {String} discountId discountId
-   * @return {Number} returns discount total
-   */
-  "discounts/codes/sale"(cartId, discountId) {
-    check(cartId, String);
-    check(discountId, String);
-    let discount = 0;
-    const discountMethod = Discounts.findOne(discountId);
-    const cart = Cart.findOne({ _id: cartId });
-
-    // TODO add item specific conditions to sale calculations.
-    for (const item of cart.items) {
-      const preDiscountItemTotal = item.quantity * item.priceWhenAdded.amount;
-      const salePriceItemTotal = item.quantity * discountMethod.discount;
-      // we if the sale is below 0, we won't discount at all. that's invalid.
-      discount += Math.max(0, preDiscountItemTotal - salePriceItemTotal);
-    }
-
-    return discount;
-  },
-
-  /**
-   * @name discounts/codes/shipping
-   * @method
-   * @memberof Discounts/Codes/Methods
-   * @summary calculates a discount based on the value of a calculated shipping rate in the cart.
-   * @param  {String} cartId cartId
-   * @param  {String} discountId discountId
-   * @return {Number} returns discount total
-   */
-  "discounts/codes/shipping"(cartId, discountId) {
-    check(cartId, String);
-    check(discountId, String);
-    let discount = 0;
-    const discountMethod = Discounts.findOne(discountId);
-    const cart = Cart.findOne({ _id: cartId });
-    if (cart.shipping && cart.shipping.length) {
-      for (const shipping of cart.shipping) {
-        if (shipping.shipmentMethod && shipping.shipmentMethod.name.toUpperCase() === discountMethod.discount.toUpperCase()) {
-          discount += Math.max(0, shipping.shipmentMethod.rate);
-        }
-      }
-    }
-    return discount;
-  },
-
-  /**
    * @name discounts/addCode
    * @method
    * @memberof Discounts/Codes/Methods
@@ -166,41 +68,15 @@ export const methods = {
     check(codeId, String);
     check(collection, String);
     const Collection = Reaction.Collections[collection];
-    //
-    // delete code from cart
-    //
-    const cart = Collection.findOne(id);
-    let hasInvoice = false;
-    let currentDiscount = 0;
-    for (const billing of cart.billing) {
-      if (billing.paymentMethod && billing.paymentMethod.processor === "code" && billing._id !== codeId) {
-        currentDiscount += parseFloat(billing.paymentMethod.amount);
-      }
-      if (billing.paymentMethod && billing.invoice) {
-        hasInvoice = true;
-      }
-    }
-    // only if this is an order
-    if (hasInvoice) {
-      const selector = {
-        "_id": id,
-        "billing._id": cart.billing[0]._id
-      };
-      const update = {
-        $set: {
-          "billing.$.invoice.discounts": currentDiscount
-        }
-      };
-      Collection.update(selector, update);
-    }
+
     // TODO: update a history record of transaction
     // The Payment schema currency defaultValue is adding {} to the $pull condition.
     // If this issue is eventually fixed, autoValues can be re-enabled here
     // See https://github.com/aldeed/simple-schema-js/issues/272
     const result = Collection.update(
       { _id: id },
-      { $set: { discount: currentDiscount }, $pull: { billing: { _id: codeId } } },
-      { multi: true, getAutoValues: false }
+      { $pull: { billing: { _id: codeId } } },
+      { getAutoValues: false }
     );
 
     if (collection === "Cart") {
@@ -228,11 +104,6 @@ export const methods = {
     let userCount = 0;
     let orderCount = 0;
 
-    // TODO: further expand to meet all condition rules
-    // const conditions = {
-    //   enabled: true
-    // };
-
     // check to ensure discounts can only apply to single shop carts
     // TODO: Remove this check after implementation of shop-by-shop discounts
     const Collection = Reaction.Collections[collection];
@@ -251,76 +122,64 @@ export const methods = {
       throw new ReactionError("not-implemented", "discounts.multiShopError", "Discounts cannot be applied to a multi-shop cart or order");
     }
 
-    // TODO: add  conditions: conditions
     const discount = Discounts.findOne({ code });
+    if (!discount) throw new ReactionError("not-found", `No discount found for code ${code}`);
 
-    // TODO: check usage limit
-    // don't apply if cart has exceeded usage limit
-    // will also need to check all time usage.
-    // which means storing the use data with the Discounts
-    // or searching all user's order history
-    // and if a user cancels an order,
-    // is the discount now re-activated
+    const { conditions } = discount;
+    let accountLimitExceeded = false;
+    let discountLimitExceeded = false;
 
-    if (discount) {
-      const { conditions } = discount;
-      let accountLimitExceeded = false;
-      let discountLimitExceeded = false;
-
-      // existing usage count
-      if (discount.transactions) {
-        const users = Array.from(discount.transactions, (trans) => trans.userId);
-        const transactionCount = new Map([...new Set(users)].map((userX) => [userX, users.filter((userY) => userY === userX).length]));
-        const orders = Array.from(discount.transactions, (trans) => trans.cartId);
-        userCount = transactionCount.get(Reaction.getUserId());
-        orderCount = orders.length;
-      }
-      // check limits
-      if (conditions) {
-        if (conditions.accountLimit) accountLimitExceeded = conditions.accountLimit <= userCount;
-        if (conditions.redemptionLimit) discountLimitExceeded = conditions.redemptionLimit <= orderCount;
-      }
-
-      // validate basic limit handling
-      if (accountLimitExceeded === true || discountLimitExceeded === true) {
-        return { i18nKeyLabel: "Code is expired", i18nKey: "discounts.codeIsExpired" };
-      }
-
-      // save to payment methods
-      // and update status in Discounts
-      // payment methods can be debit or credit.
-      const paymentMethod = {
-        id: discount._id,
-        processor: discount.discountMethod,
-        method: discount.calculation.method,
-        code: discount.code,
-        transactionId: Random.id(),
-        amount: discount.discount, // pre-process to amount.
-        status: "created"
-      };
-
-      // The first record holds the selected billing address
-      const billing = objectToApplyDiscount.billing[0];
-      const billingId = Random.id();
-      const result = Collection.update({
-        _id: id
-      }, {
-        $addToSet: {
-          billing: {
-            ...billing,
-            _id: billingId,
-            paymentMethod
-          }
-        }
-      });
-
-      if (collection === "Cart") {
-        const updatedCart = Collection.findOne({ _id: id });
-        Promise.await(appEvents.emit("afterCartUpdate", id, updatedCart));
-      }
-
-      return result;
+    // existing usage count
+    if (discount.transactions) {
+      const users = Array.from(discount.transactions, (trans) => trans.userId);
+      const transactionCount = new Map([...new Set(users)].map((userX) => [userX, users.filter((userY) => userY === userX).length]));
+      const orders = Array.from(discount.transactions, (trans) => trans.cartId);
+      userCount = transactionCount.get(Reaction.getUserId());
+      orderCount = orders.length;
     }
+    // check limits
+    if (conditions) {
+      if (conditions.accountLimit) accountLimitExceeded = conditions.accountLimit <= userCount;
+      if (conditions.redemptionLimit) discountLimitExceeded = conditions.redemptionLimit <= orderCount;
+    }
+
+    // validate basic limit handling
+    if (accountLimitExceeded === true || discountLimitExceeded === true) {
+      return { i18nKeyLabel: "Code is expired", i18nKey: "discounts.codeIsExpired" };
+    }
+
+    const now = new Date();
+    const result = Collection.update({
+      _id: id
+    }, {
+      $addToSet: {
+        billing: {
+          _id: Random.id(),
+          amount: discount.discount,
+          createdAt: now,
+          data: {
+            discountId: discount._id,
+            code: discount.code
+          },
+          displayName: `Discount Code: ${discount.code}`,
+          method: discount.calculation.method,
+          mode: "discount",
+          name: "discount_code",
+          paymentPluginName: "discount-codes",
+          processor: discount.discountMethod,
+          shopId: objectToApplyDiscount.shopId,
+          status: "created",
+          transactionId: Random.id()
+        }
+      }
+    });
+
+    if (collection === "Cart") {
+      const updatedCart = Collection.findOne({ _id: id });
+      Promise.await(appEvents.emit("afterCartUpdate", id, updatedCart));
+    }
+
+    return result;
   }
 };
 
