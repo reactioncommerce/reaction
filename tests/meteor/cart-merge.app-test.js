@@ -28,7 +28,6 @@ describe("Merge Cart function ", function () {
   before(function () {
     originals = {
       mergeCart: Meteor.server.method_handlers["cart/mergeCart"],
-      copyCartToOrder: Meteor.server.method_handlers["cart/copyCartToOrder"],
       addToCart: Meteor.server.method_handlers["cart/addToCart"]
     };
 
