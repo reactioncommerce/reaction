@@ -1,6 +1,6 @@
 import ReactionError from "@reactioncommerce/reaction-error";
 import { Cart as CartSchema } from "/imports/collections/schemas";
-import appEvents from "/imports/plugins/core/core/server/appEvents";
+import appEvents from "/imports/node-app/core/util/appEvents";
 import addCartItems from "../util/addCartItems";
 
 /**

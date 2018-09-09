@@ -2,7 +2,7 @@ import { check, Match } from "meteor/check";
 import { Cart } from "/lib/collections";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
 import getCart from "/imports/plugins/core/cart/server/util/getCart";
-import appEvents from "/imports/plugins/core/core/server/appEvents";
+import appEvents from "/imports/node-app/core/util/appEvents";
 
 /**
  * @method cart/setPaymentAddress

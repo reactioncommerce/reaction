@@ -1,4 +1,4 @@
-import appEvents from "/imports/plugins/core/core/server/appEvents";
+import appEvents from "/imports/node-app/core/util/appEvents";
 import getPercentageOffDiscount from "./util/getPercentageOffDiscount";
 import getCreditOffDiscount from "./util/getCreditOffDiscount";
 import getItemPriceDiscount from "./util/getItemPriceDiscount";

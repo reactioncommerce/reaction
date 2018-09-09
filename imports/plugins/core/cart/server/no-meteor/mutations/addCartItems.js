@@ -1,6 +1,6 @@
 import ReactionError from "@reactioncommerce/reaction-error";
 import { Cart as CartSchema } from "/imports/collections/schemas";
-import hashLoginToken from "/imports/plugins/core/accounts/server/no-meteor/util/hashLoginToken";
+import hashLoginToken from "/imports/node-app/core/util/hashLoginToken";
 import addCartItemsUtil from "../util/addCartItems";
 
 /**

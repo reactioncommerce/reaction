@@ -1,5 +1,4 @@
 import { namespaces } from "@reactioncommerce/reaction-graphql-utils";
-import { encodeProductOpaqueId } from "./product";
 import { assocInternalId, assocOpaqueId, decodeOpaqueIdForNamespace, encodeOpaqueId } from "./id";
 
 export const assocCatalogProductInternalId = assocInternalId(namespaces.CatalogProduct);
@@ -12,24 +11,25 @@ export const encodeCatalogProductOpaqueId = encodeOpaqueId(namespaces.CatalogPro
  * @method
  * @memberof GraphQL/Transforms
  * @param {Object} mediaItem object from a catalog product
- * @return transformed product media array
+ * @param {Object} context - an object containing the per-request state
+ * @return {Object} transformed product media item
  */
-export function xformProductMedia(mediaItem) {
+export function xformProductMedia(mediaItem, context) {
   if (!mediaItem) return null;
 
-  const { metadata, large, medium, image, small, thumbnail } = mediaItem;
+  const { priority, toGrid, productId, variantId, URLs: { large, medium, original, small, thumbnail } } = mediaItem;
 
   return {
-    priority: metadata && metadata.priority,
-    toGrid: metadata && metadata.toGrid,
-    productId: encodeProductOpaqueId(metadata && metadata.productId),
-    variantId: encodeProductOpaqueId(metadata && metadata.variantId),
+    priority,
+    toGrid,
+    productId,
+    variantId,
     URLs: {
-      large,
-      medium,
-      original: image,
-      small,
-      thumbnail
+      large: context.getAbsoluteUrl(large),
+      medium: context.getAbsoluteUrl(medium),
+      original: context.getAbsoluteUrl(original),
+      small: context.getAbsoluteUrl(small),
+      thumbnail: context.getAbsoluteUrl(thumbnail)
     }
   };
 }

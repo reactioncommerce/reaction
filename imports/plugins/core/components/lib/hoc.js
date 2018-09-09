@@ -181,14 +181,14 @@ export function withIsOwner(component) {
 }
 
 /**
- * @name withCSSTransitionGroup
+ * @name withCSSTransition
  * @method
- * @summary A wrapper to reactively inject react-transition-group's <CSSTransitionGroup /> into a component
+ * @summary A wrapper to dynamically import & inject react-transition-group's <CSSTransition /> into a component
  * @param {Function|React.Component} component - the component to wrap
- * @return {Function} the new wrapped component with a "CSSTransitionGroup" prop
+ * @return {Object} the new wrapped component with a "CSSTransition" prop
  * @memberof Components/Helpers
  */
-export function withCSSTransitionGroup(component) {
+export function withCSSTransition(component) {
   return lifecycle({
     componentDidMount() {
       import("react-transition-group")
@@ -198,7 +198,7 @@ export function withCSSTransitionGroup(component) {
           }
 
           this.setState({
-            CSSTransitionGroup: module.CSSTransitionGroup
+            CSSTransition: module.CSSTransition
           });
 
           return null;

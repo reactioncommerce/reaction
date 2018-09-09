@@ -3,7 +3,7 @@ import Logger from "@reactioncommerce/logger";
 import Random from "@reactioncommerce/random";
 import ReactionError from "@reactioncommerce/reaction-error";
 import hashLoginToken from "/imports/plugins/core/accounts/server/no-meteor/util/hashLoginToken";
-import appEvents from "/imports/plugins/core/core/server/appEvents";
+import appEvents from "/imports/node-app/core/util/appEvents";
 import getShippingRates from "/imports/plugins/core/shipping/server/no-meteor/util/getShippingRates";
 import applyTaxesToFulfillmentGroup from "/imports/plugins/core/taxes/server/no-meteor/mutations/applyTaxesToFulfillmentGroup";
 import { Address as AddressSchema, Invoice as InvoiceSchema, Order as OrderSchema, Payment as PaymentSchema } from "/imports/collections/schemas";

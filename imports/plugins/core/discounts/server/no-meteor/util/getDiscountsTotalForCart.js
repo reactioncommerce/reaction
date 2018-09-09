@@ -1,5 +1,5 @@
 import ReactionError from "@reactioncommerce/reaction-error";
-import { getRegisteredFunctionsForType } from "/imports/core-server";
+import { getRegisteredFunctionsForType } from "/imports/node-app/core/util/registerFunction";
 
 /**
  * @summary Calculates total discount amount for a cart based on all discounts

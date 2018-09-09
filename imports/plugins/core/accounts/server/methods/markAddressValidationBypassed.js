@@ -1,6 +1,6 @@
 import { check } from "meteor/check";
 import { Accounts, Cart } from "/lib/collections";
-import appEvents from "/imports/plugins/core/core/server/appEvents";
+import appEvents from "/imports/node-app/core/util/appEvents";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
 
 /**

@@ -3,7 +3,7 @@ import { compose } from "recompose";
 import PropTypes from "prop-types";
 import Radium from "radium";
 import classnames from "classnames";
-import { registerComponent, withCSSTransitionGroup } from "@reactioncommerce/reaction-components";
+import { registerComponent, withCSSTransition } from "@reactioncommerce/reaction-components";
 
 const styles = {
   base: {
@@ -24,31 +24,30 @@ class Overlay extends Component {
   };
 
   static propTypes = {
-    CSSTransitionGroup: PropTypes.func,
+    CSSTransition: PropTypes.func,
     children: PropTypes.node,
     isVisible: PropTypes.bool,
     onClick: PropTypes.func
   };
 
-  state = {
-    enterAnimation: {
-      animation: { opacity: 1 },
-      duration: 200
-    },
-    leaveAnimation: {
-      animation: { opacity: 0 },
-      duration: 200
+  render() {
+    const { CSSTransition, isVisible } = this.props;
+    if (CSSTransition === undefined) {
+      return null;
     }
-  }
 
-  renderOverlay() {
-    if (this.props.isVisible) {
-      const baseClassName = classnames({
-        rui: true,
-        overlay: true
-      });
+    const baseClassName = classnames({
+      rui: true,
+      overlay: true
+    });
 
-      return (
+    return (
+      <CSSTransition
+        in={isVisible}
+        unmountOnExit
+        classNames="fade-in-out"
+        timeout={200}
+      >
         <div
           aria-hidden={true}
           className={baseClassName}
@@ -56,36 +55,17 @@ class Overlay extends Component {
           onClick={this.props.onClick}
           key="overlay"
         />
-      );
-    }
-
-    return null;
-  }
-
-  render() {
-    const { CSSTransitionGroup } = this.props;
-    if (CSSTransitionGroup === undefined) {
-      return null;
-    }
-
-    return (
-      <CSSTransitionGroup
-        transitionName="fade-in-out"
-        transitionEnterTimeout={200}
-        transitionLeaveTimeout={200}
-      >
-        {this.renderOverlay()}
-      </CSSTransitionGroup>
+      </CSSTransition>
     );
   }
 }
 
 registerComponent("Overlay", Overlay, [
-  withCSSTransitionGroup,
+  withCSSTransition,
   Radium
 ]);
 
 export default compose(
-  withCSSTransitionGroup,
+  withCSSTransition,
   Radium
 )(Overlay);

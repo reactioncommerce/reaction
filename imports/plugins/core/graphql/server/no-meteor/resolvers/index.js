@@ -3,7 +3,7 @@ import account from "./account";
 import catalog from "./catalog";
 import cart from "./cart";
 import core from "./core";
-import fulfillment from "./fulfillment";
+import fulfillmentService from "/imports/node-app/services/fulfillment";
 import payment from "./payment";
 import ping from "./ping";
 import product from "./product";
@@ -11,7 +11,7 @@ import scalar from "./scalar";
 import shop from "./shop";
 import tag from "./tag";
 
-export default merge({}, account, cart, catalog, core, fulfillment, payment, ping, product, scalar, shop, tag);
+export default merge({}, account, cart, catalog, core, fulfillmentService.graphqlResolvers, payment, ping, product, scalar, shop, tag);
 
 /**
  * Arguments passed by the client for a query

@@ -1,5 +1,5 @@
 import Logger from "@reactioncommerce/logger";
-import appEvents from "/imports/plugins/core/core/server/appEvents";
+import appEvents from "/imports/node-app/core/util/appEvents";
 
 /**
  * @summary Called on startup

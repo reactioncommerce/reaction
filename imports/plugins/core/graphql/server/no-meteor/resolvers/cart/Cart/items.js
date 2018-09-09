@@ -12,5 +12,5 @@ import { xformCartItems } from "@reactioncommerce/reaction-graphql-xforms/cart";
 export default async function items(cart, connectionArgs, context) {
   if (!Array.isArray(cart.items)) return null;
 
-  return xformArrayToConnection(connectionArgs, xformCartItems(context.collections, cart.items));
+  return xformArrayToConnection(connectionArgs, xformCartItems(context, cart.items));
 }

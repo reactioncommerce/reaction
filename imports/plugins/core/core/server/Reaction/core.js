@@ -431,6 +431,15 @@ export default {
    */
   getShopIdByDomain() {
     const domain = this.getDomain();
+    const primaryShop = this.getPrimaryShop();
+
+    // in cases where the domain could match multiple shops, we first check
+    // whether the primaryShop matches the current domain. If so, we give it
+    // priority
+    if (primaryShop && Array.isArray(primaryShop.domains) && primaryShop.domains.includes(domain)) {
+      return primaryShop._id;
+    }
+
     const shop = Shops.find({
       domains: domain
     }, {

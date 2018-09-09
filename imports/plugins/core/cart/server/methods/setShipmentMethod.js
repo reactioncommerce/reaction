@@ -5,7 +5,7 @@ import Reaction from "/imports/plugins/core/core/server/Reaction";
 import ReactionError from "@reactioncommerce/reaction-error";
 import getCart from "/imports/plugins/core/cart/server/util/getCart";
 import getGraphQLContextInMeteorMethod from "/imports/plugins/core/graphql/server/getGraphQLContextInMeteorMethod";
-import selectFulfillmentOptionForGroup from "/imports/plugins/core/shipping/server/no-meteor/mutations/selectFulfillmentOptionForGroup";
+import selectFulfillmentOptionForGroup from "/imports/node-app/services/fulfillment/core/mutations/selectFulfillmentOptionForGroup";
 
 /**
  * @method cart/setShipmentMethod

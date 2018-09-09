@@ -84,18 +84,18 @@ html:not(.rtl) .rui.admin.action-view {
 // Admin action pane slide in/out animation
 .admin.rui.action-view-pane {
   &.slide-in-out-enter,
-  &.slide-in-out-leave-active {
+  &.slide-in-out-exit-active {
     transform: translateX(100%);
   }
   &.slide-in-out-rtl-enter,
-  &.slide-in-out-rtl-leave-active {
+  &.slide-in-out-rtl-exit-active {
     transform: translateX(-100%);
   }
 
   &.slide-in-out-enter-active,
   &.slide-in-out-rtl-enter-active,
-  &.slide-in-out-leave-active,
-  &.slide-in-out-rtl-leave-active {
+  &.slide-in-out-exit-active,
+  &.slide-in-out-rtl-exit-active {
     transition: transform 200ms ease-in-out;
   }
 

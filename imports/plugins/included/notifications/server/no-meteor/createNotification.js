@@ -1,6 +1,6 @@
 import Logger from "@reactioncommerce/logger";
 import Random from "@reactioncommerce/random";
-import appEvents from "/imports/plugins/core/core/server/appEvents";
+import appEvents from "/imports/node-app/core/util/appEvents";
 
 const messageForType = {
   orderCanceled: "Your order was canceled.",

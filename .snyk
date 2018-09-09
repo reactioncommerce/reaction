@@ -4,21 +4,12 @@ version: v1.11.0
 ignore:
   'npm:bootstrap:20160627':
     - bootstrap:
-        reason: We're not going to update to Bootstrap 4 any time soon
-        expires: '2018-08-26T20:23:03.274Z'
-  'npm:hoek:20180212':
-    - '*':
-      reason: "PR Accepted to tus-node-server which will resolve this vulnerability https://github.com/tus/tus-node-server/pull/120"
-      expires: '2018-08-26T20:23:03.274Z'
-  'npm:tunnel-agent:20170305':
-    - '*':
-      reason: "PR Accepted to tus-node-server which will resolve this vulnerability https://github.com/tus/tus-node-server/pull/120"
-      expires: '2018-08-26T20:23:03.274Z'
-  'npm:cryptiles:20180710':
-    - '*':
-      reason: "PR Accepted to tus-node-server which will resolve this vulnerability https://github.com/tus/tus-node-server/pull/120"
-      expires: '2018-08-26T20:23:03.274Z'
+      reason: We're not going to update to Bootstrap 4 any time soon
+      expires: '2018-10-26T20:23:03.274Z'
   'npm:chownr:20180731':
     - '*':
-      reason: "waiting on chownr to resolve issue"
-      expires: '2018-09-01T20:23:03.274Z'
+      reason: "PR in chownr to resolve issue will require node >= 10.8 https://github.com/isaacs/chownr/pull/15"
+      expires: '2018-09-29T20:23:03.274Z'
+  'npm:mem:20180117':
+    - '*':
+      reason: String of dependencies that need to be updated - oslocale (PR https://github.com/sindresorhus/os-locale/pull/31) followed by yargs then transliteration

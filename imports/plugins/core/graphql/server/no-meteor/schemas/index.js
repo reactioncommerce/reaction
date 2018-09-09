@@ -12,7 +12,7 @@ import node from "./node.graphql";
 import order from "./order.graphql";
 import payment from "./payment.graphql";
 import role from "./role.graphql";
-import shipping from "./shipping.graphql";
+import fulfillmentService from "/imports/node-app/services/fulfillment";
 import shop from "./shop.graphql";
 import tag from "./tag.graphql";
 
@@ -25,13 +25,13 @@ export default [
   checkout,
   currency,
   email,
+  ...fulfillmentService.graphqlSchemas,
   group,
   metafield,
   node,
   order,
   payment,
   role,
-  shipping,
   shop,
   tag
 ];
