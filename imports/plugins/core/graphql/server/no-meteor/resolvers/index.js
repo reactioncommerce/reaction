@@ -4,13 +4,14 @@ import catalog from "./catalog";
 import cart from "./cart";
 import core from "./core";
 import fulfillment from "./fulfillment";
+import payment from "./payment";
 import ping from "./ping";
 import product from "./product";
 import scalar from "./scalar";
 import shop from "./shop";
 import tag from "./tag";
 
-export default merge({}, account, cart, catalog, core, fulfillment, ping, product, scalar, shop, tag);
+export default merge({}, account, cart, catalog, core, fulfillment, payment, ping, product, scalar, shop, tag);
 
 /**
  * Arguments passed by the client for a query
