@@ -1,5 +1,7 @@
 import Hooks from "@reactioncommerce/hooks";
 import { Meteor } from "meteor/meteor";
+import appEvents from "/imports/plugins/core/core/server/appEvents";
+import sendOrderEmail from "/imports/plugins/core/orders/server/util/sendOrderEmail";
 
 
 /**
@@ -39,3 +41,5 @@ Hooks.Events.add("beforeUpdateOrderWorkflow", (order, options) => {
     }
   }
 });
+
+appEvents.on("afterOrderCreate", (order) => sendOrderEmail(order));

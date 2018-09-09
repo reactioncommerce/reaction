@@ -1,5 +1,4 @@
 import addToCart from "./addToCart";
-import copyCartToOrder from "./copyCartToOrder";
 import createCart from "./createCart";
 import mergeCart from "./mergeCart";
 import removeFromCart from "./removeFromCart";
@@ -7,7 +6,6 @@ import setPaymentAddress from "./setPaymentAddress";
 import setShipmentAddress from "./setShipmentAddress";
 import setShipmentMethod from "./setShipmentMethod";
 import setUserCurrency from "./setUserCurrency";
-import submitPayment from "./submitPayment";
 import unsetAddresses from "./unsetAddresses";
 
 /**
@@ -18,7 +16,6 @@ import unsetAddresses from "./unsetAddresses";
 
 export default {
   "cart/addToCart": addToCart,
-  "cart/copyCartToOrder": copyCartToOrder,
   "cart/createCart": createCart,
   "cart/mergeCart": mergeCart,
   "cart/removeFromCart": removeFromCart,
@@ -26,6 +23,5 @@ export default {
   "cart/setShipmentAddress": setShipmentAddress,
   "cart/setShipmentMethod": setShipmentMethod,
   "cart/setUserCurrency": setUserCurrency,
-  "cart/submitPayment": submitPayment,
   "cart/unsetAddresses": unsetAddresses
 };
