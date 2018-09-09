@@ -27,12 +27,19 @@ export default async function updateFlatRateFulfillmentMethodMutation(context, i
     throw new ReactionError("access-denied", "Access Denied");
   }
 
+  // MongoDB schema still uses `enabled` rather than `isEnabled`
+  method.enabled = method.isEnabled;
+  delete method.isEnabled;
+
   const { matchedCount } = await Shipping.updateOne({
     "methods._id": methodId,
     shopId
   }, {
     $set: {
-      "methods.$": method
+      "methods.$": {
+        ...method,
+        _id: methodId
+      }
     }
   });
   if (matchedCount === 0) throw new ReactionError("not-found", "Not found");

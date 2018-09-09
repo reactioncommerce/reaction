@@ -41,6 +41,10 @@ export default async function createFlatRateFulfillmentMethodMutation(context, i
 
   method._id = Random.id();
 
+  // MongoDB schema still uses `enabled` rather than `isEnabled`
+  method.enabled = method.isEnabled;
+  delete method.isEnabled;
+
   const { matchedCount } = await Shipping.updateOne({
     shopId,
     "provider.name": "flatRates"
