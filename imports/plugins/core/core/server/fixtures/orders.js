@@ -52,33 +52,6 @@ export function randomMode() {
 }
 
 /**
- * @method paymentMethod
- * @memberof Fixtures
- * @summary Create Payment Method object
- * @param {Object} doc Override props
- * @return {Object} Payment method object
- * @property {String} processor - `randomProcessor()`
- * @property {String} storedCard - `"4242424242424242"`
- * @property {String} transactionId - `Random.id()`
- * @property {String} status - `randomStatus()`
- * @property {String} mode - `randomMode()`
- * @property {String} authorization - `"auth field"`
- * @property {Number} amount - `faker.commerce.price()`
- */
-export function paymentMethod(doc) {
-  return {
-    ...doc,
-    processor: doc.processor ? doc.processor : randomProcessor(),
-    storedCard: doc.storedCard ? doc.storedCard : "4242424242424242",
-    transactionId: doc.transactionId ? doc.transactionId : Random.id(),
-    status: doc.status ? doc.status : randomStatus(),
-    mode: doc.mode ? doc.mode : randomMode(),
-    authorization: "auth field",
-    amount: doc.amount ? doc.amount : faker.commerce.price()
-  };
-}
-
-/**
  * @method getUserId
  * @memberof Fixtures
  * @return {String} ID
@@ -131,25 +104,23 @@ export default function defineOrders() {
    * @property {String} shopId.items.workflow.status Cart - Product - `"new"`
    * @property {String[]} supportedFulfillmentTypes - ["shipping"]
    * @property {Array} shipping - Shipping - `[{}]`
-   * @property {String[]} itemIds
-   * @property {Array} billing - Billing - `[]`
-   * @property {String} billing._id - Billing - `Random.id()`
-   * @property {Object} billing.address - Billing - Address object
-   * @property {Object} billing.paymentMethod - Billing - Payment Method
-   * @property {String} billing.paymentMethod.method - `"credit"`
-   * @property {String} billing.paymentMethod.processor - `"Example"`
-   * @property {String} billing.paymentMethod.storedCard - `"MasterCard 2346"`
-   * @property {String} billing.paymentMethod.paymentPackageId - `getPkgData("example-paymentmethod")._id`
-   * @property {String} paymentSettingsKey - `"example-paymentmethod"`
-   * @property {String} mode - `"authorize"`
-   * @property {String} status - `"created"`
-   * @property {Number} amount - `12.4`
-   * @property {Object} invoice - Object
-   * @property {Number} invoice.total - `12.45`
-   * @property {Number} invoice.subtotal - `12.45`
-   * @property {Number} invoice.discounts - `0`
-   * @property {Number} invoice.taxes - `0.12`
-   * @property {Number} invoice.shipping - `4.0`
+   * @property {String[]} shipping.itemIds
+   * @property {Object} shipping.payment - A payment
+   * @property {String} shipping.payment._id - Billing - `Random.id()`
+   * @property {Object} shipping.payment.address - Billing - Address object
+   * @property {String} shipping.payment.displayName - `"MasterCard 2346"`
+   * @property {String} shipping.payment.method - `"credit"`
+   * @property {String} shipping.payment.processor - `"Example"`
+   * @property {String} shipping.payment.paymentPluginName - `"example-paymentmethod"`
+   * @property {String} shipping.payment.mode - `"authorize"`
+   * @property {String} shipping.payment.status - `"created"`
+   * @property {Number} shipping.payment.amount - `12.4`
+   * @property {Object} shipping.payment.invoice - Object
+   * @property {Number} shipping.payment.invoice.total - `12.45`
+   * @property {Number} shipping.payment.invoice.subtotal - `12.45`
+   * @property {Number} shipping.payment.invoice.discounts - `0`
+   * @property {Number} shipping.payment.invoice.taxes - `0.12`
+   * @property {Number} shipping.payment.invoice.shipping - `4.0`
    * @property {String} state - `"new"`
    * @property {Date} createdAt - `new Date()`
    * @property {Date} updatedAt - `new Date()`
@@ -217,32 +188,36 @@ export default function defineOrders() {
     },
     supportedFulfillmentTypes: ["shipping"],
     shipping: [{
-      shopId,
       address: getAddress({ isShippingDefault: true }),
-      itemIds: [itemIdOne, itemIdTwo]
-    }], // Shipping Schema
-    billing: [{
-      _id: Random.id(),
-      shopId,
-      address: getAddress({ isBillingDefault: true }),
-      paymentMethod: paymentMethod({
-        method: "credit",
-        processor: "Example",
-        storedCard: "MasterCard 2346",
-        paymentPackageId: getPkgData("example-paymentmethod") ? getPkgData("example-paymentmethod")._id : "uiwneiwknekwewe",
-        paymentSettingsKey: "example-paymentmethod",
-        mode: "authorize",
-        status: "created",
-        amount: 12.45
-      }),
       invoice: {
         total: 12.45,
         subtotal: 12.45,
         discounts: 0,
         taxes: 0.12,
         shipping: 4.00
-      }
-    }],
+      },
+      itemIds: [itemIdOne, itemIdTwo],
+      payment: {
+        _id: Random.id(),
+        address: getAddress({ isBillingDefault: true }),
+        amount: 12.45,
+        displayName: "MasterCard 2346",
+        invoice: {
+          total: 12.45,
+          subtotal: 12.45,
+          discounts: 0,
+          taxes: 0.12,
+          shipping: 4.00
+        },
+        method: "credit",
+        mode: "authorize",
+        paymentPluginName: "example-paymentmethod",
+        processor: "Example",
+        status: "created",
+        shopId
+      },
+      shopId
+    }], // fulfillment group Schema
     state: "new",
     createdAt: new Date(),
     updatedAt: new Date()

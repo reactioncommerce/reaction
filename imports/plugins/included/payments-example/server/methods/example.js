@@ -6,7 +6,6 @@ import { check } from "meteor/check";
 import Logger from "@reactioncommerce/logger";
 import { ValidCardNumber, ValidExpireMonth, ValidExpireYear, ValidCVV } from "/lib/api";
 import { ExampleApi } from "./exampleapi";
-import { PaymentMethodArgument } from "/lib/collections/schemas";
 
 // function chargeObj() {
 //   return {
@@ -94,16 +93,13 @@ Meteor.methods({
    * Capture a Charge
    * @method
    * @memberof Payment/Example/Methods
-   * @param {Object} paymentMethod Object containing data about the transaction to capture
+   * @param {Object} payment Object containing data about the transaction to capture
    * @return {Object} results normalized
    */
-  "example/payment/capture"(paymentMethod) {
-    // Call both check and validate because by calling `clean`, the audit pkg
-    // thinks that we haven't checked paymentMethod arg
-    check(paymentMethod, Object);
-    PaymentMethodArgument.validate(PaymentMethodArgument.clean(paymentMethod));
+  "example/payment/capture"(payment) {
+    check(payment, Object);
 
-    const { amount, transactionId: authorizationId } = paymentMethod;
+    const { amount, transactionId: authorizationId } = payment;
     const response = ExampleApi.methods.capture.call({
       authorizationId,
       amount
@@ -119,19 +115,15 @@ Meteor.methods({
    * Create a refund
    * @method
    * @memberof Payment/Example/Methods
-   * @param  {Object} paymentMethod object
+   * @param  {Object} payment object
    * @param  {Number} amount The amount to be refunded
    * @return {Object} result
    */
-  "example/refund/create"(paymentMethod, amount) {
+  "example/refund/create"(payment, amount) {
     check(amount, Number);
+    check(payment, Object);
 
-    // Call both check and validate because by calling `clean`, the audit pkg
-    // thinks that we haven't checked paymentMethod arg
-    check(paymentMethod, Object);
-    PaymentMethodArgument.validate(PaymentMethodArgument.clean(paymentMethod));
-
-    const { transactionId } = paymentMethod;
+    const { transactionId } = payment;
     const response = ExampleApi.methods.refund.call({
       transactionId,
       amount
@@ -147,16 +139,13 @@ Meteor.methods({
    * List refunds
    * @method
    * @memberof Payment/Example/Methods
-   * @param  {Object} paymentMethod Object containing the pertinant data
+   * @param  {Object} payment Object containing the payment data
    * @return {Object} result
    */
-  "example/refund/list"(paymentMethod) {
-    // Call both check and validate because by calling `clean`, the audit pkg
-    // thinks that we haven't checked paymentMethod arg
-    check(paymentMethod, Object);
-    PaymentMethodArgument.validate(PaymentMethodArgument.clean(paymentMethod));
+  "example/refund/list"(payment) {
+    check(payment, Object);
 
-    const { transactionId } = paymentMethod;
+    const { transactionId } = payment;
     const response = ExampleApi.methods.refunds.call({
       transactionId
     });
@@ -182,7 +171,7 @@ Meteor.methods({
 /**
  * @method normalizeRiskLevel
  * @private
- * @summary Normalizes the risk level response of a transaction to the values defined in paymentMethod schema
+ * @summary Normalizes the risk level response of a transaction to the values defined in payment schema
  * @param  {object} transaction - The transaction that we need to normalize
  * @return {string} normalized status string - either elevated, high, or normal
  */
