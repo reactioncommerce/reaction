@@ -8,9 +8,8 @@ import { ExampleApi, RISKY_TEST_CARD } from "./exampleapi";
 
 const paymentMethod = {
   processor: "Generic",
-  storedCard: "Visa 4242",
-  paymentPackageId: "vrXutd72c2m7Lenqw",
-  paymentSettingsKey: "example-paymentmethod",
+  displayName: "Visa 4242",
+  paymentPluginName: "example-paymentmethod",
   status: "captured",
   mode: "authorize",
   createdAt: new Date()

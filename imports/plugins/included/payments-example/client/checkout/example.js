@@ -57,29 +57,24 @@ AutoForm.addHooks("example-payment-form", {
       cvv2: doc.cvv,
       type: Reaction.getCardType(doc.cardNumber)
     };
-    const storedCard = `${form.type.charAt(0).toUpperCase() + form.type.slice(1)} ${doc.cardNumber.slice(-4)}`;
+    const displayName = `${form.type.charAt(0).toUpperCase() + form.type.slice(1)} ${doc.cardNumber.slice(-4)}`;
     Meteor.subscribe("Packages", Reaction.getShopId());
-    const packageData = Packages.findOne({
-      name: "example-paymentmethod",
-      shopId: Reaction.getShopId()
-    });
     const { cart, token: cartToken } = getCart();
     Example.authorize(form, {
       total: cart.getTotal(),
       currency: Shops.findOne().currency
     }, (error, transaction) => {
       submitting = false;
-      let paymentMethod;
+      let payment;
       if (error) {
         handleExampleSubmitError(error);
         uiEnd(template, "Resubmit payment");
       } else if (transaction.saved === true) {
         submitting = false;
-        paymentMethod = {
+        payment = {
           processor: "Example",
-          paymentPackageId: packageData._id,
-          paymentSettingsKey: packageData.registry[0].settingsKey,
-          storedCard,
+          paymentPluginName: "example-paymentmethod",
+          displayName,
           method: "credit",
           transactionId: transaction.transactionId,
           riskLevel: transaction.riskLevel,
@@ -90,8 +85,8 @@ AutoForm.addHooks("example-payment-form", {
           createdAt: new Date(),
           transactions: []
         };
-        paymentMethod.transactions.push(transaction.response);
-        Meteor.call("cart/submitPayment", cart._id, cartToken, paymentMethod, (err) => {
+        payment.transactions.push(transaction.response);
+        Meteor.call("cart/submitPayment", cart._id, cartToken, [payment], (err) => {
           if (err) {
             Logger.error(err);
             return;
