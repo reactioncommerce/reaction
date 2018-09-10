@@ -312,6 +312,27 @@ export const OrderTransaction = new SimpleSchema({
 
 registerSchema("OrderTransaction", OrderTransaction);
 
+/**
+ * @name OrderFulfillmentGroup Schema
+ * @memberof Schemas
+ * @summary One fulfillment group of an order
+ * @type {SimpleSchema}
+ * @property {String} _id Group ID
+ * @property {Object} address Shipping address
+ * @property {String} customsLabelUrl URL for customs label
+ * @property {Number} effectiveTaxRate The effective tax rate, for display
+ * @property {Object} invoice Invoice (same as the one on Payment)
+ * @property {Object[]} items The order items in this group
+ * @property {String[]} itemIds For convenience, the _id of all the items
+ * @property {Object} payment The payment info for this group
+ * @property {Object} shipmentMethod The fulfillment method that was chosen by the customer
+ * @property {String} shippingLabelUrl URL for shipping label
+ * @property {String} shopId The shop that fulfills this group
+ * @property {Number} totalItems The total item quantity, sum of all quantities
+ * @property {String} tracking Tracking reference ID
+ * @property {String} type Fulfillment type
+ * @property {Object} workflow Current status and past statuses for this fulfillment
+ */
 const OrderFulfillmentGroup = new SimpleSchema({
   "_id": String,
   "address": {
@@ -337,6 +358,10 @@ const OrderFulfillmentGroup = new SimpleSchema({
     optional: true
   },
   "shopId": String,
+  "totalItems": {
+    type: SimpleSchema.Integer,
+    min: 1
+  },
   "tracking": {
     type: String,
     optional: true
@@ -461,6 +486,10 @@ export const Order = new SimpleSchema({
     type: Object,
     blackbox: true,
     optional: true
+  },
+  "totalItems": {
+    type: SimpleSchema.Integer,
+    min: 1
   },
   "transactions": {
     type: Array,

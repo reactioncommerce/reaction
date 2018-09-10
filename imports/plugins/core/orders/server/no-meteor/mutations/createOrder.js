@@ -253,7 +253,9 @@ export default async function createOrder(context, input) {
     finalGroup.effectiveTaxRate = effectiveTaxRate;
     finalGroup.items = itemsWithTaxInfoAdded;
 
-    finalGroup.itemIds = finalGroup.items.map((item) => item._id); // for convenience
+    // Add some more properties for convenience
+    finalGroup.itemIds = finalGroup.items.map((item) => item._id);
+    finalGroup.totalItems = finalGroup.items.reduce((sum, item) => sum + item.quantity, 0);
 
     // Error if we calculate total price differently from what the client has shown as the preview.
     // It's important to keep this after adding and verifying the shipmentMethod and order item prices.
@@ -305,6 +307,7 @@ export default async function createOrder(context, input) {
     email,
     shipping: chargedFulfillmentGroups,
     shopId,
+    totalItems: chargedFulfillmentGroups.reduce((sum, group) => sum + group.totalItems, 0),
     updatedAt: now,
     workflow: {
       status: "new",

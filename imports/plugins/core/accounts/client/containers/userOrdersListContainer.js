@@ -24,7 +24,7 @@ function composer(props, onData) {
     orders.map((order) => {
       const imageSub = Meteor.subscribe("OrderImages", order._id);
       const orderSummary = {
-        quantityTotal: order.getCount(),
+        quantityTotal: order.totalItems,
         subtotal: order.getSubTotal(),
         shippingTotal: order.getShippingTotal(),
         tax: order.getTaxTotal(),
