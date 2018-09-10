@@ -1,6 +1,5 @@
 import Cart from "./Cart";
 import CartItem from "./CartItem";
-import CartPayment from "./CartPayment";
 import FulfillmentGroup from "./FulfillmentGroup";
 import Mutation from "./Mutation";
 import Query from "./Query";
@@ -13,7 +12,6 @@ import Query from "./Query";
 export default {
   Cart,
   CartItem,
-  CartPayment,
   FulfillmentGroup,
   Mutation,
   PaymentMethodData: {

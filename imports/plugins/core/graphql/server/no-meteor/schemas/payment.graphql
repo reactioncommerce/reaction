@@ -12,16 +12,55 @@ extend type Query {
 
 extend type Mutation {
   """
-  Use this mutation to apply a Stripe payment token to a cart, to pay for the items in the cart.
-  The payment will be authorized and will only be applied if authorization is successful.
+  Use this mutation to place an order with example IOU payment.
+  """
+  placeOrderWithExampleIOUPayment(input: PlaceOrderWithExampleIOUPaymentInput!): PlaceOrderPayload!
+
+  """
+  Use this mutation to place an order with credit card payment, processed through a Stripe account,
+  in a Marketplace installation. This is a variation of placeOrderWithStripeCardPayment that
+  checks for marketplace configuration and assigns Stripe Connect account IDs to each shop payment.
   """
   placeMarketplaceOrderWithStripeCardPayment(input: PlaceMarketplaceOrderWithStripeCardPaymentInput!): PlaceOrderPayload!
 
   """
-  Use this mutation to apply a Stripe payment token to a cart, to pay for the items in the cart.
-  The payment will be authorized and will only be applied if authorization is successful.
+  Use this mutation to place an order with credit card payment, processed through a Stripe account.
+  The order will be placed only if authorization is successful.
   """
   placeOrderWithStripeCardPayment(input: PlaceOrderWithStripeCardPaymentInput!): PlaceOrderPayload!
+}
+
+
+"""
+Information about a payment made
+"""
+type Payment implements Node {
+  "The Payment ID"
+  _id: ID!
+
+  """
+  The amount that will be applied to this payment method. If there are multiple payment methods applied to the
+  cart, this may be less than the cart total.
+  """
+  amount: Money!
+
+  "For card payments, the brand of the card. Useful for showing card icons for common brands."
+  cardBrand: String
+
+  "The date and time at which this payment was created"
+  createdAt: DateTime!
+
+  """
+  The shopper-provided data needed to complete the payment using this method.
+  For example, a billing address, store credit code, stored credit card ID, etc.
+  """
+  data: PaymentData
+
+  "Use this identifier when showing this payment in a user interface"
+  displayName: String!
+
+  "The payment method"
+  method: PaymentMethod!
 }
 
 input StripeCardPaymentInput {
@@ -46,6 +85,36 @@ input PlaceOrderWithStripeCardPaymentInput {
   "The information necessary to pay. Collect this information from the shopper during a checkout flow."
   payment: StripeCardPaymentInput!
 }
+
+input ExampleIOUPaymentInput {
+  "The billing address entered by the shopper"
+  billingAddress: AddressInput!
+
+  "If set, this will be saved as the Address._id. Otherwise an ID will be generated. For tracking whether this is from a saved address."
+  billingAddressId: ID
+
+  "The full name of the person who will eventually pay for this order"
+  fullName: String!
+}
+
+"Input for the placeOrderWithExampleIOUPayment mutation"
+input PlaceOrderWithExampleIOUPaymentInput {
+  "An optional string identifying the mutation call, which will be returned in the response payload"
+  clientMutationId: String
+
+  "The order to be placed, if payment is accepted"
+  order: OrderInput!
+
+  "The information necessary to pay. Collect this information from the shopper during a checkout flow."
+  payment: ExampleIOUPaymentInput!
+}
+
+"An example"
+type ExamplePaymentData {
+  example: String!
+}
+
+union PaymentData = ExamplePaymentData
 
 "Data for a Stripe card payment"
 type StripeCardPaymentData {

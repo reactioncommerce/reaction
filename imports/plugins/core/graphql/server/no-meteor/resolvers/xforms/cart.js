@@ -15,11 +15,6 @@ export const assocCartItemOpaqueId = assocOpaqueId(namespaces.CartItem);
 export const decodeCartItemOpaqueId = decodeOpaqueIdForNamespace(namespaces.CartItem);
 export const encodeCartItemOpaqueId = encodeOpaqueId(namespaces.CartItem);
 
-export const assocCartPaymentInternalId = assocInternalId(namespaces.CartPayment);
-export const assocCartPaymentOpaqueId = assocOpaqueId(namespaces.CartPayment);
-export const decodeCartPaymentOpaqueId = decodeOpaqueIdForNamespace(namespaces.CartPayment);
-export const encodeCartPaymentOpaqueId = encodeOpaqueId(namespaces.CartPayment);
-
 export const assocFulfillmentGroupInternalId = assocInternalId(namespaces.FulfillmentGroup);
 export const assocFulfillmentGroupOpaqueId = assocOpaqueId(namespaces.FulfillmentGroup);
 export const decodeFulfillmentGroupOpaqueId = decodeOpaqueIdForNamespace(namespaces.FulfillmentGroup);
@@ -192,34 +187,6 @@ function xformCartFulfillmentGroup(fulfillmentGroup, cart) {
 }
 
 /**
- * @summary Transform a single fulfillment group
- * @param {Object} payment A payment object
- * @param {Object} cart Full cart document, with items already transformed
- * @param {Number} cartTotal The calculated total price of the cart
- * @param {Object[]} paymentMethods Payment method packages
- * @returns {Object} Transformed payment
- */
-function xformCartPayments(payment, cart) {
-  const { _id, address, amount, cardBrand, createdAt, data, displayName, name: methodName } = payment;
-
-  return {
-    _id,
-    amount: {
-      amount,
-      currencyCode: cart.currencyCode
-    },
-    billingAddress: address,
-    cardBrand,
-    createdAt,
-    data,
-    displayName,
-    method: {
-      name: methodName
-    }
-  };
-}
-
-/**
  * @param {Object} collections Map of Mongo collections
  * @param {Object} cart Cart document
  * @returns {Object} Checkout object
@@ -279,14 +246,10 @@ export async function xformCartCheckout(collections, cart) {
   }
 
   fulfillmentGroups = fulfillmentGroups.map((fulfillmentGroup) => xformCartFulfillmentGroup(fulfillmentGroup, cart));
-  fulfillmentGroups = fulfillmentGroups.filter((payment) => !!payment); // filter out nulls
-
-  let payments = (cart.billing || []).map((payment) => xformCartPayments(payment, cart));
-  payments = payments.filter((payment) => !!payment); // filter out nulls
+  fulfillmentGroups = fulfillmentGroups.filter((group) => !!group); // filter out nulls
 
   return {
     fulfillmentGroups,
-    payments,
     summary: {
       discountTotal: {
         amount: discountTotal,

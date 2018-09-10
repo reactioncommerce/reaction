@@ -6,26 +6,157 @@ extend type Query {
   ordersByAccountId(accountId: ID!, shopIds: [ID]): [Order]!
 }
 
+enum OrderItemsSortByField {
+  _id
+  addedAt
+}
+
+"Wraps a list of `OrderItem`s, providing pagination cursors and information."
+type OrderItemConnection implements NodeConnection {
+  edges: [OrderItemEdge]
+  nodes: [OrderItem]
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
+"A connection edge in which each node is a `OrderItem` object"
+type OrderItemEdge implements NodeEdge {
+  cursor: ConnectionCursor!
+  node: OrderItem
+}
+
+type OrderItemAttribute {
+  "The attribute label, e.g., Color"
+  label: String
+
+  "The attribute value, e.g., Blue"
+  value: String
+}
+
+"""
+A single item in an order. The item contains information about a purchase.
+"""
+type OrderItem implements Node {
+  "The order item ID"
+  _id: ID!
+
+  """"
+  The date and time at which this item was first added to the associated cart.
+  If an item is added, removed, and then added again, this will reflect the most recent addition.
+  However, if an item is added twice, the quantity will increase but this date will remain
+  the initial added date.
+  """
+  addedAt: DateTime
+
+  """
+  FUTURE. Additional attributes of the chosen item. For example, if this item is for a product, socks, where "blue" and "small"
+  options were chosen for some configurable attributes, then "color:blue" and "size:small" will be indicated here.
+  """
+  attributes: [OrderItemAttribute]
+
+  "The date and time at which the order item was created"
+  createdAt: DateTime!
+
+  "The URLs for a picture of the item in various sizes"
+  imageURLs: ImageSizes
+
+  "Is this a taxable item?"
+  isTaxable: Boolean!
+
+  "Arbitrary additional metadata about this cart item."
+  metafields: [Metafield]
+
+  "The short title of the associated option, if this is an option item"
+  optionTitle: String
+
+  "Packing information such as item weight, height, length, and depth. Used for calculating shipping rates."
+  parcel: ShippingParcel
+
+  "The price of the item at the time of purchase"
+  price: Money!
+
+  "The product and chosen options"
+  productConfiguration: ProductConfiguration!
+
+  "The product's slug"
+  productSlug: String
+
+  "The type of product, used to display cart items differently"
+  productType: String
+
+  "The product vendor"
+  productVendor: String
+
+  "The quantity of this item that has been added to the cart. This must be a positive integer. Remove this `CartItem` from it's associated cart if you want `0` of this item."
+  quantity: Int!
+
+  "The shop associated with this cart item."
+  shop: Shop!
+
+  "The price of the item multiplied by the quantity of this item ordered"
+  subtotal: Float!
+
+  "Tax code for this item"
+  taxCode: String
+
+  "A title for use in orders that conveys the selected product's title + chosen options"
+  title: String!
+
+  "The date and time at which this item was last updated"
+  updatedAt: DateTime!
+
+  "The selected variant title"
+  variantTitle: String
+}
+
+type ShippingOrderFulfillmentGroupData {
+  shippingAddress: Address!
+}
+
+union OrderFulfillmentGroupData = ShippingOrderFulfillmentGroupData
+
+type OrderFulfillmentGroup implements Node {
+  "The order fulfillment group ID"
+  _id: ID!
+
+  "Information needed by the selected fulfillment method to properly fulfill the order"
+  data: OrderFulfillmentGroupData
+
+  "The items that are part of this fulfillment group"
+  items(after: ConnectionCursor, before: ConnectionCursor, first: ConnectionLimitInt, last: ConnectionLimitInt, sortOrder: SortOrder = desc, sortBy: OrderItemsSortByField = addedAt): OrderItemConnection
+
+  "The payment details for this group"
+  payment: Payment!
+
+  "The fulfillment method that was selected, with its price quote"
+  selectedFulfillmentOption: FulfillmentOption!
+
+  "The shop responsible for fulfilling this order"
+  shop: Shop!
+
+  "A summary of the totals for this group"
+  summary: OrderSummary!
+
+  "Total quantity of all items in the group"
+  totalItemQuantity: Int!
+
+  "The fulfillment type. Any valid type that has been registered by a fulfillment plugin. Examples: \"shipping\", \"digital\""
+  type: FulfillmentType!
+}
+
 "An order"
 type Order implements Node {
   "The Order ID"
   _id: ID!
 
-  # Enforce database uniqueness such that an account only has one cart.
-  "The account that owns the cart. Some carts are created for anonymus users. Anonymous carts have a null account."
+  "The account that placed the order. Some orders are created for anonymus users. Anonymous orders have a null account."
   account: Account
 
-  "The ID of the cart that created this order"
+  "The ID of the cart that created this order. Carts are deleted after becoming orders, so this is just a reference."
   cartId: ID
 
-  "One or more fulfillment groups, for example, mapping certain items to certain shipping addresses"
-  fulfillmentGroups: [FulfillmentGroup]!
-
-  "One or more payments added by the shopper during checkout"
-  payments: [CartPayment]!
-
-  "A summary of the totals for this order"
-  summary: OrderSummary!
+  "One or more fulfillment groups. Each of these are fulfilled and charged as separate orders."
+  fulfillmentGroups: [OrderFulfillmentGroup]!
 
   "The date and time at which the cart was created, which is when the first item was added to it."
   createdAt: DateTime!
@@ -33,19 +164,16 @@ type Order implements Node {
   "An email address that has been associated with the cart"
   email: String
 
-  "The items that have been added to the cart. A cart is not created until the first item is added. Items can be removed from a cart, and a cart is not deleted if all items are removed from it. Because all items may have been removed, this may be an empty array."
-  items(after: ConnectionCursor, before: ConnectionCursor, first: ConnectionLimitInt, last: ConnectionLimitInt, sortOrder: SortOrder = desc, sortBy: CartItemsSortByField = addedAt): CartItemConnection
-
-  "Notes about the order"
+  "Notes about the order. This will always return an array but it may be empty"
   notes: [OrderNote]!
 
-  "The shop that owns the cart."
+  "The shop through which the order was placed"
   shop: Shop!
 
-  "Total quantity of all items in the cart"
+  "Total quantity of all items in the order"
   totalItemQuantity: Int!
 
-  "The date and time at which this cart was last updated."
+  "The date and time at which this order was last updated"
   updatedAt: DateTime!
 }
 
@@ -58,40 +186,6 @@ type OrderNote {
 
   updatedAt: DateTime!
 }
-
-"""
-Information about a payment method that has been chosen by a shopper,
-and how much of the cart total should be applied to it
-"""
-type OrderPayment implements Node {
-  "The OrderPayment ID"
-  _id: ID!
-
-  """
-  The amount that will be applied to this payment method. If there are multiple payment methods applied to the
-  cart, this may be less than the cart total.
-  """
-  amount: Money!
-
-  "The date and time at which this payment was created"
-  createdAt: DateTime!
-
-  """
-  The shopper-provided data needed to complete the payment using this method.
-  For example, a billing address, store credit code, stored credit card ID, etc.
-  """
-  data: PaymentData
-
-  "Use this identifier when showing this payment in a user interface"
-  displayName: String!
-
-  "The payment method"
-  method: PaymentMethod!
-}
-
-# Questions
-# - do we need workflow/status on item
-# - can we keep payment objects the same between cart and order?
 
 input OrderFulfillmentGroupItemInput {
   "The date and time at which this item was first added to the source cart, if this is something you want to track"
