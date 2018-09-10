@@ -1,6 +1,6 @@
 import SimpleSchema from "simpl-schema";
 import ReactionError from "@reactioncommerce/reaction-error";
-import hashLoginToken from "/imports/node-app/core/util/hashLoginToken";
+import getCartById from "../util/getCartById";
 
 const inputSchema = new SimpleSchema({
   "cartId": String,
@@ -35,49 +35,43 @@ const inputSchema = new SimpleSchema({
 export default async function updateCartItemsQuantity(context, input) {
   inputSchema.validate(input || {});
 
-  const { accountId, appEvents, collections } = context;
-  const { Cart } = collections;
-  const { cartId, items, token } = input;
+  const { cartId, items, token: cartToken } = input;
 
-  const selector = { _id: cartId };
-  if (token) {
-    selector.anonymousAccessToken = hashLoginToken(token);
-  } else if (accountId) {
-    selector.accountId = accountId;
-  } else {
-    throw new ReactionError("invalid-param", "A token is required when updating an anonymous cart");
-  }
+  const cart = await getCartById(context, cartId, { cartToken, throwIfNotFound: true });
 
-  const modifier = { $set: {} };
-  const removeItemsModifier = { $pull: { items: { $or: [] } } };
-  const arrayFilters = [];
+  let updatedItems = cart.items.map((item) => {
+    const update = items.find(({ cartItemId }) => cartItemId === item._id);
+    if (!update) return item;
 
-  items.forEach((item, index) => {
-    if (item.quantity === 0) {
-      removeItemsModifier.$pull.items.$or.push({ _id: item.cartItemId });
-    } else {
-      modifier.$set[`items.$[elem${index}].quantity`] = item.quantity;
-      arrayFilters.push({ [`elem${index}._id`]: item.cartItemId });
+    if (update.quantity === 0) {
+      return null;
     }
+
+    return {
+      ...item,
+      subtotal: item.priceWhenAdded.amount * update.quantity,
+      quantity: update.quantity
+    };
   });
 
-  if (Object.keys(modifier.$set).length > 0) {
-    const { modifiedCount } = await Cart.updateOne(selector, modifier, { arrayFilters });
-    if (modifiedCount === 0) throw new ReactionError("not-found", "Cart not found");
-  }
+  // Remove the nulls
+  updatedItems = updatedItems.filter((item) => !!item);
 
-  // If any items had zero quantity, we will now remove them in a separate Cart update.
-  // We could not have added `$pull` to the previous update modifier because MongoDB
-  // will not allow updates of `items` in two different operators in the same modifier.
-  if (removeItemsModifier.$pull.items.$or.length > 0) {
-    const { modifiedCount } = await Cart.updateOne(selector, removeItemsModifier);
-    if (modifiedCount === 0) throw new ReactionError("not-found", "Cart not found");
-  }
+  const { appEvents, collections } = context;
+  const { Cart } = collections;
 
-  const cart = await Cart.findOne(selector);
-  if (!cart) throw new ReactionError("not-found", "Cart not found");
+  const updatedAt = new Date();
+  const { matchedCount } = await Cart.updateOne({ _id: cartId }, {
+    $set: {
+      items: updatedItems,
+      updatedAt
+    }
+  });
+  if (matchedCount === 0) throw new ReactionError("server-error", "Failed to update cart");
 
-  await appEvents.emit("afterCartUpdate", cart._id, cart);
+  const updatedCart = { ...cart, items: updatedItems, updatedAt };
 
-  return { cart };
+  await appEvents.emit("afterCartUpdate", cart._id, updatedCart);
+
+  return { cart: updatedCart };
 }
