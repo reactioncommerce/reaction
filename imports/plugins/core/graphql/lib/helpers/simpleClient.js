@@ -5,6 +5,7 @@ import updateFulfillmentOptionsForGroup from "../mutations/updateFulfillmentOpti
 import createFlatRateFulfillmentMethod from "../mutations/createFlatRateFulfillmentMethod.graphql";
 import updateFlatRateFulfillmentMethod from "../mutations/updateFlatRateFulfillmentMethod.graphql";
 import deleteFlatRateFulfillmentMethod from "../mutations/deleteFlatRateFulfillmentMethod.graphql";
+import placeOrderWithStripeCardPayment from "../mutations/placeOrderWithStripeCardPayment.graphql";
 
 /**
  * In React components, you should use Apollo. This client is available for Blaze
@@ -37,6 +38,10 @@ export default {
     deleteFlatRateFulfillmentMethod: (variables) => {
       setTokenHeader();
       return client.mutate(deleteFlatRateFulfillmentMethod)(variables);
+    },
+    placeOrderWithStripeCardPayment: (variables) => {
+      setTokenHeader();
+      return client.mutate(placeOrderWithStripeCardPayment)(variables);
     },
     updateFlatRateFulfillmentMethod: (variables) => {
       setTokenHeader();

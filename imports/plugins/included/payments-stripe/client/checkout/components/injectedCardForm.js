@@ -7,14 +7,11 @@ import {
   CardCVCElement,
   PostalCodeElement
 } from "react-stripe-elements";
-import { Meteor } from "meteor/meteor";
-import { i18next, Router } from "/client/api";
-import { unstoreAnonymousCart } from "/imports/plugins/core/cart/client/util/anonymousCarts";
 
 class CardForm extends Component {
   static propTypes = {
-    cartId: PropTypes.string,
-    cartToken: PropTypes.string,
+    errorCodes: PropTypes.object,
+    onSubmit: PropTypes.func,
     postal: PropTypes.string,
     stripe: PropTypes.object
   }
@@ -31,34 +28,11 @@ class CardForm extends Component {
       submitMessage: "Complete your order",
       submitting: false
     };
-
-    /* eslint-disable camelcase */
-    this.errorCodes = {
-      card_declined: i18next.t("checkout.errorMessages.cardDeclined"),
-      country_unsupported: i18next.t("checkout.errorMessages.countryUnsupported"),
-      expired_card: i18next.t("checkout.errorMessages.expiredCard"),
-      incomplete_cvc: i18next.t("checkout.errorMessages.incompleteCVC"),
-      incomplete_expiry: i18next.t("checkout.errorMessages.incompleteExpiry"),
-      incomplete_number: i18next.t("checkout.errorMessages.incompleteNumber"),
-      incomplete_zip: i18next.t("checkout.errorMessages.incompleteZIP"),
-      incorrect_cvc: i18next.t("checkout.errorMessages.incorrectCVC"),
-      incorrect_number: i18next.t("checkout.errorMessages.incorrectNumber"),
-      incorrect_zip: i18next.t("checkout.errorMessages.incorrectZIP"),
-      invalid_cvc: i18next.t("checkout.errorMessages.invalidCVC"),
-      invalid_expiry_month: i18next.t("checkout.errorMessages.invalidExpiryMonth"),
-      invalid_expiry_year: i18next.t("checkout.errorMessages.invalidExpiryYear"),
-      invalid_expiry_month_past: i18next.t("checkout.errorMessages.incompleteExpiryMonthPast"),
-      invalid_expiry_year_past: i18next.t("checkout.errorMessages.incompleteExpiryYearPast"),
-      invalid_number: i18next.t("checkout.errorMessages.invalidNumber"),
-      postal_code_invalid: i18next.t("checkout.errorMessages.postalCodeInvalid"),
-      state_unsupported: i18next.t("checkout.errorMessages.stateUnsupported"),
-      whoops: i18next.t("checkout.errorMessages.whoops")
-    };
   }
 
   handleSubmit = (ev) => {
     const { cardNumberErrorMessage, expDateErrorMessage, CVVErrorMessage, postalErrorMessage } = this.state;
-    const { stripe, cartId, cartToken } = this.props;
+    const { onSubmit, stripe } = this.props;
     const resubmitMessage = "Resubmit payment";
     ev.preventDefault();
 
@@ -71,55 +45,30 @@ class CardForm extends Component {
       submitting: true
     });
     if (stripe) {
-      stripe.createToken().then((payload) => {
-        if (payload.error) {
+      stripe.createToken()
+        .then((payload) => {
+          if (payload.error) {
+            this.setState({
+              errorMessage: "",
+              submitMessage: resubmitMessage,
+              submitting: false
+            });
+            // Do not duplicate field validation errors
+            if (payload.error.type !== "validation_error") {
+              this.setState({ errorMessage: payload.error.message });
+            }
+            return null;
+          }
+
+          return onSubmit(payload.token.id);
+        })
+        .catch((error) => {
           this.setState({
-            errorMessage: "",
+            errorMessage: error.message || "Something went wrong. Please try again.",
             submitMessage: resubmitMessage,
             submitting: false
           });
-          // Do not duplicate field validation errors
-          if (payload.error.type !== "validation_error") {
-            this.setState({ errorMessage: payload.error.message });
-          }
-          return;
-        }
-        Meteor.apply("stripe/payment/createCharges", ["authorize", payload.token, cartId, cartToken], {
-          wait: true,
-          onResultReceived: (error, result) => {
-            if (error || (result && result.error)) {
-              let errorMessage;
-              if (error) {
-                errorMessage = error.message;
-              } else {
-                errorMessage = this.errorCodes[result.error.code] ? this.errorCodes[result.error.code] : result.error.whoops;
-              }
-              this.setState({
-                errorMessage,
-                submitMessage: resubmitMessage,
-                submitting: false
-              });
-            } else {
-              // If there wasn't an error, the cart has been deleted.
-              if (cartToken) {
-                unstoreAnonymousCart(cartId);
-              }
-
-              Router.go("cart/completed", {}, {
-                _id: cartId
-              });
-            }
-          }
         });
-        return;
-      }).catch(() => {
-        this.setState({
-          errorMessage: "Something went wrong. Please try again.",
-          submitMessage: resubmitMessage,
-          submitting: false
-        });
-        return;
-      });
     }
     return;
   };
@@ -127,35 +76,39 @@ class CardForm extends Component {
   changeHasError = (change) => (change && change.error);
 
   handleCardNumberChange = (change) => {
+    const { errorCodes } = this.props;
     if (this.changeHasError(change)) {
-      this.setState({ cardNumberErrorMessage: this.errorCodes[change.error.code] ? this.errorCodes[change.error.code] : change.error.message });
+      this.setState({ cardNumberErrorMessage: errorCodes[change.error.code] ? errorCodes[change.error.code] : change.error.message });
     } else {
       this.setState({ cardNumberErrorMessage: "" });
     }
   }
 
   handleExpDateChange = (change) => {
+    const { errorCodes } = this.props;
     if (this.changeHasError(change)) {
-      this.setState({ expDateErrorMessage: this.errorCodes[change.error.code] ? this.errorCodes[change.error.code] : change.error.message });
+      this.setState({ expDateErrorMessage: errorCodes[change.error.code] ? errorCodes[change.error.code] : change.error.message });
     } else {
       this.setState({ expDateErrorMessage: "" });
     }
   }
 
   handleCVVChange = (change) => {
+    const { errorCodes } = this.props;
     if (this.changeHasError(change)) {
-      this.setState({ CVVErrorMessage: this.errorCodes[change.error.code] ? this.errorCodes[change.error.code] : change.error.message });
+      this.setState({ CVVErrorMessage: errorCodes[change.error.code] ? errorCodes[change.error.code] : change.error.message });
     } else {
       this.setState({ CVVErrorMessage: "" });
     }
   }
 
   handlePostalChange = (change) => {
+    const { errorCodes } = this.props;
     if (change && change.value !== undefined) {
       this.setState({ postal: change.value });
     }
     if (this.changeHasError(change)) {
-      this.setState({ postalErrorMessage: this.errorCodes[change.error.code] ? this.errorCodes[change.error.code] : change.error.message });
+      this.setState({ postalErrorMessage: errorCodes[change.error.code] ? errorCodes[change.error.code] : change.error.message });
     } else {
       this.setState({ postalErrorMessage: "" });
     }
