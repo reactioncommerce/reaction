@@ -1,5 +1,6 @@
 import SimpleSchema from "simpl-schema";
 import { registerSchema } from "@reactioncommerce/schemas";
+import { Address } from "./address";
 import { Payment } from "./payments";
 import { Shipment, ShippingParcel } from "./shipping";
 import { Workflow } from "./workflow";
@@ -112,6 +113,7 @@ export const CartItem = new SimpleSchema({
     index: 1,
     label: "Cart Item shopId"
   },
+  "subtotal": Number,
   "taxCode": {
     type: String,
     optional: true
@@ -207,6 +209,10 @@ export const Cart = new SimpleSchema({
     optional: true
   },
   "currencyCode": String,
+  "billingAddress": {
+    type: Address,
+    optional: true
+  },
   "sessionId": {
     type: String,
     index: 1,

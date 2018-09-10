@@ -3,7 +3,7 @@ import { registerSchema } from "@reactioncommerce/schemas";
 import { createdAtAutoValue } from "./helpers";
 import { Address } from "./address";
 import { Invoice, Payment } from "./payments";
-import { ShippingMethod, ShippingParcel } from "./shipping";
+import { ShippingParcel } from "./shipping";
 import { Workflow } from "./workflow";
 
 const Money = new SimpleSchema({
@@ -112,6 +112,54 @@ export const Notes = new SimpleSchema({
 });
 
 registerSchema("Notes", Notes);
+
+/**
+ * @name SelectedShippingMethod
+ * @memberof Schemas
+ * @type {SimpleSchema}
+ * @property {String} _id Shipment method Id
+ * @property {String} name Method name
+ * @property {String} label Public label
+ * @property {String} group Group, allowed values: `Ground`, `Priority`, `One Day`, `Free`
+ * @property {Number} handling optional, default value: `0`
+ * @property {Number} rate Rate
+ * @property {String} carrier optional
+ */
+export const SelectedShippingMethod = new SimpleSchema({
+  _id: String,
+  name: String,
+  label: String,
+  group: {
+    type: String,
+    label: "Group",
+    allowedValues: ["Ground", "Priority", "One Day", "Free"],
+    optional: true
+  },
+  handling: {
+    type: Number,
+    min: 0
+  },
+  rate: {
+    type: Number,
+    min: 0
+  },
+  carrier: {
+    type: String,
+    optional: true
+  }
+});
+
+/**
+ * @name OrderDiscount
+ * @memberof Schemas
+ * @type {SimpleSchema}
+ * @property {Number} amount Amount of discount applied to the order
+ * @property {String} discountId Discount ID
+ */
+export const OrderDiscount = new SimpleSchema({
+  amount: Number,
+  discountId: String
+});
 
 /**
  * @name OrderItem
@@ -274,6 +322,7 @@ const OrderFulfillmentGroup = new SimpleSchema({
     type: String,
     optional: true
   },
+  "effectiveTaxRate": Number,
   "invoice": Invoice,
   "items": {
     type: Array,
@@ -282,10 +331,7 @@ const OrderFulfillmentGroup = new SimpleSchema({
   "items.$": OrderItem,
   "itemIds": [String],
   "payment": Payment,
-  "shipmentMethod": {
-    type: ShippingMethod,
-    optional: true
-  },
+  "shipmentMethod": SelectedShippingMethod,
   "shippingLabelUrl": {
     type: String,
     optional: true
@@ -346,6 +392,11 @@ export const Order = new SimpleSchema({
   },
   "createdAt": Date,
   "currencyCode": String,
+  "discounts": {
+    type: Array,
+    optional: true
+  },
+  "discounts.$": OrderDiscount,
   "documents": {
     type: Array,
     optional: true
