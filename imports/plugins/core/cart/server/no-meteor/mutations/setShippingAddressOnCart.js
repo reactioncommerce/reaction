@@ -45,19 +45,21 @@ export default async function setShippingAddressOnCart(context, input) {
 
   if (!didModify) return { cart };
 
-  const { collections } = context;
+  const { appEvents, collections } = context;
   const { Cart } = collections;
 
   const updatedAt = new Date();
-  const { modifiedCount } = await Cart.updateOne({ _id: cartId }, {
+  const { matchedCount } = await Cart.updateOne({ _id: cartId }, {
     $set: {
       shipping: updatedFulfillmentGroups,
       updatedAt
     }
   });
-  if (modifiedCount === 0) throw new ReactionError("server-error", "Failed to update cart");
+  if (matchedCount === 0) throw new ReactionError("server-error", "Failed to update cart");
 
   const updatedCart = { ...cart, shipping: updatedFulfillmentGroups, updatedAt };
+
+  await appEvents.emit("afterCartUpdate", cart._id, updatedCart);
 
   return { cart: updatedCart };
 }
