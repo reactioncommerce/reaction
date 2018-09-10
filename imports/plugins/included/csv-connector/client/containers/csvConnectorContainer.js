@@ -38,7 +38,8 @@ class CSVConnectorContainer extends Component {
       newMappingName: "",
       saveMappingAction: "none",
       selectedMapping: {},
-      shouldSaveToNewMapping: false,
+      shouldExportToS3: false,
+      shouldExportToSFTP: false,
       showSettings: false
     };
     this.state = this.defaultState;
@@ -90,7 +91,9 @@ class CSVConnectorContainer extends Component {
   getValidationErrors() {
     const {
       activeScreen,
+      fileSource,
       fileUpload,
+      jobType,
       mappingId,
       name,
       newMappingName,
@@ -104,7 +107,7 @@ class CSVConnectorContainer extends Component {
       } else {
         errors.name = [];
       }
-      if (!fileUpload.name) {
+      if (jobType === "import" && fileSource === "manual" && !fileUpload.name) {
         errors.fileUpload = [{ name: "fileUpload", message: "File is required." }];
       } else {
         errors.fileUpload = [];
@@ -225,7 +228,9 @@ class CSVConnectorContainer extends Component {
       name,
       newMappingName,
       saveMappingAction,
-      shouldSaveToNewMapping
+      shouldSaveToNewMapping,
+      shouldExportToS3,
+      shouldExportToSFTP
     } = this.state;
     const errors = this.getValidationErrors();
 
@@ -249,7 +254,9 @@ class CSVConnectorContainer extends Component {
       name,
       newMappingName,
       saveMappingAction,
-      shouldSaveToNewMapping
+      shouldSaveToNewMapping,
+      shouldExportToS3,
+      shouldExportToSFTP
     };
     let jobItemId;
     try {
@@ -265,15 +272,18 @@ class CSVConnectorContainer extends Component {
       return Alert(i18next.t("app.error"), error.message, "error");
     }
 
-    const fileRecord = FileRecord.fromFile(fileUpload);
-    fileRecord.metadata = { jobItemId, type: "upload" };
-    fileRecord.upload({ endpoint: "/jobs/uploads" })
-      .then(() => JobFiles.insert(fileRecord))
-      .then(() => {
-        Alert(i18next.t("app.success"), i18next.t("admin.alerts.jobItemSaved"), "success");
-        return this.setState(this.defaultState);
-      }).catch((error) => Alert(i18next.t("app.error"), error.message, "error"));
-    return jobItemId;
+    if (jobType === "import" && fileSource === "manual") {
+      const fileRecord = FileRecord.fromFile(fileUpload);
+      fileRecord.metadata = { jobItemId, type: "upload" };
+      fileRecord.upload({ endpoint: "/jobs/uploads" })
+        .then(() => JobFiles.insert(fileRecord))
+        .then(() => {
+          Alert(i18next.t("app.success"), i18next.t("admin.alerts.jobItemSaved"), "success");
+          return this.setState(this.defaultState);
+        }).catch((error) => Alert(i18next.t("app.error"), error.message, "error"));
+    } else {
+      return this.setState(this.defaultState);
+    }
   }
 
   renderJobItemScreen() {
@@ -298,6 +308,8 @@ class CSVConnectorContainer extends Component {
       saveMappingAction,
       selectedMapping,
       showSettings,
+      shouldExportToS3,
+      shouldExportToSFTP,
       shouldSaveToNewMapping
     } = this.state;
 
@@ -330,6 +342,8 @@ class CSVConnectorContainer extends Component {
           onDone={this.handleSubmitJobItem}
           onSetActiveScreen={this.handleSetActiveScreen}
           onSetField={this.handleSetField}
+          shouldExportToS3={shouldExportToS3}
+          shouldExportToSFTP={shouldExportToSFTP}
         />
       );
     }

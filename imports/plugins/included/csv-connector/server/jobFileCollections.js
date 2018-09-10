@@ -72,7 +72,7 @@ const downloadManager = new FileDownloadManager({
   }
 });
 
-WebApp.connectHandlers.use("/jobs/errorFiles", downloadManager.connectHandler);
+WebApp.connectHandlers.use("/jobFiles", downloadManager.connectHandler);
 
 const remoteUrlWorker = new RemoteUrlWorker({ fetch, fileCollections: [JobFiles] });
 remoteUrlWorker.start();

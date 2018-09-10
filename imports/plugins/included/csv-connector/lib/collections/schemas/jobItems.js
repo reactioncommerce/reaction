@@ -92,6 +92,16 @@ export const JobItems = new SimpleSchema({
     type: Date,
     optional: true
   },
+  errorFileId: {
+    type: String,
+    label: "Error File ID",
+    optional: true
+  },
+  exportFileId: {
+    type: String,
+    label: "Export File ID",
+    optional: true
+  },
   mapping: {
     label: "Mapping",
     type: Object,

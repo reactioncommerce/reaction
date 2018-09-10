@@ -4,7 +4,7 @@ import _ from "lodash";
 import Logger from "@reactioncommerce/logger";
 import { FileRecord } from "@reactioncommerce/file-collections";
 import { getConvMapByCollection } from "../../lib/common/conversionMaps";
-import { JobItems } from "../collections";
+import { JobItems, Mappings } from "../collections";
 import { NoMeteorJobFiles } from "../jobFileCollections";
 
 /**
@@ -82,7 +82,7 @@ function validateItem(item, fields) {
  * @return {Object} - consists of valid data to be saved to database and data with errors
  */
 async function parseRawObjects(data, mapping, convMap) {
-  const options = await convMap.preSaveCallback();
+  const options = await convMap.preImportCallback();
 
   const validData = [];
   const withErrorData = [];
@@ -103,8 +103,8 @@ async function parseRawObjects(data, mapping, convMap) {
       continue;
     }
 
-    if (typeof convMap.conversionCallback === "function") {
-      Object.assign(newDoc, convMap.conversionCallback(newDoc, options));
+    if (typeof convMap.importConversionCallback === "function") {
+      Object.assign(newDoc, convMap.importConversionCallback(newDoc, options));
     }
 
     validData.push(newDoc);
@@ -145,7 +145,7 @@ async function saveImportData(jobItem, data) {
 
   for (const item of validData) {
     try {
-      await convMap.postSaveCallback(item); // eslint-disable-line no-await-in-loop
+      await convMap.postImportCallback(item); // eslint-disable-line no-await-in-loop
     } catch (error) {
       withErrorData.push({
         rowNumber: item.rowNumber,
@@ -191,6 +191,48 @@ async function saveImportData(jobItem, data) {
 
 
 /**
+ *
+ * @name exportDataToCSV
+ * @summary Creates file record for exported data
+ * @param {Object} jobItem - job item document
+ * @return {Promise} - Promise
+ */
+async function exportDataToCSV(jobItem) {
+  const { _id: jobItemId, collection, mappingId } = jobItem;
+  const convMap = getConvMapByCollection(collection);
+  const mappingDoc = await Mappings.findOne({ _id: mappingId });
+  const mapping = _.omitBy(mappingDoc.mapping, (value) => value === "ignore");
+  const invertedMapping = _.invert(mapping);
+  const headerKeys = _.values(mapping);
+  const orderedFields = convMap.fields.filter((field) => (headerKeys.includes(field.key)));
+  const orderedFieldsKeys = orderedFields.map((field) => field.key);
+  const headers = orderedFields.map((field) => invertedMapping[field.key]);
+  const docs = await convMap.rawCollection.find({ isDeleted: false }).toArray();
+  const rows = await Promise.all(docs.map((doc) => convMap.exportConversionCallback(doc, orderedFieldsKeys)));
+  rows.unshift(headers);
+  csv.stringify(rows, async (error, csvString) => {
+    const exportFileDoc = {
+      original: {
+        name: `${jobItemId}.csv`,
+        type: "text/csv",
+        size: csvString.length,
+        updatedAt: new Date()
+      }
+    };
+    const fileRecord = new FileRecord(exportFileDoc);
+    fileRecord.metadata = { jobItemId, type: "export" };
+    const readStream = new Readable();
+    readStream.push(csvString);
+    readStream.push(null);
+    const store = NoMeteorJobFiles.getStore("jobFiles");
+    const writeStream = await store.createWriteStream(fileRecord);
+    readStream.pipe(writeStream);
+    const exportFile = await NoMeteorJobFiles.insert(fileRecord, { raw: true });
+    JobItems.update({ _id: jobItemId }, { $set: { exportFileId: exportFile._id } });
+  });
+}
+
+/**
  * @name processJobItem
  * @summary Processes an import or export job item
  * @param {String} jobItemId - job item ID
@@ -203,8 +245,8 @@ export default async function processJobItem(jobItemId) {
   // Update the status of the job item to in progress
   JobItems.update({ _id: jobItemId }, { $set: { status: "inProgress" } });
 
-  let csvRows;
   if (jobType === "import") {
+    let csvRows;
     try {
       csvRows = await getCSVRowsFromSource(jobItem);
     } catch (error) {
@@ -213,6 +255,8 @@ export default async function processJobItem(jobItemId) {
     if (csvRows) {
       await saveImportData(jobItem, csvRows);
     }
+  } else {
+    await exportDataToCSV(jobItem);
   }
-  JobItems.update({ _id: jobItemId }, { $set: { status: "completed", completedAt: new Date() } });
+  return JobItems.update({ _id: jobItemId }, { $set: { status: "completed", completedAt: new Date() } });
 }

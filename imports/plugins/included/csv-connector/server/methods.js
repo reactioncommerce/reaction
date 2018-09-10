@@ -163,24 +163,41 @@ export const methods = {
       name,
       newMappingName,
       saveMappingAction,
+      shouldExportToS3,
+      shouldExportToSFTP,
       shouldSaveToNewMapping
     } = values;
+
     const shopId = Reaction.getShopId();
 
-    const jobItemId = JobItems.insert({
+    let jobItemValues;
+
+    const commonValues = {
       collection,
-      fileSource,
-      hasHeader,
       jobSubType,
       jobType,
-      mapping: mappingByUser,
       mappingId,
       name,
       shopId,
       status: "pending",
       uploadedAt: new Date(),
       userId: Meteor.userId()
-    });
+    };
+
+    if (jobType === "import") {
+      jobItemValues = Object.assign(commonValues, {
+        fileSource,
+        hasHeader,
+        mapping: mappingByUser
+      });
+    } else {
+      jobItemValues = Object.assign(commonValues, {
+        shouldExportToS3,
+        shouldExportToSFTP
+      });
+    }
+
+    const jobItemId = JobItems.insert(jobItemValues);
 
     if ((mappingId === "create" && shouldSaveToNewMapping) || (mappingId !== "create" && saveMappingAction === "create")) {
       Mappings.insert({

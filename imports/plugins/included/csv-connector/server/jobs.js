@@ -4,7 +4,6 @@ import Logger from "@reactioncommerce/logger";
 import { Job } from "/imports/plugins/core/job-collection/lib";
 import { Jobs } from "/lib/collections";
 import { JobItems } from "../lib/collections";
-import { ConversionMaps } from "../lib/conversionMaps";
 import processJobItem from "./no-meteor/processJobItem";
 
 /**

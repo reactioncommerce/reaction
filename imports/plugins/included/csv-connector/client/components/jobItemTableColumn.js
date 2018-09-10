@@ -26,7 +26,7 @@ class JobItemTableColumn extends Component {
     const { row } = this.props;
     const {
       column: { id: renderColumn },
-      original: { errorFileId, _id: jobItemId, status },
+      original: { errorFileId, exportFileId, _id: jobItemId, status },
       value
     } = row;
     if (renderColumn === "jobType") {
@@ -46,10 +46,23 @@ class JobItemTableColumn extends Component {
               <span>Completed</span>
               <br />
               <a
-                href={`/jobs/errorFiles/JobFiles/${errorFileId}/jobFiles/${jobItemId}.csv`}
+                href={`/jobFiles/JobFiles/${errorFileId}/jobFiles/${jobItemId}.csv`}
                 target="_blank"
               >
                   Download errors
+              </a>
+            </div>
+          );
+        } else if (exportFileId) {
+          return (
+            <div>
+              <span>Completed</span>
+              <br />
+              <a
+                href={`/jobFiles/JobFiles/${exportFileId}/jobFiles/${jobItemId}.csv`}
+                target="_blank"
+              >
+                  Download data
               </a>
             </div>
           );

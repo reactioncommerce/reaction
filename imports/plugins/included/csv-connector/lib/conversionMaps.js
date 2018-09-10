@@ -27,20 +27,26 @@ export const TagsConvMap = {
       label: "Name"
     },
     {
-      key: "isVisible",
-      label: "Is Visible",
-      optional: true
-    },
-    {
       key: "slug",
       label: "Slug",
       optional: true
+    },
+    {
+      key: "parentTagId",
+      label: "Parent Tag ID",
+      optional: true,
+      ignoreOnSave: true
     },
     {
       key: "parentTagSlug",
       label: "Parent Tag Slug",
       optional: true,
       ignoreOnSave: true
+    },
+    {
+      key: "isVisible",
+      label: "Is Visible",
+      optional: true
     }
   ]
 };

@@ -47,6 +47,14 @@ class DetailScreen extends Component {
     this.props.onSetField("mappingId", value);
   }
 
+  handleChangeShouldExportToS3 = (value) => {
+    this.props.onSetField("shouldExportToS3", value);
+  }
+
+  handleChangeShouldExportToSFTP = (value) => {
+    this.props.onSetField("shouldExportToSFTP", value);
+  }
+
   handleClickBack = () => {
     this.props.onSetActiveScreen("start", false);
   }
@@ -92,33 +100,52 @@ class DetailScreen extends Component {
   }
 
   renderFileSourceSelection() {
-    const { fileSource } = this.props;
-    const fileSourceOptions = [{
-      id: "manual",
-      label: "Manual",
-      value: "manual"
-    },
-    {
-      id: "sftp",
-      label: "SFTP Server",
-      value: "sftp"
-    },
-    {
-      id: "s3",
-      label: "AWS S3 Bucket",
-      value: "s3"
-    }];
+    const { fileSource, jobType, shouldExportToSFTP, shouldExportToS3 } = this.props;
+    if (jobType === "import") {
+      const fileSourceOptions = [{
+        id: "manual",
+        label: "Manual",
+        value: "manual"
+      },
+      {
+        id: "sftp",
+        label: "SFTP Server",
+        value: "sftp"
+      },
+      {
+        id: "s3",
+        label: "AWS S3 Bucket",
+        value: "s3"
+      }];
+      return (
+        <div className="mt20">
+          <p>Choose file source:</p>
+          <SelectableList
+            components={{
+              SelectableItem: (listProps) => (<SelectableItem item={listProps.item} />)
+            }}
+            options={fileSourceOptions}
+            name="fileSource"
+            value={fileSource || "manual"}
+            onChange={this.handleChangeFileSource}
+          />
+        </div>
+      );
+    }
     return (
       <div className="mt20">
-        <p>Choose file source:</p>
-        <SelectableList
-          components={{
-            SelectableItem: (listProps) => (<SelectableItem item={listProps.item} />)
-          }}
-          options={fileSourceOptions}
-          name="fileSource"
-          value={fileSource || "manual"}
-          onChange={this.handleChangeFileSource}
+        <p>Export to:</p>
+        <Checkbox
+          label="SFTP"
+          name="shouldExportToSFTP"
+          onChange={this.handleChangeShouldExportToSFTP}
+          value={shouldExportToSFTP}
+        />
+        <Checkbox
+          label="S3"
+          name="shouldExportToS3"
+          onChange={this.handleChangeShouldExportToS3}
+          value={shouldExportToS3}
         />
       </div>
     );
@@ -156,17 +183,20 @@ class DetailScreen extends Component {
   }
 
   renderHasHeader() {
-    const { hasHeader } = this.props;
-    return (
-      <div className="mt20">
-        <Checkbox
-          label="First row contains column names?"
-          name="hasHeader"
-          onChange={this.handleChangeHasHeader}
-          value={hasHeader}
-        />
-      </div>
-    );
+    const { hasHeader, jobType } = this.props;
+    if (jobType === "import") {
+      return (
+        <div className="mt20">
+          <Checkbox
+            label="First row contains column names?"
+            name="hasHeader"
+            onChange={this.handleChangeHasHeader}
+            value={hasHeader}
+          />
+        </div>
+      );
+    }
+    return null;
   }
 
   renderJobName() {
@@ -286,7 +316,9 @@ DetailScreen.propTypes = {
   name: PropTypes.string,
   onDone: PropTypes.func,
   onSetActiveScreen: PropTypes.func,
-  onSetField: PropTypes.func
+  onSetField: PropTypes.func,
+  shouldExportToS3: PropTypes.bool,
+  shouldExportToSFTP: PropTypes.bool
 };
 
 export default DetailScreen;

@@ -1,17 +1,17 @@
-import { registerConversionMap } from "../lib/common/conversionMaps";
-import { TagsConvMap } from "../lib/conversionMaps";
+import { registerConversionMap } from "../../lib/common/conversionMaps";
+import { ProductsConvMap } from "../../lib/conversionMaps";
 import Random from "@reactioncommerce/random";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
 import rawCollections from "/imports/collections/rawCollections";
 
-const { Tags } = rawCollections;
+const { Products } = rawCollections;
 
-const tagsPreSaveCallback = () => {
+const productsPreSaveCallback = () => {
   const shopId = Reaction.getPrimaryShopId();
   return { shopId };
 };
 
-const tagsConversionCallback = (item, options) => {
+const productsConversionCallback = (item, options) => {
   const res = {};
   if (!item._id) {
     res._id = Random.id();
@@ -38,17 +38,17 @@ const tagsConversionCallback = (item, options) => {
   return res;
 };
 
-const tagsPostSaveCallback = async (item) => {
+const productsPostSaveCallback = async (item) => {
   if (item.parentTagSlug) {
-    const parentTag = await Tags.findOne({ slug: item.parentTagSlug });
-    const currentTag = await Tags.findOne({ name: item.name });
+    const parentTag = await Products.findOne({ slug: item.parentTagSlug });
+    const currentTag = await Products.findOne({ name: item.name });
     if (parentTag) {
-      Tags.update({ _id: parentTag._id }, {
+      Products.update({ _id: parentTag._id }, {
         $push: {
           relatedTagIds: currentTag._id
         }
       });
-      Tags.update({ _id: currentTag._id }, {
+      Products.update({ _id: currentTag._id }, {
         $set: {
           isTopLevel: false
         }
@@ -59,11 +59,13 @@ const tagsPostSaveCallback = async (item) => {
   }
 };
 
-const ServerTagsConvMap = Object.assign(TagsConvMap, {
-  rawCollection: Tags,
-  preSaveCallback: tagsPreSaveCallback,
-  conversionCallback: tagsConversionCallback,
-  postSaveCallback: tagsPostSaveCallback
+const ServerProductsConvMap = Object.assign(ProductsConvMap, {
+  rawCollection: Products,
+  preSaveCallback: productsPreSaveCallback,
+  conversionCallback: productsConversionCallback,
+  postSaveCallback: productsPostSaveCallback
 });
 
-registerConversionMap("Tags", ServerTagsConvMap);
+registerConversionMap("Products", ServerProductsConvMap);
+
+export default ServerProductsConvMap;
