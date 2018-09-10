@@ -11,14 +11,16 @@ if (!ROOT_URL) throw new Error("You must set ROOT_URL");
 const PORT = 3030;
 
 const app = new ReactionNodeApp({
+  additionalServices: [
+    filesService
+  ],
   graphiql: true,
   mongoUrl: MONGO_URL,
   port: PORT,
   rootUrl: ROOT_URL,
-  services: [
-    filesService,
-    fulfillmentService
-  ]
+  services: {
+    fulfillment: fulfillmentService
+  }
 });
 
 // Serve files in the /public folder statically

@@ -2,11 +2,10 @@ import SimpleSchema from "simpl-schema";
 import Logger from "@reactioncommerce/logger";
 import Random from "@reactioncommerce/random";
 import ReactionError from "@reactioncommerce/reaction-error";
-import hashLoginToken from "/imports/plugins/core/accounts/server/no-meteor/util/hashLoginToken";
+import hashLoginToken from "/imports/node-app/core/util/hashLoginToken";
 import appEvents from "/imports/node-app/core/util/appEvents";
-import getShippingRates from "/imports/plugins/core/shipping/server/no-meteor/util/getShippingRates";
 import applyTaxesToFulfillmentGroup from "/imports/plugins/core/taxes/server/no-meteor/mutations/applyTaxesToFulfillmentGroup";
-import { Address as AddressSchema, Invoice as InvoiceSchema, Order as OrderSchema, Payment as PaymentSchema } from "/imports/collections/schemas";
+import { Order as OrderSchema, Payment as PaymentSchema } from "/imports/collections/schemas";
 import findProductAndVariant from "/imports/plugins/core/catalog/server/no-meteor/utils/findProductAndVariant";
 import getDiscountsTotalForCart from "/imports/plugins/core/discounts/server/no-meteor/util/getDiscountsTotalForCart";
 
@@ -26,17 +25,18 @@ const orderItemsSchema = new SimpleSchema({
 });
 
 const orderFulfillmentGroupSchema = new SimpleSchema({
-  "address": {
-    type: AddressSchema,
+  "data": {
+    type: Object,
+    blackbox: true,
     optional: true
   },
-  "invoice": InvoiceSchema,
   "items": {
     type: Array,
     minCount: 1
   },
   "items.$": orderItemsSchema,
   "selectedFulfillmentMethodId": String,
+  "shopId": String,
   "totalPrice": Number,
   "type": {
     type: String,
@@ -97,7 +97,7 @@ async function getCurrencyRates(collections, shopId, currencyCode) {
 async function getCurrencyExchangeObject(collections, cartCurrencyCode, shopId, account) {
   // If user currency === shop currency, exchange rate = 1.0
   let userCurrency = cartCurrencyCode;
-  let exchangeRate = "1.00";
+  let exchangeRate = 1;
 
   if (account && account.profile && account.profile.currency) {
     userCurrency = account.profile.currency;
@@ -208,7 +208,7 @@ export default async function createOrder(context, input) {
 
   const { afterValidate, createPaymentForFulfillmentGroup, order: orderInput } = cleanedInput;
   const { cartId, currencyCode, email, fulfillmentGroups, shopId } = orderInput;
-  const { accountId, account, collections } = context;
+  const { accountId, account, collections, services } = context;
   const { Orders } = collections;
 
   // We are mixing concerns a bit here for now. This is for backwards compatibility with current
@@ -220,7 +220,7 @@ export default async function createOrder(context, input) {
   const finalFulfillmentGroups = await Promise.all(fulfillmentGroups.map(async (groupInput, index) => {
     const finalGroup = {
       _id: Random.id(),
-      address: groupInput.address,
+      address: groupInput.data && groupInput.data.shippingAddress,
       items: groupInput.items,
       shopId: groupInput.shopId,
       type: groupInput.type,
@@ -229,18 +229,27 @@ export default async function createOrder(context, input) {
 
     // Verify that the price for the chosen shipment method on each group matches between what the client
     // provided and what the current quote is.
-    const rates = await getShippingRates(finalGroup, context);
-    finalGroup.shipmentMethod = rates.find((rate) => groupInput.selectedFulfillmentMethodId === rate._id);
-    if (!finalGroup.shipmentMethod) {
+    const rates = await services.fulfillment.getShippingPrices(finalGroup, context);
+    const selectedFulfillmentMethod = rates.find((rate) => groupInput.selectedFulfillmentMethodId === rate.method._id);
+    if (!selectedFulfillmentMethod) {
       throw new ReactionError("invalid", "The selected fulfillment method is no longer available." +
         " Fetch updated fulfillment options and try creating the order again with a valid method.");
     }
+    finalGroup.shipmentMethod = {
+      _id: selectedFulfillmentMethod.method._id,
+      carrier: selectedFulfillmentMethod.method.carrier,
+      label: selectedFulfillmentMethod.method.label,
+      group: selectedFulfillmentMethod.method.group,
+      name: selectedFulfillmentMethod.method.name,
+      handling: selectedFulfillmentMethod.handlingPrice,
+      rate: selectedFulfillmentMethod.shippingPrice
+    };
 
     // Build the final order item objects. As part of this, we look up the variant in the system and make sure that
     // the price is what the shopper expects it to be.
     finalGroup.items = await Promise.all(finalGroup.items.map((item) => buildOrderItem(item, currencyCode, collections)));
 
-    const { effectiveTaxRate, items: itemsWithTaxInfoAdded } = applyTaxesToFulfillmentGroup(collections, finalGroup);
+    const { effectiveTaxRate, items: itemsWithTaxInfoAdded } = await applyTaxesToFulfillmentGroup(collections, finalGroup);
     finalGroup.effectiveTaxRate = effectiveTaxRate;
     finalGroup.items = itemsWithTaxInfoAdded;
 
@@ -259,9 +268,11 @@ export default async function createOrder(context, input) {
     return finalGroup;
   }));
 
-  const currencyExchangeInfo = Promise.await(getCurrencyExchangeObject(currencyCode, shopId, account));
+  const currencyExchangeInfo = await getCurrencyExchangeObject(currencyCode, shopId, account);
 
-  if (afterValidate) afterValidate();
+  if (afterValidate) {
+    await afterValidate();
+  }
 
   // Create one charge per fulfillment group. This is necessary so that each group charge can be captured as it is
   // fulfilled, and so that each can be refunded or canceled separately.
@@ -310,7 +321,7 @@ export default async function createOrder(context, input) {
   });
 
   return {
-    order,
+    orders: [order],
     token: anonymousAccessToken
   };
 }

@@ -33,10 +33,11 @@ export default async function placeMarketplaceOrderWithStripeCardPayment(parentR
   const transformedFulfillmentGroups = fulfillmentGroups.map((group) => ({
     ...group,
     items: decodeCartItemsOpaqueIds(group.items),
-    selectedFulfillmentMethodId: decodeFulfillmentMethodOpaqueId(group.selectedFulfillmentMethodId)
+    selectedFulfillmentMethodId: decodeFulfillmentMethodOpaqueId(group.selectedFulfillmentMethodId),
+    shopId: decodeShopOpaqueId(group.shopId)
   }));
 
-  const { order: createdOrder, token } = await placeMarketplaceOrderWithStripeCardPaymentMutation(context, {
+  const { orders, token } = await placeMarketplaceOrderWithStripeCardPaymentMutation(context, {
     payment: {
       ...payment,
       billingAddressId
@@ -51,7 +52,7 @@ export default async function placeMarketplaceOrderWithStripeCardPayment(parentR
 
   return {
     clientMutationId,
-    order: createdOrder,
+    orders,
     token
   };
 }

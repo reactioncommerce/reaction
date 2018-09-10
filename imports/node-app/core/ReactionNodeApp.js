@@ -13,7 +13,8 @@ export default class ReactionNodeApp {
       appEvents,
       collections: this.collections,
       getRegisteredFunctionsForType,
-      registerFunction
+      registerFunction,
+      services: this.options.services
     };
 
     this.mongodb = mongodb;
@@ -80,13 +81,14 @@ export default class ReactionNodeApp {
   }
 
   async start() {
-    const { services } = this.options;
+    const { additionalServices, services } = this.options;
 
     // (1) Connect to MongoDB database
     await this.connectToMongo();
 
     // (2) Run service startup functions
-    await Promise.all(services.map(async (service) => {
+    await services.fulfillment.startup(this.context);
+    await Promise.all(additionalServices.map(async (service) => {
       await service.startup(this.context);
     }));
 

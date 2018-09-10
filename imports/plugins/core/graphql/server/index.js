@@ -4,10 +4,17 @@ import Logger from "@reactioncommerce/logger";
 import appEvents from "/imports/node-app/core/util/appEvents";
 import collections from "/imports/collections/rawCollections";
 import createApolloServer from "/imports/node-app/core/createApolloServer";
+import fulfillmentService from "/imports/node-app/services/fulfillment";
 import runPluginStartup from "./no-meteor/runPluginStartup";
 import runMeteorMethodWithContext from "./runMeteorMethodWithContext";
 
-const baseContext = { appEvents, collections };
+const baseContext = {
+  appEvents,
+  collections,
+  services: {
+    fulfillment: fulfillmentService
+  }
+};
 
 runPluginStartup(baseContext).catch((error) => {
   Logger.error("Error in runPluginStartup:", error);
