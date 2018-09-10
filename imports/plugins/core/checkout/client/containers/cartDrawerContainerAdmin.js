@@ -18,7 +18,7 @@ CartDrawerContainerAdmin.propTypes = {
 
 function composer(props, onData) {
   const { cart } = getCart();
-  const isEmpty = !cart || !cart.items || !cart.items.length === 0;
+  const isEmpty = !cart || !cart.items || (cart.items.length === 0);
   onData(null, {
     isEmpty
   });

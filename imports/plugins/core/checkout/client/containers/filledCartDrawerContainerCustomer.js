@@ -1,8 +1,7 @@
 import { compose, withProps } from "recompose";
-import { registerComponent, composeWithTracker } from "@reactioncommerce/reaction-components";
 import { $ } from "meteor/jquery";
 import { Session } from "meteor/session";
-import { Meteor } from "meteor/meteor";
+import { registerComponent, composeWithTracker } from "@reactioncommerce/reaction-components";
 import { Reaction } from "/client/api";
 import withUpdateCartItemsQuantity from "/imports/plugins/core/graphql/lib/hocs/withUpdateCartItemsQuantity";
 import FilledCartDrawer from "../components/filledCartDrawer";
@@ -11,8 +10,6 @@ import FilledCartDrawer from "../components/filledCartDrawer";
 const handlers = {
   handleImage(item) {
     return (item && item.imageURLs) ? item.imageURLs.small : null;
-    // const media = getPrimaryMediaForOrderItem(item);
-    // return media && media.url({ store: "small" });
   },
 
   handleShowProduct(productItem) {
@@ -55,9 +52,6 @@ const handlers = {
 function composer(props, onData) {
   const { cartItems, cartId } = props;
   if (!cartItems) return;
-
-  Meteor.subscribe("CartImages", cartId);
-
 
   const handleRemoveItem = (event, item) => {
     event.stopPropagation();

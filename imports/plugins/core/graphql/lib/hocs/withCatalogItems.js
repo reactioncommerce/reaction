@@ -31,7 +31,7 @@ export default (Component) => (
       }
 
       return (
-        <Query query={getCatalogItems} variables={variables}>
+        <Query query={getCatalogItems} variables={variables} errorPolicy="all">
           {({ error, loading, data, fetchMore }) => {
             if (error) {
               Logger.error(error);

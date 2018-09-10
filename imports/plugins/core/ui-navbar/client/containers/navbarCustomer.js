@@ -1,5 +1,5 @@
-import { registerComponent, composeWithTracker } from "@reactioncommerce/reaction-components";
 import { compose } from "recompose";
+import { registerComponent, composeWithTracker } from "@reactioncommerce/reaction-components";
 import { Reaction } from "/client/api";
 import { Media } from "/imports/plugins/core/files/client";
 import withShop from "/imports/plugins/core/graphql/lib/hocs/withShop";

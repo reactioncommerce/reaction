@@ -1,8 +1,5 @@
 import "./helpers/cart.js";
 
-// import "./templates/cartDrawer/cartDrawer.html";
-// import "./templates/cartDrawer/cartDrawer.js";
-
 import "./templates/cartIcon/cartIcon.html";
 import "./templates/cartIcon/cartIcon.js";
 

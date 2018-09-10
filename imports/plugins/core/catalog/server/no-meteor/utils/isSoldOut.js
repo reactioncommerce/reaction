@@ -21,7 +21,7 @@ export default function isSoldOut(variants) {
 }
 
 function isVariantSoldOut(options) {
-  const results = options.map((option) => option.inventoryManagement && getProductQuantity(option) <= 0);
+  const results = options.map(isOptionSoldOut);
   return results.every((result) => result);
 }
 

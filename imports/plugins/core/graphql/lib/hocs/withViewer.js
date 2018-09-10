@@ -19,7 +19,7 @@ export default (Component) => (
         );
       }
       return (
-        <Query query={getViewer}>
+        <Query query={getViewer} errorPolicy="all">
           {({ error, loading, data, refetch }) => {
             if (error) {
               Logger.error(error);

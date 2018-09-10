@@ -2,11 +2,11 @@ import Velocity from "velocity-animate";
 import { compose, withProps } from "recompose";
 import { registerComponent, composeWithTracker } from "@reactioncommerce/reaction-components";
 import { Reaction } from "/client/api";
-import CartIconCustomer from "../components/cartIconCustomer";
 import withAccountCart from "/imports/plugins/core/graphql/lib/hocs/withAccountCart";
 import withShopId from "/imports/plugins/core/graphql/lib/hocs/withShopId";
 import withViewer from "/imports/plugins/core/graphql/lib/hocs/withViewer";
 import { getSlug } from "/lib/api";
+import CartIconCustomer from "../components/cartIconCustomer";
 
 const handlers = {
   handleClick(e) {

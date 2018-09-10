@@ -1,7 +1,7 @@
-import { Components, registerComponent, composeWithTracker } from "@reactioncommerce/reaction-components";
 import React from "react";
 import PropTypes from "prop-types";
 import { compose } from "recompose";
+import { Components, registerComponent, composeWithTracker } from "@reactioncommerce/reaction-components";
 import { Reaction } from "/client/api";
 
 const NavBarContainer = ({ isAdmin }) => {

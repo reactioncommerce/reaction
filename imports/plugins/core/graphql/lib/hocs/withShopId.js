@@ -24,7 +24,7 @@ export default (Component) => (
       const variables = { slug: shopSlug };
 
       return (
-        <Query query={getShopId} variables={variables}>
+        <Query query={getShopId} variables={variables} errorPolicy="all">
           {({ error, loading, data }) => {
             if (error) {
               Logger.error(error);

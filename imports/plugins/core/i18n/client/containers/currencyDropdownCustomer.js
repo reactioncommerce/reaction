@@ -1,8 +1,8 @@
 import { compose, withProps } from "recompose";
 import React, { Component } from "react";
 import { Meteor } from "meteor/meteor";
-import { Reaction } from "/client/api";
 import { registerComponent, composeWithTracker } from "@reactioncommerce/reaction-components";
+import { Reaction } from "/client/api";
 import withShop from "/imports/plugins/core/graphql/lib/hocs/withShop";
 import withShopId from "/imports/plugins/core/graphql/lib/hocs/withShopId";
 import withViewer from "/imports/plugins/core/graphql/lib/hocs/withViewer";

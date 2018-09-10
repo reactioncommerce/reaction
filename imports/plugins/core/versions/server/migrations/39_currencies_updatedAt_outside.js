@@ -7,7 +7,7 @@ import { Shops } from "/lib/collections";
  */
 
 Migrations.add({
-  version: 36,
+  version: 39,
   up() {
     Shops.find({}).forEach((shop) => {
       if (shop.currencies && shop.currencies.updatedAt) {

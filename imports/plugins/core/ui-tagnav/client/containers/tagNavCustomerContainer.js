@@ -6,8 +6,8 @@ import { Components, registerComponent, composeWithTracker } from "@reactioncomm
 import { Reaction, Router } from "/client/api";
 import withTags from "/imports/plugins/core/graphql/lib/hocs/withTags";
 import withShopId from "/imports/plugins/core/graphql/lib/hocs/withShopId";
-import TagNavCustomer from "../components/tagNavCustomer";
 import { getSlug } from "/lib/api";
+import TagNavCustomer from "../components/tagNavCustomer";
 
 const navButtonStyles = {
   editContainerItem: {

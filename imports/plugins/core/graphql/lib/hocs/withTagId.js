@@ -23,7 +23,7 @@ export default (Component) => (
 
       const variables = { slugOrId: tagSlugOrId };
       return (
-        <Query query={getTagId} variables={variables}>
+        <Query query={getTagId} variables={variables} errorPolicy="all">
           {({ error, loading, data }) => {
             if (error) {
               Logger.error(error);

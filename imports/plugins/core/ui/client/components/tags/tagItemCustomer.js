@@ -17,7 +17,6 @@ class TagItemCustomer extends Component {
    * @return {void} no return value
    */
   handleTagMouseOut = (event) => {
-    // event.preventDefault();
     if (this.props.onTagMouseOut) {
       this.props.onTagMouseOut(event, this.props.tag);
     }

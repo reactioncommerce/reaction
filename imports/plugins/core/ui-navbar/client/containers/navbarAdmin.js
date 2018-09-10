@@ -1,5 +1,5 @@
-import { registerComponent, composeWithTracker } from "@reactioncommerce/reaction-components";
 import { Meteor } from "meteor/meteor";
+import { registerComponent, composeWithTracker } from "@reactioncommerce/reaction-components";
 import { Reaction } from "/client/api";
 import { Shops } from "/lib/collections";
 import { Media } from "/imports/plugins/core/files/client";

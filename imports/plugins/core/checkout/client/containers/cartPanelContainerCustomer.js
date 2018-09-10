@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { compose } from "recompose";
-import { registerComponent, composeWithTracker } from "@reactioncommerce/reaction-components";
 import { Session } from "meteor/session";
+import { registerComponent, composeWithTracker } from "@reactioncommerce/reaction-components";
 import { Reaction, i18next } from "/client/api";
 import CartPanelCustomer from "../components/cartPanelCustomer";
 

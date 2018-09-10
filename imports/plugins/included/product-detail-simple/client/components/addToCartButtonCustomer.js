@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Session } from "meteor/session";
-import { i18next } from "/client/api";
 import { Components, registerComponent } from "@reactioncommerce/reaction-components";
+import { i18next } from "/client/api";
 
 class AddToCartButtonCustomer extends Component {
   componentDidUpdate(prevProps) {

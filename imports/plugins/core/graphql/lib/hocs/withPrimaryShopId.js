@@ -21,7 +21,7 @@ export default (Component) => (
       }
 
       return (
-        <Query query={getPrimaryShopId}>
+        <Query query={getPrimaryShopId} errorPolicy="all">
           {({ error, loading, data }) => {
             if (error) {
               Logger.error(error);
