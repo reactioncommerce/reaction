@@ -1,5 +1,6 @@
 import Logger from "@reactioncommerce/logger";
 import Random from "@reactioncommerce/random";
+import { Notification as NotificationSchema } from "/imports/collections/schemas";
 import appEvents from "/imports/node-app/core/util/appEvents";
 
 const messageForType = {
@@ -27,11 +28,14 @@ export default async function createNotification(collections, { accountId, detai
     details,
     hasDetails: !!details,
     message: messageForType[type],
+    status: "unread",
+    timeSent: new Date(),
     to: accountId,
     type,
     url
   };
 
+  NotificationSchema.validate(doc);
   await collections.Notifications.insertOne(doc);
 
   // Email or SMS plugins can watch for this event to send

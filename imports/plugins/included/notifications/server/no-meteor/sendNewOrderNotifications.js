@@ -37,7 +37,7 @@ async function getShopPrefix(collections, shopId) {
 
   const marketplace = await Packages.findOne({
     name: "reaction-marketplace",
-    shopId: this.getPrimaryShopId()
+    shopId: primaryShopId
   });
   if (marketplace && marketplace.settings && marketplace.settings.public && typeof marketplace.settings.public.shopPrefix === "string") {
     return `${marketplace.settings.public.shopPrefix}/${shop.slug}`;
