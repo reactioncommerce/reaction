@@ -2,6 +2,8 @@ import _ from "lodash";
 import React from "react";
 import { PropTypes } from "prop-types";
 import { Query } from "react-apollo";
+import Logger from "@reactioncommerce/logger";
+import ReactionError from "@reactioncommerce/reaction-error";
 import { loadMore } from "/imports/plugins/core/graphql/lib/helpers/pagination";
 import getTags from "../queries/getTags";
 import { getTagIds } from "/lib/selectors/tags";
@@ -30,7 +32,11 @@ export default (Component) => (
 
       return (
         <Query query={getTags} variables={variables}>
-          {({ loading, data, fetchMore }) => {
+          {({ error, loading, data, fetchMore }) => {
+            if (error) {
+              Logger.error(error);
+              throw new ReactionError("query-error");
+            }
             const props = {
               ...this.props,
               isLoading: loading

@@ -28,6 +28,4 @@ registerComponent("CartDrawerAdmin", CartDrawerContainerAdmin, [
   composeWithTracker(composer)
 ]);
 
-export default compose(
-  composeWithTracker(composer)
-)(CartDrawerContainerAdmin);
+export default compose(composeWithTracker(composer))(CartDrawerContainerAdmin);

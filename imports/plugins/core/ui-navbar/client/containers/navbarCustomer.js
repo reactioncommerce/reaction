@@ -42,10 +42,9 @@ export function composer(props, onData) {
 registerComponent("NavBarCustomer", NavBarCustomer, [
   composeWithTracker(composer),
   withShopId,
-  withShop, 
+  withShop,
   withViewer,
-  withAccountCart]
-);
+  withAccountCart]);
 
 export default compose(
   composeWithTracker(composer),

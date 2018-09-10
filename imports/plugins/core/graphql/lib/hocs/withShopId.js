@@ -1,6 +1,8 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { Query } from "react-apollo";
+import Logger from "@reactioncommerce/logger";
+import ReactionError from "@reactioncommerce/reaction-error";
 import getShopId from "../queries/getShopId";
 
 export default (Component) => (
@@ -23,7 +25,11 @@ export default (Component) => (
 
       return (
         <Query query={getShopId} variables={variables}>
-          {({ loading, data }) => {
+          {({ error, loading, data }) => {
+            if (error) {
+              Logger.error(error);
+              throw new ReactionError("query-error");
+            }
             const props = {
               ...this.props,
               isLoadingShopId: loading

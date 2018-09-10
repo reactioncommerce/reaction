@@ -3,7 +3,6 @@ import { registerComponent, composeWithTracker } from "@reactioncommerce/reactio
 import { $ } from "meteor/jquery";
 import { Session } from "meteor/session";
 import { Meteor } from "meteor/meteor";
-import { getPrimaryMediaForOrderItem, ReactionProduct } from "/lib/api";
 import { Reaction } from "/client/api";
 import withUpdateCartItemsQuantity from "/imports/plugins/core/graphql/lib/hocs/withUpdateCartItemsQuantity";
 import FilledCartDrawer from "../components/filledCartDrawer";
@@ -11,7 +10,7 @@ import FilledCartDrawer from "../components/filledCartDrawer";
 // event handlers to pass in as props
 const handlers = {
   handleImage(item) {
-  return (item && item.imageURLs) ? item.imageURLs.small : null;
+    return (item && item.imageURLs) ? item.imageURLs.small : null;
     // const media = getPrimaryMediaForOrderItem(item);
     // return media && media.url({ store: "small" });
   },
@@ -22,8 +21,6 @@ const handlers = {
         handle: productItem.productSlug,
         variantId: productItem.productConfiguration.productVariantId
       });
-
-      ReactionProduct.setCurrentVariant(productItem.variantId);
     }
   },
 
@@ -67,23 +64,23 @@ function composer(props, onData) {
     event.preventDefault();
     const cartItemElement = $(event.target).closest(".cart-drawer-swiper-slide");
 
-    cartItemElement.fadeOut(500,
-      () => props.updateCartItemsQuantity(
-        {
-          variables: {
-            input: {
-              cartId: props.cartId,
-              items: [
-                {
-                  cartItemId: item._id,
-                  quantity: 0
-                }
-              ]
-            }
+    cartItemElement.fadeOut(
+      500,
+      () => props.updateCartItemsQuantity({
+        variables: {
+          input: {
+            cartId: props.cartId,
+            items: [
+              {
+                cartItemId: item._id,
+                quantity: 0
+              }
+            ]
           }
         }
-      ));
-  }
+      })
+    );
+  };
 
   const productItems = cartItems;
   onData(null, {

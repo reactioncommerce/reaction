@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Mutation } from "react-apollo";
+import Logger from "@reactioncommerce/logger";
+import ReactionError from "@reactioncommerce/reaction-error";
 import updateCartItemsQuantityMutation from "../mutations/updateCartItemsQuantity";
 
 export default (Comp) => (
@@ -23,14 +25,18 @@ export default (Comp) => (
     render() {
       return (
         <Mutation mutation={updateCartItemsQuantityMutation} onError={() => undefined} onCompleted={this.handleRefetchCartData}>
-          {(updateCartItemsQuantity, { data, loading }) => (
-            <Comp
+          {(updateCartItemsQuantity, { error, data, loading }) => {
+            if (error) {
+              Logger.error(error);
+              throw new ReactionError("query-error");
+            }
+            return <Comp
               {...this.props}
               updateCartItemsQuantityData={data}
               isLoadingUpdateCartItemsQuantity={loading}
               updateCartItemsQuantity={updateCartItemsQuantity}
-            />
-          )}
+            />;
+          }}
         </Mutation>
       );
     }

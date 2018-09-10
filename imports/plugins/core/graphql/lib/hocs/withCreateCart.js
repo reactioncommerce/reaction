@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Mutation } from "react-apollo";
+import Logger from "@reactioncommerce/logger";
+import ReactionError from "@reactioncommerce/reaction-error";
 import createCartMutation from "../mutations/createCart";
 
 export default (Comp) => (
@@ -23,14 +25,18 @@ export default (Comp) => (
     render() {
       return (
         <Mutation mutation={createCartMutation} onError={() => undefined} onCompleted={this.handleRefetchCartData}>
-          {(createCart, { data, loading }) => (
-            <Comp
+          {(createCart, { error, data, loading }) => {
+            if (error) {
+              Logger.error(error);
+              throw new ReactionError("query-error");
+            }
+            return <Comp
               {...this.props}
               createCartData={data}
               isLoadingCreateCart={loading}
               createCart={createCart}
-            />
-          )}
+            />;
+          }}
         </Mutation>
       );
     }

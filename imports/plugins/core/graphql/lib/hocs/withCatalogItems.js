@@ -1,6 +1,8 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { Query } from "react-apollo";
+import Logger from "@reactioncommerce/logger";
+import ReactionError from "@reactioncommerce/reaction-error";
 import { ITEMS_INCREMENT } from "/client/config/defaults";
 import { loadMore } from "/imports/plugins/core/graphql/lib/helpers/pagination";
 import getCatalogItems from "../queries/getCatalogItems";
@@ -30,7 +32,11 @@ export default (Component) => (
 
       return (
         <Query query={getCatalogItems} variables={variables}>
-          {({ loading, data, fetchMore }) => {
+          {({ error, loading, data, fetchMore }) => {
+            if (error) {
+              Logger.error(error);
+              throw new ReactionError("query-error");
+            }
             const { catalogItems = {} } = data;
             const props = {
               ...this.props,

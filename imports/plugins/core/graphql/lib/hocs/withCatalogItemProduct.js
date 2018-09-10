@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Query } from "react-apollo";
+import Logger from "@reactioncommerce/logger";
+import ReactionError from "@reactioncommerce/reaction-error";
 import getCatalogItemProduct from "../queries/getCatalogItemProduct";
 
 export default (Comp) => (
@@ -23,8 +25,12 @@ export default (Comp) => (
       const variables = { slugOrId: productId };
 
       return (
-        <Query query={getCatalogItemProduct} variables={variables}>
-          {({ loading, data }) => {
+        <Query query={getCatalogItemProduct} variables={variables} errorPolicy="all">
+          {({ error, loading, data }) => {
+            if (error) {
+              Logger.error(error);
+              throw new ReactionError("query-error");
+            }
             const props = {
               isLoadingCatalogItemProduct: true,
               ...this.props

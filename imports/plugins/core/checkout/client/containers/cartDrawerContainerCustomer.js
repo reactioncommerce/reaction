@@ -16,7 +16,7 @@ CartDrawerContainerCustomer.propTypes = {
 };
 
 function composer(props, onData) {
-  const isEmpty = !props.cartItems || props.cartItems.length === 0
+  const isEmpty = !props.cartItems || props.cartItems.length === 0;
   onData(null, {
     isEmpty
   });
@@ -26,6 +26,4 @@ registerComponent("CartDrawerCustomer", CartDrawerContainerCustomer, [
   composeWithTracker(composer)
 ]);
 
-export default compose(
-  composeWithTracker(composer)
-)(CartDrawerContainerCustomer);
+export default compose(composeWithTracker(composer))(CartDrawerContainerCustomer);

@@ -47,7 +47,7 @@ const wrapComponent = (Comp) =>
       let featuredMedia;
       const { catalogItemProduct: product } = props;
       if (props.variantId && product && product.variants && product.variants.length > 0) {
-        const variants = product.variants;
+        const { variants } = product;
         // Check if any option is selected
         for (const variant of variants) {
           if (variant.options && variant.options.length > 0) {
@@ -61,7 +61,7 @@ const wrapComponent = (Comp) =>
           }
         }
         if (!selectedVariant) {
-          selectedVariant = product.variants[0]
+          [selectedVariant] = product.variants;
         }
         selectedVariantId = selectedVariant.variantId;
         mediaList = selectedVariant.media;
@@ -93,7 +93,7 @@ const wrapComponent = (Comp) =>
         let selectedVariant;
         let selectedOptionId;
         if (this.props.variantId && product.variants && product.variants.length > 0) {
-          const variants = product.variants;
+          const { variants } = product;
           // Check if any option is selected
           for (const variant of variants) {
             if (variant.options && variant.options.length > 0) {
@@ -106,7 +106,7 @@ const wrapComponent = (Comp) =>
             }
           }
           if (!selectedVariant) {
-            selectedVariant = product.variants[0]
+            [selectedVariant] = product.variants;
           }
         }
         this.handleSelectVariant(selectedVariant, selectedOptionId);
@@ -127,7 +127,7 @@ const wrapComponent = (Comp) =>
           if (selectedOption.primaryImage) {
             mediaList = selectedOption.media;
             if (selectedOption.media && selectedOption.media.length > 0) {
-              featuredMedia = selectedOption.media[0]
+              [featuredMedia] = selectedOption.media;
             }
           }
         }

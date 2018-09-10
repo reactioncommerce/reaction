@@ -1,6 +1,8 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { Query } from "react-apollo";
+import Logger from "@reactioncommerce/logger";
+import ReactionError from "@reactioncommerce/reaction-error";
 import getAccountCart from "../queries/getAccountCart";
 
 export default (Component) => (
@@ -19,8 +21,12 @@ export default (Component) => (
       }
       const variables = { accountId: viewerId, shopId };
       return (
-        <Query query={getAccountCart} variables={variables}>
-          {({ loading, data, refetch, fetchMore }) => {
+        <Query query={getAccountCart} variables={variables} errorPolicy="all">
+          {({ error, loading, data, refetch, fetchMore }) => {
+            if (error) {
+              Logger.error(error);
+              throw new ReactionError("query-error");
+            }
             const props = {
               ...this.props,
               isLoadingAccountCart: loading

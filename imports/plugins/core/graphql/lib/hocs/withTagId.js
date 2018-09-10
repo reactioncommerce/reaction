@@ -1,6 +1,8 @@
 import React from "react";
 import { PropTypes } from "prop-types";
 import { Query } from "react-apollo";
+import Logger from "@reactioncommerce/logger";
+import ReactionError from "@reactioncommerce/reaction-error";
 import getTagId from "../queries/getTagId";
 
 export default (Component) => (
@@ -22,7 +24,11 @@ export default (Component) => (
       const variables = { slugOrId: tagSlugOrId };
       return (
         <Query query={getTagId} variables={variables}>
-          {({ loading, data }) => {
+          {({ error, loading, data }) => {
+            if (error) {
+              Logger.error(error);
+              throw new ReactionError("query-error");
+            }
             const props = {
               ...this.props,
               isLoadingTagId: loading

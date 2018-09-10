@@ -21,10 +21,8 @@ export default function isSoldOut(variants) {
 }
 
 function isVariantSoldOut(options) {
-  const results = options.map((option) => {
-    return option.inventoryManagement && getProductQuantity(option) <= 0;
-  });
-  return results.every((result) => result);  
+  const results = options.map((option) => option.inventoryManagement && getProductQuantity(option) <= 0);
+  return results.every((result) => result);
 }
 
 function isOptionSoldOut(option) {
@@ -36,5 +34,5 @@ function isProductSoldOut(variants) {
     const quantity = getProductQuantity(variant, variants);
     return variant.inventoryManagement && quantity <= 0;
   });
-  return results.every((result) => result);  
+  return results.every((result) => result);
 }

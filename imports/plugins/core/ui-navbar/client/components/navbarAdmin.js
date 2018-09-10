@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import { Session } from "meteor/session";
 import { Components } from "@reactioncommerce/reaction-components";
 
 class NavBarAdmin extends Component {
@@ -150,12 +151,12 @@ class NavBarAdmin extends Component {
   renderCartDrawer() {
     if (!Session.equals("displayCart", true)) {
       return (
-        <div id="cart-drawer-container"> 
+        <div id="cart-drawer-container">
         </div>
       );
     }
     return (
-      <div id="cart-drawer-container" className="opened"> 
+      <div id="cart-drawer-container" className="opened">
         <Components.CartDrawerAdmin className="reaction-cart-drawer" {...this.props}/>
       </div>
     );

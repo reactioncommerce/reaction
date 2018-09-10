@@ -7,7 +7,6 @@ import { getTagIds } from "/lib/selectors/tags";
 import { Router } from "/client/api";
 
 class TagGroupCustomer extends Component {
-
   get tags() {
     return this.props.tagGroupProps.subTagGroups;
   }
