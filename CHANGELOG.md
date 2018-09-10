@@ -1,3 +1,20 @@
+# v1.16.0
+## GraphQL
+### Features
+ - feat: return absolute media URLs from GraphQL (#4565)
+
+## Meteor App
+### Features
+ - feat 4571 Replace all Meteor.userId() with util function (#4582)
+ - feat: Improve animations and dynamically import animation libraries to reduce bundle size (#4500) .. Resolves #4441
+
+### Fixes
+ - fix: reaction error swallowing (#4592)
+ - fix: update file-collections dependency from 0.5.0 to 0.6.0 (#4589)
+ - fix: null check in email validation (#4520) .. Resolves #4502
+ - fix: Add missing Shops.layout migration (#4609) .. Resolves #4608
+
+
 # v1.15.0
 
 ## Sitemap Generator
