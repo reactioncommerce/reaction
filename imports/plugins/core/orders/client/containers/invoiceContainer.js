@@ -566,7 +566,7 @@ const composer = (props, onData) => {
   // Add totalItems property to invoice
   const invoiceWithTotalItems = {
     ...invoice,
-    totalItems: order.totalItems
+    totalItems: order.totalItemQuantity
   };
 
   // get discounts

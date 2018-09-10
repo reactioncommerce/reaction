@@ -12,7 +12,7 @@ export default function startup({ collections }) {
   const { Cart } = collections;
 
   appEvents.on("afterCartUpdate", async (cartId, cart) => {
-    const shipping = await Promise.all(cart.shipping.map(async (group) => applyTaxesToFulfillmentGroup({
+    const shipping = await Promise.all(cart.shipping.map(async (group) => applyTaxesToFulfillmentGroup(collections, {
       ...group,
       items: group.itemIds.map((itemId) => cart.items.find((item) => item._id === itemId))
     })));

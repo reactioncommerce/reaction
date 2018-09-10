@@ -328,7 +328,7 @@ registerSchema("OrderTransaction", OrderTransaction);
  * @property {Object} shipmentMethod The fulfillment method that was chosen by the customer
  * @property {String} shippingLabelUrl URL for shipping label
  * @property {String} shopId The shop that fulfills this group
- * @property {Number} totalItems The total item quantity, sum of all quantities
+ * @property {Number} totalItemQuantity The total item quantity, sum of all quantities
  * @property {String} tracking Tracking reference ID
  * @property {String} type Fulfillment type
  * @property {Object} workflow Current status and past statuses for this fulfillment
@@ -358,7 +358,7 @@ const OrderFulfillmentGroup = new SimpleSchema({
     optional: true
   },
   "shopId": String,
-  "totalItems": {
+  "totalItemQuantity": {
     type: SimpleSchema.Integer,
     min: 1
   },
@@ -487,7 +487,7 @@ export const Order = new SimpleSchema({
     blackbox: true,
     optional: true
   },
-  "totalItems": {
+  "totalItemQuantity": {
     type: SimpleSchema.Integer,
     min: 1
   },

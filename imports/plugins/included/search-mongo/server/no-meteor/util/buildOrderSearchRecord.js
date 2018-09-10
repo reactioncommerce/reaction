@@ -57,12 +57,15 @@ export default async function buildOrderSearchRecord(collections, order) {
   } else {
     orderSearch.shippingStatus = "New";
   }
+
+  const orderItems = order.shipping.reduce((list, group) => [...list, ...group.items], []);
+
   orderSearch.product = {
-    title: order.items.map((item) => item.title)
+    title: orderItems.map((item) => item.title)
   };
   orderSearch.variants = {
-    title: order.items.map((item) => item.variantTitle),
-    optionTitle: order.items.map((item) => item.optionTitle)
+    title: orderItems.map((item) => item.variantTitle),
+    optionTitle: orderItems.map((item) => item.optionTitle)
   };
 
   await collections.OrderSearch.updateOne({ _id: order._id }, {

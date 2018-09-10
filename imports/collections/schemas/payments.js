@@ -92,6 +92,7 @@ export const Payment = new SimpleSchema({
     type: CurrencyExchangeRate,
     optional: true
   },
+  "currencyCode": String,
   "data": {
     type: Object,
     optional: true,

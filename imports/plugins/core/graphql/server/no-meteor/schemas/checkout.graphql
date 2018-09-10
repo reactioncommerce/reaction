@@ -128,77 +128,6 @@ type SelectFulfillmentOptionForGroupPayload {
 }
 
 ########################
-## Payment
-########################
-
-"An example"
-type ExamplePaymentData {
-  example: String!
-}
-
-union PaymentData = ExamplePaymentData
-
-"""
-Information about a payment method that has been chosen by a shopper,
-and how much of the cart total should be applied to it
-"""
-type CartPayment implements Node {
-  "The CartPayment ID"
-  _id: ID!
-
-  """
-  The amount that will be applied to this payment method. If there are multiple payment methods applied to the
-  cart, this may be less than the cart total.
-  """
-  amount: Money!
-
-  "The billing address entered by the shopper"
-  billingAddress: Address
-
-  "If this was a card payment, the brand of the card. Use this for displaying card brand logos."
-  cardBrand: String
-
-  "The date and time at which this payment was created"
-  createdAt: DateTime!
-
-  """
-  The shopper-provided data needed to complete the payment using this method.
-  For example, a billing address, store credit code, stored credit card ID, etc.
-  """
-  data: PaymentData
-
-  "Use this identifier when showing this payment in a user interface"
-  displayName: String!
-
-  "The payment method"
-  method: PaymentMethod!
-}
-
-"Input when setting the example payment method as the payment method for the cart"
-input SetExamplePaymentOnCartInput {
-  "The billing address entered by the shopper"
-  billingAddress: AddressInput!
-
-  "The cart to set shipping address on"
-  cartId: ID!
-
-  "The token for the cart, required if it is an anonymous cart"
-  cartToken: String
-
-  "An optional string identifying the mutation call, which will be returned in the response payload"
-  clientMutationId: String
-}
-
-"The response from one of the mutations that sets the payment method for a cart"
-type SetPaymentPayload {
-  "The updated Cart"
-  cart: Cart!
-
-  "The same string you sent with the mutation params, for matching mutation calls with their responses"
-  clientMutationId: String
-}
-
-########################
 ## General
 ########################
 
@@ -233,9 +162,6 @@ type Checkout {
   "One or more fulfillment groups, for example, mapping certain items to certain shipping addresses"
   fulfillmentGroups: [FulfillmentGroup]!
 
-  "One or more payments added by the shopper during checkout"
-  payments: [CartPayment]!
-
   "A summary of the totals for this order"
   summary: OrderSummary!
 }
@@ -246,9 +172,6 @@ extend type Mutation {
 
   "Set the shipping address for all fulfillment groups"
   setShippingAddressOnCart(input: SetShippingAddressOnCartInput!): SetShippingAddressOnCartPayload!
-
-  "Set the example payment method as the way the user has chosen to pay for a cart"
-  setExamplePaymentOnCart(input: SetExamplePaymentOnCartInput!): SetPaymentPayload!
 
   """
   Clients should call this as necessary during checkout to update the `availableFulfillmentOptions`
