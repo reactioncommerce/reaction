@@ -139,7 +139,8 @@
     "tether-drop": "^1.4.2",
     "tether-tooltip": "^1.2.0",
     "transliteration": "github:reactioncommerce/transliteration",
-    "url": "^0.11.0"
+    "url": "^0.11.0",
+    "url-join": "^4.0.0"
   },
   "devDependencies": {
     "@babel/cli": "7.0.0-beta.49",

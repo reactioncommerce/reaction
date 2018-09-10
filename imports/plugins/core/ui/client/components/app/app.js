@@ -47,6 +47,11 @@ class App extends Component {
     return this.props.hasDashboardAccess;
   }
 
+  get isOauthProvider() {
+    const currentRoute = this.props.currentRoute.route;
+    return currentRoute && currentRoute.options && currentRoute.options.meta && currentRoute.options.meta.oauthLoginFlow;
+  }
+
   handleViewContextChange = (event, value) => {
     Reaction.setUserPreferences("reaction-dashboard", "viewAs", value);
 
@@ -110,7 +115,7 @@ class App extends Component {
     const { currentRoute } = this.props;
     const layout = currentRoute && currentRoute.route && currentRoute.route.options && currentRoute.route.options.layout;
 
-    if (this.isAdminApp && layout !== "printLayout") {
+    if (this.isAdminApp && layout !== "printLayout" && !this.isOauthProvider) {
       return this.renderAdminApp();
     }
 
