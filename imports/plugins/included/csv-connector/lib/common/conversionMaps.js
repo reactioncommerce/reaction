@@ -1,3 +1,5 @@
+import _ from "lodash";
+
 /** This will contain all conversion maps registered in different Reaction plugins
  * A conversion map has shape like below:
  * collection - name of an existing MongoDB collection
@@ -79,4 +81,15 @@ export function getFieldOptionsForCollection(collection) {
   const fieldOptions = ConversionMaps[collection].fields.map((field) => ({ label: field.label, value: field.key }));
   fieldOptions.push({ label: "Ignore", value: "ignore" });
   return fieldOptions;
+}
+
+/**
+ * @name getConvMapByCollection
+ * @summary Gets conversion map given a collection name
+ * @param {String} collection - collection name
+ * @returns {Object} the conversion map
+ */
+export function getConvMapByCollection(collection) {
+  const convMapKey = _.findKey(ConversionMaps, (convMap) => convMap.collection === collection);
+  return ConversionMaps[convMapKey];
 }

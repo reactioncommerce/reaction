@@ -33,7 +33,7 @@ const tempStore = new TempFileStore({
   shouldAllowRequest(req) {
     const { type } = req.uploadMetadata;
     if (typeof type !== "string" || !type.startsWith("text/csv")) {
-      Logger.info(`shouldAllowRequest received request to upload file of type "${type}" and denied it`); // eslint-disable-line no-console
+      Logger.info(`shouldAllowRequest received request to upload file of type "${type}" and denied it`);
       return false;
     }
     return true;

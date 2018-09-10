@@ -364,7 +364,7 @@ class CSVConnectorContainer extends Component {
       bodyCssClassName: () => "job-item-grid-row"
     };
     const filteredFields = ["name", "jobType", "collection", "uploadedAt", "status"];
-    const columns = ["name", "jobType", "collection", "uploadedAt", "status", "delete"];
+    const columns = ["name", "jobType", "collection", "uploadedAt", "status", "completedAt", "delete"];
     const customColumnMetadata = [];
 
     columns.forEach((field) => {

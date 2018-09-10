@@ -4,10 +4,9 @@ import Client from "ssh2-sftp-client";
 import { Meteor } from "meteor/meteor";
 import { check } from "meteor/check";
 import { EJSON } from "meteor/ejson";
-import { Reaction } from "/lib/api";
+import Reaction from "/imports/plugins/core/core/server/Reaction";
 import { Packages } from "/lib/collections";
-import { JobItems } from "../lib/collections";
-import { JobFiles } from "./jobFileCollections";
+import { JobItems, Mappings } from "../lib/collections";
 
 export const methods = {
   /**
@@ -177,14 +176,23 @@ export const methods = {
       mapping: mappingByUser,
       mappingId,
       name,
-      newMappingName,
-      saveMappingAction,
       shopId,
-      shouldSaveToNewMapping,
       status: "pending",
       uploadedAt: new Date(),
       userId: Meteor.userId()
     });
+
+    if ((mappingId === "create" && shouldSaveToNewMapping) || (mappingId !== "create" && saveMappingAction === "create")) {
+      Mappings.insert({
+        shopId,
+        name: newMappingName,
+        collection,
+        mapping: mappingByUser
+      });
+    } else if (mappingId !== "create" && saveMappingAction === "update") {
+      Mappings.update({ _id: mappingId }, { $set: { mapping: mappingByUser } });
+    }
+
     return jobItemId;
   },
 

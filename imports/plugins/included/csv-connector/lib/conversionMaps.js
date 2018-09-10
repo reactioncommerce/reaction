@@ -37,8 +37,8 @@ export const TagsConvMap = {
       optional: true
     },
     {
-      key: "parentTag",
-      label: "Parent Tag",
+      key: "parentTagSlug",
+      label: "Parent Tag Slug",
       optional: true,
       ignoreOnSave: true
     }

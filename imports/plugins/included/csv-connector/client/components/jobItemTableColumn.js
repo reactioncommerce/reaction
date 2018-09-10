@@ -26,7 +26,7 @@ class JobItemTableColumn extends Component {
     const { row } = this.props;
     const {
       column: { id: renderColumn },
-      original: { status },
+      original: { errorFileId, _id: jobItemId, status },
       value
     } = row;
     if (renderColumn === "jobType") {
@@ -38,15 +38,32 @@ class JobItemTableColumn extends Component {
       if (value === "pending") {
         return <span>Pending</span>;
       } else if (value === "inProgress") {
-        return <span>Completed</span>;
+        return <span>In Progress</span>;
       } else if (value === "completed") {
+        if (errorFileId) {
+          return (
+            <div>
+              <span>Completed</span>
+              <br />
+              <a
+                href={`/jobs/errorFiles/JobFiles/${errorFileId}/jobFiles/${jobItemId}.csv`}
+                target="_blank"
+              >
+                  Download errors
+              </a>
+            </div>
+          );
+        }
         return <span>Completed</span>;
       }
       return <span>Failed</span>;
-    } else if (renderColumn === "uploadedAt") {
+    } else if (["uploadedAt", "completedAt"].includes(renderColumn)) {
       const { moment } = this.props;
-      const uploadedAtDate = (moment && moment(value).format("LLL")) || row.value.toLocaleString();
-      return <span>{uploadedAtDate}</span>;
+      if (value) {
+        const displayDate = (moment && moment(value).format("lll")) || value.toLocaleString();
+        return <span>{displayDate}</span>;
+      }
+      return null;
     } else if (renderColumn === "delete") {
       if (status === "inProgress") {
         return <span />;

@@ -1,8 +1,11 @@
+import _ from "lodash";
 import Hooks from "@reactioncommerce/hooks";
 import Logger from "@reactioncommerce/logger";
 import { Job } from "/imports/plugins/core/job-collection/lib";
 import { Jobs } from "/lib/collections";
-
+import { JobItems } from "../lib/collections";
+import { ConversionMaps } from "../lib/conversionMaps";
+import processJobItem from "./no-meteor/processJobItem";
 
 /**
  * @name processJobItems
@@ -10,11 +13,20 @@ import { Jobs } from "/lib/collections";
  * @return {undefined}
  */
 async function processJobItems() {
-  // Loop through each conversionMap collection
-  // Check if there is pending import or export for each collection
-  // If not, look for an import or export to process
-  // In other words, there should only be one jobItem in progress per collection at a time
-  return;
+  // Gather in progress collections of in progress jobs
+  // and find pending job items that are not for those collections
+  const inProgressJobItems = JobItems.find({ status: "inProgress" }).fetch();
+  const inProgressColls = _.map(inProgressJobItems, "collection");
+  const pendingJobItems = await JobItems.rawCollection().aggregate([
+    { $match: { collection: { $nin: inProgressColls }, status: "pending" } },
+    { $sort: { uploadedAt: -1 } },
+    { $group: { _id: "$collection", projects: { $addToSet: "$$ROOT" } } }
+  ]).toArray();
+  pendingJobItems.forEach((collectionGroup) => {
+    // Process only 1 of the pending job item from the group
+    processJobItem(collectionGroup.projects[0]._id);
+  });
+  return true;
 }
 
 /**

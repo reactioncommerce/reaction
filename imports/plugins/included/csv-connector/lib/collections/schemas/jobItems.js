@@ -71,7 +71,8 @@ export const JobItems = new SimpleSchema({
   shopId: {
     type: String,
     index: 1,
-    label: "Shop"
+    label: "Shop",
+    optional: true
   },
   userId: {
     type: String,
