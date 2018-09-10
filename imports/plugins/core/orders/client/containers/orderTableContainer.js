@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { compose } from "recompose";
 import { Meteor } from "meteor/meteor";
 import { Reaction, i18next } from "/client/api";
-import { getPrimaryMediaForOrderItem } from "/lib/api";
+import { getPrimaryMediaForItem } from "/lib/api";
 import { registerComponent } from "@reactioncommerce/reaction-components";
 import { getShippingInfo } from "../helpers";
 import {
@@ -684,7 +684,7 @@ const wrapComponent = (Comp) => (
           {...this.props}
           handleSelect={this.handleSelect}
           handleClick={this.handleClick}
-          displayMedia={getPrimaryMediaForOrderItem}
+          displayMedia={getPrimaryMediaForItem}
           selectedItems={this.state.selectedItems}
           selectAllOrders={this.selectAllOrders}
           multipleSelect={this.state.multipleSelect}

@@ -4,6 +4,12 @@ import { Router } from "/client/modules/router/";
 import { registerComponent, composeWithTracker } from "@reactioncommerce/reaction-components";
 import OrdersList from "../components/ordersList";
 
+/**
+ * @summary Composer
+ * @param {Object} props Provided props
+ * @param {Function} onData Call this with props
+ * @returns {undefined}
+ */
 function composer(props, onData) {
   // Get user order from props
   const { orders } = props;

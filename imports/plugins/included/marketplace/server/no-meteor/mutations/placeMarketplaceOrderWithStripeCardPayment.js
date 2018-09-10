@@ -32,13 +32,23 @@ const orderItemsSchema = new SimpleSchema({
 });
 
 const orderFulfillmentGroupSchema = new SimpleSchema({
+  "data": {
+    type: Object,
+    blackbox: true,
+    optional: true
+  },
   "items": {
     type: Array,
     minCount: 1
   },
   "items.$": orderItemsSchema,
   "selectedFulfillmentMethodId": String,
-  "totalPrice": Number
+  "shopId": String,
+  "totalPrice": Number,
+  "type": {
+    type: String,
+    allowedValues: ["shipping"]
+  }
 });
 
 const orderInputSchema = new SimpleSchema({
@@ -111,7 +121,7 @@ export default async function placeMarketplaceOrderWithStripeCardPayment(context
   let stripe;
   let stripeCustomerId;
   const stripeIdsByShopId = {};
-  return mutations.orders.createOrder({
+  return mutations.orders.createOrder(context, {
     order: orderInput,
     async afterValidate() {
       const result = await getStripeInstanceForShop(context, shopId);

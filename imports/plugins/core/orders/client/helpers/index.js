@@ -32,14 +32,10 @@ export function getOrderRiskBadge(riskLevel) {
  */
 export function getOrderRiskStatus(order) {
   const groupForShop = order.shipping.find((group) => group.shopId === Reaction.getShopId());
-  const { riskLevel } = groupForShop.payment;
+  const { riskLevel } = groupForShop.payment || {};
 
   // normal transactions do not need to be flagged
-  if (riskLevel === "normal") {
-    return "";
-  }
-
-  if (!riskLevel) {
+  if (!riskLevel || riskLevel === "normal") {
     return "";
   }
 

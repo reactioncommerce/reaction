@@ -59,7 +59,7 @@ class OrderTable extends Component {
   }
 
   /**
-   * Fullfilment Badge
+   * Fulfillment Badge
    * @param  {Object} order object containing info for order and coreOrderWorkflow
    * @return {string} A string containing the type of Badge
    */
@@ -97,7 +97,7 @@ class OrderTable extends Component {
 
   renderOrderInfo(order) {
     const { displayMedia, moment } = this.props;
-    const { invoice } = getPaymentForCurrentShop(order).invoice;
+    const { invoice } = getPaymentForCurrentShop(order);
 
     return (
       <div className="order-info">
@@ -243,7 +243,7 @@ class OrderTable extends Component {
         total: {
           accessor: (row) => {
             const { invoice } = getPaymentForCurrentShop(row);
-            return invoice.total;
+            return invoice ? invoice.total : 0;
           },
           id: "billingTotal"
         },

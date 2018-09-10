@@ -15,11 +15,11 @@ export default async function buildOrderSearchRecord(collections, order) {
 
   // get the billing and shipping for the order shop
   const { shopId } = order;
-  const shopBilling = order.billing.find((billing) => billing.shopId === shopId) || {};
   const shopShipping = order.shipping.find((shipping) => shipping.shopId === shopId) || {};
+  if (!shopShipping) return;
 
-  const shopBillingAddress = shopBilling.address;
-  const shopShippingAddress = shopShipping.address;
+  const { address: shopShippingAddress, payment } = shopShipping;
+  const shopBillingAddress = payment.address;
 
   orderSearch.billingName = shopBillingAddress && shopBillingAddress.fullName;
   orderSearch.billingPhone = shopBillingAddress && shopBillingAddress.phone.replace(/\D/g, "");
@@ -44,11 +44,11 @@ export default async function buildOrderSearchRecord(collections, order) {
   };
 
   orderSearch.userEmails = [order.email];
-  orderSearch.orderTotal = shopBilling.invoice && shopBilling.invoice.total;
+  orderSearch.orderTotal = payment.invoice.total;
   // XXX Should adjust this to be in the shop's timezone since they are likely not in the same timezone as this server.
   orderSearch.orderDate = order.createdAt && `${order.createdAt.getFullYear()}/${order.createdAt.getMonth() + 1}/${order.createdAt.getDate()}`;
-  orderSearch.billingStatus = shopBilling.paymentMethod && shopBilling.paymentMethod.status;
-  orderSearch.billingCard = shopBilling.paymentMethod && shopBilling.paymentMethod.displayName;
+  orderSearch.billingStatus = payment.status;
+  orderSearch.billingCard = payment.displayName;
   orderSearch.currentWorkflowStatus = order.workflow.status;
   if (shopShipping.shipped) {
     orderSearch.shippingStatus = "Shipped";
