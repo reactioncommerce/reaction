@@ -177,13 +177,22 @@ class ActionView extends Component {
     if (window) {
       window.addEventListener("resize", this.handleResize, false);
     }
+
+    const { actionView } = this.props;
+    if (actionView) {
+      this.setState({ actionView });
+    }
   }
 
   componentDidUpdate(prevProps) {
     const { actionView } = this.props;
 
-    if (actionView.template && actionView.template !== prevProps.actionView.template) {
+    if (EJSON.equals(actionView, prevProps.actionView) === false) {
       this.setState({ actionView });
+    }
+
+    if (actionView.template && actionView.template !== prevProps.actionView.template) {
+
     }
   }
 
