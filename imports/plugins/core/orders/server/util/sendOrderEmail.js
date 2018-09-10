@@ -138,8 +138,8 @@ export default function sendOrderEmail(order, action) {
       // Otherwise push the unique item into the combinedItems array
 
       // Add displayAmount to match user currency settings
-      orderItem.priceWhenAdded.displayAmount = accounting.formatMoney(
-        orderItem.priceWhenAdded.amount * userCurrencyExchangeRate,
+      orderItem.price.displayAmount = accounting.formatMoney(
+        orderItem.price.amount * userCurrencyExchangeRate,
         userCurrencyFormatting
       );
 

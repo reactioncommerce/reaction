@@ -99,6 +99,13 @@ class OrderTable extends Component {
     const { displayMedia, moment } = this.props;
     const { invoice } = getPaymentForCurrentShop(order);
 
+    const allOrderItems = order.shipping.reduce((items, group) => {
+      group.items.forEach((item) => {
+        items.push(item);
+      });
+      return items;
+    }, []);
+
     return (
       <div className="order-info">
         <div className="order-totals">
@@ -125,7 +132,7 @@ class OrderTable extends Component {
         </div>
 
         <div className="order-items">
-          {order.items.map((item, i) => (
+          {allOrderItems.map((item, i) => (
             <div className="order-item" key={i}>
               <div className="order-item-media">
                 <Components.ProductImage

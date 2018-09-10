@@ -77,14 +77,14 @@ class InvoiceContainer extends Component {
 
       if (isEdited) {
         editedItems = editedItems.filter((item) => item.id !== lineItem._id);
-        isEdited.refundedTotal = lineItem.priceWhenAdded.amount * adjustedQuantity;
+        isEdited.refundedTotal = lineItem.price.amount * adjustedQuantity;
         isEdited.refundedQuantity = adjustedQuantity;
         editedItems.push(isEdited);
       } else {
         editedItems.push({
           id: lineItem._id,
           title: lineItem.title,
-          refundedTotal: lineItem.priceWhenAdded.amount * lineItem.quantity,
+          refundedTotal: lineItem.price.amount * lineItem.quantity,
           refundedQuantity: lineItem.quantity
         });
       }
@@ -131,7 +131,7 @@ class InvoiceContainer extends Component {
         updateEditedItems.push({
           id: item._id,
           title: item.title,
-          refundedTotal: item.priceWhenAdded.amount * item.quantity,
+          refundedTotal: item.price.amount * item.quantity,
           refundedQuantity: item.quantity
         });
         return item._id;
@@ -154,7 +154,7 @@ class InvoiceContainer extends Component {
 
     if (isEdited) {
       editedItems = editedItems.filter((item) => item.id !== lineItem._id);
-      isEdited.refundedTotal = lineItem.priceWhenAdded.amount * refundedQuantity;
+      isEdited.refundedTotal = lineItem.price.amount * refundedQuantity;
       isEdited.refundedQuantity = refundedQuantity;
       if (refundedQuantity !== 0) {
         editedItems.push(isEdited);
@@ -163,7 +163,7 @@ class InvoiceContainer extends Component {
       editedItems.push({
         id: lineItem._id,
         title: lineItem.title,
-        refundedTotal: lineItem.priceWhenAdded.amount * refundedQuantity,
+        refundedTotal: lineItem.price.amount * refundedQuantity,
         refundedQuantity
       });
     }
@@ -566,12 +566,7 @@ const composer = (props, onData) => {
   // Add totalItems property to invoice
   const invoiceWithTotalItems = {
     ...invoice,
-    totalItems: order.items.reduce((sum, item) => {
-      if (item.shopId === shopId) {
-        return sum + item.quantity;
-      }
-      return sum;
-    }, 0)
+    totalItems: order.totalItems
   };
 
   // get discounts
