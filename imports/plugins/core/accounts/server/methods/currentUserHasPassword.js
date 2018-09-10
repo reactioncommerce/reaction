@@ -1,4 +1,5 @@
 import { Meteor } from "meteor/meteor";
+import Reaction from "/imports/plugins/core/core/server/Reaction";
 
 /**
  * @name accounts/currentUserHasPassword
@@ -9,6 +10,6 @@ import { Meteor } from "meteor/meteor";
  * @private
  */
 export default function currentUserHasPassword() {
-  const user = Meteor.users.findOne(Meteor.userId());
+  const user = Meteor.users.findOne(Reaction.getUserId());
   return !!user.services.password;
 }

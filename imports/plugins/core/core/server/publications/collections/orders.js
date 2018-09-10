@@ -138,7 +138,7 @@ Meteor.publish("AccountOrders", function (accountId) {
 
   const account = this.userId ? Accounts.findOne({ userId: this.userId }) : null;
   const contextAccountId = account && account._id;
-  if (accountId !== contextAccountId && !Reaction.hasPermission("orders", Meteor.userId(), shopId)) {
+  if (accountId !== contextAccountId && !Reaction.hasPermission("orders", Reaction.getUserId(), shopId)) {
     return this.ready();
   }
 
@@ -159,7 +159,7 @@ Meteor.publish("AccountOrders", function (accountId) {
 Meteor.publish("CompletedCartOrder", (cartId) => {
   check(cartId, String);
 
-  const userId = Meteor.userId();
+  const userId = Reaction.getUserId();
   const account = userId ? Accounts.findOne({ userId }) : null;
   const accountId = account && account._id;
 

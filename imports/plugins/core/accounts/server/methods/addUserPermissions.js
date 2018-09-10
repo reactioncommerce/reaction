@@ -1,5 +1,4 @@
 import Logger from "@reactioncommerce/logger";
-import { Meteor } from "meteor/meteor";
 import { check, Match } from "meteor/check";
 import { Roles } from "meteor/alanning:roles";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
@@ -16,7 +15,7 @@ import ReactionError from "@reactioncommerce/reaction-error";
  * @returns {Boolean} success/failure
  */
 export default function addUserPermissions(userId, permissions, group) {
-  if (!Reaction.hasPermission("reaction-accounts", Meteor.userId(), group)) {
+  if (!Reaction.hasPermission("reaction-accounts", Reaction.getUserId(), group)) {
     throw new ReactionError("access-denied", "Access denied");
   }
   check(userId, Match.OneOf(String, Array));

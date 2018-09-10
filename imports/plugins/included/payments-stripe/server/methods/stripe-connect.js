@@ -13,8 +13,8 @@ export const methods = {
     check(shopId, String);
     check(authCode, String);
 
-    if (!Reaction.hasPermission(["owner", "admin", "reaction-stripe"], Meteor.userId(), shopId)) {
-      Logger.warn(`user: ${Meteor.userId()} attempted to authorize merchant account
+    if (!Reaction.hasPermission(["owner", "admin", "reaction-stripe"], Reaction.getUserId(), shopId)) {
+      Logger.warn(`user: ${Reaction.getUserId()} attempted to authorize merchant account
         for shopId ${shopId} but was denied access due to insufficient privileges.`);
       throw new ReactionError("access-denied", "Access Denied");
     }

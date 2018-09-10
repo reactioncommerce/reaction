@@ -73,9 +73,10 @@ export default function createShop(shopAdminUserId, partialShopData) {
 
   // Get the current marketplace settings
   const marketplace = Reaction.getMarketplaceSettings();
+  const userId = Reaction.getUserId();
 
   // check to see if the current user has owner permissions for the primary shop
-  const hasPrimaryShopOwnerPermission = Reaction.hasPermission("owner", Meteor.userId(), Reaction.getPrimaryShopId());
+  const hasPrimaryShopOwnerPermission = Reaction.hasPermission("owner", userId, Reaction.getPrimaryShopId());
 
   // only permit merchant signup if marketplace is enabled and allowMerchantSignup is enabled
   let allowMerchantShopCreation = false;
@@ -89,13 +90,13 @@ export default function createShop(shopAdminUserId, partialShopData) {
   }
 
   // Non-admin users may only create shops for themselves
-  if (!hasPrimaryShopOwnerPermission && shopAdminUserId !== Meteor.userId()) {
+  if (!hasPrimaryShopOwnerPermission && shopAdminUserId !== userId) {
     throw new ReactionError("access-denied", "Access Denied");
   }
 
   // Anonymous users should never be permitted to create a shop
   if (!hasPrimaryShopOwnerPermission &&
-      Reaction.hasPermission("anonymous", Meteor.userId(), Reaction.getPrimaryShopId())) {
+      Reaction.hasPermission("anonymous", userId, Reaction.getPrimaryShopId())) {
     throw new ReactionError("access-denied", "Access Denied");
   }
 

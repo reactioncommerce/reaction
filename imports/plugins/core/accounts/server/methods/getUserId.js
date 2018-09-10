@@ -1,6 +1,7 @@
 import { Meteor } from "meteor/meteor";
 
 /**
+ * @deprecated Use Reaction.getUserId instead
  * @name reaction/getUserId
  * @method
  * @memberof Reaction/Methods

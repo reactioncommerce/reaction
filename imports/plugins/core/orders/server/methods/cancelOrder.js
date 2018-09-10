@@ -36,7 +36,7 @@ export default function cancelOrder(order, returnToStock) {
     // Run this Product update inline instead of using ordersInventoryAdjust because the collection hooks fail
     // in some instances which causes the order not to cancel
     order.items.forEach((item) => {
-      if (Reaction.hasPermission("orders", Meteor.userId(), item.shopId)) {
+      if (Reaction.hasPermission("orders", Reaction.getUserId(), item.shopId)) {
         Products.update(
           {
             _id: item.variantId,

@@ -95,7 +95,7 @@ export default function getLocale() {
   });
 
   // adjust user currency
-  const account = Accounts.findOne({ userId: Meteor.userId() });
+  const account = Accounts.findOne({ userId: Reaction.getUserId() });
   let profileCurrency = account && account.profile && account.profile.currency;
   if (account && !profileCurrency) {
     [localeCurrency] = localeCurrency;

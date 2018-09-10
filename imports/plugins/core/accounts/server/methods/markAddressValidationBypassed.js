@@ -1,7 +1,7 @@
-import { Meteor } from "meteor/meteor";
 import { check } from "meteor/check";
 import { Accounts, Cart } from "/lib/collections";
 import appEvents from "/imports/plugins/core/core/server/appEvents";
+import Reaction from "/imports/plugins/core/core/server/Reaction";
 
 /**
  * @name accounts/markAddressValidationBypassed
@@ -13,7 +13,7 @@ import appEvents from "/imports/plugins/core/core/server/appEvents";
  */
 export default function markAddressValidationBypassed(value = true) {
   check(value, Boolean);
-  const userId = Meteor.userId();
+  const userId = Reaction.getUserId();
   const account = Accounts.findOne({ userId }, { fields: { _id: 1 } });
   const updateResult = Cart.update({ accountId: account._id }, { $set: { bypassAddressValidation: value } });
 
