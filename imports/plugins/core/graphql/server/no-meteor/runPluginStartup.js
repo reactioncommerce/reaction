@@ -5,6 +5,7 @@ import discountsStartup from "/imports/plugins/core/discounts/server/no-meteor/s
 import discountCodesStartup from "/imports/plugins/included/discount-codes/server/no-meteor/startup";
 import notificationsStartup from "/imports/plugins/included/notifications/server/no-meteor/startup";
 import searchStartup from "/imports/plugins/included/search-mongo/server/no-meteor/startup";
+import taxesStartup from "/imports/plugins/core/taxes/server/no-meteor/startup";
 
 /**
  * @param {Object} context Context object with appEvents and collections
@@ -23,6 +24,7 @@ export default async function runPluginStartup(context) {
     discountCodesStartup(expandedContext),
     notificationsStartup(expandedContext),
     searchStartup(expandedContext),
-    fulfillmentService.startup(expandedContext)
+    fulfillmentService.startup(expandedContext),
+    taxesStartup(expandedContext)
   ]);
 }

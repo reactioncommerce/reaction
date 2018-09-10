@@ -1,17 +1,20 @@
 /**
- *
+ * @summary Gets the tax rate as a percent based on shop ID and shipping address of a fulfillment group
+ * @param {Object} collections Map of MongoDB collections
+ * @param {Object} group The fulfillment group to get a tax rate for
+ * @returns {Number} Tax percent, e.g., 1 means 1%
  */
-export default async function applyTaxesToFulfillmentGroup(collections, group) {
+async function getTaxPercentForShop(collections, group) {
   const { Packages, Taxes } = collections;
-  const { address: shippingAddress, items, shopId } = group;
+  const { address: shippingAddress, shopId } = group;
 
   // TODO: Calculate shipping taxes for regions that require it
   const pkg = await Packages.findOne({ shopId, name: "reaction-taxes" });
   if (!pkg || !pkg.enabled || !pkg.settings.rates.enabled) {
-    return group;
+    return 0;
   }
 
-  if (!shippingAddress) return group;
+  if (!shippingAddress) return 0;
 
   // custom rates that match shipping info
   // high chance this needs more review as
@@ -37,9 +40,25 @@ export default async function applyTaxesToFulfillmentGroup(collections, group) {
       shopId
     }]
   }, { sort: { postal: -1 } });
-  if (!taxDoc) return group;
+  if (!taxDoc) return 0;
 
-  const shopTaxRate = taxDoc.rate / 100;
+  return taxDoc.rate || 0;
+}
+
+/**
+ * @summary Modifies a fulfillment group, adding `effectiveTaxRate` property to the group,
+ *   and adding `taxRate` and `tax` properties to each item in the group. Assumes that each
+ *   item has `subtotal` and `isTaxable` props set. Assumes that the group has `shopId` and
+ *   `address` properties set.
+ * @param {Object} collections Map of MongoDB collections
+ * @param {Object} group The fulfillment group to get a tax rate for
+ * @returns {Object} Updated fulfillment group
+ */
+export default async function applyTaxesToFulfillmentGroup(collections, group) {
+  const { items } = group;
+
+  const taxPercent = await getTaxPercentForShop(collections, group);
+  const taxRate = taxPercent / 100;
 
   // calculate line item taxes
   let totalTax = 0;
@@ -52,8 +71,8 @@ export default async function applyTaxesToFulfillmentGroup(collections, group) {
     item.tax = 0;
 
     // only process taxable products and skip if there is no shopTaxData
-    if (taxDoc && item.isTaxable) {
-      item.taxRate = shopTaxRate;
+    if (taxRate && item.isTaxable) {
+      item.taxRate = taxRate;
       item.tax = item.subtotal * item.taxRate;
       totalTax += item.tax;
     }
