@@ -4,6 +4,7 @@ import PropTypes from "prop-types";
 import classnames from "classnames";
 import { getComponent, withCSSTransition } from "@reactioncommerce/reaction-components";
 import Blaze from "meteor/gadicc:blaze-react-component";
+import { EJSON } from "meteor/ejson";
 import { Admin } from "/imports/plugins/core/ui/client/providers";
 import Radium from "radium";
 import debounce from "lodash/debounce";
@@ -189,10 +190,6 @@ class ActionView extends Component {
 
     if (EJSON.equals(actionView, prevProps.actionView) === false) {
       this.setState({ actionView });
-    }
-
-    if (actionView.template && actionView.template !== prevProps.actionView.template) {
-
     }
   }
 
