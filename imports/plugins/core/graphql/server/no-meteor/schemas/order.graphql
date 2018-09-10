@@ -95,7 +95,7 @@ type OrderPayment implements Node {
 
 input OrderFulfillmentGroupItemInput {
   "The date and time at which this item was first added to the source cart, if this is something you want to track"
-  addedAt: Date
+  addedAt: DateTime
 
   """
   The price of the item, in the `order.currencyCode` currency. This value is not trusted; the actual price
@@ -111,12 +111,24 @@ input OrderFulfillmentGroupItemInput {
   quantity: Int!
 }
 
+"Information needed by the selected fulfillment method to properly fulfill the order"
+input OrderFulfillmentGroupDataInput {
+  "The mailing address to which this fulfillment group should be shipped"
+  shippingAddress: AddressInput
+}
+
 input OrderFulfillmentGroupInput {
+  "Information needed by the selected fulfillment method to properly fulfill the order"
+  data: OrderFulfillmentGroupDataInput
+
   "The list of items to be ordered"
   items: [OrderFulfillmentGroupItemInput]!
 
   "The ID of the fulfillment method to be used for this order group"
   selectedFulfillmentMethodId: ID!
+
+  "The shop that owns these items and needs to fulfill this part of the order"
+  shopId: ID!
 
   """
   The total price of the items, fulfillment, and taxes, for this group, less any discounts, in the
@@ -125,6 +137,9 @@ input OrderFulfillmentGroupInput {
   does not match what was shown to the shopper in order preview.
   """
   totalPrice: Float!
+
+  "The fulfillment type. Any valid type that has been registered by a fulfillment plugin. Examples: \"shipping\", \"digital\""
+  type: FulfillmentType!
 }
 
 input OrderInput {

@@ -2,7 +2,7 @@
 ## Fulfillment
 ########################
 
-"Information needed by the fulfillment type to properly fulfill the order"
+"Information needed by the selected fulfillment method to properly fulfill the order"
 type FulfillmentData {
   "The mailing address to which this fulfillment group should be shipped"
   shippingAddress: Address
