@@ -32,7 +32,7 @@ Reaction.registerPackage({
 
     // Payment form for checkout
     {
-      template: "examplePaymentForm",
+      template: "ExampleIOUPaymentForm",
       provides: ["paymentMethod"],
       icon: "fa fa-credit-card-alt"
     }

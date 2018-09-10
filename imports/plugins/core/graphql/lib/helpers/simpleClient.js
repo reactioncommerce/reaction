@@ -5,6 +5,7 @@ import updateFulfillmentOptionsForGroup from "../mutations/updateFulfillmentOpti
 import createFlatRateFulfillmentMethod from "../mutations/createFlatRateFulfillmentMethod.graphql";
 import updateFlatRateFulfillmentMethod from "../mutations/updateFlatRateFulfillmentMethod.graphql";
 import deleteFlatRateFulfillmentMethod from "../mutations/deleteFlatRateFulfillmentMethod.graphql";
+import placeOrderWithExampleIOUPayment from "../mutations/placeOrderWithExampleIOUPayment.graphql";
 import placeOrderWithStripeCardPayment from "../mutations/placeOrderWithStripeCardPayment.graphql";
 
 /**
@@ -38,6 +39,10 @@ export default {
     deleteFlatRateFulfillmentMethod: (variables) => {
       setTokenHeader();
       return client.mutate(deleteFlatRateFulfillmentMethod)(variables);
+    },
+    placeOrderWithExampleIOUPayment: (variables) => {
+      setTokenHeader();
+      return client.mutate(placeOrderWithExampleIOUPayment)(variables);
     },
     placeOrderWithStripeCardPayment: (variables) => {
       setTokenHeader();
