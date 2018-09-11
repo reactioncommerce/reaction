@@ -10,6 +10,7 @@
 export default function defineCollections(db, collections) {
   Object.assign(collections, {
     Accounts: db.collection("Accounts"),
+    AccountSearch: db.collection("AccountSearch"),
     Assets: db.collection("Assets"),
     Cart: db.collection("Cart"),
     Catalog: db.collection("Catalog"),
@@ -20,8 +21,10 @@ export default function defineCollections(db, collections) {
     MediaRecords: db.collection("cfs.Media.filerecord"),
     Notifications: db.collection("Notifications"),
     Orders: db.collection("Orders"),
+    OrderSearch: db.collection("OrderSearch"),
     Packages: db.collection("Packages"),
     Products: db.collection("Products"),
+    ProductSearch: db.collection("ProductSearch"),
     roles: db.collection("roles"),
     SellerShops: db.collection("SellerShops"),
     Shipping: db.collection("Shipping"),
