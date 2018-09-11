@@ -8,7 +8,6 @@ import withShopId from "/imports/plugins/core/graphql/lib/hocs/withShopId";
 import withViewer from "/imports/plugins/core/graphql/lib/hocs/withViewer";
 import withChangeCurrency from "/imports/plugins/core/graphql/lib/hocs/withChangeCurrency";
 import getCart from "/imports/plugins/core/cart/client/util/getCart";
-import { getSlug } from "/lib/api";
 import CurrencyDropdown from "../components/currencyDropdown";
 
 const handlers = {
@@ -76,7 +75,7 @@ const wrapComponent = (Comp) => (
 );
 
 const composer = (props, onData) => {
-  onData(null, { ...props, shopSlug: getSlug(Reaction.getShopName().toLowerCase()) });
+  onData(null, { ...props, shopSlug: Reaction.getSlug(Reaction.getShopName().toLowerCase()) });
 };
 
 registerComponent("CurrencyDropdownCustomer", CurrencyDropdown, [

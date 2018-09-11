@@ -6,7 +6,6 @@ import { Components, registerComponent, composeWithTracker } from "@reactioncomm
 import { Reaction, Router } from "/client/api";
 import withTags from "/imports/plugins/core/graphql/lib/hocs/withTags";
 import withShopId from "/imports/plugins/core/graphql/lib/hocs/withShopId";
-import { getSlug } from "/lib/api";
 import TagNavCustomer from "../components/tagNavCustomer";
 
 const navButtonStyles = {
@@ -295,7 +294,7 @@ const composer = (props, onData) => {
   onData(null, {
     name: "coreHeaderNavigation",
     isVisible: props.isVisible,
-    shopSlug: getSlug(Reaction.getShopName().toLowerCase())
+    shopSlug: Reaction.getSlug(Reaction.getShopName().toLowerCase())
   });
 };
 

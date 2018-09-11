@@ -3,7 +3,6 @@ import React, { Component } from "react";
 import { Reaction } from "/client/api";
 import { Meteor } from "meteor/meteor";
 import { registerComponent, composeWithTracker } from "@reactioncommerce/reaction-components";
-import { getSlug } from "/lib/api";
 import withShop from "/imports/plugins/core/graphql/lib/hocs/withShop";
 import withShopId from "/imports/plugins/core/graphql/lib/hocs/withShopId";
 import LanguageDropdown from "../components/languageDropdown";
@@ -55,7 +54,7 @@ const wrapComponent = (Comp) => (
 );
 
 const composer = (props, onData) => {
-  onData(null, { ...props, shopSlug: getSlug(Reaction.getShopName().toLowerCase()) });
+  onData(null, { ...props, shopSlug: Reaction.getSlug(Reaction.getShopName().toLowerCase()) });
 };
 
 registerComponent("LanguageDropdownCustomer", LanguageDropdown, [

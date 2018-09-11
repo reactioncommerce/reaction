@@ -5,7 +5,6 @@ import { Reaction } from "/client/api";
 import withAccountCart from "/imports/plugins/core/graphql/lib/hocs/withAccountCart";
 import withShopId from "/imports/plugins/core/graphql/lib/hocs/withShopId";
 import withViewer from "/imports/plugins/core/graphql/lib/hocs/withViewer";
-import { getSlug } from "/lib/api";
 import CartIconCustomer from "../components/cartIconCustomer";
 
 const handlers = {
@@ -19,7 +18,7 @@ const handlers = {
 };
 
 const composer = (props, onData) => {
-  onData(null, { shopSlug: getSlug(Reaction.getShopName().toLowerCase()) });
+  onData(null, { shopSlug: Reaction.getSlug(Reaction.getShopName().toLowerCase()) });
 };
 
 registerComponent("CartIconCustomer", CartIconCustomer, [

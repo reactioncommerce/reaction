@@ -6,7 +6,6 @@ import withShop from "/imports/plugins/core/graphql/lib/hocs/withShop";
 import withShopId from "/imports/plugins/core/graphql/lib/hocs/withShopId";
 import withViewer from "/imports/plugins/core/graphql/lib/hocs/withViewer";
 import withAccountCart from "/imports/plugins/core/graphql/lib/hocs/withAccountCart";
-import { getSlug } from "/lib/api";
 import NavBarCustomer from "../components/navbarCustomer";
 
 export function composer(props, onData) {
@@ -35,7 +34,7 @@ export function composer(props, onData) {
     searchEnabled,
     searchTemplate,
     hasProperPermission,
-    shopSlug: getSlug(Reaction.getShopName().toLowerCase())
+    shopSlug: Reaction.getSlug(Reaction.getShopName().toLowerCase())
   });
 }
 
