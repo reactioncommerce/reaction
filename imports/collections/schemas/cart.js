@@ -114,6 +114,10 @@ export const CartItem = new SimpleSchema({
     label: "Cart Item shopId"
   },
   "subtotal": Number,
+  "tax": {
+    type: Number,
+    optional: true
+  },
   "taxCode": {
     type: String,
     optional: true
