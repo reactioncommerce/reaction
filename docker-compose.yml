@@ -11,26 +11,6 @@ networks:
 
 services:
 
-  devserver:
-    build:
-      context: .
-      dockerfile: Dockerfile-devserver
-    command: bash -c "echo 'Starting Reaction Node server...' && npm install && npm run devserver"
-    depends_on:
-      - mongo
-    environment:
-      ROOT_URL: "http://localhost:3030"
-      MONGO_URL: "mongodb://mongo:27017/reaction"
-      BABEL_DISABLE_CACHE: 1 # This is needed to pick up changes to .graphql files. See https://www.npmjs.com/package/babel-plugin-inline-import#caveats
-    networks:
-      default:
-      reaction-api:
-    ports:
-      - "3030:3030"
-    volumes:
-      - .:/app
-      - devserver_node_modules:/app/node_modules # do not link node_modules in, and persist it between dc up runs
-
   reaction:
     build:
       context: .
@@ -69,6 +49,5 @@ services:
       - mongo
 
 volumes:
-  devserver_node_modules:
   mongo-db:
   reaction_node_modules:

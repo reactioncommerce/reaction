@@ -191,8 +191,7 @@
     }
   },
   "scripts": {
-    "devserver": "npm run reaction-node",
-    "reaction-node": "NODE_ENV=reaction-node nodemon ./imports/node-app/index.js",
+    "devserver": "ROOT_URL=http://localhost:3030 MONGO_URL=mongodb://mongo:27017/reaction NODE_ENV=reaction-node nodemon ./imports/node-app/index.js",
     "lint": "eslint .",
     "test": "npm run test:unit && npm run test:integration && npm run test:app",
     "test:app": "MONGO_URL='' TEST_CLIENT=0 meteor test --once --full-app --driver-package meteortesting:mocha",
