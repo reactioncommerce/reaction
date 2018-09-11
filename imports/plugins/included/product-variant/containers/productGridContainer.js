@@ -35,7 +35,7 @@ const wrapComponent = (Comp) => (
       };
     }
 
-    componentWillMount() {
+    UNSAFE_componentWillMount() { // eslint-disable-line camelcase
       const selectedProducts = Reaction.getUserPreferences("reaction-product-variant", "selectedGridItems");
       const { products } = this;
 
@@ -60,9 +60,11 @@ const wrapComponent = (Comp) => (
           });
         }
       }
+
+      return null;
     }
 
-    componentWillReceiveProps = (nextProps) => {
+    UNSAFE_componentWillReceiveProps = (nextProps) => { // eslint-disable-line camelcase
       this.setState({
         products: nextProps.products,
         productIds: nextProps.productIds,
@@ -174,6 +176,13 @@ const wrapComponent = (Comp) => (
   }
 );
 
+/**
+ * @name composer
+ * @summary Builds productMediaById object and passes to child component
+ * @param {Object} props - Props passed down from parent components
+ * @param {Function} onData - Callback to execute with props
+ * @returns {undefined}
+ */
 function composer(props, onData) {
   // Instantiate an object for use as a map. This object does not inherit prototype or methods from `Object`
   const productMediaById = Object.create(null);

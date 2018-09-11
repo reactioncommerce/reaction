@@ -1,3 +1,4 @@
+import Logger from "@reactioncommerce/logger";
 import { Migrations } from "meteor/percolate:migrations";
 import { Catalog } from "/lib/collections";
 import collections from "/imports/collections/rawCollections";
@@ -10,6 +11,10 @@ Migrations.add({
       "product.type": "product-simple"
     }).fetch();
 
-    products.forEach((product) => Promise.await(hashProduct(product.product._id, collections)));
+    try {
+      products.forEach((product) => Promise.await(hashProduct(product.product._id, collections)));
+    } catch (error) {
+      Logger.error("Error in migration 28, hashProduct", error);
+    }
   }
 });

@@ -1,7 +1,7 @@
 {
   "name": "reaction",
   "description": "Reaction is a modern reactive, real-time event driven ecommerce platform.",
-  "version": "1.15.0",
+  "version": "1.16.0",
   "main": "main.js",
   "directories": {
     "test": "tests"
@@ -23,7 +23,7 @@
     "@reactioncommerce/components": "0.21.0",
     "@reactioncommerce/components-context": "1.0.0",
     "@reactioncommerce/data-factory": "^1.0.0",
-    "@reactioncommerce/file-collections": "0.5.0",
+    "@reactioncommerce/file-collections": "0.6.0",
     "@reactioncommerce/file-collections-sa-gridfs": "0.0.2",
     "@reactioncommerce/hooks": "1.0.2",
     "@reactioncommerce/job-queue": "1.0.4",
@@ -53,7 +53,6 @@
     "deep-diff": "^0.3.8",
     "deep-equal": "^1.0.1",
     "dnd-core": "^2.5.4",
-    "es6-error": "^4.1.1",
     "escape-string-regexp": "^1.0.5",
     "express": "4.16.2",
     "faker": "^4.1.0",
@@ -98,6 +97,7 @@
     "radium": "^0.22.0",
     "ramda": "^0.25.0",
     "react": "16.4.2",
+    "react-animate-height": "2.0.3",
     "react-apollo": "2.1.9",
     "react-autosuggest": "^9.3.3",
     "react-avatar": "^2.5.1",
@@ -123,6 +123,7 @@
     "react-taco-table": "^0.5.1",
     "react-tether": "^0.6.1",
     "react-textarea-autosize": "^5.2.1",
+    "react-transition-group": "2.4.0",
     "reacto-form": "0.0.2",
     "recompose": "^0.26.0",
     "shallowequal": "^1.0.2",
@@ -138,9 +139,7 @@
     "tether-drop": "^1.4.2",
     "tether-tooltip": "^1.2.0",
     "transliteration": "github:reactioncommerce/transliteration",
-    "url": "^0.11.0",
-    "velocity-animate": "^1.5.1",
-    "velocity-react": "1.4.1"
+    "url": "^0.11.0"
   },
   "devDependencies": {
     "@babel/cli": "7.0.0-beta.49",

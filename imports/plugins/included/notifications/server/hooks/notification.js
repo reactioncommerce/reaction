@@ -33,7 +33,7 @@ const sendNotificationToAdmin = (adminUserId) => {
 };
 
 MethodHooks.after("cart/copyCartToOrder", (options) => {
-  const userId = Meteor.userId();
+  const userId = Reaction.getUserId();
   const type = "newOrder";
   const prefix = Reaction.getShopPrefix();
   const url = `${prefix}/notifications`;

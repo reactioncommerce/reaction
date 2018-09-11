@@ -249,3 +249,43 @@
     display: inline-block;
   }
 }
+
+input.highlight, textarea.highlight {
+  animation-name: 'highlightInput';
+  animation-duration: 300ms;
+}
+
+@keyframes highlightInput {
+  0% {
+    background-color: auto;
+  }
+  30% {
+    background-color: #e2f2e2;
+  }
+  70% {
+    background-color: #e2f2e2;
+  }
+  100% {
+    background-color: auto;
+  }
+}
+
+input.highlight-variant, textarea.highlight-variant {
+  animation-name: 'highlightVariantInput';
+  animation-duration: 300ms;
+}
+
+@keyframes highlightVariantInput {
+  0% {
+    background-color: auto;
+  }
+  30% {
+    background-color: #f0fff4;
+  }
+  70% {
+    background-color: #f0fff4;
+  }
+  100% {
+    background-color: auto;
+  }
+}

@@ -27,7 +27,7 @@ export const methods = {
     check(doc, Object);
 
     const shopId = Reaction.getShopId();
-    const userId = Meteor.userId();
+    const userId = Reaction.getUserId();
 
     // Check that this user has permission to update templates for the active shop
     if (!Reaction.hasPermission("reaction-templates", userId, shopId)) {
