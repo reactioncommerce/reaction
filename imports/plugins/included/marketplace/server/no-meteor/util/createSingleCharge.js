@@ -86,6 +86,7 @@ export default async function createSingleCharge(stripe, group, stripeCustomerId
     cardBrand: charge.source.brand,
     createdAt: new Date(charge.created * 1000), // convert S to MS
     data: {
+      billingAddress,
       chargeId: charge.id,
       charge,
       gqlType: "StripeCardPaymentData" // GraphQL union resolver uses this

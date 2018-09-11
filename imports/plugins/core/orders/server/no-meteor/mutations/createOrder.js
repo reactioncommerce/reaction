@@ -196,6 +196,21 @@ async function buildOrderItem(inputItem, currencyCode, collections) {
 }
 
 /**
+ * @summary Combines shippingAddress and shippingAddressId input
+ * @param {Object} addressInput Address from the client
+ * @param {String} addressIdInput Address ID from the client
+ * @returns {Object} shippingAddress object
+ */
+function getShippingAddressWithId(addressInput, addressIdInput) {
+  if (!addressInput) return null;
+
+  return {
+    ...addressInput,
+    _id: addressIdInput || Random.id()
+  };
+}
+
+/**
  * @method createOrder
  * @summary Creates an order
  * @param {Object} context - an object containing the per-request state
@@ -220,7 +235,7 @@ export default async function createOrder(context, input) {
   const finalFulfillmentGroups = await Promise.all(fulfillmentGroups.map(async (groupInput, index) => {
     const finalGroup = {
       _id: Random.id(),
-      address: groupInput.data && groupInput.data.shippingAddress,
+      address: groupInput.data ? getShippingAddressWithId(groupInput.data.shippingAddress, groupInput.data.shippingAddressId) : null,
       items: groupInput.items,
       shopId: groupInput.shopId,
       type: groupInput.type,
@@ -238,6 +253,7 @@ export default async function createOrder(context, input) {
     finalGroup.shipmentMethod = {
       _id: selectedFulfillmentMethod.method._id,
       carrier: selectedFulfillmentMethod.method.carrier,
+      currencyCode,
       label: selectedFulfillmentMethod.method.label,
       group: selectedFulfillmentMethod.method.group,
       name: selectedFulfillmentMethod.method.name,

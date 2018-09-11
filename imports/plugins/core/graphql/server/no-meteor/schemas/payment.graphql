@@ -109,26 +109,30 @@ input PlaceOrderWithExampleIOUPaymentInput {
   payment: ExampleIOUPaymentInput!
 }
 
-"An example"
-type ExamplePaymentData {
-  example: String!
-}
+"Data for an example IOU payment"
+type ExampleIOUPaymentData {
+  "The billing address entered or chosen by the shopper"
+  billingAddress: Address!
 
-union PaymentData = ExamplePaymentData
+  "The name of the IOU payer entered by the shopper"
+  fullName: String!
+}
 
 "Data for a Stripe card payment"
 type StripeCardPaymentData {
+  "The billing address entered or chosen by the shopper"
+  billingAddress: Address!
+
   "The Stripe charge ID"
   chargeId: String!
 }
 
-extend union PaymentData = StripeCardPaymentData
+union PaymentData = ExampleIOUPaymentData | StripeCardPaymentData
 
 "Payment plugins will extend or override this"
 enum PaymentMethodName {
-  discountcodes
-  examplepaymentmethod
-  reactionstripe
+  iou_example
+  stripe_card
 }
 
 "An example"

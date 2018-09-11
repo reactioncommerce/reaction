@@ -98,6 +98,7 @@ export default async function placeOrderWithExampleIOUPayment(context, input) {
         amount: group.invoice.total,
         createdAt: new Date(),
         data: {
+          billingAddress,
           fullName,
           gqlType: "ExampleIOUPaymentData" // GraphQL union resolver uses this
         },

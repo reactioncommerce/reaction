@@ -114,21 +114,25 @@ export const Notes = new SimpleSchema({
 registerSchema("Notes", Notes);
 
 /**
- * @name SelectedShippingMethod
+ * @name SelectedFulfillmentOption
  * @memberof Schemas
  * @type {SimpleSchema}
  * @property {String} _id Shipment method Id
- * @property {String} name Method name
- * @property {String} label Public label
+ * @property {String} carrier optional
+ * @property {String} currencyCode Currency code for interpreting rate and handling
  * @property {String} group Group, allowed values: `Ground`, `Priority`, `One Day`, `Free`
  * @property {Number} handling optional, default value: `0`
+ * @property {String} label Public label
+ * @property {String} name Method name
  * @property {Number} rate Rate
- * @property {String} carrier optional
  */
-export const SelectedShippingMethod = new SimpleSchema({
+export const SelectedFulfillmentOption = new SimpleSchema({
   _id: String,
-  name: String,
-  label: String,
+  carrier: {
+    type: String,
+    optional: true
+  },
+  currencyCode: String,
   group: {
     type: String,
     label: "Group",
@@ -139,13 +143,11 @@ export const SelectedShippingMethod = new SimpleSchema({
     type: Number,
     min: 0
   },
+  label: String,
+  name: String,
   rate: {
     type: Number,
     min: 0
-  },
-  carrier: {
-    type: String,
-    optional: true
   }
 });
 
@@ -352,7 +354,7 @@ const OrderFulfillmentGroup = new SimpleSchema({
   "items.$": OrderItem,
   "itemIds": [String],
   "payment": Payment,
-  "shipmentMethod": SelectedShippingMethod,
+  "shipmentMethod": SelectedFulfillmentOption,
   "shippingLabelUrl": {
     type: String,
     optional: true

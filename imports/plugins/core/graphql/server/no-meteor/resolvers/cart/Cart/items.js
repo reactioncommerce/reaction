@@ -4,7 +4,7 @@ import { xformCartItems } from "@reactioncommerce/reaction-graphql-xforms/cart";
 /**
  * @name "Cart.items"
  * @method
- * @memberof Accounts/GraphQL
+ * @memberof Cart/GraphQL
  * @summary converts the `items` prop on the provided cart to a connection
  * @param {Object} cart - result of the parent resolver, which is a Cart object in GraphQL schema format
  * @return {Promise<Object>} A connection object

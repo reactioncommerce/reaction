@@ -76,13 +76,13 @@ type Address implements Node {
   fullName: String!
 
   "Is this the default address for billing purposes?"
-  isBillingDefault: Boolean!
+  isBillingDefault: Boolean
 
   "Is this a commercial address?"
   isCommercial: Boolean!
 
   "Is this the default address to use when selecting a shipping address at checkout?"
-  isShippingDefault: Boolean!
+  isShippingDefault: Boolean
 
   "Arbitrary additional metadata about this address"
   metafields: [Metafield]

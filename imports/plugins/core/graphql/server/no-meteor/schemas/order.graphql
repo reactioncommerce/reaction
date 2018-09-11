@@ -1,6 +1,6 @@
 extend type Query {
   "Get an order by its ID"
-  orderById(id: ID!): Order
+  orderById(id: ID!, shopId: ID!, token: String): Order
 
   "Get all orders for a single account, optionally limited to certain shop IDs"
   ordersByAccountId(accountId: ID!, shopIds: [ID]): [Order]!
@@ -94,7 +94,7 @@ type OrderItem implements Node {
   shop: Shop!
 
   "The price of the item multiplied by the quantity of this item ordered"
-  subtotal: Float!
+  subtotal: Money!
 
   "Tax code for this item"
   taxCode: String
