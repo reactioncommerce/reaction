@@ -10,7 +10,7 @@ export default {
   _id: (node) => encodeCatalogProductOpaqueId(node._id),
   productId: (node) => encodeProductOpaqueId(node.productId),
   shop: resolveShopFromShopId,
-  pricing,
+  pricing: (node, { currencyCode }, context) => pricing(node, currencyCode, context),
   tagIds,
   tags,
   media: (node, args, context) => node.media && node.media.map((mediaItem) => xformProductMedia(mediaItem, context)),

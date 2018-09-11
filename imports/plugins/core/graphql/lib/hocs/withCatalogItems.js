@@ -8,13 +8,14 @@ import getCatalogItems from "../queries/getCatalogItems";
 export default (Component) => (
   class CatalogItems extends React.Component {
     static propTypes = {
+      currencyCode: PropTypes.string,
       shopId: PropTypes.string,
       shouldSkipGraphql: PropTypes.bool, // Whether to skip this HOC's GraphQL query & data
       tagId: PropTypes.string
     };
 
     render() {
-      const { shouldSkipGraphql, shopId, tagId } = this.props;
+      const { currencyCode = "", shouldSkipGraphql, shopId, tagId } = this.props;
 
       if (shouldSkipGraphql || !shopId) {
         return (
@@ -22,7 +23,7 @@ export default (Component) => (
         );
       }
 
-      const variables = { shopId };
+      const variables = { shopId, currencyCode };
 
       if (tagId) {
         variables.tagIds = [tagId];
@@ -41,6 +42,16 @@ export default (Component) => (
 
             if (loading === false && catalogItems) {
               props.catalogItems = (catalogItems.edges || []).map((edge) => edge.node.product);
+
+              // Use prices in selected currency if available
+              props.catalogItems.forEach((catalogItem) => {
+                catalogItem.pricing.forEach((pricing) => {
+                  if (pricing.currencyExchangePricing) {
+                    catalogItem.pricing = pricing.currencyExchangePricing;
+                    console.log("pricing", pricing);
+                  }
+                });
+              });
 
               const { pageInfo } = catalogItems;
               if (pageInfo) {
