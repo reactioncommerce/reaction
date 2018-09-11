@@ -127,7 +127,7 @@ class BrowserRouter extends Component {
     }
     MetaData.init(routeData);
 
-    if (previousRoute && analytics) { // eslint-disable-line no-undef
+    if (previousRoute && typeof analytics !== "undefined") { // eslint-disable-line no-undef
       setTimeout(() => {
         // Track page views with Segment
         const { referrer, title } = document;
