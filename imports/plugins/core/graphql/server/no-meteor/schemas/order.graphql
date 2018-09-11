@@ -140,7 +140,9 @@ type OrderFulfillmentGroup implements Node {
   "Total quantity of all items in the group"
   totalItemQuantity: Int!
 
-  "The fulfillment type. Any valid type that has been registered by a fulfillment plugin. Examples: \"shipping\", \"digital\""
+  """
+  The fulfillment type. Any valid type that has been registered by a fulfillment plugin. Examples: "shipping", "digital"
+  """
   type: FulfillmentType!
 }
 
@@ -232,7 +234,9 @@ input OrderFulfillmentGroupInput {
   """
   totalPrice: Float!
 
-  "The fulfillment type. Any valid type that has been registered by a fulfillment plugin. Examples: \"shipping\", \"digital\""
+  """
+  The fulfillment type. Any valid type that has been registered by a fulfillment plugin. Examples: "shipping", "digital"
+  """
   type: FulfillmentType!
 }
 

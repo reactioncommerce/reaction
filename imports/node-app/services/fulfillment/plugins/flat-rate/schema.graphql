@@ -21,7 +21,9 @@ type FlatRateFulfillmentMethod implements Node {
   "The cost of this fulfillment method to the shop, if you track this"
   cost: Float
 
-  "The fulfillment types for which this method may be used. For example, \"shipping\" or \"digital\"."
+  """
+  The fulfillment types for which this method may be used. For example, "shipping" or "digital".
+  """
   fulfillmentTypes: [FulfillmentType]!
 
   "The group to which this method belongs"
@@ -52,7 +54,9 @@ input FlatRateFulfillmentMethodInput {
   "The cost of this fulfillment method to the shop, if you track this"
   cost: Float
 
-  "The fulfillment types for which this method may be used. For example, \"shipping\" or \"digital\"."
+  """
+  The fulfillment types for which this method may be used. For example, "shipping" or "digital".
+  """
   fulfillmentTypes: [FulfillmentType]!
 
   "The group to which this method belongs"

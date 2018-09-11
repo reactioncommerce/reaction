@@ -45,7 +45,9 @@ type FulfillmentGroup implements Node {
   "The fulfillment method selected by a shopper for this group, with its associated price"
   selectedFulfillmentOption: FulfillmentOption
 
-  "The fulfillment type. Any valid type that has been registered by a fulfillment plugin. Examples: \"shipping\", \"digital\""
+  """
+  The fulfillment type. Any valid type that has been registered by a fulfillment plugin. Examples: "shipping", "digital"
+  """
   type: FulfillmentType!
 }
 

@@ -28,7 +28,9 @@ type FulfillmentMethod implements Node {
   "The name of this method, for display in the user interface"
   displayName: String!
 
-  "The fulfillment types for which this method may be used. For example, \"shipping\" or \"digital\"."
+  """
+  The fulfillment types for which this method may be used. For example, "shipping" or "digital".
+  """
   fulfillmentTypes: [FulfillmentType]!
 
   "The group to which this method belongs"

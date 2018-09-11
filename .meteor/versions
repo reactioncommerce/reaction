@@ -96,6 +96,7 @@ oauth2@1.2.0
 observe-sequence@1.0.16
 ongoworks:security@2.1.0
 ordered-dict@1.1.0
+orionsoft:graphql-compiler@0.0.4
 percolate:migrations@0.9.8
 practicalmeteor:chai@2.1.0_1
 practicalmeteor:mocha-core@1.0.1

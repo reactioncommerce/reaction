@@ -59,6 +59,7 @@ ongoworks:security
 tmeasday:publish-counts
 percolate:migrations
 gadicc:blaze-react-component
+orionsoft:graphql-compiler
 
 # Testing packages
 dburles:factory

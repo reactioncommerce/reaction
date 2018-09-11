@@ -208,7 +208,6 @@
   "babel": {
     "plugins": [
       "transform-class-properties",
-      "babel-plugin-inline-import",
       [
         "lodash",
         {
