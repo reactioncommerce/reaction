@@ -24,7 +24,10 @@ class BrowserRouter extends Component {
   static propTypes = {
     children: PropTypes.node,
     history: PropTypes.object,
-    store: PropTypes.object
+    store: PropTypes.object,
+    tracking: PropTypes.shape({
+      trackEvent: PropTypes.func
+    })
   }
 
   static contextTypes = {
@@ -123,6 +126,20 @@ class BrowserRouter extends Component {
       Router.Hooks.run("onEnter", currentRoute.name, routeData);
     }
     MetaData.init(routeData);
+
+    if (previousRoute && analytics) { // eslint-disable-line no-undef
+      setTimeout(() => {
+        // Track page views with Segment
+        const { referrer, title } = document;
+        const { href, pathname } = window.location;
+        analytics.page({ // eslint-disable-line no-undef
+          referrer,
+          title,
+          path: pathname,
+          url: href
+        });
+      }, 1000); // Give MetaData.init 1s to set page metadata before tracking
+    }
   }
 
   render() {
