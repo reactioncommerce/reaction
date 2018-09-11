@@ -5,7 +5,10 @@ import { Address as AddressSchema } from "/imports/collections/schemas";
 const METHOD = "credit";
 const PACKAGE_NAME = "example-paymentmethod";
 const PAYMENT_METHOD_NAME = "iou_example";
-const PROCESSOR = "IOU";
+
+// NOTE: The "processor" value is lowercased and then prefixed to various payment Meteor method names,
+// so for example, if this is "Example", the list refunds method is expected to be named "example/refund/list"
+const PROCESSOR = "Example";
 
 const paymentInputSchema = new SimpleSchema({
   billingAddress: AddressSchema,

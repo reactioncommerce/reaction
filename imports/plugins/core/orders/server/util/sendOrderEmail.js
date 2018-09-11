@@ -81,53 +81,30 @@ export default function sendOrderEmail(order, action) {
   // Get shop logo, if available
   const emailLogo = Reaction.Email.getShopLogo(shop);
 
-  let subtotal = 0;
-  let shippingCost = 0;
-  let taxes = 0;
-  let discounts = 0;
-  let amount = 0;
-  let address = {};
-  let displayName = "";
-  let shippingAddress = {};
-  let tracking;
-  let carrier = "";
+  const amount = order.shipping.reduce((sum, group) => sum + group.payment.amount, 0);
+  const discounts = order.shipping.reduce((sum, group) => sum + group.payment.invoice.discounts, 0);
+  const subtotal = order.shipping.reduce((sum, group) => sum + group.payment.invoice.subtotal, 0);
+  const taxes = order.shipping.reduce((sum, group) => sum + group.payment.invoice.taxes, 0);
+  const shippingCost = order.shipping.reduce((sum, group) => sum + group.payment.invoice.shipping, 0);
 
-  for (const billingRecord of order.billing) {
-    subtotal += Number.parseFloat(billingRecord.invoice.subtotal);
-    taxes += Number.parseFloat(billingRecord.invoice.taxes);
-    discounts += Number.parseFloat(billingRecord.invoice.discounts);
-    amount += billingRecord.paymentMethod.amount;
-    ({ address, displayName } = billingRecord);
-  }
-
-  for (const shippingRecord of order.shipping) {
-    shippingAddress = shippingRecord.address;
-    ({ tracking } = shippingRecord);
-    const { shipmentMethod } = shippingRecord;
-    ({ carrier } = shipmentMethod || {});
-    const { rate } = shipmentMethod || {};
-    shippingCost += rate || 0;
-  }
+  const { address: shippingAddress, payment, shipmentMethod, tracking } = order.shipping[0];
+  const { carrier } = shipmentMethod;
+  const { address, currency, displayName } = payment;
 
   const refundResult = Meteor.call("orders/refunds/list", order);
   const refundTotal = Array.isArray(refundResult) && refundResult.reduce((acc, refund) => acc + refund.amount, 0);
 
-  // Get user currency formatting from shops collection, remove saved rate
-  // using billing[0] here to get the currency and exchange rate used because
-  // in multi-shop mode, the currency object is different across shops
-  // and it's inconsistent, i.e. sometimes there's no exchangeRate field in the secondary
-  // shop's currency array.
-  // TODO: Remove billing[0] and properly acquire userCurrency and exchange rate
-  const userCurrencyFormatting = _.omit(shop.currencies[order.billing[0].currency.userCurrency], ["enabled", "rate"]);
+  const userCurrencyFormatting = _.omit(shop.currencies[currency.userCurrency], ["enabled", "rate"]);
 
   // Get user currency exchange rate at time of transaction
-  const userCurrencyExchangeRate = order.billing[0].currency.exchangeRate;
+  const userCurrencyExchangeRate = currency.exchangeRate;
 
   // Combine same products into single "product" for display purposes
   const combinedItems = [];
 
   // Loop through all items in the order. The items are split into individual items
-  for (const orderItem of order.items) {
+  const orderItems = order.shipping.reduce((list, group) => [...list, ...group.items], []);
+  for (const orderItem of orderItems) {
     // Find an existing item in the combinedItems array
     const foundItem = combinedItems.find((combinedItem) => combinedItem.variantId === orderItem.variantId);
 
