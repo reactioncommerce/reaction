@@ -1,5 +1,3 @@
-//import routes from "routes";
-
 /**
  * Transform a variant object into a partial representation of the Segment product schema
  * @name getVariantTrackingData
@@ -48,10 +46,8 @@ export default function getVariantTrackingData({ product, variant, optionId }) {
       }
     }
 
-    const route = routes.findAndGetUrls("product", { slugOrId: product.slug || product._id, variantId: data._id });
-
-    if (route && route.urls) {
-      url = route.urls.as;
+    if (window.location.pathname) {
+      url = window.location.pathname;
     }
   }
 

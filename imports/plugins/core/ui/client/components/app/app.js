@@ -104,7 +104,7 @@ class App extends Component {
   }
 
   renderAnalyticsScripts() {
-    let analyticsScripts = [];
+    const analyticsScripts = [];
     analyticsProviders.forEach((provider) => {
       const script = provider.renderScript();
       if (script) {
@@ -123,7 +123,7 @@ class App extends Component {
       <Fragment>
         <Helmet script={analyticsScripts} />
       </Fragment>
-    )
+    );
   }
 
   render() {

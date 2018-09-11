@@ -17,6 +17,9 @@ class ProductGrid extends Component {
     tag: PropTypes.shape({
       _id: PropTypes.string,
       name: PropTypes.string
+    }),
+    tracking: PropTypes.shape({
+      trackEvent: PropTypes.func
     })
   }
 

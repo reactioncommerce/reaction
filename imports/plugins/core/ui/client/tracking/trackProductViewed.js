@@ -12,7 +12,7 @@ import getVariantTrackingData from "./utils/getVariantTrackingData";
  * @returns {undefined}
  */
 export default function trackProductViewed(tracking, { product, variant, optionId = "" }) {
-  const { trackEvent } = tracking
+  const { trackEvent } = tracking;
   let data = {
     action: "Product Viewed",
     ...getProductTrackingData(product)
