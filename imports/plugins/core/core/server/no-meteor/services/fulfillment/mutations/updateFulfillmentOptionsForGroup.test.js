@@ -1,6 +1,5 @@
 import Factory from "/imports/test-utils/helpers/factory";
 import mockContext from "/imports/test-utils/helpers/mockContext";
-import { rewire as rewire$app, restore as restore$app } from "../..";
 import updateFulfillmentOptionsForGroup from "./updateFulfillmentOptionsForGroup";
 
 jest.mock("../util/getCartById", () => jest.fn().mockImplementation(() => Promise.resolve({
@@ -14,22 +13,22 @@ jest.mock("../util/getCartById", () => jest.fn().mockImplementation(() => Promis
 
 const fakeCart = Factory.Cart.makeOne();
 const fakeQuote = Factory.ShipmentQuote.makeOne();
-const mockGetShippingRates = jest.fn().mockName("getShippingRates");
+const mockGetFulfillmentMethodsWithQuotes = jest.fn().mockName("getFulfillmentMethodsWithQuotes");
 
 beforeAll(() => {
-  rewire$app({
-    getShippingPrices: mockGetShippingRates
-  });
+  mockContext.services = {
+    fulfillment: {
+      getFulfillmentMethodsWithQuotes: mockGetFulfillmentMethodsWithQuotes
+    }
+  };
 });
 
 beforeEach(() => {
-  mockGetShippingRates.mockClear();
+  mockGetFulfillmentMethodsWithQuotes.mockClear();
 });
 
-afterAll(restore$app);
-
 test("updates cart properly for empty rates", async () => {
-  mockGetShippingRates.mockReturnValueOnce(Promise.resolve([]));
+  mockGetFulfillmentMethodsWithQuotes.mockReturnValueOnce(Promise.resolve([]));
   mockContext.collections.Cart.findOne.mockReturnValueOnce(Promise.resolve(fakeCart));
 
   const result = await updateFulfillmentOptionsForGroup(mockContext, {
@@ -50,7 +49,7 @@ test("updates cart properly for empty rates", async () => {
 });
 
 test("updates cart properly for error rates", async () => {
-  mockGetShippingRates.mockReturnValueOnce(Promise.resolve([{
+  mockGetFulfillmentMethodsWithQuotes.mockReturnValueOnce(Promise.resolve([{
     requestStatus: "error",
     shippingProvider: "all",
     message: "All requests for shipping methods failed."
@@ -79,7 +78,7 @@ test("updates cart properly for error rates", async () => {
 });
 
 test("updates cart properly for success rates", async () => {
-  mockGetShippingRates.mockReturnValueOnce(Promise.resolve([fakeQuote]));
+  mockGetFulfillmentMethodsWithQuotes.mockReturnValueOnce(Promise.resolve([fakeQuote]));
   mockContext.collections.Cart.findOne.mockReturnValueOnce(Promise.resolve(fakeCart));
 
   const result = await updateFulfillmentOptionsForGroup(mockContext, {

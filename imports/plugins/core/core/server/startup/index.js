@@ -1,4 +1,14 @@
 import Logger from "@reactioncommerce/logger";
+import { Meteor } from "meteor/meteor";
+import { MongoInternals } from "meteor/mongo";
+import { WebApp } from "meteor/webapp";
+import { Shops } from "/lib/collections";
+import ReactionNodeApp from "/imports/node-app/core/ReactionNodeApp";
+import { NoMeteorMedia } from "/imports/plugins/core/files/server";
+import { mutations, queries, resolvers, schemas, serviceConfig, startupFunctions } from "../no-meteor/pluginRegistration";
+import fulfillmentService from "../no-meteor/services/fulfillment";
+import Reaction from "../Reaction";
+import runMeteorMethodWithContext from "../util/runMeteorMethodWithContext";
 import Accounts from "./accounts";
 import "./browser-policy";
 import CollectionSecurity from "./collection-security";
@@ -9,9 +19,10 @@ import RateLimiters from "./rate-limits";
 import RegisterCore from "./register-core";
 import RegisterRouter from "./register-router";
 import setupCdn from "./cdn";
-import Reaction from "../Reaction";
-import { Shops } from "/lib/collections";
 
+/**
+ * Core startup function
+ */
 export default function startup() {
   const startTime = Date.now();
 
@@ -40,6 +51,55 @@ export default function startup() {
   CollectionSecurity();
   RateLimiters();
 
-  const endTime = Date.now();
-  Logger.info(`Reaction initialization finished: ${endTime - startTime}ms`);
+  const { PORT, ROOT_URL } = process.env;
+  const mongodb = MongoInternals.NpmModules.mongodb.module;
+
+  // Wire up fulfillment service plugins
+  serviceConfig.fulfillment.forEach((fulfillmentServiceConfig) => {
+    fulfillmentService.configurePlugin(fulfillmentServiceConfig);
+  });
+
+  const app = new ReactionNodeApp({
+    addCallMeteorMethod(context) {
+      context.callMeteorMethod = (name, ...args) => runMeteorMethodWithContext(context, name, args);
+    },
+    additionalCollections: { Media: NoMeteorMedia },
+    // XXX Eventually these should be from individual env variables instead
+    debug: Meteor.isDevelopment,
+    context: {
+      mutations,
+      queries
+    },
+    graphQL: {
+      graphiql: Meteor.isDevelopment,
+      resolvers,
+      schemas
+    },
+    mongodb,
+    port: PORT,
+    rootUrl: ROOT_URL,
+    services: {
+      fulfillment: fulfillmentService
+    },
+    startupFunctions
+  });
+
+  const { db } = MongoInternals.defaultRemoteCollectionDriver().mongo;
+  app.setMongoDatabase(db);
+
+  app.runServiceStartup()
+    .then(() => {
+      // bind the specified paths to the Express server running Apollo + GraphiQL
+      WebApp.connectHandlers.use(app.expressApp);
+      Logger.info(`GraphQL listening at http://localhost:${PORT}/graphql-alpha`);
+      Logger.info(`GraphiQL UI: http://localhost:${PORT}/graphiql`);
+
+      const endTime = Date.now();
+      Logger.info(`Reaction initialization finished: ${endTime - startTime}ms`);
+
+      return null;
+    })
+    .catch((error) => {
+      Logger.error(error);
+    });
 }

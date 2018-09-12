@@ -1,4 +1,4 @@
-import ReactionService from "../../core/ReactionService";
+import ReactionService from "/imports/node-app/core/ReactionService";
 import startup from "./startup";
 
 const service = new ReactionService({ startup });

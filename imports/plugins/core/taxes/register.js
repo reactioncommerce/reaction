@@ -1,10 +1,12 @@
 import Reaction from "/imports/plugins/core/core/server/Reaction";
+import startup from "./server/no-meteor/startup";
 
 Reaction.registerPackage({
   label: "Taxes",
   name: "reaction-taxes",
   icon: "fa fa-university",
   autoEnable: true,
+  startupFunctions: [startup],
   settings: {
     custom: {
       enabled: true

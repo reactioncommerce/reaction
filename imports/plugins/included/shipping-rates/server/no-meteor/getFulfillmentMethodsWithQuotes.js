@@ -2,7 +2,7 @@ import Logger from "@reactioncommerce/logger";
 import ReactionError from "@reactioncommerce/reaction-error";
 
 /**
- * @summary Returns a list of shipping rates based on the items in a fulfillment group.
+ * @summary Returns a list of fulfillment method quotes based on the items in a fulfillment group.
  * @param {Object} context - Context
  * @param {Object} fulfillmentGroup - details about the purchase a user wants to make.
  * @param {Array} [previousQueryResults] - an array of shipping rates and
@@ -14,7 +14,7 @@ import ReactionError from "@reactioncommerce/reaction-error";
  * shipping rates.
  * @private
  */
-export default async function getShippingPrices(context, fulfillmentGroup, previousQueryResults = []) {
+export default async function getFulfillmentMethodsWithQuotes(context, fulfillmentGroup, previousQueryResults = []) {
   const { collections } = context;
   const { Packages, Shipping } = collections;
   const [rates = [], retrialTargets = []] = previousQueryResults;
@@ -113,6 +113,6 @@ export default async function getShippingPrices(context, fulfillmentGroup, previ
     return [rates, retrialTargets];
   }
 
-  Logger.debug("Flat rate getShippingPrices", rates);
+  Logger.debug("Flat rate getFulfillmentMethodsWithQuotes", rates);
   return [rates, retrialTargets];
 }

@@ -2,10 +2,10 @@ import cors from "cors";
 import bodyParser from "body-parser";
 import express from "express";
 import { graphqlExpress, graphiqlExpress } from "apollo-server-express";
+import { makeExecutableSchema } from "graphql-tools";
 import buildContext from "./util/buildContext";
 import getErrorFormatter from "./util/getErrorFormatter";
 import meteorTokenMiddleware from "./util/meteorTokenMiddleware";
-import schema from "/imports/plugins/core/graphql/server/no-meteor/schema";
 
 const defaultServerConfig = {
   // graphql endpoint
@@ -30,7 +30,7 @@ export default function createApolloServer(options = {}) {
   // the Meteor GraphQL server is an Express server
   const expressServer = express();
 
-  const { addCallMeteorMethod, context: contextFromOptions } = options;
+  const { addCallMeteorMethod, context: contextFromOptions, resolvers, typeDefs } = options;
   const graphQLPath = options.path || defaultServerConfig.path;
 
   // GraphQL endpoint, enhanced with JSON body parser
@@ -61,7 +61,7 @@ export default function createApolloServer(options = {}) {
 
           return res;
         },
-        schema
+        schema: makeExecutableSchema({ typeDefs, resolvers })
       };
     })
   );

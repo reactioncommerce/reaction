@@ -2,9 +2,8 @@ import Reaction from "/imports/plugins/core/core/server/Reaction";
 import startup from "./server/no-meteor/startup";
 
 Reaction.registerPackage({
-  label: "Discounts",
-  name: "reaction-discounts",
-  icon: "fa fa-gift",
+  label: "Cart",
+  name: "reaction-cart",
   autoEnable: true,
   startupFunctions: [startup]
 });

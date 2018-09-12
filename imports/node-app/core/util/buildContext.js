@@ -2,8 +2,6 @@ import { getHasPermissionFunctionForUser } from "/imports/plugins/core/accounts/
 import getShopIdForContext from "/imports/plugins/core/accounts/server/no-meteor/getShopIdForContext";
 import getRootUrl from "/imports/plugins/core/core/server/util/getRootUrl";
 import getAbsoluteUrl from "/imports/plugins/core/core/server/util/getAbsoluteUrl";
-import mutations from "/imports/plugins/core/graphql/server/no-meteor/mutations";
-import queries from "/imports/plugins/core/graphql/server/no-meteor/queries";
 
 /**
  * @name buildContext
@@ -20,9 +18,6 @@ import queries from "/imports/plugins/core/graphql/server/no-meteor/queries";
  */
 export default async function buildContext(context, request) {
   const { user } = request;
-
-  context.mutations = mutations;
-  context.queries = queries;
 
   context.user = user || null;
   const userId = (user && user._id) || null;

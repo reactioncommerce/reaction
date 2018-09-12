@@ -8,7 +8,9 @@ import createApolloServer from "../imports/node-app/core/createApolloServer";
 import defineCollections from "../imports/node-app/core/util/defineCollections";
 import Factory from "../imports/test-utils/helpers/factory";
 import hashLoginToken from "../imports/node-app/core/util/hashLoginToken";
-import setUpFileCollections from "../imports/node-app/services/files/setUpFileCollections";
+import setUpFileCollections from "../imports/plugins/core/core/server/no-meteor/services/files/setUpFileCollections";
+import mutations from "/imports/node-app/core/mutations";
+import queries from "/imports/node-app/core/queries";
 
 class TestApp {
   constructor() {
@@ -24,7 +26,9 @@ class TestApp {
       },
       context: {
         appEvents,
-        collections: this.collections
+        collections: this.collections,
+        mutations,
+        queries
       },
       debug: true
     });

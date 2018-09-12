@@ -49,9 +49,12 @@ export default function startup({ appEvents, collections }) {
         supportedFulfillmentTypes = ["shipping"];
       }
 
+      // Out of the current groups, returns the one that this item should be in by default, if it isn't
+      // already in a group
       const group = determineInitialGroupForItem(currentGroups, supportedFulfillmentTypes, item.shopId);
+
       if (!group) {
-        // Add one
+        // If no compatible group, add one with initially just this item in it
         didModifyGroups = true;
         currentGroups.push({
           _id: Random.id(),
@@ -60,12 +63,19 @@ export default function startup({ appEvents, collections }) {
           type: supportedFulfillmentTypes[0]
         });
       } else if (!group.itemIds) {
+        // If there is a compatible group but it has no items array, add one with just this item in it
         didModifyGroups = true;
         group.itemIds = [item._id];
       } else if (group.itemIds.indexOf(item._id) === -1) {
+        // If there is a compatible group with an items array but it is missing this item, add this item ID to the array
         didModifyGroups = true;
         group.itemIds.push(item._id);
       }
+    });
+
+    // Items may also have been removed. Need to remove their IDs from each group.itemIds
+    currentGroups.forEach((group) => {
+      group.itemIds = (group.itemIds || []).filter((itemId) => !!updatedCart.items.find((item) => item._id === itemId));
     });
 
     if (!didModifyGroups) return;

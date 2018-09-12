@@ -4,11 +4,28 @@ import createApolloServer from "./createApolloServer";
 import defineCollections from "./util/defineCollections";
 import { getRegisteredFunctionsForType, registerFunction } from "./util/registerFunction";
 
+/**
+ * @summary A default addCallMeteorMethod function. Adds `callMeteorMethod`
+ *   function to the context (mutates it)
+ * @param {Object} context The application context
+ * @returns {undefined}
+ */
+function defaultAddCallMethod(context) {
+  context.callMeteorMethod = (name) => {
+    console.warn(`The "${name}" Meteor method was called. The method has not yet been converted to a mutation that` + // eslint-disable-line no-console
+      " works outside of Meteor. If you are relying on a side effect or return value from this method, you may notice unexpected behavior.");
+    return null;
+  };
+}
+
 export default class ReactionNodeApp {
   constructor(options = {}) {
     this.options = { ...options };
-    this.collections = {};
+    this.collections = {
+      ...(options.additionalCollections || {})
+    };
     this.context = {
+      ...(options.context || {}),
       app: this,
       appEvents,
       collections: this.collections,
@@ -17,24 +34,26 @@ export default class ReactionNodeApp {
       services: this.options.services
     };
 
-    this.mongodb = mongodb;
+    this.mongodb = options.mongodb || mongodb;
+
+    const { graphiql, resolvers, schemas } = options.graphQL;
 
     this.expressApp = createApolloServer({
-      addCallMeteorMethod(context) {
-        context.callMeteorMethod = (name) => {
-          console.warn(`The "${name}" Meteor method was called. The method has not yet been converted to a mutation that` + // eslint-disable-line no-console
-            " works outside of Meteor. If you are relying on a side effect or return value from this method, you may notice unexpected behavior.");
-          return null;
-        };
-      },
+      addCallMeteorMethod: this.options.addCallMeteorMethod || defaultAddCallMethod,
       context: this.context,
       debug: this.options.debug || false,
-      graphiql: this.options.graphiql || false
+      graphiql: graphiql || false,
+      resolvers,
+      typeDefs: schemas
     });
   }
 
-  async connectToMongo() {
-    const { mongoUrl } = this.options;
+  setMongoDatabase(db) {
+    this.db = db;
+    defineCollections(this.db, this.collections);
+  }
+
+  async connectToMongo({ mongoUrl }) {
     const lastSlash = mongoUrl.lastIndexOf("/");
     const dbUrl = mongoUrl.slice(0, lastSlash);
     const dbName = mongoUrl.slice(lastSlash + 1);
@@ -47,15 +66,26 @@ export default class ReactionNodeApp {
         }
 
         this.mongoClient = client;
-        this.db = client.db(dbName);
-        defineCollections(this.db, this.collections);
+        this.setMongoDatabase(client.db(dbName));
+
         resolve();
       });
     });
   }
 
-  async startServer() {
-    const { port } = this.options;
+  async runServiceStartup() {
+    const { additionalServices = [], services, startupFunctions = [] } = this.options;
+
+    await services.fulfillment.startup(this.context);
+    await Promise.all(additionalServices.map(async (service) => {
+      await service.startup(this.context);
+    }));
+    await Promise.all(startupFunctions.map(async (startupFunction) => {
+      await startupFunction(this.context);
+    }));
+  }
+
+  async startServer({ port }) {
     return new Promise((resolve, reject) => {
       try {
         this.server = this.expressApp.listen(String(port), () => {
@@ -80,20 +110,15 @@ export default class ReactionNodeApp {
     });
   }
 
-  async start() {
-    const { additionalServices, services } = this.options;
-
+  async start({ mongoUrl, port }) {
     // (1) Connect to MongoDB database
-    await this.connectToMongo();
+    await this.connectToMongo({ mongoUrl });
 
     // (2) Run service startup functions
-    await services.fulfillment.startup(this.context);
-    await Promise.all(additionalServices.map(async (service) => {
-      await service.startup(this.context);
-    }));
+    await this.runServiceStartup();
 
     // (3) Start the Express GraphQL server
-    await this.startServer();
+    await this.startServer({ port });
   }
 
   async stop() {

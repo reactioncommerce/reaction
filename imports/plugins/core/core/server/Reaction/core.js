@@ -10,6 +10,7 @@ import { Roles } from "meteor/alanning:roles";
 import { EJSON } from "meteor/ejson";
 import * as Collections from "/lib/collections";
 import ConnectionDataStore from "/imports/plugins/core/core/server/util/connectionDataStore";
+import { mutations, queries, resolvers, schemas, serviceConfig, startupFunctions } from "../no-meteor/pluginRegistration";
 import createGroups from "./createGroups";
 import processJobs from "./processJobs";
 import sendVerificationEmail from "./sendVerificationEmail";
@@ -72,6 +73,31 @@ export default {
   Packages: {},
 
   registerPackage(packageInfo) {
+    // Mutate globals with package info
+    if (packageInfo.graphQL) {
+      if (packageInfo.graphQL.resolvers) {
+        merge(resolvers, packageInfo.graphQL.resolvers);
+      }
+      if (packageInfo.graphQL.schemas) {
+        schemas.push(...packageInfo.graphQL.schemas);
+      }
+    }
+    if (packageInfo.mutations) {
+      merge(mutations, packageInfo.mutations);
+    }
+    if (packageInfo.queries) {
+      merge(queries, packageInfo.queries);
+    }
+    if (packageInfo.startupFunctions) {
+      startupFunctions.push(...packageInfo.startupFunctions);
+    }
+    if (packageInfo.serviceConfig) {
+      if (packageInfo.serviceConfig.fulfillment) {
+        serviceConfig.fulfillment.push(packageInfo.serviceConfig.fulfillment);
+      }
+    }
+
+    // Save the package info
     this.Packages[packageInfo.name] = packageInfo;
     const registeredPackage = this.Packages[packageInfo.name];
     return registeredPackage;

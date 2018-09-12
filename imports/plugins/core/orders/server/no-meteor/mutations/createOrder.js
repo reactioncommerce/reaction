@@ -244,7 +244,7 @@ export default async function createOrder(context, input) {
 
     // Verify that the price for the chosen shipment method on each group matches between what the client
     // provided and what the current quote is.
-    const rates = await services.fulfillment.getShippingPrices(finalGroup, context);
+    const rates = await services.fulfillment.getFulfillmentMethodsWithQuotes(finalGroup, context);
     const selectedFulfillmentMethod = rates.find((rate) => groupInput.selectedFulfillmentMethodId === rate.method._id);
     if (!selectedFulfillmentMethod) {
       throw new ReactionError("invalid", "The selected fulfillment method is no longer available." +
