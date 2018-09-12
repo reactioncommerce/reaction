@@ -8,9 +8,9 @@ import setUpFileCollections from "./setUpFileCollections";
  * @param {Object} context.collections A map of MongoDB collections
  * @returns {undefined}
  */
-export default function startup({ app, collections }) {
+export default function startup({ app, collections, rootUrl }) {
   const { downloadManager, Media } = setUpFileCollections({
-    absoluteUrlPrefix: app.options.rootUrl,
+    absoluteUrlPrefix: rootUrl,
     db: app.db,
     Logger,
     MediaRecords: collections.MediaRecords,

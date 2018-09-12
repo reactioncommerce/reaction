@@ -8,11 +8,9 @@ import queries from "./core/queries";
 import resolvers from "./core/resolvers";
 import schemas from "./core/schemas";
 
-const { MONGO_URL, ROOT_URL } = process.env;
+const { MONGO_URL, PORT = 3030, ROOT_URL } = process.env;
 if (!MONGO_URL) throw new Error("You must set MONGO_URL");
 if (!ROOT_URL) throw new Error("You must set ROOT_URL");
-
-const PORT = 3030;
 
 const app = new ReactionNodeApp({
   additionalServices: [
@@ -21,15 +19,14 @@ const app = new ReactionNodeApp({
   debug: true,
   context: {
     mutations,
-    queries
+    queries,
+    rootUrl: ROOT_URL
   },
   graphQL: {
     graphiql: true,
     resolvers,
     schemas
   },
-  port: PORT,
-  rootUrl: ROOT_URL,
   services: {
     fulfillment: fulfillmentService
   }

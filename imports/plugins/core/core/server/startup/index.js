@@ -81,7 +81,8 @@ export default function startup() {
     debug: Meteor.isDevelopment,
     context: {
       mutations: finalMutations,
-      queries: finalQueries
+      queries: finalQueries,
+      rootUrl: ROOT_URL
     },
     graphQL: {
       graphiql: Meteor.isDevelopment,
@@ -89,8 +90,6 @@ export default function startup() {
       schemas: [...coreSchemas, ...schemas]
     },
     mongodb,
-    port: PORT,
-    rootUrl: ROOT_URL,
     services: {
       fulfillment: fulfillmentService
     },
@@ -108,8 +107,12 @@ export default function startup() {
 
       // bind the specified paths to the Express server running Apollo + GraphiQL
       WebApp.connectHandlers.use(app.expressApp);
-      Logger.info(`GraphQL listening at http://localhost:${PORT}/graphql-alpha`);
-      Logger.info(`GraphiQL UI: http://localhost:${PORT}/graphiql`);
+
+      // Log to inform that the server is running
+      WebApp.httpServer.on("listening", () => {
+        Logger.info(`GraphQL listening at ${ROOT_URL}graphql-alpha`);
+        Logger.info(`GraphiQL UI: ${ROOT_URL}graphiql`);
+      });
 
       const endTime = Date.now();
       Logger.info(`Reaction initialization finished: ${endTime - startTime}ms`);
