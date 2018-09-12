@@ -12,7 +12,7 @@ import node from "./node.graphql";
 import order from "./order.graphql";
 import payment from "./payment.graphql";
 import role from "./role.graphql";
-import fulfillmentService from "/imports/node-app/services/fulfillment";
+import fulfillmentService from "/imports/plugins/core/core/server/no-meteor/services/fulfillment";
 import shop from "./shop.graphql";
 import tag from "./tag.graphql";
 

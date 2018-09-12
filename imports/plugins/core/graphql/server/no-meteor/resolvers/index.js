@@ -3,7 +3,7 @@ import account from "./account";
 import catalog from "./catalog";
 import cart from "./cart";
 import core from "./core";
-import fulfillmentService from "/imports/node-app/services/fulfillment";
+import fulfillmentService from "/imports/plugins/core/core/server/no-meteor/services/fulfillment";
 import order from "./order";
 import payment from "./payment";
 import ping from "./ping";

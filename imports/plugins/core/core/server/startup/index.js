@@ -7,6 +7,8 @@ import { Shops } from "/lib/collections";
 import ReactionNodeApp from "/imports/node-app/core/ReactionNodeApp";
 import { NoMeteorMedia } from "/imports/plugins/core/files/server";
 import { setBaseContext } from "/imports/plugins/core/graphql/server/getGraphQLContextInMeteorMethod";
+import coreResolvers from "/imports/plugins/core/graphql/server/no-meteor/resolvers";
+import coreSchemas from "/imports/plugins/core/graphql/server/no-meteor/schemas";
 import { mutations, queries, resolvers, schemas, serviceConfig, startupFunctions } from "../no-meteor/pluginRegistration";
 import coreQueries from "../no-meteor/queries";
 import fulfillmentService from "../no-meteor/services/fulfillment";
@@ -82,8 +84,8 @@ export default function startup() {
     },
     graphQL: {
       graphiql: Meteor.isDevelopment,
-      resolvers,
-      schemas
+      resolvers: merge({}, coreResolvers, resolvers),
+      schemas: [...coreSchemas, ...schemas]
     },
     mongodb,
     port: PORT,
