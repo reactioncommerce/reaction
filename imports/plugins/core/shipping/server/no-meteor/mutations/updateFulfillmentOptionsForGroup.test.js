@@ -16,10 +16,8 @@ const fakeQuote = Factory.ShipmentQuote.makeOne();
 const mockGetFulfillmentMethodsWithQuotes = jest.fn().mockName("getFulfillmentMethodsWithQuotes");
 
 beforeAll(() => {
-  mockContext.services = {
-    fulfillment: {
-      getFulfillmentMethodsWithQuotes: mockGetFulfillmentMethodsWithQuotes
-    }
+  mockContext.queries = {
+    getFulfillmentMethodsWithQuotes: mockGetFulfillmentMethodsWithQuotes
   };
 });
 

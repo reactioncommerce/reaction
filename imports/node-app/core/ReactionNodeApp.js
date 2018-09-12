@@ -29,9 +29,11 @@ export default class ReactionNodeApp {
       app: this,
       appEvents,
       collections: this.collections,
+      getFunctionsOfType(type) {
+        return ((options.functionsByType || {})[type]) || [];
+      },
       getRegisteredFunctionsForType,
-      registerFunction,
-      services: this.options.services
+      registerFunction
     };
 
     this.mongodb = options.mongodb || mongodb;
@@ -74,9 +76,8 @@ export default class ReactionNodeApp {
   }
 
   async runServiceStartup() {
-    const { additionalServices = [], services, startupFunctions = [] } = this.options;
+    const { additionalServices = [], startupFunctions = [] } = this.options;
 
-    await services.fulfillment.startup(this.context);
     await Promise.all(additionalServices.map(async (service) => {
       await service.startup(this.context);
     }));

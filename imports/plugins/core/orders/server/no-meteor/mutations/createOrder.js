@@ -223,7 +223,7 @@ export default async function createOrder(context, input) {
 
   const { afterValidate, createPaymentForFulfillmentGroup, order: orderInput } = cleanedInput;
   const { cartId, currencyCode, email, fulfillmentGroups, shopId } = orderInput;
-  const { accountId, account, collections, services } = context;
+  const { accountId, account, collections } = context;
   const { Orders } = collections;
 
   // We are mixing concerns a bit here for now. This is for backwards compatibility with current
@@ -244,7 +244,7 @@ export default async function createOrder(context, input) {
 
     // Verify that the price for the chosen shipment method on each group matches between what the client
     // provided and what the current quote is.
-    const rates = await services.fulfillment.getFulfillmentMethodsWithQuotes(finalGroup, context);
+    const rates = await context.queries.getFulfillmentMethodsWithQuotes(finalGroup, context);
     const selectedFulfillmentMethod = rates.find((rate) => groupInput.selectedFulfillmentMethodId === rate.method._id);
     if (!selectedFulfillmentMethod) {
       throw new ReactionError("invalid", "The selected fulfillment method is no longer available." +

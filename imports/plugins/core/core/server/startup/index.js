@@ -10,8 +10,7 @@ import { setBaseContext } from "/imports/plugins/core/graphql/server/getGraphQLC
 import coreSchemas from "/imports/plugins/core/graphql/server/no-meteor/schemas";
 import coreResolvers from "../no-meteor/resolvers";
 import coreQueries from "../no-meteor/queries";
-import { mutations, queries, resolvers, schemas, serviceConfig, startupFunctions } from "../no-meteor/pluginRegistration";
-import fulfillmentService from "../no-meteor/services/fulfillment";
+import { functionsByType, mutations, queries, resolvers, schemas, startupFunctions } from "../no-meteor/pluginRegistration";
 import Reaction from "../Reaction";
 import runMeteorMethodWithContext from "../util/runMeteorMethodWithContext";
 import Accounts from "./accounts";
@@ -59,11 +58,6 @@ export default function startup() {
   const { ROOT_URL } = process.env;
   const mongodb = MongoInternals.NpmModules.mongodb.module;
 
-  // Wire up fulfillment service plugins
-  serviceConfig.fulfillment.forEach((fulfillmentServiceConfig) => {
-    fulfillmentService.configurePlugin(fulfillmentServiceConfig);
-  });
-
   // Adding core resolvers this way because `core` is not a typical plugin and doesn't call registerPackage
   // Note that coreResolvers comes first so that plugin resolvers can overwrite core resolvers if necessary
   const finalResolvers = merge({}, coreResolvers, resolvers);
@@ -84,15 +78,13 @@ export default function startup() {
       queries: finalQueries,
       rootUrl: ROOT_URL
     },
+    functionsByType,
     graphQL: {
       graphiql: Meteor.isDevelopment,
       resolvers: finalResolvers,
       schemas: [...coreSchemas, ...schemas]
     },
     mongodb,
-    services: {
-      fulfillment: fulfillmentService
-    },
     startupFunctions
   });
 

@@ -14,17 +14,13 @@ Reaction.registerPackage({
     resolvers: graphqlResolvers
   },
   mutations,
+  functionsByType: {
+    getFulfillmentMethodsWithQuotes: [getFulfillmentMethodsWithQuotes]
+  },
   settings: {
     name: "Flat Rate Service",
     flatRates: {
       enabled: false
-    }
-  },
-  serviceConfig: {
-    fulfillment: {
-      fulfillmentMethodQuoteFunctions: [
-        getFulfillmentMethodsWithQuotes
-      ]
     }
   },
   registry: [

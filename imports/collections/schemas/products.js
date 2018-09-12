@@ -93,7 +93,7 @@ registerSchema("ProductPosition", ProductPosition);
  * @property {Boolean} isDeleted, default value: `false`
  * @property {String} barcode optional
  * @property {Number} compareAtPrice optional, Compare at price
- * @property {String} fulfillmentService optional, Fullfillment service
+ * @property {String} fulfillmentService optional, Fulfillment service
  * @property {Number} weight, default value: `0`
  * @property {Number} length optional, default value: `0`
  * @property {Number} width optional, default value: `0`

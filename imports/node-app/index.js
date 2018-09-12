@@ -2,7 +2,6 @@ import express from "express";
 import Logger from "@reactioncommerce/logger";
 import ReactionNodeApp from "./core/ReactionNodeApp";
 import filesService from "./services/files";
-import fulfillmentService from "./services/fulfillment";
 import mutations from "./core/mutations";
 import queries from "./core/queries";
 import resolvers from "./core/resolvers";
@@ -26,9 +25,6 @@ const app = new ReactionNodeApp({
     graphiql: true,
     resolvers,
     schemas
-  },
-  services: {
-    fulfillment: fulfillmentService
   }
   // startupFunctions // TODO
 });

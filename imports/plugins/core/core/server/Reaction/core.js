@@ -10,7 +10,7 @@ import { Roles } from "meteor/alanning:roles";
 import { EJSON } from "meteor/ejson";
 import * as Collections from "/lib/collections";
 import ConnectionDataStore from "/imports/plugins/core/core/server/util/connectionDataStore";
-import { mutations, queries, resolvers, schemas, serviceConfig, startupFunctions } from "../no-meteor/pluginRegistration";
+import { mutations, queries, resolvers, schemas, functionsByType, startupFunctions } from "../no-meteor/pluginRegistration";
 import createGroups from "./createGroups";
 import processJobs from "./processJobs";
 import sendVerificationEmail from "./sendVerificationEmail";
@@ -91,10 +91,13 @@ export default {
     if (packageInfo.startupFunctions) {
       startupFunctions.push(...packageInfo.startupFunctions);
     }
-    if (packageInfo.serviceConfig) {
-      if (packageInfo.serviceConfig.fulfillment) {
-        serviceConfig.fulfillment.push(packageInfo.serviceConfig.fulfillment);
-      }
+    if (packageInfo.functionsByType) {
+      Object.keys(packageInfo.functionsByType).forEach((type) => {
+        if (!Array.isArray(functionsByType[type])) {
+          functionsByType[type] = [];
+        }
+        functionsByType[type].push(...packageInfo.functionsByType[type]);
+      });
     }
 
     // Save the package info
