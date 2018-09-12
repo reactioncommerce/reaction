@@ -12,5 +12,5 @@ export default async function resolveAccountFromAccountId(parent, _, context) {
   const { accountId } = parent;
   if (!accountId) return null;
 
-  return context.queries.accounts.userAccount(context, accountId);
+  return context.queries.userAccount(context, accountId);
 }

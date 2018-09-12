@@ -13,5 +13,5 @@ import { decodeGroupOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/g
  */
 export default async function group(_, { id }, context) {
   const dbGroupId = decodeGroupOpaqueId(id);
-  return context.queries.accounts.group(context, dbGroupId);
+  return context.queries.group(context, dbGroupId);
 }

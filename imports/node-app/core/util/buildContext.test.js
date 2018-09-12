@@ -1,6 +1,4 @@
 import mockContext from "/imports/test-utils/helpers/mockContext";
-import mutations from "/imports/plugins/core/graphql/server/no-meteor/mutations";
-import queries from "/imports/plugins/core/graphql/server/no-meteor/queries";
 import buildContext from "./buildContext";
 
 const fakeUser = {
@@ -13,8 +11,6 @@ test("properly mutates the context object without user", async () => {
   await buildContext(context, { user: undefined });
   expect(context).toEqual({
     collections: mockContext.collections,
-    mutations,
-    queries,
     shopId: null,
     user: null,
     userHasPermission: jasmine.any(Function),
@@ -35,8 +31,6 @@ test("properly mutates the context object with user", async () => {
     account: mockAccount,
     accountId: mockAccount._id,
     collections: mockContext.collections,
-    mutations,
-    queries,
     shopId: null,
     user: fakeUser,
     userHasPermission: jasmine.any(Function),

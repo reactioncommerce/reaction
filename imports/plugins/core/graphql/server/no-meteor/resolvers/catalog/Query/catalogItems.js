@@ -27,7 +27,7 @@ export default async function catalogItems(_, args, context) {
   const shopIds = opaqueShopIds && opaqueShopIds.map(decodeShopOpaqueId);
   const tagIds = opaqueTagIds && opaqueTagIds.map(decodeTagOpaqueId);
 
-  const query = await context.queries.catalog.catalogItems(context, {
+  const query = await context.queries.catalogItems(context, {
     shopIds,
     tagIds
   });

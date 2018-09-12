@@ -14,14 +14,14 @@ const mockItems = [
 
 const mockItemsQuery = getFakeMongoCursor("Catalog", mockItems);
 
-test("calls queries.catalog.catalogItems and returns a partial connection", async () => {
-  const catalogItems = jest.fn().mockName("queries.catalog.catalogItems").mockReturnValueOnce(Promise.resolve(mockItemsQuery));
+test("calls queries.catalogItems and returns a partial connection", async () => {
+  const catalogItems = jest.fn().mockName("queries.catalogItems").mockReturnValueOnce(Promise.resolve(mockItemsQuery));
 
   const result = await catalogItemsResolver({}, {
     shopIds,
     tagIds
   }, {
-    queries: { catalog: { catalogItems } }
+    queries: { catalogItems }
   });
 
   expect(result).toEqual({

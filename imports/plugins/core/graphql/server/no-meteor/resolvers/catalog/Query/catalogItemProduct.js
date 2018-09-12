@@ -22,7 +22,7 @@ export default async function catalogItemProduct(_, args, context) {
     productSlug = slugOrId;
   }
 
-  return context.queries.catalog.catalogItemProduct(context, {
+  return context.queries.catalogItemProduct(context, {
     _id: productId,
     slug: productSlug
   });

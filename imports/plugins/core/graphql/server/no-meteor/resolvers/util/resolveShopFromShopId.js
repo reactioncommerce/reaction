@@ -12,5 +12,5 @@ export default async function resolveShopFromShopId(parent, _, context) {
   const { shopId } = parent;
   if (!shopId) return null;
 
-  return context.queries.shops.shopById(context, shopId);
+  return context.queries.shopById(context, shopId);
 }

@@ -10,10 +10,10 @@ const fakeCart = {
   accountId: fakeAccount._id
 };
 
-test("calls queries.accounts.userAccount and returns the requested account", async () => {
-  const userAccount = jest.fn().mockName("queries.accounts.userAccount").mockReturnValueOnce(Promise.resolve(fakeAccount));
+test("calls queries.userAccount and returns the requested account", async () => {
+  const userAccount = jest.fn().mockName("queries.userAccount").mockReturnValueOnce(Promise.resolve(fakeAccount));
 
-  const accountObject = await resolveAccountFromAccountId(fakeCart, {}, { queries: { accounts: { userAccount } } });
+  const accountObject = await resolveAccountFromAccountId(fakeCart, {}, { queries: { userAccount } });
 
   expect(accountObject).toEqual(fakeAccount);
 

@@ -23,7 +23,7 @@ import { xformArrayToConnection } from "@reactioncommerce/reaction-graphql-xform
 export default async function subTags({ relatedTagIds }, connectionArgs, context) {
   if (!relatedTagIds || relatedTagIds.length === 0) return xformArrayToConnection(connectionArgs, []);
 
-  const query = await context.queries.catalog.tagsByIds(context, relatedTagIds, connectionArgs);
+  const query = await context.queries.tagsByIds(context, relatedTagIds, connectionArgs);
 
   return getPaginatedResponse(query, connectionArgs);
 }

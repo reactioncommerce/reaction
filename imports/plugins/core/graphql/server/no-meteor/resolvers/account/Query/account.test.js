@@ -7,11 +7,11 @@ const mockAccount = {
   name: "Reaction"
 };
 
-test("calls queries.accounts.userAccount and returns the requested user", async () => {
-  const userAccount = jest.fn().mockName("queries.accounts.userAccount").mockReturnValueOnce(Promise.resolve(mockAccount));
+test("calls queries.userAccount and returns the requested user", async () => {
+  const userAccount = jest.fn().mockName("queries.userAccount").mockReturnValueOnce(Promise.resolve(mockAccount));
 
   const user = await account(null, { id: base64ID }, {
-    queries: { accounts: { userAccount } },
+    queries: { userAccount },
     userId: "999"
   });
 

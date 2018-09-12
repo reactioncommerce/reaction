@@ -11,11 +11,11 @@ const mockGroups = [
 
 const mockGroupsQuery = getFakeMongoCursor("Groups", mockGroups);
 
-test("calls queries.accounts.groups and returns a partial connection", async () => {
-  const groups = jest.fn().mockName("queries.accounts.groups").mockReturnValueOnce(Promise.resolve(mockGroupsQuery));
+test("calls queries.groups and returns a partial connection", async () => {
+  const groups = jest.fn().mockName("queries.groups").mockReturnValueOnce(Promise.resolve(mockGroupsQuery));
 
   const result = await groupsResolver({ _id: base64ID }, {}, {
-    queries: { accounts: { groups } }
+    queries: { groups }
   });
 
   expect(result).toEqual({

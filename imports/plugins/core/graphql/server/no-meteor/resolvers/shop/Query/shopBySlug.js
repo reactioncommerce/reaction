@@ -10,5 +10,5 @@
  * @return {Promise<Object>} shop object
  */
 export default async function shopBySlug(_, { slug }, context) {
-  return context.queries.shops.shopBySlug(context, slug);
+  return context.queries.shopBySlug(context, slug);
 }

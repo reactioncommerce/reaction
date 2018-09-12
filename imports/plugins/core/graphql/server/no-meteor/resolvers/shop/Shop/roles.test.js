@@ -11,11 +11,11 @@ const mockRoles = [
 
 const mockRolesQuery = getFakeMongoCursor("Tags", mockRoles);
 
-test("calls queries.accounts.roles and returns a partial connection", async () => {
-  const roles = jest.fn().mockName("queries.accounts.roles").mockReturnValueOnce(Promise.resolve(mockRolesQuery));
+test("calls queries.roles and returns a partial connection", async () => {
+  const roles = jest.fn().mockName("queries.roles").mockReturnValueOnce(Promise.resolve(mockRolesQuery));
 
   const result = await rolesResolver({ _id: base64ID }, {}, {
-    queries: { accounts: { roles } }
+    queries: { roles }
   });
 
   expect(result).toEqual({

@@ -1,3 +1,4 @@
+import { merge } from "lodash";
 import Logger from "@reactioncommerce/logger";
 import { Meteor } from "meteor/meteor";
 import { MongoInternals } from "meteor/mongo";
@@ -6,6 +7,7 @@ import { Shops } from "/lib/collections";
 import ReactionNodeApp from "/imports/node-app/core/ReactionNodeApp";
 import { NoMeteorMedia } from "/imports/plugins/core/files/server";
 import { mutations, queries, resolvers, schemas, serviceConfig, startupFunctions } from "../no-meteor/pluginRegistration";
+import coreQueries from "../no-meteor/queries";
 import fulfillmentService from "../no-meteor/services/fulfillment";
 import Reaction from "../Reaction";
 import runMeteorMethodWithContext from "../util/runMeteorMethodWithContext";
@@ -59,6 +61,10 @@ export default function startup() {
     fulfillmentService.configurePlugin(fulfillmentServiceConfig);
   });
 
+  // Adding core queries this way because `core` is not a typical plugin and doesn't call registerPackage
+  // Note that coreQueries comes first so that plugin queries can overwrite core queries if necessary
+  const finalQueries = merge({}, coreQueries, queries);
+
   const app = new ReactionNodeApp({
     addCallMeteorMethod(context) {
       context.callMeteorMethod = (name, ...args) => runMeteorMethodWithContext(context, name, args);
@@ -68,7 +74,7 @@ export default function startup() {
     debug: Meteor.isDevelopment,
     context: {
       mutations,
-      queries
+      queries: finalQueries
     },
     graphQL: {
       graphiql: Meteor.isDevelopment,

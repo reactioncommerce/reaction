@@ -24,6 +24,6 @@ export default async function groups(_, { shopId, ...connectionArgs }, context) 
   // Transform ID from base64
   const dbShopId = decodeShopOpaqueId(shopId);
 
-  const query = await context.queries.accounts.groups(context, dbShopId);
+  const query = await context.queries.groups(context, dbShopId);
   return getPaginatedResponse(query, connectionArgs);
 }

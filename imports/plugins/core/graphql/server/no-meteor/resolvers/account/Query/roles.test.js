@@ -42,11 +42,11 @@ const rolesData = [
   }
 ];
 
-test("calls queries.accounts.roles with a shopId and returns roles", async () => {
-  const rolesQuery = jest.fn().mockName("queries.accounts.roles").mockReturnValueOnce(getFakeMongoCursor("roles", rolesData));
+test("calls queries.roles with a shopId and returns roles", async () => {
+  const rolesQuery = jest.fn().mockName("queries.roles").mockReturnValueOnce(getFakeMongoCursor("roles", rolesData));
 
   const result = await roles(null, { shopId: shopBase64ID }, {
-    queries: { accounts: { roles: rolesQuery } },
+    queries: { roles: rolesQuery },
     userId: "123"
   });
 

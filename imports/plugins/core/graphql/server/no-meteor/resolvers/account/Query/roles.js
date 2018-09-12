@@ -15,7 +15,7 @@ export default async function roles(_, { shopId, ...connectionArgs }, context) {
   // Transform ID from base64
   const dbShopId = decodeShopOpaqueId(shopId);
 
-  const query = await context.queries.accounts.roles(context, dbShopId);
+  const query = await context.queries.roles(context, dbShopId);
 
   return getPaginatedResponse(query, connectionArgs);
 }

@@ -19,5 +19,5 @@ export default async function tag(_, { slugOrId }, context) {
     dbTagId = slugOrId;
   }
 
-  return context.queries.catalog.tag(context, dbTagId);
+  return context.queries.tag(context, dbTagId);
 }

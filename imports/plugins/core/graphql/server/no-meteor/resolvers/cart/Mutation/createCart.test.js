@@ -15,7 +15,7 @@ const items = [{
   quantity: 1
 }];
 
-test("correctly passes through to mutations.cart.createCart", async () => {
+test("correctly passes through to mutations.createCart", async () => {
   const fakeResult = {
     cart: {
       _id: "123"
@@ -25,13 +25,11 @@ test("correctly passes through to mutations.cart.createCart", async () => {
     token: "TOKEN"
   };
 
-  const mockMutation = jest.fn().mockName("mutations.cart.createCart");
+  const mockMutation = jest.fn().mockName("mutations.createCart");
   mockMutation.mockReturnValueOnce(Promise.resolve(fakeResult));
   const context = {
     mutations: {
-      cart: {
-        createCart: mockMutation
-      }
+      createCart: mockMutation
     }
   };
 

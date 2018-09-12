@@ -15,7 +15,7 @@ export default async function tags(product, connectionArgs, context) {
   const { tagIds } = product;
   if (!tagIds || tagIds.length === 0) return xformArrayToConnection(connectionArgs, []);
 
-  const query = await context.queries.catalog.tagsByIds(context, tagIds, connectionArgs);
+  const query = await context.queries.tagsByIds(context, tagIds, connectionArgs);
 
   return getPaginatedResponse(query, connectionArgs);
 }

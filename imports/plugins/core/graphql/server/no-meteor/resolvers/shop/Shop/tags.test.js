@@ -11,11 +11,11 @@ const mockTags = [
 
 const mockTagsQuery = getFakeMongoCursor("Tags", mockTags);
 
-test("calls queries.catalog.tags and returns a partial connection", async () => {
-  const tags = jest.fn().mockName("queries.catalog.tags").mockReturnValueOnce(Promise.resolve(mockTagsQuery));
+test("calls queries.tags and returns a partial connection", async () => {
+  const tags = jest.fn().mockName("queries.tags").mockReturnValueOnce(Promise.resolve(mockTagsQuery));
 
   const result = await tagsResolver({ _id: base64ID }, {}, {
-    queries: { catalog: { tags } }
+    queries: { tags }
   });
 
   expect(result).toEqual({

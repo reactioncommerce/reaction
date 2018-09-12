@@ -11,5 +11,5 @@
  */
 export default function createdBy({ createdBy: createdByAccountId }, _, context) {
   if (!createdByAccountId) return null;
-  return context.queries.accounts.userAccount(context, createdByAccountId);
+  return context.queries.userAccount(context, createdByAccountId);
 }

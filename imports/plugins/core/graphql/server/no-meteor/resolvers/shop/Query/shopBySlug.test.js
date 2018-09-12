@@ -9,9 +9,9 @@ const fakeShop = {
   slug: fakeShopSlug
 };
 
-test("calls queries.shops.shopBySlug and returns the requested shop", async () => {
-  const shopBySlugMock = jest.fn().mockName("queries.shops.shopBySlug").mockReturnValueOnce(Promise.resolve(fakeShop));
-  const shopObject = await shopBySlug(null, { slug: fakeShopSlug }, { queries: { shops: { shopBySlug: shopBySlugMock } } });
+test("calls queries.shopBySlug and returns the requested shop", async () => {
+  const shopBySlugMock = jest.fn().mockName("queries.shopBySlug").mockReturnValueOnce(Promise.resolve(fakeShop));
+  const shopObject = await shopBySlug(null, { slug: fakeShopSlug }, { queries: { shopBySlug: shopBySlugMock } });
 
   expect(shopBySlugMock).toHaveBeenCalled();
   expect(shopObject).toEqual(fakeShop);

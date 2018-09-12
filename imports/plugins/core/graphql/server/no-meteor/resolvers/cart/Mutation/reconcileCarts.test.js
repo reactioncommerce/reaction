@@ -4,18 +4,16 @@ const internalAnonymousCartId = "555";
 const opaqueAnonymousCartId = "cmVhY3Rpb24vY2FydDo1NTU=";
 const anonymousCartToken = "TOKEN";
 
-test("correctly passes through to mutations.cart.reconcileCarts", async () => {
+test("correctly passes through to mutations.reconcileCarts", async () => {
   const fakeResult = {
     cart: { _id: "123" }
   };
 
-  const mockMutation = jest.fn().mockName("mutations.cart.reconcileCarts");
+  const mockMutation = jest.fn().mockName("mutations.reconcileCarts");
   mockMutation.mockReturnValueOnce(Promise.resolve(fakeResult));
   const context = {
     mutations: {
-      cart: {
-        reconcileCarts: mockMutation
-      }
+      reconcileCarts: mockMutation
     }
   };
 

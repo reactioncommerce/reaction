@@ -27,7 +27,7 @@ export default async function tags(_, connectionArgs, context) {
 
   const dbShopId = decodeShopOpaqueId(shopId);
 
-  const query = await context.queries.catalog.tags(context, dbShopId, connectionArgs);
+  const query = await context.queries.tags(context, dbShopId, connectionArgs);
 
   return getPaginatedResponse(query, connectionArgs);
 }

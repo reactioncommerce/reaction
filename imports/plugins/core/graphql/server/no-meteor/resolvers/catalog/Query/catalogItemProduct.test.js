@@ -9,11 +9,11 @@ const productSlug = "PRODUCT_SLUG";
 const productId = "cmVhY3Rpb24vY2F0YWxvZ0l0ZW06MTIz"; // reaction/catalogItem:123
 
 // product slug
-test("calls queries.catalog.catalogItemProduct with a product slug and return a CatalogItemProduct", async () => {
+test("calls queries.catalogItemProduct with a product slug and return a CatalogItemProduct", async () => {
   const slugOrId = productSlug;
   const catalogItemProduct = jest
     .fn()
-    .mockName("queries.catalog.catalogItemProduct")
+    .mockName("queries.catalogItemProduct")
     .mockReturnValueOnce(Promise.resolve(mockItem));
   const result = await catalogItemProductResolver(
     {},
@@ -21,7 +21,7 @@ test("calls queries.catalog.catalogItemProduct with a product slug and return a 
       slugOrId
     },
     {
-      queries: { catalog: { catalogItemProduct } }
+      queries: { catalogItemProduct }
     }
   );
 
@@ -30,11 +30,11 @@ test("calls queries.catalog.catalogItemProduct with a product slug and return a 
 });
 
 // product id
-test("calls queries.catalog.catalogItemProduct with a product id and return a CatalogItemProduct", async () => {
+test("calls queries.catalogItemProduct with a product id and return a CatalogItemProduct", async () => {
   const slugOrId = productId;
   const catalogItemProduct = jest
     .fn()
-    .mockName("queries.catalog.catalogItemProduct")
+    .mockName("queries.catalogItemProduct")
     .mockReturnValueOnce(Promise.resolve(mockItem));
   const result = await catalogItemProductResolver(
     {},
@@ -42,7 +42,7 @@ test("calls queries.catalog.catalogItemProduct with a product id and return a Ca
       slugOrId
     },
     {
-      queries: { catalog: { catalogItemProduct } }
+      queries: { catalogItemProduct }
     }
   );
 

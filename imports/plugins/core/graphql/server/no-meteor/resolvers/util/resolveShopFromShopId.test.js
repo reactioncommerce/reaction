@@ -11,10 +11,10 @@ const fakeShop = {
   name: "Reaction"
 };
 
-test("calls queries.shops.shopById and returns the requested shop", async () => {
-  const shopById = jest.fn().mockName("queries.shops.shopById").mockReturnValueOnce(Promise.resolve(fakeShop));
+test("calls queries.shopById and returns the requested shop", async () => {
+  const shopById = jest.fn().mockName("queries.shopById").mockReturnValueOnce(Promise.resolve(fakeShop));
 
-  const shopObject = await resolveShopFromShopId(fakeUser, {}, { queries: { shops: { shopById } } });
+  const shopObject = await resolveShopFromShopId(fakeUser, {}, { queries: { shopById } });
 
   expect(shopObject).toEqual(fakeShop);
 

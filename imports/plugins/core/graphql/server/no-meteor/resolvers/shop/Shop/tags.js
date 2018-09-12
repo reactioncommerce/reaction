@@ -14,7 +14,7 @@ import { decodeShopOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/sh
 export default async function tags({ _id }, connectionArgs, context) {
   const dbShopId = decodeShopOpaqueId(_id);
 
-  const query = await context.queries.catalog.tags(context, dbShopId, connectionArgs);
+  const query = await context.queries.tags(context, dbShopId, connectionArgs);
 
   return getPaginatedResponse(query, connectionArgs);
 }

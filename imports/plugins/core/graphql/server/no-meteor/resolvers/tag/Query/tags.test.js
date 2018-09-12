@@ -6,17 +6,17 @@ const base64ID = "cmVhY3Rpb24vc2hvcDoxMjM="; // reaction/shop:123
 const mockTags = Factory.Tag.makeMany(3, { _id: (i) => (i + 100).toString() });
 const mockTagsQuery = getFakeMongoCursor("Tags", mockTags);
 
-test("calls queries.catalog.tags and returns a partial connection", async () => {
+test("calls queries.tags and returns a partial connection", async () => {
   const tags = jest
     .fn()
-    .mockName("queries.catalog.tags")
+    .mockName("queries.tags")
     .mockReturnValueOnce(Promise.resolve(mockTagsQuery));
 
   const result = await tagsResolver(
     {},
     { shopId: base64ID },
     {
-      queries: { catalog: { tags } }
+      queries: { tags }
     }
   );
 

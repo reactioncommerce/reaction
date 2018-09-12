@@ -11,12 +11,12 @@ const mockAccounts = [
 
 const mockAdministratorsQuery = getFakeMongoCursor("Accounts", mockAccounts);
 
-test("calls queries.accounts.shopAdministrators and returns a partial connection", async () => {
-  const shopAdministrators = jest.fn().mockName("queries.accounts.shopAdministrators")
+test("calls queries.shopAdministrators and returns a partial connection", async () => {
+  const shopAdministrators = jest.fn().mockName("queries.shopAdministrators")
     .mockReturnValueOnce(Promise.resolve(mockAdministratorsQuery));
 
   const result = await administratorsResolver({ _id: base64ID }, {}, {
-    queries: { accounts: { shopAdministrators } },
+    queries: { shopAdministrators },
     userId: "999"
   });
 

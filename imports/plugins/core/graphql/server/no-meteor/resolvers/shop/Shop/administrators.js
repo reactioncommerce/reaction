@@ -15,6 +15,6 @@ export default async function administrators(shop, connectionArgs, context) {
   // Transform ID from base64
   const dbShopId = decodeShopOpaqueId(shop._id);
 
-  const query = await context.queries.accounts.shopAdministrators(context, dbShopId);
+  const query = await context.queries.shopAdministrators(context, dbShopId);
   return getPaginatedResponse(query, connectionArgs);
 }

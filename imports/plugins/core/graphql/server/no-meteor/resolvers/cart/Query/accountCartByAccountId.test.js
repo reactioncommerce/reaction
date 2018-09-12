@@ -5,12 +5,12 @@ const opaqueShopId = "cmVhY3Rpb24vc2hvcDoxMjM=";
 const accountId = "444";
 const opaqueAccountId = "cmVhY3Rpb24vYWNjb3VudDo0NDQ=";
 
-test("calls queries.cart.accountCartByAccountId and returns the result", async () => {
+test("calls queries.accountCartByAccountId and returns the result", async () => {
   const mockResponse = "MOCK_RESPONSE";
-  const mockQuery = jest.fn().mockName("queries.cart.accountCartByAccountId").mockReturnValueOnce(Promise.resolve(mockResponse));
+  const mockQuery = jest.fn().mockName("queries.accountCartByAccountId").mockReturnValueOnce(Promise.resolve(mockResponse));
 
   const context = {
-    queries: { cart: { accountCartByAccountId: mockQuery } },
+    queries: { accountCartByAccountId: mockQuery },
     userId: "123"
   };
 

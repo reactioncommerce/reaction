@@ -14,5 +14,5 @@ import { decodeShopOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/sh
 export default async function shop(_, { id }, context) {
   const dbShopId = decodeShopOpaqueId(id);
 
-  return context.queries.shops.shopById(context, dbShopId);
+  return context.queries.shopById(context, dbShopId);
 }
