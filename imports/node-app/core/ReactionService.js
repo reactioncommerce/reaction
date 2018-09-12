@@ -4,6 +4,8 @@ export default class ReactionService {
   constructor({
     graphqlResolvers = {},
     graphqlSchemas = [],
+    mutations = {},
+    queries = {},
     startup
   } = {}) {
     this.graphqlResolvers = {};
@@ -13,6 +15,8 @@ export default class ReactionService {
     this.addGraphqlSchemas(graphqlSchemas);
 
     this.startup = typeof startup === "function" ? startup : () => {};
+    this.mutations = mutations;
+    this.queries = queries;
   }
 
   addGraphqlResolvers(resolvers) {

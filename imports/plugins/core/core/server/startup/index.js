@@ -6,6 +6,7 @@ import { WebApp } from "meteor/webapp";
 import { Shops } from "/lib/collections";
 import ReactionNodeApp from "/imports/node-app/core/ReactionNodeApp";
 import { NoMeteorMedia } from "/imports/plugins/core/files/server";
+import { setBaseContext } from "/imports/plugins/core/graphql/server/getGraphQLContextInMeteorMethod";
 import { mutations, queries, resolvers, schemas, serviceConfig, startupFunctions } from "../no-meteor/pluginRegistration";
 import coreQueries from "../no-meteor/queries";
 import fulfillmentService from "../no-meteor/services/fulfillment";
@@ -61,9 +62,12 @@ export default function startup() {
     fulfillmentService.configurePlugin(fulfillmentServiceConfig);
   });
 
+  // Add mutations from the fulfillment service
+  const finalMutations = merge({}, fulfillmentService.mutations, mutations);
+
   // Adding core queries this way because `core` is not a typical plugin and doesn't call registerPackage
   // Note that coreQueries comes first so that plugin queries can overwrite core queries if necessary
-  const finalQueries = merge({}, coreQueries, queries);
+  const finalQueries = merge({}, coreQueries, fulfillmentService.queries, queries);
 
   const app = new ReactionNodeApp({
     addCallMeteorMethod(context) {
@@ -73,7 +77,7 @@ export default function startup() {
     // XXX Eventually these should be from individual env variables instead
     debug: Meteor.isDevelopment,
     context: {
-      mutations,
+      mutations: finalMutations,
       queries: finalQueries
     },
     graphQL: {
@@ -95,6 +99,10 @@ export default function startup() {
 
   app.runServiceStartup()
     .then(() => {
+      // Set the base context used by getGraphQLContextInMeteorMethod, which ideally should be identical
+      // to the one in GraphQL
+      setBaseContext(app.context);
+
       // bind the specified paths to the Express server running Apollo + GraphiQL
       WebApp.connectHandlers.use(app.expressApp);
       Logger.info(`GraphQL listening at http://localhost:${PORT}/graphql-alpha`);
