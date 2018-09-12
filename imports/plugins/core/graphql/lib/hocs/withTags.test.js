@@ -15,23 +15,41 @@ const mocks = [
       query: getTags,
       variables: {
         shopId: fakeOpaqueShopId,
-        isTopLevel: true
+        isTopLevel: true,
+        first: 200,
+        sortBy: "name"
       }
     },
     result: {
       data: {
-        tags: {
-          edges: [
+        "tags": {
+          "edges": [
             {
-              node: {
-                _id: "cmVhY3Rpb24vdGFnOnJwakN2VEJHamhCaTJ4ZHJv",
-                name: "Shop",
-                subTagIds: [],
-                slug: "shop",
-                heroMediaUrl: null
+              "cursor": "cnBqQ3ZUQkdqaEJpMnhkcm8=",
+              "node": {
+                "_id": "cmVhY3Rpb24vdGFnOnJwakN2VEJHamhCaTJ4ZHJv",
+                "name": "Shop",
+                "slug": "shop",
+                "heroMediaUrl": null,
+                "position": null,
+                "subTags": {
+                  "edges": [],
+                  "pageInfo": {
+                    "endCursor": null,
+                    "startCursor": null,
+                    "hasNextPage": false,
+                    "hasPreviousPage": false
+                  }
+                }
               }
             }
-          ]
+          ],
+          "pageInfo": {
+            "endCursor": "cnBqQ3ZUQkdqaEJpMnhkcm8=",
+            "startCursor": "cnBqQ3ZUQkdqaEJpMnhkcm8=",
+            "hasNextPage": false,
+            "hasPreviousPage": false
+          }
         }
       }
     }
@@ -40,6 +58,10 @@ const mocks = [
     request: {
       query: getTags,
       variables: {
+        shopId: "fakeShopId",
+        isTopLevel: true,
+        first: 200,
+        sortBy: "name"
       }
     },
     result: {
@@ -54,13 +76,13 @@ const mocks = [
 test("renders child component with correct tags", async () => {
   const wrapper = mount((
     <MockedProvider mocks={mocks} addTypename={false}>
-      <TestComponent shopId={fakeOpaqueShopId} isTopLevel/>
+      <TestComponent shopId={fakeOpaqueShopId} isTopLevel={true} first={200}/>
     </MockedProvider>
   ));
 
   await waitForFalseyProp(wrapper, "MockComponent", "isLoading");
 
-  expect(wrapper.find("MockComponent").prop("tags[0]._id")).toBe(fakeOpaqueTagId);
+  expect(wrapper.find("MockComponent").prop("tags")[0]._id).toBe(fakeOpaqueTagId);
 });
 
 test("doesn't query GraphQL if no shopId is provided", async () => {

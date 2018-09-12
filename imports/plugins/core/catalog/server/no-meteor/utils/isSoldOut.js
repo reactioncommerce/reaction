@@ -8,16 +8,15 @@ import getProductQuantity from "./getProductQuantity";
  * @return {Boolean} true if quantity is zero.
  */
 export default function isSoldOut(variants) {
-  if (Array.isArray(variants) && variants.length > 0) {
+  if (Array.isArray(variants) && variants.length > 0 && variants[0].ancestors) {
     if (variants[0].ancestors.length === 2) {
       return isProductSoldOut(variants);
     }
     if (variants[0].ancestors.length === 1) {
       return isVariantSoldOut(variants);
     }
-  } else {
-    return isOptionSoldOut(variants);
   }
+  return isOptionSoldOut(variants);
 }
 
 function isVariantSoldOut(options) {
@@ -26,6 +25,7 @@ function isVariantSoldOut(options) {
 }
 
 function isOptionSoldOut(option) {
+  console.log(option, getProductQuantity(option));
   return option.inventoryManagement && getProductQuantity(option) <= 0;
 }
 

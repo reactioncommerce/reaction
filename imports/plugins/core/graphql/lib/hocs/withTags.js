@@ -15,7 +15,7 @@ export default (Component) => (
     };
 
     render() {
-      const { shouldSkipGraphql, shopId } = this.props;
+      const { shouldSkipGraphql, shopId, isTopLevel = true, first = 200 } = this.props;
 
       if (shouldSkipGraphql || !shopId) {
         return (
@@ -25,8 +25,8 @@ export default (Component) => (
 
       const variables = {
         shopId,
-        isTopLevel: true,
-        first: 200,
+        isTopLevel,
+        first,
         sortBy: "name"
       };
 
@@ -34,8 +34,9 @@ export default (Component) => (
         <Query query={getTags} variables={variables} errorPolicy="all">
           {({ error, loading, data, fetchMore }) => {
             if (error) {
-              Logger.error(error);
-              throw new ReactionError("query-error");
+              console.log(error, data);
+              // Logger.error(error);
+              // throw new ReactionError(error);
             }
             const props = {
               ...this.props,
@@ -43,7 +44,7 @@ export default (Component) => (
             };
 
             if (loading === false) {
-              if (!data) {
+              if (!data || !data.tags) {
                 return <Component {...props} shouldSkipGraphql />;
               }
               if (data.tags && data.tags.pageInfo && data.tags.pageInfo.hasNextPage) {
@@ -66,8 +67,8 @@ export default (Component) => (
                 }
               }
               props.tags = tags;
-              props.tagsByKey = tagsByKey;
-              props.tagIds = getTagIds({ tags });
+              // props.tagsByKey = tagsByKey;
+              // props.tagIds = getTagIds({ tags });
             }
 
             return (

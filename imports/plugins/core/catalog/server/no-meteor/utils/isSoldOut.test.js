@@ -8,11 +8,13 @@ const mockCollections = {};
 
 // mock variant
 const mockVariantWithInventoryManagment = {
-  inventoryManagement: true
+  inventoryManagement: true,
+  ancestors: [ "a1", "a2" ]
 };
 
 const mockVariantWithOutInventoryManagment = {
-  inventoryManagement: false
+  inventoryManagement: false,
+  ancestors: [ "a1", "a2" ]
 };
 
 beforeAll(() => {

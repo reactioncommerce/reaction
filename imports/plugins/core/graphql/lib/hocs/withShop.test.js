@@ -13,7 +13,7 @@ const mocks = [
     request: {
       query: getShop,
       variables: {
-        id: fakeOpaqueShopId
+        shopId: fakeOpaqueShopId
       }
     },
     result: {
@@ -22,6 +22,124 @@ const mocks = [
           _id: "cmVhY3Rpb24vc2hvcDpKOEJocTN1VHRkZ3daeDNyeg==",
           description: null,
           name: "Reaction",
+          language: "en",
+          languages: [
+            {
+              "label": "العربية",
+              "enabled": true,
+              "i18n": "ar"
+            },
+            {
+              "label": "Български",
+              "enabled": false,
+              "i18n": "bg"
+            },
+            {
+              "label": "中文(简体)",
+              "enabled": true,
+              "i18n": "zh"
+            },
+            {
+              "label": "České",
+              "enabled": false,
+              "i18n": "cs"
+            },
+            {
+              "label": "Deutsch",
+              "enabled": true,
+              "i18n": "de"
+            },
+            {
+              "label": "English",
+              "enabled": true,
+              "i18n": "en"
+            },
+            {
+              "label": "Ελληνικά",
+              "enabled": true,
+              "i18n": "el"
+            },
+            {
+              "label": "Español",
+              "enabled": true,
+              "i18n": "es"
+            },
+            {
+              "label": "Français",
+              "enabled": true,
+              "i18n": "fr"
+            },
+            {
+              "label": "עברית",
+              "enabled": true,
+              "i18n": "he"
+            },
+            {
+              "label": "Hrvatski",
+              "enabled": false,
+              "i18n": "hr"
+            },
+            {
+              "label": "မြန်မာဘာသာ",
+              "enabled": false,
+              "i18n": "my"
+            },
+            {
+              "label": "Italiano",
+              "enabled": false,
+              "i18n": "it"
+            },
+            {
+              "label": "Nederlands",
+              "enabled": false,
+              "i18n": "nl"
+            },
+            {
+              "label": "Norsk bokmål",
+              "enabled": false,
+              "i18n": "nb"
+            },
+            {
+              "label": "Polski",
+              "enabled": false,
+              "i18n": "pl"
+            },
+            {
+              "label": "Português",
+              "enabled": true,
+              "i18n": "pt"
+            },
+            {
+              "label": "Русский",
+              "enabled": true,
+              "i18n": "ru"
+            },
+            {
+              "label": "Română",
+              "enabled": true,
+              "i18n": "ro"
+            },
+            {
+              "label": "Slovenščina",
+              "enabled": false,
+              "i18n": "sl"
+            },
+            {
+              "label": "Svenska",
+              "enabled": false,
+              "i18n": "sv"
+            },
+            {
+              "label": "Türkçe",
+              "enabled": false,
+              "i18n": "tr"
+            },
+            {
+              "label": "tiếng Việt",
+              "enabled": false,
+              "i18n": "vi"
+            }
+          ],
           currency: {
             _id: "cmVhY3Rpb24vY3VycmVuY3k6VVNE",
             code: "USD",
@@ -1011,7 +1129,7 @@ const mocks = [
     request: {
       query: getShop,
       variables: {
-        id: "fakeId"
+        shopId: "fakeId"
       }
     },
     result: {
@@ -1025,13 +1143,12 @@ const mocks = [
 test("renders child component with correct shop id", async () => {
   const wrapper = mount((
     <MockedProvider mocks={mocks} addTypename={false}>
-      <TestComponent id="cmVhY3Rpb24vc2hvcDpKOEJocTN1VHRkZ3daeDNyeg==" />
+      <TestComponent shopId="cmVhY3Rpb24vc2hvcDpKOEJocTN1VHRkZ3daeDNyeg==" />
     </MockedProvider>
   ));
 
   await waitForFalseyProp(wrapper, "MockComponent", "isLoading");
-
-  expect(wrapper.find("MockComponent").prop("shop._id")).toBe(fakeOpaqueShopId);
+  expect(wrapper.find("MockComponent").prop("shop")._id).toBe(fakeOpaqueShopId);
 });
 
 test("doesn't query GraphQL if no shopId is provided", () => {
@@ -1049,7 +1166,7 @@ test("doesn't query GraphQL if no shopId is provided", () => {
 test("passes shouldSkipGraphql to child component if invalid shop id is provided", async () => {
   const wrapper = mount((
     <MockedProvider mocks={mocks} addTypename={false}>
-      <TestComponent id ="fakeId" />
+      <TestComponent shopId ="fakeId" />
     </MockedProvider>
   ));
 
