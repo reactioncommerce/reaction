@@ -6,18 +6,16 @@ const internalCartId = "555";
 const opaqueCartId = "cmVhY3Rpb24vY2FydDo1NTU=";
 const cartToken = "TOKEN";
 
-test("correctly passes through to mutations.cart.setShippingAddressOnCart", async () => {
+test("correctly passes through to mutations.setShippingAddressOnCart", async () => {
   const fakeResult = {
     cart: { _id: "123" }
   };
 
-  const mockMutation = jest.fn().mockName("mutations.cart.setShippingAddressOnCart");
+  const mockMutation = jest.fn().mockName("mutations.setShippingAddressOnCart");
   mockMutation.mockReturnValueOnce(Promise.resolve(fakeResult));
   const context = {
     mutations: {
-      cart: {
-        setShippingAddressOnCart: mockMutation
-      }
+      setShippingAddressOnCart: mockMutation
     }
   };
 

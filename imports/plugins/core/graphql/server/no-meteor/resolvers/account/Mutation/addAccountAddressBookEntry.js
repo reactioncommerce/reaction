@@ -16,7 +16,7 @@ import { decodeAccountOpaqueId } from "@reactioncommerce/reaction-graphql-xforms
 export default async function addAccountAddressBookEntry(parentResult, { input }, context) {
   const { accountId, address, clientMutationId = null } = input;
   const dbAccountId = decodeAccountOpaqueId(accountId);
-  const updatedAddress = await context.mutations.accounts.addressBookAdd(context, address, dbAccountId);
+  const updatedAddress = await context.mutations.addressBookAdd(context, address, dbAccountId);
   return {
     address: updatedAddress,
     clientMutationId

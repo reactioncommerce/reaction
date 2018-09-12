@@ -92,7 +92,7 @@ export default async function placeOrderWithExampleIOUPayment(context, input) {
 
   billingAddress._id = billingAddressId || Random.id();
 
-  return mutations.orders.createOrder(context, {
+  return mutations.createOrder(context, {
     order: orderInput,
     async createPaymentForFulfillmentGroup(group) {
       return {

@@ -22,7 +22,7 @@ export default async function reconcileCarts(parentResult, { input }, context) {
     mode
   } = input;
 
-  const { cart } = await context.mutations.cart.reconcileCarts(context, {
+  const { cart } = await context.mutations.reconcileCarts(context, {
     anonymousCartId: decodeCartOpaqueId(opaqueAnonymousCartId),
     anonymousCartToken,
     mode

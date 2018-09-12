@@ -24,7 +24,7 @@ export default async function createCart(parentResult, { input }, context) {
     incorrectPriceFailures,
     minOrderQuantityFailures,
     token
-  } = await context.mutations.cart.createCart(context, {
+  } = await context.mutations.createCart(context, {
     items,
     shopId
   });

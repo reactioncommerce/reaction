@@ -22,7 +22,7 @@ export default async function setShippingAddressOnCart(parentResult, { input }, 
   const addressId = decodeAddressOpaqueId(opaqueAddressId);
   const cartId = decodeCartOpaqueId(opaqueCartId);
 
-  const { cart } = await context.mutations.cart.setShippingAddressOnCart(context, {
+  const { cart } = await context.mutations.setShippingAddressOnCart(context, {
     address,
     addressId,
     cartId,

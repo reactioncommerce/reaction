@@ -5,18 +5,16 @@ const opaqueCartId = "cmVhY3Rpb24vY2FydDo1NTU=";
 const email = "email@address.com";
 const token = "TOKEN";
 
-test("correctly passes through to mutations.cart.setEmailOnAnonymousCart", async () => {
+test("correctly passes through to mutations.setEmailOnAnonymousCart", async () => {
   const fakeResult = {
     cart: { _id: "123" }
   };
 
-  const mockMutation = jest.fn().mockName("mutations.cart.setEmailOnAnonymousCart");
+  const mockMutation = jest.fn().mockName("mutations.setEmailOnAnonymousCart");
   mockMutation.mockReturnValueOnce(Promise.resolve(fakeResult));
   const context = {
     mutations: {
-      cart: {
-        setEmailOnAnonymousCart: mockMutation
-      }
+      setEmailOnAnonymousCart: mockMutation
     }
   };
 

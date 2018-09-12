@@ -24,7 +24,7 @@ export default async function setEmailOnAnonymousCart(parentResult, { input }, c
 
   const cartId = decodeCartOpaqueId(opaqueCartId);
 
-  const { cart } = await context.mutations.cart.setEmailOnAnonymousCart(context, {
+  const { cart } = await context.mutations.setEmailOnAnonymousCart(context, {
     cartId,
     email,
     token

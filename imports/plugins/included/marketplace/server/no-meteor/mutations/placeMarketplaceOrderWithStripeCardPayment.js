@@ -121,7 +121,7 @@ export default async function placeMarketplaceOrderWithStripeCardPayment(context
   let stripe;
   let stripeCustomerId;
   const stripeIdsByShopId = {};
-  return mutations.orders.createOrder(context, {
+  return mutations.createOrder(context, {
     order: orderInput,
     async afterValidate() {
       const result = await getStripeInstanceForShop(context, shopId);

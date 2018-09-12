@@ -22,7 +22,7 @@ export default async function updateCartItemsQuantity(parentResult, { input }, c
   const cartId = decodeCartOpaqueId(opaqueCartId);
   const items = itemsInput.map((item) => ({ cartItemId: decodeCartItemOpaqueId(item.cartItemId), quantity: item.quantity }));
 
-  const { cart } = await context.mutations.cart.updateCartItemsQuantity(context, {
+  const { cart } = await context.mutations.updateCartItemsQuantity(context, {
     cartId,
     items,
     token

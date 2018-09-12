@@ -20,7 +20,7 @@ export default async function removeCartItems(parentResult, { input }, context) 
   const cartId = decodeCartOpaqueId(opaqueCartId);
   const cartItemIds = opaqueCartItemIds.map(decodeCartItemOpaqueId);
 
-  const { cart } = await context.mutations.cart.removeCartItems(context, {
+  const { cart } = await context.mutations.removeCartItems(context, {
     cartId,
     cartItemIds,
     token

@@ -24,7 +24,7 @@ export default async function addCartItems(parentResult, { input }, context) {
     cart,
     incorrectPriceFailures,
     minOrderQuantityFailures
-  } = await context.mutations.cart.addCartItems(context, {
+  } = await context.mutations.addCartItems(context, {
     cartId,
     items,
     token

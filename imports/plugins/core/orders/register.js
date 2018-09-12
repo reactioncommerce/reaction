@@ -1,10 +1,14 @@
 import Reaction from "/imports/plugins/core/core/server/Reaction";
+import mutations from "./server/no-meteor/mutations";
+import queries from "./server/no-meteor/queries";
 
 Reaction.registerPackage({
   label: "Orders",
   name: "reaction-orders",
   icon: "fa fa-sun-o",
   autoEnable: true,
+  mutations,
+  queries,
   settings: {
     name: "Orders"
   },
