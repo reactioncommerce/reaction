@@ -1,4 +1,8 @@
 import Reaction from "/imports/plugins/core/core/server/Reaction";
+import getCreditOffDiscount from "./server/no-meteor/util/getCreditOffDiscount";
+import getItemPriceDiscount from "./server/no-meteor/util/getItemPriceDiscount";
+import getPercentageOffDiscount from "./server/no-meteor/util/getPercentageOffDiscount";
+import getShippingDiscount from "./server/no-meteor/util/getShippingDiscount";
 import startup from "./server/no-meteor/startup";
 
 Reaction.registerPackage({
@@ -7,7 +11,11 @@ Reaction.registerPackage({
   icon: "fa fa-gift",
   autoEnable: true,
   functionsByType: {
-    startup: [startup]
+    "discounts/codes/credit": [getCreditOffDiscount],
+    "discounts/codes/discount": [getPercentageOffDiscount],
+    "discounts/codes/sale": [getItemPriceDiscount],
+    "discounts/codes/shipping": [getShippingDiscount],
+    "startup": [startup]
   },
   settings: {
     "discount-codes": {

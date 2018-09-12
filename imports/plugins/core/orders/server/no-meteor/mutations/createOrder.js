@@ -229,7 +229,7 @@ export default async function createOrder(context, input) {
   // We are mixing concerns a bit here for now. This is for backwards compatibility with current
   // discount codes feature. We are planning to revamp discounts soon, but until then, we'll look up
   // any discounts on the related cart here.
-  const { discounts, total: discountTotal } = await getDiscountsTotalForCart(collections, cartId);
+  const { discounts, total: discountTotal } = await getDiscountsTotalForCart(context, cartId);
 
   // Add more props to each fulfillment group, and validate/build the items in each group
   const finalFulfillmentGroups = await Promise.all(fulfillmentGroups.map(async (groupInput, index) => {

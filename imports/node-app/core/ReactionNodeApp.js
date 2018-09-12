@@ -2,7 +2,6 @@ import mongodb, { MongoClient } from "mongodb";
 import appEvents from "./util/appEvents";
 import createApolloServer from "./createApolloServer";
 import defineCollections from "./util/defineCollections";
-import { getRegisteredFunctionsForType, registerFunction } from "./util/registerFunction";
 
 /**
  * @summary A default addCallMeteorMethod function. Adds `callMeteorMethod`
@@ -31,9 +30,7 @@ export default class ReactionNodeApp {
       collections: this.collections,
       getFunctionsOfType(type) {
         return ((options.functionsByType || {})[type]) || [];
-      },
-      getRegisteredFunctionsForType,
-      registerFunction
+      }
     };
 
     this.mongodb = options.mongodb || mongodb;

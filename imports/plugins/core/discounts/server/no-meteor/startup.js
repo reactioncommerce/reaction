@@ -7,8 +7,8 @@ import getDiscountsTotalForCart from "/imports/plugins/core/discounts/server/no-
  * @param {Object} context.collections Map of MongoDB collections
  * @returns {undefined}
  */
-export default function startup({ collections }) {
-  const { Cart } = collections;
+export default function startup(context) {
+  const { Cart } = context.collections;
 
   appEvents.on("afterCartUpdate", async (cartId, cart) => {
     if (!cartId) {
@@ -23,7 +23,7 @@ export default function startup({ collections }) {
       throw new Error("afterCartUpdate hook run with no cart argument");
     }
 
-    const { total: discount } = await getDiscountsTotalForCart(collections, cartId);
+    const { total: discount } = await getDiscountsTotalForCart(context, cartId);
     if (discount !== cart.discount) {
       await Cart.update({ _id: cartId }, { $set: { discount } });
     }

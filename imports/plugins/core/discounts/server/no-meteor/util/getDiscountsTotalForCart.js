@@ -1,5 +1,4 @@
 import ReactionError from "@reactioncommerce/reaction-error";
-import { getRegisteredFunctionsForType } from "/imports/node-app/core/util/registerFunction";
 
 /**
  * @summary Calculates total discount amount for a cart based on all discounts
@@ -27,7 +26,9 @@ export default async function getDiscountsTotalForCart(collections, cartId) {
     const calculation = discount && discount.calculation && discount.calculation.method;
     if (!calculation) return null;
 
-    const funcs = getRegisteredFunctionsForType(`discounts/${processor}s/${calculation}`); // note the added "s"
+    const funcs = context.getFunctionsOfType(`discounts/${processor}s/${calculation}`); // note the added "s"
+    if (funcs.length === 0) throw new Error(`No functions of type "discounts/${processor}s/${calculation}" have been registered`);
+
     const amount = await funcs[0](cart._id, discount._id, collections);
     return { discountId: data.discountId, amount };
   }));
