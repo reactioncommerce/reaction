@@ -1,11 +1,15 @@
 /* eslint camelcase: 0 */
 import Reaction from "/imports/plugins/core/core/server/Reaction";
+import resolvers from "./server/no-meteor/resolvers";
 
 Reaction.registerPackage({
   label: "ExamplePayment",
   name: "example-paymentmethod",
   icon: "fa fa-credit-card-alt",
   autoEnable: true,
+  graphQL: {
+    resolvers
+  },
   settings: {
     "mode": false,
     "apiKey": "",

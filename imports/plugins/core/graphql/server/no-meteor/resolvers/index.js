@@ -1,13 +1,12 @@
 import { merge } from "lodash";
 import fulfillmentService from "/imports/plugins/core/core/server/no-meteor/services/fulfillment";
-import payment from "./payment";
 import ping from "./ping";
 import product from "./product";
 import scalar from "./scalar";
 import shop from "./shop";
 import tag from "./tag";
 
-export default merge({}, fulfillmentService.graphqlResolvers, payment, ping, product, scalar, shop, tag);
+export default merge({}, fulfillmentService.graphqlResolvers, ping, product, scalar, shop, tag);
 
 /**
  * Arguments passed by the client for a query
