@@ -19,6 +19,15 @@
     "url": "https://github.com/reactioncommerce/reaction/issues"
   },
   "dependencies": {
+    "@babel/plugin-proposal-class-properties": "7.0.0",
+    "@babel/plugin-proposal-decorators": "7.0.0",
+    "@babel/plugin-proposal-export-namespace-from": "7.0.0",
+    "@babel/plugin-proposal-function-sent": "7.0.0",
+    "@babel/plugin-proposal-json-strings": "7.0.0",
+    "@babel/plugin-proposal-numeric-separator": "7.0.0",
+    "@babel/plugin-proposal-throw-expressions": "7.0.0",
+    "@babel/plugin-syntax-dynamic-import": "7.0.0",
+    "@babel/plugin-syntax-import-meta": "7.0.0",
     "@babel/runtime": "7.0.0",
     "@reactioncommerce/components": "0.21.0",
     "@reactioncommerce/components-context": "1.0.0",
@@ -149,7 +158,6 @@
     "@babel/plugin-proposal-object-rest-spread": "7.0.0",
     "@babel/preset-env": "7.0.0",
     "@babel/preset-react": "7.0.0",
-    "@babel/preset-stage-2": "7.0.0",
     "@reactioncommerce/eslint-config": "1.9.0",
     "babel-core": "7.0.0-bridge.0",
     "babel-eslint": "8.2.3",
@@ -205,7 +213,12 @@
   },
   "babel": {
     "plugins": [
-      "transform-class-properties",
+      [
+        "@babel/plugin-proposal-class-properties",
+        {
+          "loose": false
+        }
+      ],
       [
         "lodash",
         {
@@ -244,16 +257,29 @@
                 "node": "current"
               }
             }
-          ],
-          [
-            "@babel/preset-stage-2",
-            {
-              "decoratorsLegacy": true
-            }
           ]
         ],
         "plugins": [
           "babel-plugin-inline-import",
+          [
+            "@babel/plugin-proposal-decorators",
+            {
+              "legacy": true
+            }
+          ],
+          "@babel/plugin-proposal-function-sent",
+          "@babel/plugin-proposal-export-namespace-from",
+          "@babel/plugin-proposal-numeric-separator",
+          "@babel/plugin-proposal-throw-expressions",
+          "@babel/plugin-syntax-dynamic-import",
+          "@babel/plugin-syntax-import-meta",
+          [
+            "@babel/plugin-proposal-class-properties",
+            {
+              "loose": false
+            }
+          ],
+          "@babel/plugin-proposal-json-strings",
           [
             "module-resolver",
             {
@@ -286,18 +312,31 @@
             }
           ],
           [
-            "@babel/preset-stage-2",
-            {
-              "decoratorsLegacy": true
-            }
-          ],
-          [
             "@babel/preset-react"
           ]
         ],
         "plugins": [
           "rewire-exports",
           "babel-plugin-inline-import",
+          [
+            "@babel/plugin-proposal-decorators",
+            {
+              "legacy": true
+            }
+          ],
+          "@babel/plugin-proposal-function-sent",
+          "@babel/plugin-proposal-export-namespace-from",
+          "@babel/plugin-proposal-numeric-separator",
+          "@babel/plugin-proposal-throw-expressions",
+          "@babel/plugin-syntax-dynamic-import",
+          "@babel/plugin-syntax-import-meta",
+          [
+            "@babel/plugin-proposal-class-properties",
+            {
+              "loose": false
+            }
+          ],
+          "@babel/plugin-proposal-json-strings",
           [
             "module-resolver",
             {
