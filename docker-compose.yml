@@ -8,6 +8,9 @@ networks:
   api:
     external:
       name: api.reaction.localhost
+  auth:
+    external:
+      name: auth.reaction.localhost
 
 services:
 
@@ -49,6 +52,7 @@ services:
     networks:
       default:
       api:
+      auth:
     ports:
       - "3000:3000"
     volumes:
