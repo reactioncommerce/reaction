@@ -76,12 +76,12 @@ export default class ReactionNodeApp {
   }
 
   async runServiceStartup() {
-    const { additionalServices = [], startupFunctions = [] } = this.options;
+    const { additionalServices = [], functionsByType = {} } = this.options;
 
     await Promise.all(additionalServices.map(async (service) => {
       await service.startup(this.context);
     }));
-    await Promise.all(startupFunctions.map(async (startupFunction) => {
+    await Promise.all((functionsByType.startup || []).map(async (startupFunction) => {
       await startupFunction(this.context);
     }));
   }

@@ -8,10 +8,12 @@ Reaction.registerPackage({
   label: "Cart",
   name: "reaction-cart",
   autoEnable: true,
+  functionsByType: {
+    startup: [startup]
+  },
   graphQL: {
     resolvers
   },
   mutations,
-  queries,
-  startupFunctions: [startup]
+  queries
 });

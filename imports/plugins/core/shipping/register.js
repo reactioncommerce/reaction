@@ -10,13 +10,15 @@ Reaction.registerPackage({
   name: "reaction-shipping",
   icon: "fa fa-truck",
   autoEnable: true,
+  functionsByType: {
+    startup: [startup]
+  },
   graphQL: {
     resolvers,
     schemas: [schema]
   },
   queries,
   mutations,
-  startupFunctions: [startup],
   settings: {
     name: "Shipping",
     shipping: {

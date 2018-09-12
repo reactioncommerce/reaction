@@ -6,5 +6,7 @@ Reaction.registerPackage({
   name: "reaction-discounts",
   icon: "fa fa-gift",
   autoEnable: true,
-  startupFunctions: [startup]
+  functionsByType: {
+    startup: [startup]
+  }
 });

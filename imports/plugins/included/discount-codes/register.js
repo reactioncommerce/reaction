@@ -6,7 +6,9 @@ Reaction.registerPackage({
   name: "discount-codes",
   icon: "fa fa-gift",
   autoEnable: true,
-  startupFunctions: [startup],
+  functionsByType: {
+    startup: [startup]
+  },
   settings: {
     "discount-codes": {
       enabled: false

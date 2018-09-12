@@ -6,7 +6,9 @@ Reaction.registerPackage({
   name: "reaction-search",
   icon: "fa fa-search",
   autoEnable: true,
-  startupFunctions: [startup],
+  functionsByType: {
+    startup: [startup]
+  },
   settings: {
     products: {
       includes: {

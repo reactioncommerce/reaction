@@ -6,7 +6,9 @@ Reaction.registerPackage({
   name: "reaction-taxes",
   icon: "fa fa-university",
   autoEnable: true,
-  startupFunctions: [startup],
+  functionsByType: {
+    startup: [startup]
+  },
   settings: {
     custom: {
       enabled: true

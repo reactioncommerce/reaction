@@ -26,7 +26,6 @@ const app = new ReactionNodeApp({
     resolvers,
     schemas
   }
-  // startupFunctions // TODO
 });
 
 // Serve files in the /public folder statically

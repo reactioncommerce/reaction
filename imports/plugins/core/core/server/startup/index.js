@@ -10,7 +10,7 @@ import { setBaseContext } from "/imports/plugins/core/graphql/server/getGraphQLC
 import coreSchemas from "/imports/plugins/core/graphql/server/no-meteor/schemas";
 import coreResolvers from "../no-meteor/resolvers";
 import coreQueries from "../no-meteor/queries";
-import { functionsByType, mutations, queries, resolvers, schemas, startupFunctions } from "../no-meteor/pluginRegistration";
+import { functionsByType, mutations, queries, resolvers, schemas } from "../no-meteor/pluginRegistration";
 import Reaction from "../Reaction";
 import runMeteorMethodWithContext from "../util/runMeteorMethodWithContext";
 import Accounts from "./accounts";
@@ -84,8 +84,7 @@ export default function startup() {
       resolvers: finalResolvers,
       schemas: [...coreSchemas, ...schemas]
     },
-    mongodb,
-    startupFunctions
+    mongodb
   });
 
   const { db } = MongoInternals.defaultRemoteCollectionDriver().mongo;
