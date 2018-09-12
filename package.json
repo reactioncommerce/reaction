@@ -237,8 +237,8 @@
           "alias": {
             "@reactioncommerce/reaction-collections": "./imports/plugins/core/collections",
             "@reactioncommerce/reaction-components": "./imports/plugins/core/components/lib",
-            "@reactioncommerce/reaction-graphql-utils": "./imports/plugins/core/graphql/server/no-meteor/resolvers/util",
-            "@reactioncommerce/reaction-graphql-xforms": "./imports/plugins/core/graphql/server/no-meteor/resolvers/xforms",
+            "@reactioncommerce/reaction-graphql-utils": "./imports/plugins/core/graphql/server/no-meteor/util",
+            "@reactioncommerce/reaction-graphql-xforms": "./imports/plugins/core/graphql/server/no-meteor/xforms",
             "@reactioncommerce/reaction-router": "./imports/plugins/core/router/lib",
             "@reactioncommerce/reaction-ui": "./imports/plugins/core/ui/client/components",
             "@reactioncommerce/reaction-error": "./imports/utils/ReactionError.js",
@@ -289,8 +289,8 @@
               "alias": {
                 "@reactioncommerce/reaction-collections": "./imports/plugins/core/collections",
                 "@reactioncommerce/reaction-components": "./imports/plugins/core/components/lib",
-                "@reactioncommerce/reaction-graphql-utils": "./imports/plugins/core/graphql/server/no-meteor/resolvers/util",
-                "@reactioncommerce/reaction-graphql-xforms": "./imports/plugins/core/graphql/server/no-meteor/resolvers/xforms",
+                "@reactioncommerce/reaction-graphql-utils": "./imports/plugins/core/graphql/server/no-meteor/util",
+                "@reactioncommerce/reaction-graphql-xforms": "./imports/plugins/core/graphql/server/no-meteor/xforms",
                 "@reactioncommerce/reaction-router": "./imports/plugins/core/router/lib",
                 "@reactioncommerce/reaction-ui": "./imports/plugins/core/ui/client/components",
                 "@reactioncommerce/reaction-error": "./imports/utils/ReactionError.js",
@@ -346,8 +346,8 @@
               "alias": {
                 "@reactioncommerce/reaction-collections": "./imports/plugins/core/collections",
                 "@reactioncommerce/reaction-components": "./imports/plugins/core/components/lib",
-                "@reactioncommerce/reaction-graphql-utils": "./imports/plugins/core/graphql/server/no-meteor/resolvers/util",
-                "@reactioncommerce/reaction-graphql-xforms": "./imports/plugins/core/graphql/server/no-meteor/resolvers/xforms",
+                "@reactioncommerce/reaction-graphql-utils": "./imports/plugins/core/graphql/server/no-meteor/util",
+                "@reactioncommerce/reaction-graphql-xforms": "./imports/plugins/core/graphql/server/no-meteor/xforms",
                 "@reactioncommerce/reaction-router": "./imports/plugins/core/router/lib",
                 "@reactioncommerce/reaction-ui": "./imports/plugins/core/ui/client/components",
                 "@reactioncommerce/reaction-error": "./imports/utils/ReactionError.js",
