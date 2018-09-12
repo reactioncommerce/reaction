@@ -1,5 +1,6 @@
 import Reaction from "/imports/plugins/core/core/server/Reaction";
 import mutations from "./server/no-meteor/mutations";
+import resolvers from "./server/no-meteor/resolvers";
 import queries from "./server/no-meteor/queries";
 
 /**
@@ -13,6 +14,9 @@ Reaction.registerPackage({
   name: "reaction-accounts",
   icon: "fa fa-users",
   autoEnable: true,
+  graphQL: {
+    resolvers
+  },
   mutations,
   queries,
   settings: {},

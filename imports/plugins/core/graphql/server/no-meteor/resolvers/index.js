@@ -1,5 +1,4 @@
 import { merge } from "lodash";
-import account from "./account";
 import catalog from "./catalog";
 import cart from "./cart";
 import core from "./core";
@@ -12,7 +11,7 @@ import scalar from "./scalar";
 import shop from "./shop";
 import tag from "./tag";
 
-export default merge({}, account, cart, catalog, core, fulfillmentService.graphqlResolvers, order, payment, ping, product, scalar, shop, tag);
+export default merge({}, cart, catalog, core, fulfillmentService.graphqlResolvers, order, payment, ping, product, scalar, shop, tag);
 
 /**
  * Arguments passed by the client for a query
