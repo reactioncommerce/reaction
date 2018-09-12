@@ -31,6 +31,8 @@ export default function defineCollections(db, collections) {
     Shops: db.collection("Shops"),
     Sms: db.collection("Sms"),
     Tags: db.collection("Tags"),
+    Taxes: db.collection("Taxes"),
+    TaxCodes: db.collection("TaxCodes"),
     Templates: db.collection("Templates"),
     Themes: db.collection("Themes"),
     Translations: db.collection("Translations"),
