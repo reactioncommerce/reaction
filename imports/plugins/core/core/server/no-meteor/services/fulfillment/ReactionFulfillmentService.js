@@ -1,5 +1,5 @@
 import ReactionService from "/imports/node-app/core/ReactionService";
-import getFulfillmentMethodsWithQuotes from "./util/getFulfillmentMethodsWithQuotes";
+import getFulfillmentMethodsWithQuotes from "/imports/plugins/core/shipping/server/no-meteor/util/getFulfillmentMethodsWithQuotes";
 
 export default class ReactionFulfillmentService extends ReactionService {
   constructor(options) {

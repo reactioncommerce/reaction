@@ -1,10 +1,16 @@
 import Reaction from "/imports/plugins/core/core/server/Reaction";
+import mutations from "./server/no-meteor/mutations";
+import resolvers from "./server/no-meteor/resolvers";
 
 Reaction.registerPackage({
   label: "Shipping",
   name: "reaction-shipping",
   icon: "fa fa-truck",
   autoEnable: true,
+  graphQL: {
+    resolvers
+  },
+  mutations,
   settings: {
     name: "Shipping",
     shipping: {

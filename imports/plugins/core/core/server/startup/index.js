@@ -7,11 +7,10 @@ import { Shops } from "/lib/collections";
 import ReactionNodeApp from "/imports/node-app/core/ReactionNodeApp";
 import { NoMeteorMedia } from "/imports/plugins/core/files/server";
 import { setBaseContext } from "/imports/plugins/core/graphql/server/getGraphQLContextInMeteorMethod";
-import graphqlPkgResolvers from "/imports/plugins/core/graphql/server/no-meteor/resolvers";
 import coreSchemas from "/imports/plugins/core/graphql/server/no-meteor/schemas";
-import { mutations, queries, resolvers, schemas, serviceConfig, startupFunctions } from "../no-meteor/pluginRegistration";
 import coreResolvers from "../no-meteor/resolvers";
 import coreQueries from "../no-meteor/queries";
+import { mutations, queries, resolvers, schemas, serviceConfig, startupFunctions } from "../no-meteor/pluginRegistration";
 import fulfillmentService from "../no-meteor/services/fulfillment";
 import Reaction from "../Reaction";
 import runMeteorMethodWithContext from "../util/runMeteorMethodWithContext";
@@ -57,7 +56,7 @@ export default function startup() {
   CollectionSecurity();
   RateLimiters();
 
-  const { PORT, ROOT_URL } = process.env;
+  const { ROOT_URL } = process.env;
   const mongodb = MongoInternals.NpmModules.mongodb.module;
 
   // Wire up fulfillment service plugins
@@ -65,12 +64,13 @@ export default function startup() {
     fulfillmentService.configurePlugin(fulfillmentServiceConfig);
   });
 
-  // Add mutations from the fulfillment service
-  const finalMutations = merge({}, fulfillmentService.mutations, mutations);
+  // Adding core resolvers this way because `core` is not a typical plugin and doesn't call registerPackage
+  // Note that coreResolvers comes first so that plugin resolvers can overwrite core resolvers if necessary
+  const finalResolvers = merge({}, coreResolvers, resolvers);
 
   // Adding core queries this way because `core` is not a typical plugin and doesn't call registerPackage
   // Note that coreQueries comes first so that plugin queries can overwrite core queries if necessary
-  const finalQueries = merge({}, coreQueries, fulfillmentService.queries, queries);
+  const finalQueries = merge({}, coreQueries, queries);
 
   const app = new ReactionNodeApp({
     addCallMeteorMethod(context) {
@@ -80,13 +80,13 @@ export default function startup() {
     // XXX Eventually these should be from individual env variables instead
     debug: Meteor.isDevelopment,
     context: {
-      mutations: finalMutations,
+      mutations,
       queries: finalQueries,
       rootUrl: ROOT_URL
     },
     graphQL: {
       graphiql: Meteor.isDevelopment,
-      resolvers: merge({}, coreResolvers, graphqlPkgResolvers, resolvers),
+      resolvers: finalResolvers,
       schemas: [...coreSchemas, ...schemas]
     },
     mongodb,
