@@ -107,7 +107,7 @@ const mocks = [
 test("renders child component with correct catalogItems connection", async () => {
   const wrapper = mount((
     <MockedProvider mocks={mocks}>
-      <TestComponent shopId={fakeOpaqueShopId} tagId={fakeOpaqueTagId} currencyCode="USD" />
+      <TestComponent shopId={fakeOpaqueShopId} tagId={fakeOpaqueTagId} />
     </MockedProvider>
   ));
 

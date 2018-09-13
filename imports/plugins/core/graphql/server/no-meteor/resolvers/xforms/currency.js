@@ -62,7 +62,7 @@ export async function xformCurrencyExchangePricing(pricing, currencyCode, contex
   const shop = await context.queries.shops.shopById(context, shopId);
 
   if (!currencyCode) {
-    currencyCode = shop.currency;
+    currencyCode = shop.currency; // eslint-disable-line no-param-reassign
   }
 
   const currency = shop.currencies[currencyCode];
@@ -92,4 +92,4 @@ export async function xformCurrencyExchangePricing(pricing, currencyCode, contex
       code: currencyCode
     }
   };
-};
+}

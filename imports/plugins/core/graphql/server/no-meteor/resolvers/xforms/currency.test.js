@@ -102,6 +102,6 @@ test("xformCurrencyExchangePricing converts min-max pricing object correctly", a
   expect(await xformCurrencyExchangePricing(minMaxPricingInput, "EUR", testContext)).toEqual(minMaxPricingOutput);
 });
 
-test("xformCurrencyExchangePricing converts single price pricing object correctly", async() => {
+test("xformCurrencyExchangePricing converts single price pricing object correctly", async () => {
   expect(await xformCurrencyExchangePricing(priceInput, "EUR", testContext)).toEqual(priceOutput);
 });

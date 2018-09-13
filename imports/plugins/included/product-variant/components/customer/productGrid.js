@@ -7,10 +7,11 @@ import { i18next } from "/client/api";
 class ProductGrid extends Component {
   static propTypes = {
     canLoadMoreProducts: PropTypes.bool,
+    currencyCode: PropTypes.string,
     isLoading: PropTypes.bool.isRequired,
     loadProducts: PropTypes.func,
     products: PropTypes.array,
-    shopCurrencyCode: PropTypes.string.isRequired
+    shopCurrencyCode: PropTypes.string
   }
 
   componentDidMount() {
