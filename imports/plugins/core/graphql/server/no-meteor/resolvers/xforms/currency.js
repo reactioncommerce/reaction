@@ -75,7 +75,16 @@ export async function xformCurrencyExchangePricing(pricing, currencyCode, contex
 
   let displayPrice = "";
   if (minPrice && maxPrice) {
-    const minFormatted = formatMoney(minPriceConverted, currency);
+    let minFormatted;
+    if (currency.where === "right") {
+      const modifiedCurrency = Object.assign({}, currency, {
+        symbol: ""
+      });
+      minFormatted = formatMoney(minPriceConverted, modifiedCurrency);
+    } else {
+      minFormatted = formatMoney(minPriceConverted, currency);
+    }
+
     const maxFormatted = formatMoney(maxPriceConverted, currency);
     displayPrice = `${minFormatted} - ${maxFormatted}`;
   } else {
