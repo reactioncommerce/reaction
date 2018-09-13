@@ -4,6 +4,11 @@ import collections from "/imports/collections/rawCollections";
 
 let baseContext = {};
 
+/**
+ * @summary Sets the baseContext used by getGraphQLContextInMeteorMethod
+ * @param {Object} context The context object
+ * @returns {undefined}
+ */
 export function setBaseContext(context) {
   baseContext = context;
 }

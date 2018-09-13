@@ -1,5 +1,6 @@
 import Reaction from "/imports/plugins/core/core/server/Reaction";
 import resolvers from "./server/no-meteor/resolvers";
+import schema from "./server/no-meteor/schema.graphql";
 
 Reaction.registerPackage({
   label: "Payments",
@@ -7,7 +8,8 @@ Reaction.registerPackage({
   icon: "fa fa-credit-card",
   autoEnable: true,
   graphQL: {
-    resolvers
+    resolvers,
+    schemas: [schema]
   },
   settings: {
     payments: {

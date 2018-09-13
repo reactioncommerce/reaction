@@ -7,7 +7,7 @@ import { Shops } from "/lib/collections";
 import ReactionNodeApp from "/imports/node-app/core/ReactionNodeApp";
 import { NoMeteorMedia } from "/imports/plugins/core/files/server";
 import { setBaseContext } from "/imports/plugins/core/graphql/server/getGraphQLContextInMeteorMethod";
-import coreSchemas from "/imports/plugins/core/graphql/server/no-meteor/schemas";
+import coreSchemas from "../no-meteor/schemas";
 import coreResolvers from "../no-meteor/resolvers";
 import coreQueries from "../no-meteor/queries";
 import { functionsByType, mutations, queries, resolvers, schemas } from "../no-meteor/pluginRegistration";
