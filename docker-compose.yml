@@ -19,11 +19,9 @@ services:
     depends_on:
       - mongo-init-replica
     environment:
-      METEOR_DISABLE_OPTIMISTIC_CACHING: 1
       MONGO_URL: "mongodb://mongo:27017/reaction"
       MONGO_OPLOG_URL: "mongodb://mongo:27017/local"
       ROOT_URL: "http://localhost:3000"
-      BABEL_DISABLE_CACHE: 1 # This is needed to pick up changes to .graphql files. See https://www.npmjs.com/package/babel-plugin-inline-import#caveats
     networks:
       default:
       reaction-api:

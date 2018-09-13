@@ -1,10 +1,10 @@
 import express from "express";
 import Logger from "@reactioncommerce/logger";
-import ReactionNodeApp from "./core/ReactionNodeApp";
-import mutations from "./core/mutations";
-import queries from "./core/queries";
-import resolvers from "./core/resolvers";
-import schemas from "./core/schemas";
+import ReactionNodeApp from "../core/ReactionNodeApp";
+import mutations from "./mutations";
+import queries from "./queries";
+import resolvers from "./resolvers";
+import schemas from "./schemas";
 import filesStartup from "./filesStartup";
 
 const { MONGO_URL, PORT = 3030, ROOT_URL } = process.env;
