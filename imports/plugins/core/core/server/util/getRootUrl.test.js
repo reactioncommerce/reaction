@@ -4,7 +4,7 @@ test("returns process.env.ROOT_URL with trailing slash if set", () => {
   process.env.ROOT_URL = "http://localhost:3000";
   const request = {
     protocol: "https",
-    hostname: "graphql.reaction.localhost"
+    hostname: "api.reaction.localhost"
   };
 
   expect(getRootUrl(request)).toBe("http://localhost:3000/");
