@@ -31,7 +31,10 @@ type ProductPricingInfo {
   "The code for the currency these pricing details applies to"
   currency: Currency!
 
-  currencyExchangePricing: CurrencyExchangeProductPricingInfo
+  currencyExchangePricing(
+    "Optionally display prices in a specified currency"
+    currencyCode: String
+  ): CurrencyExchangeProductPricingInfo
 
   """
   UI should display this price. If a product has multiple potential prices depending on selected
@@ -192,10 +195,7 @@ type CatalogProduct implements CatalogProductOrVariant & Node {
   price: PriceRange
 
   "Price and related information, per currency"
-  pricing(
-    "Optionally display prices in a specified currency"
-    currencyCode: String
-  ): [ProductPricingInfo]!
+  pricing: [ProductPricingInfo]!
 
   "The primary image"
   primaryImage: ImageInfo

@@ -1,3 +1,4 @@
+import { formatMoney, toFixed } from "accounting-js";
 import { assoc, compose, map, toPairs } from "ramda";
 import ReactionError from "@reactioncommerce/reaction-error";
 import CurrencyDefinitions from "/imports/plugins/core/core/lib/CurrencyDefinitions";
@@ -45,3 +46,50 @@ export async function getXformedCurrencyByCode(code) {
   if (!entry) throw new ReactionError("invalid", `No currency definition found for ${code}`);
   return xformCurrencyEntry([code, entry]);
 }
+
+/**
+ * @name xformCurrencyExchangePricing
+ * @method
+ * @memberof GraphQL/Transforms
+ * @summary Converts price to the supplied currency and adds currencyExchangePricing to result
+ * @param {Object} pricing Original pricing object
+ * @param {String} currencyCode Code of currency to convert prices to
+ * @param {Object} context Object containing per-request state
+ * @returns {Object} New pricing object with converted prices
+ */
+export async function xformCurrencyExchangePricing(pricing, currencyCode, context) {
+  const { shopId } = context;
+  const shop = await context.queries.shops.shopById(context, shopId);
+
+  if (!currencyCode) {
+    currencyCode = shop.currency;
+  }
+
+  const currency = shop.currencies[currencyCode];
+  const { rate } = currency;
+
+  const { price, minPrice, maxPrice } = pricing;
+  const priceConverted = price && Number(toFixed(price * rate, 2));
+  const minPriceConverted = minPrice && Number(toFixed(minPrice * rate, 2));
+  const maxPriceConverted = maxPrice && Number(toFixed(maxPrice * rate, 2));
+
+  let displayPrice = "";
+  if (minPrice && maxPrice) {
+    const minFormatted = formatMoney(minPriceConverted, currency);
+    const maxFormatted = formatMoney(maxPriceConverted, currency);
+    displayPrice = `${minFormatted} - ${maxFormatted}`;
+  } else {
+    const priceFormatted = formatMoney(priceConverted, currency);
+    displayPrice = priceFormatted;
+  }
+
+  return {
+    displayPrice,
+    price: priceConverted,
+    minPrice: minPriceConverted,
+    maxPrice: maxPriceConverted,
+    currency: {
+      code: currencyCode
+    }
+  };
+};

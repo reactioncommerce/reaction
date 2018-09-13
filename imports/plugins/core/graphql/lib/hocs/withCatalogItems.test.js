@@ -50,7 +50,17 @@ const fakeCatalogItemsConnection = {
               },
               displayPrice: "$12.99 - $19.99",
               minPrice: 12.99,
-              maxPrice: 19.99
+              maxPrice: 19.99,
+              currencyExchangePricing: {
+                __typename: "ProductPricingInfo",
+                currency: {
+                  __typename: "Currency",
+                  code: "USD"
+                },
+                displayPrice: "$12.99 - $19.99",
+                minPrice: 12.99,
+                maxPrice: 19.99
+              }
             }
           ],
           primaryImage: null
@@ -68,6 +78,7 @@ const mocks = [
       query: getCatalogItems,
       variables: {
         shopId: fakeOpaqueShopId,
+        currencyCode: "USD",
         tagIds: [fakeOpaqueTagId]
       }
     },
@@ -81,7 +92,8 @@ const mocks = [
     request: {
       query: getCatalogItems,
       variables: {
-        shopId: "invalidShopId"
+        shopId: "invalidShopId",
+        currencyCode: "USD"
       }
     },
     result: {
@@ -95,7 +107,7 @@ const mocks = [
 test("renders child component with correct catalogItems connection", async () => {
   const wrapper = mount((
     <MockedProvider mocks={mocks}>
-      <TestComponent shopId={fakeOpaqueShopId} tagId={fakeOpaqueTagId} />
+      <TestComponent shopId={fakeOpaqueShopId} tagId={fakeOpaqueTagId} currencyCode="USD" />
     </MockedProvider>
   ));
 

@@ -1,3 +1,4 @@
+import { cloneDeep } from "lodash";
 import React from "react";
 import PropTypes from "prop-types";
 import { Query } from "react-apollo";
@@ -15,7 +16,7 @@ export default (Component) => (
     };
 
     render() {
-      const { currencyCode = "", shouldSkipGraphql, shopId, tagId } = this.props;
+      const { currencyCode = "USD", shouldSkipGraphql, shopId, tagId } = this.props;
 
       if (shouldSkipGraphql || !shopId) {
         return (
@@ -41,19 +42,18 @@ export default (Component) => (
             };
 
             if (loading === false && catalogItems) {
-              props.catalogItems = (catalogItems.edges || []).map((edge) => edge.node.product);
+              props.catalogItems = (catalogItems.edges || []).map((edge) => cloneDeep(edge.node.product));
 
-              // Use prices in selected currency if available
-              props.catalogItems.forEach((catalogItem) => {
-                catalogItem.pricing.forEach((pricing) => {
+              // Use prices in selected currency if provided
+              props.catalogItems.forEach((catalogItem, cIndex) => {
+                catalogItem.pricing.forEach((pricing, pIndex) => {
                   if (pricing.currencyExchangePricing) {
-                    catalogItem.pricing = pricing.currencyExchangePricing;
-                    console.log("pricing", pricing);
+                    props.catalogItems[cIndex].pricing[pIndex] = pricing.currencyExchangePricing;
                   }
                 });
               });
 
-              const { pageInfo } = catalogItems;
+              const { pageInfo } = props.catalogItems;
               if (pageInfo) {
                 const { hasNextPage } = pageInfo;
                 props.hasMoreCatalogItems = hasNextPage;
