@@ -11,9 +11,9 @@ const productsPreSaveCallback = () => {
   return { shopId };
 };
 
-const productsConversionCallback = (item, options) => {
+const productsConversionCallback = (item, shouldUpdate, options) => {
   const res = {};
-  if (!item._id) {
+  if (!shouldUpdate) {
     res._id = Random.id();
     res.isDeleted = false;
     res.createdAt = new Date();

@@ -56,22 +56,38 @@ async function getCSVRowsFromSource(jobItem) {
  * @summary Validates an item with respect to conversion map fields
  * @param {Object} item - the item to be validated
  * @param {Object} fields - conversion map fields
+ * @param {Boolean} shouldUpdate - to update docs? false if docs are to be created
  * @return {Array} - errors on the item
  */
-function validateItem(item, fields) {
+function validateItem(item, fields, shouldUpdate) {
   const errors = [];
-  for (const field in item) {
-    if (item[field] !== undefined) {
-      const value = item[field];
-      const convMapField = fields.find(({ key }) => field === key);
-      if (convMapField && !convMapField.optional && !value) {
-        errors.push(`${field} is required.`);
+  fields.forEach((field) => {
+    if (!field.optional) {
+      if ((shouldUpdate && (field.key in item) && !item[field.key]) || (!shouldUpdate && !item[field.key])) {
+        errors.push(`${field.label} is required.`);
       }
     }
-  }
+  });
   return errors;
 }
 
+/**
+ * @name convertFieldValue
+ * @summary Converts a field value depending on its type
+ * @param {String} value - the value to be converted
+ * @param {Object} fieldSpec - field spec from ConversionMaps
+ * @return {String} - converted value
+ */
+function convertFieldValue(value, fieldSpec) {
+  if (fieldSpec.type === Boolean) {
+    const falseValues = ["0", "false"];
+    if (falseValues.includes(value.toLowerCase())) {
+      return false;
+    }
+    return true;
+  }
+  return value;
+}
 
 /**
  * @name parseRawObjects
@@ -79,91 +95,126 @@ function validateItem(item, fields) {
  * @param {Array} data - the data to be parsed
  * @param {Object} mapping - mapping from the job item
  * @param {Object} convMap - the conversion map to be used
+ * @param {Boolean} shouldUpdate - to update docs? false if docs are to be created
  * @return {Object} - consists of valid data to be saved to database and data with errors
  */
-async function parseRawObjects(data, mapping, convMap) {
-  const options = await convMap.preImportCallback();
+async function parseRawObjects(data, mapping, convMap, shouldUpdate = false) {
+  const {
+    fields,
+    importConversionInsertCallback,
+    importConversionUpdateCallback,
+    preImportInsertCallback,
+    preImportUpdateCallback
+  } = convMap;
+
+  let options = {};
+  if (shouldUpdate && typeof preImportUpdateCallback === "function") {
+    options = await preImportUpdateCallback();
+  } else if (typeof preImportInsertCallback === "function") {
+    options = await preImportInsertCallback();
+  }
 
   const validData = [];
   const withErrorData = [];
 
   for (let i = 0; i < data.length; i += 1) {
-    const item = data[i];
-    const newDoc = {};
-    newDoc.rowNumber = i;
-    for (const field in item) {
-      if (mapping[field] !== "ignore") {
-        newDoc[mapping[field]] = item[field];
+    const originalRow = data[i];
+    const row = {
+      rowNumber: i,
+      originalRow
+    };
+    const cleanRow = {};
+    for (const field in originalRow) {
+      if ({}.hasOwnProperty.call(originalRow, field) && mapping[field] !== "ignore") {
+        cleanRow[mapping[field]] = originalRow[field];
       }
     }
 
-    const errors = validateItem(newDoc, convMap.fields);
+    const errors = validateItem(cleanRow, convMap.fields, shouldUpdate);
     if (errors.length > 0) {
-      withErrorData.push({ rowNumber: i, errors });
+      row.errors = errors;
+      row.saved = false;
+      withErrorData.push(row);
       continue;
     }
 
-    if (typeof convMap.importConversionCallback === "function") {
-      Object.assign(newDoc, convMap.importConversionCallback(newDoc, options));
+    const convertedRow = {};
+    for (const fieldToConvert in cleanRow) {
+      if ({}.hasOwnProperty.call(cleanRow, fieldToConvert) && fieldToConvert !== "rowNumber") {
+        const fieldSpec = fields.find((field) => field.key === fieldToConvert);
+        convertedRow[fieldToConvert] = convertFieldValue(cleanRow[fieldToConvert], fieldSpec);
+      }
     }
 
-    validData.push(newDoc);
+    if (shouldUpdate && typeof importConversionUpdateCallback === "function") {
+      Object.assign(convertedRow, importConversionUpdateCallback(convertedRow, options));
+    } else if (typeof importConversionInsertCallback === "function") {
+      Object.assign(convertedRow, importConversionInsertCallback(convertedRow, options));
+    }
+
+    row.convertedRow = convertedRow;
+    validData.push(row);
   }
   return { validData, withErrorData };
 }
 
+/**
+ * @name prepareDataChunkForUpdate
+ * @summary Converts each object into filter, update form
+ * @param {Array} data - array of objects to be saved to database
+ * @return {Array} - array of objects for querying
+ */
+function prepareDataChunkForUpdate(data) {
+  return data.map((item) => {
+    const result = {};
+    result.filter = { _id: item._id };
+    result.update = { $set: _.omit(item, ["_id"]) };
+    return { updateOne: result };
+  });
+}
 
 /**
- *
- * @name saveImportData
- * @summary Saves import data into database
- * @param {Object} jobItem - job item document
- * @param {Array} data - array of objects to be saved to database
- * @return {Promise} - Promise
+ * @name getNonExistingIds
+ * @summary Get non existing IDs from data array read from file
+ * @param {Array} data - data to be cleaned
+ * @param {Object} rawCollection - raw collection where
+ * @return {Array} - array of ids that are not existing in current database
  */
-async function saveImportData(jobItem, data) {
-  const { collection, hasHeader, _id: jobItemId, mapping } = jobItem;
-  const convMap = getConvMapByCollection(collection);
-  const keysToDelete = convMap.fields.filter((field) => field.ignoreOnSave);
-  const insertPromises = [];
-  const { validData, withErrorData } = await parseRawObjects(data, mapping, convMap);
-  const toSaveData = validData.map((doc) => {
-    const docClone = Object.assign({}, doc);
-    delete docClone.rowNumber;
-    keysToDelete.forEach((field) => {
-      delete docClone[field.key];
-    });
-    return docClone;
-  });
-  const dataChunks = _.chunk(toSaveData, 1000);
-  dataChunks.forEach((dataChunk) => insertPromises.push(convMap.rawCollection.insertMany(dataChunk)));
-  try {
-    await Promise.all(insertPromises);
-  } catch (error) {
-    Logger.error(error);
-  }
+async function getNonExistingIds(data, rawCollection) {
+  const ids = data.map((row) => row.convertedRow._id);
+  const existingIdsDocs = await rawCollection.find({ _id: { $in: ids } }, { _id: 1 }).toArray();
+  const existingIds = existingIdsDocs.map((doc) => doc._id);
+  return _.difference(ids, existingIds);
+}
 
-  for (const item of validData) {
-    try {
-      await convMap.postImportCallback(item); // eslint-disable-line no-await-in-loop
-    } catch (error) {
-      withErrorData.push({
-        rowNumber: item.rowNumber,
-        errors: [error.message],
-        saved: true
-      });
-    }
-  }
 
+/**
+ * @name saveWithErrorData
+ * @summary Saves with error data into a file into the database
+ * @param {Array} withErrorData - data consiting of row number, error messages, and original row
+ * @param {Object} jobItem - job item doc
+ * @param {Boolean} shouldUpdate - to update docs? false if docs are to be created
+ * @return {Promise} - resolving to database updates
+ */
+async function saveWithErrorData(withErrorData, jobItem, shouldUpdate = false) {
+  const { hasHeader, _id: jobItemId } = jobItem;
   if (withErrorData.length > 0) {
     const csvErrorRows = [];
-    csvErrorRows.push(["Row Number", "Saved?", "Errors"].concat(Object.keys(data[0])));
-    withErrorData.forEach((item) => {
-      const originalRowNumber = hasHeader ? item.rowNumber + 2 : item.rowNumber + 1;
-      const saved = item.saved ? "Yes" : "No";
-      const errorMessages = item.errors.join(" || ");
-      const originalData = Object.values(data[item.rowNumber]);
-      csvErrorRows.push([originalRowNumber, saved, errorMessages].concat(originalData));
+    let header = ["Row Number", "Saved?", "Errors"];
+    if (shouldUpdate) {
+      header = ["Row Number", "Errors"];
+    }
+    csvErrorRows.push(header.concat(Object.keys(withErrorData[0].originalRow)));
+    withErrorData.forEach((row) => {
+      const originalRowNumber = hasHeader ? row.rowNumber + 2 : row.rowNumber + 1;
+      const errorMessages = row.errors.join(" || ");
+      const originalValues = Object.values(row.originalRow);
+      if (shouldUpdate) {
+        csvErrorRows.push([originalRowNumber, errorMessages].concat(originalValues));
+      } else {
+        const saved = row.saved ? "Yes" : "No";
+        csvErrorRows.push([originalRowNumber, saved, errorMessages].concat(originalValues));
+      }
     });
 
     csv.stringify(csvErrorRows, async (error, csvString) => {
@@ -189,6 +240,129 @@ async function saveImportData(jobItem, data) {
   }
 }
 
+
+/**
+ * @name saveImportDataUpdates
+ * @summary Updates existing data in database
+ * @param {Object} jobItem - job item document
+ * @param {Array} data - array of objects to be saved to database
+ * @return {Promise} - to save with error data
+ */
+async function saveImportDataUpdates(jobItem, data) {
+  const { collection, mapping } = jobItem;
+  const shouldUpdate = true;
+
+  const convMap = getConvMapByCollection(collection);
+  const { fields, postImportUpdateCallback, rawCollection } = convMap;
+  const keysToDelete = fields.filter((field) => field.ignoreOnSave);
+
+  const { validData, withErrorData } = await parseRawObjects(data, mapping, convMap, shouldUpdate);
+
+  const dataChunks = _.chunk(validData, 1000);
+
+  await Promise.all(dataChunks.map(async (dataChunk) => {
+    const idsToRemove = await getNonExistingIds(dataChunk, rawCollection);
+    const validDataChunk = [];
+    dataChunk.forEach((row) => {
+      if (!idsToRemove.includes(row.convertedRow._id)) {
+        validDataChunk.push(row);
+      } else {
+        row.errors = ["ID not found."];
+        withErrorData.push(row);
+      }
+    });
+
+    const toSaveData = validDataChunk.map((row) => {
+      const docClone = Object.assign({}, row.convertedRow);
+      keysToDelete.forEach((field) => {
+        delete docClone[field.key];
+      });
+      return docClone;
+    });
+
+    const updateArray = prepareDataChunkForUpdate(toSaveData);
+    await rawCollection.bulkWrite(updateArray);
+
+    if (typeof postImportUpdateCallback === "function") {
+      for (const row of validData) {
+        const errors = await postImportUpdateCallback(row.convertedRow); // eslint-disable-line no-await-in-loop
+        if (errors && errors.length > 0) {
+          row.errors = errors;
+          withErrorData.push(row);
+        }
+      }
+    }
+  }));
+
+  return saveWithErrorData(withErrorData, jobItem, shouldUpdate);
+}
+
+/**
+ * @name saveImportDataInserts
+ * @summary Inserts new data in database
+ * @param {Object} jobItem - job item document
+ * @param {Array} data - array of objects to be saved to database
+ * @return {Promise} - to save with error data
+ */
+async function saveImportDataInserts(jobItem, data) {
+  const { collection, mapping } = jobItem;
+
+  const convMap = getConvMapByCollection(collection);
+  const { fields, postImportInsertCallback, rawCollection } = convMap;
+  const keysToDelete = fields.filter((field) => field.ignoreOnSave);
+
+  const { validData, withErrorData } = await parseRawObjects(data, mapping, convMap);
+  const dataChunks = _.chunk(validData, 1000);
+
+  await Promise.all(dataChunks.map(async (dataChunk) => {
+    const toSaveData = dataChunk.map((row) => {
+      const docClone = Object.assign({}, row.convertedRow);
+      keysToDelete.forEach((field) => {
+        delete docClone[field.key];
+      });
+      return docClone;
+    });
+
+
+    await rawCollection.insertMany(toSaveData);
+
+    if (typeof postImportInsertCallback === "function") {
+      for (const row of validData) {
+        const errors = await postImportInsertCallback(row.convertedRow); // eslint-disable-line no-await-in-loop
+        if (errors && errors.length > 0) {
+          row.errors = errors;
+          withErrorData.push(row);
+        }
+      }
+    }
+  }));
+
+  return saveWithErrorData(withErrorData, jobItem);
+}
+
+
+/**
+ * @name saveImportData
+ * @summary Saves import data into database
+ * @param {Object} jobItem - job item document
+ * @param {Array} data - array of objects to be saved to database
+ * @return {Promise} - resolving to database updates or inserts
+ */
+async function saveImportData(jobItem, data) {
+  const { mapping } = jobItem;
+
+  let shouldUpdate = false;
+
+  const invertedMapping = _.invert(mapping);
+  if ("_id" in invertedMapping && invertedMapping._id in data[0]) {
+    shouldUpdate = true;
+  }
+
+  if (shouldUpdate) {
+    return saveImportDataUpdates(jobItem, data);
+  }
+  return saveImportDataInserts(jobItem, data);
+}
 
 /**
  *

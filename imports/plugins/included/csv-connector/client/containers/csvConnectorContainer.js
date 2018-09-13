@@ -176,14 +176,12 @@ class CSVConnectorContainer extends Component {
       if (mappingId === "create") {
         const defaultMapping = getDefaultMappingForCollection(currentCollection);
         this.setState({
-          selectedMapping: defaultMapping,
-          mappingByUser: defaultMapping.mapping
+          selectedMapping: defaultMapping
         });
       } else {
         const selectedMapping = Mappings.findOne({ _id: mappingId });
         this.setState({
-          selectedMapping,
-          mappingByUser: selectedMapping.mapping
+          selectedMapping
         });
       }
     }
@@ -205,7 +203,9 @@ class CSVConnectorContainer extends Component {
   }
 
   handleSetSampleData = async () => {
+    const { selectedMapping: { mapping } } = this.state;
     let sampleData = {};
+    const mappingByUser = {};
     try {
       const rows = await this.getCSVFilePreviewRows();
       sampleData = this.getSampleData(rows);
@@ -213,6 +213,17 @@ class CSVConnectorContainer extends Component {
       Logger.error(error);
     }
     this.setState({ sampleData });
+
+    for (const colName in sampleData) {
+      if ({}.hasOwnProperty.call(sampleData, colName)) {
+        if (mapping[colName]) {
+          mappingByUser[colName] = mapping[colName];
+        } else {
+          mappingByUser[colName] = "ignore";
+        }
+      }
+    }
+    this.setState({ mappingByUser });
   }
 
   handleSubmitJobItem = async () => {

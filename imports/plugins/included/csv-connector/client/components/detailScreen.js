@@ -76,14 +76,16 @@ class DetailScreen extends Component {
   renderDataTypeSelection() {
     const { collection, dataTypeOptions } = this.props;
     return (
-      <Select
-        id="collectionInput"
-        name="collection"
-        options={dataTypeOptions}
-        value={collection || ""}
-        onChange={this.handleChangeDataType}
-        isSearchable
-      />
+      <Field name="collection" label="Choose the data type" labelFor="collectionInput">
+        <Select
+          id="collectionInput"
+          name="collection"
+          options={dataTypeOptions}
+          value={collection || ""}
+          onChange={this.handleChangeDataType}
+          isSearchable
+        />
+      </Field>
     );
   }
 
@@ -317,6 +319,8 @@ DetailScreen.propTypes = {
   onDone: PropTypes.func,
   onSetActiveScreen: PropTypes.func,
   onSetField: PropTypes.func,
+  onSetMappingByUser: PropTypes.func,
+  selectedMapping: PropTypes.object,
   shouldExportToS3: PropTypes.bool,
   shouldExportToSFTP: PropTypes.bool
 };

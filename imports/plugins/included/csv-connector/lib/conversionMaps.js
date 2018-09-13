@@ -4,11 +4,13 @@ export const ProductsConvMap = {
   fields: [
     {
       key: "_id",
-      label: "ID"
+      label: "ID",
+      type: String
     },
     {
       key: "title",
-      label: "Title"
+      label: "Title",
+      type: String
     }
   ]
 };
@@ -20,33 +22,39 @@ export const TagsConvMap = {
     {
       key: "_id",
       label: "ID",
-      optional: true
+      optional: true,
+      type: String
     },
     {
       key: "name",
-      label: "Name"
+      label: "Name",
+      type: String
     },
     {
       key: "slug",
       label: "Slug",
-      optional: true
+      optional: true,
+      type: String
     },
     {
       key: "parentTagId",
       label: "Parent Tag ID",
       optional: true,
-      ignoreOnSave: true
+      ignoreOnSave: true,
+      type: String
     },
     {
       key: "parentTagSlug",
       label: "Parent Tag Slug",
       optional: true,
-      ignoreOnSave: true
+      ignoreOnSave: true,
+      type: String
     },
     {
       key: "isVisible",
       label: "Is Visible",
-      optional: true
+      optional: true,
+      type: Boolean
     }
   ]
 };

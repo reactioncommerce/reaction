@@ -8,11 +8,11 @@ import Select from "@reactioncommerce/components/Select/v1";
 class MappingTable extends Component {
   constructor(props) {
     super(props);
-    this.state = props.mappingByUser;
+    this.state = {};
   }
 
-  componentDidUpdate(prevProps) {
-    const { onSetMappingByUserError, sampleData } = this.props;
+  componentDidUpdate(prevProps, prevState) {
+    const { onSetMappingByUserError, mappingByUser, sampleData } = this.props;
     if (!_.isEqual(prevProps.sampleData, sampleData)) {
       // validate the file uploaded here
       let error;
@@ -20,7 +20,7 @@ class MappingTable extends Component {
       if (_.isEmpty(sampleData)) {
         error = [{ name: field, message: "We encountered a problem reading your file. Please upload another file." }];
       } else if (this.sampleDataHasNoContent()) {
-        error = [{ name: field, message: "We encountered a problem reading your file. Please upload another file." }];
+        error = [{ name: field, message: "Your file has no content. Please upload another file." }];
       }
       if (error) {
         onSetMappingByUserError(error);
@@ -28,19 +28,20 @@ class MappingTable extends Component {
         onSetMappingByUserError([]);
       }
     }
-  }
-
-  componentDidUpdate(prevProps, prevState) {
-    const isEqual = _.isEqual(prevState, this.state);
-    if (!isEqual) {
+    if (!_.isEqual(prevState, this.state)) {
       this.props.onSetMappingByUser(this.state);
     }
+    if (!_.isEqual(prevProps.mappingByUser, mappingByUser)) {
+      this.setNewMapping();
+    }
+  }
+
+  setNewMapping = () => {
+    const { mappingByUser } = this.props;
+    this.setState(mappingByUser);
   }
 
   handleChangeFieldMapping= (col) => (value) => {
-    if (value === this.state[col]) {
-      return;
-    }
     this.setState({ [col]: value });
   }
 
