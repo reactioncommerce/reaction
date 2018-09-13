@@ -3,12 +3,12 @@ import ReactionError from "@reactioncommerce/reaction-error";
 /**
  * @summary Calculates total discount amount for a cart based on all discounts
  *   that have been applied to it
- * @param {Object} collections Map of MongoDB collections
+ * @param {Object} context Context object
  * @param {String} cartId Cart ID
  * @returns {Object} Object with `discounts` array and `total`
  */
-export default async function getDiscountsTotalForCart(collections, cartId) {
-  const { Cart, Discounts } = collections;
+export default async function getDiscountsTotalForCart(context, cartId) {
+  const { Cart, Discounts } = context.collections;
 
   const cart = await Cart.findOne({ _id: cartId });
   if (!cart) {
