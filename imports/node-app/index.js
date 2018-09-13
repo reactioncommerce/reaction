@@ -1,25 +1,25 @@
 import express from "express";
 import Logger from "@reactioncommerce/logger";
 import ReactionNodeApp from "./core/ReactionNodeApp";
-import filesService from "./services/files";
 import mutations from "./core/mutations";
 import queries from "./core/queries";
 import resolvers from "./core/resolvers";
 import schemas from "./core/schemas";
+import filesStartup from "./filesStartup";
 
 const { MONGO_URL, PORT = 3030, ROOT_URL } = process.env;
 if (!MONGO_URL) throw new Error("You must set MONGO_URL");
 if (!ROOT_URL) throw new Error("You must set ROOT_URL");
 
 const app = new ReactionNodeApp({
-  additionalServices: [
-    filesService
-  ],
   debug: true,
   context: {
     mutations,
     queries,
     rootUrl: ROOT_URL
+  },
+  functionsByType: {
+    startup: [filesStartup]
   },
   graphQL: {
     graphiql: true,
