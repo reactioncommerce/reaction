@@ -1,6 +1,6 @@
 import Reaction from "/imports/plugins/core/core/server/Reaction";
 import resolvers from "./server/no-meteor/resolvers";
-import schema from "./server/no-meteor/schema.graphql";
+import schemas from "./server/no-meteor/schemas";
 
 Reaction.registerPackage({
   label: "Payments",
@@ -9,7 +9,7 @@ Reaction.registerPackage({
   autoEnable: true,
   graphQL: {
     resolvers,
-    schemas: [schema]
+    schemas
   },
   settings: {
     payments: {

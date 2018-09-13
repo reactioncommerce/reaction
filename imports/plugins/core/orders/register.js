@@ -2,7 +2,7 @@ import Reaction from "/imports/plugins/core/core/server/Reaction";
 import mutations from "./server/no-meteor/mutations";
 import queries from "./server/no-meteor/queries";
 import resolvers from "./server/no-meteor/resolvers";
-import schema from "./server/no-meteor/schema.graphql";
+import schemas from "./server/no-meteor/schemas";
 
 Reaction.registerPackage({
   label: "Orders",
@@ -11,7 +11,7 @@ Reaction.registerPackage({
   autoEnable: true,
   graphQL: {
     resolvers,
-    schemas: [schema]
+    schemas
   },
   mutations,
   queries,

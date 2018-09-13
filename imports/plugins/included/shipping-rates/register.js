@@ -1,8 +1,8 @@
 import Reaction from "/imports/plugins/core/core/server/Reaction";
 import getFulfillmentMethodsWithQuotes from "./server/no-meteor/getFulfillmentMethodsWithQuotes";
-import graphqlSchema from "./server/no-meteor/schema.graphql";
-import graphqlResolvers from "./server/no-meteor/resolvers";
+import resolvers from "./server/no-meteor/resolvers";
 import mutations from "./server/no-meteor/mutations";
+import schemas from "./server/no-meteor/schemas";
 
 Reaction.registerPackage({
   label: "Shipping Rates",
@@ -10,8 +10,8 @@ Reaction.registerPackage({
   icon: "fa fa-truck-o",
   autoEnable: true,
   graphQL: {
-    schemas: [graphqlSchema],
-    resolvers: graphqlResolvers
+    resolvers,
+    schemas
   },
   mutations,
   functionsByType: {
