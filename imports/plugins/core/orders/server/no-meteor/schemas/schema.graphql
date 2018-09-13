@@ -6,7 +6,7 @@ extend type Query {
   ordersByAccountId(accountId: ID!, shopIds: [ID]): [Order]!
 }
 
-enum OrderItemsSortByField {
+enum OrderFulfillmentGroupItemsSortByField {
   _id
   addedAt
 }
@@ -31,6 +31,32 @@ type OrderItemAttribute {
 
   "The attribute value, e.g., Blue"
   value: String
+}
+
+"A summary of the totals for this order"
+type OrderSummary {
+  "The total of all discounts applied, as a positive number"
+  discountTotal: Money!
+
+  """
+  The total price of all chosen fulfillment methods. This may be null, and there is a difference
+  between null and 0. Null means "not able to calculate", such as when no fulfillment method has
+  been selected for some fulfillment groups.
+  """
+  fulfillmentTotal: Money
+
+  "The combined prices of all cart items"
+  itemTotal: Money!
+
+  """
+  The total estimated tax that has not already been included in the item prices. This may be null,
+  and there is a difference between null and 0. Null means "not able to calculate", such as when no
+  fulfillment methods have been selected or there is some other issue with the tax service.
+  """
+  taxTotal: Money
+
+  "The sum of `itemTotal`, `fulfillmentTotal`, and `taxTotal`, minus `discountTotal`"
+  total: Money!
 }
 
 """
@@ -123,7 +149,7 @@ type OrderFulfillmentGroup implements Node {
   data: OrderFulfillmentGroupData
 
   "The items that are part of this fulfillment group"
-  items(after: ConnectionCursor, before: ConnectionCursor, first: ConnectionLimitInt, last: ConnectionLimitInt, sortOrder: SortOrder = desc, sortBy: OrderItemsSortByField = addedAt): OrderItemConnection
+  items(after: ConnectionCursor, before: ConnectionCursor, first: ConnectionLimitInt, last: ConnectionLimitInt, sortOrder: SortOrder = desc, sortBy: OrderFulfillmentGroupItemsSortByField = addedAt): OrderItemConnection
 
   "The payment details for this group"
   payment: Payment!
