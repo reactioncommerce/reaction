@@ -44,6 +44,7 @@ services:
       MONGO_OPLOG_URL: "mongodb://mongo:27017/local"
       ROOT_URL: "http://localhost:3000"
       BABEL_DISABLE_CACHE: 1 # This is needed to pick up changes to .graphql files. See https://www.npmjs.com/package/babel-plugin-inline-import#caveats
+      HYDRA_OAUTH2_INTROSPECT_URL: "http://hydra:4445/oauth2/introspect"
     networks:
       default:
       reaction-api:
