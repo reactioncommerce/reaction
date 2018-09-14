@@ -5,7 +5,7 @@ import { graphqlExpress, graphiqlExpress } from "apollo-server-express";
 import { makeExecutableSchema } from "graphql-tools";
 import buildContext from "./util/buildContext";
 import getErrorFormatter from "./util/getErrorFormatter";
-import meteorTokenMiddleware from "./util/meteorTokenMiddleware";
+import tokenMiddleware from "./util/tokenMiddleware";
 
 const defaultServerConfig = {
   // graphql endpoint
@@ -38,7 +38,7 @@ export default function createApolloServer(options = {}) {
     graphQLPath,
     cors(),
     bodyParser.json(),
-    meteorTokenMiddleware("meteor-login-token", contextFromOptions),
+    tokenMiddleware(contextFromOptions),
     graphqlExpress(async (req) => {
       const context = { ...contextFromOptions };
 
