@@ -9,7 +9,7 @@ import tokenExpiration from "./tokenExpiration";
  * If the provided token is not associated with any user or is associated but is
  * expired, this function throws an "access-denied" ReactionError.
  *
- * @name getUserFromToken
+ * @name getUserFromMeteorToken
  * @method
  * @memberof GraphQL
  * @summary Looks up a user by token
@@ -17,7 +17,7 @@ import tokenExpiration from "./tokenExpiration";
  * @param {Object} context An object with request-specific state
  * @returns {Function} The error formatter function
  */
-async function getUserFromToken(loginToken, context) {
+async function getUserFromMeteorToken(loginToken, context) {
   const { collections } = context;
   const { users } = collections;
 
@@ -44,4 +44,4 @@ async function getUserFromToken(loginToken, context) {
   return currentUser;
 }
 
-export default getUserFromToken;
+export default getUserFromMeteorToken;
