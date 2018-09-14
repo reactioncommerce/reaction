@@ -1,4 +1,4 @@
-import getUserFromToken from "./getUserFromToken";
+import getUserFromMeteorToken from "./getUserFromMeteorToken";
 import { rewire as rewire$tokenExpiration, restore as restore$tokenExpiration } from "./tokenExpiration";
 
 const loginToken = "LOGIN_TOKEN";
@@ -40,7 +40,7 @@ test("gets the user based on a non-expired token", async () => {
   mockTokenExpiration.mockImplementationOnce(() => new Date(Date.now() + 1000));
   mockContext.collections.users.findOne.mockReturnValueOnce(Promise.resolve(fakeUser));
 
-  const user = await getUserFromToken(loginToken, mockContext);
+  const user = await getUserFromMeteorToken(loginToken, mockContext);
   expect(user).toEqual(fakeUser);
 
   expect(mockContext.collections.users.findOne).toHaveBeenCalledWith({
@@ -50,11 +50,11 @@ test("gets the user based on a non-expired token", async () => {
 
 test("throws an error for an invalid token", async () => {
   mockContext.collections.users.findOne.mockReturnValueOnce(Promise.resolve(undefined));
-  await expect(getUserFromToken(loginToken, mockContext)).rejects.toThrow("Token invalid");
+  await expect(getUserFromMeteorToken(loginToken, mockContext)).rejects.toThrow("Token invalid");
 });
 
 test("throws an error for an expired token", async () => {
   mockTokenExpiration.mockImplementationOnce(() => new Date(Date.now() - 5000));
   mockContext.collections.users.findOne.mockReturnValueOnce(Promise.resolve(fakeUser));
-  await expect(getUserFromToken(loginToken, mockContext)).rejects.toThrow("Token expired");
+  await expect(getUserFromMeteorToken(loginToken, mockContext)).rejects.toThrow("Token expired");
 });
