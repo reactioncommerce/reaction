@@ -10,7 +10,6 @@ import { formatMoney, toFixed } from "accounting-js";
  * @returns {String} Display price with currency symbol(s)
  */
 export default function getDisplayPrice(minPrice, maxPrice, currencyInfo = { symbol: "" }) {
-  console.log("currencyInfo:", currencyInfo);
   let displayPrice;
 
   if (minPrice === maxPrice) {
@@ -33,8 +32,6 @@ export default function getDisplayPrice(minPrice, maxPrice, currencyInfo = { sym
     const maxFormatted = formatMoney(maxPrice, currencyInfo);
     displayPrice = `${minFormatted} - ${maxFormatted}`;
   }
-
-  console.log("displayPrice:", displayPrice);
 
   return displayPrice;
 }
