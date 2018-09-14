@@ -15,8 +15,12 @@ export default (Component) => (
       tagId: PropTypes.string
     };
 
+    static defaultProps = {
+      currencyCode: "USD"
+    };
+
     render() {
-      const { currencyCode = "USD", shouldSkipGraphql, shopId, tagId } = this.props;
+      const { currencyCode, shouldSkipGraphql, shopId, tagId } = this.props;
 
       if (shouldSkipGraphql || !shopId) {
         return (
