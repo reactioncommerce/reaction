@@ -322,7 +322,6 @@ registerSchema("OrderTransaction", OrderTransaction);
  * @property {String} _id Group ID
  * @property {Object} address Shipping address
  * @property {String} customsLabelUrl URL for customs label
- * @property {Number} effectiveTaxRate The effective tax rate, for display
  * @property {Object} invoice Invoice (same as the one on Payment)
  * @property {Object[]} items The order items in this group
  * @property {String[]} itemIds For convenience, the _id of all the items
@@ -345,7 +344,6 @@ const OrderFulfillmentGroup = new SimpleSchema({
     type: String,
     optional: true
   },
-  "effectiveTaxRate": Number,
   "invoice": Invoice,
   "items": {
     type: Array,

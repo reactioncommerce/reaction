@@ -133,13 +133,46 @@ type SelectFulfillmentOptionForGroupPayload {
 ## General
 ########################
 
+"A summary of the totals for this cart"
+type CartSummary {
+  "The total of all discounts applied, as a positive number"
+  discountTotal: Money!
+
+  """
+  The calculated tax-exclusive tax rate on all items and fulfillment prices. This may be null,
+  and there is a difference between null and 0. Null means "not able to calculate", such as
+  when no fulfillment method has been selected for some fulfillment groups.
+  """
+  effectiveTaxRate: Rate
+
+  """
+  The total price of all chosen fulfillment methods. This may be null, and there is a difference
+  between null and 0. Null means "not able to calculate", such as when no fulfillment method has
+  been selected for some fulfillment groups.
+  """
+  fulfillmentTotal: Money
+
+  "The combined prices of all cart items"
+  itemTotal: Money!
+
+  """
+  The total estimated tax that has not already been included in the item prices. This may be null,
+  and there is a difference between null and 0. Null means "not able to calculate", such as when no
+  fulfillment methods have been selected or there is some other issue with the tax service.
+  """
+  taxTotal: Money
+
+  "The sum of `itemTotal`, `fulfillmentTotal`, and `taxTotal`, minus `discountTotal`"
+  total: Money!
+}
+
 "Holds all information collected for a cart during checkout"
 type Checkout {
   "One or more fulfillment groups, for example, mapping certain items to certain shipping addresses"
   fulfillmentGroups: [FulfillmentGroup]!
 
-  "A summary of the totals for this order"
-  summary: OrderSummary!
+  "A summary of the totals for this cart"
+  summary: CartSummary!
 }
 
 extend type Mutation {

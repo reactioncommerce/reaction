@@ -121,7 +121,6 @@ export default async function addCartItems(collections, currentItems, inputItems
       productType: catalogProduct.type,
       quantity,
       shopId: catalogProduct.shopId,
-      subtotal: quantity * variantPriceInfo.price,
       taxCode: chosenVariant.taxCode,
       title: catalogProduct.title,
       updatedAt: currentDateTime,

@@ -23,7 +23,7 @@ async function getTaxPercentForShop(collections, group) {
   // match we're taking the first record, where the most
   // likely tax scenario is a postal code falling
   // back to a regional tax.
-  const taxDoc = Taxes.findOne({
+  const taxDoc = await Taxes.findOne({
     $and: [{
       $or: [{
         postal: shippingAddress.postal
@@ -46,26 +46,21 @@ async function getTaxPercentForShop(collections, group) {
 }
 
 /**
- * @summary Modifies a fulfillment group, adding `effectiveTaxRate` property to the group,
- *   and adding `taxRate` and `tax` properties to each item in the group. Assumes that each
- *   item has `subtotal` and `isTaxable` props set. Assumes that the group has `shopId` and
- *   `address` properties set.
+ * @summary Modifies a fulfillment group, adding `taxRate` and `tax` properties to each item
+ *   in the group. Assumes that each item has `subtotal` and `isTaxable` props set. Assumes
+ *   that the group has `shopId` and `address` properties set.
  * @param {Object} collections Map of MongoDB collections
  * @param {Object} group The fulfillment group to get a tax rate for
  * @returns {Object} Updated fulfillment group
  */
-export default async function applyTaxesToFulfillmentGroup(collections, group) {
+export default async function getFulfillmentGroupItemsWithTaxAdded(collections, group) {
   const { items } = group;
 
   const taxPercent = await getTaxPercentForShop(collections, group);
   const taxRate = taxPercent / 100;
 
   // calculate line item taxes
-  let totalTax = 0;
-  let itemTotal = 0;
   const itemsWithTax = items.map((item) => {
-    itemTotal += item.subtotal;
-
     // init rate to 0
     item.taxRate = 0;
     item.tax = 0;
@@ -74,17 +69,10 @@ export default async function applyTaxesToFulfillmentGroup(collections, group) {
     if (taxRate && item.isTaxable) {
       item.taxRate = taxRate;
       item.tax = item.subtotal * item.taxRate;
-      totalTax += item.tax;
     }
 
     return item;
   });
 
-  const effectiveTaxRate = itemTotal > 0 && totalTax > 0 ? totalTax / itemTotal : 0;
-
-  return {
-    ...group,
-    effectiveTaxRate,
-    items: itemsWithTax
-  };
+  return itemsWithTax;
 }

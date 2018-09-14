@@ -4,9 +4,8 @@ import Random from "@reactioncommerce/random";
 import ReactionError from "@reactioncommerce/reaction-error";
 import hashLoginToken from "/imports/node-app/core/util/hashLoginToken";
 import appEvents from "/imports/node-app/core/util/appEvents";
-import applyTaxesToFulfillmentGroup from "/imports/plugins/core/taxes/server/no-meteor/mutations/applyTaxesToFulfillmentGroup";
+import getFulfillmentGroupItemsWithTaxAdded from "/imports/plugins/core/taxes/server/no-meteor/mutations/getFulfillmentGroupItemsWithTaxAdded";
 import { Order as OrderSchema, Payment as PaymentSchema } from "/imports/collections/schemas";
-import findProductAndVariant from "/imports/plugins/core/catalog/server/no-meteor/utils/findProductAndVariant";
 import getDiscountsTotalForCart from "/imports/plugins/core/discounts/server/no-meteor/util/getDiscountsTotalForCart";
 
 const orderItemsSchema = new SimpleSchema({
@@ -121,18 +120,33 @@ async function getCurrencyExchangeObject(collections, cartCurrencyCode, shopId, 
  * @returns {Object} Invoice object with totals
  */
 function getInvoiceForFulfillmentGroup(group, discountTotal) {
-  // Build an invoice object with the final totals on it
+  // Items
   const itemTotal = group.items.reduce((sum, item) => (sum + item.subtotal), 0);
+
+  // Taxes
   const taxTotal = group.items.reduce((sum, item) => (sum + item.tax), 0);
+
+  // Fulfillment
   const shippingTotal = group.shipmentMethod.rate || 0;
   const handlingTotal = group.shipmentMethod.handling || 0;
+  const fulfillmentTotal = shippingTotal + handlingTotal;
+
+  // Totals
+  const total = Math.max(0, itemTotal + fulfillmentTotal + taxTotal - discountTotal);
+  // fulfillmentTotal should be included in this in many jurisdictions but we don't yet support that
+  const preTaxTotal = Math.max(0, itemTotal - discountTotal);
+
+  // Calculate the tax-exclusive tax rate because most people and jurisdictions
+  // refer to sales tax as exclusive rates.
+  const effectiveTaxRate = preTaxTotal > 0 && taxTotal > 0 ? taxTotal / preTaxTotal : 0;
 
   return {
     discounts: discountTotal,
-    shipping: shippingTotal + handlingTotal,
+    effectiveTaxRate,
+    shipping: fulfillmentTotal,
     subtotal: itemTotal,
     taxes: taxTotal,
-    total: Math.max(0, itemTotal + shippingTotal + handlingTotal + taxTotal - discountTotal)
+    total
   };
 }
 
@@ -140,27 +154,22 @@ function getInvoiceForFulfillmentGroup(group, discountTotal) {
  * @summary Builds an order item
  * @param {Object} inputItem Order item input. See schema.
  * @param {String} currencyCode The order currency code
- * @param {Object} collections Map of MongoDB collections
+ * @param {Object} context an object containing the per-request state
  * @returns {Promise<Object>} An order item, matching the schema needed for insertion in the Orders collection
  */
-async function buildOrderItem(inputItem, currencyCode, collections) {
+async function buildOrderItem(inputItem, currencyCode, context) {
   const {
     addedAt,
     price,
-    productConfiguration: {
-      productId,
-      productVariantId
-    },
+    productConfiguration,
     quantity
   } = inputItem;
 
   const {
     catalogProduct: chosenProduct,
-    variant: chosenVariant
-  } = await findProductAndVariant(collections, productId, productVariantId);
-
-  const variantPriceInfo = (chosenVariant.pricing && chosenVariant.pricing[currencyCode]) || {};
-  const finalPrice = variantPriceInfo.price || chosenVariant.price;
+    catalogProductVariant: chosenVariant,
+    price: finalPrice
+  } = await context.queries.getCurrentCatalogPriceForProductConfiguration(productConfiguration, currencyCode, context.collections);
   if (finalPrice !== price) {
     throw new ReactionError("invalid", `Provided price for the "${chosenVariant.title}" item does not match current published price`);
   }
@@ -177,7 +186,7 @@ async function buildOrderItem(inputItem, currencyCode, collections) {
       amount: finalPrice,
       currencyCode
     },
-    productId,
+    productId: chosenProduct._id,
     productSlug: chosenProduct.slug,
     productType: chosenProduct.type,
     productVendor: chosenProduct.vendor,
@@ -263,11 +272,9 @@ export default async function createOrder(context, input) {
 
     // Build the final order item objects. As part of this, we look up the variant in the system and make sure that
     // the price is what the shopper expects it to be.
-    finalGroup.items = await Promise.all(finalGroup.items.map((item) => buildOrderItem(item, currencyCode, collections)));
+    finalGroup.items = await Promise.all(finalGroup.items.map((item) => buildOrderItem(item, currencyCode, context)));
 
-    const { effectiveTaxRate, items: itemsWithTaxInfoAdded } = await applyTaxesToFulfillmentGroup(collections, finalGroup);
-    finalGroup.effectiveTaxRate = effectiveTaxRate;
-    finalGroup.items = itemsWithTaxInfoAdded;
+    finalGroup.items = await getFulfillmentGroupItemsWithTaxAdded(collections, finalGroup);
 
     // Add some more properties for convenience
     finalGroup.itemIds = finalGroup.items.map((item) => item._id);

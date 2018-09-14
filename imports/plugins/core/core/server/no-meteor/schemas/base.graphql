@@ -81,6 +81,18 @@ input MoneyInput {
   currencyCode: String!
 }
 
+"A numeric rate, with its corresponding percent values"
+type Rate {
+  "The rate"
+  amount: Float!
+
+  "The percent as a preformatted string with percent symbol included"
+  displayPercent: String!
+
+  "The percent (rate x 100)"
+  percent: Float!
+}
+
 "Mutations have side effects, such as mutating data or triggering a task"
 type Mutation {
   echo(str: String): String

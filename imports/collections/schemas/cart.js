@@ -250,10 +250,6 @@ export const Cart = new SimpleSchema({
   "billing.$": {
     type: Payment
   },
-  "tax": {
-    type: Number,
-    optional: true
-  },
   "taxCalculationFailed": {
     type: Boolean,
     optional: true,

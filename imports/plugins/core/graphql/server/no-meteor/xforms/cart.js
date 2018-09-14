@@ -4,6 +4,7 @@ import findVariantInCatalogProduct from "/imports/plugins/core/catalog/server/no
 import { assocInternalId, assocOpaqueId, decodeOpaqueIdForNamespace, encodeOpaqueId } from "./id";
 import { decodeProductOpaqueId } from "./product";
 import { xformProductMedia } from "./catalogProduct";
+import { xformRateToRateObject } from "./core";
 
 export const assocCartInternalId = assocInternalId(namespaces.Cart);
 export const assocCartOpaqueId = assocOpaqueId(namespaces.Cart);
@@ -88,6 +89,10 @@ function xformCartItem(context, catalogItems, products, cartItem) {
     productConfiguration: {
       productId: cartItem.productId,
       productVariantId: cartItem.variantId
+    },
+    subtotal: {
+      amount: variantPriceInfo.price * cartItem.quantity,
+      currencyCode
     }
   };
 }
@@ -218,16 +223,27 @@ export async function xformCartCheckout(collections, cart) {
     }
   }
 
-  // taxTotal is itemTotal * effective tax ratio
-  // If it's null or undefined, we assume it has not been calculated and keep as null.
+  // Each item may have a total tax amount on it. We can sum these to get the total tax amount.
+  // If any of them are null, we leave the total null also. Using for-of rather than reduce
+  // so that we can set to null and break if we hit a not-yet-calculated item.
   let taxTotal = null;
-  if (typeof cart.tax === "number") {
-    taxTotal = itemTotal * cart.tax;
+  for (const item of cart.items) {
+    if (!item.tax && item.tax !== 0) {
+      taxTotal = null;
+      break;
+    }
+    if (taxTotal === null) {
+      taxTotal = 0;
+    }
+    taxTotal += item.tax;
   }
 
   const discountTotal = cart.discount || 0;
 
   const total = Math.max(0, itemTotal + fulfillmentTotal + taxTotal - discountTotal);
+
+  // fulfillmentTotal should be included in this in many jurisdictions but we don't yet support that
+  const preTaxTotal = Math.max(0, itemTotal - discountTotal);
 
   let fulfillmentTotalMoneyObject = null;
   if (fulfillmentTotal !== null) {
@@ -238,11 +254,16 @@ export async function xformCartCheckout(collections, cart) {
   }
 
   let taxTotalMoneyObject = null;
+  let effectiveTaxRateObject = null;
   if (taxTotal !== null) {
     taxTotalMoneyObject = {
       amount: taxTotal,
       currencyCode: cart.currencyCode
     };
+    // Calculate the tax-exclusive rate because most people and jurisdictions refer to sales
+    // tax as exclusive rates.
+    const effectiveTaxRate = preTaxTotal > 0 && taxTotal > 0 ? taxTotal / preTaxTotal : 0;
+    effectiveTaxRateObject = xformRateToRateObject(effectiveTaxRate);
   }
 
   fulfillmentGroups = fulfillmentGroups.map((fulfillmentGroup) => xformCartFulfillmentGroup(fulfillmentGroup, cart));
@@ -255,6 +276,7 @@ export async function xformCartCheckout(collections, cart) {
         amount: discountTotal,
         currencyCode: cart.currencyCode
       },
+      effectiveTaxRate: effectiveTaxRateObject,
       fulfillmentTotal: fulfillmentTotalMoneyObject,
       itemTotal: {
         amount: itemTotal,

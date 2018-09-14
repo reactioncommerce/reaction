@@ -6,15 +6,19 @@ import { Address } from "./address";
  * @name Invoice
  * @type {SimpleSchema}
  * @memberof Schemas
- * @property {String} transaction optional
- * @property {Number} shipping optional
- * @property {Number} taxes optional
- * @property {Number} subtotal required
  * @property {Number} discounts optional
+ * @property {Number} effectiveTaxRate The effective tax rate, for display
+ * @property {Number} shipping optional
+ * @property {Number} subtotal required
+ * @property {Number} taxes optional
  * @property {Number} total required
  */
 export const Invoice = new SimpleSchema({
   discounts: {
+    type: Number,
+    min: 0
+  },
+  effectiveTaxRate: {
     type: Number,
     min: 0
   },
