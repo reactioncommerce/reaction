@@ -1,8 +1,9 @@
-import { formatMoney, toFixed } from "accounting-js";
+import { toFixed } from "accounting-js";
 import { assoc, compose, map, toPairs } from "ramda";
 import ReactionError from "@reactioncommerce/reaction-error";
 import CurrencyDefinitions from "/imports/plugins/core/core/lib/CurrencyDefinitions";
 import { namespaces } from "@reactioncommerce/reaction-graphql-utils";
+import getDisplayPrice from "/imports/plugins/core/catalog/server/no-meteor/utils/getDisplayPrice";
 import { assocInternalId, assocOpaqueId, decodeOpaqueIdForNamespace, encodeOpaqueId } from "./id";
 
 export const assocCurrencyInternalId = assocInternalId(namespaces.Currency);
@@ -65,32 +66,13 @@ export async function xformCurrencyExchangePricing(pricing, currencyCode, contex
     currencyCode = shop.currency; // eslint-disable-line no-param-reassign
   }
 
-  const currency = shop.currencies[currencyCode];
-  const { rate } = currency;
-
+  const currencyInfo = shop.currencies[currencyCode];
+  const { rate } = currencyInfo;
   const { price, minPrice, maxPrice } = pricing;
   const priceConverted = price && Number(toFixed(price * rate, 2));
   const minPriceConverted = minPrice && Number(toFixed(minPrice * rate, 2));
   const maxPriceConverted = maxPrice && Number(toFixed(maxPrice * rate, 2));
-
-  let displayPrice = "";
-  if (minPrice && maxPrice) {
-    let minFormatted;
-    if (currency.where === "right") {
-      const modifiedCurrency = Object.assign({}, currency, {
-        symbol: ""
-      });
-      minFormatted = formatMoney(minPriceConverted, modifiedCurrency);
-    } else {
-      minFormatted = formatMoney(minPriceConverted, currency);
-    }
-
-    const maxFormatted = formatMoney(maxPriceConverted, currency);
-    displayPrice = `${minFormatted} - ${maxFormatted}`;
-  } else {
-    const priceFormatted = formatMoney(priceConverted, currency);
-    displayPrice = priceFormatted;
-  }
+  const displayPrice = getDisplayPrice(minPriceConverted, maxPriceConverted, currencyInfo);
 
   return {
     displayPrice,
