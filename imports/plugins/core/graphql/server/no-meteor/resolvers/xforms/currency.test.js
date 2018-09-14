@@ -78,30 +78,10 @@ const minMaxPricingOutput = {
   currency: { code: "EUR" }
 };
 
-const priceInput = {
-  displayPrice: "$12.99",
-  maxPrice: null,
-  minPrice: null,
-  price: 12.99,
-  currencyCode: "USD"
-};
-
-const priceOutput = {
-  displayPrice: "11,13 €",
-  price: 11.13,
-  minPrice: null,
-  maxPrice: null,
-  currency: { code: "EUR" }
-};
-
 test("xformLegacyCurrencies converts legacy currency object to an array", () => {
   expect(xformLegacyCurrencies(input)).toEqual(expected);
 });
 
 test("xformCurrencyExchangePricing converts min-max pricing object correctly", async () => {
   expect(await xformCurrencyExchangePricing(minMaxPricingInput, "EUR", testContext)).toEqual(minMaxPricingOutput);
-});
-
-test("xformCurrencyExchangePricing converts single price pricing object correctly", async () => {
-  expect(await xformCurrencyExchangePricing(priceInput, "EUR", testContext)).toEqual(priceOutput);
 });
