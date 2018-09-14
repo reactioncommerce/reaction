@@ -2,6 +2,7 @@ import ReactionError from "@reactioncommerce/reaction-error";
 import { namespaces } from "@reactioncommerce/reaction-graphql-utils";
 import { assocInternalId, assocOpaqueId, decodeOpaqueIdForNamespace, encodeOpaqueId } from "./id";
 import { xformProductMedia } from "./catalogProduct";
+import { xformRateToRateObject } from "./core";
 
 export const assocOrderInternalId = assocInternalId(namespaces.Order);
 export const assocOrderOpaqueId = assocOpaqueId(namespaces.Order);
@@ -105,7 +106,12 @@ function xformOrderItem(context, item, catalogItems) {
     subtotal: {
       amount: item.subtotal,
       currencyCode: item.price.currencyCode
-    }
+    },
+    tax: {
+      amount: item.tax,
+      currencyCode: item.price.currencyCode
+    },
+    taxRate: xformRateToRateObject(item.taxRate)
   };
 }
 
