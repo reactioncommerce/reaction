@@ -2,11 +2,12 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Elements, StripeProvider } from "react-stripe-elements";
 import { composeWithTracker } from "@reactioncommerce/reaction-components";
-import { Meteor } from "meteor/meteor";
 import { i18next, Reaction, Router } from "/client/api";
-import { Accounts, Packages } from "/lib/collections";
+import { Packages } from "/lib/collections";
 import { unstoreAnonymousCart } from "/imports/plugins/core/cart/client/util/anonymousCarts";
 import getCart from "/imports/plugins/core/cart/client/util/getCart";
+import getOpaqueIds from "/imports/plugins/core/core/client/util/getOpaqueIds";
+import buildOrderInputFromCart from "/imports/plugins/core/cart/client/util/buildOrderInputFromCart";
 import simpleGraphQLClient from "/imports/plugins/core/graphql/lib/helpers/simpleClient";
 import InjectedCardForm from "../components/injectedCardForm";
 
@@ -33,23 +34,6 @@ class StripePaymentFormContainer extends Component {
 }
 
 /**
- * @summary Get opaque IDs for GraphQL calls
- * @param {Object[]} methodInput Argument to pass to "getOpaqueIdFromInternalId" Meteor method
- * @returns {String[]} Array of opaque IDs in the same order as `methodInput` array
- */
-function getOpaqueIds(methodInput) {
-  return new Promise((resolve, reject) => {
-    Meteor.call("getOpaqueIdFromInternalId", methodInput, (error, opaqueIds) => {
-      if (error) {
-        reject(error);
-      } else {
-        resolve(opaqueIds);
-      }
-    });
-  });
-}
-
-/**
  * @summary Builds a submit handler function
  * @param {Object} billingAddress Address to be sent with placeOrder mutation
  * @param {String} billingAddressId Address ID to be sent with placeOrder mutation
@@ -59,100 +43,18 @@ function getOpaqueIds(methodInput) {
  */
 function getSubmitHandler(billingAddress, billingAddressId, cart, cartToken) {
   return async function placeOrderWithStripe(stripeTokenId) {
-    const [
-      opaqueBillingAddressId,
-      opaqueCartId,
-      opaqueCartShopId
-    ] = await getOpaqueIds([
-      { namespace: "Address", id: billingAddressId },
-      { namespace: "Cart", id: cart._id },
-      { namespace: "Shop", id: cart.shopId }
-    ]);
+    // Build the order input
+    const order = await buildOrderInputFromCart(cart);
 
-    const fulfillmentGroups = await Promise.all(cart.shipping.map(async (group) => {
-      const items = cart.items.filter((cartItem) => group.itemIds.indexOf(cartItem._id) !== -1);
-      const itemProductIds = items.map((item) => ({ namespace: "Product", id: item.productId }));
-      const itemVariantIds = items.map((item) => ({ namespace: "Product", id: item.variantId }));
+    // Build the payment input
+    const [opaqueBillingAddressId] = await getOpaqueIds([{ namespace: "Address", id: billingAddressId }]);
+    const payment = {
+      billingAddress,
+      billingAddressId: opaqueBillingAddressId,
+      stripeTokenId
+    };
 
-      const [
-        opaqueGroupShopId,
-        selectedFulfillmentMethodId,
-        ...itemOpaqueProductIds
-      ] = await getOpaqueIds([
-        { namespace: "Shop", id: group.shopId },
-        { namespace: "FulfillmentMethod", id: group.shipmentMethod._id },
-        ...itemProductIds
-      ]);
-
-      const itemOpaqueVariantIds = await getOpaqueIds(itemVariantIds);
-
-      let totalPrice = 0;
-      const finalItems = items.map((item, index) => {
-        totalPrice += (item.subtotal + (item.tax || 0));
-        return {
-          addedAt: item.addedAt,
-          price: item.priceWhenAdded.amount,
-          productConfiguration: {
-            productId: itemOpaqueProductIds[index],
-            productVariantId: itemOpaqueVariantIds[index]
-          },
-          quantity: item.quantity
-        };
-      });
-
-      totalPrice += ((group.shipmentMethod.rate || 0) + (group.shipmentMethod.handling || 0));
-
-      const shippingAddress = {
-        address1: group.address.address1,
-        address2: group.address.address2,
-        city: group.address.city,
-        country: group.address.country,
-        fullName: group.address.fullName,
-        isCommercial: group.address.isCommercial,
-        phone: group.address.phone,
-        postal: group.address.postal,
-        region: group.address.region
-      };
-
-      return {
-        data: {
-          shippingAddress
-        },
-        items: finalItems,
-        selectedFulfillmentMethodId,
-        shopId: opaqueGroupShopId,
-        totalPrice,
-        type: group.type
-      };
-    }));
-
-    let { email } = cart;
-    if (!email) {
-      const customerAccount = Accounts.findOne({ _id: cart.accountId });
-      if (customerAccount) {
-        const defaultEmail = (customerAccount.emails || []).find((emailRecord) => emailRecord.provides === "default");
-        if (defaultEmail) {
-          email = defaultEmail.address;
-        }
-      }
-    }
-
-    await simpleGraphQLClient.mutations.placeOrderWithStripeCardPayment({
-      input: {
-        order: {
-          cartId: opaqueCartId,
-          currencyCode: cart.currencyCode,
-          email,
-          fulfillmentGroups,
-          shopId: opaqueCartShopId
-        },
-        payment: {
-          billingAddress,
-          billingAddressId: opaqueBillingAddressId,
-          stripeTokenId
-        }
-      }
-    });
+    await simpleGraphQLClient.mutations.placeOrderWithStripeCardPayment({ input: { order, payment } });
 
     // If there wasn't an error, the cart has been deleted.
     if (cartToken) {

@@ -31,6 +31,7 @@ class CardForm extends Component {
   }
 
   handleSubmit = (ev) => {
+    const { errorCodes } = this.props;
     const { cardNumberErrorMessage, expDateErrorMessage, CVVErrorMessage, postalErrorMessage } = this.state;
     const { onSubmit, stripe } = this.props;
     const resubmitMessage = "Resubmit payment";
@@ -63,8 +64,15 @@ class CardForm extends Component {
           return onSubmit(payload.token.id);
         })
         .catch((error) => {
+          let errorMessage;
+          if (Array.isArray(error) && error.length) {
+            // `errors` from GraphQL
+            errorMessage = error[0].message;
+          } else {
+            errorMessage = error.message || errorCodes.whoops;
+          }
           this.setState({
-            errorMessage: error.message || "Something went wrong. Please try again.",
+            errorMessage,
             submitMessage: resubmitMessage,
             submitting: false
           });

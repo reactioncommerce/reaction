@@ -47,9 +47,16 @@ export default class ExampleIOUPaymentForm extends Component {
         return result;
       })
       .catch((error) => {
+        let errorMessage;
+        if (Array.isArray(error) && error.length) {
+          // `errors` from GraphQL
+          errorMessage = error[0].message;
+        } else {
+          errorMessage = error.message || i18next.t("checkout.errorMessages.whoops");
+        }
         this.setState({
           isSubmitting: false,
-          errorMessage: error.message || "Something went wrong. Please try again.",
+          errorMessage,
           submitLabel: RESUBMIT_LABEL
         });
       });
