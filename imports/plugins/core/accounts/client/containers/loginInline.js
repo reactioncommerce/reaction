@@ -36,8 +36,8 @@ function pushCartWorkflow() {
       }
       // If there's already a billing and shipping address selected, push beyond address book
       const { cart: updatedCart } = getCart();
-      if (updatedCart && updatedCart.billing[0] && updatedCart.billing[0].address
-        && updatedCart.shipping[0] && updatedCart.shipping[0].address) {
+      if (updatedCart && updatedCart.billing && updatedCart.billing[0] && updatedCart.billing[0].address
+        && updatedCart.shipping && updatedCart.shipping[0] && updatedCart.shipping[0].address) {
         Meteor.call("workflow/pushCartWorkflow", "coreCartWorkflow", "checkoutAddressBook", updatedCart._id, (error2) => {
           if (error2) {
             Logger.error(error2);
