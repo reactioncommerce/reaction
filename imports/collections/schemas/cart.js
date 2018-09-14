@@ -51,7 +51,7 @@ const CartItemAttribute = new SimpleSchema({
  * @property {Number} quantity required
  * @property {String} shopId Cart Item shopId
  * @property {Object} taxData optional blackbox
- * @property {Number} taxRate optional totalTax/subTotal of the item
+ * @property {Number} taxRate optional The rate that was multiplied by the item subtotal to get the item tax
  * @property {String} title Cart Item title
  * @property {Object} transaction Transaction associated with this item
  * @property {String} updatedAt required
@@ -113,7 +113,6 @@ export const CartItem = new SimpleSchema({
     index: 1,
     label: "Cart Item shopId"
   },
-  "subtotal": Number,
   "tax": {
     type: Number,
     optional: true
