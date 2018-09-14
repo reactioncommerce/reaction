@@ -99,16 +99,18 @@
         <th>Title</th>
         <th>Price</th>
       </tr>
-      {{#each order.items}}
-        <tr>
-          <td>{{quantity}}</td>
-          <td>
-            {{title}}
-            <br />
-            <small>{{variants.title}}</small>
-          </td>
-          <td>{{formatPrice variants.price}}</td>
-        </tr>
+      {{#each shipment in order.shipping}}
+        {{#each this.items}}
+          <tr>
+            <td>{{quantity}}</td>
+            <td>
+              {{title}}
+              <br />
+              <small>{{variants.title}}</small>
+            </td>
+            <td>{{formatPrice variants.price}}</td>
+          </tr>
+        {{/each}}
       {{/each}}
     </table>
 

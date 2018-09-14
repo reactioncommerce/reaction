@@ -363,7 +363,7 @@ Meteor.methods({
     check(status, String);
     check(order, Match.ObjectIncluding({
       _id: String,
-      items: [Object]
+      shipping: [Object]
     }));
     check(itemIds, Array);
 

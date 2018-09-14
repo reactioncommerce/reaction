@@ -23,7 +23,8 @@ function orderQuantityAdjust(orderId, refundedItem) {
   }
 
   const order = Orders.findOne({ _id: orderId });
-  order.items.forEach((item) => {
+  const orderItems = order.shipping.reduce((list, group) => [...list, ...group.items], []);
+  orderItems.forEach((item) => {
     if (item._id === refundedItem.id) {
       const itemId = item._id;
       const newQuantity = item.quantity - refundedItem.refundedQuantity;
@@ -64,7 +65,7 @@ export default function refundItemsMethod(orderId, paymentId, refundItemsInfo) {
   const fut = new Future();
   const order = Orders.findOne({ _id: orderId });
   const { items: refundItems, quantity, total: amount } = refundItemsInfo;
-  const originalQuantity = order.items.reduce((acc, item) => acc + item.quantity, 0);
+  const originalQuantity = order.totalItemQuantity;
 
   // refund payment to customer
   Meteor.call("orders/refunds/create", order._id, paymentId, Number(amount), false, (error, result) => {

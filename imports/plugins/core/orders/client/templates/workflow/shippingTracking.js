@@ -118,7 +118,8 @@ Template.coreOrderShippingTracking.helpers({
 
     if (!fulfillment) return false;
 
-    return order.items.every((item) => {
+    const orderItems = order.shipping.reduce((list, group) => [...list, ...group.items], []);
+    return orderItems.every((item) => {
       if (fulfillment.itemIds.indexOf(item._id) === -1) {
         // The item is not in this shipment so we don't care
         return true;
@@ -135,7 +136,8 @@ Template.coreOrderShippingTracking.helpers({
 
     if (!fulfillment) return false;
 
-    return order.items.every((item) => {
+    const orderItems = order.shipping.reduce((list, group) => [...list, ...group.items], []);
+    return orderItems.every((item) => {
       if (fulfillment.itemIds.indexOf(item._id) === -1) {
         // The item is not in this shipment so we don't care
         return true;
@@ -151,7 +153,8 @@ Template.coreOrderShippingTracking.helpers({
 
     if (!fulfillment) return false;
 
-    return order.items.every((item) => {
+    const orderItems = order.shipping.reduce((list, group) => [...list, ...group.items], []);
+    return orderItems.every((item) => {
       if (fulfillment.itemIds.indexOf(item._id) === -1) {
         // The item is not in this shipment so we don't care
         return true;

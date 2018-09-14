@@ -582,7 +582,8 @@ const composer = (props, onData) => {
   // get unique lineItems
   const shipment = props.currentData.fulfillment;
 
-  const uniqueItems = order.items.reduce((result, item) => {
+  const orderItems = order.shipping.reduce((list, group) => [...list, ...group.items], []);
+  const uniqueItems = orderItems.reduce((result, item) => {
     // If the items are not of this shop, skip them
     if (item.shopId !== shopId) {
       return result;

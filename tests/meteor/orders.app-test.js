@@ -100,7 +100,7 @@ describe("orders test", function () {
     });
 
     it("should increase inventory with number of items canceled when returnToStock option is selected", function () {
-      const orderItemId = order.items[0].variantId;
+      const orderItemId = order.shipping[0].items[0].variantId;
       sandbox.stub(Reaction, "hasPermission", () => true); // Mock user permissions
 
       const { inventoryQuantity } = Products.findOne({ _id: orderItemId }) || {};
@@ -124,7 +124,7 @@ describe("orders test", function () {
     });
 
     it("should NOT increase/decrease inventory when returnToStock option is false", function () {
-      const orderItemId = order.items[0].variantId;
+      const orderItemId = order.shipping[0].items[0].variantId;
       sandbox.stub(Reaction, "hasPermission", () => true); // Mock user permissions
 
       // approve the order (inventory decreases)
@@ -618,7 +618,7 @@ describe("orders test", function () {
       sandbox.stub(Reaction, "hasPermission", () => true);
       const group = shippingObjectMethod(order);
       spyOnMethod("refunds/refundItems", order.userId);
-      const originalQuantity = order.items.reduce((acc, item) => acc + item.quantity, 0);
+      const originalQuantity = order.totalItemQuantity;
       const quantity = originalQuantity - 1;
       const refundItemsInfo = {
         total: 3.99,
@@ -634,7 +634,7 @@ describe("orders test", function () {
       sandbox.stub(Reaction, "hasPermission", () => true);
       const group = shippingObjectMethod(order);
       spyOnMethod("refunds/refundItems", order.userId);
-      const originalQuantity = order.items.reduce((acc, item) => acc + item.quantity, 0);
+      const originalQuantity = order.totalItemQuantity;
       const refundItemsInfo = {
         total: 9.90,
         quantity: originalQuantity,

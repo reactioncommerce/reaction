@@ -27,7 +27,8 @@ function ordersInventoryAdjustByShop(orderId, shopId) {
   }
 
   const order = Orders.findOne({ _id: orderId });
-  order.items.forEach((item) => {
+  const orderItems = order.shipping.reduce((list, group) => [...list, ...group.items], []);
+  orderItems.forEach((item) => {
     if (item.shopId === shopId) {
       Products.update(
         {
