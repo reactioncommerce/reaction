@@ -3,8 +3,10 @@ type Cart implements Node {
   "The Cart ID"
   _id: ID!
 
-  # Enforce database uniqueness such that an account only has one cart.
-  "The account that owns the cart. Some carts are created for anonymus users. Anonymous carts have a null account."
+  """
+  The account that owns the cart. Some carts are created for anonymus users. Anonymous carts have a null account.
+  Every account has exactly one cart per shop.
+  """
   account: Account
 
   "Holds all information collected for a cart during checkout"
@@ -143,12 +145,11 @@ type CartItem implements Node {
   "The quantity of this item that has been added to the cart. This must be a positive integer. Remove this `CartItem` from it's associated cart if you want `0` of this item."
   quantity: Int!
 
-  # QUESTION: This implies that cart items can be from different shops.
-  # Is it possible that certain shops share a cart but other shops are not
-  # included in that sharing? How is that defined? Probably not applicable on
-  # the cart item but at the cart itself.
   "The shop associated with this cart item."
   shop: Shop!
+
+  "The current price of the item multiplied by the quantity"
+  subtotal: Money!
 
   "A title for use in cart/orders that conveys the selected product's title + chosen options"
   title: String!
