@@ -32,7 +32,8 @@ describe("xformArrayToConnection", () => {
         hasNextPage: false,
         hasPreviousPage: false,
         startCursor: "YXJyYXljb25uZWN0aW9uOjA="
-      }
+      },
+      totalCount: 2
     });
   });
 
@@ -67,7 +68,8 @@ describe("xformArrayToConnection", () => {
         hasNextPage: false,
         hasPreviousPage: false,
         startCursor: "YXJyYXljb25uZWN0aW9uOjA="
-      }
+      },
+      totalCount: 2
     });
   });
 
@@ -98,7 +100,8 @@ describe("xformArrayToConnection", () => {
         hasNextPage: false,
         hasPreviousPage: false,
         startCursor: "YXJyYXljb25uZWN0aW9uOjE="
-      }
+      },
+      totalCount: 2
     });
   });
 
@@ -129,7 +132,8 @@ describe("xformArrayToConnection", () => {
         hasNextPage: false,
         hasPreviousPage: false,
         startCursor: "YXJyYXljb25uZWN0aW9uOjA="
-      }
+      },
+      totalCount: 2
     });
   });
 });
