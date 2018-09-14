@@ -15,7 +15,7 @@ export default function startup(context) {
   // This entire hook is doing just one thing: Updating the `taxRate` and `tax` props
   // on each item in the cart, and saving those changes to the database if any of them
   // have changed.
-  appEvents.on("afterCartUpdate", async (cartId, cart) => {
+  appEvents.on("afterCartUpdate", async (cart) => {
     // This dance is because `getFulfillmentGroupItemsWithTaxAdded` takes groups with `items` on them,
     // like in the Order schema, whereas in the Cart schema, items are directly on the cart
     // and each group has only `itemIds` on it. So we first adjust each group to look like

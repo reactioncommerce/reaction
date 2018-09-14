@@ -53,7 +53,7 @@ export default async function removeCartItems(context, input) {
   const cart = await Cart.findOne(selector);
   if (!cart) throw new ReactionError("not-found", "Cart not found");
 
-  await appEvents.emit("afterCartUpdate", cart._id, cart);
+  await appEvents.emit("afterCartUpdate", cart);
 
   return { cart };
 }

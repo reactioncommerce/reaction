@@ -40,7 +40,7 @@ export default async function reconcileCartsKeepAnonymousCart({
     updatedAt
   };
 
-  await appEvents.emit("afterCartUpdate", updatedCart._id, updatedCart);
+  await appEvents.emit("afterCartUpdate", updatedCart);
 
   const { deletedCount } = await Cart.deleteOne(anonymousCartSelector);
   if (deletedCount === 0) throw new ReactionError("server-error", "Unable to delete anonymous cart");

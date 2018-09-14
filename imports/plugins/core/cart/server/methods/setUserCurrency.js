@@ -61,7 +61,7 @@ export default function setUserCurrency(cartId, cartToken, userCurrency) {
 
   const updatedCart = Cart.findOne({ _id: cartId });
 
-  Promise.await(appEvents.emit("afterCartUpdate", cartId, updatedCart));
+  Promise.await(appEvents.emit("afterCartUpdate", updatedCart));
 
   return true;
 }

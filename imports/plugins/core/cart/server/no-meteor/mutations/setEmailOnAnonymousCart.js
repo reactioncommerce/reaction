@@ -38,7 +38,7 @@ export default async function setEmailOnAnonymousCart(context, input) {
 
   const updatedCart = await Cart.findOne({ _id: cartId });
 
-  await appEvents.emit("afterCartUpdate", updatedCart._id, updatedCart);
+  await appEvents.emit("afterCartUpdate", updatedCart);
 
   return {
     cart: updatedCart

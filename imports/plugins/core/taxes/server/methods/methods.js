@@ -94,7 +94,7 @@ export const methods = {
     });
 
     const updatedCart = Cart.findOne({ _id: cartId });
-    Promise.await(appEvents.emit("afterCartUpdate", cartId, updatedCart));
+    Promise.await(appEvents.emit("afterCartUpdate", updatedCart));
 
     return result;
   },

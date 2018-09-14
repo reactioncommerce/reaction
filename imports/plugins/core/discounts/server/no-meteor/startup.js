@@ -10,19 +10,12 @@ import getDiscountsTotalForCart from "/imports/plugins/core/discounts/server/no-
 export default function startup(context) {
   const { Cart } = context.collections;
 
-  appEvents.on("afterCartUpdate", async (cartId, cart) => {
-    if (!cartId) {
-      throw new Error("afterCartUpdate hook run with no cartId argument");
-    }
-
-    if (typeof cartId !== "string") {
-      throw new Error("afterCartUpdate hook run with non-string cartId argument");
-    }
-
+  appEvents.on("afterCartUpdate", async (cart) => {
     if (!cart) {
       throw new Error("afterCartUpdate hook run with no cart argument");
     }
 
+    const cartId = cart._id;
     const { total: discount } = await getDiscountsTotalForCart(context, cartId);
     if (discount !== cart.discount) {
       await Cart.update({ _id: cartId }, { $set: { discount } });

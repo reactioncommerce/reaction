@@ -90,7 +90,7 @@ export default function unsetAddresses(cartId, cartToken, addressId, type) {
     }
 
     const updatedCart = Cart.findOne({ _id: cartId });
-    Promise.await(appEvents.emit("afterCartUpdate", cartId, updatedCart));
+    Promise.await(appEvents.emit("afterCartUpdate", updatedCart));
   }
 
   return true;

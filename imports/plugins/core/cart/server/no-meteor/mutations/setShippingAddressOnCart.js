@@ -59,7 +59,7 @@ export default async function setShippingAddressOnCart(context, input) {
 
   const updatedCart = { ...cart, shipping: updatedFulfillmentGroups, updatedAt };
 
-  await appEvents.emit("afterCartUpdate", cart._id, updatedCart);
+  await appEvents.emit("afterCartUpdate", updatedCart);
 
   return { cart: updatedCart };
 }

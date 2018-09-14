@@ -66,7 +66,7 @@ export default async function addCartItems(context, input, options = {}) {
     items: updatedItemList,
     updatedAt
   };
-  await appEvents.emit("afterCartUpdate", cart._id, updatedCart);
+  await appEvents.emit("afterCartUpdate", updatedCart);
 
   return { cart: updatedCart, incorrectPriceFailures, minOrderQuantityFailures };
 }

@@ -60,7 +60,7 @@ export default async function reconcileCartsMerge({
     updatedAt
   };
 
-  await appEvents.emit("afterCartUpdate", updatedCart._id, updatedCart);
+  await appEvents.emit("afterCartUpdate", updatedCart);
 
   // Delete anonymous cart
   const { deletedCount } = await Cart.deleteOne(anonymousCartSelector);

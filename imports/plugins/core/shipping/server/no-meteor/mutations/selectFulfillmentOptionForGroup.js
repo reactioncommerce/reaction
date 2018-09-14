@@ -57,7 +57,7 @@ export default async function selectFulfillmentOptionForGroup(context, input) {
     }
   });
 
-  await appEvents.emit("afterCartUpdate", cartId, cart);
+  await appEvents.emit("afterCartUpdate", cart);
 
   return { cart };
 }

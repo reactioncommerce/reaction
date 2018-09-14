@@ -71,7 +71,7 @@ export default async function updateCartItemsQuantity(context, input) {
 
   const updatedCart = { ...cart, items: updatedItems, updatedAt };
 
-  await appEvents.emit("afterCartUpdate", cart._id, updatedCart);
+  await appEvents.emit("afterCartUpdate", updatedCart);
 
   return { cart: updatedCart };
 }

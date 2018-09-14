@@ -19,7 +19,7 @@ export default function markAddressValidationBypassed(value = true) {
 
   const updatedCart = Cart.findOne({ accountId: account._id });
   if (updatedCart) {
-    Promise.await(appEvents.emit("afterCartUpdate", updatedCart._id, updatedCart));
+    Promise.await(appEvents.emit("afterCartUpdate", updatedCart));
   }
 
   return updateResult;
