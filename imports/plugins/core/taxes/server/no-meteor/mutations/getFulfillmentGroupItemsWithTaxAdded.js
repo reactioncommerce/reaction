@@ -1,20 +1,20 @@
 /**
- * @summary Gets the tax rate as a percent based on shop ID and shipping address of a fulfillment group
+ * @summary Gets the tax rate based on shop ID and shipping address of a fulfillment group
  * @param {Object} collections Map of MongoDB collections
  * @param {Object} group The fulfillment group to get a tax rate for
- * @returns {Number} Tax percent, e.g., 1 means 1%
+ * @returns {Number|null} Tax rate, e.g., 0.01 means 1%
  */
-async function getTaxPercentForShop(collections, group) {
+async function getTaxRateForShop(collections, group) {
   const { Packages, Taxes } = collections;
   const { address: shippingAddress, shopId } = group;
 
   // TODO: Calculate shipping taxes for regions that require it
   const pkg = await Packages.findOne({ shopId, name: "reaction-taxes" });
   if (!pkg || !pkg.enabled || !pkg.settings.rates.enabled) {
-    return 0;
+    return null;
   }
 
-  if (!shippingAddress) return 0;
+  if (!shippingAddress) return null;
 
   // custom rates that match shipping info
   // high chance this needs more review as
@@ -40,15 +40,20 @@ async function getTaxPercentForShop(collections, group) {
       shopId
     }]
   }, { sort: { postal: -1 } });
-  if (!taxDoc) return 0;
 
-  return taxDoc.rate || 0;
+  // Here we return 0 rather than null because the package was enabled and we had enough
+  // information to calculate, but no tax jurisdictions matched.
+  if (!taxDoc || !taxDoc.rate) return 0;
+
+  // Rate is entered and stored in the database as a percent. Convert to ratio.
+  return taxDoc.rate / 100;
 }
 
 /**
  * @summary Modifies a fulfillment group, adding `taxRate` and `tax` properties to each item
  *   in the group. Assumes that each item has `subtotal` and `isTaxable` props set. Assumes
- *   that the group has `shopId` and `address` properties set.
+ *   that the group has `shopId` and `address` properties set. No-op if the `reaction-taxes`
+ *   package is disabled or a shipping address hasn't yet been set.
  * @param {Object} collections Map of MongoDB collections
  * @param {Object} group The fulfillment group to get a tax rate for
  * @returns {Object} Updated fulfillment group
@@ -56,23 +61,28 @@ async function getTaxPercentForShop(collections, group) {
 export default async function getFulfillmentGroupItemsWithTaxAdded(collections, group) {
   const { items } = group;
 
-  const taxPercent = await getTaxPercentForShop(collections, group);
-  const taxRate = taxPercent / 100;
+  const taxRate = await getTaxRateForShop(collections, group);
+
+  // The `reaction-taxes` package is disabled or a shipping address hasn't yet been set
+  if (taxRate === null) {
+    return items;
+  }
 
   // calculate line item taxes
-  const itemsWithTax = items.map((item) => {
-    // init rate to 0
-    item.taxRate = 0;
-    item.tax = 0;
-
-    // only process taxable products and skip if there is no shopTaxData
-    if (taxRate && item.isTaxable) {
-      item.taxRate = taxRate;
-      item.tax = item.subtotal * item.taxRate;
+  return items.map((item) => {
+    // only taxable products with subtotals on them
+    if (item.isTaxable && typeof item.subtotal === "number") {
+      return {
+        ...item,
+        taxRate,
+        tax: item.subtotal * taxRate
+      };
     }
 
-    return item;
+    return {
+      ...item,
+      taxRate: 0,
+      tax: 0
+    };
   });
-
-  return itemsWithTax;
 }
