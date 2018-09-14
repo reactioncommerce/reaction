@@ -43,7 +43,7 @@ export default function startup(context) {
         };
       }));
 
-      return getFulfillmentGroupItemsWithTaxAdded(collections, { ...group, items });
+      return getFulfillmentGroupItemsWithTaxAdded(collections, { ...group, items }, false);
     }));
 
     const cartItems = cart.items.map((item) => {

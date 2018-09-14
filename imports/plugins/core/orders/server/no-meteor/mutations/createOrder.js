@@ -274,7 +274,7 @@ export default async function createOrder(context, input) {
     // the price is what the shopper expects it to be.
     finalGroup.items = await Promise.all(finalGroup.items.map((item) => buildOrderItem(item, currencyCode, context)));
 
-    finalGroup.items = await getFulfillmentGroupItemsWithTaxAdded(collections, finalGroup);
+    finalGroup.items = await getFulfillmentGroupItemsWithTaxAdded(collections, finalGroup, true);
 
     // Add some more properties for convenience
     finalGroup.itemIds = finalGroup.items.map((item) => item._id);

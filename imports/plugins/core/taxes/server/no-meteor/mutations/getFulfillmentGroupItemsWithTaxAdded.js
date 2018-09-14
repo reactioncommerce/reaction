@@ -56,16 +56,20 @@ async function getTaxRateForShop(collections, group) {
  *   package is disabled or a shipping address hasn't yet been set.
  * @param {Object} collections Map of MongoDB collections
  * @param {Object} group The fulfillment group to get a tax rate for
+ * @param {Boolean} forceZeroes Set to `true` to force `taxRate` and `tax` properties to be added
+ *   and set to 0 when no tax package is enabled. For cart groups, this should be false. For order
+ *   groups, this should be true.
  * @returns {Object} Updated fulfillment group
  */
-export default async function getFulfillmentGroupItemsWithTaxAdded(collections, group) {
+export default async function getFulfillmentGroupItemsWithTaxAdded(collections, group, forceZeroes) {
   const { items } = group;
 
-  const taxRate = await getTaxRateForShop(collections, group);
+  let taxRate = await getTaxRateForShop(collections, group);
 
   // The `reaction-taxes` package is disabled or a shipping address hasn't yet been set
   if (taxRate === null) {
-    return items;
+    if (!forceZeroes) return items;
+    taxRate = 0;
   }
 
   // calculate line item taxes

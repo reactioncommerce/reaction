@@ -65,7 +65,7 @@ export default async function buildOrderInputFromCart(cart) {
     let totalPrice = 0;
     const finalItems = items.map((item, index) => {
       const productConfig = productConfigurationsWithPrice.find((config) => config.productId === item.productId && config.productVariantId === item.variantId);
-      if (!productConfig) throw new Error(`Unable to find current price of variant ${item.variantId}`);
+      if (!productConfig || !productConfig.price) throw new Error(`Unable to find current price of variant ${item.variantId}`);
       const { price } = productConfig;
       const subtotal = price * item.quantity;
       totalPrice += (subtotal + (item.tax || 0));
