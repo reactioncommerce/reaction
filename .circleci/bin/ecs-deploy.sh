@@ -11,7 +11,7 @@ if [ -z "${AWS_REGION}" ]; then
 fi
 
 ENVIRONMENT=staging
-SERVICE_DIR_NAME=devops/aws/services
+SERVICE_DIR_NAME=.reaction/devops/aws/services
 SERVICES=$(ls ${SERVICE_DIR_NAME})
 
 for SERVICE in $SERVICES; do
