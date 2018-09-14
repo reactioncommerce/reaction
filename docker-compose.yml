@@ -5,9 +5,9 @@
 version: '3.4'
 
 networks:
-  reaction-api:
+  api:
     external:
-      name: reaction-api
+      name: api.reaction.localhost
 
 services:
 
@@ -24,7 +24,7 @@ services:
       ROOT_URL: "http://localhost:3000"
     networks:
       default:
-      reaction-api:
+      api:
     ports:
       - "3000:3000"
     volumes:
