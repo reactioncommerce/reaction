@@ -178,7 +178,7 @@ type Order implements Node {
   "The Order ID"
   _id: ID!
 
-  "The account that placed the order. Some orders are created for anonymus users. Anonymous orders have a null account."
+  "The account that placed the order. Some orders are created for anonymous users. Anonymous orders have a null account."
   account: Account
 
   "The ID of the cart that created this order. Carts are deleted after becoming orders, so this is just a reference."

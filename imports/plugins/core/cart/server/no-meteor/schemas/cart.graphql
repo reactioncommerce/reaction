@@ -4,7 +4,7 @@ type Cart implements Node {
   _id: ID!
 
   """
-  The account that owns the cart. Some carts are created for anonymus users. Anonymous carts have a null account.
+  The account that owns the cart. Some carts are created for anonymous users. Anonymous carts have a null account.
   Every account has exactly one cart per shop.
   """
   account: Account
