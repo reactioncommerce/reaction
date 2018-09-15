@@ -26,14 +26,6 @@ export default async function convertAnonymousCartToNewAccountCart({
     _id: Random.id(),
     accountId,
     anonymousAccessToken: null,
-    // We will set this billing currency stuff right away because historical Meteor code did it.
-    // If this turns out to not be necessary, we should remove it.
-    billing: [
-      {
-        _id: Random.id(),
-        currency: { userCurrency: currencyCode }
-      }
-    ],
     currencyCode,
     createdAt,
     items: anonymousCart.items,
@@ -44,7 +36,12 @@ export default async function convertAnonymousCartToNewAccountCart({
     }
   };
 
-  CartSchema.validate(newCart);
+  try {
+    CartSchema.validate(newCart);
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
 
   const { result } = await Cart.insertOne(newCart);
   if (result.ok !== 1) throw new ReactionError("server-error", "Unable to create account cart");

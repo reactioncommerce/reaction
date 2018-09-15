@@ -1,5 +1,6 @@
 import SimpleSchema from "simpl-schema";
 import ReactionError from "@reactioncommerce/reaction-error";
+import { Cart as CartSchema } from "/imports/collections/schemas";
 import getCartById from "../util/getCartById";
 
 const inputSchema = new SimpleSchema({
@@ -49,7 +50,6 @@ export default async function updateCartItemsQuantity(context, input) {
 
     return {
       ...item,
-      subtotal: item.priceWhenAdded.amount * update.quantity,
       quantity: update.quantity
     };
   });
@@ -61,12 +61,15 @@ export default async function updateCartItemsQuantity(context, input) {
   const { Cart } = collections;
 
   const updatedAt = new Date();
-  const { matchedCount } = await Cart.updateOne({ _id: cartId }, {
+  const modifier = {
     $set: {
       items: updatedItems,
       updatedAt
     }
-  });
+  };
+  CartSchema.validate(modifier, { modifier: true });
+
+  const { matchedCount } = await Cart.updateOne({ _id: cartId }, modifier);
   if (matchedCount === 0) throw new ReactionError("server-error", "Failed to update cart");
 
   const updatedCart = { ...cart, items: updatedItems, updatedAt };

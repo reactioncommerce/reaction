@@ -55,11 +55,8 @@ export default async function addCartItems(context, input, options = {}) {
   };
   CartSchema.validate(modifier, { modifier: true });
 
-  const { modifiedCount } = await Cart.updateOne({
-    _id: cart._id
-  }, modifier);
-
-  if (modifiedCount !== 1) throw new ReactionError("server-error", "Unable to update cart");
+  const { matchedCount } = await Cart.updateOne({ _id: cart._id }, modifier);
+  if (matchedCount !== 1) throw new ReactionError("server-error", "Unable to update cart");
 
   const updatedCart = {
     ...cart,

@@ -25,6 +25,7 @@ test("converts the addressBook prop on an account to a connection", async () => 
       hasNextPage: false,
       hasPreviousPage: false,
       startCursor: "YXJyYXljb25uZWN0aW9uOjA="
-    }
+    },
+    totalCount: 2
   });
 });
