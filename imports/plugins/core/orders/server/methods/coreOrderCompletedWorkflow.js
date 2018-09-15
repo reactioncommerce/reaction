@@ -17,7 +17,8 @@ export default function coreOrderCompletedWorkflow(options) {
 
   const { order } = options;
 
-  const result = _.every(order.items, (item) => _.includes(item.workflow.workflow, "coreOrderItemWorkflow/completed"));
+  const orderItems = order.shipping.reduce((list, group) => [...list, ...group.items], []);
+  const result = _.every(orderItems, (item) => _.includes(item.workflow.workflow, "coreOrderItemWorkflow/completed"));
 
   return result;
 }

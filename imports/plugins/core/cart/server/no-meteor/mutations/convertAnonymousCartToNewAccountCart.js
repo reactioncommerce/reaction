@@ -1,7 +1,7 @@
 import Random from "@reactioncommerce/random";
 import ReactionError from "@reactioncommerce/reaction-error";
 import { Cart as CartSchema } from "/imports/collections/schemas";
-import appEvents from "/imports/plugins/core/core/server/appEvents";
+import appEvents from "/imports/node-app/core/util/appEvents";
 
 /**
  * @summary Copy items from an anonymous cart into a new account cart, and then delete the
@@ -26,14 +26,6 @@ export default async function convertAnonymousCartToNewAccountCart({
     _id: Random.id(),
     accountId,
     anonymousAccessToken: null,
-    // We will set this billing currency stuff right away because historical Meteor code did it.
-    // If this turns out to not be necessary, we should remove it.
-    billing: [
-      {
-        _id: Random.id(),
-        currency: { userCurrency: currencyCode }
-      }
-    ],
     currencyCode,
     createdAt,
     items: anonymousCart.items,

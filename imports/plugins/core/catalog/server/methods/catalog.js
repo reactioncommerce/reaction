@@ -12,6 +12,7 @@ import { MediaRecords, Products, Tags } from "/lib/collections";
 import { Media } from "/imports/plugins/core/files/server";
 import rawCollections from "/imports/collections/rawCollections";
 import hashProduct, { createProductHash } from "../no-meteor/mutations/hashProduct";
+import getCurrentCatalogPriceForProductConfiguration from "../no-meteor/queries/getCurrentCatalogPriceForProductConfiguration";
 import getProductPriceRange from "../no-meteor/utils/getProductPriceRange";
 import getVariants from "../no-meteor/utils/getVariants";
 import hasChildVariant from "../no-meteor/utils/hasChildVariant";
@@ -1605,5 +1606,24 @@ Meteor.methods({
     const productHash = createProductHash(product, rawCollections);
 
     return productHash;
+  },
+
+  /**
+   * @name catalog/getCurrentCatalogPriceForProductConfigurations
+   * @memberof Methods/Catalog
+   * @method
+   * @summary Gets the current price for multiple product configurations. Newer code that uses
+   *   GraphQL should not need this, but this is available while transitioning to GraphQL.
+   * @param {Object[]} productConfigurations - Product configuration objects, with `productId` and `productVariantId`
+   * @param {String} currencyCode Currency in which price is needed
+   * @return {Object[]} The same array of objects that was passed in, but with `price` added to each object.
+   */
+  "catalog/getCurrentCatalogPriceForProductConfigurations"(productConfigurations, currencyCode) {
+    check(productConfigurations, Array);
+    check(currencyCode, String);
+    return Promise.all(productConfigurations.map(async (productConfiguration) => {
+      const { price } = await getCurrentCatalogPriceForProductConfiguration(productConfiguration, currencyCode, rawCollections);
+      return { ...productConfiguration, price };
+    }));
   }
 });

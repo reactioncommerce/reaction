@@ -1,0 +1,8 @@
+"Product configuration data"
+type ProductConfiguration {
+  "The Product ID"
+  productId: ID!
+
+  "The ProductVariant ID"
+  productVariantId: ID!
+}

@@ -1,0 +1,45 @@
+extend type Mutation {
+  """
+  Use this mutation to place an order with credit card payment, processed through a Stripe account.
+  The order will be placed only if authorization is successful.
+  """
+  placeOrderWithStripeCardPayment(input: PlaceOrderWithStripeCardPaymentInput!): PlaceOrderPayload!
+}
+
+input StripeCardPaymentInput {
+  "The billing address entered by the shopper"
+  billingAddress: AddressInput!
+
+  "If set, this will be saved as the Address._id. Otherwise an ID will be generated. For tracking whether this is from a saved address."
+  billingAddressId: ID
+
+  "The `token.id` of a token created by Stripe.js, representing a credit card"
+  stripeTokenId: String!
+}
+
+"Input for the placeOrderWithStripeCardPayment mutation"
+input PlaceOrderWithStripeCardPaymentInput {
+  "An optional string identifying the mutation call, which will be returned in the response payload"
+  clientMutationId: String
+
+  "The order to be placed, if payment is accepted"
+  order: OrderInput!
+
+  "The information necessary to pay. Collect this information from the shopper during a checkout flow."
+  payment: StripeCardPaymentInput!
+}
+
+"Data for a Stripe card payment"
+type StripeCardPaymentData {
+  "The billing address entered or chosen by the shopper"
+  billingAddress: Address!
+
+  "The Stripe charge ID"
+  chargeId: String!
+}
+
+extend union PaymentData = StripeCardPaymentData
+
+extend enum PaymentMethodName {
+  stripe_card
+}

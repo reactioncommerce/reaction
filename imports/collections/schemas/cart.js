@@ -1,6 +1,6 @@
 import SimpleSchema from "simpl-schema";
 import { registerSchema } from "@reactioncommerce/schemas";
-import { Payment } from "./payments";
+import { Address } from "./address";
 import { Shipment, ShippingParcel } from "./shipping";
 import { Workflow } from "./workflow";
 import { Metafield } from "./metafield";
@@ -38,7 +38,6 @@ const CartItemAttribute = new SimpleSchema({
  * @property {String} _id required
  * @property {String} addedAt required
  * @property {CartItemAttribute[]} attributes Attributes of this item
- * @property {String} cartItemId Has to be here since we share schemas between Cart and Order
  * @property {String} createdAt required
  * @property {Metafield[]} metafields
  * @property {String} optionTitle optionTitle from the selected variant
@@ -49,10 +48,9 @@ const CartItemAttribute = new SimpleSchema({
  * @property {String} productType Product type
  * @property {String} productVendor Product vendor
  * @property {Number} quantity required
- * @property {Object} shippingMethod Shipping Method associated with this item
  * @property {String} shopId Cart Item shopId
  * @property {Object} taxData optional blackbox
- * @property {Number} taxRate optional totalTax/subTotal of the item
+ * @property {Number} taxRate optional The rate that was multiplied by the item subtotal to get the item tax
  * @property {String} title Cart Item title
  * @property {Object} transaction Transaction associated with this item
  * @property {String} updatedAt required
@@ -67,10 +65,6 @@ export const CartItem = new SimpleSchema({
     optional: true
   },
   "attributes.$": CartItemAttribute,
-  "cartItemId": {
-    type: String,
-    optional: true
-  },
   "createdAt": Date,
   "isTaxable": {
     type: Boolean,
@@ -113,15 +107,14 @@ export const CartItem = new SimpleSchema({
     type: SimpleSchema.Integer,
     min: 0
   },
-  "shippingMethod": {
-    type: Object,
-    optional: true,
-    blackbox: true // @todo Revert this to schema at some point
-  },
   "shopId": {
     type: String,
     index: 1,
     label: "Cart Item shopId"
+  },
+  "tax": {
+    type: Number,
+    optional: true
   },
   "taxCode": {
     type: String,
@@ -192,8 +185,6 @@ registerSchema("CartItems", CartItems);
  * @property {Payment[]} billing Array of Payment optional, blackbox
  * @property {String} sessionId Optional and deprecated
  * @property {Number} tax tax rate
- * @property {Object[]} taxes Array of objects optional
- * @property {Object} taxRatesByShop optional
  * @property {Number} discount optional
  * @property {Workflow} workflow optional
  * @property {Date} createdAt required
@@ -220,6 +211,10 @@ export const Cart = new SimpleSchema({
     optional: true
   },
   "currencyCode": String,
+  "billingAddress": {
+    type: Address,
+    optional: true
+  },
   "sessionId": {
     type: String,
     index: 1,
@@ -245,53 +240,13 @@ export const Cart = new SimpleSchema({
   "shipping.$": {
     type: Shipment
   },
+  /* Working to get rid of cart.billing, but currently still where discounts are applied to carts */
   "billing": {
     type: Array,
     optional: true
   },
   "billing.$": {
-    type: Payment
-  },
-  "tax": {
-    type: Number,
-    optional: true
-  },
-  "taxes": {
-    type: Array,
-    optional: true
-  },
-  "taxes.$": {
-    type: Object
-  },
-  "taxes.$.lineNumber": {
-    type: String
-  },
-  "taxes.$.discountAmount": {
-    type: Number,
-    optional: true
-  },
-  "taxes.$.taxable": {
-    type: Boolean,
-    optional: true
-  },
-  "taxes.$.tax": {
-    type: Number
-  },
-  "taxes.$.taxableAmount": {
-    type: Number
-  },
-  "taxes.$.taxCode": {
-    type: String,
-    optional: true
-  },
-  "taxes.$.details": {
     type: Object,
-    blackbox: true,
-    optional: true
-  },
-  "taxRatesByShop": {
-    type: Object,
-    optional: true,
     blackbox: true
   },
   "taxCalculationFailed": {

@@ -11,13 +11,11 @@ import AddEmail from "./addEmail";
  * @memberof Components
  * @param {Object} props - React PropTypes
  * @property {Object} order - An object representing the order
- * @property {Array} shops - An Array contains information broken down by shop
- * @property {Object} orderSummary - An object containing the items making up the order summary
- * @property {Array} paymentMethod - An array of paymentMethod objects
- * @property {Booleam} isProfilePage - A boolean value that checks if current page is user profile page
+ * @property {Array} paymentMethods - An array of paymentMethod objects
+ * @property {Boolean} isProfilePage - A boolean value that checks if current page is user profile page
  * @return {Node} React node containing the top-level component for displaying the completed order/receipt page
  */
-const CompletedOrder = ({ order, shops, orderSummary, paymentMethods, isProfilePage }) => {
+const CompletedOrder = ({ order, paymentMethods, isProfilePage }) => {
   if (!order) {
     return (
       <Components.NotFound
@@ -52,18 +50,15 @@ const CompletedOrder = ({ order, shops, orderSummary, paymentMethods, isProfileP
         <div className="order-details-content-title">
           <p><Components.Translation defaultValue="Your Items" i18nKey={"cartCompleted.yourItems"} /></p>
         </div>
-        {shops.map((shop) => {
-          const shopKey = Object.keys(shop);
-          return (
-            <CompletedShopOrders
-              shopName={shop[shopKey].name}
-              items={shop[shopKey].items}
-              key={shopKey}
-              shippingMethod={shop[shopKey].shippingMethod}
-              isProfilePage={isProfilePage}
-            />
-          );
-        })}
+        {order.shipping.map((group) => (
+          <CompletedShopOrders
+            isProfilePage={isProfilePage}
+            items={group.items}
+            key={group._id}
+            shippingMethod={group.shipmentMethod}
+            shopName={group.shopName}
+          />
+        ))}
       </div>
 
       <div className="order-details-side">
@@ -74,14 +69,14 @@ const CompletedOrder = ({ order, shops, orderSummary, paymentMethods, isProfileP
             <div className="order-details-content-title">
               <p> <Components.Translation defaultValue="Shipping Address" i18nKey={"cartCompleted.shippingAddress"} /></p>
             </div>
-            {orderSummary.shipping.map((shipment) => {
-              if (shipment.address.fullName || shipment.address.address1) {
-                return <div className="order-details-info-box" key={shipment._id}>
+            {order.shipping.map((group) => {
+              if (group.address.fullName || group.address.address1) {
+                return <div className="order-details-info-box" key={group._id}>
                   <div className="order-details-info-box-content">
                     <p>
-                      {shipment.address.fullName}<br/>
-                      {shipment.address.address1} {shipment.address.address2}<br/>
-                      {shipment.address.city}, {shipment.address.region} {shipment.address.postal} {shipment.address.country}
+                      {group.address.fullName}<br/>
+                      {group.address.address1} {group.address.address2}<br/>
+                      {group.address.city}, {group.address.region} {group.address.postal} {group.address.country}
                     </p>
                   </div>
                 </div>;
@@ -97,7 +92,7 @@ const CompletedOrder = ({ order, shops, orderSummary, paymentMethods, isProfileP
             {paymentMethods.map((paymentMethod) => <CompletedOrderPaymentMethod key={paymentMethod.key} paymentMethod={paymentMethod} />)}
           </div>
         </div>
-        <CompletedOrderSummary shops={shops} orderSummary={orderSummary} isProfilePage={isProfilePage} />
+        <CompletedOrderSummary fulfillmentGroups={order.shipping} />
         {/* This is the right side / side content */}
       </div>
 

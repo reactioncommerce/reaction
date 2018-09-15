@@ -1,0 +1,7 @@
+placeOrderWithExampleIOUPayment($input: PlaceOrderWithExampleIOUPaymentInput!) {
+  placeOrderWithExampleIOUPayment(input: $input) {
+    orders {
+      _id
+    }
+  }
+}

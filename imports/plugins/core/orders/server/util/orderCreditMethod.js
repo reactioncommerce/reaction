@@ -10,7 +10,6 @@ import Reaction from "/imports/plugins/core/core/server/Reaction";
  * @return {Object} returns entire payment method
  */
 export default function orderCreditMethod(order) {
-  const creditBillingRecords = order.billing.filter((value) => value.paymentMethod.method === "credit");
-  const billingRecord = creditBillingRecords.find((billing) => billing.shopId === Reaction.getShopId());
-  return billingRecord;
+  const creditGroup = order.shipping.find((group) => group.shopId === Reaction.getShopId() && group.payment.method === "credit");
+  return (creditGroup && creditGroup.payment) || {};
 }
