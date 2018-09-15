@@ -161,17 +161,6 @@ type CartItem implements Node {
   variantTitle: String
 }
 
-"Product configuration data"
-type ProductConfiguration {
-  # This is Product ID, but should not be used to couple the cart item or product configuration to the Product
-  # We're adding Product to the cart which is why we're not using the CatalogProductId here
-  "The Product ID"
-  productId: ID!
-
-  "The ProductVariant ID"
-  productVariantId: ID!
-}
-
 enum CartReconciliationMode {
   merge
   keepAccountCart

@@ -1,5 +1,6 @@
 import Reaction from "/imports/plugins/core/core/server/Reaction";
 import resolvers from "./server/no-meteor/resolvers";
+import schemas from "./server/no-meteor/schemas";
 
 Reaction.registerPackage({
   label: "Marketplace",
@@ -7,7 +8,8 @@ Reaction.registerPackage({
   icon: "fa fa-globe",
   autoEnable: false,
   graphQL: {
-    resolvers
+    resolvers,
+    schemas
   },
   settings: {
     name: "Marketplace",

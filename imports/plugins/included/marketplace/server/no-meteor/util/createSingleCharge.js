@@ -92,7 +92,7 @@ export default async function createSingleCharge(stripe, group, stripeCustomerId
       billingAddress,
       chargeId: charge.id,
       charge,
-      gqlType: "StripeCardPaymentData" // GraphQL union resolver uses this
+      gqlType: "MarketplaceStripeCardPaymentData" // GraphQL union resolver uses this
     },
     displayName: `${charge.source.brand} ${charge.source.last4}`,
     invoice: group.invoice,

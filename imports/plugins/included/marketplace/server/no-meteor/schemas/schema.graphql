@@ -1,0 +1,42 @@
+extend type Mutation {
+  """
+  Use this mutation to place an order with credit card payment, processed through a Stripe account,
+  in a Marketplace installation. This is a variation of placeOrderWithStripeCardPayment that
+  checks for marketplace configuration and assigns Stripe Connect account IDs to each shop payment.
+  """
+  placeMarketplaceOrderWithStripeCardPayment(input: PlaceMarketplaceOrderWithStripeCardPaymentInput!): PlaceOrderPayload!
+}
+
+input MarketplaceStripeCardPaymentInput {
+  "The billing address entered by the shopper"
+  billingAddress: AddressInput!
+
+  "If set, this will be saved as the Address._id. Otherwise an ID will be generated. For tracking whether this is from a saved address."
+  billingAddressId: ID
+
+  "The `token.id` of a token created by Stripe.js, representing a credit card"
+  stripeTokenId: String!
+}
+
+"Input for the placeMarketplaceOrderWithStripeCardPayment mutation"
+input PlaceMarketplaceOrderWithStripeCardPaymentInput {
+  "An optional string identifying the mutation call, which will be returned in the response payload"
+  clientMutationId: String
+
+  "The order to be placed, if payment is accepted"
+  order: OrderInput!
+
+  "The information necessary to pay. Collect this information from the shopper during a checkout flow."
+  payment: MarketplaceStripeCardPaymentInput!
+}
+
+"Data for a marketplace Stripe card payment"
+type MarketplaceStripeCardPaymentData {
+  "The billing address entered or chosen by the shopper"
+  billingAddress: Address!
+
+  "The Stripe charge ID"
+  chargeId: String!
+}
+
+extend union PaymentData = MarketplaceStripeCardPaymentData
