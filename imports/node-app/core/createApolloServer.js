@@ -18,6 +18,12 @@ const defaultServerConfig = {
   }
 };
 
+const resolverValidationOptions = {
+  // After we fix all errors that this prints, we should probably go
+  // back to `true` (the default)
+  requireResolversForResolveType: false
+};
+
 /**
  * @name createApolloServer
  * @method
@@ -61,7 +67,7 @@ export default function createApolloServer(options = {}) {
 
           return res;
         },
-        schema: makeExecutableSchema({ typeDefs, resolvers })
+        schema: makeExecutableSchema({ typeDefs, resolvers, resolverValidationOptions })
       };
     })
   );
