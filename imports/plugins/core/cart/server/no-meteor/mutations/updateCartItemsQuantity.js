@@ -40,22 +40,16 @@ export default async function updateCartItemsQuantity(context, input) {
 
   const cart = await getCartById(context, cartId, { cartToken, throwIfNotFound: true });
 
-  let updatedItems = cart.items.map((item) => {
+  const updatedItems = cart.items.reduce((list, item) => {
     const update = items.find(({ cartItemId }) => cartItemId === item._id);
-    if (!update) return item;
-
-    if (update.quantity === 0) {
-      return null;
+    if (!update) {
+      list.push({ ...item });
+    } else if (update.quantity > 0) {
+      // Update quantity as instructed, while omitting the item if quantity is 0
+      list.push({ ...item, quantity: update.quantity });
     }
-
-    return {
-      ...item,
-      quantity: update.quantity
-    };
-  });
-
-  // Remove the nulls
-  updatedItems = updatedItems.filter((item) => !!item);
+    return list;
+  }, []);
 
   const { appEvents, collections } = context;
   const { Cart } = collections;
