@@ -156,6 +156,7 @@ export const methods = {
           _id: Random.id(),
           amount: discount.discount,
           createdAt: now,
+          currencyCode: objectToApplyDiscount.currencyCode,
           data: {
             discountId: discount._id,
             code: discount.code
