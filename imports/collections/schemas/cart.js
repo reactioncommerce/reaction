@@ -247,7 +247,8 @@ export const Cart = new SimpleSchema({
     optional: true
   },
   "billing.$": {
-    type: Payment
+    type: Object,
+    blackbox: true
   },
   "taxCalculationFailed": {
     type: Boolean,

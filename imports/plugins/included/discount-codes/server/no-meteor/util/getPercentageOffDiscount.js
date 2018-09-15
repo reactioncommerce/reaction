@@ -1,3 +1,5 @@
+import ReactionError from "@reactioncommerce/reaction-error";
+
 /**
  * @name discounts/codes/discount
  * @method
@@ -10,10 +12,14 @@
  */
 export default async function getPercentageOffDiscount(cartId, discountId, collections) {
   const { Cart, Discounts } = collections;
-  let discount = 0;
-  const discountMethod = Discounts.findOne(discountId);
-  const cart = Cart.findOne({ _id: cartId });
 
+  const discountMethod = await Discounts.findOne({ _id: discountId });
+  if (!discountMethod) throw new ReactionError("not-found", "Discount not found");
+
+  const cart = await Cart.findOne({ _id: cartId });
+  if (!cart) throw new ReactionError("not-found", "Cart not found");
+
+  let discount = 0;
   for (const item of cart.items) {
     const preDiscount = item.quantity * item.priceWhenAdded.amount;
     discount += preDiscount * discountMethod.discount / 100;

@@ -1,3 +1,5 @@
+import ReactionError from "@reactioncommerce/reaction-error";
+
 /**
  * @name discounts/codes/credit
  * @method
@@ -10,8 +12,9 @@
  */
 export default async function getCreditOffDiscount(cartId, discountId, collections) {
   const { Discounts } = collections;
-  let discount = 0;
-  const discountMethod = Discounts.findOne(discountId);
-  ({ discount } = discountMethod);
-  return discount;
+
+  const discountMethod = await Discounts.findOne({ _id: discountId });
+  if (!discountMethod) throw new ReactionError("not-found", "Discount not found");
+
+  return discountMethod.discount || 0;
 }

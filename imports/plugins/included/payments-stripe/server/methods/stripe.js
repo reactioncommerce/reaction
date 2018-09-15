@@ -2,7 +2,7 @@ import Logger from "@reactioncommerce/logger";
 import accounting from "accounting-js";
 import stripeNpm from "stripe";
 import { Meteor } from "meteor/meteor";
-import { check } from "meteor/check";
+import { check, Match } from "meteor/check";
 import { Packages } from "/lib/collections";
 
 /**
@@ -82,7 +82,9 @@ export const methods = {
    * @return {Object} results from Stripe normalized
    */
   "stripe/payment/capture"(paymentMethod) {
-    check(paymentMethod, Object);
+    check(paymentMethod, Match.ObjectIncluding({
+      transactionId: String
+    }));
 
     const captureDetails = {
       amount: formatForStripe(paymentMethod.amount)

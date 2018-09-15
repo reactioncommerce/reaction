@@ -1,3 +1,5 @@
+import ReactionError from "@reactioncommerce/reaction-error";
+
 /**
  * @name discounts/codes/shipping
  * @method
@@ -10,9 +12,14 @@
  */
 export default async function getShippingDiscount(cartId, discountId, collections) {
   const { Cart, Discounts } = collections;
+
+  const discountMethod = await Discounts.findOne({ _id: discountId });
+  if (!discountMethod) throw new ReactionError("not-found", "Discount not found");
+
+  const cart = await Cart.findOne({ _id: cartId });
+  if (!cart) throw new ReactionError("not-found", "Cart not found");
+
   let discount = 0;
-  const discountMethod = Discounts.findOne(discountId);
-  const cart = Cart.findOne({ _id: cartId });
   if (cart.shipping && cart.shipping.length) {
     for (const shipping of cart.shipping) {
       if (shipping.shipmentMethod && shipping.shipmentMethod.name.toUpperCase() === discountMethod.discount.toUpperCase()) {

@@ -14,6 +14,7 @@ export default function defineCollections(db, collections) {
     Assets: db.collection("Assets"),
     Cart: db.collection("Cart"),
     Catalog: db.collection("Catalog"),
+    Discounts: db.collection("Discounts"),
     Emails: db.collection("Emails"),
     Groups: db.collection("Groups"),
     Inventory: db.collection("Inventory"),

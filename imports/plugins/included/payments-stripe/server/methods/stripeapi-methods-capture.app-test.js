@@ -137,17 +137,12 @@ describe("stripe/payment/capture", function () {
       createdAt: new Date()
     };
 
-    // Stripe Charge Nock
-    nock("https://api.stripe.com:443")
-      .post(`/v1/charges/${paymentMethod.transactionId}/capture`)
-      .reply(200, stripeCaptureResult); // .log(console.log);
-
     sandbox.stub(utils, "getStripeApi", function () {
       return "sk_fake_fake";
     });
 
-    Meteor.call("stripe/payment/capture", paymentMethod, function ({ details: error }, result) {
-      expect(error[0].message).to.equal("Transaction ID is required");
+    Meteor.call("stripe/payment/capture", paymentMethod, function (error, result) {
+      expect(error.message).to.equal("Match error: Missing key 'transactionId'");
       expect(result).to.be.undefined;
       done();
     });

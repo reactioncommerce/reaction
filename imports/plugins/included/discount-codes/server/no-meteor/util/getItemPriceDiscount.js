@@ -1,3 +1,5 @@
+import ReactionError from "@reactioncommerce/reaction-error";
+
 /**
  * @name discounts/codes/sale
  * @method
@@ -10,11 +12,15 @@
  */
 export default async function getItemPriceDiscount(cartId, discountId, collections) {
   const { Cart, Discounts } = collections;
-  let discount = 0;
-  const discountMethod = Discounts.findOne(discountId);
-  const cart = Cart.findOne({ _id: cartId });
+
+  const discountMethod = await Discounts.findOne({ _id: discountId });
+  if (!discountMethod) throw new ReactionError("not-found", "Discount not found");
+
+  const cart = await Cart.findOne({ _id: cartId });
+  if (!cart) throw new ReactionError("not-found", "Cart not found");
 
   // TODO add item specific conditions to sale calculations.
+  let discount = 0;
   for (const item of cart.items) {
     const preDiscountItemTotal = item.quantity * item.priceWhenAdded.amount;
     const salePriceItemTotal = item.quantity * discountMethod.discount;
