@@ -1,7 +1,6 @@
 /* eslint camelcase: 0 */
 /* eslint prefer-arrow-callback:0 */
 import nock from "nock";
-import Random from "@reactioncommerce/random";
 import { Meteor } from "meteor/meteor";
 import { expect } from "meteor/practicalmeteor:chai";
 import { sinon } from "meteor/practicalmeteor:sinon";

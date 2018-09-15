@@ -36,12 +36,7 @@ export default async function convertAnonymousCartToNewAccountCart({
     }
   };
 
-  try {
-    CartSchema.validate(newCart);
-  } catch (error) {
-    console.log(error);
-    throw error;
-  }
+  CartSchema.validate(newCart);
 
   const { result } = await Cart.insertOne(newCart);
   if (result.ok !== 1) throw new ReactionError("server-error", "Unable to create account cart");

@@ -8,7 +8,8 @@ import ReactionError from "@reactioncommerce/reaction-error";
  * @returns {Object} Object with `discounts` array and `total`
  */
 export default async function getDiscountsTotalForCart(context, cartId) {
-  const { Cart, Discounts } = context.collections;
+  const { collections } = context;
+  const { Cart, Discounts } = collections;
 
   const cart = await Cart.findOne({ _id: cartId });
   if (!cart) {

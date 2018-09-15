@@ -5,7 +5,6 @@ import { Factory } from "meteor/dburles:factory";
 import { Orders, Products } from "/lib/collections";
 import { getShop } from "./shops";
 import { getUser } from "./users";
-import { getPkgData } from "./packages";
 import { getAddress } from "./accounts";
 import { addProduct } from "./products";
 
