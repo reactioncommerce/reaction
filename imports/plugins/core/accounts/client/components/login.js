@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import Random from "@reactioncommerce/random";
 import { Components, registerComponent } from "@reactioncommerce/reaction-components";
+import { Router } from "/client/api";
 
 class Login extends Component {
   static propTypes = {
@@ -54,6 +55,20 @@ class Login extends Component {
 
   render() {
     if (this.state.currentView === "loginFormSignInView" || this.state.currentView === "loginFormSignUpView") {
+      const currentRoute = Router.current().route;
+      const isOauthFlow = currentRoute.options && currentRoute.options.meta && currentRoute.options.meta.oauthLoginFlow;
+      if (isOauthFlow) {
+        return (
+          <Components.OAuthFormContainer
+            credentials={this.props.credentials}
+            uniqueId={this.props.uniqueId}
+            currentView={this.state.currentView}
+            onForgotPasswordClick={this.showForgotPasswordView}
+            onSignUpClick={this.showSignUpView}
+            onSignInClick={this.showSignInView}
+          />
+        );
+      }
       return (
         <Components.AuthContainer
           credentials={this.props.credentials}
