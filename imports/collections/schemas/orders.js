@@ -135,8 +135,6 @@ export const SelectedFulfillmentOption = new SimpleSchema({
   currencyCode: String,
   group: {
     type: String,
-    label: "Group",
-    allowedValues: ["Ground", "Priority", "One Day", "Free"],
     optional: true
   },
   handling: {
