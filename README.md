@@ -12,10 +12,12 @@
 
 Reaction’s out-of-the-box core features include:
 
+-	One step cart and checkout
 -   Order processing
--   Payments
+-   Payments with Stripe
 -   Shipping
 -   Taxes
+-   Multi-currency support
 -   Discounts
 -   Integration with dozens of third-party apps
 -   See full list of features on our [Roadmap](https://reactioncommerce.com/roadmap)
