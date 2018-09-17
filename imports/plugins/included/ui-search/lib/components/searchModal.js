@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import classnames from "classnames";
 import { Reaction } from "/client/api";
+import CatalogGrid from "@reactioncommerce/components/CatalogGrid/v1";
 import { TextField, Button, IconButton, SortableTableLegacy } from "@reactioncommerce/reaction-ui";
 import ProductGridContainer from "/imports/plugins/included/product-variant/containers/productGridContainer";
 import { accountsTable } from "../helpers";
@@ -167,15 +168,18 @@ class SearchModal extends Component {
           {this.renderSearchTypeToggle()}
           {this.props.tags.length > 0 && this.renderProductSearchTags()}
         </div>
-        <div className="rui search-modal-results-container">
-          {this.props.products.length > 0 &&
-            <ProductGridContainer
-              products={this.props.products}
-              unmountMe={this.props.unmountMe}
-              isSearch={true}
-            />
-          }
-          {this.props.accounts.length > 0 &&
+        {this.props.products.length > 0 &&
+          <div className={`rui search-modal-results-container ${Reaction.hasPermission("admin") && "has-types"} ${this.props.tags.length && "has-tags"}`}>
+            <div className="container-grid search">
+              <CatalogGrid
+                currencyCode={this.props.currencyCode}
+                products={this.props.products}
+              />
+            </div>
+          </div>
+        }
+        {this.props.accounts.length > 0 &&
+          <div className={`rui search-modal-results-container`}>
             <div className="data-table">
               <div className="table-responsive">
                 <SortableTableLegacy
@@ -185,8 +189,8 @@ class SearchModal extends Component {
                 />
               </div>
             </div>
-          }
-        </div>
+          </div>
+        }
       </div>
     );
   }
