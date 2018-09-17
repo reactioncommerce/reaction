@@ -12,13 +12,11 @@
 
 Reaction’s out-of-the-box core features include:
 
--   Drag-and-drop merchandising
 -   Order processing
 -   Payments
 -   Shipping
 -   Taxes
 -   Discounts
--   Analytics
 -   Integration with dozens of third-party apps
 -   See full list of features on our [Roadmap](https://reactioncommerce.com/roadmap)
 
