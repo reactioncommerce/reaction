@@ -61,47 +61,41 @@ docker network create reaction-api
 docker-compose up
 ```
 
+Open `localhost:3000`
+
 This will use the `docker-compose.yml` file.
 
 To learn more on how to develop on Docker, read our documentation on [developing Reaction on Docker](https://docs.reactioncommerce.com/docs/next/installation-docker-development) and [troubleshooting Docker](https://docs.reactioncommerce.com/docs/next/troubleshooting-development#docker-issues).
 
 # Get involved
 
-## Documentation and tools
+## Read documentation & tutorials
 
 -   [Reaction Commerce: Developer documentation](https://docs.reactioncommerce.com)
 -   [Reaction Commerce: API documentation](http://api.docs.reactioncommerce.com)
+-   [Reaction Commerce engineering blog posts](https://blog.reactioncommerce.com/tag/engineering/)
+-   [Reaction Commerce YouTube videos](https://www.youtube.com/user/reactioncommerce/videos)
 
-## Get help
+## Get help & contact the team
 
 -   [Reaction Commerce Gitter chat](https://gitter.im/reactioncommerce/reaction)
 -   [Reaction Commerce forum](https://forums.reactioncommerce.com/)
-
-## Learn
-
--   [Reaction Commerce engineering blog posts](https://blog.reactioncommerce.com/tag/engineering/)
--   [Customization themes & plugins tutorial](https://docs.reactioncommerce.com/reaction-docs/master/tutorial)
--   [Reaction Commerce YouTube videos](https://www.youtube.com/user/reactioncommerce/videos)
-
-## Contact the team
-
 -   [Security reporting instructions](https://docs.reactioncommerce.com/reaction-docs/master/reporting-vulnerabilities): Report security vulnerabilities to <mailto:security@reactioncommerce.com>.
--   [Reaction Action](https://www.youtube.com/playlist?list=PLJ1TVRVOrm2NOKlILTQFvtG7J9h1anvOe): RSVP for the monthly Reaction Action livestreams.
 
 ## Contribute
 
-:star: Star us on GitHub — it helps!
+:star: Star us on GitHub — it helps! 
+
+Want to request a feature? Use our Reaction Feature Requests repository to file a request.
 
 We love your pull requests! Check our our [`Good First Issue`](https://github.com/reactioncommerce/reaction/issues?q=is%3Aopen+is%3Aissue+label%3A%22good+first+issue%22) and [`Help Wanted`](https://github.com/reactioncommerce/reaction/issues?q=label%3A%22help+wanted%22) tags for good issues to tackle.
 
 Pull requests should:
 
-- Pass linting tests: Run `npm run lint` to make sure you're following the [Reaction Code Style Guide](https://docs.reactioncommerce.com/reaction-docs/master/styleguide).
-- Pass acceptance and unit tests: Run `reaction test` to confirm both [acceptance tests and unit tests](https://docs.reactioncommerce.com/reaction-docs/master/testing-reaction) are passing
-- Have a link to the issue.
+- Pass all pull request Cirlce CI checks: Run `npm run lint` and `reaction test` to make sure you're following the [Reaction Code Style Guide](https://docs.reactioncommerce.com/reaction-docs/master/styleguide) and passing [acceptance tests and unit tests](https://docs.reactioncommerce.com/reaction-docs/master/testing-reaction).
+- Follow the pull request template.
 
 Get more details in our [Contributing Guide](https://docs.reactioncommerce.com/reaction-docs/master/contributing-to-reaction).
-
 
 ## Deploy on Docker
 
