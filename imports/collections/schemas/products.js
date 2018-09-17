@@ -392,7 +392,6 @@ registerSchema("PriceRange", PriceRange);
  * @property {String} type default value: `"simple"`
  * @property {String} vendor optional
  * @property {Metafield[]} metafields optional
- * @property {Object} positions ProductPosition
  * @property {PriceRange} price denormalized, object with range string, min and max
  * @property {Boolean} isLowQuantity denormalized, true when at least 1 variant is below `lowInventoryWarningThreshold`
  * @property {Boolean} isSoldOut denormalized, Indicates when all variants `inventoryQuantity` is zero
@@ -470,11 +469,6 @@ export const Product = new SimpleSchema({
   },
   "metafields.$": {
     type: Metafield
-  },
-  "positions": {
-    type: Object, // ProductPosition
-    blackbox: true,
-    optional: true
   },
   "price": {
     label: "Price",

@@ -8,7 +8,6 @@ import { Session } from "meteor/session";
 import { Tracker } from "meteor/tracker";
 import { Reaction } from "/client/api";
 import { ITEMS_INCREMENT } from "/client/config/defaults";
-import { ReactionProduct } from "/lib/api";
 import { Products, Tags, Shops } from "/lib/collections";
 import ProductsComponent from "../components/products";
 
@@ -19,6 +18,12 @@ Tracker.autorun(() => {
   Meteor.subscribe("ProductGridMedia", reactiveProductIds.get());
 });
 
+Tracker.autorun(() => {
+  const isActionViewOpen = Reaction.isActionViewOpen();
+  if (isActionViewOpen === false) {
+    Session.set("productGrid/selectedProducts", []);
+  }
+});
 
 /**
  * This basically runs this:
@@ -53,7 +58,7 @@ const wrapComponent = (Comp) => (
   class ProductsContainer extends Component {
     static propTypes = {
       canLoadMoreProducts: PropTypes.bool,
-      productsSubscription: PropTypes.object,
+      isProductsSubscriptionReady: PropTypes.bool,
       showNotFound: PropTypes.bool // eslint-disable-line react/boolean-prop-naming
     };
 
@@ -62,29 +67,20 @@ const wrapComponent = (Comp) => (
       this.state = {
         initialLoad: true
       };
-
-      this.ready = this.ready.bind(this);
-      this.loadMoreProducts = this.loadMoreProducts.bind(this);
     }
 
-    ready = () => {
-      if (this.props.showNotFound === true) {
+    get isReady() {
+      const { isProductsSubscriptionReady, showNotFound } = this.props;
+
+      if (showNotFound === true) {
         return false;
       }
-      const isInitialLoad = this.state.initialLoad === true;
-      const isReady = this.props.productsSubscription.ready();
-
-      if (isInitialLoad === false) {
+      if (this.state.initialLoad !== true) {
         return true;
       }
 
-      if (isReady) {
-        return true;
-      }
-      return false;
+      return isProductsSubscriptionReady;
     }
-
-    loadMoreProducts = () => this.props.canLoadMoreProducts === true
 
     loadProducts = (event) => {
       event.preventDefault();
@@ -98,8 +94,7 @@ const wrapComponent = (Comp) => (
       return (
         <Comp
           {...this.props}
-          ready={this.ready}
-          loadMoreProducts={this.loadMoreProducts}
+          isReady={this.isReady}
           loadProducts={this.loadProducts}
         />
       );
@@ -107,56 +102,47 @@ const wrapComponent = (Comp) => (
   }
 );
 
+/**
+ * @summary Products composer
+ * @param {Object} props Props from parent
+ * @param {Function} onData Call with props changes
+ * @returns {undefined}
+ */
 function composer(props, onData) {
   window.prerenderReady = false;
 
-  let canLoadMoreProducts = false;
+  const queryParams = Object.assign({}, Reaction.Router.current().query);
 
-  const slug = Reaction.Router.getParam("slug");
+  // Filter by tag
+  const tagIdOrSlug = Reaction.Router.getParam("slug");
+  if (tagIdOrSlug) {
+    const tag = Tags.findOne({ slug: tagIdOrSlug }) || Tags.findOne({ _id: tagIdOrSlug });
+    // if we get an invalid slug, don't return all products
+    if (!tag) {
+      onData(null, {
+        showNotFound: true
+      });
+      return;
+    }
+
+    queryParams.tags = [tag._id];
+  }
+
+  // Filter by shop
   const shopIdOrSlug = Reaction.Router.getParam("shopSlug");
-
-  const tag = Tags.findOne({ slug }) || Tags.findOne(slug);
-  const scrollLimit = Session.get("productScrollLimit");
-  let tags = {}; // this could be shop default implementation needed
-  let shopIds = {};
-
-  if (tag) {
-    tags = { tags: [tag._id] };
-  }
-
   if (shopIdOrSlug) {
-    shopIds = { shops: [shopIdOrSlug] };
+    queryParams.shops = [shopIdOrSlug];
   }
 
-  // if we get an invalid slug, don't return all products
-  if (!tag && slug) {
-    onData(null, {
-      showNotFound: true
-    });
-
-    return;
-  }
-
-  const currentTagId = ReactionProduct.getTagIdForPosition();
-
-  const sort = {
-    [`positions.${currentTagId}.position`]: 1,
-    createdAt: 1
-  };
-
-  const viewAsPref = Reaction.getUserPreferences("reaction-dashboard", "viewAs");
-
-  // Edit mode is true by default
-  let editMode = true;
+  const scrollLimit = Session.get("productScrollLimit");
+  const sort = { createdAt: 1 };
 
   // if we have a "viewAs" preference and the preference is not set to "administrator", then edit mode is false
-  if (viewAsPref && viewAsPref !== "administrator") {
-    editMode = false;
-  }
+  const viewAsPref = Reaction.getUserPreferences("reaction-dashboard", "viewAs");
+  const editMode = !viewAsPref || viewAsPref === "administrator";
 
-  const queryParams = Object.assign({}, tags, Reaction.Router.current().query, shopIds);
+  // Now that we have the necessary info, we can subscribe to Products we need
   const productsSubscription = Meteor.subscribe("Products", scrollLimit, queryParams, sort, editMode);
-
   if (productsSubscription.ready()) {
     window.prerenderReady = true;
   }
@@ -168,31 +154,35 @@ function composer(props, onData) {
     ]
   }).map((activeShop) => activeShop._id);
 
-  const productCursor = Products.find({
+  const products = Products.find({
     ancestors: [],
-    type: { $in: ["simple"] },
+    type: "simple",
     shopId: { $in: activeShopsIds }
-  });
+  }, {
+    sort
+  }).fetch();
+  Session.set("productGrid/products", products);
 
-  const products = productCursor.fetch();
-  const productIds = productCursor.map((product) => product._id);
-
-  const sortedProducts = ReactionProduct.sortProducts(products, currentTagId);
-  Session.set("productGrid/products", sortedProducts);
-
+  // Update ID list for ProductGridMedia subscription
+  const productIds = products.map((product) => product._id);
   reactiveProductIds.set(productIds);
 
-  canLoadMoreProducts = productCursor.count() >= Session.get("productScrollLimit");
-
-  const isActionViewOpen = Reaction.isActionViewOpen();
-  if (isActionViewOpen === false) {
-    Session.set("productGrid/selectedProducts", []);
+  const selectedProducts = Session.get("productGrid/selectedProducts");
+  if (!Reaction.isPreview() && Array.isArray(selectedProducts) && selectedProducts.length > 0) {
+    Reaction.showActionView({
+      label: "Grid Settings",
+      i18nKeyLabel: "gridSettingsPanel.title",
+      template: "productSettings",
+      type: "product"
+    });
+  } else {
+    Reaction.hideActionView();
   }
 
   onData(null, {
-    canLoadMoreProducts,
-    products: sortedProducts,
-    productsSubscription
+    canLoadMoreProducts: products.length >= scrollLimit,
+    isProductsSubscriptionReady: productsSubscription.ready(),
+    products
   });
 }
 
