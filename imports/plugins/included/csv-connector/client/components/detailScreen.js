@@ -258,7 +258,7 @@ class DetailScreen extends Component {
           id="mappingIdInput"
           name="mappingId"
           options={mappingOptions}
-          value={mappingId || "create"}
+          value={mappingId || "default"}
           onChange={this.handleChangeMappingId}
           isSearchable
         />

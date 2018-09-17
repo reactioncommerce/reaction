@@ -31,7 +31,7 @@ const importConversionInsertCallback = (item, options) => {
   } else {
     res.slug = Reaction.getSlug(item.slug);
   }
-  return res;
+  return { item: res };
 };
 
 const postImportInsertCallback = async (item) => {
@@ -42,7 +42,7 @@ const postImportInsertCallback = async (item) => {
     if (parentTag) {
       Tags.update({ _id: parentTag._id }, {
         $addToSet: {
-          relatedTagIds: [currentTag._id]
+          relatedTagIds: currentTag._id
         }
       });
       Tags.update({ _id: currentTag._id }, {
@@ -71,7 +71,6 @@ const postImportInsertCallback = async (item) => {
       errors.push(`Parent tag ${item.parentTagSlug} not found.`);
     }
   }
-  console.log(errors);
   return errors;
 };
 
@@ -81,7 +80,7 @@ const importConversionUpdateCallback = (item) => {
   if (item.slug) {
     res.slug = Reaction.getSlug(item.slug);
   }
-  return res;
+  return { item: res };
 };
 
 const postImportUpdateCallback = async (item) => {
@@ -97,7 +96,7 @@ const postImportUpdateCallback = async (item) => {
       }
       const newParentTag = await Tags.findOne(parentTagFilter);
       if (newParentTag) {
-        await Tags.updateOne({ _id: newParentTag._id }, { $addToSet: { relatedTagIds: [item._id] } });
+        await Tags.updateOne({ _id: newParentTag._id }, { $addToSet: { relatedTagIds: item._id } });
         await Tags.updateOne({ _id: item._id }, { $set: { isTopLevel: false } });
       } else {
         errors.push(`Parent tag ${item.parentTagId || item.parentTagSlug} not found.`);

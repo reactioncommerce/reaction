@@ -199,14 +199,14 @@ export const methods = {
 
     const jobItemId = JobItems.insert(jobItemValues);
 
-    if ((mappingId === "create" && shouldSaveToNewMapping) || (mappingId !== "create" && saveMappingAction === "create")) {
+    if ((mappingId === "default" && shouldSaveToNewMapping) || (mappingId !== "default" && saveMappingAction === "create")) {
       Mappings.insert({
         shopId,
         name: newMappingName,
         collection,
         mapping: mappingByUser
       });
-    } else if (mappingId !== "create" && saveMappingAction === "update") {
+    } else if (mappingId !== "default" && saveMappingAction === "update") {
       Mappings.update({ _id: mappingId }, { $set: { mapping: mappingByUser } });
     }
 

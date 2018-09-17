@@ -125,7 +125,7 @@ class MappingScreen extends Component {
       shouldSaveToNewMapping,
       saveMappingAction
     } = this.props;
-    if ((mappingId === "create" && shouldSaveToNewMapping) || (mappingId !== "create" && saveMappingAction === "create")) {
+    if ((mappingId === "default" && shouldSaveToNewMapping) || (mappingId !== "default" && saveMappingAction === "create")) {
       return (
         <div className="mt20 mr20">
           <Field errors={newMappingNameErrors} name="name" label="New mapping template name" labelFor="newMappingNameInput">
@@ -146,7 +146,7 @@ class MappingScreen extends Component {
 
   renderSaveMapping() {
     const { mappingId, shouldSaveToNewMapping, saveMappingAction } = this.props;
-    if (mappingId === "create") {
+    if (mappingId === "default") {
       return (
         <div>
           <Checkbox
@@ -194,7 +194,7 @@ class MappingScreen extends Component {
 
   renderMappingName() {
     const { mappingId, selectedMapping: { name: mappingName } } = this.props;
-    if (mappingId !== "create" && mappingName) {
+    if (mappingId !== "default" && mappingName) {
       return <p>Using <strong>{mappingName}</strong></p>;
     }
     return null;

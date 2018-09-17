@@ -85,6 +85,10 @@ function convertFieldValue(value, fieldSpec) {
       return false;
     }
     return true;
+  } else if (fieldSpec.type === Array) {
+    return value.split(" || ");
+  } else if (fieldSpec.type === Number) {
+    return Number(value);
   }
   return value;
 }
@@ -109,9 +113,9 @@ async function parseRawObjects(data, mapping, convMap, shouldUpdate = false) {
 
   let options = {};
   if (shouldUpdate && typeof preImportUpdateCallback === "function") {
-    options = await preImportUpdateCallback();
+    options = await preImportUpdateCallback(data);
   } else if (typeof preImportInsertCallback === "function") {
-    options = await preImportInsertCallback();
+    options = await preImportInsertCallback(data);
   }
 
   const validData = [];
@@ -138,7 +142,7 @@ async function parseRawObjects(data, mapping, convMap, shouldUpdate = false) {
       continue;
     }
 
-    const convertedRow = {};
+    const convertedRow = {}; // generic conversion, strings to boolean, strings to array, etc
     for (const fieldToConvert in cleanRow) {
       if ({}.hasOwnProperty.call(cleanRow, fieldToConvert) && fieldToConvert !== "rowNumber") {
         const fieldSpec = fields.find((field) => field.key === fieldToConvert);
@@ -146,10 +150,20 @@ async function parseRawObjects(data, mapping, convMap, shouldUpdate = false) {
       }
     }
 
+    let collectionConversionResult; // collection-specific conversion, i.e. tag slugs should be converted to tag ids for products
     if (shouldUpdate && typeof importConversionUpdateCallback === "function") {
-      Object.assign(convertedRow, importConversionUpdateCallback(convertedRow, options));
+      collectionConversionResult = importConversionUpdateCallback(convertedRow, options);
     } else if (typeof importConversionInsertCallback === "function") {
-      Object.assign(convertedRow, importConversionInsertCallback(convertedRow, options));
+      collectionConversionResult = importConversionInsertCallback(convertedRow, options);
+    }
+
+    if (collectionConversionResult.errors && collectionConversionResult.errors.length > 0) {
+      row.errors = collectionConversionResult.errors;
+      row.saved = false;
+      withErrorData.push(row);
+      continue;
+    } else {
+      Object.assign(convertedRow, collectionConversionResult.item);
     }
 
     row.convertedRow = convertedRow;
@@ -284,7 +298,7 @@ async function saveImportDataUpdates(jobItem, data) {
     await rawCollection.bulkWrite(updateArray);
 
     if (typeof postImportUpdateCallback === "function") {
-      for (const row of validData) {
+      for (const row of validDataChunk) {
         const errors = await postImportUpdateCallback(row.convertedRow); // eslint-disable-line no-await-in-loop
         if (errors && errors.length > 0) {
           row.errors = errors;
@@ -312,6 +326,7 @@ async function saveImportDataInserts(jobItem, data) {
   const keysToDelete = fields.filter((field) => field.ignoreOnSave);
 
   const { validData, withErrorData } = await parseRawObjects(data, mapping, convMap);
+
   const dataChunks = _.chunk(validData, 1000);
 
   await Promise.all(dataChunks.map(async (dataChunk) => {
@@ -323,12 +338,11 @@ async function saveImportDataInserts(jobItem, data) {
       return docClone;
     });
 
-
     await rawCollection.insertMany(toSaveData);
 
     if (typeof postImportInsertCallback === "function") {
       for (const row of validData) {
-        const errors = await postImportInsertCallback(row.convertedRow); // eslint-disable-line no-await-in-loop
+        const errors = await postImportInsertCallback(row.convertedRow, row.originalRow); // eslint-disable-line no-await-in-loop
         if (errors && errors.length > 0) {
           row.errors = errors;
           withErrorData.push(row);
@@ -374,13 +388,22 @@ async function saveImportData(jobItem, data) {
 async function exportDataToCSV(jobItem) {
   const { _id: jobItemId, collection, mappingId } = jobItem;
   const convMap = getConvMapByCollection(collection);
-  const mappingDoc = await Mappings.findOne({ _id: mappingId });
-  const mapping = _.omitBy(mappingDoc.mapping, (value) => value === "ignore");
-  const invertedMapping = _.invert(mapping);
-  const headerKeys = _.values(mapping);
-  const orderedFields = convMap.fields.filter((field) => (headerKeys.includes(field.key)));
-  const orderedFieldsKeys = orderedFields.map((field) => field.key);
-  const headers = orderedFields.map((field) => invertedMapping[field.key]);
+
+  let headers;
+  let orderedFieldsKeys;
+  if (mappingId === "default") {
+    headers = convMap.fields.map((field) => field.label);
+    orderedFieldsKeys = convMap.fields.map((field) => field.key);
+  } else {
+    const mappingDoc = await Mappings.findOne({ _id: mappingId });
+    const mapping = _.omitBy(mappingDoc.mapping, (value) => value === "ignore");
+    const invertedMapping = _.invert(mapping);
+    const headerKeys = _.values(mapping);
+    const orderedFields = convMap.fields.filter((field) => (headerKeys.includes(field.key)));
+    orderedFieldsKeys = orderedFields.map((field) => field.key);
+    headers = orderedFields.map((field) => invertedMapping[field.key]);
+  }
+
   const docs = await convMap.rawCollection.find({ isDeleted: false }).toArray();
   const rows = await Promise.all(docs.map((doc) => convMap.exportConversionCallback(doc, orderedFieldsKeys)));
   rows.unshift(headers);

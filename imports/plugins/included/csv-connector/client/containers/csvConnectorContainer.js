@@ -113,7 +113,7 @@ class CSVConnectorContainer extends Component {
         errors.fileUpload = [];
       }
     } else if (activeScreen === "mapping") {
-      if ((mappingId === "create" && shouldSaveToNewMapping) || (mappingId !== "create" && saveMappingAction === "create")) {
+      if ((mappingId === "default" && shouldSaveToNewMapping) || (mappingId !== "default" && saveMappingAction === "create")) {
         if (!newMappingName) {
           errors.newMappingName = [{ name: "newMappingName", message: "New name is required." }];
         } else {
@@ -150,15 +150,26 @@ class CSVConnectorContainer extends Component {
     if (value === this.state[field]) {
       return;
     }
-    const { collection } = this.state;
+    const { collection, jobType } = this.state;
+
+    if (field === "jobType") {
+      this.setState({ ...this.defaultState, jobType: value });
+      return;
+    }
+
     let mappingId;
     this.updateField(field, value);
+
     if (field === "collection" && collection !== value) {
       const mappings = Mappings.find({ collection: value }).fetch();
       const newMappingOptions = mappings.map((mapping) => ({ value: mapping._id, label: mapping.name }));
+      let label = "Create new mapping";
+      if (jobType === "export") {
+        label = "Default mapping";
+      }
       newMappingOptions.push({
-        value: "create",
-        label: "Create new mapping"
+        value: "default",
+        label
       });
       this.setState({ mappingOptions: newMappingOptions });
       mappingId = newMappingOptions[0].value;
@@ -173,7 +184,7 @@ class CSVConnectorContainer extends Component {
     if (mappingId && currentCollection) {
       const fieldOptions = getFieldOptionsForCollection(currentCollection);
       this.setState({ fieldOptions });
-      if (mappingId === "create") {
+      if (mappingId === "default") {
         const defaultMapping = getDefaultMappingForCollection(currentCollection);
         this.setState({
           selectedMapping: defaultMapping
