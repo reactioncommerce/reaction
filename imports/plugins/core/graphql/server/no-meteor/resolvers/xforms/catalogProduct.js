@@ -23,8 +23,8 @@ export function xformProductMedia(mediaItem, context) {
   return {
     priority,
     toGrid,
-    productId: encodeProductOpaqueId(productId),
-    variantId: encodeProductOpaqueId(variantId),
+    productId,
+    variantId,
     URLs: {
       large: context.getAbsoluteUrl(large),
       medium: context.getAbsoluteUrl(medium),
