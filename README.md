@@ -46,16 +46,23 @@ cd reaction
 reaction
 ```
 
+Open `localhost:3000`
+
+Learn more on how to [configure your project](https://docs.reactioncommerce.com/reaction-docs/master/configuration). Having installation issues? Check out our [troubleshooting docs](https://docs.reactioncommerce.com/docs/next/troubleshooting-development).
+
+### Install and run using Docker
+
 You can also run the app locally using [`docker-compose`](https://docs.docker.com/compose/) by running:
 
 ```sh
+docker network create reaction-api
 docker-compose up
 ```
 
-This will use the `docker-compose.yml` file. This can be used to evaluate the app locally (on all Operating Systems supported by Docker),
+This will use the `docker-compose.yml` file. This can be used to evaluate the app locally (on all systems supported by Docker),
 however, for active local development or customization, it is better to run `reaction` outside of Docker for faster app builds.
 
-Learn more on how to [configure your project](https://docs.reactioncommerce.com/reaction-docs/master/configuration).
+To learn more on how to develop on Docker, read our documentation on [developing Reaction on Docker](https://docs.reactioncommerce.com/docs/next/installation-docker-development) and [troubleshooting Docker](https://docs.reactioncommerce.com/docs/next/troubleshooting-development#docker-issues).
 
 # Get involved
 
