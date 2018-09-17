@@ -20,7 +20,7 @@ Reaction’s out-of-the-box core features include:
 -   Multi-currency support
 -   Discounts
 -   Integration with dozens of third-party apps
--   See full list of features on our [Roadmap](https://reactioncommerce.com/roadmap)
+-   See full list of features on our [roadmap](https://reactioncommerce.com/roadmap)
 
 Since anything in our codebase can be extended, overwritten, or installed as a package, you may also develop, scale, and customize anything on our platform.
 
@@ -28,19 +28,19 @@ Since anything in our codebase can be extended, overwritten, or installed as a p
 
 ### Requirements
 
-Reaction requires Meteor, Git, MongoDB, OS-specific build tools and optionally, ImageMagick. For step-by-step instructions, follow the documentation for [OS X](https://docs.reactioncommerce.com/docs/next/installation-osx), [Windows](https://docs.reactioncommerce.com/docs/next/installation-windows) or [Linux](https://docs.reactioncommerce.com/docs/next/installation-linux).
+Reaction requires Meteor, Git, Mongo DB, OS-specific build tools. For step-by-step instructions, follow the documentation for [OS X](https://docs.reactioncommerce.com/docs/next/installation-osx), [Windows](https://docs.reactioncommerce.com/docs/next/installation-windows) or [Linux](https://docs.reactioncommerce.com/docs/next/installation-linux).
 
-### Install and create your first store
+### Install and run with CLI
 
 Install the [Reaction CLI](https://github.com/reactioncommerce/reaction-cli) to get started with Reaction:
 
-```bash
+```sh
 npm install -g reaction-cli
 ```
 
 Create your store:
 
-```bash
+```sh
 reaction init
 cd reaction
 reaction
@@ -48,9 +48,11 @@ reaction
 
 Open `localhost:3000`
 
-Learn more on how to [configure your project](https://docs.reactioncommerce.com/reaction-docs/master/configuration). Having installation issues? Check out our [troubleshooting docs](https://docs.reactioncommerce.com/docs/next/troubleshooting-development).
+Learn more on how to [configure your project](https://docs.reactioncommerce.com/reaction-docs/master/configuration). 
 
-### Install and run using Docker
+Having installation issues? Check out our [troubleshooting docs](https://docs.reactioncommerce.com/docs/next/troubleshooting-development).
+
+### Install and run with Docker
 
 You can also run the app locally using [`docker-compose`](https://docs.docker.com/compose/) by running:
 
@@ -59,8 +61,7 @@ docker network create reaction-api
 docker-compose up
 ```
 
-This will use the `docker-compose.yml` file. This can be used to evaluate the app locally (on all systems supported by Docker),
-however, for active local development or customization, it is better to run `reaction` outside of Docker for faster app builds.
+This will use the `docker-compose.yml` file.
 
 To learn more on how to develop on Docker, read our documentation on [developing Reaction on Docker](https://docs.reactioncommerce.com/docs/next/installation-docker-development) and [troubleshooting Docker](https://docs.reactioncommerce.com/docs/next/troubleshooting-development#docker-issues).
 
@@ -68,11 +69,8 @@ To learn more on how to develop on Docker, read our documentation on [developing
 
 ## Documentation and tools
 
--   [Developer documentation](https://docs.reactioncommerce.com)
--   [API documentation](http://api.docs.reactioncommerce.com)
--   [Reaction GraphQL API server base](https://github.com/reactioncommerce/reaction-api-base)
--   [Reaction sample data](https://github.com/reactioncommerce/reaction-sample-data)
-
+-   [Reaction Commerce: Developer documentation](https://docs.reactioncommerce.com)
+-   [Reaction Commerce: API documentation](http://api.docs.reactioncommerce.com)
 
 ## Get help
 
