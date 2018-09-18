@@ -1,9 +1,11 @@
 import _ from "lodash";
-import { registerConversionMap } from "../../lib/common/conversionMaps";
-import { ProductsConvMap } from "../../lib/conversionMaps";
+import fetch from "node-fetch";
+import { FileRecord } from "@reactioncommerce/file-collections";
 import Random from "@reactioncommerce/random";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
 import rawCollections from "/imports/collections/rawCollections";
+import { registerConversionMap } from "../../lib/common/conversionMaps";
+import { ProductsConvMap } from "../../lib/conversionMaps";
 
 const { Media, Products, Tags } = rawCollections;
 
@@ -66,16 +68,19 @@ const importConversionInsertCallback = (item, options) => {
   return { item: res, errors };
 };
 
-const postImportInsertCallback = async (item) => {
+const postImportInsertCallback = async (item, options) => {
+  const { shopId } = options;
+  const ancestors = [];
   const errors = [];
   const update = {};
+  const stores = ["image", "large", "medium", "small", "thumbnail"];
+  const hasParent = item.parentTitle || item.parentId;
 
-  if (item.parentTitle || item.parentId) {
+  if (hasParent) {
     let parentFilter = { title: item.parentTitle };
     if (item.parentId) {
       parentFilter = { _id: item._id };
     }
-    const ancestors = [];
     update.type = "variant";
     const ancestorDoc = await Products.findOne(parentFilter);
     if (ancestorDoc) {
@@ -90,19 +95,48 @@ const postImportInsertCallback = async (item) => {
     } else {
       errors.push(`Parent ${item.parentId || item.parentTitle} not found.`);
     }
-  } else if (item.tagIds || item.tagSlugs) {
-    console.log("ITEMSLIGS", item.tagSlugs);
+  }
+
+  if (!hasParent && (item.tagIds || item.tagSlugs)) {
     let existingTags;
     if (item.tagIds && item.tagIds.length > 0 && item.tagIds[0]) {
-      existingTags = await Tags.find({ slug: { $in: item.tagSlugs } }, { _id: 1 }).toArray();
-      // existingTags = await Tags.find({ _id: { $in: item.tagIds } }, { _id: 1 }).toArray();
-    } else {
+      existingTags = await Tags.find({ _id: { $in: item.tagIds } }, { _id: 1 }).toArray();
+    } else if (item.tagSlugs.length > 0 && item.tagSlugs[0]) {
       existingTags = await Tags.find({ slug: { $in: item.tagSlugs } }, { _id: 1 }).toArray();
     }
-    console.log(existingTags);
     const hashtags = existingTags.map((tag) => tag._id);
-    console.log("HASHHS", hashtags);
     update.hashtags = hashtags;
+  }
+
+  if (ancestors.length > 0 && (item.images && item.images.length > 0 && item.images[0])) {
+    await Promise.all(item.images.map(async (imgURL, index) => {
+      const result = await fetch(imgURL);
+      const type = result.headers.get("content-type");
+      let name = "upload.png";
+      if (type !== "image/png") {
+        name = "upload.jpg";
+      }
+      const imgFileDoc = {
+        original: {
+          name,
+          type,
+          updatedAt: new Date()
+        }
+      };
+      const fileRecord = new FileRecord(imgFileDoc);
+      fileRecord.metadata = {
+        productId: ancestors[0],
+        variantId: item._id,
+        shopId,
+        priority: index
+      };
+      await Media.insert(fileRecord, { raw: true });
+      await Promise.all(stores.map(async (storeName) => {
+        const store = Media.getStore(storeName);
+        const writeStream = await store.createWriteStream(fileRecord);
+        result.body.pipe(writeStream);
+      }));
+    }));
   }
 
   if (!_.isEmpty(update)) {

@@ -99,25 +99,16 @@ function convertFieldValue(value, fieldSpec) {
  * @param {Array} data - the data to be parsed
  * @param {Object} mapping - mapping from the job item
  * @param {Object} convMap - the conversion map to be used
+ * @param {Object} options - returned from pre import callback
  * @param {Boolean} shouldUpdate - to update docs? false if docs are to be created
  * @return {Object} - consists of valid data to be saved to database and data with errors
  */
-async function parseRawObjects(data, mapping, convMap, shouldUpdate = false) {
+async function parseRawObjects(data, mapping, convMap, options, shouldUpdate = false) {
   const {
     fields,
     importConversionInsertCallback,
-    importConversionUpdateCallback,
-    preImportInsertCallback,
-    preImportUpdateCallback
+    importConversionUpdateCallback
   } = convMap;
-
-  let options = {};
-  if (shouldUpdate && typeof preImportUpdateCallback === "function") {
-    options = await preImportUpdateCallback(data);
-  } else if (typeof preImportInsertCallback === "function") {
-    options = await preImportInsertCallback(data);
-  }
-
   const validData = [];
   const withErrorData = [];
 
@@ -267,10 +258,17 @@ async function saveImportDataUpdates(jobItem, data) {
   const shouldUpdate = true;
 
   const convMap = getConvMapByCollection(collection);
-  const { fields, postImportUpdateCallback, rawCollection } = convMap;
+  const {
+    fields,
+    preImportUpdateCallback,
+    postImportUpdateCallback,
+    rawCollection
+  } = convMap;
   const keysToDelete = fields.filter((field) => field.ignoreOnSave);
 
-  const { validData, withErrorData } = await parseRawObjects(data, mapping, convMap, shouldUpdate);
+  const options = await preImportUpdateCallback(data);
+
+  const { validData, withErrorData } = await parseRawObjects(data, mapping, convMap, options, shouldUpdate);
 
   const dataChunks = _.chunk(validData, 1000);
 
@@ -299,7 +297,7 @@ async function saveImportDataUpdates(jobItem, data) {
 
     if (typeof postImportUpdateCallback === "function") {
       for (const row of validDataChunk) {
-        const errors = await postImportUpdateCallback(row.convertedRow); // eslint-disable-line no-await-in-loop
+        const errors = await postImportUpdateCallback(row.convertedRow, options); // eslint-disable-line no-await-in-loop
         if (errors && errors.length > 0) {
           row.errors = errors;
           withErrorData.push(row);
@@ -322,10 +320,17 @@ async function saveImportDataInserts(jobItem, data) {
   const { collection, mapping } = jobItem;
 
   const convMap = getConvMapByCollection(collection);
-  const { fields, postImportInsertCallback, rawCollection } = convMap;
+  const {
+    fields,
+    preImportInsertCallback,
+    postImportInsertCallback,
+    rawCollection
+  } = convMap;
   const keysToDelete = fields.filter((field) => field.ignoreOnSave);
 
-  const { validData, withErrorData } = await parseRawObjects(data, mapping, convMap);
+  const options = await preImportInsertCallback(data);
+
+  const { validData, withErrorData } = await parseRawObjects(data, mapping, convMap, options);
 
   const dataChunks = _.chunk(validData, 1000);
 
@@ -342,7 +347,7 @@ async function saveImportDataInserts(jobItem, data) {
 
     if (typeof postImportInsertCallback === "function") {
       for (const row of validData) {
-        const errors = await postImportInsertCallback(row.convertedRow, row.originalRow); // eslint-disable-line no-await-in-loop
+        const errors = await postImportInsertCallback(row.convertedRow, options); // eslint-disable-line no-await-in-loop
         if (errors && errors.length > 0) {
           row.errors = errors;
           withErrorData.push(row);

@@ -142,7 +142,7 @@ export const ProductsConvMap = {
       key: "images",
       label: "Images",
       optional: true,
-      type: String,
+      type: Array,
       ignoreOnSave: true
     },
     {
