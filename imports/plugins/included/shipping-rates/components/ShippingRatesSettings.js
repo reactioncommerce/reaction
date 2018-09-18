@@ -3,8 +3,9 @@ import PropTypes from "prop-types";
 import SimpleSchema from "simpl-schema";
 import { Meteor } from "meteor/meteor";
 import { Shipping } from "/lib/collections";
-import { formatPriceString, i18next } from "/client/api";
+import { Reaction, formatPriceString, i18next } from "/client/api";
 import { IconButton, Loading, SortableTable } from "/imports/plugins/core/ui/client/components";
+import simpleGraphQLClient from "/imports/plugins/core/graphql/lib/helpers/simpleClient";
 import ShippingMethodForm from "./ShippingMethodForm";
 
 const fulfillmentMethodFormSchema = new SimpleSchema({
@@ -26,7 +27,7 @@ const fulfillmentMethodFormSchema = new SimpleSchema({
     type: Number,
     min: 0
   },
-  enabled: Boolean
+  isEnabled: Boolean
 });
 
 const fulfillmentMethodValidator = fulfillmentMethodFormSchema.getFormValidator();
@@ -115,16 +116,30 @@ export default class ShippingRatesSettings extends Component {
       confirmButtonText
     }, (isConfirm) => {
       if (isConfirm && editingId) {
-        Meteor.call("shipping/rates/delete", editingId, (error) => {
-          if (error) {
-            Alerts.toast(`${i18next.t("admin.shippingSettings.rateFailed")} ${error}`, "error");
-            return;
-          }
-          this.setState({
-            isEditing: false,
-            editingId: null
-          });
-          Alerts.toast(i18next.t("shipping.shippingMethodDeleted"), "success");
+        const methodInput = [
+          { namespace: "Shop", id: Reaction.getShopId() },
+          { namespace: "FulfillmentMethod", id: editingId }
+        ];
+        Meteor.call("getOpaqueIdFromInternalId", methodInput, (error, opaqueIds) => {
+          const [opaqueShopId, opaqueEditingId] = opaqueIds;
+
+          simpleGraphQLClient.mutations.deleteFlatRateFulfillmentMethod({
+            input: {
+              methodId: opaqueEditingId,
+              shopId: opaqueShopId
+            }
+          })
+            .then(() => {
+              this.setState({
+                isEditing: false,
+                editingId: null
+              });
+              Alerts.toast(i18next.t("shipping.shippingMethodDeleted"), "success");
+              return null;
+            })
+            .catch((error2) => {
+              Alerts.toast(`${i18next.t("admin.shippingSettings.rateFailed")} ${error2}`, "error");
+            });
         });
       }
     });
@@ -139,34 +154,64 @@ export default class ShippingRatesSettings extends Component {
     // Remove this and switch to NumberInput once we have it.
     const cleanedDoc = fulfillmentMethodFormSchema.clean(doc);
 
+    // For now, we hard code a single fulfillment type
+    cleanedDoc.fulfillmentTypes = ["shipping"];
+
     return new Promise((resolve) => {
       if (editingId) {
-        Meteor.call("shipping/rates/update", { ...cleanedDoc, _id: editingId }, (error) => {
-          if (error) {
-            Alerts.toast(`${i18next.t("admin.shippingSettings.rateFailed")} ${error}`, "error");
-            resolve({ ok: false });
-            return;
-          }
-          this.setState({
-            isEditing: false,
-            editingId: null
-          });
-          Alerts.toast(i18next.t("admin.shippingSettings.rateSaved"), "success");
-          resolve();
+        const methodInput = [
+          { namespace: "Shop", id: Reaction.getShopId() },
+          { namespace: "FulfillmentMethod", id: editingId }
+        ];
+        Meteor.call("getOpaqueIdFromInternalId", methodInput, (error, opaqueIds) => {
+          const [opaqueShopId, opaqueEditingId] = opaqueIds;
+
+          simpleGraphQLClient.mutations.updateFlatRateFulfillmentMethod({
+            input: {
+              methodId: opaqueEditingId,
+              method: cleanedDoc,
+              shopId: opaqueShopId
+            }
+          })
+            .then(() => {
+              this.setState({
+                isEditing: false,
+                editingId: null
+              });
+              Alerts.toast(i18next.t("admin.shippingSettings.rateSaved"), "success");
+              resolve();
+              return null;
+            })
+            .catch((error2) => {
+              Alerts.toast(`${i18next.t("admin.shippingSettings.rateFailed")} ${error2}`, "error");
+              resolve({ ok: false });
+            });
         });
       } else {
-        Meteor.call("shipping/rates/add", cleanedDoc, (error) => {
-          if (error) {
-            Alerts.toast(`${i18next.t("admin.shippingSettings.rateFailed")} ${error}`, "error");
-            resolve({ ok: false });
-            return;
-          }
-          this.setState({
-            isEditing: true,
-            editingId: null
-          });
-          Alerts.toast(i18next.t("admin.shippingSettings.rateSaved"), "success");
-          resolve();
+        const methodInput = [
+          { namespace: "Shop", id: Reaction.getShopId() }
+        ];
+        Meteor.call("getOpaqueIdFromInternalId", methodInput, (error, opaqueIds) => {
+          const [opaqueShopId] = opaqueIds;
+          simpleGraphQLClient.mutations.createFlatRateFulfillmentMethod({
+            input: {
+              method: cleanedDoc,
+              shopId: opaqueShopId
+            }
+          })
+            .then(() => {
+              this.setState({
+                isEditing: true,
+                editingId: null
+              });
+              Alerts.toast(i18next.t("admin.shippingSettings.rateSaved"), "success");
+              resolve();
+              return null;
+            })
+            .catch((error2) => {
+              Alerts.toast(`${i18next.t("admin.shippingSettings.rateFailed")} ${error2}`, "error");
+              resolve({ ok: false });
+            });
         });
       }
     });
@@ -242,6 +287,7 @@ export default class ShippingRatesSettings extends Component {
           ...methodDoc,
           cost: typeof methodDoc.cost === "number" ? methodDoc.cost.toString() : methodDoc.cost,
           handling: typeof methodDoc.handling === "number" ? methodDoc.handling.toString() : methodDoc.handling,
+          isEnabled: typeof methodDoc.isEnabled === "boolean" ? methodDoc.isEnabled : (methodDoc.enabled || false), // backwards compatible
           rate: typeof methodDoc.rate === "number" ? methodDoc.rate.toString() : methodDoc.rate
         };
       }
@@ -251,7 +297,7 @@ export default class ShippingRatesSettings extends Component {
     // We can't set them in top-level code because translations are not loaded yet.
     fulfillmentMethodFormSchema.labels({
       cost: i18next.t("shippingMethod.cost"),
-      enabled: i18next.t("shippingMethod.enabled"),
+      isEnabled: i18next.t("shippingMethod.enabled"),
       group: i18next.t("shippingMethod.group"),
       handling: i18next.t("shippingMethod.handling"),
       label: i18next.t("shippingMethod.label"),

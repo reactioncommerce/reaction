@@ -1,0 +1,7 @@
+createFlatRateFulfillmentMethod($input: CreateFlatRateFulfillmentMethodInput!) {
+  createFlatRateFulfillmentMethod(input: $input) {
+    method {
+      name
+    }
+  }
+}

@@ -1,0 +1,41 @@
+type ShippingParcel {
+  containers: String
+  distanceUnit: DistanceUnit
+  height: Float
+  length: Float
+  massUnit: MassUnit
+  weight: Float
+  width: Float
+}
+
+enum FulfillmentType {
+  digital
+  pickup
+  shipping
+}
+
+"""
+A single fulfillment method. Fulfillment methods are shown to shoppers along with a quote for them,
+and the shopper chooses one method per fulfillment group per cart during checkout.
+"""
+type FulfillmentMethod implements Node {
+  "The fulfillment method ID"
+  _id: ID!
+
+  "A carrier name"
+  carrier: String
+
+  "The name of this method, for display in the user interface"
+  displayName: String!
+
+  """
+  The fulfillment types for which this method may be used. For example, "shipping" or "digital".
+  """
+  fulfillmentTypes: [FulfillmentType]!
+
+  "The group to which this method belongs"
+  group: String
+
+  "The name of this method, a unique identifier"
+  name: String!
+}

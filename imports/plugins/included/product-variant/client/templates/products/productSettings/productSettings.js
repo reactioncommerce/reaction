@@ -1,10 +1,7 @@
-import _ from "lodash";
 import { Template } from "meteor/templating";
 import { Meteor } from "meteor/meteor";
-import { ReactiveDict } from "meteor/reactive-dict";
+import { Session } from "meteor/session";
 import { Reaction } from "/client/api";
-import ReactionError from "@reactioncommerce/reaction-error";
-import Logger from "/client/modules/logger";
 import { Catalog, getPrimaryMediaForItem, ReactionProduct } from "/lib/api";
 import { Products } from "/lib/collections";
 
@@ -12,59 +9,36 @@ function updateVariantProductField(variants, field, value) {
   return variants.map((variant) => Meteor.call("products/updateProductField", variant._id, field, value));
 }
 
-Template.productSettings.onCreated(function () {
-  this.state = new ReactiveDict();
-  this.state.setDefault({
-    products: [],
-    productIds: []
-  });
-
-  this.autorun(() => {
-    const currentData = Template.currentData();
-
-    if (_.isArray(currentData.products)) {
-      const productIds = currentData.products.map((product) => product._id);
-
-      const products = Products.find({
-        _id: {
-          $in: productIds
-        }
-      }).fetch();
-
-      this.state.set("productIds", productIds);
-      this.state.set("products", products);
+/**
+ * @summary Get the list of selected products
+ * @returns {Object[]} Product documents
+ */
+function getSelectedProducts() {
+  const productIds = Session.get("productGrid/selectedProducts");
+  return Products.find({
+    _id: {
+      $in: productIds
     }
-  });
-});
+  }).fetch();
+}
 
 Template.productSettings.helpers({
+  hasSelectedProducts() {
+    const productIds = Session.get("productGrid/selectedProducts");
+    return productIds && productIds.length > 0;
+  },
   isVisible() {
-    const instance = Template.instance();
-    const products = instance.state.get("products") || [];
+    const products = getSelectedProducts();
 
-    // Use the first selected product to determin status of bulk, isVisible button
+    // Use the first selected product to determine status of bulk, isVisible button
     if (Array.isArray(products) && products.length) {
       return products[0].isVisible;
     }
 
     return false;
   },
-  hasSelectedProducts() {
-    return this.products && this.products.length > 0;
-  },
-  itemWeightActive(weight) {
-    const instance = Template.instance();
-    const products = instance.state.get("products");
-    const tagId = ReactionProduct.getTagIdForPosition();
-
-    for (const product of products) {
-      const positions = (product.positions && product.positions[tagId]) || {};
-      const currentWeight = positions.weight || 0;
-      if (currentWeight === weight) {
-        return "active";
-      }
-    }
-    return "";
+  products() {
+    return getSelectedProducts();
   }
 });
 
@@ -118,8 +92,7 @@ Template.productSettingsListItem.helpers({
 
 Template.productSettings.events({
   "click [data-event-action=publishProduct]"() {
-    const instance = Template.instance();
-    const products = instance.state.get("products") || [];
+    const products = getSelectedProducts();
 
     for (const product of products) {
       // Update the visibility using the first selected product to determine the proper
@@ -128,41 +101,17 @@ Template.productSettings.events({
       Meteor.call("products/updateProductField", product._id, "isVisible", !products[0].isVisible);
       // update the variants visibility
       const variants = Products.find({
-        ancestors: {
-          $in: [product._id]
-        }
+        ancestors: product._id
       });
       updateVariantProductField(variants, "isVisible", !products[0].isVisible);
     }
   },
   "click [data-event-action=cloneProduct]"() {
-    ReactionProduct.cloneProduct(this.products);
+    const products = getSelectedProducts();
+    ReactionProduct.cloneProduct(products);
   },
   "click [data-event-action=archiveProduct]"() {
-    ReactionProduct.archiveProduct(this.products);
-  },
-  "click [data-event-action=changeProductWeight]"(event) {
-    event.preventDefault();
-    const tagId = ReactionProduct.getTagIdForPosition();
-    for (const product of this.products) {
-      const weight =
-        Template.instance()
-          .$(event.currentTarget)
-          .data("event-data") || 0;
-      const positions = {
-        weight,
-        updatedAt: new Date()
-      };
-      /* eslint no-loop-func: 1 */
-      //
-      //
-      Meteor.call("products/updateProductPosition", product._id, positions, tagId, (error) => {
-        // eslint-disable-line no-loop-func
-        if (error) {
-          Logger.warn(error);
-          throw new ReactionError("access-denied", error);
-        }
-      });
-    }
+    const products = getSelectedProducts();
+    ReactionProduct.archiveProduct(products);
   }
 });

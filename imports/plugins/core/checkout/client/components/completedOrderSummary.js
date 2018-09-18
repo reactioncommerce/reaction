@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Components, registerComponent } from "@reactioncommerce/reaction-components";
 import ShopOrderSummary from "./shopOrderSummary";
@@ -10,47 +10,72 @@ import ShopOrderSummary from "./shopOrderSummary";
  * @param {Object} props - React PropTypes
  * @property {Array} shops - An array of summary information broken down by shop
  * @property {Object} orderSummary - An object representing the "bottom line" summary for the order
- * @property {boolean} isProfilePage - Checks if current page is Profile Page
  * @return {Node} React node containing the order summary broken down by shop
  */
-const CompletedOrderSummary = ({ shops, orderSummary, isProfilePage }) => (
-  <div>
-    <div className="order-details-content-title">
-      <p><Components.Translation defaultValue="Order Summary" i18nKey={"cartCompleted.orderSummary"} /></p>
-    </div>
-    <div className="order-details-info-box">
-      {shops.map((shop) => {
-        const shopKey = Object.keys(shop);
-        return <ShopOrderSummary shopSummary={shop[shopKey]} key={shopKey} isProfilePage={isProfilePage} />;
-      })}
-      <hr />
-      {orderSummary.discounts > 0 &&
-        <div className="order-summary-line">
-          <div className="order-summary-discount-title">
-            <Components.Translation defaultValue="Discount Total" i18nKey={"cartCompleted.discountTotal"}/>
-          </div>
-          <div className="order-summary-discount-value">
-            <Components.Currency amount={orderSummary.discounts}/>
-          </div>
+class CompletedOrderSummary extends Component {
+  static propTypes = {
+    fulfillmentGroups: PropTypes.arrayOf(PropTypes.shape({
+      _id: PropTypes.string.isRequired,
+      invoice: PropTypes.shape({
+        discounts: PropTypes.number.isRequired,
+        shipping: PropTypes.number.isRequired,
+        subtotal: PropTypes.number.isRequired,
+        taxes: PropTypes.number.isRequired,
+        total: PropTypes.number.isRequired
+      }).isRequired,
+      items: PropTypes.arrayOf(PropTypes.shape({
+        quantity: PropTypes.number.isRequired
+      })),
+      shopName: PropTypes.string.isRequired
+    }))
+  };
+
+  render() {
+    const { fulfillmentGroups } = this.props;
+
+    const discountTotal = fulfillmentGroups.reduce((sum, group) => sum + group.invoice.discounts, 0);
+    const orderTotal = fulfillmentGroups.reduce((sum, group) => sum + group.invoice.total, 0);
+
+    return (
+      <div>
+        <div className="order-details-content-title">
+          <p><Components.Translation defaultValue="Order Summary" i18nKey={"cartCompleted.orderSummary"} /></p>
         </div>
-      }
-      <div className="order-summary-line">
-        <div className="order-summary-total-title">
-          <Components.Translation defaultValue="Order Total" i18nKey={"cartCompleted.orderTotal"}/>
-        </div>
-        <div className="order-summary-total-value">
-          <Components.Currency amount={orderSummary.total}/>
+        <div className="order-details-info-box">
+          {fulfillmentGroups.map((group) => (
+            <ShopOrderSummary
+              key={group._id}
+              quantityTotal={group.items.reduce((sum, item) => sum + item.quantity, 0)}
+              shipping={group.invoice.shipping}
+              shopName={group.shopName}
+              subTotal={group.invoice.subtotal}
+              taxes={group.invoice.taxes}
+            />
+          ))}
+          <hr />
+          {discountTotal > 0 &&
+            <div className="order-summary-line">
+              <div className="order-summary-discount-title">
+                <Components.Translation defaultValue="Discount Total" i18nKey={"cartCompleted.discountTotal"}/>
+              </div>
+              <div className="order-summary-discount-value">
+                <Components.Currency amount={discountTotal}/>
+              </div>
+            </div>
+          }
+          <div className="order-summary-line">
+            <div className="order-summary-total-title">
+              <Components.Translation defaultValue="Order Total" i18nKey={"cartCompleted.orderTotal"}/>
+            </div>
+            <div className="order-summary-total-value">
+              <Components.Currency amount={orderTotal}/>
+            </div>
+          </div>
         </div>
       </div>
-    </div>
-  </div>
-);
-
-CompletedOrderSummary.propTypes = {
-  isProfilePage: PropTypes.bool,
-  orderSummary: PropTypes.object,
-  shops: PropTypes.array
-};
+    );
+  }
+}
 
 registerComponent("CompletedOrderSummary", CompletedOrderSummary);
 

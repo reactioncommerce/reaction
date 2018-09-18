@@ -4,6 +4,12 @@ import { Router } from "/client/modules/router/";
 import { registerComponent, composeWithTracker } from "@reactioncommerce/reaction-components";
 import OrdersList from "../components/ordersList";
 
+/**
+ * @summary Composer
+ * @param {Object} props Provided props
+ * @param {Function} onData Call this with props
+ * @returns {undefined}
+ */
 function composer(props, onData) {
   // Get user order from props
   const { orders } = props;
@@ -18,7 +24,7 @@ function composer(props, onData) {
     orders.map((order) => {
       const imageSub = Meteor.subscribe("OrderImages", order._id);
       const orderSummary = {
-        quantityTotal: order.getCount(),
+        quantityTotal: order.totalItemQuantity,
         subtotal: order.getSubTotal(),
         shippingTotal: order.getShippingTotal(),
         tax: order.getTaxTotal(),

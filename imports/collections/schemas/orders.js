@@ -1,9 +1,18 @@
 import SimpleSchema from "simpl-schema";
 import { registerSchema } from "@reactioncommerce/schemas";
 import { createdAtAutoValue } from "./helpers";
-import { Cart, CartItem } from "./cart";
-import { Product, ProductVariant } from "./products";
+import { Address } from "./address";
+import { Invoice, Payment } from "./payments";
+import { ShippingParcel } from "./shipping";
 import { Workflow } from "./workflow";
+
+const Money = new SimpleSchema({
+  currencyCode: String,
+  amount: {
+    type: Number,
+    min: 0
+  }
+});
 
 /**
  * @name Document
@@ -105,21 +114,93 @@ export const Notes = new SimpleSchema({
 registerSchema("Notes", Notes);
 
 /**
+ * @name SelectedFulfillmentOption
+ * @memberof Schemas
+ * @type {SimpleSchema}
+ * @property {String} _id Shipment method Id
+ * @property {String} carrier optional
+ * @property {String} currencyCode Currency code for interpreting rate and handling
+ * @property {String} group Group, allowed values: `Ground`, `Priority`, `One Day`, `Free`
+ * @property {Number} handling optional, default value: `0`
+ * @property {String} label Public label
+ * @property {String} name Method name
+ * @property {Number} rate Rate
+ */
+export const SelectedFulfillmentOption = new SimpleSchema({
+  _id: String,
+  carrier: {
+    type: String,
+    optional: true
+  },
+  currencyCode: String,
+  group: {
+    type: String,
+    optional: true
+  },
+  handling: {
+    type: Number,
+    min: 0
+  },
+  label: String,
+  name: String,
+  rate: {
+    type: Number,
+    min: 0
+  }
+});
+
+/**
+ * @name OrderDiscount
+ * @memberof Schemas
+ * @type {SimpleSchema}
+ * @property {Number} amount Amount of discount applied to the order
+ * @property {String} discountId Discount ID
+ */
+export const OrderDiscount = new SimpleSchema({
+  amount: Number,
+  discountId: String
+});
+
+/**
  * @name OrderItem
  * @memberof Schemas
  * @summary CartItem + some additional properties
  * @type {SimpleSchema}
- * @property {Workflow} workflow optional
- * @property {History[]} history optional
+ * @property {String} _id Unique ID for the item
+ * @property {String} addedAt Date/time when this was first added to the cart/order
+ * @property {String} createdAt Date/time when this order item was created
  * @property {Document[]} documents optional
- * @property {Object} product (required) The full Product document for the top-level product, at the time of order
- * @property {Object} variants (required) The full Product document for the ordered variant, at the time of order
+ * @property {History[]} history optional
+ * @property {Boolean} isTaxable Is this item taxable?
+ * @property {String} optionTitle optionTitle from the selected variant
+ * @property {ShippingParcel} parcel Currently, parcel is in simple product schema. Need to include it here as well.
+ * @property {Money} price The price+currency of variantId at the moment the related order was placed
+ * @property {String} productId required
+ * @property {String} productSlug Product slug
+ * @property {String} productType Product type
+ * @property {String} productVendor Product vendor
+ * @property {Number} quantity required
+ * @property {String} shopId Cart Item shopId
+ * @property {Number} subtotal The item subtotal, quantity x price
+ * @property {Number} tax Total tax collected for the item. Will be 0 if `isTaxable` is `false`.
+ * @property {Number} taxRate Tax rate that was used to calculate item tax. Will be 0 if `isTaxable` is `false`.
+ * @property {String} title Cart Item title
+ * @property {String} updatedAt required
+ * @property {String} variantId required
+ * @property {String} variantTitle Title from the selected variant
+ * @property {Workflow} workflow optional
+ *
 */
 export const OrderItem = new SimpleSchema({
-  "workflow": {
-    type: Workflow,
-    optional: true,
-    defaultValue: {}
+  "_id": String,
+  "addedAt": Date,
+  "createdAt": Date,
+  "documents": {
+    type: Array,
+    optional: true
+  },
+  "documents.$": {
+    type: Document
   },
   "history": {
     type: Array,
@@ -128,18 +209,68 @@ export const OrderItem = new SimpleSchema({
   "history.$": {
     type: History
   },
-  "documents": {
-    type: Array,
+  "isTaxable": {
+    type: Boolean,
+    defaultValue: false
+  },
+  "optionTitle": {
+    type: String,
     optional: true
   },
-  "documents.$": {
-    type: Document
+  "parcel": {
+    type: ShippingParcel,
+    optional: true
   },
-  "product": {
-    type: Product
+  "price": Money,
+  "productId": {
+    type: String,
+    index: 1
   },
-  "variants": {
-    type: ProductVariant
+  "productSlug": {
+    type: String,
+    optional: true
+  },
+  "productType": {
+    label: "Product Type",
+    type: String,
+    optional: true
+  },
+  "productVendor": {
+    label: "Product Vendor",
+    type: String,
+    optional: true
+  },
+  "quantity": {
+    label: "Quantity",
+    type: SimpleSchema.Integer,
+    min: 0
+  },
+  "shopId": {
+    type: String,
+    index: 1
+  },
+  "subtotal": Number,
+  "tax": Number,
+  "taxCode": {
+    type: String,
+    optional: true
+  },
+  "taxRate": Number,
+  "title": String,
+  "updatedAt": Date,
+  "variantId": {
+    type: String,
+    index: 1,
+    optional: true
+  },
+  "variantTitle": {
+    type: String,
+    optional: true
+  },
+  "workflow": {
+    type: Workflow,
+    optional: true,
+    defaultValue: {}
   }
 });
 
@@ -182,75 +313,191 @@ export const OrderTransaction = new SimpleSchema({
 registerSchema("OrderTransaction", OrderTransaction);
 
 /**
+ * @name OrderFulfillmentGroup Schema
+ * @memberof Schemas
+ * @summary One fulfillment group of an order
+ * @type {SimpleSchema}
+ * @property {String} _id Group ID
+ * @property {Object} address Shipping address
+ * @property {String} customsLabelUrl URL for customs label
+ * @property {Object} invoice Invoice (same as the one on Payment)
+ * @property {Object[]} items The order items in this group
+ * @property {String[]} itemIds For convenience, the _id of all the items
+ * @property {Object} payment The payment info for this group
+ * @property {Object} shipmentMethod The fulfillment method that was chosen by the customer
+ * @property {String} shippingLabelUrl URL for shipping label
+ * @property {String} shopId The shop that fulfills this group
+ * @property {Number} totalItemQuantity The total item quantity, sum of all quantities
+ * @property {String} tracking Tracking reference ID
+ * @property {String} type Fulfillment type
+ * @property {Object} workflow Current status and past statuses for this fulfillment
+ */
+const OrderFulfillmentGroup = new SimpleSchema({
+  "_id": String,
+  "address": {
+    type: Address,
+    optional: true
+  },
+  "customsLabelUrl": {
+    type: String,
+    optional: true
+  },
+  "invoice": Invoice,
+  "items": {
+    type: Array,
+    minCount: 1
+  },
+  "items.$": OrderItem,
+  "itemIds": [String],
+  "payment": Payment,
+  "shipmentMethod": SelectedFulfillmentOption,
+  "shippingLabelUrl": {
+    type: String,
+    optional: true
+  },
+  "shopId": String,
+  "totalItemQuantity": {
+    type: SimpleSchema.Integer,
+    min: 1
+  },
+  "tracking": {
+    type: String,
+    optional: true
+  },
+  "type": {
+    type: String,
+    allowedValues: ["shipping"]
+  },
+  "workflow": Workflow
+});
+
+/**
  * @name Order Schema
  * @memberof Schemas
  * @type {SimpleSchema}
  * @summary Order ties a User to a Cart and an array of History, Documents, Notes, Items and OrderTransactions.
- * @property {String} accountId optional
+ * @property {String} _id required for check of users' carts
+ * @property {String} accountId Account ID for account orders, or null for anonymous
+ * @property {String} anonymousAccessToken Token for accessing anonymous carts, null for account carts
  * @property {String} cartId optional
- * @property {History[]} history optional
+ * @property {Date} createdAt required
+ * @property {String} currencyCode required
  * @property {Document[]} documents optional
- * @property {Notes[]} notes optional
- * @property {Boolean} taxCalculationFailed Did we fail to calculate the tax?
- * @property {Boolean} bypassAddressValidation Did the user bypass address validation?
- * @property {OrderItem[]} items optional
- * @property {OrderTransaction[]} transactions optional
+ * @property {String} email optional
  * @property {Object[]} exportHistory optional
+ * @property {History[]} history optional
+ * @property {Notes[]} notes optional
+ * @property {Shipment[]} shipping Array of fulfillment groups
+ * @property {String} shopId required, Cart ShopId
+ * @property {Object[]} taxes Array of objects optional
+ * @property {OrderTransaction[]} transactions optional
+ * @property {Date} updatedAt optional
  * @property {Workflow} workflow optional
  */
 export const Order = new SimpleSchema({
+  "_id": {
+    type: String,
+    optional: true
+  },
   "accountId": {
     type: String,
+    index: 1,
+    optional: true
+  },
+  "anonymousAccessToken": {
+    type: String,
+    index: 1,
     optional: true
   },
   "cartId": {
     type: String,
     optional: true
   },
-  "history": {
+  "createdAt": Date,
+  "currencyCode": String,
+  "discounts": {
     type: Array,
     optional: true
   },
-  "history.$": {
-    type: History
-  },
+  "discounts.$": OrderDiscount,
   "documents": {
     type: Array,
     optional: true
   },
-  "documents.$": {
-    type: Document
-  },
-  "notes": {
-    type: Array,
-    optional: true
-  },
-  "notes.$": Notes,
-  "taxCalculationFailed": {
-    type: Boolean,
+  "documents.$": Document,
+  "email": {
+    type: String,
     optional: true,
-    defaultValue: false
+    index: 1,
+    regEx: SimpleSchema.RegEx.Email
   },
-  "bypassAddressValidation": {
-    type: Boolean,
-    optional: true,
-    defaultValue: false
-  },
-  "items": {
-    type: Array,
-    optional: true
-  },
-  "items.$": CartItem.clone().extend(OrderItem),
-  "transactions": {
-    type: Array,
-    optional: true
-  },
-  "transactions.$": OrderTransaction,
   "exportHistory": {
     type: Array,
     optional: true
   },
   "exportHistory.$": ExportHistory,
+  "history": {
+    type: Array,
+    optional: true
+  },
+  "history.$": History,
+  "notes": {
+    type: Array,
+    optional: true
+  },
+  "notes.$": Notes,
+  "shipping": [OrderFulfillmentGroup],
+  "shopId": {
+    type: String,
+    index: 1,
+    label: "Cart ShopId"
+  },
+  "taxes": {
+    type: Array,
+    optional: true
+  },
+  "taxes.$": {
+    type: Object
+  },
+  "taxes.$.lineNumber": {
+    type: String
+  },
+  "taxes.$.discountAmount": {
+    type: Number,
+    optional: true
+  },
+  "taxes.$.taxable": {
+    type: Boolean,
+    optional: true
+  },
+  "taxes.$.tax": {
+    type: Number
+  },
+  "taxes.$.taxableAmount": {
+    type: Number
+  },
+  "taxes.$.taxCode": {
+    type: String,
+    optional: true
+  },
+  "taxes.$.details": {
+    type: Object,
+    blackbox: true,
+    optional: true
+  },
+  "totalItemQuantity": {
+    type: SimpleSchema.Integer,
+    min: 1
+  },
+  "transactions": {
+    type: Array,
+    optional: true
+  },
+  "transactions.$": OrderTransaction,
+  "updatedAt": {
+    type: Date,
+    optional: true
+  },
   "workflow": {
     type: Workflow,
     optional: true,
@@ -259,6 +506,3 @@ export const Order = new SimpleSchema({
 });
 
 registerSchema("Order", Order);
-
-export const OrderDocument = Cart.clone().extend(Order);
-registerSchema("OrderDocument", OrderDocument);

@@ -1,4 +1,7 @@
 import Logger from "@reactioncommerce/logger";
+import { Shops } from "/lib/collections";
+import Reaction from "../Reaction";
+import startNodeApp from "./startNodeApp";
 import Accounts from "./accounts";
 import "./browser-policy";
 import CollectionSecurity from "./collection-security";
@@ -9,9 +12,11 @@ import RateLimiters from "./rate-limits";
 import RegisterCore from "./register-core";
 import RegisterRouter from "./register-router";
 import setupCdn from "./cdn";
-import Reaction from "../Reaction";
-import { Shops } from "/lib/collections";
 
+/**
+ * @summary Core startup function
+ * @returns {undefined}
+ */
 export default function startup() {
   const startTime = Date.now();
 
@@ -40,6 +45,14 @@ export default function startup() {
   CollectionSecurity();
   RateLimiters();
 
-  const endTime = Date.now();
-  Logger.info(`Reaction initialization finished: ${endTime - startTime}ms`);
+  startNodeApp()
+    .then(() => {
+      const endTime = Date.now();
+      Logger.info(`Reaction initialization finished: ${endTime - startTime}ms`);
+
+      return null;
+    })
+    .catch((error) => {
+      Logger.error(error);
+    });
 }
