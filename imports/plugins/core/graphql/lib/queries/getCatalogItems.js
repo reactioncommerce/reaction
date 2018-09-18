@@ -1,7 +1,7 @@
 import gql from "graphql-tag";
 
 export default gql`
-  query getCatalogItems($shopId: ID!, $tagIds: [ID], $currencyCode: String, $first: ConnectionLimitInt, $last:  ConnectionLimitInt,
+  query getCatalogItems($shopId: ID!, $tagIds: [ID], $currencyCode: String!, $first: ConnectionLimitInt, $last:  ConnectionLimitInt,
     $before: ConnectionCursor, $after: ConnectionCursor, $sortBy: CatalogItemSortByField,
     $sortByPriceCurrencyCode: String, $sortOrder: SortOrder) {
     catalogItems(shopIds: [$shopId], tagIds: $tagIds, first: $first, last: $last, before: $before, after: $after,

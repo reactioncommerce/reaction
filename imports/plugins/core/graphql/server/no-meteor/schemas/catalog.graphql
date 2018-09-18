@@ -31,8 +31,8 @@ type ProductPricingInfo {
   "The code for the currency these pricing details applies to"
   currency: Currency!
 
+  "Pricing converted to specified currency"
   currencyExchangePricing(
-    "Optionally include prices converted to specified currency"
     currencyCode: String!
   ): CurrencyExchangeProductPricingInfo
 
