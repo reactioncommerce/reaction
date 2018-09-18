@@ -5,7 +5,7 @@ environment:
     cluster: core
     certificate_arn: arn:aws:acm:us-west-2:773713188930:certificate/c2979a7a-7b84-43ed-b3a7-24b0256a1b9f
     root_domain: staging.reactioncommerce.com
-    dns_name: reaction2-catalog-sample
+    dns_name: reaction-catalog-sample
     desired_task_count: 2
     min_task_count: 0
     max_task_count: 0
