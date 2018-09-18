@@ -4,7 +4,6 @@ import classnames from "classnames";
 import { Reaction } from "/client/api";
 import CatalogGrid from "@reactioncommerce/components/CatalogGrid/v1";
 import { TextField, Button, IconButton, SortableTableLegacy } from "@reactioncommerce/reaction-ui";
-import ProductGridContainer from "/imports/plugins/included/product-variant/containers/productGridContainer";
 import { accountsTable } from "../helpers";
 
 class SearchModal extends Component {
@@ -36,14 +35,14 @@ class SearchModal extends Component {
     this.updateHeaderSize();
   }
 
-  componentWillUnmount() {
-    window.removeEventListener("resize", this.upateHeaderSize);
-  }
-
   componentDidUpdate(prevProps, prevState) {
     if (this.getHeaderSize() !== prevState.headerSize) {
       this.updateHeaderSize();
     }
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener("resize", this.upateHeaderSize);
   }
 
   getHeaderSize = () => {
@@ -196,7 +195,7 @@ class SearchModal extends Component {
           {this.renderSearchTypeToggle()}
           {this.props.tags.length > 0 && this.renderProductSearchTags()}
         </div>
-        <div className={`rui search-modal-results-container`} style={resultsStyles}>
+        <div className="rui search-modal-results-container" style={resultsStyles}>
           {this.props.products.length > 0 &&
             <div className="container-grid search">
               <CatalogGrid

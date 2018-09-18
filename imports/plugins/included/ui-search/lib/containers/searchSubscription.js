@@ -81,7 +81,7 @@ function composer(props, onData) {
             small: primaryMedia.url({ store: "small" }),
             medium: primaryMedia.url({ store: "medium" }),
             large: primaryMedia.url({ store: "large" }),
-            original: primaryMedia.url({ store: "original" }),
+            original: primaryMedia.url({ store: "original" })
           };
         }
       });
@@ -99,7 +99,7 @@ function composer(props, onData) {
           title,
           vendor
         } = productResult;
-        const primaryImage = productMediaById[_id] && { URLs: productMediaById[_id] } || null;
+        const primaryImage = (productMediaById[_id] && { URLs: productMediaById[_id] }) || null;
 
         return {
           _id,

@@ -1,4 +1,4 @@
-import { formatMoney, toFixed } from "accounting-js";
+import { formatMoney } from "accounting-js";
 
 /**
  * @name getDisplayPrice

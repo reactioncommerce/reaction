@@ -24,7 +24,7 @@ const mockProduct = {
   shopId: internalShopId,
   isDeleted: false,
   isVisible: true,
-  supportedFulfillmentTypes: [ "shipping" ]
+  supportedFulfillmentTypes: ["shipping"]
 };
 
 const mockVariant = {

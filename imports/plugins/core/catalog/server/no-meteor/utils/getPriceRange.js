@@ -1,5 +1,5 @@
 import accounting from "accounting-js";
-import getDisplayPrice from "./getDisplayPrice"
+import getDisplayPrice from "./getDisplayPrice";
 
 /**
  * A wrapper around accounting.formatMoney that handles minor differences between Reaction
