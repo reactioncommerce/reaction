@@ -22,7 +22,6 @@ const importConversionInsertCallback = (item, options) => {
   res.isDeleted = false;
   res.createdAt = new Date();
   res.updatedAt = new Date();
-  res.type = "simple";
   res.isLowQuantity = false;
   res.isDeleted = false;
   res.workflow = { status: "new" };
@@ -52,6 +51,16 @@ const importConversionInsertCallback = (item, options) => {
     res.handle = Reaction.getSlug(item.slug);
   }
 
+  if (res.template === undefined) {
+    res.template = "productDetailSimple";
+  }
+
+  if (item.parentTitle || item.parentId) {
+    res.type = "variant";
+  } else {
+    res.type = "simple";
+  }
+
   if (item.metafields && item.metafields.length > 0 && item.metafields[0]) {
     const metafields = [];
     item.metafields.forEach((metafield) => {
@@ -70,77 +79,125 @@ const importConversionInsertCallback = (item, options) => {
 
 const postImportInsertCallback = async (item, options) => {
   const { shopId } = options;
+  const {
+    _id,
+    images,
+    optionTitle,
+    parentId,
+    parentTitle,
+    tagIds,
+    tagSlugs,
+    type
+  } = item;
   const ancestors = [];
   const errors = [];
-  const update = {};
+  const currentProductUpdate = {};
   const stores = ["image", "large", "medium", "small", "thumbnail"];
-  const hasParent = item.parentTitle || item.parentId;
 
-  if (hasParent) {
-    let parentFilter = { title: item.parentTitle };
-    if (item.parentId) {
-      parentFilter = { _id: item._id };
+  if (type === "variant") {
+    let parentFilter = { title: parentTitle };
+    if (parentId) {
+      parentFilter = { _id };
     }
-    update.type = "variant";
+    currentProductUpdate.type = "variant";
     const ancestorDoc = await Products.findOne(parentFilter);
     if (ancestorDoc) {
+      // add the direct ancestor
       ancestors.push(ancestorDoc._id);
-      if (ancestorDoc.ancestors && ancestorDoc.ancestors.length === 1) {
+
+      if (ancestorDoc.ancestors && ancestorDoc.ancestors.length === 1 && ancestorDoc.ancestors[0]) {
+        // if its ancestor is a variant and the ancestor of the variant already exists
+        // then it is known that the product is an option
+        // so add the ancestor of the parent variant
         ancestors.unshift(ancestorDoc.ancestors[0]);
+      } else if (type === "variant") {
+        // if current product is actually a variant, add its parent to its children
+        const childAncestors = [ancestorDoc._id, _id];
+        await Products.update({ ancestors: _id }, { $set: { ancestors: childAncestors } });
       }
-      update.ancestors = ancestors;
-      if (ancestors.length === 2 && !item.optionTitle) {
+
+      if (ancestors.length === 2 && !optionTitle) {
         errors.push("Option title is required.");
       }
+
+      currentProductUpdate.ancestors = ancestors;
     } else {
-      errors.push(`Parent ${item.parentId || item.parentTitle} not found.`);
+      errors.push(`Parent ${parentId || parentTitle} not found.`);
     }
   }
 
-  if (!hasParent && (item.tagIds || item.tagSlugs)) {
+  if (type === "simple" && (tagIds || tagSlugs)) {
     let existingTags;
-    if (item.tagIds && item.tagIds.length > 0 && item.tagIds[0]) {
-      existingTags = await Tags.find({ _id: { $in: item.tagIds } }, { _id: 1 }).toArray();
-    } else if (item.tagSlugs.length > 0 && item.tagSlugs[0]) {
-      existingTags = await Tags.find({ slug: { $in: item.tagSlugs } }, { _id: 1 }).toArray();
+    if (tagIds && tagIds.length > 0 && tagIds[0]) {
+      existingTags = await Tags.find({ _id: { $in: tagIds } }, { _id: 1 }).toArray();
+    } else if (tagSlugs.length > 0 && tagSlugs[0]) {
+      existingTags = await Tags.find({ slug: { $in: tagSlugs } }, { _id: 1 }).toArray();
     }
     const hashtags = existingTags.map((tag) => tag._id);
-    update.hashtags = hashtags;
+    currentProductUpdate.hashtags = hashtags;
   }
 
-  if (ancestors.length > 0 && (item.images && item.images.length > 0 && item.images[0])) {
-    await Promise.all(item.images.map(async (imgURL, index) => {
-      const result = await fetch(imgURL);
-      const type = result.headers.get("content-type");
-      let name = "upload.png";
-      if (type !== "image/png") {
-        name = "upload.jpg";
-      }
-      const imgFileDoc = {
-        original: {
-          name,
-          type,
-          updatedAt: new Date()
+  // ancestors.length > 0 instead of type === "variant" to be specific
+  // that the ancestor ids are required here
+  if (ancestors.length > 0 && (images && images.length > 0 && images[0])) {
+    try {
+      await Promise.all(images.map(async (imgURL, index) => {
+        const result = await fetch(imgURL);
+        const mimetype = result.headers.get("content-type");
+        let name = "upload.png";
+        if (mimetype !== "image/png") {
+          name = "upload.jpg";
         }
-      };
-      const fileRecord = new FileRecord(imgFileDoc);
-      fileRecord.metadata = {
-        productId: ancestors[0],
-        variantId: item._id,
-        shopId,
-        priority: index
-      };
-      await Media.insert(fileRecord, { raw: true });
-      await Promise.all(stores.map(async (storeName) => {
-        const store = Media.getStore(storeName);
-        const writeStream = await store.createWriteStream(fileRecord);
-        result.body.pipe(writeStream);
+        const imgFileDoc = {
+          original: {
+            name,
+            type: mimetype,
+            updatedAt: new Date()
+          }
+        };
+        const fileRecord = new FileRecord(imgFileDoc);
+        fileRecord.metadata = {
+          productId: ancestors[0],
+          variantId: _id,
+          shopId,
+          priority: index,
+          toGrid: 1,
+          workflow: "published"
+        };
+        await Media.insert(fileRecord, { raw: true });
+        await Promise.all(stores.map(async (storeName) => {
+          const store = Media.getStore(storeName);
+          const writeStream = await store.createWriteStream(fileRecord);
+          result.body.pipe(writeStream);
+        }));
       }));
-    }));
+    } catch (error) {
+      errors.push("Images not saved");
+    }
   }
 
-  if (!_.isEmpty(update)) {
-    await Products.updateOne({ _id: item._id }, { $set: update });
+  if (!_.isEmpty(currentProductUpdate)) {
+    await Products.updateOne({ _id }, { $set: currentProductUpdate });
+  }
+
+  // The price update of parents should be here so that the ancestors of current product are already set at this point
+  if (ancestors.length > 0) {
+    await Promise.all(ancestors.map(async (ancestorId) => {
+      const childVariants = await Products.find({ ancestors: ancestorId }, { price: 1 }).toArray();
+      const childVariantsPrices = childVariants.filter((variant) => typeof variant.price === "number").map((variant) => variant.price);
+      const minPrice = _.min(childVariantsPrices);
+      const maxPrice = _.max(childVariantsPrices);
+      let range = `${minPrice} - ${maxPrice}`;
+      if (minPrice === maxPrice) {
+        range = minPrice;
+      }
+      const price = {
+        min: minPrice,
+        max: maxPrice,
+        range
+      };
+      await Products.update({ _id: ancestorId }, { $set: { price } });
+    }));
   }
 
   return errors;
