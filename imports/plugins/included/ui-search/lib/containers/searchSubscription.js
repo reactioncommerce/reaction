@@ -111,7 +111,7 @@ function composer(props, onData) {
             currency: {
               code: currencyCode || shopCurrencyCode
             },
-            displayPrice: formatPriceString(price.range)
+            displayPrice: formatPriceString((price && price.range) || 0)
           }],
           primaryImage,
           slug,
