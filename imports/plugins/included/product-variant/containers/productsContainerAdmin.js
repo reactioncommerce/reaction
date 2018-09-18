@@ -168,15 +168,24 @@ function composer(props, onData) {
   reactiveProductIds.set(productIds);
 
   const selectedProducts = Session.get("productGrid/selectedProducts");
-  if (!Reaction.isPreview() && Array.isArray(selectedProducts) && selectedProducts.length > 0) {
-    Reaction.showActionView({
-      label: "Grid Settings",
-      i18nKeyLabel: "gridSettingsPanel.title",
-      template: "productSettings",
-      type: "product"
-    });
-  } else {
-    Reaction.hideActionView();
+
+  if (!Reaction.isPreview() && Array.isArray(selectedProducts)) {
+    if (selectedProducts.length > 0) {
+      // Show the actionView if there are products selected.
+      Reaction.showActionView({
+        label: "Grid Settings",
+        i18nKeyLabel: "gridSettingsPanel.title",
+        template: "productSettings",
+        type: "product"
+      });
+    } else {
+      // If no products are selected, and we're currently displaying the "productSettings" grid admin component,
+      // then hide the actionView.
+      const currentActionView = Reaction.getActionView();
+      if (currentActionView && currentActionView.template === "productSettings") {
+        Reaction.hideActionView();
+      }
+    }
   }
 
   onData(null, {
