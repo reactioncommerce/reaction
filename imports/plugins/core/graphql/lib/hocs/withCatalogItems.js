@@ -57,7 +57,7 @@ export default (Component) => (
                 });
               });
 
-              const { pageInfo } = props.catalogItems;
+              const { pageInfo } = data.catalogItems;
               if (pageInfo) {
                 const { hasNextPage } = pageInfo;
                 props.hasMoreCatalogItems = hasNextPage;
