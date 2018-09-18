@@ -33,6 +33,9 @@ class SearchModal extends Component {
 
     window.addEventListener("resize", this.updateHeaderSize);
     this.updateHeaderSize();
+
+    // Disable scrolling for main window
+    document.body.style.overflow = "hidden";
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -43,6 +46,9 @@ class SearchModal extends Component {
 
   componentWillUnmount() {
     window.removeEventListener("resize", this.upateHeaderSize);
+
+    // Re-enable scrolling for main window
+    document.body.style.overflow = "auto";
   }
 
   getHeaderSize = () => {
