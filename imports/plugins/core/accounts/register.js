@@ -65,6 +65,13 @@ Reaction.registerPackage({
     label: "Profile",
     icon: "fa fa-user",
     provides: ["userAccountDropdown"]
+  }, {
+    route: "/reset-password/:token/:status?",
+    template: "loginFormUpdatePassword",
+    workflow: "none",
+    meta: { noAdminControls: true },
+    name: "Reset Password",
+    label: "reset-password"
   }],
   layout: [{
     layout: "coreLayout",
