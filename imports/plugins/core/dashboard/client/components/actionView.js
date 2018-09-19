@@ -4,6 +4,7 @@ import PropTypes from "prop-types";
 import classnames from "classnames";
 import { getComponent, withCSSTransition } from "@reactioncommerce/reaction-components";
 import Blaze from "meteor/gadicc:blaze-react-component";
+import { EJSON } from "meteor/ejson";
 import { Admin } from "/imports/plugins/core/ui/client/providers";
 import Radium from "radium";
 import debounce from "lodash/debounce";
@@ -177,12 +178,17 @@ class ActionView extends Component {
     if (window) {
       window.addEventListener("resize", this.handleResize, false);
     }
+
+    const { actionView } = this.props;
+    if (actionView) {
+      this.setState({ actionView });
+    }
   }
 
   componentDidUpdate(prevProps) {
     const { actionView } = this.props;
 
-    if (actionView.template && actionView.template !== prevProps.actionView.template) {
+    if (EJSON.equals(actionView, prevProps.actionView) === false) {
       this.setState({ actionView });
     }
   }
