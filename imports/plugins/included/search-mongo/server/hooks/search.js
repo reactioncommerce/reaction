@@ -74,6 +74,15 @@ Hooks.Events.add("afterRemoveProduct", (doc) => {
 });
 
 /**
+ * @summary Rebuild search record when product is published
+ */
+Hooks.Events.add("afterPublishProductToCatalog", (product, catalogProduct) => {
+  Logger.debug(`Rewriting search record for ${product.title}`);
+  ProductSearch.remove({ _id: product._id });
+  buildProductSearchRecord(product._id);
+});
+
+/**
  * after insert
  * @summary should fires on create new variants, on clones products/variants
  * @private
