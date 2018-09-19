@@ -5,7 +5,7 @@ import Random from "@reactioncommerce/random";
 import { Accounts } from "meteor/accounts-base";
 import { Meteor } from "meteor/meteor";
 import { Components, registerComponent } from "@reactioncommerce/reaction-components";
-import { Router, i18next } from "/client/api";
+import { Router } from "/client/api";
 import { LoginFormValidation } from "/lib/api";
 import UpdatePassword from "../components/updatePassword";
 
@@ -105,14 +105,20 @@ const wrapComponent = (Comp) => (
       const { status } = Router.current().params;
       if (status === "completed") {
         return (
-          <div className="col-sm-4 col-sm-offset-4">
+          <div className="idp-form col-sm-4 col-sm-offset-4">
             <div className="loginForm-title">
               <h3>
-                {i18next.t("accountsUI.info.passwordResetDone")}
+                <Components.Translation
+                  defaultValue="Password Reset Successful"
+                  i18nKey="accountsUI.info.passwordResetDone"
+                />
               </h3>
             </div>
             <p className="text-center">
-              {i18next.t("accountsUI.info.passwordResetDoneText")}
+              <Components.Translation
+                defaultValue="Return to the app to continue"
+                i18nKey="accountsUI.info.passwordResetDoneText"
+              />
             </p>
           </div>
         );

@@ -135,7 +135,7 @@ class UpdatePassword extends Component {
     }
 
     return (
-      <Components.Translation defaultValue="Update Your Password" i18nKey="accountsUI.updateYourPassword"/>
+      <Components.Translation defaultValue="Set New Password" i18nKey="accountsUI.updateYourPassword"/>
     );
   }
 
@@ -149,7 +149,7 @@ class UpdatePassword extends Component {
     return (
       <div>
         {this.props.isOpen === true &&
-          <div className="col-sm-4 col-sm-offset-4">
+          <div className="idp-form col-sm-4 col-sm-offset-4">
             {showSpinner ? this.renderSpinnerOnLoad() :
               <form onSubmit={this.handleSubmit}>
                 <div className="loginForm-title">
