@@ -164,7 +164,7 @@ export const OrderDiscount = new SimpleSchema({
 /**
  * @name OrderItem
  * @memberof Schemas
- * @summary CartItem + some additional properties
+ * @summary Defines one item in an order
  * @type {SimpleSchema}
  * @property {String} _id Unique ID for the item
  * @property {String} addedAt Date/time when this was first added to the cart/order
@@ -180,17 +180,17 @@ export const OrderDiscount = new SimpleSchema({
  * @property {String} productType Product type
  * @property {String} productVendor Product vendor
  * @property {Number} quantity required
- * @property {String} shopId Cart Item shopId
+ * @property {String} shopId The owner shop
  * @property {Number} subtotal The item subtotal, quantity x price
  * @property {Number} tax Total tax collected for the item. Will be 0 if `isTaxable` is `false`.
  * @property {Number} taxRate Tax rate that was used to calculate item tax. Will be 0 if `isTaxable` is `false`.
- * @property {String} title Cart Item title
+ * @property {String} title Title from the selected product
  * @property {String} updatedAt required
  * @property {String} variantId required
  * @property {String} variantTitle Title from the selected variant
  * @property {Workflow} workflow optional
  *
-*/
+ */
 export const OrderItem = new SimpleSchema({
   "_id": String,
   "addedAt": Date,
@@ -375,11 +375,11 @@ const OrderFulfillmentGroup = new SimpleSchema({
  * @name Order Schema
  * @memberof Schemas
  * @type {SimpleSchema}
- * @summary Order ties a User to a Cart and an array of History, Documents, Notes, Items and OrderTransactions.
- * @property {String} _id required for check of users' carts
+ * @summary Order has an array of History, Documents, Notes, Items and OrderTransactions.
+ * @property {String} _id required
  * @property {String} accountId Account ID for account orders, or null for anonymous
  * @property {String} anonymousAccessToken Token for accessing anonymous carts, null for account carts
- * @property {String} cartId optional
+ * @property {String} cartId optional For tracking which cart created this order
  * @property {Date} createdAt required
  * @property {String} currencyCode required
  * @property {Document[]} documents optional
@@ -388,7 +388,7 @@ const OrderFulfillmentGroup = new SimpleSchema({
  * @property {History[]} history optional
  * @property {Notes[]} notes optional
  * @property {Shipment[]} shipping Array of fulfillment groups
- * @property {String} shopId required, Cart ShopId
+ * @property {String} shopId required The owner shop
  * @property {Object[]} taxes Array of objects optional
  * @property {OrderTransaction[]} transactions optional
  * @property {Date} updatedAt optional
@@ -449,8 +449,7 @@ export const Order = new SimpleSchema({
   "shipping": [OrderFulfillmentGroup],
   "shopId": {
     type: String,
-    index: 1,
-    label: "Cart ShopId"
+    index: 1
   },
   "taxes": {
     type: Array,
