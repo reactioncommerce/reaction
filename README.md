@@ -57,7 +57,7 @@ Having installation issues? Check out our [troubleshooting docs](https://docs.re
 You can also run the app locally using [`docker-compose`](https://docs.docker.com/compose/) by running:
 
 ```sh
-docker network create reaction-api
+docker network create api.reaction.localhost
 docker-compose up
 ```
 
