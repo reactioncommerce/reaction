@@ -266,7 +266,10 @@ async function saveImportDataUpdates(jobItem, data) {
   } = convMap;
   const keysToDelete = fields.filter((field) => field.ignoreOnSave);
 
-  const options = await preImportUpdateCallback(data);
+  let options = {};
+  if (typeof preImportUpdateCallback === "function") {
+    options = await preImportUpdateCallback(data);
+  }
 
   const { validData, withErrorData } = await parseRawObjects(data, mapping, convMap, options, shouldUpdate);
 
@@ -328,7 +331,10 @@ async function saveImportDataInserts(jobItem, data) {
   } = convMap;
   const keysToDelete = fields.filter((field) => field.ignoreOnSave);
 
-  const options = await preImportInsertCallback(data);
+  let options = {};
+  if (typeof preImportInsertCallback === "function") {
+    options = await preImportInsertCallback(data);
+  }
 
   const { validData, withErrorData } = await parseRawObjects(data, mapping, convMap, options);
 

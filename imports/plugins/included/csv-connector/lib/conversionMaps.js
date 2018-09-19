@@ -165,7 +165,7 @@ export const ProductsConvMap = {
     },
     {
       key: "lowInventoryWarningThreshold",
-      label: "Quantity",
+      label: "Warn at quantity",
       optional: true,
       type: Number
     },
