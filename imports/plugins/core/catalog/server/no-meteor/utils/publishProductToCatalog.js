@@ -1,6 +1,8 @@
 import Random from "@reactioncommerce/random";
-import * as Schemas from "/imports/collections/schemas";
 import Logger from "@reactioncommerce/logger";
+import { ProductSearch } from "/lib/collections";
+import * as Schemas from "/imports/collections/schemas";
+import { buildProductSearchRecord } from "/imports/plugins/included/search-mongo/server/methods/searchcollections";
 import hashProduct from "../mutations/hashProduct";
 import createCatalogProduct from "./createCatalogProduct";
 
@@ -51,5 +53,14 @@ export default async function publishProductToCatalog(product, collections) {
     { upsert: true }
   );
 
-  return result && result.result && result.result.ok === 1;
+  const wasUpdateSuccessful = result && result.result && result.result.ok === 1;
+
+  if (wasUpdateSuccessful) {
+    // Update search record for product
+    Logger.debug(`Rewriting search record for ${product.title}`);
+    ProductSearch.remove({ _id: product._id });
+    buildProductSearchRecord(product._id);
+  }
+
+  return wasUpdateSuccessful;
 }

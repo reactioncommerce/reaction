@@ -74,41 +74,6 @@ Hooks.Events.add("afterRemoveProduct", (doc) => {
 });
 
 /**
- * after product update rebuild product search record
- * @private
- */
-Hooks.Events.add("afterUpdateCatalogProduct", (productId, options) => {
-  // Find the most recent version of the product document based on
-  // the passed in doc._id
-  const productDocument = Products.findOne({ _id: productId });
-
-  // If this hook is ran without options, then this callback
-  // should no be executed.
-  if (!options) {
-    return productDocument;
-  }
-
-  const { modifier: { $set: allProps } } = options;
-  const topLevelFieldNames = Object.getOwnPropertyNames(allProps);
-
-  if (ProductSearch && !Meteor.isAppTest && productDocument.type === "simple") {
-    const { fieldSet } = getSearchParameters();
-    const modifiedFields = _.intersection(fieldSet, topLevelFieldNames);
-    if (modifiedFields.length) {
-      Logger.debug(`Rewriting search record for ${productDocument.title}`);
-      ProductSearch.remove(productId);
-      if (!productDocument.isDeleted) { // do not create record if product was archived
-        buildProductSearchRecord(productId);
-      }
-    } else {
-      Logger.debug("No watched fields modified, skipping");
-    }
-  }
-
-  return productDocument;
-});
-
-/**
  * after insert
  * @summary should fires on create new variants, on clones products/variants
  * @private
