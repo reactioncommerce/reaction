@@ -5,17 +5,16 @@ import Random from "@reactioncommerce/random";
 import { Accounts } from "meteor/accounts-base";
 import { Meteor } from "meteor/meteor";
 import { Components, registerComponent } from "@reactioncommerce/reaction-components";
-import { Reaction } from "/client/api";
+import { Router } from "/client/api";
 import { LoginFormValidation } from "/lib/api";
-import UpdatePasswordOverlay from "../components/updatePasswordOverlay";
+import UpdatePassword from "../components/updatePassword";
 
 const wrapComponent = (Comp) => (
-  class UpdatePasswordOverlayContainer extends Component {
+  class UpdatePasswordContainer extends Component {
     static propTypes = {
       callback: PropTypes.func,
       formMessages: PropTypes.object,
       isOpen: PropTypes.bool,
-      token: PropTypes.string,
       type: PropTypes.string,
       uniqueId: PropTypes.string
     }
@@ -64,8 +63,8 @@ const wrapComponent = (Comp) => (
         });
         return;
       }
-
-      Accounts.resetPassword(this.props.token, password, (error) => {
+      const { token } = Router.current().params;
+      Accounts.resetPassword(token, password, (error) => {
         if (error) {
           this.setState({
             isDisabled: false,
@@ -76,15 +75,7 @@ const wrapComponent = (Comp) => (
         } else {
           // Now that Meteor.users is verified, we should do the same with the Accounts collection
           Meteor.call("accounts/verifyAccount");
-
-          this.props.callback();
-
-          this.setState({
-            isOpen: !this.state.isOpen
-          });
-
-          const shopId = Reaction.getUserPreferences("reaction", "activeShopId");
-          Reaction.setShopId(shopId);
+          Router.go(`${Router.current().route.fullPath}/completed`);
         }
       });
     }
@@ -111,6 +102,27 @@ const wrapComponent = (Comp) => (
     }
 
     render() {
+      const { status } = Router.current().params;
+      if (status === "completed") {
+        return (
+          <div className="idp-form col-sm-4 col-sm-offset-4">
+            <div className="loginForm-title">
+              <h3>
+                <Components.Translation
+                  defaultValue="Password Reset Successful"
+                  i18nKey="accountsUI.info.passwordResetDone"
+                />
+              </h3>
+            </div>
+            <p className="text-center">
+              <Components.Translation
+                defaultValue="Return to the app to continue"
+                i18nKey="accountsUI.info.passwordResetDoneText"
+              />
+            </p>
+          </div>
+        );
+      }
       return (
         <Comp
           uniqueId={this.props.uniqueId}
@@ -128,6 +140,6 @@ const wrapComponent = (Comp) => (
   }
 );
 
-registerComponent("UpdatePasswordOverlay", UpdatePasswordOverlay, wrapComponent);
+registerComponent("UpdatePassword", UpdatePassword, wrapComponent);
 
-export default wrapComponent(UpdatePasswordOverlay);
+export default wrapComponent(UpdatePassword);

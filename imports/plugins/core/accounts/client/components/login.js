@@ -54,9 +54,10 @@ class Login extends Component {
   }
 
   render() {
+    const currentRoute = Router.current().route;
+    const isOauthFlow = currentRoute.options && currentRoute.options.meta && currentRoute.options.meta.oauthLoginFlow;
+    const idpFormClass = isOauthFlow ? "idp-form" : "";
     if (this.state.currentView === "loginFormSignInView" || this.state.currentView === "loginFormSignUpView") {
-      const currentRoute = Router.current().route;
-      const isOauthFlow = currentRoute.options && currentRoute.options.meta && currentRoute.options.meta.oauthLoginFlow;
       if (isOauthFlow) {
         return (
           <Components.OAuthFormContainer
@@ -81,12 +82,14 @@ class Login extends Component {
       );
     } else if (this.state.currentView === "loginFormResetPasswordView") {
       return (
-        <Components.ForgotPassword
-          credentials={this.props.credentials}
-          uniqueId={this.props.uniqueId}
-          currentView={this.state.currentView}
-          onSignInClick={this.showSignInView}
-        />
+        <div className={idpFormClass}>
+          <Components.ForgotPassword
+            credentials={this.props.credentials}
+            uniqueId={this.props.uniqueId}
+            currentView={this.state.currentView}
+            onSignInClick={this.showSignInView}
+          />
+        </div>
       );
     }
   }

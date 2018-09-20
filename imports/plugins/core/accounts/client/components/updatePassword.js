@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import classnames from "classnames";
 import { Components } from "@reactioncommerce/reaction-components";
 
-class UpdatePasswordOverlay extends Component {
+class UpdatePassword extends Component {
   static propTypes = {
     isDisabled: PropTypes.bool,
     isOpen: PropTypes.bool,
@@ -93,30 +93,27 @@ class UpdatePasswordOverlay extends Component {
 
     if (type === "setPassword") {
       return (
-        <div className="col-sm-6">
-          <Components.Button
-            className="btn-block"
-            primary={true}
-            bezelStyle="solid"
-            i18nKeyLabel="accountsUI.setPassword"
-            label="Set your password"
-            type="submit"
-          />
-        </div>
-      );
-    }
-
-    return (
-      <div className="col-sm-6">
         <Components.Button
           className="btn-block"
           primary={true}
           bezelStyle="solid"
-          i18nKeyLabel="accountsUI.updatePasswordAndContinue"
-          label="Update and continue"
+          i18nKeyLabel="accountsUI.setPassword"
+          label="Set your password"
           type="submit"
         />
-      </div>
+      );
+    }
+
+    return (
+      <Components.Button
+        className="btn-block"
+        primary={true}
+        bezelStyle="solid"
+        i18nKeyLabel="accountsUI.submit"
+        label="Submit"
+        type="submit"
+        disabled={this.props.isDisabled}
+      />
     );
   }
 
@@ -138,7 +135,7 @@ class UpdatePasswordOverlay extends Component {
     }
 
     return (
-      <Components.Translation defaultValue="Update Your Password" i18nKey="accountsUI.updateYourPassword"/>
+      <Components.Translation defaultValue="Set New Password" i18nKey="accountsUI.updateYourPassword"/>
     );
   }
 
@@ -152,64 +149,42 @@ class UpdatePasswordOverlay extends Component {
     return (
       <div>
         {this.props.isOpen === true &&
-        <div>
-          <div className="modal-backdrop fade in" id={`modal-backdrop-${this.props.uniqueId}`}/>
-          <div className="modal fade in" id={`modal-${this.props.uniqueId}`} style={{ display: "block" }}>
-            <div className="modal-dialog">
-              {showSpinner ? this.renderSpinnerOnLoad() :
-                <form className="modal-content" onSubmit={this.handleSubmit}>
-                  <div className="modal-header">
-                    <h4 className="modal-title">
-                      {this.renderPasswordResetText()}
-                    </h4>
+          <div className="idp-form col-sm-4 col-sm-offset-4">
+            {showSpinner ? this.renderSpinnerOnLoad() :
+              <form onSubmit={this.handleSubmit}>
+                <div className="loginForm-title">
+                  <h2>
+                    {this.renderPasswordResetText()}
+                  </h2>
+                </div>
+                <div className="login-form">
+
+                  {this.renderFormMessages()}
+
+                  <div className={passwordClasses}>
+                    <Components.TextField
+                      i18nKeyLabel="accountsUI.password"
+                      label="Password"
+                      name="password"
+                      type="password"
+                      id={`password-${this.props.uniqueId}`}
+                      value={this.state.password}
+                      onChange={this.handleFieldChange}
+                    />
+                    {this.renderPasswordErrors()}
                   </div>
+                </div>
 
-                  <div className="modal-body">
-                    <div className="login-form">
-
-                      {this.renderFormMessages()}
-
-                      <div className={passwordClasses}>
-                        <Components.TextField
-                          i18nKeyLabel="accountsUI.password"
-                          label="Password"
-                          name="password"
-                          type="password"
-                          id={`password-${this.props.uniqueId}`}
-                          value={this.state.password}
-                          onChange={this.handleFieldChange}
-                        />
-                        {this.renderPasswordErrors()}
-                      </div>
-
-                    </div>
-                  </div>
-
-                  <div className="modal-footer">
-                    {this.renderSpinnerOnWait()}
-
-                    <div className="col-sm-6">
-                      <Components.Button
-                        className="btn-block"
-                        status="danger"
-                        bezelStyle="solid"
-                        i18nKeyLabel="app.cancel"
-                        label="Cancel"
-                        type="button"
-                        onClick={this.handleCancel}
-                        disabled={this.props.isDisabled}
-                      />
-                    </div>
-                  </div>
-
-                </form>
-              }
-            </div>
+                <div className="form-group">
+                  {this.renderSpinnerOnWait()}
+                </div>
+              </form>
+            }
           </div>
-        </div>}
+        }
       </div>
     );
   }
 }
 
-export default UpdatePasswordOverlay;
+export default UpdatePassword;

@@ -14,7 +14,10 @@ Reaction.registerPackage({
     route: "/account/login",
     name: "OAuth Login",
     label: "oauth-login",
-    meta: { oauthLoginFlow: true },
+    meta: {
+      noAdminControls: true,
+      oauthLoginFlow: true
+    },
     description: "Oauth Login Provider Page",
     workflow: "hydraOauthLogin",
     template: "hydraOauthLoginForm"
