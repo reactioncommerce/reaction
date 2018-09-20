@@ -1,3 +1,4 @@
+import url from "url";
 import Logger from "@reactioncommerce/logger";
 import { WebApp } from "meteor/webapp";
 import hydra from "./util/hydra";
@@ -19,6 +20,8 @@ WebApp.connectHandlers.use("/login", (req, res) => {
 
   hydra.getLoginRequest(challenge)
     .then(async (getLoginRequestRes) => {
+      const requestUrl = url.parse(getLoginRequestRes.request_url, true);
+      const { loginAction } = requestUrl.query;
       // If Hydra was already able to authenticate the user, skip will be true
       // and there will be no need to present a login form to the user.
       if (getLoginRequestRes.skip) {
@@ -29,7 +32,7 @@ WebApp.connectHandlers.use("/login", (req, res) => {
         res.redirect(acceptLoginResponse.redirect_to);
       }
 
-      res.writeHead(301, { Location: `/account/login?login_challenge=${challenge}` });
+      res.writeHead(301, { Location: `/account/login?action=${loginAction}&login_challenge=${challenge}` });
       Logger.debug("Redirecting to Login Form for user login");
       return res.end();
     })
