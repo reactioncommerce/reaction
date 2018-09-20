@@ -10,5 +10,9 @@ export default {
   currency: (account) => getXformedCurrencyByCode(account.profile && account.profile.currency),
   emailRecords: (account) => account.emails,
   preferences: (account) => get(account, "profile.preferences"),
+  primaryEmailAddress: (account) => {
+    const primaryRecord = (account.emails || []).find((record) => record.provides === "default");
+    return (primaryRecord && primaryRecord.address) || null;
+  },
   shop: resolveShopFromShopId
 };
