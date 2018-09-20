@@ -54,10 +54,8 @@ const testShop = {
 
 const testContext = {
   queries: {
-    shops: {
-      shopById() {
-        return testShop;
-      }
+    shopById() {
+      return testShop;
     }
   }
 };
