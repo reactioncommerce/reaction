@@ -407,19 +407,11 @@ export const mockInternalCatalogProducts = [
         productId: internalProductIds[0],
         variantId: null,
         URLs: {
-<<<<<<< HEAD
           thumbnail: "/thumbnail",
           small: "/small",
           medium: "/medium",
           large: "/large",
           original: "/original"
-=======
-          thumbnail: "thumbnail",
-          small: "small",
-          medium: "medium",
-          large: "large",
-          original: "original"
->>>>>>> 988d524cf7993e254825190d881c8744056feee6
         }
       }
     ],
