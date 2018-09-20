@@ -19,7 +19,10 @@ export default class Link extends Component {
     event.preventDefault();
     this.props.onClick(event);
     ReactionRouter.go(this.props.href); // eslint-disable-line no-undef
-    window.scrollTo(0, 0);
+
+    if (typeof window !== "undefined" && typeof window.scrollTo === "function") {
+      window.scrollTo(0, 0);
+    }
   };
 
   render() {
