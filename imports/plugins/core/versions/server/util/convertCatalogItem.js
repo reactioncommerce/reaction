@@ -53,35 +53,11 @@ function xformVariant(variant, variantPriceInfo, shopCurrencyCode, updatedAt) {
 }
 
 /**
- * @method
- * @summary Converts the old positions object into the new positions object
- * @param {Object} positions The old positions object
- * @param {Object[]} tags Array of tag objects with `_id` and `slug` props
- * @private
- * @return {Object} The new positions object
- */
-function xformPositions(positions, tags) {
-  const newPositions = {};
-  Object.keys(positions || {}).forEach((key) => {
-    let newKey;
-    const positionTag = tags.find((tag) => tag.slug === key || tag._id === key);
-    if (positionTag) {
-      newKey = positionTag._id;
-    } else {
-      newKey = "_default";
-    }
-    newPositions[newKey] = positions[key];
-  });
-  return newPositions;
-}
-
-/**
  * @param {Object} item The catalog item to transform
  * @param {Object} shop The shop document
- * @param {Object[]} tags Array of tag documents
  * @returns {Object} The converted item document
  */
-export default function convertCatalogItem(item, shop, tags) {
+export default function convertCatalogItem(item, shop) {
   if (!shop) {
     Logger.info("Cannot update catalog item: shop not found");
     return false;
@@ -178,7 +154,6 @@ export default function convertCatalogItem(item, shop, tags) {
     originCountry: item.originCountry,
     pageTitle: item.pageTitle,
     parcel: item.parcel,
-    positions: xformPositions(item.positions, tags),
     price: item.price,
     pricing: {
       [shop.currency]: {

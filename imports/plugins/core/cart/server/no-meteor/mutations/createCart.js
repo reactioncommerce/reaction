@@ -1,6 +1,6 @@
 import Random from "@reactioncommerce/random";
 import ReactionError from "@reactioncommerce/reaction-error";
-import hashLoginToken from "/imports/plugins/core/accounts/server/no-meteor/util/hashLoginToken";
+import hashLoginToken from "/imports/node-app/core/util/hashLoginToken";
 import { Cart as CartSchema } from "/imports/collections/schemas";
 import addCartItems from "../util/addCartItems";
 
@@ -62,14 +62,6 @@ export default async function createCart(context, input) {
     _id: Random.id(),
     accountId,
     anonymousAccessToken: anonymousAccessToken && hashLoginToken(anonymousAccessToken),
-    // We will set this billing currency stuff right away because historical Meteor code did it.
-    // If this turns out to not be necessary, we should remove it.
-    billing: [
-      {
-        _id: Random.id(),
-        currency: { userCurrency: cartCurrencyCode }
-      }
-    ],
     currencyCode: cartCurrencyCode,
     createdAt,
     items: updatedItemList,

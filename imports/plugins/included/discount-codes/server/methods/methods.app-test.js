@@ -62,8 +62,8 @@ describe("discount code methods", function () {
       Meteor.call("discounts/codes/apply", cart._id, code.code);
 
       const updatedCart = Cart.findOne({ _id: cart._id });
-      const discountObj = updatedCart.billing.find((billing) => billing.paymentMethod && billing.paymentMethod.method === "discount");
-      const discountStatus = discountObj && discountObj.paymentMethod && discountObj.paymentMethod.status;
+      const discountObj = updatedCart.billing.find((billing) => billing.method === "discount");
+      const discountStatus = discountObj && discountObj.status;
 
       expect(discountStatus).to.equal("created");
     });

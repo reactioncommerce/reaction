@@ -7,7 +7,7 @@ import ParcelSizeSettings from "../components/parcelSizeSettings";
 
 /**
  * @method saveDefaultSize
- * @summary call "shipping/updateParcelSize" method
+ * @summary call "shop/updateDefaultParcelSize" method
  * @param {Object} size - size object to be saved
  * @since 1.1.12
  * @return {Function} callback
@@ -21,7 +21,7 @@ const saveDefaultSize = (size) => {
     Alerts.toast(i18next.t("shippingSettings.parcelSize.saveFailed"), "error");
     return;
   }
-  Meteor.call("shipping/updateParcelSize", parcel, (error) => {
+  Meteor.call("shop/updateDefaultParcelSize", parcel, (error) => {
     if (error) {
       Alerts.toast(i18next.t("shippingSettings.parcelSize.saveFailed"), "error");
     }

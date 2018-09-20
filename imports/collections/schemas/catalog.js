@@ -349,7 +349,6 @@ const CatalogVariantSchema = VariantBaseSchema.clone().extend({
  * @property {String} originCountry optional
  * @property {String} pageTitle optional
  * @property {ShippingParcel} parcel optional
- * @property {Object} positions optional
  * @property {CatalogPriceRange} price optional
  * @property {Object} pricing required
  * @property {ImageInfo} primaryImage optional
@@ -482,12 +481,6 @@ export const CatalogProduct = new SimpleSchema({
   "parcel": {
     type: ShippingParcel,
     label: "Shipping parcel",
-    optional: true
-  },
-  "positions": {
-    type: Object,
-    label: "Product positions",
-    blackbox: true,
     optional: true
   },
   "price": {

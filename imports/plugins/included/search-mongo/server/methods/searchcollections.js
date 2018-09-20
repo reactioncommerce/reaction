@@ -1,17 +1,12 @@
 /* eslint camelcase: 0 */
 import Logger from "@reactioncommerce/logger";
-import { Meteor } from "meteor/meteor";
 import { check, Match } from "meteor/check";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
 import { ProductSearch, OrderSearch, AccountSearch, Orders, Products, Accounts, Shops } from "/lib/collections";
+import rawCollections from "/imports/collections/rawCollections";
+import buildOrderSearchRecord from "../no-meteor/util/buildOrderSearchRecord";
 import utils from "./common";
 import { transformations } from "./transformations";
-
-let moment;
-async function lazyLoadMoment() {
-  if (moment) return;
-  moment = await import("moment").default;
-}
 
 const requiredFields = {};
 requiredFields.products = ["_id", "hashtags", "shopId", "handle", "price", "isVisible", "isSoldOut", "isLowQuantity", "isBackorder"];
@@ -181,88 +176,11 @@ export function ensureProductSearchIndex() {
   rawProductSearchCollection.createIndex(indexObject, options).catch(handleIndexUpdateFailures);
 }
 
-export function buildOrderSearchRecord(orderId) {
-  const order = Orders.findOne({ _id: orderId });
-  const user = Meteor.users.findOne(order.userId);
-  const anonymousUserEmail = order.email;
-
-  const userEmails = [];
-  if (user && user.emails.length) {
-    for (const email of user.emails) {
-      userEmails.push(email.address);
-    }
-  } else if (anonymousUserEmail) {
-    userEmails.push(anonymousUserEmail);
-  }
-  const orderSearch = {};
-  for (const field of requiredFields.orders) {
-    if (transformations.orders[field]) {
-      orderSearch[field] = transformations.orders[field](order[field]);
-    } else {
-      orderSearch[field] = order[field];
-    }
-  }
-
-  // get the billing object for the current shop on the order (and not hardcoded [0])
-  const shopBilling = (order.billing && order.billing.find((billing) => billing && billing.shopId === Reaction.getShopId())) || {};
-
-  // get the shipping object for the current shop on the order (and not hardcoded [0])
-  const shopShipping = order.shipping.find((shipping) => shipping.shopId === Reaction.getShopId()) || {};
-
-  Promise.await(lazyLoadMoment());
-
-  orderSearch.billingName = shopBilling.address && shopBilling.address.fullName;
-  orderSearch.billingPhone = shopBilling.address && shopBilling.address.phone.replace(/\D/g, "");
-  orderSearch.shippingName = shopShipping.address && shopShipping.address.fullName;
-  if (shopShipping.address && shopShipping.address.phone) {
-    orderSearch.shippingPhone = shopShipping.address && shopShipping.address.phone.replace(/\D/g, "");
-  }
-
-  orderSearch.billingAddress = {
-    address: shopBilling.address && shopBilling.address.address1,
-    postal: shopBilling.address && shopBilling.address.postal,
-    city: shopBilling.address && shopBilling.address.city,
-    region: shopBilling.address && shopBilling.address.region,
-    country: shopBilling.address && shopBilling.address.country
-  };
-  orderSearch.shippingAddress = {
-    address: shopShipping.address && shopShipping.address.address1,
-    postal: shopShipping.address && shopShipping.address.postal,
-    city: shopShipping.address && shopShipping.address.city,
-    region: shopShipping.address && shopShipping.address.region,
-    country: shopShipping.address && shopShipping.address.country
-  };
-  orderSearch.userEmails = userEmails;
-  orderSearch.orderTotal = shopBilling.invoice && shopBilling.invoice.total;
-  orderSearch.orderDate = moment && moment(order.createdAt).format("YYYY/MM/DD");
-  orderSearch.billingStatus = shopBilling.paymentMethod && shopBilling.paymentMethod.status;
-  orderSearch.billingCard = shopBilling.paymentMethod && shopBilling.paymentMethod.storedCard;
-  orderSearch.currentWorkflowStatus = order.workflow.status;
-  if (shopShipping.shipped) {
-    orderSearch.shippingStatus = "Shipped";
-  } else if (shopShipping.packed) {
-    orderSearch.shippingStatus = "Packed";
-  } else {
-    orderSearch.shippingStatus = "New";
-  }
-  orderSearch.product = {};
-  orderSearch.variants = {};
-  orderSearch.product.title = order.items.map((item) => item.title);
-  orderSearch.variants.title = order.items.map((item) => item.variantTitle);
-  orderSearch.variants.optionTitle = order.items.map((item) => item.optionTitle);
-
-  try {
-    OrderSearch.upsert(orderId, { $set: { ...orderSearch } });
-  } catch (error) {
-    Logger.error(error, "Failed to add order to the OrderSearch collection");
-  }
-}
-
 export function buildOrderSearch(cb) {
   check(cb, Match.Optional(Function));
   const orders = Orders.find({}).fetch();
   for (const order of orders) {
-    buildOrderSearchRecord(order._id);
+    Promise.await(buildOrderSearchRecord(rawCollections, order));
   }
   const rawOrderSearchCollection = OrderSearch.rawCollection();
   rawOrderSearchCollection.dropIndexes().catch(handleIndexUpdateFailures);

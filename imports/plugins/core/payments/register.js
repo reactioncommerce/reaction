@@ -1,10 +1,16 @@
 import Reaction from "/imports/plugins/core/core/server/Reaction";
+import resolvers from "./server/no-meteor/resolvers";
+import schemas from "./server/no-meteor/schemas";
 
 Reaction.registerPackage({
   label: "Payments",
   name: "reaction-payments",
   icon: "fa fa-credit-card",
   autoEnable: true,
+  graphQL: {
+    resolvers,
+    schemas
+  },
   settings: {
     payments: {
       enabled: true

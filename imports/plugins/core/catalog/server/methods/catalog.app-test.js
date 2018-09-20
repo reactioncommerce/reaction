@@ -500,47 +500,6 @@ describe("core product methods", function () {
     });
   });
 
-  describe("updateProductPosition", function () {
-    let product;
-    let tag;
-
-    beforeEach(function () {
-      Tags.remove({});
-
-      product = addProduct();
-      tag = Factory.create("tag");
-    });
-
-    it("should throw 403 error by non admin", function () {
-      sandbox.stub(Reaction, "hasPermission", () => false);
-      const updateProductSpy = sandbox.spy(Products, "update");
-
-      expect(() => Meteor.call(
-        "products/updateProductPosition",
-        product._id, {}, tag._id
-      )).to.throw(ReactionError, /Access Denied/);
-
-      expect(updateProductSpy).to.not.have.been.called;
-    });
-
-    it("should update product position by admin", function (done) {
-      sandbox.stub(Reaction, "hasPermission", () => true);
-      const position = {
-        position: 0,
-        weight: 0,
-        updatedAt: new Date()
-      };
-      expect(() => Meteor.call(
-        "products/updateProductPosition",
-        product._id, position, tag.slug
-      )).to.not.throw(ReactionError, /Access Denied/);
-      const updatedProduct = Products.findOne(product._id);
-      expect(updatedProduct.positions).to.be.defined;
-
-      return done();
-    });
-  });
-
   describe("updateMetaFields position", () => {
     it("should throw 403 error by non admin", function () {
       sandbox.stub(Reaction, "hasPermission", () => false);

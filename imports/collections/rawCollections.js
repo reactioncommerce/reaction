@@ -1,6 +1,6 @@
 import { MongoInternals } from "meteor/mongo";
 import { NoMeteorMedia } from "/imports/plugins/core/files/server";
-import defineCollections from "./defineCollections";
+import defineCollections from "/imports/node-app/core/util/defineCollections";
 
 const collections = { Media: NoMeteorMedia };
 

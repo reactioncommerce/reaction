@@ -1,0 +1,79 @@
+extend type Query {
+  """
+  Get a list of all payment methods available during a checkout. This may filter by auth,
+  active/inactive, IP/region, shop, etc. To get the full list, use the `paymentMethods`
+  query with proper authorization.
+  """
+  availablePaymentMethods(shopId: ID!): [PaymentMethod]!
+
+  "Get a full list of all payment methods"
+  paymentMethods(shopId: ID!): [PaymentMethod]!
+}
+
+"""
+Information about a payment made
+"""
+type Payment implements Node {
+  "The Payment ID"
+  _id: ID!
+
+  """
+  The amount that will be applied to this payment method. If there are multiple payment methods applied to the
+  cart, this may be less than the cart total.
+  """
+  amount: Money!
+
+  "For card payments, the brand of the card. Useful for showing card icons for common brands."
+  cardBrand: String
+
+  "The date and time at which this payment was created"
+  createdAt: DateTime!
+
+  """
+  The shopper-provided data needed to complete the payment using this method.
+  For example, a billing address, store credit code, stored credit card ID, etc.
+  """
+  data: PaymentData
+
+  "Use this identifier when showing this payment in a user interface"
+  displayName: String!
+
+  "The payment method"
+  method: PaymentMethod!
+}
+
+"Data for an example IOU payment"
+type ExampleIOUPaymentData {
+  "The billing address entered or chosen by the shopper"
+  billingAddress: Address!
+
+  "The name of the IOU payer entered by the shopper"
+  fullName: String!
+}
+
+# These should be defined in their respective plugin schemas, but `extend union` isn't working yet
+union PaymentData = ExampleIOUPaymentData | StripeCardPaymentData | MarketplaceStripeCardPaymentData
+
+# These should be defined in their respective plugin schemas, but `extend enum` isn't working yet
+"The name of a payment method, which is how payment methods are keyed"
+enum PaymentMethodName {
+  none
+  iou_example
+  stripe_card
+}
+
+"An example"
+type ExamplePaymentMethodData {
+  example: String!
+}
+
+union PaymentMethodData = ExamplePaymentMethodData
+
+"Describes a payment method"
+type PaymentMethod {
+  "Data for this method. The data format differs for each method"
+  data: PaymentMethodData
+
+  "The payment method name. Any valid name that has been registered by a payment plugin. e.g., saved_card"
+  name: PaymentMethodName!
+}

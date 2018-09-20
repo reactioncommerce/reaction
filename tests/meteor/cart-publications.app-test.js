@@ -35,7 +35,6 @@ describe("Cart Publication", function () {
 
     beforeEach(() => {
       Collections.Cart.remove({});
-      sandbox.stub(Meteor, "userId", () => userId);
       sandbox.stub(Reaction, "getShopId", () => shop._id);
       sandbox.stub(Reaction, "getPrimaryShopId", () => shop._id);
     });

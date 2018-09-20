@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { withMoment, Components } from "@reactioncommerce/reaction-components";
 import { Badge, ClickToCopy } from "@reactioncommerce/reaction-ui";
-import { getOrderRiskBadge, getOrderRiskStatus, getBillingInfo, getShippingInfo, getTaxRiskStatus } from "../helpers";
+import { getOrderRiskBadge, getOrderRiskStatus, getPaymentForCurrentShop, getShippingInfo, getTaxRiskStatus } from "../helpers";
 
 class OrderSummary extends Component {
   static propTypes = {
@@ -46,9 +46,8 @@ class OrderSummary extends Component {
 
   render() {
     const { dateFormat, moment, order, profileShippingAddress, printableLabels, tracking } = this.props;
-    const paymentMethod = getBillingInfo(order).paymentMethod || {};
-    const invoice = getBillingInfo(order).invoice || {};
-    const shipmentMethod = getShippingInfo(order).shipmentMethod || {};
+    const { displayName: paymentDisplayName, invoice, processor, transactionId } = getPaymentForCurrentShop(order);
+    const { shipmentMethod } = getShippingInfo(order);
     const orderPaymentRisk = getOrderRiskStatus(order);
     const orderTaxRisk = getTaxRiskStatus(order);
 
@@ -114,21 +113,21 @@ class OrderSummary extends Component {
             <div className="order-summary-form-group">
               <strong data-i18n="order.processor">Processor</strong>
               <div className="invoice-details">
-                {paymentMethod && paymentMethod.processor}
+                {processor}
               </div>
             </div>
 
             <div className="order-summary-form-group">
               <strong data-i18n="order.payment">Payment</strong>
               <div className="invoice-details">
-                {paymentMethod.storedCard} ({invoice.total})
+                {paymentDisplayName} ({invoice.total})
               </div>
             </div>
 
             <div className="order-summary-form-group">
               <strong data-i18n="order.transaction">Transaction</strong>
               <div className="invoice-details">
-                {paymentMethod.transactionId}
+                {transactionId}
               </div>
             </div>
 
