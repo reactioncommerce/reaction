@@ -11,13 +11,14 @@ export function convertCart(cart) {
 
   // Set `cart.billingAddress`
   if (!cart.billingAddress && Array.isArray(cart.billing) && cart.billing[0]) {
-    convertedCart.billingAddress = cart.billing[0].address || null;
+    convertedCart.billingAddress = cart.billing[0].address;
+    if (!convertedCart.billingAddress) delete convertedCart.billingAddress;
   }
 
   // Delete removed props
-  convertedCart.tax = null;
-  convertedCart.taxes = null;
-  convertedCart.taxRatesByShop = null;
+  delete convertedCart.tax;
+  delete convertedCart.taxes;
+  delete convertedCart.taxRatesByShop;
 
   // Remove everything from billing array unless it's a discount
   if (Array.isArray(cart.billing)) {
@@ -61,12 +62,17 @@ export function convertCart(cart) {
 function convertOrderItem(item) {
   const convertedItem = { ...item };
 
+  delete convertedItem.product;
+  delete convertedItem.variants;
+  delete convertedItem.shippingMethod;
+
   if (!item.price && item.priceWhenAdded) {
     convertedItem.price = item.priceWhenAdded;
-    convertedItem.priceWhenAdded = null;
+    delete convertedItem.priceWhenAdded;
   }
 
   convertedItem.subtotal = (item.quantity || 0) * (convertedItem.price.amount || 0);
+  convertedItem.tax = convertedItem.subtotal * (convertedItem.taxRate || 0);
 
   return convertedItem;
 }
@@ -114,7 +120,7 @@ function convertOrderFulfillmentGroup(group, order, packages) {
 
   // Set `itemIds` and `totalItemQuantity`
   let totalItemQuantity = 0;
-  convertedGroup.itemIds = group.items.map((item) => {
+  convertedGroup.itemIds = convertedGroup.items.map((item) => {
     totalItemQuantity += item.quantity || 0;
     return item._id;
   });
@@ -149,9 +155,11 @@ function convertOrderFulfillmentGroup(group, order, packages) {
       }
 
       convertedGroup.payment = {
+        _id: payment._id,
+        address: payment.address,
         amount: payment.paymentMethod.amount,
         createdAt: payment.createdAt || new Date(),
-        currency: payment.paymentMethod.currency,
+        currency: payment.currency,
         currencyCode: order.currencyCode || "USD",
         data: {
           billingAddress: payment.address,
@@ -165,13 +173,21 @@ function convertOrderFulfillmentGroup(group, order, packages) {
         paymentPluginName,
         processor: payment.paymentMethod.processor,
         riskLevel: payment.paymentMethod.riskLevel,
+        shopId: payment.shopId,
         status: payment.paymentMethod.status,
         transactionId: payment.paymentMethod.transactionId,
         transactions: payment.paymentMethod.transactions
       };
     }
-    group.paymentId = null;
+    delete convertedGroup.paymentId;
+
+    if (!convertedGroup.invoice) {
+      convertedGroup.invoice = convertedGroup.payment.invoice;
+    }
   }
+
+  delete convertedGroup.shipmentQuotes;
+  delete convertedGroup.shipmentQuotesQueryStatus;
 
   return convertedGroup;
 }
@@ -195,7 +211,7 @@ export function convertOrder(order, packages) {
       }
       return list;
     }, []);
-    convertedOrder.billing = null;
+    delete convertedOrder.billing;
   }
 
   // Convert all the fulfillment groups
@@ -209,6 +225,10 @@ export function convertOrder(order, packages) {
   if (!order.totalItemQuantity) {
     convertedOrder.totalItemQuantity = (convertedOrder.shipping || []).reduce((sum, group) => sum + group.totalItemQuantity, 0);
   }
+
+  delete convertedOrder.discount;
+  delete convertedOrder.items;
+  delete convertedOrder.taxRatesByShop;
 
   return convertedOrder;
 }
