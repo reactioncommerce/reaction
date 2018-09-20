@@ -131,6 +131,10 @@ function convertOrderFulfillmentGroup(group, order, packages) {
     convertedGroup.shipmentMethod.currencyCode = order.currencyCode || "USD";
   }
 
+  if (convertedGroup.shipmentMethod) {
+    delete convertedGroup.shipmentMethod.enabled;
+  }
+
   // Convert group.invoice
   if (group.invoice) {
     convertedGroup.invoice = convertInvoice(group.invoice);
