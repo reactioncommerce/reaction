@@ -139,7 +139,7 @@ class OAuthFormContainer extends Component {
 
   render() {
     return (
-      <div>
+      <div className="idp-form">
         {this.renderAuthView()}
       </div>
     );

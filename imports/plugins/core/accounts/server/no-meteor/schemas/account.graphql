@@ -142,6 +142,11 @@ type Account implements Node {
   "An object storing plugin-specific preferences for this account"
   preferences: JSONObject
 
+  """
+  The primary email address for the account. This matches the address in `emailRecords` where `provides` is "default".
+  """
+  primaryEmailAddress: Email!
+
   "The shop to which this account belongs, if it is associated with a specific shop"
   shop: Shop
 

@@ -12,15 +12,15 @@
 
 Reaction’s out-of-the-box core features include:
 
--   Drag-and-drop merchandising
+-	One step cart and checkout
 -   Order processing
--   Payments
+-   Payments with Stripe
 -   Shipping
 -   Taxes
+-   Multi-currency support
 -   Discounts
--   Analytics
 -   Integration with dozens of third-party apps
--   See full list of features on our [Roadmap](https://reactioncommerce.com/roadmap)
+-   See full list of features on our [roadmap](https://reactioncommerce.com/roadmap)
 
 Since anything in our codebase can be extended, overwritten, or installed as a package, you may also develop, scale, and customize anything on our platform.
 
@@ -28,75 +28,74 @@ Since anything in our codebase can be extended, overwritten, or installed as a p
 
 ### Requirements
 
-Reaction requires Meteor, Git, MongoDB, OS-specific build tools and optionally, ImageMagick. For step-by-step instructions, check out this [page](https://docs.reactioncommerce.com/reaction-docs/master/installation).
+Reaction requires Meteor, Git, Mongo DB, OS-specific build tools. For step-by-step instructions, follow the documentation for [OS X](https://docs.reactioncommerce.com/docs/next/installation-osx), [Windows](https://docs.reactioncommerce.com/docs/next/installation-windows) or [Linux](https://docs.reactioncommerce.com/docs/next/installation-linux).
 
-### Install and create your first store
+### Install and run with CLI
 
 Install the [Reaction CLI](https://github.com/reactioncommerce/reaction-cli) to get started with Reaction:
 
-```bash
+```sh
 npm install -g reaction-cli
 ```
 
 Create your store:
 
-```bash
+```sh
 reaction init
 cd reaction
 reaction
 ```
 
+Open `localhost:3000`
+
+Learn more on how to [configure your project](https://docs.reactioncommerce.com/reaction-docs/master/configuration). 
+
+Having installation issues? Check out our [troubleshooting docs](https://docs.reactioncommerce.com/docs/next/troubleshooting-development).
+
+### Install and run with Docker
+
 You can also run the app locally using [`docker-compose`](https://docs.docker.com/compose/) by running:
 
 ```sh
+docker network create api.reaction.localhost
 docker-compose up
 ```
 
-This will use the `docker-compose.yml` file. This can be used to evaluate the app locally (on all Operating Systems supported by Docker),
-however, for active local development or customization, it is better to run `reaction` outside of Docker for faster app builds.
+Open `localhost:3000`
 
-Learn more on how to [configure your project](https://docs.reactioncommerce.com/reaction-docs/master/configuration).
+This will use the `docker-compose.yml` file.
+
+To learn more on how to develop on Docker, read our documentation on [developing Reaction on Docker](https://docs.reactioncommerce.com/docs/next/installation-docker-development) and [troubleshooting Docker](https://docs.reactioncommerce.com/docs/next/troubleshooting-development#docker-issues).
 
 # Get involved
 
-## Documentation and tools
+## Read documentation & tutorials
 
--   [Developer documentation](https://docs.reactioncommerce.com)
--   [API documentation](http://api.docs.reactioncommerce.com)
--   [Reaction GraphQL API server base](https://github.com/reactioncommerce/reaction-api-base)
--   [Reaction sample data](https://github.com/reactioncommerce/reaction-sample-data)
+-   [Reaction Commerce: Developer documentation](https://docs.reactioncommerce.com)
+-   [Reaction Commerce: API documentation](http://api.docs.reactioncommerce.com)
+-   [Reaction Commerce engineering blog posts](https://blog.reactioncommerce.com/tag/engineering/)
+-   [Reaction Commerce YouTube videos](https://www.youtube.com/user/reactioncommerce/videos)
 
-
-## Get help
+## Get help & contact the team
 
 -   [Reaction Commerce Gitter chat](https://gitter.im/reactioncommerce/reaction)
 -   [Reaction Commerce forum](https://forums.reactioncommerce.com/)
-
-## Learn
-
--   [Reaction Commerce engineering blog posts](https://blog.reactioncommerce.com/tag/engineering/)
--   [Customization themes & plugins tutorial](https://docs.reactioncommerce.com/reaction-docs/master/tutorial)
--   [Reaction Commerce YouTube videos](https://www.youtube.com/user/reactioncommerce/videos)
-
-## Contact the team
-
 -   [Security reporting instructions](https://docs.reactioncommerce.com/reaction-docs/master/reporting-vulnerabilities): Report security vulnerabilities to <mailto:security@reactioncommerce.com>.
--   [Reaction Action](https://www.youtube.com/playlist?list=PLJ1TVRVOrm2NOKlILTQFvtG7J9h1anvOe): RSVP for the monthly Reaction Action livestreams.
 
 ## Contribute
 
-:star: Star us on GitHub — it helps!
+:star: Star us on GitHub — it helps! 
+
+Want to request a feature? Use our Reaction Feature Requests repository to file a request.
 
 We love your pull requests! Check our our [`Good First Issue`](https://github.com/reactioncommerce/reaction/issues?q=is%3Aopen+is%3Aissue+label%3A%22good+first+issue%22) and [`Help Wanted`](https://github.com/reactioncommerce/reaction/issues?q=label%3A%22help+wanted%22) tags for good issues to tackle.
 
 Pull requests should:
 
-- Pass linting tests: Run `npm run lint` to make sure you're following the [Reaction Code Style Guide](https://docs.reactioncommerce.com/reaction-docs/master/styleguide).
-- Pass acceptance and unit tests: Run `reaction test` to confirm both [acceptance tests and unit tests](https://docs.reactioncommerce.com/reaction-docs/master/testing-reaction) are passing
-- Have a link to the issue.
+- Pass all pull request Cirlce CI checks: Run `npm run lint` and `reaction test` to make sure you're following the [Reaction Code Style Guide](https://docs.reactioncommerce.com/reaction-docs/master/styleguide) and passing [acceptance tests and unit tests](https://docs.reactioncommerce.com/reaction-docs/master/testing-reaction).
+- Follow the pull request template.
 
 Get more details in our [Contributing Guide](https://docs.reactioncommerce.com/reaction-docs/master/contributing-to-reaction).
-
 
 ## Deploy on Docker
 
