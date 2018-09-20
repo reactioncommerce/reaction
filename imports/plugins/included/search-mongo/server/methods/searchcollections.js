@@ -179,14 +179,22 @@ export function ensureProductSearchIndex() {
 export function buildOrderSearch(cb) {
   check(cb, Match.Optional(Function));
   const orders = Orders.find({}).fetch();
+
   for (const order of orders) {
-    Promise.await(buildOrderSearchRecord(rawCollections, order));
+    try {
+      Promise.await(buildOrderSearchRecord(rawCollections, order));
+    } catch (error) {
+      // Log the error but keep looping and trying to process the others
+      Logger.error(`Error running buildOrderSearchRecord for order ${order._id}`, error);
+    }
   }
+
   const rawOrderSearchCollection = OrderSearch.rawCollection();
   rawOrderSearchCollection.dropIndexes().catch(handleIndexUpdateFailures);
   rawOrderSearchCollection.createIndex({
     shopId: 1, shippingName: 1, billingName: 1, userEmails: 1
   }).catch(handleIndexUpdateFailures);
+
   if (cb) {
     cb();
   }
