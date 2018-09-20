@@ -94,10 +94,11 @@ export default function sendOrderEmail(order, action) {
   const refundResult = Meteor.call("orders/refunds/list", order);
   const refundTotal = Array.isArray(refundResult) && refundResult.reduce((acc, refund) => acc + refund.amount, 0);
 
-  const userCurrencyFormatting = _.omit(shop.currencies[currency.userCurrency], ["enabled", "rate"]);
+  const userCurrency = (currency && currency.userCurrency) || shop.currency;
+  const userCurrencyFormatting = _.omit(shop.currencies[userCurrency], ["enabled", "rate"]);
 
   // Get user currency exchange rate at time of transaction
-  const userCurrencyExchangeRate = currency.exchangeRate;
+  const userCurrencyExchangeRate = (currency && currency.exchangeRate) || 1;
 
   // Combine same products into single "product" for display purposes
   const combinedItems = [];
