@@ -1,10 +1,8 @@
 import Hooks from "@reactioncommerce/hooks";
 import Logger from "@reactioncommerce/logger";
-import _ from "lodash";
 import { Meteor } from "meteor/meteor";
-import { Products, ProductSearch, OrderSearch, AccountSearch } from "/lib/collections";
+import { ProductSearch, OrderSearch, AccountSearch } from "/lib/collections";
 import {
-  getSearchParameters,
   buildAccountSearchRecord,
   buildOrderSearchRecord,
   buildProductSearchRecord
@@ -76,7 +74,7 @@ Hooks.Events.add("afterRemoveProduct", (doc) => {
 /**
  * @summary Rebuild search record when product is published
  */
-Hooks.Events.add("afterPublishProductToCatalog", (product, catalogProduct) => {
+Hooks.Events.add("afterPublishProductToCatalog", (product) => {
   Logger.debug(`Rewriting search record for ${product.title}`);
   ProductSearch.remove({ _id: product._id });
   buildProductSearchRecord(product._id);
