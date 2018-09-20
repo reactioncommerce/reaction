@@ -2,9 +2,9 @@ import React, { Component } from "react";
 import { compose } from "recompose";
 import PropTypes from "prop-types";
 import classnames from "classnames";
+import { isEqual } from "lodash";
 import { getComponent, withCSSTransition } from "@reactioncommerce/reaction-components";
 import Blaze from "meteor/gadicc:blaze-react-component";
-import { EJSON } from "meteor/ejson";
 import { Admin } from "/imports/plugins/core/ui/client/providers";
 import Radium from "radium";
 import debounce from "lodash/debounce";
@@ -188,7 +188,7 @@ class ActionView extends Component {
   componentDidUpdate(prevProps) {
     const { actionView } = this.props;
 
-    if (EJSON.equals(actionView, prevProps.actionView) === false) {
+    if (isEqual(actionView, prevProps.actionView) === false) {
       this.setState({ actionView });
     }
   }
