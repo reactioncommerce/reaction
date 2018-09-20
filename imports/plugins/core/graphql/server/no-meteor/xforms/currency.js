@@ -60,7 +60,7 @@ export async function getXformedCurrencyByCode(code) {
  */
 export async function xformCurrencyExchangePricing(pricing, currencyCode, context) {
   const { shopId } = context;
-  const shop = await context.queries.shops.shopById(context, shopId);
+  const shop = await context.queries.shopById(context, shopId);
 
   if (!currencyCode) {
     currencyCode = shop.currency; // eslint-disable-line no-param-reassign
