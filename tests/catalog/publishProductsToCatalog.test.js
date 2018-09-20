@@ -22,7 +22,6 @@ const mockProduct = {
   ancestors: [],
   title: "Fake Product",
   shopId: internalShopId,
-  supportedFulfillmentTypes: ["shipping"],
   isDeleted: false,
   isVisible: true,
   supportedFulfillmentTypes: ["shipping"]
@@ -35,8 +34,7 @@ const mockVariant = {
   title: "Fake Product Variant",
   shopId: internalShopId,
   isDeleted: false,
-  isVisible: true,
-  price: 10
+  isVisible: true
 };
 
 const mockOptionOne = {
@@ -46,8 +44,7 @@ const mockOptionOne = {
   title: "Fake Product Option One",
   shopId: internalShopId,
   isDeleted: false,
-  isVisible: true,
-  price: 10
+  isVisible: true
 };
 
 const mockOptionTwo = {
@@ -57,8 +54,7 @@ const mockOptionTwo = {
   title: "Fake Product Option Two",
   shopId: internalShopId,
   isDeleted: false,
-  isVisible: true,
-  price: 10
+  isVisible: true
 };
 
 const mockCatalogItem = {

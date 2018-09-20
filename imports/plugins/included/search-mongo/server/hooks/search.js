@@ -1,7 +1,7 @@
 import Hooks from "@reactioncommerce/hooks";
 import Logger from "@reactioncommerce/logger";
 import { Meteor } from "meteor/meteor";
-import { Products, ProductSearch, AccountSearch } from "/lib/collections";
+import { ProductSearch, AccountSearch } from "/lib/collections";
 import rawCollections from "/imports/collections/rawCollections";
 import {
   buildAccountSearchRecord,
