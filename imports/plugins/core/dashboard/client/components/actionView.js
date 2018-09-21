@@ -161,10 +161,10 @@ class ActionView extends Component {
 
     const stateUpdates = { prevProps: props };
 
-    if (!EJSON.equals(actionView, prevProps.actionView)) {
+    if (isEqual(actionView, prevProps.actionView) === false) {
       stateUpdates.actionView = actionView;
     }
-    if (!EJSON.equals(detailView, prevProps.detailView)) {
+    if (isEqual(detailView, prevProps.detailView) === false) {
       stateUpdates.detailView = detailView;
     }
 
