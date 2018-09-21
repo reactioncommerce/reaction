@@ -179,7 +179,7 @@ async function buildOrderItem(inputItem, currencyCode, context) {
     _id: Random.id(),
     addedAt: addedAt || now,
     createdAt: now,
-    isTaxable: (chosenVariant && chosenVariant.taxable) || false,
+    isTaxable: (chosenVariant && chosenVariant.isTaxable) || false,
     optionTitle: chosenVariant && chosenVariant.optionTitle,
     parcel: chosenVariant.parcel,
     price: {
