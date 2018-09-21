@@ -28,6 +28,12 @@ Hooks.Events.add("afterCoreInit", () => {
     Logger.fatal("If you really want to downgrade to this version, you should restore your DB to a previous state from your backup.");
     process.exit(0);
   } else if (!Meteor.isAppTest) {
-    Migrations.migrateTo("latest");
+    try {
+      Migrations.migrateTo("latest");
+    } catch (error) {
+      Logger.error("Error while migrating", error);
+      // Make sure the migration control record is unlocked so they can attempt to run again next time
+      Migrations.unlock();
+    }
   }
 });
