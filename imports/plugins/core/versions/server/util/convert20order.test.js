@@ -5,6 +5,14 @@ const beforeOrder = {
   accountId: "NGn6GR8L7DfWnfGCh",
   billing: [
     {
+      shopId: "J8Bhq3uTtdgwZx3rz",
+      currency: {
+        userCurrency: "USD",
+        exchangeRate: 1
+      },
+      _id: "other"
+    },
+    {
       paymentMethod: {
         processor: "Example",
         paymentPackageId: "euAJq7W8MzPJPm7Ne",
@@ -99,7 +107,6 @@ const beforeOrder = {
       variantTitle: "Large",
       addedAt: new Date("2018-09-20T19:30:53.025+0000"),
       createdAt: new Date("2018-09-20T19:30:53.025+0000"),
-      taxRate: 0,
       product: {
         _id: "FjcfCt6qBBxLskWDn",
         createdAt: new Date("2018-06-22T21:42:38.869+0000"),

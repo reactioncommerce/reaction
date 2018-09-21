@@ -10,8 +10,9 @@ export function convertCart(cart) {
   const convertedCart = { ...cart };
 
   // Set `cart.billingAddress`
-  if (!cart.billingAddress && Array.isArray(cart.billing) && cart.billing[0]) {
-    convertedCart.billingAddress = cart.billing[0].address;
+  if (!cart.billingAddress && Array.isArray(cart.billing)) {
+    const firstRecordWithAddress = cart.billing.find((record) => !!record.address);
+    convertedCart.billingAddress = firstRecordWithAddress && firstRecordWithAddress.address;
     if (!convertedCart.billingAddress) delete convertedCart.billingAddress;
   }
 
@@ -72,7 +73,8 @@ function convertOrderItem(item) {
   }
 
   convertedItem.subtotal = (item.quantity || 0) * (convertedItem.price.amount || 0);
-  convertedItem.tax = convertedItem.subtotal * (convertedItem.taxRate || 0);
+  if (!convertedItem.taxRate) convertedItem.taxRate = 0;
+  convertedItem.tax = convertedItem.subtotal * convertedItem.taxRate;
 
   return convertedItem;
 }
