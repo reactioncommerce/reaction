@@ -161,7 +161,7 @@ function composer(props, onData) {
   // Force re-running products subscription when a product is cloned
   const resubscribe = resubscribeAfterCloning.get();
   if (resubscribe) {
-    resubscribeAfterCloning.set(false)
+    resubscribeAfterCloning.set(false);
     productsSubscription.stop();
     productsSubscription = Meteor.subscribe("Products", scrollLimit, queryParams, sort, editMode);
   }
