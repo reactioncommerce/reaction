@@ -14,7 +14,7 @@ environment:
     alb_listener_port: 80
     alb_listener_path: /
     alb_listener_rule_priority: 1
-    alb_health_check_path: /
+    alb_health_check_path: /health
     task-definition:
       name: core2
       cpu: 500

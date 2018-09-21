@@ -157,6 +157,7 @@ jobs:
           name: Deploy new task definition and update service in ECS
           command: |
             .circleci/bin/ecs-deploy.sh
+          no_output_timeout: 30m
 
   deploy-docs:
     <<: *defaults
