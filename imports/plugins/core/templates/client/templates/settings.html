@@ -13,11 +13,14 @@
         <div>
           {{#autoForm
             collection=Collections.Templates
-            schema=emailTemplateSchema
-            id="email-template-edit-form"
-            template="bootstrap3-inline"
             doc=template
-            }}
+            id="email-template-edit-form"
+            meteormethod="templates/email/update"
+            schema=emailTemplateSchema
+            template="bootstrap3-inline"
+            type="method-update"
+            validation="none"
+          }}
 
             <div class="panel panel-default">
               <div class="panel-heading" data-i18n="templateUpdateForm.emailTemplates.updateEmailTemplate">Update email template</div>
@@ -33,7 +36,12 @@
 
               <div class="panel-footer">
                 <div class="right">
-                  {{> templateSubmitButton instance=instance }}
+                  <div class="clearfix">
+                    <div class="pull-right">
+                      <button type="button" class="btn btn-primary cancel" data-i18n="app.cancel">Cancel</button>
+                      <button type="submit" class="btn btn-primary" data-i18n="app.saveChanges">Save Changes</button>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -56,14 +64,4 @@
       {{/if}}
     {{/if}}
   {{/if}}
-</template>
-
-
-<template name="templateSubmitButton">
-   <div class="clearfix">
-    <div class="pull-right">
-      <button type="button" class="btn btn-primary cancel" data-i18n="app.cancel">Cancel</button>
-      <button type="submit" class="btn btn-primary" data-i18n="app.saveChanges">Save Changes</button>
-    </div>
-  </div>
 </template>
