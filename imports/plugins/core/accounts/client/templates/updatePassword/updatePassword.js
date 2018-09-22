@@ -10,18 +10,6 @@ import { getComponent } from "/imports/plugins/core/components/lib";
 import { LoginFormValidation } from "/lib/api";
 
 /**
- * Accounts Event: onResetPasswordLink When a user uses a password reset link
- */
-Accounts.onResetPasswordLink((token, done) => {
-  Blaze.renderWithData(Template.loginFormUpdatePasswordOverlay, {
-    token,
-    callback: done,
-    isOpen: true,
-    type: "updatePassword"
-  }, $("body").get(0));
-});
-
-/**
  * Accounts Event: onEnrollmentLink When a user uses an enrollment link
  */
 Accounts.onEnrollmentLink((token, done) => {
@@ -36,14 +24,14 @@ Accounts.onEnrollmentLink((token, done) => {
 
 // ----------------------------------------------------------------------------
 // /**
-//  * Helpers: Login Form Update Password Overlay
+//  * Helpers: Login Form Update Password
 //  */
-Template.loginFormUpdatePasswordOverlay.helpers({
+Template.loginFormUpdatePassword.helpers({
   component() {
-    const currentData = Template.currentData() || {};
     return {
-      ...currentData,
-      component: getComponent("UpdatePasswordOverlay")
+      component: getComponent("UpdatePassword"),
+      isOpen: true,
+      type: "updatePassword"
     };
   }
 });

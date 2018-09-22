@@ -49,7 +49,6 @@ describe("Account Meteor method ", function () {
     const userId = fakeUser._id;
     // set the _id... some code requires that Account#_id === Account#userId
     fakeAccount = Factory.create("account", { _id: userId, userId, shopId });
-    sandbox.stub(Meteor, "userId", () => userId);
     sandbox.stub(Meteor, "user", () => fakeUser);
     sandbox.stub(Reaction, "getShopId", () => shopId);
 

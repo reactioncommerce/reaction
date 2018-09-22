@@ -22,7 +22,6 @@ const productSlug = "fake-product";
 
 const createdAt = new Date("2018-04-16T15:34:28.043Z");
 const updatedAt = new Date("2018-04-17T15:34:28.043Z");
-const positionUpdatedAt = new Date("2018-04-15T15:34:28.043Z");
 
 const mockVariants = [
   {
@@ -144,14 +143,6 @@ const mockProduct = {
     weight: 7.77
   },
   pinterestMsg: "pinterestMessage",
-  positions: {
-    _default: {
-      weight: 1,
-      position: 1,
-      pinned: true,
-      updatedAt: positionUpdatedAt.toISOString()
-    }
-  },
   price: {
     max: 5.99,
     min: 2.99,
@@ -249,14 +240,6 @@ const mockCatalogProduct = {
     length: 4.44,
     weight: 7.77,
     width: 5.55
-  },
-  positions: {
-    _default: {
-      pinned: true,
-      position: 1,
-      updatedAt: "2018-04-15T15:34:28.043Z",
-      weight: 1
-    }
   },
   price: {
     max: 5.99,

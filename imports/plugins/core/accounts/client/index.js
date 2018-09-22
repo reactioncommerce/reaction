@@ -20,7 +20,7 @@ export { default as PermissionsList } from "./components/permissionsList";
 export { default as SignIn } from "./components/signIn";
 export { default as SignUp } from "./components/signUp";
 export { default as UpdateEmail } from "./containers/updateEmail";
-export { default as UpdatePasswordOverlay } from "./components/updatePasswordOverlay";
+export { default as UpdatePassword } from "./components/updatePassword";
 export { default as LoginInline } from "./components/loginInline";
 
 export { default as AccountsDashboardContainer } from "./containers/accountsDashboardContainer";
@@ -31,7 +31,7 @@ export { default as EditGroupContainer } from "./containers/editGroupContainer";
 export { default as ForgotPasswordContainer } from "./containers/forgotPassword";
 export { default as MainDropdownContainer } from "./containers/mainDropdown";
 export { default as MessagesContainer } from "./containers/messages";
-export { default as UpdatePasswordOverlayContainer } from "./containers/passwordOverlay";
+export { default as UpdatePasswordContainer } from "./containers/updatePassword";
 export { default as LoginInlineContainer } from "./containers/loginInline";
 export { default as VerifyAccount } from "./containers/verifyAccount";
 

@@ -43,14 +43,6 @@ test("inserts a cart with the existing cart's items and returns it", async () =>
     _id: jasmine.any(String),
     accountId,
     anonymousAccessToken: null,
-    // We will set this billing currency stuff right away because historical Meteor code did it.
-    // If this turns out to not be necessary, we should remove it.
-    billing: [
-      {
-        _id: jasmine.any(String),
-        currency: { userCurrency: currencyCode }
-      }
-    ],
     currencyCode,
     createdAt: jasmine.any(Date),
     items,

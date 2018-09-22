@@ -1,7 +1,17 @@
 import { Meteor } from "meteor/meteor";
-import appEvents from "/imports/plugins/core/core/server/appEvents";
-import buildContext from "./no-meteor/buildContext";
+import buildContext from "/imports/node-app/core/util/buildContext";
 import collections from "/imports/collections/rawCollections";
+
+let baseContext = {};
+
+/**
+ * @summary Sets the baseContext used by getGraphQLContextInMeteorMethod
+ * @param {Object} context The context object
+ * @returns {undefined}
+ */
+export function setBaseContext(context) {
+  baseContext = context;
+}
 
 /**
  * Calls buildContext to build a GraphQL context object, after first looking up
@@ -26,7 +36,7 @@ export default async function getGraphQLContextInMeteorMethod(userId) {
     if (!user) throw new Error(`No user found with ID ${userId}`);
   }
 
-  const meteorContext = { appEvents, collections };
+  const meteorContext = { ...baseContext };
 
   const request = { user };
 

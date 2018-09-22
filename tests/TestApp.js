@@ -3,12 +3,14 @@ import graphql from "graphql.js";
 import findFreePort from "find-free-port";
 import MongoDBMemoryServer from "mongodb-memory-server";
 import Random from "@reactioncommerce/random";
-import appEvents from "../imports/plugins/core/core/server/appEvents";
-import createApolloServer from "../imports/plugins/core/graphql/server/no-meteor/createApolloServer";
-import defineCollections from "../imports/collections/defineCollections";
-import Factory from "/imports/test-utils/helpers/factory";
-import hashLoginToken from "../imports/plugins/core/accounts/server/no-meteor/util/hashLoginToken";
+import appEvents from "../imports/node-app/core/util/appEvents";
+import createApolloServer from "../imports/node-app/core/createApolloServer";
+import defineCollections from "../imports/node-app/core/util/defineCollections";
+import Factory from "../imports/test-utils/helpers/factory";
+import hashLoginToken from "../imports/node-app/core/util/hashLoginToken";
 import setUpFileCollections from "../imports/plugins/core/files/server/no-meteor/setUpFileCollections";
+import mutations from "../imports/node-app/devserver/mutations";
+import queries from "../imports/node-app/devserver/queries";
 
 class TestApp {
   constructor() {
@@ -24,7 +26,9 @@ class TestApp {
       },
       context: {
         appEvents,
-        collections: this.collections
+        collections: this.collections,
+        mutations,
+        queries
       },
       debug: true
     });

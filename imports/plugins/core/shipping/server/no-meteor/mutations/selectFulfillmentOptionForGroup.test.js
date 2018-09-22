@@ -2,7 +2,7 @@ import Factory from "/imports/test-utils/helpers/factory";
 import mockContext from "/imports/test-utils/helpers/mockContext";
 import selectFulfillmentOptionForGroup from "./selectFulfillmentOptionForGroup";
 
-jest.mock("../../../../cart/server/no-meteor/util/getCartById", () => jest.fn().mockImplementation(() => Promise.resolve({
+jest.mock("../util/getCartById", () => jest.fn().mockImplementation(() => Promise.resolve({
   _id: "cartId",
   shipping: [{
     _id: "group1",

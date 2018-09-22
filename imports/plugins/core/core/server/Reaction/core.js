@@ -10,6 +10,7 @@ import { Roles } from "meteor/alanning:roles";
 import { EJSON } from "meteor/ejson";
 import * as Collections from "/lib/collections";
 import ConnectionDataStore from "/imports/plugins/core/core/server/util/connectionDataStore";
+import { mutations, queries, resolvers, schemas, functionsByType } from "../no-meteor/pluginRegistration";
 import createGroups from "./createGroups";
 import processJobs from "./processJobs";
 import sendVerificationEmail from "./sendVerificationEmail";
@@ -72,6 +73,31 @@ export default {
   Packages: {},
 
   registerPackage(packageInfo) {
+    // Mutate globals with package info
+    if (packageInfo.graphQL) {
+      if (packageInfo.graphQL.resolvers) {
+        merge(resolvers, packageInfo.graphQL.resolvers);
+      }
+      if (packageInfo.graphQL.schemas) {
+        schemas.push(...packageInfo.graphQL.schemas);
+      }
+    }
+    if (packageInfo.mutations) {
+      merge(mutations, packageInfo.mutations);
+    }
+    if (packageInfo.queries) {
+      merge(queries, packageInfo.queries);
+    }
+    if (packageInfo.functionsByType) {
+      Object.keys(packageInfo.functionsByType).forEach((type) => {
+        if (!Array.isArray(functionsByType[type])) {
+          functionsByType[type] = [];
+        }
+        functionsByType[type].push(...packageInfo.functionsByType[type]);
+      });
+    }
+
+    // Save the package info
     this.Packages[packageInfo.name] = packageInfo;
     const registeredPackage = this.Packages[packageInfo.name];
     return registeredPackage;
@@ -431,6 +457,15 @@ export default {
    */
   getShopIdByDomain() {
     const domain = this.getDomain();
+    const primaryShop = this.getPrimaryShop();
+
+    // in cases where the domain could match multiple shops, we first check
+    // whether the primaryShop matches the current domain. If so, we give it
+    // priority
+    if (primaryShop && Array.isArray(primaryShop.domains) && primaryShop.domains.includes(domain)) {
+      return primaryShop._id;
+    }
+
     const shop = Shops.find({
       domains: domain
     }, {

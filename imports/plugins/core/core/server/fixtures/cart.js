@@ -116,13 +116,6 @@ export function createCart(productId, variantId) {
         address: getAddress()
       }
     ],
-    billing: [
-      {
-        _id: Random.id(),
-        shopId: getShop()._id,
-        address: getAddress()
-      }
-    ],
     workflow: {
       status: "checkoutPayment",
       workflow: [
@@ -158,13 +151,6 @@ export default function () {
        address: addressForOrder
      }
    ]`
-   * @property {Array} billing - `[
-     {
-       _id: Random.id(),
-       shopId: getShop()._id,
-       address: addressForOrder
-     }
-   ]`
    * @property {Object} workflow - `{
      status: "checkoutPayment",
      workflow: [
@@ -194,7 +180,6 @@ export default function () {
     email: faker.internet.email(),
     items: [],
     shipping: [],
-    billing: [],
     workflow: {
       status: "new",
       workflow: []
@@ -213,7 +198,6 @@ export default function () {
       getCartItem()
     ],
     shipping: [],
-    billing: [],
     workflow: {
       status: "new",
       workflow: []
@@ -249,14 +233,12 @@ export default function () {
       {
         _id: Random.id(),
         shopId: getShop()._id,
-        address: addressForOrder
-      }
-    ],
-    billing: [
-      {
-        _id: Random.id(),
-        shopId: getShop()._id,
-        address: addressForOrder
+        address: addressForOrder,
+        payment: {
+          _id: Random.id(),
+          shopId: getShop()._id,
+          address: addressForOrder
+        }
       }
     ],
     workflow: {
@@ -276,7 +258,6 @@ export default function () {
   };
 
   Factory.define("cart", Cart, Object.assign({}, cart));
-  Factory.define("cartToOrder", Cart, Object.assign({}, cart, cartToOrder));
   Factory.define("anonymousCart", Cart, Object.assign({}, cart, anonymousCart));
   Factory.define("cartOne", Cart, Object.assign({}, cart, cartToOrder, cartOne));
   Factory.define("cartTwo", Cart, Object.assign({}, cart, cartToOrder, cartTwo));

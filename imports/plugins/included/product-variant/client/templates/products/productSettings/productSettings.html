@@ -48,43 +48,6 @@
         {{> productSettingsListItem product}}
       {{/each}}
     </div>
-
-  </div>
-
-  <div class="panel panel-default">
-    <div class="panel-heading">
-      <h4 class="panel-title" data-i18n="productDetailEdit.size">Size</h4>
-    </div>
-
-    <div class="product-settings-size-controls list-group">
-
-      <div class="list-group-item {{itemWeightActive 0}}" data-event-action="changeProductWeight" data-event-data="0">
-        <div class="product-settings-size-control">
-            <div class="main"></div>
-        </div>
-      </div>
-
-      <div class="list-group-item {{itemWeightActive 1}}" data-event-action="changeProductWeight" data-event-data="1">
-
-        <div class="product-settings-size-control main-wide">
-            <div class="main"></div>
-            <div class="side">
-              <span></span>
-              <span></span>
-              <span></span>
-            </div>
-        </div>
-      </div>
-
-      <div class="list-group-item {{itemWeightActive 2}}" data-event-action="changeProductWeight" data-event-data="2">
-        <div class="product-settings-size-control main-full">
-          <div class="main">
-            <div class="overlay"></div>
-          </div>
-        </div>
-      </div>
-
-    </div>
   </div>
   {{else}}
     <div class="panel panel-default">

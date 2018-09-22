@@ -74,12 +74,12 @@ function composer(props, onData) {
   });
 
   const listItems = [];
-  const listItem = currentCart.billing.find((element) => element.paymentMethod && element.paymentMethod.processor === "code");
+  const listItem = currentCart.billing.find((element) => element.processor === "code");
   if (listItem) {
     listItems.push({
       id: listItem._id,
-      code: listItem.paymentMethod.code,
-      discount: listItem.paymentMethod.amount
+      code: listItem.code,
+      discount: listItem.amount
     });
   }
 

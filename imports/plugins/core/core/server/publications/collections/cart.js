@@ -1,7 +1,7 @@
 import { Meteor } from "meteor/meteor";
 import { check, Match } from "meteor/check";
 import { Accounts, Cart, MediaRecords } from "/lib/collections";
-import hashLoginToken from "/imports/plugins/core/accounts/server/no-meteor/util/hashLoginToken";
+import hashLoginToken from "/imports/node-app/core/util/hashLoginToken";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
 
 Meteor.publish("Cart", function (accountId, anonymousCarts, shopId) {

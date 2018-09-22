@@ -173,7 +173,6 @@ export default async function createCatalogProduct(product, collections) {
     originCountry: product.originCountry,
     pageTitle: product.pageTitle,
     parcel: product.parcel,
-    positions: product.positions,
     price: product.price,
     pricing: {
       [shop.currency]: {

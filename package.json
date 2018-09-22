@@ -1,7 +1,7 @@
 {
   "name": "reaction",
   "description": "Reaction is a modern reactive, real-time event driven ecommerce platform.",
-  "version": "1.16.0",
+  "version": "2.0.0",
   "main": "main.js",
   "directories": {
     "test": "tests"
@@ -19,7 +19,16 @@
     "url": "https://github.com/reactioncommerce/reaction/issues"
   },
   "dependencies": {
-    "@babel/runtime": "7.0.0-beta.49",
+    "@babel/plugin-proposal-class-properties": "7.0.0",
+    "@babel/plugin-proposal-decorators": "7.0.0",
+    "@babel/plugin-proposal-export-namespace-from": "7.0.0",
+    "@babel/plugin-proposal-function-sent": "7.0.0",
+    "@babel/plugin-proposal-json-strings": "7.0.0",
+    "@babel/plugin-proposal-numeric-separator": "7.0.0",
+    "@babel/plugin-proposal-throw-expressions": "7.0.0",
+    "@babel/plugin-syntax-dynamic-import": "7.0.0",
+    "@babel/plugin-syntax-import-meta": "7.0.0",
+    "@babel/runtime": "7.0.0",
     "@reactioncommerce/components": "0.21.0",
     "@reactioncommerce/components-context": "1.0.0",
     "@reactioncommerce/data-factory": "^1.0.0",
@@ -36,8 +45,8 @@
     "apollo-client": "2.3.5",
     "apollo-link": "1.2.2",
     "apollo-link-http": "1.5.4",
-    "apollo-server-core": "1.3.2",
-    "apollo-server-express": "1.3.2",
+    "apollo-server-core": "1.4.0",
+    "apollo-server-express": "1.4.0",
     "autoprefixer": "^7.2.5",
     "autosize": "^4.0.0",
     "body-parser": "^1.18.2",
@@ -60,11 +69,12 @@
     "flatten-obj": "^3.1.1",
     "font-awesome": "^4.7.0",
     "graphql": "0.13.1",
-    "graphql-fields": "^1.0.2",
-    "graphql-iso-date": "^3.5.0",
-    "graphql-relay": "^0.5.4",
+    "graphql-fields": "1.1.0",
+    "graphql-iso-date": "3.5.0",
+    "graphql-relay": "0.5.5",
     "graphql-tag": "2.9.2",
-    "graphql-tools": "2.21.0",
+    "graphql-tools": "3.1.1",
+    "graphql.js": "0.4.20",
     "handlebars": "^4.0.11",
     "history": "^4.7.2",
     "hoist-non-react-statics": "^2.3.1",
@@ -142,16 +152,14 @@
     "url": "^0.11.0"
   },
   "devDependencies": {
-    "@babel/cli": "7.0.0-beta.49",
-    "@babel/core": "7.0.0-beta.49",
-    "@babel/node": "7.0.0-beta.49",
-    "@babel/plugin-proposal-object-rest-spread": "7.0.0-beta.49",
-    "@babel/preset-env": "7.0.0-beta.49",
-    "@babel/preset-es2015": "7.0.0-beta.49",
-    "@babel/preset-react": "7.0.0-beta.49",
-    "@babel/preset-stage-2": "7.0.0-beta.49",
+    "@babel/cli": "7.0.0",
+    "@babel/core": "7.0.0",
+    "@babel/node": "7.0.0",
+    "@babel/plugin-proposal-object-rest-spread": "7.0.0",
+    "@babel/preset-env": "7.0.0",
+    "@babel/preset-react": "7.0.0",
     "@reactioncommerce/eslint-config": "1.9.0",
-    "babel-core": "^7.0.0-bridge.0",
+    "babel-core": "7.0.0-bridge.0",
     "babel-eslint": "8.2.3",
     "babel-jest": "22.4.4",
     "babel-plugin-inline-import": "3.0.0",
@@ -159,7 +167,7 @@
     "babel-plugin-module-resolver": "3.1.1",
     "babel-plugin-rewire-exports": "0.3.0",
     "babel-plugin-transform-class-properties": "6.24.1",
-    "babel-preset-meteor": "7.0.0-beta.49",
+    "babel-preset-meteor": "7.0.0",
     "chai": "^4.1.2",
     "enzyme": "^3.3.0",
     "enzyme-adapter-react-16": "1.1.1",
@@ -172,7 +180,6 @@
     "eslint-plugin-promise": "3.8.0",
     "eslint-plugin-react": "7.8.2",
     "find-free-port": "^1.2.0",
-    "graphql.js": "^0.4.20",
     "jest": "^22.4.2",
     "jest-junit": "^3.6.0",
     "js-yaml": "^3.10.0",
@@ -192,7 +199,7 @@
     }
   },
   "scripts": {
-    "devserver": "NODE_ENV=devserver nodemon .reaction/devserver/index.js",
+    "devserver": "ROOT_URL=http://localhost:3030 MONGO_URL=mongodb://localhost:27017/reaction NODE_ENV=reaction-node BABEL_DISABLE_CACHE=1 nodemon ./imports/node-app/devserver/index.js",
     "lint": "eslint .",
     "test": "npm run test:unit && npm run test:integration && npm run test:app",
     "test:app": "MONGO_URL='' TEST_CLIENT=0 meteor test --once --full-app --driver-package meteortesting:mocha",
@@ -206,8 +213,12 @@
   },
   "babel": {
     "plugins": [
-      "transform-class-properties",
-      "babel-plugin-inline-import",
+      [
+        "@babel/plugin-proposal-class-properties",
+        {
+          "loose": false
+        }
+      ],
       [
         "lodash",
         {
@@ -226,8 +237,8 @@
           "alias": {
             "@reactioncommerce/reaction-collections": "./imports/plugins/core/collections",
             "@reactioncommerce/reaction-components": "./imports/plugins/core/components/lib",
-            "@reactioncommerce/reaction-graphql-utils": "./imports/plugins/core/graphql/server/no-meteor/resolvers/util",
-            "@reactioncommerce/reaction-graphql-xforms": "./imports/plugins/core/graphql/server/no-meteor/resolvers/xforms",
+            "@reactioncommerce/reaction-graphql-utils": "./imports/plugins/core/graphql/server/no-meteor/util",
+            "@reactioncommerce/reaction-graphql-xforms": "./imports/plugins/core/graphql/server/no-meteor/xforms",
             "@reactioncommerce/reaction-router": "./imports/plugins/core/router/lib",
             "@reactioncommerce/reaction-ui": "./imports/plugins/core/ui/client/components",
             "@reactioncommerce/reaction-error": "./imports/utils/ReactionError.js",
@@ -237,7 +248,7 @@
       ]
     ],
     "env": {
-      "devserver": {
+      "reaction-node": {
         "presets": [
           [
             "@babel/env",
@@ -246,16 +257,29 @@
                 "node": "current"
               }
             }
-          ],
-          [
-            "@babel/preset-stage-2",
-            {
-              "decoratorsLegacy": true
-            }
           ]
         ],
         "plugins": [
           "babel-plugin-inline-import",
+          [
+            "@babel/plugin-proposal-decorators",
+            {
+              "legacy": true
+            }
+          ],
+          "@babel/plugin-proposal-function-sent",
+          "@babel/plugin-proposal-export-namespace-from",
+          "@babel/plugin-proposal-numeric-separator",
+          "@babel/plugin-proposal-throw-expressions",
+          "@babel/plugin-syntax-dynamic-import",
+          "@babel/plugin-syntax-import-meta",
+          [
+            "@babel/plugin-proposal-class-properties",
+            {
+              "loose": false
+            }
+          ],
+          "@babel/plugin-proposal-json-strings",
           [
             "module-resolver",
             {
@@ -265,12 +289,12 @@
               "alias": {
                 "@reactioncommerce/reaction-collections": "./imports/plugins/core/collections",
                 "@reactioncommerce/reaction-components": "./imports/plugins/core/components/lib",
-                "@reactioncommerce/reaction-graphql-utils": "./imports/plugins/core/graphql/server/no-meteor/resolvers/util",
-                "@reactioncommerce/reaction-graphql-xforms": "./imports/plugins/core/graphql/server/no-meteor/resolvers/xforms",
+                "@reactioncommerce/reaction-graphql-utils": "./imports/plugins/core/graphql/server/no-meteor/util",
+                "@reactioncommerce/reaction-graphql-xforms": "./imports/plugins/core/graphql/server/no-meteor/xforms",
                 "@reactioncommerce/reaction-router": "./imports/plugins/core/router/lib",
                 "@reactioncommerce/reaction-ui": "./imports/plugins/core/ui/client/components",
                 "@reactioncommerce/reaction-error": "./imports/utils/ReactionError.js",
-                "meteor": "./.reaction/devserver/mockmeteor",
+                "meteor": "./imports/node-app/mockmeteor",
                 "underscore": "lodash"
               }
             }
@@ -288,18 +312,31 @@
             }
           ],
           [
-            "@babel/preset-stage-2",
-            {
-              "decoratorsLegacy": true
-            }
-          ],
-          [
             "@babel/preset-react"
           ]
         ],
         "plugins": [
           "rewire-exports",
           "babel-plugin-inline-import",
+          [
+            "@babel/plugin-proposal-decorators",
+            {
+              "legacy": true
+            }
+          ],
+          "@babel/plugin-proposal-function-sent",
+          "@babel/plugin-proposal-export-namespace-from",
+          "@babel/plugin-proposal-numeric-separator",
+          "@babel/plugin-proposal-throw-expressions",
+          "@babel/plugin-syntax-dynamic-import",
+          "@babel/plugin-syntax-import-meta",
+          [
+            "@babel/plugin-proposal-class-properties",
+            {
+              "loose": false
+            }
+          ],
+          "@babel/plugin-proposal-json-strings",
           [
             "module-resolver",
             {
@@ -309,8 +346,8 @@
               "alias": {
                 "@reactioncommerce/reaction-collections": "./imports/plugins/core/collections",
                 "@reactioncommerce/reaction-components": "./imports/plugins/core/components/lib",
-                "@reactioncommerce/reaction-graphql-utils": "./imports/plugins/core/graphql/server/no-meteor/resolvers/util",
-                "@reactioncommerce/reaction-graphql-xforms": "./imports/plugins/core/graphql/server/no-meteor/resolvers/xforms",
+                "@reactioncommerce/reaction-graphql-utils": "./imports/plugins/core/graphql/server/no-meteor/util",
+                "@reactioncommerce/reaction-graphql-xforms": "./imports/plugins/core/graphql/server/no-meteor/xforms",
                 "@reactioncommerce/reaction-router": "./imports/plugins/core/router/lib",
                 "@reactioncommerce/reaction-ui": "./imports/plugins/core/ui/client/components",
                 "@reactioncommerce/reaction-error": "./imports/utils/ReactionError.js",
@@ -358,8 +395,7 @@
     },
     "ext": "js,json,graphql",
     "watch": [
-      "imports",
-      ".reaction"
+      "imports"
     ]
   }
 }

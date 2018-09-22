@@ -1,6 +1,6 @@
 import SimpleSchema from "simpl-schema";
 import ReactionError from "@reactioncommerce/reaction-error";
-import hashLoginToken from "/imports/plugins/core/accounts/server/no-meteor/util/hashLoginToken";
+import hashLoginToken from "/imports/node-app/core/util/hashLoginToken";
 
 const inputSchema = new SimpleSchema({
   cartId: String,
@@ -38,7 +38,7 @@ export default async function setEmailOnAnonymousCart(context, input) {
 
   const updatedCart = await Cart.findOne({ _id: cartId });
 
-  await appEvents.emit("afterCartUpdate", updatedCart._id, updatedCart);
+  await appEvents.emit("afterCartUpdate", updatedCart);
 
   return {
     cart: updatedCart
