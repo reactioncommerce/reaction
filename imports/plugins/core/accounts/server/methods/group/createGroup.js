@@ -4,7 +4,6 @@ import { check, Match } from "meteor/check";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
 import ReactionError from "@reactioncommerce/reaction-error";
 import { Groups } from "/lib/collections";
-import { getSlug } from "/lib/api";
 
 /**
  * @name group/createGroup
@@ -36,7 +35,7 @@ export default function createGroup(groupData, shopId) {
   const defaultCustomerGroupForShop = Groups.findOne({ slug: "customer", shopId }) || {};
   const defaultAdminPermissions = (defaultCustomerGroupForShop.permissions || []).concat("dashboard");
   const newGroupData = Object.assign({}, groupData, {
-    slug: getSlug(groupData.name), shopId
+    slug: Reaction.getSlug(groupData.name), shopId
   });
 
   if (!newGroupData.permissions) {
