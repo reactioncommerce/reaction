@@ -4,6 +4,7 @@ import ReactDOM from "react-dom";
 import { matchPath } from "react-router";
 import { Router as ReactRouter } from "react-router-dom";
 import { ApolloProvider } from "react-apollo";
+import { compose } from "recompose";
 import equal from "deep-equal";
 import pathToRegexp from "path-to-regexp";
 import queryParse from "query-parse";
@@ -14,6 +15,9 @@ import { Components } from "@reactioncommerce/reaction-components";
 import { Reaction } from "/client/api";
 import { TranslationProvider } from "/imports/plugins/core/ui/client/providers";
 import initApollo from "/imports/plugins/core/graphql/lib/helpers/initApollo";
+import withViewer from "/imports/plugins/core/graphql/lib/hocs/withViewer";
+import withAuthConsumer from "/imports/plugins/core/stores/client/hoc/withAuthConsumer";
+import { AuthProvider } from "/imports/plugins/core/stores/client/contexts/AuthContext";
 import { MetaData } from "/lib/api/router/metadata";
 import { Router } from "../lib";
 import appComponents from "./appComponents";
@@ -23,8 +27,11 @@ const { history } = Router;
 class BrowserRouter extends Component {
   static propTypes = {
     children: PropTypes.node,
+    ctxSetViewerId: PropTypes.func,
     history: PropTypes.object,
-    store: PropTypes.object
+    isLoadingViewerId: PropTypes.bool,
+    store: PropTypes.object,
+    viewerId: PropTypes.string
   }
 
   static contextTypes = {
@@ -34,6 +41,13 @@ class BrowserRouter extends Component {
   UNSAFE_componentWillMount() { // eslint-disable-line camelcase
     this.unsubscribeFromHistory = history.listen(this.handleLocationChange);
     this.handleLocationChange(history.location);
+  }
+
+  componentDidUpdate(prevProps) {
+    const { isLoadingViewerId, ctxSetViewerId, viewerId } = this.props;
+    if (prevProps.isLoadingViewerId && !isLoadingViewerId) {
+      ctxSetViewerId(viewerId);
+    }
   }
 
   componentWillUnmount() {
@@ -132,6 +146,8 @@ class BrowserRouter extends Component {
   }
 }
 
+const WrappedBrowserRouter = compose(withAuthConsumer, withViewer)(BrowserRouter);
+
 /**
  * @name getRootNode
  * @summary Loads and returns element for #react-root
@@ -172,13 +188,15 @@ export function initBrowserRouter() {
       ReactDOM.render(
         (
           <ApolloProvider client={apolloClient}>
-            <BrowserRouter history={history}>
-              <TranslationProvider>
-                <ComponentsProvider value={appComponents}>
-                  <Components.App children={Router.reactComponents} />
-                </ComponentsProvider>
-              </TranslationProvider>
-            </BrowserRouter>
+            <AuthProvider>
+              <WrappedBrowserRouter history={history}>
+                <TranslationProvider>
+                  <ComponentsProvider value={appComponents}>
+                    <Components.App children={Router.reactComponents} />
+                  </ComponentsProvider>
+                </TranslationProvider>
+              </WrappedBrowserRouter>
+            </AuthProvider>
           </ApolloProvider>
         ),
         getRootNode()
@@ -189,4 +207,4 @@ export function initBrowserRouter() {
   });
 }
 
-export default BrowserRouter;
+export default WrappedBrowserRouter;

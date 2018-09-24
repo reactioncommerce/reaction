@@ -1,9 +1,11 @@
 import { registerComponent, composeWithTracker } from "@reactioncommerce/reaction-components";
+import { compose } from "recompose";
 import { Meteor } from "meteor/meteor";
 import { Reaction } from "/client/api";
 import NavBar from "../components/navbar";
 import { Shops } from "/lib/collections";
 import { Media } from "/imports/plugins/core/files/client";
+import withAuthConsumer from "/imports/plugins/core/stores/client/hoc/withAuthConsumer";
 
 export function composer(props, onData) {
   const shopSub = Meteor.subscribe("MerchantShops", Reaction.getShopsForUser(["admin"]));
@@ -67,6 +69,6 @@ export function composer(props, onData) {
   });
 }
 
-registerComponent("NavBar", NavBar, composeWithTracker(composer));
+registerComponent("NavBar", NavBar, [composeWithTracker(composer), withAuthConsumer]);
 
-export default composeWithTracker(composer)(NavBar);
+export default compose(composeWithTracker(composer), withAuthConsumer)(NavBar);
