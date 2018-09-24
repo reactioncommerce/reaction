@@ -695,7 +695,7 @@ export default {
 
       // Slugify is exported to modules.default while transliteration is exported to modules.slugify
       slugify = mod.default || mod.slugify;
-    }
+    };
 
     let slug;
     Promise.resolve(lazyLoadSlugify()); // eslint-disable-line promise/catch-or-return
