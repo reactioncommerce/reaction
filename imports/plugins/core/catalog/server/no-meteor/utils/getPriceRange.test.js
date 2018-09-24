@@ -18,7 +18,7 @@ test("expect price object with zero values when provided price values of 0", () 
 });
 
 // epxect price object to have same value when only one price
-test("epxect price object to have same value when only one price", () => {
+test("expect price object to have same value when only one price", () => {
   const spec = getPriceRange(mockSinglePrice);
   const success = {
     range: "5.99",
@@ -29,7 +29,7 @@ test("epxect price object to have same value when only one price", () => {
 });
 
 // epxect price object to have same value when provided prices are the same
-test("epxect price object to have same value when provided prices are the same", () => {
+test("expect price object to have same value when provided prices are the same", () => {
   const spec = getPriceRange(mockSamePrices);
   const success = {
     range: "2.99",
