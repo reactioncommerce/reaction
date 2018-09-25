@@ -283,7 +283,15 @@ export default async function createOrder(context, input) {
     // Error if we calculate total price differently from what the client has shown as the preview.
     // It's important to keep this after adding and verifying the shipmentMethod and order item prices.
     finalGroup.invoice = getInvoiceForFulfillmentGroup(finalGroup, discountTotal);
-    if (groupInput.totalPrice !== finalGroup.invoice.total) {
+
+    // For now we expect that the client has NOT included discounts in the expected total it sent.
+    // Note that we don't currently know which parts of `discountTotal` go with which fulfillment groups.
+    // This needs to be rewritten soon for discounts to work when there are multiple fulfillment groups.
+    // Probably the client should be sending all applied discount IDs and amounts in the order input (by group),
+    // and include total discount in `groupInput.totalPrice`, and then we simply verify that they are valid here.
+    const expectedTotal = Math.max(groupInput.totalPrice - discountTotal, 0);
+
+    if (expectedTotal !== finalGroup.invoice.total) {
       throw new ReactionError(
         "invalid",
         `Client provided total price ${groupInput.totalPrice} for group with index ${index}, but actual total price is ${finalGroup.invoice.total}`
