@@ -294,7 +294,7 @@ export default async function createOrder(context, input) {
     if (expectedTotal !== finalGroup.invoice.total) {
       throw new ReactionError(
         "invalid",
-        `Client provided total price ${groupInput.totalPrice} for group with index ${index}, but actual total price is ${finalGroup.invoice.total}`
+        `Client provided total price ${expectedTotal} for group with index ${index}, but actual total price is ${finalGroup.invoice.total}`
       );
     }
 
