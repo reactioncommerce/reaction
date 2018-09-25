@@ -12,15 +12,14 @@ import { decodeNavItemMetadata } from "../xforms";
  * @return {Promise<Object>} Object with `navItem` property containing the created nav item
  */
 export default async function createNavItem(context, navItem) {
-  console.log("here");
   const { collections } = context;
   const { NavItems } = collections;
-  const { navItem: { metadata } } = input;
+  const { metadata } = navItem;
 
   // TODO check role/permission
 
   let decodedMetadata = {};
-  if (decodedMetadata) {
+  if (metadata) {
     decodedMetadata = decodeNavItemMetadata(metadata);
   }
 

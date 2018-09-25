@@ -33,7 +33,7 @@ export const NavItem = new SimpleSchema({
     optional: true
   },
   position: {
-    type: String
+    type: Number
   },
   shopId: {
     type: String
