@@ -103,9 +103,7 @@ const CompletedOrder = ({ order, paymentMethods, isProfilePage }) => {
 CompletedOrder.propTypes = {
   isProfilePage: PropTypes.bool,
   order: PropTypes.object,
-  orderSummary: PropTypes.object,
-  paymentMethods: PropTypes.array,
-  shops: PropTypes.array
+  paymentMethods: PropTypes.array
 };
 
 export default CompletedOrder;
