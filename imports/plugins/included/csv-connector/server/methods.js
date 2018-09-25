@@ -6,6 +6,7 @@ import { check } from "meteor/check";
 import { EJSON } from "meteor/ejson";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
 import { Packages } from "/lib/collections";
+import Field from "@reactioncommerce/components/Field/v1/Field";
 import { JobItems, Mappings } from "../lib/collections";
 
 export const methods = {
@@ -162,7 +163,12 @@ export const methods = {
       mappingId,
       name,
       newMappingName,
+      previousJobId,
       saveMappingAction,
+      s3ExportFileKey,
+      s3ImportFileKey,
+      sftpExportFilePath,
+      sftpImportFilePath,
       shouldExportToS3,
       shouldExportToSFTP,
       shouldSaveToNewMapping
@@ -170,13 +176,28 @@ export const methods = {
 
     const shopId = Reaction.getShopId();
 
+    let newMappingId;
+    if ((mappingId === "default" && shouldSaveToNewMapping) || (mappingId !== "default" && saveMappingAction === "create")) {
+      newMappingId = Mappings.insert({
+        shopId,
+        name: newMappingName,
+        collection,
+        mapping: mappingByUser
+      });
+    } else if (mappingId !== "default") {
+      newMappingId = mappingId;
+      if (saveMappingAction === "update") {
+        Mappings.update({ _id: mappingId }, { $set: { mapping: mappingByUser } });
+      }
+    }
+
     let jobItemValues;
 
     const commonValues = {
       collection,
       jobSubType,
       jobType,
-      mappingId,
+      mappingId: newMappingId,
       name,
       shopId,
       status: "pending",
@@ -190,25 +211,24 @@ export const methods = {
         hasHeader,
         mapping: mappingByUser
       });
+      if (fileSource === "s3") {
+        jobItemValues.s3ImportFileKey = s3ImportFileKey;
+      } else if (fileSource === "sftp") {
+        jobItemValues.sftpImportFilePath = sftpImportFilePath;
+      }
     } else {
       jobItemValues = Object.assign(commonValues, {
-        shouldExportToS3,
-        shouldExportToSFTP
+        shouldExportToS3: !!shouldExportToS3,
+        shouldExportToSFTP: !!shouldExportToSFTP
       });
+      if (shouldExportToS3) {
+        jobItemValues.s3ExportFileKey = s3ExportFileKey;
+      } else if (shouldExportToSFTP) {
+        jobItemValues.sftpExportFilePath = sftpExportFilePath;
+      }
     }
 
     const jobItemId = JobItems.insert(jobItemValues);
-
-    if ((mappingId === "default" && shouldSaveToNewMapping) || (mappingId !== "default" && saveMappingAction === "create")) {
-      Mappings.insert({
-        shopId,
-        name: newMappingName,
-        collection,
-        mapping: mappingByUser
-      });
-    } else if (mappingId !== "default" && saveMappingAction === "update") {
-      Mappings.update({ _id: mappingId }, { $set: { mapping: mappingByUser } });
-    }
 
     return jobItemId;
   },

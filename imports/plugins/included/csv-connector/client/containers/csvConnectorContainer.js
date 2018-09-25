@@ -36,6 +36,7 @@ class CSVConnectorContainer extends Component {
       mappingByUser: {},
       name: "",
       newMappingName: "",
+      previousJobId: "",
       saveMappingAction: "none",
       selectedMapping: {},
       shouldExportToS3: false,
@@ -93,16 +94,24 @@ class CSVConnectorContainer extends Component {
       activeScreen,
       fileSource,
       fileUpload,
+      jobSubType,
       jobType,
       mappingId,
       name,
       newMappingName,
+      previousJobId,
+      s3ExportFileKey,
+      s3ImportFileKey,
       saveMappingAction,
+      sftpExportFilePath,
+      sftpImportFilePath,
+      shouldExportToS3,
+      shouldExportToSFTP,
       shouldSaveToNewMapping
     } = this.state;
     const errors = {};
     if (activeScreen === "detail") {
-      if (!name) {
+      if (jobSubType === "create" && !name) {
         errors.name = [{ name: "name", message: "Job name is required." }];
       } else {
         errors.name = [];
@@ -111,6 +120,31 @@ class CSVConnectorContainer extends Component {
         errors.fileUpload = [{ name: "fileUpload", message: "File is required." }];
       } else {
         errors.fileUpload = [];
+      }
+      if (jobSubType === "fromPrevious" && !previousJobId) {
+        errors.previousJobId = [{ name: "previousJobId", message: "Previous job is required." }];
+      } else {
+        errors.previousJobId = [];
+      }
+      if (jobType === "import" && fileSource === "s3" && !s3ImportFileKey) {
+        errors.s3ImportFileKey = [{ name: "s3ImportFileKey", message: "S3 file key is required." }];
+      } else {
+        errors.s3ImportFileKey = [];
+      }
+      if (jobType === "export" && shouldExportToS3 && !s3ExportFileKey) {
+        errors.s3ExportFileKey = [{ name: "s3ExportFileKey", message: "S3 file key is required." }];
+      } else {
+        errors.s3ExportFileKey = [];
+      }
+      if (jobType === "import" && fileSource === "sftp" && !sftpImportFilePath) {
+        errors.sftpImportFilePath = [{ name: "sftpImportFilePath", message: "SFTP file path is required." }];
+      } else {
+        errors.sftpImportFilePath = [];
+      }
+      if (jobType === "export" && shouldExportToSFTP && !sftpExportFilePath) {
+        errors.sftpExportFilePath = [{ name: "sftpExportFilePath", message: "SFTP file path is required." }];
+      } else {
+        errors.sftpExportFilePath = [];
       }
     } else if (activeScreen === "mapping") {
       if ((mappingId === "default" && shouldSaveToNewMapping) || (mappingId !== "default" && saveMappingAction === "create")) {
@@ -157,11 +191,60 @@ class CSVConnectorContainer extends Component {
       return;
     }
 
-    let mappingId;
+    if (field === "jobSubType" && value === "fromPrevious") {
+      const previousJobs = JobItems.find({ jobType, jobSubType: "create" }).fetch();
+      const newPreviousJobsOptions = previousJobs.map((jobItem) => ({ value: jobItem._id, label: jobItem.name }));
+      this.setState({
+        collection: "",
+        fileSource: "",
+        mappingOptions: [],
+        previousJobsOptions: newPreviousJobsOptions
+      });
+      this.updateField("mappingId", "");
+    }
+
     this.updateField(field, value);
 
-    if (field === "collection" && collection !== value) {
-      const mappings = Mappings.find({ collection: value }).fetch();
+    let mappingId;
+    if (field === "mappingId") {
+      mappingId = value;
+    }
+
+    let currentCollection = collection;
+    if (field === "collection") {
+      currentCollection = value;
+    }
+
+
+    if (field === "previousJobId" && value) {
+      const prevJob = JobItems.findOne({ _id: value });
+      const {
+        collection: prevJobCollection,
+        fileSource: prevJobFileSource,
+        hasHeader: prevJobHasHeader,
+        mappingId: prevJobMappingId,
+        s3ExportFileKey: prevJobS3ExportFileKey,
+        s3ImportFileKey: prevJobS3ImportFileKey,
+        sftpExportFilePath: prevJobSFTPExportFilePath,
+        sftpImportFilePath: prevJobSFTPImportFilePath,
+        shouldExportToS3: prevJobShouldExportToS3,
+        shouldExportToSFTP: prevJobShouldExportToSFTP
+      } = prevJob;
+      mappingId = prevJobMappingId;
+      currentCollection = prevJobCollection;
+      this.updateField("collection", prevJobCollection);
+      this.updateField("fileSource", prevJobFileSource || "");
+      this.updateField("hasHeader", prevJobHasHeader);
+      this.updateField("s3ExportFileKey", prevJobS3ExportFileKey);
+      this.updateField("s3ImportFileKey", prevJobS3ImportFileKey);
+      this.updateField("sftpExportFilePath", prevJobSFTPExportFilePath);
+      this.updateField("sftpImportFilePath", prevJobSFTPImportFilePath);
+      this.updateField("shouldExportToS3", prevJobShouldExportToS3);
+      this.updateField("shouldExportToSFTP", prevJobShouldExportToSFTP);
+    }
+
+    if (currentCollection && ((field === "collection" && collection !== currentCollection) || field === "previousJobId")) {
+      const mappings = Mappings.find({ collection: currentCollection }).fetch();
       const newMappingOptions = mappings.map((mapping) => ({ value: mapping._id, label: mapping.name }));
       let label = "Create new mapping";
       if (jobType === "export") {
@@ -172,15 +255,12 @@ class CSVConnectorContainer extends Component {
         label
       });
       this.setState({ mappingOptions: newMappingOptions });
-      mappingId = newMappingOptions[0].value;
+      if (field === "collection") {
+        mappingId = newMappingOptions[0].value;
+      }
       this.updateField("mappingId", mappingId);
     }
 
-    if (field === "mappingId") {
-      mappingId = value;
-    }
-
-    const currentCollection = field === "collection" ? value : collection;
     if (mappingId && currentCollection) {
       const fieldOptions = getFieldOptionsForCollection(currentCollection);
       this.setState({ fieldOptions });
@@ -249,11 +329,17 @@ class CSVConnectorContainer extends Component {
       mappingId,
       name,
       newMappingName,
+      previousJobId,
       saveMappingAction,
+      s3ExportFileKey,
+      s3ImportFileKey,
+      sftpExportFilePath,
+      sftpImportFilePath,
       shouldSaveToNewMapping,
       shouldExportToS3,
       shouldExportToSFTP
     } = this.state;
+
     const errors = this.getValidationErrors();
 
     // If any field has validation error, return right away
@@ -275,7 +361,12 @@ class CSVConnectorContainer extends Component {
       mappingId,
       name,
       newMappingName,
+      previousJobId,
       saveMappingAction,
+      s3ExportFileKey,
+      s3ImportFileKey,
+      sftpExportFilePath,
+      sftpImportFilePath,
       shouldSaveToNewMapping,
       shouldExportToS3,
       shouldExportToSFTP
@@ -326,9 +417,15 @@ class CSVConnectorContainer extends Component {
       mappingOptions,
       name,
       newMappingName,
+      previousJobId,
+      previousJobsOptions,
+      s3ExportFileKey,
+      s3ImportFileKey,
       sampleData,
       saveMappingAction,
       selectedMapping,
+      sftpExportFilePath,
+      sftpImportFilePath,
       showSettings,
       shouldExportToS3,
       shouldExportToSFTP,
@@ -364,6 +461,12 @@ class CSVConnectorContainer extends Component {
           onDone={this.handleSubmitJobItem}
           onSetActiveScreen={this.handleSetActiveScreen}
           onSetField={this.handleSetField}
+          previousJobId={previousJobId}
+          previousJobsOptions={previousJobsOptions}
+          s3ExportFileKey={s3ExportFileKey}
+          s3ImportFileKey={s3ImportFileKey}
+          sftpExportFilePath={sftpExportFilePath}
+          sftpImportFilePath={sftpImportFilePath}
           shouldExportToS3={shouldExportToS3}
           shouldExportToSFTP={shouldExportToSFTP}
         />

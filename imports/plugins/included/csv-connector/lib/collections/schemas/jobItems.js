@@ -27,11 +27,31 @@ export const JobItems = new SimpleSchema({
     optional: true,
     label: "Job Sub-type"
   },
-  parentJobId: {
+  previousJobId: {
     type: String,
     optional: true,
-    label: "Job configuration",
+    label: "Previous job",
     index: 1
+  },
+  s3ExportFileKey: {
+    type: String,
+    optional: true,
+    label: "S3 Export File Key"
+  },
+  s3ImportFileKey: {
+    type: String,
+    optional: true,
+    label: "S3 Import File Key"
+  },
+  sftpExportFilePath: {
+    type: String,
+    optional: true,
+    label: "SFTP Export File Path"
+  },
+  sftpImportFilePath: {
+    type: String,
+    optional: true,
+    label: "SFTP Import File Path"
   },
   collection: {
     type: String,
@@ -47,21 +67,6 @@ export const JobItems = new SimpleSchema({
     type: String,
     optional: true,
     label: "File source"
-  },
-  newMappingName: {
-    type: String,
-    optional: true,
-    label: "New mapping name"
-  },
-  saveMappingAction: {
-    type: String,
-    optional: true,
-    label: "Save mapping action"
-  },
-  shouldSaveToNewMapping: {
-    type: Boolean,
-    optional: true,
-    label: "Save to new mapping?"
   },
   hasHeader: {
     type: Boolean,

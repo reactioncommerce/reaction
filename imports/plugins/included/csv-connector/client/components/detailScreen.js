@@ -47,6 +47,26 @@ class DetailScreen extends Component {
     this.props.onSetField("mappingId", value);
   }
 
+  handleChangePreviousJobId = (value) => {
+    this.props.onSetField("previousJobId", value);
+  }
+
+  handleChangeS3ExportFileKey = (value) => {
+    this.props.onSetField("s3ExportFileKey", value);
+  }
+
+  handleChangeS3ImportFileKey = (value) => {
+    this.props.onSetField("s3ImportFileKey", value);
+  }
+
+  handleChangeSFTPExportFilePath = (value) => {
+    this.props.onSetField("sftpExportFilePath", value);
+  }
+
+  handleChangeSFTPImportFilePath = (value) => {
+    this.props.onSetField("sftpImportFilePath", value);
+  }
+
   handleChangeShouldExportToS3 = (value) => {
     this.props.onSetField("shouldExportToS3", value);
   }
@@ -74,7 +94,7 @@ class DetailScreen extends Component {
   }
 
   renderDataTypeSelection() {
-    const { collection, dataTypeOptions } = this.props;
+    const { collection, dataTypeOptions, jobSubType } = this.props;
     return (
       <Field name="collection" label="Choose the data type" labelFor="collectionInput">
         <Select
@@ -83,6 +103,7 @@ class DetailScreen extends Component {
           options={dataTypeOptions}
           value={collection || ""}
           onChange={this.handleChangeDataType}
+          isReadOnly={jobSubType === "fromPrevious"}
           isSearchable
         />
       </Field>
@@ -102,7 +123,13 @@ class DetailScreen extends Component {
   }
 
   renderFileSourceSelection() {
-    const { fileSource, jobType, shouldExportToSFTP, shouldExportToS3 } = this.props;
+    const { fileSource, jobSubType, jobType, shouldExportToSFTP, shouldExportToS3 } = this.props;
+    let isReadOnly = false;
+    let defaultValue = "manual";
+    if (jobSubType === "fromPrevious") {
+      isReadOnly = true;
+      defaultValue = "";
+    }
     if (jobType === "import") {
       const fileSourceOptions = [{
         id: "manual",
@@ -124,12 +151,13 @@ class DetailScreen extends Component {
           <p>Choose file source:</p>
           <SelectableList
             components={{
-              SelectableItem: (listProps) => (<SelectableItem item={listProps.item} />)
+              SelectableItem: (listProps) => (<SelectableItem item={listProps.item} isReadOnly={listProps.isReadOnly} />)
             }}
             options={fileSourceOptions}
             name="fileSource"
-            value={fileSource || "manual"}
+            value={fileSource || defaultValue}
             onChange={this.handleChangeFileSource}
+            isReadOnly={isReadOnly}
           />
         </div>
       );
@@ -142,13 +170,17 @@ class DetailScreen extends Component {
           name="shouldExportToSFTP"
           onChange={this.handleChangeShouldExportToSFTP}
           value={shouldExportToSFTP}
+          isReadOnly={isReadOnly}
         />
+        {this.renderSFTPExportFilePath()}
         <Checkbox
           label="S3"
           name="shouldExportToS3"
           onChange={this.handleChangeShouldExportToS3}
           value={shouldExportToS3}
+          isReadOnly={isReadOnly}
         />
+        {this.renderS3ExportFilePath()}
       </div>
     );
   }
@@ -185,7 +217,7 @@ class DetailScreen extends Component {
   }
 
   renderHasHeader() {
-    const { hasHeader, jobType } = this.props;
+    const { hasHeader, jobSubType, jobType } = this.props;
     if (jobType === "import") {
       return (
         <div className="mt20">
@@ -194,6 +226,7 @@ class DetailScreen extends Component {
             name="hasHeader"
             onChange={this.handleChangeHasHeader}
             value={hasHeader}
+            isReadOnly={jobSubType === "fromPrevious"}
           />
         </div>
       );
@@ -202,7 +235,10 @@ class DetailScreen extends Component {
   }
 
   renderJobName() {
-    const { errors: { name: jobNameErrors }, name } = this.props;
+    const { errors: { name: jobNameErrors }, jobSubType, name } = this.props;
+    if (jobSubType === "fromPrevious") {
+      return null;
+    }
     return (
       <Field errors={jobNameErrors} name="name" label="Job name" labelFor="jobNameInput">
         <TextInput
@@ -251,7 +287,7 @@ class DetailScreen extends Component {
   }
 
   renderMappingSelection() {
-    const { mappingOptions, mappingId } = this.props;
+    const { jobSubType, mappingOptions, mappingId } = this.props;
     return (
       <Field name="mappingId" label="Choose a mapping template" labelFor="mappingIdInput">
         <Select
@@ -260,6 +296,7 @@ class DetailScreen extends Component {
           options={mappingOptions}
           value={mappingId || "default"}
           onChange={this.handleChangeMappingId}
+          isReadOnly={jobSubType === "fromPrevious"}
           isSearchable
         />
       </Field>
@@ -267,11 +304,111 @@ class DetailScreen extends Component {
   }
 
   renderNextOrDoneButton() {
-    const { fileSource, jobType } = this.props;
-    if (jobType === "import" && fileSource === "manual") {
+    const { fileSource, jobSubType, jobType } = this.props;
+    if (jobType === "import" && jobSubType === "create" && fileSource === "manual") {
       return <Button onClick={this.handleClickNext}>Next</Button>;
     }
     return <Button onClick={this.handleClickDone}>Done</Button>;
+  }
+
+  renderPreviousJobsSelection() {
+    const { errors: { previousJobId: previousJobIdErrors }, jobSubType, previousJobId, previousJobsOptions } = this.props;
+    if (jobSubType === "fromPrevious") {
+      return (
+        <Field errors={previousJobIdErrors} name="previousJobId" label="Select previous job" labelFor="previousJobIdInput">
+          <Select
+            id="previousJobIdInput"
+            name="previousJobId"
+            options={previousJobsOptions}
+            value={previousJobId}
+            onChange={this.handleChangePreviousJobId}
+            isSearchable
+          />
+          <ErrorsBlock errors={previousJobIdErrors} />
+        </Field>
+      );
+    }
+    return null;
+  }
+
+  renderS3ExportFilePath() {
+    const { errors: { s3ExportFileKey: s3ExportFileKeyErrors }, jobType, s3ExportFileKey, shouldExportToS3 } = this.props;
+    if (jobType !== "export" || !shouldExportToS3) {
+      return null;
+    }
+    return (
+      <Field errors={s3ExportFileKeyErrors} name="s3ExportFileKey" label="S3 file key" labelFor="s3ExportFileKeyInput">
+        <TextInput
+          errors={s3ExportFileKeyErrors}
+          id="s3ExportFileKeyInput"
+          name="s3ExportFileKey"
+          value={s3ExportFileKey}
+          placeholder="exports/export.csv"
+          onChanging={this.handleChangeS3ExportFileKey}
+        />
+        <ErrorsBlock errors={s3ExportFileKeyErrors} />
+      </Field>
+    );
+  }
+
+  renderS3ImportFileKey() {
+    const { errors: { s3ImportFileKey: s3ImportFileKeyErrors }, fileSource, jobType, s3ImportFileKey } = this.props;
+    if (jobType !== "import" || fileSource !== "s3") {
+      return null;
+    }
+    return (
+      <Field errors={s3ImportFileKeyErrors} name="s3ImportFileKey" label="S3 file key" labelFor="s3ImportFileKeyInput">
+        <TextInput
+          errors={s3ImportFileKeyErrors}
+          id="s3ImportFileKeyInput"
+          name="s3ImportFileKey"
+          value={s3ImportFileKey}
+          placeholder="imports/import.csv"
+          onChanging={this.handleChangeS3ImportFileKey}
+        />
+        <ErrorsBlock errors={s3ImportFileKeyErrors} />
+      </Field>
+    );
+  }
+
+  renderSFTPExportFilePath() {
+    const { errors: { sftpExportFilePath: sftpExportFilePathErrors }, jobType, sftpExportFilePath, shouldExportToSFTP } = this.props;
+    if (jobType !== "export" || !shouldExportToSFTP) {
+      return null;
+    }
+    return (
+      <Field errors={sftpExportFilePathErrors} name="sftpExportFilePath" label="SFTP file path" labelFor="sftpExportFilePathInput">
+        <TextInput
+          errors={sftpExportFilePathErrors}
+          id="sftpExportFilePathInput"
+          name="sftpExportFilePath"
+          value={sftpExportFilePath}
+          placeholder="exports/export.csv"
+          onChanging={this.handleChangeSFTPExportFilePath}
+        />
+        <ErrorsBlock errors={sftpExportFilePathErrors} />
+      </Field>
+    );
+  }
+
+  renderSFTPImportFilePath() {
+    const { errors: { sftpImportFilePath: sftpImportFilePathErrors }, fileSource, jobType, sftpImportFilePath } = this.props;
+    if (jobType !== "import" || fileSource !== "sftp") {
+      return null;
+    }
+    return (
+      <Field errors={sftpImportFilePathErrors} name="sftpImportFilePath" label="SFTP file path" labelFor="sftpImportFilePathInput">
+        <TextInput
+          errors={sftpImportFilePathErrors}
+          id="sftpImportFilePathInput"
+          name="sftpImportFilePath"
+          value={sftpImportFilePath}
+          placeholder="imports/import.csv"
+          onChanging={this.handleChangeSFTPImportFilePath}
+        />
+        <ErrorsBlock errors={sftpImportFilePathErrors} />
+      </Field>
+    );
   }
 
   render() {
@@ -283,13 +420,16 @@ class DetailScreen extends Component {
           </div>
         </div>
         <div className="row">
-          <div className="col-sm-12 col-md-6">
+          <div className="col-sm-12 col-md-5">
             {this.renderJobSubTypeSelection()}
+            {this.renderPreviousJobsSelection()}
             {this.renderFileSourceSelection()}
+            {this.renderS3ImportFileKey()}
+            {this.renderSFTPImportFilePath()}
             {this.renderFileUpload()}
             {this.renderHasHeader()}
           </div>
-          <div className="col-sm-12 col-md-6">
+          <div className="col-sm-12 col-md-5 col-md-offset-1">
             {this.renderDataTypeSelection()}
             {this.renderMappingSelection()}
             {this.renderJobName()}
@@ -320,7 +460,13 @@ DetailScreen.propTypes = {
   onSetActiveScreen: PropTypes.func,
   onSetField: PropTypes.func,
   onSetMappingByUser: PropTypes.func,
+  previousJobId: PropTypes.string,
+  previousJobsOptions: PropTypes.arrayOf(PropTypes.object),
+  s3ExportFileKey: PropTypes.string,
+  s3ImportFileKey: PropTypes.string,
   selectedMapping: PropTypes.object,
+  sftpExportFilePath: PropTypes.string,
+  sftpImportFilePath: PropTypes.string,
   shouldExportToS3: PropTypes.bool,
   shouldExportToSFTP: PropTypes.bool
 };
