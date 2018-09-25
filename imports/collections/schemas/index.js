@@ -24,6 +24,7 @@ export * from "./emails";
 export * from "./inventory";
 export * from "./layouts";
 export * from "./metafield";
+export * from "./navItems";
 export * from "./notifications";
 export * from "./orders";
 export * from "./payments";

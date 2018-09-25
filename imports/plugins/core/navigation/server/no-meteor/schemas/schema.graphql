@@ -1,0 +1,62 @@
+extend type Query {
+  "Get the navigation items for a shop"
+  navItems(shopId: ID!): NavItem
+}
+
+type NavItem {
+  "The Navigation Item ID"
+  _id: ID!
+
+  "The item's content. Can be plain text or HTML."
+  content: String!
+
+  "The link URL. Can be left empty to have context wrapped in a <span> instead of <a>."
+  url: String
+
+  "The ID of the parent navigation item, if applicable."
+  parentId: ID
+
+  "The order of the navigation item."
+  position: Int!
+
+  "The ID of the shop this navigation item belongs to."
+  shopId: ID!
+
+  "CSS styles to be added to the <a>/<span> tag"
+  styles: String
+
+  "Any metadata needed for the navigation item. Sent and received as stringified JSON, but stored as an object."
+  metadata: String
+}
+
+extend type Mutation {
+  createNavItem(input: NavItemInput!): NavItemPayload
+}
+
+input NavItemInput {
+  "The item's content. Can be plain text or HTML."
+  content: String!
+
+  "The link URL. Can be left empty to have context wrapped in a <span> instead of <a>."
+  url: String
+
+  "The ID of the parent navigation item, if applicable."
+  parentId: ID
+
+  "The order of the navigation item."
+  position: Int!
+
+  "The ID of the shop this navigation item belongs to."
+  shopId: ID!
+
+  "CSS styles to be added to the <a>/<span> tag"
+  styles: String
+
+  "Any metadata needed for the navigation item. Sent and received as stringified JSON, but stored as an object."
+  metadata: String
+}
+
+type NavItemPayload {
+  "The Nav Item that was created, updated, or deleted."
+  navItem: NavItem
+}
