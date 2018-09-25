@@ -33,6 +33,16 @@ export const JobItems = new SimpleSchema({
     label: "Previous job",
     index: 1
   },
+  shouldExportToS3: {
+    type: Boolean,
+    optional: true,
+    label: "Export to S3"
+  },
+  shouldExportToSFTP: {
+    type: Boolean,
+    optional: true,
+    label: "Export to SFTP"
+  },
   s3ExportFileKey: {
     type: String,
     optional: true,

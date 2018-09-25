@@ -28,7 +28,8 @@ class DetailScreen extends Component {
   }
 
   handleChangeFileSource = (value) => {
-    this.props.onSetField("fileSource", value);
+    // when import from previous job is clicked, false is passed as value instead of ""
+    this.props.onSetField("fileSource", value || "");
   }
 
   handleChangeHasHeader = (value) => {

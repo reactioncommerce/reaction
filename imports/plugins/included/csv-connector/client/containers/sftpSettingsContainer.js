@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { compose } from "recompose";
+import SimpleSchema from "simpl-schema";
 import Alert from "sweetalert2";
 import { composeWithTracker } from "@reactioncommerce/reaction-components";
 import { Meteor } from "meteor/meteor";
@@ -8,41 +9,24 @@ import { Packages } from "/lib/collections";
 import { Reaction, i18next } from "/client/api";
 import { SFTPSettings } from "../components";
 
+const SFTPSettingsFormSchema = new SimpleSchema({
+  ipAddress: String,
+  port: Number,
+  username: String,
+  password: String
+});
+
+const SFTPSettingsValidator = SFTPSettingsFormSchema.getFormValidator();
+
 const wrapComponent = (Comp) => (
   class SFTPSettingsContainer extends Component {
     static propTypes = {
       pkg: PropTypes.object
     }
 
-    constructor(props) {
-      super(props);
-      this.state = {
-        currentPkg: props.pkg
-      };
-    }
+    handleFormValidate = (values) => SFTPSettingsValidator(SFTPSettingsFormSchema.clean(values));
 
-    handleFieldChange = (value, field) => {
-      const { currentPkg } = this.state;
-      const newSettings = {};
-      newSettings[field] = value;
-      const newPkg = {
-        ...currentPkg,
-        settings: {
-          ...currentPkg.settings,
-          ...newSettings
-        }
-      };
-      this.setState({ currentPkg: newPkg });
-    }
-
-    handleSubmit = () => {
-      const { currentPkg: { settings: { ipAddress, port, username, password } } } = this.state;
-      const numPort = Number(port);
-      if (isNaN(numPort)) {
-        Alert(i18next.t("app.error"), i18next.t("admin.alerts.portNaN"), "error");
-        return;
-      }
-      const values = { ipAddress, port: numPort, username, password };
+    handleSubmit = (values) => {
       Meteor.call("csvConnector/updateSFTPSettings", values, (error) => {
         if (error) {
           return Alert(i18next.t("app.error"), error.message, "error");
@@ -61,13 +45,21 @@ const wrapComponent = (Comp) => (
     }
 
     render() {
-      const { currentPkg } = this.state;
+      const { pkg: { settings } } = this.props;
+
+      SFTPSettingsFormSchema.labels({
+        ipAddress: i18next.t("admin.dashboard.sftpIPAddress"),
+        port: i18next.t("admin.dashboard.sftpPort"),
+        username: i18next.t("admin.dashboard.sftpUsername"),
+        password: i18next.t("admin.dashboard.sftpPassword")
+      });
+
       return (
         <Comp
-          currentPkg={currentPkg}
-          onFieldChange={this.handleFieldChange}
           onSubmit={this.handleSubmit}
           onTestForImportAndExport={this.handleTestForImportAndExport}
+          validator={this.handleFormValidate}
+          values={settings}
           {...this.props}
         />
       );

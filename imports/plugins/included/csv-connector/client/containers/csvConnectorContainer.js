@@ -195,11 +195,11 @@ class CSVConnectorContainer extends Component {
       const previousJobs = JobItems.find({ jobType, jobSubType: "create" }).fetch();
       const newPreviousJobsOptions = previousJobs.map((jobItem) => ({ value: jobItem._id, label: jobItem.name }));
       this.setState({
-        collection: "",
-        fileSource: "",
         mappingOptions: [],
         previousJobsOptions: newPreviousJobsOptions
       });
+      this.updateField("collection", "");
+      this.updateField("fileSource", "");
       this.updateField("mappingId", "");
     }
 
@@ -341,7 +341,6 @@ class CSVConnectorContainer extends Component {
     } = this.state;
 
     const errors = this.getValidationErrors();
-
     // If any field has validation error, return right away
     for (const field in errors) {
       if (errors[field].length > 0) {

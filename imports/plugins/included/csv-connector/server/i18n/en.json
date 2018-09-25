@@ -6,7 +6,8 @@
       "admin": {
         "dashboard": {
           "csvConnector": "CSV Connector",
-          "S3Settings": "AWS S3 Settings",
+          "save": "Save Changes",
+          "s3Settings": "AWS S3 Settings",
           "s3AccessKey": "Access Key",
           "s3SecretAccessKey": "Secret Access Key",
           "s3Bucket": "Bucket",
@@ -17,6 +18,7 @@
           "sftpUsername": "Username",
           "sftpPassword": "Password",
           "sftpSave": "Save Changes",
+          "sftpTest": "Test for Import and Export",
           "testImport": "Test for Import",
           "testExport": "Test for Export",
           "header": {

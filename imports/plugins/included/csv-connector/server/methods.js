@@ -1,4 +1,5 @@
 import { Readable } from "stream";
+import _ from "lodash";
 import S3 from "aws-sdk/clients/s3";
 import Client from "ssh2-sftp-client";
 import { Meteor } from "meteor/meteor";
@@ -6,7 +7,6 @@ import { check } from "meteor/check";
 import { EJSON } from "meteor/ejson";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
 import { Packages } from "/lib/collections";
-import Field from "@reactioncommerce/components/Field/v1/Field";
 import { JobItems, Mappings } from "../lib/collections";
 
 export const methods = {
@@ -223,9 +223,21 @@ export const methods = {
       });
       if (shouldExportToS3) {
         jobItemValues.s3ExportFileKey = s3ExportFileKey;
-      } else if (shouldExportToSFTP) {
+      }
+      if (shouldExportToSFTP) {
         jobItemValues.sftpExportFilePath = sftpExportFilePath;
       }
+    }
+
+    if (_.isEmpty(mappingByUser) && mappingId && mappingId !== "default") {
+      const mapping = Mappings.findOne({ _id: mappingId });
+      jobItemValues.mapping = mapping.mapping;
+    }
+
+    if (previousJobId) {
+      const previousJob = JobItems.findOne({ _id: previousJobId });
+      jobItemValues.name = previousJob.name;
+      jobItemValues.previousJobId = previousJobId;
     }
 
     const jobItemId = JobItems.insert(jobItemValues);

@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { compose } from "recompose";
+import SimpleSchema from "simpl-schema";
 import Alert from "sweetalert2";
 import { composeWithTracker } from "@reactioncommerce/reaction-components";
 import { Meteor } from "meteor/meteor";
@@ -8,36 +9,23 @@ import { Packages } from "/lib/collections";
 import { Reaction, i18next } from "/client/api";
 import { S3Settings } from "../components";
 
+const S3SettingsFormSchema = new SimpleSchema({
+  accessKey: String,
+  secretAccessKey: String,
+  bucket: String
+});
+
+const S3SettingsValidator = S3SettingsFormSchema.getFormValidator();
+
 const wrapComponent = (Comp) => (
   class S3SettingsContainer extends Component {
     static propTypes = {
       pkg: PropTypes.object
     }
 
-    constructor(props) {
-      super(props);
-      this.state = {
-        currentPkg: props.pkg
-      };
-    }
+    handleFormValidate = (values) => S3SettingsValidator(S3SettingsFormSchema.clean(values));
 
-    handleFieldChange = (value, field) => {
-      const { currentPkg } = this.state;
-      const newSettings = {};
-      newSettings[field] = value;
-      const newPkg = {
-        ...currentPkg,
-        settings: {
-          ...currentPkg.settings,
-          ...newSettings
-        }
-      };
-      this.setState({ currentPkg: newPkg });
-    }
-
-    handleSubmit = () => {
-      const { currentPkg: { settings: { accessKey, secretAccessKey, bucket } } } = this.state;
-      const values = { accessKey, bucket, secretAccessKey };
+    handleSubmit = (values) => {
       Meteor.call("csvConnector/updateS3Settings", values, (error) => {
         if (error) {
           return Alert(i18next.t("app.error"), error.message, "error");
@@ -65,14 +53,21 @@ const wrapComponent = (Comp) => (
     }
 
     render() {
-      const { currentPkg } = this.state;
+      const { pkg: { settings } } = this.props;
+
+      S3SettingsFormSchema.labels({
+        accessKey: i18next.t("admin.dashboard.s3AccessKey"),
+        secretAccessKey: i18next.t("admin.dashboard.s3SecretAccessKey"),
+        bucket: i18next.t("admin.dashboard.s3Bucket")
+      });
+
       return (
         <Comp
-          currentPkg={currentPkg}
-          onFieldChange={this.handleFieldChange}
           onSubmit={this.handleSubmit}
           onTestForImport={this.handleTestForImport}
           onTestForExport={this.handleTestForExport}
+          validator={this.handleFormValidate}
+          values={settings}
           {...this.props}
         />
       );

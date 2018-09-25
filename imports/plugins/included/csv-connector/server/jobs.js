@@ -44,7 +44,7 @@ export default function generateProcessJobItemsJob() {
         backoff: "exponential"
       })
       .repeat({
-        schedule: Jobs.later.parse.text("every 1 min")
+        schedule: Jobs.later.parse.text("every 5 mins")
       })
       .save({
         cancelRepeats: true
