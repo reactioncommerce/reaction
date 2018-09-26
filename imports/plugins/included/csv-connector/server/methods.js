@@ -43,7 +43,7 @@ export const methods = {
   "csvConnector/updateSFTPSettings"(values) {
     check(values, Object);
     check(values.ipAddress, String);
-    check(values.port, Number);
+    check(values.port, String);
     check(values.username, String);
     check(values.password, String);
 
@@ -137,7 +137,7 @@ export const methods = {
     return new Promise((resolve, reject) => {
       sftpClient.connect({
         host: ipAddress,
-        port: `${port}`,
+        port,
         username,
         password
       }).then(() => resolve(true)).catch((error) => reject(error));

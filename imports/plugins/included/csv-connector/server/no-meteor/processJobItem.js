@@ -1,11 +1,16 @@
 import { Readable } from "stream";
 import csv from "csv";
 import _ from "lodash";
+import S3 from "aws-sdk/clients/s3";
+import SFTPClient from "ssh2-sftp-client";
 import Logger from "@reactioncommerce/logger";
 import { FileRecord } from "@reactioncommerce/file-collections";
+import rawCollections from "/imports/collections/rawCollections";
 import { getConvMapByCollection } from "../../lib/common/conversionMaps";
 import { JobItems, Mappings } from "../collections";
 import { NoMeteorJobFiles } from "../jobFileCollections";
+
+const { Packages } = rawCollections;
 
 /**
  * @name getCSVRowsFromSource
@@ -14,8 +19,10 @@ import { NoMeteorJobFiles } from "../jobFileCollections";
  * @return {Array} - CSV rows data
  */
 async function getCSVRowsFromSource(jobItem) {
-  const { fileSource, hasHeader, _id: jobItemId } = jobItem;
+  const { fileSource, hasHeader, _id: jobItemId, s3ImportFileKey, sftpImportFilePath } = jobItem;
 
+  let data;
+  let readStream;
   let csvRows;
 
   if (fileSource === "manual") {
@@ -23,30 +30,83 @@ async function getCSVRowsFromSource(jobItem) {
       "metadata.jobItemId": jobItemId,
       "metadata.type": "upload"
     });
+    readStream = await fileRecord.createReadStreamFromStore("jobFiles");
+    data = await new Promise((resolve) => {
+      readStream.on("data", (csvData) => {
+        resolve(csvData);
+      });
+    });
+  } else if (fileSource === "s3") {
+    const s3Pkg = await Packages.findOne({ name: "connector-settings-aws-s3" });
+    const { settings: { bucket: Bucket, accessKey: accessKeyId, secretAccessKey } } = s3Pkg;
+    const S3Config = new S3({
+      accessKeyId,
+      secretAccessKey
+    });
+    const s3Params = {
+      Bucket,
+      Key: s3ImportFileKey
+    };
 
-    const readStream = await fileRecord.createReadStreamFromStore("jobFiles");
-
-    const getCSVRows = new Promise((resolve, reject) => {
-      readStream.on("data", (data) => {
-        let columns = true;
-        if (!hasHeader) {
-          columns = (row) => row.map((item, index) => index);
-        }
-        csv.parse(data, { columns }, (error, result) => {
+    try {
+      data = await new Promise((resolve, reject) => {
+        S3Config.getObject(s3Params).send((error, { Body }) => {
           if (error) {
             reject(error);
           }
-          resolve(result);
+          resolve(Body);
         });
       });
-    });
+    } catch (error) {
+      Logger.error(error);
+    }
+  } else {
+    const sftpPkg = await Packages.findOne({ name: "connector-settings-sftp" });
+    const { settings: { ipAddress, port, username, password } } = sftpPkg;
+
+    const sftpClient = new SFTPClient();
+    try {
+      await sftpClient.connect({
+        host: ipAddress,
+        port,
+        username,
+        password
+      });
+    } catch (error) {
+      Logger.error(error);
+    }
 
     try {
-      csvRows = await getCSVRows;
+      readStream = await sftpClient.get(sftpImportFilePath);
+      data = await new Promise((resolve) => {
+        readStream.on("data", (csvData) => {
+          resolve(csvData);
+        });
+      });
     } catch (error) {
       Logger.error(error);
     }
   }
+
+  let columns = true;
+  if (!hasHeader) {
+    columns = (row) => row.map((item, index) => index);
+  }
+  const getCSVRows = await new Promise((resolve, reject) => {
+    csv.parse(data, { columns }, (error, result) => {
+      if (error) {
+        reject(error);
+      }
+      resolve(result);
+    });
+  });
+
+  try {
+    csvRows = await getCSVRows;
+  } catch (error) {
+    Logger.error(error);
+  }
+
   return csvRows;
 }
 
@@ -367,6 +427,102 @@ async function saveImportDataInserts(jobItem, data) {
 
 
 /**
+ * @name saveExportFileToDB
+ * @summary Saves export file into database
+ * @param {Object} jobItemId - job item ID
+ * @param {String} csvString - parsed CSV rows
+ * @return {Promise} - database job item update
+ */
+async function saveExportFileToDB(jobItemId, csvString) {
+  const exportFileDoc = {
+    original: {
+      name: `${jobItemId}.csv`,
+      type: "text/csv",
+      size: csvString.length,
+      updatedAt: new Date()
+    }
+  };
+  const fileRecord = new FileRecord(exportFileDoc);
+  fileRecord.metadata = { jobItemId, type: "export" };
+  const readStream = new Readable();
+  readStream.push(csvString);
+  readStream.push(null);
+  const store = NoMeteorJobFiles.getStore("jobFiles");
+  const writeStream = await store.createWriteStream(fileRecord);
+  readStream.pipe(writeStream);
+  const exportFile = await NoMeteorJobFiles.insert(fileRecord, { raw: true });
+  return JobItems.update({ _id: jobItemId }, { $set: { exportFileId: exportFile._id } });
+}
+
+
+/**
+ * @name saveExportFileToS3
+ * @summary Saves export file into S3
+ * @param {String} fileKey - path for the exported file
+ * @param {String} csvString - parsed CSV rows
+ * @return {String} - location of new S3 file
+ */
+async function saveExportFileToS3(fileKey, csvString) {
+  const s3Pkg = await Packages.findOne({ name: "connector-settings-aws-s3" });
+  const { settings: { bucket: Bucket, accessKey: accessKeyId, secretAccessKey } } = s3Pkg;
+  const S3Config = new S3({
+    accessKeyId,
+    secretAccessKey
+  });
+  const readStream = new Readable();
+  readStream.push(csvString);
+  readStream.push(null);
+  const s3Params = {
+    Bucket,
+    Key: fileKey,
+    ACL: "bucket-owner-full-control",
+    ContentType: "text/csv",
+    Body: readStream
+  };
+
+  let location;
+  try {
+    location = await new Promise((resolve, reject) => {
+      S3Config.upload(s3Params).send((error, data) => {
+        if (error) {
+          reject(error);
+        }
+        resolve(data.Location);
+      });
+    });
+  } catch (error) {
+    throw error;
+  }
+  return location;
+}
+
+
+/**
+ * @name saveExportFileToSFTP
+ * @summary Saves export file into SFTP server
+ * @param {String} filePath - path for the exported file
+ * @param {String} csvString - parsed CSV rows
+ * @return {Promise} - sftp connection
+ */
+async function saveExportFileToSFTP(filePath, csvString) {
+  const sftpPkg = await Packages.findOne({ name: "connector-settings-sftp" });
+  const { settings: { ipAddress, port, username, password } } = sftpPkg;
+  const readStream = new Readable();
+  readStream.push(csvString);
+  readStream.push(null);
+  const sftpClient = new SFTPClient();
+  return new Promise((resolve, reject) => {
+    sftpClient.connect({
+      host: ipAddress,
+      port,
+      username,
+      password
+    }).then(() => sftpClient.put(readStream, filePath)).catch((error) => reject(error));
+  });
+}
+
+
+/**
  * @name saveImportData
  * @summary Saves import data into database
  * @param {Object} jobItem - job item document
@@ -397,7 +553,16 @@ async function saveImportData(jobItem, data) {
  * @return {Promise} - Promise
  */
 async function exportDataToCSV(jobItem) {
-  const { _id: jobItemId, collection, mappingId } = jobItem;
+  const {
+    _id: jobItemId,
+    collection,
+    mappingId,
+    s3ExportFileKey,
+    sftpExportFilePath,
+    shouldExportToS3,
+    shouldExportToSFTP
+  } = jobItem;
+
   const convMap = getConvMapByCollection(collection);
 
   let headers;
@@ -418,26 +583,29 @@ async function exportDataToCSV(jobItem) {
   const docs = await convMap.rawCollection.find({ isDeleted: false }).toArray();
   const rows = await Promise.all(docs.map((doc) => convMap.exportConversionCallback(doc, orderedFieldsKeys)));
   rows.unshift(headers);
-  csv.stringify(rows, async (error, csvString) => {
-    const exportFileDoc = {
-      original: {
-        name: `${jobItemId}.csv`,
-        type: "text/csv",
-        size: csvString.length,
-        updatedAt: new Date()
-      }
-    };
-    const fileRecord = new FileRecord(exportFileDoc);
-    fileRecord.metadata = { jobItemId, type: "export" };
-    const readStream = new Readable();
-    readStream.push(csvString);
-    readStream.push(null);
-    const store = NoMeteorJobFiles.getStore("jobFiles");
-    const writeStream = await store.createWriteStream(fileRecord);
-    readStream.pipe(writeStream);
-    const exportFile = await NoMeteorJobFiles.insert(fileRecord, { raw: true });
-    JobItems.update({ _id: jobItemId }, { $set: { exportFileId: exportFile._id } });
-  });
+
+  let csvString;
+
+  try {
+    csvString = await new Promise((resolve, reject) => {
+      csv.stringify(rows, (error, result) => {
+        if (error) {
+          reject(error);
+        }
+        resolve(result);
+      });
+    });
+  } catch (error) {
+    throw error;
+  }
+
+  saveExportFileToDB(jobItemId, csvString);
+  if (shouldExportToS3) {
+    saveExportFileToS3(s3ExportFileKey, csvString);
+  }
+  if (shouldExportToSFTP) {
+    saveExportFileToSFTP(sftpExportFilePath, csvString);
+  }
 }
 
 /**

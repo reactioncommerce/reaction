@@ -39,7 +39,7 @@ const wrapComponent = (Comp) => (
         if (error) {
           return Alert(i18next.t("app.error"), i18next.t("admin.alerts.s3CredentialsInvalidForExport"), "error");
         }
-        return Alert(i18next.t("app.success"), i18next.t("admin.alerts.s3SettingsValid"), "success");
+        return Alert(i18next.t("app.success"), i18next.t("admin.alerts.s3CredentialsValid"), "success");
       });
     }
 
@@ -48,7 +48,7 @@ const wrapComponent = (Comp) => (
         if (error) {
           return Alert(i18next.t("app.error"), i18next.t("admin.alerts.s3CredentialsInvalidForImport"), "error");
         }
-        return Alert(i18next.t("app.success"), i18next.t("admin.alerts.s3SettingsValid"), "success");
+        return Alert(i18next.t("app.success"), i18next.t("admin.alerts.s3CredentialsValid"), "success");
       });
     }
 

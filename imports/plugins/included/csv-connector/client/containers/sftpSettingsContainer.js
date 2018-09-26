@@ -31,7 +31,7 @@ const wrapComponent = (Comp) => (
         if (error) {
           return Alert(i18next.t("app.error"), error.message, "error");
         }
-        return Alert(i18next.t("app.success"), i18next.t("admin.alerts.sftpSettingsSaved"), "success");
+        return Alert(i18next.t("app.success"), i18next.t("admin.alerts.sftpCredentialsSaved"), "success");
       });
     }
 
@@ -40,7 +40,7 @@ const wrapComponent = (Comp) => (
         if (error) {
           return Alert(i18next.t("app.error"), i18next.t("admin.alerts.sftpCredentialsInvalid"), "error");
         }
-        return Alert(i18next.t("app.success"), i18next.t("admin.alerts.sftpSettingsValid"), "success");
+        return Alert(i18next.t("app.success"), i18next.t("admin.alerts.sftpCredentialsValid"), "success");
       });
     }
 
