@@ -132,7 +132,10 @@ function getInvoiceForFulfillmentGroup(group, discountTotal) {
   const fulfillmentTotal = shippingTotal + handlingTotal;
 
   // Totals
+  // To avoid rounding errors, be sure to keep this calculation the same between here and
+  // `buildOrderInputFromCart.js` in the client code.
   const total = Math.max(0, itemTotal + fulfillmentTotal + taxTotal - discountTotal);
+
   // fulfillmentTotal should be included in this in many jurisdictions but we don't yet support that
   const preTaxTotal = Math.max(0, itemTotal - discountTotal);
 
