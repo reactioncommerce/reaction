@@ -5,7 +5,7 @@ import hydra from "./util/hydra";
 
 const { HYDRA_OAUTH2_ERROR_URL, HYDRA_SESSION_LIFESPAN } = process.env;
 const errorHandler = (errorMessage, res) => {
-  Logger.error(`Error while performing Hydra login request - ${errorMessage}`);
+  Logger.error(`Error while performing Hydra request - ${errorMessage}`);
   if (HYDRA_OAUTH2_ERROR_URL) {
     Logger.error(`Redirecting to HYDRA_OAUTH2_ERROR_URL: ${HYDRA_OAUTH2_ERROR_URL}`);
     res.writeHead(500, { Location: HYDRA_OAUTH2_ERROR_URL });
