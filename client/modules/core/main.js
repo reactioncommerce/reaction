@@ -507,16 +507,6 @@ export default {
   },
 
   /**
-   * Primary Shop should probably not have a prefix (or should it be /shop?)
-   * @name getPrimaryShopPrefix
-   * @method
-   * @memberof Core/Client
-   */
-  getPrimaryShopPrefix() {
-    return `/${this.getSlug(this.getPrimaryShopName().toLowerCase())}`;
-  },
-
-  /**
    * @name getPrimaryShopSettings
    * @method
    * @memberof Core/Client
@@ -641,22 +631,6 @@ export default {
   },
 
   /**
-   * @name getShopPrefix
-   * @method
-   * @memberof Core/Client
-   */
-  getShopPrefix() {
-    const shopName = this.getShopName();
-    if (shopName) {
-      return Router.pathFor("index", {
-        hash: {
-          shopSlug: this.getSlug(shopName.toLowerCase())
-        }
-      });
-    }
-  },
-
-  /**
    * @name getShopSettings
    * @method
    * @memberof Core/Client
@@ -675,7 +649,7 @@ export default {
     return shop ? shop.language : "";
   },
 
-  getSlug(slugString) {
+  async getSlug(slugString) {
     const lazyLoadSlugify = async () => {
       let mod;
       const lang = this.getShopLanguage();
@@ -698,7 +672,7 @@ export default {
     };
 
     let slug;
-    Promise.resolve(lazyLoadSlugify()); // eslint-disable-line promise/catch-or-return
+    await lazyLoadSlugify(); // eslint-disable-line promise/catch-or-return
     if (slugString && slugify) {
       slug = slugify(slugString.toLowerCase());
     } else {
