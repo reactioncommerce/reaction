@@ -8,9 +8,14 @@ import { Meteor } from "meteor/meteor";
  * @returns {undefined}
  */
 export function highlightInput(inputRef, className = "highlight") {
-  inputRef.classList.add(className);
+  let input = inputRef;
+  if (input._rootDOMNode) {
+    input = input._rootDOMNode;
+  }
+
+  input.classList.add(className);
   Meteor.setTimeout(() => {
-    inputRef.classList.remove(className);
+    input.classList.remove(className);
   }, 500);
 }
 

@@ -1,3 +1,4 @@
+import _ from "lodash";
 import Logger from "@reactioncommerce/logger";
 import ReactionError from "@reactioncommerce/reaction-error";
 import { Meteor } from "meteor/meteor";
@@ -123,17 +124,31 @@ export const methods = {
 
     const { cartTaxData, cartTaxRate, itemsWithTax, taxRatesByShop } = options;
 
-    const result = Cart.update({ _id: cartId }, {
-      $set: {
-        taxes: cartTaxData,
-        tax: cartTaxRate,
-        items: itemsWithTax,
-        taxRatesByShop
-      }
-    });
+    const cart = Cart.findOne({ _id: cartId });
 
-    const updatedCart = Cart.findOne({ _id: cartId });
-    Promise.await(appEvents.emit("afterCartUpdate", cartId, updatedCart));
+    // Compare only the props we care about for tax purposes
+    const oldCartItems = (cart.items || []).map(({ taxData, taxRate, tax }) => ({ taxData, taxRate, tax }));
+    const newCartItems = (itemsWithTax || []).map(({ taxData, taxRate, tax }) => ({ taxData, taxRate, tax }));
+
+    let result;
+    if (
+      !_.isEqual(cart.taxes, cartTaxData) ||
+      !_.isEqual(cart.tax, cartTaxRate) ||
+      !_.isEqual(oldCartItems, newCartItems) ||
+      !_.isEqual(cart.taxRatesByShop, taxRatesByShop)
+    ) {
+      result = Cart.update({ _id: cartId }, {
+        $set: {
+          taxes: cartTaxData,
+          tax: cartTaxRate,
+          items: itemsWithTax,
+          taxRatesByShop
+        }
+      });
+
+      const updatedCart = Cart.findOne({ _id: cartId });
+      Promise.await(appEvents.emit("afterCartUpdate", cartId, updatedCart));
+    }
 
     return result;
   },
