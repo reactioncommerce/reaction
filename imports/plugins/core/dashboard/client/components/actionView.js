@@ -97,9 +97,13 @@ const getStyles = (props) => {
       "flexDirection": "column",
       "flex": "1 1 auto",
       "maxWidth": viewMaxSize,
+      "@media only screen and (max-width: 1500px)": {
+        "flex": "0 1 auto",
+        maxWidth: "100%",
+        "width": "55vw"
+      },
       "@media only screen and (max-width: 949px)": {
-        width: "100vw",
-        maxWidth: "100%"
+        width: "100vw"
       }
     },
     masterView: {
@@ -116,12 +120,16 @@ const getStyles = (props) => {
       "height": "100vh",
       "backgroundColor": "white",
       "borderRight": "1px solid #ccc",
-      "@media only screen and (max-width: 949px)": {
+      "width": "24vw",
+      "@media only screen and (max-width: 1500px)": {
         position: "absolute",
         top: 0,
         right: 0,
-        width: "96vw",
+        width: "35vw",
         zIndex: 1050
+      },
+      "@media only screen and (max-width: 1200px)": {
+        width: "96vw"
       }
     },
     detailView: {
