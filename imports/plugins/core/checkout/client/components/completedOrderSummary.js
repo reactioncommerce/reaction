@@ -45,7 +45,7 @@ class CompletedOrderSummary extends Component {
           {fulfillmentGroups.map((group) => (
             <ShopOrderSummary
               key={group._id}
-              quantityTotal={group.items.reduce((sum, item) => sum + item.quantity, 0)}
+              quantityTotal={group.totalItemQuantity}
               shipping={group.invoice.shipping}
               shopName={group.shopName}
               subTotal={group.invoice.subtotal}
