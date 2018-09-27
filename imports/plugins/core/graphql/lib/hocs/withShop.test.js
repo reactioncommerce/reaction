@@ -25,119 +25,119 @@ const mocks = [
           language: "en",
           languages: [
             {
-              "label": "العربية",
-              "enabled": true,
-              "i18n": "ar"
+              label: "العربية",
+              enabled: true,
+              i18n: "ar"
             },
             {
-              "label": "Български",
-              "enabled": false,
-              "i18n": "bg"
+              label: "Български",
+              enabled: false,
+              i18n: "bg"
             },
             {
-              "label": "中文(简体)",
-              "enabled": true,
-              "i18n": "zh"
+              label: "中文(简体)",
+              enabled: true,
+              i18n: "zh"
             },
             {
-              "label": "České",
-              "enabled": false,
-              "i18n": "cs"
+              label: "České",
+              enabled: false,
+              i18n: "cs"
             },
             {
-              "label": "Deutsch",
-              "enabled": true,
-              "i18n": "de"
+              label: "Deutsch",
+              enabled: true,
+              i18n: "de"
             },
             {
-              "label": "English",
-              "enabled": true,
-              "i18n": "en"
+              label: "English",
+              enabled: true,
+              i18n: "en"
             },
             {
-              "label": "Ελληνικά",
-              "enabled": true,
-              "i18n": "el"
+              label: "Ελληνικά",
+              enabled: true,
+              i18n: "el"
             },
             {
-              "label": "Español",
-              "enabled": true,
-              "i18n": "es"
+              label: "Español",
+              enabled: true,
+              i18n: "es"
             },
             {
-              "label": "Français",
-              "enabled": true,
-              "i18n": "fr"
+              label: "Français",
+              enabled: true,
+              i18n: "fr"
             },
             {
-              "label": "עברית",
-              "enabled": true,
-              "i18n": "he"
+              label: "עברית",
+              enabled: true,
+              i18n: "he"
             },
             {
-              "label": "Hrvatski",
-              "enabled": false,
-              "i18n": "hr"
+              label: "Hrvatski",
+              enabled: false,
+              i18n: "hr"
             },
             {
-              "label": "မြန်မာဘာသာ",
-              "enabled": false,
-              "i18n": "my"
+              label: "မြန်မာဘာသာ",
+              enabled: false,
+              i18n: "my"
             },
             {
-              "label": "Italiano",
-              "enabled": false,
-              "i18n": "it"
+              label: "Italiano",
+              enabled: false,
+              i18n: "it"
             },
             {
-              "label": "Nederlands",
-              "enabled": false,
-              "i18n": "nl"
+              label: "Nederlands",
+              enabled: false,
+              i18n: "nl"
             },
             {
-              "label": "Norsk bokmål",
-              "enabled": false,
-              "i18n": "nb"
+              label: "Norsk bokmål",
+              enabled: false,
+              i18n: "nb"
             },
             {
-              "label": "Polski",
-              "enabled": false,
-              "i18n": "pl"
+              label: "Polski",
+              enabled: false,
+              i18n: "pl"
             },
             {
-              "label": "Português",
-              "enabled": true,
-              "i18n": "pt"
+              label: "Português",
+              enabled: true,
+              i18n: "pt"
             },
             {
-              "label": "Русский",
-              "enabled": true,
-              "i18n": "ru"
+              label: "Русский",
+              enabled: true,
+              i18n: "ru"
             },
             {
-              "label": "Română",
-              "enabled": true,
-              "i18n": "ro"
+              label: "Română",
+              enabled: true,
+              i18n: "ro"
             },
             {
-              "label": "Slovenščina",
-              "enabled": false,
-              "i18n": "sl"
+              label: "Slovenščina",
+              enabled: false,
+              i18n: "sl"
             },
             {
-              "label": "Svenska",
-              "enabled": false,
-              "i18n": "sv"
+              label: "Svenska",
+              enabled: false,
+              i18n: "sv"
             },
             {
-              "label": "Türkçe",
-              "enabled": false,
-              "i18n": "tr"
+              label: "Türkçe",
+              enabled: false,
+              i18n: "tr"
             },
             {
-              "label": "tiếng Việt",
-              "enabled": false,
-              "i18n": "vi"
+              label: "tiếng Việt",
+              enabled: false,
+              i18n: "vi"
             }
           ],
           currency: {

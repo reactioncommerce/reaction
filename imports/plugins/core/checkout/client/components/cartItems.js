@@ -49,7 +49,7 @@ class CartItems extends Component {
 
     return (
       <div
-        className={classnames("cart-items", { "hide-item": hide } )}
+        className={classnames("cart-items", { "hide-item": hide })}
         key={item._id}
         style={{ display: "inline-block" }}
       >

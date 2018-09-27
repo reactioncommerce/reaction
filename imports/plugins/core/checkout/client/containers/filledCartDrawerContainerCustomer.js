@@ -1,5 +1,4 @@
 import { compose, withProps } from "recompose";
-import { $ } from "meteor/jquery";
 import { Session } from "meteor/session";
 import { registerComponent, composeWithTracker } from "@reactioncommerce/reaction-components";
 import { Reaction } from "/client/api";

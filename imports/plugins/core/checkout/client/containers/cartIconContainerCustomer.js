@@ -1,4 +1,3 @@
-import Velocity from "velocity-animate";
 import { compose, withProps } from "recompose";
 import { registerComponent, composeWithTracker } from "@reactioncommerce/reaction-components";
 import { Reaction } from "/client/api";

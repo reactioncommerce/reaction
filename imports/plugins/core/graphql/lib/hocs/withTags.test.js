@@ -22,33 +22,33 @@ const mocks = [
     },
     result: {
       data: {
-        "tags": {
-          "edges": [
+        tags: {
+          edges: [
             {
-              "cursor": "cnBqQ3ZUQkdqaEJpMnhkcm8=",
-              "node": {
-                "_id": "cmVhY3Rpb24vdGFnOnJwakN2VEJHamhCaTJ4ZHJv",
-                "name": "Shop",
-                "slug": "shop",
-                "heroMediaUrl": null,
-                "position": null,
-                "subTags": {
-                  "edges": [],
-                  "pageInfo": {
-                    "endCursor": null,
-                    "startCursor": null,
-                    "hasNextPage": false,
-                    "hasPreviousPage": false
+              cursor: "cnBqQ3ZUQkdqaEJpMnhkcm8=",
+              node: {
+                _id: "cmVhY3Rpb24vdGFnOnJwakN2VEJHamhCaTJ4ZHJv",
+                name: "Shop",
+                slug: "shop",
+                heroMediaUrl: null,
+                position: null,
+                subTags: {
+                  edges: [],
+                  pageInfo: {
+                    endCursor: null,
+                    startCursor: null,
+                    hasNextPage: false,
+                    hasPreviousPage: false
                   }
                 }
               }
             }
           ],
-          "pageInfo": {
-            "endCursor": "cnBqQ3ZUQkdqaEJpMnhkcm8=",
-            "startCursor": "cnBqQ3ZUQkdqaEJpMnhkcm8=",
-            "hasNextPage": false,
-            "hasPreviousPage": false
+          pageInfo: {
+            endCursor: "cnBqQ3ZUQkdqaEJpMnhkcm8=",
+            startCursor: "cnBqQ3ZUQkdqaEJpMnhkcm8=",
+            hasNextPage: false,
+            hasPreviousPage: false
           }
         }
       }
