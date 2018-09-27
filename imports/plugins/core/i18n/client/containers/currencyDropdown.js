@@ -48,9 +48,9 @@ const composer = (props, onData) => {
     });
     const profileCurrency = user && user.profile && user.profile.currency;
 
-    if (Match.test(shop, Object) && shop.currency) {
-      const locale = Reaction.Locale.get();
+    const locale = Reaction.Locale.get();
 
+    if (Match.test(shop, Object) && shop.currency) {
       if (profileCurrency && shop.currencies[profileCurrency] && shop.currencies[profileCurrency].symbol) {
         currentCurrency = `${profileCurrency} ${shop.currencies[profileCurrency].symbol}`;
       } else if (locale && locale.currency && locale.currency.enabled) {
@@ -76,6 +76,13 @@ const composer = (props, onData) => {
           }
           currency.symbol = shop.currencies[currencyName].symbol;
           currencies.push(currency);
+
+          // Update global currency info when currency is changed
+          if (currency.class === "active" && locale.currency && currencyName != locale.currency.code) {
+            locale.currency = shop.currencies[currencyName];
+            locale.currency.code = currencyName;
+            Reaction.Locale.set(locale);
+          }
         }
       }
     }

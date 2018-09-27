@@ -103,19 +103,15 @@ export default {
 
             const locale = this.Locale.get() || {};
 
-            // fix for https://github.com/reactioncommerce/reaction/issues/248
-            // we need to keep an eye for rates changes
-            if (typeof locale.locale === "object" &&
-                 typeof locale.currency === "object" &&
-                 typeof locale.locale.currency === "string") {
-              const localeCurrency = locale.locale.currency.split(",")[0];
-              if (typeof shop.currencies[localeCurrency] === "object") {
-                if (typeof shop.currencies[localeCurrency].rate === "number") {
-                  locale.currency.rate = shop.currencies[localeCurrency].rate;
-                  localeDep.changed();
-                }
-              }
+            // Watch for currency changes
+            const isLocaleObject = typeof locale.locale === "object";
+            const isCurrencyObject = isLocaleObject && typeof locale.currency === "object";
+            const isLocaleCurrencyObject = isLocaleObject && isCurrencyObject &&
+              typeof locale.locale.currency === "string";
+            if (isLocaleCurrencyObject) {
+              localeDep.changed();
             }
+
             // we are looking for a shopCurrency changes here
             if (typeof locale.shopCurrency === "object") {
               locale.shopCurrency = shop.currencies[shop.currency];
