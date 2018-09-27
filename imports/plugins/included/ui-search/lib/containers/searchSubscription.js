@@ -9,7 +9,7 @@ import SearchModal from "../components/searchModal";
 class SearchSubscription extends Component {
   render() {
     return (
-      <SearchModal {...this.props}/>
+      <SearchModal {...this.props} />
     );
   }
 }
@@ -87,6 +87,9 @@ function composer(props, onData) {
       });
 
       // Re-format product data for CatalogGrid
+      const locale = Reaction.Locale.get();
+      const { currency } = locale;
+      const { rate = 1 } = currency;
       productResults = productResults.map((productResult) => {
         const {
           _id,
@@ -111,7 +114,9 @@ function composer(props, onData) {
             currency: {
               code: currencyCode || shopCurrencyCode
             },
-            displayPrice: formatPriceString((price && price.range) || 0)
+            displayPrice: formatPriceString((price && price.range) || 0),
+            minPrice: (price && Number((price.min * rate).toFixed(2))) || 0,
+            maxPrice: (price && Number((price.max * rate).toFixed(2))) || 0
           }],
           primaryImage,
           slug,

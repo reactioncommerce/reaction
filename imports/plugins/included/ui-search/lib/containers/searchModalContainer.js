@@ -4,7 +4,7 @@ import ReactDom from "react-dom";
 import { compose } from "recompose";
 import _ from "lodash";
 import { Reaction } from "/client/api";
-import { registerComponent } from "@reactioncommerce/reaction-components";
+import { registerComponent, withTracking } from "@reactioncommerce/reaction-components";
 import SearchSubscription from "./searchSubscription";
 
 function tagToggle(arr, val) {
@@ -119,6 +119,7 @@ const wrapComponent = (Comp) => (
                   unmountMe={this.handleChildUnmount}
                   searchCollection={this.state.collection}
                   facets={this.state.facets}
+                  tracking={this.props.tracking}
                 />
               </div> : null
             }
@@ -129,6 +130,12 @@ const wrapComponent = (Comp) => (
   }
 );
 
-registerComponent("SearchSubscription", SearchSubscription, [wrapComponent]);
+registerComponent("SearchSubscription", SearchSubscription, [
+  wrapComponent,
+  withTracking
+]);
 
-export default compose(wrapComponent)(SearchSubscription);
+export default compose(
+  wrapComponent,
+  withTracking
+)(SearchSubscription);

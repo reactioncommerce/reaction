@@ -1,9 +1,12 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import classnames from "classnames";
-import { Reaction } from "/client/api";
+import { debounce } from "lodash";
 import CatalogGrid from "@reactioncommerce/components/CatalogGrid/v1";
 import { TextField, Button, IconButton, SortableTableLegacy } from "@reactioncommerce/reaction-ui";
+import { Reaction, i18next } from "/client/api";
+import trackProductClicked from "/imports/plugins/core/ui/client/tracking/trackProductClicked";
+import trackProductListViewed from "/imports/plugins/core/ui/client/tracking/trackProductListViewed";
 import { accountsTable } from "../helpers";
 
 class SearchModal extends Component {
@@ -17,6 +20,9 @@ class SearchModal extends Component {
     products: PropTypes.array,
     siteName: PropTypes.string,
     tags: PropTypes.array,
+    tracking: PropTypes.shape({
+      trackEvent: PropTypes.func
+    }),
     unmountMe: PropTypes.func,
     value: PropTypes.string
   }
@@ -36,11 +42,22 @@ class SearchModal extends Component {
 
     // Disable scrolling for main window
     document.body.style.overflow = "hidden";
+
+    // Track product list view if search loads with previous results
+    const { products } = this.props;
+    if (products && products.length) {
+      this.trackListViewed();
+    }
   }
 
   componentDidUpdate(prevProps, prevState) {
     if (this.getHeaderSize() !== prevState.headerSize) {
       this.updateHeaderSize();
+    }
+
+    const { products } = this.props;
+    if (products && products.length) {
+      this.trackListViewed();
     }
   }
 
@@ -50,6 +67,13 @@ class SearchModal extends Component {
     // Re-enable scrolling for main window
     document.body.style.overflow = "auto";
   }
+
+  trackListViewed = debounce(() => {
+    const { tracking, products, tag } = this.props;
+    if (products && products.length) {
+      trackProductListViewed(tracking, { products, tag });
+    }
+  }, 1000);
 
   getHeaderSize = () => {
     const header = document.getElementById("search-modal-header");
@@ -186,11 +210,25 @@ class SearchModal extends Component {
     );
   }
 
+  onItemClick = (event, product) => {
+    const { tracking, unmountMe } = this.props;
+    trackProductClicked(tracking, product);
+
+    // Close search modal
+    unmountMe();
+  };
+
   render() {
     const { headerSize } = this.state;
     const resultsStyles = {
       marginTop: headerSize,
       height: window.innerHeight - headerSize
+    };
+
+    const badgeLabels = {
+      BACKORDER: i18next.t("productDetail.backOrder", "Backorder"),
+      LOW_QUANTITY: i18next.t("productDetail.limitedSupply", "Limited Supply"),
+      SOLD_OUT: i18next.t("productDetail.soldOut", "Sold Out!")
     };
 
     return (
@@ -207,7 +245,8 @@ class SearchModal extends Component {
               <CatalogGrid
                 currencyCode={this.props.currencyCode}
                 products={this.props.products}
-                onItemClick={this.props.unmountMe}
+                badgeLabels={badgeLabels}
+                onItemClick={this.onItemClick}
               />
             </div>
           }
