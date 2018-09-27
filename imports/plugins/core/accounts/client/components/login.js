@@ -63,10 +63,7 @@ class Login extends Component {
           <Components.OAuthFormContainer
             credentials={this.props.credentials}
             uniqueId={this.props.uniqueId}
-            currentView={this.state.currentView}
             onForgotPasswordClick={this.showForgotPasswordView}
-            onSignUpClick={this.showSignUpView}
-            onSignInClick={this.showSignInView}
           />
         );
       }

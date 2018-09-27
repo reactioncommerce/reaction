@@ -3,6 +3,8 @@ import Reaction from "/imports/plugins/core/core/server/Reaction";
 import Logger from "@reactioncommerce/logger";
 import hydra from "./util/hydra";
 
+const { HYDRA_SESSION_LIFESPAN } = process.env;
+
 /**
  * @name oauthLogin
  * @method
@@ -15,13 +17,13 @@ export function oauthLogin(options) {
   check(options, Object);
   check(options.challenge, String);
   check(options.remember, Match.Maybe(Boolean));
-  const { challenge, remember = false } = options;
+  const { challenge, remember = true } = options;
 
   return hydra
     .acceptLoginRequest(challenge, {
       subject: Reaction.getUserId(),
       remember,
-      remember_for: 3600 // eslint-disable-line camelcase
+      remember_for: HYDRA_SESSION_LIFESPAN || 3600 // eslint-disable-line camelcase
     })
     .then((response) => response.redirect_to)
     .catch((error) => {

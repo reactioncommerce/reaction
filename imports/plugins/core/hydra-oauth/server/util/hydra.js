@@ -59,11 +59,31 @@ function put(flow, action, challenge, body) {
     });
 }
 
+/**
+ * @name deleteUserSession
+ * @method
+ * @private
+ * @param  {String} id userId
+ * @return {Object|String} API res
+ */
+function deleteUserSession(id) {
+  return fetch(`${HYDRA_ADMIN_URL}/oauth2/auth/sessions/login/${id}`, { method: "DELETE" })
+    .then(async (res) => {
+      if (res.status < 200 || res.status > 302) {
+        const json = await res.json();
+        Logger.error(`An error occurred while deleting session in Hydra for user ${id} `, json.error_description);
+        return Promise.reject(new Error(json.error_description));
+      }
+      return null;
+    });
+}
+
 export default {
   getLoginRequest: (challenge) => get("login", challenge),
   acceptLoginRequest: (challenge, body) => put("login", "accept", challenge, body),
   rejectLoginRequest: (challenge) => put("login", "reject", challenge),
   getConsentRequest: (challenge) => get("consent", challenge),
   acceptConsentRequest: (challenge, body) => put("consent", "accept", challenge, body),
-  rejectConsentRequest: (challenge, body) => put("consent", "reject", challenge, body)
+  rejectConsentRequest: (challenge, body) => put("consent", "reject", challenge, body),
+  deleteUserSession: (id) => deleteUserSession(id)
 };
