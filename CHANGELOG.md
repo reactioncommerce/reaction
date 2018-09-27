@@ -1,4 +1,7 @@
-# v2.0.0
+# v2.0.0-rc.2
+WIP
+
+# v2.0.0-rc.1
 This is our first **release candidate** for v2.0.0 of Reaction. Please check it out and let us know what works and what doesn't for you.
 
 In many ways this may better mark the beginning of a new way to develop for Reaction rather than the end of a big development cycle. Make no mistake, there are some pretty great things that v2.0.0 includes - for example, our GraphQL API now covers the basic commerce flow, from browsing a catalog all the way through checkout. However, this release is also bigger in many ways that just this repository. Much of our work over the past several months has gone into repositories other than this primary `/reaction` one.
