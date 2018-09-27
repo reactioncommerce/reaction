@@ -1,10 +1,10 @@
 extend type Query {
   "Get the navigation items for a shop"
-  navItems(shopId: ID!): NavItem
+  navigationItems(shopId: ID!): NavigationItem
 }
 
-type NavItem {
-  "The Navigation Item ID"
+type NavigationItem {
+  "The navigation item ID."
   _id: ID!
 
   "The item's content. Can be plain text or HTML."
@@ -13,50 +13,57 @@ type NavItem {
   "The link URL. Can be left empty to have context wrapped in a <span> instead of <a>."
   url: String
 
-  "The ID of the parent navigation item, if applicable."
-  parentId: ID
-
-  "The order of the navigation item."
-  position: Int!
-
   "The ID of the shop this navigation item belongs to."
   shopId: ID!
 
-  "CSS styles to be added to the <a>/<span> tag"
-  styles: String
-
   "Any metadata needed for the navigation item. Sent and received as stringified JSON, but stored as an object."
-  metadata: String
+  metadata: JSONObject
 }
 
 extend type Mutation {
-  createNavItem(input: NavItemInput!): NavItemPayload
+  "Create a navigation item"
+  createNavigationItem(input: CreateNavigationItemInput!): NavigationItemPayload
+
+  "Update a navigation item"
+  updateNavigationItem(input: UpdateNavigationItemInput!): NavigationItemPayload
+
+  "Delete a navigation item"
+  deleteNavigationItem(input: DeleteNavigationItemInput!): NavigationItemPayload
 }
 
-input NavItemInput {
+input CreateNavigationItemInput {
+  "The navigation item to add"
+  navigationItem: NavigationItemInput!
+}
+
+input UpdateNavigationItemInput {
+  "The navigation item ID."
+  navigationItemId: ID!
+
+  "The updated navigation item. Pass the whole object without the ID"
+  navigationItem: NavigationItemInput!
+}
+
+input DeleteNavigationItemInput {
+  "The navigation item ID."
+  navigationItemId: ID!
+}
+
+input NavigationItemInput {
   "The item's content. Can be plain text or HTML."
   content: String!
 
   "The link URL. Can be left empty to have context wrapped in a <span> instead of <a>."
   url: String
 
-  "The ID of the parent navigation item, if applicable."
-  parentId: ID
-
-  "The order of the navigation item."
-  position: Int!
-
   "The ID of the shop this navigation item belongs to."
   shopId: ID!
 
-  "CSS styles to be added to the <a>/<span> tag"
-  styles: String
-
   "Any metadata needed for the navigation item. Sent and received as stringified JSON, but stored as an object."
-  metadata: String
+  metadata: JSONObject
 }
 
-type NavItemPayload {
-  "The Nav Item that was created, updated, or deleted."
-  navItem: NavItem
+type NavigationItemPayload {
+  "The navigation item that was created, updated, or deleted."
+  navigationItem: NavigationItem
 }

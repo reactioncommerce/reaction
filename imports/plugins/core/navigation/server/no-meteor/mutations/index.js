@@ -1,5 +1,5 @@
-import createNavItem from "./createNavItem";
+import createNavigationItem from "./createNavigationItem";
 
 export default {
-  createNavItem
+  createNavigationItem
 }

@@ -2,7 +2,7 @@ import SimpleSchema from "simpl-schema";
 import { registerSchema } from "@reactioncommerce/schemas";
 
 /**
- * @name NavItem Schema
+ * @name NavigationItem Schema
  * @memberof Schemas
  * @type {SimpleSchema}
  * @summary An item in a shop's navigation
@@ -16,7 +16,7 @@ import { registerSchema } from "@reactioncommerce/schemas";
  * @property {Object} metadata Any metadata needed for the navigation item. Sent and received as stringified JSON, but
  *  stored as an object.
  */
-export const NavItem = new SimpleSchema({
+export const NavigationItem = new SimpleSchema({
   _id: {
     type: String,
     optional: true
@@ -48,4 +48,4 @@ export const NavItem = new SimpleSchema({
   }
 });
 
-registerSchema("NavItem", NavItem);
+registerSchema("NavigationItem", NavigationItem);
