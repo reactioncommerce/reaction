@@ -18,7 +18,7 @@ export default (Comp) => (
 
       if (shouldSkipGraphql) {
         return (
-          <Component {...this.props} />
+          <Comp {...this.props} />
         );
       }
 

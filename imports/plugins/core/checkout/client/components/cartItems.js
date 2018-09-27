@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import classnames from "classnames";
 import { Components, registerComponent } from "@reactioncommerce/reaction-components";
 
 class CartItems extends Component {
@@ -9,6 +10,10 @@ class CartItems extends Component {
     handleShowProduct: PropTypes.func,
     item: PropTypes.object,
     pdpPath: PropTypes.func
+  }
+
+  state = {
+    hide: false
   }
 
   handleClick = (event) => {
@@ -21,10 +26,14 @@ class CartItems extends Component {
 
   removalClick = (event) => {
     event.preventDefault();
-
-    if (typeof this.props.handleRemoveItem === "function") {
-      this.props.handleRemoveItem(event, this.props.item);
-    }
+    this.setState({
+      hide: true
+    });
+    setTimeout(() => { // Time for animation to run
+      if (typeof this.props.handleRemoveItem === "function") {
+        this.props.handleRemoveItem(event, this.props.item);
+      }
+    }, 500);
   }
 
   render() {
@@ -34,11 +43,13 @@ class CartItems extends Component {
       item
     } = this.props;
 
+    const { hide } = this.state;
+
     const mediaUrl = handleImage(item);
 
     return (
       <div
-        className="cart-items"
+        className={classnames("cart-items", { "hide-item": hide } )}
         key={item._id}
         style={{ display: "inline-block" }}
       >

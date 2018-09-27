@@ -80,7 +80,7 @@ test("renders child component with correct tags", async () => {
     </MockedProvider>
   ));
 
-  await waitForFalseyProp(wrapper, "MockComponent", "isLoading");
+  await waitForFalseyProp(wrapper, "MockComponent", "isLoadingTags");
 
   expect(wrapper.find("MockComponent").prop("tags")[0]._id).toBe(fakeOpaqueTagId);
 });
@@ -94,7 +94,7 @@ test("doesn't query GraphQL if no shopId is provided", async () => {
 
   const mockComponentInstance = wrapper.find("MockComponent");
   expect(mockComponentInstance.prop("tags")).toBe(undefined);
-  expect(mockComponentInstance.prop("isLoading")).toBe(undefined);
+  expect(mockComponentInstance.prop("isLoadingTags")).toBe(undefined);
 });
 
 test("passes shouldSkipGraphql to child component if invalid shopId is provided", async () => {
@@ -104,7 +104,7 @@ test("passes shouldSkipGraphql to child component if invalid shopId is provided"
     </MockedProvider>
   ));
 
-  await waitForFalseyProp(wrapper, "MockComponent", "isLoading");
+  await waitForFalseyProp(wrapper, "MockComponent", "isLoadingTags");
 
   const mockComponentInstance = wrapper.find("MockComponent");
   expect(mockComponentInstance.prop("tags")).toBe(undefined);

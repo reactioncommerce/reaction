@@ -56,24 +56,19 @@ function composer(props, onData) {
   const handleRemoveItem = (event, item) => {
     event.stopPropagation();
     event.preventDefault();
-    const cartItemElement = $(event.target).closest(".cart-drawer-swiper-slide");
-
-    cartItemElement.fadeOut(
-      500,
-      () => props.updateCartItemsQuantity({
-        variables: {
-          input: {
-            cartId: props.cartId,
-            items: [
-              {
-                cartItemId: item._id,
-                quantity: 0
-              }
-            ]
-          }
+    props.updateCartItemsQuantity({
+      variables: {
+        input: {
+          cartId,
+          items: [
+            {
+              cartItemId: item._id,
+              quantity: 0
+            }
+          ]
         }
-      })
-    );
+      }
+    });
   };
 
   const productItems = cartItems;

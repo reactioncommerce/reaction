@@ -95,13 +95,8 @@ const wrapComponent = (Comp) => (
     }
 
     componentWillReceiveProps(nextProps) {
-      let selectedTag = {};
       const { tags = [] } = nextProps;
-      tags.forEach((tag) => {
-        if (this.isSelected(tag)) {
-          selectedTag = tag;
-        }
-      });
+      const selectedTag = tags.find(this.isSelected) || {};
 
       const { tagIds = [], tagsByKey = {}, isVisible } = nextProps;
       this.setState({
@@ -188,7 +183,7 @@ const wrapComponent = (Comp) => (
       }
     }
 
-    isSelected(tag) {
+    isSelected = (tag) => {
       let isSelected = false;
       if (this.state.selectedTag && tag) {
         isSelected = this.state.selectedTag._id === tag._id;

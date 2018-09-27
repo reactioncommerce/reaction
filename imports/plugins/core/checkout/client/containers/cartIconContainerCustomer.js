@@ -8,12 +8,10 @@ import withViewer from "/imports/plugins/core/graphql/lib/hocs/withViewer";
 import CartIconCustomer from "../components/cartIconCustomer";
 
 const handlers = {
-  handleClick(e) {
-    e.preventDefault();
-    const cartDrawer = document.querySelector("#cart-drawer-container");
-    Velocity(cartDrawer, { opacity: 1 }, 300, () => {
-      Reaction.toggleSession("displayCart");
-    });
+  handleClick(event) {
+    event.preventDefault();
+    document.querySelector("#cart-drawer-container").classList.toggle("opened");
+    Reaction.toggleSession("displayCart");
   }
 };
 

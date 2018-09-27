@@ -35,7 +35,7 @@ export default (Component) => (
             if (loading === false) {
               if (!data || !data.cart) {
                 return (
-                  <Component {...props} shouldSkipGraphql />
+                  <Component {...props} />
                 );
               }
               const { cart } = data;

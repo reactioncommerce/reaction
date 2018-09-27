@@ -25,7 +25,6 @@ function isVariantSoldOut(options) {
 }
 
 function isOptionSoldOut(option) {
-  console.log(option, getProductQuantity(option));
   return option.inventoryManagement && getProductQuantity(option) <= 0;
 }
 

@@ -36,7 +36,7 @@ export default (Component) => (
                 props.viewer = viewer;
                 props.viewerId = viewer._id;
               } else {
-                // Shop by slug not found, skip any other HOCs that relied on shopId
+                // Viewer not found, skip any other HOCs that relied on shopId
                 props.shouldSkipGraphql = true;
               }
             }

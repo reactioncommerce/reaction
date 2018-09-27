@@ -40,7 +40,7 @@ export default (Component) => (
             }
             const props = {
               ...this.props,
-              isLoading: loading
+              isLoadingTags: loading
             };
 
             if (loading === false) {
@@ -67,8 +67,6 @@ export default (Component) => (
                 }
               }
               props.tags = tags;
-              // props.tagsByKey = tagsByKey;
-              // props.tagIds = getTagIds({ tags });
             }
 
             return (
