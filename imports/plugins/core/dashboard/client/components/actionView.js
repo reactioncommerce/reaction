@@ -98,9 +98,9 @@ const getStyles = (props) => {
       "flex": "1 1 auto",
       "maxWidth": viewMaxSize,
       "@media only screen and (max-width: 1500px)": {
-        "flex": "0 1 auto",
+        flex: "0 1 auto",
         maxWidth: "100%",
-        "width": "55vw"
+        width: "55vw"
       },
       "@media only screen and (max-width: 949px)": {
         width: "100vw"
