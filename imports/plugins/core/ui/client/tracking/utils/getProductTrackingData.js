@@ -13,9 +13,9 @@ export default function getProductTrackingData(product) {
 
   if (product.pricing && product.pricing.length) {
     const price = product.pricing[0];
-    minPrice = price.minPrice;
-    maxPrice = price.maxPrice;
-    currency = price.currency.code;
+    minPrice = price.minPrice; // eslint-disable-line prefer-destructuring
+    maxPrice = price.maxPrice; // eslint-disable-line prefer-destructuring
+    currency = price.currency.code; // eslint-disable-line prefer-destructuring
   }
 
   if (window.location.pathname) {

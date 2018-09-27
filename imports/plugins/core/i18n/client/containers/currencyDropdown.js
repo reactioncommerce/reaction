@@ -78,7 +78,7 @@ const composer = (props, onData) => {
           currencies.push(currency);
 
           // Update global currency info when currency is changed
-          if (currency.class === "active" && locale.currency && currencyName != locale.currency.code) {
+          if (currency.class === "active" && locale.currency && currencyName !== locale.currency.code) {
             locale.currency = shop.currencies[currencyName];
             locale.currency.code = currencyName;
             Reaction.Locale.set(locale);
