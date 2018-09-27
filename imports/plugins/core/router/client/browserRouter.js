@@ -1,3 +1,4 @@
+import { debounce } from "lodash";
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import ReactDOM from "react-dom";
@@ -128,19 +129,23 @@ class BrowserRouter extends Component {
     MetaData.init(routeData);
 
     if (previousRoute && typeof analytics !== "undefined") { // eslint-disable-line no-undef
-      setTimeout(() => {
-        // Track page views with Segment
-        const { referrer, title } = document;
-        const { href, pathname } = window.location;
-        analytics.page({ // eslint-disable-line no-undef
-          referrer,
-          title,
-          path: pathname,
-          url: href
-        });
-      }, 1000); // Give MetaData.init 1s to set page metadata before tracking
+      this.trackPageView();
     }
   }
+
+  trackPageView = debounce(() => {
+    setTimeout(() => {
+      // Track page views with Segment
+      const { referrer, title } = document;
+      const { href, pathname } = window.location;
+      analytics.page({ // eslint-disable-line no-undef
+        referrer,
+        title,
+        path: pathname,
+        url: href
+      });
+    }, 1000); // Give MetaData.init 1s to set page metadata before tracking
+  }, 1000);
 
   render() {
     return (
