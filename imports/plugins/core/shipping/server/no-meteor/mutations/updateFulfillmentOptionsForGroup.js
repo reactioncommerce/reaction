@@ -1,8 +1,7 @@
 import { isEqual } from "lodash";
 import SimpleSchema from "simpl-schema";
 import ReactionError from "@reactioncommerce/reaction-error";
-import getCartById from "../../../../cart/server/no-meteor/util/getCartById";
-import getShippingRates from "../util/getShippingRates";
+import getCartById from "../util/getCartById";
 
 const inputSchema = new SimpleSchema({
   cartId: String,
@@ -73,8 +72,11 @@ export default async function updateFulfillmentOptionsForGroup(context, input) {
   const fulfillmentGroup = (cart.shipping || []).find((group) => group._id === fulfillmentGroupId);
   if (!fulfillmentGroup) throw new ReactionError("not-found", `Fulfillment group with ID ${fulfillmentGroupId} not found in cart with ID ${cartId}`);
 
+  // Map the items onto the fulfillment groups
+  fulfillmentGroup.items = fulfillmentGroup.itemIds.map((itemId) => cart.items.find((item) => item._id === itemId));
+
   // In the future we want to do this async and subscribe to the results
-  const rates = await getShippingRates(cart, context);
+  const rates = await context.queries.getFulfillmentMethodsWithQuotes(fulfillmentGroup, context);
 
   const { shipmentQuotes, shipmentQuotesQueryStatus } = getShipmentQuotesQueryStatus(rates);
 
@@ -91,7 +93,7 @@ export default async function updateFulfillmentOptionsForGroup(context, input) {
     if (matchedCount !== 1) throw new ReactionError("server-error", "Unable to update cart");
 
     const updatedCart = await Cart.findOne({ _id: cartId });
-    await appEvents.emit("afterCartUpdate", cartId, updatedCart);
+    await appEvents.emit("afterCartUpdate", updatedCart);
 
     return { cart: updatedCart };
   }

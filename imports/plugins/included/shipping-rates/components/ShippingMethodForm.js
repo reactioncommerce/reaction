@@ -26,7 +26,7 @@ export default class ShippingMethodForm extends Component {
       cost: PropTypes.string,
       handling: PropTypes.string,
       rate: PropTypes.string,
-      enabled: PropTypes.bool
+      isEnabled: PropTypes.bool
     }),
     onCancel: PropTypes.func.isRequired,
     onDelete: PropTypes.func.isRequired,
@@ -83,9 +83,9 @@ export default class ShippingMethodForm extends Component {
             <TextInput id={rateInputId} name="rate" />
             <ErrorsBlock names={["rate"]} />
           </Field>
-          <Field name="enabled">
-            <Checkbox name="enabled" label={i18next.t("shippingMethod.enabled")} />
-            <ErrorsBlock names={["enabled"]} />
+          <Field name="isEnabled">
+            <Checkbox name="isEnabled" label={i18next.t("shippingMethod.enabled")} />
+            <ErrorsBlock names={["isEnabled"]} />
           </Field>
         </Form>
         <div className="clearfix">

@@ -1,10 +1,22 @@
 import Reaction from "/imports/plugins/core/core/server/Reaction";
+import getFulfillmentMethodsWithQuotes from "./server/no-meteor/getFulfillmentMethodsWithQuotes";
+import resolvers from "./server/no-meteor/resolvers";
+import mutations from "./server/no-meteor/mutations";
+import schemas from "./server/no-meteor/schemas";
 
 Reaction.registerPackage({
   label: "Shipping Rates",
   name: "reaction-shipping-rates",
   icon: "fa fa-truck-o",
   autoEnable: true,
+  graphQL: {
+    resolvers,
+    schemas
+  },
+  mutations,
+  functionsByType: {
+    getFulfillmentMethodsWithQuotes: [getFulfillmentMethodsWithQuotes]
+  },
   settings: {
     name: "Flat Rate Service",
     flatRates: {

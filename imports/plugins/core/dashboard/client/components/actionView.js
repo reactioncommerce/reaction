@@ -2,9 +2,9 @@ import React, { Component } from "react";
 import { compose } from "recompose";
 import PropTypes from "prop-types";
 import classnames from "classnames";
+import { isEqual } from "lodash";
 import { getComponent, withCSSTransition } from "@reactioncommerce/reaction-components";
 import Blaze from "meteor/gadicc:blaze-react-component";
-import { EJSON } from "meteor/ejson";
 import { Admin } from "/imports/plugins/core/ui/client/providers";
 import Radium from "radium";
 import debounce from "lodash/debounce";
@@ -156,6 +156,21 @@ class ActionView extends Component {
     viewportWidth: PropTypes.number
   }
 
+  static getDerivedStateFromProps(props) {
+    const { actionView, detailView, prevProps = {} } = props;
+
+    const stateUpdates = { prevProps: props };
+
+    if (isEqual(actionView, prevProps.actionView) === false) {
+      stateUpdates.actionView = actionView;
+    }
+    if (isEqual(detailView, prevProps.detailView) === false) {
+      stateUpdates.detailView = detailView;
+    }
+
+    return stateUpdates;
+  }
+
   constructor(props) {
     super(props);
 
@@ -188,7 +203,7 @@ class ActionView extends Component {
   componentDidUpdate(prevProps) {
     const { actionView } = this.props;
 
-    if (EJSON.equals(actionView, prevProps.actionView) === false) {
+    if (isEqual(actionView, prevProps.actionView) === false) {
       this.setState({ actionView });
     }
   }
@@ -425,8 +440,8 @@ class ActionView extends Component {
           unmountOnExit
           classNames={`slide-in-out${(isRtl && "-rtl") || ""}`}
           timeout={200}
-          onEnter={() => this.setState({ detailView }) }
-          onExited={() => this.setState({ detailView }) }
+          onEnter={() => this.setState({ detailView })}
+          onExited={() => this.setState({ detailView })}
         >
           {this.renderDetailView()}
         </CSSTransition>
@@ -455,8 +470,8 @@ class ActionView extends Component {
           unmountOnExit
           classNames={`slide-in-out${(isRtl && "-rtl") || ""}`}
           timeout={200}
-          onEnter={() => this.setState({ actionView }) }
-          onExited={() => this.setState({ actionView }) }
+          onEnter={() => this.setState({ actionView })}
+          onExited={() => this.setState({ actionView })}
         >
           {this.renderActionView()}
         </CSSTransition>

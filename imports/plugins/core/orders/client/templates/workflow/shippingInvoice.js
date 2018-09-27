@@ -8,15 +8,16 @@ import { ReactiveDict } from "meteor/reactive-dict";
 import { i18next, Logger, Reaction } from "/client/api";
 import { Orders, Shops, Packages } from "/lib/collections";
 import InvoiceContainer from "../../containers/invoiceContainer.js";
-import { getBillingInfo } from "../../helpers";
+import { getPaymentForCurrentShop } from "../../helpers";
 
-// helper to return the order payment object
-// the first credit paymentMethod on the order
-// returns entire payment method
+/**
+ * @summary the first credit payment on the order
+ * @param {Object} order The order doc
+ * @returns {Object} The payment
+ */
 function orderCreditMethod(order) {
-  const creditMethods = order.billing && order.billing.filter((value) => value && value.paymentMethod && value.paymentMethod.method === "credit");
-  const creditMethod = creditMethods && creditMethods.find((billing) => billing && billing.shopId === Reaction.getShopId());
-  return creditMethod || {};
+  const creditGroup = order.shipping.find((group) => group.shopId === Reaction.getShopId() && group.payment.method === "credit");
+  return (creditGroup && creditGroup.payment) || {};
 }
 
 //
@@ -111,24 +112,22 @@ Template.coreOrderShippingInvoice.events({
   "click [data-event-action=cancelOrder]": (event, instance) => {
     event.preventDefault();
     const order = instance.state.get("order");
-    const invoiceTotal = getBillingInfo(order).invoice && getBillingInfo(order).invoice.total;
     const currencySymbol = instance.state.get("currency").symbol;
-    const { paymentMethod } = getBillingInfo(order);
 
-    Meteor.subscribe("Packages", Reaction.getShopId());
-    const packageId = paymentMethod && paymentMethod.paymentPackageId;
-    const settingsKey = paymentMethod && paymentMethod.paymentSettingsKey;
+    const { invoice, mode: paymentMode, paymentPluginName, status: paymentStatus } = getPaymentForCurrentShop(order);
+    const invoiceTotal = invoice.total;
+
+    const shopId = Reaction.getShopId();
+
     // check if payment provider supports de-authorize
     const checkSupportedMethods = Packages.findOne({
-      _id: packageId
-    }).settings[settingsKey].support;
-
-    const orderStatus = paymentMethod && paymentMethod.status;
-    const orderMode = paymentMethod && paymentMethod.mode;
+      name: paymentPluginName,
+      shopId
+    }).settings[paymentPluginName].support;
 
     let alertText;
     if (_.includes(checkSupportedMethods, "de-authorize") ||
-      (orderStatus === "completed" && orderMode === "capture")) {
+      (paymentStatus === "completed" && paymentMode === "capture")) {
       alertText = i18next.t("order.applyRefundDuringCancelOrder", { currencySymbol, invoiceTotal });
     }
 
@@ -185,7 +184,7 @@ Template.coreOrderShippingInvoice.helpers({
   disabled() {
     const instance = Template.instance();
     const order = instance.state.get("order");
-    const status = orderCreditMethod(order).paymentMethod && orderCreditMethod(order).paymentMethod.status;
+    const { status } = orderCreditMethod(order);
 
     if (status === "approved" || status === "completed") {
       return "disabled";

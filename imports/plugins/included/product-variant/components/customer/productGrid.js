@@ -10,6 +10,7 @@ import trackProductListViewed from "/imports/plugins/core/ui/client/tracking/tra
 class ProductGrid extends Component {
   static propTypes = {
     canLoadMoreProducts: PropTypes.bool,
+    currencyCode: PropTypes.string,
     isLoading: PropTypes.bool.isRequired,
     loadProducts: PropTypes.func,
     products: PropTypes.array,
@@ -95,7 +96,7 @@ class ProductGrid extends Component {
 
   // render the product grid
   renderProductGrid() {
-    const { products, shopCurrencyCode } = this.props;
+    const { products, currencyCode, shopCurrencyCode } = this.props;
     const badgeLabels = {
       BACKORDER: i18next.t("productDetail.backOrder", "Backorder"),
       LOW_QUANTITY: i18next.t("productDetail.limitedSupply", "Limited Supply"),
@@ -106,7 +107,7 @@ class ProductGrid extends Component {
       <div className="product-grid">
         <ul className="product-grid-list list-unstyled" id="product-grid-list">
           <CatalogGrid
-            currencyCode={shopCurrencyCode}
+            currencyCode={currencyCode || shopCurrencyCode}
             products={products}
             badgeLabels={badgeLabels}
             onItemClick={this.onItemClick}

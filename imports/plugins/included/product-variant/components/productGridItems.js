@@ -5,20 +5,14 @@ import { formatPriceString } from "/client/api";
 
 class ProductGridItems extends Component {
   static propTypes = {
-    canEdit: PropTypes.bool,
-    connectDragSource: PropTypes.func,
-    connectDropTarget: PropTypes.func,
     displayPrice: PropTypes.func,
-    isMediumWeight: PropTypes.func,
     isSearch: PropTypes.bool,
     isSelected: PropTypes.func,
     onClick: PropTypes.func,
     onDoubleClick: PropTypes.func,
     pdpPath: PropTypes.func,
-    positions: PropTypes.func,
     product: PropTypes.object,
-    productMedia: PropTypes.object,
-    weightClass: PropTypes.func
+    productMedia: PropTypes.object
   }
 
   static defaultProps = {
@@ -38,10 +32,6 @@ class ProductGridItems extends Component {
     this.props.onClick(event);
   }
 
-  renderPinned() {
-    return this.props.positions().pinned ? "pinned" : "";
-  }
-
   renderVisible() {
     return this.props.product.isVisible ? "" : "not-visible";
   }
@@ -52,6 +42,7 @@ class ProductGridItems extends Component {
         <div className="product-grid-overlay" />
       );
     }
+    return null;
   }
 
   renderMedia() {
@@ -62,34 +53,14 @@ class ProductGridItems extends Component {
     );
   }
 
-  renderAdditionalMedia() {
-    const { isMediumWeight, productMedia } = this.props;
-    if (!isMediumWeight()) return null;
-
-    const mediaArray = productMedia.additionalMedia;
-    if (!mediaArray || mediaArray.length === 0) return null;
-
-    return (
-      <div className={`product-additional-images ${this.renderVisible()}`}>
-        {mediaArray.map((media) => (
-          <span
-            key={media._id}
-            className="product-image"
-            style={{ backgroundImage: `url('${media.url({ store: "medium" })}')` }}
-          />
-        ))}
-        {this.renderOverlay()}
-      </div>
-    );
-  }
-
   renderNotices() {
+    const { product } = this.props;
+
     return (
       <div className="grid-alerts">
-        <Components.GridItemNotice product={this.props.product} />
-        <Components.GridItemControls product={this.props.product} />
+        <Components.GridItemNotice product={product} />
+        <Components.GridItemControls product={product} />
       </div>
-
     );
   }
 
@@ -117,25 +88,23 @@ class ProductGridItems extends Component {
     );
   }
 
-  renderHoverClassName() {
-    return this.props.isSearch ? "item-content" : "";
-  }
-
   render() {
+    const { isSearch, isSelected, pdpPath, product } = this.props;
+
     const productItem = (
       <li
-        className={`product-grid-item ${this.renderPinned()} ${this.props.weightClass()} ${this.props.isSelected()}`}
-        data-id={this.props.product._id}
-        id={this.props.product._id}
+        className={`product-grid-item product-small ${isSelected() ? "active" : ""}`}
+        data-id={product._id}
+        id={product._id}
       >
-        <div className={this.renderHoverClassName()}>
+        <div className={isSearch ? "item-content" : ""}>
           <span className="product-grid-item-alerts" />
 
           <a className="product-grid-item-images"
-            href={this.props.pdpPath()}
+            href={pdpPath()}
             data-event-category="grid"
             data-event-label="grid product click"
-            data-event-value={this.props.product._id}
+            data-event-value={product._id}
             onDoubleClick={this.handleDoubleClick}
             onClick={this.handleClick}
           >
@@ -143,21 +112,13 @@ class ProductGridItems extends Component {
               {this.renderMedia()}
               {this.renderOverlay()}
             </div>
-
-            {this.renderAdditionalMedia()}
           </a>
 
-          {!this.props.isSearch && this.renderNotices()}
+          {!isSearch && this.renderNotices()}
           {this.renderGridContent()}
         </div>
       </li>
     );
-
-    if (this.props.canEdit) {
-      return (
-        this.props.connectDropTarget(this.props.connectDragSource(productItem))
-      );
-    }
 
     return productItem;
   }

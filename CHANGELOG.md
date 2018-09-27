@@ -1,3 +1,116 @@
+# v2.0.0
+This is our first **release candidate** for v2.0.0 of Reaction. Please check it out and let us know what works and what doesn't for you.
+
+In many ways this may better mark the beginning of a new way to develop for Reaction rather than the end of a big development cycle. Make no mistake, there are some pretty great things that v2.0.0 includes - for example, our GraphQL API now covers the basic commerce flow, from browsing a catalog all the way through checkout. However, this release is also bigger in many ways that just this repository. Much of our work over the past several months has gone into repositories other than this primary `/reaction` one.
+
+We've created a component library called the [Reaction Design System](https://github.com/reactioncommerce/reaction-component-library) which we're announcing the initial "alpha" for. While it's still subject to change, there are a lot of very useful commerce focused components that we've built that live there. We'll have a link to the styleguidist playground up soon where you can play with and read the docs for each component.
+
+Our new GraphQL API has enabled us to build a new UI Client for Reaction that we're calling our [NextJS Starter Kit](https://github.com/reactioncommerce/reaction-next-starterkit). This new UI client provides a reference storefront implementation that communicates with the Reaction API exclusively via GraphQL, eliminating some of the sluggishness that was associated with our Classic UI built on Meteor. This new client is built with NextJS and provides Server Side Rendering (SSR) out of the box, as well as (Segment compatible analytics event tracking)[https://segment.com/docs/spec/ecommerce/v2/]. We'll recommend this as the best way to build a storefront UI for Reaction going forward.
+
+We're also introducing a new OpenID Connect OAuth2 Service which uses [Hydra](https://github.com/ory/hydra) to enable our new UI Client to leverage our existing Meteor based Identities and roles.
+
+These services all run together to form the Reaction Platform (working title, subject to change) - and we've got a new project called [Reaction Platform](https://github.com/reactioncommerce/reaction-platform) which will help you get everything connected and launched together.
+
+This changelog may feel somewhat insignificant because in part, we've been releasing bits of what is becoming 2.0.0 over the last several releases and much of the new development is happening outside of the `/reaction` repository.
+
+## Marketplace Updates
+When multiple shops match the searched domain, prioritize the Primary Shop. This is important when searching for "shop settings" which are only stored on the Primary Shop (e.g., smtp settings).
+
+## Breaking Changes
+
+From #4622
+- Orders-related GraphQL schemas and significant changes to the Orders MongoDB schemas to better match GraphQL. See the diffs for the schema files. Two changes of note are that order.items and order.billing arrays no longer exist. Instead, each item in order.shipping has an items array and a single payment object on it. The payment object is also flattened and unused properties have been removed from it.
+- context.queries and context.mutations are no longer namespaced. This simplifies things and makes it possible for one plugin to overwrite another plugin's functions if necessary.
+
+- Some Meteor methods are removed:
+
+  - cart/copyCartToOrder (replaced by createOrder mutation)
+  - cart/submitPayment (replaced by createOrder mutation)
+  - discounts/transaction
+  - discounts/calculate
+  - discounts/codes/credit (replaced by a function registered with the same name using functionsByType)
+  - discounts/codes/discount (replaced by a function registered with the same name using functionsByType)
+  - discounts/codes/sale (replaced by a function registered with the same name using functionsByType)
+  - discounts/codes/shipping (replaced by a function registered with the same name using functionsByType)
+  - shipping/updateShipmentQuotes
+  - shipping/provider/toggle
+  - shipping/rates/add (replaced with createFlatRateFulfillmentMethod GraphQL mutation)
+  - shipping/rates/update (replaced with updateFlatRateFulfillmentMethod GraphQL mutation)
+  - shipping/rates/delete (replaced with deleteFlatRateFulfillmentMethod GraphQL mutation)
+  - taxes/calculate (replaced by non-Meteor getFulfillmentGroupItemsWithTaxAdded)
+  - taxes/setRateByShopAndItem (replaced by non-Meteor getFulfillmentGroupItemsWithTaxAdded)
+  - notification/send (replaced by non-Meteor createNotification function)
+  - notification/delete (was unused)
+  - stripe/payment/createCharges (replaced by placeOrderWithStripeCardPayment and placeMarketplaceOrderWithStripeCardPayment GraphQL mutations)
+
+- shipping/updateParcelSize Meteor method is renamed to shop/updateDefaultParcelSize and moved to core/shop service
+- Meteor UI client checkout code now places orders using GraphQL
+- Add orderById GraphQL query
+- The "afterCartUpdate" hooks are now called with just (updatedCart) rather than the redundant (updatedCartId, updatedCart)
+- The way that orders are placed is now different. See "Order Changes" heading
+- Orders can no longer be created without an email address
+- The process by which plugins are asked to provide available fulfillment methods + quotes for them is changed. Rather than calling registered hooks, it calls all functions registered with the name "getFulfillmentMethodsWithQuotes" (See getFulfillmentMethodsWithQuotes.js)
+- The "example" payment method form is now an "IOU" form that collects only a full name. It previously had a fake credit card form, which might have been misleading. Now it is clear that it's for demo and trial purposes only. Also, this new form is in React.
+- Some unused (by core) functions have been removed from the cartOrder.js transforms that are available on Cart and Order documents in Meteor.
+
+
+Previously client code would tell the server to "copy cart to order". Now, the orders plugin is mostly unaware of what a cart is. The client is responsible for converting a cart (which is a work-in-progress order) into the OrderInput schema and placing an order using that.
+
+Related to this, payment information is now never stored on the cart. It is collected during checkout and sent with the placeOrder call. An order will only be placed if charges are successfully created using the provided payment details.
+
+The orders service is largely unaware of how payment is done, and there is no generic placeOrder mutation. Instead, plugins that provide payment methods are expected to provide GraphQL mutations that allow you to place and pay for an order using that method. Most of the logic is shared, and is encapsulated in a createOrder mutation that the orders plugin provides. But each payment method plugin wraps the createOrder mutation to handle payment specifics.
+
+All Meteor UI checkout code is updated to place orders using the new GraphQL mutations. The Meteor methods formerly involved in placing orders and payments are removed.
+
+There are currently three included payment methods, each with their own place order mutation:
+
+    placeOrderWithExampleIOUPayment
+    placeOrderWithStripeCardPayment
+    placeMarketplaceOrderWithStripeCardPayment
+
+For production, use placeOrderWithStripeCardPayment. placeOrderWithExampleIOUPayment is included for demo purposes and does not require any external services. placeMarketplaceOrderWithStripeCardPayment is part of the "marketplace" plugin, which is not fully implemented or supported. Each payment method has its own checkout UI component, which collects whatever information it needs securely.
+
+
+We've updated the password reset flow to use a full page in #4637
+ - Move previous Password Reset modal to a dedicated page on /reset-password/:token
+ - Rename the affect components to not have modal suffixes
+ - Show a message on successful reset of the password (previously, the modal closes)
+
+
+In #4613 we've renamed the Docker network on which GraphQL enabled web services are attached to `api.reaction.localhost` Networks in the Docker environment should be named as *.reaction.localhost. The localhost TLD is reserved and guaranteed to not conflict with a real TLD.
+- To enable network communication, projects communicating with Reaction's GraphQL server must be on the api.reaction.localhost Docker network.
+- PRs related to reactioncommerce/reaction#4447 should be coordinated.
+
+We've [moved the SMS schema](https://github.com/reaction-contrib/meteor-notifications-sms) to the SMS package in contrib in  #4566
+
+## Features
+ - feat: Prioritize Primary when multiple Shops match domain (#3528)
+ - feat: Setup IDP flows for Hydra auth (#4627)
+ - feat: Update GQL server to use Hydra Auth token (#4626)
+ - feat: Use new CLI tool "propel" to deploy services to ECS (#4623)
+ - feat(GraphQL): Place orders using GraphQL (#4622)
+ - feat(GraphQL): Add GraphQL via plugin, reorg files into final 2.0 plugin patterns (#4622)
+ - feat: 2.0 migrations (#4648)
+ - feat(GraphQL): add `Account.primaryEmailAddress` resolver (#4647)
+ - feat: Update Reset Password modal to a full page route (#4637)
+
+## Fixes
+ - fix: apply requested sort to Cart.items in GraphQL resolver (#4624)
+ - fix: cart item attributes (#4607)
+ - fix: startup error before primary shop is created on initial startup (#4602)
+ - fix: Update detailView when its data changes (#4659)
+ - fix: fix README broken links, update copy (#4632)
+ - fix: sidebar actions not opening on product grid (#4641)
+ - fix: Ensure MongoDB replica set is ready before start (#4636)
+ -
+
+## Chores
+ - chore: Rename the reaction-api Docker network (#4613)
+
+## Refactors
+ - refactor: Remove unused schemas (#4566)
+ - refactor: remove all grid positions code and UI (#4628)
+
 # v1.16.0
 ## GraphQL
 ### Features

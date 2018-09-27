@@ -128,60 +128,50 @@ export default {
 
     // Listen for active shop change
     return Tracker.autorun(() => {
-      let shop;
       if (this.Subscriptions.MerchantShops.ready()) {
         // if we don't have an active shopId, try to retrieve it from the userPreferences object
         // and set the shop from the storedShopId
         if (!this.shopId) {
-          const storedShopId = this.getUserPreferences("reaction", "activeShopId");
-          if (storedShopId) {
-            shop = Shops.findOne({
-              _id: storedShopId
-            });
-          } else {
-            shop = Shops.findOne({
-              domains: this.getDomain()
-            });
-          }
-        }
+          const shop = this.getCurrentShop();
 
-        if (shop) {
-          // Only set shopId if it hasn't been set yet
-          if (!this.shopId) {
-            this.shopId = shop._id;
-            this.shopName = shop.name;
-          }
-
-          // We only use the active shop to setup locale if marketplace settings
-          // are enabled and merchantLocale is set to true
-          if (this.marketplace.merchantLocale === true) {
-          // initialize local client Countries collection
-            if (!Countries.findOne()) {
-              createCountryCollection(shop.locales.countries);
+          if (shop) {
+            // Only set shopId if it hasn't been set yet
+            if (!this.shopId) {
+              this.shopId = shop._id;
+              this.shopName = shop.name;
             }
 
-            const locale = this.Locale.get() || {};
+            // We only use the active shop to setup locale if marketplace settings
+            // are enabled and merchantLocale is set to true
+            if (this.marketplace.merchantLocale === true) {
+              // initialize local client Countries collection
+              if (!Countries.findOne()) {
+                createCountryCollection(shop.locales.countries);
+              }
 
-            // fix for https://github.com/reactioncommerce/reaction/issues/248
-            // we need to keep an eye for rates changes
-            if (typeof locale.locale === "object" &&
-            typeof locale.currency === "object" &&
-            typeof locale.locale.currency === "string") {
-              const localeCurrency = locale.locale.currency.split(",")[0];
-              if (typeof shop.currencies[localeCurrency] === "object") {
-                if (typeof shop.currencies[localeCurrency].rate === "number") {
-                  locale.currency.rate = shop.currencies[localeCurrency].rate;
-                  localeDep.changed();
+              const locale = this.Locale.get() || {};
+
+              // fix for https://github.com/reactioncommerce/reaction/issues/248
+              // we need to keep an eye for rates changes
+              if (typeof locale.locale === "object" &&
+              typeof locale.currency === "object" &&
+              typeof locale.locale.currency === "string") {
+                const localeCurrency = locale.locale.currency.split(",")[0];
+                if (typeof shop.currencies[localeCurrency] === "object") {
+                  if (typeof shop.currencies[localeCurrency].rate === "number") {
+                    locale.currency.rate = shop.currencies[localeCurrency].rate;
+                    localeDep.changed();
+                  }
                 }
               }
+              // we are looking for a shopCurrency changes here
+              if (typeof locale.shopCurrency === "object") {
+                locale.shopCurrency = shop.currencies[shop.currency];
+                localeDep.changed();
+              }
             }
-            // we are looking for a shopCurrency changes here
-            if (typeof locale.shopCurrency === "object") {
-              locale.shopCurrency = shop.currencies[shop.currency];
-              localeDep.changed();
-            }
+            return this;
           }
-          return this;
         }
       }
     });
@@ -542,6 +532,28 @@ export default {
     });
 
     return (shop && shop.currency) || "USD";
+  },
+
+  /**
+   * @name getCurrentShop
+   * @summary Get the proper current shop based on various checks. This mirrors the logic in
+   *   Reaction.getShopId on the server
+   * @method
+   * @memberof Core/Client
+   * @returns {Object|null} The shop document
+   */
+  getCurrentShop() {
+    // Give preference to shop chosen by the user
+    const activeShopId = this.getUserPreferences("reaction", "activeShopId");
+    if (activeShopId) return Shops.findOne({ _id: activeShopId });
+
+    // If no chosen shop, look up the shop by domain
+    let shop = Shops.findOne({ domains: this.getDomain() });
+
+    // Finally fall back to primary shop
+    if (!shop) shop = Shops.findOne({ shopType: "primary" });
+
+    return shop;
   },
 
   /**

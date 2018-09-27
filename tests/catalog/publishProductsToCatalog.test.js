@@ -23,12 +23,14 @@ const mockProduct = {
   title: "Fake Product",
   shopId: internalShopId,
   isDeleted: false,
-  isVisible: true
+  isVisible: true,
+  supportedFulfillmentTypes: ["shipping"]
 };
 
 const mockVariant = {
   _id: internalVariantIds[0],
   ancestors: [internalProductId],
+  price: 2.99,
   title: "Fake Product Variant",
   shopId: internalShopId,
   isDeleted: false,
@@ -38,6 +40,7 @@ const mockVariant = {
 const mockOptionOne = {
   _id: internalVariantIds[1],
   ancestors: [internalProductId, internalVariantIds[0]],
+  price: 2.99,
   title: "Fake Product Option One",
   shopId: internalShopId,
   isDeleted: false,
@@ -47,6 +50,7 @@ const mockOptionOne = {
 const mockOptionTwo = {
   _id: internalVariantIds[2],
   ancestors: [internalProductId, internalVariantIds[0]],
+  price: 2.99,
   title: "Fake Product Option Two",
   shopId: internalShopId,
   isDeleted: false,
@@ -58,17 +62,21 @@ const mockCatalogItem = {
     productId: opaqueProductId,
     title: "Fake Product",
     isDeleted: false,
+    supportedFulfillmentTypes: ["shipping"],
     variants: [
       {
         _id: opaqueCatalogVariantIds[0],
         title: "Fake Product Variant",
+        price: 2.99,
         options: [
           {
             _id: opaqueCatalogVariantIds[1],
+            price: 2.99,
             title: "Fake Product Option One"
           },
           {
             _id: opaqueCatalogVariantIds[2],
+            price: 2.99,
             title: "Fake Product Option Two"
           }
         ]
