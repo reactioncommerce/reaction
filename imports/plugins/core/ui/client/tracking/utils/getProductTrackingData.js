@@ -6,22 +6,20 @@
  * @returns {Object} Data for tracking
  */
 export default function getProductTrackingData(product) {
-  let price;
+  let currency = "USD";
+  let minPrice;
+  let maxPrice;
   let url;
 
-  if (product) {
-    if (product.shop) {
-      const shopCurrency = product.shop.currency.code;
-      const foundPricing = product.pricing.find((pricing) => pricing.currency.code === shopCurrency);
+  if (product.pricing && product.pricing.length) {
+    const price = product.pricing[0];
+    minPrice = price.minPrice;
+    maxPrice = price.maxPrice;
+    currency = price.currency.code;
+  }
 
-      if (foundPricing) {
-        price = foundPricing.price || foundPricing.minPrice; // eslint-disable-line prefer-destructuring
-      }
-    }
-
-    if (window.location.pathname) {
-      url = window.location.pathname;
-    }
+  if (window.location.pathname) {
+    url = window.location.pathname;
   }
 
   return {
@@ -30,10 +28,11 @@ export default function getProductTrackingData(product) {
     category: (product.tags && Array.isArray(product.tags.nodes) && product.tags.nodes.length && product.tags.nodes[0].name) || undefined,
     name: product.title,
     brand: product.vendor,
-    currency: product.shop.currency.code,
-    price,
+    currency,
+    minPrice,
+    maxPrice,
     quantity: 1,
-    value: price,
+    value: minPrice,
     image_url: product.primaryImage && product.primaryImage.URLs.original, // eslint-disable-line camelcase
     url
   };
