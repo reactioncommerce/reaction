@@ -1,6 +1,6 @@
+import React from "react";
 import { compose, withProps } from "recompose";
 import { Meteor } from "meteor/meteor";
-import React from "react";
 import { registerComponent, composeWithTracker, Components } from "@reactioncommerce/reaction-components";
 import { i18nextDep, i18next, Reaction, Logger } from "/client/api";
 import MainDropdownCustomer from "../components/mainDropdownCustomer";
