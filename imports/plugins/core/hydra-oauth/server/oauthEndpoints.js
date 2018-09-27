@@ -59,3 +59,14 @@ WebApp.connectHandlers.use("/consent", (req, res) => {
     })
     .catch((errorMessage) => errorHandler(errorMessage, res));
 });
+
+WebApp.connectHandlers.use("/logout", (req, res) => {
+  hydra
+    .deleteUserSession(req.query.userId)
+    .then(() => {
+      Logger.debug(`Delete user session complete for userId: ${req.query.userId}`);
+      res.writeHead(200);
+      return res.end();
+    })
+    .catch((errorMessage) => errorHandler(errorMessage, res));
+});
