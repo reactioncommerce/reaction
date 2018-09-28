@@ -1,11 +1,11 @@
 environment:
   name: staging
   service:
-    name: reaction-core
+    name: reaction2-core
     cluster: core
     certificate_arn: arn:aws:acm:us-west-2:773713188930:certificate/c2979a7a-7b84-43ed-b3a7-24b0256a1b9f
     root_domain: staging.reactioncommerce.com
-    dns_name: reaction-core
+    dns_name: reaction2-core
     desired_task_count: 2
     min_task_count: 0
     max_task_count: 0
@@ -14,16 +14,15 @@ environment:
     alb_listener_port: 80
     alb_listener_path: /
     alb_listener_rule_priority: 1
-    alb_health_check_path: /
+    alb_health_check_path: /health
     task-definition:
-      name: core
+      name: core2
       cpu: 500
       memory: 1800
       container:
-        name: core
+        name: core2
         port: 3000
         image: reactioncommerce/reaction
-        #image_tag: 443896b4373cf444e6549e7fec50640c9a8a964d
         image_tag: latest
         env_params:
         - name: REACTION_AUTH
