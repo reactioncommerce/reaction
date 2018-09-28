@@ -105,9 +105,9 @@ const wrapComponent = (Comp) =>
               }
             }
           }
-          if (!selectedVariant) {
-            [selectedVariant] = product.variants;
-          }
+        }
+        if (!selectedVariant) { // select first variant by default
+          [selectedVariant] = product.variants;
         }
         this.handleSelectVariant(selectedVariant, selectedOptionId);
       }

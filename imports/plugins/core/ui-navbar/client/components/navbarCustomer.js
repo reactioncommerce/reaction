@@ -138,12 +138,7 @@ class NavBarCustomer extends Component {
           isVisible={this.state.navBarVisible}
           closeNavbar={this.handleCloseNavbar}
           {...this.props}
-        >
-          {/* <Components.Brand />
-          {this.renderNotificationIcon()}
-          {this.renderLanguage()}
-          {this.renderCurrency()} */}
-        </Components.TagNavCustomer>
+        />
       </header>
     );
   }

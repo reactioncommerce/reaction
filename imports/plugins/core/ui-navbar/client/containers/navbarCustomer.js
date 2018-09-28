@@ -9,6 +9,10 @@ import withAccountCart from "/imports/plugins/core/graphql/lib/hocs/withAccountC
 import NavBarCustomer from "../components/navbarCustomer";
 
 export function composer(props, onData) {
+  // Prevent loading GraphQL HOCs if we don't have a user account yet. All users (even anonymous) have accounts
+  if (!Meteor.user()) {
+    return;
+  }
   const { shop } = props;
   const searchPackage = Reaction.Apps({ provides: "ui-search" });
   let searchEnabled;

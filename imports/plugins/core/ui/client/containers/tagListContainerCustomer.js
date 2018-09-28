@@ -32,7 +32,6 @@ const wrapComponent = (Comp) => (
     render() {
       return (
         <Comp
-          onClick={this.handleEditButtonClick}
           tags={this.tags}
           {...this.props}
         />

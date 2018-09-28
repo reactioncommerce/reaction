@@ -29,7 +29,8 @@ export default (Component) => (
             }
             const props = {
               ...this.props,
-              isLoadingAccountCart: loading
+              isLoadingAccountCart: loading,
+              refetchCartData: refetch
             };
 
             if (loading === false) {
@@ -78,7 +79,6 @@ export default (Component) => (
                   });
                 };
               }
-              props.refetchCartData = refetch;
             }
             return (
               <Component {...props} />

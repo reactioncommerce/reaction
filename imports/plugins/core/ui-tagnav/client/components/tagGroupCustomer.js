@@ -29,6 +29,15 @@ class TagGroupCustomer extends Component {
     };
   }
 
+  handleViewAll = () => {
+    const { slug } = this.props.tagGroupProps.parentTag;
+    return Router.go("tag", {
+      hash: {
+        slug
+      }
+    });
+  }
+
   renderTree(tags) {
     if (Array.isArray(tags)) {
       return tags.map((tag) => (
@@ -48,17 +57,11 @@ class TagGroupCustomer extends Component {
   }
 
   render() {
-    const { slug } = this.props.tagGroupProps.parentTag;
-    const url = Router.pathFor("tag", {
-      hash: {
-        slug
-      }
-    });
     return (
       <div className="rui tagtree">
         <div className="header">
           <span className="title">{this.props.tagGroupProps.parentTag.name}</span>
-          <a href={url}>View All <i className="fa fa-angle-right" /></a>
+          <a onClick={this.handleViewAll}>View All <i className="fa fa-angle-right" /></a>
         </div>
         <div className="content">
           {this.renderTree(this.tags)}

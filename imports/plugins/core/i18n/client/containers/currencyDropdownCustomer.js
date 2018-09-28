@@ -75,6 +75,10 @@ const wrapComponent = (Comp) => (
 );
 
 const composer = (props, onData) => {
+  // Prevent loading GraphQL HOCs if we don't have a user account yet. All users (even anonymous) have accounts
+  if (!Meteor.user()) {
+    return;
+  }
   onData(null, { ...props, shopSlug: Reaction.getSlug(Reaction.getShopName().toLowerCase()) });
 };
 
