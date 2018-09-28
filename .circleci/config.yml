@@ -341,7 +341,7 @@ workflows:
             - docker-push
 #          filters:
 #            branches:
-#              only: /^release-2\.0.\d+$/
+#              only: /^release.*/
       - deploy-docs:
           requires:
             - test-unit

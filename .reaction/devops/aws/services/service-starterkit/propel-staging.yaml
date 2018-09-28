@@ -24,7 +24,7 @@ environment:
         - container_port: 3000
           host_port: 3000
         image: reactioncommerce/reaction
-        image_tag: propel-ecs-reaction2
+        image_tag: release-2.0.0-rc.2
         env_params:
         - name: REACTION_AUTH
         - name: REACTION_EMAIL
