@@ -264,13 +264,14 @@ async function getNonExistingIds(data, rawCollection) {
 async function saveWithErrorData(withErrorData, jobItem, shouldUpdate = false) {
   const { hasHeader, _id: jobItemId } = jobItem;
   if (withErrorData.length > 0) {
+    const sortedRows = _.sortBy(withErrorData, [(row) => row.rowNumber]);
     const csvErrorRows = [];
     let header = ["Row Number", "Saved?", "Errors"];
     if (shouldUpdate) {
       header = ["Row Number", "Errors"];
     }
-    csvErrorRows.push(header.concat(Object.keys(withErrorData[0].originalRow)));
-    withErrorData.forEach((row) => {
+    csvErrorRows.push(header.concat(Object.keys(sortedRows[0].originalRow)));
+    sortedRows.forEach((row) => {
       const originalRowNumber = hasHeader ? row.rowNumber + 2 : row.rowNumber + 1;
       const errorMessages = row.errors.join(" || ");
       const originalValues = Object.values(row.originalRow);

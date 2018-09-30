@@ -6,7 +6,6 @@ import { Components, composeWithTracker, registerComponent } from "@reactioncomm
 import { FileRecord } from "@reactioncommerce/file-collections";
 import { Meteor } from "meteor/meteor";
 import { SortableTable } from "/imports/plugins/core/ui/client/components";
-import Logger from "/client/modules/logger";
 import { i18next } from "/client/api";
 import { JobItems, Mappings } from "../../lib/collections";
 import { getDataTypeOptions, getDefaultMappingForCollection, getFieldOptionsForCollection } from "../../lib/common/conversionMaps";
@@ -303,13 +302,13 @@ class CSVConnectorContainer extends Component {
 
   handleSetSampleData = async () => {
     const { selectedMapping: { mapping } } = this.state;
-    let sampleData = {};
+    let sampleData;
     const mappingByUser = {};
     try {
       const rows = await this.getCSVFilePreviewRows();
       sampleData = this.getSampleData(rows);
     } catch (error) {
-      Logger.error(error);
+      sampleData = {};
     }
     this.setState({ sampleData });
 
@@ -328,6 +327,7 @@ class CSVConnectorContainer extends Component {
   handleSubmitJobItem = async () => {
     const {
       collection,
+      errors,
       fileSource,
       fileUpload,
       hasHeader,
@@ -348,11 +348,15 @@ class CSVConnectorContainer extends Component {
       shouldExportToSFTP
     } = this.state;
 
-    const errors = this.getValidationErrors();
+    if (errors.mappingByUser.length > 0) {
+      return false;
+    }
+
+    const newErrors = this.getValidationErrors();
     // If any field has validation error, return right away
-    for (const field in errors) {
+    for (const field in newErrors) {
       if (errors[field].length > 0) {
-        return this.setState({ errors });
+        return this.setState({ errors: newErrors });
       }
     }
 
@@ -395,15 +399,14 @@ class CSVConnectorContainer extends Component {
     if (jobType === "import" && fileSource === "manual") {
       const fileRecord = FileRecord.fromFile(fileUpload);
       fileRecord.metadata = { jobItemId, type: "upload" };
-      fileRecord.upload({ endpoint: "/jobs/uploads" })
+      return fileRecord.upload({ endpoint: "/jobs/uploads" })
         .then(() => JobFiles.insert(fileRecord))
         .then(() => {
           Alert(i18next.t("app.success"), i18next.t("admin.alerts.jobItemSaved"), "success");
           return this.setState(this.defaultState);
         }).catch((error) => Alert(i18next.t("app.error"), error.message, "error"));
-    } else {
-      return this.setState(this.defaultState);
     }
+    return this.setState(this.defaultState);
   }
 
   renderJobItemScreen() {

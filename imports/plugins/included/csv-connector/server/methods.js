@@ -240,7 +240,6 @@ export const methods = {
       jobItemValues.previousJobId = previousJobId;
     }
 
-    console.log(jobItemValues);
     const jobItemId = JobItems.insert(jobItemValues);
 
     return jobItemId;

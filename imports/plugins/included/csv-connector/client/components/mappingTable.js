@@ -88,43 +88,47 @@ class MappingTable extends Component {
     const rows = [];
     if (mappingByUserErrors && mappingByUserErrors.length > 0) {
       rows.push((
-        <tr>
+        <tr key="error-row">
           <td colSpan="2">
             <ErrorsBlock errors={mappingByUserErrors} />
           </td>
         </tr>
       ));
     }
-    for (const col in sampleData) {
-      if (col in sampleData) {
-        let colName = col;
-        if (!hasHeader) { // If no header cols are indices
-          colName = `Column ${parseInt(col, 10) + 1}`;
+
+    if (sampleData) {
+      for (const col in sampleData) {
+        if ({}.hasOwnProperty.call(sampleData, col)) {
+          let colName = col;
+          if (!hasHeader) { // If no header cols are indices
+            colName = `Column ${parseInt(col, 10) + 1}`;
+          }
+          rows.push((
+            <tr key={`col-${col}`}>
+              <td>
+                <div className="csv-col-name">
+                  <p>{colName}</p>
+                </div>
+                <div className="mt20">
+                  {sampleData[col].map((item, index) => (<p key={`col-${col}-${index}`}>{item}</p>))}
+                </div>
+              </td>
+              <td>
+                <Select
+                  id={`field${col}Input`}
+                  name={col}
+                  options={fieldOptions}
+                  value={this.state[col] !== undefined ? this.state[col] : "ignore"}
+                  onChange={this.handleChangeFieldMapping(col)}
+                  isSearchable
+                />
+              </td>
+            </tr>
+          ));
         }
-        rows.push((
-          <tr key={`col-${col}`}>
-            <td>
-              <div className="csv-col-name">
-                <p>{colName}</p>
-              </div>
-              <div className="mt20">
-                {sampleData[col].map((item, index) => (<p key={`col-${col}-${index}`}>{item}</p>))}
-              </div>
-            </td>
-            <td>
-              <Select
-                id={`field${col}Input`}
-                name={col}
-                options={fieldOptions}
-                value={this.state[col] !== undefined ? this.state[col] : "ignore"}
-                onChange={this.handleChangeFieldMapping(col)}
-                isSearchable
-              />
-            </td>
-          </tr>
-        ));
       }
     }
+
     return rows;
   }
 

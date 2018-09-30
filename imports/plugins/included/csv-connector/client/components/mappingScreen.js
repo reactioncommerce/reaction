@@ -147,7 +147,7 @@ class MappingScreen extends Component {
       return (
         <div>
           <Checkbox
-            label={i18next("admin.dashboard.shouldSaveToNewMapping")}
+            label={i18next.t("admin.dashboard.shouldSaveToNewMapping")}
             name="shouldSaveToNewMapping"
             onChange={this.handleChangeShouldSaveToNewMapping}
             value={shouldSaveToNewMapping}
