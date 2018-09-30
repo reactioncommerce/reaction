@@ -35,7 +35,7 @@ class S3Settings extends Component {
     return (
       <div>
         <div className="row" style={{ margin: "20px 0" }}>
-          <p>AWS S3 Settings</p>
+          <p>{i18next.t("admin.dashboard.s3Settings")}</p>
         </div>
         <Form ref={(formRef) => { this.form = formRef; }} onSubmit={onSubmit} validator={validator} value={values}>
           <div className="row">

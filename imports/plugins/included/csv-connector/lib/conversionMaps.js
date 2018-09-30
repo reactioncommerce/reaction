@@ -174,6 +174,12 @@ export const ProductsConvMap = {
       label: "Fulfillment types",
       optional: true,
       type: Array
+    },
+    {
+      key: "isDeleted",
+      label: "Is Deleted",
+      optional: true,
+      type: Boolean
     }
   ]
 };
@@ -216,6 +222,12 @@ export const TagsConvMap = {
     {
       key: "isVisible",
       label: "Is Visible",
+      optional: true,
+      type: Boolean
+    },
+    {
+      key: "isDeleted",
+      label: "Is Deleted",
       optional: true,
       type: Boolean
     }

@@ -1,7 +1,7 @@
 import { Readable } from "stream";
 import _ from "lodash";
 import S3 from "aws-sdk/clients/s3";
-import Client from "ssh2-sftp-client";
+import SFTPClient from "ssh2-sftp-client";
 import { Meteor } from "meteor/meteor";
 import { check } from "meteor/check";
 import { EJSON } from "meteor/ejson";
@@ -133,7 +133,7 @@ export const methods = {
     }
     const pkg = Packages.findOne({ name: "connector-settings-sftp" });
     const { settings: { ipAddress, port, username, password } } = pkg || {};
-    const sftpClient = new Client();
+    const sftpClient = new SFTPClient();
     return new Promise((resolve, reject) => {
       sftpClient.connect({
         host: ipAddress,
@@ -176,7 +176,7 @@ export const methods = {
 
     const shopId = Reaction.getShopId();
 
-    let newMappingId;
+    let newMappingId = "default";
     if ((mappingId === "default" && shouldSaveToNewMapping) || (mappingId !== "default" && saveMappingAction === "create")) {
       newMappingId = Mappings.insert({
         shopId,
@@ -240,6 +240,7 @@ export const methods = {
       jobItemValues.previousJobId = previousJobId;
     }
 
+    console.log(jobItemValues);
     const jobItemId = JobItems.insert(jobItemValues);
 
     return jobItemId;

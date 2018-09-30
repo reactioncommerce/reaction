@@ -36,7 +36,7 @@ Reaction.registerPackage({
   settings: {
     ipAddress: "",
     port: "",
-    userName: "",
+    username: "",
     password: ""
   },
   registry: []

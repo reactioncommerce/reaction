@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import Button from "@reactioncommerce/components/Button/v1";
 import SelectableList from "@reactioncommerce/components/SelectableList/v1";
 import SelectableItem from "@reactioncommerce/components/SelectableItem/v1";
+import { i18next } from "/client/api";
 
 class StartScreen extends Component {
   handleClickNext = () => {
@@ -17,19 +18,19 @@ class StartScreen extends Component {
     const { jobType } = this.props;
     const jobTypeOptions = [{
       id: "import",
-      label: "Import from CSV",
+      label: i18next.t("admin.dashboard.importFromCSV"),
       value: "import"
     },
     {
       id: "export",
-      label: "Export to CSV",
+      label: i18next.t("admin.dashboard.exportToCSV"),
       value: "export"
     }];
 
     return (
       <div>
         <div className="row">
-          <h4>Start a new job</h4>
+          <h4>{i18next.t("admin.dashboard.startNewJob")}</h4>
           <SelectableList
             components={{
               SelectableItem: (listProps) => (<SelectableItem item={listProps.item} />)

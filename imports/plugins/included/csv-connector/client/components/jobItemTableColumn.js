@@ -49,7 +49,7 @@ class JobItemTableColumn extends Component {
                 href={`/jobFiles/JobFiles/${errorFileId}/jobFiles/${jobItemId}.csv`}
                 target="_blank"
               >
-                  Download errors
+                {i18next.t("admin.dashboard.downloadErrors")}
               </a>
             </div>
           );
@@ -62,7 +62,7 @@ class JobItemTableColumn extends Component {
                 href={`/jobFiles/JobFiles/${exportFileId}/jobFiles/${jobItemId}.csv`}
                 target="_blank"
               >
-                  Download data
+                {i18next.t("admin.dashboard.downloadData")}
               </a>
             </div>
           );
@@ -73,8 +73,15 @@ class JobItemTableColumn extends Component {
     } else if (["uploadedAt", "completedAt"].includes(renderColumn)) {
       const { moment } = this.props;
       if (value) {
-        const displayDate = (moment && moment(value).format("lll")) || value.toLocaleString();
-        return <span>{displayDate}</span>;
+        const displayDate = (moment && moment(value).format("ll")) || value.toLocaleString();
+        const displayTime = (moment && moment(value).format("LTS")) || value.toLocaleString();
+        return (
+          <div>
+            <span>{displayDate}</span>
+            <br />
+            <span>{displayTime}</span>
+          </div>
+        );
       }
       return null;
     } else if (renderColumn === "delete") {

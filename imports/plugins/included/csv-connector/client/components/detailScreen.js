@@ -10,6 +10,7 @@ import Select from "@reactioncommerce/components/Select/v1";
 import SelectableList from "@reactioncommerce/components/SelectableList/v1";
 import SelectableItem from "@reactioncommerce/components/SelectableItem/v1";
 import TextInput from "@reactioncommerce/components/TextInput/v1";
+import { i18next } from "client/api";
 
 class DetailScreen extends Component {
   componentDidMount() {
@@ -97,7 +98,7 @@ class DetailScreen extends Component {
   renderDataTypeSelection() {
     const { collection, dataTypeOptions, jobSubType } = this.props;
     return (
-      <Field name="collection" label="Choose the data type" labelFor="collectionInput">
+      <Field name="collection" label={i18next.t("admin.dashboard.chooseDataType")} labelFor="collectionInput">
         <Select
           id="collectionInput"
           name="collection"
@@ -134,22 +135,22 @@ class DetailScreen extends Component {
     if (jobType === "import") {
       const fileSourceOptions = [{
         id: "manual",
-        label: "Manual",
+        label: i18next.t("admin.dashboard.jobTypeManual"),
         value: "manual"
       },
       {
         id: "sftp",
-        label: "SFTP Server",
+        label: i18next.t("admin.dashboard.jobTypeSFTP"),
         value: "sftp"
       },
       {
         id: "s3",
-        label: "AWS S3 Bucket",
+        label: i18next.t("admin.dashboard.jobTypeS3"),
         value: "s3"
       }];
       return (
         <div className="mt20">
-          <p>Choose file source:</p>
+          <p>{i18next.t("admin.dashboard.chooseFileSource")}</p>
           <SelectableList
             components={{
               SelectableItem: (listProps) => (<SelectableItem item={listProps.item} isReadOnly={listProps.isReadOnly} />)
@@ -165,7 +166,7 @@ class DetailScreen extends Component {
     }
     return (
       <div className="mt20">
-        <p>Export to:</p>
+        <p>{i18next.t("admin.dashboard.exportTo")}</p>
         <Checkbox
           label="SFTP"
           name="shouldExportToSFTP"
@@ -223,7 +224,7 @@ class DetailScreen extends Component {
       return (
         <div className="mt20">
           <Checkbox
-            label="First row contains column names?"
+            label={i18next.t("admin.dashboard.hasHeader")}
             name="hasHeader"
             onChange={this.handleChangeHasHeader}
             value={hasHeader}
@@ -241,7 +242,7 @@ class DetailScreen extends Component {
       return null;
     }
     return (
-      <Field errors={jobNameErrors} name="name" label="Job name" labelFor="jobNameInput">
+      <Field errors={jobNameErrors} name="name" label={i18next.t("admin.dashboard.jobName")} labelFor="jobNameInput">
         <TextInput
           errors={jobNameErrors}
           id="jobNameInput"
@@ -258,12 +259,12 @@ class DetailScreen extends Component {
     const { jobSubType } = this.props;
     const jobSubTypeOptions = [{
       id: "create",
-      label: "New job",
+      label: i18next.t("admin.dashboard.newJob"),
       value: "create"
     },
     {
       id: "fromPrevious",
-      label: "From previous job",
+      label: i18next.t("admin.dashboard.fromPreviousJob"),
       value: "fromPrevious"
     }];
     return (
@@ -290,7 +291,7 @@ class DetailScreen extends Component {
   renderMappingSelection() {
     const { jobSubType, mappingOptions, mappingId } = this.props;
     return (
-      <Field name="mappingId" label="Choose a mapping template" labelFor="mappingIdInput">
+      <Field name="mappingId" label={i18next.t("admin.dashboard.chooseMappingTemplate")} labelFor="mappingIdInput">
         <Select
           id="mappingIdInput"
           name="mappingId"
@@ -307,16 +308,21 @@ class DetailScreen extends Component {
   renderNextOrDoneButton() {
     const { fileSource, jobSubType, jobType } = this.props;
     if (jobType === "import" && jobSubType === "create" && fileSource === "manual") {
-      return <Button onClick={this.handleClickNext}>Next</Button>;
+      return <Button onClick={this.handleClickNext}>{i18next.t("admin.dashboard.next")}</Button>;
     }
-    return <Button onClick={this.handleClickDone}>Done</Button>;
+    return <Button onClick={this.handleClickDone}>{i18next.t("admin.dashboard.done")}</Button>;
   }
 
   renderPreviousJobsSelection() {
     const { errors: { previousJobId: previousJobIdErrors }, jobSubType, previousJobId, previousJobsOptions } = this.props;
     if (jobSubType === "fromPrevious") {
       return (
-        <Field errors={previousJobIdErrors} name="previousJobId" label="Select previous job" labelFor="previousJobIdInput">
+        <Field
+          errors={previousJobIdErrors}
+          name="previousJobId"
+          label={i18next.t("admin.dashboard.choosePreviousJob")}
+          labelFor="previousJobIdInput"
+        >
           <Select
             id="previousJobIdInput"
             name="previousJobId"
@@ -338,7 +344,12 @@ class DetailScreen extends Component {
       return null;
     }
     return (
-      <Field errors={s3ExportFileKeyErrors} name="s3ExportFileKey" label="S3 file key" labelFor="s3ExportFileKeyInput">
+      <Field
+        errors={s3ExportFileKeyErrors}
+        name="s3ExportFileKey"
+        label={i18next.t("admin.dashboard.s3FileKey")}
+        labelFor="s3ExportFileKeyInput"
+      >
         <TextInput
           errors={s3ExportFileKeyErrors}
           id="s3ExportFileKeyInput"
@@ -358,7 +369,12 @@ class DetailScreen extends Component {
       return null;
     }
     return (
-      <Field errors={s3ImportFileKeyErrors} name="s3ImportFileKey" label="S3 file key" labelFor="s3ImportFileKeyInput">
+      <Field
+        errors={s3ImportFileKeyErrors}
+        name="s3ImportFileKey"
+        label={i18next.t("admin.dashboard.s3FileKey")}
+        labelFor="s3ImportFileKeyInput"
+      >
         <TextInput
           errors={s3ImportFileKeyErrors}
           id="s3ImportFileKeyInput"
@@ -378,7 +394,12 @@ class DetailScreen extends Component {
       return null;
     }
     return (
-      <Field errors={sftpExportFilePathErrors} name="sftpExportFilePath" label="SFTP file path" labelFor="sftpExportFilePathInput">
+      <Field
+        errors={sftpExportFilePathErrors}
+        name="sftpExportFilePath"
+        label={i18next.t("admin.dashboard.sftpFilePath")}
+        labelFor="sftpExportFilePathInput"
+      >
         <TextInput
           errors={sftpExportFilePathErrors}
           id="sftpExportFilePathInput"
@@ -398,7 +419,12 @@ class DetailScreen extends Component {
       return null;
     }
     return (
-      <Field errors={sftpImportFilePathErrors} name="sftpImportFilePath" label="SFTP file path" labelFor="sftpImportFilePathInput">
+      <Field
+        errors={sftpImportFilePathErrors}
+        name="sftpImportFilePath"
+        label={i18next.t("admin.dashboard.sftpFilePath")}
+        labelFor="sftpImportFilePathInput"
+      >
         <TextInput
           errors={sftpImportFilePathErrors}
           id="sftpImportFilePathInput"
@@ -437,7 +463,7 @@ class DetailScreen extends Component {
           </div>
         </div>
         <div className="row pull-right mt20 mb20">
-          <Button actionType="secondary" onClick={this.handleClickBack} className="mr20">Back</Button>
+          <Button actionType="secondary" onClick={this.handleClickBack} className="mr20">{i18next.t("admin.dashboard.back")}</Button>
           {this.renderNextOrDoneButton()}
         </div>
       </div>

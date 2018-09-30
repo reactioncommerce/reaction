@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import _ from "lodash";
 import ErrorsBlock from "@reactioncommerce/components/ErrorsBlock/v1";
 import Select from "@reactioncommerce/components/Select/v1";
-
+import { i18next } from "client/api";
 
 class MappingTable extends Component {
   constructor(props) {
@@ -12,7 +12,7 @@ class MappingTable extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    const { onSetMappingByUserError, mappingByUser, sampleData } = this.props;
+    const { mappingByUser, onSetMappingByUserError, sampleData } = this.props;
     if (!_.isEqual(prevProps.sampleData, sampleData)) {
       // validate the file uploaded here
       let error;
@@ -37,8 +37,33 @@ class MappingTable extends Component {
   }
 
   setNewMapping = () => {
-    const { mappingByUser } = this.props;
+    const { fieldOptions, mappingByUser, onSetMappingByUserError } = this.props;
     this.setState(mappingByUser);
+
+    let error;
+    const fieldCount = _.countBy(_.values(mappingByUser));
+
+    const dupedFieldKeys = [];
+    _.forIn(fieldCount, (value, key) => {
+      if (key && key !== "ignore" && value > 1) {
+        dupedFieldKeys.push(key);
+      }
+    });
+
+    if (dupedFieldKeys.length > 0) {
+      const dupedFieldValues = dupedFieldKeys.map((key) => {
+        const fieldOption = fieldOptions.find((option) => option.value === key);
+        return fieldOption.label;
+      });
+      const dupedFields = dupedFieldValues.join(", ");
+      error = [{ name: "mappingByUser", message: `The following fields are mapped to more than one CSV column: ${dupedFields}.` }];
+    }
+
+    if (error) {
+      onSetMappingByUserError(error);
+    } else {
+      onSetMappingByUserError([]);
+    }
   }
 
   handleChangeFieldMapping= (col) => (value) => {
@@ -62,13 +87,13 @@ class MappingTable extends Component {
     } = this.props;
     const rows = [];
     if (mappingByUserErrors && mappingByUserErrors.length > 0) {
-      return (
+      rows.push((
         <tr>
           <td colSpan="2">
             <ErrorsBlock errors={mappingByUserErrors} />
           </td>
         </tr>
-      );
+      ));
     }
     for (const col in sampleData) {
       if (col in sampleData) {
@@ -109,8 +134,8 @@ class MappingTable extends Component {
         <table className="table csv-table">
           <thead>
             <tr>
-              <th width="50%">CSV Column Names</th>
-              <th>Reaction Fields</th>
+              <th width="50%">{i18next.t("admin.dashboard.csvColumnNames")}</th>
+              <th>{i18next.t("admin.dashboard.reactionFields")}</th>
             </tr>
           </thead>
           <tbody>

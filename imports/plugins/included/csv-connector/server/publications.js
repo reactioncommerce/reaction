@@ -31,19 +31,17 @@ Meteor.publish("JobItems", function (query, options) {
   }
 
   const select = query || {};
+  const sort = options || { sort: { uploadedAt: -1 } };
 
-  // append shopId to query
   select.shopId = shopId;
 
-  // appends a count to the collection
-  // we're doing this for use with griddleTable
   Counts.publish(this, "job-items-count", JobItems.find(
     select,
-    options
+    sort
   ));
   return JobItems.find(
     select,
-    options
+    sort
   );
 });
 

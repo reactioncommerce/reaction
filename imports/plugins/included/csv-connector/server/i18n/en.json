@@ -5,13 +5,50 @@
     "connectors": {
       "admin": {
         "dashboard": {
+          "back": "Back",
+          "chooseDataType": "Choose the data type",
+          "chooseFileSource": "Choose file source",
+          "chooseMappingTemplate": "Choose a mapping template",
+          "choosePreviousJob": "Choose previous job",
+          "csvColumnNames": "CSV Column Names",
           "csvConnector": "CSV Connector",
+          "csvJobsStatus": "CSV Jobs Status",
+          "done": "Done",
+          "downloadData" : "Download data",
+          "downloadErrors" : "Download errors",
+          "exportTo": "Export to",
+          "exportToCSV": "Export to CSV",
+          "fromPreviousJob": "From previous job",
+          "hasHeader": "First row contains column names?",
+          "header": {
+            "name": "Name",
+            "jobType": "Type",
+            "collection": "Data type",
+            "uploadedAt": "Initiated",
+            "status": "Status",
+            "completedAt": "Completed"
+          },
+          "importFromCSV": "Import from CSV",
+          "jobName": "Job name",
+          "jobTypeManual": "Manual",
+          "jobTypeS3": "AWS S3 bucket",
+          "jobTypeSFTP": "SFTP server",
+          "newJob": "New job",
+          "next": "Next",
+          "newMappingName": "New mapping template name",
+          "reactionFields": "Reaction Fields",
           "save": "Save Changes",
+          "saveMappingCreate": "Save as new mapping template",
+          "saveMappingNone": "Do not update current mapping template",
+          "saveMappingUpdate": "Update current mapping template",
+          "s3FileKey": "S3 file key",
           "s3Settings": "AWS S3 Settings",
           "s3AccessKey": "Access Key",
           "s3SecretAccessKey": "Secret Access Key",
           "s3Bucket": "Bucket",
           "s3Save": "Save Changes",
+          "settings": "Settings",
+          "sftpFilePath": "SFTP file path",
           "sftpSettings": "SFTP Settings",
           "sftpIPAddress": "IP Address",
           "sftpPort": "Port",
@@ -19,21 +56,22 @@
           "sftpPassword": "Password",
           "sftpSave": "Save Changes",
           "sftpTest": "Test for Import and Export",
+          "shouldSaveToNewMapping": "Save to new mapping template",
+          "startNewJob": "Start a new job",
           "testImport": "Test for Import",
           "testExport": "Test for Export",
-          "header": {
-            "name": "Name",
-            "jobType": "Type",
-            "collection": "Collection",
-            "uploadedAt": "Uploaded",
-            "status": "Status",
-            "completedAt": "Completed"
-          }
+          "using": "Using"
         },
         "alerts": {
+          "fileRequired": "File is required.",
           "jobItemRemoved": "Job item successfully removed.",
           "jobItemSaved": "Job item successfully saved.",
+          "jobNameRequired": "Job name is required.",
+          "jobNameTaken": "Job name is already taken.",
+          "mappingNameRequired": "New name is required.",
           "portNaN": "The port must be a number!",
+          "previousJobRequired": "Previous job is required.",
+          "s3FileKeyRequired": "S3 file key is required.",
           "s3SettingsSaved": "S3 settings saved.",
           "s3CredentialsValid": "Your S3 credentials are valid." ,
           "s3CredentialsInvalid": "Your S3 credentials are invalid." ,
@@ -43,7 +81,8 @@
           "sftpCredentialsValid": "Your SFTP credentials are valid." ,
           "sftpCredentialsInvalid": "Your SFTP credentials are invalid." ,
           "sftpCredentialsInvalidForImport": "Your SFTP credentials are invalid for import." ,
-          "sftpCredentialsInvalidForExport": "Your SFTP credentials are invalid for export."
+          "sftpCredentialsInvalidForExport": "Your SFTP credentials are invalid for export.",
+          "sftpFilePathRequired": "SFTP file path is required."
         }
       }
     }

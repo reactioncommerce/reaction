@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import _ from "lodash";
 import Button from "@reactioncommerce/components/Button/v1";
 import Checkbox from "@reactioncommerce/components/Checkbox/v1";
 import ErrorsBlock from "@reactioncommerce/components/ErrorsBlock/v1";
@@ -9,6 +8,7 @@ import Select from "@reactioncommerce/components/Select/v1";
 import SelectableList from "@reactioncommerce/components/SelectableList/v1";
 import SelectableItem from "@reactioncommerce/components/SelectableItem/v1";
 import TextInput from "@reactioncommerce/components/TextInput/v1";
+import { i18next } from "client/api";
 import MappingTable from "./mappingTable";
 
 
@@ -57,7 +57,7 @@ class MappingScreen extends Component {
     const { fieldOptions, hasHeader, mappingByUser, sampleData } = this.props;
     const rows = [];
     for (const col in sampleData) {
-      if (col in sampleData) {
+      if ({}.hasOwnProperty.call(sampleData, col)) {
         let colName = col;
         if (!hasHeader) { // If no header cols are indices
           colName = `Column ${parseInt(col, 10) + 1}`;
@@ -90,21 +90,13 @@ class MappingScreen extends Component {
   }
 
   renderMatchFieldsTable() {
-    const { sampleData } = this.props;
-    if (_.isEmpty(sampleData)) {
-      return (
-        <div className="alert alert-danger">
-          <p>We encountered a problem reading your file. Please upload another file.</p>
-        </div>
-      );
-    }
     return (
       <div className="csv-table-container">
         <table className="table csv-table">
           <thead>
             <tr>
-              <th width="50%">CSV Column Names</th>
-              <th>Reaction Fields</th>
+              <th width="50%">{i18next.t("admin.dashboard.csvColumnNames")}</th>
+              <th>{i18next.t("admin.dashboard.reactionFields")}</th>
             </tr>
           </thead>
           <tbody>
@@ -128,7 +120,12 @@ class MappingScreen extends Component {
     if ((mappingId === "default" && shouldSaveToNewMapping) || (mappingId !== "default" && saveMappingAction === "create")) {
       return (
         <div className="mt20 mr20">
-          <Field errors={newMappingNameErrors} name="name" label="New mapping template name" labelFor="newMappingNameInput">
+          <Field
+            errors={newMappingNameErrors}
+            name="name"
+            label={i18next.t("admin.dashboard.newMappingName")}
+            labelFor="newMappingNameInput"
+          >
             <TextInput
               errors={newMappingNameErrors}
               id="newMappingNameInput"
@@ -150,7 +147,7 @@ class MappingScreen extends Component {
       return (
         <div>
           <Checkbox
-            label="Save to new mapping template"
+            label={i18next("admin.dashboard.shouldSaveToNewMapping")}
             name="shouldSaveToNewMapping"
             onChange={this.handleChangeShouldSaveToNewMapping}
             value={shouldSaveToNewMapping}
@@ -162,17 +159,17 @@ class MappingScreen extends Component {
 
     const saveMappingOptions = [{
       id: "create",
-      label: "Save as new mapping template",
+      label: i18next.t("admin.dashboard.saveMappingCreate"),
       value: "create"
     },
     {
       id: "update",
-      label: "Update current mapping template",
+      label: i18next.t("admin.dashboard.saveMappingUpdate"),
       value: "update"
     },
     {
       id: "none",
-      label: "Do not update current mapping template",
+      label: i18next.t("admin.dashboard.saveMappingNone"),
       value: "none"
     }];
 
@@ -195,7 +192,7 @@ class MappingScreen extends Component {
   renderMappingName() {
     const { mappingId, selectedMapping: { name: mappingName } } = this.props;
     if (mappingId !== "default" && mappingName) {
-      return <p>Using <strong>{mappingName}</strong></p>;
+      return <p>{i18next.t("admin.dashboard.using")} <strong>{mappingName}</strong></p>;
     }
     return null;
   }
@@ -238,8 +235,8 @@ class MappingScreen extends Component {
           </div>
         </div>
         <div className="row pull-right mt20 mb20">
-          <Button actionType="secondary" onClick={this.handleClickBack} className="mr20">Back</Button>
-          <Button onClick={this.handleClickDone}>Done</Button>
+          <Button actionType="secondary" onClick={this.handleClickBack} className="mr20">{i18next.t("admin.dashboard.back")}</Button>
+          <Button onClick={this.handleClickDone}>{i18next.t("admin.dashboard.done")}</Button>
         </div>
       </div>
     );

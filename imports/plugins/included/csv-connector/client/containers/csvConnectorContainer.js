@@ -92,6 +92,7 @@ class CSVConnectorContainer extends Component {
   getValidationErrors() {
     const {
       activeScreen,
+      collection,
       fileSource,
       fileUpload,
       jobSubType,
@@ -111,45 +112,52 @@ class CSVConnectorContainer extends Component {
     } = this.state;
     const errors = {};
     if (activeScreen === "detail") {
-      if (jobSubType === "create" && !name) {
-        errors.name = [{ name: "name", message: "Job name is required." }];
+      if (jobSubType === "create") {
+        if (!name) {
+          errors.name = [{ name: "name", message: i18next.t("admin.alerts.jobNameRequired") }];
+        } else {
+          const existingJob = JobItems.findOne({ name, jobType, collection });
+          if (existingJob) {
+            errors.name = [{ name: "name", message: i18next.t("admin.alerts.jobNameTaken") }];
+          }
+        }
       } else {
         errors.name = [];
       }
       if (jobType === "import" && fileSource === "manual" && !fileUpload.name) {
-        errors.fileUpload = [{ name: "fileUpload", message: "File is required." }];
+        errors.fileUpload = [{ name: "fileUpload", message: i18next.t("admin.alerts.fileRequired") }];
       } else {
         errors.fileUpload = [];
       }
       if (jobSubType === "fromPrevious" && !previousJobId) {
-        errors.previousJobId = [{ name: "previousJobId", message: "Previous job is required." }];
+        errors.previousJobId = [{ name: "previousJobId", message: i18next.t("admin.alerts.previousJobRequired") }];
       } else {
         errors.previousJobId = [];
       }
       if (jobType === "import" && fileSource === "s3" && !s3ImportFileKey) {
-        errors.s3ImportFileKey = [{ name: "s3ImportFileKey", message: "S3 file key is required." }];
+        errors.s3ImportFileKey = [{ name: "s3ImportFileKey", message: i18next.t("admin.alerts.s3FileKeyRequired") }];
       } else {
         errors.s3ImportFileKey = [];
       }
       if (jobType === "export" && shouldExportToS3 && !s3ExportFileKey) {
-        errors.s3ExportFileKey = [{ name: "s3ExportFileKey", message: "S3 file key is required." }];
+        errors.s3ExportFileKey = [{ name: "s3ExportFileKey", message: i18next.t("admin.alerts.s3FileKeyRequired") }];
       } else {
         errors.s3ExportFileKey = [];
       }
       if (jobType === "import" && fileSource === "sftp" && !sftpImportFilePath) {
-        errors.sftpImportFilePath = [{ name: "sftpImportFilePath", message: "SFTP file path is required." }];
+        errors.sftpImportFilePath = [{ name: "sftpImportFilePath", message: i18next.t("admin.alerts.sftpFilePathRequired") }];
       } else {
         errors.sftpImportFilePath = [];
       }
       if (jobType === "export" && shouldExportToSFTP && !sftpExportFilePath) {
-        errors.sftpExportFilePath = [{ name: "sftpExportFilePath", message: "SFTP file path is required." }];
+        errors.sftpExportFilePath = [{ name: "sftpExportFilePath", message: i18next.t("admin.alerts.sftpFilePathRequired") }];
       } else {
         errors.sftpExportFilePath = [];
       }
     } else if (activeScreen === "mapping") {
       if ((mappingId === "default" && shouldSaveToNewMapping) || (mappingId !== "default" && saveMappingAction === "create")) {
         if (!newMappingName) {
-          errors.newMappingName = [{ name: "newMappingName", message: "New name is required." }];
+          errors.newMappingName = [{ name: "newMappingName", message: i18next.t("admin.alerts.mappingNameRequired") }];
         } else {
           errors.newMappingName = [];
         }
@@ -535,7 +543,7 @@ class CSVConnectorContainer extends Component {
     if (!showSettings && activeScreen === "start") {
       return (
         <div className="mt100">
-          <h4>CSV Jobs Status</h4>
+          <h4>{i18next.t("admin.dashboard.csvJobsStatus")}</h4>
           <SortableTable
             publication="JobItems"
             collection={JobItems}
@@ -560,7 +568,7 @@ class CSVConnectorContainer extends Component {
         <div>
           <div className="row">
             <div className="col-md-12">
-              <h4>Settings</h4>
+              <h4>{i18next.t("admin.dashboard.settings")}</h4>
             </div>
           </div>
           <div className="row">

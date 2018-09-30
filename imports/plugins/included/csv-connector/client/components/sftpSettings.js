@@ -32,7 +32,7 @@ class SFTPSettings extends Component {
     return (
       <div>
         <div className="row" style={{ margin: "20px 0" }}>
-          <p>SFTP Settings</p>
+          <p>{i18next.t("admin.dashboard.sftpSettings")}</p>
         </div>
         <Form ref={(formRef) => { this.form = formRef; }} onSubmit={onSubmit} validator={validator} value={values}>
           <div className="row">

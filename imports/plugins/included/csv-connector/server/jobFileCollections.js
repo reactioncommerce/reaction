@@ -1,7 +1,7 @@
 import Random from "@reactioncommerce/random";
 import Logger from "@reactioncommerce/logger";
-import Reaction from "/imports/plugins/core/core/server/Reaction";
 import { Meteor } from "meteor/meteor";
+import { Security } from "meteor/ongoworks:security";
 import { MongoInternals } from "meteor/mongo";
 import { WebApp } from "meteor/webapp";
 import { check } from "meteor/check";
@@ -42,11 +42,9 @@ const tempStore = new TempFileStore({
 });
 
 const JobFiles = new MeteorFileCollection("JobFiles", {
-  // add more security depending on who should be able to manipulate the file records
-  allowInsert: () => Reaction.hasPermission("core"),
-  allowUpdate: () => Reaction.hasPermission("core"),
-  allowRemove: () => Reaction.hasPermission("core"),
-  // add more security here if the files should not be public
+  allowInsert: (userId, doc) => Security.can(userId).insert(doc).for(JobFileRecords).check(),
+  allowUpdate: (userId, id, modifier) => Security.can(userId).update(id, modifier).for(JobFileRecords).check(),
+  allowRemove: (userId, id) => Security.can(userId).remove(id).for(JobFileRecords).check(),
   allowGet: () => true,
   check,
   collection: JobFileRecords,
