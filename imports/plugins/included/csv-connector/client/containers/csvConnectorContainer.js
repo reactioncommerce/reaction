@@ -355,7 +355,7 @@ class CSVConnectorContainer extends Component {
     const newErrors = this.getValidationErrors();
     // If any field has validation error, return right away
     for (const field in newErrors) {
-      if (errors[field].length > 0) {
+      if (newErrors[field].length > 0) {
         return this.setState({ errors: newErrors });
       }
     }
