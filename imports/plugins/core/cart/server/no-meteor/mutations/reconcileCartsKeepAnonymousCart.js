@@ -1,6 +1,6 @@
 import ReactionError from "@reactioncommerce/reaction-error";
 import { Cart as CartSchema } from "/imports/collections/schemas";
-import appEvents from "/imports/plugins/core/core/server/appEvents";
+import appEvents from "/imports/node-app/core/util/appEvents";
 
 /**
  * @summary Update account cart to have only the anonymous cart items, delete anonymous
@@ -40,7 +40,7 @@ export default async function reconcileCartsKeepAnonymousCart({
     updatedAt
   };
 
-  await appEvents.emit("afterCartUpdate", updatedCart._id, updatedCart);
+  await appEvents.emit("afterCartUpdate", updatedCart);
 
   const { deletedCount } = await Cart.deleteOne(anonymousCartSelector);
   if (deletedCount === 0) throw new ReactionError("server-error", "Unable to delete anonymous cart");

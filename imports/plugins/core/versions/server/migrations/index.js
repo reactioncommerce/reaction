@@ -35,3 +35,6 @@ import "./34_remove_order_shipping_items";
 import "./35_add_type_to_carts";
 import "./36_convert_requiresShipping";
 import "./37_change_shipping_rate_settings_template_name";
+import "./38_registry_products_template";
+import "./39_example_payment_template";
+import "./40_two_point_oh";

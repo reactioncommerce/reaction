@@ -1,6 +1,6 @@
 import { compose } from "recompose";
 import { Meteor } from "meteor/meteor";
-import { Orders } from "/lib/collections";
+import { Orders, Shops } from "/lib/collections";
 import { Reaction } from "/client/api";
 import { registerComponent, composeWithTracker } from "@reactioncommerce/reaction-components";
 import CompletedOrder from "../components/completedOrder";
@@ -31,21 +31,20 @@ function composer(props, onData) {
       return;
     }
 
-    const orderSummary = {
-      quantityTotal: order.getCount(),
-      subtotal: order.getSubTotal(),
-      shippingTotal: order.getShippingTotal(),
-      tax: order.getTaxTotal(),
-      discounts: order.getDiscounts(),
-      total: order.getTotal(),
-      shipping: order.shipping
+    const orderWithShopNames = {
+      ...order,
+      shipping: order.shipping.map((group) => {
+        const shop = Shops.findOne({ _id: group.shopId });
+        return {
+          ...group,
+          shopName: shop && shop.name
+        };
+      })
     };
 
     onData(null, {
       isProfilePage: false,
-      shops: order.getShopSummary(),
-      order,
-      orderSummary,
+      order: orderWithShopNames,
       paymentMethods: order.getUniquePaymentMethods()
     });
   }

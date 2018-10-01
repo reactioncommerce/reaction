@@ -5,48 +5,32 @@
 version: '3.4'
 
 networks:
-  reaction-api:
+  api:
     external:
-      name: reaction-api
+      name: api.reaction.localhost
+  auth:
+    external:
+      name: auth.reaction.localhost
 
 services:
-
-  devserver:
-    build:
-      context: .
-      dockerfile: Dockerfile-devserver
-    command: bash -c "echo 'Starting Reaction Node server...' && npm install && npm run devserver"
-    depends_on:
-      - mongo
-    environment:
-      ROOT_URL: "http://localhost:3030"
-      MONGO_URL: "mongodb://mongo:27017/reaction"
-      BABEL_DISABLE_CACHE: 1 # This is needed to pick up changes to .graphql files. See https://www.npmjs.com/package/babel-plugin-inline-import#caveats
-    networks:
-      default:
-      reaction-api:
-    ports:
-      - "3030:3030"
-    volumes:
-      - .:/app
-      - devserver_node_modules:/app/node_modules # do not link node_modules in, and persist it between dc up runs
 
   reaction:
     build:
       context: .
       target: meteor-dev
-    command: bash -c "npm install && reaction" #TODO; Revert to Meteor NPM. See comment in Dockerfile about Meteor1.7 NPM version issue.
+    command: bash -c "npm install && node ./.reaction/waitForReplica.js && reaction" #TODO; Revert to Meteor NPM. See comment in Dockerfile about Meteor1.7 NPM version issue.
     depends_on:
       - mongo-init-replica
     environment:
-      METEOR_DISABLE_OPTIMISTIC_CACHING: 1
       MONGO_URL: "mongodb://mongo:27017/reaction"
       MONGO_OPLOG_URL: "mongodb://mongo:27017/local"
       ROOT_URL: "http://localhost:3000"
-      BABEL_DISABLE_CACHE: 1 # This is needed to pick up changes to .graphql files. See https://www.npmjs.com/package/babel-plugin-inline-import#caveats
+      HYDRA_ADMIN_URL: "http://hydra:4445"
+      HYDRA_OAUTH2_INTROSPECT_URL: "http://hydra:4445/oauth2/introspect"
     networks:
       default:
-      reaction-api:
+      api:
+      auth:
     ports:
       - "3000:3000"
     volumes:
@@ -69,6 +53,5 @@ services:
       - mongo
 
 volumes:
-  devserver_node_modules:
   mongo-db:
   reaction_node_modules:

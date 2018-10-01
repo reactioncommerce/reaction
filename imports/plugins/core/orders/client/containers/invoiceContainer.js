@@ -5,10 +5,10 @@ import _ from "lodash";
 import { Meteor } from "meteor/meteor";
 import { i18next, Logger, Reaction, formatPriceString } from "/client/api";
 import { Packages } from "/lib/collections";
-import { getPrimaryMediaForOrderItem } from "/lib/api";
+import { getPrimaryMediaForItem } from "/lib/api";
 import { composeWithTracker, registerComponent } from "@reactioncommerce/reaction-components";
 import Invoice from "../components/invoice.js";
-import { getOrderRiskStatus, getOrderRiskBadge, getBillingInfo } from "../helpers";
+import { getOrderRiskStatus, getOrderRiskBadge, getPaymentForCurrentShop } from "../helpers";
 
 class InvoiceContainer extends Component {
   static propTypes = {
@@ -36,7 +36,7 @@ class InvoiceContainer extends Component {
     };
   }
 
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) { // eslint-disable-line camelcase
     if (nextProps !== this.props) {
       this.setState({
         order: nextProps.order,
@@ -77,14 +77,14 @@ class InvoiceContainer extends Component {
 
       if (isEdited) {
         editedItems = editedItems.filter((item) => item.id !== lineItem._id);
-        isEdited.refundedTotal = lineItem.priceWhenAdded.amount * adjustedQuantity;
+        isEdited.refundedTotal = lineItem.price.amount * adjustedQuantity;
         isEdited.refundedQuantity = adjustedQuantity;
         editedItems.push(isEdited);
       } else {
         editedItems.push({
           id: lineItem._id,
           title: lineItem.title,
-          refundedTotal: lineItem.priceWhenAdded.amount * lineItem.quantity,
+          refundedTotal: lineItem.price.amount * lineItem.quantity,
           refundedQuantity: lineItem.quantity
         });
       }
@@ -131,7 +131,7 @@ class InvoiceContainer extends Component {
         updateEditedItems.push({
           id: item._id,
           title: item.title,
-          refundedTotal: item.priceWhenAdded.amount * item.quantity,
+          refundedTotal: item.price.amount * item.quantity,
           refundedQuantity: item.quantity
         });
         return item._id;
@@ -154,7 +154,7 @@ class InvoiceContainer extends Component {
 
     if (isEdited) {
       editedItems = editedItems.filter((item) => item.id !== lineItem._id);
-      isEdited.refundedTotal = lineItem.priceWhenAdded.amount * refundedQuantity;
+      isEdited.refundedTotal = lineItem.price.amount * refundedQuantity;
       isEdited.refundedQuantity = refundedQuantity;
       if (refundedQuantity !== 0) {
         editedItems.push(isEdited);
@@ -163,7 +163,7 @@ class InvoiceContainer extends Component {
       editedItems.push({
         id: lineItem._id,
         title: lineItem.title,
-        refundedTotal: lineItem.priceWhenAdded.amount * refundedQuantity,
+        refundedTotal: lineItem.price.amount * refundedQuantity,
         refundedQuantity
       });
     }
@@ -184,12 +184,10 @@ class InvoiceContainer extends Component {
 
   hasRefundingEnabled() {
     const { order } = this.state;
-    const orderBillingInfo = getBillingInfo(order);
-    const paymentMethodId = orderBillingInfo.paymentMethod && orderBillingInfo.paymentMethod.paymentPackageId;
-    const paymentMethodName = orderBillingInfo.paymentMethod && orderBillingInfo.paymentMethod.paymentSettingsKey;
-    const paymentMethod = Packages.findOne({ _id: paymentMethodId });
-    const isRefundable = paymentMethod && paymentMethod.settings && paymentMethod.settings[paymentMethodName]
-      && paymentMethod.settings[paymentMethodName].support.includes("Refund");
+    const { paymentPluginName } = getPaymentForCurrentShop(order);
+    const paymentPlugin = Packages.findOne({ name: paymentPluginName });
+    const isRefundable = paymentPlugin && paymentPlugin.settings && paymentPlugin.settings[paymentPluginName]
+      && paymentPlugin.settings[paymentPluginName].support.includes("Refund");
 
     return isRefundable;
   }
@@ -219,24 +217,20 @@ class InvoiceContainer extends Component {
   handleCancelPayment = (event) => {
     event.preventDefault();
     const { order } = this.state;
-    const invoiceTotal = getBillingInfo(order).invoice && getBillingInfo(order).invoice.total;
+    const { invoice, mode: paymentMode, paymentPluginName, status: paymentStatus } = getPaymentForCurrentShop(order);
+    const invoiceTotal = invoice.total;
     const currencySymbol = this.state.currency.symbol;
 
-    Meteor.subscribe("Packages", Reaction.getShopId());
-    const packageId = getBillingInfo(order).paymentMethod && getBillingInfo(order).paymentMethod.paymentPackageId;
-    const settingsKey = getBillingInfo(order).paymentMethod && getBillingInfo(order).paymentMethod.paymentSettingsKey;
+    const shopId = Reaction.getShopId();
     // check if payment provider supports de-authorize
     const checkSupportedMethods = Packages.findOne({
-      _id: packageId,
-      shopId: Reaction.getShopId()
-    }).settings[settingsKey].support;
-
-    const orderStatus = getBillingInfo(order).paymentMethod && getBillingInfo(order).paymentMethod.status;
-    const orderMode = getBillingInfo(order).paymentMethod && getBillingInfo(order).paymentMethod.mode;
+      name: paymentPluginName,
+      shopId
+    }).settings[paymentPluginName].support;
 
     let alertText;
     if (_.includes(checkSupportedMethods, "de-authorize") ||
-      (orderStatus === "completed" && orderMode === "capture")) {
+      (paymentStatus === "completed" && paymentMode === "capture")) {
       alertText = i18next.t("order.applyRefundDuringCancelOrder", { currencySymbol, invoiceTotal });
     }
 
@@ -264,23 +258,19 @@ class InvoiceContainer extends Component {
     });
   }
 
-  handleRefund = (event, value) => {
+  handleRefund = (event, refund) => {
     event.preventDefault();
 
-    const currencySymbol = this.state.currency.symbol;
-    const { order } = this.state;
-    const paymentMethod = orderCreditMethod(order) && orderCreditMethod(order).paymentMethod;
-    const orderTotal = paymentMethod && paymentMethod.amount;
-    const discounts = paymentMethod && paymentMethod.discounts;
-    const refund = value;
-    const { refunds } = this.state;
+    const { currency, order, refunds } = this.state;
+    const currencySymbol = currency.symbol;
+    const { _id: paymentId, amount: orderTotal, discounts, processor } = getPaymentForCurrentShop(order);
     const refundTotal = refunds && Array.isArray(refunds) && refunds.reduce((acc, item) => acc + parseFloat(item.amount), 0);
 
     let adjustedTotal;
 
-    // TODO extract Stripe specific fullfilment payment handling out of core.
+    // TODO extract Stripe specific fulfillment payment handling out of core.
     // Stripe counts discounts as refunds, so we need to re-add the discount to not "double discount" in the adjustedTotal
-    if (paymentMethod && paymentMethod.processor === "Stripe") {
+    if (processor === "Stripe") {
       adjustedTotal = accounting.toFixed(orderTotal + discounts - refundTotal, 2);
     } else {
       adjustedTotal = accounting.toFixed(orderTotal - refundTotal, 2);
@@ -302,7 +292,7 @@ class InvoiceContainer extends Component {
           this.setState({
             isRefunding: true
           });
-          Meteor.call("orders/refunds/create", order._id, paymentMethod, refund, (error, result) => {
+          Meteor.call("orders/refunds/create", order._id, paymentId, refund, (error, result) => {
             if (error) {
               Alerts.alert(error.reason);
             }
@@ -319,18 +309,17 @@ class InvoiceContainer extends Component {
   }
 
   handleRefundItems = () => {
-    const paymentMethod = orderCreditMethod(this.state.order) && orderCreditMethod(this.state.order).paymentMethod;
-    const orderMode = paymentMethod && paymentMethod.mode;
     const { order } = this.state;
+    const { invoice, mode: paymentMode } = getPaymentForCurrentShop(order);
 
     // Check if payment is yet to be captured approve and capture first before return
-    if (orderMode === "authorize") {
+    if (paymentMode === "authorize") {
       Alerts.alert({
         title: i18next.t("order.refundItemsTitle"),
         type: "warning",
         text: i18next.t("order.refundItemsApproveAlert", {
           refundItemsQuantity: this.getRefundedItemsInfo().quantity,
-          totalAmount: formatPriceString(getBillingInfo(order).invoice && getBillingInfo(order).invoice.total)
+          totalAmount: formatPriceString(invoice.total)
         }),
         showCancelButton: true,
         confirmButtonText: i18next.t("order.approveInvoice")
@@ -346,11 +335,13 @@ class InvoiceContainer extends Component {
   }
 
   alertToCapture = (order) => {
+    const { invoice } = getPaymentForCurrentShop(order);
+
     Alerts.alert({
       title: i18next.t("order.refundItemsTitle"),
       text: i18next.t("order.refundItemsCaptureAlert", {
         refundItemsQuantity: this.getRefundedItemsInfo().quantity,
-        totalAmount: formatPriceString(getBillingInfo(order).invoice && getBillingInfo(order).invoice.total)
+        totalAmount: formatPriceString(invoice.total)
       }),
       type: "warning",
       showCancelButton: true,
@@ -364,8 +355,7 @@ class InvoiceContainer extends Component {
   }
 
   alertToRefund = (order) => {
-    const paymentMethod = orderCreditMethod(order) && orderCreditMethod(order).paymentMethod;
-    const orderMode = paymentMethod && paymentMethod.mode;
+    const { _id: paymentId, mode: paymentMode } = getPaymentForCurrentShop(order);
     const refundInfo = this.getRefundedItemsInfo();
 
     Alerts.alert({
@@ -383,7 +373,7 @@ class InvoiceContainer extends Component {
         });
 
         // Set warning if order is not yet captured
-        if (orderMode !== "capture") {
+        if (paymentMode !== "capture") {
           Alerts.alert({
             text: i18next.t("order.refundItemsWait"),
             type: "warning"
@@ -394,7 +384,7 @@ class InvoiceContainer extends Component {
           return;
         }
 
-        Meteor.call("orders/refunds/refundItems", this.state.order._id, paymentMethod, refundInfo, (error, result) => {
+        Meteor.call("orders/refunds/refundItems", order._id, paymentId, refundInfo, (error, result) => {
           if (result.refund === false) {
             Alerts.alert(result.error.reason || result.error.error);
           }
@@ -431,7 +421,7 @@ class InvoiceContainer extends Component {
         togglePopOver={this.togglePopOver}
         handleInputChange={this.handleInputChange}
         handleItemSelect={this.handleItemSelect}
-        displayMedia={getPrimaryMediaForOrderItem}
+        displayMedia={getPrimaryMediaForItem}
         toggleUpdating={this.toggleUpdating}
         handleRefundItems={this.handleRefundItems}
         getRefundedItemsInfo={this.getRefundedItemsInfo}
@@ -457,20 +447,6 @@ class InvoiceContainer extends Component {
 }
 
 /**
- * @summary helper method to return the order payment object
- * @param {Object} order - object representing an order
- * @return {Object} object representing entire payment method
- * @private
- */
-function orderCreditMethod(order) {
-  const billingInfo = getBillingInfo(order);
-
-  if (billingInfo.paymentMethod && billingInfo.paymentMethod.method === "credit") {
-    return billingInfo;
-  }
-}
-
-/**
  * @method approvePayment
  * @summary helper method to approve payment
  * @param {Object} order - object representing an order
@@ -478,13 +454,8 @@ function orderCreditMethod(order) {
  * @private
  */
 function approvePayment(order) {
-  const paymentMethod = orderCreditMethod(order);
-  const orderTotal = accounting.toFixed(
-    paymentMethod.invoice.subtotal
-    + paymentMethod.invoice.shipping
-    + paymentMethod.invoice.taxes
-    , 2
-  );
+  const { invoice } = getPaymentForCurrentShop(order);
+  const orderTotal = accounting.toFixed(invoice.subtotal + invoice.shipping + invoice.taxes, 2);
 
   const { discount } = order;
   // TODO: review Discount cannot be greater than original total price
@@ -578,48 +549,31 @@ const composer = (props, onData) => {
   const { order, refunds } = props;
 
   const shopId = Reaction.getShopId();
-  const shopBilling = getBillingInfo(order);
-  const creditMethod = orderCreditMethod(order);
+  const { amount, invoice, status: paymentStatus } = getPaymentForCurrentShop(order);
 
-  const paymentMethod = creditMethod && creditMethod.paymentMethod;
-  const orderStatus = creditMethod && creditMethod.paymentMethod && creditMethod.paymentMethod.status;
-  const orderDiscounts = creditMethod && creditMethod.invoice.discounts;
-
-  const paymentApproved = orderStatus === "approved";
-  const showAfterPaymentCaptured = orderStatus === "completed";
-  const paymentCaptured = _.includes(["completed", "refunded", "partialRefund"], orderStatus);
-  const paymentPendingApproval = _.includes(["created", "adjustments", "error"], orderStatus);
+  const paymentApproved = paymentStatus === "approved";
+  const showAfterPaymentCaptured = paymentStatus === "completed";
+  const paymentCaptured = _.includes(["completed", "refunded", "partialRefund"], paymentStatus);
+  const paymentPendingApproval = _.includes(["created", "adjustments", "error"], paymentStatus);
 
   // get whether adjustments can be made
-  const canMakeAdjustments = !_.includes(["approved", "completed", "refunded", "partialRefund"], orderStatus);
+  const canMakeAdjustments = !_.includes(["approved", "completed", "refunded", "partialRefund"], paymentStatus);
 
   // get adjusted Total
-  let adjustedTotal;
   const refundTotal = refunds && Array.isArray(refunds) && refunds.reduce((acc, item) => acc + parseFloat(item.amount), 0);
+  const adjustedTotal = Math.abs(amount - refundTotal);
 
-  if (paymentMethod && paymentMethod.processor === "Stripe") {
-    adjustedTotal = Math.abs(paymentMethod.amount + orderDiscounts - refundTotal);
-  }
-  adjustedTotal = Math.abs(paymentMethod && paymentMethod.amount - refundTotal);
-
-  // get invoice for the current shop
-  const invoice = Object.assign({}, shopBilling.invoice, {
-    totalItems: _.sumBy(order.items, (item) => (item.shopId === shopId ? item.quantity : 0))
-  });
+  // Add totalItems property to invoice
+  const invoiceWithTotalItems = {
+    ...invoice,
+    totalItems: order.totalItemQuantity
+  };
 
   // get discounts
-  const enabledPaymentsArr = [];
-  const apps = Reaction.Apps({
-    provides: "paymentMethod",
-    enabled: true
-  });
-  for (const app of apps) {
-    if (app.enabled === true) enabledPaymentsArr.push(app);
-  }
+  const apps = Reaction.Apps({ provides: "paymentMethod", enabled: true });
   let discounts = false;
-
-  for (const enabled of enabledPaymentsArr) {
-    if (enabled.packageName === "discount-codes") {
+  for (const app of apps) {
+    if (app.packageName === "discount-codes") {
       discounts = true;
       break;
     }
@@ -628,7 +582,8 @@ const composer = (props, onData) => {
   // get unique lineItems
   const shipment = props.currentData.fulfillment;
 
-  const uniqueItems = order.items.reduce((result, item) => {
+  const orderItems = order.shipping.reduce((list, group) => [...list, ...group.items], []);
+  const uniqueItems = orderItems.reduce((result, item) => {
     // If the items are not of this shop, skip them
     if (item.shopId !== shopId) {
       return result;
@@ -657,7 +612,7 @@ const composer = (props, onData) => {
 
   onData(null, {
     uniqueItems,
-    invoice,
+    invoice: invoiceWithTotalItems,
     discounts,
     adjustedTotal,
     paymentCaptured,

@@ -12,6 +12,7 @@ import { MediaRecords, Products, Tags } from "/lib/collections";
 import { Media } from "/imports/plugins/core/files/server";
 import rawCollections from "/imports/collections/rawCollections";
 import hashProduct, { createProductHash } from "../no-meteor/mutations/hashProduct";
+import getCurrentCatalogPriceForProductConfiguration from "../no-meteor/queries/getCurrentCatalogPriceForProductConfiguration";
 import getProductPriceRange from "../no-meteor/utils/getProductPriceRange";
 import getVariants from "../no-meteor/utils/getVariants";
 import hasChildVariant from "../no-meteor/utils/hasChildVariant";
@@ -1264,53 +1265,6 @@ Meteor.methods({
   },
 
   /**
-   * @name products/updateProductPosition
-   * @memberof Methods/Products
-   * @method
-   * @summary update product grid positions
-   * @param {String} productId - productId
-   * @param {Object} positionData -  an object with position,dimensions
-   * @param {String} tagId - The tag route for which this position is intended, or the string "_default" for default/home route
-   * @return {Number} collection update returns
-   */
-  "products/updateProductPosition"(productId, positionData, tagId) {
-    check(productId, String);
-    check(positionData, Object);
-    check(tagId, String);
-
-    // Check first if Product exists and then if user has the proper rights
-    const product = Products.findOne(productId);
-    if (!product) {
-      throw new ReactionError("not-found", "Product not found");
-    } else if (!Reaction.hasPermission("createProduct", this.userId, product.shopId)) {
-      throw new ReactionError("access-denied", "Access Denied");
-    }
-
-    this.unblock();
-
-    const position = `positions.${tagId}.position`;
-    const pinned = `positions.${tagId}.pinned`;
-    const weight = `positions.${tagId}.weight`;
-    const updatedAt = `positions.${tagId}.updatedAt`;
-
-    return updateCatalogProduct(
-      this.userId,
-      {
-        _id: productId
-      },
-      {
-        $set: {
-          [position]: positionData.position,
-          [pinned]: positionData.pinned,
-          [weight]: positionData.weight,
-          [updatedAt]: new Date(),
-          type: "simple" // for multi-schema
-        }
-      }
-    );
-  },
-
-  /**
    * @name products/updateVariantsPosition
    * @memberof Methods/Products
    * @method
@@ -1605,5 +1559,24 @@ Meteor.methods({
     const productHash = createProductHash(product, rawCollections);
 
     return productHash;
+  },
+
+  /**
+   * @name catalog/getCurrentCatalogPriceForProductConfigurations
+   * @memberof Methods/Catalog
+   * @method
+   * @summary Gets the current price for multiple product configurations. Newer code that uses
+   *   GraphQL should not need this, but this is available while transitioning to GraphQL.
+   * @param {Object[]} productConfigurations - Product configuration objects, with `productId` and `productVariantId`
+   * @param {String} currencyCode Currency in which price is needed
+   * @return {Object[]} The same array of objects that was passed in, but with `price` added to each object.
+   */
+  "catalog/getCurrentCatalogPriceForProductConfigurations"(productConfigurations, currencyCode) {
+    check(productConfigurations, Array);
+    check(currencyCode, String);
+    return Promise.all(productConfigurations.map(async (productConfiguration) => {
+      const { price } = await getCurrentCatalogPriceForProductConfiguration(productConfiguration, currencyCode, rawCollections);
+      return { ...productConfiguration, price };
+    }));
   }
 });

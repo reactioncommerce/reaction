@@ -20,10 +20,10 @@ export default function listRefunds(order) {
   }
 
   const refunds = [];
-  for (const billingRecord of order.billing) {
-    const { paymentMethod } = billingRecord;
-    const processor = paymentMethod.processor.toLowerCase();
-    const shopRefunds = Meteor.call(`${processor}/refund/list`, paymentMethod);
+  for (const group of order.shipping) {
+    const { payment } = group;
+    const processor = payment.processor.toLowerCase();
+    const shopRefunds = Meteor.call(`${processor}/refund/list`, payment);
     refunds.push(...shopRefunds);
   }
   return refunds;

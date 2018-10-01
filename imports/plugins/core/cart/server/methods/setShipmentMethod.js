@@ -5,7 +5,6 @@ import Reaction from "/imports/plugins/core/core/server/Reaction";
 import ReactionError from "@reactioncommerce/reaction-error";
 import getCart from "/imports/plugins/core/cart/server/util/getCart";
 import getGraphQLContextInMeteorMethod from "/imports/plugins/core/graphql/server/getGraphQLContextInMeteorMethod";
-import selectFulfillmentOptionForGroup from "/imports/plugins/core/shipping/server/no-meteor/mutations/selectFulfillmentOptionForGroup";
 
 /**
  * @method cart/setShipmentMethod
@@ -37,12 +36,12 @@ export default function setShipmentMethod(cartId, cartToken, methodId) {
 
   // In Meteor app we always have a user, but it may have "anonymous" role, meaning
   // it was auto-created as a kind of session.
-  const userId = Meteor.userId();
+  const userId = Reaction.getUserId();
   const anonymousUser = Roles.userIsInRole(userId, "anonymous", shopId);
   const userIdForContext = anonymousUser ? null : userId;
 
   const context = Promise.await(getGraphQLContextInMeteorMethod(userIdForContext));
-  const result = Promise.await(selectFulfillmentOptionForGroup(context, {
+  const result = Promise.await(context.mutations.selectFulfillmentOptionForGroup(context, {
     cartId,
     cartToken,
     fulfillmentGroupId: group._id,

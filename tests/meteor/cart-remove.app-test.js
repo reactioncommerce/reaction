@@ -51,7 +51,6 @@ describe("cart methods", function () {
       this.timeout(5000);
       const cart = Factory.create("cart", { accountId });
       sandbox.stub(Reaction, "getShopId", () => shop._id);
-      sandbox.stub(Meteor, "userId", () => userId);
       const updateSpy = sandbox.spy(Collections.Cart, "update");
       const cartFromCollection = Collections.Cart.findOne({ _id: cart._id });
       const cartItemId = cartFromCollection.items[0]._id;
@@ -68,7 +67,6 @@ describe("cart methods", function () {
     it("should decrease the quantity when called with a quantity", function () {
       const cart = Factory.create("cartTwo", { accountId });
       sandbox.stub(Reaction, "getShopId", () => shop._id);
-      sandbox.stub(Meteor, "userId", () => userId);
       const cartFromCollection = Collections.Cart.findOne({ _id: cart._id });
       const cartItemId = cartFromCollection.items[0]._id;
       Meteor.call("cart/removeFromCart", cartItemId, 1);
@@ -79,7 +77,6 @@ describe("cart methods", function () {
     it("should remove cart item when quantity is decreased to zero", function () {
       const cart = Factory.create("cartOne", { accountId });
       sandbox.stub(Reaction, "getShopId", () => shop._id);
-      sandbox.stub(Meteor, "userId", () => userId);
       const cartFromCollection = Collections.Cart.findOne({ _id: cart._id });
       const cartItemId = cartFromCollection.items[0]._id;
       const originalQty = cartFromCollection.items[0].quantity;
@@ -92,8 +89,6 @@ describe("cart methods", function () {
       Factory.create("cart");
       const cartItemId = "testId123";
 
-      sandbox.stub(Meteor, "userId", () => userId);
-
       function removeFromCartFunc() {
         return Meteor.call("cart/removeFromCart", cartItemId);
       }
@@ -103,7 +98,6 @@ describe("cart methods", function () {
 
     it("should throw an exception when attempting to remove non-existing item", function (done) {
       const cartItemId = Random.id();
-      sandbox.stub(Meteor, "userId", () => userId);
 
       function removeFromCartFunc() {
         return Meteor.call("cart/removeFromCart", cartItemId);

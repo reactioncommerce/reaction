@@ -7,6 +7,7 @@ import { Accounts } from "meteor/accounts-base";
 
 import { Reaction, Logger } from "/client/api";
 import { userPrefs } from "./main";
+import { getUserId } from "./helpers/utils";
 
 /**
  *  Startup Reaction
@@ -18,7 +19,7 @@ Meteor.startup(() => {
 
 // Log in anonymous guest users
 Tracker.autorun(() => {
-  const userId = Meteor.userId();
+  const userId = getUserId();
   if (userId) return; // This autorun is only for when we DO NOT have a user
 
   const loggingIn = Tracker.nonreactive(() => Accounts.loggingIn());
@@ -42,7 +43,7 @@ Tracker.autorun(() => {
 });
 
 Tracker.autorun(() => {
-  const userId = Meteor.userId(); // The only reactive thing in this autorun. Reruns on login/logout only.
+  const userId = getUserId(); // The only reactive thing in this autorun. Reruns on login/logout only.
   if (!userId) return;
 
   // Load data from Accounts collection into the localStorage
@@ -72,7 +73,7 @@ Tracker.autorun(() => {
 
 // Fine-grained reactivity on only the user preferences
 Tracker.autorun(() => {
-  const userId = Meteor.userId();
+  const userId = getUserId();
   if (!userId) return;
 
   const user = Meteor.users.findOne(userId, { fields: { profile: 1 } });

@@ -14,6 +14,7 @@ import resetShopId from "./resetShopId";
 import togglePackage from "./togglePackage";
 import updateBrandAssets from "./updateBrandAssets";
 import updateCurrencyConfiguration from "./updateCurrencyConfiguration";
+import updateDefaultParcelSize from "./updateDefaultParcelSize";
 import updateHeaderTags from "./updateHeaderTags";
 import updateLanguageConfiguration from "./updateLanguageConfiguration";
 import updateShopExternalServices from "./updateShopExternalServices";
@@ -42,6 +43,7 @@ export default {
   "shop/togglePackage": togglePackage,
   "shop/updateBrandAssets": updateBrandAssets,
   "shop/updateCurrencyConfiguration": updateCurrencyConfiguration,
+  "shop/updateDefaultParcelSize": updateDefaultParcelSize,
   "shop/updateHeaderTags": updateHeaderTags,
   "shop/updateLanguageConfiguration": updateLanguageConfiguration,
   "shop/updateShopExternalServices": updateShopExternalServices

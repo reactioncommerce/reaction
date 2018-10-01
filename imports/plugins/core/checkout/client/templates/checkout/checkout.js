@@ -1,8 +1,10 @@
 import _ from "lodash";
+import Logger from "/client/modules/logger";
 import { Meteor } from "meteor/meteor";
 import { Template } from "meteor/templating";
 import { Reaction } from "/client/api";
 import getCart from "/imports/plugins/core/cart/client/util/getCart";
+import simpleGraphQLClient from "/imports/plugins/core/graphql/lib/helpers/simpleClient";
 import "./checkout.html";
 
 //
@@ -38,8 +40,28 @@ Template.cartCheckout.onCreated(function onCreated() {
         .map(({ _id, address, itemIds, shopId, type }) => ({ _id, address, itemIds, shopId, type }));
       if (!_.isEqual(previousCartShipping, partialShipping)) {
         previousCartShipping = partialShipping;
+
+        const methodInput = [{ namespace: "Cart", id: cart._id }];
         partialShipping.forEach(({ _id }) => {
-          Meteor.call("shipping/updateShipmentQuotes", cart._id, _id, token);
+          methodInput.push({ namespace: "FulfillmentGroup", id: _id });
+        });
+
+        Meteor.call("getOpaqueIdFromInternalId", methodInput, (error, opaqueIds) => {
+          if (error || !opaqueIds) {
+            Logger.error(error || "No opaque IDs returned");
+            return;
+          }
+          const [opaqueCartId, ...opaqueGroupIds] = opaqueIds;
+
+          opaqueGroupIds.forEach((fulfillmentGroupId) => {
+            simpleGraphQLClient.mutations.updateFulfillmentOptionsForGroup({
+              input: {
+                cartId: opaqueCartId,
+                cartToken: token,
+                fulfillmentGroupId
+              }
+            });
+          });
         });
       }
     }

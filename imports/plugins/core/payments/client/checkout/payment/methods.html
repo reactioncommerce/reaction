@@ -3,7 +3,7 @@
   {{#each enabledPayments}}
 
     <div class="core-payment-method-form">
-      {{> Template.dynamic template=template}}
+      {{> React component=ReactComponentOrBlazeTemplate name=template props=.}}
     </div>
 
   {{else}}

@@ -33,7 +33,8 @@ export default function shipmentDelivered(order) {
   Meteor.call("workflow/pushItemWorkflow", "coreOrderItemWorkflow/delivered", order, itemIds);
   Meteor.call("workflow/pushItemWorkflow", "coreOrderItemWorkflow/completed", order, itemIds);
 
-  const isCompleted = order.items.every((item) => item.workflow.workflow && item.workflow.workflow.includes("coreOrderItemWorkflow/completed"));
+  const orderItems = order.shipping.reduce((list, group) => [...list, ...group.items], []);
+  const isCompleted = orderItems.every((item) => item.workflow.workflow && item.workflow.workflow.includes("coreOrderItemWorkflow/completed"));
 
   Orders.update(
     {

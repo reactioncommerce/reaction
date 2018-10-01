@@ -1,11 +1,15 @@
 import { Template } from "meteor/templating";
 import { Reaction } from "/client/api";
+import ReactComponentOrBlazeTemplate from "/imports/plugins/core/components/lib/ReactComponentOrBlazeTemplate";
 import "./methods.html";
 
 Template.corePaymentMethods.helpers({
   enabledPayments,
   isAdmin() {
     return Reaction.hasAdminAccess();
+  },
+  ReactComponentOrBlazeTemplate() {
+    return ReactComponentOrBlazeTemplate;
   }
 });
 

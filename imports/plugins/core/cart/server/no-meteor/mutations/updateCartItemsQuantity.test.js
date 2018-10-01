@@ -1,10 +1,24 @@
+import Factory from "/imports/test-utils/helpers/factory";
 import mockContext from "/imports/test-utils/helpers/mockContext";
 import updateCartItemsQuantity from "./updateCartItemsQuantity";
 
 const dbCart = {
   _id: "cartId",
-  items: []
+  items: [
+    Factory.CartItem.makeOne({
+      _id: "cartItemId1",
+      quantity: 5
+    }),
+    Factory.CartItem.makeOne({
+      _id: "cartItemId2",
+      quantity: 5
+    })
+  ]
 };
+
+beforeEach(() => {
+  jest.clearAllMocks();
+});
 
 test("updates the quantity of multiple items in account cart", async () => {
   mockContext.collections.Cart.findOne.mockReturnValueOnce(Promise.resolve(dbCart));
@@ -24,27 +38,42 @@ test("updates the quantity of multiple items in account cart", async () => {
   });
 
   expect(mockContext.collections.Cart.updateOne).toHaveBeenCalledWith({
-    _id: "cartId",
-    accountId: "FAKE_ACCOUNT_ID"
+    _id: "cartId"
   }, {
     $set: {
-      "items.$[elem0].quantity": 1,
-      "items.$[elem1].quantity": 2
+      items: [
+        {
+          ...dbCart.items[0],
+          quantity: 1
+        },
+        {
+          ...dbCart.items[1],
+          quantity: 2
+        }
+      ],
+      updatedAt: jasmine.any(Date)
     }
-  }, {
-    arrayFilters: [
-      { "elem0._id": "cartItemId1" },
-      { "elem1._id": "cartItemId2" }
-    ]
   });
 
   expect(mockContext.collections.Cart.findOne).toHaveBeenCalledWith({
-    _id: "cartId",
-    accountId: "FAKE_ACCOUNT_ID"
+    _id: "cartId"
   });
 
   expect(result).toEqual({
-    cart: dbCart
+    cart: {
+      _id: "cartId",
+      items: [
+        {
+          ...dbCart.items[0],
+          quantity: 1
+        },
+        {
+          ...dbCart.items[1],
+          quantity: 2
+        }
+      ],
+      updatedAt: jasmine.any(Date)
+    }
   });
 });
 
@@ -72,18 +101,21 @@ test("updates the quantity of multiple items in anonymous cart", async () => {
   mockContext.accountId = cachedAccountId;
 
   expect(mockContext.collections.Cart.updateOne).toHaveBeenCalledWith({
-    _id: "cartId",
-    anonymousAccessToken: hashedToken
+    _id: "cartId"
   }, {
     $set: {
-      "items.$[elem0].quantity": 1,
-      "items.$[elem1].quantity": 2
+      items: [
+        {
+          ...dbCart.items[0],
+          quantity: 1
+        },
+        {
+          ...dbCart.items[1],
+          quantity: 2
+        }
+      ],
+      updatedAt: jasmine.any(Date)
     }
-  }, {
-    arrayFilters: [
-      { "elem0._id": "cartItemId1" },
-      { "elem1._id": "cartItemId2" }
-    ]
   });
 
   expect(mockContext.collections.Cart.findOne).toHaveBeenCalledWith({
@@ -92,7 +124,20 @@ test("updates the quantity of multiple items in anonymous cart", async () => {
   });
 
   expect(result).toEqual({
-    cart: dbCart
+    cart: {
+      _id: "cartId",
+      items: [
+        {
+          ...dbCart.items[0],
+          quantity: 1
+        },
+        {
+          ...dbCart.items[1],
+          quantity: 2
+        }
+      ],
+      updatedAt: jasmine.any(Date)
+    }
   });
 });
 
@@ -135,37 +180,33 @@ test("removes an item if quantity is 0", async () => {
   });
 
   expect(mockContext.collections.Cart.updateOne).toHaveBeenCalledWith({
-    _id: "cartId",
-    accountId: "FAKE_ACCOUNT_ID"
+    _id: "cartId"
   }, {
     $set: {
-      "items.$[elem1].quantity": 2
-    }
-  }, {
-    arrayFilters: [
-      { "elem1._id": "cartItemId2" }
-    ]
-  });
-
-  expect(mockContext.collections.Cart.updateOne).toHaveBeenCalledWith({
-    _id: "cartId",
-    accountId: "FAKE_ACCOUNT_ID"
-  }, {
-    $pull: {
-      items: {
-        $or: [
-          { _id: "cartItemId1" }
-        ]
-      }
+      items: [
+        {
+          ...dbCart.items[1],
+          quantity: 2
+        }
+      ],
+      updatedAt: jasmine.any(Date)
     }
   });
 
   expect(mockContext.collections.Cart.findOne).toHaveBeenCalledWith({
-    _id: "cartId",
-    accountId: "FAKE_ACCOUNT_ID"
+    _id: "cartId"
   });
 
   expect(result).toEqual({
-    cart: dbCart
+    cart: {
+      _id: "cartId",
+      items: [
+        {
+          ...dbCart.items[1],
+          quantity: 2
+        }
+      ],
+      updatedAt: jasmine.any(Date)
+    }
   });
 });

@@ -2,6 +2,8 @@ import { Migrations } from "meteor/percolate:migrations";
 import { Cart, Orders } from "/lib/collections";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
 
+const shippingFieldExistsAndHasItems = { shipping: { $exists: true, $ne: [] } };
+
 Migrations.add({
   version: 13,
   up() {
@@ -9,11 +11,11 @@ Migrations.add({
     // This adds shopId field to each shipping object in orders and carts.
     const shopId = Reaction.getShopId();
 
-    Orders.update({}, {
+    Orders.update(shippingFieldExistsAndHasItems, {
       $set: { "shipping.0.shopId": shopId }
     }, { bypassCollection2: true, multi: true });
 
-    Cart.update({}, {
+    Cart.update(shippingFieldExistsAndHasItems, {
       $set: { "shipping.0.shopId": shopId }
     }, { bypassCollection2: true, multi: true });
   },
@@ -23,7 +25,7 @@ Migrations.add({
     }, { bypassCollection2: true, multi: true });
 
     Cart.update({}, {
-      $set: { "shipping.0.shopId": "" }
+      $unset: { "shipping.0.shopId": "" }
     }, { bypassCollection2: true, multi: true });
   }
 });

@@ -1,4 +1,3 @@
-import { Meteor } from "meteor/meteor";
 import { check, Match } from "meteor/check";
 import { Orders } from "/lib/collections";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
@@ -30,7 +29,7 @@ export default function updateHistory(orderId, event, value) {
       history: {
         event,
         value,
-        userId: Meteor.userId(),
+        userId: Reaction.getUserId(),
         updatedAt: new Date()
       }
     }
