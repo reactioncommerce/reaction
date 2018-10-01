@@ -348,7 +348,7 @@ class CSVConnectorContainer extends Component {
       shouldExportToSFTP
     } = this.state;
 
-    if (errors.mappingByUser.length > 0) {
+    if (errors.mappingByUser && errors.mappingByUser.length > 0) {
       return false;
     }
 
