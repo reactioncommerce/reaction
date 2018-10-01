@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import PropTypes from "prop-types";
 import { compose } from "recompose";
 import Papa from "papaparse";
 import Alert from "sweetalert2";
@@ -15,6 +16,10 @@ import S3SettingsContainer from "./s3SettingsContainer";
 import SFTPSettingsContainer from "./sftpSettingsContainer";
 
 class CSVConnectorContainer extends Component {
+  static propTypes = {
+    jobItems: PropTypes.arrayOf(PropTypes.object)
+  };
+
   constructor(props) {
     super(props);
     this.defaultState = {
@@ -508,6 +513,7 @@ class CSVConnectorContainer extends Component {
   }
 
   renderJobsList() {
+    const { jobItems } = this.props;
     const { activeScreen, showSettings } = this.state;
     const customRowMetaData = {
       bodyCssClassName: () => "job-item-grid-row"
@@ -548,7 +554,7 @@ class CSVConnectorContainer extends Component {
         <div className="mt100">
           <h4>{i18next.t("admin.dashboard.csvJobsStatus")}</h4>
           <SortableTable
-            publication="JobItems"
+            data={jobItems}
             collection={JobItems}
             columns={columns}
             matchingResultsCount="job-items-count"
@@ -653,7 +659,8 @@ class CSVConnectorContainer extends Component {
 function composer(props, onData) {
   Meteor.subscribe("JobItems").ready();
   Meteor.subscribe("Mappings").ready();
-  return onData(null, { ...props });
+  const jobItems = JobItems.find({}, { sort: { uploadedAt: -1 } }).fetch();
+  return onData(null, { jobItems, ...props });
 }
 
 registerComponent("CSVConnector", CSVConnectorContainer, [

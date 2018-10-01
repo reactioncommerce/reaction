@@ -250,7 +250,7 @@ export const methods = {
    * @summary Removes a job item from the database, provided that job item is not in progress
    * @method
    * @param {String} jobItemId - job item values
-   * @return {Boolean} - if deletion is successful
+   * @return {Promise} - if deletion is successful
    */
   "csvConnector/removeJobItem"(jobItemId) {
     check(jobItemId, String);
@@ -259,11 +259,7 @@ export const methods = {
     if (status === "inProgress") {
       throw new Meteor.Error("invalid", "Job item is in progress and can't be deleted.");
     }
-    JobItems.remove({ _id: jobItemId });
-
-    // TODO: Remove file from database if job item is pending
-
-    return true;
+    return JobItems.update({ _id: jobItemId }, { $set: { isDeleted: true } });
   }
 };
 

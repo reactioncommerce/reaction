@@ -122,7 +122,11 @@ export const JobItems = new SimpleSchema({
     type: Object,
     blackbox: true,
     optional: true
-  } // Mapping will be CSV column name to technical field name
+  }, // Mapping will be CSV column name to technical field name
+  isDeleted: {
+    type: Boolean,
+    defaultValue: false
+  }
 });
 
 registerSchema("JobItems", JobItems);

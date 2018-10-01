@@ -2,7 +2,7 @@ import Reaction from "/imports/plugins/core/core/server/Reaction";
 
 Reaction.registerPackage({
   label: "CSV Connector",
-  name: "csv-connector",
+  name: "connector-csv",
   icon: "fa fa-exchange",
   autoEnable: true,
   settings: {},

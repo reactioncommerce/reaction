@@ -55,10 +55,10 @@ export default function generateProcessJobItemsJob() {
     pollInterval: 30 * 1000, // backup polling, see observer below
     workTimeout: 60 * 60 * 1000
   }, (job, callback) => {
-    Logger.info(`Processing ${jobId} job`);
+    Logger.debug(`Processing ${jobId} job`);
     processJobItems();
     const doneMessage = `${jobId} job done`;
-    Logger.info(doneMessage);
+    Logger.debug(doneMessage);
     job.done(doneMessage, { repeatId: true });
     callback();
   });

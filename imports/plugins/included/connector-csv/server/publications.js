@@ -20,9 +20,9 @@ Security.permit(["insert", "update", "remove"]).collections([
 /**
  * JobItems
  */
-Meteor.publish("JobItems", function (query, options) {
+Meteor.publish("JobItems", function (query, params) {
   check(query, Match.Optional(Object));
-  check(options, Match.Optional(Object));
+  check(params, Match.Optional(Object));
 
   // check shopId
   const shopId = Reaction.getShopId();
@@ -30,18 +30,18 @@ Meteor.publish("JobItems", function (query, options) {
     return this.ready();
   }
 
-  const select = query || {};
-  const sort = options || { sort: { uploadedAt: -1 } };
+  const select = Object.assign({ isDeleted: false }, query || {});
+  const options = params || {};
 
   select.shopId = shopId;
 
   Counts.publish(this, "job-items-count", JobItems.find(
     select,
-    sort
+    options
   ));
   return JobItems.find(
     select,
-    sort
+    options
   );
 });
 

@@ -4,6 +4,7 @@ import Alert from "sweetalert2";
 import { withMoment, Components } from "@reactioncommerce/reaction-components";
 import { Meteor } from "meteor/meteor";
 import { i18next } from "/client/api";
+import { JobItems } from "../../lib/collections";
 
 class JobItemTableColumn extends Component {
   static propTypes = {
@@ -14,6 +15,7 @@ class JobItemTableColumn extends Component {
 
   handleAction = () => {
     const { row: { original: { _id } } } = this.props;
+    JobItems.update({ _id }, { $set: { isDeleted: true } }); // update the client right away
     Meteor.call("csvConnector/removeJobItem", _id, (error) => {
       if (error) {
         return Alert(i18next.t("app.error"), error.message, "error");
@@ -23,12 +25,13 @@ class JobItemTableColumn extends Component {
   }
 
   render() {
-    const { row } = this.props;
     const {
-      column: { id: renderColumn },
-      original: { errorFileId, exportFileId, _id: jobItemId, status },
-      value
-    } = row;
+      row: {
+        column: { id: renderColumn },
+        original: { errorFileId, exportFileId, _id: jobItemId, status },
+        value
+      }
+    } = this.props;
     if (renderColumn === "jobType") {
       if (value === "import") {
         return <span>Import</span>;

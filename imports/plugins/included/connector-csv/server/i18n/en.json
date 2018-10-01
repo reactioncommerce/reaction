@@ -1,6 +1,6 @@
 [{
   "i18n": "en",
-  "ns": "csv-connector",
+  "ns": "connector-csv",
   "translation": {
     "connectors": {
       "admin": {
