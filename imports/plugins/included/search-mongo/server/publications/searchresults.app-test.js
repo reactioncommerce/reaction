@@ -4,7 +4,7 @@ import { Factory } from "meteor/dburles:factory";
 import { expect } from "meteor/practicalmeteor:chai";
 import { sinon } from "meteor/practicalmeteor:sinon";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
-import { getSlug } from "/lib/api";
+import getSlug from "/imports/plugins/core/core/server/Reaction/getSlug";
 import { Accounts, Products, OrderSearch } from "/lib/collections";
 import Fixtures from "/imports/plugins/core/core/server/fixtures";
 import {
