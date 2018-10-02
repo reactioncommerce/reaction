@@ -2,7 +2,6 @@ import _ from "lodash";
 import Logger from "@reactioncommerce/logger";
 import { check, Match } from "meteor/check";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
-import getSlug from "/imports/plugins/core/core/server/Reaction/getSlug";
 import ReactionError from "@reactioncommerce/reaction-error";
 import { Groups } from "/lib/collections";
 
