@@ -62,13 +62,14 @@ export default async function buildOrderInputFromCart(cart) {
 
     const productConfigurationsWithPrice = await getCurrentCatalogPriceForProductConfigurations(productConfigurations, cart.currencyCode);
 
-    let totalPrice = 0;
+    let itemTotal = 0;
+    let taxTotal = 0;
     const finalItems = items.map((item, index) => {
       const productConfig = productConfigurationsWithPrice.find((config) => config.productId === item.productId && config.productVariantId === item.variantId);
       if (!productConfig || !productConfig.price) throw new Error(`Unable to find current price of variant ${item.variantId}`);
       const { price } = productConfig;
-      const subtotal = price * item.quantity;
-      totalPrice += (subtotal + (item.tax || 0));
+      itemTotal += price * item.quantity;
+      taxTotal += (item.tax || 0);
       return {
         addedAt: item.addedAt,
         price,
@@ -80,7 +81,14 @@ export default async function buildOrderInputFromCart(cart) {
       };
     });
 
-    totalPrice += ((group.shipmentMethod.rate || 0) + (group.shipmentMethod.handling || 0));
+    // Fulfillment
+    const shippingTotal = group.shipmentMethod.rate || 0;
+    const handlingTotal = group.shipmentMethod.handling || 0;
+    const fulfillmentTotal = shippingTotal + handlingTotal;
+
+    // To avoid rounding errors, be sure to keep this calculation the same between here and
+    // `createOrder.js` in the server code.
+    const totalPrice = Math.max(0, itemTotal + fulfillmentTotal + taxTotal);
 
     const shippingAddress = {
       address1: group.address.address1,

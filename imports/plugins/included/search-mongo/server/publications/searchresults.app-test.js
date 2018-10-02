@@ -4,7 +4,6 @@ import { Factory } from "meteor/dburles:factory";
 import { expect } from "meteor/practicalmeteor:chai";
 import { sinon } from "meteor/practicalmeteor:sinon";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
-import getSlug from "/imports/plugins/core/core/server/Reaction/getSlug";
 import { Accounts, Products, OrderSearch } from "/lib/collections";
 import Fixtures from "/imports/plugins/core/core/server/fixtures";
 import {
@@ -19,7 +18,7 @@ Fixtures();
 
 export function createProduct(isVisible = true, title) {
   const productTitle = title || faker.commerce.productName();
-  const productSlug = getSlug(productTitle);
+  const productSlug = Reaction.getSlug(productTitle);
   const product = {
     ancestors: [],
     shopId: Reaction.getShopId(),

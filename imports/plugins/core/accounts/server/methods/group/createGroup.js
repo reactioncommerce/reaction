@@ -36,7 +36,7 @@ export default function createGroup(groupData, shopId) {
   const defaultCustomerGroupForShop = Groups.findOne({ slug: "customer", shopId }) || {};
   const defaultAdminPermissions = (defaultCustomerGroupForShop.permissions || []).concat("dashboard");
   const newGroupData = Object.assign({}, groupData, {
-    slug: getSlug(groupData.name), shopId
+    slug: Reaction.getSlug(groupData.name), shopId
   });
 
   if (!newGroupData.permissions) {
