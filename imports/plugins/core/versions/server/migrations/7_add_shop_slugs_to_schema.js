@@ -1,6 +1,6 @@
 import { Migrations } from "meteor/percolate:migrations";
+import { slugify } from "transliteration";
 import { Shops } from "/lib/collections";
-import { getSlug } from "/lib/api";
 
 Migrations.add({
   version: 7,
@@ -15,7 +15,7 @@ Migrations.add({
     // Loop through all shops creating slugs and creating merchant shop objects
     shops.forEach((shop) => {
       // create slug from shop name
-      const shopSlug = getSlug(shop.name);
+      const shopSlug = slugify(shop.name);
 
       // If a shop doesn't have a slug, add one
       if (typeof shop.slug === "undefined") {
@@ -26,7 +26,7 @@ Migrations.add({
         }, { bypassCollection2: true });
       }
 
-      // if the shop is a merchant shop, create an obeject for it to - these will be used to create shop routes
+      // if the shop is a merchant shop, create an object for it to - these will be used to create shop routes
       if (shop.shopType === "merchant") {
         merchantShops.push({
           _id: shop._id,
