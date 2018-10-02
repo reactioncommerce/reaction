@@ -18,12 +18,14 @@ Migrations.add({
 
     // Add whole product object to all order items in all order documents
     Orders.find().forEach((order) => {
-      order.items.forEach((item) => {
-        item.product = Products.findOne({ _id: item.productId });
-      });
-      Orders.update({ _id: order._id }, {
-        $set: { items: order.items }
-      }, { bypassCollection2: true });
+      if (Array.isArray(order.items) && order.items.length) {
+        order.items.forEach((item) => {
+          item.product = Products.findOne({ _id: item.productId });
+        });
+        Orders.update({ _id: order._id }, {
+          $set: { items: order.items }
+        }, { bypassCollection2: true });
+      }
     });
   },
   // Going down, we remove the product object on each item in cart and order
@@ -40,12 +42,14 @@ Migrations.add({
     });
 
     Orders.find().forEach((order) => {
-      order.items.forEach((item) => {
-        delete item.product;
-      });
-      Orders.update({ _id: order._id }, {
-        $set: { items: order.items }
-      }, { bypassCollection2: true });
+      if (Array.isArray(order.items) && order.items.length) {
+        order.items.forEach((item) => {
+          delete item.product;
+        });
+        Orders.update({ _id: order._id }, {
+          $set: { items: order.items }
+        }, { bypassCollection2: true });
+      }
     });
   }
 });
