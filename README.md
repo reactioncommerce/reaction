@@ -48,7 +48,7 @@ reaction
 
 Open `localhost:3000`
 
-Learn more on how to [configure your project](https://docs.reactioncommerce.com/reaction-docs/master/configuration). 
+Learn more on how to [configure your project](https://docs.reactioncommerce.com/reaction-docs/master/configuration).
 
 Having installation issues? Check out our [troubleshooting docs](https://docs.reactioncommerce.com/docs/next/troubleshooting-development).
 
@@ -84,7 +84,7 @@ To learn more on how to develop on Docker, read our documentation on [developing
 
 ## Contribute
 
-:star: Star us on GitHub — it helps! 
+:star: Star us on GitHub — it helps!
 
 Want to request a feature? Use our Reaction Feature Requests repository to file a request.
 
@@ -109,12 +109,6 @@ docker-compose -f docker-compose-demo.yml up
 ```
 
 You can also use this file as starting point for your production docker-compose setup.
-
-## See it in action
-
-You can check our latest release in Heroku by simply clicking the button below. You will need to create a Heroku account if you do not have one yet or log in using an existing account.
-
-[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy)
 
 ### License
 
