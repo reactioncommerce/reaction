@@ -48,7 +48,8 @@ class OrderSummaryContainer extends Component {
       };
     }
 
-    const shipped = order.items.every((item) => {
+    const orderItems = order.shipping.reduce((list, group) => [...list, ...group.items], []);
+    const shipped = orderItems.every((item) => {
       if (shipment.itemIds.indexOf(item._id) === -1) {
         // The item is not in this shipment so we don't care
         return true;
@@ -67,7 +68,7 @@ class OrderSummaryContainer extends Component {
       };
     }
 
-    const canceled = order.items.every((item) => {
+    const canceled = orderItems.every((item) => {
       if (shipment.itemIds.indexOf(item._id) === -1) {
         // The item is not in this shipment so we don't care
         return true;

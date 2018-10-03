@@ -30,6 +30,14 @@ export const userPrefs = new ReactiveVar(undefined, (val, newVal) => JSON.string
 
 const deps = new Map();
 
+// Slugify is imported when Reaction.getSlug is called
+let slugify;
+
+// Array of ISO Language codes for all languages that use latin based char sets
+// list is based on this matrix http://w3c.github.io/typography/gap-analysis/language-matrix.html
+// list of lang codes https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes
+const latinLangs = ["az", "da", "de", "en", "es", "ff", "fr", "ha", "hr", "hu", "ig", "is", "it", "jv", "ku", "ms", "nl", "no", "om", "pl", "pt", "ro", "sv", "sw", "tl", "tr", "uz", "vi", "yo"]; // eslint-disable-line max-len
+
 export default {
   ...DomainsMixin,
 
@@ -128,60 +136,50 @@ export default {
 
     // Listen for active shop change
     return Tracker.autorun(() => {
-      let shop;
       if (this.Subscriptions.MerchantShops.ready()) {
         // if we don't have an active shopId, try to retrieve it from the userPreferences object
         // and set the shop from the storedShopId
         if (!this.shopId) {
-          const storedShopId = this.getUserPreferences("reaction", "activeShopId");
-          if (storedShopId) {
-            shop = Shops.findOne({
-              _id: storedShopId
-            });
-          } else {
-            shop = Shops.findOne({
-              domains: this.getDomain()
-            });
-          }
-        }
+          const shop = this.getCurrentShop();
 
-        if (shop) {
-          // Only set shopId if it hasn't been set yet
-          if (!this.shopId) {
-            this.shopId = shop._id;
-            this.shopName = shop.name;
-          }
-
-          // We only use the active shop to setup locale if marketplace settings
-          // are enabled and merchantLocale is set to true
-          if (this.marketplace.merchantLocale === true) {
-          // initialize local client Countries collection
-            if (!Countries.findOne()) {
-              createCountryCollection(shop.locales.countries);
+          if (shop) {
+            // Only set shopId if it hasn't been set yet
+            if (!this.shopId) {
+              this.shopId = shop._id;
+              this.shopName = shop.name;
             }
 
-            const locale = this.Locale.get() || {};
+            // We only use the active shop to setup locale if marketplace settings
+            // are enabled and merchantLocale is set to true
+            if (this.marketplace.merchantLocale === true) {
+              // initialize local client Countries collection
+              if (!Countries.findOne()) {
+                createCountryCollection(shop.locales.countries);
+              }
 
-            // fix for https://github.com/reactioncommerce/reaction/issues/248
-            // we need to keep an eye for rates changes
-            if (typeof locale.locale === "object" &&
-            typeof locale.currency === "object" &&
-            typeof locale.locale.currency === "string") {
-              const localeCurrency = locale.locale.currency.split(",")[0];
-              if (typeof shop.currencies[localeCurrency] === "object") {
-                if (typeof shop.currencies[localeCurrency].rate === "number") {
-                  locale.currency.rate = shop.currencies[localeCurrency].rate;
-                  localeDep.changed();
+              const locale = this.Locale.get() || {};
+
+              // fix for https://github.com/reactioncommerce/reaction/issues/248
+              // we need to keep an eye for rates changes
+              if (typeof locale.locale === "object" &&
+              typeof locale.currency === "object" &&
+              typeof locale.locale.currency === "string") {
+                const localeCurrency = locale.locale.currency.split(",")[0];
+                if (typeof shop.currencies[localeCurrency] === "object") {
+                  if (typeof shop.currencies[localeCurrency].rate === "number") {
+                    locale.currency.rate = shop.currencies[localeCurrency].rate;
+                    localeDep.changed();
+                  }
                 }
               }
+              // we are looking for a shopCurrency changes here
+              if (typeof locale.shopCurrency === "object") {
+                locale.shopCurrency = shop.currencies[shop.currency];
+                localeDep.changed();
+              }
             }
-            // we are looking for a shopCurrency changes here
-            if (typeof locale.shopCurrency === "object") {
-              locale.shopCurrency = shop.currencies[shop.currency];
-              localeDep.changed();
-            }
+            return this;
           }
-          return this;
         }
       }
     });
@@ -509,16 +507,6 @@ export default {
   },
 
   /**
-   * Primary Shop should probably not have a prefix (or should it be /shop?)
-   * @name getPrimaryShopPrefix
-   * @method
-   * @memberof Core/Client
-   */
-  getPrimaryShopPrefix() {
-    return `/${this.getSlug(this.getPrimaryShopName().toLowerCase())}`;
-  },
-
-  /**
    * @name getPrimaryShopSettings
    * @method
    * @memberof Core/Client
@@ -542,6 +530,28 @@ export default {
     });
 
     return (shop && shop.currency) || "USD";
+  },
+
+  /**
+   * @name getCurrentShop
+   * @summary Get the proper current shop based on various checks. This mirrors the logic in
+   *   Reaction.getShopId on the server
+   * @method
+   * @memberof Core/Client
+   * @returns {Object|null} The shop document
+   */
+  getCurrentShop() {
+    // Give preference to shop chosen by the user
+    const activeShopId = this.getUserPreferences("reaction", "activeShopId");
+    if (activeShopId) return Shops.findOne({ _id: activeShopId });
+
+    // If no chosen shop, look up the shop by domain
+    let shop = Shops.findOne({ domains: this.getDomain() });
+
+    // Finally fall back to primary shop
+    if (!shop) shop = Shops.findOne({ shopType: "primary" });
+
+    return shop;
   },
 
   /**
@@ -621,22 +631,6 @@ export default {
   },
 
   /**
-   * @name getShopPrefix
-   * @method
-   * @memberof Core/Client
-   */
-  getShopPrefix() {
-    const shopName = this.getShopName();
-    if (shopName) {
-      return Router.pathFor("index", {
-        hash: {
-          shopSlug: this.getSlug(shopName.toLowerCase())
-        }
-      });
-    }
-  },
-
-  /**
    * @name getShopSettings
    * @method
    * @memberof Core/Client
@@ -647,6 +641,44 @@ export default {
       shopId: this.shopId
     }) || {};
     return settings.settings || {};
+  },
+
+  getShopLanguage() {
+    const shopId = this.getShopId();
+    const shop = Shops.findOne({ _id: shopId });
+    return shop ? shop.language : "";
+  },
+
+  async getSlug(slugString) {
+    const lazyLoadSlugify = async () => {
+      let mod;
+      const lang = this.getShopLanguage();
+
+      // If slugify has been loaded but language has changed to non latin-based language, load transliteration
+      if (slugify && slugify.name === "replace" && latinLangs.indexOf(lang) === -1) {
+        mod = await import("transliteration");
+      } else if (slugify) {
+        // If slugify/transliteration is loaded & no lang change
+        return;
+      } else if (latinLangs.indexOf(lang) >= 0) {
+        // If shop's language uses latin based chars, load slugify, else load transliterations's slugify
+        mod = await import("slugify");
+      } else {
+        mod = await import("transliteration");
+      }
+
+      // Slugify is exported to modules.default while transliteration is exported to modules.slugify
+      slugify = mod.default || mod.slugify;
+    };
+
+    let slug;
+    await lazyLoadSlugify(); // eslint-disable-line promise/catch-or-return
+    if (slugString && slugify) {
+      slug = slugify(slugString.toLowerCase());
+    } else {
+      slug = "";
+    }
+    return slug;
   },
 
   /**

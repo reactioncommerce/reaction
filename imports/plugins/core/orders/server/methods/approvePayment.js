@@ -27,7 +27,8 @@ function ordersInventoryAdjustByShop(orderId, shopId) {
   }
 
   const order = Orders.findOne({ _id: orderId });
-  order.items.forEach((item) => {
+  const orderItems = order.shipping.reduce((list, group) => [...list, ...group.items], []);
+  orderItems.forEach((item) => {
     if (item.shopId === shopId) {
       Products.update(
         {
@@ -85,16 +86,16 @@ export default function approvePayment(order) {
   const result = Orders.update(
     {
       "_id": order._id,
-      "billing.shopId": shopId,
-      "billing.paymentMethod.method": "credit"
+      "shipping.shopId": shopId,
+      "shipping.payment.method": "credit"
     },
     {
       $set: {
-        "billing.$.paymentMethod.amount": total,
-        "billing.$.paymentMethod.status": "approved",
-        "billing.$.paymentMethod.mode": "capture",
-        "billing.$.invoice.discounts": discounts,
-        "billing.$.invoice.total": Number(total)
+        "shipping.$.payment.amount": total,
+        "shipping.$.payment.status": "approved",
+        "shipping.$.payment.mode": "capture",
+        "shipping.$.payment.invoice.discounts": discounts,
+        "shipping.$.payment.invoice.total": Number(total)
       }
     }
   );

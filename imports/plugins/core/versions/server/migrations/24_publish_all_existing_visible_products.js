@@ -13,7 +13,14 @@ Migrations.add({
       isVisible: true,
       type: "simple"
     }, { _id: 1 }).map((product) => product._id);
-    const success = Promise.await(publishProductsToCatalog(visiblePublishedProducts, collections));
+
+    let success = false;
+    try {
+      success = Promise.await(publishProductsToCatalog(visiblePublishedProducts, collections));
+    } catch (error) {
+      Logger.error("Error in migration 24, publishProductsToCatalog", error);
+    }
+
     if (!success) {
       Logger.error("Migration 24 failed to create catalog products for some published products.");
     }

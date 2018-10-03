@@ -94,14 +94,20 @@ export default async function addCartItems(collections, currentItems, inputItems
     // The main issue is we do not have labels.
     const attributes = [];
     if (parentVariant) {
-      attributes.push({ value: parentVariant.optionTitle || parentVariant.title });
+      attributes.push({
+        label: null, // Set label to null for now. We expect to use it in the future.
+        value: parentVariant.title
+      });
     }
-    attributes.push({ value: chosenVariant.optionTitle || chosenVariant.title });
+    attributes.push({
+      label: null, // Set label to null for now. We expect to use it in the future.
+      value: chosenVariant.title
+    });
 
     const cartItem = {
       _id: Random.id(),
       attributes,
-      isTaxable: chosenVariant.taxable || false,
+      isTaxable: chosenVariant.isTaxable || false,
       metafields,
       optionTitle: chosenVariant.optionTitle,
       parcel: chosenVariant.parcel,

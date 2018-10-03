@@ -6,7 +6,6 @@ import { registerComponent, Components } from "@reactioncommerce/reaction-compon
 
 class ProductGridItem extends Component {
   static propTypes = {
-    position: PropTypes.object,
     product: PropTypes.shape({
       _id: PropTypes.string,
       description: PropTypes.string,
@@ -37,19 +36,6 @@ class ProductGridItem extends Component {
     });
   }
 
-  // get weight class name
-  get weightClass() {
-    const { weight } = this.props.position || { weight: 0 };
-    switch (weight) {
-      case 1:
-        return "product-medium";
-      case 2:
-        return "product-large";
-      default:
-        return "product-small";
-    }
-  }
-
   // get notice class names
   get noticeClassNames() {
     const { product: { isSoldOut, isLowQuantity, isBackorder } } = this.props;
@@ -58,16 +44,6 @@ class ProductGridItem extends Component {
       "variant-qty-sold-out": (isSoldOut || (isSoldOut && isBackorder)),
       "badge-danger": (isSoldOut && !isBackorder),
       "badge-low-inv-warning": (isLowQuantity && !isSoldOut)
-    });
-  }
-
-  // get product item class names
-  get productClassNames() {
-    const { position } = this.props;
-    return classnames({
-      "product-grid-item": true,
-      [this.weightClass]: true,
-      "pinned": position.pinned
     });
   }
 
@@ -121,32 +97,6 @@ class ProductGridItem extends Component {
     );
   }
 
-
-  renderAdditionalMedia() {
-    const { product: { media }, position: { weight } } = this.props;
-
-    // if product is not medium weight
-    // or the media array is empty exit
-    if (weight !== 1 || (!media || media.length === 0)) return null;
-
-    // creating an additional madia array with
-    // the 2nd, 3rd and 4th images returned
-    // in the media array
-    const additionalMedia = [...media.slice(1, 4)];
-
-    return (
-      <div className="product-additional-images">
-        {additionalMedia.map((img) => (
-          <span
-            key={img.URLs.small}
-            className="product-image"
-            style={{ backgroundImage: `url("${img.URLs.medium}")` }}
-          />
-        ))}
-      </div>
-    );
-  }
-
   renderGridContent() {
     const { product, shopCurrencyCode } = this.props;
     const pricing = product.pricing.find((price) => price.currency.code === shopCurrencyCode);
@@ -173,7 +123,7 @@ class ProductGridItem extends Component {
     const { product } = this.props;
     return (
       <li
-        className={this.productClassNames}
+        className="product-grid-item product-small"
         data-id={product._id}
         id={product._id}
       >
@@ -190,8 +140,6 @@ class ProductGridItem extends Component {
             <div className="product-primary-images">
               {this.renderMedia()}
             </div>
-
-            {this.renderAdditionalMedia()}
           </a>
 
           {this.renderNotices()}

@@ -48,8 +48,6 @@ Template.shippingSettings.events({
     if (packageId) {
       // update package registry
       Meteor.call("registry/update", packageId, settingsKey, fields);
-      // also update shipping provider status
-      Meteor.call("shipping/provider/toggle", packageId, settingsKey);
     }
   }
 });

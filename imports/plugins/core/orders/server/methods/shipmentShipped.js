@@ -1,10 +1,12 @@
 import Hooks from "@reactioncommerce/hooks";
 import Logger from "@reactioncommerce/logger";
+import ReactionError from "@reactioncommerce/reaction-error";
 import { Meteor } from "meteor/meteor";
 import { check } from "meteor/check";
 import { Orders } from "/lib/collections";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
-import ReactionError from "@reactioncommerce/reaction-error";
+import rawCollections from "/imports/collections/rawCollections";
+import createNotification from "/imports/plugins/included/notifications/server/no-meteor/createNotification";
 import sendOrderEmail from "../util/sendOrderEmail";
 
 /**
@@ -71,6 +73,15 @@ export default function shipmentShipped(order, fulfillmentGroup) {
     },
     { bypassCollection2: true }
   );
+
+  // send notification to order owner
+  const { accountId } = order;
+  const type = "orderShipped";
+  const prefix = Reaction.getShopPrefix();
+  const url = `${prefix}/notifications`;
+  createNotification(rawCollections, { accountId, type, url }).catch((error) => {
+    Logger.error("Error in createNotification within shipmentShipped", error);
+  });
 
   return {
     workflowResult,

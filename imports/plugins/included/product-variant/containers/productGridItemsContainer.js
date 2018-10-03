@@ -5,53 +5,15 @@ import { compose } from "recompose";
 import { registerComponent } from "@reactioncommerce/reaction-components";
 import { Session } from "meteor/session";
 import { Reaction } from "/client/api";
-import { ReactionProduct } from "/lib/api";
-import { SortableItem } from "/imports/plugins/core/ui/client/containers";
 import ProductGridItems from "../components/productGridItems";
 
 const wrapComponent = (Comp) => (
   class ProductGridItemsContainer extends Component {
     static propTypes = {
-      connectDragSource: PropTypes.func,
-      connectDropTarget: PropTypes.func,
       isSearch: PropTypes.bool,
       itemSelectHandler: PropTypes.func,
       product: PropTypes.object,
       unmountMe: PropTypes.func
-    }
-
-    componentDidMount() {
-      document.querySelector(".page > main").addEventListener("click", this.onPageClick);
-    }
-
-    componentWillUnmount() {
-      document.querySelector(".page > main").removeEventListener("click", this.onPageClick);
-    }
-
-    onPageClick = (event) => {
-      // Do nothing if we are in preview mode
-      if (Reaction.isPreview() === false) {
-        // Don't trigger the clear selection if we're clicking on a grid item.
-        if (event.target.closest(".product-grid-item") === null) {
-          const selectedProducts = Session.get("productGrid/selectedProducts");
-
-          // Do we have any selected products?
-          // If we do then lets reset the Grid Settings ActionView
-          if (Array.isArray(selectedProducts) && selectedProducts.length) {
-            // Reset sessions ver of selected products
-            Session.set("productGrid/selectedProducts", []);
-
-            // Reset the action view of selected products
-            Reaction.setActionView({
-              label: "Grid Settings",
-              i18nKeyLabel: "gridSettingsPanel.title",
-              template: "productSettings",
-              type: "product",
-              data: {}
-            });
-          }
-        }
-      }
     }
 
     productPath = () => {
@@ -72,36 +34,11 @@ const wrapComponent = (Comp) => (
       return "/";
     }
 
-    positions = () => {
-      const tagId = ReactionProduct.getTagIdForPosition();
-      return (this.props.product.positions && this.props.product.positions[tagId]) || {};
-    }
-
-    weightClass = () => {
-      const positions = this.positions();
-      const weight = positions.weight || 0;
-      switch (weight) {
-        case 1:
-          return "product-medium";
-        case 2:
-          return "product-large";
-        default:
-          return "product-small";
-      }
-    }
-
     isSelected = () => {
       if (Reaction.isPreview() === false) {
         return _.includes(Session.get("productGrid/selectedProducts"), this.props.product._id) ? "active" : "";
       }
       return false;
-    }
-
-    isMediumWeight = () => {
-      const positions = this.positions();
-      const weight = positions.weight || 0;
-
-      return weight === 1;
     }
 
     displayPrice = () => {
@@ -213,10 +150,7 @@ const wrapComponent = (Comp) => (
         <Comp
           product={this.props.product}
           pdpPath={this.productPath}
-          positions={this.positions}
-          weightClass={this.weightClass}
           isSelected={this.isSelected}
-          isMediumWeight={this.isMediumWeight}
           displayPrice={this.displayPrice}
           onDoubleClick={this.onDoubleClick}
           onClick={this.onClick}
@@ -228,11 +162,7 @@ const wrapComponent = (Comp) => (
 );
 
 registerComponent("ProductGridItems", ProductGridItems, [
-  SortableItem("productGridItem"),
   wrapComponent
 ]);
 
-export default compose(
-  SortableItem("productGridItem"),
-  wrapComponent
-)(ProductGridItems);
+export default compose(wrapComponent)(ProductGridItems);

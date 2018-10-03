@@ -7,13 +7,11 @@ import { encodeOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/id";
  * @summary Converts an internal ID to a Node ID for use in GraphQL. This is a temporary bridge
  *   between older Meteor publications that publish internal IDs to clients and newer GraphQL
  *   queries where the client only ever sees the globally unique and opaque ID.
- * @param {String} namespace - The namespace for making the ID unique
- * @param {String} id - The ID
- * @return {String} - The opaque ID
+ * @param {Object[]} input - Array of objects with id and namespace props
+ * @return {String[]} - Array of opaque IDs
  */
-export default function getOpaqueIdFromInternalId(namespace, id) {
-  check(namespace, String);
-  check(id, String);
+export default function getOpaqueIdFromInternalId(input) {
+  check(input, Array);
 
-  return encodeOpaqueId(namespaces[namespace], id);
+  return input.map(({ id, namespace }) => encodeOpaqueId(namespaces[namespace], id));
 }

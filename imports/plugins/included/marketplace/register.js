@@ -1,10 +1,16 @@
 import Reaction from "/imports/plugins/core/core/server/Reaction";
+import resolvers from "./server/no-meteor/resolvers";
+import schemas from "./server/no-meteor/schemas";
 
 Reaction.registerPackage({
   label: "Marketplace",
   name: "reaction-marketplace",
   icon: "fa fa-globe",
   autoEnable: false,
+  graphQL: {
+    resolvers,
+    schemas
+  },
   settings: {
     name: "Marketplace",
     enabled: true,

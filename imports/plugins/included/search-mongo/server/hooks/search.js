@@ -2,13 +2,14 @@ import Hooks from "@reactioncommerce/hooks";
 import Logger from "@reactioncommerce/logger";
 import _ from "lodash";
 import { Meteor } from "meteor/meteor";
-import { Products, ProductSearch, OrderSearch, AccountSearch } from "/lib/collections";
+import { Products, ProductSearch, AccountSearch } from "/lib/collections";
+import rawCollections from "/imports/collections/rawCollections";
 import {
   getSearchParameters,
   buildAccountSearchRecord,
-  buildOrderSearchRecord,
   buildProductSearchRecord
 } from "../methods/searchcollections";
+import buildOrderSearchRecord from "../no-meteor/util/buildOrderSearchRecord";
 
 Hooks.Events.add("afterAccountsInsert", (userId, accountId) => {
   if (AccountSearch && !Meteor.isAppTest) {
@@ -42,20 +43,9 @@ Hooks.Events.add("afterAccountsUpdate", (userId, updateData) => {
 //   }
 // });
 
-Hooks.Events.add("afterOrderInsert", (doc) => {
-  if (OrderSearch && !Meteor.isAppTest) {
-    const orderId = doc._id;
-    buildOrderSearchRecord(orderId);
-  }
-
-  return doc;
-});
-
 Hooks.Events.add("afterUpdateOrderUpdateSearchRecord", (order) => {
-  if (OrderSearch && !Meteor.isAppTest) {
-    const orderId = order._id;
-    OrderSearch.remove(orderId);
-    buildOrderSearchRecord(orderId);
+  if (!Meteor.isAppTest) {
+    Promise.await(buildOrderSearchRecord(rawCollections, order));
   }
 });
 

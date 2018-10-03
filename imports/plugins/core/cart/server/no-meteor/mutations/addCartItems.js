@@ -1,6 +1,6 @@
 import ReactionError from "@reactioncommerce/reaction-error";
 import { Cart as CartSchema } from "/imports/collections/schemas";
-import hashLoginToken from "/imports/plugins/core/accounts/server/no-meteor/util/hashLoginToken";
+import hashLoginToken from "/imports/node-app/core/util/hashLoginToken";
 import addCartItemsUtil from "../util/addCartItems";
 
 /**
@@ -55,18 +55,15 @@ export default async function addCartItems(context, input, options = {}) {
   };
   CartSchema.validate(modifier, { modifier: true });
 
-  const { modifiedCount } = await Cart.updateOne({
-    _id: cart._id
-  }, modifier);
-
-  if (modifiedCount !== 1) throw new ReactionError("server-error", "Unable to update cart");
+  const { matchedCount } = await Cart.updateOne({ _id: cart._id }, modifier);
+  if (matchedCount !== 1) throw new ReactionError("server-error", "Unable to update cart");
 
   const updatedCart = {
     ...cart,
     items: updatedItemList,
     updatedAt
   };
-  await appEvents.emit("afterCartUpdate", cart._id, updatedCart);
+  await appEvents.emit("afterCartUpdate", updatedCart);
 
   return { cart: updatedCart, incorrectPriceFailures, minOrderQuantityFailures };
 }

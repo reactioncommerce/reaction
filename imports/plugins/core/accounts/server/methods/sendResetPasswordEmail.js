@@ -9,6 +9,10 @@ import { Shops } from "/lib/collections";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
 import ReactionError from "@reactioncommerce/reaction-error";
 
+Accounts.urls.resetPassword = function reset(token) {
+  return Meteor.absoluteUrl(`reset-password/${token}`);
+};
+
 /**
  * @method sendResetEmail
  * @memberof Core

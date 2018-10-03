@@ -18,17 +18,17 @@ export default function makeAdjustmentsToInvoice(order) {
     throw new ReactionError("access-denied", "Access Denied");
   }
 
-  this.unblock(); // REVIEW: Why unblock here?
+  this.unblock();
 
   return Orders.update(
     {
       "_id": order._id,
-      "billing.shopId": Reaction.getShopId(),
-      "billing.paymentMethod.method": "credit"
+      "shipping.shopId": Reaction.getShopId(),
+      "shipping.payment.method": "credit"
     },
     {
       $set: {
-        "billing.$.paymentMethod.status": "adjustments"
+        "shipping.$.payment.status": "adjustments"
       }
     }
   );

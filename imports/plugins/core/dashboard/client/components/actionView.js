@@ -2,16 +2,13 @@ import React, { Component } from "react";
 import { compose } from "recompose";
 import PropTypes from "prop-types";
 import classnames from "classnames";
-import { getComponent, withCSSTransitionGroup } from "@reactioncommerce/reaction-components";
+import { getComponent, withCSSTransition } from "@reactioncommerce/reaction-components";
 import Blaze from "meteor/gadicc:blaze-react-component";
+import { EJSON } from "meteor/ejson";
 import { Admin } from "/imports/plugins/core/ui/client/providers";
 import Radium from "radium";
 import debounce from "lodash/debounce";
-import {
-  IconButton,
-  Translation,
-  Overlay
-} from "/imports/plugins/core/ui/client/components";
+import { IconButton, Translation, Overlay } from "/imports/plugins/core/ui/client/components";
 
 const getStyles = (props) => {
   const minWidth = Math.min(props.viewportWidth, 400);
@@ -21,8 +18,9 @@ const getStyles = (props) => {
   const provides = actionView.provides || [];
   // legacy provides could be a string, is an array since 1.5.0, check for either.
   // prototype.includes has the fortunate side affect of checking string equality as well as array inclusion.
-  const isBigView = provides.includes("dashboard") ||
-                    (provides.includes("shortcut") && actionView.container === "dashboard");
+  const isBigView =
+    provides.includes("dashboard") || (provides.includes("shortcut") && actionView.container === "dashboard");
+
   if (isBigView) {
     viewSize = "90vw";
     viewMaxSize = "100%";
@@ -45,10 +43,6 @@ const getStyles = (props) => {
       viewSize = "90vw";
       viewMaxSize = "90vw";
     }
-  }
-
-  if (props.actionViewIsOpen === false) {
-    viewSize = 400;
   }
 
   return {
@@ -99,9 +93,11 @@ const getStyles = (props) => {
       "flexDirection": "column",
       "flex": "1 1 auto",
       "maxWidth": viewMaxSize,
+      "@media only screen and (max-width: 1420px)": {
+        minWidth: "55vw"
+      },
       "@media only screen and (max-width: 949px)": {
-        width: "100vw",
-        maxWidth: "100%"
+        width: "100vw"
       }
     },
     masterView: {
@@ -118,11 +114,15 @@ const getStyles = (props) => {
       "height": "100vh",
       "backgroundColor": "white",
       "borderRight": "1px solid #ccc",
-      "@media only screen and (max-width: 949px)": {
+      "width": "24vw",
+      "@media only screen and (max-width: 1420px)": {
+        width: "35vw"
+      },
+      "@media only screen and (max-width: 1024px)": {
         position: "absolute",
         top: 0,
         right: 0,
-        width: "96vw",
+        width: "100vw",
         zIndex: 1050
       }
     },
@@ -142,7 +142,7 @@ const getStyles = (props) => {
 
 class ActionView extends Component {
   static propTypes = {
-    CSSTransitionGroup: PropTypes.func,
+    CSSTransition: PropTypes.func,
     actionView: PropTypes.object,
     actionViewIsOpen: PropTypes.bool, // eslint-disable-line react/boolean-prop-naming
     buttons: PropTypes.array,
@@ -156,6 +156,21 @@ class ActionView extends Component {
     isDetailViewAtRootView: PropTypes.bool,
     language: PropTypes.string,
     viewportWidth: PropTypes.number
+  };
+
+  static getDerivedStateFromProps(props) {
+    const { actionView, detailView, prevProps = {} } = props;
+
+    const stateUpdates = { prevProps: props };
+
+    if (!EJSON.equals(actionView, prevProps.actionView)) {
+      stateUpdates.actionView = actionView;
+    }
+    if (!EJSON.equals(detailView, prevProps.detailView)) {
+      stateUpdates.detailView = detailView;
+    }
+
+    return stateUpdates;
   }
 
   constructor(props) {
@@ -163,16 +178,8 @@ class ActionView extends Component {
 
     this.state = {
       isMobile: this.isMobile,
-      enterAnimationForDetailView: {
-        animation: { width: 400 },
-        duration: 200,
-        easing: "easeInOutQuad"
-      },
-      leaveAnimationForDetailView: {
-        animation: { width: 0 },
-        duration: 200,
-        easing: "easeInOutQuad"
-      }
+      actionView: {},
+      detailView: null
     };
 
     this.handleResize = debounce(() => {
@@ -197,23 +204,21 @@ class ActionView extends Component {
   }
 
   renderControlComponent() {
-    if (this.props.actionView && typeof this.props.actionView.template === "string") {
+    const { actionView } = this.state;
+    if (actionView && typeof actionView.template === "string") {
       // Render a react component if one has been registered by name
       try {
-        const component = getComponent(this.props.actionView.template);
+        const component = getComponent(actionView.template);
 
         return (
           <div style={this.styles.masterView} className="master">
-            {React.createElement(component, this.props.actionView.data)}
+            {React.createElement(component, actionView.data)}
           </div>
         );
       } catch (error) {
         return (
           <div style={this.styles.masterView} className="master">
-            <Blaze
-              {...this.props.actionView.data}
-              template={this.props.actionView.template}
-            />
+            <Blaze {...actionView.data} template={actionView.template} />
           </div>
         );
       }
@@ -223,13 +228,11 @@ class ActionView extends Component {
   }
 
   renderDetailComponent() {
-    if (this.props.detailView && typeof this.props.detailView.template === "string") {
+    const { detailView } = this.state;
+    if (detailView && typeof detailView.template === "string") {
       return (
         <div style={this.styles.detailView} className="detail">
-          <Blaze
-            {...this.props.detailView.data}
-            template={this.props.detailView.template}
-          />
+          <Blaze {...detailView.data} template={detailView.template} />
         </div>
       );
     }
@@ -249,28 +252,14 @@ class ActionView extends Component {
     let button;
 
     if (this.props.isActionViewAtRootView === false) {
-      button = (
-        <IconButton
-          bezelStyle={"flat"}
-          icon="fa fa-arrow-left"
-          onClick={this.props.handleActionViewBack}
-        />
-      );
+      button = <IconButton bezelStyle={"flat"} icon="fa fa-arrow-left" onClick={this.props.handleActionViewBack} />;
     } else {
-      button = (
-        <IconButton
-          bezelStyle={"flat"}
-          icon="fa fa-times"
-          onClick={this.props.handleActionViewClose}
-        />
-      );
+      button = <IconButton bezelStyle={"flat"} icon="fa fa-times" onClick={this.props.handleActionViewClose} />;
     }
 
     return (
       <div style={this.styles.backButton}>
-        <div style={this.styles.backButtonContainers}>
-          {button}
-        </div>
+        <div style={this.styles.backButtonContainers}>{button}</div>
       </div>
     );
   }
@@ -280,9 +269,10 @@ class ActionView extends Component {
   }
 
   get actionViewIsLargeSize() {
-    const { meta } = this.props.actionView;
+    const { actionView } = this.props;
+    const { meta } = actionView;
     const dashboardSize = (meta && meta.actionView && meta.actionView.dashboardSize) || "sm";
-    const includesDashboard = this.props.actionView.provides && this.props.actionView.provides.includes("dashboard");
+    const includesDashboard = actionView.provides && actionView.provides.includes("dashboard");
 
     return includesDashboard || dashboardSize !== "sm";
   }
@@ -304,23 +294,13 @@ class ActionView extends Component {
       return (
         <div style={this.styles.backButton}>
           <div style={this.styles.backButtonContainers}>
-            <IconButton
-              bezelStyle={"flat"}
-              icon="fa fa-arrow-left"
-              onClick={this.props.handleActionViewDetailBack}
-            />
+            <IconButton bezelStyle={"flat"} icon="fa fa-arrow-left" onClick={this.props.handleActionViewDetailBack} />
           </div>
         </div>
       );
     }
 
-    return (
-      <IconButton
-        bezelStyle={"flat"}
-        icon="fa fa-times"
-        onClick={this.props.handleActionViewDetailClose}
-      />
-    );
+    return <IconButton bezelStyle={"flat"} icon="fa fa-times" onClick={this.props.handleActionViewDetailClose} />;
   }
 
   get styles() {
@@ -343,17 +323,12 @@ class ActionView extends Component {
             </h3>
           </div>
 
-          <div className="controls»">
-            {/* Controls */}
-          </div>
+          <div className="controls»">{/* Controls */}</div>
         </div>
         <div style={this.styles.body} className="admin-controls-content action-view-body">
-
           {this.renderControlComponent()}
-
         </div>
       </div>
-
     );
   }
 
@@ -367,39 +342,29 @@ class ActionView extends Component {
       "action-view-detail": true
     });
 
-    if (this.props.detailViewIsOpen) {
-      return (
-        <div className={baseClassName} style={this.styles.detailViewPanel} key="detail-view">
-          <div style={this.styles.header} className="header">
-            {this.renderDetailViewBackButton()}
+    return (
+      <div className={baseClassName} style={this.styles.detailViewPanel} key="detail-view">
+        <div style={this.styles.header} className="header">
+          {this.renderDetailViewBackButton()}
 
-            <div style={this.styles.heading} className="heading">
-              <h3 className="title" style={this.styles.title}>
-                <Translation
-                  defaultValue={actionView.label}
-                  i18nKey={actionView.i18nKeyLabel}
-                />
-              </h3>
-            </div>
-
-            <div className="controls">
-              {/* Controls */}
-            </div>
+          <div style={this.styles.heading} className="heading">
+            <h3 className="title" style={this.styles.title}>
+              <Translation defaultValue={actionView.label} i18nKey={actionView.i18nKeyLabel} />
+            </h3>
           </div>
-          <div style={this.styles.body} className="admin-controls-content action-view-body">
 
-            {/* this.renderControlComponent() */}
-            {this.renderDetailComponent()}
-          </div>
+          <div className="controls">{/* Controls */}</div>
         </div>
-      );
-    }
-
-    return null;
+        <div style={this.styles.body} className="admin-controls-content action-view-body">
+          {/* this.renderControlComponent() */}
+          {this.renderDetailComponent()}
+        </div>
+      </div>
+    );
   }
 
   renderActionView() {
-    const { CSSTransitionGroup } = this.props;
+    const { CSSTransition, detailView } = this.props;
 
     const baseClassName = classnames({
       "rui": true,
@@ -409,64 +374,53 @@ class ActionView extends Component {
       "open": this.props.actionViewIsOpen
     });
 
-    if (this.props.actionViewIsOpen) {
-      const isRtl = document.querySelector("html").className === "rtl";
+    const isRtl = document.querySelector("html").className === "rtl";
 
-      return (
-        <div style={this.styles.base} className={baseClassName} role="complementary" key="action-view">
+    return (
+      <div style={this.styles.base} className={baseClassName} role="complementary" key="action-view">
+        {this.renderMasterView()}
+        <Overlay isVisible={this.showDetailViewOverlay} onClick={this.props.handleActionViewDetailClose} />
+        <CSSTransition
+          in={this.props.detailViewIsOpen}
+          unmountOnExit
+          classNames={`slide-in-out${(isRtl && "-rtl") || ""}`}
+          timeout={200}
+          onEnter={() => this.setState({ detailView })}
+          onExited={() => this.setState({ detailView })}
+        >
+          {this.renderDetailView()}
+        </CSSTransition>
 
-          {this.renderMasterView()}
-          <Overlay
-            isVisible={this.showDetailViewOverlay}
-            onClick={this.props.handleActionViewDetailClose}
-          />
-          <CSSTransitionGroup
-            transitionName={`slide-in-out${(isRtl && "-rtl") || ""}`}
-            transitionEnterTimeout={200}
-            transitionLeaveTimeout={200}
-          >
-            {this.renderDetailView()}
-          </CSSTransitionGroup>
-
-
-          <div className="admin-controls-footer">
-            <div className="admin-controls-container">
-              {this.renderFooter()}
-            </div>
-          </div>
+        <div className="admin-controls-footer">
+          <div className="admin-controls-container">{this.renderFooter()}</div>
         </div>
-      );
-    }
-
-    return null;
+      </div>
+    );
   }
 
   render() {
-    const { CSSTransitionGroup } = this.props;
-    if (CSSTransitionGroup === undefined) {
+    const { CSSTransition, actionView } = this.props;
+    if (CSSTransition === undefined) {
       return null;
     }
 
     const isRtl = document.querySelector("html").className === "rtl";
     return (
       <div>
-        <CSSTransitionGroup
-          transitionName={`slide-in-out${(isRtl && "-rtl") || ""}`}
-          transitionEnterTimeout={200}
-          transitionLeaveTimeout={200}
+        <CSSTransition
+          in={this.props.actionViewIsOpen}
+          unmountOnExit
+          classNames={`slide-in-out${(isRtl && "-rtl") || ""}`}
+          timeout={200}
+          onEnter={() => this.setState({ actionView })}
+          onExited={() => this.setState({ actionView })}
         >
           {this.renderActionView()}
-        </CSSTransitionGroup>
-        <Overlay
-          isVisible={this.showOverlay}
-          onClick={this.props.handleActionViewClose}
-        />
+        </CSSTransition>
+        <Overlay isVisible={this.showOverlay} onClick={this.props.handleActionViewClose} />
       </div>
     );
   }
 }
 
-export default Admin()(compose(
-  withCSSTransitionGroup,
-  Radium
-)(ActionView));
+export default Admin()(compose(withCSSTransition, Radium)(ActionView));
