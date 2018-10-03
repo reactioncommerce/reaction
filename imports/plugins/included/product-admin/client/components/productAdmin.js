@@ -3,7 +3,6 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import Alert from "sweetalert2";
 import { Components } from "@reactioncommerce/reaction-components";
-import Checkbox from "@reactioncommerce/components/Checkbox/v1";
 import { i18next, Router } from "/client/api";
 import update from "immutability-helper";
 import { highlightInput } from "/imports/plugins/core/ui/client/helpers/animations";
@@ -148,14 +147,16 @@ class ProductAdmin extends Component {
     }
   }
 
-  handleSitemapCheckboxChange = (shouldAppearInSitemap) => {
-    if (shouldAppearInSitemap === this.product.shouldAppearInSitemap) {
+  handleSitemapCheckboxChange = (event) => {
+    const { checked: isChecked } = event.target;
+    const { shouldAppearInSitemap } = this.product;
+    if (typeof shouldAppearInSitemap === "undefined" || isChecked === shouldAppearInSitemap) {
       // onChange for checkbox runs when field is first displayed
       return;
     }
 
     if (this.props.onProductFieldSave) {
-      this.props.onProductFieldSave(this.product._id, "shouldAppearInSitemap", shouldAppearInSitemap);
+      this.props.onProductFieldSave(this.product._id, "shouldAppearInSitemap", isChecked);
     }
 
     const { isVisible, isDeleted } = this.product;
@@ -167,8 +168,8 @@ class ProductAdmin extends Component {
         showCancelButton: true,
         cancelButtonText: i18next.t("productDetailEdit.regenerateSitemapNo", { defaultValue: "No, don't regenerate" }),
         confirmButtonText: i18next.t("productDetailEdit.regenerateSitemapYes", { defaultValue: "Yes, regenerate" })
-      }).then(({ isYes }) => {
-        if (isYes) {
+      }).then(({ value }) => {
+        if (value) {
           this.props.generateSitemaps();
           Alerts.toast(i18next.t("shopSettings.sitemapRefreshInitiated", {
             defaultValue: "Refreshing the sitemap can take up to 5 minutes. You will be notified when it is completed."
@@ -349,12 +350,15 @@ class ProductAdmin extends Component {
               options={this.props.countries}
             />
             {this.product && (
-              <Checkbox
-                label={i18next.t("productDetailEdit.shouldAppearInSitemap", { defaultValue: "Include in sitemap?" })}
-                name="shouldAppearInSitemap"
-                value={this.product.shouldAppearInSitemap}
-                onChange={this.handleSitemapCheckboxChange}
-              />
+              <div className="checkbox">
+                <Components.Checkbox
+                  i18nKeyLabel="productDetailEdit.shouldAppearInSitemap"
+                  label="Include in sitemap?"
+                  name="shouldAppearInSitemap"
+                  onChange={this.handleSitemapCheckboxChange}
+                  checked={this.product.shouldAppearInSitemap}
+                />
+              </div>
             )}
           </Components.CardBody>
         </Components.Card>
