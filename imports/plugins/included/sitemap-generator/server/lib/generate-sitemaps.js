@@ -195,7 +195,8 @@ function getProductSitemapItems(shopId) {
     shopId,
     type: "simple",
     isVisible: true,
-    isDeleted: false
+    isDeleted: false,
+    shouldAppearInSitemap: true
   }, { fields: { handle: 1, updatedAt: 1 } }).map((product) => {
     const { handle, updatedAt } = product;
     return {
