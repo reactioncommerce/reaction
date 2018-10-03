@@ -5,7 +5,7 @@ import { connectionFromArray } from "graphql-relay";
  * @method
  * @memberof GraphQL/Transforms
  * @param {Object} connectionArgs GraphQL connection arguments
- * @param {Array|<Promise>Array} results The array of results
+ * @param {Array|Promise<Array>} results The array of results
  * @return {Object} A connection shaped object of the results array
  */
 export async function xformArrayToConnection(connectionArgs, results) {
