@@ -91,7 +91,8 @@
     "lodash.pick": "^4.4.0",
     "match-sorter": "^2.2.0",
     "meteor-node-stubs": "0.4.1",
-    "mobx": "5.0.4",
+    "mobx": "5.5.0",
+    "mobx-react": "^5.2.8",
     "moment": "^2.20.1",
     "moment-timezone": "^0.5.14",
     "mongodb": "^3.0.5",
@@ -215,9 +216,15 @@
   "babel": {
     "plugins": [
       [
+        "@babel/plugin-proposal-decorators",
+        {
+          "legacy": true
+        }
+      ],
+      [
         "@babel/plugin-proposal-class-properties",
         {
-          "loose": false
+          "loose": true
         }
       ],
       [
