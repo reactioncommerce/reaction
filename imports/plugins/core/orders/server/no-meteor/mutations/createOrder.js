@@ -245,7 +245,7 @@ export default async function createOrder(context, input) {
   const { discounts, total: discountTotal } = await getDiscountsTotalForCart(context, cartId);
 
   // Add more props to each fulfillment group, and validate/build the items in each group
-  const finalFulfillmentGroups = await Promise.all(fulfillmentGroups.map(async (groupInput, index) => {
+  const finalFulfillmentGroups = await Promise.all(fulfillmentGroups.map(async (groupInput) => {
     const finalGroup = {
       _id: Random.id(),
       address: groupInput.data ? getShippingAddressWithId(groupInput.data.shippingAddress, groupInput.data.shippingAddressId) : null,
