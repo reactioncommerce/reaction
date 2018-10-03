@@ -2,10 +2,12 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Meteor } from "meteor/meteor";
 import { i18next } from "/client/api";
+import withGenerateSitemaps from "../hocs/withGenerateSitemaps";
 import SitemapSettings from "../components/sitemap-settings";
 
 class SitemapSettingsContainer extends Component {
   static propTypes = {
+    generateSitemaps: PropTypes.func.isRequired,
     packageData: PropTypes.object
   };
 
@@ -27,17 +29,10 @@ class SitemapSettingsContainer extends Component {
   };
 
   handleGenerateClick = () => {
-    Meteor.call("sitemaps/generate", (error) => {
-      if (error) {
-        Alerts.toast(`${i18next.t("shopSettings.sitemapRefreshFailed", {
-          defaultValue: "Sitemap refresh failed"
-        })}: ${error}`, "error");
-      } else {
-        Alerts.toast(i18next.t("shopSettings.sitemapRefreshInitiated", {
-          defaultValue: "Refreshing the sitemap can take up to 5 minutes. You will be notified when it is completed."
-        }), "success");
-      }
-    });
+    this.props.generateSitemaps();
+    Alerts.toast(i18next.t("shopSettings.sitemapRefreshInitiated", {
+      defaultValue: "Refreshing the sitemap can take up to 5 minutes. You will be notified when it is completed."
+    }), "success");
   };
 
   render() {
@@ -52,4 +47,4 @@ class SitemapSettingsContainer extends Component {
   }
 }
 
-export default SitemapSettingsContainer;
+export default withGenerateSitemaps(SitemapSettingsContainer);
