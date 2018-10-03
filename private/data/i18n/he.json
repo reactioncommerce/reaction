@@ -32,7 +32,8 @@
           "dashboard": "לוח המחוונים",
           "misc": "שונות",
           "paymentMethod": "ספקי תשלום",
-          "utilities": "תכניות שירות"
+          "utilities": "תכניות שירות",
+          "addUserSuccess":"המשתמש נוסף בהצלחה"
         },
         "settings": {
           "accountSettingsLabel": "הגדרות חשבון",

@@ -35,7 +35,8 @@
           "dashboard": "Instrumentbräda",
           "misc": "misc",
           "paymentMethod": "betalnings~~POS=TRUNC",
-          "utilities": "verktyg"
+          "utilities": "verktyg",
+          "addUserSuccess":"Användaren har lagts till"
         },
         "settings": {
           "accountSettingsLabel": "Kontoinställningar",

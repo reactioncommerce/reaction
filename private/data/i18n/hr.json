@@ -35,7 +35,8 @@
           "dashboard": "kontrolna ploča",
           "misc": "Razno",
           "paymentMethod": "Pružatelji usluga plaćanja",
-          "utilities": "komunalne usluge"
+          "utilities": "komunalne usluge",
+          "addUserSuccess":"Korisnik je uspješno dodan"
         },
         "settings": {
           "accountSettingsLabel": "Postavke računa",

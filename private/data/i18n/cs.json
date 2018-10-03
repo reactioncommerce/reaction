@@ -35,7 +35,8 @@
           "dashboard": "přístrojová deska",
           "misc": "Různé",
           "paymentMethod": "Platební Poskytovatelé",
-          "utilities": "Utility"
+          "utilities": "Utility",
+          "addUserSuccess":"Uživatel byl úspěšně přidán"
         },
         "settings": {
           "accountSettingsLabel": "Nastavení účtu",

@@ -35,7 +35,8 @@
           "dashboard": "Dashboard",
           "misc": "Misc",
           "paymentMethod": "betaling Providers",
-          "utilities": "nutsbedrijven"
+          "utilities": "nutsbedrijven",
+          "addUserSuccess":"Gebruiker is succesvol toegevoegd"
         },
         "settings": {
           "accountSettingsLabel": "Account instellingen",

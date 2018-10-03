@@ -35,7 +35,8 @@
           "dashboard": "Панель управления",
           "misc": "Разное",
           "paymentMethod": "Платёжные системы",
-          "utilities": "Утилиты"
+          "utilities": "Утилиты",
+          "addUserSuccess":"Пользователь успешно добавлен"
         },
         "settings": {
           "accountSettingsLabel": "Настройки учетных записей",

@@ -35,7 +35,8 @@
           "dashboard": "Dashboard",
           "misc": "Varie",
           "paymentMethod": "Metodi di pagamento",
-          "utilities": "Utilità"
+          "utilities": "Utilità",
+          "addUserSuccess":"L'utente è stato aggiunto con success"
         },
         "settings": {
           "accountSettingsLabel": "Impostazioni dell 'account",

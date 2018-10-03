@@ -35,7 +35,8 @@
           "dashboard": "Painel de controlo",
           "misc": "Vários",
           "paymentMethod": "Fornecedores de pagamento",
-          "utilities": "Utilitários"
+          "utilities": "Utilitários",
+          "addUserSuccess":"Usuário foi adicionado com sucesso"
         },
         "settings": {
           "accountSettingsLabel": "Definições da conta",

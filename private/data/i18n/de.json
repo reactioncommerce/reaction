@@ -35,7 +35,8 @@
           "dashboard": "Dashboard",
           "misc": "Verschiedenes",
           "paymentMethod": "Zahlungs-Anbieter",
-          "utilities": "Dienstprogramme"
+          "utilities": "Dienstprogramme",
+          "addUserSuccess":"Gebruiker is succesvol toegevoegd"
         },
         "settings": {
           "accountSettingsLabel": "Kontoeinstellungen",

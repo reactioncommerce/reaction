@@ -35,7 +35,8 @@
           "dashboard": "Tableau de bord",
           "misc": "Divers",
           "paymentMethod": "Prestataires de paiement",
-          "utilities": "Services"
+          "utilities": "Services",
+          "addUserSuccess":"L'utilisateur a été ajouté avec succès"
         },
         "settings": {
           "accountSettingsLabel": "Comptes externes",

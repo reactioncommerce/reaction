@@ -35,7 +35,8 @@
           "dashboard": "Dashboard",
           "misc": "Misc",
           "paymentMethod": "Payment Providers",
-          "utilities": "Utilities"
+          "utilities": "Utilities",
+          "addUserSuccess":"User was added successfully"
         },
         "settings": {
           "accountSettingsLabel": "Login services",
