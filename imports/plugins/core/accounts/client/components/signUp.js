@@ -7,6 +7,7 @@ class SignUp extends Component {
   static propTypes = {
     credentials: PropTypes.object,
     hasPasswordService: PropTypes.func,
+    hasSwitchLinks: PropTypes.bool,
     isLoading: PropTypes.bool,
     loginFormMessages: PropTypes.func,
     messages: PropTypes.object,
@@ -14,6 +15,10 @@ class SignUp extends Component {
     onFormSubmit: PropTypes.func,
     onSignInClick: PropTypes.func,
     uniqueId: PropTypes.string
+  }
+
+  static defaultProps = {
+    hasSwitchLinks: true
   }
 
   constructor(props) {
@@ -137,19 +142,21 @@ class SignUp extends Component {
             {this.renderSpinnerOnWait()}
           </div>
 
-          <div className="form-group">
-            <Components.Button
-              tagName="span"
-              className={{
-                "btn": false,
-                "btn-default": false
-              }}
-              label="Sign In"
-              i18nKeyLabel="accountsUI.signIn"
-              data-event-category="accounts"
-              onClick={this.props.onSignInClick}
-            />
-          </div>
+          {this.props.hasSwitchLinks &&
+            <div className="form-group">
+              <Components.Button
+                tagName="span"
+                className={{
+                  "btn": false,
+                  "btn-default": false
+                }}
+                label="Sign In"
+                i18nKeyLabel="accountsUI.signIn"
+                data-event-category="accounts"
+                onClick={this.props.onSignInClick}
+              />
+            </div>
+          }
         </form>
       );
     }
