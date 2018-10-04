@@ -10,8 +10,7 @@ import { Roles } from "meteor/alanning:roles";
 import { EJSON } from "meteor/ejson";
 import * as Collections from "/lib/collections";
 import ConnectionDataStore from "/imports/plugins/core/core/server/util/connectionDataStore";
-import { mutations, queries, resolvers, schemas, functionsByType } from "../no-meteor/pluginRegistration";
-import paymentMethods from "/imports/plugins/core/payments/server/util/paymentMethods";
+import { functionsByType, mutations, paymentMethods, queries, resolvers, schemas } from "../no-meteor/pluginRegistration";
 import createGroups from "./createGroups";
 import processJobs from "./processJobs";
 import sendVerificationEmail from "./sendVerificationEmail";
@@ -63,7 +62,6 @@ export default {
       this.createDefaultAdminUser();
     }
     this.setAppVersion();
-    this.setAvailablePaymentMethods();
     // hook after init finished
     Hooks.Events.run("afterCoreInit");
 
@@ -97,6 +95,11 @@ export default {
         }
         functionsByType[type].push(...packageInfo.functionsByType[type]);
       });
+    }
+    if (packageInfo.paymentMethods) {
+      for (const paymentMethod of packageInfo.paymentMethods) {
+        paymentMethods.add(paymentMethod);
+      }
     }
 
     // Save the package info
@@ -1125,35 +1128,6 @@ export default {
     const { version } = packageJson;
     Logger.info(`Reaction Version: ${version}`);
     Shops.update({}, { $set: { appVersion: version } }, { multi: true });
-  },
-
-  /**
-   * @name setAvailablePaymentMethods
-   * @method
-   * @memberof Core
-   * @return {undefined} no return value
-   */
-  setAvailablePaymentMethods() {
-    Logger.info("Setting available payment methods.");
-    const shop = Shops.findOne({ _id: this.getShopId() });
-    if (!Array.isArray(shop.availablePaymentMethods)) shop.availablePaymentMethods = [];
-
-    // Update shop with available payment methods
-    const availablePaymentMethods = new Set(shop.availablePaymentMethods);
-    for (const packageName of Object.keys(this.Packages)) {
-      const pkg = this.Packages[packageName];
-      if (Array.isArray(pkg.paymentMethods)) {
-        for (const { name } of pkg.paymentMethods) {
-          availablePaymentMethods.add(name);
-          paymentMethods.add(name);
-        }
-      }
-    }
-    shop.availablePaymentMethods = Array.from(availablePaymentMethods);
-
-    Shops.update({}, {
-      $set: { availablePaymentMethods: shop.availablePaymentMethods }
-    }, { multi: true });
   },
 
   /**
