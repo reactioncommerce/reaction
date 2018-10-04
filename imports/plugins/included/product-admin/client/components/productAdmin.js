@@ -163,11 +163,11 @@ class ProductAdmin extends Component {
     if (isVisible && !isDeleted) {
       // If product is published, ask whether to regenerate sitemap
       Alert({
-        title: i18next.t("productDetailEdit.regenerateSitemap", { defaultValue: "Regenerate sitemap now?" }),
+        title: i18next.t("productDetailEdit.refreshSitemap", { defaultValue: "Refresh sitemap now?" }),
         type: "warning",
         showCancelButton: true,
-        cancelButtonText: i18next.t("productDetailEdit.regenerateSitemapNo", { defaultValue: "No, don't regenerate" }),
-        confirmButtonText: i18next.t("productDetailEdit.regenerateSitemapYes", { defaultValue: "Yes, regenerate" })
+        cancelButtonText: i18next.t("productDetailEdit.refreshSitemapNo", { defaultValue: "No, don't refresh" }),
+        confirmButtonText: i18next.t("productDetailEdit.refreshSitemapYes", { defaultValue: "Yes, refresh" })
       })
         .then(({ value }) => {
           if (value) {
