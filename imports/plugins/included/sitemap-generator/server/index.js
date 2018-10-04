@@ -3,7 +3,6 @@ import { WebApp } from "meteor/webapp";
 import { Sitemaps } from "../lib/collections/sitemaps";
 import generateSitemapsJob from "./jobs/generate-sitemaps-job";
 import handleSitemapRoutes from "./middleware/handle-sitemap-routes";
-import methods from "./methods";
 
 // Load translations
 import "./i18n";
@@ -16,6 +15,3 @@ generateSitemapsJob();
 
 // Sitemap front-end routes
 WebApp.connectHandlers.use(handleSitemapRoutes);
-
-// Init methods
-Meteor.methods(methods);
