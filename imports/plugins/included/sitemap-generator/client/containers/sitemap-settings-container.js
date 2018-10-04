@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { Meteor } from "meteor/meteor";
 import { i18next } from "/client/api";
 import withGenerateSitemaps from "../hocs/withGenerateSitemaps";
 import SitemapSettings from "../components/sitemap-settings";

@@ -11,7 +11,7 @@ export default (Component) => (
             <Component generateSitemaps={generateSitemaps} {...this.props} />
           )}
         </Mutation>
-      )
+      );
     }
   }
 );

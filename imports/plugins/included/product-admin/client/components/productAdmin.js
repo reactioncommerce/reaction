@@ -168,16 +168,17 @@ class ProductAdmin extends Component {
         showCancelButton: true,
         cancelButtonText: i18next.t("productDetailEdit.regenerateSitemapNo", { defaultValue: "No, don't regenerate" }),
         confirmButtonText: i18next.t("productDetailEdit.regenerateSitemapYes", { defaultValue: "Yes, regenerate" })
-      }).then(({ value }) => {
-        if (value) {
-          this.props.generateSitemaps();
-          Alerts.toast(i18next.t("shopSettings.sitemapRefreshInitiated", {
-            defaultValue: "Refreshing the sitemap can take up to 5 minutes. You will be notified when it is completed."
-          }), "success");
-        }
-        return false;
       })
-      .catch(() => false);
+        .then(({ value }) => {
+          if (value) {
+            this.props.generateSitemaps();
+            Alerts.toast(i18next.t("shopSettings.sitemapRefreshInitiated", {
+              defaultValue: "Refreshing the sitemap can take up to 5 minutes. You will be notified when it is completed."
+            }), "success");
+          }
+          return false;
+        })
+        .catch(() => false);
     }
   };
 
@@ -471,6 +472,7 @@ ProductAdmin.propTypes = {
   countries: PropTypes.arrayOf(PropTypes.object),
   editFocus: PropTypes.oneOfType([PropTypes.string, PropTypes.arrayOf(PropTypes.string)]),
   editable: PropTypes.bool, // eslint-disable-line react/boolean-prop-naming
+  generateSitemaps: PropTypes.func,
   handleFieldBlur: PropTypes.func,
   handleFieldChange: PropTypes.func,
   handleProductFieldChange: PropTypes.func,
