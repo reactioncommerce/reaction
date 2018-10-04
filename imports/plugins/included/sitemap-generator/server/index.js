@@ -1,4 +1,3 @@
-import { Meteor } from "meteor/meteor";
 import { WebApp } from "meteor/webapp";
 import { Sitemaps } from "../lib/collections/sitemaps";
 import generateSitemapsJob from "./jobs/generate-sitemaps-job";
