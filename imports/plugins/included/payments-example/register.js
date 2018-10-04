@@ -12,6 +12,10 @@ Reaction.registerPackage({
     resolvers,
     schemas
   },
+  paymentMethods: [ {
+    name: 'example',
+    displayName: 'Example'
+  } ],
   settings: {
     "mode": false,
     "apiKey": "",
