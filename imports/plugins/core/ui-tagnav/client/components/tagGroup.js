@@ -4,6 +4,7 @@ import _ from "lodash";
 import { Components, registerComponent } from "@reactioncommerce/reaction-components";
 import update from "immutability-helper";
 import { TagHelpers } from "/imports/plugins/core/ui-tagnav/client/helpers";
+import getTagSuggestions from "/imports/plugins/core/ui-tagnav/client/util/getTagSuggestions";
 import { getTagIds } from "/lib/selectors/tags";
 import { Router } from "/client/api";
 
@@ -43,8 +44,8 @@ class TagGroup extends Component {
     return "";
   }
 
-  handleGetSuggestions = (suggestionUpdateRequest) => {
-    const suggestions = TagHelpers.updateSuggestions(
+  handleGetSuggestions = async (suggestionUpdateRequest) => {
+    const suggestions = await getTagSuggestions(
       suggestionUpdateRequest.value,
       { excludeTags: this.state.tagIds }
     );

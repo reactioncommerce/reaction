@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Meteor } from "meteor/meteor";
 import { registerComponent, composeWithTracker } from "@reactioncommerce/reaction-components";
-import { Translation, IconButton } from "/imports/plugins/core/ui/client/components";
+import { IconButton } from "/imports/plugins/core/ui/client/components";
 import { Reaction } from "/client/api";
 import DiscountForm from "./form";
 
@@ -18,29 +18,27 @@ class DiscountList extends Component {
   }
   // list items
   renderList() {
-    const listItems = this.props.listItems.map((listItem) => this.renderItem(listItem.id, listItem.code));
+    const listItems = this.props.listItems.map((listItem) => this.renderItem(listItem));
 
     return (
       <div className="rui list-group">{listItems}</div>
     );
   }
   // render item
-  renderItem(_id, code) {
+  renderItem(listItem) {
     let TrashCan;
 
     if (this.props.collection !== "Orders") {
       TrashCan = (
-        <div className="pull-right">
-          <IconButton icon="fa fa-remove" onClick={(e) => this.handleClick(e, _id)}/>
+        <div className="rui list-item-action">
+          <IconButton icon="fa fa-remove" onClick={(event) => this.handleClick(event, listItem._id)}/>
         </div>
       );
     }
     return (
-      <div className="rui list-group-item" key={_id}>
-        <span>
-          {code}&nbsp;
-          <Translation defaultValue="code" i18nKey={"discounts.code"} />&nbsp;
-          <Translation defaultValue="Discount applied" i18nKey={"discounts.applied"} />
+      <div className="rui list-group-item" key={listItem._id}>
+        <span className="rui list-item-content">
+          {listItem.displayName}
         </span>
         {TrashCan}
       </div>
@@ -73,20 +71,17 @@ function composer(props, onData) {
     _id: props.id
   });
 
-  const listItems = [];
-  const listItem = currentCart.billing.find((element) => element.processor === "code");
-  if (listItem) {
-    listItems.push({
-      id: listItem._id,
-      code: listItem.code,
-      discount: listItem.amount
-    });
-  }
+  const listItems = (currentCart.billing || []).reduce((list, item) => {
+    if (item.mode === "discount") {
+      list.push({
+        _id: item._id,
+        displayName: item.displayName
+      });
+    }
+    return list;
+  }, []);
 
   onData(null, {
-    collection: props.collection,
-    validatedInput: props.validatedInput,
-    id: props.id,
     listItems
   });
 }

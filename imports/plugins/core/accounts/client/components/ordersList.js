@@ -7,37 +7,36 @@ import CompletedOrder from "../../../checkout/client/components/completedOrder";
  * @memberof Accounts
  * @extends {Component}
  * @property {Array} allOrdersInfo - array of orders
- * @property {Function} handeleDisplayMedia - function to display order image
  * @property {Boolean} isProfilePage - Profile or non-profile page
  */
 class OrdersList extends Component {
   static propTypes = {
-    allOrdersInfo: PropTypes.array,
+    allOrdersInfo: PropTypes.arrayOf(PropTypes.shape({
+      orderId: PropTypes.string.isRequired,
+      order: PropTypes.object,
+      paymentMethods: PropTypes.array
+    })),
     isProfilePage: PropTypes.bool
   }
 
   render() {
-    const { allOrdersInfo } = this.props;
+    const { allOrdersInfo, isProfilePage } = this.props;
 
     if (allOrdersInfo) {
       return (
         <div>
-          {allOrdersInfo.map((order) => {
-            const orderKey = order.orderId;
-            return (
-              <CompletedOrder
-                key={orderKey}
-                shops={order.shops}
-                order={order.order}
-                orderSummary={order.orderSummary}
-                paymentMethods={order.paymentMethods}
-                isProfilePage={this.props.isProfilePage}
-              />
-            );
-          })}
+          {allOrdersInfo.map((order) => (
+            <CompletedOrder
+              key={order.orderId}
+              order={order.order}
+              paymentMethods={order.paymentMethods}
+              isProfilePage={isProfilePage}
+            />
+          ))}
         </div>
       );
     }
+
     return (
       <div className="alert alert-info">
         <span data-i18n="cartCompleted.noOrdersFound">No orders found.</span>

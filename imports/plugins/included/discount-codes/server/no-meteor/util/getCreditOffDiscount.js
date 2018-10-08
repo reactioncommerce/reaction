@@ -16,5 +16,9 @@ export default async function getCreditOffDiscount(cartId, discountId, collectio
   const discountMethod = await Discounts.findOne({ _id: discountId });
   if (!discountMethod) throw new ReactionError("not-found", "Discount not found");
 
-  return discountMethod.discount || 0;
+  // For "credit" type discount, the `discount` string is expected to parse as a float
+  const discountAmount = Number(discountMethod.discount);
+  if (isNaN(discountAmount)) throw new ReactionError("invalid", `"${discountMethod.discount}" is not a number`);
+
+  return discountAmount || 0;
 }

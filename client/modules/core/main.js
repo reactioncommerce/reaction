@@ -30,6 +30,14 @@ export const userPrefs = new ReactiveVar(undefined, (val, newVal) => JSON.string
 
 const deps = new Map();
 
+// Slugify is imported when Reaction.getSlug is called
+let slugify;
+
+// Array of ISO Language codes for all languages that use latin based char sets
+// list is based on this matrix http://w3c.github.io/typography/gap-analysis/language-matrix.html
+// list of lang codes https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes
+const latinLangs = ["az", "da", "de", "en", "es", "ff", "fr", "ha", "hr", "hu", "ig", "is", "it", "jv", "ku", "ms", "nl", "no", "om", "pl", "pt", "ro", "sv", "sw", "tl", "tr", "uz", "vi", "yo"]; // eslint-disable-line max-len
+
 export default {
   ...DomainsMixin,
 
@@ -499,16 +507,6 @@ export default {
   },
 
   /**
-   * Primary Shop should probably not have a prefix (or should it be /shop?)
-   * @name getPrimaryShopPrefix
-   * @method
-   * @memberof Core/Client
-   */
-  getPrimaryShopPrefix() {
-    return `/${this.getSlug(this.getPrimaryShopName().toLowerCase())}`;
-  },
-
-  /**
    * @name getPrimaryShopSettings
    * @method
    * @memberof Core/Client
@@ -633,22 +631,6 @@ export default {
   },
 
   /**
-   * @name getShopPrefix
-   * @method
-   * @memberof Core/Client
-   */
-  getShopPrefix() {
-    const shopName = this.getShopName();
-    if (shopName) {
-      return Router.pathFor("index", {
-        hash: {
-          shopSlug: this.getSlug(shopName.toLowerCase())
-        }
-      });
-    }
-  },
-
-  /**
    * @name getShopSettings
    * @method
    * @memberof Core/Client
@@ -659,6 +641,44 @@ export default {
       shopId: this.shopId
     }) || {};
     return settings.settings || {};
+  },
+
+  getShopLanguage() {
+    const shopId = this.getShopId();
+    const shop = Shops.findOne({ _id: shopId });
+    return shop ? shop.language : "";
+  },
+
+  async getSlug(slugString) {
+    const lazyLoadSlugify = async () => {
+      let mod;
+      const lang = this.getShopLanguage();
+
+      // If slugify has been loaded but language has changed to non latin-based language, load transliteration
+      if (slugify && slugify.name === "replace" && latinLangs.indexOf(lang) === -1) {
+        mod = await import("transliteration");
+      } else if (slugify) {
+        // If slugify/transliteration is loaded & no lang change
+        return;
+      } else if (latinLangs.indexOf(lang) >= 0) {
+        // If shop's language uses latin based chars, load slugify, else load transliterations's slugify
+        mod = await import("slugify");
+      } else {
+        mod = await import("transliteration");
+      }
+
+      // Slugify is exported to modules.default while transliteration is exported to modules.slugify
+      slugify = mod.default || mod.slugify;
+    };
+
+    let slug;
+    await lazyLoadSlugify(); // eslint-disable-line promise/catch-or-return
+    if (slugString && slugify) {
+      slug = slugify(slugString.toLowerCase());
+    } else {
+      slug = "";
+    }
+    return slug;
   },
 
   /**

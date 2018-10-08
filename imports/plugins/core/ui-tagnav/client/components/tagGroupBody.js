@@ -3,6 +3,7 @@ import React, { Component } from "react";
 import update from "immutability-helper";
 import PropTypes from "prop-types";
 import { Components, registerComponent } from "@reactioncommerce/reaction-components";
+import getTagSuggestions from "/imports/plugins/core/ui-tagnav/client/util/getTagSuggestions";
 
 class TagGroupBody extends Component {
   constructor(props) {
@@ -50,8 +51,8 @@ class TagGroupBody extends Component {
     this.setState({ newTag: tag });
   }
 
-  handleGetSuggestions = (suggestionUpdateRequest) => {
-    const suggestions = this.props.updateSuggestions(
+  handleGetSuggestions = async (suggestionUpdateRequest) => {
+    const suggestions = await getTagSuggestions(
       suggestionUpdateRequest.value,
       { excludeTags: this.state.tagIds }
     );
@@ -165,8 +166,7 @@ TagGroupBody.propTypes = {
   onTagRemove: PropTypes.func,
   onTagSort: PropTypes.func,
   onUpdateTag: PropTypes.func,
-  tagGroupBodyProps: PropTypes.object,
-  updateSuggestions: PropTypes.func
+  tagGroupBodyProps: PropTypes.object
 };
 
 registerComponent("TagGroupBody", TagGroupBody);

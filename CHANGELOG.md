@@ -1,4 +1,34 @@
-# v2.0.0
+# v2.0.0-rc.2
+This is our second **release candidate** for v2.0.0 of Reaction. Please check it out and let us know what works and what doesn't for you.
+
+### OAuth Flow
+- Get the auth URL connected to the Login request from Hydra. Get the loginAction field and pass it in the UI route query param (?action={loginAction}) to serve as state info to the Login component.(#4651)
+- Update the Auth components to show appropriate form fields based on route query param (e.g ?action=signin)(#4651)
+- Update the SignIn and SignUp core components to have a new hasSwitchLinks prop. This will determine if link to toggle between SignIn and SignUp views should be displayed. It defaults to true (so previous behaviour is kept - no breaking change)(#4651)
+- Update Auth container for OAuth IDP flow with hasSwitchLinks=false. This makes the state of the form depend on ONLY the route query (#4651)
+- Fix the Hydra session feature. Now, when a user who already signed in (and is sill within the set HYDRA_SESSION_LIFESPAN), tries to login again, we won't show the login form again.(#4651)
+- Add /logout endpoint for Consumer apps (like Starterkit) to call to delete user sessions from Hydra. The delete session endpoint in Hydra lives on the Administrative port (4445), so we are not exposing it to Consumer apps to consume directly.(#4651)
+
+## Taxes
+If item.tax did not exist the getTaxTotal was returning NaN which would show up in cart totals. This was introduced in #4664 and is resolved in #4670
+
+## Operator UI for editing product information
+On the PDP, when typing a tag name in the admin sidebar, a console error would appear: `Uncaught (in promise) TypeError: Cannot read property 'getShopId' of undefined at getShopLang (helpers.js:118)`. This was because `Reaction` was undefined when `getShopLang()` would run. This is resolved in #4673
+
+## Fixes
+ - (fix) Properly return 0 when no tax items are present (#4670)
+ - fix: Show correct form state during create account oauth flow (#4651)
+ - Fix: console error when typing a tag name on PDP (#4673)
+ - fix: discounts and profile orders in 2.0 (#4674)
+ - fix: orders dashboard layout issue (#4688)
+    Updated a few panel styles to fit within the viewport better and not end up behind the "modal overlay"
+
+ ## Chores
+ - chore: updating get in touch link (#4676)
+ - chore: fix broken link in README to schema docs (#4672)
+
+
+# v2.0.0-rc.1
 This is our first **release candidate** for v2.0.0 of Reaction. Please check it out and let us know what works and what doesn't for you.
 
 In many ways this may better mark the beginning of a new way to develop for Reaction rather than the end of a big development cycle. Make no mistake, there are some pretty great things that v2.0.0 includes - for example, our GraphQL API now covers the basic commerce flow, from browsing a catalog all the way through checkout. However, this release is also bigger in many ways that just this repository. Much of our work over the past several months has gone into repositories other than this primary `/reaction` one.
