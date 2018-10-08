@@ -12,10 +12,10 @@ Reaction.registerPackage({
     resolvers,
     schemas
   },
-  paymentMethods: [ {
-    name: 'stripe',
-    displayName: 'Stripe'
-  } ],
+  paymentMethods: [{
+    name: "stripe",
+    displayName: "Stripe"
+  }],
   settings: {
     "mode": false,
     "api_key": "",
