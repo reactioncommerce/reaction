@@ -6,7 +6,7 @@ import getOpaqueIds from "/imports/plugins/core/core/client/util/getOpaqueIds";
  * @summary "catalog/getCurrentCatalogPriceForProductConfigurations" Meteor method wrapped in Promise
  * @param {Object[]} productConfigurations Array of product configurations
  * @param {String} currencyCode Currency in which to get prices
- * @returns {<Promise>Object[]} Same productConfigurations array, with price added
+ * @returns {Promise<Object[]>} Same productConfigurations array, with price added
  */
 function getCurrentCatalogPriceForProductConfigurations(productConfigurations, currencyCode) {
   return new Promise((resolve, reject) => {

@@ -1,3 +1,4 @@
+import accounting from "accounting-js";
 import SimpleSchema from "simpl-schema";
 import Logger from "@reactioncommerce/logger";
 import Random from "@reactioncommerce/random";
@@ -244,7 +245,7 @@ export default async function createOrder(context, input) {
   const { discounts, total: discountTotal } = await getDiscountsTotalForCart(context, cartId);
 
   // Add more props to each fulfillment group, and validate/build the items in each group
-  const finalFulfillmentGroups = await Promise.all(fulfillmentGroups.map(async (groupInput, index) => {
+  const finalFulfillmentGroups = await Promise.all(fulfillmentGroups.map(async (groupInput) => {
     const finalGroup = {
       _id: Random.id(),
       address: groupInput.data ? getShippingAddressWithId(groupInput.data.shippingAddress, groupInput.data.shippingAddressId) : null,
@@ -294,10 +295,16 @@ export default async function createOrder(context, input) {
     // and include total discount in `groupInput.totalPrice`, and then we simply verify that they are valid here.
     const expectedTotal = Math.max(groupInput.totalPrice - discountTotal, 0);
 
-    if (expectedTotal !== finalGroup.invoice.total) {
+    // In order to prevent mismatch due to rounding, we convert these to strings before comparing. What we really
+    // care about is, do these match to the specificity that the shopper will see (i.e. to the scale of the currency)?
+    // No currencies have greater than 3 decimal places, so we'll use 3.
+    const expectedTotalString = accounting.toFixed(expectedTotal, 3);
+    const actualTotalString = accounting.toFixed(finalGroup.invoice.total, 3);
+
+    if (expectedTotalString !== actualTotalString) {
       throw new ReactionError(
         "invalid",
-        `Client provided total price ${expectedTotal} for group with index ${index}, but actual total price is ${finalGroup.invoice.total}`
+        `Client provided total price ${expectedTotalString} for order group, but actual total price is ${actualTotalString}`
       );
     }
 
