@@ -13,8 +13,8 @@ Reaction.registerPackage({
     schemas
   },
   paymentMethods: [{
-    name: "stripe",
-    displayName: "Stripe"
+    name: "stripe_card",
+    displayName: "Stripe Card"
   }],
   settings: {
     "mode": false,

@@ -13,8 +13,8 @@ Reaction.registerPackage({
     schemas
   },
   paymentMethods: [{
-    name: "example",
-    displayName: "Example"
+    name: "iou_example",
+    displayName: "IOU Example"
   }],
   settings: {
     "mode": false,
