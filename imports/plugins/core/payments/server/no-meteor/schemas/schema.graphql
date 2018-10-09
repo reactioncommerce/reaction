@@ -74,8 +74,11 @@ type PaymentMethod {
   # TODO: this being a string is temporary until extend works for enums, at which point we'll use PaymentMethodName
   name: String!
 
-  "Human-readable display name."
+  "Human-readable display name"
   displayName: String!
+
+  "Whether the payment method is enabled on a given shop"
+  isEnabled: Boolean!
 
   "Data for this method. The data format differs for each method"
   data: PaymentMethodData

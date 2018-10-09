@@ -5,6 +5,7 @@ export default async function (_, { shopId }, context) {
   const allPaymentMethods = Array.from(paymentMethods);
   const dbShopId = decodeShopOpaqueId(shopId);
   const shop = await context.queries.shopById(context, dbShopId);
+
   return shop.availablePaymentMethods
     .map((availableName) => allPaymentMethods.find(({ name }) => name === availableName));
 }
