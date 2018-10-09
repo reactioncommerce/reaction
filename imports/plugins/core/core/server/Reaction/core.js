@@ -98,7 +98,7 @@ export default {
     }
     if (packageInfo.paymentMethods) {
       for (const paymentMethod of packageInfo.paymentMethods) {
-        paymentMethods.add(paymentMethod);
+        paymentMethods[paymentMethod.name] = paymentMethod;
       }
     }
 
