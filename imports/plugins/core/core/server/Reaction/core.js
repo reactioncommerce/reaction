@@ -98,7 +98,10 @@ export default {
     }
     if (packageInfo.paymentMethods) {
       for (const paymentMethod of packageInfo.paymentMethods) {
-        paymentMethods[paymentMethod.name] = paymentMethod;
+        paymentMethods[paymentMethod.name] = {
+          ...paymentMethod,
+          pluginName: packageInfo.name
+        };
       }
     }
 

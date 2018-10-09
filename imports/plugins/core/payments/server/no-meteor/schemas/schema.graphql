@@ -82,4 +82,7 @@ type PaymentMethod {
   "The payment method name. Any valid name that has been registered by a payment plugin. e.g., saved_card"
   # TODO: this being a string is temporary until extend works for enums, at which point we'll use PaymentMethodName
   name: String!
+
+  "Name of the plugin that added the payment method"
+  pluginName: String!
 }
