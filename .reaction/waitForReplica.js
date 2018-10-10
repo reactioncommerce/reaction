@@ -10,7 +10,8 @@ function defaultOut(message) {
 }
 
 /**
- * Print a message to the console (no trailing newline)
+ * Run a check/wait/retry loop until a provided function returns a 
+ * promise that resolves.
  * @param {Object} options - Named options object
  * @param {function()} options.out Function to show progress
  * @param {number} options.max Number of retries attempted before full failure
