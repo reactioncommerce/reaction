@@ -1,20 +1,21 @@
-import { paymentMethods } from "/imports/plugins/core/core/server/no-meteor/pluginRegistration";
+import { paymentMethods as paymentMethodList } from "/imports/plugins/core/core/server/no-meteor/pluginRegistration";
 
 /**
  * @name paymentMethods
  * @method
  * @memberof Payments/NoMeteorQueries
- * @summary TODO: query the Groups collection and return a MongoDB cursor
+ * @summary get list of all registered payment methods for a shop
  * @param {Object} context - an object containing the per-request state
  * @param {String} shopId - shop ID for which to get payment methods
- * @return {Object[]} TODO: Groups collection cursor
+ * @return {Object[]} Array of PaymentMethods
  */
-export default async function (context, shopId) {
+export default async function paymentMethods(context, shopId) {
   const shop = await context.queries.shopById(context, shopId);
+  const availablePaymentMethods = shop.availablePaymentMethods || [];
 
-  return Object.keys(paymentMethods)
+  return Object.keys(paymentMethodList)
     .map((name) => ({
-      ...paymentMethods[name],
-      isEnabled: shop.availablePaymentMethods.includes(name)
+      ...paymentMethodList[name],
+      isEnabled: availablePaymentMethods.includes(name)
     }));
 }
