@@ -58,7 +58,7 @@ We love your pull requests! Check our our [`Good First Issue`](https://github.co
 
 Pull requests should:
 
-- Pass all pull request Cirlce CI checks: Run `npm run lint` and `reaction test` to make sure you're following the [Reaction Code Style Guide](https://docs.reactioncommerce.com/reaction-docs/master/styleguide) and passing [acceptance tests and unit tests](https://docs.reactioncommerce.com/reaction-docs/master/testing-reaction).
+- Pass all pull request Circle CI checks: Run `npm run lint` and `reaction test` to make sure you're following the [Reaction Code Style Guide](https://docs.reactioncommerce.com/reaction-docs/master/styleguide) and passing [acceptance tests and unit tests](https://docs.reactioncommerce.com/reaction-docs/master/testing-reaction).
 - Follow the pull request template.
 
 Get more details in our [Contributing Guide](https://docs.reactioncommerce.com/reaction-docs/master/contributing-to-reaction).
