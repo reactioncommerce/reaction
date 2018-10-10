@@ -3,7 +3,6 @@
 [![Circle CI](https://circleci.com/gh/reactioncommerce/reaction.svg?style=svg)](https://circleci.com/gh/reactioncommerce/reaction) [![Gitter](https://badges.gitter.im/JoinChat.svg)](https://gitter.im/reactioncommerce/reaction?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 [![Open Source Helpers](https://www.codetriage.com/reactioncommerce/reaction/badges/users.svg)](https://www.codetriage.com/reactioncommerce/reaction)
 
-
 [Reaction](http://reactioncommerce.com) is an event-driven, real-time reactive commerce platform built with JavaScript (ES6). It plays nicely with npm, Docker, and React.
 
 ![Reaction v.1.x](https://raw.githubusercontent.com/reactioncommerce/reaction-docs/v1.7.0/assets/Reaction-Commerce-Illustration-BG-800px.png)
@@ -26,46 +25,13 @@ Since anything in our codebase can be extended, overwritten, or installed as a p
 
 # Getting started
 
-### Requirements
+## Reaction 2.0
 
-Reaction requires Meteor, Git, Mongo DB, OS-specific build tools. For step-by-step instructions, follow the documentation for [OS X](https://docs.reactioncommerce.com/docs/next/installation-osx), [Windows](https://docs.reactioncommerce.com/docs/next/installation-windows) or [Linux](https://docs.reactioncommerce.com/docs/next/installation-linux).
+Follow the documentation for [Reaction Platform](https://docs.reactioncommerce.com/docs/installation-reaction-platform) for all operating systems.
 
-### Install and run with CLI
+## Pre-2.0 Reaction
 
-Install the [Reaction CLI](https://github.com/reactioncommerce/reaction-cli) to get started with Reaction:
-
-```sh
-npm install -g reaction-cli
-```
-
-Create your store:
-
-```sh
-reaction init
-cd reaction
-reaction
-```
-
-Open `localhost:3000`
-
-Learn more on how to [configure your project](https://docs.reactioncommerce.com/reaction-docs/master/configuration).
-
-Having installation issues? Check out our [troubleshooting docs](https://docs.reactioncommerce.com/docs/next/troubleshooting-development).
-
-### Install and run with Docker
-
-You can also run the app locally using [`docker-compose`](https://docs.docker.com/compose/) by running:
-
-```sh
-docker network create api.reaction.localhost
-docker-compose up
-```
-
-Open `localhost:3000`
-
-This will use the `docker-compose.yml` file.
-
-To learn more on how to develop on Docker, read our documentation on [developing Reaction on Docker](https://docs.reactioncommerce.com/docs/next/installation-docker-development) and [troubleshooting Docker](https://docs.reactioncommerce.com/docs/next/troubleshooting-development#docker-issues).
+Follow the documentation for installing pre-2.0 Reaction on [OS X](https://docs.reactioncommerce.com/docs/next/installation-osx), [Windows](https://docs.reactioncommerce.com/docs/next/installation-windows) or [Linux](https://docs.reactioncommerce.com/docs/next/installation-linux).
 
 # Get involved
 
