@@ -11,9 +11,12 @@ import { paymentMethods } from "/imports/plugins/core/core/server/no-meteor/plug
  */
 export default async function availablePaymentMethods(context, shopId) {
   const shop = await context.queries.shopById(context, shopId);
-  const availableMethods = shop.availableMethods || [];
+  const availableMethods = shop.availablePaymentMethods || [];
   const methodNames = Object.keys(paymentMethods);
 
   return availableMethods
-    .map((name) => methodNames.find((paymentMethodName) => paymentMethodName === name));
+    .map((name) => ({
+      ...paymentMethods[name],
+      isEnabled: availableMethods.includes(name)
+    }));
 }
