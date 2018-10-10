@@ -12,7 +12,7 @@
 
 Reaction’s out-of-the-box core features include:
 
--	One step cart and checkout
+-	One-step cart and checkout
 -   Order processing
 -   Payments with Stripe
 -   Shipping
