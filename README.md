@@ -38,6 +38,7 @@ Follow the documentation for installing pre-2.0 Reaction on [OS X](https://docs.
 ## Read documentation & tutorials
 
 -   [Reaction Commerce: Developer documentation](https://docs.reactioncommerce.com)
+-   [Reaction Design System](http://designsystem.reactioncommerce.com/)
 -   [Reaction Commerce: API documentation](http://api.docs.reactioncommerce.com)
 -   [Reaction Commerce engineering blog posts](https://blog.reactioncommerce.com/tag/engineering/)
 -   [Reaction Commerce YouTube videos](https://www.youtube.com/user/reactioncommerce/videos)
