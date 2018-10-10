@@ -14,7 +14,7 @@ export default async function paymentMethods(context, shopId) {
   const shop = await context.queries.shopById(context, shopId);
   const availablePaymentMethods = shop.availablePaymentMethods || [];
 
-  if (!context.userHasPermission([ "owner", "admin" ], shopId)) {
+  if (!context.userHasPermission(["owner", "admin"], shopId)) {
     throw new ReactionError("access-denied", "Access denied");
   }
 
