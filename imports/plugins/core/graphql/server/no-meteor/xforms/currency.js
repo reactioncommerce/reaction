@@ -1,7 +1,9 @@
+import { toFixed } from "accounting-js";
 import { assoc, compose, map, toPairs } from "ramda";
 import ReactionError from "@reactioncommerce/reaction-error";
 import CurrencyDefinitions from "/imports/plugins/core/core/lib/CurrencyDefinitions";
 import { namespaces } from "@reactioncommerce/reaction-graphql-utils";
+import getDisplayPrice from "/imports/plugins/core/catalog/server/no-meteor/utils/getDisplayPrice";
 import { assocInternalId, assocOpaqueId, decodeOpaqueIdForNamespace, encodeOpaqueId } from "./id";
 
 export const assocCurrencyInternalId = assocInternalId(namespaces.Currency);
@@ -44,4 +46,41 @@ export async function getXformedCurrencyByCode(code) {
   const entry = CurrencyDefinitions[code];
   if (!entry) throw new ReactionError("invalid", `No currency definition found for ${code}`);
   return xformCurrencyEntry([code, entry]);
+}
+
+/**
+ * @name xformCurrencyExchangePricing
+ * @method
+ * @memberof GraphQL/Transforms
+ * @summary Converts price to the supplied currency and adds currencyExchangePricing to result
+ * @param {Object} pricing Original pricing object
+ * @param {String} currencyCode Code of currency to convert prices to
+ * @param {Object} context Object containing per-request state
+ * @returns {Object} New pricing object with converted prices
+ */
+export async function xformCurrencyExchangePricing(pricing, currencyCode, context) {
+  const { shopId } = context;
+  const shop = await context.queries.shopById(context, shopId);
+
+  if (!currencyCode) {
+    currencyCode = shop.currency; // eslint-disable-line no-param-reassign
+  }
+
+  const currencyInfo = shop.currencies[currencyCode];
+  const { rate } = currencyInfo;
+  const { price, minPrice, maxPrice } = pricing;
+  const priceConverted = price && Number(toFixed(price * rate, 2));
+  const minPriceConverted = minPrice && Number(toFixed(minPrice * rate, 2));
+  const maxPriceConverted = maxPrice && Number(toFixed(maxPrice * rate, 2));
+  const displayPrice = getDisplayPrice(minPriceConverted, maxPriceConverted, currencyInfo);
+
+  return {
+    displayPrice,
+    price: priceConverted,
+    minPrice: minPriceConverted,
+    maxPrice: maxPriceConverted,
+    currency: {
+      code: currencyCode
+    }
+  };
 }
