@@ -6,7 +6,8 @@ jest.mock("/imports/plugins/core/core/server/no-meteor/pluginRegistration", () =
   paymentMethods: {
     mockPaymentMethod: {
       name: "mock",
-      displayName: "Mock!"
+      displayName: "Mock!",
+      pluginName: "mock-plugin"
     }
   }
 }));
@@ -33,9 +34,19 @@ test("throws if shop not found", async () => {
   expect(mockShopById).toHaveBeenCalledWith(mockContext, "nonexistent-shop-id");
 });
 
+test("returns empty array when shop has no payment methods", async () => {
+  mockShopById.mockReturnValueOnce(fakeShop);
+  mockContext.userHasPermission.mockReturnValueOnce(true);
+
+  const result = await query(mockContext, mockContext.shopId);
+  expect(mockShopById).toHaveBeenCalledWith(mockContext, mockContext.shopId);
+  expect(result).toEqual([]);
+});
+
 test("returns empty array when shop has no valid payment methods", async () => {
   mockShopById.mockReturnValueOnce(fakeShop);
   mockContext.userHasPermission.mockReturnValueOnce(true);
+  fakeShop.availablePaymentMethods.push("nonexistent-payment-method");
 
   const result = await query(mockContext, mockContext.shopId);
   expect(mockShopById).toHaveBeenCalledWith(mockContext, mockContext.shopId);
@@ -52,6 +63,7 @@ test("returns available payment methods for a shop", async () => {
   expect(result).toEqual([{
     name: "mock",
     displayName: "Mock!",
+    pluginName: "mock-plugin",
     isEnabled: true
   }]);
 });

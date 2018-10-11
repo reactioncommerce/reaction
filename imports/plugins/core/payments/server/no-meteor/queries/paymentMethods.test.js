@@ -6,7 +6,8 @@ jest.mock("/imports/plugins/core/core/server/no-meteor/pluginRegistration", () =
   paymentMethods: {
     mockPaymentMethod: {
       name: "mock",
-      displayName: "Mock!"
+      displayName: "Mock!",
+      pluginName: "mock-plugin"
     }
   }
 }));
@@ -51,6 +52,7 @@ test("returns all payment methods for a shop", async () => {
   expect(result).toEqual([{
     name: "mock",
     displayName: "Mock!",
+    pluginName: "mock-plugin",
     isEnabled: false
   }]);
 });
