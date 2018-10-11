@@ -14,6 +14,8 @@ Migrations.add({
   version: 16,
   up() {
     Orders.find().forEach((order) => {
+      if (!Array.isArray(order.billing)) return;
+
       const newBilling = order.billing.map((billing) => {
         const packageData = Packages.findOne({
           name: paymentNameDict[billing.paymentMethod.processor],
@@ -45,6 +47,8 @@ Migrations.add({
   },
   down() {
     Orders.find().forEach((order) => {
+      if (!Array.isArray(order.billing)) return;
+
       order.billing.forEach((billing) => {
         delete billing.paymentMethod.paymentPackageId;
         delete billing.paymentMethod.paymentSettingsKey;
@@ -52,7 +56,7 @@ Migrations.add({
         delete billing.paymentMethod.items;
       });
       Orders.update({ _id: order._id }, {
-        $set: { items: order.billing }
+        $set: { billing: order.billing }
       }, { bypassCollection2: true });
     });
   }

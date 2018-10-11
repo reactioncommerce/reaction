@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Components, registerComponent } from "@reactioncommerce/reaction-components";
+import getTagSuggestions from "/imports/plugins/core/ui-tagnav/client/util/getTagSuggestions";
 
 class TagGroupHeader extends Component {
   constructor(props) {
@@ -11,8 +12,8 @@ class TagGroupHeader extends Component {
     };
   }
 
-  handleGetSuggestions = (suggestionUpdateRequest) => {
-    const suggestions = this.props.updateSuggestions(
+  handleGetSuggestions = async (suggestionUpdateRequest) => {
+    const suggestions = await getTagSuggestions(
       suggestionUpdateRequest.value,
       { excludeTags: this.state.tagIds }
     );
@@ -65,8 +66,7 @@ TagGroupHeader.propTypes = {
   onTagRemove: PropTypes.func,
   onUpdateTag: PropTypes.func,
   parentTag: PropTypes.object,
-  tag: PropTypes.object,
-  updateSuggestions: PropTypes.func
+  tag: PropTypes.object
 };
 
 registerComponent("TagGroupHeader", TagGroupHeader);

@@ -1,7 +1,7 @@
 {
   "name": "reaction",
   "description": "Reaction is a modern reactive, real-time event driven ecommerce platform.",
-  "version": "2.0.0",
+  "version": "2.0.0-rc.5",
   "main": "main.js",
   "directories": {
     "test": "tests"
@@ -205,10 +205,10 @@
     "test": "npm run test:unit && npm run test:integration && npm run test:app",
     "test:app": "MONGO_URL='' TEST_CLIENT=0 meteor test --once --full-app --driver-package meteortesting:mocha",
     "test:app:watch": "MONGO_URL='' TEST_CLIENT=0 TEST_WATCH=1 meteor test --full-app --driver-package meteortesting:mocha",
-    "test:unit": "NODE_ENV=jesttest BABEL_DISABLE_CACHE=1 jest --no-cache --testPathIgnorePatterns /tests/",
-    "test:unit:watch": "NODE_ENV=jesttest BABEL_DISABLE_CACHE=1 jest --no-cache --testPathIgnorePatterns /tests/ --watch",
-    "test:integration": "NODE_ENV=jesttest BABEL_DISABLE_CACHE=1 jest --no-cache /tests/",
-    "test:integration:watch": "NODE_ENV=jesttest BABEL_DISABLE_CACHE=1 jest --no-cache --watch /tests/",
+    "test:unit": "NODE_ENV=jesttest BABEL_DISABLE_CACHE=1 jest --no-cache --maxWorkers=4 --testPathIgnorePatterns /tests/",
+    "test:unit:watch": "NODE_ENV=jesttest BABEL_DISABLE_CACHE=1 jest --no-cache --maxWorkers=4 --testPathIgnorePatterns /tests/ --watch",
+    "test:integration": "NODE_ENV=jesttest BABEL_DISABLE_CACHE=1 jest --maxWorkers=4 --no-cache /tests/",
+    "test:integration:watch": "NODE_ENV=jesttest BABEL_DISABLE_CACHE=1 jest --maxWorkers=4 --no-cache --watch /tests/",
     "test:file": "NODE_ENV=jesttest BABEL_DISABLE_CACHE=1 jest --no-cache --watch",
     "docs": "jsdoc . --configure .reaction/jsdoc/jsdoc.json --readme .reaction/jsdoc/templates/static/README.md"
   },
