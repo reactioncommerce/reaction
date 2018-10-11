@@ -1,3 +1,4 @@
+import ReactionError from "@reactioncommerce/reaction-error";
 import { paymentMethods } from "/imports/plugins/core/core/server/no-meteor/pluginRegistration";
 
 /**
