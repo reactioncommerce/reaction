@@ -14,8 +14,10 @@ export default async function availablePaymentMethods(context, shopId) {
   const availableMethods = shop.availablePaymentMethods || [];
 
   return availableMethods
-    .map((name) => ({
-      ...paymentMethods[name],
-      isEnabled: true
-    }));
+    .reduce((all, name) => {
+      if (paymentMethods[name]) {
+        all.push({ ...paymentMethods[name], isEnabled: true });
+      }
+      return all;
+    }, []);
 }
