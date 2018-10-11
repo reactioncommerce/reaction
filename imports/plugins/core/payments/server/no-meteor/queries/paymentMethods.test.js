@@ -5,7 +5,7 @@ import query from "./paymentMethods";
 jest.mock("/imports/plugins/core/core/server/no-meteor/pluginRegistration", () => ({
   paymentMethods: {
     mockPaymentMethod: {
-      name: "mock",
+      name: "mockPaymentMethod",
       displayName: "Mock!",
       pluginName: "mock-plugin"
     }
@@ -24,6 +24,7 @@ beforeAll(() => {
 beforeEach(() => {
   jest.resetAllMocks();
   mockShopById.mockClear();
+  fakeShop.availablePaymentMethods = [];
 });
 
 test("throws if userHasPermission returns false", async () => {
@@ -50,9 +51,24 @@ test("returns all payment methods for a shop", async () => {
   const result = await query(mockContext, mockContext.shopId);
   expect(mockShopById).toHaveBeenCalledWith(mockContext, mockContext.shopId);
   expect(result).toEqual([{
-    name: "mock",
+    name: "mockPaymentMethod",
     displayName: "Mock!",
     pluginName: "mock-plugin",
     isEnabled: false
+  }]);
+});
+
+test("returns payment methods with correct enabled status", async () => {
+  mockContext.userHasPermission.mockReturnValueOnce(true);
+  mockShopById.mockReturnValueOnce(fakeShop);
+  fakeShop.availablePaymentMethods.push("mockPaymentMethod");
+
+  const result = await query(mockContext, mockContext.shopId);
+  expect(mockShopById).toHaveBeenCalledWith(mockContext, mockContext.shopId);
+  expect(result).toEqual([{
+    name: "mockPaymentMethod",
+    displayName: "Mock!",
+    pluginName: "mock-plugin",
+    isEnabled: true
   }]);
 });

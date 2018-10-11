@@ -5,7 +5,7 @@ import query from "./availablePaymentMethods";
 jest.mock("/imports/plugins/core/core/server/no-meteor/pluginRegistration", () => ({
   paymentMethods: {
     mockPaymentMethod: {
-      name: "mock",
+      name: "mockPaymentMethod",
       displayName: "Mock!",
       pluginName: "mock-plugin"
     }
@@ -24,6 +24,7 @@ beforeAll(() => {
 beforeEach(() => {
   jest.resetAllMocks();
   mockShopById.mockClear();
+  fakeShop.availablePaymentMethods = [];
 });
 
 test("throws if shop not found", async () => {
@@ -61,7 +62,7 @@ test("returns available payment methods for a shop", async () => {
   const result = await query(mockContext, mockContext.shopId);
   expect(mockShopById).toHaveBeenCalledWith(mockContext, mockContext.shopId);
   expect(result).toEqual([{
-    name: "mock",
+    name: "mockPaymentMethod",
     displayName: "Mock!",
     pluginName: "mock-plugin",
     isEnabled: true
