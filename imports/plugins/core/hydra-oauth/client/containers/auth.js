@@ -10,7 +10,6 @@ import { LoginFormValidation } from "/lib/api";
 class OAuthFormContainer extends Component {
   static propTypes = {
     currentRoute: PropTypes.object,
-    currentView: PropTypes.string,
     formMessages: PropTypes.object
   }
 
@@ -24,6 +23,7 @@ class OAuthFormContainer extends Component {
   }
 
   handleFormSubmit = (event, email, password) => {
+    const currentRouteView = this.props.currentRoute.query.action;
     event.preventDefault();
 
     this.setState({
@@ -55,7 +55,7 @@ class OAuthFormContainer extends Component {
       return;
     }
 
-    if (this.props.currentView === "loginFormSignInView") {
+    if (currentRouteView === "signin") {
       Meteor.loginWithPassword(username, pword, (error) => {
         if (error) {
           this.setState({
@@ -70,7 +70,7 @@ class OAuthFormContainer extends Component {
           });
         }
       });
-    } else if (this.props.currentView === "loginFormSignUpView") {
+    } else {
       const newUserData = {
         email: username,
         password: pword
@@ -112,13 +112,16 @@ class OAuthFormContainer extends Component {
   hasPasswordService = () => !!Package["accounts-password"]
 
   renderAuthView() {
-    if (this.props.currentView === "loginFormSignInView") {
+    const currentRouteView = this.props.currentRoute.query.action;
+
+    if (currentRouteView === "signin") {
       return (
         <Components.SignIn
           {...this.props}
           onFormSubmit={this.handleFormSubmit}
           messages={this.state.formMessages}
           onError={this.hasError}
+          hasSwitchLinks={false}
           loginFormMessages={this.formMessages}
           isLoading={this.state.isLoading}
         />
@@ -130,6 +133,7 @@ class OAuthFormContainer extends Component {
         onFormSubmit={this.handleFormSubmit}
         messages={this.state.formMessages}
         onError={this.hasError}
+        hasSwitchLinks={false}
         loginFormMessages={this.formMessages}
         hasPasswordService={this.hasPasswordService}
         isLoading={this.state.isLoading}

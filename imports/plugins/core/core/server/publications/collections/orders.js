@@ -2,7 +2,7 @@ import { Meteor } from "meteor/meteor";
 import { check, Match } from "meteor/check";
 import { Roles } from "meteor/alanning:roles";
 import { ReactiveAggregate } from "./reactiveAggregate";
-import { Accounts, MediaRecords, Orders } from "/lib/collections";
+import { Accounts, MediaRecords, Orders, Shops } from "/lib/collections";
 import { Counts } from "meteor/tmeasday:publish-counts";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
 
@@ -124,7 +124,7 @@ Meteor.publish("AccountOrders", function (accountId) {
     return this.ready();
   }
 
-  return Orders.find({
+  const ordersCursor = Orders.find({
     accountId,
     shopId
   }, {
@@ -133,6 +133,10 @@ Meteor.publish("AccountOrders", function (accountId) {
     },
     limit: 25
   });
+
+  const shopNamesCursor = Shops.find({}, { fields: { name: 1 } });
+
+  return [ordersCursor, shopNamesCursor];
 });
 
 /**

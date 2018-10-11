@@ -5,7 +5,7 @@
 Start here:
 
 - [Reaction Components API](Components.html)
-- [Reaction Core schemas](schemas.html)
+- [Reaction Core schemas](Schemas.html)
 
 > **ProTip**: You can generate docs locally and work offline. Run `npm run docs` and open `file:///tmp/reaction-docs/index.html` in any browser.
 
