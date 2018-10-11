@@ -10,7 +10,7 @@ import { Roles } from "meteor/alanning:roles";
 import { EJSON } from "meteor/ejson";
 import * as Collections from "/lib/collections";
 import ConnectionDataStore from "/imports/plugins/core/core/server/util/connectionDataStore";
-import { mutations, queries, resolvers, schemas, functionsByType } from "../no-meteor/pluginRegistration";
+import { functionsByType, mutations, paymentMethods, queries, resolvers, schemas } from "../no-meteor/pluginRegistration";
 import createGroups from "./createGroups";
 import processJobs from "./processJobs";
 import sendVerificationEmail from "./sendVerificationEmail";
@@ -95,6 +95,14 @@ export default {
         }
         functionsByType[type].push(...packageInfo.functionsByType[type]);
       });
+    }
+    if (packageInfo.paymentMethods) {
+      for (const paymentMethod of packageInfo.paymentMethods) {
+        paymentMethods[paymentMethod.name] = {
+          ...paymentMethod,
+          pluginName: packageInfo.name
+        };
+      }
     }
 
     // Save the package info
