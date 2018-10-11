@@ -11,6 +11,7 @@ import { paymentMethods } from "/imports/plugins/core/core/server/no-meteor/plug
  */
 export default async function availablePaymentMethods(context, shopId) {
   const shop = await context.queries.shopById(context, shopId);
+  if (!shop) throw new ReactionError("not-found", "Shop not found");
   const availableMethods = shop.availablePaymentMethods || [];
 
   return availableMethods

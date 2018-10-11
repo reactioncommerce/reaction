@@ -12,6 +12,7 @@ import { paymentMethods as paymentMethodList } from "/imports/plugins/core/core/
  */
 export default async function paymentMethods(context, shopId) {
   const shop = await context.queries.shopById(context, shopId);
+  if (!shop) throw new ReactionError("not-found", "Shop not found");
   const availablePaymentMethods = shop.availablePaymentMethods || [];
 
   if (!context.userHasPermission(["owner", "admin"], shopId)) {
