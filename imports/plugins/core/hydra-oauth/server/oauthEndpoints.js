@@ -49,7 +49,10 @@ WebApp.connectHandlers.use("/consent", (req, res) => {
   hydra
     .acceptConsentRequest(challenge, {
       remember: true,
-      remember_for: HYDRA_SESSION_LIFESPAN ? Number(HYDRA_SESSION_LIFESPAN) : 3600, // eslint-disable-line camelcase
+      // `remember` tells Hydra to remember this consent grant and reuse it if request is from the same user on the
+      // same client. Ideally, this should be longer than token lifespan. Set default is 24 hrs (set in seconds).
+      // Depending on preferred setup, you can allow users decide if to enable or disable
+      remember_for: HYDRA_SESSION_LIFESPAN ? Number(HYDRA_SESSION_LIFESPAN) : 86400, // eslint-disable-line camelcase
       session: {} // we are not adding any extra user, we use only the sub value already present
     })
     .then((consentResponse) => {
