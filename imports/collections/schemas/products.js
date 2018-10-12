@@ -46,43 +46,6 @@ export const VariantMedia = new SimpleSchema({
 registerSchema("VariantMedia", VariantMedia);
 
 /**
- * @name ProductPosition
- * @memberof Schemas
- * @type {SimpleSchema}
- * @property {String} tag optional
- * @property {Number} position optional
- * @property {Boolean} pinned optional
- * @property {Number} weight optional, default value: `0`
- * @property {Date} updatedAt required
- */
-export const ProductPosition = new SimpleSchema({
-  tag: {
-    type: String,
-    optional: true
-  },
-  position: {
-    type: SimpleSchema.Integer,
-    optional: true
-  },
-  pinned: {
-    type: Boolean,
-    optional: true
-  },
-  weight: {
-    type: SimpleSchema.Integer,
-    optional: true,
-    defaultValue: 0,
-    min: 0,
-    max: 3
-  },
-  updatedAt: {
-    type: Date
-  }
-});
-
-registerSchema("ProductPosition", ProductPosition);
-
-/**
  * @name ProductVariant
  * @memberof Schemas
  * @type {SimpleSchema}
@@ -383,42 +346,44 @@ registerSchema("PriceRange", PriceRange);
  * @memberof Schemas
  * @property {String} _id Product ID
  * @property {String[]} ancestors default value: `[]`
- * @property {String} shopId Product ShopID
- * @property {String} title Product Title
- * @property {String} pageTitle optional
+ * @property {String} changedHandleWas Previous handle
+ * @property {Date} createdAt required
+ * @property {String} currentProductHash optional
  * @property {String} description optional
- * @property {String} productType optional
- * @property {String} originCountry optional
- * @property {String} type default value: `"simple"`
- * @property {String} vendor optional
- * @property {Metafield[]} metafields optional
- * @property {PriceRange} price denormalized, object with range string, min and max
- * @property {Boolean} isLowQuantity denormalized, true when at least 1 variant is below `lowInventoryWarningThreshold`
- * @property {Boolean} isSoldOut denormalized, Indicates when all variants `inventoryQuantity` is zero
- * @property {Boolean} isBackorder denormalized, `true` if product not in stock, but customers anyway could order it
- * @property {String[]} supportedFulfillmentTypes Types of fulfillment ("shipping", "pickup", etc) allowed for this product
- * @property {ShippingParcel} parcel optional
- * @property {String[]} hashtags optional
- * @property {String} twitterMsg optional
  * @property {String} facebookMsg optional
  * @property {String} googleplusMsg optional
- * @property {String} pinterestMsg optional
- * @property {String} metaDescription optional
  * @property {String} handle optional, slug
+ * @property {String[]} hashtags optional
+ * @property {Boolean} isBackorder denormalized, `true` if product not in stock, but customers anyway could order it
  * @property {Boolean} isDeleted, default value: `false`
+ * @property {Boolean} isLowQuantity denormalized, true when at least 1 variant is below `lowInventoryWarningThreshold`
+ * @property {Boolean} isSoldOut denormalized, Indicates when all variants `inventoryQuantity` is zero
  * @property {Boolean} isVisible, default value: `false`
- * @property {String} template, default value: `"productDetailSimple"`
- * @property {Date} createdAt required
- * @property {Date} updatedAt optional
+ * @property {String} metaDescription optional
+ * @property {Metafield[]} metafields optional
+ * @property {String} originCountry optional
+ * @property {String} pageTitle optional
+ * @property {ShippingParcel} parcel optional
+ * @property {String} pinterestMsg optional
+ * @property {PriceRange} price denormalized, object with range string, min and max
+ * @property {String} productType optional
  * @property {Date} publishedAt optional
- * @property {String} publishedScope optional
- * @property {Workflow} workflow optional
  * @property {String} publishedProductHash optional
+ * @property {String} publishedScope optional
+ * @property {String} shopId Product ShopID
+ * @property {String[]} supportedFulfillmentTypes Types of fulfillment ("shipping", "pickup", etc) allowed for this product
+ * @property {String} template, default value: `"productDetailSimple"`
+ * @property {String} title Product Title
+ * @property {String} twitterMsg optional
+ * @property {String} type default value: `"simple"`
+ * @property {Date} updatedAt optional
+ * @property {String} vendor optional
+ * @property {Workflow} workflow optional
  */
 export const Product = new SimpleSchema({
   "_id": {
     type: String,
-    label: "Product Id"
+    label: "Product ID"
   },
   "ancestors": {
     type: Array,
@@ -428,90 +393,22 @@ export const Product = new SimpleSchema({
   "ancestors.$": {
     type: String
   },
-  "shopId": {
+  "changedHandleWas": {
     type: String,
-    index: 1,
-    label: "Product ShopId"
+    optional: true
   },
-  "title": {
-    type: String,
-    defaultValue: "",
-    label: "Product Title"
+  "createdAt": {
+    type: Date,
+    autoValue: createdAtAutoValue,
+    index: 1
   },
-  "pageTitle": {
+  "currentProductHash": {
     type: String,
     optional: true
   },
   "description": {
     type: String,
     optional: true
-  },
-  "productType": {
-    type: String,
-    optional: true
-  },
-  "originCountry": {
-    type: String,
-    optional: true
-  },
-  "type": {
-    label: "Type",
-    type: String,
-    defaultValue: "simple"
-  },
-  "vendor": {
-    type: String,
-    optional: true
-  },
-  "metafields": {
-    type: Array,
-    optional: true
-  },
-  "metafields.$": {
-    type: Metafield
-  },
-  "price": {
-    label: "Price",
-    type: PriceRange
-  },
-  "isLowQuantity": {
-    label: "Indicates that the product quantity is too low",
-    type: Boolean,
-    optional: true
-  },
-  "isSoldOut": {
-    label: "Indicates when the product quantity is zero",
-    type: Boolean,
-    optional: true
-  },
-  "isBackorder": {
-    label: "Indicates when the seller has allowed the sale of product which" +
-    " is not in stock",
-    type: Boolean,
-    optional: true
-  },
-  "supportedFulfillmentTypes": {
-    type: Array,
-    label: "Supported fulfillment types",
-    defaultValue: ["shipping"]
-  },
-  "supportedFulfillmentTypes.$": String,
-  "parcel": {
-    type: ShippingParcel,
-    optional: true
-  },
-  "hashtags": {
-    type: Array,
-    optional: true,
-    index: 1
-  },
-  "hashtags.$": {
-    type: String
-  },
-  "twitterMsg": {
-    type: String,
-    optional: true,
-    max: 140
   },
   "facebookMsg": {
     type: String,
@@ -523,22 +420,23 @@ export const Product = new SimpleSchema({
     optional: true,
     max: 255
   },
-  "pinterestMsg": {
-    type: String,
-    optional: true,
-    max: 255
-  },
-  "metaDescription": {
-    type: String,
-    optional: true
-  },
   "handle": {
     type: String,
     optional: true,
     index: 1
   },
-  "changedHandleWas": {
-    type: String,
+  "hashtags": {
+    type: Array,
+    optional: true,
+    index: 1
+  },
+  "hashtags.$": {
+    type: String
+  },
+  "isBackorder": {
+    label: "Indicates when the seller has allowed the sale of product which" +
+    " is not in stock",
+    type: Boolean,
     optional: true
   },
   "isDeleted": {
@@ -546,31 +444,106 @@ export const Product = new SimpleSchema({
     index: 1,
     defaultValue: false
   },
+  "isLowQuantity": {
+    label: "Indicates that the product quantity is too low",
+    type: Boolean,
+    optional: true
+  },
+  "isSoldOut": {
+    label: "Indicates when the product quantity is zero",
+    type: Boolean,
+    optional: true
+  },
   "isVisible": {
     type: Boolean,
     index: 1,
     defaultValue: false
   },
-  "template": {
-    label: "Template",
+  "metaDescription": {
     type: String,
-    defaultValue: "productDetailSimple"
+    optional: true
   },
-  "createdAt": {
-    type: Date,
-    autoValue: createdAtAutoValue,
-    index: 1
+  "metafields": {
+    type: Array,
+    optional: true
   },
-  "updatedAt": {
-    type: Date,
-    autoValue: updatedAtAutoValue,
+  "metafields.$": {
+    type: Metafield
+  },
+  "originCountry": {
+    type: String,
+    optional: true
+  },
+  "pageTitle": {
+    type: String,
+    optional: true
+  },
+  "parcel": {
+    type: ShippingParcel,
+    optional: true
+  },
+  "pinterestMsg": {
+    type: String,
+    optional: true,
+    max: 255
+  },
+  "price": {
+    label: "Price",
+    type: PriceRange
+  },
+  "productType": {
+    type: String,
     optional: true
   },
   "publishedAt": {
     type: Date,
     optional: true
   },
+  "publishedProductHash": {
+    type: String,
+    optional: true
+  },
   "publishedScope": {
+    type: String,
+    optional: true
+  },
+  "shopId": {
+    type: String,
+    index: 1,
+    label: "Product ShopId"
+  },
+  "supportedFulfillmentTypes": {
+    type: Array,
+    label: "Supported fulfillment types",
+    defaultValue: ["shipping"]
+  },
+  "supportedFulfillmentTypes.$": String,
+  "template": {
+    label: "Template",
+    type: String,
+    defaultValue: "productDetailSimple"
+  },
+  "title": {
+    type: String,
+    defaultValue: "",
+    label: "Product Title"
+  },
+  "twitterMsg": {
+    type: String,
+    optional: true,
+    max: 140
+  },
+  "type": {
+    label: "Type",
+    type: String,
+    defaultValue: "simple"
+  },
+  "updatedAt": {
+    type: Date,
+    autoValue: updatedAtAutoValue,
+    optional: true
+  },
+  "vendor": {
     type: String,
     optional: true
   },
@@ -578,14 +551,6 @@ export const Product = new SimpleSchema({
     type: Workflow,
     optional: true,
     defaultValue: {}
-  },
-  "currentProductHash": {
-    type: String,
-    optional: true
-  },
-  "publishedProductHash": {
-    type: String,
-    optional: true
   }
 });
 
