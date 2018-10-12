@@ -49,7 +49,7 @@ WebApp.connectHandlers.use("/consent", (req, res) => {
   hydra
     .acceptConsentRequest(challenge, {
       remember: true,
-      remember_for: HYDRA_SESSION_LIFESPAN || 3600, // eslint-disable-line camelcase
+      remember_for: HYDRA_SESSION_LIFESPAN ? Number(HYDRA_SESSION_LIFESPAN) : 3600, // eslint-disable-line camelcase
       session: {} // we are not adding any extra user, we use only the sub value already present
     })
     .then((consentResponse) => {

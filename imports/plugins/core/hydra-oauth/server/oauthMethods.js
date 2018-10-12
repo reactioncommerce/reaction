@@ -23,7 +23,7 @@ export function oauthLogin(options) {
     .acceptLoginRequest(challenge, {
       subject: Reaction.getUserId(),
       remember,
-      remember_for: HYDRA_SESSION_LIFESPAN || 3600 // eslint-disable-line camelcase
+      remember_for: HYDRA_SESSION_LIFESPAN ? Number(HYDRA_SESSION_LIFESPAN) : 3600 // eslint-disable-line camelcase
     })
     .then((response) => response.redirect_to)
     .catch((error) => {
