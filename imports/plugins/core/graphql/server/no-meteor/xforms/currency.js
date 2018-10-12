@@ -68,7 +68,15 @@ export async function xformCurrencyExchangePricing(pricing, currencyCode, contex
 
   const currencyInfo = shop.currencies[currencyCode];
   const { rate } = currencyInfo;
-  const { price, minPrice, maxPrice } = pricing;
+
+  // Stop processing if we don't have a valid currency exchange rate.
+  // rate may be undefined if Open Exchange Rates or an equivalent service is not configured properly.
+  if (typeof rate !== "number") {
+    return null;
+  }
+
+  const { compareAtPrice, price, minPrice, maxPrice } = pricing;
+  const compareAtPriceConverted = price && Number(toFixed(compareAtPrice * rate, 2));
   const priceConverted = price && Number(toFixed(price * rate, 2));
   const minPriceConverted = minPrice && Number(toFixed(minPrice * rate, 2));
   const maxPriceConverted = maxPrice && Number(toFixed(maxPrice * rate, 2));
