@@ -368,7 +368,6 @@ registerSchema("PriceRange", PriceRange);
  * @property {String} productType optional
  * @property {Date} publishedAt optional
  * @property {String} publishedProductHash optional
- * @property {String} publishedScope optional
  * @property {String} shopId Product ShopID
  * @property {String[]} supportedFulfillmentTypes Types of fulfillment ("shipping", "pickup", etc) allowed for this product
  * @property {String} template, default value: `"productDetailSimple"`
@@ -495,10 +494,6 @@ export const Product = new SimpleSchema({
     optional: true
   },
   "publishedProductHash": {
-    type: String,
-    optional: true
-  },
-  "publishedScope": {
     type: String,
     optional: true
   },
