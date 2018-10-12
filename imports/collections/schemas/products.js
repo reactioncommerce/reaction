@@ -51,38 +51,37 @@ registerSchema("VariantMedia", VariantMedia);
  * @type {SimpleSchema}
  * @property {String} _id required, Variant ID
  * @property {String[]} ancestors, default value: `[]`
- * @property {Number} index optional, Variant position number in list. Keep array index for moving variants in a list.
- * @property {Boolean} isVisible, default value: `false`
- * @property {Boolean} isDeleted, default value: `false`
  * @property {String} barcode optional
  * @property {Number} compareAtPrice optional, Compare at price
- * @property {String} fulfillmentService optional, Fulfillment service
- * @property {Number} weight, default value: `0`
- * @property {Number} length optional, default value: `0`
- * @property {Number} width optional, default value: `0`
+ * @property {Date} createdAt optional
+ * @property {Event[]} eventLog optional, Variant Event Log
  * @property {Number} height optional, default value: `0`
+ * @property {Number} index optional, Variant position number in list. Keep array index for moving variants in a list.
  * @property {Boolean} inventoryManagement, default value: `true`
  * @property {Boolean} inventoryPolicy, default value: `false`, If disabled, item can be sold even if it not in stock.
- * @property {Number} lowInventoryWarningThreshold, default value: `0`, Warn of low inventory at this number
  * @property {Number} inventoryQuantity, default value: `0`
- * @property {Number} minOrderQuantity optional
+ * @property {Boolean} isDeleted, default value: `false`
  * @property {Boolean} isLowQuantity optional, true when at least 1 variant is below `lowInventoryWarningThreshold`
  * @property {Boolean} isSoldOut optional, denormalized field, indicates when all variants `inventoryQuantity` is 0
+ * @property {Boolean} isVisible, default value: `false`
+ * @property {Number} length optional, default value: `0`
+ * @property {Number} lowInventoryWarningThreshold, default value: `0`, Warn of low inventory at this number
+ * @property {Metafield[]} metafields optional
+ * @property {Number} minOrderQuantity optional
+ * @property {String} optionTitle, Option internal name, default value: `"Untitled option"`
+ * @property {String} originCountry optional
  * @property {Number} price, default value: `0.00`
  * @property {String} shopId required, Variant ShopId
  * @property {String} sku optional
- * @property {String} type, default value: `"variant"`
  * @property {Boolean} taxable, default value: `true`
  * @property {String} taxCode, default value: `"0000"`
  * @property {String} taxDescription optional
  * @property {String} title, Label for customers, default value: `""`
- * @property {String} optionTitle, Option internal name, default value: `"Untitled option"`
- * @property {Metafield[]} metafields optional
- * @property {Date} createdAt optional
+ * @property {String} type, default value: `"variant"`
  * @property {Date} updatedAt optional
- * @property {Event[]} eventLog optional, Variant Event Log
+ * @property {Number} weight, default value: `0`
+ * @property {Number} width optional, default value: `0`
  * @property {Workflow} workflow optional
- * @property {String} originCountry optional
  */
 export const ProductVariant = new SimpleSchema({
   "_id": {
@@ -95,21 +94,6 @@ export const ProductVariant = new SimpleSchema({
   },
   "ancestors.$": {
     type: String
-  },
-  "index": {
-    label: "Variant position number in list",
-    type: SimpleSchema.Integer,
-    optional: true
-  },
-  "isVisible": {
-    type: Boolean,
-    index: 1,
-    defaultValue: false
-  },
-  "isDeleted": {
-    type: Boolean,
-    index: 1,
-    defaultValue: false
   },
   "barcode": {
     label: "Barcode",
@@ -130,34 +114,21 @@ export const ProductVariant = new SimpleSchema({
     min: 0,
     defaultValue: 0.00
   },
-  "weight": {
-    label: "Weight",
-    type: Number,
-    min: 0,
-    optional: true,
-    defaultValue: 0,
-    custom() {
-      if (Meteor.isClient) {
-        if (!(this.siblingField("type").value === "inventory" || this.value ||
-          this.value === 0)) {
-          return SimpleSchema.ErrorTypes.REQUIRED;
-        }
-      }
-    }
+  "createdAt": {
+    label: "Created at",
+    type: Date,
+    optional: true
   },
-  "length": {
-    label: "Length",
-    type: Number,
-    min: 0,
-    optional: true,
-    defaultValue: 0
+  // TODO: REVIEW - Does this need to exist? Should we use workflow instead?
+  // Should it be called 'history' or something else instead?
+  // Should this go into the Logger instead? Is the logger robust enough for this?
+  "eventLog": {
+    label: "Variant Event Log",
+    type: Array,
+    optional: true
   },
-  "width": {
-    label: "Width",
-    type: Number,
-    min: 0,
-    optional: true,
-    defaultValue: 0
+  "eventLog.$": {
+    type: Event
   },
   "height": {
     label: "Height",
@@ -165,6 +136,11 @@ export const ProductVariant = new SimpleSchema({
     min: 0,
     optional: true,
     defaultValue: 0
+  },
+  "index": {
+    label: "Variant position number in list",
+    type: SimpleSchema.Integer,
+    optional: true
   },
   "inventoryManagement": {
     type: Boolean,
@@ -194,23 +170,16 @@ export const ProductVariant = new SimpleSchema({
       }
     }
   },
-  "lowInventoryWarningThreshold": {
-    type: SimpleSchema.Integer,
-    label: "Warn at",
-    min: 0,
-    optional: true,
-    defaultValue: 0
-  },
   "inventoryQuantity": {
     type: SimpleSchema.Integer,
     label: "Quantity",
     optional: true,
     defaultValue: 0
   },
-  "minOrderQuantity": {
-    label: "Minimum order quantity",
-    type: SimpleSchema.Integer,
-    optional: true
+  "isDeleted": {
+    type: Boolean,
+    index: 1,
+    defaultValue: false
   },
   "isLowQuantity": {
     label: "Indicates that the product quantity is too low",
@@ -220,6 +189,47 @@ export const ProductVariant = new SimpleSchema({
   "isSoldOut": {
     label: "Indicates when the product quantity is zero",
     type: Boolean,
+    optional: true
+  },
+  "isVisible": {
+    type: Boolean,
+    index: 1,
+    defaultValue: false
+  },
+  "length": {
+    label: "Length",
+    type: Number,
+    min: 0,
+    optional: true,
+    defaultValue: 0
+  },
+  "lowInventoryWarningThreshold": {
+    type: SimpleSchema.Integer,
+    label: "Warn at",
+    min: 0,
+    optional: true,
+    defaultValue: 0
+  },
+  "metafields": {
+    type: Array,
+    optional: true
+  },
+  "metafields.$": {
+    type: Metafield
+  },
+  "minOrderQuantity": {
+    label: "Minimum order quantity",
+    type: SimpleSchema.Integer,
+    optional: true
+  },
+  "optionTitle": {
+    label: "Option",
+    type: String,
+    optional: true,
+    defaultValue: "Untitled Option"
+  },
+  "originCountry": {
+    type: String,
     optional: true
   },
   "price": {
@@ -238,11 +248,6 @@ export const ProductVariant = new SimpleSchema({
     label: "SKU",
     type: String,
     optional: true
-  },
-  "type": {
-    label: "Type",
-    type: String,
-    defaultValue: "variant"
   },
   "taxable": {
     label: "Taxable",
@@ -266,48 +271,42 @@ export const ProductVariant = new SimpleSchema({
     type: String,
     defaultValue: ""
   },
-  "optionTitle": {
-    label: "Option",
+  "type": {
+    label: "Type",
     type: String,
-    optional: true,
-    defaultValue: "Untitled Option"
-  },
-  "metafields": {
-    type: Array,
-    optional: true
-  },
-  "metafields.$": {
-    type: Metafield
-  },
-  "createdAt": {
-    label: "Created at",
-    type: Date,
-    optional: true
+    defaultValue: "variant"
   },
   "updatedAt": {
     label: "Updated at",
     type: Date,
     optional: true
   },
-  // TODO: REVIEW - Does this need to exist? Should we use workflow instead?
-  // Should it be called 'history' or something else instead?
-  // Should this go into the Logger instead? Is the logger robust enough for this?
-  "eventLog": {
-    label: "Variant Event Log",
-    type: Array,
-    optional: true
+  "weight": {
+    label: "Weight",
+    type: Number,
+    min: 0,
+    optional: true,
+    defaultValue: 0,
+    custom() {
+      if (Meteor.isClient) {
+        if (!(this.siblingField("type").value === "inventory" || this.value ||
+          this.value === 0)) {
+          return SimpleSchema.ErrorTypes.REQUIRED;
+        }
+      }
+    }
   },
-  "eventLog.$": {
-    type: Event
+  "width": {
+    label: "Width",
+    type: Number,
+    min: 0,
+    optional: true,
+    defaultValue: 0
   },
   "workflow": {
     type: Workflow,
     optional: true,
     defaultValue: {}
-  },
-  "originCountry": {
-    type: String,
-    optional: true
   }
 });
 
