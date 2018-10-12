@@ -41,21 +41,24 @@ WebApp.connectHandlers.use("/login", (req, res) => {
 });
 
 WebApp.connectHandlers.use("/consent", (req, res) => {
-  const challenge = req.query.consent_challenge;
   // Here, we accept consent directly without presenting a consent form to the user
   // because this was built for a trusted Consumer client.
   // For non-trusted Consumer clients, this should be updated to present a Consent UI to
   // the user grant or deny specific scopes
-  hydra
-    .acceptConsentRequest(challenge, {
-      remember: true,
-      // `remember` tells Hydra to remember this consent grant and reuse it if request is from the same user on the
-      // same client. Ideally, this should be longer than token lifespan. Set default is 24 hrs (set in seconds).
-      // Depending on preferred setup, you can allow users decide if to enable or disable
-      remember_for: HYDRA_SESSION_LIFESPAN ? Number(HYDRA_SESSION_LIFESPAN) : 86400, // eslint-disable-line camelcase
-      session: {} // we are not adding any extra user, we use only the sub value already present
-    })
-    .then((consentResponse) => {
+  const challenge = req.query.consent_challenge;
+  hydra.getConsentRequest(challenge)
+    .then(async (response) => {
+      // eslint-disable-next-line camelcase
+      const options = { grant_scope: response.requested_scope };
+      if (!response.skip) { // if skip is true (i.e no form UI is shown, there's no need to set `remember`)
+        // `remember` tells Hydra to remember this consent grant and reuse it if request is from the same user on the
+        // same client. Ideally, this should be longer than token lifespan. Set default is 24 hrs (set in seconds).
+        // Depending on preferred setup, you can allow users decide if to enable or disable
+        options.remember = true;
+        // eslint-disable-next-line camelcase
+        options.remember_for = HYDRA_SESSION_LIFESPAN ? Number(HYDRA_SESSION_LIFESPAN) : 86400;
+      }
+      const consentResponse = await hydra.acceptConsentRequest(challenge, options);
       Logger.debug(`Consent call complete. Redirecting to: ${consentResponse.redirect_to}`);
       res.writeHead(301, { Location: consentResponse.redirect_to });
       return res.end();
