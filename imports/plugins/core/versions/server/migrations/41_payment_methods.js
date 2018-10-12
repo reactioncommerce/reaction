@@ -11,8 +11,8 @@ Migrations.add({
       const methods = new Set(shop.availablePaymentMethods);
 
       const packages = Packages.find({
-        shopId: shop._id,
-        enabled: true,
+        "shopId": shop._id,
+        "enabled": true,
         "registry.provides": "paymentMethod"
       });
 
