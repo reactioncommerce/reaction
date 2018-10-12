@@ -1,6 +1,7 @@
+import Hooks from "@reactioncommerce/hooks";
+import Logger from "@reactioncommerce/logger";
 import Random from "@reactioncommerce/random";
 import * as Schemas from "/imports/collections/schemas";
-import Logger from "@reactioncommerce/logger";
 import hashProduct from "../mutations/hashProduct";
 import createCatalogProduct from "./createCatalogProduct";
 
@@ -51,5 +52,11 @@ export default async function publishProductToCatalog(product, collections) {
     { upsert: true }
   );
 
-  return result && result.result && result.result.ok === 1;
+  const wasUpdateSuccessful = result && result.result && result.result.ok === 1;
+
+  if (wasUpdateSuccessful) {
+    Hooks.Events.run("afterPublishProductToCatalog", product, catalogProduct);
+  }
+
+  return wasUpdateSuccessful;
 }

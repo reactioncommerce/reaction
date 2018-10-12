@@ -9,6 +9,7 @@ import { Tracker } from "meteor/tracker";
 import { Reaction } from "/client/api";
 import { ITEMS_INCREMENT } from "/client/config/defaults";
 import { Products, Tags, Shops } from "/lib/collections";
+import { resubscribeAfterCloning } from "/lib/api/products";
 import ProductsComponent from "../components/products";
 
 const reactiveProductIds = new ReactiveVar([], (oldVal, newVal) => JSON.stringify(oldVal.sort()) === JSON.stringify(newVal.sort()));
@@ -142,7 +143,16 @@ function composer(props, onData) {
   const editMode = !viewAsPref || viewAsPref === "administrator";
 
   // Now that we have the necessary info, we can subscribe to Products we need
-  const productsSubscription = Meteor.subscribe("Products", scrollLimit, queryParams, sort, editMode);
+  let productsSubscription = Meteor.subscribe("Products", scrollLimit, queryParams, sort, editMode);
+
+  // Force re-running products subscription when a product is cloned
+  const resubscribe = resubscribeAfterCloning.get();
+  if (resubscribe) {
+    resubscribeAfterCloning.set(false);
+    productsSubscription.stop();
+    productsSubscription = Meteor.subscribe("Products", scrollLimit, queryParams, sort, editMode);
+  }
+
   if (productsSubscription.ready()) {
     window.prerenderReady = true;
   }

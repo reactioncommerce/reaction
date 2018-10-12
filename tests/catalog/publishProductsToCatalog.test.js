@@ -22,9 +22,9 @@ const mockProduct = {
   ancestors: [],
   title: "Fake Product",
   shopId: internalShopId,
-  supportedFulfillmentTypes: ["shipping"],
   isDeleted: false,
-  isVisible: true
+  isVisible: true,
+  supportedFulfillmentTypes: ["shipping"]
 };
 
 const mockVariant = {

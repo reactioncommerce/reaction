@@ -265,6 +265,7 @@ registerSchema("MerchantShop", MerchantShop);
  * @property {Date} createdAt optional
  * @property {Date} updatedAt optional
  * @property {Object[]} paymentMethods blackbox, default value: `[]`
+ * @property {String[]} availablePaymentMethods default value: `[]`
  * @property {Workflow} workflow optional
  */
 export const Shop = new SimpleSchema({
@@ -495,6 +496,13 @@ export const Shop = new SimpleSchema({
   "paymentMethods.$": {
     type: Object,
     blackbox: true
+  },
+  "availablePaymentMethods": {
+    type: Array,
+    defaultValue: []
+  },
+  "availablePaymentMethods.$": {
+    type: String
   },
   "workflow": {
     type: Workflow,

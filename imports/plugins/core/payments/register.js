@@ -1,4 +1,5 @@
 import Reaction from "/imports/plugins/core/core/server/Reaction";
+import queries from "./server/no-meteor/queries";
 import resolvers from "./server/no-meteor/resolvers";
 import schemas from "./server/no-meteor/schemas";
 
@@ -11,6 +12,7 @@ Reaction.registerPackage({
     resolvers,
     schemas
   },
+  queries,
   settings: {
     payments: {
       enabled: true

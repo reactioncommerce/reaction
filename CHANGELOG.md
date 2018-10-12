@@ -1,3 +1,34 @@
+# v2.0.0-rc.5
+This is our fifth **release candidate** for v2.0.0 of Reaction. Please check it out and let us know what works and what doesn't for you.
+
+ - WIP
+
+# v2.0.0-rc.4
+This is our fourth **release candidate** for v2.0.0 of Reaction. Please check it out and let us know what works and what doesn't for you.
+
+## Improving Jest test performance in CI
+We started seeing unit tests timing out in CI in the morning on Friday October 5. It doesn't appear that this was caused by a change in our `jest` version as we were able to reproduce the issues on older branches which were previously passing.
+This is resolved in #4176 by changing our `test:unit` script in `package.json` to run jest with the `--maxWorkers=4` flag. This resolved our issue with tests timing out, and improves test performance in CI overall. This is suggested in the troubleshooting jest here: https://jestjs.io/docs/en/troubleshooting.html#tests-are-extremely-slow-on-docker-and-or-continuous-integration-ci-server
+
+## Checkout Totals
+There were some cases in the Classic Storefront UI where there would be a discrepancy between the total calculated on the server and the price calculated by the client.
+This is not an issue in the [Next.js Storefront](https://github.com/reactioncommerce/reaction-next-starterkit) as all price values are calculated on the server. This is resolved in #4701
+
+## Bugfixes
+fix: round total when verifying it on order create (#4701) .. Resolves #4684
+
+## Chores
+fix: limit jest maxWorkers to 4 to improve CI perf (#4716)
+
+# v2.0.0-rc.3
+This is our third **release candidate** for v2.0.0 of Reaction. Please check it out and let us know what works and what doesn't for you.
+
+A few files snuck into our last release that had incorrect jsdoc syntax in the form of `@return <Promise>Type`
+The jsdoc parser is unable to parse any return type starting with a `<` and throws an error. This error is thrown during the Deploy Docs CI step and causes that step of the CI to fail. This is resolved in #4704 by fixing the jsdoc to use the correct Promise syntax `@return Promise<Type>`
+
+## Bugfixes
+- fix: resolve errors in jsdoc Promise returns (#4704)
+
 # v2.0.0-rc.2
 This is our second **release candidate** for v2.0.0 of Reaction. Please check it out and let us know what works and what doesn't for you.
 

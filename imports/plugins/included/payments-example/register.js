@@ -12,6 +12,10 @@ Reaction.registerPackage({
     resolvers,
     schemas
   },
+  paymentMethods: [{
+    name: "iou_example",
+    displayName: "IOU Example"
+  }],
   settings: {
     "mode": false,
     "apiKey": "",

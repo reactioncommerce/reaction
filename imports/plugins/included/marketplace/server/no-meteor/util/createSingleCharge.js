@@ -2,7 +2,7 @@ import Random from "@reactioncommerce/random";
 
 const METHOD = "credit";
 const PACKAGE_NAME = "reaction-stripe";
-const PAYMENT_METHOD_NAME = "stripe_card";
+const PAYMENT_METHOD_NAME = "marketplace_stripe_card";
 
 // NOTE: The "processor" value is lowercased and then prefixed to various payment Meteor method names,
 // so for example, if this is "Stripe", the list refunds method is expected to be named "stripe/refund/list"

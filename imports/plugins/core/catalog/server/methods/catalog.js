@@ -369,6 +369,13 @@ function updateCatalogProduct(userId, selector, modifier, validation) {
 
   hashProduct(product._id, rawCollections, false);
 
+  if (product.ancestors && product.ancestors[0]) {
+    // If update is variant, recalculate top-level product's price range
+    const topLevelProductId = product.ancestors[0];
+    const price = Promise.await(getProductPriceRange(topLevelProductId, rawCollections));
+    Products.update({ _id: topLevelProductId }, { $set: { price } }, { selector: { type: 'simple' } });
+  }
+
   Hooks.Events.run("afterUpdateCatalogProduct", product._id, { modifier });
 
   return result;
