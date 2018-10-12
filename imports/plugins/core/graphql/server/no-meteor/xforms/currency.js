@@ -75,6 +75,10 @@ export async function xformCurrencyExchangePricing(pricing, currencyCode, contex
   const displayPrice = getDisplayPrice(minPriceConverted, maxPriceConverted, currencyInfo);
 
   return {
+    compareAtPrice: {
+      amount: compareAtPriceConverted || 0,
+      currencyCode
+    },
     displayPrice,
     price: priceConverted,
     minPrice: minPriceConverted,
