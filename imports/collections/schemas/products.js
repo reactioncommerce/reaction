@@ -346,7 +346,6 @@ registerSchema("PriceRange", PriceRange);
  * @memberof Schemas
  * @property {String} _id Product ID
  * @property {String[]} ancestors default value: `[]`
- * @property {String} changedHandleWas Previous handle
  * @property {Date} createdAt required
  * @property {String} currentProductHash optional
  * @property {String} description optional
@@ -392,10 +391,6 @@ export const Product = new SimpleSchema({
   },
   "ancestors.$": {
     type: String
-  },
-  "changedHandleWas": {
-    type: String,
-    optional: true
   },
   "createdAt": {
     type: Date,
