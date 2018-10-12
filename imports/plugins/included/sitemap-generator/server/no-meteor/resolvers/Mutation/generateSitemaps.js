@@ -8,7 +8,13 @@
  * @param {Object} context - an object containing the per-request state
  * @return {Promise<Boolean>} true on success
  */
-export default async function generateSitemaps(parentResult, args, context) {
+export default async function generateSitemaps(parentResult, { input = {} }, context) {
+  const { clientMutationId = null } = input;
+
   await context.mutations.generateSitemaps(context);
-  return true;
+
+  return {
+    wasJobScheduled: true,
+    clientMutationId
+  };
 }
