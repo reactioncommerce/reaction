@@ -805,7 +805,6 @@ Meteor.methods({
         });
         delete newVariant.updatedAt;
         delete newVariant.createdAt;
-        delete newVariant.publishedAt; // TODO can variant have this param?
 
         result = Products.insert(newVariant, { validate: false });
         Hooks.Events.run("afterInsertCatalogProduct", newVariant);
