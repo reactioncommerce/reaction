@@ -23,10 +23,12 @@ export function oauthLogin(options) {
     .acceptLoginRequest(challenge, {
       subject: Reaction.getUserId(),
       remember,
-      // `remember` tells Hydra to remember this login and reuse it if the same user on the same client tries to
-      // log-in again. Ideally, this should be longer than token lifespan. Set default is 24 hrs (set in seconds).
-      // Depending on preferred setup, you can allow users decide if to enable or disable
-      remember_for: HYDRA_SESSION_LIFESPAN ? Number(HYDRA_SESSION_LIFESPAN) : 86400 // eslint-disable-line camelcase
+      // `remember` tells Hydra to remember this login and reuse it if the same user on the same
+      // client tries to log-in again. Ideally, this should be longer than token lifespan.
+      // Set default is 24 hrs (set in seconds). Depending on preferred setup, you can allow
+      // users decide if to enable or disable.
+      // eslint-disable-next-line camelcase
+      remember_for: HYDRA_SESSION_LIFESPAN ? Number(HYDRA_SESSION_LIFESPAN) : 86400
     })
     .then((response) => response.redirect_to)
     .catch((error) => {

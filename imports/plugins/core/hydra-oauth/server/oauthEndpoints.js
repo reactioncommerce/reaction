@@ -50,10 +50,12 @@ WebApp.connectHandlers.use("/consent", (req, res) => {
     .then(async (response) => {
       // eslint-disable-next-line camelcase
       const options = { grant_scope: response.requested_scope };
-      if (!response.skip) { // if skip is true (i.e no form UI is shown, there's no need to set `remember`)
-        // `remember` tells Hydra to remember this consent grant and reuse it if request is from the same user on the
-        // same client. Ideally, this should be longer than token lifespan. Set default is 24 hrs (set in seconds).
-        // Depending on preferred setup, you can allow users decide if to enable or disable
+      // if skip is true (i.e no form UI is shown, there's no need to set `remember`)
+      if (!response.skip) {
+        // `remember` tells Hydra to remember this consent grant and reuse it if request is from
+        // the same user on the same client. Ideally, this should be longer than token lifespan.
+        // Set default is 24 hrs (set in seconds). Depending on preferred setup, you can allow
+        // users decide if to enable or disable
         options.remember = true;
         // eslint-disable-next-line camelcase
         options.remember_for = HYDRA_SESSION_LIFESPAN ? Number(HYDRA_SESSION_LIFESPAN) : 86400;
