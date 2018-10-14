@@ -2,7 +2,7 @@ import Hooks from "@reactioncommerce/hooks";
 import Logger from "@reactioncommerce/logger";
 import Random from "@reactioncommerce/random";
 import * as Schemas from "/imports/collections/schemas";
-import hashProduct from "../mutations/hashProduct";
+import { createProductHash } from "../mutations/hashProduct";
 import createCatalogProduct from "./createCatalogProduct";
 
 /**
@@ -14,13 +14,10 @@ import createCatalogProduct from "./createCatalogProduct";
  * @return {boolean} true on successful publish, false if publish was unsuccessful
  */
 export default async function publishProductToCatalog(product, collections) {
-  const { Catalog } = collections;
-
-  // Create hash of all user-editable fields
-  const hashedProduct = await hashProduct(product._id, collections);
+  const { Catalog, Products } = collections;
 
   // Convert Product schema object to Catalog schema object
-  const catalogProduct = await createCatalogProduct(hashedProduct, collections);
+  const catalogProduct = await createCatalogProduct(product, collections);
 
   // Check to see if product has variants
   // If not, do not publish the product to the Catalog
@@ -53,9 +50,25 @@ export default async function publishProductToCatalog(product, collections) {
   );
 
   const wasUpdateSuccessful = result && result.result && result.result.ok === 1;
-
   if (wasUpdateSuccessful) {
-    Hooks.Events.run("afterPublishProductToCatalog", product, catalogProduct);
+    // Update the Product hashes so that we know there are now no unpublished changes
+    const productHash = await createProductHash(product, collections);
+
+    const now = new Date();
+    const productUpdates = {
+      currentProductHash: productHash,
+      publishedAt: now,
+      publishedProductHash: productHash,
+      updatedAt: now
+    };
+
+    const productUpdateResult = await Products.updateOne({ _id: product._id }, { $set: productUpdates });
+    if (!productUpdateResult || !productUpdateResult.result || productUpdateResult.result.ok !== 1) {
+      Logger.error(`Failed to update product hashes for product with ID ${product._id}`, productUpdateResult && productUpdateResult.result);
+    }
+
+    const updatedProduct = { ...product, ...productUpdates };
+    Hooks.Events.run("afterPublishProductToCatalog", updatedProduct, catalogProduct);
   }
 
   return wasUpdateSuccessful;
