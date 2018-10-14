@@ -10,30 +10,6 @@ import { MediaRecords } from "/lib/collections";
  */
 
 /**
- * @method updateMediaMetadata
- * @memberof Media/Methods
- * @summary Updates a media record.
- * @param {String} fileRecordId - _id of updated file record.
- * @param {Object} metadata - metadata from updated media file.
- * @return {Boolean}
- * @private
- */
-async function updateMediaMetadata(fileRecordId, metadata) {
-  check(fileRecordId, String);
-  check(metadata, Object);
-
-  const result = MediaRecords.update({
-    _id: fileRecordId
-  }, {
-    $set: {
-      metadata
-    }
-  });
-
-  return result === 1;
-}
-
-/**
  * @name media/insert
  * @method
  * @memberof Media/Methods
@@ -116,8 +92,6 @@ export function updateMediaPriorities(sortedMediaIDs) {
         "metadata.priority": index
       }
     });
-    const { metadata } = MediaRecords.findOne({ _id });
-    updateMediaMetadata(_id, metadata);
   });
 
   return true;
