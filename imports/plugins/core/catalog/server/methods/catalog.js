@@ -367,7 +367,10 @@ function updateCatalogProduct(userId, selector, modifier, validation) {
 
   const result = Products.update(selector, modifier, validation);
 
-  hashProduct(product._id, rawCollections, false);
+  hashProduct(product._id, rawCollections, false)
+    .catch((error) => {
+      Logger.error(`Error updating currentProductHash for product with ID ${product._id}`, error);
+    });
 
   if (product.ancestors && product.ancestors[0]) {
     // If update is variant, recalculate top-level product's price range
