@@ -1,5 +1,6 @@
 import { Meteor } from "meteor/meteor";
 import { check } from "meteor/check";
+import appEvents from "/imports/node-app/core/util/appEvents";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
 import ReactionError from "@reactioncommerce/reaction-error";
 import { MediaRecords } from "/lib/collections";
@@ -19,13 +20,17 @@ import { MediaRecords } from "/lib/collections";
  */
 export async function insertMedia(fileRecord) {
   check(fileRecord, Object);
-  const mediaRecordId = await MediaRecords.insert({
+
+  const doc = {
     ...fileRecord,
     metadata: {
       ...fileRecord.metadata,
       workflow: "published"
     }
-  });
+  };
+  const mediaRecordId = await MediaRecords.insert(doc);
+
+  appEvents.emit("afterMediaInsert", doc);
 
   return mediaRecordId;
 }
@@ -49,7 +54,13 @@ export async function removeMedia(fileRecordId) {
     }
   });
 
-  return result === 1;
+  const success = (result === 1);
+
+  if (success) {
+    appEvents.emit("afterMediaUpdate", MediaRecords.findOne({ _id: fileRecordId }));
+  }
+
+  return success;
 }
 
 /**
@@ -92,6 +103,8 @@ export function updateMediaPriorities(sortedMediaIDs) {
         "metadata.priority": index
       }
     });
+
+    appEvents.emit("afterMediaUpdate", MediaRecords.findOne({ _id }));
   });
 
   return true;

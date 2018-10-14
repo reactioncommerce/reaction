@@ -1,50 +1,94 @@
 import hash from "object-hash";
-import createCatalogProduct from "../utils/createCatalogProduct";
+import getCatalogProductMedia from "../utils/getCatalogProductMedia";
 import getTopLevelProduct from "../utils/getTopLevelProduct";
+
+const productFieldsThatNeedPublishing = [
+  "_id",
+  "description",
+  "facebookMsg",
+  "googleplusMsg",
+  "handle",
+  "hashtags",
+  "isDeleted",
+  "isVisible",
+  "media",
+  "metaDescription",
+  "metafields",
+  "originCountry",
+  "pageTitle",
+  "parcel",
+  "pinterestMsg",
+  "price",
+  "productType",
+  "shopId",
+  "supportedFulfillmentTypes",
+  "template",
+  "title",
+  "twitterMsg",
+  "type",
+  "vendor"
+];
+
+const variantFieldsThatNeedPublishing = [
+  "_id",
+  "barcode",
+  "compareAtPrice",
+  "height",
+  "index",
+  "inventoryManagement",
+  "inventoryPolicy",
+  "inventoryQuantity",
+  "isDeleted",
+  "isLowQuantity",
+  "isSoldOut",
+  "isVisible",
+  "length",
+  "lowInventoryWarningThreshold",
+  "metafields",
+  "minOrderQuantity",
+  "optionTitle",
+  "originCountry",
+  "price",
+  "shopId",
+  "sku",
+  "taxable",
+  "taxCode",
+  "taxDescription",
+  "title",
+  "type",
+  "weight",
+  "width"
+];
 
 /**
  * @method createProductHash
  * @summary Create a hash of a product to compare for updates
  * @memberof Catalog
- * @param {String} productToConvert - A product object
+ * @param {String} product - The Product document to hash. Expected to be a top-level product, not a variant
  * @param {Object} collections - Raw mongo collections
  * @return {String} product hash
  */
-export async function createProductHash(productToConvert, collections) {
-  const product = await createCatalogProduct(productToConvert, collections);
+export async function createProductHash(product, collections) {
+  const variants = await collections.Products.find({ ancestors: product._id, type: "variant" }).toArray();
 
-  const hashableFields = {
-    _id: product._id,
-    ancestors: product.ancestors,
-    description: product.description,
-    facebookMsg: product.facebookMsg,
-    googleplusMsg: product.googleplusMsg,
-    handle: product.handle,
-    hashtags: product.hashtags,
-    isDeleted: product.isDeleted,
-    isVisible: product.isVisible,
-    media: product.media,
-    metaDescription: product.metaDescription,
-    metafields: product.metafields,
-    originCountry: product.originCountry,
-    pageTitle: product.pageTitle,
-    parcel: product.parcel,
-    pinterestMsg: product.pinterestMsg,
-    productType: product.productType,
-    price: product.price,
-    pricing: product.pricing,
-    publishedScope: product.publishedScope,
-    shopId: product.shopId,
-    supportedFulfillmentTypes: product.supportedFulfillmentTypes,
-    template: product.template,
-    title: product.title,
-    twitterMsg: product.twitterMsg,
-    type: product.type,
-    variants: product.variants,
-    vendor: product.vendor
-  };
+  const productForHashing = {};
+  productFieldsThatNeedPublishing.forEach((field) => {
+    productForHashing[field] = product[field];
+  });
 
-  return hash(hashableFields);
+  // Track changes to all related media, too
+  productForHashing.media = await getCatalogProductMedia(product._id, collections);
+
+  // Track changes to all variants, too
+  productForHashing.variants = variants.map((variant) => {
+    const variantForHashing = {};
+    variantFieldsThatNeedPublishing.forEach((field) => {
+      variantForHashing[field] = variant[field];
+    });
+    return variantForHashing;
+  });
+
+  return hash(productForHashing);
 }
 
 /**
@@ -59,9 +103,12 @@ export async function createProductHash(productToConvert, collections) {
 export default async function hashProduct(productId, collections, isPublished = true) {
   const { Products } = collections;
 
-  const product = await getTopLevelProduct(productId, collections);
+  const topLevelProduct = await getTopLevelProduct(productId, collections);
+  if (!topLevelProduct) {
+    throw new Error(`No top level product found for product with ID ${productId}`);
+  }
 
-  const productHash = await createProductHash(product, collections);
+  const productHash = await createProductHash(topLevelProduct, collections);
 
   // Insert/update product document with hash field
   const hashFields = {
@@ -72,23 +119,14 @@ export default async function hashProduct(productId, collections, isPublished = 
     hashFields.publishedProductHash = productHash;
   }
 
-  const result = await Products.updateOne(
-    {
-      _id: product._id
-    },
-    {
-      $set: {
-        ...hashFields,
-        updatedAt: new Date()
-      }
-    }
-  );
+  const productUpdates = {
+    ...hashFields,
+    updatedAt: new Date()
+  };
+  const result = await Products.updateOne({ _id: topLevelProduct._id }, { $set: productUpdates });
 
   if (result && result.result && result.result.ok === 1) {
-    // If product was updated, get updated product from database
-    const updatedProduct = await Products.findOne({ _id: product._id });
-
-    return updatedProduct;
+    return { ...topLevelProduct, ...productUpdates };
   }
 
   return null;
