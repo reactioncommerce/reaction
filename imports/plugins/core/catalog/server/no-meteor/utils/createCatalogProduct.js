@@ -61,53 +61,20 @@ export function xformVariant(variant, variantPriceInfo, shopCurrencyCode, varian
 }
 
 /**
- * @method createCatalogProduct
- * @summary Publish a product to the Catalog collection
- * @memberof Catalog
- * @param {Object} product - A product object
- * @param {Object} context - The app context
- * @return {boolean} true on successful publish, false if publish was unsuccessful
+ * @summary The core function for transforming a Product to a CatalogProduct
+ * @param {Object} data Data obj
+ * @param {Object} data.collections Map of MongoDB collections by name
+ * @param {Object} data.product The source product
+ * @param {Object} data.shop The Shop document for the shop that owns the product
+ * @param {Object[]} data.variants The Product documents for all variants of this product
+ * @returns {Object} The CatalogProduct document
  */
-export default async function createCatalogProduct(product, context) {
-  const { collections, getFunctionsOfType } = context;
-  const { Products, Shops } = collections;
-
-  if (!product) {
-    Logger.info("Cannot publish to catalog: undefined product");
-    return false;
-  }
-
-  if (Array.isArray(product.ancestors) && product.ancestors.length) {
-    Logger.info("Cannot publish to catalog: product is a variant");
-    return false;
-  }
-
-  const shop = await Shops.findOne(
-    { _id: product.shopId },
-    {
-      fields: {
-        currencies: 1,
-        currency: 1
-      }
-    }
-  );
-  if (!shop) {
-    Logger.info(`Cannot publish to catalog: product's shop (ID ${product.shopId}) not found`);
-    return false;
-  }
-
+export async function xformProduct({ collections, product, shop, variants }) {
   const shopCurrencyCode = shop.currency;
   const shopCurrencyInfo = shop.currencies[shopCurrencyCode];
 
   const catalogProductMedia = await getCatalogProductMedia(product._id, collections);
   const primaryImage = catalogProductMedia.find(({ toGrid }) => toGrid === 1) || null;
-
-  // Get all variants of the product and denormalize them into an array on the CatalogProduct
-  const variants = await Products.find({
-    ancestors: product._id,
-    isDeleted: { $ne: true },
-    isVisible: { $ne: false }
-  }).toArray();
 
   const topVariants = [];
   const options = new Map();
@@ -153,7 +120,8 @@ export default async function createCatalogProduct(product, context) {
     });
 
   const productPriceInfo = getPriceRange(prices, shopCurrencyInfo);
-  const catalogProduct = {
+
+  return {
     // We want to explicitly map everything so that new properties added to product are not published to a catalog unless we want them
     _id: product._id,
     barcode: product.barcode,
@@ -209,11 +177,57 @@ export default async function createCatalogProduct(product, context) {
     weight: product.weight,
     width: product.width
   };
+}
+
+/**
+ * @method createCatalogProduct
+ * @summary Publish a product to the Catalog collection
+ * @memberof Catalog
+ * @param {Object} product - A product object
+ * @param {Object} context - The app context
+ * @return {boolean} true on successful publish, false if publish was unsuccessful
+ */
+export default async function createCatalogProduct(product, context) {
+  const { collections, getFunctionsOfType } = context;
+  const { Products, Shops } = collections;
+
+  if (!product) {
+    Logger.info("Cannot publish to catalog: undefined product");
+    return false;
+  }
+
+  if (Array.isArray(product.ancestors) && product.ancestors.length) {
+    Logger.info("Cannot publish to catalog: product is a variant");
+    return false;
+  }
+
+  const shop = await Shops.findOne(
+    { _id: product.shopId },
+    {
+      fields: {
+        currencies: 1,
+        currency: 1
+      }
+    }
+  );
+  if (!shop) {
+    Logger.info(`Cannot publish to catalog: product's shop (ID ${product.shopId}) not found`);
+    return false;
+  }
+
+  // Get all variants of the product and denormalize them into an array on the CatalogProduct
+  const variants = await Products.find({
+    ancestors: product._id,
+    isDeleted: { $ne: true },
+    isVisible: { $ne: false }
+  }).toArray();
+
+  const catalogProduct = await xformProduct({ collections, product, shop, variants });
 
   // Apply custom transformations from plugins.
   getFunctionsOfType("publishProductToCatalog").forEach((customPublishFunc) => {
     // Functions of type "publishProductToCatalog" are expected to mutate the provided catalogProduct.
-    customPublishFunc(catalogProduct, { collections, product, shop, variants });
+    customPublishFunc(catalogProduct, { context, product, shop, variants });
   });
 
   return catalogProduct;
