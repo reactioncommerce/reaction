@@ -3,5 +3,5 @@ import { getXformedCurrencyByCode, xformCurrencyExchangePricing } from "@reactio
 export default {
   currency: (node) => getXformedCurrencyByCode(node.currencyCode),
   currencyExchangePricing: (node, { currencyCode }, context) => xformCurrencyExchangePricing(node, currencyCode, context),
-  compareAtPrice: (node) => ({ amount: node.compareAtPrice || 0, currencyCode: node.currencyCode })
+  compareAtPrice: ({ compareAtPrice: amount, currencyCode }) => (typeof amount === "number" && amount > 0 ? { amount, currencyCode } : null)
 };
