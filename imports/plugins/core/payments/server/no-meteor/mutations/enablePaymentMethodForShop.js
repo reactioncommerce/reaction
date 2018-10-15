@@ -4,21 +4,21 @@ import { Shops } from "/lib/collections";
 import { paymentMethods as allPaymentMethods } from "/imports/plugins/core/core/server/no-meteor/pluginRegistration";
 
 const paramsSchema = new SimpleSchema({
-  shopId: String,
+  isEnabled: Boolean,
   paymentMethodName: String,
-  isEnabled: Boolean
+  shopId: String
 });
 
 export default async function enablePaymentMethodForShop(context, input = {}) {
   paramsSchema.validate(input);
-  const { shopId, paymentMethodName, isEnabled } = input;
+  const { isEnabled, paymentMethodName, shopId } = input;
 
   if (!allPaymentMethods[paymentMethodName]) {
     throw new ReactionError("not-found", "Requested payment method is invalid");
   }
 
   const shop = await context.queries.shopById(context, shopId);
-  const methods = new Set(shop.availablePaymentMethods)
+  const methods = new Set(shop.availablePaymentMethods);
 
   if (isEnabled) {
     methods.add(paymentMethodName);
@@ -32,8 +32,5 @@ export default async function enablePaymentMethodForShop(context, input = {}) {
     { bypassCollection2: true }
   );
 
-  const paymentMethods = await context.queries.paymentMethods(context, shopId);
-  return {
-    paymentMethods
-  };
+  return context.queries.paymentMethods(context, shopId);
 }
