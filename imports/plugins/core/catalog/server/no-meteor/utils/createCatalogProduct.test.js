@@ -8,8 +8,6 @@ import { rewire as rewire$isLowQuantity, restore as restore$isLowQuantity } from
 import { rewire as rewire$isSoldOut, restore as restore$isSoldOut } from "./isSoldOut";
 import createCatalogProduct from "./createCatalogProduct";
 
-const mockCollections = { ...mockContext.collections };
-
 const internalShopId = "123";
 const opaqueShopId = "cmVhY3Rpb24vc2hvcDoxMjM="; // reaction/shop:123
 const internalCatalogItemId = "999";
@@ -462,10 +460,10 @@ afterAll(() => {
 });
 
 test("convert product object to catalog object", async () => {
-  mockCollections.Products.toArray.mockReturnValueOnce(Promise.resolve(mockVariants));
-  mockCollections.Shops.findOne.mockReturnValueOnce(Promise.resolve(mockShop));
-  mockCollections.Catalog.updateOne.mockReturnValueOnce(Promise.resolve({ result: { ok: 0 } }));
-  const spec = await createCatalogProduct(mockProduct, mockCollections);
+  mockContext.collections.Products.toArray.mockReturnValueOnce(Promise.resolve(mockVariants));
+  mockContext.collections.Shops.findOne.mockReturnValueOnce(Promise.resolve(mockShop));
+  mockContext.collections.Catalog.updateOne.mockReturnValueOnce(Promise.resolve({ result: { ok: 0 } }));
+  const spec = await createCatalogProduct(mockProduct, mockContext);
 
   expect(spec).toEqual(mockCatalogProduct);
 });

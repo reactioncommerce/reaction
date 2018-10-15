@@ -65,10 +65,11 @@ export function xformVariant(variant, variantPriceInfo, shopCurrencyCode, varian
  * @summary Publish a product to the Catalog collection
  * @memberof Catalog
  * @param {Object} product - A product object
- * @param {Object} collections - Raw mongo collections
+ * @param {Object} context - The app context
  * @return {boolean} true on successful publish, false if publish was unsuccessful
  */
-export default async function createCatalogProduct(product, collections) {
+export default async function createCatalogProduct(product, context) {
+  const { collections, getFunctionsOfType } = context;
   const { Products, Shops } = collections;
 
   if (!product) {
@@ -208,6 +209,12 @@ export default async function createCatalogProduct(product, collections) {
     weight: product.weight,
     width: product.width
   };
+
+  // Apply custom transformations from plugins.
+  getFunctionsOfType("publishProductToCatalog").forEach((customPublishFunc) => {
+    // Functions of type "publishProductToCatalog" are expected to mutate the provided catalogProduct.
+    customPublishFunc(catalogProduct, { collections, product, shop, variants });
+  });
 
   return catalogProduct;
 }

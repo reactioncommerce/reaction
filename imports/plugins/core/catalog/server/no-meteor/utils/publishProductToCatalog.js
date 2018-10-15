@@ -10,14 +10,14 @@ import createCatalogProduct from "./createCatalogProduct";
  * @summary Publish a product to the Catalog collection
  * @memberof Catalog
  * @param {Object} product - A product object
- * @param {Object} collections - Raw mongo collections
+ * @param {Object} context - The app context
  * @return {boolean} true on successful publish, false if publish was unsuccessful
  */
-export default async function publishProductToCatalog(product, collections) {
-  const { Catalog, Products } = collections;
+export default async function publishProductToCatalog(product, context) {
+  const { Catalog, Products } = context.collections;
 
   // Convert Product schema object to Catalog schema object
-  const catalogProduct = await createCatalogProduct(product, collections);
+  const catalogProduct = await createCatalogProduct(product, context);
 
   // Check to see if product has variants
   // If not, do not publish the product to the Catalog
@@ -52,7 +52,7 @@ export default async function publishProductToCatalog(product, collections) {
   const wasUpdateSuccessful = result && result.result && result.result.ok === 1;
   if (wasUpdateSuccessful) {
     // Update the Product hashes so that we know there are now no unpublished changes
-    const productHash = await createProductHash(product, collections);
+    const productHash = await createProductHash(product, context.collections);
 
     const now = new Date();
     const productUpdates = {
