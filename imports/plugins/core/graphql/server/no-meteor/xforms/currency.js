@@ -72,6 +72,7 @@ export async function xformCurrencyExchangePricing(pricing, currencyCode, contex
   // Stop processing if we don't have a valid currency exchange rate.
   // rate may be undefined if Open Exchange Rates or an equivalent service is not configured properly.
   if (typeof rate !== "number") {
+    Logger.warn("Currency exchange rates are not available. Exchange rate fetching may not be configured.")
     return null;
   }
 
