@@ -6,9 +6,21 @@ import { paymentMethods as allPaymentMethods } from "/imports/plugins/core/core/
 const paramsSchema = new SimpleSchema({
   isEnabled: Boolean,
   paymentMethodName: String,
-  shopId: String
+  shopId: String,
+  clientMutationId: { type: String, optional: true }
 });
 
+/**
+ * @method enablePaymentMethodForShop
+ * @summary Enables (or disables) payment method for a given shop
+ * @param {Object} context -  an object containing the per-request state
+ * @param {Object} input - EnablePaymentMethodForShopInput
+ * @param {String} input.isEnabled - Whether to enable or disable specified payment method
+ * @param {String} input.paymentMethodName - The name of the payment method to enable or disable
+ * @param {String} input.shopId - The id of the shop to enable payment method on
+ * @param {String} [input.clientMutationId] - An optional string identifying the mutation call
+ * @return {Promise<Array<Object>>} Array<PaymentMethod>
+ */
 export default async function enablePaymentMethodForShop(context, input = {}) {
   paramsSchema.validate(input);
   const { isEnabled, paymentMethodName, shopId } = input;
