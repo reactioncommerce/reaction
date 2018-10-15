@@ -6,7 +6,7 @@ import {
 import { rewire as rewire$isBackorder, restore as restore$isBackorder } from "./isBackorder";
 import { rewire as rewire$isLowQuantity, restore as restore$isLowQuantity } from "./isLowQuantity";
 import { rewire as rewire$isSoldOut, restore as restore$isSoldOut } from "./isSoldOut";
-import createCatalogProduct from "./createCatalogProduct";
+import createCatalogProduct, { restore$createCatalogProduct, rewire$xformProduct } from "./createCatalogProduct";
 
 const internalShopId = "123";
 const opaqueShopId = "cmVhY3Rpb24vc2hvcDoxMjM="; // reaction/shop:123
@@ -457,13 +457,37 @@ afterAll(() => {
   restore$isLowQuantity();
   restore$isSoldOut();
   restore$getCatalogProductMedia();
+  restore$createCatalogProduct();
 });
 
 test("convert product object to catalog object", async () => {
   mockContext.collections.Products.toArray.mockReturnValueOnce(Promise.resolve(mockVariants));
   mockContext.collections.Shops.findOne.mockReturnValueOnce(Promise.resolve(mockShop));
-  mockContext.collections.Catalog.updateOne.mockReturnValueOnce(Promise.resolve({ result: { ok: 0 } }));
   const spec = await createCatalogProduct(mockProduct, mockContext);
 
   expect(spec).toEqual(mockCatalogProduct);
+});
+
+test("calls functions of type publishProductToCatalog, which can mutate the catalog product", async () => {
+  mockContext.collections.Products.toArray.mockReturnValueOnce(Promise.resolve(mockVariants));
+  mockContext.collections.Shops.findOne.mockReturnValueOnce(Promise.resolve(mockShop));
+
+  rewire$xformProduct(() => ({ mock: true }));
+
+  const mockCustomPublisher = jest.fn().mockName("mockCustomPublisher").mockImplementation((obj) => {
+    obj.foo = "bar";
+  });
+
+  const catalogProduct = await createCatalogProduct({}, {
+    ...mockContext,
+    getFunctionsOfType: () => [mockCustomPublisher]
+  });
+
+  expect(catalogProduct).toEqual({ foo: "bar", mock: true });
+  expect(mockCustomPublisher).toHaveBeenCalledWith({ foo: "bar", mock: true }, {
+    context: jasmine.any(Object),
+    product: {},
+    shop: mockShop,
+    variants: mockVariants
+  });
 });
