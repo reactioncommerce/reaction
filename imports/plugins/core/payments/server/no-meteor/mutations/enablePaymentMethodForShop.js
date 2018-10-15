@@ -1,3 +1,4 @@
+import ReactionError from "@reactioncommerce/reaction-error";
 import SimpleSchema from "simpl-schema";
 import { Shops } from "/lib/collections";
 import { paymentMethods as allPaymentMethods } from "/imports/plugins/core/core/server/no-meteor/pluginRegistration";
@@ -10,8 +11,12 @@ const paramsSchema = new SimpleSchema({
 
 export default async function enablePaymentMethodForShop(context, input = {}) {
   paramsSchema.validate(input);
-
   const { shopId, paymentMethodName, isEnabled } = input;
+
+  if (!allPaymentMethods[paymentMethodName]) {
+    throw new ReactionError("not-found", "Requested payment method is invalid");
+  }
+
   const shop = await context.queries.shopById(context, shopId);
   const methods = new Set(shop.availablePaymentMethods)
 
@@ -28,7 +33,6 @@ export default async function enablePaymentMethodForShop(context, input = {}) {
   );
 
   const paymentMethods = await context.queries.paymentMethods(context, shopId);
-
   return {
     paymentMethods
   };
