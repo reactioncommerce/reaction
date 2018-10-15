@@ -78,17 +78,21 @@ export async function xformCurrencyExchangePricing(pricing, currencyCode, contex
   }
 
   const { compareAtPrice, price, minPrice, maxPrice } = pricing;
-  const compareAtPriceConverted = compareAtPrice && Number(toFixed(compareAtPrice * rate, 2));
   const priceConverted = price && Number(toFixed(price * rate, 2));
   const minPriceConverted = minPrice && Number(toFixed(minPrice * rate, 2));
   const maxPriceConverted = maxPrice && Number(toFixed(maxPrice * rate, 2));
   const displayPrice = getDisplayPrice(minPriceConverted, maxPriceConverted, currencyInfo);
+  let compareAtPriceConverted = null;
+
+  if (typeof compareAtPrice === "number" && compareAtPrice > 0) {
+    compareAtPriceConverted = {
+      amount: Number(toFixed(compareAtPrice * rate, 2)),
+      currencyCode
+    };
+  }
 
   return {
-    compareAtPrice: {
-      amount: compareAtPriceConverted || 0,
-      currencyCode
-    },
+    compareAtPrice: compareAtPriceConverted,
     displayPrice,
     price: priceConverted,
     minPrice: minPriceConverted,
