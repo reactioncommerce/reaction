@@ -414,7 +414,7 @@ registerSchema("PriceRange", PriceRange);
  * @property {String} publishedScope optional
  * @property {Workflow} workflow optional
  * @property {String} publishedProductHash optional
- * @property {Boolean} shouldAppearInSitemap optional
+ * @property {Boolean} shouldAppearInSitemap optional, whether this product should appear in auto-generated sitemap.xml
  */
 export const Product = new SimpleSchema({
   "_id": {
