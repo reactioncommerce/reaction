@@ -92,10 +92,7 @@ const minMaxPricingInput = {
 };
 
 const minMaxPricingOutput = {
-  compareAtPrice: {
-    amount: 0,
-    currencyCode: "EUR"
-  },
+  compareAtPrice: null,
   displayPrice: "11,13 € - 17,12 €",
   price: null,
   minPrice: 11.13,
