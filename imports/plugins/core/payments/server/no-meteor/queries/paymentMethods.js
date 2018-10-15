@@ -1,5 +1,5 @@
 import ReactionError from "@reactioncommerce/reaction-error";
-import { paymentMethods as paymentMethodList } from "/imports/plugins/core/core/server/no-meteor/pluginRegistration";
+import { paymentMethods as allPaymentMethods } from "/imports/plugins/core/core/server/no-meteor/pluginRegistration";
 
 /**
  * @name paymentMethods
@@ -19,9 +19,9 @@ export default async function paymentMethods(context, shopId) {
     throw new ReactionError("access-denied", "Access denied");
   }
 
-  return Object.keys(paymentMethodList)
+  return Object.keys(allPaymentMethods)
     .map((name) => ({
-      ...paymentMethodList[name],
+      ...allPaymentMethods[name],
       isEnabled: availablePaymentMethods.includes(name)
     }));
 }
