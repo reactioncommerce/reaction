@@ -1,8 +1,6 @@
 import Logger from "@reactioncommerce/logger";
-import nodemailer from "@reactioncommerce/nodemailer";
-import { Meteor } from "meteor/meteor";
 import { Emails, Jobs } from "/lib/collections";
-import Email from "./Email";
+import appEvents from "/imports/node-app/core/util/appEvents";
 
 /**
  * @returns {undefined}
@@ -19,6 +17,48 @@ export default function processEmailJobs() {
     workTimeout: 2 * 60 * 1000, // fail if it takes longer than 2mins
     payload: 20
   }, (jobs, callback) => {
+    /**
+     * @name sendEmailCompleted
+     * @summary Function to call when an email has successfully been sent
+     * @param {Object} job The job that completed
+     * @param {String} message A message to log
+     * @return {undefined} undefined
+     */
+    function sendEmailCompleted(job, message) {
+      const jobId = job._doc._id;
+
+      Emails.update({ jobId }, {
+        $set: {
+          status: "completed"
+        }
+      });
+
+      Logger.debug(message);
+
+      return job.done();
+    }
+
+    /**
+     * @name sendEmailFailed
+     * @summary Function to call when an email delivery attempt has failed
+     * @param {Object} job The job that failed
+     * @param {String} message A message to log
+     * @return {undefined} undefined
+     */
+    function sendEmailFailed(job, message) {
+      const jobId = job._doc._id;
+
+      Emails.update({ jobId }, {
+        $set: {
+          status: "failed"
+        }
+      });
+
+      Logger.error(message);
+
+      return job.fail(message);
+    }
+
     jobs.forEach((job) => {
       const { from, to, subject, html, ...optionalEmailFields } = job.data;
 
@@ -43,43 +83,7 @@ export default function processEmailJobs() {
         upsert: true
       });
 
-      const config = Email.getMailConfig();
-
-      if (config.direct) {
-        Emails.update({ jobId }, {
-          $set: {
-            status: "failed"
-          }
-        });
-        const msg = "Mail not configured";
-        Logger.error(msg);
-        return job.fail(msg);
-      }
-
-      Logger.debug(config, "Sending email with config");
-
-      const transport = nodemailer.createTransport(config);
-
-      transport.sendMail({ from, to, subject, html, ...optionalEmailFields }, Meteor.bindEnvironment((error) => {
-        if (error) {
-          Emails.update({ jobId }, {
-            $set: {
-              status: "failed"
-            }
-          });
-          Logger.error(error, "Email job failed");
-          return job.fail(error.toString());
-        }
-        Emails.update({ jobId }, {
-          $set: {
-            status: "completed"
-          }
-        });
-        Logger.debug(`Successfully sent email to ${to}`);
-        return job.done();
-      }));
-
-      return true;
+      appEvents.emit("sendEmail", job, { sendEmailCompleted, sendEmailFailed });
     });
 
     return callback();
