@@ -69,7 +69,7 @@ test("errors on invalid shop", async () => {
 });
 
 test("enables payment method for valid shop", async () => {
-  fakeShop.availablePaymentMethods = [ "mockPaymentMethod" ];
+  fakeShop.availablePaymentMethods = ["mockPaymentMethod"];
   mockContext.userHasPermission.mockReturnValue(true);
   mockShopById.mockReturnValue(fakeShop);
   mockPaymentMethods.mockReturnValue([{
