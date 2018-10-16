@@ -1,7 +1,6 @@
 import Factory from "/imports/test-utils/helpers/factory";
 import enablePaymentMethodForShop from "./enablePaymentMethodForShop";
 import mockContext from "/imports/test-utils/helpers/mockContext";
-import paymentMethods from "../queries/paymentMethods";
 
 jest.mock("/imports/plugins/core/core/server/no-meteor/pluginRegistration", () => ({
   paymentMethods: {
@@ -14,12 +13,13 @@ jest.mock("/imports/plugins/core/core/server/no-meteor/pluginRegistration", () =
 }));
 
 const fakeShop = Factory.Shop.makeOne();
-const mockShopById = jest.fn().mockName("shopById");
 const mockEnablePaymentMethod = jest.fn().mockName("enablePaymentMethodForShop");
+const mockPaymentMethods = jest.fn().mockName("paymentMethods");
+const mockShopById = jest.fn().mockName("shopById");
 
 beforeAll(() => {
   mockContext.queries = {
-    paymentMethods,
+    paymentMethods: mockPaymentMethods,
     shopById: mockShopById
   };
   mockContext.mutations = { enablePaymentMethodForShop: mockEnablePaymentMethod };
@@ -69,8 +69,15 @@ test("errors on invalid shop", async () => {
 });
 
 test("enables payment method for valid shop", async () => {
+  fakeShop.availablePaymentMethods = [ "mockPaymentMethod" ];
   mockContext.userHasPermission.mockReturnValue(true);
   mockShopById.mockReturnValue(fakeShop);
+  mockPaymentMethods.mockReturnValue([{
+    name: "mockPaymentMethod",
+    displayName: "Mock!",
+    pluginName: "mock-plugin",
+    isEnabled: true
+  }]);
 
   await expect(enablePaymentMethodForShop(mockContext, {
     shopId: fakeShop._id,
@@ -82,11 +89,19 @@ test("enables payment method for valid shop", async () => {
     pluginName: "mock-plugin",
     isEnabled: true
   }]);
+
+  expect(mockPaymentMethods).toHaveBeenCalledWith(mockContext, fakeShop._id);
 });
 
 test("disables payment method for valid shop", async () => {
   mockContext.userHasPermission.mockReturnValue(true);
   mockShopById.mockReturnValue(fakeShop);
+  mockPaymentMethods.mockReturnValue([{
+    name: "mockPaymentMethod",
+    displayName: "Mock!",
+    pluginName: "mock-plugin",
+    isEnabled: false
+  }]);
 
   await expect(enablePaymentMethodForShop(mockContext, {
     shopId: fakeShop._id,
@@ -98,4 +113,6 @@ test("disables payment method for valid shop", async () => {
     pluginName: "mock-plugin",
     isEnabled: false
   }]);
+
+  expect(mockPaymentMethods).toHaveBeenCalledWith(mockContext, fakeShop._id);
 });
