@@ -8,9 +8,22 @@ export default class EmailConfigContainer extends Component {
   };
 
   componentDidMount() {
-    const emailProviders = Reaction.Apps({ provides: "emailProviderConfig" });
-    if (emailProviders && emailProviders[0]) {
-      const { template: configComponentName } = emailProviders[0];
+    // Load plugins that provide an email provider config component
+    let emailProviderPlugins = Reaction.Apps({ provides: "emailProviderConfig" });
+
+    // If more then one plugin provides emailProviderConfig, use first non-core plugin (core is reaction-email-smtp)
+    let emailProviderPlugin;
+    if (emailProviderPlugins && emailProviderPlugins.length) {
+      if (emailProviderPlugins.length === 1) {
+        emailProviderPlugin = emailProviderPlugins[0];
+      } else {
+        emailProviderPlugins = emailProviderPlugins.filter((plugin) => plugin.packageName !== "reaction-email-smtp");
+        emailProviderPlugin = emailProviderPlugins[0];
+      }
+    }
+
+    if (emailProviderPlugin) {
+      const { template: configComponentName } = emailProviderPlugin;
       this.setState({ configComponentName });
     }
   }
