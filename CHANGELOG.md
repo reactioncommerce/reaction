@@ -1,7 +1,26 @@
 # v2.0.0-rc.5
 This is our fifth **release candidate** for v2.0.0 of Reaction. Please check it out and let us know what works and what doesn't for you.
 
- - WIP
+## GraphQL
+We've added two (2) new GraphQL queries for payment methods. A query `paymentMethods` which will list all registered payment methods and is restricted to operators and `availablePaymentMethods` which will list all payment methods which have been enabled. These new queries were added in #4709.
+
+We've also updated the CartItems GraphQL query to include a `CartItems.productTags` resolver which will return the tags for a CartItem. The new resolver and updated schemas were added in #4715
+
+## Classic Storefront UI Updates
+We've replaced the customer facing Product Grid in the Classic Storefront UI with our [CatalogGrid](https://designsystem.reactioncommerce.com/#!/CatalogGrid) component from the Reaction Design System. This was accomplished in #4649
+
+## Public API Changes
+We've changed the GraphQL schema for `PaymentMethod@name` from `PaymentMethodName` to `String`. `PaymentMethodName` was a subset of string and this should not cause any issues.
+
+## Breaking Changes
+No breaking changes to our public API.
+
+Because we've replaced the customer facing Product Grid UI in the Classic Storefront UI, if you had any plugins which relied on specific selectors or the structure of the existing UI, those may need to be updated.
+
+## Features
+ - feat: payment methods (#4709) .. Resolves #4574
+ - feat: use component library's CatalogGrid - 2.0 (#4649)
+ - feature: add product tags to cart items (#4715)
 
 # v2.0.0-rc.4
 This is our fourth **release candidate** for v2.0.0 of Reaction. Please check it out and let us know what works and what doesn't for you.
