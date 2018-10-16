@@ -1,6 +1,5 @@
 import ReactionError from "@reactioncommerce/reaction-error";
 import SimpleSchema from "simpl-schema";
-import { Shops } from "/lib/collections";
 import { paymentMethods as allPaymentMethods } from "/imports/plugins/core/core/server/no-meteor/pluginRegistration";
 
 const paramsSchema = new SimpleSchema({
@@ -23,6 +22,7 @@ const paramsSchema = new SimpleSchema({
  */
 export default async function enablePaymentMethodForShop(context, input = {}) {
   paramsSchema.validate(input);
+  const { Shops } = context.collections;
   const { isEnabled, paymentMethodName, shopId } = input;
 
   if (!allPaymentMethods[paymentMethodName]) {
@@ -30,6 +30,8 @@ export default async function enablePaymentMethodForShop(context, input = {}) {
   }
 
   const shop = await context.queries.shopById(context, shopId);
+  if (!shop) throw new ReactionError("not-found", "Shop not found");
+
   const methods = new Set(shop.availablePaymentMethods);
 
   if (isEnabled) {
@@ -38,10 +40,9 @@ export default async function enablePaymentMethodForShop(context, input = {}) {
     methods.delete(paymentMethodName);
   }
 
-  await Shops.update(
+  await Shops.updateOne(
     { _id: shop._id },
-    { $set: { availablePaymentMethods: Array.from(methods) } },
-    { bypassCollection2: true }
+    { $set: { availablePaymentMethods: Array.from(methods) } }
   );
 
   return context.queries.paymentMethods(context, shopId);

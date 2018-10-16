@@ -16,8 +16,10 @@ import { decodeShopOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/sh
  */
 export default async function enablePaymentMethodForShop(parentResult, { input }, context) {
   const { clientMutationId } = input;
-  input.shopId = decodeShopOpaqueId(input.shopId);
-  const paymentMethods = await context.mutations.enablePaymentMethodForShop(context, input);
+  const paymentMethods = await context.mutations.enablePaymentMethodForShop(context, {
+    ...input,
+    shopId: decodeShopOpaqueId(input.shopId)
+  });
 
   return {
     clientMutationId,
