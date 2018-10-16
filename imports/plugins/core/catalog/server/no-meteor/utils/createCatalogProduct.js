@@ -192,12 +192,12 @@ export default async function createCatalogProduct(product, context) {
   const { Products, Shops } = collections;
 
   if (!product) {
-    Logger.info("Cannot publish to catalog: undefined product");
+    Logger.error("Cannot publish to catalog: undefined product");
     return false;
   }
 
   if (Array.isArray(product.ancestors) && product.ancestors.length) {
-    Logger.info("Cannot publish to catalog: product is a variant");
+    Logger.error("Cannot publish to catalog: product is a variant");
     return false;
   }
 
@@ -211,7 +211,7 @@ export default async function createCatalogProduct(product, context) {
     }
   );
   if (!shop) {
-    Logger.info(`Cannot publish to catalog: product's shop (ID ${product.shopId}) not found`);
+    Logger.error(`Cannot publish to catalog: product's shop (ID ${product.shopId}) not found`);
     return false;
   }
 
