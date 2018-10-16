@@ -5,8 +5,7 @@ import { paymentMethods as allPaymentMethods } from "/imports/plugins/core/core/
 const paramsSchema = new SimpleSchema({
   isEnabled: Boolean,
   paymentMethodName: String,
-  shopId: String,
-  clientMutationId: { type: String, optional: true }
+  shopId: String
 });
 
 /**
@@ -21,7 +20,7 @@ const paramsSchema = new SimpleSchema({
  * @return {Promise<Array<Object>>} Array<PaymentMethod>
  */
 export default async function enablePaymentMethodForShop(context, input = {}) {
-  paramsSchema.validate(input);
+  paramsSchema.validate(input, { ignore: [SimpleSchema.ErrorTypes.KEY_NOT_IN_SCHEMA] });
   const { Shops } = context.collections;
   const { isEnabled, paymentMethodName, shopId } = input;
 
