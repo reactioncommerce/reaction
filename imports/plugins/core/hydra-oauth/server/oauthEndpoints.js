@@ -68,6 +68,19 @@ WebApp.connectHandlers.use("/consent", (req, res) => {
     .catch((errorMessage) => errorHandler(errorMessage, res));
 });
 
+WebApp.connectHandlers.use("/token/refresh", (req, res) => {
+  res.setHeader("Access-Control-Allow-Origin", process.env.OAUTH2_CLIENT_DOMAIN);
+
+  hydra
+    .refreshAuthToken(req.query)
+    .then((apiRes) => {
+      Logger.debug(`Refresh auth token call successful: ${apiRes.statusCode}`);
+      res.writeHead(200, { "Content-Type": "application/json" });
+      return res.end(JSON.stringify(apiRes));
+    })
+    .catch((errorMessage) => errorHandler(errorMessage, res));
+});
+
 WebApp.connectHandlers.use("/logout", (req, res) => {
   hydra
     .deleteUserSession(req.query.userId)

@@ -1,7 +1,7 @@
 import Logger from "@reactioncommerce/logger";
 import fetch from "node-fetch";
 
-const { HYDRA_ADMIN_URL } = process.env;
+const { HYDRA_ADMIN_URL, HYDRA_TOKEN_URL } = process.env;
 let mockTlsTermination = {};
 
 if (process.env.MOCK_TLS_TERMINATION) {
@@ -78,6 +78,29 @@ function deleteUserSession(id) {
     });
 }
 
+/**
+ * @name refreshAuthToken
+ * @method
+ * @private
+ * @param  {String} options options
+ * @return {Object|String} API res
+ */
+function refreshAuthToken({ refreshToken, clientId, clientSecret }) {
+  return fetch(`${HYDRA_TOKEN_URL}`, {
+    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+    method: "POST",
+    body: `grant_type=refresh_token&refresh_token=${refreshToken}&response_type=token&client_id=${clientId}&client_secret=${clientSecret}`
+  })
+    .then(async (res) => {
+      if (res.status < 200 || res.status > 302) {
+        const json = await res.json();
+        Logger.error("An error occurred while calling refresh API", json.error_description);
+        return Promise.reject(new Error(json.error_description));
+      }
+      return res.json();
+    });
+}
+
 export default {
   getLoginRequest: (challenge) => get("login", challenge),
   acceptLoginRequest: (challenge, body) => put("login", "accept", challenge, body),
@@ -85,5 +108,6 @@ export default {
   getConsentRequest: (challenge) => get("consent", challenge),
   acceptConsentRequest: (challenge, body) => put("consent", "accept", challenge, body),
   rejectConsentRequest: (challenge, body) => put("consent", "reject", challenge, body),
-  deleteUserSession: (id) => deleteUserSession(id)
+  deleteUserSession: (id) => deleteUserSession(id),
+  refreshAuthToken: (options) => refreshAuthToken(options)
 };
