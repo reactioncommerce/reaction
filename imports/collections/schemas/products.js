@@ -368,6 +368,7 @@ registerSchema("PriceRange", PriceRange);
  * @property {Date} publishedAt optional
  * @property {String} publishedProductHash optional
  * @property {String} shopId Product ShopID
+ * @property {Boolean} shouldAppearInSitemap optional, whether this product should appear in auto-generated sitemap.xml
  * @property {String[]} supportedFulfillmentTypes Types of fulfillment ("shipping", "pickup", etc) allowed for this product
  * @property {String} template, default value: `"productDetailSimple"`
  * @property {String} title Product Title
@@ -500,6 +501,11 @@ export const Product = new SimpleSchema({
     type: String,
     index: 1,
     label: "Product ShopId"
+  },
+  "shouldAppearInSitemap": {
+    type: Boolean,
+    optional: true,
+    defaultValue: true
   },
   "supportedFulfillmentTypes": {
     type: Array,

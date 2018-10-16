@@ -14,6 +14,13 @@ const input = {
     decimal: ",",
     thousand: ".",
     rate: 0.812743
+  },
+  EUR_NO_RATE: {
+    enabled: true,
+    format: "%v %s",
+    symbol: "€",
+    decimal: ",",
+    thousand: "."
   }
 };
 
@@ -35,6 +42,15 @@ const expected = [
     decimal: ",",
     thousand: ".",
     rate: 0.812743
+  },
+  {
+    _id: "EUR_NO_RATE",
+    code: "EUR_NO_RATE",
+    enabled: true,
+    format: "%v %s",
+    symbol: "€",
+    decimal: ",",
+    thousand: "."
   }
 ];
 
@@ -48,6 +64,13 @@ const testShop = {
       decimal: ",",
       thousand: ".",
       rate: 0.856467
+    },
+    EUR_NO_RATE: {
+      enabled: true,
+      format: "%v %s",
+      symbol: "€",
+      decimal: ",",
+      thousand: "."
     }
   }
 };
@@ -69,6 +92,7 @@ const minMaxPricingInput = {
 };
 
 const minMaxPricingOutput = {
+  compareAtPrice: null,
   displayPrice: "11,13 € - 17,12 €",
   price: null,
   minPrice: 11.13,
@@ -82,4 +106,8 @@ test("xformLegacyCurrencies converts legacy currency object to an array", () => 
 
 test("xformCurrencyExchangePricing converts min-max pricing object correctly", async () => {
   expect(await xformCurrencyExchangePricing(minMaxPricingInput, "EUR", testContext)).toEqual(minMaxPricingOutput);
+});
+
+test("xformCurrencyExchangePricing converts min-max pricing object correctly", async () => {
+  expect(await xformCurrencyExchangePricing(minMaxPricingInput, "EUR_NO_RATE", testContext)).toEqual(null);
 });

@@ -27,6 +27,7 @@ const mockVariants = [
     ancestors: [internalCatalogProductId],
     barcode: "barcode",
     createdAt,
+    compareAtPrice: 1100,
     height: 0,
     index: 0,
     inventoryManagement: true,
@@ -389,7 +390,7 @@ const mockCatalogProduct = {
     price: 0,
     pricing: {
       USD: {
-        compareAtPrice: null,
+        compareAtPrice: 1100,
         displayPrice: "$992.00",
         maxPrice: 992,
         minPrice: 992,
