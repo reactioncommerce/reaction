@@ -19,7 +19,8 @@ export default function processEmailJobs() {
   }, (jobs, callback) => {
     /**
      * @name sendEmailCompleted
-     * @summary Function to call when an email has successfully been sent
+     * @summary Callback for when an email has successfully been sent.
+     *  Updates email status in DB, logs a debug message, and marks job as done.
      * @param {Object} job The job that completed
      * @param {String} message A message to log
      * @return {undefined} undefined
@@ -40,7 +41,8 @@ export default function processEmailJobs() {
 
     /**
      * @name sendEmailFailed
-     * @summary Function to call when an email delivery attempt has failed
+     * @summary Callback for when an email delivery attempt has failed.
+     *  Updates email status in DB, logs an error message, and marks job as failed.
      * @param {Object} job The job that failed
      * @param {String} message A message to log
      * @return {undefined} undefined

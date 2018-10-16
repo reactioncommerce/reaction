@@ -7,7 +7,7 @@ export default class EmailConfig extends Component {
     configComponentName: PropTypes.string
   };
 
-  render () {
+  render() {
     const { configComponentName } = this.props;
 
     let ConfigComponent;
@@ -24,7 +24,7 @@ export default class EmailConfig extends Component {
             title="Mail Provider"
           />
           <Components.CardBody expandable={true}>
-            {ConfigComponent && ( <ConfigComponent /> )}
+            {ConfigComponent && (<ConfigComponent />)}
           </Components.CardBody>
         </Components.Card>
       </Components.CardGroup>
