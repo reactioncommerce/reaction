@@ -25,6 +25,10 @@ export default async function enablePaymentMethodForShop(context, input = {}) {
   const { Shops } = context.collections;
   const { isEnabled, paymentMethodName, shopId } = input;
 
+  if (!context.userHasPermission(["owner", "admin"], shopId)) {
+    throw new ReactionError("access-denied", "Access denied");
+  }
+
   if (!allPaymentMethods[paymentMethodName]) {
     throw new ReactionError("not-found", "Requested payment method is invalid");
   }
