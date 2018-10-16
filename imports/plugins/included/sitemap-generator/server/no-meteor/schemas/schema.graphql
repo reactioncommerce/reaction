@@ -1,6 +1,6 @@
 extend type Mutation {
   "Generate sitemap documents"
-  generateSitemaps(input: GenerateSitemapsInput): GenerateSitemapsPayload
+  generateSitemaps(input: GenerateSitemapsInput): GenerateSitemapsPayload!
 }
 
 "Input for the `generateSitemaps` mutation"
@@ -11,9 +11,9 @@ input GenerateSitemapsInput {
 
 "Response for the `generateSitemaps` mutation"
 type GenerateSitemapsPayload {
-  "Whether the sitemap generation job was successfully schedule"
-  wasJobScheduled: Boolean
-
   "The same string you sent with the mutation params, for matching mutation calls with their responses"
   clientMutationId: String
+  
+  "Whether the sitemap generation job was successfully scheduled"
+  wasJobScheduled: Boolean!
 }
