@@ -26,7 +26,7 @@ type ProductPricingInfo {
   A comparison price value, usually MSRP. If `price` is null, this will also be null. That is,
   only purchasable variants will have a `compareAtPrice`.
   """
-  compareAtPrice: Float
+  compareAtPrice: Money
 
   "The code for the currency these pricing details applies to"
   currency: Currency!
@@ -63,7 +63,7 @@ type CurrencyExchangeProductPricingInfo {
   A comparison price value, usually MSRP. If `price` is null, this will also be null. That is,
   only purchasable variants will have a `compareAtPrice`.
   """
-  compareAtPrice: Float
+  compareAtPrice: Money
 
   "The code for the currency these pricing details applies to"
   currency: Currency!
