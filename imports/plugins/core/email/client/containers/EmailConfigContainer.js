@@ -15,10 +15,10 @@ export default class EmailConfigContainer extends Component {
     let emailProviderPlugin;
     if (emailProviderPlugins && emailProviderPlugins.length) {
       if (emailProviderPlugins.length === 1) {
-        emailProviderPlugin = emailProviderPlugins[0];
+        [emailProviderPlugin] = emailProviderPlugins;
       } else {
         emailProviderPlugins = emailProviderPlugins.filter((plugin) => plugin.packageName !== "reaction-email-smtp");
-        emailProviderPlugin = emailProviderPlugins[0];
+        [emailProviderPlugin] = emailProviderPlugins;
       }
     }
 
