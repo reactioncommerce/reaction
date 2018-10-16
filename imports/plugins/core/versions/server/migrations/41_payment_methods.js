@@ -7,7 +7,7 @@ Migrations.add({
 
   up() {
     Shops.find().forEach((shop) => {
-      const methods = new Set(shop.availablePaymentMethods);
+      const methods = new Set();
 
       Packages.find({
         "shopId": shop._id,
