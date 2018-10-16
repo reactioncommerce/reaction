@@ -25,13 +25,9 @@ Since anything in our codebase can be extended, overwritten, or installed as a p
 
 # Getting started
 
-## Reaction 2.0
+Follow the documentation to install Reaction with [Reaction Platform](https://docs.reactioncommerce.com/docs/installation-reaction-platform) for all operating systems.
 
-Follow the documentation for [Reaction Platform](https://docs.reactioncommerce.com/docs/installation-reaction-platform) for all operating systems.
-
-## Pre-2.0 Reaction
-
-Follow the documentation for installing pre-2.0 Reaction on [OS X](https://docs.reactioncommerce.com/docs/next/installation-osx), [Windows](https://docs.reactioncommerce.com/docs/next/installation-windows) or [Linux](https://docs.reactioncommerce.com/docs/next/installation-linux).
+> Installing an older version of Reaction? Follow the documentation for installing pre-2.0 Reaction on [OS X](https://docs.reactioncommerce.com/docs/1.16.0/installation-osx), [Windows](https://docs.reactioncommerce.com/docs/1.16.0/installation-windows) or [Linux](https://docs.reactioncommerce.com/docs/1.16.0/installation-linux).
 
 # Get involved
 
@@ -53,7 +49,7 @@ Follow the documentation for installing pre-2.0 Reaction on [OS X](https://docs.
 
 :star: Star us on GitHub — it helps!
 
-Want to request a feature? Use our Reaction Feature Requests repository to file a request.
+Want to request a feature? Use our [Reaction Feature Requests repository](https://github.com/reactioncommerce/reaction-feature-requests) to file a request.
 
 We love your pull requests! Check our our [`Good First Issue`](https://github.com/reactioncommerce/reaction/issues?q=is%3Aopen+is%3Aissue+label%3A%22good+first+issue%22) and [`Help Wanted`](https://github.com/reactioncommerce/reaction/issues?q=label%3A%22help+wanted%22) tags for good issues to tackle.
 
