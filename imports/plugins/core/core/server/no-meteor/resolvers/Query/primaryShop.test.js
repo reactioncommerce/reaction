@@ -1,7 +1,6 @@
 import primaryShop from "./primaryShop";
 
 const fakeShopId = "W64ZQe9RUMuAoKrli";
-const opaqueShopId = "cmVhY3Rpb24vc2hvcDpXNjRaUWU5UlVNdUFvS3JsaQ==";
 
 const fakeShop = {
   _id: fakeShopId,
