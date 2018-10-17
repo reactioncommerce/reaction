@@ -1,5 +1,5 @@
 import { compose, withProps } from "recompose";
-import { registerComponent, composeWithTracker } from "@reactioncommerce/reaction-components";
+import { registerComponent, composeWithTracker, withTracking } from "@reactioncommerce/reaction-components";
 import { $ } from "meteor/jquery";
 import { Session } from "meteor/session";
 import { Meteor } from "meteor/meteor";
@@ -72,6 +72,7 @@ function composer(props, onData) {
 
   const productItems = cart && cart.items;
   onData(null, {
+    cartId: cart._id,
     productItems
   });
 }
@@ -79,10 +80,12 @@ function composer(props, onData) {
 // register the containers
 registerComponent("CartDrawer", CartDrawer, [
   withProps(handlers),
-  composeWithTracker(composer)
+  composeWithTracker(composer),
+  withTracking
 ]);
 
 export default compose(
   withProps(handlers),
-  composeWithTracker(composer)
+  composeWithTracker(composer),
+  withTracking
 )(CartDrawer);

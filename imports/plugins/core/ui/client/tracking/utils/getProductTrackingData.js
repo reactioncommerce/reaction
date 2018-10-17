@@ -1,3 +1,5 @@
+import { Router } from "/client/api";
+
 /**
  * Transform a product object into a partial representation of the Segment product schema.
  * Combine with `getVariantTrackingData(varaint)` to get the full definition
@@ -9,7 +11,6 @@ export default function getProductTrackingData(product) {
   let currency = "USD";
   let minPrice;
   let maxPrice;
-  let url;
 
   if (product.pricing && product.pricing.length) {
     const price = product.pricing[0];
@@ -18,13 +19,11 @@ export default function getProductTrackingData(product) {
     currency = price.currency.code; // eslint-disable-line prefer-destructuring
   }
 
-  if (window.location.pathname) {
-    url = window.location.pathname;
-  }
+  const { slug, sku } = product;
 
   return {
     product_id: product._id, // eslint-disable-line camelcase
-    sku: product.sku,
+    sku,
     category: (product.tags && Array.isArray(product.tags.nodes) && product.tags.nodes.length && product.tags.nodes[0].name) || undefined,
     name: product.title,
     brand: product.vendor,
@@ -34,6 +33,6 @@ export default function getProductTrackingData(product) {
     quantity: 1,
     value: minPrice,
     image_url: product.primaryImage && product.primaryImage.URLs.original, // eslint-disable-line camelcase
-    url
+    url: Router.pathFor("product", { hash: { handle: slug } })
   };
 }
