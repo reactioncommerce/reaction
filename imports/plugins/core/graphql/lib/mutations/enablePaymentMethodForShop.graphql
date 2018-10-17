@@ -1,6 +1,6 @@
-enablePaymentMethodForShop(input: EnablePaymentMethodForShopInput!) {
+enablePaymentMethodForShop($input: EnablePaymentMethodForShopInput!) {
   enablePaymentMethodForShop(input: $input) {
-    method {
+    paymentMethods {
       name
       displayName
       isEnabled

@@ -1,20 +1,26 @@
 import _ from "lodash";
 import getOpaqueIds from "/imports/plugins/core/core/client/util/getOpaqueIds";
 import simpleGraphQLClient from "/imports/plugins/core/graphql/lib/helpers/simpleClient";
-import { Meteor } from "meteor/meteor";
 import { Template } from "meteor/templating";
 import { AutoForm } from "meteor/aldeed:autoform";
 import { Reaction, i18next } from "/client/api";
 import { ReactiveDict } from "meteor/reactive-dict";
 import { Shops } from "/lib/collections";
 
+/* eslint-disable camelcase */
+const templates = {
+  iou_example: "exampleSettings",
+  stripe_card: "stripeSettings"
+};
+/* eslint-enable camelcase */
+
 Template.paymentSettings.onCreated(async function () {
   this.state = new ReactiveDict();
-  this.state.setDefault({ paymentMethods: [] });
+  this.state.setDefault({ shopId: null, paymentMethods: [] });
 
   const [shopId] = await getOpaqueIds([{ namespace: "Shop", id: Reaction.getShopId() }]);
   const { paymentMethods } = await simpleGraphQLClient.queries.paymentMethods({ shopId });
-  this.state.set({ paymentMethods });
+  this.state.set({ shopId, paymentMethods });
 });
 
 Template.paymentSettings.helpers({
@@ -46,6 +52,13 @@ Template.paymentSettings.helpers({
 
     return options;
   },
+  paymentMethodList() {
+    const paymentMethods = Template.instance().state.get("paymentMethods");
+    for (const method of paymentMethods) {
+      method.template = templates[method.name];
+    }
+    return paymentMethods;
+  },
   shop() {
     return Shops.findOne(Reaction.getShopId());
   }
@@ -53,19 +66,19 @@ Template.paymentSettings.helpers({
 
 // toggle payment methods visibility
 Template.paymentSettings.events({
-  "change input[name=enabled]": (event) => {
+  "change input[name=enabled]": async (event) => {
     event.preventDefault();
-    const settingsKey = event.target.getAttribute("data-key");
-    const packageId = event.target.getAttribute("data-id");
-    const fields = [{
-      property: "enabled",
-      value: event.target.checked
-    }];
-    // update package registry
-    if (packageId) {
-      Meteor.call("registry/update", packageId, settingsKey, fields);
-      Meteor.call("shop/togglePackage", packageId, !event.target.checked);
-    }
+
+    const { state } = Template.instance();
+    const response = await simpleGraphQLClient.mutations.enablePaymentMethodForShop({
+      input: {
+        shopId: state.get("shopId"),
+        paymentMethodName: event.target.getAttribute("data-name"),
+        isEnabled: event.target.checked
+      }
+    });
+    const paymentMethods = _.get(response, "enablePaymentMethodForShop.paymentMethods");
+    state.set("paymentMethods", paymentMethods);
   }
 });
 

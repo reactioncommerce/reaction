@@ -22,23 +22,21 @@
       </div>
     </div>
 
-    {{#each reactionApps provides='paymentSettings'}}
-
-    <div class="panel panel-default">
-      <div class="panel-heading panel-heading-flex">
-        <div class="panel-title">
-          <i class="fa fa-{{name}}"></i>
-          <span data-i18n="{{i18nKeyLabel}}">{{label}}</span>
-
+    {{#each paymentMethodList}}
+      <div class="panel panel-default">
+        <div class="panel-heading panel-heading-flex">
+          <div class="panel-title">
+            <i class="fa fa-{{name}}"></i>
+            <span>{{displayName}}</span>
+          </div>
+          <div class="panel-controls">
+            <input class="checkbox-switch" type="checkbox" name="enabled" data-name={{name}} {{checked isEnabled}}>
+          </div>
         </div>
-        <div class="panel-controls">
-          <input class="checkbox-switch" type="checkbox" name="enabled" data-id={{packageId}} data-key="{{settingsKey}}" {{checked enabled}}>
+        <div class="panel-body {{shown isEnabled}}">
+          {{> Template.dynamic template=template data=.}}
         </div>
       </div>
-      <div class="panel-body {{shown enabled}}">
-        {{> Template.dynamic template=template data=.}}
-      </div>
-    </div>
     {{/each}}
   </div>
 </template>
