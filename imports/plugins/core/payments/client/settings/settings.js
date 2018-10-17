@@ -14,13 +14,26 @@ const templates = {
 };
 /* eslint-enable camelcase */
 
+function modifyPaymentMethods(paymentMethods) {
+  const methods = [];
+  for (const method of paymentMethods) {
+    if (method.name !== "marketplace_stripe_card") {
+      methods.push(method);
+    }
+  }
+  return methods;
+}
+
 Template.paymentSettings.onCreated(async function () {
   this.state = new ReactiveDict();
   this.state.setDefault({ shopId: null, paymentMethods: [] });
 
   const [shopId] = await getOpaqueIds([{ namespace: "Shop", id: Reaction.getShopId() }]);
   const { paymentMethods } = await simpleGraphQLClient.queries.paymentMethods({ shopId });
-  this.state.set({ shopId, paymentMethods });
+  this.state.set({
+    shopId,
+    paymentMethods: modifyPaymentMethods(paymentMethods)
+  });
 });
 
 Template.paymentSettings.helpers({
@@ -78,7 +91,7 @@ Template.paymentSettings.events({
       }
     });
     const paymentMethods = _.get(response, "enablePaymentMethodForShop.paymentMethods");
-    state.set("paymentMethods", paymentMethods);
+    state.set("paymentMethods", modifyPaymentMethods(paymentMethods));
   }
 });
 
