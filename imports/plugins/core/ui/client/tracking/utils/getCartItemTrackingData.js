@@ -18,7 +18,7 @@ export default function getCartItemTrackingData(cartId, cartItem) {
   const { variantId, sku, title, productVendor, variantTitle, priceWhenAdded, quantity, productSlug } = cartItem;
 
   return {
-    cartId,
+    cart_id: cartId, // eslint-disable-line camelcase
     product_id: variantId, // eslint-disable-line camelcase
     sku,
     category: (tag && tag.name) || undefined,

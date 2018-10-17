@@ -19,6 +19,7 @@ class CartDrawer extends Component {
 
   componentDidMount() {
     const { cartId, productItems, tracking } = this.props;
+
     trackCartItems(tracking, {
       action: "Cart Viewed",
       cartId,
@@ -26,8 +27,20 @@ class CartDrawer extends Component {
     });
   }
 
+  handleRemoveItem = (event, item) => {
+    const { cartId, handleRemoveItem, tracking } = this.props;
+
+    trackCartItems(tracking, {
+      action: "Product Removed",
+      cartId,
+      cartItemOrItems: item
+    });
+
+    handleRemoveItem(event, item);
+  };
+
   render() {
-    const { productItems, pdpPath, handleRemoveItem, handleCheckout, handleImage, handleShowProduct } = this.props;
+    const { productItems, pdpPath, handleCheckout, handleImage, handleShowProduct } = this.props;
     return (
       <div>
         <div className="cart-drawer-swiper-container">
@@ -41,7 +54,7 @@ class CartDrawer extends Component {
                   item={item}
                   pdpPath={pdpPath}
                   handleImage={handleImage}
-                  handleRemoveItem={handleRemoveItem}
+                  handleRemoveItem={this.handleRemoveItem}
                   handleShowProduct={handleShowProduct}
                 />
               </div>
