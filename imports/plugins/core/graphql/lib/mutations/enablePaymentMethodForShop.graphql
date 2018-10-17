@@ -1,0 +1,9 @@
+enablePaymentMethodForShop(input: EnablePaymentMethodForShopInput!) {
+  enablePaymentMethodForShop(input: $input) {
+    method {
+      name
+      displayName
+      isEnabled
+    }
+  }
+}
