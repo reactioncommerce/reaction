@@ -1,4 +1,3 @@
-import _ from "lodash";
 import ReactionError from "@reactioncommerce/reaction-error";
 import { Meteor } from "meteor/meteor";
 import { Match, check } from "meteor/check";
@@ -94,60 +93,7 @@ export const methods = {
     });
 
     const updatedCart = Cart.findOne({ _id: cartId });
-    Promise.await(appEvents.emit("afterCartUpdate", cartId, updatedCart));
-
-    return result;
-  },
-
-  /**
-   * @name taxes/setRateByShopAndItem
-   * @method
-   * @memberof Taxes/Methods
-   * @summary Update the cart without hooks
-   * @param  {String} cartId cartId
-   * @param  {Object} options - Options object
-   * @param  {Object} options.taxRatesByShop - Object shopIds: taxRates
-   * @param  {Array}  options.itemsWithTax - Items array with computed tax details
-   * @param  {Object} options.cartTaxRate - Tax rate for shop associated with cart.shopId
-   * @param  {Object} options.cartTaxData - Tax data for shop associated with cart.shopId
-   * @return {Number} returns update result
-   */
-  "taxes/setRateByShopAndItem"(cartId, options) {
-    check(cartId, String);
-    check(options, {
-      taxRatesByShop: Match.OneOf(undefined, null, Object),
-      itemsWithTax: [Match.OneOf(Object, undefined)],
-      cartTaxRate: Number,
-      cartTaxData: Match.OneOf([Object], undefined, null)
-    });
-
-    const { cartTaxData, cartTaxRate, itemsWithTax, taxRatesByShop } = options;
-
-    const cart = Cart.findOne({ _id: cartId });
-
-    // Compare only the props we care about for tax purposes
-    const oldCartItems = (cart.items || []).map(({ taxData, taxRate, tax }) => ({ taxData, taxRate, tax }));
-    const newCartItems = (itemsWithTax || []).map(({ taxData, taxRate, tax }) => ({ taxData, taxRate, tax }));
-
-    let result;
-    if (
-      !_.isEqual(cart.taxes, cartTaxData) ||
-      !_.isEqual(cart.tax, cartTaxRate) ||
-      !_.isEqual(oldCartItems, newCartItems) ||
-      !_.isEqual(cart.taxRatesByShop, taxRatesByShop)
-    ) {
-      result = Cart.update({ _id: cartId }, {
-        $set: {
-          taxes: cartTaxData,
-          tax: cartTaxRate,
-          items: itemsWithTax,
-          taxRatesByShop
-        }
-      });
-
-      const updatedCart = Cart.findOne({ _id: cartId });
-      Promise.await(appEvents.emit("afterCartUpdate", cartId, updatedCart));
-    }
+    Promise.await(appEvents.emit("afterCartUpdate", updatedCart));
 
     return result;
   },
