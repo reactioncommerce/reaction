@@ -18,9 +18,9 @@ export default function trackCartItems(tracking, { action, cartItemOrItems, cart
   };
 
   if (Array.isArray(cartItemOrItems)) {
-    data.products = cartItemOrItems.map((item) => getCartItemTrackingData(cartId, item.node || item));
+    data.products = cartItemOrItems.map((item) => getCartItemTrackingData(item.node || item, cartId));
   } else {
-    Object.assign(data, getCartItemTrackingData(cartId, cartItemOrItems));
+    Object.assign(data, getCartItemTrackingData(cartItemOrItems, cartId));
   }
 
   trackEvent({

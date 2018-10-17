@@ -1,4 +1,5 @@
 import { assoc, curry } from "ramda";
+import decodeOpaqueId from "../../../lib/utils/decodeOpaqueId";
 
 /**
  * @name encodeOpaqueId
@@ -15,20 +16,7 @@ export const encodeOpaqueId = curry((namespace, id) => {
   return Buffer.from(unencoded).toString("base64");
 });
 
-/**
- * @name decodeOpaqueId
- * @method
- * @memberof GraphQL/Transforms
- * @summary Transforms an opaque ID to an internal ID
- * @param {String} opaqueId The ID to transform
- * @returns {String} An internal ID
- */
-export const decodeOpaqueId = (opaqueId) => {
-  if (opaqueId === undefined || opaqueId === null) return null;
-  const unencoded = Buffer.from(opaqueId, "base64").toString("utf8");
-  const [namespace, id] = unencoded.split(":");
-  return { namespace, id };
-};
+export { decodeOpaqueId as decodeOpaqueId };
 
 /**
  * @name decodeOpaqueIdForNamespace

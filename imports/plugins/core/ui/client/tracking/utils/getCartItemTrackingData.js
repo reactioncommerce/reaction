@@ -4,11 +4,11 @@ import { Tags } from "/lib/collections";
 /**
  * @name getCartItemTrackingData
  * @summary Transforms a CartItem object into a partial representation of the Segment product schema
- * @param {String} cartId _id of user's cart
  * @param {Object} cartItem Object of the `CartItem` type
+ * @param {String} [cartId] _id of user's cart
  * @returns {Object} Data suitable for tracking a `CartItem`
  */
-export default function getCartItemTrackingData(cartId, cartItem) {
+export default function getCartItemTrackingData(cartItem, cartId) {
   let tag;
   if (cartItem.productTagIds && cartItem.productTagIds.length) {
     // Use first tag as category
@@ -17,8 +17,13 @@ export default function getCartItemTrackingData(cartId, cartItem) {
 
   const { variantId, sku, title, productVendor, variantTitle, priceWhenAdded, quantity, productSlug } = cartItem;
 
+  // Include cart_id in returned data if provided
+  const cartIdObj = {};
+  if (cartId) {
+    cartIdObj.cart_id = cartId; // eslint-disable-line camelcase
+  }
   return {
-    cart_id: cartId, // eslint-disable-line camelcase
+    ...cartIdObj,
     product_id: variantId, // eslint-disable-line camelcase
     sku,
     category: (tag && tag.name) || undefined,
