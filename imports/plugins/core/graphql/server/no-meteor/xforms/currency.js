@@ -1,6 +1,7 @@
 import { toFixed } from "accounting-js";
 import { assoc, compose, map, toPairs } from "ramda";
 import ReactionError from "@reactioncommerce/reaction-error";
+import Logger from "@reactioncommerce/logger";
 import CurrencyDefinitions from "/imports/plugins/core/core/lib/CurrencyDefinitions";
 import { namespaces } from "@reactioncommerce/reaction-graphql-utils";
 import getDisplayPrice from "/imports/plugins/core/catalog/server/no-meteor/utils/getDisplayPrice";
@@ -68,13 +69,30 @@ export async function xformCurrencyExchangePricing(pricing, currencyCode, contex
 
   const currencyInfo = shop.currencies[currencyCode];
   const { rate } = currencyInfo;
-  const { price, minPrice, maxPrice } = pricing;
+
+  // Stop processing if we don't have a valid currency exchange rate.
+  // rate may be undefined if Open Exchange Rates or an equivalent service is not configured properly.
+  if (typeof rate !== "number") {
+    Logger.warn("Currency exchange rates are not available. Exchange rate fetching may not be configured.");
+    return null;
+  }
+
+  const { compareAtPrice, price, minPrice, maxPrice } = pricing;
   const priceConverted = price && Number(toFixed(price * rate, 2));
   const minPriceConverted = minPrice && Number(toFixed(minPrice * rate, 2));
   const maxPriceConverted = maxPrice && Number(toFixed(maxPrice * rate, 2));
   const displayPrice = getDisplayPrice(minPriceConverted, maxPriceConverted, currencyInfo);
+  let compareAtPriceConverted = null;
+
+  if (typeof compareAtPrice === "number" && compareAtPrice > 0) {
+    compareAtPriceConverted = {
+      amount: Number(toFixed(compareAtPrice * rate, 2)),
+      currencyCode
+    };
+  }
 
   return {
+    compareAtPrice: compareAtPriceConverted,
     displayPrice,
     price: priceConverted,
     minPrice: minPriceConverted,

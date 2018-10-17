@@ -314,7 +314,7 @@ export const VariantBaseSchema = new SimpleSchema({
  * @extends VariantBaseSchema
  * @property {VariantBaseSchema[]} options optional
  */
-const CatalogVariantSchema = VariantBaseSchema.clone().extend({
+export const CatalogVariantSchema = VariantBaseSchema.clone().extend({
   "options": {
     type: Array,
     label: "Variant Options",

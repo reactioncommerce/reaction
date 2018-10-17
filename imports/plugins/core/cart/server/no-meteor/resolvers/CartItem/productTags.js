@@ -2,7 +2,7 @@ import { getPaginatedResponse } from "@reactioncommerce/reaction-graphql-utils";
 import { xformArrayToConnection } from "@reactioncommerce/reaction-graphql-xforms/connection";
 
 /**
- * @name "CartItems.productTags"
+ * @name "CartItem.productTags"
  * @method
  * @memberof Catalog/GraphQL
  * @summary Returns the tags for a CartItem

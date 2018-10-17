@@ -586,8 +586,7 @@ describe("core product methods", function () {
           title: ""
         }
       }, {
-        selector: { type: "simple" },
-        validate: false
+        bypassCollection2: true
       });
 
       expect(() => Meteor.call("products/publishProduct", product._id))
