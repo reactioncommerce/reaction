@@ -8,19 +8,15 @@ const fakeShop = {
 };
 
 test("calls queries.primaryShop and returns the correct shop", async () => {
-  const primaryShopIdMock = jest.fn().mockName("queries.primaryShopId").mockReturnValueOnce(Promise.resolve(fakeShopId));
-  const shopByIdMock = jest.fn().mockName("queries.shopById").mockReturnValueOnce(Promise.resolve(fakeShop));
+  const primaryShopMock = jest.fn().mockName("queries.primaryShop").mockReturnValueOnce(Promise.resolve(fakeShop));
 
   const shopObject = await primaryShop(null, null, {
     queries: {
-      primaryShopId: primaryShopIdMock,
-      shopById: shopByIdMock,
-      primaryShop
+      primaryShop: primaryShopMock
     }
   });
 
   expect(shopObject).toEqual(fakeShop);
 
-  expect(primaryShopIdMock).toHaveBeenCalled();
-  expect(shopByIdMock).toHaveBeenCalled();
+  expect(primaryShopMock).toHaveBeenCalled();
 });
