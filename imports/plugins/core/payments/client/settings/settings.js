@@ -1,9 +1,21 @@
 import _ from "lodash";
+import getOpaqueIds from "/imports/plugins/core/core/client/util/getOpaqueIds";
+import simpleGraphQLClient from "/imports/plugins/core/graphql/lib/helpers/simpleClient";
 import { Meteor } from "meteor/meteor";
 import { Template } from "meteor/templating";
 import { AutoForm } from "meteor/aldeed:autoform";
 import { Reaction, i18next } from "/client/api";
+import { ReactiveDict } from "meteor/reactive-dict";
 import { Shops } from "/lib/collections";
+
+Template.paymentSettings.onCreated(async function () {
+  this.state = new ReactiveDict();
+  this.state.setDefault({ paymentMethods: [] });
+
+  const [shopId] = await getOpaqueIds([{ namespace: "Shop", id: Reaction.getShopId() }]);
+  const { paymentMethods } = await simpleGraphQLClient.queries.paymentMethods({ shopId });
+  this.state.set({ paymentMethods });
+});
 
 Template.paymentSettings.helpers({
   checked(enabled) {
@@ -19,22 +31,19 @@ Template.paymentSettings.helpers({
     return "";
   },
   paymentMethodOptions() {
-    const paymentMethods = Reaction.Apps({ provides: "paymentMethod" });
-    const options = [{
-      label: i18next.t("app.auto"),
-      value: "none"
-    }];
+    const options = [{ label: "Auto", value: "none" }];
+    const paymentMethods = Template.instance().state.get("paymentMethods");
 
-    if (paymentMethods && _.isArray(paymentMethods)) {
+    if (_.isArray(paymentMethods)) {
       for (const method of paymentMethods) {
-        if (method.enabled === true) {
-          options.push({
-            label: i18next.t(method.i18nKeyLabel),
-            value: method.settingsKey
-          });
-        }
+        if (!method.isEnabled) continue;
+        options.push({
+          label: method.displayName,
+          value: method.name
+        });
       }
     }
+
     return options;
   },
   shop() {

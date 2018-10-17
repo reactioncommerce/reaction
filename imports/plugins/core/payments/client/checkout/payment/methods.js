@@ -6,10 +6,12 @@ import getOpaqueIds from "/imports/plugins/core/core/client/util/getOpaqueIds";
 import simpleGraphQLClient from "/imports/plugins/core/graphql/lib/helpers/simpleClient";
 import "./methods.html";
 
+/* eslint-disable camelcase */
 const templates = {
   iou_example: "ExampleIOUPaymentForm",
   stripe_card: "stripePaymentForm"
 };
+/* eslint-enable camelcase */
 
 Template.corePaymentMethods.onCreated(async function () {
   this.state = new ReactiveDict();
@@ -24,7 +26,7 @@ Template.corePaymentMethods.onCreated(async function () {
 
   const [shopId] = await getOpaqueIds([{ namespace: "Shop", id: Reaction.getShopId() }]);
   const { availablePaymentMethods } = await simpleGraphQLClient.queries.availablePaymentMethods({ shopId });
-  availablePaymentMethods.sort((a, b) => (a.name.toUpperCase() > b.name.toUpperCase()) ? 1 : -1);
+  availablePaymentMethods.sort((a, b) => ((a.name.toUpperCase() > b.name.toUpperCase()) ? 1 : -1));
   this.state.set({ availablePaymentMethods });
 });
 
