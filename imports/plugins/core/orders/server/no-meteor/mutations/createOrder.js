@@ -193,6 +193,7 @@ async function buildOrderItem(inputItem, currencyCode, context) {
     productId: chosenProduct._id,
     productSlug: chosenProduct.slug,
     productType: chosenProduct.type,
+    productTagIds: chosenProduct.tagIds,
     productVendor: chosenProduct.vendor,
     quantity,
     shopId: chosenProduct.shopId,

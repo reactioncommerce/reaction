@@ -11,6 +11,10 @@ Reaction.registerPackage({
     resolvers,
     schemas
   },
+  paymentMethods: [{
+    name: "marketplace_stripe_card",
+    displayName: "Marketplace Stripe Card"
+  }],
   settings: {
     name: "Marketplace",
     enabled: true,

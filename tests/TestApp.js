@@ -11,6 +11,8 @@ import hashLoginToken from "../imports/node-app/core/util/hashLoginToken";
 import setUpFileCollections from "../imports/plugins/core/files/server/no-meteor/setUpFileCollections";
 import mutations from "../imports/node-app/devserver/mutations";
 import queries from "../imports/node-app/devserver/queries";
+import schemas from "../imports/node-app/devserver/schemas";
+import resolvers from "../imports/node-app/devserver/resolvers";
 
 class TestApp {
   constructor() {
@@ -30,6 +32,8 @@ class TestApp {
         mutations,
         queries
       },
+      typeDefs: schemas,
+      resolvers,
       debug: true
     });
   }
