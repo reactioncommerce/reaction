@@ -1,4 +1,4 @@
-import { checkWaitRetry } from "../.reaction/waitForReplica";
+import { checkWaitRetry } from "../.reaction/waitForMongo";
 
 test("should work in immediate success case", async () => {
   const outLog = [];
