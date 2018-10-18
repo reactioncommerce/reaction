@@ -23,7 +23,10 @@ import { addProduct } from "./products";
  */
 export function getCartItem(options = {}) {
   const product = addProduct();
-  Promise.await(publishProductToCatalog(product, rawCollections));
+  Promise.await(publishProductToCatalog(product, {
+    collections: rawCollections,
+    getFunctionsOfType: () => []
+  }));
   const variant = Products.findOne({ ancestors: [product._id] });
   const childVariants = Products.find({
     ancestors: [

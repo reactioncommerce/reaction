@@ -10,6 +10,10 @@ extend type Query {
   paymentMethods(shopId: ID!): [PaymentMethod]!
 }
 
+extend type Mutation {
+  enablePaymentMethodForShop(input: EnablePaymentMethodForShopInput!): EnablePaymentMethodForShopPayload!
+}
+
 """
 Information about a payment made
 """
@@ -85,4 +89,27 @@ type PaymentMethod {
 
   "Name of the plugin that added the payment method"
   pluginName: String!
+}
+
+"Input for the `enablePaymentMethodForShop` mutation"
+input EnablePaymentMethodForShopInput {
+  "An optional string identifying the mutation call, which will be returned in the response payload"
+  clientMutationId: String
+
+  "True to enable it or false to disable it"
+  isEnabled: Boolean!
+
+  "The name of the payment method to enable or disable"
+  paymentMethodName: String!
+
+  "The ID of the shop for which this payment method should be enabled or disabled"
+  shopId: ID!
+}
+
+type EnablePaymentMethodForShopPayload {
+  "The same string you sent with the mutation params, for matching mutation calls with their responses"
+  clientMutationId: String
+
+  "The full list of payment methods for the shop"
+  paymentMethods: [PaymentMethod]!
 }

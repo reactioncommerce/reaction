@@ -1,8 +1,10 @@
 import { Meteor } from "meteor/meteor";
 import Hooks from "@reactioncommerce/hooks";
 import Logger from "@reactioncommerce/logger";
-import { Notifications, Products, Shops, Tags } from "/lib/collections";
+import { Products, Shops, Tags } from "/lib/collections";
+import collections from "/imports/collections/rawCollections";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
+import createNotification from "/imports/plugins/included/notifications/server/no-meteor/createNotification";
 import { Sitemaps } from "../../lib/collections/sitemaps";
 
 const DEFAULT_URLS_PER_SITEMAP = 1000;
@@ -32,11 +34,10 @@ export default function generateSitemaps({ shopIds = [], notifyUserId = "", urls
 
   // Notify user, if manually generated
   if (notifyUserId) {
-    Notifications.insert({
-      to: notifyUserId,
+    createNotification(collections, {
+      accountId: notifyUserId,
       type: "sitemapGenerated",
       message: "Sitemap refresh is complete",
-      hasDetails: false,
       url: "/sitemap.xml"
     });
   }
@@ -195,7 +196,8 @@ function getProductSitemapItems(shopId) {
     shopId,
     type: "simple",
     isVisible: true,
-    isDeleted: false
+    isDeleted: false,
+    shouldAppearInSitemap: true
   }, { fields: { handle: 1, updatedAt: 1 } }).map((product) => {
     const { handle, updatedAt } = product;
     return {
