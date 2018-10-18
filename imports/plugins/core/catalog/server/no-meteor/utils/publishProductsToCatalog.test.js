@@ -5,7 +5,6 @@ import {
 } from "./publishProductToCatalogById";
 import publishProductsToCatalog from "./publishProductsToCatalog";
 
-const mockCollections = { ...mockContext.collections };
 const mockPublishProductToCatalogById = jest.fn().mockName("publishProductToCatalogById");
 
 const internalShopId = "123";
@@ -188,18 +187,18 @@ beforeAll(() => {
 afterAll(restore$publishProductToCatalogById);
 
 test("expect true if an array of products are published to the catalog collection by id", async () => {
-  mockCollections.Products.findOne.mockReturnValueOnce(Promise.resolve(mockProduct));
+  mockContext.collections.Products.findOne.mockReturnValueOnce(Promise.resolve(mockProduct));
   mockPublishProductToCatalogById
     .mockReturnValueOnce(Promise.resolve(true))
     .mockReturnValueOnce(Promise.resolve(true))
     .mockReturnValueOnce(Promise.resolve(true));
-  const spec = await publishProductsToCatalog(["123", "456", "999"], mockCollections);
+  const spec = await publishProductsToCatalog(["123", "456", "999"], mockContext);
   expect(spec).toBe(true);
 });
 
 test("expect false if an array of products are not published to the catalog collection by id", async () => {
-  mockCollections.Products.findOne.mockReturnValue(Promise.resolve(mockProduct));
+  mockContext.collections.Products.findOne.mockReturnValue(Promise.resolve(mockProduct));
   mockPublishProductToCatalogById.mockReturnValueOnce(Promise.resolve(false));
-  const spec = await publishProductsToCatalog(["123", "456", "999"], mockCollections);
+  const spec = await publishProductsToCatalog(["123", "456", "999"], mockContext);
   expect(spec).toBe(false);
 });

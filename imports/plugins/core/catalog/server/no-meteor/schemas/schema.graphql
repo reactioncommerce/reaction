@@ -26,7 +26,44 @@ type ProductPricingInfo {
   A comparison price value, usually MSRP. If `price` is null, this will also be null. That is,
   only purchasable variants will have a `compareAtPrice`.
   """
-  compareAtPrice: Float
+  compareAtPrice: Money
+
+  "The code for the currency these pricing details applies to"
+  currency: Currency!
+
+  "Pricing converted to specified currency"
+  currencyExchangePricing(
+    currencyCode: String!
+  ): CurrencyExchangeProductPricingInfo
+
+  """
+  UI should display this price. If a product has multiple potential prices depending on selected
+  variants and options, then this is a price range string such as "$3.95 - $6.99". It includes the currency
+  symbols.
+  """
+  displayPrice: String!
+
+  "The price of the most expensive possible variant+option combination"
+  maxPrice: Float!
+
+  "The price of the least expensive possible variant+option combination"
+  minPrice: Float!
+
+  """
+  For variants with no options and for options, this will always be set to a price. For variants
+  with options and products, this will be `null`. There must be a price for a variant to be
+  added to a cart or purchased. Otherwise you would instead add one of its child options to a cart.
+  """
+  price: Float
+}
+
+"The product price or price range for a specific currency"
+type CurrencyExchangeProductPricingInfo {
+  """
+  A comparison price value, usually MSRP. If `price` is null, this will also be null. That is,
+  only purchasable variants will have a `compareAtPrice`.
+  """
+  compareAtPrice: Money
 
   "The code for the currency these pricing details applies to"
   currency: Currency!

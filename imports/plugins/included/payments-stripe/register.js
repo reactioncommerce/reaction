@@ -12,6 +12,10 @@ Reaction.registerPackage({
     resolvers,
     schemas
   },
+  paymentMethods: [{
+    name: "stripe_card",
+    displayName: "Stripe Card"
+  }],
   settings: {
     "mode": false,
     "api_key": "",

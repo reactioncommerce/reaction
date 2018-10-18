@@ -2,7 +2,7 @@
  *
  * @method getTopLevelProduct
  * @summary Get a top level product based on provided ID
- * @param {string} productOrVariantId - A variant or top level Product Variant ID.
+ * @param {String} productOrVariantId - A variant or top level Product Variant ID.
  * @param {Object} collections - Raw mongo collections.
  * @return {Promise<Object[]>} Top level product object.
  */

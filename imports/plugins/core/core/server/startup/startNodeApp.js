@@ -63,7 +63,7 @@ export default async function startNodeApp() {
 
   // Log to inform that the server is running
   WebApp.httpServer.on("listening", () => {
-    Logger.info(`GraphQL listening at ${ROOT_URL}graphql-alpha`);
-    Logger.info(`GraphiQL UI: ${ROOT_URL}graphiql`);
+    Logger.info(`GraphQL listening at ${ROOT_URL}/graphql-alpha`);
+    Logger.info(`GraphiQL UI: ${ROOT_URL}/graphiql`);
   });
 }

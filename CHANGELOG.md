@@ -1,3 +1,89 @@
+# v2.0.0-rc.5
+This is our fifth **release candidate** for v2.0.0 of Reaction. Please check it out and let us know what works and what doesn't for you.
+
+## Mongo replica set issue
+Many people were having issues with the Mongo replica-set image starting before the Mongo database was ready. This could cause the replica-set to fail and the application to hang during startup in a development environment. This is fixed in #4748 by waiting for mongo to be reachable within the reaction container before connecting to it, and creating the DB if needed, initiating the replica set if needed, and waiting for the replica set to be OK. This fix should solve the docker-compose startup race conditions we've been seeing. (#4748)
+
+## GraphQL
+We've added two new GraphQL queries for payment methods. A query `paymentMethods` which will list all registered payment methods and is restricted to operators and `availablePaymentMethods` which will list all payment methods which have been enabled. These new queries were added in #4709. We've also added a GraphQL mutation that permits an operator to enable or disable a payment method for a shop in #4739
+
+We've updated the CartItems and OrderItems GraphQL queries to include a `productTags` resolver which will return the tags for the CartItem or OrderItem. The new resolvers and updated schemas were added in #4715 and #4732
+
+There is a new GraphQL mutation for generating sitemaps `generateSitemaps` this replaces the `sitemaps/generate` meteor method. method. (#4708)
+
+## Classic Storefront UI Updates
+We've replaced the customer facing Product Grid in the Classic Storefront UI with our [CatalogGrid](https://designsystem.reactioncommerce.com/#!/CatalogGrid) component from the Reaction Design System. This was accomplished in #4649
+
+There's a new "Include in sitemap?" checkbox in the Product Settings when using the operator interface to edit product information. This was added to make it possible to exclude published products from the sitemap. (#4708)
+
+## Additional Plugin Capabilities
+A plugin can now include a `catalog` object in `registerPackage`, with `customPublishedProductFields` and `customPublishedProductVariantFields` that are set to arrays of property names. These will be appended to the core list of fields for which published status should be tracked. This is used to build the hashes that are used to display an indicator when changes need to be published. (#4738)
+
+A plugin can now use the `functionsByType` pattern to register one or more functions of type "publishProductToCatalog", which are called with `(catalogProduct, { context, product, shop, variants })` and expected to mutate `catalogProduct` if necessary. (#4738)
+
+
+## nvmrc
+Even though most of the development work happens in Docker, getting the right version of node available directly in the host OS is convenient for setting up eslint integration with your editor. We've added an `.nvmrc` file for this as [we've recommended](https://docs.reactioncommerce.com/docs/recommended-tools#general) `nvm` for installing and managing NodeJS in our docs for some time now.
+
+
+## Public API Changes
+We've changed the GraphQL schema for `PaymentMethod@name` from `PaymentMethodName` to `String`. `PaymentMethodName` was a subset of string and this should not cause any issues.
+
+## Breaking Changes
+WE've replaced the `generateSitemaps` Meteor method with a GraphQL mutation. See #4708 for details.
+
+Because we've replaced the customer facing Product Grid UI in the Classic Storefront UI, if you had any plugins which relied on specific selectors or the structure of the existing UI, those may need to be updated.
+
+
+## Features
+ - feat: payment methods (#4709) .. Resolves #4574
+ - feat: enable payment method for shop (#4739) .. Resolves #4718
+ - feat: use component library's CatalogGrid - 2.0 (#4649)
+ - feat: add product tags to cart items (#4715)
+ - feat: Add product tags to order item (#4732)
+ - feat: option to choose whether a product should appear in the sitemap (#4708)
+ - feat: add a way to extend catalog product publication (#4738)
+
+
+## Fixes
+ - fix: Auth Consent scopes issue (#4733)
+ - fix: 4722 compareAtPrice - convert from Float to Money (#4731)
+ - fix(startup): init mongo replica set after waiting for connection (#4748)
+
+## Chores
+ - chore: add .nvmrc configuration file (#4744)
+
+## Docs
+ - docs: Link readers to Reaction Platform install instructions (#4724)
+ - docs: fix jsdoc copypasta on waitForReplica checkWaitRetry (#4723)
+
+
+# v2.0.0-rc.4
+This is our fourth **release candidate** for v2.0.0 of Reaction. Please check it out and let us know what works and what doesn't for you.
+
+## Improving Jest test performance in CI
+We started seeing unit tests timing out in CI in the morning on Friday October 5. It doesn't appear that this was caused by a change in our `jest` version as we were able to reproduce the issues on older branches which were previously passing.
+This is resolved in #4176 by changing our `test:unit` script in `package.json` to run jest with the `--maxWorkers=4` flag. This resolved our issue with tests timing out, and improves test performance in CI overall. This is suggested in the troubleshooting jest here: https://jestjs.io/docs/en/troubleshooting.html#tests-are-extremely-slow-on-docker-and-or-continuous-integration-ci-server
+
+## Checkout Totals
+There were some cases in the Classic Storefront UI where there would be a discrepancy between the total calculated on the server and the price calculated by the client.
+This is not an issue in the [Next.js Storefront](https://github.com/reactioncommerce/reaction-next-starterkit) as all price values are calculated on the server. This is resolved in #4701
+
+## Bugfixes
+fix: round total when verifying it on order create (#4701) .. Resolves #4684
+
+## Chores
+fix: limit jest maxWorkers to 4 to improve CI perf (#4716)
+
+# v2.0.0-rc.3
+This is our third **release candidate** for v2.0.0 of Reaction. Please check it out and let us know what works and what doesn't for you.
+
+A few files snuck into our last release that had incorrect jsdoc syntax in the form of `@return <Promise>Type`
+The jsdoc parser is unable to parse any return type starting with a `<` and throws an error. This error is thrown during the Deploy Docs CI step and causes that step of the CI to fail. This is resolved in #4704 by fixing the jsdoc to use the correct Promise syntax `@return Promise<Type>`
+
+## Bugfixes
+- fix: resolve errors in jsdoc Promise returns (#4704)
+
 # v2.0.0-rc.2
 This is our second **release candidate** for v2.0.0 of Reaction. Please check it out and let us know what works and what doesn't for you.
 

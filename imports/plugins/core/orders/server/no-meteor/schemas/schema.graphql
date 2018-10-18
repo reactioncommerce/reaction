@@ -105,6 +105,9 @@ type OrderItem implements Node {
   "The type of product, used to display cart items differently"
   productType: String
 
+   "The list of tags that have been applied to this product"
+  productTags(after: ConnectionCursor, before: ConnectionCursor, first: ConnectionLimitInt, last: ConnectionLimitInt, sortOrder: SortOrder = asc, sortBy: TagSortByField = _id): TagConnection
+
   "The product vendor"
   productVendor: String
 

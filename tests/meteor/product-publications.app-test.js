@@ -378,7 +378,7 @@ describe("Publication", function () {
       function publishProducts() {
         const productIds = Collections.Products.find({}).fetch().map((product) => product._id);
 
-        return Promise.await(publishProductsToCatalog(productIds, collections));
+        return Promise.await(publishProductsToCatalog(productIds, { collections, getFunctionsOfType: () => [] }));
       }
     });
 
@@ -391,7 +391,7 @@ describe("Publication", function () {
         const product = Collections.Products.findOne({
           isVisible: true
         });
-        Promise.await(publishProductToCatalog(product, collections));
+        Promise.await(publishProductToCatalog(product, { collections, getFunctionsOfType: () => [] }));
 
         sandbox.stub(Reaction, "getShopId", () => shopId);
 

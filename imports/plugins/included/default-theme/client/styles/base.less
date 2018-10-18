@@ -24,6 +24,25 @@ main {
   }
 }
 
+.container-grid {
+  position: relative;
+  z-index: 100;
+  box-sizing: content-box;
+  padding: 20px 55px 20px 55px;
+
+  &.search {
+    padding-right: 40px;
+  }
+
+  @media only screen and (max-width: @screen-sm-max) {
+    padding: 20px 12px 20px 12px;
+
+    &.search {
+      padding-right: 12px;
+    }
+  }
+}
+
 /* Fix for hidden modals */
 .modal-dialog {
   z-index: 9999;
