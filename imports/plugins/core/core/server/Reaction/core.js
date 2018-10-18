@@ -10,7 +10,16 @@ import { Roles } from "meteor/alanning:roles";
 import { EJSON } from "meteor/ejson";
 import * as Collections from "/lib/collections";
 import ConnectionDataStore from "/imports/plugins/core/core/server/util/connectionDataStore";
-import { functionsByType, mutations, paymentMethods, queries, resolvers, schemas } from "../no-meteor/pluginRegistration";
+import {
+  customPublishedProductFields,
+  customPublishedProductVariantFields,
+  functionsByType,
+  mutations,
+  paymentMethods,
+  queries,
+  resolvers,
+  schemas
+} from "../no-meteor/pluginRegistration";
 import createGroups from "./createGroups";
 import processJobs from "./processJobs";
 import sendVerificationEmail from "./sendVerificationEmail";
@@ -82,12 +91,15 @@ export default {
         schemas.push(...packageInfo.graphQL.schemas);
       }
     }
+
     if (packageInfo.mutations) {
       merge(mutations, packageInfo.mutations);
     }
+
     if (packageInfo.queries) {
       merge(queries, packageInfo.queries);
     }
+
     if (packageInfo.functionsByType) {
       Object.keys(packageInfo.functionsByType).forEach((type) => {
         if (!Array.isArray(functionsByType[type])) {
@@ -96,12 +108,23 @@ export default {
         functionsByType[type].push(...packageInfo.functionsByType[type]);
       });
     }
+
     if (packageInfo.paymentMethods) {
       for (const paymentMethod of packageInfo.paymentMethods) {
         paymentMethods[paymentMethod.name] = {
           ...paymentMethod,
           pluginName: packageInfo.name
         };
+      }
+    }
+
+    if (packageInfo.catalog) {
+      const { publishedProductFields, publishedProductVariantFields } = packageInfo.catalog;
+      if (Array.isArray(publishedProductFields)) {
+        customPublishedProductFields.push(...publishedProductFields);
+      }
+      if (Array.isArray(publishedProductVariantFields)) {
+        customPublishedProductVariantFields.push(...publishedProductVariantFields);
       }
     }
 
