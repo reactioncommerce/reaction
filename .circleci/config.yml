@@ -339,9 +339,9 @@ workflows:
       - deploy-to-ecs:
           requires:
             - docker-push
-#          filters:
-#            branches:
-#              only: /^release.*/
+          filters:
+            branches:
+              only: /^release*/
       - deploy-docs:
           requires:
             - test-unit
