@@ -1,3 +1,25 @@
+# v2.0.0-rc.6
+This is our sixth **release candidate** for v2.0.0 of Reaction. Please check it out and let us know what works and what doesn't for you.
+
+## Meteor 1.8 Final
+We've been using a release candidate of Meteor 1.8 in all of our 2.0 release candidates to this point - this has also included release candidate versions of Babel 7. In this release we're updating to the final version of Meteor 1.8 and Babel 7.
+
+There are a lot of great updates that are included in Meteor 1.8 and you can read all about them in the [Meteor blog](https://blog.meteor.com/meteor-1-8-erases-the-debts-of-1-7-77af4c931fe3). I think the one that we'll notice the most is significant improvement to build performance that. We've been focused on improving the performance and developer experience with Reaction for a while now and this update makes significant progress towards improving the developer experience and build times. Anyone who's been using Reaction for a while should notice big improvements to the amount of time it takes for the app to rebuild after making changes.
+
+We're still working with Node.js 8.11.4 as the upgrade to Node 8.12.0 got postponed to the Meteor 1.8.1 release. If you're itching to play with it, you can run `meteor update --release 1.8.1-beta.n` from the directory that you've got the core `reaction` project installed. There may be some additional speed improvements related to Meteor's use of `Fiber`s that come along in this version.
+
+## GraphQL API
+We've added a primaryShop GraphQL query & resolver, eliminating the need to first query for the primary shop ID, followed by another query for shop by ID.
+
+## Features
+ - feat: Add a CORS-enabled endpoint for token refresh in Hydra plugin (#4743)
+ - feat: GraphQL query & resolver for loading the primary shop (#4747)
+ - feat: update to Meteor 1.8 final (#4753)
+
+## Chores
+We've been ignoring some of our integration tests as the in-memory MongoDB they rely on has not been working effectively. Previously we did this by skipping our entire `test:integration` tests in CI, we're now just skipping the tests that are failing due to this db incompatibility and have plans to address this soon.
+- chore: Skip failing integration tests (#4751)
+
 # v2.0.0-rc.5
 This is our fifth **release candidate** for v2.0.0 of Reaction. Please check it out and let us know what works and what doesn't for you.
 
