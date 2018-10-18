@@ -645,7 +645,7 @@ const mockCatalogItemAfter = {
 };
 
 test("updates catalog item products' variants and options inventory with proper values", () => {
-  mockCollections.Products.fetch = jest.fn().mockName("Products.fetch").mockReturnValueOnce(mockVariants);
+  mockCollections.Products.fetch.mockReturnValueOnce(mockVariants);
   const result = convertCatalogItemVariants(mockCatalogItemBefore, mockCollections);
   expect(mockCatalogItemAfter).toEqual(result);
 });
