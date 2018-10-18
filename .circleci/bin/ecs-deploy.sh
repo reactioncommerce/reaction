@@ -9,7 +9,7 @@ fi
 
 ENVIRONMENT=staging
 CLUSTER=core
-export storefront_CIRCLE_SHA1=$CIRCLE_SHA1
+export core_CIRCLE_SHA1=$CIRCLE_SHA1
 
 PROPEL_CONFIG_FILE="propel.yaml"
 if [ ! -f ${PROPEL_CONFIG_FILE} ]; then
