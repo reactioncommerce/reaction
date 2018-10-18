@@ -1,11 +1,16 @@
 import React from "react";
+import BadgeOverlay from "@reactioncommerce/components/BadgeOverlay/v1";
 import Button from "@reactioncommerce/components/Button/v1";
+import CatalogGrid from "@reactioncommerce/components/CatalogGrid/v1";
+import CatalogGridItem from "@reactioncommerce/components/CatalogGridItem/v1";
 import ErrorsBlock from "@reactioncommerce/components/ErrorsBlock/v1";
 import Field from "@reactioncommerce/components/Field/v1";
+import { Link } from "/imports/plugins/core/ui/client/components/link";
 import PhoneNumberInput from "@reactioncommerce/components/PhoneNumberInput/v1";
 import Price from "@reactioncommerce/components/Price/v1";
+import ProgressiveImage from "@reactioncommerce/components/ProgressiveImage/v1";
 import Select from "@reactioncommerce/components/Select/v1";
-import spinner from "@reactioncommerce/components/utils/spinner";
+import spinner from "@reactioncommerce/components/svg/spinner";
 import TextInput from "@reactioncommerce/components/TextInput/v1";
 
 /* eslint-disable max-len */
@@ -63,14 +68,19 @@ const iconValid = (
 /* eslint-enable max-len */
 
 export default {
+  BadgeOverlay,
   Button,
+  CatalogGrid,
+  CatalogGridItem,
   ErrorsBlock,
   Field,
+  Link,
   iconClear,
   iconError,
   iconValid,
   PhoneNumberInput,
   Price,
+  ProgressiveImage,
   Select,
   spinner,
   TextInput

@@ -407,11 +407,11 @@ export const mockInternalCatalogProducts = [
         productId: internalProductIds[0],
         variantId: null,
         URLs: {
-          thumbnail: "thumbnail",
-          small: "small",
-          medium: "medium",
-          large: "large",
-          original: "original"
+          thumbnail: "/thumbnail",
+          small: "/small",
+          medium: "/medium",
+          large: "/large",
+          original: "/original"
         }
       }
     ],
@@ -421,11 +421,11 @@ export const mockInternalCatalogProducts = [
       productId: internalProductIds[0],
       variantId: null,
       URLs: {
-        thumbnail: "thumbnail",
-        small: "small",
-        medium: "medium",
-        large: "large",
-        original: "original"
+        thumbnail: "/thumbnail",
+        small: "/small",
+        medium: "/medium",
+        large: "/large",
+        original: "/original"
       }
     },
     productType: "productType",
@@ -506,11 +506,11 @@ export const mockInternalCatalogProducts = [
         productId: internalProductIds[1],
         variantId: null,
         URLs: {
-          thumbnail: "thumbnail",
-          small: "small",
-          medium: "medium",
-          large: "large",
-          original: "original"
+          thumbnail: "/thumbnail",
+          small: "/small",
+          medium: "/medium",
+          large: "/large",
+          original: "/original"
         }
       }
     ],
@@ -520,11 +520,11 @@ export const mockInternalCatalogProducts = [
       productId: internalProductIds[1],
       variantId: null,
       URLs: {
-        thumbnail: "thumbnail",
-        small: "small",
-        medium: "medium",
-        large: "large",
-        original: "original"
+        thumbnail: "/thumbnail",
+        small: "/small",
+        medium: "/medium",
+        large: "/large",
+        original: "/original"
       }
     },
     productType: "productType",
@@ -616,11 +616,11 @@ export const mockExternalCatalogProducts = [
           productId: opaqueProductIds[0],
           variantId: null,
           URLs: {
-            thumbnail: "https://shop.fake.site/thumbnail",
-            small: "https://shop.fake.site/small",
-            medium: "https://shop.fake.site/medium",
-            large: "https://shop.fake.site/large",
-            original: "https://shop.fake.site/original"
+            thumbnail: "/thumbnail",
+            small: "/small",
+            medium: "/medium",
+            large: "/large",
+            original: "/original"
           }
         }
       ],
@@ -630,11 +630,11 @@ export const mockExternalCatalogProducts = [
         productId: opaqueProductIds[0],
         variantId: null,
         URLs: {
-          thumbnail: "https://shop.fake.site/thumbnail",
-          small: "https://shop.fake.site/small",
-          medium: "https://shop.fake.site/medium",
-          large: "https://shop.fake.site/large",
-          original: "https://shop.fake.site/original"
+          thumbnail: "/thumbnail",
+          small: "/small",
+          medium: "/medium",
+          large: "/large",
+          original: "/original"
         }
       },
       productType: "productType",
@@ -725,11 +725,11 @@ export const mockExternalCatalogProducts = [
           productId: opaqueProductIds[1],
           variantId: null,
           URLs: {
-            thumbnail: "https://shop.fake.site/thumbnail",
-            small: "https://shop.fake.site/small",
-            medium: "https://shop.fake.site/medium",
-            large: "https://shop.fake.site/large",
-            original: "https://shop.fake.site/original"
+            thumbnail: "/thumbnail",
+            small: "/small",
+            medium: "/medium",
+            large: "/large",
+            original: "/original"
           }
         }
       ],
@@ -739,11 +739,11 @@ export const mockExternalCatalogProducts = [
         productId: opaqueProductIds[1],
         variantId: null,
         URLs: {
-          thumbnail: "https://shop.fake.site/thumbnail",
-          small: "https://shop.fake.site/small",
-          medium: "https://shop.fake.site/medium",
-          large: "https://shop.fake.site/large",
-          original: "https://shop.fake.site/original"
+          thumbnail: "/thumbnail",
+          small: "/small",
+          medium: "/medium",
+          large: "/large",
+          original: "/original"
         }
       },
       productType: "productType",

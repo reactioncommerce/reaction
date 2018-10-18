@@ -18,15 +18,17 @@ services:
     build:
       context: .
       target: meteor-dev
-    command: bash -c "npm install && node ./.reaction/waitForReplica.js && reaction" #TODO; Revert to Meteor NPM. See comment in Dockerfile about Meteor1.7 NPM version issue.
+    command: bash -c "npm install && node ./.reaction/waitForMongo.js && reaction" #TODO; Revert to Meteor NPM. See comment in Dockerfile about Meteor1.7 NPM version issue.
     depends_on:
-      - mongo-init-replica
+      - mongo
     environment:
       MONGO_URL: "mongodb://mongo:27017/reaction"
       MONGO_OPLOG_URL: "mongodb://mongo:27017/local"
       ROOT_URL: "http://localhost:3000"
       HYDRA_ADMIN_URL: "http://hydra:4445"
+      HYDRA_TOKEN_URL: "http://hydra:4444/oauth2/token"
       HYDRA_OAUTH2_INTROSPECT_URL: "http://hydra:4445/oauth2/introspect"
+      OAUTH2_CLIENT_DOMAINS: "http://localhost:4000"
     networks:
       default:
       api:
@@ -44,13 +46,6 @@ services:
       - "27017:27017"
     volumes:
       - mongo-db:/data/db
-
-  # This container's job is just to run the command to initialize the replica set. It will stop after doing that.
-  mongo-init-replica:
-    image: mongo:3.6.3
-    command: 'mongo mongo/reaction --eval "rs.initiate({ _id: ''rs0'', members: [ { _id: 0, host: ''localhost:27017'' } ]})"'
-    depends_on:
-      - mongo
 
 volumes:
   mongo-db:

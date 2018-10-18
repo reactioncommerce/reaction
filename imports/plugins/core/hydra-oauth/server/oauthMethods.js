@@ -3,6 +3,8 @@ import Reaction from "/imports/plugins/core/core/server/Reaction";
 import Logger from "@reactioncommerce/logger";
 import hydra from "./util/hydra";
 
+const { HYDRA_SESSION_LIFESPAN } = process.env;
+
 /**
  * @name oauthLogin
  * @method
@@ -15,13 +17,18 @@ export function oauthLogin(options) {
   check(options, Object);
   check(options.challenge, String);
   check(options.remember, Match.Maybe(Boolean));
-  const { challenge, remember = false } = options;
+  const { challenge, remember = true } = options;
 
   return hydra
     .acceptLoginRequest(challenge, {
       subject: Reaction.getUserId(),
       remember,
-      remember_for: 3600 // eslint-disable-line camelcase
+      // `remember` tells Hydra to remember this login and reuse it if the same user on the same
+      // client tries to log-in again. Ideally, this should be longer than token lifespan.
+      // Set default is 24 hrs (set in seconds). Depending on preferred setup, you can allow
+      // users decide if to enable or disable.
+      // eslint-disable-next-line camelcase
+      remember_for: HYDRA_SESSION_LIFESPAN ? Number(HYDRA_SESSION_LIFESPAN) : 86400
     })
     .then((response) => response.redirect_to)
     .catch((error) => {

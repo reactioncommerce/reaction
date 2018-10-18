@@ -1,10 +1,12 @@
 import { isEqual } from "lodash";
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import Alert from "sweetalert2";
 import { Components } from "@reactioncommerce/reaction-components";
-import { Router } from "/client/api";
+import { i18next, Router } from "/client/api";
 import update from "immutability-helper";
 import { highlightInput } from "/imports/plugins/core/ui/client/helpers/animations";
+import withGenerateSitemaps from "/imports/plugins/included/sitemap-generator/client/hocs/withGenerateSitemaps";
 
 const fieldNames = [
   "title",
@@ -144,6 +146,41 @@ class ProductAdmin extends Component {
       this.props.onProductFieldSave(this.product._id, field, value);
     }
   }
+
+  handleSitemapCheckboxChange = (event) => {
+    const { checked: isChecked } = event.target;
+    const { shouldAppearInSitemap } = this.product;
+    if (typeof shouldAppearInSitemap === "undefined" || isChecked === shouldAppearInSitemap) {
+      // onChange for checkbox runs when field is first displayed
+      return;
+    }
+
+    if (this.props.onProductFieldSave) {
+      this.props.onProductFieldSave(this.product._id, "shouldAppearInSitemap", isChecked);
+    }
+
+    const { isVisible, isDeleted } = this.product;
+    if (isVisible && !isDeleted) {
+      // If product is published, ask whether to regenerate sitemap
+      Alert({
+        title: i18next.t("productDetailEdit.refreshSitemap", { defaultValue: "Refresh sitemap now?" }),
+        type: "warning",
+        showCancelButton: true,
+        cancelButtonText: i18next.t("productDetailEdit.refreshSitemapNo", { defaultValue: "No, don't refresh" }),
+        confirmButtonText: i18next.t("productDetailEdit.refreshSitemapYes", { defaultValue: "Yes, refresh" })
+      })
+        .then(({ value }) => {
+          if (value) {
+            this.props.generateSitemaps();
+            Alerts.toast(i18next.t("shopSettings.sitemapRefreshInitiated", {
+              defaultValue: "Refreshing the sitemap can take up to 5 minutes. You will be notified when it is completed."
+            }), "success");
+          }
+          return false;
+        })
+        .catch(() => false);
+    }
+  };
 
   handleToggleVisibility = () => {
     if (this.props.onProductFieldSave) {
@@ -313,6 +350,17 @@ class ProductAdmin extends Component {
               value={this.product.originCountry}
               options={this.props.countries}
             />
+            {this.product && (
+              <div className="checkbox">
+                <Components.Checkbox
+                  i18nKeyLabel="productDetailEdit.shouldAppearInSitemap"
+                  label="Include in sitemap?"
+                  name="shouldAppearInSitemap"
+                  onChange={this.handleSitemapCheckboxChange}
+                  checked={this.product.shouldAppearInSitemap}
+                />
+              </div>
+            )}
           </Components.CardBody>
         </Components.Card>
         <Components.Card
@@ -424,6 +472,7 @@ ProductAdmin.propTypes = {
   countries: PropTypes.arrayOf(PropTypes.object),
   editFocus: PropTypes.oneOfType([PropTypes.string, PropTypes.arrayOf(PropTypes.string)]),
   editable: PropTypes.bool, // eslint-disable-line react/boolean-prop-naming
+  generateSitemaps: PropTypes.func,
   handleFieldBlur: PropTypes.func,
   handleFieldChange: PropTypes.func,
   handleProductFieldChange: PropTypes.func,
@@ -445,4 +494,4 @@ ProductAdmin.propTypes = {
   viewProps: PropTypes.object
 };
 
-export default ProductAdmin;
+export default withGenerateSitemaps(ProductAdmin);

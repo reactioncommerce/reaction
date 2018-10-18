@@ -2,17 +2,13 @@ import React, { Component } from "react";
 import { compose } from "recompose";
 import PropTypes from "prop-types";
 import classnames from "classnames";
+import { isEqual } from "lodash";
 import { getComponent, withCSSTransition } from "@reactioncommerce/reaction-components";
 import Blaze from "meteor/gadicc:blaze-react-component";
-import { EJSON } from "meteor/ejson";
 import { Admin } from "/imports/plugins/core/ui/client/providers";
 import Radium from "radium";
 import debounce from "lodash/debounce";
-import {
-  IconButton,
-  Translation,
-  Overlay
-} from "/imports/plugins/core/ui/client/components";
+import { IconButton, Translation, Overlay } from "/imports/plugins/core/ui/client/components";
 
 const getStyles = (props) => {
   const minWidth = Math.min(props.viewportWidth, 400);
@@ -22,8 +18,8 @@ const getStyles = (props) => {
   const provides = actionView.provides || [];
   // legacy provides could be a string, is an array since 1.5.0, check for either.
   // prototype.includes has the fortunate side affect of checking string equality as well as array inclusion.
-  const isBigView = provides.includes("dashboard") ||
-                    (provides.includes("shortcut") && actionView.container === "dashboard");
+  const isBigView =
+    provides.includes("dashboard") || (provides.includes("shortcut") && actionView.container === "dashboard");
 
   if (isBigView) {
     viewSize = "90vw";
@@ -97,9 +93,11 @@ const getStyles = (props) => {
       "flexDirection": "column",
       "flex": "1 1 auto",
       "maxWidth": viewMaxSize,
+      "@media only screen and (max-width: 1420px)": {
+        minWidth: "55vw"
+      },
       "@media only screen and (max-width: 949px)": {
-        width: "100vw",
-        maxWidth: "100%"
+        width: "100vw"
       }
     },
     masterView: {
@@ -116,11 +114,15 @@ const getStyles = (props) => {
       "height": "100vh",
       "backgroundColor": "white",
       "borderRight": "1px solid #ccc",
-      "@media only screen and (max-width: 949px)": {
+      "width": "24vw",
+      "@media only screen and (max-width: 1420px)": {
+        width: "35vw"
+      },
+      "@media only screen and (max-width: 1024px)": {
         position: "absolute",
         top: 0,
         right: 0,
-        width: "96vw",
+        width: "100vw",
         zIndex: 1050
       }
     },
@@ -154,17 +156,17 @@ class ActionView extends Component {
     isDetailViewAtRootView: PropTypes.bool,
     language: PropTypes.string,
     viewportWidth: PropTypes.number
-  }
+  };
 
   static getDerivedStateFromProps(props) {
     const { actionView, detailView, prevProps = {} } = props;
 
     const stateUpdates = { prevProps: props };
 
-    if (!EJSON.equals(actionView, prevProps.actionView)) {
+    if (isEqual(actionView, prevProps.actionView) === false) {
       stateUpdates.actionView = actionView;
     }
-    if (!EJSON.equals(detailView, prevProps.detailView)) {
+    if (isEqual(detailView, prevProps.detailView) === false) {
       stateUpdates.detailView = detailView;
     }
 
@@ -193,6 +195,19 @@ class ActionView extends Component {
     if (window) {
       window.addEventListener("resize", this.handleResize, false);
     }
+
+    const { actionView } = this.props;
+    if (actionView) {
+      this.setState({ actionView });
+    }
+  }
+
+  componentDidUpdate(prevProps) {
+    const { actionView } = this.props;
+
+    if (isEqual(actionView, prevProps.actionView) === false) {
+      this.setState({ actionView });
+    }
   }
 
   componentWillUnmount() {
@@ -216,10 +231,7 @@ class ActionView extends Component {
       } catch (error) {
         return (
           <div style={this.styles.masterView} className="master">
-            <Blaze
-              {...actionView.data}
-              template={actionView.template}
-            />
+            <Blaze {...actionView.data} template={actionView.template} />
           </div>
         );
       }
@@ -233,10 +245,7 @@ class ActionView extends Component {
     if (detailView && typeof detailView.template === "string") {
       return (
         <div style={this.styles.detailView} className="detail">
-          <Blaze
-            {...detailView.data}
-            template={detailView.template}
-          />
+          <Blaze {...detailView.data} template={detailView.template} />
         </div>
       );
     }
@@ -256,28 +265,14 @@ class ActionView extends Component {
     let button;
 
     if (this.props.isActionViewAtRootView === false) {
-      button = (
-        <IconButton
-          bezelStyle={"flat"}
-          icon="fa fa-arrow-left"
-          onClick={this.props.handleActionViewBack}
-        />
-      );
+      button = <IconButton bezelStyle={"flat"} icon="fa fa-arrow-left" onClick={this.props.handleActionViewBack} />;
     } else {
-      button = (
-        <IconButton
-          bezelStyle={"flat"}
-          icon="fa fa-times"
-          onClick={this.props.handleActionViewClose}
-        />
-      );
+      button = <IconButton bezelStyle={"flat"} icon="fa fa-times" onClick={this.props.handleActionViewClose} />;
     }
 
     return (
       <div style={this.styles.backButton}>
-        <div style={this.styles.backButtonContainers}>
-          {button}
-        </div>
+        <div style={this.styles.backButtonContainers}>{button}</div>
       </div>
     );
   }
@@ -312,23 +307,13 @@ class ActionView extends Component {
       return (
         <div style={this.styles.backButton}>
           <div style={this.styles.backButtonContainers}>
-            <IconButton
-              bezelStyle={"flat"}
-              icon="fa fa-arrow-left"
-              onClick={this.props.handleActionViewDetailBack}
-            />
+            <IconButton bezelStyle={"flat"} icon="fa fa-arrow-left" onClick={this.props.handleActionViewDetailBack} />
           </div>
         </div>
       );
     }
 
-    return (
-      <IconButton
-        bezelStyle={"flat"}
-        icon="fa fa-times"
-        onClick={this.props.handleActionViewDetailClose}
-      />
-    );
+    return <IconButton bezelStyle={"flat"} icon="fa fa-times" onClick={this.props.handleActionViewDetailClose} />;
   }
 
   get styles() {
@@ -351,17 +336,12 @@ class ActionView extends Component {
             </h3>
           </div>
 
-          <div className="controls»">
-            {/* Controls */}
-          </div>
+          <div className="controls»">{/* Controls */}</div>
         </div>
         <div style={this.styles.body} className="admin-controls-content action-view-body">
-
           {this.renderControlComponent()}
-
         </div>
       </div>
-
     );
   }
 
@@ -382,19 +362,13 @@ class ActionView extends Component {
 
           <div style={this.styles.heading} className="heading">
             <h3 className="title" style={this.styles.title}>
-              <Translation
-                defaultValue={actionView.label}
-                i18nKey={actionView.i18nKeyLabel}
-              />
+              <Translation defaultValue={actionView.label} i18nKey={actionView.i18nKeyLabel} />
             </h3>
           </div>
 
-          <div className="controls">
-            {/* Controls */}
-          </div>
+          <div className="controls">{/* Controls */}</div>
         </div>
         <div style={this.styles.body} className="admin-controls-content action-view-body">
-
           {/* this.renderControlComponent() */}
           {this.renderDetailComponent()}
         </div>
@@ -418,10 +392,7 @@ class ActionView extends Component {
     return (
       <div style={this.styles.base} className={baseClassName} role="complementary" key="action-view">
         {this.renderMasterView()}
-        <Overlay
-          isVisible={this.showDetailViewOverlay}
-          onClick={this.props.handleActionViewDetailClose}
-        />
+        <Overlay isVisible={this.showDetailViewOverlay} onClick={this.props.handleActionViewDetailClose} />
         <CSSTransition
           in={this.props.detailViewIsOpen}
           unmountOnExit
@@ -433,11 +404,8 @@ class ActionView extends Component {
           {this.renderDetailView()}
         </CSSTransition>
 
-
         <div className="admin-controls-footer">
-          <div className="admin-controls-container">
-            {this.renderFooter()}
-          </div>
+          <div className="admin-controls-container">{this.renderFooter()}</div>
         </div>
       </div>
     );
@@ -462,16 +430,10 @@ class ActionView extends Component {
         >
           {this.renderActionView()}
         </CSSTransition>
-        <Overlay
-          isVisible={this.showOverlay}
-          onClick={this.props.handleActionViewClose}
-        />
+        <Overlay isVisible={this.showOverlay} onClick={this.props.handleActionViewClose} />
       </div>
     );
   }
 }
 
-export default Admin()(compose(
-  withCSSTransition,
-  Radium
-)(ActionView));
+export default Admin()(compose(withCSSTransition, Radium)(ActionView));

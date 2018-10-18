@@ -39,7 +39,7 @@ beforeAll(async () => {
 
 afterAll(() => testApp.stop());
 
-test("unauthenticated", async () => {
+test.skip("unauthenticated", async () => {
   try {
     await accountQuery({ id: opaqueNonAdminAccountId });
   } catch (error) {
@@ -56,7 +56,7 @@ describe("authenticated, non-admin", () => {
     await testApp.clearLoggedInUser();
   });
 
-  test("get own account", async () => {
+  test.skip("get own account", async () => {
     const result = await accountQuery({ id: opaqueNonAdminAccountId });
     expect(result).toEqual({
       account: {
@@ -100,7 +100,7 @@ describe("authenticated, non-admin", () => {
     });
   });
 
-  test("get other account", async () => {
+  test.skip("get other account", async () => {
     try {
       await accountQuery({ id: opaqueOtherAccountId });
     } catch (error) {
@@ -118,7 +118,7 @@ describe("authenticated, admin", () => {
     await testApp.clearLoggedInUser();
   });
 
-  test("get other account", async () => {
+  test.skip("get other account", async () => {
     const result = await accountQuery({ id: opaqueOtherAccountId });
     expect(result).toEqual({
       account: {
