@@ -28,7 +28,7 @@ services:
       HYDRA_ADMIN_URL: "http://hydra:4445"
       HYDRA_TOKEN_URL: "http://hydra:4444/oauth2/token"
       HYDRA_OAUTH2_INTROSPECT_URL: "http://hydra:4445/oauth2/introspect"
-      OAUTH2_CLIENT_DOMAIN: "http://localhost:4000"
+      OAUTH2_CLIENT_DOMAINS: "http://localhost:4000"
     networks:
       default:
       api:

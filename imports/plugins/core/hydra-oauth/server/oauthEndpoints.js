@@ -68,17 +68,26 @@ WebApp.connectHandlers.use("/consent", (req, res) => {
     .catch((errorMessage) => errorHandler(errorMessage, res));
 });
 
-WebApp.connectHandlers.use("/token/refresh", (req, res) => {
-  res.setHeader("Access-Control-Allow-Origin", process.env.OAUTH2_CLIENT_DOMAIN);
+WebApp.connectHandlers.use("/token/refresh", async (req, res) => {
+  const { origin } = req.headers;
+  const whitelist = process.env.OAUTH2_CLIENT_DOMAINS || "";
+  const whitelistArr = whitelist.split(",");
 
-  hydra
-    .refreshAuthToken(req.query)
-    .then((apiRes) => {
-      Logger.debug(`Refresh auth token call successful: ${apiRes.statusCode}`);
-      res.writeHead(200, { "Content-Type": "application/json" });
-      return res.end(JSON.stringify(apiRes));
-    })
-    .catch((errorMessage) => errorHandler(errorMessage, res));
+  if (whitelistArr.indexOf(origin) > -1) {
+    res.setHeader("Access-Control-Allow-Origin", origin);
+    res.setHeader("Vary", "Origin");
+  }
+
+  const apiRes = await hydra.refreshAuthToken(req.query);
+
+  if (apiRes.status_code < 200 || apiRes.status_code > 302) {
+    Logger.error("An error occurred while calling refresh API", apiRes.error_description);
+    return errorHandler(apiRes.error_description, res);
+  }
+
+  Logger.debug(`Refresh auth token call successful: ${apiRes.statusCode}`);
+  res.writeHead(200, { "Content-Type": "application/json" });
+  return res.end(JSON.stringify(apiRes));
 });
 
 WebApp.connectHandlers.use("/logout", (req, res) => {
