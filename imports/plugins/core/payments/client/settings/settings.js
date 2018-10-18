@@ -3,6 +3,7 @@ import getOpaqueIds from "/imports/plugins/core/core/client/util/getOpaqueIds";
 import simpleGraphQLClient from "/imports/plugins/core/graphql/lib/helpers/simpleClient";
 import { Template } from "meteor/templating";
 import { AutoForm } from "meteor/aldeed:autoform";
+import { Meteor } from "meteor/meteor";
 import { Reaction, i18next } from "/client/api";
 import { ReactiveDict } from "meteor/reactive-dict";
 import { Shops } from "/lib/collections";
@@ -51,8 +52,19 @@ Template.paymentSettings.helpers({
   },
   paymentMethodOptions() {
     const options = [{ label: "Auto", value: "none" }];
-    const paymentMethods = Template.instance().state.get("paymentMethods");
 
+    const legacyMethods = Reaction.Apps({ packageName: "discount-codes", provides: "paymentMethod" });
+    if (_.isArray(legacyMethods)) {
+      for (const method of legacyMethods) {
+        if (!method.enabled) continue;
+        options.push({
+          label: i18next.t(method.i18nKeyLabel),
+          value: method.settingsKey
+        });
+      }
+    }
+
+    const paymentMethods = Template.instance().state.get("paymentMethods");
     if (_.isArray(paymentMethods)) {
       for (const method of paymentMethods) {
         if (!method.isEnabled) continue;
@@ -83,11 +95,26 @@ Template.paymentSettings.events({
     event.preventDefault();
 
     const { state } = Template.instance();
+    const isEnabled = event.target.checked;
+    const paymentMethodName = event.target.getAttribute("data-name");
+    const packageId = event.target.getAttribute("data-id");
+
+    // Handle legacy discount codes payment method
+    if (paymentMethodName === "discount-codes" && packageId) {
+      const fields = [{
+        property: "enabled",
+        value: isEnabled
+      }];
+      Meteor.call("registry/update", packageId, paymentMethodName, fields);
+      Meteor.call("shop/togglePackage", packageId, !isEnabled);
+      return;
+    }
+
     const response = await simpleGraphQLClient.mutations.enablePaymentMethodForShop({
       input: {
         shopId: state.get("shopId"),
-        paymentMethodName: event.target.getAttribute("data-name"),
-        isEnabled: event.target.checked
+        paymentMethodName,
+        isEnabled
       }
     });
     const paymentMethods = _.get(response, "enablePaymentMethodForShop.paymentMethods");
