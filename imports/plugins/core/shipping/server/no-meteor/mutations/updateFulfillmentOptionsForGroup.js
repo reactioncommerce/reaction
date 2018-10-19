@@ -2,6 +2,7 @@ import { isEqual } from "lodash";
 import SimpleSchema from "simpl-schema";
 import ReactionError from "@reactioncommerce/reaction-error";
 import getCartById from "../util/getCartById";
+import getShippingAttributes from "../util/getShippingAttributes";
 
 const inputSchema = new SimpleSchema({
   cartId: String,
@@ -74,6 +75,8 @@ export default async function updateFulfillmentOptionsForGroup(context, input) {
 
   // Map the items onto the fulfillment groups
   fulfillmentGroup.items = fulfillmentGroup.itemIds.map((itemId) => cart.items.find((item) => item._id === itemId));
+
+  const shippingAttributes = await getShippingAttributes(context, fulfillmentGroup);
 
   // In the future we want to do this async and subscribe to the results
   const rates = await context.queries.getFulfillmentMethodsWithQuotes(fulfillmentGroup, context);
