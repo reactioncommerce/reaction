@@ -36,15 +36,22 @@ function transform(doc, userId) {
       if (registry.route) {
         registry.permissions.push(registry.name || `${doc.name}/${registry.template}`);
       }
-      if (doc.settings && doc.settings[registry.settingsKey]) {
-        registry.enabled = !!doc.settings[registry.settingsKey].enabled;
-      } else {
+
+      // We no longer use a settingsKey for "enabled" for some registry types.
+      // Would prefer to eliminate for all eventually.
+      if (Array.isArray(registry.provides) && registry.provides.includes("paymentSettings")) {
         registry.enabled = !!doc.enabled;
+      } else {
+        if (doc.settings && doc.settings[registry.settingsKey]) {
+          registry.enabled = !!doc.settings[registry.settingsKey].enabled;
+        } else {
+          registry.enabled = !!doc.enabled;
+        }
+        // define export settings
+        registrySettings[registry.settingsKey] = {
+          enabled: registry.enabled
+        };
       }
-      // define export settings
-      registrySettings[registry.settingsKey] = {
-        enabled: registry.enabled
-      };
 
       // add i18n keys
       registry = translateRegistry(registry, doc);

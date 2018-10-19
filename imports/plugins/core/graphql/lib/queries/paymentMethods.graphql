@@ -3,5 +3,6 @@ getPaymentMethods($shopId: ID!) {
     name
     displayName
     isEnabled
+    pluginName
   }
 }

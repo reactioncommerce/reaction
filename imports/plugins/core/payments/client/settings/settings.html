@@ -1,5 +1,5 @@
 <template name="paymentSettings">
-    <div class="panel-group" id="paymentSettingsAccordian" role="tablist" aria-multiselectable="true">
+  <div class="panel-group" id="paymentSettingsAccordian" role="tablist" aria-multiselectable="true">
     <div class="panel panel-default">
       <div class="panel-heading">
         <div class="panel-title">
@@ -22,38 +22,52 @@
       </div>
     </div>
 
-    {{#each reactionApps packageName='discount-codes' provides='paymentSettings'}}
-      <div class="panel panel-default">
-        <div class="panel-heading panel-heading-flex">
-          <div class="panel-title">
-            <i class="fa fa-{{name}}"></i>
-            <span data-i18n="{{i18nKeyLabel}}">{{label}}</span>
-          </div>
-          <div class="panel-controls">
-            <input class="checkbox-switch" type="checkbox" name="enabled" data-name="{{settingsKey}}" data-id={{packageId}} {{checked enabled}}>
-          </div>
-        </div>
-        <div class="panel-body {{shown enabled}}">
-          {{> Template.dynamic template=template data=.}}
-        </div>
-      </div>
-    {{/each}}
+    {{> discountsPaymentSettings}}
 
-    {{#each paymentMethodList}}
-      <div class="panel panel-default">
-        <div class="panel-heading panel-heading-flex">
-          <div class="panel-title">
-            <i class="fa fa-{{name}}"></i>
-            <span>{{displayName}}</span>
-          </div>
-          <div class="panel-controls">
-            <input class="checkbox-switch" type="checkbox" name="enabled" data-name={{name}} {{checked isEnabled}}>
-          </div>
-        </div>
-        <div class="panel-body {{shown isEnabled}}">
-          {{> Template.dynamic template=template data=.}}
+    {{#each paymentPlugins}}
+    <div class="panel panel-default">
+      <div class="panel-heading panel-heading-flex">
+        <div class="panel-title">
+          <i class="fa fa-{{name}}"></i>
+          <span data-i18n="{{i18nKeyLabel}}">{{label}}</span>
         </div>
       </div>
+      <div class="panel-body">
+        <label><span data-i18n="shopSettings.paymentMethods">Payment methods</span></label>
+        <div class="rui list-group">
+          {{#each paymentMethodsForPlugin}}
+            <div class="rui list-group-item" role="button" tabindex={{@index}}>
+              <div class="rui list-item-content">
+                <span>{{displayName}}</span>
+              </div>
+              <div class="rui list-item-action">
+                <span><label class="rui switch"><input name="paymentMethodEnabled" type="checkbox"><div class="switch-control {{#if isEnabled}}active{{/if}}"></div></label></span>
+              </div>
+            </div>
+          {{/each}}
+        </div>
+        {{> Template.dynamic template=template data=.}}
+      </div>
+    </div>
     {{/each}}
   </div>
+</template>
+
+<template name="discountsPaymentSettings">
+  {{#each reactionApps packageName='discount-codes' provides='paymentSettings'}}
+  <div class="panel panel-default">
+    <div class="panel-heading panel-heading-flex">
+      <div class="panel-title">
+        <i class="fa fa-{{name}}"></i>
+        <span data-i18n="{{i18nKeyLabel}}">{{label}}</span>
+      </div>
+      <div class="panel-controls">
+        <input class="checkbox-switch" type="checkbox" name="enabled" {{checked enabled}}>
+      </div>
+    </div>
+    <div class="panel-body {{shown enabled}}">
+      {{> Template.dynamic template=template data=.}}
+    </div>
+  </div>
+  {{/each}}
 </template>
