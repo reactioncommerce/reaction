@@ -2,7 +2,7 @@ import { Template } from "meteor/templating";
 import { AutoForm } from "meteor/aldeed:autoform";
 import { Reaction, i18next } from "/client/api";
 import { Packages } from "/lib/collections";
-import { StripePackageConfig } from "../../lib/collections/schemas";
+import { StripeMarketplacePackageConfig } from "../../../lib/collections/schemas";
 
 /**
  * @summary get Stripe Package record
@@ -10,30 +10,30 @@ import { StripePackageConfig } from "../../lib/collections/schemas";
  */
 function packageData() {
   return Packages.findOne({
-    name: "reaction-stripe",
+    name: "reaction-marketplace",
     shopId: Reaction.getShopId()
   });
 }
 
-Template.stripeSettings.helpers({
+Template.stripeMarketplaceSettings.helpers({
   StripePackageConfig() {
-    return StripePackageConfig;
+    return StripeMarketplacePackageConfig;
   },
   packageData
 });
 
-Template.stripe.helpers({
+Template.stripeMarketplace.helpers({
   packageData
 });
 
-Template.stripe.events({
+Template.stripeMarketplace.events({
   "click [data-event-action=showStripeSettings]"() {
     Reaction.showActionView();
   }
 });
 
 AutoForm.hooks({
-  "stripe-update-form": {
+  "stripe-marketplace-update-form": {
     onSuccess() {
       return Alerts.toast(i18next.t("admin.settings.saveSuccess"), "success");
     },

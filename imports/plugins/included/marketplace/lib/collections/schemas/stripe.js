@@ -10,7 +10,7 @@ import { registerSchema } from "@reactioncommerce/schemas";
  * @type {SimpleSchema}
  * @see {@link https://stripe.com/docs/api}
  */
-export const StripeConnectAuthorizationCredentials = new SimpleSchema({
+const StripeConnectAuthorizationCredentials = new SimpleSchema({
   token_type: { // eslint-disable-line camelcase
     type: String
   },
@@ -34,14 +34,12 @@ export const StripeConnectAuthorizationCredentials = new SimpleSchema({
   }
 }, { check, tracker: Tracker });
 
-registerSchema("StripeConnectAuthorizationCredentials", StripeConnectAuthorizationCredentials);
-
 /**
- * @name StripePackageConfig
+ * @name StripeMarketplacePackageConfig
  * @memberof Schemas
  * @type {SimpleSchema}
  */
-export const StripePackageConfig = PackageConfig.clone().extend({
+export const StripeMarketplacePackageConfig = PackageConfig.clone().extend({
   // Remove blackbox: true from settings obj
   "settings": {
     type: Object,
@@ -94,4 +92,4 @@ export const StripePackageConfig = PackageConfig.clone().extend({
   }
 });
 
-registerSchema("StripePackageConfig", StripePackageConfig);
+registerSchema("StripeMarketplacePackageConfig", StripeMarketplacePackageConfig);

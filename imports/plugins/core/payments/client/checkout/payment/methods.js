@@ -10,6 +10,7 @@ import "./methods.html";
 /* eslint-disable camelcase */
 const templates = {
   iou_example: "ExampleIOUPaymentForm",
+  marketplace_stripe_card: "stripeMarketplacePaymentForm",
   stripe_card: "stripePaymentForm"
 };
 /* eslint-enable camelcase */
