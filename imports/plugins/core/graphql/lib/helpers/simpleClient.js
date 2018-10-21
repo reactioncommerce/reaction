@@ -34,6 +34,13 @@ function setTokenHeader() {
 }
 
 export default {
+  createMutationFunction(mutation) {
+    const cachedMutationFunction = client.mutate(mutation);
+    return (variables) => {
+      setTokenHeader();
+      return cachedMutationFunction(variables);
+    };
+  },
   mutations: {
     createFlatRateFulfillmentMethod: (variables) => {
       setTokenHeader();
