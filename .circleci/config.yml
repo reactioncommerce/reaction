@@ -341,7 +341,7 @@ workflows:
             - docker-push
           filters:
             branches:
-              only: /^feat*/
+              only: /^feat.*/
       - deploy-docs:
           requires:
             - test-unit
