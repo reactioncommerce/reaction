@@ -1,25 +1,33 @@
 <template name="corePaymentMethods">
 
-  {{#each enabledPayments}}
-
+  {{#each enabledDiscountCodes}}
     <div class="core-payment-method-form">
       {{> React component=ReactComponentOrBlazeTemplate name=template props=.}}
     </div>
+  {{/each}}
 
+  {{#each enabledPayments}}
+    <div class="core-payment-method-form">
+      {{> React component=ReactComponentOrBlazeTemplate name=template props=.}}
+    </div>
   {{else}}
 
-    {{#if isAdmin}}
-      <div class="alert alert-danger">
-        <span data-i18n="checkoutPayment.noPaymentMethods">No payment methods are configured.</span>
-        <a href="#" data-event-action="configure-payment-methods">
-          <span data-i18n="checkoutPayment.configureNow">Configure now.</span>
-        </a>
-      </div>
+    {{#if isLoading}}
+      <div>{{> React component=LoadingComponent}}</div>
     {{else}}
-      <div class="alert alert-danger">
-        <span data-i18n="checkoutPayment.noPaymentMethods">No payment methods are configured.</span>
-        <span data-i18n="checkoutPayment.contactAdmin">Please contact the store administrator.</span>
-      </div>
+      {{#if isAdmin}}
+        <div class="alert alert-danger">
+          <span data-i18n="checkoutPayment.noPaymentMethods">No payment methods are configured.</span>
+          <a href="#" data-event-action="configure-payment-methods">
+            <span data-i18n="checkoutPayment.configureNow">Configure now.</span>
+          </a>
+        </div>
+      {{else}}
+        <div class="alert alert-danger">
+          <span data-i18n="checkoutPayment.noPaymentMethods">No payment methods are configured.</span>
+          <span data-i18n="checkoutPayment.contactAdmin">Please contact the store administrator.</span>
+        </div>
+      {{/if}}
     {{/if}}
 
   {{/each}}

@@ -1,3 +1,5 @@
-import "./methods.js";
+import "./methods";
+import "./stripe-connect";
 import "./i18n";
-import "./publications.js";
+import "./publications";
+import "./startup/startup";

@@ -1,3 +1,4 @@
+import _ from "lodash";
 import Hooks from "@reactioncommerce/hooks";
 import Logger from "@reactioncommerce/logger";
 import { Meteor } from "meteor/meteor";
@@ -36,15 +37,12 @@ export default function createRefund(orderId, paymentId, amount, sendEmail = tru
   const { mode: paymentMode, paymentPluginName, processor, transactionId } = payment;
   const processorLowercase = processor.toLowerCase();
 
-  // check if payment provider supports de-authorize
-  const checkSupportedMethods = Packages.findOne({
-    name: paymentPluginName,
-    shopId: order.shopId
-  }).settings[paymentPluginName].support;
+  const paymentPlugin = Packages.findOne({ name: paymentPluginName, shopId: order.shopId });
 
+  // check if payment provider supports de-authorize
   let result;
   let modifier = {};
-  if (checkSupportedMethods.includes("De-authorize")) {
+  if (_.get(paymentPlugin, "settings.support", []).indexOf("De-authorize") > -1) {
     result = Meteor.call(`${processorLowercase}/payment/deAuthorize`, payment, amount);
     modifier = {
       $push: {
@@ -91,7 +89,7 @@ export default function createRefund(orderId, paymentId, amount, sendEmail = tru
   Hooks.Events.run("onOrderRefundCreated", orderId);
 
   // Send email to notify customer of a refund
-  if (checkSupportedMethods.includes("De-authorize")) {
+  if (_.get(paymentPlugin, "settings.support", []).indexOf("De-authorize") > -1) {
     sendOrderEmail(order);
   } else if (paymentMode === "capture" && sendEmail) {
     sendOrderEmail(order, "refunded");

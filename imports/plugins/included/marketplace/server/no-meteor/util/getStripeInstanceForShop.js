@@ -1,7 +1,7 @@
 import ReactionError from "@reactioncommerce/reaction-error";
 import stripeNpm from "stripe";
 
-const PACKAGE_NAME = "reaction-stripe";
+const PACKAGE_NAME = "reaction-marketplace";
 
 /**
  * @summary Given a shop ID, gets the Stripe package data for that shop and an instance

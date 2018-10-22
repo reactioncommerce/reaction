@@ -1,0 +1,8 @@
+getPaymentMethods($shopId: ID!) {
+  paymentMethods(shopId: $shopId) {
+    name
+    displayName
+    isEnabled
+    pluginName
+  }
+}

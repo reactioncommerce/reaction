@@ -17,19 +17,16 @@ Reaction.registerPackage({
     displayName: "IOU Example"
   }],
   settings: {
-    "mode": false,
-    "apiKey": "",
-    "example": {
+    mode: false,
+    apiKey: "",
+    example: {
       enabled: false
     },
-    "example-paymentmethod": {
-      enabled: false,
-      support: [
-        "Authorize",
-        "Capture",
-        "Refund"
-      ]
-    }
+    support: [
+      "Authorize",
+      "Capture",
+      "Refund"
+    ]
   },
   registry: [
     // Settings panel
