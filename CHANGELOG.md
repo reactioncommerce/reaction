@@ -13,6 +13,8 @@ There's also a little bit of cleanup of unused code in this release. This will l
  - fix: Product Visibility for Marketplace Shops (#4425)
  - fix: cart item attributes (#4607)
  - fix: startup error before primary shop is created on initial startup (#4602)
+ - fix: avoid infinite looping when taxes are enabled (11e95ba) .. Resolves #4620
+ - fix: limit jest maxWorkers to 4 to improve CI perf (cd76a50)
 
  ## Refactors
  - refactor: Remove unused schemas (#4566)
