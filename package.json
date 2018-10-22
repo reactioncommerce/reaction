@@ -202,7 +202,7 @@
   "scripts": {
     "devserver": "ROOT_URL=http://localhost:3030 MONGO_URL=mongodb://localhost:27017/reaction NODE_ENV=reaction-node BABEL_DISABLE_CACHE=1 nodemon ./imports/node-app/devserver/index.js",
     "lint": "eslint .",
-    "test": "npm run test:unit && npm run test:integration && npm run test:app",
+    "test": "npm run test:unit && npm run test:app",
     "test:app": "MONGO_URL='' TEST_CLIENT=0 meteor test --once --full-app --driver-package meteortesting:mocha",
     "test:app:watch": "MONGO_URL='' TEST_CLIENT=0 TEST_WATCH=1 meteor test --full-app --driver-package meteortesting:mocha",
     "test:unit": "NODE_ENV=jesttest BABEL_DISABLE_CACHE=1 jest --no-cache --maxWorkers=4 --testPathIgnorePatterns /tests/",

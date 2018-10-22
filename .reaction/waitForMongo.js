@@ -10,7 +10,8 @@ function defaultOut(message) {
 }
 
 /**
- * Print a message to the console (no trailing newline)
+ * Run a check/wait/retry loop until a provided function returns a 
+ * promise that resolves.
  * @param {Object} options - Named options object
  * @param {function()} options.out Function to show progress
  * @param {number} options.max Number of retries attempted before full failure
@@ -34,8 +35,8 @@ async function checkWaitRetry({
    *
    * @param {string} message to be printed
    * @param {number} count retry number for progress dots
-  * @returns {undefined}
-  */
+   * @returns {undefined}
+   */
   function showOnce(message, count) {
     if (!messages.has(message)) {
       messages.add(message);
@@ -88,6 +89,29 @@ async function connect(mongoUrl) {
 }
 
 /**
+ * Runs the mongo command replSetInitiate,
+ * which we need for the oplog for meteor real-time
+ *
+ * @param {objecct} db connected mongo db instance
+ * @returns {Promise} indication of success/failure
+ */
+async function initReplicaSet(db) {
+  try {
+    await db.admin().command({
+      replSetInitiate: {
+        _id: "rs0",
+        members: [{ _id: 0, host: "localhost:27017" }]
+      }
+    });
+  } catch (error) {
+    // AlreadyInitialized is OK to treat as success
+    if (error.codeName !== "AlreadyInitialized") {
+      throw error;
+    }
+  }
+}
+
+/**
  * Check if replication is ready
  *
  * @param {objecct} db connected mongo db instance
@@ -109,7 +133,11 @@ async function main() {
   if (!MONGO_URL) {
     throw new Error("You must set MONGO_URL environment variable.");
   }
-  const db = await connect(MONGO_URL);
+  const db = await checkWaitRetry({
+    timeoutMessage: "ERROR: MongoDB not reachable in time.",
+    check: connect.bind(null, MONGO_URL)
+  });
+  await initReplicaSet(db);
   await checkWaitRetry({
     timeoutMessage: "ERROR: MongoDB replica set not ready in time.",
     check: checkReplicaSetStatus.bind(null, db)
@@ -132,11 +160,7 @@ function exit(error) {
 // Allow this module to be run directly as a node program or imported as lib
 if (require.main === module) {
   process.on("unhandledRejection", exit);
-  try {
-    main();
-  } catch (error) {
-    exit(error);
-  }
+  main().catch(exit);
 }
 
 module.exports = {
