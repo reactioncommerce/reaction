@@ -3,7 +3,7 @@ import { Migrations } from "meteor/percolate:migrations";
 import { Packages, Shops } from "/lib/collections";
 
 Migrations.add({
-  version: 44,
+  version: 42,
 
   up() {
     Shops.find().forEach((shop) => {
