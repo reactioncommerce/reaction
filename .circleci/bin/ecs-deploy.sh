@@ -1,64 +1,52 @@
 #!/bin/bash
 
-sudo apt-get -y install python3-pip wget jq
+sudo apt-get -y install python3-pip wget
 sudo pip3 install awscli
-wget https://github.com/mikefarah/yq/releases/download/2.0.1/yq_linux_amd64 -O /tmp/yq
-sudo mv /tmp/yq /usr/local/bin/yq
-sudo chmod +x /usr/local/bin/yq
+
+export ENVIRONMENT=feat
+export CLUSTER=core
+export SERVICE=reaction-core
+export SERVICE_SUFFIX=CIRCLE_BRANCH
+export CONTAINER=core
+export core_CIRCLE_SHA1=$CIRCLE_SHA1
+
+PROPEL_CONFIG_FILE="propel.yaml"
+if [ ! -f ${PROPEL_CONFIG_FILE} ]; then
+	echo "Propel configuration file not found!"
+	exit 1
+fi
 
 if [ -z "${AWS_REGION}" ]; then
         AWS_REGION=us-west-2
 fi
 
-ENVIRONMENT=staging
-SERVICE_DIR_NAME=.reaction/devops/aws/services
-SERVICES=$(ls ${SERVICE_DIR_NAME})
+ENV_NAME_UPPERCASE=$(echo $ENVIRONMENT | awk '{print toupper($0)}')
+AWS_ACCESS_KEY_ID_VAR_NAME=CLOUDFORMATION_${ENV_NAME_UPPERCASE}_AWS_ACCESS_KEY_ID
+AWS_SECRET_ACCESS_KEY_VAR_NAME=CLOUDFORMATION_${ENV_NAME_UPPERCASE}_AWS_SECRET_ACCESS_KEY
 
-for SERVICE in $SERVICES; do
-        DISABLED=$(echo $SERVICE | grep disabled)
-        if [ "${DISABLED}" == "${SERVICE}" ]; then
-            continue
-        fi
-	echo "START PROCESSING SERVICE ${SERVICE}"
+if [ "${!AWS_ACCESS_KEY_ID_VAR_NAME}" ]; then
+	AWS_ACCESS_KEY_ID=${!AWS_ACCESS_KEY_ID_VAR_NAME}
+fi
 
-	cd ${SERVICE_DIR_NAME}/${SERVICE}
+if [ "${!AWS_SECRET_ACCESS_KEY_VAR_NAME}" ]; then
+	AWS_SECRET_ACCESS_KEY=${!AWS_SECRET_ACCESS_KEY_VAR_NAME}
+fi
 
-	PROPEL_CONFIG_FILE="propel-${ENVIRONMENT}.yaml"
-	if [ ! -f ${PROPEL_CONFIG_FILE} ]; then
-	    echo "Propel configuration file not found!"
-	    exit 1
-	fi
+mkdir -p ~/.aws
+echo "[default]" > ~/.aws/credentials
+echo "aws_access_key_id = ${AWS_ACCESS_KEY_ID}" >> ~/.aws/credentials
+echo "aws_secret_access_key = ${AWS_SECRET_ACCESS_KEY}" >> ~/.aws/credentials
 
-	ENV_NAME_UPPERCASE=$(echo $ENVIRONMENT | awk '{print toupper($0)}')
-	AWS_ACCESS_KEY_ID_VAR_NAME=CLOUDFORMATION_${ENV_NAME_UPPERCASE}_AWS_ACCESS_KEY_ID
-	AWS_SECRET_ACCESS_KEY_VAR_NAME=CLOUDFORMATION_${ENV_NAME_UPPERCASE}_AWS_SECRET_ACCESS_KEY
+echo "[default]" > ~/.aws/config
+echo "region = ${AWS_REGION}" >> ~/.aws/config
 
-	if [ "${!AWS_ACCESS_KEY_ID_VAR_NAME}" ]; then
-		AWS_ACCESS_KEY_ID=${!AWS_ACCESS_KEY_ID_VAR_NAME}
-	fi
+echo Running aws s3 cp s3://${S3_PROPEL_ARTIFACTS_BUCKET}/propel-linux-amd64 ./propel
+aws s3 cp s3://${S3_PROPEL_ARTIFACTS_BUCKET}/propel-linux-amd64 ./propel
 
-	if [ "${!AWS_SECRET_ACCESS_KEY_VAR_NAME}" ]; then
-		AWS_SECRET_ACCESS_KEY=${!AWS_SECRET_ACCESS_KEY_VAR_NAME}
-	fi
+sudo mv propel /usr/local/bin/propel
+sudo chmod +x /usr/local/bin/propel
 
-	mkdir -p ~/.aws
-	echo "[default]" > ~/.aws/credentials
-	echo "aws_access_key_id = ${AWS_ACCESS_KEY_ID}" >> ~/.aws/credentials
-	echo "aws_secret_access_key = ${AWS_SECRET_ACCESS_KEY}" >> ~/.aws/credentials
-
-	echo "[default]" > ~/.aws/config
-	echo "region = ${AWS_REGION}" >> ~/.aws/config
-
-	echo Running aws s3 cp s3://${S3_PROPEL_ARTIFACTS_BUCKET}/propel-linux-amd64 ./propel
-	aws s3 cp s3://${S3_PROPEL_ARTIFACTS_BUCKET}/propel-linux-amd64 ./propel
-
-	sudo mv propel /usr/local/bin/propel
-	sudo chmod +x /usr/local/bin/propel
-
-	RELEASE_DESCRIPTION="CircleCI build URL: ${CIRCLE_BUILD_URL}"
-        propel release create --deploy --descr "${RELEASE_DESCRIPTION}" -f ${PROPEL_CONFIG_FILE}
-	
-	echo "END PROCESSING SERVICE ${SERVICE}"
-	
-	cd -
-done
+RELEASE_DESCRIPTION="CircleCI build URL: ${CIRCLE_BUILD_URL}"
+propel param copy --env $ENVIRONMENT --cluster $CLUSTER --service $SERVICE --container $CONTAINER --suffix $SERVICE_SUFFIX --overwrite
+propel param set ROOT_URL=https://${SERVICE}-${SERVICE_SUFFIX}.$ENVIRONMENT.reactioncommerce.com/ --env $ENVIRONMENT --cluster $CLUSTER --service $SERVICE --container $CONTAINER --suffix $SERVICE_SUFFIX --overwrite
+propel release create --deploy --env $ENVIRONMENT --cluster $CLUSTER --descr "${RELEASE_DESCRIPTION}"
