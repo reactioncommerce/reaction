@@ -1,0 +1,6 @@
+getAvailablePaymentMethods($shopId: ID!) {
+  availablePaymentMethods(shopId: $shopId) {
+    name
+    displayName
+  }
+}

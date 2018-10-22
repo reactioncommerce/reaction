@@ -5,7 +5,7 @@ import { Address as AddressSchema } from "/imports/collections/schemas";
 import createSingleCharge from "../util/createSingleCharge";
 import getStripeInstanceForShop from "../util/getStripeInstanceForShop";
 
-const PACKAGE_NAME = "reaction-stripe";
+const PACKAGE_NAME = "reaction-marketplace";
 
 const paymentInputSchema = new SimpleSchema({
   billingAddress: AddressSchema,

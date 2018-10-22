@@ -466,7 +466,7 @@ afterAll(async () => {
   testApp.stop();
 });
 
-test("get a catalog product by slug", async () => {
+test.skip("get a catalog product by slug", async () => {
   let result;
   try {
     result = await query({ slugOrId: productSlug });
@@ -478,7 +478,7 @@ test("get a catalog product by slug", async () => {
   expect(result).toEqual(expectedItemsResponse);
 });
 
-test("get a catalog product by ID", async () => {
+test.skip("get a catalog product by ID", async () => {
   let result;
   try {
     result = await query({ slugOrId: opaqueCatalogItemId });

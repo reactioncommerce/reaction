@@ -21,7 +21,7 @@ afterAll(async () => {
 const accountInternalId = "123";
 const accountOpaqueId = "cmVhY3Rpb24vYWNjb3VudDoxMjM=";
 
-test("user can add an address to their own address book", async () => {
+test.skip("user can add an address to their own address book", async () => {
   await testApp.setLoggedInUser({ _id: accountInternalId });
 
   const address = Factory.Address.makeOne();
