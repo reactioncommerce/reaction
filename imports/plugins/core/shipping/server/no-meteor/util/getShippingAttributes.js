@@ -1,4 +1,4 @@
-import { pick } from "./helpers";
+import { asyncForEach, pick, tagsByIds } from "./helpers";
 
 /**
  * @summary Get shipping attributes for a fulfillment group
@@ -9,22 +9,19 @@ import { pick } from "./helpers";
  * @returns {Object|null} shipping attributes for the provided fulfillment group
  */
 export default async function getShippingAttributes(context, fulfillmentGroup) {
-  // console.log("fulfillmentGroup", fulfillmentGroup);
+  const { collections } = context;
   const { address: destination, items } = fulfillmentGroup;
-
   const address = pick(destination, ["address1", "address2", "city", "country", "postal", "region"]);
-
   const products = [];
 
-  items.forEach((item) => {
+   await asyncForEach(items,(async (item) => {
     const product = pick(item, [
       "productId",
       "productVendor",
     ]);
 
-    // const tags = await context.queries.tagsByIds(context, item.productTagIds);
-    // console.log("tags", tags);
-    
+    // Fetch product tags
+    product.tags = await tagsByIds(collections, item.productTagIds); 
 
     // Add physical properties as top level props
     product.weight = item.parcel.weight;
@@ -32,19 +29,13 @@ export default async function getShippingAttributes(context, fulfillmentGroup) {
     product.width = item.parcel.width;
     product.length = item.parcel.length;
 
-    // TODO: fetch tags
-
     // TODO: fetch custom attributes
 
     products.push(product);
-  })
+  }));
 
-  const data = {
+  return {
     address,
     items: products
   };
-
-  console.log("data", data);
-
-  return data;
 }
