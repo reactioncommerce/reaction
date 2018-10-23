@@ -59,4 +59,4 @@ propel param set OAUTH2_REDIRECT_URL=https://${SERVICE2}-${SERVICE_SUFFIX}.$ENVI
 propel param set OAUTH2_IDP_HOST_URL=https://${SERVICE1}-${SERVICE_SUFFIX}.$ENVIRONMENT.reactioncommerce.com --env $ENVIRONMENT --cluster $CLUSTER --service $SERVICE2 --container $CONTAINER2 --suffix $SERVICE_SUFFIX --overwrite
 propel param set EXTERNAL_GRAPHQL_URL=https://${SERVICE1}-${SERVICE_SUFFIX}.$ENVIRONMENT.reactioncommerce.com/graphql-alpha --env $ENVIRONMENT --cluster $CLUSTER --service $SERVICE2 --container $CONTAINER2 --suffix $SERVICE_SUFFIX --overwrite
 propel param set INTERNAL_GRAPHQL_URL=https://${SERVICE1}-${SERVICE_SUFFIX}.$ENVIRONMENT.reactioncommerce.com/graphql-alpha --env $ENVIRONMENT --cluster $CLUSTER --service $SERVICE2 --container $CONTAINER2 --suffix $SERVICE_SUFFIX --overwrite
-propel release create --deploy --env $ENVIRONMENT --cluster $CLUSTER --descr "${RELEASE_DESCRIPTION}" -service $SERVICE2 --suffix $SERVICE_SUFFIX
+propel release create --deploy --env $ENVIRONMENT --cluster $CLUSTER --descr "${RELEASE_DESCRIPTION}" --service $SERVICE2 --suffix $SERVICE_SUFFIX
