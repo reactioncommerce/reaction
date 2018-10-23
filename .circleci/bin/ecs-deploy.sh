@@ -6,7 +6,7 @@ sudo pip3 install awscli
 export ENVIRONMENT=feat
 export CLUSTER=core
 export SERVICE=reaction-core
-export SERVICE_SUFFIX=CIRCLE_BRANCH
+export SERVICE_SUFFIX=$CIRCLE_BRANCH
 export CONTAINER=core
 export core_CIRCLE_SHA1=$CIRCLE_SHA1
 
@@ -52,4 +52,4 @@ propel param copy --env $ENVIRONMENT --cluster $CLUSTER --service $SERVICE --con
 echo Running propel param set ROOT_URL=https://${SERVICE}-${SERVICE_SUFFIX}.$ENVIRONMENT.reactioncommerce.com/ --env $ENVIRONMENT --cluster $CLUSTER --service $SERVICE --container $CONTAINER --suffix $SERVICE_SUFFIX --overwrite
 propel param set ROOT_URL=https://${SERVICE}-${SERVICE_SUFFIX}.$ENVIRONMENT.reactioncommerce.com/ --env $ENVIRONMENT --cluster $CLUSTER --service $SERVICE --container $CONTAINER --suffix $SERVICE_SUFFIX --overwrite
 echo Running propel release create --deploy --env $ENVIRONMENT --cluster $CLUSTER --descr "${RELEASE_DESCRIPTION}"
-propel release create --deploy --env $ENVIRONMENT --cluster $CLUSTER --descr "${RELEASE_DESCRIPTION}"
+propel release create --deploy --env $ENVIRONMENT --cluster $CLUSTER --descr "${RELEASE_DESCRIPTION}" --suffix $SERVICE_SUFFIX
