@@ -32,14 +32,6 @@ if [ "${!AWS_SECRET_ACCESS_KEY_VAR_NAME}" ]; then
 	export AWS_SECRET_ACCESS_KEY=${!AWS_SECRET_ACCESS_KEY_VAR_NAME}
 fi
 
-#mkdir -p ~/.aws
-#echo "[default]" > ~/.aws/credentials
-#echo "aws_access_key_id = ${AWS_ACCESS_KEY_ID}" >> ~/.aws/credentials
-#echo "aws_secret_access_key = ${AWS_SECRET_ACCESS_KEY}" >> ~/.aws/credentials
-
-#echo "[default]" > ~/.aws/config
-#echo "region = ${AWS_REGION}" >> ~/.aws/config
-
 echo Running aws s3 cp s3://${S3_PROPEL_ARTIFACTS_BUCKET}/propel-linux-amd64 ./propel
 aws s3 cp s3://${S3_PROPEL_ARTIFACTS_BUCKET}/propel-linux-amd64 ./propel
 
