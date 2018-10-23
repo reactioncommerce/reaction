@@ -14,8 +14,10 @@ export default function filterShippingAttributes(rates, shippingAttributes) {
     // Return nothing if rate.method is not sent
     if (!rate && rate.method) return;
 
+    const { method: { restrictions } } = rate;
+
     // If rate has no restrictions, add it to validShippingRates
-    if (!rate.method.restrictions) {
+    if (!restrictions) {
       validShippingRates.push(rate);
       return validShippingRates;
     }
@@ -24,7 +26,7 @@ export default function filterShippingAttributes(rates, shippingAttributes) {
     console.log("---------- rate has some restrictions", rate.method.name); // TODO: Remove, for testing visibility only
 
     // Destination restrictions
-    const destinationRestriction = rate.method.restrictions && rate.method.restrictions.destination;
+    const destinationRestriction = restrictions && restrictions.destination;
 
     if (destinationRestriction) {
       // Whitelist - If attributes match, we do add it to the list
@@ -45,7 +47,7 @@ export default function filterShippingAttributes(rates, shippingAttributes) {
     }
 
     // Hazard restrictions
-    const hazardRestriction = rate.method.restrictions.hazard;
+    const hazardRestriction = restrictions && restrictions.hazard;
     if (hazardRestriction) {
       console.log("---------- There is a hazard restriction on this item", hazardRestriction); // TODO: Remove, for testing visibility only
     }
