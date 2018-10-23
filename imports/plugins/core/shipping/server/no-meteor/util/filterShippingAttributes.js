@@ -9,87 +9,52 @@
 export default function filterShippingAttributes(rates, shippingAttributes) {
 
   const activeShippingRates = rates.reduce((validShippingRates, rate) => {
-    console.log("------------------------------ shippingAttributes", shippingAttributes);
+    console.log("------------------------------ shippingAttributes", shippingAttributes); // TODO: Remove, for testing visibility only
 
-    // If rate has no restriction. add it to validShippingRates
+    // Return nothing if rate.method is not sent
+    if (!rate && rate.method) return;
+
+    // If rate has no restrictions, add it to validShippingRates
     if (!rate.method.restrictions) {
       validShippingRates.push(rate);
       return validShippingRates;
     }
 
     // If rate does have restrictions, check for further filtration
-    console.log("---------- rate has some restrictions", rate.method.name); // TODO: Remove, for testing only
+    console.log("---------- rate has some restrictions", rate.method.name); // TODO: Remove, for testing visibility only
 
     // Destination restrictions
-    const destinationRestriction = rate.method.restrictions.destination;
+    const destinationRestriction = rate.method.restrictions && rate.method.restrictions.destination;
+
     if (destinationRestriction) {
-      console.log("---------- There is a destination restriction on this item", destinationRestriction);
-      // Whitelist - We add it to the list if attributes match
+      // Whitelist - If attributes match, we do add it to the list
+      // If attributes do not match, we do not add it to the list
       if (destinationRestriction.type === "whitelist") {
-        console.log("---------- This is a whitelist match, meaning we add the shipping method if it matches");
         if (destinationRestriction.regions.includes(shippingAttributes.address.region)) {
-          console.log("---------- IT WORKSSSSSSSSSSSSSSSSS");
           validShippingRates.push(rate);
         };
       }
-      // Whitelist - We don't add it to the list if attributes match
+
+      // Blacklist - If attributes match, we do not add it to the list
+      // If attributes do not match, we do add it to the list
       if (destinationRestriction.type === "blacklist") {
-        console.log("---------- This is a blacklist match, meaning we add the shipping method if it does not match");
         if (!destinationRestriction.regions.includes(shippingAttributes.address.region)) {
-          console.log("---------- IT WORKSSSSSSSSSSSSSSSSS for blacklists toooooooooooo");
           validShippingRates.push(rate);
         };
       }
     }
 
-    // // Hazard restrictions
-    // const hazardRestriction = rate.method.restrictions.hazard;
-    // if (hazardRestriction) {
-    //   console.log("---------- There is a hazard restriction on this item", hazardRestriction);
-    // }
+    // Hazard restrictions
+    const hazardRestriction = rate.method.restrictions.hazard;
+    if (hazardRestriction) {
+      console.log("---------- There is a hazard restriction on this item", hazardRestriction); // TODO: Remove, for testing visibility only
+    }
 
     // Return validShippingRates reduced array
     return validShippingRates;
   }, []);
 
   // Return all activeShippingRates
-  console.log("-------------------- activeShippingRates --------------------", activeShippingRates); // TODO: Remove, for testing only
+  console.log("-------------------- activeShippingRates --------------------", activeShippingRates); // TODO: Remove, for testing visibility only
   return activeShippingRates;
 }
-
-
-
-
-
-
-// const activeMethods = [];
-  // const inactiveMethods = [];
-
-
-  // if (shippingAttributes.address.region === "AK") {
-  //   console.log("---------- WE ARE SHIPPING TO ALASKA");
-  //   activeMethods.push("Alaska");
-  // }
-  // if (shippingAttributes.address.region === "HI") {
-  //   console.log("---------- WE ARE SHIPPING TO HAWAII");
-  //   activeMethods.push("Hawaii");
-  // }
-  // if (shippingAttributes.address.region !== "AK" && shippingAttributes.address.region !== "HI") {
-  //   console.log("---------- WE ARE SHIPPING TO THE CONTIGUOUS UNITED STATES");
-  //   inactiveMethods.push("Alaska");
-  //   inactiveMethods.push("Hawaii");
-  // }
-
-  // const allMethods = rates.map((item) => item.method.name);
-
-  // // const newRates = rates;
-  // let newRates = rates.filter((item) => allMethods.includes(item.method.name));
-  // if (activeMethods && activeMethods.length) {
-  //   newRates = rates.filter((item) => activeMethods.includes(item.method.name));
-  // }
-
-  // if (inactiveMethods && !activeMethods.length) {
-  //   newRates = rates.filter((item) => !inactiveMethods.includes(item.method.name));
-  // }
-
-  // return newRates;
