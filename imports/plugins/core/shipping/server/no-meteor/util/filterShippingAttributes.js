@@ -8,7 +8,7 @@
  */
 export default function filterShippingAttributes(rates, shippingAttributes) {
 
-  console.log("---------- shippingAttributes for current order", shippingAttributes);
+  console.log("---------- shippingAttributes for current order", shippingAttributes); // TODO: remove log, for testing only
 
   const whiteListShippingRates = rates.reduce((validShippingRates, rate) => {
 
@@ -57,10 +57,56 @@ export default function filterShippingAttributes(rates, shippingAttributes) {
     return validShippingRates;
   }, []);
 
-  // Return all activeShippingRates
-  console.log("-------------------- activeShippingRates --------------------", activeShippingRates); // TODO: Remove, for testing visibility only
-  return activeShippingRates;
-  console.log("-------------------- availableShippingRates --------------------", availableShippingRates); // TODO: Remove, for testing visibility only
+
+  console.log("---------- available shipping rates after running through whitelist check", whiteListShippingRates); // TODO: remove log, for testing only
+
+
+  // Run remaining available rates through the blacklist
+  const availableShippingRates = whiteListShippingRates.reduce((stillValidShippingRates, rate) => {
+
+    const { method: { restrictions } } = rate;
+
+    // If rate does not have blacklist restrictions, add it to the available rates
+    if (restrictions && !restrictions.blacklist) {
+      console.log("---------- there are no blacklists, add rate to list", rate.method.name);
+
+      stillValidShippingRates.push(rate);
+      return stillValidShippingRates;
+    }
+
+    // There is a blacklist object on the shipping method (there always should be)
+    // Check to see if anything matches
+
+    const { blacklist: { destination } } = restrictions;
+
+    // If country blacklist exists, use this
+    if (destination && destination.country && destination.country.includes(shippingAttributes.address.country)) {
+      console.log("---------- there is a COUNTRY blacklist for this method", rate.method.name, destination);
+      return stillValidShippingRates;
+    }
+
+    // If region blacklist exists, use this if there is no country blacklist
+    if (destination && destination.region && destination.region.includes(shippingAttributes.address.region)) {
+      console.log("---------- there is a REGION blacklist for this method", rate.method.name, destination);
+      return stillValidShippingRates;
+    }
+
+    // If postal code blacklist exists, use this if there is no country or region blacklist
+    if (destination && destination.postal && destination.postal.includes(shippingAttributes.address.postal)) {
+      console.log("---------- there is a POSTAL blacklist for this method", rate.method.name, destination);
+      return stillValidShippingRates;
+    }
+
+    console.log("---------- there are no country, region, or postal blacklists for this method", rate.method.name);
+
+
+    // If it passes all the blacklist restrictions, add add it to the list of available rates
+    stillValidShippingRates.push(rate);
+    return stillValidShippingRates;
+  }, []);
+
+
+  console.log("-------------------- availableShippingRates --------------------", availableShippingRates); // TODO: remove log, for testing only
 
   // Return all remaining availalbe shipping rates
   return availableShippingRates;
