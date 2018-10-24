@@ -2,7 +2,6 @@ import { Components } from "@reactioncommerce/reaction-components";
 import { Template } from "meteor/templating";
 import { ReactiveDict } from "meteor/reactive-dict";
 import { Reaction } from "/client/api";
-import ReactComponentOrBlazeTemplate from "/imports/plugins/core/components/lib/ReactComponentOrBlazeTemplate";
 import getOpaqueIds from "/imports/plugins/core/core/client/util/getOpaqueIds";
 import simpleGraphQLClient from "/imports/plugins/core/graphql/lib/helpers/simpleClient";
 import "./methods.html";
@@ -49,9 +48,6 @@ Template.corePaymentMethods.helpers({
   },
   LoadingComponent() {
     return Components.Loading;
-  },
-  ReactComponentOrBlazeTemplate() {
-    return ReactComponentOrBlazeTemplate;
   }
 });
 

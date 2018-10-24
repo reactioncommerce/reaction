@@ -30,6 +30,9 @@ export default class ReactionNodeApp {
       collections: this.collections,
       getFunctionsOfType(type) {
         return ((options.functionsByType || {})[type]) || [];
+      },
+      getNamedFunctionDetails(name) {
+        return (options.namedFunctions || []).find((details) => details.name === name) || null;
       }
     };
 

@@ -5,6 +5,7 @@ import { Spacebars } from "meteor/spacebars";
 import { ReactiveVar } from "meteor/reactive-var";
 import { Roles } from "meteor/alanning:roles";
 import ReactionError from "@reactioncommerce/reaction-error";
+import ReactComponentOrBlazeTemplate from "/imports/plugins/core/components/lib/ReactComponentOrBlazeTemplate";
 import { i18next, Reaction } from "/client/api";
 import * as Collections from "/lib/collections";
 import * as Schemas from "/lib/collections/schemas";
@@ -304,3 +305,5 @@ Template.registerHelper("pluralize", (nCount, pString) => {
   }
   return `${nCount} ${pString}s`;
 });
+
+Template.registerHelper("ReactComponentOrBlazeTemplate", () => ReactComponentOrBlazeTemplate);

@@ -92,7 +92,7 @@
         </div>
         <div id="collapsable-{{template}}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="collapsable-{{template}}">
           <div class="panel-body {{shown enabled}}">
-            {{> Template.dynamic template=template data=.}}
+            {{> React component=ReactComponentOrBlazeTemplate name=template props=.}}
           </div>
         </div>
       </div>

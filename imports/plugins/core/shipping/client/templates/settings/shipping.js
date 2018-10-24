@@ -1,7 +1,6 @@
 import { Template } from "meteor/templating";
 import { Meteor } from "meteor/meteor";
 import { Components } from "@reactioncommerce/reaction-components";
-import ReactComponentOrBlazeTemplate from "/imports/plugins/core/components/lib/ReactComponentOrBlazeTemplate";
 
 /*
  * Template shipping helpers
@@ -27,9 +26,6 @@ Template.shippingSettings.helpers({
   },
   parcelSizeSettings() {
     return Components.ParcelSizeSettings;
-  },
-  ReactComponentOrBlazeTemplate() {
-    return ReactComponentOrBlazeTemplate;
   }
 });
 

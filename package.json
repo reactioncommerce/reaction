@@ -29,7 +29,7 @@
     "@babel/plugin-syntax-dynamic-import": "7.0.0",
     "@babel/plugin-syntax-import-meta": "7.0.0",
     "@babel/runtime": "7.0.0",
-    "@reactioncommerce/components": "0.39.3",
+    "@reactioncommerce/components": "0.47.0",
     "@reactioncommerce/components-context": "1.0.0",
     "@reactioncommerce/data-factory": "^1.0.0",
     "@reactioncommerce/file-collections": "0.6.0",
