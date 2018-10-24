@@ -10,7 +10,7 @@ export SERVICE1=reaction-core
 export CONTAINER1=core
 export core_CIRCLE_SHA1=$CIRCLE_SHA1
 
-PROPEL_CONFIG_FILE="propel.yaml"
+PROPEL_CONFIG_FILE="propel-feat.yaml"
 if [ ! -f ${PROPEL_CONFIG_FILE} ]; then
 	echo "Propel configuration file not found!"
 	exit 1
@@ -39,16 +39,16 @@ sudo mv propel /usr/local/bin/propel
 sudo chmod +x /usr/local/bin/propel
 
 RELEASE_DESCRIPTION="CircleCI build URL: ${CIRCLE_BUILD_URL}"
-propel param copy --env $ENVIRONMENT --cluster $CLUSTER --service $SERVICE1 --container $CONTAINER1 --suffix $SERVICE_SUFFIX --overwrite
-propel param set ROOT_URL=https://${SERVICE1}-${SERVICE_SUFFIX}.$ENVIRONMENT.reactioncommerce.com/ --env $ENVIRONMENT --cluster $CLUSTER --service $SERVICE1 --container $CONTAINER1 --suffix $SERVICE_SUFFIX --overwrite
-propel release create --deploy --env $ENVIRONMENT --cluster $CLUSTER --descr "${RELEASE_DESCRIPTION}" --service $SERVICE1 --suffix $SERVICE_SUFFIX
+propel param copy -f ${PROPEL_CONFIG_FILE} --env $ENVIRONMENT --cluster $CLUSTER --service $SERVICE1 --container $CONTAINER1 --suffix $SERVICE_SUFFIX --overwrite
+propel param set ROOT_URL=https://${SERVICE1}-${SERVICE_SUFFIX}.$ENVIRONMENT.reactioncommerce.com/ -f ${PROPEL_CONFIG_FILE} --env $ENVIRONMENT --cluster $CLUSTER --service $SERVICE1 --container $CONTAINER1 --suffix $SERVICE_SUFFIX --overwrite
+propel release create --deploy -f ${PROPEL_CONFIG_FILE} --env $ENVIRONMENT --cluster $CLUSTER --descr "${RELEASE_DESCRIPTION}" --service $SERVICE1 --suffix $SERVICE_SUFFIX
 
 export SERVICE2=storefront
 export CONTAINER2=storefront
-propel param copy --env $ENVIRONMENT --cluster $CLUSTER --service $SERVICE2 --container $CONTAINER2 --suffix $SERVICE_SUFFIX --overwrite
-propel param set CANONICAL_URL=https://${SERVICE1}-${SERVICE_SUFFIX}.$ENVIRONMENT.reactioncommerce.com --env $ENVIRONMENT --cluster $CLUSTER --service $SERVICE2 --container $CONTAINER2 --suffix $SERVICE_SUFFIX --overwrite
-propel param set OAUTH2_REDIRECT_URL=https://${SERVICE2}-${SERVICE_SUFFIX}.$ENVIRONMENT.reactioncommerce.com/callback --env $ENVIRONMENT --cluster $CLUSTER --service $SERVICE2 --container $CONTAINER2 --suffix $SERVICE_SUFFIX --overwrite
-propel param set OAUTH2_IDP_HOST_URL=https://${SERVICE1}-${SERVICE_SUFFIX}.$ENVIRONMENT.reactioncommerce.com --env $ENVIRONMENT --cluster $CLUSTER --service $SERVICE2 --container $CONTAINER2 --suffix $SERVICE_SUFFIX --overwrite
-propel param set EXTERNAL_GRAPHQL_URL=https://${SERVICE1}-${SERVICE_SUFFIX}.$ENVIRONMENT.reactioncommerce.com/graphql-alpha --env $ENVIRONMENT --cluster $CLUSTER --service $SERVICE2 --container $CONTAINER2 --suffix $SERVICE_SUFFIX --overwrite
-propel param set INTERNAL_GRAPHQL_URL=https://${SERVICE1}-${SERVICE_SUFFIX}.$ENVIRONMENT.reactioncommerce.com/graphql-alpha --env $ENVIRONMENT --cluster $CLUSTER --service $SERVICE2 --container $CONTAINER2 --suffix $SERVICE_SUFFIX --overwrite
-propel release create --deploy --env $ENVIRONMENT --cluster $CLUSTER --descr "${RELEASE_DESCRIPTION}" --service $SERVICE2 --suffix $SERVICE_SUFFIX
+propel param copy -f ${PROPEL_CONFIG_FILE} --env $ENVIRONMENT --cluster $CLUSTER --service $SERVICE2 --container $CONTAINER2 --suffix $SERVICE_SUFFIX --overwrite
+propel param set CANONICAL_URL=https://${SERVICE1}-${SERVICE_SUFFIX}.$ENVIRONMENT.reactioncommerce.com -f ${PROPEL_CONFIG_FILE} --env $ENVIRONMENT --cluster $CLUSTER --service $SERVICE2 --container $CONTAINER2 --suffix $SERVICE_SUFFIX --overwrite
+propel param set OAUTH2_REDIRECT_URL=https://${SERVICE2}-${SERVICE_SUFFIX}.$ENVIRONMENT.reactioncommerce.com/callback -f ${PROPEL_CONFIG_FILE} --env $ENVIRONMENT --cluster $CLUSTER --service $SERVICE2 --container $CONTAINER2 --suffix $SERVICE_SUFFIX --overwrite
+propel param set OAUTH2_IDP_HOST_URL=https://${SERVICE1}-${SERVICE_SUFFIX}.$ENVIRONMENT.reactioncommerce.com -f ${PROPEL_CONFIG_FILE} --env $ENVIRONMENT --cluster $CLUSTER --service $SERVICE2 --container $CONTAINER2 --suffix $SERVICE_SUFFIX --overwrite
+propel param set EXTERNAL_GRAPHQL_URL=https://${SERVICE1}-${SERVICE_SUFFIX}.$ENVIRONMENT.reactioncommerce.com/graphql-alpha -f ${PROPEL_CONFIG_FILE} --env $ENVIRONMENT --cluster $CLUSTER --service $SERVICE2 --container $CONTAINER2 --suffix $SERVICE_SUFFIX --overwrite
+propel param set INTERNAL_GRAPHQL_URL=https://${SERVICE1}-${SERVICE_SUFFIX}.$ENVIRONMENT.reactioncommerce.com/graphql-alpha -f ${PROPEL_CONFIG_FILE} --env $ENVIRONMENT --cluster $CLUSTER --service $SERVICE2 --container $CONTAINER2 --suffix $SERVICE_SUFFIX --overwrite
+propel release create --deploy -f ${PROPEL_CONFIG_FILE} --env $ENVIRONMENT --cluster $CLUSTER --descr "${RELEASE_DESCRIPTION}" --service $SERVICE2 --suffix $SERVICE_SUFFIX
