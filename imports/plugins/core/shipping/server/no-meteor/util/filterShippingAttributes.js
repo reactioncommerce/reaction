@@ -8,48 +8,49 @@
  */
 export default function filterShippingAttributes(rates, shippingAttributes) {
 
-  const activeShippingRates = rates.reduce((validShippingRates, rate) => {
-    console.log("------------------------------ shippingAttributes", shippingAttributes); // TODO: Remove, for testing visibility only
+  console.log("---------- shippingAttributes for current order", shippingAttributes);
 
-    // Return nothing if rate.method is not sent
-    if (!rate && rate.method) return;
+  const whiteListShippingRates = rates.reduce((validShippingRates, rate) => {
+
+    // Return nothing new if rate.method is not sent
+    if (!rate && rate.method) return validShippingRates;
 
     const { method: { restrictions } } = rate;
 
-    // If rate has no restrictions, add it to validShippingRates
+    // If rate has no restrictions, add rate to validShippingRates
     if (!restrictions) {
       validShippingRates.push(rate);
       return validShippingRates;
     }
 
-    // If rate does have restrictions, check for further filtration
-    console.log("---------- rate has some restrictions", rate.method.name); // TODO: Remove, for testing visibility only
+    // If rate does have whitelist restrictios, check for further filtration
+    if (restrictions && restrictions.whitelist) {
+      const { whitelist: { destination } } = restrictions;
 
-    // Destination restrictions
-    const destinationRestriction = restrictions && restrictions.destination;
-
-    if (destinationRestriction) {
-      // Whitelist - If attributes match, we do add it to the list
-      // If attributes do not match, we do not add it to the list
-      if (destinationRestriction.type === "whitelist") {
-        if (destinationRestriction.regions.includes(shippingAttributes.address.region)) {
-          validShippingRates.push(rate);
-        };
+      // If there are no destination whitelists, move on
+      // We don't have item whitelists, so we can end it here
+      if (!destination) {
+        validShippingRates.push(rate);
+        return validShippingRates;
       }
 
-      // Blacklist - If attributes match, we do not add it to the list
-      // If attributes do not match, we do add it to the list
-      if (destinationRestriction.type === "blacklist") {
-        if (!destinationRestriction.regions.includes(shippingAttributes.address.region)) {
-          validShippingRates.push(rate);
-        };
+      // If postal code restrictions exist, use these
+      if (destination.postal && destination.postal.includes(shippingAttributes.address.postal)) {
+        validShippingRates.push(rate);
+        return validShippingRates;
       }
-    }
 
-    // Hazard restrictions
-    const hazardRestriction = restrictions && restrictions.hazard;
-    if (hazardRestriction) {
-      console.log("---------- There is a hazard restriction on this item", hazardRestriction); // TODO: Remove, for testing visibility only
+      // If region whitelist exists, use thise if there is no zip code whitelist
+      if (destination.region && destination.region.includes(shippingAttributes.address.region)) {
+        validShippingRates.push(rate);
+        return validShippingRates;
+      }
+
+      // If country whitelist exists, use theis if there is no zip code or region whitelist
+      if (destination.country && destination.country.includes(shippingAttributes.address.country)) {
+        validShippingRates.push(rate);
+        return validShippingRates;
+      }
     }
 
     // Return validShippingRates reduced array
@@ -59,4 +60,8 @@ export default function filterShippingAttributes(rates, shippingAttributes) {
   // Return all activeShippingRates
   console.log("-------------------- activeShippingRates --------------------", activeShippingRates); // TODO: Remove, for testing visibility only
   return activeShippingRates;
+  console.log("-------------------- availableShippingRates --------------------", availableShippingRates); // TODO: Remove, for testing visibility only
+
+  // Return all remaining availalbe shipping rates
+  return availableShippingRates;
 }
