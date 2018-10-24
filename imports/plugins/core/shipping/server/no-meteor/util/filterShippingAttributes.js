@@ -100,27 +100,44 @@ export default function filterShippingAttributes(rates, shippingAttributes) {
     const { method: { restrictions: { blacklist: { attributes }}}} = rate;
 
     // If there are not attribute restrtions, then method is unrestricted
-    if (!attributes || !Array.isArray(attributes)) {
+    if (!attributes || !Array.isArray(attributes) || !attributes.length) {
       finalShippingRates.push(rate);
       return finalShippingRates;
     }
 
     const operators = {
-      "lt": function(a, b) { return a < b },
       "eq": function(a, b) { return a === b},
-      "gt": function(a, b) { return a > b}
+      "gt": function(a, b) { return a > b},
+      "lt": function(a, b) { return a < b },
+      "ne": function(a, b) { return a !== b}
     };
 
     const propertyTypes = {
       "bool": function(a) { return a === "true" },
       "float": function(a) { return parseFloat(a) },
-      "int": function(a) { return parseInt(a) }
+      "int": function(a) { return parseInt(a) },
+      "string": function(a) { return a }
     }
 
 
 
     const remainingItems = items.reduce((itemCheck, item) => {
-      const foundRestrictedProperty = attributes.find((attribute) => operators[attribute.operator](item[attribute.property], propertyType[attribute.propertyType](attribute.value)))
+
+
+
+      const foundRestrictedProperty = attributes.find((attribute) => {
+
+        // If a propertyType is not present, or does not match a predefined `propertyTypes`
+        // return true and make method restricted
+        if (!attributes.propertyType || !Object.keys(propertyTypes).includes(attributes.propertyType)) {
+          return true;
+        }
+
+
+
+        console.log("attribute", attribute);
+        return operators[attribute.operator](item[attribute.property], propertyTypes[attribute.propertyType](attribute.value))
+      });
 
 
       if (!foundRestrictedProperty) {
