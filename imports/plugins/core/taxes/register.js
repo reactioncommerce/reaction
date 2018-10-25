@@ -40,10 +40,6 @@ Reaction.registerPackage({
       name: "taxes/settings/rates",
       provides: ["taxSettings"],
       template: "customTaxRates"
-    },
-    {
-      template: "flatRateCheckoutTaxes",
-      provides: ["taxMethod"]
     }
   ]
 });
