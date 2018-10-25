@@ -3,6 +3,7 @@
 .vscode
 .idea
 .env*
+!.env.example
 .c9
 *.csv
 *.dat
