@@ -12,6 +12,11 @@ const fs = require("fs");
 module.exports = function (api) {
   api.cache(false);
 
+  /**
+   * Meteor only reads the babel config from .babelrc or package.json. So with just babel.config.js,
+   * the Meteor app fails but the Jest tests pass. With just package.json, the Jest tests in custom plugins
+   * fail but the app runs.
+   */
   const file = fs.readFileSync("./package.json");
   const packageJSON = JSON.parse(file);
 
