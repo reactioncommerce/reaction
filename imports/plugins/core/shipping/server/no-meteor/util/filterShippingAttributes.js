@@ -23,12 +23,12 @@ export default function filterShippingAttributes(rates, shippingAttributes) {
       return validShippingRates;
     }
 
-    // If rate does have whitelist restrictios, check for further filtration
-    if (restrictions && restrictions.whitelist) {
-      const { whitelist: { destination } } = restrictions;
+    // If rate does have allow restrictios, check for further filtration
+    if (restrictions && restrictions.allow) {
+      const { allow: { destination } } = restrictions;
 
-      // If there are no destination whitelists, move on
-      // We don't have item whitelists, so we can end it here
+      // If there are no destination allows, move on
+      // We don't have item allows, so we can end it here
       if (!destination) {
         validShippingRates.push(rate);
         return validShippingRates;
@@ -40,13 +40,13 @@ export default function filterShippingAttributes(rates, shippingAttributes) {
         return validShippingRates;
       }
 
-      // If region whitelist exists, use thise if there is no zip code whitelist
+      // If region allow exists, use thise if there is no zip code allow
       if (destination.region && destination.region.includes(shippingAttributes.address.region)) {
         validShippingRates.push(rate);
         return validShippingRates;
       }
 
-      // If country whitelist exists, use theis if there is no zip code or region whitelist
+      // If country allow exists, use theis if there is no zip code or region allow
       if (destination.country && destination.country.includes(shippingAttributes.address.country)) {
         validShippingRates.push(rate);
         return validShippingRates;
@@ -57,38 +57,38 @@ export default function filterShippingAttributes(rates, shippingAttributes) {
     return validShippingRates;
   }, []);
 
-  // Run remaining available rates through the blacklist
+  // Run remaining available rates through the deny
   const availableShippingRates = whiteListShippingRates.reduce((stillValidShippingRates, rate) => {
 
     const { method: { restrictions } } = rate;
 
-    // If rate does not have blacklist restrictions, add it to the available rates
-    if (restrictions && !restrictions.blacklist) {
+    // If rate does not have deny restrictions, add it to the available rates
+    if (restrictions && !restrictions.deny) {
       stillValidShippingRates.push(rate);
       return stillValidShippingRates;
     }
 
-    // There is a blacklist object on the shipping method (there always should be)
+    // There is a deny object on the shipping method (there always should be)
     // Check to see if anything matches
 
-    const { blacklist: { destination }, whitelist: { destination: whitelistDestination } } = restrictions;
+    const { deny: { destination }, allow: { destination: allowDestination } } = restrictions;
 
-    // If country blacklist exists, use this
+    // If country deny exists, use this
     if (destination && destination.country && destination.country.includes(shippingAttributes.address.country)) {
       return stillValidShippingRates;
     }
 
-    // If region blacklist exists, use this if there is no country blacklist
+    // If region deny exists, use this if there is no country deny
     if (destination && destination.region && destination.region.includes(shippingAttributes.address.region)) {
       return stillValidShippingRates;
     }
 
-    // If postal code blacklist exists, use this if there is no country or region blacklist
+    // If postal code deny exists, use this if there is no country or region deny
     if (destination && destination.postal && destination.postal.includes(shippingAttributes.address.postal)) {
       return stillValidShippingRates;
     }
 
-    // If it passes all the blacklist restrictions, add add it to the list of available rates
+    // If it passes all the deny restrictions, add add it to the list of available rates
     stillValidShippingRates.push(rate);
     return stillValidShippingRates;
   }, []);
@@ -97,7 +97,7 @@ export default function filterShippingAttributes(rates, shippingAttributes) {
 
   const availableMethodsAfterItemBlacklist = availableShippingRates.reduce((finalShippingRates, rate) => {
     const { items } = shippingAttributes;
-    const { method: { restrictions: { blacklist: { attributes }}}} = rate;
+    const { method: { restrictions: { deny: { attributes }}}} = rate;
 
     // If there are not attribute restrtions, then method is unrestricted
     if (!attributes || !Array.isArray(attributes) || !attributes.length) {
