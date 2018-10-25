@@ -1,4 +1,4 @@
-// import { pick } from "./helpers";
+import { operators, propertyTypes } from "./helpers";
 
 /**
  * @summary Filter shipping methods based on per method restrictions
@@ -103,20 +103,6 @@ export default function filterShippingAttributes(rates, shippingAttributes) {
     if (!attributes || !Array.isArray(attributes) || !attributes.length) {
       finalShippingRates.push(rate);
       return finalShippingRates;
-    }
-
-    const operators = {
-      "eq": function(a, b) { return a === b},
-      "gt": function(a, b) { return a > b},
-      "lt": function(a, b) { return a < b },
-      "ne": function(a, b) { return a !== b}
-    };
-
-    const propertyTypes = {
-      "bool": function(a) { return a === "true" },
-      "float": function(a) { return parseFloat(a) },
-      "int": function(a) { return parseInt(a) },
-      "string": function(a) { return a }
     }
 
 

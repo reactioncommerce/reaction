@@ -1,5 +1,5 @@
 /**
- * @name asyncForEach 
+ * @name asyncForEach
  * @method
  * @summary async version of `forEach`
  * @param {Array} array - Array to iterate over
@@ -16,7 +16,7 @@ export async function asyncForEach(array, callback) {
  * @name pick
  * @summary Extracts specified keys from a provided object
  * @param {Object} obj - The target object to filter keys from
- * @param {Array} keys - An array of white-listed keys to include in the returned object. 
+ * @param {Array} keys - An array of white-listed keys to include in the returned object.
  * @returns {Object} - An object containing only white-listed keys
  */
 export function pick(obj, keys) {
@@ -41,4 +41,19 @@ export async function tagsByIds(collections, tagIds) {
   return tagNames;
 }
 
+
+
+export const operators = {
+  "eq": function(a, b) { return a === b},
+  "gt": function(a, b) { return a > b},
+  "lt": function(a, b) { return a < b },
+  "ne": function(a, b) { return a !== b}
+};
+
+export const propertyTypes = {
+  "bool": function(a) { return a === "true" },
+  "float": function(a) { return parseFloat(a) },
+  "int": function(a) { return parseInt(a) },
+  "string": function(a) { return a }
+}
 
