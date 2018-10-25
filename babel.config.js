@@ -9,11 +9,11 @@ const fs = require("fs");
  * of Jest tests, we load the babel config defined in package.json and export it here.
  * See this Github comment: https://github.com/facebook/jest/issues/6053#issuecomment-383632515
  */
-module.exports = function(api) {
+module.exports = function (api) {
   api.cache(false);
 
   const file = fs.readFileSync("./package.json");
   const packageJSON = JSON.parse(file);
 
   return packageJSON.babel;
-}
+};
