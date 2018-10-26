@@ -1,0 +1,11 @@
+<template name="stripeMarketplacePaymentForm">
+  {{#if isLoading}}
+    <div class="spinner-container">
+      <div class="spinner"></div>
+    </div>
+  {{else}}
+    <div>
+      {{> React StripePaymentFormComponent}}
+    </div>
+  {{/if}}
+</template>

@@ -17,11 +17,6 @@ Reaction.registerPackage({
     "discounts/codes/shipping": [getShippingDiscount],
     "startup": [startup]
   },
-  settings: {
-    "discount-codes": {
-      enabled: false
-    }
-  },
   registry: [
     {
       label: "Codes",
