@@ -5,16 +5,8 @@
  * @returns {Number|null} Tax rate, e.g., 0.01 means 1%
  */
 async function getTaxRateForShop(collections, group) {
-  const { Packages, Taxes } = collections;
+  const { Taxes } = collections;
   const { address: shippingAddress, shopId } = group;
-
-  // TODO: Calculate shipping taxes for regions that require it
-  const pkg = await Packages.findOne({ shopId, name: "reaction-taxes-rates" });
-  if (!pkg || !pkg.enabled || !pkg.settings.rates.enabled) {
-    return null;
-  }
-
-  if (!shippingAddress) return null;
 
   // custom rates that match shipping info
   // high chance this needs more review as
@@ -54,39 +46,38 @@ async function getTaxRateForShop(collections, group) {
  *   in the group. Assumes that each item has `subtotal` and `isTaxable` props set. Assumes
  *   that the group has `shopId` and `address` properties set. No-op if the `reaction-taxes`
  *   package is disabled or a shipping address hasn't yet been set.
- * @param {Object} collections Map of MongoDB collections
+ * @param {Object} context App context
  * @param {Object} group The fulfillment group to get a tax rate for
- * @param {Boolean} forceZeroes Set to `true` to force `taxRate` and `tax` properties to be added
- *   and set to 0 when no tax package is enabled. For cart groups, this should be false. For order
- *   groups, this should be true.
  * @returns {Object} Updated fulfillment group
  */
-export default async function getFulfillmentGroupItemsWithTaxAdded(collections, group, forceZeroes) {
+export default async function calculateOrderGroupTaxes({ context, group }) {
   const { items } = group;
 
-  let taxRate = await getTaxRateForShop(collections, group);
-
-  // The `reaction-taxes-rates` package is disabled or a shipping address hasn't yet been set
-  if (taxRate === null) {
-    if (!forceZeroes) return items;
-    taxRate = 0;
-  }
+  const taxRate = await getTaxRateForShop(context.collections, group);
 
   // calculate line item taxes
-  return items.map((item) => {
+  const itemTaxes = items.map((item) => {
     // only taxable products with subtotals on them
     if (item.isTaxable && typeof item.subtotal === "number") {
       return {
-        ...item,
+        itemId: item._id,
         taxRate,
         tax: item.subtotal * taxRate
       };
     }
 
     return {
-      ...item,
+      itemId: item._id,
       taxRate: 0,
       tax: 0
     };
   });
+
+  return {
+    fulfillmentTaxes: {
+      tax: 0,
+      taxRate: 0
+    },
+    itemTaxes
+  };
 }

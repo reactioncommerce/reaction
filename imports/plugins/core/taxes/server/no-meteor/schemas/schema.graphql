@@ -1,0 +1,15 @@
+extend type Query {
+  "Get a full list of all tax services"
+  taxServices(shopId: ID!): [TaxService]!
+}
+
+type TaxService {
+  "Human-readable display name"
+  displayName: String!
+
+  "The tax service name. Any valid name that has been registered by a tax plugin."
+  name: String!
+
+  "Name of the plugin that added the tax service"
+  pluginName: String!
+}

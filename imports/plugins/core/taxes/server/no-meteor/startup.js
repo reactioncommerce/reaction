@@ -9,7 +9,7 @@ import { isEqual } from "lodash";
 async function getUpdatedCartItems(cart, context) {
   const { collections } = context;
 
-  // This dance is because `getFulfillmentGroupItemsWithTaxAdded` takes groups with `items` on them,
+  // This dance is because `getFulfillmentGroupTaxes` takes groups with `items` on them,
   // like in the Order schema, whereas in the Cart schema, items are directly on the cart
   // and each group has only `itemIds` on it. So we first adjust each group to look like
   // an order fulfillment group.
@@ -20,7 +20,7 @@ async function getUpdatedCartItems(cart, context) {
     items = items.filter((item) => !!item); // remove nulls
 
     // We also need to add `subtotal` on each item, based on the current price of that item in
-    // the catalog. `getFulfillmentGroupItemsWithTaxAdded` uses subtotal prop to calculate the tax.
+    // the catalog. `getFulfillmentGroupTaxes` uses subtotal prop to calculate the tax.
     items = await Promise.all(items.map(async (item) => {
       const productConfiguration = {
         productId: item.productId,
@@ -36,7 +36,8 @@ async function getUpdatedCartItems(cart, context) {
       };
     }));
 
-    return context.mutations.getFulfillmentGroupItemsWithTaxAdded(collections, { ...group, items }, false);
+    const { items: groupItemsWithTaxAdded } = await context.mutations.getFulfillmentGroupTaxes(context, { ...group, items }, false);
+    return groupItemsWithTaxAdded;
   }));
 
   const cartItems = cart.items.map((item) => {

@@ -33,12 +33,15 @@
           "customRatesLabel": "Custom Rates",
           "customRatesDescription": "Custom Rates",
           "taxCode": "Tax code",
-          "taxShipping": "Include Shipping",
+          "taxShipping": "Charge tax on shipping",
           "taxRate": "Rate",
           "discountsIncluded": "Include Discounts",
           "taxable": "Taxable",
           "nottaxable": "Not Taxable",
-          "confirmRateDelete": "Confirm tax rate deletion"
+          "confirmRateDelete": "Confirm tax rate deletion",
+          "defaultTaxCode": "Default tax code for products",
+          "activeTaxServiceName": "Active tax service",
+          "activeTaxServiceNamePlaceholder": "None (do not charge tax)"
         }
       }
     }

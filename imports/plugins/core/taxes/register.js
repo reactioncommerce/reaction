@@ -1,4 +1,9 @@
 import Reaction from "/imports/plugins/core/core/server/Reaction";
+import { registerPluginHandler } from "./server/no-meteor/registration";
+import mutations from "./server/no-meteor/mutations";
+import queries from "./server/no-meteor/queries";
+import resolvers from "./server/no-meteor/resolvers";
+import schemas from "./server/no-meteor/schemas";
 import startup from "./server/no-meteor/startup";
 
 Reaction.registerPackage({
@@ -7,8 +12,15 @@ Reaction.registerPackage({
   icon: "fa fa-university",
   autoEnable: true,
   functionsByType: {
+    registerPluginHandler: [registerPluginHandler],
     startup: [startup]
   },
+  graphQL: {
+    schemas,
+    resolvers
+  },
+  mutations,
+  queries,
   registry: [
     {
       provides: ["dashboard"],
