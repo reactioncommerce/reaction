@@ -1,8 +1,21 @@
 extend type Query {
-  "Get a full list of all tax services"
+  "List all tax codes supported by the current active tax service for the shop"
+  taxCodes(shopId: ID!): [TaxCode]!
+
+  "Get a full list of all tax services for the shop"
   taxServices(shopId: ID!): [TaxService]!
 }
 
+"A tax code that may be used on a product to indicate proper taxation category"
+type TaxCode {
+  "The code"
+  code: String!
+
+  "Short description of what types of products the code is for"
+  label: String!
+}
+
+"A service registered by a tax plugin, that provides tax codes and calculations"
 type TaxService {
   "Human-readable display name"
   displayName: String!

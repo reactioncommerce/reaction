@@ -1,15 +1,15 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { compose } from "recompose";
-import { registerComponent } from "@reactioncommerce/reaction-components";
+import { registerComponent, composeWithTracker } from "@reactioncommerce/reaction-components";
 import { Meteor } from "meteor/meteor";
 import { Session } from "meteor/session";
 import { Validation } from "@reactioncommerce/schemas";
 import { ReactionProduct } from "/lib/api";
-import { Packages } from "/lib/collections";
 import { Reaction, i18next } from "/client/api";
-import { TaxCodes } from "/imports/plugins/core/taxes/lib/collections";
 import { ProductVariant } from "/lib/collections/schemas";
+import getOpaqueIds from "/imports/plugins/core/core/client/util/getOpaqueIds";
+import withTaxCodes from "/imports/plugins/core/taxes/client/hoc/withTaxCodes";
 import VariantForm from "../components/variantForm";
 
 const wrapComponent = (Comp) => (
@@ -24,8 +24,8 @@ const wrapComponent = (Comp) => (
       this.validation = new Validation(ProductVariant);
 
       this.state = {
-        validationStatus: this.validation.validationStatus,
-        isDeleted: props.variant && props.variant.isDeleted
+        isDeleted: props.variant && props.variant.isDeleted,
+        validationStatus: this.validation.validationStatus
       };
     }
 
@@ -33,7 +33,7 @@ const wrapComponent = (Comp) => (
       this.runVariantValidation(this.props.variant);
     }
 
-    componentWillReceiveProps(nextProps) {
+    UNSAFE_componentWillReceiveProps(nextProps) { // eslint-disable-line camelcase
       this.setState({
         isDeleted: nextProps.variant && nextProps.variant.isDeleted
       });
@@ -49,52 +49,8 @@ const wrapComponent = (Comp) => (
 
         return validationStatus;
       }
-    }
 
-    isProviderEnabled = () => {
-      const shopId = Reaction.getShopId();
-
-      const provider = Packages.findOne({
-        shopId,
-        "registry.provides": "taxCodes",
-        "$where"() {
-          const providerName = this.name.split("-")[1];
-          return this.settings[providerName].enabled;
-        }
-      });
-
-      if (provider) {
-        return true;
-      }
-      return false;
-    }
-
-    fetchTaxCodes = () => {
-      const shopId = Reaction.getShopId();
-      const provider = Packages.findOne({
-        shopId,
-        "registry.provides": "taxCodes",
-        "$where"() {
-          const providers = this.registry.filter((o) => o.provides && o.provides.includes("taxCodes"));
-          const providerName = providers[0].name.split("/")[2];
-
-          return this.settings[providerName].enabled;
-        }
-      });
-      const taxCodesArray = [];
-
-      const codes = TaxCodes.find({
-        shopId,
-        taxCodeProvider: provider.name
-      }).fetch();
-
-      codes.forEach((code) => {
-        taxCodesArray.push({
-          value: code.taxCode,
-          label: `${code.taxCode} | ${code.label}`
-        });
-      });
-      return taxCodesArray;
+      return true;
     }
 
     hasChildVariants = (variant) => {
@@ -245,11 +201,12 @@ const wrapComponent = (Comp) => (
       const variantOptions = ReactionProduct.getVariants(variant._id);
 
       if (variantOptions && variantOptions.length !== 0) {
-        variantOptions.forEach((option) => Meteor.call("products/updateProductField", option._id, "lowInventoryWarningThreshold", variant.lowInventoryWarningThreshold, (error) => {
-          if (error) {
-            Alerts.toast(error.message, "error");
-          }
-        }));
+        variantOptions.forEach((option) =>
+          Meteor.call("products/updateProductField", option._id, "lowInventoryWarningThreshold", variant.lowInventoryWarningThreshold, (error) => {
+            if (error) {
+              Alerts.toast(error.message, "error");
+            }
+          }));
       }
     }
 
@@ -264,8 +221,6 @@ const wrapComponent = (Comp) => (
       if (this.props.variant) {
         return (
           <Comp
-            isProviderEnabled={this.isProviderEnabled}
-            fetchTaxCodes={this.fetchTaxCodes}
             hasChildVariants={this.hasChildVariants}
             greyDisabledFields={this.greyDisabledFields}
             restoreVariant={this.restoreVariant}
@@ -288,6 +243,22 @@ const wrapComponent = (Comp) => (
   }
 );
 
-registerComponent("VariantForm", VariantForm, wrapComponent);
+const composer = async (props, onData) => {
+  const [shopId] = await getOpaqueIds([{ namespace: "Shop", id: Reaction.getShopId() }]);
 
-export default compose(wrapComponent)(VariantForm);
+  onData(null, {
+    shopId
+  });
+};
+
+registerComponent("VariantForm", VariantForm, [
+  composeWithTracker(composer),
+  withTaxCodes,
+  wrapComponent
+]);
+
+export default compose(
+  composeWithTracker(composer),
+  withTaxCodes,
+  wrapComponent
+)(VariantForm);

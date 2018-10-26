@@ -1,26 +1,4 @@
-import { taxServices } from "../registration";
-
-/**
- * @param {Object} context The app context
- * @param {String} shopId The shop ID
- * @returns {Object|null} The definition from registerPackage for the tax service that is
- *   currently enabled for the shop with ID `shopId`
- */
-async function getActiveTaxServiceForShop(context, shopId) {
-  const plugin = await context.collections.Packages.findOne({ name: "reaction-taxes", shopId });
-  if (!plugin) return null;
-
-  const { activeTaxServiceName } = plugin.settings || {};
-  if (!activeTaxServiceName) return null;
-
-  const config = taxServices[activeTaxServiceName];
-  if (!config) {
-    throw new Error(`Active tax service is "${activeTaxServiceName}" but no such service exists. ` +
-      "Did you forget to install the plugin that provides this service?");
-  }
-
-  return config;
-}
+import { getActiveTaxServiceForShop } from "../registration";
 
 /**
  * @summary Modifies a fulfillment group, adding `taxRate` and `tax` properties to each item

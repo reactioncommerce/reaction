@@ -227,7 +227,7 @@ type CatalogProduct implements CatalogProductOrVariant & Node {
   "The list of tags that have been applied to this product"
   tags(after: ConnectionCursor, before: ConnectionCursor, first: ConnectionLimitInt, last: ConnectionLimitInt, sortOrder: SortOrder = asc, sortBy: TagSortByField = _id): TagConnection
 
-  "A value matching a `taxCode` value from the full list of TaxCodes"
+  "An optional code which, if understood by the active tax service for the shop, determines how this product should be taxed"
   taxCode: String
 
   "A description to use for the tax line item on an invoice"
@@ -322,7 +322,7 @@ type CatalogProductVariant implements CatalogProductOrVariant & Node {
   "A stock keeping unit (SKU) identifier for this product"
   sku: String
 
-  "A value matching a `taxCode` value from the full list of TaxCodes"
+  "An optional code which, if understood by the active tax service for the shop, determines how this product should be taxed"
   taxCode: String
 
   "A description to use for the tax line item on an invoice"

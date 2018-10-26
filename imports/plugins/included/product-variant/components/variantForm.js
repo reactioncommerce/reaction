@@ -188,7 +188,10 @@ class VariantForm extends Component {
   isExpanded = (groupName) => this.state.expandedCard === groupName
 
   renderTaxCodeField() {
-    if (this.props.isProviderEnabled()) {
+    const { taxCodes, validation } = this.props;
+
+    if (Array.isArray(taxCodes) && taxCodes.length) {
+      const options = taxCodes.map(({ code, label }) => ({ label, value: code }));
       return (
         <Components.Select
           clearable={false}
@@ -197,7 +200,7 @@ class VariantForm extends Component {
           label="Tax Code"
           name="taxCode"
           ref="taxCodeInput"
-          options={this.props.fetchTaxCodes()}
+          options={options}
           onChange={this.handleSelectChange}
           value={this.variant.taxCode}
         />
@@ -206,8 +209,6 @@ class VariantForm extends Component {
     return (
       <Components.TextField
         i18nKeyLabel="productVariant.taxCode"
-        i18nKeyPlaceholder="productVariant.selectTaxCode"
-        placeholder="Select Tax Code"
         label="Tax Code"
         name="taxCode"
         ref="taxCodeInput"
@@ -215,7 +216,7 @@ class VariantForm extends Component {
         onBlur={this.handleFieldBlur}
         onChange={this.handleFieldChange}
         onReturnKeyDown={this.handleFieldBlur}
-        validation={this.props.validation}
+        validation={validation}
       />
     );
   }
@@ -783,11 +784,9 @@ VariantForm.propTypes = {
   cloneVariant: PropTypes.func,
   countries: PropTypes.arrayOf(PropTypes.object),
   editFocus: PropTypes.oneOfType([PropTypes.string, PropTypes.arrayOf(PropTypes.string)]),
-  fetchTaxCodes: PropTypes.func,
   greyDisabledFields: PropTypes.func,
   hasChildVariants: PropTypes.func,
   isDeleted: PropTypes.bool,
-  isProviderEnabled: PropTypes.func,
   onCardExpand: PropTypes.func,
   onFieldChange: PropTypes.func,
   onUpdateQuantityField: PropTypes.func,
@@ -795,6 +794,10 @@ VariantForm.propTypes = {
   onVisibilityButtonClick: PropTypes.func,
   removeVariant: PropTypes.func,
   restoreVariant: PropTypes.func,
+  taxCodes: PropTypes.arrayOf(PropTypes.shape({
+    code: PropTypes.string.isRequired,
+    label: PropTypes.string.isRequired
+  })),
   type: PropTypes.string,
   validation: PropTypes.object,
   variant: PropTypes.object
