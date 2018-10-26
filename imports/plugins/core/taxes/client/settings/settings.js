@@ -59,17 +59,5 @@ Template.taxSettings.events({
     }];
     // save tax registry updates
     Meteor.call("registry/update", packageId, settingsKey, fields);
-  },
-  "click [data-event-action=showSecret]": (event) => {
-    const button = Template.instance().$(event.currentTarget);
-    const input = button.closest(".form-group").find("input[name=secret]");
-
-    if (input.attr("type") === "password") {
-      input.attr("type", "text");
-      button.html("Hide");
-    } else {
-      input.attr("type", "password");
-      button.html("Show");
-    }
   }
 });

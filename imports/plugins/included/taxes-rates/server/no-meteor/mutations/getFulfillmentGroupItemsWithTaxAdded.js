@@ -9,7 +9,7 @@ async function getTaxRateForShop(collections, group) {
   const { address: shippingAddress, shopId } = group;
 
   // TODO: Calculate shipping taxes for regions that require it
-  const pkg = await Packages.findOne({ shopId, name: "reaction-taxes" });
+  const pkg = await Packages.findOne({ shopId, name: "reaction-taxes-rates" });
   if (!pkg || !pkg.enabled || !pkg.settings.rates.enabled) {
     return null;
   }
@@ -66,7 +66,7 @@ export default async function getFulfillmentGroupItemsWithTaxAdded(collections, 
 
   let taxRate = await getTaxRateForShop(collections, group);
 
-  // The `reaction-taxes` package is disabled or a shipping address hasn't yet been set
+  // The `reaction-taxes-rates` package is disabled or a shipping address hasn't yet been set
   if (taxRate === null) {
     if (!forceZeroes) return items;
     taxRate = 0;

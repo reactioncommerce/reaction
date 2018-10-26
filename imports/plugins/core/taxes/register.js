@@ -9,14 +9,6 @@ Reaction.registerPackage({
   functionsByType: {
     startup: [startup]
   },
-  settings: {
-    custom: {
-      enabled: true
-    },
-    rates: {
-      enabled: false
-    }
-  },
   registry: [
     {
       provides: ["dashboard"],
@@ -34,12 +26,6 @@ Reaction.registerPackage({
       name: "taxes/settings",
       provides: ["settings"],
       template: "taxSettings"
-    },
-    {
-      label: "Custom Rates",
-      name: "taxes/settings/rates",
-      provides: ["taxSettings"],
-      template: "customTaxRates"
     }
   ]
 });

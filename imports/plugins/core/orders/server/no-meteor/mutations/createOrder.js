@@ -5,7 +5,6 @@ import Random from "@reactioncommerce/random";
 import ReactionError from "@reactioncommerce/reaction-error";
 import hashLoginToken from "/imports/node-app/core/util/hashLoginToken";
 import appEvents from "/imports/node-app/core/util/appEvents";
-import getFulfillmentGroupItemsWithTaxAdded from "/imports/plugins/core/taxes/server/no-meteor/mutations/getFulfillmentGroupItemsWithTaxAdded";
 import { Order as OrderSchema, Payment as PaymentSchema } from "/imports/collections/schemas";
 import getDiscountsTotalForCart from "/imports/plugins/core/discounts/server/no-meteor/util/getDiscountsTotalForCart";
 
@@ -279,7 +278,7 @@ export default async function createOrder(context, input) {
     // the price is what the shopper expects it to be.
     finalGroup.items = await Promise.all(finalGroup.items.map((item) => buildOrderItem(item, currencyCode, context)));
 
-    finalGroup.items = await getFulfillmentGroupItemsWithTaxAdded(collections, finalGroup, true);
+    finalGroup.items = await context.mutations.getFulfillmentGroupItemsWithTaxAdded(collections, finalGroup, true);
 
     // Add some more properties for convenience
     finalGroup.itemIds = finalGroup.items.map((item) => item._id);
