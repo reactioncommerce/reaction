@@ -2,13 +2,8 @@ import { isEqual } from "lodash";
 import SimpleSchema from "simpl-schema";
 import ReactionError from "@reactioncommerce/reaction-error";
 import getCartById from "../util/getCartById";
-<<<<<<< HEAD
 // import filterShippingAttributes from "../util/filterShippingAttributes";
-// import getShippingAttributes from "../util/getShippingAttributes";
-=======
-import filterShippingAttributes from "../util/filterShippingAttributes";
 import getShippingRestrictionAttributes from "../util/getShippingRestrictionAttributes";
->>>>>>> 6d714ab6fcb2f30069ddcb48b2bda824f9129342
 
 const inputSchema = new SimpleSchema({
   cartId: String,
