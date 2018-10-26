@@ -93,10 +93,9 @@ export default async function getFulfillmentMethodsWithQuotes(context, fulfillme
       rates.push(errorDetails);
     } else {
       const carrier = doc.provider.label;
-      for (const method of doc.methods) {
-        if (!method.enabled) {
-          continue;
-        }
+      // Run filter shipping methods
+      const availableShippingMethods = filterShippingAttributes(doc.methods, hydratedCart);
+      for (const method of availableShippingMethods) {
         if (!method.rate) {
           method.rate = 0;
         }
