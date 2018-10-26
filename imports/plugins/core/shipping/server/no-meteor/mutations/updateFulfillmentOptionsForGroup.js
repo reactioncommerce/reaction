@@ -3,7 +3,7 @@ import SimpleSchema from "simpl-schema";
 import ReactionError from "@reactioncommerce/reaction-error";
 import getCartById from "../util/getCartById";
 import filterShippingAttributes from "../util/filterShippingAttributes";
-import getShippingAttributes from "../util/getShippingAttributes";
+import getShippingRestrictionAttributes from "../util/getShippingRestrictionAttributes";
 
 const inputSchema = new SimpleSchema({
   cartId: String,
@@ -77,7 +77,8 @@ export default async function updateFulfillmentOptionsForGroup(context, input) {
   // Map the items onto the fulfillment groups
   fulfillmentGroup.items = fulfillmentGroup.itemIds.map((itemId) => cart.items.find((item) => item._id === itemId));
 
-  const shippingAttributes = await getShippingAttributes(context, fulfillmentGroup);
+  const shippingAttributes = await getShippingRestrictionAttributes(context, fulfillmentGroup);
+  console.log("shipping restrictions", shippingAttributes);
 
   // In the future we want to do this async and subscribe to the results
   const rates = await context.queries.getFulfillmentMethodsWithQuotes(fulfillmentGroup, context);
@@ -85,7 +86,7 @@ export default async function updateFulfillmentOptionsForGroup(context, input) {
   // Filter rates based on shipping restrictions and shippingAttributes
   const filteredRates = filterShippingAttributes(rates, shippingAttributes);
 
-  const { shipmentQuotes, shipmentQuotesQueryStatus } = getShipmentQuotesQueryStatus(filteredRates);
+  const { shipmentQuotes, shipmentQuotesQueryStatus } = getShipmentQuotesQueryStatus(rates);
 
   if (!isEqual(shipmentQuotes, fulfillmentGroup.shipmentQuotes) || !isEqual(shipmentQuotesQueryStatus, fulfillmentGroup.shipmentQuotesQueryStatus)) {
     const { matchedCount } = await Cart.updateOne({
