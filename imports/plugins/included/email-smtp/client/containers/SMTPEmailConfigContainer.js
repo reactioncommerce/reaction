@@ -6,10 +6,10 @@ import { registerComponent, composeWithTracker } from "@reactioncommerce/reactio
 import { Meteor } from "meteor/meteor";
 import { Reaction } from "/client/api";
 import actions from "../actions";
-import EmailConfig from "../components/emailConfig";
+import SMTPEmailConfig from "../components/SMTPEmailConfig";
 
 const wrapComponent = (Comp) => (
-  class EmailConfigContainer extends Component {
+  class SMTPEmailConfigContainer extends Component {
     static propTypes = {
       settings: PropTypes.shape({
         host: PropTypes.string,
@@ -98,7 +98,7 @@ const composer = (props, onData) => {
 
 const handlers = { saveSettings: actions.settings.saveSettings };
 
-registerComponent("EmailConfig", EmailConfig, [
+registerComponent("SMTPEmailConfig", SMTPEmailConfig, [
   composeWithTracker(composer),
   withProps(handlers),
   wrapComponent
@@ -108,4 +108,4 @@ export default compose(
   composeWithTracker(composer),
   withProps(handlers),
   wrapComponent
-)(EmailConfig);
+)(SMTPEmailConfig);

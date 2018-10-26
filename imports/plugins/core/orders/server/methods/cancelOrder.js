@@ -1,3 +1,4 @@
+import _ from "lodash";
 import Logger from "@reactioncommerce/logger";
 import { Meteor } from "meteor/meteor";
 import { check } from "meteor/check";
@@ -69,11 +70,7 @@ export default function cancelOrder(order, returnToStock) {
 
   // refund payment to customer
   const paymentPlugin = Packages.findOne({ name: paymentPluginName, shopId: order.shopId });
-  const isRefundable =
-    paymentPlugin &&
-    paymentPlugin.settings &&
-    paymentPlugin.settings[paymentPluginName] &&
-    paymentPlugin.settings[paymentPluginName].support.includes("Refund");
+  const isRefundable = (_.get(paymentPlugin, "settings.support", []).indexOf("Refund") > -1);
 
   if (isRefundable) {
     Meteor.call("orders/refunds/create", order._id, paymentId, Number(invoiceTotal));

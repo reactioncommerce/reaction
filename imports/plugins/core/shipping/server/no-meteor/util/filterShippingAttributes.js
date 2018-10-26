@@ -1,4 +1,4 @@
-// import { pick } from "./helpers";
+import { operators, propertyTypes } from "./helpers";
 
 /**
  * @summary Filter shipping methods based on per method restrictions
@@ -23,12 +23,12 @@ export default function filterShippingAttributes(rates, shippingAttributes) {
       return validShippingRates;
     }
 
-    // If rate does have whitelist restrictios, check for further filtration
-    if (restrictions && restrictions.whitelist) {
-      const { whitelist: { destination } } = restrictions;
+    // If rate does have allow restrictios, check for further filtration
+    if (restrictions && restrictions.allow) {
+      const { allow: { destination } } = restrictions;
 
-      // If there are no destination whitelists, move on
-      // We don't have item whitelists, so we can end it here
+      // If there are no destination allows, move on
+      // We don't have item allows, so we can end it here
       if (!destination) {
         validShippingRates.push(rate);
         return validShippingRates;
@@ -40,13 +40,13 @@ export default function filterShippingAttributes(rates, shippingAttributes) {
         return validShippingRates;
       }
 
-      // If region whitelist exists, use thise if there is no zip code whitelist
+      // If region allow exists, use thise if there is no zip code allow
       if (destination.region && destination.region.includes(shippingAttributes.address.region)) {
         validShippingRates.push(rate);
         return validShippingRates;
       }
 
-      // If country whitelist exists, use theis if there is no zip code or region whitelist
+      // If country allow exists, use theis if there is no zip code or region allow
       if (destination.country && destination.country.includes(shippingAttributes.address.country)) {
         validShippingRates.push(rate);
         return validShippingRates;
@@ -57,57 +57,88 @@ export default function filterShippingAttributes(rates, shippingAttributes) {
     return validShippingRates;
   }, []);
 
-
-  console.log("---------- available shipping rates after running through whitelist check", whiteListShippingRates); // TODO: remove log, for testing only
-
-
-  // Run remaining available rates through the blacklist
+  // Run remaining available rates through the deny
   const availableShippingRates = whiteListShippingRates.reduce((stillValidShippingRates, rate) => {
 
     const { method: { restrictions } } = rate;
 
-    // If rate does not have blacklist restrictions, add it to the available rates
-    if (restrictions && !restrictions.blacklist) {
-      console.log("---------- there are no blacklists, add rate to list", rate.method.name);
-
+    // If rate does not have deny restrictions, add it to the available rates
+    if (restrictions && !restrictions.deny) {
       stillValidShippingRates.push(rate);
       return stillValidShippingRates;
     }
 
-    // There is a blacklist object on the shipping method (there always should be)
+    // There is a deny object on the shipping method (there always should be)
     // Check to see if anything matches
 
-    const { blacklist: { destination } } = restrictions;
+    const { deny: { destination }, allow: { destination: allowDestination } } = restrictions;
 
-    // If country blacklist exists, use this
+    // If country deny exists, use this
     if (destination && destination.country && destination.country.includes(shippingAttributes.address.country)) {
-      console.log("---------- there is a COUNTRY blacklist for this method", rate.method.name, destination);
       return stillValidShippingRates;
     }
 
-    // If region blacklist exists, use this if there is no country blacklist
+    // If region deny exists, use this if there is no country deny
     if (destination && destination.region && destination.region.includes(shippingAttributes.address.region)) {
-      console.log("---------- there is a REGION blacklist for this method", rate.method.name, destination);
       return stillValidShippingRates;
     }
 
-    // If postal code blacklist exists, use this if there is no country or region blacklist
+    // If postal code deny exists, use this if there is no country or region deny
     if (destination && destination.postal && destination.postal.includes(shippingAttributes.address.postal)) {
-      console.log("---------- there is a POSTAL blacklist for this method", rate.method.name, destination);
       return stillValidShippingRates;
     }
 
-    console.log("---------- there are no country, region, or postal blacklists for this method", rate.method.name);
-
-
-    // If it passes all the blacklist restrictions, add add it to the list of available rates
+    // If it passes all the deny restrictions, add add it to the list of available rates
     stillValidShippingRates.push(rate);
     return stillValidShippingRates;
   }, []);
 
 
-  console.log("-------------------- availableShippingRates --------------------", availableShippingRates); // TODO: remove log, for testing only
+
+  const availableMethodsAfterItemBlacklist = availableShippingRates.reduce((finalShippingRates, rate) => {
+    const { items } = shippingAttributes;
+    const { method: { restrictions: { deny: { attributes }}}} = rate;
+
+    // If there are not attribute restrtions, then method is unrestricted
+    if (!attributes || !Array.isArray(attributes) || !attributes.length) {
+      finalShippingRates.push(rate);
+      return finalShippingRates;
+    }
+
+
+
+    const remainingItems = items.reduce((itemCheck, item) => {
+
+
+
+      const foundRestrictedProperty = attributes.find((attribute) => {
+
+        // If a propertyType is not present, or does not match a predefined `propertyTypes`
+        // return true and make method restricted
+        if (!attributes.propertyType || !Object.keys(propertyTypes).includes(attributes.propertyType)) {
+          return true;
+        }
+
+
+
+        console.log("attribute", attribute);
+        return operators[attribute.operator](item[attribute.property], propertyTypes[attribute.propertyType](attribute.value))
+      });
+
+
+      if (!foundRestrictedProperty) {
+        finalShippingRates.push(rate);
+      }
+
+      return finalShippingRates;
+    }, [])
+
+
+    return finalShippingRates;
+  }, [])
+
+  console.log("-------------------- availableShippingRates --------------------", availableMethodsAfterItemBlacklist); // TODO: remove log, for testing only
 
   // Return all remaining availalbe shipping rates
-  return availableShippingRates;
+  return availableMethodsAfterItemBlacklist;
 }
