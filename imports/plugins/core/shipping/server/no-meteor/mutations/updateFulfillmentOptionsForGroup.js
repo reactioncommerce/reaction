@@ -86,7 +86,7 @@ export default async function updateFulfillmentOptionsForGroup(context, input) {
   // Filter rates based on shipping restrictions and shippingAttributes
   const filteredRates = filterShippingAttributes(rates, shippingAttributes);
 
-  const { shipmentQuotes, shipmentQuotesQueryStatus } = getShipmentQuotesQueryStatus(rates);
+  const { shipmentQuotes, shipmentQuotesQueryStatus } = getShipmentQuotesQueryStatus(filteredRates);
 
   if (!isEqual(shipmentQuotes, fulfillmentGroup.shipmentQuotes) || !isEqual(shipmentQuotesQueryStatus, fulfillmentGroup.shipmentQuotesQueryStatus)) {
     const { matchedCount } = await Cart.updateOne({
