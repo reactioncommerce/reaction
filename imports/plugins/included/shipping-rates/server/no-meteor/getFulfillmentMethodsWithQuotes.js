@@ -1,5 +1,8 @@
 import Logger from "@reactioncommerce/logger";
 import ReactionError from "@reactioncommerce/reaction-error";
+import filterShippingAttributes from "./util/filterShippingAttributes";
+import getShippingAttributes from "./util/getShippingAttributes";
+import cartShippingRestricted from "./util/cartShippingRestricted";
 
 /**
  * @summary Returns a list of fulfillment method quotes based on the items in a fulfillment group.
@@ -72,35 +75,58 @@ export default async function getFulfillmentMethodsWithQuotes(context, fulfillme
     "provider.enabled": true
   }).toArray();
 
+  // Get hydrated cart for current order from current order
+  // This gets all item attributes and address from cart
+  // TODO: Change this name - talk to will about that
+  const hydratedCart = await getShippingAttributes(context, fulfillmentGroup);
+
   const initialNumOfRates = rates.length;
   shippingRateDocs.forEach((doc) => {
-    const carrier = doc.provider.label;
-    for (const method of doc.methods) {
-      if (!method.enabled) {
-        continue;
+    // Check universal shipping restrictions
+    // If any universal restrictions are found, all shipping methods are blocked
+    if (cartShippingRestricted(hydratedCart, doc)) {
+      const errorDetails = {
+        requestStatus: "error",
+        shippingProvider: "flat-rate-shipping",
+        message: "Flat rate shipping did not return any shipping methods."
+      };
+      rates.push(errorDetails);
+    } else {
+      const carrier = doc.provider.label;
+      for (const method of doc.methods) {
+        if (!method.enabled) {
+          continue;
+        }
+        if (!method.rate) {
+          method.rate = 0;
+        }
+        if (!method.handling) {
+          method.handling = 0;
+        }
+        // Store shipping provider here in order to have it available in shipmentMethod
+        // for cart and order usage
+        if (!method.carrier) {
+          method.carrier = carrier;
+        }
+        const rate = method.rate + method.handling;
+        rates.push({
+          carrier,
+          handlingPrice: method.handling,
+          method,
+          rate,
+          shippingPrice: method.rate,
+          shopId: doc.shopId
+        });
       }
-      if (!method.rate) {
-        method.rate = 0;
-      }
-      if (!method.handling) {
-        method.handling = 0;
-      }
-      // Store shipping provider here in order to have it available in shipmentMethod
-      // for cart and order usage
-      if (!method.carrier) {
-        method.carrier = carrier;
-      }
-      const rate = method.rate + method.handling;
-      rates.push({
-        carrier,
-        handlingPrice: method.handling,
-        method,
-        rate,
-        shippingPrice: method.rate,
-        shopId: doc.shopId
-      });
     }
   });
+
+
+  // Filter shipping rates
+  // rates = filterShippingAttributes(rates, shippingAttributes);
+
+  // console.log("----------------- filteredShippingRates", rates);
+
 
   if (rates.length === initialNumOfRates) {
     const errorDetails = {
