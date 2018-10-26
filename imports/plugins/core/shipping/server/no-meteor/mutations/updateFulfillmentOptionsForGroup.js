@@ -88,6 +88,7 @@ export default async function updateFulfillmentOptionsForGroup(context, input) {
   // In the future we want to do this async and subscribe to the results
   const rates = await context.queries.getFulfillmentMethodsWithQuotes(fulfillmentGroup, context);
 
+  // TODO: Remove these lines they are no longer used here, they have moved
   // Filter rates based on shipping restrictions and shippingAttributes
   // const filteredRates = filterShippingAttributes(rates, shippingAttributes);
   //
