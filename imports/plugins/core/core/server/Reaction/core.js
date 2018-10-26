@@ -40,6 +40,12 @@ export default {
   ...AbsoluteUrlMixin,
 
   init() {
+    const registerPluginHandlerFuncs = functionsByType.registerPluginHandler || [];
+    const packageInfoArray = Object.values(this.Packages);
+    registerPluginHandlerFuncs.forEach((registerPluginHandlerFunc) => {
+      packageInfoArray.forEach(registerPluginHandlerFunc);
+    });
+
     // run beforeCoreInit hooks
     Hooks.Events.run("beforeCoreInit");
 
