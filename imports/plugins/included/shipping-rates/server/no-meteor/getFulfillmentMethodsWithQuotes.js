@@ -1,8 +1,8 @@
 import Logger from "@reactioncommerce/logger";
 import ReactionError from "@reactioncommerce/reaction-error";
+import cartShippingRestricted from "./util/cartShippingRestricted";
 import filterShippingAttributes from "./util/filterShippingAttributes";
 import getShippingRestrictionAttributes from "./util/getShippingRestrictionAttributes";
-import cartShippingRestricted from "./util/cartShippingRestricted";
 
 /**
  * @summary Returns a list of fulfillment method quotes based on the items in a fulfillment group.
