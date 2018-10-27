@@ -18,7 +18,6 @@ function attributeDenyCheck(methods, hydratedCart) {
       return validShippingMethods;
     }
 
-
     items.reduce((itemCheck, item) => {
       // If any item matches a restriction, restrict method
       const foundRestrictedProperty = attributes.some((attribute) => {
@@ -32,7 +31,6 @@ function attributeDenyCheck(methods, hydratedCart) {
 
       return validShippingMethods;
     }, []);
-
 
     return validShippingMethods;
   }, []);
@@ -117,9 +115,8 @@ function locationDenyCheck(methods, hydratedCart) {
       return validShippingRates;
     }
 
-    // There is a deny object on the shipping method (there always should be)
+    // There is a deny object on the shipping method (there always should be at this point)
     // Check to see if anything matches
-
     const { deny: { destination } } = restrictions;
 
     // If country deny exists, use this
