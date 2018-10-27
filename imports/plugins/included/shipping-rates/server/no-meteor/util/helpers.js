@@ -69,7 +69,7 @@ export async function getCatalogProducts(collections, items) {
 
 /**
  * @constant
- * @type {objcect}
+ * @type {Object}
 */
 export const operators = {
   eq: function (a, b) { return a === b ;},
@@ -80,7 +80,7 @@ export const operators = {
 
 /**
  * @constant
- * @type {objcect}
+ * @type {Object}
 */
 export const propertyTypes = {
   bool: function (a) { return a === "true"; },
