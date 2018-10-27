@@ -16,7 +16,6 @@ export default function cartShippingRestricted(shippingAttributes, doc) {
     return true;
   }
 
-
   const doItemsContainGlobalRestrictions = items.some((item) =>
   // If any item matches a restriction, restrict method
     foundRestrictedProperty = attributes.some((attribute) => {

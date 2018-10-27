@@ -13,6 +13,22 @@ export async function asyncForEach(array, callback) {
 }
 
 /**
+ * @name getCatalogProducts
+ * @summary Returns products in the Catalog collection that correspond to the cart items provided.
+ * @param {Object} collections - The mongo collections
+ * @param {Array} items - An array of items that have been added to the shopping cart.
+ * @returns {Array} products - An array of products in the catalog
+ */
+export async function getCatalogProducts(collections, items) {
+  const { Catalog } = collections;
+  const productIds = items.map((item) => item.productId);
+
+  const products = await Catalog.find({ "product.productId": { $in: productIds } }).toArray();
+
+  return products;
+}
+
+/**
  * @name pick
  * @summary Extracts specified keys from a provided object
  * @param {Object} obj - The target object to filter keys from
@@ -49,23 +65,6 @@ export async function tagsByIds(collections, catalogProducts) {
     })
   }));
 }
-
-/**
- * @name getCatalogProducts
- * @summary Returns products in the Catalog collection that correspond to the cart items provided.
- * @param {Object} collections - The mongo collections
- * @param {Array} items - An array of items that have been added to the shopping cart.
- * @returns {Array} products - An array of products in the catalog
- */
-export async function getCatalogProducts(collections, items) {
-  const { Catalog } = collections;
-  const productIds = items.map((item) => item.productId);
-
-  const products = await Catalog.find({ "product.productId": { $in: productIds } }).toArray();
-
-  return products;
-}
-
 
 /**
  * @constant

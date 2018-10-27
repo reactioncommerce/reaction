@@ -1,6 +1,5 @@
 import { operators, propertyTypes } from "./helpers";
 
-
 /**
  * @summary Filter shipping methods based on per method attribute restrictions
  * @param {Object} methods - all available shipping methods to check

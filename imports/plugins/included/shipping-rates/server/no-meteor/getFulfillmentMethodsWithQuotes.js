@@ -75,15 +75,13 @@ export default async function getFulfillmentMethodsWithQuotes(context, fulfillme
     "provider.enabled": true
   }).toArray();
 
-  // Get hydrated cart for current order from current order
-  // This gets all item attributes and address from cart
-  // TODO: Change this name - talk to will about that
-  const hydratedCart = await getShippingRestrictionAttributes(context, fulfillmentGroup);
+  // Get hydrated cart, an object of current order data including item and destination information
+  const hydratedCart = await getShippingRestrictionAttributes(context, fulfillmentGroup); // TODO: possibly change function name
 
   const initialNumOfRates = rates.length;
   shippingRateDocs.forEach((doc) => {
-    // Check universal shipping restrictions
-    // If any universal restrictions are found, all shipping methods are blocked
+    // Check for universal shipping restrictions
+    // If any apply, all shipping methods are blocked
     if (cartShippingRestricted(hydratedCart, doc)) {
       const errorDetails = {
         requestStatus: "error",
@@ -93,7 +91,7 @@ export default async function getFulfillmentMethodsWithQuotes(context, fulfillme
       rates.push(errorDetails);
     } else {
       const carrier = doc.provider.label;
-      // Check by method shipping restrictions
+      // Check for method specific shipping restrictions
       const availableShippingMethods = filterShippingMethods(doc.methods, hydratedCart);
       for (const method of availableShippingMethods) {
         if (!method.rate) {
