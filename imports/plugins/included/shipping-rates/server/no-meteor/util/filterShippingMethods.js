@@ -12,9 +12,6 @@ function attributeDenyCheck(availableShippingMethods, hydratedCart) {
     const { items } = hydratedCart;
     const { restrictions: { deny: { attributes } } } = method;
 
-    // console.log("-------------------- made it past location deny List check, checking for attribute deny list check now--------------------", method.method.name);
-
-
     // If there are not attribute restrtions, then method is unrestricted
     if (!attributes || !Array.isArray(attributes) || !attributes.length) {
       validShippingMethods.push(method);
@@ -25,13 +22,6 @@ function attributeDenyCheck(availableShippingMethods, hydratedCart) {
     items.reduce((itemCheck, item) => {
       // If any item matches a restriction, restrict method
       const foundRestrictedProperty = attributes.some((attribute) => {
-
-        // If a propertyType is not present, or does not match a predefined `propertyTypes`
-        // return true and make method restricted
-        // if (!attributes.propertyType || !Object.keys(propertyTypes).includes(attributes.propertyType)) {
-        //   return true;
-        // }
-
         return operators[attribute.operator](item[attribute.property], propertyTypes[attribute.propertyType](attribute.value));
       });
 
@@ -41,29 +31,12 @@ function attributeDenyCheck(availableShippingMethods, hydratedCart) {
       }
 
       return validShippingMethods;
-    }, [])
+    }, []);
 
 
     return validShippingMethods;
-  }, [])
+  }, []);
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 /**
@@ -73,7 +46,7 @@ function attributeDenyCheck(availableShippingMethods, hydratedCart) {
  * @returns {Object|null} available shipping methods after filtering
  */
 export default function filterShippingMethods(methods, hydratedCart) {
-  // const { items: hydratedItems, destination } = hydratedCart;
+  // Check all methods against location allow check
   const allowedMethodsBasedOnShippingLocationsAllowList = methods.reduce((validShippingRates, method) => {
     // Return nothing if there is no method on the method
     if (!method.enabled) {
@@ -82,14 +55,11 @@ export default function filterShippingMethods(methods, hydratedCart) {
 
     const { restrictions } = method;
 
-    // console.log("-------------------- first check, all (10) methods should produce this log --------------------", method.method.name);
-
     // If method has no restrictions, add method to validShippingRates
     if (!restrictions) {
       validShippingRates.push(method);
       return validShippingRates;
     }
-
 
     // If method does have allow list, check for further filtration
     if (restrictions && restrictions.allow) {
@@ -127,7 +97,8 @@ export default function filterShippingMethods(methods, hydratedCart) {
     return validShippingRates;
   }, []);
 
-  // Run remaining available methods through the deny
+
+  // Run remaining available methods through the location deny check
   const allowedMethodsBasedOnShippingLocationsDenyList = allowedMethodsBasedOnShippingLocationsAllowList.reduce((validShippingRates, method) => {
     const { restrictions } = method;
 
@@ -163,10 +134,9 @@ export default function filterShippingMethods(methods, hydratedCart) {
   }, []);
 
 
-  // Run remaining shipping rates list through attribute deny check
-  const reducedShippingRates = attributeDenyCheck(allowedMethodsBasedOnShippingLocationsDenyList, hydratedCart);
 
-  // console.log("-------------------- reducedShippingRates --------------------", reducedShippingRates); // TODO: remove log, for testing only
+  // Run remaining methods through attribute deny check
+  const reducedShippingRates = attributeDenyCheck(allowedMethodsBasedOnShippingLocationsDenyList, hydratedCart);
 
   // Return all remaining availalbe shipping rates
   return reducedShippingRates;
