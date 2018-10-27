@@ -93,7 +93,7 @@ export default async function getFulfillmentMethodsWithQuotes(context, fulfillme
       rates.push(errorDetails);
     } else {
       const carrier = doc.provider.label;
-      // Run filter shipping methods
+      // Check by method shipping restrictions
       const availableShippingMethods = filterShippingAttributes(doc.methods, hydratedCart);
       for (const method of availableShippingMethods) {
         if (!method.rate) {
@@ -119,13 +119,6 @@ export default async function getFulfillmentMethodsWithQuotes(context, fulfillme
       }
     }
   });
-
-
-  // Filter shipping rates
-  // rates = filterShippingAttributes(rates, shippingAttributes);
-
-  // console.log("----------------- filteredShippingRates", rates);
-
 
   if (rates.length === initialNumOfRates) {
     const errorDetails = {
