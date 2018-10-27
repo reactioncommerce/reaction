@@ -32,7 +32,7 @@ export async function tagsByIds(collections, catalogProducts) {
     tags: item.product.tagIds.map(id => {
       foundTag = tags.find(tag => tag._id === id);
       return foundTag ? foundTag.name : null;
-    }) 
+    })
   }));
 }
 
@@ -51,18 +51,3 @@ export async function getCatalogProducts(collections, items) {
 
   return products;
 }
-
-export const operators = {
-  "eq": function(a, b) { return a === b},
-  "gt": function(a, b) { return a > b},
-  "lt": function(a, b) { return a < b },
-  "ne": function(a, b) { return a !== b}
-};
-
-export const propertyTypes = {
-  "bool": function(a) { return a === "true" },
-  "float": function(a) { return parseFloat(a) },
-  "int": function(a) { return parseInt(a) },
-  "string": function(a) { return a }
-}
-
