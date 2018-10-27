@@ -2,7 +2,6 @@ import { isEqual } from "lodash";
 import SimpleSchema from "simpl-schema";
 import ReactionError from "@reactioncommerce/reaction-error";
 import getCartById from "../util/getCartById";
-// import filterShippingAttributes from "../util/filterShippingAttributes";
 import getShippingRestrictionAttributes from "../util/getShippingRestrictionAttributes";
 
 const inputSchema = new SimpleSchema({
@@ -77,17 +76,11 @@ export default async function updateFulfillmentOptionsForGroup(context, input) {
   // Map the items onto the fulfillment groups
   fulfillmentGroup.items = fulfillmentGroup.itemIds.map((itemId) => cart.items.find((item) => item._id === itemId));
 
+  // TODO: remove this from this file, it's no longer used here
   const shippingAttributes = await getShippingRestrictionAttributes(context, fulfillmentGroup);
-  console.log("shipping restrictions", shippingAttributes);
 
   // In the future we want to do this async and subscribe to the results
   const rates = await context.queries.getFulfillmentMethodsWithQuotes(fulfillmentGroup, context);
-
-  // TODO: Remove these lines they are no longer used here, they have moved
-  // Filter rates based on shipping restrictions and shippingAttributes
-  // const filteredRates = filterShippingAttributes(rates, shippingAttributes);
-  //
-  // const { shipmentQuotes, shipmentQuotesQueryStatus } = getShipmentQuotesQueryStatus(filteredRates);
 
   const { shipmentQuotes, shipmentQuotesQueryStatus } = getShipmentQuotesQueryStatus(rates);
 
