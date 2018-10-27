@@ -3,12 +3,12 @@ import { operators, propertyTypes } from "./helpers";
 
 /**
  * @summary Filter shipping methods based on per method attribute restrictions
- * @param {Object} availableShippingMethods - all available shipping methods to check
+ * @param {Object} methods - all available shipping methods to check
  * @param {Object} hydratedCart - hydrated cart for current order
  * @returns {Object|null} available shipping methods after filtering
  */
-function attributeDenyCheck(availableShippingMethods, hydratedCart) {
-  return availableShippingMethods.reduce((validShippingMethods, method) => {
+function attributeDenyCheck(methods, hydratedCart) {
+  return methods.reduce((validShippingMethods, method) => {
     const { items } = hydratedCart;
     const { restrictions: { deny: { attributes } } } = method;
 
@@ -40,14 +40,14 @@ function attributeDenyCheck(availableShippingMethods, hydratedCart) {
 
 
 /**
- * @summary Filter shipping methods based on per method restrictions
- * @param {Object} methods - all available shipping methods for a shop
+ * @summary Filter shipping methods based on per method allow location restrictions
+ * @param {Object} methods - all available shipping methods to check
  * @param {Object} hydratedCart - hydrated cart for current order
  * @returns {Object|null} available shipping methods after filtering
  */
-export default function filterShippingMethods(methods, hydratedCart) {
+function locationAllowCheck(methods, hydratedCart) {
   // Check all methods against location allow check
-  const allowedMethodsBasedOnShippingLocationsAllowList = methods.reduce((validShippingRates, method) => {
+  return methods.reduce((validShippingRates, method) => {
     // Return nothing if there is no method on the method
     if (!method.enabled) {
       return validShippingRates;
@@ -96,10 +96,19 @@ export default function filterShippingMethods(methods, hydratedCart) {
     // Return validShippingRates reduced array
     return validShippingRates;
   }, []);
+}
 
 
+/**
+ * @summary Filter shipping methods based on per method deny location restrictions
+ * @param {Object} methods - all available shipping methods to check
+ * @param {Object} hydratedCart - hydrated cart for current order
+ * @returns {Object|null} available shipping methods after filtering
+ */
+function locationDenyCheck(methods, hydratedCart) {
   // Run remaining available methods through the location deny check
-  const allowedMethodsBasedOnShippingLocationsDenyList = allowedMethodsBasedOnShippingLocationsAllowList.reduce((validShippingRates, method) => {
+  return methods.reduce((validShippingRates, method) => {
+  // const allowedMethodsBasedOnShippingLocationsDenyList = allowedMethodsBasedOnShippingLocationsAllowList.reduce((validShippingRates, method) => {
     const { restrictions } = method;
 
     // If method does not have deny restrictions, add it to the available methods
@@ -132,12 +141,25 @@ export default function filterShippingMethods(methods, hydratedCart) {
     validShippingRates.push(method);
     return validShippingRates;
   }, []);
+}
 
 
+/**
+ * @summary Filter shipping methods based on per method restrictions
+ * @param {Object} methods - all available shipping methods for a shop
+ * @param {Object} hydratedCart - hydrated cart for current order
+ * @returns {Object|null} available shipping methods after filtering
+ */
+export default function filterShippingMethods(methods, hydratedCart) {
+  // Check all methods against location allow check
+  const allowedMethodsBasedOnShippingLocationsAllowList = locationAllowCheck(methods, hydratedCart);
 
-  // Run remaining methods through attribute deny check
-  const reducedShippingRates = attributeDenyCheck(allowedMethodsBasedOnShippingLocationsDenyList, hydratedCart);
+  // Check remaining methods against location deny check
+  const allowedMethodsBasedOnShippingLocationsDenyList = locationDenyCheck(allowedMethodsBasedOnShippingLocationsAllowList, hydratedCart);
+
+  // Check remaining methods against attribute deny check
+  const availableShippingMethods = attributeDenyCheck(allowedMethodsBasedOnShippingLocationsDenyList, hydratedCart);
 
   // Return all remaining availalbe shipping rates
-  return reducedShippingRates;
+  return availableShippingMethods;
 }
