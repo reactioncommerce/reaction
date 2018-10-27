@@ -1,7 +1,7 @@
 import Logger from "@reactioncommerce/logger";
 import ReactionError from "@reactioncommerce/reaction-error";
 import cartShippingRestricted from "./util/cartShippingRestricted";
-import filterShippingAttributes from "./util/filterShippingAttributes";
+import filterShippingMethods from "./util/filterShippingMethods";
 import getShippingRestrictionAttributes from "./util/getShippingRestrictionAttributes";
 
 /**
@@ -80,6 +80,9 @@ export default async function getFulfillmentMethodsWithQuotes(context, fulfillme
   // TODO: Change this name - talk to will about that
   const hydratedCart = await getShippingRestrictionAttributes(context, fulfillmentGroup);
 
+  console.log("hyrdrateCart", hydratedCart);
+
+
   const initialNumOfRates = rates.length;
   shippingRateDocs.forEach((doc) => {
     // Check universal shipping restrictions
@@ -94,7 +97,7 @@ export default async function getFulfillmentMethodsWithQuotes(context, fulfillme
     } else {
       const carrier = doc.provider.label;
       // Check by method shipping restrictions
-      const availableShippingMethods = filterShippingAttributes(doc.methods, hydratedCart);
+      const availableShippingMethods = filterShippingMethods(doc.methods, hydratedCart);
       for (const method of availableShippingMethods) {
         if (!method.rate) {
           method.rate = 0;
