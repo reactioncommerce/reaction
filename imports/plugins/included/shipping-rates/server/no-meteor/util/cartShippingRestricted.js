@@ -3,7 +3,7 @@ import { operators, propertyTypes } from "./helpers";
 
 /**
  * @summary Filter shipping methods based on global restrictions
- * @param {Object} universalShippingRestrictions - provided global restriction settings
+ * @param {Object} universalShippingRestrictions - provided universal restriction settings
  * @param {Object} shippingAttributes - computed shippingAttributes for current order
  * @returns {Object|null} available shipping methods after filtering
  */
@@ -51,7 +51,7 @@ export default function cartShippingRestricted(shippingAttributes, doc) {
     })
   );
 
-  // If restrictions are found, true
+  // If restrictions are found, return true
   // If they aren't found, return false
   return doItemsContainGlobalRestrictions;
 }

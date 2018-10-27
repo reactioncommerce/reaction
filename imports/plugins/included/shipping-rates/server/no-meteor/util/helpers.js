@@ -8,7 +8,7 @@
  */
 export async function asyncForEach(array, callback) {
   for (let index = 0; index < array.length; index++) {
-    await callback(array[index], index, array)
+    await callback(array[index], index, array);
   }
 }
 
@@ -20,7 +20,7 @@ export async function asyncForEach(array, callback) {
  * @returns {Object} - An object containing only white-listed keys
  */
 export function pick(obj, keys) {
-  return keys.map(k => k in obj ? { [k]: obj[k] } : {})
+  return keys.map((k) => (k in obj ? { [k]: obj[k] } : {}))
     .reduce((res, o) => Object.assign(res, o), {});
 }
 
@@ -37,51 +37,18 @@ export async function tagsByIds(collections, catalogProducts) {
   const tagIds = catalogProducts.reduce((list, item) => {
     list.push(...item.product.tagIds);
     return list;
-  }, [])
+  }, []);
 
   const tags = await Tags.find({ _id: { $in: tagIds } }).toArray();
 
-  return catalogProducts.map(item => ({
+  return catalogProducts.map((item) => ({
     productId: item.product.productId,
-    tags: item.product.tagIds.map(id => {
-      foundTag = tags.find(tag => tag._id === id);
+    tags: item.product.tagIds.map((id) => {
+      foundTag = tags.find((tag) => tag._id === id);
       return foundTag ? foundTag.name : null;
     })
   }));
 }
-
-
-
-export const operators = {
-  "eq": function(a, b) { return a === b},
-  "gt": function(a, b) { return a > b},
-  "lt": function(a, b) { return a < b },
-  "ne": function(a, b) { return a !== b}
-};
-
-export const propertyTypes = {
-  "bool": function(a) { return a === "true" },
-  "float": function(a) { return parseFloat(a) },
-  "int": function(a) { return parseInt(a) },
-  "string": function(a) { return a }
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 /**
  * @name getCatalogProducts
@@ -92,10 +59,32 @@ export const propertyTypes = {
  */
 export async function getCatalogProducts(collections, items) {
   const { Catalog } = collections;
-  const productIds = items.map(item => item.productId);
+  const productIds = items.map((item) => item.productId);
 
   const products = await Catalog.find({ "product.productId": { $in: productIds } }).toArray();
 
   return products;
 }
 
+
+/**
+ * @constant
+ * @type {objcect}
+*/
+export const operators = {
+  eq: function (a, b) { return a === b ;},
+  gt: function (a, b) { return a > b ;},
+  lt: function (a, b) { return a < b; },
+  ne: function (a, b) { return a !== b ;}
+};
+
+/**
+ * @constant
+ * @type {objcect}
+*/
+export const propertyTypes = {
+  bool: function (a) { return a === "true"; },
+  float: function (a) { return parseFloat(a); },
+  int: function (a) { return parseInt(a); },
+  string: function (a) { return a; }
+};
