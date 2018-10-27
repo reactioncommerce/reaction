@@ -1,7 +1,7 @@
 import Logger from "@reactioncommerce/logger";
 import ReactionError from "@reactioncommerce/reaction-error";
 import filterShippingAttributes from "./util/filterShippingAttributes";
-import getShippingAttributes from "./util/getShippingAttributes";
+import getShippingRestrictionAttributes from "./util/getShippingRestrictionAttributes";
 import cartShippingRestricted from "./util/cartShippingRestricted";
 
 /**
@@ -78,7 +78,7 @@ export default async function getFulfillmentMethodsWithQuotes(context, fulfillme
   // Get hydrated cart for current order from current order
   // This gets all item attributes and address from cart
   // TODO: Change this name - talk to will about that
-  const hydratedCart = await getShippingAttributes(context, fulfillmentGroup);
+  const hydratedCart = await getShippingRestrictionAttributes(context, fulfillmentGroup);
 
   const initialNumOfRates = rates.length;
   shippingRateDocs.forEach((doc) => {
