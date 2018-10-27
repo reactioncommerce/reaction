@@ -72,7 +72,7 @@ function attributeDenyCheck(availableShippingMethods, hydratedCart) {
  * @param {Object} hydratedCart - hydrated cart for current order
  * @returns {Object|null} available shipping methods after filtering
  */
-export default function filterShippingAttributes(methods, hydratedCart) {
+export default function filterShippingMethods(methods, hydratedCart) {
   // const { items: hydratedItems, destination } = hydratedCart;
   const allowedMethodsBasedOnShippingLocationsAllowList = methods.reduce((validShippingRates, method) => {
     // Return nothing if there is no method on the method
