@@ -80,9 +80,6 @@ export default async function getFulfillmentMethodsWithQuotes(context, fulfillme
   // TODO: Change this name - talk to will about that
   const hydratedCart = await getShippingRestrictionAttributes(context, fulfillmentGroup);
 
-  console.log("hyrdrateCart", hydratedCart);
-
-
   const initialNumOfRates = rates.length;
   shippingRateDocs.forEach((doc) => {
     // Check universal shipping restrictions
