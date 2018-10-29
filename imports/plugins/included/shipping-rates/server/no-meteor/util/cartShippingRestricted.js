@@ -16,9 +16,9 @@ export default function cartShippingRestricted(shippingAttributes, doc) {
     return true;
   }
 
-  const doItemsContainGlobalRestrictions = items.some((item) =>
-  // If any item matches a restriction, restrict method
-    foundRestrictedProperty = attributes.some((attribute) => {
+  const doItemsContainGlobalRestrictions = items.some((item) => { // eslint-disable-line
+    // If any item matches a restriction, restrict method
+    return attributes.some((attribute) => {
       const attributeFound = operators[attribute.operator](item[attribute.property], propertyTypes[attribute.propertyType](attribute.value));
 
       if (attributeFound) {
@@ -42,8 +42,10 @@ export default function cartShippingRestricted(shippingAttributes, doc) {
           return true;
         }
       }
-    })
-  );
+
+      return false;
+    });
+  });
 
   // If restrictions are found, return true
   // If they aren't found, return false
