@@ -12,7 +12,7 @@ export default function cartShippingRestricted(shippingAttributes, doc) {
   const { items } = shippingAttributes;
 
   // If there are no universal restrictions, move on to method specific checks
-  if (!attributes || !Array.isArray(attributes) || !attributes.length) {
+  if (!universalShippingRestrictions || !attributes || !Array.isArray(attributes) || !attributes.length) {
     return true;
   }
 
