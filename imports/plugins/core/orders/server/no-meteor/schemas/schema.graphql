@@ -84,9 +84,6 @@ type OrderItem implements Node {
   "The URLs for a picture of the item in various sizes"
   imageURLs: ImageSizes
 
-  "Is this a taxable item?"
-  isTaxable: Boolean!
-
   "Arbitrary additional metadata about this cart item."
   metafields: [Metafield]
 
@@ -122,12 +119,6 @@ type OrderItem implements Node {
 
   "The price of the item multiplied by the quantity of this item ordered"
   subtotal: Money!
-
-  "The amount of tax charged for this item"
-  tax: Money!
-
-  "Tax code for this item"
-  taxCode: String
 
   "A title for use in orders that conveys the selected product's title + chosen options"
   title: String!

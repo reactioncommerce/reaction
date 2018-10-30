@@ -1,4 +1,12 @@
-import { Cart, CartItem, OrderFulfillmentGroup, OrderItem, ProductVariant } from "/imports/collections/schemas";
+import {
+  Cart,
+  CartItem,
+  CatalogVariantSchema,
+  OrderFulfillmentGroup,
+  OrderItem,
+  ProductVariant,
+  VariantBaseSchema
+} from "/imports/collections/schemas";
 import { Taxes, TaxSummary } from "./simpleSchemas";
 
 Cart.extend({
@@ -52,7 +60,7 @@ OrderItem.extend({
   "taxes.$": Taxes
 });
 
-ProductVariant.extend({
+const variantSchemaExtension = {
   isTaxable: Boolean,
   taxCode: {
     type: String,
@@ -62,4 +70,10 @@ ProductVariant.extend({
     type: String,
     optional: true
   }
-});
+};
+
+ProductVariant.extend(variantSchemaExtension);
+
+// Extend the catalog variant database schemas
+VariantBaseSchema.extend(variantSchemaExtension);
+CatalogVariantSchema.extend(variantSchemaExtension);

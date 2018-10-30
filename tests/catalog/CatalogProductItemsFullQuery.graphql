@@ -17,7 +17,6 @@
           isBackorder
           isLowQuantity
           isSoldOut
-          isTaxable
           length
           lowInventoryWarningThreshold
           metafields {
@@ -94,8 +93,6 @@
               _id
             }
           }
-          taxCode
-          taxDescription
           title
           updatedAt
           variants {

@@ -1,4 +1,5 @@
 import Reaction from "/imports/plugins/core/core/server/Reaction";
+import publishProductToCatalog from "./server/no-meteor/publishProductToCatalog";
 import { registerPluginHandler } from "./server/no-meteor/registration";
 import mutations from "./server/no-meteor/mutations";
 import queries from "./server/no-meteor/queries";
@@ -11,7 +12,11 @@ Reaction.registerPackage({
   name: "reaction-taxes",
   icon: "fa fa-university",
   autoEnable: true,
+  catalog: {
+    customPublishedProductVariantFields: ["isTaxable", "taxCode", "taxDescription"]
+  },
   functionsByType: {
+    publishProductToCatalog: [publishProductToCatalog],
     registerPluginHandler: [registerPluginHandler],
     startup: [startup]
   },
