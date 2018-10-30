@@ -1,7 +1,7 @@
 import { isEqual } from "lodash";
 
 /**
- * @summary Returns `cart.items` with `tax` and `taxRate` props updated on them
+ * @summary Returns `cart.items` with tax-related props updated on them
  * @param {Object} cart The cart
  * @param {Object} context App context
  * @returns {Object[]} Updated items array
@@ -13,8 +13,7 @@ async function getUpdatedCartItems(cart, context) {
   // like in the Order schema, whereas in the Cart schema, items are directly on the cart
   // and each group has only `itemIds` on it. So we first adjust each group to look like
   // an order fulfillment group.
-  //
-  // Also, effectiveTaxRate is on the cart rather than the group.
+  const taxSummaries = [];
   const itemsWithTax = await Promise.all(cart.shipping.map(async (group) => {
     let items = group.itemIds.map((itemId) => cart.items.find((item) => item._id === itemId));
     items = items.filter((item) => !!item); // remove nulls
@@ -36,24 +35,41 @@ async function getUpdatedCartItems(cart, context) {
       };
     }));
 
-    const { items: groupItemsWithTaxAdded } = await context.mutations.getFulfillmentGroupTaxes(context, { ...group, items }, false);
+    const {
+      items: groupItemsWithTaxAdded,
+      taxSummary
+    } = await context.mutations.getFulfillmentGroupTaxes(context, { ...group, items }, false);
+
+    taxSummaries.push(taxSummary);
+
     return groupItemsWithTaxAdded;
   }));
 
   const cartItems = cart.items.map((item) => {
-    const newItem = { ...item, taxRate: 0, tax: 0 };
+    const newItem = { ...item };
     itemsWithTax.forEach((group) => {
-      group.forEach((groupItem) => {
-        if (groupItem._id === item._id) {
-          newItem.taxRate = groupItem.taxRate;
-          newItem.tax = groupItem.tax;
-        }
-      });
+      const matchingGroupItem = group.find((groupItem) => groupItem._id === item._id);
+      if (matchingGroupItem) {
+        newItem.tax = matchingGroupItem.tax;
+        newItem.taxableAmount = matchingGroupItem.taxableAmount;
+        newItem.taxes = matchingGroupItem.taxes;
+      }
     });
     return newItem;
   });
 
-  return cartItems;
+  // Reduce all group tax summaries to a single one
+  const taxSummary = taxSummaries.reduce((combinedSummary, groupSummary) => {
+    // groupSummary will be null if there wasn't enough info to calc taxes
+    if (!combinedSummary || !groupSummary) return null;
+
+    combinedSummary.tax += groupSummary.tax;
+    combinedSummary.taxableAmount += groupSummary.taxableAmount;
+
+    return combinedSummary;
+  }, { tax: 0, taxableAmount: 0 });
+
+  return { cartItems, taxSummary };
 }
 
 const EMITTED_BY_NAME = "TAXES_CORE_PLUGIN";
@@ -68,19 +84,20 @@ export default function startup(context) {
   const { appEvents, collections } = context;
   const { Cart } = collections;
 
-  // This entire hook is doing just one thing: Updating the `taxRate` and `tax` props
+  // This entire hook is doing just one thing: Updating the tax-related props
   // on each item in the cart, and saving those changes to the database if any of them
   // have changed.
   appEvents.on("afterCartUpdate", async (cart, { emittedBy } = {}) => {
     if (emittedBy === EMITTED_BY_NAME) return; // short circuit infinite loops
 
-    const cartItems = await getUpdatedCartItems(cart, context);
+    const { cartItems, taxSummary } = await getUpdatedCartItems(cart, context);
 
-    if (isEqual(cartItems, cart.items)) return;
+    if (isEqual(cartItems, cart.items) && isEqual(taxSummary, cart.taxSummary)) return;
 
     const { matchedCount } = await Cart.updateOne({ _id: cart._id }, {
       $set: {
-        items: cartItems
+        items: cartItems,
+        taxSummary
       }
     });
     if (matchedCount === 0) throw new Error("Unable to update cart");

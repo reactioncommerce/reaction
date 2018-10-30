@@ -110,8 +110,7 @@ function xformOrderItem(context, item, catalogItems) {
     tax: {
       amount: item.tax,
       currencyCode: item.price.currencyCode
-    },
-    taxRate: xformRateToRateObject(item.taxRate)
+    }
   };
 }
 

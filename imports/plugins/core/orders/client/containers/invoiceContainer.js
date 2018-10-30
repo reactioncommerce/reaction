@@ -574,24 +574,15 @@ const composer = (props, onData) => {
 
   // get unique lineItems
   const shipment = props.currentData.fulfillment;
+  const { shipmentMethod } = shipment || {};
 
   const orderItems = order.shipping.reduce((list, group) => [...list, ...group.items], []);
   const uniqueItems = orderItems.reduce((result, item) => {
     // If the items are not of this shop, skip them
-    if (item.shopId !== shopId) {
-      return result;
+    if (item.shopId === shopId) {
+      item.shipping = shipmentMethod;
+      result.push(item);
     }
-    const shipping = shipment && shipment.shipmentMethod;
-    item.shipping = shipping;
-    if (order.taxes !== undefined) {
-      const taxes = order.taxes.slice(0, -1);
-
-      if (taxes.length !== 0) {
-        const taxDetail = taxes.find((tax) => tax.lineNumber === item._id);
-        item.taxDetail = taxDetail;
-      }
-    }
-    result.push(item);
     return result;
   }, []);
 

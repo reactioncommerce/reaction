@@ -39,7 +39,6 @@ export function metaField(options = {}) {
  * @param {String} [options.title] - productVariant title
  * @param {String} [options.optionTitle] - productVariant option title
  * @param {String} [options.sku] - productVariant sku
- * @param {String} [options.taxable] - is this productVariant taxable?
  * @param {Object[]} [options.metafields] - productVariant metaFields
  *
  * @returns {Object} - randomly generated productVariant
@@ -53,13 +52,13 @@ export function productVariant(options = {}) {
     inventoryPolicy: faker.random.boolean(),
     lowInventoryWarningThreshold: _.random(1, 5),
     inventoryQuantity: _.random(0, 100),
+    isTaxable: faker.random.boolean(),
     isVisible: true,
     price: _.random(10, 1000),
     title: faker.commerce.productName(),
     optionTitle: faker.commerce.productName(),
     shopId: getShop()._id,
     sku: _.random(0, 6),
-    taxable: faker.random.boolean(),
     type: "variant",
     metafields: [
       metaField(),
@@ -93,7 +92,6 @@ export function productVariant(options = {}) {
  * @param {String} [options.title] - productVariant title
  * @param {String} [options.optionTitle] - productVariant option title
  * @param {String} [options.sku] - productVariant sku
- * @param {String} [options.taxable] - is this productVariant taxable?
  * @param {Object[]} [options.metafields] - productVariant metaFields
  * @returns {Object} Product
  */

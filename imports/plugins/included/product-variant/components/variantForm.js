@@ -32,8 +32,8 @@ const fieldGroups = {
   length: { group: "variantDetails" },
   height: { group: "variantDetails" },
   weight: { group: "variantDetails" },
-  taxCode: { group: "taxable" },
-  taxDescription: { group: "taxable" },
+  taxCode: { group: "isTaxable" },
+  taxDescription: { group: "isTaxable" },
   inventoryQuantity: { group: "inventoryManagement" },
   inventoryPolicy: { group: "inventoryManagement" },
   lowInventoryWarningThreshold: { group: "inventoryManagement" }
@@ -47,7 +47,7 @@ class VariantForm extends Component {
       expandedCard: props.editFocus,
       variant: props.variant,
       inventoryPolicy: props.variant.inventoryPolicy,
-      taxable: props.variant.taxable,
+      isTaxable: props.variant.isTaxable,
       inventoryManagement: props.variant.inventoryManagement
     };
   }
@@ -69,7 +69,7 @@ class VariantForm extends Component {
         expandedCard: nextProps.editFocus,
         inventoryManagement: nextProps.variant.inventoryManagement,
         inventoryPolicy: nextProps.variant.inventoryPolicy,
-        taxable: nextProps.variant.taxable,
+        isTaxable: nextProps.variant.isTaxable,
         variant: nextProps.variant
       });
     }
@@ -511,10 +511,10 @@ class VariantForm extends Component {
         </Components.Card>
 
         <Components.SettingsCard
-          enabled={this.state.taxable}
+          enabled={this.state.isTaxable}
           expandable={true}
           i18nKeyTitle="productVariant.taxable"
-          name="taxable"
+          name="isTaxable"
           packageName={"reaction-product-variant"}
           saveOpenStateToPreferences={true}
           showSwitch={true}

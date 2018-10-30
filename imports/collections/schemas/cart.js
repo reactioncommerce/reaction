@@ -49,8 +49,6 @@ const CartItemAttribute = new SimpleSchema({
  * @property {String} productVendor Product vendor
  * @property {Number} quantity required
  * @property {String} shopId Cart Item shopId
- * @property {Object} taxData optional blackbox
- * @property {Number} taxRate optional The rate that was multiplied by the item subtotal to get the item tax
  * @property {String} title Cart Item title
  * @property {Object} transaction Transaction associated with this item
  * @property {String} updatedAt required
@@ -66,10 +64,6 @@ export const CartItem = new SimpleSchema({
   },
   "attributes.$": CartItemAttribute,
   "createdAt": Date,
-  "isTaxable": {
-    type: Boolean,
-    defaultValue: false
-  },
   "metafields": {
     type: Array,
     optional: true
@@ -117,23 +111,6 @@ export const CartItem = new SimpleSchema({
     type: String,
     index: 1,
     label: "Cart Item shopId"
-  },
-  "tax": {
-    type: Number,
-    optional: true
-  },
-  "taxCode": {
-    type: String,
-    optional: true
-  },
-  "taxData": {
-    type: Object,
-    optional: true,
-    blackbox: true
-  },
-  "taxRate": {
-    type: Number,
-    optional: true
   },
   "title": {
     type: String,

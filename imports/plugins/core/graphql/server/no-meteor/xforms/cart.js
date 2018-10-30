@@ -227,23 +227,15 @@ export async function xformCartCheckout(collections, cart) {
   // If any of them are null, we leave the total null also. Using for-of rather than reduce
   // so that we can set to null and break if we hit a not-yet-calculated item.
   let taxTotal = null;
-  for (const item of cart.items) {
-    if (!item.tax && item.tax !== 0) {
-      taxTotal = null;
-      break;
-    }
-    if (taxTotal === null) {
-      taxTotal = 0;
-    }
-    taxTotal += item.tax;
+  let taxableAmount = null;
+  const { taxSummary } = cart;
+  if (taxSummary) {
+    ({ tax: taxTotal, taxableAmount } = taxSummary);
   }
 
   const discountTotal = cart.discount || 0;
 
   const total = Math.max(0, itemTotal + fulfillmentTotal + taxTotal - discountTotal);
-
-  // fulfillmentTotal should be included in this in many jurisdictions but we don't yet support that
-  const preTaxTotal = Math.max(0, itemTotal - discountTotal);
 
   let fulfillmentTotalMoneyObject = null;
   if (fulfillmentTotal !== null) {
@@ -260,10 +252,10 @@ export async function xformCartCheckout(collections, cart) {
       amount: taxTotal,
       currencyCode: cart.currencyCode
     };
-    // Calculate the tax-exclusive rate because most people and jurisdictions refer to sales
-    // tax as exclusive rates.
-    const effectiveTaxRate = preTaxTotal > 0 && taxTotal > 0 ? taxTotal / preTaxTotal : 0;
-    effectiveTaxRateObject = xformRateToRateObject(effectiveTaxRate);
+    if (taxSummary) {
+      const effectiveTaxRate = taxSummary.tax / taxSummary.taxableAmount;
+      effectiveTaxRateObject = xformRateToRateObject(effectiveTaxRate);
+    }
   }
 
   fulfillmentGroups = fulfillmentGroups.map((fulfillmentGroup) => xformCartFulfillmentGroup(fulfillmentGroup, cart));
@@ -280,6 +272,10 @@ export async function xformCartCheckout(collections, cart) {
       fulfillmentTotal: fulfillmentTotalMoneyObject,
       itemTotal: {
         amount: itemTotal,
+        currencyCode: cart.currencyCode
+      },
+      taxableAmount: {
+        amount: taxableAmount,
         currencyCode: cart.currencyCode
       },
       taxTotal: taxTotalMoneyObject,

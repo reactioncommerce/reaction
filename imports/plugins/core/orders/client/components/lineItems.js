@@ -156,7 +156,7 @@ class LineItems extends Component {
   renderLineItemInvoice(uniqueItem) {
     return (
       <div className="invoice-order-items">
-        {this.props.order.taxes &&
+        {uniqueItem.tax &&
           <div className="invoice-order-item-tax">
             <b>
               <Components.Translation
@@ -165,17 +165,10 @@ class LineItems extends Component {
               />
             </b>
             <div className="tax-code">
-              <span>
-                {uniqueItem.taxDetail ? uniqueItem.taxDetail.taxCode : uniqueItem.variants.taxCode}
-              </span>
+              <span>{uniqueItem.taxCode}</span>
             </div>
             <div className="tax-cost">
-              <span>
-                {uniqueItem.taxDetail ?
-                  formatPriceString(uniqueItem.taxDetail.tax) :
-                  formatPriceString(uniqueItem.tax)
-                }
-              </span>
+              <span>{formatPriceString(uniqueItem.tax)}</span>
             </div>
           </div>
         }
@@ -186,7 +179,7 @@ class LineItems extends Component {
               i18nKey="cartSubTotals.subtotal"
             />
           </b>
-          <span><b>{formatPriceString(uniqueItem.price.amount * uniqueItem.quantity)}</b></span>
+          <span><b>{formatPriceString(uniqueItem.subtotal)}</b></span>
         </div>
       </div>
     );

@@ -139,9 +139,9 @@ type CartSummary {
   discountTotal: Money!
 
   """
-  The calculated tax-exclusive tax rate on all items and fulfillment prices. This may be null,
-  and there is a difference between null and 0. Null means "not able to calculate", such as
-  when no fulfillment method has been selected for some fulfillment groups.
+  The calculated tax-exclusive tax rate on all items and fulfillment prices (taxTotal / taxableAmount).
+  This may be null, and there is a difference between null and 0. Null means "not able to calculate",
+  such as when no fulfillment method has been selected for some fulfillment groups.
   """
   effectiveTaxRate: Rate
 
@@ -154,6 +154,9 @@ type CartSummary {
 
   "The combined prices of all cart items"
   itemTotal: Money!
+
+  "The total amount that was deemed taxable by the tax service"
+  taxableAmount: Money!
 
   """
   The total estimated tax that has not already been included in the item prices. This may be null,

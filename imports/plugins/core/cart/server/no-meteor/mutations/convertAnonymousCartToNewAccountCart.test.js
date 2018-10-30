@@ -17,7 +17,6 @@ const items = [
     title: "TITLE",
     updatedAt: new Date("2018-01-01T00:00:00.000"),
     variantId: "variantId",
-    isTaxable: false,
     priceWhenAdded: {
       amount: 9.99,
       currencyCode: "USD"

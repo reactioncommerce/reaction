@@ -73,9 +73,6 @@ registerSchema("VariantMedia", VariantMedia);
  * @property {Number} price, default value: `0.00`
  * @property {String} shopId required, Variant ShopId
  * @property {String} sku optional
- * @property {Boolean} taxable, default value: `true`
- * @property {String} taxCode, default value: `"0000"`
- * @property {String} taxDescription optional
  * @property {String} title, Label for customers, default value: `""`
  * @property {String} type, default value: `"variant"`
  * @property {Date} updatedAt optional
@@ -248,23 +245,6 @@ export const ProductVariant = new SimpleSchema({
     label: "SKU",
     type: String,
     optional: true
-  },
-  "taxable": {
-    label: "Taxable",
-    type: Boolean,
-    defaultValue: true,
-    optional: true
-  },
-  "taxCode": {
-    label: "Tax Code",
-    type: String,
-    defaultValue: "0000",
-    optional: true
-  },
-  "taxDescription": {
-    type: String,
-    optional: true,
-    label: "Tax Description"
   },
   "title": {
     label: "Label",

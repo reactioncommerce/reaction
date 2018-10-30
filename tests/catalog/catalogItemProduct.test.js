@@ -132,7 +132,6 @@ const mockCatalogProduct = {
   isBackorder: false,
   isLowQuantity: false,
   isSoldOut: false,
-  isTaxable: false,
   isVisible: true,
   length: 5.67,
   lowInventoryWarningThreshold: 2,
@@ -212,8 +211,6 @@ const mockCatalogProduct = {
   ],
   supportedFulfillmentTypes: ["shipping"],
   tagIds: internalTagIds,
-  taxCode: "taxCode",
-  taxDescription: "taxDescription",
   title: "Fake Product Title",
   type: "product-simple",
   updatedAt: updatedAt.toISOString(),
@@ -354,7 +351,6 @@ const expectedItemsResponse = {
       isBackorder: false,
       isLowQuantity: false,
       isSoldOut: false,
-      isTaxable: false,
       length: 5.67,
       lowInventoryWarningThreshold: 2,
       metafields: [
@@ -437,8 +433,6 @@ const expectedItemsResponse = {
       tags: {
         nodes: [{ _id: opaqueTagIds[0] }, { _id: opaqueTagIds[1] }]
       },
-      taxCode: "taxCode",
-      taxDescription: "taxDescription",
       title: "Fake Product Title",
       updatedAt: updatedAt.toISOString(),
       variants: expectedVariantsResponse,

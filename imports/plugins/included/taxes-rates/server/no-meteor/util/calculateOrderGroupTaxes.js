@@ -56,28 +56,39 @@ export default async function calculateOrderGroupTaxes({ context, group }) {
   const taxRate = await getTaxRateForShop(context.collections, group);
 
   // calculate line item taxes
+  let totalTaxableAmount = 0;
+  let totalTax = 0;
   const itemTaxes = items.map((item) => {
     // only taxable products with subtotals on them
     if (item.isTaxable && typeof item.subtotal === "number") {
+      totalTaxableAmount += item.subtotal;
+      const itemTax = item.subtotal * taxRate;
+      totalTax += itemTax;
       return {
         itemId: item._id,
-        taxRate,
-        tax: item.subtotal * taxRate
+        tax: itemTax,
+        taxableAmount: item.subtotal,
+        taxes: []
       };
     }
 
     return {
       itemId: item._id,
-      taxRate: 0,
-      tax: 0
+      tax: 0,
+      taxableAmount: 0,
+      taxes: []
     };
   });
 
+  // TODO tax shipping as and where necessary
+
   return {
-    fulfillmentTaxes: {
-      tax: 0,
-      taxRate: 0
-    },
-    itemTaxes
+    itemTaxes,
+    taxSummary: {
+      calculatedAt: new Date(),
+      tax: totalTax,
+      taxableAmount: totalTaxableAmount,
+      taxes: []
+    }
   };
 }

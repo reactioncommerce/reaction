@@ -1,4 +1,4 @@
 import "./i18n";
-// assemble server api
-import "./methods/methods";
+import "./no-meteor/extendCoreSchemas";
+import "./methods";
 import "./api/import";

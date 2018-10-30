@@ -360,7 +360,6 @@ export const mockInternalCatalogProducts = [
     isBackorder: false,
     isLowQuantity: false,
     isSoldOut: false,
-    isTaxable: false,
     isVisible: true,
     length: 5.67,
     lowInventoryWarningThreshold: 2,
@@ -440,8 +439,6 @@ export const mockInternalCatalogProducts = [
     ],
     supportedFulfillmentTypes: ["shipping"],
     tagIds: internalTagIds,
-    taxCode: "taxCode",
-    taxDescription: "taxDescription",
     title: "Fake Product Title",
     type: "product-simple",
     updatedAt: updatedAt.toISOString(),
@@ -459,7 +456,6 @@ export const mockInternalCatalogProducts = [
     isBackorder: false,
     isLowQuantity: false,
     isSoldOut: false,
-    isTaxable: false,
     isVisible: true,
     length: 5.67,
     lowInventoryWarningThreshold: 2,
@@ -539,8 +535,6 @@ export const mockInternalCatalogProducts = [
     ],
     supportedFulfillmentTypes: ["shipping"],
     tagIds: internalTagIds,
-    taxCode: "taxCode",
-    taxDescription: "taxDescription",
     title: "Another Fake Product Title",
     type: "product-simple",
     updatedAt: updatedAt.toISOString(),
@@ -571,7 +565,6 @@ export const mockExternalCatalogProducts = [
       isBackorder: false,
       isLowQuantity: false,
       isSoldOut: false,
-      isTaxable: false,
       length: 5.67,
       lowInventoryWarningThreshold: 2,
       metafields: [
@@ -654,8 +647,6 @@ export const mockExternalCatalogProducts = [
       tags: {
         nodes: [{ _id: opaqueTagIds[0] }, { _id: opaqueTagIds[1] }]
       },
-      taxCode: "taxCode",
-      taxDescription: "taxDescription",
       title: "Fake Product Title",
       updatedAt: updatedAt.toISOString(),
       variants: mockExternalCatalogVariants,
@@ -680,7 +671,6 @@ export const mockExternalCatalogProducts = [
       isBackorder: false,
       isLowQuantity: false,
       isSoldOut: false,
-      isTaxable: false,
       length: 5.67,
       lowInventoryWarningThreshold: 2,
       metafields: [
@@ -763,8 +753,6 @@ export const mockExternalCatalogProducts = [
       tags: {
         nodes: [{ _id: opaqueTagIds[0] }, { _id: opaqueTagIds[1] }]
       },
-      taxCode: "taxCode",
-      taxDescription: "taxDescription",
       title: "Another Fake Product Title",
       updatedAt: updatedAt.toISOString(),
       variants: [],
