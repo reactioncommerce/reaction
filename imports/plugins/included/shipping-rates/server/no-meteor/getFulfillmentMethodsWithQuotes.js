@@ -79,17 +79,16 @@ export default async function getFulfillmentMethodsWithQuotes(context, fulfillme
   const hydratedCart = await getShippingRestrictionAttributes(context, fulfillmentGroup); // TODO: possibly change function name
 
   const initialNumOfRates = rates.length;
-  shippingRateDocs.forEach((doc) => {
-    // Check for universal shipping restrictions
-    // If any apply, all shipping methods are blocked
-    if (cartShippingRestricted(hydratedCart, doc)) {
-      const errorDetails = {
-        requestStatus: "error",
-        shippingProvider: "flat-rate-shipping",
-        message: "Flat rate shipping did not return any shipping methods."
-      };
-      rates.push(errorDetails);
-    } else {
+
+  if (await cartShippingRestricted(context, hydratedCart)) {
+    const errorDetails = {
+      requestStatus: "error",
+      shippingProvider: "flat-rate-shipping",
+      message: "Flat rate shipping did not return any shipping methods."
+    };
+    rates.push(errorDetails);
+  } else {
+    shippingRateDocs.forEach((doc) => {
       const carrier = doc.provider.label;
       // Check for method specific shipping restrictions
       const availableShippingMethods = filterShippingMethods(doc.methods, hydratedCart);
@@ -115,8 +114,8 @@ export default async function getFulfillmentMethodsWithQuotes(context, fulfillme
           shopId: doc.shopId
         });
       }
-    }
-  });
+    });
+  }
 
   if (rates.length === initialNumOfRates) {
     const errorDetails = {
