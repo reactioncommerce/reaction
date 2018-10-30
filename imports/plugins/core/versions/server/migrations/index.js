@@ -42,3 +42,4 @@ import "./41_set_should_appear_in_sitemap";
 import "./42_payment_methods";
 import "./43_stripe_marketplace_pkg";
 import "./44_tax_rates_pkg";
+import "./45_tax_schema_changes";
