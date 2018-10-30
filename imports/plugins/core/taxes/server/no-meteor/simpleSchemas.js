@@ -42,17 +42,6 @@ export const TaxSummary = new SimpleSchema({
   taxes: [Taxes]
 });
 
-export const CartTaxSummary = new SimpleSchema({
-  tax: {
-    type: Number,
-    min: 0
-  },
-  taxableAmount: {
-    type: Number,
-    min: 0
-  }
-});
-
 export const TaxServiceResult = new SimpleSchema({
   "itemTaxes": Array,
   "itemTaxes.$": Object,

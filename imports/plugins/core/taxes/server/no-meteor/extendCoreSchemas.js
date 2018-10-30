@@ -1,9 +1,9 @@
 import { Cart, CartItem, OrderFulfillmentGroup, OrderItem, ProductVariant } from "/imports/collections/schemas";
-import { CartTaxSummary, Taxes, TaxSummary } from "./simpleSchemas";
+import { Taxes, TaxSummary } from "./simpleSchemas";
 
 Cart.extend({
   taxSummary: {
-    type: CartTaxSummary,
+    type: TaxSummary,
     optional: true
   }
 });

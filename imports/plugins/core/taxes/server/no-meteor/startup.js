@@ -63,11 +63,13 @@ async function getUpdatedCartItems(cart, context) {
     // groupSummary will be null if there wasn't enough info to calc taxes
     if (!combinedSummary || !groupSummary) return null;
 
+    combinedSummary.calculatedAt = groupSummary.calculatedAt;
     combinedSummary.tax += groupSummary.tax;
     combinedSummary.taxableAmount += groupSummary.taxableAmount;
+    combinedSummary.taxes = combinedSummary.taxes.concat(groupSummary.taxes);
 
     return combinedSummary;
-  }, { tax: 0, taxableAmount: 0 });
+  }, { tax: 0, taxableAmount: 0, taxes: [] });
 
   return { cartItems, taxSummary };
 }
