@@ -10,90 +10,42 @@ import { registerSchema } from "@reactioncommerce/schemas";
  * @summary Taxes schema
  */
 export const Taxes = new SimpleSchema({
-  "shopId": {
+  shopId: {
     type: String,
     index: 1,
     label: "Taxes shopId"
   },
-  "taxCode": {
+  taxCode: {
     type: String,
     label: "Tax Identifier",
     defaultValue: "RC_TAX",
     index: 1
   },
-  "cartMethod": {
-    label: "Calculation Method",
-    type: String,
-    allowedValues: ["unit", "row", "total"],
-    defaultValue: "total"
-  },
-  "taxLocale": {
+  taxLocale: {
     label: "Taxation Location",
     type: String,
-    allowedValues: ["shipping", "billing", "origination", "destination"],
+    allowedValues: ["origin", "destination"],
     defaultValue: "destination"
   },
-  "taxShipping": {
-    label: "Tax Shipping",
-    type: Boolean,
-    defaultValue: false
-  },
-  "taxIncluded": {
-    label: "Taxes included in product prices",
-    type: Boolean,
-    defaultValue: false,
-    optional: true
-  },
-  "discountsIncluded": {
-    label: "Tax before discounts",
-    type: Boolean,
-    defaultValue: false,
-    optional: true
-  },
-  "region": {
+  region: {
     label: "State/Province/Region",
     type: String,
     optional: true,
     index: 1
   },
-  "postal": {
+  postal: {
     label: "ZIP/Postal Code",
     type: String,
     optional: true,
     index: 1
   },
-  "country": {
+  country: {
     type: String,
     label: "Country",
     optional: true,
     index: 1
   },
-  "isCommercial": {
-    label: "Commercial address.",
-    type: Boolean,
-    optional: true
-  },
-  "rate": Number,
-  "method": {
-    type: Array,
-    optional: true,
-    label: "Tax Methods"
-  },
-  "method.$": {
-    type: Object
-  },
-  "method.$.plugin": {
-    type: String,
-    label: "Plugin",
-    defaultValue: "Custom",
-    optional: true
-  },
-  "method.$.enabled": {
-    type: Boolean,
-    label: "Enabled",
-    defaultValue: true,
-    optional: true
-  }
+  rate: Number
 }, { check, tracker: Tracker });
 
 registerSchema("Taxes", Taxes);

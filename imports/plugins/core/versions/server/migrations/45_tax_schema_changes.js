@@ -1,3 +1,4 @@
+import { Mongo } from "meteor/mongo";
 import { Migrations } from "meteor/percolate:migrations";
 import { Cart, Orders, Products } from "/lib/collections";
 import findAndConvertInBatches from "../util/findAndConvertInBatches";
@@ -119,6 +120,21 @@ Migrations.add({
         return product;
       }
     });
+
+    // Taxes
+    // This collection is defined in the taxes plugin only, so we get a new instance of it here
+    const Taxes = new Mongo.Collection("Taxes", { defineMutationMethods: false });
+    Taxes.update({}, {
+      // Remove all props that were never implemented
+      $unset: {
+        cartMethod: "",
+        discountsIncluded: "",
+        isCommercial: "",
+        method: "",
+        taxIncluded: "",
+        taxShipping: ""
+      }
+    }, { bypassCollection2: true, multi: true });
   },
 
   down() {
