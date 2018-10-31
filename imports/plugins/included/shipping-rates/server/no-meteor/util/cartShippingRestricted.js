@@ -1,4 +1,3 @@
-import { getFlatRateFulfillmentRestrictionsCollection } from "../collections";
 import { operators, propertyTypes } from "./helpers";
 
 /**
@@ -9,7 +8,7 @@ import { operators, propertyTypes } from "./helpers";
  */
 export default async function cartShippingRestricted(context, shippingAttributes) {
   const { items } = shippingAttributes;
-  const flatRateFulfillmentRestrictionsCollection = getFlatRateFulfillmentRestrictionsCollection(context);
+  const flatRateFulfillmentRestrictionsCollection = context.collections.FlatRateFulfillmentRestrictions;
   const universalRestrictions = await flatRateFulfillmentRestrictionsCollection.find({ methodIds: null, type: "deny" }).toArray();
 
   // If there are no universal restrictions, move on to method specific checks
