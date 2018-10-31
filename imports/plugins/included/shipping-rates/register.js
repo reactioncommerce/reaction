@@ -3,6 +3,7 @@ import getFulfillmentMethodsWithQuotes from "./server/no-meteor/getFulfillmentMe
 import resolvers from "./server/no-meteor/resolvers";
 import mutations from "./server/no-meteor/mutations";
 import schemas from "./server/no-meteor/schemas";
+import startup from "./server/no-meteor/startup";
 
 Reaction.registerPackage({
   label: "Shipping Rates",
@@ -15,7 +16,8 @@ Reaction.registerPackage({
   },
   mutations,
   functionsByType: {
-    getFulfillmentMethodsWithQuotes: [getFulfillmentMethodsWithQuotes]
+    getFulfillmentMethodsWithQuotes: [getFulfillmentMethodsWithQuotes],
+    startup: [startup]
   },
   settings: {
     name: "Flat Rate Service",
