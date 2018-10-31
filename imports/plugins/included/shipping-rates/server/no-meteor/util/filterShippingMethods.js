@@ -156,6 +156,6 @@ export default function filterShippingMethods(methods, hydratedCart) {
   // Check remaining methods against attribute deny check
   const availableShippingMethods = attributeDenyCheck(allowedMethodsBasedOnShippingLocationsDenyList, hydratedCart);
 
-  // Return all remaining availalbe shipping rates
+  // Return all remaining available shipping rates
   return availableShippingMethods;
 }

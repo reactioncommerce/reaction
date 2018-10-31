@@ -1,31 +1,37 @@
-/**
- * @name asyncForEach
- * @method
- * @summary async version of `forEach`
- * @param {Array} array - Array to iterate over
- * @param {Function} callback - function to execute against each item in the array
- * @return {undefined}
- */
-export async function asyncForEach(array, callback) {
-  for (let index = 0; index < array.length; index++) {
-    await callback(array[index], index, array);
-  }
-}
+import findVariantInCatalogProduct from "/imports/plugins/core/catalog/server/no-meteor/utils/findVariantInCatalogProduct";
 
 /**
- * @name getCatalogProducts
+ * @name findCatalogProductsAndVariants
  * @summary Returns products in the Catalog collection that correspond to the cart items provided.
  * @param {Object} collections - The mongo collections
- * @param {Array} items - An array of items that have been added to the shopping cart.
- * @returns {Array} products - An array of products in the catalog
+ * @param {Array} orderLineItems - An array of items that have been added to the shopping cart.
+ * @returns {Array} products - An array of products, parent variant and variants in the catalog
  */
-export async function getCatalogProducts(collections, items) {
+export async function findCatalogProductsAndVariants(collections, orderLineItems) {
   const { Catalog } = collections;
-  const productIds = items.map((item) => item.productId);
+  const productIds = orderLineItems.map((orderLineItem) => orderLineItem.productId);
 
-  const products = await Catalog.find({ "product.productId": { $in: productIds } }).toArray();
+  const catalogProductItems = await Catalog.find({
+    "product.productId": { $in: productIds },
+    "product.isVisible": true,
+    "product.isDeleted": { $ne: true },
+    "isDeleted": { $ne: true }
+  }).toArray();
 
-  return products;
+  const catalogProductsAndVariants = catalogProductItems.map((catalogProduct) => {
+    const { product } = catalogProduct;
+    const orderedVariant = orderLineItems.find((item) => item.productId === product.productId); 
+
+    const { parentVariant, variant } = findVariantInCatalogProduct(product, orderedVariant.variantId);
+
+    return {
+      product,
+      parentVariant,
+      variant
+    };
+  }); 
+
+  return catalogProductsAndVariants;
 }
 
 /**
@@ -38,6 +44,53 @@ export async function getCatalogProducts(collections, items) {
 export function pick(obj, keys) {
   return keys.map((k) => (k in obj ? { [k]: obj[k] } : {}))
     .reduce((res, o) => Object.assign(res, o), {});
+}
+
+/**
+ * @name mergeProductAndVariants
+ * @summary Merges a product and its variants
+ * @param {Object} productAndVariants - The product and its variants
+ * @returns {Object} - The merged product and variants
+ */
+export function mergeProductAndVariants(productsAndVariants) {
+  const { product, parentVariant, variant } = productsAndVariants;
+
+  // Filter out unnecessary product props
+  const { 
+    variants, 
+    customAttributes, 
+    media, 
+    metafields, 
+    parcel,
+    pricing, 
+    primaryImage,
+    socialMetadata, 
+    ...productProps 
+  } = product;
+
+  // Filter out unnecessary parent variant props
+  const { 
+    customAttributes: parentVariantCustomAttributes,
+    media: parentVariantMedia,
+    parcel: parentVariantParcel,
+    pricing: parentVariantPricing, 
+    ...parentVariantProps
+  } = parentVariant;
+
+  // Filter out unnecessary variant props
+  const { 
+    customAttributes: variantCustomAttributes,
+    media: variantMedia,
+    parcel: variantParcel,
+    pricing: variantPricing, 
+    ...variantProps
+  } = variant;
+
+  return {
+    ...productProps,
+    ...parentVariant && parentVariantProps,
+    ...variant && variantProps
+  };
 }
 
 /**
