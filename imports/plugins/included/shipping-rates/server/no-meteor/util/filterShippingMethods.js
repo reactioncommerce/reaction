@@ -19,7 +19,7 @@ function attributeDenyCheck(methods, hydratedCart) {
 
     items.reduce((itemCheck, item) => {
       // If any item matches a restriction, restrict method
-      const foundRestrictedProperty = attributes.some((attribute) => {
+      const foundRestrictedProperty = attributes.some((attribute) => { // eslint-disable-line
         return operators[attribute.operator](item[attribute.property], propertyTypes[attribute.propertyType](attribute.value));
       });
 
