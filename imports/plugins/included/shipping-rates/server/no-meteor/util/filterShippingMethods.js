@@ -23,6 +23,6 @@ export default async function filterShippingMethods(context, methods, hydratedCa
   // Check remaining methods against attribute deny check
   const availableShippingMethods = await attributeDenyCheck(flatRateFulfillmentRestrictionsCollection, allowedMethodsBasedOnShippingLocationsDenyList, hydratedCart);
 
-  // Return all remaining availalbe shipping rates
+  // Return all remaining available shipping rates
   return availableShippingMethods;
 }

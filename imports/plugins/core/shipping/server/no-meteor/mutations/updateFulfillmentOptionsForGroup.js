@@ -1,8 +1,8 @@
 import { isEqual } from "lodash";
 import SimpleSchema from "simpl-schema";
 import ReactionError from "@reactioncommerce/reaction-error";
+import { xformCartCheckout } from "@reactioncommerce/reaction-graphql-xforms/cart";
 import getCartById from "../util/getCartById";
-import getShippingRestrictionAttributes from "../util/getShippingRestrictionAttributes";
 
 const inputSchema = new SimpleSchema({
   cartId: String,
@@ -76,11 +76,11 @@ export default async function updateFulfillmentOptionsForGroup(context, input) {
   // Map the items onto the fulfillment groups
   fulfillmentGroup.items = fulfillmentGroup.itemIds.map((itemId) => cart.items.find((item) => item._id === itemId));
 
-  // TODO: remove this from this file, it's no longer used here
-  const shippingAttributes = await getShippingRestrictionAttributes(context, fulfillmentGroup);
+  // Add cart summary
+  cartWithSummary = await xformCartCheckout(collections, cart);
 
   // In the future we want to do this async and subscribe to the results
-  const rates = await context.queries.getFulfillmentMethodsWithQuotes(fulfillmentGroup, context);
+  const rates = await context.queries.getFulfillmentMethodsWithQuotes(fulfillmentGroup, cartWithSummary, context);
 
   const { shipmentQuotes, shipmentQuotesQueryStatus } = getShipmentQuotesQueryStatus(rates);
 
