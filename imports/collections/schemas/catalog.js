@@ -129,7 +129,6 @@ export const SocialMetadata = new SimpleSchema({
  * @property {Boolean} inventoryPolicy required
  * @property {Boolean} isLowQuantity required
  * @property {Boolean} isSoldOut required
- * @property {Boolean} isTaxable required, default value: `false`
  * @property {Number} length optional, default value: `0`
  * @property {Number} lowInventoryWarningThreshold optional, default value: `0`
  * @property {ImageInfo[]} media optional
@@ -142,8 +141,6 @@ export const SocialMetadata = new SimpleSchema({
  * @property {ImageInfo} primaryImage optional
  * @property {String} shopId required
  * @property {String} sku optional
- * @property {String} taxCode optional, default value: `"0000"`
- * @property {String} taxDescription optional
  * @property {String} title optional
  * @property {Date} updatedAt required
  * @property {String} variantId required
@@ -190,12 +187,6 @@ export const VariantBaseSchema = new SimpleSchema({
   "isSoldOut": {
     type: Boolean,
     label: "Indicates when the product quantity is zero"
-  },
-  "isTaxable": {
-    type: Boolean,
-    label: "Indicates if a product is taxable",
-    index: 1,
-    defaultValue: false
   },
   "length": {
     type: Number,
@@ -264,17 +255,6 @@ export const VariantBaseSchema = new SimpleSchema({
   "sku": {
     type: String,
     label: "SKU",
-    optional: true
-  },
-  "taxCode": {
-    type: String,
-    label: "Tax Code",
-    defaultValue: "0000",
-    optional: true
-  },
-  "taxDescription": {
-    type: String,
-    label: "Tax Description",
     optional: true
   },
   "title": {
