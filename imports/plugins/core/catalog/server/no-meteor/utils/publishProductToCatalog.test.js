@@ -32,7 +32,6 @@ const mockVariants = [
     inventoryPolicy: false,
     isLowQuantity: true,
     isSoldOut: false,
-    isTaxable: false,
     length: 0,
     lowInventoryWarningThreshold: 0,
     metafields: [
@@ -54,8 +53,6 @@ const mockVariants = [
     },
     shopId: internalShopId,
     sku: "sku",
-    taxCode: "0000",
-    taxDescription: "taxDescription",
     title: "Small Concrete Pizza",
     updatedAt,
     variantId: internalVariantIds[0],
@@ -72,7 +69,6 @@ const mockVariants = [
     inventoryPolicy: false,
     isLowQuantity: true,
     isSoldOut: false,
-    isTaxable: false,
     length: 5,
     lowInventoryWarningThreshold: 8,
     metafields: [
@@ -94,8 +90,6 @@ const mockVariants = [
     },
     shopId: internalShopId,
     sku: "sku",
-    taxCode: "0000",
-    taxDescription: "taxDescription",
     title: "Small Concrete Pizza",
     updatedAt,
     variantId: internalVariantIds[1],
