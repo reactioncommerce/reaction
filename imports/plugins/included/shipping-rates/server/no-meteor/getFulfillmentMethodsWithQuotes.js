@@ -89,7 +89,7 @@ export default async function getFulfillmentMethodsWithQuotes(context, fulfillme
     };
     rates.push(errorDetails);
   } else {
-    shippingRateDocs.forEach(async (doc) => {
+    const awaitedShippingRateDocs = shippingRateDocs.map(async (doc) => {
       const carrier = doc.provider.label;
       // Check for method specific shipping restrictions
       const availableShippingMethods = await filterShippingMethods(context, doc.methods, hydratedCart);
@@ -116,6 +116,7 @@ export default async function getFulfillmentMethodsWithQuotes(context, fulfillme
         });
       }
     });
+    await Promise.all(awaitedShippingRateDocs);
   }
 
   if (rates.length === initialNumOfRates) {
