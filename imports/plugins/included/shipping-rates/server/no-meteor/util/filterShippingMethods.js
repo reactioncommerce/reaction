@@ -38,123 +38,137 @@ function attributeDenyCheck(methods, hydratedCart) {
 
 /**
  * @summary Filter shipping methods based on per method allow location restrictions
+ * @param {Object} flatRateFulfillmentRestrictionsCollection - restrictions from FlatRateFulfillmentRestrcitionsCollection
  * @param {Object} methods - all available shipping methods to check
  * @param {Object} hydratedCart - hydrated cart for current order
  * @returns {Object|null} available shipping methods after filtering
  */
-function locationAllowCheck(methods, hydratedCart) {
+async function locationAllowCheck(flatRateFulfillmentRestrictionsCollection, methods, hydratedCart) {
   // Check all methods against location allow check
-  return methods.reduce((validShippingRates, method) => {
-    // Return nothing if there is no method on the method
+  return methods.reduce(async (validShippingMethods, method) => {
+    const awaitedValidShippingMethods = await validShippingMethods;
+
+    // If method is not enabled, it is not valid
     if (!method.enabled) {
-      return validShippingRates;
+      return awaitedValidShippingMethods;
     }
 
-    const { restrictions } = method;
+    // Get method specific allow restrictions
+    const methodRestrictions = await flatRateFulfillmentRestrictionsCollection.find({ methodIds: method._id, type: "allow" }).toArray();
 
-    // If method has no restrictions, add method to validShippingRates
-    if (!restrictions) {
-      validShippingRates.push(method);
-      return validShippingRates;
+    // Check to see if any restrictions for this method are destination restrictions
+    const destinationRestrictions = methodRestrictions.some((restriction) => restriction.destination !== null);
+
+    // If there are no destination allow restrictions, this method is valid at this point
+    if (!destinationRestrictions) {
+      awaitedValidShippingMethods.push(method);
+      return awaitedValidShippingMethods;
     }
 
-    // If method does have allow list, check for further filtration
-    if (restrictions && restrictions.allow) {
-      const { allow: { destination } } = restrictions;
-
-      // If there is no allow.destination list, add method to validShippingRates
-      // We don't have an allow.attributes list
-      if (!destination) {
-        validShippingRates.push(method);
-        return validShippingRates;
-      }
+    // Loop over each restriction and determine if this method is valid
+    methodRestrictions.forEach((methodRestriction) => {
+      const { destination } = methodRestriction;
 
       // Start checking at the micro-level, and move more macro as we go on
-
       // Check for an allow list of postal codes
       if (destination.postal && destination.postal.includes(hydratedCart.address.postal)) {
-        validShippingRates.push(method);
-        return validShippingRates;
+        awaitedValidShippingMethods.push(method);
+        return awaitedValidShippingMethods;
       }
 
       // Check for an allow list of regions
       if (destination.region && destination.region.includes(hydratedCart.address.region)) {
-        validShippingRates.push(method);
-        return validShippingRates;
+        awaitedValidShippingMethods.push(method);
+        return awaitedValidShippingMethods;
       }
 
       // Check for an allow list of countries
       if (destination.country && destination.country.includes(hydratedCart.address.country)) {
-        validShippingRates.push(method);
-        return validShippingRates;
+        awaitedValidShippingMethods.push(method);
+        return awaitedValidShippingMethods;
       }
-    }
+    });
 
-    // Return validShippingRates reduced array
-    return validShippingRates;
-  }, []);
+    return awaitedValidShippingMethods;
+  }, Promise.resolve([]));
 }
 
 
 /**
  * @summary Filter shipping methods based on per method deny location restrictions
+ * @param {Object} flatRateFulfillmentRestrictionsCollection - restrictions from FlatRateFulfillmentRestrcitionsCollection
  * @param {Object} methods - all available shipping methods to check
  * @param {Object} hydratedCart - hydrated cart for current order
  * @returns {Object|null} available shipping methods after filtering
  */
-function locationDenyCheck(methods, hydratedCart) {
+function locationDenyCheck(flatRateFulfillmentRestrictionsCollection, methods, hydratedCart) {
   // Run remaining available methods through the location deny check
-  return methods.reduce((validShippingRates, method) => {
-  // const allowedMethodsBasedOnShippingLocationsDenyList = allowedMethodsBasedOnShippingLocationsAllowList.reduce((validShippingRates, method) => {
-    const { restrictions } = method;
+  return methods.reduce(async (validShippingMethods, method) => {
+    const awaitedValidShippingMethods = await validShippingMethods;
 
-    // If method does not have deny restrictions, add it to the available methods
-    if (restrictions && !restrictions.deny) {
-      validShippingRates.push(method);
-      return validShippingRates;
+    // Get method specific deny restrictions
+    const methodRestrictions = await flatRateFulfillmentRestrictionsCollection.find({ methodIds: method._id, type: "deny" }).toArray();
+
+    // Check to see if any restrictions for this method are destination restrictions
+    const destinationRestrictions = methodRestrictions.some((restriction) => restriction.destination !== null);
+
+    // If there is no destination deny restriction, this method is valid
+    if (!destinationRestrictions) {
+      awaitedValidShippingMethods.push(method);
+      return awaitedValidShippingMethods;
     }
 
-    // There is a deny object on the shipping method (there always should be at this point)
-    // Check to see if anything matches
-    const { deny: { destination } } = restrictions;
+    // Check each restriction for the method
+    // If any restriction matches hydratedCart data, this method is not valid
+    const denyMethod = methodRestrictions.some((methodRestriction) => {
+      const { destination } = methodRestriction;
+      // If country deny exists, use this
+      if (destination && destination.country && destination.country.includes(hydratedCart.address.country)) {
+        return true;
+      }
 
-    // If country deny exists, use this
-    if (destination && destination.country && destination.country.includes(hydratedCart.address.country)) {
-      return validShippingRates;
+      // If region deny exists, use this if there is no country deny
+      if (destination && destination.region && destination.region.includes(hydratedCart.address.region)) {
+        return true;
+      }
+
+      // If postal code deny exists, use this if there is no country or region deny
+      if (destination && destination.postal && destination.postal.includes(hydratedCart.address.postal)) {
+        return true;
+      }
+
+      return false;
+    });
+
+    // If it passes all the deny restrictions, add it to the list of available methods
+    if (!denyMethod) {
+      awaitedValidShippingMethods.push(method);
     }
 
-    // If region deny exists, use this if there is no country deny
-    if (destination && destination.region && destination.region.includes(hydratedCart.address.region)) {
-      return validShippingRates;
-    }
-
-    // If postal code deny exists, use this if there is no country or region deny
-    if (destination && destination.postal && destination.postal.includes(hydratedCart.address.postal)) {
-      return validShippingRates;
-    }
-
-    // If it passes all the deny restrictions, add add it to the list of available methods
-    validShippingRates.push(method);
-    return validShippingRates;
-  }, []);
+    return awaitedValidShippingMethods;
+  }, Promise.resolve([]));
 }
 
 
 /**
  * @summary Filter shipping methods based on per method restrictions
+ * @param {Object} context - an object containing the per-request state
  * @param {Object} methods - all available shipping methods for a shop
  * @param {Object} hydratedCart - hydrated cart for current order
  * @returns {Object|null} available shipping methods after filtering
  */
-export default function filterShippingMethods(methods, hydratedCart) {
+export default async function filterShippingMethods(context, methods, hydratedCart) {
+  // const flatRateFulfillmentRestrictionsCollection = getFlatRateFulfillmentRestrictionsCollection(context);
+  const flatRateFulfillmentRestrictionsCollection = context.collections.FlatRateFulfillmentRestrictions;
+
   // Check all methods against location allow check
-  const allowedMethodsBasedOnShippingLocationsAllowList = locationAllowCheck(methods, hydratedCart);
+  const allowedMethodsBasedOnShippingLocationsAllowList = await locationAllowCheck(flatRateFulfillmentRestrictionsCollection, methods, hydratedCart);
 
   // Check remaining methods against location deny check
-  const allowedMethodsBasedOnShippingLocationsDenyList = locationDenyCheck(allowedMethodsBasedOnShippingLocationsAllowList, hydratedCart);
+  const allowedMethodsBasedOnShippingLocationsDenyList = await locationDenyCheck(flatRateFulfillmentRestrictionsCollection, allowedMethodsBasedOnShippingLocationsAllowList, hydratedCart);
 
   // Check remaining methods against attribute deny check
-  const availableShippingMethods = attributeDenyCheck(allowedMethodsBasedOnShippingLocationsDenyList, hydratedCart);
+  const availableShippingMethods = await attributeDenyCheck(flatRateFulfillmentRestrictionsCollection, allowedMethodsBasedOnShippingLocationsDenyList, hydratedCart);
 
   // Return all remaining availalbe shipping rates
   return availableShippingMethods;
