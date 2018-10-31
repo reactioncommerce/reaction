@@ -14,7 +14,7 @@ export default async function cartShippingRestricted(context, shippingAttributes
 
   // If there are no universal restrictions, move on to method specific checks
   if (!universalRestrictions) {
-    return true;
+    return false;
   }
 
   const doItemsContainUniversalRestrictions = items.some((item) => { // eslint-disable-line
