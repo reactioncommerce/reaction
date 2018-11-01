@@ -77,24 +77,24 @@ export default async function getFulfillmentMethodsWithQuotes(context, fulfillme
     "provider.enabled": true
   }).toArray();
 
+  const initialNumOfRates = rates.length;
+
   // Get hydrated cart, an object of current order data including item and destination information
   const hydratedCart = await getShippingRestrictionAttributes(context, cartWithSummary, fulfillmentGroup); // TODO: possibly change function name
+  const isCartShippingRestricted = await cartShippingRestricted(context, hydratedCart);
 
-  const initialNumOfRates = rates.length;
-  shippingRateDocs.forEach((doc) => {
-    // Check for universal shipping restrictions
-    // If any apply, all shipping methods are blocked
-    if (cartShippingRestricted(hydratedCart, doc)) {
-      const errorDetails = {
-        requestStatus: "error",
-        shippingProvider: "flat-rate-shipping",
-        message: "Flat rate shipping did not return any shipping methods."
-      };
-      rates.push(errorDetails);
-    } else {
+  if (isCartShippingRestricted) {
+    const errorDetails = {
+      requestStatus: "error",
+      shippingProvider: "flat-rate-shipping",
+      message: "Flat rate shipping did not return any shipping methods."
+    };
+    rates.push(errorDetails);
+  } else {
+    const awaitedShippingRateDocs = shippingRateDocs.map(async (doc) => {
       const carrier = doc.provider.label;
       // Check for method specific shipping restrictions
-      const availableShippingMethods = filterShippingMethods(doc.methods, hydratedCart);
+      const availableShippingMethods = await filterShippingMethods(context, doc.methods, hydratedCart);
       for (const method of availableShippingMethods) {
         if (!method.rate) {
           method.rate = 0;
@@ -117,8 +117,9 @@ export default async function getFulfillmentMethodsWithQuotes(context, fulfillme
           shopId: doc.shopId
         });
       }
-    }
-  });
+    });
+    await Promise.all(awaitedShippingRateDocs);
+  }
 
   if (rates.length === initialNumOfRates) {
     const errorDetails = {
