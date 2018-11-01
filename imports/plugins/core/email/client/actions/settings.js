@@ -72,8 +72,9 @@ export default {
           if (result.value) {
             save();
             resolve(true);
+          } else {
+            resolve(false);
           }
-          resolve(false);
         } else {
           save();
           resolve(true);
