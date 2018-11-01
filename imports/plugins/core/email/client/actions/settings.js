@@ -10,7 +10,7 @@ export default {
    * @param {Function} callback - optional callback
    * @return {Boolean} returns true if all fields provided and update method called
    */
-  saveSettings(settings, callback) {
+  async saveSettings(settings, callback) {
     const { service, host, port, user, password } = settings;
 
     if (!service) {
@@ -55,24 +55,32 @@ export default {
     };
 
     // check if the settings work first
-    Meteor.call("email/verifySettings", settings, (error) => {
-      callback();
-      // if the connection fails
-      if (error) {
-        Alert({
-          title: i18next.t("mail.alerts.connectionFailed"),
-          text: i18next.t("mail.alerts.saveAnyway"),
-          type: "warning",
-          showCancelButton: true,
-          cancelButtonText: i18next.t("app.cancel"),
-          confirmButtonColor: "#DD6B55",
-          confirmButtonText: i18next.t("app.save")
-        }).then(() => save()).catch(() => true);
-      } else {
-        save();
-      }
+    const settingsVerified = await new Promise((resolve) => {
+      Meteor.call("email/verifySettings", settings, async (error) => {
+        callback();
+        // if the connection fails
+        if (error) {
+          const result = await Alert({
+            title: i18next.t("mail.alerts.connectionFailed"),
+            text: i18next.t("mail.alerts.saveAnyway"),
+            type: "warning",
+            showCancelButton: true,
+            cancelButtonText: i18next.t("app.cancel"),
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: i18next.t("app.save")
+          });
+          if (result.value) {
+            save();
+            resolve(true);
+          } else {
+            resolve(false);
+          }
+        } else {
+          save();
+          resolve(true);
+        }
+      });
     });
-
-    return true;
+    return settingsVerified;
   }
 };
