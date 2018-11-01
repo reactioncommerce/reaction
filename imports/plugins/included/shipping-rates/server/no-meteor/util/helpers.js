@@ -1,4 +1,5 @@
 import findVariantInCatalogProduct from "/imports/plugins/core/catalog/server/no-meteor/utils/findVariantInCatalogProduct";
+import _ from "lodash";
 
 /**
  * @name findCatalogProductsAndVariants
@@ -20,7 +21,7 @@ export async function findCatalogProductsAndVariants(collections, orderLineItems
 
   const catalogProductsAndVariants = catalogProductItems.map((catalogProduct) => {
     const { product } = catalogProduct;
-    const orderedVariant = orderLineItems.find((item) => item.productId === product.productId); 
+    const orderedVariant = orderLineItems.find((item) => item.productId === product.productId);
 
     const { parentVariant, variant } = findVariantInCatalogProduct(product, orderedVariant.variantId);
 
@@ -29,7 +30,7 @@ export async function findCatalogProductsAndVariants(collections, orderLineItems
       parentVariant,
       variant
     };
-  }); 
+  });
 
   return catalogProductsAndVariants;
 }
@@ -52,44 +53,33 @@ export function pick(obj, keys) {
  * @param {Object} productAndVariants - The product and its variants
  * @returns {Object} - The merged product and variants
  */
-export function mergeProductAndVariants(productsAndVariants) {
-  const { product, parentVariant, variant } = productsAndVariants;
+export function mergeProductAndVariants(productAndVariants) {
+  const { product, parentVariant, variant } = productAndVariants;
 
   // Filter out unnecessary product props
-  const { 
-    variants, 
-    customAttributes, 
-    media, 
-    metafields, 
-    parcel,
-    pricing, 
-    primaryImage,
-    socialMetadata, 
-    ...productProps 
-  } = product;
-
-  // Filter out unnecessary parent variant props
-  const { 
-    customAttributes: parentVariantCustomAttributes,
-    media: parentVariantMedia,
-    parcel: parentVariantParcel,
-    pricing: parentVariantPricing, 
-    ...parentVariantProps
-  } = parentVariant;
+  const productProps = _.omit(product, [
+    "variants", "media", "metafields", "parcel", "pricing", " primaryImage", "socialMetadata", "customAttributes"
+  ]);
 
   // Filter out unnecessary variant props
-  const { 
-    customAttributes: variantCustomAttributes,
-    media: variantMedia,
-    parcel: variantParcel,
-    pricing: variantPricing, 
-    ...variantProps
-  } = variant;
+  const variantExcludeProps = ["media", "parcel", "pricing", "primaryImage", "customAttributes"];
+  const variantProps = _.omit(variant, variantExcludeProps);
+
+  // If an option has been added to the cart
+  if (parentVariant) {
+    // Filter out unnecessary parent variant props
+    const parentVariantProps = _.omit(parentVariant, variantExcludeProps);
+
+    return {
+      ...productProps,
+      ...parentVariantProps,
+      ...variantProps
+    };
+  }
 
   return {
     ...productProps,
-    ...parentVariant && parentVariantProps,
-    ...variant && variantProps
+    ...variantProps
   };
 }
 
@@ -113,7 +103,7 @@ export async function tagsByIds(collections, catalogProducts) {
   return catalogProducts.map((item) => ({
     productId: item.product.productId,
     tags: item.product.tagIds.map((id) => {
-      foundTag = tags.find((tag) => tag._id === id);
+      const foundTag = tags.find((tag) => tag._id === id);
       return foundTag ? foundTag.name : null;
     })
   }));
