@@ -5,9 +5,10 @@
     "reaction-address": {
       "addressValidation": {
         "addNewItemButtonText": "Add address validation service",
+        "cancelButtonText": "Cancel",
         "countryCodesLabel": "Country filter",
         "countryCodesHelpText": "Use this service only for addresses in these countries",
-        "deleteItemButtonText": "Delete service",
+        "deleteItemButtonText": "Delete",
         "entryFormSubmitButtonText": "Add service",
         "helpText": "Add one or more services to enable address validation for this shop. The first service that matches the country filter will be used.",
         "serviceNameLabel": "Validation service name"

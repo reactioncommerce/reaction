@@ -12,7 +12,9 @@ import ShopAddressValidationSettings from "../components/ShopAddressValidationSe
 const PACKAGE_NAME = "reaction-address";
 
 /**
- *
+ * @returns {Object[]} The list of enabled address validation services
+ *   for the current shop, from package settings, with each item having
+ *   `_id`, `countryCodes`, and `serviceName` props
  */
 function getEnabledAddressValidationServices() {
   // Get plugin settings for the current shop
@@ -23,7 +25,9 @@ function getEnabledAddressValidationServices() {
 }
 
 /**
- *
+ * @param {Object[]} enabledServices Updated `enabledServices` array, to store in
+ *   package settings
+ * @returns {Promise<Object>} Method result
  */
 function updateEnabledServices(enabledServices) {
   return new Promise((resolve, reject) => {
@@ -45,6 +49,7 @@ const handlers = {
     return updateEnabledServices(enabledServices);
   },
   onItemDeleted(id) {
+    console.log("onItemDeleted", id);
     let enabledServices = getEnabledAddressValidationServices();
     enabledServices = enabledServices.filter((item) => item._id !== id);
     return updateEnabledServices(enabledServices);

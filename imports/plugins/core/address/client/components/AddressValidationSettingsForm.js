@@ -45,7 +45,7 @@ export default class AddressValidationSettingsForm extends Component {
 
   uniqueInstanceIdentifier = uniqueId("AddressValidationSettingsForm");
 
-  async submit() {
+  submit() {
     if (this.form) {
       this.form.submit();
     }

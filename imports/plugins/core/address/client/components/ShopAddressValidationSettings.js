@@ -1,7 +1,8 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { i18next } from "/client/api";
-import AccordionFormList from "./AccordionFormList";
+import Button from "@reactioncommerce/components/Button/v1";
+import { SortableTable } from "/imports/plugins/core/ui/client/components";
 import AddressValidationSettingsForm from "./AddressValidationSettingsForm";
 
 export default class ShopAddressValidationSettings extends Component {
@@ -11,7 +12,7 @@ export default class ShopAddressValidationSettings extends Component {
       value: PropTypes.string.isRequired
     })),
     enabledServices: PropTypes.arrayOf(PropTypes.shape({
-      countryCodes: PropTypes.arrayOf(PropTypes.string).isRequired,
+      countryCodes: PropTypes.arrayOf(PropTypes.string),
       serviceDisplayName: PropTypes.string.isRequired,
       serviceName: PropTypes.string.isRequired
     })),
@@ -30,43 +31,86 @@ export default class ShopAddressValidationSettings extends Component {
     serviceOptions: []
   };
 
-  get listItems() {
-    const { countryOptions, enabledServices, onItemEdited, serviceOptions } = this.props;
+  state = {
+    isAdding: false
+  }
 
-    return enabledServices.map((item) => ({
-      detail: item.countryCodes.join(", "),
-      id: item._id,
-      itemEditFormProps: {
-        countryOptions,
-        onSubmit: (doc) => onItemEdited(item._id, doc),
-        serviceOptions,
-        value: item
-      },
-      label: item.serviceDisplayName
-    }));
+  showAddForm = () => {
+    this.setState({ isAdding: true });
+  };
+
+  hideAddForm = () => {
+    this.setState({ isAdding: false });
+  };
+
+  handleAddFormSubmit = (...args) => {
+    const { onItemAdded } = this.props;
+    return onItemAdded(...args)
+      .then((result) => {
+        this.hideAddForm();
+        return result;
+      });
+  };
+
+  handleAddFormSubmitButton = () => {
+    if (this.addForm) {
+      this.addForm.submit();
+    }
+  };
+
+  renderAddForm() {
+    const { countryOptions, serviceOptions } = this.props;
+
+    return (
+      <div>
+        <AddressValidationSettingsForm
+          countryOptions={countryOptions}
+          onSubmit={this.handleAddFormSubmit}
+          ref={(instance) => { this.addForm = instance; }}
+          serviceOptions={serviceOptions}
+        />
+        <Button actionType="secondary" onClick={this.hideAddForm}>{i18next.t("addressValidation.cancelButtonText")}</Button>
+        <Button actionType="important" onClick={this.handleAddFormSubmitButton}>{i18next.t("addressValidation.entryFormSubmitButtonText")}</Button>
+      </div>
+    );
   }
 
   render() {
-    const { countryOptions, onItemAdded, onItemDeleted, serviceOptions } = this.props;
-
-    const itemAddFormProps = {
-      countryOptions,
-      onSubmit: (doc) => onItemAdded(doc),
-      serviceOptions
-    };
+    const { enabledServices, onItemDeleted } = this.props;
+    const { isAdding } = this.state;
 
     return (
       <div className="clearfix">
         <p>{i18next.t("addressValidation.helpText")}</p>
-        <AccordionFormList
-          addNewItemButtonText={i18next.t("addressValidation.addNewItemButtonText")}
-          components={{ ItemAddForm: AddressValidationSettingsForm, ItemEditForm: AddressValidationSettingsForm }}
-          deleteItemButtonText={i18next.t("addressValidation.deleteItemButtonText")}
-          entryFormSubmitButtonText={i18next.t("addressValidation.entryFormSubmitButtonText")}
-          itemAddFormProps={itemAddFormProps}
-          items={this.listItems}
-          onItemDeleted={onItemDeleted}
+        <SortableTable
+          className="-striped -highlight"
+          data={enabledServices}
+          columnMetadata={[
+            {
+              accessor: "serviceDisplayName",
+              Header: "Name"
+            },
+            {
+              accessor: (item) => {
+                const countries = item.countryCodes || [];
+                if (countries.length === 0) return "All";
+                return countries.join(", ");
+              },
+              Header: "Countries",
+              id: "countries"
+            },
+            {
+              Cell: (row) => (
+                <Button actionType="secondaryDanger" isShortHeight onClick={() => { onItemDeleted(row.value._id); }}>
+                  {i18next.t("addressValidation.deleteItemButtonText")}
+                </Button>
+              )
+            }
+          ]}
+          filterType="none"
         />
+        {!isAdding && <Button actionType="important" onClick={this.showAddForm}>{i18next.t("addressValidation.addNewItemButtonText")}</Button>}
+        {!!isAdding && this.renderAddForm()}
       </div>
     );
   }

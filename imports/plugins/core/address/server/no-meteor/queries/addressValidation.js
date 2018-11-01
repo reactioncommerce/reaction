@@ -17,7 +17,7 @@ export default async function addressValidation({ address, shopId }, context) {
   const { collections } = context;
   const { Packages } = collections;
 
-  const plugin = Package.findOne({ name: "reaction-address", shopId });
+  const plugin = Packages.findOne({ name: "reaction-address", shopId });
   if (!plugin) {
     // This would be weird because we're in the "reaction-address" plugin, but you never know
     throw new ReactionError("internal-error", `reaction-address plugin not found for shop with ID ${shopId}`);
