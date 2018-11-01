@@ -1,0 +1,18 @@
+[{
+  "language": "English",
+  "i18n": "en",
+  "ns": "google-webtools",
+  "translation": {
+    "google-webtools": {
+      "admin": {
+        "dashboard": {
+          "siteVerificationToken": "Site Verification Token",
+          "save": "Save Changes"
+        },
+        "alerts": {
+          "siteVerificationTokenSaved": "Google web tools settings saved."
+        }
+      }
+    }
+  }
+}]

@@ -1,0 +1,8 @@
+########################
+## Queries
+########################
+
+extend type Query {
+  "Returns the site verification token to be used in the client"
+  siteVerificationToken: String
+}
