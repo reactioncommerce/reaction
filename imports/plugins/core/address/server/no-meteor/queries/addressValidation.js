@@ -24,7 +24,7 @@ export default async function addressValidation({ address, shopId }, context) {
     throw new ReactionError("internal-error", `reaction-address plugin not found for shop with ID ${shopId}`);
   }
 
-  const validationService = await getAddressValidationService(context, shopId);
+  const validationService = await getAddressValidationService(context, shopId, address.country);
 
   if (!validationService) {
     return {
