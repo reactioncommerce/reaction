@@ -9,11 +9,13 @@ import { Sms } from "/lib/collections";
 Meteor.publish("SmsSettings", function () {
   const shopId = Reaction.getShopId();
   if (!shopId) {
-    Logger.warn("Ignoring null request on Sms Subscription");
+    Logger.info("Ignoring null request on Sms Subscription");
     return this.ready();
   }
 
-  const result = Sms.find({ shopId });
+  if (Reaction.hasPermission(["owner", "admin"], this.userId, shopId)) {
+    return Sms.find({ shopId });
+  }
 
-  return result;
+  return this.ready();
 });

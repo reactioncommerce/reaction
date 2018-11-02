@@ -35,6 +35,11 @@ function transform(doc, userId) {
       registry.permissions = [...permissions];
       if (registry.route) {
         registry.permissions.push(registry.name || `${doc.name}/${registry.template}`);
+
+        // Delete the route if the user doesn't have the correct permissions
+        if (Roles.userIsInRole(userId, registry.permissions, doc.shopId) === false) {
+          delete registry.route;
+        }
       }
       if (doc.settings && doc.settings[registry.settingsKey]) {
         registry.enabled = !!doc.settings[registry.settingsKey].enabled;
