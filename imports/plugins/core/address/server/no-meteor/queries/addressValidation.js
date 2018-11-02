@@ -1,4 +1,5 @@
 import ReactionError from "@reactioncommerce/reaction-error";
+import { getAddressValidationService } from "../registration";
 
 /**
  * @name addressValidation
@@ -23,14 +24,14 @@ export default async function addressValidation({ address, shopId }, context) {
     throw new ReactionError("internal-error", `reaction-address plugin not found for shop with ID ${shopId}`);
   }
 
-  // const addressValidationFunction = context.getNamedFunctionDetails(shop.addressValidationFunctionName);
+  const validationService = await getAddressValidationService(context, shopId);
 
-  if (addressValidationFunctions.length === 0) {
+  if (!validationService) {
     return {
       suggestedAddresses: [],
       validationErrors: []
     };
   }
 
-  return addressValidationFunctions[0]({ address }, context);
+  return validationService.functions.addressValidation({ address, context });
 }

@@ -27,6 +27,7 @@ export default class AddressValidationSettingsForm extends Component {
       label: PropTypes.string.isRequired,
       value: PropTypes.string.isRequired
     })),
+    onChange: PropTypes.func,
     onSubmit: PropTypes.func.isRequired,
     serviceOptions: PropTypes.arrayOf(PropTypes.shape({
       label: PropTypes.string.isRequired,
@@ -52,13 +53,19 @@ export default class AddressValidationSettingsForm extends Component {
   }
 
   render() {
-    const { countryOptions, onSubmit, serviceOptions, validator, value } = this.props;
+    const { countryOptions, onChange, onSubmit, serviceOptions, validator, value } = this.props;
 
     const serviceNameInputId = `serviceName_${this.uniqueInstanceIdentifier}`;
     const countryCodesInputId = `countryCodes_${this.uniqueInstanceIdentifier}`;
 
     return (
-      <Form ref={(formRef) => { this.form = formRef; }} onSubmit={onSubmit} validator={validator} value={value}>
+      <Form
+        onChange={onChange}
+        onSubmit={onSubmit}
+        ref={(formRef) => { this.form = formRef; }}
+        validator={validator}
+        value={value}
+      >
         <Field name="serviceName" label={i18next.t("addressValidation.serviceNameLabel")} labelFor={serviceNameInputId}>
           <Select id={serviceNameInputId} name="serviceName" options={serviceOptions} />
           <ErrorsBlock names={["serviceName"]} />

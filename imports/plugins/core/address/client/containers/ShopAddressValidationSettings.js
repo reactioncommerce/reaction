@@ -1,4 +1,4 @@
-import { get } from "lodash";
+import { get, sortBy } from "lodash";
 import { compose, withProps } from "recompose";
 import { registerComponent, composeWithTracker } from "@reactioncommerce/reaction-components";
 import Random from "@reactioncommerce/random";
@@ -8,20 +8,21 @@ import { Countries } from "/client/collections";
 import Logger from "/client/modules/logger";
 import { Packages } from "/lib/collections";
 import ShopAddressValidationSettings from "../components/ShopAddressValidationSettings";
+import withAddressValidationServices from "../hoc/withAddressValidationServices";
 
 const PACKAGE_NAME = "reaction-address";
 
 /**
  * @returns {Object[]} The list of enabled address validation services
  *   for the current shop, from package settings, with each item having
- *   `_id`, `countryCodes`, and `serviceName` props
+ *   `_id`, `createdAt`, `countryCodes`, and `serviceName` props
  */
 function getEnabledAddressValidationServices() {
   // Get plugin settings for the current shop
   const plugin = Packages.findOne({ name: PACKAGE_NAME, shopId: Reaction.getShopId() });
   if (!plugin) return [];
 
-  return get(plugin, "settings.addressValidation.enabledServices", []);
+  return sortBy(get(plugin, "settings.addressValidation.enabledServices", []), "createdAt");
 }
 
 /**
@@ -45,11 +46,10 @@ function updateEnabledServices(enabledServices) {
 const handlers = {
   onItemAdded(doc) {
     const enabledServices = getEnabledAddressValidationServices();
-    enabledServices.push({ ...doc, _id: Random.id() });
+    enabledServices.push({ ...doc, _id: Random.id(), createdAt: new Date() });
     return updateEnabledServices(enabledServices);
   },
   onItemDeleted(id) {
-    console.log("onItemDeleted", id);
     let enabledServices = getEnabledAddressValidationServices();
     enabledServices = enabledServices.filter((item) => item._id !== id);
     return updateEnabledServices(enabledServices);
@@ -65,12 +65,23 @@ const handlers = {
 };
 
 const composer = (props, onData) => {
+  const { addressValidationServices } = props;
+
   let enabledServices = getEnabledAddressValidationServices();
 
   // Add serviceDisplayName to each item
   if (Array.isArray(enabledServices)) {
     enabledServices = enabledServices.map((item) => {
-      const serviceDisplayName = "TODO Get Names";
+      const serviceDefinition = (addressValidationServices || []).find(({ name }) => name === item.serviceName);
+
+      let serviceDisplayName;
+      if (serviceDefinition) {
+        serviceDisplayName = serviceDefinition.displayName;
+      } else {
+        // There could be services enabled that have since had their plugins removed
+        serviceDisplayName = item.serviceName;
+      }
+
       return {
         serviceDisplayName,
         ...item
@@ -79,21 +90,20 @@ const composer = (props, onData) => {
   }
 
   onData(null, {
+    addressValidationServices,
     enabledServices,
-    countryOptions: Countries.find().fetch(),
-    serviceOptions: [{
-      label: "Test",
-      value: "test"
-    }]
+    countryOptions: Countries.find().fetch()
   });
 };
 
 registerComponent("ShopAddressValidationSettings", ShopAddressValidationSettings, [
   withProps(handlers),
+  withAddressValidationServices,
   composeWithTracker(composer)
 ]);
 
 export default compose(
   withProps(handlers),
+  withAddressValidationServices,
   composeWithTracker(composer)
 )(ShopAddressValidationSettings);

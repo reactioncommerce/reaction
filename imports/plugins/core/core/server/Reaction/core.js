@@ -40,6 +40,15 @@ export default {
   ...AbsoluteUrlMixin,
 
   init() {
+    const registerPluginHandlerFuncs = functionsByType.registerPluginHandler || [];
+    const packageInfoArray = Object.values(this.Packages);
+    registerPluginHandlerFuncs.forEach((registerPluginHandlerFunc) => {
+      if (typeof registerPluginHandlerFunc !== "function") {
+        throw new Error('A plugin registered a function of type "registerPluginHandler" which is not actually a function');
+      }
+      packageInfoArray.forEach(registerPluginHandlerFunc);
+    });
+
     // run beforeCoreInit hooks
     Hooks.Events.run("beforeCoreInit");
 

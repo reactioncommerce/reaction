@@ -7,6 +7,11 @@ import AddressValidationSettingsForm from "./AddressValidationSettingsForm";
 
 export default class ShopAddressValidationSettings extends Component {
   static propTypes = {
+    addressValidationServices: PropTypes.arrayOf(PropTypes.shape({
+      displayName: PropTypes.string.isRequired,
+      name: PropTypes.string.isRequired,
+      supportedCountryCodes: PropTypes.arrayOf(PropTypes.string)
+    })),
     countryOptions: PropTypes.arrayOf(PropTypes.shape({
       label: PropTypes.string.isRequired,
       value: PropTypes.string.isRequired
@@ -18,21 +23,18 @@ export default class ShopAddressValidationSettings extends Component {
     })),
     onItemAdded: PropTypes.func.isRequired,
     onItemDeleted: PropTypes.func.isRequired,
-    onItemEdited: PropTypes.func.isRequired,
-    serviceOptions: PropTypes.arrayOf(PropTypes.shape({
-      label: PropTypes.string.isRequired,
-      value: PropTypes.string.isRequired
-    }))
+    onItemEdited: PropTypes.func.isRequired
   };
 
   static defaultProps = {
+    addressValidationServices: [],
     countryOptions: [],
-    enabledServices: [],
-    serviceOptions: []
+    enabledServices: []
   };
 
   state = {
-    isAdding: false
+    isAdding: false,
+    selectedServiceNameInAddForm: null
   }
 
   showAddForm = () => {
@@ -58,19 +60,50 @@ export default class ShopAddressValidationSettings extends Component {
     }
   };
 
-  renderAddForm() {
-    const { countryOptions, serviceOptions } = this.props;
+  handleAddFormChange = (doc) => {
+    this.setState({ selectedServiceNameInAddForm: doc.serviceName });
+  };
 
+  get serviceOptions() {
+    const { addressValidationServices } = this.props;
+
+    return (addressValidationServices || []).map((addressValidationService) => ({
+      label: addressValidationService.displayName,
+      value: addressValidationService.name
+    }));
+  }
+
+  get supportedCountryOptions() {
+    const { addressValidationServices, countryOptions } = this.props;
+    const { selectedServiceNameInAddForm } = this.state;
+
+    // Don't show any countries in the list until they've selected a service
+    if (!selectedServiceNameInAddForm) return [];
+
+    const selectedService = (addressValidationServices || []).find((service) =>
+      service.name === selectedServiceNameInAddForm);
+
+    if (!selectedService || !Array.isArray(selectedService.supportedCountryCodes)) return countryOptions;
+
+    return countryOptions.filter(({ value }) => selectedService.supportedCountryCodes.includes(value));
+  }
+
+  renderAddForm() {
     return (
       <div>
         <AddressValidationSettingsForm
-          countryOptions={countryOptions}
+          countryOptions={this.supportedCountryOptions}
+          onChange={this.handleAddFormChange}
           onSubmit={this.handleAddFormSubmit}
           ref={(instance) => { this.addForm = instance; }}
-          serviceOptions={serviceOptions}
+          serviceOptions={this.serviceOptions}
         />
-        <Button actionType="secondary" onClick={this.hideAddForm}>{i18next.t("addressValidation.cancelButtonText")}</Button>
-        <Button actionType="important" onClick={this.handleAddFormSubmitButton}>{i18next.t("addressValidation.entryFormSubmitButtonText")}</Button>
+        <div style={{ display: "flex", justifyContent: "flex-end" }}>
+          <Button actionType="secondary" onClick={this.hideAddForm}>{i18next.t("addressValidation.cancelButtonText")}</Button>
+          <div style={{ marginLeft: 14 }}>
+            <Button actionType="important" onClick={this.handleAddFormSubmitButton}>{i18next.t("addressValidation.entryFormSubmitButtonText")}</Button>
+          </div>
+        </div>
       </div>
     );
   }
@@ -100,8 +133,9 @@ export default class ShopAddressValidationSettings extends Component {
               id: "countries"
             },
             {
+              accessor: "_id",
               Cell: (row) => (
-                <Button actionType="secondaryDanger" isShortHeight onClick={() => { onItemDeleted(row.value._id); }}>
+                <Button actionType="secondaryDanger" isShortHeight onClick={() => { onItemDeleted(row.value); }}>
                   {i18next.t("addressValidation.deleteItemButtonText")}
                 </Button>
               )
@@ -109,7 +143,7 @@ export default class ShopAddressValidationSettings extends Component {
           ]}
           filterType="none"
         />
-        {!isAdding && <Button actionType="important" onClick={this.showAddForm}>{i18next.t("addressValidation.addNewItemButtonText")}</Button>}
+        {!isAdding && <Button actionType="important" isFullWidth onClick={this.showAddForm}>{i18next.t("addressValidation.addNewItemButtonText")}</Button>}
         {!!isAdding && this.renderAddForm()}
       </div>
     );

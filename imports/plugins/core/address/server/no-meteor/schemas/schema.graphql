@@ -1,5 +1,25 @@
 extend type Query {
+  """
+  Get a list of errors and suggested properly formatted addresses for an address. If no address
+  validation service is active for the shop, this will return as if the address is valid even
+  though no check actually occurred.
+  """
   addressValidation(address: AddressInput!, shopId: ID!): AddressValidationResults!
+
+  "Get a full list of all registered address validation services"
+  addressValidationServices: [AddressValidationService]!
+}
+
+"A single registered address validation service"
+type AddressValidationService {
+  "Human-readable name to show operators"
+  displayName: String!
+
+  "Unique name to serve as a key identifying this service"
+  name: String!
+
+  "An optional list of all country codes that this address service supports. Null means all countries."
+  supportedCountryCodes: [String]
 }
 
 "A list of the possible types of `Address`"
