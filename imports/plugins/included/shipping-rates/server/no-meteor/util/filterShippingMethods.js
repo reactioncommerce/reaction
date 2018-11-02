@@ -11,18 +11,36 @@ import { locationDenyCheck } from "./locationDenyCheck";
  * @returns {Object|null} available shipping methods after filtering
  */
 export default async function filterShippingMethods(context, methods, hydratedCart) {
-  // const flatRateFulfillmentRestrictionsCollection = getFlatRateFulfillmentRestrictionsCollection(context);
   const flatRateFulfillmentRestrictionsCollection = context.collections.FlatRateFulfillmentRestrictions;
 
-  // Check all methods against location allow check
-  const allowedMethodsBasedOnShippingLocationsAllowList = await locationAllowCheck(flatRateFulfillmentRestrictionsCollection, methods, hydratedCart);
+  const allValidShippingMethods = methods.reduce(async (validShippingMethods, method) => {
+    const awaitedValidShippingMethods = await validShippingMethods;
 
-  // Check remaining methods against location deny check
-  const allowedMethodsBasedOnShippingLocationsDenyList = await locationDenyCheck(flatRateFulfillmentRestrictionsCollection, allowedMethodsBasedOnShippingLocationsAllowList, hydratedCart);
+    // If method is not enabled, it is not valid
+    if (!method.enabled) {
+      return awaitedValidShippingMethods;
+    }
 
-  // Check remaining methods against attribute deny check
-  const availableShippingMethods = await attributeDenyCheck(flatRateFulfillmentRestrictionsCollection, allowedMethodsBasedOnShippingLocationsDenyList, hydratedCart);
+    // Find all restrictions for this shipping method
+    const methodRestrictions = await flatRateFulfillmentRestrictionsCollection.find({ methodIds: method._id }).toArray();
 
-  // Return all remaining available shipping rates
-  return availableShippingMethods;
+    // Check method against location allow check
+    const allowedMethodBasedOnShippingLocationsAllowList = await locationAllowCheck(methodRestrictions, method, hydratedCart);
+
+    // Check method against location deny check
+    const allowedMethodsBasedOnShippingLocationsDenyList = await locationDenyCheck(methodRestrictions, method, hydratedCart);
+
+    // Check method against attributes deny check
+    const allowedMethodsBasedOnShippingAttributesDenyList = await attributeDenyCheck(methodRestrictions, method, hydratedCart);
+
+    // If method passes all checks, it is valid and should be added to valid methods array
+    if (allowedMethodBasedOnShippingLocationsAllowList && allowedMethodsBasedOnShippingLocationsDenyList && allowedMethodsBasedOnShippingAttributesDenyList) {
+      awaitedValidShippingMethods.push(method);
+    }
+
+    return awaitedValidShippingMethods;
+  }, Promise.resolve([]));
+
+  // Return all valid shipping rates
+  return allValidShippingMethods;
 }

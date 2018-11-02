@@ -1,69 +1,67 @@
 import { operators, propertyTypes } from "./helpers";
 
+
 /**
- * @summary Filter shipping methods based on per method attribute restrictions
- * @param {Object} flatRateFulfillmentRestrictionsCollection - restrictions from FlatRateFulfillmentRestrcitionsCollection
- * @param {Object} methods - all available shipping methods to check
+ * @summary Filter shipping methods based on per method allow location restrictions
+ * @param {Object} methodRestrictions - method restrictions from FlatRateFulfillmentRestrcitionsCollection
+ * @param {Object} method - current method to check restrcictions against
  * @param {Object} hydratedCart - hydrated cart for current order
- * @returns {Object|null} available shipping methods after filtering
+ * @returns {Bool} true / false as to whether method is still valid after this check
  */
-export async function attributeDenyCheck(flatRateFulfillmentRestrictionsCollection, methods, hydratedCart) {
-  return methods.reduce(async (validShippingMethods, method) => {
-    const awaitedValidShippingMethods = await validShippingMethods;
-    const { items } = hydratedCart;
+export async function attributeDenyCheck(methodRestrictions, method, hydratedCart) {
+  // Get method specific allow restrictions
+  const denyRestrictions = methodRestrictions.filter((methodRestriction) => methodRestriction.type === "deny");
 
-    // Get method specific allow restrictions
-    const methodRestrictions = await flatRateFulfillmentRestrictionsCollection.find({ methodIds: method._id, type: "deny" }).toArray();
+  // Check to see if any restrictions for this method are attributes restrictions
+  const attributesRestrictions = denyRestrictions.some((restriction) => restriction.attributes !== null);
 
-    // Check to see if any restrictions for this method are destination restrictions
-    const attributeRestrictions = methodRestrictions.some((restriction) => restriction.attributes && restriction.attributes.length);
+  // If there are no attributes deny restrictions, this method is valid at this point
+  if (!attributesRestrictions) {
+    return true;
+  }
 
-    // If there are no destination allow restrictions, this method is valid at this point
-    if (!attributeRestrictions) {
-      awaitedValidShippingMethods.push(method);
-      return awaitedValidShippingMethods;
-    }
+  const { items } = hydratedCart;
 
-    const denyMethod = items.some((item) => {
-      // For each item, run through the restrictions
-      return methodRestrictions.some((methodRestriction) => {
-        const { attributes, destination } = methodRestriction;
-        return attributes.some((attribute) => {
-          const attributeFound = operators[attribute.operator](item[attribute.property], propertyTypes[attribute.propertyType](attribute.value));
+  const denyMethod = items.some((item) => { // eslint-disable-line
+    // For each item, run through the restrictions
+    return methodRestrictions.some((methodRestriction) => {
+      const { attributes, destination } = methodRestriction;
 
-          if (attributeFound) {
-            // If there is no destination restriction, destination restriction is global
-            // Return true to restrict this method
-            if (!destination) return attributeFound;
+      // If there is no destination restriction on this method, it is valid at this point
+      if (!attributes) {
+        return false;
+      }
 
-            const { country: restrictionCountry, postal: restrictionPostal, region: restrictionRegion } = destination;
+      return attributes.some((attribute) => {
+        const attributeFound = operators[attribute.operator](item[attribute.property], propertyTypes[attribute.propertyType](attribute.value));
 
-            if (restrictionPostal && restrictionPostal.includes(hydratedCart.address.postal)) {
-              return true;
-            }
+        if (attributeFound) {
+          // If there is no destination restriction, destination restriction is global
+          // Return true to restrict this method
+          if (!destination) return attributeFound;
 
-            // Check for an allow list of regions
-            if (restrictionRegion && restrictionRegion.includes(hydratedCart.address.region)) {
-              return true;
-            }
+          const { country: restrictionCountry, postal: restrictionPostal, region: restrictionRegion } = destination;
 
-            // Check for an allow list of countries
-            if (restrictionCountry && restrictionCountry.includes(hydratedCart.address.country)) {
-              return true;
-            }
+          if (restrictionPostal && restrictionPostal.includes(hydratedCart.address.postal)) {
+            return true;
           }
 
-          // If shipping location does not match restricted location && attribute, method is not restricted
-          return false;
-        });
+          // Check for an allow list of regions
+          if (restrictionRegion && restrictionRegion.includes(hydratedCart.address.region)) {
+            return true;
+          }
+
+          // Check for an allow list of countries
+          if (restrictionCountry && restrictionCountry.includes(hydratedCart.address.country)) {
+            return true;
+          }
+        }
+
+        // If shipping location does not match restricted location && attribute, method is not restricted
+        return false;
       });
     });
+  });
 
-    // If it passes all the deny restrictions, add it to the list of available methods
-    if (!denyMethod) {
-      awaitedValidShippingMethods.push(method);
-    }
-
-    return awaitedValidShippingMethods;
-  }, Promise.resolve([]));
+  return !denyMethod;
 }
