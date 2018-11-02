@@ -5,6 +5,7 @@ import { Form } from "reacto-form";
 import { i18next } from "/client/api";
 import ErrorsBlock from "@reactioncommerce/components/ErrorsBlock/v1";
 import Field from "@reactioncommerce/components/Field/v1";
+import MultiSelect from "@reactioncommerce/components/MultiSelect/v1";
 import Select from "@reactioncommerce/components/Select/v1";
 
 /**
@@ -77,7 +78,7 @@ export default class AddressValidationSettingsForm extends Component {
           labelFor={countryCodesInputId}
           name="countryCodes"
         >
-          <Select id={countryCodesInputId} isMulti name="countryCodes" options={countryOptions} />
+          <MultiSelect id={countryCodesInputId} name="countryCodes" options={countryOptions} />
           <ErrorsBlock names={["countryCodes"]} />
         </Field>
       </Form>
