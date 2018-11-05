@@ -321,6 +321,50 @@ test("allow method - do not allow shipping of `Restricted Vendor` to 10001, all 
   expect(allowedMethods).toEqual(mockShippingMethod);
 });
 
+test("allow method - multiple attributes but only 1 meets criteria to deny", async () => {
+  const mockMethodRestrictions = [
+    {
+      _id: "allow001",
+      methodIds: [
+        "stviZaLdqRvTKW6J5"
+      ],
+      type: "allow",
+      destination: {
+        country: [
+          "US"
+        ]
+      }
+    },
+    {
+      _id: "deny001",
+      methodIds: [
+        "stviZaLdqRvTKW6J5"
+      ],
+      type: "deny",
+      attributes: [
+        {
+          property: "total",
+          value: 500,
+          propertyType: "int",
+          operator: "lt"
+        },
+        {
+          property: "weight",
+          value: 40,
+          propertyType: "int",
+          operator: "gt"
+        }
+      ]
+    }
+  ];
+
+  mockContext.collections.FlatRateFulfillmentRestrictions.toArray.mockReturnValue(Promise.resolve(mockMethodRestrictions));
+
+  const allowedMethods = await filterShippingMethods(mockContext, mockShippingMethod, mockHydratedCart);
+
+  expect(allowedMethods).toEqual(mockShippingMethod);
+});
+
 
 /*
  * Tests with location restrictions AND attribute restrictions that deny method
@@ -376,7 +420,11 @@ test("deny method - do not allow shipping of `Restricted Vendor` to California, 
         "stviZaLdqRvTKW6J5"
       ],
       type: "allow",
-      destination: {}
+      destination: {
+        country: [
+          "US"
+        ]
+      }
     },
     {
       _id: "deny001",
@@ -417,7 +465,11 @@ test("deny method - do not allow shipping of `Restricted Vendor` to 90405, all o
         "stviZaLdqRvTKW6J5"
       ],
       type: "allow",
-      destination: {}
+      destination: {
+        country: [
+          "US"
+        ]
+      }
     },
     {
       _id: "deny001",
@@ -493,7 +545,11 @@ test("deny method - region on deny list, no item restrictions", async () => {
         "stviZaLdqRvTKW6J5"
       ],
       type: "allow",
-      destination: {}
+      destination: {
+        country: [
+          "US"
+        ]
+      }
     },
     {
       _id: "deny001",
@@ -526,7 +582,11 @@ test("deny method - postal on deny list, no item restrictions", async () => {
         "stviZaLdqRvTKW6J5"
       ],
       type: "allow",
-      destination: {}
+      destination: {
+        country: [
+          "US"
+        ]
+      }
     },
     {
       _id: "deny001",
@@ -560,7 +620,11 @@ test("deny method - vendor on deny list", async () => {
         "stviZaLdqRvTKW6J5"
       ],
       type: "allow",
-      destination: {}
+      destination: {
+        country: [
+          "US"
+        ]
+      }
     },
     {
       _id: "deny001",
@@ -594,7 +658,11 @@ test("deny method - item weight is too high", async () => {
         "stviZaLdqRvTKW6J5"
       ],
       type: "allow",
-      destination: {}
+      destination: {
+        country: [
+          "US"
+        ]
+      }
     },
     {
       _id: "deny001",
@@ -605,7 +673,7 @@ test("deny method - item weight is too high", async () => {
       attributes: [
         {
           property: "weight",
-          value: 50,
+          value: 40,
           propertyType: "int",
           operator: "gt"
         }
@@ -628,7 +696,11 @@ test("deny method - cart total is less than $900", async () => {
         "stviZaLdqRvTKW6J5"
       ],
       type: "allow",
-      destination: {}
+      destination: {
+        country: [
+          "US"
+        ]
+      }
     },
     {
       _id: "deny001",
@@ -642,6 +714,50 @@ test("deny method - cart total is less than $900", async () => {
           value: 900,
           propertyType: "int",
           operator: "lt"
+        }
+      ]
+    }
+  ];
+
+  mockContext.collections.FlatRateFulfillmentRestrictions.toArray.mockReturnValue(Promise.resolve(mockMethodRestrictions));
+
+  const allowedMethods = await filterShippingMethods(mockContext, mockShippingMethod, mockHydratedCart);
+
+  expect(allowedMethods).toEqual([]);
+});
+
+test("deny method - multiple attributes - cart total is less than $900 AND item weight is too high", async () => {
+  const mockMethodRestrictions = [
+    {
+      _id: "allow001",
+      methodIds: [
+        "stviZaLdqRvTKW6J5"
+      ],
+      type: "allow",
+      destination: {
+        country: [
+          "US"
+        ]
+      }
+    },
+    {
+      _id: "deny001",
+      methodIds: [
+        "stviZaLdqRvTKW6J5"
+      ],
+      type: "deny",
+      attributes: [
+        {
+          property: "total",
+          value: 900,
+          propertyType: "int",
+          operator: "lt"
+        },
+        {
+          property: "weight",
+          value: 40,
+          propertyType: "int",
+          operator: "gt"
         }
       ]
     }
