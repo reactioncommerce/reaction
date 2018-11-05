@@ -2,6 +2,7 @@ import Reaction from "/imports/plugins/core/core/server/Reaction";
 import getFulfillmentMethodsWithQuotes from "./server/no-meteor/getFulfillmentMethodsWithQuotes";
 import resolvers from "./server/no-meteor/resolvers";
 import mutations from "./server/no-meteor/mutations";
+import queries from "./server/no-meteor/queries";
 import schemas from "./server/no-meteor/schemas";
 import startup from "./server/no-meteor/startup";
 
@@ -15,6 +16,7 @@ Reaction.registerPackage({
     schemas
   },
   mutations,
+  queries,
   functionsByType: {
     getFulfillmentMethodsWithQuotes: [getFulfillmentMethodsWithQuotes],
     startup: [startup]
