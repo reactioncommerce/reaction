@@ -55,7 +55,7 @@ export default async function addressValidation({ address }) {
 ```
 
 ### Registering an address validation plugin.
-To register your custom plugin to Reaction's plugin system you need to create a `register.js` file in your plugin's root directory and pass the plugin configuration to `Reaction.registerPackage`. Within this config you'll also need to set an `addressValidationServices` property that will make your address validation service avalible to Reaction's address system.
+To register your custom plugin to Reaction's plugin system you need to create a `register.js` file in your plugin's root directory and pass the plugin configuration to `Reaction.registerPackage`. Within this config you'll also need to set an `addressValidationServices` property that will make your address validation service available to Reaction's address system.
 
 Exmaple plugin registration:
 ```js
@@ -90,4 +90,4 @@ Reaction.registerPackage({
 The `addressValidationServices` property is key to making your plugin avalible to Reaction's address system, once this step is completed you can restart Reaction, enable your validation service from the Shop operator panel and start testing your service via the `addressValidation` GQL query.
 
 ## Using this plugin to build address validation UI
-We wanted to provide a way for developers to build address validation UI using the `addressValidation` query without havig to choose, configure and write a validation serivce plugin. Then running Reaction locally or in `development` mode the Address Validation Test plugin will become avalible within the operators Shop panel. Once this test plugin is enabled all addresses execpt those with postal codes begining with "9" will return some sort of validation results/errors. The amount of `suggestedAddresses` that get returned is based on the first number of the postal code (e.g, "10234" = 1 suggested address, "20234" = 2 suggested address, etc). Similarly the `validationErrors` will return an amount based of the second number of the postal code (e.g., "10234" = 1 validation error, "11234" = 2 validation errors, etc).
+We wanted to provide a way for developers to build address validation UI using the `addressValidation` query without havig to choose, configure and write a validation serivce plugin. Then running Reaction locally or in `development` mode the Address Validation Test plugin will become available within the operators Shop panel. Once this test plugin is enabled all addresses execpt those with postal codes begining with "9" will return some sort of validation results/errors. The amount of `suggestedAddresses` that get returned is based on the first number of the postal code (e.g, "10234" = 1 suggested address, "20234" = 2 suggested address, etc). Similarly the `validationErrors` will return an amount based of the second number of the postal code (e.g., "10234" = 1 validation error, "11234" = 2 validation errors, etc).
