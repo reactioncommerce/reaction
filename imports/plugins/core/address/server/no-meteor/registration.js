@@ -7,10 +7,16 @@ export const addressValidationServices = {};
  * @param {Object} options The options object that the plugin passed to registerPackage
  * @returns {undefined}
  */
-export function registerPluginHandler({ name: pluginName, addressValidationServices: pluginAddressValidationServices }) {
+export function registerPluginHandler({
+  name: pluginName,
+  addressValidationServices: pluginAddressValidationServices
+}) {
   if (Array.isArray(pluginAddressValidationServices)) {
     for (const pluginAddressValidationService of pluginAddressValidationServices) {
-      addressValidationServices[pluginAddressValidationService.name] = { ...pluginAddressValidationService, pluginName };
+      addressValidationServices[pluginAddressValidationService.name] = {
+        ...pluginAddressValidationService,
+        pluginName
+      };
     }
   }
 }
@@ -36,7 +42,16 @@ export async function getEnabledAddressValidationServicesForShop(context, shopId
  */
 export async function getAddressValidationService(context, shopId, countryCode) {
   const services = await getEnabledAddressValidationServicesForShop(context, shopId);
-
-  return services.find((service) =>
-    !Array.isArray(service.countryCodes) || service.countryCodes.includes(countryCode));
+  const supportedServices = services.filter((ser) => {
+    const registeredService = addressValidationServices[ser.serviceName];
+    return (
+      !Array.isArray(registeredService.supportedCountryCodes) ||
+      registeredService.supportedCountryCodes.includes(countryCode)
+    );
+  });
+  const foundService = supportedServices.find(
+    (service) => !Array.isArray(service.countryCodes) || service.countryCodes.includes(countryCode)
+  );
+  if (!foundService) return null;
+  return addressValidationServices[foundService.serviceName];
 }
