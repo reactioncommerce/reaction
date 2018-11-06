@@ -109,7 +109,7 @@ export default class ShopAddressValidationSettings extends Component {
   }
 
   render() {
-    const { enabledServices, onItemDeleted } = this.props;
+    const { addressValidationServices, enabledServices, onItemDeleted } = this.props;
     const { isAdding } = this.state;
 
     return (
@@ -126,7 +126,11 @@ export default class ShopAddressValidationSettings extends Component {
             {
               accessor: (item) => {
                 const countries = item.countryCodes || [];
-                if (countries.length === 0) return "All";
+                if (countries.length === 0) {
+                  const selectedService = (addressValidationServices || []).find((service) => service.name === item.serviceName);
+                  if (selectedService && selectedService.supportedCountryCodes) return selectedService.supportedCountryCodes.join(", ");
+                  return "All";
+                }
                 return countries.join(", ");
               },
               Header: "Countries",
