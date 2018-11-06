@@ -49,9 +49,7 @@ export async function getAddressValidationService(context, shopId, countryCode) 
       registeredService.supportedCountryCodes.includes(countryCode)
     );
   });
-  const foundService = supportedServices.find(
-    (service) => !Array.isArray(service.countryCodes) || service.countryCodes.includes(countryCode)
-  );
+  const foundService = supportedServices.find((service) => !Array.isArray(service.countryCodes) || service.countryCodes.includes(countryCode));
   if (!foundService) return null;
   return addressValidationServices[foundService.serviceName];
 }
