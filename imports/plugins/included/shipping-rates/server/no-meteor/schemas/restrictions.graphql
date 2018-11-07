@@ -25,12 +25,23 @@ enum FlatRateFulfillmentRestrictionSortByField {
 
 
 ####
-# Query
+# Queries
 ####
 extend type Query {
   "Get the full list of flat rate fulfillment method restrictions."
   getFlatRateFulfillmentRestrictions(
     shopId: ID!
+    after: ConnectionCursor,
+    before: ConnectionCursor,
+    first: ConnectionLimitInt,
+    last: ConnectionLimitInt,
+    sortOrder: SortOrder = desc,
+    sortBy: FlatRateFulfillmentRestrictionSortByField = createdAt
+  ): FlatRateFulfillmentRestrictionConnection!
+
+  getFlatRateFulfillmentRestriction(
+    shopId: ID!
+    restrictionId: ID!
     after: ConnectionCursor,
     before: ConnectionCursor,
     first: ConnectionLimitInt,
