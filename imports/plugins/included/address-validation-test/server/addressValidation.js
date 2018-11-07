@@ -1,10 +1,10 @@
 import faker from "faker";
 
 /**
- * @file addressValidation - The porpuse of this methods is only to create a
+ * @file addressValidation - The purpose of this methods is only to create a
  * variety of `AddressValidationResults` and not doing any actual address validation.
  * Using the provided `address.postal` code we return several different types of validation results
- * `address.postal` codes begining with "9" will always return as valid.
+ * `address.postal` codes beginning with "9" will always return as valid.
  * @namespace AddressValidationTest
  */
 
@@ -15,15 +15,16 @@ import faker from "faker";
 const fakeValidationErrors = [
   {
     summary: "The address is not deliverable.",
-    details:
-      "The physical location exists but there are no homes on this street. One reason might be railroad tracks or rivers running alongside this street, as they would prevent construction of homes in this location.",
+    details: "The physical location exists but there are no homes on this street. One reason might be " +
+      "railroad tracks or rivers running alongside this street, as they would prevent construction of " +
+      "homes in this location.",
     type: "error",
     source: "Validation.Taxes.Services.Address"
   },
   {
     summary: "Address Not Found",
-    details:
-      "The address as submitted could not be found. Please check for excessive abbreviations in the street address line or in the City name.",
+    details: "The address as submitted could not be found. Please check for excessive abbreviations in " +
+      "the street address line or in the City name.",
     source: "USPS",
     type: "error"
   },
@@ -41,8 +42,8 @@ const fakeValidationErrors = [
   },
   {
     summary: "Address correction",
-    details:
-      "Please use request address section from Address validation service response. It will have standardized address (like 9 digit zip code)",
+    details: "Please use request address section from Address validation service response. " +
+      "It will have standardized address (like 9 digit zip code)",
     source: "Radial",
     type: "error"
   }
@@ -54,7 +55,7 @@ const fakeValidationErrors = [
  */
 const fakeAddresses = [];
 // creating 8 fake addresses
-for (let i = 0; i < 9; i += 1) {
+for (let index = 0; index < 9; index += 1) {
   const randNum = Math.floor(Math.random() * 100 + 1);
   fakeAddresses.push({
     address1: faker.address.streetAddress(),
