@@ -477,16 +477,15 @@ export default {
    * @summary Get a user's shop ID, as stored in preferences
    * @todo This should intelligently find the correct default shop Probably whatever the main shop is or marketplace
    * @param {String} userId (probably logged in userId)
-   * @return {StringId} active shop ID
+   * @return {String} active shop ID
    */
   getUserShopId(userId) {
     check(userId, String);
 
-    return this.getUserPreferences({
-      userId,
-      packageName: "reaction",
-      preference: "activeShopId"
-    });
+    const user = AccountsCollection.findOne({ _id: userId });
+    if (!user) return null;
+
+    return _.get(user, "profile.preferences.reaction.activeShopId");
   },
 
   /**
@@ -657,19 +656,6 @@ export default {
   },
 
   /**
-   * @summary Takes options in the form of a query object. Returns a package that matches.
-   * @method
-   * @memberof Core
-   * @name getPackageSettingsWithOptions
-   * @param  {object} options Options object, forms the query for Packages.findOne
-   * @return {object} Returns the first package found with the provided options
-   */
-  getPackageSettingsWithOptions(options) {
-    const query = options;
-    return Packages.findOne(query);
-  },
-
-  /**
    * @name getMarketplaceSettings
    * @method
    * @memberof Core
@@ -688,31 +674,6 @@ export default {
       return marketplace.settings;
     }
     return {};
-  },
-
-  /**
-   * @name getUserPreferences
-   * @method
-   * @memberof Core
-   * @param  {Object} options {packageName, preference, defaultValue}
-   * @return {String|undefined} User's package preference or undefined
-   */
-  getUserPreferences(options) {
-    const { userId, packageName, preference, defaultValue } = options;
-
-    if (!userId) {
-      return undefined;
-    }
-
-    const user = AccountsCollection.findOne({ _id: userId });
-
-    if (user) {
-      const { profile } = user;
-      if (profile && profile.preferences && profile.preferences[packageName] && profile.preferences[packageName][preference]) {
-        return profile.preferences[packageName][preference];
-      }
-    }
-    return defaultValue || undefined;
   },
 
   /**
