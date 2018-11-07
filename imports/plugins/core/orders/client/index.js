@@ -1,5 +1,6 @@
-import { registerOperatorRoute } from "/imports/client/ui";
 import Inbox from "@material-ui/icons/Inbox";
+
+import { registerOperatorRoute } from "/imports/client/ui";
 import Orders from "./containers/orderDashboardContainer";
 import "./helpers";
 

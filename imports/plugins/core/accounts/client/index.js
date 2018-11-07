@@ -1,3 +1,8 @@
+import Group from "@material-ui/icons/Group";
+
+import { registerOperatorRoute } from "/imports/client/ui";
+import Accounts from "./containers/accountsDashboardContainer";
+
 export { default as AccountsDashboard } from "./components/accountsDashboard";
 export { default as AddressBookForm } from "./components/addressBookForm";
 export { default as AddressBookReview } from "./components/addressBookReview";
@@ -50,3 +55,10 @@ import "./templates/profile/userOrdersList.html";
 import "./templates/profile/userOrdersList.js";
 import "./templates/updatePassword/updatePassword.html";
 import "./templates/updatePassword/updatePassword.js";
+
+registerOperatorRoute({
+  path: "/accounts",
+  mainComponent: Accounts,
+  sidebarIconComponent: Group,
+  sidebarI18nLabel: "admin.dashboard.accountsLabel"
+});

@@ -57,7 +57,7 @@ const CompanyName = styledMUI(Typography)`
   margin: 20px auto;
 `;
 
-export default class SideBar extends Component {
+export default class Sidebar extends Component {
   static propTypes = {
     handleDrawerClose: PropTypes.func.isRequired,
     handleDrawerOpen: PropTypes.func.isRequired,
@@ -81,8 +81,8 @@ export default class SideBar extends Component {
       <List>
         {
           routes.map((route) => (
-            <Link to={`/operator${route.path}`}>
-              <ListItem button key={route.path}>
+            <Link to={`/operator${route.path}`} key={route.path}>
+              <ListItem button>
                 <ListItemIcon>
                   {React.createElement(route.sidebarIconComponent, {})}
                 </ListItemIcon>
