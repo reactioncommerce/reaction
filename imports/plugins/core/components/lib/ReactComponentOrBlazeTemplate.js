@@ -24,3 +24,14 @@ export default class ReactComponentOrBlazeTemplate extends Component {
     }
   }
 }
+
+export function getReactComponentOrBlazeTemplate(name) {
+  if (!name) return null;
+
+  try {
+    const component = getComponent(name);
+    return React.createElement(component);
+  } catch (error) {
+    return <Blaze template={name} />;
+  }
+}

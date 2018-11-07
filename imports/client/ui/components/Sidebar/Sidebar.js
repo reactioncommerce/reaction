@@ -1,4 +1,5 @@
 import React, { Component, Fragment } from "react";
+import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import styled from "styled-components";
 import styledMUI from "styled-components-mui";
@@ -80,14 +81,16 @@ export default class SideBar extends Component {
       <List>
         {
           routes.map((route) => (
-            <ListItem button key={route.path}>
-              <ListItemIcon>
-                {React.createElement(route.sidebarIconComponent, {})}
-              </ListItemIcon>
-              <ListItemText>
-                <Translation defaultValue="Shipping" i18nKey={"admin.dashboard.shippingLabel"} />
-              </ListItemText>
-            </ListItem>
+            <Link to={`/operator${route.path}`}>
+              <ListItem button key={route.path}>
+                <ListItemIcon>
+                  {React.createElement(route.sidebarIconComponent, {})}
+                </ListItemIcon>
+                <ListItemText>
+                  <Translation defaultValue="Shipping" i18nKey={route.sidebarI18nLabel} />
+                </ListItemText>
+              </ListItem>
+            </Link>
           ))
         }
       </List>
