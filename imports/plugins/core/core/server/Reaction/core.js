@@ -216,7 +216,7 @@ export default {
    * @return {array} Array of shopIds that the user has at least one of the given set of roles for
    */
   getShopsWithRoles(roles, userId = getUserId()) {
-    // Owner permission for a shop supercedes grantable permissions, so we always check for owner permissions as well
+    // Owner permission for a shop supersedes grantable permissions, so we always check for owner permissions as well
     roles.push("owner");
 
     // Reducer that returns a unique list of shopIds that results from calling getGroupsForUser for each role
@@ -475,7 +475,6 @@ export default {
    * @method
    * @memberof Core
    * @summary Get a user's shop ID, as stored in preferences
-   * @todo This should intelligently find the correct default shop Probably whatever the main shop is or marketplace
    * @param {String} userId (probably logged in userId)
    * @return {String} active shop ID
    */
@@ -674,26 +673,6 @@ export default {
       return marketplace.settings;
     }
     return {};
-  },
-
-  /**
-   * @name setUserPreferences
-   * @method
-   * @memberof Core
-   * @summary save user preferences in the Accounts collection
-   * @param {String} packageName Package name
-   * @param {String} preference Preference key
-   * @param {String} value Preference value
-   * @param {String} userId User ID
-   * @return {Number} setPreferenceResult
-   */
-  setUserPreferences(packageName, preference, value, userId) {
-    const setPreferenceResult = AccountsCollection.update(userId, {
-      $set: {
-        [`profile.preferences.${packageName}.${preference}`]: value
-      }
-    });
-    return setPreferenceResult;
   },
 
   /**

@@ -9,6 +9,7 @@ import inviteShopOwner from "./inviteShopOwner";
 import removeEmailAddress from "./removeEmailAddress";
 import removeUserPermissions from "./removeUserPermissions";
 import sendResetPasswordEmail from "./sendResetPasswordEmail";
+import setActiveShopId from "./setActiveShopId";
 import setProfileCurrency from "./setProfileCurrency";
 import setUserPermissions from "./setUserPermissions";
 import updateEmailAddress from "./updateEmailAddress";
@@ -39,6 +40,7 @@ export default {
   "accounts/removeEmailAddress": removeEmailAddress,
   "accounts/removeUserPermissions": removeUserPermissions,
   "accounts/sendResetPasswordEmail": sendResetPasswordEmail,
+  "accounts/setActiveShopId": setActiveShopId,
   "accounts/setProfileCurrency": setProfileCurrency,
   "accounts/setUserPermissions": setUserPermissions,
   "accounts/updateEmailAddress": updateEmailAddress,
