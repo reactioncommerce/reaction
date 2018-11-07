@@ -1,0 +1,118 @@
+####
+# Custom data types for FlatRateFulfillmentRestriction data
+####
+type attributeRestrictions {
+  property: String
+  value: String
+  propertyType: String
+  operator: String
+}
+
+type destinationRestrictions {
+  country: [String]
+  region: [String]
+  postal: [String]
+}
+
+enum restrictionTypeEnum {
+  allow
+  deny
+}
+
+enum FlatRateFulfillmentRestrictionSortByField {
+  createdAt
+}
+
+
+####
+# Query
+####
+extend type Query {
+  "Get the full list of flat rate fulfillment method restrictions."
+  getFlatRateFulfillmentRestrictions(
+    shopId: ID!
+    after: ConnectionCursor,
+    before: ConnectionCursor,
+    first: ConnectionLimitInt,
+    last: ConnectionLimitInt,
+    sortOrder: SortOrder = desc,
+    sortBy: FlatRateFulfillmentRestrictionSortByField = createdAt
+  ): FlatRateFulfillmentRestrictionConnection!
+}
+
+type FlatRateFulfillmentRestrictionConnection {
+  edges: [FlatRateFulfillmentRestrictionEdge]
+  nodes: [FlatRateFulfillmentRestriction]
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
+type FlatRateFulfillmentRestrictionEdge {
+  cursor: ConnectionCursor!
+  node: FlatRateFulfillmentRestriction
+}
+
+"Defines a restriction for a single flat rate fulfillment method, or universally all flat rate fulfillment methods."
+type FlatRateFulfillmentRestriction implements Node {
+  "The restriction ID."
+  _id: ID!
+
+  "The shop ID"
+  shopId: ID!
+
+  "Method IDs to apply this restriction to."
+  methodIds: [String]
+
+  """
+  The type of this restriction. Allowed types are "allow" or "deny".
+  """
+  type: restrictionTypeEnum!
+
+  "Attribute restrictions."
+  attributes: [attributeRestrictions]
+
+  "Destination restrictions."
+  destination: destinationRestrictions
+}
+
+
+####
+# Create restriction mutation
+####
+
+
+####
+# Delete restriction mutation
+####
+extend type Mutation {
+  "Delete a flat rate fulfillment restriction"
+  deleteFlatRateFulfillmentRestriction(input: DeleteFlatRateFulfillmentRestrictionInput!): DeleteFlatRateFulfillmentRestrictionPayload!
+}
+
+# Inputs
+"Input for the `deleteFlatRateFulfillmentRestriction` mutation"
+input DeleteFlatRateFulfillmentRestrictionInput {
+  "An optional string identifying the mutation call, which will be returned in the response payload"
+  clientMutationId: String
+
+  "The ID of the flat rate fulfillment method you want to delete"
+  restrictionId: ID!
+
+  "The shop that owns the method"
+  shopId: ID!
+}
+
+# Payloads
+"Response from the `deleteFlatRateFulfillmentMethod` mutation"
+type DeleteFlatRateFulfillmentRestrictionPayload {
+  "The same string you sent with the mutation params, for matching mutation calls with their responses"
+  clientMutationId: String
+
+  "The removed fulfillment method"
+  restriction: FlatRateFulfillmentRestriction!
+}
+
+
+####
+# Update restriction mutation
+####
