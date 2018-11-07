@@ -185,14 +185,18 @@ const handlers = {
    */
   updateAddress(address, property, validateAddress = true) {
     if (validateAddress) {
+      let validationResult;
       return callValidateAddress(address)
         .then((result) => {
+          validationResult = result;
           if (result.validated) {
             return callUpdateAddress(address, property);
           }
           return null;
         })
-        .then(updateCartAddresses);
+        .then(updateCartAddresses)
+        // AddressBook component expects the full result back when `validateAddress` is true
+        .then(() => validationResult);
     }
 
     return callUpdateAddress(address, property).then(updateCartAddresses);
