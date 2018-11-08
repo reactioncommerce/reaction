@@ -19,7 +19,7 @@ export async function locationDenyCheck(methodRestrictions, method, hydratedCart
 
   // Loop over each deny restriction and determine if this method is valid
   // If any levels of destination match, this method is invalid at this point
-  const isAllowed = denyRestrictions.every((methodRestriction) => {
+  const isAllowed = denyRestrictions.some((methodRestriction) => {
     const { destination } = methodRestriction;
 
     // If there is no destination restriction on this method, it is valid at this point
