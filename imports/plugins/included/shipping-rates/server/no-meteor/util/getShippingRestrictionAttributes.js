@@ -1,3 +1,4 @@
+import ReactionError from "@reactioncommerce/reaction-error";
 import { findCatalogProductsAndVariants, pick, tagsByIds, mergeProductAndVariants } from "./helpers";
 
 /**
@@ -18,43 +19,42 @@ export default async function getShippingRestrictionAttributes(context, cartWith
   const address = pick(destination, ["address1", "address2", "city", "country", "postal", "region"]);
   const { summary } = cartWithSummary;
   const products = [];
-  
+
   // Products in the Catalog collection are the source of truth, therefore use them
   // as the source of data instead of what is coming from the client.
   const catalogProductsAndVariants = await findCatalogProductsAndVariants(collections, orderItems);
-  const allProductsTags = await tagsByIds(collections, catalogProductsAndVariants)
+  const allProductsTags = await tagsByIds(collections, catalogProductsAndVariants);
 
-  for (const orderLineItem of orderItems ) {
-    const productAndVariants = catalogProductsAndVariants.find(catProduct => {
-      return catProduct.product.productId === orderLineItem.productId;
-    });
+  for (const orderLineItem of orderItems) {
+    const productAndVariants = catalogProductsAndVariants.find((catProduct) => catProduct.product.productId === orderLineItem.productId);
 
     if (!productAndVariants) {
-      throw ("Catalog product not found");
+      throw new ReactionError("not-found", "Catalog product not found");
     }
 
     const flattenProduct = mergeProductAndVariants(productAndVariants);
 
     // Fetch product tags
-    allProductsTags.find(tag => {
+    allProductsTags.find((tag) => {
       if (tag.productId === productAndVariants.product.productId) {
         flattenProduct.tags = tag.tags;
       }
+      return null;
     });
 
     // Fetch custom attributes
     getFunctionsOfType("addShippingRestrictionCustomAttributes").forEach((customAttributesFunc) => {
       customAttributesFunc(flattenProduct, productAndVariants);
-    })
+    });
 
     products.push(flattenProduct);
-  };
+  }
 
   return {
     address,
     discountTotal: summary.discountTotal.amount,
     items: products,
     itemTotal: summary.itemTotal.amount,
-    total: summary.total.amount,
+    total: summary.total.amount
   };
 }

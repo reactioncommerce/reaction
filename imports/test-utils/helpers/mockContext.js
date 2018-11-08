@@ -11,7 +11,7 @@ const mockContext = {
   userId: "FAKE_USER_ID"
 };
 
-export function mockCollection(collectionName){
+export function mockCollection(collectionName) {
   return {
     insert() {
       throw new Error("insert mongo method is deprecated, use insertOne or insertMany");

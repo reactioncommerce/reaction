@@ -19,7 +19,6 @@ import getShippingRestrictionAttributes from "./util/getShippingRestrictionAttri
  * @private
  */
 export default async function getFulfillmentMethodsWithQuotes(context, fulfillmentGroup, cartWithSummary, previousQueryResults = []) {
-
   const { collections } = context;
   const { Packages, Shipping } = collections;
   const [rates = [], retrialTargets = []] = previousQueryResults;

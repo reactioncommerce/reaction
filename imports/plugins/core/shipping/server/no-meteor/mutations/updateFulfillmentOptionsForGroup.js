@@ -77,7 +77,7 @@ export default async function updateFulfillmentOptionsForGroup(context, input) {
   fulfillmentGroup.items = fulfillmentGroup.itemIds.map((itemId) => cart.items.find((item) => item._id === itemId));
 
   // Add cart summary
-  cartWithSummary = await xformCartCheckout(collections, cart);
+  const cartWithSummary = await xformCartCheckout(collections, cart);
 
   // In the future we want to do this async and subscribe to the results
   const rates = await context.queries.getFulfillmentMethodsWithQuotes(fulfillmentGroup, cartWithSummary, context);

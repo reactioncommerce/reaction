@@ -114,10 +114,10 @@ export async function tagsByIds(collections, catalogProducts) {
  * @type {Object}
 */
 export const operators = {
-  eq: function (a, b) { return a === b ;},
-  gt: function (a, b) { return a > b ;},
-  lt: function (a, b) { return a < b; },
-  ne: function (a, b) { return a !== b ;}
+  eq(a, b) { return a === b; },
+  gt(a, b) { return a > b; },
+  lt(a, b) { return a < b; },
+  ne(a, b) { return a !== b; }
 };
 
 /**
@@ -125,8 +125,8 @@ export const operators = {
  * @type {Object}
 */
 export const propertyTypes = {
-  bool: function (a) { return a === "true"; },
-  float: function (a) { return parseFloat(a); },
-  int: function (a) { return parseInt(a); },
-  string: function (a) { return a; }
+  bool(a) { return a === "true"; },
+  float(a) { return parseFloat(a); },
+  int(a) { return parseInt(a, 10); },
+  string(a) { return a; }
 };
