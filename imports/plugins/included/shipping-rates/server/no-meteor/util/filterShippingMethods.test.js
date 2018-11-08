@@ -688,7 +688,7 @@ test("deny method - item weight is too high", async () => {
   expect(allowedMethods).toEqual([]);
 });
 
-test("deny method - cart total is less than $900", async () => {
+test("deny method - item value is less than $100", async () => {
   const mockMethodRestrictions = [
     {
       _id: "allow001",
@@ -710,8 +710,8 @@ test("deny method - cart total is less than $900", async () => {
       type: "deny",
       attributes: [
         {
-          property: "total",
-          value: 900,
+          property: "price",
+          value: 100,
           propertyType: "int",
           operator: "lt"
         }
@@ -726,7 +726,7 @@ test("deny method - cart total is less than $900", async () => {
   expect(allowedMethods).toEqual([]);
 });
 
-test("deny method - multiple attributes - cart total is less than $900 AND item weight is too high", async () => {
+test("deny method - multiple attributes - item value is less than $100 AND item weight is too high", async () => {
   const mockMethodRestrictions = [
     {
       _id: "allow001",
@@ -748,8 +748,8 @@ test("deny method - multiple attributes - cart total is less than $900 AND item 
       type: "deny",
       attributes: [
         {
-          property: "total",
-          value: 900,
+          property: "price",
+          value: 100,
           propertyType: "int",
           operator: "lt"
         },
