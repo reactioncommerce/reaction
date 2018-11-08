@@ -19,12 +19,12 @@ Meteor.publish("ServiceConfiguration", function (checkUserId) {
     this.userId, ["owner", "admin", "dashboard/accounts"],
     Reaction.getShopId()
   )) {
-    return ServiceConfiguration.configurations.find({}, {
-      fields: {
-        secret: 1
-      }
-    });
+    return ServiceConfiguration.configurations.find({});
   }
 
-  return ServiceConfiguration.configurations.find({});
+  return ServiceConfiguration.configurations.find({}, {
+    fields: {
+      secret: 0
+    }
+  });
 });
