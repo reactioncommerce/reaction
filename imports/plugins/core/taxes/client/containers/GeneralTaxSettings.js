@@ -44,13 +44,21 @@ const handlers = {
   onSubmit: updatePluginSettings
 };
 
-const composer = async (props, onData) => {
-  const [shopId] = await getOpaqueIds([{ namespace: "Shop", id: Reaction.getShopId() }]);
+const composer = (props, onData) => {
+  const shopId = Reaction.getShopId();
+  const settingsDoc = getPluginSettings();
 
-  onData(null, {
-    settingsDoc: getPluginSettings(),
-    shopId
-  });
+  getOpaqueIds([{ namespace: "Shop", id: shopId }])
+    .then(([opaqueShopId]) => {
+      onData(null, {
+        settingsDoc,
+        shopId: opaqueShopId
+      });
+      return null;
+    })
+    .catch((error) => {
+      Logger.error(error);
+    });
 };
 
 registerComponent("GeneralTaxSettings", GeneralTaxSettings, [

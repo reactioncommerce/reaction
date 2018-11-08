@@ -33,13 +33,21 @@ export default class GeneralTaxSettings extends Component {
     }
   };
 
-  render() {
-    const { onSubmit, settingsDoc, taxServices, validator } = this.props;
+  get taxServicesOptions() {
+    const { taxServices } = this.props;
 
-    const taxServicesOptions = (taxServices || []).map(({ displayName, name }) => ({
+    const options = (taxServices || []).map(({ displayName, name }) => ({
       label: displayName,
       value: name
     }));
+
+    options.unshift({ label: "None", value: "" });
+
+    return options;
+  }
+
+  render() {
+    const { onSubmit, settingsDoc, validator } = this.props;
 
     const activeTaxServiceNameInputId = `activeTaxServiceName_${this.uniqueInstanceIdentifier}`;
     const defaultTaxCodeInputId = `defaultTaxCode_${this.uniqueInstanceIdentifier}`;
@@ -49,7 +57,7 @@ export default class GeneralTaxSettings extends Component {
       <div className="clearfix">
         <Form ref={(formRef) => { this.form = formRef; }} onSubmit={onSubmit} validator={validator} value={settingsDoc}>
           <Field name="activeTaxServiceName" label={i18next.t("admin.taxSettings.activeTaxServiceName")} labelFor={activeTaxServiceNameInputId}>
-            <Select id={activeTaxServiceNameInputId} name="activeTaxServiceName" options={taxServicesOptions} placeholder={i18next.t("admin.taxSettings.activeTaxServiceNamePlaceholder")} />
+            <Select id={activeTaxServiceNameInputId} name="activeTaxServiceName" options={this.taxServicesOptions} placeholder={i18next.t("admin.taxSettings.activeTaxServiceNamePlaceholder")} />
             <ErrorsBlock names={["activeTaxServiceName"]} />
           </Field>
           <Field name="defaultTaxCode" label={i18next.t("admin.taxSettings.defaultTaxCode")} labelFor={defaultTaxCodeInputId}>
