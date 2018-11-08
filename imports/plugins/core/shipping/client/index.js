@@ -6,8 +6,9 @@ import "./containers";
 import "./templates";
 
 registerOperatorRoute({
-  path: "/shipping",
+  isNavigationLink: true,
   mainComponent: Shipping,
+  path: "/shipping",
   sidebarIconComponent: LocalShipping,
   sidebarI18nLabel: "admin.dashboard.shippingLabel"
 });

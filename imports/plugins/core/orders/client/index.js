@@ -30,9 +30,9 @@ registerOperatorRoute({
 });
 
 registerOperatorRoute({
-  path: "/orders",
-  mainComponent: Orders,
   isNavigationLink: true,
+  mainComponent: Orders,
+  path: "/orders",
   sidebarIconComponent: Inbox,
   sidebarI18nLabel: "admin.dashboard.ordersLabel"
 });

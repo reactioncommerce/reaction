@@ -6,8 +6,9 @@ import "./settings/search.html";
 import "./settings/search.js";
 
 registerOperatorRoute({
-  path: "/search",
+  isNavigationLink: true,
   mainComponent: "searchSettings",
+  path: "/search",
   sidebarIconComponent: Search,
   sidebarI18nLabel: "admin.dashboard.searchLabel"
 });

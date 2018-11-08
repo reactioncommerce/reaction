@@ -5,8 +5,9 @@ import "./checkout";
 import "./settings";
 
 registerOperatorRoute({
-  path: "/payment",
+  isNavigationLink: true,
   mainComponent: "paymentSettings",
+  path: "/payment",
   sidebarIconComponent: Payment,
-  sidebarI18nLabel: "admin.dashboard.paymentsLabel"
+  sidebarI18nLabel: "admin.settings.paymentSettingsLabel"
 });
