@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from "react";
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import PropTypes from "prop-types";
 import styled from "styled-components";
 import styledMUI from "styled-components-mui";
@@ -55,6 +55,15 @@ const CompanyName = styledMUI(Typography)`
   font-weight: bold;
 `;
 
+const activeClassName = "nav-item-active";
+const Link = styled(NavLink).attrs({
+  activeClassName
+})`
+ &.${activeClassName} span {
+   color: ${applyTheme("Sidebar.activeMenuItemColor")};
+ }
+`;
+
 export default class Sidebar extends Component {
   static propTypes = {
     handleDrawerClose: PropTypes.func.isRequired,
@@ -78,8 +87,8 @@ export default class Sidebar extends Component {
     return (
       <List>
         {
-          routes.map((route) => (
-            <Link to={`/operator${route.path}`} key={route.path}>
+          routes.filter(({ isNavigationLink }) => isNavigationLink).map((route) => (
+            <Link to={`/operator${route.path}`} activeClassName={activeClassName} key={route.path}>
               <ListItem button>
                 <ListItemIcon>
                   {React.createElement(route.sidebarIconComponent)}
