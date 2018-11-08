@@ -1,3 +1,7 @@
+import DashboardIcon from "@material-ui/icons/Dashboard";
+
+import { registerOperatorRoute } from "/imports/client/ui";
+import Dashboard from "./containers/dashboardContainer";
 import "./templates/import/import.html";
 import "./templates/import/import.js";
 
@@ -17,3 +21,11 @@ import "./templates/shop/settings/settings.js";
 
 import "./templates/dashboard.html";
 import "./templates/dashboard.js";
+
+registerOperatorRoute({
+  path: "/dashboard",
+  mainComponent: Dashboard,
+  isNavigationLink: true,
+  sidebarIconComponent: DashboardIcon,
+  sidebarI18nLabel: "admin.dashboard.coreTitle"
+});

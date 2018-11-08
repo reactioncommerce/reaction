@@ -8,8 +8,9 @@ export { default as LanguageDropdown } from "./containers/languageDropdown";
 export { default as LocalizationSettings } from "./containers/localizationSettings";
 
 registerOperatorRoute({
-  path: "/localization",
+  isNavigationLink: true,
   mainComponent: Localization,
+  path: "/localization",
   sidebarIconComponent: Language,
   sidebarI18nLabel: "admin.i18nSettings.shopLocalization"
 });

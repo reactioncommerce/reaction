@@ -59,6 +59,7 @@ import "./templates/updatePassword/updatePassword.js";
 registerOperatorRoute({
   path: "/accounts",
   mainComponent: Accounts,
+  isNavigationLink: true,
   sidebarIconComponent: Group,
   sidebarI18nLabel: "admin.dashboard.accountsLabel"
 });
