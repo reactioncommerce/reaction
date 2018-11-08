@@ -23,6 +23,19 @@ enum FlatRateFulfillmentRestrictionSortByField {
   createdAt
 }
 
+input attributeRestrictionsInput {
+  property: String
+  value: String
+  propertyType: String
+  operator: String
+}
+
+input destinationRestrictionsInput {
+  country: [String]
+  region: [String]
+  postal: [String]
+}
+
 
 ####
 # Queries
@@ -90,6 +103,51 @@ type FlatRateFulfillmentRestriction implements Node {
 ####
 # Create restriction mutation
 ####
+extend type Mutation {
+  "Create a flat rate fulfillment restriction"
+  createFlatRateFulfillmentRestriction(input: CreateFlatRateFulfillmentRestrictionInput!): CreateFlatRateFulfillmentRestrictionPayload!
+}
+
+# Inputs
+"Defines a fulfillment method that has a fixed price. This type is provided by the `flat-rate` fulfillment plugin."
+input FlatRateFulfillmentRestrictionInput {
+  "Method IDs to apply this restriction to."
+  methodIds: [String]
+
+  """
+  The type of this restriction. Allowed types are "allow" or "deny".
+  """
+  type: restrictionTypeEnum!
+
+  "Attribute restrictions."
+  attributes: [attributeRestrictionsInput]
+
+  "Destination restrictions."
+  destination: destinationRestrictionsInput
+}
+
+"Input for the `CreateFlatRateFulfillmentRestriction` mutation"
+input CreateFlatRateFulfillmentRestrictionInput {
+  "An optional string identifying the mutation call, which will be returned in the response payload"
+  clientMutationId: String
+
+  "This defines the flat rate fulfillment restriction that you want to create"
+  restriction: FlatRateFulfillmentRestrictionInput!
+
+  "The shop to create this flat rate fulfillment restriction for"
+  shopId: ID!
+}
+
+
+# Payloads
+"Response from the `CreateFlatRateFulfillmentRestriction` mutation"
+type CreateFlatRateFulfillmentRestrictionPayload {
+  "The same string you sent with the mutation params, for matching mutation calls with their responses"
+  clientMutationId: String
+
+  "The created fulfillment method"
+  restriction: FlatRateFulfillmentRestriction!
+}
 
 
 ####
@@ -114,7 +172,7 @@ input DeleteFlatRateFulfillmentRestrictionInput {
 }
 
 # Payloads
-"Response from the `deleteFlatRateFulfillmentMethod` mutation"
+"Response from the `deleteFlatRateFulfillmentRestriction` mutation"
 type DeleteFlatRateFulfillmentRestrictionPayload {
   "The same string you sent with the mutation params, for matching mutation calls with their responses"
   clientMutationId: String
@@ -127,3 +185,5 @@ type DeleteFlatRateFulfillmentRestrictionPayload {
 ####
 # Update restriction mutation
 ####
+
+## coming soon
