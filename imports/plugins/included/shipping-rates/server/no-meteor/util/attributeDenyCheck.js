@@ -32,7 +32,8 @@ export async function attributeDenyCheck(methodRestrictions, method, hydratedCar
         return false;
       }
 
-      return attributes.some((attribute) => {
+      // Item must meet all attributes to be restricted
+      return attributes.every((attribute) => {
         const attributeFound = operators[attribute.operator](item[attribute.property], propertyTypes[attribute.propertyType](attribute.value));
 
         if (attributeFound) {
