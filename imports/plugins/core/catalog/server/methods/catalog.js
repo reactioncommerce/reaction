@@ -516,10 +516,12 @@ Meteor.methods({
     check(newVariant, Match.Optional(Object));
 
     // Check first if Product exists and then if user has the rights
-    const product = Products.findOne(parentId);
+    const product = Products.findOne({ _id: parentId });
     if (!product) {
       throw new ReactionError("not-found", "Product not found");
-    } else if (!Reaction.hasPermission("createProduct", this.userId, product.shopId)) {
+    }
+
+    if (!Reaction.hasPermission("createProduct", this.userId, product.shopId)) {
       throw new ReactionError("access-denied", "Access Denied");
     }
 
@@ -537,7 +539,7 @@ Meteor.methods({
     const assembledVariant = Object.assign(newVariant || {}, {
       _id: newVariantId,
       ancestors,
-      taxCode: product.taxCode,
+      isTaxable: false,
       shopId: product.shopId,
       type: "variant"
     });
