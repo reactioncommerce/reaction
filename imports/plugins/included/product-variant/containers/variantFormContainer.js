@@ -7,6 +7,7 @@ import { Session } from "meteor/session";
 import { Validation } from "@reactioncommerce/schemas";
 import { ReactionProduct } from "/lib/api";
 import { Reaction, i18next } from "/client/api";
+import Logger from "/client/modules/logger";
 import { ProductVariant } from "/lib/collections/schemas";
 import getOpaqueIds from "/imports/plugins/core/core/client/util/getOpaqueIds";
 import withTaxCodes from "/imports/plugins/core/taxes/client/hoc/withTaxCodes";
@@ -50,7 +51,7 @@ const wrapComponent = (Comp) => (
         return validationStatus;
       }
 
-      return true;
+      return null;
     }
 
     hasChildVariants = (variant) => {
@@ -136,22 +137,30 @@ const wrapComponent = (Comp) => (
 
     handleVariantFieldSave = (variantId, fieldName, value, variant) => {
       const validationStatus = this.runVariantValidation(variant);
+      if (!validationStatus) return;
 
-      if (validationStatus.isFieldValid(fieldName)) {
-        Meteor.call("products/updateProductField", variantId, fieldName, value, (error) => {
-          if (error) {
-            Alerts.toast(error.message, "error");
-          }
-
-          if (fieldName === "inventoryPolicy") {
-            this.updateInventoryPolicyIfChildVariants(variant);
-          }
-
-          if (fieldName === "lowInventoryWarningThreshold") {
-            this.updateLowInventoryThresholdIfChildVariants(variant);
-          }
-        });
+      // validationStatus has a `isFieldValid` method, but it incorrectly returns
+      // `false` when the field doesn't exist, such as when you clear an optional field
+      // and save it.
+      const fieldIsValid = !validationStatus.fields[fieldName] || validationStatus.fields[fieldName].isValid;
+      if (!fieldIsValid) {
+        Logger.error(`${fieldName} field is invalid`);
+        return;
       }
+
+      Meteor.call("products/updateProductField", variantId, fieldName, value, (error) => {
+        if (error) {
+          Alerts.toast(error.message, "error");
+        }
+
+        if (fieldName === "inventoryPolicy") {
+          this.updateInventoryPolicyIfChildVariants(variant);
+        }
+
+        if (fieldName === "lowInventoryWarningThreshold") {
+          this.updateLowInventoryThresholdIfChildVariants(variant);
+        }
+      });
     }
 
     handleCardExpand = (cardName) => {

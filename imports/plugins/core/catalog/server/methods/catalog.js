@@ -987,10 +987,12 @@ Meteor.methods({
     }
 
     // Check first if Product exists and then if user has the right to alter it
-    const doc = Products.findOne(_id);
+    const doc = Products.findOne({ _id });
     if (!doc) {
       throw new ReactionError("not-found", "Product not found");
-    } else if (!Reaction.hasPermission("createProduct", this.userId, doc.shopId)) {
+    }
+
+    if (!Reaction.hasPermission("createProduct", this.userId, doc.shopId)) {
       throw new ReactionError("access-denied", "Access Denied");
     }
 
@@ -1039,8 +1041,8 @@ Meteor.methods({
           selector: { type }
         }
       );
-    } catch (e) {
-      throw new ReactionError("server-error", e.message);
+    } catch (err) {
+      throw new ReactionError("server-error", err.message);
     }
 
     // If we get a result from the product update,

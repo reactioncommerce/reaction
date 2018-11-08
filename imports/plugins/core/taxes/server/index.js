@@ -1,4 +1,4 @@
 import "./i18n";
-import "./no-meteor/extendCoreSchemas";
+import "../lib/extendCoreSchemas";
 import "./methods";
 import "./api/import";

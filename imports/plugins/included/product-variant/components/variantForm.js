@@ -23,22 +23,6 @@ const fieldNames = [
   "lowInventoryWarningThreshold"
 ];
 
-const fieldGroups = {
-  title: { group: "variantDetails" },
-  originCountry: { group: "variantDetails" },
-  compareAtPrice: { group: "variantDetails" },
-  price: { group: "variantDetails" },
-  width: { group: "variantDetails" },
-  length: { group: "variantDetails" },
-  height: { group: "variantDetails" },
-  weight: { group: "variantDetails" },
-  taxCode: { group: "isTaxable" },
-  taxDescription: { group: "isTaxable" },
-  inventoryQuantity: { group: "inventoryManagement" },
-  inventoryPolicy: { group: "inventoryManagement" },
-  lowInventoryWarningThreshold: { group: "inventoryManagement" }
-};
-
 class VariantForm extends Component {
   constructor(props) {
     super(props);
@@ -77,29 +61,6 @@ class VariantForm extends Component {
     this.setState({
       expandedCard: nextProps.editFocus
     });
-  }
-
-  fieldGroupForFieldName(field) {
-    // Other wise, if a field was passed
-    // const fieldName = this.state.viewProps.field;
-
-    let fieldName;
-
-    // If the field is an array of field name
-    if (Array.isArray(field) && field.length) {
-      // Use the first field name
-      [fieldName] = field;
-    } else {
-      fieldName = field;
-    }
-
-    const fieldData = fieldGroups[fieldName];
-
-    if (fieldData && fieldData.group) {
-      return fieldData.group;
-    }
-
-    return fieldName;
   }
 
   animateFieldFlash(fieldName) {
@@ -149,9 +110,11 @@ class VariantForm extends Component {
         ...variant,
         [field]: value
       }
-    }));
-
-    this.handleFieldBlur(event, value, field);
+    }), () => {
+      if (this.props.onVariantFieldSave) {
+        this.props.onVariantFieldSave(this.variant._id, field, value, this.state.variant);
+      }
+    });
   }
 
   handleInventoryPolicyChange = (event, value, field) => {
@@ -192,6 +155,7 @@ class VariantForm extends Component {
 
     if (Array.isArray(taxCodes) && taxCodes.length) {
       const options = taxCodes.map(({ code, label }) => ({ label, value: code }));
+      options.unshift({ label: "None", value: "" });
       return (
         <Components.Select
           clearable={false}

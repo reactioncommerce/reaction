@@ -1,7 +1,7 @@
 import Logger from "@reactioncommerce/logger";
 import ReactionError from "@reactioncommerce/reaction-error";
 import { getActiveTaxServiceForShop } from "../registration";
-import { TaxServiceResult } from "../simpleSchemas";
+import { TaxServiceResult } from "../../../lib/simpleSchemas";
 
 /**
  * @summary Modifies a fulfillment group, adding tax-related properties to each item
