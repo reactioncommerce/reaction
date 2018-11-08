@@ -31,6 +31,7 @@ export function mockCollection(collectionName) {
       .mockName(`${collectionName}.find`)
       .mockReturnThis(),
     findOne: jest.fn().mockName(`${collectionName}.findOne`),
+    findOneAndDelete: jest.fn().mockName(`${collectionName}.findOneAndDelete`),
     insertOne: jest.fn().mockName(`${collectionName}.insertOne`),
     insertMany: jest.fn().mockName(`${collectionName}.insertMany`),
     toArray: jest.fn().mockName(`${collectionName}.toArray`),
