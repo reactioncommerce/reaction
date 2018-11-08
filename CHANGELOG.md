@@ -8,17 +8,42 @@ There are a lot of great updates that are included in Meteor 1.8 and you can rea
 
 We're still working with Node.js 8.11.4 as the upgrade to Node 8.12.0 got postponed to the Meteor 1.8.1 release. If you're itching to play with it, you can run `meteor update --release 1.8.1-beta.n` from the directory that you've got the core `reaction` project installed. There may be some additional speed improvements related to Meteor's use of `Fiber`s that come along in this version.
 
+We've also updated the our base docker image to use Meteor 1.8 (#4760)
+
+## Email Sending
+We've extracted the core email sending functionality into a new `reaction-email-smtp` plugin which is `included` and created a new `sendEmail` event which is emitted for each email job. The core smtp email plugin now listens for these events and sends an email if an SMTP provider is configured. By doing this we've made it possible to create plugins which send emails via an API rather than via SMTP.
+
+The email provider config form found at Dashboard -> Emails -> Mail Provider is now also able to be overridden. Plugins can use register.js to provide a React component to use here.
+
 ## GraphQL API
-We've added a primaryShop GraphQL query & resolver, eliminating the need to first query for the primary shop ID, followed by another query for shop by ID.
+Added a primaryShop GraphQL query & resolver, eliminating the need to first query for the primary shop ID, followed by another query for shop by ID.
+
+
+## Breaking Changes
+In #4749 we changed the names of our included payment method plugins. We've included a migration to automatically update any existing installation, but if you have custom code that relies on these payment method names you may need make some changes.
+
+
+## Fixes
+ - fix: keep toggles shown, width 100% in action view (#4772)
+ - fix: Use babel.config.js to fix Jest tests in custom plugins with package.json (#4782)
 
 ## Features
+ - feat: decouple SMTP email sending logic from core to allow plugins to override (#4740)
  - feat: Add a CORS-enabled endpoint for token refresh in Hydra plugin (#4743)
  - feat: GraphQL query & resolver for loading the primary shop (#4747)
  - feat: update to Meteor 1.8 final (#4753)
+ - feat: update to base image 1.8 (#4760)
+ - feat: client ui payment methods (#4749) .. Resolves #4719
+ - feat: added migration for adding available payment methods to shops. (#4729)
+ - feat: use GraphQL for payment methods operator ui (#4749) .. Resolves #4719
+
+## Migrations
+ - chore: added migration for adding available payment methods to shops. (#4729)
 
 ## Chores
 We've been ignoring some of our integration tests as the in-memory MongoDB they rely on has not been working effectively. Previously we did this by skipping our entire `test:integration` tests in CI, we're now just skipping the tests that are failing due to this db incompatibility and have plans to address this soon.
-- chore: Skip failing integration tests (#4751)
+ - chore: Skip failing integration tests (#4751)
+ - chore: Deploy release branches to staging ECS environment (#4758)
 
 # v2.0.0-rc.5
 This is our fifth **release candidate** for v2.0.0 of Reaction. Please check it out and let us know what works and what doesn't for you.

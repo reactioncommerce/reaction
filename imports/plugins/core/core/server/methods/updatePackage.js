@@ -1,4 +1,4 @@
-import { check } from "meteor/check";
+import { check, Match } from "meteor/check";
 import { Packages } from "/lib/collections";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
 import ReactionError from "@reactioncommerce/reaction-error";
@@ -10,7 +10,7 @@ import ReactionError from "@reactioncommerce/reaction-error";
  * @param {String} packageName - the name of the Package to update.
  * @param {String} field - the part of the Package's data that is to
  * be updated.
- * @param {Object} value - the new data that's to be stored for the said
+ * @param {Object|Array} value - the new data that's to be stored for the said
  * Package.
  * @since 1.5.1
  * @return {Object} - returns an object with info about the update operation.
@@ -18,7 +18,7 @@ import ReactionError from "@reactioncommerce/reaction-error";
 export default function updatePackage(packageName, field, value) {
   check(packageName, String);
   check(field, String);
-  check(value, Object);
+  check(value, Match.OneOf(Object, Array));
 
   const userId = Reaction.getUserId();
   const shopId = Reaction.getShopId();

@@ -93,9 +93,6 @@ const getStyles = (props) => {
       "flexDirection": "column",
       "flex": "1 1 auto",
       "maxWidth": viewMaxSize,
-      "@media only screen and (max-width: 1420px)": {
-        minWidth: "55vw"
-      },
       "@media only screen and (max-width: 949px)": {
         width: "100vw"
       }
