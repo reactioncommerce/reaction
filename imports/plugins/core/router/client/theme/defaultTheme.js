@@ -32,7 +32,7 @@ const rui_components = {
     zIndex: 1
   },
   Sidebar: {
-    drawerWidth: "240px",
+    drawerWidth: "264px",
     iconBarBackground: colors.darkBlue500,
     menuBarBackgroundColor: colors.coolGrey100,
     iconColor: colors.coolGrey300,
