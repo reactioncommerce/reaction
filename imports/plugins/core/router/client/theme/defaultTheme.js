@@ -32,12 +32,13 @@ const rui_components = {
     zIndex: 1
   },
   Sidebar: {
+    activeMenuItemColor: colors.reactionBlue,
+    companyNameColor: colors.reactionBlue,
+    companyNameBorderBottom: colors.reactionBlue200,
     drawerWidth: "264px",
     iconBarBackground: colors.darkBlue500,
-    menuBarBackgroundColor: colors.coolGrey100,
     iconColor: colors.coolGrey300,
-    companyNameColor: colors.reactionBlue,
-    companyNameBorderBottom: colors.reactionBlue200
+    menuBarBackgroundColor: colors.coolGrey100
   }
 };
 

@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { Router } from "@reactioncommerce/reaction-router";
 import { compose } from "recompose";
 import { Meteor } from "meteor/meteor";
 import { Reaction, i18next } from "/client/api";
@@ -118,6 +119,12 @@ const wrapComponent = (Comp) => (
     }
 
     handleClick = (order, startWorkflow = false) => {
+      // If the users is in the new operator UI, redirect to
+      // Order detail view
+      if (window.location.pathname.includes("/operator")) {
+        return Router.go(`/operator/orders/${order._id}`);
+      }
+
       Reaction.setActionViewDetail({
         label: "Order Details",
         i18nKeyLabel: "orderWorkflow.orderDetails",
