@@ -17,18 +17,14 @@ import {
 import { Typography } from "@material-ui/core";
 import { Translation } from "/imports/plugins/core/ui/client/components";
 
-const drawerWidth = "240px";
-
 const IconButton = styled(MUIIconButton)``;
 
-const Drawer = styledMUI((props) => (
-  <MUIDrawer {...props} classes={{ paper: "paper" }} />
-))`
-  width: ${drawerWidth};
+const Drawer = styledMUI(MUIDrawer, { paper: "Paper" })`
+  width: ${applyTheme("Sidebar.drawerWidth")};
   flex-shrink: 0;
-  & .paper {
+  .Paper {
     background-color: ${applyTheme("Sidebar.menuBarBackgroundColor")};
-    width: ${drawerWidth};
+    width: ${applyTheme("Sidebar.drawerWidth")};
   }
 `;
 
@@ -51,10 +47,12 @@ const DrawerHeader = styled.div`
 `;
 
 const CompanyName = styledMUI(Typography)`
+  ${addTypographyStyles("SidebarMenu", "titleText")};
   color: ${applyTheme("Sidebar.companyNameColor")};
   border-bottom: solid 5px ${applyTheme("Sidebar.companyNameBorderBottom")};
   width: fit-content;
   margin: 20px auto;
+  font-weight: bold;
 `;
 
 export default class Sidebar extends Component {
@@ -84,10 +82,10 @@ export default class Sidebar extends Component {
             <Link to={`/operator${route.path}`} key={route.path}>
               <ListItem button>
                 <ListItemIcon>
-                  {React.createElement(route.sidebarIconComponent, {})}
+                  {React.createElement(route.sidebarIconComponent)}
                 </ListItemIcon>
-                <ListItemText>
-                  <Translation defaultValue="Shipping" i18nKey={route.sidebarI18nLabel} />
+                <ListItemText disableTypography>
+                  <Translation defaultValue="" i18nKey={route.sidebarI18nLabel} />
                 </ListItemText>
               </ListItem>
             </Link>
@@ -103,11 +101,11 @@ export default class Sidebar extends Component {
     const menu = (
       <nav>
         <DrawerHeader>
-          <CompanyName variant="h5">Reaction</CompanyName>
           <IconButton onClick={this.handleDrawerClose}>
             <ChevronLeftIcon />
           </IconButton>
         </DrawerHeader>
+        <CompanyName variant="h5">Reaction</CompanyName>
         {this.renderMenuItems()}
       </nav>
     );

@@ -26,8 +26,6 @@ const query = {
   }
 };
 
-const drawerWidth = "240px";
-
 const Container = styled.div`
   display: flex;
 `;
@@ -39,7 +37,7 @@ const Main = styled.div`
     (props.open
       ? "margin 225ms cubic-bezier(0, 0, 0.2, 1) 0ms"
       : "margin 195ms cubic-bezier(0.4, 0, 0.6, 1) 0ms")};
-  margin-left: ${(props) => (props.open ? 0 : `-${drawerWidth}`)};
+  margin-left: ${(props) => (props.open ? 0 : "-264px")};
 `;
 
 const AppBar = styledMUI(MUIAppBar)`
@@ -51,8 +49,8 @@ const AppBar = styledMUI(MUIAppBar)`
   ${(props) => {
     if (props.open) {
       return css`
-        margin-left: ${drawerWidth};
-        width: calc(100 % - ${drawerWidth}px);
+        margin-left: ${applyTheme("Sidebar.drawerWidth")};
+        width: calc(100 % - ${applyTheme("Sidebar.drawerWidth")});
 `;
     }
   }};
