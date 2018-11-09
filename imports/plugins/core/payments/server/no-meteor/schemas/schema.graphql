@@ -56,6 +56,7 @@ type ExampleIOUPaymentData {
 }
 
 # Use `extend union` to define a payment plugin's PaymentData type
+"Data identifying a payment for an order"
 union PaymentData = ExampleIOUPaymentData
 
 # Use `extend enum` to add a plugin's payment method name
