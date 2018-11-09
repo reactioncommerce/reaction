@@ -60,6 +60,9 @@ extend type CartItem {
   "Total tax calculated for this item"
   tax: Money
 
+  "The tax code for this item"
+  taxCode: String
+
   "Amount of subtotal that is taxable"
   taxableAmount: Money
 
@@ -73,6 +76,9 @@ extend type OrderItem {
 
   "Total tax calculated for this item"
   tax: Money!
+
+  "The tax code for this item"
+  taxCode: String
 
   "Amount of subtotal that is taxable"
   taxableAmount: Money!
