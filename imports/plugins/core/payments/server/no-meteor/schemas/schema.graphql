@@ -55,14 +55,13 @@ type ExampleIOUPaymentData {
   fullName: String!
 }
 
-# These should be defined in their respective plugin schemas, but `extend union` isn't working yet
-union PaymentData = ExampleIOUPaymentData | StripeCardPaymentData | MarketplaceStripeCardPaymentData
+# Use `extend union` to define a payment plugin's PaymentData type
+union PaymentData = ExampleIOUPaymentData
 
-# These should be defined in their respective plugin schemas, but `extend enum` isn't working yet
+# Use `extend enum` to add a plugin's payment method name
 "The name of a payment method, which is how payment methods are keyed"
 enum PaymentMethodName {
   iou_example
-  stripe_card
 }
 
 "An example"
