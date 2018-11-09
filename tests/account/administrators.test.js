@@ -86,7 +86,7 @@ beforeAll(async () => {
 
 afterAll(() => testApp.stop());
 
-test("unauthenticated", async () => {
+test.skip("unauthenticated", async () => {
   try {
     await administratorsQuery({ shopId: opaqueShopId });
   } catch (error) {
@@ -94,7 +94,7 @@ test("unauthenticated", async () => {
   }
 });
 
-test("authenticated as admin", async () => {
+test.skip("authenticated as admin", async () => {
   await testApp.setLoggedInUser(mockAdminOneAccount);
 
   const nodes = [
@@ -119,7 +119,7 @@ test("authenticated as admin", async () => {
   await testApp.clearLoggedInUser();
 });
 
-test("authenticated as non-admin", async () => {
+test.skip("authenticated as non-admin", async () => {
   await testApp.setLoggedInUser(mockOtherAccount);
 
   try {

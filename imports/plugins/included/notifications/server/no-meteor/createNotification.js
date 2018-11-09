@@ -20,14 +20,15 @@ const messageForType = {
  * @param {String} input.details - details of the Notification
  * @param {String} input.type - The type of Notification
  * @param {String} input.url - url link
+ * @param {String} [input.message] - Message to send, if not already defined in messageForType
  * @return {undefined}
  */
-export default async function createNotification(collections, { accountId, details, type, url }) {
+export default async function createNotification(collections, { accountId, details, type, url, message = "" }) {
   const doc = {
     _id: Random.id(),
     details,
     hasDetails: !!details,
-    message: messageForType[type],
+    message: message || messageForType[type],
     status: "unread",
     timeSent: new Date(),
     to: accountId,

@@ -24,7 +24,7 @@ export default function handleSitemapRoutes(req, res, next) {
 
   if (xml) {
     res.statusCode = 200;
-    res.send(xml);
+    res.end(xml);
   } else {
     res.statusCode = 404;
   }

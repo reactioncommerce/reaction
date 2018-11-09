@@ -69,15 +69,11 @@ export const StripePackageConfig = PackageConfig.clone().extend({
     label: "Connect Authorization Credentials",
     optional: true
   },
-  "settings.reaction-stripe": {
-    type: Object,
-    defaultValue: {}
-  },
-  "settings.reaction-stripe.support": {
+  "settings.support": {
     type: Array,
     label: "Payment provider supported methods"
   },
-  "settings.reaction-stripe.support.$": {
+  "settings.support.$": {
     type: String,
     allowedValues: ["Authorize", "De-authorize", "Capture", "Refund"]
   },

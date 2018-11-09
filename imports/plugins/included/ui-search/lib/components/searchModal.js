@@ -2,8 +2,8 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import classnames from "classnames";
 import { Reaction } from "/client/api";
+import CatalogGrid from "@reactioncommerce/components/CatalogGrid/v1";
 import { TextField, Button, IconButton, SortableTableLegacy } from "@reactioncommerce/reaction-ui";
-import ProductGridContainer from "/imports/plugins/included/product-variant/containers/productGridContainer";
 import { accountsTable } from "../helpers";
 
 class SearchModal extends Component {
@@ -22,15 +22,43 @@ class SearchModal extends Component {
   }
 
   state = {
-    activeTab: "products"
+    activeTab: "products",
+    headerSize: 0
   }
 
   componentDidMount() {
     // Focus and select all text in the search input
     const { input } = this.textField.refs;
     input.select();
+
+    window.addEventListener("resize", this.updateHeaderSize);
+    this.updateHeaderSize();
+
+    // Disable scrolling for main window
+    document.body.style.overflow = "hidden";
   }
 
+  componentDidUpdate(prevProps, prevState) {
+    if (this.getHeaderSize() !== prevState.headerSize) {
+      this.updateHeaderSize();
+    }
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener("resize", this.upateHeaderSize);
+
+    // Re-enable scrolling for main window
+    document.body.style.overflow = "auto";
+  }
+
+  getHeaderSize = () => {
+    const header = document.getElementById("search-modal-header");
+    return (header && header.offsetHeight) || 0;
+  };
+
+  updateHeaderSize = () => {
+    this.setState({ headerSize: this.getHeaderSize() });
+  };
 
   isKeyboardAction(event) {
     // keyCode 32 (spacebar)
@@ -159,21 +187,29 @@ class SearchModal extends Component {
   }
 
   render() {
+    const { headerSize } = this.state;
+    const resultsStyles = {
+      marginTop: headerSize,
+      height: window.innerHeight - headerSize
+    };
+
     return (
       <div>
         <div className="rui search-modal-close"><IconButton icon="fa fa-times" onClick={this.props.unmountMe} /></div>
-        <div className="rui search-modal-header">
+        <div className="rui search-modal-header" id="search-modal-header">
           {this.renderSearchInput()}
           {this.renderSearchTypeToggle()}
           {this.props.tags.length > 0 && this.renderProductSearchTags()}
         </div>
-        <div className="rui search-modal-results-container">
+        <div className="rui search-modal-results-container" style={resultsStyles}>
           {this.props.products.length > 0 &&
-            <ProductGridContainer
-              products={this.props.products}
-              unmountMe={this.props.unmountMe}
-              isSearch={true}
-            />
+            <div className="container-grid search">
+              <CatalogGrid
+                currencyCode={this.props.currencyCode}
+                products={this.props.products}
+                onItemClick={this.props.unmountMe}
+              />
+            </div>
           }
           {this.props.accounts.length > 0 &&
             <div className="data-table">

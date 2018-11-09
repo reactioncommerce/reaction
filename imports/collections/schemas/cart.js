@@ -97,6 +97,12 @@ export const CartItem = new SimpleSchema({
     type: String,
     optional: true
   },
+  "productTagIds": {
+    label: "Product Tags",
+    type: Array,
+    optional: true
+  },
+  "productTagIds.$": String,
   "productVendor": {
     label: "Product Vendor",
     type: String,

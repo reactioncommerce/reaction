@@ -1,5 +1,6 @@
 import { Meteor } from "meteor/meteor";
 import { check } from "meteor/check";
+import appEvents from "/imports/node-app/core/util/appEvents";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
 import ReactionError from "@reactioncommerce/reaction-error";
 import { MediaRecords } from "/lib/collections";
@@ -8,30 +9,6 @@ import { MediaRecords } from "/lib/collections";
  * Media-related Meteor methods
  * @namespace Media/Methods
  */
-
-/**
- * @method updateMediaMetadata
- * @memberof Media/Methods
- * @summary Updates a media record.
- * @param {String} fileRecordId - _id of updated file record.
- * @param {Object} metadata - metadata from updated media file.
- * @return {Boolean}
- * @private
- */
-async function updateMediaMetadata(fileRecordId, metadata) {
-  check(fileRecordId, String);
-  check(metadata, Object);
-
-  const result = MediaRecords.update({
-    _id: fileRecordId
-  }, {
-    $set: {
-      metadata
-    }
-  });
-
-  return result === 1;
-}
 
 /**
  * @name media/insert
@@ -43,13 +20,17 @@ async function updateMediaMetadata(fileRecordId, metadata) {
  */
 export async function insertMedia(fileRecord) {
   check(fileRecord, Object);
-  const mediaRecordId = await MediaRecords.insert({
+
+  const doc = {
     ...fileRecord,
     metadata: {
       ...fileRecord.metadata,
       workflow: "published"
     }
-  });
+  };
+  const mediaRecordId = await MediaRecords.insert(doc);
+
+  appEvents.emit("afterMediaInsert", doc);
 
   return mediaRecordId;
 }
@@ -73,7 +54,13 @@ export async function removeMedia(fileRecordId) {
     }
   });
 
-  return result === 1;
+  const success = (result === 1);
+
+  if (success) {
+    appEvents.emit("afterMediaUpdate", MediaRecords.findOne({ _id: fileRecordId }));
+  }
+
+  return success;
 }
 
 /**
@@ -116,8 +103,8 @@ export function updateMediaPriorities(sortedMediaIDs) {
         "metadata.priority": index
       }
     });
-    const { metadata } = MediaRecords.findOne({ _id });
-    updateMediaMetadata(_id, metadata);
+
+    appEvents.emit("afterMediaUpdate", MediaRecords.findOne({ _id }));
   });
 
   return true;

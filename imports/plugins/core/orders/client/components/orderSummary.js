@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { withMoment, Components } from "@reactioncommerce/reaction-components";
 import { Badge, ClickToCopy } from "@reactioncommerce/reaction-ui";
+import { formatPriceString } from "/client/api";
 import { getOrderRiskBadge, getOrderRiskStatus, getPaymentForCurrentShop, getShippingInfo, getTaxRiskStatus } from "../helpers";
 
 class OrderSummary extends Component {
@@ -85,7 +86,7 @@ class OrderSummary extends Component {
                 <div className="risk-info risk-tax">
                   <Components.Translation
                     i18nKey="admin.orderRisk.orderTaxRisk"
-                    defaultValue="Tax not calulated"
+                    defaultValue="Tax not calculated"
                   />
                 </div>
               }
@@ -120,7 +121,7 @@ class OrderSummary extends Component {
             <div className="order-summary-form-group">
               <strong data-i18n="order.payment">Payment</strong>
               <div className="invoice-details">
-                {paymentDisplayName} ({invoice.total})
+                {paymentDisplayName} ({formatPriceString(invoice.total)})
               </div>
             </div>
 

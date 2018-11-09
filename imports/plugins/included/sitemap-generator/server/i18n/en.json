@@ -7,6 +7,12 @@
         "refreshSitemapsNow": "Refresh sitemap",
         "sitemapRefreshInitiated": "Refreshing the sitemap can take up to 5 minutes. You will be notified when it is completed.",
         "sitemapRefreshFailed": "Sitemap refresh failed"
+      },
+      "productDetailEdit": {
+        "shouldAppearInSitemap": "Include in sitemap?",
+        "refreshSitemap": "Refresh sitemap now?",
+        "refreshSitemapYes": "Yes, refresh",
+        "refreshSitemapNo": "No, don't refresh"
       }
     }
   }

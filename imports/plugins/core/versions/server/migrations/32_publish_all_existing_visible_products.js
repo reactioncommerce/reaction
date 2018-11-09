@@ -15,7 +15,7 @@ Migrations.add({
     }, { _id: 1 }).map((product) => product._id);
     let success = false;
     try {
-      success = Promise.await(publishProductsToCatalog(visiblePublishedProducts, collections));
+      success = Promise.await(publishProductsToCatalog(visiblePublishedProducts, { collections, getFunctionsOfType: () => [] }));
     } catch (error) {
       Logger.error("Error in migration 32, publishProductsToCatalog", error);
     }

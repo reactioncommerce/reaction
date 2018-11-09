@@ -39,7 +39,7 @@ export default async function publishProducts(context, productIds) {
     });
   }
 
-  const success = await publishProductsToCatalog(productIds, collections);
+  const success = await publishProductsToCatalog(productIds, context);
   if (!success) {
     Logger.error("Some Products could not be published to the Catalog.");
     throw new ReactionError("server-error", "Some Products could not be published to the Catalog. Make sure your variants are visible.");

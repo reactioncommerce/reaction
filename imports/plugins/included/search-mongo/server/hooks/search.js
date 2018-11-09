@@ -1,11 +1,9 @@
 import Hooks from "@reactioncommerce/hooks";
 import Logger from "@reactioncommerce/logger";
-import _ from "lodash";
 import { Meteor } from "meteor/meteor";
-import { Products, ProductSearch, AccountSearch } from "/lib/collections";
+import { ProductSearch, AccountSearch } from "/lib/collections";
 import rawCollections from "/imports/collections/rawCollections";
 import {
-  getSearchParameters,
   buildAccountSearchRecord,
   buildProductSearchRecord
 } from "../methods/searchcollections";
@@ -64,38 +62,12 @@ Hooks.Events.add("afterRemoveProduct", (doc) => {
 });
 
 /**
- * after product update rebuild product search record
- * @private
+ * @summary Rebuild search record when product is published
  */
-Hooks.Events.add("afterUpdateCatalogProduct", (productId, options) => {
-  // Find the most recent version of the product document based on
-  // the passed in doc._id
-  const productDocument = Products.findOne({ _id: productId });
-
-  // If this hook is ran without options, then this callback
-  // should no be executed.
-  if (!options) {
-    return productDocument;
-  }
-
-  const { modifier: { $set: allProps } } = options;
-  const topLevelFieldNames = Object.getOwnPropertyNames(allProps);
-
-  if (ProductSearch && !Meteor.isAppTest && productDocument.type === "simple") {
-    const { fieldSet } = getSearchParameters();
-    const modifiedFields = _.intersection(fieldSet, topLevelFieldNames);
-    if (modifiedFields.length) {
-      Logger.debug(`Rewriting search record for ${productDocument.title}`);
-      ProductSearch.remove(productId);
-      if (!productDocument.isDeleted) { // do not create record if product was archived
-        buildProductSearchRecord(productId);
-      }
-    } else {
-      Logger.debug("No watched fields modified, skipping");
-    }
-  }
-
-  return productDocument;
+Hooks.Events.add("afterPublishProductToCatalog", (product) => {
+  Logger.debug(`Rewriting search record for ${product.title}`);
+  ProductSearch.remove({ _id: product._id });
+  buildProductSearchRecord(product._id);
 });
 
 /**

@@ -4,7 +4,7 @@ import { compose } from "recompose";
 import { registerComponent, composeWithTracker } from "@reactioncommerce/reaction-components";
 import { Meteor } from "meteor/meteor";
 import { Reaction } from "/client/api";
-import { Shops } from "/lib/collections";
+import { Accounts, Shops } from "/lib/collections";
 import withCatalogItems from "imports/plugins/core/graphql/lib/hocs/withCatalogItems";
 import withShopId from "/imports/plugins/core/graphql/lib/hocs/withShopId";
 import withTagId from "/imports/plugins/core/graphql/lib/hocs/withTagId";
@@ -92,6 +92,9 @@ function composer(props, onData) {
     return;
   }
 
+  const userAccount = Accounts.findOne(Meteor.userId());
+  const { currency: currencyCode = "" } = userAccount.profile;
+
   // Get active shop's slug
   const internalShopId = Reaction.getShopId();
   const pathShopSlug = Reaction.Router.getParam("shopSlug");
@@ -113,6 +116,7 @@ function composer(props, onData) {
 
   // Pass arguments to GraphQL HOCs
   onData(null, {
+    currencyCode,
     shopSlug,
     tagSlugOrId
   });

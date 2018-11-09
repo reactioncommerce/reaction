@@ -2,7 +2,8 @@
 .fileStorage/
 .vscode
 .idea
-.env
+.env*
+!.env.example
 .c9
 *.csv
 *.dat

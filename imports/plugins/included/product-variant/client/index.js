@@ -15,7 +15,6 @@ export { default as Products } from "../components/products";
 export { default as VariantForm } from "../components/variantForm";
 export { default as VariantEdit } from "../components/variantEdit";
 export { default as ProductGridCustomer } from "../components/customer/productGrid";
-export { default as ProductGridItemCustomer } from "../components/customer/productGridItem";
 
 export { default as GridItemControlsContainer } from "../containers/gridItemControlsContainer";
 export { default as GridItemNoticeContainer } from "../containers/gridItemNoticeContainer";

@@ -193,6 +193,7 @@ async function buildOrderItem(inputItem, currencyCode, context) {
     productId: chosenProduct._id,
     productSlug: chosenProduct.slug,
     productType: chosenProduct.type,
+    productTagIds: chosenProduct.tagIds,
     productVendor: chosenProduct.vendor,
     quantity,
     shopId: chosenProduct.shopId,
@@ -319,19 +320,25 @@ export default async function createOrder(context, input) {
 
   // Create one charge per fulfillment group. This is necessary so that each group charge can be captured as it is
   // fulfilled, and so that each can be refunded or canceled separately.
-  const chargedFulfillmentGroups = await Promise.all(finalFulfillmentGroups.map(async (group) => {
-    const payment = await createPaymentForFulfillmentGroup(group);
-    const paymentWithCurrency = {
-      ...payment,
-      currency: currencyExchangeInfo,
-      currencyCode
-    };
-    PaymentSchema.validate(paymentWithCurrency);
-    return {
-      ...group,
-      payment: paymentWithCurrency
-    };
-  }));
+  let chargedFulfillmentGroups;
+  try {
+    chargedFulfillmentGroups = await Promise.all(finalFulfillmentGroups.map(async (group) => {
+      const payment = await createPaymentForFulfillmentGroup(group);
+      const paymentWithCurrency = {
+        ...payment,
+        currency: currencyExchangeInfo,
+        currencyCode
+      };
+      PaymentSchema.validate(paymentWithCurrency);
+      return {
+        ...group,
+        payment: paymentWithCurrency
+      };
+    }));
+  } catch (error) {
+    Logger.error("createOrder: error creating payments", error.message);
+    throw new ReactionError("payment-failed", "There was a problem authorizing this payment");
+  }
 
   // Create anonymousAccessToken if no account ID
   let anonymousAccessToken = null;

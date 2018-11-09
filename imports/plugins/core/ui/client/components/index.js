@@ -11,6 +11,7 @@ export { default as NumericInput } from "./numericInput/numericInput";
 export { default as NumberTypeInput } from "./numericInput/numberTypeInput";
 export { Button, IconButton, EditButton, VisibilityButton, Handle, ButtonSelect } from "./button";
 export { Badge } from "./badge";
+export { Link } from "./link";
 export { Translation, Currency } from "./translation";
 export { default as Tooltip } from "./tooltip/tooltip";
 export { Metadata, Metafield } from "./metadata";
