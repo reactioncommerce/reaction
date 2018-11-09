@@ -9,7 +9,7 @@ mockContext.userHasPermission.mockReturnValueOnce(true);
 const restriction = {
   type: "deny",
   attributes: [
-    { property: "vendor", value: "erik", propertyType: "string", operator: "eq" },
+    { property: "vendor", value: "reaction", propertyType: "string", operator: "eq" },
     { property: "productType", value: "knife", propertyType: "string", operator: "eq" }
   ],
   destination: { region: ["CO", "NY"] }
@@ -27,7 +27,7 @@ const updatedRestriction = {
 test("update a flat rate fulfillment restriction", async () => {
   mockContext.collections.FlatRateFulfillmentRestrictions.updateOne.mockReturnValueOnce(Promise.resolve({
     ok: 1,
-    restriction: updatedRestriction
+    updatedRestriction
   }));
 
   const result = await updateFlatRateFulfillmentRestrictionMutation(mockContext, {
@@ -40,7 +40,7 @@ test("update a flat rate fulfillment restriction", async () => {
     restriction: {
       type: "deny",
       attributes: [
-        { property: "vendor", value: "erik", propertyType: "string", operator: "eq" },
+        { property: "vendor", value: "reaction", propertyType: "string", operator: "eq" },
         { property: "productType", value: "knife", propertyType: "string", operator: "eq" }
       ],
       destination: { region: ["CO", "NY"] }
