@@ -13,7 +13,7 @@ Reaction.registerPackage({
   icon: "fa fa-university",
   autoEnable: true,
   catalog: {
-    customPublishedProductVariantFields: ["isTaxable", "taxCode", "taxDescription"]
+    publishedProductVariantFields: ["isTaxable", "taxCode", "taxDescription"]
   },
   functionsByType: {
     publishProductToCatalog: [publishProductToCatalog],
