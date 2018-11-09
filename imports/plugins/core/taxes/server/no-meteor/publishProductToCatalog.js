@@ -15,11 +15,21 @@ export default function publishProductToCatalog(catalogProduct, { variants }) {
 
     if (catalogProductVariant.options) {
       catalogProductVariant.options.forEach((catalogProductVariantOption) => {
-        const unpublishedVariantOption = variants.find((variant) => variant._id === catalogProductVariantOption.variantId);
-        if (unpublishedVariantOption) {
-          catalogProductVariantOption.isTaxable = !!unpublishedVariantOption.isTaxable;
-          catalogProductVariantOption.taxCode = unpublishedVariantOption.taxCode;
-          catalogProductVariantOption.taxDescription = unpublishedVariantOption.taxDescription;
+        // NOTE: This is how we would publish tax fields off the option variant, but currently the
+        // UI does not allow setting these on an option, only on its parent variant. So we will
+        // instead use the values from the parent.
+        //
+        // const unpublishedVariantOption = variants.find((variant) => variant._id === catalogProductVariantOption.variantId);
+        // if (unpublishedVariantOption) {
+        //   catalogProductVariantOption.isTaxable = !!unpublishedVariantOption.isTaxable;
+        //   catalogProductVariantOption.taxCode = unpublishedVariantOption.taxCode;
+        //   catalogProductVariantOption.taxDescription = unpublishedVariantOption.taxDescription;
+        // }
+
+        if (unpublishedVariant) {
+          catalogProductVariantOption.isTaxable = !!unpublishedVariant.isTaxable;
+          catalogProductVariantOption.taxCode = unpublishedVariant.taxCode;
+          catalogProductVariantOption.taxDescription = unpublishedVariant.taxDescription;
         }
       });
     }
