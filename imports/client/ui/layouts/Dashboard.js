@@ -31,6 +31,7 @@ const Container = styled.div`
 `;
 
 const Main = styled.div`
+  max-width: 1200px;
   flex-grow: 1;
   padding: 24px;
   transition: ${(props) =>
