@@ -1,7 +1,8 @@
-import DashboardIcon from "@material-ui/icons/Dashboard";
+import React from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faStore } from "@fortawesome/free-solid-svg-icons";
 
 import { registerOperatorRoute } from "/imports/client/ui";
-import Dashboard from "./containers/dashboardContainer";
 import "./templates/import/import.html";
 import "./templates/import/import.js";
 
@@ -23,9 +24,11 @@ import "./templates/dashboard.html";
 import "./templates/dashboard.js";
 
 registerOperatorRoute({
-  path: "/dashboard",
-  mainComponent: Dashboard,
   isNavigationLink: true,
-  sidebarIconComponent: DashboardIcon,
-  sidebarI18nLabel: "admin.dashboard.coreTitle"
+  isSetting: true,
+  path: "/shop-settings",
+  mainComponent: "shopSettings",
+  // eslint-disable-next-line react/display-name
+  sidebarIconComponent: () => <FontAwesomeIcon icon={faStore} size="lg" />,
+  sidebarI18nLabel: "admin.settings.shopSettingsLabel"
 });

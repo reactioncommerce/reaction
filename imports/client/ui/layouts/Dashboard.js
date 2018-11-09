@@ -5,7 +5,8 @@ import { ContainerQuery } from "react-container-query";
 import MUIAppBar from "@material-ui/core/AppBar";
 import MUIToolbar from "@material-ui/core/Toolbar";
 import MUIIconButton from "@material-ui/core/IconButton";
-import MenuIcon from "@material-ui/icons/Menu";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faBars } from "@fortawesome/free-solid-svg-icons";
 import ProfileImage from "@reactioncommerce/components/ProfileImage/v1";
 import { applyTheme } from "@reactioncommerce/components/utils";
 import { Route, Switch } from "react-router";
@@ -105,7 +106,7 @@ export default class Dashboard extends Component {
               <Toolbar>
                 <BurgerMenuContainer>
                   <IconButton onClick={this.handleDrawerOpen}>
-                    <MenuIcon />
+                    <FontAwesomeIcon icon={faBars} />
                   </IconButton>
                 </BurgerMenuContainer>
                 <Grow />

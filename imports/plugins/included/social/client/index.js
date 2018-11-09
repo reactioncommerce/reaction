@@ -1,4 +1,6 @@
-import Share from "@material-ui/icons/Share";
+import React from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faShareAltSquare } from "@fortawesome/free-solid-svg-icons";
 
 import { registerOperatorRoute } from "/imports/client/ui";
 import SocialSettings from "./containers/socialSettingsContainer";
@@ -19,8 +21,10 @@ import "./templates/social.js";
 
 registerOperatorRoute({
   isNavigationLink: true,
+  isSetting: true,
   mainComponent: SocialSettings,
   path: "/social-settings",
-  sidebarIconComponent: Share,
+  // eslint-disable-next-line react/display-name
+  sidebarIconComponent: () => <FontAwesomeIcon icon={faShareAltSquare} size="lg" />,
   sidebarI18nLabel: "admin.dashboard.socialLabel"
 });

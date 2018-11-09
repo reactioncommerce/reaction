@@ -1,4 +1,6 @@
-import Language from "@material-ui/icons/Language";
+import React from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faLanguage } from "@fortawesome/free-solid-svg-icons";
 
 import { registerOperatorRoute } from "/imports/client/ui";
 import Localization from "./containers/localizationSettings";
@@ -9,8 +11,10 @@ export { default as LocalizationSettings } from "./containers/localizationSettin
 
 registerOperatorRoute({
   isNavigationLink: true,
+  isSetting: true,
   mainComponent: Localization,
   path: "/localization",
-  sidebarIconComponent: Language,
+  // eslint-disable-next-line react/display-name
+  sidebarIconComponent: () => <FontAwesomeIcon icon={faLanguage} size="lg" />,
   sidebarI18nLabel: "admin.i18nSettings.shopLocalization"
 });

@@ -1,4 +1,6 @@
-import Inbox from "@material-ui/icons/Inbox";
+import React from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faInbox } from "@fortawesome/free-solid-svg-icons";
 
 import { registerOperatorRoute } from "/imports/client/ui";
 import Orders from "./containers/orderDashboardContainer";
@@ -31,9 +33,11 @@ registerOperatorRoute({
 
 registerOperatorRoute({
   isNavigationLink: true,
+  isSetting: false,
   mainComponent: Orders,
   path: "/orders",
-  sidebarIconComponent: Inbox,
+  // eslint-disable-next-line react/display-name
+  sidebarIconComponent: () => <FontAwesomeIcon icon={faInbox} size="lg" />,
   sidebarI18nLabel: "admin.dashboard.ordersLabel"
 });
 

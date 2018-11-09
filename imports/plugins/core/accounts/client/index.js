@@ -1,4 +1,6 @@
-import Group from "@material-ui/icons/Group";
+import React from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faUsers, faSignInAlt } from "@fortawesome/free-solid-svg-icons";
 
 import { registerOperatorRoute } from "/imports/client/ui";
 import Accounts from "./containers/accountsDashboardContainer";
@@ -57,9 +59,21 @@ import "./templates/updatePassword/updatePassword.html";
 import "./templates/updatePassword/updatePassword.js";
 
 registerOperatorRoute({
+  isNavigationLink: true,
+  isSetting: false,
   path: "/accounts",
   mainComponent: Accounts,
-  isNavigationLink: true,
-  sidebarIconComponent: Group,
+  // eslint-disable-next-line react/display-name
+  sidebarIconComponent: () => <FontAwesomeIcon icon={faUsers} size="lg" />,
   sidebarI18nLabel: "admin.dashboard.accountsLabel"
+});
+
+registerOperatorRoute({
+  isNavigationLink: true,
+  isSetting: true,
+  path: "/login-services",
+  mainComponent: "accountsSettings",
+  // eslint-disable-line react/display-name
+  sidebarIconComponent: () => <FontAwesomeIcon icon={faSignInAlt} size="lg" />,
+  sidebarI18nLabel: "admin.settings.accountSettingsLabel"
 });
