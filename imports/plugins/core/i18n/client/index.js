@@ -1,6 +1,6 @@
 import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faLanguage } from "@fortawesome/free-solid-svg-icons";
+import { faGlobe } from "@fortawesome/free-solid-svg-icons";
 
 import { registerOperatorRoute } from "/imports/client/ui";
 import Localization from "./containers/localizationSettings";
@@ -15,6 +15,6 @@ registerOperatorRoute({
   mainComponent: Localization,
   path: "/localization",
   // eslint-disable-next-line react/display-name
-  sidebarIconComponent: () => <FontAwesomeIcon icon={faLanguage} size="lg" />,
+  sidebarIconComponent: () => <FontAwesomeIcon icon={faGlobe} size="lg" />,
   sidebarI18nLabel: "admin.i18nSettings.shopLocalization"
 });
