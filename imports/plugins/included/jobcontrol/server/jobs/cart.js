@@ -4,12 +4,7 @@ import { Meteor } from "meteor/meteor";
 import { Accounts, Cart, Jobs } from "/lib/collections";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
 import { Job } from "/imports/plugins/core/job-collection/lib";
-
-let moment;
-async function lazyLoadMoment() {
-  if (moment) return;
-  moment = await import("moment").default;
-}
+import moment from "moment";
 
 /**
  * @param {Object} olderThan older than date
@@ -55,34 +50,48 @@ export function cartCleanupJob() {
     pollInterval: 60 * 60 * 1000, // backup polling, see observer below
     workTimeout: 180 * 1000
   }, (job, callback) => {
-    Logger.debug("Processing cart/removeFromCart");
+    Logger.info("Processing cart/removeFromCart");
     const settings = Reaction.getShopSettings();
     if (settings.cart) {
-      Promise.await(lazyLoadMoment());
       const schedule = (settings.cart.cleanupDurationDays).match(/\d/);// configurable in shop settings
       const olderThan = moment().subtract(Number(schedule[0]), "days")._d;
+      Logger.info("removing carts older than", olderThan);
       const carts = getStaleCarts(olderThan);
-      carts.forEach((cart) => {
-        const account = Accounts.findOne({ _id: cart.accountId });
-        const removeCart = Cart.remove({ accountId: account._id });
-        if (!account.emails.length) {
-          const removeAccount = Accounts.remove({
-            _id: account._id,
-            emails: []
-          });
-          Hooks.Events.run("afterAccountsRemove", null, account._id);
-          Meteor.users.remove({ _id: account.userId, emails: [] }); // clears out anonymous user
-          if (removeCart && removeAccount) {
-            const success = "Stale anonymous user cart and account successfully cleaned";
-            Logger.debug(success);
-            job.done(success, { repeatId: true });
+      if (carts && carts.length) {
+        const totalLength = carts.length;
+        let currentRun = 0;
+        carts.forEach((cart) => {
+          const account = Accounts.findOne({ _id: cart.accountId });
+          if (account) {
+            const removeCarts = Cart.remove({ accountId: account._id });
+            if (account) {
+              if (!account.emails.length && removeCarts) {
+                Accounts.remove({
+                  _id: account._id,
+                  emails: []
+                });
+                Hooks.Events.run("afterAccountsRemove", null, account._id);
+                Meteor.users.remove({ _id: account.userId, emails: [] }); // clears out anonymous user
+                Logger.info("Stale anonymous user cart and account successfully cleaned");
+              } else if (removeCarts) {
+                Logger.info("Stale anonymous user cart and account successfully cleaned");
+              }
+            }
+          } else {
+            Cart.remove({ _id: cart._id });
+            Logger.info("Removed just this cart");
           }
-        } else {
-          const success = "Stale user cart successfully cleaned";
-          Logger.debug(success);
-          job.done(success, { repeatId: true });
-        }
-      });
+          currentRun += 1;
+          job.progress(
+            currentRun,
+            totalLength,
+            { echo: true }
+          );
+        });
+      } else { Logger.info("No carts found"); }
+      const success = "Cart cleanup job completed";
+      Logger.info(success);
+      job.done(success);
     } else {
       Logger.debug("No cart cleanup schedule");
     }
