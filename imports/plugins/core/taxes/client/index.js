@@ -14,6 +14,6 @@ registerOperatorRoute({
   mainComponent: "taxSettings",
   path: "/tax-settings",
   // eslint-disable-next-line react/display-name
-  sidebarIconComponent: () => <FontAwesomeIcon icon={faUniversity} size="lg"/>,
+  sidebarIconComponent: <FontAwesomeIcon icon={faUniversity} />,
   sidebarI18nLabel: "admin.dashboard.taxesLabel"
 });

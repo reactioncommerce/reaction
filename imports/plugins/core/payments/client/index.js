@@ -13,6 +13,6 @@ registerOperatorRoute({
   mainComponent: "paymentSettings",
   path: "/payment",
   // eslint-disable-next-line react/display-name
-  sidebarIconComponent: () => <FontAwesomeIcon icon={faCreditCard} size="lg" />,
+  sidebarIconComponent: <FontAwesomeIcon icon={faCreditCard} />,
   sidebarI18nLabel: "admin.settings.paymentSettingsLabel"
 });

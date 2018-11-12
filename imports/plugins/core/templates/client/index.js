@@ -12,6 +12,6 @@ registerOperatorRoute({
   path: "/templates",
   mainComponent: "templateSettings",
   // eslint-disable-next-line react/display-name
-  sidebarIconComponent: () => <FontAwesomeIcon icon={faColumns} size="lg" />,
+  sidebarIconComponent: <FontAwesomeIcon icon={faColumns} />,
   sidebarI18nLabel: "admin.settings.templateSettingsLabel"
 });

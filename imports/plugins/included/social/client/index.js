@@ -25,6 +25,6 @@ registerOperatorRoute({
   mainComponent: SocialSettings,
   path: "/social-settings",
   // eslint-disable-next-line react/display-name
-  sidebarIconComponent: () => <FontAwesomeIcon icon={faShareAltSquare} size="lg" />,
+  sidebarIconComponent: <FontAwesomeIcon icon={faShareAltSquare} />,
   sidebarI18nLabel: "admin.dashboard.socialLabel"
 });

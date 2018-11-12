@@ -37,7 +37,7 @@ registerOperatorRoute({
   mainComponent: Orders,
   path: "/orders",
   // eslint-disable-next-line react/display-name
-  sidebarIconComponent: () => <FontAwesomeIcon icon={faInbox} size="lg" />,
+  sidebarIconComponent: <FontAwesomeIcon icon={faInbox} />,
   sidebarI18nLabel: "admin.dashboard.ordersLabel"
 });
 

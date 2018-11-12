@@ -64,7 +64,7 @@ registerOperatorRoute({
   path: "/accounts",
   mainComponent: Accounts,
   // eslint-disable-next-line react/display-name
-  sidebarIconComponent: () => <FontAwesomeIcon icon={faUsers} size="lg" />,
+  sidebarIconComponent: <FontAwesomeIcon icon={faUsers} />,
   sidebarI18nLabel: "admin.dashboard.accountsLabel"
 });
 
@@ -74,6 +74,6 @@ registerOperatorRoute({
   path: "/login-services",
   mainComponent: "accountsSettings",
   // eslint-disable-line react/display-name
-  sidebarIconComponent: () => <FontAwesomeIcon icon={faSignInAlt} size="lg" />,
+  sidebarIconComponent: <FontAwesomeIcon icon={faSignInAlt} />,
   sidebarI18nLabel: "admin.settings.accountSettingsLabel"
 });

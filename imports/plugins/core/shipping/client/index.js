@@ -14,6 +14,6 @@ registerOperatorRoute({
   mainComponent: Shipping,
   path: "/shipping",
   // eslint-disable-next-line react/display-name
-  sidebarIconComponent: () => <FontAwesomeIcon icon={faShippingFast} size="lg"/>,
+  sidebarIconComponent: <FontAwesomeIcon icon={faShippingFast} />,
   sidebarI18nLabel: "admin.dashboard.shippingLabel"
 });
