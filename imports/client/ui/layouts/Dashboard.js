@@ -4,7 +4,7 @@ import styledMUI from "styled-components-mui";
 import { ContainerQuery } from "react-container-query";
 import MUIAppBar from "@material-ui/core/AppBar";
 import MUIToolbar from "@material-ui/core/Toolbar";
-import MUIIconButton from "@material-ui/core/IconButton";
+import IconButton from "@material-ui/core/IconButton";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars } from "@fortawesome/free-solid-svg-icons";
 import ProfileImage from "@reactioncommerce/components/ProfileImage/v1";
@@ -13,6 +13,7 @@ import { Route, Switch } from "react-router";
 import Sidebar from "../components/Sidebar";
 import { operatorRoutes } from "../index";
 
+// TODO: Use real data
 const viewer = {
   firstName: "John",
   lastName: "Doe",
@@ -66,14 +67,10 @@ const Grow = styled.div`
   flex-grow: 1;
 `;
 
-const IconButton = styled(MUIIconButton)``;
-
-const BurgerMenuContainer = styled.div`
-  color: ${applyTheme("BurgerMenu.color")};
-`;
+const BurgerMenuContainer = styled.div``;
 
 const DrawerHeader = styled.div`
-  min-height: 56px;
+  min-height: 48px;
   @media (min-width: 600px) {
     min-height: 64px;
   }

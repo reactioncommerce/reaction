@@ -5,9 +5,9 @@ import styled from "styled-components";
 import styledMUI from "styled-components-mui";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronLeft } from "@fortawesome/free-solid-svg-icons";
-import List from "@material-ui/core/List";
-import ListItem from "@material-ui/core/ListItem";
-import ListItemIcon from "@material-ui/core/ListItemIcon";
+import MUIList from "@material-ui/core/List";
+import MUIListItem from "@material-ui/core/ListItem";
+import MUIListItemIcon from "@material-ui/core/ListItemIcon";
 import MUIDivider from "@material-ui/core/Divider";
 import MUIListItemText from "@material-ui/core/ListItemText";
 import MUIDrawer from "@material-ui/core/Drawer";
@@ -16,10 +16,11 @@ import {
   applyTheme,
   addTypographyStyles
 } from "@reactioncommerce/components/utils";
-import { Typography } from "@material-ui/core";
 import { Translation } from "/imports/plugins/core/ui/client/components";
 
-const IconButton = styled(MUIIconButton)``;
+const IconButton = styledMUI(MUIIconButton)`
+  margin-left: auto;
+`;
 
 const Drawer = styledMUI(MUIDrawer, { paper: "Paper" })`
   width: ${applyTheme("Sidebar.drawerWidth")};
@@ -31,8 +32,33 @@ const Drawer = styledMUI(MUIDrawer, { paper: "Paper" })`
 `;
 
 const Divider = styledMUI(MUIDivider)`
-  margin-top: 10px;
-  margin-bottom: 10px;
+  width: ${applyTheme("Sidebar.iconBarWidth")};
+  padding-top: 10px;
+  padding-bottom: 10px;
+  background-color: ${applyTheme("Sidebar.iconBarBackgroundColor")};
+`;
+
+const List = styledMUI(MUIList)`
+  padding-top: 0;
+`;
+
+const ListItem = styledMUI(MUIListItem)`
+  padding: 0;
+`;
+
+const LowerDarkBlueBand = styled.div`
+  background-color: ${applyTheme("Sidebar.iconBarBackgroundColor")};
+  width: ${applyTheme("Sidebar.iconBarWidth")};
+  height: 100vh;
+`;
+
+const ListItemIcon = styled(MUIListItemIcon)`
+  width: ${applyTheme("Sidebar.iconBarWidth")};
+  background-color: ${applyTheme("Sidebar.iconBarBackgroundColor")};
+  padding-top: ${applyTheme("Sidebar.ListItemIconPaddingTop")};
+  padding-right: ${applyTheme("Sidebar.ListItemIconPaddingRight")};
+  padding-bottom: ${applyTheme("Sidebar.ListItemIconPaddingBottom")};
+  padding-left: ${applyTheme("Sidebar.ListItemIconPaddingLeft")};
 `;
 
 const ListItemText = styledMUI(MUIListItemText)`
@@ -42,9 +68,8 @@ const ListItemText = styledMUI(MUIListItemText)`
 const DrawerHeader = styled.div`
   display: flex;
   align-items: center;
-  padding: 0 8px;
-  justify-content: flex-end;
-  min-height: 56px;
+  padding: 0 8px 0 0;
+  min-height: 48px;
   @media (min-width: 600px) {
     min-height: 64px;
   }
@@ -53,13 +78,32 @@ const DrawerHeader = styled.div`
   }
 `;
 
-const CompanyName = styledMUI(Typography)`
+const AppBarDarkBlueBand = styled.div`
+  background-color: ${applyTheme("Sidebar.iconBarBackgroundColor")};
+  height: 48px;
+  width: ${applyTheme("Sidebar.iconBarWidth")};
+  @media (min-width: 600px) {
+    min-height: 64px;
+  }
+`;
+
+const CompanyBranding = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
+const UpperDarkBlueBand = styled.div`
+  width: ${applyTheme("Sidebar.iconBarWidth")};
+  height: 90px;
+  background-color: ${applyTheme("Sidebar.iconBarBackgroundColor")};
+`;
+
+const CompanyName = styled.div`
   ${addTypographyStyles("SidebarMenu", "titleText")};
   color: ${applyTheme("Sidebar.companyNameColor")};
-  border-bottom: solid 5px ${applyTheme("Sidebar.companyNameBorderBottom")};
-  width: fit-content;
-  margin: 20px auto;
+  padding-bottom: 20px;
   font-weight: bold;
+  margin: 0 auto;
 `;
 
 const activeClassName = "nav-item-active";
@@ -101,7 +145,7 @@ export default class Sidebar extends Component {
             <Link to={`/operator${route.path}`} activeClassName={activeClassName} key={route.path}>
               <ListItem button>
                 <ListItemIcon>
-                  {React.createElement(route.sidebarIconComponent)}
+                  {React.cloneElement(route.sidebarIconComponent, { color: "#5d8ea9", size: "lg" })}
                 </ListItemIcon>
                 <ListItemText disableTypography>
                   <Translation defaultValue="" i18nKey={route.sidebarI18nLabel} />
@@ -120,15 +164,20 @@ export default class Sidebar extends Component {
     const menu = (
       <nav>
         <DrawerHeader>
+          <AppBarDarkBlueBand />
           <IconButton onClick={this.handleDrawerClose}>
             <FontAwesomeIcon icon={faChevronLeft} />
           </IconButton>
         </DrawerHeader>
-        <CompanyName variant="h5">Reaction</CompanyName>
+        <CompanyBranding>
+          <UpperDarkBlueBand />
+          <CompanyName variant="h5">Reaction</CompanyName>
+        </CompanyBranding>
         <List>
           {this.renderNavigationMenuItems()}
           <Divider component="li" />
           {this.renderNavigationMenuItems(true)}
+          <LowerDarkBlueBand />
         </List>
       </nav>
     );
