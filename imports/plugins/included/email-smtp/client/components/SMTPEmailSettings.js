@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Components } from "@reactioncommerce/reaction-components";
 
-class EmailSettings extends Component {
+class SMTPEmailSettings extends Component {
   constructor(props) {
     super(props);
 
@@ -120,7 +120,7 @@ class EmailSettings extends Component {
   }
 }
 
-EmailSettings.propTypes = {
+SMTPEmailSettings.propTypes = {
   providers: PropTypes.object.isRequired,
   saveSettings: PropTypes.func.isRequired,
   settings: PropTypes.shape({
@@ -132,4 +132,4 @@ EmailSettings.propTypes = {
   })
 };
 
-export default EmailSettings;
+export default SMTPEmailSettings;

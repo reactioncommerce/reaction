@@ -1,9 +1,9 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 import PropTypes from "prop-types";
 import { Components } from "@reactioncommerce/reaction-components";
 import { Translation } from "/imports/plugins/core/ui/client/components";
 
-class EmailConfig extends Component {
+class SMTPEmailConfig extends Component {
   constructor(props) {
     super(props);
 
@@ -101,7 +101,7 @@ class EmailConfig extends Component {
               i18nKey={"admin.settings.editSettings"}
             />
           </h4>
-          <Components.EmailSettings showSettings={showSettings} />
+          <Components.SMTPEmailSettings showSettings={showSettings} />
         </div>
       );
     }
@@ -111,24 +111,15 @@ class EmailConfig extends Component {
 
   render() {
     return (
-      <Components.CardGroup>
-        <Components.Card>
-          <Components.CardHeader
-            actAsExpander={true}
-            i18nKeyTitle="admin.settings.mailProvider"
-            title="Mail Provider"
-          />
-          <Components.CardBody expandable={true}>
-            {this.renderSettingsDisplay()}
-            {this.renderSettingsUpdate()}
-          </Components.CardBody>
-        </Components.Card>
-      </Components.CardGroup>
+      <Fragment>
+        {this.renderSettingsDisplay()}
+        {this.renderSettingsUpdate()}
+      </Fragment>
     );
   }
 }
 
-EmailConfig.propTypes = {
+SMTPEmailConfig.propTypes = {
   settings: PropTypes.shape({
     host: PropTypes.string,
     password: PropTypes.string,
@@ -142,4 +133,4 @@ EmailConfig.propTypes = {
   status: PropTypes.string
 };
 
-export default EmailConfig;
+export default SMTPEmailConfig;

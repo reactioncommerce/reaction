@@ -3,7 +3,7 @@ import { registerComponent, composeWithTracker } from "@reactioncommerce/reactio
 import { Meteor } from "meteor/meteor";
 import { Reaction } from "/client/api";
 import actions from "../actions";
-import EmailSettings from "../components/emailSettings";
+import SMTPEmailSettings from "../components/SMTPEmailSettings";
 
 const providers = require("nodemailer-wellknown/services.json");
 
@@ -23,7 +23,7 @@ const composer = (props, onData) => {
 
 const handlers = { saveSettings: actions.settings.saveSettings };
 
-registerComponent("EmailSettings", EmailSettings, [
+registerComponent("SMTPEmailSettings", SMTPEmailSettings, [
   composeWithTracker(composer),
   withProps(handlers)
 ]);
@@ -31,4 +31,4 @@ registerComponent("EmailSettings", EmailSettings, [
 export default compose(
   composeWithTracker(composer),
   withProps(handlers)
-)(EmailSettings);
+)(SMTPEmailSettings);
