@@ -167,7 +167,6 @@ registerSchema("CartItems", CartItems);
  * @property {Shipment[]} shipping Array of Shipment optional, blackbox
  * @property {Payment[]} billing Array of Payment optional, blackbox
  * @property {String} sessionId Optional and deprecated
- * @property {Number} tax tax rate
  * @property {Number} discount optional
  * @property {Workflow} workflow optional
  * @property {Date} createdAt required
@@ -231,11 +230,6 @@ export const Cart = new SimpleSchema({
   "billing.$": {
     type: Object,
     blackbox: true
-  },
-  "taxCalculationFailed": {
-    type: Boolean,
-    optional: true,
-    defaultValue: false
   },
   "bypassAddressValidation": {
     type: Boolean,

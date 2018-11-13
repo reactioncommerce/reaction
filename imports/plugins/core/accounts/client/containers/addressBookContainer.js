@@ -249,24 +249,11 @@ const handlers = {
   },
 
   markCart(address, isEnteredSelected) {
-    if (!isEnteredSelected) {
-      Meteor.call("accounts/markAddressValidationBypassed", false, (error) => {
-        if (error) {
-          return Logger.error(error, "Unable to mark the cart");
-        }
-        Meteor.call("accounts/markTaxCalculationFailed", false, (err) => {
-          if (err) {
-            return Logger.error(err, "Unable to mark the cart");
-          }
-        });
-      });
-    } else {
-      Meteor.call("accounts/markAddressValidationBypassed", true, (error) => {
-        if (error) {
-          return Logger.error(error, "Unable to mark the cart");
-        }
-      });
-    }
+    Meteor.call("accounts/markAddressValidationBypassed", !!isEnteredSelected, (error) => {
+      if (error) {
+        Logger.error(error, "Unable to mark the cart");
+      }
+    });
   },
 
   /**
