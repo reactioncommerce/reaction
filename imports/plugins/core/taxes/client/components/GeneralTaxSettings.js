@@ -4,7 +4,6 @@ import { uniqueId } from "lodash";
 import { Form } from "reacto-form";
 import { i18next } from "/client/api";
 import Button from "@reactioncommerce/components/Button/v1";
-import Checkbox from "@reactioncommerce/components/Checkbox/v1";
 import ErrorsBlock from "@reactioncommerce/components/ErrorsBlock/v1";
 import Field from "@reactioncommerce/components/Field/v1";
 import Select from "@reactioncommerce/components/Select/v1";
@@ -15,8 +14,7 @@ export default class GeneralTaxSettings extends Component {
     onSubmit: PropTypes.func.isRequired,
     settingsDoc: PropTypes.shape({
       activeTaxServiceName: PropTypes.string,
-      defaultTaxCode: PropTypes.string,
-      taxShipping: PropTypes.bool
+      defaultTaxCode: PropTypes.string
     }),
     taxServices: PropTypes.arrayOf(PropTypes.shape({
       displayName: PropTypes.string.isRequired,
@@ -51,7 +49,6 @@ export default class GeneralTaxSettings extends Component {
 
     const activeTaxServiceNameInputId = `activeTaxServiceName_${this.uniqueInstanceIdentifier}`;
     const defaultTaxCodeInputId = `defaultTaxCode_${this.uniqueInstanceIdentifier}`;
-    const taxShippingInputId = `taxShipping_${this.uniqueInstanceIdentifier}`;
 
     return (
       <div className="clearfix">
@@ -63,10 +60,6 @@ export default class GeneralTaxSettings extends Component {
           <Field name="defaultTaxCode" label={i18next.t("admin.taxSettings.defaultTaxCode")} labelFor={defaultTaxCodeInputId}>
             <TextInput id={defaultTaxCodeInputId} name="defaultTaxCode" />
             <ErrorsBlock names={["defaultTaxCode"]} />
-          </Field>
-          <Field name="taxShipping">
-            <Checkbox id={taxShippingInputId} label={i18next.t("admin.taxSettings.taxShipping")} labelFor={taxShippingInputId} name="taxShipping" />
-            <ErrorsBlock names={["taxShipping"]} />
           </Field>
         </Form>
         <div className="clearfix">

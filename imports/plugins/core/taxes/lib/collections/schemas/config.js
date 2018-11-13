@@ -17,10 +17,6 @@ export const TaxPackageConfig = PackageConfig.clone().extend({
   "settings.defaultTaxCode": {
     type: String,
     optional: true
-  },
-  "settings.taxShipping": {
-    type: Boolean,
-    defaultValue: false
   }
 });
 
