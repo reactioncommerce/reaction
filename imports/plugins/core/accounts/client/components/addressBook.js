@@ -256,18 +256,18 @@ class AddressBook extends Component {
       // new object with editAddress _id and the param addess data
       this.clearForm();
       return updateAddress({ _id: editAddress._id, ...address }, null, validateAddress)
-        .then((result) => {
-          if (result && result.validated === false) {
+        .then((validationResults) => {
+          if (validationResults && validationResults.validated === false) {
             this.setState({
               mode: "review",
-              validationResults: result
+              validationResults
             });
           } else {
             this.setState({
               mode: "grid"
             });
           }
-          return undefined;
+          return null;
         })
         .catch(onError);
     }

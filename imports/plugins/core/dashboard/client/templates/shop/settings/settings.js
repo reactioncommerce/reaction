@@ -71,7 +71,7 @@ Template.shopSettings.helpers({
     return address[0];
   },
   showAppSwitch(template) {
-    if (template === "optionsShopSettings") {
+    if (template === "optionsShopSettings" || template === "ShopAddressValidationSettings") {
       // do not have switch for options card/panel
       return false;
     }
