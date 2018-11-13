@@ -1,5 +1,5 @@
 import { namespaces } from "@reactioncommerce/reaction-graphql-utils";
-import { decodeOpaqueIdForNamespace, encodeOpaqueId } from "./id";
+import { assocInternalId, assocOpaqueId, decodeOpaqueIdForNamespace, encodeOpaqueId } from "./id";
 
 export const assocNavigationItemInternalId = assocInternalId(namespaces.NavigationItem);
 export const assocNavigationItemOpaqueId = assocOpaqueId(namespaces.NavigationItem);
