@@ -58,7 +58,7 @@ export default async function calculateOrderGroupTaxes({ context, group }) {
     if (!item.isTaxable) return [];
 
     return allTaxes
-      .filter((taxDef) => taxDef.taxCode === item.taxCode)
+      .filter((taxDef) => !taxDef.taxCode || taxDef.taxCode === item.taxCode)
       .map((taxDef) => ({
         _id: Random.id(),
         jurisdictionId: taxDef._id,

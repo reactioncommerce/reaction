@@ -58,7 +58,7 @@ Template.customTaxRates.helpers({
     };
   },
   taxGrid() {
-    const filteredFields = ["taxCode", "rate", "country", "region", "postal"];
+    const filteredFields = ["country", "region", "postal", "taxCode", "rate"];
     const noDataMessage = i18next.t("admin.taxSettings.noCustomTaxRatesFound");
     const instance = Template.instance();
 

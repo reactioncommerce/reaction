@@ -14,7 +14,7 @@
           "taxesDescription": "Tax configuration"
         },
         "taxGrid": {
-          "taxCode": "Code",
+          "taxCode": "Item Code",
           "rate": "Rate",
           "country": "Country",
           "region": "Region",
