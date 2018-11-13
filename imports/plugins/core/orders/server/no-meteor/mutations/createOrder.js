@@ -127,7 +127,7 @@ function getInvoiceForFulfillmentGroup(group, discountTotal) {
 
   // Taxes
   const { tax: taxTotal, taxableAmount } = taxSummary;
-  const effectiveTaxRate = taxTotal / taxableAmount;
+  const effectiveTaxRate = taxableAmount > 0 ? taxTotal / taxableAmount : 0;
 
   // Fulfillment
   const shippingTotal = group.shipmentMethod.rate || 0;
