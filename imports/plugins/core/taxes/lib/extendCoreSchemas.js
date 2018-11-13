@@ -60,6 +60,22 @@ OrderItem.extend({
   "taxes.$": Taxes
 });
 
+ProductVariant.extend({
+  isTaxable: {
+    type: Boolean,
+    optional: true
+  },
+  taxCode: {
+    type: String,
+    optional: true
+  },
+  taxDescription: {
+    type: String,
+    optional: true
+  }
+});
+
+// Extend the catalog variant database schemas
 const variantSchemaExtension = {
   isTaxable: Boolean,
   taxCode: {
@@ -72,8 +88,5 @@ const variantSchemaExtension = {
   }
 };
 
-ProductVariant.extend(variantSchemaExtension);
-
-// Extend the catalog variant database schemas
 VariantBaseSchema.extend(variantSchemaExtension);
 CatalogVariantSchema.extend(variantSchemaExtension);

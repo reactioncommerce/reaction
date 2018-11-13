@@ -43,7 +43,6 @@ const mockVariants = [
     isDeleted: false,
     isLowQuantity: true,
     isSoldOut: false,
-    isTaxable: true,
     isVisible: true,
     length: 0,
     lowInventoryWarningThreshold: 0,
@@ -82,7 +81,6 @@ const mockVariants = [
     isDeleted: false,
     isLowQuantity: true,
     isSoldOut: false,
-    isTaxable: true,
     isVisible: true,
     length: 2,
     lowInventoryWarningThreshold: 0,
@@ -199,7 +197,6 @@ const expectedOptionsResponse = [
     inventoryPolicy: true,
     isLowQuantity: true,
     isSoldOut: false,
-    isTaxable: true,
     length: 2,
     lowInventoryWarningThreshold: 0,
     metafields: [
@@ -250,7 +247,6 @@ const expectedVariantsResponse = [
     inventoryPolicy: false,
     isLowQuantity: true,
     isSoldOut: false,
-    isTaxable: true,
     length: 0,
     lowInventoryWarningThreshold: 0,
     metafields: [

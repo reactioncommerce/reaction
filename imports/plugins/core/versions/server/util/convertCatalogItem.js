@@ -22,7 +22,6 @@ function xformVariant(variant, variantPriceInfo, shopCurrencyCode, updatedAt) {
     inventoryPolicy: !!variant.inventoryPolicy,
     isLowQuantity: !!variant.isLowQuantity,
     isSoldOut: !!variant.isSoldOut,
-    isTaxable: !!variant.isTaxable,
     length: variant.length,
     lowInventoryWarningThreshold: variant.lowInventoryWarningThreshold,
     metafields: variant.metafields,

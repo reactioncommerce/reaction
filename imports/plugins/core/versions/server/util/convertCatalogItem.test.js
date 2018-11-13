@@ -95,7 +95,6 @@ const beforeDoc = {
       price: 19.99,
       inventoryManagement: true,
       inventoryPolicy: true,
-      isTaxable: true,
       isVisible: true,
       updatedAt: new Date("2014-04-03T20:46:52.411+0000"),
       createdAt: new Date("2014-04-03T20:46:52.411+0000"),
@@ -136,7 +135,6 @@ const beforeDoc = {
       price: 19.99,
       inventoryManagement: true,
       inventoryPolicy: true,
-      isTaxable: true,
       isVisible: true,
       updatedAt: new Date("2014-04-03T20:46:52.411+0000"),
       createdAt: new Date("2014-04-03T20:46:52.411+0000"),
@@ -176,7 +174,6 @@ const beforeDoc = {
       price: 12.99,
       inventoryManagement: true,
       inventoryPolicy: true,
-      isTaxable: true,
       isVisible: true,
       updatedAt: new Date("2014-04-03T20:46:52.411+0000"),
       createdAt: new Date("2014-04-03T20:46:52.411+0000"),
@@ -335,7 +332,6 @@ const afterDoc = {
         inventoryPolicy: true,
         isLowQuantity: false,
         isSoldOut: false,
-        isTaxable: true,
         length: 0,
         lowInventoryWarningThreshold: 0,
         metafields: [
@@ -377,7 +373,6 @@ const afterDoc = {
             inventoryPolicy: true,
             isLowQuantity: false,
             isSoldOut: false,
-            isTaxable: true,
             length: 10,
             lowInventoryWarningThreshold: 0,
             metafields: [
@@ -419,7 +414,6 @@ const afterDoc = {
             inventoryPolicy: true,
             isLowQuantity: false,
             isSoldOut: false,
-            isTaxable: true,
             length: 10,
             lowInventoryWarningThreshold: 0,
             metafields: [
