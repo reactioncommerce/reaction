@@ -22,7 +22,7 @@ export async function attributeDenyCheck(methodRestrictions, method, hydratedCar
 
   const { items } = hydratedCart;
 
-  const denyMethod = items.some((item) => { // eslint-disable-line
+  const denyMethod = items.some((item) => {
     // For each item, run through the restrictions
     return methodRestrictions.some((methodRestriction) => {
       const { attributes, destination } = methodRestriction;
