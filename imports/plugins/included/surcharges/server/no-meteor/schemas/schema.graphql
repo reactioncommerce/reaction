@@ -1,0 +1,166 @@
+####
+# Custom data types for Surcharges data
+####
+
+type surcharges {
+  amount: String
+  reason: String
+  message: String
+}
+
+type surchargeAttributeRestrictions {
+  property: String
+  value: String
+  propertyType: String
+  operator: String
+}
+
+type surchargeDestinationRestrictions {
+  country: [String]
+  region: [String]
+  postal: [String]
+}
+
+enum surchargeTypeEnum {
+  surcharge
+}
+
+enum SurchargeSortByField {
+  createdAt
+}
+
+input surchargesInput {
+  amount: String
+  reason: String
+  message: String
+}
+
+input surchargeAttributeRestrictionsInput {
+  property: String
+  value: String
+  propertyType: String
+  operator: String
+}
+
+input surchargeDestinationRestrictionsInput {
+  country: [String]
+  region: [String]
+  postal: [String]
+}
+
+####
+# Queries
+####
+extend type Query {
+  "Get the full list of flat rate fulfillment method restrictions."
+  getSurcharges(
+    shopId: ID!
+    after: ConnectionCursor,
+    before: ConnectionCursor,
+    first: ConnectionLimitInt,
+    last: ConnectionLimitInt,
+    sortOrder: SortOrder = desc,
+    sortBy: SurchargeSortByField = createdAt
+  ): SurchargeConnection!
+
+  getSurcharge(
+    shopId: ID!
+    surchargeId: ID!
+    after: ConnectionCursor,
+    before: ConnectionCursor,
+    first: ConnectionLimitInt,
+    last: ConnectionLimitInt,
+    sortOrder: SortOrder = desc,
+    sortBy: SurchargeSortByField = createdAt
+  ): SurchargeConnection!
+}
+
+type SurchargeConnection {
+  edges: [SurchargeEdge]
+  nodes: [Surcharge]
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
+type SurchargeEdge {
+  cursor: ConnectionCursor!
+  node: Surcharge
+}
+
+"Defines a surcharge."
+type Surcharge implements Node {
+  "The surcharge ID."
+  _id: ID!
+
+  "The shop ID"
+  shopId: ID!
+
+  "Method IDs to apply this surcharge to."
+  methodIds: [String]
+
+  """
+  The type of this surcharge. Allowed types "surcharge".
+  """
+  type: surchargeTypeEnum!
+
+  "Attribute restrictions."
+  attributes: [surchargeAttributeRestrictions]
+
+  "Destination restrictions."
+  destination: surchargeDestinationRestrictions
+
+  "Surcharges."
+  surcharges: surcharges
+}
+
+
+####
+# Create surcharge mutation
+####
+extend type Mutation {
+  "Create a surcharge"
+  createSurcharge(input: CreateSurchargeInput!): CreateSurchargePayload!
+}
+
+# Inputs
+"Defines a surcharge."
+input SurchargeInput {
+  "Method IDs to apply this surcharge to."
+  methodIds: [String]
+
+  """
+  The type of this surcharge. Allowed types are "surcharge".
+  """
+  type: surchargeTypeEnum!
+
+  "Attribute restrictions."
+  attributes: [surchargeAttributeRestrictionsInput]
+
+  "Destination restrictions."
+  destination: surchargeDestinationRestrictionsInput
+
+  "Surcharges."
+  surcharges: [surchargesInput]
+}
+
+"Input for the `CreateSurcharge` mutation"
+input CreateSurchargeInput {
+  "An optional string identifying the mutation call, which will be returned in the response payload"
+  clientMutationId: String
+
+  "This defines the surcharge that you want to create"
+  surcharge: SurchargeInput!
+
+  "The shop to create this surcharge for"
+  shopId: ID!
+}
+
+# Payloads
+"Response from the `CreateSurcharge` mutation"
+type CreateSurchargePayload {
+  "The same string you sent with the mutation params, for matching mutation calls with their responses"
+  clientMutationId: String
+
+  "The created surcharge"
+  surcharge: Surcharge!
+}
