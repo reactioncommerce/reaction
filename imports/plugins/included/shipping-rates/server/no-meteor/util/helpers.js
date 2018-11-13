@@ -10,7 +10,7 @@ import _ from "lodash";
  */
 export async function findCatalogProductsAndVariants(collections, orderLineItems) {
   const { Catalog } = collections;
-  const productIds = orderLineItems.map((orderLineItem) => orderLineItem.productId);
+  const productIds = orderLineItems.map((orderLineItem) => orderLineItem.productId || orderLineItem.productConfiguration.productId);
 
   const catalogProductItems = await Catalog.find({
     "product.productId": { $in: productIds },
@@ -21,7 +21,7 @@ export async function findCatalogProductsAndVariants(collections, orderLineItems
 
   const catalogProductsAndVariants = catalogProductItems.map((catalogProduct) => {
     const { product } = catalogProduct;
-    const orderedVariant = orderLineItems.find((item) => item.productId === product.productId);
+    const orderedVariant = orderLineItems.find((item) => product.productId === item.productId || item.productConfiguration.productId);
 
     const { parentVariant, variant } = findVariantInCatalogProduct(product, orderedVariant.variantId);
 
