@@ -6,16 +6,18 @@ import { NavigationItem as NavigationItemSchema } from "/imports/collections/sch
 /**
  * @method createNavigationItem
  * @summary Creates a nav item
- * @param {Object} context - an object containing the per-request state
- * @param {Object} navigationItem - Nav item to add. See schema.graphql
+ * @param {Object} context An object containing the per-request state
+ * @param {Object} navigationItem Nav item to add. See schema.graphql
  * @return {Promise<Object>} Object with `navigationItem` property containing the created nav item
  */
 export default async function createNavigationItem(context, navigationItem) {
-  const { collections } = context;
+  const { collections, shopId, userHasPermission } = context;
   const { NavigationItems } = collections;
-  const { metadata } = navigationItem;
+  const { metadata, content = [] } = navigationItem;
 
-  // TODO check role/permission
+  if (userHasPermission(["core"]) === false) {
+    throw new ReactionError("access-denied", "You do not have permission to create a navigation item");
+  }
 
   let parsedMetadata = {};
   if (metadata) {
@@ -29,7 +31,11 @@ export default async function createNavigationItem(context, navigationItem) {
   const newNavigationItem = {
     ...navigationItem,
     _id: Random.id(),
-    metadata: parsedMetadata
+    shopId,
+    data: {},
+    metadata: parsedMetadata,
+    createdAt: new Date(),
+    hasUnpublishedChanges: true
   };
 
   NavigationItemSchema.validate(newNavigationItem);
