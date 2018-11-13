@@ -110,7 +110,7 @@ type Surcharge implements Node {
   destination: surchargeDestinationRestrictions
 
   "Surcharges."
-  surcharges: surcharges
+  surcharges: [surcharges]
 }
 
 
