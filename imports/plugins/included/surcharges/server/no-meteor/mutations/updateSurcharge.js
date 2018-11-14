@@ -10,10 +10,10 @@ const inputSchema = new SimpleSchema({
 
 /**
  * @method updateSurchargeMutation
- * @summary updates a flat rate fulfillment method
+ * @summary updates a surcharge
  * @param {Object} context - an object containing the per-request state
  * @param {Object} input - Input (see SimpleSchema)
- * @return {Promise<Object>} An object with a `surcharge` property containing the updated method
+ * @return {Promise<Object>} An object with a `surcharge` property containing the updated surcharge
  */
 export default async function updateSurchargeMutation(context, input) {
   const cleanedInput = inputSchema.clean(input); // add default values and such
@@ -21,13 +21,13 @@ export default async function updateSurchargeMutation(context, input) {
 
   const { surcharge, surchargeId, shopId } = cleanedInput;
   const { collections, userHasPermission } = context;
-  const { FlatRateFulfillmentSurcharges } = collections;
+  const { Surcharges } = collections;
 
   if (!userHasPermission(["admin", "owner", "shipping"], shopId)) {
     throw new ReactionError("access-denied", "Access Denied");
   }
 
-  const { matchedCount } = await FlatRateFulfillmentSurcharges.updateOne({
+  const { matchedCount } = await Surcharges.updateOne({
     _id: surchargeId,
     shopId
   }, {

@@ -166,26 +166,6 @@ type CreateSurchargePayload {
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 ####
 # Delete restriction mutation
 ####
@@ -201,7 +181,7 @@ input DeleteSurchargeInput {
   clientMutationId: String
 
   "The ID of the flat rate fulfillment method you want to delete"
-  restrictionId: ID!
+  surchargeId: ID!
 
   "The shop that owns the method"
   shopId: ID!
@@ -214,39 +194,8 @@ type DeleteSurchargePayload {
   clientMutationId: String
 
   "The removed fulfillment method"
-  restriction: Surcharge!
+  surcharge: Surcharge!
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 ####

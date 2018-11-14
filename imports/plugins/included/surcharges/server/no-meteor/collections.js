@@ -5,5 +5,5 @@
  * @returns {Object|null} shipping surcharges collection for the provided fulfillment group
  */
 export function getSurchargesCollection(context) {
-  return context.app.db.collection("FlatRateFulfillmentSurcharges");
+  return context.app.db.collection("Surcharges");
 }

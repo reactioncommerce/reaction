@@ -6,16 +6,13 @@
  * @param {Object} context - an object containing the per-request state
  * @param {Object} params - request parameters
  * @param {String} params.shopId - Shop ID for the shop that owns the surcharges
- * @return {Promise<Object>|undefined} - A surcharge document, if one is found
+ * @return {Promise<Object>|undefined} - Surcharge documents, if found
  */
 export default async function getSurcharges(context, { shopId } = {}) {
   const { collections } = context;
-  const { FlatRateFulfillmentSurcharges } = collections;
+  const { Surcharges } = collections;
 
-  console.log("shopI---------------------", shopId);
-
-
-  return FlatRateFulfillmentSurcharges.find({
+  return Surcharges.find({
     shopId
   });
 }

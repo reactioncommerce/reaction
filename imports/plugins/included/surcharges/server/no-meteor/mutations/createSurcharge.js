@@ -10,7 +10,7 @@ const inputSchema = new SimpleSchema({
 
 /**
  * @method createSurchargeMutation
- * @summary Creates a flat rate fulfillment surcharge
+ * @summary Creates a surcharge
  * @param {Object} context - an object containing the per-request state
  * @param {Object} input - Input (see SimpleSchema)
  * @return {Promise<Object>} An object with a `surcharge` property containing the created surcharge
@@ -21,13 +21,13 @@ export default async function createSurchargeMutation(context, input) {
 
   const { surcharge, shopId } = cleanedInput;
   const { collections, userHasPermission } = context;
-  const { FlatRateFulfillmentSurcharges } = collections;
+  const { Surcharges } = collections;
 
   if (!userHasPermission(["admin", "owner", "shipping"], shopId)) {
     throw new ReactionError("access-denied", "Access Denied");
   }
 
-  const { insertedCount } = await FlatRateFulfillmentSurcharges.insertOne({
+  const { insertedCount } = await Surcharges.insertOne({
     _id: Random.id(),
     shopId,
     ...surcharge

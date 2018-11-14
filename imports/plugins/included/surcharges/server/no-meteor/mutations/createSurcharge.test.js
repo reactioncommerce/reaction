@@ -2,12 +2,12 @@ import mockContext, { mockCollection } from "/imports/test-utils/helpers/mockCon
 import createSurchargeMutation from "./createSurcharge";
 
 
-// Create mock context with FlatRateFulfillmentSurcharges collection
-mockContext.collections.FlatRateFulfillmentSurcharges = mockCollection("FlatRateFulfillmentSurcharges");
+// Create mock context with Surcharges collection
+mockContext.collections.Surcharges = mockCollection("Surcharges");
 mockContext.userHasPermission.mockReturnValueOnce(true);
 
 test("add a surcharge", async () => {
-  mockContext.collections.FlatRateFulfillmentSurcharges.insertOne.mockReturnValueOnce(Promise.resolve({}));
+  mockContext.collections.Surcharges.insertOne.mockReturnValueOnce(Promise.resolve({}));
 
   const result = await createSurchargeMutation(mockContext, {
     _id: "surcharge123",
@@ -15,7 +15,7 @@ test("add a surcharge", async () => {
     surcharge: {
       type: "surcharge",
       attributes: [
-        { property: "vendor", value: "erik", propertyType: "string", operator: "eq" },
+        { property: "vendor", value: "reaction", propertyType: "string", operator: "eq" },
         { property: "productType", value: "knife", propertyType: "string", operator: "eq" }
       ],
       destination: { region: ["CO", "NY"] },
@@ -33,7 +33,7 @@ test("add a surcharge", async () => {
     surcharge: {
       type: "surcharge",
       attributes: [
-        { property: "vendor", value: "erik", propertyType: "string", operator: "eq" },
+        { property: "vendor", value: "reaction", propertyType: "string", operator: "eq" },
         { property: "productType", value: "knife", propertyType: "string", operator: "eq" }
       ],
       destination: { region: ["CO", "NY"] },

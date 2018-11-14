@@ -4,5 +4,5 @@
  * @returns {undefined}
  */
 export default function startup(context) {
-  context.collections.FlatRateFulfillmentSurcharges = context.app.db.collection("FlatRateFulfillmentSurcharges");
+  context.collections.Surcharges = context.app.db.collection("Surcharges");
 }

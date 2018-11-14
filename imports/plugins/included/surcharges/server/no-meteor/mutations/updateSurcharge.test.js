@@ -2,8 +2,8 @@ import mockContext, { mockCollection } from "/imports/test-utils/helpers/mockCon
 import updateSurchargeMutation from "./updateSurcharge";
 
 
-// Create mock context with FlatRateFulfillmentSurcharges collection
-mockContext.collections.FlatRateFulfillmentSurcharges = mockCollection("FlatRateFulfillmentSurcharges");
+// Create mock context with Surcharges collection
+mockContext.collections.Surcharges = mockCollection("Surcharges");
 mockContext.userHasPermission.mockReturnValueOnce(true);
 
 const surcharge = {
@@ -39,7 +39,7 @@ const updatedSurcharge = {
 };
 
 test("update a surcharge", async () => {
-  mockContext.collections.FlatRateFulfillmentSurcharges.updateOne.mockReturnValueOnce(Promise.resolve({
+  mockContext.collections.Surcharges.updateOne.mockReturnValueOnce(Promise.resolve({
     ok: 1,
     updatedSurcharge
   }));
