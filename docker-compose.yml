@@ -24,6 +24,7 @@ services:
     command: bash -c "meteor npm install && node ./.reaction/waitForMongo.js && reaction"
     depends_on:
       - mongo
+    env_file: .env
     environment:
       MONGO_URL: "mongodb://mongo:27017/reaction"
       MONGO_OPLOG_URL: "mongodb://mongo:27017/local"
