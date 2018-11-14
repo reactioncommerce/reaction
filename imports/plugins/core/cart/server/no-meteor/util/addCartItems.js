@@ -107,7 +107,7 @@ export default async function addCartItems(collections, currentItems, inputItems
     const cartItem = {
       _id: Random.id(),
       attributes,
-      isTaxable: chosenVariant.taxable || false,
+      isTaxable: chosenVariant.isTaxable || false,
       metafields,
       optionTitle: chosenVariant.optionTitle,
       parcel: chosenVariant.parcel,
