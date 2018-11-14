@@ -24,6 +24,11 @@ export default {
     ping: () => "pong",
     ...Query
   },
+  PackageSettingsData: {
+    __resolveType(obj) {
+      return obj.gqlType;
+    }
+  },
   Shop,
   Tag,
   Time: GraphQLTime,
