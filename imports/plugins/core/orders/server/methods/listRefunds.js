@@ -1,7 +1,8 @@
-import { Meteor } from "meteor/meteor";
 import { check } from "meteor/check";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
 import ReactionError from "@reactioncommerce/reaction-error";
+import getGraphQLContextInMeteorMethod from "/imports/plugins/core/graphql/server/getGraphQLContextInMeteorMethod";
+import { functionsByType } from "/imports/plugins/core/core/server/no-meteor/pluginRegistration";
 
 /**
  * @name orders/refund/list
@@ -23,7 +24,8 @@ export default function listRefunds(order) {
   for (const group of order.shipping) {
     const { payment } = group;
     const processor = payment.processor.toLowerCase();
-    const shopRefunds = Meteor.call(`${processor}/refund/list`, payment);
+    const context = Promise.await(getGraphQLContextInMeteorMethod(Reaction.getUserId()));
+    const shopRefunds = Promise.await(functionsByType[`${processor}ListRefund`][0](context, payment));
     refunds.push(...shopRefunds);
   }
   return refunds;

@@ -3,8 +3,11 @@ import Logger from "@reactioncommerce/logger";
 import { Meteor } from "meteor/meteor";
 import { check } from "meteor/check";
 import { Orders } from "/lib/collections";
-import Reaction from "/imports/plugins/core/core/server/Reaction";
 import ReactionError from "@reactioncommerce/reaction-error";
+import Reaction from "/imports/plugins/core/core/server/Reaction";
+import getGraphQLContextInMeteorMethod from "/imports/plugins/core/graphql/server/getGraphQLContextInMeteorMethod";
+import { functionsByType } from "/imports/plugins/core/core/server/no-meteor/pluginRegistration";
+
 
 /**
  * @name orders/capturePayments
@@ -44,7 +47,8 @@ export default function capturePayments(orderId) {
     let result;
     let error;
     try {
-      result = Meteor.call(`${processorLowercase}/payment/capture`, payment);
+      const context = Promise.await(getGraphQLContextInMeteorMethod(Reaction.getUserId()));
+      result = Promise.await(functionsByType[`${processorLowercase}CapturePayment`][0](context, payment));
     } catch (err) {
       error = err;
     }
