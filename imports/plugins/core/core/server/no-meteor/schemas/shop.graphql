@@ -88,4 +88,7 @@ extend type Query {
 
   "Returns the ID of the primary shop for the domain"
   primaryShopId: ID
+
+  "Returns the primary shop for the domain"
+  primaryShop: Shop
 }

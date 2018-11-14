@@ -1,12 +1,12 @@
 import { Template } from "meteor/templating";
 import EmailLogs from "../containers/emailLogs";
-import EmailConfig from "../containers/emailConfig";
+import EmailConfigContainer from "../containers/EmailConfigContainer";
 
 
 Template.emailSettings.helpers({
   EmailConfig() {
     return {
-      component: EmailConfig
+      component: EmailConfigContainer
     };
   },
   EmailLogs() {

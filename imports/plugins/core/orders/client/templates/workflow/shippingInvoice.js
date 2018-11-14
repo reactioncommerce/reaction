@@ -117,16 +117,11 @@ Template.coreOrderShippingInvoice.events({
     const { invoice, mode: paymentMode, paymentPluginName, status: paymentStatus } = getPaymentForCurrentShop(order);
     const invoiceTotal = invoice.total;
 
-    const shopId = Reaction.getShopId();
+    const paymentPlugin = Packages.findOne({ name: paymentPluginName, shopId: order.shopId });
 
     // check if payment provider supports de-authorize
-    const checkSupportedMethods = Packages.findOne({
-      name: paymentPluginName,
-      shopId
-    }).settings[paymentPluginName].support;
-
     let alertText;
-    if (_.includes(checkSupportedMethods, "de-authorize") ||
+    if (_.get(paymentPlugin, "settings.support", []).indexOf("De-authorize") > -1 ||
       (paymentStatus === "completed" && paymentMode === "capture")) {
       alertText = i18next.t("order.applyRefundDuringCancelOrder", { currencySymbol, invoiceTotal });
     }

@@ -15,14 +15,14 @@ beforeAll(async () => {
 
 afterAll(() => testApp.stop());
 
-test("unauthenticated", async () => {
+test.skip("unauthenticated", async () => {
   const result = await viewerQuery();
   expect(result).toEqual({
     viewer: null
   });
 });
 
-test("authenticated", async () => {
+test.skip("authenticated", async () => {
   const mockAccount = Factory.Accounts.makeOne({
     _id: "123"
   });

@@ -70,7 +70,7 @@ beforeAll(async () => {
 
 afterAll(() => testApp.stop());
 
-test("unauthenticated", async () => {
+test.skip("unauthenticated", async () => {
   try {
     await groupsQuery({ shopId: opaqueShopId });
   } catch (error) {
@@ -78,7 +78,7 @@ test("unauthenticated", async () => {
   }
 });
 
-test("authenticated with reaction-accounts role, gets all groups", async () => {
+test.skip("authenticated with reaction-accounts role, gets all groups", async () => {
   await testApp.setLoggedInUser(mockAdminAccount);
 
   const nodes = groups.map(groupMongoSchemaToGraphQL);
@@ -100,7 +100,7 @@ test("authenticated with reaction-accounts role, gets all groups", async () => {
   await testApp.clearLoggedInUser();
 });
 
-test("authenticated without reaction-accounts role, gets only groups the account belongs to", async () => {
+test.skip("authenticated without reaction-accounts role, gets only groups the account belongs to", async () => {
   await testApp.setLoggedInUser(mockOtherAccount);
 
   const nodes = groups.slice(0, 1).map(groupMongoSchemaToGraphQL);

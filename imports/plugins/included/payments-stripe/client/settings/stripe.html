@@ -1,42 +1,21 @@
 <template name="stripeSettings">
-    {{#unless packageData.settings.api_key}}
-    <div class="alert alert-info">
-      <span data-i18n="admin.paymentSettings.stripeSettingsDescription">Don't have a Stripe API Secret Key?</span>
-      <a href="https://dashboard.stripe.com/account/apikeys" target="_blank">
-        <span data-i18n="admin.paymentSettings.stripeSettingsGetItHere">Get it here.</span>
-      </a>
-    </div>
-    {{/unless}}
-    <div>
-      {{#autoForm collection=Collections.Packages schema=StripePackageConfig doc=packageData type="update" id="stripe-update-form"}}
-        {{>afQuickField name='settings.api_key'}}
-        {{>afQuickField name='settings.public.publishable_key'}}
-        {{#if marketplaceEnabled}}
-          <br>
-          <span data-i18n="admin.paymentSettings.stripeClientIdWarning">The Client ID is a <strong>PUBLIC</strong> field. Please ensure you're using the `client_id` found on the </span>
-          <a target="_blank" href="https://dashboard.stripe.com/account/applications/settings">
-            <span data-i18n="admin.paymentSettings.stripeClientIDLink">Stripe Connect Settings</span>
-          </a>
-          {{>afQuickField name='settings.public.client_id'}}
-          <br>
-          <span data-i18n="admin.connect.applicationFeeDescription">
-            This number represents a percentage fee that the marketplace (this shop) takes for any item which is sold
-            by a merchant shop for this marketplace. This fee applies only if Stripe Connect is setup and enabled on both
-            the marketplace and the merchant shops and if Stripe is the payment provider used to perform the checkout.
-          </span>
-          <br>
-          <span data-i18n="admin.connect.moreDetails">For more details, see the</span>
-          <a target="_blank" href="https://stripe.com/docs/connect/direct-charges#flow-of-funds-with-fees">
-            <span data-i18n="admin.connect.docsLink">Stripe Connect Docs</span>
-          </a>
-          {{>afQuickField name="settings.applicationFee"}}
-        {{/if}}
-        {{>afQuickField name="settings.reaction-stripe.support" options="allowed" noselect=true}}
-        <button type="submit" class="btn btn-primary pull-right"><span data-i18n="app.saveChanges">Save Changes</span></button>
-      {{/autoForm}}
-    </div>
+  {{#unless packageData.settings.api_key}}
+  <div class="alert alert-info">
+    <span data-i18n="admin.paymentSettings.stripeSettingsDescription">Don't have a Stripe API Secret Key?</span>
+    <a href="https://dashboard.stripe.com/account/apikeys" target="_blank">
+      <span data-i18n="admin.paymentSettings.stripeSettingsGetItHere">Get it here.</span>
+    </a>
+  </div>
+  {{/unless}}
+  <div>
+    {{#autoForm collection=Collections.Packages schema=StripePackageConfig doc=packageData type="update" id="stripe-update-form"}}
+      {{>afQuickField name='settings.api_key'}}
+      {{>afQuickField name='settings.public.publishable_key'}}
+      {{>afQuickField name="settings.support" options="allowed" noselect=true}}
+      <button type="submit" class="btn btn-primary pull-right"><span data-i18n="app.saveChanges">Save Changes</span></button>
+    {{/autoForm}}
+  </div>
 </template>
-
 
 <template name="stripe">
   <div class="container-fluid-sm flex">
@@ -77,8 +56,4 @@
       </div>
     </div>
   </div>
-</template>
-
-<template name="stripeConnectRedirect">
-  <p>Stripe Connect Redirect</p>
 </template>
