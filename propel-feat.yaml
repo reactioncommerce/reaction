@@ -1,6 +1,5 @@
 services:
 - name: reaction-core
-  certificate_arn: arn:aws:acm:us-west-2:773713188930:certificate/c2979a7a-7b84-43ed-b3a7-24b0256a1b9f
   root_domain: staging.reactioncommerce.com
   dns_name: reaction-core
   desired_task_count: 2
@@ -21,7 +20,7 @@ services:
       - container_port: 3000
         host_port: 3000
       image: reactioncommerce/reaction
-      image_tag: release-2.0.0-rc.5
+      image_tag: release-2.0.0-rc.7
       env_params:
       - name: REACTION_AUTH
       - name: REACTION_EMAIL
@@ -31,27 +30,40 @@ services:
       - name: HYDRA_ADMIN_URL
       - name: HYDRA_OAUTH2_INTROSPECT_URL
       - name: SKIP_FIXTURES
-- name: storefront
-  certificate_arn: arn:aws:acm:us-west-2:773713188930:certificate/c2979a7a-7b84-43ed-b3a7-24b0256a1b9f
+      - name: CERTIFICATE_ARN
+- name: storefront-core
   root_domain: staging.reactioncommerce.com
   dns_name: storefront
   desired_task_count: 1
   min_task_count: 0
-  max_task_count: 8
+  max_task_count: 2
   min_healthy_percent: 100
   max_percent: 200
   alb_listener_port: 80
   alb_listener_path: /
-  alb_health_check_path: /
+  alb_health_check_path: /health
   task-definition:
-    name: staging-storefront
+    name: staging-storefront-core
     containers:
+    - name: nginx
+      cpu: 128
+      memory: 256
+      port_mappings:
+      - container_port: 8082
+        host_port: 8082
+      image: sportsdirect/nginx
+      image_tag: latest
+      links:
+      - storefront
+      env_params:
+      - name: PROXY_URL
+      - name: NGINX_LISTEN_PORT
+      - name: CERTIFICATE_ARN
     - name: storefront
       cpu: 500
       memory: 1800
       port_mappings:
       - container_port: 4000
-        host_port: 4000
       image: reactioncommerce/reaction-next-starterkit
       image_tag: develop
       env_params:
@@ -72,5 +84,9 @@ services:
       - name: OAUTH2_CLIENT_ID
       - name: OAUTH2_CLIENT_SECRET
       - name: OAUTH2_REDIRECT_URL
-      - name: PASSPORT_SESSION_SECRET
+      - name: OAUTH2_HOST
+      - name: OAUTH2_ADMIN_PORT
+      - name: HYDRA_ADMIN_URL
+      - name: SESSION_SECRET
+      - name: SESSION_MAX_AGE_MS
       - name: CANONICAL_URL
