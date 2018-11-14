@@ -123,6 +123,10 @@ export const CartItem = new SimpleSchema({
     index: 1,
     label: "Cart Item shopId"
   },
+  "subtotal": {
+    type: Number,
+    optional: true
+  },
   "taxCode": {
     type: String,
     optional: true
@@ -133,6 +137,10 @@ export const CartItem = new SimpleSchema({
     blackbox: true
   },
   "taxRate": {
+    type: Number,
+    optional: true
+  },
+  "tax": {
     type: Number,
     optional: true
   },
