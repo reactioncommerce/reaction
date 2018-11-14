@@ -10,6 +10,7 @@ import registerNavigationPlugin from "/imports/plugins/core/navigation/server/no
 import registerOrdersPlugin from "/imports/plugins/core/orders/server/no-meteor/register";
 import registerProductPlugin from "/imports/plugins/core/product/server/no-meteor/register";
 import registerSettingsPlugin from "/imports/plugins/core/settings/server/register";
+import registerShopPlugin from "/imports/plugins/core/shop/server/register";
 import registerTagsPlugin from "/imports/plugins/core/tags/server/no-meteor/register";
 import registerTemplatesPlugin from "/imports/plugins/core/templates/server/no-meteor/register";
 import registerNotificationsPlugin from "/imports/plugins/included/notifications/server/no-meteor/register";
@@ -30,6 +31,7 @@ export default async function registerPlugins(app) {
   await registerFilesPlugin(app); // Core plugin needs Media collection, so files plugin must be first
   await registerCorePlugin(app);
   await registerAccountsPlugin(app);
+  await registerShopPlugin(app);
   await registerCartPlugin(app);
   await registerCatalogPlugin(app);
   await registerDiscountsPlugin(app);
