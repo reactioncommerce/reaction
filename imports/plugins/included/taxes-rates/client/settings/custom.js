@@ -5,7 +5,7 @@ import { ReactiveDict } from "meteor/reactive-dict";
 import { AutoForm } from "meteor/aldeed:autoform";
 import { Shops } from "/lib/collections";
 import { Countries } from "/client/collections";
-import { Taxes, TaxCodes } from "../../lib/collections";
+import { Taxes } from "../../lib/collections";
 import { i18next } from "/client/api";
 import { Taxes as TaxSchema } from "../../lib/collections/schemas";
 import { IconButton, Loading, SortableTable } from "/imports/plugins/core/ui/client/components";
@@ -58,7 +58,7 @@ Template.customTaxRates.helpers({
     };
   },
   taxGrid() {
-    const filteredFields = ["taxCode", "rate", "country", "region", "postal"];
+    const filteredFields = ["country", "region", "postal", "taxCode", "rate"];
     const noDataMessage = i18next.t("admin.taxSettings.noCustomTaxRatesFound");
     const instance = Template.instance();
 
@@ -162,28 +162,6 @@ Template.customTaxRates.helpers({
       tax.shopId = shop._id;
     }
     return tax;
-  },
-  taxCodes() {
-    const instance = Template.instance();
-    if (instance.subscriptionsReady()) {
-      const taxCodes = TaxCodes.find().fetch();
-      const options = [{
-        label: i18next.t("admin.taxSettings.taxable"),
-        value: "RC_TAX"
-      }, {
-        label: i18next.t("admin.taxSettings.nottaxable"),
-        value: "RC_NOTAX"
-      }];
-
-      for (const taxCode of taxCodes) {
-        options.push({
-          label: i18next.t(taxCode.label),
-          value: taxCode.id
-        });
-      }
-      return options;
-    }
-    return [];
   }
 });
 

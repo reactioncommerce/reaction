@@ -1,4 +1,4 @@
 import "./i18n";
-// assemble server api
-import "./methods/methods";
-import "./publications/taxes";
+import "../lib/extendCoreSchemas";
+import "./methods";
+import "./api/import";
