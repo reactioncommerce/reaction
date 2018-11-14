@@ -4,7 +4,7 @@ import { decodeShopOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/sh
 /**
  * @name "Query.navigationItemsByShopId"
  * @method
- * @memberof Catalog/GraphQL
+ * @memberof Navigation/GraphQL
  * @summary Get a paginated list of navigation items for a shop, as an operator
  * @param {Object} _ unused
  * @param {ConnectionArgs} args An object of all arguments that were sent by the client
@@ -14,8 +14,6 @@ import { decodeShopOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/sh
  */
 export default async function navigationItemsByShopId(_, args, context) {
   const { shopId, ...connectionArgs } = args;
-  const { userHasPermission } = context;
-
   const decodedShopId = decodeShopOpaqueId(shopId);
 
   const query = await context.queries.navigationItemsByShopId(context, decodedShopId);

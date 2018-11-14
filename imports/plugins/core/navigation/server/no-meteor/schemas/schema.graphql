@@ -65,7 +65,7 @@ type NavigationItem implements Node {
 "Represents the data for a navigation item"
 type NavigationItemData {
   "The content for the navigation item, in one or more languages"
-  content: [NavigationItemContent]!
+  content: [NavigationItemContent]
 
   "CSS class names to add to the menu item for display"
   classNames: String
@@ -113,7 +113,7 @@ type NavigationTree implements Node {
 "Represents a navigation item and its children in a tree"
 type NavigationTreeItem {
   "The navigation item"
-  NavigationItem: NavigationItem!
+  navigationItem: NavigationItem!
 
   "The child navigation items"
   items: [NavigationTreeItem]
