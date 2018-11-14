@@ -51,13 +51,13 @@ export const Destination = new SimpleSchema({
  * @property {String} reason
  */
 export const Surcharges = new SimpleSchema({
-  "amount": {
+  amount: {
     type: String
   },
-  "message": {
+  message: {
     type: String
   },
-  "reason": {
+  reason: {
     type: String
   }
 });
