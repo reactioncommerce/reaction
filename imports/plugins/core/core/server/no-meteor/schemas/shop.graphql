@@ -13,6 +13,12 @@ type Shop implements Node {
 
   currency: Currency
 
+  "The ID of the shop's default navigation tree"
+  defaultNavigationTreeId: String
+
+  "The default navigation tree for this shop"
+  defaultNavigationTree: NavigationTree
+
   "Returns a list of groups for this shop, as a Relay-compatible connection."
   groups(after: ConnectionCursor, before: ConnectionCursor, first: ConnectionLimitInt, last: ConnectionLimitInt, sortOrder: SortOrder = asc, sortBy: GroupSortByField = createdAt): GroupConnection
 
