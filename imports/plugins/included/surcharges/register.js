@@ -1,5 +1,4 @@
 import Reaction from "/imports/plugins/core/core/server/Reaction";
-import getFulfillmentSurchargesWithQuotes from "./server/no-meteor/getFulfillmentSurchargesWithQuotes";
 import resolvers from "./server/no-meteor/resolvers";
 import mutations from "./server/no-meteor/mutations";
 import queries from "./server/no-meteor/queries";
@@ -18,7 +17,6 @@ Reaction.registerPackage({
   mutations,
   queries,
   functionsByType: {
-    getFulfillmentSurchargesWithQuotes: [getFulfillmentSurchargesWithQuotes],
     startup: [startup]
   }
 });
