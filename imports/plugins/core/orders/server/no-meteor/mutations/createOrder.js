@@ -3,11 +3,14 @@ import SimpleSchema from "simpl-schema";
 import Logger from "@reactioncommerce/logger";
 import Random from "@reactioncommerce/random";
 import ReactionError from "@reactioncommerce/reaction-error";
+import { xformCartCheckout } from "@reactioncommerce/reaction-graphql-xforms/cart";
 import hashLoginToken from "/imports/node-app/core/util/hashLoginToken";
 import appEvents from "/imports/node-app/core/util/appEvents";
 import getFulfillmentGroupItemsWithTaxAdded from "/imports/plugins/core/taxes/server/no-meteor/mutations/getFulfillmentGroupItemsWithTaxAdded";
 import { Order as OrderSchema, Payment as PaymentSchema } from "/imports/collections/schemas";
 import getDiscountsTotalForCart from "/imports/plugins/core/discounts/server/no-meteor/util/getDiscountsTotalForCart";
+import getCartById from "/imports/plugins/core/shipping/server/no-meteor/util/getCartById.js";
+
 
 const orderItemsSchema = new SimpleSchema({
   "addedAt": {
@@ -236,7 +239,7 @@ export default async function createOrder(context, input) {
   inputSchema.validate(cleanedInput);
 
   const { afterValidate, createPaymentForFulfillmentGroup, order: orderInput } = cleanedInput;
-  const { cartId, currencyCode, email, fulfillmentGroups, shopId } = orderInput;
+  const { cartId, cartToken, currencyCode, email, fulfillmentGroups, shopId } = orderInput;
   const { accountId, account, collections } = context;
   const { Orders } = collections;
 
@@ -256,9 +259,11 @@ export default async function createOrder(context, input) {
       workflow: { status: "new", workflow: ["coreOrderWorkflow/notStarted"] }
     };
 
+    const cart = await getCartById(context, cartId, { cartToken, throwIfNotFound: true });
+    const cartWithSummary = await xformCartCheckout(collections, cart);
     // Verify that the price for the chosen shipment method on each group matches between what the client
     // provided and what the current quote is.
-    const rates = await context.queries.getFulfillmentMethodsWithQuotes(finalGroup, context);
+    const rates = await context.queries.getFulfillmentMethodsWithQuotes(finalGroup, cartWithSummary, context);
     const selectedFulfillmentMethod = rates.find((rate) => groupInput.selectedFulfillmentMethodId === rate.method._id);
     if (!selectedFulfillmentMethod) {
       throw new ReactionError("invalid", "The selected fulfillment method is no longer available." +
