@@ -139,6 +139,17 @@ type OrderItem implements Node {
   variantTitle: String
 }
 
+type OrderSurcharge implements Node {
+  "The order surcharge ID"
+  _id: ID!
+
+  amount: Money!
+
+  message(language: String): String!
+
+  surchargeId: ID
+}
+
 type ShippingOrderFulfillmentGroupData {
   shippingAddress: Address!
 }
@@ -166,6 +177,9 @@ type OrderFulfillmentGroup implements Node {
 
   "A summary of the totals for this group"
   summary: OrderSummary!
+
+  "Surcharges applied to this order"
+  surcharges: [OrderSurcharge]!
 
   "Total quantity of all items in the group"
   totalItemQuantity: Int!

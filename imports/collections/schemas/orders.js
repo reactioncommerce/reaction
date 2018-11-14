@@ -2,17 +2,11 @@ import SimpleSchema from "simpl-schema";
 import { registerSchema } from "@reactioncommerce/schemas";
 import { createdAtAutoValue } from "./helpers";
 import { Address } from "./address";
+import { Money, Surcharge } from "./core";
 import { Invoice, Payment } from "./payments";
 import { ShippingParcel } from "./shipping";
 import { Workflow } from "./workflow";
 
-const Money = new SimpleSchema({
-  currencyCode: String,
-  amount: {
-    type: Number,
-    min: 0
-  }
-});
 
 /**
  * @name Document
@@ -333,6 +327,7 @@ registerSchema("OrderTransaction", OrderTransaction);
  * @property {Object} shipmentMethod The fulfillment method that was chosen by the customer
  * @property {String} shippingLabelUrl URL for shipping label
  * @property {String} shopId The shop that fulfills this group
+ * @property {Surcharge[]} surcharges Surcharges applied to this order
  * @property {Number} totalItemQuantity The total item quantity, sum of all quantities
  * @property {String} tracking Tracking reference ID
  * @property {String} type Fulfillment type
@@ -362,6 +357,13 @@ const OrderFulfillmentGroup = new SimpleSchema({
     optional: true
   },
   "shopId": String,
+  "surcharges": {
+    type: Array,
+    optional: true
+  },
+  "surcharges.$": {
+    type: Surcharge
+  },
   "totalItemQuantity": {
     type: SimpleSchema.Integer,
     min: 1

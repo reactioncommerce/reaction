@@ -20,6 +20,7 @@ export * from "./address";
 export * from "./assets";
 export * from "./catalog";
 export * from "./cart";
+export * from "./core";
 export * from "./emails";
 export * from "./inventory";
 export * from "./layouts";
