@@ -7,6 +7,12 @@ There's also a little bit of cleanup of unused code in this release. This will l
  - feat: Prioritize Primary when multiple Shops match domain (#3528)
 
 ## Fixes
+ - fix: custom tax rates not applied (#4806)
+ - fix: console error tag name error pdp .. Resolves #4776 (#4790)
+ - fix: email settings update on cancel (#4792)
+ - fix: update detailView when its data changes (#4791)
+ - fix: submitting the template edit form now works .. Resolves #4774 (#4780)
+ - fix: edit groups panel (#4771)
  - fix: add translated text for adding user to group by admin (#4562)
  - fix: Hide Action View if Product Settings panel open (#4433)
  - fix: Import `getSlug` instead of using `this.getSlug` (#4547)
@@ -24,7 +30,16 @@ There's also a little bit of cleanup of unused code in this release. This will l
  - chore: Use new CLI tool "propel" to deploy services to ECS (#4623)
 
  ## Contributors
- Thanks to @pmn4 for contributing to this release! :tada:
+ Thanks to @pmn4, @nadaa, and @janus-reith for contributing to this release! :tada:
+
+# v1.16.1
+## Security Hotfix
+
+### We discovered vulnerabilities that affect shops built on Reaction Commerce that use third-party oAuth services or SMS services.
+
+## Security Updates
+fix: dashboard routes available for unauthed users
+fix: service configuration publication vuln
 
 # v1.16.0
 ## GraphQL
