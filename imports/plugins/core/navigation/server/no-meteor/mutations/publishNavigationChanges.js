@@ -9,7 +9,6 @@ function getNavigationTreeItemIds(items) {
     const { navigationItemId, items: childItems } = item;
     itemIds.push(navigationItemId);
     if (childItems) {
-      console.log("childItems", childItems);
       const childItemIds = getNavigationTreeItemIds(childItems);
       itemIds = [...itemIds, ...childItemIds];
     }
@@ -40,8 +39,6 @@ export default async function publishNavigationChanges(context, _id) {
 
   const { draftItems } = navigationTree;
   const draftItemIds = uniq(getNavigationTreeItemIds(draftItems));
-
-  console.log("draftItemIds", draftItemIds);
 
   // Publish changes to all items in the tree
   draftItemIds.forEach(async (draftItemId) => {

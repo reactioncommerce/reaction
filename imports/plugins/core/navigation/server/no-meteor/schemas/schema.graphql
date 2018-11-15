@@ -216,11 +216,8 @@ input NavigationItemContentInput {
 }
 
 input NavigationTreeInput {
-  "The ID of the shop this navigation tree belongs to"
-  shopId: ID!
-
   "The name of the tree, for operator display purposes"
-  name: String!
+  name: String
 
   "The draft navigation items that make up this tree"
   draftItems: [NavigationTreeItemInput]

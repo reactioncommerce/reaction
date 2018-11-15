@@ -1,5 +1,4 @@
 import SimpleSchema from "simpl-schema";
-import Random from "@reactioncommerce/random";
 import ReactionError from "@reactioncommerce/reaction-error";
 import { NavigationItem as NavigationItemSchema } from "/imports/collections/schemas";
 
