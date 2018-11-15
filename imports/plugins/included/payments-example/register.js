@@ -11,18 +11,18 @@ Reaction.registerPackage({
   name: "example-paymentmethod",
   icon: "fa fa-credit-card-alt",
   autoEnable: true,
-  functionsByType: {
-    exampleCapturePayment: [exampleCapturePayment],
-    exampleCreateRefund: [exampleCreateRefund],
-    exampleListRefund: [exampleListRefund]
-  },
   graphQL: {
     resolvers,
     schemas
   },
   paymentMethods: [{
     name: "iou_example",
-    displayName: "IOU Example"
+    displayName: "IOU Example",
+    functions: {
+      capturePayment: exampleCapturePayment,
+      createRefund: exampleCreateRefund,
+      listRefund: exampleListRefund
+    }
   }],
   settings: {
     "mode": false,

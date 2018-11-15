@@ -6,7 +6,7 @@ import { Orders } from "/lib/collections";
 import ReactionError from "@reactioncommerce/reaction-error";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
 import getGraphQLContextInMeteorMethod from "/imports/plugins/core/graphql/server/getGraphQLContextInMeteorMethod";
-import { functionsByType } from "/imports/plugins/core/core/server/no-meteor/pluginRegistration";
+import { paymentMethods } from "/imports/plugins/core/core/server/no-meteor/pluginRegistration";
 
 
 /**
@@ -38,17 +38,14 @@ export default function capturePayments(orderId) {
 
   // find the payment based on shopId
   const { _id: groupId, payment } = order.shipping.find((group) => group.shopId === shopId);
-  const { mode, processor, status, transactionId } = payment;
+  const { mode, name, status, transactionId } = payment;
 
-  if (mode === "capture" && status === "approved" && processor) {
-    // Grab the amount from the shipment, otherwise use the original amount
-    const processorLowercase = processor.toLowerCase();
-
+  if (mode === "capture" && status === "approved" && name) {
     let result;
     let error;
     try {
       const context = Promise.await(getGraphQLContextInMeteorMethod(Reaction.getUserId()));
-      result = Promise.await(functionsByType[`${processorLowercase}CapturePayment`][0](context, payment));
+      result = Promise.await(paymentMethods[name].functions.capturePayment(context, payment));
     } catch (err) {
       error = err;
     }

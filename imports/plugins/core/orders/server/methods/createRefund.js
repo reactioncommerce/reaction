@@ -5,7 +5,7 @@ import ReactionError from "@reactioncommerce/reaction-error";
 import { Orders, Packages } from "/lib/collections";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
 import getGraphQLContextInMeteorMethod from "/imports/plugins/core/graphql/server/getGraphQLContextInMeteorMethod";
-import { functionsByType } from "/imports/plugins/core/core/server/no-meteor/pluginRegistration";
+import { paymentMethods } from "/imports/plugins/core/core/server/no-meteor/pluginRegistration";
 import sendOrderEmail from "../util/sendOrderEmail";
 
 /**
@@ -34,8 +34,7 @@ export default function createRefund(orderId, paymentId, amount, sendEmail = tru
   const fulfillmentGroup = order.shipping.find((group) => group.payment._id === paymentId);
   const { _id: groupId, payment } = fulfillmentGroup;
 
-  const { mode: paymentMode, paymentPluginName, processor, transactionId } = payment;
-  const processorLowercase = processor.toLowerCase();
+  const { mode: paymentMode, paymentPluginName, name, transactionId } = payment;
 
   // check if payment provider supports de-authorize
   const checkSupportedMethods = Packages.findOne({
@@ -47,7 +46,7 @@ export default function createRefund(orderId, paymentId, amount, sendEmail = tru
   let modifier = {};
   const context = Promise.await(getGraphQLContextInMeteorMethod(Reaction.getUserId()));
   if (checkSupportedMethods.includes("De-authorize")) {
-    result = Promise.await(functionsByType[`${processorLowercase}DeAuthorizePayment`][0](context, payment, amount));
+    result = Promise.await(paymentMethods[name].functions.deAuthorizePayment(context, payment, amount));
     modifier = {
       $push: {
         "shipping.$.payment.transactions": result
@@ -64,7 +63,7 @@ export default function createRefund(orderId, paymentId, amount, sendEmail = tru
       throw new ReactionError("Attempt to de-authorize transaction failed", result.error);
     }
   } else if (paymentMode === "capture") {
-    result = Promise.await(functionsByType[`${processorLowercase}CreateRefund`][0](context, payment, amount));
+    result = Promise.await(paymentMethods[name].functions.createRefund(context, payment, amount));
     modifier = {
       $push: {
         "shipping.$.payment.transactions": result

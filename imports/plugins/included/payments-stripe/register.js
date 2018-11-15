@@ -11,18 +11,18 @@ Reaction.registerPackage({
   name: "reaction-stripe",
   icon: "fa fa-cc-stripe",
   autoEnable: true,
-  functionsByType: {
-    stripeCapturePayment: [stripeCapturePayment],
-    stripeCreateRefund: [stripeCreateRefund],
-    stripeListRefund: [stripeListRefund]
-  },
   graphQL: {
     resolvers,
     schemas
   },
   paymentMethods: [{
     name: "stripe_card",
-    displayName: "Stripe Card"
+    displayName: "Stripe Card",
+    functions: {
+      capturePayment: stripeCapturePayment,
+      createRefund: stripeCreateRefund,
+      listRefund: stripeListRefund
+    }
   }],
   settings: {
     "mode": false,
