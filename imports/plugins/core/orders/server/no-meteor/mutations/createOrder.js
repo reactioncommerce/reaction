@@ -6,7 +6,6 @@ import ReactionError from "@reactioncommerce/reaction-error";
 import { xformCartCheckout } from "@reactioncommerce/reaction-graphql-xforms/cart";
 import hashLoginToken from "/imports/node-app/core/util/hashLoginToken";
 import appEvents from "/imports/node-app/core/util/appEvents";
-import getFulfillmentGroupItemsWithTaxAdded from "/imports/plugins/core/taxes/server/no-meteor/mutations/getFulfillmentGroupItemsWithTaxAdded";
 import { Order as OrderSchema, Payment as PaymentSchema } from "/imports/collections/schemas";
 import getDiscountsTotalForCart from "/imports/plugins/core/discounts/server/no-meteor/util/getDiscountsTotalForCart";
 import getCartById from "/imports/plugins/core/shipping/server/no-meteor/util/getCartById.js";
@@ -124,11 +123,14 @@ async function getCurrencyExchangeObject(collections, cartCurrencyCode, shopId, 
  * @returns {Object} Invoice object with totals
  */
 function getInvoiceForFulfillmentGroup(group, discountTotal) {
+  const { taxSummary } = group;
+
   // Items
   const itemTotal = group.items.reduce((sum, item) => (sum + item.subtotal), 0);
 
   // Taxes
-  const taxTotal = group.items.reduce((sum, item) => (sum + item.tax), 0);
+  const { tax: taxTotal, taxableAmount } = taxSummary;
+  const effectiveTaxRate = taxableAmount > 0 ? taxTotal / taxableAmount : 0;
 
   // Fulfillment
   const shippingTotal = group.shipmentMethod.rate || 0;
@@ -140,18 +142,12 @@ function getInvoiceForFulfillmentGroup(group, discountTotal) {
   // `buildOrderInputFromCart.js` in the client code.
   const total = Math.max(0, itemTotal + fulfillmentTotal + taxTotal - discountTotal);
 
-  // fulfillmentTotal should be included in this in many jurisdictions but we don't yet support that
-  const preTaxTotal = Math.max(0, itemTotal - discountTotal);
-
-  // Calculate the tax-exclusive tax rate because most people and jurisdictions
-  // refer to sales tax as exclusive rates.
-  const effectiveTaxRate = preTaxTotal > 0 && taxTotal > 0 ? taxTotal / preTaxTotal : 0;
-
   return {
     discounts: discountTotal,
     effectiveTaxRate,
     shipping: fulfillmentTotal,
     subtotal: itemTotal,
+    taxableAmount,
     taxes: taxTotal,
     total
   };
@@ -284,7 +280,9 @@ export default async function createOrder(context, input) {
     // the price is what the shopper expects it to be.
     finalGroup.items = await Promise.all(finalGroup.items.map((item) => buildOrderItem(item, currencyCode, context)));
 
-    finalGroup.items = await getFulfillmentGroupItemsWithTaxAdded(collections, finalGroup, true);
+    const { items, taxSummary } = await context.mutations.getFulfillmentGroupTaxes(context, finalGroup, true);
+    finalGroup.items = items;
+    finalGroup.taxSummary = taxSummary;
 
     // Add some more properties for convenience
     finalGroup.itemIds = finalGroup.items.map((item) => item._id);

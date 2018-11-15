@@ -27,7 +27,3 @@ input PlaceOrderWithExampleIOUPaymentInput {
   "The information necessary to pay. Collect this information from the shopper during a checkout flow."
   payment: ExampleIOUPaymentInput!
 }
-
-extend enum PaymentMethodName {
-  iou_example
-}

@@ -165,7 +165,6 @@ export const OrderDiscount = new SimpleSchema({
  * @property {String} createdAt Date/time when this order item was created
  * @property {Document[]} documents optional
  * @property {History[]} history optional
- * @property {Boolean} isTaxable Is this item taxable?
  * @property {String} optionTitle optionTitle from the selected variant
  * @property {ShippingParcel} parcel Currently, parcel is in simple product schema. Need to include it here as well.
  * @property {Money} price The price+currency of variantId at the moment the related order was placed
@@ -176,8 +175,6 @@ export const OrderDiscount = new SimpleSchema({
  * @property {Number} quantity required
  * @property {String} shopId The owner shop
  * @property {Number} subtotal The item subtotal, quantity x price
- * @property {Number} tax Total tax collected for the item. Will be 0 if `isTaxable` is `false`.
- * @property {Number} taxRate Tax rate that was used to calculate item tax. Will be 0 if `isTaxable` is `false`.
  * @property {String} title Title from the selected product
  * @property {String} updatedAt required
  * @property {String} variantId required
@@ -202,10 +199,6 @@ export const OrderItem = new SimpleSchema({
   },
   "history.$": {
     type: History
-  },
-  "isTaxable": {
-    type: Boolean,
-    defaultValue: false
   },
   "optionTitle": {
     type: String,
@@ -250,12 +243,6 @@ export const OrderItem = new SimpleSchema({
     index: 1
   },
   "subtotal": Number,
-  "tax": Number,
-  "taxCode": {
-    type: String,
-    optional: true
-  },
-  "taxRate": Number,
   "title": String,
   "updatedAt": Date,
   "variantId": {
@@ -333,7 +320,7 @@ registerSchema("OrderTransaction", OrderTransaction);
  * @property {String} type Fulfillment type
  * @property {Object} workflow Current status and past statuses for this fulfillment
  */
-const OrderFulfillmentGroup = new SimpleSchema({
+export const OrderFulfillmentGroup = new SimpleSchema({
   "_id": String,
   "address": {
     type: Address,
@@ -397,7 +384,6 @@ const OrderFulfillmentGroup = new SimpleSchema({
  * @property {Notes[]} notes optional
  * @property {Shipment[]} shipping Array of fulfillment groups
  * @property {String} shopId required The owner shop
- * @property {Object[]} taxes Array of objects optional
  * @property {OrderTransaction[]} transactions optional
  * @property {Date} updatedAt optional
  * @property {Workflow} workflow optional
@@ -458,39 +444,6 @@ export const Order = new SimpleSchema({
   "shopId": {
     type: String,
     index: 1
-  },
-  "taxes": {
-    type: Array,
-    optional: true
-  },
-  "taxes.$": {
-    type: Object
-  },
-  "taxes.$.lineNumber": {
-    type: String
-  },
-  "taxes.$.discountAmount": {
-    type: Number,
-    optional: true
-  },
-  "taxes.$.taxable": {
-    type: Boolean,
-    optional: true
-  },
-  "taxes.$.tax": {
-    type: Number
-  },
-  "taxes.$.taxableAmount": {
-    type: Number
-  },
-  "taxes.$.taxCode": {
-    type: String,
-    optional: true
-  },
-  "taxes.$.details": {
-    type: Object,
-    blackbox: true,
-    optional: true
   },
   "totalItemQuantity": {
     type: SimpleSchema.Integer,
