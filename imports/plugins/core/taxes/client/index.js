@@ -3,8 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUniversity } from "@fortawesome/free-solid-svg-icons";
 import { registerOperatorRoute } from "/imports/client/ui";
 
-import "./settings/custom.html";
-import "./settings/custom.js";
+import "../lib/extendCoreSchemas";
 import "./settings/settings.html";
 import "./settings/settings.js";
 

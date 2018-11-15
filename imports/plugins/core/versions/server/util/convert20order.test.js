@@ -576,7 +576,6 @@ const beforeOrder = {
   },
   cartId: "Z7cWgoi8DGC3buZ9r",
   email: "admin@localhost",
-  taxCalculationFailed: false,
   bypassAddressValidation: false
 };
 
@@ -807,7 +806,6 @@ const afterOrder = {
   tax: 0,
   cartId: "Z7cWgoi8DGC3buZ9r",
   email: "admin@localhost",
-  taxCalculationFailed: false,
   bypassAddressValidation: false,
   discounts: [],
   totalItemQuantity: 2

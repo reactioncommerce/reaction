@@ -18,7 +18,7 @@ describe("serialization", () => {
 
 describe("value parsing", () => {
   test("handles null or undefined", () => {
-    expect(ConnectionCursor.parseValue(undefined)).toBe(undefined);
+    expect(ConnectionCursor.parseValue(undefined)).toBe(null);
     expect(ConnectionCursor.parseValue(null)).toBe(null);
   });
 

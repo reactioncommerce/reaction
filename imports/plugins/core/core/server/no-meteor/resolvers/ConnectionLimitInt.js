@@ -8,8 +8,7 @@ const MAX_LIMIT = 200;
  * @private
  */
 function parseValue(value) {
-  // Note that we do not have to do isNaN(value) check here because GraphQLScalarType will not call this for isNaN.
-  // Instead it automatically changes isNaN to undefined.
+  if (value === undefined || isNaN(value)) return undefined;
   if (typeof value !== "number") return MAX_LIMIT;
   return Math.min(Math.max(1, value), MAX_LIMIT);
 }

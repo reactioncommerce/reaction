@@ -11,6 +11,7 @@ import ReactionError from "@reactioncommerce/reaction-error";
 import { MediaRecords, Products, Tags } from "/lib/collections";
 import { Media } from "/imports/plugins/core/files/server";
 import rawCollections from "/imports/collections/rawCollections";
+import getGraphQLContextInMeteorMethod from "/imports/plugins/core/graphql/server/getGraphQLContextInMeteorMethod";
 import hashProduct, { createProductHash } from "../no-meteor/mutations/hashProduct";
 import getCurrentCatalogPriceForProductConfiguration from "../no-meteor/queries/getCurrentCatalogPriceForProductConfiguration";
 import getProductPriceRange from "../no-meteor/utils/getProductPriceRange";
@@ -318,32 +319,45 @@ function flushQuantity(id) {
  * @param {Object} props - initial product properties
  * @return {Object} product - new product
  */
-function createProduct(props = null) {
-  const finalProps = props || {};
-  if (finalProps.type !== "variant" && !finalProps.handle) {
-    if (typeof finalProps.title === "string" && finalProps.title.length) {
-      finalProps.handle = Reaction.getSlug(finalProps.title);
-    } else {
-      finalProps.handle = Random.id();
+function createProduct(props = null, info = {}) {
+  const newProductOrVariant = {
+    shopId: Reaction.getShopId(),
+    type: "simple",
+    ...(props || {})
+  };
+
+  if (newProductOrVariant.type === "variant") {
+    const userId = Reaction.getUserId();
+    const context = Promise.await(getGraphQLContextInMeteorMethod(userId));
+
+    // Apply custom transformations from plugins.
+    for (const customFunc of context.getFunctionsOfType("mutateNewVariantBeforeCreate")) {
+      // Functions of type "mutateNewVariantBeforeCreate" are expected to mutate the provided variant.
+      Promise.await(customFunc(newProductOrVariant, { context, ...info }));
+    }
+  } else {
+    // Set handle for products only, not variants
+    if (!newProductOrVariant.handle) {
+      if (typeof newProductOrVariant.title === "string" && newProductOrVariant.title.length) {
+        newProductOrVariant.handle = Reaction.getSlug(newProductOrVariant.title);
+      } else {
+        newProductOrVariant.handle = Random.id();
+      }
+    }
+
+    // Price is required on products
+    if (!newProductOrVariant.price) {
+      newProductOrVariant.price = {
+        range: "0.00 - 0.00",
+        min: 0,
+        max: 0
+      };
     }
   }
 
-  const _id = Products.insert(
-    {
-      shopId: Reaction.getShopId(),
-      type: "simple",
-      ...finalProps
-    },
-    {
-      validate: false
-    }
-  );
+  const _id = Products.insert(newProductOrVariant);
 
-  const newProduct = Products.findOne({ _id });
-
-  Hooks.Events.run("afterInsertCatalogProduct", newProduct);
-
-  return newProduct;
+  return Products.findOne({ _id });
 }
 
 /**
@@ -487,15 +501,11 @@ Meteor.methods({
       let newId;
       try {
         newId = Products.insert(clone, { validate: false });
-        const newProduct = Products.findOne(newId);
-        Hooks.Events.run("afterInsertCatalogProduct", newProduct);
         Logger.debug(`products/cloneVariant: created ${type === "child" ? "sub child " : ""}clone: ${clone._id} from ${variantId}`);
       } catch (error) {
         Logger.error(`products/cloneVariant: cloning of ${variantId} was failed: ${error}`);
         throw error;
       }
-
-      Hooks.Events.run("afterInsertProduct", clone);
 
       return newId;
     });
@@ -508,24 +518,31 @@ Meteor.methods({
    * @summary initializes empty variant template
    * @param {String} parentId - the product _id or top level variant _id where
    * we create variant
-   * @param {Object} [newVariant] - variant object
    * @return {String} new variantId
    */
-  "products/createVariant"(parentId, newVariant) {
+  "products/createVariant"(parentId) {
     check(parentId, String);
-    check(newVariant, Match.Optional(Object));
 
     // Check first if Product exists and then if user has the rights
-    const product = Products.findOne(parentId);
-    if (!product) {
-      throw new ReactionError("not-found", "Product not found");
-    } else if (!Reaction.hasPermission("createProduct", this.userId, product.shopId)) {
-      throw new ReactionError("access-denied", "Access Denied");
+    const parent = Products.findOne({ _id: parentId });
+    if (!parent) {
+      throw new ReactionError("not-found", "Parent not found");
     }
 
-    const newVariantId = Random.id();
-    // get parent ancestors to build new ancestors array
-    const { ancestors } = product;
+    let product;
+    let parentVariant;
+    if (parent.type === "variant") {
+      product = Products.findOne({ _id: parent.ancestors[0] });
+      parentVariant = parent;
+    } else {
+      product = parent;
+      parentVariant = null;
+    }
+
+    const userId = Reaction.getUserId();
+    if (!Reaction.hasPermission("createProduct", userId, product.shopId)) {
+      throw new ReactionError("access-denied", "Access Denied");
+    }
 
     // Verify that the parent variant and any ancestors are not deleted.
     // Child variants cannot be added if a parent product is marked as `{ isDeleted: true }`
@@ -533,18 +550,22 @@ Meteor.methods({
       throw new ReactionError("server-error", "Unable to create product variant");
     }
 
+    // get parent ancestors to build new ancestors array
+    const { ancestors } = parent;
     Array.isArray(ancestors) && ancestors.push(parentId);
-    const assembledVariant = Object.assign(newVariant || {}, {
+
+    const newVariantId = Random.id();
+    const newVariant = {
       _id: newVariantId,
       ancestors,
-      taxCode: product.taxCode,
       shopId: product.shopId,
       type: "variant"
-    });
+    };
 
-    if (!newVariant) {
-      Object.assign(assembledVariant, {
-        title: `${product.title} - Untitled option`,
+    const isOption = ancestors.length > 1;
+    if (isOption) {
+      Object.assign(newVariant, {
+        title: `${parent.title} - Untitled option`,
         price: 0.0
       });
     }
@@ -556,9 +577,7 @@ Meteor.methods({
       flushQuantity(parentId);
     }
 
-    Hooks.Events.run("beforeInsertCatalogProduct", assembledVariant);
-    Products.insert(assembledVariant);
-    Hooks.Events.run("afterInsertCatalogProduct", assembledVariant);
+    createProduct(newVariant, { product, parentVariant, isOption });
 
     Logger.debug(`products/createVariant: created variant: ${newVariantId} for ${parentId}`);
 
@@ -783,7 +802,6 @@ Meteor.methods({
         newProduct.handle = createHandle(Reaction.getSlug(newProduct.title), newProduct._id);
       }
       result = Products.insert(newProduct, { validate: false });
-      Hooks.Events.run("afterInsertCatalogProduct", newProduct);
       results.push(result);
 
       // cloning variants
@@ -810,7 +828,6 @@ Meteor.methods({
         delete newVariant.createdAt;
 
         result = Products.insert(newVariant, { validate: false });
-        Hooks.Events.run("afterInsertCatalogProduct", newVariant);
         copyMedia(productNewId, variant._id, variantNewId);
         results.push(result);
       }
@@ -824,24 +841,12 @@ Meteor.methods({
    * @method
    * @summary when we create a new product, we create it with an empty variant.
    * all products have a variant with pricing and details
-   * @param {Object} [product] - optional product object
    * @return {String} The new product ID
    */
-  "products/createProduct"(product) {
-    check(product, Match.Optional(Object));
-
+  "products/createProduct"() {
     // Ensure user has createProduct permission for active shop
     if (!Reaction.hasPermission("createProduct")) {
       throw new ReactionError("access-denied", "Access Denied");
-    }
-
-    // also if a product is provided, check first that the user doesn't mock a shop with no permissions to it
-    if (product) {
-      if (!product.shopId || !Reaction.hasPermission("createProduct", this.userId, product.shopId)) {
-        throw new ReactionError("invalid-parameter", "Product should have a valid shopId");
-      }
-
-      return Products.insert(product);
     }
 
     // Create a product
@@ -853,7 +858,7 @@ Meteor.methods({
       price: 0.0,
       title: "",
       type: "variant" // needed for multi-schema
-    });
+    }, { product: newSimpleProduct, parentVariant: null, isOption: false });
 
     return newSimpleProduct._id;
   },
@@ -987,10 +992,12 @@ Meteor.methods({
     }
 
     // Check first if Product exists and then if user has the right to alter it
-    const doc = Products.findOne(_id);
+    const doc = Products.findOne({ _id });
     if (!doc) {
       throw new ReactionError("not-found", "Product not found");
-    } else if (!Reaction.hasPermission("createProduct", this.userId, doc.shopId)) {
+    }
+
+    if (!Reaction.hasPermission("createProduct", this.userId, doc.shopId)) {
       throw new ReactionError("access-denied", "Access Denied");
     }
 
@@ -1039,8 +1046,8 @@ Meteor.methods({
           selector: { type }
         }
       );
-    } catch (e) {
-      throw new ReactionError("server-error", e.message);
+    } catch (err) {
+      throw new ReactionError("server-error", err.message);
     }
 
     // If we get a result from the product update,
