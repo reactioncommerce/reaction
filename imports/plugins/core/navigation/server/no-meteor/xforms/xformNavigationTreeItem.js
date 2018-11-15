@@ -8,12 +8,13 @@
 export default async function xformNavigationTreeItem(context, item) {
   const { collections } = context;
   const { NavigationItems } = collections;
-  const { navigationItemId, items = [] } = item;
+  const { navigationItemId } = item;
+  let { items = [] } = item;
 
   const navigationItem = await NavigationItems.findOne({ _id: navigationItemId });
 
   if (items.length) {
-    items = items.map((childItem) => xformNavigationTreeItem(childItem));
+    items = items.map((childItem) => xformNavigationTreeItem(context, childItem));
   }
 
   return {

@@ -126,26 +126,14 @@ extend type Mutation {
   "Update an existing navigation item's draft data. Sets hasUnpublishedChanges to true"
   updateNavigationItem(input: UpdateNavigationItemInput!): UpdateNavigationItemPayload
 
-  #"Publish a navigation item's draft data. Sets hasUnpublishedChanges to false"
-  #publishNavigationItemChanges(input: PublishNavigationItemChangesInput!): PublishNavigationItemChangesPayload
-
   "Delete a navigation item"
   deleteNavigationItem(input: DeleteNavigationItemInput!): DeleteNavigationItemPayload
-
-  "Create a new navigation tree"
-  createNavigationTree(input: CreateNavigationTreeInput!): CreateNavigationTreePayload
 
   "Update an existing navigation tree's draft items. Sets hasUnpublishedChanges to true"
   updateNavigationTree(input: UpdateNavigationTreeInput!): UpdateNavigationTreePayload
 
-  "Publish the draft structure for a navigation tree. Sets hasUnpublishedChanges to false"
-  publishNavigationTreeChanges(input: PublishNavigationTreeChangesInput!): PublishNavigationTreeChangesPayload
-
-  #"Publish the draft structure for a navigation tree and the draft changes for all of its navigation items. Sets hasUnpublishedChanges to false on tree and its items"
-  #publishNavigationTreeAndItemChanges
-
-  "Delete a navigation tree"
-  deleteNavigationTree(input: DeleteNavigationTreeInput!): DeleteNavigationTreePayload
+  "Publish the draft structure for a navigation tree and the draft changes for all of its navigation items. Sets hasUnpublishedChanges to false on tree and its items"
+  publishNavigationChanges(input: PublishNavigationChangesInput!): PublishNavigationChangesPayload
 }
 
 input CreateNavigationItemInput {
@@ -167,25 +155,9 @@ input UpdateNavigationItemInput {
   clientMutationId: String
 }
 
-input PublishNavigationItemChangesInput {
-  "The ID of the navigation item"
-  _id: ID!
-
-  "An optional string identifying the mutation call, which will be returned in the response payload"
-  clientMutationId: String
-}
-
 input DeleteNavigationItemInput {
   "The ID of the navigation item to delete"
   _id: ID!
-
-  "An optional string identifying the mutation call, which will be returned in the response payload"
-  clientMutationId: String
-}
-
-input CreateNavigationTreeInput {
-  "The name to create a new navigation item with"
-  name: String!
 
   "An optional string identifying the mutation call, which will be returned in the response payload"
   clientMutationId: String
@@ -202,16 +174,8 @@ input UpdateNavigationTreeInput {
   clientMutationId: String
 }
 
-input PublishNavigationTreeChangesInput {
+input PublishNavigationChangesInput {
   "The ID of the navigation tree"
-  _id: ID!
-
-  "An optional string identifying the mutation call, which will be returned in the response payload"
-  clientMutationId: String
-}
-
-input DeleteNavigationTreeInput {
-  "The ID of the navigation tree to delete"
   _id: ID!
 
   "An optional string identifying the mutation call, which will be returned in the response payload"
@@ -294,14 +258,6 @@ type DeleteNavigationItemPayload {
   clientMutationId: String
 }
 
-type CreateNavigationTreePayload {
-  "The created navigation tree"
-  navigationTree: NavigationTree
-
-  "The same string you sent with the mutation params, for matching mutation calls with their responses"
-  clientMutationId: String
-}
-
 type UpdateNavigationTreePayload {
   "The updated navigation tree"
   navigationTree: NavigationTree
@@ -310,16 +266,8 @@ type UpdateNavigationTreePayload {
   clientMutationId: String
 }
 
-type PublishNavigationTreeChangesPayload {
+type PublishNavigationChangesPayload {
   "The navigation tree with updated items"
-  navigationTree: NavigationTree
-
-  "The same string you sent with the mutation params, for matching mutation calls with their responses"
-  clientMutationId: String
-}
-
-type DeleteNavigationTreePayload {
-  "The deleted navigation tree"
   navigationTree: NavigationTree
 
   "The same string you sent with the mutation params, for matching mutation calls with their responses"

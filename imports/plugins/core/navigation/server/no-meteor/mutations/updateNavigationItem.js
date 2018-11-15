@@ -9,7 +9,7 @@ import { NavigationItem as NavigationItemSchema } from "/imports/collections/sch
  * @param {Object} context An object containing the per-request state
  * @param {String} _id _id of navigation item to update
  * @param {Object} navigationItem Updated navigation item
- * @return {Promise<Object>} Object with `navigationItem` property containing the updated nav item
+ * @return {Promise<Object>} Updated navigation item
  */
 export default async function updateNavigationItem(context, _id, navigationItem) {
   const { collections, userHasPermission, shopId } = context;
@@ -23,6 +23,8 @@ export default async function updateNavigationItem(context, _id, navigationItem)
   let update = {};
 
   if (draftData) {
+    update.hasUnpublishedChanges = true;
+
     for (let fieldName in draftData) {
       update[`draftData.${fieldName}`] = draftData[fieldName];
     }
