@@ -29,6 +29,7 @@ services:
       HYDRA_TOKEN_URL: "http://hydra:4444/oauth2/token"
       HYDRA_OAUTH2_INTROSPECT_URL: "http://hydra:4445/oauth2/introspect"
       OAUTH2_CLIENT_DOMAINS: "http://localhost:4000"
+      METEOR_DISABLE_OPTIMISTIC_CACHING: 1
     networks:
       default:
       api:
