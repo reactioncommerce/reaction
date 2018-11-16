@@ -73,19 +73,11 @@ function xformCartItem(context, catalogItems, products, cartItem) {
 
   return {
     ...cartItem,
-    compareAtPrice: {
-      amount: variantPriceInfo.compareAtPrice,
-      currencyCode
-    },
     currentQuantity: variantSourceProduct && variantSourceProduct.inventoryQuantity,
     imageURLs: media && media.URLs,
     isBackorder: variant.isBackorder || false,
     isLowQuantity: variant.isLowQuantity || false,
     isSoldOut: variant.isSoldOut || false,
-    price: {
-      amount: variantPriceInfo.price,
-      currencyCode
-    },
     productConfiguration: {
       productId: cartItem.productId,
       productVariantId: cartItem.variantId

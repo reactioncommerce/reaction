@@ -42,6 +42,7 @@ const CartItemAttribute = new SimpleSchema({
  * @property {Metafield[]} metafields
  * @property {String} optionTitle optionTitle from the selected variant
  * @property {ShippingParcel} parcel Currently, parcel is in simple product schema. Need to include it here as well.
+ * @property {Money} price The current price of this item
  * @property {Money} priceWhenAdded The price+currency at the moment this item was added to this cart
  * @property {String} productId required
  * @property {String} productSlug Product slug
@@ -77,6 +78,7 @@ export const CartItem = new SimpleSchema({
     type: ShippingParcel,
     optional: true
   },
+  "price": Money,
   "priceWhenAdded": Money,
   "productId": {
     type: String,

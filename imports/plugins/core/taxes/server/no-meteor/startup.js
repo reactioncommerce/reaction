@@ -7,7 +7,7 @@ import { isEqual } from "lodash";
  * @returns {Object} Valid TaxServiceOrderInput from a cart group
  */
 async function buildOrderInputForTaxCalculation(cart, group, context) {
-  const { collections, queries } = context;
+  const { collections } = context;
   const { currencyCode } = cart;
 
   let items = group.itemIds.map((itemId) => cart.items.find((item) => item._id === itemId));
@@ -15,32 +15,19 @@ async function buildOrderInputForTaxCalculation(cart, group, context) {
 
   // We also need to add `subtotal` on each item, based on the current price of that item in
   // the catalog. `getFulfillmentGroupTaxes` uses subtotal prop to calculate the tax.
-  items = await Promise.all(items.map(async (item) => {
-    const productConfiguration = {
-      productId: item.productId,
-      productVariantId: item.variantId
-    };
-    const {
-      price
-    } = await queries.getCurrentCatalogPriceForProductConfiguration(productConfiguration, currencyCode, collections);
-
-    return {
-      _id: item._id,
-      isTaxable: item.isTaxable,
-      parcel: item.parcel,
-      price: {
-        amount: price,
-        currencyCode
-      },
-      quantity: item.quantity,
-      shopId: item.shopId,
-      subtotal: {
-        amount: price * item.quantity,
-        currencyCode
-      },
-      taxCode: item.taxCode,
-      variantId: item.variantId
-    };
+  items = items.map((item) => ({
+    _id: item._id,
+    isTaxable: item.isTaxable,
+    parcel: item.parcel,
+    price: item.price,
+    quantity: item.quantity,
+    shopId: item.shopId,
+    subtotal: {
+      amount: item.price.amount * item.quantity,
+      currencyCode
+    },
+    taxCode: item.taxCode,
+    variantId: item.variantId
   }));
 
   const { address, shipmentMethod, shopId, type: fulfillmentType } = group;

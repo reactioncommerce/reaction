@@ -107,10 +107,20 @@ export default async function addCartItems(collections, currentItems, inputItems
     const cartItem = {
       _id: Random.id(),
       attributes,
+      compareAtPrice: {
+        amount: variantPriceInfo.compareAtPrice,
+        currencyCode: price.currencyCode
+      },
       isTaxable: chosenVariant.isTaxable || false,
       metafields,
       optionTitle: chosenVariant.optionTitle,
       parcel: chosenVariant.parcel,
+      // This one will be kept updated by event handler watching for
+      // catalog changes whereas `priceWhenAdded` will not.
+      price: {
+        amount: variantPriceInfo.price,
+        currencyCode: price.currencyCode
+      },
       priceWhenAdded: {
         amount: variantPriceInfo.price,
         currencyCode: price.currencyCode
