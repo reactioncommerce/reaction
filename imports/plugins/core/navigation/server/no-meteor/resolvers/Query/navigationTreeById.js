@@ -1,5 +1,4 @@
 import SimpleSchema from "simpl-schema";
-import { getPaginatedResponse } from "@reactioncommerce/reaction-graphql-utils";
 import { decodeNavigationTreeOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/navigationTree";
 
 const argsSchema = new SimpleSchema({
@@ -12,7 +11,7 @@ const argsSchema = new SimpleSchema({
 });
 
 /**
- * @name "Query.navigationTreeById"
+ * @name Query.navigationTreeById
  * @method
  * @memberof Navigation/GraphQL
  * @summary Returns a navigation tree by its ID in the specified language
@@ -30,5 +29,5 @@ export default async function navigationTreeById(_, args, context) {
 
   const decodedId = decodeNavigationTreeOpaqueId(id);
 
-  return context.queries.navigationTreeById(context, decodedId, language);
+  return context.queries.navigationTreeById(context, language, decodedId);
 }

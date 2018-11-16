@@ -17,7 +17,7 @@ type Shop implements Node {
   defaultNavigationTreeId: String
 
   "The default navigation tree for this shop"
-  defaultNavigationTree: NavigationTree
+  defaultNavigationTree(language: String!): NavigationTree
 
   "Returns a list of groups for this shop, as a Relay-compatible connection."
   groups(after: ConnectionCursor, before: ConnectionCursor, first: ConnectionLimitInt, last: ConnectionLimitInt, sortOrder: SortOrder = asc, sortBy: GroupSortByField = createdAt): GroupConnection

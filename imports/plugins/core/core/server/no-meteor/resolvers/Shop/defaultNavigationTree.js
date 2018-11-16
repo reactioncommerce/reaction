@@ -15,5 +15,5 @@ export default async function defaultNavigationTree(shop, args, context) {
     return;
   }
 
-  return context.queries.navigationTreeById(context, defaultNavigationTreeId);
+  return context.queries.navigationTreeById(context, args.language, defaultNavigationTreeId);
 }
