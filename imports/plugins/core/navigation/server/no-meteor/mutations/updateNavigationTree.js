@@ -1,6 +1,6 @@
-import SimpleSchema from "simpl-schema";
 import ReactionError from "@reactioncommerce/reaction-error";
 import { NavigationTree as NavigationTreeSchema } from "/imports/collections/schemas";
+import decodeNavigationTreeItemIds from "../util/decodeNavigationTreeItemIds";
 
 /**
  * @method updateNavigationTree
@@ -13,6 +13,8 @@ import { NavigationTree as NavigationTreeSchema } from "/imports/collections/sch
 export default async function updateNavigationTree(context, _id, navigationTree) {
   const { collections, userHasPermission, shopId } = context;
   const { NavigationTrees } = collections;
+
+  NavigationTreeSchema.validate(navigationTree);
   const { draftItems, name } = navigationTree;
 
   if (userHasPermission(["core"], shopId) === false) {
@@ -22,6 +24,7 @@ export default async function updateNavigationTree(context, _id, navigationTree)
   const update = {};
 
   if (draftItems) {
+    decodeNavigationTreeItemIds(draftItems);
     update.draftItems = draftItems;
     update.hasUnpublishedChanges = true;
   }
@@ -29,8 +32,7 @@ export default async function updateNavigationTree(context, _id, navigationTree)
     update.name = name;
   }
 
-  NavigationTreeSchema.validate(navigationTree);
-  await NavigationTrees.updateOne({ _id }, { $set: { ...update }});
+  await NavigationTrees.updateOne({ _id }, { $set: { ...update } });
 
   const updatedNavigationTree = await NavigationTrees.findOne({ _id });
 
