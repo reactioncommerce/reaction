@@ -1,6 +1,5 @@
-import SimpleSchema from "simpl-schema";
 import ReactionError from "@reactioncommerce/reaction-error";
-import { NavigationItem as NavigationItemSchema } from "/imports/collections/schemas";
+import { NavigationItemData } from "/imports/collections/schemas";
 
 /**
  * @method updateNavigationItem
@@ -19,26 +18,29 @@ export default async function updateNavigationItem(context, _id, navigationItem)
     throw new ReactionError("access-denied", "You do not have permission to update a navigation item");
   }
 
-  let update = {};
+  const update = {};
 
   if (draftData) {
+    NavigationItemData.validate(draftData);
+    
     update.hasUnpublishedChanges = true;
 
-    for (let fieldName in draftData) {
-      update[`draftData.${fieldName}`] = draftData[fieldName];
+    for (const fieldName in draftData) {
+      if (Object.prototype.hasOwnProperty.call(draftData, fieldName)) {
+        update[`draftData.${fieldName}`] = draftData[fieldName];
+      }
     }
   }
 
   if (metadata) {
     try {
       update.metadata = JSON.parse(metadata);
-    } catch(error) {
+    } catch (error) {
       throw new ReactionError("invalid-metadata-string", "Supplied metadata JSON string could not be parsed");
     }
   }
 
-  NavigationItemSchema.validate(navigationItem);
-  await NavigationItems.updateOne({ _id }, { $set: { ...update }});
+  await NavigationItems.updateOne({ _id }, { $set: { ...update } });
 
   const updatedNavigationItem = await NavigationItems.findOne({ _id });
 
