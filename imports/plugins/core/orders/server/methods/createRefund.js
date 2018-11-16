@@ -5,7 +5,7 @@ import ReactionError from "@reactioncommerce/reaction-error";
 import { Orders, Packages } from "/lib/collections";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
 import getGraphQLContextInMeteorMethod from "/imports/plugins/core/graphql/server/getGraphQLContextInMeteorMethod";
-import { paymentMethods } from "/imports/plugins/core/core/server/no-meteor/pluginRegistration";
+import { getPaymentMethodConfigByName } from "/imports/plugins/core/core/server/no-meteor/pluginRegistration";
 import sendOrderEmail from "../util/sendOrderEmail";
 
 /**
@@ -46,7 +46,7 @@ export default function createRefund(orderId, paymentId, amount, sendEmail = tru
   let modifier = {};
   const context = Promise.await(getGraphQLContextInMeteorMethod(Reaction.getUserId()));
   if (checkSupportedMethods.includes("De-authorize")) {
-    result = Promise.await(paymentMethods[name].functions.deAuthorizePayment(context, payment, amount));
+    result = Promise.await(getPaymentMethodConfigByName(name).functions.deAuthorizePayment(context, payment, amount));
     modifier = {
       $push: {
         "shipping.$.payment.transactions": result
@@ -63,7 +63,7 @@ export default function createRefund(orderId, paymentId, amount, sendEmail = tru
       throw new ReactionError("Attempt to de-authorize transaction failed", result.error);
     }
   } else if (paymentMode === "capture") {
-    result = Promise.await(paymentMethods[name].functions.createRefund(context, payment, amount));
+    result = Promise.await(getPaymentMethodConfigByName(name).functions.createRefund(context, payment, amount));
     modifier = {
       $push: {
         "shipping.$.payment.transactions": result

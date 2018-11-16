@@ -6,7 +6,7 @@ import { Orders } from "/lib/collections";
 import ReactionError from "@reactioncommerce/reaction-error";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
 import getGraphQLContextInMeteorMethod from "/imports/plugins/core/graphql/server/getGraphQLContextInMeteorMethod";
-import { paymentMethods } from "/imports/plugins/core/core/server/no-meteor/pluginRegistration";
+import { getPaymentMethodConfigByName } from "/imports/plugins/core/core/server/no-meteor/pluginRegistration";
 
 
 /**
@@ -45,7 +45,7 @@ export default function capturePayments(orderId) {
     let error;
     try {
       const context = Promise.await(getGraphQLContextInMeteorMethod(Reaction.getUserId()));
-      result = Promise.await(paymentMethods[name].functions.capturePayment(context, payment));
+      result = Promise.await(getPaymentMethodConfigByName(name).functions.capturePayment(context, payment));
     } catch (err) {
       error = err;
     }
