@@ -1,5 +1,5 @@
 /**
- * @name "Mutation.createNavigationItem"
+ * @name Mutation.createNavigationItem
  * @method
  * @memberof Navigation/GraphQL
  * @summary resolver for createNavigationItem GraphQL mutation

@@ -46,5 +46,5 @@ export default async function createDefaultNavigationTree(shop, name) {
     hasUnpublishedChanges: false
   });
 
-  Shops.updateOne({ _id: shopId }, { $set: { defaultNavigationTreeId: navigationTreeId }});
+  Shops.updateOne({ _id: shopId }, { $set: { defaultNavigationTreeId: navigationTreeId } });
 }

@@ -1,21 +1,6 @@
-import SimpleSchema from "simpl-schema";
 import { uniq } from "lodash";
 import ReactionError from "@reactioncommerce/reaction-error";
-
-function getNavigationTreeItemIds(items) {
-  let itemIds = [];
-
-  items.forEach((item) => {
-    const { navigationItemId, items: childItems } = item;
-    itemIds.push(navigationItemId);
-    if (childItems) {
-      const childItemIds = getNavigationTreeItemIds(childItems);
-      itemIds = [...itemIds, ...childItemIds];
-    }
-  });
-
-  return itemIds;
-}
+import getNavigationTreeItemIds from "../util/getNavigationTreeItemIds";
 
 /**
  * @method publishNavigationChanges
@@ -32,21 +17,23 @@ export default async function publishNavigationChanges(context, _id) {
     throw new ReactionError("access-denied", "You do not have permission to publish a navigation tree");
   }
 
-  const navigationTree = await NavigationTrees.findOne({ _id });
+  const treeSelector = { _id };
+  const navigationTree = await NavigationTrees.findOne(treeSelector);
   if (!navigationTree) {
     throw new ReactionError("navigation-tree-not-found", "No navigation tree was found");
   }
 
+  // Get the _ids of all items in the tree, recursively
   const { draftItems } = navigationTree;
   const draftItemIds = uniq(getNavigationTreeItemIds(draftItems));
 
   // Publish changes to all items in the tree
   draftItemIds.forEach(async (draftItemId) => {
-    const selector = { _id: draftItemId };
-    const navigationItem = await NavigationItems.findOne(selector);
+    const itemSelector = { _id: draftItemId };
+    const navigationItem = await NavigationItems.findOne(itemSelector);
     if (navigationItem) {
       const { draftData } = navigationItem;
-      await NavigationItems.updateOne(selector, {
+      await NavigationItems.updateOne(itemSelector, {
         $set: {
           data: draftData,
           hasUnpublishedChanges: false
@@ -56,12 +43,12 @@ export default async function publishNavigationChanges(context, _id) {
   });
 
   // Publish changes to tree itself
-  await NavigationTrees.updateOne({ _id }, {
+  await NavigationTrees.updateOne(treeSelector, {
     $set: {
       items: draftItems,
       hasUnpublishedChanges: false
     }
   });
 
-  return NavigationTrees.findOne({ _id });
+  return NavigationTrees.findOne(treeSelector);
 }

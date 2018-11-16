@@ -1,7 +1,7 @@
 import { decodeNavigationItemOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/navigationItem";
 
 /**
- * @name "Mutation.updateNavigationItem"
+ * @name Mutation.updateNavigationItem
  * @method
  * @memberof Navigation/GraphQL
  * @summary resolver for updateNavigationItem GraphQL mutation
@@ -9,6 +9,7 @@ import { decodeNavigationItemOpaqueId } from "@reactioncommerce/reaction-graphql
  * @param {Object} args.input An object of all mutation arguments that were sent by the client
  * @param {String} args.input._id ID of the navigation item to update
  * @param {String} args.input.navigationItem The updated navigation item
+ * @param {String} [args.input.clientMutationId] An optional string identifying the mutation call
  * @param {Object} context An object containing the per-request state
  * @return {Promise<Object>} UpdateNavigationItemPayload
  */

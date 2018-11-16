@@ -2,7 +2,7 @@ import { getPaginatedResponse } from "@reactioncommerce/reaction-graphql-utils";
 import { decodeShopOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/shop";
 
 /**
- * @name "Query.navigationItemsByShopId"
+ * @name Query.navigationItemsByShopId
  * @method
  * @memberof Navigation/GraphQL
  * @summary Get a paginated list of navigation items for a shop, as an operator
