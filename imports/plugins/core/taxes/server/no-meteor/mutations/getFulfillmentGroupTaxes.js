@@ -1,70 +1,65 @@
 import Logger from "@reactioncommerce/logger";
 import ReactionError from "@reactioncommerce/reaction-error";
 import { getActiveTaxServiceForShop } from "../registration";
-import { TaxServiceResult } from "../../../lib/simpleSchemas";
+import { TaxServiceOrderInput, TaxServiceResult } from "../../../lib/simpleSchemas";
 
 /**
- * @summary Modifies a fulfillment group, adding tax-related properties to each item
- *   in the group. Assumes that each item has `subtotal` and `isTaxable` props set. Assumes
- *   that the group has `shopId` and `address` properties set. No-op if the `reaction-taxes`
- *   plugin is disabled or a shipping address hasn't yet been set.
+ * @summary Returns all taxes that apply to a provided order, delegating to a more specific
+ *   tax calculation service for the actual calculations.
  * @param {Object} context App context
- * @param {Object} group The fulfillment group to get a tax rate for
+ * @param {Object} order Relevant information about an order. This is similar to an OrderFulfillmentGroup type.
  * @param {Boolean} forceZeroes Set to `true` to force tax properties to be added
- *   and set to 0 when no tax plugin is enabled. For cart groups, this should be false. For order
- *   groups, this should be true.
- * @returns {Object} Updated fulfillment group
+ *   and set to 0 when no tax plugin is enabled. When calculating tax for a cart, this should be false.
+ *   When calculating tax for an order, this should be true.
+ * @returns {Object} Calculated tax information. Has `taxSummary` property in `TaxSummary` schema
+ *   as well as `itemTaxes` array property with `itemId`, `tax`, `taxableAmount`,
+ *   and `taxes` properties on each array item.
  */
-export default async function getFulfillmentGroupTaxes(context, group, forceZeroes) {
-  const { address: shippingAddress, items, shopId } = group;
+export default async function getFulfillmentGroupTaxes(context, { order, forceZeroes }) {
+  try {
+    TaxServiceOrderInput.validate(order);
+  } catch (error) {
+    Logger.error("Invalid order input provided to getFulfillmentGroupTaxes", error);
+    throw new ReactionError("internal-error", "Error while calculating taxes");
+  }
+
+  const { items, shopId } = order;
 
   const activeTaxService = await getActiveTaxServiceForShop(context, shopId);
 
-  if (!shippingAddress || !activeTaxService) {
-    if (forceZeroes) {
-      return {
-        taxSummary: {
-          calculatedAt: new Date(),
-          tax: 0,
-          taxableAmount: 0,
-          taxes: []
-        },
-        items: items.map((item) => ({ ...item, tax: 0, taxableAmount: 0, taxes: [] }))
-      };
-    }
-    return { items, taxSummary: null };
+  const defaultReturnValue = {
+    taxSummary: {
+      calculatedAt: new Date(),
+      tax: 0,
+      taxableAmount: 0,
+      taxes: []
+    },
+    itemTaxes: items.map((item) => ({ itemId: item._id, tax: 0, taxableAmount: 0, taxes: [] }))
+  };
+
+  if (!activeTaxService) {
+    return forceZeroes ? defaultReturnValue : { itemTaxes: [], taxSummary: null };
   }
 
   let taxServiceResult;
   try {
-    taxServiceResult = await activeTaxService.functions.calculateOrderGroupTaxes({ context, group });
+    taxServiceResult = await activeTaxService.functions.calculateOrderTaxes({ context, order });
   } catch (error) {
-    Logger.error(`Error in calculateOrderGroupTaxes for the active tax service (${activeTaxService.displayName})`, error);
+    Logger.error(`Error in calculateOrderTaxes for the active tax service (${activeTaxService.displayName})`, error);
     throw new ReactionError("internal-error", "Error while calculating taxes");
+  }
+
+  // The tax service may return `null` if it can't calculate due to missing info
+  if (!taxServiceResult) {
+    return forceZeroes ? defaultReturnValue : { itemTaxes: [], taxSummary: null };
   }
 
   try {
     TaxServiceResult.validate(taxServiceResult);
   } catch (error) {
-    Logger.error(`Invalid return from calculateOrderGroupTaxes for the active tax service (${activeTaxService.displayName})`, error);
+    Logger.error(`Invalid return from calculateOrderTaxes for the active tax service (${activeTaxService.displayName})`, error);
     throw new ReactionError("internal-error", "Error while calculating taxes");
   }
 
-  const { itemTaxes, taxSummary } = taxServiceResult;
-
-  const itemsWithUpdatedTaxProps = items.map((item) => {
-    const itemTax = itemTaxes.find((entry) => entry.itemId === item._id) || {};
-
-    return {
-      ...item,
-      tax: itemTax.tax,
-      taxableAmount: itemTax.taxableAmount,
-      taxes: itemTax.taxes
-    };
-  });
-
-  return {
-    items: itemsWithUpdatedTaxProps,
-    taxSummary
-  };
+  return taxServiceResult;
 }

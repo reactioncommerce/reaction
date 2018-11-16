@@ -3,12 +3,12 @@ import Random from "@reactioncommerce/random";
 /**
  * @summary Gets all applicable tax definitions based on shop ID and shipping address of a fulfillment group
  * @param {Object} collections Map of MongoDB collections
- * @param {Object} group The fulfillment group to get a tax definitions for
+ * @param {Object} order The order
  * @returns {Object[]} Array of tax definition docs
  */
-async function getTaxesForShop(collections, group) {
+async function getTaxesForShop(collections, order) {
   const { Taxes } = collections;
-  const { address: shippingAddress, shopId } = group;
+  const { shippingAddress, shopId } = order;
 
   // Find all defined taxes where the shipping address is a match
   const taxDocs = await Taxes.find({
@@ -37,18 +37,17 @@ async function getTaxesForShop(collections, group) {
 }
 
 /**
- * @summary Modifies a fulfillment group, adding `taxRate` and `tax` properties to each item
- *   in the group. Assumes that each item has `subtotal` and `isTaxable` props set. Assumes
- *   that the group has `shopId` and `address` properties set. No-op if the `reaction-taxes`
- *   package is disabled or a shipping address hasn't yet been set.
+ * @summary Calculate and return taxes for an order
  * @param {Object} context App context
- * @param {Object} group The fulfillment group to get a tax rate for
- * @returns {Object} Updated fulfillment group
+ * @param {Object} order The order
+ * @returns {Object|null} Calculated tax information, in `TaxServiceResult` schema, or `null` if can't calculate
  */
-export default async function calculateOrderGroupTaxes({ context, group }) {
-  const { items } = group;
+export default async function calculateOrderTaxes({ context, order }) {
+  const { items, shippingAddress } = order;
 
-  const allTaxes = await getTaxesForShop(context.collections, group);
+  if (!shippingAddress) return null;
+
+  const allTaxes = await getTaxesForShop(context.collections, order);
 
   /**
    * @param {Object} item The item
@@ -63,8 +62,8 @@ export default async function calculateOrderGroupTaxes({ context, group }) {
         _id: Random.id(),
         jurisdictionId: taxDef._id,
         sourcing: taxDef.taxLocale,
-        tax: item.subtotal * taxDef.rate,
-        taxableAmount: item.subtotal,
+        tax: item.subtotal.amount * taxDef.rate,
+        taxableAmount: item.subtotal.amount,
         taxName: taxDef.name,
         taxRate: taxDef.rate
       }));
@@ -75,10 +74,6 @@ export default async function calculateOrderGroupTaxes({ context, group }) {
   let totalTax = 0;
   const groupTaxes = {};
   const itemTaxes = items.map((item) => {
-    if (typeof item.subtotal !== "number") {
-      throw new Error("item.subtotal is missing");
-    }
-
     const taxes = taxesForItem(item);
 
     // Update the group taxes list
