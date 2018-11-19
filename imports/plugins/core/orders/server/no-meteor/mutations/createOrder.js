@@ -7,6 +7,7 @@ import hashLoginToken from "/imports/node-app/core/util/hashLoginToken";
 import appEvents from "/imports/node-app/core/util/appEvents";
 import { Order as OrderSchema, Payment as PaymentSchema } from "/imports/collections/schemas";
 import getDiscountsTotalForCart from "/imports/plugins/core/discounts/server/no-meteor/util/getDiscountsTotalForCart";
+import xformOrderGroupToCommonOrder from "/imports/plugins/core/orders/server/util/xformOrderGroupToCommonOrder";
 
 const orderItemsSchema = new SimpleSchema({
   "addedAt": {
@@ -66,55 +67,6 @@ const inputSchema = new SimpleSchema({
   createPaymentForFulfillmentGroup: Function,
   order: orderInputSchema
 });
-
-/**
- * @param {Object} group The order fulfillment group
- * @param {String} currencyCode The currency code
- * @param {Object} collections Map of MongoDB collections
- * @returns {Object} Valid TaxServiceOrderInput from a cart group
- */
-async function buildOrderInputForTaxCalculation(group, currencyCode, collections) {
-  const items = group.items.map((item) => ({
-    _id: item._id,
-    isTaxable: item.isTaxable,
-    parcel: item.parcel,
-    price: item.price,
-    quantity: item.quantity,
-    shopId: item.shopId,
-    subtotal: {
-      amount: item.subtotal,
-      currencyCode
-    },
-    taxCode: item.taxCode,
-    variantId: item.variantId
-  }));
-
-  const { address, shipmentMethod, shopId, type: fulfillmentType } = group;
-  const shop = await collections.Shops.findOne({ _id: shopId });
-
-  return {
-    currencyCode,
-    fulfillmentPrices: {
-      handling: {
-        amount: shipmentMethod.handling || 0,
-        currencyCode
-      },
-      shipping: {
-        amount: shipmentMethod.rate || 0,
-        currencyCode
-      },
-      total: {
-        amount: (shipmentMethod.handling || 0) + (shipmentMethod.rate || 0),
-        currencyCode
-      }
-    },
-    fulfillmentType,
-    items,
-    originAddress: (shop && Array.isArray(shop.addressBook) && shop.addressBook[0]) || null,
-    shippingAddress: address || null,
-    shopId
-  };
-}
 
 /**
  * @summary Gets currency rates from a shop
@@ -324,8 +276,8 @@ export default async function createOrder(context, input) {
     finalGroup.items = await Promise.all(finalGroup.items.map((item) => buildOrderItem(item, currencyCode, context)));
 
     // Apply taxes
-    const orderInputForTaxes = await buildOrderInputForTaxCalculation(finalGroup, currencyCode, collections);
-    const { itemTaxes, taxSummary } = await context.mutations.getFulfillmentGroupTaxes(context, { order: orderInputForTaxes, forceZeroes: true });
+    const commonOrder = await xformOrderGroupToCommonOrder(finalGroup, currencyCode, collections);
+    const { itemTaxes, taxSummary } = await context.mutations.getFulfillmentGroupTaxes(context, { order: commonOrder, forceZeroes: true });
     finalGroup.items = finalGroup.items.map((item) => {
       const itemTax = itemTaxes.find((entry) => entry.itemId === item._id) || {};
 
