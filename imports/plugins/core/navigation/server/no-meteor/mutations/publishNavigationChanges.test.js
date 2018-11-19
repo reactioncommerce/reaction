@@ -3,48 +3,48 @@ import publishNavigationChangesMutation from "./publishNavigationChanges";
 
 const mockTreeItems = [
   {
-    "navigationItemId": "uaXXawc5oxy9eR4hP",
-    "items": [
+    navigationItemId: "uaXXawc5oxy9eR4hP",
+    items: [
       {
-        "navigationItemId": "tAKATQeqoD4Ah5gg2"
+        navigationItemId: "tAKATQeqoD4Ah5gg2"
       }
     ]
   },
   {
-    "navigationItemId": "KEcn6NvrRuztmPMq8"
+    navigationItemId: "KEcn6NvrRuztmPMq8"
   }
 ];
 const mockDraftNavigationTree = {
-  "_id": "pkMTWAEHJrsiNzY2a",
-  "shopId": "123",
-  "name": "Main Navigation",
-  "draftItems": mockTreeItems,
-  "items": [],
-  "hasUnpublishedChanges": true
+  _id: "pkMTWAEHJrsiNzY2a",
+  shopId: "123",
+  name: "Main Navigation",
+  draftItems: mockTreeItems,
+  items: [],
+  hasUnpublishedChanges: true
 };
 const mockPublishedNavigationTree = {
-  "_id": "pkMTWAEHJrsiNzY2a",
-  "shopId": "123",
-  "name": "Main Navigation",
-  "draftItems": mockTreeItems,
-  "items": mockTreeItems,
-  "hasUnpublishedChanges": false
+  _id: "pkMTWAEHJrsiNzY2a",
+  shopId: "123",
+  name: "Main Navigation",
+  draftItems: mockTreeItems,
+  items: mockTreeItems,
+  hasUnpublishedChanges: false
 };
 const mockNavigationItem = {
-  "_id": "n1",
-  "createdAt": new Date(),
-  "metadata": { "tagId": "t1" },
-  "draftData": {
-    "content": [
+  _id: "n1",
+  createdAt: new Date(),
+  metadata: { tagId: "t1" },
+  draftData: {
+    content: [
       {
-        "language": "en",
-        "value": "Home"
+        language: "en",
+        value: "Home"
       }
     ],
-    "isUrlRelative": true,
-    "shouldOpenInNewWindow": false,
-    "url": "/",
-    "classNames": "home-link"
+    isUrlRelative: true,
+    shouldOpenInNewWindow: false,
+    url: "/",
+    classNames: "home-link"
   },
   data: {},
   hasUnpublishedChanges: true

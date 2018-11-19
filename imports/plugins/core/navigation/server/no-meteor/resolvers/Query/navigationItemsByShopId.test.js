@@ -5,44 +5,44 @@ const opaqueShopId = "cmVhY3Rpb24vc2hvcDoxMjM="; // reaction/shop:123
 
 const mockNavigationItems = [
   {
-    "_id": "n1",
-    "createdAt": "2018-11-16T15:09:38.586Z",
-    "metadata": { "tagId": "t1" },
-    "draftData": {
-      "content": [
+    _id: "n1",
+    createdAt: "2018-11-16T15:09:38.586Z",
+    metadata: { tagId: "t1" },
+    draftData: {
+      content: [
         {
-          "language": "en",
-          "value": "Home"
+          language: "en",
+          value: "Home"
         }
       ],
-      "isUrlRelative": true,
-      "shouldOpenInNewWindow": false,
-      "url": "/",
-      "classNames": "home-link"
+      isUrlRelative: true,
+      shouldOpenInNewWindow: false,
+      url: "/",
+      classNames: "home-link"
     }
   },
   {
-    "_id": "n2",
-    "createdAt": "2018-11-16T13:09:38.586Z",
-    "metadata": { "tagId": "t2" },
-    "draftData": {
-      "content": [
+    _id: "n2",
+    createdAt: "2018-11-16T13:09:38.586Z",
+    metadata: { tagId: "t2" },
+    draftData: {
+      content: [
         {
-          "language": "en",
-          "value": "About"
+          language: "en",
+          value: "About"
         }
       ],
-      "isUrlRelative": true,
-      "shouldOpenInNewWindow": false,
-      "url": "/about",
-      "classNames": "about-link"
+      isUrlRelative: true,
+      shouldOpenInNewWindow: false,
+      url: "/about",
+      classNames: "about-link"
     }
   }
 ];
 
 const mockNavigationItemsQuery = getFakeMongoCursor("NavigationItems", mockNavigationItems);
 
-test("calls queries.navigationItemsByShopId and returns a partial connection", async() => {
+test("calls queries.navigationItemsByShopId and returns a partial connection", async () => {
   const navigationItemsByShopId = jest.fn()
     .mockName("queries.navigationItemsByShopId")
     .mockReturnValueOnce(Promise.resolve(mockNavigationItemsQuery));

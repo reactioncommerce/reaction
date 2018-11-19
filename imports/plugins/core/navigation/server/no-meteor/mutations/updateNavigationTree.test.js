@@ -3,40 +3,40 @@ import updateNavigationTreeMutation from "./updateNavigationTree";
 
 const mockNavigationTreeId = "pkMTWAEHJrsiNzY2a";
 const mockNavigationTreeInput = {
-  "name": "Main Menu",
-  "draftItems": [
-   {
-     "navigationItemId": "cmVhY3Rpb24vbmF2aWdhdGlvbkl0ZW06dWFYWGF3YzVveHk5ZVI0aFA=",
-     "items": [
-       {
-         "navigationItemId": "cmVhY3Rpb24vbmF2aWdhdGlvbkl0ZW06dEFLQVRRZXFvRDRBaDVnZzI="
-       }
-     ]
-   },
-   {
-     "navigationItemId": "cmVhY3Rpb24vbmF2aWdhdGlvbkl0ZW06S0VjbjZOdnJSdXp0bVBNcTg="
-   }
+  name: "Main Menu",
+  draftItems: [
+    {
+      navigationItemId: "cmVhY3Rpb24vbmF2aWdhdGlvbkl0ZW06dWFYWGF3YzVveHk5ZVI0aFA=",
+      items: [
+        {
+          navigationItemId: "cmVhY3Rpb24vbmF2aWdhdGlvbkl0ZW06dEFLQVRRZXFvRDRBaDVnZzI="
+        }
+      ]
+    },
+    {
+      navigationItemId: "cmVhY3Rpb24vbmF2aWdhdGlvbkl0ZW06S0VjbjZOdnJSdXp0bVBNcTg="
+    }
   ],
-  "hasUnpublishedChanges": false
+  hasUnpublishedChanges: false
 };
 
 const mockNavigationTree = {
-  "name": "Main Menu",
-  "draftItems": [
-   {
-     "navigationItemId": "wYWSrwT2bWDE9aHLg",
-     "items": [
-       {
-         "navigationItemId": "KEcn6NvrRuztmPMq8"
-       }
-     ]
-   },
-   {
-     "navigationItemId": "tAKATQeqoD4Ah5gg2"
-   }
+  name: "Main Menu",
+  draftItems: [
+    {
+      navigationItemId: "wYWSrwT2bWDE9aHLg",
+      items: [
+        {
+          navigationItemId: "KEcn6NvrRuztmPMq8"
+        }
+      ]
+    },
+    {
+      navigationItemId: "tAKATQeqoD4Ah5gg2"
+    }
   ],
-  "hasUnpublishedChanges": false
-}
+  hasUnpublishedChanges: false
+};
 
 test("calls NavigationTrees.findOne and updateOne, and returns the updated tree", async () => {
   mockContext.collections.NavigationTrees.findOne

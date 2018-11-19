@@ -10,7 +10,6 @@ export default function getNavigationItemContentForLanguage(content, language) {
   const translatedContent = content.find((contentItem) => contentItem.language === language);
   if (translatedContent) {
     return [translatedContent];
-  } else {
-    return [content[0]];
   }
+  return [content[0]];
 }

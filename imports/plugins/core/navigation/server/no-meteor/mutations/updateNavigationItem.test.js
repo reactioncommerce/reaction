@@ -2,20 +2,20 @@ import mockContext from "/imports/test-utils/helpers/mockContext";
 import updateNavigationItemMutation from "./updateNavigationItem";
 
 const mockNavigationItem = {
-  "_id": "n1",
-  "createdAt": new Date(),
-  "metadata": { "tagId": "t1" },
-  "draftData": {
-    "content": [
+  _id: "n1",
+  createdAt: new Date(),
+  metadata: { tagId: "t1" },
+  draftData: {
+    content: [
       {
-        "language": "en",
-        "value": "Home"
+        language: "en",
+        value: "Home"
       }
     ],
-    "isUrlRelative": true,
-    "shouldOpenInNewWindow": false,
-    "url": "/",
-    "classNames": "home-link"
+    isUrlRelative: true,
+    shouldOpenInNewWindow: false,
+    url: "/",
+    classNames: "home-link"
   },
   data: {},
   hasUnpublishedChanges: true
@@ -26,7 +26,7 @@ test("calls NavigationItems.findOne and updateOne, and returns the updated navig
     .mockReturnValueOnce(Promise.resolve(mockNavigationItem))
     .mockReturnValueOnce(Promise.resolve(mockNavigationItem));
 
-  const result = await updateNavigationItemMutation(mockContext, "n1", { metadata: "{ \"tagId\": \"t1\" }"});
+  const result = await updateNavigationItemMutation(mockContext, "n1", { metadata: "{ \"tagId\": \"t1\" }" });
 
   expect(mockContext.collections.NavigationItems.findOne).toHaveBeenCalledTimes(2);
   expect(mockContext.collections.NavigationItems.updateOne).toHaveBeenCalled();

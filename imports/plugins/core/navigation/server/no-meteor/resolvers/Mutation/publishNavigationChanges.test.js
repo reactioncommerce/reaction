@@ -1,28 +1,28 @@
 import publishNavigationChangesMutation from "./publishNavigationChanges";
 
 const mockInput = {
-  "_id": "cmVhY3Rpb24vbmF2aWdhdGlvblRyZWU6cGtNVFdBRUhKcnNpTnpZMmE="
+  _id: "cmVhY3Rpb24vbmF2aWdhdGlvblRyZWU6cGtNVFdBRUhKcnNpTnpZMmE="
 };
 const mockNavigationTreeItems = [
- {
-   "navigationItemId": "uaXXawc5oxy9eR4hP",
-   "items": [
-     {
-       "navigationItemId": "tAKATQeqoD4Ah5gg2"
-     }
-   ]
- },
- {
-   "navigationItemId": "KEcn6NvrRuztmPMq8"
- }
+  {
+    navigationItemId: "uaXXawc5oxy9eR4hP",
+    items: [
+      {
+        navigationItemId: "tAKATQeqoD4Ah5gg2"
+      }
+    ]
+  },
+  {
+    navigationItemId: "KEcn6NvrRuztmPMq8"
+  }
 ];
 const mockNavigationTreeResult = {
-  "_id": "pkMTWAEHJrsiNzY2a",
-  "shopId": "123",
-  "name": "Main Navigation",
-  "draftItems": mockNavigationTreeItems,
-  "items": mockNavigationTreeItems,
-  "hasUnpublishedChanges": false
+  _id: "pkMTWAEHJrsiNzY2a",
+  shopId: "123",
+  name: "Main Navigation",
+  draftItems: mockNavigationTreeItems,
+  items: mockNavigationTreeItems,
+  hasUnpublishedChanges: false
 };
 
 test("calls mutations.publishNavigationChanges and returns the updated tree", async () => {

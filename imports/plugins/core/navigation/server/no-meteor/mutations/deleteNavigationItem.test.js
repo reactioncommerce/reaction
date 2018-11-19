@@ -3,20 +3,20 @@ import { NavigationItem as NavigationItemSchema } from "/imports/collections/sch
 import deleteNavigationItemMutation from "./deleteNavigationItem";
 
 const mockNavigationItem = {
-  "_id": "n1",
-  "createdAt": new Date(),
-  "metadata": { "tagId": "t1" },
-  "draftData": {
-    "content": [
+  _id: "n1",
+  createdAt: new Date(),
+  metadata: { tagId: "t1" },
+  draftData: {
+    content: [
       {
-        "language": "en",
-        "value": "Home"
+        language: "en",
+        value: "Home"
       }
     ],
-    "isUrlRelative": true,
-    "shouldOpenInNewWindow": false,
-    "url": "/",
-    "classNames": "home-link"
+    isUrlRelative: true,
+    shouldOpenInNewWindow: false,
+    url: "/",
+    classNames: "home-link"
   }
 };
 
@@ -24,7 +24,7 @@ test("calls NavigationItems.deleteOne and returns an object that validates again
   mockContext.collections.NavigationItems.findOne.mockReturnValueOnce(Promise.resolve(mockNavigationItem));
   const navigationItem = await deleteNavigationItemMutation(mockContext, {});
   const validationContext = NavigationItemSchema.newContext();
-  validationContext.validate(navigationItem)
+  validationContext.validate(navigationItem);
   const isValid = validationContext.isValid();
 
   expect(isValid).toBe(true);

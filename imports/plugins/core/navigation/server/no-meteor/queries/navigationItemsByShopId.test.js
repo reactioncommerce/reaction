@@ -1,9 +1,7 @@
 import mockContext from "/imports/test-utils/helpers/mockContext";
 import navigationItemsByShopIdQuery from "./navigationItemsByShopId";
 
-const mockShopId = "123";
 const query = { shopId: "123" };
-
 
 test("calls NavigationItems.find and returns a navigation item", async () => {
   mockContext.collections.NavigationItems.find.mockReturnValueOnce("NAVIGATIONITEM");

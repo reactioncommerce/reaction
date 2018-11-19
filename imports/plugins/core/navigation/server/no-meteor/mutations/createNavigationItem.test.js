@@ -5,7 +5,7 @@ import createNavigationItemMutation from "./createNavigationItem";
 test("calls NavigationItems.insert and returns an object that validates against the schema", async () => {
   const navigationItem = await createNavigationItemMutation(mockContext, {});
   const validationContext = NavigationItemSchema.newContext();
-  validationContext.validate(navigationItem)
+  validationContext.validate(navigationItem);
   const isValid = validationContext.isValid();
   expect(isValid).toBe(true);
   expect(mockContext.collections.NavigationItems.insertOne).toHaveBeenCalled();

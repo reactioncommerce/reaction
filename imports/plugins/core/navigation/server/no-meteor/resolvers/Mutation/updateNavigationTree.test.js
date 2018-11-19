@@ -1,33 +1,33 @@
 import updateNavigationTreeMutation from "./updateNavigationTree";
 
 const mockNavigationTreeItems = [
- {
-   "navigationItemId": "uaXXawc5oxy9eR4hP",
-   "items": [
-     {
-       "navigationItemId": "tAKATQeqoD4Ah5gg2"
-     }
-   ]
- },
- {
-   "navigationItemId": "KEcn6NvrRuztmPMq8"
- }
+  {
+    navigationItemId: "uaXXawc5oxy9eR4hP",
+    items: [
+      {
+        navigationItemId: "tAKATQeqoD4Ah5gg2"
+      }
+    ]
+  },
+  {
+    navigationItemId: "KEcn6NvrRuztmPMq8"
+  }
 ];
 const mockInput = {
-  "_id": "cmVhY3Rpb24vbmF2aWdhdGlvblRyZWU6cGtNVFdBRUhKcnNpTnpZMmE=",
-  "navigationTree": {
-    "draftItems": mockNavigationTreeItems,
-    "name": "Main Menu"
+  _id: "cmVhY3Rpb24vbmF2aWdhdGlvblRyZWU6cGtNVFdBRUhKcnNpTnpZMmE=",
+  navigationTree: {
+    draftItems: mockNavigationTreeItems,
+    name: "Main Menu"
   }
 };
 const mockNavigationTreeResult = {
-  "_id": "pkMTWAEHJrsiNzY2a",
-  "shopId": "123",
-  "name": "Main Menu",
-  "draftItems": mockNavigationTreeItems,
-  "items": mockNavigationTreeItems,
-  "hasUnpublishedChanges": true
-}
+  _id: "pkMTWAEHJrsiNzY2a",
+  shopId: "123",
+  name: "Main Menu",
+  draftItems: mockNavigationTreeItems,
+  items: mockNavigationTreeItems,
+  hasUnpublishedChanges: true
+};
 
 test("calls mutations.updateNavigationTree and returns the updated tree", async () => {
   const updateNavigationTree = jest.fn()

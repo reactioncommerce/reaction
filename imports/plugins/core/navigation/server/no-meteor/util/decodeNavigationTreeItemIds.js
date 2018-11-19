@@ -8,7 +8,7 @@ import { decodeNavigationItemOpaqueId } from "@reactioncommerce/reaction-graphql
  */
 export default function decodeNavigationTreeItemIds(items) {
   items.forEach((item) => {
-    let { navigationItemId, items: childItems } = item;
+    const { navigationItemId, items: childItems } = item;
     item.navigationItemId = decodeNavigationItemOpaqueId(navigationItemId);
     if (childItems) {
       decodeNavigationTreeItemIds(childItems);

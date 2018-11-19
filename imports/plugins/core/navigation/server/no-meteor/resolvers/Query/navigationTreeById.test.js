@@ -8,24 +8,24 @@ const mockNavigationTree = {
   name: "Main Navigation",
   draftItems: [
     {
-      "navigationItem": {
-        "_id": "wYWSrwT2bWDE9aHLg"
+      navigationItem: {
+        _id: "wYWSrwT2bWDE9aHLg"
       },
-      "items": [
+      items: [
         {
-          "navigationItem": {
-            "_id": "KEcn6NvrRuztmPMq8"
+          navigationItem: {
+            _id: "KEcn6NvrRuztmPMq8"
           },
-          "items": []
+          items: []
         },
         {
-          "navigationItem": {
-            "_id": "tAKATQeqoD4Ah5gg2"
+          navigationItem: {
+            _id: "tAKATQeqoD4Ah5gg2"
           },
-          "items": [
+          items: [
             {
-              "navigationItem": {
-                "_id": "uaXXawc5oxy9eR4hP"
+              navigationItem: {
+                _id: "uaXXawc5oxy9eR4hP"
               }
             }
           ]
@@ -37,7 +37,7 @@ const mockNavigationTree = {
   hasUnpublishedChanges: true
 };
 
-test("calls queries.navigationTreeById and returns a navigation tree", async() => {
+test("calls queries.navigationTreeById and returns a navigation tree", async () => {
   const navigationTreeById = jest.fn()
     .mockName("queries.navigationTreeById")
     .mockReturnValueOnce(Promise.resolve(mockNavigationTree));
