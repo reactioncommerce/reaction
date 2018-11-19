@@ -1,6 +1,4 @@
-import Random from "@reactioncommerce/random";
 import SimpleSchema from "simpl-schema";
-import { registerSchema } from "@reactioncommerce/schemas";
 
 // Test card to use to add risk level flag for testing purposes only.
 export const RISKY_TEST_CARD = "4000000000009235";
