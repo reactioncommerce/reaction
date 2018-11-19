@@ -1,4 +1,11 @@
 import Reaction from "/imports/plugins/core/core/server/Reaction";
+import mutateNewVariantBeforeCreate from "./server/no-meteor/mutateNewVariantBeforeCreate";
+import publishProductToCatalog from "./server/no-meteor/publishProductToCatalog";
+import { registerPluginHandler } from "./server/no-meteor/registration";
+import mutations from "./server/no-meteor/mutations";
+import queries from "./server/no-meteor/queries";
+import resolvers from "./server/no-meteor/resolvers";
+import schemas from "./server/no-meteor/schemas";
 import startup from "./server/no-meteor/startup";
 
 Reaction.registerPackage({
@@ -6,17 +13,21 @@ Reaction.registerPackage({
   name: "reaction-taxes",
   icon: "fa fa-university",
   autoEnable: true,
+  catalog: {
+    publishedProductVariantFields: ["isTaxable", "taxCode", "taxDescription"]
+  },
   functionsByType: {
+    mutateNewVariantBeforeCreate: [mutateNewVariantBeforeCreate],
+    publishProductToCatalog: [publishProductToCatalog],
+    registerPluginHandler: [registerPluginHandler],
     startup: [startup]
   },
-  settings: {
-    custom: {
-      enabled: true
-    },
-    rates: {
-      enabled: false
-    }
+  graphQL: {
+    schemas,
+    resolvers
   },
+  mutations,
+  queries,
   registry: [
     {
       provides: ["dashboard"],
@@ -34,16 +45,6 @@ Reaction.registerPackage({
       name: "taxes/settings",
       provides: ["settings"],
       template: "taxSettings"
-    },
-    {
-      label: "Custom Rates",
-      name: "taxes/settings/rates",
-      provides: ["taxSettings"],
-      template: "customTaxRates"
-    },
-    {
-      template: "flatRateCheckoutTaxes",
-      provides: ["taxMethod"]
     }
   ]
 });

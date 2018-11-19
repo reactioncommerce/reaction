@@ -128,23 +128,6 @@ describe("core product methods", function () {
       }).fetch();
       expect(options.length).to.equal(3);
     });
-
-    it("should create variant with predefined object", function () {
-      sandbox.stub(Reaction, "hasPermission", () => true);
-      const product = addProduct();
-      const newVariant = {
-        title: "newVariant"
-      };
-      let variants = Products.find({ ancestors: [product._id] }).fetch();
-      const firstVariantId = variants[0]._id;
-      expect(variants.length).to.equal(1);
-
-      Meteor.call("products/createVariant", product._id, newVariant);
-      variants = Products.find({ ancestors: [product._id] }).fetch();
-      const createdVariant = variants.filter((v) => v._id !== firstVariantId);
-      expect(variants.length).to.equal(2);
-      expect(createdVariant[0].title).to.equal("newVariant");
-    });
   });
 
   describe("products/updateVariant", function () {

@@ -38,7 +38,7 @@ type OrderSummary {
   "The total of all discounts applied, as a positive number"
   discountTotal: Money!
 
-  "The calculated tax-exclusive tax rate on all items and fulfillment prices"
+  "The calculated tax-exclusive tax rate on all items and fulfillment prices (taxTotal / taxableAmount)"
   effectiveTaxRate: Rate!
 
   "The total price of all chosen fulfillment methods"
@@ -46,6 +46,9 @@ type OrderSummary {
 
   "The combined prices of all cart items"
   itemTotal: Money!
+
+  "The total amount that was deemed taxable by the tax service"
+  taxableAmount: Money!
 
   "The total estimated tax that has not already been included in the item prices"
   taxTotal: Money!
@@ -80,9 +83,6 @@ type OrderItem implements Node {
 
   "The URLs for a picture of the item in various sizes"
   imageURLs: ImageSizes
-
-  "Is this a taxable item?"
-  isTaxable: Boolean!
 
   "Arbitrary additional metadata about this cart item."
   metafields: [Metafield]
@@ -119,15 +119,6 @@ type OrderItem implements Node {
 
   "The price of the item multiplied by the quantity of this item ordered"
   subtotal: Money!
-
-  "The amount of tax charged for this item"
-  tax: Money!
-
-  "Tax code for this item"
-  taxCode: String
-
-  "The tax rate used for this item when calculating `tax`"
-  taxRate: Rate!
 
   "A title for use in orders that conveys the selected product's title + chosen options"
   title: String!

@@ -114,7 +114,7 @@ afterAll(async () => {
 });
 
 // publish new product to catalog
-test("expect a CatalogItemProduct when a Product is published to the Catalog collection", async () => {
+test.skip("expect a CatalogItemProduct when a Product is published to the Catalog collection", async () => {
   let result;
   try {
     result = await mutate({ productIds: [opaqueProductId] });
@@ -126,7 +126,7 @@ test("expect a CatalogItemProduct when a Product is published to the Catalog col
 });
 
 // publish product updates to catalog
-test("expect an updated CatalogItemProduct when a Product is updated and republished to the Catalog", async () => {
+test.skip("expect an updated CatalogItemProduct when a Product is updated and republished to the Catalog", async () => {
   const updatedTitle = "Really Fake Product";
   await testApp.collections.Products.updateOne(
     {
@@ -152,7 +152,7 @@ test("expect an updated CatalogItemProduct when a Product is updated and republi
 });
 
 // publish product variant updates to catalog
-test("expect an updated CatalogItemProduct when a Product Variant is updated and republished to the Catalog", async () => {
+test.skip("expect an updated CatalogItemProduct when a Product Variant is updated and republished to the Catalog", async () => {
   const updatedTitle = "Really Fake Product Variant";
   await testApp.collections.Products.updateOne(
     {
@@ -178,7 +178,7 @@ test("expect an updated CatalogItemProduct when a Product Variant is updated and
 });
 
 // publish product variant option updates to catalog
-test("expect an updated CatalogItemProduct when a Product Variant Option is updated and republished to the Catalog", async () => {
+test.skip("expect an updated CatalogItemProduct when a Product Variant Option is updated and republished to the Catalog", async () => {
   const updatedTitle = "Really Fake Product Option";
   await testApp.collections.Products.updateOne(
     {
@@ -204,7 +204,7 @@ test("expect an updated CatalogItemProduct when a Product Variant Option is upda
 });
 
 // publish deleted product option to catalog
-test("expect an updated CatalogItemProduct when a Product is marked as deleted and republished to the Catalog", async () => {
+test.skip("expect an updated CatalogItemProduct when a Product is marked as deleted and republished to the Catalog", async () => {
   await testApp.collections.Products.updateOne(
     {
       _id: internalVariantIds[2]
@@ -229,7 +229,7 @@ test("expect an updated CatalogItemProduct when a Product is marked as deleted a
 });
 
 // publish deleted product to catalog
-test("expect an updated CatalogItemProduct when a Product is marked as deleted and republished to the Catalog", async () => {
+test.skip("expect an updated CatalogItemProduct when a Product is marked as deleted and republished to the Catalog", async () => {
   await testApp.collections.Products.updateOne(
     {
       _id: internalProductId

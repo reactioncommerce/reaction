@@ -1,7 +1,7 @@
 {
   "name": "reaction",
   "description": "Reaction is a modern reactive, real-time event driven ecommerce platform.",
-  "version": "2.0.0-rc.5",
+  "version": "2.0.0-rc.6",
   "main": "main.js",
   "directories": {
     "test": "tests"
@@ -29,7 +29,7 @@
     "@babel/plugin-syntax-dynamic-import": "7.0.0",
     "@babel/plugin-syntax-import-meta": "7.0.0",
     "@babel/runtime": "7.0.0",
-    "@reactioncommerce/components": "0.39.3",
+    "@reactioncommerce/components": "0.54.0",
     "@reactioncommerce/components-context": "1.0.0",
     "@reactioncommerce/data-factory": "^1.0.0",
     "@reactioncommerce/file-collections": "0.6.0",
@@ -68,12 +68,12 @@
     "fibers": "^2.0.0",
     "flatten-obj": "^3.1.1",
     "font-awesome": "^4.7.0",
-    "graphql": "0.13.1",
+    "graphql": "14.0.2",
     "graphql-fields": "1.1.0",
     "graphql-iso-date": "3.5.0",
     "graphql-relay": "0.5.5",
     "graphql-tag": "2.9.2",
-    "graphql-tools": "3.1.1",
+    "graphql-tools": "4.0.3",
     "graphql.js": "0.4.20",
     "handlebars": "^4.0.11",
     "history": "^4.7.2",
@@ -202,7 +202,7 @@
   "scripts": {
     "devserver": "ROOT_URL=http://localhost:3030 MONGO_URL=mongodb://localhost:27017/reaction NODE_ENV=reaction-node BABEL_DISABLE_CACHE=1 nodemon ./imports/node-app/devserver/index.js",
     "lint": "eslint .",
-    "test": "npm run test:unit && npm run test:app",
+    "test": "npm run test:unit && npm run test:integration && npm run test:app",
     "test:app": "MONGO_URL='' TEST_CLIENT=0 meteor test --once --full-app --driver-package meteortesting:mocha",
     "test:app:watch": "MONGO_URL='' TEST_CLIENT=0 TEST_WATCH=1 meteor test --full-app --driver-package meteortesting:mocha",
     "test:unit": "NODE_ENV=jesttest BABEL_DISABLE_CACHE=1 jest --no-cache --maxWorkers=4 --testPathIgnorePatterns /tests/",

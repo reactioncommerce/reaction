@@ -29,7 +29,7 @@ beforeAll(async () => {
 
 afterAll(() => testApp.stop());
 
-test("get shop, no auth necessary", async () => {
+test.skip("get shop, no auth necessary", async () => {
   const opaqueShopId = encodeShopOpaqueId(shopId);
   const result = await shopQuery({ id: opaqueShopId });
   expect(result).toEqual({

@@ -39,3 +39,7 @@ import "./38_registry_products_template";
 import "./39_example_payment_template";
 import "./40_two_point_oh";
 import "./41_set_should_appear_in_sitemap";
+import "./42_payment_methods";
+import "./43_stripe_marketplace_pkg";
+import "./44_tax_rates_pkg";
+import "./45_tax_schema_changes";
