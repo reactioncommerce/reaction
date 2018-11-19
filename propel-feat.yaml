@@ -14,7 +14,7 @@ services:
     name: staging-core
     containers:
     - name: core
-      cpu: 500
+      cpu: 510
       memory: 1800
       port_mappings:
       - container_port: 3000
