@@ -31,29 +31,29 @@ export const NavigationItemContent = new SimpleSchema({
  *  when clicked
  */
 export const NavigationItemData = new SimpleSchema({
-  classNames: {
+  "classNames": {
     type: String,
     optional: true
   },
-  content: {
+  "content": {
     type: Array,
     optional: true
   },
   "content.$": {
     type: NavigationItemContent
   },
-  url: {
+  "url": {
     type: String,
     optional: true
   },
-  isUrlRelative: {
+  "isUrlRelative": {
     type: Boolean,
     optional: true
   },
-  shouldOpenInNewWindow: {
+  "shouldOpenInNewWindow": {
     type: Boolean,
     optional: true
-  },
+  }
 });
 
 /**
@@ -72,39 +72,39 @@ export const NavigationItemData = new SimpleSchema({
  * @property {Boolean} hasUnpublishedChanges Whether the navigation item has unpublished changes
  */
 export const NavigationItem = new SimpleSchema({
-  _id: {
+  "_id": {
     type: String,
     optional: true
   },
-  shopId: {
+  "shopId": {
     type: String,
     optional: true
   },
-  data: {
+  "data": {
     type: NavigationItemData,
     optional: true
   },
-  draftData: {
+  "draftData": {
     type: NavigationItemData,
     optional: true
   },
-  metadata: {
+  "metadata": {
     type: Object,
     blackbox: true,
     optional: true
   },
-  treeIds: {
+  "treeIds": {
     type: Array,
     optional: true
   },
   "treeIds.$": {
     type: String
   },
-  createdAt: {
+  "createdAt": {
     type: Date,
     optional: true
   },
-  hasUnpublishedChanges: {
+  "hasUnpublishedChanges": {
     type: Boolean,
     optional: true
   }

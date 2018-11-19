@@ -55,33 +55,33 @@ export const NavigationTreeItem = new SimpleSchema({
  * @property {Boolean} hasUnpublishedChanges Whether the navigation item has unpublished changes
  */
 export const NavigationTree = new SimpleSchema({
-  _id: {
+  "_id": {
     type: String,
     optional: true
   },
-  shopId: {
+  "shopId": {
     type: String,
     optional: true
   },
-  name: {
+  "name": {
     type: String,
     optional: true
   },
-  items: {
+  "items": {
     type: Array,
     optional: true
   },
   "items.$": {
     type: NavigationTreeItem
   },
-  draftItems: {
+  "draftItems": {
     type: Array,
     optional: true
   },
   "draftItems.$": {
     type: NavigationTreeItem
   },
-  hasUnpublishedChanges: {
+  "hasUnpublishedChanges": {
     type: Boolean,
     optional: true
   }
