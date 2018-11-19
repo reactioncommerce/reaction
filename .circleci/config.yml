@@ -1,7 +1,7 @@
 version: 2.1
 
 orbs:
-  rc_linter: reactioncommerce/linter@dev:v4
+  rc_linter: reactioncommerce/linter@dev:v5
 
 # The following stanza defines a map named defaults with a variable that may be
 # inserted using the YAML merge (<<: *) key later in the file to save some
@@ -341,7 +341,8 @@ workflows:
 #      - eslint:
 #          requires:
 #            - build
-      - rc_linter/run_linters:
+      - rc_linter/dockerfile_lint
+      - rc_linter/eslint:
           requires:
             - build
       - docker-build:
