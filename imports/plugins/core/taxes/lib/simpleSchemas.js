@@ -28,6 +28,10 @@ export const Taxes = new SimpleSchema({
 
 export const TaxSummary = new SimpleSchema({
   calculatedAt: Date,
+  calculatedByTaxServiceName: {
+    type: String,
+    optional: true
+  },
   referenceId: {
     type: String,
     optional: true

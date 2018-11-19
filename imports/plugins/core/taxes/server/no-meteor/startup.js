@@ -93,6 +93,7 @@ async function getUpdatedCartItems(cart, context) {
     }
 
     combinedSummary.calculatedAt = taxSummary.calculatedAt;
+    combinedSummary.calculatedByTaxServiceName = taxSummary.calculatedByTaxServiceName;
     combinedSummary.tax += taxSummary.tax;
     combinedSummary.taxableAmount += taxSummary.taxableAmount;
     combinedSummary.taxes = combinedSummary.taxes.concat(taxSummary.taxes);

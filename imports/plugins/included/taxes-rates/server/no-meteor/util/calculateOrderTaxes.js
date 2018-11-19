@@ -1,5 +1,7 @@
 import Random from "@reactioncommerce/random";
 
+const TAX_SERVICE_NAME = "custom-rates";
+
 /**
  * @summary Gets all applicable tax definitions based on shop ID and shipping address of a fulfillment group
  * @param {Object} collections Map of MongoDB collections
@@ -116,6 +118,7 @@ export default async function calculateOrderTaxes({ context, order }) {
     itemTaxes,
     taxSummary: {
       calculatedAt: new Date(),
+      calculatedByTaxServiceName: TAX_SERVICE_NAME,
       tax: totalTax,
       taxableAmount: totalTaxableAmount,
       taxes: Object.values(groupTaxes)
