@@ -1,10 +1,10 @@
 import { Migrations } from "meteor/percolate:migrations";
 import { Catalog, Products } from "/lib/collections";
-import { convertCatalogItemVariants } from "../util/convert44";
+import { convertCatalogItemVariants } from "../util/convert46";
 import findAndConvertInBatches from "../util/findAndConvertInBatches";
 
 Migrations.add({
-  version: 44,
+  version: 46,
   up() {
     // Catalog
     findAndConvertInBatches({
