@@ -24,7 +24,7 @@ export default function listRefunds(order) {
   for (const group of order.shipping) {
     const { payment } = group;
     const context = Promise.await(getGraphQLContextInMeteorMethod(Reaction.getUserId()));
-    const shopRefunds = Promise.await(getPaymentMethodConfigByName(payment.name).functions.listRefund(context, payment));
+    const shopRefunds = Promise.await(getPaymentMethodConfigByName(payment.name).functions.listRefunds(context, payment));
     refunds.push(...shopRefunds);
   }
   return refunds;

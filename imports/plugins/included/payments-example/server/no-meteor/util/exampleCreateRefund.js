@@ -1,18 +1,18 @@
-import { ExampleApi } from "../../methods/exampleapi";
+import { ExampleApi } from "./exampleapi";
 
 /**
  * @name exampleCreateRefund
  * @method
- * @summary Create a Stripe refund for an order
+ * @summary Create a refund for an order for example payment method
  * @param {Object} context an object containing the per-request state
- * @param {Object} payment object containing authorization ID
+ * @param {Object} payment object containing transaction ID
  * @param {Number} amount the amount to be refunded
  * @return {Object} refund result
  * @private
  */
-export default async function exampleCreateRefund(context, payment, amount) {
+export default function exampleCreateRefund(context, payment, amount) {
   const { transactionId } = payment;
-  const response = ExampleApi.methods.refund.call({
+  const response = ExampleApi.refund({
     transactionId,
     amount
   });

@@ -1,7 +1,7 @@
-import { ExampleApi } from "../../methods/exampleapi";
+import { ExampleApi } from "./exampleapi";
 
 /**
- * @name exampleListRefund
+ * @name exampleListRefunds
  * @method
  * @summary List refunds
  * @param {Object} context an object containing the per-request state
@@ -9,11 +9,9 @@ import { ExampleApi } from "../../methods/exampleapi";
  * @return {Object} refund result
  * @private
  */
-export default async function exampleListRefund(context, payment) {
+export default function exampleListRefunds(context, payment) {
   const { transactionId } = payment;
-  const response = ExampleApi.methods.refunds.call({
-    transactionId
-  });
+  const response = ExampleApi.refunds({ transactionId });
   const result = [];
   for (const refund of response.refunds) {
     result.push(refund);

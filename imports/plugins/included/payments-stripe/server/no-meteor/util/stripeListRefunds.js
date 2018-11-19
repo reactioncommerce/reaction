@@ -3,15 +3,15 @@ import Logger from "@reactioncommerce/logger";
 import getStripeApi from "./getStripeApi";
 
 /**
- * @name stripeListRefund
+ * @name stripeListRefunds
  * @method
  * @summary List refunds
  * @param {Object} context an object containing the per-request state
  * @param {Object} paymentMethod object containing transaction ID
- * @return {Object} refund result
+ * @return {Object} list refunds result
  * @private
  */
-export default async function stripeCreateRefund(context, paymentMethod) {
+export default async function stripeListRefunds(context, paymentMethod) {
   const stripeKey = await getStripeApi(context, paymentMethod.paymentPluginName, paymentMethod.shopId);
   const stripe = stripeNpm(stripeKey);
   let refundListResults;

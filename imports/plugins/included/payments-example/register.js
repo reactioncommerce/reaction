@@ -4,7 +4,7 @@ import resolvers from "./server/no-meteor/resolvers";
 import schemas from "./server/no-meteor/schemas";
 import exampleCapturePayment from "./server/no-meteor/util/exampleCapturePayment";
 import exampleCreateRefund from "./server/no-meteor/util/exampleCreateRefund";
-import exampleListRefund from "./server/no-meteor/util/exampleListRefund";
+import exampleListRefunds from "./server/no-meteor/util/exampleListRefunds";
 
 Reaction.registerPackage({
   label: "ExamplePayment",
@@ -21,7 +21,7 @@ Reaction.registerPackage({
     functions: {
       capturePayment: exampleCapturePayment,
       createRefund: exampleCreateRefund,
-      listRefund: exampleListRefund
+      listRefunds: exampleListRefunds
     }
   }],
   settings: {
