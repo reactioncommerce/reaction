@@ -18,11 +18,16 @@ export default async function updateNavigationItem(context, _id, navigationItem)
     throw new ReactionError("access-denied", "You do not have permission to update a navigation item");
   }
 
+  const existingNavigationItem = await NavigationItems.findOne({ _id });
+  if (!existingNavigationItem) {
+    throw new ReactionError("navigation-item-not-found", "Navigation item was not found");
+  }
+
   const update = {};
 
   if (draftData) {
     NavigationItemData.validate(draftData);
-    
+
     update.hasUnpublishedChanges = true;
 
     for (const fieldName in draftData) {

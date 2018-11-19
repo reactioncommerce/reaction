@@ -40,7 +40,7 @@ export default async function createNavigationItem(context, navigationItem) {
   };
 
   NavigationItemSchema.validate(newNavigationItem);
-  await NavigationItems.insert(newNavigationItem);
+  await NavigationItems.insertOne(newNavigationItem);
 
   return newNavigationItem;
 }

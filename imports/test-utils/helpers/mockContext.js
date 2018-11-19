@@ -20,6 +20,8 @@ const mockContext = {
   "Groups",
   "Inventory",
   "MediaRecords",
+  "NavigationItems",
+  "NavigationTrees",
   "Notifications",
   "Orders",
   "Packages",

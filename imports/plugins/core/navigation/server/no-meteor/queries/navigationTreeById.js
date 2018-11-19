@@ -18,5 +18,5 @@ export default async function navigationTreeById(context, language, _id) {
     navigationTree.language = language;
   }
 
-  return navigationTree
+  return navigationTree;
 }

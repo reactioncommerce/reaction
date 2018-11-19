@@ -21,6 +21,11 @@ export default async function updateNavigationTree(context, _id, navigationTree)
     throw new ReactionError("access-denied", "You do not have permission to update a navigation tree");
   }
 
+  const existingNavigationTree = await NavigationTrees.findOne({ _id });
+  if (!existingNavigationTree) {
+    throw new ReactionError("navigation-tree-not-found", "No navigation tree was found");
+  }
+
   const update = {};
 
   if (draftItems) {
