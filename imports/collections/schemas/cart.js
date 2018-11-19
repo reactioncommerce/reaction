@@ -64,6 +64,10 @@ export const CartItem = new SimpleSchema({
     optional: true
   },
   "attributes.$": CartItemAttribute,
+  "compareAtPrice": {
+    type: Money,
+    optional: true
+  },
   "createdAt": Date,
   "metafields": {
     type: Array,
@@ -114,6 +118,7 @@ export const CartItem = new SimpleSchema({
     index: 1,
     label: "Cart Item shopId"
   },
+  "subtotal": Money,
   "title": {
     type: String,
     label: "CartItem Title"

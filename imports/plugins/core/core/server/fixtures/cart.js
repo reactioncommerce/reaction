@@ -34,12 +34,17 @@ export function getCartItem(options = {}) {
     ]
   }).fetch();
   const selectedOption = Random.choice(childVariants);
+  const quantity = _.random(1, selectedOption.inventoryQuantity);
   const defaults = {
     _id: Random.id(),
     addedAt: new Date(),
     createdAt: new Date(),
     isTaxable: false,
     optionTitle: selectedOption.optionTitle,
+    price: {
+      amount: selectedOption.price,
+      currencyCode: "USD"
+    },
     priceWhenAdded: {
       amount: selectedOption.price,
       currencyCode: "USD"
@@ -47,8 +52,12 @@ export function getCartItem(options = {}) {
     productId: product._id,
     productSlug: product.handle,
     productType: product.type,
+    quantity,
     shopId: options.shopId || getShop()._id,
-    quantity: _.random(1, selectedOption.inventoryQuantity),
+    subtotal: {
+      amount: selectedOption.price * quantity,
+      currencyCode: "USD"
+    },
     title: product.title,
     updatedAt: new Date(),
     variantId: selectedOption._id,
@@ -85,12 +94,17 @@ export function createCart(productId, variantId) {
   const variant = Products.findOne(variantId);
   const user = Factory.create("user");
   const account = Factory.create("account", { userId: user._id });
+  const quantity = _.random(1, variant.inventoryQuantity);
   const cartItem = {
     _id: Random.id(),
     addedAt: new Date(),
     createdAt: new Date(),
     isTaxable: false,
     optionTitle: variant.optionTitle,
+    price: {
+      amount: variant.price,
+      currencyCode: "USD"
+    },
     priceWhenAdded: {
       amount: variant.price,
       currencyCode: "USD"
@@ -98,8 +112,12 @@ export function createCart(productId, variantId) {
     productId: product._id,
     productSlug: product.handle,
     productType: product.type,
+    quantity,
     shopId: getShop()._id,
-    quantity: _.random(1, variant.inventoryQuantity),
+    subtotal: {
+      amount: variant.price * quantity,
+      currencyCode: "USD"
+    },
     title: product.title,
     updatedAt: new Date(),
     variantId: variant._id,

@@ -26,10 +26,9 @@ export default async function getItemPriceDiscount(cartId, discountId, collectio
   // TODO add item specific conditions to sale calculations.
   let discount = 0;
   for (const item of cart.items) {
-    const preDiscountItemTotal = item.quantity * item.priceWhenAdded.amount;
     const salePriceItemTotal = item.quantity * discountAmount;
     // we if the sale is below 0, we won't discount at all. that's invalid.
-    discount += Math.max(0, preDiscountItemTotal - salePriceItemTotal);
+    discount += Math.max(0, item.subtotal.amount - salePriceItemTotal);
   }
 
   return discount;

@@ -132,6 +132,11 @@ export default async function addCartItems(collections, currentItems, inputItems
       productTagIds: catalogProduct.tagIds,
       quantity,
       shopId: catalogProduct.shopId,
+      // Subtotal will be kept updated by event handler watching for catalog changes.
+      subtotal: {
+        amount: variantPriceInfo.price * quantity,
+        currencyCode: price.currencyCode
+      },
       taxCode: chosenVariant.taxCode,
       title: catalogProduct.title,
       updatedAt: currentDateTime,
