@@ -1,7 +1,7 @@
 version: 2.1
 
 orbs:
-  rc_linter: reactioncommerce/linter@dev:v8
+  rc_linter: reactioncommerce/linter@dev:v9
 
 # The following stanza defines a map named defaults with a variable that may be
 # inserted using the YAML merge (<<: *) key later in the file to save some
