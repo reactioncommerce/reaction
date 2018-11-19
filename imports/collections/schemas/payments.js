@@ -6,12 +6,13 @@ import { Address } from "./address";
  * @name Invoice
  * @type {SimpleSchema}
  * @memberof Schemas
- * @property {Number} discounts optional
+ * @property {Number} discounts Total of all discounts (a positive number, but subtracted from the grand total)
  * @property {Number} effectiveTaxRate The effective tax rate, for display
- * @property {Number} shipping optional
- * @property {Number} subtotal required
- * @property {Number} taxes optional
- * @property {Number} total required
+ * @property {Number} shipping Price of the selected fulfillment method
+ * @property {Number} subtotal Item total
+ * @property {Number} taxableAmount Total amount that was deemed taxable by the tax service
+ * @property {Number} taxes Total tax
+ * @property {Number} total Grand total
  */
 export const Invoice = new SimpleSchema({
   discounts: {
@@ -31,6 +32,10 @@ export const Invoice = new SimpleSchema({
     min: 0
   },
   taxes: {
+    type: Number,
+    min: 0
+  },
+  taxableAmount: {
     type: Number,
     min: 0
   },

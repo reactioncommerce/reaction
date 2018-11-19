@@ -50,7 +50,7 @@ export function getOrderRiskStatus(order) {
  * @return {boolean} label - true if the tax was not submitted by user.
  */
 export function getTaxRiskStatus(order) {
-  return order.taxCalculationFailed || order.bypassAddressValidation;
+  return order.bypassAddressValidation;
 }
 
 /**
