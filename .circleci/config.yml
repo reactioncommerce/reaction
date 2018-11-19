@@ -17,15 +17,7 @@ defaults: &defaults
   docker:
     - image: circleci/node:8-stretch
 
-jobs:
-  run_linters:
-    <<: *defaults
-    steps:
-      - rc_linter/run_dockerfile_lint
-      - rc_linter/run_eslint:
-          branch: ${CIRCLECI_BRANCH}
-          global_cache_version: ${GLOBAL_CACHE_VERSION}
-  
+jobs:  
   build:
     <<: *defaults
     steps:
@@ -349,7 +341,8 @@ workflows:
 #      - eslint:
 #          requires:
 #            - build
-      - run_linters:
+      - rc_linter/run_linters:
+          branch: ${CIRCLECI_BRANCH}
           requires:
             - build
       - docker-build:
