@@ -48,7 +48,7 @@ twitter-config-ui@1.0.0
 # Community Packages
 alanning:roles
 aldeed:autoform@6.2.0
-aldeed:collection2@3.0.0
+aldeed:collection2@3.0.1
 aldeed:schema-index@3.0.0
 aldeed:template-extension
 bozhao:accounts-instagram

@@ -81,8 +81,6 @@ const beforeDoc = {
     }
   ],
   minOrderQuantity: 1,
-  taxCode: "taxCode",
-  taxDescription: "taxDescription",
   twitterMsg: "twitterMsg",
   facebookMsg: "facebookMsg",
   googleplusMsg: "googleplusMsg",
@@ -110,7 +108,6 @@ const beforeDoc = {
       ],
       minOrderQuantity: 1,
       shopId: "J8Bhq3uTtdgwZx3rz",
-      taxable: true,
       type: "variant",
       originCountry: "US",
       isDeleted: false,
@@ -154,7 +151,6 @@ const beforeDoc = {
       ],
       minOrderQuantity: 1,
       shopId: "J8Bhq3uTtdgwZx3rz",
-      taxable: true,
       type: "variant",
       originCountry: "US",
       isDeleted: false,
@@ -194,7 +190,6 @@ const beforeDoc = {
       ],
       minOrderQuantity: 1,
       shopId: "J8Bhq3uTtdgwZx3rz",
-      taxable: true,
       type: "variant",
       originCountry: "US",
       isDeleted: false,
@@ -221,7 +216,6 @@ const afterDoc = {
     isDeleted: false,
     isLowQuantity: false,
     isSoldOut: false,
-    isTaxable: false,
     isVisible: true,
     height: 27.4,
     length: 765.6,
@@ -324,8 +318,6 @@ const afterDoc = {
       "rpjCvTBGjhBi2xdro",
       "cseCBSSrJ3t8HQSNP"
     ],
-    taxCode: "taxCode",
-    taxDescription: "taxDescription",
     title: "Basic Reaction Product",
     type: "product-simple",
     updatedAt: new Date("2018-05-24T14:43:26.282+0000"),
@@ -340,7 +332,6 @@ const afterDoc = {
         inventoryPolicy: true,
         isLowQuantity: false,
         isSoldOut: false,
-        isTaxable: true,
         length: 0,
         lowInventoryWarningThreshold: 0,
         metafields: [
@@ -382,7 +373,6 @@ const afterDoc = {
             inventoryPolicy: true,
             isLowQuantity: false,
             isSoldOut: false,
-            isTaxable: true,
             length: 10,
             lowInventoryWarningThreshold: 0,
             metafields: [
@@ -424,7 +414,6 @@ const afterDoc = {
             inventoryPolicy: true,
             isLowQuantity: false,
             isSoldOut: false,
-            isTaxable: true,
             length: 10,
             lowInventoryWarningThreshold: 0,
             metafields: [
