@@ -24,6 +24,10 @@ import { addProduct } from "./products";
 export function getCartItem(options = {}) {
   const product = addProduct();
   Promise.await(publishProductToCatalog(product, {
+    appEvents: {
+      emit() {},
+      on() {}
+    },
     collections: rawCollections,
     getFunctionsOfType: () => []
   }));
