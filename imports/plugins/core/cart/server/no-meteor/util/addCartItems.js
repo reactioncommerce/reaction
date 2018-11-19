@@ -107,10 +107,7 @@ export default async function addCartItems(collections, currentItems, inputItems
     const cartItem = {
       _id: Random.id(),
       attributes,
-      compareAtPrice: {
-        amount: variantPriceInfo.compareAtPrice,
-        currencyCode: price.currencyCode
-      },
+      compareAtPrice: null,
       isTaxable: chosenVariant.isTaxable || false,
       metafields,
       optionTitle: chosenVariant.optionTitle,
@@ -143,6 +140,13 @@ export default async function addCartItems(collections, currentItems, inputItems
       variantId: productVariantId,
       variantTitle: chosenVariant.title
     };
+
+    if (variantPriceInfo.compareAtPrice || variantPriceInfo.compareAtPrice === 0) {
+      cartItem.compareAtPrice = {
+        amount: variantPriceInfo.compareAtPrice,
+        currencyCode: price.currencyCode
+      };
+    }
 
     // Check whether this variant is already in the cart. If so, increment quantity.
     const currentMatchingItemIndex = currentItems.findIndex((item) => item.productId === productId && item.variantId === productVariantId);
