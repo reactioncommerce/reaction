@@ -1,7 +1,7 @@
 version: 2.1
 
 orbs:
-  rc_linter: reactioncommerce/linter@dev:v17
+  rc_linter: reactioncommerce/linter@dev:v18
 
 # The following stanza defines a map named defaults with a variable that may be
 # inserted using the YAML merge (<<: *) key later in the file to save some
@@ -92,11 +92,12 @@ jobs:
           paths:
             - ~/.mongodb-binaries
       - run:
-          name: Create workspace directory
+          name: Create workspace
           command: |
-            mkdir -p /tmp/workspace
+            mkdir -p docker-build-workspace
+            cp GLOBAL_CACHE_VERSION docker-build-workspace
       - persist_to_workspace:
-          root: /tmp/workspace
+          root: docker-build-workspace
           paths:
             - GLOBAL_CACHE_VERSION
 
