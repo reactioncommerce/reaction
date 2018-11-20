@@ -1,7 +1,7 @@
 version: 2.1
 
 orbs:
-  rc_linter: reactioncommerce/linter@dev:v12
+  rc_linter: reactioncommerce/linter@dev:v13
 
 # The following stanza defines a map named defaults with a variable that may be
 # inserted using the YAML merge (<<: *) key later in the file to save some
@@ -222,6 +222,10 @@ jobs:
     <<: *defaults
     steps:
       - checkout
+      - run:
+          name: Save GLOBAL_CACHE_VERSION variable in file
+          command: |
+            echo ${GLOBAL_CACHE_VERSION} > /tmp/GLOBAL_CACHE_VERSION
       - restore_cache:
           name: Restoring Meteor cache
           key: meteor-{{ checksum "/tmp/GLOBAL_CACHE_VERSION" }}
@@ -248,6 +252,10 @@ jobs:
     <<: *defaults
     steps:
       - checkout
+      - run:
+          name: Save GLOBAL_CACHE_VERSION variable in file
+          command: |
+            echo ${GLOBAL_CACHE_VERSION} > /tmp/GLOBAL_CACHE_VERSION
       - restore_cache:
           keys:
             - node-modules-{{ checksum "/tmp/GLOBAL_CACHE_VERSION" }}-{{ checksum "package.json" }}-{{ checksum "package-lock.json" }}
@@ -261,6 +269,10 @@ jobs:
     <<: *defaults
     steps:
       - checkout
+      - run:
+          name: Save GLOBAL_CACHE_VERSION variable in file
+          command: |
+            echo ${GLOBAL_CACHE_VERSION} > /tmp/GLOBAL_CACHE_VERSION
       - restore_cache:
           keys:
             - node-modules-{{ checksum "/tmp/GLOBAL_CACHE_VERSION" }}-{{ checksum "package.json" }}-{{ checksum "package-lock.json" }}
@@ -290,6 +302,10 @@ jobs:
     <<: *defaults
     steps:
       - checkout
+      - run:
+          name: Save GLOBAL_CACHE_VERSION variable in file
+          command: |
+            echo ${GLOBAL_CACHE_VERSION} > /tmp/GLOBAL_CACHE_VERSION
       - setup_remote_docker:
           docker_layer_caching: true
       - restore_cache:
@@ -347,7 +363,7 @@ workflows:
 #            - build
       - rc_linter/dockerfile_lint
       - rc_linter/eslint:
-          global_cache_version: ${GLOBAL_CACHE_VERSION}
+          cache_version: ${GLOBAL_CACHE_VERSION}
           requires:
             - build
       - docker-build:
