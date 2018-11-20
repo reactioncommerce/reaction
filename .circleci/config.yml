@@ -91,6 +91,10 @@ jobs:
           key: mongodb-memory-server
           paths:
             - ~/.mongodb-binaries
+      - run:
+          name: Create workspace directory
+          command: |
+            mkdir -p /tmp/workspace
       - persist_to_workspace:
           root: /tmp/workspace
           paths:
