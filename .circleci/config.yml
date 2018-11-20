@@ -325,7 +325,8 @@ workflows:
   version: 2
   build_and_test:
     jobs:
-      - build
+      - build:
+          context: reaction-build-cache-settings
 #      - dockerfile-lint
       - test-app:
           requires:
