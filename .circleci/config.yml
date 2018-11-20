@@ -1,7 +1,7 @@
 version: 2.1
 
 orbs:
-  rc_linter: reactioncommerce/linter@dev:v15
+  rc_linter: reactioncommerce/linter@dev:v16
 
 # The following stanza defines a map named defaults with a variable that may be
 # inserted using the YAML merge (<<: *) key later in the file to save some
@@ -91,10 +91,6 @@ jobs:
           key: mongodb-memory-server
           paths:
             - ~/.mongodb-binaries
-      - store_artifacts:
-          path: /tmp/GLOBAL_CACHE_VERSION
-          destination: GLOBAL_CACHE_VERSION_artifact
-
 
   docker-build:
     <<: *defaults
