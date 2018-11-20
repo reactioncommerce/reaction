@@ -1,7 +1,7 @@
 version: 2.1
 
 orbs:
-  rc_linter: reactioncommerce/linter@dev:v10
+  rc_linter: reactioncommerce/linter@dev:v12
 
 # The following stanza defines a map named defaults with a variable that may be
 # inserted using the YAML merge (<<: *) key later in the file to save some
@@ -11,6 +11,7 @@ defaults: &defaults
     - DOCKER_REPOSITORY: "reactioncommerce/reaction"
     - DOCKER_NAMESPACE: "reactioncommerce"
     - DOCKER_NAME: "reaction"
+    - GLOBAL_CACHE_VERSION: "v2"
     - TOOL_NODE_FLAGS: "--max-old-space-size=4096"
   working_directory: ~/reaction-app
   docker:
@@ -21,11 +22,15 @@ jobs:
     <<: *defaults
     steps:
       - checkout
+      - run:
+          name: Save GLOBAL_CACHE_VERSION variable in file
+          command: |
+            echo ${GLOBAL_CACHE_VERSION} > /tmp/GLOBAL_CACHE_VERSION
       - setup_remote_docker:
           docker_layer_caching: true
       - restore_cache:
           name: Restoring Meteor cache
-          key: "${GLOBAL_CACHE_VERSION}-meteor"
+          key: meteor-{{ checksum "/tmp/GLOBAL_CACHE_VERSION" }}
       - run:
           name: Install Meteor
           command: |
@@ -38,7 +43,7 @@ jobs:
             fi
       - save_cache:
           name: Saving Meteor to cache
-          key: "${GLOBAL_CACHE_VERSION}-meteor-{{ epoch }}"
+          key: meteor-{{ checksum "/tmp/GLOBAL_CACHE_VERSION" }}-{{ epoch }}
           paths:
             - ~/.meteor
       - run:
@@ -72,11 +77,11 @@ jobs:
       # Store node_modules dependency cache.
       # Saved with package.json checksum and timestamped branch name keys.
       - save_cache:
-          key: "${GLOBAL_CACHE_VERSION}-node-modules-{{ checksum \"package.json\" }}-{{ checksum \"package-lock.json\" }}"
+          key: node-modules-{{ checksum "/tmp/GLOBAL_CACHE_VERSION" }}-{{ checksum "package.json" }}-{{ checksum "package-lock.json" }}
           paths:
             - node_modules
       - save_cache:
-          key: "${GLOBAL_CACHE_VERSION}-node-modules-{{ .Branch }}-{{ epoch }}"
+          key: node-modules-{{ checksum "/tmp/GLOBAL_CACHE_VERSION" }}-{{ .Branch }}-{{ epoch }}
           paths:
             - node_modules
       # mongodb-memory-server installs Mongo binary on npm install, which we need
@@ -219,16 +224,16 @@ jobs:
       - checkout
       - restore_cache:
           name: Restoring Meteor cache
-          key: "${GLOBAL_CACHE_VERSION}-meteor"
+          key: meteor-{{ checksum "/tmp/GLOBAL_CACHE_VERSION" }}
       - run:
           name: Link Restored Meteor
           command: sudo ln -s ~/.meteor/meteor /usr/local/bin/meteor
       - restore_cache:
           # Fall back to less specific caches
           keys:
-            - "${GLOBAL_CACHE_VERSION}-node-modules-{{ checksum \"package.json\" }}-{{ checksum \"package-lock.json\" }}"
-            - "${GLOBAL_CACHE_VERSION}-node-modules-{{ .Branch }}"
-            - "${GLOBAL_CACHE_VERSION}-node-modules-master"
+            - node-modules-{{ checksum "/tmp/GLOBAL_CACHE_VERSION" }}-{{ checksum "package.json" }}-{{ checksum "package-lock.json" }}
+            - node-modules-{{ checksum "/tmp/GLOBAL_CACHE_VERSION" }}-{{ .Branch }}
+            - node-modules-{{ checksum "/tmp/GLOBAL_CACHE_VERSION" }}-master
       - run:
           name: Install Reaction CLI
           command: sudo npm install -g reaction-cli
@@ -245,9 +250,9 @@ jobs:
       - checkout
       - restore_cache:
           keys:
-            - "${GLOBAL_CACHE_VERSION}-node-modules-{{ checksum \"package.json\" }}-{{ checksum \"package-lock.json\" }}"
-            - "${GLOBAL_CACHE_VERSION}-node-modules-{{ .Branch }}"
-            - "${GLOBAL_CACHE_VERSION}-node-modules-master"
+            - node-modules-{{ checksum "/tmp/GLOBAL_CACHE_VERSION" }}-{{ checksum "package.json" }}-{{ checksum "package-lock.json" }}
+            - node-modules-{{ checksum "/tmp/GLOBAL_CACHE_VERSION" }}-{{ .Branch }}
+            - node-modules-{{ checksum "/tmp/GLOBAL_CACHE_VERSION" }}-master
       - run:
           name: Run Unit Tests
           command: npm run test:unit
@@ -258,9 +263,9 @@ jobs:
       - checkout
       - restore_cache:
           keys:
-            - v1-node-modules-{{ checksum "package.json" }}-{{ checksum "package-lock.json" }}
-            - v1-node-modules-{{ .Branch }}
-            - v1-node-modules-master
+            - node-modules-{{ checksum "/tmp/GLOBAL_CACHE_VERSION" }}-{{ checksum "package.json" }}-{{ checksum "package-lock.json" }}
+            - node-modules-{{ checksum "/tmp/GLOBAL_CACHE_VERSION" }}-{{ .Branch }}
+            - node-modules-{{ checksum "/tmp/GLOBAL_CACHE_VERSION" }}-master
       - restore_cache:
           name: Restoring mongodb-memory-server MongoDB cache
           key: mongodb-memory-server
@@ -289,9 +294,9 @@ jobs:
           docker_layer_caching: true
       - restore_cache:
           keys:
-            - "${GLOBAL_CACHE_VERSION}-node-modules-{{ checksum \"package.json\" }}-{{ checksum \"package-lock.json\" }}"
-            - "${GLOBAL_CACHE_VERSION}-node-modules-{{ .Branch }}"
-            - "${GLOBAL_CACHE_VERSION}-node-modules-master"
+            - node-modules-{{ checksum "/tmp/GLOBAL_CACHE_VERSION" }}-{{ checksum "package.json" }}-{{ checksum "package-lock.json" }}
+            - node-modules-{{ checksum "/tmp/GLOBAL_CACHE_VERSION" }}-{{ .Branch }}
+            - node-modules-{{ checksum "/tmp/GLOBAL_CACHE_VERSION" }}-master
       - run:
           name: Snyk Test
           command: |
@@ -325,8 +330,7 @@ workflows:
   version: 2
   build_and_test:
     jobs:
-      - build:
-          context: reaction-build-cache-settings
+      - build
 #      - dockerfile-lint
       - test-app:
           requires:
@@ -343,6 +347,7 @@ workflows:
 #            - build
       - rc_linter/dockerfile_lint
       - rc_linter/eslint:
+          global_cache_version: ${GLOBAL_CACHE_VERSION}
           requires:
             - build
       - docker-build:
