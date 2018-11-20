@@ -1,7 +1,7 @@
 version: 2.1
 
 orbs:
-  rc_linter: reactioncommerce/linter@dev:v16
+  rc_linter: reactioncommerce/linter@dev:v17
 
 # The following stanza defines a map named defaults with a variable that may be
 # inserted using the YAML merge (<<: *) key later in the file to save some
@@ -25,12 +25,12 @@ jobs:
       - run:
           name: Save GLOBAL_CACHE_VERSION variable in file
           command: |
-            echo ${GLOBAL_CACHE_VERSION} > /tmp/GLOBAL_CACHE_VERSION
+            echo ${GLOBAL_CACHE_VERSION} > GLOBAL_CACHE_VERSION
       - setup_remote_docker:
           docker_layer_caching: true
       - restore_cache:
           name: Restoring Meteor cache
-          key: meteor-{{ checksum "/tmp/GLOBAL_CACHE_VERSION" }}
+          key: meteor-{{ checksum "GLOBAL_CACHE_VERSION" }}
       - run:
           name: Install Meteor
           command: |
@@ -43,7 +43,7 @@ jobs:
             fi
       - save_cache:
           name: Saving Meteor to cache
-          key: meteor-{{ checksum "/tmp/GLOBAL_CACHE_VERSION" }}-{{ epoch }}
+          key: meteor-{{ checksum "GLOBAL_CACHE_VERSION" }}-{{ epoch }}
           paths:
             - ~/.meteor
       - run:
@@ -77,11 +77,11 @@ jobs:
       # Store node_modules dependency cache.
       # Saved with package.json checksum and timestamped branch name keys.
       - save_cache:
-          key: node-modules-{{ checksum "/tmp/GLOBAL_CACHE_VERSION" }}-{{ checksum "package.json" }}-{{ checksum "package-lock.json" }}
+          key: node-modules-{{ checksum "GLOBAL_CACHE_VERSION" }}-{{ checksum "package.json" }}-{{ checksum "package-lock.json" }}
           paths:
             - node_modules
       - save_cache:
-          key: node-modules-{{ checksum "/tmp/GLOBAL_CACHE_VERSION" }}-{{ .Branch }}-{{ epoch }}
+          key: node-modules-{{ checksum "GLOBAL_CACHE_VERSION" }}-{{ .Branch }}-{{ epoch }}
           paths:
             - node_modules
       # mongodb-memory-server installs Mongo binary on npm install, which we need
@@ -91,6 +91,10 @@ jobs:
           key: mongodb-memory-server
           paths:
             - ~/.mongodb-binaries
+      - persist_to_workspace:
+          root: /tmp/workspace
+          paths:
+            - GLOBAL_CACHE_VERSION
 
   docker-build:
     <<: *defaults
@@ -362,7 +366,6 @@ workflows:
 #            - build
       - rc_linter/dockerfile_lint
       - rc_linter/eslint:
-          cache_version: ${GLOBAL_CACHE_VERSION}
           requires:
             - build
       - docker-build:
