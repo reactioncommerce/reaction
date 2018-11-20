@@ -25,6 +25,7 @@ export default async function xformCartGroupToCommonOrder(cart, group, context) 
       currencyCode
     },
     taxCode: item.taxCode,
+    title: item.title,
     variantId: item.variantId
   }));
 
@@ -32,6 +33,8 @@ export default async function xformCartGroupToCommonOrder(cart, group, context) 
   const shop = await collections.Shops.findOne({ _id: shopId });
 
   return {
+    billingAddress: null,
+    cartId: cart._id,
     currencyCode: cart.currencyCode,
     fulfillmentPrices: {
       handling: {
@@ -49,8 +52,10 @@ export default async function xformCartGroupToCommonOrder(cart, group, context) 
     },
     fulfillmentType,
     items,
+    orderId: null,
     originAddress: (shop && Array.isArray(shop.addressBook) && shop.addressBook[0]) || null,
     shippingAddress: address || null,
-    shopId
+    shopId,
+    sourceType: "cart"
   };
 }

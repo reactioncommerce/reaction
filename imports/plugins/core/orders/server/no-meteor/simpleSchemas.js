@@ -30,6 +30,7 @@ const CommonOrderItem = new SimpleSchema({
     type: String,
     optional: true
   },
+  title: String,
   variantId: String
 });
 
@@ -50,6 +51,14 @@ const CommonOrderFulfillmentPrices = new SimpleSchema({
  *   caring whether it is for a Cart or an Order.
  */
 export const CommonOrder = new SimpleSchema({
+  billingAddress: {
+    type: Address,
+    optional: true
+  },
+  cartId: {
+    type: String,
+    optional: true
+  },
   currencyCode: String,
   fulfillmentPrices: CommonOrderFulfillmentPrices,
   fulfillmentType: {
@@ -57,6 +66,10 @@ export const CommonOrder = new SimpleSchema({
     allowedValues: ["shipping"]
   },
   items: [CommonOrderItem],
+  orderId: {
+    type: String,
+    optional: true
+  },
   originAddress: {
     type: Address,
     optional: true
@@ -65,5 +78,9 @@ export const CommonOrder = new SimpleSchema({
     type: Address,
     optional: true
   },
-  shopId: String
+  shopId: String,
+  sourceType: {
+    type: String,
+    allowedValues: ["cart", "order"]
+  }
 });
