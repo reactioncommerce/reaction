@@ -1,7 +1,7 @@
 version: 2.1
 
 orbs:
-  rc_linter: reactioncommerce/linter@dev:v9
+  rc_linter: reactioncommerce/linter@dev:v10
 
 # The following stanza defines a map named defaults with a variable that may be
 # inserted using the YAML merge (<<: *) key later in the file to save some
@@ -26,7 +26,7 @@ jobs:
           docker_layer_caching: true
       - restore_cache:
           name: Restoring Meteor cache
-          key: meteor
+          key: "${GLOBAL_CACHE_VERSION}-meteor"
       - run:
           name: Install Meteor
           command: |
@@ -39,7 +39,7 @@ jobs:
             fi
       - save_cache:
           name: Saving Meteor to cache
-          key: meteor-{{ epoch }}
+          key: "${GLOBAL_CACHE_VERSION}-meteor-{{ epoch }}"
           paths:
             - ~/.meteor
       - run:
@@ -73,11 +73,11 @@ jobs:
       # Store node_modules dependency cache.
       # Saved with package.json checksum and timestamped branch name keys.
       - save_cache:
-          key: node-modules-{{ checksum "package.json" }}-{{ checksum "package-lock.json" }}
+          key: "${GLOBAL_CACHE_VERSION}-node-modules-{{ checksum "package.json" }}-{{ checksum "package-lock.json" }}"
           paths:
             - node_modules
       - save_cache:
-          key: node-modules-{{ .Branch }}-{{ epoch }}
+          key: "${GLOBAL_CACHE_VERSION}-node-modules-{{ .Branch }}-{{ epoch }}"
           paths:
             - node_modules
       # mongodb-memory-server installs Mongo binary on npm install, which we need
@@ -206,9 +206,9 @@ jobs:
 #      - checkout
 #      - restore_cache:
 #          keys:
-#            - node-modules-{{ checksum "package.json" }}-{{ checksum "package-lock.json" }}
-#            - node-modules-{{ .Branch }}
-#            - node-modules-master
+#            - ${GLOBAL_CACHE_VERSION}-node-modules-{{ checksum "package.json" }}-{{ checksum "package-lock.json" }}
+#            - ${GLOBAL_CACHE_VERSION}-node-modules-{{ .Branch }}
+#            - ${GLOBAL_CACHE_VERSION}-node-modules-master
 #      - run:
 #          name: Run Lint
 #          command: |
@@ -220,16 +220,16 @@ jobs:
       - checkout
       - restore_cache:
           name: Restoring Meteor cache
-          key: meteor
+          key: "${GLOBAL_CACHE_VERSION}-meteor"
       - run:
           name: Link Restored Meteor
           command: sudo ln -s ~/.meteor/meteor /usr/local/bin/meteor
       - restore_cache:
           # Fall back to less specific caches
           keys:
-            - node-modules-{{ checksum "package.json" }}-{{ checksum "package-lock.json" }}
-            - node-modules-{{ .Branch }}
-            - node-modules-master
+            - "${GLOBAL_CACHE_VERSION}-node-modules-{{ checksum "package.json" }}-{{ checksum "package-lock.json" }}"
+            - "${GLOBAL_CACHE_VERSION}-node-modules-{{ .Branch }}"
+            - "${GLOBAL_CACHE_VERSION}-node-modules-master"
       - run:
           name: Install Reaction CLI
           command: sudo npm install -g reaction-cli
@@ -246,9 +246,9 @@ jobs:
       - checkout
       - restore_cache:
           keys:
-            - node-modules-{{ checksum "package.json" }}-{{ checksum "package-lock.json" }}
-            - node-modules-{{ .Branch }}
-            - node-modules-master
+            - "${GLOBAL_CACHE_VERSION}-node-modules-{{ checksum "package.json" }}-{{ checksum "package-lock.json" }}"
+            - "${GLOBAL_CACHE_VERSION}-node-modules-{{ .Branch }}"
+            - "${GLOBAL_CACHE_VERSION}-node-modules-master"
       - run:
           name: Run Unit Tests
           command: npm run test:unit
@@ -290,9 +290,9 @@ jobs:
           docker_layer_caching: true
       - restore_cache:
           keys:
-            - node-modules-{{ checksum "package.json" }}-{{ checksum "package-lock.json" }}
-            - node-modules-{{ .Branch }}
-            - node-modules-master
+            - "${GLOBAL_CACHE_VERSION}-node-modules-{{ checksum "package.json" }}-{{ checksum "package-lock.json" }}"
+            - "${GLOBAL_CACHE_VERSION}-node-modules-{{ .Branch }}"
+            - "${GLOBAL_CACHE_VERSION}-node-modules-master"
       - run:
           name: Snyk Test
           command: |
