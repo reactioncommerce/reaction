@@ -73,7 +73,7 @@ jobs:
       # Store node_modules dependency cache.
       # Saved with package.json checksum and timestamped branch name keys.
       - save_cache:
-          key: "${GLOBAL_CACHE_VERSION}-node-modules-{{ checksum "package.json" }}-{{ checksum "package-lock.json" }}"
+          key: "${GLOBAL_CACHE_VERSION}-node-modules-{{ checksum \"package.json\" }}-{{ checksum \"package-lock.json\" }}"
           paths:
             - node_modules
       - save_cache:
@@ -227,7 +227,7 @@ jobs:
       - restore_cache:
           # Fall back to less specific caches
           keys:
-            - "${GLOBAL_CACHE_VERSION}-node-modules-{{ checksum "package.json" }}-{{ checksum "package-lock.json" }}"
+            - "${GLOBAL_CACHE_VERSION}-node-modules-{{ checksum \"package.json\" }}-{{ checksum \"package-lock.json\" }}"
             - "${GLOBAL_CACHE_VERSION}-node-modules-{{ .Branch }}"
             - "${GLOBAL_CACHE_VERSION}-node-modules-master"
       - run:
@@ -246,7 +246,7 @@ jobs:
       - checkout
       - restore_cache:
           keys:
-            - "${GLOBAL_CACHE_VERSION}-node-modules-{{ checksum "package.json" }}-{{ checksum "package-lock.json" }}"
+            - "${GLOBAL_CACHE_VERSION}-node-modules-{{ checksum \"package.json\" }}-{{ checksum \"package-lock.json\" }}"
             - "${GLOBAL_CACHE_VERSION}-node-modules-{{ .Branch }}"
             - "${GLOBAL_CACHE_VERSION}-node-modules-master"
       - run:
@@ -290,7 +290,7 @@ jobs:
           docker_layer_caching: true
       - restore_cache:
           keys:
-            - "${GLOBAL_CACHE_VERSION}-node-modules-{{ checksum "package.json" }}-{{ checksum "package-lock.json" }}"
+            - "${GLOBAL_CACHE_VERSION}-node-modules-{{ checksum \"package.json\" }}-{{ checksum \"package-lock.json\" }}"
             - "${GLOBAL_CACHE_VERSION}-node-modules-{{ .Branch }}"
             - "${GLOBAL_CACHE_VERSION}-node-modules-master"
       - run:
