@@ -3,7 +3,6 @@ import createShop from "./createShop";
 import createTag from "./createTag";
 import fetchCurrencyRate from "./fetchCurrencyRate";
 import flushCurrencyRate from "./flushCurrencyRate";
-import getBaseLanguage from "./getBaseLanguage";
 import getCurrencyRates from "./getCurrencyRates";
 import getLocale from "./getLocale";
 import getWorkflow from "./getWorkflow";
@@ -32,7 +31,6 @@ export default {
   "shop/createTag": createTag,
   "shop/fetchCurrencyRate": fetchCurrencyRate,
   "shop/flushCurrencyRate": flushCurrencyRate,
-  "shop/getBaseLanguage": getBaseLanguage,
   "shop/getCurrencyRates": getCurrencyRates,
   "shop/getLocale": getLocale,
   "shop/getWorkflow": getWorkflow,
