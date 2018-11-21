@@ -158,6 +158,9 @@ type CartSummary {
   "The total amount that was deemed taxable by the tax service"
   taxableAmount: Money!
 
+  "The combined total of all surcharges"
+  surchargeTotal: Money!
+
   """
   The total estimated tax that has not already been included in the item prices. This may be null,
   and there is a difference between null and 0. Null means "not able to calculate", such as when no
