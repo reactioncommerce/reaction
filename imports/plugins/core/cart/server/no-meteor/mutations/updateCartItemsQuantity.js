@@ -46,7 +46,15 @@ export default async function updateCartItemsQuantity(context, input) {
       list.push({ ...item });
     } else if (update.quantity > 0) {
       // Update quantity as instructed, while omitting the item if quantity is 0
-      list.push({ ...item, quantity: update.quantity });
+      list.push({
+        ...item,
+        quantity: update.quantity,
+        // Update the subtotal since it is a multiple of the price
+        subtotal: {
+          amount: item.price.amount * update.quantity,
+          currencyCode: item.subtotal.currencyCode
+        }
+      });
     }
     return list;
   }, []);

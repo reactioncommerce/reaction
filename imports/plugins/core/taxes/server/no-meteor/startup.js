@@ -1,4 +1,5 @@
 import { isEqual } from "lodash";
+import xformCartGroupToCommonOrder from "/imports/plugins/core/cart/server/no-meteor/util/xformCartGroupToCommonOrder";
 
 /**
  * @summary Returns `cart.items` with tax-related props updated on them
@@ -7,71 +8,42 @@ import { isEqual } from "lodash";
  * @returns {Object[]} Updated items array
  */
 async function getUpdatedCartItems(cart, context) {
-  const { collections } = context;
-
-  // This dance is because `getFulfillmentGroupTaxes` takes groups with `items` on them,
-  // like in the Order schema, whereas in the Cart schema, items are directly on the cart
-  // and each group has only `itemIds` on it. So we first adjust each group to look like
-  // an order fulfillment group.
-  const taxSummaries = [];
-  const itemsWithTax = await Promise.all(cart.shipping.map(async (group) => {
-    let items = group.itemIds.map((itemId) => cart.items.find((item) => item._id === itemId));
-    items = items.filter((item) => !!item); // remove nulls
-
-    // We also need to add `subtotal` on each item, based on the current price of that item in
-    // the catalog. `getFulfillmentGroupTaxes` uses subtotal prop to calculate the tax.
-    items = await Promise.all(items.map(async (item) => {
-      const productConfiguration = {
-        productId: item.productId,
-        productVariantId: item.variantId
-      };
-      const {
-        price
-      } = await context.queries.getCurrentCatalogPriceForProductConfiguration(productConfiguration, cart.currencyCode, collections);
-
-      return {
-        ...item,
-        subtotal: price * item.quantity
-      };
-    }));
-
-    const {
-      items: groupItemsWithTaxAdded,
-      taxSummary
-    } = await context.mutations.getFulfillmentGroupTaxes(context, { ...group, items }, false);
-
-    taxSummaries.push(taxSummary);
-
-    return groupItemsWithTaxAdded;
+  const taxResultsByGroup = await Promise.all(cart.shipping.map(async (group) => {
+    const order = await xformCartGroupToCommonOrder(cart, group, context);
+    return context.mutations.getFulfillmentGroupTaxes(context, { order, forceZeroes: false });
   }));
 
+  // Add tax properties to all items in the cart, if taxes were able to be calculated
   const cartItems = cart.items.map((item) => {
     const newItem = { ...item };
-    itemsWithTax.forEach((group) => {
-      const matchingGroupItem = group.find((groupItem) => groupItem._id === item._id);
-      if (matchingGroupItem) {
-        newItem.tax = matchingGroupItem.tax;
-        newItem.taxableAmount = matchingGroupItem.taxableAmount;
-        newItem.taxes = matchingGroupItem.taxes;
+    taxResultsByGroup.forEach((group) => {
+      const matchingGroupTaxes = group.itemTaxes.find((groupItem) => groupItem.itemId === item._id);
+      if (matchingGroupTaxes) {
+        newItem.tax = matchingGroupTaxes.tax;
+        newItem.taxableAmount = matchingGroupTaxes.taxableAmount;
+        newItem.taxes = matchingGroupTaxes.taxes;
       }
     });
     return newItem;
   });
 
-  // Reduce all group tax summaries to a single one
-  const taxSummary = taxSummaries.reduce((combinedSummary, groupSummary) => {
+  // Merge all group tax summaries to a single one for the whole cart
+  let combinedSummary = { tax: 0, taxableAmount: 0, taxes: [] };
+  for (const { taxSummary } of taxResultsByGroup) {
     // groupSummary will be null if there wasn't enough info to calc taxes
-    if (!combinedSummary || !groupSummary) return null;
+    if (!taxSummary) {
+      combinedSummary = null;
+      break;
+    }
 
-    combinedSummary.calculatedAt = groupSummary.calculatedAt;
-    combinedSummary.tax += groupSummary.tax;
-    combinedSummary.taxableAmount += groupSummary.taxableAmount;
-    combinedSummary.taxes = combinedSummary.taxes.concat(groupSummary.taxes);
+    combinedSummary.calculatedAt = taxSummary.calculatedAt;
+    combinedSummary.calculatedByTaxServiceName = taxSummary.calculatedByTaxServiceName;
+    combinedSummary.tax += taxSummary.tax;
+    combinedSummary.taxableAmount += taxSummary.taxableAmount;
+    combinedSummary.taxes = combinedSummary.taxes.concat(taxSummary.taxes);
+  }
 
-    return combinedSummary;
-  }, { tax: 0, taxableAmount: 0, taxes: [] });
-
-  return { cartItems, taxSummary };
+  return { cartItems, taxSummary: combinedSummary };
 }
 
 const EMITTED_BY_NAME = "TAXES_CORE_PLUGIN";
