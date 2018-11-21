@@ -241,8 +241,6 @@ export default async function createOrder(context, input) {
   const cleanedInput = inputSchema.clean(input); // add default values and such
   inputSchema.validate(cleanedInput);
 
-  const { afterValidate, createPaymentForFulfillmentGroup, order: orderInput } = cleanedInput;
-  const { cartId, cartToken, currencyCode, email, fulfillmentGroups, shopId } = orderInput;
   const { afterValidate, billingAddress, createPaymentForFulfillmentGroup, order: orderInput } = cleanedInput;
   const { cartId, cartToken, currencyCode, email, fulfillmentGroups, shopId } = orderInput;
   const { accountId, account, collections } = context;
