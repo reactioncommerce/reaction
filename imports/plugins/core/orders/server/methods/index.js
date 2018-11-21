@@ -1,4 +1,3 @@
-import addOrderEmail from "./addOrderEmail";
 import approvePayment from "./approvePayment";
 import cancelOrder from "./cancelOrder";
 import capturePayments from "./capturePayments";
@@ -26,7 +25,6 @@ import updateShipmentTracking from "./updateShipmentTracking";
  */
 
 export default {
-  "orders/addOrderEmail": addOrderEmail,
   "orders/approvePayment": approvePayment,
   "orders/cancelOrder": cancelOrder,
   "orders/capturePayments": capturePayments,
