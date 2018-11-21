@@ -6,9 +6,9 @@ import ReactionError from "@reactioncommerce/reaction-error";
 import { xformCartCheckout } from "@reactioncommerce/reaction-graphql-xforms/cart";
 import hashLoginToken from "/imports/node-app/core/util/hashLoginToken";
 import appEvents from "/imports/node-app/core/util/appEvents";
-import getFulfillmentGroupItemsWithTaxAdded from "/imports/plugins/core/taxes/server/no-meteor/mutations/getFulfillmentGroupItemsWithTaxAdded";
-import { Order as OrderSchema, Payment as PaymentSchema } from "/imports/collections/schemas";
+import { Address as AddressSchema, Order as OrderSchema, Payment as PaymentSchema } from "/imports/collections/schemas";
 import getDiscountsTotalForCart from "/imports/plugins/core/discounts/server/no-meteor/util/getDiscountsTotalForCart";
+import xformOrderGroupToCommonOrder from "/imports/plugins/core/orders/server/util/xformOrderGroupToCommonOrder";
 import getCartById from "/imports/plugins/core/shipping/server/no-meteor/util/getCartById.js";
 
 
@@ -67,10 +67,16 @@ const inputSchema = new SimpleSchema({
     type: Function,
     optional: true
   },
+  // Although billing address is typically needed only by the payment plugin,
+  // some tax services require it to calculate taxes for digital items. Thus
+  // it should be provided here in order to be added to the CommonOrder if possible.
+  billingAddress: {
+    type: AddressSchema,
+    optional: true
+  },
   createPaymentForFulfillmentGroup: Function,
   order: orderInputSchema
 });
-
 
 /**
  * @summary Gets currency rates from a shop
@@ -124,11 +130,14 @@ async function getCurrencyExchangeObject(collections, cartCurrencyCode, shopId, 
  * @returns {Object} Invoice object with totals
  */
 function getInvoiceForFulfillmentGroup(group, discountTotal) {
+  const { taxSummary } = group;
+
   // Items
   const itemTotal = group.items.reduce((sum, item) => (sum + item.subtotal), 0);
 
   // Taxes
-  const taxTotal = group.items.reduce((sum, item) => (sum + item.tax), 0);
+  const { tax: taxTotal, taxableAmount } = taxSummary;
+  const effectiveTaxRate = taxableAmount > 0 ? taxTotal / taxableAmount : 0;
 
   // Fulfillment
   const shippingTotal = group.shipmentMethod.rate || 0;
@@ -140,18 +149,12 @@ function getInvoiceForFulfillmentGroup(group, discountTotal) {
   // `buildOrderInputFromCart.js` in the client code.
   const total = Math.max(0, itemTotal + fulfillmentTotal + taxTotal - discountTotal);
 
-  // fulfillmentTotal should be included in this in many jurisdictions but we don't yet support that
-  const preTaxTotal = Math.max(0, itemTotal - discountTotal);
-
-  // Calculate the tax-exclusive tax rate because most people and jurisdictions
-  // refer to sales tax as exclusive rates.
-  const effectiveTaxRate = preTaxTotal > 0 && taxTotal > 0 ? taxTotal / preTaxTotal : 0;
-
   return {
     discounts: discountTotal,
     effectiveTaxRate,
     shipping: fulfillmentTotal,
     subtotal: itemTotal,
+    taxableAmount,
     taxes: taxTotal,
     total
   };
@@ -240,6 +243,8 @@ export default async function createOrder(context, input) {
 
   const { afterValidate, createPaymentForFulfillmentGroup, order: orderInput } = cleanedInput;
   const { cartId, cartToken, currencyCode, email, fulfillmentGroups, shopId } = orderInput;
+  const { afterValidate, billingAddress, createPaymentForFulfillmentGroup, order: orderInput } = cleanedInput;
+  const { cartId, cartToken, currencyCode, email, fulfillmentGroups, shopId } = orderInput;
   const { accountId, account, collections } = context;
   const { Orders } = collections;
 
@@ -247,6 +252,8 @@ export default async function createOrder(context, input) {
   // discount codes feature. We are planning to revamp discounts soon, but until then, we'll look up
   // any discounts on the related cart here.
   const { discounts, total: discountTotal } = await getDiscountsTotalForCart(context, cartId);
+
+  const orderId = Random.id();
 
   // Add more props to each fulfillment group, and validate/build the items in each group
   const finalFulfillmentGroups = await Promise.all(fulfillmentGroups.map(async (groupInput) => {
@@ -284,7 +291,27 @@ export default async function createOrder(context, input) {
     // the price is what the shopper expects it to be.
     finalGroup.items = await Promise.all(finalGroup.items.map((item) => buildOrderItem(item, currencyCode, context)));
 
-    finalGroup.items = await getFulfillmentGroupItemsWithTaxAdded(collections, finalGroup, true);
+    // Apply taxes
+    const commonOrder = await xformOrderGroupToCommonOrder({
+      billingAddress,
+      cartId,
+      collections,
+      currencyCode,
+      group: finalGroup,
+      orderId
+    });
+    const { itemTaxes, taxSummary } = await context.mutations.getFulfillmentGroupTaxes(context, { order: commonOrder, forceZeroes: true });
+    finalGroup.items = finalGroup.items.map((item) => {
+      const itemTax = itemTaxes.find((entry) => entry.itemId === item._id) || {};
+
+      return {
+        ...item,
+        tax: itemTax.tax,
+        taxableAmount: itemTax.taxableAmount,
+        taxes: itemTax.taxes
+      };
+    });
+    finalGroup.taxSummary = taxSummary;
 
     // Add some more properties for convenience
     finalGroup.itemIds = finalGroup.items.map((item) => item._id);
@@ -354,7 +381,7 @@ export default async function createOrder(context, input) {
   const now = new Date();
 
   const order = {
-    _id: Random.id(),
+    _id: orderId,
     accountId,
     anonymousAccessToken: anonymousAccessToken && hashLoginToken(anonymousAccessToken),
     cartId,

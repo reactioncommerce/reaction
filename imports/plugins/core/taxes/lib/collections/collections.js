@@ -1,14 +1,5 @@
 import { Mongo } from "meteor/mongo";
-import * as Schemas from "./schemas";
-
-/**
- * @name Taxes
- * @memberof Collections
- * @type {MongoCollection}
- */
-export const Taxes = new Mongo.Collection("Taxes");
-
-Taxes.attachSchema(Schemas.Taxes);
+import { TaxCodes as TaxCodesSchema } from "./schemas";
 
 /**
  * @name TaxCodes
@@ -17,4 +8,4 @@ Taxes.attachSchema(Schemas.Taxes);
  */
 export const TaxCodes = new Mongo.Collection("TaxCodes");
 
-TaxCodes.attachSchema(Schemas.TaxCodes);
+TaxCodes.attachSchema(TaxCodesSchema);

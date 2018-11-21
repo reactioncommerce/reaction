@@ -2,9 +2,11 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import { ApolloProvider } from "react-apollo";
+import { ComponentsProvider } from "@reactioncommerce/components-context";
 import _ from "lodash";
 import { Template } from "meteor/templating";
 import { Blaze } from "meteor/blaze";
+import appComponents from "/imports/plugins/core/router/client/appComponents";
 import initApollo from "/imports/plugins/core/graphql/lib/helpers/initApollo";
 
 // Ideally this will be done only in browserRouter.js, but we lose context within Blaze templates,
@@ -33,7 +35,9 @@ Template.React.onRendered(function () {
     ReactDOM.render(
       (
         <ApolloProvider client={apolloClient}>
-          {elem}
+          <ComponentsProvider value={appComponents}>
+            {elem}
+          </ComponentsProvider>
         </ApolloProvider>
       ),
       container

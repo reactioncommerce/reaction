@@ -3166,11 +3166,6 @@
     }
   },
   "name": "Reaction",
-  "taxes": [{
-    "taxesIncluded": null,
-    "taxShipping": null,
-    "countyTaxes": true
-  }],
   "timezone": "US/Pacific",
   "baseUOL": "in",
   "unitsOfLength": [{

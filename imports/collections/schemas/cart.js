@@ -42,6 +42,7 @@ const CartItemAttribute = new SimpleSchema({
  * @property {Metafield[]} metafields
  * @property {String} optionTitle optionTitle from the selected variant
  * @property {ShippingParcel} parcel Currently, parcel is in simple product schema. Need to include it here as well.
+ * @property {Money} price The current price of this item
  * @property {Money} priceWhenAdded The price+currency at the moment this item was added to this cart
  * @property {String} productId required
  * @property {String} productSlug Product slug
@@ -49,8 +50,6 @@ const CartItemAttribute = new SimpleSchema({
  * @property {String} productVendor Product vendor
  * @property {Number} quantity required
  * @property {String} shopId Cart Item shopId
- * @property {Object} taxData optional blackbox
- * @property {Number} taxRate optional The rate that was multiplied by the item subtotal to get the item tax
  * @property {String} title Cart Item title
  * @property {Object} transaction Transaction associated with this item
  * @property {String} updatedAt required
@@ -65,11 +64,11 @@ export const CartItem = new SimpleSchema({
     optional: true
   },
   "attributes.$": CartItemAttribute,
-  "createdAt": Date,
-  "isTaxable": {
-    type: Boolean,
-    defaultValue: false
+  "compareAtPrice": {
+    type: Money,
+    optional: true
   },
+  "createdAt": Date,
   "metafields": {
     type: Array,
     optional: true
@@ -83,6 +82,7 @@ export const CartItem = new SimpleSchema({
     type: ShippingParcel,
     optional: true
   },
+  "price": Money,
   "priceWhenAdded": Money,
   "productId": {
     type: String,
@@ -118,23 +118,7 @@ export const CartItem = new SimpleSchema({
     index: 1,
     label: "Cart Item shopId"
   },
-  "tax": {
-    type: Number,
-    optional: true
-  },
-  "taxCode": {
-    type: String,
-    optional: true
-  },
-  "taxData": {
-    type: Object,
-    optional: true,
-    blackbox: true
-  },
-  "taxRate": {
-    type: Number,
-    optional: true
-  },
+  "subtotal": Money,
   "title": {
     type: String,
     label: "CartItem Title"
@@ -190,7 +174,6 @@ registerSchema("CartItems", CartItems);
  * @property {Shipment[]} shipping Array of Shipment optional, blackbox
  * @property {Payment[]} billing Array of Payment optional, blackbox
  * @property {String} sessionId Optional and deprecated
- * @property {Number} tax tax rate
  * @property {Number} discount optional
  * @property {Workflow} workflow optional
  * @property {Date} createdAt required
@@ -254,11 +237,6 @@ export const Cart = new SimpleSchema({
   "billing.$": {
     type: Object,
     blackbox: true
-  },
-  "taxCalculationFailed": {
-    type: Boolean,
-    optional: true,
-    defaultValue: false
   },
   "bypassAddressValidation": {
     type: Boolean,

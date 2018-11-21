@@ -107,7 +107,6 @@ interface CatalogProductOrVariant {
   height: Float
   isLowQuantity: Boolean!
   isSoldOut: Boolean!
-  isTaxable: Boolean!
   length: Float
   lowInventoryWarningThreshold: Int
   metafields: [Metafield]
@@ -115,8 +114,6 @@ interface CatalogProductOrVariant {
   originCountry: String
   shop: Shop!
   sku: String
-  taxCode: String
-  taxDescription: String
   title: String
 
   # This should be required but we need to migrate existing data first
@@ -157,9 +154,6 @@ type CatalogProduct implements CatalogProductOrVariant & Node {
 
   "True if every product variant has inventoryManagement enabled and has 0 inventory"
   isSoldOut: Boolean!
-
-  "Is sales tax charged on this item?"
-  isTaxable: Boolean!
 
   "True if this product should be shown to shoppers. Typically, non-visible products are not returned in queries."
   isVisible: Boolean!
@@ -227,12 +221,6 @@ type CatalogProduct implements CatalogProductOrVariant & Node {
   "The list of tags that have been applied to this product"
   tags(after: ConnectionCursor, before: ConnectionCursor, first: ConnectionLimitInt, last: ConnectionLimitInt, sortOrder: SortOrder = asc, sortBy: TagSortByField = _id): TagConnection
 
-  "A value matching a `taxCode` value from the full list of TaxCodes"
-  taxCode: String
-
-  "A description to use for the tax line item on an invoice"
-  taxDescription: String
-
   "Product title"
   title: String
 
@@ -280,9 +268,6 @@ type CatalogProductVariant implements CatalogProductOrVariant & Node {
   "True if inventoryManagement is enabled and this variant has 0 inventory"
   isSoldOut: Boolean!
 
-  "Is sales tax charged on this item?"
-  isTaxable: Boolean!
-
   "The length of the product, if it has physical dimensions"
   length: Float
 
@@ -321,12 +306,6 @@ type CatalogProductVariant implements CatalogProductOrVariant & Node {
 
   "A stock keeping unit (SKU) identifier for this product"
   sku: String
-
-  "A value matching a `taxCode` value from the full list of TaxCodes"
-  taxCode: String
-
-  "A description to use for the tax line item on an invoice"
-  taxDescription: String
 
   "Product title"
   title: String

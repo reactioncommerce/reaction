@@ -43,8 +43,7 @@ export function decodeCartItemsOpaqueIds(items) {
  * @return {Object} Same object with GraphQL-only props added
  */
 function xformCartItem(context, catalogItems, products, cartItem) {
-  const { priceWhenAdded, productId, variantId } = cartItem;
-  const { currencyCode } = priceWhenAdded;
+  const { productId, variantId } = cartItem;
 
   const catalogItem = catalogItems.find((cItem) => cItem.product.productId === productId);
   if (!catalogItem) {
@@ -55,11 +54,6 @@ function xformCartItem(context, catalogItems, products, cartItem) {
   const { variant } = findVariantInCatalogProduct(catalogProduct, variantId);
   if (!variant) {
     throw new ReactionError("invalid-param", `Product with ID ${productId} has no variant with ID ${variantId}`);
-  }
-
-  const variantPriceInfo = variant.pricing[currencyCode];
-  if (!variantPriceInfo) {
-    throw new ReactionError("invalid-param", `This product variant does not have a price for ${currencyCode}`);
   }
 
   let media;
@@ -73,26 +67,14 @@ function xformCartItem(context, catalogItems, products, cartItem) {
 
   return {
     ...cartItem,
-    compareAtPrice: {
-      amount: variantPriceInfo.compareAtPrice,
-      currencyCode
-    },
     currentQuantity: variantSourceProduct && variantSourceProduct.inventoryQuantity,
     imageURLs: media && media.URLs,
     isBackorder: variant.isBackorder || false,
     isLowQuantity: variant.isLowQuantity || false,
     isSoldOut: variant.isSoldOut || false,
-    price: {
-      amount: variantPriceInfo.price,
-      currencyCode
-    },
     productConfiguration: {
       productId: cartItem.productId,
       productVariantId: cartItem.variantId
-    },
-    subtotal: {
-      amount: variantPriceInfo.price * cartItem.quantity,
-      currencyCode
     }
   };
 }
@@ -198,7 +180,7 @@ function xformCartFulfillmentGroup(fulfillmentGroup, cart) {
  */
 export async function xformCartCheckout(collections, cart) {
   // itemTotal is qty * amount for each item, summed
-  const itemTotal = (cart.items || []).reduce((sum, item) => (sum + (item.quantity * item.priceWhenAdded.amount)), 0);
+  const itemTotal = (cart.items || []).reduce((sum, item) => (sum + item.subtotal.amount), 0);
 
   // shippingTotal is shipmentMethod.rate for each item, summed
   // handlingTotal is shipmentMethod.handling for each item, summed
@@ -227,23 +209,15 @@ export async function xformCartCheckout(collections, cart) {
   // If any of them are null, we leave the total null also. Using for-of rather than reduce
   // so that we can set to null and break if we hit a not-yet-calculated item.
   let taxTotal = null;
-  for (const item of cart.items) {
-    if (!item.tax && item.tax !== 0) {
-      taxTotal = null;
-      break;
-    }
-    if (taxTotal === null) {
-      taxTotal = 0;
-    }
-    taxTotal += item.tax;
+  let taxableAmount = null;
+  const { taxSummary } = cart;
+  if (taxSummary) {
+    ({ tax: taxTotal, taxableAmount } = taxSummary);
   }
 
   const discountTotal = cart.discount || 0;
 
   const total = Math.max(0, itemTotal + fulfillmentTotal + taxTotal - discountTotal);
-
-  // fulfillmentTotal should be included in this in many jurisdictions but we don't yet support that
-  const preTaxTotal = Math.max(0, itemTotal - discountTotal);
 
   let fulfillmentTotalMoneyObject = null;
   if (fulfillmentTotal !== null) {
@@ -260,10 +234,10 @@ export async function xformCartCheckout(collections, cart) {
       amount: taxTotal,
       currencyCode: cart.currencyCode
     };
-    // Calculate the tax-exclusive rate because most people and jurisdictions refer to sales
-    // tax as exclusive rates.
-    const effectiveTaxRate = preTaxTotal > 0 && taxTotal > 0 ? taxTotal / preTaxTotal : 0;
-    effectiveTaxRateObject = xformRateToRateObject(effectiveTaxRate);
+    if (taxSummary) {
+      const effectiveTaxRate = taxSummary.tax / taxSummary.taxableAmount;
+      effectiveTaxRateObject = xformRateToRateObject(effectiveTaxRate);
+    }
   }
 
   fulfillmentGroups = fulfillmentGroups.map((fulfillmentGroup) => xformCartFulfillmentGroup(fulfillmentGroup, cart));
@@ -280,6 +254,10 @@ export async function xformCartCheckout(collections, cart) {
       fulfillmentTotal: fulfillmentTotalMoneyObject,
       itemTotal: {
         amount: itemTotal,
+        currencyCode: cart.currencyCode
+      },
+      taxableAmount: {
+        amount: taxableAmount,
         currencyCode: cart.currencyCode
       },
       taxTotal: taxTotalMoneyObject,
