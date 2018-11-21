@@ -25,7 +25,7 @@ type Cart implements Node {
   shop: Shop!
 
   "Surcharges to apply to this cart"
-  surcharges: [CartSurcharge]!
+  surcharges: [CartSurcharge]
 
   "Total quantity of all items in the cart"
   totalItemQuantity: Int!
@@ -171,10 +171,19 @@ type CartSurcharge implements Node {
   "The cart surcharge ID"
   _id: ID!
 
+  "The amount of the surcharge"
   amount: Money!
 
+  "The cartID (for reference)"
+  cartId: ID
+
+  "The fulfillmentGroupId (for reference)"
+  fulfillmentGroupID: ID
+
+  "The message to explain the surchage"
   message(language: String): String!
 
+  "The surchargeId from the surchages collection (for reference)"
   surchargeId: ID
 }
 

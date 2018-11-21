@@ -131,13 +131,22 @@ type OrderItem implements Node {
 }
 
 type OrderSurcharge implements Node {
-  "The order surcharge ID"
+  "The cart surcharge ID"
   _id: ID!
 
+  "The amount of the surcharge"
   amount: Money!
 
+  "The cartID (for reference)"
+  cartId: ID
+
+  "The fulfillmentGroupId (for reference)"
+  fulfillmentGroupID: ID
+
+  "The message to explain the surchage"
   message(language: String): String!
 
+  "The surchargeId from the surchages collection (for reference)"
   surchargeId: ID
 }
 
@@ -170,7 +179,7 @@ type OrderFulfillmentGroup implements Node {
   summary: OrderSummary!
 
   "Surcharges applied to this order"
-  surcharges: [OrderSurcharge]!
+  surcharges: [OrderSurcharge]
 
   "Total quantity of all items in the group"
   totalItemQuantity: Int!
@@ -206,6 +215,9 @@ type Order implements Node {
 
   "The shop through which the order was placed"
   shop: Shop!
+
+  "Surcharges to apply to this cart"
+  surcharges: [OrderSurcharge]
 
   "Total quantity of all items in the order"
   totalItemQuantity: Int!
