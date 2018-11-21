@@ -34,7 +34,13 @@ export async function attributeDenyCheck(methodRestrictions, method, hydratedCar
 
       // Item must meet all attributes to be restricted
       return attributes.every((attribute) => {
-        const attributeFound = operators[attribute.operator](item[attribute.property], propertyTypes[attribute.propertyType](attribute.value));
+        let attributeFound = operators[attribute.operator](item[attribute.property], propertyTypes[attribute.propertyType](attribute.value));
+
+        // If attribute is an array on the item, use `includes` instead of checking for ===
+        // This works for tags, tagIds, and any future attribute that might be an array
+        if (Array.isArray(item[attribute.property])) {
+          attributeFound = item[attribute.property].includes(attribute.value);
+        }
 
         if (attributeFound) {
           // If there is no destination restriction, destination restriction is global
