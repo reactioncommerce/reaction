@@ -10,6 +10,7 @@ import { Address } from "./address";
  * @property {Number} effectiveTaxRate The effective tax rate, for display
  * @property {Number} shipping Price of the selected fulfillment method
  * @property {Number} subtotal Item total
+ * @property {Number} surcharges Total of all surcharges
  * @property {Number} taxableAmount Total amount that was deemed taxable by the tax service
  * @property {Number} taxes Total tax
  * @property {Number} total Grand total
@@ -28,6 +29,10 @@ export const Invoice = new SimpleSchema({
     min: 0
   },
   subtotal: {
+    type: Number,
+    min: 0
+  },
+  surcharges: {
     type: Number,
     min: 0
   },

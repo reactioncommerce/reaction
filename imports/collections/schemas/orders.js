@@ -344,13 +344,6 @@ export const OrderFulfillmentGroup = new SimpleSchema({
     optional: true
   },
   "shopId": String,
-  "surcharges": {
-    type: Array,
-    optional: true
-  },
-  "surcharges.$": {
-    type: Surcharge
-  },
   "totalItemQuantity": {
     type: SimpleSchema.Integer,
     min: 1
@@ -444,6 +437,13 @@ export const Order = new SimpleSchema({
   "shopId": {
     type: String,
     index: 1
+  },
+  "surcharges": {
+    type: Array,
+    optional: true
+  },
+  "surcharges.$": {
+    type: Surcharge
   },
   "totalItemQuantity": {
     type: SimpleSchema.Integer,
