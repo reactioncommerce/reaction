@@ -1,4 +1,5 @@
 import _ from "lodash";
+import { check, Match } from "meteor/check";
 import Hooks from "@reactioncommerce/hooks";
 import Logger from "@reactioncommerce/logger";
 import ReactionError from "@reactioncommerce/reaction-error";
