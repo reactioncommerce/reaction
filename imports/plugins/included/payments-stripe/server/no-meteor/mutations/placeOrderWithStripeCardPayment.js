@@ -97,6 +97,7 @@ export default async function placeOrderWithStripeCardPayment(context, input) {
   let stripe;
   let stripeCustomerId;
   return mutations.createOrder(context, {
+    billingAddress,
     order: orderInput,
     async afterValidate() {
       stripe = await getStripeInstanceForShop(context, shopId);

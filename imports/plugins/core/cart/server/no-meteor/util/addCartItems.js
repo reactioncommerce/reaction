@@ -107,10 +107,17 @@ export default async function addCartItems(collections, currentItems, inputItems
     const cartItem = {
       _id: Random.id(),
       attributes,
+      compareAtPrice: null,
       isTaxable: chosenVariant.isTaxable || false,
       metafields,
       optionTitle: chosenVariant.optionTitle,
       parcel: chosenVariant.parcel,
+      // This one will be kept updated by event handler watching for
+      // catalog changes whereas `priceWhenAdded` will not.
+      price: {
+        amount: variantPriceInfo.price,
+        currencyCode: price.currencyCode
+      },
       priceWhenAdded: {
         amount: variantPriceInfo.price,
         currencyCode: price.currencyCode
@@ -122,12 +129,24 @@ export default async function addCartItems(collections, currentItems, inputItems
       productTagIds: catalogProduct.tagIds,
       quantity,
       shopId: catalogProduct.shopId,
+      // Subtotal will be kept updated by event handler watching for catalog changes.
+      subtotal: {
+        amount: variantPriceInfo.price * quantity,
+        currencyCode: price.currencyCode
+      },
       taxCode: chosenVariant.taxCode,
       title: catalogProduct.title,
       updatedAt: currentDateTime,
       variantId: productVariantId,
       variantTitle: chosenVariant.title
     };
+
+    if (variantPriceInfo.compareAtPrice || variantPriceInfo.compareAtPrice === 0) {
+      cartItem.compareAtPrice = {
+        amount: variantPriceInfo.compareAtPrice,
+        currencyCode: price.currencyCode
+      };
+    }
 
     // Check whether this variant is already in the cart. If so, increment quantity.
     const currentMatchingItemIndex = currentItems.findIndex((item) => item.productId === productId && item.variantId === productVariantId);

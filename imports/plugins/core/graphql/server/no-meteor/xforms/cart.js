@@ -43,8 +43,7 @@ export function decodeCartItemsOpaqueIds(items) {
  * @return {Object} Same object with GraphQL-only props added
  */
 function xformCartItem(context, catalogItems, products, cartItem) {
-  const { priceWhenAdded, productId, variantId } = cartItem;
-  const { currencyCode } = priceWhenAdded;
+  const { productId, variantId } = cartItem;
 
   const catalogItem = catalogItems.find((cItem) => cItem.product.productId === productId);
   if (!catalogItem) {
@@ -55,11 +54,6 @@ function xformCartItem(context, catalogItems, products, cartItem) {
   const { variant } = findVariantInCatalogProduct(catalogProduct, variantId);
   if (!variant) {
     throw new ReactionError("invalid-param", `Product with ID ${productId} has no variant with ID ${variantId}`);
-  }
-
-  const variantPriceInfo = variant.pricing[currencyCode];
-  if (!variantPriceInfo) {
-    throw new ReactionError("invalid-param", `This product variant does not have a price for ${currencyCode}`);
   }
 
   let media;
@@ -73,26 +67,14 @@ function xformCartItem(context, catalogItems, products, cartItem) {
 
   return {
     ...cartItem,
-    compareAtPrice: {
-      amount: variantPriceInfo.compareAtPrice,
-      currencyCode
-    },
     currentQuantity: variantSourceProduct && variantSourceProduct.inventoryQuantity,
     imageURLs: media && media.URLs,
     isBackorder: variant.isBackorder || false,
     isLowQuantity: variant.isLowQuantity || false,
     isSoldOut: variant.isSoldOut || false,
-    price: {
-      amount: variantPriceInfo.price,
-      currencyCode
-    },
     productConfiguration: {
       productId: cartItem.productId,
       productVariantId: cartItem.variantId
-    },
-    subtotal: {
-      amount: variantPriceInfo.price * cartItem.quantity,
-      currencyCode
     }
   };
 }
@@ -198,7 +180,7 @@ function xformCartFulfillmentGroup(fulfillmentGroup, cart) {
  */
 export async function xformCartCheckout(collections, cart) {
   // itemTotal is qty * amount for each item, summed
-  const itemTotal = (cart.items || []).reduce((sum, item) => (sum + (item.quantity * item.priceWhenAdded.amount)), 0);
+  const itemTotal = (cart.items || []).reduce((sum, item) => (sum + item.subtotal.amount), 0);
 
   // shippingTotal is shipmentMethod.rate for each item, summed
   // handlingTotal is shipmentMethod.handling for each item, summed
