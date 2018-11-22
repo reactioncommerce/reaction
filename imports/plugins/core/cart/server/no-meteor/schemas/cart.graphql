@@ -71,6 +71,10 @@ type CartItemAttribute {
   value: String
 }
 
+type CartSurchargeMessage {
+  message: String
+}
+
 """
 A single item in a cart. The item contains information about an intended purchase.
 """
@@ -181,7 +185,7 @@ type CartSurcharge implements Node {
   fulfillmentGroupID: ID
 
   "The message to explain the surchage"
-  message(language: String): String!
+  message: CartSurchargeMessage
 
   "The surchargeId from the surchages collection (for reference)"
   surchargeId: ID

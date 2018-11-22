@@ -33,6 +33,10 @@ type OrderItemAttribute {
   value: String
 }
 
+type OrderSurchargeMessage {
+  message: String
+}
+
 "A summary of the totals for this order"
 type OrderSummary {
   "The total of all discounts applied, as a positive number"
@@ -46,6 +50,9 @@ type OrderSummary {
 
   "The combined prices of all cart items"
   itemTotal: Money!
+
+  "The total of all suurcharges applied"
+  surchargeTotal: Money!
 
   "The total amount that was deemed taxable by the tax service"
   taxableAmount: Money!
@@ -144,7 +151,7 @@ type OrderSurcharge implements Node {
   fulfillmentGroupID: ID
 
   "The message to explain the surchage"
-  message(language: String): String!
+  message: OrderSurchargeMessage
 
   "The surchargeId from the surchages collection (for reference)"
   surchargeId: ID

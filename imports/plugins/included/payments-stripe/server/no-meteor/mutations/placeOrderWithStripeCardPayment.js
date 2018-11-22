@@ -1,6 +1,6 @@
 import SimpleSchema from "simpl-schema";
 import Random from "@reactioncommerce/random";
-import { Address as AddressSchema } from "/imports/collections/schemas";
+import { Address as AddressSchema, Surcharge } from "/imports/collections/schemas";
 import createSingleCharge from "../util/createSingleCharge";
 import getStripeInstanceForShop from "../util/getStripeInstanceForShop";
 
@@ -60,7 +60,14 @@ const orderInputSchema = new SimpleSchema({
     minCount: 1
   },
   "fulfillmentGroups.$": orderFulfillmentGroupSchema,
-  "shopId": String
+  "shopId": String,
+  "surcharges": {
+    type: Array,
+    optional: true
+  },
+  "surcharges.$": {
+    type: Surcharge
+  }
 });
 
 const inputSchema = new SimpleSchema({

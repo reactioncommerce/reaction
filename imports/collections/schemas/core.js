@@ -1,10 +1,14 @@
 import SimpleSchema from "simpl-schema";
 
 export const Money = new SimpleSchema({
-  currencyCode: String,
   amount: {
     type: Number,
     min: 0
+  },
+  currencyCode: String,
+  displayAmount: {
+    type: String,
+    optional: true
   }
 });
 
@@ -16,7 +20,7 @@ export const Money = new SimpleSchema({
  * @property {Money} amount
  * @property {String} cartId optional
  * @property {String} fulfillmentGroupId optional
- * @property {Object} message
+ * @property {Object} message optional
  * @property {String} surchargeId optional
  */
 export const Surcharge = new SimpleSchema({
@@ -30,9 +34,10 @@ export const Surcharge = new SimpleSchema({
     type: String,
     optional: true
   },
-  messages: {
+  message: {
     type: Object,
-    blackbox: true
+    blackbox: true,
+    optional: true
   },
   surchargeId: {
     type: String,
