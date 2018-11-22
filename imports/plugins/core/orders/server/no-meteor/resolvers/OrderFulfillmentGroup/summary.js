@@ -10,7 +10,7 @@ import { xformRateToRateObject } from "@reactioncommerce/reaction-graphql-xforms
  */
 export default function summary(fulfillmentGroup) {
   const { invoice, payment } = fulfillmentGroup;
-  const { discounts, effectiveTaxRate, shipping, subtotal, taxableAmount, taxes, total } = invoice;
+  const { discounts, effectiveTaxRate, shipping, subtotal, surcharges, taxableAmount, taxes, total } = invoice;
 
   return {
     discountTotal: {
@@ -24,6 +24,10 @@ export default function summary(fulfillmentGroup) {
     },
     itemTotal: {
       amount: subtotal,
+      currencyCode: payment.currencyCode
+    },
+    surchargeTotal: {
+      amount: surcharges,
       currencyCode: payment.currencyCode
     },
     taxableAmount: {
