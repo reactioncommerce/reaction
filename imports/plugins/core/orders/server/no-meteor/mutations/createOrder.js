@@ -8,6 +8,7 @@ import hashLoginToken from "/imports/node-app/core/util/hashLoginToken";
 import appEvents from "/imports/node-app/core/util/appEvents";
 import { Order as OrderSchema, Payment as PaymentSchema } from "/imports/collections/schemas";
 import getDiscountsTotalForCart from "/imports/plugins/core/discounts/server/no-meteor/util/getDiscountsTotalForCart";
+import getSurchargesTotalForCart from "/imports/plugins/included/surcharges/server/no-meteor/util/getSurchargesTotalForCart";
 import getCartById from "/imports/plugins/core/shipping/server/no-meteor/util/getCartById.js";
 
 
@@ -116,13 +117,13 @@ async function getCurrencyExchangeObject(collections, cartCurrencyCode, shopId, 
 }
 
 /**
- * @summary Calculate final shipping, discounts, and taxes, and build an invoice object
+ * @summary Calculate final shipping, discounts, surcharges, and taxes, and build an invoice object
  *   with the totals on it.
  * @param {Object} group The fulfillment group
  * @param {Number} discountTotal Total discount amount
  * @returns {Object} Invoice object with totals
  */
-function getInvoiceForFulfillmentGroup(group, discountTotal) {
+function getInvoiceForFulfillmentGroup(group, discountTotal, surchargeTotal) {
   const { taxSummary } = group;
 
   // Items
@@ -140,13 +141,14 @@ function getInvoiceForFulfillmentGroup(group, discountTotal) {
   // Totals
   // To avoid rounding errors, be sure to keep this calculation the same between here and
   // `buildOrderInputFromCart.js` in the client code.
-  const total = Math.max(0, itemTotal + fulfillmentTotal + taxTotal - discountTotal);
+  const total = Math.max(0, itemTotal + fulfillmentTotal + taxTotal + surchargeTotal - discountTotal);
 
   return {
     discounts: discountTotal,
     effectiveTaxRate,
     shipping: fulfillmentTotal,
     subtotal: itemTotal,
+    surcharges: surchargeTotal,
     taxableAmount,
     taxes: taxTotal,
     total
@@ -244,6 +246,8 @@ export default async function createOrder(context, input) {
   // any discounts on the related cart here.
   const { discounts, total: discountTotal } = await getDiscountsTotalForCart(context, cartId);
 
+  const { surcharges, total: surchargeTotal } = await getSurchargesTotalForCart(context, cartId);
+
   // Add more props to each fulfillment group, and validate/build the items in each group
   const finalFulfillmentGroups = await Promise.all(fulfillmentGroups.map(async (groupInput) => {
     const finalGroup = {
@@ -290,13 +294,14 @@ export default async function createOrder(context, input) {
 
     // Error if we calculate total price differently from what the client has shown as the preview.
     // It's important to keep this after adding and verifying the shipmentMethod and order item prices.
-    finalGroup.invoice = getInvoiceForFulfillmentGroup(finalGroup, discountTotal);
+    finalGroup.invoice = getInvoiceForFulfillmentGroup(finalGroup, discountTotal, surchargeTotal);
 
     // For now we expect that the client has NOT included discounts in the expected total it sent.
     // Note that we don't currently know which parts of `discountTotal` go with which fulfillment groups.
     // This needs to be rewritten soon for discounts to work when there are multiple fulfillment groups.
     // Probably the client should be sending all applied discount IDs and amounts in the order input (by group),
     // and include total discount in `groupInput.totalPrice`, and then we simply verify that they are valid here.
+    // The same logic above should apply to surcharges, when multiple fulfillment groups are available.
     const expectedTotal = Math.max(groupInput.totalPrice - discountTotal, 0);
 
     // In order to prevent mismatch due to rounding, we convert these to strings before comparing. What we really
@@ -362,6 +367,7 @@ export default async function createOrder(context, input) {
     email,
     shipping: chargedFulfillmentGroups,
     shopId,
+    surcharges,
     totalItemQuantity: chargedFulfillmentGroups.reduce((sum, group) => sum + group.totalItemQuantity, 0),
     updatedAt: now,
     workflow: {
