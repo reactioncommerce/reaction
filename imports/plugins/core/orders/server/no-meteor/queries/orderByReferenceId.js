@@ -2,23 +2,23 @@ import ReactionError from "@reactioncommerce/reaction-error";
 import hashLoginToken from "/imports/node-app/core/util/hashLoginToken";
 
 /**
- * @name orderById
+ * @name orderByReferenceId
  * @method
  * @memberof Order/NoMeteorQueries
- * @summary Query the Orders collection for an order with the provided orderId
+ * @summary Query the Orders collection for an order with the provided order referenceId
  * @param {Object} context - an object containing the per-request state
  * @param {Object} params - request parameters
- * @param {String} params.orderId - Order ID
+ * @param {String} params.orderReferenceId - Order reference ID
  * @param {String} params.shopId - Shop ID for the shop that owns the order
  * @param {String} [params.token] - Anonymous order token
  * @return {Promise<Object>|undefined} - An Order document, if one is found
  */
-export default async function orderById(context, { orderId, shopId, token } = {}) {
+export default async function orderByReferenceId(context, { orderReferenceId, shopId, token } = {}) {
   const { accountId: contextAccountId, collections, userHasPermission } = context;
   const { Orders } = collections;
 
-  if (!orderId || !shopId) {
-    throw new ReactionError("invalid-param", "You must provide orderId and shopId arguments");
+  if (!orderReferenceId || !shopId) {
+    throw new ReactionError("invalid-param", "You must provide orderReferenceId and shopId arguments");
   }
 
   let accountId;
@@ -38,9 +38,9 @@ export default async function orderById(context, { orderId, shopId, token } = {}
   }
 
   return Orders.findOne({
-    _id: orderId,
     accountId,
     anonymousAccessToken,
+    referenceId: orderReferenceId,
     shopId
   });
 }
