@@ -118,7 +118,7 @@ Reaction.registerTemplate({
   name: TemplatePaths.coreOrderNewTemplate,
   type: "email",
   template: Reaction.Email.getTemplateFile(TemplatePaths.coreOrderNewTemplate),
-  subject: "Your order is confirmed - {{order._id}}"
+  subject: "Your order is confirmed - {{order.referenceId}}"
 });
 
 /*
@@ -131,7 +131,7 @@ Reaction.registerTemplate({
   name: TemplatePaths.orderShipped,
   type: "email",
   template: Reaction.Email.getTemplateFile(TemplatePaths.orderShipped),
-  subject: "{{shop.name}}: Your order has shipped - {{order._id}}"
+  subject: "{{shop.name}}: Your order has shipped - {{order.referenceId}}"
 });
 
 /*
@@ -144,7 +144,7 @@ Reaction.registerTemplate({
   name: TemplatePaths.orderRefunded,
   type: "email",
   template: Reaction.Email.getTemplateFile(TemplatePaths.orderRefunded),
-  subject: "{{shop.name}}: Confirmation of refund for {{order._id}}"
+  subject: "{{shop.name}}: Confirmation of refund for {{order.referenceId}}"
 });
 
 /*
@@ -157,5 +157,5 @@ Reaction.registerTemplate({
   name: TemplatePaths.orderItemRefund,
   type: "email",
   template: Reaction.Email.getTemplateFile(TemplatePaths.orderItemRefund),
-  subject: "{{shop.name}}: Refund confirmation - {{order._id}}"
+  subject: "{{shop.name}}: Refund confirmation - {{order.referenceId}}"
 });

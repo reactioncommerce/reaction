@@ -34,12 +34,12 @@ class OrderSummary extends Component {
   }
 
   orderLink() {
-    const orderId = this.props.order._id;
+    const orderId = this.props.order.referenceId;
     return orderId;
   }
 
   truncateId() {
-    const orderId = this.props.order._id;
+    const orderId = this.props.order.referenceId;
     const shortId = orderId.slice(-5);
 
     return shortId;
@@ -97,7 +97,7 @@ class OrderSummary extends Component {
               <div className="invoice-details" style={{ cursor: "pointer" }}>
                 <ClickToCopy
                   copyToClipboard={this.orderLink()}
-                  displayText={order._id}
+                  displayText={order.referenceId}
                   i18nKeyTooltip="admin.orderWorkflow.summary.copyOrderLink"
                   tooltip="Copy Order Link"
                 />
