@@ -55,10 +55,10 @@ We love your pull requests! Check our our [`Good First Issue`](https://github.co
 
 Pull requests should:
 
-- Pass all Circle CI checks: 
+- Pass all Circle CI checks:
     - Run `docker-compose run --rm reaction npm run lint` to make sure your code follows [Reaction's ESLint rules](https://github.com/reactioncommerce/reaction-eslint-config).
     - Run `docker-compose run --rm reaction reaction test` to run [acceptance tests and unit tests](https://docs.reactioncommerce.com/reaction-docs/master/testing-reaction).
-    - Make sure you're following the [Reaction Code Style Guide](https://docs.reactioncommerce.com/reaction-docs/master/styleguide) and 
+    - Make sure you're following the [Reaction Code Style Guide](https://docs.reactioncommerce.com/reaction-docs/master/styleguide) and
 - Follow the pull request template.
 
 Get more details in our [Contributing Guide](https://docs.reactioncommerce.com/reaction-docs/master/contributing-to-reaction).
@@ -66,15 +66,6 @@ Get more details in our [Contributing Guide](https://docs.reactioncommerce.com/r
 ## Deploy on Docker
 
 We ensure that all releases are deployable as [Docker](https://hub.docker.com/r/reactioncommerce/reaction/) containers. While we don't regularly test other methods of deployment, our community has documented deployment strategies for AWS, [Digital Ocean](https://gist.github.com/jshimko/745ca66748846551692e24c267a56060), and Galaxy. For an introduction to Docker deployment, the [Reaction deployment guide](https://docs.reactioncommerce.com/reaction-docs/master/deploying) has detailed examples.
-
-We've included a demo [docker-compose file](https://github.com/reactioncommerce/reaction/blob/master/docker-compose-demo.yml) in the repository.
-It shows how to use `mongo` as a service with your Reaction app. It can be used to do a demo of your production build by running this command:
-
-```sh
-docker-compose -f docker-compose-demo.yml up
-```
-
-You can also use this file as starting point for your production docker-compose setup.
 
 ### License
 
