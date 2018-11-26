@@ -4,7 +4,6 @@ import { Components } from "@reactioncommerce/reaction-components";
 import CompletedShopOrders from "./completedShopOrders";
 import CompletedOrderPaymentMethod from "./completedOrderPaymentMethods";
 import CompletedOrderSummary from "./completedOrderSummary";
-import AddEmail from "./addEmail";
 
 /**
  * @summary Displays a summary/information about the order the user has just completed
@@ -38,7 +37,6 @@ const CompletedOrder = ({ order, paymentMethods, isProfilePage }) => {
         <p><strong>Order ID </strong>{order.referenceId}</p>
         {/* show a different message depending on whether we have an email or not */}
         <AddEmail order={order} orderEmail={order.email} />
-        {/* This is the left side / main content*/}
       </div>
     );
   }
