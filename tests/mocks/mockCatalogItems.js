@@ -37,7 +37,7 @@ export const mockCatalogItems = [
 /**
  * Mock absolute URLs in catalog products when returned from GraphQL
  */
-const mockExternalCatalogProductNodes = [];
+export const mockExternalCatalogProductNodes = [];
 const siteURL = "https://shop.fake.site";
 
 function mockMediaURLsResponse(URLs) {
