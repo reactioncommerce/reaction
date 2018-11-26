@@ -30,3 +30,4 @@ import "./29_default_parcel_size";
 import "./30_cart_schema_changes";
 import "./31_order_schema_changes";
 import "./32_publish_all_existing_visible_products";
+import "./32-1_remove_social_app_secret";
