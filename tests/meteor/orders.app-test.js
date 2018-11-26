@@ -35,7 +35,6 @@ describe("orders test", function () {
       "shipmentDelivered": Meteor.server.method_handlers["orders/shipmentDelivered"],
       "sendNotification": Meteor.server.method_handlers["orders/sendNotification"],
       "updateShipmentTracking": Meteor.server.method_handlers["orders/updateShipmentTracking"],
-      "addOrderEmail": Meteor.server.method_handlers["orders/addOrderEmail"],
       "updateHistory": Meteor.server.method_handlers["orders/updateHistory"],
       "capturePayments": Meteor.server.method_handlers["orders/capturePayments"],
       "refunds/list": Meteor.server.method_handlers["orders/refunds/list"],
@@ -443,25 +442,6 @@ describe("orders test", function () {
       Meteor.call("orders/updateShipmentTracking", order, shipment, trackingValue);
       const orders = Orders.findOne({ _id: order._id });
       expect(shippingObjectMethod(orders).tracking).to.equal(trackingValue);
-    });
-  });
-
-  describe("orders/addOrderEmail", function () {
-    it("should return if userId is not available", function () {
-      spyOnMethod("addOrderEmail");
-      function addOrderEmail() {
-        const email = "sample@email.com";
-        return Meteor.call("orders/addOrderEmail", order.cartId, email);
-      }
-      expect(addOrderEmail).to.throw(ReactionError, /Access Denied. You are not connected./);
-    });
-
-    it("should add the email to the order", function () {
-      spyOnMethod("addOrderEmail", order.userId);
-      const email = "sample@email.com";
-      Meteor.call("orders/addOrderEmail", order.cartId, email);
-      const orders = Orders.findOne({ _id: order._id });
-      expect(orders.email).to.equal(email);
     });
   });
 
