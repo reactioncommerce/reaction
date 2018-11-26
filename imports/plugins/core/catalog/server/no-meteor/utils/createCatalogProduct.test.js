@@ -6,7 +6,7 @@ import {
 import { rewire as rewire$isBackorder, restore as restore$isBackorder } from "./isBackorder";
 import { rewire as rewire$isLowQuantity, restore as restore$isLowQuantity } from "./isLowQuantity";
 import { rewire as rewire$isSoldOut, restore as restore$isSoldOut } from "./isSoldOut";
-import createCatalogProduct, { restore$createCatalogProduct, rewire$xformProduct } from "./createCatalogProduct";
+import createCatalogProduct, { restore as restore$createCatalogProduct, rewire$xformProduct } from "./createCatalogProduct";
 
 const internalShopId = "123";
 const opaqueShopId = "cmVhY3Rpb24vc2hvcDoxMjM="; // reaction/shop:123
