@@ -35,8 +35,10 @@ const CompletedOrder = ({ order, paymentMethods, isProfilePage }) => {
         {/* This is the left side / main content */}
         <h3><Components.Translation defaultValue="Thank You" i18nKey={"cartCompleted.thankYou"} /></h3>
         <p><strong>Order ID </strong>{order.referenceId}</p>
-        {/* show a different message depending on whether we have an email or not */}
-        <AddEmail order={order} orderEmail={order.email} />
+        <p>
+          <Components.Translation defaultValue="Order updates will be sent to" i18nKey="cartCompleted.trackYourDelivery" />
+          &nbsp;<strong>{order.email}</strong>
+        </p>
       </div>
     );
   }
