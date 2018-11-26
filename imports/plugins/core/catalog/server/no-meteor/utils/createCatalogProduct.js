@@ -29,7 +29,6 @@ export function xformVariant(variant, variantPriceInfo, shopCurrencyCode, varian
     inventoryPolicy: !!variant.inventoryPolicy,
     isLowQuantity: variantInventory.isLowQuantity,
     isSoldOut: variantInventory.isSoldOut,
-    isTaxable: !!variant.taxable,
     length: variant.length,
     lowInventoryWarningThreshold: variant.lowInventoryWarningThreshold,
     media: variantMedia,
