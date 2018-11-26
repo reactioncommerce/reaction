@@ -15,7 +15,6 @@
               "facebook": {
                 "title": "Facebook",
                 "appId": "ID aplikacije",
-                "appSecret": "aplikacija tajna",
                 "profilePage": "Stranica profila"
               },
               "googleplus": {

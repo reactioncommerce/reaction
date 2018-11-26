@@ -35,7 +35,6 @@ registerSchema("SocialProvider", SocialProvider);
  * @property {Object} settings.public.apps optional
  * @property {SocialProvider} settings.public.apps.facebook  optional, Facebook
  * @property {String} settings.public.apps.facebook.appId optional, Facebook App ID
- * @property {String} settings.public.apps.facebook.appSecret optional, Facebook App Secret
  * @property {SocialProvider} settings.public.apps.twitter optional, Twitter
  * @property {String} settings.public.apps.twitter.username optional, Twitter username
  * @property {SocialProvider} settings.public.apps.pinterest optional, Pinterest
@@ -69,12 +68,6 @@ export const SocialPackageConfig = PackageConfig.clone().extend({
     type: String,
     regEx: /\d+/,
     label: "App Id",
-    optional: true
-  },
-  "settings.public.apps.facebook.appSecret": {
-    type: String,
-    regEx: /[\da-z]+/,
-    label: "App Secret",
     optional: true
   },
   "settings.public.apps.twitter": {
