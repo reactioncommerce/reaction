@@ -256,9 +256,9 @@ jobs:
       - checkout
       - restore_cache:
           keys:
-            - v1-node-modules-{{ checksum "package.json" }}-{{ checksum "package-lock.json" }}
-            - v1-node-modules-{{ .Branch }}
-            - v1-node-modules-master
+            - ${GLOBAL_CACHE_VERSION}-node-modules-{{ checksum "package.json" }}-{{ checksum "package-lock.json" }}
+            - ${GLOBAL_CACHE_VERSION}-node-modules-{{ .Branch }}
+            - ${GLOBAL_CACHE_VERSION}-node-modules-master
       - restore_cache:
           name: Restoring mongodb-memory-server MongoDB cache
           key: mongodb-memory-server
