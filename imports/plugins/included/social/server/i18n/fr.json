@@ -15,7 +15,6 @@
               "facebook": {
                 "title": "Facebook",
                 "appId": "ID de l'application",
-                "appSecret": "App secret",
                 "profilePage": "URL du profil"
               },
               "googleplus": {
