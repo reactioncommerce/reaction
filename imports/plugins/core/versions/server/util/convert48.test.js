@@ -1,5 +1,5 @@
 import mockContext from "/imports/test-utils/helpers/mockContext";
-import { convertCatalogItemVariants } from "./convert44";
+import { convertCatalogItemVariants } from "./convert48";
 
 const mockCollections = { ...mockContext.collections };
 

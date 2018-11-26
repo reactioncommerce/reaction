@@ -44,4 +44,4 @@ import "./43_stripe_marketplace_pkg";
 import "./44_tax_rates_pkg";
 import "./45_tax_schema_changes";
 import "./46_cart_item_props";
-import "./47_catalog_variant_inventory";
+import "./48_catalog_variant_inventory";
