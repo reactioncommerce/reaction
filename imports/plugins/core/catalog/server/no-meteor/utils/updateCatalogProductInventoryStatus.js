@@ -1,4 +1,5 @@
 import Logger from "@reactioncommerce/logger";
+import _ from "lodash";
 import isBackorder from "./isBackorder";
 import isLowQuantity from "./isLowQuantity";
 import isSoldOut from "./isSoldOut";
@@ -13,6 +14,10 @@ import isSoldOut from "./isSoldOut";
  * @return {Promise<boolean>} true on success, false on failure
  */
 export default async function updateCatalogProductInventoryStatus(productId, collections) {
+  const baseKey = "product";
+  const topVariants = new Map();
+  const options = new Map();
+
   const { Catalog, Products } = collections;
   const catalogItem = await Catalog.findOne({ "product.productId": productId });
 
@@ -21,33 +26,74 @@ export default async function updateCatalogProductInventoryStatus(productId, col
     return false;
   }
 
-  const catalogProduct = catalogItem.product;
-
   const variants = await Products.find({ ancestors: productId }).toArray();
 
-  const update = {
+  const modifier = {
     "product.isSoldOut": isSoldOut(variants),
     "product.isBackorder": isBackorder(variants),
     "product.isLowQuantity": isLowQuantity(variants)
   };
 
-  // Only apply changes if one of these fields have changed
-  if (
-    update["product.isSoldOut"] !== catalogProduct.isSoldOut ||
-    update["product.isBackorder"] !== catalogProduct.isBackorder ||
-    update["product.isLowQuantity"] !== catalogProduct.isLowQuantity
-  ) {
-    const result = await Catalog.updateOne(
-      {
-        "product.productId": productId
-      },
-      {
-        $set: update
+  variants.forEach((variant) => {
+    if (variant.ancestors.length === 2) {
+      const parentId = variant.ancestors[1];
+      if (options.has(parentId)) {
+        options.get(parentId).push(variant);
+      } else {
+        options.set(parentId, [variant]);
       }
+    } else {
+      topVariants.set(variant._id, variant);
+    }
+  });
+
+  const topVariantsFromCatalogItem = catalogItem.product.variants;
+
+  topVariantsFromCatalogItem.forEach((variant, topVariantIndex) => {
+    const catalogVariantOptions = variant.options || [];
+    const topVariantFromProductsCollection = topVariants.get(variant._id);
+    const variantOptionsFromProductsCollection = options.get(variant._id);
+    const catalogVariantOptionsMap = new Map();
+
+    catalogVariantOptions.forEach((catalogVariantOption) => {
+      catalogVariantOptionsMap.set(catalogVariantOption._id, catalogVariantOption);
+    });
+
+    // We only want the variant options that are currently published to the catalog.
+    // We need to be careful, not to publish variant or options to the catalog
+    // that an operator may not wish to be published yet.
+    const variantOptions = _.intersectionWith(
+      variantOptionsFromProductsCollection, // array to filter
+      catalogVariantOptions, // Items to exclude
+      ({ _id: productVariantId }, { _id: catalogItemVariantOptionId }) => (
+        // Exclude options from the products collection that aren't in the catalog collection
+        productVariantId === catalogItemVariantOptionId
+      )
     );
 
-    return result && result.result && result.result.ok === 1;
-  }
+    if (variantOptions) {
+      // Create a modifier for a variant and it's options
+      modifier[`${baseKey}.variants.${topVariantIndex}.isSoldOut`] = isSoldOut(variantOptions);
+      modifier[`${baseKey}.variants.${topVariantIndex}.isLowQuantity`] = isLowQuantity(variantOptions);
+      modifier[`${baseKey}.variants.${topVariantIndex}.isBackorder`] = isBackorder(variantOptions);
 
-  return false;
+      variantOptions.forEach((option, optionIndex) => {
+        modifier[`${baseKey}.variants.${topVariantIndex}.options.${optionIndex}.isSoldOut`] = isSoldOut([option]);
+        modifier[`${baseKey}.variants.${topVariantIndex}.options.${optionIndex}.isLowQuantity`] = isLowQuantity([option]);
+        modifier[`${baseKey}.variants.${topVariantIndex}.options.${optionIndex}.isBackorder`] = isBackorder([option]);
+      });
+    } else {
+      // Create a modifier for a top level variant only
+      modifier[`${baseKey}.variants.${topVariantIndex}.isSoldOut`] = isSoldOut([topVariantFromProductsCollection]);
+      modifier[`${baseKey}.variants.${topVariantIndex}.isLowQuantity`] = isLowQuantity([topVariantFromProductsCollection]);
+      modifier[`${baseKey}.variants.${topVariantIndex}.isBackorder`] = isBackorder([topVariantFromProductsCollection]);
+    }
+  });
+
+  const result = await Catalog.updateOne(
+    { "product.productId": productId },
+    { $set: modifier }
+  );
+
+  return (result && result.result && result.result.ok === 1) || false;
 }

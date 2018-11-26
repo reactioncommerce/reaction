@@ -12,10 +12,11 @@ import isSoldOut from "./isSoldOut";
  * @param {Object} variantPriceInfo The result of calling getPriceRange for this price or all child prices
  * @param {String} shopCurrencyCode The shop currency code for the shop to which this product belongs
  * @param {Object} variantMedia Media for this specific variant
+ * @param {Object} variantInventory Inventory flags for this variant
  * @private
  * @returns {Object} The transformed variant
  */
-export function xformVariant(variant, variantPriceInfo, shopCurrencyCode, variantMedia) {
+export function xformVariant(variant, variantPriceInfo, shopCurrencyCode, variantMedia, variantInventory) {
   const primaryImage = variantMedia.find(({ toGrid }) => toGrid === 1) || null;
 
   return {
@@ -26,8 +27,8 @@ export function xformVariant(variant, variantPriceInfo, shopCurrencyCode, varian
     index: variant.index || 0,
     inventoryManagement: !!variant.inventoryManagement,
     inventoryPolicy: !!variant.inventoryPolicy,
-    isLowQuantity: !!variant.isLowQuantity,
-    isSoldOut: !!variant.isSoldOut,
+    isLowQuantity: variantInventory.isLowQuantity,
+    isSoldOut: variantInventory.isSoldOut,
     length: variant.length,
     lowInventoryWarningThreshold: variant.lowInventoryWarningThreshold,
     media: variantMedia,
@@ -95,22 +96,35 @@ export async function xformProduct({ collections, product, shop, variants }) {
     .map((variant) => {
       const variantOptions = options.get(variant._id);
       let priceInfo;
+      let variantInventory;
       if (variantOptions) {
         const optionPrices = variantOptions.map((option) => option.price);
         priceInfo = getPriceRange(optionPrices, shopCurrencyInfo);
+        variantInventory = {
+          isLowQuantity: isLowQuantity(variantOptions),
+          isSoldOut: isSoldOut(variantOptions)
+        };
       } else {
         priceInfo = getPriceRange([variant.price], shopCurrencyInfo);
+        variantInventory = {
+          isLowQuantity: isLowQuantity([variant]),
+          isSoldOut: isSoldOut([variant])
+        };
       }
       prices.push(priceInfo.min, priceInfo.max);
 
       const variantMedia = catalogProductMedia.filter((media) => media.variantId === variant._id);
 
-      const newVariant = xformVariant(variant, priceInfo, shopCurrencyCode, variantMedia);
+      const newVariant = xformVariant(variant, priceInfo, shopCurrencyCode, variantMedia, variantInventory);
 
       if (variantOptions) {
         newVariant.options = variantOptions.map((option) => {
           const optionMedia = catalogProductMedia.filter((media) => media.variantId === option._id);
-          return xformVariant(option, getPriceRange([option.price], shopCurrencyInfo), shopCurrencyCode, optionMedia);
+          const optionInventory = {
+            isLowQuantity: isLowQuantity([option]),
+            isSoldOut: isSoldOut([option])
+          };
+          return xformVariant(option, getPriceRange([option.price], shopCurrencyInfo), shopCurrencyCode, optionMedia, optionInventory);
         });
       }
       return newVariant;
