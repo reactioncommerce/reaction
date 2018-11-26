@@ -331,10 +331,9 @@ workflows:
       - test-unit:
           requires:
             - build
-      # TODO uncomment and figure out why they always fail on CI
-      # - test-integration:
-      #     requires:
-      #       - build
+      - test-integration:
+          requires:
+            - build
       - eslint:
           requires:
             - build
