@@ -15,7 +15,6 @@
               "facebook": {
                 "title": "Facebook က",
                 "appId": "App ကို ID ကို",
-                "appSecret": "App ကိုလြှို့ဝှကျ",
                 "profilePage": "ပရိုဖိုင်းကို 's Page"
               },
               "googleplus": {

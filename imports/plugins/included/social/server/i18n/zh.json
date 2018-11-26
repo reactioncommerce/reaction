@@ -15,7 +15,6 @@
               "facebook": {
                 "title": "Facebook",
                 "appId": "应用程式ID",
-                "appSecret": "应用秘密",
                 "profilePage": "个人主页"
               },
               "googleplus": {
