@@ -4,7 +4,7 @@ import { convertCatalogItemVariants } from "../util/convert46";
 import findAndConvertInBatches from "../util/findAndConvertInBatches";
 
 Migrations.add({
-  version: 46,
+  version: 47,
   up() {
     // Catalog
     findAndConvertInBatches({
