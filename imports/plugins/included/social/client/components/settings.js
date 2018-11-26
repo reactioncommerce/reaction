@@ -11,7 +11,7 @@ const socialProviders = [
   {
     name: "facebook",
     icon: "fa fa-facebook",
-    fields: ["appId", "appSecret", "profilePage"]
+    fields: ["appId", "profilePage"]
   },
   {
     name: "twitter",
