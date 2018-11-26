@@ -52,7 +52,6 @@ aldeed:collection2@3.0.1
 aldeed:schema-index@3.0.0
 aldeed:template-extension
 bozhao:accounts-instagram
-dispatch:run-as-user
 meteorhacks:ssr
 meteorhacks:subs-manager
 ongoworks:security
