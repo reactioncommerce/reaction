@@ -77,14 +77,6 @@ jobs:
           key: ${GLOBAL_CACHE_VERSION}-node-modules-{{ .Branch }}-{{ epoch }}
           paths:
             - node_modules
-      # mongodb-memory-server installs Mongo binary on npm install, which we need
-      # later when we run Jest integration tests
-      - save_cache:
-          name: Saving mongodb-memory-server MongoDB cache
-          key: mongodb-memory-server
-          paths:
-            - ~/.mongodb-binaries
-
 
   docker-build:
     <<: *defaults
@@ -259,9 +251,6 @@ jobs:
             - ${GLOBAL_CACHE_VERSION}-node-modules-{{ checksum "package.json" }}-{{ checksum "package-lock.json" }}
             - ${GLOBAL_CACHE_VERSION}-node-modules-{{ .Branch }}
             - ${GLOBAL_CACHE_VERSION}-node-modules-master
-      - restore_cache:
-          name: Restoring mongodb-memory-server MongoDB cache
-          key: mongodb-memory-server
       - run:
           name: Run Integration Tests
           command: npm run test:integration
