@@ -1,5 +1,8 @@
 #!/bin/bash
 
+sudo apt-get -y install python3-pip wget
+sudo pip3 install awscli
+
 export ENVIRONMENT=staging
 export CLUSTER=core
 export CIRCLE_BRANCH=feat-gg-propel-changes
@@ -30,6 +33,12 @@ fi
 if [ "${!AWS_SECRET_ACCESS_KEY_VAR_NAME}" ]; then
 	export AWS_SECRET_ACCESS_KEY=${!AWS_SECRET_ACCESS_KEY_VAR_NAME}
 fi
+
+echo Running aws s3 cp s3://${S3_PROPEL_ARTIFACTS_BUCKET}/propel-linux-amd64 ./propel
+aws s3 cp s3://${S3_PROPEL_ARTIFACTS_BUCKET}/propel-linux-amd64 ./propel
+
+sudo mv propel /usr/local/bin/propel
+sudo chmod +x /usr/local/bin/propel
 
 RELEASE_DESCRIPTION="CircleCI build URL: ${CIRCLE_BUILD_URL}"
 
