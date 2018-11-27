@@ -5,7 +5,13 @@ import updateFulfillmentOptionsForGroup from "./updateFulfillmentOptionsForGroup
 jest.mock("../util/getCartById", () => jest.fn().mockImplementation(() => Promise.resolve({
   _id: "cartId",
   items: [{
-    _id: "123"
+    _id: "123",
+    priceWhenAdded: {
+      amount: 19.99
+    },
+    subtotal: {
+      amount: 19.99
+    }
   }],
   shipping: [{
     _id: "group1",

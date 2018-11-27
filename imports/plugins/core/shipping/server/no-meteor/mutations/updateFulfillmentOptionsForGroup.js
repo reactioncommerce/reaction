@@ -1,6 +1,7 @@
 import { isEqual } from "lodash";
 import SimpleSchema from "simpl-schema";
 import ReactionError from "@reactioncommerce/reaction-error";
+import { xformCartCheckout } from "@reactioncommerce/reaction-graphql-xforms/cart";
 import getCartById from "../util/getCartById";
 
 const inputSchema = new SimpleSchema({
@@ -75,8 +76,11 @@ export default async function updateFulfillmentOptionsForGroup(context, input) {
   // Map the items onto the fulfillment groups
   fulfillmentGroup.items = fulfillmentGroup.itemIds.map((itemId) => cart.items.find((item) => item._id === itemId));
 
+  // Add cart summary
+  const cartWithSummary = await xformCartCheckout(collections, cart);
+
   // In the future we want to do this async and subscribe to the results
-  const rates = await context.queries.getFulfillmentMethodsWithQuotes(fulfillmentGroup, context);
+  const rates = await context.queries.getFulfillmentMethodsWithQuotes(fulfillmentGroup, cartWithSummary, context);
 
   const { shipmentQuotes, shipmentQuotesQueryStatus } = getShipmentQuotesQueryStatus(rates);
 
