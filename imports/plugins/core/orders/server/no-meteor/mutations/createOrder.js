@@ -11,7 +11,6 @@ import getDiscountsTotalForCart from "/imports/plugins/core/discounts/server/no-
 import xformOrderGroupToCommonOrder from "/imports/plugins/core/orders/server/util/xformOrderGroupToCommonOrder";
 import getCartById from "/imports/plugins/core/shipping/server/no-meteor/util/getCartById.js";
 
-
 const orderItemsSchema = new SimpleSchema({
   "addedAt": {
     type: Date,
@@ -243,6 +242,7 @@ export default async function createOrder(context, input) {
 
   const { afterValidate, billingAddress, createPaymentForFulfillmentGroup, order: orderInput } = cleanedInput;
   const { cartId, cartToken, currencyCode, email, fulfillmentGroups, shopId } = orderInput;
+  const { cartId, currencyCode, email, fulfillmentGroups, shopId } = orderInput;
   const { accountId, account, collections } = context;
   const { Orders } = collections;
 
