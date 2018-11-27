@@ -37,5 +37,5 @@ sudo mv propel /usr/local/bin/propel
 sudo chmod +x /usr/local/bin/propel
 
 RELEASE_DESCRIPTION="CircleCI build URL: ${CIRCLE_BUILD_URL}"
-echo Running propel release create --deploy --env $ENVIRONMENT --cluster $CLUSTER --descr "${RELEASE_DESCRIPTION}" --verbose
-propel release create --deploy --env $ENVIRONMENT --cluster $CLUSTER --descr "${RELEASE_DESCRIPTION}" --verbose
+echo Running propel release create --deploy --env $ENVIRONMENT --cluster $CLUSTER --descr "${RELEASE_DESCRIPTION}"
+propel release create --deploy --env $ENVIRONMENT --cluster $CLUSTER --descr "${RELEASE_DESCRIPTION}"
