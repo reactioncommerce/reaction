@@ -5,12 +5,11 @@ sudo pip3 install awscli
 
 export ENVIRONMENT=staging
 export CLUSTER=core
-export CIRCLE_BRANCH=feat-gg-propel-changes
 # remove spaces from branch name
 export SERVICE_FEATURE=`echo $CIRCLE_BRANCH | sed 's/ //g'`
 export SERVICE1=reaction-core
 export CONTAINER1=core
-#export core_CIRCLE_SHA1=$CIRCLE_SHA1
+export core_CIRCLE_SHA1=$CIRCLE_SHA1
 
 PROPEL_CONFIG_FILE="propel-feat.yaml"
 if [ ! -f ${PROPEL_CONFIG_FILE} ]; then
