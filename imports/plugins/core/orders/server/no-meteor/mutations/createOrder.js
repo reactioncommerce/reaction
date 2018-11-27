@@ -242,7 +242,6 @@ export default async function createOrder(context, input) {
 
   const { afterValidate, billingAddress, createPaymentForFulfillmentGroup, order: orderInput } = cleanedInput;
   const { cartId, cartToken, currencyCode, email, fulfillmentGroups, shopId } = orderInput;
-  const { cartId, currencyCode, email, fulfillmentGroups, shopId } = orderInput;
   const { accountId, account, collections } = context;
   const { Orders } = collections;
 
