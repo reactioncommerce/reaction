@@ -51,8 +51,8 @@ services:
       port_mappings:
       - container_port: 8082
         host_port: 8082
-      image: sportsdirect/nginx
-      image_tag: latest
+      image: reactioncommerce/reaction-nginx
+      image_tag: storefront
       links:
       - storefront
       env_params:
