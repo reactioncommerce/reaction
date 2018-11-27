@@ -185,14 +185,18 @@ const handlers = {
    */
   updateAddress(address, property, validateAddress = true) {
     if (validateAddress) {
+      let validationResult;
       return callValidateAddress(address)
         .then((result) => {
+          validationResult = result;
           if (result.validated) {
             return callUpdateAddress(address, property);
           }
           return null;
         })
-        .then(updateCartAddresses);
+        .then(updateCartAddresses)
+        // AddressBook component expects the full result back when `validateAddress` is true
+        .then(() => validationResult);
     }
 
     return callUpdateAddress(address, property).then(updateCartAddresses);
@@ -245,24 +249,11 @@ const handlers = {
   },
 
   markCart(address, isEnteredSelected) {
-    if (!isEnteredSelected) {
-      Meteor.call("accounts/markAddressValidationBypassed", false, (error) => {
-        if (error) {
-          return Logger.error(error, "Unable to mark the cart");
-        }
-        Meteor.call("accounts/markTaxCalculationFailed", false, (err) => {
-          if (err) {
-            return Logger.error(err, "Unable to mark the cart");
-          }
-        });
-      });
-    } else {
-      Meteor.call("accounts/markAddressValidationBypassed", true, (error) => {
-        if (error) {
-          return Logger.error(error, "Unable to mark the cart");
-        }
-      });
-    }
+    Meteor.call("accounts/markAddressValidationBypassed", !!isEnteredSelected, (error) => {
+      if (error) {
+        Logger.error(error, "Unable to mark the cart");
+      }
+    });
   },
 
   /**

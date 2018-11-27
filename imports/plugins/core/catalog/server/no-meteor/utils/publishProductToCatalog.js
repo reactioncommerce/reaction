@@ -14,7 +14,8 @@ import createCatalogProduct from "./createCatalogProduct";
  * @return {boolean} true on successful publish, false if publish was unsuccessful
  */
 export default async function publishProductToCatalog(product, context) {
-  const { Catalog, Products } = context.collections;
+  const { appEvents, collections } = context;
+  const { Catalog, Products } = collections;
 
   // Convert Product schema object to Catalog schema object
   const catalogProduct = await createCatalogProduct(product, context);
@@ -69,6 +70,7 @@ export default async function publishProductToCatalog(product, context) {
 
     const updatedProduct = { ...product, ...productUpdates };
     Hooks.Events.run("afterPublishProductToCatalog", updatedProduct, catalogProduct);
+    appEvents.emit("afterPublishProductToCatalog", updatedProduct, catalogProduct);
   }
 
   return wasUpdateSuccessful;

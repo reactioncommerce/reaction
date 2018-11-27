@@ -15,8 +15,15 @@ jest.mock("../util/addCartItems", () => jest.fn().mockImplementation(() => Promi
       title: "TITLE",
       updatedAt: new Date(),
       variantId: "variantId",
-      isTaxable: false,
+      price: {
+        amount: 9.99,
+        currencyCode: "USD"
+      },
       priceWhenAdded: {
+        amount: 9.99,
+        currencyCode: "USD"
+      },
+      subtotal: {
         amount: 9.99,
         currencyCode: "USD"
       }
@@ -86,8 +93,15 @@ test("creates an anonymous cart if no user is logged in", async () => {
           title: "TITLE",
           updatedAt: jasmine.any(Date),
           variantId: "variantId",
-          isTaxable: false,
+          price: {
+            amount: 9.99,
+            currencyCode: "USD"
+          },
           priceWhenAdded: {
+            amount: 9.99,
+            currencyCode: "USD"
+          },
+          subtotal: {
             amount: 9.99,
             currencyCode: "USD"
           }

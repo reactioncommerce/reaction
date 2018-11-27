@@ -4,7 +4,6 @@ import { Components } from "@reactioncommerce/reaction-components";
 import CompletedShopOrders from "./completedShopOrders";
 import CompletedOrderPaymentMethod from "./completedOrderPaymentMethods";
 import CompletedOrderSummary from "./completedOrderSummary";
-import AddEmail from "./addEmail";
 
 /**
  * @summary Displays a summary/information about the order the user has just completed
@@ -29,16 +28,17 @@ const CompletedOrder = ({ order, paymentMethods, isProfilePage }) => {
   let headerText;
 
   if (isProfilePage) {
-    headerText = (<p className="order-id"><strong>Order ID </strong>{order._id}</p>);
+    headerText = (<p className="order-id"><strong>Order ID </strong>{order.referenceId}</p>);
   } else {
     headerText = (
       <div className="order-details-header">
         {/* This is the left side / main content */}
         <h3><Components.Translation defaultValue="Thank You" i18nKey={"cartCompleted.thankYou"} /></h3>
-        <p><strong>Order ID </strong>{order._id}</p>
-        {/* show a different message depending on whether we have an email or not */}
-        <AddEmail order={order} orderEmail={order.email} />
-        {/* This is the left side / main content*/}
+        <p><strong>Order ID </strong>{order.referenceId}</p>
+        <p>
+          <Components.Translation defaultValue="Order updates will be sent to" i18nKey="cartCompleted.trackYourDelivery" />
+          &nbsp;<strong>{order.email}</strong>
+        </p>
       </div>
     );
   }

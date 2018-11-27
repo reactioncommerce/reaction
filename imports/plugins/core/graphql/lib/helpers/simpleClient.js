@@ -41,6 +41,13 @@ export default {
       return cachedMutationFunction(variables);
     };
   },
+  createQueryFunction(query) {
+    const cachedQueryFunction = client.query(query);
+    return (variables) => {
+      setTokenHeader();
+      return cachedQueryFunction(variables);
+    };
+  },
   mutations: {
     createFlatRateFulfillmentMethod: (variables) => {
       setTokenHeader();
