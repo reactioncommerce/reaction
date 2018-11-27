@@ -168,7 +168,7 @@ const mockProduct = {
   twitterMsg: "twitterMessage",
   type: "product-simple",
   updatedAt,
-  mockVariants,
+  variants: mockVariants,
   vendor: "vendor",
   weight: 15.6,
   width: 8.4
@@ -211,15 +211,7 @@ test("expect true if a product's inventory has changed and is updated in the cat
   expect(spec).toBe(true);
 });
 
-test("expect false if a product's inventory did not change and is not updated in the catalog collection", async () => {
-  mockCollections.Catalog.findOne.mockReturnValueOnce(Promise.resolve(mockCatalogItem));
-  mockCollections.Products.toArray.mockReturnValueOnce(Promise.resolve(mockVariants));
-  mockIsSoldOut.mockReturnValueOnce(false);
-  const spec = await updateCatalogProductInventoryStatus(mockProduct, mockCollections);
-  expect(spec).toBe(false);
-});
-
-test("expect false if a product's catalog item does not exsit", async () => {
+test("expect false if a product's catalog item does not exist", async () => {
   mockCollections.Catalog.findOne.mockReturnValueOnce(Promise.resolve(undefined));
   const spec = await updateCatalogProductInventoryStatus(mockProduct, mockCollections);
   expect(spec).toBe(false);
