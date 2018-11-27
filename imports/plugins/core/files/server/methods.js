@@ -1,36 +1,14 @@
 import { Meteor } from "meteor/meteor";
 import { check } from "meteor/check";
+import appEvents from "/imports/node-app/core/util/appEvents";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
+import ReactionError from "@reactioncommerce/reaction-error";
 import { MediaRecords } from "/lib/collections";
 
 /**
  * Media-related Meteor methods
  * @namespace Media/Methods
  */
-
-/**
- * @method updateMediaMetadata
- * @memberof Media/Methods
- * @summary Updates a media record.
- * @param {String} fileRecordId - _id of updated file record.
- * @param {Object} metadata - metadata from updated media file.
- * @return {Boolean}
- * @private
- */
-async function updateMediaMetadata(fileRecordId, metadata) {
-  check(fileRecordId, String);
-  check(metadata, Object);
-
-  const result = MediaRecords.update({
-    _id: fileRecordId
-  }, {
-    $set: {
-      metadata
-    }
-  });
-
-  return result === 1;
-}
 
 /**
  * @name media/insert
@@ -42,13 +20,17 @@ async function updateMediaMetadata(fileRecordId, metadata) {
  */
 export async function insertMedia(fileRecord) {
   check(fileRecord, Object);
-  const mediaRecordId = await MediaRecords.insert({
+
+  const doc = {
     ...fileRecord,
     metadata: {
       ...fileRecord.metadata,
       workflow: "published"
     }
-  });
+  };
+  const mediaRecordId = await MediaRecords.insert(doc);
+
+  appEvents.emit("afterMediaInsert", doc);
 
   return mediaRecordId;
 }
@@ -72,7 +54,13 @@ export async function removeMedia(fileRecordId) {
     }
   });
 
-  return result === 1;
+  const success = (result === 1);
+
+  if (success) {
+    appEvents.emit("afterMediaUpdate", MediaRecords.findOne({ _id: fileRecordId }));
+  }
+
+  return success;
 }
 
 /**
@@ -87,7 +75,7 @@ export function updateMediaPriorities(sortedMediaIDs) {
   check(sortedMediaIDs, [String]);
 
   if (!Reaction.hasPermission("createProduct")) {
-    throw new Meteor.Error("access-denied", "Access Denied");
+    throw new ReactionError("access-denied", "Access Denied");
   }
 
   // Check to be sure product linked with each media belongs to the current user's current shop
@@ -99,12 +87,12 @@ export function updateMediaPriorities(sortedMediaIDs) {
 
   sortedMediaRecords.forEach((mediaRecord) => {
     if (!mediaRecord.metadata || mediaRecord.metadata.shopId !== shopId) {
-      throw new Meteor.Error("access-denied", `Access Denied. No access to shop ${mediaRecord.metadata.shopId}`);
+      throw new ReactionError("access-denied", `Access Denied. No access to shop ${mediaRecord.metadata.shopId}`);
     }
   });
 
   if (sortedMediaRecords.length !== sortedMediaIDs.length) {
-    throw new Meteor.Error("not-found", "At least one ID in sortedMediaIDs does not exist");
+    throw new ReactionError("not-found", "At least one ID in sortedMediaIDs does not exist");
   }
 
   sortedMediaIDs.forEach((_id, index) => {
@@ -115,8 +103,8 @@ export function updateMediaPriorities(sortedMediaIDs) {
         "metadata.priority": index
       }
     });
-    const { metadata } = MediaRecords.findOne({ _id });
-    updateMediaMetadata(_id, metadata);
+
+    appEvents.emit("afterMediaUpdate", MediaRecords.findOne({ _id }));
   });
 
   return true;

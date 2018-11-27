@@ -5,7 +5,7 @@ import { formatPriceString, i18next } from "/client/api";
 import Avatar from "react-avatar";
 import { withMoment } from "@reactioncommerce/reaction-components";
 import { Badge, ClickToCopy, Icon, RolloverCheckbox, Checkbox } from "@reactioncommerce/reaction-ui";
-import { getOrderRiskBadge, getOrderRiskStatus, getBillingInfo, getTaxRiskStatus } from "../helpers";
+import { getOrderRiskBadge, getOrderRiskStatus, getPaymentForCurrentShop, getTaxRiskStatus } from "../helpers";
 
 class OrderTableColumn extends Component {
   static propTypes = {
@@ -49,19 +49,20 @@ class OrderTableColumn extends Component {
   }
 
   render() {
-    const columnAccessor = this.props.row.column.id;
-    const invoice = getBillingInfo(this.props.row.original).invoice || {};
-    const { moment } = this.props;
-    const orderPaymentRisk = getOrderRiskStatus(this.props.row.original);
-    const orderTaxRisk = getTaxRiskStatus(this.props.row.original);
+    const { moment, row } = this.props;
+    const { original: order } = row;
+    const columnAccessor = row.column.id;
+    const { invoice } = getPaymentForCurrentShop(order);
+    const orderPaymentRisk = getOrderRiskStatus(order);
+    const orderTaxRisk = getTaxRiskStatus(order);
     const orderRisk = orderPaymentRisk || orderTaxRisk;
 
     if (columnAccessor === "shippingFullName") {
       return (
         <div style={{ display: "inline-flex" }}>
-          {this.renderCheckboxOnSelect(this.props.row)}
+          {this.renderCheckboxOnSelect(row)}
           <strong className="orders-full-name">
-            {this.props.row.value}
+            {row.value}
             {orderRisk &&
               <Badge
                 className="risk-info"
@@ -75,17 +76,17 @@ class OrderTableColumn extends Component {
     }
     if (columnAccessor === "email") {
       return (
-        <div style={{ marginTop: 7 }}>{this.props.row.value}</div>
+        <div style={{ marginTop: 7 }}>{row.value}</div>
       );
     }
     if (columnAccessor === "createdAt") {
-      const createdDate = (moment && moment(this.props.row.value).format("MM/D/YYYY")) || this.props.row.value.toLocaleString();
+      const createdDate = (moment && moment(row.value).format("MM/D/YYYY")) || row.value.toLocaleString();
       return (
         <div style={{ marginTop: 7 }}>{createdDate}</div>
       );
     }
     if (columnAccessor === "_id") {
-      const id = this.props.row.original._id;
+      const id = order._id;
       const truncatedId = id.substring(0, 4);
       return (
         <div style={{ marginTop: 7 }}>
@@ -110,8 +111,8 @@ class OrderTableColumn extends Component {
         <Badge
           className="orders-badge"
           badgeSize="large"
-          i18nKeyLabel={`admin.table.data.status.${this.props.row.value}`}
-          label={this.props.row.value}
+          i18nKeyLabel={`admin.table.data.status.${row.value}`}
+          label={row.value}
           status="basic"
         />
       );
@@ -121,15 +122,15 @@ class OrderTableColumn extends Component {
         <div className="status-info">
           <Badge
             badgeSize="large"
-            i18nKeyLabel={`admin.table.data.status.${this.props.row.value}`}
-            label={this.props.row.value}
-            status={this.props.fulfillmentBadgeStatus(this.props.row.original)}
+            i18nKeyLabel={`admin.table.data.status.${row.value}`}
+            label={row.value}
+            status={this.props.fulfillmentBadgeStatus(order)}
           />
         </div>
       );
     }
     if (columnAccessor === "") {
-      const startWorkflow = this.props.row.original.workflow.status === "new";
+      const startWorkflow = order.workflow.status === "new";
       const classes = classnames({
         "rui": true,
         "btn": true,
@@ -138,13 +139,13 @@ class OrderTableColumn extends Component {
       const chevronDirection = i18next.dir() === "rtl" ? "left" : "right";
 
       return (
-        <button className={classes} onClick={() => this.props.handleClick(this.props.row.original, startWorkflow)}>
+        <button className={classes} onClick={() => this.props.handleClick(order, startWorkflow)}>
           <Icon icon={`fa fa-chevron-${chevronDirection}`} />
         </button>
       );
     }
     return (
-      <span>{this.props.row.value}</span>
+      <span>{row.value}</span>
     );
   }
 }

@@ -1,8 +1,8 @@
-import Hooks from "@reactioncommerce/hooks";
 import { Meteor } from "meteor/meteor";
 import { check } from "meteor/check";
 import getGraphQLContextInMeteorMethod from "/imports/plugins/core/graphql/server/getGraphQLContextInMeteorMethod";
 import reconcileCarts from "../no-meteor/mutations/reconcileCarts";
+import Reaction from "/imports/plugins/core/core/server/Reaction";
 
 /**
  * @method cart/mergeCart
@@ -21,7 +21,7 @@ export default function mergeCart(anonymousCartId, anonymousCartToken) {
   check(anonymousCartToken, String);
 
   // Pass through to the new mutation function at this point
-  const context = Promise.await(getGraphQLContextInMeteorMethod(Meteor.userId()));
+  const context = Promise.await(getGraphQLContextInMeteorMethod(Reaction.getUserId()));
   const { cart } = Promise.await(reconcileCarts(context, {
     anonymousCartId,
     anonymousCartToken,
@@ -30,23 +30,15 @@ export default function mergeCart(anonymousCartId, anonymousCartToken) {
 
   const cartId = cart._id;
 
-  // Calculate discounts
-  Hooks.Events.run("afterCartUpdateCalculateDiscount", cartId);
-
   const accountCartWorkflow = cart.workflow;
   if (accountCartWorkflow && accountCartWorkflow.workflow) {
     if (accountCartWorkflow.workflow.length > 2) {
       Meteor.call("workflow/revertCartWorkflow", "coreCheckoutShipping", cart._id);
-      // refresh shipping quotes
-      Meteor.call("shipping/updateShipmentQuotes", cartId);
     }
   } else if (accountCartWorkflow && accountCartWorkflow.status === "new") {
     // to call `workflow/pushCartWorkflow` two times is the only way to move
     // from status "new" to "checkoutAddressBook" which I found without
     // refactoring of `workflow/pushCartWorkflow`
-    // We send `cartId` as arguments because this method could be called from
-    // publication method and in half cases it could be so, that
-    // Meteor.userId() will be null.
     Meteor.call(
       "workflow/pushCartWorkflow", "coreCartWorkflow",
       "checkoutLogin", cartId

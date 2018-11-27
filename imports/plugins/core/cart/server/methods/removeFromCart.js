@@ -1,6 +1,8 @@
 import Logger from "@reactioncommerce/logger";
 import { Meteor } from "meteor/meteor";
+import { Roles } from "meteor/alanning:roles";
 import { check, Match } from "meteor/check";
+import ReactionError from "@reactioncommerce/reaction-error";
 import getCart from "/imports/plugins/core/cart/server/util/getCart";
 import getGraphQLContextInMeteorMethod from "/imports/plugins/core/graphql/server/getGraphQLContextInMeteorMethod";
 import updateCartItemsQuantity from "../no-meteor/mutations/updateCartItemsQuantity";
@@ -21,8 +23,8 @@ export default function removeFromCart(cartId, cartToken, cartItemId, quantityDe
   check(cartItemId, String);
   check(quantityDecrement, Match.Optional(Number));
 
-  const { account, cart } = getCart(null, { cartToken, throwIfNotFound: true });
-
+  const { cart } = getCart(null, { cartToken, throwIfNotFound: true });
+  const { shopId } = cart;
   let cartItem;
 
   if (Array.isArray(cart.items)) {
@@ -32,7 +34,7 @@ export default function removeFromCart(cartId, cartToken, cartItemId, quantityDe
   // extra check of item exists
   if (!cartItem) {
     Logger.error(`Unable to find an item: ${cartItemId} within the cart: ${cart._id}`);
-    throw new Meteor.Error("not-found", "Unable to find an item with such ID in cart.");
+    throw new ReactionError("not-found", "Unable to find an item with such ID in cart.");
   }
 
   let quantity;
@@ -42,10 +44,14 @@ export default function removeFromCart(cartId, cartToken, cartItemId, quantityDe
     quantity = cartItem.quantity - quantityDecrement;
   }
 
-  // Pass through to the new mutation function
-  const context = Promise.await(getGraphQLContextInMeteorMethod(account.userId));
+  const userId = Meteor.userId();
+  const anonymousUser = Roles.userIsInRole(userId, "anonymous", shopId);
+  const userIdForContext = anonymousUser ? null : userId;
+
+  const context = Promise.await(getGraphQLContextInMeteorMethod(userIdForContext));
   const { cart: updatedCart } = Promise.await(updateCartItemsQuantity(context, {
     cartId: cart._id,
+    token: cartToken,
     items: [
       { cartItemId, quantity }
     ]

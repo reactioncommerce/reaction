@@ -1,6 +1,6 @@
 import _ from "lodash";
-import { Meteor } from "meteor/meteor";
 import { Reaction } from "/lib/api";
+import ReactionError from "@reactioncommerce/reaction-error";
 import { Shops } from "/lib/collections";
 
 /**
@@ -34,7 +34,7 @@ export default function flushCurrencyRate() {
 
   // if updatedAt is not a Date(), then there is no rates yet
   if (typeof updatedAt !== "object") {
-    throw new Meteor.Error(
+    throw new ReactionError(
       "error-occurred",
       "[flushCurrencyRates worker]: There is nothing to flush."
     );

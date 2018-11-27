@@ -1,9 +1,9 @@
 import React, { Component } from "react";
+import { compose } from "recompose";
 import PropTypes from "prop-types";
-import { VelocityTransitionGroup } from "velocity-react";
 import Radium from "radium";
 import classnames from "classnames";
-import { registerComponent } from "@reactioncommerce/reaction-components";
+import { registerComponent, withCSSTransition } from "@reactioncommerce/reaction-components";
 
 const styles = {
   base: {
@@ -24,53 +24,48 @@ class Overlay extends Component {
   };
 
   static propTypes = {
+    CSSTransition: PropTypes.func,
     children: PropTypes.node,
     isVisible: PropTypes.bool,
     onClick: PropTypes.func
   };
 
-  state = {
-    enterAnimation: {
-      animation: { opacity: 1 },
-      duration: 200
-    },
-    leaveAnimation: {
-      animation: { opacity: 0 },
-      duration: 200
+  render() {
+    const { CSSTransition, isVisible } = this.props;
+    if (CSSTransition === undefined) {
+      return null;
     }
-  }
 
-  renderOverlay() {
-    if (this.props.isVisible) {
-      const baseClassName = classnames({
-        rui: true
-      });
+    const baseClassName = classnames({
+      rui: true,
+      overlay: true
+    });
 
-      return (
+    return (
+      <CSSTransition
+        in={isVisible}
+        unmountOnExit
+        classNames="fade-in-out"
+        timeout={200}
+      >
         <div
           aria-hidden={true}
           className={baseClassName}
           style={styles.base}
           onClick={this.props.onClick}
+          key="overlay"
         />
-      );
-    }
-
-    return null;
-  }
-
-  render() {
-    return (
-      <VelocityTransitionGroup
-        enter={this.state.enterAnimation}
-        leave={this.state.leaveAnimation}
-      >
-        {this.renderOverlay()}
-      </VelocityTransitionGroup>
+      </CSSTransition>
     );
   }
 }
 
-registerComponent("Overlay", Overlay, Radium);
+registerComponent("Overlay", Overlay, [
+  withCSSTransition,
+  Radium
+]);
 
-export default Radium(Overlay);
+export default compose(
+  withCSSTransition,
+  Radium
+)(Overlay);

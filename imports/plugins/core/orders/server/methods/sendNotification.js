@@ -1,7 +1,7 @@
-import { Meteor } from "meteor/meteor";
 import { check, Match } from "meteor/check";
 import { Accounts, Orders } from "/lib/collections";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
+import ReactionError from "@reactioncommerce/reaction-error";
 import sendOrderEmail from "../util/sendOrderEmail";
 
 /**
@@ -19,13 +19,13 @@ export default function sendNotification(orderId, action) {
 
   const order = Orders.findOne({ _id: orderId });
   if (!order) {
-    throw new Meteor.Error("not-found", "No order found with that ID");
+    throw new ReactionError("not-found", "No order found with that ID");
   }
 
   const account = this.userId ? Accounts.findOne({ userId: this.userId }) : null;
   const contextAccountId = account && account._id;
   if (order.accountId !== contextAccountId && !Reaction.hasPermission("orders", this.userId, order.shopId)) {
-    throw new Meteor.Error("access-denied", "Access Denied");
+    throw new ReactionError("access-denied", "Access Denied");
   }
 
   this.unblock();

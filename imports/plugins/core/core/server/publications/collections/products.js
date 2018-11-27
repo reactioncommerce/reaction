@@ -5,7 +5,7 @@ import { Meteor } from "meteor/meteor";
 import { Tracker } from "meteor/tracker";
 import { check, Match } from "meteor/check";
 import { registerSchema } from "@reactioncommerce/schemas";
-import { Products, Shops, Catalog } from "/lib/collections";
+import { Products, Shops } from "/lib/collections";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
 
 //
@@ -71,23 +71,14 @@ const filters = new SimpleSchema({
 
 registerSchema("filters", filters);
 
-const catalogProductFiltersSchema = new SimpleSchema({
-  "shopIdsOrSlugs": {
-    type: Array,
-    optional: true
-  },
-  "shopIdsOrSlugs.$": String,
-  "tagIds": {
-    type: Array,
-    optional: true
-  },
-  "tagIds.$": String,
-  "query": {
-    type: String,
-    optional: true
-  }
-});
-
+/**
+ * @name applyShopsFilter
+ * @summary Builds selector for shops
+ * @private
+ * @param {Object} selector - Current selector
+ * @param {Array} shopIdsOrSlugs - Shop _ids or slugs to filter for
+ * @return {Object} updated selector with shop filters
+ */
 function applyShopsFilter(selector, shopIdsOrSlugs) {
   // Active shop
   const shopId = Reaction.getShopId();
@@ -148,6 +139,13 @@ function applyShopsFilter(selector, shopIdsOrSlugs) {
   return selector;
 }
 
+/**
+ * @name filterProducts
+ * @summary Builds a selector for Products collection, given a set of filters
+ * @private
+ * @param {Object} productFilters - See filters schema above
+ * @return {Object} Selector
+ */
 function filterProducts(productFilters) {
   // if there are filter/params that don't match the schema
   // validate, catch except but return no results
@@ -351,89 +349,5 @@ Meteor.publish("Products", function (productScrollLimit = 24, productFilters, so
     sort
     // We shouldn't limit here. Otherwise we are limited to 24 total products which
     // could be far less than 24 top-level products.
-  });
-});
-
-function filterCatalogItems(catalogFilters) {
-  // if there are filter/params that don't match the schema
-  // validate, catch except but return no results
-  try {
-    if (catalogFilters) catalogProductFiltersSchema.validate(catalogFilters);
-  } catch (e) {
-    Logger.warn(e, "Invalid Catalog Product Filters");
-    return false;
-  }
-
-  // Init default selector - Everyone can see products that fit this selector
-  const baseSelector = {
-    "product.isDeleted": { $ne: true }, // by default, we don't publish deleted products
-    "product.isVisible": true // by default, only lookup visible products
-  };
-
-  const { shopIdsOrSlugs } = catalogFilters || {};
-  const selector = applyShopsFilter(baseSelector, shopIdsOrSlugs);
-
-  if (!selector) return false;
-  if (!catalogFilters) return selector;
-
-  // filter by tags
-  if (catalogFilters.tagIds) {
-    selector["product.tagIds"] = {
-      $in: catalogFilters.tagIds
-    };
-  }
-
-  // filter by query
-  if (catalogFilters.query) {
-    const cond = {
-      $regex: catalogFilters.query,
-      $options: "i"
-    };
-
-    selector.$or = [{
-      title: cond
-    }, {
-      pageTitle: cond
-    }, {
-      description: cond
-    }];
-  }
-
-  return selector;
-}
-
-/**
- * @name Products/grid
- * @method
- * @memberof Core
- * @summary Publication method for a customer facing product grid
- * @param {number} productScrollLimit - product find limit
- * @param {object} productFilters - filters to be applied to the product find
- * @return {MongoCursor} Mongo cursor object of found products
- */
-Meteor.publish("Products/grid", function (productScrollLimit = 24, productFilters) {
-  check(productScrollLimit, Number);
-  check(productFilters, Match.OneOf(undefined, Object));
-
-  const newSelector = filterCatalogItems(productFilters);
-
-  if (newSelector === false) {
-    return this.ready();
-  }
-
-  let tagIdForPosition = "_default";
-  if (productFilters && Array.isArray(productFilters.tagIds) && productFilters.tagIds.length) {
-    [tagIdForPosition] = productFilters.tagIds;
-  }
-
-  return Catalog.find(newSelector, {
-    sort: {
-      [`product.positions.${tagIdForPosition}.position`]: 1,
-      createdAt: -1
-    },
-    limit: productScrollLimit,
-    fields: {
-      variants: 0
-    }
   });
 });

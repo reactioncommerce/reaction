@@ -1,10 +1,10 @@
 import _ from "lodash";
-import { Meteor } from "meteor/meteor";
 import { Template } from "meteor/templating";
 import { Accounts } from "meteor/accounts-base";
 import { Spacebars } from "meteor/spacebars";
 import { ReactiveVar } from "meteor/reactive-var";
 import { Roles } from "meteor/alanning:roles";
+import ReactionError from "@reactioncommerce/reaction-error";
 import { i18next, Reaction } from "/client/api";
 import * as Collections from "/lib/collections";
 import * as Schemas from "/lib/collections/schemas";
@@ -186,7 +186,6 @@ Template.registerHelper("capitalize", (str) => str.charAt(0).toUpperCase() + str
  */
 Template.registerHelper("toCamelCase", (str) => !!str && toCamelCase(str));
 
-
 /**
  * @method siteName
  * @memberof BlazeTemplateHelpers
@@ -242,7 +241,7 @@ Template.registerHelper("condition", (v1, operator, v2) => {
     case "gte":
       return v1 >= v2;
     default:
-      throw new Meteor.Error("undefined-operator", `Undefined conditional operator ${operator}`);
+      throw new ReactionError("undefined-operator", `Undefined conditional operator ${operator}`);
   }
 });
 
@@ -269,10 +268,11 @@ Template.registerHelper("orElse", (v1, v2) => v1 || v2);
  */
 Template.registerHelper("key_value", (context) => {
   const result = [];
-  _.each(context, (value, key) => result.push({
-    key,
-    value
-  }));
+  _.each(context, (value, key) =>
+    result.push({
+      key,
+      value
+    }));
   return result;
 });
 
@@ -285,7 +285,7 @@ Template.registerHelper("key_value", (context) => {
  * @returns {String} returns formatted Spacebars.SafeString
  */
 Template.registerHelper("nl2br", (text) => {
-  const nl2br = (`${text}`).replace(/([^>\r\n]?)(\r\n|\n\r|\r|\n)/g, "$1<br>$2");
+  const nl2br = `${text}`.replace(/([^>\r\n]?)(\r\n|\n\r|\r|\n)/g, "$1<br>$2");
   return new Spacebars.SafeString(nl2br);
 });
 

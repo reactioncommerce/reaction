@@ -1,9 +1,12 @@
 import Hooks from "@reactioncommerce/hooks";
 import Logger from "@reactioncommerce/logger";
+import ReactionError from "@reactioncommerce/reaction-error";
 import { Meteor } from "meteor/meteor";
 import { check } from "meteor/check";
 import { Orders } from "/lib/collections";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
+import rawCollections from "/imports/collections/rawCollections";
+import createNotification from "/imports/plugins/included/notifications/server/no-meteor/createNotification";
 import sendOrderEmail from "../util/sendOrderEmail";
 
 /**
@@ -12,18 +15,18 @@ import sendOrderEmail from "../util/sendOrderEmail";
  * @memberof Orders/Methods
  * @summary trigger shipmentShipped status and workflow update
  * @param {Object} order - order object
- * @param {Object} shipment - shipment object
+ * @param {Object} fulfillmentGroup - fulfillmentGroup object
  * @return {Object} return results of several operations
  */
-export default function shipmentShipped(order, shipment) {
+export default function shipmentShipped(order, fulfillmentGroup) {
   check(order, Object);
-  check(shipment, Object);
+  check(fulfillmentGroup, Object);
 
   // TODO: Who should have access to ship shipments in a marketplace setting
   // Should be anyone who has product in an order.
   if (!Reaction.hasPermission("orders")) {
     Logger.error("User does not have 'orders' permissions");
-    throw new Meteor.Error("access-denied", "Access Denied");
+    throw new ReactionError("access-denied", "Access Denied");
   }
 
   this.unblock();
@@ -31,7 +34,7 @@ export default function shipmentShipped(order, shipment) {
   let completedItemsResult;
   let completedOrderResult;
 
-  const itemIds = shipment.items.map((item) => item._id);
+  const { itemIds } = fulfillmentGroup;
 
   // TODO: In the future, this could be handled by shipping delivery status
   // REVIEW: This hook seems to run before the shipment has been marked as shipped
@@ -58,7 +61,7 @@ export default function shipmentShipped(order, shipment) {
   Orders.update(
     {
       "_id": order._id,
-      "shipping._id": shipment._id
+      "shipping._id": fulfillmentGroup._id
     },
     {
       $set: {
@@ -70,6 +73,15 @@ export default function shipmentShipped(order, shipment) {
     },
     { bypassCollection2: true }
   );
+
+  // send notification to order owner
+  const { accountId } = order;
+  const type = "orderShipped";
+  const prefix = Reaction.getShopPrefix();
+  const url = `${prefix}/notifications`;
+  createNotification(rawCollections, { accountId, type, url }).catch((error) => {
+    Logger.error("Error in createNotification within shipmentShipped", error);
+  });
 
   return {
     workflowResult,

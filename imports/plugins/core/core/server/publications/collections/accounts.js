@@ -9,7 +9,7 @@ import Reaction from "/imports/plugins/core/core/server/Reaction";
  */
 
 Meteor.publish("Accounts", function () {
-  const userId = Meteor.userId();
+  const userId = Reaction.getUserId();
 
   if (!userId) {
     return this.ready();

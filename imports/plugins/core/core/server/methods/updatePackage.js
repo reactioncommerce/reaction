@@ -1,7 +1,7 @@
-import { Meteor } from "meteor/meteor";
 import { check } from "meteor/check";
 import { Packages } from "/lib/collections";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
+import ReactionError from "@reactioncommerce/reaction-error";
 
 /**
  * @method package/update
@@ -20,10 +20,10 @@ export default function updatePackage(packageName, field, value) {
   check(field, String);
   check(value, Object);
 
-  const userId = Meteor.userId();
+  const userId = Reaction.getUserId();
   const shopId = Reaction.getShopId();
   if (!Reaction.hasPermission([packageName], userId, shopId)) {
-    throw new Meteor.Error("access-denied", `Access Denied. You don't have permissions for the ${packageName} package.`);
+    throw new ReactionError("access-denied", `Access Denied. You don't have permissions for the ${packageName} package.`);
   }
 
   const updateResult = Packages.update({
@@ -35,7 +35,7 @@ export default function updatePackage(packageName, field, value) {
     }
   });
   if (updateResult !== 1) {
-    throw new Meteor.Error("server-error", `An error occurred while updating the package ${packageName}.`);
+    throw new ReactionError("server-error", `An error occurred while updating the package ${packageName}.`);
   }
   return updateResult;
 }

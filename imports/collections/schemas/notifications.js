@@ -22,6 +22,10 @@ import { registerSchema } from "@reactioncommerce/schemas";
  * @property {Date} timeSent required
  */
 export const Notification = new SimpleSchema({
+  _id: {
+    type: String,
+    optional: false
+  },
   message: {
     type: String,
     optional: false
@@ -46,23 +50,8 @@ export const Notification = new SimpleSchema({
     type: String,
     optional: true
   },
-  status: {
-    type: String,
-    optional: false,
-    defaultValue: "unread"
-  },
-  timeSent: {
-    type: Date,
-    optional: false,
-    autoValue() {
-      if (this.isInsert) {
-        return new Date();
-      } else if (this.isUpsert) {
-        return { $setOnInsert: new Date() };
-      }
-      this.unset();
-    }
-  }
+  status: String,
+  timeSent: Date
 });
 
 registerSchema("Notification", Notification);

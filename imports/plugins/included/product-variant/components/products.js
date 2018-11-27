@@ -1,26 +1,25 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Components } from "@reactioncommerce/reaction-components";
-import { Reaction } from "/client/api";
 import { getTagIds as getIds } from "/lib/selectors/tags";
 
 /** Class representing the Products React component
  * @summary PropTypes for Product React component
- * @property {Function} loadMoreProducts - load more products callback
+ * @property {Boolean} canLoadMoreProducts - Are there more products to load?
+ * @property {Boolean} isProductsSubscriptionReady - Products subscription is ready?
+ * @property {Boolean} isReady - Data is ready?
  * @property {Function} loadProducts - Load products callback
  * @property {Array} products - Array of products
- * @property {Object} products - Products subscription
- * @property {Function} ready - Ready state check helper
  * @property {Boolean} showNotFound - Force show not-found view
 */
 
 class Products extends Component {
   static propTypes = {
-    loadMoreProducts: PropTypes.func,
+    canLoadMoreProducts: PropTypes.bool,
+    isProductsSubscriptionReady: PropTypes.bool,
+    isReady: PropTypes.bool,
     loadProducts: PropTypes.func,
     products: PropTypes.array,
-    productsSubscription: PropTypes.object,
-    ready: PropTypes.func,
     showNotFound: PropTypes.bool // eslint-disable-line react/boolean-prop-naming
   };
 
@@ -64,32 +63,18 @@ class Products extends Component {
       <Components.ProductGrid
         productsByKey={productsByKey || {}}
         productIds={getIds({ tags: products })}
-        canEdit={Reaction.hasPermission("createProduct")}
         products={products}
       />
     );
   }
 
   /**
-   * Render loading component
-   * @access protected
-   * @return {Node} React node containing the `Loading` component.
-   */
-  renderSpinner() {
-    if (this.props.productsSubscription.ready() === false) {
-      return (
-        <Components.Loading />
-      );
-    }
-  }
-
-  /**
    * Render load more button
    * @access protected
-   * @return {Node|undefined} React node contianing a `laod more` button or undefined.
+   * @return {Node|undefined} React node containing a `load more` button or undefined.
    */
   renderLoadMoreProductsButton() {
-    if (this.props.loadMoreProducts()) {
+    if (this.props.canLoadMoreProducts) {
       return (
         <div className="product-load-more" id="productScrollLimitLoader">
           <button
@@ -101,12 +86,14 @@ class Products extends Component {
         </div>
       );
     }
+
+    return null;
   }
 
   /**
    * Render the not found component
    * @access protected
-   * @return {Node} React node contianing the `NotFound` component.
+   * @return {Node} React node containing the `NotFound` component.
    */
   renderNotFound() {
     return (
@@ -124,27 +111,30 @@ class Products extends Component {
    * @return {Node} React node containing elements that make up the `Products` component.
    */
   render() {
-    // Force show the not-found view.
-    if (this.props.showNotFound) {
-      return this.renderNotFound();
-    } else if (this.props.ready()) {
-      // Render products grid if products are available after subscription ready.
-      if (this.hasProducts) {
-        return (
-          <div id="container-main">
-            {this.renderProductGrid()}
-            {this.renderLoadMoreProductsButton()}
-            {this.renderSpinner()}
-          </div>
-        );
-      }
+    const { isProductsSubscriptionReady, isReady, showNotFound } = this.props;
 
-      // Render not-found view if no products are available.
+    // Force show the not-found view.
+    if (showNotFound) {
       return this.renderNotFound();
     }
 
-    // Render loading component by default if no condition above matches.
-    return this.renderSpinner();
+    if (!isProductsSubscriptionReady || !isReady) {
+      return (
+        <Components.Loading />
+      );
+    }
+
+    // Render not-found view if no products are available.
+    if (!this.hasProducts) {
+      return this.renderNotFound();
+    }
+
+    return (
+      <div id="container-main">
+        {this.renderProductGrid()}
+        {this.renderLoadMoreProductsButton()}
+      </div>
+    );
   }
 }
 

@@ -4,7 +4,6 @@ const inMemoryCache = {};
 const connectionKey = "connection-data";
 
 function connectionData() {
-  // similar to Meteor.userId()
   const invocation =
     DDP._CurrentMethodInvocation.get() ||
     DDP._CurrentPublicationInvocation.get();

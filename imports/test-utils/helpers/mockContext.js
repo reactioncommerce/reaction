@@ -1,6 +1,11 @@
 const mockContext = {
   accountId: "FAKE_ACCOUNT_ID",
+  appEvents: {
+    emit() {},
+    on() {}
+  },
   collections: {},
+  getFunctionsOfType: jest.fn().mockName("getFunctionsOfType").mockReturnValue([]),
   shopId: "FAKE_SHOP_ID",
   userHasPermission: jest.fn().mockName("userHasPermission"),
   userId: "FAKE_USER_ID"
@@ -14,7 +19,6 @@ const mockContext = {
   "Emails",
   "Groups",
   "Inventory",
-  "Logs",
   "MediaRecords",
   "Notifications",
   "Orders",
@@ -25,7 +29,6 @@ const mockContext = {
   "SellerShops",
   "Shipping",
   "Shops",
-  "Sms",
   "Tags",
   "Templates",
   "Themes",
@@ -55,6 +58,7 @@ const mockContext = {
     insertMany: jest.fn().mockName(`${collectionName}.insertMany`),
     toArray: jest.fn().mockName(`${collectionName}.toArray`),
     updateOne: jest.fn().mockName(`${collectionName}.updateOne`).mockReturnValue(Promise.resolve({
+      matchedCount: 1,
       modifiedCount: 1
     })),
     updateMany: jest.fn().mockName(`${collectionName}.updateMany`)

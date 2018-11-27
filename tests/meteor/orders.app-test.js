@@ -6,6 +6,7 @@ import { check, Match } from "meteor/check";
 import { Factory } from "meteor/dburles:factory";
 import { expect } from "meteor/practicalmeteor:chai";
 import { sinon } from "meteor/practicalmeteor:sinon";
+import ReactionError from "@reactioncommerce/reaction-error";
 import Fixtures from "/imports/plugins/core/core/server/fixtures";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
 import { getShop } from "/imports/plugins/core/core/server/fixtures/shops";
@@ -51,8 +52,8 @@ describe("orders test", function () {
     sandbox = sinon.sandbox.create();
     order = Factory.create("order");
     sandbox.stub(Reaction, "getShopId", () => order.shopId);
-    const { paymentMethod } = billingObjectMethod(order);
-    sandbox.stub(paymentMethod, "paymentPackageId", example._id);
+    const { payment } = shippingObjectMethod(order);
+    sandbox.stub(payment, "paymentPluginName", example.name);
     return done();
   });
 
@@ -70,20 +71,14 @@ describe("orders test", function () {
     });
   }
 
-  function billingObjectMethod(orderObject) {
-    const billingObject = orderObject.billing.find((billing) => billing.shopId === shopId);
-    return billingObject;
-  }
-
   function shippingObjectMethod(orderObject) {
     const shippingObject = orderObject.shipping.find((shipping) => shipping.shopId === shopId);
     return shippingObject;
   }
 
-  function orderCreditMethod(orderData) {
-    const billingRecord = orderData.billing.filter((value) => value.paymentMethod.method === "credit");
-    const billingObject = billingRecord.find((billing) => billing.shopId === shopId);
-    return billingObject;
+  function orderCreditMethod(orderObject) {
+    const creditGroup = orderObject.shipping.find((group) => group.shopId === Reaction.getShopId() && group.payment.method === "credit");
+    return (creditGroup && creditGroup.payment) || {};
   }
 
   describe("orders/cancelOrder", function () {
@@ -101,11 +96,11 @@ describe("orders test", function () {
       function cancelOrder() {
         return Meteor.call("orders/cancelOrder", order, returnToStock);
       }
-      expect(cancelOrder).to.throw(Meteor.Error, /Access Denied/);
+      expect(cancelOrder).to.throw(ReactionError, /Access Denied/);
     });
 
     it("should increase inventory with number of items canceled when returnToStock option is selected", function () {
-      const orderItemId = order.items[0].variantId;
+      const orderItemId = order.shipping[0].items[0].variantId;
       sandbox.stub(Reaction, "hasPermission", () => true); // Mock user permissions
 
       const { inventoryQuantity } = Products.findOne({ _id: orderItemId }) || {};
@@ -129,7 +124,7 @@ describe("orders test", function () {
     });
 
     it("should NOT increase/decrease inventory when returnToStock option is false", function () {
-      const orderItemId = order.items[0].variantId;
+      const orderItemId = order.shipping[0].items[0].variantId;
       sandbox.stub(Reaction, "hasPermission", () => true); // Mock user permissions
 
       // approve the order (inventory decreases)
@@ -163,7 +158,7 @@ describe("orders test", function () {
       spyOnMethod("cancelOrder", order.userId);
       Meteor.call("orders/cancelOrder", order, returnToStock);
       const orderObject = Orders.findOne({ _id: order._id });
-      expect(billingObjectMethod(orderObject).paymentMethod.mode).to.equal("cancel");
+      expect(shippingObjectMethod(orderObject).payment.mode).to.equal("cancel");
     });
 
     it("should change the workflow status of the item to coreOrderItemWorkflow/canceled", function () {
@@ -185,7 +180,7 @@ describe("orders test", function () {
       function shipmentPicked() {
         return Meteor.call("orders/shipmentPicked", order, shipment);
       }
-      expect(shipmentPicked).to.throw(Meteor.Error, /Access Denied/);
+      expect(shipmentPicked).to.throw(ReactionError, /Access Denied/);
     });
 
     it("should update the order item workflow status to coreOrderItemWorkflow/picked", function () {
@@ -216,7 +211,7 @@ describe("orders test", function () {
       function shipmentPacked() {
         return Meteor.call("orders/shipmentPacked", order, shipment);
       }
-      expect(shipmentPacked).to.throw(Meteor.Error, /Access Denied/);
+      expect(shipmentPacked).to.throw(ReactionError, /Access Denied/);
     });
 
     it("should update the order item workflow status to coreOrderItemWorkflow/packed", function () {
@@ -247,7 +242,7 @@ describe("orders test", function () {
       function shipmentLabeled() {
         return Meteor.call("orders/shipmentLabeled", order, shipment);
       }
-      expect(shipmentLabeled).to.throw(Meteor.Error, /Access Denied/);
+      expect(shipmentLabeled).to.throw(ReactionError, /Access Denied/);
     });
 
     it("should update the order item workflow status to coreOrderItemWorkflow/labeled", function () {
@@ -277,15 +272,15 @@ describe("orders test", function () {
       function makeAdjustmentsToInvoice() {
         return Meteor.call("orders/makeAdjustmentsToInvoice", order);
       }
-      expect(makeAdjustmentsToInvoice).to.throw(Meteor.Error, /Access Denied/);
+      expect(makeAdjustmentsToInvoice).to.throw(ReactionError, /Access Denied/);
     });
 
     it("should make adjustment to the invoice", function () {
       sandbox.stub(Reaction, "hasPermission", () => true);
       spyOnMethod("makeAdjustmentsToInvoice", order.userId);
       Meteor.call("orders/makeAdjustmentsToInvoice", order);
-      const orderPaymentMethodStatus = billingObjectMethod(Orders.findOne({ _id: order._id })).paymentMethod.status;
-      expect(orderPaymentMethodStatus).equal("adjustments");
+      const orderPaymentStatus = shippingObjectMethod(Orders.findOne({ _id: order._id })).payment.status;
+      expect(orderPaymentStatus).equal("adjustments");
     });
   });
 
@@ -296,7 +291,7 @@ describe("orders test", function () {
       function approvePayment() {
         return Meteor.call("orders/approvePayment", order);
       }
-      expect(approvePayment).to.throw(Meteor.Error, /Access Denied/);
+      expect(approvePayment).to.throw(ReactionError, /Access Denied/);
     });
 
     it("should approve payment", function () {
@@ -309,11 +304,12 @@ describe("orders test", function () {
       const discountTotal = Math.max(0, subTotal - discount); // ensure no discounting below 0.
       const total = accounting.toFixed(discountTotal + shipping + taxes, 2);
       Meteor.call("orders/approvePayment", order);
-      const orderBilling = billingObjectMethod(Orders.findOne({ _id: order._id }));
-      expect(orderBilling.paymentMethod.status).to.equal("approved");
-      expect(orderBilling.paymentMethod.mode).to.equal("capture");
-      expect(orderBilling.invoice.discounts).to.equal(discount);
-      expect(orderBilling.invoice.total).to.equal(Number(total));
+      const orderDoc = Orders.findOne({ _id: order._id });
+      const orderBilling = shippingObjectMethod(orderDoc);
+      expect(orderBilling.payment.status).to.equal("approved");
+      expect(orderBilling.payment.mode).to.equal("capture");
+      expect(orderBilling.payment.invoice.discounts).to.equal(discount);
+      expect(orderBilling.payment.invoice.total).to.equal(Number(total));
     });
   });
 
@@ -325,7 +321,7 @@ describe("orders test", function () {
       function shipmentShipped() {
         return Meteor.call("orders/shipmentShipped", order, shipment);
       }
-      expect(shipmentShipped).to.throw(Meteor.Error, /Access Denied/);
+      expect(shipmentShipped).to.throw(ReactionError, /Access Denied/);
     });
 
     it("should update the order item workflow status to coreOrderItemWorkflow/completed", function () {
@@ -378,7 +374,7 @@ describe("orders test", function () {
       function shipmentDelivered() {
         return Meteor.call("orders/shipmentDelivered", order);
       }
-      expect(shipmentDelivered).to.throw(Meteor.Error, /Access Denied/);
+      expect(shipmentDelivered).to.throw(ReactionError, /Access Denied/);
     });
 
     it("should update the order item workflow status to coreOrderItemWorkflow/completed", function () {
@@ -412,7 +408,7 @@ describe("orders test", function () {
       function sendNotification() {
         return Meteor.call("orders/sendNotification", order._id);
       }
-      expect(sendNotification).to.throw(Meteor.error, /Access Denied/);
+      expect(sendNotification).to.throw(ReactionError, /Access Denied/);
     });
 
     it("should send email notification", function () {
@@ -436,7 +432,7 @@ describe("orders test", function () {
         const trackingValue = "2340FLKD104309";
         return Meteor.call("orders/updateShipmentTracking", order, shipment, trackingValue);
       }
-      expect(updateShipmentTracking).to.throw(Meteor.error, /Access Denied/);
+      expect(updateShipmentTracking).to.throw(ReactionError, /Access Denied/);
     });
 
     it("should update the order tracking value", function () {
@@ -457,7 +453,7 @@ describe("orders test", function () {
         const email = "sample@email.com";
         return Meteor.call("orders/addOrderEmail", order.cartId, email);
       }
-      expect(addOrderEmail).to.throw(Meteor.error, /Access Denied. You are not connected./);
+      expect(addOrderEmail).to.throw(ReactionError, /Access Denied. You are not connected./);
     });
 
     it("should add the email to the order", function () {
@@ -477,7 +473,7 @@ describe("orders test", function () {
         const trackingValue = "65TFYTGFCHCUJVR66";
         return Meteor.call("orders/updateHistory", order._id, "Tracking added", trackingValue);
       }
-      expect(updateHistory).to.throw(Meteor.error, /Access Denied/);
+      expect(updateHistory).to.throw(ReactionError, /Access Denied/);
     });
 
     it("should update the order history for the item", function () {
@@ -497,11 +493,11 @@ describe("orders test", function () {
     beforeEach(function (done) {
       Orders.update({
         "_id": order._id,
-        "billing.paymentMethod.transactionId": billingObjectMethod(order).paymentMethod.transactionId
+        "shipping.payment.transactionId": shippingObjectMethod(order).payment.transactionId
       }, {
         $set: {
-          "billing.$.paymentMethod.mode": "capture",
-          "billing.$.paymentMethod.status": "approved"
+          "shipping.$.payment.mode": "capture",
+          "shipping.$.payment.status": "approved"
         }
       });
       return done();
@@ -513,7 +509,7 @@ describe("orders test", function () {
       function capturePayments() {
         return Meteor.call("orders/capturePayments", order._id);
       }
-      expect(capturePayments).to.throw(Meteor.error, /Access Denied/);
+      expect(capturePayments).to.throw(ReactionError, /Access Denied/);
     });
 
     it("should update the order item workflow to coreOrderItemWorkflow/captured", function () {
@@ -528,9 +524,9 @@ describe("orders test", function () {
       sandbox.stub(Reaction, "hasPermission", () => true);
       spyOnMethod("capturePayments", order.userId);
       Meteor.call("orders/capturePayments", order._id, () => {
-        const orderPaymentMethod = billingObjectMethod(Orders.findOne({ _id: order._id })).paymentMethod;
-        expect(orderPaymentMethod.mode).to.equal("capture");
-        expect(orderPaymentMethod.status).to.equal("completed");
+        const orderPayment = shippingObjectMethod(Orders.findOne({ _id: order._id })).payment;
+        expect(orderPayment.mode).to.equal("capture");
+        expect(orderPayment.status).to.equal("completed");
         done();
       });
     });
@@ -548,9 +544,9 @@ describe("orders test", function () {
 
       sandbox.stub(Logger, "fatal"); // since we expect this, let's keep the output clean
       Meteor.call("orders/capturePayments", order._id, () => {
-        const orderPaymentMethod = billingObjectMethod(Orders.findOne({ _id: order._id })).paymentMethod;
-        expect(orderPaymentMethod.mode).to.equal("capture");
-        expect(orderPaymentMethod.status).to.equal("error");
+        const orderPayment = shippingObjectMethod(Orders.findOne({ _id: order._id })).payment;
+        expect(orderPayment.mode).to.equal("capture");
+        expect(orderPayment.status).to.equal("error");
         done();
       });
     });
@@ -576,23 +572,23 @@ describe("orders test", function () {
 
     it("should return error if user is does not have admin permissions", function () {
       sandbox.stub(Reaction, "hasPermission", () => false);
-      const billing = billingObjectMethod(order);
+      const group = shippingObjectMethod(order);
       spyOnMethod("refunds/create", order.userId);
       function refundsCreate() {
         const amount = 5.20;
-        return Meteor.call("orders/refunds/create", order._id, billing.paymentMethod, amount);
+        return Meteor.call("orders/refunds/create", order._id, group.payment, amount);
       }
-      expect(refundsCreate).to.throw(Meteor.error, /Access Denied/);
+      expect(refundsCreate).to.throw(ReactionError, /Access Denied/);
     });
 
     it("should update the order as refunded", function () {
       sandbox.stub(Reaction, "hasPermission", () => true);
-      const billing = billingObjectMethod(order);
+      const group = shippingObjectMethod(order);
       spyOnMethod("refunds/create", order.userId);
       const amount = 5.20;
-      Meteor.call("orders/refunds/create", order._id, billing.paymentMethod, amount);
+      Meteor.call("orders/refunds/create", order._id, group.payment, amount);
       const updateOrder = Orders.findOne({ _id: order._id });
-      expect(billingObjectMethod(updateOrder).paymentMethod.status).to.equal("refunded");
+      expect(shippingObjectMethod(updateOrder).payment.status).to.equal("refunded");
     });
   });
 
@@ -605,7 +601,7 @@ describe("orders test", function () {
 
     it("should return error if user does not have admin permissions", function () {
       sandbox.stub(Reaction, "hasPermission", () => false);
-      const billing = billingObjectMethod(order);
+      const group = shippingObjectMethod(order);
       spyOnMethod("refunds/refundItems", order.userId);
       function refundItems() {
         const refundItemsInfo = {
@@ -613,40 +609,40 @@ describe("orders test", function () {
           quantity: 2,
           items: [{}, {}]
         };
-        return Meteor.call("orders/refunds/refundItems", order._id, billing.paymentMethod, refundItemsInfo);
+        return Meteor.call("orders/refunds/refundItems", order._id, group.payment._id, refundItemsInfo);
       }
-      expect(refundItems).to.throw(Meteor.error, /Access Denied/);
+      expect(refundItems).to.throw(ReactionError, /Access Denied/);
     });
 
     it("should update the order as partially refunded if not all of items in the order are refunded", function () {
       sandbox.stub(Reaction, "hasPermission", () => true);
-      const billing = billingObjectMethod(order);
+      const group = shippingObjectMethod(order);
       spyOnMethod("refunds/refundItems", order.userId);
-      const originalQuantity = order.items.reduce((acc, item) => acc + item.quantity, 0);
+      const originalQuantity = order.totalItemQuantity;
       const quantity = originalQuantity - 1;
       const refundItemsInfo = {
         total: 3.99,
         quantity,
         items: [{}, {}]
       };
-      Meteor.call("orders/refunds/refundItems", order._id, billing.paymentMethod, refundItemsInfo);
+      Meteor.call("orders/refunds/refundItems", order._id, group.payment._id, refundItemsInfo);
       const updateOrder = Orders.findOne({ _id: order._id });
-      expect(billingObjectMethod(updateOrder).paymentMethod.status).to.equal("partialRefund");
+      expect(shippingObjectMethod(updateOrder).payment.status).to.equal("partialRefund");
     });
 
     it("should update the order as refunded if all items in the order are refunded", function () {
       sandbox.stub(Reaction, "hasPermission", () => true);
-      const billing = billingObjectMethod(order);
+      const group = shippingObjectMethod(order);
       spyOnMethod("refunds/refundItems", order.userId);
-      const originalQuantity = order.items.reduce((acc, item) => acc + item.quantity, 0);
+      const originalQuantity = order.totalItemQuantity;
       const refundItemsInfo = {
         total: 9.90,
         quantity: originalQuantity,
         items: [{}, {}]
       };
-      Meteor.call("orders/refunds/refundItems", order._id, billing.paymentMethod, refundItemsInfo);
+      Meteor.call("orders/refunds/refundItems", order._id, group.payment._id, refundItemsInfo);
       const updateOrder = Orders.findOne({ _id: order._id });
-      expect(billingObjectMethod(updateOrder).paymentMethod.status).to.equal("refunded");
+      expect(shippingObjectMethod(updateOrder).payment.status).to.equal("refunded");
     });
   });
 });

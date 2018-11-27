@@ -7,10 +7,11 @@ import { Media } from "/imports/plugins/core/files/client";
 
 export function composer(props, onData) {
   const shopSub = Meteor.subscribe("MerchantShops", Reaction.getShopsForUser(["admin"]));
-  if (!shopSub.ready()) {
-    return;
-  }
-  const shop = Shops.findOne(Reaction.getShopId());
+  if (!shopSub.ready()) return;
+
+  const shop = Shops.findOne({ _id: Reaction.getShopId() });
+  if (!shop) throw new Error(`No shop found with shop ID ${Reaction.getShopId()}`);
+
   const searchPackage = Reaction.Apps({ provides: "ui-search" });
   const user = Meteor.user();
   let searchEnabled;

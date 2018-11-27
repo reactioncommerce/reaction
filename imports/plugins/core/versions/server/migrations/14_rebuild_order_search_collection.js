@@ -1,42 +1,28 @@
 import Logger from "@reactioncommerce/logger";
 import { Migrations } from "meteor/percolate:migrations";
 import { OrderSearch } from "/lib/collections";
-import Reaction from "/imports/plugins/core/core/server/Reaction";
+import { buildOrderSearch } from "../util/searchcollections";
 
-let buildOrderSearch;
+Migrations.add({
+  version: 14,
+  up() {
+    OrderSearch.remove({});
 
-async function loadSearchRecordBuilderIfItExists() {
-  const searchPackage = Reaction.getPackageSettings("reaction-search");
-
-  if (typeof searchPackage === "object") {
-    Logger.debug("Found stock search-mongo (reaction-search) plugin.");
-
-    ({ buildOrderSearch } = await import("/imports/plugins/included/search-mongo/server/methods/searchcollections"));
-  } else {
-    Logger.warn("Failed to load reaction-search plugin. Skipping building order search records on version migration " +
-                "step 14.");
-  }
-}
-
-loadSearchRecordBuilderIfItExists()
-  .then(() => Migrations.add({
-    // Migrations 12 and 13 introduced changes on Orders, so we need to rebuild the search collection
-    version: 14,
-    up() {
-      OrderSearch.remove({});
-
-      if (buildOrderSearch) {
-        buildOrderSearch();
-      }
-    },
-    down() {
-      // whether we are going up or down we just want to update the search collections
-      // to match whatever the current code in the build methods are.
-      OrderSearch.remove({});
-
-      if (buildOrderSearch) {
-        buildOrderSearch();
-      }
+    try {
+      buildOrderSearch();
+    } catch (error) {
+      Logger.error("Error running up() on version 14", error);
     }
-  }))
-  .catch((err) => Logger.warn(`Failed to run version migration step 14. Received error: ${err}.`));
+  },
+  down() {
+    // whether we are going up or down we just want to update the search collections
+    // to match whatever the current code in the build methods are.
+    OrderSearch.remove({});
+
+    try {
+      buildOrderSearch();
+    } catch (error) {
+      Logger.error("Error running down() on version 14", error);
+    }
+  }
+});

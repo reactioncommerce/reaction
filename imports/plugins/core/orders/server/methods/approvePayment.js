@@ -1,7 +1,7 @@
 import Hooks from "@reactioncommerce/hooks";
 import accounting from "accounting-js";
-import { Meteor } from "meteor/meteor";
 import { check } from "meteor/check";
+import ReactionError from "@reactioncommerce/reaction-error";
 import { Orders, Products } from "/lib/collections";
 import rawCollections from "/imports/collections/rawCollections";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
@@ -23,11 +23,12 @@ function ordersInventoryAdjustByShop(orderId, shopId) {
   check(shopId, String);
 
   if (!Reaction.hasPermission("orders")) {
-    throw new Meteor.Error("access-denied", "Access Denied");
+    throw new ReactionError("access-denied", "Access Denied");
   }
 
   const order = Orders.findOne({ _id: orderId });
-  order.items.forEach((item) => {
+  const orderItems = order.shipping.reduce((list, group) => [...list, ...group.items], []);
+  orderItems.forEach((item) => {
     if (item.shopId === shopId) {
       Products.update(
         {
@@ -67,7 +68,7 @@ export default function approvePayment(order) {
   // REVIEW: Who should have access to do this for a marketplace?
   // Do we have/need a shopId on each order?
   if (!Reaction.hasPermission("orders")) {
-    throw new Meteor.Error("access-denied", "Access Denied");
+    throw new ReactionError("access-denied", "Access Denied");
   }
 
   this.unblock(); // REVIEW: why unblock here?
@@ -85,16 +86,16 @@ export default function approvePayment(order) {
   const result = Orders.update(
     {
       "_id": order._id,
-      "billing.shopId": shopId,
-      "billing.paymentMethod.method": "credit"
+      "shipping.shopId": shopId,
+      "shipping.payment.method": "credit"
     },
     {
       $set: {
-        "billing.$.paymentMethod.amount": total,
-        "billing.$.paymentMethod.status": "approved",
-        "billing.$.paymentMethod.mode": "capture",
-        "billing.$.invoice.discounts": discounts,
-        "billing.$.invoice.total": Number(total)
+        "shipping.$.payment.amount": total,
+        "shipping.$.payment.status": "approved",
+        "shipping.$.payment.mode": "capture",
+        "shipping.$.payment.invoice.discounts": discounts,
+        "shipping.$.payment.invoice.total": Number(total)
       }
     }
   );

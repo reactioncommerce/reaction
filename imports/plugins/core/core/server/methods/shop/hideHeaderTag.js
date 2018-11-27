@@ -1,6 +1,6 @@
 import { check } from "meteor/check";
-import { Meteor } from "meteor/meteor";
 import { Reaction } from "/lib/api";
+import ReactionError from "@reactioncommerce/reaction-error";
 import { Tags } from "/lib/collections";
 
 /**
@@ -14,7 +14,7 @@ export default function hideHeaderTag(tagId) {
   check(tagId, String);
   // must have core permissions
   if (!Reaction.hasPermission("core")) {
-    throw new Meteor.Error("access-denied", "Access Denied");
+    throw new ReactionError("access-denied", "Access Denied");
   }
   this.unblock();
   // hide it

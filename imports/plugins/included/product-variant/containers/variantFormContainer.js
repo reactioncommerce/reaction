@@ -190,6 +190,10 @@ const wrapComponent = (Comp) => (
           if (fieldName === "inventoryPolicy") {
             this.updateInventoryPolicyIfChildVariants(variant);
           }
+
+          if (fieldName === "lowInventoryWarningThreshold") {
+            this.updateLowInventoryThresholdIfChildVariants(variant);
+          }
         });
       }
     }
@@ -233,6 +237,19 @@ const wrapComponent = (Comp) => (
             Alerts.toast(error.message, "error");
           }
         });
+      }
+    }
+
+    updateLowInventoryThresholdIfChildVariants = (variant) => {
+      // Check to see if this variant has options attached to it
+      const variantOptions = ReactionProduct.getVariants(variant._id);
+
+      if (variantOptions && variantOptions.length !== 0) {
+        variantOptions.forEach((option) => Meteor.call("products/updateProductField", option._id, "lowInventoryWarningThreshold", variant.lowInventoryWarningThreshold, (error) => {
+          if (error) {
+            Alerts.toast(error.message, "error");
+          }
+        }));
       }
     }
 

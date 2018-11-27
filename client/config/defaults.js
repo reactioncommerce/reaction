@@ -1,6 +1,3 @@
-import { Session } from "meteor/session";
-import { AutoForm } from "meteor/aldeed:autoform";
-
 /**
  * @namespace Constants
  *
@@ -59,16 +56,3 @@ export const INDEX_OPTIONS = {
  * @summary Set default number of items to load for product grid
  */
 export const ITEMS_INCREMENT = 24;
-
-/**
- * Set Reaction layout defaults
- */
-Session.setDefault("DEFAULT_LAYOUT", DEFAULT_LAYOUT);
-Session.setDefault("DEFAULT_WORKFLOW", DEFAULT_WORKFLOW);
-Session.setDefault("INDEX_OPTIONS", INDEX_OPTIONS);
-Session.setDefault("productScrollLimit", ITEMS_INCREMENT);
-
-/**
- * Autoform default template
- */
-AutoForm.setDefaultTemplate("bootstrap3");

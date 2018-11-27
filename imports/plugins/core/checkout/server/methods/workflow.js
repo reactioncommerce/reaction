@@ -363,7 +363,7 @@ Meteor.methods({
     check(status, String);
     check(order, Match.ObjectIncluding({
       _id: String,
-      items: [Object]
+      shipping: [Object]
     }));
     check(itemIds, Array);
 
@@ -372,33 +372,38 @@ Meteor.methods({
     // will contain only the items associated with their shop
     // We'll get the order from the db that has all the items
 
-    // TODO: Resolve potential concurrency issue where any writes to the order items
-    // between this read and the Orders.update write below would be lost.
     const dbOrder = Orders.findOne({ _id: order._id });
-    const items = dbOrder.items.map((item) => {
-      // Don't modify items unless they in our itemIds array
-      if (!itemIds.includes(item._id)) {
+
+    const shipping = dbOrder.shipping.map((group) => {
+      const items = group.items.map((item) => {
+        // Don't modify items unless they in our itemIds array
+        if (!itemIds.includes(item._id)) {
+          return item;
+        }
+
+        // Add the current status to completed workflows
+        if (item.workflow.status !== "new") {
+          const workflows = item.workflow.workflow || [];
+
+          workflows.push(status);
+          item.workflow.workflow = _.uniq(workflows);
+        }
+
+        // Set the new item status
+        item.workflow.status = status;
         return item;
-      }
-
-      // Add the current status to completed workflows
-      if (item.workflow.status !== "new") {
-        const workflows = item.workflow.workflow || [];
-
-        workflows.push(status);
-        item.workflow.workflow = _.uniq(workflows);
-      }
-
-      // Set the new item status
-      item.workflow.status = status;
-      return item;
+      });
+      return {
+        ...group,
+        items
+      };
     });
 
     const result = Orders.update({
       _id: dbOrder._id
     }, {
       $set: {
-        items
+        shipping
       }
     });
 

@@ -6,7 +6,7 @@ import { formatPriceString, i18next } from "/client/api";
 import { Orders } from "/lib/collections";
 import { Components, withMoment } from "@reactioncommerce/reaction-components";
 import { Badge, ClickToCopy, Icon, Translation, Checkbox, Loading, SortableTable } from "@reactioncommerce/reaction-ui";
-import { getOrderRiskBadge, getOrderRiskStatus, getBillingInfo, getShippingInfo } from "../helpers";
+import { getOrderRiskBadge, getOrderRiskStatus, getPaymentForCurrentShop, getShippingInfo } from "../helpers";
 import OrderTableColumn from "./orderTableColumn";
 import OrderBulkActionsBar from "./orderBulkActionsBar";
 
@@ -59,7 +59,7 @@ class OrderTable extends Component {
   }
 
   /**
-   * Fullfilment Badge
+   * Fulfillment Badge
    * @param  {Object} order object containing info for order and coreOrderWorkflow
    * @return {string} A string containing the type of Badge
    */
@@ -97,7 +97,14 @@ class OrderTable extends Component {
 
   renderOrderInfo(order) {
     const { displayMedia, moment } = this.props;
-    const invoice = getBillingInfo(order).invoice || {};
+    const { invoice } = getPaymentForCurrentShop(order);
+
+    const allOrderItems = order.shipping.reduce((items, group) => {
+      group.items.forEach((item) => {
+        items.push(item);
+      });
+      return items;
+    }, []);
 
     return (
       <div className="order-info">
@@ -125,7 +132,7 @@ class OrderTable extends Component {
         </div>
 
         <div className="order-items">
-          {order.items.map((item, i) => (
+          {allOrderItems.map((item, i) => (
             <div className="order-item" key={i}>
               <div className="order-item-media">
                 <Components.ProductImage
@@ -241,11 +248,17 @@ class OrderTable extends Component {
           id: "_id"
         },
         total: {
-          accessor: (row) => getBillingInfo(row).invoice && getBillingInfo(row).invoice.total,
+          accessor: (row) => {
+            const { invoice } = getPaymentForCurrentShop(row);
+            return invoice ? invoice.total : 0;
+          },
           id: "billingTotal"
         },
         shipping: {
-          accessor: (row) => getShippingInfo(row).workflow && getShippingInfo(row).workflow.status,
+          accessor: (row) => {
+            const { workflow } = getShippingInfo(row);
+            return workflow.status;
+          },
           id: "shippingStatus"
         },
         status: {

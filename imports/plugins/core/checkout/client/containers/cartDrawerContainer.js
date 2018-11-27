@@ -36,6 +36,7 @@ const handlers = {
         }
       });
     }
+    return "";
   },
 
   handleRemoveItem(event, item) {
@@ -49,13 +50,20 @@ const handlers = {
   },
 
   handleCheckout() {
-    $("#cart-drawer-container").fadeOut();
+    document.querySelector("#cart-drawer-container").classList.remove("opened");
     Session.set("displayCart", false);
     return Reaction.Router.go("cart/checkout");
   }
 };
 
-// reactive Tracker wrapped function
+/**
+ * @name composer
+ * @private
+ * @summary Subscribes to images for products in cart & passes cart products to CartDrawer
+ * @param {Object} props - React props
+ * @param {Function} onData - Function to call when data is ready
+ * @returns {undefined}
+ */
 function composer(props, onData) {
   const { cart } = getCart();
   if (!cart) return;

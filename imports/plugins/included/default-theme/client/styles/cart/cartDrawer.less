@@ -1,6 +1,23 @@
 #cart-drawer-container {
   display: none;
+  opacity: 0;
+  &.opened {
+    display: block;
+    opacity: 1;
+    animation-name: fadeIn;
+    animation-duration: 300ms;
+  }
 }
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
 .cart-drawer {
   height: 100%;
   width: 100%;

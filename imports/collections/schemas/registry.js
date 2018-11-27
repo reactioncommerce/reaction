@@ -282,7 +282,8 @@ export const CorePackageConfig = PackageConfig.clone().extend({
   },
   "settings.openexchangerates.appId": {
     type: String,
-    label: "Open Exchange Rates App Id"
+    label: "Open Exchange Rates App Id",
+    optional: true
   },
   "settings.openexchangerates.refreshPeriod": {
     type: String,
@@ -313,12 +314,23 @@ export const CorePackageConfig = PackageConfig.clone().extend({
   },
   "settings.cart": {
     type: Object,
-    defaultValue: {}
+    defaultValue: {},
+    optional: true
   },
   "settings.cart.cleanupDurationDays": {
     type: String,
     label: "Cleanup Schedule",
     defaultValue: "older than 3 days"
+  },
+  "settings.sitemaps": {
+    type: Object,
+    defaultValue: {},
+    optional: true
+  },
+  "settings.sitemaps.refreshPeriod": {
+    type: String,
+    label: "Sitemap refresh period",
+    defaultValue: "every 24 hours"
   }
 });
 

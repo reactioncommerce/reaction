@@ -5,7 +5,6 @@ import {
 } from "./publishProductToCatalog";
 import publishProductToCatalogById from "./publishProductToCatalogById";
 
-const mockCollections = { ...mockContext.collections };
 const mockPublishProductToCatalog = jest.fn().mockName("publishProductToCatalog");
 
 const internalShopId = "123";
@@ -20,7 +19,6 @@ const productSlug = "fake-product";
 
 const createdAt = new Date("2018-04-16T15:34:28.043Z");
 const updatedAt = new Date("2018-04-17T15:34:28.043Z");
-const positionUpdatedAt = new Date("2018-04-15T15:34:28.043Z");
 
 const mockVariants = [
   {
@@ -140,14 +138,6 @@ const mockProduct = {
     weight: 7.77
   },
   pinterestMsg: "pinterestMessage",
-  positions: {
-    _default: {
-      weight: 1,
-      position: 1,
-      pinned: true,
-      updatedAt: positionUpdatedAt.toISOString()
-    }
-  },
   price: {
     max: 5.99,
     min: 2.99,
@@ -170,11 +160,11 @@ const mockProduct = {
   ],
   productId: internalProductId,
   productType: "productType",
-  requiresShipping: true,
   shop: {
     _id: opaqueShopId
   },
   sku: "ABC123",
+  supportedFulfillmentTypes: ["shipping"],
   handle: productSlug,
   hashtags: internalTagIds,
   taxCode: "taxCode",
@@ -197,15 +187,15 @@ beforeAll(() => {
 afterAll(restore$publishProductToCatalog);
 
 test("expect true if a product is published to the catalog collection by product id", async () => {
-  mockCollections.Products.findOne.mockReturnValueOnce(Promise.resolve(mockProduct));
+  mockContext.collections.Products.findOne.mockReturnValueOnce(Promise.resolve(mockProduct));
   mockPublishProductToCatalog.mockReturnValueOnce(Promise.resolve(true));
-  const spec = await publishProductToCatalogById(internalProductId, mockCollections);
+  const spec = await publishProductToCatalogById(internalProductId, mockContext);
   expect(spec).toBe(true);
 });
 
 test("expect false if a product is not published to the catalog collection by product id", async () => {
-  mockCollections.Products.findOne.mockReturnValueOnce(Promise.resolve(mockProduct));
+  mockContext.collections.Products.findOne.mockReturnValueOnce(Promise.resolve(mockProduct));
   mockPublishProductToCatalog.mockReturnValueOnce(Promise.resolve(false));
-  const spec = await publishProductToCatalogById(internalProductId, mockCollections);
+  const spec = await publishProductToCatalogById(internalProductId, mockContext);
   expect(spec).toBe(false);
 });

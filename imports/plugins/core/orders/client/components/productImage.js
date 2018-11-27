@@ -10,8 +10,10 @@ class ProductImage extends Component {
     badge: PropTypes.bool, // eslint-disable-line react/boolean-prop-naming
     displayMedia: PropTypes.func.isRequired,
     item: PropTypes.shape({
+      productId: PropTypes.string,
       quantity: PropTypes.number,
-      title: PropTypes.string.isRequired
+      title: PropTypes.string.isRequired,
+      variantId: PropTypes.string
     }).isRequired,
     mode: PropTypes.oneOf(["span", "img"]),
     size: PropTypes.string

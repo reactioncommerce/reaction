@@ -9,26 +9,7 @@ import { Reaction, i18next } from "/client/api";
 import TagList from "../components/tags/tagList";
 import { Tags } from "/lib/collections";
 import { getTagIds } from "/lib/selectors/tags";
-
-function updateSuggestions(term, { excludeTags }) {
-  const slug = Reaction.getSlug(term);
-
-  const selector = {
-    slug: new RegExp(slug, "i")
-  };
-
-  if (Array.isArray(excludeTags)) {
-    selector._id = {
-      $nin: excludeTags
-    };
-  }
-
-  const tags = Tags.find(selector).map((tag) => ({
-    label: tag.name
-  }));
-
-  return tags;
-}
+import getTagSuggestions from "/imports/plugins/core/ui-tagnav/client/util/getTagSuggestions";
 
 const wrapComponent = (Comp) => (
   class TagListContainer extends Component {
@@ -186,8 +167,8 @@ const wrapComponent = (Comp) => (
       });
     }
 
-    handleGetSuggestions = (suggestionUpdateRequest) => {
-      const suggestions = updateSuggestions(
+    handleGetSuggestions = async (suggestionUpdateRequest) => {
+      const suggestions = await getTagSuggestions(
         suggestionUpdateRequest.value,
         { excludeTags: this.state.tagIds }
       );

@@ -7,6 +7,7 @@ import { sinon } from "meteor/practicalmeteor:sinon";
 import { Discounts } from "/imports/plugins/core/discounts/lib/collections";
 import { Cart } from "/lib/collections";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
+import ReactionError from "@reactioncommerce/reaction-error";
 
 const code = {
   discount: 12,
@@ -35,7 +36,7 @@ describe("discount code methods", function () {
     it("should throw 403 error with discounts permission", function () {
       sandbox.stub(Roles, "userIsInRole", () => false);
       // this should actually trigger a whole lot of things
-      expect(() => Meteor.call("discounts/addCode", code)).to.throw(Meteor.Error, /Access Denied/);
+      expect(() => Meteor.call("discounts/addCode", code)).to.throw(ReactionError, /Access Denied/);
     });
 
     // admin user
@@ -61,8 +62,8 @@ describe("discount code methods", function () {
       Meteor.call("discounts/codes/apply", cart._id, code.code);
 
       const updatedCart = Cart.findOne({ _id: cart._id });
-      const discountObj = updatedCart.billing.find((billing) => billing.paymentMethod && billing.paymentMethod.method === "discount");
-      const discountStatus = discountObj && discountObj.paymentMethod && discountObj.paymentMethod.status;
+      const discountObj = updatedCart.billing.find((billing) => billing.method === "discount");
+      const discountStatus = discountObj && discountObj.status;
 
       expect(discountStatus).to.equal("created");
     });
@@ -74,7 +75,7 @@ describe("discount code methods", function () {
       const cart = Factory.create("cartMultiShop");
 
       expect(() =>
-        Meteor.call("discounts/codes/apply", cart._id, code.code)).to.throw(Meteor.Error, /multiShopError/);
+        Meteor.call("discounts/codes/apply", cart._id, code.code)).to.throw(ReactionError, /multiShopError/);
     });
   });
 });

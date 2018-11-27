@@ -1,6 +1,7 @@
 import { Meteor } from "meteor/meteor";
 import { check } from "meteor/check";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
+import ReactionError from "@reactioncommerce/reaction-error";
 
 /**
  * @name orders/refund/list
@@ -15,14 +16,14 @@ export default function listRefunds(order) {
   check(order, Object);
 
   if (!this.userId === order.userId && !Reaction.hasPermission("orders")) {
-    throw new Meteor.Error("access-denied", "Access Denied");
+    throw new ReactionError("access-denied", "Access Denied");
   }
 
   const refunds = [];
-  for (const billingRecord of order.billing) {
-    const { paymentMethod } = billingRecord;
-    const processor = paymentMethod.processor.toLowerCase();
-    const shopRefunds = Meteor.call(`${processor}/refund/list`, paymentMethod);
+  for (const group of order.shipping) {
+    const { payment } = group;
+    const processor = payment.processor.toLowerCase();
+    const shopRefunds = Meteor.call(`${processor}/refund/list`, payment);
     refunds.push(...shopRefunds);
   }
   return refunds;

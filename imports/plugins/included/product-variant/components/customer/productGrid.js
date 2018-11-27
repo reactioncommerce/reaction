@@ -1,15 +1,17 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Components } from "@reactioncommerce/reaction-components";
-import { ReactionProduct } from "/lib/api";
+import CatalogGrid from "@reactioncommerce/components/CatalogGrid/v1";
+import { i18next } from "/client/api";
 
 class ProductGrid extends Component {
   static propTypes = {
     canLoadMoreProducts: PropTypes.bool,
+    currencyCode: PropTypes.string,
+    isLoading: PropTypes.bool.isRequired,
     loadProducts: PropTypes.func,
     products: PropTypes.array,
-    productsSubscription: PropTypes.object,
-    shopCurrencyCode: PropTypes.string.isRequired
+    shopCurrencyCode: PropTypes.string
   }
 
   componentDidMount() {
@@ -20,32 +22,34 @@ class ProductGrid extends Component {
     window.removeEventListener("scroll", this.loadMoreProducts);
   }
 
-  // load more products to the grid
+  // Load more products when user is close (80%) to the bottom
   loadMoreProducts = (event) => {
     const { canLoadMoreProducts, loadProducts } = this.props;
-    const { scrollY, innerHeight } = window;
-    const { body: { scrollHeight } } = document;
-    const atBottom = Math.abs(innerHeight + scrollY - scrollHeight) <= 1;
-
-    if (canLoadMoreProducts && atBottom) {
+    const { documentElement } = document;
+    const { scrollTop, scrollHeight, clientHeight } = documentElement;
+    const scrollPercent = (scrollTop) / (scrollHeight - clientHeight) * 100;
+    const isCloseToBottom = scrollPercent >= 80;
+    if (canLoadMoreProducts && isCloseToBottom) {
       loadProducts(event);
     }
   }
 
   // render the loading spinner
   renderLoadingSpinner() {
-    const { productsSubscription: { ready } } = this.props;
+    const { isLoading } = this.props;
     // if the products catalog is not ready
     // show the loading spinner
-    if (!ready()) return <Components.Loading />;
+    if (isLoading) return <Components.Loading />;
+
+    return null;
   }
 
   // render the No Products Found message
   renderNotFound() {
-    const { products, productsSubscription: { ready } } = this.props;
+    const { products, isLoading } = this.props;
     // if the products subscription is ready & the products array is undefined or empty
     // show the Not Found message
-    if (ready() && (!Array.isArray(products) || !products.length)) {
+    if (isLoading === false && (!Array.isArray(products) || !products.length)) {
       return (
         <Components.NotFound
           i18nKeyTitle="productGrid.noProductsFound"
@@ -54,24 +58,27 @@ class ProductGrid extends Component {
         />
       );
     }
+
+    return null;
   }
 
   // render the product grid
   renderProductGrid() {
-    const { products, shopCurrencyCode } = this.props;
-    const currentTagId = ReactionProduct.getTagIdForPosition();
+    const { products, currencyCode, shopCurrencyCode } = this.props;
+    const badgeLabels = {
+      BACKORDER: i18next.t("productDetail.backOrder", "Backorder"),
+      LOW_QUANTITY: i18next.t("productDetail.limitedSupply", "Limited Supply"),
+      SOLD_OUT: i18next.t("productDetail.soldOut", "Sold Out!")
+    };
 
     return (
       <div className="product-grid">
         <ul className="product-grid-list list-unstyled" id="product-grid-list">
-          {products.map((product) => (
-            <Components.ProductGridItemCustomer
-              shopCurrencyCode={shopCurrencyCode}
-              product={product}
-              position={(product.positions && product.positions[currentTagId]) || {}}
-              key={product._id}
-            />
-          ))}
+          <CatalogGrid
+            currencyCode={currencyCode || shopCurrencyCode}
+            products={products}
+            badgeLabels={badgeLabels}
+          />
         </ul>
       </div>
     );
@@ -79,7 +86,7 @@ class ProductGrid extends Component {
 
   render() {
     return (
-      <div className="container-main">
+      <div className="container-grid">
         {this.renderProductGrid()}
         {this.renderLoadingSpinner()}
         {this.renderNotFound()}

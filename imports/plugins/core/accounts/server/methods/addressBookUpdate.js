@@ -5,6 +5,7 @@ import { check, Match } from "meteor/check";
 import { Accounts } from "/lib/collections";
 import * as Schemas from "/lib/collections/schemas";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
+import ReactionError from "@reactioncommerce/reaction-error";
 
 /**
  * @name accounts/addressBookUpdate
@@ -21,23 +22,21 @@ export default function addressBookUpdate(address, accountUserId, type) {
   check(accountUserId, Match.Maybe(String));
   check(type, Match.Maybe(String));
 
-  // security, check for admin access. We don't need to check every user call
-  // here because we are calling `Meteor.userId` from within this Method.
-  if (typeof accountUserId === "string") { // if this will not be a String -
-    // `check` will not pass it.
-    if (Meteor.userId() !== accountUserId && !Reaction.hasPermission("reaction-accounts")) {
-      throw new Meteor.Error("access-denied", "Access denied");
+  // security check for admin access
+  if (typeof accountUserId === "string") {
+    if (Reaction.getUserId() !== accountUserId && !Reaction.hasPermission("reaction-accounts")) {
+      throw new ReactionError("access-denied", "Access denied");
     }
   }
   this.unblock();
 
   // If no userId is provided, use the current user
-  const userId = accountUserId || Meteor.userId();
+  const userId = accountUserId || Reaction.getUserId();
   // Find old state of isShippingDefault & isBillingDefault to compare and reflect in cart
   const account = Accounts.findOne({ userId });
   const oldAddress = (account.profile.addressBook || []).find((addr) => addr._id === address._id);
 
-  if (!oldAddress) throw new Meteor.Error("not-found", `No existing address found with ID ${address._id}`);
+  if (!oldAddress) throw new ReactionError("not-found", `No existing address found with ID ${address._id}`);
 
   // Set new address to be default for `type`
   if (typeof type === "string") {
@@ -91,7 +90,7 @@ export default function addressBookUpdate(address, accountUserId, type) {
   });
 
   // Run afterAccountsUpdate hook to update Accounts Search
-  Hooks.Events.run("afterAccountsUpdate", Meteor.userId(), {
+  Hooks.Events.run("afterAccountsUpdate", userId, {
     accountId: account._id,
     updatedFields
   });
@@ -107,5 +106,5 @@ export default function addressBookUpdate(address, accountUserId, type) {
     return updatedAccount.profile.addressBook.find((updatedAddress) => address._id === updatedAddress._id);
   }
 
-  throw new Meteor.Error("server-error", "Unable to update account address");
+  throw new ReactionError("server-error", "Unable to update account address");
 }

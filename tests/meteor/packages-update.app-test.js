@@ -6,6 +6,7 @@ import { expect } from "meteor/practicalmeteor:chai";
 import { sinon } from "meteor/practicalmeteor:sinon";
 import { Packages } from "/lib/collections";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
+import ReactionError from "@reactioncommerce/reaction-error";
 
 describe("Update Package", function () {
   let sandbox;
@@ -26,7 +27,7 @@ describe("Update Package", function () {
       function updatePackage() {
         return Meteor.call("package/update", examplePackage.name, "settings", {});
       }
-      expect(updatePackage).to.throw(Meteor.Error, /Access Denied/);
+      expect(updatePackage).to.throw(ReactionError, /Access Denied/);
       expect(pkgUpdateSpy).to.not.have.been.called;
 
       return done();

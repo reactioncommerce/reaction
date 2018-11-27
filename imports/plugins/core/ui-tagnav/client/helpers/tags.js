@@ -165,26 +165,6 @@ export const TagHelpers = {
         }
       });
     }
-  },
-
-  updateSuggestions(term, { excludeTags }) {
-    const slug = Reaction.getSlug(term);
-
-    const selector = {
-      slug: new RegExp(slug, "i")
-    };
-
-    if (Array.isArray(excludeTags)) {
-      selector._id = {
-        $nin: excludeTags
-      };
-    }
-
-    const tags = Tags.find(selector).map((tag) => ({
-      label: tag.name
-    }));
-
-    return tags;
   }
 };
 

@@ -1,5 +1,4 @@
 import { $ } from "meteor/jquery";
-import { Meteor } from "meteor/meteor";
 import { AutoForm } from "meteor/aldeed:autoform";
 import { Blaze } from "meteor/blaze";
 import { ReactiveDict } from "meteor/reactive-dict";
@@ -144,22 +143,11 @@ Template.templateSettings.events({
 
 AutoForm.hooks({
   "email-template-edit-form": {
-    onSubmit(insertDoc) {
-      this.event.preventDefault();
-
-      const templateId = this.docId;
-
-      Meteor.call("templates/email/update", templateId, insertDoc, (error, result) => {
-        if (error) {
-          Alerts.toast(i18next.t("templateUpdateForm.alerts.failedToUpdate", { err: error.message }), "error");
-          this.done(new Error("Failed to update template: ", error));
-          return false;
-        }
-        if (result) {
-          Alerts.toast(i18next.t("templateUpdateForm.alerts.templateUpdated", "Template successfully updated"), "success");
-          this.done();
-        }
-      });
+    onSuccess() {
+      return Alerts.toast(i18next.t("templateUpdateForm.alerts.templateUpdated", "Template successfully updated"), "success");
+    },
+    onError(operation, error) {
+      return Alerts.toast(i18next.t("templateUpdateForm.alerts.failedToUpdate", { err: error.message }), "error");
     }
   }
 });

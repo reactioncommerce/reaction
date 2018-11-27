@@ -19,7 +19,8 @@ jobs:
     <<: *defaults
     steps:
       - checkout
-      - setup_remote_docker
+      - setup_remote_docker:
+          docker_layer_caching: true
       - restore_cache:
           name: Restoring Meteor cache
           key: ${GLOBAL_CACHE_VERSION}-meteor
@@ -41,6 +42,31 @@ jobs:
       - run:
           name: Meteor NPM Install
           command: meteor npm install
+      - run:
+          name: Build dist bundle
+          command: meteor build --directory ../build/
+      - run:
+          name: Check .js file size
+          command: |
+            maxSize=2967000
+            size=$( wc -c ../build/bundle/programs/web.browser/*.js | awk '{$1=$1};1' | cut -d " " -f 1 )
+            if [[ $size -gt $maxSize ]]; then
+              echo "The production js file has size" $size "which exceeds limit of" $maxSize 1>&2
+              exit 3
+            else
+              echo "The js file size is" $size
+            fi
+      - run:
+          name: Check .css file size
+          command: |
+            maxSize=24888
+            size=$( wc -c ../build/bundle/programs/web.browser/*.css | awk '{$1=$1};1' | cut -d " " -f 1 )
+            if [[ $size -gt $maxSize ]]; then
+              echo "The production js file has size" $size "which exceeds limit of" $maxSize 1>&2
+              exit 3
+            else
+              echo "The css file size is" $size
+            fi
       # Store node_modules dependency cache.
       # Saved with package.json checksum and timestamped branch name keys.
       - save_cache:
@@ -59,11 +85,13 @@ jobs:
           paths:
             - ~/.mongodb-binaries
 
+
   docker-build:
     <<: *defaults
     steps:
       - checkout
-      - setup_remote_docker
+      - setup_remote_docker:
+          docker_layer_caching: true
       - attach_workspace:
           at: docker-cache
       - run:
@@ -92,7 +120,8 @@ jobs:
   docker-push:
     <<: *defaults
     steps:
-      - setup_remote_docker
+      - setup_remote_docker:
+          docker_layer_caching: true
       - attach_workspace:
           at: docker-cache
       - run:
@@ -120,14 +149,25 @@ jobs:
               echo "No deploy for forks"
             fi
 
-  deploy-to-ecs:
+  deploy-to-ecs-release-branch:
     <<: *defaults
     steps:
       - checkout
       - run:
           name: Deploy new task definition and update service in ECS
           command: |
-            .circleci/bin/ecs-deploy.sh
+            .circleci/bin/ecs-deploy-release-branch.sh
+          no_output_timeout: 30m
+
+  deploy-to-ecs-feature-branch:
+    <<: *defaults
+    steps:
+      - checkout
+      - run:
+          name: Deploy new task definition and update service in ECS
+          command: |
+            .circleci/bin/ecs-deploy-feature-branch.sh
+          no_output_timeout: 30m
 
   deploy-docs:
     <<: *defaults
@@ -169,7 +209,7 @@ jobs:
       - run:
           name: Run Lint
           command: |
-            npm run lint
+            npm run lint -- --quiet
 
   test-app:
     <<: *defaults
@@ -232,7 +272,8 @@ jobs:
       - image: hadolint/hadolint:v1.6.6-6-g254b4ff
     steps:
       - checkout
-      - setup_remote_docker
+      - setup_remote_docker:
+          docker_layer_caching: true
       - run:
           name: Dockerfile Lint
           command: |
@@ -242,7 +283,8 @@ jobs:
     <<: *defaults
     steps:
       - checkout
-      - setup_remote_docker
+      - setup_remote_docker:
+          docker_layer_caching: true
       - restore_cache:
           keys:
             - ${GLOBAL_CACHE_VERSION}-node-modules-{{ checksum "package.json" }}-{{ checksum "package-lock.json" }}
@@ -304,12 +346,18 @@ workflows:
           context: reaction-publish-docker
           requires:
             - docker-build
-      - deploy-to-ecs:
+      - deploy-to-ecs-release-branch:
           requires:
             - docker-push
           filters:
             branches:
-              only: /^release-1\.14\.\d+$/
+              only: /^release-2.*/
+      - deploy-to-ecs-feature-branch:
+          requires:
+            - docker-push
+          filters:
+            branches:
+              only: /^feat.*/
       - deploy-docs:
           requires:
             - test-unit

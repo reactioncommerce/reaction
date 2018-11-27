@@ -7,7 +7,7 @@ import LanguageDropdown from "../components/languageDropdown";
 
 const handlers = {
   handleChange(value) {
-    Meteor.users.update(Meteor.userId(), { $set: { "profile.lang": value } });
+    Meteor.users.update(Reaction.getUserId(), { $set: { "profile.lang": value } });
   }
 };
 

@@ -2,6 +2,7 @@ import { Meteor } from "meteor/meteor";
 import { check } from "meteor/check";
 import { Orders } from "/lib/collections";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
+import ReactionError from "@reactioncommerce/reaction-error";
 
 /**
  * @name orders/shipmentPacked
@@ -9,28 +10,28 @@ import Reaction from "/imports/plugins/core/core/server/Reaction";
  * @memberof Orders/Methods
  * @summary update packing status
  * @param {Object} order - order object
- * @param {Object} shipment - shipment object
+ * @param {Object} fulfillmentGroup - fulfillmentGroup object
  * @return {Object} return workflow result
  */
-export default function shipmentPacked(order, shipment) {
+export default function shipmentPacked(order, fulfillmentGroup) {
   check(order, Object);
-  check(shipment, Object);
+  check(fulfillmentGroup, Object);
 
   // REVIEW: who should have permission to do this in a marketplace setting?
   // Do we need to update the order schema to reflect multiple packers / shipments?
   if (!Reaction.hasPermission("orders")) {
-    throw new Meteor.Error("access-denied", "Access Denied");
+    throw new ReactionError("access-denied", "Access Denied");
   }
 
   // Set the status of the items as packed
-  const itemIds = shipment.items.map((item) => item._id);
+  const { itemIds } = fulfillmentGroup;
 
   const result = Meteor.call("workflow/pushItemWorkflow", "coreOrderItemWorkflow/packed", order, itemIds);
   if (result === 1) {
     return Orders.update(
       {
         "_id": order._id,
-        "shipping._id": shipment._id
+        "shipping._id": fulfillmentGroup._id
       },
       {
         $set: {

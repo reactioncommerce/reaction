@@ -1,8 +1,8 @@
-import Hooks from "@reactioncommerce/hooks";
 import { check, Match } from "meteor/check";
-import * as Collections from "/lib/collections";
+import { Cart } from "/lib/collections";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
 import getCart from "/imports/plugins/core/cart/server/util/getCart";
+import appEvents from "/imports/node-app/core/util/appEvents";
 
 /**
  * @method cart/setPaymentAddress
@@ -19,39 +19,19 @@ export default function setPaymentAddress(cartId, cartToken, address) {
   check(cartToken, Match.Maybe(String));
   Reaction.Schemas.Address.validate(address);
 
-  const { cart } = getCart(cartId, { cartToken, throwIfNotFound: true });
+  getCart(cartId, { cartToken, throwIfNotFound: true });
 
-  let selector;
-  let update;
-  // temp hack until we build out multiple billing handlers
-  // if we have an existing item update it, otherwise add to set.
-  if (Array.isArray(cart.billing) && cart.billing.length > 0) {
-    selector = {
-      "_id": cartId,
-      "billing._id": cart.billing[0]._id
-    };
-    update = {
-      $set: {
-        "billing.$.address": address
-      }
-    };
-  } else {
-    selector = {
-      _id: cartId
-    };
-    update = {
-      $addToSet: {
-        billing: {
-          address
-        }
-      }
-    };
-  }
+  const result = Cart.update({
+    _id: cartId
+  }, {
+    $set: {
+      billingAddress: address
+    }
+  });
 
-  const result = Collections.Cart.update(selector, update);
+  const updatedCart = Cart.findOne({ _id: cartId });
 
-  // Calculate discounts
-  Hooks.Events.run("afterCartUpdateCalculateDiscount", cartId);
+  Promise.await(appEvents.emit("afterCartUpdate", updatedCart));
 
   return result;
 }

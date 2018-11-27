@@ -28,7 +28,16 @@ class NotificationRoute extends Component {
       });
       Reaction.showActionView(actionViewData);
     } else {
-      Reaction.Router.go(notify.url);
+      // Determine if url's basename ends in a file extension (i.e. /sitemap.xml).
+      // If so, use window.location to break out of the Reaction app, otherwise navigate via Reaction router
+      const { url } = notify;
+      const urlSplit = url.split("/");
+      const doesBasenameHavePeriod = urlSplit[urlSplit.length - 1].includes(".");
+      if (doesBasenameHavePeriod) {
+        window.location = url;
+      } else {
+        Reaction.Router.go(url);
+      }
     }
 
     const { markOneAsRead } = this.props;

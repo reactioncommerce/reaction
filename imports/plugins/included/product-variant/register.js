@@ -8,7 +8,7 @@ Reaction.registerPackage({
   registry: [{
     route: "/tag/:slug?",
     name: "tag",
-    template: "products",
+    template: "Products",
     workflow: "coreProductGridWorkflow"
   }, {
     route: "/products/createProduct",
@@ -47,7 +47,7 @@ Reaction.registerPackage({
     theme: "default",
     enabled: true,
     structure: {
-      template: "products",
+      template: "Products",
       layoutHeader: "NavBar",
       layoutFooter: "",
       notFound: "productNotFound",

@@ -43,7 +43,7 @@ class EditGroup extends Component {
 
   componentWillReceiveProps(nextProps) {
     const { groups, selectedGroup } = nextProps;
-    this.setState({ groups, selectedGroup });
+    this.setState({ groups, selectedGroup: selectedGroup || {} });
   }
 
   selectGroup = (grp) => (event) => {

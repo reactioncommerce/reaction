@@ -1,6 +1,8 @@
 import { Template } from "meteor/templating";
 import { Meteor } from "meteor/meteor";
 import { Components } from "@reactioncommerce/reaction-components";
+import ReactComponentOrBlazeTemplate from "/imports/plugins/core/components/lib/ReactComponentOrBlazeTemplate";
+
 /*
  * Template shipping helpers
  */
@@ -25,6 +27,9 @@ Template.shippingSettings.helpers({
   },
   parcelSizeSettings() {
     return Components.ParcelSizeSettings;
+  },
+  ReactComponentOrBlazeTemplate() {
+    return ReactComponentOrBlazeTemplate;
   }
 });
 
@@ -43,8 +48,6 @@ Template.shippingSettings.events({
     if (packageId) {
       // update package registry
       Meteor.call("registry/update", packageId, settingsKey, fields);
-      // also update shipping provider status
-      Meteor.call("shipping/provider/toggle", packageId, settingsKey);
     }
   }
 });

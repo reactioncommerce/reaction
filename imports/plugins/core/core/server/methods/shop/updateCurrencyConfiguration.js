@@ -1,6 +1,6 @@
 import { check } from "meteor/check";
-import { Meteor } from "meteor/meteor";
 import { Reaction } from "/lib/api";
+import ReactionError from "@reactioncommerce/reaction-error";
 import { Shops } from "/lib/collections";
 
 /**
@@ -18,7 +18,7 @@ export default function updateCurrencyConfiguration(currency, enabled) {
 
   // must have core permissions
   if (!Reaction.hasPermission("core")) {
-    throw new Meteor.Error("access-denied", "Access Denied");
+    throw new ReactionError("access-denied", "Access Denied");
   }
   this.unblock();
 

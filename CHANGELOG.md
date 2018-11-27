@@ -1,3 +1,362 @@
+# v2.0.0-rc.6
+This is our sixth **release candidate** for v2.0.0 of Reaction. Please check it out and let us know what works and what doesn't for you.
+
+## Meteor 1.8 Final
+We've been using a release candidate of Meteor 1.8 in all of our 2.0 release candidates to this point - this has also included release candidate versions of Babel 7. In this release we're updating to the final version of Meteor 1.8 and Babel 7.
+
+There are a lot of great updates that are included in Meteor 1.8 and you can read all about them in the [Meteor blog](https://blog.meteor.com/meteor-1-8-erases-the-debts-of-1-7-77af4c931fe3). I think the one that we'll notice the most is significant improvement to build performance that. We've been focused on improving the performance and developer experience with Reaction for a while now and this update makes significant progress towards improving the developer experience and build times. Anyone who's been using Reaction for a while should notice big improvements to the amount of time it takes for the app to rebuild after making changes.
+
+We're still working with Node.js 8.11.4 as the upgrade to Node 8.12.0 got postponed to the Meteor 1.8.1 release. If you're itching to play with it, you can run `meteor update --release 1.8.1-beta.n` from the directory that you've got the core `reaction` project installed. There may be some additional speed improvements related to Meteor's use of `Fiber`s that come along in this version.
+
+We've also updated the our base docker image to use Meteor 1.8 (#4760)
+
+## Email Sending
+We've extracted the core email sending functionality into a new `reaction-email-smtp` plugin which is `included` and created a new `sendEmail` event which is emitted for each email job. The core smtp email plugin now listens for these events and sends an email if an SMTP provider is configured. By doing this we've made it possible to create plugins which send emails via an API rather than via SMTP.
+
+The email provider config form found at Dashboard -> Emails -> Mail Provider is now also able to be overridden. Plugins can use register.js to provide a React component to use here.
+
+## GraphQL API
+Added a primaryShop GraphQL query & resolver, eliminating the need to first query for the primary shop ID, followed by another query for shop by ID.
+
+
+## Breaking Changes
+In #4749 we changed the names of our included payment method plugins. We've included a migration to automatically update any existing installation, but if you have custom code that relies on these payment method names you may need make some changes.
+
+
+## Fixes
+ - fix: keep toggles shown, width 100% in action view (#4772)
+ - fix: Use babel.config.js to fix Jest tests in custom plugins with package.json (#4782)
+
+## Features
+ - feat: decouple SMTP email sending logic from core to allow plugins to override (#4740)
+ - feat: Add a CORS-enabled endpoint for token refresh in Hydra plugin (#4743)
+ - feat: GraphQL query & resolver for loading the primary shop (#4747)
+ - feat: update to Meteor 1.8 final (#4753)
+ - feat: update to base image 1.8 (#4760)
+ - feat: client ui payment methods (#4749) .. Resolves #4719
+ - feat: added migration for adding available payment methods to shops. (#4729)
+ - feat: use GraphQL for payment methods operator ui (#4749) .. Resolves #4719
+
+## Migrations
+ - chore: added migration for adding available payment methods to shops. (#4729)
+
+## Chores
+We've been ignoring some of our integration tests as the in-memory MongoDB they rely on has not been working effectively. Previously we did this by skipping our entire `test:integration` tests in CI, we're now just skipping the tests that are failing due to this db incompatibility and have plans to address this soon.
+ - chore: Skip failing integration tests (#4751)
+ - chore: Deploy release branches to staging ECS environment (#4758)
+
+# v2.0.0-rc.5
+This is our fifth **release candidate** for v2.0.0 of Reaction. Please check it out and let us know what works and what doesn't for you.
+
+## Mongo replica set issue
+Many people were having issues with the Mongo replica-set image starting before the Mongo database was ready. This could cause the replica-set to fail and the application to hang during startup in a development environment. This is fixed in #4748 by waiting for mongo to be reachable within the reaction container before connecting to it, and creating the DB if needed, initiating the replica set if needed, and waiting for the replica set to be OK. This fix should solve the docker-compose startup race conditions we've been seeing. (#4748)
+
+## GraphQL
+We've added two new GraphQL queries for payment methods. A query `paymentMethods` which will list all registered payment methods and is restricted to operators and `availablePaymentMethods` which will list all payment methods which have been enabled. These new queries were added in #4709. We've also added a GraphQL mutation that permits an operator to enable or disable a payment method for a shop in #4739
+
+We've updated the CartItems and OrderItems GraphQL queries to include a `productTags` resolver which will return the tags for the CartItem or OrderItem. The new resolvers and updated schemas were added in #4715 and #4732
+
+There is a new GraphQL mutation for generating sitemaps `generateSitemaps` this replaces the `sitemaps/generate` meteor method. method. (#4708)
+
+## Classic Storefront UI Updates
+We've replaced the customer facing Product Grid in the Classic Storefront UI with our [CatalogGrid](https://designsystem.reactioncommerce.com/#!/CatalogGrid) component from the Reaction Design System. This was accomplished in #4649
+
+There's a new "Include in sitemap?" checkbox in the Product Settings when using the operator interface to edit product information. This was added to make it possible to exclude published products from the sitemap. (#4708)
+
+## Additional Plugin Capabilities
+A plugin can now include a `catalog` object in `registerPackage`, with `customPublishedProductFields` and `customPublishedProductVariantFields` that are set to arrays of property names. These will be appended to the core list of fields for which published status should be tracked. This is used to build the hashes that are used to display an indicator when changes need to be published. (#4738)
+
+A plugin can now use the `functionsByType` pattern to register one or more functions of type "publishProductToCatalog", which are called with `(catalogProduct, { context, product, shop, variants })` and expected to mutate `catalogProduct` if necessary. (#4738)
+
+
+## nvmrc
+Even though most of the development work happens in Docker, getting the right version of node available directly in the host OS is convenient for setting up eslint integration with your editor. We've added an `.nvmrc` file for this as [we've recommended](https://docs.reactioncommerce.com/docs/recommended-tools#general) `nvm` for installing and managing NodeJS in our docs for some time now.
+
+
+## Public API Changes
+We've changed the GraphQL schema for `PaymentMethod@name` from `PaymentMethodName` to `String`. `PaymentMethodName` was a subset of string and this should not cause any issues.
+
+## Breaking Changes
+WE've replaced the `generateSitemaps` Meteor method with a GraphQL mutation. See #4708 for details.
+
+Because we've replaced the customer facing Product Grid UI in the Classic Storefront UI, if you had any plugins which relied on specific selectors or the structure of the existing UI, those may need to be updated.
+
+
+## Features
+ - feat: payment methods (#4709) .. Resolves #4574
+ - feat: enable payment method for shop (#4739) .. Resolves #4718
+ - feat: use component library's CatalogGrid - 2.0 (#4649)
+ - feat: add product tags to cart items (#4715)
+ - feat: Add product tags to order item (#4732)
+ - feat: option to choose whether a product should appear in the sitemap (#4708)
+ - feat: add a way to extend catalog product publication (#4738)
+
+
+## Fixes
+ - fix: Auth Consent scopes issue (#4733)
+ - fix: 4722 compareAtPrice - convert from Float to Money (#4731)
+ - fix(startup): init mongo replica set after waiting for connection (#4748)
+
+## Chores
+ - chore: add .nvmrc configuration file (#4744)
+
+## Docs
+ - docs: Link readers to Reaction Platform install instructions (#4724)
+ - docs: fix jsdoc copypasta on waitForReplica checkWaitRetry (#4723)
+
+
+# v2.0.0-rc.4
+This is our fourth **release candidate** for v2.0.0 of Reaction. Please check it out and let us know what works and what doesn't for you.
+
+## Improving Jest test performance in CI
+We started seeing unit tests timing out in CI in the morning on Friday October 5. It doesn't appear that this was caused by a change in our `jest` version as we were able to reproduce the issues on older branches which were previously passing.
+This is resolved in #4176 by changing our `test:unit` script in `package.json` to run jest with the `--maxWorkers=4` flag. This resolved our issue with tests timing out, and improves test performance in CI overall. This is suggested in the troubleshooting jest here: https://jestjs.io/docs/en/troubleshooting.html#tests-are-extremely-slow-on-docker-and-or-continuous-integration-ci-server
+
+## Checkout Totals
+There were some cases in the Classic Storefront UI where there would be a discrepancy between the total calculated on the server and the price calculated by the client.
+This is not an issue in the [Next.js Storefront](https://github.com/reactioncommerce/reaction-next-starterkit) as all price values are calculated on the server. This is resolved in #4701
+
+## Bugfixes
+fix: round total when verifying it on order create (#4701) .. Resolves #4684
+
+## Chores
+fix: limit jest maxWorkers to 4 to improve CI perf (#4716)
+
+# v2.0.0-rc.3
+This is our third **release candidate** for v2.0.0 of Reaction. Please check it out and let us know what works and what doesn't for you.
+
+A few files snuck into our last release that had incorrect jsdoc syntax in the form of `@return <Promise>Type`
+The jsdoc parser is unable to parse any return type starting with a `<` and throws an error. This error is thrown during the Deploy Docs CI step and causes that step of the CI to fail. This is resolved in #4704 by fixing the jsdoc to use the correct Promise syntax `@return Promise<Type>`
+
+## Bugfixes
+- fix: resolve errors in jsdoc Promise returns (#4704)
+
+# v2.0.0-rc.2
+This is our second **release candidate** for v2.0.0 of Reaction. Please check it out and let us know what works and what doesn't for you.
+
+### OAuth Flow
+- Get the auth URL connected to the Login request from Hydra. Get the loginAction field and pass it in the UI route query param (?action={loginAction}) to serve as state info to the Login component.(#4651)
+- Update the Auth components to show appropriate form fields based on route query param (e.g ?action=signin)(#4651)
+- Update the SignIn and SignUp core components to have a new hasSwitchLinks prop. This will determine if link to toggle between SignIn and SignUp views should be displayed. It defaults to true (so previous behaviour is kept - no breaking change)(#4651)
+- Update Auth container for OAuth IDP flow with hasSwitchLinks=false. This makes the state of the form depend on ONLY the route query (#4651)
+- Fix the Hydra session feature. Now, when a user who already signed in (and is sill within the set HYDRA_SESSION_LIFESPAN), tries to login again, we won't show the login form again.(#4651)
+- Add /logout endpoint for Consumer apps (like Starterkit) to call to delete user sessions from Hydra. The delete session endpoint in Hydra lives on the Administrative port (4445), so we are not exposing it to Consumer apps to consume directly.(#4651)
+
+## Taxes
+If item.tax did not exist the getTaxTotal was returning NaN which would show up in cart totals. This was introduced in #4664 and is resolved in #4670
+
+## Operator UI for editing product information
+On the PDP, when typing a tag name in the admin sidebar, a console error would appear: `Uncaught (in promise) TypeError: Cannot read property 'getShopId' of undefined at getShopLang (helpers.js:118)`. This was because `Reaction` was undefined when `getShopLang()` would run. This is resolved in #4673
+
+## Fixes
+ - (fix) Properly return 0 when no tax items are present (#4670)
+ - fix: Show correct form state during create account oauth flow (#4651)
+ - Fix: console error when typing a tag name on PDP (#4673)
+ - fix: discounts and profile orders in 2.0 (#4674)
+ - fix: orders dashboard layout issue (#4688)
+    Updated a few panel styles to fit within the viewport better and not end up behind the "modal overlay"
+
+ ## Chores
+ - chore: updating get in touch link (#4676)
+ - chore: fix broken link in README to schema docs (#4672)
+
+
+# v2.0.0-rc.1
+This is our first **release candidate** for v2.0.0 of Reaction. Please check it out and let us know what works and what doesn't for you.
+
+In many ways this may better mark the beginning of a new way to develop for Reaction rather than the end of a big development cycle. Make no mistake, there are some pretty great things that v2.0.0 includes - for example, our GraphQL API now covers the basic commerce flow, from browsing a catalog all the way through checkout. However, this release is also bigger in many ways that just this repository. Much of our work over the past several months has gone into repositories other than this primary `/reaction` one.
+
+We've created a component library called the [Reaction Design System](https://github.com/reactioncommerce/reaction-component-library) which we're announcing the initial "alpha" for. While it's still subject to change, there are a lot of very useful commerce focused components that we've built that live there. We'll have a link to the styleguidist playground up soon where you can play with and read the docs for each component.
+
+Our new GraphQL API has enabled us to build a new UI Client for Reaction that we're calling our [NextJS Starter Kit](https://github.com/reactioncommerce/reaction-next-starterkit). This new UI client provides a reference storefront implementation that communicates with the Reaction API exclusively via GraphQL, eliminating some of the sluggishness that was associated with our Classic UI built on Meteor. This new client is built with NextJS and provides Server Side Rendering (SSR) out of the box, as well as (Segment compatible analytics event tracking)[https://segment.com/docs/spec/ecommerce/v2/]. We'll recommend this as the best way to build a storefront UI for Reaction going forward.
+
+We're also introducing a new OpenID Connect OAuth2 Service which uses [Hydra](https://github.com/ory/hydra) to enable our new UI Client to leverage our existing Meteor based Identities and roles.
+
+These services all run together to form the Reaction Platform (working title, subject to change) - and we've got a new project called [Reaction Platform](https://github.com/reactioncommerce/reaction-platform) which will help you get everything connected and launched together.
+
+This changelog may feel somewhat insignificant because in part, we've been releasing bits of what is becoming 2.0.0 over the last several releases and much of the new development is happening outside of the `/reaction` repository.
+
+## Marketplace Updates
+When multiple shops match the searched domain, prioritize the Primary Shop. This is important when searching for "shop settings" which are only stored on the Primary Shop (e.g., smtp settings).
+
+## Breaking Changes
+
+From #4622
+- Orders-related GraphQL schemas and significant changes to the Orders MongoDB schemas to better match GraphQL. See the diffs for the schema files. Two changes of note are that order.items and order.billing arrays no longer exist. Instead, each item in order.shipping has an items array and a single payment object on it. The payment object is also flattened and unused properties have been removed from it.
+- context.queries and context.mutations are no longer namespaced. This simplifies things and makes it possible for one plugin to overwrite another plugin's functions if necessary.
+
+- Some Meteor methods are removed:
+
+  - cart/copyCartToOrder (replaced by createOrder mutation)
+  - cart/submitPayment (replaced by createOrder mutation)
+  - discounts/transaction
+  - discounts/calculate
+  - discounts/codes/credit (replaced by a function registered with the same name using functionsByType)
+  - discounts/codes/discount (replaced by a function registered with the same name using functionsByType)
+  - discounts/codes/sale (replaced by a function registered with the same name using functionsByType)
+  - discounts/codes/shipping (replaced by a function registered with the same name using functionsByType)
+  - shipping/updateShipmentQuotes
+  - shipping/provider/toggle
+  - shipping/rates/add (replaced with createFlatRateFulfillmentMethod GraphQL mutation)
+  - shipping/rates/update (replaced with updateFlatRateFulfillmentMethod GraphQL mutation)
+  - shipping/rates/delete (replaced with deleteFlatRateFulfillmentMethod GraphQL mutation)
+  - taxes/calculate (replaced by non-Meteor getFulfillmentGroupItemsWithTaxAdded)
+  - taxes/setRateByShopAndItem (replaced by non-Meteor getFulfillmentGroupItemsWithTaxAdded)
+  - notification/send (replaced by non-Meteor createNotification function)
+  - notification/delete (was unused)
+  - stripe/payment/createCharges (replaced by placeOrderWithStripeCardPayment and placeMarketplaceOrderWithStripeCardPayment GraphQL mutations)
+
+- shipping/updateParcelSize Meteor method is renamed to shop/updateDefaultParcelSize and moved to core/shop service
+- Meteor UI client checkout code now places orders using GraphQL
+- Add orderById GraphQL query
+- The "afterCartUpdate" hooks are now called with just (updatedCart) rather than the redundant (updatedCartId, updatedCart)
+- The way that orders are placed is now different. See "Order Changes" heading
+- Orders can no longer be created without an email address
+- The process by which plugins are asked to provide available fulfillment methods + quotes for them is changed. Rather than calling registered hooks, it calls all functions registered with the name "getFulfillmentMethodsWithQuotes" (See getFulfillmentMethodsWithQuotes.js)
+- The "example" payment method form is now an "IOU" form that collects only a full name. It previously had a fake credit card form, which might have been misleading. Now it is clear that it's for demo and trial purposes only. Also, this new form is in React.
+- Some unused (by core) functions have been removed from the cartOrder.js transforms that are available on Cart and Order documents in Meteor.
+
+
+Previously client code would tell the server to "copy cart to order". Now, the orders plugin is mostly unaware of what a cart is. The client is responsible for converting a cart (which is a work-in-progress order) into the OrderInput schema and placing an order using that.
+
+Related to this, payment information is now never stored on the cart. It is collected during checkout and sent with the placeOrder call. An order will only be placed if charges are successfully created using the provided payment details.
+
+The orders service is largely unaware of how payment is done, and there is no generic placeOrder mutation. Instead, plugins that provide payment methods are expected to provide GraphQL mutations that allow you to place and pay for an order using that method. Most of the logic is shared, and is encapsulated in a createOrder mutation that the orders plugin provides. But each payment method plugin wraps the createOrder mutation to handle payment specifics.
+
+All Meteor UI checkout code is updated to place orders using the new GraphQL mutations. The Meteor methods formerly involved in placing orders and payments are removed.
+
+There are currently three included payment methods, each with their own place order mutation:
+
+    placeOrderWithExampleIOUPayment
+    placeOrderWithStripeCardPayment
+    placeMarketplaceOrderWithStripeCardPayment
+
+For production, use placeOrderWithStripeCardPayment. placeOrderWithExampleIOUPayment is included for demo purposes and does not require any external services. placeMarketplaceOrderWithStripeCardPayment is part of the "marketplace" plugin, which is not fully implemented or supported. Each payment method has its own checkout UI component, which collects whatever information it needs securely.
+
+
+We've updated the password reset flow to use a full page in #4637
+ - Move previous Password Reset modal to a dedicated page on /reset-password/:token
+ - Rename the affect components to not have modal suffixes
+ - Show a message on successful reset of the password (previously, the modal closes)
+
+
+In #4613 we've renamed the Docker network on which GraphQL enabled web services are attached to `api.reaction.localhost` Networks in the Docker environment should be named as *.reaction.localhost. The localhost TLD is reserved and guaranteed to not conflict with a real TLD.
+- To enable network communication, projects communicating with Reaction's GraphQL server must be on the api.reaction.localhost Docker network.
+- PRs related to reactioncommerce/reaction#4447 should be coordinated.
+
+We've [moved the SMS schema](https://github.com/reaction-contrib/meteor-notifications-sms) to the SMS package in contrib in  #4566
+
+## Features
+ - feat: Prioritize Primary when multiple Shops match domain (#3528)
+ - feat: Setup IDP flows for Hydra auth (#4627)
+ - feat: Update GQL server to use Hydra Auth token (#4626)
+ - feat: Use new CLI tool "propel" to deploy services to ECS (#4623)
+ - feat(GraphQL): Place orders using GraphQL (#4622)
+ - feat(GraphQL): Add GraphQL via plugin, reorg files into final 2.0 plugin patterns (#4622)
+ - feat: 2.0 migrations (#4648)
+ - feat(GraphQL): add `Account.primaryEmailAddress` resolver (#4647)
+ - feat: Update Reset Password modal to a full page route (#4637)
+
+## Fixes
+ - fix: apply requested sort to Cart.items in GraphQL resolver (#4624)
+ - fix: cart item attributes (#4607)
+ - fix: startup error before primary shop is created on initial startup (#4602)
+ - fix: Update detailView when its data changes (#4659)
+ - fix: fix README broken links, update copy (#4632)
+ - fix: sidebar actions not opening on product grid (#4641)
+ - fix: Ensure MongoDB replica set is ready before start (#4636)
+ -
+
+## Chores
+ - chore: Rename the reaction-api Docker network (#4613)
+
+## Refactors
+ - refactor: Remove unused schemas (#4566)
+ - refactor: remove all grid positions code and UI (#4628)
+
+# v1.16.0
+## GraphQL
+### Features
+ - feat: return absolute media URLs from GraphQL (#4565)
+
+## Meteor App
+### Features
+ - feat 4571 Replace all Meteor.userId() with util function (#4582)
+ - feat: Improve animations and dynamically import animation libraries to reduce bundle size (#4500) .. Resolves #4441
+
+### Fixes
+ - fix: reaction error swallowing (#4592)
+ - fix: update file-collections dependency from 0.5.0 to 0.6.0 (#4589)
+ - fix: null check in email validation (#4520) .. Resolves #4502
+ - fix: Add missing Shops.layout migration (#4609) .. Resolves #4608
+
+
+# v1.15.0
+
+## Sitemap Generator
+A sitemap generator plugin that creates and stores XML for a sitemap index, as well as sitemaps for tag pages, PDPs, and arbitrary URLs that can be added via an event hook.
+
+There is a recurring job that runs every 24 hours (the specific interval can be changed) that generates the sitemaps. There is also a button to manually trigger a refresh, at Dashboard -> Shop -> Options - along with a notification that appears when it's completed.
+
+## Use our GraphQL API for the Product Grid within the Meteor App
+As part of our push towards our GraphQL API, we've started to leverage the API inside of our existing Meteor app. This release converts our customer facing product grid from using Meteor Pub/Sub to consuming data from our GraphQL API instead. This is the first step in an ongoing initiative to start using the GraphQL API inside of our existing monolithic commerce application. See #4481 for a list of files changed.
+
+## GraphQL Checkout
+This release includes the first set of GraphQL APIs designed for stepping through a checkout. While we've started to consume this API within our Storefront Starter Kit, these APIs should be treated as unstable and subject to change. We've added mutations for setting an anonymous email - `setEmailOnAnonymousCart` and selecting fulfillment options - `selectFulfillmentOptionForGroup`.
+
+**A note on fulfillment options**
+Fulfillment options are what we're calling what used to be shipment options. In order to prepare ourselves for several types of fulfillment that do not necessarily include shipping, we're updating the checkout through order models, methods, and now our GraphQL API to be capable of grouping items into "Fulfillment Groups". This opens the door for several new types of fulfillments down the line such as In Store Pickup, Digital Downloads, Digital Key Generation, and anything else you can think up. We're not actively building any of these different fulfillment types into core, but want to ensure that it's possible and there's a clear direction to do so.
+
+## Breaking Changes
+  - If a plugin adds an "afterCartUpdate" hook, it will no longer be called. Change the plugin code to use appEvents.on("afterCartUpdate" instead. (#4535)
+  - If a plugin creates or updates a cart, be sure it calls appEvents.emit("afterCartCreate") or appEvents.emit("afterCartUpdate"), respectively, passing the proper arguments. If you do this within an appEvents.on hook for the same event, be sure to wrap the call in conditional logic to avoid an infinite loop. (#4535)
+  - We've refactored the `Shipment` schema to remove the `items` property. This will cause a breaking change for plugins expecting the items property to be there. Such plugins should be updated to use a combination of itemIds and the main items list. (#4531)
+  - Removed `requiresShipping` prop from products and catalog products. This has been replaced by an array `supportedFulfillmentTypes`. Reaction's core admin interface did not provide a method for setting this prop, and we've left the `supportedFulfillmentTypes` out of the exiting operator interface. This change will emable us to show a "Shipping"/"Pick Up" selector for other items down the road. Will also permit creation of digital fulfillment types, etc. (#4554)
+  - The last argument of the setShipmentMethod Meteor method now expects just the method ID rather than the whole method object. Core client code has been updated, but you should update any custom code that calls this method.
+  - Removed the resetShipmentMethod Meteor method
+  - The `cart/setAnonymousUserEmail` Meteor method is removed. This does not break any core behavior, but it might require updates to any custom plugins.
+
+
+## GraphQL DevServer
+### Features
+ - feat(GraphQL): update fulfillment options for group (#4538)
+ - feat(GraphQL): Add resolver for Cart.totalItemQuantity (#4533)
+ - feat(GraphQL): add resolver for Cart.checkout (#4507)
+ - feat(GraphQL): Replace "cart/setAnonymousUserEmail" Meteor method with setEmailOnAnonymousCart mutation (#4564)
+ - feat(GraphQL): Implement selectFulfillmentOptionForGroup mutation (#4548)
+
+## Fixes
+ - fix(GraphQL): Fix CartItem.currentQuantity (#4508)
+
+## Meteor App
+### Features
+ - feat: Convert product grid to consume GraphQL data (#4481) .. Resolves #4480
+ - feat: Fulfillment improvements (#4554)
+ - feat: Plugin for auto-generated sitemaps (#4413) .. Resolves #4353
+
+### Performance
+ - perf: improve orders sub speed by rearranging pipeline (#4555)
+ - perf: Move formatPhoneNumber (and libphonenumber-js) server-side to reduce client bundle (#4517) .. Resolves #4516
+
+### Fixes
+ - fix: for sidebar unable to be opened (edge condition) (#4546) .. Resolves #4545
+ - fix(marketplace): Default to Primary Shop when no domains match (#4544)
+ - fix: sync lowInventoryThreshold number between variants and child options (#4519)
+ - fix: Product prices showing as $NaN.undefined on the customer product grid (#4518)
+
+### Refactor
+ - refactor: Refactor cart / fulfillment hooks (#4535)
+ - refactor fulfillment items (#4531)
+ - refactor: resolve reaction error (#4494) .. Resolves #4477
+ - refactor: Dynamically import Swiper to reduce client bundle size (#4515) .. Resolves #4514
+
+### Chores
+ - chore: Added production bundle size check to CircleCI (#4521)
+
+### Contributors
+ - Thanks to @pmn4 for contributing to this release :tada:
+
+
 # v1.14.1
 ## Patch release
 Resolves issues found after releasing `1.14.0` - one causing jsdoc to fail during CI builds for the `master` branch, and another where method hooks were running incorrectly occasionally for `catalog/publish/products` and `accoutns/addressBookAdd`. See specific PRs for more details.

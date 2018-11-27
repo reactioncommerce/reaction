@@ -2,65 +2,46 @@ import { Meteor } from "meteor/meteor";
 import { check, Match } from "meteor/check";
 import { Roles } from "meteor/alanning:roles";
 import { ReactiveAggregate } from "./reactiveAggregate";
-import { Accounts, MediaRecords, Orders } from "/lib/collections";
+import { Accounts, MediaRecords, Orders, Shops } from "/lib/collections";
 import { Counts } from "meteor/tmeasday:publish-counts";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
 
 /**
- * A shared way of creating a projection
+ * @summary A shared way of creating a projection
  * @param {String} shopId - shopId to filter records by
  * @param {Object} sort - An object containing a sort
  * @param {Number} limit - An optional limit of how many records to return
  * @param {Object} query - An optional query to match
+ * @param {Number} skip - An optional limit number of records to skip
  * @returns {Array} An array of projection operators
  * @private
  */
 function createAggregate(shopId, sort = { createdAt: -1 }, limit = 0, query = {}, skip = 0) {
-  // NOTE: in Mongo 3.4 using the $in operator will be supported for projection filters
-  const aggregate = [
-    { $match: { "items.shopId": shopId, ...query } },
-    {
-      $project: {
-        items: {
-          $filter: {
-            input: "$items",
-            as: "item",
-            cond: { $eq: ["$$item.shopId", shopId] }
-          }
-        },
-        billing: {
-          $filter: {
-            input: "$billing",
-            as: "billing",
-            cond: { $eq: ["$$billing.shopId", shopId] }
-          }
-        },
-        shipping: {
-          $filter: {
-            input: "$shipping",
-            as: "shipping",
-            cond: { $eq: ["$$shipping.shopId", shopId] }
-          }
-        },
-        cartId: 1,
-        shopId: 1, // workflow is still stored at the top level and used to showing status
-        workflow: 1,
-        discount: 1,
-        tax: 1,
-        email: 1,
-        createdAt: 1,
-        accountId: 1,
-        taxCalculationFailed: 1,
-        bypassAddressValidation: 1
-      }
-    },
-    { $sort: sort },
-    { $skip: skip }
-  ];
+  const aggregate = [{ $match: { "shipping.shopId": shopId, ...query } }];
 
-  if (limit > 0) {
-    aggregate.push({ $limit: limit });
-  }
+  if (sort) aggregate.push({ $sort: sort });
+  if (skip > 0) aggregate.push({ $skip: skip });
+  if (limit > 0) aggregate.push({ $limit: limit });
+
+  // NOTE: in Mongo 3.4 using the $in operator will be supported for projection filters
+  aggregate.push({
+    $project: {
+      shipping: {
+        $filter: {
+          input: "$shipping",
+          as: "shipping",
+          cond: { $eq: ["$$shipping.shopId", shopId] }
+        }
+      },
+      accountId: 1,
+      cartId: 1,
+      createdAt: 1,
+      email: 1,
+      shopId: 1,
+      workflow: 1 // workflow is still stored at the top level and used to showing status
+    }
+  });
+
   return aggregate;
 }
 
@@ -76,7 +57,7 @@ Meteor.publish("Orders", function () {
   // return any order for which the shopId is attached to an item
   const aggregateOptions = {
     observeSelector: {
-      "items.shopId": shopId
+      "shipping.shopId": shopId
     }
   };
   const aggregate = createAggregate(shopId);
@@ -108,7 +89,7 @@ Meteor.publish("PaginatedOrders", function (query, options) {
   // return any order for which the shopId is attached to an item
   const aggregateOptions = {
     observeSelector: {
-      "items.shopId": shopId
+      "shipping.shopId": shopId
     }
   };
   const limit = (options && options.limit) ? options.limit : 0;
@@ -139,11 +120,11 @@ Meteor.publish("AccountOrders", function (accountId) {
 
   const account = this.userId ? Accounts.findOne({ userId: this.userId }) : null;
   const contextAccountId = account && account._id;
-  if (accountId !== contextAccountId && !Reaction.hasPermission("orders", Meteor.userId(), shopId)) {
+  if (accountId !== contextAccountId && !Reaction.hasPermission("orders", Reaction.getUserId(), shopId)) {
     return this.ready();
   }
 
-  return Orders.find({
+  const ordersCursor = Orders.find({
     accountId,
     shopId
   }, {
@@ -152,6 +133,10 @@ Meteor.publish("AccountOrders", function (accountId) {
     },
     limit: 25
   });
+
+  const shopNamesCursor = Shops.find({}, { fields: { name: 1 } });
+
+  return [ordersCursor, shopNamesCursor];
 });
 
 /**
@@ -160,7 +145,7 @@ Meteor.publish("AccountOrders", function (accountId) {
 Meteor.publish("CompletedCartOrder", (cartId) => {
   check(cartId, String);
 
-  const userId = Meteor.userId();
+  const userId = Reaction.getUserId();
   const account = userId ? Accounts.findOne({ userId }) : null;
   const accountId = account && account._id;
 
@@ -175,8 +160,7 @@ Meteor.publish("OrderImages", (orderId) => {
   if (!orderId) return [];
 
   const order = Orders.findOne({ _id: orderId });
-  const { items: orderItems } = order || {};
-  if (!Array.isArray(orderItems)) return [];
+  const orderItems = order.shipping.reduce((list, group) => [...list, ...group.items], []);
 
   // Ensure each of these are unique
   const productIds = [...new Set(orderItems.map((item) => item.productId))];

@@ -314,7 +314,7 @@ export const VariantBaseSchema = new SimpleSchema({
  * @extends VariantBaseSchema
  * @property {VariantBaseSchema[]} options optional
  */
-const CatalogVariantSchema = VariantBaseSchema.clone().extend({
+export const CatalogVariantSchema = VariantBaseSchema.clone().extend({
   "options": {
     type: Array,
     label: "Variant Options",
@@ -349,17 +349,16 @@ const CatalogVariantSchema = VariantBaseSchema.clone().extend({
  * @property {String} originCountry optional
  * @property {String} pageTitle optional
  * @property {ShippingParcel} parcel optional
- * @property {Object} positions optional
  * @property {CatalogPriceRange} price optional
  * @property {Object} pricing required
  * @property {ImageInfo} primaryImage optional
  * @property {String} productId required
  * @property {String} productType optional
- * @property {Boolean} requiresShipping optional, default value: `true`, Require a shipping address
  * @property {String} shopId required
  * @property {String} sku optional
  * @property {String} slug optional
  * @property {SocialMetadata[]} socialMetadata optional
+ * @property {String[]} supportedFulfillmentTypes Types of fulfillment ("shipping", "pickup", etc) allowed for this product
  * @property {Array} tagIds optional
  * @property {String} taxCode optional, default value: `"0000"`
  * @property {String} taxDescription optional
@@ -484,12 +483,6 @@ export const CatalogProduct = new SimpleSchema({
     label: "Shipping parcel",
     optional: true
   },
-  "positions": {
-    type: Object,
-    label: "Product positions",
-    blackbox: true,
-    optional: true
-  },
   "price": {
     type: CatalogPriceRange,
     optional: true
@@ -512,11 +505,6 @@ export const CatalogProduct = new SimpleSchema({
     type: String,
     label: "Product type",
     optional: true
-  },
-  "requiresShipping": {
-    type: Boolean,
-    label: "Require a shipping address",
-    defaultValue: true
   },
   "shopId": {
     type: String,
@@ -541,6 +529,12 @@ export const CatalogProduct = new SimpleSchema({
   "socialMetadata.$": {
     type: SocialMetadata
   },
+  "supportedFulfillmentTypes": {
+    type: Array,
+    label: "Supported fulfillment types",
+    defaultValue: ["shipping"]
+  },
+  "supportedFulfillmentTypes.$": String,
   "tagIds": {
     type: Array,
     label: "Hashtags",

@@ -1,6 +1,5 @@
 import _ from "lodash";
 import { Template } from "meteor/templating";
-import { Meteor } from "meteor/meteor";
 import { Roles } from "meteor/alanning:roles";
 import { Reaction } from "/client/api";
 import { Packages, Shops } from "/lib/collections";
@@ -21,6 +20,7 @@ import { Packages, Shops } from "/lib/collections";
  * @return {Object[]} returns an array of filtered, structure reactionApps
  */
 export function Apps(optionHash) {
+  const { getUserId } = Reaction;
   const filter = {};
   const registryFilter = {};
   let key;
@@ -94,7 +94,7 @@ export function Apps(optionHash) {
           // This checks that the registry item contains a permissions matches with the user's permission for the shop
           const hasPermissionToRegistryItem = item.permissions.indexOf(permission) > -1;
           // This checks that the user's permission set have the right value that is on the registry item
-          const hasRoleAccessForShop = Roles.userIsInRole(Meteor.userId(), permission, Reaction.getShopId());
+          const hasRoleAccessForShop = Roles.userIsInRole(getUserId(), permission, Reaction.getShopId());
 
           // both checks must pass for access to be granted
           if (hasPermissionToRegistryItem && hasRoleAccessForShop) {

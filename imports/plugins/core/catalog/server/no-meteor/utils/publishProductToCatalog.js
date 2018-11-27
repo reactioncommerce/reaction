@@ -1,7 +1,8 @@
+import Hooks from "@reactioncommerce/hooks";
+import Logger from "@reactioncommerce/logger";
 import Random from "@reactioncommerce/random";
 import * as Schemas from "/imports/collections/schemas";
-import Logger from "@reactioncommerce/logger";
-import hashProduct from "../mutations/hashProduct";
+import { createProductHash } from "../mutations/hashProduct";
 import createCatalogProduct from "./createCatalogProduct";
 
 /**
@@ -9,17 +10,21 @@ import createCatalogProduct from "./createCatalogProduct";
  * @summary Publish a product to the Catalog collection
  * @memberof Catalog
  * @param {Object} product - A product object
- * @param {Object} collections - Raw mongo collections
+ * @param {Object} context - The app context
  * @return {boolean} true on successful publish, false if publish was unsuccessful
  */
-export default async function publishProductToCatalog(product, collections) {
-  const { Catalog } = collections;
-
-  // Create hash of all user-editable fields
-  const hashedProduct = await hashProduct(product._id, collections);
+export default async function publishProductToCatalog(product, context) {
+  const { Catalog, Products } = context.collections;
 
   // Convert Product schema object to Catalog schema object
-  const catalogProduct = await createCatalogProduct(hashedProduct, collections);
+  const catalogProduct = await createCatalogProduct(product, context);
+
+  // Check to see if product has variants
+  // If not, do not publish the product to the Catalog
+  if (!catalogProduct.variants || (catalogProduct.variants && catalogProduct.variants.length === 0)) {
+    Logger.info("Cannot publish to catalog: product has no visible variants");
+    return false;
+  }
 
   const modifier = {
     $set: {
@@ -33,12 +38,7 @@ export default async function publishProductToCatalog(product, collections) {
     }
   };
 
-  // Check against catalog schema
-  try {
-    Schemas.Catalog.validate(modifier, { modifier: true });
-  } catch (err) {
-    Logger.error(err);
-  }
+  Schemas.Catalog.validate(modifier, { modifier: true });
 
   // Insert/update catalog document
   const result = await Catalog.updateOne(
@@ -49,5 +49,27 @@ export default async function publishProductToCatalog(product, collections) {
     { upsert: true }
   );
 
-  return result && result.result && result.result.ok === 1;
+  const wasUpdateSuccessful = result && result.result && result.result.ok === 1;
+  if (wasUpdateSuccessful) {
+    // Update the Product hashes so that we know there are now no unpublished changes
+    const productHash = await createProductHash(product, context.collections);
+
+    const now = new Date();
+    const productUpdates = {
+      currentProductHash: productHash,
+      publishedAt: now,
+      publishedProductHash: productHash,
+      updatedAt: now
+    };
+
+    const productUpdateResult = await Products.updateOne({ _id: product._id }, { $set: productUpdates });
+    if (!productUpdateResult || !productUpdateResult.result || productUpdateResult.result.ok !== 1) {
+      Logger.error(`Failed to update product hashes for product with ID ${product._id}`, productUpdateResult && productUpdateResult.result);
+    }
+
+    const updatedProduct = { ...product, ...productUpdates };
+    Hooks.Events.run("afterPublishProductToCatalog", updatedProduct, catalogProduct);
+  }
+
+  return wasUpdateSuccessful;
 }

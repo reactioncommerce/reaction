@@ -3,6 +3,7 @@ import Hooks from "@reactioncommerce/hooks";
 import Logger from "@reactioncommerce/logger";
 import Random from "@reactioncommerce/random";
 import { Meteor } from "meteor/meteor";
+import ReactionError from "@reactioncommerce/reaction-error";
 import { Accounts } from "meteor/accounts-base";
 import * as Collections from "/lib/collections";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
@@ -42,7 +43,7 @@ export default function startup() {
 
       // check if the email is verified
       if (!userEmail.length || !userEmail[0].verified) {
-        throw new Meteor.Error("access-denied", "Oops! Please validate your email first.");
+        throw new ReactionError("access-denied", "Oops! Please validate your email first.");
       }
     }
 

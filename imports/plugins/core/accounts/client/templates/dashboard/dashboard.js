@@ -90,7 +90,7 @@ Template.accountsDashboard.helpers({
 });
 
 Template.accountsSettings.onCreated(function () {
-  this.subscribe("ServiceConfiguration", Meteor.userId());
+  this.subscribe("ServiceConfiguration", Reaction.getUserId());
 });
 
 Template.accountsSettings.helpers({

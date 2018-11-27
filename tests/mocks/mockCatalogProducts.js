@@ -3,7 +3,7 @@ import { internalTagIds, opaqueTagIds } from "./mockTags";
 
 /**
  *
- * @todo TEMP mocks these will be removed in favor of a fixture/facotry solution
+ * @todo TEMP mocks these will be removed in favor of a fixture/factory solution
  */
 
 export const internalProductIds = ["999", "222"];
@@ -130,7 +130,7 @@ export const mockInternalCatalogOptions = [
 ];
 
 /**
- * mock external catalog product varaint options
+ * mock external catalog product variant options
  */
 export const mockExternalCatalogOptions = [
   {
@@ -407,11 +407,11 @@ export const mockInternalCatalogProducts = [
         productId: internalProductIds[0],
         variantId: null,
         URLs: {
-          thumbnail: "http://localhost/thumbnail",
-          small: "http://localhost/small",
-          medium: "http://localhost/medium",
-          large: "http://localhost/large",
-          original: "http://localhost/original"
+          thumbnail: "/thumbnail",
+          small: "/small",
+          medium: "/medium",
+          large: "/large",
+          original: "/original"
         }
       }
     ],
@@ -421,15 +421,14 @@ export const mockInternalCatalogProducts = [
       productId: internalProductIds[0],
       variantId: null,
       URLs: {
-        thumbnail: "http://localhost/thumbnail",
-        small: "http://localhost/small",
-        medium: "http://localhost/medium",
-        large: "http://localhost/large",
-        original: "http://localhost/original"
+        thumbnail: "/thumbnail",
+        small: "/small",
+        medium: "/medium",
+        large: "/large",
+        original: "/original"
       }
     },
     productType: "productType",
-    requiresShipping: true,
     shopId: internalShopId,
     sku: "ABC123",
     slug: "fake-product",
@@ -439,6 +438,7 @@ export const mockInternalCatalogProducts = [
       { service: "googleplus", message: "googlePlusMessage" },
       { service: "pinterest", message: "pinterestMessage" }
     ],
+    supportedFulfillmentTypes: ["shipping"],
     tagIds: internalTagIds,
     taxCode: "taxCode",
     taxDescription: "taxDescription",
@@ -506,11 +506,11 @@ export const mockInternalCatalogProducts = [
         productId: internalProductIds[1],
         variantId: null,
         URLs: {
-          thumbnail: "http://localhost/thumbnail",
-          small: "http://localhost/small",
-          medium: "http://localhost/medium",
-          large: "http://localhost/large",
-          original: "http://localhost/original"
+          thumbnail: "/thumbnail",
+          small: "/small",
+          medium: "/medium",
+          large: "/large",
+          original: "/original"
         }
       }
     ],
@@ -520,15 +520,14 @@ export const mockInternalCatalogProducts = [
       productId: internalProductIds[1],
       variantId: null,
       URLs: {
-        thumbnail: "http://localhost/thumbnail",
-        small: "http://localhost/small",
-        medium: "http://localhost/medium",
-        large: "http://localhost/large",
-        original: "http://localhost/original"
+        thumbnail: "/thumbnail",
+        small: "/small",
+        medium: "/medium",
+        large: "/large",
+        original: "/original"
       }
     },
     productType: "productType",
-    requiresShipping: true,
     shopId: internalShopId,
     sku: "ABC123",
     slug: "another-fake-product",
@@ -538,6 +537,7 @@ export const mockInternalCatalogProducts = [
       { service: "googleplus", message: "googlePlusMessage" },
       { service: "pinterest", message: "pinterestMessage" }
     ],
+    supportedFulfillmentTypes: ["shipping"],
     tagIds: internalTagIds,
     taxCode: "taxCode",
     taxDescription: "taxDescription",
@@ -616,11 +616,11 @@ export const mockExternalCatalogProducts = [
           productId: opaqueProductIds[0],
           variantId: null,
           URLs: {
-            thumbnail: "http://localhost/thumbnail",
-            small: "http://localhost/small",
-            medium: "http://localhost/medium",
-            large: "http://localhost/large",
-            original: "http://localhost/original"
+            thumbnail: "/thumbnail",
+            small: "/small",
+            medium: "/medium",
+            large: "/large",
+            original: "/original"
           }
         }
       ],
@@ -630,15 +630,14 @@ export const mockExternalCatalogProducts = [
         productId: opaqueProductIds[0],
         variantId: null,
         URLs: {
-          thumbnail: "http://localhost/thumbnail",
-          small: "http://localhost/small",
-          medium: "http://localhost/medium",
-          large: "http://localhost/large",
-          original: "http://localhost/original"
+          thumbnail: "/thumbnail",
+          small: "/small",
+          medium: "/medium",
+          large: "/large",
+          original: "/original"
         }
       },
       productType: "productType",
-      requiresShipping: true,
       shop: {
         _id: opaqueShopId
       },
@@ -650,6 +649,7 @@ export const mockExternalCatalogProducts = [
         { service: "googleplus", message: "googlePlusMessage" },
         { service: "pinterest", message: "pinterestMessage" }
       ],
+      supportedFulfillmentTypes: ["shipping"],
       tagIds: opaqueTagIds,
       tags: {
         nodes: [{ _id: opaqueTagIds[0] }, { _id: opaqueTagIds[1] }]
@@ -725,11 +725,11 @@ export const mockExternalCatalogProducts = [
           productId: opaqueProductIds[1],
           variantId: null,
           URLs: {
-            thumbnail: "http://localhost/thumbnail",
-            small: "http://localhost/small",
-            medium: "http://localhost/medium",
-            large: "http://localhost/large",
-            original: "http://localhost/original"
+            thumbnail: "/thumbnail",
+            small: "/small",
+            medium: "/medium",
+            large: "/large",
+            original: "/original"
           }
         }
       ],
@@ -739,15 +739,14 @@ export const mockExternalCatalogProducts = [
         productId: opaqueProductIds[1],
         variantId: null,
         URLs: {
-          thumbnail: "http://localhost/thumbnail",
-          small: "http://localhost/small",
-          medium: "http://localhost/medium",
-          large: "http://localhost/large",
-          original: "http://localhost/original"
+          thumbnail: "/thumbnail",
+          small: "/small",
+          medium: "/medium",
+          large: "/large",
+          original: "/original"
         }
       },
       productType: "productType",
-      requiresShipping: true,
       shop: {
         _id: opaqueShopId
       },
@@ -759,6 +758,7 @@ export const mockExternalCatalogProducts = [
         { service: "googleplus", message: "googlePlusMessage" },
         { service: "pinterest", message: "pinterestMessage" }
       ],
+      supportedFulfillmentTypes: ["shipping"],
       tagIds: opaqueTagIds,
       tags: {
         nodes: [{ _id: opaqueTagIds[0] }, { _id: opaqueTagIds[1] }]

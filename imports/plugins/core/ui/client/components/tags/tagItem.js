@@ -2,28 +2,25 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import classnames from "classnames";
 import Autosuggest from "react-autosuggest";
-import Velocity from "velocity-animate";
-import "velocity-animate/velocity.ui";
 import { registerComponent } from "@reactioncommerce/reaction-components";
 import { i18next } from "/client/api";
 import { Button, Handle } from "/imports/plugins/core/ui/client/components";
 import { SortableItem } from "/imports/plugins/core/ui/client/containers";
 import { Router } from "@reactioncommerce/reaction-router";
+import { highlightInput } from "../../helpers/animations";
 
 class TagItem extends Component {
-  componentWillReceiveProps(nextProps) {
+  componentDidUpdate(prevProps) {
     if (this._updated && this._saved && this.refs.autoSuggestInput) {
       const { input } = this.refs.autoSuggestInput;
 
-      Velocity.RunSequence([
-        { e: input, p: { backgroundColor: "#e2f2e2" }, o: { duration: 200 } },
-        { e: input, p: { backgroundColor: "#fff" }, o: { duration: 100 } }
-      ]);
+      highlightInput(input);
 
+      this._saved = false;
       this._updated = false;
     }
 
-    if ((nextProps.tag.name !== this.props.tag.name)) {
+    if (prevProps.tag.name !== this.props.tag.name) {
       this._updated = true;
     }
   }

@@ -21,59 +21,59 @@ const wrapComponent = (Comp) => (
 
       this.validation = new Validation(ProductVariant);
       this.validProduct = props.product;
-
-      this.hasCreateProductPermission = this.hasCreateProductPermission.bind(this);
-      this.hasChanges = this.hasChanges.bind(this);
-      this.checked = this.checked.bind(this);
-      this.checkValidation = this.checkValidation.bind(this);
     }
 
-    componentWillMount() {
+    UNSAFE_componentWillMount() { // eslint-disable-line camelcase
       this.checkValidation();
     }
 
-    hasCreateProductPermission = () => Reaction.hasPermission("createProduct")
-
-    hasChanges = () => !!this.props.product.__draft
-
     // This method checks validation of the variants of the all the products on the Products grid to
     // check whether all required fields have been submitted before publishing
-    checkValidation = () => {
+    checkValidation() {
+      const { product } = this.props;
+
       // this returns an array with a single object
-      const variants = ReactionProduct.getVariants(this.props.product._id);
+      const variants = ReactionProduct.getVariants(product._id);
 
       // should validate variants if they exist to determine if product is Valid
+      // if variants do not exist then validation should pass
+      let isValid;
       if (variants.length !== 0) {
         const validatedVariants = variants.map((variant) => this.validation.validate(variant));
-        this.setState({
-          validProduct: Object.assign({}, this.props.product, { __isValid: validatedVariants[0].isValid })
-        });
+        ([{ isValid }] = validatedVariants);
       } else {
-        // if variants do not exist then validation should pass
-        this.setState({
-          validProduct: Object.assign({}, this.props.product, { __isValid: true })
-        });
+        isValid = true;
       }
+
+      this.setState({
+        validProduct: Object.assign({}, product, { __isValid: isValid })
+      });
     }
 
-    checked = () => this.props.isSelected === true
-
     render() {
+      const { isSelected, product } = this.props;
+
       return (
         <Comp
           product={this.state.validProduct}
-          hasCreateProductPermission={this.hasCreateProductPermission}
-          hasChanges={this.hasChanges}
-          checked={this.checked}
+          hasCreateProductPermission={Reaction.hasPermission("createProduct")}
+          hasChanges={!!product.__draft}
+          isSelected={isSelected}
         />
       );
     }
   }
 );
 
+/**
+ * @summary Composer function
+ * @param {Object} props Props from parent
+ * @param {Function} onData Callback to pass more props
+ * @returns {undefined}
+ */
 function composer(props, onData) {
   const { product } = props;
-  let isSelected;
+  let isSelected = false;
 
   if (product) {
     const selectedProducts = Session.get("productGrid/selectedProducts");
@@ -81,8 +81,8 @@ function composer(props, onData) {
   }
 
   onData(null, {
-    product,
-    isSelected
+    isSelected,
+    product
   });
 }
 

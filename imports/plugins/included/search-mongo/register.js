@@ -1,10 +1,14 @@
 import Reaction from "/imports/plugins/core/core/server/Reaction";
+import startup from "./server/no-meteor/startup";
 
 Reaction.registerPackage({
   label: "Search",
   name: "reaction-search",
   icon: "fa fa-search",
   autoEnable: true,
+  functionsByType: {
+    startup: [startup]
+  },
   settings: {
     products: {
       includes: {

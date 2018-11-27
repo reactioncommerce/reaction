@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { isEmpty } from "lodash";
 import classnames from "classnames";
-import { Meteor } from "meteor/meteor";
 import { Roles } from "meteor/alanning:roles";
 import { formatPriceString, Reaction } from "/client/api";
 import { Components, registerComponent } from "@reactioncommerce/reaction-components";
@@ -19,7 +18,7 @@ class LineItems extends Component {
    * @name LineItems propTypes
    * @summary React component for displaying the actionable data on the invoice section on the orders sideview
    * @param {Object} props - React PropTypes
-   * @property {Object} order - An object represnting an order
+   * @property {Object} order - An object representing an order
    * @property {Object} uniqueItems - An object representing a line item
    * @property {Array} editedItems - An array/list of line items that have been edited/modified
    * @property {Array} selectedItems - An array of all the line items  that have been selected
@@ -93,7 +92,7 @@ class LineItems extends Component {
 
           <div className="order-detail-price">
             <div className="invoice-details" style={{ marginRight: 15 }}>
-              <strong>{formatPriceString(uniqueItem.priceWhenAdded.amount)}</strong>
+              <strong>{formatPriceString(uniqueItem.price.amount)}</strong>
             </div>
           </div>
 
@@ -145,7 +144,7 @@ class LineItems extends Component {
 
           <div className="order-detail-price">
             <div className="invoice-details" style={{ marginRight: 15 }}>
-              <strong>{formatPriceString(uniqueItem.priceWhenAdded.amount)}</strong>
+              <strong>{formatPriceString(uniqueItem.price.amount)}</strong>
             </div>
           </div>
 
@@ -187,7 +186,7 @@ class LineItems extends Component {
               i18nKey="cartSubTotals.subtotal"
             />
           </b>
-          <span><b>{formatPriceString(uniqueItem.priceWhenAdded.amount * uniqueItem.quantity)}</b></span>
+          <span><b>{formatPriceString(uniqueItem.price.amount * uniqueItem.quantity)}</b></span>
         </div>
       </div>
     );
@@ -344,7 +343,7 @@ class LineItems extends Component {
         ))}
 
         {
-          Roles.userIsInRole(Meteor.userId(), ["orders", "dashboard/orders"], Reaction.getShopId()) &&
+          Roles.userIsInRole(Reaction.getUserId(), ["orders", "dashboard/orders"], Reaction.getShopId()) &&
           this.renderPopOver()
         }
       </Components.Button>

@@ -1,4 +1,8 @@
 import Reaction from "/imports/plugins/core/core/server/Reaction";
+import mutations from "./server/no-meteor/mutations";
+import queries from "./server/no-meteor/queries";
+import resolvers from "./server/no-meteor/resolvers";
+import schemas from "./server/no-meteor/schemas";
 
 /**
  * @file Accounts core plugin: Manage how members sign into your shop
@@ -11,6 +15,12 @@ Reaction.registerPackage({
   name: "reaction-accounts",
   icon: "fa fa-users",
   autoEnable: true,
+  graphQL: {
+    resolvers,
+    schemas
+  },
+  mutations,
+  queries,
   settings: {},
   registry: [{
     route: "/dashboard/accounts",
@@ -55,6 +65,13 @@ Reaction.registerPackage({
     label: "Profile",
     icon: "fa fa-user",
     provides: ["userAccountDropdown"]
+  }, {
+    route: "/reset-password/:token/:status?",
+    template: "loginFormUpdatePassword",
+    workflow: "none",
+    meta: { noAdminControls: true },
+    name: "Reset Password",
+    label: "reset-password"
   }],
   layout: [{
     layout: "coreLayout",

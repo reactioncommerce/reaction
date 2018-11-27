@@ -1,5 +1,5 @@
-import { Meteor } from "meteor/meteor";
-import hashLoginToken from "/imports/plugins/core/accounts/server/no-meteor/util/hashLoginToken";
+import ReactionError from "@reactioncommerce/reaction-error";
+import hashLoginToken from "/imports/node-app/core/util/hashLoginToken";
 
 /**
  * @name anonymousCartByCartId
@@ -17,7 +17,7 @@ export default async function anonymousCartByCartId(context, { cartId, token } =
   const { Cart } = collections;
 
   if (!cartId) {
-    throw new Meteor.Error("invalid-param", "You must provide a cartId");
+    throw new ReactionError("invalid-param", "You must provide a cartId");
   }
 
   return Cart.findOne({

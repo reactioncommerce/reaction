@@ -8,19 +8,19 @@
 
       {{#if isNotCanceled}}
         {{#if printableLabels}}
-        <div>
-          <div><strong data-i18n="orderShipping.printLabels">Labels</strong></div>
-          {{#if printableLabels.shippingLabelUrl}}
-            <a class="rui btn btn-cta" href="{{printableLabels.shippingLabelUrl}}" target="_blank">
-              <span data-i18n="orderShipping.printShippingLabel">Print Shipping</span>
-            </a>
-          {{/if}}
-          {{#if printableLabels.customsLabelUrl}}
-            <a class="rui btn btn-cta" href="{{printableLabels.customsLabelUrl}}" target="_blank">
-              <span data-i18n="orderShipping.printCustomsLabel">Print Customs</span>
-            </a>
-          {{/if}}
-        </div>
+          <div>
+            <div><strong data-i18n="orderShipping.printLabels">Labels</strong></div>
+            {{#if printableLabels.shippingLabelUrl}}
+              <a class="rui btn btn-cta" href="{{printableLabels.shippingLabelUrl}}" target="_blank">
+                <span data-i18n="orderShipping.printShippingLabel">Print Shipping</span>
+              </a>
+            {{/if}}
+            {{#if printableLabels.customsLabelUrl}}
+              <a class="rui btn btn-cta" href="{{printableLabels.customsLabelUrl}}" target="_blank">
+                <span data-i18n="orderShipping.printCustomsLabel">Print Customs</span>
+              </a>
+            {{/if}}
+          </div>
         {{else}}
            {{#if editTracking}}
              <form class="form-inline" name="addTrackingForm">

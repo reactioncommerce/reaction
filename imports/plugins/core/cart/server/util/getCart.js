@@ -1,11 +1,12 @@
 import Logger from "@reactioncommerce/logger";
 import { Meteor } from "meteor/meteor";
+import ReactionError from "@reactioncommerce/reaction-error";
 import { Accounts, Cart } from "/lib/collections";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
-import hashLoginToken from "/imports/plugins/core/accounts/server/no-meteor/util/hashLoginToken";
+import hashLoginToken from "/imports/node-app/core/util/hashLoginToken";
 
 /**
- * @summary Gets the current cart. Assumes a calling context where Meteor.userId() works. It works
+ * @summary Gets the current cart. Assumes a calling context where logged in userID can be retrieved. It works
  *   in all client code, in server methods, and in server publications.
  * @param {String} [cartId] Limit the search by this cart ID if provided.
  * @param {Object} [options] Options
@@ -20,7 +21,7 @@ export default function getCart(cartId, { cartToken, throwIfNotFound = false } =
     throw new Meteor.Error("not-found", "Cart not found");
   }
 
-  const userId = Meteor.userId();
+  const userId = Reaction.getUserId();
   let account = null;
   const selector = { shopId };
   if (cartId) {
@@ -35,7 +36,7 @@ export default function getCart(cartId, { cartToken, throwIfNotFound = false } =
     if (!account) {
       if (throwIfNotFound) {
         Logger.error(`Cart not found for user with ID ${userId}`);
-        throw new Meteor.Error("not-found", "Cart not found");
+        throw new ReactionError("not-found", "Cart not found");
       }
 
       return { account, cart: null };
@@ -48,7 +49,7 @@ export default function getCart(cartId, { cartToken, throwIfNotFound = false } =
 
   if (!cart && throwIfNotFound) {
     Logger.error(`Cart not found for user with ID ${userId}`);
-    throw new Meteor.Error("not-found", "Cart not found");
+    throw new ReactionError("not-found", "Cart not found");
   }
 
   return { account, cart };

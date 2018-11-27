@@ -5,6 +5,7 @@ import { Meteor } from "meteor/meteor";
 import { Template } from "meteor/templating";
 import { $ } from "meteor/jquery";
 import { Roles } from "meteor/alanning:roles";
+import ReactionError from "@reactioncommerce/reaction-error";
 import AccountsDashboard from "/imports/plugins/core/accounts/client/containers/accountsDashboardContainer";
 import { Components } from "@reactioncommerce/reaction-components";
 
@@ -37,14 +38,14 @@ Template.member.events({
 
 Template.memberSettings.helpers({
   isOwnerDisabled() {
-    if (Meteor.userId() === this.userId) {
+    if (Reaction.getUserId() === this.userId) {
       if (Roles.userIsInRole(this.userId, "owner", this.shopId)) {
         return true;
       }
     }
   },
   userId() {
-    return Meteor.userId();
+    return Reaction.getUserId();
   },
   hasPermissionChecked(permission, userId) {
     if (userId && Roles.userIsInRole(userId, permission, this.shopId || Roles.userIsInRole(
@@ -162,7 +163,7 @@ Template.memberSettings.events({
     const permissions = [];
     const member = template.data;
     if (!this.shopId) {
-      throw new Meteor.Error("invalid-parameter", "Shop is required");
+      throw new ReactionError("invalid-parameter", "Shop is required");
     }
     if (self.name) {
       permissions.push(self.name);

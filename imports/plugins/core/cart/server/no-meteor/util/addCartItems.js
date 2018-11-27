@@ -1,6 +1,6 @@
 import Random from "@reactioncommerce/random";
 import SimpleSchema from "simpl-schema";
-import { Meteor } from "meteor/meteor";
+import ReactionError from "@reactioncommerce/reaction-error";
 import findProductAndVariant from "/imports/plugins/core/catalog/server/no-meteor/utils/findProductAndVariant";
 
 const inputItemSchema = new SimpleSchema({
@@ -59,7 +59,7 @@ export default async function addCartItems(collections, currentItems, inputItems
 
     const variantPriceInfo = chosenVariant.pricing[price.currencyCode];
     if (!variantPriceInfo) {
-      throw new Meteor.Error("invalid-param", `This product variant does not have a price for ${price.currencyCode}`);
+      throw new ReactionError("invalid-param", `This product variant does not have a price for ${price.currencyCode}`);
     }
 
     if (options.skipPriceCheck !== true && variantPriceInfo.price !== price.amount) {
@@ -94,14 +94,20 @@ export default async function addCartItems(collections, currentItems, inputItems
     // The main issue is we do not have labels.
     const attributes = [];
     if (parentVariant) {
-      attributes.push({ value: parentVariant.optionTitle || parentVariant.title });
+      attributes.push({
+        label: null, // Set label to null for now. We expect to use it in the future.
+        value: parentVariant.title
+      });
     }
-    attributes.push({ value: chosenVariant.optionTitle || chosenVariant.title });
+    attributes.push({
+      label: null, // Set label to null for now. We expect to use it in the future.
+      value: chosenVariant.title
+    });
 
     const cartItem = {
       _id: Random.id(),
       attributes,
-      isTaxable: chosenVariant.taxable || false,
+      isTaxable: chosenVariant.isTaxable || false,
       metafields,
       optionTitle: chosenVariant.optionTitle,
       parcel: chosenVariant.parcel,
@@ -113,6 +119,7 @@ export default async function addCartItems(collections, currentItems, inputItems
       productSlug: catalogProduct.slug,
       productVendor: catalogProduct.vendor,
       productType: catalogProduct.type,
+      productTagIds: catalogProduct.tagIds,
       quantity,
       shopId: catalogProduct.shopId,
       taxCode: chosenVariant.taxCode,

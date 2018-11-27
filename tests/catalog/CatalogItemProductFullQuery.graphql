@@ -76,7 +76,6 @@
       }
       productId
       productType
-      requiresShipping
       shop {
         _id
       }
@@ -86,6 +85,7 @@
         service
         message
       }
+      supportedFulfillmentTypes
       tagIds
       tags(first: 2) {
         nodes {

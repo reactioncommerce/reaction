@@ -6,9 +6,7 @@ import {
 import { rewire as rewire$isBackorder, restore as restore$isBackorder } from "./isBackorder";
 import { rewire as rewire$isLowQuantity, restore as restore$isLowQuantity } from "./isLowQuantity";
 import { rewire as rewire$isSoldOut, restore as restore$isSoldOut } from "./isSoldOut";
-import createCatalogProduct from "./createCatalogProduct";
-
-const mockCollections = { ...mockContext.collections };
+import createCatalogProduct, { restore$createCatalogProduct, rewire$xformProduct } from "./createCatalogProduct";
 
 const internalShopId = "123";
 const opaqueShopId = "cmVhY3Rpb24vc2hvcDoxMjM="; // reaction/shop:123
@@ -22,7 +20,6 @@ const productSlug = "fake-product";
 
 const createdAt = new Date("2018-04-16T15:34:28.043Z");
 const updatedAt = new Date("2018-04-17T15:34:28.043Z");
-const positionUpdatedAt = new Date("2018-04-15T15:34:28.043Z");
 
 const mockVariants = [
   {
@@ -30,6 +27,7 @@ const mockVariants = [
     ancestors: [internalCatalogProductId],
     barcode: "barcode",
     createdAt,
+    compareAtPrice: 1100,
     height: 0,
     index: 0,
     inventoryManagement: true,
@@ -144,14 +142,6 @@ const mockProduct = {
     weight: 7.77
   },
   pinterestMsg: "pinterestMessage",
-  positions: {
-    _default: {
-      weight: 1,
-      position: 1,
-      pinned: true,
-      updatedAt: positionUpdatedAt.toISOString()
-    }
-  },
   price: {
     max: 5.99,
     min: 2.99,
@@ -174,11 +164,11 @@ const mockProduct = {
   ],
   productId: internalProductId,
   productType: "productType",
-  requiresShipping: true,
   shop: {
     _id: opaqueShopId
   },
   sku: "ABC123",
+  supportedFulfillmentTypes: ["shipping"],
   handle: productSlug,
   hashtags: internalTagIds,
   taxCode: "taxCode",
@@ -250,14 +240,6 @@ const mockCatalogProduct = {
     weight: 7.77,
     width: 5.55
   },
-  positions: {
-    _default: {
-      pinned: true,
-      position: 1,
-      updatedAt: "2018-04-15T15:34:28.043Z",
-      weight: 1
-    }
-  },
   price: {
     max: 5.99,
     min: 2.99,
@@ -287,7 +269,6 @@ const mockCatalogProduct = {
   },
   productId: "999",
   productType: "productType",
-  requiresShipping: true,
   shopId: "123",
   sku: "ABC123",
   slug: "fake-product",
@@ -304,6 +285,7 @@ const mockCatalogProduct = {
     message: "pinterestMessage",
     service: "pinterest"
   }],
+  supportedFulfillmentTypes: ["shipping"],
   tagIds: ["923", "924"],
   taxCode: "taxCode",
   taxDescription: "taxDescription",
@@ -408,7 +390,7 @@ const mockCatalogProduct = {
     price: 0,
     pricing: {
       USD: {
-        compareAtPrice: null,
+        compareAtPrice: 1100,
         displayPrice: "$992.00",
         maxPrice: 992,
         minPrice: 992,
@@ -476,13 +458,37 @@ afterAll(() => {
   restore$isLowQuantity();
   restore$isSoldOut();
   restore$getCatalogProductMedia();
+  restore$createCatalogProduct();
 });
 
 test("convert product object to catalog object", async () => {
-  mockCollections.Products.toArray.mockReturnValueOnce(Promise.resolve(mockVariants));
-  mockCollections.Shops.findOne.mockReturnValueOnce(Promise.resolve(mockShop));
-  mockCollections.Catalog.updateOne.mockReturnValueOnce(Promise.resolve({ result: { ok: 0 } }));
-  const spec = await createCatalogProduct(mockProduct, mockCollections);
+  mockContext.collections.Products.toArray.mockReturnValueOnce(Promise.resolve(mockVariants));
+  mockContext.collections.Shops.findOne.mockReturnValueOnce(Promise.resolve(mockShop));
+  const spec = await createCatalogProduct(mockProduct, mockContext);
 
   expect(spec).toEqual(mockCatalogProduct);
+});
+
+test("calls functions of type publishProductToCatalog, which can mutate the catalog product", async () => {
+  mockContext.collections.Products.toArray.mockReturnValueOnce(Promise.resolve(mockVariants));
+  mockContext.collections.Shops.findOne.mockReturnValueOnce(Promise.resolve(mockShop));
+
+  rewire$xformProduct(() => ({ mock: true }));
+
+  const mockCustomPublisher = jest.fn().mockName("mockCustomPublisher").mockImplementation((obj) => {
+    obj.foo = "bar";
+  });
+
+  const catalogProduct = await createCatalogProduct({}, {
+    ...mockContext,
+    getFunctionsOfType: () => [mockCustomPublisher]
+  });
+
+  expect(catalogProduct).toEqual({ foo: "bar", mock: true });
+  expect(mockCustomPublisher).toHaveBeenCalledWith({ foo: "bar", mock: true }, {
+    context: jasmine.any(Object),
+    product: {},
+    shop: mockShop,
+    variants: mockVariants
+  });
 });

@@ -4,13 +4,13 @@ import Random from "@reactioncommerce/random";
 import { Meteor } from "meteor/meteor";
 import { check, Match } from "meteor/check";
 import { Factory } from "meteor/dburles:factory";
+import ReactionError from "@reactioncommerce/reaction-error";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
 import { Cart, Products, Accounts } from "/lib/collections";
 import { expect } from "meteor/practicalmeteor:chai";
 import { sinon } from "meteor/practicalmeteor:sinon";
 import { getShop, getAddress } from "/imports/plugins/core/core/server/fixtures/shops";
 import { addProduct } from "/imports/plugins/core/core/server/fixtures/products";
-import hashLoginToken from "/imports/plugins/core/accounts/server/no-meteor/util/hashLoginToken";
 import Fixtures from "/imports/plugins/core/core/server/fixtures";
 
 Fixtures();
@@ -28,9 +28,7 @@ describe("Add/Create cart methods", function () {
     originals = {
       mergeCart: Meteor.server.method_handlers["cart/mergeCart"],
       createCart: Meteor.server.method_handlers["cart/createCart"],
-      copyCartToOrder: Meteor.server.method_handlers["cart/copyCartToOrder"],
-      addToCart: Meteor.server.method_handlers["cart/addToCart"],
-      setAnonymousUserEmail: Meteor.server.method_handlers["cart/setAnonymousUserEmail"]
+      addToCart: Meteor.server.method_handlers["cart/addToCart"]
     };
   });
 
@@ -62,7 +60,6 @@ describe("Add/Create cart methods", function () {
   describe("cart/createCart", function () {
     it("should create a test cart", function () {
       sandbox.stub(Reaction, "getPrimaryShopId", () => shop._id);
-      sandbox.stub(Meteor, "userId", () => userId);
       const cartInsertSpy = sandbox.spy(Cart, "insert");
       const cartId = Meteor.call("cart/createCart");
       const cart = Cart.findOne({ accountId });
@@ -77,20 +74,9 @@ describe("Add/Create cart methods", function () {
     let productId;
     let variantId;
     let permissionStub;
-    let resetShipmentStub;
-    let updateShipmentQuoteStub;
 
     before(function () {
       permissionStub = sinon.stub(Reaction, "hasPermission", function () {
-        return true;
-      });
-
-      resetShipmentStub = sinon.stub(Meteor.server.method_handlers, "cart/resetShipmentMethod", function (...args) {
-        check(args, [Match.Any]);
-        return true;
-      });
-      updateShipmentQuoteStub = sinon.stub(Meteor.server.method_handlers, "shipping/updateShipmentQuotes", function (...args) {
-        check(args, [Match.Any]);
         return true;
       });
 
@@ -103,8 +89,6 @@ describe("Add/Create cart methods", function () {
 
     after(function () {
       permissionStub.restore();
-      resetShipmentStub.restore();
-      updateShipmentQuoteStub.restore();
     });
 
     beforeEach(function () {
@@ -124,7 +108,6 @@ describe("Add/Create cart methods", function () {
 
     it("should merge all items of same variant in cart", function () {
       sandbox.stub(Reaction, "getShopId", () => shop._id);
-      sandbox.stub(Meteor, "userId", () => userId);
       spyOnMethod("addToCart", userId);
       const cartId = Meteor.call("cart/createCart");
 
@@ -142,7 +125,7 @@ describe("Add/Create cart methods", function () {
       function addToCartFunc() {
         return Meteor.call("cart/addToCart", productId, variantId, quantity);
       }
-      expect(addToCartFunc).to.throw(Meteor.Error, /Cart not found/);
+      expect(addToCartFunc).to.throw(ReactionError, /Cart not found/);
       return done();
     });
 
@@ -151,96 +134,7 @@ describe("Add/Create cart methods", function () {
       function addToCartFunc() {
         return Meteor.call("cart/addToCart", "fakeProductId", variantId, quantity);
       }
-      expect(addToCartFunc).to.throw(Meteor.Error, "Product with such id was not found [not-found]");
-      return done();
-    });
-  });
-
-  describe("cart/setAnonymousUserEmail", function () {
-    beforeEach(function () {
-      Cart.remove({});
-    });
-
-    it("should add an email to an anonymous cart", function () {
-      const token = Random.secret();
-      const cart = Factory.create("cart", {
-        email: undefined,
-        anonymousAccessToken: hashLoginToken(token)
-      });
-
-      spyOnMethod("setAnonymousUserEmail", null);
-
-      const email = "anon@email.com";
-      Meteor.call("cart/setAnonymousUserEmail", cart._id, token, email);
-      const updatedCart = Cart.findOne({ _id: cart._id });
-      expect(updatedCart.email).to.equal(email);
-    });
-  });
-
-  describe("cart/copyCartToOrder", function () {
-    it("should throw error if cart user not current user", function (done) {
-      const cart = Factory.create("cart", { accountId });
-      spyOnMethod("copyCartToOrder", "wrongUserId");
-      function copyCartFunc() {
-        return Meteor.call("cart/copyCartToOrder", cart._id);
-      }
-      expect(copyCartFunc).to.throw(Meteor.Error, /Access Denied/);
-      return done();
-    });
-
-    it("should throw error if cart has no items", function (done) {
-      const user1 = Factory.create("user");
-      sandbox.stub(Meteor, "userId", () => user1._id);
-      sandbox.stub(Reaction, "getShopId", function () {
-        return shop._id;
-      });
-
-      sandbox.stub(Accounts, "findOne", function () {
-        return {
-          emails: [{
-            address: "test@localhost",
-            provides: "default"
-          }]
-        };
-      });
-      spyOnMethod("copyCartToOrder", user1._id);
-      const cartId = Meteor.call("cart/createCart");
-      function copyCartFunc() {
-        return Meteor.call("cart/copyCartToOrder", cartId);
-      }
-      expect(copyCartFunc).to.throw(Meteor.Error, /Missing cart items/);
-      return done();
-    });
-
-    it("should throw an error if order creation has failed", function () {
-      const cart = Factory.create("cartToOrder");
-      spyOnMethod("copyCartToOrder", userId);
-      // The main moment of test. We are spy on `insert` operation but do not
-      // let it through this call
-      const insertStub = sandbox.stub(Reaction.Collections.Orders, "insert");
-      function copyCartFunc() {
-        return Meteor.call("cart/copyCartToOrder", cart._id);
-      }
-      expect(copyCartFunc).to.throw(Meteor.Error, /Invalid request/);
-      expect(insertStub).to.have.been.called;
-    });
-
-    it("should create an order", function (done) {
-      const cart = Factory.create("cartToOrder");
-      sandbox.stub(Reaction, "getShopId", function () {
-        return cart.shopId;
-      });
-      spyOnMethod("copyCartToOrder", userId);
-      // let's keep it simple. We don't want to see a long email about
-      // success. But I leave it here in case if anyone want to check whole
-      // method flow.
-      const insertStub = sandbox.stub(Reaction.Collections.Orders, "insert");
-      function copyCartFunc() {
-        return Meteor.call("cart/copyCartToOrder", cart._id);
-      }
-
-      expect(copyCartFunc).to.throw(Meteor.Error, /Invalid request/);
-      expect(insertStub).to.have.been.called;
+      expect(addToCartFunc).to.throw(ReactionError, "Product with such id was not found [not-found]");
       return done();
     });
   });

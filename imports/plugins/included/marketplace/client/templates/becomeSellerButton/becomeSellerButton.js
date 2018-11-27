@@ -4,7 +4,7 @@ import { Reaction, i18next } from "/client/api";
 
 Template.becomeSellerButton.events({
   "click [data-event-action='button-click-become-seller']"() {
-    Meteor.call("shop/createShop", Meteor.userId(), (error, response) => {
+    Meteor.call("shop/createShop", Reaction.getUserId(), (error, response) => {
       if (error) {
         const errorMessage = i18next.t("marketplace.errorCannotCreateShop", { defaultValue: "Could not create shop for current user {{user}}" });
         return Alerts.toast(`${errorMessage} ${error}`, "error");

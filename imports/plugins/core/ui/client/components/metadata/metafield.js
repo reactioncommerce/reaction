@@ -1,28 +1,15 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import Velocity from "velocity-animate";
-import "velocity-animate/velocity.ui";
 import { Components, registerComponent } from "@reactioncommerce/reaction-components";
+import { highlightInput } from "../../helpers/animations";
 
 class Metafield extends Component {
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.metafield.key !== this.props.metafield.key) {
-      const { input } = this.refs.keyInput.refs;
-
-      Velocity.RunSequence([
-        { e: input, p: { backgroundColor: "#e2f2e2" }, o: { duration: 200 } },
-        { e: input, p: { backgroundColor: "#fff" }, o: { duration: 100 } }
-      ]);
-    }
-
-    if (nextProps.metafield.value !== this.props.metafield.value) {
-      const { input } = this.refs.valueInput.refs;
-
-      Velocity.RunSequence([
-        { e: input, p: { backgroundColor: "#e2f2e2" }, o: { duration: 200 } },
-        { e: input, p: { backgroundColor: "#fff" }, o: { duration: 100 } }
-      ]);
-    }
+  constructor(props) {
+    super(props);
+    this.state = {
+      // Currently focused input's original value, used to determine whether to highlight on blur/enter
+      inputOriginalValue: ""
+    };
   }
 
   get detailNamePlaceholder() {
@@ -61,13 +48,43 @@ class Metafield extends Component {
     }
   }
 
+  handleFocus = (event) => {
+    this.setState({ inputOriginalValue: event.target.value });
+  }
+
+  handleKeyBlur = (event) => {
+    const keyInput = this.refs.keyInput.refs.input;
+
+    if (this.state.inputOriginalValue !== keyInput.value) {
+      // Value has changed, highlight
+      this.highlightInput(keyInput);
+    }
+
+    this.handleBlur(event);
+  };
+
+  highlightInput = (inputRef) => {
+    this.setState({ inputOriginalValue: inputRef.value });
+    highlightInput(inputRef);
+  }
+
+  handleValueBlur = (event) => {
+    const valueInput = this.refs.valueInput.refs.input;
+
+    if (this.state.inputOriginalValue !== valueInput.value) {
+      // Value has changed, highlight
+      this.highlightInput(valueInput);
+    }
+
+    this.handleBlur(event);
+  };
+
   handleBlur = (event) => {
     if (this.props.onBlur) {
       const newMetadata = {
         key: this.refs.keyInput.refs.input.value,
         value: this.refs.valueInput.refs.input.value
       };
-
       if (newMetadata.key && newMetadata.value) {
         this.props.onBlur(event, newMetadata, this.props.index);
       }
@@ -104,9 +121,10 @@ class Metafield extends Component {
               className="metafield-key-input"
               i18nKeyPlaceholder={this.i18nKeyDetailName}
               name="key"
-              onBlur={this.handleBlur}
+              onFocus={this.handleFocus}
+              onBlur={this.handleKeyBlur}
               onChange={this.handleChange}
-              onReturnKeyDown={this.handleBlur}
+              onReturnKeyDown={this.handleKeyBlur}
               placeholder={this.detailNamePlaceholder}
               ref="keyInput"
               value={this.props.metafield.key}
@@ -115,9 +133,10 @@ class Metafield extends Component {
               className="metafield-value-input"
               i18nKeyPlaceholder={this.i18nKeyDetailInformation}
               name="value"
-              onBlur={this.handleBlur}
+              onFocus={this.handleFocus}
+              onBlur={this.handleValueBlur}
               onChange={this.handleChange}
-              onReturnKeyDown={this.handleBlur}
+              onReturnKeyDown={this.handleValueBlur}
               placeholder={this.detailInfoPlaceholder}
               ref="valueInput"
               value={this.props.metafield.value}

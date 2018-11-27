@@ -1,6 +1,5 @@
 import React from "react";
 import { composeWithTracker } from "@reactioncommerce/reaction-components";
-import { Meteor } from "meteor/meteor";
 import { Template } from "meteor/templating";
 import { Roles } from "meteor/alanning:roles";
 import { Reaction } from "/client/api";
@@ -43,7 +42,7 @@ function handleOpenShortcut(event, app) {
 }
 
 function composer(props, onData) {
-  const audience = Roles.getRolesForUser(Meteor.userId(), Reaction.getShopId());
+  const audience = Roles.getRolesForUser(Reaction.getUserId(), Reaction.getShopId());
   const settings = Reaction.Apps({ provides: "settings", enabled: true, audience }) || [];
 
   const dashboard = Reaction.Apps({ provides: "dashboard", enabled: true, audience })

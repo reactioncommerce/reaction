@@ -4,6 +4,7 @@ import { Factory } from "meteor/dburles:factory";
 import { Roles } from "meteor/alanning:roles";
 import { Translations } from "/lib/collections";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
+import ReactionError from "@reactioncommerce/reaction-error";
 import { expect } from "meteor/practicalmeteor:chai";
 import { sinon } from "meteor/practicalmeteor:sinon";
 import Fixtures from "/imports/plugins/core/core/server/fixtures";
@@ -26,7 +27,7 @@ describe("i18n methods", function () {
       sandbox.stub(Roles, "userIsInRole", () => false);
       const removeTranslationSpy = sandbox.spy(Translations, "remove");
       const importTranslationSpy = sandbox.spy(Reaction.Importer, "translation");
-      expect(() => Meteor.call("i18n/flushTranslations")).to.throw(Meteor.Error, /Access Denied/);
+      expect(() => Meteor.call("i18n/flushTranslations")).to.throw(ReactionError, /Access Denied/);
       expect(removeTranslationSpy).to.not.have.been.called;
       expect(importTranslationSpy).to.not.have.been.called;
     });

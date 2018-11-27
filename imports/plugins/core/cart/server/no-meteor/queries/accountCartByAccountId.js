@@ -1,4 +1,4 @@
-import { Meteor } from "meteor/meteor";
+import ReactionError from "@reactioncommerce/reaction-error";
 
 /**
  * @name accountCartByAccountId
@@ -16,14 +16,14 @@ export default async function accountCartByAccountId(context, { accountId, shopI
   const { Cart } = collections;
 
   if (accountId !== contextAccountId && !userHasPermission(["owner", "admin"], shopId)) {
-    throw new Meteor.Error("access-denied", "Access Denied");
+    throw new ReactionError("access-denied", "Access Denied");
   }
 
   if (!accountId) {
-    throw new Meteor.Error("invalid-param", "You must provide accountId");
+    throw new ReactionError("invalid-param", "You must provide accountId");
   }
   if (!shopId) {
-    throw new Meteor.Error("invalid-param", "You must provide shopId");
+    throw new ReactionError("invalid-param", "You must provide shopId");
   }
 
   return Cart.findOne({ accountId, shopId });

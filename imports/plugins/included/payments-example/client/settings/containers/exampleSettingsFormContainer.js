@@ -51,12 +51,11 @@ class ExampleSettingsFormContainer extends Component {
   }
 
   render() {
-    const { settingsKey } = this.props.packageData.registry[0];
     return (
       <ExampleSettingsForm
         onChange={this.handleChange}
         onSubmit={this.handleSubmit}
-        settings={this.props.packageData.settings[settingsKey]}
+        settings={this.props.packageData.settings}
       />
     );
   }

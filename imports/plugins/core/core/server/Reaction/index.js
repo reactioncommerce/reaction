@@ -12,9 +12,11 @@ import setDomain from "./setDomain";
 import setShopName from "./setShopName";
 import * as Collections from "/lib/collections";
 import * as Schemas from "/lib/collections/schemas";
+import * as accountUtils from "./accountUtils";
 
 export default {
   ...Core,
+  ...accountUtils,
   addRolesToGroups,
   assignOwnerRoles,
   Collections,

@@ -10,11 +10,22 @@ import { Roles } from "meteor/alanning:roles";
 import { EJSON } from "meteor/ejson";
 import * as Collections from "/lib/collections";
 import ConnectionDataStore from "/imports/plugins/core/core/server/util/connectionDataStore";
+import {
+  customPublishedProductFields,
+  customPublishedProductVariantFields,
+  functionsByType,
+  mutations,
+  paymentMethods,
+  queries,
+  resolvers,
+  schemas
+} from "../no-meteor/pluginRegistration";
 import createGroups from "./createGroups";
 import processJobs from "./processJobs";
 import sendVerificationEmail from "./sendVerificationEmail";
 import { registerTemplate } from "./templates";
 import { AbsoluteUrlMixin } from "./absoluteUrl";
+import { getUserId } from "./accountUtils";
 
 /**
  * @file Server core methods
@@ -71,6 +82,53 @@ export default {
   Packages: {},
 
   registerPackage(packageInfo) {
+    // Mutate globals with package info
+    if (packageInfo.graphQL) {
+      if (packageInfo.graphQL.resolvers) {
+        merge(resolvers, packageInfo.graphQL.resolvers);
+      }
+      if (packageInfo.graphQL.schemas) {
+        schemas.push(...packageInfo.graphQL.schemas);
+      }
+    }
+
+    if (packageInfo.mutations) {
+      merge(mutations, packageInfo.mutations);
+    }
+
+    if (packageInfo.queries) {
+      merge(queries, packageInfo.queries);
+    }
+
+    if (packageInfo.functionsByType) {
+      Object.keys(packageInfo.functionsByType).forEach((type) => {
+        if (!Array.isArray(functionsByType[type])) {
+          functionsByType[type] = [];
+        }
+        functionsByType[type].push(...packageInfo.functionsByType[type]);
+      });
+    }
+
+    if (packageInfo.paymentMethods) {
+      for (const paymentMethod of packageInfo.paymentMethods) {
+        paymentMethods[paymentMethod.name] = {
+          ...paymentMethod,
+          pluginName: packageInfo.name
+        };
+      }
+    }
+
+    if (packageInfo.catalog) {
+      const { publishedProductFields, publishedProductVariantFields } = packageInfo.catalog;
+      if (Array.isArray(publishedProductFields)) {
+        customPublishedProductFields.push(...publishedProductFields);
+      }
+      if (Array.isArray(publishedProductVariantFields)) {
+        customPublishedProductVariantFields.push(...publishedProductVariantFields);
+      }
+    }
+
+    // Save the package info
     this.Packages[packageInfo.name] = packageInfo;
     const registeredPackage = this.Packages[packageInfo.name];
     return registeredPackage;
@@ -99,7 +157,7 @@ export default {
     const groupPermissions = group.permissions;
 
     // granting invitation right for user with `owner` role in a shop
-    if (this.hasPermission(["owner"], Meteor.userId(), group.shopId)) {
+    if (this.hasPermission(["owner"], getUserId(), group.shopId)) {
       return true;
     }
 
@@ -123,11 +181,11 @@ export default {
    * @memberof Core
    * @summary server permissions checks hasPermission exists on both the server and the client.
    * @param {String | Array} checkPermissions -String or Array of permissions if empty, defaults to "admin, owner"
-   * @param {String} userId - userId, defaults to Meteor.userId()
+   * @param {String} userId - userId, defaults to logged in userId
    * @param {String} checkGroup group - default to shopId
    * @return {Boolean} Boolean - true if has permission
    */
-  hasPermission(checkPermissions, userId = Meteor.userId(), checkGroup = this.getShopId()) {
+  hasPermission(checkPermissions, userId = getUserId(), checkGroup = this.getShopId()) {
     // check(checkPermissions, Match.OneOf(String, Array)); check(userId, String); check(checkGroup,
     // Match.Optional(String));
     let permissions;
@@ -192,11 +250,11 @@ export default {
    * @method
    * @memberof Core
    * @param  {array} roles an array of roles to check. Will return a shopId if the user has _any_ of the roles
-   * @param  {string} [userId=Meteor.userId()] Optional userId, defaults to Meteor.userId()
+   * @param  {string} userId Optional userId, defaults to logged in userId
    *                                           Must pass this.userId from publications to avoid error!
    * @return {array} Array of shopIds that the user has at least one of the given set of roles for
    */
-  getShopsWithRoles(roles, userId = Meteor.userId()) {
+  getShopsWithRoles(roles, userId = getUserId()) {
     // Owner permission for a shop superceeds grantable permissions, so we always check for owner permissions as well
     roles.push("owner");
 
@@ -252,9 +310,10 @@ export default {
    */
   getPrimaryShopId() {
     const primaryShop = this.getPrimaryShop();
-    if (primaryShop) {
-      return primaryShop._id;
-    }
+
+    if (!primaryShop) { return null; }
+
+    return primaryShop._id;
   },
 
   /**
@@ -372,15 +431,23 @@ export default {
 
     try {
       // otherwise, find the shop by user settings
-      shopId = this.getUserShopId(Meteor.userId());
-    } catch (e) {
-      // `Meteor.userId` will raise an error when invoked outside of a method
+      shopId = this.getUserShopId(getUserId());
+    } catch (_e) {
+      // an error when invoked outside of a method
       // call or publication, i.e., at startup. That's ok here.
     }
 
     // if still not found, look up the shop by domain
     if (!shopId) {
       shopId = this.getShopIdByDomain();
+    }
+
+    // use the primary shop id by default
+    if (!shopId) {
+      const domain = this.connectionDomain();
+      Logger.warn(`No shop matching domain '${domain}'. Defaulting to Primary Shop.`);
+
+      shopId = this.getPrimaryShopId();
     }
 
     // store the value for faster responses
@@ -395,6 +462,7 @@ export default {
    * @memberof Core
    * @summary allows the client to trigger an uncached lookup of the shopId.
    *          this is useful when a user switches shops.
+   * @return {undefined}
    */
   resetShopId() {
     ConnectionDataStore.clear("shopId");
@@ -405,7 +473,7 @@ export default {
    * @summary Whether the current shop is the Primary Shop (vs a Merchant Shop)
    * @method
    * @memberof Core
-   * @return {Boolean}
+   * @return {Boolean} whether shop is flagged as primary
    */
   isShopPrimary() {
     return this.getShopId() === this.getPrimaryShopId();
@@ -415,10 +483,20 @@ export default {
    * @name getShopIdByDomain
    * @method
    * @memberof Core
-   * @summary returns the shop which should be used given the current domain
+   * @summary searches for a shop which should be used given the current domain
+   * @return {StringId} shopId
    */
   getShopIdByDomain() {
     const domain = this.getDomain();
+    const primaryShop = this.getPrimaryShop();
+
+    // in cases where the domain could match multiple shops, we first check
+    // whether the primaryShop matches the current domain. If so, we give it
+    // priority
+    if (primaryShop && Array.isArray(primaryShop.domains) && primaryShop.domains.includes(domain)) {
+      return primaryShop._id;
+    }
+
     const shop = Shops.find({
       domains: domain
     }, {
@@ -437,7 +515,8 @@ export default {
    * @memberof Core
    * @summary Get a user's shop ID, as stored in preferences
    * @todo This should intelligently find the correct default shop Probably whatever the main shop is or marketplace
-   * @return {StringId}        active shop ID
+   * @param {String} userId (probably logged in userId)
+   * @return {StringId} active shop ID
    */
   getUserShopId(userId) {
     check(userId, String);
@@ -732,7 +811,7 @@ export default {
     // for each shop, we're loading packages in a unique registry
     // Object.keys(pkgConfigs).forEach((pkgName) => {
     for (const packageName in packages) {
-      // Guard to prvent unexpected `for in` behavior
+      // Guard to prevent unexpected `for in` behavior
       if ({}.hasOwnProperty.call(packages, packageName)) {
         const config = packages[packageName];
         this.assignOwnerRoles(shopId, packageName, config.registry);

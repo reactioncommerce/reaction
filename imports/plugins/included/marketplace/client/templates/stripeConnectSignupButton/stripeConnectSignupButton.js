@@ -10,7 +10,7 @@ Template.stripeConnectSignupButton.events({
     const primaryShopId = Reaction.getPrimaryShopId();
     const primaryStripePackage = Reaction.getPackageSettingsWithOptions({
       shopId: primaryShopId,
-      name: "reaction-stripe",
+      name: "reaction-marketplace",
       enabled: true
     });
 

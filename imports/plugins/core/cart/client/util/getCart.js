@@ -1,4 +1,3 @@
-import { Meteor } from "meteor/meteor";
 import { Reaction } from "/client/api";
 import { Accounts, Cart } from "/lib/collections";
 import { getAnonymousCartsReactive } from "./anonymousCarts";
@@ -8,7 +7,7 @@ import { getAnonymousCartsReactive } from "./anonymousCarts";
  * @returns {Object|null} The cart document or null
  */
 export default function getCart() {
-  const userId = Meteor.userId();
+  const userId = Reaction.getUserId();
   const account = (userId && Accounts.findOne({ userId })) || null;
 
   const shopId = Reaction.getCartShopId();

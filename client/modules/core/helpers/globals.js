@@ -1,10 +1,5 @@
 import _ from "lodash";
 import { Session } from "meteor/session";
-import { Meteor } from "meteor/meteor";
-import { Roles } from "meteor/alanning:roles";
-
-/* eslint "no-extend-native": [2, {"exceptions": ["String"]}] */
-/* eslint "no-alert": 0 */
 
 /**
  * @name toggleSession
@@ -55,29 +50,4 @@ export function getCardType(cardNumber) {
     return "discover";
   }
   return "";
-}
-
-/**
- * @name getGuestLoginState
- * @method
- * @memberof Helpers
- * @todo These should all be removed. PR's happily accepted.
- * @summary Determines if a guest checkout is enabled and the login state for users
- * @return {Boolean} true if authenticated user
- */
-export function getGuestLoginState() {
-  if (Meteor.userId() === "string" && this.getShopId() && this.allowGuestCheckout()) {
-    const isGuestFlow = Session.equals("guestCheckoutFlow", true);
-    const isGuest = Roles.userIsInRole(Meteor.userId(), "guest", this.getShopId());
-    const isAnonymous = Roles.userIsInRole(Meteor.userId(), "anonymous", this.getShopId());
-    if (!isGuestFlow && !isGuest && isAnonymous) {
-      return false;
-    } else if (!isGuestFlow && isGuest && !isAnonymous) {
-      return true;
-    }
-  } else if (Session.equals("guestCheckoutFlow", true) && _.pluck(Meteor.user()
-    .emails, "address")) {
-    return true;
-  }
-  return false;
 }

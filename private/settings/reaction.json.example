@@ -134,7 +134,6 @@
                         "version": "v2.1",
                         "profilePage": "",
                         "enabled": true,
-                        "appSecret": ""
                     },
                     "twitter": {
                         "enabled": true

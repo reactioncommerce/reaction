@@ -7,6 +7,7 @@ import { Components, registerComponent, composeWithTracker } from "@reactioncomm
 import { Reaction, Router } from "/client/api";
 import { getTagIds } from "/lib/selectors/tags";
 import { TagHelpers } from "/imports/plugins/core/ui-tagnav/client/helpers";
+import getTagSuggestions from "/imports/plugins/core/ui-tagnav/client/util/getTagSuggestions";
 import { Tags } from "/lib/collections";
 import TagNav from "../components/tagNav";
 
@@ -63,9 +64,6 @@ const TagNavHelpers = {
   },
   tagById(tagId, tags) {
     return _.find(tags, (tag) => tag._id === tagId);
-  },
-  updateSuggestions(suggestion, excludeTagsObj) {
-    return TagHelpers.updateSuggestions(suggestion, excludeTagsObj);
   },
   hasSubTags(tagId, tags) {
     const foundTag = this.tagById(tagId, tags);
@@ -236,8 +234,8 @@ const wrapComponent = (Comp) => (
       });
     }
 
-    handleGetSuggestions = (suggestionUpdateRequest) => {
-      const suggestions = TagNavHelpers.updateSuggestions(
+    handleGetSuggestions = async (suggestionUpdateRequest) => {
+      const suggestions = await getTagSuggestions(
         suggestionUpdateRequest.value,
         { excludeTags: this.state.tagIds }
       );

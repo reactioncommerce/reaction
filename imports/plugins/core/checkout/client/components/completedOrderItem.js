@@ -1,6 +1,6 @@
-import React from "react";
+import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { getPrimaryMediaForOrderItem } from "/lib/api";
+import { getPrimaryMediaForItem } from "/lib/api";
 import { Components, registerComponent } from "@reactioncommerce/reaction-components";
 
 /**
@@ -10,25 +10,38 @@ import { Components, registerComponent } from "@reactioncommerce/reaction-compon
  * @property {Object} item - An object representing each item on the order
  * @return {Node} React node containing each line item on an order
  */
-const CompletedOrderItem = ({ item }) => (
-  <div className="row order-details-line">
-    <div className="order-details-media">
-      <Components.ProductImage
-        item={item}
-        displayMedia={getPrimaryMediaForOrderItem}
-        size="small"
-        badge={false}
-      />
-    </div>
-    <div className="order-details-title">{item.title}<p>{item.variantTitle}</p></div>
-    <div className="order-details-quantity"><span>{item.quantity}</span></div>
-    <div className="order-details-price"><Components.Currency amount={item.priceWhenAdded.amount} /></div>
-  </div>
-);
+class CompletedOrderItem extends Component {
+  static propTypes = {
+    item: PropTypes.shape({
+      price: PropTypes.shape({
+        amount: PropTypes.number.isRequired
+      }).isRequired,
+      quantity: PropTypes.number.isRequired,
+      title: PropTypes.string.isRequired,
+      variantTitle: PropTypes.string.isRequired
+    })
+  };
 
-CompletedOrderItem.propTypes = {
-  item: PropTypes.object
-};
+  render() {
+    const { item } = this.props;
+
+    return (
+      <div className="row order-details-line">
+        <div className="order-details-media">
+          <Components.ProductImage
+            badge={false}
+            displayMedia={getPrimaryMediaForItem}
+            item={item}
+            size="small"
+          />
+        </div>
+        <div className="order-details-title">{item.title}<p>{item.variantTitle}</p></div>
+        <div className="order-details-quantity"><span>{item.quantity}</span></div>
+        <div className="order-details-price"><Components.Currency amount={item.price.amount} /></div>
+      </div>
+    );
+  }
+}
 
 registerComponent("CompletedOrderItem", CompletedOrderItem);
 

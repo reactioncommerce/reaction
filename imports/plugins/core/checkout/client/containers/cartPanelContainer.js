@@ -1,13 +1,12 @@
 import { withProps } from "recompose";
 import { registerComponent } from "@reactioncommerce/reaction-components";
-import { $ } from "meteor/jquery";
 import { Session } from "meteor/session";
 import { Reaction } from "/client/api";
 import CartPanel from "../components/cartPanel";
 
 const handlers = {
   checkout() {
-    $("#cart-drawer-container").fadeOut();
+    document.querySelector("#cart-drawer-container").classList.remove("opened");
     Session.set("displayCart", false);
     return Reaction.Router.go("cart/checkout");
   }
