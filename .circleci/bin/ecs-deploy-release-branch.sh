@@ -6,6 +6,7 @@ sudo pip3 install awscli
 export ENVIRONMENT=staging
 export CLUSTER=core
 export core_CIRCLE_SHA1=$CIRCLE_SHA1
+echo core_CIRCLE_SHA1=${core_CIRCLE_SHA1}
 
 PROPEL_CONFIG_FILE="propel.yaml"
 if [ ! -f ${PROPEL_CONFIG_FILE} ]; then
@@ -36,4 +37,5 @@ sudo mv propel /usr/local/bin/propel
 sudo chmod +x /usr/local/bin/propel
 
 RELEASE_DESCRIPTION="CircleCI build URL: ${CIRCLE_BUILD_URL}"
-propel release create --deploy --env $ENVIRONMENT --cluster $CLUSTER --descr "${RELEASE_DESCRIPTION}" 
+echo Running propel release create --deploy --env $ENVIRONMENT --cluster $CLUSTER --descr "${RELEASE_DESCRIPTION}" --verbose
+propel release create --deploy --env $ENVIRONMENT --cluster $CLUSTER --descr "${RELEASE_DESCRIPTION}" --verbose
