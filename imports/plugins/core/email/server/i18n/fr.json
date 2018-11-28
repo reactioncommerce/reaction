@@ -81,7 +81,6 @@
           "saveFailed": "Impossible de sauvegarder les paramètres de messagerie. {{error}}",
           "cantSendEmail": "Erreur de serveur: Vous ne pouvez pas envoyer une notification par e-mail.",
           "emailSent": "notification par courrier électronique envoyé.",
-          "addOrderEmailFailed": "L'ajout d'un e-mail à la commande a échoué",
           "addCartEmailFailed": "L'ajout d'un e-mail au panier a échoué"
         }
       }

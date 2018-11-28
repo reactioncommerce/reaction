@@ -1,3 +1,4 @@
+import Factory from "/imports/test-utils/helpers/factory";
 import mockContext from "/imports/test-utils/helpers/mockContext";
 import reconcileCartsKeepAnonymousCart from "./reconcileCartsKeepAnonymousCart";
 
@@ -6,24 +7,7 @@ const accountId = "accountId";
 const accountCart = { _id: "ACCOUNT_CART", accountId };
 const accountCartSelector = { accountId };
 const anonymousCartSelector = { _id: "123" };
-const items = [
-  {
-    _id: "CartItemID",
-    addedAt: new Date("2018-01-01T00:00:00.000"),
-    createdAt: new Date("2018-01-01T00:00:00.000"),
-    productId: "productId",
-    quantity: 1,
-    shopId: "shopId",
-    title: "TITLE",
-    updatedAt: new Date("2018-01-01T00:00:00.000"),
-    variantId: "variantId",
-    isTaxable: false,
-    priceWhenAdded: {
-      amount: 9.99,
-      currencyCode: "USD"
-    }
-  }
-];
+const items = [Factory.CartItem.makeOne()];
 
 test("overwrites account cart items, deletes anonymous cart, and returns updated account cart", async () => {
   const result = await reconcileCartsKeepAnonymousCart({

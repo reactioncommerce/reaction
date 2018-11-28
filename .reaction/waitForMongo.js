@@ -1,3 +1,4 @@
+const url = require("url");
 const { MongoClient } = require("mongodb");
 
 /**
@@ -10,7 +11,7 @@ function defaultOut(message) {
 }
 
 /**
- * Run a check/wait/retry loop until a provided function returns a 
+ * Run a check/wait/retry loop until a provided function returns a
  * promise that resolves.
  * @param {Object} options - Named options object
  * @param {function()} options.out Function to show progress
@@ -73,13 +74,12 @@ async function checkWaitRetry({
 /**
  * Connect to mongodb
  *
- * @param {string} mongoUrl URL to mongodb server and database name
+ * @param {object} parsedUrl URL to mongodb server and database name, parsed
  * @returns {Promise} a promise resolving to the mongodb db instance
  */
-async function connect(mongoUrl) {
-  const lastSlash = mongoUrl.lastIndexOf("/");
-  const dbUrl = mongoUrl.slice(0, lastSlash);
-  const dbName = mongoUrl.slice(lastSlash + 1);
+async function connect(parsedUrl) {
+  const dbUrl = url.format({ ...parsedUrl, pathname: "" });
+  const dbName = parsedUrl.pathname.slice(1);
 
   const client = await MongoClient.connect(
     dbUrl,
@@ -92,15 +92,16 @@ async function connect(mongoUrl) {
  * Runs the mongo command replSetInitiate,
  * which we need for the oplog for meteor real-time
  *
- * @param {objecct} db connected mongo db instance
+ * @param {object} db connected mongo db instance
+ * @param {string} parsedUrl URL to mongodb, parsed to an object
  * @returns {Promise} indication of success/failure
  */
-async function initReplicaSet(db) {
+async function initReplicaSet(db, parsedUrl) {
   try {
     await db.admin().command({
       replSetInitiate: {
         _id: "rs0",
-        members: [{ _id: 0, host: "localhost:27017" }]
+        members: [{ _id: 0, host: parsedUrl.hostname }]
       }
     });
   } catch (error) {
@@ -133,11 +134,12 @@ async function main() {
   if (!MONGO_URL) {
     throw new Error("You must set MONGO_URL environment variable.");
   }
+  const parsedUrl = url.parse(MONGO_URL);
   const db = await checkWaitRetry({
     timeoutMessage: "ERROR: MongoDB not reachable in time.",
-    check: connect.bind(null, MONGO_URL)
+    check: connect.bind(null, parsedUrl)
   });
-  await initReplicaSet(db);
+  await initReplicaSet(db, parsedUrl);
   await checkWaitRetry({
     timeoutMessage: "ERROR: MongoDB replica set not ready in time.",
     check: checkReplicaSetStatus.bind(null, db)

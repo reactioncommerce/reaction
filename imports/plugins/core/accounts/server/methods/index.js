@@ -9,7 +9,6 @@ import groupMethods from "./group";
 import inviteShopMember from "./inviteShopMember";
 import inviteShopOwner from "./inviteShopOwner";
 import markAddressValidationBypassed from "./markAddressValidationBypassed";
-import markTaxCalculationFailed from "./markTaxCalculationFailed";
 import removeEmailAddress from "./removeEmailAddress";
 import removeUserPermissions from "./removeUserPermissions";
 import sendResetPasswordEmail from "./sendResetPasswordEmail";
@@ -45,7 +44,6 @@ export default {
   "accounts/inviteShopMember": inviteShopMember,
   "accounts/inviteShopOwner": inviteShopOwner,
   "accounts/markAddressValidationBypassed": markAddressValidationBypassed,
-  "accounts/markTaxCalculationFailed": markTaxCalculationFailed,
   "accounts/removeEmailAddress": removeEmailAddress,
   "accounts/removeUserPermissions": removeUserPermissions,
   "accounts/sendResetPasswordEmail": sendResetPasswordEmail,
