@@ -152,12 +152,12 @@ class SortableTable extends Component {
 
 
   /**
-   * @name renderData()
+   * @name renderMeteorData()
    * @method
    * @summary Take data from getMeteorData() and filter if needed, or spit out raw if no filter
    * @returns {Object} data filed (string), translated header (string), and minWidth (number / undefined)
    */
-  renderData() {
+  renderMeteorData() {
     const { filteredFields, filterType } = this.props;
     const { filterInput } = this.state;
 
@@ -173,6 +173,28 @@ class SortableTable extends Component {
     }
 
     return originalData;
+  }
+
+  /**
+   * @name renderData()
+   * @method
+   * @summary Take data from getMeteorData() and filter if needed, or spit out raw if no filter
+   * @returns {Object} data filed (string), translated header (string), and minWidth (number / undefined)
+   */
+  renderData() {
+    const { data, filteredFields, filterType } = this.props;
+    const { filterInput } = this.state;
+
+    if (Array.isArray(data) && data.length) {
+      if (filterType === "both" || filterType === "table") {
+        const filteredData = matchSorter(data, filterInput, { keys: filteredFields });
+        return filteredData;
+      }
+
+      return data;
+    }
+
+    return;
   }
 
 
@@ -291,7 +313,7 @@ class SortableTable extends Component {
         <ReactTable
           className={otherProps.tableClassName || defaultClassName}
           columns={this.renderColumns()}
-          data={otherProps.data || this.renderData()}
+          data={this.renderData() || this.renderMeteorData()}
           defaultFilterMethod={this.customFilter}
           defaultPageSize={otherProps.defaultPageSize}
           filterable={this.renderColumnFilter()}
