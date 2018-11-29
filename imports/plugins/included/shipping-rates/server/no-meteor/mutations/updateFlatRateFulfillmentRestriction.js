@@ -32,7 +32,6 @@ export default async function updateFlatRateFulfillmentRestrictionMutation(conte
     shopId
   }, {
     $set: {
-      _id: restrictionId,
       ...restriction
     }
   });
