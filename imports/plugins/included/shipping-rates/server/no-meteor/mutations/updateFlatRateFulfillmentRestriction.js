@@ -37,5 +37,11 @@ export default async function updateFlatRateFulfillmentRestrictionMutation(conte
   });
   if (matchedCount === 0) throw new ReactionError("not-found", "Not found");
 
-  return { restriction };
+  return {
+    restriction: {
+      _id: restrictionId,
+      shopId,
+      ...restriction
+    }
+  };
 }
