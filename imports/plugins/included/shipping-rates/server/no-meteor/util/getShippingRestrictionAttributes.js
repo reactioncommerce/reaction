@@ -43,9 +43,13 @@ export default async function getShippingRestrictionAttributes(context, cartWith
     });
 
     // Fetch custom attributes
-    getFunctionsOfType("addShippingRestrictionCustomAttributes").forEach((customAttributesFunc) => {
-      customAttributesFunc(flattenProduct, productAndVariants);
-    });
+    // We need to run each of these functions in a series, rather than in parallel, because
+    // we are mutating the same object on each pass. It is recommended to disable `no-await-in-loop`
+    // eslint rules when the output of one iteration might be used as input in another iteration, such as this case here.
+    // See https://eslint.org/docs/rules/no-await-in-loop#when-not-to-use-it
+    for (const customAttributesFunc of getFunctionsOfType("addShippingRestrictionCustomAttributes")) {
+      await customAttributesFunc(flattenProduct, productAndVariants); // eslint-disable-line
+    }
 
     products.push(flattenProduct);
   }
