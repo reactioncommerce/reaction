@@ -1,20 +1,20 @@
 ####
 # Custom data types for FlatRateFulfillmentRestriction data
 ####
-type attributeRestrictions {
+type AttributeRestrictions {
   property: String
   value: String
   propertyType: String
   operator: String
 }
 
-type destinationRestrictions {
+type DestinationRestrictions {
   country: [String]
   region: [String]
   postal: [String]
 }
 
-enum restrictionTypeEnum {
+enum RestrictionTypeEnum {
   allow
   deny
 }
@@ -23,14 +23,14 @@ enum FlatRateFulfillmentRestrictionSortByField {
   createdAt
 }
 
-input attributeRestrictionsInput {
+input AttributeRestrictionsInput {
   property: String
   value: String
   propertyType: String
   operator: String
 }
 
-input destinationRestrictionsInput {
+input DestinationRestrictionsInput {
   country: [String]
   region: [String]
   postal: [String]
@@ -81,13 +81,13 @@ type FlatRateFulfillmentRestriction implements Node {
   """
   The type of this restriction. Allowed types are "allow" or "deny".
   """
-  type: restrictionTypeEnum!
+  type: RestrictionTypeEnum!
 
   "Attribute restrictions."
-  attributes: [attributeRestrictions]
+  attributes: [AttributeRestrictions]
 
   "Destination restrictions."
-  destination: destinationRestrictions
+  destination: DestinationRestrictions
 }
 
 
@@ -108,13 +108,13 @@ input FlatRateFulfillmentRestrictionInput {
   """
   The type of this restriction. Allowed types are "allow" or "deny".
   """
-  type: restrictionTypeEnum!
+  type: RestrictionTypeEnum!
 
   "Attribute restrictions."
-  attributes: [attributeRestrictionsInput]
+  attributes: [AttributeRestrictionsInput]
 
   "Destination restrictions."
-  destination: destinationRestrictionsInput
+  destination: DestinationRestrictionsInput
 }
 
 "Input for the `CreateFlatRateFulfillmentRestriction` mutation"
