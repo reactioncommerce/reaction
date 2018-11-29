@@ -24,7 +24,7 @@ export default async function getFulfillmentMethodsWithQuotes(fulfillmentGroup, 
 
   // Try once more.
   if (retrialTargets.length > 0) {
-    promises = funcs.map((rateFunction) => rateFunction(context, fulfillmentGroup, [rates, retrialTargets]));
+    promises = funcs.map((rateFunction) => rateFunction(context, fulfillmentGroup, cartWithSummary, [rates, retrialTargets]));
     await Promise.all(promises);
 
     if (retrialTargets.length > 0) {
