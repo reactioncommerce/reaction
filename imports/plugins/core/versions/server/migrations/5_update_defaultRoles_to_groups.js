@@ -72,7 +72,7 @@ Migrations.add({
 
     // finds all accounts with a permission set and assigns them to matching group
     function updateAccountsInGroup({ shopId, permissions = [], groupId }) {
-      if (!groupId) return null;
+      if (!groupId) return [];
       const query = { [`roles.${shopId}`]: { $size: permissions.length, $all: permissions } };
       const matchingUserIds = Meteor.users.find(query).fetch().map((user) => user._id);
 
