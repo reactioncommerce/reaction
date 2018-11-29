@@ -12,8 +12,8 @@ Reaction.registerPackage({
   autoEnable: true,
   registry: [{
     route: "/account/login",
-    name: "OAuth Login",
-    label: "oauth-login",
+    name: "account/login",
+    label: "OAuth Login",
     meta: {
       noAdminControls: true,
       oauthLoginFlow: true
