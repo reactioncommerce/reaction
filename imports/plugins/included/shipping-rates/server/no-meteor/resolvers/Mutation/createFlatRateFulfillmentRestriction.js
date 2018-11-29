@@ -1,4 +1,5 @@
 import { decodeShopOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/shop";
+import { decodeFulfillmentMethodOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/fulfillment";
 import createFlatRateFulfillmentRestrictionMutation from "../../mutations/createFlatRateFulfillmentRestriction";
 
 /**
@@ -18,6 +19,13 @@ export default async function createFlatRateFulfillmentRestriction(parentResult,
   const { clientMutationId = null, restriction, shopId: opaqueShopId } = input;
 
   const shopId = decodeShopOpaqueId(opaqueShopId);
+
+  let decodedMethodIds = [];
+  if (restriction.methodIds && Array.isArray(restriction.methodIds)) {
+    decodedMethodIds = restriction.methodIds.map((methodId) => decodeFulfillmentMethodOpaqueId(methodId));
+  }
+
+  restriction.methodIds = decodedMethodIds;
 
   const { restriction: insertedRestriction } = await createFlatRateFulfillmentRestrictionMutation(context, {
     restriction,
