@@ -61,7 +61,7 @@ extend type Query {
     last: ConnectionLimitInt,
     sortOrder: SortOrder = desc,
     sortBy: FlatRateFulfillmentRestrictionSortByField = createdAt
-  ): FlatRateFulfillmentRestrictionConnection!
+  ): FlatRateFulfillmentRestriction!
 }
 
 type FlatRateFulfillmentRestrictionConnection {

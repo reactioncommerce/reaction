@@ -18,7 +18,7 @@ export default async function getFlatRateFulfillmentRestriction(context, { restr
     throw new ReactionError("access-denied", "Access Denied");
   }
 
-  return FlatRateFulfillmentRestrictions.find({
+  return FlatRateFulfillmentRestrictions.findOne({
     _id: restrictionId,
     shopId
   });
