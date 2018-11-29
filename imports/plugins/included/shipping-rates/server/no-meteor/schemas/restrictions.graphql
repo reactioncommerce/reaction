@@ -52,16 +52,7 @@ extend type Query {
     sortBy: FlatRateFulfillmentRestrictionSortByField = createdAt
   ): FlatRateFulfillmentRestrictionConnection!
 
-  getFlatRateFulfillmentRestriction(
-    shopId: ID!
-    restrictionId: ID!
-    after: ConnectionCursor,
-    before: ConnectionCursor,
-    first: ConnectionLimitInt,
-    last: ConnectionLimitInt,
-    sortOrder: SortOrder = desc,
-    sortBy: FlatRateFulfillmentRestrictionSortByField = createdAt
-  ): FlatRateFulfillmentRestriction!
+  getFlatRateFulfillmentRestriction(restrictionId: ID!, shopId: ID!): FlatRateFulfillmentRestriction
 }
 
 type FlatRateFulfillmentRestrictionConnection {
