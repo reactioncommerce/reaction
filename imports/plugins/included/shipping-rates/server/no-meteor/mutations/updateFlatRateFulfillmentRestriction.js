@@ -3,6 +3,7 @@ import ReactionError from "@reactioncommerce/reaction-error";
 import restrictionSchema from "../util/restrictionSchema";
 
 const inputSchema = new SimpleSchema({
+  restrictionId: String,
   restriction: restrictionSchema,
   shopId: String
 });
