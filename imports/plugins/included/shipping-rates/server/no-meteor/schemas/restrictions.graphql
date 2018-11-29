@@ -75,7 +75,7 @@ type FlatRateFulfillmentRestriction implements Node {
   "The shop ID"
   shopId: ID!
 
-  "Method IDs to apply this restriction to."
+  "Method IDs to apply this restriction to. If none, applies to all methods as a universal restriction."
   methodIds: [String]
 
   """
