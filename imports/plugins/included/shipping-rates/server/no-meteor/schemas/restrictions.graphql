@@ -84,10 +84,10 @@ type FlatRateFulfillmentRestriction implements Node {
   """
   type: RestrictionTypeEnum!
 
-  "Attribute restrictions."
+  "Attribute restrictions. Multiple attribute restrictions are evaluated with AND. If both destination and attribute restrictions are present, they evaluate with AND."
   attributes: [AttributeRestrictions]
 
-  "Destination restrictions."
+  "Destination restrictions. If multiple destination restrictions are present, the most localized is the only one evaluated (i.e. evaluate postal if present, then region if present, then country). If both destination and attribute restrictions are present, they evaluate with AND."
   destination: DestinationRestrictions
 }
 
@@ -111,10 +111,10 @@ input FlatRateFulfillmentRestrictionInput {
   """
   type: RestrictionTypeEnum!
 
-  "Attribute restrictions."
+  "Attribute restrictions. Multiple attribute restrictions are evaluated with AND. If both destination and attribute restrictions are present, they evaluate with AND."
   attributes: [AttributeRestrictionsInput]
 
-  "Destination restrictions."
+  "Destination restrictions. If multiple destination restrictions are present, the most localized is the only one evaluated (i.e. evaluate postal if present, then region if present, then country). If both destination and attribute restrictions are present, they evaluate with AND."
   destination: DestinationRestrictionsInput
 }
 
