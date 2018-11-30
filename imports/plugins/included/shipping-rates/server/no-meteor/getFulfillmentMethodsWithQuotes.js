@@ -27,8 +27,6 @@ export default async function getFulfillmentMethodsWithQuotes(context, commonOrd
     fileName: "hooks.js"
   };
 
-  console.log("----------------------------- totals", totals);
-
 
   if (retrialTargets.length > 0) {
     const isNotAmongFailedRequests = retrialTargets.every((target) =>
