@@ -9,6 +9,7 @@ import MUIListItemIcon from "@material-ui/core/ListItemIcon";
 import MUIDivider from "@material-ui/core/Divider";
 import MUIListItemText from "@material-ui/core/ListItemText";
 import MUIDrawer from "@material-ui/core/Drawer";
+import ShopLogoWithData from "../ShopLogoWithData";
 import {
   applyTheme,
   addTypographyStyles
@@ -53,7 +54,7 @@ const ListItemText = styledMUI(MUIListItemText)`
   ${addTypographyStyles("SidebarMenu", "bodyText")};
 `;
 
-const CompanyBranding = styled.div`
+const LogoArea = styled.div`
   display: flex;
   justify-content: center;
   padding-top: ${applyTheme("Sidebar.logoPaddingTop")};
@@ -68,14 +69,6 @@ const StyledNav = styled.nav`
   display: flex;
   flex-direction: column;
   height: 100%;
-`;
-
-const CompanyName = styled.div`
-  ${addTypographyStyles("SidebarMenu", "titleText")};
-  color: ${applyTheme("Sidebar.companyNameColor")};
-  font-weight: bold;
-  margin: 0;
-  padding: 0;
 `;
 
 const activeClassName = "nav-item-active";
@@ -95,7 +88,7 @@ export default class Sidebar extends Component {
     routes: PropTypes.array
   }
 
-  renderNavigationMenuItems = (settings = false) => {
+  renderNavigationMenuItems(settings = false) {
     const { routes } = this.props;
     const filteredRoutes = settings ?
       routes.filter(({ isNavigationLink, isSetting }) => isNavigationLink && isSetting) :
@@ -121,14 +114,14 @@ export default class Sidebar extends Component {
     );
   }
 
-  renderSidebarMenu = () => {
+  render() {
     const { isMobile, isSidebarOpen, onDrawerClose } = this.props;
 
     const menu = (
       <StyledNav>
-        <CompanyBranding>
-          <CompanyName variant="h5">Reaction</CompanyName>
-        </CompanyBranding>
+        <LogoArea>
+          <ShopLogoWithData />
+        </LogoArea>
         <List>
           {this.renderNavigationMenuItems()}
           <Divider component="li" />
@@ -152,17 +145,11 @@ export default class Sidebar extends Component {
         </Drawer>
       );
     }
+
     return (
       <Drawer variant="persistent" open={isSidebarOpen}>
         {menu}
       </Drawer>
-    );
-  };
-  render() {
-    return (
-      <Fragment>
-        {this.renderSidebarMenu()}
-      </Fragment>
     );
   }
 }

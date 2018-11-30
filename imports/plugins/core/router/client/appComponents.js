@@ -28,6 +28,7 @@ import RegionInput from "@reactioncommerce/components/RegionInput/v1";
 import Select from "@reactioncommerce/components/Select/v1";
 import SelectableItem from "@reactioncommerce/components/SelectableItem/v1";
 import SelectableList from "@reactioncommerce/components/SelectableList/v1";
+import ShopLogo from "@reactioncommerce/components/ShopLogo/v1";
 import TextInput from "@reactioncommerce/components/TextInput/v1";
 
 export default {
@@ -61,5 +62,6 @@ export default {
   spinner,
   SelectableItem,
   SelectableList,
+  ShopLogo,
   TextInput
 };
