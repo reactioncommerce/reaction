@@ -20,6 +20,7 @@ const CommonOrderItem = new SimpleSchema({
     optional: true
   },
   price: Money,
+  productId: String,
   quantity: {
     type: SimpleSchema.Integer,
     min: 0

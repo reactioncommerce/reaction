@@ -13,6 +13,7 @@ export default async function xformOrderGroupToCommonOrder({ billingAddress = nu
     isTaxable: item.isTaxable,
     parcel: item.parcel,
     price: item.price,
+    productId: item.productId,
     quantity: item.quantity,
     shopId: item.shopId,
     subtotal: {

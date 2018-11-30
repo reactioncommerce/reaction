@@ -18,6 +18,7 @@ export default async function xformCartGroupToCommonOrder(cart, group, context) 
     isTaxable: item.isTaxable,
     parcel: item.parcel,
     price: item.price,
+    productId: item.productId,
     quantity: item.quantity,
     shopId: item.shopId,
     subtotal: {
