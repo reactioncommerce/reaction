@@ -2,6 +2,7 @@ import { isEqual } from "lodash";
 import SimpleSchema from "simpl-schema";
 import ReactionError from "@reactioncommerce/reaction-error";
 import xformCartGroupToCommonOrder from "/imports/plugins/core/cart/server/no-meteor/util/xformCartGroupToCommonOrder";
+import getDiscountsTotalForCart from "/imports/plugins/core/discounts/server/no-meteor/util/getDiscountsTotalForCart";
 
 import getCartById from "../util/getCartById";
 
@@ -79,10 +80,9 @@ export default async function updateFulfillmentOptionsForGroup(context, input) {
   // Map the items onto the fulfillment groups
   fulfillmentGroup.items = fulfillmentGroup.itemIds.map((itemId) => cart.items.find((item) => item._id === itemId));
 
-  // TODO: In the future, we should update this with discounts
+  // TODO: In the future, we should update this with a discounts update
   // Discounts are calculated per cart here. This will need to be updated when we refactor discounts to go by group.
-  // We use parseInt on the discount reduction, as we store them as strings
-  const groupDiscountTotal = (cart.billing && cart.billing.filter((billingItem) => billingItem.method === "discount")).reduce((sum, billingItem) => (sum + parseInt(billingItem.amount, 10)), 0);
+  const { total: groupDiscountTotal } = await getDiscountsTotalForCart(context, cartId);
   const groupItemTotal = fulfillmentGroup.items.reduce((sum, item) => (sum + item.subtotal.amount), 0);
 
   const totals = {
