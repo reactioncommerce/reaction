@@ -121,6 +121,9 @@ type TaxSummary {
   "The time at which taxes were last calculated for the cart or order group"
   calculatedAt: DateTime!
 
+  "The name of the tax service that last calculated taxes for the cart or order group"
+  calculatedByTaxServiceName: String
+
   "A reference ID for the external system that calculated the taxes"
   referenceId: String
 

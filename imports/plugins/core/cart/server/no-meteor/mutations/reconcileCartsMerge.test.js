@@ -1,3 +1,4 @@
+import Factory from "/imports/test-utils/helpers/factory";
 import mockContext from "/imports/test-utils/helpers/mockContext";
 import reconcileCartsMerge from "./reconcileCartsMerge";
 
@@ -15,7 +16,15 @@ jest.mock("../util/addCartItems", () => jest.fn().mockImplementation(() => Promi
       title: "UPDATED TITLE",
       updatedAt: new Date("2018-01-01T00:00:00.000"),
       variantId: "variantId",
+      price: {
+        amount: 9.99,
+        currencyCode: "USD"
+      },
       priceWhenAdded: {
+        amount: 9.99,
+        currencyCode: "USD"
+      },
+      subtotal: {
         amount: 9.99,
         currencyCode: "USD"
       }
@@ -29,30 +38,33 @@ const accountId = "accountId";
 const accountCart = { _id: "ACCOUNT_CART", accountId };
 const accountCartSelector = { accountId };
 const anonymousCartSelector = { _id: "123" };
-const items = [
-  {
-    _id: "CartItemID",
-    addedAt: new Date("2018-01-01T00:00:00.000"),
-    createdAt: new Date("2018-01-01T00:00:00.000"),
-    productId: "productId",
-    quantity: 1,
-    shopId: "shopId",
-    title: "TITLE",
-    updatedAt: new Date("2018-01-01T00:00:00.000"),
-    variantId: "variantId",
-    priceWhenAdded: {
-      amount: 9.99,
-      currencyCode: "USD"
-    }
-  }
-];
+const items = [Factory.CartItem.makeOne()];
 
 test("merges anonymous cart items into account cart items, deletes anonymous cart, and returns updated account cart", async () => {
   const updatedItems = [
     {
-      ...items[0],
+      _id: "CartItemID",
+      addedAt: new Date("2018-01-01T00:00:00.000"),
+      createdAt: new Date("2018-01-01T00:00:00.000"),
+      productId: "productId",
+      quantity: 1,
+      shopId: "shopId",
       // We can tell by the title that addCartItems was called
-      title: "UPDATED TITLE"
+      title: "UPDATED TITLE",
+      updatedAt: new Date("2018-01-01T00:00:00.000"),
+      variantId: "variantId",
+      price: {
+        amount: 9.99,
+        currencyCode: "USD"
+      },
+      priceWhenAdded: {
+        amount: 9.99,
+        currencyCode: "USD"
+      },
+      subtotal: {
+        amount: 9.99,
+        currencyCode: "USD"
+      }
     }
   ];
 

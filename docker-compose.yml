@@ -11,6 +11,9 @@ networks:
   auth:
     external:
       name: auth.reaction.localhost
+  streams:
+    external:
+      name: streams.reaction.localhost
 
 services:
 
@@ -42,6 +45,9 @@ services:
   mongo:
     image: mongo:3.6.3
     command: mongod --oplogSize 128 --replSet rs0 --storageEngine=wiredTiger
+    networks:
+      default:
+      streams:
     ports:
       - "27017:27017"
     volumes:

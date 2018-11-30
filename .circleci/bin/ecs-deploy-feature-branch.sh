@@ -3,11 +3,12 @@
 sudo apt-get -y install python3-pip wget
 sudo pip3 install awscli
 
-export ENVIRONMENT=feat
+export ENVIRONMENT=staging
 export CLUSTER=core
-export SERVICE_SUFFIX=$CIRCLE_BRANCH
-export SERVICE1=reaction-core
-export CONTAINER1=core
+# remove spaces from branch name
+export SERVICE_FEATURE=`echo $CIRCLE_BRANCH | sed 's/ //g'`
+export SERVICE=reaction-core
+export CONTAINER=core
 export core_CIRCLE_SHA1=$CIRCLE_SHA1
 
 PROPEL_CONFIG_FILE="propel-feat.yaml"
@@ -39,16 +40,24 @@ sudo mv propel /usr/local/bin/propel
 sudo chmod +x /usr/local/bin/propel
 
 RELEASE_DESCRIPTION="CircleCI build URL: ${CIRCLE_BUILD_URL}"
-propel param copy -f ${PROPEL_CONFIG_FILE} --env $ENVIRONMENT --cluster $CLUSTER --service $SERVICE1 --container $CONTAINER1 --suffix $SERVICE_SUFFIX --overwrite
-propel param set ROOT_URL=https://${SERVICE1}-${SERVICE_SUFFIX}.$ENVIRONMENT.reactioncommerce.com/ -f ${PROPEL_CONFIG_FILE} --env $ENVIRONMENT --cluster $CLUSTER --service $SERVICE1 --container $CONTAINER1 --suffix $SERVICE_SUFFIX --overwrite
-propel release create --deploy -f ${PROPEL_CONFIG_FILE} --env $ENVIRONMENT --cluster $CLUSTER --descr "${RELEASE_DESCRIPTION}" --service $SERVICE1 --suffix $SERVICE_SUFFIX
 
-export SERVICE2=storefront
+propel param copy -f ${PROPEL_CONFIG_FILE} --env $ENVIRONMENT --cluster $CLUSTER --service $SERVICE --container $CONTAINER --feature $SERVICE_FEATURE --overwrite
+
+propel param set ROOT_URL=https://${SERVICE_FEATURE}.$ENVIRONMENT.reactioncommerce.com/ -f ${PROPEL_CONFIG_FILE} --env $ENVIRONMENT --cluster $CLUSTER --service $SERVICE --container $CONTAINER --feature $SERVICE_FEATURE --overwrite
+
+propel release create --deploy -f ${PROPEL_CONFIG_FILE} --env $ENVIRONMENT --cluster $CLUSTER --descr "${RELEASE_DESCRIPTION}" --service $SERVICE --feature $SERVICE_FEATURE
+
+export SERVICE=storefront
+export CONTAINER1=nginx
 export CONTAINER2=storefront
-propel param copy -f ${PROPEL_CONFIG_FILE} --env $ENVIRONMENT --cluster $CLUSTER --service $SERVICE2 --container $CONTAINER2 --suffix $SERVICE_SUFFIX --overwrite
-propel param set CANONICAL_URL=https://${SERVICE1}-${SERVICE_SUFFIX}.$ENVIRONMENT.reactioncommerce.com -f ${PROPEL_CONFIG_FILE} --env $ENVIRONMENT --cluster $CLUSTER --service $SERVICE2 --container $CONTAINER2 --suffix $SERVICE_SUFFIX --overwrite
-propel param set OAUTH2_REDIRECT_URL=https://${SERVICE2}-${SERVICE_SUFFIX}.$ENVIRONMENT.reactioncommerce.com/callback -f ${PROPEL_CONFIG_FILE} --env $ENVIRONMENT --cluster $CLUSTER --service $SERVICE2 --container $CONTAINER2 --suffix $SERVICE_SUFFIX --overwrite
-propel param set OAUTH2_IDP_HOST_URL=https://${SERVICE1}-${SERVICE_SUFFIX}.$ENVIRONMENT.reactioncommerce.com -f ${PROPEL_CONFIG_FILE} --env $ENVIRONMENT --cluster $CLUSTER --service $SERVICE2 --container $CONTAINER2 --suffix $SERVICE_SUFFIX --overwrite
-propel param set EXTERNAL_GRAPHQL_URL=https://${SERVICE1}-${SERVICE_SUFFIX}.$ENVIRONMENT.reactioncommerce.com/graphql-alpha -f ${PROPEL_CONFIG_FILE} --env $ENVIRONMENT --cluster $CLUSTER --service $SERVICE2 --container $CONTAINER2 --suffix $SERVICE_SUFFIX --overwrite
-propel param set INTERNAL_GRAPHQL_URL=https://${SERVICE1}-${SERVICE_SUFFIX}.$ENVIRONMENT.reactioncommerce.com/graphql-alpha -f ${PROPEL_CONFIG_FILE} --env $ENVIRONMENT --cluster $CLUSTER --service $SERVICE2 --container $CONTAINER2 --suffix $SERVICE_SUFFIX --overwrite
-propel release create --deploy -f ${PROPEL_CONFIG_FILE} --env $ENVIRONMENT --cluster $CLUSTER --descr "${RELEASE_DESCRIPTION}" --service $SERVICE2 --suffix $SERVICE_SUFFIX
+
+propel param copy -f ${PROPEL_CONFIG_FILE} --env $ENVIRONMENT --cluster $CLUSTER --service $SERVICE --container $CONTAINER1 --feature $SERVICE_FEATURE --overwrite
+propel param copy -f ${PROPEL_CONFIG_FILE} --env $ENVIRONMENT --cluster $CLUSTER --service $SERVICE --container $CONTAINER2 --feature $SERVICE_FEATURE --overwrite
+
+propel param set CANONICAL_URL=https://${SERVICE_FEATURE}.$ENVIRONMENT.reactioncommerce.com -f ${PROPEL_CONFIG_FILE} --env $ENVIRONMENT --cluster $CLUSTER --service $SERVICE --container $CONTAINER2 --feature $SERVICE_FEATURE --overwrite
+propel param set OAUTH2_REDIRECT_URL=https://${SERVICE_FEATURE}.$ENVIRONMENT.reactioncommerce.com/callback -f ${PROPEL_CONFIG_FILE} --env $ENVIRONMENT --cluster $CLUSTER --service $SERVICE --container $CONTAINER2 --feature $SERVICE_FEATURE --overwrite
+propel param set OAUTH2_IDP_HOST_URL=https://${SERVICE_FEATURE}.$ENVIRONMENT.reactioncommerce.com -f ${PROPEL_CONFIG_FILE} --env $ENVIRONMENT --cluster $CLUSTER --service $SERVICE --container $CONTAINER2 --feature $SERVICE_FEATURE --overwrite
+propel param set EXTERNAL_GRAPHQL_URL=https://${SERVICE_FEATURE}.$ENVIRONMENT.reactioncommerce.com/graphql-alpha -f ${PROPEL_CONFIG_FILE} --env $ENVIRONMENT --cluster $CLUSTER --service $SERVICE --container $CONTAINER2 --feature $SERVICE_FEATURE --overwrite
+propel param set INTERNAL_GRAPHQL_URL=https://${SERVICE_FEATURE}.$ENVIRONMENT.reactioncommerce.com/graphql-alpha -f ${PROPEL_CONFIG_FILE} --env $ENVIRONMENT --cluster $CLUSTER --service $SERVICE --container $CONTAINER2 --feature $SERVICE_FEATURE --overwrite
+
+propel release create --deploy -f ${PROPEL_CONFIG_FILE} --env $ENVIRONMENT --cluster $CLUSTER --descr "${RELEASE_DESCRIPTION}" --service $SERVICE --feature $SERVICE_FEATURE

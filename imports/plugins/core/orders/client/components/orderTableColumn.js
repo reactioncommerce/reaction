@@ -85,8 +85,8 @@ class OrderTableColumn extends Component {
         <div style={{ marginTop: 7 }}>{createdDate}</div>
       );
     }
-    if (columnAccessor === "_id") {
-      const id = order._id;
+    if (columnAccessor === "referenceId") {
+      const id = order.referenceId;
       const truncatedId = id.substring(0, 4);
       return (
         <div style={{ marginTop: 7 }}>
