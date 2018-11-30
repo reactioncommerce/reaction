@@ -22,6 +22,7 @@ import { Link } from "/imports/plugins/core/ui/client/components/link";
 import MultiSelect from "@reactioncommerce/components/MultiSelect/v1";
 import PhoneNumberInput from "@reactioncommerce/components/PhoneNumberInput/v1";
 import Price from "@reactioncommerce/components/Price/v1";
+import ProfileImage from "@reactioncommerce/components/ProfileImage/v1";
 import ProgressiveImage from "@reactioncommerce/components/ProgressiveImage/v1";
 import QuantityInput from "@reactioncommerce/components/QuantityInput/v1";
 import RegionInput from "@reactioncommerce/components/RegionInput/v1";
@@ -55,6 +56,7 @@ export default {
   MultiSelect,
   PhoneNumberInput,
   Price,
+  ProfileImage,
   ProgressiveImage,
   QuantityInput,
   RegionInput,

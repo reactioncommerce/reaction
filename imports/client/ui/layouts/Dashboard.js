@@ -7,19 +7,11 @@ import MUIToolbar from "@material-ui/core/Toolbar";
 import IconButton from "@material-ui/core/IconButton";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars } from "@fortawesome/free-solid-svg-icons";
-import ProfileImage from "@reactioncommerce/components/ProfileImage/v1";
 import { applyTheme } from "@reactioncommerce/components/utils";
 import { Route, Switch } from "react-router";
+import ProfileImageWithData from "../components/ProfileImageWithData";
 import Sidebar from "../components/Sidebar";
 import { operatorRoutes } from "../index";
-
-// TODO: Use real data
-const viewer = {
-  firstName: "John",
-  lastName: "Doe",
-  name: "John Doe",
-  primaryEmailAddress: "john@doe.com"
-};
 
 const query = {
   isMobile: {
@@ -136,7 +128,7 @@ export default class Dashboard extends Component {
               <AppBar elevation={0} position="fixed" isMobile={isMobile} isSidebarOpen={isSidebarOpen}>
                 <MUIToolbar>
                   <Grow />
-                  <ProfileImage size={40} viewer={viewer} />
+                  <ProfileImageWithData size={40} />
                 </MUIToolbar>
               </AppBar>
               <Sidebar
