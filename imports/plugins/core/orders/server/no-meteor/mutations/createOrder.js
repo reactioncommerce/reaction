@@ -3,13 +3,11 @@ import SimpleSchema from "simpl-schema";
 import Logger from "@reactioncommerce/logger";
 import Random from "@reactioncommerce/random";
 import ReactionError from "@reactioncommerce/reaction-error";
-import { xformCartCheckout } from "@reactioncommerce/reaction-graphql-xforms/cart";
 import hashLoginToken from "/imports/node-app/core/util/hashLoginToken";
 import appEvents from "/imports/node-app/core/util/appEvents";
 import { Address as AddressSchema, Order as OrderSchema, Payment as PaymentSchema } from "/imports/collections/schemas";
 import getDiscountsTotalForCart from "/imports/plugins/core/discounts/server/no-meteor/util/getDiscountsTotalForCart";
 import xformOrderGroupToCommonOrder from "/imports/plugins/core/orders/server/util/xformOrderGroupToCommonOrder";
-import getCartById from "/imports/plugins/core/shipping/server/no-meteor/util/getCartById.js";
 
 const orderItemsSchema = new SimpleSchema({
   "addedAt": {
@@ -363,8 +361,8 @@ export default async function createOrder(context, input) {
   const cleanedInput = inputSchema.clean(input); // add default values and such
   inputSchema.validate(cleanedInput);
 
-  const { afterValidate, billingAddress, createPaymentForFulfillmentGroup, order: orderInput } = cleanedInput;
-  const { cartId, cartToken, currencyCode, email, fulfillmentGroups, shopId } = orderInput;
+  const { afterValidate, createPaymentForFulfillmentGroup, order: orderInput } = cleanedInput;
+  const { cartId, currencyCode, email, fulfillmentGroups, shopId } = orderInput;
   const { accountId, account, collections } = context;
   const { Orders } = collections;
 
