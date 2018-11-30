@@ -6,18 +6,16 @@ import { findCatalogProductsAndVariants, pick, tagsByIds, mergeProductAndVariant
  * @summary Get shipping attributes for a fulfillment group that will be used to
  * determine any applicable shipping restrictions.
  * @param {Object} context -  an object containing the per-request state
- * @param {Object} cartWithSummary - the users cart with its summary
- * @param {Object} cartWithSummary.summary - The cart summary
+ * @param {Object} totals - The totals object with discounts, item, and group totals
  * @param {Object} fulfillmentGroup - a fulfillment group for a shopping cart
  * @param {Object} fulfillmentGroup.address - the shipping address
  * @param {Array} fulfillmentGroup.items - the items in the cart
  * @returns {Object|null} shipping restriction attributes for the provided fulfillment group
  */
-export default async function getShippingRestrictionAttributes(context, cartWithSummary, fulfillmentGroup) {
+export default async function getShippingRestrictionAttributes(context, totals, fulfillmentGroup) {
   const { collections, getFunctionsOfType } = context;
   const { address: destination, items: orderItems } = fulfillmentGroup;
   const address = pick(destination, ["address1", "address2", "city", "country", "postal", "region"]);
-  const { summary } = cartWithSummary;
   const products = [];
 
   // Products in the Catalog collection are the source of truth, therefore use them
@@ -56,9 +54,9 @@ export default async function getShippingRestrictionAttributes(context, cartWith
 
   return {
     address,
-    discountTotal: summary.discountTotal.amount,
+    discountTotal: totals.groupDiscountTotal.amount,
     items: products,
-    itemTotal: summary.itemTotal.amount,
-    total: summary.total.amount
+    itemTotal: totals.groupItemTotal.amount,
+    total: totals.groupTotal.amount
   };
 }

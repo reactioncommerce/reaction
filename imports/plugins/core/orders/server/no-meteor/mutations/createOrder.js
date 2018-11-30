@@ -231,23 +231,33 @@ function getShippingAddressWithId(addressInput, addressIdInput) {
 
 /**
  * @summary Adds shipment method to the final fulfillment group
- * @param {Object} context - an object containing the per-request state
  * @param {Object} finalGroup Fulfillment group object pre shipment method addition
  * @param {Object} cleanedInput - Necessary orderInput. See SimpleSchema
  * @param {Object} groupInput - Original fulfillment group that we componse finalGroup from. See SimpleSchema
- * @param {String} orderId - New randomized ID to attach to order
+ * @param {String} discountTotal - Calculated discount total
  * @returns {Object} Fulfillment group object post shipment method addition
  */
-async function addShipmentMethodToGroup(context, finalGroup, cleanedInput, groupInput, orderId) {
-  const { collections } = context;
-  const { billingAddress, order: orderInput } = cleanedInput;
-  const { cartId, cartToken, currencyCode } = orderInput;
+async function addShipmentMethodToGroup(finalGroup, cleanedInput, groupInput, discountTotal) {
+  const { order: orderInput } = cleanedInput;
+  const { currencyCode } = orderInput;
 
-  const cart = await getCartById(context, cartId, { cartToken, throwIfNotFound: true });
-  const cartWithSummary = await xformCartCheckout(collections, cart);
-  // Verify that the price for the chosen shipment method on each group matches between what the client
-  // provided and what the current quote is.
-  const rates = await context.queries.getFulfillmentMethodsWithQuotes(finalGroup, cartWithSummary, context);
+  const groupItemTotal = finalGroup.items.reduce((sum, item) => (sum + item.subtotal), 0);
+  const totals = {
+    groupDiscountTotal: {
+      amount: discountTotal,
+      currencyCode
+    },
+    groupItemTotal: {
+      amount: groupItemTotal,
+      currencyCode
+    },
+    groupTotal: {
+      amount: groupItemTotal - discountTotal,
+      currencyCode
+    }
+  };
+
+  const rates = await context.queries.getFulfillmentMethodsWithQuotes(finalGroup, totals, context);
   const selectedFulfillmentMethod = rates.find((rate) => groupInput.selectedFulfillmentMethodId === rate.method._id);
   if (!selectedFulfillmentMethod) {
     throw new ReactionError("invalid", "The selected fulfillment method is no longer available." +
@@ -368,7 +378,7 @@ export default async function createOrder(context, input) {
     finalGroup.items = await Promise.all(finalGroup.items.map((item) => buildOrderItem(item, currencyCode, context)));
 
     // Apply shipment method
-    await addShipmentMethodToGroup(context, finalGroup, cleanedInput, groupInput, orderId);
+    await addShipmentMethodToGroup(finalGroup, cleanedInput, groupInput, discountTotal);
 
     // Apply Taxes
     await addTaxesToGroup(context, finalGroup, cleanedInput, orderId);

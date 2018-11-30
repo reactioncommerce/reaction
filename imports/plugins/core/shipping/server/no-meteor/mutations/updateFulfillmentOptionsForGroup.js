@@ -76,11 +76,24 @@ export default async function updateFulfillmentOptionsForGroup(context, input) {
   // Map the items onto the fulfillment groups
   fulfillmentGroup.items = fulfillmentGroup.itemIds.map((itemId) => cart.items.find((item) => item._id === itemId));
 
-  // Add cart summary
-  const cartWithSummary = await xformCartCheckout(collections, cart);
+  const groupItemTotal = fulfillmentGroup.items.reduce((sum, item) => (sum + item.subtotal), 0);
+  const totals = {
+    groupDiscountTotal: {
+      amount: groupDiscountTotal,
+      currencyCode: "USD"
+    },
+    groupItemTotal: {
+      amount: groupItemTotal,
+      currencyCode: "USD"
+    },
+    groupTotal: {
+      amount: groupItemTotal - groupDiscountTotal,
+      currencyCode: "USD"
+    }
+  };
 
   // In the future we want to do this async and subscribe to the results
-  const rates = await context.queries.getFulfillmentMethodsWithQuotes(fulfillmentGroup, cartWithSummary, context);
+  const rates = await context.queries.getFulfillmentMethodsWithQuotes(fulfillmentGroup, totals, context);
 
   const { shipmentQuotes, shipmentQuotesQueryStatus } = getShipmentQuotesQueryStatus(rates);
 
