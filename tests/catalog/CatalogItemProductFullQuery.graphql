@@ -41,7 +41,9 @@
           _id
           code
         }
-        compareAtPrice
+        compareAtPrice {
+          amount
+        }
         price
         maxPrice
         minPrice
@@ -144,7 +146,9 @@
               _id
               code
             }
-            compareAtPrice
+            compareAtPrice {
+              amount
+            }
             price
             maxPrice
             minPrice
@@ -168,7 +172,9 @@
             _id
             code
           }
-          compareAtPrice
+          compareAtPrice {
+            amount
+          }
           price
           maxPrice
           minPrice

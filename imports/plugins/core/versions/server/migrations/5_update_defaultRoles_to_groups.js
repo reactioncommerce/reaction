@@ -1,9 +1,6 @@
-import _ from "lodash";
 import Logger from "@reactioncommerce/logger";
 import { Meteor } from "meteor/meteor";
-import { Roles } from "meteor/alanning:roles";
 import { Migrations } from "meteor/percolate:migrations";
-import Reaction from "/imports/plugins/core/core/server/Reaction";
 import { Accounts, Groups, Shops } from "/lib/collections";
 
 /**
@@ -16,9 +13,6 @@ Migrations.add({
   version: 5,
   up() {
     const shops = Shops.find({}).fetch();
-
-    // needed to ensure restart in case of a migration that failed before finishing
-    Groups.remove({});
     Accounts.update({}, { $set: { groups: [] } }, { bypassCollection2: true, multi: true });
 
     if (shops && shops.length) {
@@ -34,12 +28,19 @@ Migrations.add({
         permissionsArray.forEach((permissions, index) => {
           if (!permissions) { return null; }
           Logger.debug(`creating custom group for shop ${shop.name}`);
-          const groupId = Groups.insert({
+          // An "update" is preferred here to cover cases where a migration re-run is triggered (and thus avoids duplicates).
+          // (as against deleting all the documents before a re-run).
+          const groupId = Groups.update({
+            slug: `custom${index + 1}`
+          }, {
             name: `custom ${index + 1}`,
             slug: `custom${index + 1}`,
             permissions,
             shopId: shop._id
-          }, { bypassCollection2: true });
+          }, {
+            upsert: true,
+            bypassCollection2: true
+          });
           updateAccountsInGroup({
             shopId: shop._id,
             permissions,
@@ -51,33 +52,18 @@ Migrations.add({
 
     function createDefaultGroupsForShop(shop) {
       let defaultGroupAccounts = [];
-      const { defaultRoles, defaultVisitorRole } = shop;
-      let ownerRoles = Roles.getAllRoles().fetch().map((role) => role.name);
+      const groupNames = ["shop manager", "customer", "guest", "owner"];
 
-      ownerRoles = ownerRoles.concat(Reaction.defaultCustomerRoles);
-      ownerRoles = _.uniq(ownerRoles);
-
-      const shopManagerRoles = ownerRoles.filter((role) => role !== "owner");
-      const roles = {
-        "shop manager": shopManagerRoles,
-        "customer": defaultRoles || Reaction.defaultCustomerRoles,
-        "guest": defaultVisitorRole || Reaction.defaultVisitorRoles,
-        "owner": ownerRoles
-      };
-
-      Object.keys(roles).forEach((groupKeys) => {
+      groupNames.forEach((groupKeys) => {
         Logger.debug(`creating group ${groupKeys} for shop ${shop.name}`);
-        const groupId = Groups.insert({
-          name: groupKeys,
-          slug: groupKeys,
-          permissions: roles[groupKeys],
-          shopId: shop._id
-        });
-        Logger.debug(`new group "${groupKeys}" created with id "${groupId}"`);
+        // On startup Reaction.init() creates the default groups, this finds existing groups
+        // and updates accounts that belong to them
+        const { _id, permissions } = Groups.findOne({ slug: groupKeys }) || {};
+        Logger.debug(`new group "${groupKeys}" created with id "${_id}"`);
         const updatedAccounts = updateAccountsInGroup({
           shopId: shop._id,
-          permissions: roles[groupKeys],
-          groupId
+          permissions,
+          _id
         });
         defaultGroupAccounts = defaultGroupAccounts.concat(updatedAccounts);
       });
@@ -86,6 +72,7 @@ Migrations.add({
 
     // finds all accounts with a permission set and assigns them to matching group
     function updateAccountsInGroup({ shopId, permissions = [], groupId }) {
+      if (!groupId) return [];
       const query = { [`roles.${shopId}`]: { $size: permissions.length, $all: permissions } };
       const matchingUserIds = Meteor.users.find(query).fetch().map((user) => user._id);
 
@@ -125,7 +112,7 @@ Migrations.add({
 
 /*
  * helper func created to limit the permission sets available to unique values without duplicates.
- * It takes a two dimentional array like this:
+ * It takes a two dimensional array like this:
  * [
  *   ["tag", "product"],
  *   ["product", "tag"],

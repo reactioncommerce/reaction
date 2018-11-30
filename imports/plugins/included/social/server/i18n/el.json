@@ -15,7 +15,6 @@
               "facebook": {
                 "title": "Facebook",
                 "appId": "Αναγνωριστικό εφαρμογής",
-                "appSecret": "App μυστικό",
                 "profilePage": "Σελίδα προφίλ"
               },
               "googleplus": {

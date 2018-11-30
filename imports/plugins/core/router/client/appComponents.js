@@ -22,15 +22,19 @@ import { Link } from "/imports/plugins/core/ui/client/components/link";
 import MultiSelect from "@reactioncommerce/components/MultiSelect/v1";
 import PhoneNumberInput from "@reactioncommerce/components/PhoneNumberInput/v1";
 import Price from "@reactioncommerce/components/Price/v1";
+import ProfileImage from "@reactioncommerce/components/ProfileImage/v1";
 import ProgressiveImage from "@reactioncommerce/components/ProgressiveImage/v1";
 import QuantityInput from "@reactioncommerce/components/QuantityInput/v1";
 import RegionInput from "@reactioncommerce/components/RegionInput/v1";
 import Select from "@reactioncommerce/components/Select/v1";
 import SelectableItem from "@reactioncommerce/components/SelectableItem/v1";
 import SelectableList from "@reactioncommerce/components/SelectableList/v1";
+import ShopLogo from "@reactioncommerce/components/ShopLogo/v1";
 import TextInput from "@reactioncommerce/components/TextInput/v1";
+import * as iconComponents from "./theme/icons";
 
 export default {
+  ...iconComponents,
   Accordion,
   AddressBook,
   AddressForm,
@@ -54,6 +58,7 @@ export default {
   MultiSelect,
   PhoneNumberInput,
   Price,
+  ProfileImage,
   ProgressiveImage,
   QuantityInput,
   RegionInput,
@@ -61,5 +66,6 @@ export default {
   spinner,
   SelectableItem,
   SelectableList,
+  ShopLogo,
   TextInput
 };

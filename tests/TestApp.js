@@ -29,12 +29,15 @@ class TestApp {
       context: {
         appEvents,
         collections: this.collections,
+        getFunctionsOfType: () => [],
         mutations,
         queries
       },
       typeDefs: schemas,
-      resolvers,
-      debug: true
+      resolvers
+      // Uncomment this if you need to debug a test. Otherwise we keep debug mode off to avoid extra
+      // error logging in the test output.
+      // debug: true
     });
   }
 
