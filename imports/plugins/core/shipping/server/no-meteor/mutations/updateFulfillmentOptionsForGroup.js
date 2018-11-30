@@ -80,7 +80,9 @@ export default async function updateFulfillmentOptionsForGroup(context, input) {
   fulfillmentGroup.items = fulfillmentGroup.itemIds.map((itemId) => cart.items.find((item) => item._id === itemId));
 
   // TODO: In the future, we should update this with discounts
-  const groupDiscountTotal = 0;
+  // Discounts are calculated per cart here. This will need to be updated when we refactor discounts to go by group.
+  // We use parseInt on the discount reduction, as we store them as strings
+  const groupDiscountTotal = (cart.billing && cart.billing.filter((billingItem) => billingItem.method === "discount")).reduce((sum, billingItem) => (sum + parseInt(billingItem.amount, 10)), 0);
   const groupItemTotal = fulfillmentGroup.items.reduce((sum, item) => (sum + item.subtotal.amount), 0);
 
   const totals = {
