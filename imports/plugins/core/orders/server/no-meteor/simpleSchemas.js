@@ -36,9 +36,18 @@ const CommonOrderItem = new SimpleSchema({
 });
 
 const CommonOrderFulfillmentPrices = new SimpleSchema({
-  handling: Money,
-  shipping: Money,
-  total: Money
+  handling: {
+    type: Money,
+    optional: true
+  },
+  shipping: {
+    type: Money,
+    optional: true
+  },
+  total: {
+    type: Money,
+    optional: true
+  }
 });
 
 /**
