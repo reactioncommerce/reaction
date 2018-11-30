@@ -1,3 +1,9 @@
+import React from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faShareAltSquare } from "@fortawesome/free-solid-svg-icons";
+
+import { registerOperatorRoute } from "/imports/client/ui";
+import SocialSettings from "./containers/socialSettingsContainer";
 import "./templates/apps/facebook.html";
 import "./templates/apps/facebook.js";
 import "./templates/apps/googleplus.html";
@@ -12,3 +18,13 @@ import "./templates/dashboard/social.js";
 
 import "./templates/social.html";
 import "./templates/social.js";
+
+registerOperatorRoute({
+  isNavigationLink: true,
+  isSetting: true,
+  mainComponent: SocialSettings,
+  path: "/social-settings",
+  // eslint-disable-next-line react/display-name
+  SidebarIconComponent: (props) => <FontAwesomeIcon icon={faShareAltSquare} {...props} />,
+  sidebarI18nLabel: "admin.dashboard.socialLabel"
+});
