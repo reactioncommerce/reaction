@@ -50,11 +50,13 @@ const rui_components = {
     drawerWidth: "264px",
     iconBarWidth,
     iconColor: colors.coolGrey300,
+    listItemIconFontSize: "20px",
     // We could use flex-end here, but that aligns the right edge of all icons and since icons can
     // be a pixel or two different in width from each other, this looks strange. Instead, we use
     // "center" align here, which will align the center of all icons, and then push that to the
     // right using left padding.
     listItemIconHorizontalAlign: "center",
+    listItemIconMaxHeight: "40px", // includes the top and bottom padding below
     listItemIconPaddingBottom: "10px",
     listItemIconPaddingLeft: "16px",
     listItemIconPaddingRight: "0",

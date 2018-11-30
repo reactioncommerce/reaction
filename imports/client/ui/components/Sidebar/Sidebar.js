@@ -39,12 +39,21 @@ const ListItem = styledMUI(MUIListItem)`
 `;
 
 const ListItemIcon = styledMUI(MUIListItemIcon)`
+  color: ${applyTheme("Sidebar.iconColor")};
   justify-content: ${applyTheme("Sidebar.listItemIconHorizontalAlign")};
   padding-top: ${applyTheme("Sidebar.listItemIconPaddingTop")};
   padding-right: ${applyTheme("Sidebar.listItemIconPaddingRight")};
   padding-bottom: ${applyTheme("Sidebar.listItemIconPaddingBottom")};
   padding-left: ${applyTheme("Sidebar.listItemIconPaddingLeft")};
   width: ${applyTheme("Sidebar.iconBarWidth")};
+
+  /*
+   * FontAwesome icons respect this font-size to determine icon height while other
+   * SVGs should be designed to be 100% height. Generally you'll want listItemIconMaxHeight
+   * to be listItemIconFontSize + listItemIconPaddingTop + listItemIconPaddingBottom
+   */
+  font-size: ${applyTheme("Sidebar.listItemIconFontSize")};
+  max-height: ${applyTheme("Sidebar.listItemIconMaxHeight")};
 
   /* remove margin from default MUI theme */
   margin-right: 0;
@@ -101,7 +110,7 @@ export default class Sidebar extends Component {
             <Link to={`/operator${route.path}`} activeClassName={activeClassName} key={route.path}>
               <ListItem button>
                 <ListItemIcon>
-                  {React.cloneElement(route.sidebarIconComponent, { color: "#5d8ea9", size: "lg" })}
+                  <route.SidebarIconComponent />
                 </ListItemIcon>
                 <ListItemText disableTypography>
                   <Translation defaultValue="" i18nKey={route.sidebarI18nLabel} />

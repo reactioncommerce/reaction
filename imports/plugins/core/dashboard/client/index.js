@@ -29,6 +29,6 @@ registerOperatorRoute({
   path: "/shop-settings",
   mainComponent: "shopSettings",
   // eslint-disable-next-line react/display-name
-  sidebarIconComponent: <FontAwesomeIcon icon={faStore} />,
+  SidebarIconComponent: (props) => <FontAwesomeIcon icon={faStore} {...props} />,
   sidebarI18nLabel: "admin.settings.shopSettingsLabel"
 });

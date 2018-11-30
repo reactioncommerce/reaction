@@ -1,13 +1,13 @@
 import React, { Component } from "react";
+import PropTypes from "prop-types";
 import styled, { css } from "styled-components";
 import styledMUI from "styled-components-mui";
 import { ContainerQuery } from "react-container-query";
 import MUIAppBar from "@material-ui/core/AppBar";
 import MUIToolbar from "@material-ui/core/Toolbar";
 import IconButton from "@material-ui/core/IconButton";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBars } from "@fortawesome/free-solid-svg-icons";
-import { applyTheme } from "@reactioncommerce/components/utils";
+import { applyTheme, CustomPropTypes } from "@reactioncommerce/components/utils";
+import { withComponents } from "@reactioncommerce/components-context";
 import { Route, Switch } from "react-router";
 import ProfileImageWithData from "../components/ProfileImageWithData";
 import Sidebar from "../components/Sidebar";
@@ -90,7 +90,13 @@ const DrawerHeader = styled.div`
   }
 `;
 
-export default class Dashboard extends Component {
+class Dashboard extends Component {
+  static propTypes = {
+    components: PropTypes.shape({
+      IconHamburger: CustomPropTypes.component.isRequired
+    })
+  };
+
   state = {
     isSidebarOpen: null
   };
@@ -104,6 +110,7 @@ export default class Dashboard extends Component {
   };
 
   render() {
+    const { components: { IconHamburger } } = this.props;
     const { isSidebarOpen } = this.state;
 
     return (
@@ -123,7 +130,7 @@ export default class Dashboard extends Component {
           return (
             <Container>
               <HamburgerIconButton onClick={this.handleDrawerToggle}>
-                <FontAwesomeIcon icon={faBars} />
+                <IconHamburger />
               </HamburgerIconButton>
               <AppBar elevation={0} position="fixed" isMobile={isMobile} isSidebarOpen={isSidebarOpen}>
                 <MUIToolbar>
@@ -160,3 +167,5 @@ export default class Dashboard extends Component {
     );
   }
 }
+
+export default withComponents(Dashboard);

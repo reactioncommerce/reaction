@@ -31,8 +31,10 @@ import SelectableItem from "@reactioncommerce/components/SelectableItem/v1";
 import SelectableList from "@reactioncommerce/components/SelectableList/v1";
 import ShopLogo from "@reactioncommerce/components/ShopLogo/v1";
 import TextInput from "@reactioncommerce/components/TextInput/v1";
+import * as iconComponents from "./theme/icons";
 
 export default {
+  ...iconComponents,
   Accordion,
   AddressBook,
   AddressForm,

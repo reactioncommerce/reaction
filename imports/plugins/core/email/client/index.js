@@ -16,6 +16,6 @@ registerOperatorRoute({
   path: "/email",
   mainComponent: EmailConfigContainer,
   // eslint-disable-next-line react/display-name
-  sidebarIconComponent: <FontAwesomeIcon icon={faEnvelope} />,
+  SidebarIconComponent: (props) => <FontAwesomeIcon icon={faEnvelope} {...props} />,
   sidebarI18nLabel: "admin.dashboard.emailLabel"
 });
