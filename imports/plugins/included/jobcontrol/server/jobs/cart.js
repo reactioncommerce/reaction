@@ -1,17 +1,9 @@
 import Hooks from "@reactioncommerce/hooks";
 import Logger from "@reactioncommerce/logger";
-import { Meteor } from "meteor/meteor";
-import { Accounts, Cart, Jobs } from "/lib/collections";
+import { Cart, Jobs } from "/lib/collections";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
 import { Job } from "/imports/plugins/core/job-collection/lib";
 import moment from "moment";
-
-/**
- * @param {Object} olderThan older than date
- * @return {Object} stale carts
- * @private
- */
-const getStaleCarts = (olderThan) => Cart.find({ updatedAt: { $lte: olderThan } }).fetch();
 
 /**
  * @summary Adds an afterCoreInit hook for removing stale carts
@@ -56,39 +48,7 @@ export function cartCleanupJob() {
       const schedule = (settings.cart.cleanupDurationDays).match(/\d/);// configurable in shop settings
       const olderThan = moment().subtract(Number(schedule[0]), "days")._d;
       Logger.info("removing carts older than", olderThan);
-      const carts = getStaleCarts(olderThan);
-      if (carts && carts.length) {
-        const totalLength = carts.length;
-        let currentRun = 0;
-        carts.forEach((cart) => {
-          const account = Accounts.findOne({ _id: cart.accountId });
-          if (account) {
-            const removeCarts = Cart.remove({ accountId: account._id });
-            if (account) {
-              if (!account.emails.length && removeCarts) {
-                Accounts.remove({
-                  _id: account._id,
-                  emails: []
-                });
-                Hooks.Events.run("afterAccountsRemove", null, account._id);
-                Meteor.users.remove({ _id: account.userId, emails: [] }); // clears out anonymous user
-                Logger.info("Stale anonymous user cart and account successfully cleaned");
-              } else if (removeCarts) {
-                Logger.info("Stale anonymous user cart and account successfully cleaned");
-              }
-            }
-          } else {
-            Cart.remove({ _id: cart._id });
-            Logger.info("Removed just this cart");
-          }
-          currentRun += 1;
-          job.progress(
-            currentRun,
-            totalLength,
-            { echo: true }
-          );
-        });
-      } else { Logger.info("No carts found"); }
+      Cart.remove({ updatedAt: { $lte: olderThan } }, { multi: true });
       const success = "Cart cleanup job completed";
       Logger.info(success);
       job.done(success);
