@@ -1,7 +1,8 @@
 import { isEqual } from "lodash";
 import SimpleSchema from "simpl-schema";
 import ReactionError from "@reactioncommerce/reaction-error";
-import { xformCartCheckout } from "@reactioncommerce/reaction-graphql-xforms/cart";
+import xformCartGroupToCommonOrder from "/imports/plugins/core/cart/server/no-meteor/util/xformCartGroupToCommonOrder";
+
 import getCartById from "../util/getCartById";
 
 const inputSchema = new SimpleSchema({
@@ -73,27 +74,32 @@ export default async function updateFulfillmentOptionsForGroup(context, input) {
   const fulfillmentGroup = (cart.shipping || []).find((group) => group._id === fulfillmentGroupId);
   if (!fulfillmentGroup) throw new ReactionError("not-found", `Fulfillment group with ID ${fulfillmentGroupId} not found in cart with ID ${cartId}`);
 
+  const commonOrder = await xformCartGroupToCommonOrder(cart, fulfillmentGroup, context);
+
   // Map the items onto the fulfillment groups
   fulfillmentGroup.items = fulfillmentGroup.itemIds.map((itemId) => cart.items.find((item) => item._id === itemId));
 
-  const groupItemTotal = fulfillmentGroup.items.reduce((sum, item) => (sum + item.subtotal), 0);
+  // TODO: In the future, we should update this with discounts
+  const groupDiscountTotal = 0;
+  const groupItemTotal = fulfillmentGroup.items.reduce((sum, item) => (sum + item.subtotal.amount), 0);
+
   const totals = {
     groupDiscountTotal: {
       amount: groupDiscountTotal,
-      currencyCode: "USD"
+      currencyCode: cart.currencyCode
     },
     groupItemTotal: {
       amount: groupItemTotal,
-      currencyCode: "USD"
+      currencyCode: cart.currencyCode
     },
     groupTotal: {
       amount: groupItemTotal - groupDiscountTotal,
-      currencyCode: "USD"
+      currencyCode: cart.currencyCode
     }
   };
 
   // In the future we want to do this async and subscribe to the results
-  const rates = await context.queries.getFulfillmentMethodsWithQuotes(fulfillmentGroup, totals, context);
+  const rates = await context.queries.getFulfillmentMethodsWithQuotes(commonOrder, totals, context);
 
   const { shipmentQuotes, shipmentQuotesQueryStatus } = getShipmentQuotesQueryStatus(rates);
 

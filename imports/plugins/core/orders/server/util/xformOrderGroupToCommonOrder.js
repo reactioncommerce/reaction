@@ -28,24 +28,34 @@ export default async function xformOrderGroupToCommonOrder({ billingAddress = nu
   const { address, shipmentMethod, shopId, type: fulfillmentType } = group;
   const shop = await collections.Shops.findOne({ _id: shopId });
 
+  let fulfillmentPrices = {
+    handling: null,
+    shipping: null,
+    total: null
+  };
+
+  if (shipmentMethod) {
+    fulfillmentPrices = {
+      handling: {
+        amount: (shipmentMethod && shipmentMethod.handling) || 0,
+        currencyCode
+      },
+      shipping: {
+        amount: (shipmentMethod && shipmentMethod.rate) || 0,
+        currencyCode
+      },
+      total: {
+        amount: shipmentMethod ? (shipmentMethod.handling || 0) + (shipmentMethod.rate || 0) : 0,
+        currencyCode
+      }
+    };
+  }
+
   return {
     billingAddress,
     cartId,
     currencyCode,
-    fulfillmentPrices: {
-      handling: {
-        amount: shipmentMethod.handling || 0,
-        currencyCode
-      },
-      shipping: {
-        amount: shipmentMethod.rate || 0,
-        currencyCode
-      },
-      total: {
-        amount: (shipmentMethod.handling || 0) + (shipmentMethod.rate || 0),
-        currencyCode
-      }
-    },
+    fulfillmentPrices,
     fulfillmentType,
     items,
     orderId,

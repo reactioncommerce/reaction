@@ -7,14 +7,13 @@ import { findCatalogProductsAndVariants, pick, tagsByIds, mergeProductAndVariant
  * determine any applicable shipping restrictions.
  * @param {Object} context -  an object containing the per-request state
  * @param {Object} totals - The totals object with discounts, item, and group totals
- * @param {Object} fulfillmentGroup - a fulfillment group for a shopping cart
- * @param {Object} fulfillmentGroup.address - the shipping address
+ * @param {Object} commonOrder - details about the purchase a user wants to make.
  * @param {Array} fulfillmentGroup.items - the items in the cart
  * @returns {Object|null} shipping restriction attributes for the provided fulfillment group
  */
-export default async function getShippingRestrictionAttributes(context, totals, fulfillmentGroup) {
+export default async function getShippingRestrictionAttributes(context, totals, commonOrder) {
   const { collections, getFunctionsOfType } = context;
-  const { address: destination, items: orderItems } = fulfillmentGroup;
+  const { shippingAddress: destination, items: orderItems } = commonOrder;
   const address = pick(destination, ["address1", "address2", "city", "country", "postal", "region"]);
   const products = [];
 
