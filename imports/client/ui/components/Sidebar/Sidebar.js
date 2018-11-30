@@ -65,7 +65,7 @@ const ListItemText = styledMUI(MUIListItemText)`
 
 const LogoArea = styled.div`
   display: flex;
-  justify-content: center;
+  justify-content: ${applyTheme("Sidebar.logoHorizontalAlign")};
   padding-top: ${applyTheme("Sidebar.logoPaddingTop")};
   padding-bottom: ${applyTheme("Sidebar.logoPaddingBottom")};
   padding-left: ${applyTheme("Sidebar.logoPaddingLeft")};

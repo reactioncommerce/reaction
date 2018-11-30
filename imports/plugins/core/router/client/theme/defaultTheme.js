@@ -61,9 +61,11 @@ const rui_components = {
     listItemIconPaddingLeft: "16px",
     listItemIconPaddingRight: "0",
     listItemIconPaddingTop: "10px",
+    // Change "flex-start" to "center" to center the logo in the right side of the sidebar
+    logoHorizontalAlign: "flex-start",
     logoPaddingBottom: "32px",
-    logoPaddingLeft: "32px",
-    logoPaddingRight: "32px",
+    logoPaddingLeft: "10px",
+    logoPaddingRight: "10px",
     logoPaddingTop: "32px",
     menuBarBackground: `linear-gradient(
       to right,
