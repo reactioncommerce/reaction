@@ -230,6 +230,106 @@ function getShippingAddressWithId(addressInput, addressIdInput) {
 }
 
 /**
+ * @summary Adds shipment method to the final fulfillment group
+ * @param {Object} context - an object containing the per-request state
+ * @param {Object} finalGroup Fulfillment group object pre shipment method addition
+ * @param {Object} cleanedInput - Necessary orderInput. See SimpleSchema
+ * @param {Object} groupInput - Original fulfillment group that we componse finalGroup from. See SimpleSchema
+ * @param {String} orderId - New randomized ID to attach to order
+ * @returns {Object} Fulfillment group object post shipment method addition
+ */
+async function addShipmentMethodToGroup(context, finalGroup, cleanedInput, groupInput, orderId) {
+  const { collections } = context;
+  const { billingAddress, order: orderInput } = cleanedInput;
+  const { cartId, cartToken, currencyCode } = orderInput;
+
+  const cart = await getCartById(context, cartId, { cartToken, throwIfNotFound: true });
+  const cartWithSummary = await xformCartCheckout(collections, cart);
+  // Verify that the price for the chosen shipment method on each group matches between what the client
+  // provided and what the current quote is.
+  const rates = await context.queries.getFulfillmentMethodsWithQuotes(finalGroup, cartWithSummary, context);
+  const selectedFulfillmentMethod = rates.find((rate) => groupInput.selectedFulfillmentMethodId === rate.method._id);
+  if (!selectedFulfillmentMethod) {
+    throw new ReactionError("invalid", "The selected fulfillment method is no longer available." +
+      " Fetch updated fulfillment options and try creating the order again with a valid method.");
+  }
+  finalGroup.shipmentMethod = {
+    _id: selectedFulfillmentMethod.method._id,
+    carrier: selectedFulfillmentMethod.method.carrier,
+    currencyCode,
+    label: selectedFulfillmentMethod.method.label,
+    group: selectedFulfillmentMethod.method.group,
+    name: selectedFulfillmentMethod.method.name,
+    handling: selectedFulfillmentMethod.handlingPrice,
+    rate: selectedFulfillmentMethod.shippingPrice
+  };
+}
+
+/**
+ * @summary Adds taxes to the final fulfillment group
+ * @param {Object} context - an object containing the per-request state
+ * @param {Object} finalGroup Fulfillment group object pre tax addition
+ * @param {Object} cleanedInput - Necessary orderInput. See SimpleSchema
+ * @param {String} orderId - New randomized ID to attach to order
+ * @returns {Object} Fulfillment group object post tax addition
+ */
+async function addTaxesToGroup(context, finalGroup, cleanedInput, orderId) {
+  const { collections } = context;
+  const { billingAddress, order: orderInput } = cleanedInput;
+  const { cartId, currencyCode } = orderInput;
+  const commonOrder = await xformOrderGroupToCommonOrder({
+    billingAddress,
+    cartId,
+    collections,
+    currencyCode,
+    group: finalGroup,
+    orderId
+  });
+
+  const { itemTaxes, taxSummary } = await context.mutations.getFulfillmentGroupTaxes(context, { order: commonOrder, forceZeroes: true });
+  finalGroup.items = finalGroup.items.map((item) => {
+    const itemTax = itemTaxes.find((entry) => entry.itemId === item._id) || {};
+
+    return {
+      ...item,
+      tax: itemTax.tax,
+      taxableAmount: itemTax.taxableAmount,
+      taxes: itemTax.taxes
+    };
+  });
+  finalGroup.taxSummary = taxSummary;
+}
+
+/**
+ * @summary Compares exptected total with actual total to make sure data is correct
+ * @param {Object} finalGroup Fulfillment group object pre tax addition
+ * @param {Object} groupInput - Original fulfillment group that we componse finalGroup from. See SimpleSchema
+ * @param {String} discountTotal - Calculated discount total
+ * @returns {undefined}
+ */
+function compareExpectedAndActualTotals(finalGroup, groupInput, discountTotal) {
+  // For now we expect that the client has NOT included discounts in the expected total it sent.
+  // Note that we don't currently know which parts of `discountTotal` go with which fulfillment groups.
+  // This needs to be rewritten soon for discounts to work when there are multiple fulfillment groups.
+  // Probably the client should be sending all applied discount IDs and amounts in the order input (by group),
+  // and include total discount in `groupInput.totalPrice`, and then we simply verify that they are valid here.
+  const expectedTotal = Math.max(groupInput.totalPrice - discountTotal, 0);
+
+  // In order to prevent mismatch due to rounding, we convert these to strings before comparing. What we really
+  // care about is, do these match to the specificity that the shopper will see (i.e. to the scale of the currency)?
+  // No currencies have greater than 3 decimal places, so we'll use 3.
+  const expectedTotalString = accounting.toFixed(expectedTotal, 3);
+  const actualTotalString = accounting.toFixed(finalGroup.invoice.total, 3);
+
+  if (expectedTotalString !== actualTotalString) {
+    throw new ReactionError(
+      "invalid",
+      `Client provided total price ${expectedTotalString} for order group, but actual total price is ${actualTotalString}`
+    );
+  }
+}
+
+/**
  * @method createOrder
  * @summary Creates an order
  * @param {Object} context - an object containing the per-request state
@@ -263,80 +363,26 @@ export default async function createOrder(context, input) {
       workflow: { status: "new", workflow: ["coreOrderWorkflow/notStarted"] }
     };
 
-    const cart = await getCartById(context, cartId, { cartToken, throwIfNotFound: true });
-    const cartWithSummary = await xformCartCheckout(collections, cart);
-    // Verify that the price for the chosen shipment method on each group matches between what the client
-    // provided and what the current quote is.
-    const rates = await context.queries.getFulfillmentMethodsWithQuotes(finalGroup, cartWithSummary, context);
-    const selectedFulfillmentMethod = rates.find((rate) => groupInput.selectedFulfillmentMethodId === rate.method._id);
-    if (!selectedFulfillmentMethod) {
-      throw new ReactionError("invalid", "The selected fulfillment method is no longer available." +
-        " Fetch updated fulfillment options and try creating the order again with a valid method.");
-    }
-    finalGroup.shipmentMethod = {
-      _id: selectedFulfillmentMethod.method._id,
-      carrier: selectedFulfillmentMethod.method.carrier,
-      currencyCode,
-      label: selectedFulfillmentMethod.method.label,
-      group: selectedFulfillmentMethod.method.group,
-      name: selectedFulfillmentMethod.method.name,
-      handling: selectedFulfillmentMethod.handlingPrice,
-      rate: selectedFulfillmentMethod.shippingPrice
-    };
-
     // Build the final order item objects. As part of this, we look up the variant in the system and make sure that
     // the price is what the shopper expects it to be.
     finalGroup.items = await Promise.all(finalGroup.items.map((item) => buildOrderItem(item, currencyCode, context)));
 
-    // Apply taxes
-    const commonOrder = await xformOrderGroupToCommonOrder({
-      billingAddress,
-      cartId,
-      collections,
-      currencyCode,
-      group: finalGroup,
-      orderId
-    });
-    const { itemTaxes, taxSummary } = await context.mutations.getFulfillmentGroupTaxes(context, { order: commonOrder, forceZeroes: true });
-    finalGroup.items = finalGroup.items.map((item) => {
-      const itemTax = itemTaxes.find((entry) => entry.itemId === item._id) || {};
+    // Apply shipment method
+    await addShipmentMethodToGroup(context, finalGroup, cleanedInput, groupInput, orderId);
 
-      return {
-        ...item,
-        tax: itemTax.tax,
-        taxableAmount: itemTax.taxableAmount,
-        taxes: itemTax.taxes
-      };
-    });
-    finalGroup.taxSummary = taxSummary;
+    // Apply Taxes
+    await addTaxesToGroup(context, finalGroup, cleanedInput, orderId);
 
     // Add some more properties for convenience
     finalGroup.itemIds = finalGroup.items.map((item) => item._id);
     finalGroup.totalItemQuantity = finalGroup.items.reduce((sum, item) => sum + item.quantity, 0);
 
-    // Error if we calculate total price differently from what the client has shown as the preview.
-    // It's important to keep this after adding and verifying the shipmentMethod and order item prices.
     finalGroup.invoice = getInvoiceForFulfillmentGroup(finalGroup, discountTotal);
 
-    // For now we expect that the client has NOT included discounts in the expected total it sent.
-    // Note that we don't currently know which parts of `discountTotal` go with which fulfillment groups.
-    // This needs to be rewritten soon for discounts to work when there are multiple fulfillment groups.
-    // Probably the client should be sending all applied discount IDs and amounts in the order input (by group),
-    // and include total discount in `groupInput.totalPrice`, and then we simply verify that they are valid here.
-    const expectedTotal = Math.max(groupInput.totalPrice - discountTotal, 0);
-
-    // In order to prevent mismatch due to rounding, we convert these to strings before comparing. What we really
-    // care about is, do these match to the specificity that the shopper will see (i.e. to the scale of the currency)?
-    // No currencies have greater than 3 decimal places, so we'll use 3.
-    const expectedTotalString = accounting.toFixed(expectedTotal, 3);
-    const actualTotalString = accounting.toFixed(finalGroup.invoice.total, 3);
-
-    if (expectedTotalString !== actualTotalString) {
-      throw new ReactionError(
-        "invalid",
-        `Client provided total price ${expectedTotalString} for order group, but actual total price is ${actualTotalString}`
-      );
-    }
+    // Compare expected and actual totals to make sure client sees correct calculated price
+    // Error if we calculate total price differently from what the client has shown as the preview.
+    // It's important to keep this after adding and verifying the shipmentMethod and order item prices.
+    compareExpectedAndActualTotals(finalGroup, groupInput, discountTotal);
 
     return finalGroup;
   }));
