@@ -5,7 +5,7 @@ FROM reactioncommerce/base:v1.8-meteor as meteor-dev
 
 LABEL maintainer="Reaction Commerce <architecture@reactioncommerce.com>"
 
-ENV PATH $PATH:/home/node/.meteor
+ENV PATH $PATH:/home/node/.meteor:$APP_SOURCE_DIR/node_modules/.bin
 
 COPY --chown=node package-lock.json $APP_SOURCE_DIR/
 COPY --chown=node package.json $APP_SOURCE_DIR/
