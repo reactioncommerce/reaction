@@ -234,10 +234,11 @@ function getShippingAddressWithId(addressInput, addressIdInput) {
  * @param {Object} cleanedInput - Necessary orderInput. See SimpleSchema
  * @param {Object} groupInput - Original fulfillment group that we componse finalGroup from. See SimpleSchema
  * @param {String} discountTotal - Calculated discount total
+ * @param {String} orderItemTotal - Calculated total of all items in an order
  * @param {String} orderId - Randomized new orderId
  * @returns {Object} Fulfillment group object post shipment method addition
  */
-async function addShipmentMethodToGroup(context, finalGroup, cleanedInput, groupInput, discountTotal, orderId) {
+async function addShipmentMethodToGroup(context, finalGroup, cleanedInput, groupInput, discountTotal, orderItemTotal, orderId) {
   const { billingAddress, order: orderInput } = cleanedInput;
   const { cartId, currencyCode } = orderInput;
   const { collections } = context;
@@ -251,6 +252,7 @@ async function addShipmentMethodToGroup(context, finalGroup, cleanedInput, group
   });
 
   const groupItemTotal = finalGroup.items.reduce((sum, item) => (sum + item.subtotal), 0);
+
   const totals = {
     groupDiscountTotal: {
       amount: discountTotal,
@@ -262,6 +264,18 @@ async function addShipmentMethodToGroup(context, finalGroup, cleanedInput, group
     },
     groupTotal: {
       amount: groupItemTotal - discountTotal,
+      currencyCode
+    },
+    orderDiscountTotal: {
+      amount: discountTotal,
+      currencyCode
+    },
+    orderItemTotal: {
+      amount: orderItemTotal,
+      currencyCode
+    },
+    orderTotal: {
+      amount: orderItemTotal - discountTotal,
       currencyCode
     }
   };
@@ -373,6 +387,20 @@ export default async function createOrder(context, input) {
 
   const orderId = Random.id();
 
+  // Loop through each fulfillment group, get all items and subtotals from each group and sum them up
+  const orderItemTotals = await Promise.all(fulfillmentGroups.map(async (groupInput) => {
+    const { items } = groupInput;
+
+    // Build order item for all items in fulfillment group
+    const builtItems = await Promise.all(items.map((item) => buildOrderItem(item, currencyCode, context)));
+
+    // Calculate subtotal from all items in this fulfillment group
+    return builtItems.reduce((sum, item) => (sum + item.subtotal), 0);
+  }));
+
+  const orderItemTotal = orderItemTotals.reduce((sum, subtotal) => (sum + subtotal), 0);
+
+
   // Add more props to each fulfillment group, and validate/build the items in each group
   const finalFulfillmentGroups = await Promise.all(fulfillmentGroups.map(async (groupInput) => {
     const finalGroup = {
@@ -389,7 +417,7 @@ export default async function createOrder(context, input) {
     finalGroup.items = await Promise.all(finalGroup.items.map((item) => buildOrderItem(item, currencyCode, context)));
 
     // Apply shipment method
-    await addShipmentMethodToGroup(context, finalGroup, cleanedInput, groupInput, discountTotal, orderId);
+    await addShipmentMethodToGroup(context, finalGroup, cleanedInput, groupInput, discountTotal, orderItemTotal, orderId);
 
     // Apply Taxes
     await addTaxesToGroup(context, finalGroup, cleanedInput, orderId);
