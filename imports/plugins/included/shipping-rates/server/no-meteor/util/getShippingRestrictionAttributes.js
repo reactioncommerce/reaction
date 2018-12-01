@@ -53,9 +53,12 @@ export default async function getShippingRestrictionAttributes(context, totals, 
 
   return {
     address,
-    discountTotal: totals.groupDiscountTotal.amount,
     items: products,
-    itemTotal: totals.groupItemTotal.amount,
-    total: totals.groupTotal.amount
+    groupDiscountTotal: totals.groupDiscountTotal.amount,
+    groupItemTotal: totals.groupItemTotal.amount,
+    groupTotal: totals.groupTotal.amount,
+    orderDiscountTotal: totals.orderDiscountTotal.amount,
+    orderItemTotal: totals.orderItemTotal.amount,
+    orderTotal: totals.orderTotal.amount
   };
 }

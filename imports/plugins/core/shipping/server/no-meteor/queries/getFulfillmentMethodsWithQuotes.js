@@ -4,7 +4,7 @@ import Logger from "@reactioncommerce/logger";
  * @name getFulfillmentMethodsWithQuotes
  * @method
  * @summary Just gets rates, without updating anything
- * @param {Object} fulfillmentGroup - fulfillmentGroup object
+ * @param {Object} commonOrder - details about the purchase a user wants to make.
  * @param {Object} totals - The totals object with discounts, item, and group totals
  * @param {Object} context - Context
  * @return {Array} return updated rates in cart
