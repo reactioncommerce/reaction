@@ -2,7 +2,6 @@ import { isEqual } from "lodash";
 import SimpleSchema from "simpl-schema";
 import ReactionError from "@reactioncommerce/reaction-error";
 import xformCartGroupToCommonOrder from "/imports/plugins/core/cart/server/no-meteor/util/xformCartGroupToCommonOrder";
-import getDiscountsTotalForCart from "/imports/plugins/core/discounts/server/no-meteor/util/getDiscountsTotalForCart";
 
 import getCartById from "../util/getCartById";
 
@@ -81,13 +80,14 @@ export default async function updateFulfillmentOptionsForGroup(context, input) {
   fulfillmentGroup.items = fulfillmentGroup.itemIds.map((itemId) => cart.items.find((item) => item._id === itemId));
 
   // TODO: In the future, we should update this with a discounts update
-  // Discounts are calculated per cart here. This will need to be updated when we refactor discounts to go by group.
-  const { total: groupDiscountTotal } = await getDiscountsTotalForCart(context, cartId);
+  // Discounts are stored as the sum of all discounts, per cart. This will need to be updated when we refactor discounts to go by group.
+  const discountTotal = cart.discount || 0;
   const groupItemTotal = fulfillmentGroup.items.reduce((sum, item) => (sum + item.subtotal.amount), 0);
+  console.log("-------------------------------");
 
   const totals = {
     groupDiscountTotal: {
-      amount: groupDiscountTotal,
+      amount: discountTotal,
       currencyCode: cart.currencyCode
     },
     groupItemTotal: {
@@ -95,7 +95,8 @@ export default async function updateFulfillmentOptionsForGroup(context, input) {
       currencyCode: cart.currencyCode
     },
     groupTotal: {
-      amount: groupItemTotal - groupDiscountTotal,
+      amount: groupItemTotal - discountTotal,
+      currencyCode: cart.currencyCode
       currencyCode: cart.currencyCode
     }
   };
