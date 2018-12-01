@@ -1,7 +1,8 @@
 import { isEqual } from "lodash";
 import SimpleSchema from "simpl-schema";
 import ReactionError from "@reactioncommerce/reaction-error";
-import { xformCartCheckout } from "@reactioncommerce/reaction-graphql-xforms/cart";
+import xformCartGroupToCommonOrder from "/imports/plugins/core/cart/server/no-meteor/util/xformCartGroupToCommonOrder";
+
 import getCartById from "../util/getCartById";
 
 const inputSchema = new SimpleSchema({
@@ -73,14 +74,47 @@ export default async function updateFulfillmentOptionsForGroup(context, input) {
   const fulfillmentGroup = (cart.shipping || []).find((group) => group._id === fulfillmentGroupId);
   if (!fulfillmentGroup) throw new ReactionError("not-found", `Fulfillment group with ID ${fulfillmentGroupId} not found in cart with ID ${cartId}`);
 
+  const commonOrder = await xformCartGroupToCommonOrder(cart, fulfillmentGroup, context);
+
   // Map the items onto the fulfillment groups
   fulfillmentGroup.items = fulfillmentGroup.itemIds.map((itemId) => cart.items.find((item) => item._id === itemId));
 
-  // Add cart summary
-  const cartWithSummary = await xformCartCheckout(collections, cart);
+  // TODO: In the future, we should update this with a discounts update
+  // Discounts are stored as the sum of all discounts, per cart. This will need to be updated when we refactor discounts to go by group.
+  const discountTotal = cart.discount || 0;
+  const groupItemTotal = fulfillmentGroup.items.reduce((sum, item) => (sum + item.subtotal.amount), 0);
+  // orderItemTotal will need to be updated to be the actual total when we eventually have more than one group available
+  const orderItemTotal = groupItemTotal;
+
+  const totals = {
+    groupDiscountTotal: {
+      amount: discountTotal,
+      currencyCode: cart.currencyCode
+    },
+    groupItemTotal: {
+      amount: groupItemTotal,
+      currencyCode: cart.currencyCode
+    },
+    groupTotal: {
+      amount: groupItemTotal - discountTotal,
+      currencyCode: cart.currencyCode
+    },
+    orderDiscountTotal: {
+      amount: discountTotal,
+      currencyCode: cart.currencyCode
+    },
+    orderItemTotal: {
+      amount: orderItemTotal,
+      currencyCode: cart.currencyCode
+    },
+    orderTotal: {
+      amount: orderItemTotal - discountTotal,
+      currencyCode: cart.currencyCode
+    }
+  };
 
   // In the future we want to do this async and subscribe to the results
-  const rates = await context.queries.getFulfillmentMethodsWithQuotes(fulfillmentGroup, cartWithSummary, context);
+  const rates = await context.queries.getFulfillmentMethodsWithQuotes(commonOrder, totals, context);
 
   const { shipmentQuotes, shipmentQuotesQueryStatus } = getShipmentQuotesQueryStatus(rates);
 

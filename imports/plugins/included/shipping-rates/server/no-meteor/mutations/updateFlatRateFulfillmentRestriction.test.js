@@ -38,12 +38,14 @@ test("update a flat rate fulfillment restriction", async () => {
 
   expect(result).toEqual({
     restriction: {
+      _id: "restriction123",
       type: "deny",
       attributes: [
         { property: "vendor", value: "reaction", propertyType: "string", operator: "eq" },
         { property: "productType", value: "knife", propertyType: "string", operator: "eq" }
       ],
-      destination: { region: ["CO", "NY"] }
+      destination: { region: ["CO", "NY"] },
+      shopId: "shop123"
     }
   });
 });

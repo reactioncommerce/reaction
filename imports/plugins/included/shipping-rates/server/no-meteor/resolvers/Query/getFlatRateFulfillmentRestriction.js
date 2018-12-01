@@ -1,5 +1,4 @@
 import { decodeShopOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/shop";
-import { getPaginatedResponse } from "@reactioncommerce/reaction-graphql-utils";
 import { decodeFulfillmentRestrictionOpaqueId } from "../../xforms/flatRateFulfillmentRestriction";
 
 /**
@@ -15,12 +14,10 @@ import { decodeFulfillmentRestrictionOpaqueId } from "../../xforms/flatRateFulfi
  * @return {Promise<Object>|undefined} A Restriction object
  */
 export default async function getFlatRateFulfillmentRestriction(parentResult, args, context) {
-  const { restrictionId, shopId, ...connectionArgs } = args;
+  const { restrictionId, shopId } = args;
 
-  const cursor = await context.queries.getFlatRateFulfillmentRestriction(context, {
+  return context.queries.getFlatRateFulfillmentRestriction(context, {
     restrictionId: decodeFulfillmentRestrictionOpaqueId(restrictionId),
     shopId: decodeShopOpaqueId(shopId)
   });
-
-  return getPaginatedResponse(cursor, connectionArgs);
 }

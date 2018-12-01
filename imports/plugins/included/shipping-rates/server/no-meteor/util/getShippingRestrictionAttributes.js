@@ -6,18 +6,15 @@ import { findCatalogProductsAndVariants, pick, tagsByIds, mergeProductAndVariant
  * @summary Get shipping attributes for a fulfillment group that will be used to
  * determine any applicable shipping restrictions.
  * @param {Object} context -  an object containing the per-request state
- * @param {Object} cartWithSummary - the users cart with its summary
- * @param {Object} cartWithSummary.summary - The cart summary
- * @param {Object} fulfillmentGroup - a fulfillment group for a shopping cart
- * @param {Object} fulfillmentGroup.address - the shipping address
+ * @param {Object} totals - The totals object with discounts, item, and group totals
+ * @param {Object} commonOrder - details about the purchase a user wants to make.
  * @param {Array} fulfillmentGroup.items - the items in the cart
  * @returns {Object|null} shipping restriction attributes for the provided fulfillment group
  */
-export default async function getShippingRestrictionAttributes(context, cartWithSummary, fulfillmentGroup) {
+export default async function getShippingRestrictionAttributes(context, totals, commonOrder) {
   const { collections, getFunctionsOfType } = context;
-  const { address: destination, items: orderItems } = fulfillmentGroup;
+  const { shippingAddress: destination, items: orderItems } = commonOrder;
   const address = pick(destination, ["address1", "address2", "city", "country", "postal", "region"]);
-  const { summary } = cartWithSummary;
   const products = [];
 
   // Products in the Catalog collection are the source of truth, therefore use them
@@ -43,18 +40,25 @@ export default async function getShippingRestrictionAttributes(context, cartWith
     });
 
     // Fetch custom attributes
-    getFunctionsOfType("addShippingRestrictionCustomAttributes").forEach((customAttributesFunc) => {
-      customAttributesFunc(flattenProduct, productAndVariants);
-    });
+    // We need to run each of these functions in a series, rather than in parallel, because
+    // we are mutating the same object on each pass. It is recommended to disable `no-await-in-loop`
+    // eslint rules when the output of one iteration might be used as input in another iteration, such as this case here.
+    // See https://eslint.org/docs/rules/no-await-in-loop#when-not-to-use-it
+    for (const customAttributesFunc of getFunctionsOfType("addShippingRestrictionCustomAttributes")) {
+      await customAttributesFunc(flattenProduct, productAndVariants); // eslint-disable-line
+    }
 
     products.push(flattenProduct);
   }
 
   return {
     address,
-    discountTotal: summary.discountTotal.amount,
     items: products,
-    itemTotal: summary.itemTotal.amount,
-    total: summary.total.amount
+    groupDiscountTotal: totals.groupDiscountTotal.amount,
+    groupItemTotal: totals.groupItemTotal.amount,
+    groupTotal: totals.groupTotal.amount,
+    orderDiscountTotal: totals.orderDiscountTotal.amount,
+    orderItemTotal: totals.orderItemTotal.amount,
+    orderTotal: totals.orderTotal.amount
   };
 }

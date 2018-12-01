@@ -7,8 +7,8 @@ import getShippingRestrictionAttributes from "./util/getShippingRestrictionAttri
 /**
  * @summary Returns a list of fulfillment method quotes based on the items in a fulfillment group.
  * @param {Object} context - Context
- * @param {Object} fulfillmentGroup - details about the purchase a user wants to make.
- * @param {Object} cartWithSummary - the user's cart with its summary
+ * @param {Object} commonOrder - details about the purchase a user wants to make.
+ * @param {Object} totals - The totals object with discounts, item, and group totals
  * @param {Array} [previousQueryResults] - an array of shipping rates and
  * info about failed calls to the APIs of some shipping methods providers
  * e.g Shippo.
@@ -18,7 +18,7 @@ import getShippingRestrictionAttributes from "./util/getShippingRestrictionAttri
  * shipping rates.
  * @private
  */
-export default async function getFulfillmentMethodsWithQuotes(context, fulfillmentGroup, cartWithSummary, previousQueryResults = []) {
+export default async function getFulfillmentMethodsWithQuotes(context, commonOrder, totals, previousQueryResults = []) {
   const { collections } = context;
   const { Packages, Shipping } = collections;
   const [rates = [], retrialTargets = []] = previousQueryResults;
@@ -26,6 +26,7 @@ export default async function getFulfillmentMethodsWithQuotes(context, fulfillme
     packageName: "flat-rate-shipping",
     fileName: "hooks.js"
   };
+
 
   if (retrialTargets.length > 0) {
     const isNotAmongFailedRequests = retrialTargets.every((target) =>
@@ -38,7 +39,7 @@ export default async function getFulfillmentMethodsWithQuotes(context, fulfillme
 
   // Verify that we have a valid address to work with
   let shippingErrorDetails;
-  if (!fulfillmentGroup.address) {
+  if (!commonOrder.shippingAddress) {
     shippingErrorDetails = {
       requestStatus: "error",
       shippingProvider: "flat-rate-shipping",
@@ -72,17 +73,17 @@ export default async function getFulfillmentMethodsWithQuotes(context, fulfillme
   }
 
   const shippingRateDocs = await Shipping.find({
-    "shopId": fulfillmentGroup.shopId,
+    "shopId": commonOrder.shopId,
     "provider.enabled": true
   }).toArray();
 
   const initialNumOfRates = rates.length;
 
-  // Get hydrated cart, an object of current order data including item and destination information
-  const hydratedCart = await getShippingRestrictionAttributes(context, cartWithSummary, fulfillmentGroup); // TODO: possibly change function name
-  const isCartShippingRestricted = await cartShippingRestricted(context, hydratedCart);
+  // Get hydrated order, an object of current order data including item and destination information
+  const hydratedOrder = await getShippingRestrictionAttributes(context, totals, commonOrder); // TODO: possibly change function name
+  const isOrderShippingRestricted = await cartShippingRestricted(context, hydratedOrder);
 
-  if (isCartShippingRestricted) {
+  if (isOrderShippingRestricted) {
     const errorDetails = {
       requestStatus: "error",
       shippingProvider: "flat-rate-shipping",
@@ -93,7 +94,7 @@ export default async function getFulfillmentMethodsWithQuotes(context, fulfillme
     const awaitedShippingRateDocs = shippingRateDocs.map(async (doc) => {
       const carrier = doc.provider.label;
       // Check for method specific shipping restrictions
-      const availableShippingMethods = await filterShippingMethods(context, doc.methods, hydratedCart);
+      const availableShippingMethods = await filterShippingMethods(context, doc.methods, hydratedOrder);
       for (const method of availableShippingMethods) {
         if (!method.rate) {
           method.rate = 0;

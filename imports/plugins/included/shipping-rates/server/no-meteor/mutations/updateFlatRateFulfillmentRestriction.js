@@ -3,6 +3,7 @@ import ReactionError from "@reactioncommerce/reaction-error";
 import restrictionSchema from "../util/restrictionSchema";
 
 const inputSchema = new SimpleSchema({
+  restrictionId: String,
   restriction: restrictionSchema,
   shopId: String
 });
@@ -32,11 +33,16 @@ export default async function updateFlatRateFulfillmentRestrictionMutation(conte
     shopId
   }, {
     $set: {
-      _id: restrictionId,
       ...restriction
     }
   });
   if (matchedCount === 0) throw new ReactionError("not-found", "Not found");
 
-  return { restriction };
+  return {
+    restriction: {
+      _id: restrictionId,
+      shopId,
+      ...restriction
+    }
+  };
 }
