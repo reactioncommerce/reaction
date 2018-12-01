@@ -2,10 +2,10 @@
  * @summary Filter shipping methods based on per method allow location restrictions
  * @param {Object} methodRestrictions - method restrictions from FlatRateFulfillmentRestrcitionsCollection
  * @param {Object} method - current method to check restrcictions against
- * @param {Object} hydratedCart - hydrated cart for current order
+ * @param {Object} hydratedOrder - hydrated order for current order
  * @returns {Bool} true / false as to whether method is still valid after this check
  */
-export async function locationDenyCheck(methodRestrictions, method, hydratedCart) {
+export async function locationDenyCheck(methodRestrictions, method, hydratedOrder) {
   // Get method specific allow restrictions
   const denyRestrictions = methodRestrictions.filter((methodRestriction) => methodRestriction.type === "deny");
 
@@ -29,17 +29,17 @@ export async function locationDenyCheck(methodRestrictions, method, hydratedCart
 
     // Start checking at the macro-level, and move more macro as we go on
     // Check for an allow list of countries
-    if (destination.country && destination.country.includes(hydratedCart.address.country)) {
+    if (destination.country && destination.country.includes(hydratedOrder.address.country)) {
       return false;
     }
 
     // Check for an allow list of regions
-    if (destination.region && destination.region.includes(hydratedCart.address.region)) {
+    if (destination.region && destination.region.includes(hydratedOrder.address.region)) {
       return false;
     }
 
     // Check for an allow list of postal codes
-    if (destination.postal && destination.postal.includes(hydratedCart.address.postal)) {
+    if (destination.postal && destination.postal.includes(hydratedOrder.address.postal)) {
       return false;
     }
 

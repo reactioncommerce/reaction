@@ -79,11 +79,11 @@ export default async function getFulfillmentMethodsWithQuotes(context, commonOrd
 
   const initialNumOfRates = rates.length;
 
-  // Get hydrated cart, an object of current order data including item and destination information
-  const hydratedCart = await getShippingRestrictionAttributes(context, totals, commonOrder); // TODO: possibly change function name
-  const isCartShippingRestricted = await cartShippingRestricted(context, hydratedCart);
+  // Get hydrated order, an object of current order data including item and destination information
+  const hydratedOrder = await getShippingRestrictionAttributes(context, totals, commonOrder); // TODO: possibly change function name
+  const isOrderShippingRestricted = await cartShippingRestricted(context, hydratedOrder);
 
-  if (isCartShippingRestricted) {
+  if (isOrderShippingRestricted) {
     const errorDetails = {
       requestStatus: "error",
       shippingProvider: "flat-rate-shipping",
@@ -94,7 +94,7 @@ export default async function getFulfillmentMethodsWithQuotes(context, commonOrd
     const awaitedShippingRateDocs = shippingRateDocs.map(async (doc) => {
       const carrier = doc.provider.label;
       // Check for method specific shipping restrictions
-      const availableShippingMethods = await filterShippingMethods(context, doc.methods, hydratedCart);
+      const availableShippingMethods = await filterShippingMethods(context, doc.methods, hydratedOrder);
       for (const method of availableShippingMethods) {
         if (!method.rate) {
           method.rate = 0;
