@@ -33,7 +33,7 @@
     "@fortawesome/free-solid-svg-icons": "^5.5.0",
     "@fortawesome/react-fontawesome": "^0.1.3",
     "@material-ui/core": "^3.4.0",
-    "@reactioncommerce/components": "^0.54.0",
+    "@reactioncommerce/components": "0.56.0",
     "@reactioncommerce/components-context": "1.0.0",
     "@reactioncommerce/data-factory": "^1.0.0",
     "@reactioncommerce/file-collections": "0.6.0",
