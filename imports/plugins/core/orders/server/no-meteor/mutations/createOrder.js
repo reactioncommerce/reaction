@@ -390,6 +390,7 @@ export default async function createOrder(context, input) {
     currencyCode,
     discounts,
     email,
+    referenceId: Random.id(),
     shipping: chargedFulfillmentGroups,
     shopId,
     surcharges,

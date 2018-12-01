@@ -67,7 +67,7 @@ beforeAll(async () => {
 
 afterAll(() => testApp.stop());
 
-test.skip("unauthenticated", async () => {
+test("unauthenticated", async () => {
   try {
     await groupQuery({ id: groupMongoSchemaToGraphQL(groups[0])._id });
   } catch (error) {
@@ -75,7 +75,7 @@ test.skip("unauthenticated", async () => {
   }
 });
 
-test.skip("authenticated with reaction-accounts role, gets any group", async () => {
+test("authenticated with reaction-accounts role, gets any group", async () => {
   await testApp.setLoggedInUser(mockAdminAccount);
 
   const expectedGroup = groupMongoSchemaToGraphQL(groups[0]);
@@ -88,7 +88,7 @@ test.skip("authenticated with reaction-accounts role, gets any group", async () 
   await testApp.clearLoggedInUser();
 });
 
-test.skip("authenticated without reaction-accounts role, gets group they belong to", async () => {
+test("authenticated without reaction-accounts role, gets group they belong to", async () => {
   await testApp.setLoggedInUser(mockOtherAccount);
 
   const expectedGroup = groupMongoSchemaToGraphQL(groups[0]);
@@ -101,7 +101,7 @@ test.skip("authenticated without reaction-accounts role, gets group they belong 
   await testApp.clearLoggedInUser();
 });
 
-test.skip("authenticated without reaction-accounts role, does not get group they do not belong to", async () => {
+test("authenticated without reaction-accounts role, does not get group they do not belong to", async () => {
   await testApp.setLoggedInUser(mockOtherAccount);
 
   try {

@@ -6,7 +6,7 @@ import {
 import { rewire as rewire$isBackorder, restore as restore$isBackorder } from "./isBackorder";
 import { rewire as rewire$isLowQuantity, restore as restore$isLowQuantity } from "./isLowQuantity";
 import { rewire as rewire$isSoldOut, restore as restore$isSoldOut } from "./isSoldOut";
-import createCatalogProduct, { restore$createCatalogProduct, rewire$xformProduct } from "./createCatalogProduct";
+import createCatalogProduct, { restore as restore$createCatalogProduct, rewire$xformProduct } from "./createCatalogProduct";
 
 const internalShopId = "123";
 const opaqueShopId = "cmVhY3Rpb24vc2hvcDoxMjM="; // reaction/shop:123
@@ -288,7 +288,7 @@ const mockCatalogProduct = {
     index: 0,
     inventoryManagement: true,
     inventoryPolicy: false,
-    isLowQuantity: true,
+    isLowQuantity: false,
     isSoldOut: false,
     length: 0,
     lowInventoryWarningThreshold: 0,
@@ -311,7 +311,7 @@ const mockCatalogProduct = {
       index: 0,
       inventoryManagement: true,
       inventoryPolicy: true,
-      isLowQuantity: true,
+      isLowQuantity: false,
       isSoldOut: false,
       length: 2,
       lowInventoryWarningThreshold: 0,

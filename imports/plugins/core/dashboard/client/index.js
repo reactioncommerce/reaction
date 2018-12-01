@@ -1,3 +1,8 @@
+import React from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faStore } from "@fortawesome/free-solid-svg-icons";
+
+import { registerOperatorRoute } from "/imports/client/ui";
 import "./templates/import/import.html";
 import "./templates/import/import.js";
 
@@ -17,3 +22,13 @@ import "./templates/shop/settings/settings.js";
 
 import "./templates/dashboard.html";
 import "./templates/dashboard.js";
+
+registerOperatorRoute({
+  isNavigationLink: true,
+  isSetting: true,
+  path: "/shop-settings",
+  mainComponent: "shopSettings",
+  // eslint-disable-next-line react/display-name
+  SidebarIconComponent: (props) => <FontAwesomeIcon icon={faStore} {...props} />,
+  sidebarI18nLabel: "admin.settings.shopSettingsLabel"
+});

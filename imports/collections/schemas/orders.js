@@ -433,6 +433,7 @@ export const Order = new SimpleSchema({
     optional: true
   },
   "notes.$": Notes,
+  "referenceId": String,
   "shipping": [OrderFulfillmentGroup],
   "shopId": {
     type: String,

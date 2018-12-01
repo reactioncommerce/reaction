@@ -14,7 +14,7 @@ import { Shops } from "/lib/collections";
  * @return {Int} returns update result
  * @private
  */
-function updateShopBrandAssets(asset, shopId = Reaction.getShopId(), userId = Reaction.getUserId) {
+function updateShopBrandAssets(asset, shopId = Reaction.getShopId(), userId = Reaction.getUserId()) {
   check(asset, {
     mediaId: String,
     type: String

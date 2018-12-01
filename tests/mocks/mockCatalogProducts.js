@@ -45,6 +45,7 @@ export const mockInternalCatalogOptions = [
     inventoryPolicy: true,
     isLowQuantity: false,
     isSoldOut: false,
+    isTaxable: true,
     length: 2,
     lowInventoryWarningThreshold: 0,
     metafields: [
@@ -90,6 +91,7 @@ export const mockInternalCatalogOptions = [
     inventoryPolicy: true,
     isLowQuantity: true,
     isSoldOut: false,
+    isTaxable: true,
     length: 2,
     lowInventoryWarningThreshold: 0,
     metafields: [
@@ -141,6 +143,7 @@ export const mockExternalCatalogOptions = [
     inventoryPolicy: true,
     isLowQuantity: false,
     isSoldOut: false,
+    isTaxable: true,
     length: 2,
     lowInventoryWarningThreshold: 0,
     metafields: [
@@ -191,6 +194,7 @@ export const mockExternalCatalogOptions = [
     inventoryPolicy: true,
     isLowQuantity: true,
     isSoldOut: false,
+    isTaxable: true,
     length: 2,
     lowInventoryWarningThreshold: 0,
     metafields: [
@@ -247,6 +251,7 @@ export const mockInternalCatalogVariants = [
     inventoryPolicy: false,
     isLowQuantity: true,
     isSoldOut: false,
+    isTaxable: true,
     length: 0,
     lowInventoryWarningThreshold: 0,
     metafields: [
@@ -299,6 +304,7 @@ export const mockExternalCatalogVariants = [
     inventoryPolicy: false,
     isLowQuantity: true,
     isSoldOut: false,
+    isTaxable: true,
     length: 0,
     lowInventoryWarningThreshold: 0,
     metafields: [
@@ -320,7 +326,7 @@ export const mockExternalCatalogVariants = [
           _id: "cmVhY3Rpb24vY3VycmVuY3k6VVNE",
           code: "USD"
         },
-        compareAtPrice: 10,
+        compareAtPrice: { amount: 10 },
         displayPrice: "2.99 - 5.99",
         maxPrice: 5.99,
         minPrice: 2.99,
@@ -588,7 +594,7 @@ export const mockExternalCatalogProducts = [
             _id: "cmVhY3Rpb24vY3VycmVuY3k6VVNE",
             code: "USD"
           },
-          compareAtPrice: 10,
+          compareAtPrice: { amount: 10 },
           displayPrice: "2.99 - 5.99",
           maxPrice: 5.99,
           minPrice: 2.99,
@@ -694,7 +700,7 @@ export const mockExternalCatalogProducts = [
             _id: "cmVhY3Rpb24vY3VycmVuY3k6VVNE",
             code: "USD"
           },
-          compareAtPrice: 35,
+          compareAtPrice: { amount: 35 },
           displayPrice: "16.99 - 25.99",
           maxPrice: 25.99,
           minPrice: 16.99,

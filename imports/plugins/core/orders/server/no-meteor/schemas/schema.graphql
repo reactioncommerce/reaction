@@ -4,6 +4,9 @@ extend type Query {
 
   "Get all orders for a single account, optionally limited to certain shop IDs"
   ordersByAccountId(accountId: ID!, shopIds: [ID]): [Order]!
+
+  "Get an order by its reference ID (the ID shown to customers)"
+  orderByReferenceId(id: ID!, shopId: ID!, token: String): Order
 }
 
 enum OrderFulfillmentGroupItemsSortByField {
@@ -208,17 +211,23 @@ type Order implements Node {
   "The ID of the cart that created this order. Carts are deleted after becoming orders, so this is just a reference."
   cartId: ID
 
-  "One or more fulfillment groups. Each of these are fulfilled and charged as separate orders."
-  fulfillmentGroups: [OrderFulfillmentGroup]!
-
   "The date and time at which the cart was created, which is when the first item was added to it."
   createdAt: DateTime!
 
   "An email address that has been associated with the cart"
   email: String
 
+  "One or more fulfillment groups. Each of these are fulfilled and charged as separate orders."
+  fulfillmentGroups: [OrderFulfillmentGroup]!
+
   "Notes about the order. This will always return an array but it may be empty"
   notes: [OrderNote]!
+
+  """
+  An ID by which the customer can reference this order when enquiring about it. A storefront user
+  interface may show this to customers. Do not display other IDs (`_id`) to customers.
+  """
+  referenceId: String!
 
   "The shop through which the order was placed"
   shop: Shop!
