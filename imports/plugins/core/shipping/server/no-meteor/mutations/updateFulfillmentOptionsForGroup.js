@@ -83,7 +83,8 @@ export default async function updateFulfillmentOptionsForGroup(context, input) {
   // Discounts are stored as the sum of all discounts, per cart. This will need to be updated when we refactor discounts to go by group.
   const discountTotal = cart.discount || 0;
   const groupItemTotal = fulfillmentGroup.items.reduce((sum, item) => (sum + item.subtotal.amount), 0);
-  console.log("-------------------------------");
+  // orderItemTotal will need to be updated to be the actual total when we eventually have more than one group available
+  const orderItemTotal = groupItemTotal;
 
   const totals = {
     groupDiscountTotal: {
@@ -97,6 +98,17 @@ export default async function updateFulfillmentOptionsForGroup(context, input) {
     groupTotal: {
       amount: groupItemTotal - discountTotal,
       currencyCode: cart.currencyCode
+    },
+    orderDiscountTotal: {
+      amount: discountTotal,
+      currencyCode: cart.currencyCode
+    },
+    orderItemTotal: {
+      amount: orderItemTotal,
+      currencyCode: cart.currencyCode
+    },
+    orderTotal: {
+      amount: orderItemTotal - discountTotal,
       currencyCode: cart.currencyCode
     }
   };
