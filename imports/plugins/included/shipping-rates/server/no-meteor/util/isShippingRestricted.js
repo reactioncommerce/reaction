@@ -12,7 +12,7 @@ export default async function isShippingRestricted(context, hydratedOrder) {
   const universalRestrictions = await flatRateFulfillmentRestrictionsCollection.find({ methodIds: null, type: "deny" }).toArray();
 
   // If there are no universal restrictions, move on to method specific checks
-  if (!universalRestrictions) {
+  if (universalRestrictions.length === 0) {
     return false;
   }
 
