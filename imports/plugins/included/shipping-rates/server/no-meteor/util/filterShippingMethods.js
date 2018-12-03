@@ -25,19 +25,19 @@ export default async function filterShippingMethods(context, methods, hydratedOr
     const methodRestrictions = await FlatRateFulfillmentRestrictions.find({ methodIds: method._id }).toArray();
 
     // Check method against location allow check
-    const allowedMethodBasedOnShippingLocationsAllowList = await locationAllowCheck(methodRestrictions, method, hydratedOrder);
+    const methodIsAllowedBasedOnShippingLocationsAllowList = await locationAllowCheck(methodRestrictions, method, hydratedOrder);
+    if (!methodIsAllowedBasedOnShippingLocationsAllowList) return awaitedValidShippingMethods;
 
     // Check method against location deny check
-    const allowedMethodsBasedOnShippingLocationsDenyList = await locationDenyCheck(methodRestrictions, method, hydratedOrder);
+    const methodIsAllowedBasedOnShippingLocationsDenyList = await locationDenyCheck(methodRestrictions, method, hydratedOrder);
+    if (!methodIsAllowedBasedOnShippingLocationsDenyList) return awaitedValidShippingMethods;
 
     // Check method against attributes deny check
-    const allowedMethodsBasedOnShippingAttributesDenyList = await attributeDenyCheck(methodRestrictions, method, hydratedOrder);
+    const methodIsAllowedBasedOnShippingAttributesDenyList = await attributeDenyCheck(methodRestrictions, method, hydratedOrder);
+    if (!methodIsAllowedBasedOnShippingAttributesDenyList) return awaitedValidShippingMethods;
 
     // If method passes all checks, it is valid and should be added to valid methods array
-    if (allowedMethodBasedOnShippingLocationsAllowList && allowedMethodsBasedOnShippingLocationsDenyList && allowedMethodsBasedOnShippingAttributesDenyList) {
-      awaitedValidShippingMethods.push(method);
-    }
-
+    awaitedValidShippingMethods.push(method);
     return awaitedValidShippingMethods;
   }, Promise.resolve([]));
 
