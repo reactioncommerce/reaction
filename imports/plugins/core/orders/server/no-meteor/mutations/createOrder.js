@@ -305,22 +305,57 @@ async function addShipmentMethodToGroup(context, finalGroup, cleanedInput, group
 /**
  * @summary Adds taxes to the final fulfillment group
  * @param {Object} context - an object containing the per-request state
- * @param {Object} finalGroup Fulfillment group object pre tax addition
+ * @param {Object} finalGroup Fulfillment group object pre shipment method addition
  * @param {Object} cleanedInput - Necessary orderInput. See SimpleSchema
- * @param {String} orderId - New randomized ID to attach to order
+ * @param {Object} groupInput - Original fulfillment group that we componse finalGroup from. See SimpleSchema
+ * @param {String} discountTotal - Calculated discount total
+ * @param {String} orderItemTotal - Calculated total of all items in an order
+ * @param {String} orderId - Randomized new orderId
  * @returns {Object} Fulfillment group object post tax addition
  */
-async function addTaxesToGroup(context, finalGroup, cleanedInput, orderId) {
+async function addTaxesToGroup(context, finalGroup, cleanedInput, groupInput, discountTotal, orderItemTotal, orderId) {
   const { collections } = context;
   const { billingAddress, order: orderInput } = cleanedInput;
   const { cartId, currencyCode } = orderInput;
+
+
+  const groupItemTotal = finalGroup.items.reduce((sum, item) => (sum + item.subtotal), 0);
+
+  const totals = {
+    groupDiscountTotal: {
+      amount: discountTotal,
+      currencyCode
+    },
+    groupItemTotal: {
+      amount: groupItemTotal,
+      currencyCode
+    },
+    groupTotal: {
+      amount: groupItemTotal - discountTotal,
+      currencyCode
+    },
+    orderDiscountTotal: {
+      amount: discountTotal,
+      currencyCode
+    },
+    orderItemTotal: {
+      amount: orderItemTotal,
+      currencyCode
+    },
+    orderTotal: {
+      amount: orderItemTotal - discountTotal,
+      currencyCode
+    }
+  };
+
   const commonOrder = await xformOrderGroupToCommonOrder({
     billingAddress,
     cartId,
     collections,
     currencyCode,
     group: finalGroup,
-    orderId
+    orderId,
+    totals
   });
 
   const { itemTaxes, taxSummary } = await context.mutations.getFulfillmentGroupTaxes(context, { order: commonOrder, forceZeroes: true });
@@ -422,7 +457,7 @@ export default async function createOrder(context, input) {
     await addShipmentMethodToGroup(context, finalGroup, cleanedInput, groupInput, discountTotal, orderItemTotal, orderId);
 
     // Apply Taxes
-    await addTaxesToGroup(context, finalGroup, cleanedInput, orderId);
+    await addTaxesToGroup(context, finalGroup, cleanedInput, groupInput, discountTotal, orderItemTotal, orderId);
 
     // Add some more properties for convenience
     finalGroup.itemIds = finalGroup.items.map((item) => item._id);
