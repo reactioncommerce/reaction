@@ -50,13 +50,13 @@ export default async function getShippingRestrictionAttributes(context, commonOr
   }
 
   return {
-    address: shippingAddress,
     items: products,
     groupDiscountTotal: totals.groupDiscountTotal.amount,
     groupItemTotal: totals.groupItemTotal.amount,
     groupTotal: totals.groupTotal.amount,
     orderDiscountTotal: totals.orderDiscountTotal.amount,
     orderItemTotal: totals.orderItemTotal.amount,
-    orderTotal: totals.orderTotal.amount
+    orderTotal: totals.orderTotal.amount,
+    shippingAddress
   };
 }
