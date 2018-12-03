@@ -1,6 +1,6 @@
 import Logger from "@reactioncommerce/logger";
 import ReactionError from "@reactioncommerce/reaction-error";
-import cartShippingRestricted from "./util/cartShippingRestricted";
+import isShippingRestricted from "./util/isShippingRestricted";
 import filterShippingMethods from "./util/filterShippingMethods";
 import getShippingRestrictionAttributes from "./util/getShippingRestrictionAttributes";
 
@@ -81,7 +81,7 @@ export default async function getFulfillmentMethodsWithQuotes(context, commonOrd
 
   // Get hydrated order, an object of current order data including item and destination information
   const hydratedOrder = await getShippingRestrictionAttributes(context, totals, commonOrder); // TODO: possibly change function name
-  const isOrderShippingRestricted = await cartShippingRestricted(context, hydratedOrder);
+  const isOrderShippingRestricted = await isShippingRestricted(context, hydratedOrder);
 
   if (isOrderShippingRestricted) {
     const errorDetails = {

@@ -6,7 +6,7 @@ import { operators, propertyTypes } from "./helpers";
  * @param {Object} hydratedOrder - computed hydratedOrder for current order
  * @returns {Object|null} available shipping methods after filtering
  */
-export default async function cartShippingRestricted(context, hydratedOrder) {
+export default async function isShippingRestricted(context, hydratedOrder) {
   const { items } = hydratedOrder;
   const flatRateFulfillmentRestrictionsCollection = context.collections.FlatRateFulfillmentRestrictions;
   const universalRestrictions = await flatRateFulfillmentRestrictionsCollection.find({ methodIds: null, type: "deny" }).toArray();
