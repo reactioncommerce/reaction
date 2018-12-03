@@ -11,7 +11,7 @@ import { locationDenyCheck } from "./locationDenyCheck";
  * @returns {Object|null} available shipping methods after filtering
  */
 export default async function filterShippingMethods(context, methods, hydratedOrder) {
-  const flatRateFulfillmentRestrictionsCollection = context.collections.FlatRateFulfillmentRestrictions;
+  const { FlatRateFulfillmentRestrictions } = context.collections;
 
   const allValidShippingMethods = methods.reduce(async (validShippingMethods, method) => {
     const awaitedValidShippingMethods = await validShippingMethods;
@@ -22,7 +22,7 @@ export default async function filterShippingMethods(context, methods, hydratedOr
     }
 
     // Find all restrictions for this shipping method
-    const methodRestrictions = await flatRateFulfillmentRestrictionsCollection.find({ methodIds: method._id }).toArray();
+    const methodRestrictions = await FlatRateFulfillmentRestrictions.find({ methodIds: method._id }).toArray();
 
     // Check method against location allow check
     const allowedMethodBasedOnShippingLocationsAllowList = await locationAllowCheck(methodRestrictions, method, hydratedOrder);
