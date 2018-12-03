@@ -1,3 +1,5 @@
+import { isObject } from "lodash.isObject";
+
 /**
  * @summary Filter shipping methods based on per method allow location restrictions
  * @param {Object} methodRestrictions - method restrictions from FlatRateFulfillmentRestrcitionsCollection
@@ -6,16 +8,11 @@
  * @returns {Bool} true / false as to whether method is still valid after this check
  */
 export async function locationAllowCheck(methodRestrictions, method, hydratedOrder) {
-  // Get method specific allow restrictions
-  const allowRestrictions = methodRestrictions.filter((methodRestriction) => methodRestriction.type === "allow");
+  // Get method specific destination allow restrictions
+  const allowRestrictions = methodRestrictions.filter((restriction) => restriction.type === "allow" && isObject(restriction.destination));
 
-  // Check to see if any restrictions for this method are destination restrictions
-  const destinationRestrictions = allowRestrictions.some((restriction) => restriction.destination !== null);
-
-  // If there are no destination allow restrictions, this method is valid at this point
-  if (!destinationRestrictions) {
-    return true;
-  }
+  // If there are no location deny restrictions, this method is valid at this point
+  if (allowRestrictions.length === 0) return true;
 
   // Loop over each allow restriction and determine if this method is valid
   // If any levels of destination match, this method is valid at this point
