@@ -1,5 +1,3 @@
-import { isObject } from "lodash.isObject";
-
 /**
  * @summary Filter shipping methods based on per method deny location restrictions
  * @param {Object} methodRestrictions - method restrictions from FlatRateFulfillmentRestrcitionsCollection
@@ -9,7 +7,7 @@ import { isObject } from "lodash.isObject";
  */
 export async function locationDenyCheck(methodRestrictions, method, hydratedOrder) {
   // Get method specific allow restrictions
-  const denyRestrictions = methodRestrictions.filter((restriction) => restriction.type === "deny" && isObject(restriction.destination));
+  const denyRestrictions = methodRestrictions.filter((restriction) => restriction.type === "deny");
 
   // If there are no destination deny restrictions, this method is valid at this point
   if (denyRestrictions.length === 0) return true;
