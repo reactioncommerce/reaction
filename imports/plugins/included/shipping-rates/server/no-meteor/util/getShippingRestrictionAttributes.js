@@ -6,14 +6,13 @@ import { findCatalogProductsAndVariants, tagsByIds, mergeProductAndVariants } fr
  * @summary Get shipping attributes for a fulfillment group that will be used to
  * determine any applicable shipping restrictions.
  * @param {Object} context -  an object containing the per-request state
- * @param {Object} totals - The totals object with discounts, item, and group totals
  * @param {Object} commonOrder - details about the purchase a user wants to make.
  * @param {Array} fulfillmentGroup.items - the items in the cart
  * @returns {Object|null} shipping restriction attributes for the provided fulfillment group
  */
-export default async function getShippingRestrictionAttributes(context, totals, commonOrder) {
+export default async function getShippingRestrictionAttributes(context, commonOrder) {
   const { collections, getFunctionsOfType } = context;
-  const { items: orderItems, shippingAddress } = commonOrder;
+  const { items: orderItems, shippingAddress, totals } = commonOrder;
   const products = [];
 
   // Products in the Catalog collection are the source of truth, therefore use them

@@ -5,12 +5,11 @@ import Logger from "@reactioncommerce/logger";
  * @method
  * @summary Just gets rates, without updating anything
  * @param {Object} commonOrder - details about the purchase a user wants to make.
- * @param {Object} totals - The totals object with discounts, item, and group totals
  * @param {Object} context - Context
  * @return {Array} return updated rates in cart
  * @private
  */
-export default async function getFulfillmentMethodsWithQuotes(commonOrder, totals, context) {
+export default async function getFulfillmentMethodsWithQuotes(commonOrder, context) {
   const rates = [];
   const retrialTargets = [];
   // must have items to calculate shipping
@@ -19,12 +18,12 @@ export default async function getFulfillmentMethodsWithQuotes(commonOrder, total
   }
 
   const funcs = context.getFunctionsOfType("getFulfillmentMethodsWithQuotes");
-  let promises = funcs.map((rateFunction) => rateFunction(context, commonOrder, totals, [rates, retrialTargets]));
+  let promises = funcs.map((rateFunction) => rateFunction(context, commonOrder, [rates, retrialTargets]));
   await Promise.all(promises);
 
   // Try once more.
   if (retrialTargets.length > 0) {
-    promises = funcs.map((rateFunction) => rateFunction(context, commonOrder, totals, [rates, retrialTargets]));
+    promises = funcs.map((rateFunction) => rateFunction(context, commonOrder, [rates, retrialTargets]));
     await Promise.all(promises);
 
     if (retrialTargets.length > 0) {

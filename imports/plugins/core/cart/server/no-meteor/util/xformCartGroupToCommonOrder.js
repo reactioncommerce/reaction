@@ -56,6 +56,41 @@ export default async function xformCartGroupToCommonOrder(cart, group, context) 
     };
   }
 
+  // TODO: In the future, we should update this with a discounts update
+  // Discounts are stored as the sum of all discounts, per cart. This will need to be updated when we refactor discounts to go by group.
+  const discountTotal = cart.discount || 0;
+  const groupItemTotal = group.items.reduce((sum, item) => (sum + item.subtotal.amount), 0);
+  // orderItemTotal will need to be updated to be the actual total when we eventually have more than one group available
+  const orderItemTotal = groupItemTotal;
+
+  const totals = {
+    groupDiscountTotal: {
+      amount: discountTotal,
+      currencyCode: cart.currencyCode
+    },
+    groupItemTotal: {
+      amount: groupItemTotal,
+      currencyCode: cart.currencyCode
+    },
+    groupTotal: {
+      amount: groupItemTotal - discountTotal,
+      currencyCode: cart.currencyCode
+    },
+    orderDiscountTotal: {
+      amount: discountTotal,
+      currencyCode: cart.currencyCode
+    },
+    orderItemTotal: {
+      amount: orderItemTotal,
+      currencyCode: cart.currencyCode
+    },
+    orderTotal: {
+      amount: orderItemTotal - discountTotal,
+      currencyCode: cart.currencyCode
+    }
+  };
+
+
   return {
     billingAddress: null,
     cartId: cart._id,
@@ -67,6 +102,7 @@ export default async function xformCartGroupToCommonOrder(cart, group, context) 
     originAddress: (shop && Array.isArray(shop.addressBook) && shop.addressBook[0]) || null,
     shippingAddress: address || null,
     shopId,
-    sourceType: "cart"
+    sourceType: "cart",
+    totals
   };
 }

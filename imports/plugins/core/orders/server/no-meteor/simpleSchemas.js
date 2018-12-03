@@ -50,6 +50,33 @@ const CommonOrderFulfillmentPrices = new SimpleSchema({
   }
 });
 
+const CommonOrderTotals = new SimpleSchema({
+  groupDiscountTotal: {
+    type: Money,
+    optional: true
+  },
+  groupItemTotal: {
+    type: Money,
+    optional: true
+  },
+  groupTotal: {
+    type: Money,
+    optional: true
+  },
+  orderDiscountTotal: {
+    type: Money,
+    optional: true
+  },
+  orderItemTotal: {
+    type: Money,
+    optional: true
+  },
+  orderTotal: {
+    type: Money,
+    optional: true
+  }
+});
+
 /**
  * @type {SimpleSchema}
  * @summary The CommonOrder schema describes an order for a single shop, containing only
@@ -92,5 +119,9 @@ export const CommonOrder = new SimpleSchema({
   sourceType: {
     type: String,
     allowedValues: ["cart", "order"]
+  },
+  totals: {
+    type: CommonOrderTotals,
+    optional: true
   }
 });

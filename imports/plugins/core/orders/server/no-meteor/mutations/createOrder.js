@@ -242,14 +242,6 @@ async function addShipmentMethodToGroup(context, finalGroup, cleanedInput, group
   const { billingAddress, order: orderInput } = cleanedInput;
   const { cartId, currencyCode } = orderInput;
   const { collections } = context;
-  const commonOrder = await xformOrderGroupToCommonOrder({
-    billingAddress,
-    cartId,
-    collections,
-    currencyCode,
-    group: finalGroup,
-    orderId
-  });
 
   const groupItemTotal = finalGroup.items.reduce((sum, item) => (sum + item.subtotal), 0);
 
@@ -280,9 +272,19 @@ async function addShipmentMethodToGroup(context, finalGroup, cleanedInput, group
     }
   };
 
+  const commonOrder = await xformOrderGroupToCommonOrder({
+    billingAddress,
+    cartId,
+    collections,
+    currencyCode,
+    group: finalGroup,
+    orderId,
+    totals
+  });
+
   // We are passing commonOrder in here, but we need the finalGroup.shipmentMethod data inside of fianl order, which doesn't get set until after this
   // but we need the data from this in order to set it
-  const rates = await context.queries.getFulfillmentMethodsWithQuotes(commonOrder, totals, context);
+  const rates = await context.queries.getFulfillmentMethodsWithQuotes(commonOrder, context);
   const selectedFulfillmentMethod = rates.find((rate) => groupInput.selectedFulfillmentMethodId === rate.method._id);
   if (!selectedFulfillmentMethod) {
     throw new ReactionError("invalid", "The selected fulfillment method is no longer available." +

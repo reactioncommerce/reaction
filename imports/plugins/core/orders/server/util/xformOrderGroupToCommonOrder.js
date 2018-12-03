@@ -7,7 +7,7 @@
  * @param {String} orderId The order ID
  * @returns {Object} Valid CommonOrder for the given order group
  */
-export default async function xformOrderGroupToCommonOrder({ billingAddress = null, cartId, collections, currencyCode, group, orderId }) {
+export default async function xformOrderGroupToCommonOrder({ billingAddress = null, cartId, collections, currencyCode, group, orderId, totals }) {
   const items = group.items.map((item) => ({
     _id: item._id,
     isTaxable: item.isTaxable,
@@ -62,6 +62,7 @@ export default async function xformOrderGroupToCommonOrder({ billingAddress = nu
     originAddress: (shop && Array.isArray(shop.addressBook) && shop.addressBook[0]) || null,
     shippingAddress: address || null,
     shopId,
-    sourceType: "order"
+    sourceType: "order",
+    totals
   };
 }
