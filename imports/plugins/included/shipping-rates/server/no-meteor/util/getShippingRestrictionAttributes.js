@@ -1,5 +1,5 @@
 import ReactionError from "@reactioncommerce/reaction-error";
-import { findCatalogProductsAndVariants, pick, tagsByIds, mergeProductAndVariants } from "./helpers";
+import { findCatalogProductsAndVariants, tagsByIds, mergeProductAndVariants } from "./helpers";
 
 /**
  * @name getShippingRestrictionAttributes
