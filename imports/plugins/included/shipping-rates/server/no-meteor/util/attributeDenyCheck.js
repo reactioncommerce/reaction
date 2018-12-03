@@ -14,7 +14,7 @@ export async function attributeDenyCheck(methodRestrictions, method, hydratedOrd
   // If there are no attributes deny restrictions, this method is valid at this point
   if (attributesDenyRestrictions.length === 0) return true;
 
-  const { items } = hydratedOrder;
+  const { items, shippingAddress } = hydratedOrder;
 
   const denyMethod = items.some((item) => { // eslint-disable-line
     // For each item, run through the restrictions
@@ -38,17 +38,17 @@ export async function attributeDenyCheck(methodRestrictions, method, hydratedOrd
 
           const { country: restrictionCountry, postal: restrictionPostal, region: restrictionRegion } = destination;
 
-          if (restrictionPostal && restrictionPostal.includes(hydratedOrder.address.postal)) {
+          if (restrictionPostal && restrictionPostal.includes(shippingAddress.postal)) {
             return true;
           }
 
           // Check for an allow list of regions
-          if (restrictionRegion && restrictionRegion.includes(hydratedOrder.address.region)) {
+          if (restrictionRegion && restrictionRegion.includes(shippingAddress.region)) {
             return true;
           }
 
           // Check for an allow list of countries
-          if (restrictionCountry && restrictionCountry.includes(hydratedOrder.address.country)) {
+          if (restrictionCountry && restrictionCountry.includes(shippingAddress.country)) {
             return true;
           }
         }

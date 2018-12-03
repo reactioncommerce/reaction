@@ -6,6 +6,7 @@
  * @returns {Bool} true / false as to whether method is still valid after this check
  */
 export async function locationAllowCheck(methodRestrictions, method, hydratedOrder) {
+  const { shippingAddress } = hydratedOrder;
   // Get method specific destination allow restrictions
   const allowRestrictions = methodRestrictions.filter((restriction) => restriction.type === "allow");
 
@@ -24,17 +25,17 @@ export async function locationAllowCheck(methodRestrictions, method, hydratedOrd
 
     // Start checking at the micro-level, and move more macro as we go on
     // Check for an allow list of postal codes
-    if (destination.postal && destination.postal.includes(hydratedOrder.address.postal)) {
+    if (destination.postal && destination.postal.includes(shippingAddress.postal)) {
       return true;
     }
 
     // Check for an allow list of regions
-    if (destination.region && destination.region.includes(hydratedOrder.address.region)) {
+    if (destination.region && destination.region.includes(shippingAddress.region)) {
       return true;
     }
 
     // Check for an allow list of countries
-    if (destination.country && destination.country.includes(hydratedOrder.address.country)) {
+    if (destination.country && destination.country.includes(shippingAddress.country)) {
       return true;
     }
 

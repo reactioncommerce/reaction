@@ -12,7 +12,7 @@ import { findCatalogProductsAndVariants, tagsByIds, mergeProductAndVariants } fr
  */
 export default async function getShippingRestrictionAttributes(context, commonOrder) {
   const { collections, getFunctionsOfType } = context;
-  const { items: orderItems, shippingAddress, totals } = commonOrder;
+  const { items: orderItems } = commonOrder;
   const products = [];
 
   // Products in the Catalog collection are the source of truth, therefore use them
@@ -51,12 +51,6 @@ export default async function getShippingRestrictionAttributes(context, commonOr
 
   return {
     items: products,
-    groupDiscountTotal: totals.groupDiscountTotal.amount,
-    groupItemTotal: totals.groupItemTotal.amount,
-    groupTotal: totals.groupTotal.amount,
-    orderDiscountTotal: totals.orderDiscountTotal.amount,
-    orderItemTotal: totals.orderItemTotal.amount,
-    orderTotal: totals.orderTotal.amount,
-    shippingAddress
+    ...commonOrder
   };
 }
