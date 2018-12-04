@@ -48,9 +48,6 @@ private/custom/*
 private/plugins/*
 !private/plugins/.gitkeep
 
-imports/plugins/custom/*
-!imports/plugins/custom/.gitkeep
-
 .reaction/config.json
 
 coverage/*

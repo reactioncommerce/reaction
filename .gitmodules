@@ -1,0 +1,3 @@
+[submodule "imports/plugins/custom/reaction-plugin-email-bronto"]
+	path = imports/plugins/custom/reaction-plugin-email-bronto
+	url = git@github.com:sportsdirect/reaction-plugin-email-bronto.git
