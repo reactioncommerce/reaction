@@ -21,4 +21,4 @@ __root_name=$(basename "${__root_dir}")
 
 echo "${__root_name} post-project-start script invoked." 2>&1
 
-"${__root_dir}/.reaction/scripts/setup"
+"${__root_dir}/bin/setup"

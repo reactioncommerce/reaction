@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 
 __dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-env_file=${__dir}/../../.env
-env_example_file=${__dir}/../../.env.example
+env_file=${__dir}/../.env
+env_example_file=${__dir}/../.env.example
 
 function main {
   set -e
