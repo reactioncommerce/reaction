@@ -243,35 +243,6 @@ async function addShipmentMethodToGroup(context, finalGroup, cleanedInput, group
   const { cartId, currencyCode } = orderInput;
   const { collections } = context;
 
-  const groupItemTotal = finalGroup.items.reduce((sum, item) => (sum + item.subtotal), 0);
-
-  const totals = {
-    groupDiscountTotal: {
-      amount: discountTotal,
-      currencyCode
-    },
-    groupItemTotal: {
-      amount: groupItemTotal,
-      currencyCode
-    },
-    groupTotal: {
-      amount: groupItemTotal - discountTotal,
-      currencyCode
-    },
-    orderDiscountTotal: {
-      amount: discountTotal,
-      currencyCode
-    },
-    orderItemTotal: {
-      amount: orderItemTotal,
-      currencyCode
-    },
-    orderTotal: {
-      amount: orderItemTotal - discountTotal,
-      currencyCode
-    }
-  };
-
   const commonOrder = await xformOrderGroupToCommonOrder({
     billingAddress,
     cartId,
@@ -279,7 +250,7 @@ async function addShipmentMethodToGroup(context, finalGroup, cleanedInput, group
     currencyCode,
     group: finalGroup,
     orderId,
-    totals
+    discountTotal
   });
 
   // We are passing commonOrder in here, but we need the finalGroup.shipmentMethod data inside of fianl order, which doesn't get set until after this
@@ -318,36 +289,6 @@ async function addTaxesToGroup(context, finalGroup, cleanedInput, groupInput, di
   const { billingAddress, order: orderInput } = cleanedInput;
   const { cartId, currencyCode } = orderInput;
 
-
-  const groupItemTotal = finalGroup.items.reduce((sum, item) => (sum + item.subtotal), 0);
-
-  const totals = {
-    groupDiscountTotal: {
-      amount: discountTotal,
-      currencyCode
-    },
-    groupItemTotal: {
-      amount: groupItemTotal,
-      currencyCode
-    },
-    groupTotal: {
-      amount: groupItemTotal - discountTotal,
-      currencyCode
-    },
-    orderDiscountTotal: {
-      amount: discountTotal,
-      currencyCode
-    },
-    orderItemTotal: {
-      amount: orderItemTotal,
-      currencyCode
-    },
-    orderTotal: {
-      amount: orderItemTotal - discountTotal,
-      currencyCode
-    }
-  };
-
   const commonOrder = await xformOrderGroupToCommonOrder({
     billingAddress,
     cartId,
@@ -355,7 +296,7 @@ async function addTaxesToGroup(context, finalGroup, cleanedInput, groupInput, di
     currencyCode,
     group: finalGroup,
     orderId,
-    totals
+    discountTotal
   });
 
   const { itemTaxes, taxSummary } = await context.mutations.getFulfillmentGroupTaxes(context, { order: commonOrder, forceZeroes: true });
