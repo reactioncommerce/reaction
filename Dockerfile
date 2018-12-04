@@ -5,6 +5,8 @@ FROM reactioncommerce/base:v1.8-meteor as builder
 
 COPY --chown=node . $APP_SOURCE_DIR
 
+RUN meteor npm install
+
 RUN printf "\\n[-] Running Reaction plugin loader...\\n" \
  && reaction plugins load
 RUN printf "\\n[-] Building Meteor application...\\n" \
