@@ -15,7 +15,6 @@
               "facebook": {
                 "title": "Facebook",
                 "appId": "Uygulama kimliği",
-                "appSecret": "Uygulama Gizli",
                 "profilePage": "Profil sayfası"
               },
               "googleplus": {

@@ -7,7 +7,7 @@ Template.coreOrderWorkflow.helpers({
    * @summary Creates an Object with order id and a fulfillment object
    * @param  {String} orderId - An order id
    * @param  {Object} fulfillment - An order fulfillment. e.g. a shipment
-   * @return {Object} An object witht the order id and fulfillment
+   * @return {Object} An object with the order id and fulfillment
    * @ignore
    */
   orderFulfillmentData(orderId, fulfillment) {

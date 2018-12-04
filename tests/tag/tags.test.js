@@ -37,7 +37,7 @@ beforeAll(async () => {
 
 afterAll(() => testApp.stop());
 
-test.skip("get the first 20 tags when neither first or last is in query", async () => {
+test("get the first 20 tags when neither first or last is in query", async () => {
   let result;
   try {
     result = await query({ shopId: opaqueShopId });
@@ -74,7 +74,7 @@ test.skip("get the first 20 tags when neither first or last is in query", async 
   expect(result.tags.pageInfo).toEqual({ endCursor: "MTI0", hasNextPage: false, hasPreviousPage: true, startCursor: "MTIw" });
 });
 
-test.skip("get the last 10 tags when last is in query and before last item in list", async () => {
+test("get the last 10 tags when last is in query and before last item in list", async () => {
   let result;
   try {
     result = await query({ shopId: opaqueShopId, last: 10, before: "MTI0" });
@@ -110,7 +110,7 @@ test.skip("get the last 10 tags when last is in query and before last item in li
   expect(result.tags.pageInfo).toEqual({ endCursor: "MTAz", hasNextPage: true, hasPreviousPage: false, startCursor: "MTAw" });
 });
 
-test.skip("works correctly when last goes before start", async () => {
+test("works correctly when last goes before start", async () => {
   let result;
   try {
     result = await query({ shopId: opaqueShopId, last: 5, before: "MTAw" });

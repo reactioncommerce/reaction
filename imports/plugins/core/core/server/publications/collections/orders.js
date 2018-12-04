@@ -156,6 +156,28 @@ Meteor.publish("CompletedCartOrder", (cartId) => {
   }, { limit: 1 });
 });
 
+/**
+ * find an order by _id
+ */
+Meteor.publish("OrderById", (orderId) => {
+  check(orderId, String);
+  if (this.userId === null) {
+    return this.ready();
+  }
+  const shopId = Reaction.getShopId();
+  if (!shopId) {
+    return this.ready();
+  }
+
+  if (Reaction.hasPermission("orders", Reaction.getUserId(), shopId)) {
+    return Orders.find({
+      _id: orderId
+    }, { limit: 1 });
+  }
+
+  return this.ready();
+});
+
 Meteor.publish("OrderImages", (orderId) => {
   check(orderId, Match.Optional(String));
   if (!orderId) return [];
