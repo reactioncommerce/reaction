@@ -18,9 +18,7 @@ networks:
 services:
 
   reaction:
-    build:
-      context: .
-      target: meteor-dev
+    image: reactioncommerce/base:v1.8-meteor-dev
     command: bash -c "meteor npm install && node ./.reaction/waitForMongo.js && reaction"
     depends_on:
       - mongo
