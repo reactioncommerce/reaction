@@ -10,7 +10,7 @@ import _ from "lodash";
  */
 export async function findCatalogProductsAndVariants(collections, orderLineItems) {
   const { Catalog } = collections;
-  // TODO: Question for Eric - If i remove product config here and one other place, everything works
+  // TODO: Question for Eric - If I remove productConfiguration `||` here and one other place, everything works
   const productIds = orderLineItems.map((orderLineItem) => orderLineItem.productId);
   // const productIds = orderLineItems.map((orderLineItem) => orderLineItem.productId || orderLineItem.productConfiguration.productId);
 
