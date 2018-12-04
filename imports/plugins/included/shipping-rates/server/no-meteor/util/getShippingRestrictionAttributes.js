@@ -21,9 +21,7 @@ export default async function getShippingRestrictionAttributes(context, commonOr
   const allProductsTags = await tagsByIds(collections, catalogProductsAndVariants);
 
   for (const orderLineItem of orderItems) {
-    // TODO: Question for Eric - If I remove productConfiguration `||` here and one other place, everything works
     const productAndVariants = catalogProductsAndVariants.find((catProduct) => catProduct.product.productId === orderLineItem.productId);
-    // const productAndVariants = catalogProductsAndVariants.find((catProduct) => catProduct.product.productId === orderLineItem.productId || orderLineItem.productConfiguration.productId);
 
     if (!productAndVariants) {
       throw new ReactionError("not-found", "Catalog product not found");
