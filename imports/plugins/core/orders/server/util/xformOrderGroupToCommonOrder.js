@@ -53,7 +53,7 @@ export default async function xformOrderGroupToCommonOrder({ billingAddress = nu
 
   // TODO: In the future, we should update this with a discounts update
   // Discounts are stored as the sum of all discounts, per cart. This will need to be updated when we refactor discounts to go by group.
-  const groupItemTotal = group.items.reduce((sum, item) => (sum + item.subtotal.amount), 0);
+  const groupItemTotal = group.items.reduce((sum, item) => (sum + item.subtotal), 0);
   // orderItemTotal will need to be updated to be the actual total when we eventually have more than one group available
   const orderItemTotal = groupItemTotal;
 
