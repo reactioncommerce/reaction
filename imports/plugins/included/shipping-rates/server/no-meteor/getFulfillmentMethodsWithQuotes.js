@@ -1,6 +1,6 @@
 import Logger from "@reactioncommerce/logger";
 import ReactionError from "@reactioncommerce/reaction-error";
-import cartShippingRestricted from "./util/cartShippingRestricted";
+import isShippingRestricted from "./util/isShippingRestricted";
 import filterShippingMethods from "./util/filterShippingMethods";
 import getShippingRestrictionAttributes from "./util/getShippingRestrictionAttributes";
 
@@ -8,7 +8,6 @@ import getShippingRestrictionAttributes from "./util/getShippingRestrictionAttri
  * @summary Returns a list of fulfillment method quotes based on the items in a fulfillment group.
  * @param {Object} context - Context
  * @param {Object} commonOrder - details about the purchase a user wants to make.
- * @param {Object} totals - The totals object with discounts, item, and group totals
  * @param {Array} [previousQueryResults] - an array of shipping rates and
  * info about failed calls to the APIs of some shipping methods providers
  * e.g Shippo.
@@ -18,7 +17,7 @@ import getShippingRestrictionAttributes from "./util/getShippingRestrictionAttri
  * shipping rates.
  * @private
  */
-export default async function getFulfillmentMethodsWithQuotes(context, commonOrder, totals, previousQueryResults = []) {
+export default async function getFulfillmentMethodsWithQuotes(context, commonOrder, previousQueryResults = []) {
   const { collections } = context;
   const { Packages, Shipping } = collections;
   const [rates = [], retrialTargets = []] = previousQueryResults;
@@ -80,8 +79,8 @@ export default async function getFulfillmentMethodsWithQuotes(context, commonOrd
   const initialNumOfRates = rates.length;
 
   // Get hydrated order, an object of current order data including item and destination information
-  const hydratedOrder = await getShippingRestrictionAttributes(context, totals, commonOrder); // TODO: possibly change function name
-  const isOrderShippingRestricted = await cartShippingRestricted(context, hydratedOrder);
+  const hydratedOrder = await getShippingRestrictionAttributes(context, commonOrder); // TODO: possibly change function name
+  const isOrderShippingRestricted = await isShippingRestricted(context, hydratedOrder);
 
   if (isOrderShippingRestricted) {
     const errorDetails = {

@@ -1,21 +1,17 @@
 /**
- * @summary Filter shipping methods based on per method allow location restrictions
+ * @summary Filter shipping methods based on per method deny location restrictions
  * @param {Object} methodRestrictions - method restrictions from FlatRateFulfillmentRestrcitionsCollection
  * @param {Object} method - current method to check restrcictions against
  * @param {Object} hydratedOrder - hydrated order for current order
  * @returns {Bool} true / false as to whether method is still valid after this check
  */
 export async function locationDenyCheck(methodRestrictions, method, hydratedOrder) {
+  const { shippingAddress } = hydratedOrder;
   // Get method specific allow restrictions
-  const denyRestrictions = methodRestrictions.filter((methodRestriction) => methodRestriction.type === "deny");
+  const denyRestrictions = methodRestrictions.filter((restriction) => restriction.type === "deny");
 
-  // Check to see if any restrictions for this method are destination restrictions
-  const destinationRestrictions = denyRestrictions.some((restriction) => restriction.destination !== null);
-
-  // If there are no destination allow restrictions, this method is valid at this point
-  if (!destinationRestrictions) {
-    return true;
-  }
+  // If there are no destination deny restrictions, this method is valid at this point
+  if (denyRestrictions.length === 0) return true;
 
   // Loop over each deny restriction and determine if this method is valid
   // If any levels of destination match, this method is invalid at this point
@@ -29,17 +25,17 @@ export async function locationDenyCheck(methodRestrictions, method, hydratedOrde
 
     // Start checking at the macro-level, and move more macro as we go on
     // Check for an allow list of countries
-    if (destination.country && destination.country.includes(hydratedOrder.address.country)) {
+    if (destination.country && destination.country.includes(shippingAddress.country)) {
       return false;
     }
 
     // Check for an allow list of regions
-    if (destination.region && destination.region.includes(hydratedOrder.address.region)) {
+    if (destination.region && destination.region.includes(shippingAddress.region)) {
       return false;
     }
 
     // Check for an allow list of postal codes
-    if (destination.postal && destination.postal.includes(hydratedOrder.address.postal)) {
+    if (destination.postal && destination.postal.includes(shippingAddress.postal)) {
       return false;
     }
 

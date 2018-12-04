@@ -7,7 +7,7 @@
  * @param {String} orderId The order ID
  * @returns {Object} Valid CommonOrder for the given order group
  */
-export default async function xformOrderGroupToCommonOrder({ billingAddress = null, cartId, collections, currencyCode, group, orderId }) {
+export default async function xformOrderGroupToCommonOrder({ billingAddress = null, cartId, collections, currencyCode, group, orderId, discountTotal }) {
   const items = group.items.map((item) => ({
     _id: item._id,
     isTaxable: item.isTaxable,
@@ -37,19 +37,52 @@ export default async function xformOrderGroupToCommonOrder({ billingAddress = nu
   if (shipmentMethod) {
     fulfillmentPrices = {
       handling: {
-        amount: (shipmentMethod && shipmentMethod.handling) || 0,
+        amount: shipmentMethod.handling || 0,
         currencyCode
       },
       shipping: {
-        amount: (shipmentMethod && shipmentMethod.rate) || 0,
+        amount: shipmentMethod.rate || 0,
         currencyCode
       },
       total: {
-        amount: shipmentMethod ? (shipmentMethod.handling || 0) + (shipmentMethod.rate || 0) : 0,
+        amount: (shipmentMethod.handling || 0) + (shipmentMethod.rate || 0),
         currencyCode
       }
     };
   }
+
+  // TODO: In the future, we should update this with a discounts update
+  // Discounts are stored as the sum of all discounts, per cart. This will need to be updated when we refactor discounts to go by group.
+  const groupItemTotal = group.items.reduce((sum, item) => (sum + item.subtotal), 0);
+  // orderItemTotal will need to be updated to be the actual total when we eventually have more than one group available
+  const orderItemTotal = groupItemTotal;
+
+  const totals = {
+    groupDiscountTotal: {
+      amount: discountTotal,
+      currencyCode
+    },
+    groupItemTotal: {
+      amount: groupItemTotal,
+      currencyCode
+    },
+    groupTotal: {
+      amount: groupItemTotal - discountTotal,
+      currencyCode
+    },
+    orderDiscountTotal: {
+      amount: discountTotal,
+      currencyCode
+    },
+    orderItemTotal: {
+      amount: orderItemTotal,
+      currencyCode
+    },
+    orderTotal: {
+      amount: orderItemTotal - discountTotal,
+      currencyCode
+    }
+  };
 
   return {
     billingAddress,
@@ -62,6 +95,7 @@ export default async function xformOrderGroupToCommonOrder({ billingAddress = nu
     originAddress: (shop && Array.isArray(shop.addressBook) && shop.addressBook[0]) || null,
     shippingAddress: address || null,
     shopId,
-    sourceType: "order"
+    sourceType: "order",
+    totals
   };
 }

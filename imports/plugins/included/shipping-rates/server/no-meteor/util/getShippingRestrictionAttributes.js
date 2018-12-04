@@ -1,20 +1,18 @@
 import ReactionError from "@reactioncommerce/reaction-error";
-import { findCatalogProductsAndVariants, pick, tagsByIds, mergeProductAndVariants } from "./helpers";
+import { findCatalogProductsAndVariants, tagsByIds, mergeProductAndVariants } from "./helpers";
 
 /**
  * @name getShippingRestrictionAttributes
  * @summary Get shipping attributes for a fulfillment group that will be used to
  * determine any applicable shipping restrictions.
  * @param {Object} context -  an object containing the per-request state
- * @param {Object} totals - The totals object with discounts, item, and group totals
  * @param {Object} commonOrder - details about the purchase a user wants to make.
  * @param {Array} fulfillmentGroup.items - the items in the cart
  * @returns {Object|null} shipping restriction attributes for the provided fulfillment group
  */
-export default async function getShippingRestrictionAttributes(context, totals, commonOrder) {
+export default async function getShippingRestrictionAttributes(context, commonOrder) {
   const { collections, getFunctionsOfType } = context;
-  const { shippingAddress: destination, items: orderItems } = commonOrder;
-  const address = pick(destination, ["address1", "address2", "city", "country", "postal", "region"]);
+  const { items: orderItems } = commonOrder;
   const products = [];
 
   // Products in the Catalog collection are the source of truth, therefore use them
@@ -23,7 +21,7 @@ export default async function getShippingRestrictionAttributes(context, totals, 
   const allProductsTags = await tagsByIds(collections, catalogProductsAndVariants);
 
   for (const orderLineItem of orderItems) {
-    const productAndVariants = catalogProductsAndVariants.find((catProduct) => catProduct.product.productId === orderLineItem.productId || orderLineItem.productConfiguration.productId);
+    const productAndVariants = catalogProductsAndVariants.find((catProduct) => catProduct.product.productId === orderLineItem.productId);
 
     if (!productAndVariants) {
       throw new ReactionError("not-found", "Catalog product not found");
@@ -52,13 +50,7 @@ export default async function getShippingRestrictionAttributes(context, totals, 
   }
 
   return {
-    address,
     items: products,
-    groupDiscountTotal: totals.groupDiscountTotal.amount,
-    groupItemTotal: totals.groupItemTotal.amount,
-    groupTotal: totals.groupTotal.amount,
-    orderDiscountTotal: totals.orderDiscountTotal.amount,
-    orderItemTotal: totals.orderItemTotal.amount,
-    orderTotal: totals.orderTotal.amount
+    ...commonOrder
   };
 }

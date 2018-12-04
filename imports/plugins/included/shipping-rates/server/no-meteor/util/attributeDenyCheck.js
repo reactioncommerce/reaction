@@ -1,36 +1,25 @@
 import { operators, propertyTypes } from "./helpers";
 
-
 /**
- * @summary Filter shipping methods based on per method allow location restrictions
+ * @summary Filter shipping methods based on per method deny attribute restrictions
  * @param {Object} methodRestrictions - method restrictions from FlatRateFulfillmentRestrcitionsCollection
  * @param {Object} method - current method to check restrcictions against
  * @param {Object} hydratedOrder - hydrated order for current order
  * @returns {Bool} true / false as to whether method is still valid after this check
  */
 export async function attributeDenyCheck(methodRestrictions, method, hydratedOrder) {
-  // Get method specific allow restrictions
-  const denyRestrictions = methodRestrictions.filter((methodRestriction) => methodRestriction.type === "deny");
-
-  // Check to see if any restrictions for this method are attributes restrictions
-  const attributesRestrictions = denyRestrictions.some((restriction) => restriction.attributes !== null);
+  // Get method specific attribute deny restrictions
+  const attributesDenyRestrictions = methodRestrictions.filter((restriction) => restriction.type === "deny" && Array.isArray(restriction.attributes));
 
   // If there are no attributes deny restrictions, this method is valid at this point
-  if (!attributesRestrictions) {
-    return true;
-  }
+  if (attributesDenyRestrictions.length === 0) return true;
 
-  const { items } = hydratedOrder;
+  const { items, shippingAddress } = hydratedOrder;
 
   const denyMethod = items.some((item) => { // eslint-disable-line
     // For each item, run through the restrictions
-    return methodRestrictions.some((methodRestriction) => {
+    return attributesDenyRestrictions.some((methodRestriction) => {
       const { attributes, destination } = methodRestriction;
-
-      // If there is no destination restriction on this method, it is valid at this point
-      if (!attributes) {
-        return false;
-      }
 
       // Item must meet all attributes to be restricted
       return attributes.every((attribute) => {
@@ -49,17 +38,17 @@ export async function attributeDenyCheck(methodRestrictions, method, hydratedOrd
 
           const { country: restrictionCountry, postal: restrictionPostal, region: restrictionRegion } = destination;
 
-          if (restrictionPostal && restrictionPostal.includes(hydratedOrder.address.postal)) {
+          if (restrictionPostal && restrictionPostal.includes(shippingAddress.postal)) {
             return true;
           }
 
           // Check for an allow list of regions
-          if (restrictionRegion && restrictionRegion.includes(hydratedOrder.address.region)) {
+          if (restrictionRegion && restrictionRegion.includes(shippingAddress.region)) {
             return true;
           }
 
           // Check for an allow list of countries
-          if (restrictionCountry && restrictionCountry.includes(hydratedOrder.address.country)) {
+          if (restrictionCountry && restrictionCountry.includes(shippingAddress.country)) {
             return true;
           }
         }

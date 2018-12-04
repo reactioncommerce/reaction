@@ -2,10 +2,10 @@
 # Custom data types for FlatRateFulfillmentRestriction data
 ####
 type AttributeRestrictions {
-  property: String
-  value: String
-  propertyType: String
-  operator: String
+  property: String!
+  value: String!
+  propertyType: String!
+  operator: String!
 }
 
 type DestinationRestrictions {
@@ -24,10 +24,10 @@ enum FlatRateFulfillmentRestrictionSortByField {
 }
 
 input AttributeRestrictionsInput {
-  property: String
-  value: String
-  propertyType: String
-  operator: String
+  property: String!
+  value: String!
+  propertyType: String!
+  operator: String!
 }
 
 input DestinationRestrictionsInput {

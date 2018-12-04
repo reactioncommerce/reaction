@@ -6,13 +6,13 @@ import { operators, propertyTypes } from "./helpers";
  * @param {Object} hydratedOrder - computed hydratedOrder for current order
  * @returns {Object|null} available shipping methods after filtering
  */
-export default async function cartShippingRestricted(context, hydratedOrder) {
-  const { items } = hydratedOrder;
+export default async function isShippingRestricted(context, hydratedOrder) {
+  const { items, shippingAddress } = hydratedOrder;
   const flatRateFulfillmentRestrictionsCollection = context.collections.FlatRateFulfillmentRestrictions;
   const universalRestrictions = await flatRateFulfillmentRestrictionsCollection.find({ methodIds: null, type: "deny" }).toArray();
 
   // If there are no universal restrictions, move on to method specific checks
-  if (!universalRestrictions) {
+  if (universalRestrictions.length === 0) {
     return false;
   }
 
@@ -33,17 +33,17 @@ export default async function cartShippingRestricted(context, hydratedOrder) {
 
             const { country: restrictionCountry, postal: restrictionPostal, region: restrictionRegion } = destination;
 
-            if (restrictionPostal && restrictionPostal.includes(hydratedOrder.address.postal)) {
+            if (restrictionPostal && restrictionPostal.includes(shippingAddress.postal)) {
               return true;
             }
 
             // Check for an allow list of regions
-            if (restrictionRegion && restrictionRegion.includes(hydratedOrder.address.region)) {
+            if (restrictionRegion && restrictionRegion.includes(shippingAddress.region)) {
               return true;
             }
 
             // Check for an allow list of countries
-            if (restrictionCountry && restrictionCountry.includes(hydratedOrder.address.country)) {
+            if (restrictionCountry && restrictionCountry.includes(shippingAddress.country)) {
               return true;
             }
           }
@@ -57,17 +57,17 @@ export default async function cartShippingRestricted(context, hydratedOrder) {
         // There are no attribute restrictions, only check destination restrictions
         const { country: restrictionCountry, postal: restrictionPostal, region: restrictionRegion } = destination;
 
-        if (restrictionPostal && restrictionPostal.includes(hydratedOrder.address.postal)) {
+        if (restrictionPostal && restrictionPostal.includes(shippingAddress.postal)) {
           return true;
         }
 
         // Check for an allow list of regions
-        if (restrictionRegion && restrictionRegion.includes(hydratedOrder.address.region)) {
+        if (restrictionRegion && restrictionRegion.includes(shippingAddress.region)) {
           return true;
         }
 
         // Check for an allow list of countries
-        if (restrictionCountry && restrictionCountry.includes(hydratedOrder.address.country)) {
+        if (restrictionCountry && restrictionCountry.includes(shippingAddress.country)) {
           return true;
         }
       }
