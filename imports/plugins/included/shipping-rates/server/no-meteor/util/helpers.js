@@ -10,7 +10,9 @@ import _ from "lodash";
  */
 export async function findCatalogProductsAndVariants(collections, orderLineItems) {
   const { Catalog } = collections;
-  const productIds = orderLineItems.map((orderLineItem) => orderLineItem.productId || orderLineItem.productConfiguration.productId);
+  // TODO: Question for Eric - If i remove product config here and one other place, everything works
+  const productIds = orderLineItems.map((orderLineItem) => orderLineItem.productId);
+  // const productIds = orderLineItems.map((orderLineItem) => orderLineItem.productId || orderLineItem.productConfiguration.productId);
 
   const catalogProductItems = await Catalog.find({
     "product.productId": { $in: productIds },
