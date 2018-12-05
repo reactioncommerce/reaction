@@ -314,7 +314,6 @@ registerSchema("OrderTransaction", OrderTransaction);
  * @property {Object} shipmentMethod The fulfillment method that was chosen by the customer
  * @property {String} shippingLabelUrl URL for shipping label
  * @property {String} shopId The shop that fulfills this group
- * @property {Surcharge[]} surcharges Surcharges applied to this order
  * @property {Number} totalItemQuantity The total item quantity, sum of all quantities
  * @property {String} tracking Tracking reference ID
  * @property {String} type Fulfillment type
@@ -377,6 +376,7 @@ export const OrderFulfillmentGroup = new SimpleSchema({
  * @property {Notes[]} notes optional
  * @property {Shipment[]} shipping Array of fulfillment groups
  * @property {String} shopId required The owner shop
+ * @property {Surcharges[]} surcharges Surcharges applied to this order
  * @property {OrderTransaction[]} transactions optional
  * @property {Date} updatedAt optional
  * @property {Workflow} workflow optional
