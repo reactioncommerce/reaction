@@ -1,3 +1,6 @@
 [submodule "imports/plugins/custom/custom-attributes"]
 	path = imports/plugins/custom/custom-attributes
 	url = git@github.com:sportsdirect/reaction-plugin-custom-attributes.git
+[submodule "imports/plugins/custom/reaction-plugin-email-bronto"]
+	path = imports/plugins/custom/reaction-plugin-email-bronto
+	url = git@github.com:sportsdirect/reaction-plugin-email-bronto.git
