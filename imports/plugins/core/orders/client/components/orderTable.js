@@ -119,8 +119,8 @@ class OrderTable extends Component {
           <span className="order-data order-data-id">
             <strong>Order ID: </strong>
             <ClickToCopy
-              copyToClipboard={order._id}
-              displayText={order._id}
+              copyToClipboard={order.referenceId}
+              displayText={order.referenceId}
               i18nKeyTooltip="admin.orderWorkflow.summary.copyOrderLink"
               tooltip="Copy Order Link"
             />
@@ -244,8 +244,8 @@ class OrderTable extends Component {
           id: "createdAt"
         },
         id: {
-          accessor: "_id",
-          id: "_id"
+          accessor: "referenceId",
+          id: "referenceId"
         },
         total: {
           accessor: (row) => {

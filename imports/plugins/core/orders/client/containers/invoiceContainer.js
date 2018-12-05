@@ -186,10 +186,7 @@ class InvoiceContainer extends Component {
     const { order } = this.state;
     const { paymentPluginName } = getPaymentForCurrentShop(order);
     const paymentPlugin = Packages.findOne({ name: paymentPluginName });
-    const isRefundable = paymentPlugin && paymentPlugin.settings && paymentPlugin.settings[paymentPluginName]
-      && paymentPlugin.settings[paymentPluginName].support.includes("Refund");
-
-    return isRefundable;
+    return _.get(paymentPlugin, "settings.support", []).indexOf("Refund") > -1;
   }
 
   handleApprove = (event) => {
@@ -221,15 +218,11 @@ class InvoiceContainer extends Component {
     const invoiceTotal = invoice.total;
     const currencySymbol = this.state.currency.symbol;
 
-    const shopId = Reaction.getShopId();
-    // check if payment provider supports de-authorize
-    const checkSupportedMethods = Packages.findOne({
-      name: paymentPluginName,
-      shopId
-    }).settings[paymentPluginName].support;
+    const paymentPlugin = Packages.findOne({ name: paymentPluginName, shopId: order.shopId });
 
+    // check if payment provider supports de-authorize
     let alertText;
-    if (_.includes(checkSupportedMethods, "de-authorize") ||
+    if (_.get(paymentPlugin, "settings.support", []).indexOf("De-authorize") > -1 ||
       (paymentStatus === "completed" && paymentMode === "capture")) {
       alertText = i18next.t("order.applyRefundDuringCancelOrder", { currencySymbol, invoiceTotal });
     }
@@ -581,24 +574,15 @@ const composer = (props, onData) => {
 
   // get unique lineItems
   const shipment = props.currentData.fulfillment;
+  const { shipmentMethod } = shipment || {};
 
   const orderItems = order.shipping.reduce((list, group) => [...list, ...group.items], []);
   const uniqueItems = orderItems.reduce((result, item) => {
     // If the items are not of this shop, skip them
-    if (item.shopId !== shopId) {
-      return result;
+    if (item.shopId === shopId) {
+      item.shipping = shipmentMethod;
+      result.push(item);
     }
-    const shipping = shipment && shipment.shipmentMethod;
-    item.shipping = shipping;
-    if (order.taxes !== undefined) {
-      const taxes = order.taxes.slice(0, -1);
-
-      if (taxes.length !== 0) {
-        const taxDetail = taxes.find((tax) => tax.lineNumber === item._id);
-        item.taxDetail = taxDetail;
-      }
-    }
-    result.push(item);
     return result;
   }, []);
 

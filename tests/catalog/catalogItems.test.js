@@ -27,6 +27,7 @@ beforeAll(async () => {
 
 afterAll(async () => {
   await testApp.collections.Shops.remove({ _id: internalShopId });
+  await Promise.all(internalTagIds.map((_id) => testApp.collections.Tags.remove({ _id })));
   await testApp.collections.Catalog.remove({ _id: internalCatalogItemIds[0] });
   await testApp.collections.Catalog.remove({ _id: internalCatalogItemIds[1] });
   testApp.stop();

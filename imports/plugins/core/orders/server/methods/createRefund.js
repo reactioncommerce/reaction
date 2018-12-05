@@ -1,10 +1,12 @@
+import _ from "lodash";
+import { check, Match } from "meteor/check";
 import Hooks from "@reactioncommerce/hooks";
 import Logger from "@reactioncommerce/logger";
-import { Meteor } from "meteor/meteor";
-import { check, Match } from "meteor/check";
+import ReactionError from "@reactioncommerce/reaction-error";
 import { Orders, Packages } from "/lib/collections";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
-import ReactionError from "@reactioncommerce/reaction-error";
+import getGraphQLContextInMeteorMethod from "/imports/plugins/core/graphql/server/getGraphQLContextInMeteorMethod";
+import { getPaymentMethodConfigByName } from "/imports/plugins/core/core/server/no-meteor/pluginRegistration";
 import sendOrderEmail from "../util/sendOrderEmail";
 
 /**
@@ -33,19 +35,16 @@ export default function createRefund(orderId, paymentId, amount, sendEmail = tru
   const fulfillmentGroup = order.shipping.find((group) => group.payment._id === paymentId);
   const { _id: groupId, payment } = fulfillmentGroup;
 
-  const { mode: paymentMode, paymentPluginName, processor, transactionId } = payment;
-  const processorLowercase = processor.toLowerCase();
+  const { mode: paymentMode, paymentPluginName, name, transactionId } = payment;
+
+  const paymentPlugin = Packages.findOne({ name: paymentPluginName, shopId: order.shopId });
 
   // check if payment provider supports de-authorize
-  const checkSupportedMethods = Packages.findOne({
-    name: paymentPluginName,
-    shopId: order.shopId
-  }).settings[paymentPluginName].support;
-
   let result;
   let modifier = {};
-  if (checkSupportedMethods.includes("De-authorize")) {
-    result = Meteor.call(`${processorLowercase}/payment/deAuthorize`, payment, amount);
+  const context = Promise.await(getGraphQLContextInMeteorMethod(Reaction.getUserId()));
+  if (_.get(paymentPlugin, "settings.support", []).indexOf("De-authorize") > -1) {
+    result = Promise.await(getPaymentMethodConfigByName(name).functions.deAuthorizePayment(context, payment, amount));
     modifier = {
       $push: {
         "shipping.$.payment.transactions": result
@@ -62,7 +61,7 @@ export default function createRefund(orderId, paymentId, amount, sendEmail = tru
       throw new ReactionError("Attempt to de-authorize transaction failed", result.error);
     }
   } else if (paymentMode === "capture") {
-    result = Meteor.call(`${processorLowercase}/refund/create`, payment, amount);
+    result = Promise.await(getPaymentMethodConfigByName(name).functions.createRefund(context, payment, amount));
     modifier = {
       $push: {
         "shipping.$.payment.transactions": result
@@ -91,7 +90,7 @@ export default function createRefund(orderId, paymentId, amount, sendEmail = tru
   Hooks.Events.run("onOrderRefundCreated", orderId);
 
   // Send email to notify customer of a refund
-  if (checkSupportedMethods.includes("De-authorize")) {
+  if (_.get(paymentPlugin, "settings.support", []).indexOf("De-authorize") > -1) {
     sendOrderEmail(order);
   } else if (paymentMode === "capture" && sendEmail) {
     sendOrderEmail(order, "refunded");

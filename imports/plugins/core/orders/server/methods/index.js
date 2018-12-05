@@ -1,9 +1,6 @@
-import addOrderEmail from "./addOrderEmail";
 import approvePayment from "./approvePayment";
 import cancelOrder from "./cancelOrder";
 import capturePayments from "./capturePayments";
-import coreOrderCompletedWorkflow from "./coreOrderCompletedWorkflow";
-import coreOrderProcessingWorkflow from "./coreOrderProcessingWorkflow";
 import createRefund from "./createRefund";
 import listRefunds from "./listRefunds";
 import makeAdjustmentsToInvoice from "./makeAdjustmentsToInvoice";
@@ -26,7 +23,6 @@ import updateShipmentTracking from "./updateShipmentTracking";
  */
 
 export default {
-  "orders/addOrderEmail": addOrderEmail,
   "orders/approvePayment": approvePayment,
   "orders/cancelOrder": cancelOrder,
   "orders/capturePayments": capturePayments,
@@ -42,7 +38,5 @@ export default {
   "orders/shipmentPicked": shipmentPicked,
   "orders/shipmentShipped": shipmentShipped,
   "orders/updateHistory": updateHistory,
-  "orders/updateShipmentTracking": updateShipmentTracking,
-  "workflow/coreOrderWorkflow/coreOrderProcessing": coreOrderProcessingWorkflow,
-  "workflow/coreOrderWorkflow/coreOrderCompleted": coreOrderCompletedWorkflow
+  "orders/updateShipmentTracking": updateShipmentTracking
 };

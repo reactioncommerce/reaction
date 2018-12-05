@@ -40,6 +40,7 @@ export default async function orderById(context, { orderId, shopId, token } = {}
   return Orders.findOne({
     _id: orderId,
     accountId,
-    anonymousAccessToken
+    anonymousAccessToken,
+    shopId
   });
 }

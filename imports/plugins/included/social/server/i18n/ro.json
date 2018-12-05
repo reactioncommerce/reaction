@@ -15,7 +15,6 @@
               "facebook": {
                 "title": "Facebook",
                 "appId": "ID-ul aplicației",
-                "appSecret": "aplicaţia Secret",
                 "profilePage": "profilul Pagina"
               },
               "googleplus": {

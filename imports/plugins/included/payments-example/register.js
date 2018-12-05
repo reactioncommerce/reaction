@@ -2,6 +2,9 @@
 import Reaction from "/imports/plugins/core/core/server/Reaction";
 import resolvers from "./server/no-meteor/resolvers";
 import schemas from "./server/no-meteor/schemas";
+import exampleCapturePayment from "./server/no-meteor/util/exampleCapturePayment";
+import exampleCreateRefund from "./server/no-meteor/util/exampleCreateRefund";
+import exampleListRefunds from "./server/no-meteor/util/exampleListRefunds";
 
 Reaction.registerPackage({
   label: "ExamplePayment",
@@ -14,22 +17,24 @@ Reaction.registerPackage({
   },
   paymentMethods: [{
     name: "iou_example",
-    displayName: "IOU Example"
+    displayName: "IOU Example",
+    functions: {
+      capturePayment: exampleCapturePayment,
+      createRefund: exampleCreateRefund,
+      listRefunds: exampleListRefunds
+    }
   }],
   settings: {
-    "mode": false,
-    "apiKey": "",
-    "example": {
+    mode: false,
+    apiKey: "",
+    example: {
       enabled: false
     },
-    "example-paymentmethod": {
-      enabled: false,
-      support: [
-        "Authorize",
-        "Capture",
-        "Refund"
-      ]
-    }
+    support: [
+      "Authorize",
+      "Capture",
+      "Refund"
+    ]
   },
   registry: [
     // Settings panel

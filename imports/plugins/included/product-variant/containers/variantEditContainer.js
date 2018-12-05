@@ -58,8 +58,6 @@ const wrapComponent = (Comp) => (
 );
 
 function composer(props, onData) {
-  Meteor.subscribe("TaxCodes").ready();
-
   const productHandle = Reaction.Router.getParam("handle");
 
   if (!productHandle) {

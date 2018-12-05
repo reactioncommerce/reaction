@@ -15,7 +15,6 @@
               "facebook": {
                 "title": "Facebook",
                 "appId": "ID на приложението",
-                "appSecret": "App Secret",
                 "profilePage": "профилна страница"
               },
               "googleplus": {

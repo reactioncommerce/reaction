@@ -25,9 +25,7 @@ export default async function reconcileCartsMerge({
   // Convert item schema to input item schema
   const itemsInput = (anonymousCart.items || []).map((item) => ({
     metafields: item.metafields,
-    price: {
-      currencyCode: item.priceWhenAdded.currencyCode
-    },
+    price: item.price,
     productConfiguration: {
       productId: item.productId,
       productVariantId: item.variantId

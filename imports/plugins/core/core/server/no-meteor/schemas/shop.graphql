@@ -9,6 +9,9 @@ type Shop implements Node {
   """
   administrators(after: ConnectionCursor, before: ConnectionCursor, first: ConnectionLimitInt, last: ConnectionLimitInt, sortOrder: SortOrder = asc, sortBy: AccountSortByField = createdAt): AccountConnection
 
+  "URLs for various shop assets in various sizes"
+  brandAssets: ShopBrandAssets
+
   currencies: [Currency]
 
   currency: Currency
@@ -71,6 +74,12 @@ type InviteShopMemberPayload {
   clientMutationId: String
 }
 
+"URLs for various shop assets in various sizes"
+type ShopBrandAssets {
+  "URLs for the navigation bar brand logo image"
+  navbarBrandImage: ImageSizes
+}
+
 extend type Mutation {
   """
   Given a person's email address and name, invite them to create an account for a certain shop,
@@ -88,4 +97,7 @@ extend type Query {
 
   "Returns the ID of the primary shop for the domain"
   primaryShopId: ID
+
+  "Returns the primary shop for the domain"
+  primaryShop: Shop
 }

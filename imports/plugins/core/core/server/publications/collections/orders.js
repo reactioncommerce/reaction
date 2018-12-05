@@ -37,6 +37,7 @@ function createAggregate(shopId, sort = { createdAt: -1 }, limit = 0, query = {}
       cartId: 1,
       createdAt: 1,
       email: 1,
+      referenceId: 1,
       shopId: 1,
       workflow: 1 // workflow is still stored at the top level and used to showing status
     }
@@ -153,6 +154,28 @@ Meteor.publish("CompletedCartOrder", (cartId) => {
     accountId,
     cartId
   }, { limit: 1 });
+});
+
+/**
+ * find an order by _id
+ */
+Meteor.publish("OrderById", (orderId) => {
+  check(orderId, String);
+  if (this.userId === null) {
+    return this.ready();
+  }
+  const shopId = Reaction.getShopId();
+  if (!shopId) {
+    return this.ready();
+  }
+
+  if (Reaction.hasPermission("orders", Reaction.getUserId(), shopId)) {
+    return Orders.find({
+      _id: orderId
+    }, { limit: 1 });
+  }
+
+  return this.ready();
 });
 
 Meteor.publish("OrderImages", (orderId) => {
