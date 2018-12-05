@@ -1,7 +1,7 @@
 import Random from "@reactioncommerce/random";
 
 const METHOD = "credit";
-const PACKAGE_NAME = "reaction-stripe";
+const PACKAGE_NAME = "reaction-marketplace";
 const PAYMENT_METHOD_NAME = "marketplace_stripe_card";
 
 // NOTE: The "processor" value is lowercased and then prefixed to various payment Meteor method names,
@@ -58,11 +58,11 @@ export default async function createSingleCharge(stripe, group, stripeCustomerId
     shipping: getStripeShippingObjectForFulfillmentGroup(group)
   };
 
-  const stripeOptions = {};
+  let stripeOptions;
 
   if (stripeAccountId) {
     // If this is a merchant shop, we need to tokenize the customer and charge the token with the merchant ID
-    stripeOptions.stripe_account = stripeAccountId; // eslint-disable-line camelcase
+    stripeOptions = { stripe_account: stripeAccountId }; // eslint-disable-line camelcase
 
     // Create token from our customer object to use with merchant shop
     const customerToken = await stripe.tokens.create({ customer: stripeCustomerId }, stripeOptions);
@@ -80,7 +80,15 @@ export default async function createSingleCharge(stripe, group, stripeCustomerId
   }
 
   // https://stripe.com/docs/api#create_charge
-  const charge = await stripe.charges.create(stripeChargeInput, stripeOptions);
+  // The `if` may seem unnecessary, but Stripe lib is particular about passing options.
+  // If you pass a second argument and it is empty or null or undefined, it throws an
+  // error.
+  let charge;
+  if (stripeOptions) {
+    charge = await stripe.charges.create(stripeChargeInput, stripeOptions);
+  } else {
+    charge = await stripe.charges.create(stripeChargeInput);
+  }
 
   return {
     _id: Random.id(),

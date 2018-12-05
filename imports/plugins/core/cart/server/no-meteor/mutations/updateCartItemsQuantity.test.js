@@ -44,11 +44,19 @@ test("updates the quantity of multiple items in account cart", async () => {
       items: [
         {
           ...dbCart.items[0],
-          quantity: 1
+          quantity: 1,
+          subtotal: {
+            amount: dbCart.items[0].price.amount,
+            currencyCode: dbCart.items[0].subtotal.currencyCode
+          }
         },
         {
           ...dbCart.items[1],
-          quantity: 2
+          quantity: 2,
+          subtotal: {
+            amount: dbCart.items[1].price.amount * 2,
+            currencyCode: dbCart.items[1].subtotal.currencyCode
+          }
         }
       ],
       updatedAt: jasmine.any(Date)
@@ -65,11 +73,19 @@ test("updates the quantity of multiple items in account cart", async () => {
       items: [
         {
           ...dbCart.items[0],
-          quantity: 1
+          quantity: 1,
+          subtotal: {
+            amount: dbCart.items[0].price.amount,
+            currencyCode: dbCart.items[0].subtotal.currencyCode
+          }
         },
         {
           ...dbCart.items[1],
-          quantity: 2
+          quantity: 2,
+          subtotal: {
+            amount: dbCart.items[1].price.amount * 2,
+            currencyCode: dbCart.items[1].subtotal.currencyCode
+          }
         }
       ],
       updatedAt: jasmine.any(Date)
@@ -107,11 +123,19 @@ test("updates the quantity of multiple items in anonymous cart", async () => {
       items: [
         {
           ...dbCart.items[0],
-          quantity: 1
+          quantity: 1,
+          subtotal: {
+            amount: dbCart.items[0].price.amount,
+            currencyCode: dbCart.items[0].subtotal.currencyCode
+          }
         },
         {
           ...dbCart.items[1],
-          quantity: 2
+          quantity: 2,
+          subtotal: {
+            amount: dbCart.items[1].price.amount * 2,
+            currencyCode: dbCart.items[1].subtotal.currencyCode
+          }
         }
       ],
       updatedAt: jasmine.any(Date)
@@ -129,11 +153,19 @@ test("updates the quantity of multiple items in anonymous cart", async () => {
       items: [
         {
           ...dbCart.items[0],
-          quantity: 1
+          quantity: 1,
+          subtotal: {
+            amount: dbCart.items[0].price.amount,
+            currencyCode: dbCart.items[0].subtotal.currencyCode
+          }
         },
         {
           ...dbCart.items[1],
-          quantity: 2
+          quantity: 2,
+          subtotal: {
+            amount: dbCart.items[1].price.amount * 2,
+            currencyCode: dbCart.items[1].subtotal.currencyCode
+          }
         }
       ],
       updatedAt: jasmine.any(Date)
@@ -186,7 +218,11 @@ test("removes an item if quantity is 0", async () => {
       items: [
         {
           ...dbCart.items[1],
-          quantity: 2
+          quantity: 2,
+          subtotal: {
+            amount: dbCart.items[1].price.amount * 2,
+            currencyCode: dbCart.items[1].subtotal.currencyCode
+          }
         }
       ],
       updatedAt: jasmine.any(Date)
@@ -203,7 +239,11 @@ test("removes an item if quantity is 0", async () => {
       items: [
         {
           ...dbCart.items[1],
-          quantity: 2
+          quantity: 2,
+          subtotal: {
+            amount: dbCart.items[1].price.amount * 2,
+            currencyCode: dbCart.items[1].subtotal.currencyCode
+          }
         }
       ],
       updatedAt: jasmine.any(Date)

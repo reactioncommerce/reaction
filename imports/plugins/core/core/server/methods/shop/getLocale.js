@@ -72,7 +72,6 @@ export default function getLocale() {
 
   // localeCurrency is an array of allowed currencies
   _.each(localeCurrency, (currency) => {
-    let exchangeRate;
     if (shop.currencies[currency]) {
       result.currency = shop.currencies[currency];
       // only fetch rates if locale and shop currency are not equal
@@ -82,10 +81,8 @@ export default function getLocale() {
         const exchangeConfig = settings.openexchangerates || {};
 
         if (exchangeConfig.appId) {
-          exchangeRate = Meteor.call("shop/getCurrencyRates", currency);
-
-          if (typeof exchangeRate === "number") {
-            result.currency.exchangeRate = exchangeRate;
+          if (typeof result.currency.rate === "number") {
+            result.currency.exchangeRate = result.currency.rate;
           } else {
             Logger.warn("Failed to get currency exchange rates.");
           }

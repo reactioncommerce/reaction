@@ -1,52 +1,7 @@
 import _ from "lodash";
-import { Meteor } from "meteor/meteor";
-import { Packages } from "/lib/collections";
-import Reaction from "/imports/plugins/core/core/server/Reaction";
 import * as Schemas from "/lib/collections/schemas";
-
-/**
- * @name getValidator
- * @summary Returns the name of the geocoder method to use
- * @returns {string} Name of the Geocoder method to use
- * @private
- */
-function getValidator() {
-  const shopId = Reaction.getShopId();
-  const geoCoders = Packages.find({
-    "registry": { $elemMatch: { provides: "addressValidation" } },
-    "settings.addressValidation.enabled": true,
-    shopId,
-    "enabled": true
-  }).fetch();
-
-  if (!geoCoders.length) {
-    return "";
-  }
-  let geoCoder;
-  // Just one?, use that one
-  if (geoCoders.length === 1) {
-    [geoCoder] = geoCoders;
-  }
-
-  geoCoder = geoCoders.find((gC) => {
-    // check if addressValidation is enabled but the package is disabled, don't do address validation
-    let registryName;
-    for (const registry of gC.registry) {
-      if (registry.provides && registry.provides.includes("addressValidation")) {
-        registryName = registry.name;
-      }
-    }
-    const packageKey = registryName.split("/")[2]; // "taxes/addressValidation/{packageKey}"
-    if (!_.get(gC.settings[packageKey], "enabled")) {
-      return false;
-    }
-    return true;
-  });
-  if (geoCoder && geoCoder.settings && geoCoder.settings.addressValidation) {
-    return geoCoder.settings.addressValidation.addressValidationMethod;
-  }
-  return null;
-}
+import getGraphQLContextInMeteorMethod from "/imports/plugins/core/graphql/server/getGraphQLContextInMeteorMethod";
+import Reaction from "/imports/plugins/core/core/server/Reaction";
 
 /**
  * @name compareAddress
@@ -135,36 +90,42 @@ function compareAddress(address, validationAddress) {
  * @method
  * @summary Validates an address, and if fails returns details of issues
  * @param {Object} address - The address object to validate
- * @returns {{validated: boolean, address: *}} - The results of the validation
+ * @returns {Object} The results of the validation
  */
 export default function validateAddress(address) {
-  Schemas.Address.clean(address);
+  Schemas.Address.clean(address, { mutate: true });
   Schemas.Address.validate(address);
 
-  let validated = true;
-  let validationErrors;
-  let suggestedAddress = {};
-  let formErrors;
-  const validator = getValidator();
-  if (validator) {
-    const validationResult = Meteor.call(validator, address);
-    ({ validatedAddress: suggestedAddress } = validationResult);
-    formErrors = validationResult.errors;
-    if (suggestedAddress) {
-      validationErrors = compareAddress(address, suggestedAddress);
-      if (validationErrors.totalErrors || formErrors.length) {
-        validated = false;
-        suggestedAddress.failedValidation = true;
-      }
-    } else {
-      // No address, fail validation
-      validated = false;
-      suggestedAddress = {
-        failedValidation: true
-      };
+  const context = Promise.await(getGraphQLContextInMeteorMethod(Reaction.getUserId()));
+  const {
+    suggestedAddresses,
+    validationErrors
+  } = Promise.await(context.queries.addressValidation({ address, shopId: Reaction.getShopId() }, context));
+
+  let suggestedAddress;
+  let fieldErrors;
+  if (suggestedAddresses.length) {
+    [suggestedAddress] = suggestedAddresses;
+
+    fieldErrors = compareAddress(address, suggestedAddress);
+
+    if (fieldErrors.totalErrors || validationErrors.length) {
+      suggestedAddress.failedValidation = true;
     }
+  } else {
+    // No address, fail validation
+    suggestedAddress = {
+      failedValidation: true
+    };
   }
+
   suggestedAddress = { ...address, ...suggestedAddress };
-  const validationResults = { validated, fieldErrors: validationErrors, formErrors, suggestedAddress, enteredAddress: address };
-  return validationResults;
+
+  return {
+    validated: suggestedAddresses.length === 0 && validationErrors.length === 0,
+    fieldErrors,
+    formErrors: validationErrors,
+    suggestedAddress,
+    enteredAddress: address
+  };
 }

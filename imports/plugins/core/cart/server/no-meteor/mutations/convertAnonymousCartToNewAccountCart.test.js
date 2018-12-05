@@ -1,3 +1,4 @@
+import Factory from "/imports/test-utils/helpers/factory";
 import mockContext from "/imports/test-utils/helpers/mockContext";
 import convertAnonymousCartToNewAccountCart from "./convertAnonymousCartToNewAccountCart";
 
@@ -6,24 +7,7 @@ const currencyCode = "GBP";
 const accountId = "accountId";
 const anonymousCartSelector = { _id: "123" };
 const shopId = "shopId";
-const items = [
-  {
-    _id: "CartItemID",
-    addedAt: new Date("2018-01-01T00:00:00.000"),
-    createdAt: new Date("2018-01-01T00:00:00.000"),
-    productId: "productId",
-    quantity: 1,
-    shopId: "shopId",
-    title: "TITLE",
-    updatedAt: new Date("2018-01-01T00:00:00.000"),
-    variantId: "variantId",
-    isTaxable: false,
-    priceWhenAdded: {
-      amount: 9.99,
-      currencyCode: "USD"
-    }
-  }
-];
+const items = [Factory.CartItem.makeOne()];
 
 test("inserts a cart with the existing cart's items and returns it", async () => {
   Cart.insertOne.mockReturnValueOnce(Promise.resolve({ result: { ok: 1 } }));

@@ -7,6 +7,7 @@ import Toolbar from "/imports/plugins/core/dashboard/client/components/toolbar";
 import { ActionViewContainer, PackageListContainer } from "/imports/plugins/core/dashboard/client/containers";
 import { ActionView, ShortcutBar } from "/imports/plugins/core/dashboard/client/components";
 import { Reaction } from "/client/api";
+import Dashboard from "/imports/client/ui/layouts/Dashboard";
 
 const ConnectedToolbarComponent = ToolbarContainer(Toolbar);
 const ConnectedAdminViewComponent = ActionViewContainer(ActionView);
@@ -106,6 +107,12 @@ class App extends Component {
     );
   }
 
+  renderOperatorApp() {
+    return (
+      <Dashboard />
+    );
+  }
+
   render() {
     const pageClassName = classnames({
       "admin": true,
@@ -116,6 +123,10 @@ class App extends Component {
     const layout = currentRoute && currentRoute.route && currentRoute.route.options && currentRoute.route.options.layout;
 
     if (this.isAdminApp && layout !== "printLayout" && !this.noAdminControls) {
+      if (currentRoute.route.path.startsWith("/operator")) {
+        return this.renderOperatorApp();
+      }
+
       return this.renderAdminApp();
     }
 

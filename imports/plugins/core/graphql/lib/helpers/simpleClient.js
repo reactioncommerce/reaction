@@ -5,8 +5,11 @@ import updateFulfillmentOptionsForGroup from "../mutations/updateFulfillmentOpti
 import createFlatRateFulfillmentMethod from "../mutations/createFlatRateFulfillmentMethod.graphql";
 import updateFlatRateFulfillmentMethod from "../mutations/updateFlatRateFulfillmentMethod.graphql";
 import deleteFlatRateFulfillmentMethod from "../mutations/deleteFlatRateFulfillmentMethod.graphql";
+import enablePaymentMethodForShop from "../mutations/enablePaymentMethodForShop.graphql";
 import placeOrderWithExampleIOUPayment from "../mutations/placeOrderWithExampleIOUPayment.graphql";
 import placeOrderWithStripeCardPayment from "../mutations/placeOrderWithStripeCardPayment.graphql";
+import availablePaymentMethods from "../queries/availablePaymentMethods.graphql";
+import paymentMethods from "../queries/paymentMethods.graphql";
 
 /**
  * In React components, you should use Apollo. This client is available for Blaze
@@ -31,6 +34,20 @@ function setTokenHeader() {
 }
 
 export default {
+  createMutationFunction(mutation) {
+    const cachedMutationFunction = client.mutate(mutation);
+    return (variables) => {
+      setTokenHeader();
+      return cachedMutationFunction(variables);
+    };
+  },
+  createQueryFunction(query) {
+    const cachedQueryFunction = client.query(query);
+    return (variables) => {
+      setTokenHeader();
+      return cachedQueryFunction(variables);
+    };
+  },
   mutations: {
     createFlatRateFulfillmentMethod: (variables) => {
       setTokenHeader();
@@ -39,6 +56,10 @@ export default {
     deleteFlatRateFulfillmentMethod: (variables) => {
       setTokenHeader();
       return client.mutate(deleteFlatRateFulfillmentMethod)(variables);
+    },
+    enablePaymentMethodForShop: (variables) => {
+      setTokenHeader();
+      return client.mutate(enablePaymentMethodForShop)(variables);
     },
     placeOrderWithExampleIOUPayment: (variables) => {
       setTokenHeader();
@@ -55,6 +76,16 @@ export default {
     updateFulfillmentOptionsForGroup: (variables) => {
       setTokenHeader();
       return client.mutate(updateFulfillmentOptionsForGroup)(variables);
+    }
+  },
+  queries: {
+    availablePaymentMethods: (variables) => {
+      setTokenHeader();
+      return client.query(availablePaymentMethods)(variables);
+    },
+    paymentMethods: (variables) => {
+      setTokenHeader();
+      return client.query(paymentMethods)(variables);
     }
   }
 };

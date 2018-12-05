@@ -326,7 +326,7 @@ export const mockExternalCatalogVariants = [
           _id: "cmVhY3Rpb24vY3VycmVuY3k6VVNE",
           code: "USD"
         },
-        compareAtPrice: 10,
+        compareAtPrice: { amount: 10 },
         displayPrice: "2.99 - 5.99",
         maxPrice: 5.99,
         minPrice: 2.99,
@@ -360,7 +360,6 @@ export const mockInternalCatalogProducts = [
     isBackorder: false,
     isLowQuantity: false,
     isSoldOut: false,
-    isTaxable: false,
     isVisible: true,
     length: 5.67,
     lowInventoryWarningThreshold: 2,
@@ -440,8 +439,6 @@ export const mockInternalCatalogProducts = [
     ],
     supportedFulfillmentTypes: ["shipping"],
     tagIds: internalTagIds,
-    taxCode: "taxCode",
-    taxDescription: "taxDescription",
     title: "Fake Product Title",
     type: "product-simple",
     updatedAt: updatedAt.toISOString(),
@@ -459,7 +456,6 @@ export const mockInternalCatalogProducts = [
     isBackorder: false,
     isLowQuantity: false,
     isSoldOut: false,
-    isTaxable: false,
     isVisible: true,
     length: 5.67,
     lowInventoryWarningThreshold: 2,
@@ -539,8 +535,6 @@ export const mockInternalCatalogProducts = [
     ],
     supportedFulfillmentTypes: ["shipping"],
     tagIds: internalTagIds,
-    taxCode: "taxCode",
-    taxDescription: "taxDescription",
     title: "Another Fake Product Title",
     type: "product-simple",
     updatedAt: updatedAt.toISOString(),
@@ -571,7 +565,6 @@ export const mockExternalCatalogProducts = [
       isBackorder: false,
       isLowQuantity: false,
       isSoldOut: false,
-      isTaxable: false,
       length: 5.67,
       lowInventoryWarningThreshold: 2,
       metafields: [
@@ -601,7 +594,7 @@ export const mockExternalCatalogProducts = [
             _id: "cmVhY3Rpb24vY3VycmVuY3k6VVNE",
             code: "USD"
           },
-          compareAtPrice: 10,
+          compareAtPrice: { amount: 10 },
           displayPrice: "2.99 - 5.99",
           maxPrice: 5.99,
           minPrice: 2.99,
@@ -654,8 +647,6 @@ export const mockExternalCatalogProducts = [
       tags: {
         nodes: [{ _id: opaqueTagIds[0] }, { _id: opaqueTagIds[1] }]
       },
-      taxCode: "taxCode",
-      taxDescription: "taxDescription",
       title: "Fake Product Title",
       updatedAt: updatedAt.toISOString(),
       variants: mockExternalCatalogVariants,
@@ -680,7 +671,6 @@ export const mockExternalCatalogProducts = [
       isBackorder: false,
       isLowQuantity: false,
       isSoldOut: false,
-      isTaxable: false,
       length: 5.67,
       lowInventoryWarningThreshold: 2,
       metafields: [
@@ -710,7 +700,7 @@ export const mockExternalCatalogProducts = [
             _id: "cmVhY3Rpb24vY3VycmVuY3k6VVNE",
             code: "USD"
           },
-          compareAtPrice: 35,
+          compareAtPrice: { amount: 35 },
           displayPrice: "16.99 - 25.99",
           maxPrice: 25.99,
           minPrice: 16.99,
@@ -763,8 +753,6 @@ export const mockExternalCatalogProducts = [
       tags: {
         nodes: [{ _id: opaqueTagIds[0] }, { _id: opaqueTagIds[1] }]
       },
-      taxCode: "taxCode",
-      taxDescription: "taxDescription",
       title: "Another Fake Product Title",
       updatedAt: updatedAt.toISOString(),
       variants: [],

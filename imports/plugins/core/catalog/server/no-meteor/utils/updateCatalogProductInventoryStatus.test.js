@@ -29,9 +29,9 @@ const mockVariants = [
     index: 0,
     inventoryManagement: true,
     inventoryPolicy: false,
+    isDeleted: false,
     isLowQuantity: true,
     isSoldOut: false,
-    isDeleted: false,
     isVisible: true,
     length: 0,
     lowInventoryWarningThreshold: 0,
@@ -51,7 +51,6 @@ const mockVariants = [
     price: 0,
     shopId: internalShopId,
     sku: "sku",
-    taxable: true,
     taxCode: "0000",
     taxDescription: "taxDescription",
     title: "Small Concrete Pizza",
@@ -68,9 +67,9 @@ const mockVariants = [
     index: 0,
     inventoryManagement: true,
     inventoryPolicy: true,
+    isDeleted: false,
     isLowQuantity: true,
     isSoldOut: false,
-    isDeleted: false,
     isVisible: true,
     length: 2,
     lowInventoryWarningThreshold: 0,
@@ -90,7 +89,6 @@ const mockVariants = [
     price: 992.0,
     shopId: internalShopId,
     sku: "sku",
-    taxable: true,
     taxCode: "0000",
     taxDescription: "taxDescription",
     title: "One pound bag",
@@ -166,14 +164,11 @@ const mockProduct = {
   supportedFulfillmentTypes: ["shipping"],
   handle: productSlug,
   hashtags: internalTagIds,
-  taxCode: "taxCode",
-  taxDescription: "taxDescription",
-  taxable: false,
   title: "Fake Product Title",
   twitterMsg: "twitterMessage",
   type: "product-simple",
   updatedAt,
-  mockVariants,
+  variants: mockVariants,
   vendor: "vendor",
   weight: 15.6,
   width: 8.4
@@ -216,15 +211,7 @@ test("expect true if a product's inventory has changed and is updated in the cat
   expect(spec).toBe(true);
 });
 
-test("expect false if a product's inventory did not change and is not updated in the catalog collection", async () => {
-  mockCollections.Catalog.findOne.mockReturnValueOnce(Promise.resolve(mockCatalogItem));
-  mockCollections.Products.toArray.mockReturnValueOnce(Promise.resolve(mockVariants));
-  mockIsSoldOut.mockReturnValueOnce(false);
-  const spec = await updateCatalogProductInventoryStatus(mockProduct, mockCollections);
-  expect(spec).toBe(false);
-});
-
-test("expect false if a product's catalog item does not exsit", async () => {
+test("expect false if a product's catalog item does not exist", async () => {
   mockCollections.Catalog.findOne.mockReturnValueOnce(Promise.resolve(undefined));
   const spec = await updateCatalogProductInventoryStatus(mockProduct, mockCollections);
   expect(spec).toBe(false);

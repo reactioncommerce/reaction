@@ -105,10 +105,10 @@ beforeAll(async () => {
 
 afterAll(async () => {
   await testApp.collections.Shops.remove({ _id: internalShopId });
-  await testApp.collections.Product.remove({ _id: internalProductId });
-  await testApp.collections.Product.remove({ _id: internalVariantIds[0] });
-  await testApp.collections.Product.remove({ _id: internalVariantIds[1] });
-  await testApp.collections.Product.remove({ _id: internalVariantIds[2] });
+  await testApp.collections.Products.remove({ _id: internalProductId });
+  await testApp.collections.Products.remove({ _id: internalVariantIds[0] });
+  await testApp.collections.Products.remove({ _id: internalVariantIds[1] });
+  await testApp.collections.Products.remove({ _id: internalVariantIds[2] });
   await testApp.clearLoggedInUser();
   testApp.stop();
 });
