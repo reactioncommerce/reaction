@@ -423,7 +423,7 @@ export default async function createOrder(context, input) {
     }));
   } catch (error) {
     Logger.error("createOrder: error creating payments", error.message);
-    throw new ReactionError("payment-failed", "There was a problem authorizing this payment");
+    throw new ReactionError("payment-failed", `There was a problem authorizing this payment: ${error.message}`);
   }
 
   // Create anonymousAccessToken if no account ID
