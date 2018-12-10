@@ -8,8 +8,8 @@ import { operators, propertyTypes } from "./helpers";
  */
 export default async function isShippingRestricted(context, hydratedOrder) {
   const { items, shippingAddress } = hydratedOrder;
-  const flatRateFulfillmentRestrictionsCollection = context.collections.FlatRateFulfillmentRestrictions;
-  const universalRestrictions = await flatRateFulfillmentRestrictionsCollection.find({ methodIds: null, type: "deny" }).toArray();
+  const { FlatRateFulfillmentRestrictions } = context.collections;
+  const universalRestrictions = await FlatRateFulfillmentRestrictions.find({ methodIds: null, type: "deny" }).toArray();
 
   // If there are no universal restrictions, move on to method specific checks
   if (universalRestrictions.length === 0) {
