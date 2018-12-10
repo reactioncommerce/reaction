@@ -42,15 +42,15 @@ export default async function xformCartGroupToCommonOrder(cart, group, context) 
   if (shipmentMethod) {
     fulfillmentPrices = {
       handling: {
-        amount: (shipmentMethod && shipmentMethod.handling) || 0,
+        amount: shipmentMethod.handling || 0,
         currencyCode
       },
       shipping: {
-        amount: (shipmentMethod && shipmentMethod.rate) || 0,
+        amount: shipmentMethod.rate,
         currencyCode
       },
       total: {
-        amount: shipmentMethod ? (shipmentMethod.handling || 0) + (shipmentMethod.rate || 0) : 0,
+        amount: (shipmentMethod.handling || 0) + shipmentMethod.rate,
         currencyCode
       }
     };
