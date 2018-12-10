@@ -252,7 +252,7 @@ async function addShipmentMethodToGroup(context, finalGroup, cleanedInput, group
     discountTotal
   });
 
-  // We are passing commonOrder in here, but we need the finalGroup.shipmentMethod data inside of fianl order, which doesn't get set until after this
+  // We are passing commonOrder in here, but we need the finalGroup.shipmentMethod data inside of final order, which doesn't get set until after this
   // but we need the data from this in order to set it
   const rates = await context.queries.getFulfillmentMethodsWithQuotes(commonOrder, context);
   const selectedFulfillmentMethod = rates.find((rate) => groupInput.selectedFulfillmentMethodId === rate.method._id);
