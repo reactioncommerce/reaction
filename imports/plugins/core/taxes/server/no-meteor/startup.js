@@ -9,10 +9,6 @@ import xformCartGroupToCommonOrder from "/imports/plugins/core/cart/server/no-me
  */
 async function getUpdatedCartItems(cart, context) {
   const taxResultsByGroup = await Promise.all(cart.shipping.map(async (group) => {
-    // Map the items onto the fulfillment groups
-    group.items = group.itemIds.map((itemId) => cart.items.find((item) => item._id === itemId));
-
-
     const order = await xformCartGroupToCommonOrder(cart, group, context);
     return context.mutations.getFulfillmentGroupTaxes(context, { order, forceZeroes: false });
   }));
