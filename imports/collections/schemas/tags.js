@@ -84,6 +84,10 @@ export const Tag = new SimpleSchema({
   "heroMediaUrl": {
     type: String,
     optional: true
+  },
+  "displayTitle": {
+    type: String,
+    optional: true
   }
 });
 
