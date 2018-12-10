@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+# Pre Build Hook
+# Invoked by the reaction-next project bootstrapping process.
+#
+# Invoked before Docker build.
+# Perform any actions here that are required before docker-compose build. For
+# example, copying values from .env.example to .env.
+#
+# Important Notes:
+#
+#  - Expect that services are NOT running at this time.
+#  - Do not assume that this hook script will run from this local directory.
+#    The $__dir var is provided for convenience and may be used to invoke other
+#    scripts.
+#  - It is good practice to keep this script lightweight and invoke setup
+#    scripts in your project.
+
+__current_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+__root_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
+__root_name=$(basename "${__root_dir}")
+
+echo "${__root_name} post-project-start script invoked." 2>&1
+
+"${__root_dir}/bin/setup"

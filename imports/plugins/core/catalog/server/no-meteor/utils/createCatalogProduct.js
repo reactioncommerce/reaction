@@ -27,6 +27,7 @@ export function xformVariant(variant, variantPriceInfo, shopCurrencyCode, varian
     index: variant.index || 0,
     inventoryManagement: !!variant.inventoryManagement,
     inventoryPolicy: !!variant.inventoryPolicy,
+    isBackorder: variantInventory.isBackorder,
     isLowQuantity: variantInventory.isLowQuantity,
     isSoldOut: variantInventory.isSoldOut,
     length: variant.length,
@@ -101,12 +102,14 @@ export async function xformProduct({ collections, product, shop, variants }) {
         const optionPrices = variantOptions.map((option) => option.price);
         priceInfo = getPriceRange(optionPrices, shopCurrencyInfo);
         variantInventory = {
+          isBackorder: isBackorder(variantOptions),
           isLowQuantity: isLowQuantity(variantOptions),
           isSoldOut: isSoldOut(variantOptions)
         };
       } else {
         priceInfo = getPriceRange([variant.price], shopCurrencyInfo);
         variantInventory = {
+          isBackorder: isBackorder([variant]),
           isLowQuantity: isLowQuantity([variant]),
           isSoldOut: isSoldOut([variant])
         };
@@ -121,6 +124,7 @@ export async function xformProduct({ collections, product, shop, variants }) {
         newVariant.options = variantOptions.map((option) => {
           const optionMedia = catalogProductMedia.filter((media) => media.variantId === option._id);
           const optionInventory = {
+            isBackorder: isBackorder([option]),
             isLowQuantity: isLowQuantity([option]),
             isSoldOut: isSoldOut([option])
           };
