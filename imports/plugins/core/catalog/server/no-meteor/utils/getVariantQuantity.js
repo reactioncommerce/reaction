@@ -9,7 +9,7 @@ import getVariants from "./getVariants";
  * product variant options as params to skip the db lookup and return the variant quantity
  * based on the provided options.
  * @param {Object} variant - A top level product variant object.
- * @param {Object} collection - Raw mongo collections.
+ * @param {Object} collections - Raw mongo collections.
  * @param {Object[]} variants - Array of product variant option objects.
  * @return {Promise<number>} Variant quantity.
  */
