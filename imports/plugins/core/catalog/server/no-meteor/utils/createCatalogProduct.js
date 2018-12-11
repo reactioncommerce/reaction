@@ -1,4 +1,5 @@
 import Logger from "@reactioncommerce/logger";
+import canBackorder from "./canBackorder";
 import getCatalogProductMedia from "./getCatalogProductMedia";
 import getPriceRange from "./getPriceRange";
 import isBackorder from "./isBackorder";
@@ -22,6 +23,7 @@ export function xformVariant(variant, variantPriceInfo, shopCurrencyCode, varian
   return {
     _id: variant._id,
     barcode: variant.barcode,
+    canBackorder: variantInventory.canBackorder,
     createdAt: variant.createdAt || new Date(),
     height: variant.height,
     index: variant.index || 0,
@@ -102,6 +104,7 @@ export async function xformProduct({ collections, product, shop, variants }) {
         const optionPrices = variantOptions.map((option) => option.price);
         priceInfo = getPriceRange(optionPrices, shopCurrencyInfo);
         variantInventory = {
+          canBackorder: canBackorder(variantOptions),
           isBackorder: isBackorder(variantOptions),
           isLowQuantity: isLowQuantity(variantOptions),
           isSoldOut: isSoldOut(variantOptions)
@@ -109,6 +112,7 @@ export async function xformProduct({ collections, product, shop, variants }) {
       } else {
         priceInfo = getPriceRange([variant.price], shopCurrencyInfo);
         variantInventory = {
+          canBackorder: canBackorder([variant]),
           isBackorder: isBackorder([variant]),
           isLowQuantity: isLowQuantity([variant]),
           isSoldOut: isSoldOut([variant])
@@ -124,6 +128,7 @@ export async function xformProduct({ collections, product, shop, variants }) {
         newVariant.options = variantOptions.map((option) => {
           const optionMedia = catalogProductMedia.filter((media) => media.variantId === option._id);
           const optionInventory = {
+            canBackorder: canBackorder([option]),
             isBackorder: isBackorder([option]),
             isLowQuantity: isLowQuantity([option]),
             isSoldOut: isSoldOut([option])
@@ -140,6 +145,7 @@ export async function xformProduct({ collections, product, shop, variants }) {
     // We want to explicitly map everything so that new properties added to product are not published to a catalog unless we want them
     _id: product._id,
     barcode: product.barcode,
+    canBackorder: canBackorder(variants),
     createdAt: product.createdAt || new Date(),
     description: product.description,
     height: product.height,

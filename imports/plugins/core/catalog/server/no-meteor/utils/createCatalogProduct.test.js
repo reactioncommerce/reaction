@@ -26,6 +26,7 @@ const mockVariants = [
     _id: internalVariantIds[0],
     ancestors: [internalCatalogProductId],
     barcode: "barcode",
+    canBackorder: true,
     createdAt,
     compareAtPrice: 1100,
     height: 0,
@@ -65,6 +66,7 @@ const mockVariants = [
     _id: internalVariantIds[1],
     ancestors: [internalCatalogProductId, internalVariantIds[0]],
     barcode: "barcode",
+    canBackorder: false,
     createdAt,
     height: 2,
     index: 0,
@@ -285,6 +287,7 @@ const mockCatalogProduct = {
   variants: [{
     _id: "875",
     barcode: "barcode",
+    canBackorder: true,
     createdAt,
     height: 0,
     index: 0,
@@ -309,6 +312,7 @@ const mockCatalogProduct = {
     options: [{
       _id: "874",
       barcode: "barcode",
+      canBackorder: false,
       createdAt,
       height: 2,
       index: 0,

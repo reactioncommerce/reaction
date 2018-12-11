@@ -122,6 +122,7 @@ export const SocialMetadata = new SimpleSchema({
  * @type {SimpleSchema}
  * @property {String} _id required
  * @property {String} barcode optional
+ * @property {Boolean} canBackorder required
  * @property {Date} createdAt required
  * @property {Number} height optional, default value: `0`
  * @property {Number} index required
@@ -157,6 +158,10 @@ export const VariantBaseSchema = new SimpleSchema({
     type: String,
     label: "Barcode",
     optional: true
+  },
+  "canBackorder": {
+    type: Boolean,
+    label: "Indicates when the seller has allowed the sale of product which is not in stock"
   },
   "createdAt": {
     type: Date,
@@ -317,6 +322,7 @@ export const CatalogVariantSchema = VariantBaseSchema.clone().extend({
  * @type {SimpleSchema}
  * @property {String} _id required
  * @property {String} barcode optional
+ * @property {Boolean} canBackorder required
  * @property {Date} createdAt required
  * @property {String} description optional
  * @property {Number} height optional, default value: `0`
@@ -362,6 +368,10 @@ export const CatalogProduct = new SimpleSchema({
     type: String,
     label: "Barcode",
     optional: true
+  },
+  "canBackorder": {
+    type: Boolean,
+    label: "Indicates when the seller has allowed the sale of product which is not in stock"
   },
   "createdAt": {
     type: Date,
