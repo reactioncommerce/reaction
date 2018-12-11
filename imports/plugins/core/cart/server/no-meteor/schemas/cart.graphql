@@ -96,7 +96,7 @@ type CartItem implements Node {
   The quantity of this item currently available to order.
   FUTURE: currentyQuantity, inventoryAvailableToSell, inventoryInStock are all the same number as of now, as we haven't tracked inventory this way as of yet
   """
-  currentQuantity: Int
+  currentQuantity: Int @deprecated(reason: "Use `inventoryAvailableToSell` or `inventoryInStock`.")
 
   """
   The date and time at which the cart item was created. If an item is added, removed, and then added again,
