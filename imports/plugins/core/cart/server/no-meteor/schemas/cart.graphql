@@ -92,7 +92,10 @@ type CartItem implements Node {
   "The current comparison (e.g., MSRP) price of the item"
   compareAtPrice: Money
 
-  "The quantity of this item currently available to order"
+  """
+  The quantity of this item currently available to order.
+  FUTURE: currentyQuantity, inventoryAvailableToSell, inventoryInStock are all the same number as of now, as we haven't tracked inventory this way as of yet
+  """
   currentQuantity: Int
 
   """
@@ -103,6 +106,18 @@ type CartItem implements Node {
 
   "The URLs for a picture of the item in various sizes"
   imageURLs: ImageSizes
+
+  """
+  The quantity of this item currently available to sell. This number does not include reserved inventory (i.e. inventory reserved in another cart).
+  FUTURE: currentyQuantity, inventoryAvailableToSell, inventoryInStock are all the same number as of now, as we haven't tracked inventory this way as of yet
+  """
+  inventoryAvailableToSell: Int
+
+  """
+  The quantity of this item that is in stock. This number includes all inventory that hasn't been shipped (i.e. inventory reserved in another cart).
+  FUTURE: currentyQuantity, inventoryAvailableToSell, inventoryInStock are all the same number as of now, as we haven't tracked inventory this way as of yet
+  """
+  inventoryInStock: Int
 
   "Is this item currently backordered?"
   isBackorder: Boolean!
