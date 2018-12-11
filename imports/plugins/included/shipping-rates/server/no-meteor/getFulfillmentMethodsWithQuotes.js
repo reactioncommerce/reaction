@@ -1,10 +1,13 @@
 import Logger from "@reactioncommerce/logger";
 import ReactionError from "@reactioncommerce/reaction-error";
+import isShippingRestricted from "./util/isShippingRestricted";
+import filterShippingMethods from "./util/filterShippingMethods";
+import getShippingRestrictionAttributes from "./util/getShippingRestrictionAttributes";
 
 /**
  * @summary Returns a list of fulfillment method quotes based on the items in a fulfillment group.
  * @param {Object} context - Context
- * @param {Object} fulfillmentGroup - details about the purchase a user wants to make.
+ * @param {Object} commonOrder - details about the purchase a user wants to make.
  * @param {Array} [previousQueryResults] - an array of shipping rates and
  * info about failed calls to the APIs of some shipping methods providers
  * e.g Shippo.
@@ -14,7 +17,7 @@ import ReactionError from "@reactioncommerce/reaction-error";
  * shipping rates.
  * @private
  */
-export default async function getFulfillmentMethodsWithQuotes(context, fulfillmentGroup, previousQueryResults = []) {
+export default async function getFulfillmentMethodsWithQuotes(context, commonOrder, previousQueryResults = []) {
   const { collections } = context;
   const { Packages, Shipping } = collections;
   const [rates = [], retrialTargets = []] = previousQueryResults;
@@ -22,6 +25,7 @@ export default async function getFulfillmentMethodsWithQuotes(context, fulfillme
     packageName: "flat-rate-shipping",
     fileName: "hooks.js"
   };
+
 
   if (retrialTargets.length > 0) {
     const isNotAmongFailedRequests = retrialTargets.every((target) =>
@@ -34,7 +38,7 @@ export default async function getFulfillmentMethodsWithQuotes(context, fulfillme
 
   // Verify that we have a valid address to work with
   let shippingErrorDetails;
-  if (!fulfillmentGroup.address) {
+  if (!commonOrder.shippingAddress) {
     shippingErrorDetails = {
       requestStatus: "error",
       shippingProvider: "flat-rate-shipping",
@@ -68,39 +72,53 @@ export default async function getFulfillmentMethodsWithQuotes(context, fulfillme
   }
 
   const shippingRateDocs = await Shipping.find({
-    "shopId": fulfillmentGroup.shopId,
+    "shopId": commonOrder.shopId,
     "provider.enabled": true
   }).toArray();
 
   const initialNumOfRates = rates.length;
-  shippingRateDocs.forEach((doc) => {
-    const carrier = doc.provider.label;
-    for (const method of doc.methods) {
-      if (!method.enabled) {
-        continue;
+
+  // Get hydrated order, an object of current order data including item and destination information
+  const hydratedOrder = await getShippingRestrictionAttributes(context, commonOrder); // TODO: possibly change function name
+  const isOrderShippingRestricted = await isShippingRestricted(context, hydratedOrder);
+
+  if (isOrderShippingRestricted) {
+    const errorDetails = {
+      requestStatus: "error",
+      shippingProvider: "flat-rate-shipping",
+      message: "Flat rate shipping did not return any shipping methods."
+    };
+    rates.push(errorDetails);
+  } else {
+    const awaitedShippingRateDocs = shippingRateDocs.map(async (doc) => {
+      const carrier = doc.provider.label;
+      // Check for method specific shipping restrictions
+      const availableShippingMethods = await filterShippingMethods(context, doc.methods, hydratedOrder);
+      for (const method of availableShippingMethods) {
+        if (!method.rate) {
+          method.rate = 0;
+        }
+        if (!method.handling) {
+          method.handling = 0;
+        }
+        // Store shipping provider here in order to have it available in shipmentMethod
+        // for cart and order usage
+        if (!method.carrier) {
+          method.carrier = carrier;
+        }
+        const rate = method.rate + method.handling;
+        rates.push({
+          carrier,
+          handlingPrice: method.handling,
+          method,
+          rate,
+          shippingPrice: method.rate,
+          shopId: doc.shopId
+        });
       }
-      if (!method.rate) {
-        method.rate = 0;
-      }
-      if (!method.handling) {
-        method.handling = 0;
-      }
-      // Store shipping provider here in order to have it available in shipmentMethod
-      // for cart and order usage
-      if (!method.carrier) {
-        method.carrier = carrier;
-      }
-      const rate = method.rate + method.handling;
-      rates.push({
-        carrier,
-        handlingPrice: method.handling,
-        method,
-        rate,
-        shippingPrice: method.rate,
-        shopId: doc.shopId
-      });
-    }
-  });
+    });
+    await Promise.all(awaitedShippingRateDocs);
+  }
 
   if (rates.length === initialNumOfRates) {
     const errorDetails = {
