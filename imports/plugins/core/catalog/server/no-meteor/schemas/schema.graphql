@@ -143,7 +143,7 @@ type CatalogProduct implements CatalogProductOrVariant & Node {
   "The height of the product, if it has physical dimensions"
   height: Float
 
-  "True if isSoldOut is true AND none of the variants have an inventoryPolicy set"
+  "True if isSoldOut is true AND none of the variants have an inventoryPolicy set AND available inventory is 0"
   isBackorder: Boolean!
 
   "True if this product has been deleted. Typically, deleted products are not returned in queries."
@@ -262,7 +262,7 @@ type CatalogProductVariant implements CatalogProductOrVariant & Node {
   "True if inventory policy is enabled for this variant"
   inventoryPolicy: Boolean!
 
-  "True if isSoldOut is true AND none of the variants have an inventoryPolicy set"
+  "True if isSoldOut is true AND none of the variants have an inventoryPolicy set AND available inventory is 0"
   isBackorder: Boolean!
 
   "True if inventoryManagement is enabled and this variant has an available quantity less than its lowInventoryWarningThreshold"

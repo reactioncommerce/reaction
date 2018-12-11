@@ -183,7 +183,7 @@ export const VariantBaseSchema = new SimpleSchema({
   },
   "isBackorder": {
     type: Boolean,
-    label: "Indicates when the seller has allowed the sale of product which is not in stock",
+    label: "Indicates when a product is currently backordered",
     defaultValue: false
   },
   "isLowQuantity": {
@@ -382,7 +382,7 @@ export const CatalogProduct = new SimpleSchema({
   },
   "isBackorder": {
     type: Boolean,
-    label: "Indicates when the seller has allowed the sale of product which is not in stock"
+    label: "Indicates when a product is currently backordered"
   },
   "isDeleted": {
     type: Boolean,
