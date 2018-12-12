@@ -1,6 +1,7 @@
 import _ from "lodash";
 import Hooks from "@reactioncommerce/hooks";
 import Logger from "@reactioncommerce/logger";
+import ReactionError from "@reactioncommerce/reaction-error";
 import { Meteor } from "meteor/meteor";
 import { check, Match } from "meteor/check";
 import { Cart, Orders, Packages, Groups } from "/lib/collections";
@@ -13,22 +14,20 @@ import Reaction from "/imports/plugins/core/core/server/Reaction";
  * @param {String} userId - currently logged in user
  * @param {Object} selector - selector for product to update
  * @param {Object} modifier - Object describing what parts of the document to update.
- * @param {Object} validation
  * @return {String} _id of updated document
  * @private
  */
-function updateOrderWorkflow(userId, selector, modifier, validation) {
+function updateOrderWorkflow(userId, selector, modifier) {
   const order = Orders.findOne(selector);
 
   Hooks.Events.run("beforeUpdateOrderWorkflow", order, {
     userId,
-    modifier,
-    validation
+    modifier
   });
 
   Logger.debug("beforeUpdateOrderWorkflow hook executed before Order is updated");
 
-  const result = Orders.update(selector, modifier, validation);
+  const result = Orders.update(selector, modifier);
 
   // Update mongo search record
   Hooks.Events.run("afterUpdateOrderUpdateSearchRecord", order);
@@ -113,7 +112,7 @@ Meteor.methods({
     const statusExistsInWorkflow = _.includes(currentCart.workflow.workflow, newWorkflowStatus);
     const maxSteps = defaultPackageWorkflows.length;
     let nextWorkflowStepIndex;
-    let templateProcessedinWorkflow = false;
+    let templateProcessedInWorkflow = false;
     let gotoNextWorkflowStep = false;
 
     // if we haven't populated workflows lets exit
@@ -144,9 +143,9 @@ Meteor.methods({
     });
 
     // check to see if the next step has already been processed.
-    // templateProcessedinWorkflow boolean
+    // templateProcessedInWorkflow boolean
     gotoNextWorkflowStep = nextWorkflowStep.template;
-    templateProcessedinWorkflow = _.includes(currentCart.workflow.workflow, nextWorkflowStep.template);
+    templateProcessedInWorkflow = _.includes(currentCart.workflow.workflow, nextWorkflowStep.template);
 
     // debug info
     Logger.debug("currentWorkflowStatus: ", currentWorkflowStatus);
@@ -156,7 +155,7 @@ Meteor.methods({
     Logger.debug("currentWorkflow: ", currentCart.workflow.workflow);
     Logger.debug("nextWorkflowStep: ", nextWorkflowStep.template || defaultPackageWorkflows[0].template);
     Logger.debug("statusExistsInWorkflow: ", statusExistsInWorkflow);
-    Logger.debug("templateProcessedinWorkflow: ", templateProcessedinWorkflow);
+    Logger.debug("templateProcessedInWorkflow: ", templateProcessedInWorkflow);
     Logger.debug("gotoNextWorkflowStep: ", gotoNextWorkflowStep);
 
     // Condition One
@@ -178,11 +177,11 @@ Meteor.methods({
     }
 
     // Condition Two
-    // your're now accepted into the workflow,
+    // you're now accepted into the workflow,
     // but to begin the workflow you need to have a next step
     // and you should have already be in the current workflow template
     if (gotoNextWorkflowStep && statusExistsInWorkflow === false &&
-      templateProcessedinWorkflow === false) {
+      templateProcessedInWorkflow === false) {
       Logger.debug("######## Condition Two #########: set status to: ", nextWorkflowStep.template);
 
       return Cart.update({ _id: currentCart._id }, {
@@ -199,7 +198,7 @@ Meteor.methods({
     // If you got here by skipping around willy nilly
     // we're going to do our best to ignore you.
     if (gotoNextWorkflowStep && statusExistsInWorkflow === true &&
-      templateProcessedinWorkflow === false) {
+      templateProcessedInWorkflow === false) {
       Logger.debug(
         `######## Condition Three #########: complete workflow ${currentWorkflowStatus} updates and move to: `,
         nextWorkflowStep.template
@@ -218,13 +217,15 @@ Meteor.methods({
     // you got here through hard work, and processed the previous template
     // nice job. now start over with the next step.
     if (gotoNextWorkflowStep && statusExistsInWorkflow === true &&
-      templateProcessedinWorkflow === true) {
+      templateProcessedInWorkflow === true) {
       Logger.debug(
         "######## Condition Four #########: previously ran, doing nothing. : ",
         newWorkflowStatus
       );
       return true;
     }
+
+    return false;
   },
 
   /**
@@ -234,6 +235,7 @@ Meteor.methods({
    * @summary if something was changed on the previous `cartWorkflow` steps,
    * we need to revert to this step to renew the order
    * @param {String} newWorkflowStatus - name of `cartWorkflow` step, which we need to revert
+   * @param {String} cartId - The cart ID
    * @todo need tests
    * @return {Number|Boolean} cart update results
    */
@@ -257,12 +259,12 @@ Meteor.methods({
     // exit if no such step in workflow
     if (resetToIndex < 0) return false;
     // remove all steps that further `newWorkflowStatus` and itself
-    const resetedWorkflow = workflow.slice(0, resetToIndex);
+    const resetWorkflow = workflow.slice(0, resetToIndex);
 
     return Cart.update({ _id: cart._id }, {
       $set: {
         "workflow.status": newWorkflowStatus,
-        "workflow.workflow": resetedWorkflow
+        "workflow.workflow": resetWorkflow
       }
     });
   },
@@ -270,7 +272,7 @@ Meteor.methods({
   /**
    * @name workflow/pushOrderWorkflow
    * @summary Update the order workflow: Push the status as the current workflow step,
-   * move the current status to completed worflow steps
+   * move the current status to completed workflow steps
    *
    * @description Step 1 meteor call to push a new workflow
    * Meteor.call("workflow/pushOrderWorkflow", "coreOrderWorkflow", "processing", this);
@@ -288,64 +290,35 @@ Meteor.methods({
     check(workflow, String);
     check(status, String);
     check(order, Match.ObjectIncluding({
-      _id: String
+      _id: String,
+      shopId: String
     }));
     this.unblock();
 
+    if (!Reaction.hasPermission("orders", Reaction.getUserId(), order.shopId)) {
+      throw new ReactionError("access-denied", "Access Denied");
+    }
+
+    // Combine (workflow) "coreOrderWorkflow", (status) "processing" into "coreOrderWorkflow/processing".
+    // This combination will be used to call the method "workflow/coreOrderWorkflow/processing", if it exists.
     const workflowStatus = `${workflow}/${status}`;
 
     const result = updateOrderWorkflow(
       this.userId,
       {
-        _id: order._id
+        _id: order._id,
+        // Necessary to query on shop ID too, so they can't pass in a different ID for permission check
+        shopId: order.shopId
       },
       {
         $set: {
-          // Combine (workflow) "coreOrderWorkflow", (status) "processing" into "coreOrderWorkflow/processing".
-          // This comoniation will be used to call the method "workflow/coreOrderWorkflow/processing", if it exists.
-          "workflow.status": `${workflow}/${status}`
+          "workflow.status": workflowStatus
         },
         $addToSet: {
           "workflow.workflow": workflowStatus
         }
       }
     );
-
-    return result;
-  },
-
-  /**
-   * @name workflow/pullOrderWorkflow
-   * @description Push the status as the current workflow step, move the current status to completed worflow steps
-   * @summary Pull a previous order status
-   * @method
-   * @memberof Workflow/Methods
-   * @param  {String} workflow workflow to push to
-   * @param  {String} status - Workflow status
-   * @param  {Order} order - Schemas.Order, an order object
-   * @return {Boolean} true if update was successful
-   */
-  "workflow/pullOrderWorkflow"(workflow, status, order) {
-    check(workflow, String);
-    check(status, String);
-    check(order, Match.ObjectIncluding({
-      _id: String,
-      workflow: Match.ObjectIncluding({
-        status: String
-      })
-    }));
-    this.unblock();
-
-    const result = Orders.update({
-      _id: order._id
-    }, {
-      $set: {
-        "workflow.status": status
-      },
-      $pull: {
-        "workflow.workflow": order.workflow.status
-      }
-    });
 
     return result;
   },
@@ -363,9 +336,13 @@ Meteor.methods({
     check(status, String);
     check(order, Match.ObjectIncluding({
       _id: String,
-      shipping: [Object]
+      shopId: String
     }));
     check(itemIds, Array);
+
+    if (!Reaction.hasPermission("orders", Reaction.getUserId(), order.shopId)) {
+      throw new ReactionError("access-denied", "Access Denied");
+    }
 
     // We can't trust the order from the client (for several reasons)
     // Initially because in a multi-merchant scenario, the order from the client
@@ -400,7 +377,9 @@ Meteor.methods({
     });
 
     const result = Orders.update({
-      _id: dbOrder._id
+      _id: dbOrder._id,
+      // Necessary to query on shop ID too, so they can't pass in a different ID for permission check
+      shopId: order.shopId
     }, {
       $set: {
         shipping
