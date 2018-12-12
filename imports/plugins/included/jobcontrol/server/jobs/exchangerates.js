@@ -1,10 +1,10 @@
 import Hooks from "@reactioncommerce/hooks";
 import Logger from "@reactioncommerce/logger";
-import { Meteor } from "meteor/meteor";
 import { Job } from "/imports/plugins/core/job-collection/lib";
 import { Jobs } from "/lib/collections";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
 import fetchCurrencyRate from "/imports/plugins/core/core/server/util/fetchCurrencyRate";
+import flushCurrencyRate from "/imports/plugins/core/core/server/util/flushCurrencyRate";
 
 /**
  * @summary Schedule fetching and flushing jobs
@@ -87,25 +87,24 @@ export function fetchRateJobs() {
     try {
       fetchCurrencyRate();
     } catch (error) {
-      if (error) {
-        if (error.error === "notConfigured") {
-          Logger.error(error.message);
-          job.done(error.message, { repeatId: true });
-        } else {
-          job.done(error.toString(), { repeatId: true });
-        }
+      if (error.error === "notConfigured") {
+        Logger.error(error.message);
+        job.done(error.message, { repeatId: true });
       } else {
-        // we should always return "completed" job here, because errors are fine
-        // result for this task, so that's why we show message if error happens
-        // and return job.done();
-        // you can read more about job.repeat() here:
-        // https://github.com/vsivsi/meteor-job-collection#set-how-many-times-this
-        // -job-will-be-automatically-re-run-by-the-job-collection
-        const success = "Latest exchange rates were fetched successfully.";
-        Logger.debug(success);
-        job.done(success, { repeatId: true });
+        job.done(error.toString(), { repeatId: true });
       }
+      callback();
+      return;
     }
+    // we should always return "completed" job here, because errors are fine
+    // result for this task, so that's why we show message if error happens
+    // and return job.done();
+    // you can read more about job.repeat() here:
+    // https://github.com/vsivsi/meteor-job-collection#set-how-many-times-this
+    // -job-will-be-automatically-re-run-by-the-job-collection
+    const success = "Latest exchange rates were fetched successfully.";
+    Logger.debug(success);
+    job.done(success, { repeatId: true });
     callback();
   });
 
@@ -124,23 +123,24 @@ export function fetchRateJobs() {
       workTimeout: 180 * 1000
     },
     (job, callback) => {
-      Meteor.call("shop/flushCurrencyRate", (error) => {
-        if (error) {
-          if (error.error === "notExists") {
-            Logger.error(error.message);
-            job.done(error.message, { repeatId: true });
-          } else {
-            // Logger.error(error.toString());
-            job.done(error.toString(), { repeatId: true });
-          }
+      try {
+        flushCurrencyRate();
+      } catch (error) {
+        if (error.error === "notExists") {
+          Logger.error(error.message);
+          job.done(error.message, { repeatId: true });
         } else {
-          // https://github.com/vsivsi/meteor-job-collection#set-how-many-times-this
-          // -job-will-be-automatically-re-run-by-the-job-collection
-          const success = "Stale exchange rates were flushed.";
-          Logger.debug(success);
-          job.done(success, { repeatId: true });
+          // Logger.error(error.toString());
+          job.done(error.toString(), { repeatId: true });
         }
-      });
+        callback();
+        return;
+      }
+      // https://github.com/vsivsi/meteor-job-collection#set-how-many-times-this
+      // -job-will-be-automatically-re-run-by-the-job-collection
+      const success = "Stale exchange rates were flushed.";
+      Logger.debug(success);
+      job.done(success, { repeatId: true });
       callback();
     }
   );
