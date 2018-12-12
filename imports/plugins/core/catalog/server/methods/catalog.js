@@ -1505,24 +1505,6 @@ Meteor.methods({
   },
 
   /**
-   * @name products/getpublishedProductHash
-   * @memberof Methods/Products
-   * @method
-   * @summary hashes product information for comparison purposes
-   * @param {String} productId - the product _id of the product to hash
-   * @return {String} hash of product
-   */
-  "products/getpublishedProductHash"(productId) {
-    check(productId, String);
-
-    const product = Products.findOne({ _id: productId });
-
-    const productHash = createProductHash(product, rawCollections);
-
-    return productHash;
-  },
-
-  /**
    * @name catalog/getCurrentCatalogPriceForProductConfigurations
    * @memberof Methods/Catalog
    * @method
