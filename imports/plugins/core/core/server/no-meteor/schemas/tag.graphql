@@ -46,7 +46,7 @@ type Tag implements Node & Deletable {
   displayTitle: String
 
   "If `true`, the tag's tag listing page will be available to be viewed by the public"
-  active: Boolean
+  isActive: Boolean
 }
 
 "The fields by which you are allowed to sort any query that returns a `TagConnection`"

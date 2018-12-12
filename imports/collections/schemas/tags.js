@@ -89,7 +89,7 @@ export const Tag = new SimpleSchema({
     type: String,
     optional: true
   },
-  "active": {
+  "isActive": {
     type: Boolean,
     optional: true
   }
