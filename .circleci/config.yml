@@ -336,7 +336,7 @@ workflows:
           requires:
             - build
       - test-e2e:
-	  requires:
+          requires:
             - deploy-to-ecs-release-branch
       - eslint:
           requires:
