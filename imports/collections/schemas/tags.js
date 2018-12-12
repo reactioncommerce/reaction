@@ -88,6 +88,10 @@ export const Tag = new SimpleSchema({
   "displayTitle": {
     type: String,
     optional: true
+  },
+  "active": {
+    type: Boolean,
+    optional: true
   }
 });
 
