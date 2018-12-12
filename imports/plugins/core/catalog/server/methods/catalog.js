@@ -585,61 +585,6 @@ Meteor.methods({
   },
 
   /**
-   * @name products/updateVariant
-   * @memberof Methods/Products
-   * @method
-   * @summary update individual variant with new values, merges into original
-   * only need to supply updated information. Currently used for a one use case
-   * - to manage top-level variant autoform.
-   * @param {Object} variant - current variant object
-   * @todo some use cases of this method was moved to "products/
-   * updateProductField", but it still used
-   * @return {Number} returns update result
-   */
-  "products/updateVariant"(variant) {
-    check(variant, Object);
-
-    // Check first if Variant exists and then if user has the right to clone it
-    const currentVariant = Products.findOne(variant._id);
-    if (!currentVariant) {
-      throw new ReactionError("not-found", "Variant not found");
-    }
-
-    if (!Reaction.hasPermission("createProduct", this.userId, currentVariant.shopId)) {
-      throw new ReactionError("access-denied", "Access Denied");
-    }
-
-    const newVariant = Object.assign({}, currentVariant, variant);
-
-    const variantUpdateResult = updateCatalogProduct(
-      this.userId,
-      {
-        _id: variant._id
-      },
-      {
-        $set: newVariant
-      },
-      {
-        selector: { type: currentVariant.type },
-        validate: false
-      }
-    );
-
-    const productId = currentVariant.ancestors[0];
-    // we need manually check is these fields were updated?
-    // we can't stop after successful denormalization, because we have a
-    // case when several fields could be changed in top-level variant
-    // before form will be submitted.
-    toDenormalize.forEach((field) => {
-      if (currentVariant[field] !== variant[field]) {
-        denormalize(productId, field);
-      }
-    });
-
-    return variantUpdateResult;
-  },
-
-  /**
    * @name products/deleteVariant
    * @memberof Methods/Products
    * @method
