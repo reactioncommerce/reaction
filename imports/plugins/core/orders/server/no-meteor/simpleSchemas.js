@@ -20,6 +20,7 @@ const CommonOrderItem = new SimpleSchema({
     optional: true
   },
   price: Money,
+  productId: String,
   quantity: {
     type: SimpleSchema.Integer,
     min: 0
@@ -35,9 +36,45 @@ const CommonOrderItem = new SimpleSchema({
 });
 
 const CommonOrderFulfillmentPrices = new SimpleSchema({
-  handling: Money,
-  shipping: Money,
-  total: Money
+  handling: {
+    type: Money,
+    optional: true
+  },
+  shipping: {
+    type: Money,
+    optional: true
+  },
+  total: {
+    type: Money,
+    optional: true
+  }
+});
+
+const CommonOrderTotals = new SimpleSchema({
+  groupDiscountTotal: {
+    type: Money,
+    optional: true
+  },
+  groupItemTotal: {
+    type: Money,
+    optional: true
+  },
+  groupTotal: {
+    type: Money,
+    optional: true
+  },
+  orderDiscountTotal: {
+    type: Money,
+    optional: true
+  },
+  orderItemTotal: {
+    type: Money,
+    optional: true
+  },
+  orderTotal: {
+    type: Money,
+    optional: true
+  }
 });
 
 /**
@@ -82,5 +119,9 @@ export const CommonOrder = new SimpleSchema({
   sourceType: {
     type: String,
     allowedValues: ["cart", "order"]
+  },
+  totals: {
+    type: CommonOrderTotals,
+    optional: true
   }
 });

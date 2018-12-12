@@ -5,7 +5,7 @@ import createDefaultNavigationTree from "/imports/plugins/core/navigation/server
 const { NavigationTrees, Shops } = rawCollections;
 
 Migrations.add({
-  version: 49,
+  version: 50,
   up() {
     Shops.find({}).forEach((shop) => {
       createDefaultNavigationTree(shop, "Main Navigation");

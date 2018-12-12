@@ -47,4 +47,5 @@ import "./45_tax_schema_changes";
 import "./46_cart_item_props";
 import "./47_order_ref";
 import "./48_catalog_variant_inventory";
-import "./49_create_default_navigation_trees";
+import "./49_update_idp_route_name_to_match_pattern";
+import "./50_create_default_navigation_trees";
