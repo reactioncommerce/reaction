@@ -1,7 +1,6 @@
 import createShop from "./createShop";
 import createTag from "./createTag";
 import getLocale from "./getLocale";
-import hideHeaderTag from "./hideHeaderTag";
 import locateAddress from "./locateAddress";
 import removeHeaderTag from "./removeHeaderTag";
 import resetShopId from "./resetShopId";
@@ -24,7 +23,6 @@ export default {
   "shop/createShop": createShop,
   "shop/createTag": createTag,
   "shop/getLocale": getLocale,
-  "shop/hideHeaderTag": hideHeaderTag,
   "shop/locateAddress": locateAddress,
   "shop/removeHeaderTag": removeHeaderTag,
   "shop/resetShopId": resetShopId,
