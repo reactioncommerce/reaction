@@ -14,6 +14,14 @@ export const TaxPackageConfig = PackageConfig.clone().extend({
     blackbox: false,
     defaultValue: {}
   },
+  "settings.activeTaxServiceName": {
+    type: String,
+    optional: true
+  },
+  "settings.fallbackTaxServiceName": {
+    type: String,
+    optional: true
+  },
   "settings.defaultTaxCode": {
     type: String,
     optional: true
