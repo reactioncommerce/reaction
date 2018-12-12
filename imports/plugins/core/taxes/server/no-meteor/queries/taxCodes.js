@@ -1,6 +1,6 @@
 import { sortBy } from "lodash";
 import ReactionError from "@reactioncommerce/reaction-error";
-import { getActiveTaxServiceForShop } from "../registration";
+import { getTaxServicesForShop } from "../registration";
 
 /**
  * @name taxCodes
@@ -16,7 +16,7 @@ export default async function taxCodes(context, shopId) {
     throw new ReactionError("access-denied", "Access denied");
   }
 
-  const activeTaxService = await getActiveTaxServiceForShop(context, shopId);
+  const { activeTaxService } = await getTaxServicesForShop(context, shopId);
   if (!activeTaxService) return [];
 
   const list = await activeTaxService.functions.getTaxCodes({ context, shopId });

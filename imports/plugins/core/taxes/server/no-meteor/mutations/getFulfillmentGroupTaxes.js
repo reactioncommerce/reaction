@@ -1,7 +1,7 @@
 import Logger from "@reactioncommerce/logger";
 import ReactionError from "@reactioncommerce/reaction-error";
 import { CommonOrder } from "/imports/plugins/core/orders/server/no-meteor/simpleSchemas";
-import { getActiveTaxServiceForShop } from "../registration";
+import { getTaxServicesForShop } from "../registration";
 import { TaxServiceResult } from "../../../lib/simpleSchemas";
 
 /**
@@ -26,7 +26,7 @@ export default async function getFulfillmentGroupTaxes(context, { order, forceZe
 
   const { items, shopId } = order;
 
-  const activeTaxService = await getActiveTaxServiceForShop(context, shopId);
+  const { activeTaxService } = await getTaxServicesForShop(context, shopId);
 
   const defaultReturnValue = {
     taxSummary: {
