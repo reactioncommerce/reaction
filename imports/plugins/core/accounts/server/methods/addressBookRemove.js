@@ -16,16 +16,16 @@ import ReactionError from "@reactioncommerce/reaction-error";
 export default function addressBookRemove(addressId, accountUserId) {
   check(addressId, String);
   check(accountUserId, Match.Optional(String));
-
-  if (typeof accountUserId === "string") {
-    if (Reaction.getUserId() !== accountUserId && !Reaction.hasPermission("reaction-accounts")) {
-      throw new ReactionError("access-denied", "Access denied");
-    }
-  }
   this.unblock();
 
-  const userId = accountUserId || Reaction.getUserId();
+  const authUserId = Reaction.getUserId();
+  const userId = accountUserId || authUserId;
   const account = Accounts.findOne({ userId });
+  if (!account) throw new ReactionError("not-found", "Not Found");
+
+  if (authUserId !== userId && !Reaction.hasPermission("reaction-accounts", authUserId, account.shopId)) {
+    throw new ReactionError("access-denied", "Access denied");
+  }
 
   const updatedAccountResult = Accounts.update({
     userId,
