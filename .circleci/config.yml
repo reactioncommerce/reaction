@@ -255,6 +255,18 @@ jobs:
           name: Run Integration Tests
           command: npm run test:integration
 
+  test-e2e:
+    <<: *defaults
+    docker:
+      - image: reactioncommerce/reaction-automation-client:latest
+    steps:
+      - setup_remote_docker:
+          docker_layer_caching: true
+      - run:
+          name: Run Tests
+          command: |
+            docker run -d -t -i -e URL=https://reaction-core.staging.reactioncommerce.com/ reactioncommerce/reaction-automation-client:latest yarn test
+
   dockerfile-lint:
     <<: *defaults
     docker:
@@ -265,7 +277,7 @@ jobs:
           docker_layer_caching: true
       - run:
           name: Dockerfile Lint
-          command: |
+          command: | 
             hadolint Dockerfile
 
   snyk-security:
@@ -323,6 +335,9 @@ workflows:
       - test-integration:
           requires:
             - build
+      - test-e2e:
+	  requires:
+            - deploy-to-ecs-release-branch
       - eslint:
           requires:
             - build
@@ -337,15 +352,15 @@ workflows:
       - deploy-to-ecs-release-branch:
           requires:
             - docker-push
-          filters:
-            branches:
-              only: /^release-2.*/
+         #  filters:
+         #   branches:
+         #     only: /^release-2.*/
       - deploy-to-ecs-feature-branch:
           requires:
             - docker-push
-          filters:
-            branches:
-              only: /^feat.*/
+         # filters:
+         #   branches:
+         #   only: /^feat.*/
       - deploy-docs:
           requires:
             - test-unit
