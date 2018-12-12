@@ -27,6 +27,8 @@ export function xformVariant(variant, variantPriceInfo, shopCurrencyCode, varian
     createdAt: variant.createdAt || new Date(),
     height: variant.height,
     index: variant.index || 0,
+    inventoryAvailableToSell: variantInventory.inventoryAvailableToSell || 0,
+    inventoryInStock: variantInventory.inventoryInStock || 0,
     inventoryManagement: !!variant.inventoryManagement,
     inventoryPolicy: !!variant.inventoryPolicy,
     isBackorder: variantInventory.isBackorder,
@@ -101,10 +103,14 @@ export async function xformProduct({ collections, product, shop, variants }) {
       let priceInfo;
       let variantInventory;
       if (variantOptions) {
+        const inventoryAvailableToSell = variantOptions.reduce((sum, option) => sum + option.inventoryAvailableToSell || 0, 0); // TODO: EK - Get this number to correctly display on the variant
+        const inventoryQuantity = variantOptions.reduce((sum, option) => sum + option.inventoryQuantity || 0, 0); // TODO: EK - Get this number to correctly display on the variant
         const optionPrices = variantOptions.map((option) => option.price);
         priceInfo = getPriceRange(optionPrices, shopCurrencyInfo);
         variantInventory = {
           canBackorder: canBackorder(variantOptions),
+          inventoryAvailableToSell,
+          inventoryInStock: inventoryQuantity,
           isBackorder: isBackorder(variantOptions),
           isLowQuantity: isLowQuantity(variantOptions),
           isSoldOut: isSoldOut(variantOptions)
@@ -113,6 +119,8 @@ export async function xformProduct({ collections, product, shop, variants }) {
         priceInfo = getPriceRange([variant.price], shopCurrencyInfo);
         variantInventory = {
           canBackorder: canBackorder([variant]),
+          inventoryAvailableToSell: variant.inventoryAvailableToSell || 0,
+          inventoryInStock: variant.inventoryQuantity || 0,
           isBackorder: isBackorder([variant]),
           isLowQuantity: isLowQuantity([variant]),
           isSoldOut: isSoldOut([variant])
@@ -129,6 +137,8 @@ export async function xformProduct({ collections, product, shop, variants }) {
           const optionMedia = catalogProductMedia.filter((media) => media.variantId === option._id);
           const optionInventory = {
             canBackorder: canBackorder([option]),
+            inventoryAvailableToSell: option.inventoryAvailableToSell,
+            inventoryInStock: option.inventoryQuantity,
             isBackorder: isBackorder([option]),
             isLowQuantity: isLowQuantity([option]),
             isSoldOut: isSoldOut([option])

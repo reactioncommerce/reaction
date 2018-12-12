@@ -72,21 +72,30 @@ export default async function updateCatalogProductInventoryStatus(productId, col
     );
 
     if (variantOptions) {
+      const variantInventoryAvailableToSell = variantOptions.reduce((sum, option) => sum + option.inventoryAvailableToSell || 0, 0); // TODO: EK - Get this number to correctly display on the variant
+      const variantInventoryInStock = variantOptions.reduce((sum, option) => sum + option.inventoryQuantity || 0, 0); // TODO: EK - Get this number to correctly display on the variant
+
       // Create a modifier for a variant and it's options
       modifier[`${baseKey}.variants.${topVariantIndex}.isSoldOut`] = isSoldOut(variantOptions);
       modifier[`${baseKey}.variants.${topVariantIndex}.isLowQuantity`] = isLowQuantity(variantOptions);
       modifier[`${baseKey}.variants.${topVariantIndex}.isBackorder`] = isBackorder(variantOptions);
+      modifier[`${baseKey}.variants.${topVariantIndex}.inventoryAvailableToSell`] = variantInventoryAvailableToSell;
+      modifier[`${baseKey}.variants.${topVariantIndex}.inventoryInStock`] = variantInventoryInStock;
 
       variantOptions.forEach((option, optionIndex) => {
         modifier[`${baseKey}.variants.${topVariantIndex}.options.${optionIndex}.isSoldOut`] = isSoldOut([option]);
         modifier[`${baseKey}.variants.${topVariantIndex}.options.${optionIndex}.isLowQuantity`] = isLowQuantity([option]);
         modifier[`${baseKey}.variants.${topVariantIndex}.options.${optionIndex}.isBackorder`] = isBackorder([option]);
+        modifier[`${baseKey}.variants.${topVariantIndex}.options.${optionIndex}.inventoryAvailableToSell`] = option.inventoryAvailableToSell;
+        modifier[`${baseKey}.variants.${topVariantIndex}.options.${optionIndex}.inventoryInStock`] = option.inventoryQuantity;
       });
     } else {
       // Create a modifier for a top level variant only
       modifier[`${baseKey}.variants.${topVariantIndex}.isSoldOut`] = isSoldOut([topVariantFromProductsCollection]);
       modifier[`${baseKey}.variants.${topVariantIndex}.isLowQuantity`] = isLowQuantity([topVariantFromProductsCollection]);
       modifier[`${baseKey}.variants.${topVariantIndex}.isBackorder`] = isBackorder([topVariantFromProductsCollection]);
+      modifier[`${baseKey}.variants.${topVariantIndex}.inventoryAvailableToSell`] = topVariantFromProductsCollection.inventoryAvailableToSell;
+      modifier[`${baseKey}.variants.${topVariantIndex}.inventoryInStock`] = topVariantFromProductsCollection.inventoryQuantity;
     }
   });
 
