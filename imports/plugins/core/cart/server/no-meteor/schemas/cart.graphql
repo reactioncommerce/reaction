@@ -94,9 +94,8 @@ type CartItem implements Node {
 
   """
   The quantity of this item currently available to order.
-  FUTURE: currentyQuantity, inventoryAvailableToSell, inventoryInStock are all the same number as of now, as we haven't tracked inventory this way as of yet
   """
-  currentQuantity: Int @deprecated(reason: "Use `inventoryAvailableToSell` or `inventoryInStock`.")
+  currentQuantity: Int @deprecated(reason: "Use `inventoryAvailableToSell`.")
 
   """
   The date and time at which the cart item was created. If an item is added, removed, and then added again,
@@ -108,16 +107,12 @@ type CartItem implements Node {
   imageURLs: ImageSizes
 
   """
-  The quantity of this item currently available to sell. This number does not include reserved inventory (i.e. inventory reserved in another cart).
-  FUTURE: currentyQuantity, inventoryAvailableToSell, inventoryInStock are all the same number as of now, as we haven't tracked inventory this way as of yet
+  The quantity of this item currently available to sell.
+  This number is updated when an order is placed by the customer.
+  This number does not include reserved inventory (i.e. inventory that has been ordered, but not yet processed by the operator).
+  This is most likely the quantity to display in the storefront UI.
   """
   inventoryAvailableToSell: Int
-
-  """
-  The quantity of this item that is in stock. This number includes all inventory that hasn't been shipped (i.e. inventory reserved in another cart).
-  FUTURE: currentyQuantity, inventoryAvailableToSell, inventoryInStock are all the same number as of now, as we haven't tracked inventory this way as of yet
-  """
-  inventoryInStock: Int
 
   "Is this item currently backordered?"
   isBackorder: Boolean!

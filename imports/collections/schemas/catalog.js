@@ -178,6 +178,21 @@ export const VariantBaseSchema = new SimpleSchema({
     type: SimpleSchema.Integer,
     label: "The position of this variant among other variants at the same level of the product-variant-option hierarchy"
   },
+  "inventoryAvailableToSell": {
+    type: SimpleSchema.Integer,
+    label: "The quantity of this item currently available to sell." +
+    "This number is updated when an order is placed by the customer." +
+    "This number does not include reserved inventory (i.e. inventory that has been ordered, but not yet processed by the operator)." +
+    "This is most likely the quantity to display in the storefront UI."
+  },
+  "inventoryInStock": {
+    type: SimpleSchema.Integer,
+    label: "The quantity of this item currently in stock." +
+    "This number is updated when an order is processed by the operator." +
+    "This number includes all inventory, including reserved inventory (i.e. inventory that has been ordered, but not yet processed by the operator)." +
+    "This is most likely just used as a reference in the operator UI, and not displayed in the storefront UI." +
+    "Called `inventoryQuantity` in the Product Schema, and `inventoryInStock` in the Catalog schema."
+  },
   "inventoryManagement": {
     type: Boolean,
     label: "True if inventory management is enabled for this variant"

@@ -168,9 +168,22 @@ export const ProductVariant = new SimpleSchema({
       }
     }
   },
+  "inventoryAvailableToSell": {
+    type: SimpleSchema.Integer,
+    label: "The quantity of this item currently available to sell." +
+    "This number is updated when an order is placed by the customer." +
+    "This number does not include reserved inventory (i.e. inventory that has been ordered, but not yet processed by the operator)." +
+    "This is most likely the quantity to display in the storefront UI.",
+    optional: true,
+    defaultValue: 0
+  },
   "inventoryQuantity": {
     type: SimpleSchema.Integer,
-    label: "Quantity",
+    label: "The quantity of this item currently in stock." +
+    "This number is updated when an order is processed by the operator." +
+    "This number includes all inventory, including reserved inventory (i.e. inventory that has been ordered, but not yet processed by the operator)." +
+    "This is most likely just used as a reference in the operator UI, and not displayed in the storefront UI." +
+    "Called `inventoryQuantity` in the Product Schema, and `inventoryInStock` in the Catalog schema.",
     optional: true,
     defaultValue: 0
   },
