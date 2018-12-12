@@ -265,7 +265,7 @@ jobs:
       - run:
           name: Run Tests
           command: |
-            docker run -d -t -i -e URL=https://reaction-core.staging.reactioncommerce.com/ reactioncommerce/reaction-automation-client:latest yarn test
+            docker run -t -e URL=https://reaction-core.staging.reactioncommerce.com/ reactioncommerce/reaction-automation-client:latest yarn test
 
   dockerfile-lint:
     <<: *defaults
