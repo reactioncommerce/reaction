@@ -16,11 +16,15 @@ export default function togglePackage(packageId, enabled) {
   check(packageId, String);
   check(enabled, Boolean);
 
-  if (!Reaction.hasAdminAccess()) {
+  const shopId = Reaction.getShopId();
+  if (!Reaction.hasPermission(["owner", "admin"], Reaction.getUserId(), shopId)) {
     throw new ReactionError("access-denied", "Access Denied");
   }
 
-  return Packages.update(packageId, {
+  return Packages.update({
+    _id: packageId,
+    shopId
+  }, {
     $set: {
       enabled: !enabled
     }
