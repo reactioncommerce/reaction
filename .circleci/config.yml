@@ -358,9 +358,9 @@ workflows:
       - deploy-to-ecs-feature-branch:
           requires:
             - docker-push
-         filters:
-           branches:
-           only: /^feat.*/
+          filters:
+            branches:
+              only: /^feat.*/
       - deploy-docs:
           requires:
             - test-unit
