@@ -1226,16 +1226,18 @@ Meteor.methods({
    * @method
    * @description updates top level variant position index
    * @param {Array} sortedVariantIds - array of top level variant `_id`s
+   * @param {String} shopId - The ID of the shop that owns all variants being sorted
    * @since 0.11.0
    * @return {Number} Products.update result
    */
-  "products/updateVariantsPosition"(sortedVariantIds) {
+  "products/updateVariantsPosition"(sortedVariantIds, shopId) {
     check(sortedVariantIds, [String]);
+    check(shopId, String);
 
     // This checks to make sure the user has createProduct permissions for the active shop.
     // TODO: We should determine if that is the correct role that a user should have
     // to be permitted to re-arrange products on the grid
-    if (!Reaction.hasPermission("createProduct")) {
+    if (!Reaction.hasPermission("createProduct", this.userId, shopId)) {
       throw new ReactionError("access-denied", "Access Denied");
     }
 
@@ -1243,7 +1245,10 @@ Meteor.methods({
       updateCatalogProduct(
         this.userId,
         {
-          _id: id
+          _id: id,
+          // Query on shop ID to be sure a different ID was not passed in to pass the permission check
+          shopId,
+          type: "variant"
         },
         {
           $set: { index }

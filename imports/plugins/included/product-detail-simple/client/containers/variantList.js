@@ -153,7 +153,7 @@ class VariantListContainer extends Component {
 
     // Save the updated positions
     Meteor.defer(() => {
-      Meteor.call("products/updateVariantsPosition", getVariantIds(newVariantOrder));
+      Meteor.call("products/updateVariantsPosition", getVariantIds(newVariantOrder), variant.shopId);
     });
   };
 
