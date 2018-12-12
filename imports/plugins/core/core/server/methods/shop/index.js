@@ -1,4 +1,3 @@
-import changeLayouts from "./changeLayouts";
 import createShop from "./createShop";
 import createTag from "./createTag";
 import fetchCurrencyRate from "./fetchCurrencyRate";
@@ -24,7 +23,6 @@ import updateShopExternalServices from "./updateShopExternalServices";
 */
 
 export default {
-  "shop/changeLayouts": changeLayouts,
   "shop/createShop": createShop,
   "shop/createTag": createTag,
   "shop/fetchCurrencyRate": fetchCurrencyRate,
