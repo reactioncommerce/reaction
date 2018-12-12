@@ -16,8 +16,6 @@ import { Packages, Shops } from "/lib/collections";
  * @returns {undefined}
  */
 export default function fetchCurrencyRate() {
-  this.unblock();
-
   const shopId = Reaction.getShopId();
   const shop = Shops.findOne(shopId, {
     fields: {

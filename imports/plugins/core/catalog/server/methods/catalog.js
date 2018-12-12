@@ -12,7 +12,7 @@ import { MediaRecords, Products, Tags } from "/lib/collections";
 import { Media } from "/imports/plugins/core/files/server";
 import rawCollections from "/imports/collections/rawCollections";
 import getGraphQLContextInMeteorMethod from "/imports/plugins/core/graphql/server/getGraphQLContextInMeteorMethod";
-import hashProduct, { createProductHash } from "../no-meteor/mutations/hashProduct";
+import hashProduct from "../no-meteor/mutations/hashProduct";
 import getCurrentCatalogPriceForProductConfiguration from "../no-meteor/queries/getCurrentCatalogPriceForProductConfiguration";
 import getProductPriceRange from "../no-meteor/utils/getProductPriceRange";
 import getVariants from "../no-meteor/utils/getVariants";
@@ -672,7 +672,7 @@ Meteor.methods({
     }
 
     if (Array.isArray(productOrArray)) {
-      // Reduce to unique shops found among producs in this array
+      // Reduce to unique shops found among products in this array
       const shopIds = productOrArray.map((prod) => prod.shopId);
       const uniqueShopIds = [...new Set(shopIds)];
 

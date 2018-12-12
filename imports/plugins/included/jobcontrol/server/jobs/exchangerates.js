@@ -4,8 +4,12 @@ import { Meteor } from "meteor/meteor";
 import { Job } from "/imports/plugins/core/job-collection/lib";
 import { Jobs } from "/lib/collections";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
+import fetchCurrencyRate from "/imports/plugins/core/core/server/util/fetchCurrencyRate";
 
-
+/**
+ * @summary Schedule fetching and flushing jobs
+ * @returns {undefined}
+ */
 export function setupFetchFlushCurrencyHooks() {
   // While we don't necessarily need to wait for anything to add a job
   // in this case we need to have packages loaded so we can check for the OER API key
@@ -71,12 +75,18 @@ export function setupFetchFlushCurrencyHooks() {
 }
 
 
+/**
+ * @summary Set up workers for "shop/fetchCurrencyRates" and "shop/flushCurrencyRates" jobs
+ * @returns {undefined}
+ */
 export function fetchRateJobs() {
   const fetchCurrencyRates = Jobs.processJobs("shop/fetchCurrencyRates", {
     pollInterval: 60 * 60 * 1000, // backup polling, see observer below
     workTimeout: 180 * 1000
   }, (job, callback) => {
-    Meteor.call("shop/fetchCurrencyRate", (error) => {
+    try {
+      fetchCurrencyRate();
+    } catch (error) {
       if (error) {
         if (error.error === "notConfigured") {
           Logger.error(error.message);
@@ -95,7 +105,7 @@ export function fetchRateJobs() {
         Logger.debug(success);
         job.done(success, { repeatId: true });
       }
-    });
+    }
     callback();
   });
 
@@ -107,7 +117,6 @@ export function fetchRateJobs() {
       return fetchCurrencyRates.trigger();
     }
   });
-
 
   const flushCurrencyRates = Jobs.processJobs(
     "shop/flushCurrencyRates", {
