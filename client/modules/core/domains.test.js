@@ -31,13 +31,13 @@ describe("DomainsMixin", () => {
       test("wraps composeUrl without parameters", () => {
         DomainsMixin.absoluteUrl();
 
-        expect(composeUrl).toHaveBeenCalledWith(undefined, {});
+        expect(composeUrl).toHaveBeenCalledWith(undefined, { rootUrl });
       });
 
       test("wraps composeUrl with path only", () => {
         DomainsMixin.absoluteUrl(path);
 
-        expect(composeUrl).toHaveBeenCalledWith(path, {});
+        expect(composeUrl).toHaveBeenCalledWith(path, { rootUrl });
       });
 
       test("wraps composeUrl with options only", () => {
@@ -45,7 +45,7 @@ describe("DomainsMixin", () => {
 
         DomainsMixin.absoluteUrl(options);
 
-        expect(composeUrl).toHaveBeenCalledWith(undefined, options);
+        expect(composeUrl).toHaveBeenCalledWith(undefined, { ...options, rootUrl });
       });
 
       test("wraps composeUrl both a path and options", () => {
@@ -53,7 +53,7 @@ describe("DomainsMixin", () => {
 
         DomainsMixin.absoluteUrl(path, options);
 
-        expect(composeUrl).toHaveBeenCalledWith(path, options);
+        expect(composeUrl).toHaveBeenCalledWith(path, { ...options, rootUrl });
       });
     });
 
