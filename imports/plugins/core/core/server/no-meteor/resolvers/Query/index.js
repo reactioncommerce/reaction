@@ -1,4 +1,4 @@
-import packageSettings from "./packageSettings";
+import pluginSettings from "./pluginSettings";
 import primaryShopId from "./primaryShopId";
 import shop from "./shop";
 import shopBySlug from "./shopBySlug";
@@ -6,7 +6,7 @@ import tag from "./tag";
 import tags from "./tags";
 
 export default {
-  packageSettings,
+  pluginSettings,
   primaryShopId,
   shop,
   shopBySlug,

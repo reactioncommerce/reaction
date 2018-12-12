@@ -1,0 +1,9 @@
+type PluginSettingsData {
+  "Plugin settings. If queried by a non-admin user, only public settings will be returned."
+  settings: JSONObject
+}
+
+extend type Query {
+  "A generic query for getting the settings for a package."
+  pluginSettings(name: String, shopId: ID!): PluginSettingsData
+}
