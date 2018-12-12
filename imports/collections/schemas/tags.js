@@ -91,7 +91,7 @@ export const Tag = new SimpleSchema({
   },
   "isActive": {
     type: Boolean,
-    optional: true
+    optional: false
   }
 });
 
