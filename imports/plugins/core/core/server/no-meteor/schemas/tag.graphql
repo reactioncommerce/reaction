@@ -15,6 +15,9 @@ type Tag implements Node & Deletable {
   "If `true`, this tag should be shown at the top level of the tag hierarchy"
   isTopLevel: Boolean!
 
+  "If `true`, this tag's Tag Listing Page should be visible to the public"
+  isVisible: Boolean!
+
   "Arbitrary additional metadata about this tag"
   metafields: [Metafield]
 
@@ -39,10 +42,10 @@ type Tag implements Node & Deletable {
   "The date and time at which this tag was last updated"
   updatedAt: DateTime!
 
-  "A string containing the hero image url for a tag listing page"
+  "A string containing the hero image url for a Tag Listing Page"
   heroMediaUrl: String
 
-  "A string of the title to be displayed on a tag listing page"
+  "A string of the title to be displayed on a Tag Listing Page"
   displayTitle: String
 }
 
