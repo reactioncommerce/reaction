@@ -1,13 +1,7 @@
 import Hooks from "@reactioncommerce/hooks";
 import { Meteor } from "meteor/meteor";
-import { ReactionProduct } from "/lib/api";
-import { Products } from "/lib/collections";
-import rawCollections from "/imports/collections/rawCollections";
-import Reaction from "/imports/plugins/core/core/server/Reaction";
-import updateCatalogProductInventoryStatus from "/imports/plugins/core/catalog/server/no-meteor/utils/updateCatalogProductInventoryStatus";
 import appEvents from "/imports/node-app/core/util/appEvents";
 import sendOrderEmail from "/imports/plugins/core/orders/server/util/sendOrderEmail";
-
 
 /**
 *  Step 3 of the "workflow/pushOrderWorkflow" flow
@@ -48,33 +42,3 @@ Hooks.Events.add("beforeUpdateOrderWorkflow", (order, options) => {
 });
 
 appEvents.on("afterOrderCreate", (order) => sendOrderEmail(order));
-
-// TODO: EK - Is this the right way to do this?
-appEvents.on("afterOrderCreate", (order) => {
-  const shopId = Reaction.getShopId();
-  const orderItems = order.shipping.reduce((list, group) => [...list, ...group.items], []);
-
-  orderItems.forEach((item) => {
-    if (item.shopId === shopId) {
-      Products.update(
-        {
-          _id: item.variantId
-        },
-        {
-          $inc: {
-            inventoryAvailableToSell: -item.quantity
-          }
-        },
-        {
-          publish: true,
-          selector: {
-            type: "variant"
-          }
-        }
-      );
-
-      // Publish inventory updates to the Catalog
-      Promise.await(updateCatalogProductInventoryStatus(item.productId, rawCollections));
-    }
-  });
-});
