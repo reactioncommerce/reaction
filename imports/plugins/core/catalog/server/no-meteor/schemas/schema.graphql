@@ -146,6 +146,25 @@ type CatalogProduct implements CatalogProductOrVariant & Node {
   "The height of the product, if it has physical dimensions"
   height: Float
 
+  """
+  The quantity of this item currently available to sell.
+  This number is updated when an order is placed by the customer.
+  This number does not include reserved inventory (i.e. inventory that has been ordered, but not yet processed by the operator).
+  This number is calculated by summing all child variant inventory numbers.
+  This is most likely the quantity to display in the storefront UI.
+  """
+  inventoryAvailableToSell: Int
+
+  """
+  The quantity of this item currently in stock.
+  This number is updated when an order is processed by the operator.
+  This number includes all inventory, including reserved inventory (i.e. inventory that has been ordered, but not yet processed by the operator).
+  This number is calculated by summing all child variant inventory numbers.
+  This is most likely just used as a reference in the operator UI, and not displayed in the storefront UI.
+  Called `inventoryQuantity` in the Product Schema, and `inventoryInStock` in the Catalog schema.
+  """
+  inventoryInStock: Int
+
   "True if isSoldOut is true AND none of the variants have an inventoryPolicy set AND available inventory is 0"
   isBackorder: Boolean!
 
@@ -266,6 +285,7 @@ type CatalogProductVariant implements CatalogProductOrVariant & Node {
   The quantity of this item currently available to sell.
   This number is updated when an order is placed by the customer.
   This number does not include reserved inventory (i.e. inventory that has been ordered, but not yet processed by the operator).
+  If this is a variant, this number is created by summing all child option inventory numbers.
   This is most likely the quantity to display in the storefront UI.
   """
   inventoryAvailableToSell: Int
@@ -274,6 +294,7 @@ type CatalogProductVariant implements CatalogProductOrVariant & Node {
   The quantity of this item currently in stock.
   This number is updated when an order is processed by the operator.
   This number includes all inventory, including reserved inventory (i.e. inventory that has been ordered, but not yet processed by the operator).
+  If this is a variant, this number is created by summing all child option inventory numbers.
   This is most likely just used as a reference in the operator UI, and not displayed in the storefront UI.
   Called `inventoryQuantity` in the Product Schema, and `inventoryInStock` in the Catalog schema.
   """

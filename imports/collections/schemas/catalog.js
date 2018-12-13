@@ -126,6 +126,8 @@ export const SocialMetadata = new SimpleSchema({
  * @property {Date} createdAt required
  * @property {Number} height optional, default value: `0`
  * @property {Number} index required
+ * @property {Boolean} inventoryAvailableToSell required
+ * @property {Boolean} inventoryInStock required
  * @property {Boolean} inventoryManagement required
  * @property {Boolean} inventoryPolicy required
  * @property {Boolean} isBackorder required
@@ -183,6 +185,7 @@ export const VariantBaseSchema = new SimpleSchema({
     label: "The quantity of this item currently available to sell." +
     "This number is updated when an order is placed by the customer." +
     "This number does not include reserved inventory (i.e. inventory that has been ordered, but not yet processed by the operator)." +
+    "If this is a variant, this number is created by summing all child option inventory numbers." +
     "This is most likely the quantity to display in the storefront UI."
   },
   "inventoryInStock": {
@@ -190,6 +193,7 @@ export const VariantBaseSchema = new SimpleSchema({
     label: "The quantity of this item currently in stock." +
     "This number is updated when an order is processed by the operator." +
     "This number includes all inventory, including reserved inventory (i.e. inventory that has been ordered, but not yet processed by the operator)." +
+    "If this is a variant, this number is created by summing all child option inventory numbers." +
     "This is most likely just used as a reference in the operator UI, and not displayed in the storefront UI." +
     "Called `inventoryQuantity` in the Product Schema, and `inventoryInStock` in the Catalog schema."
   },
@@ -341,6 +345,8 @@ export const CatalogVariantSchema = VariantBaseSchema.clone().extend({
  * @property {Date} createdAt required
  * @property {String} description optional
  * @property {Number} height optional, default value: `0`
+ * @property {Boolean} inventoryAvailableToSell required
+ * @property {Boolean} inventoryInStock required
  * @property {Boolean} isBackorder required
  * @property {Boolean} isDeleted required, default value: `false`
  * @property {Boolean} isLowQuantity required
@@ -404,6 +410,23 @@ export const CatalogProduct = new SimpleSchema({
     min: 0,
     optional: true,
     defaultValue: 0
+  },
+  "inventoryAvailableToSell": {
+    type: SimpleSchema.Integer,
+    label: "The quantity of this item currently available to sell." +
+    "This number is updated when an order is placed by the customer." +
+    "This number does not include reserved inventory (i.e. inventory that has been ordered, but not yet processed by the operator)." +
+    "If this is a variant, this number is created by summing all child option inventory numbers." +
+    "This is most likely the quantity to display in the storefront UI."
+  },
+  "inventoryInStock": {
+    type: SimpleSchema.Integer,
+    label: "The quantity of this item currently in stock." +
+    "This number is updated when an order is processed by the operator." +
+    "This number includes all inventory, including reserved inventory (i.e. inventory that has been ordered, but not yet processed by the operator)." +
+    "If this is a variant, this number is created by summing all child option inventory numbers." +
+    "This is most likely just used as a reference in the operator UI, and not displayed in the storefront UI." +
+    "Called `inventoryQuantity` in the Product Schema, and `inventoryInStock` in the Catalog schema."
   },
   "isBackorder": {
     type: Boolean,

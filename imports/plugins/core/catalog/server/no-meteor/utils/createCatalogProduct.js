@@ -103,14 +103,12 @@ export async function xformProduct({ collections, product, shop, variants }) {
       let priceInfo;
       let variantInventory;
       if (variantOptions) {
-        const inventoryAvailableToSell = variantOptions.reduce((sum, option) => sum + option.inventoryAvailableToSell || 0, 0); // TODO: EK - Get this number to correctly display on the variant
-        const inventoryQuantity = variantOptions.reduce((sum, option) => sum + option.inventoryQuantity || 0, 0); // TODO: EK - Get this number to correctly display on the variant
         const optionPrices = variantOptions.map((option) => option.price);
         priceInfo = getPriceRange(optionPrices, shopCurrencyInfo);
         variantInventory = {
           canBackorder: canBackorder(variantOptions),
-          inventoryAvailableToSell,
-          inventoryInStock: inventoryQuantity,
+          inventoryAvailableToSell: variant.inventoryAvailableToSell || 0,
+          inventoryInStock: variant.inventoryQuantity || 0,
           isBackorder: isBackorder(variantOptions),
           isLowQuantity: isLowQuantity(variantOptions),
           isSoldOut: isSoldOut(variantOptions)
@@ -159,6 +157,8 @@ export async function xformProduct({ collections, product, shop, variants }) {
     createdAt: product.createdAt || new Date(),
     description: product.description,
     height: product.height,
+    inventoryAvailableToSell: product.inventoryAvailableToSell || 0,
+    inventoryInStock: product.inventoryQuantity || 0,
     isBackorder: isBackorder(variants),
     isDeleted: !!product.isDeleted,
     isLowQuantity: isLowQuantity(variants),
