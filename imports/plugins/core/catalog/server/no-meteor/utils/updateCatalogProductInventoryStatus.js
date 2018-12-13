@@ -4,7 +4,7 @@ import isBackorder from "./isBackorder";
 import isLowQuantity from "./isLowQuantity";
 import isSoldOut from "./isSoldOut";
 
-// TODO: EK - add product level inventory status here
+// TODO: EK - add product level inventory status somewhere in here, so they publish when a product is published to the catalog
 /**
  *
  * @method updateCatalogProductInventoryStatus
@@ -77,8 +77,8 @@ export default async function updateCatalogProductInventoryStatus(productId, col
       modifier[`${baseKey}.variants.${topVariantIndex}.isSoldOut`] = isSoldOut(variantOptions);
       modifier[`${baseKey}.variants.${topVariantIndex}.isLowQuantity`] = isLowQuantity(variantOptions);
       modifier[`${baseKey}.variants.${topVariantIndex}.isBackorder`] = isBackorder(variantOptions);
-      modifier[`${baseKey}.variants.${topVariantIndex}.inventoryAvailableToSell`] = topVariantFromProductsCollection.inventoryAvailableToSell; // TODO EK - make sure this works
-      modifier[`${baseKey}.variants.${topVariantIndex}.inventoryInStock`] = topVariantFromProductsCollection.inventoryAvailableToSell; // TODO EK - make sure this works
+      modifier[`${baseKey}.variants.${topVariantIndex}.inventoryAvailableToSell`] = topVariantFromProductsCollection.inventoryAvailableToSell;
+      modifier[`${baseKey}.variants.${topVariantIndex}.inventoryInStock`] = topVariantFromProductsCollection.inventoryQuantity;
 
       variantOptions.forEach((option, optionIndex) => {
         modifier[`${baseKey}.variants.${topVariantIndex}.options.${optionIndex}.isSoldOut`] = isSoldOut([option]);
