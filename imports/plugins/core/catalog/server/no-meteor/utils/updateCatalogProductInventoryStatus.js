@@ -4,7 +4,6 @@ import isBackorder from "./isBackorder";
 import isLowQuantity from "./isLowQuantity";
 import isSoldOut from "./isSoldOut";
 
-// TODO: EK - add product level inventory status somewhere in here, so they publish when a product is published to the catalog
 /**
  *
  * @method updateCatalogProductInventoryStatus
@@ -27,9 +26,12 @@ export default async function updateCatalogProductInventoryStatus(productId, col
     return false;
   }
 
+  const product = await Products.findOne({ _id: productId });
   const variants = await Products.find({ ancestors: productId }).toArray();
 
   const modifier = {
+    "product.inventoryAvailableToSell": product.inventoryAvailableToSell,
+    "product.inventoryInStock": product.inventoryInStock,
     "product.isSoldOut": isSoldOut(variants),
     "product.isBackorder": isBackorder(variants),
     "product.isLowQuantity": isLowQuantity(variants)
