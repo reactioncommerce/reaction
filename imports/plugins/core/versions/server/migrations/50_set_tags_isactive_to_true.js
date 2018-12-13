@@ -14,7 +14,7 @@ Migrations.add({
         isActive: true
       }
     }, {
-      multi: true 
+      multi: true
     });
   },
   down() {
@@ -23,7 +23,7 @@ Migrations.add({
         isActive: ""
       }
     }, {
-      multi: true 
+      multi: true
     });
   }
 });
