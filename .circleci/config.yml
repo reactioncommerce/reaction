@@ -352,9 +352,9 @@ workflows:
       - deploy-to-ecs-release-branch:
           requires:
             - docker-push
-         #  filters:
-         #   branches:
-         #     only: /^release-2.*/
+          filters:
+            branches:
+              only: /^release-2.*/
       # - deploy-to-ecs-feature-branch:
       #     requires:
       #       - docker-push
