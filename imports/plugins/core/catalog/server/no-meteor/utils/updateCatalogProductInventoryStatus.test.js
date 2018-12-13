@@ -210,6 +210,7 @@ afterAll(() => {
 
 test("expect true if a product's inventory has changed and is updated in the catalog collection", async () => {
   mockCollections.Catalog.findOne.mockReturnValueOnce(Promise.resolve(mockCatalogItem));
+  mockCollections.Products.findOne.mockReturnValueOnce(Promise.resolve(mockProduct));
   mockCollections.Products.toArray.mockReturnValueOnce(Promise.resolve(mockVariants));
   mockIsSoldOut.mockReturnValueOnce(true);
   mockCollections.Catalog.updateOne.mockReturnValueOnce(Promise.resolve({ result: { ok: 1 } }));
@@ -219,6 +220,7 @@ test("expect true if a product's inventory has changed and is updated in the cat
 
 test("expect false if a product's catalog item does not exist", async () => {
   mockCollections.Catalog.findOne.mockReturnValueOnce(Promise.resolve(undefined));
+  mockCollections.Products.findOne.mockReturnValueOnce(Promise.resolve(mockProduct));
   const spec = await updateCatalogProductInventoryStatus(mockProduct, mockCollections);
   expect(spec).toBe(false);
 });
