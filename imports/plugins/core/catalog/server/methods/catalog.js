@@ -1087,7 +1087,8 @@ Meteor.methods({
 
     const newTag = {
       slug: Reaction.getSlug(tagName),
-      name: tagName
+      name: tagName,
+      isActive: true
     };
 
     const existingTag = Tags.findOne({
