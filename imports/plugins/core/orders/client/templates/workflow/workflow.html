@@ -4,7 +4,9 @@
       {{#each shipment in shipping}}
         <div class="panel {{#if isCompleted}} panel-success {{else}} panel-info {{/if}}">
           {{#each reactionTemplate workflow="coreOrderShipmentWorkflow"}}
-            {{> Template.dynamic template=template data=(orderFulfillmentData ../_id shipment) }}
+            <div>
+              {{> React component=ReactComponentOrBlazeTemplate name=template props=(orderFulfillmentData ../_id shipment)}}
+            </div>
           {{/each}}
         </div>
       {{/each}}
