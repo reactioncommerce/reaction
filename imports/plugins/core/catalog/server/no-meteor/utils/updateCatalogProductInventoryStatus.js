@@ -4,6 +4,7 @@ import isBackorder from "./isBackorder";
 import isLowQuantity from "./isLowQuantity";
 import isSoldOut from "./isSoldOut";
 
+// TODO: EK - add product level inventory status here
 /**
  *
  * @method updateCatalogProductInventoryStatus
@@ -72,15 +73,12 @@ export default async function updateCatalogProductInventoryStatus(productId, col
     );
 
     if (variantOptions) {
-      const variantInventoryAvailableToSell = variantOptions.reduce((sum, option) => sum + option.inventoryAvailableToSell || 0, 0); // TODO: EK - Get this number to correctly display on the variant
-      const variantInventoryInStock = variantOptions.reduce((sum, option) => sum + option.inventoryQuantity || 0, 0); // TODO: EK - Get this number to correctly display on the variant
-
       // Create a modifier for a variant and it's options
       modifier[`${baseKey}.variants.${topVariantIndex}.isSoldOut`] = isSoldOut(variantOptions);
       modifier[`${baseKey}.variants.${topVariantIndex}.isLowQuantity`] = isLowQuantity(variantOptions);
       modifier[`${baseKey}.variants.${topVariantIndex}.isBackorder`] = isBackorder(variantOptions);
-      modifier[`${baseKey}.variants.${topVariantIndex}.inventoryAvailableToSell`] = variantInventoryAvailableToSell;
-      modifier[`${baseKey}.variants.${topVariantIndex}.inventoryInStock`] = variantInventoryInStock;
+      modifier[`${baseKey}.variants.${topVariantIndex}.inventoryAvailableToSell`] = topVariantFromProductsCollection.inventoryAvailableToSell; // TODO EK - make sure this works
+      modifier[`${baseKey}.variants.${topVariantIndex}.inventoryInStock`] = topVariantFromProductsCollection.inventoryAvailableToSell; // TODO EK - make sure this works
 
       variantOptions.forEach((option, optionIndex) => {
         modifier[`${baseKey}.variants.${topVariantIndex}.options.${optionIndex}.isSoldOut`] = isSoldOut([option]);
