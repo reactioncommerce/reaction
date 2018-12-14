@@ -463,7 +463,7 @@ describe("core product methods", function () {
       const product2 = addProduct();
       const updateProductSpy = sandbox.spy(Products, "update");
       expect(() => Meteor.call("products/updateVariantsPosition", [
-        product._id, product2._id])).to.throw(ReactionError, /Access Denied/);
+        product._id, product2._id], product.shopId)).to.throw(ReactionError, /Access Denied/);
       expect(updateProductSpy).to.not.have.been.called;
     });
 
@@ -479,7 +479,7 @@ describe("core product methods", function () {
 
       Meteor.call("products/updateVariantsPosition", [
         variant2._id, variant3._id, variant1._id
-      ]);
+      ], variant1.shopId);
       const modifiedVariant1 = Products.findOne(variant1._id);
       const modifiedVariant2 = Products.findOne(variant2._id);
       const modifiedVariant3 = Products.findOne(variant3._id);
