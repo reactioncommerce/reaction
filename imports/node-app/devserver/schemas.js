@@ -15,6 +15,9 @@ import paymentsExample from "/imports/plugins/included/payments-example/server/n
 import paymentsStripe from "/imports/plugins/included/payments-stripe/server/no-meteor/schemas";
 import shippingRates from "/imports/plugins/included/shipping-rates/server/no-meteor/schemas";
 
+// UNIT TEST
+import remoteGraphQL from "/imports/plugins/unit-test/remote-graphql/server/no-meteor/schemas";
+
 export default [
   ...accounts,
   ...address,
@@ -29,5 +32,6 @@ export default [
   ...marketplace,
   ...paymentsExample,
   ...paymentsStripe,
-  ...shippingRates
+  ...shippingRates,
+  ...remoteGraphQL
 ];
