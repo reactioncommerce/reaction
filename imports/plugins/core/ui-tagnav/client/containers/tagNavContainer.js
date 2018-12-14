@@ -262,10 +262,10 @@ const wrapComponent = (Comp) => (
     }
 
     closeDropdown = (event) => {
-      const closestNavItem = event.target.closest(".navbar-item");
+      const closestNavigationItem = event.target.closest(".navbar-item");
 
       // on mouseover an element outside of tags, close dropdown
-      if (this._isMounted && !closestNavItem) {
+      if (this._isMounted && !closestNavigationItem) {
         this.closeDropdownTimeout = setTimeout(() => {
           this.setState({ selectedTag: null });
           this.detachhBodyListener();
