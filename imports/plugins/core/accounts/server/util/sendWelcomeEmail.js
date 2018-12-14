@@ -8,9 +8,8 @@ import { Accounts, Shops } from "/lib/collections";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
 
 /**
- * @name accounts/sendWelcomeEmail
+ * @name sendWelcomeEmail
  * @summary Send an email to consumers on sign up
- * @memberof Accounts/Methods
  * @method
  * @param {String} shopId - shopId of new User
  * @param {String} userId - new userId to welcome
@@ -22,15 +21,13 @@ export default function sendWelcomeEmail(shopId, userId, token) {
   check(userId, String);
   check(token, String);
 
-  this.unblock();
-
-  const account = Accounts.findOne(userId);
+  const account = Accounts.findOne({ userId });
   // anonymous users aren't welcome here
   if (!account.emails || !account.emails.length > 0) {
     return false;
   }
 
-  const shop = Shops.findOne(shopId);
+  const shop = Shops.findOne({ _id: shopId });
 
   // Get shop logo, if available. If not, use default logo from file-system
   const emailLogo = Reaction.Email.getShopLogo(shop);

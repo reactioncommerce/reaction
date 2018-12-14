@@ -21,19 +21,16 @@ export default function addressBookUpdate(address, accountUserId, type) {
   Schemas.Address.validate(address);
   check(accountUserId, Match.Maybe(String));
   check(type, Match.Maybe(String));
-
-  // security check for admin access
-  if (typeof accountUserId === "string") {
-    if (Reaction.getUserId() !== accountUserId && !Reaction.hasPermission("reaction-accounts")) {
-      throw new ReactionError("access-denied", "Access denied");
-    }
-  }
   this.unblock();
 
-  // If no userId is provided, use the current user
+  const authUserId = Reaction.getUserId();
   const userId = accountUserId || Reaction.getUserId();
-  // Find old state of isShippingDefault & isBillingDefault to compare and reflect in cart
   const account = Accounts.findOne({ userId });
+  if (authUserId !== userId && !Reaction.hasPermission("reaction-accounts", authUserId, account.shopId)) {
+    throw new ReactionError("access-denied", "Access denied");
+  }
+
+  // Find old state of isShippingDefault & isBillingDefault to compare and reflect in cart
   const oldAddress = (account.profile.addressBook || []).find((addr) => addr._id === address._id);
 
   if (!oldAddress) throw new ReactionError("not-found", `No existing address found with ID ${address._id}`);

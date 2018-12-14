@@ -8,13 +8,13 @@ import xformCartGroupToCommonOrder from "/imports/plugins/core/cart/server/no-me
  * @returns {Object[]} Updated items array
  */
 async function getUpdatedCartItems(cart, context) {
-  const taxResultsByGroup = await Promise.all(cart.shipping.map(async (group) => {
+  const taxResultsByGroup = await Promise.all((cart.shipping || []).map(async (group) => {
     const order = await xformCartGroupToCommonOrder(cart, group, context);
     return context.mutations.getFulfillmentGroupTaxes(context, { order, forceZeroes: false });
   }));
 
   // Add tax properties to all items in the cart, if taxes were able to be calculated
-  const cartItems = cart.items.map((item) => {
+  const cartItems = (cart.items || []).map((item) => {
     const newItem = { ...item };
     taxResultsByGroup.forEach((group) => {
       const matchingGroupTaxes = group.itemTaxes.find((groupItem) => groupItem.itemId === item._id);
