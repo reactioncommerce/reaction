@@ -87,6 +87,9 @@ extend type Query {
     "Set to true if you want soft deleted tags to be included in the response"
     shouldIncludeDeleted: Boolean = false,
 
+    "Set to true if you want to include tags that have isVisible set to false"
+    shouldIncludeInvisible: Boolean = false,
+
     after: ConnectionCursor,
     before: ConnectionCursor,
     first: ConnectionLimitInt,
