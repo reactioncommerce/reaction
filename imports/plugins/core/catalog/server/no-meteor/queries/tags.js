@@ -8,7 +8,7 @@
  * @param {Object} [params] - Additional options for the query
  * @param {Boolean} [params.isTopLevel] - If set, look for `isTopLevel` matching this value
  * @param {Boolean} [params.shouldIncludeDeleted] - Whether or not to include `isDeleted=true` tags. Default is `false`
- * @param {Boolean} [params.shouldIncludeInvisible] - Whether or not to include `isVisible=false` tags.  Default is `false`.
+ * @param {Boolean} [params.shouldIncludeInvisible] - Admin only. Whether or not to include `isVisible=false` tags.  Default is `false`.
  * @return {Promise<MongoCursor>} - A MongoDB cursor for the proper query
  */
 export default async function tags(context, shopId, { shouldIncludeDeleted = false, isTopLevel, shouldIncludeInvisible = false } = {}) {
@@ -19,7 +19,10 @@ export default async function tags(context, shopId, { shouldIncludeDeleted = fal
 
   if (isTopLevel === false || isTopLevel === true) query.isTopLevel = isTopLevel;
   if (shouldIncludeDeleted !== true) query.isDeleted = { $ne: true };
-  if (shouldIncludeInvisible !== true) query.isVisible = { $ne: false};
-
+  if (shouldIncludeInvisible !== true) {
+    query.isVisible = { $ne: false };
+  } else if (shouldIncludeInvisible == true && context.userHasPermission(["owner", "admin"], shopId)) {
+    query.isVisible = { $in: [false, true]};
+  };
   return Tags.find(query);
 }
