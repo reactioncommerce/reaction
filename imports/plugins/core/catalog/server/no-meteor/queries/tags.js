@@ -21,8 +21,8 @@ export default async function tags(context, shopId, { shouldIncludeDeleted = fal
   if (shouldIncludeDeleted !== true) query.isDeleted = { $ne: true };
   if (shouldIncludeInvisible !== true) {
     query.isVisible = { $ne: false };
-  } else if (shouldIncludeInvisible == true && context.userHasPermission(["owner", "admin"], shopId)) {
-    query.isVisible = { $in: [false, true]};
-  };
+  } else if (shouldIncludeInvisible === true && context.userHasPermission(["owner", "admin"], shopId)) {
+    query.isVisible = { $in: [false, true] };
+  }
   return Tags.find(query);
 }
