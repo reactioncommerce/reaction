@@ -49,9 +49,9 @@ test("non-top-level only, including deleted", async () => {
   expect(result).toBe("CURSOR");
 });
 
-test("include not visible - by an admin", async () => {
+test("include not visible - by an admin or not", async () => {
   mockContext.collections.Tags.find.mockReturnValueOnce("CURSOR");
   const result = await tags(mockContext, mockShopId, { shouldIncludeInvisible: true });
-  expect(mockContext.collections.Tags.find).toHaveBeenCalledWith({ shopId: mockShopId, isVisible: { $or: [false, true] } });
+  expect(mockContext.collections.Tags.find).toHaveBeenCalledWith({ shopId: mockShopId, isDeleted: { $ne: true } });
   expect(result).toBe("CURSOR");
 });
