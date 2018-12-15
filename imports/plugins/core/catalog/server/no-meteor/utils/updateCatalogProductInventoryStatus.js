@@ -31,7 +31,7 @@ export default async function updateCatalogProductInventoryStatus(productId, col
 
   const modifier = {
     "product.inventoryAvailableToSell": product.inventoryAvailableToSell,
-    "product.inventoryInStock": product.inventoryInStock,
+    "product.inventoryInStock": product.inventoryQuantity,
     "product.isSoldOut": isSoldOut(variants),
     "product.isBackorder": isBackorder(variants),
     "product.isLowQuantity": isLowQuantity(variants)
