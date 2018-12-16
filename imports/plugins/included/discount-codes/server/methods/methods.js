@@ -1,9 +1,10 @@
 import Random from "@reactioncommerce/random";
 import { Meteor } from "meteor/meteor";
-import { check } from "meteor/check";
+import { check, Match } from "meteor/check";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
 import ReactionError from "@reactioncommerce/reaction-error";
 import appEvents from "/imports/node-app/core/util/appEvents";
+import getCart from "/imports/plugins/core/cart/server/util/getCart";
 import { Discounts } from "/imports/plugins/core/discounts/lib/collections";
 import { DiscountCodes as DiscountSchema } from "../../lib/collections/schemas";
 
@@ -88,13 +89,41 @@ export const methods = {
    * @param  {String} id cart id of which to remove a code
    * @param  {String} codeId discount Id from cart.billing
    * @param  {String} collection collection (either Orders or Cart)
+   * @param  {String} [token] Cart or order token if anonymous
    * @return {String} returns update/insert result
    */
-  "discounts/codes/remove"(id, codeId, collection = "Cart") {
+  "discounts/codes/remove"(id, codeId, collection = "Cart", token) {
     check(id, String);
     check(codeId, String);
     check(collection, String);
+    check(token, Match.Maybe(String));
+
     const Collection = Reaction.Collections[collection];
+
+    if (collection === "Cart") {
+      let { cart } = getCart(id, { cartToken: token, throwIfNotFound: true });
+
+      // If we found a cart, then the current account owns it
+      if (!cart) {
+        cart = Collection.findOne({ _id: id });
+        if (!cart) {
+          throw new ReactionError("not-found", "Cart not found");
+        }
+
+        if (!Reaction.hasPermission("discounts", Reaction.getUserId(), cart.shopId)) {
+          throw new ReactionError("access-denied", "Access Denied");
+        }
+      }
+    } else {
+      const order = Collection.findOne({ _id: id });
+      if (!order) {
+        throw new ReactionError("not-found", "Order not found");
+      }
+
+      if (!Reaction.hasPermission("discounts", Reaction.getUserId(), order.shopId)) {
+        throw new ReactionError("access-denied", "Access Denied");
+      }
+    }
 
     // TODO: update a history record of transaction
     // The Payment schema currency defaultValue is adding {} to the $pull condition.
@@ -122,22 +151,53 @@ export const methods = {
    * @param  {String} id cart/order id of which to remove a code
    * @param  {String} code valid discount code
    * @param  {String} collection collection (either Orders or Cart)
+   * @param  {String} [token] Cart or order token if anonymous
    * @return {Boolean} returns true if successfully applied
    */
-  "discounts/codes/apply"(id, code, collection = "Cart") {
+  "discounts/codes/apply"(id, code, collection = "Cart", token) {
     check(id, String);
     check(code, String);
     check(collection, String);
+    check(token, Match.Maybe(String));
     let userCount = 0;
     let orderCount = 0;
 
+    const Collection = Reaction.Collections[collection];
+    let objectToApplyDiscount;
+
+    if (collection === "Cart") {
+      let { cart } = getCart(id, { cartToken: token, throwIfNotFound: true });
+
+      // If we found a cart, then the current account owns it
+      if (!cart) {
+        cart = Collection.findOne({ _id: id });
+        if (!cart) {
+          throw new ReactionError("not-found", "Cart not found");
+        }
+
+        if (!Reaction.hasPermission("discounts", Reaction.getUserId(), cart.shopId)) {
+          throw new ReactionError("access-denied", "Access Denied");
+        }
+      }
+
+      objectToApplyDiscount = cart;
+    } else {
+      const order = Collection.findOne({ _id: id });
+      if (!order) {
+        throw new ReactionError("not-found", "Order not found");
+      }
+
+      if (!Reaction.hasPermission("discounts", Reaction.getUserId(), order.shopId)) {
+        throw new ReactionError("access-denied", "Access Denied");
+      }
+
+      objectToApplyDiscount = order;
+    }
+
     // check to ensure discounts can only apply to single shop carts
     // TODO: Remove this check after implementation of shop-by-shop discounts
-    const Collection = Reaction.Collections[collection];
-    const objectToApplyDiscount = Collection.findOne({ _id: id });
-    const items = objectToApplyDiscount && objectToApplyDiscount.items;
     // loop through all items and filter down to unique shops (in order to get participating shops in the order/cart)
-    const uniqueShopObj = items.reduce((shopObj, item) => {
+    const uniqueShopObj = objectToApplyDiscount.items.reduce((shopObj, item) => {
       if (!shopObj[item.shopId]) {
         shopObj[item.shopId] = true;
       }

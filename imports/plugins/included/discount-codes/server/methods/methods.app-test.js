@@ -5,6 +5,7 @@ import { Factory } from "meteor/dburles:factory";
 import { expect } from "meteor/practicalmeteor:chai";
 import { sinon } from "meteor/practicalmeteor:sinon";
 import { Discounts } from "/imports/plugins/core/discounts/lib/collections";
+import { getShop } from "/imports/plugins/core/core/server/fixtures/shops";
 import { Cart } from "/lib/collections";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
 import ReactionError from "@reactioncommerce/reaction-error";
@@ -22,7 +23,17 @@ before(function () {
 });
 
 describe("discount code methods", function () {
+  const shop = getShop();
   let sandbox;
+  let user;
+  let account;
+  let accountId;
+
+  before(function () {
+    user = Factory.create("user");
+    account = Factory.create("account", { userId: user._id });
+    accountId = account._id;
+  });
 
   beforeEach(function () {
     sandbox = sinon.sandbox.create();
@@ -67,10 +78,13 @@ describe("discount code methods", function () {
 
   describe("discounts/codes/apply", function () {
     it("should apply code when called for a cart with multiple items from same shop", function () {
+      this.timeout(5000);
+      sandbox.stub(Reaction, "getCartShopId", () => shop._id);
+      sandbox.stub(Reaction, "getUserId", () => user._id);
       sandbox.stub(Reaction, "hasPermission", () => true);
 
       // make a cart with two items from same shop
-      const cart = Factory.create("cartMultiItems");
+      const cart = Factory.create("cartMultiItems", { accountId });
 
       Meteor.call("discounts/addCode", code);
       Meteor.call("discounts/codes/apply", cart._id, code.code);
@@ -83,10 +97,13 @@ describe("discount code methods", function () {
     });
 
     it("should not apply code when applied to multi-shop order or cart", function () {
+      this.timeout(5000);
+      sandbox.stub(Reaction, "getCartShopId", () => shop._id);
+      sandbox.stub(Reaction, "getUserId", () => user._id);
       sandbox.stub(Reaction, "hasPermission", () => true);
 
       // make a cart with two items from separate shops
-      const cart = Factory.create("cartMultiShop");
+      const cart = Factory.create("cartMultiShop", { accountId });
 
       expect(() =>
         Meteor.call("discounts/codes/apply", cart._id, code.code)).to.throw(ReactionError, /multiShopError/);
