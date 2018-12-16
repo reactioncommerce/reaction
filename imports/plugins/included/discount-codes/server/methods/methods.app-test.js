@@ -51,6 +51,20 @@ describe("discount code methods", function () {
     });
   });
 
+  describe("discounts/deleteCode", function () {
+    it("should delete rate with discounts permission", function () {
+      this.timeout(15000);
+      sandbox.stub(Roles, "userIsInRole", () => true);
+      const discountInsertSpy = sandbox.spy(Discounts, "insert");
+      const discountId = Meteor.call("discounts/addCode", code);
+      expect(discountInsertSpy).to.have.been.called;
+
+      Meteor.call("discounts/deleteCode", discountId);
+      const discountCount = Discounts.find(discountId).count();
+      expect(discountCount).to.equal(0);
+    });
+  });
+
   describe("discounts/codes/apply", function () {
     it("should apply code when called for a cart with multiple items from same shop", function () {
       sandbox.stub(Reaction, "hasPermission", () => true);

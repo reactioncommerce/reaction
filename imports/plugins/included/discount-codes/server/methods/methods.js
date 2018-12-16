@@ -1,6 +1,6 @@
 import Random from "@reactioncommerce/random";
 import { Meteor } from "meteor/meteor";
-import { Match, check } from "meteor/check";
+import { check } from "meteor/check";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
 import ReactionError from "@reactioncommerce/reaction-error";
 import appEvents from "/imports/node-app/core/util/appEvents";
@@ -20,18 +20,18 @@ export const methods = {
    * @method
    * @memberof Discounts/Codes/Methods
    * @param  {Object} doc A Discounts document to be inserted
-   * @param  {String} [docId] DEPRECATED. Existing ID to trigger an update. Use discounts/editCode method instead.
    * @return {String} Insert result
    */
-  "discounts/addCode"(doc, docId) {
+  "discounts/addCode"(doc) {
     check(doc, Object); // actual schema validation happens during insert below
 
-    // Backward compatibility
-    check(docId, Match.Optional(String));
-    if (docId) return Meteor.call("discounts/editCode", { _id: docId, modifier: doc });
+    const shopId = Reaction.getShopId();
 
-    if (!Reaction.hasPermission("discount-codes")) throw new ReactionError("access-denied", "Access Denied");
-    doc.shopId = Reaction.getShopId();
+    if (!Reaction.hasPermission("discounts", Reaction.getUserId(), shopId)) {
+      throw new ReactionError("access-denied", "Access Denied");
+    }
+
+    doc.shopId = shopId;
     return Discounts.insert(doc);
   },
 
@@ -47,9 +47,37 @@ export const methods = {
       _id: String,
       modifier: Object // actual schema validation happens during update below
     });
-    if (!Reaction.hasPermission("discount-codes")) throw new ReactionError("access-denied", "Access Denied");
+
+    const shopId = Reaction.getShopId();
+
+    if (!Reaction.hasPermission("discounts", Reaction.getUserId(), shopId)) {
+      throw new ReactionError("access-denied", "Access Denied");
+    }
+
     const { _id, modifier } = details;
-    return Discounts.update(_id, modifier);
+    return Discounts.update({ _id, shopId }, modifier);
+  },
+
+  /**
+   * @name discounts/deleteCode
+   * @method
+   * @memberof Discounts/Codes/Methods
+   * @param  {String} discountId discount id to delete
+   * @return {String} returns remove result
+   */
+  "discounts/deleteCode"(discountId) {
+    check(discountId, String);
+
+    const shopId = Reaction.getShopId();
+
+    if (!Reaction.hasPermission("discounts", Reaction.getUserId(), shopId)) {
+      throw new ReactionError("access-denied", "Access Denied");
+    }
+
+    return Discounts.remove({
+      _id: discountId,
+      shopId
+    });
   },
 
   /**
