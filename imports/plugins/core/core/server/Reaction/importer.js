@@ -401,21 +401,18 @@ Importer.tag = function (key, tag, shopId) {
  * @summary Push a new upsert document to the import buffer.
  * @param {Mongo.Collection} collection The target collection
  * @param {Object} key A key to look up the object
- * @param {Object} object The object data to be updated
+ * @param {Object} importObject The object data to be updated
  * @returns {undefined}
  */
-Importer.object = function (collection, key, object) {
+Importer.object = function (collection, key, importObject) {
   check(collection, Mongo.Collection);
   check(key, Object);
-  check(object, Object);
+  check(importObject, Object);
 
   // enforce strings instead of Mongo.ObjectId
-  if (!collection.findOne(key) && !object._id) {
+  if (!collection.findOne(key) && !importObject._id) {
     key._id = Random.id();
   }
-
-  // hooks for additional import manipulation.
-  const importObject = Hooks.Events.run(`onImport${this._name(collection)}`, object);
 
   // Cleaning the object adds default values from schema, if value doesn't exist
   const cleanedModifier = collection.simpleSchema(importObject).clean({
