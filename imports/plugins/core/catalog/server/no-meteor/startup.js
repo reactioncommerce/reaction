@@ -49,4 +49,14 @@ export default function startup(context) {
       Logger.error("Error in afterMediaRemove", error);
     });
   });
+
+  appEvents.on("afterProductSoftDelete", ({ product }) => {
+    collections.Catalog.updateOne({
+      "product.productId": product._id
+    }, {
+      $set: {
+        "product.isDeleted": true
+      }
+    });
+  });
 }

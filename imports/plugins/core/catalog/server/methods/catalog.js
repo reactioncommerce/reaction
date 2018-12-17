@@ -1,5 +1,4 @@
 import _ from "lodash";
-import Hooks from "@reactioncommerce/hooks";
 import Logger from "@reactioncommerce/logger";
 import Random from "@reactioncommerce/random";
 import { check, Match } from "meteor/check";
@@ -10,6 +9,7 @@ import Reaction from "/imports/plugins/core/core/server/Reaction";
 import ReactionError from "@reactioncommerce/reaction-error";
 import { MediaRecords, Products, Tags } from "/lib/collections";
 import { Media } from "/imports/plugins/core/files/server";
+import appEvents from "/imports/node-app/core/util/appEvents";
 import rawCollections from "/imports/collections/rawCollections";
 import getGraphQLContextInMeteorMethod from "/imports/plugins/core/graphql/server/getGraphQLContextInMeteorMethod";
 import hashProduct, { createProductHash } from "../no-meteor/mutations/hashProduct";
@@ -373,12 +373,6 @@ function createProduct(props = null, info = {}) {
 function updateCatalogProduct(userId, selector, modifier, validation) {
   const product = Products.findOne(selector);
 
-  Hooks.Events.run("beforeUpdateCatalogProduct", product, {
-    userId,
-    modifier,
-    validation
-  });
-
   const result = Products.update(selector, modifier, validation);
 
   hashProduct(product._id, rawCollections, false)
@@ -392,8 +386,6 @@ function updateCatalogProduct(userId, selector, modifier, validation) {
     const price = Promise.await(getProductPriceRange(topLevelProductId, rawCollections));
     Products.update({ _id: topLevelProductId }, { $set: { price } }, { selector: { type: 'simple' } });
   }
-
-  Hooks.Events.run("afterUpdateCatalogProduct", product._id, { modifier });
 
   return result;
 }
@@ -652,14 +644,21 @@ Meteor.methods({
     check(variantId, String);
 
     // Check first if Variant exists and then if user has the right to delete it
-    const variant = Products.findOne(variantId);
+    const variant = Products.findOne({ _id: variantId });
     if (!variant) {
       throw new ReactionError("not-found", "Variant not found");
-    } else if (!Reaction.hasPermission("createProduct", this.userId, variant.shopId)) {
+    }
+
+    if (variant.type !== "variant") {
+      throw new ReactionError("invalid", "Not a variant");
+    }
+
+    const authUserId = Reaction.getUserId();
+    if (!Reaction.hasPermission("createProduct", authUserId, variant.shopId)) {
       throw new ReactionError("access-denied", "Access Denied");
     }
 
-    const selector = {
+    const variantsToDelete = Products.find({
       // Don't "archive" variants that are already marked deleted.
       isDeleted: {
         $ne: true
@@ -669,24 +668,19 @@ Meteor.methods({
           _id: variantId
         },
         {
-          ancestors: {
-            $in: [variantId]
-          }
+          ancestors: variantId
         }
       ]
-    };
-    const toDelete = Products.find(selector).fetch();
+    }).fetch();
 
     // out if nothing to delete
-    if (!Array.isArray(toDelete) || toDelete.length === 0) return false;
+    if (variantsToDelete.length === 0) return false;
 
     // Flag the variant and all its children as deleted.
-    toDelete.forEach((product) => {
-      Hooks.Events.run("beforeRemoveCatalogProduct", product, { userId: this.userId });
+    variantsToDelete.forEach((variantToDelete) => {
       Products.update(
         {
-          _id: product._id,
-          type: product.type
+          _id: variantToDelete._id
         },
         {
           $set: {
@@ -694,12 +688,19 @@ Meteor.methods({
           }
         }
       );
-      Hooks.Events.run("afterRemoveCatalogProduct", this.userId, product);
+
+      appEvents.emit("afterVariantSoftDelete", {
+        variant: {
+          ...variantToDelete,
+          isDeleted: true
+        },
+        deletedBy: authUserId
+      });
     });
 
     // After variant was removed from product, we need to recalculate all
     // denormalized fields
-    const productId = toDelete[0].ancestors[0];
+    const productId = variantsToDelete[0].ancestors[0];
     toDenormalize.forEach((field) => denormalize(productId, field));
 
     Logger.debug(`Flagged variant and all its children as deleted.`);
@@ -880,10 +881,14 @@ Meteor.methods({
     }
 
     // Check first if Product exists and then if user has the right to delete it
-    const product = Products.findOne(extractedProductId || productId);
+    const product = Products.findOne({ _id: extractedProductId || productId });
     if (!product) {
       throw new ReactionError("not-found", "Product not found");
-    } else if (!Reaction.hasPermission("createProduct", this.userId, product.shopId)) {
+    }
+
+    const authUserId = Reaction.getUserId();
+
+    if (!Reaction.hasPermission("createProduct", authUserId, product.shopId)) {
       throw new ReactionError("access-denied", "Access Denied");
     }
 
@@ -921,11 +926,9 @@ Meteor.methods({
 
     // Flag the product and all of it's variants as deleted.
     productsWithVariants.forEach((toArchiveProduct) => {
-      Hooks.Events.run("beforeRemoveCatalogProduct", toArchiveProduct, { userId: this.userId });
       Products.update(
         {
-          _id: toArchiveProduct._id,
-          type: toArchiveProduct.type
+          _id: toArchiveProduct._id
         },
         {
           $set: {
@@ -933,7 +936,24 @@ Meteor.methods({
           }
         }
       );
-      Hooks.Events.run("afterRemoveCatalogProduct", this.userId, toArchiveProduct);
+
+      if (toArchiveProduct.type === "variant") {
+        appEvents.emit("afterVariantSoftDelete", {
+          variant: {
+            ...toArchiveProduct,
+            isDeleted: true
+          },
+          deletedBy: authUserId
+        });
+      } else {
+        appEvents.emit("afterProductSoftDelete", {
+          product: {
+            ...toArchiveProduct,
+            isDeleted: true
+          },
+          deletedBy: authUserId
+        });
+      }
     });
 
     const numFlaggedAsDeleted = Products.find({
