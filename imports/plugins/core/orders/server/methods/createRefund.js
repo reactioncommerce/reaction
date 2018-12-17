@@ -4,6 +4,7 @@ import Hooks from "@reactioncommerce/hooks";
 import Logger from "@reactioncommerce/logger";
 import ReactionError from "@reactioncommerce/reaction-error";
 import { Orders, Packages } from "/lib/collections";
+import appEvents from "/imports/node-app/core/util/appEvents";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
 import getGraphQLContextInMeteorMethod from "/imports/plugins/core/graphql/server/getGraphQLContextInMeteorMethod";
 import { getPaymentMethodConfigByName } from "/imports/plugins/core/core/server/no-meteor/pluginRegistration";
@@ -74,7 +75,7 @@ export default function createRefund(orderId, paymentId, amount, sendEmail = tru
     }
   }
 
-  Orders.update(
+  const updateResult = Orders.update(
     {
       "_id": orderId,
       "shipping._id": groupId
@@ -86,6 +87,16 @@ export default function createRefund(orderId, paymentId, amount, sendEmail = tru
       ...modifier
     }
   );
+
+  if (updateResult !== 1) {
+    throw new ReactionError("server-error", "Unable to update order");
+  }
+
+  const updatedOrder = Orders.findOne({ _id: orderId });
+  Promise.await(appEvents.emit("afterOrderUpdate", {
+    order: updatedOrder,
+    updatedBy: Reaction.getUserId()
+  }));
 
   Hooks.Events.run("onOrderRefundCreated", orderId);
 

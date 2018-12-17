@@ -1,9 +1,9 @@
-import Hooks from "@reactioncommerce/hooks";
 import accounting from "accounting-js";
 import { check } from "meteor/check";
 import ReactionError from "@reactioncommerce/reaction-error";
 import { Orders, Products } from "/lib/collections";
 import rawCollections from "/imports/collections/rawCollections";
+import appEvents from "/imports/node-app/core/util/appEvents";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
 import updateCatalogProductInventoryStatus from "/imports/plugins/core/catalog/server/no-meteor/utils/updateCatalogProductInventoryStatus";
 import orderCreditMethod from "../util/orderCreditMethod";
@@ -99,9 +99,15 @@ export default function approvePayment(order) {
       }
     }
   );
+  if (result !== 1) {
+    throw new ReactionError("server-error", "Unable to update order");
+  }
 
-  // Update search record
-  Hooks.Events.run("afterUpdateOrderUpdateSearchRecord", order);
+  const updatedOrder = Orders.findOne({ _id: order._id });
+  Promise.await(appEvents.emit("afterOrderUpdate", {
+    order: updatedOrder,
+    updatedBy: Reaction.getUserId()
+  }));
 
   return result;
 }

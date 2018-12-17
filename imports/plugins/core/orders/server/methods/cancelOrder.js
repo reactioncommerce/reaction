@@ -2,9 +2,10 @@ import _ from "lodash";
 import Logger from "@reactioncommerce/logger";
 import { Meteor } from "meteor/meteor";
 import { check } from "meteor/check";
-import ReactionError from "@reactioncommerce/reaction-error";
 import { Orders, Products, Packages } from "/lib/collections";
+import appEvents from "/imports/node-app/core/util/appEvents";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
+import ReactionError from "@reactioncommerce/reaction-error";
 import rawCollections from "/imports/collections/rawCollections";
 import createNotification from "/imports/plugins/included/notifications/server/no-meteor/createNotification";
 import updateCatalogProductInventoryStatus from "/imports/plugins/core/catalog/server/no-meteor/utils/updateCatalogProductInventoryStatus";
@@ -87,7 +88,7 @@ export default function cancelOrder(order, returnToStock) {
   // update item workflow
   Meteor.call("workflow/pushItemWorkflow", "coreOrderItemWorkflow/canceled", order, itemIds);
 
-  return Orders.update(
+  const result = Orders.update(
     {
       "_id": order._id,
       "shipping.shopId": Reaction.getShopId(),
@@ -103,4 +104,15 @@ export default function cancelOrder(order, returnToStock) {
       }
     }
   );
+  if (result !== 1) {
+    throw new ReactionError("server-error", "Unable to update order");
+  }
+
+  const updatedOrder = Orders.findOne({ _id: order._id });
+  Promise.await(appEvents.emit("afterOrderUpdate", {
+    order: updatedOrder,
+    updatedBy: Reaction.getUserId()
+  }));
+
+  return result;
 }

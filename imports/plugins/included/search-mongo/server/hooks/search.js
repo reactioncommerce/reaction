@@ -30,7 +30,7 @@ appEvents.on("afterAccountUpdate", ({ updatedAccount, updatedFields }) => {
   }
 });
 
-Hooks.Events.add("afterUpdateOrderUpdateSearchRecord", (order) => {
+appEvents.on("afterOrderUpdate", ({ order }) => {
   if (!Meteor.isAppTest) {
     Promise.await(buildOrderSearchRecord(rawCollections, order));
   }

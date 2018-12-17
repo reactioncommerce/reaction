@@ -3,11 +3,11 @@ import Logger from "@reactioncommerce/logger";
 import { Meteor } from "meteor/meteor";
 import { check } from "meteor/check";
 import { Orders } from "/lib/collections";
+import appEvents from "/imports/node-app/core/util/appEvents";
 import ReactionError from "@reactioncommerce/reaction-error";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
 import getGraphQLContextInMeteorMethod from "/imports/plugins/core/graphql/server/getGraphQLContextInMeteorMethod";
 import { getPaymentMethodConfigByName } from "/imports/plugins/core/core/server/no-meteor/pluginRegistration";
-
 
 /**
  * @name orders/capturePayments
@@ -53,7 +53,7 @@ export default function capturePayments(orderId) {
     if (result && result.saved === true) {
       const metadata = Object.assign({}, payment.metadata || {}, result.metadata || {});
 
-      Orders.update(
+      const updateResult = Orders.update(
         {
           "_id": orderId,
           "shipping._id": groupId
@@ -70,6 +70,16 @@ export default function capturePayments(orderId) {
         }
       );
 
+      if (updateResult !== 1) {
+        throw new ReactionError("server-error", "Unable to update order");
+      }
+
+      const updatedOrder = Orders.findOne({ _id: orderId });
+      Promise.await(appEvents.emit("afterOrderUpdate", {
+        order: updatedOrder,
+        updatedBy: Reaction.getUserId()
+      }));
+
       // event onOrderPaymentCaptured used for confirmation hooks
       // ie: confirmShippingMethodForOrder is triggered here
       Hooks.Events.run("onOrderPaymentCaptured", orderId);
@@ -82,7 +92,7 @@ export default function capturePayments(orderId) {
       Logger.fatal("Failed to capture transaction.", order, transactionId, error);
     }
 
-    Orders.update(
+    const updateResult = Orders.update(
       {
         "_id": orderId,
         "shipping._id": groupId
@@ -97,6 +107,16 @@ export default function capturePayments(orderId) {
         }
       }
     );
+
+    if (updateResult !== 1) {
+      throw new ReactionError("server-error", "Unable to update order");
+    }
+
+    const updatedOrder = Orders.findOne({ _id: orderId });
+    Promise.await(appEvents.emit("afterOrderUpdate", {
+      order: updatedOrder,
+      updatedBy: Reaction.getUserId()
+    }));
 
     return { error: "orders/capturePayments: Failed to capture transaction" };
   }
