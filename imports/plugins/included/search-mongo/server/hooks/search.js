@@ -2,6 +2,7 @@ import Hooks from "@reactioncommerce/hooks";
 import Logger from "@reactioncommerce/logger";
 import { Meteor } from "meteor/meteor";
 import { ProductSearch, AccountSearch } from "/lib/collections";
+import appEvents from "/imports/node-app/core/util/appEvents";
 import rawCollections from "/imports/collections/rawCollections";
 import {
   buildAccountSearchRecord,
@@ -23,23 +24,11 @@ Hooks.Events.add("afterAccountsRemove", (userId, accountId) => {
   }
 });
 
-Hooks.Events.add("afterAccountsUpdate", (userId, updateData) => {
-  const { accountId, updatedFields } = updateData;
-
+appEvents.on("afterAccountUpdate", ({ updatedAccount, updatedFields }) => {
   if (AccountSearch && !Meteor.isAppTest) {
-    buildAccountSearchRecord(accountId, updatedFields);
+    buildAccountSearchRecord(updatedAccount._id, updatedFields);
   }
 });
-
-
-// NOTE: this hooks does not seemed to get fired, are there is no way
-// to delete an order, only cancel.
-// TODO: Verify the assumption above.
-// Orders.after.remove((userId, doc) => {
-//   if (OrderSearch && !Meteor.isAppTest) {
-//     OrderSearch.remove(doc._id);
-//   }
-// });
 
 Hooks.Events.add("afterUpdateOrderUpdateSearchRecord", (order) => {
   if (!Meteor.isAppTest) {

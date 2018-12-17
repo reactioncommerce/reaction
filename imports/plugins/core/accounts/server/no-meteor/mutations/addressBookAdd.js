@@ -1,4 +1,3 @@
-import Hooks from "@reactioncommerce/hooks";
 import Random from "@reactioncommerce/random";
 import { get } from "lodash";
 import ReactionError from "@reactioncommerce/reaction-error";
@@ -14,7 +13,7 @@ import ReactionError from "@reactioncommerce/reaction-error";
  * @return {Promise<Object>} with updated address
  */
 export default async function addressBookAdd(context, address, accountUserId) {
-  const { collections, userHasPermission, userId: userIdFromContext } = context;
+  const { appEvents, collections, userHasPermission, userId: userIdFromContext } = context;
   const { Accounts, users: Users } = collections;
 
   const userId = accountUserId || userIdFromContext;
@@ -43,11 +42,6 @@ export default async function addressBookAdd(context, address, accountUserId) {
           "profile.addressBook.$.isShippingDefault": false
         }
       });
-
-      Hooks.Events.run("afterAccountsUpdate", userIdFromContext, {
-        accountId: account._id,
-        updatedFields: ["isShippingDefault"]
-      });
     }
 
     if (address.isBillingDefault) {
@@ -58,11 +52,6 @@ export default async function addressBookAdd(context, address, accountUserId) {
         $set: {
           "profile.addressBook.$.isBillingDefault": false
         }
-      });
-
-      Hooks.Events.run("afterAccountsUpdate", userIdFromContext, {
-        accountId: account._id,
-        updatedFields: ["isBillingDefault"]
       });
     }
   }
@@ -90,13 +79,17 @@ export default async function addressBookAdd(context, address, accountUserId) {
   const result = await Accounts.updateOne({ userId }, accountsUpdateQuery);
 
   // If the address update was successful, then return the full updated address
-  if (result.modifiedCount === 1) {
-    // Find the account
-    const updatedAccount = await Accounts.findOne({ userId });
-
-    // Pull the updated address and return it
-    return updatedAccount.profile.addressBook.find((updatedAddress) => address._id === updatedAddress._id);
+  if (result.modifiedCount !== 1) {
+    throw new ReactionError("server-error", "Unable to add address to account");
   }
 
-  throw new ReactionError("server-error", "Unable to add address to account");
+  const updatedAccount = Accounts.findOne({ userId });
+  await appEvents.emit("afterAccountUpdate", {
+    updatedAccount,
+    updatedBy: userIdFromContext,
+    updatedFields: ["profile.addressBook"]
+  });
+
+  // Pull the updated address and return it
+  return updatedAccount.profile.addressBook.find((updatedAddress) => address._id === updatedAddress._id);
 }

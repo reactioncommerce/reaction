@@ -216,7 +216,7 @@ export function buildAccountSearchRecord(accountId, updatedFields) {
     // forceIndex is included to forceIndexing on startup, or when manually added
     const searchableFields = ["forceIndex", "shopId", "emails", "firstName", "lastName", "phone"];
 
-    const shouldRunIndex = updatedFields && updatedFields.some((field) => searchableFields.includes(field));
+    const shouldRunIndex = !Array.isArray(updatedFields) || updatedFields.some((field) => searchableFields.includes(field));
 
     // If updatedFields contains one of the searchableFields, run the indexing
     if (shouldRunIndex) {

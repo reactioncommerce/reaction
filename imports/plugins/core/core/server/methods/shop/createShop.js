@@ -1,4 +1,3 @@
-import Hooks from "@reactioncommerce/hooks";
 import Logger from "@reactioncommerce/logger";
 import { check, Match } from "meteor/check";
 import { Meteor } from "meteor/meteor";
@@ -6,6 +5,7 @@ import { Roles } from "meteor/alanning:roles";
 import { Accounts, Groups, Shops } from "/lib/collections";
 import * as Schemas from "/lib/collections/schemas";
 import { Reaction } from "/lib/api";
+import appEvents from "/imports/node-app/core/util/appEvents";
 import ReactionError from "@reactioncommerce/reaction-error";
 import getSlug from "/imports/plugins/core/core/server/Reaction/getSlug";
 
@@ -100,7 +100,7 @@ export default function createShop(shopAdminUserId, partialShopData) {
     throw new ReactionError("access-denied", "Access Denied");
   }
 
-  const currentUser = Meteor.user();
+  const currentUser = Meteor.users.findOne({ _id: userId });
   const currentAccount = Accounts.findOne({ _id: currentUser._id });
   if (!currentUser) {
     throw new ReactionError("server-error", "Unable to create shop without a user");
@@ -161,10 +161,14 @@ export default function createShop(shopAdminUserId, partialShopData) {
       groups: ownerGroup._id
     }
   });
-  Hooks.Events.run("afterAccountsUpdate", currentUser._id, {
-    accountId: shopUser._id,
-    updatedFields: ["groups"]
-  });
+
+  const updatedAccount = Accounts.findOne({ _id: shopUser._id });
+  Promise.await(appEvents.emit("afterAccountUpdate", {
+    updatedAccount,
+    updatedBy: userId,
+    updatedFields: ["groups", "shopId"]
+  }));
+
   // Add this shop to the merchant
   Shops.update({ _id: primaryShopId }, {
     $addToSet: {

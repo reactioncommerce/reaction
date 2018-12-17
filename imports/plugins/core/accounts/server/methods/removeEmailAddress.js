@@ -1,5 +1,4 @@
 import _ from "lodash";
-import Hooks from "@reactioncommerce/hooks";
 import Logger from "@reactioncommerce/logger";
 import Random from "@reactioncommerce/random";
 import { Meteor } from "meteor/meteor";
@@ -7,6 +6,7 @@ import { Accounts as MeteorAccounts } from "meteor/accounts-base";
 import { check } from "meteor/check";
 import { SSR } from "meteor/meteorhacks:ssr";
 import { Accounts } from "/lib/collections";
+import appEvents from "/imports/node-app/core/util/appEvents";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
 import ReactionError from "@reactioncommerce/reaction-error";
 
@@ -137,9 +137,10 @@ async function sendUpdatedVerificationEmail(userId, email) {
  */
 function syncUsersAndAccounts() {
   const user = Meteor.user();
+  const userId = user._id;
 
   Accounts.update({
-    _id: user._id
+    userId
   }, {
     $set: {
       emails: [
@@ -147,10 +148,13 @@ function syncUsersAndAccounts() {
       ]
     }
   });
-  Hooks.Events.run("afterAccountsUpdate", user._id, {
-    accountId: user._id,
+
+  const updatedAccount = Accounts.findOne({ userId });
+  Promise.await(appEvents.emit("afterAccountUpdate", {
+    updatedAccount,
+    updatedBy: userId,
     updatedFields: ["emails"]
-  });
+  }));
 
   return true;
 }

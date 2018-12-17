@@ -1,6 +1,6 @@
-import Hooks from "@reactioncommerce/hooks";
 import Logger from "@reactioncommerce/logger";
 import { check } from "meteor/check";
+import appEvents from "/imports/node-app/core/util/appEvents";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
 import ReactionError from "@reactioncommerce/reaction-error";
 import { Accounts, Groups } from "/lib/collections";
@@ -37,11 +37,15 @@ export default function removeUser(userId, groupId) {
 
   try {
     setUserPermissions(user, defaultCustomerGroupForShop.permissions, shopId);
-    Accounts.update({ _id: userId, groups: groupId }, { $set: { "groups.$": defaultCustomerGroupForShop._id } }); // replace the old id with new id
-    Hooks.Events.run("afterAccountsUpdate", Reaction.getUserId(), {
-      accountId: userId,
+    Accounts.update({ userId, groups: groupId }, { $set: { "groups.$": defaultCustomerGroupForShop._id } }); // replace the old id with new id
+
+    const updatedAccount = Accounts.findOne({ userId });
+    Promise.await(appEvents.emit("afterAccountUpdate", {
+      updatedAccount,
+      updatedBy: Reaction.getUserId(),
       updatedFields: ["groups"]
-    });
+    }));
+
     return defaultCustomerGroupForShop;
   } catch (error) {
     Logger.error(error);

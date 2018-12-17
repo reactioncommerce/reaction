@@ -1,6 +1,6 @@
-import Hooks from "@reactioncommerce/hooks";
 import { Meteor } from "meteor/meteor";
 import { Accounts } from "/lib/collections";
+import appEvents from "/imports/node-app/core/util/appEvents";
 
 /**
  * @name accounts/verifyAccount
@@ -13,7 +13,7 @@ import { Accounts } from "/lib/collections";
 export default function verifyAccount() {
   if (!this.userId) {
     // not logged in
-    return undefined;
+    return null;
   }
 
   const user = Meteor.user();
@@ -30,13 +30,12 @@ export default function verifyAccount() {
   });
 
   if (result) {
-    Hooks.Events.run(
-      "afterAccountsUpdate",
-      this.userId, {
-        accountId: Accounts.findOne({ userId: this.userId })._id,
-        updatedFields: ["emails"]
-      }
-    );
+    const updatedAccount = Accounts.findOne({ userId: this.userId });
+    Promise.await(appEvents.emit("afterAccountUpdate", {
+      updatedAccount,
+      updatedBy: this.userId,
+      updatedFields: ["emails"]
+    }));
   }
 
   return result;

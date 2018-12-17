@@ -1,9 +1,9 @@
 import _ from "lodash";
-import Hooks from "@reactioncommerce/hooks";
 import { Meteor } from "meteor/meteor";
 import { check, Match } from "meteor/check";
 import { Accounts } from "/lib/collections";
 import * as Schemas from "/lib/collections/schemas";
+import appEvents from "/imports/node-app/core/util/appEvents";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
 import ReactionError from "@reactioncommerce/reaction-error";
 
@@ -77,6 +77,10 @@ export default function addressBookUpdate(address, accountUserId, type) {
     userId
   }, accountsUpdateQuery);
 
+  if (updatedAccountResult !== 1) {
+    throw new ReactionError("server-error", "Unable to update account address");
+  }
+
   // Create an array which contains all fields that have changed
   // This is used for search, to determine if we need to re-index
   const updatedFields = [];
@@ -86,22 +90,14 @@ export default function addressBookUpdate(address, accountUserId, type) {
     }
   });
 
-  // Run afterAccountsUpdate hook to update Accounts Search
-  Hooks.Events.run("afterAccountsUpdate", userId, {
-    accountId: account._id,
+  const updatedAccount = Accounts.findOne({ userId });
+  Promise.await(appEvents.emit("afterAccountUpdate", {
+    updatedAccount,
+    updatedBy: authUserId,
     updatedFields
-  });
+  }));
 
   // If the address update was successful, then return the full updated address
-  if (updatedAccountResult === 1) {
-    // Find the account
-    const updatedAccount = Accounts.findOne({
-      userId
-    });
-
-    // Pull the updated address and return it
-    return updatedAccount.profile.addressBook.find((updatedAddress) => address._id === updatedAddress._id);
-  }
-
-  throw new ReactionError("server-error", "Unable to update account address");
+  // Pull the updated address and return it
+  return updatedAccount.profile.addressBook.find((updatedAddress) => address._id === updatedAddress._id);
 }
