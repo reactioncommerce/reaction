@@ -162,7 +162,7 @@ const wrapComponent = (Comp) => (
           // We do this by taking the `inventoryQuantity` number, and then mapping through all
           // open orders to find orders with this particular item. We then subtract the quantity
           // of these "reserved" items
-          Meteor.call("products/updateInventoryAvailableToSell", variantId, (err) => {
+          Meteor.call("products/updateVariantAndProductInventory", variantId, (err) => {
             if (err) {
               Alerts.toast(error.message, "error");
             }
