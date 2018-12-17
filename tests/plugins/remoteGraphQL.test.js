@@ -1,30 +1,21 @@
-import { getApp, PORT } from "../mocks/mockRemoteGraphql";
+import nock from "nock";
 import TestApp from "../TestApp";
+import { baseUrl } from "../../imports/plugins/unit-test/remote-graphql/server/no-meteor/schemas";
 
-const remoteGraphQL = getApp();
 const testApp = new TestApp();
-let server;
 
 beforeAll(async () => {
-  const remotePromise = new Promise((resolve, reject) => {
-    server = remoteGraphQL.listen(PORT, (error) => {
-      if (error) {
-        reject(error);
-        return;
-      }
-      resolve();
-    });
-  });
   await testApp.start();
-  await remotePromise;
 });
 
 test("plugin with remote graphQL should delegate properly", async () => {
+  nock(baseUrl)
+    .post("/")
+    .reply(200, { data: { unitTestRemoteGraphql: 43.43 } });
   const res = await testApp.query("{unitTestRemoteGraphql}")();
-  expect(res).toHaveProperty("unitTestRemoteGraphql", 42.42);
+  expect(res).toHaveProperty("unitTestRemoteGraphql", 43.43);
 });
 
 afterAll(() => {
-  server && server.close();
   testApp.stop();
 });
