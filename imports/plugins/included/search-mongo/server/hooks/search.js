@@ -51,7 +51,7 @@ appEvents.on("afterProductDelete", ({ product }) => {
 /**
  * @summary Rebuild search record when product is published
  */
-Hooks.Events.add("afterPublishProductToCatalog", (product) => {
+appEvents.on("afterPublishProductToCatalog", ({ product }) => {
   Logger.debug(`Rewriting search record for ${product.title}`);
   ProductSearch.remove({ _id: product._id });
   buildProductSearchRecord(product._id);

@@ -69,8 +69,10 @@ export default async function publishProductToCatalog(product, context) {
     }
 
     const updatedProduct = { ...product, ...productUpdates };
-    Hooks.Events.run("afterPublishProductToCatalog", updatedProduct, catalogProduct);
-    appEvents.emit("afterPublishProductToCatalog", updatedProduct, catalogProduct);
+    appEvents.emit("afterPublishProductToCatalog", {
+      catalogProduct,
+      product: updatedProduct
+    });
   }
 
   return wasUpdateSuccessful;

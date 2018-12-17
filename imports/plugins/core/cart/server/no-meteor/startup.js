@@ -92,7 +92,7 @@ export default function startup(context) {
 
   // When a variant's price changes, change the `price` and `subtotal` fields of all CartItems for that variant.
   // When a variant's compare-at price changes, change the `compareAtPrice` field of all CartItems for that variant.
-  appEvents.on("afterPublishProductToCatalog", async (product, catalogProduct) => {
+  appEvents.on("afterPublishProductToCatalog", async ({ catalogProduct }) => {
     const { variants } = catalogProduct;
 
     // Build a map of variant IDs to their potentially-changed prices
