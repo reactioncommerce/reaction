@@ -35,9 +35,9 @@ const resolverValidationOptions = {
 export default function createApolloServer(options = {}) {
   // the Meteor GraphQL server is an Express server
   const expressServer = express();
-  let typeDefs = options.typeDefs || [];
-  const schemasToMerge = typeDefs.filter((td) => typeof td !== "string");
-  typeDefs = typeDefs.filter((td) => typeof td === "string");
+  const schemas = options.schemas || [];
+  const schemasToMerge = schemas.filter((td) => typeof td !== "string");
+  const typeDefs = schemas.filter((td) => typeof td === "string");
   const { addCallMeteorMethod, context: contextFromOptions, resolvers } = options;
   const graphQLPath = options.path || defaultServerConfig.path;
   let schema = makeExecutableSchema({
