@@ -4,6 +4,9 @@
 [submodule "imports/plugins/custom/reaction-plugin-radial-lib"]
 	path = imports/plugins/custom/reaction-plugin-radial-lib
 	url = https://github.com/sportsdirect/reaction-plugin-radial-lib
+[submodule "imports/plugins/custom/custom-attributes"]
+	path = imports/plugins/custom/custom-attributes
+	url = git@github.com:sportsdirect/reaction-plugin-custom-attributes.git
 [submodule "imports/plugins/custom/reaction-plugin-email-bronto"]
 	path = imports/plugins/custom/reaction-plugin-email-bronto
 	url = git@github.com:sportsdirect/reaction-plugin-email-bronto.git

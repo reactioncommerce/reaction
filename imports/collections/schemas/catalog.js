@@ -127,6 +127,7 @@ export const SocialMetadata = new SimpleSchema({
  * @property {Number} index required
  * @property {Boolean} inventoryManagement required
  * @property {Boolean} inventoryPolicy required
+ * @property {Boolean} isBackorder required
  * @property {Boolean} isLowQuantity required
  * @property {Boolean} isSoldOut required
  * @property {Number} length optional, default value: `0`
@@ -179,6 +180,11 @@ export const VariantBaseSchema = new SimpleSchema({
   "inventoryPolicy": {
     type: Boolean,
     label: "True if inventory policy is enabled for this variant"
+  },
+  "isBackorder": {
+    type: Boolean,
+    label: "Indicates when the seller has allowed the sale of product which is not in stock",
+    defaultValue: false
   },
   "isLowQuantity": {
     type: Boolean,
