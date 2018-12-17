@@ -11,7 +11,11 @@ import ReactionError from "@reactioncommerce/reaction-error";
 import { MediaRecords, Products, Tags } from "/lib/collections";
 import { Media } from "/imports/plugins/core/files/server";
 import rawCollections from "/imports/collections/rawCollections";
+import updateCatalogProductInventoryStatus from "/imports/plugins/core/catalog/server/no-meteor/utils/updateCatalogProductInventoryStatus";
 import getGraphQLContextInMeteorMethod from "/imports/plugins/core/graphql/server/getGraphQLContextInMeteorMethod";
+import getVariantInventoryNotAvailableToSellQuantity from "/imports/plugins/core/inventory/server/no-meteor/utils/getVariantInventoryNotAvailableToSellQuantity";
+import updateParentVariantsInventoryAvailableToSellQuantity from "/imports/plugins/core/inventory/server/no-meteor/utils/updateParentVariantsInventoryAvailableToSellQuantity";
+import updateParentVariantsInventoryInStockQuantity from "/imports/plugins/core/inventory/server/no-meteor/utils/updateParentVariantsInventoryInStockQuantity";
 import hashProduct, { createProductHash } from "../no-meteor/mutations/hashProduct";
 import getCurrentCatalogPriceForProductConfiguration from "../no-meteor/queries/getCurrentCatalogPriceForProductConfiguration";
 import getProductPriceRange from "../no-meteor/utils/getProductPriceRange";
@@ -1059,6 +1063,72 @@ Meteor.methods({
     }
     return update;
   },
+
+  /**
+   * @name products/updateVariantAndProductInventory
+   * @memberof Methods/Products
+   * @method
+   * @summary update inventory available to see of a variant / option and it's parents
+   * @param {String} _id - variant or option ID of product that was updated
+   * @return {Number} returns update result
+   */
+  "products/updateVariantAndProductInventory"(_id) {
+    check(_id, String);
+
+    // Must have createProduct permission for active shop
+    if (!Reaction.hasPermission("createProduct")) {
+      throw new ReactionError("access-denied", "Access Denied");
+    }
+
+    // Check first if Product exists and then if user has the right to alter it
+    const doc = Products.findOne({ _id });
+    if (!doc) {
+      throw new ReactionError("not-found", "Product not found");
+    }
+
+    if (!Reaction.hasPermission("createProduct", this.userId, doc.shopId)) {
+      throw new ReactionError("access-denied", "Access Denied");
+    }
+
+    // Get reserved inventory - the inventory currently in an unprocessed order
+    const reservedInventory = Promise.await(getVariantInventoryNotAvailableToSellQuantity(doc, rawCollections));
+
+    // Compute `inventoryAvailableToSell` as the inventory in stock minus the reserved inventory
+    const computedInventoryAvailableToSell = doc.inventoryQuantity - reservedInventory;
+
+    // we need to use sync mode here, to return correct error and result to UI
+    let result;
+    try {
+      result = updateCatalogProduct(
+        this.userId,
+        {
+          _id
+        },
+        {
+          $set: {
+            inventoryAvailableToSell: computedInventoryAvailableToSell
+          }
+        },
+        {
+          selector: { type: "variant" }
+        }
+      );
+    } catch (err) {
+      throw new ReactionError("server-error", err.message);
+    }
+
+    // Update `inventoryAvailableToSell` on all parents of this variant / option
+    Promise.await(updateParentVariantsInventoryAvailableToSellQuantity(doc, rawCollections));
+    // Update `inventoryQuantity` on all parents of this variant / option
+    Promise.await(updateParentVariantsInventoryInStockQuantity(doc, rawCollections));
+
+    // Publish inventory to catalog
+    Promise.await(updateCatalogProductInventoryStatus(doc.ancestors[0], rawCollections));
+
+    // Return updated number for UI
+    return computedInventoryAvailableToSell;
+  },
+
 
   /**
    * @name products/updateProductTags
