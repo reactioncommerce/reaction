@@ -3,40 +3,18 @@ import rawCollections from "/imports/collections/rawCollections";
 
 /**
  * @name createDefaultNavigationTree
- * @summary Creates a navigation tree with a single "Home" item and assigns it as the default for a shop
+ * @summary Creates a default navigation tree for a shop
  * @param {Object} shop Shop to create tree for
  * @param {String} name Name of navigation tree
- * @return {Undefined} undefined
+ * @return {String} Navigation tree _id
  */
 export default async function createDefaultNavigationTree(shop, name) {
-  const { NavigationItems, NavigationTrees, Shops } = rawCollections;
-  const { _id: shopId, language } = shop;
-
-  // Create a "Home" nav item
-  const navigationItemId = Random.id();
-  const navigationItemData = {
-    content: [{
-      language,
-      value: "Home"
-    }],
-    url: "/",
-    isUrlRelative: true,
-    shouldOpenInNewWindow: false
-  };
-  await NavigationItems.insertOne({
-    _id: navigationItemId,
-    shopId,
-    draftData: navigationItemData,
-    data: navigationItemData,
-    createdAt: new Date(),
-    hasUnpublishedChanges: false
-  });
+  const { NavigationTrees, Shops } = rawCollections;
+  const { _id: shopId } = shop;
 
   // Create the tree
   const navigationTreeId = Random.id();
-  const navigationTreeItems = [{
-    navigationItemId
-  }];
+  const navigationTreeItems = [];
   await NavigationTrees.insertOne({
     _id: navigationTreeId,
     shopId,
@@ -46,5 +24,7 @@ export default async function createDefaultNavigationTree(shop, name) {
     hasUnpublishedChanges: false
   });
 
-  Shops.updateOne({ _id: shopId }, { $set: { defaultNavigationTreeId: navigationTreeId } });
+  await Shops.updateOne({ _id: shopId }, { $set: { defaultNavigationTreeId: navigationTreeId } });
+
+  return navigationTreeId;
 }
