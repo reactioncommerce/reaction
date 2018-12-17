@@ -5,10 +5,8 @@ import ReactionError from "@reactioncommerce/reaction-error";
 import { Orders, Products } from "/lib/collections";
 import rawCollections from "/imports/collections/rawCollections";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
-import getTopLevelVariant from "/imports/plugins/core/catalog/server/no-meteor/utils/getTopLevelVariant";
-import getProductInventoryInStockQuantity from "/imports/plugins/core/catalog/server/no-meteor/utils/getProductInventoryInStockQuantity";
-import getVariantInventoryInStockQuantity from "/imports/plugins/core/catalog/server/no-meteor/utils/getVariantInventoryInStockQuantity";
 import updateCatalogProductInventoryStatus from "/imports/plugins/core/catalog/server/no-meteor/utils/updateCatalogProductInventoryStatus";
+import updateParentVariantsInventoryInStockQuantity from "/imports/plugins/core/inventory/server/no-meteor/utils/updateParentVariantsInventoryInStockQuantity";
 import orderCreditMethod from "../util/orderCreditMethod";
 
 /**
@@ -50,49 +48,8 @@ function ordersInventoryAdjustByShop(orderId, shopId) {
         }
       );
 
-      // Check to see if this item is the top level variant, or an option
-      const topLevelVariant = await getTopLevelVariant(item.variantId, rawCollections);
-
-      // If item is an option, update the quantity on its parent variant too
-      if (topLevelVariant._id !== item.variantId) {
-        const variantInventoryInStockQuantity = await getVariantInventoryInStockQuantity(topLevelVariant, rawCollections);
-
-        await rawCollections.Products.updateOne(
-          {
-            _id: topLevelVariant._id
-          },
-          {
-            $set: {
-              inventoryQuantity: variantInventoryInStockQuantity
-            }
-          },
-          {
-            publish: true,
-            selector: {
-              type: "variant"
-            }
-          }
-        );
-      }
-
-      // Update the top level product to be the sum of all variant inventory numbers
-      const productInventoryInStockQuantity = await getProductInventoryInStockQuantity(item.productId, rawCollections);
-      await rawCollections.Products.updateOne(
-        {
-          _id: item.productId
-        },
-        {
-          $set: {
-            inventoryQuantity: productInventoryInStockQuantity
-          }
-        },
-        {
-          publish: true,
-          selector: {
-            type: "variant"
-          }
-        }
-      );
+      // Update `inventoryQuantity` on all parents of this variant / option
+      Promise.await(updateParentVariantsInventoryInStockQuantity(item, rawCollections));
 
       // Publish inventory updates to the Catalog
       Promise.await(updateCatalogProductInventoryStatus(item.productId, rawCollections));
