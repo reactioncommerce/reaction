@@ -40,15 +40,6 @@ export default {
   ...AbsoluteUrlMixin,
 
   init() {
-    const registerPluginHandlerFuncs = functionsByType.registerPluginHandler || [];
-    const packageInfoArray = Object.values(this.Packages);
-    registerPluginHandlerFuncs.forEach((registerPluginHandlerFunc) => {
-      if (typeof registerPluginHandlerFunc !== "function") {
-        throw new Error('A plugin registered a function of type "registerPluginHandler" which is not actually a function');
-      }
-      packageInfoArray.forEach(registerPluginHandlerFunc);
-    });
-
     // make sure the default shop has been created before going further
     while (!this.getShopId()) {
       Logger.warn("No shopId, waiting one second...");
@@ -74,6 +65,18 @@ export default {
       this.createDefaultAdminUser();
     }
     this.setAppVersion();
+
+    // Call `functionsByType.registerPluginHandler` functions for every plugin that
+    // has supplied one, passing in all other plugins. Allows one plugin for check
+    // for the presence of another plugin and read its config.
+    const registerPluginHandlerFuncs = functionsByType.registerPluginHandler || [];
+    const packageInfoArray = Object.values(this.Packages);
+    registerPluginHandlerFuncs.forEach((registerPluginHandlerFunc) => {
+      if (typeof registerPluginHandlerFunc !== "function") {
+        throw new Error('A plugin registered a function of type "registerPluginHandler" which is not actually a function');
+      }
+      packageInfoArray.forEach(registerPluginHandlerFunc);
+    });
 
     // hook after init finished
     Hooks.Events.run("afterCoreInit");

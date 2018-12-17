@@ -10,6 +10,10 @@ Reaction.registerPackage({
   label: "HydraOauth",
   name: "reaction-hydra-oauth",
   autoEnable: true,
+  addRolesToGroups: [{
+    groups: ["guest", "customer"],
+    roles: ["account/login"]
+  }],
   registry: [{
     route: "/account/login",
     name: "account/login",

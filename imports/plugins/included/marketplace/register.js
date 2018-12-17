@@ -12,6 +12,10 @@ Reaction.registerPackage({
     resolvers,
     schemas
   },
+  addRolesToGroups: [{
+    groups: ["owner", "shop manager", "customer", "guest"],
+    roles: ["stripe/connect/authorize"]
+  }],
   paymentMethods: [{
     name: "marketplace_stripe_card",
     displayName: "Marketplace Stripe Card"
