@@ -10,11 +10,11 @@ import {
 } from "../methods/searchcollections";
 import buildOrderSearchRecord from "../no-meteor/util/buildOrderSearchRecord";
 
-Hooks.Events.add("afterAccountsInsert", (userId, accountId) => {
+appEvents.on("afterAccountCreate", ({ account }) => {
   if (AccountSearch && !Meteor.isAppTest) {
     // Passing forceIndex will run account search index even if
     // updated fields don't match a searchable field
-    buildAccountSearchRecord(accountId, ["forceIndex"]);
+    buildAccountSearchRecord(account._id, ["forceIndex"]);
   }
 });
 
