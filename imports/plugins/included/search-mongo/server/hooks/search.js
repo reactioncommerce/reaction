@@ -40,14 +40,12 @@ appEvents.on("afterOrderUpdate", ({ order }) => {
  * if product is removed, remove product search record
  * @private
  */
-Hooks.Events.add("afterRemoveProduct", (doc) => {
-  if (ProductSearch && !Meteor.isAppTest && doc.type === "simple") {
-    const productId = doc._id;
-    ProductSearch.remove(productId);
+appEvents.on("afterProductDelete", ({ product }) => {
+  if (ProductSearch && !Meteor.isAppTest && product.type === "simple") {
+    const productId = product._id;
+    ProductSearch.remove({ _id: productId });
     Logger.debug(`Removed product ${productId} from ProductSearch collection`);
   }
-
-  return doc;
 });
 
 /**
