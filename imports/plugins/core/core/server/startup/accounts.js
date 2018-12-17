@@ -192,13 +192,9 @@ export default function startup() {
 
   /**
    * Accounts.onLogin event
-   * @param {Object} opts - user account creation options
+   * @param {Object} options - user account creation options
    */
-  Accounts.onLogin((opts) => {
-    // run onLogin hooks
-    // (the options object must be returned by all callbacks)
-    const options = Hooks.Events.run("onLogin", opts);
-
+  Accounts.onLogin((options) => {
     // The first time an "anonymous" user logs in for real, remove their "anonymous" role.
     // Anonymous users don't have profile access or ability to see order history, etc.
     if (options.type !== "anonymous" && options.type !== "resume") {
