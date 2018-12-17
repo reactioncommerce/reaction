@@ -49,17 +49,11 @@ export default {
       packageInfoArray.forEach(registerPluginHandlerFunc);
     });
 
-    // run beforeCoreInit hooks
-    Hooks.Events.run("beforeCoreInit");
-
     // make sure the default shop has been created before going further
     while (!this.getShopId()) {
       Logger.warn("No shopId, waiting one second...");
       Meteor._sleepForMs(1000);
     }
-
-    // run onCoreInit hooks
-    Hooks.Events.run("onCoreInit");
 
     // start job server
     Jobs.startJobServer(() => {
@@ -80,6 +74,7 @@ export default {
       this.createDefaultAdminUser();
     }
     this.setAppVersion();
+
     // hook after init finished
     Hooks.Events.run("afterCoreInit");
 
