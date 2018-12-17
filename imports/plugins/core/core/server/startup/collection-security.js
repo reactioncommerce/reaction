@@ -176,8 +176,4 @@ export default function () {
     update: () => true,
     remove: () => true
   });
-
-  // As the above security Rules definitions happen after all known Core Initialization Event hooks,
-  // Event hook to run after security rules are initialized. Use this hook to add security via a plugin
-  Hooks.Events.run("afterSecurityInit");
 }
