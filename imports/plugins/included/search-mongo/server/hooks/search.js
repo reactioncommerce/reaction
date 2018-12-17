@@ -18,9 +18,9 @@ appEvents.on("afterAccountCreate", ({ account }) => {
   }
 });
 
-Hooks.Events.add("afterAccountsRemove", (userId, accountId) => {
+appEvents.on("afterAccountDelete", ({ account }) => {
   if (AccountSearch && !Meteor.isAppTest) {
-    AccountSearch.remove(accountId);
+    AccountSearch.remove(account._id);
   }
 });
 
