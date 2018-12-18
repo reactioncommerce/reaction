@@ -1,4 +1,4 @@
-($slugOrId: String!) {
+query ($slugOrId: String!) {
   catalogItemProduct(slugOrId: $slugOrId) {
     _id
     shop {

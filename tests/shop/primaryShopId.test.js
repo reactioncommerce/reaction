@@ -12,7 +12,7 @@ beforeAll(async () => {
 
   shopId = await testApp.insertPrimaryShop();
 
-  primaryShopIdQuery = testApp.query(`{
+  primaryShopIdQuery = testApp.query(`query {
   primaryShopId
 }`);
 });

@@ -8,7 +8,7 @@ const opaqueShopId = "cmVhY3Rpb24vc2hvcDoxMjM="; // reaction/shop:123
 const shopName = "Test Shop";
 const mockTags = Factory.Tag.makeMany(25, { shopId: internalShopId, _id: (index) => (index + 100).toString(), position: (index) => index + 100 });
 
-const tagsQuery = `($shopId: ID!, $after: ConnectionCursor, $before: ConnectionCursor, $first: ConnectionLimitInt, $last: ConnectionLimitInt) {
+const tagsQuery = `query ($shopId: ID!, $after: ConnectionCursor, $before: ConnectionCursor, $first: ConnectionLimitInt, $last: ConnectionLimitInt) {
   tags(shopId: $shopId, after: $after, before: $before, first: $first, last: $last) {
     totalCount
     pageInfo {

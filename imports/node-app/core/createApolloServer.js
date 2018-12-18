@@ -1,22 +1,11 @@
-import cors from "cors";
-import bodyParser from "body-parser";
 import express from "express";
-import { graphqlExpress, graphiqlExpress } from "apollo-server-express";
-import { makeExecutableSchema } from "graphql-tools";
+import { makeExecutableSchema } from "apollo-server";
+import { ApolloServer } from "apollo-server-express";
 import buildContext from "./util/buildContext";
 import getErrorFormatter from "./util/getErrorFormatter";
 import tokenMiddleware from "./util/tokenMiddleware";
 
-const defaultServerConfig = {
-  // graphql endpoint
-  path: "/graphql-alpha",
-  // GraphiQL endpoint
-  graphiqlPath: "/graphiql",
-  // GraphiQL options (default: log the current user in your request)
-  graphiqlOptions: {
-    passHeader: "'meteor-login-token': localStorage['Meteor.loginToken'] || ''"
-  }
-};
+const DEFAULT_GRAPHQL_PATH = "/graphql-alpha";
 
 const resolverValidationOptions = {
   // After we fix all errors that this prints, we should probably go
@@ -28,63 +17,45 @@ const resolverValidationOptions = {
  * @name createApolloServer
  * @method
  * @memberof GraphQL
- * @summary Creates an express app, adds graphql and optionally graphiql routes to it,
- *   and the returns it.
+ * @summary Creates an express app with Apollo Server route
+ * @param {Object} options Options
  * @returns {ExpressApp} The express app
  */
 export default function createApolloServer(options = {}) {
-  // the Meteor GraphQL server is an Express server
-  const expressServer = express();
-
   const { addCallMeteorMethod, context: contextFromOptions, resolvers, typeDefs } = options;
-  const graphQLPath = options.path || defaultServerConfig.path;
+  const path = options.path || DEFAULT_GRAPHQL_PATH;
 
-  // GraphQL endpoint, enhanced with JSON body parser
-  expressServer.use(
-    graphQLPath,
-    cors(),
-    bodyParser.json(),
-    tokenMiddleware(contextFromOptions),
-    graphqlExpress(async (req) => {
+  // Create a custom Express server so that we can add our own middleware and HTTP routes
+  const app = express();
+
+  const schema = makeExecutableSchema({ typeDefs, resolvers, resolverValidationOptions });
+
+  const server = new ApolloServer({
+    async context({ req }) {
       const context = { ...contextFromOptions };
 
-      // meteorTokenMiddleware will have set req.user if there is one
-
+      // meteorTokenMiddleware will have already set req.user if there is one
       await buildContext(context, req);
 
       addCallMeteorMethod(context);
 
-      return {
-        context,
-        debug: options.debug || false,
-        formatError: getErrorFormatter(context),
-        formatResponse(res) {
-          // Apollo includes `errors` in the response when empty, but the spec forbids this.
-          // http://facebook.github.io/graphql/draft/#sec-Errors
-          if (Object.prototype.hasOwnProperty.call(res, "errors") && (!res.errors || res.errors.filter((v) => !!v).length === 0)) {
-            delete res.errors;
-          }
+      return context;
+    },
+    debug: options.debug || false,
+    formatError: getErrorFormatter(),
+    schema
+  });
 
-          return res;
-        },
-        schema: makeExecutableSchema({ typeDefs, resolvers, resolverValidationOptions })
-      };
-    })
+  // GraphQL endpoint, enhanced with JSON body parser
+  app.use(
+    path,
+    tokenMiddleware(contextFromOptions)
   );
 
-  // Start GraphiQL if enabled
-  if (options.graphiql) {
-    // GraphiQL endpoint
-    expressServer.use(
-      options.graphiqlPath || defaultServerConfig.graphiqlPath,
-      graphiqlExpress({
-        // GraphiQL options
-        ...defaultServerConfig.graphiqlOptions,
-        // endpoint of the graphql server where to send requests
-        endpointURL: graphQLPath
-      })
-    );
-  }
+  server.applyMiddleware({ app, cors: true, path });
 
-  return expressServer;
+  return {
+    apolloServer: server,
+    expressApp: app
+  };
 }
