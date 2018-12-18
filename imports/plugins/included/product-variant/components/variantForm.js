@@ -794,7 +794,6 @@ VariantForm.propTypes = {
   isDeleted: PropTypes.bool,
   onCardExpand: PropTypes.func,
   onFieldChange: PropTypes.func,
-  onUpdateQuantityField: PropTypes.func,
   onVariantFieldSave: PropTypes.func,
   onVisibilityButtonClick: PropTypes.func,
   removeVariant: PropTypes.func,
