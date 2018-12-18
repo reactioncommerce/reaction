@@ -1,5 +1,3 @@
-import getProductQuantity from "./getProductQuantity";
-
 /**
  * @method isSoldOut
  * @summary If all the product variants have a quantity of 0 return `true`.
@@ -8,9 +6,6 @@ import getProductQuantity from "./getProductQuantity";
  * @return {Boolean} true if quantity is zero.
  */
 export default function isSoldOut(variants) {
-  const results = variants.map((variant) => {
-    const quantity = getProductQuantity(variant, variants);
-    return variant.inventoryManagement && quantity <= 0;
-  });
+  const results = variants.map((variant) => variant.inventoryManagement && variant.inventoryAvailableToSell <= 0);
   return results.every((result) => result);
 }
