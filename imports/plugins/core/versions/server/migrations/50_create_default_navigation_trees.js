@@ -1,7 +1,7 @@
 import { Migrations } from "meteor/percolate:migrations";
 import rawCollections from "/imports/collections/rawCollections";
-import createDefaultNavigationTree from "/imports/plugins/core/navigation/server/no-meteor/util/createDefaultNavigationTree";
-import migrateTagNav from "/imports/plugins/core/navigation/server/no-meteor/util/migrateTagNav";
+import createDefaultNavigationTree from "/imports/plugins/core/versions/server/util/createDefaultNavigationTree";
+import migrateTagNav from "/imports/plugins/core/versions/server/util/migrateTagNav";
 
 const { NavigationTrees, Shops } = rawCollections;
 

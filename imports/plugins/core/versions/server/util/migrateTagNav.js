@@ -28,43 +28,54 @@ export default async function migrateTagNav(shopId, treeId) {
  * @summary Builds and returns a navigation tree structure for tags in a shop
  * @param {Object} shop Shop to load tags for
  * @param {String} treeId Navigation Tree _id
- * @param {Array} [childTagIds] A tag's child tag _ids (used when function recursively calls itself)
+ * @param {Array} tags Cache of all visible tags in database. Used when function calls itself
+ * @param {Array} [childTagIds] A tag's child tag _ids. Used when function recursively calls itself
  * @return {Array} Navigation tree items
  */
-async function getTreeItemsForTags(shop, treeId, childTagIds = []) {
+async function getTreeItemsForTags(shop, treeId, tags = [], childTagIds = []) {
   const { Tags } = rawCollections;
   const { _id: shopId, language } = shop;
 
-  const selector = {
-    shopId,
-    isVisible: true,
-    isDeleted: false,
-    isTopLevel: !childTagIds.length
-  };
-  const options = {};
-  if (selector.isTopLevel) {
-    options.sort = {
-      position: 1
-    };
+  if (!tags.length) {
+    // First run, query for all visible tags
+    const allTags = await Tags.find({
+      shopId,
+      isVisible: true,
+      isDeleted: false
+    }, {
+      sort: {
+        position: 1 // Position is only present on top-level tags
+      }
+    }).toArray();
+
+    tags.push(...allTags);
+  }
+
+  const thisLevelTags = [];
+  if (!childTagIds.length) {
+    // Get top-level tags, ordered by position
+    tags.forEach((tag) => {
+      if (tag.isTopLevel) {
+        thisLevelTags.push(tag);
+      }
+    });
   } else {
-    options.sort = {
-      created: 1
-    };
-  }
-  if (childTagIds.length) {
-    selector._id = {
-      $in: childTagIds
-    };
+    // Get child tags, in order they are defined on parent
+    childTagIds.forEach((childTagId) => {
+      const childTag = tags.find((tag) => tag._id === childTagId);
+      if (childTag) {
+        thisLevelTags.push(childTag);
+      }
+    });
   }
 
-  const tags = await Tags.find(selector, options).toArray();
 
-  const treeItems = await Promise.all(tags.map(async (tag) => {
+  const treeItems = await Promise.all(thisLevelTags.map(async (tag) => {
     const { relatedTagIds = [] } = tag;
     const treeItem = await createTagNavItem(tag, language, treeId);
 
     if (relatedTagIds.length) {
-      const childTreeItems = await getTreeItemsForTags(shop, treeId, relatedTagIds);
+      const childTreeItems = await getTreeItemsForTags(shop, treeId, tags, relatedTagIds);
       treeItem.items = childTreeItems;
     }
 
