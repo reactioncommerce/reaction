@@ -51,19 +51,20 @@ export default async function getFulfillmentGroupTaxes(context, { order, forceZe
   }
 
   // The tax service may return `null` if it can't calculate due to missing info
-  if (!taxServiceResult) {
+  if (!taxServiceResult && fallbackTaxService) {
     // if primaryTaxService returns null, try the fallbackTaxService before falling back to forceZeroTax (if set)
-    if (fallbackTaxService) {
-      Logger.info("Primary tax service calculation returned null. Using set fallback tax service");
-      try {
-        taxServiceResult = await fallbackTaxService.functions.calculateOrderTaxes({ context, order });
-      } catch (fallbackError) {
-        Logger.error(`Error in calculateOrderTaxes for the fallback tax service (${fallbackTaxService.displayName})`, fallbackError);
-        throw new ReactionError("internal-error", "Error while calculating taxes");
-      }
-    } else {
-      return forceZeroes ? defaultReturnValue : { itemTaxes: [], taxSummary: null };
+    Logger.info("Primary tax service calculation returned null. Using set fallback tax service");
+    try {
+      taxServiceResult = await fallbackTaxService.functions.calculateOrderTaxes({ context, order });
+    } catch (fallbackError) {
+      Logger.error(`Error in calculateOrderTaxes for the fallback tax service (${fallbackTaxService.displayName})`, fallbackError);
+      throw new ReactionError("internal-error", "Error while calculating taxes");
     }
+  }
+
+  // if none of primary and fallback services returns valid tax response, default to zero or empty
+  if (!taxServiceResult) {
+    return forceZeroes ? defaultReturnValue : { itemTaxes: [], taxSummary: null };
   }
 
   try {
