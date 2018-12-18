@@ -25,6 +25,7 @@ const mockVariants = [
   {
     _id: internalVariantIds[0],
     barcode: "barcode",
+    canBackorder: true,
     createdAt,
     height: 0,
     index: 0,
@@ -65,6 +66,7 @@ const mockVariants = [
   {
     _id: internalVariantIds[0],
     barcode: "barcode",
+    canBackorder: true,
     createdAt,
     height: 0,
     index: 0,
@@ -107,6 +109,7 @@ const mockVariants = [
 const mockProduct = {
   _id: internalCatalogItemId,
   barcode: "abc123",
+  canBackorder: true,
   createdAt,
   description: "Mock product description",
   height: 11.23,
@@ -168,6 +171,7 @@ const updatedMockProduct = {
   _id: internalCatalogItemId,
   shopId: internalShopId,
   barcode: "barcode",
+  canBackorder: true,
   createdAt,
   description: "description",
   facebookMsg: "facebookMessage",
@@ -314,7 +318,6 @@ test("expect true if a product is published to the catalog collection", async ()
   mockContext.collections.Products.findOne.mockReturnValue(Promise.resolve(updatedMockProduct));
   mockContext.collections.Catalog.updateOne.mockReturnValueOnce(Promise.resolve({ result: { ok: 1 } }));
   const spec = await publishProductToCatalog(mockProduct, mockContext);
-  console.log("------------- spec", spec);
 
   expect(spec).toBe(true);
 });
@@ -324,6 +327,5 @@ test("expect false if a product is not published to the catalog collection", asy
   mockContext.collections.Shops.findOne.mockReturnValueOnce(Promise.resolve(mockShop));
   mockContext.collections.Catalog.updateOne.mockReturnValueOnce(Promise.resolve({ result: { ok: 0 } }));
   const spec = await publishProductToCatalog(mockProduct, mockContext);
-  console.log("------------- spec2", spec);
   expect(spec).toBe(false);
 });
