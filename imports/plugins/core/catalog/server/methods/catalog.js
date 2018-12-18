@@ -1097,7 +1097,7 @@ Meteor.methods({
     const computedInventoryAvailableToSell = doc.inventoryQuantity - reservedInventory;
 
     // we need to use sync mode here, to return correct error and result to UI
-    let result;
+    let result; // eslint-disable-line
     try {
       result = updateCatalogProduct(
         this.userId,

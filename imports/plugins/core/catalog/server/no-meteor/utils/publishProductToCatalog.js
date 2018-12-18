@@ -39,9 +39,6 @@ export default async function publishProductToCatalog(product, context) {
     }
   };
 
-
-  console.log("---------- modifier", modifier);
-
   Schemas.Catalog.validate(modifier, { modifier: true });
 
   // Insert/update catalog document
