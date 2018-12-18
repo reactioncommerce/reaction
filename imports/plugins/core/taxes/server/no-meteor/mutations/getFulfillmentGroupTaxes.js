@@ -26,7 +26,7 @@ export default async function getFulfillmentGroupTaxes(context, { order, forceZe
 
   const { items, shopId } = order;
 
-  const { activeTaxService, fallbackTaxService } = await getTaxServicesForShop(context, shopId);
+  const { primaryTaxService, fallbackTaxService } = await getTaxServicesForShop(context, shopId);
 
   const defaultReturnValue = {
     taxSummary: {
@@ -38,15 +38,15 @@ export default async function getFulfillmentGroupTaxes(context, { order, forceZe
     itemTaxes: items.map((item) => ({ itemId: item._id, tax: 0, taxableAmount: 0, taxes: [] }))
   };
 
-  if (!activeTaxService) {
+  if (!primaryTaxService) {
     return forceZeroes ? defaultReturnValue : { itemTaxes: [], taxSummary: null };
   }
 
   let taxServiceResult;
   try {
-    taxServiceResult = await activeTaxService.functions.calculateOrderTaxes({ context, order });
+    taxServiceResult = await primaryTaxService.functions.calculateOrderTaxes({ context, order });
   } catch (error) {
-    Logger.error(`Error in calculateOrderTaxes for the active tax service (${activeTaxService.displayName})`, error);
+    Logger.error(`Error in calculateOrderTaxes for the primary tax service (${primaryTaxService.displayName})`, error);
     throw new ReactionError("internal-error", "Error while calculating taxes");
   }
 

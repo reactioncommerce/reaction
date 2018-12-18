@@ -13,7 +13,7 @@ export default class GeneralTaxSettings extends Component {
   static propTypes = {
     onSubmit: PropTypes.func.isRequired,
     settingsDoc: PropTypes.shape({
-      activeTaxServiceName: PropTypes.string,
+      primaryTaxServiceName: PropTypes.string,
       fallbackTaxServiceName: PropTypes.string,
       defaultTaxCode: PropTypes.string
     }),
@@ -33,7 +33,7 @@ export default class GeneralTaxSettings extends Component {
   };
 
   enableFallbackTaxSelect = (currentSettings) => {
-    if (currentSettings.activeTaxServiceName) return false;
+    if (currentSettings.primaryTaxServiceName) return false;
     return true;
   }
 
@@ -53,16 +53,16 @@ export default class GeneralTaxSettings extends Component {
   render() {
     const { onSubmit, settingsDoc, validator } = this.props;
 
-    const activeTaxServiceNameInputId = `activeTaxServiceName_${this.uniqueInstanceIdentifier}`;
+    const primaryTaxServiceNameInputId = `primaryTaxServiceName_${this.uniqueInstanceIdentifier}`;
     const fallbackTaxServiceNameInputId = `fallbackTaxServiceName_${this.uniqueInstanceIdentifier}`;
     const defaultTaxCodeInputId = `defaultTaxCode_${this.uniqueInstanceIdentifier}`;
 
     return (
       <div className="clearfix">
         <Form ref={(formRef) => { this.form = formRef; }} onSubmit={onSubmit} validator={validator} value={settingsDoc}>
-          <Field name="activeTaxServiceName" label={i18next.t("admin.taxSettings.activeTaxServiceName")} labelFor={activeTaxServiceNameInputId}>
-            <Select id={activeTaxServiceNameInputId} name="activeTaxServiceName" options={this.taxServicesOptions} placeholder={i18next.t("admin.taxSettings.activeTaxServiceNamePlaceholder")} />
-            <ErrorsBlock names={["activeTaxServiceName"]} />
+          <Field name="primaryTaxServiceName" label={i18next.t("admin.taxSettings.primaryTaxServiceName")} labelFor={primaryTaxServiceNameInputId}>
+            <Select id={primaryTaxServiceNameInputId} name="primaryTaxServiceName" options={this.taxServicesOptions} placeholder={i18next.t("admin.taxSettings.primaryTaxServiceNamePlaceholder")} />
+            <ErrorsBlock names={["primaryTaxServiceName"]} />
           </Field>
           <Field name="fallbackTaxServiceName" label={i18next.t("admin.taxSettings.fallbackTaxServiceName")} labelFor={fallbackTaxServiceNameInputId}>
             <Select

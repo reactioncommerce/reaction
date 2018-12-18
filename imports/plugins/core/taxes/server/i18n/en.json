@@ -40,8 +40,8 @@
           "nottaxable": "Not Taxable",
           "confirmRateDelete": "Confirm tax rate deletion",
           "defaultTaxCode": "Default tax code for products",
-          "activeTaxServiceName": "Active tax service",
-          "activeTaxServiceNamePlaceholder": "None (do not charge tax)",
+          "primaryTaxServiceName": "Primary tax service",
+          "primaryTaxServiceNamePlaceholder": "None (do not charge tax)",
           "fallbackTaxServiceName": "Fallback tax service",
           "fallbackTaxServiceNamePlaceholder": "None (no fallback tax service)"
         }

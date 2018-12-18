@@ -16,9 +16,9 @@ export default async function taxCodes(context, shopId) {
     throw new ReactionError("access-denied", "Access denied");
   }
 
-  const { activeTaxService } = await getTaxServicesForShop(context, shopId);
-  if (!activeTaxService) return [];
+  const { primaryTaxService } = await getTaxServicesForShop(context, shopId);
+  if (!primaryTaxService) return [];
 
-  const list = await activeTaxService.functions.getTaxCodes({ context, shopId });
+  const list = await primaryTaxService.functions.getTaxCodes({ context, shopId });
   return sortBy(list, "label");
 }

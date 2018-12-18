@@ -17,20 +17,20 @@ export function registerPluginHandler({ name: pluginName, taxServices: pluginTax
  * @param {Object} context The app context
  * @param {String} shopId The shop ID
  * @returns {Object} An object containing the definitions from registerPackage for the
- *   active and fallback tax services currently enabled for the shop with ID `shopId`.
+ *   primary and fallback tax services currently enabled for the shop with ID `shopId`.
  */
 export async function getTaxServicesForShop(context, shopId) {
   const plugin = await context.collections.Packages.findOne({ name: "reaction-taxes", shopId });
   if (!plugin) return {};
 
-  const { activeTaxServiceName, fallbackTaxServiceName } = plugin.settings || {};
-  if (!activeTaxServiceName) return {}; // at least an active must be set
+  const { primaryTaxServiceName, fallbackTaxServiceName } = plugin.settings || {};
+  if (!primaryTaxServiceName) return {}; // at least a primary service must be set
 
-  const activeTaxService = taxServices[activeTaxServiceName];
+  const primaryTaxService = taxServices[primaryTaxServiceName];
   const fallbackTaxService = taxServices[fallbackTaxServiceName];
 
-  if (!activeTaxService) {
-    throw new Error(`Active tax service is "${activeTaxServiceName}" but no such service exists. ` +
+  if (!primaryTaxService) {
+    throw new Error(`Primary tax service is "${primaryTaxServiceName}" but no such service exists. ` +
       "Did you forget to install the plugin that provides this service?");
   }
 
@@ -39,5 +39,5 @@ export async function getTaxServicesForShop(context, shopId) {
       "Did you forget to install the plugin that provides this service?");
   }
 
-  return { activeTaxService, fallbackTaxService };
+  return { primaryTaxService, fallbackTaxService };
 }

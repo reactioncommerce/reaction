@@ -14,7 +14,7 @@ export const TaxPackageConfig = PackageConfig.clone().extend({
     blackbox: false,
     defaultValue: {}
   },
-  "settings.activeTaxServiceName": {
+  "settings.primaryTaxServiceName": {
     type: String,
     optional: true
   },
