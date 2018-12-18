@@ -16,21 +16,21 @@ export default async function updateParentVariantsInventoryAvailableToSellQuanti
   // the parent based on different data
   // If this is a cart item, `productId` and `variantId` are fields on the object
   // If this is a product object, _id is the equivalent of `variantId`, and `ancestors[0]` is the productId
-  let productId;
-  let variantId;
+  let updateProductId;
+  let updateVariantId;
   if (item.variantId && item.productId) {
-    productId = item.productId;
-    variantId = item.variantId;
+    updateProductId = item.productId;
+    updateVariantId = item.variantId;
   } else {
-    productId = item.ancestors[0];
-    variantId = item._id;
+    updateProductId = item.ancestors[0]; // eslint-disable-line
+    updateVariantId = item._id;
   }
 
   // Check to see if this item is the top level variant, or an option
-  const topLevelVariant = await getTopLevelVariant(variantId, collections);
+  const topLevelVariant = await getTopLevelVariant(updateVariantId, collections);
 
   // If item is an option, update the quantity on its parent variant too
-  if (topLevelVariant._id !== item._id) {
+  if (topLevelVariant._id !== updateVariantId) {
     const variantInventoryAvailableToSellQuantity = await getVariantInventoryAvailableToSellQuantity(topLevelVariant, collections);
 
     await collections.Products.updateOne(
@@ -52,11 +52,11 @@ export default async function updateParentVariantsInventoryAvailableToSellQuanti
   }
 
   // Update the top level product to be the sum of all variant inventory numbers
-  const productInventoryAvailableToSellQuantity = await getProductInventoryAvailableToSellQuantity(productId, collections);
+  const productInventoryAvailableToSellQuantity = await getProductInventoryAvailableToSellQuantity(updateProductId, collections);
 
   await collections.Products.updateOne(
     {
-      _id: productId
+      _id: updateProductId
     },
     {
       $set: {
