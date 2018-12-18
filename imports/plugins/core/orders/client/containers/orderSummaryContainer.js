@@ -142,13 +142,6 @@ const composer = (props, onData) => {
     if (order) {
       const profileShippingAddress = getShippingInfo(order).address || {};
 
-      if (order.workflow) {
-        if (order.workflow.status === "coreOrderCreated") {
-          order.workflow.status = "coreOrderCreated";
-          Meteor.call("workflow/pushOrderWorkflow", "coreOrderWorkflow", "coreOrderCreated", order);
-        }
-      }
-
       onData(null, {
         order,
         profileShippingAddress
