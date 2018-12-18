@@ -63,7 +63,7 @@ const mockVariants = [
   },
   {
     _id: internalVariantIds[1],
-    ancestors: [internalCatalogProductId, internalVariantIds[0]],
+    ancestors: [internalCatalogProductId],
     barcode: "barcode",
     height: 2,
     index: 0,
