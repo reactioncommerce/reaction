@@ -23,9 +23,7 @@ const wrapComponent = (Comp) => (
 
       for (const topVariant of topVariants) {
         const inventoryThreshold = topVariant.lowInventoryWarningThreshold;
-        const inventoryQuantity = ReactionProduct.getVariantQuantity(topVariant);
-
-        if (inventoryQuantity !== 0 && inventoryThreshold >= inventoryQuantity) {
+        if (topVariant.inventoryAvailableToSell !== 0 && inventoryThreshold >= topVariant.inventoryAvailableToSell) {
           return true;
         }
       }
@@ -36,9 +34,7 @@ const wrapComponent = (Comp) => (
       const topVariants = ReactionProduct.getTopVariants(this.props.product._id);
 
       for (const topVariant of topVariants) {
-        const inventoryQuantity = ReactionProduct.getVariantQuantity(topVariant);
-
-        if (inventoryQuantity > 0) {
+        if (topVariant.inventoryAvailableToSell > 0) {
           return false;
         }
       }

@@ -19,9 +19,8 @@ const composer = (props, onData) => {
 
   // Admins pull variants from the Products collection
   if (Reaction.hasPermission(["createProduct"], Reaction.getShopId())) {
-    const inventoryQuantity = ReactionProduct.getVariantQuantity(variant);
     // Product collection variant
-    if (inventoryManagement && !inventoryPolicy && inventoryQuantity === 0) {
+    if (inventoryManagement && !inventoryPolicy && variant.inventoryAvailableToSell === 0) {
       status = "info";
       label = "Backorder";
       i18nKeyLabel = "productDetail.backOrder";
@@ -30,7 +29,7 @@ const composer = (props, onData) => {
       label = "Sold Out!";
       i18nKeyLabel = "productDetail.soldOut";
     } else if (inventoryManagement) {
-      if (lowInventoryWarningThreshold >= inventoryQuantity) {
+      if (lowInventoryWarningThreshold >= variant.inventoryAvailableToSell) {
         status = "warning";
         label = "Limited Supply";
         i18nKeyLabel = "productDetail.limitedSupply";
