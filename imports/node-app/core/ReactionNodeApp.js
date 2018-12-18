@@ -43,7 +43,7 @@ export default class ReactionNodeApp {
       debug: this.options.debug || false,
       graphiql: graphiql || false,
       resolvers,
-      typeDefs: schemas
+      schemas
     });
   }
 
