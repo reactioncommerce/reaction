@@ -2,9 +2,9 @@ import Logger from "@reactioncommerce/logger";
 import canBackorder from "./canBackorder";
 import getCatalogProductMedia from "./getCatalogProductMedia";
 import getPriceRange from "./getPriceRange";
-import isBackorder from "./isBackorder";
-import isLowQuantity from "./isLowQuantity";
-import isSoldOut from "./isSoldOut";
+import isBackorder from "/imports/plugins/core/inventory/server/no-meteor/utils/isBackorder";
+import isLowQuantity from "/imports/plugins/core/inventory/server/no-meteor/utils/isLowQuantity";
+import isSoldOut from "/imports/plugins/core/inventory/server/no-meteor/utils/isSoldOut";
 
 /**
  * @method

@@ -3,9 +3,9 @@ import {
   rewire as rewire$getCatalogProductMedia,
   restore as restore$getCatalogProductMedia
 } from "./getCatalogProductMedia";
-import { rewire as rewire$isBackorder, restore as restore$isBackorder } from "./isBackorder";
-import { rewire as rewire$isLowQuantity, restore as restore$isLowQuantity } from "./isLowQuantity";
-import { rewire as rewire$isSoldOut, restore as restore$isSoldOut } from "./isSoldOut";
+import { rewire as rewire$isBackorder, restore as restore$isBackorder } from "/imports/plugins/core/inventory/server/no-meteor/utils/isBackorder";
+import { rewire as rewire$isLowQuantity, restore as restore$isLowQuantity } from "/imports/plugins/core/inventory/server/no-meteor/utils/isLowQuantity";
+import { rewire as rewire$isSoldOut, restore as restore$isSoldOut } from "/imports/plugins/core/inventory/server/no-meteor/utils/isSoldOut";
 import createCatalogProduct, { restore as restore$createCatalogProduct, rewire$xformProduct } from "./createCatalogProduct";
 
 const internalShopId = "123";

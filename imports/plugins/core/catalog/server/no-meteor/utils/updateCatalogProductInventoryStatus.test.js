@@ -1,7 +1,7 @@
 import mockContext from "/imports/test-utils/helpers/mockContext";
-import { rewire as rewire$isBackorder, restore as restore$isBackorder } from "./isBackorder";
-import { rewire as rewire$isLowQuantity, restore as restore$isLowQuantity } from "./isLowQuantity";
-import { rewire as rewire$isSoldOut, restore as restore$isSoldOut } from "./isSoldOut";
+import { rewire as rewire$isBackorder, restore as restore$isBackorder } from "/imports/plugins/core/inventory/server/no-meteor/utils/isBackorder";
+import { rewire as rewire$isLowQuantity, restore as restore$isLowQuantity } from "/imports/plugins/core/inventory/server/no-meteor/utils/isLowQuantity";
+import { rewire as rewire$isSoldOut, restore as restore$isSoldOut } from "/imports/plugins/core/inventory/server/no-meteor/utils/isSoldOut";
 import updateCatalogProductInventoryStatus from "./updateCatalogProductInventoryStatus";
 
 const mockCollections = { ...mockContext.collections };

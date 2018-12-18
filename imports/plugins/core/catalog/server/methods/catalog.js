@@ -21,9 +21,9 @@ import getCurrentCatalogPriceForProductConfiguration from "../no-meteor/queries/
 import getProductPriceRange from "../no-meteor/utils/getProductPriceRange";
 import getVariants from "../no-meteor/utils/getVariants";
 import hasChildVariant from "../no-meteor/utils/hasChildVariant";
-import isSoldOut from "../no-meteor/utils/isSoldOut";
-import isLowQuantity from "../no-meteor/utils/isLowQuantity";
-import isBackorder from "../no-meteor/utils/isBackorder";
+import isSoldOut from "/imports/plugins/core/inventory/server/no-meteor/utils/isSoldOut";
+import isLowQuantity from "/imports/plugins/core/inventory/server/no-meteor/utils/isLowQuantity";
+import isBackorder from "/imports/plugins/core/inventory/server/no-meteor/utils/isBackorder";
 
 /* eslint new-cap: 0 */
 /* eslint no-loop-func: 0 */
