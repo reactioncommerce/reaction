@@ -1,7 +1,6 @@
 import { registerComponent, composeWithTracker } from "@reactioncommerce/reaction-components";
 import { InventoryBadge } from "../components/badge";
 import { Reaction } from "/client/api";
-import { ReactionProduct } from "/lib/api";
 
 const composer = (props, onData) => {
   const { variant, soldOut } = props;
