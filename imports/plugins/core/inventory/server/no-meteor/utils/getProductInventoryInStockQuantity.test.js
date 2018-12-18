@@ -1,6 +1,6 @@
 import mockContext from "/imports/test-utils/helpers/mockContext";
-import { rewire as rewire$getVariants, restore as restore$getVariants } from "./getVariants";
-import getProductInventoryAvailableToSellQuantity from "./getProductInventoryAvailableToSellQuantity";
+import { rewire as rewire$getVariants, restore as restore$getVariants } from "/imports/plugins/core/catalog/server/no-meteor/utils/getVariants";
+import getProductInventoryInStockQuantity from "./getProductInventoryInStockQuantity";
 
 const mockCollections = { ...mockContext.collections };
 const mockGetVariants = jest.fn().mockName("getVariants");
@@ -20,7 +20,7 @@ const mockVariants = [
     createdAt,
     height: 0,
     index: 0,
-    inventoryAvailableToSell: 6,
+    inventoryAvailableToSell: 5,
     inventoryManagement: true,
     inventoryPolicy: false,
     inventoryQuantity: 5,
@@ -60,7 +60,7 @@ const mockVariants = [
     barcode: "barcode",
     height: 2,
     index: 0,
-    inventoryAvailableToSell: 3,
+    inventoryAvailableToSell: 5,
     inventoryManagement: true,
     inventoryPolicy: true,
     inventoryQuantity: 5,
@@ -104,14 +104,14 @@ afterAll(restore$getVariants);
 // expect product variant quantity number when passing a single variant
 test("expect product variant quantity number", async () => {
   mockGetVariants.mockReturnValueOnce(Promise.resolve(mockVariants));
-  const spec = await getProductInventoryAvailableToSellQuantity(mockVariants, mockCollections);
-  expect(spec).toEqual(9);
+  const spec = await getProductInventoryInStockQuantity(mockVariants, mockCollections);
+  expect(spec).toEqual(10);
 });
 
 // expect 0 if all variants have an inventory quantity of 0
 test("expect 0 if all variants have an inventory quantity of 0", async () => {
   mockVariants[0].inventoryAvailableToSell = 0;
   mockVariants[1].inventoryAvailableToSell = 0;
-  const spec = await getProductInventoryAvailableToSellQuantity(mockVariants[0], mockCollections, mockVariants);
+  const spec = await getProductInventoryInStockQuantity(mockVariants[0], mockCollections, mockVariants);
   expect(spec).toEqual(0);
 });

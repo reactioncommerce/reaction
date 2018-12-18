@@ -1,6 +1,6 @@
 import getTopLevelVariant from "/imports/plugins/core/catalog/server/no-meteor/utils/getTopLevelVariant";
-import getProductInventoryInStockQuantity from "/imports/plugins/core/catalog/server/no-meteor/utils/getProductInventoryInStockQuantity";
-import getVariantInventoryInStockQuantity from "/imports/plugins/core/catalog/server/no-meteor/utils/getVariantInventoryInStockQuantity";
+import getProductInventoryInStockQuantity from "/imports/plugins/core/inventory/server/no-meteor/utils/getProductInventoryInStockQuantity";
+import getVariantInventoryInStockQuantity from "/imports/plugins/core/inventory/server/no-meteor/utils/getVariantInventoryInStockQuantity";
 /**
  *
  * @method updateParentVariantsInventoryAvailableToSellQuantity

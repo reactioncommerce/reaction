@@ -1,4 +1,4 @@
-import getVariants from "./getVariants";
+import getVariants from "/imports/plugins/core/catalog/server/no-meteor/utils/getVariants";
 
 /**
  *
