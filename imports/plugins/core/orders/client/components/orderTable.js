@@ -6,7 +6,7 @@ import { formatPriceString, i18next } from "/client/api";
 import { Orders } from "/lib/collections";
 import { Components, withMoment } from "@reactioncommerce/reaction-components";
 import { Badge, ClickToCopy, Icon, Translation, Checkbox, Loading, SortableTable } from "@reactioncommerce/reaction-ui";
-import { getOrderRiskBadge, getOrderRiskStatus, getPaymentForCurrentShop, getShippingInfo } from "../helpers";
+import { getOrderRiskBadge, getOrderRiskStatus, getShippingInfo } from "../helpers";
 import OrderTableColumn from "./orderTableColumn";
 import OrderBulkActionsBar from "./orderBulkActionsBar";
 
@@ -97,7 +97,8 @@ class OrderTable extends Component {
 
   renderOrderInfo(order) {
     const { displayMedia, moment } = this.props;
-    const { invoice } = getPaymentForCurrentShop(order);
+    const [payment] = order.payments || [];
+    const { amount } = payment || {};
 
     const allOrderItems = order.shipping.reduce((items, group) => {
       group.items.forEach((item) => {
@@ -127,7 +128,7 @@ class OrderTable extends Component {
           </span>
 
           <span className="order-data order-data-total">
-            <strong>Total: {formatPriceString(invoice.total)}</strong>
+            <strong>Total: {formatPriceString(amount)}</strong>
           </span>
         </div>
 
@@ -249,7 +250,7 @@ class OrderTable extends Component {
         },
         total: {
           accessor: (row) => {
-            const { invoice } = getPaymentForCurrentShop(row);
+            const { invoice } = getShippingInfo(row);
             return invoice ? invoice.total : 0;
           },
           id: "billingTotal"

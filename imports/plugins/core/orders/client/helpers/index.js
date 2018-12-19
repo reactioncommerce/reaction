@@ -156,17 +156,6 @@ export function filterShippingStatus(filter) {
 }
 
 /**
- * @name getPaymentForCurrentShop
- * @memberof Helpers
- * @summary get proper payment object as per current active shop
- * @param {Object} order - order object to check against
- * @return {Object} proper payment object to use
- */
-export function getPaymentForCurrentShop(order) {
-  return getShippingInfo(order).payment || {};
-}
-
-/**
  * @name getShippingInfo
  * @memberof Helpers
  * @summary get proper shipping object as per current active shop

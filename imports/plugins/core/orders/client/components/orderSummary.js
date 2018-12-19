@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { withMoment, Components } from "@reactioncommerce/reaction-components";
 import { Badge, ClickToCopy } from "@reactioncommerce/reaction-ui";
 import { formatPriceString } from "/client/api";
-import { getOrderRiskBadge, getOrderRiskStatus, getPaymentForCurrentShop, getShippingInfo, getTaxRiskStatus } from "../helpers";
+import { getOrderRiskBadge, getOrderRiskStatus, getShippingInfo, getTaxRiskStatus } from "../helpers";
 
 class OrderSummary extends Component {
   static propTypes = {
@@ -47,7 +47,8 @@ class OrderSummary extends Component {
 
   render() {
     const { dateFormat, moment, order, profileShippingAddress, printableLabels, tracking } = this.props;
-    const { displayName: paymentDisplayName, invoice, processor, transactionId } = getPaymentForCurrentShop(order);
+    const [payment] = order.payments || [];
+    const { amount, displayName: paymentDisplayName, processor, transactionId } = payment || {};
     const { shipmentMethod } = getShippingInfo(order);
     const orderPaymentRisk = getOrderRiskStatus(order);
     const orderTaxRisk = getTaxRiskStatus(order);
@@ -121,7 +122,7 @@ class OrderSummary extends Component {
             <div className="order-summary-form-group">
               <strong data-i18n="order.payment">Payment</strong>
               <div className="invoice-details">
-                {paymentDisplayName} ({formatPriceString(invoice.total)})
+                {paymentDisplayName} ({formatPriceString(amount)})
               </div>
             </div>
 

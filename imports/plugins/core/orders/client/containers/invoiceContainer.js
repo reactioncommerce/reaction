@@ -8,7 +8,7 @@ import { Packages } from "/lib/collections";
 import { getPrimaryMediaForItem } from "/lib/api";
 import { composeWithTracker, registerComponent } from "@reactioncommerce/reaction-components";
 import Invoice from "../components/invoice.js";
-import { getOrderRiskStatus, getOrderRiskBadge, getPaymentForCurrentShop } from "../helpers";
+import { getOrderRiskStatus, getOrderRiskBadge, getShippingInfo } from "../helpers";
 
 class InvoiceContainer extends Component {
   static propTypes = {
@@ -184,7 +184,8 @@ class InvoiceContainer extends Component {
 
   hasRefundingEnabled() {
     const { order } = this.state;
-    const { paymentPluginName } = getPaymentForCurrentShop(order);
+    const [payment] = order.payments || [];
+    const { paymentPluginName } = payment || {};
     const paymentPlugin = Packages.findOne({ name: paymentPluginName });
     return _.get(paymentPlugin, "settings.support", []).indexOf("Refund") > -1;
   }
@@ -214,8 +215,8 @@ class InvoiceContainer extends Component {
   handleCancelPayment = (event) => {
     event.preventDefault();
     const { order } = this.state;
-    const { invoice, mode: paymentMode, paymentPluginName, status: paymentStatus } = getPaymentForCurrentShop(order);
-    const invoiceTotal = invoice.total;
+    const [payment] = order.payments || [];
+    const { amount: invoiceTotal, mode: paymentMode, paymentPluginName, status: paymentStatus } = payment || {};
     const currencySymbol = this.state.currency.symbol;
 
     const paymentPlugin = Packages.findOne({ name: paymentPluginName, shopId: order.shopId });
@@ -256,7 +257,8 @@ class InvoiceContainer extends Component {
 
     const { currency, order, refunds } = this.state;
     const currencySymbol = currency.symbol;
-    const { _id: paymentId, amount: orderTotal, discounts, processor } = getPaymentForCurrentShop(order);
+    const [payment] = order.payments || [];
+    const { _id: paymentId, amount: orderTotal, discounts, processor } = payment || {};
     const refundTotal = refunds && Array.isArray(refunds) && refunds.reduce((acc, item) => acc + parseFloat(item.amount), 0);
 
     let adjustedTotal;
@@ -303,7 +305,8 @@ class InvoiceContainer extends Component {
 
   handleRefundItems = () => {
     const { order } = this.state;
-    const { invoice, mode: paymentMode } = getPaymentForCurrentShop(order);
+    const [payment] = order.payments || [];
+    const { amount, mode: paymentMode } = payment || {};
 
     // Check if payment is yet to be captured approve and capture first before return
     if (paymentMode === "authorize") {
@@ -312,7 +315,7 @@ class InvoiceContainer extends Component {
         type: "warning",
         text: i18next.t("order.refundItemsApproveAlert", {
           refundItemsQuantity: this.getRefundedItemsInfo().quantity,
-          totalAmount: formatPriceString(invoice.total)
+          totalAmount: formatPriceString(amount)
         }),
         showCancelButton: true,
         confirmButtonText: i18next.t("order.approveInvoice")
@@ -328,13 +331,14 @@ class InvoiceContainer extends Component {
   }
 
   alertToCapture = (order) => {
-    const { invoice } = getPaymentForCurrentShop(order);
+    const [payment] = order.payments || [];
+    const { amount } = payment || {};
 
     Alerts.alert({
       title: i18next.t("order.refundItemsTitle"),
       text: i18next.t("order.refundItemsCaptureAlert", {
         refundItemsQuantity: this.getRefundedItemsInfo().quantity,
-        totalAmount: formatPriceString(invoice.total)
+        totalAmount: formatPriceString(amount)
       }),
       type: "warning",
       showCancelButton: true,
@@ -348,7 +352,8 @@ class InvoiceContainer extends Component {
   }
 
   alertToRefund = (order) => {
-    const { _id: paymentId, mode: paymentMode } = getPaymentForCurrentShop(order);
+    const [payment] = order.payments || [];
+    const { _id: paymentId, mode: paymentMode } = payment || {};
     const refundInfo = this.getRefundedItemsInfo();
 
     Alerts.alert({
@@ -447,7 +452,7 @@ class InvoiceContainer extends Component {
  * @private
  */
 function approvePayment(order) {
-  const { invoice } = getPaymentForCurrentShop(order);
+  const { invoice } = getShippingInfo(order);
   const orderTotal = accounting.toFixed(invoice.subtotal + invoice.shipping + invoice.taxes, 2);
 
   const { discount } = order;
@@ -542,7 +547,9 @@ const composer = (props, onData) => {
   const { order, refunds } = props;
 
   const shopId = Reaction.getShopId();
-  const { amount, invoice, status: paymentStatus } = getPaymentForCurrentShop(order);
+  const [payment] = order.payments || [];
+  const { amount, status: paymentStatus } = payment || {};
+  const { invoice } = getShippingInfo(order);
 
   const paymentApproved = paymentStatus === "approved";
   const showAfterPaymentCaptured = paymentStatus === "completed";

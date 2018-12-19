@@ -46,6 +46,13 @@ const orderFulfillmentGroupSchema = new SimpleSchema({
 });
 
 const orderInputSchema = new SimpleSchema({
+  // Although billing address is typically needed only by the payment plugin,
+  // some tax services require it to calculate taxes for digital items. Thus
+  // it should be provided here in order to be added to the CommonOrder if possible.
+  "billingAddress": {
+    type: AddressSchema,
+    optional: true
+  },
   "cartId": {
     type: String,
     optional: true
@@ -65,9 +72,7 @@ const paymentInputSchema = new SimpleSchema({
     type: Number,
     optional: true
   },
-  // Although billing address is typically needed only by the payment plugin,
-  // some tax services require it to calculate taxes for digital items. Thus
-  // it should be provided here in order to be added to the CommonOrder if possible.
+  // Optionally override the order.billingAddress for each payment
   billingAddress: {
     type: AddressSchema,
     optional: true
@@ -252,8 +257,8 @@ function getShippingAddressWithId(addressInput, addressIdInput) {
  * @returns {Object} Fulfillment group object post shipment method addition
  */
 async function addShipmentMethodToGroup(context, finalGroup, cleanedInput, groupInput, discountTotal, orderId) {
-  const { billingAddress, order: orderInput } = cleanedInput;
-  const { cartId, currencyCode } = orderInput;
+  const { order: orderInput } = cleanedInput;
+  const { billingAddress, cartId, currencyCode } = orderInput;
   const { collections } = context;
 
   const commonOrder = await xformOrderGroupToCommonOrder({
@@ -298,8 +303,8 @@ async function addShipmentMethodToGroup(context, finalGroup, cleanedInput, group
  */
 async function addTaxesToGroup(context, finalGroup, cleanedInput, groupInput, discountTotal, orderId) {
   const { collections } = context;
-  const { billingAddress, order: orderInput } = cleanedInput;
-  const { cartId, currencyCode } = orderInput;
+  const { order: orderInput } = cleanedInput;
+  const { billingAddress, cartId, currencyCode } = orderInput;
 
   const commonOrder = await xformOrderGroupToCommonOrder({
     billingAddress,
@@ -483,6 +488,7 @@ export default async function placeOrder(context, input) {
     _id: orderId,
     accountId,
     anonymousAccessToken: anonymousAccessToken && hashLoginToken(anonymousAccessToken),
+    billingAddress,
     cartId,
     createdAt: now,
     currencyCode,

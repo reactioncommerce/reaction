@@ -8,7 +8,6 @@ import { ReactiveDict } from "meteor/reactive-dict";
 import { i18next, Logger, Reaction } from "/client/api";
 import { Orders, Shops, Packages } from "/lib/collections";
 import InvoiceContainer from "../../containers/invoiceContainer.js";
-import { getPaymentForCurrentShop } from "../../helpers";
 
 /**
  * @summary the first credit payment on the order
@@ -114,7 +113,8 @@ Template.coreOrderShippingInvoice.events({
     const order = instance.state.get("order");
     const currencySymbol = instance.state.get("currency").symbol;
 
-    const { invoice, mode: paymentMode, paymentPluginName, status: paymentStatus } = getPaymentForCurrentShop(order);
+    const [payment] = order.payments || [];
+    const { invoice, mode: paymentMode, paymentPluginName, status: paymentStatus } = payment || {};
     const invoiceTotal = invoice.total;
 
     const paymentPlugin = Packages.findOne({ name: paymentPluginName, shopId: order.shopId });
