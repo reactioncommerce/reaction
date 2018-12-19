@@ -46,31 +46,18 @@ type Payment implements Node {
   method: PaymentMethod!
 }
 
-"Data for an example IOU payment"
-type ExampleIOUPaymentData {
-  "The billing address entered or chosen by the shopper"
-  billingAddress: Address!
-
-  "The name of the IOU payer entered by the shopper"
-  fullName: String!
-}
-
 # Use `extend union` to define a payment plugin's PaymentData type
 "Data identifying a payment for an order"
-union PaymentData = ExampleIOUPaymentData
+union PaymentData
 
 # Use `extend enum` to add a plugin's payment method name
 "The name of a payment method, which is how payment methods are keyed"
 enum PaymentMethodName {
-  iou_example
+  none
 }
 
-"An example"
-type ExamplePaymentMethodData {
-  example: String!
-}
-
-union PaymentMethodData = ExamplePaymentMethodData
+# Use `extend union` to define a payment plugin's PaymentMethodData type
+union PaymentMethodData
 
 "Describes a payment method"
 type PaymentMethod {

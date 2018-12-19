@@ -2,7 +2,6 @@ import { composeWithTracker, registerComponent } from "@reactioncommerce/reactio
 import { Reaction, Router } from "/client/api";
 import { unstoreAnonymousCart } from "/imports/plugins/core/cart/client/util/anonymousCarts";
 import getCart from "/imports/plugins/core/cart/client/util/getCart";
-import getOpaqueIds from "/imports/plugins/core/core/client/util/getOpaqueIds";
 import buildOrderInputFromCart from "/imports/plugins/core/cart/client/util/buildOrderInputFromCart";
 import simpleGraphQLClient from "/imports/plugins/core/graphql/lib/helpers/simpleClient";
 import ExampleIOUPaymentForm from "../components/ExampleIOUPaymentForm";
@@ -21,14 +20,13 @@ function getSubmitHandler(billingAddress, billingAddressId, cart, cartToken) {
     const order = await buildOrderInputFromCart(cart);
 
     // Build the payment input
-    const [opaqueBillingAddressId] = await getOpaqueIds([{ namespace: "Address", id: billingAddressId }]);
-    const payment = {
+    const payments = [{
       billingAddress,
-      billingAddressId: opaqueBillingAddressId,
-      ...paymentData
-    };
+      data: paymentData,
+      method: "iou_example"
+    }];
 
-    await simpleGraphQLClient.mutations.placeOrderWithExampleIOUPayment({ input: { order, payment } });
+    await simpleGraphQLClient.mutations.placeOrder({ input: { order, payments } });
 
     // If there wasn't an error, the cart has been deleted.
     if (cartToken) {
