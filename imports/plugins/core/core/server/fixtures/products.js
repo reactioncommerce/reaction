@@ -156,7 +156,7 @@ export default function () {
    * @property {String} name - `"Tag"`
    * @property {String} slug - `"tag"`
    * @property {Number} position - `_.random(0, 100000)`
-   * @property {Boolean} isActive - `true`
+   * @property {Boolean} isVisible - `true`
    * @property {Boolean} isTopLevel - `true`
    * @property {String} shopId - `getShop()._id`
    * @property {Date} createdAt - `faker.date.past()`
@@ -167,7 +167,7 @@ export default function () {
     slug: "tag",
     position: _.random(0, 100000),
     //  relatedTagIds: [],
-    isActive: true,
+    isVisible: true,
     isTopLevel: true,
     shopId: getShop()._id,
     createdAt: faker.date.past(),
