@@ -21,9 +21,12 @@ export default function updateHeaderTags(tagName, tagId, currentTagId) {
   check(tagId, Match.OneOf(String, null, undefined));
   check(currentTagId, Match.OneOf(String, null, undefined));
 
-  let newTagId = {};
-  // must have 'core' permissions
-  if (!Reaction.hasPermission("core")) {
+  const shopId = Reaction.getShopId();
+
+  // Must have 'core' permissions for the current shop ID. We then pass in
+  // that shopId to all of the Tags.update calls below to ensure that
+  // all of the modified tags belong to this shop.
+  if (!Reaction.hasPermission("core", Reaction.getUserId(), shopId)) {
     throw new ReactionError("access-denied", "Access Denied");
   }
   this.unblock();
@@ -41,7 +44,7 @@ export default function updateHeaderTags(tagName, tagId, currentTagId) {
   let result;
 
   if (tagId) {
-    result = Tags.update(tagId, { $set: newTag });
+    result = Tags.update({ _id: tagId, shopId }, { $set: newTag });
     Logger.debug(`Changed name of tag ${tagId} to ${tagName}`);
     return result;
   }
@@ -49,7 +52,7 @@ export default function updateHeaderTags(tagName, tagId, currentTagId) {
   if (existingTag) {
     // if is currentTag
     if (currentTagId) {
-      result = Tags.update(currentTagId, {
+      result = Tags.update({ _id: currentTagId, shopId }, {
         $addToSet: {
           relatedTagIds: existingTag._id
         }
@@ -59,7 +62,7 @@ export default function updateHeaderTags(tagName, tagId, currentTagId) {
     }
 
     // update existing tag
-    result = Tags.update(existingTag._id, {
+    result = Tags.update({ _id: existingTag._id, shopId }, {
       $set: {
         isTopLevel: true
       }
@@ -69,13 +72,13 @@ export default function updateHeaderTags(tagName, tagId, currentTagId) {
   }
 
   // create newTags
-  newTagId = Meteor.call("shop/createTag", tagName, !currentTagId);
+  const newTagId = Meteor.call("shop/createTag", tagName, !currentTagId);
 
   // if result is an Error object, we return it immediately
   if (typeof newTagId !== "string") return newTagId;
 
   if (currentTagId) {
-    result = Tags.update(currentTagId, {
+    result = Tags.update({ _id: currentTagId, shopId }, {
       $addToSet: {
         relatedTagIds: newTagId
       }

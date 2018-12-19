@@ -1,5 +1,5 @@
 <template name="discountCodesCheckout">
   <div>
-    {{> React component=DiscountList id=cartId collection="Cart"}}
+    {{> React component=DiscountList id=cartProps.cartId token=cartProps.cartToken collection="Cart"}}
   </div>
 </template>

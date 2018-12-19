@@ -145,7 +145,7 @@ class VariantListContainer extends Component {
       $splice: [[dragIndex, 1], [hoverIndex, 0, variant]]
     });
 
-    // Set local state so the component does't have to wait for a round-trip
+    // Set local state so the component doesn't have to wait for a round-trip
     // to the server to get the updated list of variants
     this.setState({
       variants: newVariantOrder
@@ -153,7 +153,7 @@ class VariantListContainer extends Component {
 
     // Save the updated positions
     Meteor.defer(() => {
-      Meteor.call("products/updateVariantsPosition", getVariantIds(newVariantOrder));
+      Meteor.call("products/updateVariantsPosition", getVariantIds(newVariantOrder), variant.shopId);
     });
   };
 

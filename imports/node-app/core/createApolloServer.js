@@ -2,7 +2,7 @@ import cors from "cors";
 import bodyParser from "body-parser";
 import express from "express";
 import { graphqlExpress, graphiqlExpress } from "apollo-server-express";
-import { makeExecutableSchema } from "graphql-tools";
+import { makeExecutableSchema, mergeSchemas } from "graphql-tools";
 import buildContext from "./util/buildContext";
 import getErrorFormatter from "./util/getErrorFormatter";
 import tokenMiddleware from "./util/tokenMiddleware";
@@ -35,9 +35,19 @@ const resolverValidationOptions = {
 export default function createApolloServer(options = {}) {
   // the Meteor GraphQL server is an Express server
   const expressServer = express();
-
-  const { addCallMeteorMethod, context: contextFromOptions, resolvers, typeDefs } = options;
+  const schemas = options.schemas || [];
+  const schemasToMerge = schemas.filter((td) => typeof td !== "string");
+  const typeDefs = schemas.filter((td) => typeof td === "string");
+  const { addCallMeteorMethod, context: contextFromOptions, resolvers } = options;
   const graphQLPath = options.path || defaultServerConfig.path;
+  let schema = makeExecutableSchema({
+    typeDefs,
+    resolvers,
+    resolverValidationOptions
+  });
+  if (schemasToMerge.length) {
+    schema = mergeSchemas({ schemas: [schema, ...schemasToMerge] });
+  }
 
   // GraphQL endpoint, enhanced with JSON body parser
   expressServer.use(
@@ -67,7 +77,7 @@ export default function createApolloServer(options = {}) {
 
           return res;
         },
-        schema: makeExecutableSchema({ typeDefs, resolvers, resolverValidationOptions })
+        schema
       };
     })
   );
