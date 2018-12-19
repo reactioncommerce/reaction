@@ -6,9 +6,8 @@ import { i18next, Reaction, Router } from "/client/api";
 import { Packages } from "/lib/collections";
 import { unstoreAnonymousCart } from "/imports/plugins/core/cart/client/util/anonymousCarts";
 import getCart from "/imports/plugins/core/cart/client/util/getCart";
-import getOpaqueIds from "/imports/plugins/core/core/client/util/getOpaqueIds";
 import buildOrderInputFromCart from "/imports/plugins/core/cart/client/util/buildOrderInputFromCart";
-import { placeMarketplaceOrderWithStripeCardPayment } from "../util/graphql";
+import { placeOrder } from "../util/graphql";
 import InjectedCardForm from "../components/injectedCardForm";
 
 class StripePaymentFormContainer extends Component {
@@ -47,14 +46,15 @@ function getSubmitHandler(billingAddress, billingAddressId, cart, cartToken) {
     const order = await buildOrderInputFromCart(cart);
 
     // Build the payment input
-    const [opaqueBillingAddressId] = await getOpaqueIds([{ namespace: "Address", id: billingAddressId }]);
-    const payment = {
+    const payments = [{
       billingAddress,
-      billingAddressId: opaqueBillingAddressId,
-      stripeTokenId
-    };
+      data: {
+        stripeTokenId
+      },
+      method: "marketplace_stripe_card"
+    }];
 
-    await placeMarketplaceOrderWithStripeCardPayment({ input: { order, payment } });
+    await placeOrder({ input: { order, payments } });
 
     // If there wasn't an error, the cart has been deleted.
     if (cartToken) {

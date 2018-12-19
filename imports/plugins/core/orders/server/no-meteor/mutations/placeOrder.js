@@ -504,9 +504,7 @@ export default async function placeOrder(context, input) {
   OrderSchema.validate(order);
   await Orders.insertOne(order);
 
-  appEvents.emit("afterOrderCreate", order).catch((error) => {
-    Logger.error("Error emitting afterOrderCreate", error);
-  });
+  appEvents.emit("afterOrderCreate", order);
 
   return {
     orders: [order],

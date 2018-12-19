@@ -1,7 +1,7 @@
 /* eslint camelcase: 0 */
 import Reaction from "/imports/plugins/core/core/server/Reaction";
-import resolvers from "./server/no-meteor/resolvers";
 import schemas from "./server/no-meteor/schemas";
+import stripeCreateAuthorizedPayment from "./server/no-meteor/util/stripeCreateAuthorizedPayment";
 
 Reaction.registerPackage({
   label: "Marketplace",
@@ -9,12 +9,14 @@ Reaction.registerPackage({
   icon: "fa fa-globe",
   autoEnable: false,
   graphQL: {
-    resolvers,
     schemas
   },
   paymentMethods: [{
     name: "marketplace_stripe_card",
-    displayName: "Marketplace Stripe Card"
+    displayName: "Marketplace Stripe Card",
+    functions: {
+      createAuthorizedPayment: stripeCreateAuthorizedPayment
+    }
   }],
   settings: {
     name: "Marketplace",
