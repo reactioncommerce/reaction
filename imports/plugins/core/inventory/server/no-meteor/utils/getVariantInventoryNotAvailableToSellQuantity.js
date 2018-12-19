@@ -14,13 +14,19 @@ export default async function getVariantInventoryNotAvailableToSellQuantity(vari
   }).toArray();
 
   const reservedQuantity = orders.reduce((sum, order) => {
-    // Filter out items that match the variant we are currently updating
-    const matchingItems = order.shipping[0].items.filter((item) => item.variantId === variant._id);
+    // Reduce through each fulfillment (shipping) object
+    const shippingGroupsItems = order.shipping.reduce((acc, shippingGroup) => {
+      // Get all items in order that match the item being adjusted
+      const matchingItems = shippingGroup.items.filter((item) => item.variantId === variant._id);
 
-    // Reduce `quantity` fields of matched items
-    const reservedQuantityOfItem = matchingItems.reduce((quantity, matchingItem) => quantity + matchingItem.quantity, 0);
+      // Reduce `quantity` fields of matched items into single number
+      const reservedQuantityOfItem = matchingItems.reduce((quantity, matchingItem) => quantity + matchingItem.quantity, 0);
 
-    return sum + reservedQuantityOfItem;
+      return acc + reservedQuantityOfItem;
+    }, 0);
+
+    // Sum up numbers from all fulfillment (shipping) groups
+    return sum + shippingGroupsItems;
   }, 0);
 
   return reservedQuantity;
