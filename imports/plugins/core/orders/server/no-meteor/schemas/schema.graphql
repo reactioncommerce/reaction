@@ -9,6 +9,14 @@ extend type Query {
   orderByReferenceId(id: ID!, shopId: ID!, token: String): Order
 }
 
+extend type Mutation {
+  """
+  Use this mutation to place an order, providing information necessary to pay for it.
+  The order will be placed only if authorization is successful for all submitted payments.
+  """
+  placeOrder(input: PlaceOrderInput!): PlaceOrderPayload!
+}
+
 enum OrderFulfillmentGroupItemsSortByField {
   _id
   addedAt
@@ -303,7 +311,50 @@ input OrderInput {
   shopId: String!
 }
 
+input PaymentInput {
+  """
+  Amount to charge, which must be less than or equal to the order total. This is assumed
+  to be in the same currency as the order. Set to `null` to charge the remaining amount
+  to this payment method, which might be the full order total if this is the only payment.
+  """
+  amount: Float
+
+  """
+  The billing address entered by the shopper. If omitted, the billing address on the order input
+  will be used. Some payment methods may not require a billing address but others will fail
+  authorization without one, so be sure that client UI code is aware of which payment methods
+  require collecting one.
+  """
+  billingAddress: AddressInput
+
+  "Any additional user-provided input necessary to authorize and capture the payment"
+  data: JSONObject
+
+  "The name of the payment method to use for this payment"
+  method: PaymentMethodName!
+}
+
+"Input for the placeOrder mutation"
+input PlaceOrderInput {
+  "An optional string identifying the mutation call, which will be returned in the response payload"
+  clientMutationId: String
+
+  "The order to be placed, if payment is accepted"
+  order: OrderInput!
+
+  """
+  The information necessary to pay. Collect this information from the shopper during a checkout flow.
+  You need not provide any payment input if the total is zero.
+  The total of all payment input `amount` fields must add up to the order total. The first payment
+  method where the `amount` field is `null` will be charged the remainder due.
+  """
+  payments: [PaymentInput]
+}
+
 type PlaceOrderPayload {
+  "The same string you sent with the mutation params, for matching mutation calls with their responses"
+  clientMutationId: String
+
   "Orders that were created"
   orders: [Order]!
 

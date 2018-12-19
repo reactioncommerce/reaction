@@ -108,7 +108,6 @@ export const Payment = new SimpleSchema({
     blackbox: true
   },
   "displayName": String,
-  "invoice": Invoice,
   "method": String,
   "mode": String,
   "name": String,

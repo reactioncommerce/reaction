@@ -342,7 +342,6 @@ export const OrderFulfillmentGroup = new SimpleSchema({
   },
   "items.$": OrderItem,
   "itemIds": [String],
-  "payment": Payment,
   "shipmentMethod": SelectedFulfillmentOption,
   "shippingLabelUrl": {
     type: String,
@@ -380,6 +379,7 @@ export const OrderFulfillmentGroup = new SimpleSchema({
  * @property {Object[]} exportHistory optional
  * @property {History[]} history optional
  * @property {Notes[]} notes optional
+ * @property {Payment[]} payments Array of payments
  * @property {Shipment[]} shipping Array of fulfillment groups
  * @property {String} shopId required The owner shop
  * @property {OrderTransaction[]} transactions optional
@@ -438,6 +438,11 @@ export const Order = new SimpleSchema({
     optional: true
   },
   "notes.$": Notes,
+  "payments": {
+    type: Array,
+    optional: true
+  },
+  "payments.$": Payment,
   "referenceId": String,
   "shipping": [OrderFulfillmentGroup],
   "shopId": {
