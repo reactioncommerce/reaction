@@ -365,6 +365,10 @@ export function convertCatalogItemVariants(item, collections) {
   // to be invalid just because a product has been set to not visible while that change has
   // not yet been published to the catalog.
   // The catalog will be used as the source of truth for the variants and options.
+  const product = Products.findOne({
+    _id: item.product._id
+  });
+
   const variants = Products.find({
     ancestors: item.product._id
   }).fetch();
@@ -411,8 +415,8 @@ export function convertCatalogItemVariants(item, collections) {
     if (variantOptions) {
       // For variants with options, update the inventory flags for the top-level variant and options
       updatedVariantFields = {
-        inventoryAvailableToSell: variant.inventoryAvailableToSell,
-        inventoryInStock: variant.inventoryQuantity,
+        inventoryAvailableToSell: topVariantFromProductsCollection.inventoryAvailableToSell,
+        inventoryInStock: topVariantFromProductsCollection.inventoryQuantity,
         isBackorder: isBackorder(variantOptions),
         isLowQuantity: isLowQuantity(variantOptions),
         isSoldOut: isSoldOut(variantOptions),
@@ -444,6 +448,11 @@ export function convertCatalogItemVariants(item, collections) {
 
   const catalogProduct = {
     ...item.product,
+    inventoryAvailableToSell: product.inventoryAvailableToSell,
+    inventoryInStock: product.inventoryQuantity,
+    isBackorder: isBackorder(variants),
+    isLowQuantity: isLowQuantity(variants),
+    isSoldOut: isSoldOut(variants),
     variants: catalogProductVariants
   };
 
