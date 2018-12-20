@@ -221,10 +221,8 @@ function updateParentVariantsInventoryAvailableToSellQuantity(item, collections)
         }
       },
       {
-        publish: true,
-        selector: {
-          type: "variant"
-        }
+        bypassCollection2: true,
+        publish: true
       }
     );
   }
@@ -244,10 +242,8 @@ function updateParentVariantsInventoryAvailableToSellQuantity(item, collections)
       }
     },
     {
-      publish: true,
-      selector: {
-        type: "variant"
-      }
+      bypassCollection2: true,
+      publish: true
     }
   );
   return;
@@ -274,10 +270,8 @@ export function addInventoryAvailableToSellFieldToProduct(item, collections) {
         }
       },
       {
-        publish: true,
-        selector: {
-          type: "variant"
-        }
+        bypassCollection2: true,
+        publish: true
       }
     );
 
