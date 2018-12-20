@@ -1,9 +1,9 @@
 [submodule "imports/plugins/custom/reaction-plugin-radial-payment"]
 	path = imports/plugins/custom/reaction-plugin-radial-payment
-	url = https://github.com/sportsdirect/reaction-plugin-radial-payment
+	url = git@github.com:sportsdirect/reaction-plugin-radial-payment.git
 [submodule "imports/plugins/custom/reaction-plugin-radial-lib"]
 	path = imports/plugins/custom/reaction-plugin-radial-lib
-	url = https://github.com/sportsdirect/reaction-plugin-radial-lib
+	url = git@github.com:sportsdirect/reaction-plugin-radial-lib.git
 [submodule "imports/plugins/custom/custom-attributes"]
 	path = imports/plugins/custom/custom-attributes
 	url = git@github.com:sportsdirect/reaction-plugin-custom-attributes.git
