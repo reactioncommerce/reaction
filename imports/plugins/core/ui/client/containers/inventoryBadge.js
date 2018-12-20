@@ -28,7 +28,7 @@ const composer = (props, onData) => {
       label = "Sold Out!";
       i18nKeyLabel = "productDetail.soldOut";
     } else if (inventoryManagement) {
-      if (lowInventoryWarningThreshold >= variant.inventoryAvailableToSell) {
+      if (lowInventoryWarningThreshold <= variant.inventoryAvailableToSell) {
         status = "warning";
         label = "Limited Supply";
         i18nKeyLabel = "productDetail.limitedSupply";
