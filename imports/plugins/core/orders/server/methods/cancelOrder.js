@@ -58,7 +58,7 @@ export default function cancelOrder(order, returnToStock) {
   // update item workflow
   Meteor.call("workflow/pushItemWorkflow", "coreOrderItemWorkflow/canceled", order, itemIds);
 
-  Promise.await(appEvents.emit("afterCancelOrder", order, returnToStock));
+  Promise.await(appEvents.emit("afterOrderCancel", order, returnToStock));
 
   return Orders.update(
     {
