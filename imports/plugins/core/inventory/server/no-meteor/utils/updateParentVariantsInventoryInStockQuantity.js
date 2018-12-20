@@ -3,8 +3,8 @@ import getProductInventoryInStockQuantity from "/imports/plugins/core/inventory/
 import getVariantInventoryInStockQuantity from "/imports/plugins/core/inventory/server/no-meteor/utils/getVariantInventoryInStockQuantity";
 /**
  *
- * @method updateParentVariantsInventoryAvailableToSellQuantity
- * @summary Get the number of product variants that are currently reserved in an order.
+ * @method updateParentVariantsInventoryInStockQuantity
+ * @summary Get the number of product variants that are currently in stock.
  * This function can take any variant object.
  * @param {Object} item - A product item object, either from the cart or the products catalog
  * @param {Object} collections - Raw mongo collections.
