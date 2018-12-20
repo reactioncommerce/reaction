@@ -1015,11 +1015,6 @@ Meteor.methods({
   "products/updateVariantAndProductInventory"(_id) {
     check(_id, String);
 
-    // Must have createProduct permission for active shop
-    if (!Reaction.hasPermission("createProduct")) {
-      throw new ReactionError("access-denied", "Access Denied");
-    }
-
     // Check first if Product exists and then if user has the right to alter it
     const doc = Products.findOne({ _id });
     if (!doc) {
