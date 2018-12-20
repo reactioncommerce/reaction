@@ -11,7 +11,6 @@ class OrderSummary extends Component {
     moment: PropTypes.func,
     order: PropTypes.object,
     printableLabels: PropTypes.func,
-    profileShippingAddress: PropTypes.object,
     shipmentStatus: PropTypes.func,
     tracking: PropTypes.func
   }
@@ -46,10 +45,13 @@ class OrderSummary extends Component {
   }
 
   render() {
-    const { dateFormat, moment, order, profileShippingAddress, printableLabels, tracking } = this.props;
+    const { dateFormat, moment, order, printableLabels, tracking } = this.props;
+
+    if (!order) return null;
+
     const [payment] = order.payments || [];
     const { amount, displayName: paymentDisplayName, processor, transactionId } = payment || {};
-    const { shipmentMethod } = getShippingInfo(order);
+    const { address: shippingAddress, shipmentMethod } = getShippingInfo(order);
     const orderPaymentRisk = getOrderRiskStatus(order);
     const orderTaxRisk = getTaxRiskStatus(order);
 
@@ -59,7 +61,7 @@ class OrderSummary extends Component {
           className="order-summary-form-group bg-info"
           style={{ lineHeight: 3, marginTop: -15, marginRight: -15, marginLeft: -15 }}
         >
-          <strong style={{ marginLeft: 15 }}>{profileShippingAddress && profileShippingAddress.fullName}</strong>
+          <strong style={{ marginLeft: 15 }}>{shippingAddress && shippingAddress.fullName}</strong>
           <div className="invoice-details" style={{ marginRight: 15, position: "relative" }}>
             {order.email}
           </div>
@@ -70,8 +72,8 @@ class OrderSummary extends Component {
             <div style={{ marginBottom: 4 }}>
               <Badge
                 badgeSize="large"
-                i18nKeyLabel={`cartDrawer.${order && order.workflow && order.workflow.status}`}
-                label={order && order.workflow && order.workflow.status}
+                i18nKeyLabel={`cartDrawer.${order.workflow && order.workflow.status}`}
+                label={order.workflow && order.workflow.status}
                 status={this.badgeStatus()}
               />
               {orderPaymentRisk &&
@@ -163,24 +165,27 @@ class OrderSummary extends Component {
           </div>
         </div>
 
-        <br/>
-        <div className="order-summary-form-group">
-          <strong data-i18n="orderShipping.shipTo">Ship to</strong>
-          <div className="invoice-details">
-            <strong>Phone: </strong>{profileShippingAddress.phone}
-          </div>
-        </div>
+        {!!shippingAddress && <div>
+          <br/>
 
-        <div style={{ marginTop: 4 }}>
-          <span>{profileShippingAddress.fullName}</span>
-          <br/>
-          <span>{profileShippingAddress.address1}</span>
-          {profileShippingAddress.address2 && <span><br/>{profileShippingAddress.address2}</span>}
-          <br/>
-          <span>
-            {profileShippingAddress.city}, {profileShippingAddress.region}, {profileShippingAddress.country} {profileShippingAddress.postal}
-          </span>
-        </div>
+          <div className="order-summary-form-group">
+            <strong data-i18n="orderShipping.shipTo">Ship to</strong>
+            <div className="invoice-details">
+              <strong>Phone: </strong>{shippingAddress.phone}
+            </div>
+          </div>
+
+          <div style={{ marginTop: 4 }}>
+            <span>{shippingAddress.fullName}</span>
+            <br/>
+            <span>{shippingAddress.address1}</span>
+            {shippingAddress.address2 && <span><br/>{shippingAddress.address2}</span>}
+            <br/>
+            <span>
+              {shippingAddress.city}, {shippingAddress.region}, {shippingAddress.country} {shippingAddress.postal}
+            </span>
+          </div>
+        </div>}
       </div>
     );
   }

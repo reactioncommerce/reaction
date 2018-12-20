@@ -1,12 +1,10 @@
 import Hooks from "@reactioncommerce/hooks";
-import accounting from "accounting-js";
 import { check } from "meteor/check";
 import ReactionError from "@reactioncommerce/reaction-error";
 import { Orders, Products } from "/lib/collections";
 import rawCollections from "/imports/collections/rawCollections";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
 import updateCatalogProductInventoryStatus from "/imports/plugins/core/catalog/server/no-meteor/utils/updateCatalogProductInventoryStatus";
-import orderCreditMethod from "../util/orderCreditMethod";
 
 /**
  * @name ordersInventoryAdjustByShop
@@ -63,45 +61,45 @@ function ordersInventoryAdjustByShop(orderId, shopId) {
  */
 export default function approvePayment(order) {
   check(order, Object);
-  const { invoice } = orderCreditMethod(order);
 
-  // REVIEW: Who should have access to do this for a marketplace?
-  // Do we have/need a shopId on each order?
-  if (!Reaction.hasPermission("orders")) {
+  const shopId = Reaction.getShopId();
+
+  if (!Reaction.hasPermission("orders", Reaction.getUserId(), shopId)) {
     throw new ReactionError("access-denied", "Access Denied");
   }
 
-  this.unblock(); // REVIEW: why unblock here?
+  const dbOrder = Orders.findOne({
+    _id: order._id,
+    shopId
+  }, {
+    projection: {
+      payments: 1
+    }
+  });
+  if (!dbOrder) throw new ReactionError("not-found", "Not Found");
 
-  // this is server side check to verify
-  // that the math all still adds up.
-  const shopId = Reaction.getShopId();
-  const { discounts, shipping, subtotal, taxes } = invoice;
-  const discountTotal = Math.max(0, subtotal - discounts); // ensure no discounting below 0.
-  const total = accounting.toFixed(Number(discountTotal) + Number(shipping) + Number(taxes), 2);
+  if (Array.isArray(dbOrder.payments) && dbOrder.payments.length > 0) {
+    // Update all payments that are in "created" status to be "approved" status
+    const payments = dbOrder.payments.map((payment) => {
+      let { status } = payment;
+
+      if (status === "created") status = "approved";
+
+      return { ...payment, status };
+    });
+
+    Orders.update({
+      _id: order._id
+    }, {
+      $set: {
+        payments
+      }
+    });
+
+    // Update search record
+    Hooks.Events.run("afterUpdateOrderUpdateSearchRecord", order);
+  }
 
   // Updates flattened inventory count on variants in Products collection
   ordersInventoryAdjustByShop(order._id, shopId);
-
-  const result = Orders.update(
-    {
-      "_id": order._id,
-      "shipping.shopId": shopId,
-      "shipping.payment.method": "credit"
-    },
-    {
-      $set: {
-        "shipping.$.payment.amount": total,
-        "shipping.$.payment.status": "approved",
-        "shipping.$.payment.mode": "capture",
-        "shipping.$.payment.invoice.discounts": discounts,
-        "shipping.$.payment.invoice.total": Number(total)
-      }
-    }
-  );
-
-  // Update search record
-  Hooks.Events.run("afterUpdateOrderUpdateSearchRecord", order);
-
-  return result;
 }

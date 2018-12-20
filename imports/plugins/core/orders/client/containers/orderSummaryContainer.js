@@ -14,13 +14,6 @@ class OrderSummaryContainer extends Component {
     order: PropTypes.object
   }
 
-  constructor(props) {
-    super(props);
-    this.dateFormat = this.dateFormat.bind(this);
-    this.tracking = this.tracking.bind(this);
-    this.shipmentStatus = this.shipmentStatus.bind(this);
-  }
-
   dateFormat = (context, block) => {
     const { moment } = this.props;
     const formatString = block || "MMM DD, YYYY hh:mm:ss A";
@@ -139,19 +132,7 @@ const composer = (props, onData) => {
       "shipping._id": props.fulfillment && props.fulfillment._id
     });
 
-    if (order) {
-      const profileShippingAddress = getShippingInfo(order).address || {};
-
-      onData(null, {
-        order,
-        profileShippingAddress
-      });
-    } else {
-      onData(null, {
-        order: {},
-        profileShippingAddress: {}
-      });
-    }
+    onData(null, { order });
   }
 };
 

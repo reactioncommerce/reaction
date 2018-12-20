@@ -37,6 +37,7 @@ function createAggregate(shopId, sort = { createdAt: -1 }, limit = 0, query = {}
       cartId: 1,
       createdAt: 1,
       email: 1,
+      payments: 1,
       referenceId: 1,
       shopId: 1,
       workflow: 1 // workflow is still stored at the top level and used to showing status
