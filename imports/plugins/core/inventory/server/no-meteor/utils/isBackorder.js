@@ -6,6 +6,5 @@
  * @return {boolean} is backorder currently active or not for a product
  */
 export default function isBackorder(variants) {
-  const results = variants.map((variant) => !variant.inventoryPolicy && variant.inventoryManagement && variant.inventoryAvailableToSell === 0);
-  return results.every((result) => result);
+  return variants.every((variant) => !variant.inventoryPolicy && variant.inventoryManagement && variant.inventoryAvailableToSell === 0);
 }

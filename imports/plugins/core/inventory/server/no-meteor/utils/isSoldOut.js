@@ -6,6 +6,5 @@
  * @return {Boolean} true if quantity is zero.
  */
 export default function isSoldOut(variants) {
-  const results = variants.map((variant) => variant.inventoryManagement && variant.inventoryAvailableToSell <= 0);
-  return results.every((result) => result);
+  variants.every((variant) => variant.inventoryManagement && variant.inventoryAvailableToSell <= 0);
 }
