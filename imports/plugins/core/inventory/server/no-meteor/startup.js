@@ -58,7 +58,8 @@ export default function startup(context) {
       });
 
       // Publish inventory updates to the Catalog
-      uniqueProductsToUpdate.forEach(async (uniqueProduct) => {
+      const uniqueProducts = Array.from(uniqueProductsToUpdate);
+      uniqueProducts.forEach(async (uniqueProduct) => {
         await updateCatalogProductInventoryStatus(uniqueProduct.productId, collections);
       });
     }
@@ -96,7 +97,8 @@ export default function startup(context) {
       });
 
       // Publish inventory updates to the Catalog
-      uniqueProductsToUpdate.forEach(async (uniqueProduct) => {
+      const uniqueProducts = Array.from(uniqueProductsToUpdate);
+      uniqueProducts.forEach(async (uniqueProduct) => {
         await updateCatalogProductInventoryStatus(uniqueProduct.productId, collections);
       });
     }
@@ -140,7 +142,9 @@ export default function startup(context) {
       uniqueProductsToUpdate.add(item.productId);
     });
 
-    uniqueProductsToUpdate.forEach(async (uniqueProduct) => {
+    // Publish inventory updates to the Catalog
+    const uniqueProducts = Array.from(uniqueProductsToUpdate);
+    uniqueProducts.forEach(async (uniqueProduct) => {
       await updateCatalogProductInventoryStatus(uniqueProduct.productId, collections);
     });
   });
