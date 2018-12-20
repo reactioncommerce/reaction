@@ -1,5 +1,4 @@
 
-import rawCollections from "/imports/collections/rawCollections";
 import updateCatalogProductInventoryStatus from "/imports/plugins/core/catalog/server/no-meteor/utils/updateCatalogProductInventoryStatus";
 import appEvents from "/imports/node-app/core/util/appEvents";
 import updateParentVariantsInventoryAvailableToSellQuantity from "/imports/plugins/core/inventory/server/no-meteor/utils/updateParentVariantsInventoryAvailableToSellQuantity";
@@ -27,20 +26,14 @@ export default function startup(context) {
           $inc: {
             inventoryAvailableToSell: -item.quantity
           }
-        },
-        {
-          publish: true,
-          selector: {
-            type: "variant"
-          }
         }
       );
 
       // Update `inventoryQuantity` on all parents of this variant / option
-      Promise.await(updateParentVariantsInventoryAvailableToSellQuantity(item, rawCollections));
+      await updateParentVariantsInventoryAvailableToSellQuantity(item, collections);
 
       // Publish inventory updates to the Catalog
-      Promise.await(updateCatalogProductInventoryStatus(item.productId, rawCollections));
+      await updateCatalogProductInventoryStatus(item.productId, collections);
     });
   });
 }
