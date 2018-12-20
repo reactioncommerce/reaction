@@ -41,12 +41,6 @@ export default async function updateParentVariantsInventoryAvailableToSellQuanti
         $set: {
           inventoryAvailableToSell: variantInventoryAvailableToSellQuantity
         }
-      },
-      {
-        publish: true,
-        selector: {
-          type: "variant"
-        }
       }
     );
   }
@@ -61,12 +55,6 @@ export default async function updateParentVariantsInventoryAvailableToSellQuanti
     {
       $set: {
         inventoryAvailableToSell: productInventoryAvailableToSellQuantity
-      }
-    },
-    {
-      publish: true,
-      selector: {
-        type: "variant"
       }
     }
   );
