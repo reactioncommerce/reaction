@@ -19,7 +19,7 @@ const composer = (props, onData) => {
   // Admins pull variants from the Products collection
   if (Reaction.hasPermission(["createProduct"], Reaction.getShopId())) {
     // Product collection variant
-    if (inventoryManagement && !inventoryPolicy && variant.inventoryAvailableToSell === 0) {
+    if (inventoryManagement && !inventoryPolicy && variant.inventoryAvailableToSell <= 0) {
       status = "info";
       label = "Backorder";
       i18nKeyLabel = "productDetail.backOrder";
