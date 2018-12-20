@@ -6,5 +6,5 @@
  * @return {Boolean} true if quantity is zero.
  */
 export default function isSoldOut(variants) {
-  variants.every((variant) => variant.inventoryManagement && variant.inventoryAvailableToSell <= 0);
+  return variants.every((variant) => variant.inventoryManagement && variant.inventoryAvailableToSell <= 0);
 }
