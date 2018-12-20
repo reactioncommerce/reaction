@@ -111,7 +111,6 @@ const mockProduct = {
   _id: internalCatalogItemId,
   shopId: internalShopId,
   barcode: "barcode",
-  canBackorder: false,
   createdAt,
   description: "description",
   facebookMsg: "facebookMessage",
@@ -200,7 +199,6 @@ const mockShop = {
 const mockCatalogProduct = {
   _id: "999",
   barcode: "barcode",
-  canBackorder: false,
   createdAt,
   description: "description",
   height: 11.23,

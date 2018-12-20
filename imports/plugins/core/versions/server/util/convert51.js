@@ -464,7 +464,6 @@ export function convertCatalogItemVariants(item, collections) {
 
   const catalogProduct = {
     ...item.product,
-    canBackorder: canBackorder(variants),
     inventoryAvailableToSell: product.inventoryAvailableToSell,
     inventoryInStock: product.inventoryQuantity,
     isBackorder: isBackorder(variants),

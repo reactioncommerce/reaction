@@ -134,9 +134,6 @@ type CatalogProduct implements CatalogProductOrVariant & Node {
   "The product barcode value, if it has one"
   barcode: String
 
-  "Indicates when the seller has allowed the sale of product which is not in stock. True if inventoryManagement is true AND none of the variants have an inventoryPolicy set."
-  canBackorder: Boolean!
-
   "The date and time at which this CatalogProduct was created, which is when the related product was first published"
   createdAt: DateTime!
 

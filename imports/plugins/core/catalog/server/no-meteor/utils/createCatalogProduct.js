@@ -153,7 +153,6 @@ export async function xformProduct({ collections, product, shop, variants }) {
     // We want to explicitly map everything so that new properties added to product are not published to a catalog unless we want them
     _id: product._id,
     barcode: product.barcode,
-    canBackorder: canBackorder(variants),
     createdAt: product.createdAt || new Date(),
     description: product.description,
     height: product.height,

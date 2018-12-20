@@ -109,7 +109,6 @@ const mockVariants = [
 const mockProduct = {
   _id: internalCatalogItemId,
   barcode: "abc123",
-  canBackorder: true,
   createdAt,
   description: "Mock product description",
   height: 11.23,
@@ -171,7 +170,6 @@ const updatedMockProduct = {
   _id: internalCatalogItemId,
   shopId: internalShopId,
   barcode: "barcode",
-  canBackorder: true,
   createdAt,
   description: "description",
   facebookMsg: "facebookMessage",
