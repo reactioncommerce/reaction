@@ -6,6 +6,5 @@
  * @return {boolean} is backorder allowed or not for a product
  */
 export default function canBackorder(variants) {
-  const results = variants.map((variant) => !variant.inventoryPolicy && variant.inventoryManagement);
-  return results.every((result) => result);
+  return variants.every((variant) => !variant.inventoryPolicy && variant.inventoryManagement);
 }
