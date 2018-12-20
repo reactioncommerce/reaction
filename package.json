@@ -394,6 +394,9 @@
       "jsx-a11y/label-has-for": "off"
     }
   },
+  "prettier": {
+    "arrowParens": "always"
+  },
   "nodemonConfig": {
     "delay": "2000",
     "execMap": {

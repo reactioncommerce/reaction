@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+# Post Build Hook
+# Invoked by the reaction-next project bootstrapping process.
+#
+# Invoked after Docker build.
+# Perform any actions here that are required after docker-compose build but
+# before the project is started.
+#
+# Important Notes:
+#
+#  - Expect that services are NOT running at this time.
+#  - Do not assume that this hook script will run from this local directory.
+#    The $__dir var is provided for convenience and may be used to invoke other
+#    scripts.
+#  - It is good practice to keep this script lightweight and invoke setup
+#    scripts in your project.
+
+__current_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+__root_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
+__root_name=$(basename "${__root_dir}")
+
+echo "${__root_name} post-build script invoked." 2>&1

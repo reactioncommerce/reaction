@@ -46,7 +46,9 @@
             </div>
           {{/each}}
         </div>
-        {{> Template.dynamic template=template data=.}}
+        <div>
+          {{> React component=ReactComponentOrBlazeTemplate name=template props=.}}
+        </div>
       </div>
     </div>
     {{/each}}
@@ -66,7 +68,7 @@
       </div>
     </div>
     <div class="panel-body {{shown enabled}}">
-      {{> Template.dynamic template=template data=.}}
+      {{> React component=ReactComponentOrBlazeTemplate name=template props=.}}
     </div>
   </div>
   {{/each}}

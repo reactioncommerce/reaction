@@ -256,7 +256,7 @@ async function addShipmentMethodToGroup(context, finalGroup, cleanedInput, group
     discountTotal
   });
 
-  // We are passing commonOrder in here, but we need the finalGroup.shipmentMethod data inside of fianl order, which doesn't get set until after this
+  // We are passing commonOrder in here, but we need the finalGroup.shipmentMethod data inside of final order, which doesn't get set until after this
   // but we need the data from this in order to set it
   const rates = await context.queries.getFulfillmentMethodsWithQuotes(commonOrder, context);
   const selectedFulfillmentMethod = rates.find((rate) => groupInput.selectedFulfillmentMethodId === rate.method._id);
@@ -427,7 +427,7 @@ export default async function createOrder(context, input) {
     }));
   } catch (error) {
     Logger.error("createOrder: error creating payments", error.message);
-    throw new ReactionError("payment-failed", "There was a problem authorizing this payment");
+    throw new ReactionError("payment-failed", `There was a problem authorizing this payment: ${error.message}`);
   }
 
   // Create anonymousAccessToken if no account ID
