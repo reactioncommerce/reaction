@@ -122,17 +122,17 @@ export const SocialMetadata = new SimpleSchema({
  * @type {SimpleSchema}
  * @property {String} _id required
  * @property {String} barcode optional
- * @property {Boolean} canBackorder required
+ * @property {Boolean} canBackorder required, Indicates when the seller has allowed the sale of product which is not in stock
  * @property {Date} createdAt required
  * @property {Number} height optional, default value: `0`
  * @property {Number} index required
- * @property {Boolean} inventoryAvailableToSell required
- * @property {Boolean} inventoryInStock required
- * @property {Boolean} inventoryManagement required
- * @property {Boolean} inventoryPolicy required
- * @property {Boolean} isBackorder required
- * @property {Boolean} isLowQuantity required
- * @property {Boolean} isSoldOut required
+ * @property {Boolean} inventoryAvailableToSell required, The quantity of this item currently available to sell. This number does not include reserved inventory (i.e. inventory that has been ordered, but not yet processed by the operator). If this is a variant, this number is created by summing all child option inventory numbers. This is most likely the quantity to display in the storefront UI.
+ * @property {Boolean} inventoryInStock required, The quantity of this item currently in stock. This number is updated when an order is processed by the operator. This number includes all inventory, including reserved inventory (i.e. inventory that has been ordered, but not yet processed by the operator). If this is a variant, this number is created by summing all child option inventory numbers. This is most likely just used as a reference in the operator UI, and not displayed in the storefront UI. Called `inventoryQuantity` in the Product Schema, and `inventoryInStock` in the Catalog schema.
+ * @property {Boolean} inventoryManagement required, True if inventory management is enabled for this variant
+ * @property {Boolean} inventoryPolicy required, True if inventory policy is enabled for this variant
+ * @property {Boolean} isBackorder required, Indicates when a product is currently backordered
+ * @property {Boolean} isLowQuantity required, Indicates that the product quantity is too low
+ * @property {Boolean} isSoldOut required, Indicates when the product quantity is zero
  * @property {Number} length optional, default value: `0`
  * @property {Number} lowInventoryWarningThreshold optional, default value: `0`
  * @property {ImageInfo[]} media optional
@@ -163,7 +163,7 @@ export const VariantBaseSchema = new SimpleSchema({
   },
   "canBackorder": {
     type: Boolean,
-    label: "Indicates when the seller has allowed the sale of product which is not in stock"
+    label: "Can backorder"
   },
   "createdAt": {
     type: Date,
@@ -182,41 +182,32 @@ export const VariantBaseSchema = new SimpleSchema({
   },
   "inventoryAvailableToSell": {
     type: SimpleSchema.Integer,
-    label: "The quantity of this item currently available to sell." +
-    "This number is updated when an order is placed by the customer." +
-    "This number does not include reserved inventory (i.e. inventory that has been ordered, but not yet processed by the operator)." +
-    "If this is a variant, this number is created by summing all child option inventory numbers." +
-    "This is most likely the quantity to display in the storefront UI."
+    label: "Inventory available to sell"
   },
   "inventoryInStock": {
     type: SimpleSchema.Integer,
-    label: "The quantity of this item currently in stock." +
-    "This number is updated when an order is processed by the operator." +
-    "This number includes all inventory, including reserved inventory (i.e. inventory that has been ordered, but not yet processed by the operator)." +
-    "If this is a variant, this number is created by summing all child option inventory numbers." +
-    "This is most likely just used as a reference in the operator UI, and not displayed in the storefront UI." +
-    "Called `inventoryQuantity` in the Product Schema, and `inventoryInStock` in the Catalog schema."
+    label: "Inventory in stock"
   },
   "inventoryManagement": {
     type: Boolean,
-    label: "True if inventory management is enabled for this variant"
+    label: "Inventory management"
   },
   "inventoryPolicy": {
     type: Boolean,
-    label: "True if inventory policy is enabled for this variant"
+    label: "Inventory policy"
   },
   "isBackorder": {
     type: Boolean,
-    label: "Indicates when a product is currently backordered",
+    label: "Is backordered",
     defaultValue: false
   },
   "isLowQuantity": {
     type: Boolean,
-    label: "Indicates that the product quantity is too low"
+    label: "Is low quantity"
   },
   "isSoldOut": {
     type: Boolean,
-    label: "Indicates when the product quantity is zero"
+    label: "Is sold out"
   },
   "length": {
     type: Number,
@@ -345,12 +336,11 @@ export const CatalogVariantSchema = VariantBaseSchema.clone().extend({
  * @property {Date} createdAt required
  * @property {String} description optional
  * @property {Number} height optional, default value: `0`
- * @property {Boolean} inventoryAvailableToSell required
- * @property {Boolean} inventoryInStock required
- * @property {Boolean} isBackorder required
- * @property {Boolean} isDeleted required, default value: `false`
- * @property {Boolean} isLowQuantity required
- * @property {Boolean} isSoldOut required
+ * @property {Boolean} inventoryAvailableToSell required, The quantity of this item currently available to sell. This number does not include reserved inventory (i.e. inventory that has been ordered, but not yet processed by the operator). If this is a variant, this number is created by summing all child option inventory numbers. This is most likely the quantity to display in the storefront UI.
+ * @property {Boolean} inventoryInStock required, The quantity of this item currently in stock. This number is updated when an order is processed by the operator. This number includes all inventory, including reserved inventory (i.e. inventory that has been ordered, but not yet processed by the operator). If this is a variant, this number is created by summing all child option inventory numbers. This is most likely just used as a reference in the operator UI, and not displayed in the storefront UI. Called `inventoryQuantity` in the Product Schema, and `inventoryInStock` in the Catalog schema.
+ * @property {Boolean} isBackorder required, Indicates when a product is currently backordered
+ * @property {Boolean} isLowQuantity required, Indicates that the product quantity is too low
+ * @property {Boolean} isSoldOut required, Indicates when the product quantity is zero
  * @property {Boolean} isVisible required, default value: `false`
  * @property {Number} length optional, default value: `0`
  * @property {Number} lowInventoryWarningThreshold optional, default value: `0`
@@ -413,38 +403,29 @@ export const CatalogProduct = new SimpleSchema({
   },
   "inventoryAvailableToSell": {
     type: SimpleSchema.Integer,
-    label: "The quantity of this item currently available to sell." +
-    "This number is updated when an order is placed by the customer." +
-    "This number does not include reserved inventory (i.e. inventory that has been ordered, but not yet processed by the operator)." +
-    "If this is a variant, this number is created by summing all child option inventory numbers." +
-    "This is most likely the quantity to display in the storefront UI."
+    label: "Inventory available to sell"
   },
   "inventoryInStock": {
     type: SimpleSchema.Integer,
-    label: "The quantity of this item currently in stock." +
-    "This number is updated when an order is processed by the operator." +
-    "This number includes all inventory, including reserved inventory (i.e. inventory that has been ordered, but not yet processed by the operator)." +
-    "If this is a variant, this number is created by summing all child option inventory numbers." +
-    "This is most likely just used as a reference in the operator UI, and not displayed in the storefront UI." +
-    "Called `inventoryQuantity` in the Product Schema, and `inventoryInStock` in the Catalog schema."
+    label: "Inventory in stock"
   },
   "isBackorder": {
     type: Boolean,
-    label: "Indicates when a product is currently backordered"
+    label: "Is backorder"
   },
   "isDeleted": {
     type: Boolean,
-    label: "Indicates when a product is archived",
+    label: "Is deleted",
     index: 1,
     defaultValue: false
   },
   "isLowQuantity": {
     type: Boolean,
-    label: "Indicates that the product quantity is too low"
+    label: "Is low quantity"
   },
   "isSoldOut": {
     type: Boolean,
-    label: "Indicates when the product quantity is zero"
+    label: "Is sold out"
   },
   "isVisible": {
     type: Boolean,
