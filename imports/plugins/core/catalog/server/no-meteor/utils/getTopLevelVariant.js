@@ -11,7 +11,10 @@ export default async function getTopLevelVariant(productOrVariantId, collections
 
   // Find a product or variant
   let product = await Products.findOne({
-    _id: productOrVariantId
+    _id: productOrVariantId,
+    projection: {
+      ancestors: 1
+    }
   });
 
   // If the found product has two ancestors, this means it's an option, and we get it's parent variant
