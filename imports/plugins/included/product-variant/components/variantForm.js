@@ -229,14 +229,14 @@ class VariantForm extends Component {
             i18nKeyLabel="productVariant.inventoryPolicy"
             i18nKeyOnLabel="productVariant.inventoryPolicy"
             name="inventoryPolicy"
-            label={"Allow backorder"}
-            onLabel={"Allow backorder"}
+            label="Allow backorder"
+            onLabel="Allow backorder"
             checked={!this.state.inventoryPolicy}
             onChange={this.handleInventoryPolicyChange}
             validation={this.props.validation}
             disabled={true}
-            helpText={"Backorder allowance is now controlled by options"}
-            i18nKeyHelpText={"admin.helpText.variantBackorderToggle"}
+            helpText="Backorder allowance is now controlled by options"
+            i18nKeyHelpText="admin.helpText.variantBackorderToggle"
             style={{ backgroundColor: "lightgrey", cursor: "not-allowed" }}
           />
         </div>
@@ -249,8 +249,8 @@ class VariantForm extends Component {
           i18nKeyLabel="productVariant.inventoryPolicy"
           i18nKeyOnLabel="productVariant.inventoryPolicy"
           name="inventoryPolicy"
-          label={"Allow backorder"}
-          onLabel={"Allow backorder"}
+          label="Allow backorder"
+          onLabel="Allow backorder"
           checked={!this.state.inventoryPolicy}
           onChange={this.handleInventoryPolicyChange}
           validation={this.props.validation}
@@ -275,8 +275,8 @@ class VariantForm extends Component {
               value={this.variant.inventoryQuantity}
               style={{ backgroundColor: "lightgrey", cursor: "not-allowed" }}
               disabled={true}
-              helpText={"Variants inventory in stock quantity is calculated by options inventory"}
-              i18nKeyHelpText={"admin.helpText.variantInventoryQuantity"}
+              helpText="Variants inventory in stock quantity is calculated by options inventory"
+              i18nKeyHelpText="admin.helpText.variantInventoryQuantity"
             />
           </div>
           <div className="col-sm-6">
@@ -291,8 +291,8 @@ class VariantForm extends Component {
               value={this.variant.inventoryAvailableToSell}
               style={{ backgroundColor: "lightgrey", cursor: "not-allowed" }}
               disabled={true}
-              helpText={"Variant inventory available to sell quantity is calculated by options inventory"}
-              i18nKeyHelpText={"admin.helpText.variantInventoryAvailableToSell"}
+              helpText="Variant inventory available to sell quantity is calculated by options inventory"
+              i18nKeyHelpText="admin.helpText.variantInventoryAvailableToSell"
             />
           </div>
         </Fragment>
@@ -315,8 +315,8 @@ class VariantForm extends Component {
             onBlur={this.handleFieldBlur}
             onReturnKeyDown={this.handleFieldBlur}
             validation={this.props.validation}
-            helpText={"Inventory in stock"}
-            i18nKeyHelpText={"admin.helpText.optionInventoryQuantity"}
+            helpText="Inventory in stock"
+            i18nKeyHelpText="admin.helpText.optionInventoryQuantity"
           />
         </div>
         <div className="col-sm-6">
@@ -335,8 +335,8 @@ class VariantForm extends Component {
             onBlur={this.handleFieldBlur}
             onReturnKeyDown={this.handleFieldBlur}
             validation={this.props.validation}
-            helpText={"Inventory available to sell"}
-            i18nKeyHelpText={"admin.helpText.optionInventoryAvailableToSell"}
+            helpText="Inventory available to sell"
+            i18nKeyHelpText="admin.helpText.optionInventoryAvailableToSell"
           />
         </div>
       </Fragment>
