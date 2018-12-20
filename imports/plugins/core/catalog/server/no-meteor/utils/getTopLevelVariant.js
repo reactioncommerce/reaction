@@ -11,7 +11,8 @@ export default async function getTopLevelVariant(productOrVariantId, collections
 
   // Find a product or variant
   let product = await Products.findOne({
-    _id: productOrVariantId,
+    _id: productOrVariantId
+  }, {
     projection: {
       ancestors: 1
     }
