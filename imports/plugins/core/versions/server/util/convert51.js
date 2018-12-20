@@ -309,6 +309,19 @@ function hasChildVariant(productOrVariantId, collections) {
 }
 
 /**
+ * @method canBackorder
+ * @summary If all the products variants have inventory policy disabled and inventory management enabled
+ * @memberof Catalog
+ * @param {Object[]} variants - Array with product variant objects
+ * @return {boolean} is backorder allowed or not for a product
+ */
+function canBackorder(variants) {
+  const results = variants.map((variant) => !variant.inventoryPolicy && variant.inventoryManagement);
+  return results.every((result) => result);
+}
+
+
+/**
  * @method isBackorder
  * @summary If all the products variants have inventory policy disabled, inventory management enabled and a quantity of zero return `true`
  * @memberof Catalog
@@ -415,6 +428,7 @@ export function convertCatalogItemVariants(item, collections) {
     if (variantOptions) {
       // For variants with options, update the inventory flags for the top-level variant and options
       updatedVariantFields = {
+        canBackorder: canBackorder(variantOptions),
         inventoryAvailableToSell: topVariantFromProductsCollection.inventoryAvailableToSell,
         inventoryInStock: topVariantFromProductsCollection.inventoryQuantity,
         isBackorder: isBackorder(variantOptions),
@@ -422,6 +436,7 @@ export function convertCatalogItemVariants(item, collections) {
         isSoldOut: isSoldOut(variantOptions),
         options: variantOptions.map((option) => ({
           ...catalogVariantOptionsMap.get(option._id),
+          canBackorder: canBackorder([option]),
           inventoryAvailableToSell: option.inventoryAvailableToSell,
           inventoryInStock: option.inventoryQuantity,
           isBackorder: isBackorder([option]),
@@ -432,6 +447,7 @@ export function convertCatalogItemVariants(item, collections) {
     } else {
       // For variants WITHOUT options, update the inventory flags for the top-level variant only
       updatedVariantFields = {
+        canBackorder: canBackorder([topVariantFromProductsCollection]),
         inventoryAvailableToSell: topVariantFromProductsCollection.inventoryAvailableToSell,
         inventoryInStock: topVariantFromProductsCollection.inventoryQuantity,
         isBackorder: isBackorder([topVariantFromProductsCollection]),
@@ -448,6 +464,7 @@ export function convertCatalogItemVariants(item, collections) {
 
   const catalogProduct = {
     ...item.product,
+    canBackorder: canBackorder(variants),
     inventoryAvailableToSell: product.inventoryAvailableToSell,
     inventoryInStock: product.inventoryQuantity,
     isBackorder: isBackorder(variants),
