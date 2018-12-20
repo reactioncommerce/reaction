@@ -17,6 +17,12 @@ export default function startup(context) {
     // We need to check to make sure the inventory has been removed before we return it to stock
     const orderIsApproved = order.shipping.find((group) => group.payment.status !== "created");
 
+    // Create a new set of unique productIds
+    // We do this because variants might have the same productId
+    // and we don't want to update the product each time a variant is it's child
+    // we can map over the unique productIds at the end, and update each one once
+    const uniqueProductsToUpdate = new Set();
+
     // If order is approved, the inventory has been taken away from both `inventoryQuantity` and `inventoryAvailableToSell`
     if (returnToStock && orderIsApproved) {
     // Run this Product update inline instead of using ordersInventoryAdjust because the collection hooks fail
@@ -48,8 +54,12 @@ export default function startup(context) {
           }
         );
 
-        // Publish inventory updates to the Catalog
-        await updateCatalogProductInventoryStatus(item.productId, collections);
+        uniqueProductsToUpdate.add(item.productId);
+      });
+
+      // Publish inventory updates to the Catalog
+      uniqueProductsToUpdate.forEach(async (uniqueProduct) => {
+        await updateCatalogProductInventoryStatus(uniqueProduct.productId, collections);
       });
     }
 
@@ -82,8 +92,12 @@ export default function startup(context) {
           }
         );
 
-        // Publish inventory updates to the Catalog
-        await updateCatalogProductInventoryStatus(item.productId, collections);
+        uniqueProductsToUpdate.add(item.productId);
+      });
+
+      // Publish inventory updates to the Catalog
+      uniqueProductsToUpdate.forEach(async (uniqueProduct) => {
+        await updateCatalogProductInventoryStatus(uniqueProduct.productId, collections);
       });
     }
   });
@@ -91,6 +105,12 @@ export default function startup(context) {
   appEvents.on("afterOrderCreate", async (order) => {
     const { collections } = context;
     const orderItems = order.shipping.reduce((list, group) => [...list, ...group.items], []);
+
+    // Create a new set of unique productIds
+    // We do this because variants might have the same productId
+    // and we don't want to update the product each time a variant is it's child
+    // we can map over the unique productIds at the end, and update each one once
+    const uniqueProductsToUpdate = new Set();
 
     orderItems.forEach(async (item) => {
       // Update supplied item inventory
@@ -117,8 +137,11 @@ export default function startup(context) {
         }
       );
 
-      // Publish inventory updates to the Catalog
-      await updateCatalogProductInventoryStatus(item.productId, collections);
+      uniqueProductsToUpdate.add(item.productId);
+    });
+
+    uniqueProductsToUpdate.forEach(async (uniqueProduct) => {
+      await updateCatalogProductInventoryStatus(uniqueProduct.productId, collections);
     });
   });
 }
