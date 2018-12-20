@@ -58,6 +58,4 @@ export default async function updateParentVariantsInventoryAvailableToSellQuanti
       }
     }
   );
-
-  return;
 }

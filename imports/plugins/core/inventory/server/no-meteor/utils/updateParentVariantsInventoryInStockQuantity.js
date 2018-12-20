@@ -40,12 +40,6 @@ export default async function updateParentVariantsInventoryInStockQuantity(item,
         $set: {
           inventoryQuantity: variantInventoryInStockQuantity
         }
-      },
-      {
-        publish: true,
-        selector: {
-          type: "variant"
-        }
       }
     );
   }
@@ -61,14 +55,6 @@ export default async function updateParentVariantsInventoryInStockQuantity(item,
       $set: {
         inventoryQuantity: productInventoryInStockQuantity
       }
-    },
-    {
-      publish: true,
-      selector: {
-        type: "variant"
-      }
     }
   );
-
-  return;
 }
