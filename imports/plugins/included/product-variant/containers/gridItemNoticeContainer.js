@@ -23,7 +23,7 @@ const wrapComponent = (Comp) => (
 
       for (const topVariant of topVariants) {
         const inventoryThreshold = topVariant.lowInventoryWarningThreshold;
-        if (topVariant.inventoryAvailableToSell !== 0 && inventoryThreshold >= topVariant.inventoryAvailableToSell) {
+        if (topVariant.inventoryAvailableToSell > 0 && inventoryThreshold > topVariant.inventoryAvailableToSell) {
           return true;
         }
       }
