@@ -44,7 +44,8 @@ const mockOrdersArray = [
             workflow: {
               status: "new",
               workflow: [
-                "coreOrderWorkflow/created"
+                "coreOrderWorkflow/created",
+                "coreItemWorkflow/removedFromInventoryAvailableToSell"
               ]
             },
             tax: 0,
@@ -54,7 +55,7 @@ const mockOrdersArray = [
         ]
       }
     ],
-    totalItemQuantity: 2,
+    totalItemQuantity: 1,
     workflow: {
       status: "coreOrderWorkflow/processing",
       workflow: [
@@ -102,7 +103,8 @@ const mockOrdersArray = [
             workflow: {
               status: "new",
               workflow: [
-                "coreOrderWorkflow/created"
+                "coreOrderWorkflow/created",
+                "coreItemWorkflow/removedFromInventoryAvailableToSell"
               ]
             },
             tax: 0,
@@ -112,7 +114,7 @@ const mockOrdersArray = [
         ]
       }
     ],
-    totalItemQuantity: 2,
+    totalItemQuantity: 1,
     workflow: {
       status: "coreOrderWorkflow/processing",
       workflow: [
@@ -160,7 +162,8 @@ const mockOrdersArray = [
             workflow: {
               status: "new",
               workflow: [
-                "coreOrderWorkflow/created"
+                "coreOrderWorkflow/created",
+                "coreItemWorkflow/removedFromInventoryAvailableToSell"
               ]
             },
             tax: 0,
@@ -170,7 +173,7 @@ const mockOrdersArray = [
         ]
       }
     ],
-    totalItemQuantity: 2,
+    totalItemQuantity: 1,
     workflow: {
       status: "coreOrderWorkflow/processing",
       workflow: [
