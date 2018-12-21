@@ -161,7 +161,7 @@ class Invoice extends Component {
     * @returns {null} null
     */
   renderInvoice() {
-    const { invoice, discounts, canMakeAdjustments } = this.props;
+    const { invoice, discounts } = this.props;
 
     return (
       <div>
@@ -211,6 +211,8 @@ class Invoice extends Component {
   }
 
   render() {
+    const { order } = this.props;
+
     return (
       <Components.CardGroup>
         <Components.Card>
@@ -226,7 +228,7 @@ class Invoice extends Component {
               {this.renderInvoice()}
             </div>
 
-            <InvoiceActions {...this.props}/>
+            <InvoiceActions {...this.props} payments={order && order.payments}/>
           </Components.CardBody>
         </Components.Card>
       </Components.CardGroup>

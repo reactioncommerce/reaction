@@ -25,6 +25,10 @@ class InvoiceActions extends Component {
      */
     handleApprove: PropTypes.func,
     /**
+     * A function for canceling the order
+     */
+    handleCancelPayment: PropTypes.func,
+    /**
      * A function for capturing payments
      */
     handleCapturePayment: PropTypes.func,
@@ -148,14 +152,14 @@ class InvoiceActions extends Component {
         {payment.status === "completed" &&
           <div className="cancel-order-btn">
             <Components.Button
-              className="btn btn-danger"
               bezelStyle="solid"
-              label="Cancel Order"
-              i18nKeyLabel="order.cancelOrderLabel"
-              type="button"
-              data-event-action="cancelOrder"
-              style={{ marginBottom: 10 }}
+              className="btn btn-danger"
               data-i18n="order.cancelOrderLabel"
+              onClick={this.props.handleCancelPayment}
+              i18nKeyLabel="order.cancelOrderLabel"
+              label="Cancel Order"
+              style={{ marginBottom: 10 }}
+              type="button"
             />
           </div>
         }

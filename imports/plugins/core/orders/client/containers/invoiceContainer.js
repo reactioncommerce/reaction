@@ -4,7 +4,7 @@ import accounting from "accounting-js";
 import _ from "lodash";
 import { Meteor } from "meteor/meteor";
 import { i18next, Logger, Reaction, formatPriceString } from "/client/api";
-import { Packages } from "/lib/collections";
+import { Orders, Shops, Packages } from "/lib/collections";
 import { getPrimaryMediaForItem } from "/lib/api";
 import { composeWithTracker, registerComponent } from "@reactioncommerce/reaction-components";
 import Invoice from "../components/invoice.js";
@@ -14,35 +14,37 @@ import { captureOrderPayments } from "../graphql";
 class InvoiceContainer extends Component {
   static propTypes = {
     currency: PropTypes.object,
-    isFetching: PropTypes.bool,
     order: PropTypes.object,
-    refunds: PropTypes.array,
     uniqueItems: PropTypes.array
   }
 
   constructor(props) {
     super(props);
     this.state = {
-      currency: props.currency,
-      refunds: props.refunds,
-      order: props.order,
-      isUpdating: false,
+      editedItems: [],
       isCapturing: false,
+      isFetchingRefunds: true,
       isRefunding: false,
+      isUpdating: false,
       popOverIsOpen: false,
+      refunds: [],
       selectAllItems: false,
       selectedItems: [],
-      editedItems: [],
       value: undefined
     };
   }
 
-  UNSAFE_componentWillReceiveProps(nextProps) { // eslint-disable-line camelcase
-    if (nextProps !== this.props) {
-      this.setState({
-        order: nextProps.order,
-        currency: nextProps.currency,
-        refunds: nextProps.refunds
+  componentDidMount() {
+    const { order } = this.props;
+
+    if (order) {
+      Meteor.call("orders/refunds/list", order, (error, result) => {
+        if (error) Logger.warn(error);
+
+        this.setState({
+          isFetchingRefunds: false,
+          refunds: Array.isArray(result) ? result.reverse() : []
+        });
       });
     }
   }
@@ -64,7 +66,7 @@ class InvoiceContainer extends Component {
   };
 
   handleItemSelect = (lineItem) => {
-    let { selectedItems, editedItems } = this.state;
+    let { editedItems, selectedItems } = this.state;
 
     // if item is not in the selectedItems array
     if (!selectedItems.includes(lineItem._id)) {
@@ -89,27 +91,20 @@ class InvoiceContainer extends Component {
           refundedQuantity: lineItem.quantity
         });
       }
-
-      this.setState({
-        editedItems,
-        selectedItems,
-        isUpdating: true,
-        selectAllItems: false
-      });
     } else {
       // remove item from selected items
       selectedItems = selectedItems.filter((id) => id !== lineItem._id);
 
       // remove item from edited quantities
       editedItems = editedItems.filter((item) => item.id !== lineItem._id);
-
-      this.setState({
-        editedItems,
-        selectedItems,
-        isUpdating: true,
-        selectAllItems: false
-      });
     }
+
+    this.setState({
+      editedItems,
+      selectedItems,
+      isUpdating: true,
+      selectAllItems: false
+    });
   }
 
   handleSelectAllItems = (uniqueItems) => {
@@ -184,7 +179,7 @@ class InvoiceContainer extends Component {
   }
 
   hasRefundingEnabled() {
-    const { order } = this.state;
+    const { order } = this.props;
     const [payment] = order.payments || [];
     const { paymentPluginName } = payment || {};
     const paymentPlugin = Packages.findOne({ name: paymentPluginName });
@@ -194,7 +189,7 @@ class InvoiceContainer extends Component {
   handleApprove = (event) => {
     event.preventDefault();
 
-    const { order } = this.state;
+    const { order } = this.props;
     approvePayment(order);
   }
 
@@ -203,7 +198,7 @@ class InvoiceContainer extends Component {
 
     this.setState({ isCapturing: true });
 
-    const { order } = this.state;
+    const { order } = this.props;
     capturePayments(order)
       .then(() => {
         this.setState({ isCapturing: false });
@@ -217,10 +212,10 @@ class InvoiceContainer extends Component {
 
   handleCancelPayment = (event) => {
     event.preventDefault();
-    const { order } = this.state;
+    const { currency, order } = this.props;
     const [payment] = order.payments || [];
     const { amount: invoiceTotal, mode: paymentMode, paymentPluginName, status: paymentStatus } = payment || {};
-    const currencySymbol = this.state.currency.symbol;
+    const currencySymbol = currency.symbol;
 
     const paymentPlugin = Packages.findOne({ name: paymentPluginName, shopId: order.shopId });
 
@@ -261,7 +256,8 @@ class InvoiceContainer extends Component {
   handleRefund = (event, refund) => {
     event.preventDefault();
 
-    const { currency, order, refunds } = this.state;
+    const { currency, order } = this.props;
+    const { refunds } = this.state;
     const currencySymbol = currency.symbol;
     const [payment] = order.payments || [];
     const { _id: paymentId, amount: orderTotal } = payment || {};
@@ -302,7 +298,7 @@ class InvoiceContainer extends Component {
   }
 
   handleRefundItems = () => {
-    const { order } = this.state;
+    const { order } = this.props;
     const [payment] = order.payments || [];
     const { amount, mode: paymentMode } = payment || {};
 
@@ -437,6 +433,7 @@ class InvoiceContainer extends Component {
         getRefundedItemsInfo={this.getRefundedItemsInfo}
         handleApprove={this.handleApprove}
         isAdjusted={this.isAdjusted}
+        handleCancelPayment={this.handleCancelPayment}
         handleCapturePayment={this.handleCapturePayment}
         handleRefund={this.handleRefund}
         hasRefundingEnabled={this.hasRefundingEnabled()}
@@ -446,7 +443,6 @@ class InvoiceContainer extends Component {
         isCapturing={this.state.isCapturing}
         selectAllItems={this.state.selectAllItems}
         selectedItems={this.state.selectedItems}
-        currency={this.state.currency}
         isRefunding={this.state.isRefunding}
         popOverIsOpen={this.state.popOverIsOpen}
         editedItems={this.state.editedItems}
@@ -500,74 +496,70 @@ function capturePayments(order) {
 }
 
 const composer = (props, onData) => {
-  const { order, refunds } = props;
+  const { fulfillment, orderId } = props;
 
+  const order = Orders.findOne({ _id: orderId });
   const shopId = Reaction.getShopId();
-  const [payment] = order.payments || [];
-  const { amount, status: paymentStatus } = payment || {};
-  const { invoice } = getShippingInfo(order);
+  const shop = Shops.findOne({ _id: shopId });
+  const currency = shop && shop.currencies[shop.currency];
 
-  // get whether adjustments can be made
-  const canMakeAdjustments = !_.includes(["approved", "completed", "refunded", "partialRefund"], paymentStatus);
+  if (order) {
+    const [payment] = order.payments || [];
+    const { status: paymentStatus } = payment || {};
+    const { invoice } = getShippingInfo(order);
 
-  // get adjusted Total
-  const refundTotal = Array.isArray(refunds) && refunds.reduce((acc, item) => acc + parseFloat(item.amount), 0);
-  const adjustedTotal = Math.abs(amount - refundTotal);
+    // get whether adjustments can be made
+    const canMakeAdjustments = !_.includes(["approved", "completed", "refunded", "partialRefund"], paymentStatus);
 
-  // Add totalItems property to invoice
-  const invoiceWithTotalItems = {
-    ...invoice,
-    totalItems: order.totalItemQuantity
-  };
+    // Add totalItems property to invoice
+    const invoiceWithTotalItems = {
+      ...invoice,
+      totalItems: order.totalItemQuantity
+    };
 
-  // get discounts
-  const apps = Reaction.Apps({ provides: "paymentMethod", enabled: true });
-  let discounts = false;
-  for (const app of apps) {
-    if (app.packageName === "discount-codes") {
-      discounts = true;
-      break;
+    // get discounts
+    const apps = Reaction.Apps({ provides: "paymentMethod", enabled: true });
+    let discounts = false;
+    for (const app of apps) {
+      if (app.packageName === "discount-codes") {
+        discounts = true;
+        break;
+      }
     }
+
+    // get unique lineItems
+    const { shipmentMethod } = fulfillment || {};
+
+    const orderItems = order.shipping.reduce((list, group) => [...list, ...group.items], []);
+    const uniqueItems = orderItems.reduce((result, item) => {
+      // If the items are not of this shop, skip them
+      if (item.shopId === shopId) {
+        item.shipping = shipmentMethod;
+        result.push(item);
+      }
+      return result;
+    }, []);
+
+    // print order
+    const printOrder = Reaction.Router.pathFor("dashboard/pdf/orders", {
+      hash: {
+        id: orderId,
+        shipment: fulfillment && fulfillment._id
+      }
+    });
+
+    onData(null, {
+      canMakeAdjustments,
+      currency,
+      discounts,
+      invoice: invoiceWithTotalItems,
+      order,
+      printOrder,
+      uniqueItems
+    });
   }
-
-  // get unique lineItems
-  const shipment = props.currentData.fulfillment;
-  const { shipmentMethod } = shipment || {};
-
-  const orderItems = order.shipping.reduce((list, group) => [...list, ...group.items], []);
-  const uniqueItems = orderItems.reduce((result, item) => {
-    // If the items are not of this shop, skip them
-    if (item.shopId === shopId) {
-      item.shipping = shipmentMethod;
-      result.push(item);
-    }
-    return result;
-  }, []);
-
-  // print order
-  const printOrder = Reaction.Router.pathFor("dashboard/pdf/orders", {
-    hash: {
-      id: props.order._id,
-      shipment: props.currentData.fulfillment && props.currentData.fulfillment._id
-    }
-  });
-
-  onData(null, {
-    adjustedTotal,
-    canMakeAdjustments,
-    currency: props.currency,
-    currentData: props.currentData,
-    discounts,
-    invoice: invoiceWithTotalItems,
-    isFetching: props.isFetching,
-    order: props.order,
-    payments: order.payments,
-    printOrder,
-    refunds: props.refunds,
-    uniqueItems
-  });
 };
 
-registerComponent("InvoiceContainer", InvoiceContainer, composeWithTracker(composer));
+registerComponent("OrderInvoice", InvoiceContainer, composeWithTracker(composer));
 
 export default composeWithTracker(composer)(InvoiceContainer);

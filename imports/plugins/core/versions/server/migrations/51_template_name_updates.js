@@ -8,6 +8,7 @@ import { Packages } from "/lib/collections";
 Migrations.add({
   version: 51,
   up() {
+    // coreOrderShippingSummary -> OrderSummary
     Packages.rawCollection().update({
       "layout.template": "coreOrderShippingSummary"
     }, {
@@ -16,6 +17,18 @@ Migrations.add({
       }
     }, {
       arrayFilters: [{ "elem.template": "coreOrderShippingSummary" }],
+      multi: true
+    });
+
+    // coreOrderShippingInvoice -> OrderInvoice
+    Packages.rawCollection().update({
+      "layout.template": "coreOrderShippingInvoice"
+    }, {
+      $set: {
+        "layout.$[elem].template": "OrderInvoice"
+      }
+    }, {
+      arrayFilters: [{ "elem.template": "coreOrderShippingInvoice" }],
       multi: true
     });
   },
@@ -28,6 +41,17 @@ Migrations.add({
       }
     }, {
       arrayFilters: [{ "elem.template": "OrderSummary" }],
+      multi: true
+    });
+
+    Packages.rawCollection().update({
+      "layout.template": "OrderInvoice"
+    }, {
+      $set: {
+        "layout.$[elem].template": "coreOrderShippingInvoice"
+      }
+    }, {
+      arrayFilters: [{ "elem.template": "OrderInvoice" }],
       multi: true
     });
   }
