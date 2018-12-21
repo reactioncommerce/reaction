@@ -511,7 +511,7 @@ const composer = (props, onData) => {
   const canMakeAdjustments = !_.includes(["approved", "completed", "refunded", "partialRefund"], paymentStatus);
 
   // get adjusted Total
-  const refundTotal = refunds && Array.isArray(refunds) && refunds.reduce((acc, item) => acc + parseFloat(item.amount), 0);
+  const refundTotal = Array.isArray(refunds) && refunds.reduce((acc, item) => acc + parseFloat(item.amount), 0);
   const adjustedTotal = Math.abs(amount - refundTotal);
 
   // Add totalItems property to invoice

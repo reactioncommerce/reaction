@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { withMoment, Components } from "@reactioncommerce/reaction-components";
+import { Components } from "@reactioncommerce/reaction-components";
 import { Badge, ClickToCopy } from "@reactioncommerce/reaction-ui";
 import { formatPriceString } from "/client/api";
 import { getOrderRiskBadge, getOrderRiskStatus, getShippingInfo, getTaxRiskStatus } from "../helpers";
@@ -191,4 +191,4 @@ class OrderSummary extends Component {
   }
 }
 
-export default withMoment(OrderSummary);
+export default OrderSummary;

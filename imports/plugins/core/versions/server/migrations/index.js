@@ -49,3 +49,4 @@ import "./47_order_ref";
 import "./48_catalog_variant_inventory";
 import "./49_update_idp_route_name_to_match_pattern";
 import "./50_create_default_navigation_trees";
+import "./51_template_name_updates";

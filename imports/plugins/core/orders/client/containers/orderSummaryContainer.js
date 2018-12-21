@@ -1,7 +1,8 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import { compose } from "recompose";
 import { Meteor } from "meteor/meteor";
-import { composeWithTracker, withMoment } from "@reactioncommerce/reaction-components";
+import { composeWithTracker, registerComponent, withMoment } from "@reactioncommerce/reaction-components";
 import { Orders } from "/lib/collections";
 import { Card, CardHeader, CardBody, CardGroup } from "/imports/plugins/core/ui/client/components";
 import { i18next } from "/client/api";
@@ -136,4 +137,12 @@ const composer = (props, onData) => {
   }
 };
 
-export default composeWithTracker(composer)(withMoment(OrderSummaryContainer));
+registerComponent("OrderSummary", OrderSummaryContainer, [
+  withMoment,
+  composeWithTracker(composer)
+]);
+
+export default compose(
+  withMoment,
+  composeWithTracker(composer)
+)(OrderSummaryContainer);
