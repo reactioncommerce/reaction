@@ -21,14 +21,6 @@ class OrderSummaryContainer extends Component {
     return (moment && moment(context).format(formatString)) || context.toLocaleString();
   }
 
-  tracking = () => {
-    const shipping = getShippingInfo(this.props.order);
-    if (shipping.tracking) {
-      return shipping.tracking;
-    }
-    return i18next.t("orderShipping.noTracking");
-  }
-
   shipmentStatus = () => {
     const { order } = this.props;
     const shipment = getShippingInfo(this.props.order);

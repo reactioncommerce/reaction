@@ -10,9 +10,7 @@ class OrderSummary extends Component {
     dateFormat: PropTypes.func,
     moment: PropTypes.func,
     order: PropTypes.object,
-    printableLabels: PropTypes.func,
-    shipmentStatus: PropTypes.func,
-    tracking: PropTypes.func
+    printableLabels: PropTypes.func
   }
 
   badgeStatus() {
@@ -45,13 +43,13 @@ class OrderSummary extends Component {
   }
 
   render() {
-    const { dateFormat, moment, order, printableLabels, tracking } = this.props;
+    const { dateFormat, moment, order, printableLabels } = this.props;
 
     if (!order) return null;
 
     const [payment] = order.payments || [];
     const { amount, displayName: paymentDisplayName, processor, transactionId } = payment || {};
-    const { address: shippingAddress, shipmentMethod } = getShippingInfo(order);
+    const { address: shippingAddress } = getShippingInfo(order);
     const orderPaymentRisk = getOrderRiskStatus(order);
     const orderTaxRisk = getTaxRiskStatus(order);
 
@@ -135,20 +133,6 @@ class OrderSummary extends Component {
               </div>
             </div>
 
-            <div className="order-summary-form-group">
-              <strong data-i18n="orderShipping.carrier">Carrier</strong>
-              <div className="invoice-details">
-                {shipmentMethod.carrier} - {shipmentMethod.label}
-              </div>
-            </div>
-
-            <div className="order-summary-form-group">
-              <strong data-i18n="orderShipping.tracking">Tracking</strong>
-              <div className="invoice-details">
-                {tracking()}
-              </div>
-            </div>
-
             {printableLabels() &&
               <div className="order-summary-form-group">
                 <strong data-i18n="orderShipping.printLabels">Labels</strong>
@@ -164,28 +148,6 @@ class OrderSummary extends Component {
             }
           </div>
         </div>
-
-        {!!shippingAddress && <div>
-          <br/>
-
-          <div className="order-summary-form-group">
-            <strong data-i18n="orderShipping.shipTo">Ship to</strong>
-            <div className="invoice-details">
-              <strong>Phone: </strong>{shippingAddress.phone}
-            </div>
-          </div>
-
-          <div style={{ marginTop: 4 }}>
-            <span>{shippingAddress.fullName}</span>
-            <br/>
-            <span>{shippingAddress.address1}</span>
-            {shippingAddress.address2 && <span><br/>{shippingAddress.address2}</span>}
-            <br/>
-            <span>
-              {shippingAddress.city}, {shippingAddress.region}, {shippingAddress.country} {shippingAddress.postal}
-            </span>
-          </div>
-        </div>}
       </div>
     );
   }
