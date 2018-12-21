@@ -157,9 +157,6 @@ type OrderFulfillmentGroup implements Node {
   "The items that are part of this fulfillment group"
   items(after: ConnectionCursor, before: ConnectionCursor, first: ConnectionLimitInt, last: ConnectionLimitInt, sortOrder: SortOrder = desc, sortBy: OrderFulfillmentGroupItemsSortByField = addedAt): OrderItemConnection
 
-  "The payment details for this group"
-  payment: Payment!
-
   "The fulfillment method that was selected, with its price quote"
   selectedFulfillmentOption: FulfillmentOption!
 
@@ -200,6 +197,12 @@ type Order implements Node {
 
   "Notes about the order. This will always return an array but it may be empty"
   notes: [OrderNote]!
+
+  """
+  Payments that collectively have paid or will pay for the total amount due for this order.
+  May be null if no payment is needed.
+  """
+  payments: [Payment]
 
   """
   An ID by which the customer can reference this order when enquiring about it. A storefront user

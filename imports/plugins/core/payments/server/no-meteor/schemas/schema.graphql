@@ -42,8 +42,28 @@ type Payment implements Node {
   "Use this identifier when showing this payment in a user interface"
   displayName: String!
 
+  "Has the payment authorization been canceled?"
+  isAuthorizationCanceled: Boolean!
+
+  "Has the payment been captured? If false, it is just an authorization."
+  isCaptured: Boolean!
+
   "The payment method"
   method: PaymentMethod!
+
+  "The current status of this payment"
+  status: PaymentStatus!
+}
+
+"Valid payment statuses"
+enum PaymentStatus {
+  adjustments
+  approved
+  completed
+  created
+  error
+  partialRefund
+  refunded
 }
 
 # Use `extend union` to define a payment plugin's PaymentData type

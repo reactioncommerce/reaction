@@ -79,6 +79,7 @@ registerSchema("CurrencyExchangeRate", CurrencyExchangeRate);
  * @property {String} [cardBrand] The brand of card, if the payment method was a credit card
  * @property {CurrencyExchangeRate} [currency] The exchange rate, if the user's currency is different from shop's
  * @property {Object} [data] Arbitrary data that the payment method needs
+ * @property {String} mode "authorize" if still needs to be captured, or "capture" if captured. "cancel" if auth was canceled.
  * @property {Invoice} invoice A summary of the totals that make up the full charge amount. Created when the payment is added to an order.
  * @property {String} shopId The ID of the shop that is being paid. This might be a merchant shop in a marketplace setup.
  */
