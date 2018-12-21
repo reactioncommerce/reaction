@@ -17,7 +17,7 @@ export default async function getVariantInventoryNotAvailableToSellQuantity(vari
     // Reduce through each fulfillment (shipping) object
     const shippingGroupsItems = order.shipping.reduce((acc, shippingGroup) => {
       // Get all items in order that match the item being adjusted
-      const matchingItems = shippingGroup.items.filter((item) => item.variantId === variant._id);
+      const matchingItems = shippingGroup.items.filter((item) => item.variantId === variant._id && item.workflow.workflow.includes("coreItemWorkflow/removedFromInventoryAvailableToSell"));
 
       // Reduce `quantity` fields of matched items into single number
       const reservedQuantityOfItem = matchingItems.reduce((quantity, matchingItem) => quantity + matchingItem.quantity, 0);

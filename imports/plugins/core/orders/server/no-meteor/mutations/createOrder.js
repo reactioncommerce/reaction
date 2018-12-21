@@ -206,7 +206,7 @@ async function buildOrderItem(inputItem, currencyCode, context) {
     updatedAt: now,
     variantId: chosenVariant._id,
     variantTitle: chosenVariant.title,
-    workflow: { status: "new", workflow: ["coreOrderWorkflow/created"] }
+    workflow: { status: "new", workflow: ["coreOrderWorkflow/created", "coreItemWorkflow/removedFromInventoryAvailableToSell"] }
   };
 
   return newItem;
