@@ -20,21 +20,21 @@ export default async function tags(context, shopId, { shouldIncludeDeleted = fal
   if (isTopLevel === false || isTopLevel === true) query.isTopLevel = isTopLevel;
 
   if (context.userHasPermission(["owner", "admin"], shopId)) {
-    if (shouldIncludeDeleted == true) {
-      query.isDeleted = { $in: [false, true] }
+    if (shouldIncludeDeleted === true) {
+      query.isDeleted = { $in: [false, true] };
     } else {
-      query.isDeleted = { $ne: true }
+      query.isDeleted = { $ne: true };
     }
-    if (shouldIncludeInvisible == true) {
-      query.isVisible = { $in: [false, true] }
+    if (shouldIncludeInvisible === true) {
+      query.isVisible = { $in: [false, true] };
     } else {
-      query.isVisible = { $ne: false }
+      query.isVisible = { $ne: false };
     }
   } else {
     query = {
       isDeleted: false,
       isVisible: true
-    }
+    };
   }
 
   return Tags.find(query);

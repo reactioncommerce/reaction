@@ -14,23 +14,23 @@ export default async function tag(context, slugOrId, { shouldIncludeInvisible = 
   let query = {
     $and: [
       { isVisible: true },
-      { $or: [{ _id: slugOrId }, { slug: slugOrId } ]}
+      { $or: [{ _id: slugOrId }, { slug: slugOrId }] }
     ]
-  }
+  };
 
   if (userHasPermission(["owner", "admin"], contextShopId)) {
-    if (shouldIncludeInvisible == true) {
-      query = { 
+    if (shouldIncludeInvisible === true) {
+      query = {
         $and: [
           { isVisible: { $in: [false, true] } },
-          { $or: [{ _id: slugOrId }, { slug: slugOrId } ]}
+          { $or: [{ _id: slugOrId }, { slug: slugOrId }] }
         ]
       };
     } else {
-      query
+      query;
     }
   } else {
-    query
+    query;
   }
 
   return Tags.findOne(query);
