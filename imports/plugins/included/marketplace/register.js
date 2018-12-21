@@ -1,7 +1,10 @@
 /* eslint camelcase: 0 */
 import Reaction from "/imports/plugins/core/core/server/Reaction";
 import schemas from "./server/no-meteor/schemas";
+import stripeCapturePayment from "./server/no-meteor/util/stripeCapturePayment";
 import stripeCreateAuthorizedPayment from "./server/no-meteor/util/stripeCreateAuthorizedPayment";
+import stripeCreateRefund from "./server/no-meteor/util/stripeCreateRefund";
+import stripeListRefunds from "./server/no-meteor/util/stripeListRefunds";
 
 Reaction.registerPackage({
   label: "Marketplace",
@@ -15,7 +18,10 @@ Reaction.registerPackage({
     name: "marketplace_stripe_card",
     displayName: "Marketplace Stripe Card",
     functions: {
-      createAuthorizedPayment: stripeCreateAuthorizedPayment
+      capturePayment: stripeCapturePayment,
+      createAuthorizedPayment: stripeCreateAuthorizedPayment,
+      createRefund: stripeCreateRefund,
+      listRefunds: stripeListRefunds
     }
   }],
   settings: {
