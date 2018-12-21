@@ -3,13 +3,10 @@ import Logger from "@reactioncommerce/logger";
 import { Meteor } from "meteor/meteor";
 import { check } from "meteor/check";
 import ReactionError from "@reactioncommerce/reaction-error";
-import { Orders, Products, Packages } from "/lib/collections";
+import { Orders, Packages } from "/lib/collections";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
 import rawCollections from "/imports/collections/rawCollections";
 import createNotification from "/imports/plugins/included/notifications/server/no-meteor/createNotification";
-import updateCatalogProductInventoryStatus from "/imports/plugins/core/catalog/server/no-meteor/utils/updateCatalogProductInventoryStatus";
-import updateParentVariantsInventoryAvailableToSellQuantity from "/imports/plugins/core/inventory/server/no-meteor/utils/updateParentVariantsInventoryAvailableToSellQuantity";
-import updateParentVariantsInventoryInStockQuantity from "/imports/plugins/core/inventory/server/no-meteor/utils/updateParentVariantsInventoryInStockQuantity";
 import orderCreditMethod from "../util/orderCreditMethod";
 import appEvents from "/imports/node-app/core/util/appEvents";
 
