@@ -15,7 +15,7 @@ export default async function tags(context, shopId, { shouldIncludeDeleted = fal
   const { collections } = context;
 
   const { Tags } = collections;
-  const query = { shopId };
+  let query = { shopId };
 
   if (isTopLevel === false || isTopLevel === true) query.isTopLevel = isTopLevel;
 
