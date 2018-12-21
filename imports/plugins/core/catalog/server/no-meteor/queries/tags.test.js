@@ -10,48 +10,55 @@ beforeEach(() => {
 test("default - is visible only", async () => {
   mockContext.collections.Tags.find.mockReturnValueOnce("CURSOR");
   const result = await tags(mockContext, mockShopId);
-  expect(mockContext.collections.Tags.find).toHaveBeenCalledWith({ shopId: mockShopId, isDeleted: { $ne: true }, isVisible: { $ne: false } });
+  expect(mockContext.collections.Tags.find).toHaveBeenCalledWith({ shopId: mockShopId, isDeleted: false, isVisible: true });
   expect(result).toBe("CURSOR");
 });
 
 test("include deleted", async () => {
   mockContext.collections.Tags.find.mockReturnValueOnce("CURSOR");
   const result = await tags(mockContext, mockShopId, { shouldIncludeDeleted: true });
-  expect(mockContext.collections.Tags.find).toHaveBeenCalledWith({ shopId: mockShopId, isVisible: { $ne: false } });
+  expect(mockContext.collections.Tags.find).toHaveBeenCalledWith({ shopId: mockShopId, isDeleted: true, isVisible: true});
   expect(result).toBe("CURSOR");
 });
 
 test("top-level only", async () => {
   mockContext.collections.Tags.find.mockReturnValueOnce("CURSOR");
   const result = await tags(mockContext, mockShopId, { isTopLevel: true });
-  expect(mockContext.collections.Tags.find).toHaveBeenCalledWith({ shopId: mockShopId, isDeleted: { $ne: true }, isTopLevel: true, isVisible: { $ne: false } });
+  expect(mockContext.collections.Tags.find).toHaveBeenCalledWith({ shopId: mockShopId, isDeleted: false, isTopLevel: true, isVisible: true });
   expect(result).toBe("CURSOR");
 });
 
 test("non-top-level only", async () => {
   mockContext.collections.Tags.find.mockReturnValueOnce("CURSOR");
   const result = await tags(mockContext, mockShopId, { isTopLevel: false });
-  expect(mockContext.collections.Tags.find).toHaveBeenCalledWith({ shopId: mockShopId, isDeleted: { $ne: true }, isTopLevel: false, isVisible: { $ne: false } });
+  expect(mockContext.collections.Tags.find).toHaveBeenCalledWith({ shopId: mockShopId, isDeleted: false, isTopLevel: false, isVisible: true });
   expect(result).toBe("CURSOR");
 });
 
 test("top-level only, including deleted", async () => {
   mockContext.collections.Tags.find.mockReturnValueOnce("CURSOR");
   const result = await tags(mockContext, mockShopId, { isTopLevel: true, shouldIncludeDeleted: true });
-  expect(mockContext.collections.Tags.find).toHaveBeenCalledWith({ shopId: mockShopId, isTopLevel: true, isVisible: { $ne: false } });
+  expect(mockContext.collections.Tags.find).toHaveBeenCalledWith({ shopId: mockShopId, isTopLevel: true, isVisible: true });
   expect(result).toBe("CURSOR");
 });
 
 test("non-top-level only, including deleted", async () => {
   mockContext.collections.Tags.find.mockReturnValueOnce("CURSOR");
   const result = await tags(mockContext, mockShopId, { isTopLevel: false, shouldIncludeDeleted: true });
-  expect(mockContext.collections.Tags.find).toHaveBeenCalledWith({ shopId: mockShopId, isTopLevel: false, isVisible: { $ne: false } });
+  expect(mockContext.collections.Tags.find).toHaveBeenCalledWith({ shopId: mockShopId, isTopLevel: false, isVisible: true });
   expect(result).toBe("CURSOR");
 });
 
-test("include not visible - by an admin or not", async () => {
+test("include not visible - by an admin", async () => {
   mockContext.collections.Tags.find.mockReturnValueOnce("CURSOR");
   const result = await tags(mockContext, mockShopId, { shouldIncludeInvisible: true });
-  expect(mockContext.collections.Tags.find).toHaveBeenCalledWith({ shopId: mockShopId, isDeleted: { $ne: true } });
+  expect(mockContext.collections.Tags.find).toHaveBeenCalledWith({ shopId: mockShopId, isDeleted: false});
+  expect(result).toBe("CURSOR");
+});
+
+test("include not visible and only topLevel - by an admin", async () => {
+  mockContext.collections.Tags.find.mockReturnValueOnce("CURSOR");
+  const result = await tags(mockContext, mockShopId, { shouldIncludeInvisible: true, isTopLevel: true });
+  expect(mockContext.collections.Tags.find).toHaveBeenCalledWith({ shopId: mockShopId, isDeleted: false, isTopLevel: true});
   expect(result).toBe("CURSOR");
 });

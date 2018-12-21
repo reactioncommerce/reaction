@@ -23,18 +23,16 @@ export default async function tags(context, shopId, { shouldIncludeDeleted = fal
     if (shouldIncludeDeleted === true) {
       query.isDeleted = { $in: [false, true] };
     } else {
-      query.isDeleted = { $ne: true };
+      query.isDeleted = false;
     }
     if (shouldIncludeInvisible === true) {
       query.isVisible = { $in: [false, true] };
     } else {
-      query.isVisible = { $ne: false };
+      query.isVisible = true;
     }
   } else {
-    query = {
-      isDeleted: false,
-      isVisible: true
-    };
+    query.isDeleted = false;
+    query.isVisible = true;
   }
 
   return Tags.find(query);
