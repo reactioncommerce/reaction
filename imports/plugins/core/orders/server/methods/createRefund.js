@@ -1,9 +1,8 @@
-import _ from "lodash";
-import { check, Match } from "meteor/check";
+import { check } from "meteor/check";
 import Hooks from "@reactioncommerce/hooks";
 import Logger from "@reactioncommerce/logger";
 import ReactionError from "@reactioncommerce/reaction-error";
-import { Orders, Packages } from "/lib/collections";
+import { Orders } from "/lib/collections";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
 import getGraphQLContextInMeteorMethod from "/imports/plugins/core/graphql/server/getGraphQLContextInMeteorMethod";
 import { getPaymentMethodConfigByName } from "/imports/plugins/core/core/server/no-meteor/pluginRegistration";
@@ -17,82 +16,52 @@ import sendOrderEmail from "../util/sendOrderEmail";
  * @param {String} orderId - order object
  * @param {String} paymentId - ID of payment to refund
  * @param {Number} amount - Amount of the refund, as a positive number
- * @param {Bool} sendEmail - Send email confirmation
  * @return {null} no return value
  */
-export default function createRefund(orderId, paymentId, amount, sendEmail = true) {
+export default function createRefund(orderId, paymentId, amount) {
   check(orderId, String);
   check(paymentId, String);
   check(amount, Number);
-  check(sendEmail, Match.Optional(Boolean));
 
-  // REVIEW: For marketplace implementations, who can refund? Just the marketplace?
-  if (!Reaction.hasPermission("orders")) {
+  const order = Orders.findOne({ _id: orderId });
+  if (!order) throw new ReactionError("not-found", "Order not found");
+
+  const authUserId = Reaction.getUserId();
+
+  if (!Reaction.hasPermission("orders", authUserId, order.shopId)) {
     throw new ReactionError("access-denied", "Access Denied");
   }
 
-  const order = Orders.findOne({ _id: orderId });
-  const fulfillmentGroup = order.shipping.find((group) => group.payment._id === paymentId);
-  const { _id: groupId, payment } = fulfillmentGroup;
+  const payment = (order.payments || []).find((pmt) => pmt._id === paymentId);
+  if (!payment) throw new ReactionError("not-found", "Payment not found");
 
-  const { mode: paymentMode, paymentPluginName, name, transactionId } = payment;
+  const { name } = payment;
+  const context = Promise.await(getGraphQLContextInMeteorMethod(authUserId));
+  const result = Promise.await(getPaymentMethodConfigByName(name).functions.createRefund(context, payment, amount));
 
-  const paymentPlugin = Packages.findOne({ name: paymentPluginName, shopId: order.shopId });
-
-  // check if payment provider supports de-authorize
-  let result;
-  let modifier = {};
-  const context = Promise.await(getGraphQLContextInMeteorMethod(Reaction.getUserId()));
-  if (_.get(paymentPlugin, "settings.support", []).indexOf("De-authorize") > -1) {
-    result = Promise.await(getPaymentMethodConfigByName(name).functions.deAuthorizePayment(context, payment, amount));
-    modifier = {
-      $push: {
-        "shipping.$.payment.transactions": result
-      }
-    };
-
-    if (result.saved === false) {
-      Logger.fatal(
-        "Attempt for de-authorize transaction failed",
-        order._id,
-        transactionId,
-        result.error
-      );
-      throw new ReactionError("Attempt to de-authorize transaction failed", result.error);
-    }
-  } else if (paymentMode === "capture") {
-    result = Promise.await(getPaymentMethodConfigByName(name).functions.createRefund(context, payment, amount));
-    modifier = {
-      $push: {
-        "shipping.$.payment.transactions": result
-      }
-    };
-
-    if (result.saved === false) {
-      Logger.fatal("Attempt for refund transaction failed", order._id, transactionId, result.error);
-      throw new ReactionError("Attempt to refund transaction failed", result.error);
-    }
+  if (!result.saved) {
+    Logger.fatal("Attempt to refund payment failed", order._id, paymentId, result.error);
+    throw new ReactionError("Attempt to refund payment failed", result.error);
   }
 
   Orders.update(
     {
       "_id": orderId,
-      "shipping._id": groupId
+      "payments._id": paymentId
     },
     {
       $set: {
-        "shipping.$.payment.status": "refunded"
+        "payments.$.mode": "cancel",
+        "payments.$.status": "refunded"
       },
-      ...modifier
+      $push: {
+        "payments.$.transactions": result
+      }
     }
   );
 
   Hooks.Events.run("onOrderRefundCreated", orderId);
 
   // Send email to notify customer of a refund
-  if (_.get(paymentPlugin, "settings.support", []).indexOf("De-authorize") > -1) {
-    sendOrderEmail(order);
-  } else if (paymentMode === "capture" && sendEmail) {
-    sendOrderEmail(order, "refunded");
-  }
+  sendOrderEmail(order, "refunded");
 }
