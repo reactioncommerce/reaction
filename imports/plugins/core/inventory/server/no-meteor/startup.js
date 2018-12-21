@@ -1,6 +1,8 @@
 import appEvents from "/imports/node-app/core/util/appEvents";
 import updateCatalogProductInventoryStatus from "/imports/plugins/core/catalog/server/no-meteor/utils/updateCatalogProductInventoryStatus";
-
+import getVariantInventoryNotAvailableToSellQuantity from "/imports/plugins/core/inventory/server/no-meteor/utils/getVariantInventoryNotAvailableToSellQuantity";
+import updateParentVariantsInventoryAvailableToSellQuantity from "/imports/plugins/core/inventory/server/no-meteor/utils/updateParentVariantsInventoryAvailableToSellQuantity";
+import updateParentVariantsInventoryInStockQuantity from "/imports/plugins/core/inventory/server/no-meteor/utils/updateParentVariantsInventoryInStockQuantity";
 /**
  * @summary Called on startup
  * @param {Object} context Startup context
@@ -181,5 +183,39 @@ export default function startup(context) {
     productIds.forEach(async (productId) => {
       await updateCatalogProductInventoryStatus(productId, collections);
     });
+  });
+
+  appEvents.on("afterVariantUpdate", async ({ _id, field }) => {
+    const { collections } = context;
+
+    // If the updated field was `inventoryQuantity`, adjust `inventoryAvailableToSell` quantities
+    if (field === "inventoryQuantity") {
+      const doc = await collections.Products.findOne({ _id });
+
+      // Get reserved inventory - the inventory currently in an unprocessed order
+      const reservedInventory = await getVariantInventoryNotAvailableToSellQuantity(doc, collections);
+
+      // Compute `inventoryAvailableToSell` as the inventory in stock minus the reserved inventory
+      const computedInventoryAvailableToSell = doc.inventoryQuantity - reservedInventory;
+
+      await collections.Products.updateOne(
+        {
+          _id: doc._id
+        },
+        {
+          $set: {
+            inventoryAvailableToSell: computedInventoryAvailableToSell
+          }
+        }
+      );
+
+      // Update `inventoryAvailableToSell` on all parents of this variant / option
+      await updateParentVariantsInventoryAvailableToSellQuantity(doc, collections);
+      // Update `inventoryQuantity` on all parents of this variant / option
+      await updateParentVariantsInventoryInStockQuantity(doc, collections);
+
+      // Publish inventory to catalog
+      await updateCatalogProductInventoryStatus(doc.ancestors[0], collections);
+    }
   });
 }
