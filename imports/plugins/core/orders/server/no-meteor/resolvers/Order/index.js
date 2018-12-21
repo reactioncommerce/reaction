@@ -1,5 +1,5 @@
 import { encodeCartOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/cart";
-import { encodeOrderOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/order";
+import { encodeOrderOpaqueId, xformOrderPayment } from "@reactioncommerce/reaction-graphql-xforms/order";
 import { resolveAccountFromAccountId, resolveShopFromShopId } from "@reactioncommerce/reaction-graphql-utils";
 import totalItemQuantity from "./totalItemQuantity";
 
@@ -9,6 +9,7 @@ export default {
   cartId: (node) => encodeCartOpaqueId(node._id),
   fulfillmentGroups: (node) => node.shipping || [],
   notes: (node) => node.notes || [],
+  payments: (node) => (Array.isArray(node.payments) ? node.payments.map(xformOrderPayment) : null),
   shop: resolveShopFromShopId,
   totalItemQuantity
 };

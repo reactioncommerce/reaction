@@ -1,5 +1,4 @@
 /* eslint prefer-arrow-callback:0 */
-import Logger from "@reactioncommerce/logger";
 import accounting from "accounting-js";
 import { Meteor } from "meteor/meteor";
 import { check, Match } from "meteor/check";
@@ -36,7 +35,6 @@ describe("orders test", function () {
       "sendNotification": Meteor.server.method_handlers["orders/sendNotification"],
       "updateShipmentTracking": Meteor.server.method_handlers["orders/updateShipmentTracking"],
       "updateHistory": Meteor.server.method_handlers["orders/updateHistory"],
-      "capturePayments": Meteor.server.method_handlers["orders/capturePayments"],
       "refunds/list": Meteor.server.method_handlers["orders/refunds/list"],
       "refunds/create": Meteor.server.method_handlers["orders/refunds/create"],
       "refunds/refundItems": Meteor.server.method_handlers["orders/refunds/refundItems"],
@@ -73,11 +71,6 @@ describe("orders test", function () {
   function shippingObjectMethod(orderObject) {
     const shippingObject = orderObject.shipping.find((shipping) => shipping.shopId === shopId);
     return shippingObject;
-  }
-
-  function orderCreditMethod(orderObject) {
-    const creditGroup = orderObject.shipping.find((group) => group.shopId === Reaction.getShopId() && group.payment.method === "credit");
-    return (creditGroup && creditGroup.payment) || {};
   }
 
   describe("orders/cancelOrder", function () {
@@ -278,7 +271,7 @@ describe("orders test", function () {
       sandbox.stub(Reaction, "hasPermission", () => true);
       spyOnMethod("makeAdjustmentsToInvoice", order.userId);
       Meteor.call("orders/makeAdjustmentsToInvoice", order);
-      const orderPaymentStatus = shippingObjectMethod(Orders.findOne({ _id: order._id })).payment.status;
+      const orderPaymentStatus = Orders.findOne({ _id: order._id }).payments[0].status;
       expect(orderPaymentStatus).equal("adjustments");
     });
   });
@@ -296,7 +289,7 @@ describe("orders test", function () {
     it("should approve payment", function () {
       sandbox.stub(Reaction, "hasPermission", () => true);
       spyOnMethod("approvePayment", order.userId);
-      const { invoice } = orderCreditMethod(order);
+      const { invoice } = shippingObjectMethod(order);
       const subTotal = invoice.subtotal;
       const { shipping, taxes } = invoice;
       const discount = invoice.discounts;
@@ -466,69 +459,6 @@ describe("orders test", function () {
       expect(orders.history[0].event).to.equal(event);
       expect(orders.history[0].value).to.equal(trackingValue);
       expect(orders.history[0].userId).to.equal(order.userId);
-    });
-  });
-
-  describe("orders/capturePayments", function () {
-    beforeEach(function (done) {
-      Orders.update({
-        "_id": order._id,
-        "shipping.payment.transactionId": shippingObjectMethod(order).payment.transactionId
-      }, {
-        $set: {
-          "shipping.$.payment.mode": "capture",
-          "shipping.$.payment.status": "approved"
-        }
-      });
-      return done();
-    });
-
-    it("should return access denied if user does not have access", function () {
-      sandbox.stub(Reaction, "hasPermission", () => false);
-      spyOnMethod("capturePayments", order.userId);
-      function capturePayments() {
-        return Meteor.call("orders/capturePayments", order._id);
-      }
-      expect(capturePayments).to.throw(ReactionError, /Access Denied/);
-    });
-
-    it("should update the order item workflow to coreOrderItemWorkflow/captured", function () {
-      sandbox.stub(Reaction, "hasPermission", () => true);
-      spyOnMethod("capturePayments", order.userId);
-      Meteor.call("orders/capturePayments", order._id);
-      const orderItemWorkflow = Orders.findOne({ _id: order._id }).items[0].workflow;
-      expect(orderItemWorkflow.status).to.equal("coreOrderItemWorkflow/captured");
-    });
-
-    it("should update the order after the payment processor has captured the payment", function (done) {
-      sandbox.stub(Reaction, "hasPermission", () => true);
-      spyOnMethod("capturePayments", order.userId);
-      Meteor.call("orders/capturePayments", order._id, () => {
-        const orderPayment = shippingObjectMethod(Orders.findOne({ _id: order._id })).payment;
-        expect(orderPayment.mode).to.equal("capture");
-        expect(orderPayment.status).to.equal("completed");
-        done();
-      });
-    });
-
-    it("should update order payment method status to error if payment processor fails", function (done) {
-      sandbox.stub(Reaction, "hasPermission", () => true);
-      spyOnMethod("capturePayments", order.userId);
-      sandbox.stub(Meteor.server.method_handlers, "example/payment/capture", function (...args) {
-        check(args, [Match.Any]);
-        return {
-          error: "stub error",
-          saved: false
-        };
-      });
-
-      sandbox.stub(Logger, "fatal"); // since we expect this, let's keep the output clean
-      Meteor.call("orders/capturePayments", order._id, () => {
-        const orderPayment = shippingObjectMethod(Orders.findOne({ _id: order._id })).payment;
-        expect(orderPayment.mode).to.equal("capture");
-        expect(orderPayment.status).to.equal("error");
-        done();
-      });
     });
   });
 
