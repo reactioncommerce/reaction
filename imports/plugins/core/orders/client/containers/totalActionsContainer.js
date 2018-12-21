@@ -3,11 +3,10 @@ import PropTypes from "prop-types";
 import { composeWithTracker } from "@reactioncommerce/reaction-components";
 import TotalActions from "../components/totalActions";
 
-class TotalActionsContaner extends Component {
+class TotalActionsContainer extends Component {
   static propTypes = {
     adjustedTotal: PropTypes.number,
-    invoice: PropTypes.object,
-    paymentCaptured: PropTypes.bool // eslint-disable-line react/boolean-prop-naming
+    invoice: PropTypes.object
   }
 
   constructor(props) {
@@ -25,12 +24,11 @@ class TotalActionsContaner extends Component {
   }
 
   render() {
-    const { paymentCaptured, adjustedTotal, invoice } = this.props;
+    const { adjustedTotal, invoice } = this.props;
     return (
       <div>
         <TotalActions
           isAdjusted={this.isAdjusted}
-          paymentCaptured={paymentCaptured}
           adjustedTotal={adjustedTotal}
           invoice={invoice}
         />
@@ -41,10 +39,9 @@ class TotalActionsContaner extends Component {
 
 const composer = (props, onData) => {
   onData(null, {
-    paymentCaptured: props.paymentCaptured,
     adjustedTotal: props.adjustedTotal,
     invoice: props.invoice
   });
 };
 
-export default composeWithTracker(composer)(TotalActionsContaner);
+export default composeWithTracker(composer)(TotalActionsContainer);

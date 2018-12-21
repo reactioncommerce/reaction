@@ -12,30 +12,42 @@ import InvoiceActions from "./invoiceActions";
  */
 
 class Invoice extends Component {
-  /**
-    * @name Invoice propTypes
-    * @type {propTypes}
-    * @param {Object} props - React PropTypes
-    * @property {Object} invoice - An object representing an invoice
-    * @property {Object} order - An object representing an order
-    * @property {Bool} discounts - A boolean indicating whether discounts are enabled
-    * @property {Array} refunds - An array/list of refunds
-    * @property {Bool} paymentCaptured - A boolean indicating whether payment has been captured
-    * @property {Bool} canMakeAdjustments - A boolean indicating whether adjustments could be made on total payment
-    * @property {Bool} hasRefundingEnabled - A boolean indicating whether payment supports refunds
-    * @property {Bool} isFetching - A boolean indicating whether refund list is being loaded
-    * @return {Node} React node containing component for displaying the `invoice` section on the orders sideview
-    */
   static propTypes = {
+    /**
+     * A boolean indicating whether adjustments could be made on total payment
+     */
     canMakeAdjustments: PropTypes.bool,
+    /**
+     * A boolean indicating whether discounts are enabled
+     */
     discounts: PropTypes.bool, // eslint-disable-line react/boolean-prop-naming
+    /**
+     * Function that renders media
+     */
     displayMedia: PropTypes.func,
+    /**
+     * A boolean indicating whether payment supports refunds
+     */
     hasRefundingEnabled: PropTypes.bool,
+    /**
+     * An order invoice document
+     */
     invoice: PropTypes.object,
+    /**
+     * Is the refund list being loaded
+     */
     isFetching: PropTypes.bool,
+    /**
+     * Injected MomentJS library
+     */
     moment: PropTypes.func,
+    /**
+     * An order document
+     */
     order: PropTypes.object,
-    paymentCaptured: PropTypes.bool, // eslint-disable-line react/boolean-prop-naming
+    /**
+     * A list of refunds for this payment
+     */
     refunds: PropTypes.array
   }
 
@@ -44,7 +56,7 @@ class Invoice extends Component {
   }
 
   /**
-    * @name formatDate()
+    * @name formatDate
     * @method
     * @summary Formats dates
     * @param {Number} context - the date to be formatted
@@ -58,7 +70,7 @@ class Invoice extends Component {
   }
 
   /**
-    * @name handleClick()
+    * @name handleClick
     * @method
     * @summary Handle clicking the add discount link
     * @param {Event} event - the event that fired
@@ -72,7 +84,7 @@ class Invoice extends Component {
   }
 
   /**
-    * @name renderDiscountForm()
+    * @name renderDiscountForm
     * @method
     * @summary Displays the discount form
     * @returns {null} null
@@ -96,7 +108,7 @@ class Invoice extends Component {
   }
 
   /**
-    * @name renderRefundsInfo()
+    * @name renderRefundsInfo
     * @method
     * @summary Displays the refund information after the order payment breakdown on the invoice
     * @returns {null} null
@@ -125,7 +137,7 @@ class Invoice extends Component {
   }
 
   /**
-    * @name renderTotal()
+    * @name renderTotal
     * @method
     * @summary Displays the total payment form
     * @returns {null} null
@@ -143,39 +155,13 @@ class Invoice extends Component {
   }
 
   /**
-    * @name renderConditionalDisplay()
-    * @method
-    * @summary Displays either refunds info or the total payment form
-    * @returns {null} null
-    */
-  renderConditionalDisplay() {
-    const { canMakeAdjustments, paymentCaptured } = this.props;
-    return (
-      <div>
-        {canMakeAdjustments ?
-          <div> {this.renderTotal()} </div> :
-          <span>
-            {paymentCaptured ?
-              <div>
-                {this.renderRefundsInfo()}
-              </div>
-              :
-              <div> {this.renderTotal()} </div>
-            }
-          </span>
-        }
-      </div>
-    );
-  }
-
-  /**
-    * @name renderInvoice()
+    * @name renderInvoice
     * @method
     * @summary Displays the invoice form with broken down payment info
     * @returns {null} null
     */
   renderInvoice() {
-    const { invoice, discounts } = this.props;
+    const { invoice, discounts, canMakeAdjustments } = this.props;
 
     return (
       <div>
@@ -218,7 +204,8 @@ class Invoice extends Component {
             {this.renderDiscountForm()}
           </div>
         }
-        {this.renderConditionalDisplay()}
+        {this.renderRefundsInfo()}
+        {this.renderTotal()}
       </div>
     );
   }

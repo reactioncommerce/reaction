@@ -5,19 +5,10 @@ import { $ } from "meteor/jquery";
 import { Template } from "meteor/templating";
 import { ReactiveVar } from "meteor/reactive-var";
 import { ReactiveDict } from "meteor/reactive-dict";
-import { i18next, Logger, Reaction } from "/client/api";
+import { i18next, Logger } from "/client/api";
 import { Orders, Shops, Packages } from "/lib/collections";
 import InvoiceContainer from "../../containers/invoiceContainer.js";
-
-/**
- * @summary the first credit payment on the order
- * @param {Object} order The order doc
- * @returns {Object} The payment
- */
-function orderCreditMethod(order) {
-  const creditGroup = order.shipping.find((group) => group.shopId === Reaction.getShopId() && group.payment.method === "credit");
-  return (creditGroup && creditGroup.payment) || {};
-}
+import { getShippingInfo } from "../../helpers";
 
 //
 // core order shipping invoice templates
@@ -113,8 +104,9 @@ Template.coreOrderShippingInvoice.events({
     const order = instance.state.get("order");
     const currencySymbol = instance.state.get("currency").symbol;
 
+    const { invoice } = getShippingInfo(order);
     const [payment] = order.payments || [];
-    const { invoice, mode: paymentMode, paymentPluginName, status: paymentStatus } = payment || {};
+    const { mode: paymentMode, paymentPluginName, status: paymentStatus } = payment || {};
     const invoiceTotal = invoice.total;
 
     const paymentPlugin = Packages.findOne({ name: paymentPluginName, shopId: order.shopId });
@@ -140,19 +132,21 @@ Template.coreOrderShippingInvoice.events({
       let returnToStock;
       if (isConfirm) {
         returnToStock = false;
-        return Meteor.call("orders/cancelOrder", order, returnToStock, (err) => {
+        Meteor.call("orders/cancelOrder", order, returnToStock, (err) => {
           if (err) {
             $(".alert").removeClass("hidden").text(err.message);
           }
         });
+        return;
       }
       if (cancel === "cancel") {
         returnToStock = true;
-        return Meteor.call("orders/cancelOrder", order, returnToStock, (err) => {
+        Meteor.call("orders/cancelOrder", order, returnToStock, (err) => {
           if (err) {
             $(".alert").removeClass("hidden").text(err.message);
           }
         });
+        return;
       }
     });
   },
@@ -179,7 +173,7 @@ Template.coreOrderShippingInvoice.helpers({
   disabled() {
     const instance = Template.instance();
     const order = instance.state.get("order");
-    const { status } = orderCreditMethod(order);
+    const { status } = order.payments[0];
 
     if (status === "approved" || status === "completed") {
       return "disabled";

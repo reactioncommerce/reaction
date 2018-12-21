@@ -1,4 +1,21 @@
+import { Meteor } from "meteor/meteor";
 import { Reaction } from "/client/api";
+
+/**
+ * @param {Object} order The order doc
+ * @returns {Promise<null>} null
+ */
+export async function approvePayment(order) {
+  return new Promise((resolve, reject) => {
+    Meteor.call("orders/approvePayment", order, (error, result) => {
+      if (error) {
+        reject(error);
+      } else {
+        resolve(result);
+      }
+    });
+  });
+}
 
 /**
  * @method getOrderRiskBadge

@@ -5,7 +5,7 @@ import { Meteor } from "meteor/meteor";
 import { Reaction, i18next } from "/client/api";
 import { getPrimaryMediaForItem } from "/lib/api";
 import { registerComponent } from "@reactioncommerce/reaction-components";
-import { getShippingInfo } from "../helpers";
+import { approvePayment, getShippingInfo } from "../helpers";
 import {
   PACKAGE_NAME,
   ORDER_LIST_FILTERS_PREFERENCE_NAME,
@@ -13,6 +13,7 @@ import {
   shippingStates
 } from "../../lib/constants";
 import OrderTable from "../components/orderTable";
+import { captureOrderPayments } from "../graphql";
 
 const shippingStrings = ["picked", "packed", "labeled", "shipped"];
 
@@ -36,9 +37,9 @@ const wrapComponent = (Comp) => (
           picked: false,
           packed: false,
           labeled: false,
-          shipped: false,
-          capturePayment: false
+          shipped: false
         },
+        isCapturingPayment: false,
         ready: false
       };
     }
@@ -122,7 +123,8 @@ const wrapComponent = (Comp) => (
       // If the users is in the new operator UI, redirect to
       // Order detail view
       if (window.location.pathname.includes("/operator")) {
-        return Router.go(`/operator/orders/${order._id}`);
+        Router.go(`/operator/orders/${order._id}`);
+        return;
       }
 
       Reaction.setActionViewDetail({
@@ -228,7 +230,7 @@ const wrapComponent = (Comp) => (
 
         Meteor.call(`orders/shipment${capitalizeStatus}`, order, shippingRecord, (error) => {
           if (error) {
-            Alerts.toast(`An error occured while setting the status: ${error}`, "error");
+            Alerts.toast(`An error occurred while setting the status: ${error}`, "error");
           } else {
             Meteor.call("orders/updateHistory", order._id, "Shipping state set by bulk operation", status);
           }
@@ -613,76 +615,46 @@ const wrapComponent = (Comp) => (
       }
     }
 
-    /**
-     * @summary Finds the credit record in order for the active shop
-     * @param {Object} order The order where to find the payment record in.
-     * @returns {Object} The payment record with method === credit of currently active shop
-     * @private
-     */
-    orderCreditMethod(order) {
-      const creditGroup = order.shipping.find((group) => group.shopId === Reaction.getShopId() && group.payment.method === "credit");
-      return (creditGroup && creditGroup.payment) || {};
-    }
-
     handleBulkPaymentCapture = (selectedOrdersIds, orders) => {
       this.setState({
-        isLoading: {
-          capturePayment: true
-        }
+        isCapturingPayment: true
       });
+
       const selectedOrders = orders.filter((order) => selectedOrdersIds.includes(order._id));
 
-      let orderCount = 0;
-      const done = () => {
-        orderCount += 1;
-        if (orderCount === selectedOrders.length) {
+      const orderCapturePromises = selectedOrders.map(async (order) => {
+        await approvePayment(order);
+
+        if (Array.isArray(order.payments) && order.payments.length > 0) {
+          const paymentIds = order.payments
+            .filter((payment) => payment.mode === "capture" && payment.status !== "completed")
+            .map((payment) => payment._id);
+          if (paymentIds.length > 0) {
+            await captureOrderPayments({ orderId: order._id, paymentIds, shopId: order.shopId });
+          }
+        }
+      });
+
+      Promise.all(orderCapturePromises)
+        .then(() => {
           this.setState({
-            isLoading: {
-              capturePayment: false
-            }
+            isCapturingPayment: false
           });
+
           Alerts.alert({
             text: i18next.t("order.paymentCaptureSuccess"),
             type: "success",
             allowOutsideClick: false
           });
-        }
-      };
 
-      // TODO: send these orders in batch as an array. This would entail re-writing the
-      // "orders/approvePayment" method to receive an array of orders as a param.
-      selectedOrders.forEach((order) => {
-        // Only capture orders which are not captured yet (but possibly are already approved)
-        const { mode: paymentMode, status: paymentStatus } = this.orderCreditMethod(order);
-        if (paymentMode === "capture" && paymentStatus === "completed") {
-          done();
-          return;
-        }
-        Meteor.call("orders/approvePayment", order, (approvePaymentError) => {
-          if (approvePaymentError) {
-            this.setState({
-              isLoading: {
-                capturePayment: false
-              }
-            });
-            Alerts.toast(`An error occurred while approving the payment: ${approvePaymentError}`, "error");
-          } else {
-            // TODO: send these orders in batch as an array. This would entail re-writing the
-            // "orders/capturePayments" method to receive an array of orders as a param.
-            Meteor.call("orders/capturePayments", order._id, (capturePaymentError) => {
-              if (capturePaymentError) {
-                this.setState({
-                  isLoading: {
-                    capturePayment: false
-                  }
-                });
-                Alerts.toast(`An error occurred while capturing the payment: ${capturePaymentError}`, "error");
-              }
-              done();
-            });
-          }
+          return null;
+        })
+        .catch((error) => {
+          this.setState({
+            isCapturingPayment: false
+          });
+          Alerts.toast(`An error occurred while capturing the payment: ${error}`, "error");
         });
-      });
     }
 
     render() {
@@ -697,6 +669,7 @@ const wrapComponent = (Comp) => (
           multipleSelect={this.state.multipleSelect}
           setShippingStatus={this.setShippingStatus}
           shipping={this.state.shipping}
+          isCapturingPayment={this.state.isCapturingPayment}
           isLoading={this.state.isLoading}
           renderFlowList={this.state.renderFlowList}
           toggleShippingFlowList={this.toggleShippingFlowList}

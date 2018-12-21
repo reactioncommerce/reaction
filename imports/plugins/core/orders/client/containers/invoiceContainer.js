@@ -8,7 +8,8 @@ import { Packages } from "/lib/collections";
 import { getPrimaryMediaForItem } from "/lib/api";
 import { composeWithTracker, registerComponent } from "@reactioncommerce/reaction-components";
 import Invoice from "../components/invoice.js";
-import { getOrderRiskStatus, getOrderRiskBadge, getShippingInfo } from "../helpers";
+import { approvePayment, getOrderRiskStatus, getOrderRiskBadge, getShippingInfo } from "../helpers";
+import { captureOrderPayments } from "../graphql";
 
 class InvoiceContainer extends Component {
   static propTypes = {
@@ -200,16 +201,18 @@ class InvoiceContainer extends Component {
   handleCapturePayment = (event) => {
     event.preventDefault();
 
-    this.setState({
-      isCapturing: true
-    });
+    this.setState({ isCapturing: true });
 
     const { order } = this.state;
-    capturePayments(order, () => {
-      this.setState({
-        isCapturing: false
+    capturePayments(order)
+      .then(() => {
+        this.setState({ isCapturing: false });
+        return null;
+      })
+      .catch((error) => {
+        Logger.error(error);
+        this.setState({ isCapturing: false });
       });
-    });
   }
 
   handleCancelPayment = (event) => {
@@ -243,12 +246,15 @@ class InvoiceContainer extends Component {
       let returnToStock;
       if (isConfirm) {
         returnToStock = false;
-        return Meteor.call("orders/cancelOrder", order, returnToStock);
+        Meteor.call("orders/cancelOrder", order, returnToStock);
+        return;
       }
       if (cancel === "cancel") {
         returnToStock = true;
-        return Meteor.call("orders/cancelOrder", order, returnToStock);
+        Meteor.call("orders/cancelOrder", order, returnToStock);
+        return;
       }
+      return;
     });
   }
 
@@ -258,18 +264,10 @@ class InvoiceContainer extends Component {
     const { currency, order, refunds } = this.state;
     const currencySymbol = currency.symbol;
     const [payment] = order.payments || [];
-    const { _id: paymentId, amount: orderTotal, discounts, processor } = payment || {};
-    const refundTotal = refunds && Array.isArray(refunds) && refunds.reduce((acc, item) => acc + parseFloat(item.amount), 0);
+    const { _id: paymentId, amount: orderTotal } = payment || {};
+    const refundTotal = Array.isArray(refunds) && refunds.reduce((acc, item) => acc + parseFloat(item.amount), 0);
 
-    let adjustedTotal;
-
-    // TODO extract Stripe specific fulfillment payment handling out of core.
-    // Stripe counts discounts as refunds, so we need to re-add the discount to not "double discount" in the adjustedTotal
-    if (processor === "Stripe") {
-      adjustedTotal = accounting.toFixed(orderTotal + discounts - refundTotal, 2);
-    } else {
-      adjustedTotal = accounting.toFixed(orderTotal - refundTotal, 2);
-    }
+    const adjustedTotal = accounting.toFixed(orderTotal - refundTotal, 2);
 
     if (refund > adjustedTotal) {
       Alerts.inline("Refund(s) total cannot be greater than adjusted total", "error", {
@@ -321,8 +319,11 @@ class InvoiceContainer extends Component {
         confirmButtonText: i18next.t("order.approveInvoice")
       }, (isConfirm) => {
         if (isConfirm) {
-          approvePayment(order);
-          this.alertToCapture(order);
+          approvePayment(order)
+            .then(() => this.alertToCapture(order))
+            .catch((error) => {
+              Logger.error(error);
+            });
         }
       });
     } else {
@@ -331,7 +332,9 @@ class InvoiceContainer extends Component {
   }
 
   alertToCapture = (order) => {
-    const [payment] = order.payments || [];
+    if (!Array.isArray(order.payments) || order.payments.length === 0) return;
+
+    const [payment] = order.payments;
     const { amount } = payment || {};
 
     Alerts.alert({
@@ -345,8 +348,17 @@ class InvoiceContainer extends Component {
       confirmButtonText: i18next.t("order.capturePayment")
     }, (isConfirm) => {
       if (isConfirm) {
-        capturePayments(order);
-        this.alertToRefund(order);
+        this.setState({ isCapturing: true });
+
+        capturePayments(order)
+          .then(() => {
+            this.setState({ isCapturing: false });
+            return this.alertToRefund(order);
+          })
+          .catch((error) => {
+            Logger.error(error);
+            this.setState({ isCapturing: false });
+          });
       }
     });
   }
@@ -445,85 +457,22 @@ class InvoiceContainer extends Component {
 }
 
 /**
- * @method approvePayment
- * @summary helper method to approve payment
- * @param {Object} order - object representing an order
- * @return {null} null
- * @private
- */
-function approvePayment(order) {
-  const { invoice } = getShippingInfo(order);
-  const orderTotal = accounting.toFixed(invoice.subtotal + invoice.shipping + invoice.taxes, 2);
-
-  const { discount } = order;
-  // TODO: review Discount cannot be greater than original total price
-  // logic is probably not valid any more. Discounts aren't valid below 0 order.
-  if (discount > orderTotal) {
-    Alerts.inline("Discount cannot be greater than original total price", "error", {
-      placement: "coreOrderShippingInvoice",
-      i18nKey: "order.invalidDiscount",
-      autoHide: 10000
-    });
-  } else if (orderTotal === accounting.toFixed(discount, 2)) {
-    Alerts.alert({
-      title: i18next.t("order.fullDiscountWarning"),
-      showCancelButton: true,
-      confirmButtonText: i18next.t("order.applyDiscount")
-    }, (isConfirm) => {
-      if (isConfirm) {
-        Meteor.call("orders/approvePayment", order, (error) => {
-          if (error) {
-            Logger.warn(error);
-          }
-        });
-      }
-    });
-  } else {
-    Meteor.call("orders/approvePayment", order, (error) => {
-      if (error) {
-        Logger.warn(error);
-        if (error.error === "orders/approvePayment.discount-amount") {
-          Alerts.inline("Discount cannot be greater than original total price", "error", {
-            placement: "coreOrderShippingInvoice",
-            i18nKey: "order.invalidDiscount",
-            autoHide: 10000
-          });
-        }
-      }
-    });
-  }
-}
-
-/**
  * @method capturePayments
  * @summary helper method to capture payments
  * @param {object} order - object representing an order
- * @param {function} onCancel - called on clicking cancel in alert dialog
- * @return {null} null
+ * @return {Promise<null>} null
  * @private
  */
-function capturePayments(order, onCancel) {
-  const capture = () => {
-    Meteor.call("orders/capturePayments", order._id);
-    if (order.workflow.status === "new") {
-      Meteor.call("workflow/pushOrderWorkflow", "coreOrderWorkflow", "processing", order);
+function capturePayments(order) {
+  if (!order.payments) return Promise.resolve(null);
 
-      Reaction.Router.setQueryParams({
-        filter: "processing",
-        _id: order._id
-      });
-    }
-  };
+  const paymentIds = order.payments.map((payment) => payment._id);
+  const capture = () => captureOrderPayments({ orderId: order._id, paymentIds, shopId: order.shopId });
 
-  // before capturing, check if there's a payment risk on order; alert admin before capture
-  if (getOrderRiskStatus(order)) {
-    alertDialog()
-      .then(capture)
-      .catch(onCancel);
-  } else {
-    capture();
-  }
-
+  /**
+   * @summary Show alert
+   * @returns {Promise<Boolean>} Resolves if they click Continue
+   */
   function alertDialog() {
     let alertType = "warning";
     const riskBadge = getOrderRiskBadge(getOrderRiskStatus(order));
@@ -541,6 +490,13 @@ function capturePayments(order, onCancel) {
       confirmButtonText: i18next.t("admin.settings.continue")
     });
   }
+
+  // before capturing, check if there's a payment risk on order; alert admin before capture
+  if (getOrderRiskStatus(order)) {
+    return alertDialog().then(capture);
+  }
+
+  return capture();
 }
 
 const composer = (props, onData) => {
@@ -550,11 +506,6 @@ const composer = (props, onData) => {
   const [payment] = order.payments || [];
   const { amount, status: paymentStatus } = payment || {};
   const { invoice } = getShippingInfo(order);
-
-  const paymentApproved = paymentStatus === "approved";
-  const showAfterPaymentCaptured = paymentStatus === "completed";
-  const paymentCaptured = _.includes(["completed", "refunded", "partialRefund"], paymentStatus);
-  const paymentPendingApproval = _.includes(["created", "adjustments", "error"], paymentStatus);
 
   // get whether adjustments can be made
   const canMakeAdjustments = !_.includes(["approved", "completed", "refunded", "partialRefund"], paymentStatus);
@@ -602,22 +553,18 @@ const composer = (props, onData) => {
   });
 
   onData(null, {
-    uniqueItems,
-    invoice: invoiceWithTotalItems,
-    discounts,
     adjustedTotal,
-    paymentCaptured,
-    paymentPendingApproval,
-    paymentApproved,
     canMakeAdjustments,
-    showAfterPaymentCaptured,
-    printOrder,
-
-    currentData: props.currentData,
     currency: props.currency,
+    currentData: props.currentData,
+    discounts,
+    invoice: invoiceWithTotalItems,
     isFetching: props.isFetching,
     order: props.order,
-    refunds: props.refunds
+    payments: order.payments,
+    printOrder,
+    refunds: props.refunds,
+    uniqueItems
   });
 };
 

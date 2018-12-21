@@ -40,6 +40,7 @@ class OrderTable extends Component {
     handleBulkPaymentCapture: PropTypes.func,
     handleClick: PropTypes.func,
     handleSelect: PropTypes.func,
+    isCapturingPayment: PropTypes.bool,
     isLoading: PropTypes.object,
     isOpen: PropTypes.bool,
     moment: PropTypes.func,
@@ -133,8 +134,8 @@ class OrderTable extends Component {
         </div>
 
         <div className="order-items">
-          {allOrderItems.map((item, i) => (
-            <div className="order-item" key={i}>
+          {allOrderItems.map((item, index) => (
+            <div className="order-item" key={String(index)}>
               <div className="order-item-media">
                 <Components.ProductImage
                   item={item}
@@ -376,6 +377,7 @@ class OrderTable extends Component {
             selectAllOrders={this.props.selectAllOrders}
             selectedItems={this.props.selectedItems}
             setShippingStatus={this.props.setShippingStatus}
+            isCapturingPayment={this.props.isCapturingPayment}
             isLoading={this.props.isLoading}
             renderFlowList={this.props.renderFlowList}
             toggleShippingFlowList={this.props.toggleShippingFlowList}

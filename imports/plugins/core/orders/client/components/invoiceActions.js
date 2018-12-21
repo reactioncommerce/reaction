@@ -11,42 +11,54 @@ import { Components, registerComponent } from "@reactioncommerce/reaction-compon
  */
 
 class InvoiceActions extends Component {
-  /**
-   * @name InvoiceActions propTypes
-   * @summary React component for displaying the actionable data on the invoice section on the orders sideview
-   * @param {Object} props - React PropTypes
-   * @property {Object} invoice - An object representing an invoice
-   * @property {Array} refunds - An array/list of refunds
-   * @property {Function} handleApprove - A function for approving payments
-   * @property {Function} handleCapturePayment - A function for capturing payments
-   * @property {Function} handleRefund - A function for refunding payments
-   * @property {Object} currency - A object represting current shop currency details
-   * @property {String} printOrder - A string representing the route/path for printed order
-   * @property {Number} adjustedTotal - The calculated adjusted total after refunds/discounts
-   * @property {Bool} paymentCaptured - A boolean indicating whether payment has been captured
-   * @property {Bool} hasRefundingEnabled - A boolean indicating whether payment supports refunds
-   * @property {Bool} paymentApproved - A boolean indicating whether payment has been approved
-   * @property {Bool} paymentPendingApproval - A boolean indicating whether payment is yet to be approved
-   * @property {Bool} showAfterPaymentCaptured - A boolean indicating that status of the order is completed
-   * @property {Bool} isCapturing - A boolean indicating whether payment is being captured
-   * @property {Bool} isRefunding - A boolean indicating whether payment is being refunded
-   * @return {Node} React node containing component for displaying the `invoice` section on the orders sideview
-   */
   static propTypes = {
+    /**
+     * The calculated adjusted total after refunds/discounts
+     */
     adjustedTotal: PropTypes.number,
+    /**
+     * Currency details for the current shop
+     */
     currency: PropTypes.object,
+    /**
+     * A function for approving payments
+     */
     handleApprove: PropTypes.func,
+    /**
+     * A function for capturing payments
+     */
     handleCapturePayment: PropTypes.func,
+    /**
+     * A function for refunding payments
+     */
     handleRefund: PropTypes.func,
+    /**
+     * hasRefundingEnabled
+     */
     hasRefundingEnabled: PropTypes.bool,
+    /**
+     * The invoice document
+     */
     invoice: PropTypes.object,
+    /**
+     * True while the payment is being captured
+     */
     isCapturing: PropTypes.bool,
+    /**
+     * True while a refund is being created
+     */
     isRefunding: PropTypes.bool,
-    paymentApproved: PropTypes.bool, // eslint-disable-line react/boolean-prop-naming
-    paymentCaptured: PropTypes.bool, // eslint-disable-line react/boolean-prop-naming
-    paymentPendingApproval: PropTypes.bool, // eslint-disable-line react/boolean-prop-naming
-    printOrder: PropTypes.string,
-    showAfterPaymentCaptured: PropTypes.bool // eslint-disable-line react/boolean-prop-naming
+    /**
+     * List of payments for this invoice
+     */
+    payments: PropTypes.arrayOf(PropTypes.shape({
+      mode: PropTypes.string.isRequired,
+      status: PropTypes.string.isRequired
+    })),
+    /**
+     * A string representing the route/path for printed order
+     */
+    printOrder: PropTypes.string
   }
 
   state = {
@@ -86,7 +98,8 @@ class InvoiceActions extends Component {
   }
 
   renderRefundForm() {
-    const { adjustedTotal } = this.props;
+    const { adjustedTotal, payments } = this.props;
+    const [payment] = payments;
 
     return (
       <div>
@@ -132,7 +145,7 @@ class InvoiceActions extends Component {
           </div>
         }
 
-        {this.props.showAfterPaymentCaptured &&
+        {payment.status === "completed" &&
           <div className="cancel-order-btn">
             <Components.Button
               className="btn btn-danger"
@@ -160,84 +173,94 @@ class InvoiceActions extends Component {
   }
 
   renderApproval() {
-    if (this.props.paymentPendingApproval) {
-      return (
-        <div className="btn-block">
-          <div>
-            <Components.ButtonSelect
-              buttons= {[
-                {
-                  name: "Approve",
-                  i18nKeyLabel: "order.approveInvoice",
-                  active: true,
-                  status: "success",
-                  eventAction: "approveInvoice",
-                  bgColor: "bg-success",
-                  buttonType: "submit"
-                }, {
-                  name: "Cancel",
-                  i18nKeyLabel: "order.cancelInvoice",
-                  active: false,
-                  status: "danger",
-                  eventAction: "cancelOrder",
-                  bgColor: "bg-danger",
-                  buttonType: "button"
-                }
-              ]}
-            />
+    const { payments } = this.props;
+    const [payment] = payments;
+
+    switch (payment.status) {
+      case "adjustments":
+      case "created":
+        return (
+          <div className="btn-block">
+            <div>
+              <Components.ButtonSelect
+                buttons= {[
+                  {
+                    name: "Approve",
+                    i18nKeyLabel: "order.approveInvoice",
+                    active: true,
+                    status: "success",
+                    eventAction: "approveInvoice",
+                    bgColor: "bg-success",
+                    buttonType: "submit"
+                  }, {
+                    name: "Cancel",
+                    i18nKeyLabel: "order.cancelInvoice",
+                    active: false,
+                    status: "danger",
+                    eventAction: "cancelOrder",
+                    bgColor: "bg-danger",
+                    buttonType: "button"
+                  }
+                ]}
+              />
+            </div>
           </div>
-        </div>
-      );
-    }
+        );
 
-    if (this.props.paymentApproved) {
-      return (
-        <div className="flex">
-          <a
-            className="btn btn-link"
-            href={this.props.printOrder}
-            target="_blank"
-            data-i18n="app.print"
-          >
-            Print
-          </a>
+      case "approved":
+      case "error":
+        return (
+          <div className="flex">
+            <a
+              className="btn btn-link"
+              href={this.props.printOrder}
+              target="_blank"
+              data-i18n="app.print"
+            >
+              Print
+            </a>
 
-          <button
-            className="btn btn-success flex-item-fill"
-            type="button"
-            data-event-action="capturePayment"
-            disabled={this.props.isCapturing}
-            onClick = {this.props.handleCapturePayment}
-          >
+            <button
+              className="btn btn-success flex-item-fill"
+              type="button"
+              data-event-action="capturePayment"
+              disabled={this.props.isCapturing}
+              onClick={this.props.handleCapturePayment}
+            >
 
-            {this.props.isCapturing ?
-              <span id="btn-capture-payment">
-                Capturing <i className="fa fa-spinner fa-spin" id="btn-processing" />
-              </span> :
-              <span id="btn-capture-payment" data-i18n="order.capturePayment">Capture Payment</span>
-            }
-          </button>
-        </div>
-      );
+              {this.props.isCapturing ?
+                <span id="btn-capture-payment">
+                  Capturing <i className="fa fa-spinner fa-spin" id="btn-processing" />
+                </span> :
+                <span id="btn-capture-payment" data-i18n="order.capturePayment">Capture Payment</span>
+              }
+            </button>
+          </div>
+        );
+
+      default:
+        return null;
     }
   }
 
   render() {
-    return (
-      <form onSubmit={this.props.handleApprove}>
+    const { adjustedTotal, handleApprove, invoice, payments } = this.props;
+    const [payment] = payments;
+    const { mode } = payment;
 
+    return (
+      <form onSubmit={handleApprove}>
         <div style={{ marginBottom: 15, marginTop: 15 }}>
           {this.renderApproval()}
-          {this.props.paymentCaptured &&
+          {mode === "captured" &&
             <div className="total-container">
               {this.renderCapturedTotal()}
-              {this.props.invoice.total !== this.props.adjustedTotal && this.renderAdjustedTotal()}
+              {invoice.total !== adjustedTotal && this.renderAdjustedTotal()}
               {this.renderRefundForm()}
             </div>
           }
         </div>
       </form>
-
     );
   }
 }
