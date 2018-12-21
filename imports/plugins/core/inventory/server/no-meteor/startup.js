@@ -1,4 +1,3 @@
-
 import appEvents from "/imports/node-app/core/util/appEvents";
 import updateCatalogProductInventoryStatus from "/imports/plugins/core/catalog/server/no-meteor/utils/updateCatalogProductInventoryStatus";
 
@@ -127,6 +126,49 @@ export default function startup(context) {
         {
           $inc: {
             inventoryAvailableToSell: -item.quantity
+          }
+        }
+      );
+    });
+
+    // Publish inventory updates to the Catalog
+    // Since variants share the same productId, we only want to update each product once
+    // So we use a Set to get all unique productIds that were affected, then loop through that data
+    const productIds = [...new Set(orderItems.map((item) => item.productId))];
+    productIds.forEach(async (productId) => {
+      await updateCatalogProductInventoryStatus(productId, collections);
+    });
+  });
+
+  appEvents.on("afterOrderApprovePayment", async (order) => {
+    const { collections } = context;
+    const orderItems = order.shipping.reduce((list, group) => [...list, ...group.items], []);
+
+    // Create a new set of unique productIds
+    // We do this because variants might have the same productId
+    // and we don't want to update the product each time a variant is it's child
+    // we can map over the unique productIds at the end, and update each one once
+    orderItems.forEach(async (item) => {
+      // Update supplied item inventory
+      const updatedItem = await collections.Products.findOneAndUpdate(
+        {
+          _id: item.variantId
+        },
+        {
+          $inc: {
+            inventoryQuantity: -item.quantity
+          }
+        }
+      );
+
+      // Update supplied item inventory
+      await collections.Products.updateMany(
+        {
+          _id: { $in: updatedItem.value.ancestors }
+        },
+        {
+          $inc: {
+            inventoryQuantity: -item.quantity
           }
         }
       );

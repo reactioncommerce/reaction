@@ -2,60 +2,10 @@ import Hooks from "@reactioncommerce/hooks";
 import accounting from "accounting-js";
 import { check } from "meteor/check";
 import ReactionError from "@reactioncommerce/reaction-error";
-import { Orders, Products } from "/lib/collections";
-import rawCollections from "/imports/collections/rawCollections";
+import appEvents from "/imports/node-app/core/util/appEvents";
+import { Orders } from "/lib/collections";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
-import updateCatalogProductInventoryStatus from "/imports/plugins/core/catalog/server/no-meteor/utils/updateCatalogProductInventoryStatus";
-import updateParentVariantsInventoryInStockQuantity from "/imports/plugins/core/inventory/server/no-meteor/utils/updateParentVariantsInventoryInStockQuantity";
 import orderCreditMethod from "../util/orderCreditMethod";
-
-/**
- * @name ordersInventoryAdjustByShop
- * @method
- * @private
- * @summary Adjust inventory for a particular shop when an order is approved
- * @todo Marketplace: Is there a reason to do this any other way? Can admins reduce for more than one shop?
- * @param {String} orderId - orderId
- * @param {String} shopId - the id of the shop approving the order
- * @return {null} no return value
- */
-function ordersInventoryAdjustByShop(orderId, shopId) {
-  check(orderId, String);
-  check(shopId, String);
-
-  if (!Reaction.hasPermission("orders")) {
-    throw new ReactionError("access-denied", "Access Denied");
-  }
-
-  const order = Orders.findOne({ _id: orderId });
-  const orderItems = order.shipping.reduce((list, group) => [...list, ...group.items], []);
-  orderItems.forEach((item) => {
-    if (item.shopId === shopId) {
-      Products.update(
-        {
-          _id: item.variantId
-        },
-        {
-          $inc: {
-            inventoryQuantity: -item.quantity
-          }
-        },
-        {
-          publish: true,
-          selector: {
-            type: "variant"
-          }
-        }
-      );
-
-      // Update `inventoryQuantity` on all parents of this variant / option
-      Promise.await(updateParentVariantsInventoryInStockQuantity(item, rawCollections));
-
-      // Publish inventory updates to the Catalog
-      Promise.await(updateCatalogProductInventoryStatus(item.productId, rawCollections));
-    }
-  });
-}
 
 /**
  * @name orders/approvePayment
@@ -84,9 +34,6 @@ export default function approvePayment(order) {
   const discountTotal = Math.max(0, subtotal - discounts); // ensure no discounting below 0.
   const total = accounting.toFixed(Number(discountTotal) + Number(shipping) + Number(taxes), 2);
 
-  // Updates flattened inventory count on variants in Products collection
-  ordersInventoryAdjustByShop(order._id, shopId);
-
   const result = Orders.update(
     {
       "_id": order._id,
@@ -103,6 +50,8 @@ export default function approvePayment(order) {
       }
     }
   );
+
+  Promise.await(appEvents.emit("afterOrderApprovePayment", order));
 
   // Update search record
   Hooks.Events.run("afterUpdateOrderUpdateSearchRecord", order);
