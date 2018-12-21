@@ -1,14 +1,12 @@
-import _ from "lodash";
 import Logger from "@reactioncommerce/logger";
 import { Meteor } from "meteor/meteor";
 import { check } from "meteor/check";
 import ReactionError from "@reactioncommerce/reaction-error";
-import { Orders, Products, Packages } from "/lib/collections";
+import { Orders, Products } from "/lib/collections";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
 import rawCollections from "/imports/collections/rawCollections";
 import createNotification from "/imports/plugins/included/notifications/server/no-meteor/createNotification";
 import updateCatalogProductInventoryStatus from "/imports/plugins/core/catalog/server/no-meteor/utils/updateCatalogProductInventoryStatus";
-import orderCreditMethod from "../util/orderCreditMethod";
 
 /**
  * @name orders/cancelOrder
@@ -32,7 +30,8 @@ export default function cancelOrder(order, returnToStock) {
   // Inventory is removed from stock only once an order has been approved
   // This is indicated by payment.status being anything other than `created`
   // We need to check to make sure the inventory has been removed before we return it to stock
-  const orderIsApproved = order.shipping.find((group) => group.payment.status !== "created");
+  const orderIsApproved = !Array.isArray(order.payments) || order.payments.length === 0 ||
+    !!order.payments.find((payment) => payment.status !== "created");
 
   if (returnToStock && orderIsApproved) {
     // Run this Product update inline instead of using ordersInventoryAdjust because the collection hooks fail
@@ -62,19 +61,25 @@ export default function cancelOrder(order, returnToStock) {
     });
   }
 
-  const { _id: paymentId, invoice, paymentPluginName } = orderCreditMethod(order);
-  const shippingRecord = order.shipping.find((shipping) => shipping.shopId === Reaction.getShopId());
-  const { itemIds } = shippingRecord;
-
-  const invoiceTotal = invoice.total;
-
   // refund payment to customer
-  const paymentPlugin = Packages.findOne({ name: paymentPluginName, shopId: order.shopId });
-  const isRefundable = (_.get(paymentPlugin, "settings.support", []).indexOf("Refund") > -1);
+  (order.payments || []).forEach((payment) => {
+    Meteor.call("orders/refunds/create", order._id, payment._id, payment.amount);
+  });
 
-  if (isRefundable) {
-    Meteor.call("orders/refunds/create", order._id, paymentId, Number(invoiceTotal));
-  }
+  // update item workflow
+  const orderItemIds = order.shipping.reduce((list, group) => [...list, ...group.items], []).map((item) => item._id);
+  Meteor.call("workflow/pushItemWorkflow", "coreOrderItemWorkflow/canceled", order, orderItemIds);
+
+  const result = Orders.update({
+    _id: order._id
+  }, {
+    $set: {
+      "workflow.status": "coreOrderWorkflow/canceled"
+    },
+    $push: {
+      "workflow.workflow": "coreOrderWorkflow/canceled"
+    }
+  });
 
   // send notification to user
   const { accountId } = order;
@@ -84,23 +89,5 @@ export default function cancelOrder(order, returnToStock) {
     Logger.error("Error in createNotification within shipmentShipped", error);
   });
 
-  // update item workflow
-  Meteor.call("workflow/pushItemWorkflow", "coreOrderItemWorkflow/canceled", order, itemIds);
-
-  return Orders.update(
-    {
-      "_id": order._id,
-      "shipping.shopId": Reaction.getShopId(),
-      "shipping.payment.method": "credit"
-    },
-    {
-      $set: {
-        "workflow.status": "coreOrderWorkflow/canceled",
-        "shipping.$.payment.mode": "cancel"
-      },
-      $push: {
-        "workflow.workflow": "coreOrderWorkflow/canceled"
-      }
-    }
-  );
+  return result;
 }
