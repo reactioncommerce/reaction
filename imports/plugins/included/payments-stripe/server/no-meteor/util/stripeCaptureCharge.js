@@ -11,35 +11,28 @@ import getStripeApi from "./getStripeApi";
  * @private
  */
 export default async function stripeCaptureCharge(context, payment) {
-  let result;
+  const result = { saved: false };
   const captureDetails = {
     amount: formatForStripe(payment.amount)
   };
-
 
   const stripeKey = await getStripeApi(context, payment.paymentPluginName, payment.shopId);
   const stripe = stripeNpm(stripeKey);
 
   try {
     const captureResult = await stripe.charges.capture(payment.transactionId, captureDetails);
+    result.response = captureResult;
     if (captureResult.status === "succeeded") {
-      result = {
-        saved: true,
-        response: captureResult
-      };
-    } else {
-      result = {
-        saved: false,
-        response: captureResult
-      };
+      result.saved = true;
     }
   } catch (error) {
-    Logger.error(error);
-    result = {
-      saved: false,
-      error
-    };
-    return { error, result };
+    Logger.debug(error);
+    result.error = error;
+
+    if (error.code === "charge_already_captured") {
+      result.isAlreadyCaptured = true;
+    }
   }
+
   return result;
 }
