@@ -10,7 +10,7 @@ import updateParentVariantsInventoryInStockQuantity from "/imports/plugins/core/
  * @returns {undefined}
  */
 export default function startup(context) {
-  appEvents.on("afterOrderCancel", async (order, returnToStock) => {
+  appEvents.on("afterOrderCancel", async ({ order, returnToStock }) => {
     const { collections } = context;
 
     // Inventory is removed from stock only once an order has been approved
