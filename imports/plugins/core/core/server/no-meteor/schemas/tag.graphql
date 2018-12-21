@@ -47,6 +47,7 @@ type Tag implements Node & Deletable {
 
   "A string of the title to be displayed on a Tag Listing Page"
   displayTitle: String
+  
 }
 
 "The fields by which you are allowed to sort any query that returns a `TagConnection`"
@@ -73,8 +74,17 @@ type TagConnection implements NodeConnection {
 }
 
 extend type Query {
-  "Returns a tag from a provided tag ID or slug"
-  tag(slugOrId: String): Tag
+  "Returns a tag from a provided tag ID or slug. Tags with isVisible set to false are excluded by default."
+  tag(
+    "Only tags associated with this shop will be returned"
+    shopId: ID!,
+  
+    "Slug or ID of Tag"
+    slugOrId: String,
+    
+    "Set to true if you want to include tags that have isVisible set to false"
+    shouldIncludeInvisible: Boolean = false
+  ): Tag
 
   "Returns a paged list of tags for a shop. You must include a shopId when querying."
   tags(
