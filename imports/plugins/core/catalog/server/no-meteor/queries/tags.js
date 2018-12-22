@@ -7,7 +7,7 @@
  * @param {String} shopId - ID of shop to query
  * @param {Object} [params] - Additional options for the query
  * @param {Boolean} [params.isTopLevel] - If set, look for `isTopLevel` matching this value
- * @param {Boolean} [params.shouldIncludeDeleted] - Whether or not to include `isDeleted=true` tags. Default is `false`
+ * @param {Boolean} [params.shouldIncludeDeleted] - Admin only. Whether or not to include `isDeleted=true` tags. Default is `false`
  * @param {Boolean} [params.shouldIncludeInvisible] - Admin only. Whether or not to include `isVisible=false` tags.  Default is `false`.
  * @return {Promise<MongoCursor>} - A MongoDB cursor for the proper query
  */
