@@ -1,5 +1,18 @@
 import getRootUrl from "./getRootUrl";
 
+test("returns the origin url when set", () => {
+  process.env.ROOT_URL = "http://localhost:3000";
+  const request = {
+    protocol: "https",
+    hostname: "api.reaction.localhost",
+    headers: {
+      origin: "https://merchant.reactioncommerce.com"
+    }
+  };
+
+  expect(getRootUrl(request)).toBe("https://merchant.reactioncommerce.com/");
+});
+
 test("returns process.env.ROOT_URL with trailing slash if set", () => {
   process.env.ROOT_URL = "http://localhost:3000";
   const request = {

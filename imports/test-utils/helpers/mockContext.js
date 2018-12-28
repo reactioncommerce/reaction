@@ -6,6 +6,7 @@ const mockContext = {
   },
   collections: {},
   getFunctionsOfType: jest.fn().mockName("getFunctionsOfType").mockReturnValue([]),
+  rootUrl: "http://localhost/",
   shopId: "FAKE_SHOP_ID",
   userHasPermission: jest.fn().mockName("userHasPermission"),
   userId: "FAKE_USER_ID"
@@ -76,3 +77,32 @@ mockContext.collections.Media = {
 };
 
 export default mockContext;
+
+// use this method to reset any mocked functions when checking call counts
+export function resetContext() {
+  mockContext.accountId = "FAKE_ACCOUNT_ID";
+  mockContext.rootUrl = "http://localhost/";
+  mockContext.shopId = "FAKE_SHOP_ID";
+  mockContext.userId = "FAKE_USER_ID";
+
+  Object.keys(mockContext.collections).forEach((collection) => {
+    [
+      "deleteOne",
+      "deleteMany",
+      "find",
+      "findLocal",
+      "findOne",
+      "findOneLocal",
+      "insertOne",
+      "insertMany",
+      "toArray",
+      "updateOne",
+      "updateMany"
+    ].filter((method) => (
+      (method in mockContext.collections[collection]) &&
+        mockContext.collections[collection][method].mockReset
+    )).forEach((method) => {
+      mockContext.collections[collection][method].mockReset();
+    });
+  });
+}

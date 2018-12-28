@@ -2,7 +2,7 @@ import { get } from "lodash";
 import getShopIdByDomain from "./getShopIdByDomain";
 
 export default async function getShopIdForContext(context) {
-  const { collections, user } = context;
+  const { user } = context;
 
   let shopId;
 
@@ -12,8 +12,15 @@ export default async function getShopIdForContext(context) {
 
   // if still not found, look up the shop by domain
   if (!shopId) {
-    shopId = await getShopIdByDomain(collections);
+    shopId = await getShopIdByDomain(context);
   }
+
+  // if (shopId) {
+  //   // TODO: set user preference such that a user returning to the Primary Shop
+  //   // will already be in their preferred shop
+
+  //   Reaction.setUserPreferences("reaction", "activeShopId", shopId);
+  // }
 
   return shopId || null;
 }
