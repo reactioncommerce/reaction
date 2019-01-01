@@ -9,12 +9,11 @@ import ExampleIOUPaymentForm from "../components/ExampleIOUPaymentForm";
 /**
  * @summary Builds a submit handler function
  * @param {Object} billingAddress Address to be sent with placeOrder mutation
- * @param {String} billingAddressId Address ID to be sent with placeOrder mutation
  * @param {Object} cart Cart document
  * @param {String} [cartToken] Token for anonymous carts
  * @returns {Function} onSubmit function
  */
-function getSubmitHandler(billingAddress, billingAddressId, cart, cartToken) {
+function getSubmitHandler(billingAddress, cart, cartToken) {
   return async function placeOrderWithExampleIOUPayment(paymentData) {
     // Build the order input
     const order = await buildOrderInputFromCart(cart);
@@ -61,10 +60,9 @@ function composer(props, onData) {
     postal: cartBillingAddress.postal,
     region: cartBillingAddress.region
   };
-  const billingAddressId = cartBillingAddress._id;
 
   onData(null, {
-    onSubmit: getSubmitHandler(billingAddress, billingAddressId, cart, token)
+    onSubmit: getSubmitHandler(billingAddress, cart, token)
   });
 }
 
