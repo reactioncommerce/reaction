@@ -186,11 +186,9 @@ class InvoiceContainer extends Component {
     return _.get(paymentPlugin, "settings.support", []).indexOf("Refund") > -1;
   }
 
-  handleApprove = (event) => {
-    event.preventDefault();
-
+  handleApprove = (paymentId) => {
     const { order } = this.props;
-    approvePayment(order);
+    return approvePayment(order._id, paymentId);
   }
 
   handleCapturePayment = (event) => {
@@ -315,7 +313,7 @@ class InvoiceContainer extends Component {
         confirmButtonText: i18next.t("order.approveInvoice")
       }, (isConfirm) => {
         if (isConfirm) {
-          approvePayment(order)
+          approvePayment(order._id, order.payments[0]._id)
             .then(() => this.alertToCapture(order))
             .catch((error) => {
               Logger.error(error);
@@ -421,22 +419,22 @@ class InvoiceContainer extends Component {
         {...this.props}
 
         clearRefunds={this.handleClearRefunds}
-        handlePopOverOpen={this.handlePopOverOpen}
-        handleSelectAllItems={this.handleSelectAllItems}
-        onClose={this.handleClose}
-        togglePopOver={this.togglePopOver}
-        handleInputChange={this.handleInputChange}
-        handleItemSelect={this.handleItemSelect}
         displayMedia={getPrimaryMediaForItem}
-        toggleUpdating={this.toggleUpdating}
-        handleRefundItems={this.handleRefundItems}
         getRefundedItemsInfo={this.getRefundedItemsInfo}
-        handleApprove={this.handleApprove}
-        isAdjusted={this.isAdjusted}
         handleCancelPayment={this.handleCancelPayment}
         handleCapturePayment={this.handleCapturePayment}
+        handleInputChange={this.handleInputChange}
+        handleItemSelect={this.handleItemSelect}
+        handlePopOverOpen={this.handlePopOverOpen}
         handleRefund={this.handleRefund}
+        handleRefundItems={this.handleRefundItems}
+        handleSelectAllItems={this.handleSelectAllItems}
         hasRefundingEnabled={this.hasRefundingEnabled()}
+        isAdjusted={this.isAdjusted}
+        onApprovePayment={this.handleApprove}
+        onClose={this.handleClose}
+        togglePopOver={this.togglePopOver}
+        toggleUpdating={this.toggleUpdating}
 
         value={this.state.value}
         refunds={this.state.refunds}

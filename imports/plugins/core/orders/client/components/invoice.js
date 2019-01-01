@@ -43,9 +43,17 @@ class Invoice extends Component {
      */
     moment: PropTypes.func,
     /**
+     * Function to be called when "Approve" is clicked for a payment
+     */
+    onApprovePayment: PropTypes.func,
+    /**
      * An order document
      */
     order: PropTypes.object,
+    /**
+     * A string representing the route/path for printed order
+     */
+    printOrder: PropTypes.string,
     /**
      * A list of refunds for this payment
      */
@@ -212,13 +220,13 @@ class Invoice extends Component {
   }
 
   renderPayments() {
-    const { order } = this.props;
+    const { onApprovePayment, order } = this.props;
 
-    return order.payments.map((payment) => <OrderPayment key={payment._id} payment={payment} />);
+    return order.payments.map((payment) => <OrderPayment key={payment._id} onApprovePayment={onApprovePayment} payment={payment} />);
   }
 
   render() {
-    const { order } = this.props;
+    const { order, printOrder } = this.props;
 
     return (
       <Components.CardGroup>
@@ -234,6 +242,17 @@ class Invoice extends Component {
             <div className="invoice-container">
               {this.renderInvoice()}
             </div>
+
+            {!!printOrder && <div>
+              <a
+                className="btn btn-default"
+                href={printOrder}
+                target="_blank"
+                data-i18n="app.printInvoice"
+              >
+                Print Invoice
+              </a>
+            </div>}
 
             <h3>Payments</h3>
 

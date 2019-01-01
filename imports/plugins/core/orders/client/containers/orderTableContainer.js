@@ -623,13 +623,12 @@ const wrapComponent = (Comp) => (
       const selectedOrders = orders.filter((order) => selectedOrdersIds.includes(order._id));
 
       const orderCapturePromises = selectedOrders.map(async (order) => {
-        await approvePayment(order);
-
         if (Array.isArray(order.payments) && order.payments.length > 0) {
           const paymentIds = order.payments
             .filter((payment) => payment.mode === "capture" && payment.status !== "completed")
             .map((payment) => payment._id);
           if (paymentIds.length > 0) {
+            await Promise.all(paymentIds.map((paymentId) => approvePayment(order._id, paymentId)));
             await captureOrderPayments({ orderId: order._id, paymentIds, shopId: order.shopId });
           }
         }

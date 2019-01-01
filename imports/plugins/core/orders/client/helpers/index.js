@@ -2,12 +2,13 @@ import { Meteor } from "meteor/meteor";
 import { Reaction } from "/client/api";
 
 /**
- * @param {Object} order The order doc
+ * @param {String} orderId The order ID
+ * @param {String} paymentId The ID of the payment to approve
  * @returns {Promise<null>} null
  */
-export async function approvePayment(order) {
+export async function approvePayment(orderId, paymentId) {
   return new Promise((resolve, reject) => {
-    Meteor.call("orders/approvePayment", order, (error, result) => {
+    Meteor.call("orders/approvePayment", orderId, paymentId, (error, result) => {
       if (error) {
         reject(error);
       } else {

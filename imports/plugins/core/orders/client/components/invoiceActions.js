@@ -21,10 +21,6 @@ class InvoiceActions extends Component {
      */
     currency: PropTypes.object,
     /**
-     * A function for approving payments
-     */
-    handleApprove: PropTypes.func,
-    /**
      * A function for canceling the order
      */
     handleCancelPayment: PropTypes.func,
@@ -58,11 +54,7 @@ class InvoiceActions extends Component {
     payments: PropTypes.arrayOf(PropTypes.shape({
       mode: PropTypes.string.isRequired,
       status: PropTypes.string.isRequired
-    })),
-    /**
-     * A string representing the route/path for printed order
-     */
-    printOrder: PropTypes.string
+    }))
   }
 
   state = {
@@ -163,15 +155,6 @@ class InvoiceActions extends Component {
             />
           </div>
         }
-
-        <a
-          className="btn btn-default btn-block"
-          href={this.props.printOrder}
-          target="_blank"
-          data-i18n="app.printInvoice"
-        >
-          Print Invoice
-        </a>
       </div>
     );
   }
@@ -181,49 +164,11 @@ class InvoiceActions extends Component {
     const [payment] = payments;
 
     switch (payment.status) {
-      case "adjustments":
-      case "created":
-        return (
-          <div className="btn-block">
-            <div>
-              <Components.ButtonSelect
-                buttons= {[
-                  {
-                    name: "Approve",
-                    i18nKeyLabel: "order.approveInvoice",
-                    active: true,
-                    status: "success",
-                    eventAction: "approveInvoice",
-                    bgColor: "bg-success",
-                    buttonType: "submit"
-                  }, {
-                    name: "Cancel",
-                    i18nKeyLabel: "order.cancelInvoice",
-                    active: false,
-                    status: "danger",
-                    eventAction: "cancelOrder",
-                    bgColor: "bg-danger",
-                    buttonType: "button"
-                  }
-                ]}
-              />
-            </div>
-          </div>
-        );
 
       case "approved":
       case "error":
         return (
           <div className="flex">
-            <a
-              className="btn btn-link"
-              href={this.props.printOrder}
-              target="_blank"
-              data-i18n="app.print"
-            >
-              Print
-            </a>
-
             <button
               className="btn btn-success flex-item-fill"
               type="button"
@@ -248,23 +193,21 @@ class InvoiceActions extends Component {
   }
 
   render() {
-    const { adjustedTotal, handleApprove, invoice, payments } = this.props;
+    const { adjustedTotal, invoice, payments } = this.props;
     const [payment] = payments;
     const { mode } = payment;
 
     return (
-      <form onSubmit={handleApprove}>
-        <div style={{ marginBottom: 15, marginTop: 15 }}>
-          {this.renderApproval()}
-          {mode === "captured" &&
-            <div className="total-container">
-              {this.renderCapturedTotal()}
-              {invoice.total !== adjustedTotal && this.renderAdjustedTotal()}
-              {this.renderRefundForm()}
-            </div>
-          }
-        </div>
-      </form>
+      <div style={{ marginBottom: 15, marginTop: 15 }}>
+        {this.renderApproval()}
+        {mode === "captured" &&
+          <div className="total-container">
+            {this.renderCapturedTotal()}
+            {invoice.total !== adjustedTotal && this.renderAdjustedTotal()}
+            {this.renderRefundForm()}
+          </div>
+        }
+      </div>
     );
   }
 }

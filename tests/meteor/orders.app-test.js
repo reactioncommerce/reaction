@@ -281,7 +281,7 @@ describe("orders test", function () {
       sandbox.stub(Reaction, "hasPermission", () => false);
       spyOnMethod("approvePayment", order.userId);
       function approvePayment() {
-        return Meteor.call("orders/approvePayment", order);
+        return Meteor.call("orders/approvePayment", order._id, order.payments[0]._id);
       }
       expect(approvePayment).to.throw(ReactionError, /Access Denied/);
     });
@@ -295,7 +295,7 @@ describe("orders test", function () {
       const discount = invoice.discounts;
       const discountTotal = Math.max(0, subTotal - discount); // ensure no discounting below 0.
       const total = accounting.toFixed(discountTotal + shipping + taxes, 2);
-      Meteor.call("orders/approvePayment", order);
+      Meteor.call("orders/approvePayment", order._id, order.payments[0]._id);
       const orderDoc = Orders.findOne({ _id: order._id });
       const orderBilling = shippingObjectMethod(orderDoc);
       expect(orderBilling.payment.status).to.equal("approved");
