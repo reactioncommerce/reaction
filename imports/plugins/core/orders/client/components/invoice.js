@@ -3,7 +3,6 @@ import PropTypes from "prop-types";
 import { formatPriceString } from "/client/api";
 import { Components, registerComponent, withMoment } from "@reactioncommerce/reaction-components";
 import LineItems from "./lineItems";
-import InvoiceActions from "./invoiceActions";
 import OrderPayment from "./OrderPayment";
 
 /**
@@ -18,6 +17,10 @@ class Invoice extends Component {
      * A boolean indicating whether adjustments could be made on total payment
      */
     canMakeAdjustments: PropTypes.bool,
+    /**
+     * Currency details for the current shop
+     */
+    currency: PropTypes.object,
     /**
      * A boolean indicating whether discounts are enabled
      */
@@ -43,6 +46,10 @@ class Invoice extends Component {
      */
     isFetching: PropTypes.bool,
     /**
+     * True while a refund is being created
+     */
+    isRefunding: PropTypes.bool,
+    /**
      * Injected MomentJS library
      */
     moment: PropTypes.func,
@@ -54,6 +61,10 @@ class Invoice extends Component {
      * Function to be called when "Capture" is clicked for a payment
      */
     onCapturePayment: PropTypes.func,
+    /**
+     * Function to be called when a refund is requested for a payment
+     */
+    onRefundPayment: PropTypes.func.isRequired,
     /**
      * An order document
      */
@@ -221,28 +232,47 @@ class Invoice extends Component {
             {this.renderDiscountForm()}
           </div>
         }
-        {this.renderRefundsInfo()}
         {this.renderTotal()}
+        {this.renderRefundsInfo()}
       </div>
     );
   }
 
   renderPayments() {
-    const { isCapturing, onApprovePayment, onCapturePayment, order } = this.props;
+    const {
+      currency,
+      hasRefundingEnabled,
+      isCapturing,
+      isRefunding,
+      onApprovePayment,
+      onCapturePayment,
+      onRefundPayment,
+      order,
+      refunds
+    } = this.props;
 
-    return order.payments.map((payment) => (
-      <OrderPayment
-        key={payment._id}
-        isCapturing={isCapturing}
-        onApprovePayment={onApprovePayment}
-        onCapturePayment={onCapturePayment}
-        payment={payment}
-      />
-    ));
+    return order.payments.map((payment) => {
+      const refundsForPayment = refunds.filter((refund) => refund.paymentId === payment._id);
+
+      return (
+        <OrderPayment
+          currency={currency}
+          key={payment._id}
+          hasRefundingEnabled={hasRefundingEnabled}
+          isCapturing={isCapturing}
+          isRefunding={isRefunding}
+          onApprovePayment={onApprovePayment}
+          onCapturePayment={onCapturePayment}
+          onRefundPayment={onRefundPayment}
+          payment={payment}
+          refunds={refundsForPayment}
+        />
+      );
+    });
   }
 
   render() {
-    const { order, printOrder } = this.props;
+    const { printOrder } = this.props;
 
     return (
       <Components.CardGroup>
@@ -271,10 +301,7 @@ class Invoice extends Component {
             </div>}
 
             <h3>Payments</h3>
-
             {this.renderPayments()}
-
-            <InvoiceActions {...this.props} payments={order && order.payments}/>
           </Components.CardBody>
         </Components.Card>
       </Components.CardGroup>

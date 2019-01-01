@@ -36,13 +36,19 @@ export default function createRefund(orderId, paymentId, amount) {
   if (!payment) throw new ReactionError("not-found", "Payment not found");
 
   const { name } = payment;
+  const { functions } = getPaymentMethodConfigByName(name);
   const context = Promise.await(getGraphQLContextInMeteorMethod(authUserId));
-  const result = Promise.await(getPaymentMethodConfigByName(name).functions.createRefund(context, payment, amount));
+  const result = Promise.await(functions.createRefund(context, payment, amount));
 
   if (!result.saved) {
     Logger.fatal("Attempt to refund payment failed", order._id, paymentId, result.error);
     throw new ReactionError("Attempt to refund payment failed", result.error);
   }
+
+  // List refunds to see if we've now refunded the full amount of this payment
+  const allRefunds = Promise.await(functions.listRefunds(context, payment));
+  const refundTotal = allRefunds.reduce((sum, refund) => sum + refund.amount, 0);
+  const isFullyRefunded = refundTotal === payment.amount;
 
   Orders.update(
     {
@@ -51,8 +57,7 @@ export default function createRefund(orderId, paymentId, amount) {
     },
     {
       $set: {
-        "payments.$.mode": "cancel",
-        "payments.$.status": "refunded"
+        "payments.$.status": isFullyRefunded ? "refunded" : "partialRefund"
       },
       $push: {
         "payments.$.transactions": result

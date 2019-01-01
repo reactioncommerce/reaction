@@ -69,6 +69,7 @@ export default async function captureOrderPayments(context, input = {}) {
     const payment = updatedPayments.find((pmt) => pmt._id === captureResult.paymentId);
 
     if (captureResult.saved || captureResult.isAlreadyCaptured) {
+      payment.mode = "captured";
       payment.status = "completed";
       payment.metadata = { ...(payment.metadata || {}), ...(captureResult.metadata || {}) };
     } else {

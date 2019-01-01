@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { withComponents } from "@reactioncommerce/components-context";
 import { CustomPropTypes } from "@reactioncommerce/components/utils";
+import { Components } from "@reactioncommerce/reaction-components";
 import { formatPriceString, i18next } from "/client/api";
 
 const displayStatuses = {
@@ -28,7 +29,22 @@ class OrderPayment extends Component {
        */
       Button: CustomPropTypes.component.isRequired
     }),
+    /**
+     * Currency details for the current shop
+     */
+    currency: PropTypes.object,
+    /**
+     * A boolean indicating whether payment supports refunds
+     */
+    hasRefundingEnabled: PropTypes.bool,
+    /**
+     * True if currently capturing this payment
+     */
     isCapturing: PropTypes.bool,
+    /**
+     * True while a refund is being created
+     */
+    isRefunding: PropTypes.bool,
     /**
      * Function to be called when "Approve" is clicked for a payment
      */
@@ -37,6 +53,13 @@ class OrderPayment extends Component {
      * Function to be called when "Capture" is clicked for a payment
      */
     onCapturePayment: PropTypes.func.isRequired,
+    /**
+     * Function to be called when a refund is requested for a payment
+     */
+    onRefundPayment: PropTypes.func.isRequired,
+    /**
+     * Payment details
+     */
     payment: PropTypes.shape({
       _id: PropTypes.string.isRequired,
       amount: PropTypes.number.isRequired,
@@ -45,7 +68,11 @@ class OrderPayment extends Component {
       processor: PropTypes.string.isRequired,
       status: PropTypes.string.isRequired,
       transactionId: PropTypes.string.isRequired
-    }).isRequired
+    }).isRequired,
+    refunds: PropTypes.arrayOf(PropTypes.shape({
+      amount: PropTypes.number.isRequired,
+      paymentId: PropTypes.string.isRequired
+    }))
   };
 
   static defaultProps = {
@@ -53,7 +80,8 @@ class OrderPayment extends Component {
   };
 
   state = {
-    isApproving: false
+    isApproving: false,
+    value: 0
   }
 
   componentDidMount() {
@@ -80,14 +108,81 @@ class OrderPayment extends Component {
     return onCapturePayment(payment._id);
   }
 
+  handleClickRefund = async () => {
+    const { onRefundPayment, payment } = this.props;
+
+    await onRefundPayment(payment._id, this.state.value);
+
+    if (this._isMounted) this.setState({ value: 0 });
+  }
+
+  renderRefundForm() {
+    const {
+      components: { Button },
+      currency,
+      hasRefundingEnabled,
+      isRefunding,
+      payment
+    } = this.props;
+
+    return (
+      <div>
+        {!!hasRefundingEnabled &&
+          <div className="flex refund-container">
+            <div className="refund-input">
+              <Components.NumericInput
+                numericType="currency"
+                value={this.state.value}
+                format={currency}
+                classNames={{
+                  input: {
+                    amount: true
+                  }
+                }}
+                onChange={(event, value) => {
+                  this.setState({ value });
+                }}
+              />
+            </div>
+
+            <Button
+              isDisabled={this.state.value === 0}
+              isShortHeight
+              isWaiting={isRefunding}
+              onClick={this.handleClickRefund}
+            >
+              {i18next.t("order.applyRefund")}
+            </Button>
+          </div>
+        }
+
+        {payment.status === "completed" &&
+          <div className="cancel-order-btn">
+            <Components.Button
+              bezelStyle="solid"
+              className="btn btn-danger"
+              data-i18n="order.cancelOrderLabel"
+              onClick={this.props.handleCancelPayment}
+              i18nKeyLabel="order.cancelOrderLabel"
+              label="Cancel Order"
+              style={{ marginBottom: 10 }}
+              type="button"
+            />
+          </div>
+        }
+      </div>
+    );
+  }
+
   renderStatus(status) {
     return displayStatuses[status];
   }
 
   render() {
-    const { components: { Button }, isCapturing, payment } = this.props;
+    const { components: { Button }, isCapturing, payment, refunds } = this.props;
     const { isApproving } = this.state;
     const { _id, amount, captureErrorMessage, displayName, processor, status, transactionId } = payment;
+    const refundTotal = (refunds || []).reduce((acc, item) => acc + item.amount, 0);
 
     return (
       <div key={_id} className="order-payment-list-item">
@@ -95,10 +190,11 @@ class OrderPayment extends Component {
         <div><strong data-i18n="order.processor">Processor: </strong> {processor}</div>
         <div><strong data-i18n="order.transaction">Transaction ID:</strong> {transactionId}</div>
         <div><strong data-i18n="order.amount">Amount:</strong> {formatPriceString(amount)}</div>
+        <div><strong data-i18n="order.refundAmount">Refunded Amount:</strong> {formatPriceString(refundTotal)}</div>
         <div><strong data-i18n="order.status">Status:</strong> {this.renderStatus(status)}</div>
         {!!captureErrorMessage && <div>{captureErrorMessage}</div>}
         <div className="order-payment-action-area">
-          {["created", "adjustments"].indexOf(status) > -1 ?
+          {["created", "adjustments"].indexOf(status) > -1 &&
             <Button
               actionType="important"
               isFullWidth
@@ -107,9 +203,8 @@ class OrderPayment extends Component {
             >
               {i18next.t("order.approveInvoice")}
             </Button>
-            : null
           }
-          {["approved", "error"].indexOf(payment.status) > -1 ?
+          {["approved", "error"].indexOf(payment.status) > -1 &&
             <Button
               actionType="important"
               isFullWidth
@@ -118,8 +213,8 @@ class OrderPayment extends Component {
             >
               {i18next.t("order.capturePayment")}
             </Button>
-            : null
           }
+          {["completed", "partialRefund"].indexOf(status) > -1 && this.renderRefundForm()}
         </div>
       </div>
     );

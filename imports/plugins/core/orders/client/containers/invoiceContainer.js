@@ -249,17 +249,15 @@ class InvoiceContainer extends Component {
     });
   }
 
-  handleRefund = (event, refund) => {
-    event.preventDefault();
-
+  handleRefund = (paymentId, refund) => {
     const { currency, order } = this.props;
     const { refunds } = this.state;
     const currencySymbol = currency.symbol;
-    const [payment] = order.payments || [];
-    const { _id: paymentId, amount: orderTotal } = payment || {};
-    const refundTotal = Array.isArray(refunds) && refunds.reduce((acc, item) => acc + parseFloat(item.amount), 0);
+    const payment = order.payments.find((pmt) => pmt._id === paymentId);
+    const { amount: originalPaymentTotal } = payment || {};
 
-    const adjustedTotal = accounting.toFixed(orderTotal - refundTotal, 2);
+    const refundTotal = (refunds || []).reduce((acc, item) => acc + item.amount, 0);
+    const adjustedTotal = originalPaymentTotal - refundTotal;
 
     if (refund > adjustedTotal) {
       Alerts.inline("Refund(s) total cannot be greater than adjusted total", "error", {
@@ -423,13 +421,13 @@ class InvoiceContainer extends Component {
         handleInputChange={this.handleInputChange}
         handleItemSelect={this.handleItemSelect}
         handlePopOverOpen={this.handlePopOverOpen}
-        handleRefund={this.handleRefund}
         handleRefundItems={this.handleRefundItems}
         handleSelectAllItems={this.handleSelectAllItems}
         hasRefundingEnabled={this.hasRefundingEnabled()}
         isAdjusted={this.isAdjusted}
         onApprovePayment={this.handleApprove}
         onCapturePayment={this.handleCapturePayment}
+        onRefundPayment={this.handleRefund}
         onClose={this.handleClose}
         togglePopOver={this.togglePopOver}
         toggleUpdating={this.toggleUpdating}

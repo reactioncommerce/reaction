@@ -30,7 +30,8 @@ export default function listRefunds(order) {
   if (Array.isArray(dbOrder.payments)) {
     for (const payment of dbOrder.payments) {
       const shopRefunds = Promise.await(getPaymentMethodConfigByName(payment.name).functions.listRefunds(context, payment));
-      refunds.push(...shopRefunds);
+      const shopRefundsWithPaymentId = shopRefunds.map((shopRefund) => ({ ...shopRefund, paymentId: payment._id }));
+      refunds.push(...shopRefundsWithPaymentId);
     }
   }
 
