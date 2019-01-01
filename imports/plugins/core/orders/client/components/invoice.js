@@ -4,6 +4,7 @@ import { formatPriceString } from "/client/api";
 import { Components, registerComponent, withMoment } from "@reactioncommerce/reaction-components";
 import LineItems from "./lineItems";
 import InvoiceActions from "./invoiceActions";
+import OrderPayment from "./OrderPayment";
 
 /**
  * @file Invoice is a React Component for displaying the `invoice` section on the orders sideview
@@ -210,6 +211,12 @@ class Invoice extends Component {
     );
   }
 
+  renderPayments() {
+    const { order } = this.props;
+
+    return order.payments.map((payment) => <OrderPayment key={payment._id} payment={payment} />);
+  }
+
   render() {
     const { order } = this.props;
 
@@ -227,6 +234,10 @@ class Invoice extends Component {
             <div className="invoice-container">
               {this.renderInvoice()}
             </div>
+
+            <h3>Payments</h3>
+
+            {this.renderPayments()}
 
             <InvoiceActions {...this.props} payments={order && order.payments}/>
           </Components.CardBody>

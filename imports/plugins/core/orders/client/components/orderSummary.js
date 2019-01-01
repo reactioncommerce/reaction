@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Components } from "@reactioncommerce/reaction-components";
 import { Badge, ClickToCopy } from "@reactioncommerce/reaction-ui";
-import { formatPriceString } from "/client/api";
 import { getOrderRiskBadge, getOrderRiskStatus, getShippingInfo, getTaxRiskStatus } from "../helpers";
 
 class OrderSummary extends Component {
@@ -47,8 +46,6 @@ class OrderSummary extends Component {
 
     if (!order) return null;
 
-    const [payment] = order.payments || [];
-    const { amount, displayName: paymentDisplayName, processor, transactionId } = payment || {};
     const { address: shippingAddress } = getShippingInfo(order);
     const orderPaymentRisk = getOrderRiskStatus(order);
     const orderTaxRisk = getTaxRiskStatus(order);
@@ -109,27 +106,6 @@ class OrderSummary extends Component {
               <strong data-i18n="order.created">Created</strong>
               <div className="invoice-details">
                 {moment && moment(order.createdAt).fromNow()} | {dateFormat(order.createdAt, "MM/D/YYYY")}
-              </div>
-            </div>
-
-            <div className="order-summary-form-group">
-              <strong data-i18n="order.processor">Processor</strong>
-              <div className="invoice-details">
-                {processor}
-              </div>
-            </div>
-
-            <div className="order-summary-form-group">
-              <strong data-i18n="order.payment">Payment</strong>
-              <div className="invoice-details">
-                {paymentDisplayName} ({formatPriceString(amount)})
-              </div>
-            </div>
-
-            <div className="order-summary-form-group">
-              <strong data-i18n="order.transaction">Transaction</strong>
-              <div className="invoice-details">
-                {transactionId}
               </div>
             </div>
 
