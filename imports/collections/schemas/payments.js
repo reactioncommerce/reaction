@@ -93,6 +93,14 @@ export const Payment = new SimpleSchema({
     optional: true
   },
   "amount": Number,
+  "captureErrorCode": {
+    type: String,
+    optional: true
+  },
+  "captureErrorMessage": {
+    type: String,
+    optional: true
+  },
   "cardBrand": {
     type: String,
     optional: true

@@ -55,6 +55,8 @@ export default async function captureOrderPayments(context, input = {}) {
       result = await getPaymentMethodConfigByName(payment.name).functions.capturePayment(context, payment);
     } catch (error) {
       result.error = error;
+      result.errorCode = "uncaught_plugin_error";
+      result.errorMessage = error.message;
     }
     result.paymentId = payment._id;
     return result;
@@ -71,6 +73,8 @@ export default async function captureOrderPayments(context, input = {}) {
       payment.metadata = { ...(payment.metadata || {}), ...(captureResult.metadata || {}) };
     } else {
       payment.status = "error";
+      payment.captureErrorCode = captureResult.errorCode;
+      payment.captureErrorMessage = captureResult.errorMessage;
     }
 
     payment.transactions.push(captureResult);

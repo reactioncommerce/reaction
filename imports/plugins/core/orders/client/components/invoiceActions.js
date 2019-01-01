@@ -25,10 +25,6 @@ class InvoiceActions extends Component {
      */
     handleCancelPayment: PropTypes.func,
     /**
-     * A function for capturing payments
-     */
-    handleCapturePayment: PropTypes.func,
-    /**
      * A function for refunding payments
      */
     handleRefund: PropTypes.func,
@@ -40,10 +36,6 @@ class InvoiceActions extends Component {
      * The invoice document
      */
     invoice: PropTypes.object,
-    /**
-     * True while the payment is being captured
-     */
-    isCapturing: PropTypes.bool,
     /**
      * True while a refund is being created
      */
@@ -159,39 +151,6 @@ class InvoiceActions extends Component {
     );
   }
 
-  renderApproval() {
-    const { payments } = this.props;
-    const [payment] = payments;
-
-    switch (payment.status) {
-
-      case "approved":
-      case "error":
-        return (
-          <div className="flex">
-            <button
-              className="btn btn-success flex-item-fill"
-              type="button"
-              data-event-action="capturePayment"
-              disabled={this.props.isCapturing}
-              onClick={this.props.handleCapturePayment}
-            >
-
-              {this.props.isCapturing ?
-                <span id="btn-capture-payment">
-                  Capturing <i className="fa fa-spinner fa-spin" id="btn-processing" />
-                </span> :
-                <span id="btn-capture-payment" data-i18n="order.capturePayment">Capture Payment</span>
-              }
-            </button>
-          </div>
-        );
-
-      default:
-        return null;
-    }
-  }
-
   render() {
     const { adjustedTotal, invoice, payments } = this.props;
     const [payment] = payments;
@@ -199,7 +158,6 @@ class InvoiceActions extends Component {
 
     return (
       <div style={{ marginBottom: 15, marginTop: 15 }}>
-        {this.renderApproval()}
         {mode === "captured" &&
           <div className="total-container">
             {this.renderCapturedTotal()}

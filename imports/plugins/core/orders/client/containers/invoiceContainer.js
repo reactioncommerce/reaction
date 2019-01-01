@@ -191,13 +191,11 @@ class InvoiceContainer extends Component {
     return approvePayment(order._id, paymentId);
   }
 
-  handleCapturePayment = (event) => {
-    event.preventDefault();
-
+  handleCapturePayment = (paymentId) => {
     this.setState({ isCapturing: true });
 
     const { order } = this.props;
-    capturePayments(order)
+    capturePayments(order, [paymentId])
       .then(() => {
         this.setState({ isCapturing: false });
         return null;
@@ -422,7 +420,6 @@ class InvoiceContainer extends Component {
         displayMedia={getPrimaryMediaForItem}
         getRefundedItemsInfo={this.getRefundedItemsInfo}
         handleCancelPayment={this.handleCancelPayment}
-        handleCapturePayment={this.handleCapturePayment}
         handleInputChange={this.handleInputChange}
         handleItemSelect={this.handleItemSelect}
         handlePopOverOpen={this.handlePopOverOpen}
@@ -432,6 +429,7 @@ class InvoiceContainer extends Component {
         hasRefundingEnabled={this.hasRefundingEnabled()}
         isAdjusted={this.isAdjusted}
         onApprovePayment={this.handleApprove}
+        onCapturePayment={this.handleCapturePayment}
         onClose={this.handleClose}
         togglePopOver={this.togglePopOver}
         toggleUpdating={this.toggleUpdating}
@@ -453,15 +451,16 @@ class InvoiceContainer extends Component {
 /**
  * @method capturePayments
  * @summary helper method to capture payments
- * @param {object} order - object representing an order
+ * @param {Object} order - object representing an order
+ * @param {String[]} [paymentIds] - Optional array of payment IDs, to capture certain payments
  * @return {Promise<null>} null
  * @private
  */
-function capturePayments(order) {
+function capturePayments(order, paymentIds) {
   if (!order.payments) return Promise.resolve(null);
 
-  const paymentIds = order.payments.map((payment) => payment._id);
-  const capture = () => captureOrderPayments({ orderId: order._id, paymentIds, shopId: order.shopId });
+  const paymentIdList = paymentIds || order.payments.map((payment) => payment._id);
+  const capture = () => captureOrderPayments({ orderId: order._id, paymentIds: paymentIdList, shopId: order.shopId });
 
   /**
    * @summary Show alert

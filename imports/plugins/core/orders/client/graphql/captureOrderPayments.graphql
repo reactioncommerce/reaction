@@ -4,6 +4,8 @@ captureOrderPayments($input: CaptureOrderPaymentsInput!) {
       _id
       payments {
         _id
+        captureErrorCode
+        captureErrorMessage
         status
       }
     }

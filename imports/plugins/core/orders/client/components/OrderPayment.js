@@ -28,13 +28,28 @@ class OrderPayment extends Component {
        */
       Button: CustomPropTypes.component.isRequired
     }),
+    isCapturing: PropTypes.bool,
     /**
      * Function to be called when "Approve" is clicked for a payment
      */
-    onApprovePayment: PropTypes.func,
+    onApprovePayment: PropTypes.func.isRequired,
+    /**
+     * Function to be called when "Capture" is clicked for a payment
+     */
+    onCapturePayment: PropTypes.func.isRequired,
     payment: PropTypes.shape({
-      _id: PropTypes.string.isRequired
+      _id: PropTypes.string.isRequired,
+      amount: PropTypes.number.isRequired,
+      captureErrorMessage: PropTypes.string,
+      displayName: PropTypes.string.isRequired,
+      processor: PropTypes.string.isRequired,
+      status: PropTypes.string.isRequired,
+      transactionId: PropTypes.string.isRequired
     }).isRequired
+  };
+
+  static defaultProps = {
+    isCapturing: false
   };
 
   state = {
@@ -59,30 +74,52 @@ class OrderPayment extends Component {
     if (this._isMounted) this.setState({ isApproving: false });
   }
 
+  handleClickCapture = async () => {
+    const { onCapturePayment, payment } = this.props;
+
+    return onCapturePayment(payment._id);
+  }
+
   renderStatus(status) {
     return displayStatuses[status];
   }
 
   render() {
-    const { components: { Button }, payment } = this.props;
+    const { components: { Button }, isCapturing, payment } = this.props;
     const { isApproving } = this.state;
+    const { _id, amount, captureErrorMessage, displayName, processor, status, transactionId } = payment;
 
     return (
-      <div key={payment._id} className="order-payment-list-item">
-        <div><strong>{payment.displayName}</strong></div>
-        <div><strong data-i18n="order.processor">Processor: </strong> {payment.processor}</div>
-        <div><strong data-i18n="order.transaction">Transaction ID:</strong> {payment.transactionId}</div>
-        <div><strong data-i18n="order.amount">Amount:</strong> {formatPriceString(payment.amount)}</div>
-        <div><strong data-i18n="order.status">Status:</strong> {this.renderStatus(payment.status)}</div>
-        <div className="order-payment-action-area">{["created", "adjustments"].indexOf(payment.status) > -1 ?
-          <Button
-            actionType="important"
-            isFullWidth
-            isWaiting={isApproving}
-            onClick={this.handleClickApprove}
-          >
-            {i18next.t("order.approveInvoice")}
-          </Button> : null}
+      <div key={_id} className="order-payment-list-item">
+        <div><strong>{displayName}</strong></div>
+        <div><strong data-i18n="order.processor">Processor: </strong> {processor}</div>
+        <div><strong data-i18n="order.transaction">Transaction ID:</strong> {transactionId}</div>
+        <div><strong data-i18n="order.amount">Amount:</strong> {formatPriceString(amount)}</div>
+        <div><strong data-i18n="order.status">Status:</strong> {this.renderStatus(status)}</div>
+        {!!captureErrorMessage && <div>{captureErrorMessage}</div>}
+        <div className="order-payment-action-area">
+          {["created", "adjustments"].indexOf(status) > -1 ?
+            <Button
+              actionType="important"
+              isFullWidth
+              isWaiting={isApproving}
+              onClick={this.handleClickApprove}
+            >
+              {i18next.t("order.approveInvoice")}
+            </Button>
+            : null
+          }
+          {["approved", "error"].indexOf(payment.status) > -1 ?
+            <Button
+              actionType="important"
+              isFullWidth
+              isWaiting={isCapturing}
+              onClick={this.handleClickCapture}
+            >
+              {i18next.t("order.capturePayment")}
+            </Button>
+            : null
+          }
         </div>
       </div>
     );

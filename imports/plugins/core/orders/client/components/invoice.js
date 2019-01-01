@@ -35,6 +35,10 @@ class Invoice extends Component {
      */
     invoice: PropTypes.object,
     /**
+     * Set true when currently capturing a payment
+     */
+    isCapturing: PropTypes.bool,
+    /**
      * Is the refund list being loaded
      */
     isFetching: PropTypes.bool,
@@ -46,6 +50,10 @@ class Invoice extends Component {
      * Function to be called when "Approve" is clicked for a payment
      */
     onApprovePayment: PropTypes.func,
+    /**
+     * Function to be called when "Capture" is clicked for a payment
+     */
+    onCapturePayment: PropTypes.func,
     /**
      * An order document
      */
@@ -220,9 +228,17 @@ class Invoice extends Component {
   }
 
   renderPayments() {
-    const { onApprovePayment, order } = this.props;
+    const { isCapturing, onApprovePayment, onCapturePayment, order } = this.props;
 
-    return order.payments.map((payment) => <OrderPayment key={payment._id} onApprovePayment={onApprovePayment} payment={payment} />);
+    return order.payments.map((payment) => (
+      <OrderPayment
+        key={payment._id}
+        isCapturing={isCapturing}
+        onApprovePayment={onApprovePayment}
+        onCapturePayment={onCapturePayment}
+        payment={payment}
+      />
+    ));
   }
 
   render() {

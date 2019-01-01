@@ -31,6 +31,16 @@ type Payment implements Node {
   """
   amount: Money!
 
+  """
+  If status is "error" due to a capture error, this code describes the error in a machine-readable way.
+  """
+  captureErrorCode: String
+
+  """
+  If status is "error" due to a capture error, this code describes the error in a human-readable way.
+  """
+  captureErrorMessage: String
+
   "For card payments, the brand of the card. Useful for showing card icons for common brands."
   cardBrand: String
 

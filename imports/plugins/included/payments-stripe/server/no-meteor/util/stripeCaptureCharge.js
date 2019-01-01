@@ -28,6 +28,8 @@ export default async function stripeCaptureCharge(context, payment) {
   } catch (error) {
     Logger.debug(error);
     result.error = error;
+    result.errorCode = error.code;
+    result.errorMessage = error.message;
 
     if (error.code === "charge_already_captured") {
       result.isAlreadyCaptured = true;
