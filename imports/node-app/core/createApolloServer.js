@@ -1,5 +1,5 @@
 import express from "express";
-import { makeExecutableSchema } from "apollo-server";
+import { makeExecutableSchema, mergeSchemas } from "apollo-server";
 import { ApolloServer } from "apollo-server-express";
 import buildContext from "./util/buildContext";
 import getErrorFormatter from "./util/getErrorFormatter";
@@ -22,13 +22,22 @@ const resolverValidationOptions = {
  * @returns {ExpressApp} The express app
  */
 export default function createApolloServer(options = {}) {
-  const { addCallMeteorMethod, context: contextFromOptions, resolvers, typeDefs } = options;
+  const { addCallMeteorMethod, context: contextFromOptions, resolvers } = options;
   const path = options.path || DEFAULT_GRAPHQL_PATH;
+
+  // We support passing in either a typeDefs string or an already executable schema,
+  // for the case where a plugin is stitching in a schema from an external API.
+  const schemas = options.schemas || [];
+  const schemasToMerge = schemas.filter((td) => typeof td !== "string");
+  const typeDefs = schemas.filter((td) => typeof td === "string");
 
   // Create a custom Express server so that we can add our own middleware and HTTP routes
   const app = express();
 
-  const schema = makeExecutableSchema({ typeDefs, resolvers, resolverValidationOptions });
+  let schema = makeExecutableSchema({ typeDefs, resolvers, resolverValidationOptions });
+  if (schemasToMerge.length) {
+    schema = mergeSchemas({ schemas: [schema, ...schemasToMerge] });
+  }
 
   const server = new ApolloServer({
     async context({ req }) {

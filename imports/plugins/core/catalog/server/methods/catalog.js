@@ -12,7 +12,7 @@ import { MediaRecords, Products, Tags } from "/lib/collections";
 import { Media } from "/imports/plugins/core/files/server";
 import rawCollections from "/imports/collections/rawCollections";
 import getGraphQLContextInMeteorMethod from "/imports/plugins/core/graphql/server/getGraphQLContextInMeteorMethod";
-import hashProduct, { createProductHash } from "../no-meteor/mutations/hashProduct";
+import hashProduct from "../no-meteor/mutations/hashProduct";
 import getCurrentCatalogPriceForProductConfiguration from "../no-meteor/queries/getCurrentCatalogPriceForProductConfiguration";
 import getProductPriceRange from "../no-meteor/utils/getProductPriceRange";
 import getVariants from "../no-meteor/utils/getVariants";
@@ -585,61 +585,6 @@ Meteor.methods({
   },
 
   /**
-   * @name products/updateVariant
-   * @memberof Methods/Products
-   * @method
-   * @summary update individual variant with new values, merges into original
-   * only need to supply updated information. Currently used for a one use case
-   * - to manage top-level variant autoform.
-   * @param {Object} variant - current variant object
-   * @todo some use cases of this method was moved to "products/
-   * updateProductField", but it still used
-   * @return {Number} returns update result
-   */
-  "products/updateVariant"(variant) {
-    check(variant, Object);
-
-    // Check first if Variant exists and then if user has the right to clone it
-    const currentVariant = Products.findOne(variant._id);
-    if (!currentVariant) {
-      throw new ReactionError("not-found", "Variant not found");
-    }
-
-    if (!Reaction.hasPermission("createProduct", this.userId, currentVariant.shopId)) {
-      throw new ReactionError("access-denied", "Access Denied");
-    }
-
-    const newVariant = Object.assign({}, currentVariant, variant);
-
-    const variantUpdateResult = updateCatalogProduct(
-      this.userId,
-      {
-        _id: variant._id
-      },
-      {
-        $set: newVariant
-      },
-      {
-        selector: { type: currentVariant.type },
-        validate: false
-      }
-    );
-
-    const productId = currentVariant.ancestors[0];
-    // we need manually check is these fields were updated?
-    // we can't stop after successful denormalization, because we have a
-    // case when several fields could be changed in top-level variant
-    // before form will be submitted.
-    toDenormalize.forEach((field) => {
-      if (currentVariant[field] !== variant[field]) {
-        denormalize(productId, field);
-      }
-    });
-
-    return variantUpdateResult;
-  },
-
-  /**
    * @name products/deleteVariant
    * @memberof Methods/Products
    * @method
@@ -727,7 +672,7 @@ Meteor.methods({
     }
 
     if (Array.isArray(productOrArray)) {
-      // Reduce to unique shops found among producs in this array
+      // Reduce to unique shops found among products in this array
       const shopIds = productOrArray.map((prod) => prod.shopId);
       const uniqueShopIds = [...new Set(shopIds)];
 
@@ -985,11 +930,6 @@ Meteor.methods({
     check(_id, String);
     check(field, String);
     check(value, Match.OneOf(String, Object, Array, Boolean, Number));
-
-    // Must have createProduct permission for active shop
-    if (!Reaction.hasPermission("createProduct")) {
-      throw new ReactionError("access-denied", "Access Denied");
-    }
 
     // Check first if Product exists and then if user has the right to alter it
     const doc = Products.findOne({ _id });
@@ -1286,16 +1226,18 @@ Meteor.methods({
    * @method
    * @description updates top level variant position index
    * @param {Array} sortedVariantIds - array of top level variant `_id`s
+   * @param {String} shopId - The ID of the shop that owns all variants being sorted
    * @since 0.11.0
    * @return {Number} Products.update result
    */
-  "products/updateVariantsPosition"(sortedVariantIds) {
+  "products/updateVariantsPosition"(sortedVariantIds, shopId) {
     check(sortedVariantIds, [String]);
+    check(shopId, String);
 
     // This checks to make sure the user has createProduct permissions for the active shop.
     // TODO: We should determine if that is the correct role that a user should have
     // to be permitted to re-arrange products on the grid
-    if (!Reaction.hasPermission("createProduct")) {
+    if (!Reaction.hasPermission("createProduct", this.userId, shopId)) {
       throw new ReactionError("access-denied", "Access Denied");
     }
 
@@ -1303,7 +1245,10 @@ Meteor.methods({
       updateCatalogProduct(
         this.userId,
         {
-          _id: id
+          _id: id,
+          // Query on shop ID to be sure a different ID was not passed in to pass the permission check
+          shopId,
+          type: "variant"
         },
         {
           $set: { index }
@@ -1557,24 +1502,6 @@ Meteor.methods({
 
     // if collection updated we return new `isVisible` state
     return res === 1 && !product.isVisible;
-  },
-
-  /**
-   * @name products/getpublishedProductHash
-   * @memberof Methods/Products
-   * @method
-   * @summary hashes product information for comparison purposes
-   * @param {String} productId - the product _id of the product to hash
-   * @return {String} hash of product
-   */
-  "products/getpublishedProductHash"(productId) {
-    check(productId, String);
-
-    const product = Products.findOne({ _id: productId });
-
-    const productHash = createProductHash(product, rawCollections);
-
-    return productHash;
   },
 
   /**

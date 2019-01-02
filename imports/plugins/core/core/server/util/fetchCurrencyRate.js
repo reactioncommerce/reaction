@@ -16,8 +16,6 @@ import { Packages, Shops } from "/lib/collections";
  * @returns {undefined}
  */
 export default function fetchCurrencyRate() {
-  this.unblock();
-
   const shopId = Reaction.getShopId();
   const shop = Shops.findOne(shopId, {
     fields: {
@@ -83,7 +81,7 @@ export default function fetchCurrencyRate() {
     _.each(shopCurrencies, (currencyConfig, currencyKey) => {
       if (exchangeRates[currencyKey] !== undefined) {
         const rateUpdate = {
-          // this needed for shop/flushCurrencyRates Method
+          // this needed for shop/flushCurrencyRates job
           "currencies.updatedAt": new Date(rateResults.data.timestamp * 1000)
         };
         const collectionKey = `currencies.${currencyKey}.rate`;

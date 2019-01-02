@@ -15,7 +15,7 @@ import schemas from "../imports/node-app/devserver/schemas";
 import resolvers from "../imports/node-app/devserver/resolvers";
 
 class TestApp {
-  constructor() {
+  constructor(options = { extraSchemas: [] }) {
     this.collections = {};
     this.context = {
       appEvents,
@@ -34,7 +34,7 @@ class TestApp {
         };
       },
       context: this.context,
-      typeDefs: schemas,
+      schemas: [...schemas, ...options.extraSchemas],
       resolvers
       // Uncomment this if you need to debug a test. Otherwise we keep debug mode off to avoid extra
       // error logging in the test output.

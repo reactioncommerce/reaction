@@ -42,7 +42,7 @@ export default class ReactionNodeApp {
       context: this.context,
       debug: this.options.debug || false,
       resolvers,
-      typeDefs: schemas
+      schemas
     });
 
     this.expressApp = expressApp;
