@@ -68,11 +68,6 @@ Reaction.registerPackage({
     },
     api_key: "",
     connectAuth: {},
-    support: [
-      "Authorize",
-      "Capture",
-      "Refund"
-    ],
     public: {
       allowMerchantSignup: false, // Merchants can sign up without an invite
       client_id: "",

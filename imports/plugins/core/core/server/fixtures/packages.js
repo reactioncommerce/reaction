@@ -29,11 +29,6 @@ export const getPkgData = (pkgName) => {
  * @property {Object} settings - Object
  * @property {Boolean} settings.mode - `false`
  * @property {String} settings.apikey - `""`
- * @property {Object} example - Object
- * @property {Boolean} example.enabled - `false`
- * @property {Object} example-paymentmethod - Object
- * @property {Boolean} example-paymentmethod.enabled - `true`
- * @property {Array} example-paymentmethod.support - `["Authorize", "Capture", "Refund"]`
  * @property {Array} registry - `[]`
  * @property {Object} layout - `null`
  */
@@ -44,15 +39,8 @@ export function examplePaymentMethod() {
     shopId: getShopId(),
     enabled: true,
     settings: {
-      "mode": false,
-      "apikey": "",
-      "example": {
-        enabled: false
-      },
-      "example-paymentmethod": {
-        enabled: true,
-        support: ["Authorize", "Capture", "Refund"]
-      }
+      mode: false,
+      apikey: ""
     },
     registry: [],
     layout: null

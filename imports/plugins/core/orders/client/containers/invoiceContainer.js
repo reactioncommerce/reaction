@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import _ from "lodash";
 import { Meteor } from "meteor/meteor";
 import { i18next, Logger, Reaction, formatPriceString } from "/client/api";
-import { Orders, Shops, Packages } from "/lib/collections";
+import { Orders, Shops } from "/lib/collections";
 import { getPrimaryMediaForItem } from "/lib/api";
 import { composeWithTracker, registerComponent } from "@reactioncommerce/reaction-components";
 import Invoice from "../components/invoice.js";
@@ -13,6 +13,7 @@ import { captureOrderPayments } from "../graphql";
 class InvoiceContainer extends Component {
   static propTypes = {
     currency: PropTypes.object,
+    invoice: PropTypes.object,
     order: PropTypes.object,
     uniqueItems: PropTypes.array
   }
@@ -178,11 +179,7 @@ class InvoiceContainer extends Component {
   }
 
   hasRefundingEnabled() {
-    const { order } = this.props;
-    const [payment] = order.payments || [];
-    const { paymentPluginName } = payment || {};
-    const paymentPlugin = Packages.findOne({ name: paymentPluginName });
-    return _.get(paymentPlugin, "settings.support", []).indexOf("Refund") > -1;
+    return true; // may re-implement in the future
   }
 
   handleApprove = (paymentId) => {
@@ -206,24 +203,13 @@ class InvoiceContainer extends Component {
   }
 
   handleCancelOrder = () => {
-    const { currency, order } = this.props;
-    const [payment] = order.payments || [];
-    const { amount: invoiceTotal, mode: paymentMode, paymentPluginName, status: paymentStatus } = payment || {};
+    const { currency, invoice, order } = this.props;
+    const { total: invoiceTotal } = invoice;
     const currencySymbol = currency.symbol;
 
-    const paymentPlugin = Packages.findOne({ name: paymentPluginName, shopId: order.shopId });
-
-    // check if payment provider supports de-authorize
-    let alertText;
-    if (_.get(paymentPlugin, "settings.support", []).indexOf("De-authorize") > -1 ||
-      (paymentStatus === "completed" && paymentMode === "capture")) {
-      alertText = i18next.t("order.applyRefundDuringCancelOrder", { currencySymbol, invoiceTotal });
-    }
-
-    // TODO: Redesign the cancel order workflow to be more intuitive
     Alerts.alert({
       title: i18next.t("order.cancelOrder"),
-      text: alertText,
+      text: i18next.t("order.applyRefundDuringCancelOrder", { currencySymbol, invoiceTotal }),
       type: "warning",
       showCancelButton: true,
       showCloseButton: true,

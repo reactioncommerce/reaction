@@ -29,12 +29,7 @@ Reaction.registerPackage({
     apiKey: "",
     example: {
       enabled: false
-    },
-    support: [
-      "Authorize",
-      "Capture",
-      "Refund"
-    ]
+    }
   },
   registry: [
     // Settings panel

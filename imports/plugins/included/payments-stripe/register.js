@@ -27,11 +27,6 @@ Reaction.registerPackage({
   settings: {
     mode: false,
     api_key: "",
-    support: [
-      "Authorize",
-      "Capture",
-      "Refund"
-    ],
     public: {
       publishable_key: "",
       client_id: ""
