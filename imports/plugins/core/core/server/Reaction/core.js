@@ -1080,6 +1080,7 @@ export default {
         // Settings from the package registry.js
         const settingsFromPackage = {
           name: pkgName,
+          version: config.version,
           icon: config.icon,
           enabled: !!config.autoEnable,
           settings: config.settings,
@@ -1097,7 +1098,9 @@ export default {
         const settingsFromDB = packages.find((ps) => (config.name === ps.name && shopId === ps.shopId));
 
         const combinedSettings = merge({}, settingsFromPackage, settingsFromFixture || {}, settingsFromDB || {});
-
+        if (combinedSettings.version) {
+          combinedSettings.version = settingsFromPackage.version || settingsFromDB.version;
+        }
         if (combinedSettings.registry) {
           combinedSettings.registry = combinedSettings.registry.map((entry) => {
             if (entry.provides && !Array.isArray(entry.provides)) {
@@ -1120,6 +1123,7 @@ export default {
           }
         }
         // Import package data
+        Logger.info("combined settings", combinedSettings);
         this.Importer.package(combinedSettings, shopId);
         return Logger.debug(`Initializing ${shop.name} ${pkgName}`);
       }));
