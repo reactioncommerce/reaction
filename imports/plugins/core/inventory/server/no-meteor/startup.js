@@ -24,7 +24,7 @@ export default function startup(context) {
     // in some instances which causes the order not to cancel
       const orderItems = order.shipping.reduce((list, group) => [...list, ...group.items], []);
       orderItems.forEach(async (item) => {
-        const updatedItem = await collections.Products.findOneAndUpdate(
+        const { value: updatedItem } = await collections.Products.findOneAndUpdate(
           {
             _id: item.variantId
           },
@@ -33,13 +33,15 @@ export default function startup(context) {
               inventoryAvailableToSell: +item.quantity,
               inventoryQuantity: +item.quantity
             }
+          }, {
+            returnNewDocument: true
           }
         );
 
         // Update parents of supplied item
         await collections.Products.updateMany(
           {
-            _id: { $in: updatedItem.value.ancestors }
+            _id: { $in: updatedItem.ancestors }
           },
           {
             $inc: {
@@ -65,7 +67,7 @@ export default function startup(context) {
     // in some instances which causes the order not to cancel
       const orderItems = order.shipping.reduce((list, group) => [...list, ...group.items], []);
       orderItems.forEach(async (item) => {
-        const updatedItem = await collections.Products.findOneAndUpdate(
+        const { value: updatedItem } = await collections.Products.findOneAndUpdate(
           {
             _id: item.variantId
           },
@@ -73,13 +75,15 @@ export default function startup(context) {
             $inc: {
               inventoryAvailableToSell: +item.quantity
             }
+          }, {
+            returnNewDocument: true
           }
         );
 
         // Update parents of supplied item
         await collections.Products.updateMany(
           {
-            _id: { $in: updatedItem.value.ancestors }
+            _id: { $in: updatedItem.ancestors }
           },
           {
             $inc: {
@@ -109,7 +113,7 @@ export default function startup(context) {
     // we can map over the unique productIds at the end, and update each one once
     orderItems.forEach(async (item) => {
       // Update supplied item inventory
-      const updatedItem = await collections.Products.findOneAndUpdate(
+      const { value: updatedItem } = await collections.Products.findOneAndUpdate(
         {
           _id: item.variantId
         },
@@ -117,13 +121,15 @@ export default function startup(context) {
           $inc: {
             inventoryAvailableToSell: -item.quantity
           }
+        }, {
+          returnNewDocument: true
         }
       );
 
       // Update supplied item inventory
       await collections.Products.updateMany(
         {
-          _id: { $in: updatedItem.value.ancestors }
+          _id: { $in: updatedItem.ancestors }
         },
         {
           $inc: {
@@ -152,7 +158,7 @@ export default function startup(context) {
     // we can map over the unique productIds at the end, and update each one once
     orderItems.forEach(async (item) => {
       // Update supplied item inventory
-      const updatedItem = await collections.Products.findOneAndUpdate(
+      const { value: updatedItem } = await collections.Products.findOneAndUpdate(
         {
           _id: item.variantId
         },
@@ -160,13 +166,15 @@ export default function startup(context) {
           $inc: {
             inventoryQuantity: -item.quantity
           }
+        }, {
+          returnNewDocument: true
         }
       );
 
       // Update supplied item inventory
       await collections.Products.updateMany(
         {
-          _id: { $in: updatedItem.value.ancestors }
+          _id: { $in: updatedItem.ancestors }
         },
         {
           $inc: {
