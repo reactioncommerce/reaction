@@ -120,56 +120,35 @@ class OrderPayment extends Component {
     const {
       components: { Button },
       currency,
-      hasRefundingEnabled,
-      isRefunding,
-      payment
+      isRefunding
     } = this.props;
 
     return (
-      <div>
-        {!!hasRefundingEnabled &&
-          <div className="flex refund-container">
-            <div className="refund-input">
-              <Components.NumericInput
-                numericType="currency"
-                value={this.state.value}
-                format={currency}
-                classNames={{
-                  input: {
-                    amount: true
-                  }
-                }}
-                onChange={(event, value) => {
-                  this.setState({ value });
-                }}
-              />
-            </div>
+      <div className="flex refund-container">
+        <div className="refund-input">
+          <Components.NumericInput
+            numericType="currency"
+            value={this.state.value}
+            format={currency}
+            classNames={{
+              input: {
+                amount: true
+              }
+            }}
+            onChange={(event, value) => {
+              this.setState({ value });
+            }}
+          />
+        </div>
 
-            <Button
-              isDisabled={this.state.value === 0}
-              isShortHeight
-              isWaiting={isRefunding}
-              onClick={this.handleClickRefund}
-            >
-              {i18next.t("order.applyRefund")}
-            </Button>
-          </div>
-        }
-
-        {payment.status === "completed" &&
-          <div className="cancel-order-btn">
-            <Components.Button
-              bezelStyle="solid"
-              className="btn btn-danger"
-              data-i18n="order.cancelOrderLabel"
-              onClick={this.props.handleCancelPayment}
-              i18nKeyLabel="order.cancelOrderLabel"
-              label="Cancel Order"
-              style={{ marginBottom: 10 }}
-              type="button"
-            />
-          </div>
-        }
+        <Button
+          isDisabled={this.state.value === 0}
+          isShortHeight
+          isWaiting={isRefunding}
+          onClick={this.handleClickRefund}
+        >
+          {i18next.t("order.applyRefund")}
+        </Button>
       </div>
     );
   }
@@ -179,7 +158,7 @@ class OrderPayment extends Component {
   }
 
   render() {
-    const { components: { Button }, isCapturing, payment, refunds } = this.props;
+    const { components: { Button }, hasRefundingEnabled, isCapturing, payment, refunds } = this.props;
     const { isApproving } = this.state;
     const { _id, amount, captureErrorMessage, displayName, processor, status, transactionId } = payment;
     const refundTotal = (refunds || []).reduce((acc, item) => acc + item.amount, 0);
@@ -190,7 +169,7 @@ class OrderPayment extends Component {
         <div><strong data-i18n="order.processor">Processor: </strong> {processor}</div>
         <div><strong data-i18n="order.transaction">Transaction ID:</strong> {transactionId}</div>
         <div><strong data-i18n="order.amount">Amount:</strong> {formatPriceString(amount)}</div>
-        <div><strong data-i18n="order.refundAmount">Refunded Amount:</strong> {formatPriceString(refundTotal)}</div>
+        {!!refundTotal && <div><strong data-i18n="order.refundAmount">Refunded Amount:</strong> {formatPriceString(refundTotal)}</div>}
         <div><strong data-i18n="order.status">Status:</strong> {this.renderStatus(status)}</div>
         {!!captureErrorMessage && <div>{captureErrorMessage}</div>}
         <div className="order-payment-action-area">
@@ -214,7 +193,7 @@ class OrderPayment extends Component {
               {i18next.t("order.capturePayment")}
             </Button>
           }
-          {["completed", "partialRefund"].indexOf(status) > -1 && this.renderRefundForm()}
+          {hasRefundingEnabled && ["completed", "partialRefund"].indexOf(status) > -1 && this.renderRefundForm()}
         </div>
       </div>
     );

@@ -1,7 +1,10 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { formatPriceString } from "/client/api";
+import { compose } from "recompose";
+import { withComponents } from "@reactioncommerce/components-context";
+import { CustomPropTypes } from "@reactioncommerce/components/utils";
 import { Components, registerComponent, withMoment } from "@reactioncommerce/reaction-components";
+import { formatPriceString, i18next } from "/client/api";
 import LineItems from "./lineItems";
 import OrderPayment from "./OrderPayment";
 
@@ -17,6 +20,19 @@ class Invoice extends Component {
      * A boolean indicating whether adjustments could be made on total payment
      */
     canMakeAdjustments: PropTypes.bool,
+    /**
+     * If you've set up a components context using
+     * [@reactioncommerce/components-context](https://github.com/reactioncommerce/components-context)
+     * (recommended), then this prop will come from there automatically. If you have not
+     * set up a components context or you want to override one of the components in a
+     * single spot, you can pass in the components prop directly.
+     */
+    components: PropTypes.shape({
+      /**
+       * Button component used for payment buttons
+       */
+      Button: CustomPropTypes.component.isRequired
+    }),
     /**
      * Currency details for the current shop
      */
@@ -56,11 +72,15 @@ class Invoice extends Component {
     /**
      * Function to be called when "Approve" is clicked for a payment
      */
-    onApprovePayment: PropTypes.func,
+    onApprovePayment: PropTypes.func.isRequired,
+    /**
+     * Function to be called when "Cancel Order" is clicked
+     */
+    onCancelOrder: PropTypes.func.isRequired,
     /**
      * Function to be called when "Capture" is clicked for a payment
      */
-    onCapturePayment: PropTypes.func,
+    onCapturePayment: PropTypes.func.isRequired,
     /**
      * Function to be called when a refund is requested for a payment
      */
@@ -272,7 +292,11 @@ class Invoice extends Component {
   }
 
   render() {
-    const { printOrder } = this.props;
+    const { components: { Button }, onCancelOrder, order, printOrder } = this.props;
+
+    // The "cancelOrder" method is intended to be used when all payments are in "completed" status
+    // and have not yet been fully or partially refunded
+    const canCancelOrder = (order.payments || []).every((payment) => payment.status === "completed");
 
     return (
       <Components.CardGroup>
@@ -285,20 +309,31 @@ class Invoice extends Component {
           <Components.CardBody expandable={false}>
             <LineItems {...this.props} />
 
-            <div className="invoice-container">
+            <div>
               {this.renderInvoice()}
             </div>
 
-            {!!printOrder && <div>
-              <a
-                className="btn btn-default"
-                href={printOrder}
-                target="_blank"
-                data-i18n="app.printInvoice"
-              >
-                Print Invoice
-              </a>
-            </div>}
+            <div className="invoice-actions-container">
+              {!!printOrder && <div>
+                <a
+                  className="btn btn-default"
+                  href={printOrder}
+                  target="_blank"
+                  data-i18n="app.printInvoice"
+                >
+                  Print Invoice
+                </a>
+              </div>}
+
+              {canCancelOrder &&
+                <Button
+                  actionType="danger"
+                  onClick={onCancelOrder}
+                >
+                  {i18next.t("order.cancelOrderLabel")}
+                </Button>
+              }
+            </div>
 
             <h3>Payments</h3>
             {this.renderPayments()}
@@ -309,6 +344,12 @@ class Invoice extends Component {
   }
 }
 
-registerComponent("Invoice", Invoice, withMoment);
+registerComponent("Invoice", Invoice, [
+  withMoment,
+  withComponents
+]);
 
-export default withMoment(Invoice);
+export default compose(
+  withMoment,
+  withComponents
+)(Invoice);

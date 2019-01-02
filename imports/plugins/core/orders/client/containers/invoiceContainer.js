@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import accounting from "accounting-js";
 import _ from "lodash";
 import { Meteor } from "meteor/meteor";
 import { i18next, Logger, Reaction, formatPriceString } from "/client/api";
@@ -206,8 +205,7 @@ class InvoiceContainer extends Component {
       });
   }
 
-  handleCancelPayment = (event) => {
-    event.preventDefault();
+  handleCancelOrder = () => {
     const { currency, order } = this.props;
     const [payment] = order.payments || [];
     const { amount: invoiceTotal, mode: paymentMode, paymentPluginName, status: paymentStatus } = payment || {};
@@ -417,7 +415,6 @@ class InvoiceContainer extends Component {
         clearRefunds={this.handleClearRefunds}
         displayMedia={getPrimaryMediaForItem}
         getRefundedItemsInfo={this.getRefundedItemsInfo}
-        handleCancelPayment={this.handleCancelPayment}
         handleInputChange={this.handleInputChange}
         handleItemSelect={this.handleItemSelect}
         handlePopOverOpen={this.handlePopOverOpen}
@@ -426,6 +423,7 @@ class InvoiceContainer extends Component {
         hasRefundingEnabled={this.hasRefundingEnabled()}
         isAdjusted={this.isAdjusted}
         onApprovePayment={this.handleApprove}
+        onCancelOrder={this.handleCancelOrder}
         onCapturePayment={this.handleCapturePayment}
         onRefundPayment={this.handleRefund}
         onClose={this.handleClose}
