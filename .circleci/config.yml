@@ -5,8 +5,8 @@ version: 2
 # typing. See http://yaml.org/type/merge.html for details.
 defaults: &defaults
   environment:
-    - DOCKER_REPOSITORY: "reactioncommerce/reaction"
-    - DOCKER_NAMESPACE: "reactioncommerce"
+    - DOCKER_REPOSITORY: "sportsdirect/reaction"
+    - DOCKER_NAMESPACE: "sportsdirect"
     - DOCKER_NAME: "reaction"
     - GLOBAL_CACHE_VERSION: "v2"
     - TOOL_NODE_FLAGS: "--max-old-space-size=4096"
