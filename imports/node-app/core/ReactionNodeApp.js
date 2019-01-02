@@ -35,16 +35,17 @@ export default class ReactionNodeApp {
 
     this.mongodb = options.mongodb || mongodb;
 
-    const { graphiql, resolvers, schemas } = options.graphQL;
+    const { resolvers, schemas } = options.graphQL;
 
-    this.expressApp = createApolloServer({
+    const { expressApp } = createApolloServer({
       addCallMeteorMethod: this.options.addCallMeteorMethod || defaultAddCallMethod,
       context: this.context,
       debug: this.options.debug || false,
-      graphiql: graphiql || false,
       resolvers,
       schemas
     });
+
+    this.expressApp = expressApp;
   }
 
   setMongoDatabase(db) {
