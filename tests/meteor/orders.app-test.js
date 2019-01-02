@@ -35,7 +35,6 @@ describe("orders test", function () {
       "sendNotification": Meteor.server.method_handlers["orders/sendNotification"],
       "updateShipmentTracking": Meteor.server.method_handlers["orders/updateShipmentTracking"],
       "updateHistory": Meteor.server.method_handlers["orders/updateHistory"],
-      "refunds/list": Meteor.server.method_handlers["orders/refunds/list"],
       "refunds/create": Meteor.server.method_handlers["orders/refunds/create"],
       "refunds/refundItems": Meteor.server.method_handlers["orders/refunds/refundItems"],
       "example/payment/capture": Meteor.server.method_handlers["example/payment/capture"]
@@ -459,17 +458,6 @@ describe("orders test", function () {
       expect(orders.history[0].event).to.equal(event);
       expect(orders.history[0].value).to.equal(trackingValue);
       expect(orders.history[0].userId).to.equal(order.userId);
-    });
-  });
-
-  describe("orders/refunds/list", function () {
-    it("should return an array of refunds", function () {
-      sandbox.stub(Reaction, "hasPermission", () => true);
-      spyOnMethod("refunds/list", order.userId);
-      Meteor.call("orders/refunds/list", order, (err, res) => {
-        // refunds would be empty because there isn't any refunds yet
-        expect(res.length).to.equal(0);
-      });
     });
   });
 

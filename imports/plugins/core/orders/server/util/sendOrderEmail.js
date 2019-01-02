@@ -1,11 +1,12 @@
 import _ from "lodash";
 import Logger from "@reactioncommerce/logger";
 import accounting from "accounting-js";
-import { Meteor } from "meteor/meteor";
 import { SSR } from "meteor/meteorhacks:ssr";
 import { Shops } from "/lib/collections";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
 import { Media } from "/imports/plugins/core/files/server";
+import getGraphQLContextInMeteorMethod from "/imports/plugins/core/graphql/server/getGraphQLContextInMeteorMethod";
+import { getPaymentMethodConfigByName } from "/imports/plugins/core/payments/server/no-meteor/registration";
 
 /**
  * @name getPrimaryMediaForItem
@@ -89,11 +90,21 @@ export default function sendOrderEmail(order, action) {
 
   const { address: shippingAddress, shipmentMethod, tracking } = order.shipping[0];
   const { carrier } = shipmentMethod;
-  const [payment] = (order.payments || []);
-  const { address, currency, displayName } = payment || {};
+  const [firstPayment] = (order.payments || []);
+  const { address: billingAddress, currency, displayName } = firstPayment || {};
 
-  const refundResult = Meteor.call("orders/refunds/list", order);
-  const refundTotal = Array.isArray(refundResult) && refundResult.reduce((acc, refund) => acc + refund.amount, 0);
+  const refunds = [];
+
+  if (Array.isArray(order.payments)) {
+    const context = Promise.await(getGraphQLContextInMeteorMethod(null));
+    for (const payment of order.payments) {
+      const shopRefunds = Promise.await(getPaymentMethodConfigByName(payment.name).functions.listRefunds(context, payment));
+      const shopRefundsWithPaymentId = shopRefunds.map((shopRefund) => ({ ...shopRefund, paymentId: payment._id }));
+      refunds.push(...shopRefundsWithPaymentId);
+    }
+  }
+
+  const refundTotal = refunds.reduce((acc, refund) => acc + refund.amount, 0);
 
   const userCurrency = (currency && currency.userCurrency) || shop.currency;
   const userCurrencyFormatting = _.omit(shop.currencies[userCurrency], ["enabled", "rate"]);
@@ -184,10 +195,10 @@ export default function sendOrderEmail(order, action) {
     order,
     billing: {
       address: {
-        address: `${address.address1}${address.address2 ? ` ${address.address2}` : ""}`,
-        city: address.city,
-        region: address.region,
-        postal: address.postal
+        address: `${billingAddress.address1}${billingAddress.address2 ? ` ${billingAddress.address2}` : ""}`,
+        city: billingAddress.city,
+        region: billingAddress.region,
+        postal: billingAddress.postal
       },
       paymentMethod: displayName,
       subtotal: accounting.formatMoney(subtotal * userCurrencyExchangeRate, userCurrencyFormatting),
