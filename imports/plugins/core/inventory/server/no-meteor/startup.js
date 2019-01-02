@@ -34,7 +34,7 @@ export default function startup(context) {
               inventoryQuantity: +item.quantity
             }
           }, {
-            returnNewDocument: true
+            returnOriginal: false
           }
         );
 
@@ -76,7 +76,7 @@ export default function startup(context) {
               inventoryAvailableToSell: +item.quantity
             }
           }, {
-            returnNewDocument: true
+            returnOriginal: false
           }
         );
 
@@ -122,7 +122,7 @@ export default function startup(context) {
             inventoryAvailableToSell: -item.quantity
           }
         }, {
-          returnNewDocument: true
+          returnOriginal: false
         }
       );
 
@@ -167,7 +167,7 @@ export default function startup(context) {
             inventoryQuantity: -item.quantity
           }
         }, {
-          returnNewDocument: true
+          returnOriginal: false
         }
       );
 
