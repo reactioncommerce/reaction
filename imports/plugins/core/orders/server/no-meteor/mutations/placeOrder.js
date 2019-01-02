@@ -331,6 +331,7 @@ async function addTaxesToGroup(context, finalGroup, cleanedInput, groupInput, di
 async function createPayments({
   accountId,
   billingAddress,
+  context,
   currencyCode,
   currencyExchangeInfo,
   email,
@@ -339,19 +340,34 @@ async function createPayments({
   shippingAddress,
   shopId
 }) {
+  // Get the shop, for determining which payment methods are enabled
+  const shop = await context.queries.shopById(context, shopId);
+  if (!shop) throw new ReactionError("not-found", "Shop not found");
+  const availablePaymentMethods = shop.availablePaymentMethods || [];
+
   // Verify that total of payment inputs equals total due.
   let remainingTotal = orderTotal;
   const paymentPromises = (paymentsInput || []).map(async (paymentInput) => {
     if (remainingTotal === 0) return null;
 
+    const { amount: inputAmount, method: methodName } = paymentInput;
+
     // Determine amount to charge to this payment source
-    const amount = paymentInput.amount || remainingTotal;
+    const amount = inputAmount || remainingTotal;
     remainingTotal -= Math.min(amount, remainingTotal);
 
+    // Verify that this payment method is enabled for the shop
+    if (!availablePaymentMethods.includes(methodName)) {
+      throw new ReactionError("payment-failed", `Payment method not enabled for this shop: ${methodName}`);
+    }
+
     // Grab config for this payment method
-    const paymentMethodConfig = getPaymentMethodConfigByName(paymentInput.method);
-    if (!paymentMethodConfig) {
-      throw new ReactionError("payment-failed", `Invalid payment method name: ${paymentInput.method}`);
+    let paymentMethodConfig;
+    try {
+      paymentMethodConfig = getPaymentMethodConfigByName(methodName);
+    } catch (error) {
+      Logger.error(error);
+      throw new ReactionError("payment-failed", `Invalid payment method name: ${methodName}`);
     }
 
     // Authorize this payment
@@ -491,6 +507,7 @@ export default async function placeOrder(context, input) {
   const payments = await createPayments({
     accountId,
     billingAddress,
+    context,
     currencyCode,
     currencyExchangeInfo,
     email,
