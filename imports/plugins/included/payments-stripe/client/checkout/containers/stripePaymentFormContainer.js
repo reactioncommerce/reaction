@@ -45,7 +45,9 @@ function getSubmitHandler(billingAddress, cart, cartToken) {
     const order = await buildOrderInputFromCart(cart);
 
     // Build the payment input
+    const amount = order.fulfillmentGroups.reduce((sum, group) => sum + group.totalPrice, 0);
     const payments = [{
+      amount,
       billingAddress,
       data: {
         stripeTokenId

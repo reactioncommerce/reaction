@@ -68,10 +68,7 @@ const orderInputSchema = new SimpleSchema({
 });
 
 const paymentInputSchema = new SimpleSchema({
-  amount: {
-    type: Number,
-    optional: true
-  },
+  amount: Number,
   // Optionally override the order.billingAddress for each payment
   billingAddress: {
     type: AddressSchema,
@@ -345,16 +342,14 @@ async function createPayments({
   if (!shop) throw new ReactionError("not-found", "Shop not found");
   const availablePaymentMethods = shop.availablePaymentMethods || [];
 
-  // Verify that total of payment inputs equals total due.
-  let remainingTotal = orderTotal;
+  // Verify that total of payment inputs equals total due. We need to be sure
+  // to do this before creating any payment authorizations
+  const paymentTotal = (paymentsInput || []).reduce((sum, paymentInput) => sum + paymentInput.amount, 0);
+  if (paymentTotal !== orderTotal) throw new ReactionError("payment-failed", "Total of all payments must equal order total");
+
+  // Create authorized payments for each
   const paymentPromises = (paymentsInput || []).map(async (paymentInput) => {
-    if (remainingTotal === 0) return null;
-
-    const { amount: inputAmount, method: methodName } = paymentInput;
-
-    // Determine amount to charge to this payment source
-    const amount = inputAmount || remainingTotal;
-    remainingTotal -= Math.min(amount, remainingTotal);
+    const { amount, method: methodName } = paymentInput;
 
     // Verify that this payment method is enabled for the shop
     if (!availablePaymentMethods.includes(methodName)) {
@@ -384,11 +379,7 @@ async function createPayments({
       } // optional, object, blackbox
     });
 
-    const paymentWithCurrency = {
-      ...payment,
-      currency: currencyExchangeInfo,
-      currencyCode
-    };
+    const paymentWithCurrency = { ...payment, currency: currencyExchangeInfo, currencyCode };
 
     PaymentSchema.validate(paymentWithCurrency);
 

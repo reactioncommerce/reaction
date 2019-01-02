@@ -320,7 +320,7 @@ input PaymentInput {
   to be in the same currency as the order. Set to `null` to charge the remaining amount
   to this payment method, which might be the full order total if this is the only payment.
   """
-  amount: Float
+  amount: Float!
 
   """
   The billing address entered by the shopper. If omitted, the billing address on the order input
