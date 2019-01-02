@@ -316,6 +316,82 @@ async function addTaxesToGroup(context, finalGroup, cleanedInput, groupInput, di
 }
 
 /**
+ * @summary Create all authorized payments for a potential order
+ * @param {String} [accountId] The ID of the account placing the order
+ * @param {Object} [billingAddress] Billing address for the order as a whole
+ * @param {String} currencyCode Currency code for interpreting the amount of all payments
+ * @param {Object} currencyExchangeInfo Currency exchange info
+ * @param {String} email Email address for the order
+ * @param {Number} orderTotal Total due for the order
+ * @param {Object[]} paymentsInput List of payment inputs
+ * @param {Object} [shippingAddress] Shipping address, if relevant, for fraud detection
+ * @param {String} shopId ID of shop that owns the order
+ * @returns {Object} Object with `payments` property that has the array of created payments
+ */
+async function createPayments({
+  accountId,
+  billingAddress,
+  currencyCode,
+  currencyExchangeInfo,
+  email,
+  orderTotal,
+  paymentsInput,
+  shippingAddress,
+  shopId
+}) {
+  // Verify that total of payment inputs equals total due.
+  let remainingTotal = orderTotal;
+  const paymentPromises = (paymentsInput || []).map(async (paymentInput) => {
+    if (remainingTotal === 0) return null;
+
+    // Determine amount to charge to this payment source
+    const amount = paymentInput.amount || remainingTotal;
+    remainingTotal -= Math.min(amount, remainingTotal);
+
+    // Grab config for this payment method
+    const paymentMethodConfig = getPaymentMethodConfigByName(paymentInput.method);
+    if (!paymentMethodConfig) {
+      throw new ReactionError("payment-failed", `Invalid payment method name: ${paymentInput.method}`);
+    }
+
+    // Authorize this payment
+    const payment = await paymentMethodConfig.functions.createAuthorizedPayment(context, {
+      accountId, // optional
+      amount,
+      billingAddress: paymentInput.billingAddress || billingAddress,
+      currencyCode,
+      email,
+      shippingAddress, // optional, for fraud detection, the first shipping address if shipping to multiple
+      shopId,
+      paymentData: {
+        ...(paymentInput.data || {})
+      } // optional, object, blackbox
+    });
+
+    const paymentWithCurrency = {
+      ...payment,
+      currency: currencyExchangeInfo,
+      currencyCode
+    };
+
+    PaymentSchema.validate(paymentWithCurrency);
+
+    return paymentWithCurrency;
+  });
+
+  let payments;
+  try {
+    payments = await Promise.all(paymentPromises);
+    payments = payments.filter((payment) => !!payment); // remove nulls
+  } catch (error) {
+    Logger.error("createOrder: error creating payments", error.message);
+    throw new ReactionError("payment-failed", `There was a problem authorizing this payment: ${error.message}`);
+  }
+
+  return { payments };
+}
+
+/**
  * @summary Compares expected total with actual total to make sure data is correct
  * @param {Object} finalGroup Fulfillment group object pre tax addition
  * @param {Object} groupInput - Original fulfillment group that we compose finalGroup from. See SimpleSchema
@@ -412,60 +488,20 @@ export default async function placeOrder(context, input) {
 
   const currencyExchangeInfo = await getCurrencyExchangeObject(collections, currencyCode, shopId, account);
 
-  // Verify that total of payment inputs equals total due.
-  let remainingTotal = orderTotal;
-  const paymentPromises = (paymentsInput || []).map(async (paymentInput) => {
-    if (remainingTotal === 0) return null;
-
-    // Determine amount to charge to this payment source
-    const amount = paymentInput.amount || remainingTotal;
-    remainingTotal -= Math.min(amount, remainingTotal);
-
-    // Grab config for this payment method
-    const paymentMethodConfig = getPaymentMethodConfigByName(paymentInput.method);
-    if (!paymentMethodConfig) {
-      throw new ReactionError("payment-failed", `Invalid payment method name: ${paymentInput.method}`);
-    }
-
-    // Authorize this payment
-    const payment = await paymentMethodConfig.functions.createAuthorizedPayment(context, {
-      accountId, // optional
-      amount,
-      billingAddress: paymentInput.billingAddress || billingAddress,
-      currencyCode,
-      email,
-      shippingAddress: shippingAddressForPayments, // optional, for fraud detection, the first shipping address if shipping to multiple
-      shopId,
-      paymentData: {
-        ...(paymentInput.data || {})
-      } // optional, object, blackbox
-    });
-
-    const paymentWithCurrency = {
-      ...payment,
-      currency: currencyExchangeInfo,
-      currencyCode
-    };
-
-    PaymentSchema.validate(paymentWithCurrency);
-
-    return paymentWithCurrency;
+  const payments = await createPayments({
+    accountId,
+    billingAddress,
+    currencyCode,
+    currencyExchangeInfo,
+    email,
+    orderTotal,
+    paymentsInput,
+    shippingAddress: shippingAddressForPayments,
+    shopId
   });
 
-  let payments;
-  try {
-    payments = await Promise.all(paymentPromises);
-    payments = payments.filter((payment) => !!payment); // remove nulls
-  } catch (error) {
-    Logger.error("createOrder: error creating payments", error.message);
-    throw new ReactionError("payment-failed", `There was a problem authorizing this payment: ${error.message}`);
-  }
-
   // Create anonymousAccessToken if no account ID
-  let anonymousAccessToken = null;
-  if (!accountId) {
-    anonymousAccessToken = Random.secret();
-  }
+  const anonymousAccessToken = accountId ? null : Random.secret();
 
   const now = new Date();
 
