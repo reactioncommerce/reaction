@@ -1098,6 +1098,8 @@ export default {
         const settingsFromDB = packages.find((ps) => (config.name === ps.name && shopId === ps.shopId));
 
         const combinedSettings = merge({}, settingsFromPackage, settingsFromFixture || {}, settingsFromDB || {});
+
+        // always use version from package
         if (combinedSettings.version) {
           combinedSettings.version = settingsFromPackage.version || settingsFromDB.version;
         }
