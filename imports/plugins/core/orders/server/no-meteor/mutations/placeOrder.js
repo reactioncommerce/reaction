@@ -8,7 +8,7 @@ import appEvents from "/imports/node-app/core/util/appEvents";
 import { Address as AddressSchema, Order as OrderSchema, Payment as PaymentSchema } from "/imports/collections/schemas";
 import getDiscountsTotalForCart from "/imports/plugins/core/discounts/server/no-meteor/util/getDiscountsTotalForCart";
 import xformOrderGroupToCommonOrder from "/imports/plugins/core/orders/server/util/xformOrderGroupToCommonOrder";
-import { getPaymentMethodConfigByName } from "/imports/plugins/core/core/server/no-meteor/pluginRegistration";
+import { getPaymentMethodConfigByName } from "/imports/plugins/core/payments/server/no-meteor/registration";
 
 const orderItemsSchema = new SimpleSchema({
   "addedAt": {
@@ -326,7 +326,7 @@ async function addTaxesToGroup(context, finalGroup, cleanedInput, groupInput, di
  * @param {Object[]} paymentsInput List of payment inputs
  * @param {Object} [shippingAddress] Shipping address, if relevant, for fraud detection
  * @param {String} shopId ID of shop that owns the order
- * @returns {Object} Object with `payments` property that has the array of created payments
+ * @returns {Object[]} Array of created payments
  */
 async function createPayments({
   accountId,
@@ -404,7 +404,7 @@ async function createPayments({
     throw new ReactionError("payment-failed", `There was a problem authorizing this payment: ${error.message}`);
   }
 
-  return { payments };
+  return payments;
 }
 
 /**

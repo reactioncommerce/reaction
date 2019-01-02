@@ -1,6 +1,6 @@
 import ReactionError from "@reactioncommerce/reaction-error";
 import SimpleSchema from "simpl-schema";
-import { getPaymentMethodConfigByName } from "/imports/plugins/core/core/server/no-meteor/pluginRegistration";
+import { getPaymentMethodConfigByName } from "../registration";
 
 const inputSchema = new SimpleSchema({
   orderId: String,

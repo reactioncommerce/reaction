@@ -5,7 +5,7 @@ import ReactionError from "@reactioncommerce/reaction-error";
 import { Orders } from "/lib/collections";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
 import getGraphQLContextInMeteorMethod from "/imports/plugins/core/graphql/server/getGraphQLContextInMeteorMethod";
-import { getPaymentMethodConfigByName } from "/imports/plugins/core/core/server/no-meteor/pluginRegistration";
+import { getPaymentMethodConfigByName } from "/imports/plugins/core/payments/server/no-meteor/registration";
 import sendOrderEmail from "../util/sendOrderEmail";
 
 /**
