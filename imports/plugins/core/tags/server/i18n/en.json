@@ -1,0 +1,52 @@
+[
+  {
+    "i18n": "en",
+    "ns": "reaction-tags",
+    "translation": {
+      "reaction-tags": {
+        "admin": {
+          "tags": {
+            "tags": "Tags",
+            "tagManagement": "Tag Management",
+            "enabled": "Enabled",
+            "disabled": "Disabled",
+            "enable": "Enable",
+            "disable": "Disable",
+            "delete": "Delete",
+            "form": {
+              "name": "Tag name",
+              "nameHelpText": "The unique name for the tag",
+              "displayTitle": "Display Title",
+              "displayTitleHelpText": "The tag display title for product listing pages.",
+              "slug": "slug",
+              "formTitleNew": "Create a new tag",
+              "formTitleUpdate": "Edit Tag",
+              "createNewRule": "Create Tag",
+              "cancel": "Cancel",
+              "delete": "Delete",
+              "deleteConfirm": "Delete this tag?",
+              "submitNew": "Create Tag",
+              "submitUpdate": "Update Tag"
+            },
+            "headers": {
+              "slug": "slug",
+              "name": "name",
+              "displayTitle": "Display Title",
+              "visible": "Visible"
+            },
+            "tableText": {
+              "noDataMessage": "No results found",
+              "previousText": "Previous",
+              "nextText": "Next",
+              "loadingText": "Loading...",
+              "noDataText": "No results found",
+              "pageText": "Page",
+              "ofText": "of",
+              "rowsText": "rows"
+            }
+          }
+        }
+      }
+    }
+  }
+]
