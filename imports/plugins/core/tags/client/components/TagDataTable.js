@@ -12,7 +12,7 @@ import Select from "@reactioncommerce/components/Select/v1";
 import TextInput from "@reactioncommerce/components/TextInput/v1";
 import Button from "@reactioncommerce/components/Button/v1";
 import { i18next } from "/client/api";
-import { pagination } from "./TagDataTable/util/pagination";
+import { pagination } from "./util/pagination";
 
 const CheckboxTable = checkboxHOC(ReactTable);
 
