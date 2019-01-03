@@ -1125,7 +1125,6 @@ export default {
           }
         }
         // Import package data
-        Logger.info("combined settings", combinedSettings);
         this.Importer.package(combinedSettings, shopId);
         return Logger.debug(`Initializing ${shop.name} ${pkgName}`);
       }));
