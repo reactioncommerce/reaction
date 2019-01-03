@@ -181,8 +181,13 @@ async function buildOrderItem(inputItem, currencyCode, context) {
     catalogProductVariant: chosenVariant,
     price: finalPrice
   } = await context.queries.getCurrentCatalogPriceForProductConfiguration(productConfiguration, currencyCode, context.collections);
+
   if (finalPrice !== price) {
     throw new ReactionError("invalid", `Provided price for the "${chosenVariant.title}" item does not match current published price`);
+  }
+
+  if (!chosenVariant.canBackorder && (quantity > chosenVariant.inventoryAvailableToSell)) {
+    throw new ReactionError("invalid-order-quantity", `Quantity ordered is more than available inventory for  "${chosenVariant.title}"`);
   }
 
   const now = new Date();
@@ -210,7 +215,7 @@ async function buildOrderItem(inputItem, currencyCode, context) {
     updatedAt: now,
     variantId: chosenVariant._id,
     variantTitle: chosenVariant.title,
-    workflow: { status: "new", workflow: ["coreOrderWorkflow/created"] }
+    workflow: { status: "new", workflow: ["coreOrderWorkflow/created", "coreItemWorkflow/removedFromInventoryAvailableToSell"] }
   };
 
   return newItem;

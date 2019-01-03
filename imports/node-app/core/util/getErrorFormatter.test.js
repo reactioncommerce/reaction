@@ -30,19 +30,6 @@ test("if originalError is present, logs the error with some additional details",
 
   expect(LoggerMock.error).toHaveBeenCalledWith({
     errorId: jasmine.any(String),
-    path: "PATH",
-    userId: "123"
-  });
-});
-
-test("if originalError is present, logs the error with some additional details", () => {
-  const context = { user: { _id: "123", name: "User" } };
-  const error = { originalError: new Error("TEST_ERROR"), path: "PATH" };
-  getErrorFormatter(context)(error);
-
-  expect(LoggerMock.error).toHaveBeenCalledWith({
-    errorId: jasmine.any(String),
-    path: "PATH",
-    userId: "123"
+    path: "PATH"
   });
 });

@@ -1,5 +1,3 @@
-import getProductQuantity from "./getProductQuantity";
-
 /**
  * @method isLowQuantity
  * @summary If at least one of the product variants quantity is less than the low inventory threshold return `true`.
@@ -10,9 +8,8 @@ import getProductQuantity from "./getProductQuantity";
 export default function isLowQuantity(variants) {
   const threshold = variants && variants.length && variants[0].lowInventoryWarningThreshold;
   const results = variants.map((variant) => {
-    const quantity = getProductQuantity(variant, variants);
-    if (variant.inventoryManagement && quantity) {
-      return quantity <= threshold;
+    if (variant.inventoryManagement && variant.inventoryAvailableToSell) {
+      return variant.inventoryAvailableToSell <= threshold;
     }
     return false;
   });

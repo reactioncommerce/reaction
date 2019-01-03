@@ -99,8 +99,10 @@ type CartItem implements Node {
   "The current comparison (e.g., MSRP) price of the item"
   compareAtPrice: Money
 
-  "The quantity of this item currently available to order"
-  currentQuantity: Int
+  """
+  The quantity of this item currently available to order.
+  """
+  currentQuantity: Int @deprecated(reason: "Use `inventoryAvailableToSell`.")
 
   """
   The date and time at which the cart item was created. If an item is added, removed, and then added again,
@@ -110,6 +112,14 @@ type CartItem implements Node {
 
   "The URLs for a picture of the item in various sizes"
   imageURLs: ImageSizes
+
+  """
+  The quantity of this item currently available to sell.
+  This number is updated when an order is placed by the customer.
+  This number does not include reserved inventory (i.e. inventory that has been ordered, but not yet processed by the operator).
+  This is most likely the quantity to display in the storefront UI.
+  """
+  inventoryAvailableToSell: Int
 
   "Is this item currently backordered?"
   isBackorder: Boolean!
