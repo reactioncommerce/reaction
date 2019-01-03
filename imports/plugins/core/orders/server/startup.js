@@ -3,7 +3,6 @@ import { Meteor } from "meteor/meteor";
 import appEvents from "/imports/node-app/core/util/appEvents";
 import sendOrderEmail from "/imports/plugins/core/orders/server/util/sendOrderEmail";
 
-
 /**
 *  Step 3 of the "workflow/pushOrderWorkflow" flow
 *

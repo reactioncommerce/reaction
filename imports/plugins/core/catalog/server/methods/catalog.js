@@ -10,6 +10,7 @@ import Reaction from "/imports/plugins/core/core/server/Reaction";
 import ReactionError from "@reactioncommerce/reaction-error";
 import { MediaRecords, Products, Tags } from "/lib/collections";
 import { Media } from "/imports/plugins/core/files/server";
+import appEvents from "/imports/node-app/core/util/appEvents";
 import rawCollections from "/imports/collections/rawCollections";
 import getGraphQLContextInMeteorMethod from "/imports/plugins/core/graphql/server/getGraphQLContextInMeteorMethod";
 import hashProduct from "../no-meteor/mutations/hashProduct";
@@ -17,9 +18,9 @@ import getCurrentCatalogPriceForProductConfiguration from "../no-meteor/queries/
 import getProductPriceRange from "../no-meteor/utils/getProductPriceRange";
 import getVariants from "../no-meteor/utils/getVariants";
 import hasChildVariant from "../no-meteor/utils/hasChildVariant";
-import isSoldOut from "../no-meteor/utils/isSoldOut";
-import isLowQuantity from "../no-meteor/utils/isLowQuantity";
-import isBackorder from "../no-meteor/utils/isBackorder";
+import isSoldOut from "/imports/plugins/core/inventory/server/no-meteor/utils/isSoldOut";
+import isLowQuantity from "/imports/plugins/core/inventory/server/no-meteor/utils/isLowQuantity";
+import isBackorder from "/imports/plugins/core/inventory/server/no-meteor/utils/isBackorder";
 
 /* eslint new-cap: 0 */
 /* eslint no-loop-func: 0 */
@@ -997,6 +998,9 @@ Meteor.methods({
         denormalize(doc.ancestors[0], field);
       }
     }
+
+    appEvents.emit("afterVariantUpdate", { _id, field, value });
+
     return update;
   },
 
