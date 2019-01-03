@@ -20,7 +20,7 @@ const StatusLabel = styled.span`
   text-transform: capitalize
 `;
 
-class DataTableColumn extends Component {
+class TagDataTableColumn extends Component {
   static propTypes = {
     data: PropTypes.object,
     moment: PropTypes.func,
@@ -70,6 +70,6 @@ class DataTableColumn extends Component {
   }
 }
 
-registerComponent("DataTableColumn", DataTableColumn, withMoment);
+registerComponent("TagDataTableColumn", TagDataTableColumn, withMoment);
 
-export default withMoment(DataTableColumn);
+export default withMoment(TagDataTableColumn);
