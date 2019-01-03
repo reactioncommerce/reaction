@@ -6,12 +6,18 @@
       "admin": {
         "helpText": {
           "compareAtPrice": "Original price or MSRP",
-          "optionInventoryQuantity": "Inventory",
+          "optionInventoryAvailableToSell": "Inventory available to sell",
+          "optionInventoryQuantity": "Inventory in stock",
           "optionTitle": "Displayed on Product Detail Page",
           "price": "Purchase price",
           "title": "Displayed in cart, checkout, and orders",
           "variantBackorderToggle": "Backorder allowance is now controlled by options",
-          "variantInventoryQuantity": "Variant inventory is now controlled by options"
+          "variantInventoryAvailableToSell": "Variant inventory available to sell quantity is calculated by options inventory",
+          "variantInventoryQuantity": "Variants inventory in stock quantity is calculated by options inventory"
+        },
+        "productVariant": {
+          "inventoryAvailableToSell": "Available to sell",
+          "inventoryQuantity": "In stock"
         },
         "tooltip": {
           "validationError": "Validation error"

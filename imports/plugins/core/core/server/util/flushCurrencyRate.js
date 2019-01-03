@@ -4,18 +4,13 @@ import ReactionError from "@reactioncommerce/reaction-error";
 import { Shops } from "/lib/collections";
 
 /**
- * @name shop/flushCurrencyRate
+ * @name flushCurrencyRate
  * @method
- * @memberof Shop/Methods
- * @description Method calls by cron job
- * @summary It removes exchange rates that are too old
- * usage: Meteor.call("shop/flushCurrencyRate")
+ * @summary Removes exchange rates that are too old. Called by background job
  * @fires Collections.Shops#update
  * @returns {undefined}
  */
 export default function flushCurrencyRate() {
-  this.unblock();
-
   let shopId;
   const marketplaceSettings = Reaction.getMarketplaceSettings();
 

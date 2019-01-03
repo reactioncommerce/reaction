@@ -3,9 +3,9 @@ import {
   rewire as rewire$getCatalogProductMedia,
   restore as restore$getCatalogProductMedia
 } from "./getCatalogProductMedia";
-import { rewire as rewire$isBackorder, restore as restore$isBackorder } from "./isBackorder";
-import { rewire as rewire$isLowQuantity, restore as restore$isLowQuantity } from "./isLowQuantity";
-import { rewire as rewire$isSoldOut, restore as restore$isSoldOut } from "./isSoldOut";
+import { rewire as rewire$isBackorder, restore as restore$isBackorder } from "/imports/plugins/core/inventory/server/no-meteor/utils/isBackorder";
+import { rewire as rewire$isLowQuantity, restore as restore$isLowQuantity } from "/imports/plugins/core/inventory/server/no-meteor/utils/isLowQuantity";
+import { rewire as rewire$isSoldOut, restore as restore$isSoldOut } from "/imports/plugins/core/inventory/server/no-meteor/utils/isSoldOut";
 import createCatalogProduct, { restore as restore$createCatalogProduct, rewire$xformProduct } from "./createCatalogProduct";
 
 const internalShopId = "123";
@@ -26,10 +26,13 @@ const mockVariants = [
     _id: internalVariantIds[0],
     ancestors: [internalCatalogProductId],
     barcode: "barcode",
+    canBackorder: true,
     createdAt,
     compareAtPrice: 1100,
     height: 0,
     index: 0,
+    inventoryAvailableToSell: 10,
+    inventoryInStock: 0,
     inventoryManagement: true,
     inventoryPolicy: false,
     isBackorder: false,
@@ -65,9 +68,12 @@ const mockVariants = [
     _id: internalVariantIds[1],
     ancestors: [internalCatalogProductId, internalVariantIds[0]],
     barcode: "barcode",
+    canBackorder: false,
     createdAt,
     height: 2,
     index: 0,
+    inventoryAvailableToSell: 10,
+    inventoryInStock: 0,
     inventoryManagement: true,
     inventoryPolicy: true,
     isBackorder: false,
@@ -111,6 +117,8 @@ const mockProduct = {
   fulfillmentService: "fulfillmentService",
   googleplusMsg: "googlePlusMessage",
   height: 11.23,
+  inventoryAvailableToSell: 10,
+  inventoryInStock: 0,
   isBackorder: false,
   isLowQuantity: false,
   isSoldOut: false,
@@ -194,6 +202,8 @@ const mockCatalogProduct = {
   createdAt,
   description: "description",
   height: 11.23,
+  inventoryAvailableToSell: 10,
+  inventoryInStock: 0,
   isBackorder: false,
   isDeleted: false,
   isLowQuantity: false,
@@ -285,9 +295,12 @@ const mockCatalogProduct = {
   variants: [{
     _id: "875",
     barcode: "barcode",
+    canBackorder: false,
     createdAt,
     height: 0,
     index: 0,
+    inventoryAvailableToSell: 10,
+    inventoryInStock: 0,
     isBackorder: false,
     inventoryManagement: true,
     inventoryPolicy: false,
@@ -309,9 +322,12 @@ const mockCatalogProduct = {
     options: [{
       _id: "874",
       barcode: "barcode",
+      canBackorder: false,
       createdAt,
       height: 2,
       index: 0,
+      inventoryAvailableToSell: 10,
+      inventoryInStock: 0,
       inventoryManagement: true,
       inventoryPolicy: true,
       isBackorder: false,

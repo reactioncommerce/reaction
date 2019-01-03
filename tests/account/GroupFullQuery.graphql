@@ -1,4 +1,4 @@
-($id: ID!) {
+query ($id: ID!) {
   group(id: $id) {
     _id
     createdAt
