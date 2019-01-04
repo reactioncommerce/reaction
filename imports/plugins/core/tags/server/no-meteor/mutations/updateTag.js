@@ -1,7 +1,9 @@
 import ReactionError from "@reactioncommerce/reaction-error";
 import SimpleSchema from "simpl-schema";
+import getSlug from "/imports/plugins/core/core/server/Reaction/getSlug";
 
 const inputSchema = new SimpleSchema({
+  slug: String,
   name: String,
   displayTitle: String,
   isVisible: Boolean
@@ -27,6 +29,7 @@ export default async function updateTag(context, input) {
   }
 
   const params = {
+    slug: getSlug(input.name),
     name: input.name,
     displayTitle: input.displayTitle,
     isVisible: input.isVisible
