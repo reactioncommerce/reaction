@@ -1,6 +1,7 @@
 import Random from "@reactioncommerce/random";
 import ReactionError from "@reactioncommerce/reaction-error";
 import { Tag as TagSchema } from "/imports/collections/schemas";
+import getSlug from "/imports/plugins/core/core/server/Reaction/getSlug";
 
 /**
  * @name Mutation.addTag
@@ -13,7 +14,7 @@ import { Tag as TagSchema } from "/imports/collections/schemas";
  */
 export default async function addTag(context, input) {
   // Check for owner or admin permissions from the user before allowing the mutation
-  const { shopId } = input;
+  const { shopId, name, isVisible, displayTitle } = input;
   const { appEvents, collections, userHasPermission } = context;
   const { Tags } = collections;
 
@@ -26,9 +27,13 @@ export default async function addTag(context, input) {
   const now = new Date();
   const tag = {
     _id: Random.id(),
-    isVisible: input.isVisible,
-    name: input.name,
-    displayTitle: input.displayTitle,
+    isDeleted: false,
+    isTopLevel: false,
+    isVisible,
+    slug: getSlug(name),
+    name,
+    displayTitle,
+    shopId,
     createdAt: now,
     updatedAt: now
   };
