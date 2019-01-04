@@ -176,3 +176,14 @@ Template.optionsShopSettings.helpers({
     return PluginVersionsContainer;
   }
 });
+
+Template.shopSettings.helpers({
+  versionedPackages() {
+    const versionedPackages = Packages.find({ version: { $exists: true }, shopId: Reaction.getShopId() });
+    return versionedPackages;
+  },
+
+  PluginVersionsContainer() {
+    return PluginVersionsContainer;
+  }
+});
