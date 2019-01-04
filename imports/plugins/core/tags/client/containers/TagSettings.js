@@ -251,17 +251,6 @@ class TagSettings extends Component {
                 value={selectedTag}
               >
                 <PaddedField
-                  helpText={i18next.t("admin.tags.form.displayTitleHelpText")}
-                  name="displayTitle"
-                  label={i18next.t("admin.tags.form.displayTitle")}
-                  labelFor={displayTitleInputId}
-                  isRequired
-                >
-                  <TextInput id={displayTitleInputId} name="displayTitle" placeholder="URL" />
-                  <ErrorsBlock names={["displayTitle"]} />
-                </PaddedField>
-
-                <PaddedField
                   helpText={i18next.t("admin.tags.form.nameHelpText")}
                   name="name"
                   label={i18next.t("admin.tags.form.name")}
@@ -270,6 +259,17 @@ class TagSettings extends Component {
                 >
                   <TextInput id={nameInputId} name="name" placeholder="i.e. womens-shoes" />
                   <ErrorsBlock names={["name"]} />
+                </PaddedField>
+
+                <PaddedField
+                  helpText={i18next.t("admin.tags.form.displayTitleHelpText")}
+                  name="displayTitle"
+                  label={i18next.t("admin.tags.form.displayTitle")}
+                  labelFor={displayTitleInputId}
+                  isRequired
+                >
+                  <TextInput id={displayTitleInputId} name="displayTitle" placeholder="URL" />
+                  <ErrorsBlock names={["displayTitle"]} />
                 </PaddedField>
 
                 <PaddedField
