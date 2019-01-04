@@ -1,6 +1,7 @@
 import Reaction from "/imports/plugins/core/core/server/Reaction";
-// import resolvers from "./server/no-meteor/resolvers";
-// import schemas from "./server/no-meteor/schemas";
+import mutations from "./server/no-meteor/mutations";
+import resolvers from "./server/no-meteor/resolvers";
+import schemas from "./server/no-meteor/schemas";
 // import startup from "./server/no-meteor/startup";
 
 Reaction.registerPackage({
@@ -8,10 +9,11 @@ Reaction.registerPackage({
   name: "reaction-tags",
   icon: "fa fa-tag",
   autoEnable: true,
-  // graphQL: {
-  //   resolvers,
-  //   schemas
-  // },
+  graphQL: {
+    resolvers,
+    schemas
+  },
+  mutations,
   // functionsByType: {
   //   startup: [startup]
   // },
