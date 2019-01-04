@@ -1,0 +1,82 @@
+input AddTagInput {
+  "An optional string identifying the mutation call, which will be returned in the response payload"
+  clientMutationId: String
+
+  "Whether the tag is visible"
+  isVisible: Boolean!
+
+  "Unique name of the tag"
+  name: String!
+
+  "Title to display to customers"
+  displayTitle: String!
+
+  "The shop that owns the rule"
+  shopId: ID!
+}
+
+type AddTagPayload {
+  "The same string you sent with the mutation params, for matching mutation calls with their responses"
+  clientMutationId: String
+
+  "The newly-created tag"
+  tag: Tag!
+}
+
+input RemoveTagInput {
+  "An optional string identifying the mutation call, which will be returned in the response payload"
+  clientMutationId: String
+
+  "ID of tag to delete"
+  id: ID!
+
+  "The shop that owns the tag"
+  shopId: ID!
+}
+
+type RemoveTagPayload {
+  "The same string you sent with the mutation params, for matching mutation calls with their responses"
+  clientMutationId: String
+
+  "Whether the rule was successfully removed"
+  wasRemoved: Boolean!
+
+  "The deleted redirect rule"
+  tag: Tag!
+}
+
+input UpdateTagInput {
+  "An optional string identifying the mutation call, which will be returned in the response payload"
+  clientMutationId: String
+
+  "ID of rule to modify"
+  id: ID!
+
+  "Whether the tag is visible"
+  isVisible: Boolean!
+
+  "Unique name of the tag"
+  name: String!
+
+  "Title to display to customers"
+  displayTitle: String!
+}
+
+type UpdateTagPayload {
+  "The same string you sent with the mutation params, for matching mutation calls with their responses"
+  clientMutationId: String
+
+  "The updated redirect rule"
+  redirectRule: RedirectRule!
+}
+
+extend type Mutation {
+  "Adds a new tag"
+  addRedirectRule(input: AddTagInput!): AddTagPayload!
+
+  "Removes an existing tag"
+  removeRedirectRule(input: RemoveTagInput!): RemoveTagPayload!
+
+  "Updates an existing tag"
+  updateRedirectRule(input: UpdateTagInput!): UpdateTagPayload!
+}
