@@ -1,12 +1,11 @@
 import gql from "graphql-tag";
+import { Tag } from "./fragments";
 
 export const addTagMutation = gql`
   mutation addTagMutation($input: AddTagInput!) {
     addTag(input: $input) {
       tag {
-        _id
-        name
-        displayTitle
+        ${Tag}
       }
     }
   }
@@ -16,21 +15,17 @@ export const updateTagMutation = gql`
   mutation updateTagMutation($input: UpdateTagInput!) {
     updateTag(input: $input) {
       tag {
-        _id
-        name
-        displayTitle
+        ${Tag}
       }
     }
   }
 `;
 
-export const removeTagRuleMutation = gql`
+export const removeTagMutation = gql`
   mutation removeTagMutation($input: RemoveTagInput!) {
     removeTag(input: $input) {
       tag {
-        _id
-        name
-        displayTitle
+        ${Tag}
       }
     }
   }
