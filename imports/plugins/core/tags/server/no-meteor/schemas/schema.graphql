@@ -21,6 +21,9 @@ type AddTagPayload {
 
   "The newly-created tag"
   tag: Tag!
+
+  "The shop that owns the tag"
+  shopId: ID!
 }
 
 input RemoveTagInput {
@@ -60,6 +63,9 @@ input UpdateTagInput {
 
   "Title to display to customers"
   displayTitle: String!
+
+  "The shop that owns the tag"
+  shopId: ID!
 }
 
 type UpdateTagPayload {
