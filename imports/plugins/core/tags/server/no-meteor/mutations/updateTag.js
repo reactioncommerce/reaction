@@ -27,11 +27,9 @@ export default async function updateTag(context, input) {
   }
 
   const params = {
-    from: input.from,
-    to: input.to,
-    enabled: input.enabled,
-    type: input.type,
-    status: input.status
+    name: input.name,
+    displayTitle: input.displayTitle,
+    isVisible: input.isVisible
   };
 
   if (params.type === "rewrite") params.status = null;
