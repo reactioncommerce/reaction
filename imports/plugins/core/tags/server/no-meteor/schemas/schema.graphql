@@ -67,16 +67,16 @@ type UpdateTagPayload {
   clientMutationId: String
 
   "The updated redirect rule"
-  redirectRule: RedirectRule!
+  tag: Tag!
 }
 
 extend type Mutation {
   "Adds a new tag"
-  addRedirectRule(input: AddTagInput!): AddTagPayload!
+  addTag(input: AddTagInput!): AddTagPayload!
 
   "Removes an existing tag"
-  removeRedirectRule(input: RemoveTagInput!): RemoveTagPayload!
+  removeTag(input: RemoveTagInput!): RemoveTagPayload!
 
   "Updates an existing tag"
-  updateRedirectRule(input: UpdateTagInput!): UpdateTagPayload!
+  updateTag(input: UpdateTagInput!): UpdateTagPayload!
 }
