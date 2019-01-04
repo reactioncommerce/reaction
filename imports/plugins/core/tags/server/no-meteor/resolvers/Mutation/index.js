@@ -1,9 +1,9 @@
-import addRedirectRule from "./addRedirectRule";
-import removeRedirectRule from "./removeRedirectRule";
-import updateRedirectRule from "./updateRedirectRule";
+import addTag from "./addTag";
+import removeTag from "./removeTag";
+import updateTag from "./updateTag";
 
 export default {
-  addRedirectRule,
-  removeRedirectRule,
-  updateRedirectRule
+  addTag,
+  removeTag,
+  updateTag
 };
