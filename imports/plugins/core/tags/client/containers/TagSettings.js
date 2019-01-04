@@ -59,7 +59,7 @@ class TagSettings extends Component {
 
   state = {
     selection: [],
-    selectedRoute: null
+    selectedTag: null
   }
 
   formValue = null;
@@ -70,7 +70,7 @@ class TagSettings extends Component {
     if (column.id === "edit") {
       this.setState({
         selection: [],
-        selectedRoute: rowData
+        selectedTag: rowData
       });
     }
   }
@@ -137,10 +137,7 @@ class TagSettings extends Component {
 
   handleShowCreateForm = () => {
     this.setState({
-      selectedRoute: {
-        status: this.httpStatusCodes[0].value,
-        type: this.redirectTypes[0].value
-      }
+      selectedTag: {}
     });
   }
 
@@ -196,7 +193,7 @@ class TagSettings extends Component {
     this.formValue = null;
     this.setState({
       selection: [],
-      selectedRoute: null
+      selectedTag: null
     });
   }
 
@@ -213,9 +210,9 @@ class TagSettings extends Component {
   }
 
   handleTypeSelectChange = (value) => {
-    this.setState(({ selectedRoute }) => ({
-      selectedRoute: {
-        ...selectedRoute,
+    this.setState(({ selectedTag }) => ({
+      selectedTag: {
+        ...selectedTag,
         ...this.formValue,
         type: value,
         status: value === "redirect" ? this.httpStatusCodes[0].value : undefined
@@ -224,7 +221,7 @@ class TagSettings extends Component {
   }
 
   renderForm() {
-    const { selectedRoute } = this.state;
+    const { selectedTag } = this.state;
     const nameInputId = `name_${this.uniqueInstanceIdentifier}`;
     const displayTitleInputId = `displayTitle_${this.uniqueInstanceIdentifier}`;
     const visibleInputId = `visible_${this.uniqueInstanceIdentifier}`;
@@ -233,10 +230,10 @@ class TagSettings extends Component {
     let mutation = addTagMutation;
     let submitButtonTitle = i18next.t("admin.tags.form.submitNew");
 
-    if (selectedRoute) {
-      const isNew = !!selectedRoute._id;
+    if (selectedTag) {
+      const isNew = !!selectedTag._id;
 
-      if (selectedRoute._id) {
+      if (selectedTag._id) {
         title = i18next.t("admin.tags.form.formTitleUpdate");
         mutation = updateTagMutation;
         submitButtonTitle = i18next.t("admin.tags.form.submitUpdate");
@@ -251,7 +248,7 @@ class TagSettings extends Component {
                 ref={(formRef) => { this.form = formRef; }}
                 onChange={this.handleFormChange}
                 onSubmit={(data) => this.handleSubmit(data, mutationFunc)}
-                value={selectedRoute}
+                value={selectedTag}
               >
                 <PaddedField
                   helpText={i18next.t("admin.tags.form.displayTitleHelpText")}
@@ -293,7 +290,7 @@ class TagSettings extends Component {
                       <Button
                         actionType="secondary"
                         isTextOnly={true}
-                        onClick={() => this.handleRemove(selectedRoute._id, removeMutationFunc)}
+                        onClick={() => this.handleRemove(selectedTag._id, removeMutationFunc)}
                       >
                         {i18next.t("admin.tags.form.delete")}
                       </Button>
