@@ -5,7 +5,7 @@ import { Reaction, i18next } from "/client/api";
 import { Packages, Shops } from "/lib/collections";
 import { Media } from "/imports/plugins/core/files/client";
 import SitemapSettingsContainer from "/imports/plugins/included/sitemap-generator/client/containers/sitemap-settings-container";
-import PluginVersionsContainer from "/imports/plugins/included/plugin-versions/client/containers/plugin-versions";
+import PluginVersionsContainer from "../../../containers/plugin-versions";
 import ShopBrandMediaManager from "./ShopBrandMediaManager";
 
 
