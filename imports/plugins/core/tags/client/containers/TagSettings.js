@@ -80,11 +80,9 @@ class TagSettings extends Component {
 
     const input = {
       id: data._id,
-      to: data.to,
-      from: data.from,
-      status: data.status,
-      type: data.type,
-      enabled: !!data.enabled,
+      name: data.name,
+      displayTitle: data.displayTitle,
+      isVisible: data.isVisible,
       shopId
     };
 
@@ -166,11 +164,9 @@ class TagSettings extends Component {
       if (action === "enable" || action === "disable") {
         input = {
           ...input,
-          enabled: action === "enable",
-          to: item.to,
-          from: item.from,
-          type: item.type,
-          status: item.type === "redirect" ? item.status : null
+          isVisible: action === "enable",
+          name: item.name,
+          displayTitle: item.displayTitle
         };
       }
 
