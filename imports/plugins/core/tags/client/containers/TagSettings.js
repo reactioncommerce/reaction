@@ -82,7 +82,7 @@ class TagSettings extends Component {
       id: data._id,
       name: data.name,
       displayTitle: data.displayTitle,
-      isVisible: data.isVisible,
+      isVisible: data.isVisible || false,
       shopId
     };
 
