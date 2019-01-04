@@ -1,3 +1,4 @@
+import cors from "cors";
 import express from "express";
 import { makeExecutableSchema, mergeSchemas } from "apollo-server";
 import { ApolloServer } from "apollo-server-express";
@@ -58,6 +59,12 @@ export default function createApolloServer(options = {}) {
   // GraphQL endpoint, enhanced with JSON body parser
   app.use(
     path,
+    // Enable `cors` to set HTTP response header: Access-Control-Allow-Origin: *
+    // Although the `cors: true` option to `applyMiddleware` below does this already
+    // for successful requests, we need it to be set here, before tokenMiddleware,
+    // so that the header is set on 401 responses, too. Otherwise it breaks our 401
+    // refresh handling on the clients.
+    cors(),
     tokenMiddleware(contextFromOptions)
   );
 
