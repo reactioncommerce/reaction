@@ -122,7 +122,7 @@ class TagForm extends Component {
     const { tag } = this.props;
     const nameInputId = `name_${this.uniqueInstanceIdentifier}`;
     const displayTitleInputId = `displayTitle_${this.uniqueInstanceIdentifier}`;
-    const visibleInputId = `visible_${this.uniqueInstanceIdentifier}`;
+    const isVisibleInputId = `isVisible_${this.uniqueInstanceIdentifier}`;
 
     let title = i18next.t("admin.tags.form.formTitleNew");
     let mutation = addTagMutation;
@@ -170,13 +170,13 @@ class TagForm extends Component {
               </PaddedField>
 
               <PaddedField
-                name="visible"
-                labelFor={visibleInputId}
+                name="isVisible"
+                labelFor={isVisibleInputId}
               >
                 <Checkbox
-                  id={visibleInputId}
-                  name="visible"
-                  label={i18next.t("admin.tags.visible")}
+                  id={isVisibleInputId}
+                  name="isVisible"
+                  label={i18next.t("admin.tags.form.isVisible")}
                 />
               </PaddedField>
             </Form>
