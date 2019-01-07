@@ -18,6 +18,7 @@
               "nameHelpText": "The unique name for the tag",
               "displayTitle": "Display Title",
               "displayTitleHelpText": "The tag display title for product listing pages.",
+              "displayTitlePlaceholder": "i.e. Women's Shoes",
               "slug": "slug",
               "formTitleNew": "Create a new tag",
               "formTitleUpdate": "Edit Tag",
