@@ -1,24 +1,16 @@
-import React, { Component, Fragment } from "react";
+import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { registerComponent, Components } from "@reactioncommerce/reaction-components";
+import { withRouter } from "react-router";
 import { compose } from "recompose";
-import { Mutation, withApollo } from "react-apollo";
+import { withApollo } from "react-apollo";
 import { uniqueId } from "lodash";
 import styled from "styled-components";
-import { Form } from "reacto-form";
 import Button from "@reactioncommerce/components/Button/v1";
-import Checkbox from "@reactioncommerce/components/Checkbox/v1";
-import ErrorsBlock from "@reactioncommerce/components/ErrorsBlock/v1";
-import Field from "@reactioncommerce/components/Field/v1";
-import TextInput from "@reactioncommerce/components/TextInput/v1";
 import { i18next } from "/client/api";
 import withOpaqueShopId from "/imports/plugins/core/graphql/lib/hocs/withOpaqueShopId";
 import { tagListingQuery } from "../../lib/queries";
-import { addTagMutation, updateTagMutation, removeTagMutation } from "../../lib/mutations";
-
-const Title = styled.h3`
-  margin-bottom: 16px;
-`;
+import { updateTagMutation, removeTagMutation } from "../../lib/mutations";
 
 const ButtonBar = styled.div`
   display: flex;
@@ -26,21 +18,11 @@ const ButtonBar = styled.div`
   margin-bottom: 20px
 `;
 
-const FormActions = styled.div`
-  display: flex;
-  justify-content: flex-end;
-`;
-
-const FormAction = styled.div`
-  padding-left: 16px;
-`;
-
-const PaddedField = styled(Field)`
-  margin-bottom: 20px;
-`;
-
 class TagSettings extends Component {
   static propTypes = {
+    history: PropTypes.shape({
+      push: PropTypes.func.isRequired
+    }),
     isLoadingShopId: PropTypes.bool,
     shopId: PropTypes.string.isRequired
   }
@@ -69,74 +51,15 @@ class TagSettings extends Component {
   handleCellClick = ({ column, rowData }) => {
     if (column.id === "edit") {
       this.setState({
-        selection: [],
-        selectedTag: rowData
+        selection: []
       });
+
+      this.props.history.push(`/operator/tags/edit/${rowData._id}`);
     }
-  }
-
-  async handleSubmit(data, mutation) {
-    const { shopId } = this.props;
-
-    const input = {
-      id: data._id,
-      name: data.name,
-      displayTitle: data.displayTitle,
-      isVisible: data.isVisible || false,
-      shopId
-    };
-
-    const result = await mutation({
-      refetchQueries: [{
-        query: tagListingQuery,
-        variables: {
-          shopId
-        }
-      }],
-      variables: {
-        input
-      }
-    });
-
-    // If a rule was added, then refech the first page of rules
-    if (!data._id) {
-      this.tableRef.current.refetchFirstPage();
-    }
-
-    this.reset();
-
-    return result;
-  }
-
-  handleRemove(id, mutation) {
-    Alerts.alert({
-      title: i18next.t("admin.routing.form.deleteConfirm"),
-      type: "warning",
-      showCancelButton: true
-    }, async (isConfirm) => {
-      if (isConfirm) {
-        const { shopId } = this.props;
-
-        await mutation({
-          variables: {
-            input: {
-              id,
-              shopId
-            }
-          }
-        });
-
-        this.tableRef.current.refetch();
-
-        this.reset();
-      }
-    });
   }
 
   handleShowCreateForm = () => {
-    this.setState({
-      selectedTag: {}
-    });
+    this.props.history.push("/operator/tags/create");
   }
 
   handleBulkAction = async (action, itemIds) => {
@@ -186,139 +109,11 @@ class TagSettings extends Component {
   }
 
   reset() {
-    this.formValue = null;
     this.setState({
-      selection: [],
-      selectedTag: null
+      selection: []
     });
   }
 
-  handleCancel = () => {
-    this.reset();
-  }
-
-  handleSubmitForm = () => {
-    this.form.submit();
-  }
-
-  handleFormChange = (value) => {
-    this.formValue = value;
-  }
-
-  handleTypeSelectChange = (value) => {
-    this.setState(({ selectedTag }) => ({
-      selectedTag: {
-        ...selectedTag,
-        ...this.formValue,
-        type: value,
-        status: value === "redirect" ? this.httpStatusCodes[0].value : undefined
-      }
-    }));
-  }
-
-  renderForm() {
-    const { selectedTag } = this.state;
-    const nameInputId = `name_${this.uniqueInstanceIdentifier}`;
-    const displayTitleInputId = `displayTitle_${this.uniqueInstanceIdentifier}`;
-    const visibleInputId = `visible_${this.uniqueInstanceIdentifier}`;
-
-    let title = i18next.t("admin.tags.form.formTitleNew");
-    let mutation = addTagMutation;
-    let submitButtonTitle = i18next.t("admin.tags.form.submitNew");
-
-    if (selectedTag) {
-      const isNew = !!selectedTag._id;
-
-      if (selectedTag._id) {
-        title = i18next.t("admin.tags.form.formTitleUpdate");
-        mutation = updateTagMutation;
-        submitButtonTitle = i18next.t("admin.tags.form.submitUpdate");
-      }
-
-      return (
-        <Mutation mutation={mutation}>
-          {(mutationFunc) => (
-            <Fragment>
-              <Title>{title}</Title>
-              <Form
-                ref={(formRef) => { this.form = formRef; }}
-                onChange={this.handleFormChange}
-                onSubmit={(data) => this.handleSubmit(data, mutationFunc)}
-                value={selectedTag}
-              >
-                <PaddedField
-                  helpText={i18next.t("admin.tags.form.nameHelpText")}
-                  name="name"
-                  label={i18next.t("admin.tags.form.name")}
-                  labelFor={nameInputId}
-                  isRequired
-                >
-                  <TextInput id={nameInputId} name="name" placeholder="i.e. womens-shoes" />
-                  <ErrorsBlock names={["name"]} />
-                </PaddedField>
-
-                <PaddedField
-                  helpText={i18next.t("admin.tags.form.displayTitleHelpText")}
-                  name="displayTitle"
-                  label={i18next.t("admin.tags.form.displayTitle")}
-                  labelFor={displayTitleInputId}
-                  isRequired
-                >
-                  <TextInput id={displayTitleInputId} name="displayTitle" placeholder="URL" />
-                  <ErrorsBlock names={["displayTitle"]} />
-                </PaddedField>
-
-                <PaddedField
-                  name="visible"
-                  labelFor={visibleInputId}
-                >
-                  <Checkbox
-                    id={visibleInputId}
-                    name="visible"
-                    label={i18next.t("admin.tags.visible")}
-                  />
-                </PaddedField>
-              </Form>
-              <FormActions>
-                {isNew &&
-                  <Mutation mutation={removeTagMutation}>
-                    {(removeMutationFunc) => (
-                      <Button
-                        actionType="secondary"
-                        isTextOnly={true}
-                        onClick={() => this.handleRemove(selectedTag._id, removeMutationFunc)}
-                      >
-                        {i18next.t("admin.tags.form.delete")}
-                      </Button>
-                    )}
-                  </Mutation>
-                }
-                <FormAction>
-                  <Button actionType="secondary" onClick={this.handleCancel}>
-                    {i18next.t("admin.tags.form.cancel")}
-                  </Button>
-                </FormAction>
-                <FormAction>
-                  <Button onClick={this.handleSubmitForm}>
-                    {submitButtonTitle}
-                  </Button>
-                </FormAction>
-              </FormActions>
-              <Components.Divider />
-            </Fragment>
-          )}
-        </Mutation>
-      );
-    }
-
-    return (
-      <ButtonBar>
-        <Button onClick={this.handleShowCreateForm}>
-          {i18next.t("admin.tags.form.createNewRule")}
-        </Button>
-      </ButtonBar>
-    );
-  }
 
   renderTable() {
     const { shopId, isLoadingPrimaryShopId } = this.props;
@@ -394,24 +189,32 @@ class TagSettings extends Component {
 
   render() {
     return (
-      <Components.CardGroup>
-        <Components.Card>
-          <Components.CardBody>
-            {this.renderForm()}
-            {this.renderTable()}
-          </Components.CardBody>
-        </Components.Card>
-      </Components.CardGroup>
+      <div>
+        <ButtonBar>
+          <Button onClick={this.handleShowCreateForm}>
+            {i18next.t("admin.tags.form.createNewRule")}
+          </Button>
+        </ButtonBar>
+        <Components.CardGroup>
+          <Components.Card>
+            <Components.CardBody>
+              {this.renderTable()}
+            </Components.CardBody>
+          </Components.Card>
+        </Components.CardGroup>
+      </div>
     );
   }
 }
 
 registerComponent("TagSettings", TagSettings, [
   withApollo,
+  withRouter,
   withOpaqueShopId
 ]);
 
 export default compose(
   withApollo,
+  withRouter,
   withOpaqueShopId
 )(TagSettings);
