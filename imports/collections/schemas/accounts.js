@@ -127,7 +127,7 @@ registerSchema("Email", Email);
  * @property {Profile} profile optional
  * @property {String[]} groups optional, Array of groupIds of the groups the user belongs to
  * @property {Metafield[]} metafields optional
- * @property {Date} createdAt required
+ * @property {Date} createdAt optional
  * @property {Date} updatedAt optional
  */
 export const Accounts = new SimpleSchema({
@@ -205,7 +205,8 @@ export const Accounts = new SimpleSchema({
   },
   "createdAt": {
     type: Date,
-    autoValue: createdAtAutoValue
+    autoValue: createdAtAutoValue,
+    optional: true
   },
   "updatedAt": {
     type: Date,
