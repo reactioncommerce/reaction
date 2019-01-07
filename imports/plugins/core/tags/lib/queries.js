@@ -15,3 +15,11 @@ export const tagListingQuery = gql`
     }
   }
 `;
+
+export const getTag = gql`
+  query getTag($slugOrId: String!) {
+    tag(slugOrId: $slugOrId) {
+      ${Tag}
+    }
+  }
+`;
