@@ -19,6 +19,7 @@ function composer(props, onData) {
         cartCount: cart.getCount(),
         cartShipping: cart.getShippingTotal(),
         cartDiscount: cart.getDiscounts(),
+        cartSurcharges: cart.getSurcharges(),
         cartTaxes: cart.getTaxTotal(),
         cartTotal: cart.getTotal(),
         isLoading: false

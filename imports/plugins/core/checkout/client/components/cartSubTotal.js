@@ -41,6 +41,17 @@ class CartSubTotal extends Component {
       );
     }
   }
+
+  validateSurcharges() {
+    if (Number(this.source.cartSurcharges) > 0) {
+      return (
+        <tr>
+          <td><Components.Translation defaultValue="Surcharges" i18nKey="cartSubTotals.surcharges" /></td>
+          <td><Components.Currency amount={this.source.cartSurcharges} /></td>
+        </tr>
+      );
+    }
+  }
   validateShipping() {
     if (Number(this.source.cartShipping) > 0) {
       return (
@@ -86,6 +97,7 @@ class CartSubTotal extends Component {
                 <td><Components.Currency amount={this.source.cartSubTotal} /></td>
               </tr>
               {this.validateDiscount()}
+              {this.validateSurcharges()}
               {this.validateShipping()}
               {this.validateTaxes()}
               <tr>
