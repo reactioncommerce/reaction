@@ -7,10 +7,8 @@ import hashLoginToken from "/imports/node-app/core/util/hashLoginToken";
 import appEvents from "/imports/node-app/core/util/appEvents";
 import { Address as AddressSchema, Order as OrderSchema, Payment as PaymentSchema } from "/imports/collections/schemas";
 import getDiscountsTotalForCart from "/imports/plugins/core/discounts/server/no-meteor/util/getDiscountsTotalForCart";
-import getSurchargesTotalForCart from "/imports/plugins/included/surcharges/server/no-meteor/util/getSurchargesTotalForCart";
-import getCartById from "/imports/plugins/core/shipping/server/no-meteor/util/getCartById.js";
-
 import xformOrderGroupToCommonOrder from "/imports/plugins/core/orders/server/util/xformOrderGroupToCommonOrder";
+import getSurchargesTotalForCart from "/imports/plugins/included/surcharges/server/no-meteor/util/getSurchargesTotalForCart";
 
 const orderItemsSchema = new SimpleSchema({
   "addedAt": {
@@ -127,6 +125,7 @@ async function getCurrencyExchangeObject(collections, cartCurrencyCode, shopId, 
  *   with the totals on it.
  * @param {Object} group The fulfillment group
  * @param {Number} discountTotal Total discount amount
+ * @param {Number} surchargeTotal Total surcharge amount
  * @returns {Object} Invoice object with totals
  */
 function getInvoiceForFulfillmentGroup(group, discountTotal, surchargeTotal) {
@@ -360,8 +359,8 @@ export default async function createOrder(context, input) {
   const cleanedInput = inputSchema.clean(input); // add default values and such
   inputSchema.validate(cleanedInput);
 
-  const { afterValidate, billingAddress, createPaymentForFulfillmentGroup, order: orderInput } = cleanedInput;
-  const { cartId, cartToken, currencyCode, email, fulfillmentGroups, shopId } = orderInput;
+  const { afterValidate, createPaymentForFulfillmentGroup, order: orderInput } = cleanedInput;
+  const { cartId, currencyCode, email, fulfillmentGroups, shopId } = orderInput;
   const { accountId, account, collections } = context;
   const { Orders } = collections;
 
@@ -397,7 +396,7 @@ export default async function createOrder(context, input) {
     finalGroup.itemIds = finalGroup.items.map((item) => item._id);
     finalGroup.totalItemQuantity = finalGroup.items.reduce((sum, item) => sum + item.quantity, 0);
 
-    finalGroup.invoice = getInvoiceForFulfillmentGroup(finalGroup, discountTotal);
+    finalGroup.invoice = getInvoiceForFulfillmentGroup(finalGroup, discountTotal, surchargeTotal);
 
     // Compare expected and actual totals to make sure client sees correct calculated price
     // Error if we calculate total price differently from what the client has shown as the preview.
