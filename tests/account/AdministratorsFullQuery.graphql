@@ -1,4 +1,4 @@
-($shopId: ID!) {
+query ($shopId: ID!) {
   administrators(shopId: $shopId) {
     nodes {
       _id

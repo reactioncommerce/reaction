@@ -1,4 +1,4 @@
-($accountId: ID!, $groupId: ID!) {
+query ($accountId: ID!, $groupId: ID!) {
   addAccountToGroup(input: { accountId: $accountId, groupId: $groupId }) {
     group {
       _id

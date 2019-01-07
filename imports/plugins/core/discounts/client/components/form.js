@@ -19,9 +19,10 @@ export default class DiscountForm extends Component {
     // debounce helper so to wait on user input
     this.debounceDiscounts = debounce(() => {
       this.setState({ validationMessage: "" });
+      const { collection, id, token } = this.props;
       const { discount } = this.state;
       // handle discount code validation messages after attempt to apply
-      Meteor.call("discounts/codes/apply", this.props.id, discount, this.props.collection, (error, result) => {
+      Meteor.call("discounts/codes/apply", id, discount, collection, token, (error, result) => {
         if (error) {
           Alerts.toast(i18next.t(error.reason), "error");
         }
@@ -38,9 +39,6 @@ export default class DiscountForm extends Component {
         }
       });
     }, 800);
-
-    this.handleChange = this.handleChange.bind(this);
-    this.handleClick = this.handleClick.bind(this);
   }
 
   componentWillUnmount() {
@@ -64,7 +62,7 @@ export default class DiscountForm extends Component {
   }
 
   // handle keydown and change events
-  handleChange(event) {
+  handleChange = (event) => {
     const { attempts } = this.state;
     // ensure we don't submit on enter
     if (event.keyCode === 13) {
@@ -85,7 +83,7 @@ export default class DiscountForm extends Component {
   }
 
   // handle display or not
-  handleClick(event) {
+  handleClick = (event) => {
     event.preventDefault();
     this.setState({ validatedInput: true });
   }
@@ -163,5 +161,6 @@ DiscountForm.propTypes = {
   collection: PropTypes.string,
   discount: PropTypes.string,
   id: PropTypes.string,
+  token: PropTypes.string,
   validatedInput: PropTypes.bool // eslint-disable-line react/boolean-prop-naming
 };

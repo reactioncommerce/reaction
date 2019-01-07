@@ -1,6 +1,6 @@
 import ReactionError from "@reactioncommerce/reaction-error";
 import { Meteor } from "meteor/meteor";
-import { Match, check } from "meteor/check";
+import { check } from "meteor/check";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
 import { Taxes } from "../lib/collections";
 
@@ -22,12 +22,13 @@ const methods = {
   "taxes/deleteRate"(taxId) {
     check(taxId, String);
 
-    // check permissions to delete
-    if (!Reaction.hasPermission("taxes")) {
+    const shopId = Reaction.getShopId();
+
+    if (!Reaction.hasPermission("taxes", Reaction.getUserId(), shopId)) {
       throw new ReactionError("access-denied", "Access Denied");
     }
 
-    return Taxes.remove(taxId);
+    return Taxes.remove({ _id: taxId, shopId });
   },
 
   /**
@@ -35,18 +36,18 @@ const methods = {
    * @method
    * @memberof TaxesRates/Methods
    * @param  {Object} doc A Taxes document to be inserted
-   * @param  {String} [docId] DEPRECATED. Existing ID to trigger an update. Use taxes/editRate method instead.
    * @return {String} Insert result
    */
-  "taxes/addRate"(doc, docId) {
+  "taxes/addRate"(doc) {
     check(doc, Object); // actual schema validation happens during insert below
 
-    // Backward compatibility
-    check(docId, Match.Optional(String));
-    if (docId) return Meteor.call("taxes/editRate", { _id: docId, modifier: doc });
+    const shopId = Reaction.getShopId();
 
-    if (!Reaction.hasPermission("taxes")) throw new ReactionError("access-denied", "Access Denied");
-    doc.shopId = Reaction.getShopId();
+    if (!Reaction.hasPermission("taxes", Reaction.getUserId(), shopId)) {
+      throw new ReactionError("access-denied", "Access Denied");
+    }
+
+    doc.shopId = shopId;
     return Taxes.insert(doc);
   },
 
@@ -62,9 +63,15 @@ const methods = {
       _id: String,
       modifier: Object // actual schema validation happens during update below
     });
-    if (!Reaction.hasPermission("taxes")) throw new ReactionError("access-denied", "Access Denied");
+
+    const shopId = Reaction.getShopId();
+
+    if (!Reaction.hasPermission("taxes", Reaction.getUserId(), shopId)) {
+      throw new ReactionError("access-denied", "Access Denied");
+    }
+
     const { _id, modifier } = details;
-    return Taxes.update(_id, modifier);
+    return Taxes.update({ _id, shopId }, modifier);
   }
 };
 
