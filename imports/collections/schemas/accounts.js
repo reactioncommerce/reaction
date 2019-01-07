@@ -205,7 +205,8 @@ export const Accounts = new SimpleSchema({
   },
   "createdAt": {
     type: Date,
-    autoValue: createdAtAutoValue
+    autoValue: createdAtAutoValue,
+    optional: true
   },
   "updatedAt": {
     type: Date,
