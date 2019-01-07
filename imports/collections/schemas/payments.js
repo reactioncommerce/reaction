@@ -15,6 +15,7 @@ import { Address } from "./address";
  * @property {Number} total Grand total
  */
 export const Invoice = new SimpleSchema({
+  currencyCode: String,
   discounts: {
     type: Number,
     min: 0

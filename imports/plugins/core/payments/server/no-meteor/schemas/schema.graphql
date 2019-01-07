@@ -31,6 +31,9 @@ type Payment implements Node {
   """
   amount: Money!
 
+  "The billing address for this payment, if one was collected"
+  billingAddress: Address
+
   """
   If status is "error" due to a capture error, this code describes the error in a machine-readable way.
   """

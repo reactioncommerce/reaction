@@ -38,6 +38,9 @@ Migrations.add({
           // Remove _id from shipping address
           if (group.address) delete group.address._id;
 
+          // Add currencyCode to invoice
+          group.invoice.currencyCode = payment.currencyCode;
+
           return group;
         });
 
@@ -62,6 +65,9 @@ Migrations.add({
             }
             group.payment = payment;
           }
+
+          // Remove currencyCode from invoice
+          delete group.invoice.currencyCode;
 
           return group;
         });

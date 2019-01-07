@@ -140,9 +140,10 @@ async function getCurrencyExchangeObject(collections, cartCurrencyCode, shopId, 
  *   with the totals on it.
  * @param {Object} group The fulfillment group
  * @param {Number} discountTotal Total discount amount
+ * @param {String} currencyCode Currency code of totals
  * @returns {Object} Invoice object with totals
  */
-function getInvoiceForFulfillmentGroup(group, discountTotal) {
+function getInvoiceForFulfillmentGroup(group, discountTotal, currencyCode) {
   const { taxSummary } = group;
 
   // Items
@@ -163,6 +164,7 @@ function getInvoiceForFulfillmentGroup(group, discountTotal) {
   const total = Math.max(0, itemTotal + fulfillmentTotal + taxTotal - discountTotal);
 
   return {
+    currencyCode,
     discounts: discountTotal,
     effectiveTaxRate,
     shipping: fulfillmentTotal,
@@ -486,7 +488,7 @@ export default async function placeOrder(context, input) {
     finalGroup.itemIds = finalGroup.items.map((item) => item._id);
     finalGroup.totalItemQuantity = finalGroup.items.reduce((sum, item) => sum + item.quantity, 0);
 
-    finalGroup.invoice = getInvoiceForFulfillmentGroup(finalGroup, discountTotal);
+    finalGroup.invoice = getInvoiceForFulfillmentGroup(finalGroup, discountTotal, currencyCode);
 
     // Compare expected and actual totals to make sure client sees correct calculated price
     // Error if we calculate total price differently from what the client has shown as the preview.
