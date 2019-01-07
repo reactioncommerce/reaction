@@ -29,6 +29,7 @@ const Container = styled.div`
 // for DOM elements and prints warnings in the console. Someday there may be a better solution.
 // See https://github.com/styled-components/styled-components/issues/305
 const Main = styled(({ children, isMobile, isSidebarOpen, ...divProps }) => (<div {...divProps}>{children}</div>))`
+  width: 100vw;
   background-color: ${applyTheme("Layout.pageBackgroundColor")};
   flex-grow: 1;
   transition: ${(props) =>
