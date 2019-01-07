@@ -33,9 +33,9 @@ const Main = styled(({ children, isMobile, isSidebarOpen, ...divProps }) => (<di
   flex-grow: 1;
   transition: ${(props) =>
     (props.isSidebarOpen && props.isMobile !== true
-      ? "margin 225ms cubic-bezier(0, 0, 0.2, 1) 0ms"
-      : "margin 195ms cubic-bezier(0.4, 0, 0.6, 1) 0ms")};
-  margin-left: ${(props) => (!props.isSidebarOpen && props.isMobile === false ? "-264px" : 0)};
+      ? "padding 225ms cubic-bezier(0, 0, 0.2, 1) 0ms"
+      : "padding 195ms cubic-bezier(0.4, 0, 0.6, 1) 0ms")};
+  padding-left: ${(props) => (props.isSidebarOpen && props.isMobile === false ? "280px" : 0)};
 `;
 
 const MainContent = styled.div`
