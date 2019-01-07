@@ -7,6 +7,22 @@ export { default as DataTable } from "./components/TagDataTable";
 export { default as TagDataTableColumn } from "./components/TagDataTableColumn";
 export { default as TagSettings } from "./containers/TagSettings";
 
+import TagFormPage from "./pages/TagFormPageWithData";
+
+registerOperatorRoute({
+  isNavigationLink: false,
+  isSetting: true,
+  path: "/tags/create",
+  mainComponent: TagFormPage
+});
+
+registerOperatorRoute({
+  isNavigationLink: false,
+  isSetting: true,
+  path: "/tags/edit/:tagId",
+  mainComponent: TagFormPage
+});
+
 registerOperatorRoute({
   isNavigationLink: true,
   isSetting: true,
