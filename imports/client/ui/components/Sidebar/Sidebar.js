@@ -17,8 +17,6 @@ import {
 import { Translation } from "/imports/plugins/core/ui/client/components";
 
 const Drawer = styledMUI(MUIDrawer, { paper: "Paper" })`
-  width: ${applyTheme("Sidebar.drawerWidth")};
-  flex-shrink: 0;
   .Paper {
     width: ${applyTheme("Sidebar.drawerWidth")};
   }
