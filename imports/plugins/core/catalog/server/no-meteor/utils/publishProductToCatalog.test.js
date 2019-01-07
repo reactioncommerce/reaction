@@ -3,9 +3,9 @@ import {
   rewire as rewire$getCatalogProductMedia,
   restore as restore$getCatalogProductMedia
 } from "./getCatalogProductMedia";
-import { rewire as rewire$isBackorder, restore as restore$isBackorder } from "./isBackorder";
-import { rewire as rewire$isLowQuantity, restore as restore$isLowQuantity } from "./isLowQuantity";
-import { rewire as rewire$isSoldOut, restore as restore$isSoldOut } from "./isSoldOut";
+import { rewire as rewire$isBackorder, restore as restore$isBackorder } from "/imports/plugins/core/inventory/server/no-meteor/utils/isBackorder";
+import { rewire as rewire$isLowQuantity, restore as restore$isLowQuantity } from "/imports/plugins/core/inventory/server/no-meteor/utils/isLowQuantity";
+import { rewire as rewire$isSoldOut, restore as restore$isSoldOut } from "/imports/plugins/core/inventory/server/no-meteor/utils/isSoldOut";
 import { rewire as rewire$createCatalogProduct, restore as restore$createCatalogProduct } from "./createCatalogProduct";
 import publishProductToCatalog from "./publishProductToCatalog";
 
@@ -25,9 +25,12 @@ const mockVariants = [
   {
     _id: internalVariantIds[0],
     barcode: "barcode",
+    canBackorder: true,
     createdAt,
     height: 0,
     index: 0,
+    inventoryAvailableToSell: 0,
+    inventoryInStock: 0,
     inventoryManagement: true,
     inventoryPolicy: false,
     isBackorder: false,
@@ -63,9 +66,12 @@ const mockVariants = [
   {
     _id: internalVariantIds[0],
     barcode: "barcode",
+    canBackorder: true,
     createdAt,
     height: 0,
     index: 0,
+    inventoryAvailableToSell: 0,
+    inventoryInStock: 0,
     inventoryManagement: true,
     inventoryPolicy: false,
     isBackorder: false,
@@ -106,6 +112,8 @@ const mockProduct = {
   createdAt,
   description: "Mock product description",
   height: 11.23,
+  inventoryAvailableToSell: 0,
+  inventoryInStock: 0,
   isBackorder: false,
   isDeleted: false,
   isLowQuantity: false,
@@ -168,6 +176,8 @@ const updatedMockProduct = {
   fulfillmentService: "fulfillmentService",
   googleplusMsg: "googlePlusMessage",
   height: 11.23,
+  inventoryAvailableToSell: 0,
+  inventoryInStock: 0,
   isBackorder: false,
   isLowQuantity: false,
   isSoldOut: false,
@@ -306,6 +316,7 @@ test("expect true if a product is published to the catalog collection", async ()
   mockContext.collections.Products.findOne.mockReturnValue(Promise.resolve(updatedMockProduct));
   mockContext.collections.Catalog.updateOne.mockReturnValueOnce(Promise.resolve({ result: { ok: 1 } }));
   const spec = await publishProductToCatalog(mockProduct, mockContext);
+
   expect(spec).toBe(true);
 });
 

@@ -1,4 +1,4 @@
-($shopIds: [ID]!, $first: ConnectionLimitInt, $sortBy: CatalogItemSortByField, $sortOrder: SortOrder, $sortByPriceCurrencyCode: String ) {
+query ($shopIds: [ID]!, $first: ConnectionLimitInt, $sortBy: CatalogItemSortByField, $sortOrder: SortOrder, $sortByPriceCurrencyCode: String ) {
   catalogItems(first: $first, shopIds: $shopIds, sortBy: $sortBy, sortOrder: $sortOrder, sortByPriceCurrencyCode: $sortByPriceCurrencyCode) {
     nodes {
       _id

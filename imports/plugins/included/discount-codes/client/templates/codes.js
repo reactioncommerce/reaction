@@ -7,8 +7,11 @@ Template.discountCodesCheckout.helpers({
   DiscountList() {
     return DiscountList;
   },
-  cartId() {
-    const { cart } = getCart();
-    return cart && cart._id;
+  cartProps() {
+    const { cart, token } = getCart();
+    return {
+      cartId: cart && cart._id,
+      cartToken: token
+    };
   }
 });

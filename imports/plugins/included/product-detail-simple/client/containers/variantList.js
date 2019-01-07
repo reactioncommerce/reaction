@@ -42,7 +42,7 @@ function getTopVariants() {
     // calculate inventory total for all variants
     for (const variant of variants) {
       if (variant.inventoryManagement) {
-        const qty = ReactionProduct.getVariantQuantity(variant);
+        const qty = variant.inventoryAvailableToSell;
         if (typeof qty === "number") {
           inventoryTotal += qty;
         }
@@ -50,7 +50,7 @@ function getTopVariants() {
     }
     // calculate percentage of total inventory of this product
     for (const variant of variants) {
-      const qty = ReactionProduct.getVariantQuantity(variant);
+      const qty = variant.inventoryAvailableToSell;
       variant.inventoryTotal = inventoryTotal;
       if (variant.inventoryManagement && inventoryTotal) {
         variant.inventoryPercentage = parseInt(qty / inventoryTotal * 100, 10);
@@ -74,7 +74,7 @@ function getTopVariants() {
 }
 
 function isSoldOut(variant) {
-  return ReactionProduct.getVariantQuantity(variant) < 1;
+  return variant.inventoryAvailableToSell < 1;
 }
 
 class VariantListContainer extends Component {
@@ -145,7 +145,7 @@ class VariantListContainer extends Component {
       $splice: [[dragIndex, 1], [hoverIndex, 0, variant]]
     });
 
-    // Set local state so the component does't have to wait for a round-trip
+    // Set local state so the component doesn't have to wait for a round-trip
     // to the server to get the updated list of variants
     this.setState({
       variants: newVariantOrder
@@ -153,7 +153,7 @@ class VariantListContainer extends Component {
 
     // Save the updated positions
     Meteor.defer(() => {
-      Meteor.call("products/updateVariantsPosition", getVariantIds(newVariantOrder));
+      Meteor.call("products/updateVariantsPosition", getVariantIds(newVariantOrder), variant.shopId);
     });
   };
 

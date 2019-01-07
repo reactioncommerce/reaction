@@ -12,7 +12,7 @@ beforeAll(async () => {
 
   shopId = await testApp.insertPrimaryShop();
 
-  shopQuery = testApp.query(`($id: ID!) {
+  shopQuery = testApp.query(`query ($id: ID!) {
   shop(id: $id) {
     _id
     currencies {

@@ -7,6 +7,7 @@ import ReactionError from "@reactioncommerce/reaction-error";
 import { Accounts } from "meteor/accounts-base";
 import * as Collections from "/lib/collections";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
+import sendWelcomeEmail from "/imports/plugins/core/accounts/server/util/sendWelcomeEmail";
 
 /**
  * @summary Account server startup code
@@ -167,7 +168,7 @@ export default function startup() {
       if (userDetails.emails && userDetails.emails.length > 0
         && (!(Meteor.users.find().count() === 0) && !userDetails.profile.invited)) {
         const token = Random.secret();
-        Meteor.call("accounts/sendWelcomeEmail", shopId, user._id, token);
+        sendWelcomeEmail(shopId, user._id, token);
         const defaultEmail = userDetails.emails.find((email) => email.provides === "default");
         const when = new Date();
         const tokenObj = {
