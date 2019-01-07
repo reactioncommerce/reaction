@@ -47,7 +47,7 @@ const rui_components = {
     companyNameColor: colors.reactionBlue,
     companyNameBorderBottom: colors.reactionBlue200,
     dividerHeight: "20px",
-    drawerWidth: "264px",
+    drawerWidth: "280px",
     iconBarWidth,
     iconColor: colors.coolGrey300,
     listItemIconFontSize: "20px",
