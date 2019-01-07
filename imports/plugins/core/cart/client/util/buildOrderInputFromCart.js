@@ -85,10 +85,11 @@ export default async function buildOrderInputFromCart(cart) {
     const shippingTotal = group.shipmentMethod.rate || 0;
     const handlingTotal = group.shipmentMethod.handling || 0;
     const fulfillmentTotal = shippingTotal + handlingTotal;
+    const surchargesTotal = cart.surcharges.reduce((sum, surcharge) => sum + surcharge.amount.amount, 0);
 
     // To avoid rounding errors, be sure to keep this calculation the same between here and
     // `createOrder.js` in the server code.
-    const totalPrice = Math.max(0, itemTotal + fulfillmentTotal + taxTotal);
+    const totalPrice = Math.max(0, itemTotal + fulfillmentTotal + taxTotal + surchargesTotal);
 
     const shippingAddress = {
       address1: group.address.address1,
