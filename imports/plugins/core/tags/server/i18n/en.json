@@ -27,7 +27,8 @@
               "delete": "Delete",
               "deleteConfirm": "Delete this tag?",
               "submitNew": "Create Tag",
-              "submitUpdate": "Update Tag"
+              "submitUpdate": "Update Tag",
+              "isVisible": "Tag is enabled in storefront"
             },
             "headers": {
               "slug": "slug",
