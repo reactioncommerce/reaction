@@ -165,7 +165,7 @@ class TagForm extends Component {
                 labelFor={displayTitleInputId}
                 isRequired
               >
-                <TextInput id={displayTitleInputId} name="displayTitle" placeholder="URL" />
+                <TextInput id={displayTitleInputId} name="displayTitle" placeholder={i18next.t("admin.tags.form.displayTitlePlaceholder")} />
                 <ErrorsBlock names={["displayTitle"]} />
               </PaddedField>
 
