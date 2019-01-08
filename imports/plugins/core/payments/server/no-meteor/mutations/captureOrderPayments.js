@@ -64,7 +64,7 @@ export default async function captureOrderPayments(context, input = {}) {
 
   const captureResults = await Promise.all(capturePromises);
 
-  const updatedPayments = orderPaymentsToCapture;
+  const updatedPayments = order.payments;
   captureResults.forEach((captureResult) => {
     const payment = updatedPayments.find((pmt) => pmt._id === captureResult.paymentId);
 
