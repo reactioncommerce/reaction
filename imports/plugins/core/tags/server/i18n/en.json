@@ -28,7 +28,10 @@
               "deleteConfirm": "Delete this tag?",
               "submitNew": "Create Tag",
               "submitUpdate": "Update Tag",
-              "isVisible": "Tag is enabled in storefront"
+              "isVisible": "Tag is enabled in storefront",
+              "tagListingPage": "Tag listing page",
+              "metadata": "Metadata",
+              "productOrdering": "Product ordering"
             },
             "headers": {
               "slug": "slug",
