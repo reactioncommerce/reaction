@@ -2,12 +2,17 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import Button from "@reactioncommerce/components/Button/v1";
 import AppBar from "@material-ui/core/AppBar";
-import MUIToolbar from "@material-ui/core/Toolbar";
+import Typography from "@material-ui/core/Typography";
+import Toolbar from "@material-ui/core/Toolbar";
 import { i18next } from "/client/api";
 import styled from "styled-components";
 
-const Toolbar = styled(MUIToolbar)`
-  flex-direction: flex-end;
+const Title = styled.div`
+  flex: 1;
+`;
+
+const ToolbarItem = styled.div`
+  margin-left: 8px;
 `;
 
 class TagToolbar extends Component {
@@ -38,22 +43,30 @@ class TagToolbar extends Component {
     return (
       <AppBar position="fixed" color="default">
         <Toolbar>
-          {title}
+          <Title>
+            <Typography variant="h6">{title}</Typography>
+          </Title>
           {(canBeDeleted && !isNew) &&
-            <Button
-              actionType="secondary"
-              isTextOnly={true}
-              onClick={onDelete}
-            >
-              {i18next.t("admin.tags.form.delete")}
-            </Button>
+            <ToolbarItem>
+              <Button
+                actionType="secondary"
+                isTextOnly={true}
+                onClick={onDelete}
+              >
+                {i18next.t("admin.tags.form.delete")}
+              </Button>
+            </ToolbarItem>
           }
-          <Button actionType="secondary" onClick={onCancel}>
-            {i18next.t("admin.tags.form.cancel")}
-          </Button>
-          <Button onClick={onSave}>
-            {submitButtonTitle}
-          </Button>
+          <ToolbarItem>
+            <Button actionType="secondary" onClick={onCancel}>
+              {i18next.t("admin.tags.form.cancel")}
+            </Button>
+          </ToolbarItem>
+          <ToolbarItem>
+            <Button onClick={onSave}>
+              {submitButtonTitle}
+            </Button>
+          </ToolbarItem>
         </Toolbar>
       </AppBar>
     );
