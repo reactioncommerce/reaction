@@ -10,6 +10,11 @@ import Checkbox from "@reactioncommerce/components/Checkbox/v1";
 import ErrorsBlock from "@reactioncommerce/components/ErrorsBlock/v1";
 import Field from "@reactioncommerce/components/Field/v1";
 import TextInput from "@reactioncommerce/components/TextInput/v1";
+import Tabs from "@material-ui/core/Tabs";
+import Tab from "@material-ui/core/Tab";
+import Card from "@material-ui/core/Card";
+import CardContent from "@material-ui/core/CardContent";
+import MUICardActions from "@material-ui/core/CardActions";
 import { i18next } from "/client/api";
 
 import { tagListingQuery } from "../../lib/queries";
@@ -19,16 +24,15 @@ const Title = styled.h3`
   margin-bottom: 16px;
 `;
 
-const FormActions = styled.div`
-  display: flex;
+const CardActions = styled(MUICardActions)`
   justify-content: flex-end;
 `;
 
-const FormAction = styled.div`
-  padding-left: 16px;
+const PaddedField = styled(Field)`
+  margin-bottom: 20px;
 `;
 
-const PaddedField = styled(Field)`
+const ContentGroup = styled.div`
   margin-bottom: 20px;
 `;
 
@@ -43,6 +47,10 @@ class TagForm extends Component {
 
   static defaultProps = {
     tag: {}
+  }
+
+  state = {
+    currentTab: 0
   }
 
   formValue = null;
@@ -118,8 +126,13 @@ class TagForm extends Component {
     this.formValue = value;
   }
 
-  renderForm() {
+  handleTabChange = (event, value) => {
+    this.setState({ currentTab: value });
+  };
+
+  render() {
     const { tag } = this.props;
+    const { currentTab } = this.state;
     const nameInputId = `name_${this.uniqueInstanceIdentifier}`;
     const displayTitleInputId = `displayTitle_${this.uniqueInstanceIdentifier}`;
     const isVisibleInputId = `isVisible_${this.uniqueInstanceIdentifier}`;
@@ -147,80 +160,73 @@ class TagForm extends Component {
               onSubmit={(data) => this.handleSubmit(data, mutationFunc)}
               value={tag}
             >
-              <PaddedField
-                helpText={i18next.t("admin.tags.form.nameHelpText")}
-                name="name"
-                label={i18next.t("admin.tags.form.name")}
-                labelFor={nameInputId}
-                isRequired
-              >
-                <TextInput id={nameInputId} name="name" placeholder="i.e. womens-shoes" />
-                <ErrorsBlock names={["name"]} />
-              </PaddedField>
+              <ContentGroup>
+                <PaddedField
+                  helpText={i18next.t("admin.tags.form.nameHelpText")}
+                  name="name"
+                  label={i18next.t("admin.tags.form.name")}
+                  labelFor={nameInputId}
+                  isRequired
+                >
+                  <TextInput id={nameInputId} name="name" placeholder="i.e. womens-shoes" />
+                  <ErrorsBlock names={["name"]} />
+                </PaddedField>
+              </ContentGroup>
 
-              <PaddedField
-                helpText={i18next.t("admin.tags.form.displayTitleHelpText")}
-                name="displayTitle"
-                label={i18next.t("admin.tags.form.displayTitle")}
-                labelFor={displayTitleInputId}
-                isRequired
-              >
-                <TextInput id={displayTitleInputId} name="displayTitle" placeholder={i18next.t("admin.tags.form.displayTitlePlaceholder")} />
-                <ErrorsBlock names={["displayTitle"]} />
-              </PaddedField>
+              <ContentGroup>
+                <Tabs value={currentTab} onChange={this.handleTabChange}>
+                  <Tab label={i18next.t("admin.tags.form.tagListingPage")} />
+                  <Tab label={i18next.t("admin.tags.form.metadata")} />
+                  <Tab label={i18next.t("admin.tags.form.productOrdering")} />
+                </Tabs>
+                <Components.Divider />
+              </ContentGroup>
 
-              <PaddedField
-                name="isVisible"
-                labelFor={isVisibleInputId}
-              >
-                <Checkbox
-                  id={isVisibleInputId}
-                  name="isVisible"
-                  label={i18next.t("admin.tags.form.isVisible")}
-                />
-              </PaddedField>
+              <Card>
+                <CardContent>
+                  {currentTab === 0 &&
+                    <Fragment>
+                      <PaddedField
+                        helpText={i18next.t("admin.tags.form.displayTitleHelpText")}
+                        name="displayTitle"
+                        label={i18next.t("admin.tags.form.displayTitle")}
+                        labelFor={displayTitleInputId}
+                        isRequired
+                      >
+                        <TextInput id={displayTitleInputId} name="displayTitle" placeholder={i18next.t("admin.tags.form.displayTitlePlaceholder")} />
+                        <ErrorsBlock names={["displayTitle"]} />
+                      </PaddedField>
+
+                      <PaddedField
+                        name="isVisible"
+                        labelFor={isVisibleInputId}
+                      >
+                        <Checkbox
+                          id={isVisibleInputId}
+                          name="isVisible"
+                          label={i18next.t("admin.tags.form.isVisible")}
+                        />
+                      </PaddedField>
+                    </Fragment>
+                  }
+
+                  {currentTab === 1 &&
+                    <div>
+                      tab 2
+                    </div>
+                  }
+
+                  {currentTab === 3 &&
+                    <div>
+                      tab 3
+                    </div>
+                  }
+                </CardContent>
+              </Card>
             </Form>
-            <FormActions>
-              {isNew &&
-                <Mutation mutation={removeTagMutation}>
-                  {(removeMutationFunc) => (
-                    <Button
-                      actionType="secondary"
-                      isTextOnly={true}
-                      onClick={() => this.handleRemove(tag._id, removeMutationFunc)}
-                    >
-                      {i18next.t("admin.tags.form.delete")}
-                    </Button>
-                  )}
-                </Mutation>
-              }
-              <FormAction>
-                <Button actionType="secondary" onClick={this.handleCancel}>
-                  {i18next.t("admin.tags.form.cancel")}
-                </Button>
-              </FormAction>
-              <FormAction>
-                <Button onClick={this.handleSubmitForm}>
-                  {submitButtonTitle}
-                </Button>
-              </FormAction>
-            </FormActions>
-            <Components.Divider />
           </Fragment>
         )}
       </Mutation>
-    );
-  }
-
-  render() {
-    return (
-      <Components.CardGroup>
-        <Components.Card>
-          <Components.CardBody>
-            {this.renderForm()}
-          </Components.CardBody>
-        </Components.Card>
-      </Components.CardGroup>
     );
   }
 }
