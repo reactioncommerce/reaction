@@ -1,3 +1,111 @@
+# v2.0.0-rc.8
+This is our eighth **release candidate** for v2.0.0 of Reaction. Please check it out and let us know what works and what doesn't for you.
+
+## New Bits
+### Operator 2.0
+
+## Improved Bits
+### Developer performance
+Added two environment variables to the example .env file `.env.example` (https://github.com/reactioncommerce/reaction/pull/4826)
+```
+  METEOR_DISABLE_OPTIMISTIC_CACHING=1
+  METEOR_WATCH_POLLING_INTERVAL_MS=10000
+```
+
+## Breaking changes
+### Catalog
+- Added a new, final param to xformVariant with the processed inventory flags (https://github.com/reactioncommerce/reaction/pull/4742)
+
+### Meteor Methods
+- Payment plugins that use Meteor methods for capture and refund will not be compatible with this PR. This is intentional as we're migrating toward GraphQL and away from Meteor Methods for client-server interaction. Custom payment methods will need to be rewritten to follow the pattern in #4803. (https://github.com/reactioncommerce/reaction/pull/4803)
+- If a custom plugin uses any of these methods, it will need to be updated. (https://github.com/reactioncommerce/reaction/pull/4815)
+  - `shop/getBaseLanguage`
+  - `shop/getCurrencyRates`
+  - `shop/getWorkflow`
+  - `getTemplateByName`
+  - `orders/addOrderEmail`
+  - `taxes/updateTaxCode`
+  - `workflow/coreOrderWorkflow/coreOrderProcessing`
+  - `workflow/coreOrderWorkflow/coreOrderCompleted`
+- Custom code relying on being able to call the "accounts/sendWelcomeEmail" Meteor method will break. Calls from client code must be removed. Calls from server code should be updated to import and call the util function. (https://github.com/reactioncommerce/reaction/pull/4867)
+
+### Taxes
+- We've created a new `taxes-rates` plugin in the `included` folder, and all features related to custom rates have been moved there. This includes the "Custom Rates" panel in tax settings; the `Taxes` collection and its related schemas; the "taxes/addRate", "taxes/editRate", and "taxes/deleteRate" Meteor methods, and the "Taxes" Meteor publication.
+- The core `taxes` plugin has a new API for registering tax services (such as the included "Custom Rates" service, or a custom Avalara service for example). They are registered by passing in a `taxServices` array to `registerPackage` (example and details in #4785)
+- Some tax-related fields on Cart, CartItem, Order, OrderFulfillmentGroup, and OrderItem have been moved, renamed, added, or removed. We've attempted to remove all unused fields, and group or rename other fields for clarity. One example is the `taxes` array, which now has a different schema and appears for individual items as well as the full cart or order fulfillment group.
+- On `Products` documents, `taxable` is now `isTaxable`. This change had previously been made in the `Catalog` schema and now is made in `Products` to match.
+- For the Custom Rates plugin, be aware that the `taxCode` value is now used for filtering which products should be taxed at that rate. This requires a review of all your products to ensure that they have a tax code specified, in addition to being marked as taxable. If you'd rather not do this review, you can revert to the old behavior of ignoring tax codes by editing each of your Custom Rates entries, clearing the the "Tax Code" field, and saving.
+- *If you are upgrading from 1.x and use only Custom Rates for taxes, data migrations should provide a seamless transition. Most tax changes are breaking only for third-party non-included tax plugins. However, please verify after upgrading that the correct tax service is active.*
+
+### Address Validation
+Breaking changes to how address validation works. Affects all plugins that provide address validation and all clients that validate addresses. (https://github.com/reactioncommerce/reaction/pull/4767)
+
+### Configuration
+- Propel was updated and any propel scripts must be updated. (https://github.com/reactioncommerce/reaction/pull/4802)
+- If you run Reaction locally, such as for development, you will now need to be sure there is a `.env` file with correct environment variables set in it. The `.env.example` file, with no changes, should work for most people. When running with reaction-platform, this should happen automatically. But if you've already been developing locally and you pull in this change, you'll need to run bin/setup once. You can also run bin/setup anytime you pull in the future, to add any new ENV variables. (https://github.com/reactioncommerce/reaction/pull/4826)
+- Docker network streams.reaction.localhost must be created, which developers can do by pulling down the latest reaction-platform and running make (or make network-create if they want to be surgical about it). (https://github.com/reactioncommerce/reaction/pull/4805)
+
+### Meteor Plugins
+- Custom plugins that rely on the dispatch:run-as-user Meteor package will need to find a different solution and remove the dependent code. (https://github.com/reactioncommerce/reaction/pull/4825)
+
+## Features
+ - feat: Navigation Backend (#4683)
+ - feat: shipping method restrictions (#4821)
+ - feat: Update main Reaction app to use `.env` file (#4826)
+ - feat(tag): add Display Title to Tag (#4856)
+ - feat: Operator 2.0 first draft (#4800)
+ - feat: Deploy feature branches to ECS (#4834)
+ - feat: Add Order.referenceId (#4827)
+ - feat: Use no-meteor functions for payment capture and refund methods (#4803)
+ - feat: Remove unused meteor methods (#4815)
+ - feat: Put mongo on the streams network (#4805)
+ - feat: Update graphql packages to support extend enum and extend union (#4798)
+ - feat: Improve tax API, split out Custom Rates plugin (#4785)
+ - feat: Address validation GraphQL (#4767)
+ - feat: add isBackorder data to variants (#4855)
+
+
+## Fixes
+ - fix: Migrate existing tag nav to new navigation tree structure (#4882)
+ - fix: primaryShopId query fallback (#4862)
+ - fix: permission issues with Meteor methods for Accounts plugin (#4867)
+ - fix: Add migration file for plugin route name change (#4858)
+ - fix: CartCleanupJob (#4799)
+ - fix: 404 on Hydra Oauth page (#4835)
+ - fix: Jest integration tests (#4824)
+ - fix: ECS deployments (#4836)
+ - fix: ECS deployment: move TLS certificate ARN from propel.yaml to ENV vars (#4802)
+ - fix: catalog variant inventory flags always false (#4742) .. Resolves #4741
+ - fix: tax calculation arguments, other tax fixes (#4811)
+
+
+## Refactor
+- refactor: shipping rules (#4789)
+
+## Performance
+- perf: Add a mongodb index on Catalog.updatedAt (#4819)
+
+## Chores
+ - chore: use ci env var for staging url (#4885)
+ - chore: e2e integration for release branches (#4878)
+ - chore: Configure prettier arrowParens to match our eslint rules (#4876)
+ - chore: Add node_modules/.bin to PATH in docker (#4820)
+ - chore: remove unused dispatch:run-as-user package (#4825)
+
+
+
+# v2.0.0-rc.7
+This is our seventh **release candidate** for v2.0.0 of Reaction. Please check it out and let us know what works and what doesn't for you.
+## Security Release
+This security release addresses to potential vulnerabilities
+1. We discovered a vulnerability that affects shops built on Reaction Commerce that use the Reaction-Social plugin with Facebook and the Facebook App Secret configured. More details on this issue below.
+
+2. Remove dependency on `event-stream`
+## Event Stream Dependency Removal
+This fix removes a dependency on `event-stream` introduced by `nodemon` via `pstree` by bumping `nodemon` and `pstree.remy` through `nodemon` to a version that does not include `pstree`.
+
+[event-stream](https://github.com/dominictarr/event-stream/issues/116) had a malicious bit of code added to version `3.3.6` which has since been removed from github and appears to have specifically targeted [copay](https://github.com/bitpay/copay/issues/9346).
+
 # v2.0.0-rc.6
 This is our sixth **release candidate** for v2.0.0 of Reaction. Please check it out and let us know what works and what doesn't for you.
 
@@ -273,6 +381,49 @@ We've [moved the SMS schema](https://github.com/reaction-contrib/meteor-notifica
 ## Refactors
  - refactor: Remove unused schemas (#4566)
  - refactor: remove all grid positions code and UI (#4628)
+
+# v1.17.1
+## Security Release
+This security release addresses to potential vulnerabilities
+1. We discovered a vulnerability that affects shops built on Reaction Commerce that use the Reaction-Social plugin with Facebook and the Facebook App Secret configured. More details on this issue below.
+
+2. Remove dependency on `event-stream`
+## Event Stream Dependency Removal
+This fix removes a dependency on `event-stream` introduced by `nodemon` via `pstree` by bumping `nodemon` and `pstree.remy` through `nodemon` to a version that does not include `pstree`.
+
+[event-stream](https://github.com/dominictarr/event-stream/issues/116) had a malicious bit of code added to version `3.3.6` which has since been removed from github and appears to have specifically targeted [copay](https://github.com/bitpay/copay/issues/9346).
+
+# v1.17.0
+This release contains mostly bug fixes, many of which are focused on Marketplace implementations. Thanks to @pmn4 for contributing many of the marketplace fixes and additions.
+
+There's also a little bit of cleanup of unused code in this release. This will likely be our last release on the 1.x line as our new work is focused on our 2.x version.
+
+## Features
+ - feat: Prioritize Primary when multiple Shops match domain (#3528)
+
+## Fixes
+ - fix: custom tax rates not applied (#4806)
+ - fix: console error tag name error pdp .. Resolves #4776 (#4790)
+ - fix: email settings update on cancel (#4792)
+ - fix: update detailView when its data changes (#4791)
+ - fix: submitting the template edit form now works .. Resolves #4774 (#4780)
+ - fix: edit groups panel (#4771)
+ - fix: add translated text for adding user to group by admin (#4562)
+ - fix: Hide Action View if Product Settings panel open (#4433)
+ - fix: Import `getSlug` instead of using `this.getSlug` (#4547)
+ - fix: Product Visibility for Marketplace Shops (#4425)
+ - fix: cart item attributes (#4607)
+ - fix: startup error before primary shop is created on initial startup (#4602)
+ - fix: avoid infinite looping when taxes are enabled (11e95ba) .. Resolves #4620
+ - fix: limit jest maxWorkers to 4 to improve CI perf (cd76a50)
+
+ ## Refactors
+ - refactor: Remove unused schemas (#4566)
+
+ ## Chores
+ - chore: Rename the reaction-api Docker network (#4613)
+ - chore: Use new CLI tool "propel" to deploy services to ECS (#4623)
+
 
 # v1.16.0
 ## GraphQL
