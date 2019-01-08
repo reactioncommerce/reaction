@@ -1,9 +1,10 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 import PropTypes from "prop-types";
 import { withRouter } from "react-router";
 import { compose } from "recompose";
 import withOpaqueShopId from "/imports/plugins/core/graphql/lib/hocs/withOpaqueShopId";
 import { Query, withApollo } from "react-apollo";
+import TagToolbar from "../components/TagToolbar";
 import TagForm from "../components/TagForm";
 import { getTag } from "../../lib/queries";
 
@@ -29,7 +30,7 @@ class TagFormPageWithData extends Component {
     this.props.history.push("/operator/tags");
   }
 
-  render() {
+  renderForm() {
     const { shopId, match } = this.props;
 
     // Id there's a tagId param, then try to find
@@ -61,6 +62,15 @@ class TagFormPageWithData extends Component {
         onCancel={this.handleCancel}
         onSave={this.handleSave}
       />
+    );
+  }
+
+  render() {
+    return (
+      <Fragment>
+        <TagToolbar />
+        {this.renderForm()}
+      </Fragment>
     );
   }
 }
