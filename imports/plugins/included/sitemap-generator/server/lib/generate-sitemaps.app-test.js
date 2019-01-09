@@ -26,11 +26,13 @@ describe("generateSitemaps", () => {
     sandbox.restore();
   });
 
-  it("should throw not-found error if invalid shopId is passed", () => {
+  it("should throw not-found error if invalid shopId is passed", function () {
+    this.timeout(30000);
     expect(() => generateSitemaps({ shopIds: ["FAKE_SHOP_ID"] })).to.throw(Meteor.Error, /not-found/);
   });
 
-  it("should generate the correct number of sitemap documents", () => {
+  it("should generate the correct number of sitemap documents", function () {
+    this.timeout(10000);
     const { _id: shopId } = primaryShop;
 
     // Create a visible tag and product for our primary shop
@@ -51,7 +53,8 @@ describe("generateSitemaps", () => {
     expect(sitemapsCount).to.equal(4);
   });
 
-  it("should create sitemaps for primary shop if no shop _id is given", () => {
+  it("should create sitemaps for primary shop if no shop _id is given", function () {
+    this.timeout(10000);
     const { _id: shopId } = primaryShop;
 
     Sitemaps.remove({});
@@ -65,7 +68,8 @@ describe("generateSitemaps", () => {
     expect(sitemap.shopId).to.equal(shopId);
   });
 
-  it("should not include deleted/non-visible products in sitemaps", () => {
+  it("should not include deleted/non-visible products in sitemaps", function () {
+    this.timeout(10000);
     const { _id: shopId } = primaryShop;
 
     Factory.create("tag", { shopId });
@@ -81,7 +85,8 @@ describe("generateSitemaps", () => {
     expect(sitemapsCount).to.equal(4);
   });
 
-  it("should create sitemaps with the correct number of URLs per each", () => {
+  it("should create sitemaps with the correct number of URLs per each", function () {
+    this.timeout(10000);
     const { _id: shopId } = primaryShop;
     const shopFields = { shopId };
 
