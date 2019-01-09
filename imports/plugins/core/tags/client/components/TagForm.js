@@ -51,6 +51,8 @@ const Dropzone = styled(ReactDropzone)`
   min-height: 400px;
 `;
 
+// Metafied names
+
 class TagForm extends Component {
   static propTypes = {
     isLoadingShopId: PropTypes.bool,
@@ -81,7 +83,17 @@ class TagForm extends Component {
       name: data.name,
       displayTitle: data.displayTitle,
       isVisible: data.isVisible || false,
-      shopId
+      shopId,
+      metafields: [
+        { key: "keywords", value: data.keywords || "", namespace: "matatag" },
+        { key: "description", value: data.description || "", namespace: "matatag" },
+        { key: "og:title", value: data["og:title"] || "", namespace: "matatag" },
+        { key: "og:description", value: data["og:description"] || "", namespace: "matatag" },
+        { key: "og:url", value: data["og:url"] || "", namespace: "matatag" },
+        { key: "og:image", value: data["og:image"] || "", namespace: "matatag" },
+        { key: "og:locale", value: data["og:locale"] || "", namespace: "matatag" },
+        { key: "fb:app_id", value: data["fb:app_id"] || "", namespace: "matatag" }
+      ]
     };
 
     const result = await mutation({
@@ -95,8 +107,6 @@ class TagForm extends Component {
         input
       }
     });
-
-    this.reset();
 
     return result;
   }
@@ -118,8 +128,6 @@ class TagForm extends Component {
             }
           }
         });
-
-        this.reset();
       }
     });
   }
@@ -129,13 +137,11 @@ class TagForm extends Component {
   }
 
   handleCancel = () => {
-    this.reset();
     this.props.onCancel();
   }
 
   handleSubmitForm = () => {
     this.form.submit();
-    this.props.onSave();
   }
 
   handleFormChange = (value) => {
@@ -165,12 +171,42 @@ class TagForm extends Component {
     );
   }
 
-  render() {
+  get tagData() {
     const { tag } = this.props;
+
+    if (tag) {
+      let metafields = {};
+
+      if (Array.isArray(tag.metafields)) {
+        tag.metafields.forEach((field) => {
+          metafields[field.key] = field.value;
+        });
+      }
+
+      return {
+        ...tag,
+        ...metafields
+      };
+    }
+
+    return {};
+  }
+
+  render() {
+    const tag = this.tagData;
     const { currentTab } = this.state;
     const nameInputId = `name_${this.uniqueInstanceIdentifier}`;
     const slugInputId = `slug_${this.uniqueInstanceIdentifier}`;
     const displayTitleInputId = `displayTitle_${this.uniqueInstanceIdentifier}`;
+    const keywordsInputId = `keywords_${this.uniqueInstanceIdentifier}`;
+    const descriptionInputId = `description_${this.uniqueInstanceIdentifier}`;
+    const ogTitleInputId = `ogTitle_${this.uniqueInstanceIdentifier}`;
+    const ogDescriptionInputId = `ogDescription${this.uniqueInstanceIdentifier}`;
+    const ogUrlInputId = `ogUrl_${this.uniqueInstanceIdentifier}`;
+    const ogImageUrlInputId = `ogImageUrl_${this.uniqueInstanceIdentifier}`;
+    const fbAppIdInputId = `fbAppId_${this.uniqueInstanceIdentifier}`;
+    const ogLocaleInputId = `ogLocale_${this.uniqueInstanceIdentifier}`;
+
     const isVisibleInputId = `isVisible_${this.uniqueInstanceIdentifier}`;
 
     let title = i18next.t("admin.tags.form.formTitleNew");
@@ -264,9 +300,85 @@ class TagForm extends Component {
                   }
 
                   {currentTab === 1 &&
-                    <div>
-                      tab 2
-                    </div>
+                    <Grid container spacing={24}>
+                      <Grid item md={6}>
+                        <Typography variant="h6">{i18next.t("admin.tags.form.tagListingHero")}</Typography>
+                        <PaddedField
+                          name="keywords"
+                          label={i18next.t("admin.tags.form.keywords")}
+                          labelFor={keywordsInputId}
+                          isRequired
+                        >
+                          <TextInput id={keywordsInputId} name="keywords" placeholder={i18next.t("admin.tags.form.keywordsPlaceholder")} />
+                          <ErrorsBlock names={["keywords"]} />
+                        </PaddedField>
+
+                        <PaddedField
+                          name="description"
+                          label={i18next.t("admin.tags.form.description")}
+                          labelFor={descriptionInputId}
+                        >
+                          <TextInput id={descriptionInputId} name="description" placeholder={i18next.t("admin.tags.form.descriptionPlaceholder")} />
+                          <ErrorsBlock names={["description"]} />
+                        </PaddedField>
+                      </Grid>
+                      <Grid item md={6}>
+                        <Typography variant="h6">{i18next.t("admin.tags.form.tagListingHero")}</Typography>
+                        <PaddedField
+                          name="og:title"
+                          label={i18next.t("admin.tags.form.ogTitle")}
+                          labelFor={ogTitleInputId}
+                        >
+                          <TextInput id={ogTitleInputId} name="og:title" placeholder={i18next.t("admin.tags.form.ogTitlePlaceholder")} />
+                          <ErrorsBlock names={["og:title"]} />
+                        </PaddedField>
+
+                        <PaddedField
+                          name="og:description"
+                          label={i18next.t("admin.tags.form.ogDescription")}
+                          labelFor={ogDescriptionInputId}
+                        >
+                          <TextInput id={ogDescriptionInputId} name="og:description" placeholder={i18next.t("admin.tags.form.ogDescriptionPlaceholder")} />
+                          <ErrorsBlock names={["og:description"]} />
+                        </PaddedField>
+
+                        <PaddedField
+                          name="og:url"
+                          label={i18next.t("admin.tags.form.ogUrl")}
+                          labelFor={ogDescriptionInputId}
+                        >
+                          <TextInput id={ogUrlInputId} name="og:url" placeholder={i18next.t("admin.tags.form.ogUrlPlaceholder")} />
+                          <ErrorsBlock names={["og:url"]} />
+                        </PaddedField>
+
+                        <PaddedField
+                          name="og:image"
+                          label={i18next.t("admin.tags.form.ogImageUrl")}
+                          labelFor={ogImageUrlInputId}
+                        >
+                          <TextInput id={ogImageUrlInputId} name="og:image" placeholder={i18next.t("admin.tags.form.ogImageUrlPlaceholder")} />
+                          <ErrorsBlock names={["og:image"]} />
+                        </PaddedField>
+
+                        <PaddedField
+                          name="og:locale"
+                          label={i18next.t("admin.tags.form.ogLocale")}
+                          labelFor={ogLocaleInputId}
+                        >
+                          <TextInput id={ogLocaleInputId} name="og:locale" placeholder={i18next.t("admin.tags.form.ogLocalePlaceholder")} />
+                          <ErrorsBlock names={["og:locale"]} />
+                        </PaddedField>
+
+                        <PaddedField
+                          name="fb:app_id"
+                          label={i18next.t("admin.tags.form.fbAppId")}
+                          labelFor={fbAppIdInputId}
+                        >
+                          <TextInput id={fbAppIdInputId} name="fb:app_id" placeholder={i18next.t("admin.tags.form.fbAppIdPlaceholder")} />
+                          <ErrorsBlock names={["fb:app_id"]} />
+                        </PaddedField>
+                      </Grid>
+                    </Grid>
                   }
 
                   {currentTab === 3 &&
