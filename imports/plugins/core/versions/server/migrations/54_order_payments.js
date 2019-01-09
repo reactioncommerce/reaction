@@ -3,7 +3,7 @@ import { Orders } from "/lib/collections";
 import findAndConvertInBatches from "../util/findAndConvertInBatches";
 
 Migrations.add({
-  version: 52,
+  version: 54,
   up() {
     findAndConvertInBatches({
       collection: Orders,
