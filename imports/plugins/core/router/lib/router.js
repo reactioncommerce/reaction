@@ -583,7 +583,7 @@ Router.initPackageRoutes = (options) => {
 
   // when running in identity provider mode, use only routes defined by the package
   const idpPackage = packages.find((pkg) => pkg.name === IDENTITY_PROVIDER_PLUGIN_NAME);
-  if (idpPackage && idpPackage.identityProviderMode) defaultRouteDefinitions = [];
+  if (idpPackage && idpPackage.identityProviderMode === "idp-only") defaultRouteDefinitions = [];
 
   const enabledPackageRoutes = getEnabledPackageRoutes(ReactionLayout, packages);
   const updatedPackageRoutes = addRoutePrefixToPackageRoutes(enabledPackageRoutes);
