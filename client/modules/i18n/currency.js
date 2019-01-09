@@ -74,7 +74,12 @@ export function formatPriceString(formatPrice, useDefaultShopCurrency) {
   const userCurrency = findCurrency(locale.currency, defaultShopCurrency);
 
   // for the cases then we have only one price. It is a number.
-  const currentPrice = formatPrice.toString();
+  const stringCurrentPrice = formatPrice.toString();
+
+  // Remove commas from current price
+  // accounting.formatMoney does not play nice with extra commas
+  const currentPrice = stringCurrentPrice.replace(/,/g, "");
+
   let price = 0;
   const prices = currentPrice.indexOf(" - ") >= 0 ?
     currentPrice.split(" - ") : [currentPrice];
