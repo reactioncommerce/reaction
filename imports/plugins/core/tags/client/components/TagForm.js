@@ -1,8 +1,10 @@
 import React, { Component, Fragment } from "react";
 import PropTypes from "prop-types";
 import { Components } from "@reactioncommerce/reaction-components";
+import { applyTheme } from "@reactioncommerce/components/utils";
 import { Mutation } from "react-apollo";
 import { uniqueId } from "lodash";
+import ReactDropzone from "react-dropzone";
 import styled from "styled-components";
 import { Form } from "reacto-form";
 import Button from "@reactioncommerce/components/Button/v1";
@@ -10,13 +12,14 @@ import Checkbox from "@reactioncommerce/components/Checkbox/v1";
 import ErrorsBlock from "@reactioncommerce/components/ErrorsBlock/v1";
 import Field from "@reactioncommerce/components/Field/v1";
 import TextInput from "@reactioncommerce/components/TextInput/v1";
+import Grid from "@material-ui/core/Grid";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import MUICardActions from "@material-ui/core/CardActions";
+import Typography from "@material-ui/core/Typography";
 import { i18next } from "/client/api";
-
 import { tagListingQuery } from "../../lib/queries";
 import { addTagMutation, updateTagMutation, removeTagMutation } from "../../lib/mutations";
 
@@ -26,19 +29,26 @@ const Title = styled.h3`
 
 const CardActions = styled(MUICardActions)`
   justify-content: flex-end;
+  padding-right: 0;
 `;
 
 const PaddedField = styled(Field)`
-  margin-bottom: 20px;
+  margin-bottom: 30px;
 `;
 
 const ContentGroup = styled.div`
-  margin-bottom: 20px;
+  margin-bottom: 30px;
 `;
 
 const FormActions = styled.div`
   display: flex;
   justify-content: flex-end;
+`;
+
+const Dropzone = styled(ReactDropzone)`
+  background-color: ${applyTheme("MediaUploader.backgroundColor")};
+  border: ${applyTheme("MediaUploader.border")};
+  min-height: 400px;
 `;
 
 class TagForm extends Component {
@@ -59,6 +69,7 @@ class TagForm extends Component {
   }
 
   formValue = null;
+  uploadedFiles = null
 
   uniqueInstanceIdentifier = uniqueId("URLRedirectEditForm");
 
@@ -135,6 +146,25 @@ class TagForm extends Component {
     this.setState({ currentTab: value });
   };
 
+  handleDrop = (files) => {
+    if (files.length === 0) return;
+    this.uploadedFiles = files;
+  };
+
+  renderMediaGalleryUploader() {
+    const { mediaGalleryWidth: containerWidth, uploadProgress, tag } = this.props;
+
+    return (
+      <Dropzone
+        onDrop={this.handleDrop}
+        ref={(inst) => { this.dropzone = inst; }}
+        accept="image/jpg, image/png, image/jpeg"
+      >
+        {tag && tag.heroMediaUrl && <img src={tag.heroMediaUrl} width="100%" alt="" />}
+      </Dropzone>
+    );
+  }
+
   render() {
     const { tag } = this.props;
     const { currentTab } = this.state;
@@ -191,39 +221,46 @@ class TagForm extends Component {
               <Card>
                 <CardContent>
                   {currentTab === 0 &&
-                    <Fragment>
-                      <PaddedField
-                        helpText={i18next.t("admin.tags.form.displayTitleHelpText")}
-                        name="displayTitle"
-                        label={i18next.t("admin.tags.form.displayTitle")}
-                        labelFor={displayTitleInputId}
-                        isRequired
-                      >
-                        <TextInput id={displayTitleInputId} name="displayTitle" placeholder={i18next.t("admin.tags.form.displayTitlePlaceholder")} />
-                        <ErrorsBlock names={["displayTitle"]} />
-                      </PaddedField>
+                    <Grid container spacing={24}>
+                      <Grid item md={6}>
+                        <PaddedField
+                          helpText={i18next.t("admin.tags.form.displayTitleHelpText")}
+                          name="displayTitle"
+                          label={i18next.t("admin.tags.form.displayTitle")}
+                          labelFor={displayTitleInputId}
+                          isRequired
+                        >
+                          <TextInput id={displayTitleInputId} name="displayTitle" placeholder={i18next.t("admin.tags.form.displayTitlePlaceholder")} />
+                          <ErrorsBlock names={["displayTitle"]} />
+                        </PaddedField>
 
-                      <PaddedField
-                        helpText={i18next.t("admin.tags.form.slugHelpText")}
-                        name="slug"
-                        label={i18next.t("admin.tags.form.slug")}
-                        labelFor={slugInputId}
-                      >
-                        <TextInput id={slugInputId} isReadOnly name="slug" placeholder={i18next.t("admin.tags.form.slugPlaceholder")} />
-                        <ErrorsBlock names={["slug"]} />
-                      </PaddedField>
+                        <PaddedField
+                          helpText={i18next.t("admin.tags.form.slugHelpText")}
+                          name="slug"
+                          label={i18next.t("admin.tags.form.slug")}
+                          labelFor={slugInputId}
+                        >
+                          <TextInput id={slugInputId} isReadOnly name="slug" placeholder={i18next.t("admin.tags.form.slugPlaceholder")} />
+                          <ErrorsBlock names={["slug"]} />
+                        </PaddedField>
 
-                      <PaddedField
-                        name="isVisible"
-                        labelFor={isVisibleInputId}
-                      >
-                        <Checkbox
-                          id={isVisibleInputId}
+                        <PaddedField
                           name="isVisible"
-                          label={i18next.t("admin.tags.form.isVisible")}
-                        />
-                      </PaddedField>
-                    </Fragment>
+                          labelFor={isVisibleInputId}
+                        >
+                          <Checkbox
+                            id={isVisibleInputId}
+                            name="isVisible"
+                            label={i18next.t("admin.tags.form.isVisible")}
+                          />
+                        </PaddedField>
+                      </Grid>
+                      <Grid item md={6}>
+                        <Typography variant="h6">{i18next.t("admin.tags.form.tagListingHero")}</Typography>
+                        <Typography>{i18next.t("admin.tags.form.tagListingHeroHelpText")}</Typography>
+                        {this.renderMediaGalleryUploader()}
+                      </Grid>
+                    </Grid>
                   }
 
                   {currentTab === 1 &&
@@ -238,11 +275,11 @@ class TagForm extends Component {
                     </div>
                   }
 
-                  <FormActions>
+                  <CardActions>
                     <Button actionType="secondary" onClick={this.handleSubmitForm}>
                       {i18next.t("admin.tags.form.save")}
                     </Button>
-                  </FormActions>
+                  </CardActions>
                 </CardContent>
               </Card>
             </Form>

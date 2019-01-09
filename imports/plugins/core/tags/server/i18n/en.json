@@ -34,7 +34,9 @@
               "tagListingPage": "Tag listing page",
               "metadata": "Metadata",
               "productOrdering": "Product ordering",
-              "save": "Save"
+              "save": "Save",
+              "tagListingHero": "Tag listing page hero image",
+              "tagListingHeroHelpText": "Images with an aspect ratio of 16:9 or greater work best."
             },
             "headers": {
               "slug": "slug",

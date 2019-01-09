@@ -1,7 +1,11 @@
 import React, { Component, Fragment } from "react";
 import PropTypes from "prop-types";
+import { Meteor } from "meteor/meteor";
 import { withRouter } from "react-router";
 import { compose } from "recompose";
+import { Logger, Reaction } from "/client/api";
+import { FileRecord } from "@reactioncommerce/file-collections";
+import { Media } from "/imports/plugins/core/files/client";
 import withOpaqueShopId from "/imports/plugins/core/graphql/lib/hocs/withOpaqueShopId";
 import { Query, withApollo } from "react-apollo";
 import TagToolbar from "../components/TagToolbar";
@@ -29,6 +33,53 @@ class TagFormPageWithData extends Component {
   handleCancel = () => {
     this.props.history.push("/operator/tags");
   }
+
+  handleUpload = (files) => {
+    const { tag, shopId } = this.props;
+    const userId = Reaction.getUserId();
+
+    let count = Media.findLocal({
+      "metadata.tagId": tag._id
+    }).length;
+
+    // Only allow one file to be uploaded at a time
+    const file = files[0];
+
+    // Convert it to a FileRecord
+    const fileRecord = FileRecord.fromFile(file);
+
+    // Set metadata
+    fileRecord.metadata = {
+      createdBy: userId,
+      shopId,
+      tagId: tag._id,
+      priority: count,
+      toGrid: 1 // we need number
+    };
+
+    count += 1;
+
+    // Listen for upload progress events
+    fileRecord.on("uploadProgress", (uploadProgress) => {
+      this.setState({ uploadProgress });
+    });
+
+    // Do the upload. chunkSize is optional and defaults to 5MB
+    fileRecord.upload({})
+      // We insert only AFTER the server has confirmed that all chunks were uploaded
+      .then(() => {
+        Meteor.call("media/insert", fileRecord.document, (error) => {
+          if (error) Alerts.toast(error.reason, "error");
+          this.setState({ uploadProgress: null });
+        });
+        return null;
+      })
+      .catch((error) => {
+        this.setState({ uploadProgress: null });
+        Logger.error(error);
+      });
+  };
+
 
   renderForm() {
     const { shopId, match } = this.props;
@@ -68,7 +119,10 @@ class TagFormPageWithData extends Component {
   render() {
     return (
       <Fragment>
-        <TagToolbar />
+        <TagToolbar
+          onCancel={this.handleCancel}
+          onSave={this.handleSave}
+        />
         {this.renderForm()}
       </Fragment>
     );

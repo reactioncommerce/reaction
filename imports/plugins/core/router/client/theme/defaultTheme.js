@@ -74,6 +74,10 @@ const rui_components = {
       ${colors.coolGrey100} ${iconBarWidth},
       ${colors.coolGrey100} 100%
     )`
+  },
+  MediaUploader: {
+    backgroundColor: colors.black02,
+    border: `1px solid ${colors.black10}`
   }
 };
 
