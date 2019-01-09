@@ -36,6 +36,11 @@ const ContentGroup = styled.div`
   margin-bottom: 20px;
 `;
 
+const FormActions = styled.div`
+  display: flex;
+  justify-content: flex-end;
+`;
+
 class TagForm extends Component {
   static propTypes = {
     isLoadingShopId: PropTypes.bool,
@@ -232,6 +237,12 @@ class TagForm extends Component {
                       tab 3
                     </div>
                   }
+
+                  <FormActions>
+                    <Button actionType="secondary" onClick={this.handleSubmitForm}>
+                      {i18next.t("admin.tags.form.save")}
+                    </Button>
+                  </FormActions>
                 </CardContent>
               </Card>
             </Form>
