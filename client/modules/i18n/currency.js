@@ -75,7 +75,6 @@ export function formatPriceString(formatPrice, useDefaultShopCurrency) {
 
   // for the cases then we have only one price. It is a number.
   const currentPrice = formatPrice.toString();
-
   let price = 0;
   const prices = currentPrice.indexOf(" - ") >= 0 ?
     currentPrice.split(" - ") : [currentPrice];
