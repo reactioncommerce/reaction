@@ -33,7 +33,8 @@
               "isVisible": "Tag is enabled in storefront",
               "tagListingPage": "Tag listing page",
               "metadata": "Metadata",
-              "productOrdering": "Product ordering"
+              "productOrdering": "Product ordering",
+              "save": "Save"
             },
             "headers": {
               "slug": "slug",
