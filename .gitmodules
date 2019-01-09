@@ -13,3 +13,6 @@
 [submodule "imports/plugins/custom/reaction-plugin-radial-tax"]
 	path = imports/plugins/custom/reaction-plugin-radial-tax
 	url = git@github.com:sportsdirect/reaction-plugin-radial-tax.git
+[submodule "imports/plugins/custom/reaction-plugin-cloudinary"]
+	path = imports/plugins/custom/reaction-plugin-cloudinary
+	url = git@github.com:sportsdirect/reaction-plugin-cloudinary.git
