@@ -3,10 +3,16 @@ import SimpleSchema from "simpl-schema";
 import getSlug from "/imports/plugins/core/core/server/Reaction/getSlug";
 
 const inputSchema = new SimpleSchema({
-  slug: String,
-  name: String,
-  displayTitle: String,
-  isVisible: Boolean
+  "slug": String,
+  "name": String,
+  "displayTitle": String,
+  "isVisible": Boolean,
+  "metafields": { type: Array, optional: true },
+  "metafields.$": new SimpleSchema({
+    key: { type: String, max: 30 },
+    namespace: { type: String, max: 20 },
+    value: { type: String }
+  })
 }, { requiredByDefault: false });
 
 /**
@@ -32,7 +38,8 @@ export default async function updateTag(context, input) {
     slug: getSlug(input.name),
     name: input.name,
     displayTitle: input.displayTitle,
-    isVisible: input.isVisible
+    isVisible: input.isVisible,
+    metafields: input.metafields
   };
 
   if (params.type === "rewrite") params.status = null;

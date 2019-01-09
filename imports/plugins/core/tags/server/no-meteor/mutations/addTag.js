@@ -14,7 +14,7 @@ import getSlug from "/imports/plugins/core/core/server/Reaction/getSlug";
  */
 export default async function addTag(context, input) {
   // Check for owner or admin permissions from the user before allowing the mutation
-  const { shopId, name, isVisible, displayTitle } = input;
+  const { shopId, name, isVisible, displayTitle, metafields } = input;
   const { appEvents, collections, userHasPermission } = context;
   const { Tags } = collections;
 
@@ -31,6 +31,7 @@ export default async function addTag(context, input) {
     isTopLevel: false,
     isVisible,
     slug: getSlug(name),
+    metafields,
     name,
     displayTitle,
     shopId,

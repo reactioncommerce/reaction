@@ -13,6 +13,9 @@ input AddTagInput {
 
   "The shop that owns the rule"
   shopId: ID!
+
+  "Tag metafields"
+  metafields: [MetafieldInput]
 }
 
 type AddTagPayload {
@@ -66,6 +69,9 @@ input UpdateTagInput {
 
   "The shop that owns the tag"
   shopId: ID!
+
+  "Tag metafields"
+  metafields: [MetafieldInput]
 }
 
 type UpdateTagPayload {
