@@ -134,6 +134,7 @@ class TagForm extends Component {
     const { tag } = this.props;
     const { currentTab } = this.state;
     const nameInputId = `name_${this.uniqueInstanceIdentifier}`;
+    const slugInputId = `slug_${this.uniqueInstanceIdentifier}`;
     const displayTitleInputId = `displayTitle_${this.uniqueInstanceIdentifier}`;
     const isVisibleInputId = `isVisible_${this.uniqueInstanceIdentifier}`;
 
@@ -195,6 +196,16 @@ class TagForm extends Component {
                       >
                         <TextInput id={displayTitleInputId} name="displayTitle" placeholder={i18next.t("admin.tags.form.displayTitlePlaceholder")} />
                         <ErrorsBlock names={["displayTitle"]} />
+                      </PaddedField>
+
+                      <PaddedField
+                        helpText={i18next.t("admin.tags.form.slugHelpText")}
+                        name="slug"
+                        label={i18next.t("admin.tags.form.slug")}
+                        labelFor={slugInputId}
+                      >
+                        <TextInput id={slugInputId} isReadOnly name="slug" placeholder={i18next.t("admin.tags.form.slugPlaceholder")} />
+                        <ErrorsBlock names={["slug"]} />
                       </PaddedField>
 
                       <PaddedField
