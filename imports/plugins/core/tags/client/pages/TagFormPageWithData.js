@@ -95,7 +95,6 @@ class TagFormPageWithData extends Component {
               <TagForm
                 shopId={shopId}
                 tag={tag}
-                products={this.state.products}
                 onCancel={this.handleCancel}
                 onSave={this.handleSave}
               />
