@@ -19,10 +19,10 @@ export const rawMuiTheme = {
     }
   },
   typography: {
-    font: "'Source Sans Pro', 'Helvetica Neue', Helvetica, sans-serif",
-    button: {
-      fontSize: "16px"
-    },
+    fontFamily: "'Source Sans Pro', 'Helvetica Neue', Helvetica, sans-serif",
+    fontWeightLight: 400,
+    fontWeightRegular: 400,
+    fontWeightMedium: 500,
     useNextVariants: true
   },
   shadows: [
