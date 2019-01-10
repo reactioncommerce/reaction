@@ -4,7 +4,10 @@ import PropTypes from "prop-types";
 
 export default class PluginVersion extends Component {
   static propTypes = {
-    versionedPackage: PropTypes.object
+    versionedPackage: PropTypes.shape({
+      name: PropTypes.string.isRequired,
+      version: PropTypes.string
+    }).isRequired
   };
 
   render() {
