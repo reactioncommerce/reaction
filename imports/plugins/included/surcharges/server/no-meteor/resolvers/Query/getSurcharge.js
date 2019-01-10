@@ -1,5 +1,4 @@
 import { decodeShopOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/shop";
-import { getPaginatedResponse } from "@reactioncommerce/reaction-graphql-utils";
 import { decodeSurchargeOpaqueId } from "../../xforms/surcharge";
 
 /**
@@ -15,12 +14,10 @@ import { decodeSurchargeOpaqueId } from "../../xforms/surcharge";
  * @return {Promise<Object>|undefined} A Surcharge object
  */
 export default async function getSurcharge(parentResult, args, context) {
-  const { surchargeId, shopId, ...connectionArgs } = args;
+  const { surchargeId, shopId } = args;
 
-  const cursor = await context.queries.getSurcharge(context, {
+  return context.queries.getSurcharge(context, {
     surchargeId: decodeSurchargeOpaqueId(surchargeId),
     shopId: decodeShopOpaqueId(shopId)
   });
-
-  return getPaginatedResponse(cursor, connectionArgs);
 }
