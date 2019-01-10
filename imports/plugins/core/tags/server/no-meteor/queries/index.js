@@ -1,5 +1,5 @@
-import produtsByTagId from "./productsByTagId";
+import productsByTagId from "./productsByTagId";
 
 export default {
-  produtsByTagId
+  productsByTagId
 };

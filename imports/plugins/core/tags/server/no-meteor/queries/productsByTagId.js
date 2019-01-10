@@ -4,7 +4,7 @@ import ReactionError from "@reactioncommerce/reaction-error";
  * @name queries.productsByTagId
  * @method
  * @memberof Tags/GraphQL
- * @summary get list of product by tag id
+ * @summary get a list of products by tag id
  * @param {Object} context - an object containing the per-request state
  * @param {Object} [params] - an object of all arguments that were sent by the client
  * @param {String} [params.shopId] - Shop ID
@@ -23,6 +23,6 @@ export default async function productsByTagId(context, params) {
 
   return Products.find({
     shopId,
-    hashtags: { $in: tagId }
+    hashtags: { $in: [tagId] }
   });
 }
