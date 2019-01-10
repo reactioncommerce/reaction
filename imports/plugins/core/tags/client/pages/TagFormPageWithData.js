@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from "react";
+import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Meteor } from "meteor/meteor";
 import { withRouter } from "react-router";
@@ -8,7 +8,6 @@ import { FileRecord } from "@reactioncommerce/file-collections";
 import { Media } from "/imports/plugins/core/files/client";
 import withOpaqueShopId from "/imports/plugins/core/graphql/lib/hocs/withOpaqueShopId";
 import { Query, withApollo } from "react-apollo";
-import TagToolbar from "../components/TagToolbar";
 import TagForm from "../components/TagForm";
 import { getTag } from "../../lib/queries";
 
@@ -80,8 +79,7 @@ class TagFormPageWithData extends Component {
       });
   };
 
-
-  renderForm() {
+  render() {
     const { shopId, match } = this.props;
 
     // Id there's a tagId param, then try to find
@@ -97,6 +95,7 @@ class TagFormPageWithData extends Component {
               <TagForm
                 shopId={shopId}
                 tag={tag}
+                products={this.state.products}
                 onCancel={this.handleCancel}
                 onSave={this.handleSave}
               />
@@ -113,18 +112,6 @@ class TagFormPageWithData extends Component {
         onCancel={this.handleCancel}
         onSave={this.handleSave}
       />
-    );
-  }
-
-  render() {
-    return (
-      <Fragment>
-        <TagToolbar
-          onCancel={this.handleCancel}
-          onSave={this.handleSave}
-        />
-        {this.renderForm()}
-      </Fragment>
     );
   }
 }
