@@ -1,6 +1,5 @@
 import React, { Component, Fragment } from "react";
 import PropTypes from "prop-types";
-import { Components } from "@reactioncommerce/reaction-components";
 import { applyTheme } from "@reactioncommerce/components/utils";
 import { Mutation } from "react-apollo";
 import { uniqueId } from "lodash";
@@ -258,7 +257,7 @@ class TagForm extends Component {
                   <Tab label={i18next.t("admin.tags.form.metadata")} />
                   <Tab label={i18next.t("admin.tags.form.productOrdering")} />
                 </Tabs>
-                <Components.Divider />
+                <Divider />
               </ContentGroup>
 
               <Card>
