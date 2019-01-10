@@ -23,3 +23,19 @@ export const getTag = gql`
     }
   }
 `;
+
+export const tagProductsQuery = gql`
+  query getTagProducts($shopId: ID!, $tagId: ID!) {
+    productsByTagId(shopId: $shopId, tagId: $tagId) {
+      pageInfo {
+        endCursor
+        startCursor
+        hasNextPage
+      }
+      nodes {
+        _id
+        title
+      }
+    }
+  }
+`;
