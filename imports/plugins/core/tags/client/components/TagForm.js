@@ -15,6 +15,7 @@ import Grid from "@material-ui/core/Grid";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 import Card from "@material-ui/core/Card";
+import Divider from "@material-ui/core/Divider";
 import CardContent from "@material-ui/core/CardContent";
 import MUICardActions from "@material-ui/core/CardActions";
 import Typography from "@material-ui/core/Typography";
