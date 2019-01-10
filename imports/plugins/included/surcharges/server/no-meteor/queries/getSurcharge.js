@@ -12,7 +12,7 @@ export default async function getSurcharge(context, { surchargeId, shopId } = {}
   const { collections } = context;
   const { Surcharges } = collections;
 
-  return Surcharges.find({
+  return Surcharges.findOne({
     _id: surchargeId,
     shopId
   });
