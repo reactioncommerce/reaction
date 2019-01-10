@@ -1,3 +1,6 @@
+
+
+
 input AddTagInput {
   "An optional string identifying the mutation call, which will be returned in the response payload"
   clientMutationId: String
@@ -78,8 +81,43 @@ type UpdateTagPayload {
   "The same string you sent with the mutation params, for matching mutation calls with their responses"
   clientMutationId: String
 
-  "The updated redirect rule"
+  "The updated tag"
   tag: Tag!
+}
+
+type TagProduct {
+  "The product id"
+  _id: ID!
+
+  "The date and time at which this CatalogProduct was created, which is when the related product was first published"
+  createdAt: DateTime!
+
+  "The title of the product"
+  title: String
+}
+
+type TagProductEdge {
+  cursor: ConnectionCursor!
+  node: RedirectRule
+}
+
+type TagProductConnection {
+  edges: [TagProductEdge]
+  nodes: [TagProduct]
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
+extend type Query {
+  "Returns a list of product in a tag"
+  productsByTagId(
+    shopId: ID!
+    tagId: ID!
+    after: ConnectionCursor
+    before: ConnectionCursor
+    first: ConnectionLimitInt
+    last: ConnectionLimitInt
+  ): TagProductConnection!
 }
 
 extend type Mutation {
