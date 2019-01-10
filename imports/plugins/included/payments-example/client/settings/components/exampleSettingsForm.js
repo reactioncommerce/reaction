@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import _ from "lodash";
 import { TextField, Translation } from "/imports/plugins/core/ui/client/components";
 
 class ExampleSettingsForm extends Component {
