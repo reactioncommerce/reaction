@@ -23,6 +23,7 @@ import { i18next } from "/client/api";
 import { tagListingQuery } from "../../lib/queries";
 import { addTagMutation, updateTagMutation, removeTagMutation } from "../../lib/mutations";
 import TagToolbar from "./TagToolbar";
+import TagProductTable from "./TagProductTable";
 
 const Title = styled.h3`
   margin-bottom: 16px;
@@ -30,7 +31,7 @@ const Title = styled.h3`
 
 const CardActions = styled(MUICardActions)`
   justify-content: flex-end;
-  padding-right: 0;
+  padding-right: 0 !important;
 `;
 
 const PaddedField = styled(Field)`
@@ -39,11 +40,6 @@ const PaddedField = styled(Field)`
 
 const ContentGroup = styled.div`
   margin-bottom: 30px;
-`;
-
-const FormActions = styled.div`
-  display: flex;
-  justify-content: flex-end;
 `;
 
 const Dropzone = styled(ReactDropzone)`
@@ -72,6 +68,7 @@ class TagForm extends Component {
   }
 
   formValue = null;
+  productOrderingPriorities = {}
   uploadedFiles = null
 
   uniqueInstanceIdentifier = uniqueId("URLRedirectEditForm");
@@ -133,6 +130,10 @@ class TagForm extends Component {
     });
   }
 
+  handleProductPriorityChange = (productId, priority) => {
+    this.productOrderingPriorities[productId] = priority;
+  }
+
   reset() {
     this.formValue = null;
   }
@@ -159,7 +160,7 @@ class TagForm extends Component {
   };
 
   renderMediaGalleryUploader() {
-    const { mediaGalleryWidth: containerWidth, uploadProgress, tag } = this.props;
+    const { tag } = this.props;
 
     return (
       <Dropzone
@@ -195,6 +196,7 @@ class TagForm extends Component {
 
   render() {
     const tag = this.tagData;
+    const { shopId } = this.props;
     const { currentTab } = this.state;
     const nameInputId = `name_${this.uniqueInstanceIdentifier}`;
     const slugInputId = `slug_${this.uniqueInstanceIdentifier}`;
@@ -207,19 +209,14 @@ class TagForm extends Component {
     const ogImageUrlInputId = `ogImageUrl_${this.uniqueInstanceIdentifier}`;
     const fbAppIdInputId = `fbAppId_${this.uniqueInstanceIdentifier}`;
     const ogLocaleInputId = `ogLocale_${this.uniqueInstanceIdentifier}`;
-
     const isVisibleInputId = `isVisible_${this.uniqueInstanceIdentifier}`;
 
     let title = i18next.t("admin.tags.form.formTitleNew");
     let mutation = addTagMutation;
-    let submitButtonTitle = i18next.t("admin.tags.form.submitNew");
-
-    const isNew = !!tag._id;
 
     if (tag._id) {
       title = i18next.t("admin.tags.form.formTitleUpdate");
       mutation = updateTagMutation;
-      submitButtonTitle = i18next.t("admin.tags.form.submitUpdate");
     }
 
     return (
@@ -391,10 +388,12 @@ class TagForm extends Component {
                     </Grid>
                   }
 
-                  {currentTab === 3 &&
-                    <div>
-                      tab 3
-                    </div>
+                  {currentTab === 2 &&
+                    <TagProductTable
+                      onProductPriorityChange={this.handleProductPriorityChange}
+                      shopId={shopId}
+                      tagId={tag._id}
+                    />
                   }
 
                   <CardActions>
