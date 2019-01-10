@@ -22,6 +22,7 @@ import Typography from "@material-ui/core/Typography";
 import { i18next } from "/client/api";
 import { tagListingQuery } from "../../lib/queries";
 import { addTagMutation, updateTagMutation, removeTagMutation } from "../../lib/mutations";
+import TagToolbar from "./TagToolbar";
 
 const Title = styled.h3`
   margin-bottom: 16px;
@@ -225,6 +226,15 @@ class TagForm extends Component {
       <Mutation mutation={mutation}>
         {(mutationFunc) => (
           <Fragment>
+            <Mutation mutation={removeTagMutation}>
+              {(removeMutationFunc) => (
+                <TagToolbar
+                  onDelete={() => { this.handleRemove(tag._id, removeMutationFunc); }}
+                  onCancel={this.handleCancel}
+                  onSave={this.handleSave}
+                />
+              )}
+            </Mutation>
             <Title>{title}</Title>
             <Form
               ref={(formRef) => { this.form = formRef; }}
