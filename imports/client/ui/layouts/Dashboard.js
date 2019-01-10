@@ -1,6 +1,6 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 import PropTypes from "prop-types";
-import styled, { css } from "styled-components";
+import styled, { css, injectGlobal } from "styled-components";
 import styledMUI from "styled-components-mui";
 import { ContainerQuery } from "react-container-query";
 import MUIAppBar from "@material-ui/core/AppBar";
@@ -19,6 +19,13 @@ const query = {
     maxWidth: 600
   }
 };
+
+// Remove the 10px fontSize from the html element as it affects fonts that rely on rem
+injectGlobal`
+  html {
+    font-size: inherit;
+  }
+`;
 
 const Container = styled.div`
   display: flex;
