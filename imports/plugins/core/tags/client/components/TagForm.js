@@ -309,7 +309,7 @@ class TagForm extends Component {
                   {currentTab === 1 &&
                     <Grid container spacing={24}>
                       <Grid item md={6}>
-                        <Typography variant="h6">{i18next.t("admin.tags.form.tagListingHero")}</Typography>
+                        <Typography variant="h6">{i18next.t("admin.tags.form.keywords")}</Typography>
                         <PaddedField
                           name="keywords"
                           label={i18next.t("admin.tags.form.keywords")}
@@ -330,7 +330,7 @@ class TagForm extends Component {
                         </PaddedField>
                       </Grid>
                       <Grid item md={6}>
-                        <Typography variant="h6">{i18next.t("admin.tags.form.tagListingHero")}</Typography>
+                        <Typography variant="h6">{i18next.t("admin.tags.form.openGraph")}</Typography>
                         <PaddedField
                           name="og:title"
                           label={i18next.t("admin.tags.form.ogTitle")}

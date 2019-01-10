@@ -30,6 +30,7 @@
               "deleteConfirm": "Delete this tag?",
               "submitNew": "Create Tag",
               "submitUpdate": "Update Tag",
+              "saveChanges": "Save changes",
               "isVisible": "Tag is enabled in storefront",
               "tagListingPage": "Tag listing page",
               "metadata": "Metadata",
@@ -54,7 +55,10 @@
               "fbAppId": "Facebook App Id (Optional)",
               "fbAppIdPlaceholder": "App Id",
               "ogLocale": "Locale [og:locale]",
-              "ogLocalePlaceholder": "Locale"
+              "ogLocalePlaceholder": "Locale",
+              "id": "ID",
+              "title": "Title",
+              "priority": "Priority"
             },
             "headers": {
               "slug": "slug",
