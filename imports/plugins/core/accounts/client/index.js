@@ -1,3 +1,10 @@
+import React from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faUsers, faSignInAlt } from "@fortawesome/free-solid-svg-icons";
+
+import { registerOperatorRoute } from "/imports/client/ui";
+import Accounts from "./containers/accountsDashboardContainer";
+
 export { default as AccountsDashboard } from "./components/accountsDashboard";
 export { default as AddressBookForm } from "./components/addressBookForm";
 export { default as AddressBookReview } from "./components/addressBookReview";
@@ -50,3 +57,23 @@ import "./templates/profile/userOrdersList.html";
 import "./templates/profile/userOrdersList.js";
 import "./templates/updatePassword/updatePassword.html";
 import "./templates/updatePassword/updatePassword.js";
+
+registerOperatorRoute({
+  isNavigationLink: true,
+  isSetting: false,
+  path: "/accounts",
+  mainComponent: Accounts,
+  // eslint-disable-next-line react/display-name, react/no-multi-comp
+  SidebarIconComponent: (props) => <FontAwesomeIcon icon={faUsers} {...props} />,
+  sidebarI18nLabel: "admin.dashboard.accountsLabel"
+});
+
+registerOperatorRoute({
+  isNavigationLink: true,
+  isSetting: true,
+  path: "/login-services",
+  mainComponent: "accountsSettings",
+  // eslint-disable-next-line react/display-name, react/no-multi-comp
+  SidebarIconComponent: (props) => <FontAwesomeIcon icon={faSignInAlt} {...props} />,
+  sidebarI18nLabel: "admin.settings.accountSettingsLabel"
+});

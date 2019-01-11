@@ -3,7 +3,7 @@
  * @summary Returns the root URL, returning process.env.ROOT_URL if set,
  *  otherwise using the request's protocol & hostname
  * @param {Object} request Express request object
- * @param {Object} request.hostname Hostname derived from Host or X-Forwarded-Host heaer
+ * @param {Object} request.hostname Hostname derived from Host or X-Forwarded-Host header
  * @param {String} request.protocol Either http or https
  * @returns {String} URL
  */

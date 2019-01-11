@@ -3,10 +3,7 @@ import createShop from "./createShop";
 import createTag from "./createTag";
 import fetchCurrencyRate from "./fetchCurrencyRate";
 import flushCurrencyRate from "./flushCurrencyRate";
-import getBaseLanguage from "./getBaseLanguage";
-import getCurrencyRates from "./getCurrencyRates";
 import getLocale from "./getLocale";
-import getWorkflow from "./getWorkflow";
 import hideHeaderTag from "./hideHeaderTag";
 import locateAddress from "./locateAddress";
 import removeHeaderTag from "./removeHeaderTag";
@@ -32,10 +29,7 @@ export default {
   "shop/createTag": createTag,
   "shop/fetchCurrencyRate": fetchCurrencyRate,
   "shop/flushCurrencyRate": flushCurrencyRate,
-  "shop/getBaseLanguage": getBaseLanguage,
-  "shop/getCurrencyRates": getCurrencyRates,
   "shop/getLocale": getLocale,
-  "shop/getWorkflow": getWorkflow,
   "shop/hideHeaderTag": hideHeaderTag,
   "shop/locateAddress": locateAddress,
   "shop/removeHeaderTag": removeHeaderTag,

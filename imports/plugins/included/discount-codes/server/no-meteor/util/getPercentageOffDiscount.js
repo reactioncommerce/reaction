@@ -25,8 +25,7 @@ export default async function getPercentageOffDiscount(cartId, discountId, colle
 
   let discount = 0;
   for (const item of cart.items) {
-    const preDiscount = item.quantity * item.priceWhenAdded.amount;
-    discount += preDiscount * discountAmount / 100;
+    discount += item.subtotal.amount * discountAmount / 100;
   }
 
   return discount;

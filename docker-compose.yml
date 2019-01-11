@@ -11,6 +11,9 @@ networks:
   auth:
     external:
       name: auth.reaction.localhost
+  streams:
+    external:
+      name: streams.reaction.localhost
 
 services:
 
@@ -21,14 +24,8 @@ services:
     command: bash -c "meteor npm install && node ./.reaction/waitForMongo.js && reaction"
     depends_on:
       - mongo
-    environment:
-      MONGO_URL: "mongodb://mongo:27017/reaction"
-      MONGO_OPLOG_URL: "mongodb://mongo:27017/local"
-      ROOT_URL: "http://localhost:3000"
-      HYDRA_ADMIN_URL: "http://hydra:4445"
-      HYDRA_TOKEN_URL: "http://hydra:4444/oauth2/token"
-      HYDRA_OAUTH2_INTROSPECT_URL: "http://hydra:4445/oauth2/introspect"
-      OAUTH2_CLIENT_DOMAINS: "http://localhost:4000"
+    env_file:
+      - ./.env
     networks:
       default:
       api:
@@ -42,6 +39,9 @@ services:
   mongo:
     image: mongo:3.6.3
     command: mongod --oplogSize 128 --replSet rs0 --storageEngine=wiredTiger
+    networks:
+      default:
+      streams:
     ports:
       - "27017:27017"
     volumes:

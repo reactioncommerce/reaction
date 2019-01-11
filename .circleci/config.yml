@@ -77,14 +77,6 @@ jobs:
           key: ${GLOBAL_CACHE_VERSION}-node-modules-{{ .Branch }}-{{ epoch }}
           paths:
             - node_modules
-      # mongodb-memory-server installs Mongo binary on npm install, which we need
-      # later when we run Jest integration tests
-      - save_cache:
-          name: Saving mongodb-memory-server MongoDB cache
-          key: mongodb-memory-server
-          paths:
-            - ~/.mongodb-binaries
-
 
   docker-build:
     <<: *defaults
@@ -256,15 +248,24 @@ jobs:
       - checkout
       - restore_cache:
           keys:
-            - v1-node-modules-{{ checksum "package.json" }}-{{ checksum "package-lock.json" }}
-            - v1-node-modules-{{ .Branch }}
-            - v1-node-modules-master
-      - restore_cache:
-          name: Restoring mongodb-memory-server MongoDB cache
-          key: mongodb-memory-server
+            - ${GLOBAL_CACHE_VERSION}-node-modules-{{ checksum "package.json" }}-{{ checksum "package-lock.json" }}
+            - ${GLOBAL_CACHE_VERSION}-node-modules-{{ .Branch }}
+            - ${GLOBAL_CACHE_VERSION}-node-modules-master
       - run:
           name: Run Integration Tests
           command: npm run test:integration
+
+  test-e2e:
+    <<: *defaults
+    docker:
+      - image: reactioncommerce/reaction-automation-client:latest
+    steps:
+      - setup_remote_docker:
+          docker_layer_caching: true
+      - run:
+          name: Run Tests
+          command: |
+            docker run -t -e URL=${STAGING_URL} reactioncommerce/reaction-automation-client:latest npm run-script chrome
 
   dockerfile-lint:
     <<: *defaults
@@ -276,7 +277,7 @@ jobs:
           docker_layer_caching: true
       - run:
           name: Dockerfile Lint
-          command: |
+          command: | 
             hadolint Dockerfile
 
   snyk-security:
@@ -331,10 +332,12 @@ workflows:
       - test-unit:
           requires:
             - build
-      # TODO uncomment and figure out why they always fail on CI
-      # - test-integration:
-      #     requires:
-      #       - build
+      - test-integration:
+          requires:
+            - build
+      - test-e2e:
+          requires:
+            - deploy-to-ecs-release-branch
       - eslint:
           requires:
             - build
@@ -352,12 +355,12 @@ workflows:
           filters:
             branches:
               only: /^release-2.*/
-      - deploy-to-ecs-feature-branch:
-          requires:
-            - docker-push
-          filters:
-            branches:
-              only: /^feat.*/
+      # - deploy-to-ecs-feature-branch:
+      #     requires:
+      #       - docker-push
+      #     filters:
+      #       branches:
+      #         only: /^feat.*/
       - deploy-docs:
           requires:
             - test-unit

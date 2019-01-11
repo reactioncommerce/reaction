@@ -4,7 +4,7 @@ import {
   restore as restore$getCatalogProductMedia
 } from "../utils/getCatalogProductMedia";
 import { rewire as rewire$getTopLevelProduct, restore as restore$getTopLevelProduct } from "../utils/getTopLevelProduct";
-import hashProduct, { rewire$createProductHash, restore$createProductHash } from "./hashProduct";
+import hashProduct, { rewire$createProductHash, restore as restore$hashProduct } from "./hashProduct";
 
 const mockCollections = { ...mockContext.collections };
 
@@ -86,9 +86,6 @@ const mockProduct = {
   supportedFulfillmentTypes: ["shipping"],
   handle: productSlug,
   hashtags: internalTagIds,
-  taxCode: "taxCode",
-  taxDescription: "taxDescription",
-  taxable: false,
   title: "Fake Product Title",
   twitterMsg: "twitterMessage",
   type: "product-simple",
@@ -130,7 +127,7 @@ beforeAll(() => {
 });
 
 afterAll(() => {
-  restore$createProductHash();
+  restore$hashProduct();
   restore$getCatalogProductMedia();
   restore$getTopLevelProduct();
 });

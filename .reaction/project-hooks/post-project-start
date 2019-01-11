@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+# Post Project Start Hook
+# Invoked by the reaction-next project bootstrapping process.
+#
+# Invoked after this service is started. Can be used for project specific
+# actions that should be performed after the project is running, like database
+# setup, migrations, seeds, etc. Do not depend on other projects in this hook!
+#
+# Important Notes:
+#
+#  - The hook runs after all Docker Compose services in THIS project are
+#    started. Though started, there is no guarantee that these services are
+#    ready (i.e. that they will respond to requests.) It is your responsibility
+#    to test that services are available before using them to avoid race
+#    conditions.
+#  - Do not assume that this hook script will run from this local directory.
+#    The $__dir var is provided for convenience and may be used to invoke other
+#    scripts.
+#  - It is good practice to keep this script lightweight and invoke setup
+#    scripts in your project.
+
+__current_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+__root_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
+__root_name=$(basename "${__root_dir}")
+
+echo "${__root_name} post-project-start script invoked." 2>&1

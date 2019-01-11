@@ -17,7 +17,6 @@
           isBackorder
           isLowQuantity
           isSoldOut
-          isTaxable
           length
           lowInventoryWarningThreshold
           metafields {
@@ -44,7 +43,9 @@
               _id
               code
             }
-            compareAtPrice
+            compareAtPrice {
+              amount
+            }
             price
             maxPrice
             minPrice
@@ -94,8 +95,6 @@
               _id
             }
           }
-          taxCode
-          taxDescription
           title
           updatedAt
           variants {
@@ -149,7 +148,9 @@
                   _id
                   code
                 }
-                compareAtPrice
+                compareAtPrice {
+                  amount
+                }
                 price
                 maxPrice
                 minPrice
@@ -173,7 +174,9 @@
                 _id
                 code
               }
-              compareAtPrice
+              compareAtPrice {
+                amount
+              }
               price
               maxPrice
               minPrice

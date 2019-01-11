@@ -27,12 +27,13 @@ beforeAll(async () => {
 
 afterAll(async () => {
   await testApp.collections.Shops.remove({ _id: internalShopId });
+  await Promise.all(internalTagIds.map((_id) => testApp.collections.Tags.remove({ _id })));
   await testApp.collections.Catalog.remove({ _id: internalCatalogItemIds[0] });
   await testApp.collections.Catalog.remove({ _id: internalCatalogItemIds[1] });
   testApp.stop();
 });
 
-test.skip("get all items for shop", async () => {
+test("get all items for shop", async () => {
   let result;
   try {
     result = await query({ shopIds: [opaqueShopId] });
@@ -45,7 +46,7 @@ test.skip("get all items for shop", async () => {
 });
 
 // expect CatalogItems sorted by minPrice form high to low
-test.skip("expect CatalogItemProducts sorted by minPrice from highest to lowest when sortByPriceCurrencyCode is provided", async () => {
+test("expect CatalogItemProducts sorted by minPrice from highest to lowest when sortByPriceCurrencyCode is provided", async () => {
   let result;
   try {
     result = await query({ shopIds: [opaqueShopId], sortBy: "minPrice", sortByPriceCurrencyCode: "USD" });
@@ -58,7 +59,7 @@ test.skip("expect CatalogItemProducts sorted by minPrice from highest to lowest 
 });
 
 // expect CatalogItems sorted by minPrice form high to low when sortOrder is desc
-test.skip("expect CatalogItemProducts sorted by minPrice from highest to lowest when sortByPriceCurrencyCode is provided and sortOrder is desc", async () => {
+test("expect CatalogItemProducts sorted by minPrice from highest to lowest when sortByPriceCurrencyCode is provided and sortOrder is desc", async () => {
   let result;
   try {
     result = await query({
@@ -76,7 +77,7 @@ test.skip("expect CatalogItemProducts sorted by minPrice from highest to lowest 
 });
 
 // expect CatalogItems sorted by minPrice form low to high when sortOrder is asc
-test.skip("expect CatalogItemProducts sorted by minPrice from lowest to highest when sortByPriceCurrencyCode is provided and sortOrder is asc", async () => {
+test("expect CatalogItemProducts sorted by minPrice from lowest to highest when sortByPriceCurrencyCode is provided and sortOrder is asc", async () => {
   let result;
   try {
     result = await query({
@@ -94,7 +95,7 @@ test.skip("expect CatalogItemProducts sorted by minPrice from lowest to highest 
 });
 
 // expect error when invalid currency code is provided
-test.skip("expect error when sortByPriceCurrencyCode is not provided while sortBy is minPrice", async () => {
+test("expect error when sortByPriceCurrencyCode is not provided while sortBy is minPrice", async () => {
   try {
     await query({
       shopIds: [opaqueShopId],

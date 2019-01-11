@@ -56,7 +56,7 @@ export default function createApolloServer(options = {}) {
 
       return {
         context,
-        debug: options.debug,
+        debug: options.debug || false,
         formatError: getErrorFormatter(context),
         formatResponse(res) {
           // Apollo includes `errors` in the response when empty, but the spec forbids this.

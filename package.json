@@ -1,7 +1,7 @@
 {
   "name": "reaction",
   "description": "Reaction is a modern reactive, real-time event driven ecommerce platform.",
-  "version": "2.0.0-rc.7",
+  "version": "2.0.0-rc.8",
   "main": "main.js",
   "directories": {
     "test": "tests"
@@ -29,7 +29,11 @@
     "@babel/plugin-syntax-dynamic-import": "7.0.0",
     "@babel/plugin-syntax-import-meta": "7.0.0",
     "@babel/runtime": "7.0.0",
-    "@reactioncommerce/components": "0.39.3",
+    "@fortawesome/fontawesome-svg-core": "^1.2.8",
+    "@fortawesome/free-solid-svg-icons": "^5.5.0",
+    "@fortawesome/react-fontawesome": "^0.1.3",
+    "@material-ui/core": "^3.4.0",
+    "@reactioncommerce/components": "^0.54.0",
     "@reactioncommerce/components-context": "1.0.0",
     "@reactioncommerce/data-factory": "^1.0.0",
     "@reactioncommerce/file-collections": "0.6.0",
@@ -68,12 +72,12 @@
     "fibers": "^2.0.0",
     "flatten-obj": "^3.1.1",
     "font-awesome": "^4.7.0",
-    "graphql": "0.13.1",
+    "graphql": "14.0.2",
     "graphql-fields": "1.1.0",
     "graphql-iso-date": "3.5.0",
     "graphql-relay": "0.5.5",
     "graphql-tag": "2.9.2",
-    "graphql-tools": "3.1.1",
+    "graphql-tools": "4.0.3",
     "graphql.js": "0.4.20",
     "handlebars": "^4.0.11",
     "history": "^4.7.2",
@@ -145,6 +149,7 @@
     "store": "^2.0.12",
     "stripe": "^5.4.0",
     "styled-components": "3.4.2",
+    "styled-components-mui": "^0.3.2",
     "sweetalert2": "^7.12.3",
     "swiper": "^4.1.0",
     "tether-drop": "^1.4.2",
@@ -162,11 +167,11 @@
     "@reactioncommerce/eslint-config": "1.9.0",
     "babel-core": "7.0.0-bridge.0",
     "babel-eslint": "8.2.3",
-    "babel-jest": "22.4.4",
+    "babel-jest": "23.6.0",
     "babel-plugin-inline-import": "3.0.0",
     "babel-plugin-lodash": "3.3.2",
     "babel-plugin-module-resolver": "3.1.1",
-    "babel-plugin-rewire-exports": "0.3.0",
+    "babel-plugin-rewire-exports": "1.0.1",
     "babel-plugin-transform-class-properties": "6.24.1",
     "babel-preset-meteor": "7.0.0",
     "chai": "^4.1.2",
@@ -181,11 +186,11 @@
     "eslint-plugin-promise": "3.8.0",
     "eslint-plugin-react": "7.8.2",
     "find-free-port": "^1.2.0",
-    "jest": "^22.4.2",
-    "jest-junit": "^3.6.0",
+    "jest": "23.6.0",
+    "jest-junit": "5.2.0",
     "js-yaml": "^3.10.0",
     "jsdoc": "^3.5.5",
-    "mongodb-memory-server": "1.8.0",
+    "mongodb-memory-server": "2.7.3",
     "nodemon": "^1.18.6",
     "react-addons-test-utils": "15.6.2",
     "snyk": "^1.78.0"
@@ -388,6 +393,9 @@
       ],
       "jsx-a11y/label-has-for": "off"
     }
+  },
+  "prettier": {
+    "arrowParens": "always"
   },
   "nodemonConfig": {
     "delay": "2000",

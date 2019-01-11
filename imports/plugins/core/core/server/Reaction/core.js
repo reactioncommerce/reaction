@@ -40,6 +40,15 @@ export default {
   ...AbsoluteUrlMixin,
 
   init() {
+    const registerPluginHandlerFuncs = functionsByType.registerPluginHandler || [];
+    const packageInfoArray = Object.values(this.Packages);
+    registerPluginHandlerFuncs.forEach((registerPluginHandlerFunc) => {
+      if (typeof registerPluginHandlerFunc !== "function") {
+        throw new Error('A plugin registered a function of type "registerPluginHandler" which is not actually a function');
+      }
+      packageInfoArray.forEach(registerPluginHandlerFunc);
+    });
+
     // run beforeCoreInit hooks
     Hooks.Events.run("beforeCoreInit");
 
@@ -883,6 +892,14 @@ export default {
     let options = {};
     options = Hooks.Events.run("beforeCreateDefaultAdminUser", options);
 
+    const {
+      REACTION_AUTH,
+      REACTION_EMAIL,
+      REACTION_SECURE_DEFAULT_ADMIN,
+      REACTION_USER,
+      REACTION_USER_NAME
+    } = process.env;
+
     // If $REACTION_SECURE_DEFAULT_ADMIN is set to "true" on first run,
     // a random email/password will be generated instead of using the
     // default email and password (email: admin@localhost pw: r3@cti0n)
@@ -891,7 +908,7 @@ export default {
     // the only place to retrieve them.
     // If the admin email/password is provided via environment or Meteor settings,
     // the $REACTION_SECURE_DEFAULT_ADMIN will only enforce the email validation part.
-    const isSecureSetup = process.env.REACTION_SECURE_DEFAULT_ADMIN === "true";
+    const isSecureSetup = REACTION_SECURE_DEFAULT_ADMIN === "true";
 
     // generate default values to use if none are supplied
     const defaultEmail = isSecureSetup ? `${Random.id(8).toLowerCase()}@localhost` : "admin@localhost";
@@ -899,33 +916,15 @@ export default {
     const defaultUsername = "admin";
     const defaultName = "Admin";
 
-    // Process environment variables and Meteor settings for initial user config.
-    // If ENV variables are set, they always override Meteor settings (settings.json).
-    // This is to allow for testing environments where we don't want to use users configured in a settings file.
-    const { env } = process;
-    let configureEnv = false;
-
-    if (env.REACTION_EMAIL && env.REACTION_AUTH) {
-      configureEnv = true;
+    if (REACTION_EMAIL && REACTION_AUTH) {
       Logger.info("Using environment variables to create admin user");
     }
 
     // defaults use either env or generated values
-    options.email = env.REACTION_EMAIL || defaultEmail;
-    options.password = env.REACTION_AUTH || defaultPassword;
-    options.username = env.REACTION_USER_NAME || defaultUsername;
-    options.name = env.REACTION_USER || defaultName;
-
-    // or use `meteor --settings`
-    if (Meteor.settings && !configureEnv) {
-      if (Meteor.settings.reaction) {
-        options.email = Meteor.settings.reaction.REACTION_EMAIL || defaultEmail;
-        options.password = Meteor.settings.reaction.REACTION_AUTH || defaultPassword;
-        options.username = Meteor.settings.reaction.REACTION_USER || defaultUsername;
-        options.name = Meteor.settings.reaction.REACTION_USER_NAME || defaultName;
-        Logger.info("Using meteor --settings to create admin user");
-      }
-    }
+    options.email = REACTION_EMAIL || defaultEmail;
+    options.password = REACTION_AUTH || defaultPassword;
+    options.username = REACTION_USER_NAME || defaultUsername;
+    options.name = REACTION_USER || defaultName;
 
     // set the default shop email to the default admin email
     Shops.update(shopId, {
@@ -953,27 +952,28 @@ export default {
     //
     // create the new admin user
     //
-    let accountId;
+    let userId;
     // we're checking again to see if this user was created but not specifically for this shop.
-    if (Meteor.users.find({ "emails.address": options.email }).count() === 0) {
-      accountId = Accounts.createUser(options);
-    } else {
+    const existingUser = Meteor.users.findOne({ "emails.address": options.email });
+    if (existingUser) {
       // this should only occur when existing admin creates a new shop
-      accountId = Meteor.users.findOne({ "emails.address": options.email })._id;
-    }
+      userId = existingUser._id;
+    } else {
+      userId = Accounts.createUser(options);
 
-    // update the user's name if it was provided
-    // (since Accounts.createUser() doesn't allow that field and strips it out)
-    Meteor.users.update(accountId, {
-      $set: {
-        name: options.name
-      }
-    });
+      // update the user's name if it was provided
+      // (since Accounts.createUser() doesn't allow that field and strips it out)
+      Meteor.users.update({ _id: userId }, {
+        $set: {
+          name: options.name
+        }
+      });
+    }
 
     // unless strict security is enabled, mark the admin's email as validated
     if (!isSecureSetup) {
       Meteor.users.update({
-        "_id": accountId,
+        "_id": userId,
         "emails.address": options.email
       }, {
         $set: {
@@ -981,7 +981,7 @@ export default {
         }
       });
       Collections.Accounts.update({
-        "_id": accountId,
+        userId,
         "emails.address": options.email
       }, {
         $set: {
@@ -990,7 +990,7 @@ export default {
       });
     } else {
       // send verification email to admin
-      sendVerificationEmail(accountId);
+      sendVerificationEmail(userId);
     }
 
     // Set default owner roles
@@ -1001,9 +1001,9 @@ export default {
     ownerRoles = _.uniq(ownerRoles);
 
     // we don't use accounts/addUserPermissions here because we may not yet have permissions
-    Roles.setUserRoles(accountId, ownerRoles, shopId);
+    Roles.setUserRoles(userId, ownerRoles, shopId);
     // // the reaction owner has permissions to all sites by default
-    Roles.setUserRoles(accountId, ownerRoles, Roles.GLOBAL_GROUP);
+    Roles.setUserRoles(userId, ownerRoles, Roles.GLOBAL_GROUP);
     // initialize package permissions we don't need to do any further permission configuration it is taken care of in the
     // assignOwnerRoles
     const packages = Packages.find().fetch();
@@ -1020,10 +1020,10 @@ export default {
         \n ********************************* \n\n`);
 
     // run hooks on new user object
-    const user = Meteor.users.findOne(accountId);
+    const user = Meteor.users.findOne({ _id: userId });
     Hooks.Events.run("afterCreateDefaultAdminUser", user);
 
-    return accountId;
+    return userId;
   },
 
   /**

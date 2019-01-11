@@ -1,3 +1,4 @@
 import schema from "./schema.graphql";
+import restrictions from "./restrictions.graphql";
 
-export default [schema];
+export default [restrictions, schema];

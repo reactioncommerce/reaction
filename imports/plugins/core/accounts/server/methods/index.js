@@ -9,11 +9,9 @@ import groupMethods from "./group";
 import inviteShopMember from "./inviteShopMember";
 import inviteShopOwner from "./inviteShopOwner";
 import markAddressValidationBypassed from "./markAddressValidationBypassed";
-import markTaxCalculationFailed from "./markTaxCalculationFailed";
 import removeEmailAddress from "./removeEmailAddress";
 import removeUserPermissions from "./removeUserPermissions";
 import sendResetPasswordEmail from "./sendResetPasswordEmail";
-import sendWelcomeEmail from "./sendWelcomeEmail";
 import setProfileCurrency from "./setProfileCurrency";
 import setUserPermissions from "./setUserPermissions";
 import updateEmailAddress from "./updateEmailAddress";
@@ -45,11 +43,9 @@ export default {
   "accounts/inviteShopMember": inviteShopMember,
   "accounts/inviteShopOwner": inviteShopOwner,
   "accounts/markAddressValidationBypassed": markAddressValidationBypassed,
-  "accounts/markTaxCalculationFailed": markTaxCalculationFailed,
   "accounts/removeEmailAddress": removeEmailAddress,
   "accounts/removeUserPermissions": removeUserPermissions,
   "accounts/sendResetPasswordEmail": sendResetPasswordEmail,
-  "accounts/sendWelcomeEmail": sendWelcomeEmail,
   "accounts/setProfileCurrency": setProfileCurrency,
   "accounts/setUserPermissions": setUserPermissions,
   "accounts/updateEmailAddress": updateEmailAddress,

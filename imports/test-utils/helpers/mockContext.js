@@ -11,31 +11,8 @@ const mockContext = {
   userId: "FAKE_USER_ID"
 };
 
-[
-  "Accounts",
-  "Assets",
-  "Cart",
-  "Catalog",
-  "Emails",
-  "Groups",
-  "Inventory",
-  "MediaRecords",
-  "Notifications",
-  "Orders",
-  "Packages",
-  "Products",
-  "Revisions",
-  "roles",
-  "SellerShops",
-  "Shipping",
-  "Shops",
-  "Tags",
-  "Templates",
-  "Themes",
-  "Translations",
-  "users"
-].forEach((collectionName) => {
-  mockContext.collections[collectionName] = {
+export function mockCollection(collectionName) {
+  return {
     insert() {
       throw new Error("insert mongo method is deprecated, use insertOne or insertMany");
     },
@@ -54,6 +31,8 @@ const mockContext = {
       .mockName(`${collectionName}.find`)
       .mockReturnThis(),
     findOne: jest.fn().mockName(`${collectionName}.findOne`),
+    findOneAndDelete: jest.fn().mockName(`${collectionName}.findOneAndDelete`),
+    fetch: jest.fn().mockName(`${collectionName}.fetch`),
     insertOne: jest.fn().mockName(`${collectionName}.insertOne`),
     insertMany: jest.fn().mockName(`${collectionName}.insertMany`),
     toArray: jest.fn().mockName(`${collectionName}.toArray`),
@@ -63,6 +42,35 @@ const mockContext = {
     })),
     updateMany: jest.fn().mockName(`${collectionName}.updateMany`)
   };
+}
+
+[
+  "Accounts",
+  "Assets",
+  "Cart",
+  "Catalog",
+  "Emails",
+  "Groups",
+  "Inventory",
+  "MediaRecords",
+  "NavigationItems",
+  "NavigationTrees",
+  "Notifications",
+  "Orders",
+  "Packages",
+  "Products",
+  "Revisions",
+  "roles",
+  "SellerShops",
+  "Shipping",
+  "Shops",
+  "Tags",
+  "Templates",
+  "Themes",
+  "Translations",
+  "users"
+].forEach((collectionName) => {
+  mockContext.collections[collectionName] = mockCollection(collectionName);
 });
 
 mockContext.collections.Media = {

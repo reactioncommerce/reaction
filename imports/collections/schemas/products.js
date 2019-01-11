@@ -60,6 +60,7 @@ registerSchema("VariantMedia", VariantMedia);
  * @property {Boolean} inventoryManagement, default value: `true`
  * @property {Boolean} inventoryPolicy, default value: `false`, If disabled, item can be sold even if it not in stock.
  * @property {Number} inventoryQuantity, default value: `0`
+ * @property {Boolean} isBackorder denormalized, `true` if product not in stock, but customers anyway could order it
  * @property {Boolean} isDeleted, default value: `false`
  * @property {Boolean} isLowQuantity optional, true when at least 1 variant is below `lowInventoryWarningThreshold`
  * @property {Boolean} isSoldOut optional, denormalized field, indicates when all variants `inventoryQuantity` is 0
@@ -73,9 +74,6 @@ registerSchema("VariantMedia", VariantMedia);
  * @property {Number} price, default value: `0.00`
  * @property {String} shopId required, Variant ShopId
  * @property {String} sku optional
- * @property {Boolean} taxable, default value: `true`
- * @property {String} taxCode, default value: `"0000"`
- * @property {String} taxDescription optional
  * @property {String} title, Label for customers, default value: `""`
  * @property {String} type, default value: `"variant"`
  * @property {Date} updatedAt optional
@@ -176,6 +174,12 @@ export const ProductVariant = new SimpleSchema({
     optional: true,
     defaultValue: 0
   },
+  "isBackorder": {
+    label: "Indicates when the seller has allowed the sale of product which" +
+    " is not in stock",
+    type: Boolean,
+    optional: true
+  },
   "isDeleted": {
     type: Boolean,
     index: 1,
@@ -248,23 +252,6 @@ export const ProductVariant = new SimpleSchema({
     label: "SKU",
     type: String,
     optional: true
-  },
-  "taxable": {
-    label: "Taxable",
-    type: Boolean,
-    defaultValue: true,
-    optional: true
-  },
-  "taxCode": {
-    label: "Tax Code",
-    type: String,
-    defaultValue: "0000",
-    optional: true
-  },
-  "taxDescription": {
-    type: String,
-    optional: true,
-    label: "Tax Description"
   },
   "title": {
     label: "Label",
