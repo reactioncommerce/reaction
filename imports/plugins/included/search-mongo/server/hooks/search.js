@@ -1,4 +1,3 @@
-import Hooks from "@reactioncommerce/hooks";
 import Logger from "@reactioncommerce/logger";
 import { Meteor } from "meteor/meteor";
 import { ProductSearch, AccountSearch } from "/lib/collections";
@@ -55,19 +54,4 @@ appEvents.on("afterPublishProductToCatalog", ({ product }) => {
   Logger.debug(`Rewriting search record for ${product.title}`);
   ProductSearch.remove({ _id: product._id });
   buildProductSearchRecord(product._id);
-});
-
-/**
- * after insert
- * @summary should fires on create new variants, on clones products/variants
- * @private
- */
-Hooks.Events.add("afterInsertProduct", (doc) => {
-  if (ProductSearch && !Meteor.isAppTest && doc.type === "simple") {
-    const productId = doc._id;
-    buildProductSearchRecord(productId);
-    Logger.debug(`Added product ${productId} to ProductSearch`);
-  }
-
-  return doc;
 });
