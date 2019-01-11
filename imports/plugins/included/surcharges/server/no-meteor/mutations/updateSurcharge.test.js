@@ -7,35 +7,33 @@ mockContext.collections.Surcharges = mockCollection("Surcharges");
 mockContext.userHasPermission.mockReturnValueOnce(true);
 
 const surcharge = {
-  type: "deny",
+  type: "surcharge",
   attributes: [
     { property: "vendor", value: "reaction", propertyType: "string", operator: "eq" },
     { property: "productType", value: "knife", propertyType: "string", operator: "eq" }
   ],
   destination: { region: ["CO", "NY"] },
-  surcharges: [
-    {
-      amount: "5.99",
-      message: "Original Message",
-      reason: "Original Reason"
-    }
-  ]
+  amount: {
+    amount: 5.99,
+    currencyCode: "USD"
+  },
+  message: "Original Message",
+  reason: "Original Reason"
 };
 
 const updatedSurcharge = {
-  type: "deny",
+  type: "surcharge",
   attributes: [
     { property: "vendor", value: "john", propertyType: "string", operator: "eq" },
     { property: "productType", value: "gun", propertyType: "string", operator: "eq" }
   ],
   destination: { region: ["NJ", "WY"] },
-  surcharges: [
-    {
-      amount: "17.99",
-      message: "Updated Message",
-      reason: "Updated Reason"
-    }
-  ]
+  amount: {
+    amount: 17.99,
+    currencyCode: "USD"
+  },
+  message: "Updated Message",
+  reason: "Updated Reason"
 };
 
 test("update a surcharge", async () => {
@@ -52,19 +50,18 @@ test("update a surcharge", async () => {
 
   expect(result).toEqual({
     surcharge: {
-      type: "deny",
+      type: "surcharge",
       attributes: [
         { property: "vendor", value: "reaction", propertyType: "string", operator: "eq" },
         { property: "productType", value: "knife", propertyType: "string", operator: "eq" }
       ],
       destination: { region: ["CO", "NY"] },
-      surcharges: [
-        {
-          amount: "5.99",
-          message: "Original Message",
-          reason: "Original Reason"
-        }
-      ]
+      amount: {
+        amount: 5.99,
+        currencyCode: "USD"
+      },
+      message: "Original Message",
+      reason: "Original Reason"
     }
   });
 });
