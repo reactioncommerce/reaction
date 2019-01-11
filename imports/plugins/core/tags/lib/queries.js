@@ -35,6 +35,7 @@ export const tagProductsQuery = gql`
       nodes {
         _id
         title
+        position
       }
     }
   }
