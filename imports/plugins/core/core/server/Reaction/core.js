@@ -7,6 +7,7 @@ import { check } from "meteor/check";
 import { Roles } from "meteor/alanning:roles";
 import { EJSON } from "meteor/ejson";
 import * as Collections from "/lib/collections";
+import appEvents from "/imports/node-app/core/util/appEvents";
 import ConnectionDataStore from "/imports/plugins/core/core/server/util/connectionDataStore";
 import {
   customPublishedProductFields,
@@ -47,7 +48,7 @@ export default {
     Jobs.startJobServer(() => {
       Logger.info("JobServer started");
       processJobs();
-      Hooks.Events.run("onJobServerStart");
+      appEvents.emit("jobServerStart");
     });
     if (process.env.VERBOSE_JOBS) {
       Jobs.setLogStream(process.stdout);
