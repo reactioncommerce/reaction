@@ -1,7 +1,7 @@
 import mongodb, { MongoClient } from "mongodb";
-import graphql from "graphql.js";
-import findFreePort from "find-free-port";
 import MongoDBMemoryServer from "mongodb-memory-server";
+import { gql } from "apollo-server";
+import { createTestClient } from "apollo-server-testing";
 import Random from "@reactioncommerce/random";
 import appEvents from "../imports/node-app/core/util/appEvents";
 import createApolloServer from "../imports/node-app/core/createApolloServer";
@@ -15,10 +15,17 @@ import schemas from "../imports/node-app/devserver/schemas";
 import resolvers from "../imports/node-app/devserver/resolvers";
 
 class TestApp {
-  constructor() {
+  constructor(options = { extraSchemas: [] }) {
     this.collections = {};
+    this.context = {
+      appEvents,
+      collections: this.collections,
+      getFunctionsOfType: () => [],
+      mutations,
+      queries
+    };
 
-    this.app = createApolloServer({
+    const { apolloServer, expressApp } = createApolloServer({
       addCallMeteorMethod(context) {
         context.callMeteorMethod = (name) => {
           console.warn(`The "${name}" Meteor method was called. The method has not yet been converted to a mutation that` + // eslint-disable-line no-console
@@ -26,26 +33,29 @@ class TestApp {
           return null;
         };
       },
-      context: {
-        appEvents,
-        collections: this.collections,
-        getFunctionsOfType: () => [],
-        mutations,
-        queries
-      },
-      typeDefs: schemas,
+      context: this.context,
+      schemas: [...schemas, ...options.extraSchemas],
       resolvers
       // Uncomment this if you need to debug a test. Otherwise we keep debug mode off to avoid extra
       // error logging in the test output.
       // debug: true
     });
+
+    this.app = expressApp;
+    this.graphClient = createTestClient(apolloServer);
   }
 
-  mutate = (...args) => this.graphClient.mutate(...args);
+  mutate = (mutation) => async (variables) => {
+    const result = await this.graphClient.mutate({ mutation: gql(mutation), variables });
+    if (result.errors) throw result.errors;
+    return result.data;
+  };
 
-  query = (...args) => this.graphClient.query(...args);
-
-  subscribe = (...args) => this.graphClient.subscribe(...args);
+  query = (query) => async (variables) => {
+    const result = await this.graphClient.query({ query: gql(query), variables });
+    if (result.errors) throw result.errors;
+    return result.data;
+  };
 
   async createUserAndAccount(user = {}, globalRoles) {
     await this.collections.users.insertOne({
@@ -86,20 +96,14 @@ class TestApp {
     });
 
     this.userId = user._id;
-    this.setLoginToken(loginToken);
+
+    const dbUser = await this.collections.users.findOne({ _id: user._id });
+    this.context.user = dbUser;
   }
 
   async clearLoggedInUser() {
-    this.clearLoginToken();
     this.userId = null;
-  }
-
-  setLoginToken(token) {
-    this.graphClient.headers({ "meteor-login-token": token });
-  }
-
-  clearLoginToken() {
-    this.setLoginToken(null);
+    this.context.user = null;
   }
 
   async insertPrimaryShop(shopData) {
@@ -128,7 +132,7 @@ class TestApp {
   async startMongo() {
     this.mongoServer = new MongoDBMemoryServer();
     const mongoUri = await this.mongoServer.getConnectionString();
-    this.connection = await MongoClient.connect(mongoUri);
+    this.connection = await MongoClient.connect(mongoUri, { useNewUrlParser: true });
     this.db = this.connection.db(await this.mongoServer.getDbName());
 
     defineCollections(this.db, this.collections);
@@ -149,41 +153,12 @@ class TestApp {
     this.mongoServer.stop();
   }
 
-  async startServer() {
-    const port = await findFreePort(4040);
-    return new Promise((resolve, reject) => {
-      try {
-        this.server = this.app.listen(String(port), () => {
-          this.graphClient = graphql(`http://localhost:${port}/graphql-alpha`, { asJSON: true });
-          resolve(port);
-        });
-      } catch (error) {
-        reject(error);
-      }
-    });
-  }
-
-  async stopServer() {
-    if (!this.server) return null;
-    return new Promise((resolve, reject) => {
-      this.server.close((error) => {
-        if (error) {
-          reject(error);
-        } else {
-          resolve(null);
-        }
-      });
-    });
-  }
-
   async start() {
     await this.startMongo();
-    await this.startServer();
   }
 
   async stop() {
     this.stopMongo();
-    await this.stopServer();
   }
 }
 

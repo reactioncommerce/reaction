@@ -69,6 +69,8 @@ function xformCartItem(context, catalogItems, products, cartItem) {
     ...cartItem,
     currentQuantity: variantSourceProduct && variantSourceProduct.inventoryQuantity,
     imageURLs: media && media.URLs,
+    inventoryAvailableToSell: variantSourceProduct && variantSourceProduct.inventoryQuantity,
+    inventoryInStock: variantSourceProduct && variantSourceProduct.inventoryQuantity,
     isBackorder: variant.isBackorder || false,
     isLowQuantity: variant.isLowQuantity || false,
     isSoldOut: variant.isSoldOut || false,

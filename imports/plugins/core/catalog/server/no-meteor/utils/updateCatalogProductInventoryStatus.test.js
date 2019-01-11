@@ -1,7 +1,7 @@
 import mockContext from "/imports/test-utils/helpers/mockContext";
-import { rewire as rewire$isBackorder, restore as restore$isBackorder } from "./isBackorder";
-import { rewire as rewire$isLowQuantity, restore as restore$isLowQuantity } from "./isLowQuantity";
-import { rewire as rewire$isSoldOut, restore as restore$isSoldOut } from "./isSoldOut";
+import { rewire as rewire$isBackorder, restore as restore$isBackorder } from "/imports/plugins/core/inventory/server/no-meteor/utils/isBackorder";
+import { rewire as rewire$isLowQuantity, restore as restore$isLowQuantity } from "/imports/plugins/core/inventory/server/no-meteor/utils/isLowQuantity";
+import { rewire as rewire$isSoldOut, restore as restore$isSoldOut } from "/imports/plugins/core/inventory/server/no-meteor/utils/isSoldOut";
 import updateCatalogProductInventoryStatus from "./updateCatalogProductInventoryStatus";
 
 const mockCollections = { ...mockContext.collections };
@@ -27,6 +27,8 @@ const mockVariants = [
     createdAt,
     height: 0,
     index: 0,
+    inventoryAvailableToSell: 10,
+    inventoryInStock: 10,
     inventoryManagement: true,
     inventoryPolicy: false,
     isDeleted: false,
@@ -61,10 +63,12 @@ const mockVariants = [
   },
   {
     _id: internalVariantIds[1],
-    ancestors: [internalCatalogProductId, internalVariantIds[0]],
+    ancestors: [internalCatalogProductId],
     barcode: "barcode",
     height: 2,
     index: 0,
+    inventoryAvailableToSell: 10,
+    inventoryInStock: 10,
     inventoryManagement: true,
     inventoryPolicy: true,
     isDeleted: false,
@@ -108,6 +112,8 @@ const mockProduct = {
   fulfillmentService: "fulfillmentService",
   googleplusMsg: "googlePlusMessage",
   height: 11.23,
+  inventoryAvailableToSell: 20,
+  inventoryInStock: 20,
   isBackorder: false,
   isLowQuantity: false,
   isSoldOut: false,
@@ -204,6 +210,7 @@ afterAll(() => {
 
 test("expect true if a product's inventory has changed and is updated in the catalog collection", async () => {
   mockCollections.Catalog.findOne.mockReturnValueOnce(Promise.resolve(mockCatalogItem));
+  mockCollections.Products.findOne.mockReturnValueOnce(Promise.resolve(mockProduct));
   mockCollections.Products.toArray.mockReturnValueOnce(Promise.resolve(mockVariants));
   mockIsSoldOut.mockReturnValueOnce(true);
   mockCollections.Catalog.updateOne.mockReturnValueOnce(Promise.resolve({ result: { ok: 1 } }));
@@ -213,6 +220,7 @@ test("expect true if a product's inventory has changed and is updated in the cat
 
 test("expect false if a product's catalog item does not exist", async () => {
   mockCollections.Catalog.findOne.mockReturnValueOnce(Promise.resolve(undefined));
+  mockCollections.Products.findOne.mockReturnValueOnce(Promise.resolve(mockProduct));
   const spec = await updateCatalogProductInventoryStatus(mockProduct, mockCollections);
   expect(spec).toBe(false);
 });

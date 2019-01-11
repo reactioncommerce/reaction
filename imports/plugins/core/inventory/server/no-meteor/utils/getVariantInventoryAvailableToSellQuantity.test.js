@@ -1,6 +1,6 @@
 import mockContext from "/imports/test-utils/helpers/mockContext";
-import { rewire as rewire$getVariants, restore as restore$getVariants } from "./getVariants";
-import getVariantQuantity from "./getVariantQuantity";
+import { rewire as rewire$getVariants, restore as restore$getVariants } from "/imports/plugins/core/catalog/server/no-meteor/utils/getVariants";
+import getVariantInventoryAvailableToSellQuantity from "./getVariantInventoryAvailableToSellQuantity";
 
 const mockCollections = { ...mockContext.collections };
 const mockGetVariants = jest.fn().mockName("getVariants");
@@ -22,6 +22,7 @@ const mockVariants = [
     index: 0,
     inventoryManagement: true,
     inventoryPolicy: false,
+    inventoryAvailableToSell: 5,
     inventoryQuantity: 5,
     isDeleted: false,
     isLowQuantity: true,
@@ -61,6 +62,7 @@ const mockVariants = [
     index: 0,
     inventoryManagement: true,
     inventoryPolicy: true,
+    inventoryAvailableToSell: 5,
     inventoryQuantity: 5,
     isDeleted: false,
     isLowQuantity: true,
@@ -102,20 +104,21 @@ afterAll(restore$getVariants);
 // expect product variant quantity number when passing a single variant
 test("expect product variant quantity number when pasing a single variant", async () => {
   mockGetVariants.mockReturnValueOnce(Promise.resolve([mockVariants[1]]));
-  const spec = await getVariantQuantity(mockVariants[0], mockCollections);
+  const spec = await getVariantInventoryAvailableToSellQuantity(mockVariants[0], mockCollections);
   expect(spec).toEqual(5);
 });
 
 // expect product variant quantity number when passing a array of product variant objects
 test("expect product variant quantity number when passing a array of product variant objects", async () => {
-  const spec = await getVariantQuantity(mockVariants[0], mockCollections, mockVariants);
+  const spec = await getVariantInventoryAvailableToSellQuantity(mockVariants[0], mockCollections, mockVariants);
   expect(spec).toEqual(5);
 });
 
 // expect 0 if all variants have an inventory quantity of 0
 test("expect 0 if all variants have an inventory quantity of 0", async () => {
-  mockVariants[0].inventoryQuantity = 0;
-  mockVariants[1].inventoryQuantity = 0;
-  const spec = await getVariantQuantity(mockVariants[0], mockCollections, mockVariants);
+  mockVariants[0].inventoryAvailableToSell = 0;
+  mockVariants[1].inventoryAvailableToSell = 0;
+  const spec = await getVariantInventoryAvailableToSellQuantity(mockVariants[0], mockCollections, mockVariants);
   expect(spec).toEqual(0);
 });
+
