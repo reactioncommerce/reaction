@@ -58,6 +58,7 @@ class TagProductTable extends Component {
                     <TableCell>{product.title}</TableCell>
                     <TableCell align="right">
                       <TextInput
+                        value={`${product.position}`}
                         onChange={(value) => {
                           this.handlePriorityChange(product._id, value);
                         }}
