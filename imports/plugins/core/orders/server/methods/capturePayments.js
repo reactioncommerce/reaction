@@ -1,4 +1,3 @@
-import Hooks from "@reactioncommerce/hooks";
 import Logger from "@reactioncommerce/logger";
 import { Meteor } from "meteor/meteor";
 import { check } from "meteor/check";
@@ -80,9 +79,12 @@ export default function capturePayments(orderId) {
         updatedBy: Reaction.getUserId()
       }));
 
-      // event onOrderPaymentCaptured used for confirmation hooks
-      // ie: confirmShippingMethodForOrder is triggered here
-      Hooks.Events.run("onOrderPaymentCaptured", orderId);
+      Promise.await(appEvents.emit("afterOrderPaymentCapture", {
+        capturedBy: Reaction.getUserId(),
+        order: updatedOrder,
+        payment
+      }));
+
       return { error, result };
     }
 
