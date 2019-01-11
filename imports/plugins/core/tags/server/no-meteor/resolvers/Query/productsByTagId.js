@@ -1,4 +1,4 @@
-import { getPaginatedResponse } from "@reactioncommerce/reaction-graphql-utils";
+import { getPaginatedAggregateResponse } from "@reactioncommerce/reaction-graphql-utils";
 import { decodeShopOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/shop";
 import { decodeTagOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/tag";
 
@@ -29,5 +29,6 @@ export default async function productsByTagId(_, params, context) {
     first: params.first,
     last: params.last
   };
-  return getPaginatedResponse(query, connectionArgs);
+
+  return getPaginatedAggregateResponse(query, connectionArgs);
 }
