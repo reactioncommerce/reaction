@@ -99,12 +99,14 @@ class TagForm extends Component {
       Object.keys(this.productOrderingPriorities).forEach((productId) => {
         const priority = this.productOrderingPriorities[productId];
 
-        if (typeof parseInt(priority, 10) === "number") {
+        if (isNaN(parseInt(priority, 10)) === false) {
           featured.push({ productId, priority });
         }
       });
 
       input.featuredProductIds = orderBy(featured, ["priority"]).map(({ productId }) => productId);
+    } else {
+      input.featuredProductIds = null;
     }
 
     const result = await mutation({
