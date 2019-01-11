@@ -38,7 +38,6 @@
     "@reactioncommerce/data-factory": "^1.0.0",
     "@reactioncommerce/file-collections": "0.6.0",
     "@reactioncommerce/file-collections-sa-gridfs": "0.0.2",
-    "@reactioncommerce/hooks": "1.0.2",
     "@reactioncommerce/job-queue": "1.0.4",
     "@reactioncommerce/logger": "1.1.1",
     "@reactioncommerce/nodemailer": "5.0.5",
