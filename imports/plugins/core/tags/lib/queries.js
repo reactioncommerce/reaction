@@ -3,7 +3,7 @@ import { Tag } from "./fragments";
 
 export const tagListingQuery = gql`
   query getTags($shopId: ID!, $first: ConnectionLimitInt, $last:  ConnectionLimitInt, $before: ConnectionCursor, $after: ConnectionCursor) {
-    tags(shopId: $shopId, first: $first, last: $last, before: $before, after: $after) {
+    tags(shopId: $shopId, first: $first, last: $last, before: $before, after: $after, shouldIncludeInvisible: true) {
       pageInfo {
         endCursor
         startCursor
@@ -18,7 +18,7 @@ export const tagListingQuery = gql`
 
 export const getTag = gql`
   query getTag($slugOrId: String!) {
-    tag(slugOrId: $slugOrId) {
+    tag(slugOrId: $slugOrId, shouldIncludeInvisible: true) {
       ${Tag}
     }
   }
