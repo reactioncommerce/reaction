@@ -13,11 +13,12 @@ const value = {
     { property: "productType", value: "knife", propertyType: "string", operator: "eq" }
   ],
   destination: { region: ["CO", "NY"] },
-  surcharges: [{
+  amount: {
     amount: 19.99,
-    reason: "Hazardous items",
-    message: "A surcharge will apply to this shipment because of a hazardous item."
-  }]
+    currencyCode: "USD"
+  },
+  reason: "Hazardous items",
+  message: "A surcharge will apply to this shipment because of a hazardous item."
 };
 
 test("delete a surcharge", async () => {
@@ -39,11 +40,12 @@ test("delete a surcharge", async () => {
         { property: "productType", value: "knife", propertyType: "string", operator: "eq" }
       ],
       destination: { region: ["CO", "NY"] },
-      surcharges: [{
+      amount: {
         amount: 19.99,
-        reason: "Hazardous items",
-        message: "A surcharge will apply to this shipment because of a hazardous item."
-      }]
+        currencyCode: "USD"
+      },
+      reason: "Hazardous items",
+      message: "A surcharge will apply to this shipment because of a hazardous item."
     }
   });
 });
