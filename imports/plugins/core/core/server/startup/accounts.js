@@ -1,5 +1,4 @@
 import _ from "lodash";
-import Hooks from "@reactioncommerce/hooks";
 import Logger from "@reactioncommerce/logger";
 import Random from "@reactioncommerce/random";
 import { Meteor } from "meteor/meteor";

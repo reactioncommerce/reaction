@@ -1,132 +1,9 @@
-import _ from "lodash";
-import Logger from "@reactioncommerce/logger";
-import Random from "@reactioncommerce/random";
 import { Meteor } from "meteor/meteor";
 import { Accounts as MeteorAccounts } from "meteor/accounts-base";
 import { check } from "meteor/check";
-import { SSR } from "meteor/meteorhacks:ssr";
 import { Accounts } from "/lib/collections";
 import appEvents from "/imports/node-app/core/util/appEvents";
-import Reaction from "/imports/plugins/core/core/server/Reaction";
-import ReactionError from "@reactioncommerce/reaction-error";
-
-/**
- * @method sendUpdatedVerificationEmail
- * @memberof Core
- * @summary Send an email with a link the user can use to verify their updated email address.
- * @param {String} userId - The id of the user to send email to.
- * @param {String} [email] Optional. Address to send the email to.
- *                 This address must be in the user's emails list.
- *                 Defaults to the first unverified email in the list.
- * @return {Job} - returns a sendEmail Job instance
- */
-async function sendUpdatedVerificationEmail(userId, email) {
-  // Make sure the user exists, and email is one of their addresses.
-  const user = Meteor.users.findOne(userId);
-
-  if (!user) {
-    Logger.error("sendVerificationEmail - User not found");
-    throw new ReactionError("not-found", "User not found");
-  }
-
-  let address = email;
-
-  // pick the first unverified address if no address provided.
-  if (!email) {
-    const unverifiedEmail = _.find(user.emails || [], (e) => !e.verified) || {};
-
-    ({ address } = unverifiedEmail);
-
-    if (!address) {
-      const msg = "No unverified email addresses found.";
-      Logger.error(msg);
-      throw new ReactionError("not-found", msg);
-    }
-  }
-
-  // make sure we have a valid address
-  if (!address || !user.emails || !(user.emails.map((mailInfo) => mailInfo.address).includes(address))) {
-    const msg = "Email not found for user";
-    Logger.error(msg);
-    throw new ReactionError("not-found", msg);
-  }
-
-  const token = Random.secret();
-  const when = new Date();
-  const tokenObj = { token, address, when };
-
-  Meteor.users.update({ _id: userId }, {
-    $push: {
-      "services.email.verificationTokens": tokenObj
-    }
-  });
-
-  const shopName = Reaction.getShopName();
-  const url = MeteorAccounts.urls.verifyEmail(token);
-  const copyrightDate = new Date().getFullYear();
-
-  const dataForEmail = {
-    // Reaction Information
-    contactEmail: "hello@reactioncommerce.com",
-    homepage: Reaction.absoluteUrl(),
-    emailLogo: `${Reaction.absoluteUrl()}resources/placeholder.gif`,
-    copyrightDate,
-    legalName: "Reaction Commerce",
-    physicalAddress: {
-      address: "2110 Main Street, Suite 207",
-      city: "Santa Monica",
-      region: "CA",
-      postal: "90405"
-    },
-    shopName,
-    socialLinks: {
-      facebook: {
-        link: "https://www.facebook.com/reactioncommerce"
-      },
-      github: {
-        link: "https://github.com/reactioncommerce/reaction"
-      },
-      instagram: {
-        link: "https://instagram.com/reactioncommerce"
-      },
-      twitter: {
-        link: "https://www.twitter.com/getreaction"
-      }
-    },
-    confirmationUrl: url,
-    userEmailAddress: address
-  };
-
-  if (!Reaction.Email.getMailUrl()) {
-    Logger.warn(`
-
-  ***************************************************
-          IMPORTANT! EMAIL VERIFICATION LINK
-
-           Email sending is not configured.
-
-  Go to the following URL to verify email: ${address}
-
-  ${url}
-  ***************************************************
-
-    `);
-  }
-
-  const tpl = "accounts/verifyUpdatedEmail";
-  const subject = "accounts/verifyUpdatedEmail/subject";
-
-  SSR.compileTemplate(tpl, Reaction.Email.getTemplate(tpl));
-  SSR.compileTemplate(subject, Reaction.Email.getSubject(tpl));
-
-  return Reaction.Email.send({
-    to: address,
-    from: Reaction.getShopEmail(),
-    subject: SSR.render(subject, dataForEmail),
-    html: SSR.render(tpl, dataForEmail)
-  });
-}
-
+import sendVerificationEmail from "../util/sendVerificationEmail";
 
 /**
  * @name accounts/syncUsersAndAccounts
@@ -176,7 +53,11 @@ export default function removeEmailAddress(email) {
   MeteorAccounts.removeEmail(user._id, email);
 
   // Verify new address
-  sendUpdatedVerificationEmail(user._id);
+  sendVerificationEmail({
+    bodyTemplate: "accounts/verifyUpdatedEmail",
+    subjectTemplate: "accounts/verifyUpdatedEmail/subject",
+    userId: user._id
+  });
 
   // Sync users and accounts collections
   syncUsersAndAccounts();

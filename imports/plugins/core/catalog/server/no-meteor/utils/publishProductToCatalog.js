@@ -1,4 +1,3 @@
-import Hooks from "@reactioncommerce/hooks";
 import Logger from "@reactioncommerce/logger";
 import Random from "@reactioncommerce/random";
 import * as Schemas from "/imports/collections/schemas";

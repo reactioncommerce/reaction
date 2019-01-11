@@ -1,5 +1,6 @@
 import { merge } from "lodash";
 import Logger from "@reactioncommerce/logger";
+import { Accounts } from "meteor/accounts-base";
 import { Meteor } from "meteor/meteor";
 import { MongoInternals } from "meteor/mongo";
 import { WebApp } from "meteor/webapp";
@@ -36,6 +37,9 @@ export default async function startNodeApp() {
     // XXX Eventually these should be from individual env variables instead
     debug: Meteor.isDevelopment,
     context: {
+      createUser(options) {
+        return Accounts.createUser(options);
+      },
       mutations,
       queries: finalQueries,
       rootUrl: ROOT_URL

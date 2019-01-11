@@ -4,6 +4,7 @@ import queries from "./server/no-meteor/queries";
 import { registerPluginHandler } from "./server/no-meteor/registration";
 import resolvers from "./server/no-meteor/resolvers";
 import schemas from "./server/no-meteor/schemas";
+import startup from "./server/no-meteor/startup";
 
 /**
  * @file Accounts core plugin: Manage how members sign into your shop
@@ -21,7 +22,8 @@ Reaction.registerPackage({
     roles: ["account/verify"]
   }],
   functionsByType: {
-    registerPluginHandler: [registerPluginHandler]
+    registerPluginHandler: [registerPluginHandler],
+    startup: [startup]
   },
   graphQL: {
     resolvers,
