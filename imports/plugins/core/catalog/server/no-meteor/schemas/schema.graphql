@@ -143,7 +143,26 @@ type CatalogProduct implements CatalogProductOrVariant & Node {
   "The height of the product, if it has physical dimensions"
   height: Float
 
-  "True if isSoldOut is true AND none of the variants have an inventoryPolicy set"
+  """
+  The quantity of this item currently available to sell.
+  This number is updated when an order is placed by the customer.
+  This number does not include reserved inventory (i.e. inventory that has been ordered, but not yet processed by the operator).
+  This number is calculated by summing all child variant inventory numbers.
+  This is most likely the quantity to display in the storefront UI.
+  """
+  inventoryAvailableToSell: Int
+
+  """
+  The quantity of this item currently in stock.
+  This number is updated when an order is processed by the operator.
+  This number includes all inventory, including reserved inventory (i.e. inventory that has been ordered, but not yet processed by the operator).
+  This number is calculated by summing all child variant inventory numbers.
+  This is most likely just used as a reference in the operator UI, and not displayed in the storefront UI.
+  Called `inventoryQuantity` in the Product Schema, and `inventoryInStock` in the Catalog schema.
+  """
+  inventoryInStock: Int
+
+  "True if isSoldOut is true AND none of the variants have an inventoryPolicy set AND available inventory is 0"
   isBackorder: Boolean!
 
   "True if this product has been deleted. Typically, deleted products are not returned in queries."
@@ -247,6 +266,9 @@ type CatalogProductVariant implements CatalogProductOrVariant & Node {
   "The product variant barcode value, if it has one"
   barcode: String
 
+  "Indicates when the seller has allowed the sale of product which is not in stock. True if inventoryManagement is true AND none of the variants have an inventoryPolicy set."
+  canBackorder: Boolean!
+
   "The date and time at which this CatalogProductVariant was created, which is when the related product was first published"
   createdAt: DateTime
 
@@ -256,13 +278,32 @@ type CatalogProductVariant implements CatalogProductOrVariant & Node {
   "The position of this variant among other variants at the same level of the product-variant-option hierarchy"
   index: Int!
 
+  """
+  The quantity of this item currently available to sell.
+  This number is updated when an order is placed by the customer.
+  This number does not include reserved inventory (i.e. inventory that has been ordered, but not yet processed by the operator).
+  If this is a variant, this number is created by summing all child option inventory numbers.
+  This is most likely the quantity to display in the storefront UI.
+  """
+  inventoryAvailableToSell: Int
+
+  """
+  The quantity of this item currently in stock.
+  This number is updated when an order is processed by the operator.
+  This number includes all inventory, including reserved inventory (i.e. inventory that has been ordered, but not yet processed by the operator).
+  If this is a variant, this number is created by summing all child option inventory numbers.
+  This is most likely just used as a reference in the operator UI, and not displayed in the storefront UI.
+  Called `inventoryQuantity` in the Product Schema, and `inventoryInStock` in the Catalog schema.
+  """
+  inventoryInStock: Int
+
   "True if inventory management is enabled for this variant"
   inventoryManagement: Boolean!
 
   "True if inventory policy is enabled for this variant"
   inventoryPolicy: Boolean!
 
-  "True if isSoldOut is true AND none of the variants have an inventoryPolicy set"
+  "True if isSoldOut is true AND none of the variants have an inventoryPolicy set AND available inventory is 0"
   isBackorder: Boolean!
 
   "True if inventoryManagement is enabled and this variant has an available quantity less than its lowInventoryWarningThreshold"

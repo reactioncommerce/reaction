@@ -1,4 +1,4 @@
-($shopId: ID!) {
+query ($shopId: ID!) {
   groups(shopId: $shopId) {
     nodes {
       _id
