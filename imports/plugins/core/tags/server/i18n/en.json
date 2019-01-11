@@ -13,6 +13,8 @@
             "enable": "Enable",
             "disable": "Disable",
             "delete": "Delete",
+            "visible": "Visible",
+            "hidden": "Hidden",
             "form": {
               "name": "Tag name",
               "nameHelpText": "The unique name for the tag",
@@ -64,7 +66,7 @@
               "slug": "slug",
               "name": "name",
               "displayTitle": "Display Title",
-              "visible": "Visible"
+              "status": "Status"
             },
             "tableText": {
               "noDataMessage": "No results found",
