@@ -10,6 +10,9 @@
 [submodule "imports/plugins/custom/reaction-plugin-email-bronto"]
 	path = imports/plugins/custom/reaction-plugin-email-bronto
 	url = git@github.com:sportsdirect/reaction-plugin-email-bronto.git
+[submodule "imports/plugins/custom/reaction-plugin-product-import"]
+	path = imports/plugins/custom/reaction-plugin-product-import
+	url = git@github.com:sportsdirect/reaction-plugin-product-import.git
 [submodule "imports/plugins/custom/reaction-plugin-radial-tax"]
 	path = imports/plugins/custom/reaction-plugin-radial-tax
 	url = git@github.com:sportsdirect/reaction-plugin-radial-tax.git
