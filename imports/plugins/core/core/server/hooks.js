@@ -1,10 +1,10 @@
-import Hooks from "@reactioncommerce/hooks";
 import Logger from "@reactioncommerce/logger";
+import appEvents from "/imports/node-app/core/util/appEvents";
 import { Assets } from "/lib/collections";
 import MethodHooks from "./method-hooks";
 import Reaction from "./Reaction";
 
-Hooks.Events.add("afterCoreInit", () => {
+appEvents.on("afterCoreInit", () => {
   const shopId = Reaction.getShopId();
   Assets.find({ type: "template" }).forEach((template) => {
     Logger.debug(`Importing ${template.name} template`);

@@ -1,4 +1,3 @@
-import Hooks from "@reactioncommerce/hooks";
 import Logger from "@reactioncommerce/logger";
 import packageJson from "/package.json";
 import _, { merge, uniqWith } from "lodash";
@@ -72,8 +71,8 @@ export default {
       packageInfoArray.forEach(registerPluginHandlerFunc);
     });
 
-    // hook after init finished
-    Hooks.Events.run("afterCoreInit");
+    // DEPRECATED. Avoid consuming this hook in new code
+    appEvents.emit("afterCoreInit");
 
     Logger.debug("Reaction.init() has run");
 
