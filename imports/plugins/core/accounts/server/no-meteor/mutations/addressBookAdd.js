@@ -83,7 +83,7 @@ export default async function addressBookAdd(context, address, accountUserId) {
     throw new ReactionError("server-error", "Unable to add address to account");
   }
 
-  const updatedAccount = Accounts.findOne({ userId });
+  const updatedAccount = await Accounts.findOne({ userId });
   await appEvents.emit("afterAccountUpdate", {
     updatedAccount,
     updatedBy: userIdFromContext,
