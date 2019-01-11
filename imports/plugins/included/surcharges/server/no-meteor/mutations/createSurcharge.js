@@ -27,8 +27,9 @@ export default async function createSurchargeMutation(context, input) {
     throw new ReactionError("access-denied", "Access Denied");
   }
 
+  surcharge._id = Random.id();
+
   const { insertedCount } = await Surcharges.insertOne({
-    _id: Random.id(),
     shopId,
     ...surcharge
   });

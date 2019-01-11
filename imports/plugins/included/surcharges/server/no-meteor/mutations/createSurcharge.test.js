@@ -13,37 +13,36 @@ test("add a surcharge", async () => {
     _id: "surcharge123",
     shopId: "shop123",
     surcharge: {
+      amount: {
+        amount: "19.99",
+        currencyCode: "USD"
+      },
+      message: "You are shipping hazardous items, there is a 19.99 surcharge",
+      reason: "An item meets a surcharge restriction",
       type: "surcharge",
       attributes: [
         { property: "vendor", value: "reaction", propertyType: "string", operator: "eq" },
         { property: "productType", value: "knife", propertyType: "string", operator: "eq" }
       ],
-      destination: { region: ["CO", "NY"] },
-      surcharges: [
-        {
-          amount: "19.99",
-          message: "You are shipping hazardous items, there is a 19.99 surcharge",
-          reason: "An item meets a surcharge restriction"
-        }
-      ]
+      destination: { region: ["CO", "NY"] }
     }
   });
 
   expect(result).toEqual({
     surcharge: {
+      _id: "surcharge123",
+      amount: {
+        amount: 19.99,
+        currencyCode: "USD"
+      },
+      message: "You are shipping hazardous items, there is a 19.99 surcharge",
+      reason: "An item meets a surcharge restriction",
       type: "surcharge",
       attributes: [
         { property: "vendor", value: "reaction", propertyType: "string", operator: "eq" },
         { property: "productType", value: "knife", propertyType: "string", operator: "eq" }
       ],
-      destination: { region: ["CO", "NY"] },
-      surcharges: [
-        {
-          amount: "19.99",
-          message: "You are shipping hazardous items, there is a 19.99 surcharge",
-          reason: "An item meets a surcharge restriction"
-        }
-      ]
+      destination: { region: ["CO", "NY"] }
     }
   });
 });
