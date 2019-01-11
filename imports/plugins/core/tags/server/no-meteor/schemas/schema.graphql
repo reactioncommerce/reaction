@@ -75,6 +75,9 @@ input UpdateTagInput {
 
   "Tag metafields"
   metafields: [MetafieldInput]
+
+  "A list of the IDs of top products in this tag"
+  featuredProductIds: [ID]
 }
 
 type UpdateTagPayload {
@@ -94,6 +97,9 @@ type TagProduct {
 
   "The title of the product"
   title: String
+
+  "Position of the product"
+  position: Int
 }
 
 type TagProductEdge {
