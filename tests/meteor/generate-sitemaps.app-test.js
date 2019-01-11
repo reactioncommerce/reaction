@@ -4,14 +4,15 @@ import { Factory } from "meteor/dburles:factory";
 import { sinon } from "meteor/practicalmeteor:sinon";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
 import { Products, Shops, Tags } from "/lib/collections";
-import { Sitemaps } from "../../lib/collections/sitemaps";
-import generateSitemaps from "./generate-sitemaps";
+import { Sitemaps } from "/imports/plugins/included/sitemap-generator/server/lib/collections/sitemaps";
+import generateSitemaps from "/imports/plugins/included/sitemap-generator/server/lib/generate-sitemaps";
 
 describe("generateSitemaps", () => {
   let sandbox;
   let primaryShop;
 
-  beforeEach(() => {
+  beforeEach(function () {
+    this.timeout(30000);
     sandbox = sinon.sandbox.create();
     primaryShop = Factory.create("shop");
     sandbox.stub(Reaction, "getPrimaryShopId", () => primaryShop._id);
