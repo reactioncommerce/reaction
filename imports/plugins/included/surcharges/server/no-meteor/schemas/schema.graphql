@@ -2,12 +2,6 @@
 # Custom data types for Surcharges data
 ####
 
-type surcharges {
-  amount: String
-  reason: String
-  message: String
-}
-
 type surchargeAttributeRestrictions {
   property: String
   value: String
@@ -27,12 +21,6 @@ enum surchargeTypeEnum {
 
 enum SurchargeSortByField {
   createdAt
-}
-
-input surchargesInput {
-  amount: String
-  reason: String
-  message: String
 }
 
 input surchargeAttributeRestrictionsInput {
@@ -63,16 +51,7 @@ extend type Query {
     sortBy: SurchargeSortByField = createdAt
   ): SurchargeConnection!
 
-  getSurcharge(
-    shopId: ID!
-    surchargeId: ID!
-    after: ConnectionCursor,
-    before: ConnectionCursor,
-    first: ConnectionLimitInt,
-    last: ConnectionLimitInt,
-    sortOrder: SortOrder = desc,
-    sortBy: SurchargeSortByField = createdAt
-  ): SurchargeConnection!
+  getSurcharge(shopId: ID!, surchargeId: ID!): Surcharge
 }
 
 type SurchargeConnection {
@@ -109,8 +88,14 @@ type Surcharge implements Node {
   "Destination restrictions."
   destination: surchargeDestinationRestrictions
 
-  "Surcharges."
-  surcharges: [surcharges]
+  "Amount."
+  amount: Money!
+
+  "Message."
+  message: String! # TODO: EK - update this to an array of objects with language
+
+  "Message."
+  reason: String! # TODO: EK - update this to an array of objects with language
 }
 
 
@@ -139,8 +124,14 @@ input SurchargeInput {
   "Destination restrictions."
   destination: surchargeDestinationRestrictionsInput
 
-  "Surcharges."
-  surcharges: [surchargesInput]
+  "Amount."
+  amount: MoneyInput!
+
+  "Message."
+  message: String! # TODO: EK - update this to an array of objects with language
+
+  "Message."
+  reason: String! # TODO: EK - update this to an array of objects with language
 }
 
 "Input for the `CreateSurcharge` mutation"

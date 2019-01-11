@@ -1,4 +1,5 @@
 import SimpleSchema from "simpl-schema";
+import { Money } from "imports/collections/schemas/core";
 
 /**
  * @name Attributes
@@ -42,47 +43,51 @@ export const Destination = new SimpleSchema({
   "postal.$": String
 });
 
-/**
- * @name Surcharges
- * @memberof Schemas
- * @type {SimpleSchema}
- * @property {String} amount
- * @property {String} message
- * @property {String} reason
- */
-export const Surcharges = new SimpleSchema({
-  amount: {
-    type: String
-  },
-  message: {
-    type: String
-  },
-  reason: {
-    type: String
-  }
-});
-
 const surchargeSchema = new SimpleSchema({
+  /*
+   * Fulfillment methods this surcharge applies to
+   * If blank, it applies to all methods
+  */
   "methodIds": {
     type: Array,
     optional: true
   },
   "methodIds.$": String,
-  "type": String,
+  "type": {
+    type: String,
+    defaultValue: "surcharge"
+  },
+  /*
+   * Order item attributes methods this surcharge applies to
+  */
   "attributes": {
     type: Array,
     optional: true
   },
   "attributes.$": Attributes,
+  /*
+   * Destinations this surcharge applies to
+  */
   "destination": {
     type: Destination,
     optional: true
   },
-  "surcharges": {
-    type: Array
+  "amount": {
+    type: Money
   },
-  "surcharges.$": {
-    type: Surcharges
+  /*
+   * Message is used as a client message to let customers know why this surcharge might apply
+  */
+  /* TODO: EK - update this to an array of objects with language */
+  "message": {
+    type: String
+  },
+  /* TODO: EK - update this to an array of objects with language */
+  /*
+   * Reason is used as an internal message to let operators know why this surcharge might apply
+  */
+  "reason": {
+    type: String
   }
 });
 

@@ -36,7 +36,13 @@ type OrderItemAttribute {
   value: String
 }
 
+# TODO: EK - update this to an array of objects with language
 type OrderSurchargeMessage {
+  message: String
+}
+
+# TODO: EK - update this to an array of objects with language
+type OrderSurchargeReason {
   message: String
 }
 
@@ -153,8 +159,11 @@ type OrderSurcharge implements Node {
   "The fulfillmentGroupId (for reference)"
   fulfillmentGroupID: ID
 
-  "The message to explain the surchage"
-  message: OrderSurchargeMessage
+  "The message to explain the surchage to customers"
+  message: String # TODO: EK - update this to an array of objects with language OrderSurchargeMessage
+
+  "The reason to explain the surchage to operators"
+  reason: String # TODO: EK - update this to an array of objects with language OrderSurchargeReason
 
   "The surchargeId from the surchages collection (for reference)"
   surchargeId: ID

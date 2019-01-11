@@ -20,7 +20,8 @@ export const Money = new SimpleSchema({
  * @property {Money} amount
  * @property {String} cartId optional
  * @property {String} fulfillmentGroupId optional
- * @property {Object} message optional
+ * @property {String} message optional
+ * @property {String} reason optional
  * @property {String} surchargeId optional
  */
 export const Surcharge = new SimpleSchema({
@@ -34,9 +35,20 @@ export const Surcharge = new SimpleSchema({
     type: String,
     optional: true
   },
+  /* TODO: EK - update this to an array of objects with language */
+  /*
+   * Message is used as a client message to let customers know why this surcharge might apply
+  */
   message: {
-    type: Object,
-    blackbox: true,
+    type: String,
+    optional: true
+  },
+  /* TODO: EK - update this to an array of objects with language */
+  /*
+   * Reason is used as an internal message to let operators know why this surcharge might apply
+  */
+  reason: {
+    type: String,
     optional: true
   },
   surchargeId: {

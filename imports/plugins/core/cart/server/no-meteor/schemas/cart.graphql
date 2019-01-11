@@ -71,7 +71,13 @@ type CartItemAttribute {
   value: String
 }
 
+# TODO: EK - update this to an array of objects with language
 type CartSurchargeMessage {
+  message: String
+}
+
+# TODO: EK - update this to an array of objects with language
+type CartSurchargeReason {
   message: String
 }
 
@@ -194,8 +200,11 @@ type CartSurcharge implements Node {
   "The fulfillmentGroupId (for reference)"
   fulfillmentGroupID: ID
 
-  "The message to explain the surchage"
-  message: CartSurchargeMessage
+  "The message to explain the surchage to customers"
+  message: String # TODO: EK - update this to an array of objects with language CartSurchargeMessage
+
+  "The reason to explain the surchage to operators"
+  reason: String # TODO: EK - update this to an array of objects with language CartReasonMessage
 
   "The surchargeId from the surchages collection (for reference)"
   surchargeId: ID
