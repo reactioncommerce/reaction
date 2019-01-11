@@ -2,7 +2,7 @@ import React, { Component, Fragment } from "react";
 import PropTypes from "prop-types";
 import { applyTheme } from "@reactioncommerce/components/utils";
 import { Mutation } from "react-apollo";
-import { uniqueId } from "lodash";
+import { orderBy, uniqueId } from "lodash";
 import ReactDropzone from "react-dropzone";
 import styled from "styled-components";
 import { Form } from "reacto-form";
@@ -20,7 +20,7 @@ import CardContent from "@material-ui/core/CardContent";
 import MUICardActions from "@material-ui/core/CardActions";
 import Typography from "@material-ui/core/Typography";
 import { i18next } from "/client/api";
-import { tagListingQuery } from "../../lib/queries";
+import { tagListingQuery, tagProductsQuery } from "../../lib/queries";
 import { addTagMutation, updateTagMutation, removeTagMutation } from "../../lib/mutations";
 import TagToolbar from "./TagToolbar";
 import TagProductTable from "./TagProductTable";
@@ -94,11 +94,30 @@ class TagForm extends Component {
       ]
     };
 
+    if (Object.keys(this.productOrderingPriorities).length) {
+      const featured = [];
+      Object.keys(this.productOrderingPriorities).forEach((productId) => {
+        const priority = this.productOrderingPriorities[productId];
+
+        if (typeof parseInt(priority, 10) === "number") {
+          featured.push({ productId, priority });
+        }
+      });
+
+      input.featuredProductIds = orderBy(featured, ["priority"]).map(({ productId }) => productId);
+    }
+
     const result = await mutation({
       refetchQueries: [{
         query: tagListingQuery,
         variables: {
           shopId
+        }
+      }, {
+        query: tagProductsQuery,
+        variables: {
+          shopId,
+          tagId: data._id
         }
       }],
       variables: {
