@@ -631,6 +631,8 @@ Meteor.methods({
           $set: {
             isDeleted: true
           }
+        }, {
+          selector: { type: "variant" }
         }
       );
 
@@ -879,6 +881,8 @@ Meteor.methods({
           $set: {
             isDeleted: true
           }
+        }, {
+          selector: { type: toArchiveProduct.type }
         }
       );
 
