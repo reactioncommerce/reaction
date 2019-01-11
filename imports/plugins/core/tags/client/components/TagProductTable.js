@@ -42,6 +42,7 @@ class TagProductTable extends Component {
             products = productsByTagId.nodes;
           }
 
+
           return (
             <Table>
               <TableHead>
@@ -52,20 +53,24 @@ class TagProductTable extends Component {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {Array.isArray(products) && products.map((product) => (
-                  <TableRow key={product._id}>
-                    <TableCell component="th" scope="row">{product._id}</TableCell>
-                    <TableCell>{product.title}</TableCell>
-                    <TableCell align="right">
-                      <TextInput
-                        value={`${product.position}`}
-                        onChange={(value) => {
-                          this.handlePriorityChange(product._id, value);
-                        }}
-                      />
-                    </TableCell>
-                  </TableRow>
-                ))}
+                {Array.isArray(products) && products.map((product) => {
+                  let position = product.position >= 0 ? `${product.position}` : undefined;
+
+                  return (
+                    <TableRow key={product._id}>
+                      <TableCell component="th" scope="row">{product._id}</TableCell>
+                      <TableCell>{product.title}</TableCell>
+                      <TableCell align="right">
+                        <TextInput
+                          value={position}
+                          onChange={(value) => {
+                            this.handlePriorityChange(product._id, value);
+                          }}
+                        />
+                      </TableCell>
+                    </TableRow>
+                  );
+                })}
               </TableBody>
             </Table>
           );
