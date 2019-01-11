@@ -25,6 +25,10 @@ export default async function productsByTagId(context, params) {
     _id: tagId
   });
 
+  if (!tag) {
+    throw new ReactionError("not-found", "Tag not found");
+  }
+
   // Products from catalog sample data
   const positions = tag.featuredProductIds;
 
