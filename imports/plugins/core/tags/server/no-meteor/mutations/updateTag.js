@@ -12,7 +12,9 @@ const inputSchema = new SimpleSchema({
     key: { type: String, max: 30 },
     namespace: { type: String, max: 20 },
     value: { type: String }
-  })
+  }),
+  "featuredProductIds": { type: Array, optional: true },
+  "featuredProductIds.$": String
 }, { requiredByDefault: false });
 
 /**
@@ -39,7 +41,8 @@ export default async function updateTag(context, input) {
     name: input.name,
     displayTitle: input.displayTitle,
     isVisible: input.isVisible,
-    metafields: input.metafields
+    metafields: input.metafields,
+    featuredProductIds: input.featuredProductIds
   };
 
   if (params.type === "rewrite") params.status = null;
