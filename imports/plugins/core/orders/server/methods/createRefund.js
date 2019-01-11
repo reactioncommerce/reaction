@@ -1,6 +1,5 @@
 import _ from "lodash";
 import { check, Match } from "meteor/check";
-import Hooks from "@reactioncommerce/hooks";
 import Logger from "@reactioncommerce/logger";
 import ReactionError from "@reactioncommerce/reaction-error";
 import { Orders, Packages } from "/lib/collections";
@@ -97,8 +96,6 @@ export default function createRefund(orderId, paymentId, amount, sendEmail = tru
     order: updatedOrder,
     updatedBy: Reaction.getUserId()
   }));
-
-  Hooks.Events.run("onOrderRefundCreated", orderId);
 
   // Send email to notify customer of a refund
   if (_.get(paymentPlugin, "settings.support", []).indexOf("De-authorize") > -1) {
