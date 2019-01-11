@@ -19,3 +19,6 @@
 [submodule "imports/plugins/custom/reaction-plugin-cloudinary"]
 	path = imports/plugins/custom/reaction-plugin-cloudinary
 	url = git@github.com:sportsdirect/reaction-plugin-cloudinary.git
+[submodule "imports/plugins/custom/reaction-plugin-routing"]
+	path = imports/plugins/custom/reaction-plugin-routing
+	url = git@github.com:reactioncommerce/reaction-plugin-routing.git
