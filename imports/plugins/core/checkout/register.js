@@ -9,34 +9,12 @@ Reaction.registerPackage({
     name: "Checkout"
   },
   registry: [{
-    route: "/cart/checkout",
-    name: "cart/checkout",
-    workflow: "coreCartWorkflow",
-    label: "Checkout",
-    template: "cartCheckout"
-  }, {
     route: "/cart/completed/:_id?",
     name: "cart/completed",
     template: "cartCompleted",
     workflow: "coreCartWorkflow"
   }],
   layout: [{
-    layout: "coreLayout",
-    workflow: "coreCartWorkflow",
-    collection: "Cart",
-    theme: "default",
-    enabled: true,
-    structure: {
-      template: "cartCheckout",
-      layoutHeader: "NavBarCheckout",
-      layoutFooter: "",
-      notFound: "notFound",
-      dashboardHeader: "",
-      dashboardControls: "dashboardControls",
-      dashboardHeaderControls: "",
-      adminControlsFooter: "adminControlsFooter"
-    }
-  }, {
     template: "checkoutLogin",
     label: "Login",
     workflow: "coreCartWorkflow",
