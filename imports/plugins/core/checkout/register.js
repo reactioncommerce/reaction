@@ -13,13 +13,5 @@ Reaction.registerPackage({
     name: "cart/completed",
     template: "cartCompleted",
     workflow: "coreCartWorkflow"
-  }],
-  layout: [{
-    template: "checkoutPayment",
-    label: "Complete",
-    workflow: "coreCartWorkflow",
-    container: "checkout-steps-side",
-    audience: ["guest", "anonymous"],
-    position: "5"
   }]
 });
