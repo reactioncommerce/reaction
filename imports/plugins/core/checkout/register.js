@@ -7,11 +7,5 @@ Reaction.registerPackage({
   autoEnable: true,
   settings: {
     name: "Checkout"
-  },
-  registry: [{
-    route: "/cart/completed/:_id?",
-    name: "cart/completed",
-    template: "cartCompleted",
-    workflow: "coreCartWorkflow"
-  }]
+  }
 });

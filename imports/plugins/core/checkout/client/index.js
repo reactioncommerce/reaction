@@ -6,9 +6,6 @@ import "./templates/cartDrawer/cartDrawer.js";
 import "./templates/cartIcon/cartIcon.html";
 import "./templates/cartIcon/cartIcon.js";
 
-import "./templates/checkout/completed/completed.html";
-import "./templates/checkout/completed/completed.js";
-
 export { default as CartDrawer } from "./components/cartDrawer";
 export { default as CartIcon } from "./components/cartIcon";
 export { default as CartItems } from "./components/cartItems";
