@@ -10,8 +10,6 @@ import "./templates/checkout/completed/completed.html";
 import "./templates/checkout/completed/completed.js";
 import "./templates/checkout/progressBar/progressBar.html";
 import "./templates/checkout/progressBar/progressBar.js";
-import "./templates/checkout/review/review.html";
-import "./templates/checkout/review/review.js";
 
 export { default as CartDrawer } from "./components/cartDrawer";
 export { default as CartIcon } from "./components/cartIcon";
