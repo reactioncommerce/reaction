@@ -5,7 +5,6 @@ import createFlatRateFulfillmentMethod from "../mutations/createFlatRateFulfillm
 import updateFlatRateFulfillmentMethod from "../mutations/updateFlatRateFulfillmentMethod.graphql";
 import deleteFlatRateFulfillmentMethod from "../mutations/deleteFlatRateFulfillmentMethod.graphql";
 import enablePaymentMethodForShop from "../mutations/enablePaymentMethodForShop.graphql";
-import placeOrder from "../mutations/placeOrder.graphql";
 import paymentMethods from "../queries/paymentMethods.graphql";
 
 /**
@@ -57,10 +56,6 @@ export default {
     enablePaymentMethodForShop: (variables) => {
       setTokenHeader();
       return client.mutate(enablePaymentMethodForShop)(variables);
-    },
-    placeOrder: (variables) => {
-      setTokenHeader();
-      return client.mutate(placeOrder)(variables);
     },
     updateFlatRateFulfillmentMethod: (variables) => {
       setTokenHeader();
