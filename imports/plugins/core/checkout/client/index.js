@@ -28,5 +28,4 @@ export { default as EmptyCartDrawer } from "./components/emptyCartDrawer";
 
 export { default as CartDrawerContainer } from "./containers/cartDrawerContainer";
 export { default as CartIconContainer } from "./containers/cartIconContainer";
-export { default as CartPanelContainer } from "./containers/cartPanelContainer";
 export { default as CartSubTotalContainer } from "./containers/cartSubTotalContainer";
