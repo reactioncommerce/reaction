@@ -144,7 +144,6 @@ export function createCart(productId, variantId) {
     workflow: {
       status: "checkoutPayment",
       workflow: [
-        "coreCheckoutShipping",
         "checkoutReview",
         "checkoutPayment"
       ]
@@ -177,7 +176,6 @@ export default function () {
    * @property {Object} workflow - `{
      status: "checkoutPayment",
      workflow: [
-       "coreCheckoutShipping",
        "checkoutReview",
        "checkoutPayment"
      ]
@@ -265,7 +263,6 @@ export default function () {
     workflow: {
       status: "checkoutPayment",
       workflow: [
-        "coreCheckoutShipping",
         "checkoutReview",
         "checkoutPayment"
       ]

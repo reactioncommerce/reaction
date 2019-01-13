@@ -15,13 +15,6 @@ Reaction.registerPackage({
     workflow: "coreCartWorkflow"
   }],
   layout: [{
-    template: "coreCheckoutShipping",
-    label: "Shipping Options",
-    workflow: "coreCartWorkflow",
-    container: "checkout-steps-main",
-    audience: ["guest", "anonymous"],
-    position: "3"
-  }, {
     template: "checkoutReview",
     label: "Review Payment",
     workflow: "coreCartWorkflow",
