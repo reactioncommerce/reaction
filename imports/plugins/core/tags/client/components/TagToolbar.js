@@ -30,23 +30,15 @@ class TagToolbar extends Component {
   }
 
   render() {
-    const { onDelete, onCancel, onSave, canBeDeleted, isNew } = this.props;
-
-    let title = i18next.t("admin.tags.tags");
-    let submitButtonTitle = i18next.t("admin.tags.form.submitNew");
-
-    if (isNew) {
-      title = i18next.t("admin.tags.form.formTitleUpdate");
-      submitButtonTitle = i18next.t("admin.tags.form.submitUpdate");
-    }
+    const { onDelete, onCancel, onSave, canBeDeleted } = this.props;
 
     return (
       <AppBar position="fixed" color="default">
         <Toolbar>
           <Title>
-            <Typography variant="h6">{title}</Typography>
+            <Typography variant="h6">{i18next.t("admin.tags.tags")}</Typography>
           </Title>
-          {(canBeDeleted && !isNew) &&
+          {(canBeDeleted) &&
             <ToolbarItem>
               <Button
                 actionType="secondary"
@@ -64,7 +56,7 @@ class TagToolbar extends Component {
           </ToolbarItem>
           <ToolbarItem>
             <Button onClick={onSave}>
-              {submitButtonTitle}
+              {i18next.t("admin.tags.form.saveChanges")}
             </Button>
           </ToolbarItem>
         </Toolbar>
