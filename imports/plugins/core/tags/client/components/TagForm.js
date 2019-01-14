@@ -264,7 +264,6 @@ class TagForm extends Component {
             >
               <ContentGroup>
                 <PaddedField
-                  helpText={i18next.t("admin.tags.form.nameHelpText")}
                   name="name"
                   label={i18next.t("admin.tags.form.name")}
                   labelFor={nameInputId}
