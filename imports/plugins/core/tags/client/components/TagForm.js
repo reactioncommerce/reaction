@@ -279,7 +279,7 @@ class TagForm extends Component {
                 <Tabs value={currentTab} onChange={this.handleTabChange}>
                   <Tab label={i18next.t("admin.tags.form.tagListingPage")} />
                   <Tab label={i18next.t("admin.tags.form.metadata")} />
-                  <Tab label={i18next.t("admin.tags.form.productOrdering")} />
+                  {tag._id && <Tab label={i18next.t("admin.tags.form.productOrdering")} />}
                 </Tabs>
                 <Divider />
               </ContentGroup>
