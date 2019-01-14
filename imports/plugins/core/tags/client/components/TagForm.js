@@ -94,19 +94,21 @@ class TagForm extends Component {
       ]
     };
 
-    if (Object.keys(this.productOrderingPriorities).length) {
-      const featured = [];
-      Object.keys(this.productOrderingPriorities).forEach((productId) => {
-        const priority = this.productOrderingPriorities[productId];
+    if (data._id) {
+      if (Object.keys(this.productOrderingPriorities).length) {
+        const featured = [];
+        Object.keys(this.productOrderingPriorities).forEach((productId) => {
+          const priority = this.productOrderingPriorities[productId];
 
-        if (isNaN(parseInt(priority, 10)) === false) {
-          featured.push({ productId, priority });
-        }
-      });
+          if (isNaN(parseInt(priority, 10)) === false) {
+            featured.push({ productId, priority });
+          }
+        });
 
-      input.featuredProductIds = orderBy(featured, ["priority"]).map(({ productId }) => productId);
-    } else {
-      input.featuredProductIds = null;
+        input.featuredProductIds = orderBy(featured, ["priority"]).map(({ productId }) => productId);
+      } else {
+        input.featuredProductIds = null;
+      }
     }
 
     const result = await mutation({
