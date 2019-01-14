@@ -54,12 +54,16 @@ class TagForm extends Component {
   static propTypes = {
     isLoadingShopId: PropTypes.bool,
     onCancel: PropTypes.func,
-    onSave: PropTypes.func,
+    onCreate: PropTypes.func,
+    onUpdate: PropTypes.func,
     shopId: PropTypes.string.isRequired,
     tag: PropTypes.object
   }
 
   static defaultProps = {
+    onCancel() {},
+    onCreate() {},
+    onUpdate() {},
     tag: {}
   }
 
@@ -75,6 +79,14 @@ class TagForm extends Component {
 
   async handleSubmit(data, mutation) {
     const { shopId } = this.props;
+    const isNew = !data._id;
+
+    const refetchQueries = [{
+      query: tagListingQuery,
+      variables: {
+        shopId
+      }
+    }];
 
     const input = {
       id: data._id,
@@ -94,7 +106,7 @@ class TagForm extends Component {
       ]
     };
 
-    if (data._id) {
+    if (!isNew) {
       if (Object.keys(this.productOrderingPriorities).length) {
         const featured = [];
         Object.keys(this.productOrderingPriorities).forEach((productId) => {
@@ -109,25 +121,29 @@ class TagForm extends Component {
       } else {
         input.featuredProductIds = null;
       }
-    }
 
-    const result = await mutation({
-      refetchQueries: [{
-        query: tagListingQuery,
-        variables: {
-          shopId
-        }
-      }, {
+      // On update, refetch featured products
+      refetchQueries.push({
         query: tagProductsQuery,
         variables: {
           shopId,
           tagId: data._id
         }
-      }],
+      });
+    }
+
+    const result = await mutation({
+      refetchQueries,
       variables: {
         input
       }
     });
+
+    if (result.data.addTag) {
+      this.props.onCreate(result.data.addTag.tag);
+    } else {
+      this.props.onUpdate(result.data.updateTag.tag);
+    }
 
     return result;
   }

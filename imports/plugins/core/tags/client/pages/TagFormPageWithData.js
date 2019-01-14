@@ -25,8 +25,8 @@ class TagFormPageWithData extends Component {
     tagId: PropTypes.string
   }
 
-  handleSave = () => {
-    this.props.history.push("/operator/tags");
+  handleCreate = (tag) => {
+    this.props.history.push(`/operator/tags/edit/${tag._id}`);
   }
 
   handleCancel = () => {
@@ -96,7 +96,6 @@ class TagFormPageWithData extends Component {
                 shopId={shopId}
                 tag={tag}
                 onCancel={this.handleCancel}
-                onSave={this.handleSave}
               />
             );
           }}
@@ -109,7 +108,7 @@ class TagFormPageWithData extends Component {
       <TagForm
         shopId={shopId}
         onCancel={this.handleCancel}
-        onSave={this.handleSave}
+        onCreate={this.handleCreate}
       />
     );
   }
