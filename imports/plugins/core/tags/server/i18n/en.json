@@ -24,7 +24,7 @@
               "slug": "Slug",
               "slugHelpText": "Tag slug is automatically generated using the tag name.",
               "slugPlaceholder": "womens-shoes",
-              "formTitleNew": "Create a new tag",
+              "formTitleNew": "Create a tag",
               "formTitleUpdate": "Edit Tag",
               "createNewRule": "Create Tag",
               "cancel": "Cancel",
