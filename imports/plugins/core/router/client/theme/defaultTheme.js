@@ -78,6 +78,9 @@ const rui_components = {
   MediaUploader: {
     backgroundColor: colors.black02,
     border: `1px solid ${colors.black20}`
+  },
+  HeroMediaSmall: {
+    border: `1px solid ${colors.reactionBlue}`
   }
 };
 
