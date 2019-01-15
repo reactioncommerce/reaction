@@ -239,6 +239,7 @@ class TagForm extends Component {
     const { currentTab } = this.state;
     const nameInputId = `name_${this.uniqueInstanceIdentifier}`;
     const slugInputId = `slug_${this.uniqueInstanceIdentifier}`;
+    const heroMediaUrlInputId = `heroMediaUrl_${this.uniqueInstanceIdentifier}`;
     const displayTitleInputId = `displayTitle_${this.uniqueInstanceIdentifier}`;
     const keywordsInputId = `keywords_${this.uniqueInstanceIdentifier}`;
     const descriptionInputId = `description_${this.uniqueInstanceIdentifier}`;
@@ -340,6 +341,15 @@ class TagForm extends Component {
                         <Typography variant="h6">{i18next.t("admin.tags.form.tagListingHero")}</Typography>
                         <Typography>{i18next.t("admin.tags.form.tagListingHeroHelpText")}</Typography>
                         {this.renderMediaGalleryUploader()}
+
+                        <PaddedField
+                          name="heroMediaUrl"
+                          label={i18next.t("admin.tags.form.heroMediaUrl")}
+                          labelFor={heroMediaUrlInputId}
+                        >
+                          <TextInput id={heroMediaUrlInputId} name="heroMediaUrl" placeholder={i18next.t("admin.tags.form.heroMediaUrlPlaceholder")} />
+                          <ErrorsBlock names={["heroMediaUrl"]} />
+                        </PaddedField>
                       </Grid>
                     </Grid>
                   }
