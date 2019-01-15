@@ -2,10 +2,34 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { i18next } from "/client/api";
 import { Components, registerComponent, withMoment } from "@reactioncommerce/reaction-components";
+import { applyTheme } from "@reactioncommerce/components/utils";
 import styled from "styled-components";
+
+const Cell = styled.div`
+  display: flex;
+  align-items: center;
+  height: 100%;
+`;
 
 const EnabledLabel = styled.span`
   padding-left: 8px;
+`;
+
+const HeroMedia = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 30px;
+  height: 100%;
+`;
+
+const HeroMediaImage = styled.img`
+  object-fit: cover;
+  width: 53px;
+  height: 30px
+  border-radius: 2px;
+  border: ${applyTheme("HeroMediaSmall.border")}
+
 `;
 
 class TagDataTableColumn extends Component {
@@ -22,21 +46,27 @@ class TagDataTableColumn extends Component {
 
     if (renderColumn === "isVisible") {
       return (
-        <span>
+        <Cell>
           <Components.Icon icon="fa fa-circle" className={row.value ? "valid" : "error"} />
           <EnabledLabel>{i18next.t(row.value ? "admin.tags.visible" : "admin.tags.hidden")}</EnabledLabel>
-        </span>
+        </Cell>
       );
     } else if (renderColumn === "edit") {
       return (
-        <span>
+        <Cell>
           <Components.Icon icon="fa fa-pencil" />
-        </span>
+        </Cell>
+      );
+    } else if (renderColumn === "heroMediaUrl") {
+      return (
+        <HeroMedia>
+          {(row.value && <HeroMediaImage src={row.value} width="100%" alt="" />) || "-"}
+        </HeroMedia>
       );
     }
 
     return (
-      <span>{row.value}</span>
+      <Cell>{row.value}</Cell>
     );
   }
 }
