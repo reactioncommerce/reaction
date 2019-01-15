@@ -15,8 +15,6 @@ import { tagListingQuery } from "../../lib/queries";
 import { updateTagMutation, removeTagMutation } from "../../lib/mutations";
 
 const ButtonBar = styled.div`
-  display: flex;
-  justify-content: flex-end;
   margin-bottom: 20px
 `;
 
