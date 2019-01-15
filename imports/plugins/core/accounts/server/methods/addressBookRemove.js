@@ -27,6 +27,10 @@ export default function addressBookRemove(addressId, accountUserId) {
     throw new ReactionError("access-denied", "Access denied");
   }
 
+  const addressBeingRemoved = account.profile && Array.isArray(account.profile.addressBook) &&
+    account.profile.addressBook.find((addressBookItem) => addressId === addressBookItem._id);
+  if (!addressBeingRemoved) throw new ReactionError("not-found", "Address Not Found");
+
   const updatedAccountResult = Accounts.update({
     userId,
     "profile.addressBook._id": addressId
@@ -49,6 +53,5 @@ export default function addressBookRemove(addressId, accountUserId) {
   }));
 
   // If the address remove was successful, then return the removed address
-  // Pull the address from the account before it was updated and return it
-  return account.profile.addressBook.find((removedAddress) => addressId === removedAddress._id);
+  return addressBeingRemoved;
 }
