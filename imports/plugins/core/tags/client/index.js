@@ -5,9 +5,9 @@ import { faTag } from "@fortawesome/free-solid-svg-icons";
 
 export { default as DataTable } from "./components/TagDataTable";
 export { default as TagDataTableColumn } from "./components/TagDataTableColumn";
-export { default as TagSettings } from "./containers/TagSettings";
 
 import TagFormPage from "./pages/TagFormPageWithData";
+import TagSettingsPage from "./pages/TagSettingsPageWithData";
 
 registerOperatorRoute({
   isNavigationLink: false,
@@ -27,7 +27,7 @@ registerOperatorRoute({
   isNavigationLink: true,
   isSetting: true,
   path: "/tags",
-  mainComponent: "TagSettings",
+  mainComponent: TagSettingsPage,
   // eslint-disable-next-line react/display-name, react/no-multi-comp
   SidebarIconComponent: (props) => <FontAwesomeIcon icon={faTag} {...props} />,
   sidebarI18nLabel: "admin.tags.tags"
