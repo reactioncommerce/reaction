@@ -30,7 +30,7 @@ test("add a surcharge", async () => {
 
   expect(result).toEqual({
     surcharge: {
-      _id: "surcharge123",
+      _id: jasmine.any(String),
       amount: {
         amount: 19.99,
         currencyCode: "USD"
