@@ -120,7 +120,7 @@ class TagSettings extends Component {
 
     if (isLoadingPrimaryShopId) return null;
 
-    const filteredFields = ["heroImageUrl", "slug", "displayTitle", "name", "isVisible", "edit"];
+    const filteredFields = ["heroMediaUrl", "slug", "displayTitle", "name", "isVisible", "edit"];
     const noDataMessage = i18next.t("admin.tags.tableText.noDataMessage");
 
     // helper adds a class to every grid row
@@ -136,8 +136,8 @@ class TagSettings extends Component {
       let colClassName;
       let headerLabel = i18next.t(`admin.tags.headers.${field}`);
 
-      if (field === "heroImageUrl") {
-        colWidth = 120;
+      if (field === "heroMediaUrl") {
+        colWidth = 70;
         colClassName = "email-log-status";
         headerLabel = "";
       }
