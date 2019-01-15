@@ -28,7 +28,7 @@
               "formTitleUpdate": "Edit Tag",
               "heroMediaUrl": "Hero media URL",
               "heroMediaUrlPlaceholder": "URL",
-              "createNewRule": "Create Tag",
+              "createNew": "Create a tag",
               "cancel": "Cancel",
               "delete": "Delete",
               "deleteConfirm": "Delete this tag?",
@@ -65,8 +65,8 @@
               "priority": "Priority"
             },
             "headers": {
-              "slug": "slug",
-              "name": "name",
+              "slug": "Slug",
+              "name": "Tag",
               "displayTitle": "Display Title",
               "status": "Status"
             },
