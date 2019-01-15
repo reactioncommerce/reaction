@@ -7,6 +7,8 @@ import { withApollo } from "react-apollo";
 import { uniqueId } from "lodash";
 import styled from "styled-components";
 import Button from "@reactioncommerce/components/Button/v1";
+import Card from "@material-ui/core/Card";
+import CardContent from "@material-ui/core/CardContent";
 import { i18next } from "/client/api";
 import withOpaqueShopId from "/imports/plugins/core/graphql/lib/hocs/withOpaqueShopId";
 import { tagListingQuery } from "../../lib/queries";
@@ -195,13 +197,12 @@ class TagSettings extends Component {
             {i18next.t("admin.tags.form.createNewRule")}
           </Button>
         </ButtonBar>
-        <Components.CardGroup>
-          <Components.Card>
-            <Components.CardBody>
-              {this.renderTable()}
-            </Components.CardBody>
-          </Components.Card>
-        </Components.CardGroup>
+
+        <Card>
+          <CardContent>
+            {this.renderTable()}
+          </CardContent>
+        </Card>
       </div>
     );
   }
