@@ -76,11 +76,6 @@ type CartSurchargeMessage {
   message: String
 }
 
-# TODO: EK - update this to an array of objects with language
-type CartSurchargeReason {
-  message: String
-}
-
 """
 A single item in a cart. The item contains information about an intended purchase.
 """
@@ -202,9 +197,6 @@ type CartSurcharge implements Node {
 
   "The message to explain the surchage to customers"
   message: String # TODO: EK - update this to an array of objects with language CartSurchargeMessage
-
-  "The reason to explain the surchage to operators"
-  reason: String # TODO: EK - update this to an array of objects with language CartReasonMessage
 
   "The surchargeId from the surchages collection (for reference)"
   surchargeId: ID

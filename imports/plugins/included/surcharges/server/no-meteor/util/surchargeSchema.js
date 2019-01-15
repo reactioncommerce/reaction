@@ -81,13 +81,6 @@ const surchargeSchema = new SimpleSchema({
   /* TODO: EK - update this to an array of objects with language */
   "message": {
     type: String
-  },
-  /* TODO: EK - update this to an array of objects with language */
-  /*
-   * Reason is used as an internal message to let operators know why this surcharge might apply
-  */
-  "reason": {
-    type: String
   }
 });
 
