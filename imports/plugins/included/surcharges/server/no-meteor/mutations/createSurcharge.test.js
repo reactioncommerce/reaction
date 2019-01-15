@@ -18,7 +18,6 @@ test("add a surcharge", async () => {
         currencyCode: "USD"
       },
       message: "You are shipping hazardous items, there is a 19.99 surcharge",
-      reason: "An item meets a surcharge restriction",
       type: "surcharge",
       attributes: [
         { property: "vendor", value: "reaction", propertyType: "string", operator: "eq" },
@@ -36,7 +35,6 @@ test("add a surcharge", async () => {
         currencyCode: "USD"
       },
       message: "You are shipping hazardous items, there is a 19.99 surcharge",
-      reason: "An item meets a surcharge restriction",
       type: "surcharge",
       attributes: [
         { property: "vendor", value: "reaction", propertyType: "string", operator: "eq" },

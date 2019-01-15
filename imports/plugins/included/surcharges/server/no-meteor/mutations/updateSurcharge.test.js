@@ -17,8 +17,7 @@ const surcharge = {
     amount: 5.99,
     currencyCode: "USD"
   },
-  message: "Original Message",
-  reason: "Original Reason"
+  message: "Original Message"
 };
 
 const updatedSurcharge = {
@@ -32,8 +31,7 @@ const updatedSurcharge = {
     amount: 17.99,
     currencyCode: "USD"
   },
-  message: "Updated Message",
-  reason: "Updated Reason"
+  message: "Updated Message"
 };
 
 test("update a surcharge", async () => {
@@ -60,8 +58,7 @@ test("update a surcharge", async () => {
         amount: 5.99,
         currencyCode: "USD"
       },
-      message: "Original Message",
-      reason: "Original Reason"
+      message: "Original Message"
     }
   });
 });
