@@ -11,14 +11,15 @@ describe("generateSitemaps", () => {
   let sandbox;
   let primaryShop;
 
-  beforeEach((done) => {
+  beforeEach(function () {
+    this.timeout(10000);
     sandbox = sinon.sandbox.create();
     primaryShop = Factory.create("shop");
     sandbox.stub(Reaction, "getPrimaryShopId", () => primaryShop._id);
-    done();
   });
 
-  afterEach(() => {
+  afterEach(function () {
+    this.timeout(10000);
     const { _id: shopId } = primaryShop;
     Shops.remove({ _id: shopId });
     Sitemaps.remove({ shopId });
