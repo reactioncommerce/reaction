@@ -192,7 +192,7 @@ class TagSettings extends Component {
       <div>
         <ButtonBar>
           <Button onClick={this.handleShowCreateForm}>
-            {i18next.t("admin.tags.form.createNewRule")}
+            {i18next.t("admin.tags.form.createNew")}
           </Button>
         </ButtonBar>
 
