@@ -11,10 +11,11 @@ describe("generateSitemaps", () => {
   let sandbox;
   let primaryShop;
 
-  beforeEach(() => {
+  beforeEach((done) => {
     sandbox = sinon.sandbox.create();
     primaryShop = Factory.create("shop");
     sandbox.stub(Reaction, "getPrimaryShopId", () => primaryShop._id);
+    done();
   });
 
   afterEach(() => {
