@@ -305,6 +305,7 @@ class TagForm extends Component {
                   {currentTab === 0 &&
                     <Grid container spacing={24}>
                       <Grid item md={6}>
+                        <Typography variant="h6">{i18next.t("admin.tags.form.displayTitleAndSlug")}</Typography>
                         <PaddedField
                           helpText={i18next.t("admin.tags.form.displayTitleHelpText")}
                           name="displayTitle"
