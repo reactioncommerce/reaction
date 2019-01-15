@@ -26,6 +26,8 @@
               "slugPlaceholder": "womens-shoes",
               "formTitleNew": "Create a tag",
               "formTitleUpdate": "Edit Tag",
+              "heroMediaUrl": "Hero media URL",
+              "heroMediaUrlPlaceholder": "URL",
               "createNewRule": "Create Tag",
               "cancel": "Cancel",
               "delete": "Delete",
