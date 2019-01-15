@@ -8,6 +8,7 @@ export const tagListingQuery = gql`
         endCursor
         startCursor
         hasNextPage
+        hasPreviousPage
       }
       nodes {
         ${Tag}
