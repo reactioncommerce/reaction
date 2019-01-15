@@ -21,7 +21,7 @@
 	url = git@github.com:sportsdirect/reaction-plugin-cloudinary.git
 [submodule "imports/plugins/custom/reaction-plugin-routing"]
 	path = imports/plugins/custom/reaction-plugin-routing
-	url = git@github.com:reactioncommerce/reaction-plugin-routing.git
+	url = git@github.com:sportsdirect/reaction-plugin-routing.git
 [submodule "imports/plugins/custom/reaction-plugin-kafka-lib"]
 	path = imports/plugins/custom/reaction-plugin-kafka-lib
 	url = git@github.com:sportsdirect/reaction-plugin-kafka-lib.git
