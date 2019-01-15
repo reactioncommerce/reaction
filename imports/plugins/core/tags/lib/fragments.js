@@ -5,6 +5,7 @@ export const Tag = `
   name
   slug
   isVisible
+  heroMediaUrl
   metafields {
     description
     key
