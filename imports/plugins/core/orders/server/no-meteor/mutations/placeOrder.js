@@ -9,6 +9,7 @@ import { Address as AddressSchema, Order as OrderSchema, Payment as PaymentSchem
 import getDiscountsTotalForCart from "/imports/plugins/core/discounts/server/no-meteor/util/getDiscountsTotalForCart";
 import xformOrderGroupToCommonOrder from "/imports/plugins/core/orders/server/util/xformOrderGroupToCommonOrder";
 import { getPaymentMethodConfigByName } from "/imports/plugins/core/payments/server/no-meteor/registration";
+import verifyPaymentsMatchOrderTotal from "../../util/verifyPaymentsMatchOrderTotal";
 
 const orderItemsSchema = new SimpleSchema({
   "addedAt": {
@@ -351,8 +352,7 @@ async function createPayments({
 
   // Verify that total of payment inputs equals total due. We need to be sure
   // to do this before creating any payment authorizations
-  const paymentTotal = (paymentsInput || []).reduce((sum, paymentInput) => sum + paymentInput.amount, 0);
-  if (paymentTotal !== orderTotal) throw new ReactionError("payment-failed", "Total of all payments must equal order total");
+  verifyPaymentsMatchOrderTotal(paymentsInput || [], orderTotal);
 
   // Create authorized payments for each
   const paymentPromises = (paymentsInput || []).map(async (paymentInput) => {
