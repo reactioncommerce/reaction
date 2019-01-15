@@ -36,12 +36,21 @@ export default async function updateTag(context, input) {
     throw new ReactionError("access-denied", "User does not have permission");
   }
 
+  let metafields = [];
+
+  // Filter out blank meta fields
+  Array.isArray(input.metafields) && input.metafields.forEach((field) => {
+    if (typeof field.value === "string" && field.value.trim().length) {
+      metafields.push(field);
+    }
+  });
+
   const params = {
     slug: getSlug(input.name),
     name: input.name,
     displayTitle: input.displayTitle,
     isVisible: input.isVisible,
-    metafields: input.metafields,
+    metafields: (metafields.length && metafields) || null,
     featuredProductIds: input.featuredProductIds
   };
 
