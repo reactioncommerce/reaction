@@ -76,20 +76,25 @@ export default async function addressBookAdd(context, address, accountUserId) {
 
   await Users.updateOne({ _id: userId }, userUpdateQuery);
 
-  const result = await Accounts.updateOne({ userId }, accountsUpdateQuery);
+  const { value: updatedAccount } = await Accounts.findOneAndUpdate(
+    { userId },
+    accountsUpdateQuery,
+    {
+      returnOriginal: false
+    }
+  );
 
-  // If the address update was successful, then return the full updated address
-  if (result.modifiedCount !== 1) {
+  if (!updatedAccount) {
     throw new ReactionError("server-error", "Unable to add address to account");
   }
 
-  const updatedAccount = await Accounts.findOne({ userId });
   await appEvents.emit("afterAccountUpdate", {
     updatedAccount,
     updatedBy: userIdFromContext,
     updatedFields: ["profile.addressBook"]
   });
 
-  // Pull the updated address and return it
+  // If the address update was successful, then return the full updated address.
+  // Since we just pushed into `profile.addressBook`, we know it will exist.
   return updatedAccount.profile.addressBook.find((updatedAddress) => address._id === updatedAddress._id);
 }

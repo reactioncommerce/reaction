@@ -97,7 +97,7 @@ export default function addressBookUpdate(address, accountUserId, type) {
     updatedFields
   }));
 
-  // If the address update was successful, then return the full updated address
-  // Pull the updated address and return it
+  // If the address update was successful, then return the full updated address.
+  // Since we just pushed into `profile.addressBook`, we know it will exist.
   return updatedAccount.profile.addressBook.find((updatedAddress) => address._id === updatedAddress._id);
 }
