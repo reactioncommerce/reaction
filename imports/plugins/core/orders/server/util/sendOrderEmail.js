@@ -91,7 +91,7 @@ export default function sendOrderEmail(order, action) {
   const { address: shippingAddress, shipmentMethod, tracking } = order.shipping[0];
   const { carrier } = shipmentMethod;
   const [firstPayment] = (order.payments || []);
-  const { address: billingAddress, currency, displayName } = firstPayment || {};
+  const { address: billingAddress, currency } = firstPayment || {};
 
   const refunds = [];
 
@@ -200,7 +200,10 @@ export default function sendOrderEmail(order, action) {
         region: billingAddress.region,
         postal: billingAddress.postal
       },
-      paymentMethod: displayName,
+      payments: (order.payments || []).map((payment) => ({
+        displayName: payment.displayName,
+        displayAmount: accounting.formatMoney(payment.amount * userCurrencyExchangeRate, userCurrencyFormatting)
+      })),
       subtotal: accounting.formatMoney(subtotal * userCurrencyExchangeRate, userCurrencyFormatting),
       shipping: accounting.formatMoney(shippingCost * userCurrencyExchangeRate, userCurrencyFormatting),
       taxes: accounting.formatMoney(taxes * userCurrencyExchangeRate, userCurrencyFormatting),

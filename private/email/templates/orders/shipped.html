@@ -233,7 +233,11 @@
                                                 {{shipping.address.region}} {{shipping.address.postal}}</td>
                                               <td width="33%" align="left" valign="top" style="font-size:10px; line-height:normal; color:#4c4c4d; font-family:Arial, helvetica;">{{billing.address.address}},<br> {{billing.address.city}},
                                                 {{billing.address.region}} {{billing.address.postal}}</td>
-                                              <td width="33%" align="left" valign="top" style="font-size:10px; line-height:normal; color:#4c4c4d; font-family:Arial, helvetica;">{{billing.paymentMethod}}</td>
+                                              <td width="33%" align="left" valign="top" style="font-size:10px; line-height:normal; color:#4c4c4d; font-family:Arial, helvetica;">
+                                                {{#each billing.payments}}
+                                                  {{this.displayName}} ({{this.displayAmount}})<br />
+                                                {{/each}}
+                                              </td>
                                             </tr>
                                             <tr>
                                               <td valign="top" align="left" height="40" style="line-height:1px; font-size:1px;">&nbsp;</td>
