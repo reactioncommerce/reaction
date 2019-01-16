@@ -1,75 +1,50 @@
-// import Logger from "@reactioncommerce/logger";
-// import ReactionError from "@reactioncommerce/reaction-error";
-import { xformCartCheckout } from "@reactioncommerce/reaction-graphql-xforms/cart";
+import Random from "@reactioncommerce/random";
+import xformCartGroupToCommonOrder from "/imports/plugins/core/cart/server/no-meteor/util/xformCartGroupToCommonOrder";
+import extendCommonOrder from "/imports/plugins/core/shipping/server/no-meteor/util/extendCommonOrder";
+import { surchargeCheck } from "./util/surchargeCheck";
+
 
 /**
  * @summary Returns a list of surcharges based on the cart.
  * @param {Object} context - Context
- * @param {Object} cartWithSummary - the user's cart with its summary
  * @param {Object} cart - the user's cart
  * @return {Array} - an array that surcharges to apply to cart / order
  * @private
  */
 export default async function getSurcharges(context, cart) {
-  const { collections } = context;
-  const surcharges = [];
+  const { Surcharges } = context.collections;
+  const surcharges = await Surcharges.find({}).toArray();
 
-  // const cartWithSummary = await xformCartCheckout(collections, cart);
-
-  // // Need fulfillment group to pass to hydrated carte
-
-  // const hydratedCart = await getShippingRestrictionAttributes(context, cartWithSummary, fulfillmentGroup);
-
-  // // map over cart, check for itemst hat match
+  // Create an extended common order to check surcharges against
+  const commonOrder = await xformCartGroupToCommonOrder(cart, cart.shipping[0], context);
+  const extendedCommonOrder = await extendCommonOrder(context, commonOrder);
 
 
+  const allAppliedSurcharges = await surcharges.reduce(async (appliedSurcharges, surcharge) => {
+    const awaitedAppliedSurcharges = await appliedSurcharges;
 
-  // console.log(" -------------------- cart -------------------- ", cart);
+    const applySurcharge = await surchargeCheck(surcharge, extendedCommonOrder);
 
-  surcharges.push(
-    {
-      _id: "DFZ3td3hgwaBAHiNm",
-      amount:  {
-        amount: 5.99,
-        displayAmount: "5.99",
-        currencyCode: "USD"
-      },
-      message: {
-        message: "This is a test surcharge, #1."
-      },
-      surchargeId: "DFZ3td3hgwaBAHiNm",
-      fulfillmentGroupId: "DFZ3td3hgwaBAHiNm",
-      cartId: "DFZ3td3hgwaBAHiNm"
-    },
-    {
-      _id: "ANKd9JgmAdsRzjiJh",
-      amount:  {
-        amount: 6.99,
-        displayAmount: "6.99",
-        currencyCode: "USD"
-      },
-      message: {
-        message: "This is a test surcharge, #2."
-      },
-      surchargeId: "ANKd9JgmAdsRzjiJh",
-      fulfillmentGroupId: "ANKd9JgmAdsRzjiJh",
-      cartId: "ANKd9JgmAdsRzjiJh"
-    },
-    {
-      _id: "fbvawYJHFSk8rHif",
-      amount:  {
-        amount: 1.99,
-        displayAmount: "1.99",
-        currencyCode: "USD"
-      },
-      message: {
-        message: "This is a test surcharge, #3."
-      },
-      surchargeId: "fbvawYJHFSk8rHif",
-      fulfillmentGroupId: "fbvawYJHFSk8rHif",
-      cartId: "fbvawYJHFSk8rHif"
+    // If surcharge passes all checks, it is valid and should be added to valid surcharges array
+    if (applySurcharge) {
+      awaitedAppliedSurcharges.push(surcharge);
     }
-  );
 
-  return surcharges;
+    return awaitedAppliedSurcharges;
+  }, Promise.resolve([]));
+
+  // We don't need all data to be passed to Cart / Order
+  // Parse provided surcharge data to pass only relevent data to match Cart / Order schema
+  const appliedSurchargesFormattedForFulfillment = allAppliedSurcharges.map((surcharge) => {
+    return {
+      _id: Random.id(),
+      surchargeId: surcharge._id,
+      amount: surcharge.amount,
+      message: surcharge.message,
+      reason: surcharge.reason,
+      cartId: cart._id
+    };
+  });
+
+  return appliedSurchargesFormattedForFulfillment;
 }
