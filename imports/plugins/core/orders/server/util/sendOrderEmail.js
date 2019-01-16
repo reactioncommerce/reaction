@@ -91,7 +91,31 @@ export default function sendOrderEmail(order, action) {
   const { address: shippingAddress, shipmentMethod, tracking } = order.shipping[0];
   const { carrier } = shipmentMethod;
   const [firstPayment] = (order.payments || []);
-  const { address: billingAddress, currency } = firstPayment || {};
+  const { address: paymentBillingAddress, currency } = firstPayment || {};
+
+  const shippingAddressForEmail = shippingAddress ? {
+    address: `${shippingAddress.address1}${shippingAddress.address2 ? ` ${shippingAddress.address2}` : ""}`,
+    city: shippingAddress.city,
+    region: shippingAddress.region,
+    postal: shippingAddress.postal
+  } : null;
+
+  let billingAddressForEmail = null;
+  if (order.billingAddress) {
+    billingAddressForEmail = {
+      address: `${order.billingAddress.address1}${order.billingAddress.address2 ? ` ${order.billingAddress.address2}` : ""}`,
+      city: order.billingAddress.city,
+      region: order.billingAddress.region,
+      postal: order.billingAddress.postal
+    };
+  } else if (paymentBillingAddress) {
+    billingAddressForEmail = {
+      address: `${paymentBillingAddress.address1}${paymentBillingAddress.address2 ? ` ${paymentBillingAddress.address2}` : ""}`,
+      city: paymentBillingAddress.city,
+      region: paymentBillingAddress.region,
+      postal: paymentBillingAddress.postal
+    };
+  }
 
   const refunds = [];
 
@@ -194,12 +218,7 @@ export default function sendOrderEmail(order, action) {
     // Order Data
     order,
     billing: {
-      address: {
-        address: `${billingAddress.address1}${billingAddress.address2 ? ` ${billingAddress.address2}` : ""}`,
-        city: billingAddress.city,
-        region: billingAddress.region,
-        postal: billingAddress.postal
-      },
+      address: billingAddressForEmail,
       payments: (order.payments || []).map((payment) => ({
         displayName: payment.displayName,
         displayAmount: accounting.formatMoney(payment.amount * userCurrencyExchangeRate, userCurrencyFormatting)
@@ -224,12 +243,7 @@ export default function sendOrderEmail(order, action) {
     shipping: {
       tracking,
       carrier,
-      address: {
-        address: `${shippingAddress.address1}${shippingAddress.address2 ? ` ${shippingAddress.address2}` : ""}`,
-        city: shippingAddress.city,
-        region: shippingAddress.region,
-        postal: shippingAddress.postal
-      }
+      address: shippingAddressForEmail
     }
   };
 
