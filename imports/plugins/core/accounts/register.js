@@ -3,6 +3,7 @@ import mutations from "./server/no-meteor/mutations";
 import queries from "./server/no-meteor/queries";
 import resolvers from "./server/no-meteor/resolvers";
 import schemas from "./server/no-meteor/schemas";
+import { ENROLL_URI_BASE } from "./server/util/getDataForEmail";
 
 /**
  * @file Accounts core plugin: Manage how members sign into your shop
@@ -72,6 +73,13 @@ Reaction.registerPackage({
     meta: { noAdminControls: true },
     name: "reset-password",
     label: "reset-password"
+  }, {
+    route: `/${ENROLL_URI_BASE}/:token/:status?`,
+    template: "loginFormUpdatePassword",
+    workflow: "none",
+    meta: { noAdminControls: true },
+    name: ENROLL_URI_BASE,
+    label: "Account Enroll"
   }],
   layout: [{
     layout: "coreLayout",
