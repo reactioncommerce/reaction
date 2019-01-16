@@ -21,15 +21,35 @@ export default function cancelOrder(order, returnToStock) {
   check(order, Object);
   check(returnToStock, Boolean);
 
-  // REVIEW: Only marketplace admins should be able to cancel entire order?
-  // Unless order is entirely contained in a single shop? Do we need a switch on marketplace owner dashboard?
-  if (!Reaction.hasPermission("orders")) {
+  if (!Reaction.hasPermission("orders", Reaction.getUserId(), order.shopId)) {
     throw new ReactionError("access-denied", "Access Denied");
   }
 
-  // refund payment to customer
+  // refund all payments to customer
   (order.payments || []).forEach((payment) => {
-    Meteor.call("orders/refunds/create", order._id, payment._id, payment.amount);
+    switch (payment.status) {
+      case "completed":
+      case "partialRefund":
+        Meteor.call("orders/refunds/create", order._id, payment._id, payment.amount);
+        break;
+
+      case "created":
+      case "approved":
+        Orders.update(
+          {
+            "_id": order._id,
+            "payments._id": payment._id
+          },
+          {
+            $set: {
+              "payments.$.status": "canceled"
+            }
+          }
+        );
+        break;
+      default:
+        break;
+    }
   });
 
   // update item workflow
@@ -37,7 +57,8 @@ export default function cancelOrder(order, returnToStock) {
   Meteor.call("workflow/pushItemWorkflow", "coreOrderItemWorkflow/canceled", order, orderItemIds);
 
   const result = Orders.update({
-    _id: order._id
+    _id: order._id,
+    shopId: order.shopId
   }, {
     $set: {
       "workflow.status": "coreOrderWorkflow/canceled"
@@ -51,11 +72,14 @@ export default function cancelOrder(order, returnToStock) {
 
   // send notification to user
   const { accountId } = order;
-  const prefix = Reaction.getShopPrefix();
-  const url = `${prefix}/notifications`;
-  createNotification(rawCollections, { accountId, type: "orderCanceled", url }).catch((error) => {
-    Logger.error("Error in createNotification within shipmentShipped", error);
-  });
+
+  if (accountId) {
+    const prefix = Reaction.getShopPrefix();
+    const url = `${prefix}/notifications`;
+    createNotification(rawCollections, { accountId, type: "orderCanceled", url }).catch((error) => {
+      Logger.error("Error in createNotification within shipmentShipped", error);
+    });
+  }
 
   return result;
 }

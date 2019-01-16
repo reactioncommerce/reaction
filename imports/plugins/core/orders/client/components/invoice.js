@@ -294,9 +294,7 @@ class Invoice extends Component {
   render() {
     const { components: { Button }, onCancelOrder, order, printOrder } = this.props;
 
-    // The "cancelOrder" method is intended to be used when all payments are in "completed" status
-    // and have not yet been fully or partially refunded
-    const canCancelOrder = (order.payments || []).every((payment) => payment.status === "completed");
+    const canCancelOrder = (order.workflow.status !== "coreOrderWorkflow/canceled");
 
     return (
       <Components.CardGroup>

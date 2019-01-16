@@ -6,12 +6,13 @@ import { Components } from "@reactioncommerce/reaction-components";
 import { formatPriceString, i18next } from "/client/api";
 
 const displayStatuses = {
-  created: "Awaiting approval",
   approved: "Approved",
+  canceled: "Canceled authorization before capture",
   completed: "Captured",
+  created: "Awaiting approval",
   error: "Error",
-  refunded: "Fully refunded",
-  partialRefund: "Partially refunded"
+  partialRefund: "Partially refunded",
+  refunded: "Fully refunded"
 };
 
 class OrderPayment extends Component {

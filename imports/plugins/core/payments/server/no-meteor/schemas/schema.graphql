@@ -74,12 +74,28 @@ type Payment implements Node {
 
 "Valid payment statuses"
 enum PaymentStatus {
+  "A shop operator adjusted the payment amount after the order was placed"
   adjustments
+
+  "A shop operator has approved this payment"
   approved
+
+  "A shop operator has canceled this payment before it was captured"
+  canceled
+
+  "A shop operator has captured this payment"
   completed
+
+  "Upon placing an order, the status of all payments for that order begins at 'created'"
   created
+
+  "There was an error capturing the payment"
   error
+
+  "A shop operator has refunded some but not all of this payment"
   partialRefund
+
+  "A shop operator has refunded all of this payment"
   refunded
 }
 

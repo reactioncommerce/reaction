@@ -1,4 +1,5 @@
 import { check } from "meteor/check";
+import accounting from "accounting-js";
 import Hooks from "@reactioncommerce/hooks";
 import Logger from "@reactioncommerce/logger";
 import ReactionError from "@reactioncommerce/reaction-error";
@@ -15,7 +16,9 @@ import sendOrderEmail from "../util/sendOrderEmail";
  * @summary Apply a refund to an already captured order
  * @param {String} orderId - order object
  * @param {String} paymentId - ID of payment to refund
- * @param {Number} amount - Amount of the refund, as a positive number
+ * @param {Number} amount - Amount of the refund, as a positive number. If this is
+ *   more than the remaining amount to be refunded for this payment, the rest of
+ *   the payment will be refunded, making it fully refunded.
  * @return {null} no return value
  */
 export default function createRefund(orderId, paymentId, amount) {
@@ -38,7 +41,14 @@ export default function createRefund(orderId, paymentId, amount) {
   const { name } = payment;
   const { functions } = getPaymentMethodConfigByName(name);
   const context = Promise.await(getGraphQLContextInMeteorMethod(authUserId));
-  const result = Promise.await(functions.createRefund(context, payment, amount));
+
+  // Get total amount not yet refunded
+  const allRefundsBefore = Promise.await(functions.listRefunds(context, payment));
+  const refundTotalBefore = allRefundsBefore.reduce((sum, refund) => sum + refund.amount, 0);
+  const amountNotYetRefunded = payment.amount - refundTotalBefore;
+
+  const amountToRefund = Math.min(amountNotYetRefunded, amount);
+  const result = Promise.await(functions.createRefund(context, payment, amountToRefund));
 
   if (!result.saved) {
     Logger.fatal("Attempt to refund payment failed", order._id, paymentId, result.error);
@@ -48,7 +58,9 @@ export default function createRefund(orderId, paymentId, amount) {
   // List refunds to see if we've now refunded the full amount of this payment
   const allRefunds = Promise.await(functions.listRefunds(context, payment));
   const refundTotal = allRefunds.reduce((sum, refund) => sum + refund.amount, 0);
-  const isFullyRefunded = refundTotal === payment.amount;
+
+  // There could be JS math errors so we round to 3 decimal places when comparing
+  const isFullyRefunded = accounting.toFixed(refundTotal, 3) === accounting.toFixed(payment.amount, 3);
 
   Orders.update(
     {
