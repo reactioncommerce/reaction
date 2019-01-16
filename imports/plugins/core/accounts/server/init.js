@@ -1,6 +1,7 @@
 import Hooks from "@reactioncommerce/hooks";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
 import { Accounts, Groups } from "/lib/collections";
+import { ENROLL_URI_BASE } from "./util/getDataForEmail";
 
 // set default admin user's account as "owner"
 Hooks.Events.add("afterCreateDefaultAdminUser", (user) => {
@@ -16,6 +17,6 @@ Hooks.Events.add("afterCoreInit", () => {
   Reaction.addRolesToGroups({
     allShops: true,
     groups: ["guest", "customer"],
-    roles: ["account/verify", "reset-password"]
+    roles: ["account/verify", "reset-password", ENROLL_URI_BASE]
   });
 });
