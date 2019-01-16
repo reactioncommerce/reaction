@@ -34,15 +34,15 @@ export default async function getSurcharges(context, { cart }) {
 
   // We don't need all data to be passed to Cart / Order
   // Parse provided surcharge data to pass only relevent data to match Cart / Order schema
-  const appliedSurchargesFormattedForFulfillment = allAppliedSurcharges.map((surcharge) => {
-    return {
+  const appliedSurchargesFormattedForFulfillment = allAppliedSurcharges.map((surcharge) => (
+    {
       _id: Random.id(),
       surchargeId: surcharge._id,
       amount: surcharge.amount,
       message: surcharge.message,
       cartId: cart._id
-    };
-  });
+    }
+  ));
 
   return appliedSurchargesFormattedForFulfillment;
 }
