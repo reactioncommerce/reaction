@@ -44,8 +44,9 @@ export default function approvePayment(orderId, paymentId) {
     }
   });
 
-  Promise.await(appEvents.emit("afterOrderApprovePayment", dbOrder));
+  const updatedOrder = Orders.findOne({ _id: orderId });
+  Promise.await(appEvents.emit("afterOrderApprovePayment", updatedOrder));
 
   // Update search record
-  Hooks.Events.run("afterUpdateOrderUpdateSearchRecord", dbOrder);
+  Hooks.Events.run("afterUpdateOrderUpdateSearchRecord", updatedOrder);
 }

@@ -153,6 +153,11 @@ export default function startup(context) {
 
   appEvents.on("afterOrderApprovePayment", async (order) => {
     const { collections } = context;
+
+    // We only decrease the inventory quantity after the final payment is approved
+    const nonApprovedPayment = (order.payments || []).find((payment) => payment.status === "created");
+    if (nonApprovedPayment) return;
+
     const orderItems = order.shipping.reduce((list, group) => [...list, ...group.items], []);
 
     // Create a new set of unique productIds
