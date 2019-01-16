@@ -5,6 +5,7 @@ import exampleCapturePayment from "./server/no-meteor/util/exampleCapturePayment
 import exampleCreateAuthorizedPayment from "./server/no-meteor/util/exampleCreateAuthorizedPayment";
 import exampleCreateRefund from "./server/no-meteor/util/exampleCreateRefund";
 import exampleListRefunds from "./server/no-meteor/util/exampleListRefunds";
+import startup from "./server/no-meteor/startup";
 
 Reaction.registerPackage({
   label: "ExamplePayment",
@@ -13,6 +14,9 @@ Reaction.registerPackage({
   autoEnable: true,
   graphQL: {
     schemas
+  },
+  functionsByType: {
+    startup: [startup]
   },
   paymentMethods: [{
     name: "iou_example",
