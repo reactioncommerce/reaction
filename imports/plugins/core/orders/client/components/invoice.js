@@ -46,10 +46,6 @@ class Invoice extends Component {
      */
     displayMedia: PropTypes.func,
     /**
-     * A boolean indicating whether payment supports refunds
-     */
-    hasRefundingEnabled: PropTypes.bool,
-    /**
      * An order invoice document
      */
     invoice: PropTypes.object,
@@ -89,6 +85,10 @@ class Invoice extends Component {
      * An order document
      */
     order: PropTypes.object,
+    /**
+     * List of payment methods defined for the shop that owns this order
+     */
+    paymentMethods: PropTypes.arrayOf(PropTypes.object),
     /**
      * A string representing the route/path for printed order
      */
@@ -162,10 +162,10 @@ class Invoice extends Component {
     * @returns {null} null
     */
   renderRefundsInfo() {
-    const { hasRefundingEnabled, isFetching, refunds } = this.props;
+    const { isFetching, refunds } = this.props;
     return (
       <div>
-        {(hasRefundingEnabled && isFetching) &&
+        {(isFetching) &&
           <div className="form-group order-summary-form-group">
             <strong>Loading Refunds</strong>
             <div className="invoice-details">
@@ -261,30 +261,31 @@ class Invoice extends Component {
   renderPayments() {
     const {
       currency,
-      hasRefundingEnabled,
       isCapturing,
       isRefunding,
       onApprovePayment,
       onCapturePayment,
       onRefundPayment,
       order,
-      refunds
+      paymentMethods = [],
+      refunds = []
     } = this.props;
 
     return order.payments.map((payment) => {
       const refundsForPayment = refunds.filter((refund) => refund.paymentId === payment._id);
+      const paymentMethod = paymentMethods.find((method) => method.name === payment.name);
 
       return (
         <OrderPayment
           currency={currency}
           key={payment._id}
-          hasRefundingEnabled={hasRefundingEnabled}
           isCapturing={isCapturing}
           isRefunding={isRefunding}
           onApprovePayment={onApprovePayment}
           onCapturePayment={onCapturePayment}
           onRefundPayment={onRefundPayment}
           payment={payment}
+          paymentMethod={paymentMethod}
           refunds={refundsForPayment}
         />
       );

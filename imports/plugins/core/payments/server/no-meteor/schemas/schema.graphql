@@ -114,6 +114,9 @@ union PaymentMethodData
 
 "Describes a payment method"
 type PaymentMethod {
+  "If this is `false`, the payment method does not support refunding. Use this to hide refund UI."
+  canRefund: Boolean!
+
   "Data for this method. The data format differs for each method"
   data: PaymentMethodData
 

@@ -5,6 +5,8 @@ import { Meteor } from "meteor/meteor";
 import { i18next, Logger, Reaction, formatPriceString } from "/client/api";
 import { Orders, Shops } from "/lib/collections";
 import { getPrimaryMediaForItem } from "/lib/api";
+import getOpaqueIds from "/imports/plugins/core/core/client/util/getOpaqueIds";
+import simpleGraphQLClient from "/imports/plugins/core/graphql/lib/helpers/simpleClient";
 import { composeWithTracker, registerComponent } from "@reactioncommerce/reaction-components";
 import Invoice from "../components/invoice.js";
 import { approvePayment, getOrderRiskStatus, getOrderRiskBadge, getShippingInfo } from "../helpers";
@@ -35,18 +37,40 @@ class InvoiceContainer extends Component {
   }
 
   componentDidMount() {
+    this._isMounted = true;
+
     const { order } = this.props;
 
     if (order) {
       Meteor.call("orders/refunds/list", order, (error, result) => {
         if (error) Logger.warn(error);
 
-        this.setState({
-          isFetchingRefunds: false,
-          refunds: Array.isArray(result) ? result.reverse() : []
-        });
+        if (this._isMounted) {
+          this.setState({
+            isFetchingRefunds: false,
+            refunds: Array.isArray(result) ? result.reverse() : []
+          });
+        }
       });
+
+      getOpaqueIds([{ namespace: "Shop", id: order.shopId }])
+        .then(([shopId]) => simpleGraphQLClient.queries.paymentMethods({ shopId }))
+        .then(({ paymentMethods }) => {
+          if (this._isMounted) {
+            this.setState({
+              paymentMethods
+            });
+          }
+          return null;
+        })
+        .catch((error) => {
+          Logger.warn(error);
+        });
     }
+  }
+
+  componentWillUnmount() {
+    this._isMounted = false;
   }
 
   handlePopOverOpen = (event) => {
@@ -176,10 +200,6 @@ class InvoiceContainer extends Component {
       total: editedItems.reduce((acc, item) => acc + item.refundedTotal, 0),
       items: editedItems
     };
-  }
-
-  hasRefundingEnabled() {
-    return true; // may re-implement in the future
   }
 
   handleApprove = (paymentId) => {
@@ -406,7 +426,6 @@ class InvoiceContainer extends Component {
         handlePopOverOpen={this.handlePopOverOpen}
         handleRefundItems={this.handleRefundItems}
         handleSelectAllItems={this.handleSelectAllItems}
-        hasRefundingEnabled={this.hasRefundingEnabled()}
         isAdjusted={this.isAdjusted}
         onApprovePayment={this.handleApprove}
         onCancelOrder={this.handleCancelOrder}
@@ -425,6 +444,7 @@ class InvoiceContainer extends Component {
         popOverIsOpen={this.state.popOverIsOpen}
         editedItems={this.state.editedItems}
         isUpdating={this.state.isUpdating}
+        paymentMethods={this.state.paymentMethods}
       />
     );
   }

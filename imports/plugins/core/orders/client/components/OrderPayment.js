@@ -35,10 +35,6 @@ class OrderPayment extends Component {
      */
     currency: PropTypes.object,
     /**
-     * A boolean indicating whether payment supports refunds
-     */
-    hasRefundingEnabled: PropTypes.bool,
-    /**
      * True if currently capturing this payment
      */
     isCapturing: PropTypes.bool,
@@ -70,6 +66,15 @@ class OrderPayment extends Component {
       status: PropTypes.string.isRequired,
       transactionId: PropTypes.string.isRequired
     }).isRequired,
+    /**
+     * The payment method definition
+     */
+    paymentMethod: PropTypes.shape({
+      canRefund: PropTypes.bool.isRequired
+    }),
+    /**
+     * List of refunds
+     */
     refunds: PropTypes.arrayOf(PropTypes.shape({
       amount: PropTypes.number.isRequired,
       paymentId: PropTypes.string.isRequired
@@ -159,7 +164,7 @@ class OrderPayment extends Component {
   }
 
   render() {
-    const { components: { Button }, hasRefundingEnabled, isCapturing, payment, refunds } = this.props;
+    const { components: { Button }, isCapturing, payment, paymentMethod, refunds } = this.props;
     const { isApproving } = this.state;
     const { _id, amount, captureErrorMessage, displayName, processor, status, transactionId } = payment;
     const refundTotal = (refunds || []).reduce((acc, item) => acc + item.amount, 0);
@@ -194,7 +199,7 @@ class OrderPayment extends Component {
               {i18next.t("order.capturePayment")}
             </Button>
           }
-          {hasRefundingEnabled && ["completed", "partialRefund"].indexOf(status) > -1 && this.renderRefundForm()}
+          {!!paymentMethod && paymentMethod.canRefund && ["completed", "partialRefund"].indexOf(status) > -1 && this.renderRefundForm()}
         </div>
       </div>
     );

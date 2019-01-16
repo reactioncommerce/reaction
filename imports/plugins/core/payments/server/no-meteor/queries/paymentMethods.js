@@ -22,6 +22,8 @@ export default async function paymentMethods(context, shopId) {
   return Object.keys(allPaymentMethods)
     .map((name) => ({
       ...allPaymentMethods[name],
+      // Force canRefund to be set
+      canRefund: allPaymentMethods[name].canRefund !== false,
       isEnabled: availablePaymentMethods.includes(name)
     }));
 }

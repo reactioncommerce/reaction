@@ -6,6 +6,7 @@ import { Orders } from "/lib/collections";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
 import rawCollections from "/imports/collections/rawCollections";
 import createNotification from "/imports/plugins/included/notifications/server/no-meteor/createNotification";
+import { getPaymentMethodConfigByName } from "/imports/plugins/core/payments/server/no-meteor/registration";
 import appEvents from "/imports/node-app/core/util/appEvents";
 
 /**
@@ -30,7 +31,9 @@ export default function cancelOrder(order, returnToStock) {
     switch (payment.status) {
       case "completed":
       case "partialRefund":
-        Meteor.call("orders/refunds/create", order._id, payment._id, payment.amount);
+        if (getPaymentMethodConfigByName(payment.name).canRefund) {
+          Meteor.call("orders/refunds/create", order._id, payment._id, payment.amount);
+        }
         break;
 
       case "created":

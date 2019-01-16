@@ -39,7 +39,9 @@ export default function createRefund(orderId, paymentId, amount) {
   if (!payment) throw new ReactionError("not-found", "Payment not found");
 
   const { name } = payment;
-  const { functions } = getPaymentMethodConfigByName(name);
+  const { canRefund, functions } = getPaymentMethodConfigByName(name);
+  if (!canRefund) throw new ReactionError("invalid", "Refunding not supported");
+
   const context = Promise.await(getGraphQLContextInMeteorMethod(authUserId));
 
   // Get total amount not yet refunded
