@@ -12,7 +12,7 @@ export async function surchargeCheck(surcharge, extendCommonOrder) {
 
   const validSurcharge = items.some((item) => { // eslint-disable-line
     // For each item, check against surcharge
-    const { country: restrictionCountry, postal: restrictionPostal, region: restrictionRegion } = destination;
+    const { country, postal, region } = destination;
 
     if (Array.isArray(attributes) && attributes.length) {
       // Item must meet all attributes to be restricted
@@ -28,19 +28,19 @@ export async function surchargeCheck(surcharge, extendCommonOrder) {
         if (attributeFound && shippingAddress) {
           // If there is no destination restriction, destination restriction is global
           // Return true to restrict this method
-          if (!destination) return attributeFound;
+          if (!destination || Object.getOwnPropertyNames(destination).length === 0) return attributeFound;
 
-          if (restrictionPostal && restrictionPostal.includes(shippingAddress.postal)) {
+          if (postal && postal.includes(shippingAddress.postal)) {
             return true;
           }
 
           // Check for an allow list of regions
-          if (restrictionRegion && restrictionRegion.includes(shippingAddress.region)) {
+          if (region && region.includes(shippingAddress.region)) {
             return true;
           }
 
           // Check for an allow list of countries
-          if (restrictionCountry && restrictionCountry.includes(shippingAddress.country)) {
+          if (country && country.includes(shippingAddress.country)) {
             return true;
           }
         }
@@ -55,17 +55,17 @@ export async function surchargeCheck(surcharge, extendCommonOrder) {
 
     // If destination exists, make sure we have a shipping address, and check against it
     if (shippingAddress) {
-      if (restrictionPostal && restrictionPostal.includes(shippingAddress.postal)) {
+      if (postal && postal.includes(shippingAddress.postal)) {
         return true;
       }
 
       // Check for an allow list of regions
-      if (restrictionRegion && restrictionRegion.includes(shippingAddress.region)) {
+      if (region && region.includes(shippingAddress.region)) {
         return true;
       }
 
       // Check for an allow list of countries
-      if (restrictionCountry && restrictionCountry.includes(shippingAddress.country)) {
+      if (country && country.includes(shippingAddress.country)) {
         return true;
       }
     }
