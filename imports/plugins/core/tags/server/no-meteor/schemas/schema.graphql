@@ -126,7 +126,7 @@ type TagProduct {
 
 type TagProductEdge {
   cursor: ConnectionCursor!
-  node: RedirectRule
+  node: TagProduct
 }
 
 type TagProductConnection {
