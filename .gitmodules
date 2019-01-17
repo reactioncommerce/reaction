@@ -22,3 +22,6 @@
 [submodule "imports/plugins/custom/reaction-plugin-kafka-lib"]
 	path = imports/plugins/custom/reaction-plugin-kafka-lib
 	url = git@github.com:sportsdirect/reaction-plugin-kafka-lib.git
+[submodule "imports/plugins/custom/reaction-plugin-pricing-engine"]
+	path = imports/plugins/custom/reaction-plugin-pricing-engine
+	url = git@github.com:sportsdirect/reaction-plugin-pricing-engine.git
