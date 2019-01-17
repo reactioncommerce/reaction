@@ -33,7 +33,6 @@ export default async function updateSurchargeMutation(context, input) {
     shopId
   }, {
     $set: {
-      _id: surchargeId,
       ...surcharge
     }
   });
