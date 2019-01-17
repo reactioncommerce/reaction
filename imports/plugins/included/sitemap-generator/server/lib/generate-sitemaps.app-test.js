@@ -11,7 +11,8 @@ describe("generateSitemaps", () => {
   let sandbox;
   let primaryShop;
 
-  beforeEach(() => {
+  beforeEach(function () {
+    this.timeout(10000);
     sandbox = sinon.sandbox.create();
     primaryShop = Factory.create("shop");
     sandbox.stub(Reaction, "getPrimaryShopId", () => primaryShop._id);
