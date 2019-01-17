@@ -1,11 +1,9 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { Meteor } from "meteor/meteor";
 import { withRouter } from "react-router";
 import { compose } from "recompose";
 import { Logger, Reaction } from "/client/api";
 import { FileRecord } from "@reactioncommerce/file-collections";
-import { Media } from "/imports/plugins/core/files/client";
 import withOpaqueShopId from "/imports/plugins/core/graphql/lib/hocs/withOpaqueShopId";
 import { Query, withApollo } from "react-apollo";
 import TagForm from "../components/TagForm";
