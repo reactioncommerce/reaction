@@ -1,9 +1,9 @@
 import _ from "lodash";
 import Logger from "@reactioncommerce/logger";
-import accounting from "accounting-js";
 import { SSR } from "meteor/meteorhacks:ssr";
 import { Shops } from "/lib/collections";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
+import formatMoney from "/imports/utils/formatMoney";
 import { Media } from "/imports/plugins/core/files/server";
 import getGraphQLContextInMeteorMethod from "/imports/plugins/core/graphql/server/getGraphQLContextInMeteorMethod";
 import { getPaymentMethodConfigByName } from "/imports/plugins/core/payments/server/no-meteor/registration";
@@ -131,7 +131,6 @@ export default function sendOrderEmail(order, action) {
   const refundTotal = refunds.reduce((acc, refund) => acc + refund.amount, 0);
 
   const userCurrency = (currency && currency.userCurrency) || shop.currency;
-  const userCurrencyFormatting = _.omit(shop.currencies[userCurrency], ["enabled", "rate"]);
 
   // Get user currency exchange rate at time of transaction
   const userCurrencyExchangeRate = (currency && currency.exchangeRate) || 1;
@@ -152,10 +151,7 @@ export default function sendOrderEmail(order, action) {
       // Otherwise push the unique item into the combinedItems array
 
       // Add displayAmount to match user currency settings
-      orderItem.price.displayAmount = accounting.formatMoney(
-        orderItem.price.amount * userCurrencyExchangeRate,
-        userCurrencyFormatting
-      );
+      orderItem.price.displayAmount = formatMoney(orderItem.price.amount * userCurrencyExchangeRate, userCurrency);
 
       combinedItems.push(orderItem);
 
@@ -221,20 +217,20 @@ export default function sendOrderEmail(order, action) {
       address: billingAddressForEmail,
       payments: (order.payments || []).map((payment) => ({
         displayName: payment.displayName,
-        displayAmount: accounting.formatMoney(payment.amount * userCurrencyExchangeRate, userCurrencyFormatting)
+        displayAmount: formatMoney(payment.amount * userCurrencyExchangeRate, userCurrency)
       })),
-      subtotal: accounting.formatMoney(subtotal * userCurrencyExchangeRate, userCurrencyFormatting),
-      shipping: accounting.formatMoney(shippingCost * userCurrencyExchangeRate, userCurrencyFormatting),
-      taxes: accounting.formatMoney(taxes * userCurrencyExchangeRate, userCurrencyFormatting),
-      discounts: accounting.formatMoney(discounts * userCurrencyExchangeRate, userCurrencyFormatting),
-      refunds: accounting.formatMoney(refundTotal * userCurrencyExchangeRate, userCurrencyFormatting),
-      total: accounting.formatMoney(
+      subtotal: formatMoney(subtotal * userCurrencyExchangeRate, userCurrency),
+      shipping: formatMoney(shippingCost * userCurrencyExchangeRate, userCurrency),
+      taxes: formatMoney(taxes * userCurrencyExchangeRate, userCurrency),
+      discounts: formatMoney(discounts * userCurrencyExchangeRate, userCurrency),
+      refunds: formatMoney(refundTotal * userCurrencyExchangeRate, userCurrency),
+      total: formatMoney(
         (subtotal + shippingCost + taxes - discounts) * userCurrencyExchangeRate,
-        userCurrencyFormatting
+        userCurrency
       ),
-      adjustedTotal: accounting.formatMoney(
+      adjustedTotal: formatMoney(
         (amount - refundTotal) * userCurrencyExchangeRate,
-        userCurrencyFormatting
+        userCurrency
       )
     },
     combinedItems,

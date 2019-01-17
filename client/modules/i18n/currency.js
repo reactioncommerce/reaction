@@ -43,6 +43,7 @@ export function findCurrency(defaultCurrency, useDefaultShopCurrency) {
 
 /**
  * @name formatPriceString
+ * @deprecated Slowly migrating everything to use `formatMoney` from "/imports/utils/formatMoney" instead
  * @summary Return shop/locale specific formatted price. Also accepts a range formatted with " - ".
  * @memberof i18n
  * @method

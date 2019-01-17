@@ -2,10 +2,11 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import _ from "lodash";
 import { Meteor } from "meteor/meteor";
-import { i18next, Logger, Reaction, formatPriceString } from "/client/api";
-import { Orders, Shops } from "/lib/collections";
+import { i18next, Logger, Reaction } from "/client/api";
+import { Orders } from "/lib/collections";
 import { getPrimaryMediaForItem } from "/lib/api";
 import getOpaqueIds from "/imports/plugins/core/core/client/util/getOpaqueIds";
+import formatMoney from "/imports/utils/formatMoney";
 import simpleGraphQLClient from "/imports/plugins/core/graphql/lib/helpers/simpleClient";
 import { composeWithTracker, registerComponent } from "@reactioncommerce/reaction-components";
 import Invoice from "../components/invoice.js";
@@ -14,7 +15,6 @@ import { captureOrderPayments } from "../graphql";
 
 class InvoiceContainer extends Component {
   static propTypes = {
-    currency: PropTypes.object,
     invoice: PropTypes.object,
     order: PropTypes.object,
     uniqueItems: PropTypes.array
@@ -223,13 +223,14 @@ class InvoiceContainer extends Component {
   }
 
   handleCancelOrder = () => {
-    const { currency, invoice, order } = this.props;
+    const { invoice, order } = this.props;
     const { total: invoiceTotal } = invoice;
-    const currencySymbol = currency.symbol;
 
     Alerts.alert({
       title: i18next.t("order.cancelOrder"),
-      text: i18next.t("order.applyRefundDuringCancelOrder", { currencySymbol, invoiceTotal }),
+      text: i18next.t("order.applyRefundDuringCancelOrder", {
+        invoiceTotal: formatMoney(invoiceTotal, order.currencyCode)
+      }),
       type: "warning",
       showCancelButton: true,
       showCloseButton: true,
@@ -254,9 +255,8 @@ class InvoiceContainer extends Component {
   }
 
   handleRefund = (paymentId, refund) => {
-    const { currency, order } = this.props;
+    const { order } = this.props;
     const { refunds } = this.state;
-    const currencySymbol = currency.symbol;
     const payment = order.payments.find((pmt) => pmt._id === paymentId);
     const { amount: originalPaymentTotal } = payment || {};
 
@@ -271,7 +271,9 @@ class InvoiceContainer extends Component {
       });
     } else {
       Alerts.alert({
-        title: i18next.t("order.applyRefundToThisOrder", { refund, currencySymbol }),
+        title: i18next.t("order.applyRefundToThisOrder", {
+          refund: formatMoney(refund, order.currencyCode)
+        }),
         showCancelButton: true,
         confirmButtonText: i18next.t("order.applyRefund")
       }, (isConfirm) => {
@@ -307,7 +309,7 @@ class InvoiceContainer extends Component {
         type: "warning",
         text: i18next.t("order.refundItemsApproveAlert", {
           refundItemsQuantity: this.getRefundedItemsInfo().quantity,
-          totalAmount: formatPriceString(amount)
+          totalAmount: formatMoney(amount, order.currencyCode)
         }),
         showCancelButton: true,
         confirmButtonText: i18next.t("order.approveInvoice")
@@ -335,7 +337,7 @@ class InvoiceContainer extends Component {
       title: i18next.t("order.refundItemsTitle"),
       text: i18next.t("order.refundItemsCaptureAlert", {
         refundItemsQuantity: this.getRefundedItemsInfo().quantity,
-        totalAmount: formatPriceString(amount)
+        totalAmount: formatMoney(amount, order.currencyCode)
       }),
       type: "warning",
       showCancelButton: true,
@@ -366,7 +368,7 @@ class InvoiceContainer extends Component {
       title: i18next.t("order.refundItemsTitle"),
       text: i18next.t("order.refundItemsAlert", {
         refundItemsQuantity: refundInfo.quantity,
-        refundItemsTotal: formatPriceString(refundInfo.total)
+        refundItemsTotal: formatMoney(refundInfo.total, order.currencyCode)
       }),
       showCancelButton: true,
       confirmButtonText: i18next.t("order.refundAmount")
@@ -499,8 +501,6 @@ const composer = (props, onData) => {
 
   const order = Orders.findOne({ _id: orderId });
   const shopId = Reaction.getShopId();
-  const shop = Shops.findOne({ _id: shopId });
-  const currency = shop && shop.currencies[shop.currency];
 
   if (order) {
     const [payment] = order.payments || [];
@@ -549,7 +549,6 @@ const composer = (props, onData) => {
 
     onData(null, {
       canMakeAdjustments,
-      currency,
       discounts,
       invoice: invoiceWithTotalItems,
       order,

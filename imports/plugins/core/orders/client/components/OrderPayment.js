@@ -4,6 +4,7 @@ import { withComponents } from "@reactioncommerce/components-context";
 import { CustomPropTypes } from "@reactioncommerce/components/utils";
 import { Components } from "@reactioncommerce/reaction-components";
 import { formatPriceString, i18next } from "/client/api";
+import CurrencyDefinitions from "/imports/utils/CurrencyDefinitions";
 
 const displayStatuses = {
   approved: "Approved",
@@ -31,10 +32,6 @@ class OrderPayment extends Component {
       Button: CustomPropTypes.component.isRequired
     }),
     /**
-     * Currency details for the current shop
-     */
-    currency: PropTypes.object,
-    /**
      * True if currently capturing this payment
      */
     isCapturing: PropTypes.bool,
@@ -61,6 +58,7 @@ class OrderPayment extends Component {
       _id: PropTypes.string.isRequired,
       amount: PropTypes.number.isRequired,
       captureErrorMessage: PropTypes.string,
+      currencyCode: PropTypes.string.isRequired,
       displayName: PropTypes.string.isRequired,
       processor: PropTypes.string.isRequired,
       status: PropTypes.string.isRequired,
@@ -125,7 +123,7 @@ class OrderPayment extends Component {
   renderRefundForm() {
     const {
       components: { Button },
-      currency,
+      payment,
       isRefunding
     } = this.props;
 
@@ -135,7 +133,7 @@ class OrderPayment extends Component {
           <Components.NumericInput
             numericType="currency"
             value={this.state.value}
-            format={currency}
+            format={CurrencyDefinitions[payment.currencyCode]}
             classNames={{
               input: {
                 amount: true
