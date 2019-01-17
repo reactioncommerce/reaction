@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import Button from "@reactioncommerce/components/Button/v1";
 import AppBar from "@material-ui/core/AppBar";
-import Typography from "@material-ui/core/Typography";
 import Toolbar from "@material-ui/core/Toolbar";
 import { i18next } from "/client/api";
 import styled from "styled-components";
@@ -35,9 +34,7 @@ class TagToolbar extends Component {
     return (
       <AppBar position="fixed" color="default">
         <Toolbar>
-          <Title>
-            <Typography variant="h6">{i18next.t("admin.tags.tags")}</Typography>
-          </Title>
+          <Title />
           {(canBeDeleted) &&
             <ToolbarItem>
               <Button
