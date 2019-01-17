@@ -37,6 +37,7 @@ type OrderItemAttribute {
 }
 
 # TODO: EK - update this to an array of objects with language
+# The message to pass to the client, which should already be translated based on shop language
 type OrderSurchargeMessage {
   message: String
 }
@@ -154,8 +155,8 @@ type OrderSurcharge implements Node {
   "The fulfillmentGroupId (for reference)"
   fulfillmentGroupID: ID
 
-  "The message to explain the surchage to customers"
-  message: String # TODO: EK - update this to an array of objects with language OrderSurchargeMessage
+  "The message to explain the surchage to customers, translated (if available) based on shop language"
+  message: String
 
   "The surchargeId from the surchages collection (for reference)"
   surchargeId: ID
