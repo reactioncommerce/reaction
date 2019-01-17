@@ -51,5 +51,6 @@ import "./49_update_idp_route_name_to_match_pattern";
 import "./50_create_default_navigation_trees";
 import "./51_catalog_variant_inventory";
 import "./52_change_activetaxfield_to_primary";
-import "./53_template_name_updates";
-import "./54_order_payments";
+import "./53_update_password_registry_route_name";
+import "./54_template_name_updates";
+import "./55_order_payments";

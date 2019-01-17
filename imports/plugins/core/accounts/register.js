@@ -70,7 +70,7 @@ Reaction.registerPackage({
     template: "loginFormUpdatePassword",
     workflow: "none",
     meta: { noAdminControls: true },
-    name: "Reset Password",
+    name: "reset-password",
     label: "reset-password"
   }],
   layout: [{
