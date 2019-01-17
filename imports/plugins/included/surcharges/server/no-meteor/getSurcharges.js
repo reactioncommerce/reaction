@@ -14,9 +14,10 @@ import { surchargeCheck } from "./util/surchargeCheck";
 export default async function getSurcharges(context, { cart }) {
   const { Surcharges } = context.collections;
   const surcharges = await Surcharges.find({}).toArray();
+  const [shipping] = cart.shipping;
 
   // Create an extended common order to check surcharges against
-  const commonOrder = await xformCartGroupToCommonOrder(cart, cart.shipping[0], context); // TODO: EK - pass correct shipping object
+  const commonOrder = await xformCartGroupToCommonOrder(cart, shipping, context); // TODO: EK - pass correct shipping object
   const extendedCommonOrder = await extendCommonOrder(context, commonOrder);
 
   const allAppliedSurcharges = await surcharges.reduce(async (appliedSurcharges, surcharge) => {
