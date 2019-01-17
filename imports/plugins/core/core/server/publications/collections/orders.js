@@ -184,6 +184,8 @@ Meteor.publish("OrderImages", (orderId) => {
   if (!orderId) return [];
 
   const order = Orders.findOne({ _id: orderId });
+  if (!order) return [];
+
   const orderItems = order.shipping.reduce((list, group) => [...list, ...group.items], []);
 
   // Ensure each of these are unique
