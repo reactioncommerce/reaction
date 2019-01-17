@@ -9,7 +9,8 @@ import { Media } from "/imports/plugins/core/files/client";
 import withOpaqueShopId from "/imports/plugins/core/graphql/lib/hocs/withOpaqueShopId";
 import { Query, withApollo } from "react-apollo";
 import TagForm from "../components/TagForm";
-import { getTag } from "../../lib/queries";
+import { getTag, tagListingQuery } from "../../lib/queries";
+import { setTagHeroMediaMutation } from "../../lib/mutations";
 
 class TagFormPageWithData extends Component {
   static propTypes = {
@@ -25,6 +26,11 @@ class TagFormPageWithData extends Component {
     tagId: PropTypes.string
   }
 
+  get tagId() {
+    const { match } = this.props;
+    return (match && match.params.tagId) || null;
+  }
+
   handleCreate = (tag) => {
     this.props.history.push(`/operator/tags/edit/${tag._id}`);
   }
@@ -34,12 +40,13 @@ class TagFormPageWithData extends Component {
   }
 
   handleUpload = (files) => {
-    const { tag, shopId } = this.props;
+    const { shopId, client } = this.props;
     const userId = Reaction.getUserId();
 
-    let count = Media.findLocal({
-      "metadata.tagId": tag._id
-    }).length;
+    if (!this.tagId) {
+      Alerts.toast("Save tag before uploading a hero image.", "error");
+      return;
+    }
 
     // Only allow one file to be uploaded at a time
     const file = files[0];
@@ -51,12 +58,8 @@ class TagFormPageWithData extends Component {
     fileRecord.metadata = {
       createdBy: userId,
       shopId,
-      tagId: tag._id,
-      priority: count,
-      toGrid: 1 // we need number
+      type: "tag-hero-image"
     };
-
-    count += 1;
 
     // Listen for upload progress events
     fileRecord.on("uploadProgress", (uploadProgress) => {
@@ -66,11 +69,28 @@ class TagFormPageWithData extends Component {
     // Do the upload. chunkSize is optional and defaults to 5MB
     fileRecord.upload({})
       // We insert only AFTER the server has confirmed that all chunks were uploaded
-      .then(() => {
-        Meteor.call("media/insert", fileRecord.document, (error) => {
-          if (error) Alerts.toast(error.reason, "error");
-          this.setState({ uploadProgress: null });
+      .then(async () => {
+        const refetchQueries = [{
+          query: tagListingQuery,
+          variables: {
+            shopId
+          }
+        }];
+
+        await client.mutate({
+          mutation: setTagHeroMediaMutation,
+          variables: {
+            input: {
+              id: this.tagId,
+              shopId,
+              fileRecord: fileRecord.document
+            }
+          },
+          refetchQueries
         });
+
+        this.setState({ uploadProgress: null });
+
         return null;
       })
       .catch((error) => {
@@ -80,22 +100,24 @@ class TagFormPageWithData extends Component {
   };
 
   render() {
-    const { shopId, match } = this.props;
+    const { client, shopId } = this.props;
 
     // Id there's a tagId param, then try to find
     // that tag and render the edit form
-    if (match && match.params.tagId) {
+    if (this.tagId) {
       return (
-        <Query query={getTag} variables={{ slugOrId: match.params.tagId }} fetchPolicy="network-only">
+        <Query query={getTag} variables={{ slugOrId: this.tagId }} fetchPolicy="network-only">
           {({ data }) => {
             const tag = data && data.tag;
 
             // Render the edit tag form
             return (
               <TagForm
+                client={client}
                 shopId={shopId}
                 tag={tag}
                 onCancel={this.handleCancel}
+                onHeroUpload={this.handleUpload}
               />
             );
           }}
@@ -106,7 +128,9 @@ class TagFormPageWithData extends Component {
     // Render the create tag form
     return (
       <TagForm
+        client={client}
         shopId={shopId}
+        onHeroUpload={this.handleUpload}
         onCancel={this.handleCancel}
         onCreate={this.handleCreate}
       />

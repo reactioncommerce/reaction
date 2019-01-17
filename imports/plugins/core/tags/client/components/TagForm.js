@@ -1,9 +1,9 @@
 import React, { Component, Fragment } from "react";
 import PropTypes from "prop-types";
-import { applyTheme } from "@reactioncommerce/components/utils";
+import { applyTheme, getRequiredValidator } from "@reactioncommerce/components/utils";
 import { Mutation } from "react-apollo";
 import { orderBy, uniqueId } from "lodash";
-import ReactDropzone from "react-dropzone";
+import Dropzone from "react-dropzone";
 import styled from "styled-components";
 import { Form } from "reacto-form";
 import Button from "@reactioncommerce/components/Button/v1";
@@ -21,7 +21,7 @@ import MUICardActions from "@material-ui/core/CardActions";
 import Typography from "@material-ui/core/Typography";
 import { i18next } from "/client/api";
 import { tagListingQuery, tagProductsQuery } from "../../lib/queries";
-import { addTagMutation, updateTagMutation, removeTagMutation } from "../../lib/mutations";
+import { addTagMutation, updateTagMutation, removeTagMutation, setTagHeroMediaMutation } from "../../lib/mutations";
 import TagToolbar from "./TagToolbar";
 import TagProductTable from "./TagProductTable";
 
@@ -42,10 +42,28 @@ const ContentGroup = styled.div`
   margin-bottom: 30px;
 `;
 
-const Dropzone = styled(ReactDropzone)`
-  background-color: ${applyTheme("MediaUploader.backgroundColor")};
-  border: ${applyTheme("MediaUploader.border")};
-  min-height: 400px;
+const DropzoneWrapper = styled.div`
+  .dropzone {
+    background-color: ${applyTheme("MediaUploader.backgroundColor")};
+    border: ${applyTheme("MediaUploader.border")};
+    min-height: 325px;
+    display: flex;
+    align-items: center;
+    position: relative;
+  }
+`;
+
+const HeroEditButton = styled.div`
+  position: absolute;
+  top: 10px;
+  right: 10px;
+`;
+
+const HeroUploadButton = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
 `;
 
 // Metafied names
@@ -94,6 +112,7 @@ class TagForm extends Component {
       displayTitle: data.displayTitle,
       isVisible: data.isVisible || false,
       shopId,
+      heroMediaUrl: data.heroMediaUrl,
       metafields: [
         { key: "keywords", value: data.keywords || "", namespace: "matatag" },
         { key: "description", value: data.description || "", namespace: "matatag" },
@@ -196,19 +215,90 @@ class TagForm extends Component {
   handleDrop = (files) => {
     if (files.length === 0) return;
     this.uploadedFiles = files;
+    this.props.onHeroUpload(files);
   };
+
+  handleDeleteHeroImage = () => {
+    Alerts.alert({
+      title: i18next.t("admin.tags.form.heroMediaDeleteConfirm"),
+      type: "warning",
+      showCancelButton: true
+    }, async (isConfirm) => {
+      if (isConfirm) {
+        const { client, tag, shopId } = this.props;
+
+        await client.mutate({
+          mutation: setTagHeroMediaMutation,
+          variables: {
+            input: {
+              id: tag._id,
+              shopId,
+              fileRecord: null
+            }
+          },
+          refetchQueries: [{
+            query: tagProductsQuery,
+            variables: {
+              shopId,
+              tagId: tag._id
+            }
+          }]
+        });
+      }
+    });
+  }
+
+  handleDropzoneClick = () => {
+    this.dropzone && this.dropzone.open();
+  }
 
   renderMediaGalleryUploader() {
     const { tag } = this.props;
 
+    let content;
+
+    if (tag && tag.heroMediaUrl) {
+      content = (
+        <Fragment>
+          <HeroEditButton>
+            <Button
+              isShortHeight
+              onClick={this.handleDeleteHeroImage}
+            >
+              {i18next.t("admin.tags.form.delete")}
+            </Button>
+          </HeroEditButton>
+          <img src={tag.heroMediaUrl} width="100%" alt="" />
+        </Fragment>
+      );
+    } else {
+      content = (
+        <HeroUploadButton>
+          <Button
+            actionType="secondary"
+            isShortHeight
+            onClick={this.handleDropzoneClick}
+          >
+            {i18next.t("admin.tags.form.uploadImage")}
+          </Button>
+        </HeroUploadButton>
+      );
+    }
+
+    // <img src={tag.heroMediaUrl} width="100%" alt="" />
+
     return (
-      <Dropzone
-        onDrop={this.handleDrop}
-        ref={(inst) => { this.dropzone = inst; }}
-        accept="image/jpg, image/png, image/jpeg"
-      >
-        {tag && tag.heroMediaUrl && <img src={tag.heroMediaUrl} width="100%" alt="" />}
-      </Dropzone>
+      <DropzoneWrapper>
+        <Dropzone
+          disableClick
+          className="dropzone"
+          onDrop={this.handleDrop}
+          ref={(inst) => { this.dropzone = inst; }}
+          accept="image/jpg, image/png, image/jpeg"
+        >
+          {content}
+        </Dropzone>
+      </DropzoneWrapper>
     );
   }
 
@@ -277,6 +367,7 @@ class TagForm extends Component {
               ref={(formRef) => { this.form = formRef; }}
               onChange={this.handleFormChange}
               onSubmit={(data) => this.handleSubmit(data, mutationFunc)}
+              validator={getRequiredValidator("name", "displayTitle")}
               value={tag}
             >
               <ContentGroup>
@@ -293,9 +384,9 @@ class TagForm extends Component {
 
               <ContentGroup>
                 <Tabs value={currentTab} onChange={this.handleTabChange}>
-                  <Tab label={i18next.t("admin.tags.form.tagListingPage")} />
+                  <Tab label={i18next.t("admin.tags.form.tagDetails")} />
                   <Tab label={i18next.t("admin.tags.form.metadata")} />
-                  {tag._id && <Tab label={i18next.t("admin.tags.form.productOrdering")} />}
+                  {tag._id && <Tab label={i18next.t("admin.tags.form.products")} />}
                 </Tabs>
                 <Divider />
               </ContentGroup>
