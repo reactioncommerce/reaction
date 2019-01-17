@@ -28,9 +28,9 @@ const inputSchema = new SimpleSchema({
  * @return {Promise<Object>} UpdateTagPayload
  */
 export default async function updateTag(context, input) {
-  const { collections, userHasPermission } = context;
+  const { appEvents, collections, userHasPermission } = context;
   const { Tags } = collections;
-  const { clientMutationId, shopId, tagId } = input;
+  const { shopId, tagId } = input;
 
   // Check for owner or admin permissions from the user before allowing the mutation
   if (!userHasPermission(["owner", "admin"], shopId)) {
@@ -75,8 +75,7 @@ export default async function updateTag(context, input) {
 
   const tag = await Tags.findOne({ _id: tagId, shopId });
 
-  return {
-    clientMutationId,
-    tag
-  };
+  await appEvents.emit("afterTagUpdate", tag);
+
+  return tag;
 }

@@ -26,7 +26,7 @@ export default async function updateTag(parentResult, { input }, context) {
   const shopId = decodeShopOpaqueId(opaqueShopId);
   const tagId = decodeTagOpaqueId(opaqueTagId);
 
-  const { tag } = await context.mutations.updateTag(context, {
+  const tag = await context.mutations.updateTag(context, {
     shopId,
     tagId,
     ...tagInput
