@@ -54,7 +54,7 @@ class TagProductTable extends Component {
               </TableHead>
               <TableBody>
                 {Array.isArray(products) && products.map((product) => {
-                  const position = product.position && product.position >= 0 ? `${product.position}` : undefined;
+                  const position = product.position !== null && product.position >= 0 ? `${product.position}` : undefined;
 
                   return (
                     <TableRow key={product._id}>
