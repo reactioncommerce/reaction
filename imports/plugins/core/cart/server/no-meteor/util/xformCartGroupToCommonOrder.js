@@ -15,10 +15,12 @@ export default async function xformCartGroupToCommonOrder(cart, group, context) 
   // the catalog. `getFulfillmentGroupTaxes` uses subtotal prop to calculate the tax.
   items = items.map((item) => ({
     _id: item._id,
+    attributes: item.attributes,
     isTaxable: item.isTaxable,
     parcel: item.parcel,
     price: item.price,
     productId: item.productId,
+    productVendor: item.productVendor,
     quantity: item.quantity,
     shopId: item.shopId,
     subtotal: {
@@ -27,7 +29,8 @@ export default async function xformCartGroupToCommonOrder(cart, group, context) 
     },
     taxCode: item.taxCode,
     title: item.title,
-    variantId: item.variantId
+    variantId: item.variantId,
+    variantTitle: item.variantTitle
   }));
 
   const { address, shipmentMethod, shopId, type: fulfillmentType } = group;
