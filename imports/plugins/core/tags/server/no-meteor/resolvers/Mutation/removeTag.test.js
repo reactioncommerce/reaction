@@ -1,32 +1,40 @@
-import mockContext from "/imports/test-utils/helpers/mockContext";
-import removeTag from "./removeTag";
 
-const testB64Id = "cmVhY3Rpb24vcmVkaXJlY3RSdWxlOjEyMzQ=";
+import { encodeShopOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/shop";
+import { encodeTagOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/tag";
+import removeTag from "./removeTag";
 
 beforeEach(() => {
   jest.resetAllMocks();
 });
 
-test("calls Mutation.removeTag and returns the RemoveRedirectRulePayload on success", async () => {
-  mockContext.userHasPermission.mockReturnValueOnce(true);
-  mockContext.collections.RedirectRules.deleteOne.mockReturnValueOnce({ result: { ok: 1 } });
+test("calls Mutation.removeTag and returns the RemoveTagPayload on success", async () => {
+  const shopId = encodeShopOpaqueId("s1");
+  const tagId = encodeTagOpaqueId("t1");
+  const tag = {
+    name: "shirt",
+    displayTitle: "Shirt"
+  };
 
-  const input = {
-    input: {
-      _id: testB64Id
+  const fakeResult = { _id: tagId, shopId, ...tag };
+  const mockMutation = jest.fn().mockName("mutations.addTag");
+  mockMutation.mockReturnValueOnce(Promise.resolve(fakeResult));
+
+  const context = {
+    mutations: {
+      removeTag: mockMutation
     }
   };
-  const result = await removeTag(null, input, mockContext);
 
-  expect(result.wasRemoved).toBe(true);
-  expect(mockContext.collections.RedirectRules.deleteOne).toHaveBeenCalled();
-});
+  const result = await removeTag(null, {
+    input: {
+      shopId,
+      tagId,
+      clientMutationId: "clientMutationId"
+    }
+  }, context);
 
-test("calls Mutation.removeTag and throws for non admins", async () => {
-  mockContext.userHasPermission.mockReturnValueOnce(false);
-  mockContext.collections.RedirectRules.deleteOne.mockReturnValueOnce({ result: { ok: 1 } });
-
-  const result = removeTag(null, {}, mockContext);
-  expect(result).rejects.toThrowErrorMatchingSnapshot();
-  expect(mockContext.collections.RedirectRules.deleteOne).not.toHaveBeenCalled();
+  expect(result).toEqual({
+    tag: fakeResult,
+    clientMutationId: "clientMutationId"
+  });
 });
