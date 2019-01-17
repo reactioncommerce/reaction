@@ -6,6 +6,7 @@ const inputSchema = new SimpleSchema({
   "slug": String,
   "name": String,
   "displayTitle": String,
+  "heroMediaUrl": String,
   "isVisible": Boolean,
   "metafields": { type: Array, optional: true },
   "metafields.$": new SimpleSchema({
@@ -54,7 +55,12 @@ export default async function updateTag(context, input) {
     featuredProductIds: input.featuredProductIds
   };
 
-  if (params.type === "rewrite") params.status = null;
+  if (typeof input.heroMediaUrl === "string" && input.heroMediaUrl.length) {
+    params.heroMediaUrl = input.heroMediaUrl;
+  } else {
+    params.heroMediaUrl = null;
+  }
+
   inputSchema.validate(params);
   params.updatedAt = new Date();
 
