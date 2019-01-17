@@ -22,8 +22,6 @@ export default async function addTag(context, input) {
     throw new ReactionError("access-denied", "User does not have permission");
   }
 
-  const { clientMutationId } = input;
-
   const now = new Date();
   const tag = {
     _id: Random.id(),
@@ -48,8 +46,5 @@ export default async function addTag(context, input) {
 
   await appEvents.emit("afterTagCreate", tag);
 
-  return {
-    clientMutationId,
-    tag
-  };
+  return tag;
 }

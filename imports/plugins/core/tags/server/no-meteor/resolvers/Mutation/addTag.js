@@ -23,7 +23,7 @@ export default async function addTag(parentResult, { input }, context) {
 
   const shopId = decodeShopOpaqueId(opaqueShopId);
 
-  const { tag } = await context.mutations.addTag(context, {
+  const tag = await context.mutations.addTag(context, {
     shopId,
     ...tagInput
   });
