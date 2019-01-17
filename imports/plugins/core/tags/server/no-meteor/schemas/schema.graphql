@@ -14,7 +14,7 @@ input AddTagInput {
   "Title to display to customers"
   displayTitle: String!
 
-  "The shop that owns the rule"
+  "The shop that owns the tag"
   shopId: ID!
 
   "Tag metafields"
@@ -32,6 +32,28 @@ type AddTagPayload {
   shopId: ID!
 }
 
+input SetTagHeroMediaInput {
+  "An optional string identifying the mutation call, which will be returned in the response payload"
+  clientMutationId: String
+
+  "ID of tag to add the hero image record to"
+  id: ID!
+
+  "The shop that owns the tag"
+  shopId: ID!
+
+  "File record document"
+  fileRecord: JSONObject!
+}
+
+type SetTagHeroMediaPayload {
+  "The same string you sent with the mutation params, for matching mutation calls with their responses"
+  clientMutationId: String
+
+  "Tag the hero image was added to"
+  tag: Tag!
+}
+
 input RemoveTagInput {
   "An optional string identifying the mutation call, which will be returned in the response payload"
   clientMutationId: String
@@ -47,7 +69,7 @@ type RemoveTagPayload {
   "The same string you sent with the mutation params, for matching mutation calls with their responses"
   clientMutationId: String
 
-  "The deleted redirect rule"
+  "The deleted tag"
   tag: Tag!
 }
 
@@ -75,6 +97,9 @@ input UpdateTagInput {
 
   "A list of the IDs of top products in this tag"
   featuredProductIds: [ID]
+
+  "Hero media URL"
+  heroMediaUrl: String
 }
 
 type UpdateTagPayload {
@@ -126,6 +151,9 @@ extend type Query {
 extend type Mutation {
   "Adds a new tag"
   addTag(input: AddTagInput!): AddTagPayload!
+
+  "Add an image to the tag"
+  setTagHeroMedia(input: SetTagHeroMediaInput!): SetTagHeroMediaPayload!
 
   "Removes an existing tag"
   removeTag(input: RemoveTagInput!): RemoveTagPayload!
