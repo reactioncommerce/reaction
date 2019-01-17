@@ -31,7 +31,7 @@ test("calls mutations.updateTag and returns the UpdateTagPayload on success", as
   };
   const result = await updateTag(mockContext, input);
 
-  expect(result.redirectRule).toBeDefined();
+  expect(result).toBeDefined();
   expect(mockContext.collections.Tags.updateOne).toHaveBeenCalled();
 });
 
@@ -39,7 +39,6 @@ test("calls mutations.updateTag and throws for non admins", async () => {
   mockContext.userHasPermission.mockReturnValueOnce(false);
   mockContext.collections.Tags.updateOne.mockReturnValueOnce({ result: { n: 1 } });
 
-  // await expect(redirectRules(null, {}, mockContext)).rejects.toThrowError(/User does not have permission/);
   const result = updateTag(mockContext, {});
   expect(result).rejects.toThrowErrorMatchingSnapshot();
   expect(mockContext.collections.Tags.updateOne).not.toHaveBeenCalled();
