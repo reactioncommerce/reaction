@@ -8,9 +8,13 @@ beforeEach(() => {
   jest.resetAllMocks();
 });
 
-test("calls mutations.removeTag and returns the RemoveRedirectRulePayload on success", async () => {
+test("calls mutations.removeTag and returns the RemoveTagPayload on success", async () => {
   mockContext.userHasPermission.mockReturnValueOnce(true);
   mockContext.collections.Tags.deleteOne.mockReturnValueOnce({ result: { ok: 1 } });
+  mockContext.collections.Tags.findOne.mockReturnValueOnce({
+    shopId: testShopId,
+    tagId: testTagId
+  });
 
   const input = {
     input: {
@@ -18,9 +22,12 @@ test("calls mutations.removeTag and returns the RemoveRedirectRulePayload on suc
       tagId: testTagId
     }
   };
-  const result = await removeTag(null, input, mockContext);
+  const result = await removeTag(mockContext, input);
 
-  expect(result.wasRemoved).toBe(true);
+  expect(result).toEqual({
+    shopId: testShopId,
+    tagId: testTagId
+  });
   expect(mockContext.collections.Tags.deleteOne).toHaveBeenCalled();
 });
 
@@ -28,7 +35,7 @@ test("calls mutations.removeTag and throws for non admins", async () => {
   mockContext.userHasPermission.mockReturnValueOnce(false);
   mockContext.collections.Tags.deleteOne.mockReturnValueOnce({ result: { ok: 1 } });
 
-  const result = removeTag(null, {}, mockContext);
+  const result = removeTag(mockContext, {});
   expect(result).rejects.toThrowErrorMatchingSnapshot();
   expect(mockContext.collections.Tags.deleteOne).not.toHaveBeenCalled();
 });
