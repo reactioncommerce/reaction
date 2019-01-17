@@ -11,6 +11,16 @@ export const addTagMutation = gql`
   }
 `;
 
+export const setTagHeroMediaMutation = gql`
+  mutation setTagHeroMediaMutation($input: SetTagHeroMediaInput!) {
+    setTagHeroMedia(input: $input) {
+      tag {
+        ${Tag}
+      }
+    }
+  }
+`;
+
 export const updateTagMutation = gql`
   mutation updateTagMutation($input: UpdateTagInput!) {
     updateTag(input: $input) {
