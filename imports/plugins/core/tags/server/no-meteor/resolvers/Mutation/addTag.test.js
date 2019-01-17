@@ -1,4 +1,5 @@
-import mockContext from "/imports/test-utils/helpers/mockContext";
+import { encodeShopOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/shop";
+import { encodeTagOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/tag";
 import addTag from "./addTag";
 
 beforeEach(() => {
@@ -6,26 +7,32 @@ beforeEach(() => {
 });
 
 test("calls Mutation.addTag and returns the AddTagPayload on success", async () => {
-  mockContext.userHasPermission.mockReturnValueOnce(true);
-  mockContext.collections.Tags.insertOne.mockReturnValueOnce({ result: { ok: 1 } });
+  const shopId = encodeShopOpaqueId("s1");
+  const tagId = encodeTagOpaqueId("t1");
+  const tag = {
+    name: "shirt",
+    displayTitle: "Shirt"
+  };
 
-  const input = {
-    input: {
-      name: "shirt",
-      displayTitle: "Shirt"
+  const fakeResult = { _id: tagId, shopId, ...tag };
+  const mockMutation = jest.fn().mockName("mutations.addTag");
+  mockMutation.mockReturnValueOnce(Promise.resolve(fakeResult));
+
+  const context = {
+    mutations: {
+      addTag: mockMutation
     }
   };
-  const result = await addTag(null, input, mockContext);
 
-  expect(result.tag).toBeDefined();
-  expect(mockContext.collections.Tags.insertOne).toHaveBeenCalled();
-});
+  const result = await addTag(null, {
+    input: {
+      ...tag,
+      clientMutationId: "clientMutationId"
+    }
+  }, context);
 
-test("calls Mutation.addTag and throws for non admins", async () => {
-  mockContext.userHasPermission.mockReturnValueOnce(false);
-  mockContext.collections.Tags.insertOne.mockReturnValueOnce({ result: { ok: 1 } });
-
-  const result = addTag(null, {}, mockContext);
-  expect(result).rejects.toThrowErrorMatchingSnapshot();
-  expect(mockContext.collections.Tags.insertOne).not.toHaveBeenCalled();
+  expect(result).toEqual({
+    tag: fakeResult,
+    clientMutationId: "clientMutationId"
+  });
 });
