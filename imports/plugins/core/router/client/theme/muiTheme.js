@@ -4,7 +4,6 @@ import colors from "./colors";
 
 const { rui_typography: typography } = defaultComponentTheme;
 
-
 export const rawMuiTheme = {
   palette: {
     primary: {
@@ -19,7 +18,7 @@ export const rawMuiTheme = {
     }
   },
   typography: {
-    fontFamily: "'Source Sans Pro', 'Helvetica Neue', Helvetica, sans-serif",
+    fontFamily: typography.bodyText.fontFamily,
     fontWeightLight: 400,
     fontWeightRegular: 400,
     fontWeightMedium: 500,
