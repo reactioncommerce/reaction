@@ -43,7 +43,7 @@ input SetTagHeroMediaInput {
   shopId: ID!
 
   "File record document"
-  fileRecord: JSONObject!
+  fileRecord: JSONObject
 }
 
 type SetTagHeroMediaPayload {

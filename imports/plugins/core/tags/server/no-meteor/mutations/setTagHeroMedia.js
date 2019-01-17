@@ -23,19 +23,23 @@ export default async function setTagHeroMedia(context, input) {
     throw new ReactionError("access-denied", "User does not have permission");
   }
 
-  const doc = {
-    ...fileRecord,
-    metadata: {
-      ...fileRecord.metadata,
-      workflow: "published"
-    }
-  };
+  let heroMediaUrl = null;
 
-  const mediaRecordId = await MediaRecords.insert(doc);
+  if (fileRecord) {
+    const doc = {
+      ...fileRecord,
+      metadata: {
+        ...fileRecord.metadata,
+        workflow: "published"
+      }
+    };
 
-  // Because we don't have access to the URL of the file, we have to take
-  // do our best to get he URL as it will be once the file is finished being processed.
-  const heroMediaUrl = `${FileRecord.downloadEndpointPrefix}/${Media.name}/${mediaRecordId}/large/${fileRecord.original.name}`;
+    const mediaRecordId = await MediaRecords.insert(doc);
+
+    // Because we don't have access to the URL of the file, we have to take
+    // do our best to get he URL as it will be once the file is finished being processed.
+    heroMediaUrl = `${FileRecord.downloadEndpointPrefix}/${Media.name}/${mediaRecordId}/large/${fileRecord.original.name}`;
+  }
 
   const { result } = await Tags.updateOne({
     _id: tagId
@@ -46,12 +50,12 @@ export default async function setTagHeroMedia(context, input) {
   });
 
   if (result.n === 0) {
-    throw new ReactionError("not-found", "Redirect rule not found");
+    throw new ReactionError("not-found", `Hero media couldn't be updated on tag ${tagId}`);
   }
 
   const tag = await Tags.findOne({ _id: tagId, shopId });
 
-  appEvents.emit("afterSetTagHeroMedia", doc);
+  appEvents.emit("afterSetTagHeroMedia", tag);
 
   return tag;
 }
