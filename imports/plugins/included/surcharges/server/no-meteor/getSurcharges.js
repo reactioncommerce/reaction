@@ -17,7 +17,7 @@ export default async function getSurcharges(context, { cart }) {
   const [shipping] = cart.shipping;
 
   // Create an extended common order to check surcharges against
-  const commonOrder = await xformCartGroupToCommonOrder(cart, shipping, context); // TODO: EK - pass correct shipping object
+  const commonOrder = await xformCartGroupToCommonOrder(cart, shipping, context);
   const extendedCommonOrder = await extendCommonOrder(context, commonOrder);
 
   const allAppliedSurcharges = await surcharges.reduce(async (appliedSurcharges, surcharge) => {
