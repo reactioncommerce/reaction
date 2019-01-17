@@ -11,9 +11,6 @@ export async function surchargeCheck(surcharge, extendCommonOrder) {
   const { attributes, destination } = surcharge;
 
   const validSurcharge = items.some((item) => { // eslint-disable-line
-    // For each item, check against surcharge
-    const { country, postal, region } = destination;
-
     if (Array.isArray(attributes) && attributes.length) {
       // Item must meet all attributes to be restricted
       return attributes.every((attribute) => {
@@ -29,6 +26,8 @@ export async function surchargeCheck(surcharge, extendCommonOrder) {
           // If there is no destination restriction, destination restriction is global
           // Return true to restrict this method
           if (!destination || Object.getOwnPropertyNames(destination).length === 0) return attributeFound;
+
+          const { country, postal, region } = destination;
 
           if (postal && postal.includes(shippingAddress.postal)) {
             return true;
@@ -52,6 +51,8 @@ export async function surchargeCheck(surcharge, extendCommonOrder) {
 
     // If there are no attributes on the surcharge, and destination doesn't exist, don't apply surcharge
     if (!destination) return false;
+
+    const { country, postal, region } = destination;
 
     // If destination exists, make sure we have a shipping address, and check against it
     if (shippingAddress) {
