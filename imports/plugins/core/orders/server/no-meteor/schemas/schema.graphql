@@ -36,12 +36,6 @@ type OrderItemAttribute {
   value: String
 }
 
-# TODO: EK - update this to an array of objects with language
-# The message to pass to the client, which should already be translated based on shop language
-type OrderSurchargeMessage {
-  message: String
-}
-
 "A summary of the totals for this order"
 type OrderSummary {
   "The total of all discounts applied, as a positive number"

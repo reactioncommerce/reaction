@@ -71,12 +71,6 @@ type CartItemAttribute {
   value: String
 }
 
-# TODO: EK - update this to an array of objects with language
-# The message to pass to the client, which should already be translated based on shop language
-type CartSurchargeMessage {
-  message: String
-}
-
 """
 A single item in a cart. The item contains information about an intended purchase.
 """

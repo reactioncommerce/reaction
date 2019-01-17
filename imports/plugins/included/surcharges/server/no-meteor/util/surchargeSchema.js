@@ -43,6 +43,18 @@ export const Destination = new SimpleSchema({
   "postal.$": String
 });
 
+/**
+ * @name Message
+ * @memberof Schemas
+ * @type {SimpleSchema}
+ * @property {String} content
+ * @property {String} language
+ */
+const Message = new SimpleSchema({
+  content: String,
+  language: String
+});
+
 const surchargeSchema = new SimpleSchema({
   /*
    * Fulfillment methods this surcharge applies to
@@ -77,10 +89,13 @@ const surchargeSchema = new SimpleSchema({
   },
   /*
    * Message is used as a client message to let customers know why this surcharge might apply
+   * It can be saved in various languages
   */
-  /* TODO: EK - update this to an array of objects with language */
   "message": {
-    type: String
+    type: Array
+  },
+  "message.$": {
+    type: Message
   }
 });
 

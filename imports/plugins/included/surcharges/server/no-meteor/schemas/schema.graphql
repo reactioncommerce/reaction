@@ -36,6 +36,11 @@ input surchargeDestinationRestrictionsInput {
   postal: [String]
 }
 
+input surchargeMessageInput {
+  content: String
+  language: String
+}
+
 ####
 # Queries
 ####
@@ -91,8 +96,8 @@ type Surcharge implements Node {
   "Amount."
   amount: Money!
 
-  "Message."
-  message: String! # TODO: EK - update this to an array of objects with language
+  "Message translated into provided language."
+  message: String!
 }
 
 
@@ -125,7 +130,7 @@ input SurchargeInput {
   amount: MoneyInput!
 
   "Message."
-  message: String! # TODO: EK - update this to an array of objects with language
+  message: [surchargeMessageInput]!
 }
 
 "Input for the `CreateSurcharge` mutation"
