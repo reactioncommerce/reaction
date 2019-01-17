@@ -24,14 +24,13 @@ export default async function removeTag(parentResult, { input }, context) {
   const shopId = decodeShopOpaqueId(opaqueShopId);
   const tagId = decodeTagOpaqueId(opaqueTagId);
 
-  const { tag, wasRemoved } = await context.mutations.removeTag(context, {
+  const tag = await context.mutations.removeTag(context, {
     shopId,
     tagId
   });
 
   return {
     clientMutationId,
-    wasRemoved,
     tag
   };
 }

@@ -23,12 +23,8 @@ export default async function removeTag(context, input) {
   const { result } = await Tags.deleteOne({ _id: tagId, shopId });
 
   if (result.n === 0) {
-    throw new ReactionError("not-found", "Redirect rule not found");
+    throw new ReactionError("not-found", "Tag not found");
   }
 
-  return {
-    clientMutationId: input.clientMutationId,
-    wasRemoved: result.ok === 1,
-    tag
-  };
+  return tag;
 }

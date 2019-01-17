@@ -47,9 +47,6 @@ type RemoveTagPayload {
   "The same string you sent with the mutation params, for matching mutation calls with their responses"
   clientMutationId: String
 
-  "Whether the rule was successfully removed"
-  wasRemoved: Boolean!
-
   "The deleted redirect rule"
   tag: Tag!
 }
