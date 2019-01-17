@@ -3,8 +3,9 @@ import ReactionError from "@reactioncommerce/reaction-error";
 import surchargeSchema from "../util/surchargeSchema";
 
 const inputSchema = new SimpleSchema({
+  shopId: String,
   surcharge: surchargeSchema,
-  shopId: String
+  surchargeId: String
 });
 
 
