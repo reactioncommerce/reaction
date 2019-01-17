@@ -66,8 +66,6 @@ const HeroUploadButton = styled.div`
   width: 100%;
 `;
 
-// Metafied names
-
 class TagForm extends Component {
   static propTypes = {
     isLoadingShopId: PropTypes.bool,
@@ -86,12 +84,12 @@ class TagForm extends Component {
   }
 
   state = {
-    currentTab: 0
+    currentTab: 0,
+    uploadPreview: null
   }
 
   formValue = null;
   productOrderingPriorities = {}
-  uploadedFiles = null
 
   uniqueInstanceIdentifier = uniqueId("URLRedirectEditForm");
 
@@ -214,7 +212,14 @@ class TagForm extends Component {
 
   handleDrop = (files) => {
     if (files.length === 0) return;
-    this.uploadedFiles = files;
+
+    const reader = new FileReader();
+    reader.readAsDataURL(files[0]);
+    reader.onloadend = () => {
+      const base64data = reader.result;
+      this.setState({ uploadPreview: base64data });
+    };
+
     this.props.onHeroUpload(files);
   };
 
@@ -254,10 +259,20 @@ class TagForm extends Component {
 
   renderMediaGalleryUploader() {
     const { tag } = this.props;
-
+    const { uploadPreview } = this.state;
     let content;
 
     if (tag && tag.heroMediaUrl) {
+      let imageUrl;
+
+      if (uploadPreview) {
+        // Use the image preview from the upload if available
+        imageUrl = uploadPreview;
+      } else if (tag.heroMediaUrl) {
+        // Otherwise use the url for the image saved in the database
+        imageUrl = tag.heroMediaUrl;
+      }
+
       content = (
         <Fragment>
           <HeroEditButton>
@@ -268,7 +283,7 @@ class TagForm extends Component {
               {i18next.t("admin.tags.form.delete")}
             </Button>
           </HeroEditButton>
-          <img src={tag.heroMediaUrl} width="100%" alt="" />
+          <img src={imageUrl} width="100%" alt="" />
         </Fragment>
       );
     } else {
@@ -284,8 +299,6 @@ class TagForm extends Component {
         </HeroUploadButton>
       );
     }
-
-    // <img src={tag.heroMediaUrl} width="100%" alt="" />
 
     return (
       <DropzoneWrapper>
