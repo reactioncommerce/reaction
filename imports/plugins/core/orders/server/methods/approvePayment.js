@@ -58,7 +58,10 @@ export default function approvePayment(order) {
     order: updatedOrder,
     updatedBy: Reaction.getUserId()
   }));
-  Promise.await(appEvents.emit("afterOrderApprovePayment", updatedOrder));
+  Promise.await(appEvents.emit("afterOrderApprovePayment", {
+    approvedBy: Reaction.getUserId(),
+    order: updatedOrder
+  }));
 
   return result;
 }
