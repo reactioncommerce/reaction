@@ -89,7 +89,7 @@ export default async function addressBookAdd(context, address, accountUserId) {
   }
 
   await appEvents.emit("afterAccountUpdate", {
-    updatedAccount,
+    account: updatedAccount,
     updatedBy: userIdFromContext,
     updatedFields: ["profile.addressBook"]
   });

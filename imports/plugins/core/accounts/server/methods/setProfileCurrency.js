@@ -39,7 +39,7 @@ export default function setProfileCurrency(currencyName, accountId) {
 
   const updatedAccount = Accounts.findOne({ userId });
   Promise.await(appEvents.emit("afterAccountUpdate", {
-    updatedAccount,
+    account: updatedAccount,
     updatedBy: currentUserId,
     updatedFields: ["profile.currency"]
   }));

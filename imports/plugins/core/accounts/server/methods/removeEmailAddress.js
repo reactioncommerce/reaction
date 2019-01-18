@@ -28,7 +28,7 @@ function syncUsersAndAccounts() {
 
   const updatedAccount = Accounts.findOne({ userId });
   Promise.await(appEvents.emit("afterAccountUpdate", {
-    updatedAccount,
+    account: updatedAccount,
     updatedBy: userId,
     updatedFields: ["emails"]
   }));

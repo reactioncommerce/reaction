@@ -48,8 +48,8 @@ export default function addressBookRemove(addressId, accountUserId) {
 
   const updatedAccount = Accounts.findOne({ userId });
   Promise.await(appEvents.emit("afterAccountUpdate", {
-    updatedBy: authUserId,
-    updatedAccount
+    account: updatedAccount,
+    updatedBy: authUserId
   }));
 
   // If the address remove was successful, then return the removed address

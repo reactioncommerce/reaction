@@ -84,7 +84,7 @@ export default function addUser(userId, groupId) {
 
     const updatedAccount = Accounts.findOne({ userId });
     Promise.await(appEvents.emit("afterAccountUpdate", {
-      updatedAccount,
+      account: updatedAccount,
       updatedBy: loggedInUserId,
       updatedFields: ["groups"]
     }));

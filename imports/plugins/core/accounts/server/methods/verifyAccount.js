@@ -32,7 +32,7 @@ export default function verifyAccount() {
   if (result) {
     const updatedAccount = Accounts.findOne({ userId: this.userId });
     Promise.await(appEvents.emit("afterAccountUpdate", {
-      updatedAccount,
+      account: updatedAccount,
       updatedBy: this.userId,
       updatedFields: ["emails"]
     }));

@@ -23,9 +23,9 @@ appEvents.on("afterAccountDelete", ({ account }) => {
   }
 });
 
-appEvents.on("afterAccountUpdate", ({ updatedAccount, updatedFields }) => {
+appEvents.on("afterAccountUpdate", ({ account, updatedFields }) => {
   if (AccountSearch && !Meteor.isAppTest) {
-    buildAccountSearchRecord(updatedAccount._id, updatedFields);
+    buildAccountSearchRecord(account._id, updatedFields);
   }
 });
 

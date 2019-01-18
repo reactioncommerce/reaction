@@ -164,7 +164,7 @@ export default function createShop(shopAdminUserId, partialShopData) {
 
   const updatedAccount = Accounts.findOne({ _id: shopUser._id });
   Promise.await(appEvents.emit("afterAccountUpdate", {
-    updatedAccount,
+    account: updatedAccount,
     updatedBy: userId,
     updatedFields: ["groups", "shopId"]
   }));
