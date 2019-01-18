@@ -36,7 +36,6 @@ export const Surcharge = new SimpleSchema({
     type: String,
     optional: true
   },
-  /* TODO: EK - do we need fulfillmentGroup here? */
   "fulfillmentGroupId": {
     type: String,
     optional: true

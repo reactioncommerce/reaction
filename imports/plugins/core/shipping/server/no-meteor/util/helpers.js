@@ -97,6 +97,7 @@ export async function tagsByIds(collections, catalogProducts) {
   }));
 }
 
+// TODO: EK - merge this into a central location
 /**
  * @constant
  * @type {Object}

@@ -59,7 +59,6 @@ const surchargeSchema = new SimpleSchema({
   /*
    * Fulfillment methods this surcharge applies to
    * If blank, it applies to all methods
-   * TODO: EK - do we need this?
   */
   "methodIds": {
     type: Array,

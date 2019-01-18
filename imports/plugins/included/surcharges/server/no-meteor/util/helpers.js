@@ -1,3 +1,5 @@
+// TODO: EK - merge this into a central location
+
 /**
  * @constant
  * @type {Object}
