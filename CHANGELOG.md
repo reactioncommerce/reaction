@@ -1,3 +1,10 @@
+# v2.0.0-rc.9
+This is our eighth **release candidate** for v2.0.0 of Reaction. Please check it out and let us know what works and what doesn't for you.
+
+This release is being coordinated with `reaction-platform` and is designed to work with the same versions of `reaction-next-starterkit` and `reaction-hydra`
+
+Release notes in progress
+
 # v2.0.0-rc.8
 This is our eighth **release candidate** for v2.0.0 of Reaction. Please check it out and let us know what works and what doesn't for you.
 
