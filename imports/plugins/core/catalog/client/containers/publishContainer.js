@@ -20,13 +20,27 @@ class PublishContainer extends Component {
     });
   }
 
+  publishAllToCatalog(collection) {
+    Meteor.call(`catalog/publishAll/${collection}`, (error, result) => {
+      if (result) {
+        Alerts.toast(i18next.t("admin.catalogProductPublishSuccess", { defaultValue: "Products published to catalog" }), "success");
+      } else if (error) {
+        Alerts.toast(error.message, "error");
+      }
+    });
+  }
+
   handlePublishClick = () => {
     const productIds = this.props.documents
       .filter((doc) => doc.type === "simple")
       .map((doc) => doc._id);
 
     this.publishToCatalog("products", productIds);
-  }
+  };
+
+  handlePublishAllClick = () => {
+    this.publishAllToCatalog("products");
+  };
 
   handlePublishActions = (event, action) => {
     if (action === "archive" && this.props.onAction) {
@@ -42,6 +56,7 @@ class PublishContainer extends Component {
           documents={this.props.documents}
           isEnabled={this.props.isEnabled}
           onPublishClick={this.handlePublishClick}
+          onPublishAllClick={this.handlePublishAllClick}
           onAction={this.handlePublishActions}
           onVisibilityChange={this.props.onVisibilityChange}
           isPreview={this.props.isPreview}

@@ -12,8 +12,9 @@ import publishProductsToCatalog from "../utils/publishProductsToCatalog";
  * @return {Promise<Object[]>} Array of CatalogItemProduct objects
  */
 export default async function publishProducts(context, productIds) {
-  const { collections, shopId: primaryShopId, userHasPermission } = context;
+  const { collections, shopId: primaryShopId, userHasPermission, appEvents } = context;
   const { Catalog, Products } = collections;
+  appEvents.emit("userIntentToPublish", productIds);
 
   // Find all products
   const products = await Products.find(
@@ -44,5 +45,6 @@ export default async function publishProducts(context, productIds) {
     Logger.error("Some Products could not be published to the Catalog.");
     throw new ReactionError("server-error", "Some Products could not be published to the Catalog. Make sure your variants are visible.");
   }
+  appEvents.emit("afterProductsPublished", productIds);
   return Catalog.find({ "product.productId": { $in: productIds } }).toArray();
 }

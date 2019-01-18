@@ -21,6 +21,7 @@ class PublishControls extends Component {
     isPreview: PropTypes.bool,
     onAction: PropTypes.func,
     onAddProduct: PropTypes.func,
+    onPublishAllClick: PropTypes.func,
     onPublishClick: PropTypes.func,
     onViewContextChange: PropTypes.func,
     onVisibilityChange: PropTypes.func,
@@ -37,9 +38,9 @@ class PublishControls extends Component {
 
   constructor(props) {
     super(props);
-
     this.handleToggleShowChanges = this.handleToggleShowChanges.bind(this);
     this.handlePublishClick = this.handlePublishClick.bind(this);
+    this.handlePublishAllClick = this.handlePublishAllClick.bind(this);
   }
 
   state = {
@@ -62,6 +63,16 @@ class PublishControls extends Component {
   handlePublishClick() {
     if (this.props.onPublishClick) {
       this.props.onPublishClick(this.props.revisions);
+
+      this.setState({
+        isHashUpdating: true
+      });
+    }
+  }
+
+  handlePublishAllClick() {
+    if (this.props.onPublishAllClick) {
+      this.props.onPublishAllClick();
 
       this.setState({
         isHashUpdating: true
@@ -158,7 +169,8 @@ class PublishControls extends Component {
   renderPublishButton() {
     const buttonProps = {};
 
-    if (Array.isArray(this.props.documentIds) && this.props.documentIds.length > 1) {
+    const multiProduct = Array.isArray(this.props.documentIds) && this.props.documentIds.length > 1;
+    if (multiProduct) {
       buttonProps.label = "Publish All";
       buttonProps.i18nKeyLabel = "toolbar.publishAll";
     }
@@ -171,8 +183,8 @@ class PublishControls extends Component {
         <Button
           bezelStyle="solid"
           disabled={isDisabled}
-          label="Publish"
-          onClick={this.handlePublishClick}
+          label={ multiProduct ? "Publish All" : "Publish" }
+          onClick={ multiProduct ? this.handlePublishAllClick : this.handlePublishClick}
           status="success"
           i18nKeyLabel="productDetailEdit.publish"
           {...buttonProps}
