@@ -43,7 +43,7 @@ export default function loadData() {
         Shops.update({ _id: primaryShop._id }, { $addToSet: { domains: domain } });
       }
 
-      Promise.await(appEvents.emit("afterShopCreate", { shop: primaryShop }));
+      Promise.await(appEvents.emit("afterShopCreate", { createdBy: null, shop: primaryShop }));
     }
     const shopId = primaryShop._id;
 
