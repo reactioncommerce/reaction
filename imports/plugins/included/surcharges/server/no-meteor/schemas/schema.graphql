@@ -47,7 +47,8 @@ input messagesByLanguageInput {
 extend type Query {
   "Get the full list of flat rate fulfillment method restrictions."
   getSurcharges(
-    shopId: ID!
+    shopId: ID!,
+    language: String,
     after: ConnectionCursor,
     before: ConnectionCursor,
     first: ConnectionLimitInt,
@@ -56,7 +57,7 @@ extend type Query {
     sortBy: SurchargeSortByField = createdAt
   ): SurchargeConnection!
 
-  getSurcharge(shopId: ID!, surchargeId: ID!): Surcharge
+  getSurcharge(shopId: ID!, surchargeId: ID!, language: String): Surcharge
 }
 
 type SurchargeConnection {
