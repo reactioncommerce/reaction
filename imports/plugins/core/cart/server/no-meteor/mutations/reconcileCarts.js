@@ -82,7 +82,8 @@ export default async function reconcileCarts(context, input) {
       anonymousCart,
       anonymousCartSelector,
       Cart,
-      shopId
+      shopId,
+      userId
     })
   };
 }
