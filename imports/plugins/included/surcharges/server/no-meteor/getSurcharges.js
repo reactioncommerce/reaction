@@ -40,7 +40,7 @@ export default async function getSurcharges(context, { cart }) {
       _id: Random.id(),
       surchargeId: surcharge._id,
       amount: surcharge.amount,
-      message: surcharge.message,
+      messagesByLanguage: surcharge.messagesByLanguage,
       cartId: cart._id
     }
   ));
