@@ -36,9 +36,9 @@ input surchargeDestinationRestrictionsInput {
   postal: [String]
 }
 
-input surchargeMessageInput {
-  content: String
-  language: String
+input messagesByLanguageInput {
+  content: String!
+  language: String!
 }
 
 ####
@@ -96,7 +96,7 @@ type Surcharge implements Node {
   "Amount."
   amount: Money!
 
-  "Message translated into provided language."
+  "Message translated into provided / default language."
   message: String!
 }
 
@@ -129,8 +129,8 @@ input SurchargeInput {
   "Amount."
   amount: MoneyInput!
 
-  "Message."
-  message: [surchargeMessageInput]!
+  "Messages by language."
+  messagesByLanguage: [messagesByLanguageInput]!
 }
 
 "Input for the `CreateSurcharge` mutation"

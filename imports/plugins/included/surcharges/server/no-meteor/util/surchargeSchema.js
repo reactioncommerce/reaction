@@ -59,6 +59,7 @@ const surchargeSchema = new SimpleSchema({
   /*
    * Fulfillment methods this surcharge applies to
    * If blank, it applies to all methods
+   * TODO: EK - do we need this?
   */
   "methodIds": {
     type: Array,
@@ -91,10 +92,10 @@ const surchargeSchema = new SimpleSchema({
    * Message is used as a client message to let customers know why this surcharge might apply
    * It can be saved in various languages
   */
-  "message": {
+  "messagesByLanguage": {
     type: Array
   },
-  "message.$": {
+  "messagesByLanguage.$": {
     type: Message
   }
 });

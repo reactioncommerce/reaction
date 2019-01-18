@@ -12,7 +12,7 @@ export const Money = new SimpleSchema({
   }
 });
 
-const SurchargeMessage = new SimpleSchema({
+const SurchargeMessagesByLanguage = new SimpleSchema({
   content: String,
   language: String
 });
@@ -25,7 +25,7 @@ const SurchargeMessage = new SimpleSchema({
  * @property {Money} amount
  * @property {String} cartId optional
  * @property {String} fulfillmentGroupId optional
- * @property {String} message optional
+ * @property {String} messagesByLanguage optional
  * @property {String} reason optional
  * @property {String} surchargeId optional
  */
@@ -36,6 +36,7 @@ export const Surcharge = new SimpleSchema({
     type: String,
     optional: true
   },
+  /* TODO: EK - do we need fulfillmentGroup here? */
   "fulfillmentGroupId": {
     type: String,
     optional: true
@@ -44,12 +45,12 @@ export const Surcharge = new SimpleSchema({
    * Message is used as a client message to let customers know why this surcharge might apply
    * It can be saved in various languages
   */
-  "message": {
+  "messagesByLanguage": {
     type: Array,
     optional: true
   },
-  "message.$": {
-    type: SurchargeMessage
+  "messagesByLanguage.$": {
+    type: SurchargeMessagesByLanguage
   },
   "surchargeId": {
     type: String,
