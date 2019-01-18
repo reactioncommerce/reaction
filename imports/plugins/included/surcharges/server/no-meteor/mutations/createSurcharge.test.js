@@ -17,7 +17,15 @@ test("add a surcharge", async () => {
         amount: "19.99",
         currencyCode: "USD"
       },
-      message: "You are shipping hazardous items, there is a 19.99 surcharge",
+      messagesByLanguage: [
+        {
+          content: "You are shipping hazardous items, there is a 19.99 surcharge",
+          language: "en"
+        }, {
+          content: "Spanish - You are shipping hazardous items, there is a 19.99 surcharge",
+          language: "es"
+        }
+      ],
       type: "surcharge",
       attributes: [
         { property: "vendor", value: "reaction", propertyType: "string", operator: "eq" },
@@ -34,7 +42,15 @@ test("add a surcharge", async () => {
         amount: 19.99,
         currencyCode: "USD"
       },
-      message: "You are shipping hazardous items, there is a 19.99 surcharge",
+      messagesByLanguage: [
+        {
+          content: "You are shipping hazardous items, there is a 19.99 surcharge",
+          language: "en"
+        }, {
+          content: "Spanish - You are shipping hazardous items, there is a 19.99 surcharge",
+          language: "es"
+        }
+      ],
       type: "surcharge",
       attributes: [
         { property: "vendor", value: "reaction", propertyType: "string", operator: "eq" },

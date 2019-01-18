@@ -17,7 +17,15 @@ const surcharge = {
     amount: 5.99,
     currencyCode: "USD"
   },
-  message: "Original Message"
+  messagesByLanguage: [
+    {
+      content: "Original Message English",
+      language: "en"
+    }, {
+      content: "Original Message Spanish",
+      language: "es"
+    }
+  ]
 };
 
 const updatedSurcharge = {
@@ -31,7 +39,15 @@ const updatedSurcharge = {
     amount: 17.99,
     currencyCode: "USD"
   },
-  message: "Updated Message"
+  messagesByLanguage: [
+    {
+      content: "Updated Message English",
+      language: "en"
+    }, {
+      content: "Updated Message Spanish",
+      language: "es"
+    }
+  ]
 };
 
 test("update a surcharge", async () => {
@@ -58,7 +74,15 @@ test("update a surcharge", async () => {
         amount: 5.99,
         currencyCode: "USD"
       },
-      message: "Original Message"
+      messagesByLanguage: [
+        {
+          content: "Original Message English",
+          language: "en"
+        }, {
+          content: "Original Message Spanish",
+          language: "es"
+        }
+      ]
     }
   });
 });
