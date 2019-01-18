@@ -59,7 +59,7 @@ export default async function updateCartItemsQuantity(context, input) {
     return list;
   }, []);
 
-  const { appEvents, collections } = context;
+  const { appEvents, collections, userId } = context;
   const { Cart } = collections;
 
   const updatedAt = new Date();
@@ -76,7 +76,10 @@ export default async function updateCartItemsQuantity(context, input) {
 
   const updatedCart = { ...cart, items: updatedItems, updatedAt };
 
-  await appEvents.emit("afterCartUpdate", updatedCart);
+  await appEvents.emit("afterCartUpdate", {
+    cart: updatedCart,
+    updatedBy: userId
+  });
 
   return { cart: updatedCart };
 }

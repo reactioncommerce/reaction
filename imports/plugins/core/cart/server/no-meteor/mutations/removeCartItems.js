@@ -28,7 +28,7 @@ const inputSchema = new SimpleSchema({
 export default async function removeCartItems(context, input) {
   inputSchema.validate(input || {});
 
-  const { accountId, appEvents, collections } = context;
+  const { accountId, appEvents, collections, userId } = context;
   const { Cart } = collections;
   const { cartId, cartItemIds, token } = input;
 
@@ -53,7 +53,10 @@ export default async function removeCartItems(context, input) {
   const cart = await Cart.findOne(selector);
   if (!cart) throw new ReactionError("not-found", "Cart not found");
 
-  await appEvents.emit("afterCartUpdate", cart);
+  await appEvents.emit("afterCartUpdate", {
+    cart,
+    updatedBy: userId
+  });
 
   return { cart };
 }

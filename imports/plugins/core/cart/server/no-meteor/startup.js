@@ -63,7 +63,10 @@ async function updateAllCartsForVariant({ appEvents, Cart, pricing, variantId })
 
     // Emit "after update"
     const updatedCart = await Cart.findOne({ _id: cart._id });
-    appEvents.emit("afterCartUpdate", updatedCart, { emittedBy: AFTER_CATALOG_UPDATE_EMITTED_BY_NAME });
+    appEvents.emit("afterCartUpdate", {
+      cart: updatedCart,
+      updatedBy: null
+    }, { emittedBy: AFTER_CATALOG_UPDATE_EMITTED_BY_NAME });
   }));
 
   return null;

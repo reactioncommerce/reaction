@@ -24,7 +24,7 @@ function determineInitialGroupForItem(currentGroups, supportedFulfillmentTypes, 
 export default function startup({ appEvents, collections }) {
   const { Cart } = collections;
 
-  const handler = async (updatedCart) => {
+  const handler = async ({ cart: updatedCart }) => {
     if (!updatedCart) {
       throw new Error("afterCartUpdate hook run with no cart argument");
     }
