@@ -15,6 +15,11 @@ type surchargeDestinationRestrictions {
   postal: [String]
 }
 
+type surchargeMessagesByLanguage {
+  content: String!
+  language: String!
+}
+
 enum surchargeTypeEnum {
   surcharge
 }
@@ -99,6 +104,9 @@ type Surcharge implements Node {
 
   "Message translated into provided / default language."
   message: String!
+
+  "Messages provided with content and all languages"
+  messagesByLanguage: [surchargeMessagesByLanguage]
 }
 
 
