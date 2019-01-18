@@ -18,8 +18,9 @@ Reaction.registerPackage({
   icon: "fa fa-users",
   autoEnable: true,
   addRolesToGroups: [{
+    allShops: true,
     groups: ["guest", "customer"],
-    roles: ["account/verify"]
+    roles: ["account/verify", "reset-password"]
   }],
   functionsByType: {
     registerPluginHandler: [registerPluginHandler],
@@ -80,7 +81,7 @@ Reaction.registerPackage({
     template: "loginFormUpdatePassword",
     workflow: "none",
     meta: { noAdminControls: true },
-    name: "Reset Password",
+    name: "reset-password",
     label: "reset-password"
   }],
   layout: [{

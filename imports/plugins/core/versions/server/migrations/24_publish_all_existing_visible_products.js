@@ -16,7 +16,14 @@ Migrations.add({
 
     let success = false;
     try {
-      success = Promise.await(publishProductsToCatalog(visiblePublishedProducts, { collections, getFunctionsOfType: () => [] }));
+      success = Promise.await(publishProductsToCatalog(visiblePublishedProducts, {
+        appEvents: {
+          emit() {},
+          on() {}
+        },
+        collections,
+        getFunctionsOfType: () => []
+      }));
     } catch (error) {
       Logger.error("Error in migration 24, publishProductsToCatalog", error);
     }
