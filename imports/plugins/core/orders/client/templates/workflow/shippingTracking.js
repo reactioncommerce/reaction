@@ -201,5 +201,8 @@ Template.coreOrderShippingTracking.helpers({
 
     return (shipmentWorkflow && Array.isArray(shipmentWorkflow.workflow) && shipmentWorkflow.workflow.includes("coreOrderWorkflow/packed") && shipment.tracking)
       || (shipmentWorkflow && Array.isArray(shipmentWorkflow.workflow) && shipmentWorkflow.workflow.includes("coreOrderWorkflow/packed"));
+  },
+  noTrackingMessage() {
+    return i18next.t("orderShipping.noTracking");
   }
 });

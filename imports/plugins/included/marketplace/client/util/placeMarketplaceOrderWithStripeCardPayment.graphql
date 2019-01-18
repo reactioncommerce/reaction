@@ -1,7 +1,0 @@
-placeMarketplaceOrderWithStripeCardPayment($input: PlaceMarketplaceOrderWithStripeCardPaymentInput!) {
-  placeMarketplaceOrderWithStripeCardPayment(input: $input) {
-    orders {
-      _id
-    }
-  }
-}

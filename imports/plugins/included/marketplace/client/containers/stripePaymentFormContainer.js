@@ -6,9 +6,8 @@ import { i18next, Reaction, Router } from "/client/api";
 import { Packages } from "/lib/collections";
 import { unstoreAnonymousCart } from "/imports/plugins/core/cart/client/util/anonymousCarts";
 import getCart from "/imports/plugins/core/cart/client/util/getCart";
-import getOpaqueIds from "/imports/plugins/core/core/client/util/getOpaqueIds";
 import buildOrderInputFromCart from "/imports/plugins/core/cart/client/util/buildOrderInputFromCart";
-import { placeMarketplaceOrderWithStripeCardPayment } from "../util/graphql";
+import { placeOrder } from "../util/graphql";
 import InjectedCardForm from "../components/injectedCardForm";
 
 class StripePaymentFormContainer extends Component {
@@ -36,25 +35,27 @@ class StripePaymentFormContainer extends Component {
 /**
  * @summary Builds a submit handler function
  * @param {Object} billingAddress Address to be sent with placeOrder mutation
- * @param {String} billingAddressId Address ID to be sent with placeOrder mutation
  * @param {Object} cart Cart document
  * @param {String} [cartToken] Token for anonymous carts
  * @returns {Function} onSubmit function
  */
-function getSubmitHandler(billingAddress, billingAddressId, cart, cartToken) {
+function getSubmitHandler(billingAddress, cart, cartToken) {
   return async function placeOrderWithStripe(stripeTokenId) {
     // Build the order input
     const order = await buildOrderInputFromCart(cart);
 
     // Build the payment input
-    const [opaqueBillingAddressId] = await getOpaqueIds([{ namespace: "Address", id: billingAddressId }]);
-    const payment = {
+    const amount = order.fulfillmentGroups.reduce((sum, group) => sum + group.totalPrice, 0);
+    const payments = [{
+      amount,
       billingAddress,
-      billingAddressId: opaqueBillingAddressId,
-      stripeTokenId
-    };
+      data: {
+        stripeTokenId
+      },
+      method: "marketplace_stripe_card"
+    }];
 
-    await placeMarketplaceOrderWithStripeCardPayment({ input: { order, payment } });
+    await placeOrder({ input: { order, payments } });
 
     // If there wasn't an error, the cart has been deleted.
     if (cartToken) {
@@ -95,7 +96,6 @@ function composer(props, onData) {
     postal: cartBillingAddress.postal,
     region: cartBillingAddress.region
   };
-  const billingAddressId = cartBillingAddress._id;
 
   /* eslint-disable camelcase */
   const errorCodes = {
@@ -124,7 +124,7 @@ function composer(props, onData) {
     apiKey: stripePackage.settings.public.publishable_key,
     errorCodes,
     language: i18next.language,
-    onSubmit: getSubmitHandler(billingAddress, billingAddressId, cart, token),
+    onSubmit: getSubmitHandler(billingAddress, cart, token),
     postal: cartBillingAddress.postal
   });
 }

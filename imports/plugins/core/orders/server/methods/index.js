@@ -1,6 +1,5 @@
 import approvePayment from "./approvePayment";
 import cancelOrder from "./cancelOrder";
-import capturePayments from "./capturePayments";
 import createRefund from "./createRefund";
 import listRefunds from "./listRefunds";
 import makeAdjustmentsToInvoice from "./makeAdjustmentsToInvoice";
@@ -25,7 +24,6 @@ import updateShipmentTracking from "./updateShipmentTracking";
 export default {
   "orders/approvePayment": approvePayment,
   "orders/cancelOrder": cancelOrder,
-  "orders/capturePayments": capturePayments,
   "orders/makeAdjustmentsToInvoice": makeAdjustmentsToInvoice,
   "orders/processPayment": processPayment,
   "orders/refunds/create": createRefund,
