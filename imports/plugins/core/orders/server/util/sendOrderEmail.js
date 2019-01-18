@@ -1,11 +1,12 @@
 import _ from "lodash";
 import Logger from "@reactioncommerce/logger";
-import accounting from "accounting-js";
-import { Meteor } from "meteor/meteor";
 import { SSR } from "meteor/meteorhacks:ssr";
 import { Shops } from "/lib/collections";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
+import formatMoney from "/imports/utils/formatMoney";
 import { Media } from "/imports/plugins/core/files/server";
+import getGraphQLContextInMeteorMethod from "/imports/plugins/core/graphql/server/getGraphQLContextInMeteorMethod";
+import { getPaymentMethodConfigByName } from "/imports/plugins/core/payments/server/no-meteor/registration";
 
 /**
  * @name getPrimaryMediaForItem
@@ -77,25 +78,59 @@ export default function sendOrderEmail(order, action) {
   // Get Shop information
   const shop = Shops.findOne({ _id: order.shopId });
 
-  // TODO need to make this fully support multi-shop. Now it's just collapsing into one
   // Get shop logo, if available
   const emailLogo = Reaction.Email.getShopLogo(shop);
 
-  const amount = order.shipping.reduce((sum, group) => sum + group.payment.amount, 0);
-  const discounts = order.shipping.reduce((sum, group) => sum + group.payment.invoice.discounts, 0);
-  const subtotal = order.shipping.reduce((sum, group) => sum + group.payment.invoice.subtotal, 0);
-  const taxes = order.shipping.reduce((sum, group) => sum + group.payment.invoice.taxes, 0);
-  const shippingCost = order.shipping.reduce((sum, group) => sum + group.payment.invoice.shipping, 0);
+  // TODO need to make this fully support multiple fulfillment groups. Now it's just collapsing into one
+  const amount = order.shipping.reduce((sum, group) => sum + group.invoice.total, 0);
+  const discounts = order.shipping.reduce((sum, group) => sum + group.invoice.discounts, 0);
+  const subtotal = order.shipping.reduce((sum, group) => sum + group.invoice.subtotal, 0);
+  const taxes = order.shipping.reduce((sum, group) => sum + group.invoice.taxes, 0);
+  const shippingCost = order.shipping.reduce((sum, group) => sum + group.invoice.shipping, 0);
 
-  const { address: shippingAddress, payment, shipmentMethod, tracking } = order.shipping[0];
+  const { address: shippingAddress, shipmentMethod, tracking } = order.shipping[0];
   const { carrier } = shipmentMethod;
-  const { address, currency, displayName } = payment;
+  const [firstPayment] = (order.payments || []);
+  const { address: paymentBillingAddress, currency } = firstPayment || {};
 
-  const refundResult = Meteor.call("orders/refunds/list", order);
-  const refundTotal = Array.isArray(refundResult) && refundResult.reduce((acc, refund) => acc + refund.amount, 0);
+  const shippingAddressForEmail = shippingAddress ? {
+    address: `${shippingAddress.address1}${shippingAddress.address2 ? ` ${shippingAddress.address2}` : ""}`,
+    city: shippingAddress.city,
+    region: shippingAddress.region,
+    postal: shippingAddress.postal
+  } : null;
+
+  let billingAddressForEmail = null;
+  if (order.billingAddress) {
+    billingAddressForEmail = {
+      address: `${order.billingAddress.address1}${order.billingAddress.address2 ? ` ${order.billingAddress.address2}` : ""}`,
+      city: order.billingAddress.city,
+      region: order.billingAddress.region,
+      postal: order.billingAddress.postal
+    };
+  } else if (paymentBillingAddress) {
+    billingAddressForEmail = {
+      address: `${paymentBillingAddress.address1}${paymentBillingAddress.address2 ? ` ${paymentBillingAddress.address2}` : ""}`,
+      city: paymentBillingAddress.city,
+      region: paymentBillingAddress.region,
+      postal: paymentBillingAddress.postal
+    };
+  }
+
+  const refunds = [];
+
+  if (Array.isArray(order.payments)) {
+    const context = Promise.await(getGraphQLContextInMeteorMethod(null));
+    for (const payment of order.payments) {
+      const shopRefunds = Promise.await(getPaymentMethodConfigByName(payment.name).functions.listRefunds(context, payment));
+      const shopRefundsWithPaymentId = shopRefunds.map((shopRefund) => ({ ...shopRefund, paymentId: payment._id }));
+      refunds.push(...shopRefundsWithPaymentId);
+    }
+  }
+
+  const refundTotal = refunds.reduce((acc, refund) => acc + refund.amount, 0);
 
   const userCurrency = (currency && currency.userCurrency) || shop.currency;
-  const userCurrencyFormatting = _.omit(shop.currencies[userCurrency], ["enabled", "rate"]);
 
   // Get user currency exchange rate at time of transaction
   const userCurrencyExchangeRate = (currency && currency.exchangeRate) || 1;
@@ -116,10 +151,7 @@ export default function sendOrderEmail(order, action) {
       // Otherwise push the unique item into the combinedItems array
 
       // Add displayAmount to match user currency settings
-      orderItem.price.displayAmount = accounting.formatMoney(
-        orderItem.price.amount * userCurrencyExchangeRate,
-        userCurrencyFormatting
-      );
+      orderItem.price.displayAmount = formatMoney(orderItem.price.amount * userCurrencyExchangeRate, userCurrency);
 
       combinedItems.push(orderItem);
 
@@ -182,25 +214,23 @@ export default function sendOrderEmail(order, action) {
     // Order Data
     order,
     billing: {
-      address: {
-        address: `${address.address1}${address.address2 ? ` ${address.address2}` : ""}`,
-        city: address.city,
-        region: address.region,
-        postal: address.postal
-      },
-      paymentMethod: displayName,
-      subtotal: accounting.formatMoney(subtotal * userCurrencyExchangeRate, userCurrencyFormatting),
-      shipping: accounting.formatMoney(shippingCost * userCurrencyExchangeRate, userCurrencyFormatting),
-      taxes: accounting.formatMoney(taxes * userCurrencyExchangeRate, userCurrencyFormatting),
-      discounts: accounting.formatMoney(discounts * userCurrencyExchangeRate, userCurrencyFormatting),
-      refunds: accounting.formatMoney(refundTotal * userCurrencyExchangeRate, userCurrencyFormatting),
-      total: accounting.formatMoney(
+      address: billingAddressForEmail,
+      payments: (order.payments || []).map((payment) => ({
+        displayName: payment.displayName,
+        displayAmount: formatMoney(payment.amount * userCurrencyExchangeRate, userCurrency)
+      })),
+      subtotal: formatMoney(subtotal * userCurrencyExchangeRate, userCurrency),
+      shipping: formatMoney(shippingCost * userCurrencyExchangeRate, userCurrency),
+      taxes: formatMoney(taxes * userCurrencyExchangeRate, userCurrency),
+      discounts: formatMoney(discounts * userCurrencyExchangeRate, userCurrency),
+      refunds: formatMoney(refundTotal * userCurrencyExchangeRate, userCurrency),
+      total: formatMoney(
         (subtotal + shippingCost + taxes - discounts) * userCurrencyExchangeRate,
-        userCurrencyFormatting
+        userCurrency
       ),
-      adjustedTotal: accounting.formatMoney(
+      adjustedTotal: formatMoney(
         (amount - refundTotal) * userCurrencyExchangeRate,
-        userCurrencyFormatting
+        userCurrency
       )
     },
     combinedItems,
@@ -209,12 +239,7 @@ export default function sendOrderEmail(order, action) {
     shipping: {
       tracking,
       carrier,
-      address: {
-        address: `${shippingAddress.address1}${shippingAddress.address2 ? ` ${shippingAddress.address2}` : ""}`,
-        city: shippingAddress.city,
-        region: shippingAddress.region,
-        postal: shippingAddress.postal
-      }
+      address: shippingAddressForEmail
     }
   };
 

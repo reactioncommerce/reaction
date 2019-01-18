@@ -45,6 +45,12 @@ type FulfillmentGroup implements Node {
   "The fulfillment method selected by a shopper for this group, with its associated price"
   selectedFulfillmentOption: FulfillmentOption
 
+  "The shipping address collected for this group, if relevant"
+  shippingAddress: Address
+
+  "The shop that owns the items in this group and is responsible for fulfillment"
+  shop: Shop!
+
   """
   The fulfillment type. Any valid type that has been registered by a fulfillment plugin. Examples: "shipping", "digital"
   """

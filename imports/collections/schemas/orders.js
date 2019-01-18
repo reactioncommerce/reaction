@@ -336,7 +336,6 @@ export const OrderFulfillmentGroup = new SimpleSchema({
   },
   "items.$": OrderItem,
   "itemIds": [String],
-  "payment": Payment,
   "shipmentMethod": SelectedFulfillmentOption,
   "shippingLabelUrl": {
     type: String,
@@ -366,6 +365,7 @@ export const OrderFulfillmentGroup = new SimpleSchema({
  * @property {String} _id required
  * @property {String} accountId Account ID for account orders, or null for anonymous
  * @property {String} anonymousAccessToken Token for accessing anonymous carts, null for account carts
+ * @property {Address} [billingAddress] Optional billing address
  * @property {String} cartId optional For tracking which cart created this order
  * @property {Date} createdAt required
  * @property {String} currencyCode required
@@ -374,6 +374,7 @@ export const OrderFulfillmentGroup = new SimpleSchema({
  * @property {Object[]} exportHistory optional
  * @property {History[]} history optional
  * @property {Notes[]} notes optional
+ * @property {Payment[]} payments Array of payments
  * @property {Shipment[]} shipping Array of fulfillment groups
  * @property {String} shopId required The owner shop
  * @property {Surcharges[]} surcharges Surcharges applied to this order
@@ -394,6 +395,13 @@ export const Order = new SimpleSchema({
   "anonymousAccessToken": {
     type: String,
     index: 1,
+    optional: true
+  },
+  // Although billing address is typically needed only by the payment plugin,
+  // some tax services require it to calculate taxes for digital items. Thus
+  // it should be provided here in order to be added to the CommonOrder if possible.
+  "billingAddress": {
+    type: Address,
     optional: true
   },
   "cartId": {
@@ -433,6 +441,11 @@ export const Order = new SimpleSchema({
     optional: true
   },
   "notes.$": Notes,
+  "payments": {
+    type: Array,
+    optional: true
+  },
+  "payments.$": Payment,
   "referenceId": String,
   "shipping": [OrderFulfillmentGroup],
   "shopId": {

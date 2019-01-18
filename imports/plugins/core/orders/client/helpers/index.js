@@ -1,4 +1,22 @@
+import { Meteor } from "meteor/meteor";
 import { Reaction } from "/client/api";
+
+/**
+ * @param {String} orderId The order ID
+ * @param {String} paymentId The ID of the payment to approve
+ * @returns {Promise<null>} null
+ */
+export async function approvePayment(orderId, paymentId) {
+  return new Promise((resolve, reject) => {
+    Meteor.call("orders/approvePayment", orderId, paymentId, (error, result) => {
+      if (error) {
+        reject(error);
+      } else {
+        resolve(result);
+      }
+    });
+  });
+}
 
 /**
  * @method getOrderRiskBadge
@@ -153,17 +171,6 @@ export function filterShippingStatus(filter) {
   }
 
   return query;
-}
-
-/**
- * @name getPaymentForCurrentShop
- * @memberof Helpers
- * @summary get proper payment object as per current active shop
- * @param {Object} order - order object to check against
- * @return {Object} proper payment object to use
- */
-export function getPaymentForCurrentShop(order) {
-  return getShippingInfo(order).payment || {};
 }
 
 /**

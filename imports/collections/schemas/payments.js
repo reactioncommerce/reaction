@@ -16,6 +16,7 @@ import { Address } from "./address";
  * @property {Number} total Grand total
  */
 export const Invoice = new SimpleSchema({
+  currencyCode: String,
   discounts: {
     type: Number,
     min: 0
@@ -84,6 +85,7 @@ registerSchema("CurrencyExchangeRate", CurrencyExchangeRate);
  * @property {String} [cardBrand] The brand of card, if the payment method was a credit card
  * @property {CurrencyExchangeRate} [currency] The exchange rate, if the user's currency is different from shop's
  * @property {Object} [data] Arbitrary data that the payment method needs
+ * @property {String} mode "authorize" if still needs to be captured, or "capture" if captured. "cancel" if auth was canceled.
  * @property {Invoice} invoice A summary of the totals that make up the full charge amount. Created when the payment is added to an order.
  * @property {String} shopId The ID of the shop that is being paid. This might be a merchant shop in a marketplace setup.
  */
@@ -97,6 +99,14 @@ export const Payment = new SimpleSchema({
     optional: true
   },
   "amount": Number,
+  "captureErrorCode": {
+    type: String,
+    optional: true
+  },
+  "captureErrorMessage": {
+    type: String,
+    optional: true
+  },
   "cardBrand": {
     type: String,
     optional: true
@@ -113,7 +123,6 @@ export const Payment = new SimpleSchema({
     blackbox: true
   },
   "displayName": String,
-  "invoice": Invoice,
   "method": String,
   "mode": String,
   "name": String,

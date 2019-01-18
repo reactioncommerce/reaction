@@ -1,60 +1,52 @@
 import Hooks from "@reactioncommerce/hooks";
-import accounting from "accounting-js";
 import { check } from "meteor/check";
 import ReactionError from "@reactioncommerce/reaction-error";
 import appEvents from "/imports/node-app/core/util/appEvents";
 import { Orders } from "/lib/collections";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
-import orderCreditMethod from "../util/orderCreditMethod";
 
 /**
  * @name orders/approvePayment
  * @method
  * @memberof Orders/Methods
  * @summary Approve payment and apply any adjustments
- * @param {Object} order - order object
- * @return {Object} return this.processPayment result
+ * @param {String} orderId - The order ID
+ * @param {String} paymentId - The payment ID
+ * @return {undefined}
  */
-export default function approvePayment(order) {
-  check(order, Object);
-  const { invoice } = orderCreditMethod(order);
+export default function approvePayment(orderId, paymentId) {
+  check(orderId, String);
+  check(paymentId, String);
 
-  // REVIEW: Who should have access to do this for a marketplace?
-  // Do we have/need a shopId on each order?
-  if (!Reaction.hasPermission("orders")) {
+  const shopId = Reaction.getShopId();
+
+  if (!Reaction.hasPermission("orders", Reaction.getUserId(), shopId)) {
     throw new ReactionError("access-denied", "Access Denied");
   }
 
-  this.unblock(); // REVIEW: why unblock here?
+  const dbOrder = Orders.findOne({
+    _id: orderId,
+    shopId
+  });
+  if (!dbOrder) throw new ReactionError("not-found", "Order not found");
 
-  // this is server side check to verify
-  // that the math all still adds up.
-  const shopId = Reaction.getShopId();
-  const { discounts, shipping, subtotal, taxes } = invoice;
-  const discountTotal = Math.max(0, subtotal - discounts); // ensure no discounting below 0.
-  const total = accounting.toFixed(Number(discountTotal) + Number(shipping) + Number(taxes), 2);
-
-  const result = Orders.update(
-    {
-      "_id": order._id,
-      "shipping.shopId": shopId,
-      "shipping.payment.method": "credit"
-    },
-    {
-      $set: {
-        "shipping.$.payment.amount": total,
-        "shipping.$.payment.status": "approved",
-        "shipping.$.payment.mode": "capture",
-        "shipping.$.payment.invoice.discounts": discounts,
-        "shipping.$.payment.invoice.total": Number(total)
+  Orders.update({
+    _id: orderId,
+    payments: {
+      $elemMatch: {
+        _id: paymentId,
+        status: { $in: ["adjustments", "created"] }
       }
     }
-  );
+  }, {
+    $set: {
+      "payments.$.status": "approved"
+    }
+  });
 
-  Promise.await(appEvents.emit("afterOrderApprovePayment", order));
+  const updatedOrder = Orders.findOne({ _id: orderId });
+  Promise.await(appEvents.emit("afterOrderApprovePayment", updatedOrder));
 
   // Update search record
-  Hooks.Events.run("afterUpdateOrderUpdateSearchRecord", order);
-
-  return result;
+  Hooks.Events.run("afterUpdateOrderUpdateSearchRecord", updatedOrder);
 }
