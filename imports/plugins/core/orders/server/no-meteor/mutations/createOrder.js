@@ -358,7 +358,7 @@ export default async function createOrder(context, input) {
 
   const { afterValidate, createPaymentForFulfillmentGroup, order: orderInput } = cleanedInput;
   const { cartId, currencyCode, email, fulfillmentGroups, shopId } = orderInput;
-  const { accountId, account, collections } = context;
+  const { accountId, account, collections, userId } = context;
   const { Orders } = collections;
 
   // We are mixing concerns a bit here for now. This is for backwards compatibility with current
@@ -463,7 +463,7 @@ export default async function createOrder(context, input) {
   OrderSchema.validate(order);
   await Orders.insertOne(order);
 
-  appEvents.emit("afterOrderCreate", order).catch((error) => {
+  appEvents.emit("afterOrderCreate", { createdBy: userId, order }).catch((error) => {
     Logger.error("Error emitting afterOrderCreate", error);
   });
 

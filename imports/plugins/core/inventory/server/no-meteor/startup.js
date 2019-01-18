@@ -103,7 +103,7 @@ export default function startup(context) {
     }
   });
 
-  appEvents.on("afterOrderCreate", async (order) => {
+  appEvents.on("afterOrderCreate", async ({ order }) => {
     const { collections } = context;
     const orderItems = order.shipping.reduce((list, group) => [...list, ...group.items], []);
 

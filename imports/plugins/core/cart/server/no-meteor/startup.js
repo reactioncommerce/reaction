@@ -83,7 +83,7 @@ export default function startup(context) {
   const { Cart } = collections;
 
   // When an order is created, delete the source cart
-  appEvents.on("afterOrderCreate", async (order) => {
+  appEvents.on("afterOrderCreate", async ({ order }) => {
     const { cartId } = order;
     if (cartId) {
       const { result } = await Cart.deleteOne({ _id: cartId });
