@@ -195,6 +195,16 @@ jobs:
             .circleci/bin/ecs-deploy-bobs-develop-branch.sh
           no_output_timeout: 30m
 
+  deploy-to-kube-bobs-develop-branch:
+    <<: *defaults
+    steps:
+      - checkout
+      - run:
+          name: Update helm chart for reaction-core service in kubernetes
+          command: |
+            .circleci/bin/kube-deploy-bobs-develop-branch.sh
+          no_output_timeout: 30m
+
   deploy-docs:
     <<: *defaults
     steps:
@@ -358,64 +368,68 @@ workflows:
   version: 2
   build_and_test:
     jobs:
-      - build
-      - dockerfile-lint
-      - test-app:
-          requires:
-            - build
-      - test-unit:
-          requires:
-            - build
-      - test-integration:
-          requires:
-            - build
-      - test-e2e:
-          requires:
-            - deploy-to-ecs-release-branch
-      - eslint:
-          requires:
-            - build
-      - docker-build:
-          context: reaction-build-read
-          requires:
-            - snyk-security
-      - docker-push:
-          context: reaction-publish-docker
-          requires:
-            - docker-build
-      - deploy-to-ecs-release-branch:
-          requires:
-            - docker-push
-          filters:
-            branches:
-              only: /^release-2.*/
-#      - deploy-to-ecs-feature-branch:
+#      - build
+#      - dockerfile-lint
+#      - test-app:
+#          requires:
+#            - build
+#      - test-unit:
+#          requires:
+#            - build
+#      - test-integration:
+#          requires:
+#            - build
+#      - test-e2e:
+#          requires:
+#            - deploy-to-ecs-release-branch
+#      - eslint:
+#          requires:
+#            - build
+#      - docker-build:
+#          context: reaction-build-read
+#          requires:
+#            - snyk-security
+#      - docker-push:
+#          context: reaction-publish-docker
+#          requires:
+#            - docker-build
+#      - deploy-to-ecs-release-branch:
 #          requires:
 #            - docker-push
 #          filters:
 #            branches:
-#              only: /^feat.*/
-#      - deploy-to-ecs-ems-develop-branch:
+#              only: /^release-2.*/
+##      - deploy-to-ecs-feature-branch:
+##          requires:
+##            - docker-push
+##          filters:
+##            branches:
+##              only: /^feat.*/
+##      - deploy-to-ecs-ems-develop-branch:
+##          requires:
+##            - docker-push
+##          filters:
+##            branches:
+##              only: /^develop.*/
+#      - deploy-to-ecs-bobs-develop-branch:
 #          requires:
 #            - docker-push
 #          filters:
 #            branches:
 #              only: /^develop.*/
-      - deploy-to-ecs-bobs-develop-branch:
-          requires:
-            - docker-push
+#      - deploy-docs:
+#          requires:
+#            - test-unit
+#            - test-app
+#            - docker-build
+#          filters:
+#            branches:
+#              only: /^master$/
+#      - snyk-security:
+#          context: reaction-validation
+#          requires:
+#            - build
+      - deploy-to-kube-bobs-develop-branch:
           filters:
             branches:
               only: /^develop.*/
-      - deploy-docs:
-          requires:
-            - test-unit
-            - test-app
-            - docker-build
-          filters:
-            branches:
-              only: /^master$/
-      - snyk-security:
-          context: reaction-validation
-          requires:
-            - build
