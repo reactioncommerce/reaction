@@ -43,6 +43,4 @@ export HELM_HOME=~/.helm
 # install helm secrets plugin
 /usr/local/bin/helm plugin install https://github.com/futuresimple/helm-secrets
 
-find $HELM_HOME -ls
-
-helm-wrapper upgrade reaction-core .reaction/helm-charts/reaction-core --values reaction/helm-charts/reaction-core/values.yaml
+helm secrets upgrade reaction-core .reaction/helm-charts/reaction-core --values reaction/helm-charts/reaction-core/values.yaml
