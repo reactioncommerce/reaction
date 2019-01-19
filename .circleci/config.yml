@@ -393,12 +393,12 @@ workflows:
           context: reaction-publish-docker
           requires:
             - docker-build
-#      - deploy-to-ecs-release-branch:
-#          requires:
-#            - docker-push
-#          filters:
-#            branches:
-#              only: /^release-2.*/
+      - deploy-to-ecs-release-branch:
+          requires:
+            - docker-push
+          filters:
+            branches:
+              only: /^release-2.*/
 #      - deploy-to-ecs-feature-branch:
 #          requires:
 #            - docker-push
