@@ -32,6 +32,9 @@ tar xvfz helm-v2.12.2-linux-amd64.tar.gz
 sudo cp linux-amd64/helm /usr/local/bin
 sudo chmod +x /usr/local/bin/helm
 
-/usr/local/bin/kubectl config use-context circleci-context
-/usr/local/bin/helm upgrade reaction-core helm-charts/reaction-core
 
+# install helm secrets plugin
+/usr/local/bin/helm plugin install https://github.com/futuresimple/helm-secrets
+
+/usr/local/bin/kubectl config use-context circleci-context
+helm-wrapper upgrade reaction-core .reaction/helm-charts/reaction-core --values reaction/helm-charts/reaction-core/values.yaml
