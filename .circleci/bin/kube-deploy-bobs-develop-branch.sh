@@ -32,6 +32,9 @@ tar xvfz helm-v2.12.2-linux-amd64.tar.gz
 sudo cp linux-amd64/helm /usr/local/bin
 sudo chmod +x /usr/local/bin/helm
 
+# create HELM_HOME and HELM_HOME/plugins
+mkdir -p ~/.helm/plugins
+export HELM_HOME=~/.helm
 
 # install helm secrets plugin
 /usr/local/bin/helm plugin install https://github.com/futuresimple/helm-secrets
