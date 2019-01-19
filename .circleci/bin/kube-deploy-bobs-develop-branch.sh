@@ -22,11 +22,15 @@ mkdir -p ~/.kube
 echo Running aws s3 cp s3://${KUBECTL_CONFIG_STAGING_S3_BUCKET}/${KUBECTL_CONFIG_STAGING_FILENAME} ~/.kube/config
 aws s3 cp s3://${KUBECTL_CONFIG_STAGING_S3_BUCKET}/${KUBECTL_CONFIG_STAGING_FILENAME} ~/.kube/config
 
-# download kubectl and helm
+# download kubectl
 curl -LO https://storage.googleapis.com/kubernetes-release/release/v1.13.0/bin/linux/amd64/kubectl
 sudo mv kubectl /usr/local/bin
 sudo chmod +x /usr/local/bin/kubectl
 
+# set kubectl context to circleci-context
+/usr/local/bin/kubectl config use-context circleci-context
+
+# download helm
 curl -LO https://storage.googleapis.com/kubernetes-helm/helm-v2.12.2-linux-amd64.tar.gz
 tar xvfz helm-v2.12.2-linux-amd64.tar.gz
 sudo cp linux-amd64/helm /usr/local/bin
@@ -39,5 +43,6 @@ export HELM_HOME=~/.helm
 # install helm secrets plugin
 /usr/local/bin/helm plugin install https://github.com/futuresimple/helm-secrets
 
-/usr/local/bin/kubectl config use-context circleci-context
+find $HELM_HOME -ls
+
 helm-wrapper upgrade reaction-core .reaction/helm-charts/reaction-core --values reaction/helm-charts/reaction-core/values.yaml
