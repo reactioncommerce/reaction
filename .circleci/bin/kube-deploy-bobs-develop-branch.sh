@@ -32,6 +32,6 @@ tar xvfz helm-v2.12.2-linux-amd64.tar.gz
 sudo cp linux-amd64/helm /usr/local/bin
 sudo chmod +x /usr/local/bin/helm
 
-./kubectl config use-context circleci-context
-helm upgrade reaction-core helm-charts/reaction-core
+/usr/local/bin/kubectl config use-context circleci-context
+/usr/local/bin/helm upgrade reaction-core helm-charts/reaction-core
 
