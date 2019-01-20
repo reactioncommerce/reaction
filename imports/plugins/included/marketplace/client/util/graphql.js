@@ -1,4 +1,4 @@
 import simpleGraphQLClient from "/imports/plugins/core/graphql/lib/helpers/simpleClient";
-import placeMarketplaceOrderWithStripeCardPaymentMutation from "./placeMarketplaceOrderWithStripeCardPayment.graphql";
+import placeOrderMutation from "./placeOrder.graphql";
 
-export const placeMarketplaceOrderWithStripeCardPayment = simpleGraphQLClient.createMutationFunction(placeMarketplaceOrderWithStripeCardPaymentMutation);
+export const placeOrder = simpleGraphQLClient.createMutationFunction(placeOrderMutation);

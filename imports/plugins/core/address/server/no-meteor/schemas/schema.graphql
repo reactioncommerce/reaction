@@ -39,6 +39,11 @@ input AddressInput {
   "Optional second line"
   address2: String
 
+  """
+  Optionally, a name for this address (e.g. "Home") to easily identify it in the future
+  """
+  addressName: String
+
   "City"
   city: String!
 
@@ -74,9 +79,9 @@ input AddressInput {
 }
 
 "Represents a physical or mailing address somewhere on Earth"
-type Address implements Node {
+type Address {
   "The address ID"
-  _id: ID!
+  _id: ID
 
   "The street address / first line"
   address1: String!
@@ -119,7 +124,7 @@ type Address implements Node {
 }
 
 "Wraps a list of `Addresses`, providing pagination cursors and information."
-type AddressConnection implements NodeConnection {
+type AddressConnection {
   edges: [AddressEdge]
   nodes: [Address]
   pageInfo: PageInfo!
@@ -127,7 +132,7 @@ type AddressConnection implements NodeConnection {
 }
 
 "A connection edge in which each node is an `Address` object"
-type AddressEdge implements NodeEdge {
+type AddressEdge {
   cursor: ConnectionCursor!
   node: Address
 }

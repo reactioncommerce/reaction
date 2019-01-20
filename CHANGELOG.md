@@ -3,16 +3,42 @@ This is our eighth **release candidate** for v2.0.0 of Reaction. Please check it
 
 ## New Bits
 ### Operator 2.0
+The core experience and UI for a shop operator using Reaction Commerce has not changed much over the last couple of years. We've been hard at work on the new and improved [storefront](https://github.com/reactioncommerce/reaction-next-starterkit) but until now have not revealed any of our design or plans for improving the updated operator UI.
+
+
+This release includes the first beta of the new Reaction operator UI. Our focus with this new operator UI has several goals. First, we’re transitioning from a single page storefront and admin experience to a full page admin experience that will be separate from the storefront. . We believe this change is necessary and beneficial for anyone operating a store that works with a large number of products and/or does a high-volume of order. This change also decouples the customer facing storefront from the operator UI. The existing UI had a WYSIWYG flavor to it where the product and catalog management was done in an interface that was identical to what the customer saw. There are some benefits to this - having a good perspective of what your customers see when you make a change - but for large catalogs, it's not very practical. In addition, we’ve received feedback that the experience could be confusing for admin users who wanted to concentrate on their admin tasks only.  Once decoupled the operator UI can use 100% of the screen space for store management and operation. The change will be a big benefit to users managing large product catalogs and complex fulfillment patterns.
+
+Right now this new operator UI is opt-in and the existing, drawer style operator experience will continue to function as it has. You can access the new operator UI by visiting `/operator`.
+
+<img width="1245" alt="operator_2 0" src="https://user-images.githubusercontent.com/486340/48387165-7a44f080-e6a9-11e8-8977-75893be34ee2.png">
+
+This UI should have all existing functionality baked in, but we anticipate that there may be some rough edges and from a user experience standpoint it is the first step on a longer path. The first step here has been to replicate existing functionality by moving existing components into the new layout and fixing bugs that we've found. Going forward, we'll be implementing improved UIs for many of the operator tools - Catalog Management, Inventory, Pricing, Order Management, etc.
+
+Please file an issue for any bugs that you find, whether they be weird UI quirks or things that don't as expected.
+
+### .env file
+Most services that make up the Reaction platform use a .env file in the root of the service folder to define environment variables that should be set while running. They also have a pre-build script that the reaction-platform tool runs to create or update the .env file from a .env.example file, which is committed. Until now, this project did not use ` .env` file, so we've added one. See https://github.com/reactioncommerce/reaction/pull/4826 for more details.
 
 ## Improved Bits
+### Support for extending GraphQL enums and unions
+We've updated GraphQL and GraphQL Tools to new versions and added support for `extend enum` and `extend union`. This permits extending the core schema in this way from a plugin. See https://github.com/reactioncommerce/reaction/pull/4798 for more details
+
 ### Developer performance
-Added two environment variables to the example .env file `.env.example` (https://github.com/reactioncommerce/reaction/pull/4826)
+When we introduced `reaction-platform` and begun developing in Docker environments, we began to notice high CPU utilization that for those of us developing on OSX.
+
+<img width="1143" alt="image" src="https://user-images.githubusercontent.com/1203639/51052875-dc787f80-158c-11e9-9f16-60f81e43b4ec.png">
+
+ Long story short, this is an [issue with filesystem operations in Docker for Mac](https://github.com/docker/for-mac/issues/1759#issue-237416539) and there's not much we can do to resolve the core issue. In development mode, we leverage Meteor to watch for file changes. By adjusting the polling interval for the Meteor file watcher, we can greatly reduce the issues introduced by Docker for Mac. We've set two environment variables in the example .env file `.env.example` (https://github.com/reactioncommerce/reaction/pull/4826) as follows, but if these don't work for you, I'd start by adjusting the polling interval to something higher - 20000 (20s) or 30000 (30s). If you're working directly on the core `reaction` project, this may impact how long it takes before a change you've made is recognized and rebuilt, but that may be a small price to pay to reduce CPU burn by hyperkit. There shouldn't be any other consequences to increasing this number.
+
 ```
   METEOR_DISABLE_OPTIMISTIC_CACHING=1
   METEOR_WATCH_POLLING_INTERVAL_MS=10000
 ```
 
+
 ## Breaking changes
+This release contains a number of breaking changes that we've been working to get into Reaction before we cut the final 2.0.0 release. If you're planning to update an existing shop, please read through this list
+
 ### Catalog
 - Added a new, final param to xformVariant with the processed inventory flags (https://github.com/reactioncommerce/reaction/pull/4742)
 

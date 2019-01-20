@@ -2,7 +2,7 @@ import Factory from "/imports/test-utils/helpers/factory";
 import mockContext from "/imports/test-utils/helpers/mockContext";
 import query from "./paymentMethods";
 
-jest.mock("/imports/plugins/core/core/server/no-meteor/pluginRegistration", () => ({
+jest.mock("../registration", () => ({
   paymentMethods: {
     mockPaymentMethod: {
       name: "mockPaymentMethod",
@@ -51,10 +51,11 @@ test("returns all payment methods for a shop", async () => {
   const result = await query(mockContext, mockContext.shopId);
   expect(mockShopById).toHaveBeenCalledWith(mockContext, mockContext.shopId);
   expect(result).toEqual([{
-    name: "mockPaymentMethod",
+    canRefund: true,
     displayName: "Mock!",
-    pluginName: "mock-plugin",
-    isEnabled: false
+    isEnabled: false,
+    name: "mockPaymentMethod",
+    pluginName: "mock-plugin"
   }]);
 });
 
@@ -66,9 +67,10 @@ test("returns payment methods with correct enabled status", async () => {
   const result = await query(mockContext, mockContext.shopId);
   expect(mockShopById).toHaveBeenCalledWith(mockContext, mockContext.shopId);
   expect(result).toEqual([{
-    name: "mockPaymentMethod",
+    canRefund: true,
     displayName: "Mock!",
-    pluginName: "mock-plugin",
-    isEnabled: true
+    isEnabled: true,
+    name: "mockPaymentMethod",
+    pluginName: "mock-plugin"
   }]);
 });

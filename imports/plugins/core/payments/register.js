@@ -1,4 +1,5 @@
 import Reaction from "/imports/plugins/core/core/server/Reaction";
+import { registerPluginHandler } from "./server/no-meteor/registration";
 import mutations from "./server/no-meteor/mutations";
 import queries from "./server/no-meteor/queries";
 import resolvers from "./server/no-meteor/resolvers";
@@ -9,6 +10,9 @@ Reaction.registerPackage({
   name: "reaction-payments",
   icon: "fa fa-credit-card",
   autoEnable: true,
+  functionsByType: {
+    registerPluginHandler: [registerPluginHandler]
+  },
   graphQL: {
     resolvers,
     schemas

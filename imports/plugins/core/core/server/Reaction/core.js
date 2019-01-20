@@ -15,7 +15,6 @@ import {
   customPublishedProductVariantFields,
   functionsByType,
   mutations,
-  paymentMethods,
   queries,
   resolvers,
   schemas
@@ -116,15 +115,6 @@ export default {
         }
         functionsByType[type].push(...packageInfo.functionsByType[type]);
       });
-    }
-
-    if (packageInfo.paymentMethods) {
-      for (const paymentMethod of packageInfo.paymentMethods) {
-        paymentMethods[paymentMethod.name] = {
-          ...paymentMethod,
-          pluginName: packageInfo.name
-        };
-      }
     }
 
     if (packageInfo.catalog) {
@@ -1080,6 +1070,7 @@ export default {
         // Settings from the package registry.js
         const settingsFromPackage = {
           name: pkgName,
+          version: config.version,
           icon: config.icon,
           enabled: !!config.autoEnable,
           settings: config.settings,
@@ -1098,6 +1089,10 @@ export default {
 
         const combinedSettings = merge({}, settingsFromPackage, settingsFromFixture || {}, settingsFromDB || {});
 
+        // always use version from package
+        if (combinedSettings.version) {
+          combinedSettings.version = settingsFromPackage.version || settingsFromDB.version;
+        }
         if (combinedSettings.registry) {
           combinedSettings.registry = combinedSettings.registry.map((entry) => {
             if (entry.provides && !Array.isArray(entry.provides)) {

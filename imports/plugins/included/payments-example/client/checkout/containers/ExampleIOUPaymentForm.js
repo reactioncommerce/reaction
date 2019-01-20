@@ -2,7 +2,6 @@ import { composeWithTracker, registerComponent } from "@reactioncommerce/reactio
 import { Reaction, Router } from "/client/api";
 import { unstoreAnonymousCart } from "/imports/plugins/core/cart/client/util/anonymousCarts";
 import getCart from "/imports/plugins/core/cart/client/util/getCart";
-import getOpaqueIds from "/imports/plugins/core/core/client/util/getOpaqueIds";
 import buildOrderInputFromCart from "/imports/plugins/core/cart/client/util/buildOrderInputFromCart";
 import simpleGraphQLClient from "/imports/plugins/core/graphql/lib/helpers/simpleClient";
 import ExampleIOUPaymentForm from "../components/ExampleIOUPaymentForm";
@@ -10,25 +9,25 @@ import ExampleIOUPaymentForm from "../components/ExampleIOUPaymentForm";
 /**
  * @summary Builds a submit handler function
  * @param {Object} billingAddress Address to be sent with placeOrder mutation
- * @param {String} billingAddressId Address ID to be sent with placeOrder mutation
  * @param {Object} cart Cart document
  * @param {String} [cartToken] Token for anonymous carts
  * @returns {Function} onSubmit function
  */
-function getSubmitHandler(billingAddress, billingAddressId, cart, cartToken) {
+function getSubmitHandler(billingAddress, cart, cartToken) {
   return async function placeOrderWithExampleIOUPayment(paymentData) {
     // Build the order input
     const order = await buildOrderInputFromCart(cart);
 
     // Build the payment input
-    const [opaqueBillingAddressId] = await getOpaqueIds([{ namespace: "Address", id: billingAddressId }]);
-    const payment = {
+    const amount = order.fulfillmentGroups.reduce((sum, group) => sum + group.totalPrice, 0);
+    const payments = [{
+      amount,
       billingAddress,
-      billingAddressId: opaqueBillingAddressId,
-      ...paymentData
-    };
+      data: paymentData,
+      method: "iou_example"
+    }];
 
-    await simpleGraphQLClient.mutations.placeOrderWithExampleIOUPayment({ input: { order, payment } });
+    await simpleGraphQLClient.mutations.placeOrder({ input: { order, payments } });
 
     // If there wasn't an error, the cart has been deleted.
     if (cartToken) {
@@ -63,10 +62,9 @@ function composer(props, onData) {
     postal: cartBillingAddress.postal,
     region: cartBillingAddress.region
   };
-  const billingAddressId = cartBillingAddress._id;
 
   onData(null, {
-    onSubmit: getSubmitHandler(billingAddress, billingAddressId, cart, token)
+    onSubmit: getSubmitHandler(billingAddress, cart, token)
   });
 }
 

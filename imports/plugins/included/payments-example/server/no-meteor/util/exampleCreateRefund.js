@@ -1,5 +1,3 @@
-import { ExampleApi } from "./exampleapi";
-
 /**
  * @name exampleCreateRefund
  * @method
@@ -10,15 +8,13 @@ import { ExampleApi } from "./exampleapi";
  * @return {Object} refund result
  * @private
  */
-export default function exampleCreateRefund(context, payment, amount) {
-  const { transactionId } = payment;
-  const response = ExampleApi.refund({
-    transactionId,
-    amount
+export default async function exampleCreateRefund(context, payment, amount) {
+  const { currencyCode, transactionId } = payment;
+  await context.collections.ExampleIOUPaymentRefunds.insertOne({
+    amount,
+    createdAt: new Date(),
+    currencyCode,
+    transactionId
   });
-  const results = {
-    saved: true,
-    response
-  };
-  return results;
+  return { saved: true };
 }
