@@ -3,7 +3,7 @@ import getVariants from "/imports/plugins/core/catalog/server/no-meteor/utils/ge
 /**
  *
  * @method getVariantInventoryInStockQuantity
- * @summary Get the number of product variants in stock. This calculates based off of `inventoryQuantity`.
+ * @summary Get the number of product variants in stock. This calculates based off of `inventoryInStock`.
  * This function can take only a top level variant object and a mongo collection as params to return the product
  * variant quantity. This method can also take a top level variant, mongo collection and an array of
  * product variant options as params to skip the db lookup and return the variant quantity
@@ -22,7 +22,7 @@ export default async function getVariantInventoryInStockQuantity(variant, collec
   }
 
   if (options && options.length) {
-    return options.reduce((sum, option) => sum + option.inventoryQuantity || 0, 0);
+    return options.reduce((sum, option) => sum + option.inventoryInStock || 0, 0);
   }
-  return variant.inventoryQuantity || 0;
+  return variant.inventoryInStock || 0;
 }

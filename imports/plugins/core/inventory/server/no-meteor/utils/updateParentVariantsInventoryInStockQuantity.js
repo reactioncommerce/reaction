@@ -38,7 +38,7 @@ export default async function updateParentVariantsInventoryInStockQuantity(item,
       },
       {
         $set: {
-          inventoryQuantity: variantInventoryInStockQuantity
+          inventoryInStock: variantInventoryInStockQuantity
         }
       }
     );
@@ -53,7 +53,7 @@ export default async function updateParentVariantsInventoryInStockQuantity(item,
     },
     {
       $set: {
-        inventoryQuantity: productInventoryInStockQuantity
+        inventoryInStock: productInventoryInStockQuantity
       }
     }
   );

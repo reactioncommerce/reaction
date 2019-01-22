@@ -254,7 +254,7 @@
       },
       "productVariant": {
         "addVariantOptions": "Přidat možností k tomu, aby \"Přidat do košíku\" Butto",
-        "inventoryQuantity": "Množství",
+        "inventoryInStock": "Množství",
         "title": "Označení",
         "price": "Cena",
         "optionTitle": "Volba",

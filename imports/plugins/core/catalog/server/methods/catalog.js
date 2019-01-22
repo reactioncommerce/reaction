@@ -54,7 +54,7 @@ function updateVariantProductField(variants, field, value) {
  */
 const toDenormalize = [
   "price",
-  "inventoryQuantity",
+  "inventoryInStock",
   "lowInventoryWarningThreshold",
   "inventoryPolicy",
   "inventoryManagement"
@@ -222,7 +222,7 @@ function copyMedia(newId, variantOldId, variantNewId) {
  * @param {String} id - product _id
  * @param {String} field - type of field. Could be:
  * "price",
- * "inventoryQuantity",
+ * "inventoryInStock",
  * "inventoryManagement",
  * "inventoryPolicy",
  * "lowInventoryWarningThreshold"
@@ -241,7 +241,7 @@ function denormalize(id, field) {
 
   switch (field) {
     case "inventoryPolicy":
-    case "inventoryQuantity":
+    case "inventoryInStock":
     case "inventoryManagement":
       Object.assign(update, {
         isSoldOut: Promise.await(isSoldOut(variants, rawCollections)),
@@ -279,10 +279,10 @@ function denormalize(id, field) {
 /**
  * flushQuantity
  * @private
- * @summary if variant `inventoryQuantity` not zero, function update it to
- * zero. This needed in case then option with it's own `inventoryQuantity`
+ * @summary if variant `inventoryInStock` not zero, function update it to
+ * zero. This needed in case then option with it's own `inventoryInStock`
  * creates to top-level variant. In that case top-level variant should display
- * sum of his options `inventoryQuantity` fields.
+ * sum of his options `inventoryInStock` fields.
  * @param {String} id - variant _id
  * @return {Number} - collection update results
  */
@@ -290,7 +290,7 @@ function flushQuantity(id) {
   const variant = Products.findOne(id);
   // if variant already have descendants, quantity should be 0, and we don't
   // need to do all next actions
-  if (variant.inventoryQuantity === 0) {
+  if (variant.inventoryInStock === 0) {
     return 1; // let them think that we have one successful operation here
   }
 
@@ -300,7 +300,7 @@ function flushQuantity(id) {
     },
     {
       $set: {
-        inventoryQuantity: 0
+        inventoryInStock: 0
       }
     },
     {
@@ -494,7 +494,7 @@ Meteor.methods({
       }
       delete clone.updatedAt;
       delete clone.createdAt;
-      delete clone.inventoryQuantity;
+      delete clone.inventoryInStock;
       delete clone.lowInventoryWarningThreshold;
 
       copyMedia(productId, oldId, clone._id);
@@ -942,7 +942,7 @@ Meteor.methods({
       throw new ReactionError("access-denied", "Access Denied");
     }
 
-    if (field === "inventoryQuantity" && value === "") {
+    if (field === "inventoryInStock" && value === "") {
       if (!Promise.await(hasChildVariant(_id, rawCollections))) {
         throw new ReactionError("invalid", "Inventory Quantity is required when no child variants");
       }
