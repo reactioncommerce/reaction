@@ -6,19 +6,7 @@ Migrations.add({
   up() {
     collections.Products.update(
       {
-        type: "simple"
-      },
-      {
-        $rename: { inventoryQuantity: "inventoryInStock" }
-      },
-      {
-        multi: true
-      }
-    );
-
-    collections.Products.update(
-      {
-        type: "variant"
+        type: { $in: ["simple", "variant"]
       },
       {
         $rename: { inventoryQuantity: "inventoryInStock" }
@@ -31,18 +19,7 @@ Migrations.add({
   down() {
     collections.Products.update(
       {
-        type: "simple"
-      },
-      {
-        $rename: { inventoryInStock: "inventoryQuantity" }
-      },
-      {
-        multi: true
-      }
-    );
-    collections.Products.update(
-      {
-        type: "variant"
+        type: { $in: ["simple", "variant"]
       },
       {
         $rename: { inventoryInStock: "inventoryQuantity" }
