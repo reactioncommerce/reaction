@@ -6,7 +6,7 @@ Migrations.add({
   up() {
     collections.Products.update(
       {
-        type: { $in: ["simple", "variant"]
+        type: { $in: ["simple", "variant"] }
       },
       {
         $rename: { inventoryQuantity: "inventoryInStock" }
@@ -19,7 +19,7 @@ Migrations.add({
   down() {
     collections.Products.update(
       {
-        type: { $in: ["simple", "variant"]
+        type: { $in: ["simple", "variant"] }
       },
       {
         $rename: { inventoryInStock: "inventoryQuantity" }
