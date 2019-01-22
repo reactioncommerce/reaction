@@ -546,7 +546,7 @@ export default async function placeOrder(context, input) {
   OrderSchema.validate(order);
   await Orders.insertOne(order);
 
-  appEvents.emit("afterOrderCreate", { createdBy: userId, order })
+  appEvents.emit("afterOrderCreate", { createdBy: userId, order });
 
   return {
     orders: [order],
