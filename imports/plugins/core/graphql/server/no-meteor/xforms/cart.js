@@ -67,10 +67,10 @@ function xformCartItem(context, catalogItems, products, cartItem) {
 
   return {
     ...cartItem,
-    currentQuantity: variantSourceProduct && variantSourceProduct.inventoryQuantity,
+    currentQuantity: variantSourceProduct && variantSourceProduct.inventoryInStock,
     imageURLs: media && media.URLs,
-    inventoryAvailableToSell: variantSourceProduct && variantSourceProduct.inventoryQuantity,
-    inventoryInStock: variantSourceProduct && variantSourceProduct.inventoryQuantity,
+    inventoryAvailableToSell: variantSourceProduct && variantSourceProduct.inventoryInStock,
+    inventoryInStock: variantSourceProduct && variantSourceProduct.inventoryInStock,
     isBackorder: variant.isBackorder || false,
     isLowQuantity: variant.isLowQuantity || false,
     isSoldOut: variant.isSoldOut || false,

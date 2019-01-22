@@ -21,7 +21,7 @@ export default function startup(context) {
     const orderIsApproved = !Array.isArray(order.payments) || order.payments.length === 0 ||
       !!order.payments.find((payment) => payment.status !== "created");
 
-    // If order is approved, the inventory has been taken away from both `inventoryQuantity` and `inventoryAvailableToSell`
+    // If order is approved, the inventory has been taken away from both `inventoryInStock` and `inventoryAvailableToSell`
     if (returnToStock && orderIsApproved) {
       // Run this Product update inline instead of using ordersInventoryAdjust because the collection hooks fail
       // in some instances which causes the order not to cancel
@@ -34,7 +34,7 @@ export default function startup(context) {
           {
             $inc: {
               inventoryAvailableToSell: +item.quantity,
-              inventoryQuantity: +item.quantity
+              inventoryInStock: +item.quantity
             }
           }, {
             returnOriginal: false
@@ -49,7 +49,7 @@ export default function startup(context) {
           {
             $inc: {
               inventoryAvailableToSell: +item.quantity,
-              inventoryQuantity: +item.quantity
+              inventoryInStock: +item.quantity
             }
           }
         );
@@ -64,7 +64,7 @@ export default function startup(context) {
       });
     }
 
-    // If order is not approved, the inventory hasn't been taken away from `inventoryQuantity`, but has been taken away from `inventoryAvailableToSell`
+    // If order is not approved, the inventory hasn't been taken away from `inventoryInStock`, but has been taken away from `inventoryAvailableToSell`
     if (!orderIsApproved) {
     // Run this Product update inline instead of using ordersInventoryAdjust because the collection hooks fail
     // in some instances which causes the order not to cancel
@@ -172,7 +172,7 @@ export default function startup(context) {
         },
         {
           $inc: {
-            inventoryQuantity: -item.quantity
+            inventoryInStock: -item.quantity
           }
         }, {
           returnOriginal: false
@@ -186,7 +186,7 @@ export default function startup(context) {
         },
         {
           $inc: {
-            inventoryQuantity: -item.quantity
+            inventoryInStock: -item.quantity
           }
         }
       );
@@ -204,15 +204,15 @@ export default function startup(context) {
   appEvents.on("afterVariantUpdate", async ({ _id, field }) => {
     const { collections } = context;
 
-    // If the updated field was `inventoryQuantity`, adjust `inventoryAvailableToSell` quantities
-    if (field === "inventoryQuantity") {
+    // If the updated field was `inventoryInStock`, adjust `inventoryAvailableToSell` quantities
+    if (field === "inventoryInStock") {
       const doc = await collections.Products.findOne({ _id });
 
       // Get reserved inventory - the inventory currently in an unprocessed order
       const reservedInventory = await getVariantInventoryNotAvailableToSellQuantity(doc, collections);
 
       // Compute `inventoryAvailableToSell` as the inventory in stock minus the reserved inventory
-      const computedInventoryAvailableToSell = doc.inventoryQuantity - reservedInventory;
+      const computedInventoryAvailableToSell = doc.inventoryInStock - reservedInventory;
 
       await collections.Products.updateOne(
         {
@@ -227,7 +227,7 @@ export default function startup(context) {
 
       // Update `inventoryAvailableToSell` on all parents of this variant / option
       await updateParentVariantsInventoryAvailableToSellQuantity(doc, collections);
-      // Update `inventoryQuantity` on all parents of this variant / option
+      // Update `inventoryInStock` on all parents of this variant / option
       await updateParentVariantsInventoryInStockQuantity(doc, collections);
 
       // Publish inventory to catalog

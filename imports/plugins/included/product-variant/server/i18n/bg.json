@@ -6,12 +6,12 @@
       "admin": {
         "helpText": {
           "compareAtPrice": "Оригинална цена или MSRP",
-          "optionInventoryQuantity": "Складова наличност",
+          "optionInventoryInStock": "Складова наличност",
           "optionTitle": "Показва се на страницата с подробности за продукта",
           "price": "Покупна цена",
           "title": "Показва се в кошницата, касата и поръчките",
           "variantBackorderToggle": "Обезщетението за резервно копие сега се контролира от опциите",
-          "variantInventoryQuantity": "Инвентарът на варианти сега се контролира от опциите"
+          "variantInventoryInStock": "Инвентарът на варианти сега се контролира от опциите"
         },
         "tooltip": {
           "validationError": "Грешка при валидацията"

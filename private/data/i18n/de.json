@@ -254,7 +254,7 @@
       },
       "productVariant": {
         "addVariantOptions": "Fügen Sie Optionen aktivieren \"In den Warenkorb\" butto",
-        "inventoryQuantity": "Menge",
+        "inventoryInStock": "Menge",
         "title": "Label",
         "price": "Preis",
         "optionTitle": "Option",

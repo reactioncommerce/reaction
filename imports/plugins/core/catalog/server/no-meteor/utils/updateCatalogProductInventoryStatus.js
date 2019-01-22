@@ -31,7 +31,7 @@ export default async function updateCatalogProductInventoryStatus(productId, col
 
   const modifier = {
     "product.inventoryAvailableToSell": product.inventoryAvailableToSell,
-    "product.inventoryInStock": product.inventoryQuantity,
+    "product.inventoryInStock": product.inventoryInStock,
     "product.isSoldOut": isSoldOut(variants),
     "product.isBackorder": isBackorder(variants),
     "product.isLowQuantity": isLowQuantity(variants)
@@ -80,14 +80,14 @@ export default async function updateCatalogProductInventoryStatus(productId, col
       modifier[`${baseKey}.variants.${topVariantIndex}.isLowQuantity`] = isLowQuantity(variantOptions);
       modifier[`${baseKey}.variants.${topVariantIndex}.isBackorder`] = isBackorder(variantOptions);
       modifier[`${baseKey}.variants.${topVariantIndex}.inventoryAvailableToSell`] = topVariantFromProductsCollection.inventoryAvailableToSell;
-      modifier[`${baseKey}.variants.${topVariantIndex}.inventoryInStock`] = topVariantFromProductsCollection.inventoryQuantity;
+      modifier[`${baseKey}.variants.${topVariantIndex}.inventoryInStock`] = topVariantFromProductsCollection.inventoryInStock;
 
       variantOptions.forEach((option, optionIndex) => {
         modifier[`${baseKey}.variants.${topVariantIndex}.options.${optionIndex}.isSoldOut`] = isSoldOut([option]);
         modifier[`${baseKey}.variants.${topVariantIndex}.options.${optionIndex}.isLowQuantity`] = isLowQuantity([option]);
         modifier[`${baseKey}.variants.${topVariantIndex}.options.${optionIndex}.isBackorder`] = isBackorder([option]);
         modifier[`${baseKey}.variants.${topVariantIndex}.options.${optionIndex}.inventoryAvailableToSell`] = option.inventoryAvailableToSell;
-        modifier[`${baseKey}.variants.${topVariantIndex}.options.${optionIndex}.inventoryInStock`] = option.inventoryQuantity;
+        modifier[`${baseKey}.variants.${topVariantIndex}.options.${optionIndex}.inventoryInStock`] = option.inventoryInStock;
       });
     } else {
       // Create a modifier for a top level variant only
@@ -95,7 +95,7 @@ export default async function updateCatalogProductInventoryStatus(productId, col
       modifier[`${baseKey}.variants.${topVariantIndex}.isLowQuantity`] = isLowQuantity([topVariantFromProductsCollection]);
       modifier[`${baseKey}.variants.${topVariantIndex}.isBackorder`] = isBackorder([topVariantFromProductsCollection]);
       modifier[`${baseKey}.variants.${topVariantIndex}.inventoryAvailableToSell`] = topVariantFromProductsCollection.inventoryAvailableToSell;
-      modifier[`${baseKey}.variants.${topVariantIndex}.inventoryInStock`] = topVariantFromProductsCollection.inventoryQuantity;
+      modifier[`${baseKey}.variants.${topVariantIndex}.inventoryInStock`] = topVariantFromProductsCollection.inventoryInStock;
     }
   });
 

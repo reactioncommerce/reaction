@@ -254,7 +254,7 @@
       },
       "productVariant": {
         "addVariantOptions": "Ajout d'options pour permettre 'Ajouter au panier' butto",
-        "inventoryQuantity": "Quantité",
+        "inventoryInStock": "Quantité",
         "title": "Balise",
         "price": "Prix",
         "optionTitle": "Option",
