@@ -4,6 +4,12 @@ import { Accounts as MeteorAccounts } from "meteor/accounts-base";
 import { Shops } from "/lib/collections";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
 
+export const ENROLL_URI_BASE = "account/enroll";
+
+MeteorAccounts.urls.enrollAccount = function (token) {
+  return Reaction.absoluteUrl(`${ENROLL_URI_BASE}/${token}`);
+};
+
 /**
  * @name getDataForEmail
  * @memberof Accounts/Methods

@@ -15,6 +15,7 @@ const wrapComponent = (Comp) => (
       callback: PropTypes.func,
       formMessages: PropTypes.object,
       isOpen: PropTypes.bool,
+      onCompleteRoute: PropTypes.string,
       type: PropTypes.string,
       uniqueId: PropTypes.string
     }
@@ -75,7 +76,7 @@ const wrapComponent = (Comp) => (
         } else {
           // Now that Meteor.users is verified, we should do the same with the Accounts collection
           Meteor.call("accounts/verifyAccount");
-          Router.go(`${Router.current().route.fullPath}/completed`);
+          Router.go(this.props.onCompleteRoute);
         }
       });
     }
