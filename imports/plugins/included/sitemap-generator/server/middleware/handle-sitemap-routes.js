@@ -6,7 +6,7 @@ import getSitemapXML from "../lib/get-sitemap-xml";
  * @summary Route handler/middleware for generated sitemap XML files
  * @param {Object} req - Node.js IncomingMessage object
  * @param {Object} res - Node.js ServerResponse object
- * @param {Function} next - Passes handling of request to next relevant middlewhere
+ * @param {Function} next - Passes handling of request to next relevant middleware
  * @returns {undefined} - Sends XML to response, or triggers 404
  */
 export default function handleSitemapRoutes(req, res, next) {
