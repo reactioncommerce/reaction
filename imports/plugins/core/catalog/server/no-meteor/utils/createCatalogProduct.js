@@ -27,8 +27,8 @@ export function xformVariant(variant, variantPriceInfo, shopCurrencyCode, varian
     createdAt: variant.createdAt || new Date(),
     height: variant.height,
     index: variant.index || 0,
-    inventoryAvailableToSell: variantInventory.inventoryAvailableToSell || 0,
-    inventoryInStock: variantInventory.inventoryInStock || 0,
+    inventoryAvailableToSell: variantInventory.inventoryAvailableToSell,
+    inventoryInStock: variantInventory.inventoryInStock,
     inventoryManagement: !!variant.inventoryManagement,
     inventoryPolicy: !!variant.inventoryPolicy,
     isBackorder: variantInventory.isBackorder,
@@ -107,8 +107,8 @@ export async function xformProduct({ collections, product, shop, variants }) {
         priceInfo = getPriceRange(optionPrices, shopCurrencyInfo);
         variantInventory = {
           canBackorder: canBackorder(variantOptions),
-          inventoryAvailableToSell: variant.inventoryAvailableToSell || 0,
-          inventoryInStock: variant.inventoryInStock || 0,
+          inventoryAvailableToSell: variant.inventoryAvailableToSell,
+          inventoryInStock: variant.inventoryInStock,
           isBackorder: isBackorder(variantOptions),
           isLowQuantity: isLowQuantity(variantOptions),
           isSoldOut: isSoldOut(variantOptions)
@@ -117,8 +117,8 @@ export async function xformProduct({ collections, product, shop, variants }) {
         priceInfo = getPriceRange([variant.price], shopCurrencyInfo);
         variantInventory = {
           canBackorder: canBackorder([variant]),
-          inventoryAvailableToSell: variant.inventoryAvailableToSell || 0,
-          inventoryInStock: variant.inventoryInStock || 0,
+          inventoryAvailableToSell: variant.inventoryAvailableToSell,
+          inventoryInStock: variant.inventoryInStock,
           isBackorder: isBackorder([variant]),
           isLowQuantity: isLowQuantity([variant]),
           isSoldOut: isSoldOut([variant])
@@ -156,8 +156,8 @@ export async function xformProduct({ collections, product, shop, variants }) {
     createdAt: product.createdAt || new Date(),
     description: product.description,
     height: product.height,
-    inventoryAvailableToSell: product.inventoryAvailableToSell || 0,
-    inventoryInStock: product.inventoryInStock || 0,
+    inventoryAvailableToSell: product.inventoryAvailableToSell,
+    inventoryInStock: product.inventoryInStock,
     isBackorder: isBackorder(variants),
     isDeleted: !!product.isDeleted,
     isLowQuantity: isLowQuantity(variants),
