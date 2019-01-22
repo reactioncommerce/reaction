@@ -19,6 +19,13 @@ jobs:
     <<: *defaults
     steps:
       - checkout
+      - add_ssh_keys:
+          fingerprints:
+            - "5c:d7:27:76:d6:6b:f3:b2:db:04:7f:a8:0e:bd:8b:a6"
+      - run:
+          name: Checkout git submodules
+          command: |
+            git submodule update --init --recursive
       - setup_remote_docker:
           docker_layer_caching: true
       - restore_cache:
@@ -82,6 +89,13 @@ jobs:
     <<: *defaults
     steps:
       - checkout
+      - add_ssh_keys:
+          fingerprints:
+            - "5c:d7:27:76:d6:6b:f3:b2:db:04:7f:a8:0e:bd:8b:a6"
+      - run:
+          name: Checkout git submodules
+          command: |
+            git submodule update --init --recursive
       - setup_remote_docker:
           docker_layer_caching: true
       - attach_workspace:
@@ -159,6 +173,36 @@ jobs:
           name: Deploy new task definition and update service in ECS
           command: |
             .circleci/bin/ecs-deploy-feature-branch.sh
+          no_output_timeout: 30m
+
+  deploy-to-ecs-ems-develop-branch:
+    <<: *defaults
+    steps:
+      - checkout
+      - run:
+          name: Deploy new task definition and update service in ECS
+          command: |
+            .circleci/bin/ecs-deploy-ems-develop-branch.sh
+          no_output_timeout: 30m
+
+  deploy-to-ecs-bobs-develop-branch:
+    <<: *defaults
+    steps:
+      - checkout
+      - run:
+          name: Deploy new task definition and update service in ECS
+          command: |
+            .circleci/bin/ecs-deploy-bobs-develop-branch.sh
+          no_output_timeout: 30m
+
+  deploy-to-kube-bobs-develop-branch:
+    <<: *defaults
+    steps:
+      - checkout
+      - run:
+          name: Update helm chart for reaction-core service in kubernetes
+          command: |
+            .circleci/bin/kube-deploy-bobs-develop-branch.sh
           no_output_timeout: 30m
 
   deploy-docs:
@@ -355,12 +399,24 @@ workflows:
           filters:
             branches:
               only: /^release-2.*/
-      # - deploy-to-ecs-feature-branch:
-      #     requires:
-      #       - docker-push
-      #     filters:
-      #       branches:
-      #         only: /^feat.*/
+#      - deploy-to-ecs-feature-branch:
+#          requires:
+#            - docker-push
+#          filters:
+#            branches:
+#              only: /^feat.*/
+#      - deploy-to-ecs-ems-develop-branch:
+#          requires:
+#            - docker-push
+#          filters:
+#            branches:
+#              only: /^develop.*/
+#      - deploy-to-ecs-bobs-develop-branch:
+#          requires:
+#            - docker-push
+#          filters:
+#            branches:
+#              only: /^develop.*/
       - deploy-docs:
           requires:
             - test-unit
@@ -373,3 +429,9 @@ workflows:
           context: reaction-validation
           requires:
             - build
+      - deploy-to-kube-bobs-develop-branch:
+          requires:
+            - docker-push
+          filters:
+            branches:
+              only: /^develop.*/

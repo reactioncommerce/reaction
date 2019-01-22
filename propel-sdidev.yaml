@@ -1,8 +1,8 @@
 services:
-- name: reaction-core
-  root_domain: staging.reactioncommerce.com
+- name: reaction-core-sdidev
+  root_domain: sdldev.reactioncommerce.com
   dns_name: reaction-core
-  desired_task_count: 2
+  desired_task_count: 1
   min_task_count: 0
   max_task_count: 2
   min_healthy_percent: 100
@@ -11,7 +11,7 @@ services:
   alb_listener_path: /
   alb_health_check_path: /health
   task-definition:
-    name: staging-core
+    name: dev-core-sdidev
     containers:
     - name: core
       cpu: 500
@@ -19,9 +19,10 @@ services:
       port_mappings:
       - container_port: 3000
         host_port: 3000
-      image: sportsdirect/reaction
-      image_tag: develop
+      image: reactioncommerce/reaction
+      image_tag: release-2.0.0-rc.8
       env_params:
+      - name: CERTIFICATE_ARN
       - name: REACTION_AUTH
       - name: REACTION_EMAIL
       - name: REACTION_USER
@@ -30,4 +31,3 @@ services:
       - name: HYDRA_ADMIN_URL
       - name: HYDRA_OAUTH2_INTROSPECT_URL
       - name: SKIP_FIXTURES
-      - name: CERTIFICATE_ARN

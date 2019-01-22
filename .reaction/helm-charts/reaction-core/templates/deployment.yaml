@@ -1,0 +1,94 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: "{{ .Release.Name }}"
+  labels:
+    app: "{{ .Release.Name }}"
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
+    release: "{{ .Release.Name }}"
+    heritage: "{{ .Release.Service }}"
+spec:
+  replicas: {{.Values.replicas}}
+  template:
+    metadata:
+      labels:
+        app: "{{ .Release.Name }}"
+    spec:
+      {{- if .Values.scheduling.affinity }}
+      {{- if .Values.scheduling.affinity.node }}
+      {{- if .Values.scheduling.affinity.node.labels }}
+      affinity:
+        nodeAffinity:
+          {{ .Values.scheduling.affinity.node.type }}:
+            nodeSelectorTerms:
+            - matchExpressions:
+                {{- range .Values.scheduling.affinity.node.labels }}
+                - key: {{ .key }}
+                  operator: {{ .operator }}
+                  values:
+                  {{- range .values }}
+                  - {{ . }}
+                  {{- end }}
+                {{- end }}
+      {{- end }}
+      {{- end }}
+      {{- end }}
+      containers:
+      - name: "{{ .Release.Name }}"
+        image: {{ .Values.image }}:{{ .Values.imageTag }}
+        imagePullPolicy: {{ default "" .Values.imagePullPolicy | quote }}
+        env:
+        # all custom environment variables
+        {{- range .Values.app.envVars }}
+        - name: {{ .key }}
+          value: {{ .value | quote }}
+        {{- end }}
+
+
+        ports:
+        - name: api
+          containerPort: {{ .Values.service.apiPort }}
+
+        # resource requests/limits
+        resources:
+          requests:
+            memory: {{ .Values.resources.requests.memory }}
+            cpu: {{ .Values.resources.requests.cpu }}
+          limits:
+            memory: {{ .Values.resources.limits.memory }}
+            cpu: {{ .Values.resources.limits.cpu }}
+
+        # health checks
+#        readinessProbe:
+#          httpGet:
+#            path: /health
+#            port: {{ .Values.service.apiPort }}
+#          initialDelaySeconds: 15
+#          timeoutSeconds: 2
+#          periodSeconds: 15
+#          successThreshold: 2
+#          failureThreshold: 2
+
+#        livenessProbe:
+#          httpGet:
+#            path: /health
+#            port: {{ .Values.service.apiPort }}
+#          initialDelaySeconds: 90
+#          timeoutSeconds: 2
+#          periodSeconds: 15
+#          failureThreshold: 2
+
+      {{- if .Values.scheduling.tolerations }}
+      tolerations:
+      {{- range .Values.scheduling.tolerations }}
+      - key: {{ .key }}
+        value: {{ .value }}
+        operator: Equal
+        effect: {{ .effect }}
+      {{- end }}
+      {{- end }}
+
+      {{- if .Values.imagePullSecret }}
+      imagePullSecrets:
+        - name: "{{ .Values.imagePullSecret }}"
+      {{- end }}
