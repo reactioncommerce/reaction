@@ -112,14 +112,14 @@ class TagForm extends Component {
       shopId,
       heroMediaUrl: data.heroMediaUrl,
       metafields: [
-        { key: "keywords", value: data.keywords || "", namespace: "matatag" },
-        { key: "description", value: data.description || "", namespace: "matatag" },
-        { key: "og:title", value: data["og:title"] || "", namespace: "matatag" },
-        { key: "og:description", value: data["og:description"] || "", namespace: "matatag" },
-        { key: "og:url", value: data["og:url"] || "", namespace: "matatag" },
-        { key: "og:image", value: data["og:image"] || "", namespace: "matatag" },
-        { key: "og:locale", value: data["og:locale"] || "", namespace: "matatag" },
-        { key: "fb:app_id", value: data["fb:app_id"] || "", namespace: "matatag" }
+        { key: "keywords", value: data.keywords || "", namespace: "metatag" },
+        { key: "description", value: data.description || "", namespace: "metatag" },
+        { key: "og:title", value: data["og:title"] || "", namespace: "metatag" },
+        { key: "og:description", value: data["og:description"] || "", namespace: "metatag" },
+        { key: "og:url", value: data["og:url"] || "", namespace: "metatag" },
+        { key: "og:image", value: data["og:image"] || "", namespace: "metatag" },
+        { key: "og:locale", value: data["og:locale"] || "", namespace: "metatag" },
+        { key: "fb:app_id", value: data["fb:app_id"] || "", namespace: "metatag" }
       ]
     };
 
