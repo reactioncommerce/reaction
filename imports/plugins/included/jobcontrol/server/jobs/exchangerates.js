@@ -1,7 +1,7 @@
-import Hooks from "@reactioncommerce/hooks";
 import Logger from "@reactioncommerce/logger";
 import { Job } from "/imports/plugins/core/job-collection/lib";
 import { Jobs } from "/lib/collections";
+import appEvents from "/imports/node-app/core/util/appEvents";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
 import fetchCurrencyRate from "/imports/plugins/core/core/server/util/fetchCurrencyRate";
 import flushCurrencyRate from "/imports/plugins/core/core/server/util/flushCurrencyRate";
@@ -13,7 +13,7 @@ import flushCurrencyRate from "/imports/plugins/core/core/server/util/flushCurre
 export function setupFetchFlushCurrencyHooks() {
   // While we don't necessarily need to wait for anything to add a job
   // in this case we need to have packages loaded so we can check for the OER API key
-  Hooks.Events.add("afterCoreInit", () => {
+  appEvents.on("afterCoreInit", () => {
     const settings = Reaction.getShopSettings();
     const exchangeConfig = settings.openexchangerates || {};
 
@@ -48,7 +48,7 @@ export function setupFetchFlushCurrencyHooks() {
     }
   });
 
-  Hooks.Events.add("afterCoreInit", () => {
+  appEvents.on("afterCoreInit", () => {
     const settings = Reaction.getShopSettings();
     const exchangeConfig = settings.openexchangerates || {};
 

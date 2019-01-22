@@ -30,7 +30,7 @@ export async function insertMedia(fileRecord) {
   };
   const mediaRecordId = await MediaRecords.insert(doc);
 
-  appEvents.emit("afterMediaInsert", doc);
+  appEvents.emit("afterMediaInsert", { createdBy: Reaction.getUserId(), mediaRecord: doc });
 
   return mediaRecordId;
 }
@@ -57,7 +57,8 @@ export async function removeMedia(fileRecordId) {
   const success = (result === 1);
 
   if (success) {
-    appEvents.emit("afterMediaUpdate", MediaRecords.findOne({ _id: fileRecordId }));
+    const mediaRecord = MediaRecords.findOne({ _id: fileRecordId });
+    appEvents.emit("afterMediaUpdate", { createdBy: Reaction.getUserId(), mediaRecord });
   }
 
   return success;
@@ -104,7 +105,8 @@ export function updateMediaPriorities(sortedMediaIDs) {
       }
     });
 
-    appEvents.emit("afterMediaUpdate", MediaRecords.findOne({ _id }));
+    const mediaRecord = MediaRecords.findOne({ _id });
+    appEvents.emit("afterMediaUpdate", { createdBy: Reaction.getUserId(), mediaRecord });
   });
 
   return true;

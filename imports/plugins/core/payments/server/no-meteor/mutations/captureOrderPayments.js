@@ -20,7 +20,8 @@ const inputSchema = new SimpleSchema({
  */
 export default async function captureOrderPayments(context, input = {}) {
   inputSchema.validate(input);
-  const { Orders } = context.collections;
+  const { appEvents, collections, userId } = context;
+  const { Orders } = collections;
   const { orderId, paymentIds, shopId } = input;
 
   if (!context.userHasPermission(["orders"], shopId)) {
@@ -65,6 +66,7 @@ export default async function captureOrderPayments(context, input = {}) {
   const captureResults = await Promise.all(capturePromises);
 
   const updatedPayments = order.payments;
+  const capturedPayments = [];
   captureResults.forEach((captureResult) => {
     const payment = updatedPayments.find((pmt) => pmt._id === captureResult.paymentId);
 
@@ -72,6 +74,7 @@ export default async function captureOrderPayments(context, input = {}) {
       payment.mode = "captured";
       payment.status = "completed";
       payment.metadata = { ...(payment.metadata || {}), ...(captureResult.metadata || {}) };
+      capturedPayments.push(payment);
     } else {
       payment.status = "error";
       payment.captureErrorCode = captureResult.errorCode;
@@ -87,6 +90,19 @@ export default async function captureOrderPayments(context, input = {}) {
       updatedAt: new Date()
     }
   }, { returnOriginal: false });
+
+  await appEvents.emit("afterOrderUpdate", {
+    order: updatedOrder,
+    updatedBy: userId
+  });
+
+  capturedPayments.forEach((payment) => {
+    appEvents.emit("afterOrderPaymentCapture", {
+      capturedBy: userId,
+      order: updatedOrder,
+      payment
+    });
+  });
 
   return { order: updatedOrder };
 }

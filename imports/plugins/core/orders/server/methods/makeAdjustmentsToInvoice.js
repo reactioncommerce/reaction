@@ -1,5 +1,6 @@
 import { check } from "meteor/check";
 import { Orders } from "/lib/collections";
+import appEvents from "/imports/node-app/core/util/appEvents";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
 import ReactionError from "@reactioncommerce/reaction-error";
 
@@ -20,7 +21,7 @@ export default function makeAdjustmentsToInvoice(order) {
 
   this.unblock();
 
-  return Orders.update(
+  const result = Orders.update(
     {
       "_id": order._id,
       "shipping.shopId": Reaction.getShopId(),
@@ -32,4 +33,16 @@ export default function makeAdjustmentsToInvoice(order) {
       }
     }
   );
+
+  if (result !== 1) {
+    throw new ReactionError("server-error", "Unable to update order");
+  }
+
+  const updatedOrder = Orders.findOne({ _id: order._id });
+  Promise.await(appEvents.emit("afterOrderUpdate", {
+    order: updatedOrder,
+    updatedBy: Reaction.getUserId()
+  }));
+
+  return result;
 }

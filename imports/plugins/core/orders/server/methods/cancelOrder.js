@@ -22,7 +22,9 @@ export default function cancelOrder(order, returnToStock) {
   check(order, Object);
   check(returnToStock, Boolean);
 
-  if (!Reaction.hasPermission("orders", Reaction.getUserId(), order.shopId)) {
+  const authUserId = Reaction.getUserId();
+
+  if (!Reaction.hasPermission("orders", authUserId, order.shopId)) {
     throw new ReactionError("access-denied", "Access Denied");
   }
 
@@ -71,7 +73,18 @@ export default function cancelOrder(order, returnToStock) {
     }
   });
 
-  Promise.await(appEvents.emit("afterOrderCancel", { order, returnToStock }));
+  const updatedOrder = Orders.findOne({ _id: order._id });
+
+  Promise.await(appEvents.emit("afterOrderUpdate", {
+    order: updatedOrder,
+    updatedBy: authUserId
+  }));
+
+  Promise.await(appEvents.emit("afterOrderCancel", {
+    cancelledBy: authUserId,
+    order: updatedOrder,
+    returnToStock
+  }));
 
   // send notification to user
   const { accountId } = order;

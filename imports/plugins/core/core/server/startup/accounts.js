@@ -1,12 +1,12 @@
 import _ from "lodash";
-import Hooks from "@reactioncommerce/hooks";
 import Logger from "@reactioncommerce/logger";
 import Random from "@reactioncommerce/random";
 import { Meteor } from "meteor/meteor";
-import ReactionError from "@reactioncommerce/reaction-error";
 import { Accounts } from "meteor/accounts-base";
 import * as Collections from "/lib/collections";
+import appEvents from "/imports/node-app/core/util/appEvents";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
+import ReactionError from "@reactioncommerce/reaction-error";
 import sendWelcomeEmail from "/imports/plugins/core/accounts/server/util/sendWelcomeEmail";
 
 /**
@@ -158,18 +158,21 @@ export default function startup() {
       const account = Object.assign({ shopId }, user, additionals);
       account.userId = user._id;
       Collections.Accounts.insert(account);
-      Hooks.Events.run("afterAccountsInsert", account.userId, user._id);
 
-      const userDetails = Collections.Accounts.findOne({ _id: user._id });
+      const insertedAccount = Collections.Accounts.findOne({ userId: user._id });
+      Promise.await(appEvents.emit("afterAccountCreate", {
+        account: insertedAccount,
+        createdBy: user._id
+      }));
 
       // send a welcome email to new users,
       // but skip the first default admin user and anonymous users
       // (default admins already get a verification email)
-      if (userDetails.emails && userDetails.emails.length > 0
-        && (!(Meteor.users.find().count() === 0) && !userDetails.profile.invited)) {
+      if (insertedAccount.emails && insertedAccount.emails.length > 0
+        && (!(Meteor.users.find().count() === 0) && !insertedAccount.profile.invited)) {
         const token = Random.secret();
         sendWelcomeEmail(shopId, user._id, token);
-        const defaultEmail = userDetails.emails.find((email) => email.provides === "default");
+        const defaultEmail = insertedAccount.emails.find((email) => email.provides === "default");
         const when = new Date();
         const tokenObj = {
           address: defaultEmail.address,
@@ -182,22 +185,15 @@ export default function startup() {
       // assign default user roles
       user.roles = roles;
 
-      // run onCreateUser hooks
-      // (the user object must be returned by all callbacks)
-      const userDoc = Hooks.Events.run("onCreateUser", user, options);
-      return userDoc;
+      return user;
     }
   });
 
   /**
    * Accounts.onLogin event
-   * @param {Object} opts - user account creation options
+   * @param {Object} options - user account creation options
    */
-  Accounts.onLogin((opts) => {
-    // run onLogin hooks
-    // (the options object must be returned by all callbacks)
-    const options = Hooks.Events.run("onLogin", opts);
-
+  Accounts.onLogin((options) => {
     // The first time an "anonymous" user logs in for real, remove their "anonymous" role.
     // Anonymous users don't have profile access or ability to see order history, etc.
     if (options.type !== "anonymous" && options.type !== "resume") {

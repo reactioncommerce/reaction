@@ -1,6 +1,6 @@
-import Hooks from "@reactioncommerce/hooks";
 import Logger from "@reactioncommerce/logger";
 import { Cart, Jobs } from "/lib/collections";
+import appEvents from "/imports/node-app/core/util/appEvents";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
 import { Job } from "/imports/plugins/core/job-collection/lib";
 import moment from "moment";
@@ -10,7 +10,7 @@ import moment from "moment";
  * @returns {undefined}
  */
 export function setupStaleCartHook() {
-  Hooks.Events.add("afterCoreInit", () => {
+  appEvents.on("afterCoreInit", () => {
     Logger.debug("Adding Job removeStaleCart and Accounts to jobControl");
     const settings = Reaction.getShopSettings();
     if (settings.cart) {

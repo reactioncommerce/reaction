@@ -1,8 +1,7 @@
-import Hooks from "@reactioncommerce/hooks";
 import { check } from "meteor/check";
 import ReactionError from "@reactioncommerce/reaction-error";
-import appEvents from "/imports/node-app/core/util/appEvents";
 import { Orders } from "/lib/collections";
+import appEvents from "/imports/node-app/core/util/appEvents";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
 
 /**
@@ -12,15 +11,16 @@ import Reaction from "/imports/plugins/core/core/server/Reaction";
  * @summary Approve payment and apply any adjustments
  * @param {String} orderId - The order ID
  * @param {String} paymentId - The payment ID
- * @return {undefined}
+ * @return {Object} The updated order document
  */
 export default function approvePayment(orderId, paymentId) {
   check(orderId, String);
   check(paymentId, String);
 
   const shopId = Reaction.getShopId();
+  const authUserId = Reaction.getUserId();
 
-  if (!Reaction.hasPermission("orders", Reaction.getUserId(), shopId)) {
+  if (!Reaction.hasPermission("orders", authUserId, shopId)) {
     throw new ReactionError("access-denied", "Access Denied");
   }
 
@@ -45,8 +45,14 @@ export default function approvePayment(orderId, paymentId) {
   });
 
   const updatedOrder = Orders.findOne({ _id: orderId });
-  Promise.await(appEvents.emit("afterOrderApprovePayment", updatedOrder));
+  Promise.await(appEvents.emit("afterOrderUpdate", {
+    order: updatedOrder,
+    updatedBy: authUserId
+  }));
+  Promise.await(appEvents.emit("afterOrderApprovePayment", {
+    approvedBy: authUserId,
+    order: updatedOrder
+  }));
 
-  // Update search record
-  Hooks.Events.run("afterUpdateOrderUpdateSearchRecord", updatedOrder);
+  return updatedOrder;
 }

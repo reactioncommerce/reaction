@@ -1,5 +1,5 @@
-import Hooks from "@reactioncommerce/hooks";
 import Logger from "@reactioncommerce/logger";
+import appEvents from "/imports/node-app/core/util/appEvents";
 import { Job } from "/imports/plugins/core/job-collection/lib";
 import { Jobs } from "/lib/collections";
 
@@ -9,8 +9,13 @@ async function lazyLoadMoment() {
   moment = await import("moment").default;
 }
 
+/**
+ * @summary Adds a "jobServerStart" event consumer, which registers
+ *   a job to remove stale jobs.
+ * @returns {undefined}
+ */
 export function addCleanupJobControlHook() {
-  Hooks.Events.add("onJobServerStart", () => {
+  appEvents.on("jobServerStart", () => {
     Logger.debug("Adding Job jobControl/removeStaleJobs to JobControl");
 
     new Job(Jobs, "jobControl/removeStaleJobs", {})
