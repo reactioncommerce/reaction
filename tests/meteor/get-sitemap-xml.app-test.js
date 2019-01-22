@@ -1,7 +1,7 @@
 import Random from "@reactioncommerce/random";
 import { expect } from "meteor/practicalmeteor:chai";
-import { Sitemaps } from "../../lib/collections/sitemaps";
-import getSitemapXML from "./get-sitemap-xml";
+import { Sitemaps } from "/imports/plugins/included/sitemap-generator/server/lib/collections/sitemaps";
+import getSitemapXML from "/imports/plugins/included/sitemap-generator/server/lib/get-sitemap-xml";
 
 describe("getSitemapXML", () => {
   it("should return an empty string if no sitemap by handle for given shop is found", () => {

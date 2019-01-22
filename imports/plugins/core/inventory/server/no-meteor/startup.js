@@ -106,7 +106,7 @@ export default function startup(context) {
     }
   });
 
-  appEvents.on("afterOrderCreate", async (order) => {
+  appEvents.on("afterOrderCreate", async ({ order }) => {
     const { collections } = context;
     const orderItems = order.shipping.reduce((list, group) => [...list, ...group.items], []);
 
@@ -151,7 +151,7 @@ export default function startup(context) {
     });
   });
 
-  appEvents.on("afterOrderApprovePayment", async (order) => {
+  appEvents.on("afterOrderApprovePayment", async ({ order }) => {
     const { collections } = context;
 
     // We only decrease the inventory quantity after the final payment is approved

@@ -24,7 +24,7 @@ const inputSchema = new SimpleSchema({
 export default async function setEmailOnAnonymousCart(context, input) {
   inputSchema.validate(input || {});
 
-  const { appEvents, collections } = context;
+  const { appEvents, collections, userId } = context;
   const { Cart } = collections;
   const { cartId, email, token } = input;
 
@@ -38,7 +38,10 @@ export default async function setEmailOnAnonymousCart(context, input) {
 
   const updatedCart = await Cart.findOne({ _id: cartId });
 
-  await appEvents.emit("afterCartUpdate", updatedCart);
+  await appEvents.emit("afterCartUpdate", {
+    cart: updatedCart,
+    updatedBy: userId
+  });
 
   return {
     cart: updatedCart

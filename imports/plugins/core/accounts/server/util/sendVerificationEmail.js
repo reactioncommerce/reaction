@@ -6,20 +6,25 @@ import { Accounts } from "meteor/accounts-base";
 import { SSR } from "meteor/meteorhacks:ssr";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
 import ReactionError from "@reactioncommerce/reaction-error";
-import Core from "./core";
-import Email from "./Email";
 
 /**
  * @method sendVerificationEmail
- * @memberof Core
  * @summary Send an email with a link the user can use verify their email address.
- * @param {String} userId - The id of the user to send email to.
- * @param {String} [email] Optional. Address to send the email to.
+ * @param {Object} input Input options
+ * @param {String} input.userId - The id of the user to send email to.
+ * @param {String} [input.email] Optional. Address to send the email to.
  *                 This address must be in the user's emails list.
  *                 Defaults to the first unverified email in the list.
+ * @param {String} [input.bodyTemplate] Template name for rendering the email body
+ * @param {String} [input.subjectTemplate] Template name for rendering the email subject
  * @return {Job} - returns a sendEmail Job instance
  */
-export default async function sendVerificationEmail(userId, email) {
+export default async function sendVerificationEmail({
+  bodyTemplate = "accounts/verifyEmail",
+  email,
+  subjectTemplate = "accounts/verifyEmail/subject",
+  userId
+}) {
   // Make sure the user exists, and email is one of their addresses.
   const user = Meteor.users.findOne(userId);
 
@@ -60,7 +65,7 @@ export default async function sendVerificationEmail(userId, email) {
     }
   });
 
-  const shopName = Core.getShopName();
+  const shopName = Reaction.getShopName();
   const url = Accounts.urls.verifyEmail(token);
   const copyrightDate = new Date().getFullYear();
 
@@ -96,7 +101,7 @@ export default async function sendVerificationEmail(userId, email) {
     userEmailAddress: address
   };
 
-  if (!Email.getMailUrl()) {
+  if (!Reaction.Email.getMailUrl()) {
     Logger.warn(`
 
   ***************************************************
@@ -112,16 +117,13 @@ export default async function sendVerificationEmail(userId, email) {
     `);
   }
 
-  const tpl = "accounts/verifyEmail";
-  const subject = "accounts/verifyEmail/subject";
+  SSR.compileTemplate(bodyTemplate, Reaction.Email.getTemplate(bodyTemplate));
+  SSR.compileTemplate(subjectTemplate, Reaction.Email.getSubject(bodyTemplate));
 
-  SSR.compileTemplate(tpl, Email.getTemplate(tpl));
-  SSR.compileTemplate(subject, Email.getSubject(tpl));
-
-  return Email.send({
+  return Reaction.Email.send({
     to: address,
-    from: Core.getShopEmail(),
-    subject: SSR.render(subject, dataForEmail),
-    html: SSR.render(tpl, dataForEmail)
+    from: Reaction.getShopEmail(),
+    subject: SSR.render(subjectTemplate, dataForEmail),
+    html: SSR.render(bodyTemplate, dataForEmail)
   });
 }

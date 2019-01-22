@@ -45,7 +45,7 @@ export default async function setShippingAddressOnCart(context, input) {
 
   if (!didModify) return { cart };
 
-  const { appEvents, collections } = context;
+  const { appEvents, collections, userId } = context;
   const { Cart } = collections;
 
   const updatedAt = new Date();
@@ -59,7 +59,10 @@ export default async function setShippingAddressOnCart(context, input) {
 
   const updatedCart = { ...cart, shipping: updatedFulfillmentGroups, updatedAt };
 
-  await appEvents.emit("afterCartUpdate", updatedCart);
+  await appEvents.emit("afterCartUpdate", {
+    cart: updatedCart,
+    updatedBy: userId
+  });
 
   return { cart: updatedCart };
 }

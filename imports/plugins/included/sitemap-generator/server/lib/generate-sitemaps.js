@@ -1,10 +1,10 @@
 import { Meteor } from "meteor/meteor";
-import Hooks from "@reactioncommerce/hooks";
 import Logger from "@reactioncommerce/logger";
 import { Products, Shops, Tags } from "/lib/collections";
 import collections from "/imports/collections/rawCollections";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
 import createNotification from "/imports/plugins/included/notifications/server/no-meteor/createNotification";
+import getGraphQLContextInMeteorMethod from "/imports/plugins/core/graphql/server/getGraphQLContextInMeteorMethod";
 import { Sitemaps } from "../../lib/collections/sitemaps";
 
 const DEFAULT_URLS_PER_SITEMAP = 1000;
@@ -68,12 +68,16 @@ function generateSitemapsForShop(shopId, urlsPerSitemap) {
 
   // Generate sitemaps for basic pages
   // Allow custom shops to add arbitrary URLs to the sitemap
-  const pageSitemapItems = Hooks.Events.run("onGenerateSitemap", [
+  const context = Promise.await(getGraphQLContextInMeteorMethod(null));
+  const customFuncs = context.getFunctionsOfType("getPageSitemapItems");
+  const customPageItemResults = Promise.await(Promise.all(customFuncs.map((customFunc) => customFunc())));
+  const pageSitemapItems = customPageItemResults.reduce((list, customItems) => list.concat(customItems), [
     {
       url: "BASE_URL",
       lastModDate: new Date() // Always assume homepage has updated each time generation runs
     }
   ]);
+
   const pageSitemaps = rebuildPaginatedSitemaps(shopId, {
     typeHandle: "pages",
     items: pageSitemapItems,

@@ -1,6 +1,6 @@
-import Hooks from "@reactioncommerce/hooks";
 import { check, Match } from "meteor/check";
 import { Accounts, Shops } from "/lib/collections";
+import appEvents from "/imports/node-app/core/util/appEvents";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
 import ReactionError from "@reactioncommerce/reaction-error";
 
@@ -36,10 +36,13 @@ export default function setProfileCurrency(currencyName, accountId) {
   }
 
   Accounts.update({ userId }, { $set: { "profile.currency": currencyName } });
-  Hooks.Events.run("afterAccountsUpdate", userId, {
-    accountId: account._id,
-    updatedFields: ["currency"]
-  });
 
-  return Accounts.findOne({ userId });
+  const updatedAccount = Accounts.findOne({ userId });
+  Promise.await(appEvents.emit("afterAccountUpdate", {
+    account: updatedAccount,
+    updatedBy: currentUserId,
+    updatedFields: ["profile.currency"]
+  }));
+
+  return updatedAccount;
 }

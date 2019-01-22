@@ -63,7 +63,10 @@ async function updateAllCartsForVariant({ appEvents, Cart, pricing, variantId })
 
     // Emit "after update"
     const updatedCart = await Cart.findOne({ _id: cart._id });
-    appEvents.emit("afterCartUpdate", updatedCart, { emittedBy: AFTER_CATALOG_UPDATE_EMITTED_BY_NAME });
+    appEvents.emit("afterCartUpdate", {
+      cart: updatedCart,
+      updatedBy: null
+    }, { emittedBy: AFTER_CATALOG_UPDATE_EMITTED_BY_NAME });
   }));
 
   return null;
@@ -80,7 +83,7 @@ export default function startup(context) {
   const { Cart } = collections;
 
   // When an order is created, delete the source cart
-  appEvents.on("afterOrderCreate", async (order) => {
+  appEvents.on("afterOrderCreate", async ({ order }) => {
     const { cartId } = order;
     if (cartId) {
       const { result } = await Cart.deleteOne({ _id: cartId });
@@ -92,7 +95,7 @@ export default function startup(context) {
 
   // When a variant's price changes, change the `price` and `subtotal` fields of all CartItems for that variant.
   // When a variant's compare-at price changes, change the `compareAtPrice` field of all CartItems for that variant.
-  appEvents.on("afterPublishProductToCatalog", async (product, catalogProduct) => {
+  appEvents.on("afterPublishProductToCatalog", async ({ catalogProduct }) => {
     const { variants } = catalogProduct;
 
     // Build a map of variant IDs to their potentially-changed prices
