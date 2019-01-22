@@ -13,7 +13,6 @@ import {
   customPublishedProductVariantFields,
   functionsByType,
   mutations,
-  paymentMethods,
   queries,
   resolvers,
   schemas
@@ -107,15 +106,6 @@ export default {
         }
         functionsByType[type].push(...packageInfo.functionsByType[type]);
       });
-    }
-
-    if (packageInfo.paymentMethods) {
-      for (const paymentMethod of packageInfo.paymentMethods) {
-        paymentMethods[paymentMethod.name] = {
-          ...paymentMethod,
-          pluginName: packageInfo.name
-        };
-      }
     }
 
     if (packageInfo.catalog) {

@@ -67,14 +67,6 @@ export const StripeMarketplacePackageConfig = PackageConfig.clone().extend({
     label: "Connect Authorization Credentials",
     optional: true
   },
-  "settings.support": {
-    type: Array,
-    label: "Payment provider supported methods"
-  },
-  "settings.support.$": {
-    type: String,
-    allowedValues: ["Authorize", "De-authorize", "Capture", "Refund"]
-  },
   "settings.public": {
     type: Object,
     defaultValue: {}
