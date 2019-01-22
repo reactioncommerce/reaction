@@ -1,39 +1,13 @@
 import _ from "lodash";
-import Hooks from "@reactioncommerce/hooks";
 import Logger from "@reactioncommerce/logger";
 import ReactionError from "@reactioncommerce/reaction-error";
 import { Meteor } from "meteor/meteor";
 import { check, Match } from "meteor/check";
 import { Cart, Orders, Packages, Groups } from "/lib/collections";
+import appEvents from "/imports/node-app/core/util/appEvents";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
 
 /* eslint no-shadow: 0 */
-
-/**
- * @summary Updates a hook to update orders status before updating an order.
- * @param {String} userId - currently logged in user
- * @param {Object} selector - selector for product to update
- * @param {Object} modifier - Object describing what parts of the document to update.
- * @return {String} _id of updated document
- * @private
- */
-function updateOrderWorkflow(userId, selector, modifier) {
-  const order = Orders.findOne(selector);
-
-  Hooks.Events.run("beforeUpdateOrderWorkflow", order, {
-    userId,
-    modifier
-  });
-
-  Logger.debug("beforeUpdateOrderWorkflow hook executed before Order is updated");
-
-  const result = Orders.update(selector, modifier);
-
-  // Update mongo search record
-  Hooks.Events.run("afterUpdateOrderUpdateSearchRecord", order);
-
-  return result;
-}
 
 /**
  * @file Methods for Workflow. Run these methods using `Meteor.call()`.
@@ -303,22 +277,27 @@ Meteor.methods({
     // This combination will be used to call the method "workflow/coreOrderWorkflow/processing", if it exists.
     const workflowStatus = `${workflow}/${status}`;
 
-    const result = updateOrderWorkflow(
-      this.userId,
-      {
-        _id: order._id,
-        // Necessary to query on shop ID too, so they can't pass in a different ID for permission check
-        shopId: order.shopId
+    const result = Orders.update({
+      _id: order._id,
+      // Necessary to query on shop ID too, so they can't pass in a different ID for permission check
+      shopId: order.shopId
+    }, {
+      $set: {
+        "workflow.status": workflowStatus
       },
-      {
-        $set: {
-          "workflow.status": workflowStatus
-        },
-        $addToSet: {
-          "workflow.workflow": workflowStatus
-        }
+      $addToSet: {
+        "workflow.workflow": workflowStatus
       }
-    );
+    });
+    if (result !== 1) {
+      throw new ReactionError("server-error", "Unable to update order");
+    }
+
+    const updatedOrder = Orders.findOne({ _id: order._id });
+    Promise.await(appEvents.emit("afterOrderUpdate", {
+      order: updatedOrder,
+      updatedBy: Reaction.getUserId()
+    }));
 
     return result;
   },
@@ -385,9 +364,17 @@ Meteor.methods({
         shipping
       }
     });
+    if (result !== 1) {
+      throw new ReactionError("server-error", "Unable to update order");
+    }
 
-    // Update search record
-    Hooks.Events.run("afterUpdateOrderUpdateSearchRecord", order);
+    Promise.await(appEvents.emit("afterOrderUpdate", {
+      order: {
+        ...dbOrder,
+        shipping
+      },
+      updatedBy: Reaction.getUserId()
+    }));
 
     return result;
   }

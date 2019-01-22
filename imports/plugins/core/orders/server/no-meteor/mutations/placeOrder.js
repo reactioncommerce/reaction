@@ -457,7 +457,7 @@ export default async function placeOrder(context, input) {
 
   const { order: orderInput, payments: paymentsInput } = cleanedInput;
   const { billingAddress, cartId, currencyCode, email, fulfillmentGroups, shopId } = orderInput;
-  const { accountId, account, collections } = context;
+  const { accountId, account, collections, userId } = context;
   const { Orders } = collections;
 
   // We are mixing concerns a bit here for now. This is for backwards compatibility with current
@@ -557,7 +557,7 @@ export default async function placeOrder(context, input) {
   OrderSchema.validate(order);
   await Orders.insertOne(order);
 
-  appEvents.emit("afterOrderCreate", order);
+  appEvents.emit("afterOrderCreate", { createdBy: userId, order });
 
   return {
     orders: [order],

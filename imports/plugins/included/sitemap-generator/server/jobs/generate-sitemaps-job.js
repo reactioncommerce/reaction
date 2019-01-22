@@ -1,6 +1,6 @@
-import Hooks from "@reactioncommerce/hooks";
 import Logger from "@reactioncommerce/logger";
 import { Jobs } from "/lib/collections";
+import appEvents from "/imports/node-app/core/util/appEvents";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
 import { Job } from "/imports/plugins/core/job-collection/lib";
 import generateSitemaps from "../lib/generate-sitemaps";
@@ -14,7 +14,7 @@ export default function generateSitemapsJob() {
   const jobId = "sitemaps/generate";
 
   // Hook that schedules job
-  Hooks.Events.add("afterCoreInit", () => {
+  appEvents.on("afterCoreInit", () => {
     const settings = Reaction.getShopSettings();
     const { sitemaps } = settings;
     const refreshPeriod = (sitemaps && sitemaps.refreshPeriod) || "every 24 hours";

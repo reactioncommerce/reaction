@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import styled, { css } from "styled-components";
+import styled, { css, injectGlobal } from "styled-components";
 import styledMUI from "styled-components-mui";
 import { ContainerQuery } from "react-container-query";
 import MUIAppBar from "@material-ui/core/AppBar";
@@ -20,6 +20,13 @@ const query = {
   }
 };
 
+// Remove the 10px fontSize from the html element as it affects fonts that rely on rem
+injectGlobal`
+  html {
+    font-size: inherit;
+  }
+`;
+
 const Container = styled.div`
   display: flex;
 `;
@@ -29,13 +36,14 @@ const Container = styled.div`
 // for DOM elements and prints warnings in the console. Someday there may be a better solution.
 // See https://github.com/styled-components/styled-components/issues/305
 const Main = styled(({ children, isMobile, isSidebarOpen, ...divProps }) => (<div {...divProps}>{children}</div>))`
+  width: 100vw;
   background-color: ${applyTheme("Layout.pageBackgroundColor")};
   flex-grow: 1;
   transition: ${(props) =>
     (props.isSidebarOpen && props.isMobile !== true
-      ? "margin 225ms cubic-bezier(0, 0, 0.2, 1) 0ms"
-      : "margin 195ms cubic-bezier(0.4, 0, 0.6, 1) 0ms")};
-  margin-left: ${(props) => (!props.isSidebarOpen && props.isMobile === false ? "-264px" : 0)};
+      ? "padding 225ms cubic-bezier(0, 0, 0.2, 1) 0ms"
+      : "padding 195ms cubic-bezier(0.4, 0, 0.6, 1) 0ms")};
+  padding-left: ${(props) => (props.isSidebarOpen && props.isMobile === false ? "280px" : 0)};
 `;
 
 const MainContent = styled.div`

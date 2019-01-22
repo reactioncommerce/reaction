@@ -32,21 +32,31 @@ async function hashRelatedProduct(media, collections) {
 export default function startup(context) {
   const { appEvents, collections } = context;
 
-  appEvents.on("afterMediaInsert", (media) => {
-    hashRelatedProduct(media, collections).catch((error) => {
+  appEvents.on("afterMediaInsert", ({ mediaRecord }) => {
+    hashRelatedProduct(mediaRecord, collections).catch((error) => {
       Logger.error("Error in afterMediaInsert", error);
     });
   });
 
-  appEvents.on("afterMediaUpdate", (media) => {
-    hashRelatedProduct(media, collections).catch((error) => {
+  appEvents.on("afterMediaUpdate", ({ mediaRecord }) => {
+    hashRelatedProduct(mediaRecord, collections).catch((error) => {
       Logger.error("Error in afterMediaUpdate", error);
     });
   });
 
-  appEvents.on("afterMediaRemove", (media) => {
-    hashRelatedProduct(media, collections).catch((error) => {
+  appEvents.on("afterMediaRemove", ({ mediaRecord }) => {
+    hashRelatedProduct(mediaRecord, collections).catch((error) => {
       Logger.error("Error in afterMediaRemove", error);
+    });
+  });
+
+  appEvents.on("afterProductSoftDelete", ({ product }) => {
+    collections.Catalog.updateOne({
+      "product.productId": product._id
+    }, {
+      $set: {
+        "product.isDeleted": true
+      }
     });
   });
 }
