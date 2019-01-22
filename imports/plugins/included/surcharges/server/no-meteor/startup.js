@@ -15,7 +15,7 @@ export default function startup(context) {
   collections.Surcharges = context.app.db.collection("Surcharges");
 
   // Update the cart to include surcharges, if applicable
-  appEvents.on("afterCartUpdate", async (cart, { emittedBy } = {}) => {
+  appEvents.on("afterCartUpdate", async ({ cart }, { emittedBy } = {}) => {
     if (emittedBy === EMITTED_BY_NAME) return; // short circuit infinite loops
 
     const cartSurcharges = await getSurcharges(context, { cart });
@@ -29,6 +29,6 @@ export default function startup(context) {
       returnOriginal: false
     });
 
-    appEvents.emit("afterCartUpdate", updatedCart, { emittedBy: EMITTED_BY_NAME });
+    appEvents.emit("afterCartUpdate", { updatedCart }, { emittedBy: EMITTED_BY_NAME });
   });
 }
