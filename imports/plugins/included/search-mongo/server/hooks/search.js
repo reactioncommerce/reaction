@@ -39,7 +39,7 @@ appEvents.on("afterOrderUpdate", ({ order }) => {
  * if product is removed, remove product search record
  * @private
  */
-appEvents.on("afterProductDelete", ({ product }) => {
+appEvents.on("afterProductSoftDelete", ({ product }) => {
   if (ProductSearch && !Meteor.isAppTest && product.type === "simple") {
     const productId = product._id;
     ProductSearch.remove({ _id: productId });
