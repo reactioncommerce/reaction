@@ -14,8 +14,10 @@ import { Tracker } from "meteor/tracker";
 import { Packages, Shops } from "/lib/collections";
 import { getComponent } from "@reactioncommerce/reaction-components/components";
 import Hooks from "./hooks";
+import { addRoutePrefixToPackageRoutes, getEnabledPackageRoutes } from "./utils";
 import { Reaction } from "/lib/api";
 
+const IDENTITY_PROVIDER_PLUGIN_NAME = "reaction-hydra-oauth";
 // Using a ternary operator here to avoid a mutable export - open to suggestions for a better way to do this
 export const history = Meteor.isClient ? createBrowserHistory() : createMemoryHistory();
 
@@ -352,31 +354,6 @@ function hasRoutePermission(route) {
     Router.Reaction.hasPermission(route.permissions, Reaction.getUserId());
 }
 
-
-/**
- * assemble route name to be standard prefix/package name + registry name or route
- * @param  {String} packageName  [package name]
- * @param  {Object} registryItem [registry object]
- * @return {String}              [route name]
- * @private
- */
-function getRegistryRouteName(packageName, registryItem) {
-  let routeName;
-  if (packageName && registryItem) {
-    if (registryItem.name) {
-      routeName = registryItem.name;
-    } else if (registryItem.template) {
-      routeName = `${packageName}/${registryItem.template}`;
-    } else {
-      routeName = packageName;
-    }
-    // dont include params in the name
-    [routeName] = routeName.split(":");
-    return routeName;
-  }
-  return null;
-}
-
 /**
  * selectLayout
  * @param {Object} layout - element of shops.layout array
@@ -565,16 +542,13 @@ Router.initPackageRoutes = (options) => {
     marketplaceSettings = marketplace.settings.public;
   }
 
-  const pkgs = Packages.find().fetch();
-
-  const routeDefinitions = [];
+  const packages = Packages.find().fetch();
 
   // Default layouts
   const indexLayout = ReactionLayout(options.indexRoute);
-  const notFoundLayout = ReactionLayout({ template: "notFound" });
+  const defaultNotFoundLayout = ReactionLayout({ template: "notFound" });
 
-  // Index route
-  routeDefinitions.push({
+  let defaultRouteDefinitions = [{
     route: "/",
     name: "index",
     options: {
@@ -584,9 +558,7 @@ Router.initPackageRoutes = (options) => {
       component: indexLayout.component,
       structure: indexLayout.structure
     }
-  });
-
-  routeDefinitions.push({
+  }, {
     route: `${marketplaceSettings.shopPrefix}/:shopSlug`,
     name: "index",
     options: {
@@ -597,90 +569,25 @@ Router.initPackageRoutes = (options) => {
       component: indexLayout.component,
       structure: indexLayout.structure
     }
-  });
-
-  // Not-found route
-  routeDefinitions.push({
+  }, {
     route: "/not-found",
     name: "not-found",
     options: {
       name: "not-found",
-      ...notFoundLayout.indexRoute,
-      theme: notFoundLayout.theme,
-      component: notFoundLayout.component,
-      structure: notFoundLayout.structure
+      ...defaultNotFoundLayout.indexRoute,
+      theme: defaultNotFoundLayout.theme,
+      component: defaultNotFoundLayout.component,
+      structure: defaultNotFoundLayout.structure
     }
-  });
+  }];
 
-  // get package registry route configurations
-  for (const pkg of pkgs) {
-    const newRoutes = [];
-    // pkg registry
-    if (pkg.registry && pkg.enabled) {
-      const registry = Array.from(pkg.registry);
-      for (const registryItem of registry) {
-        // registryItems
-        if (registryItem.route) {
-          const {
-            meta,
-            route,
-            permissions,
-            template,
-            layout,
-            workflow
-            // provides
-          } = registryItem;
+  // when running in idp-only mode, the default routes are not to show up
+  const idpPackage = packages.find((pkg) => pkg.name === IDENTITY_PROVIDER_PLUGIN_NAME);
+  if (idpPackage && idpPackage.identityProviderMode === "idp-only") defaultRouteDefinitions = [];
 
-          const name = getRegistryRouteName(pkg.name, registryItem);
-
-          // define new route
-          // we could allow the options to be passed in the registry if we need to be more flexible
-          const reactionLayout = ReactionLayout({ template, workflow, layout, permissions });
-          const newRouteConfig = {
-            route,
-            name,
-            options: {
-              meta,
-              name,
-              template,
-              layout,
-              triggersEnter: Router.Hooks.get("onEnter", name),
-              triggersExit: Router.Hooks.get("onExit", name),
-              component: reactionLayout.component,
-              theme: reactionLayout.theme,
-              structure: reactionLayout.structure
-            }
-          };
-          newRoutes.push({
-            ...newRouteConfig,
-            route: `/shop/:shopSlug${route}`,
-            options: {
-              ...newRouteConfig.options,
-              type: "shop-prefix"
-            }
-          });
-          // push new routes
-          newRoutes.push(newRouteConfig);
-        } // end registryItems
-      } // end package.registry
-
-      //
-      // add group and routes to routing table
-      //
-      for (const route of newRoutes) {
-        // allow overriding of prefix in route definitions
-        // define an "absolute" url by excluding "/"
-        route.group = {};
-
-        if (route.route.substring(0, 1) !== "/") {
-          route.route = `/${route.route}`;
-          route.group.prefix = "";
-        }
-
-        routeDefinitions.push(route);
-      }
-    }
-  } // end package loop
+  const enabledPackageRoutes = getEnabledPackageRoutes(ReactionLayout, packages);
+  const updatedPackageRoutes = addRoutePrefixToPackageRoutes(enabledPackageRoutes);
+  const allRouteDefinitions = [...updatedPackageRoutes, ...defaultRouteDefinitions];
 
   // Uniq-ify routes
   // Take all route definitions in the order that were received, and reverse it.
@@ -689,7 +596,7 @@ Router.initPackageRoutes = (options) => {
   //
   // TODO: In the future, sort by priority
   // TODO: Allow duplicated routes with a prefix / suffix / flag
-  const uniqRoutes = uniqBy(routeDefinitions.reverse(), "route");
+  const uniqRoutes = uniqBy(allRouteDefinitions.reverse(), "route");
   const reactRouterRoutes = uniqRoutes.map((route, index) => (
     <Route
       key={`${route.name}-${index}`}
@@ -702,10 +609,12 @@ Router.initPackageRoutes = (options) => {
   // Last route, if no other route is matched, this one will be the not-found view
   // Note: This is last because all other routes must at-least attempt a match
   // before falling back to this not-found route.
+  const notFound = allRouteDefinitions.find((route) => route.name === "not-found") || {};
+  const notFoundComponent = notFound.options && notFound.options.component;
   reactRouterRoutes.push((
     <Route
       key="not-found"
-      render={notFoundLayout.component}
+      render={notFoundComponent}
     />
   ));
 

@@ -1,5 +1,5 @@
 import ReactionError from "@reactioncommerce/reaction-error";
-import { paymentMethods as allPaymentMethods } from "/imports/plugins/core/core/server/no-meteor/pluginRegistration";
+import { paymentMethods as allPaymentMethods } from "../registration";
 
 /**
  * @name paymentMethods
@@ -22,6 +22,8 @@ export default async function paymentMethods(context, shopId) {
   return Object.keys(allPaymentMethods)
     .map((name) => ({
       ...allPaymentMethods[name],
+      // Force canRefund to be set
+      canRefund: allPaymentMethods[name].canRefund !== false,
       isEnabled: availablePaymentMethods.includes(name)
     }));
 }

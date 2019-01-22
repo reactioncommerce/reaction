@@ -25,17 +25,12 @@ class ExampleSettingsFormContainer extends Component {
   }
 
   handleSubmit(settings) {
-    // e.preventDefault();
-
     const packageId = this.props.packageData._id;
     const { settingsKey } = this.props.packageData.registry[0];
 
     const fields = [{
       property: "apiKey",
       value: settings.apiKey
-    }, {
-      property: "support",
-      value: settings.support
     }];
 
     this.saveUpdate(fields, packageId, settingsKey);

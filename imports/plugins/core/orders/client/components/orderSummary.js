@@ -1,19 +1,15 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { withMoment, Components } from "@reactioncommerce/reaction-components";
+import { Components } from "@reactioncommerce/reaction-components";
 import { Badge, ClickToCopy } from "@reactioncommerce/reaction-ui";
-import { formatPriceString } from "/client/api";
-import { getOrderRiskBadge, getOrderRiskStatus, getPaymentForCurrentShop, getShippingInfo, getTaxRiskStatus } from "../helpers";
+import { getOrderRiskBadge, getOrderRiskStatus, getShippingInfo, getTaxRiskStatus } from "../helpers";
 
 class OrderSummary extends Component {
   static propTypes = {
     dateFormat: PropTypes.func,
     moment: PropTypes.func,
     order: PropTypes.object,
-    printableLabels: PropTypes.func,
-    profileShippingAddress: PropTypes.object,
-    shipmentStatus: PropTypes.func,
-    tracking: PropTypes.func
+    printableLabels: PropTypes.func
   }
 
   badgeStatus() {
@@ -46,9 +42,11 @@ class OrderSummary extends Component {
   }
 
   render() {
-    const { dateFormat, moment, order, profileShippingAddress, printableLabels, tracking } = this.props;
-    const { displayName: paymentDisplayName, invoice, processor, transactionId } = getPaymentForCurrentShop(order);
-    const { shipmentMethod } = getShippingInfo(order);
+    const { dateFormat, moment, order, printableLabels } = this.props;
+
+    if (!order) return null;
+
+    const { address: shippingAddress } = getShippingInfo(order);
     const orderPaymentRisk = getOrderRiskStatus(order);
     const orderTaxRisk = getTaxRiskStatus(order);
 
@@ -58,7 +56,7 @@ class OrderSummary extends Component {
           className="order-summary-form-group bg-info"
           style={{ lineHeight: 3, marginTop: -15, marginRight: -15, marginLeft: -15 }}
         >
-          <strong style={{ marginLeft: 15 }}>{profileShippingAddress && profileShippingAddress.fullName}</strong>
+          <strong style={{ marginLeft: 15 }}>{shippingAddress && shippingAddress.fullName}</strong>
           <div className="invoice-details" style={{ marginRight: 15, position: "relative" }}>
             {order.email}
           </div>
@@ -69,8 +67,8 @@ class OrderSummary extends Component {
             <div style={{ marginBottom: 4 }}>
               <Badge
                 badgeSize="large"
-                i18nKeyLabel={`cartDrawer.${order && order.workflow && order.workflow.status}`}
-                label={order && order.workflow && order.workflow.status}
+                i18nKeyLabel={`cartDrawer.${order.workflow && order.workflow.status}`}
+                label={order.workflow && order.workflow.status}
                 status={this.badgeStatus()}
               />
               {orderPaymentRisk &&
@@ -111,41 +109,6 @@ class OrderSummary extends Component {
               </div>
             </div>
 
-            <div className="order-summary-form-group">
-              <strong data-i18n="order.processor">Processor</strong>
-              <div className="invoice-details">
-                {processor}
-              </div>
-            </div>
-
-            <div className="order-summary-form-group">
-              <strong data-i18n="order.payment">Payment</strong>
-              <div className="invoice-details">
-                {paymentDisplayName} ({formatPriceString(invoice.total)})
-              </div>
-            </div>
-
-            <div className="order-summary-form-group">
-              <strong data-i18n="order.transaction">Transaction</strong>
-              <div className="invoice-details">
-                {transactionId}
-              </div>
-            </div>
-
-            <div className="order-summary-form-group">
-              <strong data-i18n="orderShipping.carrier">Carrier</strong>
-              <div className="invoice-details">
-                {shipmentMethod.carrier} - {shipmentMethod.label}
-              </div>
-            </div>
-
-            <div className="order-summary-form-group">
-              <strong data-i18n="orderShipping.tracking">Tracking</strong>
-              <div className="invoice-details">
-                {tracking()}
-              </div>
-            </div>
-
             {printableLabels() &&
               <div className="order-summary-form-group">
                 <strong data-i18n="orderShipping.printLabels">Labels</strong>
@@ -161,28 +124,9 @@ class OrderSummary extends Component {
             }
           </div>
         </div>
-
-        <br/>
-        <div className="order-summary-form-group">
-          <strong data-i18n="orderShipping.shipTo">Ship to</strong>
-          <div className="invoice-details">
-            <strong>Phone: </strong>{profileShippingAddress.phone}
-          </div>
-        </div>
-
-        <div style={{ marginTop: 4 }}>
-          <span>{profileShippingAddress.fullName}</span>
-          <br/>
-          <span>{profileShippingAddress.address1}</span>
-          {profileShippingAddress.address2 && <span><br/>{profileShippingAddress.address2}</span>}
-          <br/>
-          <span>
-            {profileShippingAddress.city}, {profileShippingAddress.region}, {profileShippingAddress.country} {profileShippingAddress.postal}
-          </span>
-        </div>
       </div>
     );
   }
 }
 
-export default withMoment(OrderSummary);
+export default OrderSummary;

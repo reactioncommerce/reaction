@@ -7,6 +7,6 @@ Hooks.Events.add("afterCoreInit", () => {
   Reaction.addRolesToGroups({
     allShops: true,
     groups: ["guest", "customer"],
-    roles: ["account/login"]
+    roles: ["account/login", "not-found"]
   });
 });

@@ -67,6 +67,9 @@ type NavigationItemData {
   "The content for the navigation item, in one or more languages"
   content: [NavigationItemContent]
 
+  "The translated content for a navigation item"
+  contentForLanguage: String
+
   "CSS class names to add to the menu item for display"
   classNames: String
 

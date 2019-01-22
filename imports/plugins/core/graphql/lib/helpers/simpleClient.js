@@ -6,8 +6,7 @@ import createFlatRateFulfillmentMethod from "../mutations/createFlatRateFulfillm
 import updateFlatRateFulfillmentMethod from "../mutations/updateFlatRateFulfillmentMethod.graphql";
 import deleteFlatRateFulfillmentMethod from "../mutations/deleteFlatRateFulfillmentMethod.graphql";
 import enablePaymentMethodForShop from "../mutations/enablePaymentMethodForShop.graphql";
-import placeOrderWithExampleIOUPayment from "../mutations/placeOrderWithExampleIOUPayment.graphql";
-import placeOrderWithStripeCardPayment from "../mutations/placeOrderWithStripeCardPayment.graphql";
+import placeOrder from "../mutations/placeOrder.graphql";
 import availablePaymentMethods from "../queries/availablePaymentMethods.graphql";
 import paymentMethods from "../queries/paymentMethods.graphql";
 
@@ -61,13 +60,9 @@ export default {
       setTokenHeader();
       return client.mutate(enablePaymentMethodForShop)(variables);
     },
-    placeOrderWithExampleIOUPayment: (variables) => {
+    placeOrder: (variables) => {
       setTokenHeader();
-      return client.mutate(placeOrderWithExampleIOUPayment)(variables);
-    },
-    placeOrderWithStripeCardPayment: (variables) => {
-      setTokenHeader();
-      return client.mutate(placeOrderWithStripeCardPayment)(variables);
+      return client.mutate(placeOrder)(variables);
     },
     updateFlatRateFulfillmentMethod: (variables) => {
       setTokenHeader();

@@ -170,6 +170,8 @@ function xformCartFulfillmentGroup(fulfillmentGroup, cart) {
     // Revisit when the UI supports breaking into multiple groups.
     items: cart.items || [],
     selectedFulfillmentOption,
+    shippingAddress: fulfillmentGroup.address,
+    shopId: fulfillmentGroup.shopId,
     // For now, this is always shipping. Revisit when adding download, pickup, etc. types
     type: "shipping"
   };

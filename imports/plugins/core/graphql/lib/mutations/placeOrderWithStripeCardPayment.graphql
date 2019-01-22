@@ -1,7 +1,0 @@
-placeOrderWithStripeCardPayment($input: PlaceOrderWithStripeCardPaymentInput!) {
-  placeOrderWithStripeCardPayment(input: $input) {
-    orders {
-      _id
-    }
-  }
-}

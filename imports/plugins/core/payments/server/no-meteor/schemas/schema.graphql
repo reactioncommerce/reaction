@@ -11,6 +11,10 @@ extend type Query {
 }
 
 extend type Mutation {
+  "Capture one or more payments for an order"
+  captureOrderPayments(input: CaptureOrderPaymentsInput!): CaptureOrderPaymentsPayload!
+
+  "Enable a payment method for a shop"
   enablePaymentMethodForShop(input: EnablePaymentMethodForShopInput!): EnablePaymentMethodForShopPayload!
 }
 
@@ -27,6 +31,19 @@ type Payment implements Node {
   """
   amount: Money!
 
+  "The billing address for this payment, if one was collected"
+  billingAddress: Address
+
+  """
+  If status is "error" due to a capture error, this code describes the error in a machine-readable way.
+  """
+  captureErrorCode: String
+
+  """
+  If status is "error" due to a capture error, this code describes the error in a human-readable way.
+  """
+  captureErrorMessage: String
+
   "For card payments, the brand of the card. Useful for showing card icons for common brands."
   cardBrand: String
 
@@ -42,38 +59,64 @@ type Payment implements Node {
   "Use this identifier when showing this payment in a user interface"
   displayName: String!
 
+  "Has the payment authorization been canceled?"
+  isAuthorizationCanceled: Boolean!
+
+  "Has the payment been captured? If false, it is just an authorization."
+  isCaptured: Boolean!
+
   "The payment method"
   method: PaymentMethod!
+
+  "The current status of this payment"
+  status: PaymentStatus!
 }
 
-"Data for an example IOU payment"
-type ExampleIOUPaymentData {
-  "The billing address entered or chosen by the shopper"
-  billingAddress: Address!
+"Valid payment statuses"
+enum PaymentStatus {
+  "A shop operator adjusted the payment amount after the order was placed"
+  adjustments
 
-  "The name of the IOU payer entered by the shopper"
-  fullName: String!
+  "A shop operator has approved this payment"
+  approved
+
+  "A shop operator has canceled this payment before it was captured"
+  canceled
+
+  "A shop operator has captured this payment"
+  completed
+
+  "Upon placing an order, the status of all payments for that order begins at 'created'"
+  created
+
+  "There was an error capturing the payment"
+  error
+
+  "A shop operator has refunded some but not all of this payment"
+  partialRefund
+
+  "A shop operator has refunded all of this payment"
+  refunded
 }
 
 # Use `extend union` to define a payment plugin's PaymentData type
 "Data identifying a payment for an order"
-union PaymentData = ExampleIOUPaymentData
+union PaymentData
 
 # Use `extend enum` to add a plugin's payment method name
 "The name of a payment method, which is how payment methods are keyed"
 enum PaymentMethodName {
-  iou_example
+  none
 }
 
-"An example"
-type ExamplePaymentMethodData {
-  example: String!
-}
-
-union PaymentMethodData = ExamplePaymentMethodData
+# Use `extend union` to define a payment plugin's PaymentMethodData type
+union PaymentMethodData
 
 "Describes a payment method"
 type PaymentMethod {
+  "If this is `false`, the payment method does not support refunding. Use this to hide refund UI."
+  canRefund: Boolean!
+
   "Data for this method. The data format differs for each method"
   data: PaymentMethodData
 
@@ -112,4 +155,28 @@ type EnablePaymentMethodForShopPayload {
 
   "The full list of payment methods for the shop"
   paymentMethods: [PaymentMethod]!
+}
+
+"Input for the `captureOrderPayments` mutation"
+input CaptureOrderPaymentsInput {
+  "An optional string identifying the mutation call, which will be returned in the response payload"
+  clientMutationId: String
+
+  "The order ID"
+  orderId: ID!
+
+  "The IDs of one or more payments to capture for this order"
+  paymentIds: [ID]!
+
+  "The ID of the shop that owns this order"
+  shopId: ID!
+}
+
+"Response from the `captureOrderPayments` mutation"
+type CaptureOrderPaymentsPayload {
+  "The same string you sent with the mutation params, for matching mutation calls with their responses"
+  clientMutationId: String
+
+  "The updated order"
+  order: Order!
 }

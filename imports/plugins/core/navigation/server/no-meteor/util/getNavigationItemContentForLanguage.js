@@ -1,15 +1,15 @@
 /**
  * @name getNavigationItemContentForLanguage
- * @summary Filters a navigation item's content array down to a single language. If not found,
- *  defaults to first element in content array.
+ * @summary Returns translated navigation item content
  * @param {Array} content Navigation item's data or draftData content
- * @param {String} language Language to filter by
- * @return {Array} Array containing a single content translation object
+ * @param {String} language Language
+ * @return {String} Translated navigation item content, or first navigation item content if translation in
+ *  provided language is not available.
  */
 export default function getNavigationItemContentForLanguage(content, language) {
   const translatedContent = content.find((contentItem) => contentItem.language === language);
   if (translatedContent) {
-    return [translatedContent];
+    return translatedContent.value;
   }
-  return [content[0]];
+  return content[0].value || "";
 }
