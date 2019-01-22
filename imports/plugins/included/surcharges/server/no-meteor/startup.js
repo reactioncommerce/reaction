@@ -29,6 +29,6 @@ export default function startup(context) {
       returnOriginal: false
     });
 
-    appEvents.emit("afterCartUpdate", { updatedCart }, { emittedBy: EMITTED_BY_NAME });
+    appEvents.emit("afterCartUpdate", { cart: updatedCart }, { emittedBy: EMITTED_BY_NAME });
   });
 }
