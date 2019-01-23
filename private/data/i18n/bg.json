@@ -254,7 +254,7 @@
       },
       "productVariant": {
         "addVariantOptions": "Добави опции, за да се даде възможност на \"Добави в количката\" butto",
-        "inventoryQuantity": "количество",
+        "inventoryInStock": "количество",
         "title": "Етикет",
         "price": "Цена",
         "optionTitle": "опция",

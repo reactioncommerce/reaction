@@ -38,7 +38,7 @@ export function getCartItem(options = {}) {
     ]
   }).fetch();
   const selectedOption = Random.choice(childVariants);
-  const quantity = _.random(1, selectedOption.inventoryQuantity);
+  const quantity = _.random(1, selectedOption.inventoryInStock);
   const defaults = {
     _id: Random.id(),
     addedAt: new Date(),
@@ -98,7 +98,7 @@ export function createCart(productId, variantId) {
   const variant = Products.findOne(variantId);
   const user = Factory.create("user");
   const account = Factory.create("account", { userId: user._id });
-  const quantity = _.random(1, variant.inventoryQuantity);
+  const quantity = _.random(1, variant.inventoryInStock);
   const cartItem = {
     _id: Random.id(),
     addedAt: new Date(),

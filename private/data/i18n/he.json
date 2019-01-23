@@ -240,7 +240,7 @@
       },
       "productVariant": {
         "addVariantOptions": "הוסף אפשרויות כדי להפעיל  את הלחצן \"הוסף לעגלה\"",
-        "inventoryQuantity": "כמות",
+        "inventoryInStock": "כמות",
         "title": "תווית",
         "price": "מחיר",
         "optionTitle": "אפשרות",
