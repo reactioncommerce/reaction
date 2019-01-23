@@ -194,7 +194,7 @@ type CartSurcharge implements Node {
   message: String
 
   "The surchargeId from the surchages collection (for reference)"
-  surchargeId: ID
+  surchargeDefinitionId: ID!
 }
 
 enum CartReconciliationMode {
