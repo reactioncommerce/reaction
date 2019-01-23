@@ -8,5 +8,5 @@ import buildOrderSearchRecord from "./util/buildOrderSearchRecord";
  * @returns {undefined}
  */
 export default function startup({ collections }) {
-  appEvents.on("afterOrderCreate", (order) => buildOrderSearchRecord(collections, order));
+  appEvents.on("afterOrderCreate", ({ order }) => buildOrderSearchRecord(collections, order));
 }

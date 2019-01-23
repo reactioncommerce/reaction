@@ -28,7 +28,7 @@ export default async function selectFulfillmentOptionForGroup(context, input) {
   inputSchema.validate(cleanedInput);
 
   const { cartId, cartToken, fulfillmentGroupId, fulfillmentMethodId } = cleanedInput;
-  const { appEvents, collections } = context;
+  const { appEvents, collections, userId } = context;
   const { Cart } = collections;
 
   const cart = await getCartById(context, cartId, { cartToken, throwIfNotFound: true });
@@ -57,7 +57,10 @@ export default async function selectFulfillmentOptionForGroup(context, input) {
     }
   });
 
-  await appEvents.emit("afterCartUpdate", cart);
+  await appEvents.emit("afterCartUpdate", {
+    cart,
+    updatedBy: userId
+  });
 
   return { cart };
 }

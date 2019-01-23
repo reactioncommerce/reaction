@@ -9,6 +9,10 @@ Reaction.registerPackage({
   functionsByType: {
     startup: [startup]
   },
+  addRolesToGroups: [{
+    groups: ["guest", "customer"],
+    roles: ["notifications"]
+  }],
   registry: [{
     label: "Notifications",
     name: "notifications",

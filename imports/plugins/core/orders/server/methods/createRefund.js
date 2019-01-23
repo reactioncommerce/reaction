@@ -1,9 +1,9 @@
 import { check } from "meteor/check";
-import accounting from "accounting-js";
-import Hooks from "@reactioncommerce/hooks";
 import Logger from "@reactioncommerce/logger";
 import ReactionError from "@reactioncommerce/reaction-error";
 import { Orders } from "/lib/collections";
+import appEvents from "/imports/node-app/core/util/appEvents";
+import accounting from "accounting-js";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
 import getGraphQLContextInMeteorMethod from "/imports/plugins/core/graphql/server/getGraphQLContextInMeteorMethod";
 import { getPaymentMethodConfigByName } from "/imports/plugins/core/payments/server/no-meteor/registration";
@@ -64,7 +64,7 @@ export default function createRefund(orderId, paymentId, amount) {
   // There could be JS math errors so we round to 3 decimal places when comparing
   const isFullyRefunded = accounting.toFixed(refundTotal, 3) === accounting.toFixed(payment.amount, 3);
 
-  Orders.update(
+  const updateResult = Orders.update(
     {
       "_id": orderId,
       "payments._id": paymentId
@@ -79,7 +79,15 @@ export default function createRefund(orderId, paymentId, amount) {
     }
   );
 
-  Hooks.Events.run("onOrderRefundCreated", orderId);
+  if (updateResult !== 1) {
+    throw new ReactionError("server-error", "Unable to update order");
+  }
+
+  const updatedOrder = Orders.findOne({ _id: orderId });
+  Promise.await(appEvents.emit("afterOrderUpdate", {
+    order: updatedOrder,
+    updatedBy: authUserId
+  }));
 
   // Send email to notify customer of a refund
   sendOrderEmail(order, "refunded");

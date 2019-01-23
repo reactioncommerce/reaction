@@ -1,13 +1,14 @@
 import Logger from "@reactioncommerce/logger";
 import { Meteor } from "meteor/meteor";
-import { Packages } from "/lib/collections";
+import { isAppStartupComplete } from "imports/plugins/core/core/server/startup/startNodeApp";
 
-before(function () {
-  this.timeout(6000);
-  let numPackages = 0;
-  while (numPackages === 0) {
-    numPackages = Packages.find({}).count();
-    Logger.debug(`there are ${numPackages} packages loaded`);
-    Meteor._sleepForMs(500);
+before(function (done) {
+  this.timeout(30000);
+  let readyToBeginRunningTests = isAppStartupComplete();
+  while (!readyToBeginRunningTests) {
+    readyToBeginRunningTests = isAppStartupComplete();
+    Logger.info("Waiting for app to finish starting before running tests...");
+    Meteor._sleepForMs(1000);
   }
+  done();
 });

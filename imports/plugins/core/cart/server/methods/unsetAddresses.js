@@ -3,6 +3,7 @@ import { Meteor } from "meteor/meteor";
 import { check, Match } from "meteor/check";
 import ReactionError from "@reactioncommerce/reaction-error";
 import { Cart } from "/lib/collections";
+import Reaction from "/imports/plugins/core/core/server/Reaction";
 import getCart from "/imports/plugins/core/cart/server/util/getCart";
 import appEvents from "/imports/node-app/core/util/appEvents";
 
@@ -90,7 +91,10 @@ export default function unsetAddresses(cartId, cartToken, addressId, type) {
     }
 
     const updatedCart = Cart.findOne({ _id: cartId });
-    Promise.await(appEvents.emit("afterCartUpdate", updatedCart));
+    Promise.await(appEvents.emit("afterCartUpdate", {
+      cart: updatedCart,
+      updatedBy: Reaction.getUserId()
+    }));
   }
 
   return true;

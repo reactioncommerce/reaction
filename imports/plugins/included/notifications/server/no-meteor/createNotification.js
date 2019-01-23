@@ -23,7 +23,7 @@ const messageForType = {
  * @param {String} [input.message] - Message to send, if not already defined in messageForType
  * @return {undefined}
  */
-export default async function createNotification(collections, { accountId, details, type, url, message = "" }) {
+export default async function createNotification(collections, { accountId, details, type, url, userId, message = "" }) {
   const doc = {
     _id: Random.id(),
     details,
@@ -40,7 +40,7 @@ export default async function createNotification(collections, { accountId, detai
   await collections.Notifications.insertOne(doc);
 
   // Email or SMS plugins can watch for this event to send
-  appEvents.emit("afterNotificationCreate", doc).catch((error) => {
+  appEvents.emit("afterNotificationCreate", { createdBy: userId, notification: doc }).catch((error) => {
     Logger.error("Error emitting afterNotificationCreate in createNotification", error);
   });
 }
