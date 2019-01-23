@@ -1,4 +1,4 @@
-import getSurchargeMessageInShopLanguage from "../util/getSurchargeMessageInShopLanguage";
+import getSurchargeMessageForLanguage from "../util/getSurchargeMessageForLanguage";
 
 /**
  * @name xformSurchargeMessage
@@ -8,6 +8,6 @@ import getSurchargeMessageInShopLanguage from "../util/getSurchargeMessageInShop
  * @return {String} Translated message to return to client
  */
 export default async function xformSurchargeMessage(language, messagesByLanguage) {
-  const translatedMessage = getSurchargeMessageInShopLanguage(language, messagesByLanguage);
+  const translatedMessage = getSurchargeMessageForLanguage(language, messagesByLanguage);
   return translatedMessage;
 }
