@@ -155,7 +155,7 @@ type OrderSurcharge implements Node {
   cartId: ID
 
   "The fulfillmentGroupId (for reference)"
-  fulfillmentGroupID: ID
+  fulfillmentGroupId: ID
 
   "The message to explain the surchage to customers, translated (if available) based on shop language"
   message: String
