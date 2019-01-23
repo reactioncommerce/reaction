@@ -25,7 +25,7 @@ type Cart implements Node {
   shop: Shop!
 
   "Surcharges to apply to this cart"
-  surcharges: [Surcharge]
+  surcharges: [AppliedSurcharge]!
 
   "Total quantity of all items in the cart"
   totalItemQuantity: Int!
