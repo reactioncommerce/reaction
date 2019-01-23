@@ -8,8 +8,5 @@
  */
 export default function getSurchargeMessageForLanguage(language, messagesByLanguage) {
   const translatedMessage = messagesByLanguage.find((message) => message.language === language);
-  if (translatedMessage) {
-    return translatedMessage.content;
-  }
-  return messagesByLanguage[0].content || "";
+  return (translatedMessage && translatedMessage.content) || null;
 }
