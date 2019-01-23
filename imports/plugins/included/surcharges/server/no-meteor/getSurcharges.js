@@ -12,13 +12,20 @@ import { surchargeCheck } from "./util/surchargeCheck";
  * @private
  */
 export default async function getSurcharges(context, { cart }) {
-  const { Surcharges } = context.collections;
-  const surcharges = await Surcharges.find({}).toArray();
+  const { collections: { Surcharges } } = context;
   const [shipping] = cart.shipping;
 
   // Create an extended common order to check surcharges against
   const commonOrder = await xformCartGroupToCommonOrder(cart, shipping, context);
   const extendedCommonOrder = await extendCommonOrder(context, commonOrder);
+
+  // Get surcharges from Mongo
+  // Use forEach to use Mongos built in memory handling to not
+  // overload memory while fetching the entire colleciotn
+  const surcharges = [];
+  await Surcharges.find({ shopId: extendedCommonOrder.shopId }).forEach((surcharge) => {
+    surcharges.push(surcharge);
+  });
 
   const allAppliedSurcharges = await surcharges.reduce(async (appliedSurcharges, surcharge) => {
     const awaitedAppliedSurcharges = await appliedSurcharges;
