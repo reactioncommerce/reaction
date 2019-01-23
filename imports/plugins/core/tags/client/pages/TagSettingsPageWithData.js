@@ -150,7 +150,7 @@ class TagSettings extends Component {
 
       if (field === "isVisible") {
         colWidth = 110;
-        headerLabel = "";
+        headerLabel = i18next.t("admin.tags.headers.status");
       }
 
       // https://react-table.js.org/#/story/cell-renderers-custom-components
