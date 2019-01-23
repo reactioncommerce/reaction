@@ -11,6 +11,13 @@ const Cell = styled.div`
   height: 100%;
 `;
 
+const CenteredCell = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+`;
+
 const EnabledLabel = styled.span`
   padding-left: 8px;
 `;
@@ -53,9 +60,9 @@ class TagDataTableColumn extends Component {
       );
     } else if (renderColumn === "edit") {
       return (
-        <Cell>
+        <CenteredCell>
           <Components.Icon icon="fa fa-pencil" />
-        </Cell>
+        </CenteredCell>
       );
     } else if (renderColumn === "heroMediaUrl") {
       return (
