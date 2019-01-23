@@ -2,6 +2,11 @@
 # Custom data types for Surcharges data
 ####
 
+
+###
+# Types
+###
+"Defines a surcharge that has been applied to a Cart or Order"
 type AppliedSurcharge implements Node {
   "The surcharge ID"
   _id: ID!
@@ -19,82 +24,7 @@ type AppliedSurcharge implements Node {
   surchargeDefinitionId: ID!
 }
 
-type SurchargeAttributeRestrictions {
-  property: String
-  value: String
-  propertyType: String
-  operator: String
-}
-
-type SurchargeConnection {
-  edges: [SurchargeEdge]
-  nodes: [Surcharge]
-  pageInfo: PageInfo!
-  totalCount: Int!
-}
-
-type SurchargeDestinationRestrictions {
-  country: [String]
-  region: [String]
-  postal: [String]
-}
-
-type SurchargeEdge {
-  cursor: ConnectionCursor!
-  node: Surcharge
-}
-
-type SurchargeMessagesByLanguage {
-  content: String!
-  language: String!
-}
-
-enum SurchargeSortByField {
-  createdAt
-}
-
-enum SurchargeTypeEnum {
-  surcharge
-}
-
-input SurchargeAttributeRestrictionsInput {
-  property: String
-  value: String
-  propertyType: String
-  operator: String
-}
-
-input SurchargeDestinationRestrictionsInput {
-  country: [String]
-  region: [String]
-  postal: [String]
-}
-
-input MessagesByLanguageInput {
-  content: String!
-  language: String!
-}
-
-####
-# Queries
-####
-extend type Query {
-  "Get the full list of flat rate fulfillment method restrictions."
-  getSurcharges(
-    shopId: ID!,
-    language: String,
-    after: ConnectionCursor,
-    before: ConnectionCursor,
-    first: ConnectionLimitInt,
-    last: ConnectionLimitInt,
-    sortOrder: SortOrder = desc,
-    sortBy: SurchargeSortByField = createdAt
-  ): SurchargeConnection!
-
-  getSurcharge(shopId: ID!, surchargeId: ID!, language: String): Surcharge
-}
-
-"Defines a surcharge."
+"Defines a surcharge for getSurcharge and getSurcharges query."
 type Surcharge implements Node {
   "The surcharge ID."
   _id: ID!
@@ -126,16 +56,102 @@ type Surcharge implements Node {
   messagesByLanguage: [SurchargeMessagesByLanguage]
 }
 
-
-####
-# Create surcharge mutation
-####
-extend type Mutation {
-  "Create a surcharge"
-  createSurcharge(input: CreateSurchargeInput!): CreateSurchargePayload!
+"Attribute Restrictions attached to a Surcharge"
+type SurchargeAttributeRestrictions {
+  property: String
+  value: String
+  propertyType: String
+  operator: String
 }
 
+"Wraps a list of `Surcharge`s, providing pagination cursors and information."
+type SurchargeConnection {
+  edges: [SurchargeEdge]
+  nodes: [Surcharge]
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
+"Destination Restrictions attached to a Surcharge"
+type SurchargeDestinationRestrictions {
+  country: [String]
+  region: [String]
+  postal: [String]
+}
+
+"A connection edge in which each node is a `Surcharge` object"
+type SurchargeEdge {
+  cursor: ConnectionCursor!
+  node: Surcharge
+}
+
+"Object that includes translated content and language of translation"
+type SurchargeMessagesByLanguage {
+  content: String!
+  language: String!
+}
+
+
+###
+# Enums
+###
+enum SurchargeSortByField {
+  createdAt
+}
+
+enum SurchargeTypeEnum {
+  surcharge
+}
+
+
+###
 # Inputs
+###
+"Input for the `CreateSurcharge` mutation"
+input CreateSurchargeInput {
+  "An optional string identifying the mutation call, which will be returned in the response payload"
+  clientMutationId: String
+
+  "This defines the surcharge that you want to create"
+  surcharge: SurchargeInput!
+
+  "The shop to create this surcharge for"
+  shopId: ID!
+}
+
+"Input for the `deleteSurcharge` mutation"
+input DeleteSurchargeInput {
+  "An optional string identifying the mutation call, which will be returned in the response payload"
+  clientMutationId: String
+
+  "The ID of the flat rate fulfillment method you want to delete"
+  surchargeId: ID!
+
+  "The shop that owns the method"
+  shopId: ID!
+}
+
+"Input to add a surcharge message with language"
+input MessagesByLanguageInput {
+  content: String!
+  language: String!
+}
+
+"Input to add a surcharge attribute restriction"
+input SurchargeAttributeRestrictionsInput {
+  property: String
+  value: String
+  propertyType: String
+  operator: String
+}
+
+"Input to add a surcharge destination restriction"
+input SurchargeDestinationRestrictionsInput {
+  country: [String]
+  region: [String]
+  postal: [String]
+}
+
 "Defines a surcharge."
 input SurchargeInput {
   "Method IDs to apply this surcharge to."
@@ -159,70 +175,6 @@ input SurchargeInput {
   messagesByLanguage: [MessagesByLanguageInput]!
 }
 
-"Input for the `CreateSurcharge` mutation"
-input CreateSurchargeInput {
-  "An optional string identifying the mutation call, which will be returned in the response payload"
-  clientMutationId: String
-
-  "This defines the surcharge that you want to create"
-  surcharge: SurchargeInput!
-
-  "The shop to create this surcharge for"
-  shopId: ID!
-}
-
-# Payloads
-"Response from the `CreateSurcharge` mutation"
-type CreateSurchargePayload {
-  "The same string you sent with the mutation params, for matching mutation calls with their responses"
-  clientMutationId: String
-
-  "The created surcharge"
-  surcharge: Surcharge!
-}
-
-
-####
-# Delete restriction mutation
-####
-extend type Mutation {
-  "Delete a flat rate fulfillment restriction"
-  deleteSurcharge(input: DeleteSurchargeInput!): DeleteSurchargePayload!
-}
-
-# Inputs
-"Input for the `deleteSurcharge` mutation"
-input DeleteSurchargeInput {
-  "An optional string identifying the mutation call, which will be returned in the response payload"
-  clientMutationId: String
-
-  "The ID of the flat rate fulfillment method you want to delete"
-  surchargeId: ID!
-
-  "The shop that owns the method"
-  shopId: ID!
-}
-
-# Payloads
-"Response from the `deleteSurcharge` mutation"
-type DeleteSurchargePayload {
-  "The same string you sent with the mutation params, for matching mutation calls with their responses"
-  clientMutationId: String
-
-  "The removed fulfillment method"
-  surcharge: Surcharge!
-}
-
-
-####
-# Update surcharge mutation
-####
-extend type Mutation {
-  "Update a flat rate fulfillment surcharge"
-  updateSurcharge(input: UpdateSurchargeInput!): UpdateSurchargePayload!
-}
-
-# Inputs
 "Input for the `updateSurcharge` mutation"
 input UpdateSurchargeInput {
   "An optional string identifying the mutation call, which will be returned in the response payload"
@@ -238,7 +190,67 @@ input UpdateSurchargeInput {
   surcharge: SurchargeInput!
 }
 
+
+####
+# Queries
+####
+extend type Query {
+  "Get the full list of flat rate fulfillment method restrictions."
+  getSurcharges(
+    shopId: ID!,
+    language: String,
+    after: ConnectionCursor,
+    before: ConnectionCursor,
+    first: ConnectionLimitInt,
+    last: ConnectionLimitInt,
+    sortOrder: SortOrder = desc,
+    sortBy: SurchargeSortByField = createdAt
+  ): SurchargeConnection!
+
+  getSurcharge(shopId: ID!, surchargeId: ID!, language: String): Surcharge
+}
+
+
+####
+# Mutations
+####
+extend type Mutation {
+  "Create a surcharge"
+  createSurcharge(input: CreateSurchargeInput!): CreateSurchargePayload!
+}
+
+extend type Mutation {
+  "Delete a flat rate fulfillment restriction"
+  deleteSurcharge(input: DeleteSurchargeInput!): DeleteSurchargePayload!
+}
+
+extend type Mutation {
+  "Update a flat rate fulfillment surcharge"
+  updateSurcharge(input: UpdateSurchargeInput!): UpdateSurchargePayload!
+}
+
+
+####
 # Payloads
+####
+"Response from the `CreateSurcharge` mutation"
+type CreateSurchargePayload {
+  "The same string you sent with the mutation params, for matching mutation calls with their responses"
+  clientMutationId: String
+
+  "The created surcharge"
+  surcharge: Surcharge!
+}
+
+"Response from the `deleteSurcharge` mutation"
+type DeleteSurchargePayload {
+  "The same string you sent with the mutation params, for matching mutation calls with their responses"
+  clientMutationId: String
+
+  "The removed fulfillment method"
+  surcharge: Surcharge!
+}
+
 "Response from the `updateFlatRateFulfillmentMethod` mutation"
 type UpdateSurchargePayload {
   "The same string you sent with the mutation params, for matching mutation calls with their responses"
