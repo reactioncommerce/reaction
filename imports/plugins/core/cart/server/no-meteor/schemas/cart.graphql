@@ -25,7 +25,7 @@ type Cart implements Node {
   shop: Shop!
 
   "Surcharges to apply to this cart"
-  surcharges: [CartSurcharge]
+  surcharges: [Surcharge]
 
   "Total quantity of all items in the cart"
   totalItemQuantity: Int!
@@ -175,26 +175,6 @@ type CartItem implements Node {
 
   "The selected variant title"
   variantTitle: String
-}
-
-type CartSurcharge implements Node {
-  "The cart surcharge ID"
-  _id: ID!
-
-  "The amount of the surcharge"
-  amount: Money!
-
-  "The cartID (for reference)"
-  cartId: ID
-
-  "The fulfillmentGroupId (for reference)"
-  fulfillmentGroupId: ID
-
-  "The message to explain the surchage to customers, translated (if available) based on shop language"
-  message: String
-
-  "The surchargeId from the surchages collection (for reference)"
-  surchargeDefinitionId: ID!
 }
 
 enum CartReconciliationMode {

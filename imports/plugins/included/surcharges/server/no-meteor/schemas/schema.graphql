@@ -20,6 +20,23 @@ type surchargeMessagesByLanguage {
   language: String!
 }
 
+type Surcharge implements Node {
+  "The surcharge ID"
+  _id: ID!
+
+  "The amount of the surcharge"
+  amount: Money!
+
+  "The fulfillmentGroupId (for reference)"
+  fulfillmentGroupId: ID
+
+  "The message to explain the surchage to customers, translated (if available) based on shop language"
+  message: String
+
+  "The surchargeId from the surchages collection (for reference)"
+  surchargeDefinitionId: ID!
+}
+
 enum surchargeTypeEnum {
   surcharge
 }
@@ -230,3 +247,12 @@ type UpdateSurchargePayload {
   "The updated fulfillment surcharge"
   surcharge: Surcharge!
 }
+
+
+
+
+
+
+
+
+
