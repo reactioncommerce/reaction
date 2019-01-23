@@ -169,9 +169,6 @@ type OrderFulfillmentGroup implements Node {
   "A summary of the totals for this group"
   summary: OrderSummary!
 
-  "Surcharges applied to this order"
-  surcharges: [Surcharge]
-
   "Total quantity of all items in the group"
   totalItemQuantity: Int!
 
@@ -220,7 +217,7 @@ type Order implements Node {
   shop: Shop!
 
   "Surcharges to apply to this cart"
-  surcharges: [Surcharge]
+  surcharges: [Surcharge]!
 
   "Total quantity of all items in the order"
   totalItemQuantity: Int!
