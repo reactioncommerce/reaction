@@ -5,11 +5,7 @@ export const Money = new SimpleSchema({
     type: Number,
     min: 0
   },
-  currencyCode: String,
-  displayAmount: {
-    type: String,
-    optional: true
-  }
+  currencyCode: String
 });
 
 const SurchargeMessagesByLanguage = new SimpleSchema({
