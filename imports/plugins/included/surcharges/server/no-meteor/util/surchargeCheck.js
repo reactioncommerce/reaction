@@ -1,4 +1,5 @@
-import { operators, propertyTypes } from "/lib/api";
+import operators from "/imports/utils/operators";
+import propertyTypes from "/imports/utils/propertyTypes";
 
 /**
  * @summary Filter surcharges based on surcharge restriction data
