@@ -28,10 +28,10 @@ type Sitemap {
   shopId: String!
 
   "The Sitemap handle, as set in Sitemaps collection"
-  handle: String
+  handle: String!
 
   "The Sitemap XML content"
-  xml: String
+  xml: String!
 
   "Date created"
   createdAt: Date!
