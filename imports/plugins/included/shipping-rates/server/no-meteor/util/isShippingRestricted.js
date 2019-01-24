@@ -1,4 +1,4 @@
-import { operators, propertyTypes } from "./helpers";
+import { operators, propertyTypes } from "/lib/api";
 
 /**
  * @summary Filter shipping methods based on global restrictions
