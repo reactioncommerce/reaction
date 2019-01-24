@@ -1,7 +1,7 @@
 import { surchargeCheck } from "./surchargeCheck";
 import mockContext, { mockCollection } from "/imports/test-utils/helpers/mockContext";
 
-// Create mock context with FlatRateFulfillmentRestrictions collection
+// Create mock context with Surcharges collection
 mockContext.collections.Surcharges = mockCollection("Surcharges");
 
 const mockSurchargeWithAttributesAndLocation = [
