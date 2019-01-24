@@ -66,14 +66,7 @@ const orderInputSchema = new SimpleSchema({
     minCount: 1
   },
   "fulfillmentGroups.$": orderFulfillmentGroupSchema,
-  "shopId": String,
-  "surcharges": {
-    type: Array,
-    optional: true
-  },
-  "surcharges.$": {
-    type: SurchargeSchema
-  }
+  "shopId": String
 });
 
 const paymentInputSchema = new SimpleSchema({
