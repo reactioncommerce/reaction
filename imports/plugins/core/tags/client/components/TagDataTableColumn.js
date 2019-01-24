@@ -40,7 +40,7 @@ const HeroMediaImage = styled.img`
   border: ${applyTheme("HeroMediaSmall.border")}
 `;
 
-const StatusIcon = styled(CircleIcon)`
+const StatusIcon = styled(({ isVisible, ...rest }) => <CircleIcon {...rest} />)`
   ${({ isVisible }) => (isVisible && css`color: ${colors.forestGreen300}`) || css`color: ${colors.black40}`};
 `;
 
