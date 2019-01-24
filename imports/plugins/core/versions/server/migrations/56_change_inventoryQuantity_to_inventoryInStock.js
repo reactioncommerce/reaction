@@ -12,6 +12,7 @@ Migrations.add({
         $rename: { inventoryQuantity: "inventoryInStock" }
       },
       {
+        bypassCollection2: true,
         multi: true
       }
     );
@@ -25,6 +26,7 @@ Migrations.add({
         $rename: { inventoryInStock: "inventoryQuantity" }
       },
       {
+        bypassCollection2: true,
         multi: true
       }
     );
