@@ -3,7 +3,9 @@ import PropTypes from "prop-types";
 import { i18next } from "/client/api";
 import { Components, registerComponent, withMoment } from "@reactioncommerce/reaction-components";
 import { applyTheme } from "@reactioncommerce/components/utils";
-import styled from "styled-components";
+import colors from "/imports/plugins/core/router/client/theme/colors.js";
+import styled, { css } from "styled-components";
+import CircleIcon from "mdi-material-ui/CheckboxBlankCircle";
 
 const Cell = styled.div`
   display: flex;
@@ -36,7 +38,10 @@ const HeroMediaImage = styled.img`
   height: 30px
   border-radius: 2px;
   border: ${applyTheme("HeroMediaSmall.border")}
+`;
 
+const StatusIcon = styled(CircleIcon)`
+  ${({ isVisible }) => (isVisible && css`color: ${colors.forestGreen300}`) || css`color: ${colors.black40}`};
 `;
 
 class TagDataTableColumn extends Component {
@@ -54,7 +59,7 @@ class TagDataTableColumn extends Component {
     if (renderColumn === "isVisible") {
       return (
         <Cell>
-          <Components.Icon icon="fa fa-circle" className={row.value ? "valid" : "error"} />
+          <StatusIcon isVisible={row.value} fontSize="small" />
           <EnabledLabel>{i18next.t(row.value ? "admin.tags.visible" : "admin.tags.hidden")}</EnabledLabel>
         </Cell>
       );
