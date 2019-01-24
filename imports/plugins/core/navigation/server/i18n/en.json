@@ -1,0 +1,16 @@
+[{
+  "language": "English",
+  "i18n": "en",
+  "ns": "navigation",
+  "translation": {
+    "navigation": {
+      "navigationItem": {
+        "displayName": "Display Name",
+        "url": "URL",
+        "isUrlRelative": "This URL is relative",
+        "shouldOpenInNewWindow": "Open in a new tab",
+        "classNames": "CSS Class Names"
+      }
+    }
+  }
+}]

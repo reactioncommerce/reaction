@@ -194,24 +194,22 @@ const wrapComponent = (Comp) => (
 
     render() {
       return (
-        <Components.DragDropProvider>
-          <Comp
-            newTag={this.state.newTag}
-            onClick={this.handleEditButtonClick}
-            onClearSuggestions={this.handleClearSuggestions}
-            onGetSuggestions={this.handleGetSuggestions}
-            onMoveTag={this.handleMoveTag}
-            onNewTagSave={this.handleNewTagSave}
-            onNewTagUpdate={this.handleNewTagUpdate}
-            onTagRemove={this.handleTagRemove}
-            onTagSave={this.handleTagSave}
-            onTagUpdate={this.handleTagUpdate}
-            suggestions={this.state.suggestions}
-            tags={this.tags}
-            tooltip="Unpublished changes"
-            {...this.props}
-          />
-        </Components.DragDropProvider>
+        <Comp
+          newTag={this.state.newTag}
+          onClick={this.handleEditButtonClick}
+          onClearSuggestions={this.handleClearSuggestions}
+          onGetSuggestions={this.handleGetSuggestions}
+          onMoveTag={this.handleMoveTag}
+          onNewTagSave={this.handleNewTagSave}
+          onNewTagUpdate={this.handleNewTagUpdate}
+          onTagRemove={this.handleTagRemove}
+          onTagSave={this.handleTagSave}
+          onTagUpdate={this.handleTagUpdate}
+          suggestions={this.state.suggestions}
+          tags={this.tags}
+          tooltip="Unpublished changes"
+          {...this.props}
+        />
       );
     }
   }

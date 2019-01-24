@@ -121,7 +121,6 @@ class App extends Component {
 
     const { currentRoute } = this.props;
     const layout = currentRoute && currentRoute.route && currentRoute.route.options && currentRoute.route.options.layout;
-
     if (this.isAdminApp && layout !== "printLayout" && !this.noAdminControls) {
       if (currentRoute.route.path.startsWith("/operator")) {
         return this.renderOperatorApp();
