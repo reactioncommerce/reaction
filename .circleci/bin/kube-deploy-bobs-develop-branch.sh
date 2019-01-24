@@ -43,4 +43,5 @@ export HELM_HOME=~/.helm
 # install helm secrets plugin
 /usr/local/bin/helm plugin install https://github.com/futuresimple/helm-secrets
 
+echo Running helm secrets upgrade --set imageTag=$CIRCLE_SHA1 reaction-core .reaction/helm-charts/reaction-core -f .reaction/helm-charts/reaction-core/secrets.yaml
 helm secrets upgrade --set imageTag=$CIRCLE_SHA1 reaction-core .reaction/helm-charts/reaction-core -f .reaction/helm-charts/reaction-core/secrets.yaml

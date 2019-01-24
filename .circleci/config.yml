@@ -434,4 +434,4 @@ workflows:
             - docker-push
           filters:
             branches:
-              only: /^develop.*/
+              only: /^develop$/
