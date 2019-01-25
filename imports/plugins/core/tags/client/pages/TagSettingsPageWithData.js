@@ -31,9 +31,9 @@ class TagSettings extends Component {
     super(props);
 
     this.bulkActions = [
-      { value: "disable", label: i18next.t("admin.routing.disable") },
-      { value: "enable", label: i18next.t("admin.routing.enable") },
-      { value: "delete", label: i18next.t("admin.routing.delete") }
+      { value: "hidden", label: i18next.t("admin.tags.hidden") },
+      { value: "visible", label: i18next.t("admin.tags.visible") },
+      { value: "delete", label: i18next.t("admin.tags.delete") }
     ];
 
     this.tableRef = React.createRef();
@@ -67,7 +67,7 @@ class TagSettings extends Component {
     let mutation = updateTagMutation;
 
     // Escape early if you don't have a valid action
-    if (!["enable", "disable", "delete"].includes(action)) {
+    if (!["visible", "hidden", "delete"].includes(action)) {
       return Promise.reject(`Invalid bulk action: ${action}`);
     }
 
@@ -82,12 +82,12 @@ class TagSettings extends Component {
         shopId
       };
 
-      // For enable / disable we need to supply the required fields for
+      // For visible / hidden we need to supply the required fields for
       // the `UpdateTagInput`
-      if (action === "enable" || action === "disable") {
+      if (action === "visible" || action === "hidden") {
         input = {
           ...input,
-          isVisible: action === "enable",
+          isVisible: action === "visible",
           name: item.name,
           displayTitle: item.displayTitle
         };

@@ -33,7 +33,7 @@ const FilterTextInput = styled.div`
 
 const BulkActionsSelect = styled.div`
   min-width: 150px;
-  margin-left: 20px;
+  margin-right: 20px;
 `;
 
 const PaginationContainer = styled.div`
@@ -66,6 +66,10 @@ const TableContainer = styled.div`
   }
 
   .ReactTable .rt-thead.-header {
+    border: none;
+  }
+
+  .ReactTable .rt-tr-group {
     border: none;
   }
 
@@ -266,7 +270,7 @@ class TagDataTable extends Component {
       const option = bulkActions.find((opt) => opt.value === action);
 
       Alerts.alert({
-        title: `${option.label} ${selection.length} item(s)`,
+        title: i18next.t(`admin.tags.${option.value}Action`, { count: selection.length }),
         type: "warning",
         showCancelButton: true
       }, async (isConfirm) => {
@@ -499,8 +503,8 @@ class TagDataTable extends Component {
           return (
             <TableContainer>
               <TableHeader>
-                {this.renderTableFilter(resultCount)}
                 {resultCount > 0 && this.renderBulkActionsSelect()}
+                {this.renderTableFilter(resultCount)}
               </TableHeader>
               <CheckboxTable
                 {...checkboxProps}
