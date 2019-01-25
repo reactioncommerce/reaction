@@ -54,6 +54,7 @@ export default async function startNodeApp() {
       resolvers: finalResolvers,
       schemas: [...coreSchemas, ...schemas]
     },
+    httpServer: WebApp.httpServer,
     mongodb
   });
 
@@ -66,13 +67,13 @@ export default async function startNodeApp() {
 
   await app.runServiceStartup();
 
-  // bind the specified paths to the Express server running Apollo + GraphiQL
+  // bind the specified paths to the Express server running GraphQL
   WebApp.connectHandlers.use(app.expressApp);
 
   // Log to inform that the server is running
   WebApp.httpServer.on("listening", () => {
-    Logger.info(`GraphQL listening at ${ROOT_URL}/graphql-alpha`);
-    Logger.info(`GraphiQL UI: ${ROOT_URL}/graphiql`);
+    Logger.info(`GraphQL listening at ${ROOT_URL}${app.apolloServer.graphqlPath}`);
+    Logger.info(`GraphQL subscriptions ready at ${ROOT_URL.replace("http", "ws")}${app.apolloServer.subscriptionsPath}`);
 
     appStartupIsComplete = true;
   });

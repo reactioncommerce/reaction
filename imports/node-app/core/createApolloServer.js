@@ -40,9 +40,12 @@ export default function createApolloServer(options = {}) {
     schema = mergeSchemas({ schemas: [schema, ...schemasToMerge] });
   }
 
-  const server = new ApolloServer({
-    async context({ req }) {
+  const apolloServer = new ApolloServer({
+    async context({ connection, req }) {
       const context = { ...contextFromOptions };
+
+      // For a GraphQL subscription WebSocket request, there is no `req`
+      if (connection) return context;
 
       // meteorTokenMiddleware will have already set req.user if there is one
       await buildContext(context, req);
@@ -53,7 +56,10 @@ export default function createApolloServer(options = {}) {
     },
     debug: options.debug || false,
     formatError: getErrorFormatter(),
-    schema
+    schema,
+    subscriptions: {
+      path: DEFAULT_GRAPHQL_PATH
+    }
   });
 
   // GraphQL endpoint, enhanced with JSON body parser
@@ -68,10 +74,10 @@ export default function createApolloServer(options = {}) {
     tokenMiddleware(contextFromOptions)
   );
 
-  server.applyMiddleware({ app, cors: true, path });
+  apolloServer.applyMiddleware({ app, cors: true, path });
 
   return {
-    apolloServer: server,
+    apolloServer,
     expressApp: app
   };
 }
