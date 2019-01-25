@@ -13,6 +13,7 @@ import TextInput from "@reactioncommerce/components/TextInput/v1";
 import Button from "@reactioncommerce/components/Button/v1";
 import { i18next } from "/client/api";
 import { pagination } from "./util/pagination";
+import TagTableSelect from "./TagTableSelect";
 
 const CheckboxTable = checkboxHOC(ReactTable);
 
@@ -41,6 +42,35 @@ const PaginationContainer = styled.div`
   width: 100%;
   > div {
     margin-left: 0.5rem;
+  }
+`;
+
+const TableContainer = styled.div`
+  .ReactTable {
+    border: none;
+  }
+
+  .ReactTable .rt-th, .ReactTable .rt-td {
+    padding: 0px 5px;
+  }
+
+  .ReactTable .rt-tbody .rt-td {
+    border: none;
+  }
+
+  .ReactTable .rt-thead .rt-th, .ReactTable .rt-thead .rt-td {
+    border: none;
+    display: flex;
+    align-items: center;
+    font-weight: 600;
+  }
+
+  .ReactTable .rt-thead.-header {
+    border: none;
+  }
+
+  .ReactTable .rt-thead.-header:first-child .rt-th:first-child {
+    justify-content: center;
   }
 `;
 
@@ -417,11 +447,14 @@ class TagDataTable extends Component {
       ...variablesProp
     };
     const checkboxProps = {
+      SelectInputComponent: TagTableSelect,
+      SelectAllInputComponent: TagTableSelect,
       selectType: "checkbox",
       selectAll: this.state.selectAll,
       isSelected: this.isRowSelected,
       toggleSelection: this.handleToggleSelection,
-      toggleAll: this.handleToggleAll
+      toggleAll: this.handleToggleAll,
+      selectWidth: 64
     };
 
 
@@ -464,7 +497,7 @@ class TagDataTable extends Component {
           const { hasNextPage, hasPreviousPage, loadNextPage, loadPreviousPage } = pageInfo;
 
           return (
-            <div className="rui rui-sortable-table">
+            <TableContainer>
               <TableHeader>
                 {this.renderTableFilter(resultCount)}
                 {resultCount > 0 && this.renderBulkActionsSelect()}
@@ -541,7 +574,7 @@ class TagDataTable extends Component {
                   <ChevronRightIcon />
                 </Button>
               </PaginationContainer>
-            </div>
+            </TableContainer>
           );
         }}
       </Query>
