@@ -58,7 +58,7 @@ export default function createApolloServer(options = {}) {
     formatError: getErrorFormatter(),
     schema,
     subscriptions: {
-      path: DEFAULT_GRAPHQL_PATH
+      path
     }
   });
 
@@ -78,6 +78,7 @@ export default function createApolloServer(options = {}) {
 
   return {
     apolloServer,
-    expressApp: app
+    expressApp: app,
+    path
   };
 }

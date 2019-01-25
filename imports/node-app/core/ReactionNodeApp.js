@@ -45,7 +45,8 @@ export default class ReactionNodeApp {
 
     const {
       apolloServer,
-      expressApp
+      expressApp,
+      path
     } = createApolloServer({
       addCallMeteorMethod: this.options.addCallMeteorMethod || defaultAddCallMethod,
       context: this.context,
@@ -56,10 +57,10 @@ export default class ReactionNodeApp {
 
     this.apolloServer = apolloServer;
     this.expressApp = expressApp;
+    this.graphQLPath = path;
 
-    // Wire up GraphQL subscription websocket handlers
+    // HTTP server for GraphQL subscription websocket handlers
     this.httpServer = options.httpServer || createServer(this.expressApp);
-    apolloServer.installSubscriptionHandlers(this.httpServer);
   }
 
   setMongoDatabase(db) {

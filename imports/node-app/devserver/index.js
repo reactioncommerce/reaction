@@ -31,6 +31,8 @@ const app = new ReactionNodeApp({
 // Serve files in the /public folder statically
 app.expressApp.use(express.static("public"));
 
+app.apolloServer.installSubscriptionHandlers(app.httpServer);
+
 app.start({ mongoUrl: MONGO_URL, port: PORT })
   .then(() => {
     Logger.info(`GraphQL listening at ${ROOT_URL}${app.apolloServer.graphqlPath}`);

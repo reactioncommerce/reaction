@@ -48,6 +48,7 @@
     "apollo-client": "2.3.5",
     "apollo-link": "1.2.2",
     "apollo-link-http": "1.5.4",
+    "apollo-link-ws": "1.0.12",
     "apollo-server": "2.3.1",
     "apollo-server-express": "2.3.1",
     "autoprefixer": "^7.2.5",
