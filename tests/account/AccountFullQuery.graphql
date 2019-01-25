@@ -1,4 +1,4 @@
-($id: ID!) {
+query ($id: ID!) {
   account(id: $id) {
     _id
     addressBook {

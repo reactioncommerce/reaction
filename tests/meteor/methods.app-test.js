@@ -19,39 +19,6 @@ describe("Server/Core", function () {
     sandbox.restore();
   });
 
-  describe("shop/removeHeaderTag", function () {
-    beforeEach(function () {
-      return Tags.remove({});
-    });
-
-    it("should throw 403 error by non admin", function (done) {
-      const tagUpdateSpy = sandbox.spy(Tags, "update");
-      const tagRemoveSpy = sandbox.spy(Tags, "remove");
-      const tag = Factory.create("tag");
-      const currentTag = Factory.create("tag");
-      function removeTagFunc() {
-        return Meteor.call("shop/removeHeaderTag", tag._id, currentTag._id);
-      }
-      expect(removeTagFunc).to.throw(ReactionError, /Access Denied/);
-      expect(tagUpdateSpy).to.not.have.been.called;
-      expect(tagRemoveSpy).to.not.have.been.called;
-      return done();
-    });
-
-    it("should remove header tag by admin", function (done) {
-      sandbox.stub(Reaction, "hasPermission", function () {
-        return true;
-      });
-
-      const tag = Factory.create("tag");
-      const currentTag = Factory.create("tag");
-      expect(Tags.find().count()).to.equal(2);
-      Meteor.call("shop/removeHeaderTag", tag._id, currentTag._id);
-      expect(Tags.find().count()).to.equal(1);
-      return done();
-    });
-  });
-
   describe("shop/createTag", () => {
     beforeEach(() => {
       Tags.remove({});

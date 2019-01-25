@@ -1,4 +1,4 @@
-{
+query {
   viewer {
     _id
     addressBook {
