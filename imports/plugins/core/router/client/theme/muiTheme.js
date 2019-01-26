@@ -68,6 +68,19 @@ export const rawMuiTheme = {
       root: {
         border: `1px solid ${colors.black10}`
       }
+    },
+    MuiCheckbox: {
+      root: {
+        color: colors.coolGrey500
+      },
+      colorSecondary: {
+        "&$checked": {
+          color: colors.coolGrey500
+        },
+        "&$disabled": {
+          color: colors.coolGrey100
+        }
+      }
     }
   }
 };

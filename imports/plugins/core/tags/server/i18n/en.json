@@ -15,6 +15,12 @@
             "delete": "Delete",
             "visible": "Visible",
             "hidden": "Hidden",
+            "visibleAction": "Make {{count}} tag visible to customers",
+            "visibleAction_plural": "Make {{count}} tags visible to customers",
+            "hiddenAction": "Hide {{count}} tag from customers",
+            "hiddenAction_plural": "Hide {{count}} tags from customers",
+            "deleteAction": "Delete {{count}} tag",
+            "deleteAction_plural": "Delete {{count}} tags",
             "form": {
               "name": "Tag name",
               "nameHelpText": "The unique name for the tag",

@@ -19,6 +19,9 @@ input AddTagInput {
 
   "Tag metafields"
   metafields: [MetafieldInput]
+
+  "Hero media URL"
+  heroMediaUrl: String
 }
 
 type AddTagPayload {
