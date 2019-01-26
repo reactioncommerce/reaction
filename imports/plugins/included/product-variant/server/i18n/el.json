@@ -6,12 +6,12 @@
       "admin": {
         "helpText": {
           "compareAtPrice": "Αρχική τιμή ή MSRP",
-          "optionInventoryQuantity": "Καταγραφή εμπορευμάτων",
+          "optionInventoryInStock": "Καταγραφή εμπορευμάτων",
           "optionTitle": "Εμφανίζεται στη σελίδα λεπτομερειών προϊόντος",
           "price": "Τιμή αγοράς",
           "title": "Εμφανίζονται στο καλάθι, στο ταμείο και στις παραγγελίες",
           "variantBackorderToggle": "Το επίδομα backorder ελέγχεται τώρα από τις επιλογές",
-          "variantInventoryQuantity": "Το απόθεμα παραλλαγών ελέγχεται τώρα από επιλογές"
+          "variantInventoryInStock": "Το απόθεμα παραλλαγών ελέγχεται τώρα από επιλογές"
         },
         "tooltip": {
           "validationError": "Σφάλμα επικύρωσης"

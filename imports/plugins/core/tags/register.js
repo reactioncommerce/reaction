@@ -9,6 +9,7 @@ Reaction.registerPackage({
   name: "reaction-tags",
   icon: "fa fa-tag",
   autoEnable: true,
+  version: "1.0.0",
   graphQL: {
     resolvers,
     schemas

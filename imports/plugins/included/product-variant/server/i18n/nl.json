@@ -6,12 +6,12 @@
       "admin": {
         "helpText": {
           "compareAtPrice": "Oorspronkelijke prijs of MSRP",
-          "optionInventoryQuantity": "Inventaris",
+          "optionInventoryInStock": "Inventaris",
           "optionTitle": "Wordt weergegeven op productdetailpagina",
           "price": "Aankoopprijs",
           "title": "Wordt weergegeven in winkelwagen, afrekenen en bestellingen",
           "variantBackorderToggle": "Reserveordertoeslag wordt nu gecontroleerd door opties",
-          "variantInventoryQuantity": "Variant inventaris wordt nu gecontroleerd door opties"
+          "variantInventoryInStock": "Variant inventaris wordt nu gecontroleerd door opties"
         },
         "tooltip": {
           "validationError": "Validatie fout"

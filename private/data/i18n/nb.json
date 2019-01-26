@@ -99,7 +99,7 @@
         "details": "Detaljer"
       },
       "productVariant": {
-        "inventoryQuantity": "Antall",
+        "inventoryInStock": "Antall",
         "title": "Produkt tittel",
         "barcode": "Strekkode"
       },

@@ -6,12 +6,12 @@
       "admin": {
         "helpText": {
           "compareAtPrice": "Originalna cena ali MSRP",
-          "optionInventoryQuantity": "popis",
+          "optionInventoryInStock": "popis",
           "optionTitle": "Prikazano na strani s podrobnostmi o izdelku",
           "price": "Nakupna cena",
           "title": "Prikazano v vozičku, blagajno in naročila",
           "variantBackorderToggle": "Nadomestilo za backorder zdaj nadzira možnosti",
-          "variantInventoryQuantity": "Popis variant zdaj nadzira možnosti"
+          "variantInventoryInStock": "Popis variant zdaj nadzira možnosti"
         },
         "tooltip": {
           "validationError": "Napaka validacije"

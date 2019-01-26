@@ -6,12 +6,12 @@
       "admin": {
         "helpText": {
           "compareAtPrice": "Eredeti ár vagy MSRP",
-          "optionInventoryQuantity": "Leltár",
+          "optionInventoryInStock": "Leltár",
           "optionTitle": "Megjelenik a termék részletes oldalán",
           "price": "Vételár",
           "title": "Kosárba, pénztárba és megrendelésekbe",
           "variantBackorderToggle": "A hátrányos juttatásokat az opciók vezérlik",
-          "variantInventoryQuantity": "A változatleltárt jelenleg a lehetőségek választják"
+          "variantInventoryInStock": "A változatleltárt jelenleg a lehetőségek választják"
         },
         "tooltip": {
           "validationError": "Érvényesítési hiba"

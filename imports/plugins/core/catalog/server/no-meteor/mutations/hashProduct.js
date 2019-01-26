@@ -38,7 +38,7 @@ const variantFieldsThatNeedPublishing = [
   "index",
   "inventoryManagement",
   "inventoryPolicy",
-  "inventoryQuantity",
+  "inventoryInStock",
   "isDeleted",
   "isLowQuantity",
   "isSoldOut",

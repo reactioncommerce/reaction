@@ -47,7 +47,7 @@ class ChildVariant extends Component {
     } = this.props.variant;
 
     // If childVariant is sold out, show Sold Out badge
-    if (inventoryManagement && this.props.variant.inventoryQuantity <= 0) {
+    if (inventoryManagement && this.props.variant.inventoryInStock <= 0) {
       if (inventoryPolicy) {
         return (
           <span className="variant-qty-sold-out badge badge-danger child-variant-badge-label">
