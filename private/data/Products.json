@@ -41,7 +41,7 @@
   "price": 19.99,
   "inventoryManagement": true,
   "inventoryPolicy": true,
-  "inventoryQuantity": 15,
+  "inventoryInStock": 15,
   "isVisible": true,
   "updatedAt": {
     "$date": "2014-04-03T13:46:52.411-0700"
@@ -68,7 +68,7 @@
   "price": 19.99,
   "inventoryManagement": true,
   "inventoryPolicy": true,
-  "inventoryQuantity": 19,
+  "inventoryInStock": 19,
   "isVisible": true,
   "updatedAt": {
     "$date": "2014-04-03T13:46:52.411-0700"
@@ -98,7 +98,7 @@
   "price": 12.99,
   "inventoryManagement": true,
   "inventoryPolicy": true,
-  "inventoryQuantity": 42,
+  "inventoryInStock": 42,
   "isVisible": true,
   "updatedAt": {
     "$date": "2014-04-03T13:46:52.411-0700"

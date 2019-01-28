@@ -6,12 +6,12 @@
       "admin": {
         "helpText": {
           "compareAtPrice": "Preço original ou MSRP",
-          "optionInventoryQuantity": "Inventário",
+          "optionInventoryInStock": "Inventário",
           "optionTitle": "Exibido na página de detalhes do produto",
           "price": "Preço de compra",
           "title": "Exibido no carrinho, no checkout e nos pedidos",
           "variantBackorderToggle": "O subsídio de reserva está agora controlado por opções",
-          "variantInventoryQuantity": "O inventário de variantes agora é controlado por opções"
+          "variantInventoryInStock": "O inventário de variantes agora é controlado por opções"
         },
         "tooltip": {
           "validationError": "Erro de validação"

@@ -7,11 +7,20 @@ const fakeUser = {
 
 test("properly mutates the context object without user", async () => {
   process.env.ROOT_URL = "http://localhost:3000";
-  const context = { collections: mockContext.collections };
+  const context = {
+    collections: mockContext.collections,
+    queries: {
+      primaryShopId: () => "PRIMARY_SHOP_ID"
+    }
+  };
+
   await buildContext(context, { user: undefined });
   expect(context).toEqual({
     collections: mockContext.collections,
-    shopId: null,
+    queries: {
+      primaryShopId: jasmine.any(Function)
+    },
+    shopId: "PRIMARY_SHOP_ID",
     user: null,
     userHasPermission: jasmine.any(Function),
     userId: null,
@@ -25,13 +34,21 @@ test("properly mutates the context object with user", async () => {
   const mockAccount = { _id: "accountId", userId: fakeUser._id };
   mockContext.collections.Accounts.findOne.mockReturnValueOnce(Promise.resolve(mockAccount));
 
-  const context = { collections: mockContext.collections };
+  const context = {
+    collections: mockContext.collections,
+    queries: {
+      primaryShopId: () => "PRIMARY_SHOP_ID"
+    }
+  };
   await buildContext(context, { user: fakeUser });
   expect(context).toEqual({
     account: mockAccount,
     accountId: mockAccount._id,
     collections: mockContext.collections,
-    shopId: null,
+    queries: {
+      primaryShopId: jasmine.any(Function)
+    },
+    shopId: "PRIMARY_SHOP_ID",
     user: fakeUser,
     userHasPermission: jasmine.any(Function),
     userId: fakeUser._id,

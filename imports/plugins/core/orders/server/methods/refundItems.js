@@ -3,6 +3,7 @@ import Future from "fibers/future";
 import { Meteor } from "meteor/meteor";
 import { check } from "meteor/check";
 import { Orders } from "/lib/collections";
+import appEvents from "/imports/node-app/core/util/appEvents";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
 import ReactionError from "@reactioncommerce/reaction-error";
 import sendOrderEmail from "../util/sendOrderEmail";
@@ -40,6 +41,12 @@ function orderQuantityAdjust(orderId, refundedItem) {
       );
     }
   });
+
+  const updatedOrder = Orders.findOne({ _id: orderId });
+  Promise.await(appEvents.emit("afterOrderUpdate", {
+    order: updatedOrder,
+    updatedBy: Reaction.getUserId()
+  }));
 }
 
 /**
@@ -87,7 +94,7 @@ export default function refundItemsMethod(orderId, paymentId, refundItemsInfo) {
         refundedStatus = "partialRefund";
       }
 
-      Orders.update(
+      const updateResult = Orders.update(
         {
           "_id": orderId,
           "shipping.payment._id": paymentId
@@ -98,6 +105,16 @@ export default function refundItemsMethod(orderId, paymentId, refundItemsInfo) {
           }
         }
       );
+
+      if (updateResult !== 1) {
+        throw new ReactionError("server-error", "Unable to update order");
+      }
+
+      const updatedOrder = Orders.findOne({ _id: orderId });
+      Promise.await(appEvents.emit("afterOrderUpdate", {
+        order: updatedOrder,
+        updatedBy: Reaction.getUserId()
+      }));
 
       sendOrderEmail(order, "itemRefund");
 

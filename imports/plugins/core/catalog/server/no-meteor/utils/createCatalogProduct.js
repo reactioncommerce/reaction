@@ -1,9 +1,10 @@
 import Logger from "@reactioncommerce/logger";
+import canBackorder from "./canBackorder";
 import getCatalogProductMedia from "./getCatalogProductMedia";
 import getPriceRange from "./getPriceRange";
-import isBackorder from "./isBackorder";
-import isLowQuantity from "./isLowQuantity";
-import isSoldOut from "./isSoldOut";
+import isBackorder from "/imports/plugins/core/inventory/server/no-meteor/utils/isBackorder";
+import isLowQuantity from "/imports/plugins/core/inventory/server/no-meteor/utils/isLowQuantity";
+import isSoldOut from "/imports/plugins/core/inventory/server/no-meteor/utils/isSoldOut";
 
 /**
  * @method
@@ -22,11 +23,15 @@ export function xformVariant(variant, variantPriceInfo, shopCurrencyCode, varian
   return {
     _id: variant._id,
     barcode: variant.barcode,
+    canBackorder: variantInventory.canBackorder,
     createdAt: variant.createdAt || new Date(),
     height: variant.height,
     index: variant.index || 0,
+    inventoryAvailableToSell: variantInventory.inventoryAvailableToSell || 0,
+    inventoryInStock: variantInventory.inventoryInStock || 0,
     inventoryManagement: !!variant.inventoryManagement,
     inventoryPolicy: !!variant.inventoryPolicy,
+    isBackorder: variantInventory.isBackorder,
     isLowQuantity: variantInventory.isLowQuantity,
     isSoldOut: variantInventory.isSoldOut,
     length: variant.length,
@@ -101,12 +106,20 @@ export async function xformProduct({ collections, product, shop, variants }) {
         const optionPrices = variantOptions.map((option) => option.price);
         priceInfo = getPriceRange(optionPrices, shopCurrencyInfo);
         variantInventory = {
+          canBackorder: canBackorder(variantOptions),
+          inventoryAvailableToSell: variant.inventoryAvailableToSell || 0,
+          inventoryInStock: variant.inventoryInStock || 0,
+          isBackorder: isBackorder(variantOptions),
           isLowQuantity: isLowQuantity(variantOptions),
           isSoldOut: isSoldOut(variantOptions)
         };
       } else {
         priceInfo = getPriceRange([variant.price], shopCurrencyInfo);
         variantInventory = {
+          canBackorder: canBackorder([variant]),
+          inventoryAvailableToSell: variant.inventoryAvailableToSell || 0,
+          inventoryInStock: variant.inventoryInStock || 0,
+          isBackorder: isBackorder([variant]),
           isLowQuantity: isLowQuantity([variant]),
           isSoldOut: isSoldOut([variant])
         };
@@ -121,6 +134,10 @@ export async function xformProduct({ collections, product, shop, variants }) {
         newVariant.options = variantOptions.map((option) => {
           const optionMedia = catalogProductMedia.filter((media) => media.variantId === option._id);
           const optionInventory = {
+            canBackorder: canBackorder([option]),
+            inventoryAvailableToSell: option.inventoryAvailableToSell,
+            inventoryInStock: option.inventoryInStock,
+            isBackorder: isBackorder([option]),
             isLowQuantity: isLowQuantity([option]),
             isSoldOut: isSoldOut([option])
           };
@@ -139,6 +156,8 @@ export async function xformProduct({ collections, product, shop, variants }) {
     createdAt: product.createdAt || new Date(),
     description: product.description,
     height: product.height,
+    inventoryAvailableToSell: product.inventoryAvailableToSell || 0,
+    inventoryInStock: product.inventoryInStock || 0,
     isBackorder: isBackorder(variants),
     isDeleted: !!product.isDeleted,
     isLowQuantity: isLowQuantity(variants),

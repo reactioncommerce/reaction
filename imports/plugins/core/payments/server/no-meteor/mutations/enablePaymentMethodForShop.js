@@ -1,6 +1,6 @@
 import ReactionError from "@reactioncommerce/reaction-error";
 import SimpleSchema from "simpl-schema";
-import { paymentMethods as allPaymentMethods } from "/imports/plugins/core/core/server/no-meteor/pluginRegistration";
+import { paymentMethods as allPaymentMethods } from "../registration";
 
 const paramsSchema = new SimpleSchema({
   isEnabled: Boolean,

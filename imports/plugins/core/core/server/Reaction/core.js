@@ -1,28 +1,24 @@
-import Hooks from "@reactioncommerce/hooks";
 import Logger from "@reactioncommerce/logger";
-import Random from "@reactioncommerce/random";
 import packageJson from "/package.json";
 import _, { merge, uniqWith } from "lodash";
 import { Meteor } from "meteor/meteor";
 import { check } from "meteor/check";
-import { Accounts } from "meteor/accounts-base";
 import { Roles } from "meteor/alanning:roles";
 import { EJSON } from "meteor/ejson";
 import * as Collections from "/lib/collections";
+import appEvents from "/imports/node-app/core/util/appEvents";
 import ConnectionDataStore from "/imports/plugins/core/core/server/util/connectionDataStore";
 import {
   customPublishedProductFields,
   customPublishedProductVariantFields,
   functionsByType,
   mutations,
-  paymentMethods,
   queries,
   resolvers,
   schemas
 } from "../no-meteor/pluginRegistration";
 import createGroups from "./createGroups";
 import processJobs from "./processJobs";
-import sendVerificationEmail from "./sendVerificationEmail";
 import { registerTemplate } from "./templates";
 import { AbsoluteUrlMixin } from "./absoluteUrl";
 import { getUserId } from "./accountUtils";
@@ -40,32 +36,17 @@ export default {
   ...AbsoluteUrlMixin,
 
   init() {
-    const registerPluginHandlerFuncs = functionsByType.registerPluginHandler || [];
-    const packageInfoArray = Object.values(this.Packages);
-    registerPluginHandlerFuncs.forEach((registerPluginHandlerFunc) => {
-      if (typeof registerPluginHandlerFunc !== "function") {
-        throw new Error('A plugin registered a function of type "registerPluginHandler" which is not actually a function');
-      }
-      packageInfoArray.forEach(registerPluginHandlerFunc);
-    });
-
-    // run beforeCoreInit hooks
-    Hooks.Events.run("beforeCoreInit");
-
     // make sure the default shop has been created before going further
     while (!this.getShopId()) {
       Logger.warn("No shopId, waiting one second...");
       Meteor._sleepForMs(1000);
     }
 
-    // run onCoreInit hooks
-    Hooks.Events.run("onCoreInit");
-
     // start job server
     Jobs.startJobServer(() => {
       Logger.info("JobServer started");
       processJobs();
-      Hooks.Events.run("onJobServerStart");
+      appEvents.emit("jobServerStart");
     });
     if (process.env.VERBOSE_JOBS) {
       Jobs.setLogStream(process.stdout);
@@ -75,13 +56,22 @@ export default {
     // process imports from packages and any hooked imports
     this.Importer.flush();
     createGroups();
-    // timing is important, packages are rqd for initial permissions configuration.
-    if (!Meteor.isAppTest) {
-      this.createDefaultAdminUser();
-    }
     this.setAppVersion();
-    // hook after init finished
-    Hooks.Events.run("afterCoreInit");
+
+    // Call `functionsByType.registerPluginHandler` functions for every plugin that
+    // has supplied one, passing in all other plugins. Allows one plugin for check
+    // for the presence of another plugin and read its config.
+    const registerPluginHandlerFuncs = functionsByType.registerPluginHandler || [];
+    const packageInfoArray = Object.values(this.Packages);
+    registerPluginHandlerFuncs.forEach((registerPluginHandlerFunc) => {
+      if (typeof registerPluginHandlerFunc !== "function") {
+        throw new Error('A plugin registered a function of type "registerPluginHandler" which is not actually a function');
+      }
+      packageInfoArray.forEach(registerPluginHandlerFunc);
+    });
+
+    // DEPRECATED. Avoid consuming this hook in new code
+    appEvents.emit("afterCoreInit");
 
     Logger.debug("Reaction.init() has run");
 
@@ -116,15 +106,6 @@ export default {
         }
         functionsByType[type].push(...packageInfo.functionsByType[type]);
       });
-    }
-
-    if (packageInfo.paymentMethods) {
-      for (const paymentMethod of packageInfo.paymentMethods) {
-        paymentMethods[paymentMethod.name] = {
-          ...paymentMethod,
-          pluginName: packageInfo.name
-        };
-      }
     }
 
     if (packageInfo.catalog) {
@@ -867,175 +848,6 @@ export default {
   },
 
   /**
-   * @name createDefaultAdminUser
-   * @method
-   * @memberof Core
-   * @summary Method that creates default admin user
-   * Settings load precendence:
-   *  1. environment variables
-   *  2. settings in meteor.settings
-   * @returns {String} return userId
-   */
-  createDefaultAdminUser() {
-    const shopId = this.getPrimaryShopId();
-    if (!shopId) {
-      throw new Error(`createDefaultAdminUser: getPrimaryShopId returned ${shopId}`);
-    }
-
-    // if an admin user has already been created, we'll exit
-    if (Roles.getUsersInRole("owner", shopId).count() !== 0) {
-      Logger.debug("Not creating default admin user, already exists");
-      return ""; // this default admin has already been created for this shop.
-    }
-
-    // run hooks on options object before creating user (the options object must be returned from all callbacks)
-    let options = {};
-    options = Hooks.Events.run("beforeCreateDefaultAdminUser", options);
-
-    // If $REACTION_SECURE_DEFAULT_ADMIN is set to "true" on first run,
-    // a random email/password will be generated instead of using the
-    // default email and password (email: admin@localhost pw: r3@cti0n)
-    // and the new admin user will need to verify their email to log in.
-    // If a random email and password are generated, the console will be
-    // the only place to retrieve them.
-    // If the admin email/password is provided via environment or Meteor settings,
-    // the $REACTION_SECURE_DEFAULT_ADMIN will only enforce the email validation part.
-    const isSecureSetup = process.env.REACTION_SECURE_DEFAULT_ADMIN === "true";
-
-    // generate default values to use if none are supplied
-    const defaultEmail = isSecureSetup ? `${Random.id(8).toLowerCase()}@localhost` : "admin@localhost";
-    const defaultPassword = isSecureSetup ? Random.secret(8) : "r3@cti0n";
-    const defaultUsername = "admin";
-    const defaultName = "Admin";
-
-    // Process environment variables and Meteor settings for initial user config.
-    // If ENV variables are set, they always override Meteor settings (settings.json).
-    // This is to allow for testing environments where we don't want to use users configured in a settings file.
-    const { env } = process;
-    let configureEnv = false;
-
-    if (env.REACTION_EMAIL && env.REACTION_AUTH) {
-      configureEnv = true;
-      Logger.info("Using environment variables to create admin user");
-    }
-
-    // defaults use either env or generated values
-    options.email = env.REACTION_EMAIL || defaultEmail;
-    options.password = env.REACTION_AUTH || defaultPassword;
-    options.username = env.REACTION_USER_NAME || defaultUsername;
-    options.name = env.REACTION_USER || defaultName;
-
-    // or use `meteor --settings`
-    if (Meteor.settings && !configureEnv) {
-      if (Meteor.settings.reaction) {
-        options.email = Meteor.settings.reaction.REACTION_EMAIL || defaultEmail;
-        options.password = Meteor.settings.reaction.REACTION_AUTH || defaultPassword;
-        options.username = Meteor.settings.reaction.REACTION_USER || defaultUsername;
-        options.name = Meteor.settings.reaction.REACTION_USER_NAME || defaultName;
-        Logger.info("Using meteor --settings to create admin user");
-      }
-    }
-
-    // set the default shop email to the default admin email
-    Shops.update(shopId, {
-      $addToSet: {
-        emails: {
-          address: options.email,
-          verified: true
-        }
-      }
-    });
-
-    // get the current shop
-    const shop = Shops.findOne(shopId);
-
-    // add the current domain to the shop if it doesn't already exist
-    if (!shop.domains.includes(this.getDomain())) {
-      // set the default shop email to the default admin email
-      Shops.update(shopId, {
-        $addToSet: {
-          domains: this.getDomain()
-        }
-      });
-    }
-
-    //
-    // create the new admin user
-    //
-    let accountId;
-    // we're checking again to see if this user was created but not specifically for this shop.
-    if (Meteor.users.find({ "emails.address": options.email }).count() === 0) {
-      accountId = Accounts.createUser(options);
-    } else {
-      // this should only occur when existing admin creates a new shop
-      accountId = Meteor.users.findOne({ "emails.address": options.email })._id;
-    }
-
-    // update the user's name if it was provided
-    // (since Accounts.createUser() doesn't allow that field and strips it out)
-    Meteor.users.update(accountId, {
-      $set: {
-        name: options.name
-      }
-    });
-
-    // unless strict security is enabled, mark the admin's email as validated
-    if (!isSecureSetup) {
-      Meteor.users.update({
-        "_id": accountId,
-        "emails.address": options.email
-      }, {
-        $set: {
-          "emails.$.verified": true
-        }
-      });
-      Collections.Accounts.update({
-        "_id": accountId,
-        "emails.address": options.email
-      }, {
-        $set: {
-          "emails.$.verified": true
-        }
-      });
-    } else {
-      // send verification email to admin
-      sendVerificationEmail(accountId);
-    }
-
-    // Set default owner roles
-    const defaultAdminRoles = ["owner", "admin", "guest", "account/profile"];
-    // Join other roles with defaultAdminRoles for owner.
-    // this is needed as owner should not just have "owner" but all other defined roles
-    let ownerRoles = defaultAdminRoles.concat(this.defaultCustomerRoles);
-    ownerRoles = _.uniq(ownerRoles);
-
-    // we don't use accounts/addUserPermissions here because we may not yet have permissions
-    Roles.setUserRoles(accountId, ownerRoles, shopId);
-    // // the reaction owner has permissions to all sites by default
-    Roles.setUserRoles(accountId, ownerRoles, Roles.GLOBAL_GROUP);
-    // initialize package permissions we don't need to do any further permission configuration it is taken care of in the
-    // assignOwnerRoles
-    const packages = Packages.find().fetch();
-    for (const pkg of packages) {
-      this.assignOwnerRoles(shopId, pkg.name, pkg.registry);
-    }
-
-    // notify user that the default admin was created by
-    // printing the account info to the console
-    Logger.warn(`\n *********************************
-        \n  IMPORTANT! DEFAULT ADMIN INFO
-        \n  EMAIL/LOGIN: ${options.email}
-        \n  PASSWORD: ${options.password}
-        \n ********************************* \n\n`);
-
-    // run hooks on new user object
-    const user = Meteor.users.findOne(accountId);
-    Hooks.Events.run("afterCreateDefaultAdminUser", user);
-
-    return accountId;
-  },
-
-  /**
    *  @name loadPackages
    *  @method
    *  @memberof Core
@@ -1089,6 +901,7 @@ export default {
         // Settings from the package registry.js
         const settingsFromPackage = {
           name: pkgName,
+          version: config.version,
           icon: config.icon,
           enabled: !!config.autoEnable,
           settings: config.settings,
@@ -1107,6 +920,10 @@ export default {
 
         const combinedSettings = merge({}, settingsFromPackage, settingsFromFixture || {}, settingsFromDB || {});
 
+        // always use version from package
+        if (combinedSettings.version) {
+          combinedSettings.version = settingsFromPackage.version || settingsFromDB.version;
+        }
         if (combinedSettings.registry) {
           combinedSettings.registry = combinedSettings.registry.map((entry) => {
             if (entry.provides && !Array.isArray(entry.provides)) {

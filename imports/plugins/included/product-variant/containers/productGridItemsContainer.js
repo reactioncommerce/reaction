@@ -5,6 +5,7 @@ import { compose } from "recompose";
 import { registerComponent } from "@reactioncommerce/reaction-components";
 import { Session } from "meteor/session";
 import { Reaction } from "/client/api";
+import { Catalog } from "/lib/api";
 import ProductGridItems from "../components/productGridItems";
 
 const wrapComponent = (Comp) => (
@@ -42,9 +43,8 @@ const wrapComponent = (Comp) => (
     }
 
     displayPrice = () => {
-      if (this.props.product.price && this.props.product.price.range) {
-        return this.props.product.price.range;
-      }
+      const { product } = this.props;
+      return Catalog.getProductPriceRange(product._id).range;
     }
 
     handleCheckboxSelect = (list, product) => {

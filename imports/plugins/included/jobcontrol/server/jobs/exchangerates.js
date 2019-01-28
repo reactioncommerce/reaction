@@ -1,15 +1,19 @@
-import Hooks from "@reactioncommerce/hooks";
 import Logger from "@reactioncommerce/logger";
-import { Meteor } from "meteor/meteor";
 import { Job } from "/imports/plugins/core/job-collection/lib";
 import { Jobs } from "/lib/collections";
+import appEvents from "/imports/node-app/core/util/appEvents";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
+import fetchCurrencyRate from "/imports/plugins/core/core/server/util/fetchCurrencyRate";
+import flushCurrencyRate from "/imports/plugins/core/core/server/util/flushCurrencyRate";
 
-
+/**
+ * @summary Schedule fetching and flushing jobs
+ * @returns {undefined}
+ */
 export function setupFetchFlushCurrencyHooks() {
   // While we don't necessarily need to wait for anything to add a job
   // in this case we need to have packages loaded so we can check for the OER API key
-  Hooks.Events.add("afterCoreInit", () => {
+  appEvents.on("afterCoreInit", () => {
     const settings = Reaction.getShopSettings();
     const exchangeConfig = settings.openexchangerates || {};
 
@@ -44,7 +48,7 @@ export function setupFetchFlushCurrencyHooks() {
     }
   });
 
-  Hooks.Events.add("afterCoreInit", () => {
+  appEvents.on("afterCoreInit", () => {
     const settings = Reaction.getShopSettings();
     const exchangeConfig = settings.openexchangerates || {};
 
@@ -71,31 +75,36 @@ export function setupFetchFlushCurrencyHooks() {
 }
 
 
+/**
+ * @summary Set up workers for "shop/fetchCurrencyRates" and "shop/flushCurrencyRates" jobs
+ * @returns {undefined}
+ */
 export function fetchRateJobs() {
   const fetchCurrencyRates = Jobs.processJobs("shop/fetchCurrencyRates", {
     pollInterval: 60 * 60 * 1000, // backup polling, see observer below
     workTimeout: 180 * 1000
   }, (job, callback) => {
-    Meteor.call("shop/fetchCurrencyRate", (error) => {
-      if (error) {
-        if (error.error === "notConfigured") {
-          Logger.error(error.message);
-          job.done(error.message, { repeatId: true });
-        } else {
-          job.done(error.toString(), { repeatId: true });
-        }
+    try {
+      fetchCurrencyRate();
+    } catch (error) {
+      if (error.error === "notConfigured") {
+        Logger.error(error.message);
+        job.done(error.message, { repeatId: true });
       } else {
-        // we should always return "completed" job here, because errors are fine
-        // result for this task, so that's why we show message if error happens
-        // and return job.done();
-        // you can read more about job.repeat() here:
-        // https://github.com/vsivsi/meteor-job-collection#set-how-many-times-this
-        // -job-will-be-automatically-re-run-by-the-job-collection
-        const success = "Latest exchange rates were fetched successfully.";
-        Logger.debug(success);
-        job.done(success, { repeatId: true });
+        job.done(error.toString(), { repeatId: true });
       }
-    });
+      callback();
+      return;
+    }
+    // we should always return "completed" job here, because errors are fine
+    // result for this task, so that's why we show message if error happens
+    // and return job.done();
+    // you can read more about job.repeat() here:
+    // https://github.com/vsivsi/meteor-job-collection#set-how-many-times-this
+    // -job-will-be-automatically-re-run-by-the-job-collection
+    const success = "Latest exchange rates were fetched successfully.";
+    Logger.debug(success);
+    job.done(success, { repeatId: true });
     callback();
   });
 
@@ -108,30 +117,30 @@ export function fetchRateJobs() {
     }
   });
 
-
   const flushCurrencyRates = Jobs.processJobs(
     "shop/flushCurrencyRates", {
       pollInterval: 60 * 60 * 1000, // backup polling, see observer below
       workTimeout: 180 * 1000
     },
     (job, callback) => {
-      Meteor.call("shop/flushCurrencyRate", (error) => {
-        if (error) {
-          if (error.error === "notExists") {
-            Logger.error(error.message);
-            job.done(error.message, { repeatId: true });
-          } else {
-            // Logger.error(error.toString());
-            job.done(error.toString(), { repeatId: true });
-          }
+      try {
+        flushCurrencyRate();
+      } catch (error) {
+        if (error.error === "notExists") {
+          Logger.error(error.message);
+          job.done(error.message, { repeatId: true });
         } else {
-          // https://github.com/vsivsi/meteor-job-collection#set-how-many-times-this
-          // -job-will-be-automatically-re-run-by-the-job-collection
-          const success = "Stale exchange rates were flushed.";
-          Logger.debug(success);
-          job.done(success, { repeatId: true });
+          // Logger.error(error.toString());
+          job.done(error.toString(), { repeatId: true });
         }
-      });
+        callback();
+        return;
+      }
+      // https://github.com/vsivsi/meteor-job-collection#set-how-many-times-this
+      // -job-will-be-automatically-re-run-by-the-job-collection
+      const success = "Stale exchange rates were flushed.";
+      Logger.debug(success);
+      job.done(success, { repeatId: true });
       callback();
     }
   );

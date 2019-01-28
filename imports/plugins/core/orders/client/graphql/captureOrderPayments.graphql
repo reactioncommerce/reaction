@@ -1,0 +1,13 @@
+captureOrderPayments($input: CaptureOrderPaymentsInput!) {
+  captureOrderPayments(input: $input) {
+    order {
+      _id
+      payments {
+        _id
+        captureErrorCode
+        captureErrorMessage
+        status
+      }
+    }
+  }
+}

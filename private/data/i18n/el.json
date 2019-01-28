@@ -254,7 +254,7 @@
       },
       "productVariant": {
         "addVariantOptions": "Προσθέστε τις επιλογές για να επιτρέψει «Προσθήκη στο Καλάθι» butto",
-        "inventoryQuantity": "Ποσότητα",
+        "inventoryInStock": "Ποσότητα",
         "title": "Επιγραφή",
         "price": "Τίμημα",
         "optionTitle": "Επιλογή",

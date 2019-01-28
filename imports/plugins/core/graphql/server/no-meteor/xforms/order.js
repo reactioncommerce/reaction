@@ -19,12 +19,24 @@ export const decodeOrderItemOpaqueId = decodeOpaqueIdForNamespace(namespaces.Ord
 export const encodeOrderItemOpaqueId = encodeOpaqueId(namespaces.OrderItem);
 
 /**
- * @summary Transform a single fulfillment group payment
+ * @summary Transform a single order payment
  * @param {Object} payment A payment object
  * @returns {Object} Transformed payment
  */
-export function xformOrderFulfillmentGroupPayment(payment) {
-  const { _id, address, amount, cardBrand, createdAt, currencyCode, data, displayName, name: methodName } = payment;
+export function xformOrderPayment(payment) {
+  const {
+    _id,
+    address,
+    amount,
+    cardBrand,
+    createdAt,
+    currencyCode,
+    data,
+    displayName,
+    mode,
+    name: methodName,
+    status
+  } = payment;
 
   return {
     _id,
@@ -38,9 +50,12 @@ export function xformOrderFulfillmentGroupPayment(payment) {
     currencyCode,
     data,
     displayName,
+    isAuthorizationCanceled: (mode === "cancel"),
+    isCaptured: (mode === "captured"),
     method: {
       name: methodName
-    }
+    },
+    status
   };
 }
 

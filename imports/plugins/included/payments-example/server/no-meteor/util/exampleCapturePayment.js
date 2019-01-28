@@ -1,5 +1,3 @@
-import { ExampleApi } from "./exampleapi";
-
 /**
  * @name exampleCapturePayment
  * @method
@@ -9,12 +7,6 @@ import { ExampleApi } from "./exampleapi";
  * @return {Object} result for capturing a payment
  * @private
  */
-export default function exampleCapturePayment(context, payment) {
-  const { amount, transactionId: authorizationId } = payment;
-  const response = ExampleApi.capture({ authorizationId, amount });
-  const result = {
-    saved: true,
-    response
-  };
-  return result;
+export default function exampleCapturePayment() {
+  return { saved: true, response: {} };
 }

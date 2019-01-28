@@ -1,7 +1,7 @@
-import Hooks from "@reactioncommerce/hooks";
 import Logger from "@reactioncommerce/logger";
 import { Meteor } from "meteor/meteor";
 import { ProductSearch, AccountSearch } from "/lib/collections";
+import appEvents from "/imports/node-app/core/util/appEvents";
 import rawCollections from "/imports/collections/rawCollections";
 import {
   buildAccountSearchRecord,
@@ -9,39 +9,27 @@ import {
 } from "../methods/searchcollections";
 import buildOrderSearchRecord from "../no-meteor/util/buildOrderSearchRecord";
 
-Hooks.Events.add("afterAccountsInsert", (userId, accountId) => {
+appEvents.on("afterAccountCreate", ({ account }) => {
   if (AccountSearch && !Meteor.isAppTest) {
     // Passing forceIndex will run account search index even if
     // updated fields don't match a searchable field
-    buildAccountSearchRecord(accountId, ["forceIndex"]);
+    buildAccountSearchRecord(account._id, ["forceIndex"]);
   }
 });
 
-Hooks.Events.add("afterAccountsRemove", (userId, accountId) => {
+appEvents.on("afterAccountDelete", ({ account }) => {
   if (AccountSearch && !Meteor.isAppTest) {
-    AccountSearch.remove(accountId);
+    AccountSearch.remove(account._id);
   }
 });
 
-Hooks.Events.add("afterAccountsUpdate", (userId, updateData) => {
-  const { accountId, updatedFields } = updateData;
-
+appEvents.on("afterAccountUpdate", ({ account, updatedFields }) => {
   if (AccountSearch && !Meteor.isAppTest) {
-    buildAccountSearchRecord(accountId, updatedFields);
+    buildAccountSearchRecord(account._id, updatedFields);
   }
 });
 
-
-// NOTE: this hooks does not seemed to get fired, are there is no way
-// to delete an order, only cancel.
-// TODO: Verify the assumption above.
-// Orders.after.remove((userId, doc) => {
-//   if (OrderSearch && !Meteor.isAppTest) {
-//     OrderSearch.remove(doc._id);
-//   }
-// });
-
-Hooks.Events.add("afterUpdateOrderUpdateSearchRecord", (order) => {
+appEvents.on("afterOrderUpdate", ({ order }) => {
   if (!Meteor.isAppTest) {
     Promise.await(buildOrderSearchRecord(rawCollections, order));
   }
@@ -51,36 +39,19 @@ Hooks.Events.add("afterUpdateOrderUpdateSearchRecord", (order) => {
  * if product is removed, remove product search record
  * @private
  */
-Hooks.Events.add("afterRemoveProduct", (doc) => {
-  if (ProductSearch && !Meteor.isAppTest && doc.type === "simple") {
-    const productId = doc._id;
-    ProductSearch.remove(productId);
+appEvents.on("afterProductSoftDelete", ({ product }) => {
+  if (ProductSearch && !Meteor.isAppTest && product.type === "simple") {
+    const productId = product._id;
+    ProductSearch.remove({ _id: productId });
     Logger.debug(`Removed product ${productId} from ProductSearch collection`);
   }
-
-  return doc;
 });
 
 /**
  * @summary Rebuild search record when product is published
  */
-Hooks.Events.add("afterPublishProductToCatalog", (product) => {
+appEvents.on("afterPublishProductToCatalog", ({ product }) => {
   Logger.debug(`Rewriting search record for ${product.title}`);
   ProductSearch.remove({ _id: product._id });
   buildProductSearchRecord(product._id);
-});
-
-/**
- * after insert
- * @summary should fires on create new variants, on clones products/variants
- * @private
- */
-Hooks.Events.add("afterInsertProduct", (doc) => {
-  if (ProductSearch && !Meteor.isAppTest && doc.type === "simple") {
-    const productId = doc._id;
-    buildProductSearchRecord(productId);
-    Logger.debug(`Added product ${productId} to ProductSearch`);
-  }
-
-  return doc;
 });

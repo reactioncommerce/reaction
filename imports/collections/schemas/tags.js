@@ -84,7 +84,16 @@ export const Tag = new SimpleSchema({
   "heroMediaUrl": {
     type: String,
     optional: true
-  }
+  },
+  "displayTitle": {
+    type: String,
+    optional: true
+  },
+  "featuredProductIds": {
+    type: Array,
+    optional: true
+  },
+  "featuredProductIds.$": String
 });
 
 registerSchema("Tag", Tag);

@@ -16,15 +16,15 @@ export default async function xformNavigationTreeItem(context, language, item) {
 
   const navigationItem = await NavigationItems.findOne({ _id: navigationItemId });
 
-  // Filter navigation content by language
+  // Add translated content value
   const { draftData, data } = navigationItem;
   const { content: draftContent } = draftData || {};
   const { content } = data;
   if (draftContent) {
-    navigationItem.draftData.content = getNavigationItemContentForLanguage(draftContent, language);
+    navigationItem.draftData.contentForLanguage = getNavigationItemContentForLanguage(draftContent, language);
   }
   if (content) {
-    navigationItem.data.content = getNavigationItemContentForLanguage(content, language);
+    navigationItem.data.contentForLanguage = getNavigationItemContentForLanguage(content, language);
   }
 
   if (items.length) {

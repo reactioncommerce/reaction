@@ -1,4 +1,3 @@
-import Hooks from "@reactioncommerce/hooks";
 import Logger from "@reactioncommerce/logger";
 import Random from "@reactioncommerce/random";
 import * as Schemas from "/imports/collections/schemas";
@@ -69,8 +68,10 @@ export default async function publishProductToCatalog(product, context) {
     }
 
     const updatedProduct = { ...product, ...productUpdates };
-    Hooks.Events.run("afterPublishProductToCatalog", updatedProduct, catalogProduct);
-    appEvents.emit("afterPublishProductToCatalog", updatedProduct, catalogProduct);
+    appEvents.emit("afterPublishProductToCatalog", {
+      catalogProduct,
+      product: updatedProduct
+    });
   }
 
   return wasUpdateSuccessful;

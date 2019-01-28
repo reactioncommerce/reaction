@@ -2,25 +2,11 @@ import Random from "@reactioncommerce/random";
 import { Accounts } from "meteor/accounts-base";
 import { Template } from "meteor/templating";
 import { $ } from "meteor/jquery";
-import { Blaze } from "meteor/blaze";
 import { ReactiveVar } from "meteor/reactive-var";
-import { i18next } from "/client/api";
+import { Reaction, i18next } from "/client/api";
 import { LoginFormSharedHelpers } from "../../helpers";
 import { getComponent } from "/imports/plugins/core/components/lib";
 import { LoginFormValidation } from "/lib/api";
-
-/**
- * Accounts Event: onEnrollmentLink When a user uses an enrollment link
- */
-Accounts.onEnrollmentLink((token, done) => {
-  Blaze.renderWithData(Template.loginFormUpdatePasswordOverlay, {
-    token,
-    callback: done,
-    isOpen: true,
-    type: "setPassword"
-  }, $("body").get(0));
-});
-
 
 // ----------------------------------------------------------------------------
 // /**
@@ -28,10 +14,25 @@ Accounts.onEnrollmentLink((token, done) => {
 //  */
 Template.loginFormUpdatePassword.helpers({
   component() {
+    const routeName = Reaction.Router.current().route.name;
+    const formTypeProps = {
+      "account/enroll": {
+        type: "setPassword",
+        onCompleteRoute: "/"
+      },
+      "reset-password": {
+        type: "updatePassword",
+        onCompleteRoute: `${Reaction.Router.current().route.fullPath}/completed`
+      }
+    };
+
+    const { type, onCompleteRoute } = formTypeProps[routeName];
+
     return {
       component: getComponent("UpdatePassword"),
       isOpen: true,
-      type: "updatePassword"
+      type,
+      onCompleteRoute
     };
   }
 });

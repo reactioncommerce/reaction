@@ -1,7 +1,8 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import { compose } from "recompose";
 import { Meteor } from "meteor/meteor";
-import { composeWithTracker, withMoment } from "@reactioncommerce/reaction-components";
+import { composeWithTracker, registerComponent, withMoment } from "@reactioncommerce/reaction-components";
 import { Orders } from "/lib/collections";
 import { Card, CardHeader, CardBody, CardGroup } from "/imports/plugins/core/ui/client/components";
 import { i18next } from "/client/api";
@@ -14,25 +15,10 @@ class OrderSummaryContainer extends Component {
     order: PropTypes.object
   }
 
-  constructor(props) {
-    super(props);
-    this.dateFormat = this.dateFormat.bind(this);
-    this.tracking = this.tracking.bind(this);
-    this.shipmentStatus = this.shipmentStatus.bind(this);
-  }
-
   dateFormat = (context, block) => {
     const { moment } = this.props;
     const formatString = block || "MMM DD, YYYY hh:mm:ss A";
     return (moment && moment(context).format(formatString)) || context.toLocaleString();
-  }
-
-  tracking = () => {
-    const shipping = getShippingInfo(this.props.order);
-    if (shipping.tracking) {
-      return shipping.tracking;
-    }
-    return i18next.t("orderShipping.noTracking");
   }
 
   shipmentStatus = () => {
@@ -139,27 +125,16 @@ const composer = (props, onData) => {
       "shipping._id": props.fulfillment && props.fulfillment._id
     });
 
-    if (order) {
-      const profileShippingAddress = getShippingInfo(order).address || {};
-
-      if (order.workflow) {
-        if (order.workflow.status === "coreOrderCreated") {
-          order.workflow.status = "coreOrderCreated";
-          Meteor.call("workflow/pushOrderWorkflow", "coreOrderWorkflow", "coreOrderCreated", order);
-        }
-      }
-
-      onData(null, {
-        order,
-        profileShippingAddress
-      });
-    } else {
-      onData(null, {
-        order: {},
-        profileShippingAddress: {}
-      });
-    }
+    onData(null, { order });
   }
 };
 
-export default composeWithTracker(composer)(withMoment(OrderSummaryContainer));
+registerComponent("OrderSummary", OrderSummaryContainer, [
+  withMoment,
+  composeWithTracker(composer)
+]);
+
+export default compose(
+  withMoment,
+  composeWithTracker(composer)
+)(OrderSummaryContainer);

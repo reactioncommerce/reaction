@@ -18,7 +18,8 @@ export default async function reconcileCartsMerge({
   accountCartSelector,
   anonymousCart,
   anonymousCartSelector,
-  collections
+  collections,
+  userId
 }) {
   const { Cart } = collections;
 
@@ -58,7 +59,10 @@ export default async function reconcileCartsMerge({
     updatedAt
   };
 
-  await appEvents.emit("afterCartUpdate", updatedCart);
+  await appEvents.emit("afterCartUpdate", {
+    cart: updatedCart,
+    updatedBy: userId
+  });
 
   // Delete anonymous cart
   const { deletedCount } = await Cart.deleteOne(anonymousCartSelector);

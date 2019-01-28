@@ -200,10 +200,18 @@ export function buildOrderSearch(cb) {
   }
 }
 
+/**
+ * @summary Builds or rebuilds the search record for an account.
+ * @param {String} accountId The Account ID
+ * @param {String[]} [updatedFields] A list of which fields were updated. If provided,
+ *   the rebuild will happen only if any of these fields match a field in `searchableFields`.
+ *   If undefined, the rebuild will always happen. If an empty array, the rebuild will never happen.
+ * @returns {undefined}
+ */
 export function buildAccountSearchRecord(accountId, updatedFields) {
   Logger.debug("building account search record");
   check(accountId, String);
-  check(updatedFields, Array);
+  check(updatedFields, Match.Maybe(Array));
 
   const account = Accounts.findOne(accountId);
   // let's ignore anonymous accounts
@@ -216,9 +224,10 @@ export function buildAccountSearchRecord(accountId, updatedFields) {
     // forceIndex is included to forceIndexing on startup, or when manually added
     const searchableFields = ["forceIndex", "shopId", "emails", "firstName", "lastName", "phone"];
 
-    const shouldRunIndex = updatedFields && updatedFields.some((field) => searchableFields.includes(field));
+    // If updatedFields contains one of the searchableFields, run the indexing.
+    // If updatedFields is undefined, run indexing to be safe.
+    const shouldRunIndex = !Array.isArray(updatedFields) || updatedFields.some((field) => searchableFields.includes(field));
 
-    // If updatedFields contains one of the searchableFields, run the indexing
     if (shouldRunIndex) {
       AccountSearch.remove(accountId);
       for (const field of requiredFields.accounts) {

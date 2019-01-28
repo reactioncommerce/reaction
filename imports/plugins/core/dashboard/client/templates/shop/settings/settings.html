@@ -70,6 +70,26 @@
       </div>
     </div>
 
+
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <div class="panel-title">
+          <a
+            href="#plugin-versions"
+            aria-controls="plugin-versions"
+            aria-expanded="true"
+            role="button"
+            data-toggle="collapse"
+            data-parent="#shopSettingsAccordian">Plugin Versions</a>
+        </div>
+      </div>
+      <div id="plugin-versions" class="panel-collapse collapse" role="tabpanel">
+        <div class="panel-body">
+          {{> React component=PluginVersions versionedPackages=versionedPackages}}
+        </div>
+      </div>
+    </div>
+
     {{#each reactionApps provides='shopSettings'}}
       <div class="panel panel-default">
         <div class="panel-heading panel-heading-flex">

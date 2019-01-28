@@ -219,13 +219,6 @@ const wrapComponent = (Comp) => (
       }
     }
 
-    updateQuantityIfChildVariants = (variant) => {
-      if (this.hasChildVariants(variant)) {
-        const variantQuantity = ReactionProduct.getVariantQuantity(variant);
-        return variantQuantity;
-      }
-    }
-
     render() {
       if (this.props.variant) {
         return (
@@ -238,7 +231,6 @@ const wrapComponent = (Comp) => (
             onVariantFieldSave={this.handleVariantFieldSave}
             onVisibilityButtonClick={this.handleVariantVisibilityToggle}
             onCardExpand={this.handleCardExpand}
-            onUpdateQuantityField={this.updateQuantityIfChildVariants}
             validation={this.state.validationStatus}
             isDeleted={this.state.isDeleted}
             {...this.props}

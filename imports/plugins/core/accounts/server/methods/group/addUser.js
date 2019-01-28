@@ -1,8 +1,8 @@
-import Hooks from "@reactioncommerce/hooks";
 import Logger from "@reactioncommerce/logger";
 import { Roles } from "meteor/alanning:roles";
 import { check } from "meteor/check";
 import { Meteor } from "meteor/meteor";
+import appEvents from "/imports/node-app/core/util/appEvents";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
 import ReactionError from "@reactioncommerce/reaction-error";
 import { Accounts, Groups } from "/lib/collections";
@@ -81,10 +81,14 @@ export default function addUser(userId, groupId) {
   try {
     setUserPermissions({ _id: userId }, permissions, shopId);
     Accounts.update({ userId }, { $set: { groups: newGroups } });
-    Hooks.Events.run("afterAccountsUpdate", loggedInUserId, {
-      accountId: account._id,
+
+    const updatedAccount = Accounts.findOne({ userId });
+    Promise.await(appEvents.emit("afterAccountUpdate", {
+      account: updatedAccount,
+      updatedBy: loggedInUserId,
       updatedFields: ["groups"]
-    });
+    }));
+
     if (slug === "owner") {
       if (shopId === Reaction.getPrimaryShopId()) {
         changeMarketplaceOwner({ userId, permissions });

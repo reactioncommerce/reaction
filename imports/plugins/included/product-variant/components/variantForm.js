@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 import PropTypes from "prop-types";
 import classnames from "classnames";
 import _ from "lodash";
@@ -18,7 +18,8 @@ const fieldNames = [
   "weight",
   "taxCode",
   "taxDescription",
-  "inventoryQuantity",
+  "inventoryInStock",
+  "inventoryAvailableToSell",
   "inventoryPolicy",
   "lowInventoryWarningThreshold"
 ];
@@ -228,14 +229,14 @@ class VariantForm extends Component {
             i18nKeyLabel="productVariant.inventoryPolicy"
             i18nKeyOnLabel="productVariant.inventoryPolicy"
             name="inventoryPolicy"
-            label={"Allow backorder"}
-            onLabel={"Allow backorder"}
+            label="Allow backorder"
+            onLabel="Allow backorder"
             checked={!this.state.inventoryPolicy}
             onChange={this.handleInventoryPolicyChange}
             validation={this.props.validation}
             disabled={true}
-            helpText={"Backorder allowance is now controlled by options"}
-            i18nKeyHelpText={"admin.helpText.variantBackorderToggle"}
+            helpText="Backorder allowance is now controlled by options"
+            i18nKeyHelpText="admin.helpText.variantBackorderToggle"
             style={{ backgroundColor: "lightgrey", cursor: "not-allowed" }}
           />
         </div>
@@ -248,8 +249,8 @@ class VariantForm extends Component {
           i18nKeyLabel="productVariant.inventoryPolicy"
           i18nKeyOnLabel="productVariant.inventoryPolicy"
           name="inventoryPolicy"
-          label={"Allow backorder"}
-          onLabel={"Allow backorder"}
+          label="Allow backorder"
+          onLabel="Allow backorder"
           checked={!this.state.inventoryPolicy}
           onChange={this.handleInventoryPolicyChange}
           validation={this.props.validation}
@@ -261,44 +262,84 @@ class VariantForm extends Component {
   renderQuantityField() {
     if (this.props.hasChildVariants(this.variant)) {
       return (
-        <div className="col-sm-6">
-          <Components.TextField
-            i18nKeyLabel="productVariant.inventoryQuantity"
-            i18nKeyPlaceholder="0"
-            placeholder="0"
-            label="Quantity"
-            type="number"
-            name="inventoryQuantity"
-            ref="inventoryQuantityInput"
-            value={this.props.onUpdateQuantityField(this.variant)}
-            style={{ backgroundColor: "lightgrey", cursor: "not-allowed" }}
-            disabled={true}
-            helpText={"Variant inventory is now controlled by options"}
-            i18nKeyHelpText={"admin.helpText.variantInventoryQuantity"}
-          />
-        </div>
+        <Fragment>
+          <div className="col-sm-6">
+            <Components.TextField
+              i18nKeyLabel="productVariant.inventoryInStock"
+              i18nKeyPlaceholder="0"
+              placeholder="0"
+              label="In Stock"
+              type="number"
+              name="inventoryInStock"
+              ref="inventoryInStockInput"
+              value={this.variant.inventoryInStock}
+              style={{ backgroundColor: "lightgrey", cursor: "not-allowed" }}
+              disabled={true}
+              helpText="Variants inventory in stock quantity is calculated by options inventory"
+              i18nKeyHelpText="admin.helpText.variantInventoryInStock"
+            />
+          </div>
+          <div className="col-sm-6">
+            <Components.TextField
+              i18nKeyLabel="productVariant.inventoryAvailableToSell"
+              i18nKeyPlaceholder="0"
+              placeholder="0"
+              label="Available To Sell"
+              type="number"
+              name="inventoryAvailableToSell"
+              ref="inventoryAvailableToSellInput"
+              value={this.variant.inventoryAvailableToSell}
+              style={{ backgroundColor: "lightgrey", cursor: "not-allowed" }}
+              disabled={true}
+              helpText="Variant inventory available to sell quantity is calculated by options inventory"
+              i18nKeyHelpText="admin.helpText.variantInventoryAvailableToSell"
+            />
+          </div>
+        </Fragment>
       );
     }
 
     return (
-      <div className="col-sm-6">
-        <Components.TextField
-          i18nKeyLabel="productVariant.inventoryQuantity"
-          i18nKeyPlaceholder="0"
-          placeholder="0"
-          label="Quantity"
-          type="number"
-          name="inventoryQuantity"
-          ref="inventoryQuantityInput"
-          value={this.variant.inventoryQuantity}
-          onChange={this.handleFieldChange}
-          onBlur={this.handleFieldBlur}
-          onReturnKeyDown={this.handleFieldBlur}
-          validation={this.props.validation}
-          helpText={"Option inventory"}
-          i18nKeyHelpText={"admin.helpText.optionInventoryQuantity"}
-        />
-      </div>
+      <Fragment>
+        <div className="col-sm-6">
+          <Components.TextField
+            i18nKeyLabel="productVariant.inventoryInStock"
+            i18nKeyPlaceholder="0"
+            placeholder="0"
+            label="In Stock"
+            type="number"
+            name="inventoryInStock"
+            ref="inventoryInStockInput"
+            value={this.variant.inventoryInStock}
+            onChange={this.handleFieldChange}
+            onBlur={this.handleFieldBlur}
+            onReturnKeyDown={this.handleFieldBlur}
+            validation={this.props.validation}
+            helpText="Inventory in stock"
+            i18nKeyHelpText="admin.helpText.optionInventoryInStock"
+          />
+        </div>
+        <div className="col-sm-6">
+          <Components.TextField
+            i18nKeyLabel="productVariant.inventoryAvailableToSell"
+            i18nKeyPlaceholder="0"
+            placeholder="0"
+            label="Available To Sell"
+            type="number"
+            name="InventoryAvailableToSell"
+            ref="InventoryAvailableToSellInput"
+            value={this.variant.inventoryAvailableToSell}
+            style={{ backgroundColor: "lightgrey", cursor: "not-allowed" }}
+            disabled={true}
+            onChange={this.handleFieldChange}
+            onBlur={this.handleFieldBlur}
+            onReturnKeyDown={this.handleFieldBlur}
+            validation={this.props.validation}
+            helpText="Inventory available to sell"
+            i18nKeyHelpText="admin.helpText.optionInventoryAvailableToSell"
+          />
+        </div>
+      </Fragment>
     );
   }
 
@@ -753,7 +794,6 @@ VariantForm.propTypes = {
   isDeleted: PropTypes.bool,
   onCardExpand: PropTypes.func,
   onFieldChange: PropTypes.func,
-  onUpdateQuantityField: PropTypes.func,
   onVariantFieldSave: PropTypes.func,
   onVisibilityButtonClick: PropTypes.func,
   removeVariant: PropTypes.func,

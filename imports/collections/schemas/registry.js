@@ -199,6 +199,11 @@ export const PackageConfig = new SimpleSchema({
     type: Boolean,
     defaultValue: true
   },
+  "version": {
+    type: String,
+    label: "Package Version",
+    optional: true
+  },
   "icon": {
     type: String,
     optional: true

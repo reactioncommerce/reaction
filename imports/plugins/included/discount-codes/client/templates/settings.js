@@ -170,7 +170,7 @@ Template.customDiscountCodes.events({
     }, (isConfirm) => {
       if (isConfirm) {
         if (id) {
-          Meteor.call("discounts/deleteRate", id);
+          Meteor.call("discounts/deleteCode", id);
           instance.state.set({
             isEditing: false,
             editingId: null

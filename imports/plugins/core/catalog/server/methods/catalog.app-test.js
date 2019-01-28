@@ -130,33 +130,6 @@ describe("core product methods", function () {
     });
   });
 
-  describe("products/updateVariant", function () {
-    it("should throw 403 error by non admin", function () {
-      sandbox.stub(Reaction, "hasPermission", () => false);
-      const product = addProduct();
-      const variant = Products.findOne({ ancestors: [product._id] });
-      variant["title"] = "Updated Title";
-      variant["price"] = 7;
-      const updateProductSpy = sandbox.stub(Products, "update");
-      expect(() => Meteor.call("products/updateVariant", variant)).to.throw(ReactionError, /Access Denied/);
-      expect(updateProductSpy).to.not.have.been.called;
-    });
-
-    it("should update individual variant by admin passing in full object", function (done) {
-      sandbox.stub(Reaction, "hasPermission", () => true);
-      const product = addProduct();
-      let variant = Products.findOne({ ancestors: [product._id] });
-      variant["title"] = "Updated Title";
-      variant["price"] = 7;
-      Meteor.call("products/updateVariant", variant);
-      variant = Products.findOne({ ancestors: [product._id] });
-      expect(variant.price).to.equal(7);
-      expect(variant.title).to.equal("Updated Title");
-
-      return done();
-    });
-  });
-
   describe("products/deleteVariant", function () {
     it("should throw 403 error by non admin", function () {
       sandbox.stub(Reaction, "hasPermission", () => false);
@@ -490,7 +463,7 @@ describe("core product methods", function () {
       const product2 = addProduct();
       const updateProductSpy = sandbox.spy(Products, "update");
       expect(() => Meteor.call("products/updateVariantsPosition", [
-        product._id, product2._id])).to.throw(ReactionError, /Access Denied/);
+        product._id, product2._id], product.shopId)).to.throw(ReactionError, /Access Denied/);
       expect(updateProductSpy).to.not.have.been.called;
     });
 
@@ -506,7 +479,7 @@ describe("core product methods", function () {
 
       Meteor.call("products/updateVariantsPosition", [
         variant2._id, variant3._id, variant1._id
-      ]);
+      ], variant1.shopId);
       const modifiedVariant1 = Products.findOne(variant1._id);
       const modifiedVariant2 = Products.findOne(variant2._id);
       const modifiedVariant3 = Products.findOne(variant3._id);

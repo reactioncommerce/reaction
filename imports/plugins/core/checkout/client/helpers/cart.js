@@ -21,7 +21,7 @@ Template.registerHelper("cart", () => {
     showItemLowInventoryWarning(variant) {
       if (variant && variant.inventoryPolicy &&
         variant.lowInventoryWarningThreshold) {
-        return variant.inventoryQuantity <=
+        return variant.inventoryInStock <=
           variant.lowInventoryWarningThreshold;
       }
       return false;
