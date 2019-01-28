@@ -4,6 +4,11 @@
   "ns": "navigation",
   "translation": {
     "navigation": {
+      "admin": {
+        "navigation": {
+          "navigation": "Navigation"
+        }
+      },
       "navigationItem": {
         "displayName": "Display Name",
         "url": "URL",
