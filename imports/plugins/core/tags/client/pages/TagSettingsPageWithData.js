@@ -31,8 +31,8 @@ class TagSettings extends Component {
     super(props);
 
     this.bulkActions = [
-      { value: "hidden", label: i18next.t("admin.tags.hidden") },
-      { value: "visible", label: i18next.t("admin.tags.visible") },
+      { value: "hidden", label: i18next.t("admin.tags.makeHidden") },
+      { value: "visible", label: i18next.t("admin.tags.makeVisible") },
       { value: "delete", label: i18next.t("admin.tags.delete") }
     ];
 
