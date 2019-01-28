@@ -1,4 +1,5 @@
 import stripeNpm from "stripe";
+import packageJson from "/package.json";
 import Logger from "@reactioncommerce/logger";
 import formatForStripe from "./formatForStripe";
 import getStripeApi from "./getStripeApi";
@@ -19,6 +20,11 @@ export default async function stripeCaptureCharge(context, payment) {
 
   const stripeKey = await getStripeApi(context, payment.paymentPluginName, payment.shopId);
   const stripe = stripeNpm(stripeKey);
+  stripe.setAppInfo({
+    name: "ReactionCommerce",
+    version: packageJson.version,
+    url: packageJson.url
+  });
 
   try {
     const captureResult = await stripe.charges.capture(payment.transactionId, captureDetails);
