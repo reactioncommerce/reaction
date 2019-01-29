@@ -448,6 +448,6 @@ workflows:
       - deploy-to-kube-bobs-int:
           requires:
             - docker-push
-#          filters:
-#            branches:
-#              only: /^develop-test$/
+          filters:
+            branches:
+              only: /^develop-test$/
