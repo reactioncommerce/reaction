@@ -1,28 +1,25 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
-import Paper from "@material-ui/core/Paper";
+import Divider from "@material-ui/core/Divider";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 import NavigationItemsList from "../../NavigationItemsList/v1";
 import TagsList from "../../TagsList/v1";
 
-const styles = (theme) => ({
+const styles = () => ({
   root: {
-    flexGrow: 1,
-    backgroundColor: theme.palette.background.paper
+    flexGrow: 1
   },
   tabRoot: {
-    textTransform: "initial",
-    fontSize: "14px",
     height: "60px",
-    marginTop: "22px",
-    fontFamily: "Source Sans Pro, Helvetica Neue, Helvetica, sans-serif"
+    marginTop: "22px"
   }
 });
 
 class NavigationItemTabs extends React.Component {
   static propTypes = {
+    classes: PropTypes.object,
     navigationItems: PropTypes.array,
     onClickAddNavigationItem: PropTypes.func,
     onClickUpdateNavigationItem: PropTypes.func,
@@ -69,18 +66,17 @@ class NavigationItemTabs extends React.Component {
 
     return (
       <div className={classes.root}>
-        <Paper square>
-          <Tabs
-            value={value}
-            indicatorColor="primary"
-            textColor="primary"
-            onChange={this.handleChange}
-            classes={{ root: classes.tabsRoot }}
-          >
-            <Tab label="Tags" classes={{ root: classes.tabRoot }}/>
-            <Tab label="Items" classes={{ root: classes.tabRoot }} />
-          </Tabs>
-        </Paper>
+        <Tabs
+          value={value}
+          indicatorColor="primary"
+          textColor="primary"
+          onChange={this.handleChange}
+          classes={{ root: classes.tabsRoot }}
+        >
+          <Tab label="Tags" classes={{ root: classes.tabRoot }}/>
+          <Tab label="Items" classes={{ root: classes.tabRoot }} />
+        </Tabs>
+        <Divider />
         {this.renderNavigationItemsTab()}
       </div>
     );
