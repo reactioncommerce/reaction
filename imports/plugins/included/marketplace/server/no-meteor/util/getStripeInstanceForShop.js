@@ -1,5 +1,5 @@
 import ReactionError from "@reactioncommerce/reaction-error";
-import getStripeInstance from "getStripeInstance";
+import getStripeInstance from "./getStripeInstance";
 
 const PACKAGE_NAME = "reaction-marketplace";
 
