@@ -6,7 +6,7 @@ import { Packages } from "/lib/collections";
  */
 
 Migrations.add({
-  version: 53,
+  version: 54,
   up() {
     // coreOrderShippingSummary -> OrderSummary
     Packages.rawCollection().update({
