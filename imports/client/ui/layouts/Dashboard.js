@@ -120,6 +120,9 @@ class Dashboard extends Component {
   render() {
     const { components: { IconHamburger } } = this.props;
     const { isSidebarOpen } = this.state;
+    const uiState = {
+      isLeftDrawerOpen: isSidebarOpen
+    };
 
     return (
       <ContainerQuery query={query}>
@@ -154,19 +157,32 @@ class Dashboard extends Component {
               />
               <Main isMobile={isMobile} isSidebarOpen={isSidebarOpen}>
                 <DrawerHeader />
-                <MainContent>
-                  <Switch>
-                    {
-                      operatorRoutes.map((route) => (
-                        <Route
-                          key={route.path}
-                          path={`/operator${route.path}`}
-                          component={route.mainComponent}
-                        />
-                      ))
-                    }
-                  </Switch>
-                </MainContent>
+
+                <Switch>
+                  {
+                    operatorRoutes.map((route) => (
+                      <Route
+                        key={route.path}
+                        path={`/operator${route.path}`}
+                        render={(props) => {
+                          // If the layout component is explicitly null
+                          if (route.layoutComponent === null) {
+                            return <route.mainComponent uiState={uiState} {...props} />;
+                          }
+
+                          const LayoutComponent = route.layoutComponent || MainContent;
+
+                          return (
+                            <LayoutComponent>
+                              <route.mainComponent uiState={uiState} {...props} />
+                            </LayoutComponent>
+                          );
+                        }}
+                      />
+                    ))
+                  }
+                </Switch>
+
               </Main>
             </Container>
           );
