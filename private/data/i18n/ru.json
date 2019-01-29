@@ -254,7 +254,7 @@
       },
       "productVariant": {
         "addVariantOptions": "Добавить параметры для включения 'Добавить в корзину' переключате",
-        "inventoryQuantity": "Количество",
+        "inventoryInStock": "Количество",
         "title": "Название",
         "price": "Цена",
         "optionTitle": "Опция",

@@ -195,14 +195,24 @@ jobs:
             .circleci/bin/ecs-deploy-bobs-develop-branch.sh
           no_output_timeout: 30m
 
-  deploy-to-kube-bobs-develop-branch:
+  deploy-to-kube-bobs-staging:
     <<: *defaults
     steps:
       - checkout
       - run:
-          name: Update helm chart for reaction-core service in kubernetes
+          name: Update helm chart for reaction-core service in kubernetes staging env.
           command: |
-            .circleci/bin/kube-deploy-bobs-develop-branch.sh
+            .circleci/bin/kube-deploy-bobs-staging.sh
+          no_output_timeout: 30m
+
+  deploy-to-kube-bobs-int:
+    <<: *defaults
+    steps:
+      - checkout
+      - run:
+          name: Update helm chart for reaction-core service in kubernetes int env.
+          command: |
+            .circleci/bin/kube-deploy-bobs-int.sh
           no_output_timeout: 30m
 
   deploy-docs:
@@ -429,9 +439,15 @@ workflows:
           context: reaction-validation
           requires:
             - build
-      - deploy-to-kube-bobs-develop-branch:
+      - deploy-to-kube-bobs-staging:
           requires:
             - docker-push
           filters:
             branches:
               only: /^develop$/
+      - deploy-to-kube-bobs-int:
+          requires:
+            - docker-push
+          filters:
+            branches:
+              only: /^develop-test$/

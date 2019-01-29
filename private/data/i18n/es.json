@@ -254,7 +254,7 @@
       },
       "productVariant": {
         "addVariantOptions": "Añadir opciones para activar 'Agregar al carrito' butto",
-        "inventoryQuantity": "Cantidad",
+        "inventoryInStock": "Cantidad",
         "title": "Etiqueta",
         "price": "Precio",
         "optionTitle": "Opción",

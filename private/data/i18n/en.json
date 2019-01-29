@@ -256,7 +256,7 @@
       },
       "productVariant": {
         "addVariantOptions": "Add options to enable 'Add to Cart' button",
-        "inventoryQuantity": "Quantity",
+        "inventoryInStock": "Quantity",
         "title": "Title",
         "price": "Price",
         "optionTitle": "Option title",

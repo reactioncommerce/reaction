@@ -95,10 +95,18 @@ type Rate {
 
 "Mutations have side effects, such as mutating data or triggering a task"
 type Mutation {
+  "A test mutation that returns whatever string you send it"
   echo(str: String): String
 }
 
 "Queries return all requested data, without any side effects"
 type Query {
+  "A test query"
   ping: String!
+}
+
+"Subscriptions allow you to request to get updated data whenever it changes"
+type Subscription {
+  "A test subscription that returns an incremented number every 1 second for 10 seconds"
+  tick: Int!
 }

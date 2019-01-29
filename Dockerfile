@@ -1,7 +1,7 @@
 ##############################################################################
 # meteor-dev stage - builds image for dev and used with docker-compose.yml
 ##############################################################################
-FROM reactioncommerce/base:v1.8-meteor as meteor-dev
+FROM reactioncommerce/base:v1.8.0.2-meteor as meteor-dev
 
 LABEL maintainer="Reaction Commerce <architecture@reactioncommerce.com>"
 

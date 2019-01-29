@@ -6,12 +6,12 @@
       "admin": {
         "helpText": {
           "compareAtPrice": "Původní cena nebo MSRP",
-          "optionInventoryQuantity": "Inventář",
+          "optionInventoryInStock": "Inventář",
           "optionTitle": "Zobrazeno na stránce s podrobnostmi o produktu",
           "price": "Kupní cena",
           "title": "Zobrazeno v košíku, pokladně a objednávkách",
           "variantBackorderToggle": "Příspěvek pro backorder je nyní řízen možností",
-          "variantInventoryQuantity": "Varianta inventáře je nyní ovládána možnostmi"
+          "variantInventoryInStock": "Varianta inventáře je nyní ovládána možnostmi"
         },
         "tooltip": {
           "validationError": "Chyba ověření"
