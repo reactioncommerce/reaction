@@ -64,7 +64,7 @@ export const rawMuiTheme = {
       [`${breakpoints.up("xs")} and (orientation: landscape)`]: {
         minHeight: toolbarHeight
       },
-      [breakpoints.up('sm')]: {
+      [breakpoints.up("sm")]: {
         minHeight: toolbarHeight
       }
     }
