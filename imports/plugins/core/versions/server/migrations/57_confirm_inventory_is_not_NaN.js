@@ -17,5 +17,19 @@ Migrations.add({
         multi: true
       }
     );
+
+    collections.Products.update(
+      {
+        type: { $in: ["simple", "variant"] },
+        inventoryInStock: NaN
+      },
+      {
+        $set: { inventoryInStock: 0 }
+      },
+      {
+        bypassCollection2: true,
+        multi: true
+      }
+    );
   }
 });
