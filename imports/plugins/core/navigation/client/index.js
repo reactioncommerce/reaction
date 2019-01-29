@@ -12,6 +12,7 @@ import "./styles.less";
 registerOperatorRoute({
   isNavigationLink: true,
   isSetting: true,
+  layoutComponent: null,
   mainComponent: NavigationDashboard,
   path: "/navigation",
   // eslint-disable-next-line react/display-name
