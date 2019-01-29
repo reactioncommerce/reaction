@@ -1,8 +1,11 @@
 import { defaultComponentTheme } from "@reactioncommerce/components";
 import createMuiTheme from "@material-ui/core/styles/createMuiTheme";
+import createBreakpoints from "@material-ui/core/styles/createBreakpoints";
 import colors from "./colors";
 
 const { rui_typography: typography } = defaultComponentTheme;
+const breakpoints = createBreakpoints({});
+const toolbarHeight = 80;
 
 export const rawMuiTheme = {
   palette: {
@@ -51,6 +54,20 @@ export const rawMuiTheme = {
     "0px 13px 26px 0 rgba(0,0,0,0.05);",
     "0px 13px 26px 0 rgba(0,0,0,0.05);"
   ],
+  shape: {
+    borderRadius: 2
+  },
+  mixins: {
+    toolbar: {
+      minHeight: toolbarHeight,
+      [`${breakpoints.up("xs")} and (orientation: landscape)`]: {
+        minHeight: toolbarHeight
+      },
+      [breakpoints.up('sm')]: {
+        minHeight: toolbarHeight
+      }
+    }
+  },
   // Override default props
   props: {
     MuiAppBar: {
@@ -60,8 +77,16 @@ export const rawMuiTheme = {
   // Override defined theme properties
   overrides: {
     MuiAppBar: {
+      root: {
+        height: toolbarHeight
+      },
       colorDefault: {
         backgroundColor: colors.white
+      }
+    },
+    MuiButton: {
+      root: {
+        textTransform: "initial"
       }
     },
     MuiCard: {
