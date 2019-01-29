@@ -21,6 +21,7 @@ export const rawMuiTheme = {
     }
   },
   typography: {
+    fontSize: 16,
     fontFamily: typography.bodyText.fontFamily,
     fontWeightLight: 400,
     fontWeightRegular: 400,
