@@ -1,7 +1,12 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import classnames from "classnames";
+import AppBar from "@material-ui/core/AppBar";
 import Grid from "@material-ui/core/Grid";
 import Modal from "@material-ui/core/Modal";
+import Button from "@material-ui/core/Button";
+import Toolbar from "@material-ui/core/Toolbar";
+import Typography from "@material-ui/core/Typography";
 import { withStyles } from "@material-ui/core/styles";
 import HTML5Backend from "react-dnd-html5-backend";
 import { DragDropContext } from "react-dnd";
@@ -10,6 +15,12 @@ import NavigationTreeContainer from "../../NavigationTreeContainer/v1";
 import NavigationItemTabs from "../../NavigationItemTabs/v1";
 
 const styles = (theme) => ({
+  toolbarButton: {
+    marginLeft: theme.spacing.unit
+  },
+  leftSidebarOpen: {
+    paddingLeft: 280 + (theme.spacing.unit * 2)
+  },
   paper: {
     position: "absolute",
     width: theme.spacing.unit * 80,
@@ -19,6 +30,9 @@ const styles = (theme) => ({
     top: "50%",
     left: "50%",
     transform: "translate(-50%, -50%)"
+  },
+  title: {
+    flex: 1
   }
 });
 
@@ -31,6 +45,9 @@ class NavigationDashboard extends Component {
     onDragHover: PropTypes.func,
     onToggleChildrenVisibility: PropTypes.func,
     tags: PropTypes.array,
+    uiState: PropTypes.shape({
+      isLeftDrawerOpen: PropTypes.bool
+    }),
     updateNavigationItem: PropTypes.func
   }
 
@@ -76,6 +93,7 @@ class NavigationDashboard extends Component {
       onDragHover,
       onToggleChildrenVisibility,
       tags,
+      uiState,
       updateNavigationItem
     } = this.props;
 
@@ -86,8 +104,22 @@ class NavigationDashboard extends Component {
       overNavigationItemId
     } = this.state;
 
+    const toolbarClassName = classnames({
+      [classes.leftSidebarOpen]: uiState.isLeftDrawerOpen
+    });
+
     return (
       <div>
+
+        <AppBar color="default">
+          <Toolbar className={toolbarClassName}>
+            <Typography className={classes.title} variant="h6">Main Navigation</Typography>
+            <Button className={classes.toolbarButton} color="primary" onClick={this.handlePublishChanges}>Discard</Button>
+            <Button className={classes.toolbarButton} color="primary" variant="outlined" onClick={this.handleSaveDraftChanges}>Save Changes</Button>
+            <Button className={classes.toolbarButton} color="primary" variant="contained" onClick={this.handlePublishChanges}>Publish</Button>
+          </Toolbar>
+        </AppBar>
+
         <Grid container>
           <Grid item xs={3}>
             <NavigationItemTabs
