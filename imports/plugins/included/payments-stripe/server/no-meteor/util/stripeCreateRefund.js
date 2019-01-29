@@ -1,7 +1,7 @@
 import stripeNpm from "stripe";
 import packageJson from "/package.json";
 import Logger from "@reactioncommerce/logger";
-import getStripeApi from "./getStripeApi";
+import getStripeApiKey from "./getStripeApiKey";
 import formatForStripe from "./formatForStripe";
 
 /**
@@ -17,7 +17,7 @@ import formatForStripe from "./formatForStripe";
 export default async function stripeCreateRefund(context, paymentMethod, amount) {
   let result;
   try {
-    const stripeKey = await getStripeApi(context, paymentMethod.paymentPluginName, paymentMethod.shopId);
+    const stripeKey = await getStripeApiKey(context, paymentMethod.paymentPluginName, paymentMethod.shopId);
     const stripe = stripeNpm(stripeKey);
     stripe.setAppInfo({
       name: "ReactionCommerce",

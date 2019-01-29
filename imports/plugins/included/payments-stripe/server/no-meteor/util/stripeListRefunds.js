@@ -1,7 +1,7 @@
 import stripeNpm from "stripe";
 import packageJson from "/package.json";
 import Logger from "@reactioncommerce/logger";
-import getStripeApi from "./getStripeApi";
+import getStripeApiKey from "./getStripeApiKey";
 
 /**
  * @name stripeListRefunds
@@ -13,7 +13,7 @@ import getStripeApi from "./getStripeApi";
  * @private
  */
 export default async function stripeListRefunds(context, paymentMethod) {
-  const stripeKey = await getStripeApi(context, paymentMethod.paymentPluginName, paymentMethod.shopId);
+  const stripeKey = await getStripeApiKey(context, paymentMethod.paymentPluginName, paymentMethod.shopId);
   const stripe = stripeNpm(stripeKey);
   stripe.setAppInfo({
     name: "ReactionCommerce",

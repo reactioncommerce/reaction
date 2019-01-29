@@ -1,11 +1,11 @@
 /**
- * @name getStripeApi
+ * @name getStripeApiKey
  * @param {Object} context - an object containing the per-request state
  * @param {String} paymentPluginName - plugin name
  * @param {String} shopId Shop ID
  * @returns {String} Stripe key
  */
-export default async function getStripeApi(context, paymentPluginName, shopId) {
+export default async function getStripeApiKey(context, paymentPluginName, shopId) {
   const { collections: { Packages } } = context;
   const stripePackage = await Packages.findOne({ name: paymentPluginName, shopId });
   if (!stripePackage) throw new Error(`No package found with name ${paymentPluginName}`);
