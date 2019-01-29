@@ -63,21 +63,6 @@ class NavigationTreeContainer extends Component {
   render() {
     return (
       <Wrapper>
-        <HeaderWrapper>
-          <Grid container>
-            <Grid item xs={6}>
-              <NavigationName>Main Nav</NavigationName>
-            </Grid>
-            <Grid item xs={6}>
-              <Grid container direction="row-reverse">
-                <Button actionType="default" onClick={this.handlePublishChanges}>Publish Menu</Button>
-                <Button actionType="secondary" onClick={this.handleSaveDraftChanges} className="nav-save-changes">
-                  Save Changes
-                </Button>
-              </Grid>
-            </Grid>
-          </Grid>
-        </HeaderWrapper>
         <ContentWrapper>
           <Grid container>
             <Grid item xs={12}>
