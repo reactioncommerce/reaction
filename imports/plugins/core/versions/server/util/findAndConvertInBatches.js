@@ -10,12 +10,12 @@ const LIMIT = 200;
  * @param {Function} options.converter Conversion function for a single doc
  * @returns {undefined}
  */
-export default function findAndConvertInBatches({ collection, converter }) {
+export default function findAndConvertInBatches({ collection, converter, query = {} }) {
   let docs;
   let skip = 0;
 
   do {
-    docs = collection.find({}, {
+    docs = collection.find(query, {
       limit: LIMIT,
       skip,
       sort: {
