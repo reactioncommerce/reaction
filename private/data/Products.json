@@ -102,8 +102,8 @@
   "price": 12.99,
   "inventoryManagement": true,
   "inventoryPolicy": true,
-  "inventoryAvailableToSell": 35,
-  "inventoryInStock": 35,
+  "inventoryAvailableToSell": 10,
+  "inventoryInStock": 10,
   "isVisible": true,
   "updatedAt": {
     "$date": "2014-04-03T13:46:52.411-0700"
