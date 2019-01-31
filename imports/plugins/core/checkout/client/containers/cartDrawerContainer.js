@@ -1,7 +1,6 @@
 import { compose, withProps } from "recompose";
 import { registerComponent, composeWithTracker } from "@reactioncommerce/reaction-components";
 import { $ } from "meteor/jquery";
-import { Session } from "meteor/session";
 import { Meteor } from "meteor/meteor";
 import { getPrimaryMediaForOrderItem, ReactionProduct } from "/lib/api";
 import { Reaction } from "/client/api";
@@ -47,12 +46,6 @@ const handlers = {
     if (!cart) return;
 
     cartItemElement.fadeOut(500, () => Meteor.call("cart/removeFromCart", cart._id, token, item._id));
-  },
-
-  handleCheckout() {
-    document.querySelector("#cart-drawer-container").classList.remove("opened");
-    Session.set("displayCart", false);
-    return Reaction.Router.go("cart/checkout");
   }
 };
 
