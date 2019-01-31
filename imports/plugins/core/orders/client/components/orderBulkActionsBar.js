@@ -5,6 +5,7 @@ import { Translation, Checkbox, Button, Icon, List, ListItem } from "@reactionco
 class OrderBulkActionsBar extends Component {
   static propTypes = {
     handleBulkPaymentCapture: PropTypes.func,
+    isCapturingPayment: PropTypes.bool,
     isLoading: PropTypes.object,
     multipleSelect: PropTypes.bool, // eslint-disable-line react/boolean-prop-naming
     orders: PropTypes.array,
@@ -120,6 +121,7 @@ class OrderBulkActionsBar extends Component {
         </List>
       );
     }
+    return null;
   }
 
   handleListItemClick = (event, value) => {
@@ -155,9 +157,9 @@ class OrderBulkActionsBar extends Component {
             status="success"
             bezelStyle="solid"
             className="capture-orders-button"
-            label={this.props.isLoading.capturePayment ? "Capturing" : "Capture"}
-            i18nKeyLabel={this.props.isLoading.capturePayment ? "order.capturing" : "order.capture"}
-            icon={this.props.isLoading.capturePayment ? "fa fa-spinner fa-pulse" : ""}
+            label={this.props.isCapturingPayment ? "Capturing" : "Capture"}
+            i18nKeyLabel={this.props.isCapturingPayment ? "order.capturing" : "order.capture"}
+            icon={this.props.isCapturingPayment ? "fa fa-spinner fa-pulse" : ""}
             iconAfter={true}
             onClick={this.handlePaymentClick}
           />

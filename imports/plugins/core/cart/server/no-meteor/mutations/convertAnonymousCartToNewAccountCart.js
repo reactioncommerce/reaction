@@ -18,7 +18,8 @@ export default async function convertAnonymousCartToNewAccountCart({
   anonymousCart,
   anonymousCartSelector,
   Cart,
-  shopId
+  shopId,
+  userId
 }) {
   const createdAt = new Date();
   const currencyCode = anonymousCart.currencyCode || "USD";
@@ -41,7 +42,10 @@ export default async function convertAnonymousCartToNewAccountCart({
   const { result } = await Cart.insertOne(newCart);
   if (result.ok !== 1) throw new ReactionError("server-error", "Unable to create account cart");
 
-  await appEvents.emit("afterCartCreate", newCart);
+  await appEvents.emit("afterCartCreate", {
+    cart: newCart,
+    createdBy: userId
+  });
 
   const { deletedCount } = await Cart.deleteOne(anonymousCartSelector);
   if (deletedCount === 0) throw new ReactionError("server-error", "Unable to delete anonymous cart");

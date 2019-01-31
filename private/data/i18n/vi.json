@@ -254,7 +254,7 @@
       },
       "productVariant": {
         "addVariantOptions": "Thêm tùy chọn để cho phép \"Thêm vào giỏ\" butto",
-        "inventoryQuantity": "Số lượng, lượng",
+        "inventoryInStock": "Số lượng, lượng",
         "title": "Nhãn",
         "price": "Giá bán",
         "optionTitle": "Tùy chọn",

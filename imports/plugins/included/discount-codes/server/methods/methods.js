@@ -137,7 +137,10 @@ export const methods = {
 
     if (collection === "Cart") {
       const updatedCart = Collection.findOne({ _id: id });
-      Promise.await(appEvents.emit("afterCartUpdate", updatedCart));
+      Promise.await(appEvents.emit("afterCartUpdate", {
+        cart: updatedCart,
+        updatedBy: Reaction.getUserId()
+      }));
     }
 
     return result;
@@ -264,7 +267,10 @@ export const methods = {
 
     if (collection === "Cart") {
       const updatedCart = Collection.findOne({ _id: id });
-      Promise.await(appEvents.emit("afterCartUpdate", updatedCart));
+      Promise.await(appEvents.emit("afterCartUpdate", {
+        cart: updatedCart,
+        updatedBy: Reaction.getUserId()
+      }));
     }
 
     return result;

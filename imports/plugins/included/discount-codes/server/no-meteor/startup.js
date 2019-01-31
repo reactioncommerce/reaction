@@ -9,7 +9,7 @@ import appEvents from "/imports/node-app/core/util/appEvents";
 export default function startup({ collections }) {
   const { Discounts } = collections;
 
-  appEvents.on("afterOrderCreate", async (order) => {
+  appEvents.on("afterOrderCreate", async ({ order }) => {
     await Promise.all(order.discounts.map(async (orderDiscount) => {
       const { discountId } = orderDiscount;
       const transaction = {

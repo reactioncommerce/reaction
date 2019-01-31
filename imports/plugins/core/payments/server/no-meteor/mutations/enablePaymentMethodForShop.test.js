@@ -2,7 +2,7 @@ import Factory from "/imports/test-utils/helpers/factory";
 import enablePaymentMethodForShop from "./enablePaymentMethodForShop";
 import mockContext from "/imports/test-utils/helpers/mockContext";
 
-jest.mock("/imports/plugins/core/core/server/no-meteor/pluginRegistration", () => ({
+jest.mock("../registration", () => ({
   paymentMethods: {
     mockPaymentMethod: {
       name: "mockPaymentMethod",

@@ -254,7 +254,7 @@
       },
       "productVariant": {
         "addVariantOptions": "Dodaj opcje, aby umożliwić \"Dodaj do koszyka\" butto",
-        "inventoryQuantity": "Ilość",
+        "inventoryInStock": "Ilość",
         "title": "Tytuł",
         "price": "Cena",
         "optionTitle": "Opcja",

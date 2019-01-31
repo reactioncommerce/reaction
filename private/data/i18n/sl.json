@@ -254,7 +254,7 @@
       },
       "productVariant": {
         "addVariantOptions": "Dodaj možnosti, da bi \"Dodaj v košarico\" butto",
-        "inventoryQuantity": "količina",
+        "inventoryInStock": "količina",
         "title": "Label",
         "price": "Cena",
         "optionTitle": "možnost",

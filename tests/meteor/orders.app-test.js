@@ -1,5 +1,4 @@
 /* eslint prefer-arrow-callback:0 */
-import Logger from "@reactioncommerce/logger";
 import accounting from "accounting-js";
 import { Meteor } from "meteor/meteor";
 import { check, Match } from "meteor/check";
@@ -36,8 +35,6 @@ describe("orders test", function () {
       "sendNotification": Meteor.server.method_handlers["orders/sendNotification"],
       "updateShipmentTracking": Meteor.server.method_handlers["orders/updateShipmentTracking"],
       "updateHistory": Meteor.server.method_handlers["orders/updateHistory"],
-      "capturePayments": Meteor.server.method_handlers["orders/capturePayments"],
-      "refunds/list": Meteor.server.method_handlers["orders/refunds/list"],
       "refunds/create": Meteor.server.method_handlers["orders/refunds/create"],
       "refunds/refundItems": Meteor.server.method_handlers["orders/refunds/refundItems"],
       "example/payment/capture": Meteor.server.method_handlers["example/payment/capture"]
@@ -75,11 +72,6 @@ describe("orders test", function () {
     return shippingObject;
   }
 
-  function orderCreditMethod(orderObject) {
-    const creditGroup = orderObject.shipping.find((group) => group.shopId === Reaction.getShopId() && group.payment.method === "credit");
-    return (creditGroup && creditGroup.payment) || {};
-  }
-
   describe("orders/cancelOrder", function () {
     beforeEach(function () {
       sandbox.stub(Meteor.server.method_handlers, "orders/sendNotification", function (...args) {
@@ -102,7 +94,7 @@ describe("orders test", function () {
       const orderItemId = order.shipping[0].items[0].variantId;
       sandbox.stub(Reaction, "hasPermission", () => true); // Mock user permissions
 
-      const { inventoryQuantity } = Products.findOne({ _id: orderItemId }) || {};
+      const { inventoryInStock } = Products.findOne({ _id: orderItemId }) || {};
 
       // approve the order (inventory decreases)
       spyOnMethod("approvePayment", order.userId);
@@ -117,9 +109,9 @@ describe("orders test", function () {
       Meteor.call("orders/cancelOrder", updatedOrder, true); // returnToStock = true;
 
       const product = Products.findOne({ _id: orderItemId });
-      const inventoryAfterRestock = product.inventoryQuantity;
+      const inventoryAfterRestock = product.inventoryInStock;
 
-      expect(inventoryQuantity).to.equal(inventoryAfterRestock);
+      expect(inventoryInStock).to.equal(inventoryAfterRestock);
     });
 
     it("should NOT increase/decrease inventory when returnToStock option is false", function () {
@@ -130,16 +122,16 @@ describe("orders test", function () {
       spyOnMethod("approvePayment", order.userId);
       Meteor.call("orders/approvePayment", order);
 
-      const { inventoryQuantity } = Products.findOne({ _id: orderItemId }) || {};
+      const { inventoryInStock } = Products.findOne({ _id: orderItemId }) || {};
 
       // cancel order with NO returnToStock option (which should leave inventory untouched)
       spyOnMethod("cancelOrder", order.userId);
       Meteor.call("orders/cancelOrder", order, false); // returnToStock = false;
 
       const product = Products.findOne({ _id: orderItemId });
-      const inventoryAfterNoRestock = product.inventoryQuantity;
+      const inventoryAfterNoRestock = product.inventoryInStock;
 
-      expect(inventoryQuantity).to.equal(inventoryAfterNoRestock);
+      expect(inventoryInStock).to.equal(inventoryAfterNoRestock);
     });
 
     it("should notify owner of the order, if the order is canceled", function () {
@@ -278,7 +270,7 @@ describe("orders test", function () {
       sandbox.stub(Reaction, "hasPermission", () => true);
       spyOnMethod("makeAdjustmentsToInvoice", order.userId);
       Meteor.call("orders/makeAdjustmentsToInvoice", order);
-      const orderPaymentStatus = shippingObjectMethod(Orders.findOne({ _id: order._id })).payment.status;
+      const orderPaymentStatus = Orders.findOne({ _id: order._id }).payments[0].status;
       expect(orderPaymentStatus).equal("adjustments");
     });
   });
@@ -288,7 +280,7 @@ describe("orders test", function () {
       sandbox.stub(Reaction, "hasPermission", () => false);
       spyOnMethod("approvePayment", order.userId);
       function approvePayment() {
-        return Meteor.call("orders/approvePayment", order);
+        return Meteor.call("orders/approvePayment", order._id, order.payments[0]._id);
       }
       expect(approvePayment).to.throw(ReactionError, /Access Denied/);
     });
@@ -296,13 +288,13 @@ describe("orders test", function () {
     it("should approve payment", function () {
       sandbox.stub(Reaction, "hasPermission", () => true);
       spyOnMethod("approvePayment", order.userId);
-      const { invoice } = orderCreditMethod(order);
+      const { invoice } = shippingObjectMethod(order);
       const subTotal = invoice.subtotal;
       const { shipping, taxes } = invoice;
       const discount = invoice.discounts;
       const discountTotal = Math.max(0, subTotal - discount); // ensure no discounting below 0.
       const total = accounting.toFixed(discountTotal + shipping + taxes, 2);
-      Meteor.call("orders/approvePayment", order);
+      Meteor.call("orders/approvePayment", order._id, order.payments[0]._id);
       const orderDoc = Orders.findOne({ _id: order._id });
       const orderBilling = shippingObjectMethod(orderDoc);
       expect(orderBilling.payment.status).to.equal("approved");
@@ -466,80 +458,6 @@ describe("orders test", function () {
       expect(orders.history[0].event).to.equal(event);
       expect(orders.history[0].value).to.equal(trackingValue);
       expect(orders.history[0].userId).to.equal(order.userId);
-    });
-  });
-
-  describe("orders/capturePayments", function () {
-    beforeEach(function (done) {
-      Orders.update({
-        "_id": order._id,
-        "shipping.payment.transactionId": shippingObjectMethod(order).payment.transactionId
-      }, {
-        $set: {
-          "shipping.$.payment.mode": "capture",
-          "shipping.$.payment.status": "approved"
-        }
-      });
-      return done();
-    });
-
-    it("should return access denied if user does not have access", function () {
-      sandbox.stub(Reaction, "hasPermission", () => false);
-      spyOnMethod("capturePayments", order.userId);
-      function capturePayments() {
-        return Meteor.call("orders/capturePayments", order._id);
-      }
-      expect(capturePayments).to.throw(ReactionError, /Access Denied/);
-    });
-
-    it("should update the order item workflow to coreOrderItemWorkflow/captured", function () {
-      sandbox.stub(Reaction, "hasPermission", () => true);
-      spyOnMethod("capturePayments", order.userId);
-      Meteor.call("orders/capturePayments", order._id);
-      const orderItemWorkflow = Orders.findOne({ _id: order._id }).items[0].workflow;
-      expect(orderItemWorkflow.status).to.equal("coreOrderItemWorkflow/captured");
-    });
-
-    it("should update the order after the payment processor has captured the payment", function (done) {
-      sandbox.stub(Reaction, "hasPermission", () => true);
-      spyOnMethod("capturePayments", order.userId);
-      Meteor.call("orders/capturePayments", order._id, () => {
-        const orderPayment = shippingObjectMethod(Orders.findOne({ _id: order._id })).payment;
-        expect(orderPayment.mode).to.equal("capture");
-        expect(orderPayment.status).to.equal("completed");
-        done();
-      });
-    });
-
-    it("should update order payment method status to error if payment processor fails", function (done) {
-      sandbox.stub(Reaction, "hasPermission", () => true);
-      spyOnMethod("capturePayments", order.userId);
-      sandbox.stub(Meteor.server.method_handlers, "example/payment/capture", function (...args) {
-        check(args, [Match.Any]);
-        return {
-          error: "stub error",
-          saved: false
-        };
-      });
-
-      sandbox.stub(Logger, "fatal"); // since we expect this, let's keep the output clean
-      Meteor.call("orders/capturePayments", order._id, () => {
-        const orderPayment = shippingObjectMethod(Orders.findOne({ _id: order._id })).payment;
-        expect(orderPayment.mode).to.equal("capture");
-        expect(orderPayment.status).to.equal("error");
-        done();
-      });
-    });
-  });
-
-  describe("orders/refunds/list", function () {
-    it("should return an array of refunds", function () {
-      sandbox.stub(Reaction, "hasPermission", () => true);
-      spyOnMethod("refunds/list", order.userId);
-      Meteor.call("orders/refunds/list", order, (err, res) => {
-        // refunds would be empty because there isn't any refunds yet
-        expect(res.length).to.equal(0);
-      });
     });
   });
 

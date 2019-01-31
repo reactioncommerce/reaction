@@ -72,7 +72,7 @@ const wrapComponent = (Comp) =>
           }
         }
 
-        if (currentVariant.inventoryPolicy && currentVariant.inventoryQuantity < 1) {
+        if (currentVariant.inventoryPolicy && currentVariant.inventoryInStock < 1) {
           Alerts.inline("Sorry, this item is out of stock!", "warning", {
             placement: "productDetail",
             i18nKey: "productDetail.outOfStock",
@@ -91,7 +91,7 @@ const wrapComponent = (Comp) =>
 
         quantity = parseInt(this.state.cartQuantity, 10);
         totalQuantity = quantity + storedQuantity;
-        maxQuantity = currentVariant.inventoryQuantity;
+        maxQuantity = currentVariant.inventoryInStock;
 
         if (quantity < 1) {
           quantity = 1;

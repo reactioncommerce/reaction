@@ -18,7 +18,7 @@ import addCartItemsUtil from "../util/addCartItems";
  */
 export default async function addCartItems(context, input, options = {}) {
   const { cartId, items, token } = input;
-  const { appEvents, collections, accountId = null } = context;
+  const { appEvents, collections, accountId = null, userId = null } = context;
   const { Cart } = collections;
 
   let selector;
@@ -63,7 +63,10 @@ export default async function addCartItems(context, input, options = {}) {
     items: updatedItemList,
     updatedAt
   };
-  await appEvents.emit("afterCartUpdate", updatedCart);
+  await appEvents.emit("afterCartUpdate", {
+    cart: updatedCart,
+    updatedBy: userId
+  });
 
   return { cart: updatedCart, incorrectPriceFailures, minOrderQuantityFailures };
 }

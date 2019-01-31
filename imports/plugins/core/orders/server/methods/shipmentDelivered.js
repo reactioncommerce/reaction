@@ -1,10 +1,7 @@
-import Hooks from "@reactioncommerce/hooks";
-import { Meteor } from "meteor/meteor";
 import { check } from "meteor/check";
-import { Orders } from "/lib/collections";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
-import ReactionError from "@reactioncommerce/reaction-error";
 import sendOrderEmail from "../util/sendOrderEmail";
+import updateShipmentStatus from "../util/updateShipmentStatus";
 
 /**
  * @name orders/shipmentDelivered
@@ -17,48 +14,17 @@ import sendOrderEmail from "../util/sendOrderEmail";
 export default function shipmentDelivered(order) {
   check(order, Object);
 
-  // REVIEW: this should be callable from the server via callback from Shippo or other webhook
-  if (!Reaction.hasPermission("orders")) {
-    throw new ReactionError("access-denied", "Access Denied");
-  }
+  const currentShopId = Reaction.getShopId();
+  const fulfillmentGroup = order.shipping.find((shipping) => shipping.shopId === currentShopId);
 
-  this.unblock();
+  updateShipmentStatus({
+    fulfillmentGroupId: fulfillmentGroup._id,
+    fulfillmentGroupItemIds: fulfillmentGroup.itemIds,
+    order,
+    status: "delivered"
+  });
 
-  const fulfillmentGroup = order.shipping.find((shipping) => shipping.shopId === Reaction.getShopId());
+  sendOrderEmail(order, "delivered");
 
-  sendOrderEmail(order);
-
-  const { itemIds } = fulfillmentGroup;
-
-  Meteor.call("workflow/pushItemWorkflow", "coreOrderItemWorkflow/delivered", order, itemIds);
-  Meteor.call("workflow/pushItemWorkflow", "coreOrderItemWorkflow/completed", order, itemIds);
-
-  const orderItems = order.shipping.reduce((list, group) => [...list, ...group.items], []);
-  const isCompleted = orderItems.every((item) => item.workflow.workflow && item.workflow.workflow.includes("coreOrderItemWorkflow/completed"));
-
-  Orders.update(
-    {
-      "_id": order._id,
-      "shipping._id": fulfillmentGroup._id
-    },
-    {
-      $set: {
-        "shipping.$.workflow.status": "coreOrderWorkflow/delivered"
-      },
-      $push: {
-        "shipping.$.workflow.workflow": "coreOrderWorkflow/delivered"
-      }
-    },
-    { bypassCollection2: true }
-  );
-
-  if (isCompleted === true) {
-    Hooks.Events.run("onOrderShipmentDelivered", order._id);
-    Meteor.call("workflow/pushOrderWorkflow", "coreOrderWorkflow", "completed", order);
-    return true;
-  }
-
-  Meteor.call("workflow/pushOrderWorkflow", "coreOrderWorkflow", "processing", order);
-
-  return false;
+  return true;
 }

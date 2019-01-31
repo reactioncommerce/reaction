@@ -8,12 +8,11 @@ import Email from "/imports/plugins/core/core/server/Reaction/Email";
  * @name sendSMTPEmail
  * @summary Responds to the "sendEmail" app event to send an email via SMTP
  * @param {Object} job Current sendEmail job being processed
- * @param {Object} callbacks Functions to call on success or failure
- * @param {Function} callbacks.sendEmailCompleted Called when email was successfully sent
- * @param {Function} callbacks.sendEmailFailed Called on error
+ * @param {Function} sendEmailCompleted Called when email was successfully sent
+ * @param {Function} sendEmailFailed Called on error
  * @return {undefined} Calls one of the callbacks with a return
  */
-export default function sendSMTPEmail(job, { sendEmailCompleted, sendEmailFailed }) {
+export default function sendSMTPEmail({ job, sendEmailCompleted, sendEmailFailed }) {
   // Determine if email provider is SMTP
   const smtpProviders = require("nodemailer-wellknown/services.json");
   const smtpProviderNames = Object.keys(smtpProviders);
