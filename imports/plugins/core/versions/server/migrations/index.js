@@ -55,3 +55,4 @@ import "./53_update_password_registry_route_name";
 import "./54_template_name_updates";
 import "./55_order_payments";
 import "./56_change_inventoryQuantity_to_inventoryInStock";
+import "./57_confirm_inventory_is_not_NaN.js";
