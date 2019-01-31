@@ -7,7 +7,6 @@ import {
   ProductTags,
   ProductMetadata,
   PriceRange,
-  AddToCartButton,
   ProductNotFound,
   ProductDetail,
   VariantList
@@ -37,6 +36,5 @@ registerComponent("VariantList", VariantList);
 registerComponent("MediaGalleryContainer", MediaGalleryContainer);
 registerComponent("SocialContainer", SocialContainer);
 registerComponent("VariantListContainer", VariantListContainer);
-registerComponent("AddToCartButton", AddToCartButton);
 registerComponent("Divider", Divider);
 registerComponent("ProductNotFound", ProductNotFound);

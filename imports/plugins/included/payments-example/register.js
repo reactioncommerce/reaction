@@ -42,13 +42,6 @@ Reaction.registerPackage({
       provides: ["paymentSettings"],
       container: "dashboard",
       template: "exampleSettings"
-    },
-
-    // Payment form for checkout
-    {
-      template: "ExampleIOUPaymentForm",
-      provides: ["paymentMethod"],
-      icon: "fa fa-credit-card-alt"
     }
   ]
 });

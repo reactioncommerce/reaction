@@ -14,6 +14,8 @@
             "disable": "Disable",
             "delete": "Delete",
             "visible": "Visible",
+            "makeVisible": "Make visible",
+            "makeHidden": "Make hidden",
             "hidden": "Hidden",
             "visibleAction": "Make {{count}} tag visible to customers",
             "visibleAction_plural": "Make {{count}} tags visible to customers",

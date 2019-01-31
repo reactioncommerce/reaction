@@ -179,16 +179,6 @@ export default function blocks() {
           props: {
             placement: "productDetail"
           }
-        },
-
-        // Add to cart button
-        {
-          component: "AddToCartButton",
-          props: {
-            style: {
-              paddingTop: 20
-            }
-          }
         }
 
       ]

@@ -1,7 +1,7 @@
 {
   "name": "reaction",
   "description": "Reaction is a modern reactive, real-time event driven ecommerce platform.",
-  "version": "2.0.0-rc.8",
+  "version": "2.0.0-rc.9",
   "main": "main.js",
   "directories": {
     "test": "tests"
@@ -48,6 +48,7 @@
     "apollo-client": "2.3.5",
     "apollo-link": "1.2.2",
     "apollo-link-http": "1.5.4",
+    "apollo-link-ws": "1.0.12",
     "apollo-server": "2.3.1",
     "apollo-server-express": "2.3.1",
     "autoprefixer": "^7.2.5",
@@ -64,6 +65,7 @@
     "cuid": "^2.1.0",
     "deep-diff": "^0.3.8",
     "deep-equal": "^1.0.1",
+    "envalid": "^4.1.4",
     "escape-string-regexp": "^1.0.5",
     "express": "4.16.2",
     "faker": "^4.1.0",
@@ -194,7 +196,7 @@
     "js-yaml": "^3.10.0",
     "jsdoc": "^3.5.5",
     "mongodb-memory-server": "2.7.3",
-    "nodemon": "^1.18.6",
+    "nodemon": "1.18.9",
     "react-addons-test-utils": "15.6.2",
     "snyk": "^1.78.0"
   },
