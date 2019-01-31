@@ -81,5 +81,8 @@ export default async function updateCartItemsQuantity(context, input) {
     updatedBy: userId
   });
 
-  return { cart: updatedCart };
+  // Re-fetch cart with updated data
+  const updatedCartAfterAppEvents = await Cart.findOne({ _id: cartId });
+
+  return { cart: updatedCartAfterAppEvents };
 }
