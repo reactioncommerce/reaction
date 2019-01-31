@@ -3,7 +3,7 @@ import nock from "nock";
 import mockContext from "/imports/test-utils/helpers/mockContext";
 import stripeListRefunds from "./stripeListRefunds";
 
-jest.mock("./getStripeApi", () => jest.fn().mockImplementation(() => "STRIPE_API_KEY"));
+jest.mock("./getStripeApiKey", () => jest.fn().mockImplementation(() => "STRIPE_API_KEY"));
 
 test("should call StripeApi.methods.listRefunds with the proper parameters and return a properly" +
 "formatted list of refunds", async () => {
