@@ -1,6 +1,5 @@
 import Logger from "@reactioncommerce/logger";
-import getStripeApiKey from "./getStripeApiKey";
-import getStripeInstance from "./getStripeInstance";
+import getStripeInstanceForShop from "./getStripeInstanceForShop";
 
 /**
  * @name stripeListRefunds
@@ -12,8 +11,7 @@ import getStripeInstance from "./getStripeInstance";
  * @private
  */
 export default async function stripeListRefunds(context, paymentMethod) {
-  const stripeKey = await getStripeApiKey(context, paymentMethod.paymentPluginName, paymentMethod.shopId);
-  const stripe = getStripeInstance(stripeKey);
+  const stripe = await getStripeInstanceForShop(context, paymentMethod.shopId);
 
   let refundListResults;
   try {

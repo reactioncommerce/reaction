@@ -5,10 +5,11 @@ import stripeCapturePayment from "./server/no-meteor/util/stripeCapturePayment";
 import stripeCreateAuthorizedPayment from "./server/no-meteor/util/stripeCreateAuthorizedPayment";
 import stripeCreateRefund from "./server/no-meteor/util/stripeCreateRefund";
 import stripeListRefunds from "./server/no-meteor/util/stripeListRefunds";
+import { STRIPE_PACKAGE_NAME } from "./lib/constants";
 
 Reaction.registerPackage({
   label: "Stripe",
-  name: "reaction-stripe",
+  name: STRIPE_PACKAGE_NAME,
   icon: "fa fa-cc-stripe",
   autoEnable: true,
   graphQL: {
