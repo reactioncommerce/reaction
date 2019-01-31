@@ -680,20 +680,46 @@ export default (Component) => (
     }
 
     handleSetNavigationTree = (navigationTree) => {
-      this.setState({ navigationTree });
+      const sortableNavigationTree = this.navigationTreeToSortable(navigationTree);
+      this.setState({ navigationTree, sortableNavigationTree });
+    }
+
+    handleSetSortableNavigationTree = (sortableNavigationTree) => {
+      this.setState({ sortableNavigationTree });
+    }
+
+    getNavigationItemTitle(navigationItem, language = "en") {
+      return navigationItem.draftData.content.find((item) => item.language === language) || { value: "" };
+    }
+
+    navigationTreeToSortable(navigationTree) {
+      return navigationTree.map((node) => {
+        let newNode = {};
+        newNode.id = node.navigationItem._id;
+        newNode.title = this.getNavigationItemTitle(node.navigationItem).value;
+
+        if (Array.isArray(node.items) && node.items.length) {
+          newNode.children = this.navigationTreeToSortable(node.items);
+        }
+
+        return newNode;
+      });
     }
 
     render() {
-      const { navigationItems, navigationTree, dragging, draggingNavigationTree, tags } = this.state;
+      const { navigationItems, navigationTree, dragging, draggingNavigationTree, sortableNavigationTree, tags } = this.state;
       let currentNavigationTree = navigationTree;
       if (dragging) {
         currentNavigationTree = draggingNavigationTree;
       }
-      console.log(this.state);
+      // console.log(this.state);
       const navigationTreeRows = this.getFlatDataFromNavigationTree(currentNavigationTree, true);
+
       return (
         <Component
           {...this.props}
+          sortableNavigationTree={sortableNavigationTree}
+          onSetSortableNavigationTree={this.handleSetSortableNavigationTree}
           navigationItems={navigationItems}
           navigationTreeRows={navigationTreeRows}
           onDragHover={this.handleDragHover}

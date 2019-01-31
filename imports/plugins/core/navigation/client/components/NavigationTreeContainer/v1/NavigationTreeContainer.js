@@ -1,31 +1,19 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
-import Button from "@reactioncommerce/components/Button/v1";
 import Grid from "@material-ui/core/Grid";
+import { SortableTreeWithoutDndContext as SortableTree } from "react-sortable-tree";
+import "react-sortable-tree/style.css";
 import NavigationTreeNode from "../../NavigationTreeNode";
+
 
 const Wrapper = styled.div`
   border-left: 1px solid #ccc;
 `;
 
-const HeaderWrapper = styled.div`
-  border-bottom: 1px solid #ccc;
-  padding: 20px;
-
-  .nav-save-changes {
-    margin-right: 20px;
-  }
-`;
-
 const ContentWrapper = styled.div`
   padding: 40px 80px;
   min-height: calc(100vh - 140px);
-`;
-
-const NavigationName = styled.h4`
-  margin: 0;
-  margin-top: 12px;
 `;
 
 const NavigationItemsListContainer = styled.div`
@@ -38,8 +26,10 @@ class NavigationTreeContainer extends Component {
     onClickUpdateNavigationItem: PropTypes.func,
     onDragHover: PropTypes.func,
     onSetOverNavigationItemId: PropTypes.func,
+    onSetSortableNavigationTree: PropTypes.func,
     onToggleChildrenVisibility: PropTypes.func,
-    overNavigationItemId: PropTypes.string
+    overNavigationItemId: PropTypes.string,
+    sortableNavigationTree: PropTypes.arrayOf(PropTypes.object)
   }
 
   renderRows() {
@@ -61,6 +51,7 @@ class NavigationTreeContainer extends Component {
   }
 
   render() {
+    const { onSetSortableNavigationTree, sortableNavigationTree } = this.props;
     return (
       <Wrapper>
         <ContentWrapper>
@@ -69,6 +60,14 @@ class NavigationTreeContainer extends Component {
               <p>Drag and drop pages and tags from the left column into the navigation structure.</p>
             </Grid>
           </Grid>
+
+          <div style={{ height: 400 }}>
+            <SortableTree
+              treeData={sortableNavigationTree}
+              onChange={onSetSortableNavigationTree}
+            />
+          </div>
+
           <NavigationItemsListContainer>
             {this.renderRows()}
           </NavigationItemsListContainer>

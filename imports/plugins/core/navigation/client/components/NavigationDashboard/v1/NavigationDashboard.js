@@ -43,7 +43,9 @@ class NavigationDashboard extends Component {
     navigationItems: PropTypes.array,
     navigationTreeRows: PropTypes.array,
     onDragHover: PropTypes.func,
+    onSetSortableNavigationTree: PropTypes.func,
     onToggleChildrenVisibility: PropTypes.func,
+    sortableNavigationTree: PropTypes.arrayOf(PropTypes.object),
     tags: PropTypes.array,
     uiState: PropTypes.shape({
       isLeftDrawerOpen: PropTypes.bool
@@ -91,7 +93,9 @@ class NavigationDashboard extends Component {
       navigationItems,
       navigationTreeRows,
       onDragHover,
+      onSetSortableNavigationTree,
       onToggleChildrenVisibility,
+      sortableNavigationTree,
       tags,
       uiState,
       updateNavigationItem
@@ -132,6 +136,8 @@ class NavigationDashboard extends Component {
           </Grid>
           <Grid item xs={9}>
             <NavigationTreeContainer
+              sortableNavigationTree={sortableNavigationTree}
+              onSetSortableNavigationTree={onSetSortableNavigationTree}
               navigationTreeRows={navigationTreeRows}
               overNavigationItemId={overNavigationItemId}
               onClickUpdateNavigationItem={this.updateNavigationItem}
