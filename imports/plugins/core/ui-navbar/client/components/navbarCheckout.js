@@ -10,8 +10,7 @@ const NavBarCheckout = (props, context) => {
     notifications: false,
     languages: false,
     currency: false,
-    mainDropdown: false,
-    cartContainer: false
+    mainDropdown: false
   };
   const newProps = {
     ...props,

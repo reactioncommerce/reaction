@@ -1,7 +1,0 @@
-updateFulfillmentOptionsForGroup($input: UpdateFulfillmentOptionsForGroupInput!) {
-  updateFulfillmentOptionsForGroup(input: $input) {
-    cart {
-      _id
-    }
-  }
-}

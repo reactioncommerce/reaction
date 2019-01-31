@@ -4,7 +4,6 @@ import { faCreditCard } from "@fortawesome/free-solid-svg-icons";
 
 import { registerOperatorRoute } from "/imports/client/ui";
 
-import "./checkout";
 import "./settings";
 
 registerOperatorRoute({
