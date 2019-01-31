@@ -169,7 +169,7 @@ input SurchargeInput {
   destination: SurchargeDestinationRestrictionsInput
 
   "Amount."
-  amount: MoneyInput!
+  amount: Float!
 
   "Messages by language."
   messagesByLanguage: [MessagesByLanguageInput]!

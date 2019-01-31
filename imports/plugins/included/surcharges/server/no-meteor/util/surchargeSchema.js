@@ -85,7 +85,7 @@ const surchargeSchema = new SimpleSchema({
     optional: true
   },
   "amount": {
-    type: Money
+    type: Number
   },
   /*
    * Message is used as a client message to let customers know why this surcharge might apply
