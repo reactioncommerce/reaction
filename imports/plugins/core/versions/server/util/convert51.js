@@ -153,7 +153,7 @@ function getVariantInventoryInStockQuantity(variant, collections, variants) {
   }
 
   if (options && options.length) {
-    return options.reduce((sum, option) => sum + option.inventoryQuantity || 0, 0);
+    return options.reduce((sum, option) => sum + (option.inventoryQuantity || option.inventoryAvailableToSell) || 0, 0);
   }
   return variant.inventoryQuantity || 0;
 }
@@ -173,7 +173,7 @@ function getProductInventoryInStockQuantity(productId, collections) {
   const variants = getVariants(productId, collections, true);
 
   if (variants && variants.length) {
-    return variants.reduce((sum, variant) => sum + variant.inventoryQuantity || 0, 0);
+    return variants.reduce((sum, variant) => sum + (variant.inventoryQuantity || variant.inventoryAvailableToSell) || 0, 0);
   }
   return 0;
 }
@@ -258,24 +258,28 @@ export function addInventoryAvailableToSellFieldToProduct(item, collections) {
   if ((item.type === "variant" && hasChildVariant(item._id, collections)) || (item.type === "variant" && item.ancestors.length === 2)) {
     const reservedQuantity = getVariantInventoryNotAvailableToSellQuantity(item, collections);
 
-    item.inventoryAvailableToSell = item.inventoryQuantity - reservedQuantity;
+    const inventoryInStockQuantity = item.inventoryQuantity || item.inventoryInStock || 0;
 
-    collections.Products.update(
-      {
-        _id: item._id
-      },
-      {
-        $set: {
-          inventoryAvailableToSell: item.inventoryQuantity - reservedQuantity
+    if (!item.inventoryAvailableToSell) {
+      item.inventoryAvailableToSell = inventoryInStockQuantity - reservedQuantity;
+
+      collections.Products.update(
+        {
+          _id: item._id
+        },
+        {
+          $set: {
+            inventoryAvailableToSell: item.inventoryQuantity - reservedQuantity
+          }
+        },
+        {
+          bypassCollection2: true,
+          publish: true
         }
-      },
-      {
-        bypassCollection2: true,
-        publish: true
-      }
-    );
+      );
 
-    updateParentVariantsInventoryAvailableToSellQuantity(item, collections);
+      updateParentVariantsInventoryAvailableToSellQuantity(item, collections);
+    }
 
     return item;
   }
@@ -424,7 +428,7 @@ export function convertCatalogItemVariants(item, collections) {
       updatedVariantFields = {
         canBackorder: canBackorder(variantOptions),
         inventoryAvailableToSell: topVariantFromProductsCollection.inventoryAvailableToSell,
-        inventoryInStock: topVariantFromProductsCollection.inventoryQuantity,
+        inventoryInStock: topVariantFromProductsCollection.inventoryQuantity || topVariantFromProductsCollection.inventoryInStock,
         isBackorder: isBackorder(variantOptions),
         isLowQuantity: isLowQuantity(variantOptions),
         isSoldOut: isSoldOut(variantOptions),
@@ -432,7 +436,7 @@ export function convertCatalogItemVariants(item, collections) {
           ...catalogVariantOptionsMap.get(option._id),
           canBackorder: canBackorder([option]),
           inventoryAvailableToSell: option.inventoryAvailableToSell,
-          inventoryInStock: option.inventoryQuantity,
+          inventoryInStock: option.inventoryQuantity || option.inventoryInStock,
           isBackorder: isBackorder([option]),
           isLowQuantity: isLowQuantity([option]),
           isSoldOut: isSoldOut([option])
@@ -443,7 +447,7 @@ export function convertCatalogItemVariants(item, collections) {
       updatedVariantFields = {
         canBackorder: canBackorder([topVariantFromProductsCollection]),
         inventoryAvailableToSell: topVariantFromProductsCollection.inventoryAvailableToSell,
-        inventoryInStock: topVariantFromProductsCollection.inventoryQuantity,
+        inventoryInStock: topVariantFromProductsCollection.inventoryQuantity || topVariantFromProductsCollection.inventoryInStock,
         isBackorder: isBackorder([topVariantFromProductsCollection]),
         isLowQuantity: isLowQuantity([topVariantFromProductsCollection]),
         isSoldOut: isSoldOut([topVariantFromProductsCollection])
@@ -459,7 +463,7 @@ export function convertCatalogItemVariants(item, collections) {
   const catalogProduct = {
     ...item.product,
     inventoryAvailableToSell: product.inventoryAvailableToSell,
-    inventoryInStock: product.inventoryQuantity,
+    inventoryInStock: product.inventoryQuantity || product.inventoryInStock,
     isBackorder: isBackorder(variants),
     isLowQuantity: isLowQuantity(variants),
     isSoldOut: isSoldOut(variants),

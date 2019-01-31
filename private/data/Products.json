@@ -14,6 +14,8 @@
   "price.range": "12.99 - 19.99",
   "price.min": 12.99,
   "price.max": 19.99,
+  "inventoryAvailableToSell": 35,
+  "inventoryInStock": 35,
   "isVisible": true,
   "isLowQuantity": false,
   "isSoldOut": false,
@@ -41,7 +43,8 @@
   "price": 19.99,
   "inventoryManagement": true,
   "inventoryPolicy": true,
-  "inventoryInStock": 15,
+  "inventoryAvailableToSell": 35,
+  "inventoryInStock": 35,
   "isVisible": true,
   "updatedAt": {
     "$date": "2014-04-03T13:46:52.411-0700"
@@ -68,7 +71,8 @@
   "price": 19.99,
   "inventoryManagement": true,
   "inventoryPolicy": true,
-  "inventoryInStock": 19,
+  "inventoryAvailableToSell": 20,
+  "inventoryInStock": 20,
   "isVisible": true,
   "updatedAt": {
     "$date": "2014-04-03T13:46:52.411-0700"
@@ -98,7 +102,8 @@
   "price": 12.99,
   "inventoryManagement": true,
   "inventoryPolicy": true,
-  "inventoryInStock": 42,
+  "inventoryAvailableToSell": 10,
+  "inventoryInStock": 10,
   "isVisible": true,
   "updatedAt": {
     "$date": "2014-04-03T13:46:52.411-0700"
