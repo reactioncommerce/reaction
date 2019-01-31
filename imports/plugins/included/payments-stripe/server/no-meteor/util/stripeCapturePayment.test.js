@@ -3,7 +3,7 @@ import nock from "nock";
 import mockContext from "/imports/test-utils/helpers/mockContext";
 import stripeCapturePayment from "./stripeCapturePayment";
 
-jest.mock("./getStripeApi", () => jest.fn().mockImplementation(() => "STRIPE_API_KEY"));
+jest.mock("./getStripeApiKey", () => jest.fn().mockImplementation(() => "STRIPE_API_KEY"));
 
 const stripeCaptureResult = {
   id: "ch_17hZ4wBXXkbZQs3xL5JhlSgS",

@@ -369,7 +369,9 @@
   },
   "jest": {
     "setupTestFrameworkScriptFile": "<rootDir>/imports/test-utils/setupJestTests.js",
-    "modulePathIgnorePatterns": ["node_modules"]
+    "modulePathIgnorePatterns": [
+      "node_modules"
+    ]
   },
   "eslintConfig": {
     "extends": "@reactioncommerce",

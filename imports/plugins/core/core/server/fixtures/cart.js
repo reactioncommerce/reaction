@@ -141,16 +141,6 @@ export function createCart(productId, variantId) {
         address: getAddress()
       }
     ],
-    workflow: {
-      status: "checkoutPayment",
-      workflow: [
-        "checkoutLogin",
-        "checkoutAddressBook",
-        "coreCheckoutShipping",
-        "checkoutReview",
-        "checkoutPayment"
-      ]
-    },
     createdAt: faker.date.past(),
     updatedAt: new Date()
   };
@@ -176,16 +166,6 @@ export default function () {
        address: addressForOrder
      }
    ]`
-   * @property {Object} workflow - `{
-     status: "checkoutPayment",
-     workflow: [
-       "checkoutLogin",
-       "checkoutAddressBook",
-       "coreCheckoutShipping",
-       "checkoutReview",
-       "checkoutPayment"
-     ]
-   }`
    * @property {Date} createdAt - `faker.date.past()`
    * @property {Date} updatedAt - `new Date()`
    * @description Types of Cart Factories:
@@ -265,17 +245,7 @@ export default function () {
           address: addressForOrder
         }
       }
-    ],
-    workflow: {
-      status: "checkoutPayment",
-      workflow: [
-        "checkoutLogin",
-        "checkoutAddressBook",
-        "coreCheckoutShipping",
-        "checkoutReview",
-        "checkoutPayment"
-      ]
-    }
+    ]
   };
 
   const anonymousCart = {

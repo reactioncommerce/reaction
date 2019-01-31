@@ -134,13 +134,6 @@ Reaction.registerPackage({
       hideForShopTypes: ["merchant", "affiliate"]
     },
 
-    // Payment form for checkout
-    {
-      template: "stripeMarketplacePaymentForm",
-      provides: ["paymentMethod"],
-      icon: "fa fa-cc-stripe"
-    },
-
     // Redirect for Stripe Connect Sign-In
     {
       route: "/stripe/connect/authorize",
