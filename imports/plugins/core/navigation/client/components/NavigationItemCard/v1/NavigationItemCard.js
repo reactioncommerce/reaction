@@ -90,7 +90,16 @@ const ActionIconSpan = styled.span`
 
 const navigationItemSource = {
   beginDrag(props) {
-    return props;
+    const { node: { navigationItem } } = props.row;
+    const { _id, draftData } = navigationItem;
+    const { value } = draftData.content.find((content) => content.language === "en");
+
+    return {
+      node: {
+        id: _id,
+        title: value
+      }
+    };
   }
 };
 
@@ -224,9 +233,13 @@ class NavigationItemCard extends Component {
           <Paper>
             <CardContentContainer>
               {
-                connectDragSource(<div style={{ width: "20px", display: "flex", flexDirection: "column", justifyContent: "center" }}>
-                  <HandleIconSpan>{iconEllipsisV}</HandleIconSpan>
-                </div>)
+                connectDragSource((
+                  <div style={{ width: "20px", display: "flex", flexDirection: "column", justifyContent: "center" }}>
+                    <HandleIconSpan>{iconEllipsisV}</HandleIconSpan>
+                  </div>
+                ), {
+                  dropEffect: "copy"
+                })
               }
               {this.renderChildrenToggleButton()}
               <NavDetailContainer>
