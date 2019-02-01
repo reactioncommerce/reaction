@@ -98,7 +98,8 @@ class NavigationDashboard extends Component {
       sortableNavigationTree,
       tags,
       uiState,
-      updateNavigationItem
+      updateNavigationItem,
+      updateNavigationTree
     } = this.props;
 
     const {
@@ -119,7 +120,7 @@ class NavigationDashboard extends Component {
           <Toolbar className={toolbarClassName}>
             <Typography className={classes.title} variant="h6">Main Navigation</Typography>
             <Button className={classes.toolbarButton} color="primary" onClick={this.handlePublishChanges}>Discard</Button>
-            <Button className={classes.toolbarButton} color="primary" variant="outlined" onClick={this.handleSaveDraftChanges}>Save Changes</Button>
+            <Button className={classes.toolbarButton} color="primary" variant="outlined" onClick={updateNavigationTree}>Save Changes</Button>
             <Button className={classes.toolbarButton} color="primary" variant="contained" onClick={this.handlePublishChanges}>Publish</Button>
           </Toolbar>
         </AppBar>
