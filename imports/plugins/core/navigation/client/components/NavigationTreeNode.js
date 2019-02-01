@@ -4,7 +4,7 @@ import { findDOMNode } from "react-dom";
 import { compose } from "recompose";
 import Grid from "@material-ui/core/Grid";
 import { DropTarget } from "react-dnd";
-import NavigationItemCard from "./NavigationItemCard/v1";
+import NavigationItemCard from "./NavigationItemCard";
 
 const navigationTreeRowTarget = {
   drop(props) {

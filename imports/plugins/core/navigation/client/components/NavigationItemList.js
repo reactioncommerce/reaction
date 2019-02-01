@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
 import Link from "@reactioncommerce/components/Link/v1";
-import NavigationItemCard from "../../NavigationItemCard/v1";
+import NavigationItemCard from "./NavigationItemCard";
 
 const Wrapper = styled.div`
   padding: 20px;

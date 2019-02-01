@@ -4,8 +4,8 @@ import { withStyles } from "@material-ui/core/styles";
 import Divider from "@material-ui/core/Divider";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
-import NavigationItemsList from "../../NavigationItemsList/v1";
-import TagsList from "../../TagsList/v1";
+import NavigationItemList from "./NavigationItemList";
+import TagList from "./TagList";
 
 const styles = () => ({
   root: {
@@ -47,10 +47,10 @@ class NavigationItemTabs extends React.Component {
       updateNavigationItem
     } = this.props;
     if (value === 0) {
-      return <TagsList tags={tags}/>;
+      return <TagList tags={tags}/>;
     }
     return (
-      <NavigationItemsList
+      <NavigationItemList
         onClickAddNavigationItem={onClickAddNavigationItem}
         onClickUpdateNavigationItem={onClickUpdateNavigationItem}
         navigationItems={navigationItems}

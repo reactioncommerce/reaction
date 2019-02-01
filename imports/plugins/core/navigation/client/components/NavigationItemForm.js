@@ -12,7 +12,7 @@ import ErrorsBlock from "@reactioncommerce/components/ErrorsBlock/v1";
 import Field from "@reactioncommerce/components/Field/v1";
 import TextInput from "@reactioncommerce/components/TextInput/v1";
 import { i18next } from "/client/api";
-import iconTimes from "../../svg/iconTimes";
+import iconTimes from "../svg/iconTimes";
 
 
 const Wrapper = styled.div`

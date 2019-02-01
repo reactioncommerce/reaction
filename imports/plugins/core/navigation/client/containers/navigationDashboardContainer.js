@@ -1,6 +1,6 @@
 import { compose } from "recompose";
 import { registerComponent } from "@reactioncommerce/reaction-components";
-import NavigationDashboard from "../components/NavigationDashboard/v1";
+import NavigationDashboard from "../components/NavigationDashboard";
 import withCreateNavigationItem from "../hocs/withCreateNavigationItem";
 import withUpdateNavigationItem from "../hocs/withUpdateNavigationItem";
 import withUpdateNavigationTree from "../hocs/withUpdateNavigationTree";

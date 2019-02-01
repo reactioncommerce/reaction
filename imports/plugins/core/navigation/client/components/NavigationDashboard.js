@@ -10,9 +10,9 @@ import Typography from "@material-ui/core/Typography";
 import { withStyles } from "@material-ui/core/styles";
 import HTML5Backend from "react-dnd-html5-backend";
 import { DragDropContext } from "react-dnd";
-import NavigationItemForm from "../../NavigationItemForm";
-import NavigationTreeContainer from "../../NavigationTreeContainer/v1";
-import NavigationItemTabs from "../../NavigationItemTabs/v1";
+import NavigationItemForm from "./NavigationItemForm";
+import NavigationTreeContainer from "./NavigationTreeContainer";
+import NavigationItemTabs from "./NavigationItemTabs";
 
 const styles = (theme) => ({
   toolbarButton: {

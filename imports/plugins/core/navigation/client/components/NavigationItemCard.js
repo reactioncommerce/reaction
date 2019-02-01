@@ -5,13 +5,13 @@ import { DragSource, DropTarget } from "react-dnd";
 import styled from "styled-components";
 import Paper from "@material-ui/core/Paper";
 import Link from "@reactioncommerce/components/Link/v1";
-import iconEllipsisV from "../../../svg/iconEllipsisV";
-import iconChevronDown from "../../../svg/iconChevronDown";
-import iconChevronRight from "../../../svg/iconChevronRight";
-import iconPencil from "../../../svg/iconPencil";
-import iconTimes from "../../../svg/iconTimes";
-import iconFile from "../../../svg/iconFile";
-import iconTag from "../../../svg/iconTag";
+import iconEllipsisV from "../svg/iconEllipsisV";
+import iconChevronDown from "../svg/iconChevronDown";
+import iconChevronRight from "../svg/iconChevronRight";
+import iconPencil from "../svg/iconPencil";
+import iconTimes from "../svg/iconTimes";
+import iconFile from "../svg/iconFile";
+import iconTag from "../svg/iconTag";
 
 const CardContainer = styled.div`
   margin-bottom: 5px;

@@ -4,7 +4,7 @@ import styled from "styled-components";
 import Grid from "@material-ui/core/Grid";
 import { SortableTreeWithoutDndContext as SortableTree } from "react-sortable-tree";
 import "react-sortable-tree/style.css";
-import NavigationTreeNode from "../../NavigationTreeNode";
+import NavigationTreeNode from "./NavigationTreeNode";
 
 
 const Wrapper = styled.div`

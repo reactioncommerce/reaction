@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
-import NavigationItemCard from "../../NavigationItemCard/v1";
+import NavigationItemCard from "./NavigationItemCard";
 
 const Wrapper = styled.div`
   padding: 80px 20px;
