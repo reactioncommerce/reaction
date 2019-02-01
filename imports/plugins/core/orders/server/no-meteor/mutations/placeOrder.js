@@ -451,8 +451,16 @@ export default async function placeOrder(context, input) {
   inputSchema.validate(cleanedInput);
 
   const { order: orderInput, payments: paymentsInput } = cleanedInput;
-  const { billingAddress, cartId, currencyCode, customData, email, fulfillmentGroups, shopId } = orderInput;
-  const { accountId, account, collections, userId } = context;
+  const {
+    billingAddress,
+    cartId,
+    currencyCode,
+    customData: customDataFromClient,
+    email,
+    fulfillmentGroups,
+    shopId
+  } = orderInput;
+  const { accountId, account, collections, getFunctionsOfType, userId } = context;
   const { Orders } = collections;
 
   // We are mixing concerns a bit here for now. This is for backwards compatibility with current
@@ -533,7 +541,6 @@ export default async function placeOrder(context, input) {
     cartId,
     createdAt: now,
     currencyCode,
-    customData,
     discounts,
     email,
     payments,
@@ -547,6 +554,22 @@ export default async function placeOrder(context, input) {
       workflow: ["coreOrderWorkflow/created"]
     }
   };
+
+  // Apply custom order data transformations from plugins
+  const transformCustomOrderDataFuncs = getFunctionsOfType("transformCustomOrderData");
+  if (transformCustomOrderDataFuncs.length > 0) {
+    let customData = { ...(customDataFromClient || {}) };
+    // We need to run each of these functions in a series, rather than in parallel, because
+    // each function expects to get the result of the previous. It is recommended to disable `no-await-in-loop`
+    // eslint rules when the output of one iteration might be used as input in another iteration, such as this case here.
+    // See https://eslint.org/docs/rules/no-await-in-loop#when-not-to-use-it
+    for (const transformCustomOrderDataFunc of transformCustomOrderDataFuncs) {
+      customData = await transformCustomOrderDataFunc({ context, customData, order }); // eslint-disable-line no-await-in-loop
+    }
+    order.customData = customData;
+  } else {
+    order.customData = customDataFromClient;
+  }
 
   // Validate and save
   OrderSchema.validate(order);
