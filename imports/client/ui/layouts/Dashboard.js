@@ -55,6 +55,10 @@ const MainContent = styled.div`
   margin: 0 auto;
 `;
 
+const MainContentFullWidth = styled.div`
+  padding-top: ${applyTheme("Layout.pageContentPaddingTop")};
+`;
+
 // The reason we can't simply do `styledMUI(MUIAppBar)` here is because we're passing in isMobile and isSidebarOpen
 // props for the styled-components conditionals, but React does not recognize these as valid attributes
 // for DOM elements and prints warnings in the console. Someday there may be a better solution.
@@ -79,14 +83,6 @@ const Grow = styled.div`
   flex-grow: 1;
 `;
 
-const HamburgerIconButton = styledMUI(IconButton)`
-  color: ${applyTheme("Layout.burgerIconColor")};
-  position: fixed;
-  left: ${applyTheme("Layout.burgerIconLeft")};
-  top: ${applyTheme("Layout.burgerIconTop")};
-  z-index: 2000;
-`;
-
 // This is an invisible element that is needed only to push the page content down below the `AppBar`
 const DrawerHeader = styled.div`
   min-height: 48px;
@@ -106,7 +102,7 @@ class Dashboard extends Component {
   };
 
   state = {
-    isSidebarOpen: null
+    isSidebarOpen: true
   };
 
   handleDrawerClose = () => {
@@ -118,7 +114,6 @@ class Dashboard extends Component {
   };
 
   render() {
-    const { components: { IconHamburger } } = this.props;
     const { isSidebarOpen } = this.state;
     const uiState = {
       isLeftDrawerOpen: isSidebarOpen
@@ -140,9 +135,6 @@ class Dashboard extends Component {
 
           return (
             <Container>
-              <HamburgerIconButton onClick={this.handleDrawerToggle}>
-                <IconHamburger />
-              </HamburgerIconButton>
               <AppBar elevation={0} position="fixed" isMobile={isMobile} isSidebarOpen={isSidebarOpen}>
                 <MUIToolbar>
                   <Grow />
@@ -151,7 +143,7 @@ class Dashboard extends Component {
               </AppBar>
               <Sidebar
                 isMobile={isMobile}
-                isSidebarOpen={isSidebarOpen || false}
+                isSidebarOpen={true}
                 onDrawerClose={this.handleDrawerClose}
                 routes={operatorRoutes}
               />
@@ -167,7 +159,11 @@ class Dashboard extends Component {
                         render={(props) => {
                           // If the layout component is explicitly null
                           if (route.layoutComponent === null) {
-                            return <route.mainComponent uiState={uiState} {...props} />;
+                            return (
+                              <MainContentFullWidth>
+                                <route.mainComponent uiState={uiState} {...props} />;
+                              </MainContentFullWidth>
+                            );
                           }
 
                           const LayoutComponent = route.layoutComponent || MainContent;
