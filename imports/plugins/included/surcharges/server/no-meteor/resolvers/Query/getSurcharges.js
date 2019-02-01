@@ -14,21 +14,11 @@ import { getPaginatedResponse } from "@reactioncommerce/reaction-graphql-utils";
  * @return {Promise<Object>|undefined} A Surcharge object
  */
 export default async function getSurcharges(parentResult, args, context) {
-  const { language, shopId, ...connectionArgs } = args;
+  const { shopId, ...connectionArgs } = args;
 
   const cursor = await context.queries.getSurcharges(context, {
-    language,
     shopId: decodeShopOpaqueId(shopId)
   });
 
-  const response = await getPaginatedResponse(cursor, connectionArgs);
-
-  if (response) {
-    // Add language from args so that we can use it to get translated message
-    response.nodes.forEach((node) => {
-      node.language = language;
-    });
-  }
-
-  return response;
+  return getPaginatedResponse(cursor, connectionArgs);
 }

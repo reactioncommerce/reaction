@@ -15,10 +15,9 @@ import { decodeSurchargeOpaqueId } from "../../xforms/surcharge";
  * @return {Promise<Object>|undefined} A Surcharge object
  */
 export default async function getSurcharge(parentResult, args, context) {
-  const { language, surchargeId, shopId } = args;
+  const { surchargeId, shopId } = args;
 
   return context.queries.getSurcharge(context, {
-    language,
     surchargeId: decodeSurchargeOpaqueId(surchargeId),
     shopId: decodeShopOpaqueId(shopId)
   });

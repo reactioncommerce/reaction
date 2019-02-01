@@ -6,6 +6,6 @@ import xformSurchargeMessage from "../../xforms/xformSurchargeMessage";
 export default {
   _id: (node) => encodeSurchargeOpaqueId(node._id),
   shopId: (node) => encodeShopOpaqueId(node.shopId),
-  amount: (node) => node.amount && xformSurchargeAmount(node.amount),
-  message: (node) => node.messagesByLanguage && node.messagesByLanguage.length && xformSurchargeMessage(node.language, node.messagesByLanguage)
+  amount: (node, _, context) => node.amount && xformSurchargeAmount(context, node.shopId, node.amount),
+  message: (node, { language }) => node.messagesByLanguage && node.messagesByLanguage.length && xformSurchargeMessage(language, node.messagesByLanguage)
 };

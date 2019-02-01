@@ -18,7 +18,7 @@ type AppliedSurcharge implements Node {
   fulfillmentGroupId: ID
 
   "The message to explain the surchage to customers, translated (if available) based on shop language"
-  message: String
+  message(language: String!): String
 
   "The surchargeId from the surchages collection (for reference)"
   surchargeDefinitionId: ID!
@@ -50,7 +50,7 @@ type Surcharge implements Node {
   amount: Money!
 
   "Message translated into provided / default language."
-  message: String!
+  message(language: String!): String!
 
   "Messages provided with content and all languages"
   messagesByLanguage: [SurchargeMessagesByLanguage]
@@ -198,7 +198,6 @@ extend type Query {
   "Get the full list of flat rate fulfillment method restrictions."
   getSurcharges(
     shopId: ID!,
-    language: String,
     after: ConnectionCursor,
     before: ConnectionCursor,
     first: ConnectionLimitInt,
@@ -207,7 +206,7 @@ extend type Query {
     sortBy: SurchargeSortByField = createdAt
   ): SurchargeConnection!
 
-  getSurcharge(shopId: ID!, surchargeId: ID!, language: String): Surcharge
+  getSurcharge(shopId: ID!, surchargeId: ID!): Surcharge
 }
 
 
