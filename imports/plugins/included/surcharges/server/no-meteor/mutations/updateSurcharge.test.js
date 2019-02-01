@@ -13,10 +13,7 @@ const surcharge = {
     { property: "productType", value: "knife", propertyType: "string", operator: "eq" }
   ],
   destination: { region: ["CO", "NY"] },
-  amount: {
-    amount: 5.99,
-    currencyCode: "USD"
-  },
+  amount: 5.99,
   messagesByLanguage: [
     {
       content: "Original Message English",
@@ -70,10 +67,7 @@ test("update a surcharge", async () => {
         { property: "productType", value: "knife", propertyType: "string", operator: "eq" }
       ],
       destination: { region: ["CO", "NY"] },
-      amount: {
-        amount: 5.99,
-        currencyCode: "USD"
-      },
+      amount: 5.99,
       messagesByLanguage: [
         {
           content: "Original Message English",

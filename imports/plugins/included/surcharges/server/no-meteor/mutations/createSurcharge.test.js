@@ -13,10 +13,7 @@ test("add a surcharge", async () => {
     _id: "surcharge123",
     shopId: "shop123",
     surcharge: {
-      amount: {
-        amount: "19.99",
-        currencyCode: "USD"
-      },
+      amount: "19.99",
       messagesByLanguage: [
         {
           content: "You are shipping hazardous items, there is a 19.99 surcharge",
@@ -38,10 +35,7 @@ test("add a surcharge", async () => {
   expect(result).toEqual({
     surcharge: {
       _id: jasmine.any(String),
-      amount: {
-        amount: 19.99,
-        currencyCode: "USD"
-      },
+      amount: 19.99,
       messagesByLanguage: [
         {
           content: "You are shipping hazardous items, there is a 19.99 surcharge",

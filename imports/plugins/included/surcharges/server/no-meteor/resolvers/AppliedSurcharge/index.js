@@ -1,4 +1,3 @@
-import { encodeShopOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/shop";
 import { encodeSurchargeOpaqueId } from "../../xforms/surcharge";
 import xformSurchargeAmount from "../../xforms/xformSurchargeAmount";
 import xformSurchargeMessage from "../../xforms/xformSurchargeMessage";

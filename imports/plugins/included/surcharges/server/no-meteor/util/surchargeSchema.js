@@ -1,5 +1,4 @@
 import SimpleSchema from "simpl-schema";
-import { Money } from "imports/collections/schemas/core";
 
 /**
  * @name Attributes
