@@ -65,6 +65,7 @@ class NavigationTreeContainer extends Component {
             <SortableTree
               treeData={sortableNavigationTree}
               onChange={onSetSortableNavigationTree}
+              dndType={"CARD"}
             />
           </div>
         </ContentWrapper>
