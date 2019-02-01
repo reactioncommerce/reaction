@@ -110,6 +110,14 @@ export const rawMuiTheme = {
           color: colors.coolGrey100
         }
       }
+    },
+    MuiDrawer: {
+      paperAnchorLeft: {
+        borderRight: "none"
+      },
+      paperAnchorDockedLeft: {
+        borderRight: "none"
+      }
     }
   }
 };
