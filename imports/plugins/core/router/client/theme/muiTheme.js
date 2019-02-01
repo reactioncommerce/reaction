@@ -26,7 +26,10 @@ export const rawMuiTheme = {
     fontWeightLight: 400,
     fontWeightRegular: 400,
     fontWeightMedium: 500,
-    useNextVariants: true
+    useNextVariants: true,
+    h6: {
+      fontSize: 18
+    }
   },
   shadows: [
     "none",
