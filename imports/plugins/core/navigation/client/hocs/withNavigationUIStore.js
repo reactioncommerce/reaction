@@ -694,7 +694,7 @@ export default (Component) => (
 
     navigationTreeToSortable(navigationTree) {
       return navigationTree.map((node) => {
-        let newNode = {};
+        const newNode = {};
         newNode.id = node.navigationItem._id;
         newNode.title = this.getNavigationItemTitle(node.navigationItem).value;
 
@@ -704,6 +704,11 @@ export default (Component) => (
 
         return newNode;
       });
+    }
+
+    handleUpdateNavigationTree = (navigationTree) => {
+      const { draftItems } = navigationTree;
+      this.handleSetNavigationTree(draftItems);
     }
 
     render() {
@@ -718,6 +723,7 @@ export default (Component) => (
       return (
         <Component
           {...this.props}
+          onUpdateNavigationTree={this.handleUpdateNavigationTree}
           sortableNavigationTree={sortableNavigationTree}
           onSetSortableNavigationTree={this.handleSetSortableNavigationTree}
           navigationItems={navigationItems}
