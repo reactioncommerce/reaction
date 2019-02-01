@@ -21,6 +21,6 @@ export default async function getSurchargesTotalForCart(context, cartId) {
   // Surcharges are additive, if we allow more than one
   return {
     surcharges,
-    total: surcharges.reduce((sum, surcharge) => sum + surcharge.amount.amount, 0)
+    total: surcharges.reduce((sum, surcharge) => sum + surcharge.amount, 0)
   };
 }

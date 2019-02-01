@@ -27,7 +27,7 @@ const SurchargeMessagesByLanguage = new SimpleSchema({
  */
 export const Surcharge = new SimpleSchema({
   "_id": String,
-  "amount": Money,
+  "amount": Number,
   "cartId": {
     type: String,
     optional: true
