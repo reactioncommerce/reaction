@@ -10,7 +10,7 @@
  * @param {String} params.surchargeId - Surcharge ID of the surcharge we are requesting
  * @return {Promise<Object>|undefined} - A surcharge document, if one is found
  */
-export default async function getSurcharge(context, { language, surchargeId, shopId } = {}) {
+export default async function getSurcharge(context, { surchargeId, shopId } = {}) {
   const { collections } = context;
   const { Surcharges } = collections;
 
@@ -18,11 +18,6 @@ export default async function getSurcharge(context, { language, surchargeId, sho
     _id: surchargeId,
     shopId
   });
-
-  if (surcharge) {
-    // Add language from args so that we can use it to get translated message
-    surcharge.language = language;
-  }
 
   return surcharge;
 }
