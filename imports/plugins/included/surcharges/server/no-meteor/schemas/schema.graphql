@@ -91,6 +91,19 @@ type SurchargeMessagesByLanguage {
   language: String!
 }
 
+###
+# Extensions of existing types
+###
+extend type Cart {
+  "Surcharges applied to this cart"
+  surcharges: [AppliedSurcharge]!
+}
+
+extend type Order {
+  "Surcharges applied to this order"
+  surcharges: [AppliedSurcharge]!
+}
+
 
 ###
 # Enums

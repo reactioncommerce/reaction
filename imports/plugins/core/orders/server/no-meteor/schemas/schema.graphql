@@ -216,9 +216,6 @@ type Order implements Node {
   "The shop through which the order was placed"
   shop: Shop!
 
-  "Surcharges to apply to this cart"
-  surcharges: [AppliedSurcharge]!
-
   "Total quantity of all items in the order"
   totalItemQuantity: Int!
 
