@@ -58,9 +58,6 @@ type OrderSummary {
   "The combined prices of all cart items"
   itemTotal: Money!
 
-  "The total of all suurcharges applied"
-  surchargeTotal: Money!
-
   "The total amount that was deemed taxable by the tax service"
   taxableAmount: Money!
 

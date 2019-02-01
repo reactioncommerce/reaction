@@ -104,6 +104,19 @@ extend type Order {
   surcharges: [AppliedSurcharge]!
 }
 
+extend type CartSummary {
+  """
+  The combined total of all surcharges. This may be null, and there is a difference
+  between null and 0. Null means "not able to calculate", such as when no fulfillment method has
+  been selected for some fulfillment groups.
+  """
+  surchargeTotal: Money
+}
+
+extend type OrderSummary {
+  "The total of all suurcharges applied"
+  surchargeTotal: Money
+}
 
 ###
 # Enums
