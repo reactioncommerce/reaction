@@ -9,7 +9,7 @@ const Money = new SimpleSchema({
   }
 });
 
-const CommonOrderItem = new SimpleSchema({
+export const CommonOrderItem = new SimpleSchema({
   _id: String,
   isTaxable: {
     type: Boolean,
