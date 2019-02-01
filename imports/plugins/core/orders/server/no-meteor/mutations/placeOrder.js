@@ -59,6 +59,11 @@ const orderInputSchema = new SimpleSchema({
     optional: true
   },
   "currencyCode": String,
+  "customData": {
+    type: Object,
+    blackbox: true,
+    optional: true
+  },
   "email": String,
   "fulfillmentGroups": {
     type: Array,
@@ -446,7 +451,7 @@ export default async function placeOrder(context, input) {
   inputSchema.validate(cleanedInput);
 
   const { order: orderInput, payments: paymentsInput } = cleanedInput;
-  const { billingAddress, cartId, currencyCode, email, fulfillmentGroups, shopId } = orderInput;
+  const { billingAddress, cartId, currencyCode, customData, email, fulfillmentGroups, shopId } = orderInput;
   const { accountId, account, collections, userId } = context;
   const { Orders } = collections;
 
@@ -528,6 +533,7 @@ export default async function placeOrder(context, input) {
     cartId,
     createdAt: now,
     currencyCode,
+    customData,
     discounts,
     email,
     payments,

@@ -375,6 +375,7 @@ export const OrderFulfillmentGroup = new SimpleSchema({
  * @property {String} cartId optional For tracking which cart created this order
  * @property {Date} createdAt required
  * @property {String} currencyCode required
+ * @property {Object} customData Arbitrary custom order data
  * @property {Document[]} documents optional
  * @property {String} email optional
  * @property {Object[]} exportHistory optional
@@ -415,6 +416,16 @@ export const Order = new SimpleSchema({
   },
   "createdAt": Date,
   "currencyCode": String,
+  /**
+   * Custom key/value data that you need to store.
+   * You'll need to extend GraphQL schemas if you
+   * want to expose any of this data through the API.
+   */
+  "customData": {
+    type: Object,
+    blackbox: true,
+    optional: true
+  },
   "discounts": {
     type: Array,
     optional: true
