@@ -113,25 +113,6 @@ class NavigationItemCard extends Component {
     row: PropTypes.object
   };
 
-  componentDidUpdate(prevProps) {
-    const { isDragging, isOver, navigationItemId, onSetDraggingNavigationItemId, onSetOverNavigationItemId } = this.props;
-    if (isDragging !== prevProps.isDragging) {
-      let draggingNavigationItemId = "";
-      if (isDragging) {
-        draggingNavigationItemId = navigationItemId;
-      }
-      onSetDraggingNavigationItemId(draggingNavigationItemId);
-    }
-
-    if (isOver !== prevProps.isOver) {
-      let overNavigationItemId = "";
-      if (isOver) {
-        overNavigationItemId = navigationItemId;
-      }
-      onSetOverNavigationItemId(overNavigationItemId);
-    }
-  }
-
   get type() {
     const { row } = this.props;
     let type;
