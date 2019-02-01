@@ -67,10 +67,6 @@ class NavigationTreeContainer extends Component {
               onChange={onSetSortableNavigationTree}
             />
           </div>
-
-          <NavigationItemsListContainer>
-            {this.renderRows()}
-          </NavigationItemsListContainer>
         </ContentWrapper>
       </Wrapper>
     );
