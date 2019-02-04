@@ -1,98 +1,32 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { compose } from "recompose";
-import { DragSource, DropTarget } from "react-dnd";
-import styled from "styled-components";
+import { DragSource } from "react-dnd";
 import Card from "@material-ui/core/Card";
+import IconButton from "@material-ui/core/IconButton";
 import { withStyles } from "@material-ui/core/styles";
-import Link from "@reactioncommerce/components/Link/v1";
 import DragIcon from "mdi-material-ui/Drag";
-import iconEllipsisV from "../svg/iconEllipsisV";
-import iconChevronDown from "../svg/iconChevronDown";
-import iconChevronRight from "../svg/iconChevronRight";
-import iconPencil from "../svg/iconPencil";
-import iconTimes from "../svg/iconTimes";
-import iconFile from "../svg/iconFile";
-import iconTag from "../svg/iconTag";
-
-const CardContainer = styled.div`
-  margin-bottom: 5px;
-`;
-const CardContentContainer = styled.div`
-  display: flex;
-  padding: 10px 20px;
-`;
-
-const HandleIconSpan = styled.span`
-  display: inline-block;
-  height: 16px;
-  width: 16px;
-  color: #e6e6e6;
-  cursor: pointer;
-`;
-
-const ChevronIconContainer = styled.div`
-  width: 20px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-`;
-
-const ChevronIconSpan = styled.span`
-  display: inline-block;
-  height: 16px;
-  width: 16px;
-  color: #666666;
-`;
-
-const NavDetailContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  padding-left: 20px;
-`;
-
-const NavName = styled.p`
-  font-weight: 700;
-  margin: 0;
-`;
-
-const NavDesc = styled.p`
-  font-weight: 400;
-  margin: 0;
-  color: #b3b3b3;
-`;
-
-const NavDescSpan = styled.span`
-  display: inline-block;
-  height: 16px;
-  width: 16px;
-  margin-right: 10px;
-`;
-
-const ActionsContainer = styled.div`
-  margin-left: auto;
-  display: flex;
-`;
-
-const ActionIconContainer = styled.div`
-  width: 50px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  text-align: center;
-`;
-
-const ActionIconSpan = styled.span`
-  display: inline-block;
-  height: 20px;
-  width: 20px;
-  color: #666666;
-`;
+import FileOutlineIcon from "mdi-material-ui/FileOutline";
+import PencilIcon from "mdi-material-ui/Pencil";
+import { Typography } from "@material-ui/core";
 
 const styles = (theme) => ({
   card: {
-    marignTop: -1
+    height: 60,
+    display: "flex",
+    alignItems: "center",
+    paddingLeft: theme.spacing.unit,
+    paddingRight: theme.spacing.unit
+  },
+  rowContent: {
+    flex: 1
+  },
+  subtitle: {
+    display: "flex",
+    alignItems: "center"
+  },
+  subtitleIcon: {
+    marginRight: 4
   }
 });
 
@@ -113,6 +47,9 @@ const navigationItemSource = {
 
 /**
  * Specifies which props to inject into your component.
+ * @param {Object} connect DnD connect
+ * @param {Object} monitor DnD monitor
+ * @returns {Object} DnD connection source
  */
 function sourceCollect(connect, monitor) {
   return {
@@ -124,87 +61,17 @@ function sourceCollect(connect, monitor) {
 
 class NavigationItemCard extends Component {
   static propTypes = {
+    classes: PropTypes.func,
+    connectDragPreview: PropTypes.func,
+    connectDragSource: PropTypes.func,
+    isDragging: PropTypes.bool,
     onClickUpdateNavigationItem: PropTypes.func,
-    onSetDraggingNavigationItemId: PropTypes.func,
-    onToggleChildrenVisibility: PropTypes.func,
     row: PropTypes.object
   };
-
-  get type() {
-    const { row } = this.props;
-    let type;
-    if (row) {
-      const { node: { navigationItem, tag } } = row;
-      if (tag) {
-        type = "tag";
-      } else if (navigationItem) {
-        type = "item";
-      }
-    }
-    return type;
-  }
-
-  get isInTree() {
-    const { row } = this.props;
-    if (row) {
-      const { treeIndex } = row;
-      if (treeIndex !== undefined) {
-        return true;
-      }
-    }
-    return false;
-  }
 
   handleClickEdit = () => {
     const { onClickUpdateNavigationItem, row: { node: { navigationItem } } } = this.props;
     onClickUpdateNavigationItem(navigationItem);
-  }
-
-  handleToggleVisibility = () => {
-    const { onToggleChildrenVisibility, row: { path } } = this.props;
-    onToggleChildrenVisibility(path);
-  }
-
-  renderActionButtons() {
-    const removeActionButton = (
-      <ActionIconContainer>
-        <Link onClick={this.removeNavigationItem}>
-          <ActionIconSpan>{iconTimes}</ActionIconSpan>
-        </Link>
-      </ActionIconContainer>
-    );
-
-    const editActionButton = (
-      <ActionIconContainer>
-        <Link onClick={this.handleClickEdit}>
-          <ActionIconSpan>{iconPencil}</ActionIconSpan>
-        </Link>
-      </ActionIconContainer>
-    );
-
-    if (this.isInTree || this.type === "item") {
-      return (
-        <ActionsContainer>
-          { this.type === "item" ? editActionButton : null }
-          { this.isInTree ? removeActionButton : null }
-        </ActionsContainer>
-      );
-    }
-    return null;
-  }
-
-  renderChildrenToggleButton() {
-    const { row: { node: { expanded, items } } } = this.props;
-    if (this.isInTree && items && items.length > 0) {
-      return (
-        <ChevronIconContainer>
-          <Link onClick={this.handleToggleVisibility}>
-            <ChevronIconSpan>{expanded ? iconChevronDown : iconChevronRight }</ChevronIconSpan>
-          </Link>
-        </ChevronIconContainer>
-      );
-    }
-    return null;
   }
 
   render() {
@@ -216,51 +83,31 @@ class NavigationItemCard extends Component {
       row
     } = this.props;
 
-    let title;
-    let description;
-    let type;
+    const { node: { navigationItem } } = row;
+    const { draftData } = navigationItem;
+    const { value } = draftData.content.find((content) => content.language === "en");
+    const title = value;
+    const { url: subtitle } = draftData;
 
-    if (row) {
-      const { node: { tag, navigationItem } } = row;
-      if (tag) {
-        const { name } = tag;
-        title = name;
-        description = name;
-        type = "tag";
-      } else if (navigationItem) {
-        const { draftData } = navigationItem;
-        const { value } = draftData.content.find((content) => content.language === "en");
-        title = value;
-        ({ url: description } = draftData);
-        type = "item";
-      }
-    }
+    const dragHandle = (
+      <div>
+        <IconButton><DragIcon /></IconButton>
+      </div>
+    );
 
     const toRender = (
       <div style={{ opacity: isDragging ? 0.5 : 1 }}>
         <Card className={classes.card}>
-          <CardContentContainer>
-            {
-              connectDragSource((
-                <div style={{ width: "20px", display: "flex", flexDirection: "column", justifyContent: "center" }}>
-                  <HandleIconSpan><DragIcon /></HandleIconSpan>
-                </div>
-              ), {
-                dropEffect: "copy"
-              })
-            }
-            {this.renderChildrenToggleButton()}
-            <NavDetailContainer>
-              <NavName>{title}</NavName>
-              <NavDesc>
-                <NavDescSpan>
-                  {type === "tag" ? iconTag : iconFile}
-                </NavDescSpan>
-                {description}
-              </NavDesc>
-            </NavDetailContainer>
-            {this.renderActionButtons()}
-          </CardContentContainer>
+          {connectDragSource(dragHandle, { dropEffect: "copy" })}
+          <div className={classes.rowContent}>
+            <Typography>{title}</Typography>
+            <Typography className={classes.subtitle} variant="caption">
+              <FileOutlineIcon className={classes.subtitleIcon} fontSize="inherit" /> {subtitle}
+            </Typography>
+          </div>
+          <IconButton onClick={this.handleClickEdit}>
+            <PencilIcon />
+          </IconButton>
         </Card>
       </div>
     );
