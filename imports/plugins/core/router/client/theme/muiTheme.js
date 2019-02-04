@@ -18,7 +18,8 @@ export const rawMuiTheme = {
       light: colors.coolGrey300,
       main: colors.coolGrey,
       dark: colors.coolGrey400
-    }
+    },
+    divider: colors.black10
   },
   typography: {
     fontSize: 16,
@@ -83,6 +84,9 @@ export const rawMuiTheme = {
     MuiAppBar: {
       root: {
         height: toolbarHeight
+      },
+      colorPrimary: {
+        backgroundColor: colors.white
       },
       colorDefault: {
         backgroundColor: colors.white
