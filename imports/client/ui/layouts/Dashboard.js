@@ -1,11 +1,12 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import styled, { css, injectGlobal } from "styled-components";
-import styledMUI from "styled-components-mui";
+import { compose } from "recompose";
+import classNames from "classnames";
+import styled, { injectGlobal } from "styled-components";
 import { ContainerQuery } from "react-container-query";
-import MUIAppBar from "@material-ui/core/AppBar";
-import MUIToolbar from "@material-ui/core/Toolbar";
-import IconButton from "@material-ui/core/IconButton";
+import withStyles from "@material-ui/core/styles/withStyles";
+import AppBar from "@material-ui/core/AppBar";
+import Toolbar from "@material-ui/core/Toolbar";
 import { applyTheme, CustomPropTypes } from "@reactioncommerce/components/utils";
 import { withComponents } from "@reactioncommerce/components-context";
 import { Route, Switch } from "react-router";
@@ -44,6 +45,10 @@ const Main = styled(({ children, isMobile, isSidebarOpen, ...divProps }) => (<di
       ? "padding 225ms cubic-bezier(0, 0, 0.2, 1) 0ms"
       : "padding 195ms cubic-bezier(0.4, 0, 0.6, 1) 0ms")};
   padding-left: ${(props) => (props.isSidebarOpen && props.isMobile === false ? "280px" : 0)};
+  padding-bottom: ${applyTheme("Layout.pageContentPaddingBottom")};
+  padding-right: ${applyTheme("Layout.pageContentPaddingRight")};
+  padding-top: ${applyTheme("Layout.pageContentPaddingTop")};
+  margin: 0 auto;
 `;
 
 const MainContent = styled.div`
@@ -55,44 +60,27 @@ const MainContent = styled.div`
   margin: 0 auto;
 `;
 
-const MainContentFullWidth = styled.div`
-  padding-top: ${applyTheme("Layout.pageContentPaddingTop")};
-`;
-
-// The reason we can't simply do `styledMUI(MUIAppBar)` here is because we're passing in isMobile and isSidebarOpen
-// props for the styled-components conditionals, but React does not recognize these as valid attributes
-// for DOM elements and prints warnings in the console. Someday there may be a better solution.
-// See https://github.com/styled-components/styled-components/issues/305
-const AppBar = styledMUI(({ children, isMobile, isSidebarOpen, ...restProps }) => (<MUIAppBar {...restProps}>{children}</MUIAppBar>))`
-  background-color: ${applyTheme("Layout.pageHeaderBackgroundColor")};
+const MainFullWidth = styled.div`
+  width: 100vw;
+  background-color: ${applyTheme("Layout.pageBackgroundColor")};
+  flex-grow: 1;
   transition: ${(props) =>
     (props.isSidebarOpen && props.isMobile !== true
-      ? "margin 225ms cubic-bezier(0.0, 0, 0.2, 1) 0ms,width 225ms cubic-bezier(0.0, 0, 0.2, 1) 0ms"
-      : "margin 195ms cubic-bezier(0.4, 0, 0.6, 1) 0ms,width 195ms cubic-bezier(0.4, 0, 0.6, 1) 0ms")};
-  ${(props) => {
-    if (props.isSidebarOpen && props.isMobile !== true) {
-      return css`
-        margin-left: ${applyTheme("Sidebar.drawerWidth")};
-        width: calc(100% - ${applyTheme("Sidebar.drawerWidth")});`;
-    }
-    return null;
-  }};
+      ? "padding 225ms cubic-bezier(0, 0, 0.2, 1) 0ms"
+      : "padding 195ms cubic-bezier(0.4, 0, 0.6, 1) 0ms")};
+  padding-left: ${(props) => (props.isSidebarOpen && props.isMobile === false ? "280px" : 0)};
+  padding-top: ${applyTheme("Layout.pageContentPaddingTop")};
 `;
 
 const Grow = styled.div`
   flex-grow: 1;
 `;
 
-// This is an invisible element that is needed only to push the page content down below the `AppBar`
-const DrawerHeader = styled.div`
-  min-height: 48px;
-  @media (min-width: 600px) {
-    min-height: 64px;
+const styles = (theme) => ({
+  leftSidebarOpen: {
+    paddingLeft: 280 + (theme.spacing.unit * 2)
   }
-  @media (min-width: 0px) and (orientation: landscape) {
-    min-height: 48px;
-  }
-`;
+});
 
 class Dashboard extends Component {
   static propTypes = {
@@ -114,10 +102,15 @@ class Dashboard extends Component {
   };
 
   render() {
+    const { classes } = this.props;
     const { isSidebarOpen } = this.state;
     const uiState = {
       isLeftDrawerOpen: isSidebarOpen
     };
+
+    const toolbarClassName = classNames({
+      [classes.leftSidebarOpen]: uiState.isLeftDrawerOpen
+    });
 
     return (
       <ContainerQuery query={query}>
@@ -135,11 +128,11 @@ class Dashboard extends Component {
 
           return (
             <Container>
-              <AppBar elevation={0} position="fixed" isMobile={isMobile} isSidebarOpen={isSidebarOpen}>
-                <MUIToolbar>
+              <AppBar position="fixed">
+                <Toolbar className={toolbarClassName}>
                   <Grow />
                   <ProfileImageWithData size={40} />
-                </MUIToolbar>
+                </Toolbar>
               </AppBar>
               <Sidebar
                 isMobile={isMobile}
@@ -147,39 +140,34 @@ class Dashboard extends Component {
                 onDrawerClose={this.handleDrawerClose}
                 routes={operatorRoutes}
               />
-              <Main isMobile={isMobile} isSidebarOpen={isSidebarOpen}>
-                <DrawerHeader />
-
-                <Switch>
-                  {
-                    operatorRoutes.map((route) => (
-                      <Route
-                        key={route.path}
-                        path={`/operator${route.path}`}
-                        render={(props) => {
-                          // If the layout component is explicitly null
-                          if (route.layoutComponent === null) {
-                            return (
-                              <MainContentFullWidth>
-                                <route.mainComponent uiState={uiState} {...props} />;
-                              </MainContentFullWidth>
-                            );
-                          }
-
-                          const LayoutComponent = route.layoutComponent || MainContent;
-
+              <Switch>
+                {
+                  operatorRoutes.map((route) => (
+                    <Route
+                      key={route.path}
+                      path={`/operator${route.path}`}
+                      render={(props) => {
+                        // If the layout component is explicitly null
+                        if (route.layoutComponent === null) {
                           return (
-                            <LayoutComponent>
-                              <route.mainComponent uiState={uiState} {...props} />
-                            </LayoutComponent>
+                            <MainFullWidth isMobile={isMobile} isSidebarOpen={isSidebarOpen}>
+                              <route.mainComponent uiState={uiState} {...props} />;
+                            </MainFullWidth>
                           );
-                        }}
-                      />
-                    ))
-                  }
-                </Switch>
+                        }
 
-              </Main>
+                        const LayoutComponent = route.layoutComponent || Main;
+
+                        return (
+                          <LayoutComponent isMobile={isMobile} isSidebarOpen={isSidebarOpen}>
+                            <route.mainComponent uiState={uiState} {...props} />
+                          </LayoutComponent>
+                        );
+                      }}
+                    />
+                  ))
+                }
+              </Switch>
             </Container>
           );
         }}
@@ -188,4 +176,7 @@ class Dashboard extends Component {
   }
 }
 
-export default withComponents(Dashboard);
+export default compose(
+  withComponents,
+  withStyles(styles, { name: "RuiDashboard" })
+)(Dashboard);
