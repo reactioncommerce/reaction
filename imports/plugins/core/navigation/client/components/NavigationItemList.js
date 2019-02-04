@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
-import Link from "@reactioncommerce/components/Link/v1";
+import Button from "@material-ui/core/Button";
 import NavigationItemCard from "./NavigationItemCard";
 
 const Wrapper = styled.div`
@@ -48,7 +48,7 @@ class PagesList extends Component {
     return (
       <Wrapper>
         <LinkContainer>
-          <Link onClick={onClickAddNavigationItem} className="add-nav-item-link">Add navigation item</Link>
+          <Button color="primary" variant="outlined" onClick={onClickAddNavigationItem}>Add navigation item</Button>
         </LinkContainer>
         {this.renderNavigationItems()}
       </Wrapper>
