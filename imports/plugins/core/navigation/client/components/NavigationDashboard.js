@@ -15,6 +15,10 @@ import NavigationTreeContainer from "./NavigationTreeContainer";
 import NavigationItemTabs from "./NavigationItemTabs";
 
 const styles = (theme) => ({
+  root: {
+    height: "100vh",
+    overflow: "hidden"
+  },
   toolbarButton: {
     marginLeft: theme.spacing.unit
   },
@@ -114,8 +118,7 @@ class NavigationDashboard extends Component {
     });
 
     return (
-      <div>
-
+      <div className={classes.root}>
         <AppBar color="default">
           <Toolbar className={toolbarClassName}>
             <Typography className={classes.title} variant="h6">Main Navigation</Typography>
