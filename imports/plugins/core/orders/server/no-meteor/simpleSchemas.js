@@ -9,7 +9,6 @@ const Money = new SimpleSchema({
   }
 });
 
-<<<<<<< HEAD
 /**
  * @name CommonOrderItemAttribute
  * @memberof Schemas
@@ -36,11 +35,6 @@ const CommonOrderItem = new SimpleSchema({
   },
   "attributes.$": CommonOrderItemAttribute,
   "isTaxable": {
-=======
-export const CommonOrderItem = new SimpleSchema({
-  _id: String,
-  isTaxable: {
->>>>>>> origin/develop
     type: Boolean,
     optional: true
   },
