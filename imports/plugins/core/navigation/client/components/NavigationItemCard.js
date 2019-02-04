@@ -3,8 +3,10 @@ import PropTypes from "prop-types";
 import { compose } from "recompose";
 import { DragSource, DropTarget } from "react-dnd";
 import styled from "styled-components";
-import Paper from "@material-ui/core/Paper";
+import Card from "@material-ui/core/Card";
+import { withStyles } from "@material-ui/core/styles";
 import Link from "@reactioncommerce/components/Link/v1";
+import DragIcon from "mdi-material-ui/Drag";
 import iconEllipsisV from "../svg/iconEllipsisV";
 import iconChevronDown from "../svg/iconChevronDown";
 import iconChevronRight from "../svg/iconChevronRight";
@@ -87,6 +89,12 @@ const ActionIconSpan = styled.span`
   width: 20px;
   color: #666666;
 `;
+
+const styles = (theme) => ({
+  card: {
+    marignTop: -1
+  }
+});
 
 const navigationItemSource = {
   beginDrag(props) {
@@ -201,6 +209,7 @@ class NavigationItemCard extends Component {
 
   render() {
     const {
+      classes,
       connectDragPreview,
       connectDragSource,
       isDragging,
@@ -229,32 +238,30 @@ class NavigationItemCard extends Component {
 
     const toRender = (
       <div style={{ opacity: isDragging ? 0.5 : 1 }}>
-        <CardContainer>
-          <Paper>
-            <CardContentContainer>
-              {
-                connectDragSource((
-                  <div style={{ width: "20px", display: "flex", flexDirection: "column", justifyContent: "center" }}>
-                    <HandleIconSpan>{iconEllipsisV}</HandleIconSpan>
-                  </div>
-                ), {
-                  dropEffect: "copy"
-                })
-              }
-              {this.renderChildrenToggleButton()}
-              <NavDetailContainer>
-                <NavName>{title}</NavName>
-                <NavDesc>
-                  <NavDescSpan>
-                    {type === "tag" ? iconTag : iconFile}
-                  </NavDescSpan>
-                  {description}
-                </NavDesc>
-              </NavDetailContainer>
-              {this.renderActionButtons()}
-            </CardContentContainer>
-          </Paper>
-        </CardContainer>
+        <Card className={classes.card}>
+          <CardContentContainer>
+            {
+              connectDragSource((
+                <div style={{ width: "20px", display: "flex", flexDirection: "column", justifyContent: "center" }}>
+                  <HandleIconSpan><DragIcon /></HandleIconSpan>
+                </div>
+              ), {
+                dropEffect: "copy"
+              })
+            }
+            {this.renderChildrenToggleButton()}
+            <NavDetailContainer>
+              <NavName>{title}</NavName>
+              <NavDesc>
+                <NavDescSpan>
+                  {type === "tag" ? iconTag : iconFile}
+                </NavDescSpan>
+                {description}
+              </NavDesc>
+            </NavDetailContainer>
+            {this.renderActionButtons()}
+          </CardContentContainer>
+        </Card>
       </div>
     );
 
@@ -262,4 +269,7 @@ class NavigationItemCard extends Component {
   }
 }
 
-export default compose(DragSource("CARD", navigationItemSource, sourceCollect))(NavigationItemCard);
+export default compose(
+  DragSource("CARD", navigationItemSource, sourceCollect),
+  withStyles(styles, { name: "RuiNavigationItemCard" })
+)(NavigationItemCard);
