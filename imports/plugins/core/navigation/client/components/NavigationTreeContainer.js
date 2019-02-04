@@ -2,9 +2,11 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
 import Grid from "@material-ui/core/Grid";
+import withStyles from "@material-ui/core/styles/withStyles";
 import { SortableTreeWithoutDndContext as SortableTree } from "react-sortable-tree";
 import "react-sortable-tree/style.css";
 import NavigationTreeNode from "./NavigationTreeNode";
+import SortableTheme from "./SortableTheme";
 
 
 const Wrapper = styled.div`
@@ -19,6 +21,12 @@ const ContentWrapper = styled.div`
 const NavigationItemsListContainer = styled.div`
   margin-top: 50px;
 `;
+
+const styles = (theme) => ({
+  wrapper: {
+    borderLeft: `1px solid ${theme.palette.divider}`
+  }
+});
 
 class NavigationTreeContainer extends Component {
   static propTypes = {
@@ -51,9 +59,9 @@ class NavigationTreeContainer extends Component {
   }
 
   render() {
-    const { onSetSortableNavigationTree, sortableNavigationTree } = this.props;
+    const { classes, onSetSortableNavigationTree, sortableNavigationTree } = this.props;
     return (
-      <Wrapper>
+      <div className={classes.wrapper}>
         <ContentWrapper>
           <Grid container>
             <Grid item xs={12}>
@@ -61,17 +69,18 @@ class NavigationTreeContainer extends Component {
             </Grid>
           </Grid>
 
-          <div style={{ height: 400 }}>
+          <div style={{ height: "100vh" }}>
             <SortableTree
               treeData={sortableNavigationTree}
               onChange={onSetSortableNavigationTree}
+              theme={SortableTheme}
               dndType={"CARD"}
             />
           </div>
         </ContentWrapper>
-      </Wrapper>
+      </div>
     );
   }
 }
 
-export default NavigationTreeContainer;
+export default withStyles(styles, { name: "RuiNavigationTreeContainer" })(NavigationTreeContainer);
