@@ -4,6 +4,7 @@ import mutations from "./server/no-meteor/mutations";
 import queries from "./server/no-meteor/queries";
 import schemas from "./server/no-meteor/schemas";
 import startup from "./server/no-meteor/startup";
+import getSurcharges from "./server/no-meteor/getSurcharges";
 
 Reaction.registerPackage({
   label: "Surcharges",
@@ -17,6 +18,7 @@ Reaction.registerPackage({
   mutations,
   queries,
   functionsByType: {
+    getSurcharges: [getSurcharges],
     startup: [startup]
   }
 });
