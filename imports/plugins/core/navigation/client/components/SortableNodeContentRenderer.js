@@ -8,6 +8,7 @@ import IconButton from "@material-ui/core/IconButton";
 import Typography from "@material-ui/core/Typography";
 import ChevronRightIcon from "mdi-material-ui/ChevronRight";
 import DragIcon from "mdi-material-ui/Drag";
+import FileOutlineIcon from "mdi-material-ui/FileOutline";
 
 const styles = (theme) => ({
   cardContent: {
@@ -46,6 +47,13 @@ const styles = (theme) => ({
   },
   rowToolbar: {
     display: "flex"
+  },
+  subtitle: {
+    display: "flex",
+    alignItems: "center"
+  },
+  subtitleIcon: {
+    marginRight: 4
   }
 });
 
@@ -87,6 +95,7 @@ class SortableNodeContentRenderer extends Component {
     rowDirection: PropTypes.string.isRequired,
     scaffoldBlockPxWidth: PropTypes.number.isRequired,
     style: PropTypes.shape({}),
+    subtitle: PropTypes.oneOfType([PropTypes.func, PropTypes.node]),
     swapDepth: PropTypes.number,
     swapFrom: PropTypes.number,
     swapLength: PropTypes.number,
@@ -247,11 +256,11 @@ class SortableNodeContentRenderer extends Component {
                 }}
               >
                 <div className={classes.rowContent}>
-                  <Typography className={classes.title} variant="subtitle">
+                  <Typography className={classes.title} variant="subtitle1">
                     {typeof nodeTitle === "function" ? nodeTitle({ node, path, treeIndex }) : nodeTitle}
                   </Typography>
-                  <Typography variant="caption">
-                    {typeof nodeSubtitle === "function" ? nodeSubtitle({ node, path, treeIndex }) : nodeSubtitle}
+                  <Typography className={classes.subtitle} variant="caption">
+                    <FileOutlineIcon className={classes.subtitleIcon} fontSize="inherit" /> {typeof nodeSubtitle === "function" ? nodeSubtitle({ node, path, treeIndex }) : nodeSubtitle}
                   </Typography>
                 </div>
 
