@@ -5,6 +5,7 @@ import classNames from "classnames";
 import { withStyles } from "@material-ui/core/styles";
 import Card from "@material-ui/core/Card";
 import IconButton from "@material-ui/core/IconButton";
+import Typography from "@material-ui/core/Typography";
 import ChevronRightIcon from "mdi-material-ui/ChevronRight";
 import DragIcon from "mdi-material-ui/Drag";
 
@@ -31,6 +32,20 @@ const styles = (theme) => ({
     "&$expanded": {
       transform: "rotate(90deg)"
     }
+  },
+  row: {
+    display: "flex",
+    flex: 1,
+    alignItems: "center"
+  },
+  rowDragDisabled: {
+    opacity: 0.8
+  },
+  rowContent: {
+    flex: 1
+  },
+  rowToolbar: {
+    display: "flex"
   }
 });
 
@@ -210,77 +225,47 @@ class SortableNodeContentRenderer extends Component {
               <ChevronRightIcon />
             </IconButton>
           )}
+          {/* Set the row preview to be used during drag and drop */}
+          {connectDragPreview((
+            <div style={{ display: "flex", flex: 1 }}>
+              {scaffold}
+              <div
+                className={
+                  classNames(classes.row, {
+                    [classes.rowDragDisabled]: !canDrag,
+                    [classes.rowLandingPad]: isLandingPadActive,
+                    [classes.rowCancelPad]: isLandingPadActive && !canDrop,
+                    [classes.rowSearchMatch]: isSearchMatch,
+                    [classes.rowSearchFocus]: isSearchFocus
+                  }, className)
+                }
+                style={{
+                  opacity: isDraggedDescendant ? 0.5 : 1,
+                  ...style
+                }}
+              >
+                <div className={classes.rowContent}>
+                  <Typography className={classes.title} variant="subtitle">
+                    {typeof nodeTitle === "function" ? nodeTitle({ node, path, treeIndex }) : nodeTitle}
+                  </Typography>
+                  <Typography variant="caption">
+                    {node.secondaryText}
+                  </Typography>
+                </div>
 
-          <div
-            className={
-              styles.rowWrapper +
-              (!canDrag ? ` ${styles.rowWrapperDragDisabled}` : "")
-            }
-          >
-
-            {/* Set the row preview to be used during drag and drop */}
-            {connectDragPreview((
-              <div style={{ display: "flex" }}>
-                {scaffold}
-                <div
-                  className={
-                    styles.row +
-                    (isLandingPadActive ? ` ${styles.rowLandingPad}` : "") +
-                    (isLandingPadActive && !canDrop
-                      ? ` ${styles.rowCancelPad}`
-                      : "") +
-                    (isSearchMatch ? ` ${styles.rowSearchMatch}` : "") +
-                    (isSearchFocus ? ` ${styles.rowSearchFocus}` : "") +
-                    (className ? ` ${className}` : "")
-                  }
-                  style={{
-                    opacity: isDraggedDescendant ? 0.5 : 1,
-                    ...style
-                  }}
-                >
-                  <div
-                    className={
-                      styles.rowContents +
-                      (!canDrag ? ` ${styles.rowContentsDragDisabled}` : "")
-                    }
-                  >
-                    <div className={styles.rowToolbar}>
-                      {icons.map((icon, index) => (
-                        <div
-                          key={index} // eslint-disable-line react/no-array-index-key
-                          className={styles.toolbarButton}
-                        >
-                          {icon}
-                        </div>
-                      ))}
+                <div className={classes.rowToolbar}>
+                  {buttons.map((button, index) => (
+                    <div
+                      key={index} // eslint-disable-line react/no-array-index-key
+                      className={classes.toolbarButton}
+                    >
+                      {button}
                     </div>
-                    <div className={styles.rowLabel}>
-                      <span className={styles.rowTitle}>
-                        {typeof nodeTitle === "function"
-                          ? nodeTitle({
-                            node,
-                            path,
-                            treeIndex
-                          })
-                          : nodeTitle}
-                      </span>
-                    </div>
-
-                    <div className={styles.rowToolbar}>
-                      {buttons.map((btn, index) => (
-                        <div
-                          key={index} // eslint-disable-line react/no-array-index-key
-                          className={styles.toolbarButton}
-                        >
-                          {btn}
-                        </div>
-                      ))}
-                    </div>
-                  </div>
+                  ))}
                 </div>
               </div>
-            ))}
-          </div>
+            </div>
+          ))}
         </Card>
 
       </div>
