@@ -61,7 +61,7 @@ function sourceCollect(connect, monitor) {
 
 class NavigationItemCard extends Component {
   static propTypes = {
-    classes: PropTypes.func,
+    classes: PropTypes.object,
     connectDragPreview: PropTypes.func,
     connectDragSource: PropTypes.func,
     isDragging: PropTypes.bool,
