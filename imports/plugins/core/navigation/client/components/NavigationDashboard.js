@@ -44,6 +44,7 @@ class NavigationDashboard extends Component {
   static propTypes = {
     classes: PropTypes.object,
     createNavigationItem: PropTypes.func,
+    deleteNavigationItem: PropTypes.func,
     navigationItems: PropTypes.array,
     navigationTreeRows: PropTypes.array,
     onDragHover: PropTypes.func,
@@ -54,7 +55,8 @@ class NavigationDashboard extends Component {
     uiState: PropTypes.shape({
       isLeftDrawerOpen: PropTypes.bool
     }),
-    updateNavigationItem: PropTypes.func
+    updateNavigationItem: PropTypes.func,
+    updateNavigationTree: PropTypes.func
   }
 
   state = {
@@ -67,13 +69,13 @@ class NavigationDashboard extends Component {
     tags: []
   }
 
-  addNavigationItem = () => this.setState({ isModalOpen: true, modalMode: "create", navigationItem: null });
+  addNavigationItem = () => {
+    this.setState({ isModalOpen: true, modalMode: "create", navigationItem: null });
+  }
 
-  handleCloseModal = () => this.setState({ isModalOpen: false });
-
-  handleSetDraggingNavigationItemId = (draggingNavigationItemId) => this.setState({ draggingNavigationItemId });
-
-  handleSetOverNavigationItemId = (overNavigationItemId) => this.setState({ overNavigationItemId });
+  handleCloseModal = () => {
+    this.setState({ isModalOpen: false });
+  }
 
   updateNavigationItem = (navigationItemDoc) => {
     const { _id, draftData } = navigationItemDoc;
@@ -94,6 +96,7 @@ class NavigationDashboard extends Component {
     const {
       classes,
       createNavigationItem,
+      deleteNavigationItem,
       navigationItems,
       navigationTreeRows,
       onDragHover,
@@ -123,8 +126,7 @@ class NavigationDashboard extends Component {
           <Toolbar className={toolbarClassName}>
             <Typography className={classes.title} variant="h6">Main Navigation</Typography>
             <Button className={classes.toolbarButton} color="primary" onClick={this.handlePublishChanges}>Discard</Button>
-            <Button className={classes.toolbarButton} color="primary" variant="outlined" onClick={updateNavigationTree}>Save Changes</Button>
-            <Button className={classes.toolbarButton} color="primary" variant="contained" onClick={this.handlePublishChanges}>Publish</Button>
+            <Button className={classes.toolbarButton} color="primary" variant="contained" onClick={updateNavigationTree}>Save Changes</Button>
           </Toolbar>
         </AppBar>
 
@@ -161,6 +163,7 @@ class NavigationDashboard extends Component {
           <div className={classes.paper}>
             <NavigationItemForm
               createNavigationItem={createNavigationItem}
+              deleteNavigationItem={deleteNavigationItem}
               mode={modalMode}
               navigationItem={navigationItem}
               onCloseForm={this.handleCloseModal}

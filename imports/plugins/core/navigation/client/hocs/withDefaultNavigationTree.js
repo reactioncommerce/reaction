@@ -39,12 +39,12 @@ export default (Component) => (
           onCompleted={this.handleSetNavigationTree}
           notifyOnNetworkStatusChange={true}
         >
-          {({ data, loading }) => {
+          {({ data, loading, refetch }) => {
             if (!loading) {
               const { navigationTreeById: { name } } = data;
               props.navigationTreeName = name;
             }
-            return <Component {...props} />;
+            return <Component {...props} refetchNavigationTree={refetch} />;
           }}
         </Query>
       );

@@ -5,14 +5,15 @@ import SimpleSchema from "simpl-schema";
 import styled from "styled-components";
 import Grid from "@material-ui/core/Grid";
 import { Form } from "reacto-form";
-import Link from "@reactioncommerce/components/Link/v1";
-import Button from "@reactioncommerce/components/Button/v1";
+import Button from "@material-ui/core/Button";
+import IconButton from "@material-ui/core/IconButton";
+import CloseIcon from "mdi-material-ui/Close";
 import Checkbox from "@reactioncommerce/components/Checkbox/v1";
 import ErrorsBlock from "@reactioncommerce/components/ErrorsBlock/v1";
 import Field from "@reactioncommerce/components/Field/v1";
 import TextInput from "@reactioncommerce/components/TextInput/v1";
 import { i18next } from "/client/api";
-import iconTimes from "../svg/iconTimes";
+import ConfirmDialog from "/imports/client/ui/components/ConfirmDialog";
 
 
 const Wrapper = styled.div`
@@ -50,6 +51,7 @@ const navigationItemValidator = navigationItemFormSchema.getFormValidator();
 class NavigationItemForm extends Component {
   static propTypes = {
     createNavigationItem: PropTypes.func,
+    deleteNavigationItem: PropTypes.func,
     mode: PropTypes.oneOf(["create", "edit"]),
     navigationItem: PropTypes.object,
     onCloseForm: PropTypes.func,
@@ -98,6 +100,18 @@ class NavigationItemForm extends Component {
     return onCloseForm();
   }
 
+  handleClickDelete = () => {
+    const { deleteNavigationItem, navigationItem, onCloseForm } = this.props;
+    deleteNavigationItem({
+      variables: {
+        input: {
+          _id: navigationItem._id
+        }
+      }
+    });
+    return onCloseForm();
+  }
+
   handleClickSave = () => {
     if (this.form) {
       this.form.submit();
@@ -113,7 +127,7 @@ class NavigationItemForm extends Component {
   }
 
   render() {
-    const { onCloseForm, navigationItem } = this.props;
+    const { onCloseForm, mode, navigationItem } = this.props;
 
     const nameInputId = `name_${this.uniqueInstanceIdentifier}`;
     const urlInputId = `url_${this.uniqueInstanceIdentifier}`;
@@ -134,9 +148,9 @@ class NavigationItemForm extends Component {
             {this.renderActionTitle()}
           </Grid>
           <Grid item xs={4} className="close-icon-container">
-            <Link onClick={onCloseForm}>
-              <span className="close-icon">{iconTimes}</span>
-            </Link>
+            <IconButton onClick={onCloseForm}>
+              <CloseIcon />
+            </IconButton>
           </Grid>
         </Grid>
         <Grid container>
@@ -167,8 +181,19 @@ class NavigationItemForm extends Component {
         </Grid>
         <Grid>
           <Grid item xs={12} className="buttons-container">
-            <Button actionType="secondary" onClick={onCloseForm}>{i18next.t("app.cancel")}</Button>
-            <Button onClick={this.handleClickSave} className="button-save">{i18next.t("app.saveChanges")}</Button>
+            { mode !== "create" && (
+              <ConfirmDialog
+                title={i18next.t("admin.navigation.deleteTitle")}
+                message={i18next.t("admin.navigation.deleteMessage")}
+                onConfirm={this.handleClickDelete}
+              >
+                {({ openDialog }) => (
+                  <Button color="primary" onClick={openDialog} variant="outlined">{i18next.t("admin.navigation.delete")}</Button>
+                )}
+              </ConfirmDialog>
+            )}
+            <Button color="primary" onClick={onCloseForm} variant="outlined">{i18next.t("app.cancel")}</Button>
+            <Button color="primary" onClick={this.handleClickSave} variant="contained">{i18next.t("app.saveChanges")}</Button>
           </Grid>
         </Grid>
       </Wrapper>
