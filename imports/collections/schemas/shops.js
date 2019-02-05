@@ -257,7 +257,7 @@ registerSchema("MerchantShop", MerchantShop);
  * @property {String} unitsOfMeasure.$.label default value: `Ounces`
  * @property {Boolean} unitsOfMeasure.$.default default value: `false`
  * @property {Metafield[]} metafields optional
- * @property {String[]} defaultSellerRoles default values: `["owner", "admin", "seller", "guest", "manage-users", "orders", "account/profile", "product", "createProduct", "tag", "index", "cart/checkout", "cart/completed"]`
+ * @property {String[]} defaultSellerRoles default values: `["owner", "admin", "seller", "guest", "manage-users", "orders", "account/profile", "product", "createProduct", "tag", "index", "cart/completed"]`
  * @property {Layout[]} layout optional
  * @property {ShopTheme} theme optional
  * @property {BrandAsset[]} brandAssets optional
@@ -446,7 +446,6 @@ export const Shop = new SimpleSchema({
       "createProduct",
       "tag",
       "index",
-      "cart/checkout",
       "cart/completed"
     ]
   },

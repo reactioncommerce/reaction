@@ -1,6 +1,6 @@
-import stripeNpm from "stripe";
 import Logger from "@reactioncommerce/logger";
-import getStripeApi from "./getStripeApi";
+import getStripeApiKey from "./getStripeApiKey";
+import getStripeInstance from "./getStripeInstance";
 import formatForStripe from "./formatForStripe";
 
 /**
@@ -16,8 +16,9 @@ import formatForStripe from "./formatForStripe";
 export default async function stripeCreateRefund(context, paymentMethod, amount) {
   let result;
   try {
-    const stripeKey = await getStripeApi(context, paymentMethod.paymentPluginName, paymentMethod.shopId);
-    const stripe = stripeNpm(stripeKey);
+    const stripeKey = await getStripeApiKey(context, paymentMethod.paymentPluginName, paymentMethod.shopId);
+    const stripe = getStripeInstance(stripeKey);
+
     const refundResult = await stripe.refunds.create({ charge: paymentMethod.transactionId, amount: formatForStripe(amount) });
     Logger.debug(refundResult);
     if (refundResult && refundResult.object === "refund") {

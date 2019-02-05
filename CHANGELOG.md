@@ -1,3 +1,43 @@
+# v2.0.0-rc.9
+This is our ninth **release candidate** for v2.0.0 of Reaction. Please check it out and let us know what works and what doesn't for you.
+
+This release is being coordinated with `reaction-platform` and is designed to work with the same versions of `reaction-next-starterkit` and `reaction-hydra`
+
+## Inventory improvements
+We've made some updates to the way inventory is tracked, introducing a new inventory field: `inventoryAvailableToSell`. This field tracks inventory that has been ordered, but has not yet been processed and so is still counted in-stock. This number is what is displayed to customers and determines whether a product is considered "sold out" or not. The old inventory number `inventoryQty` has been renamed to `inventoryInStock` and continues to represent the inventory available in stock. For more info see #4859.
+
+## Breaking changes
+### Inventory
+- Migration 51 has been added to attach `inventoryAvailableToSell` to all products / variants, to correctly calculate the numbers on parent products / variants, and to publish this data to already published Catalog items.
+- `currentQuantity` has been marked with `depreciated` in the cart. This isn't a breaking change at the moment, but lays the path to remove this field and replace with `inventoryAvailableToSell` and `inventoryInStock` in the future.
+- `Catalog.getVariantQuantity` and `ReactionProduct.getVariantQuantity` have been removed. Custom plugins using these methods will need to be updated. The same data returned by these methods is now on the object that was being passed into these methods as the field `inventoryQuantity` or `inventoryAvailableToSell`
+- Moved `isBackorder`, `isLowQuantity`, and `isSoldOut` functions from the `catalog` plugin to the new `inventory` plugin. Custom plugins using these methods will need to update their import path.
+
+## Features
+ - feat: Add flag to enable only IDP routes (#4903)
+ - feat: Record plugin versions in DB and show in Shop panel (#4895)
+ - feat: Add support for fallback tax service (#4871)
+ - feat: Update to Apollo Server 2.0 (#4884)
+ - feat(#4848): Return only isVisible Tags, unless admin (#4879)
+ - feat: Support remote graphql schemas in plugins (#4870)
+ - feat: Support plugins directly registering React components (#4875)
+
+ ## Bugfixes
+ - fix: Password reset page not found (#4917)
+ - fix: add replace to remove comma from formatting (#4910)
+ - fix: add contentForLanguage resolver for nav item content (#4913)
+ - fix: Restore CORS for 401s (#4894)
+ - fix: Meteor method permissions fixes (#4883)
+ - fix: Multi-shop permission fixes (#4872)
+ - fix: check permissions for order workflow methods (#4863)
+
+ ## Tests
+ - test: Fix sitemaps test timeouts (#4920)
+
+ ## Refactors
+ - refactor: updates to inventory counts and statuses (#4859)
+
+
 # v2.0.0-rc.8
 This is our eighth **release candidate** for v2.0.0 of Reaction. Please check it out and let us know what works and what doesn't for you.
 

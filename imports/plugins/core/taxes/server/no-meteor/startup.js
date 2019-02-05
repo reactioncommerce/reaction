@@ -76,6 +76,6 @@ export default function startup(context) {
     });
     if (matchedCount === 0) throw new Error("Unable to update cart");
 
-    appEvents.emit("afterCartUpdate", { cart: { ...cart, items: cartItems }, updatedBy: null }, { emittedBy: EMITTED_BY_NAME });
+    appEvents.emit("afterCartUpdate", { cart: { ...cart, items: cartItems, taxSummary }, updatedBy: null }, { emittedBy: EMITTED_BY_NAME });
   });
 }

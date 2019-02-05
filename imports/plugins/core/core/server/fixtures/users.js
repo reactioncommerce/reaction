@@ -38,8 +38,8 @@ export function getUsers(limit = 2) {
  * @example const user1 = Factory.create("user");
  * @description Types of User factories
  * - `user` - A user
- * - `registeredUser` - A user with a password, loginTokens and roles: `account/profile, guest, product, tag, index, cart/checkout, cart/completed`
- * - `anonymous` - A user without an account with rules: `guest, anonymous, product, tag, index, cart/checkout, cart/completed`
+ * - `registeredUser` - A user with a password, loginTokens and roles: `account/profile, guest, product, tag, index, cart/completed`
+ * - `anonymous` - A user without an account with rules: `guest, anonymous, product, tag, index, cart/completed`
  * @property {String} username - `faker.internet.userName() + _.random(0, 1000)`
  * @property {String} name - `faker.name.findName()`
  * @property {Array} emails - `[{address: faker.internet.email(), verified: true}]`
@@ -109,7 +109,6 @@ const anonymous = {
       "product",
       "tag",
       "index",
-      "cart/checkout",
       "cart/completed"
     ]
   }
@@ -131,7 +130,6 @@ export default function () {
         "product",
         "tag",
         "index",
-        "cart/checkout",
         "cart/completed"
       ]
     },
