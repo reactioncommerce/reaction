@@ -113,6 +113,7 @@ export const rawMuiTheme = {
     },
     MuiButton: {
       root: {
+        padding: `${defaultSpacingUnit}px ${defaultSpacingUnit * 2}px`,
         textTransform: "initial"
       },
       outlinedPrimary: {
@@ -125,7 +126,6 @@ export const rawMuiTheme = {
     MuiCard: {
       root: {
         border: `1px solid ${colors.black10}`,
-        padding: `${defaultSpacingUnit}px ${defaultSpacingUnit * 2}px`
       }
     },
     MuiCheckbox: {
