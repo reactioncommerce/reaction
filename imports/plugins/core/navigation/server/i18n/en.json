@@ -6,7 +6,12 @@
     "navigation": {
       "admin": {
         "navigation": {
-          "navigation": "Navigation"
+          "cancel": "Cancel",
+          "ok": "OK",
+          "delete": "Delete",
+          "navigation": "Navigation",
+          "deleteTitle": "Delete navigation item?",
+          "deleteMessage": "Deleting navigation items also removes them from the navigation tree."
         }
       },
       "navigationItem": {
