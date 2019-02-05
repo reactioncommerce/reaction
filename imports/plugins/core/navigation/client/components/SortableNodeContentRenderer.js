@@ -128,6 +128,7 @@ class SortableNodeContentRenderer extends Component {
       canDrag,
       node,
       title,
+      subtitle,
       draggedNode,
       path,
       treeIndex,
@@ -150,6 +151,7 @@ class SortableNodeContentRenderer extends Component {
       ...otherProps
     } = this.props;
     const nodeTitle = title || node.title;
+    const nodeSubtitle = subtitle || node.subtitle;
 
     const isDraggedDescendant = draggedNode && isDescendant(draggedNode, node);
     const isLandingPadActive = !didDrop && isDragging;
@@ -249,7 +251,7 @@ class SortableNodeContentRenderer extends Component {
                     {typeof nodeTitle === "function" ? nodeTitle({ node, path, treeIndex }) : nodeTitle}
                   </Typography>
                   <Typography variant="caption">
-                    {node.secondaryText}
+                    {typeof nodeSubtitle === "function" ? nodeSubtitle({ node, path, treeIndex }) : nodeSubtitle}
                   </Typography>
                 </div>
 
