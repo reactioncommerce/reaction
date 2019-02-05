@@ -7,7 +7,6 @@ import NavigationDashboard from "./containers/navigationDashboardContainer";
 
 import "./containers";
 import "./templates";
-import "./styles.less";
 
 registerOperatorRoute({
   isNavigationLink: true,

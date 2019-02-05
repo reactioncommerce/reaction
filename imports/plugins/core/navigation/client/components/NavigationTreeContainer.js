@@ -9,7 +9,6 @@ import CloseIcon from "mdi-material-ui/Close";
 import { SortableTreeWithoutDndContext as SortableTree, removeNodeAtPath } from "react-sortable-tree";
 import "react-sortable-tree/style.css";
 import ConfirmDialog from "/imports/client/ui/components/ConfirmDialog";
-import NavigationTreeNode from "./NavigationTreeNode";
 import SortableTheme from "./SortableTheme";
 
 const ContentWrapper = styled.div`
@@ -71,24 +70,6 @@ class NavigationTreeContainer extends Component {
         </ConfirmDialog>
       ]
     };
-  }
-
-  renderRows() {
-    const { navigationTreeRows, onClickUpdateNavigationItem, onDragHover, onSetOverNavigationItemId, onToggleChildrenVisibility } = this.props;
-    let rows = null;
-    if (navigationTreeRows) {
-      rows = navigationTreeRows.map((row, index) => (
-        <NavigationTreeNode
-          key={index}
-          row={row}
-          onClickUpdateNavigationItem={onClickUpdateNavigationItem}
-          onDragHover={onDragHover}
-          onSetOverNavigationItemId={onSetOverNavigationItemId}
-          onToggleChildrenVisibility={onToggleChildrenVisibility}
-        />
-      ));
-    }
-    return rows;
   }
 
   render() {

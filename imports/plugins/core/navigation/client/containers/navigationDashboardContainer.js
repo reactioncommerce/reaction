@@ -8,8 +8,6 @@ import withDefaultNavigationTree from "../hocs/withDefaultNavigationTree";
 import withNavigationItems from "../hocs/withNavigationItems";
 import withDefaultNavigationTreeId from "../hocs/withDefaultNavigationTreeId";
 import withNavigationUIStore from "../hocs/withNavigationUIStore";
-import withTags from "../hocs/withTags";
-
 
 registerComponent("NavigationDashboard", NavigationDashboard, [
   withNavigationUIStore,
@@ -18,8 +16,7 @@ registerComponent("NavigationDashboard", NavigationDashboard, [
   withDefaultNavigationTree,
   withNavigationItems,
   withUpdateNavigationItem,
-  withUpdateNavigationTree,
-  withTags
+  withUpdateNavigationTree
 ]);
 
 export default compose(
@@ -29,6 +26,5 @@ export default compose(
   withDefaultNavigationTree,
   withNavigationItems,
   withUpdateNavigationItem,
-  withUpdateNavigationTree,
-  withTags
+  withUpdateNavigationTree
 )(NavigationDashboard);

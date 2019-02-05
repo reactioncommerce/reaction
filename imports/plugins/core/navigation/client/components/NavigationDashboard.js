@@ -12,7 +12,7 @@ import HTML5Backend from "react-dnd-html5-backend";
 import { DragDropContext } from "react-dnd";
 import NavigationItemForm from "./NavigationItemForm";
 import NavigationTreeContainer from "./NavigationTreeContainer";
-import NavigationItemTabs from "./NavigationItemTabs";
+import NavigationItemList from "./NavigationItemList";
 
 const styles = (theme) => ({
   root: {
@@ -46,12 +46,8 @@ class NavigationDashboard extends Component {
     createNavigationItem: PropTypes.func,
     deleteNavigationItem: PropTypes.func,
     navigationItems: PropTypes.array,
-    navigationTreeRows: PropTypes.array,
-    onDragHover: PropTypes.func,
     onSetSortableNavigationTree: PropTypes.func,
-    onToggleChildrenVisibility: PropTypes.func,
     sortableNavigationTree: PropTypes.arrayOf(PropTypes.object),
-    tags: PropTypes.array,
     uiState: PropTypes.shape({
       isLeftDrawerOpen: PropTypes.bool
     }),
@@ -98,12 +94,8 @@ class NavigationDashboard extends Component {
       createNavigationItem,
       deleteNavigationItem,
       navigationItems,
-      navigationTreeRows,
-      onDragHover,
       onSetSortableNavigationTree,
-      onToggleChildrenVisibility,
       sortableNavigationTree,
-      tags,
       uiState,
       updateNavigationItem,
       updateNavigationTree
@@ -112,8 +104,7 @@ class NavigationDashboard extends Component {
     const {
       isModalOpen,
       modalMode,
-      navigationItem,
-      overNavigationItemId
+      navigationItem
     } = this.state;
 
     const toolbarClassName = classnames({
@@ -132,25 +123,17 @@ class NavigationDashboard extends Component {
 
         <Grid container>
           <Grid item xs={3}>
-            <NavigationItemTabs
+            <NavigationItemList
               onClickAddNavigationItem={this.addNavigationItem}
               navigationItems={navigationItems}
-              tags={tags}
               onClickUpdateNavigationItem={this.updateNavigationItem}
-              onSetDraggingNavigationItemId={this.handleSetDraggingNavigationItemId}
             />
           </Grid>
           <Grid item xs={9}>
             <NavigationTreeContainer
               sortableNavigationTree={sortableNavigationTree}
               onSetSortableNavigationTree={onSetSortableNavigationTree}
-              navigationTreeRows={navigationTreeRows}
-              overNavigationItemId={overNavigationItemId}
               onClickUpdateNavigationItem={this.updateNavigationItem}
-              onDragHover={onDragHover}
-              onSetDraggingNavigationItemId={this.handleSetDraggingNavigationItemId}
-              onSetOverNavigationItemId={this.handleSetOverNavigationItemId}
-              onToggleChildrenVisibility={onToggleChildrenVisibility}
             />
           </Grid>
         </Grid>

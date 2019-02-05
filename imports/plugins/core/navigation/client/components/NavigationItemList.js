@@ -1,24 +1,24 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import styled from "styled-components";
+import withStyles from "@material-ui/core/styles/withStyles";
 import Button from "@material-ui/core/Button";
 import NavigationItemCard from "./NavigationItemCard";
 
-const Wrapper = styled.div`
-  padding: 20px;
-`;
 
-const LinkContainer = styled.div`
-  margin: 20px 0px;
-  text-align: right;
-
-  .add-nav-item-link {
-    font-weight: 700;
+const styles = (theme) => ({
+  root: {
+    flexGrow: 1,
+    padding: theme.spacing.unit * 2
+  },
+  header: {
+    marginBottom: theme.spacing.unit * 2,
+    textAlign: "right"
   }
-`;
+});
 
-class PagesList extends Component {
+class NavigationItemList extends Component {
   static propTypes = {
+    classes: PropTypes.object,
     navigationItems: PropTypes.array,
     onClickAddNavigationItem: PropTypes.func,
     onClickUpdateNavigationItem: PropTypes.func,
@@ -44,16 +44,16 @@ class PagesList extends Component {
   }
 
   render() {
-    const { onClickAddNavigationItem } = this.props;
+    const { classes, onClickAddNavigationItem } = this.props;
     return (
-      <Wrapper>
-        <LinkContainer>
+      <div className={classes.root}>
+        <div className={classes.header}>
           <Button color="primary" variant="outlined" onClick={onClickAddNavigationItem}>Add navigation item</Button>
-        </LinkContainer>
+        </div>
         {this.renderNavigationItems()}
-      </Wrapper>
+      </div>
     );
   }
 }
 
-export default PagesList;
+export default withStyles(styles, { name: "RuiNavigationItemList" })(NavigationItemList);
