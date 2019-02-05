@@ -628,8 +628,7 @@ export default (Component) => (
 
         const rows = this.getRows(addedResult.navigationTree);
         const expandedParentPath = rows[addedResult.treeIndex].path;
-        console.log("ROWS", rows);
-        console.log(expandedParentPath);
+
         return {
           draggedNode,
           targetDepth,
@@ -697,6 +696,8 @@ export default (Component) => (
         const newNode = {};
         newNode.id = node.navigationItem._id;
         newNode.title = this.getNavigationItemTitle(node.navigationItem).value;
+        newNode.subtitle = node.navigationItem.draftData.url;
+        newNode.navigationItem = { ...node.navigationItem };
 
         if (Array.isArray(node.items) && node.items.length) {
           newNode.children = this.navigationTreeToSortable(node.items);
