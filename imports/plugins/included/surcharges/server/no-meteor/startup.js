@@ -1,3 +1,4 @@
+import xformCartGroupToCommonOrder from "/imports/plugins/core/cart/server/no-meteor/util/xformCartGroupToCommonOrder";
 import getSurcharges from "./getSurcharges";
 
 const EMITTED_BY_NAME = "SURCHARGES_PLUGIN";
@@ -18,7 +19,12 @@ export default function startup(context) {
   appEvents.on("afterCartUpdate", async ({ cart }, { emittedBy } = {}) => {
     if (emittedBy === EMITTED_BY_NAME) return; // short circuit infinite loops
 
-    const cartSurcharges = await getSurcharges(context, { cart });
+    // Get cart fulfillmentGroup
+    const [shipping] = cart.shipping;
+    // Convert cart to commonOrder, and get extendedCommonOrder
+    const commonOrder = await xformCartGroupToCommonOrder(cart, shipping, context);
+
+    const cartSurcharges = await getSurcharges(context, { commonOrder });
 
     const { value: updatedCart } = await Cart.findOneAndUpdate({ _id: cart._id }, {
       $set: {

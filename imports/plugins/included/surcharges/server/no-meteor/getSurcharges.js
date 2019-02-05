@@ -11,12 +11,8 @@ import { surchargeCheck } from "./util/surchargeCheck";
  * @return {Array} - an array that surcharges to apply to cart / order
  * @private
  */
-export default async function getSurcharges(context, { cart }) {
+export default async function getSurcharges(context, { commonOrder }) {
   const { collections: { Surcharges } } = context;
-  const [shipping] = cart.shipping;
-
-  // Create an extended common order to check surcharges against
-  const commonOrder = await xformCartGroupToCommonOrder(cart, shipping, context);
   const extendedCommonOrder = await extendCommonOrder(context, commonOrder);
 
   // Get surcharges from Mongo
@@ -48,7 +44,7 @@ export default async function getSurcharges(context, { cart }) {
       surchargeId: surcharge._id,
       amount: surcharge.amount,
       messagesByLanguage: surcharge.messagesByLanguage,
-      cartId: cart._id
+      cartId: commonOrder.cartId
     }
   ));
 
