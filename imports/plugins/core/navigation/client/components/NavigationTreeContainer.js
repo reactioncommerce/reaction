@@ -2,24 +2,18 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
 import Grid from "@material-ui/core/Grid";
+import IconButton from "@material-ui/core/IconButton";
 import withStyles from "@material-ui/core/styles/withStyles";
-import { SortableTreeWithoutDndContext as SortableTree } from "react-sortable-tree";
+import PencilIcon from "mdi-material-ui/Pencil";
+import CloseIcon from "mdi-material-ui/Close";
+import { SortableTreeWithoutDndContext as SortableTree, removeNodeAtPath } from "react-sortable-tree";
 import "react-sortable-tree/style.css";
 import NavigationTreeNode from "./NavigationTreeNode";
 import SortableTheme from "./SortableTheme";
 
-
-const Wrapper = styled.div`
-  border-left: 1px solid #ccc;
-`;
-
 const ContentWrapper = styled.div`
   padding: 40px 80px;
   min-height: calc(100vh - 140px);
-`;
-
-const NavigationItemsListContainer = styled.div`
-  margin-top: 50px;
 `;
 
 const styles = (theme) => ({
@@ -30,6 +24,7 @@ const styles = (theme) => ({
 
 class NavigationTreeContainer extends Component {
   static propTypes = {
+    classes: PropTypes.object,
     navigationTreeRows: PropTypes.array,
     onClickUpdateNavigationItem: PropTypes.func,
     onDragHover: PropTypes.func,
@@ -38,6 +33,40 @@ class NavigationTreeContainer extends Component {
     onToggleChildrenVisibility: PropTypes.func,
     overNavigationItemId: PropTypes.string,
     sortableNavigationTree: PropTypes.arrayOf(PropTypes.object)
+  }
+
+  static defaultProps = {
+    onSetSortableNavigationTree() {}
+  }
+
+  getNodeKey = ({ treeIndex }) => treeIndex;
+
+  generateNodeProps = ({ node, path }) => {
+    const { onClickUpdateNavigationItem, onSetSortableNavigationTree, sortableNavigationTree } = this.props;
+
+    return {
+      buttons: [
+        <IconButton
+          onClick={() => {
+            onClickUpdateNavigationItem(node.navigationItem);
+          }}
+        >
+          <PencilIcon />
+        </IconButton>,
+        <IconButton
+          onClick={() => {
+            const newSortableNavigationTree = removeNodeAtPath({
+              treeData: sortableNavigationTree,
+              path,
+              getNodeKey: this.getNodeKey
+            });
+            onSetSortableNavigationTree(newSortableNavigationTree);
+          }}
+        >
+          <CloseIcon />
+        </IconButton>
+      ]
+    };
   }
 
   renderRows() {
@@ -71,6 +100,7 @@ class NavigationTreeContainer extends Component {
 
           <div style={{ height: "100vh" }}>
             <SortableTree
+              generateNodeProps={this.generateNodeProps}
               treeData={sortableNavigationTree}
               onChange={onSetSortableNavigationTree}
               theme={SortableTheme}
