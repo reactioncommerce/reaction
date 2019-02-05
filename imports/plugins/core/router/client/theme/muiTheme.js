@@ -7,16 +7,22 @@ const { rui_typography: typography } = defaultComponentTheme;
 const breakpoints = createBreakpoints({});
 const toolbarHeight = 80;
 
+export const defaultSpacingUnit = 10;
+
+// Colors
+export const colorPrimaryMain = colors.coolGrey;
+export const colorSecondaryMain = colors.coolGrey;
+
 export const rawMuiTheme = {
   palette: {
     primary: {
       light: colors.coolGrey300,
-      main: colors.coolGrey,
+      main: colorPrimaryMain,
       dark: colors.coolGrey400
     },
     secondary: {
       light: colors.coolGrey300,
-      main: colors.coolGrey,
+      main: colorSecondaryMain,
       dark: colors.coolGrey400
     },
     divider: colors.black10
@@ -30,6 +36,16 @@ export const rawMuiTheme = {
     useNextVariants: true,
     h6: {
       fontSize: 18
+    },
+    subtitle1: {
+      fontSize: 16
+    },
+    button: {
+      fontSize: 14,
+      letterSpacing: 0.8
+    },
+    caption: {
+      color: colors.black30
     }
   },
   shadows: [
@@ -61,6 +77,9 @@ export const rawMuiTheme = {
   ],
   shape: {
     borderRadius: 2
+  },
+  spacing: {
+    unit: defaultSpacingUnit
   },
   mixins: {
     toolbar: {
@@ -95,11 +114,18 @@ export const rawMuiTheme = {
     MuiButton: {
       root: {
         textTransform: "initial"
+      },
+      outlinedPrimary: {
+        border: `1px solid ${colorPrimaryMain}`
+      },
+      outlinedSecondary: {
+        border: `1px solid ${colorSecondaryMain}`
       }
     },
     MuiCard: {
       root: {
-        border: `1px solid ${colors.black10}`
+        border: `1px solid ${colors.black10}`,
+        padding: `${defaultSpacingUnit}px ${defaultSpacingUnit * 2}px`
       }
     },
     MuiCheckbox: {
