@@ -1,10 +1,10 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 import PropTypes from "prop-types";
 import { uniqueId } from "lodash";
 import SimpleSchema from "simpl-schema";
-import styled from "styled-components";
 import Grid from "@material-ui/core/Grid";
 import { Form } from "reacto-form";
+import withStyles from "@material-ui/core/styles/withStyles";
 import Button from "@material-ui/core/Button";
 import IconButton from "@material-ui/core/IconButton";
 import CloseIcon from "mdi-material-ui/Close";
@@ -15,25 +15,18 @@ import TextInput from "@reactioncommerce/components/TextInput/v1";
 import { i18next } from "/client/api";
 import ConfirmDialog from "/imports/client/ui/components/ConfirmDialog";
 
-
-const Wrapper = styled.div`
-  .close-icon-container {
-    text-align: right;
+const styles = (theme) => ({
+  closeButtonContainer: {
+    textAlign: "right",
+  },
+  formActions: {
+    textAlign: "right",
+    marginTop: theme.spacing.unit * 2
+  },
+  formActionButton: {
+    marginLeft: theme.spacing.unit
   }
-  .close-icon {
-    display: inline-block;
-    height: 12px;
-    width: 12px;
-  }
-  .buttons-container {
-    text-align: right;
-    margin-top: 20px;
-
-    .button-save {
-      margin-left: 10px;
-    }
-  }
-`;
+});
 
 const navigationItemFormSchema = new SimpleSchema({
   name: String,
@@ -50,6 +43,7 @@ const navigationItemValidator = navigationItemFormSchema.getFormValidator();
 
 class NavigationItemForm extends Component {
   static propTypes = {
+    classes: PropTypes.object,
     createNavigationItem: PropTypes.func,
     deleteNavigationItem: PropTypes.func,
     mode: PropTypes.oneOf(["create", "edit"]),
@@ -127,7 +121,7 @@ class NavigationItemForm extends Component {
   }
 
   render() {
-    const { onCloseForm, mode, navigationItem } = this.props;
+    const { classes, onCloseForm, mode, navigationItem } = this.props;
 
     const nameInputId = `name_${this.uniqueInstanceIdentifier}`;
     const urlInputId = `url_${this.uniqueInstanceIdentifier}`;
@@ -142,12 +136,12 @@ class NavigationItemForm extends Component {
     });
 
     return (
-      <Wrapper>
+      <Fragment>
         <Grid container>
           <Grid item xs={8}>
             {this.renderActionTitle()}
           </Grid>
-          <Grid item xs={4} className="close-icon-container">
+          <Grid item xs={4} className={classes.closeButtonContainer}>
             <IconButton onClick={onCloseForm}>
               <CloseIcon />
             </IconButton>
@@ -180,7 +174,7 @@ class NavigationItemForm extends Component {
           </Grid>
         </Grid>
         <Grid>
-          <Grid item xs={12} className="buttons-container">
+          <Grid item xs={12} className={classes.formActions}>
             { mode !== "create" && (
               <ConfirmDialog
                 title={i18next.t("admin.navigation.deleteTitle")}
@@ -188,18 +182,18 @@ class NavigationItemForm extends Component {
                 onConfirm={this.handleClickDelete}
               >
                 {({ openDialog }) => (
-                  <Button color="primary" onClick={openDialog} variant="outlined">{i18next.t("admin.navigation.delete")}</Button>
+                  <Button color="primary" onClick={openDialog}>{i18next.t("admin.navigation.delete")}</Button>
                 )}
               </ConfirmDialog>
             )}
-            <Button color="primary" onClick={onCloseForm} variant="outlined">{i18next.t("app.cancel")}</Button>
-            <Button color="primary" onClick={this.handleClickSave} variant="contained">{i18next.t("app.saveChanges")}</Button>
+            <Button className={classes.formActionButton} color="primary" onClick={onCloseForm} variant="outlined">{i18next.t("app.cancel")}</Button>
+            <Button className={classes.formActionButton} color="primary" onClick={this.handleClickSave} variant="contained">{i18next.t("app.saveChanges")}</Button>
           </Grid>
         </Grid>
-      </Wrapper>
+      </Fragment>
     );
   }
 }
 
-export default NavigationItemForm;
+export default withStyles(styles, { name: "RuiNavigationItemForm" })(NavigationItemForm);
 
