@@ -8,6 +8,7 @@ import PencilIcon from "mdi-material-ui/Pencil";
 import CloseIcon from "mdi-material-ui/Close";
 import { SortableTreeWithoutDndContext as SortableTree, removeNodeAtPath } from "react-sortable-tree";
 import "react-sortable-tree/style.css";
+import ConfirmDialog from "/imports/client/ui/components/ConfirmDialog";
 import NavigationTreeNode from "./NavigationTreeNode";
 import SortableTheme from "./SortableTheme";
 
@@ -46,15 +47,14 @@ class NavigationTreeContainer extends Component {
 
     return {
       buttons: [
-        <IconButton
-          onClick={() => {
-            onClickUpdateNavigationItem(node.navigationItem);
-          }}
-        >
+        <IconButton onClick={() => { onClickUpdateNavigationItem(node.navigationItem); }}>
           <PencilIcon />
         </IconButton>,
-        <IconButton
-          onClick={() => {
+        <ConfirmDialog
+          ButtonComponent={IconButton}
+          openButtonContent={<CloseIcon />}
+          title={"Remove this navigation item?"}
+          onConfirm={() => {
             const newSortableNavigationTree = removeNodeAtPath({
               treeData: sortableNavigationTree,
               path,
@@ -63,8 +63,12 @@ class NavigationTreeContainer extends Component {
             onSetSortableNavigationTree(newSortableNavigationTree);
           }}
         >
-          <CloseIcon />
-        </IconButton>
+          {({ openDialog }) => (
+            <IconButton onClick={openDialog}>
+              <CloseIcon />
+            </IconButton>
+          )}
+        </ConfirmDialog>
       ]
     };
   }
@@ -97,11 +101,10 @@ class NavigationTreeContainer extends Component {
               <p>Drag and drop pages and tags from the left column into the navigation structure.</p>
             </Grid>
           </Grid>
-
           <div style={{ height: "100vh" }}>
             <SortableTree
               generateNodeProps={this.generateNodeProps}
-              treeData={sortableNavigationTree}
+              treeData={sortableNavigationTree || []}
               onChange={onSetSortableNavigationTree}
               theme={SortableTheme}
               dndType={"CARD"}
