@@ -9,7 +9,6 @@ import { Address as AddressSchema, Order as OrderSchema, Payment as PaymentSchem
 import getDiscountsTotalForCart from "/imports/plugins/core/discounts/server/no-meteor/util/getDiscountsTotalForCart";
 import xformOrderGroupToCommonOrder from "/imports/plugins/core/orders/server/util/xformOrderGroupToCommonOrder";
 import { getPaymentMethodConfigByName } from "/imports/plugins/core/payments/server/no-meteor/registration";
-import getSurchargesTotalForCart from "/imports/plugins/included/surcharges/server/no-meteor/util/getSurchargesTotalForCart";
 import verifyPaymentsMatchOrderTotal from "../../util/verifyPaymentsMatchOrderTotal";
 
 const orderItemsSchema = new SimpleSchema({
@@ -143,10 +142,10 @@ async function getCurrencyExchangeObject(collections, cartCurrencyCode, shopId, 
  * @param {Object} group The fulfillment group
  * @param {Number} discountTotal Total discount amount
  * @param {String} currencyCode Currency code of totals
- * @param {Number} surchargeTotal Total surcharge amount
+ * @param {Number} groupSurchargeTotal Total surcharge amount for group
  * @returns {Object} Invoice object with totals
  */
-function getInvoiceForFulfillmentGroup(group, discountTotal, currencyCode, surchargeTotal) {
+function getInvoiceForFulfillmentGroup(group, discountTotal, currencyCode, groupSurchargeTotal) {
   const { taxSummary } = group;
 
   // Items
@@ -164,7 +163,7 @@ function getInvoiceForFulfillmentGroup(group, discountTotal, currencyCode, surch
   // Totals
   // To avoid rounding errors, be sure to keep this calculation the same between here and
   // `buildOrderInputFromCart.js` in the client code.
-  const total = Math.max(0, itemTotal + fulfillmentTotal + taxTotal + surchargeTotal - discountTotal);
+  const total = Math.max(0, itemTotal + fulfillmentTotal + taxTotal + groupSurchargeTotal - discountTotal);
 
   return {
     currencyCode,
@@ -172,7 +171,7 @@ function getInvoiceForFulfillmentGroup(group, discountTotal, currencyCode, surch
     effectiveTaxRate,
     shipping: fulfillmentTotal,
     subtotal: itemTotal,
-    surcharges: surchargeTotal,
+    surcharges: groupSurchargeTotal,
     taxableAmount,
     taxes: taxTotal,
     total
@@ -450,14 +449,19 @@ export default async function placeOrder(context, input) {
 
   const { order: orderInput, payments: paymentsInput } = cleanedInput;
   const { billingAddress, cartId, currencyCode, email, fulfillmentGroups, shopId } = orderInput;
-  const { accountId, account, collections, userId } = context;
+  const { accountId, account, collections, getFunctionsOfType, userId } = context;
   const { Orders } = collections;
 
   // We are mixing concerns a bit here for now. This is for backwards compatibility with current
   // discount codes feature. We are planning to revamp discounts soon, but until then, we'll look up
   // any discounts on the related cart here.
   const { discounts, total: discountTotal } = await getDiscountsTotalForCart(context, cartId);
-  const { surcharges, total: surchargeTotal } = await getSurchargesTotalForCart(context, cartId);
+
+  // Create array for surcharges to apply to order, if applicable
+  // Array is populated inside `fulfillmentGroups.map()`
+  const orderSurcharges = [];
+
+  // Create orderId
   const orderId = Random.id();
 
   // Add more props to each fulfillment group, and validate/build the items in each group
@@ -491,7 +495,31 @@ export default async function placeOrder(context, input) {
     finalGroup.itemIds = finalGroup.items.map((item) => item._id);
     finalGroup.totalItemQuantity = finalGroup.items.reduce((sum, item) => sum + item.quantity, 0);
 
-    finalGroup.invoice = getInvoiceForFulfillmentGroup(finalGroup, discountTotal, currencyCode, surchargeTotal);
+    // Get surcharges to apply to group, if applicable
+    let groupSurcharges = [];
+    const commonOrder = await xformOrderGroupToCommonOrder({
+      billingAddress,
+      cartId,
+      collections,
+      currencyCode,
+      group: finalGroup,
+      orderId,
+      discountTotal
+    });
+
+    for (const func of context.getFunctionsOfType("getSurcharges")) {
+      const appliedSurcharges = await func(context, { commonOrder });
+      appliedSurcharges.forEach((appliedSurcharge) => {
+        // Push to group surchage array
+        groupSurcharges.push(appliedSurcharge);
+        // Push to overall order surcharge array
+        orderSurcharges.push(appliedSurcharge);
+      })
+    }
+
+    const groupSurchargeTotal = groupSurcharges.reduce((sum, surcharge) => sum + surcharge.amount,0);
+
+    finalGroup.invoice = getInvoiceForFulfillmentGroup(finalGroup, discountTotal, currencyCode, groupSurchargeTotal);
 
     // Compare expected and actual totals to make sure client sees correct calculated price
     // Error if we calculate total price differently from what the client has shown as the preview.
@@ -523,6 +551,9 @@ export default async function placeOrder(context, input) {
 
   const now = new Date();
 
+  console.log("orderSurchages", orderSurcharges);
+
+
   const order = {
     _id: orderId,
     accountId,
@@ -537,7 +568,7 @@ export default async function placeOrder(context, input) {
     referenceId: Random.id(),
     shipping: finalFulfillmentGroups,
     shopId,
-    surcharges,
+    surcharges: orderSurcharges,
     totalItemQuantity: finalFulfillmentGroups.reduce((sum, group) => sum + group.totalItemQuantity, 0),
     updatedAt: now,
     workflow: {
