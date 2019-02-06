@@ -15,6 +15,7 @@ export const colorSecondaryMain = colors.coolGrey;
 
 export const rawMuiTheme = {
   palette: {
+    colors, // TODO: De-structure these colors into various MUI properties rather than using them from this object
     primary: {
       light: colors.coolGrey300,
       main: colorPrimaryMain,

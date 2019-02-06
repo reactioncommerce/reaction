@@ -44,6 +44,7 @@ export default (Component) => (
         const newNode = {};
         newNode.id = node.navigationItem._id;
         newNode.title = this.getNavigationItemTitle(node.navigationItem).value;
+        newNode.expanded = node.navigationItem.expanded;
         newNode.subtitle = node.navigationItem.draftData.url;
         newNode.navigationItem = { ...node.navigationItem };
 

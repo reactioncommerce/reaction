@@ -105,6 +105,7 @@ export default (Component) => {
                   {...this.props}
                   deleteNavigationItem={deleteNavigationItem}
                   updateNavigationItem={updateNavigationItem}
+                  publishNavigationChanges={this.handlePublishNavigationChanges}
                 />
               )}
             </Mutation>

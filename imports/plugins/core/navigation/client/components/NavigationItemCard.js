@@ -18,6 +18,13 @@ const styles = (theme) => ({
     paddingLeft: theme.spacing.unit,
     paddingRight: theme.spacing.unit
   },
+  iconButton: {
+    "padding": 6,
+    "color": theme.palette.colors.black30,
+    "&:hover": {
+      backgroundColor: "transparent"
+    }
+  },
   rowContent: {
     flex: 1
   },
@@ -91,7 +98,9 @@ class NavigationItemCard extends Component {
 
     const dragHandle = (
       <div>
-        <IconButton><DragIcon /></IconButton>
+        <IconButton className={classes.iconButton}>
+          <DragIcon />
+        </IconButton>
       </div>
     );
 

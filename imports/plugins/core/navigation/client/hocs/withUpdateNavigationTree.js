@@ -39,12 +39,14 @@ export default (Component) => (
     static propTypes = {
       defaultNavigationTreeId: PropTypes.string,
       onUpdateNavigationTree: PropTypes.func,
+      publishNavigationChanges: PropTypes.func,
       sortableNavigationTree: PropTypes.arrayOf(PropTypes.object)
     }
 
     handleUpdateNavigationTree = (data) => {
       const { updateNavigationTree: { navigationTree } } = data;
       this.props.onUpdateNavigationTree(navigationTree);
+      this.props.publishNavigationChanges();
     }
 
     sortableNavigationTreeToDraftItems(sortableNavigationTree) {

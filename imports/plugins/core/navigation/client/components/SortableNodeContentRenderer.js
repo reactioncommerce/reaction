@@ -19,7 +19,11 @@ const styles = (theme) => ({
     height: "100%"
   },
   dragIcon: {
-    padding: 6
+    "padding": 6,
+    "color": theme.palette.colors.black30,
+    "&:hover": {
+      backgroundColor: "transparent"
+    }
   },
   // Expand styles. This empty object has to be here for "&$expanded" to work below.
   expanded: {},
