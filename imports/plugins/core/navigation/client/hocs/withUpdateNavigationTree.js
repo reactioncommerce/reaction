@@ -37,7 +37,9 @@ const updateNavigationTreeMutation = gql`
 export default (Component) => (
   class WithUpdateNavigationTree extends React.Component {
     static propTypes = {
-      onUpdateNavigationTree: PropTypes.func
+      defaultNavigationTreeId: PropTypes.string,
+      onUpdateNavigationTree: PropTypes.func,
+      sortableNavigationTree: PropTypes.arrayOf(PropTypes.object)
     }
 
     handleUpdateNavigationTree = (data) => {

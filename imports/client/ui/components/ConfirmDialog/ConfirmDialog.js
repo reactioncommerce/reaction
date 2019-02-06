@@ -14,7 +14,6 @@ class ConfirmDialog extends Component {
     confirmActionText: PropTypes.string,
     message: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
     onConfirm: PropTypes.func,
-    openButtonContent: PropTypes.oneOfType([PropTypes.string, PropTypes.node]).isRequired,
     title: PropTypes.oneOfType([PropTypes.string, PropTypes.node])
   }
 
