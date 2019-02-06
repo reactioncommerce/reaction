@@ -507,17 +507,17 @@ export default async function placeOrder(context, input) {
       discountTotal
     });
 
-    for (const func of context.getFunctionsOfType("getSurcharges")) {
-      const appliedSurcharges = await func(context, { commonOrder });
+    for (const func of getFunctionsOfType("getSurcharges")) {
+      const appliedSurcharges = await func(context, { commonOrder }); // eslint-disable-line
       appliedSurcharges.forEach((appliedSurcharge) => {
         // Push to group surchage array
         groupSurcharges.push(appliedSurcharge);
         // Push to overall order surcharge array
         orderSurcharges.push(appliedSurcharge);
-      })
+      });
     }
 
-    const groupSurchargeTotal = groupSurcharges.reduce((sum, surcharge) => sum + surcharge.amount,0);
+    const groupSurchargeTotal = groupSurcharges.reduce((sum, surcharge) => sum + surcharge.amount, 0);
 
     finalGroup.invoice = getInvoiceForFulfillmentGroup(finalGroup, discountTotal, currencyCode, groupSurchargeTotal);
 

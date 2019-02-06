@@ -1,5 +1,4 @@
 import Random from "@reactioncommerce/random";
-import xformCartGroupToCommonOrder from "/imports/plugins/core/cart/server/no-meteor/util/xformCartGroupToCommonOrder";
 import extendCommonOrder from "/imports/plugins/core/shipping/server/no-meteor/util/extendCommonOrder";
 import { surchargeCheck } from "./util/surchargeCheck";
 

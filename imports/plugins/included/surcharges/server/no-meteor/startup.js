@@ -24,8 +24,8 @@ export default function startup(context) {
 
     // Merge surcharges from each shipping group
     for (const shippingGroup of shipping) {
-      const commonOrder = await xformCartGroupToCommonOrder(cart, shippingGroup, context);
-      const appliedSurcharges = await getSurcharges(context, { commonOrder });
+      const commonOrder = await xformCartGroupToCommonOrder(cart, shippingGroup, context); // eslint-disable-line
+      const appliedSurcharges = await getSurcharges(context, { commonOrder }); // eslint-disable-line
 
       appliedSurcharges.forEach((appliedSurcharge) => {
         // Push shippingGroup surcharges to cart surcharge array
