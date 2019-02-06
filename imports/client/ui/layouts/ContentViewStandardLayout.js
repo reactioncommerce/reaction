@@ -6,13 +6,15 @@ import withStyles from "@material-ui/core/styles/withStyles";
 const styles = (theme) => ({
   root: {
     width: "100vw",
-    background: "",
     flexGrow: 1,
     transition: "padding 225ms cubic-bezier(0, 0, 0.2, 1) 0ms"
   },
   content: {
     maxWidth: 1140,
-    padding: theme.spacing.unit * 2,
+    paddingTop: theme.mixins.toolbar.minHeight + (theme.spacing.unit * 2),
+    paddingLeft: theme.spacing.unit * 2,
+    paddingRight: theme.spacing.unit * 2,
+    paddingBottom: theme.spacing.unit * 2,
     margin: "0 auto"
   },
   leftSidebarOpen: {

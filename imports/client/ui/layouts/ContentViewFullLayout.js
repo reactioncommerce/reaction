@@ -7,11 +7,11 @@ import PropTypes from "prop-types";
 import classNames from "classnames";
 import withStyles from "@material-ui/core/styles/withStyles";
 
-const styles = () => ({
+const styles = (theme) => ({
   root: {
     width: "100vw",
     height: "100vh",
-    paddingTop: 80,
+    paddingTop: theme.mixins.toolbar.minHeight,
     background: "",
     flexGrow: 1,
     transition: "padding 225ms cubic-bezier(0, 0, 0.2, 1) 0ms",
