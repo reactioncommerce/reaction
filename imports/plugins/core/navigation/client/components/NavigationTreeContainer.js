@@ -1,7 +1,5 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import styled from "styled-components";
-import Grid from "@material-ui/core/Grid";
 import IconButton from "@material-ui/core/IconButton";
 import withStyles from "@material-ui/core/styles/withStyles";
 import PencilIcon from "mdi-material-ui/Pencil";
@@ -11,14 +9,11 @@ import "react-sortable-tree/style.css";
 import ConfirmDialog from "/imports/client/ui/components/ConfirmDialog";
 import SortableTheme from "./SortableTheme";
 
-const ContentWrapper = styled.div`
-  padding: 40px 80px;
-  min-height: calc(100vh - 140px);
-`;
-
 const styles = (theme) => ({
   wrapper: {
-    borderLeft: `1px solid ${theme.palette.divider}`
+    width: "100%",
+    borderLeft: `1px solid ${theme.palette.divider}`,
+    height: `calc(100vh - ${theme.mixins.toolbar.minHeight}px)`
   }
 });
 
@@ -76,22 +71,23 @@ class NavigationTreeContainer extends Component {
     const { classes, onSetSortableNavigationTree, sortableNavigationTree } = this.props;
     return (
       <div className={classes.wrapper}>
-        <ContentWrapper>
-          <Grid container>
-            <Grid item xs={12}>
-              <p>Drag and drop pages and tags from the left column into the navigation structure.</p>
-            </Grid>
-          </Grid>
-          <div style={{ height: "100vh" }}>
-            <SortableTree
-              generateNodeProps={this.generateNodeProps}
-              treeData={sortableNavigationTree || []}
-              onChange={onSetSortableNavigationTree}
-              theme={SortableTheme}
-              dndType={"CARD"}
-            />
-          </div>
-        </ContentWrapper>
+        <SortableTree
+          reactVirtualizedListProps={{
+            style: {
+              paddingTop: "50px",
+              boxSizing: "border-box"
+            },
+            containerStyle: {
+              position: "relative",
+              overflow: "visible"
+            }
+          }}
+          generateNodeProps={this.generateNodeProps}
+          treeData={sortableNavigationTree || []}
+          onChange={onSetSortableNavigationTree}
+          theme={SortableTheme}
+          dndType={"CARD"}
+        />
       </div>
     );
   }

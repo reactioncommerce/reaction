@@ -210,7 +210,8 @@ class SortableNodeContentRenderer extends Component {
         style={{
           marginTop: -2,
           height: "100%",
-          marginLeft: (lowerSiblingCounts.length - 1) * scaffoldBlockPxWidth
+          marginLeft: (lowerSiblingCounts.length) * scaffoldBlockPxWidth,
+          marginRight: scaffoldBlockPxWidth
         }}
         {...otherProps}
       >

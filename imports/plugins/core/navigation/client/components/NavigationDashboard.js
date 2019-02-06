@@ -16,7 +16,8 @@ import NavigationItemList from "./NavigationItemList";
 
 const styles = (theme) => ({
   root: {
-    height: "100vh",
+    display: "flex",
+    height: `calc(100vh - ${theme.mixins.toolbar.minHeight}px)`,
     overflow: "hidden"
   },
   toolbarButton: {
@@ -120,23 +121,16 @@ class NavigationDashboard extends Component {
             <Button className={classes.toolbarButton} color="primary" variant="contained" onClick={updateNavigationTree}>Save Changes</Button>
           </Toolbar>
         </AppBar>
-
-        <Grid container>
-          <Grid item xs={3}>
-            <NavigationItemList
-              onClickAddNavigationItem={this.addNavigationItem}
-              navigationItems={navigationItems}
-              onClickUpdateNavigationItem={this.updateNavigationItem}
-            />
-          </Grid>
-          <Grid item xs={9}>
-            <NavigationTreeContainer
-              sortableNavigationTree={sortableNavigationTree}
-              onSetSortableNavigationTree={onSetSortableNavigationTree}
-              onClickUpdateNavigationItem={this.updateNavigationItem}
-            />
-          </Grid>
-        </Grid>
+        <NavigationItemList
+          onClickAddNavigationItem={this.addNavigationItem}
+          navigationItems={navigationItems}
+          onClickUpdateNavigationItem={this.updateNavigationItem}
+        />
+        <NavigationTreeContainer
+          sortableNavigationTree={sortableNavigationTree}
+          onSetSortableNavigationTree={onSetSortableNavigationTree}
+          onClickUpdateNavigationItem={this.updateNavigationItem}
+        />
         <Modal
           aria-labelledby="simple-modal-title"
           aria-describedby="simple-modal-description"

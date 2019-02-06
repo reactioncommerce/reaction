@@ -7,12 +7,26 @@ import NavigationItemCard from "./NavigationItemCard";
 
 const styles = (theme) => ({
   root: {
+    display: "flex",
+    flexDirection: "column",
     flexGrow: 1,
-    padding: theme.spacing.unit * 2
+    width: "100%",
+    maxWidth: 380
   },
   header: {
-    marginBottom: theme.spacing.unit * 2,
-    textAlign: "right"
+    padding: theme.spacing.unit * 2,
+    textAlign: "right",
+    flex: 0
+  },
+  list: {
+    flex: 1,
+    overflowY: "auto",
+    height: "100%"
+  },
+  listContent: {
+    paddingLeft: theme.spacing.unit * 2,
+    paddingRight: theme.spacing.unit * 2,
+    paddingBottom: theme.spacing.unit * 2
   }
 });
 
@@ -50,7 +64,11 @@ class NavigationItemList extends Component {
         <div className={classes.header}>
           <Button color="primary" variant="outlined" onClick={onClickAddNavigationItem}>Add navigation item</Button>
         </div>
-        {this.renderNavigationItems()}
+        <div className={classes.list}>
+          <div className={classes.listContent}>
+            {this.renderNavigationItems()}
+          </div>
+        </div>
       </div>
     );
   }
