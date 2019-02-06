@@ -14,8 +14,10 @@ class DiscountList extends Component {
 
   // handle remove click
   handleClick(event, codeId) {
-    return Meteor.call("discounts/codes/remove", this.props.id, codeId, this.props.collection);
+    const { collection, id, token } = this.props;
+    return Meteor.call("discounts/codes/remove", id, codeId, collection, token);
   }
+
   // list items
   renderList() {
     const listItems = this.props.listItems.map((listItem) => this.renderItem(listItem));
@@ -24,6 +26,7 @@ class DiscountList extends Component {
       <div className="rui list-group">{listItems}</div>
     );
   }
+
   // render item
   renderItem(listItem) {
     let TrashCan;
@@ -47,8 +50,9 @@ class DiscountList extends Component {
 
   // load form input view
   renderNoneFound() {
+    const { collection, id, token, validatedInput } = this.props;
     return (
-      <DiscountForm id={this.props.id} collection={this.props.collection} validatedInput={this.props.validatedInput} />
+      <DiscountForm id={id} collection={collection} token={token} validatedInput={validatedInput} />
     );
   }
 
@@ -63,9 +67,16 @@ DiscountList.propTypes = {
   collection: PropTypes.string,
   id: PropTypes.string,
   listItems: PropTypes.array,
+  token: PropTypes.string,
   validatedInput: PropTypes.bool // eslint-disable-line react/boolean-prop-naming
 };
 
+/**
+ * @summary Tracker reactive props
+ * @param {Object} props Incoming props
+ * @param {Function} onData Callback for more props
+ * @returns {undefined}
+ */
 function composer(props, onData) {
   const currentCart = Reaction.Collections[props.collection].findOne({
     _id: props.id

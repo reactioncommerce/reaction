@@ -21,7 +21,7 @@ import reconcileCartsMerge from "./reconcileCartsMerge";
  * @return {Promise<Object>} Object in which `cart` property is set to the updated account cart
  */
 export default async function reconcileCarts(context, input) {
-  const { accountId, collections, user } = context;
+  const { accountId, collections, user, userId = null } = context;
   const { Cart } = collections;
   const { anonymousCartId, anonymousCartToken, mode = "merge" } = input;
 
@@ -57,17 +57,17 @@ export default async function reconcileCarts(context, input) {
     switch (mode) {
       case "keepAccountCart":
         return {
-          cart: await reconcileCartsKeepAccountCart({ accountCart, anonymousCartSelector, Cart })
+          cart: await reconcileCartsKeepAccountCart({ accountCart, anonymousCartSelector, Cart, userId })
         };
 
       case "keepAnonymousCart":
         return {
-          cart: await reconcileCartsKeepAnonymousCart({ accountCart, accountCartSelector, anonymousCart, anonymousCartSelector, Cart })
+          cart: await reconcileCartsKeepAnonymousCart({ accountCart, accountCartSelector, anonymousCart, anonymousCartSelector, Cart, userId })
         };
 
       case "merge":
         return {
-          cart: await reconcileCartsMerge({ accountCart, accountCartSelector, anonymousCart, anonymousCartSelector, collections })
+          cart: await reconcileCartsMerge({ accountCart, accountCartSelector, anonymousCart, anonymousCartSelector, collections, userId })
         };
 
       default:
@@ -82,7 +82,8 @@ export default async function reconcileCarts(context, input) {
       anonymousCart,
       anonymousCartSelector,
       Cart,
-      shopId
+      shopId,
+      userId
     })
   };
 }

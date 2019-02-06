@@ -15,6 +15,6 @@ registerOperatorRoute({
   mainComponent: Localization,
   path: "/localization",
   // eslint-disable-next-line react/display-name
-  sidebarIconComponent: <FontAwesomeIcon icon={faGlobe} />,
+  SidebarIconComponent: (props) => <FontAwesomeIcon icon={faGlobe} {...props} />,
   sidebarI18nLabel: "admin.i18nSettings.shopLocalization"
 });

@@ -1,7 +1,7 @@
 import Logger from "@reactioncommerce/logger";
 import ReactionError from "@reactioncommerce/reaction-error";
 import { CommonOrder } from "/imports/plugins/core/orders/server/no-meteor/simpleSchemas";
-import { getActiveTaxServiceForShop } from "../registration";
+import { getTaxServicesForShop } from "../registration";
 import { TaxServiceResult } from "../../../lib/simpleSchemas";
 
 /**
@@ -26,7 +26,7 @@ export default async function getFulfillmentGroupTaxes(context, { order, forceZe
 
   const { items, shopId } = order;
 
-  const activeTaxService = await getActiveTaxServiceForShop(context, shopId);
+  const { primaryTaxService, fallbackTaxService } = await getTaxServicesForShop(context, shopId);
 
   const defaultReturnValue = {
     taxSummary: {
@@ -38,19 +38,31 @@ export default async function getFulfillmentGroupTaxes(context, { order, forceZe
     itemTaxes: items.map((item) => ({ itemId: item._id, tax: 0, taxableAmount: 0, taxes: [] }))
   };
 
-  if (!activeTaxService) {
+  if (!primaryTaxService) {
     return forceZeroes ? defaultReturnValue : { itemTaxes: [], taxSummary: null };
   }
 
   let taxServiceResult;
   try {
-    taxServiceResult = await activeTaxService.functions.calculateOrderTaxes({ context, order });
+    taxServiceResult = await primaryTaxService.functions.calculateOrderTaxes({ context, order });
   } catch (error) {
-    Logger.error(`Error in calculateOrderTaxes for the active tax service (${activeTaxService.displayName})`, error);
+    Logger.error(`Error in calculateOrderTaxes for the primary tax service (${primaryTaxService.displayName})`, error);
     throw new ReactionError("internal-error", "Error while calculating taxes");
   }
 
   // The tax service may return `null` if it can't calculate due to missing info
+  if (!taxServiceResult && fallbackTaxService) {
+    // if primaryTaxService returns null, try the fallbackTaxService before falling back to forceZeroTax (if set)
+    Logger.info("Primary tax service calculation returned null. Using set fallback tax service");
+    try {
+      taxServiceResult = await fallbackTaxService.functions.calculateOrderTaxes({ context, order });
+    } catch (fallbackError) {
+      Logger.error(`Error in calculateOrderTaxes for the fallback tax service (${fallbackTaxService.displayName})`, fallbackError);
+      throw new ReactionError("internal-error", "Error while calculating taxes");
+    }
+  }
+
+  // if none of primary and fallback services returns valid tax response, default to zero or empty
   if (!taxServiceResult) {
     return forceZeroes ? defaultReturnValue : { itemTaxes: [], taxSummary: null };
   }
@@ -58,7 +70,7 @@ export default async function getFulfillmentGroupTaxes(context, { order, forceZe
   try {
     TaxServiceResult.validate(taxServiceResult);
   } catch (error) {
-    Logger.error(`Invalid return from calculateOrderTaxes for the active tax service (${activeTaxService.displayName})`, error);
+    Logger.error("Invalid return from the calculateOrderTaxes function", error);
     throw new ReactionError("internal-error", "Error while calculating taxes");
   }
 

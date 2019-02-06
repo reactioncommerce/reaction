@@ -6,7 +6,7 @@ import { formatPriceString, i18next } from "/client/api";
 import { Orders } from "/lib/collections";
 import { Components, withMoment } from "@reactioncommerce/reaction-components";
 import { Badge, ClickToCopy, Icon, Translation, Checkbox, Loading, SortableTable } from "@reactioncommerce/reaction-ui";
-import { getOrderRiskBadge, getOrderRiskStatus, getPaymentForCurrentShop, getShippingInfo } from "../helpers";
+import { getOrderRiskBadge, getOrderRiskStatus, getShippingInfo } from "../helpers";
 import OrderTableColumn from "./orderTableColumn";
 import OrderBulkActionsBar from "./orderBulkActionsBar";
 
@@ -40,6 +40,7 @@ class OrderTable extends Component {
     handleBulkPaymentCapture: PropTypes.func,
     handleClick: PropTypes.func,
     handleSelect: PropTypes.func,
+    isCapturingPayment: PropTypes.bool,
     isLoading: PropTypes.object,
     isOpen: PropTypes.bool,
     moment: PropTypes.func,
@@ -97,7 +98,8 @@ class OrderTable extends Component {
 
   renderOrderInfo(order) {
     const { displayMedia, moment } = this.props;
-    const { invoice } = getPaymentForCurrentShop(order);
+    const [payment] = order.payments || [];
+    const { amount } = payment || {};
 
     const allOrderItems = order.shipping.reduce((items, group) => {
       group.items.forEach((item) => {
@@ -127,13 +129,13 @@ class OrderTable extends Component {
           </span>
 
           <span className="order-data order-data-total">
-            <strong>Total: {formatPriceString(invoice.total)}</strong>
+            <strong>Total: {formatPriceString(amount)}</strong>
           </span>
         </div>
 
         <div className="order-items">
-          {allOrderItems.map((item, i) => (
-            <div className="order-item" key={i}>
+          {allOrderItems.map((item, index) => (
+            <div className="order-item" key={String(index)}>
               <div className="order-item-media">
                 <Components.ProductImage
                   item={item}
@@ -249,7 +251,7 @@ class OrderTable extends Component {
         },
         total: {
           accessor: (row) => {
-            const { invoice } = getPaymentForCurrentShop(row);
+            const { invoice } = getShippingInfo(row);
             return invoice ? invoice.total : 0;
           },
           id: "billingTotal"
@@ -375,6 +377,7 @@ class OrderTable extends Component {
             selectAllOrders={this.props.selectAllOrders}
             selectedItems={this.props.selectedItems}
             setShippingStatus={this.props.setShippingStatus}
+            isCapturingPayment={this.props.isCapturingPayment}
             isLoading={this.props.isLoading}
             renderFlowList={this.props.renderFlowList}
             toggleShippingFlowList={this.props.toggleShippingFlowList}

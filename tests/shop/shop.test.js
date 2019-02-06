@@ -12,7 +12,7 @@ beforeAll(async () => {
 
   shopId = await testApp.insertPrimaryShop();
 
-  shopQuery = testApp.query(`($id: ID!) {
+  shopQuery = testApp.query(`query ($id: ID!) {
   shop(id: $id) {
     _id
     currencies {
@@ -29,7 +29,7 @@ beforeAll(async () => {
 
 afterAll(() => testApp.stop());
 
-test.skip("get shop, no auth necessary", async () => {
+test("get shop, no auth necessary", async () => {
   const opaqueShopId = encodeShopOpaqueId(shopId);
   const result = await shopQuery({ id: opaqueShopId });
   expect(result).toEqual({

@@ -9,9 +9,18 @@ type Shop implements Node {
   """
   administrators(after: ConnectionCursor, before: ConnectionCursor, first: ConnectionLimitInt, last: ConnectionLimitInt, sortOrder: SortOrder = asc, sortBy: AccountSortByField = createdAt): AccountConnection
 
+  "URLs for various shop assets in various sizes"
+  brandAssets: ShopBrandAssets
+
   currencies: [Currency]
 
   currency: Currency
+
+  "The ID of the shop's default navigation tree"
+  defaultNavigationTreeId: String
+
+  "The default navigation tree for this shop"
+  defaultNavigationTree(language: String!): NavigationTree
 
   "Returns a list of groups for this shop, as a Relay-compatible connection."
   groups(after: ConnectionCursor, before: ConnectionCursor, first: ConnectionLimitInt, last: ConnectionLimitInt, sortOrder: SortOrder = asc, sortBy: GroupSortByField = createdAt): GroupConnection
@@ -69,6 +78,12 @@ type InviteShopMemberPayload {
 
   "The same string you sent with the mutation params, for matching mutation calls with their responses"
   clientMutationId: String
+}
+
+"URLs for various shop assets in various sizes"
+type ShopBrandAssets {
+  "URLs for the navigation bar brand logo image"
+  navbarBrandImage: ImageSizes
 }
 
 extend type Mutation {

@@ -12,14 +12,14 @@ beforeAll(async () => {
 
   shopId = await testApp.insertPrimaryShop();
 
-  primaryShopIdQuery = testApp.query(`{
+  primaryShopIdQuery = testApp.query(`query {
   primaryShopId
 }`);
 });
 
 afterAll(() => testApp.stop());
 
-test.skip("get primaryShopId, no auth necessary", async () => {
+test("get primaryShopId, no auth necessary", async () => {
   const result = await primaryShopIdQuery();
   expect(result).toEqual({
     primaryShopId: encodeShopOpaqueId(shopId)

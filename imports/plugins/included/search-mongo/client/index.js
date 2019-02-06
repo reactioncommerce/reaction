@@ -13,6 +13,6 @@ registerOperatorRoute({
   mainComponent: "searchSettings",
   path: "/search",
   // eslint-disable-next-line react/display-name
-  sidebarIconComponent: <FontAwesomeIcon icon={faSearch} />,
+  SidebarIconComponent: (props) => <FontAwesomeIcon icon={faSearch} {...props} />,
   sidebarI18nLabel: "admin.dashboard.searchLabel"
 });

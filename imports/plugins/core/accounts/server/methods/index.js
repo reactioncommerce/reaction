@@ -12,7 +12,6 @@ import markAddressValidationBypassed from "./markAddressValidationBypassed";
 import removeEmailAddress from "./removeEmailAddress";
 import removeUserPermissions from "./removeUserPermissions";
 import sendResetPasswordEmail from "./sendResetPasswordEmail";
-import sendWelcomeEmail from "./sendWelcomeEmail";
 import setProfileCurrency from "./setProfileCurrency";
 import setUserPermissions from "./setUserPermissions";
 import updateEmailAddress from "./updateEmailAddress";
@@ -47,7 +46,6 @@ export default {
   "accounts/removeEmailAddress": removeEmailAddress,
   "accounts/removeUserPermissions": removeUserPermissions,
   "accounts/sendResetPasswordEmail": sendResetPasswordEmail,
-  "accounts/sendWelcomeEmail": sendWelcomeEmail,
   "accounts/setProfileCurrency": setProfileCurrency,
   "accounts/setUserPermissions": setUserPermissions,
   "accounts/updateEmailAddress": updateEmailAddress,

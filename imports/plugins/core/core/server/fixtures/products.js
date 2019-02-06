@@ -34,7 +34,7 @@ export function metaField(options = {}) {
  * @param {String} [options.inventoryManagement] - Track inventory for this product?
  * @param {String} [options.inventoryPolicy] - Allow overselling of this product?
  * @param {String} [options.lowInventoryWarningThreshold] - Qty left of inventory that sets off warning
- * @param {String} [options.inventoryQuantity] - Inventory Quantity
+ * @param {String} [options.inventoryInStock] - Inventory Quantity
  * @param {String} [options.price] - productVariant price
  * @param {String} [options.title] - productVariant title
  * @param {String} [options.optionTitle] - productVariant option title
@@ -51,7 +51,7 @@ export function productVariant(options = {}) {
     inventoryManagement: faker.random.boolean(),
     inventoryPolicy: faker.random.boolean(),
     lowInventoryWarningThreshold: _.random(1, 5),
-    inventoryQuantity: _.random(0, 100),
+    inventoryInStock: _.random(0, 100),
     isTaxable: faker.random.boolean(),
     isVisible: true,
     price: _.random(10, 1000),
@@ -87,7 +87,7 @@ export function productVariant(options = {}) {
  * @param {String} [options.inventoryManagement] - Track inventory for this product?
  * @param {String} [options.inventoryPolicy] - Allow overselling of this product?
  * @param {String} [options.lowInventoryWarningThreshold] - Qty left of inventory that sets off warning
- * @param {String} [options.inventoryQuantity] - Inventory Quantity
+ * @param {String} [options.inventoryInStock] - Inventory Quantity
  * @param {String} [options.price] - productVariant price
  * @param {String} [options.title] - productVariant title
  * @param {String} [options.optionTitle] - productVariant option title
@@ -156,6 +156,7 @@ export default function () {
    * @property {String} name - `"Tag"`
    * @property {String} slug - `"tag"`
    * @property {Number} position - `_.random(0, 100000)`
+   * @property {Boolean} isVisible - `true`
    * @property {Boolean} isTopLevel - `true`
    * @property {String} shopId - `getShop()._id`
    * @property {Date} createdAt - `faker.date.past()`
@@ -166,6 +167,7 @@ export default function () {
     slug: "tag",
     position: _.random(0, 100000),
     //  relatedTagIds: [],
+    isVisible: true,
     isTopLevel: true,
     shopId: getShop()._id,
     createdAt: faker.date.past(),

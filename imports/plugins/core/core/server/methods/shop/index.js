@@ -1,12 +1,7 @@
-import changeLayouts from "./changeLayouts";
 import createShop from "./createShop";
 import createTag from "./createTag";
-import fetchCurrencyRate from "./fetchCurrencyRate";
-import flushCurrencyRate from "./flushCurrencyRate";
 import getLocale from "./getLocale";
-import hideHeaderTag from "./hideHeaderTag";
 import locateAddress from "./locateAddress";
-import removeHeaderTag from "./removeHeaderTag";
 import resetShopId from "./resetShopId";
 import togglePackage from "./togglePackage";
 import updateBrandAssets from "./updateBrandAssets";
@@ -24,15 +19,10 @@ import updateShopExternalServices from "./updateShopExternalServices";
 */
 
 export default {
-  "shop/changeLayouts": changeLayouts,
   "shop/createShop": createShop,
   "shop/createTag": createTag,
-  "shop/fetchCurrencyRate": fetchCurrencyRate,
-  "shop/flushCurrencyRate": flushCurrencyRate,
   "shop/getLocale": getLocale,
-  "shop/hideHeaderTag": hideHeaderTag,
   "shop/locateAddress": locateAddress,
-  "shop/removeHeaderTag": removeHeaderTag,
   "shop/resetShopId": resetShopId,
   "shop/togglePackage": togglePackage,
   "shop/updateBrandAssets": updateBrandAssets,

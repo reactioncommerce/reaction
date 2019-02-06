@@ -254,7 +254,7 @@
       },
       "productVariant": {
         "addVariantOptions": "opties Voeg inschakelen 'In Winkelwagen' butto",
-        "inventoryQuantity": "Hoeveelheid",
+        "inventoryInStock": "Hoeveelheid",
         "title": "Etiket",
         "price": "Prijs",
         "optionTitle": "Keuze",

@@ -8,7 +8,7 @@ const opaqueShopId = "cmVhY3Rpb24vc2hvcDoxMjM="; // reaction/shop:123
 const shopName = "Test Shop";
 const mockTags = Factory.Tag.makeMany(25, { shopId: internalShopId, _id: (index) => (index + 100).toString(), position: (index) => index + 100 });
 
-const tagsQuery = `($shopId: ID!, $after: ConnectionCursor, $before: ConnectionCursor, $first: ConnectionLimitInt, $last: ConnectionLimitInt) {
+const tagsQuery = `query ($shopId: ID!, $after: ConnectionCursor, $before: ConnectionCursor, $first: ConnectionLimitInt, $last: ConnectionLimitInt) {
   tags(shopId: $shopId, after: $after, before: $before, first: $first, last: $last) {
     totalCount
     pageInfo {
@@ -37,7 +37,7 @@ beforeAll(async () => {
 
 afterAll(() => testApp.stop());
 
-test.skip("get the first 20 tags when neither first or last is in query", async () => {
+test("get the first 20 tags when neither first or last is in query", async () => {
   let result;
   try {
     result = await query({ shopId: opaqueShopId });
@@ -74,7 +74,7 @@ test.skip("get the first 20 tags when neither first or last is in query", async 
   expect(result.tags.pageInfo).toEqual({ endCursor: "MTI0", hasNextPage: false, hasPreviousPage: true, startCursor: "MTIw" });
 });
 
-test.skip("get the last 10 tags when last is in query and before last item in list", async () => {
+test("get the last 10 tags when last is in query and before last item in list", async () => {
   let result;
   try {
     result = await query({ shopId: opaqueShopId, last: 10, before: "MTI0" });
@@ -110,7 +110,7 @@ test.skip("get the last 10 tags when last is in query and before last item in li
   expect(result.tags.pageInfo).toEqual({ endCursor: "MTAz", hasNextPage: true, hasPreviousPage: false, startCursor: "MTAw" });
 });
 
-test.skip("works correctly when last goes before start", async () => {
+test("works correctly when last goes before start", async () => {
   let result;
   try {
     result = await query({ shopId: opaqueShopId, last: 5, before: "MTAw" });

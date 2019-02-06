@@ -1,8 +1,11 @@
 import Reaction from "/imports/plugins/core/core/server/Reaction";
 import mutations from "./server/no-meteor/mutations";
 import queries from "./server/no-meteor/queries";
+import { registerPluginHandler } from "./server/no-meteor/registration";
 import resolvers from "./server/no-meteor/resolvers";
 import schemas from "./server/no-meteor/schemas";
+import startup from "./server/no-meteor/startup";
+import { ENROLL_URI_BASE } from "./server/util/getDataForEmail";
 
 /**
  * @file Accounts core plugin: Manage how members sign into your shop
@@ -15,6 +18,15 @@ Reaction.registerPackage({
   name: "reaction-accounts",
   icon: "fa fa-users",
   autoEnable: true,
+  addRolesToGroups: [{
+    allShops: true,
+    groups: ["guest", "customer"],
+    roles: ["account/verify", "reset-password", ENROLL_URI_BASE]
+  }],
+  functionsByType: {
+    registerPluginHandler: [registerPluginHandler],
+    startup: [startup]
+  },
   graphQL: {
     resolvers,
     schemas
@@ -70,8 +82,15 @@ Reaction.registerPackage({
     template: "loginFormUpdatePassword",
     workflow: "none",
     meta: { noAdminControls: true },
-    name: "Reset Password",
+    name: "reset-password",
     label: "reset-password"
+  }, {
+    route: `/${ENROLL_URI_BASE}/:token/:status?`,
+    template: "loginFormUpdatePassword",
+    workflow: "none",
+    meta: { noAdminControls: true },
+    name: ENROLL_URI_BASE,
+    label: "Account Enroll"
   }],
   layout: [{
     layout: "coreLayout",

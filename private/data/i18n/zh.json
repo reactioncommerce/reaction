@@ -254,7 +254,7 @@
       },
       "productVariant": {
         "addVariantOptions": "添加选项来启用“添加到购物车”按钮操",
-        "inventoryQuantity": "数量",
+        "inventoryInStock": "数量",
         "title": "标签",
         "price": "价格",
         "optionTitle": "选项",

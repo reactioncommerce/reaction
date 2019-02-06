@@ -1,6 +1,6 @@
-import Hooks from "@reactioncommerce/hooks";
 import { check, Match } from "meteor/check";
 import { Accounts } from "/lib/collections";
+import appEvents from "/imports/node-app/core/util/appEvents";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
 import ReactionError from "@reactioncommerce/reaction-error";
 
@@ -16,16 +16,20 @@ import ReactionError from "@reactioncommerce/reaction-error";
 export default function addressBookRemove(addressId, accountUserId) {
   check(addressId, String);
   check(accountUserId, Match.Optional(String));
-
-  if (typeof accountUserId === "string") {
-    if (Reaction.getUserId() !== accountUserId && !Reaction.hasPermission("reaction-accounts")) {
-      throw new ReactionError("access-denied", "Access denied");
-    }
-  }
   this.unblock();
 
-  const userId = accountUserId || Reaction.getUserId();
+  const authUserId = Reaction.getUserId();
+  const userId = accountUserId || authUserId;
   const account = Accounts.findOne({ userId });
+  if (!account) throw new ReactionError("not-found", "Not Found");
+
+  if (authUserId !== userId && !Reaction.hasPermission("reaction-accounts", authUserId, account.shopId)) {
+    throw new ReactionError("access-denied", "Access denied");
+  }
+
+  const addressBeingRemoved = account.profile && Array.isArray(account.profile.addressBook) &&
+    account.profile.addressBook.find((addressBookItem) => addressId === addressBookItem._id);
+  if (!addressBeingRemoved) throw new ReactionError("not-found", "Address Not Found");
 
   const updatedAccountResult = Accounts.update({
     userId,
@@ -38,17 +42,16 @@ export default function addressBookRemove(addressId, accountUserId) {
     }
   }, { bypassCollection2: true });
 
-  // forceIndex when removing an address
-  Hooks.Events.run("afterAccountsUpdate", userId, {
-    accountId: account._id,
-    updatedFields: ["forceIndex"]
-  });
-
-  // If the address remove was successful, then return the removed address
-  if (updatedAccountResult === 1) {
-    // Pull the address from the account before it was updated and return it
-    return account.profile.addressBook.find((removedAddress) => addressId === removedAddress._id);
+  if (updatedAccountResult !== 1) {
+    throw new ReactionError("server-error", "Unable to remove address from account");
   }
 
-  throw new ReactionError("server-error", "Unable to remove address from account");
+  const updatedAccount = Accounts.findOne({ userId });
+  Promise.await(appEvents.emit("afterAccountUpdate", {
+    account: updatedAccount,
+    updatedBy: authUserId
+  }));
+
+  // If the address remove was successful, then return the removed address
+  return addressBeingRemoved;
 }

@@ -20,8 +20,7 @@ class NavBar extends Component {
       notifications: true,
       languages: true,
       currency: true,
-      mainDropdown: true,
-      cartContainer: true
+      mainDropdown: true
     }
   };
 
@@ -105,19 +104,6 @@ class NavBar extends Component {
     }
   }
 
-  renderCartContainerAndPanel() {
-    return (
-      <div className="cart-container">
-        <div className="cart">
-          <Components.CartIcon />
-        </div>
-        <div className="cart-alert">
-          <Components.CartPanel />
-        </div>
-      </div>
-    );
-  }
-
   renderMainDropdown() {
     return (
       <Components.MainDropdown />
@@ -158,7 +144,6 @@ class NavBar extends Component {
         {this.props.visibility.languages && this.renderLanguage()}
         {this.props.visibility.currency && this.renderCurrency()}
         {this.props.visibility.mainDropdown && this.renderMainDropdown()}
-        {this.props.visibility.cartContainer && this.renderCartContainerAndPanel()}
       </div>
     );
   }

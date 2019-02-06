@@ -31,7 +31,10 @@ export default function setPaymentAddress(cartId, cartToken, address) {
 
   const updatedCart = Cart.findOne({ _id: cartId });
 
-  Promise.await(appEvents.emit("afterCartUpdate", updatedCart));
+  Promise.await(appEvents.emit("afterCartUpdate", {
+    cart: updatedCart,
+    updatedBy: Reaction.getUserId()
+  }));
 
   return result;
 }

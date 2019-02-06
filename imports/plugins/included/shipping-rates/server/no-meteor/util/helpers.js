@@ -10,7 +10,7 @@ import _ from "lodash";
  */
 export async function findCatalogProductsAndVariants(collections, orderLineItems) {
   const { Catalog } = collections;
-  const productIds = orderLineItems.map((orderLineItem) => orderLineItem.productId || orderLineItem.productConfiguration.productId);
+  const productIds = orderLineItems.map((orderLineItem) => orderLineItem.productId);
 
   const catalogProductItems = await Catalog.find({
     "product.productId": { $in: productIds },
@@ -21,7 +21,7 @@ export async function findCatalogProductsAndVariants(collections, orderLineItems
 
   const catalogProductsAndVariants = catalogProductItems.map((catalogProduct) => {
     const { product } = catalogProduct;
-    const orderedVariant = orderLineItems.find((item) => product.productId === item.productId || item.productConfiguration.productId);
+    const orderedVariant = orderLineItems.find((item) => product.productId === item.productId);
 
     const { parentVariant, variant } = findVariantInCatalogProduct(product, orderedVariant.variantId);
 
@@ -33,18 +33,6 @@ export async function findCatalogProductsAndVariants(collections, orderLineItems
   });
 
   return catalogProductsAndVariants;
-}
-
-/**
- * @name pick
- * @summary Extracts specified keys from a provided object
- * @param {Object} obj - The target object to filter keys from
- * @param {Array} keys - An array of white-listed keys to include in the returned object.
- * @returns {Object} - An object containing only white-listed keys
- */
-export function pick(obj, keys) {
-  return keys.map((k) => (k in obj ? { [k]: obj[k] } : {}))
-    .reduce((res, o) => Object.assign(res, o), {});
 }
 
 /**
@@ -114,10 +102,10 @@ export async function tagsByIds(collections, catalogProducts) {
  * @type {Object}
 */
 export const operators = {
-  eq(a, b) { return a === b; },
-  gt(a, b) { return a > b; },
-  lt(a, b) { return a < b; },
-  ne(a, b) { return a !== b; }
+  eq(varA, varB) { return varA === varB; },
+  gt(varA, varB) { return varA > varB; },
+  lt(varA, varB) { return varA < varB; },
+  ne(varA, varB) { return varA !== varB; }
 };
 
 /**
@@ -125,8 +113,8 @@ export const operators = {
  * @type {Object}
 */
 export const propertyTypes = {
-  bool(a) { return a === "true"; },
-  float(a) { return parseFloat(a); },
-  int(a) { return parseInt(a, 10); },
-  string(a) { return a; }
+  bool(varA) { return varA.trim().toLowerCase() === "true"; },
+  float(varA) { return parseFloat(varA); },
+  int(varA) { return parseInt(varA, 10); },
+  string(varA) { return varA; }
 };

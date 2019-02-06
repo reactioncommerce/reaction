@@ -10,6 +10,8 @@ export default {
   FulfillmentGroup: "reaction/fulfillmentGroup",
   FulfillmentMethod: "reaction/fulfillmentMethod",
   Group: "reaction/group",
+  NavigationItem: "reaction/navigationItem",
+  NavigationTree: "reaction/navigationTree",
   Order: "reaction/order",
   OrderFulfillmentGroup: "reaction/orderFulfillmentGroup",
   OrderItem: "reaction/orderItem",

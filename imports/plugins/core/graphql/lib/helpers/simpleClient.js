@@ -1,14 +1,10 @@
 import graphql from "graphql.js";
 import { Accounts } from "meteor/accounts-base";
 import { Reaction } from "/client/modules/core";
-import updateFulfillmentOptionsForGroup from "../mutations/updateFulfillmentOptionsForGroup.graphql";
 import createFlatRateFulfillmentMethod from "../mutations/createFlatRateFulfillmentMethod.graphql";
 import updateFlatRateFulfillmentMethod from "../mutations/updateFlatRateFulfillmentMethod.graphql";
 import deleteFlatRateFulfillmentMethod from "../mutations/deleteFlatRateFulfillmentMethod.graphql";
 import enablePaymentMethodForShop from "../mutations/enablePaymentMethodForShop.graphql";
-import placeOrderWithExampleIOUPayment from "../mutations/placeOrderWithExampleIOUPayment.graphql";
-import placeOrderWithStripeCardPayment from "../mutations/placeOrderWithStripeCardPayment.graphql";
-import availablePaymentMethods from "../queries/availablePaymentMethods.graphql";
 import paymentMethods from "../queries/paymentMethods.graphql";
 
 /**
@@ -61,28 +57,12 @@ export default {
       setTokenHeader();
       return client.mutate(enablePaymentMethodForShop)(variables);
     },
-    placeOrderWithExampleIOUPayment: (variables) => {
-      setTokenHeader();
-      return client.mutate(placeOrderWithExampleIOUPayment)(variables);
-    },
-    placeOrderWithStripeCardPayment: (variables) => {
-      setTokenHeader();
-      return client.mutate(placeOrderWithStripeCardPayment)(variables);
-    },
     updateFlatRateFulfillmentMethod: (variables) => {
       setTokenHeader();
       return client.mutate(updateFlatRateFulfillmentMethod)(variables);
-    },
-    updateFulfillmentOptionsForGroup: (variables) => {
-      setTokenHeader();
-      return client.mutate(updateFulfillmentOptionsForGroup)(variables);
     }
   },
   queries: {
-    availablePaymentMethods: (variables) => {
-      setTokenHeader();
-      return client.query(availablePaymentMethods)(variables);
-    },
     paymentMethods: (variables) => {
       setTokenHeader();
       return client.query(paymentMethods)(variables);

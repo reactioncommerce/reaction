@@ -6,6 +6,9 @@ jest.mock("../util/getCartById", () => jest.fn().mockImplementation(() => Promis
   _id: "cartId",
   items: [{
     _id: "123",
+    price: {
+      amount: 19.99
+    },
     priceWhenAdded: {
       amount: 19.99
     },

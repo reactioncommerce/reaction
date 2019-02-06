@@ -105,16 +105,16 @@ beforeAll(async () => {
 
 afterAll(async () => {
   await testApp.collections.Shops.remove({ _id: internalShopId });
-  await testApp.collections.Product.remove({ _id: internalProductId });
-  await testApp.collections.Product.remove({ _id: internalVariantIds[0] });
-  await testApp.collections.Product.remove({ _id: internalVariantIds[1] });
-  await testApp.collections.Product.remove({ _id: internalVariantIds[2] });
+  await testApp.collections.Products.remove({ _id: internalProductId });
+  await testApp.collections.Products.remove({ _id: internalVariantIds[0] });
+  await testApp.collections.Products.remove({ _id: internalVariantIds[1] });
+  await testApp.collections.Products.remove({ _id: internalVariantIds[2] });
   await testApp.clearLoggedInUser();
   testApp.stop();
 });
 
 // publish new product to catalog
-test.skip("expect a CatalogItemProduct when a Product is published to the Catalog collection", async () => {
+test("expect a CatalogItemProduct when a Product is published to the Catalog collection", async () => {
   let result;
   try {
     result = await mutate({ productIds: [opaqueProductId] });
@@ -126,7 +126,7 @@ test.skip("expect a CatalogItemProduct when a Product is published to the Catalo
 });
 
 // publish product updates to catalog
-test.skip("expect an updated CatalogItemProduct when a Product is updated and republished to the Catalog", async () => {
+test("expect an updated CatalogItemProduct when a Product is updated and republished to the Catalog", async () => {
   const updatedTitle = "Really Fake Product";
   await testApp.collections.Products.updateOne(
     {
@@ -152,7 +152,7 @@ test.skip("expect an updated CatalogItemProduct when a Product is updated and re
 });
 
 // publish product variant updates to catalog
-test.skip("expect an updated CatalogItemProduct when a Product Variant is updated and republished to the Catalog", async () => {
+test("expect an updated CatalogItemProduct when a Product Variant is updated and republished to the Catalog", async () => {
   const updatedTitle = "Really Fake Product Variant";
   await testApp.collections.Products.updateOne(
     {
@@ -178,7 +178,7 @@ test.skip("expect an updated CatalogItemProduct when a Product Variant is update
 });
 
 // publish product variant option updates to catalog
-test.skip("expect an updated CatalogItemProduct when a Product Variant Option is updated and republished to the Catalog", async () => {
+test("expect an updated CatalogItemProduct when a Product Variant Option is updated and republished to the Catalog", async () => {
   const updatedTitle = "Really Fake Product Option";
   await testApp.collections.Products.updateOne(
     {
@@ -204,7 +204,7 @@ test.skip("expect an updated CatalogItemProduct when a Product Variant Option is
 });
 
 // publish deleted product option to catalog
-test.skip("expect an updated CatalogItemProduct when a Product is marked as deleted and republished to the Catalog", async () => {
+test("expect an updated CatalogItemProduct when a Product is marked as deleted and republished to the Catalog", async () => {
   await testApp.collections.Products.updateOne(
     {
       _id: internalVariantIds[2]
@@ -229,7 +229,7 @@ test.skip("expect an updated CatalogItemProduct when a Product is marked as dele
 });
 
 // publish deleted product to catalog
-test.skip("expect an updated CatalogItemProduct when a Product is marked as deleted and republished to the Catalog", async () => {
+test("expect an updated CatalogItemProduct when a Product is marked as deleted and republished to the Catalog", async () => {
   await testApp.collections.Products.updateOne(
     {
       _id: internalProductId

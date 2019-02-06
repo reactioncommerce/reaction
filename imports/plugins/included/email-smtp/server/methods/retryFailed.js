@@ -13,7 +13,7 @@ import ReactionError from "@reactioncommerce/reaction-error";
  * @return {Boolean} - returns true if job is successfully restarted
  */
 export default function retryFailed(jobId) {
-  if (!Reaction.hasPermission(["owner", "admin", "reaction-email"], this.userId)) {
+  if (!Reaction.hasPermission(["owner", "admin", "reaction-email"], this.userId, Reaction.getPrimaryShopId())) {
     Logger.error("email/retryFailed: Access Denied");
     throw new ReactionError("access-denied", "Access Denied");
   }

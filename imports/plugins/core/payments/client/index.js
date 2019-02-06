@@ -4,7 +4,6 @@ import { faCreditCard } from "@fortawesome/free-solid-svg-icons";
 
 import { registerOperatorRoute } from "/imports/client/ui";
 
-import "./checkout";
 import "./settings";
 
 registerOperatorRoute({
@@ -13,6 +12,6 @@ registerOperatorRoute({
   mainComponent: "paymentSettings",
   path: "/payment",
   // eslint-disable-next-line react/display-name
-  sidebarIconComponent: <FontAwesomeIcon icon={faCreditCard} />,
+  SidebarIconComponent: (props) => <FontAwesomeIcon icon={faCreditCard} {...props} />,
   sidebarI18nLabel: "admin.settings.paymentSettingsLabel"
 });

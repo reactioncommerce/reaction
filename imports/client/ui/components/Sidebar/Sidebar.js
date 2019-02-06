@@ -3,136 +3,99 @@ import { NavLink } from "react-router-dom";
 import PropTypes from "prop-types";
 import styled from "styled-components";
 import styledMUI from "styled-components-mui";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faChevronLeft } from "@fortawesome/free-solid-svg-icons";
 import MUIList from "@material-ui/core/List";
 import MUIListItem from "@material-ui/core/ListItem";
 import MUIListItemIcon from "@material-ui/core/ListItemIcon";
 import MUIDivider from "@material-ui/core/Divider";
 import MUIListItemText from "@material-ui/core/ListItemText";
 import MUIDrawer from "@material-ui/core/Drawer";
-import MUIIconButton from "@material-ui/core/IconButton";
+import ShopLogoWithData from "../ShopLogoWithData";
 import {
   applyTheme,
   addTypographyStyles
 } from "@reactioncommerce/components/utils";
 import { Translation } from "/imports/plugins/core/ui/client/components";
 
-const IconButton = styledMUI(MUIIconButton)`
-  margin-left: auto;
-`;
-
 const Drawer = styledMUI(MUIDrawer, { paper: "Paper" })`
-  width: ${applyTheme("Sidebar.drawerWidth")};
-  flex-shrink: 0;
   .Paper {
-    background-color: ${applyTheme("Sidebar.menuBarBackgroundColor")};
     width: ${applyTheme("Sidebar.drawerWidth")};
   }
 `;
 
 const Divider = styledMUI(MUIDivider)`
-  width: ${applyTheme("Sidebar.iconBarWidth")};
-  padding-top: 10px;
-  padding-bottom: 10px;
-  background-color: ${applyTheme("Sidebar.iconBarBackgroundColor")};
+  padding-top: ${applyTheme("Sidebar.dividerHeight")};;
+  background-color: transparent;
 `;
 
 const List = styledMUI(MUIList)`
   padding-top: 0;
+  overflow: auto;
 `;
 
 const ListItem = styledMUI(MUIListItem)`
   padding: 0;
 `;
 
-const LowerDarkBlueBand = styled.div`
-  background-color: ${applyTheme("Sidebar.iconBarBackgroundColor")};
+const ListItemIcon = styledMUI(MUIListItemIcon)`
+  color: ${applyTheme("Sidebar.iconColor")};
+  justify-content: ${applyTheme("Sidebar.listItemIconHorizontalAlign")};
+  padding-top: ${applyTheme("Sidebar.listItemIconPaddingTop")};
+  padding-right: ${applyTheme("Sidebar.listItemIconPaddingRight")};
+  padding-bottom: ${applyTheme("Sidebar.listItemIconPaddingBottom")};
+  padding-left: ${applyTheme("Sidebar.listItemIconPaddingLeft")};
   width: ${applyTheme("Sidebar.iconBarWidth")};
-  height: 100vh;
-`;
 
-const ListItemIcon = styled(MUIListItemIcon)`
-  width: ${applyTheme("Sidebar.iconBarWidth")};
-  background-color: ${applyTheme("Sidebar.iconBarBackgroundColor")};
-  padding-top: ${applyTheme("Sidebar.ListItemIconPaddingTop")};
-  padding-right: ${applyTheme("Sidebar.ListItemIconPaddingRight")};
-  padding-bottom: ${applyTheme("Sidebar.ListItemIconPaddingBottom")};
-  padding-left: ${applyTheme("Sidebar.ListItemIconPaddingLeft")};
+  /*
+   * FontAwesome icons respect this font-size to determine icon height while other
+   * SVGs should be designed to be 100% height. Generally you'll want listItemIconMaxHeight
+   * to be listItemIconFontSize + listItemIconPaddingTop + listItemIconPaddingBottom
+   */
+  font-size: ${applyTheme("Sidebar.listItemIconFontSize")};
+  max-height: ${applyTheme("Sidebar.listItemIconMaxHeight")};
+
+  /* remove margin from default MUI theme */
+  margin-right: 0;
 `;
 
 const ListItemText = styledMUI(MUIListItemText)`
   ${addTypographyStyles("SidebarMenu", "bodyText")};
 `;
 
-const DrawerHeader = styled.div`
+const LogoArea = styled.div`
   display: flex;
-  align-items: center;
-  padding: 0 8px 0 0;
-  min-height: 48px;
-  @media (min-width: 600px) {
-    min-height: 64px;
-  }
-  @media (min-width: 0px) and (orientation: landscape) {
-    min-height: 48px;
-  }
+  justify-content: ${applyTheme("Sidebar.logoHorizontalAlign")};
+  padding-top: ${applyTheme("Sidebar.logoPaddingTop")};
+  padding-bottom: ${applyTheme("Sidebar.logoPaddingBottom")};
+  padding-left: ${applyTheme("Sidebar.logoPaddingLeft")};
+  padding-right: ${applyTheme("Sidebar.logoPaddingRight")};
+  margin-left: ${applyTheme("Sidebar.iconBarWidth")};
 `;
 
-const AppBarDarkBlueBand = styled.div`
-  background-color: ${applyTheme("Sidebar.iconBarBackgroundColor")};
-  height: 48px;
-  width: ${applyTheme("Sidebar.iconBarWidth")};
-  @media (min-width: 600px) {
-    min-height: 64px;
-  }
-`;
-
-const CompanyBranding = styled.div`
+const StyledNav = styled.nav`
+  background: ${applyTheme("Sidebar.menuBarBackground")};
   display: flex;
-  align-items: center;
-`;
-
-const UpperDarkBlueBand = styled.div`
-  width: ${applyTheme("Sidebar.iconBarWidth")};
-  height: 90px;
-  background-color: ${applyTheme("Sidebar.iconBarBackgroundColor")};
-`;
-
-const CompanyName = styled.div`
-  ${addTypographyStyles("SidebarMenu", "titleText")};
-  color: ${applyTheme("Sidebar.companyNameColor")};
-  padding-bottom: 20px;
-  font-weight: bold;
-  margin: 0 auto;
+  flex-direction: column;
+  height: 100%;
 `;
 
 const activeClassName = "nav-item-active";
 const Link = styled(NavLink).attrs({
   activeClassName
 })`
- &.${activeClassName} span {
-   color: ${applyTheme("Sidebar.activeMenuItemColor")};
- }
+  &.${activeClassName} span {
+    color: ${applyTheme("Sidebar.activeMenuItemColor")};
+  }
 `;
 
 export default class Sidebar extends Component {
   static propTypes = {
-    handleDrawerClose: PropTypes.func.isRequired,
-    handleDrawerOpen: PropTypes.func.isRequired,
     isMobile: PropTypes.bool,
     isSidebarOpen: PropTypes.bool.isRequired,
+    onDrawerClose: PropTypes.func.isRequired,
     routes: PropTypes.array
   }
 
-  handleDrawerOpen = () => {
-    this.props.handleDrawerOpen();
-  };
-
-  handleDrawerClose = () => {
-    this.props.handleDrawerClose();
-  };
-
-  renderNavigationMenuItems = (settings = false) => {
+  renderNavigationMenuItems(settings = false) {
     const { routes } = this.props;
     const filteredRoutes = settings ?
       routes.filter(({ isNavigationLink, isSetting }) => isNavigationLink && isSetting) :
@@ -145,7 +108,7 @@ export default class Sidebar extends Component {
             <Link to={`/operator${route.path}`} activeClassName={activeClassName} key={route.path}>
               <ListItem button>
                 <ListItemIcon>
-                  {React.cloneElement(route.sidebarIconComponent, { color: "#5d8ea9", size: "lg" })}
+                  <route.SidebarIconComponent />
                 </ListItemIcon>
                 <ListItemText disableTypography>
                   <Translation defaultValue="" i18nKey={route.sidebarI18nLabel} />
@@ -158,28 +121,20 @@ export default class Sidebar extends Component {
     );
   }
 
-  renderSidebarMenu = () => {
-    const { isMobile, isSidebarOpen } = this.props;
+  render() {
+    const { isMobile, isSidebarOpen, onDrawerClose } = this.props;
 
     const menu = (
-      <nav>
-        <DrawerHeader>
-          <AppBarDarkBlueBand />
-          <IconButton onClick={this.handleDrawerClose}>
-            <FontAwesomeIcon icon={faChevronLeft} />
-          </IconButton>
-        </DrawerHeader>
-        <CompanyBranding>
-          <UpperDarkBlueBand />
-          <CompanyName variant="h5">Reaction</CompanyName>
-        </CompanyBranding>
+      <StyledNav>
+        <LogoArea>
+          <ShopLogoWithData />
+        </LogoArea>
         <List>
           {this.renderNavigationMenuItems()}
           <Divider component="li" />
           {this.renderNavigationMenuItems(true)}
-          <LowerDarkBlueBand />
         </List>
-      </nav>
+      </StyledNav>
     );
 
     if (isMobile) {
@@ -188,7 +143,7 @@ export default class Sidebar extends Component {
           variant="temporary"
           anchor="left"
           open={isSidebarOpen}
-          onClose={this.handleDrawerClose}
+          onClose={onDrawerClose}
           ModalProps={
             { keepMounted: true } // Better open performance on mobile.
           }
@@ -197,17 +152,11 @@ export default class Sidebar extends Component {
         </Drawer>
       );
     }
+
     return (
       <Drawer variant="persistent" open={isSidebarOpen}>
         {menu}
       </Drawer>
-    );
-  };
-  render() {
-    return (
-      <Fragment>
-        {this.renderSidebarMenu()}
-      </Fragment>
     );
   }
 }

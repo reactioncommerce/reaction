@@ -1,3 +1,5 @@
+import ReactionError from "@reactioncommerce/reaction-error";
+
 /**
  * @name getFlatRateFulfillmentRestriction
  * @method
@@ -9,10 +11,14 @@
  * @return {Promise<Object>|undefined} - A restrictions document, if one is found
  */
 export default async function getFlatRateFulfillmentRestriction(context, { restrictionId, shopId } = {}) {
-  const { collections } = context;
+  const { collections, userHasPermission } = context;
   const { FlatRateFulfillmentRestrictions } = collections;
 
-  return FlatRateFulfillmentRestrictions.find({
+  if (!userHasPermission(["admin", "owner", "shipping"], shopId)) {
+    throw new ReactionError("access-denied", "Access Denied");
+  }
+
+  return FlatRateFulfillmentRestrictions.findOne({
     _id: restrictionId,
     shopId
   });

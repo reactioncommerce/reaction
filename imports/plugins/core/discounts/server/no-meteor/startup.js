@@ -10,7 +10,7 @@ import getDiscountsTotalForCart from "/imports/plugins/core/discounts/server/no-
 export default function startup(context) {
   const { Cart } = context.collections;
 
-  appEvents.on("afterCartUpdate", async (cart) => {
+  appEvents.on("afterCartUpdate", async ({ cart }) => {
     if (!cart) {
       throw new Error("afterCartUpdate hook run with no cart argument");
     }

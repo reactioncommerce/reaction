@@ -10,7 +10,7 @@ export const operatorRoutes = [];
  * @param {Node|String} route.mainComponent - A react component to render in
  * the main content area or the name of a Blaze template that has been registered
  * by a package.
- * @param {Node} route.sidebarIconComponent - The menu icon for this route
+ * @param {Node} route.SidebarIconComponent - A React component that renders the menu icon for this route
  * @param {String} route.sidebarI18nLabel - The i18n key for this route, i.e. "admin.dashboard.ordersLabel"
  * @returns {undefined}
  */

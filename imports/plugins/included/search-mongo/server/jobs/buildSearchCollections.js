@@ -1,6 +1,6 @@
-import Hooks from "@reactioncommerce/hooks";
 import Logger from "@reactioncommerce/logger";
 import { Meteor } from "meteor/meteor";
+import appEvents from "/imports/node-app/core/util/appEvents";
 import { Job } from "/imports/plugins/core/job-collection/lib";
 import { Jobs, ProductSearch, Orders, OrderSearch, AccountSearch } from "/lib/collections";
 import {
@@ -10,7 +10,6 @@ import {
   buildProductSearch,
   rebuildProductSearchIndex
 } from "../methods/";
-
 
 function addBuildProductSearchCollection() {
   const productSearchCount = ProductSearch.find({}).count();
@@ -70,7 +69,7 @@ function addBuildAccountSearchCollection() {
   }
 }
 
-Hooks.Events.add("afterCoreInit", () => {
+appEvents.on("afterCoreInit", () => {
   if (!Meteor.isAppTest) {
     buildEmptyProductSearch();
     addBuildProductSearchCollection();
@@ -78,7 +77,6 @@ Hooks.Events.add("afterCoreInit", () => {
     addBuildAccountSearchCollection();
   }
 });
-
 
 export default function () {
   Jobs.processJobs(
