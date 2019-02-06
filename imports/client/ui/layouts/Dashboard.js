@@ -7,12 +7,14 @@ import { ContainerQuery } from "react-container-query";
 import withStyles from "@material-ui/core/styles/withStyles";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
-import { applyTheme, CustomPropTypes } from "@reactioncommerce/components/utils";
+import { CustomPropTypes } from "@reactioncommerce/components/utils";
 import { withComponents } from "@reactioncommerce/components-context";
 import { Route, Switch } from "react-router";
 import ProfileImageWithData from "../components/ProfileImageWithData";
 import Sidebar from "../components/Sidebar";
 import { operatorRoutes } from "../index";
+import ContentViewFullLayout from "./ContentViewFullLayout";
+import ContentViewStandardayout from "./ContentViewStandardLayout";
 
 const query = {
   isMobile: {
@@ -32,46 +34,6 @@ const Container = styled.div`
   display: flex;
 `;
 
-// The reason we can't simply do `styled.div` here is because we're passing in isMobile and isSidebarOpen
-// props for the styled-components conditionals, but React does not recognize these as valid attributes
-// for DOM elements and prints warnings in the console. Someday there may be a better solution.
-// See https://github.com/styled-components/styled-components/issues/305
-const Main = styled(({ children, isMobile, isSidebarOpen, ...divProps }) => (<div {...divProps}>{children}</div>))`
-  width: 100vw;
-  background-color: ${applyTheme("Layout.pageBackgroundColor")};
-  flex-grow: 1;
-  transition: ${(props) =>
-    (props.isSidebarOpen && props.isMobile !== true
-      ? "padding 225ms cubic-bezier(0, 0, 0.2, 1) 0ms"
-      : "padding 195ms cubic-bezier(0.4, 0, 0.6, 1) 0ms")};
-  padding-left: ${(props) => (props.isSidebarOpen && props.isMobile === false ? "280px" : 0)};
-  padding-bottom: ${applyTheme("Layout.pageContentPaddingBottom")};
-  padding-right: ${applyTheme("Layout.pageContentPaddingRight")};
-  padding-top: ${applyTheme("Layout.pageContentPaddingTop")};
-  margin: 0 auto;
-`;
-
-const MainContent = styled.div`
-  max-width: ${applyTheme("Layout.pageContentMaxWidth")};
-  padding-bottom: ${applyTheme("Layout.pageContentPaddingBottom")};
-  padding-left: ${applyTheme("Layout.pageContentPaddingLeft")};
-  padding-right: ${applyTheme("Layout.pageContentPaddingRight")};
-  padding-top: ${applyTheme("Layout.pageContentPaddingTop")};
-  margin: 0 auto;
-`;
-
-const MainFullWidth = styled.div`
-  width: 100vw;
-  background-color: ${applyTheme("Layout.pageBackgroundColor")};
-  flex-grow: 1;
-  transition: ${(props) =>
-    (props.isSidebarOpen && props.isMobile !== true
-      ? "padding 225ms cubic-bezier(0, 0, 0.2, 1) 0ms"
-      : "padding 195ms cubic-bezier(0.4, 0, 0.6, 1) 0ms")};
-  padding-left: ${(props) => (props.isSidebarOpen && props.isMobile === false ? "280px" : 0)};
-  padding-top: ${applyTheme("Layout.pageContentPaddingTop")};
-`;
-
 const Grow = styled.div`
   flex-grow: 1;
 `;
@@ -84,6 +46,7 @@ const styles = (theme) => ({
 
 class Dashboard extends Component {
   static propTypes = {
+    classes: PropTypes.object,
     components: PropTypes.shape({
       IconHamburger: CustomPropTypes.component.isRequired
     })
@@ -150,13 +113,13 @@ class Dashboard extends Component {
                         // If the layout component is explicitly null
                         if (route.layoutComponent === null) {
                           return (
-                            <MainFullWidth isMobile={isMobile} isSidebarOpen={isSidebarOpen}>
+                            <ContentViewFullLayout isMobile={isMobile} isSidebarOpen={isSidebarOpen}>
                               <route.mainComponent uiState={uiState} {...props} />;
-                            </MainFullWidth>
+                            </ContentViewFullLayout>
                           );
                         }
 
-                        const LayoutComponent = route.layoutComponent || Main;
+                        const LayoutComponent = route.layoutComponent || ContentViewStandardayout;
 
                         return (
                           <LayoutComponent isMobile={isMobile} isSidebarOpen={isSidebarOpen}>
