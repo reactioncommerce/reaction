@@ -167,16 +167,16 @@ class SortableNodeContentRenderer extends Component {
 
     // Construct the scaffold representing the structure of the tree
     const scaffold = [];
-    lowerSiblingCounts.forEach((lowerSiblingCount, i) => {
+    lowerSiblingCounts.forEach((lowerSiblingCount, index) => {
       scaffold.push((
         <div
-          key={`pre_${1 + i}`}
+          key={`pre_${1 + index}`}
           // style={{ width: scaffoldBlockPxWidth }}
           className={styles.lineBlock}
         />
       ));
 
-      if (treeIndex !== listIndex && i === swapDepth) {
+      if (treeIndex !== listIndex && index === swapDepth) {
         // This row has been shifted, and is at the depth of
         // the line pointing to the new destination
         let highlightLineClass = "";
@@ -195,9 +195,9 @@ class SortableNodeContentRenderer extends Component {
 
         scaffold.push((
           <div
-            key={`highlight_${1 + i}`}
+            key={`highlight_${1 + index}`}
             style={{
-              left: scaffoldBlockPxWidth * i
+              left: scaffoldBlockPxWidth * index
             }}
             className={`${styles.absoluteLineBlock} ${highlightLineClass}`}
           />
@@ -261,7 +261,8 @@ class SortableNodeContentRenderer extends Component {
                     {typeof nodeTitle === "function" ? nodeTitle({ node, path, treeIndex }) : nodeTitle}
                   </Typography>
                   <Typography className={classes.subtitle} variant="caption">
-                    <FileOutlineIcon className={classes.subtitleIcon} fontSize="inherit" /> {typeof nodeSubtitle === "function" ? nodeSubtitle({ node, path, treeIndex }) : nodeSubtitle}
+                    <FileOutlineIcon className={classes.subtitleIcon} fontSize="inherit" />
+                    {typeof nodeSubtitle === "function" ? nodeSubtitle({ node, path, treeIndex }) : nodeSubtitle}
                   </Typography>
                 </div>
 
