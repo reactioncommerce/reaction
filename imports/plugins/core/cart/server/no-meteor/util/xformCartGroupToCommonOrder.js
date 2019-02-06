@@ -13,6 +13,7 @@ export default async function xformCartGroupToCommonOrder(cart, group, context) 
 
   // We also need to add `subtotal` on each item, based on the current price of that item in
   // the catalog. `getFulfillmentGroupTaxes` uses subtotal prop to calculate the tax.
+  // ** If you add any data here, be sure to add the same data to the matching xformOrderGroupToCommonOrder xform
   items = items.map((item) => ({
     _id: item._id,
     attributes: item.attributes,

@@ -8,21 +8,25 @@
  * @returns {Object} Valid CommonOrder for the given order group
  */
 export default async function xformOrderGroupToCommonOrder({ billingAddress = null, cartId, collections, currencyCode, group, orderId, discountTotal }) {
+  // ** If you add any data here, be sure to add the same data to the matching xformCartGroupToCommonOrder xform
   const items = group.items.map((item) => ({
     _id: item._id,
+    attributes: item.attributes,
     isTaxable: item.isTaxable,
     parcel: item.parcel,
     price: item.price,
     productId: item.productId,
+    productVendor: item.productVendor,
     quantity: item.quantity,
     shopId: item.shopId,
     subtotal: {
-      amount: item.subtotal,
+      amount: item.price.amount * item.quantity,
       currencyCode
     },
     taxCode: item.taxCode,
     title: item.title,
-    variantId: item.variantId
+    variantId: item.variantId,
+    variantTitle: item.variantTitle
   }));
 
   const { address, shipmentMethod, shopId, type: fulfillmentType } = group;
