@@ -10,6 +10,12 @@ export default (Component) => (
       dragging: false
     }
 
+    handleDiscardChanges = () => {
+      this.setState(({ navigationTree }) => ({
+        sortableNavigationTree: this.navigationTreeToSortable(navigationTree)
+      }));
+    }
+
     handleSetNavigationItems = (navigationItems) => {
       this.setState({ navigationItems });
     }
@@ -65,6 +71,7 @@ export default (Component) => (
           onSetSortableNavigationTree={this.handleSetSortableNavigationTree}
           navigationItems={navigationItems}
           onAddNavigationItem={this.handleAddNavigationItem}
+          onDiscardNavigationTreeChanges={this.handleDiscardChanges}
           onSetNavigationTree={this.handleSetNavigationTree}
           onSetNavigationItems={this.handleSetNavigationItems}
         />

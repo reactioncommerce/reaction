@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import classnames from "classnames";
 import AppBar from "@material-ui/core/AppBar";
-import Grid from "@material-ui/core/Grid";
 import Modal from "@material-ui/core/Modal";
 import Button from "@material-ui/core/Button";
 import Toolbar from "@material-ui/core/Toolbar";
@@ -47,6 +46,7 @@ class NavigationDashboard extends Component {
     createNavigationItem: PropTypes.func,
     deleteNavigationItem: PropTypes.func,
     navigationItems: PropTypes.array,
+    onDiscardNavigationTreeChanges: PropTypes.func,
     onSetSortableNavigationTree: PropTypes.func,
     sortableNavigationTree: PropTypes.arrayOf(PropTypes.object),
     uiState: PropTypes.shape({
@@ -98,6 +98,7 @@ class NavigationDashboard extends Component {
       onSetSortableNavigationTree,
       sortableNavigationTree,
       uiState,
+      onDiscardNavigationTreeChanges,
       updateNavigationItem,
       updateNavigationTree
     } = this.props;
@@ -117,7 +118,7 @@ class NavigationDashboard extends Component {
         <AppBar color="default">
           <Toolbar className={toolbarClassName}>
             <Typography className={classes.title} variant="h6">Main Navigation</Typography>
-            <Button className={classes.toolbarButton} color="primary" onClick={this.handlePublishChanges}>Discard</Button>
+            <Button className={classes.toolbarButton} color="primary" onClick={onDiscardNavigationTreeChanges}>Discard</Button>
             <Button className={classes.toolbarButton} color="primary" variant="contained" onClick={updateNavigationTree}>Save Changes</Button>
           </Toolbar>
         </AppBar>
