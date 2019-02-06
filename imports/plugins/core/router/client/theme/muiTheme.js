@@ -125,7 +125,7 @@ export const rawMuiTheme = {
     },
     MuiCard: {
       root: {
-        border: `1px solid ${colors.black10}`,
+        border: `1px solid ${colors.black10}`
       }
     },
     MuiCheckbox: {
