@@ -19,12 +19,19 @@ export default function startup(context) {
   appEvents.on("afterCartUpdate", async ({ cart }, { emittedBy } = {}) => {
     if (emittedBy === EMITTED_BY_NAME) return; // short circuit infinite loops
 
-    // Get cart fulfillmentGroup
-    const [shipping] = cart.shipping;
-    // Convert cart to commonOrder, and get extendedCommonOrder
-    const commonOrder = await xformCartGroupToCommonOrder(cart, shipping, context);
+    const { shipping } = cart;
+    let cartSurcharges = [];
 
-    const cartSurcharges = await getSurcharges(context, { commonOrder });
+    // Merge surcharges from each shipping group
+    for (const shippingGroup of shipping) {
+      const commonOrder = await xformCartGroupToCommonOrder(cart, shippingGroup, context);
+      const appliedSurcharges = await getSurcharges(context, { commonOrder });
+
+      appliedSurcharges.forEach((appliedSurcharge) => {
+        // Push shippingGroup surcharges to cart surcharge array
+        cartSurcharges.push(appliedSurcharge);
+      });
+    }
 
     const { value: updatedCart } = await Cart.findOneAndUpdate({ _id: cart._id }, {
       $set: {
