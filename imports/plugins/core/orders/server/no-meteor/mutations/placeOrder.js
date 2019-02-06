@@ -551,9 +551,6 @@ export default async function placeOrder(context, input) {
 
   const now = new Date();
 
-  console.log("orderSurchages", orderSurcharges);
-
-
   const order = {
     _id: orderId,
     accountId,
