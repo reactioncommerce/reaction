@@ -56,29 +56,16 @@ export default async function addressBookAdd(context, address, accountUserId) {
     }
   }
 
-  const userUpdateQuery = {
-    $set: {
-      "profile.addressBook": address
-    }
-  };
-  const accountsUpdateQuery = {
-    $addToSet: {
-      "profile.addressBook": address
-    }
-  };
-
-  // If there is no `name` field on account or this is the first address we're
-  // adding for this account, set the name from the address.fullName.
-  if (!account.name || get(account, "profile.addressBook.length", 0) === 0) {
-    userUpdateQuery.$set.name = address.fullName;
-    accountsUpdateQuery.$set = { name: address.fullName };
-  }
-
-  await Users.updateOne({ _id: userId }, userUpdateQuery);
-
   const { value: updatedAccount } = await Accounts.findOneAndUpdate(
     { userId },
-    accountsUpdateQuery,
+    {
+      $addToSet: {
+        "profile.addressBook": address
+      },
+      $set: {
+        updatedAt: new Date()
+      }
+    },
     {
       returnOriginal: false
     }
