@@ -1,5 +1,4 @@
 import Random from "@reactioncommerce/random";
-import { get } from "lodash";
 import ReactionError from "@reactioncommerce/reaction-error";
 
 /**
@@ -14,7 +13,7 @@ import ReactionError from "@reactioncommerce/reaction-error";
  */
 export default async function addressBookAdd(context, address, accountUserId) {
   const { appEvents, collections, userHasPermission, userId: userIdFromContext } = context;
-  const { Accounts, users: Users } = collections;
+  const { Accounts } = collections;
 
   const userId = accountUserId || userIdFromContext;
   const account = await Accounts.findOne({ userId });
