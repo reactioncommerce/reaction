@@ -2,7 +2,7 @@ import SimpleSchema from "simpl-schema";
 import { registerSchema } from "@reactioncommerce/schemas";
 import { createdAtAutoValue } from "./helpers";
 import { Address } from "./address";
-import { Money, Surcharge } from "./core";
+import { Money, AppliedSurcharge } from "./core";
 import { Invoice, Payment } from "./payments";
 import { ShippingParcel } from "./shipping";
 import { Workflow } from "./workflow";

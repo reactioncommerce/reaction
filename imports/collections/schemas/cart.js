@@ -1,7 +1,7 @@
 import SimpleSchema from "simpl-schema";
 import { registerSchema } from "@reactioncommerce/schemas";
 import { Address } from "./address";
-import { Money, Surcharge } from "./core";
+import { Money, AppliedSurcharge } from "./core";
 import { Shipment, ShippingParcel } from "./shipping";
 import { Workflow } from "./workflow";
 import { Metafield } from "./metafield";
