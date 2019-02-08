@@ -221,7 +221,7 @@ input UpdateSurchargeInput {
 # Queries
 ####
 extend type Query {
-  "Get the full list of flat rate fulfillment method restrictions."
+  "Get the full list of surcharges."
   getSurcharges(
     shopId: ID!,
     after: ConnectionCursor,
@@ -242,14 +242,10 @@ extend type Query {
 extend type Mutation {
   "Create a surcharge"
   createSurcharge(input: CreateSurchargeInput!): CreateSurchargePayload!
-}
 
-extend type Mutation {
   "Delete a flat rate fulfillment restriction"
   deleteSurcharge(input: DeleteSurchargeInput!): DeleteSurchargePayload!
-}
 
-extend type Mutation {
   "Update a flat rate fulfillment surcharge"
   updateSurcharge(input: UpdateSurchargeInput!): UpdateSurchargePayload!
 }
