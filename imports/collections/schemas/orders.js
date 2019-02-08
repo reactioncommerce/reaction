@@ -369,6 +369,7 @@ export const OrderFulfillmentGroup = new SimpleSchema({
  * @property {String} cartId optional For tracking which cart created this order
  * @property {Date} createdAt required
  * @property {String} currencyCode required
+ * @property {Object} customFields required
  * @property {Document[]} documents optional
  * @property {String} email optional
  * @property {Object[]} exportHistory optional
@@ -410,6 +411,11 @@ export const Order = new SimpleSchema({
   },
   "createdAt": Date,
   "currencyCode": String,
+  "customFields": {
+    type: Object,
+    blackbox: true,
+    optional: true
+  },
   "discounts": {
     type: Array,
     optional: true
