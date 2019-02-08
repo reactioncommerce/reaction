@@ -11,8 +11,9 @@ import getAbsoluteUrl from "/imports/plugins/core/core/server/util/getAbsoluteUr
  *   `userHasPermission` properties.
  * @param {Object} context - A context object on which to set additional context properties
  * @param {Object} request - Request object
+ * @param {Object} request.headers - Map of headers from the client request
  * @param {String} request.hostname - Hostname derived from Host or X-Forwarded-Host header
- * @param {Object} request.protocol - Either http or https
+ * @param {String} request.protocol - Either http or https
  * @param {Object} [request.user] - The user who authenticated this request, if applicable
  * @returns {undefined} No return
  */
@@ -39,4 +40,6 @@ export default async function buildContext(context, request = {}) {
 
   context.rootUrl = getRootUrl(request);
   context.getAbsoluteUrl = (path) => getAbsoluteUrl(context.rootUrl, path);
+
+  context.requestHeaders = request.headers;
 }
