@@ -20,7 +20,7 @@ export default function startup(context) {
     if (emittedBy === EMITTED_BY_NAME) return; // short circuit infinite loops
 
     const { shipping } = cart;
-    let cartSurcharges = [];
+    const cartSurcharges = [];
 
     // Merge surcharges from each shipping group
     for (const shippingGroup of shipping) {
