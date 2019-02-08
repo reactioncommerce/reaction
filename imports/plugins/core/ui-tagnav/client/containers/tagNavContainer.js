@@ -248,7 +248,7 @@ const wrapComponent = (Comp) => (
     }
 
     get canEdit() {
-      return this.props.hasEditRights && Reaction.isPreview() === false;
+      return this.props.hasEditRights;
     }
 
     attachBodyListener = () => {
