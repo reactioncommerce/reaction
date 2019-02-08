@@ -59,6 +59,17 @@ const orderInputSchema = new SimpleSchema({
     optional: true
   },
   "currencyCode": String,
+  /**
+   * If you need to store customFields, be sure to add them to your
+   * GraphQL input schema and your Order SimpleSchema with proper typing.
+   * This schema need not care what `customFields` is because the input
+   * and Order schemas will validate. Thus, we use blackbox here.
+   */
+  "customFields": {
+    type: Object,
+    blackbox: true,
+    optional: true
+  },
   "email": String,
   "fulfillmentGroups": {
     type: Array,
@@ -448,7 +459,15 @@ export default async function placeOrder(context, input) {
   inputSchema.validate(cleanedInput);
 
   const { order: orderInput, payments: paymentsInput } = cleanedInput;
-  const { billingAddress, cartId, currencyCode, email, fulfillmentGroups, shopId } = orderInput;
+  const {
+    billingAddress,
+    cartId,
+    currencyCode,
+    customFields: customFieldsFromClient,
+    email,
+    fulfillmentGroups,
+    shopId
+  } = orderInput;
   const { accountId, account, collections, getFunctionsOfType, userId } = context;
   const { Orders } = collections;
 
@@ -573,6 +592,22 @@ export default async function placeOrder(context, input) {
       workflow: ["coreOrderWorkflow/created"]
     }
   };
+
+  // Apply custom order data transformations from plugins
+  const transformCustomOrderFieldsFuncs = getFunctionsOfType("transformCustomOrderFields");
+  if (transformCustomOrderFieldsFuncs.length > 0) {
+    let customFields = { ...(customFieldsFromClient || {}) };
+    // We need to run each of these functions in a series, rather than in parallel, because
+    // each function expects to get the result of the previous. It is recommended to disable `no-await-in-loop`
+    // eslint rules when the output of one iteration might be used as input in another iteration, such as this case here.
+    // See https://eslint.org/docs/rules/no-await-in-loop#when-not-to-use-it
+    for (const transformCustomOrderFieldsFunc of transformCustomOrderFieldsFuncs) {
+      customFields = await transformCustomOrderFieldsFunc({ context, customFields, order }); // eslint-disable-line no-await-in-loop
+    }
+    order.customFields = customFields;
+  } else {
+    order.customFields = customFieldsFromClient;
+  }
 
   // Validate and save
   OrderSchema.validate(order);
