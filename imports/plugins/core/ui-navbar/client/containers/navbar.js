@@ -50,7 +50,9 @@ export function composer(props, onData) {
     Reaction.setShopId(shopId);
   };
 
-  if (searchPackage.length && shop && user && !Roles.userIsInRole(user._id, "anonymous", shop._id)) {
+  const isLoggedIn = !!(shop && user && !Roles.userIsInRole(user._id, "anonymous", shop._id));
+
+  if (searchPackage.length && isLoggedIn) {
     searchEnabled = true;
     searchTemplate = searchPackage[0].template;
   } else {
@@ -65,13 +67,23 @@ export function composer(props, onData) {
   const hasProperPermission = Reaction.hasPermission("account/profile");
 
   onData(null, {
-    shop,
     brandMedia,
+    handleShopSelectChange,
+    hasProperPermission,
     searchEnabled,
     searchTemplate,
-    hasProperPermission,
+    shop,
     shops,
-    handleShopSelectChange
+    visibility: {
+      hamburger: true,
+      brand: true,
+      tags: isLoggedIn,
+      search: true,
+      notifications: true,
+      languages: true,
+      currency: true,
+      mainDropdown: true
+    }
   });
 }
 
