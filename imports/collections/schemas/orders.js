@@ -457,7 +457,7 @@ export const Order = new SimpleSchema({
     optional: true
   },
   "surcharges.$": {
-    type: Surcharge
+    type: AppliedSurcharge
   },
   "totalItemQuantity": {
     type: SimpleSchema.Integer,

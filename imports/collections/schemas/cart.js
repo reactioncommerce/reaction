@@ -246,7 +246,7 @@ export const Cart = new SimpleSchema({
     optional: true
   },
   "surcharges.$": {
-    type: Surcharge
+    type: AppliedSurcharge
   },
   "workflow": {
     type: Workflow,
