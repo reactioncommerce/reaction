@@ -17,7 +17,7 @@ import ConfirmDialog from "/imports/client/ui/components/ConfirmDialog";
 
 const styles = (theme) => ({
   closeButtonContainer: {
-    textAlign: "right",
+    textAlign: "right"
   },
   formActions: {
     textAlign: "right",

@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import _ from "lodash";
 import update from "immutability-helper";
 import { compose } from "recompose";
-import { registerComponent, composeWithTracker, Components } from "@reactioncommerce/reaction-components";
+import { registerComponent, composeWithTracker } from "@reactioncommerce/reaction-components";
 import { Meteor } from "meteor/meteor";
 import { Reaction, i18next } from "/client/api";
 import TagList from "../components/tags/tagList";
