@@ -515,7 +515,7 @@ export default async function placeOrder(context, input) {
     finalGroup.totalItemQuantity = finalGroup.items.reduce((sum, item) => sum + item.quantity, 0);
 
     // Get surcharges to apply to group, if applicable
-    let groupSurcharges = [];
+    const groupSurcharges = [];
     const commonOrder = await xformOrderGroupToCommonOrder({
       billingAddress,
       cartId,
@@ -529,6 +529,8 @@ export default async function placeOrder(context, input) {
     for (const func of getFunctionsOfType("getSurcharges")) {
       const appliedSurcharges = await func(context, { commonOrder }); // eslint-disable-line
       appliedSurcharges.forEach((appliedSurcharge) => {
+        // Set fullfillmentGroupId
+        appliedSurcharge.fulfillmentGroupId = finalGroup._id;
         // Push to group surchage array
         groupSurcharges.push(appliedSurcharge);
         // Push to overall order surcharge array
