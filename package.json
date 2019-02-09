@@ -143,7 +143,7 @@
     "reacto-form": "0.0.2",
     "recompose": "^0.26.0",
     "shallowequal": "^1.0.2",
-    "sharp": "0.20.5",
+    "sharp": "^0.20.5",
     "simpl-schema": "1.5.0",
     "slugify": "1.3.1",
     "sortablejs": "^1.8.1",
@@ -155,7 +155,7 @@
     "swiper": "^4.4.6",
     "tether-drop": "^1.4.2",
     "tether-tooltip": "^1.2.0",
-    "transliteration": "github:reactioncommerce/transliteration",
+    "transliteration": "^2.1.2",
     "url": "^0.11.0"
   },
   "devDependencies": {
