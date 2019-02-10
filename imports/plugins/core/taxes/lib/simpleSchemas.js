@@ -7,7 +7,7 @@ export const Taxes = new SimpleSchema({
    * You'll need to extend GraphQL schemas if you
    * want to expose any of this data through the API.
    */
-  customData: {
+  customFields: {
     type: Object,
     blackbox: true,
     optional: true
@@ -41,6 +41,16 @@ export const TaxSummary = new SimpleSchema({
     type: String,
     optional: true
   },
+  /**
+   * Custom key/value data that you need to store.
+   * You'll need to extend GraphQL schemas if you
+   * want to expose any of this data through the API.
+   */
+  customFields: {
+    type: Object,
+    blackbox: true,
+    optional: true
+  },
   referenceId: {
     type: String,
     optional: true
@@ -57,6 +67,16 @@ export const TaxSummary = new SimpleSchema({
 });
 
 export const TaxServiceItemTax = new SimpleSchema({
+  /**
+   * Custom key/value data that you need to store.
+   * You'll need to extend GraphQL schemas if you
+   * want to expose any of this data through the API.
+   */
+  customFields: {
+    type: Object,
+    blackbox: true,
+    optional: true
+  },
   itemId: String,
   tax: {
     type: Number,
