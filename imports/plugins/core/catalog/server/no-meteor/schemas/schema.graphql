@@ -439,6 +439,7 @@ enum CatalogItemSortByField {
   createdAt
   minPrice
   updatedAt
+  featured
 }
 
 extend type Query {
@@ -460,7 +461,7 @@ extend type Query {
     sortByPriceCurrencyCode: String
 
     "By default, items are sorted by when they were created, newest first. Set this to sort by one of the other allowed fields"
-    sortBy: CatalogItemSortByField = createdAt
+    sortBy: CatalogItemSortByField = featured
   ): CatalogItemConnection
   "Gets product from catalog"
   catalogItemProduct(
