@@ -1,5 +1,4 @@
-import { getPaginatedResponse } from "@reactioncommerce/reaction-graphql-utils";
-import { getPaginatedAggregateResponse } from "@reactioncommerce/reaction-graphql-utils";
+import { getPaginatedResponse, getPaginatedAggregateResponse } from "@reactioncommerce/reaction-graphql-utils";
 import { decodeShopOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/shop";
 import { decodeTagOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/tag";
 
@@ -18,6 +17,9 @@ import { decodeTagOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/tag
 export default async function catalogItems(_, args, context) {
   const { shopIds: opaqueShopIds, tagIds: opaqueTagIds, ...connectionArgs } = args;
 
+  const shopIds = opaqueShopIds && opaqueShopIds.map(decodeShopOpaqueId);
+  const tagIds = opaqueTagIds && opaqueTagIds.map(decodeTagOpaqueId);
+
   if (connectionArgs.sortyBy === "featured") {
     const query = await context.queries.catalogItemsAggregate(context, {
       shopIds,
@@ -32,9 +34,6 @@ export default async function catalogItems(_, args, context) {
     }
     connectionArgs.sortBy = `product.pricing.${connectionArgs.sortByPriceCurrencyCode}.minPrice`;
   }
-
-  const shopIds = opaqueShopIds && opaqueShopIds.map(decodeShopOpaqueId);
-  const tagIds = opaqueTagIds && opaqueTagIds.map(decodeTagOpaqueId);
 
   const query = await context.queries.catalogItems(context, {
     shopIds,
