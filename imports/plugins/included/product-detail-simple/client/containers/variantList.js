@@ -120,7 +120,7 @@ class VariantListContainer extends Component {
     ReactionProduct.setCurrentVariant(variant._id);
     Session.set(`variant-form-${editVariant._id}`, true);
 
-    if (Reaction.hasPermission("createProduct") && !Reaction.isPreview()) {
+    if (Reaction.hasPermission("createProduct")) {
       Reaction.showActionView({
         label: "Edit Variant",
         i18nKeyLabel: "productDetailEdit.editVariant",
@@ -172,6 +172,12 @@ class VariantListContainer extends Component {
   }
 }
 
+/**
+ * @private
+ * @param {Object} props Props
+ * @param {Function} onData Call this to update props
+ * @returns {undefined}
+ */
 function composer(props, onData) {
   let childVariantMedia = [];
   const childVariants = getChildVariants();
@@ -191,13 +197,7 @@ function composer(props, onData) {
     );
   }
 
-  let editable;
-
-  if (Reaction.isPreview() === true) {
-    editable = false;
-  } else {
-    editable = Reaction.hasPermission(["createProduct"]);
-  }
+  const editable = Reaction.hasPermission(["createProduct"]);
 
   onData(null, {
     variants: getTopVariants(),

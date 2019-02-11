@@ -138,19 +138,15 @@ function composer(props, onData) {
   const scrollLimit = Session.get("productScrollLimit");
   const sort = { createdAt: 1 };
 
-  // if we have a "viewAs" preference and the preference is not set to "administrator", then edit mode is false
-  const viewAsPref = Reaction.getUserPreferences("reaction-dashboard", "viewAs");
-  const editMode = !viewAsPref || viewAsPref === "administrator";
-
   // Now that we have the necessary info, we can subscribe to Products we need
-  let productsSubscription = Meteor.subscribe("Products", scrollLimit, queryParams, sort, editMode);
+  let productsSubscription = Meteor.subscribe("Products", scrollLimit, queryParams, sort, true);
 
   // Force re-running products subscription when a product is cloned
   const resubscribe = resubscribeAfterCloning.get();
   if (resubscribe) {
     resubscribeAfterCloning.set(false);
     productsSubscription.stop();
-    productsSubscription = Meteor.subscribe("Products", scrollLimit, queryParams, sort, editMode);
+    productsSubscription = Meteor.subscribe("Products", scrollLimit, queryParams, sort, true);
   }
 
   if (productsSubscription.ready()) {
@@ -179,7 +175,7 @@ function composer(props, onData) {
 
   const selectedProducts = Session.get("productGrid/selectedProducts");
 
-  if (!Reaction.isPreview() && Array.isArray(selectedProducts)) {
+  if (Array.isArray(selectedProducts)) {
     if (selectedProducts.length > 0) {
       // Show the actionView if there are products selected.
       Reaction.showActionView({

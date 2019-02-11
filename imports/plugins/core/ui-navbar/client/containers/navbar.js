@@ -1,10 +1,17 @@
 import { registerComponent, composeWithTracker } from "@reactioncommerce/reaction-components";
 import { Meteor } from "meteor/meteor";
+import { Roles } from "meteor/alanning:roles";
 import { Reaction } from "/client/api";
 import NavBar from "../components/navbar";
 import { Shops } from "/lib/collections";
 import { Media } from "/imports/plugins/core/files/client";
 
+/**
+ * @private
+ * @param {Object} props Props
+ * @param {Function} onData Call this to update props
+ * @returns {undefined}
+ */
 export function composer(props, onData) {
   const shopSub = Meteor.subscribe("MerchantShops", Reaction.getShopsForUser(["admin"]));
   if (!shopSub.ready()) return;
@@ -33,7 +40,7 @@ export function composer(props, onData) {
   /**
    * @method
    * @summary Handle change in selected shop
-   * @param {script} event
+   * @param {script} event DOM Event
    * @param {String} shopId - selected shopId
    * @since 1.5.8
    * @return {void}
@@ -43,7 +50,9 @@ export function composer(props, onData) {
     Reaction.setShopId(shopId);
   };
 
-  if (searchPackage.length) {
+  const isLoggedIn = !!(shop && user && !Roles.userIsInRole(user._id, "anonymous", shop._id));
+
+  if (searchPackage.length && isLoggedIn) {
     searchEnabled = true;
     searchTemplate = searchPackage[0].template;
   } else {
@@ -58,13 +67,23 @@ export function composer(props, onData) {
   const hasProperPermission = Reaction.hasPermission("account/profile");
 
   onData(null, {
-    shop,
     brandMedia,
+    handleShopSelectChange,
+    hasProperPermission,
     searchEnabled,
     searchTemplate,
-    hasProperPermission,
+    shop,
     shops,
-    handleShopSelectChange
+    visibility: {
+      hamburger: true,
+      brand: true,
+      tags: isLoggedIn,
+      search: true,
+      notifications: true,
+      languages: true,
+      currency: true,
+      mainDropdown: true
+    }
   });
 }
 
