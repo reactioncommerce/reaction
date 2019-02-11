@@ -13,5 +13,39 @@ Reaction.registerPackage({
     resolvers
   },
   mutations,
-  queries
+  queries,
+  registry: [
+    {
+      provides: ["settings"],
+      label: "Navigation",
+      description: "Manage navigation",
+      route: "/dashboard/navigation",
+      icon: "fa fa-bars",
+      container: "core",
+      template: "navigationDashboard",
+      name: "navigation-dashboard",
+      workflow: "navigationWorkflow",
+      priority: 2,
+      meta: {
+        actionView: {
+          dashboardSize: "lg"
+        }
+      }
+    }
+  ],
+  layout: [{
+    workflow: "navigationWorkflow",
+    layout: "coreLayout",
+    theme: "default",
+    enabled: true,
+    structure: {
+      template: "navigationDashboard",
+      layoutHeader: "NavBar",
+      layoutFooter: "",
+      notFound: "notFound",
+      dashboardControls: "",
+      dashboardHeaderControls: "",
+      adminControlsFooter: "adminControlsFooter"
+    }
+  }]
 });

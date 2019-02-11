@@ -159,17 +159,15 @@ class VariantListContainer extends Component {
 
   render() {
     return (
-      <Components.DragDropProvider>
-        <Components.VariantList
-          onEditVariant={this.handleEditVariant}
-          onMoveVariant={this.handleMoveVariant}
-          onVariantClick={this.handleVariantClick}
-          onVariantVisibiltyToggle={this.handleVariantVisibilityToggle}
-          onCreateVariant={this.handleCreateVariant}
-          {...this.props}
-          variants={this.variants}
-        />
-      </Components.DragDropProvider>
+      <Components.VariantList
+        onEditVariant={this.handleEditVariant}
+        onMoveVariant={this.handleMoveVariant}
+        onVariantClick={this.handleVariantClick}
+        onVariantVisibiltyToggle={this.handleVariantVisibilityToggle}
+        onCreateVariant={this.handleCreateVariant}
+        {...this.props}
+        variants={this.variants}
+      />
     );
   }
 }
