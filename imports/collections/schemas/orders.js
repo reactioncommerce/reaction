@@ -413,6 +413,11 @@ export const Order = new SimpleSchema({
     type: String,
     optional: true
   },
+  "customFields": {
+    type: Object,
+    blackbox: true,
+    optional: true
+  },
   "createdAt": Date,
   "currencyCode": String,
   "discounts": {
