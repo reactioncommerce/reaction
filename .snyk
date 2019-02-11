@@ -1,40 +1,4 @@
 # Snyk (https://snyk.io) policy file, patches or ignores known vulnerabilities.
-version: v1.11.0
-# ignores vulnerabilities until expiry date; change duration by modifying expiry date
-ignore:
-  'SNYK-JS-BOOTSTRAP-72889':
-  - bootstrap:
-      reason: We're not going to update to Bootstrap 4 and we don't use Bootstrap JS
-      expires: '2019-12-31T20:23:03.274Z'
-  'SNYK-JS-BOOTSTRAP-72890':
-  - bootstrap:
-      reason: We're not going to update to Bootstrap 4 and we don't use Bootstrap JS. Will re-evaluate once bootstrap is eliminated.
-      expires: '2019-12-31T20:23:03.274Z'
-  'npm:bootstrap:20160627':
-    - bootstrap:
-      reason: We're not going to update to Bootstrap 4 and we don't use Bootstrap JS
-      expires: '2019-12-31T20:23:03.274Z'
-  'npm:bootstrap:20180529':
-      - bootstrap:
-        reason: We're not going to update to Bootstrap 4 and we don't use Bootstrap JS
-        expires: '2019-12-31T20:23:03.274Z'
-  'SNYK-JS-CHOWNR-73502':
-    - '*':
-      reason: "We don't use chownr in an untrusted system where a possible attacker has access to the filesystem where the user script is running chown. chownr is a recursive fs operation and TOCTOU is fundamental to the way it works."
-      expires: '2019-12-31T20:23:03.274Z'
-  'npm:chownr:20180731':
-    - '*':
-      reason: "PR in chownr to resolve issue will require node >= 10.8 https://github.com/isaacs/chownr/pull/15"
-      expires: '2019-12-31T20:23:03.274Z'
-  'npm:mem:20180117':
-    - '*':
-      reason: String of dependencies that need to be updated - oslocale (PR https://github.com/sindresorhus/os-locale/pull/31) followed by yargs then transliteration
-      expires: '2019-01-14T00:00:00.274Z'
-  'npm:braces:20180219':
-    - '*':
-      reason: Low severity issue we'll address as part of our 2.0 final security work.
-      expires: '2019-01-14T00:00:00.274Z'
-  'SNYK-JS-MERGE-72553':
-    - '*':
-      reason: Low severity issue we'll address as part of our 2.0 final security work.
-      expires: '2019-01-14T00:00:00.274Z'
+version: v1.13.3
+patch: {}
+ignore: {}
