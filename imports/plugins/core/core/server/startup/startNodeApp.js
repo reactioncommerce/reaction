@@ -26,7 +26,7 @@ export const isAppStartupComplete = () => appStartupIsComplete;
  * @returns {undefined}
  */
 export default async function startNodeApp() {
-  const { ROOT_URL } = process.env;
+  const { ROOT_URL, GRAPHQL_INTROSPECTION } = process.env;
   const mongodb = MongoInternals.NpmModules.mongodb.module;
 
   // Adding core resolvers this way because `core` is not a typical plugin and doesn't call registerPackage
@@ -54,7 +54,7 @@ export default async function startNodeApp() {
     },
     functionsByType,
     graphQL: {
-      graphiql: Meteor.isDevelopment,
+      graphiql: Meteor.isDevelopment || GRAPHQL_INTROSPECTION === "true",
       resolvers: finalResolvers,
       schemas: [...coreSchemas, ...schemas]
     },
