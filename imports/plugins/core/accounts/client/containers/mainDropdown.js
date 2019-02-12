@@ -64,7 +64,6 @@ function handleChange(event, value) {
   }
 
   if (value.name === "createProduct") {
-    Reaction.setUserPreferences("reaction-dashboard", "viewAs", "administrator");
     Meteor.call("products/createProduct", (error, productId) => {
       let currentTag;
       let currentTagId;

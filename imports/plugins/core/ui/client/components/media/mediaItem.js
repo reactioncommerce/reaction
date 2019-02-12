@@ -4,13 +4,11 @@ import PropTypes from "prop-types";
 import ReactImageMagnify from "react-image-magnify";
 import { Components, registerComponent } from "@reactioncommerce/reaction-components";
 import { Reaction } from "/client/api";
-import { SortableItem } from "/imports/plugins/core/ui/client/containers";
 import Hint from "./hint";
 
 class MediaItem extends Component {
   static propTypes = {
     connectDragSource: PropTypes.func,
-    connectDropTarget: PropTypes.func,
     defaultSource: PropTypes.string,
     editable: PropTypes.bool, // eslint-disable-line react/boolean-prop-naming
     mediaHeight: PropTypes.number,
@@ -166,7 +164,7 @@ class MediaItem extends Component {
   }
 
   render() {
-    const { connectDragSource, connectDropTarget, editable, zoomable } = this.props;
+    const { editable, zoomable } = this.props;
 
     const classes = {
       "gallery-image": true,
@@ -190,13 +188,13 @@ class MediaItem extends Component {
     );
 
     if (editable) {
-      return connectDragSource(connectDropTarget(mediaElement));
+      return mediaElement;
     }
 
     return mediaElement;
   }
 }
 
-registerComponent("MediaItem", MediaItem, SortableItem("media"));
+registerComponent("MediaItem", MediaItem);
 
-export default SortableItem("media")(MediaItem);
+export default MediaItem;
