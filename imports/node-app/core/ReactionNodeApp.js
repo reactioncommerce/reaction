@@ -41,7 +41,7 @@ export default class ReactionNodeApp {
 
     this.mongodb = options.mongodb || mongodb;
 
-    const { resolvers, schemas } = options.graphQL;
+    const { resolvers, schemas, graphiql } = options.graphQL;
 
     const {
       apolloServer,
@@ -51,6 +51,7 @@ export default class ReactionNodeApp {
       addCallMeteorMethod: this.options.addCallMeteorMethod || defaultAddCallMethod,
       context: this.context,
       debug: this.options.debug || false,
+      graphiql,
       resolvers,
       schemas
     });
