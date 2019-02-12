@@ -11,7 +11,7 @@ import getNavigationItemContentForLanguage from "../util/getNavigationItemConten
 export default async function xformNavigationTreeItem(context, language, item) {
   const { collections } = context;
   const { NavigationItems } = collections;
-  const { navigationItemId } = item;
+  const { expanded, navigationItemId } = item;
   let { items = [] } = item;
 
   const navigationItem = await NavigationItems.findOne({ _id: navigationItemId });
@@ -33,6 +33,7 @@ export default async function xformNavigationTreeItem(context, language, item) {
 
   return {
     navigationItem,
+    expanded,
     items
   };
 }

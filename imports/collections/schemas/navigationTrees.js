@@ -11,6 +11,11 @@ const items = {
   optional: true
 };
 
+const expanded = {
+  type: Boolean,
+  optional: true
+};
+
 /**
  * @name NavigationTreeItem
  * @memberof Schemas
@@ -21,10 +26,12 @@ const items = {
  */
 export const NavigationTreeItem = new SimpleSchema({
   navigationItemId,
+  expanded,
   items,
   "items.$": {
     type: new SimpleSchema({
       navigationItemId,
+      expanded,
       items,
       "items.$": {
         type: new SimpleSchema({

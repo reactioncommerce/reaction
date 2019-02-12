@@ -1,5 +1,4 @@
 import Random from "@reactioncommerce/random";
-import { get } from "lodash";
 import ReactionError from "@reactioncommerce/reaction-error";
 
 /**
@@ -14,7 +13,7 @@ import ReactionError from "@reactioncommerce/reaction-error";
  */
 export default async function addressBookAdd(context, address, accountUserId) {
   const { appEvents, collections, userHasPermission, userId: userIdFromContext } = context;
-  const { Accounts, users: Users } = collections;
+  const { Accounts } = collections;
 
   const userId = accountUserId || userIdFromContext;
   const account = await Accounts.findOne({ userId });
@@ -56,29 +55,16 @@ export default async function addressBookAdd(context, address, accountUserId) {
     }
   }
 
-  const userUpdateQuery = {
-    $set: {
-      "profile.addressBook": address
-    }
-  };
-  const accountsUpdateQuery = {
-    $addToSet: {
-      "profile.addressBook": address
-    }
-  };
-
-  // If there is no `name` field on account or this is the first address we're
-  // adding for this account, set the name from the address.fullName.
-  if (!account.name || get(account, "profile.addressBook.length", 0) === 0) {
-    userUpdateQuery.$set.name = address.fullName;
-    accountsUpdateQuery.$set = { name: address.fullName };
-  }
-
-  await Users.updateOne({ _id: userId }, userUpdateQuery);
-
   const { value: updatedAccount } = await Accounts.findOneAndUpdate(
     { userId },
-    accountsUpdateQuery,
+    {
+      $addToSet: {
+        "profile.addressBook": address
+      },
+      $set: {
+        updatedAt: new Date()
+      }
+    },
     {
       returnOriginal: false
     }
