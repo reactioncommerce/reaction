@@ -44,6 +44,14 @@ type OrderItemAttribute {
   value: String
 }
 
+type OrderStatus {
+  "The attribute label, e.g., New"
+  label: String
+
+  "The attribute type, e.g., new"
+  type: String
+}
+
 "A summary of the totals for this order"
 type OrderSummary {
   "The total of all discounts applied, as a positive number"
@@ -212,6 +220,9 @@ type Order implements Node {
 
   "The shop through which the order was placed"
   shop: Shop!
+
+  "The status of the order. Can be new, processing, shipped, complete."
+  status: OrderStatus
 
   "Total quantity of all items in the order"
   totalItemQuantity: Int!
