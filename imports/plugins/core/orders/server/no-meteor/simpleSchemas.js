@@ -27,7 +27,7 @@ const CommonOrderItemAttribute = new SimpleSchema({
   }
 });
 
-const CommonOrderItem = new SimpleSchema({
+export const CommonOrderItem = new SimpleSchema({
   "_id": String,
   "attributes": {
     type: Array,
