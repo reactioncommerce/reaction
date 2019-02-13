@@ -33,7 +33,7 @@ type Surcharge implements Node {
   shopId: ID!
 
   "Method IDs to apply this surcharge to."
-  methodIds: [String]
+  methodIds: [ID]
 
   """
   The type of this surcharge. Allowed types "surcharge".
@@ -181,7 +181,7 @@ input SurchargeDestinationRestrictionsInput {
 "Defines a surcharge."
 input SurchargeInput {
   "Method IDs to apply this surcharge to."
-  methodIds: [String]
+  methodIds: [ID]
 
   """
   The type of this surcharge. Allowed types are "surcharge".
