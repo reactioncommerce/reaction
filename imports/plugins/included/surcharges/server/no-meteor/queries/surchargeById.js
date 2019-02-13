@@ -1,5 +1,5 @@
 /**
- * @name getSurcharge
+ * @name surchargeById
  * @method
  * @memberof Fulfillment/NoMeteorQueries
  * @summary Query the Surcharges collection for a surcharge with the provided shopId and surchargeId
@@ -10,7 +10,7 @@
  * @param {String} params.surchargeId - Surcharge ID of the surcharge we are requesting
  * @return {Promise<Object>|undefined} - A surcharge document, if one is found
  */
-export default async function getSurcharge(context, { surchargeId, shopId } = {}) {
+export default async function surchargeById(context, { surchargeId, shopId } = {}) {
   const { collections } = context;
   const { Surcharges } = collections;
 

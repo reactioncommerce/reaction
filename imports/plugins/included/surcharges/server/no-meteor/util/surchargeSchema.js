@@ -66,10 +66,6 @@ const surchargeSchema = new SimpleSchema({
     optional: true
   },
   "attributes.$": Attributes,
-  "createdAt": {
-    type: Date,
-    label: "Date/time this surcharge was created at"
-  },
   /*
    * Destinations this surcharge applies to
   */
@@ -99,10 +95,6 @@ const surchargeSchema = new SimpleSchema({
   "type": {
     type: String,
     defaultValue: "surcharge"
-  },
-  "updatedAt": {
-    type: Date,
-    label: "Updated at"
   }
 });
 

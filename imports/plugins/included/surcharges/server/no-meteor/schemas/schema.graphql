@@ -24,7 +24,7 @@ type AppliedSurcharge implements Node {
   surchargeDefinitionId: ID!
 }
 
-"Defines a surcharge for getSurcharge and getSurcharges query."
+"Defines a surcharge for surchargeById and surcharges query."
 type Surcharge implements Node {
   "The surcharge ID."
   _id: ID!
@@ -222,7 +222,7 @@ input UpdateSurchargeInput {
 ####
 extend type Query {
   "Get the full list of surcharges."
-  getSurcharges(
+  surcharges(
     shopId: ID!,
     after: ConnectionCursor,
     before: ConnectionCursor,
@@ -232,7 +232,7 @@ extend type Query {
     sortBy: SurchargeSortByField = createdAt
   ): SurchargeConnection!
 
-  getSurcharge(shopId: ID!, surchargeId: ID!): Surcharge
+  surchargeById(shopId: ID!, surchargeId: ID!): Surcharge
 }
 
 

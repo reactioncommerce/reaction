@@ -2,10 +2,10 @@ import { decodeShopOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/sh
 import { getPaginatedResponse } from "@reactioncommerce/reaction-graphql-utils";
 
 /**
- * @name "Query.getSurcharges"
+ * @name "Query.surcharges"
  * @method
  * @memberof Fulfillment/GraphQL
- * @summary resolver for the getSurcharges GraphQL mutation
+ * @summary resolver for the surcharges GraphQL mutation
  * @param {Object} parentResult - unused
  * @param {Object} args - an object of all arguments that were sent by the client
  * @param {String} args.shopId - The shop that owns these surcharges
@@ -13,10 +13,10 @@ import { getPaginatedResponse } from "@reactioncommerce/reaction-graphql-utils";
  * @param {Object} context - an object containing the per-request state
  * @return {Promise<Object>|undefined} A Surcharge object
  */
-export default async function getSurcharges(parentResult, args, context) {
+export default async function surcharges(parentResult, args, context) {
   const { shopId, ...connectionArgs } = args;
 
-  const cursor = await context.queries.getSurcharges(context, {
+  const cursor = await context.queries.surcharges(context, {
     shopId: decodeShopOpaqueId(shopId)
   });
 

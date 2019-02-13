@@ -2,10 +2,10 @@ import { decodeShopOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/sh
 import { decodeSurchargeOpaqueId } from "../../xforms/surcharge";
 
 /**
- * @name "Query.getSurcharge"
+ * @name "Query.surchargeById"
  * @method
  * @memberof Fulfillment/GraphQL
- * @summary resolver for the getSurcharge GraphQL mutation
+ * @summary resolver for the surchargeById GraphQL mutation
  * @param {Object} parentResult - unused
  * @param {Object} args - an object of all arguments that were sent by the client
  * @param {String} args.language - Language to retrieve surcharge message in
@@ -14,10 +14,10 @@ import { decodeSurchargeOpaqueId } from "../../xforms/surcharge";
  * @param {Object} context - an object containing the per-request state
  * @return {Promise<Object>|undefined} A Surcharge object
  */
-export default async function getSurcharge(parentResult, args, context) {
+export default async function surchargeById(parentResult, args, context) {
   const { surchargeId, shopId } = args;
 
-  return context.queries.getSurcharge(context, {
+  return context.queries.surchargeById(context, {
     surchargeId: decodeSurchargeOpaqueId(surchargeId),
     shopId: decodeShopOpaqueId(shopId)
   });

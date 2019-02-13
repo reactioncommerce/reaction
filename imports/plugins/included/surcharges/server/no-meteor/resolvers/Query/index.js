@@ -1,7 +1,7 @@
-import getSurcharge from "./getSurcharge";
-import getSurcharges from "./getSurcharges";
+import surchargeById from "./surchargeById";
+import surcharges from "./surcharges";
 
 export default {
-  getSurcharge,
-  getSurcharges
+  surchargeById,
+  surcharges
 };
