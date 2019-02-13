@@ -37,6 +37,7 @@ export default async function xformOrderGroupToCommonOrder({ billingAddress = nu
     shipping: null,
     total: null
   };
+  let fulfillmentMethodId;
 
   if (shipmentMethod) {
     fulfillmentPrices = {
@@ -53,6 +54,8 @@ export default async function xformOrderGroupToCommonOrder({ billingAddress = nu
         currencyCode
       }
     };
+
+    fulfillmentMethodId = shipmentMethod._id;
   }
 
   // TODO: In the future, we should update this with a discounts update
@@ -92,6 +95,7 @@ export default async function xformOrderGroupToCommonOrder({ billingAddress = nu
     billingAddress,
     cartId,
     currencyCode,
+    fulfillmentMethodId,
     fulfillmentPrices,
     fulfillmentType,
     items,

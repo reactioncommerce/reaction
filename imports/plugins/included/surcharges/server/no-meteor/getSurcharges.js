@@ -25,6 +25,22 @@ export default async function getSurcharges(context, { commonOrder }) {
   const allAppliedSurcharges = await surcharges.reduce(async (appliedSurcharges, surcharge) => {
     const awaitedAppliedSurcharges = await appliedSurcharges;
 
+    const { methodIds } = surcharge;
+    const { fulfillmentMethodId } = extendedCommonOrder;
+
+    // Check to see if surcharge has methodIds attached to it.
+    // If it doesn't, this surcharge can apply to any fulfillmentMethod
+    if (Array.isArray(methodIds) && methodIds.length > 0) {
+      // If surcharge has methodIds attached to it, and fulfillmentMethodId is not yet set,
+      // don't apply any surchages at this time
+      if (!fulfillmentMethodId) return awaitedAppliedSurcharges;
+
+      // If surcharge has methodIds attached to it, and fulfillmentMethodId is set,
+      // check to see if surcharge applies to this methodId.
+      // If not, don't apply surcharge.
+      if (!methodIds.includes(fulfillmentMethodId)) return awaitedAppliedSurcharges;
+    }
+
     const applySurcharge = await surchargeCheck(surcharge, extendedCommonOrder);
 
     // If surcharge passes all checks, it is valid and should be added to valid surcharges array

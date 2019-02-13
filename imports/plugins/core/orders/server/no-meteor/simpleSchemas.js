@@ -128,6 +128,10 @@ export const CommonOrder = new SimpleSchema({
     optional: true
   },
   currencyCode: String,
+  fulfillmentMethodId: {
+    type: String,
+    optional: true
+  },
   fulfillmentPrices: CommonOrderFulfillmentPrices,
   fulfillmentType: {
     type: String,
