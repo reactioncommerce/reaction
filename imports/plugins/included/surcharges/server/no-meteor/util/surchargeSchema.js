@@ -55,6 +55,38 @@ const Message = new SimpleSchema({
 });
 
 const surchargeSchema = new SimpleSchema({
+  "amount": {
+    type: Number
+  },
+  /*
+   * Order item attributes methods this surcharge applies to
+  */
+  "attributes": {
+    type: Array,
+    optional: true
+  },
+  "attributes.$": Attributes,
+  "createdAt": {
+    type: Date,
+    label: "Date/time this surcharge was created at"
+  },
+  /*
+   * Destinations this surcharge applies to
+  */
+  "destination": {
+    type: Destination,
+    optional: true
+  },
+  /*
+   * Message is used as a client message to let customers know why this surcharge might apply
+   * It can be saved in various languages
+  */
+  "messagesByLanguage": {
+    type: Array
+  },
+  "messagesByLanguage.$": {
+    type: Message
+  },
   /*
    * Fulfillment methods this surcharge applies to
    * If blank, it applies to all methods
@@ -68,33 +100,9 @@ const surchargeSchema = new SimpleSchema({
     type: String,
     defaultValue: "surcharge"
   },
-  /*
-   * Order item attributes methods this surcharge applies to
-  */
-  "attributes": {
-    type: Array,
-    optional: true
-  },
-  "attributes.$": Attributes,
-  /*
-   * Destinations this surcharge applies to
-  */
-  "destination": {
-    type: Destination,
-    optional: true
-  },
-  "amount": {
-    type: Number
-  },
-  /*
-   * Message is used as a client message to let customers know why this surcharge might apply
-   * It can be saved in various languages
-  */
-  "messagesByLanguage": {
-    type: Array
-  },
-  "messagesByLanguage.$": {
-    type: Message
+  "updatedAt": {
+    type: Date,
+    label: "Updated at"
   }
 });
 

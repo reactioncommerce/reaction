@@ -31,6 +31,8 @@ export default async function createSurchargeMutation(context, input) {
 
   const { insertedCount } = await Surcharges.insertOne({
     shopId,
+    createdAt: new Date(),
+    updatedAt: new Date(),
     ...surcharge
   });
   if (insertedCount === 0) throw new ReactionError("server-error", "Unable to create surcharge");
