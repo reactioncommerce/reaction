@@ -8,7 +8,6 @@ import { Tags, Shops } from "/lib/collections";
 import { AdminContextProvider } from "/imports/plugins/core/ui/client/providers";
 
 const handleAddProduct = () => {
-  Reaction.setUserPreferences("reaction-dashboard", "viewAs", "administrator");
   Meteor.call("products/createProduct", (error, productId) => {
     if (Meteor.isClient) {
       let currentTag;
@@ -45,6 +44,12 @@ const handleShopSelectChange = (event, shopId) => {
   }
 };
 
+/**
+ * @private
+ * @param {Object} props Props
+ * @param {Function} onData Call this to update props
+ * @returns {undefined}
+ */
 function composer(props, onData) {
   // Reactive data sources
   const routeName = Reaction.Router.getRouteName();
@@ -81,7 +86,6 @@ function composer(props, onData) {
   onData(null, {
     packageButtons,
     dashboardHeaderTemplate: props.data.dashboardHeader,
-    isPreview: Reaction.isPreview(),
     isActionViewAtRootView: Reaction.isActionViewAtRootView(),
     actionViewIsOpen: Reaction.isActionViewOpen(),
     hasCreateProductAccess: Reaction.hasPermission("createProduct", Reaction.getUserId(), Reaction.getShopId()),
@@ -90,8 +94,7 @@ function composer(props, onData) {
 
     // Callbacks
     onAddProduct: handleAddProduct,
-    onShopSelectChange: handleShopSelectChange,
-    onViewContextChange: props.handleViewContextChange
+    onShopSelectChange: handleShopSelectChange
   });
 }
 

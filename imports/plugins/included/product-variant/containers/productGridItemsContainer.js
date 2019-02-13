@@ -35,12 +35,7 @@ const wrapComponent = (Comp) => (
       return "/";
     }
 
-    isSelected = () => {
-      if (Reaction.isPreview() === false) {
-        return _.includes(Session.get("productGrid/selectedProducts"), this.props.product._id) ? "active" : "";
-      }
-      return false;
-    }
+    isSelected = () => (_.includes(Session.get("productGrid/selectedProducts"), this.props.product._id) ? "active" : "")
 
     displayPrice = () => {
       const { product } = this.props;
@@ -98,7 +93,7 @@ const wrapComponent = (Comp) => (
       event.preventDefault();
       const { product } = this.props;
 
-      if (Reaction.hasPermission("createProduct") && Reaction.isPreview() === false) {
+      if (Reaction.hasPermission("createProduct")) {
         if (this.props.isSearch) {
           let { handle } = product;
           if (product.__published) {

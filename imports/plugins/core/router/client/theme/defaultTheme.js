@@ -31,7 +31,7 @@ const rui_components = {
     pageContentPaddingBottom: "24px",
     pageContentPaddingLeft: "24px",
     pageContentPaddingRight: "24px",
-    pageContentPaddingTop: "24px",
+    pageContentPaddingTop: "80px",
     pageHeaderBackgroundColor: colors.black02
   },
   ProfileImage: {

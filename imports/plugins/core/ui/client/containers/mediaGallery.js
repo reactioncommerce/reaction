@@ -224,18 +224,15 @@ function sortMedia(media) {
   return sortedMedia;
 }
 
+/**
+ * @private
+ * @param {Object} props Props
+ * @param {Function} onData Call this to update props
+ * @returns {undefined}
+ */
 function composer(props, onData) {
-  let editable;
-  const viewAs = Reaction.getUserPreferences("reaction-dashboard", "viewAs", "administrator");
-
-  if (viewAs === "customer") {
-    editable = false;
-  } else {
-    editable = Reaction.hasPermission(props.permission || ["createProduct"]);
-  }
-
   onData(null, {
-    editable,
+    editable: Reaction.hasPermission(props.permission || ["createProduct"]),
     media: sortMedia(props.media)
   });
 }

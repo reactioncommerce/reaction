@@ -5,7 +5,6 @@ import { Tracker } from "meteor/tracker";
 import { Components } from "@reactioncommerce/reaction-components";
 import {
   FlatButton,
-  Switch,
   Icon,
   VerticalDivider
 } from "/imports/plugins/core/ui/client/components";
@@ -20,22 +19,18 @@ class PublishControls extends Component {
     documents: PropTypes.arrayOf(PropTypes.object),
     hasCreateProductAccess: PropTypes.bool,
     isEnabled: PropTypes.bool,
-    isPreview: PropTypes.bool,
     onAddProduct: PropTypes.func,
     onShopSelectChange: PropTypes.func,
-    onViewContextChange: PropTypes.func,
     onVisibilityChange: PropTypes.func,
     packageButtons: PropTypes.arrayOf(PropTypes.object),
     shopId: PropTypes.string,
     shops: PropTypes.arrayOf(PropTypes.object),
-    showViewAsControls: PropTypes.bool, // eslint-disable-line react/boolean-prop-naming
     translation: PropTypes.shape({
       lang: PropTypes.string
     })
   }
 
   static defaultProps = {
-    showViewAsControls: true,
     isEnabled: true
   }
 
@@ -55,12 +50,6 @@ class PublishControls extends Component {
     this.tracker.stop();
   }
 
-  onViewContextChange = (event, isChecked) => {
-    if (typeof this.props.onViewContextChange === "function") {
-      this.props.onViewContextChange(event, isChecked ? "administrator" : "customer");
-    }
-  }
-
   // Passthrough to shopSelectChange handler in container above
   onShopSelectChange = (event, shopId) => {
     if (typeof this.props.onShopSelectChange === "function") {
@@ -69,25 +58,21 @@ class PublishControls extends Component {
   }
 
   renderViewControls() {
-    if (this.props.showViewAsControls) {
-      return (
-        <FlatButton
-          label="Private"
-          i18nKeyLabel="app.private"
-          i18nKeyToggleOnLabel="app.public"
-          toggleOnLabel="Public"
-          icon="fa fa-eye-slash"
-          onIcon="fa fa-eye"
-          toggle={true}
-          value="public"
-          onValue="private"
-          toggleOn={this.isVisible === "public"}
-          onToggle={this.handleVisibilityChange}
-        />
-      );
-    }
-
-    return null;
+    return (
+      <FlatButton
+        label="Private"
+        i18nKeyLabel="app.private"
+        i18nKeyToggleOnLabel="app.public"
+        toggleOnLabel="Public"
+        icon="fa fa-eye-slash"
+        onIcon="fa fa-eye"
+        toggle={true}
+        value="public"
+        onValue="private"
+        toggleOn={this.isVisible === "public"}
+        onToggle={this.handleVisibilityChange}
+      />
+    );
   }
 
   renderShopSelect() {
@@ -99,23 +84,6 @@ class PublishControls extends Component {
           onShopSelectChange={this.onShopSelectChange}
           shopId={this.props.shopId}
           shops={this.props.shops}
-        />
-      );
-    }
-
-    return null;
-  }
-
-  renderVisibilitySwitch() {
-    if (this.props.hasCreateProductAccess) {
-      return (
-        <Switch
-          i18nKeyLabel="app.editMode"
-          i18nKeyOnLabel="app.editMode"
-          label={"Edit Mode"}
-          onLabel={"Edit Mode"}
-          checked={!this.props.isPreview}
-          onChange={this.onViewContextChange}
         />
       );
     }
@@ -190,7 +158,6 @@ class PublishControls extends Component {
     return (
       <Components.Toolbar>
         <Components.ToolbarGroup firstChild={true}>
-          {this.renderVisibilitySwitch()}
           {this.renderShopSelect()}
         </Components.ToolbarGroup>
         <Components.ToolbarGroup lastChild={true}>

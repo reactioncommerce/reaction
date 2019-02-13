@@ -5,7 +5,6 @@ import Autosuggest from "react-autosuggest";
 import { registerComponent } from "@reactioncommerce/reaction-components";
 import { i18next } from "/client/api";
 import { Button, Handle } from "/imports/plugins/core/ui/client/components";
-import { SortableItem } from "/imports/plugins/core/ui/client/containers";
 import { Router } from "@reactioncommerce/reaction-router";
 import { highlightInput } from "../../helpers/animations";
 
@@ -208,13 +207,13 @@ class TagItem extends Component {
     });
 
     return (
-      this.props.connectDropTarget(<div className="rui item edit draggable">
+      <div className="rui item edit draggable">
         <div
           className={baseClassName}
           data-id={this.props.tag._id}
         >
           <form onSubmit={this.handleTagFormSubmit}>
-            <Handle connectDragSource={this.props.connectDragSource} />
+            <Handle />
             {this.renderAutosuggestInput()}
             <Button icon="times-circle" onClick={this.handleTagRemove} status="danger" />
             {this.props.isTagNav &&
@@ -222,7 +221,7 @@ class TagItem extends Component {
             }
           </form>
         </div>
-      </div>)
+      </div>
     );
   }
 
@@ -302,8 +301,6 @@ class TagItem extends Component {
 
 TagItem.propTypes = {
   blank: PropTypes.bool, // eslint-disable-line react/boolean-prop-naming
-  connectDragSource: PropTypes.func,
-  connectDropTarget: PropTypes.func,
   draggable: PropTypes.bool, // eslint-disable-line react/boolean-prop-naming
   editable: PropTypes.bool, // eslint-disable-line react/boolean-prop-naming
   fullWidth: PropTypes.bool, // eslint-disable-line react/boolean-prop-naming
@@ -326,6 +323,6 @@ TagItem.propTypes = {
   tag: PropTypes.object
 };
 
-registerComponent("TagItem", TagItem, SortableItem("tag"));
+registerComponent("TagItem", TagItem);
 
-export default SortableItem("tag")(TagItem);
+export default TagItem;
