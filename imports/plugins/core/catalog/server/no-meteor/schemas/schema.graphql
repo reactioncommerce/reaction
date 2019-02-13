@@ -460,7 +460,7 @@ extend type Query {
     "Provide a Currency code if sortBy is minPrice"
     sortByPriceCurrencyCode: String
 
-    "By default, items are sorted by featured products first, and then when they were created, newest first. Set this to sort by one of the other allowed fields"
+    "By default, items are sorted by featured products. Set this to sort by one of the other allowed fields"
     sortBy: CatalogItemSortByField = featured
   ): CatalogItemConnection
   "Gets product from catalog"
