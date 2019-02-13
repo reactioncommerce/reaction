@@ -33,8 +33,8 @@ export default async function catalogItemsAggregate(context, { shopIds, tagId } 
   // Add a new field "order" to each product with their order in the array
   const addFields = {
     $addFields: {
-      "__order": {
-        "$indexOfArray": [order, "$product._id"]
+      __order: {
+        $indexOfArray: [order, "$product._id"]
       }
     }
   };
@@ -47,23 +47,23 @@ export default async function catalogItemsAggregate(context, { shopIds, tagId } 
       product: 1,
       featuredPosition: {
         $cond: {
-          if: { $lt: [ "$__order", 0] },
-          then: { $add: [ { $abs: "$__order" }, order.length ]},
+          if: { $lt: ["$__order", 0] },
+          then: { $add: [{ $abs: "$__order" }, order.length] },
           else: "$__order"
         }
       }
     }
   };
-  
+
   // Sort by featuredPosition
   const sort = {
     $sort: {
-      "featuredPosition": 1
+      featuredPosition: 1
     }
   };
 
   return {
     collection: Catalog,
     pipeline: [addFields, projection, sort]
-  }
+  };
 }
