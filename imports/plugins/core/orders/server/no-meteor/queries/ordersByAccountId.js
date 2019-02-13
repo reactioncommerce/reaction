@@ -12,7 +12,7 @@ import ReactionError from "@reactioncommerce/reaction-error";
  * @return {Promise<Object>|undefined} - An Array of Order documents, if found
  */
 export default async function ordersByAccountId(context, { accountId, shopIds } = {}) {
-  const { contextAccountId, collections, userHasPermission } = context;
+  const { accountId: contextAccountId, collections, userHasPermission } = context;
   const { Orders } = collections;
 
 
@@ -20,14 +20,14 @@ export default async function ordersByAccountId(context, { accountId, shopIds } 
     throw new ReactionError("invalid-param", "You must provide accountId arguments");
   }
 
-  // TODO: EK - Permissions check here
   // Unless you are an admin with orders permission, you are limited to seeing it if you placed it
-  // if (!userHasPermission(["orders"], shopId)) {
-  //   if (!contextAccountId) {
-  //     throw new ReactionError("access-denied", "Access Denied");
-  //   }
-  //   accountId = contextAccountId;
-  // }
+  if (accountId !== contextAccountId) {
+    shopIds.forEach((shopId) => {
+      if (!userHasPermission(["orders"], shopId)) {
+        throw new ReactionError("access-denied", "Access Denied");
+      }
+    });
+  }
 
   const query = {
     accountId
