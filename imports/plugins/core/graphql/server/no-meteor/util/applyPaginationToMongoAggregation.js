@@ -83,13 +83,13 @@ export default async function applyPaginationToMongoAggregation(aggregationParam
   const results = await collection.aggregate([...pipeline, facet]).toArray();
 
   if (results[0]) {
-    var firstResult = results[0]
-    var nodes = firstResult.nodes;
-    var totalCount = firstResult.pageInfo[0].totalCount;
+    const firstResult = results[0];
+    const { nodes } = firstResult;
+    const { returnTotalCount } = firstResult.pageInfo[0];
   }
-  
+
   return {
-    totalCount,
+    returnTotalCount,
     pageInfo: { hasNextPage, hasPreviousPage },
     nodes
   };

@@ -22,7 +22,7 @@ export default async function catalogItems(_, args, context) {
 
   if (connectionArgs.sortBy === "featured") {
     if (tagIds.length === 0) {
-      throw new Error("A tag ID is required.")
+      throw new Error("A tag ID is required.");
     }
     const tagId = tagIds[0];
     const query = await context.queries.catalogItemsAggregate(context, {
