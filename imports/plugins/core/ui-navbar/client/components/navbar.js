@@ -118,18 +118,16 @@ class NavBar extends Component {
 
   renderTagNav() {
     return (
-      <header className="menu" role="banner">
-        <Components.TagNav
-          isVisible={this.state.navBarVisible}
-          closeNavbar={this.handleCloseNavbar}
-          {...this.props}
-        >
-          <Components.Brand />
-          {this.renderNotificationIcon()}
-          {this.renderLanguage()}
-          {this.renderCurrency()}
-        </Components.TagNav>
-      </header>
+      <Components.TagNav
+        isVisible={this.state.navBarVisible}
+        closeNavbar={this.handleCloseNavbar}
+        {...this.props}
+      >
+        <Components.Brand />
+        {this.renderNotificationIcon()}
+        {this.renderLanguage()}
+        {this.renderCurrency()}
+      </Components.TagNav>
     );
   }
 
@@ -138,7 +136,9 @@ class NavBar extends Component {
       <div className="rui navbar">
         {this.props.visibility.hamburger && this.renderHamburgerButton()}
         {this.props.visibility.brand && this.renderBrand()}
-        {this.props.visibility.tags && this.renderTagNav()}
+        <header className="menu" role="banner">
+          {this.props.visibility.tags && this.renderTagNav()}
+        </header>
         {this.props.visibility.search && this.renderSearchButton()}
         {this.props.visibility.notifications && this.renderNotificationIcon()}
         {this.props.visibility.languages && this.renderLanguage()}

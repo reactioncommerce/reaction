@@ -3,7 +3,6 @@ import PropTypes from "prop-types";
 import classnames from "classnames";
 import { Components, registerComponent } from "@reactioncommerce/reaction-components";
 import { Validation } from "@reactioncommerce/schemas";
-import { SortableItem } from "/imports/plugins/core/ui/client/containers";
 
 import { ReactionProduct } from "/lib/api";
 
@@ -157,7 +156,7 @@ class Variant extends Component {
     );
 
     if (this.props.editable) {
-      return this.props.connectDragSource(this.props.connectDropTarget(variantElement));
+      return variantElement;
     }
 
     return variantElement;
@@ -165,8 +164,6 @@ class Variant extends Component {
 }
 
 Variant.propTypes = {
-  connectDragSource: PropTypes.func,
-  connectDropTarget: PropTypes.func,
   displayPrice: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   editButton: PropTypes.node,
   editable: PropTypes.bool, // eslint-disable-line react/boolean-prop-naming
@@ -177,6 +174,6 @@ Variant.propTypes = {
   visibilityButton: PropTypes.node
 };
 
-registerComponent("Variant", Variant, SortableItem("product-variant"));
+registerComponent("Variant", Variant);
 
-export default SortableItem("product-variant")(Variant);
+export default Variant;

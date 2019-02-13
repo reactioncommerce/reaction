@@ -1,0 +1,26 @@
+[{
+  "language": "English",
+  "i18n": "en",
+  "ns": "navigation",
+  "translation": {
+    "navigation": {
+      "admin": {
+        "navigation": {
+          "cancel": "Cancel",
+          "ok": "OK",
+          "delete": "Delete",
+          "navigation": "Navigation",
+          "deleteTitle": "Delete navigation item?",
+          "deleteMessage": "Deleting navigation items also removes them from the navigation tree."
+        }
+      },
+      "navigationItem": {
+        "displayName": "Display Name",
+        "url": "URL",
+        "isUrlRelative": "This URL is relative",
+        "shouldOpenInNewWindow": "Open in a new tab",
+        "classNames": "CSS Class Names"
+      }
+    }
+  }
+}]

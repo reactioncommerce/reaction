@@ -118,6 +118,9 @@ type NavigationTreeItem {
   "The navigation item"
   navigationItem: NavigationItem!
 
+  "Whether the navigation item should display its children"
+  expanded: Boolean
+
   "The child navigation items"
   items: [NavigationTreeItem]
 }
@@ -229,6 +232,9 @@ input NavigationTreeInput {
 input NavigationTreeItemInput {
   "The ID of the navigation item"
   navigationItemId: ID!
+
+  "Whether the navigation item should display its children"
+  expanded: Boolean
 
   "The child navigation items"
   items: [NavigationTreeItemInput]
