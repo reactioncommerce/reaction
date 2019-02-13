@@ -20,7 +20,7 @@ export default async function catalogItems(_, args, context) {
   const shopIds = opaqueShopIds && opaqueShopIds.map(decodeShopOpaqueId);
   const tagIds = opaqueTagIds && opaqueTagIds.map(decodeTagOpaqueId);
 
-  if (connectionArgs.sortyBy === "featured") {
+  if (connectionArgs.sortBy === "featured") {
     const tagId = tagIds[0];
     const query = await context.queries.catalogItemsAggregate(context, {
       shopIds,
