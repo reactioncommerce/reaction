@@ -1,3 +1,4 @@
+import { decodeFulfillmentMethodOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/fulfillment";
 import { decodeShopOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/shop";
 import createSurchargeMutation from "../../mutations/createSurcharge";
 
@@ -18,6 +19,13 @@ export default async function createSurcharge(parentResult, { input }, context) 
   const { clientMutationId = null, surcharge, shopId: opaqueShopId } = input;
 
   const shopId = decodeShopOpaqueId(opaqueShopId);
+
+  let decodedMethodIds = [];
+  if (surcharge.methodIds && Array.isArray(surcharge.methodIds)) {
+    decodedMethodIds = surcharge.methodIds.map((methodId) => decodeFulfillmentMethodOpaqueId(methodId));
+  }
+
+  surcharge.methodIds = decodedMethodIds;
 
   const { surcharge: insertedSurcharge } = await createSurchargeMutation(context, {
     surcharge,

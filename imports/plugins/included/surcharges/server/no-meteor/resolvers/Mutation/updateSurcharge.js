@@ -1,3 +1,4 @@
+import { decodeFulfillmentMethodOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/fulfillment";
 import { decodeShopOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/shop";
 import { decodeSurchargeOpaqueId } from "../../xforms/surcharge";
 import updateSurchargeMutation from "../../mutations/updateSurcharge";
@@ -21,6 +22,13 @@ export default async function updateSurcharge(parentResult, { input }, context) 
 
   const shopId = decodeShopOpaqueId(opaqueShopId);
   const surchargeId = decodeSurchargeOpaqueId(opaqueSurchargeId);
+
+  let decodedMethodIds = [];
+  if (surcharge.methodIds && Array.isArray(surcharge.methodIds)) {
+    decodedMethodIds = surcharge.methodIds.map((methodId) => decodeFulfillmentMethodOpaqueId(methodId));
+  }
+
+  surcharge.methodIds = decodedMethodIds;
 
   const { surcharge: updatedSurcharge } = await updateSurchargeMutation(context, {
     surcharge,
