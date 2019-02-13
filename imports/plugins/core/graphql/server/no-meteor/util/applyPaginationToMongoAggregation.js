@@ -12,7 +12,7 @@ const DEFAULT_LIMIT = 20;
  * @param {Array} [aggregationParams.pipeline] - Mongo aggregation pipeline array
  * @param {Object} args GraphQL query arguments
  * @param {Number} totalCount Total count of docs that match the query, after applying the before/after filter
- * @return {Promise<Object>} `{ pageInfo }`
+ * @return {Promise<Object>} `{ totalCount, pageInfo: { hasNextPage, hasPreviousPage }, nodes }`
  */
 export default async function applyPaginationToMongoAggregation(aggregationParams, { first, last } = {}, totalCount) {
   const { collection, pipeline } = aggregationParams;
@@ -82,9 +82,15 @@ export default async function applyPaginationToMongoAggregation(aggregationParam
 
   const results = await collection.aggregate([...pipeline, facet]).toArray();
 
+  if (results[0]) {
+    var firstResult = results[0]
+    var nodes = firstResult.nodes;
+    var totalCount = firstResult.pageInfo[0].totalCount;
+  }
+  
   return {
-    hasNextPage,
-    hasPreviousPage,
-    results
+    totalCount,
+    pageInfo: { hasNextPage, hasPreviousPage },
+    nodes
   };
 }
