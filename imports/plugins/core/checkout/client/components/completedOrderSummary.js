@@ -34,6 +34,7 @@ class CompletedOrderSummary extends Component {
     const { fulfillmentGroups } = this.props;
 
     const discountTotal = fulfillmentGroups.reduce((sum, group) => sum + group.invoice.discounts, 0);
+    const surchargeTotal = fulfillmentGroups.reduce((sum, group) => sum + group.invoice.surcharges, 0);
     const orderTotal = fulfillmentGroups.reduce((sum, group) => sum + group.invoice.total, 0);
 
     return (
@@ -60,6 +61,16 @@ class CompletedOrderSummary extends Component {
               </div>
               <div className="order-summary-discount-value">
                 <Components.Currency amount={discountTotal}/>
+              </div>
+            </div>
+          }
+          {surchargeTotal > 0 &&
+            <div className="order-summary-line">
+              <div className="order-summary-surcharge-title">
+                <Components.Translation defaultValue="Surcharge Total" i18nKey={"cartCompleted.surchargeTotal"}/>
+              </div>
+              <div className="order-summary-surcharge-value">
+                <Components.Currency amount={surchargeTotal}/>
               </div>
             </div>
           }

@@ -318,6 +318,7 @@
         "orderItems": "Items in order",
         "subtotal": "Sub total",
         "shipping": "Shipping",
+        "surcharge": "Surcharge",
         "tax": "Tax",
         "total": "Total"
       },

@@ -2,7 +2,7 @@ import ReactionError from "@reactioncommerce/reaction-error";
 import { findCatalogProductsAndVariants, tagsByIds, mergeProductAndVariants } from "./helpers";
 
 /**
- * @name getShippingRestrictionAttributes
+ * @name extendCommonOrder
  * @summary Get shipping attributes for a fulfillment group that will be used to
  * determine any applicable shipping restrictions.
  * @param {Object} context -  an object containing the per-request state
@@ -10,7 +10,7 @@ import { findCatalogProductsAndVariants, tagsByIds, mergeProductAndVariants } fr
  * @param {Array} fulfillmentGroup.items - the items in the cart
  * @returns {Object|null} shipping restriction attributes for the provided fulfillment group
  */
-export default async function getShippingRestrictionAttributes(context, commonOrder) {
+export default async function extendCommonOrder(context, commonOrder) {
   const { collections, getFunctionsOfType } = context;
   const { items: orderItems } = commonOrder;
   const products = [];

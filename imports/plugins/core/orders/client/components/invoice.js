@@ -185,6 +185,29 @@ class Invoice extends Component {
   }
 
   /**
+    * @name renderSurcharge
+    * @method
+    * @summary Displays the surcharge amount from the invoice, if available
+    * @returns {null} null
+    */
+  renderSurcharge() {
+    const { invoice: { surcharges } } = this.props;
+
+    if (surcharges) {
+      return (
+        <div className="order-summary-form-group">
+          <strong><Components.Translation defaultValue="Surcharge" i18nKey="cartSubTotals.surcharge"/></strong>
+          <div className="invoice-details">
+            {formatPriceString(surcharges)}
+          </div>
+        </div>
+      );
+    }
+
+    return null;
+  }
+
+  /**
     * @name renderTotal
     * @method
     * @summary Displays the total payment form
@@ -252,6 +275,7 @@ class Invoice extends Component {
             {this.renderDiscountForm()}
           </div>
         }
+        {this.renderSurcharge()}
         {this.renderTotal()}
         {this.renderRefundsInfo()}
       </div>
