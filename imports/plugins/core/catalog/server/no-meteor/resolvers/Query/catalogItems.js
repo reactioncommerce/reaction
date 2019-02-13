@@ -10,7 +10,7 @@ import { decodeTagOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/tag
  * @param {Object} _ - unused
  * @param {ConnectionArgs} args - an object of all arguments that were sent by the client
  * @param {Object} args.shopIds - limit to catalog items for these shops
- * @param {Object} args.tagIds - limit to catalog items with these tags
+ * @param {Array} args.tagIds - limit to catalog items with this array of tags
  * @param {Object} context - an object containing the per-request state
  * @return {Promise<Object>} A CatalogItemConnection object
  */
@@ -21,9 +21,10 @@ export default async function catalogItems(_, args, context) {
   const tagIds = opaqueTagIds && opaqueTagIds.map(decodeTagOpaqueId);
 
   if (connectionArgs.sortyBy === "featured") {
+    const tagId = tagIds[0];
     const query = await context.queries.catalogItemsAggregate(context, {
       shopIds,
-      tagIds
+      tagId
     });
     return getPaginatedAggregateResponse(query, connectionArgs);
   }
