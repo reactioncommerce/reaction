@@ -1,4 +1,5 @@
 import Logger from "@reactioncommerce/logger";
+import extendCommonOrder from "../util/extendCommonOrder";
 
 /**
  * @name getFulfillmentMethodsWithQuotes
@@ -17,13 +18,15 @@ export default async function getFulfillmentMethodsWithQuotes(commonOrder, conte
     return rates;
   }
 
+  const commonOrderExtended = await extendCommonOrder(context, commonOrder);
+
   const funcs = context.getFunctionsOfType("getFulfillmentMethodsWithQuotes");
-  let promises = funcs.map((rateFunction) => rateFunction(context, commonOrder, [rates, retrialTargets]));
+  let promises = funcs.map((rateFunction) => rateFunction(context, commonOrderExtended, [rates, retrialTargets]));
   await Promise.all(promises);
 
   // Try once more.
   if (retrialTargets.length > 0) {
-    promises = funcs.map((rateFunction) => rateFunction(context, commonOrder, [rates, retrialTargets]));
+    promises = funcs.map((rateFunction) => rateFunction(context, commonOrderExtended, [rates, retrialTargets]));
     await Promise.all(promises);
 
     if (retrialTargets.length > 0) {

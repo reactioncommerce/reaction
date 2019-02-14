@@ -2,17 +2,11 @@ import SimpleSchema from "simpl-schema";
 import { registerSchema } from "@reactioncommerce/schemas";
 import { createdAtAutoValue } from "./helpers";
 import { Address } from "./address";
+import { Money, AppliedSurcharge } from "./core";
 import { Invoice, Payment } from "./payments";
 import { ShippingParcel } from "./shipping";
 import { Workflow } from "./workflow";
 
-const Money = new SimpleSchema({
-  currencyCode: String,
-  amount: {
-    type: Number,
-    min: 0
-  }
-});
 
 /**
  * @name Document
@@ -375,7 +369,7 @@ export const OrderFulfillmentGroup = new SimpleSchema({
  * @property {String} cartId optional For tracking which cart created this order
  * @property {Date} createdAt required
  * @property {String} currencyCode required
- * @property {Object[]} customFields optional
+ * @property {Object} customFields optional
  * @property {Document[]} documents optional
  * @property {String} email optional
  * @property {Object[]} exportHistory optional
@@ -384,6 +378,7 @@ export const OrderFulfillmentGroup = new SimpleSchema({
  * @property {Payment[]} payments Array of payments
  * @property {Shipment[]} shipping Array of fulfillment groups
  * @property {String} shopId required The owner shop
+ * @property {Surcharges[]} surcharges Surcharges applied to this order
  * @property {OrderTransaction[]} transactions optional
  * @property {Date} updatedAt optional
  * @property {Workflow} workflow optional
@@ -414,13 +409,13 @@ export const Order = new SimpleSchema({
     type: String,
     optional: true
   },
+  "createdAt": Date,
+  "currencyCode": String,
   "customFields": {
     type: Object,
     blackbox: true,
     optional: true
   },
-  "createdAt": Date,
-  "currencyCode": String,
   "discounts": {
     type: Array,
     optional: true
@@ -462,6 +457,13 @@ export const Order = new SimpleSchema({
   "shopId": {
     type: String,
     index: 1
+  },
+  "surcharges": {
+    type: Array,
+    optional: true
+  },
+  "surcharges.$": {
+    type: AppliedSurcharge
   },
   "totalItemQuantity": {
     type: SimpleSchema.Integer,
