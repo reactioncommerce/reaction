@@ -21,6 +21,9 @@ export default async function getUpdatedCartItems(context, cart) {
         newItem.tax = matchingGroupTaxes.tax;
         newItem.taxableAmount = matchingGroupTaxes.taxableAmount;
         newItem.taxes = matchingGroupTaxes.taxes;
+        if (matchingGroupTaxes.customFields) {
+          newItem.customTaxFields = matchingGroupTaxes.customFields;
+        }
       }
     });
     return newItem;
@@ -40,6 +43,11 @@ export default async function getUpdatedCartItems(context, cart) {
     combinedSummary.tax += taxSummary.tax;
     combinedSummary.taxableAmount += taxSummary.taxableAmount;
     combinedSummary.taxes = combinedSummary.taxes.concat(taxSummary.taxes);
+
+    if (taxSummary.customFields) {
+      if (!combinedSummary.customFields) combinedSummary.customFields = {};
+      Object.assign(combinedSummary.customFields, taxSummary.customFields);
+    }
   }
 
   return { cartItems, taxSummary: combinedSummary };

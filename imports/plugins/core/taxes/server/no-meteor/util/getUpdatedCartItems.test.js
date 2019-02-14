@@ -1,11 +1,17 @@
 import Factory from "/imports/test-utils/helpers/factory";
 import mockContext from "/imports/test-utils/helpers/mockContext";
-import addTaxesToGroup from "./addTaxesToGroup";
+import getUpdatedCartItems from "./getUpdatedCartItems";
 
 const address = Factory.Address.makeOne({ _id: undefined });
 
 const group = {
   address,
+  itemIds: ["1"],
+  shopId: "shopId1",
+  type: "shipping"
+};
+
+const cart = {
   items: [
     {
       _id: "1",
@@ -25,13 +31,9 @@ const group = {
       variantTitle: "Variant Title"
     }
   ],
-  shopId: "shopId1",
-  type: "shipping"
-};
-
-const orderInput = {
-  billingAddress: address,
-  currencyCode: "USD"
+  shipping: [
+    group
+  ]
 };
 
 const taxSummary = {
@@ -78,12 +80,12 @@ test("mutates group.items and group.taxSummary", async () => {
     taxSummary
   }));
 
-  await addTaxesToGroup(mockContext, group, orderInput);
+  const { cartItems, taxSummary: taxSummaryResult } = await getUpdatedCartItems(mockContext, cart);
 
-  expect(group.items[0].tax).toBe(0.5);
-  expect(group.items[0].taxableAmount).toBe(10.99);
-  expect(group.items[0].taxes).toEqual(itemTaxes);
-  expect(group.taxSummary).toEqual(taxSummary);
+  expect(cartItems[0].tax).toBe(0.5);
+  expect(cartItems[0].taxableAmount).toBe(10.99);
+  expect(cartItems[0].taxes).toEqual(itemTaxes);
+  expect(taxSummaryResult).toEqual(taxSummary);
 });
 
 test("customFields are properly saved", async () => {
@@ -114,9 +116,9 @@ test("customFields are properly saved", async () => {
     }
   }));
 
-  await addTaxesToGroup(mockContext, group, orderInput);
+  const { cartItems, taxSummary: taxSummaryResult } = await getUpdatedCartItems(mockContext, cart);
 
-  expect(group.items[0].taxes[0].customFields).toEqual({ foo: "bar3" });
-  expect(group.items[0].customTaxFields).toEqual({ foo: "bar2" });
-  expect(group.taxSummary.customFields).toEqual({ foo: "bar1" });
+  expect(cartItems[0].taxes[0].customFields).toEqual({ foo: "bar3" });
+  expect(cartItems[0].customTaxFields).toEqual({ foo: "bar2" });
+  expect(taxSummaryResult.customFields).toEqual({ foo: "bar1" });
 });

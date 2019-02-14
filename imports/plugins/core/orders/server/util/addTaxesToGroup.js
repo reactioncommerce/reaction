@@ -27,12 +27,19 @@ export default async function addTaxesToGroup(context, group, orderInput, discou
   group.items = group.items.map((item) => {
     const itemTax = itemTaxes.find((entry) => entry.itemId === item._id) || {};
 
-    return {
+    const updatedItem = {
       ...item,
       tax: itemTax.tax,
       taxableAmount: itemTax.taxableAmount,
       taxes: itemTax.taxes
     };
+
+    if (itemTax.customFields) {
+      updatedItem.customTaxFields = itemTax.customFields;
+    }
+
+    return updatedItem;
   });
+
   group.taxSummary = taxSummary;
 }
