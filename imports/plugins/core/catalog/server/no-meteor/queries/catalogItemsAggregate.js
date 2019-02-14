@@ -71,6 +71,6 @@ export default async function catalogItemsAggregate(context, { shopIds, tagId } 
 
   return {
     collection: Catalog,
-    pipeline: [addFields, projection, sort]
+    pipeline: [match, addFields, projection, sort]
   };
 }
