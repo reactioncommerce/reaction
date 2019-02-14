@@ -2,7 +2,6 @@ import Logger from "@reactioncommerce/logger";
 import ReactionError from "@reactioncommerce/reaction-error";
 import isShippingRestricted from "./util/isShippingRestricted";
 import filterShippingMethods from "./util/filterShippingMethods";
-import getShippingRestrictionAttributes from "./util/getShippingRestrictionAttributes";
 
 /**
  * @summary Returns a list of fulfillment method quotes based on the items in a fulfillment group.
@@ -79,8 +78,7 @@ export default async function getFulfillmentMethodsWithQuotes(context, commonOrd
   const initialNumOfRates = rates.length;
 
   // Get hydrated order, an object of current order data including item and destination information
-  const hydratedOrder = await getShippingRestrictionAttributes(context, commonOrder); // TODO: possibly change function name
-  const isOrderShippingRestricted = await isShippingRestricted(context, hydratedOrder);
+  const isOrderShippingRestricted = await isShippingRestricted(context, commonOrder);
 
   if (isOrderShippingRestricted) {
     const errorDetails = {
@@ -93,7 +91,7 @@ export default async function getFulfillmentMethodsWithQuotes(context, commonOrd
     const awaitedShippingRateDocs = shippingRateDocs.map(async (doc) => {
       const carrier = doc.provider.label;
       // Check for method specific shipping restrictions
-      const availableShippingMethods = await filterShippingMethods(context, doc.methods, hydratedOrder);
+      const availableShippingMethods = await filterShippingMethods(context, doc.methods, commonOrder);
       for (const method of availableShippingMethods) {
         if (!method.rate) {
           method.rate = 0;
