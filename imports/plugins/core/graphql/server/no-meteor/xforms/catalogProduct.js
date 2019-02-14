@@ -19,7 +19,7 @@ export const encodeCatalogProductOpaqueId = encodeOpaqueId(namespaces.CatalogPro
 export async function xformCatalogProductMedia(mediaItem, context) {
   const xformCatalogProductMediaFuncs = context.getFunctionsOfType("xformCatalogProductMedia");
   for (const func of xformCatalogProductMediaFuncs) {
-    const xformedMediaItem = await func(mediaItem, context);
+    const xformedMediaItem = await func(mediaItem, context); // eslint-disable-line no-await-in-loop
     if (xformedMediaItem) {
       return xformedMediaItem;
     }
