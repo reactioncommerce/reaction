@@ -15,7 +15,7 @@ test("add a flat rate fulfillment restriction", async () => {
     restriction: {
       type: "deny",
       attributes: [
-        { property: "vendor", value: "erik", propertyType: "string", operator: "eq" },
+        { property: "vendor", value: "reaction", propertyType: "string", operator: "eq" },
         { property: "productType", value: "knife", propertyType: "string", operator: "eq" }
       ],
       destination: { region: ["CO", "NY"] }
@@ -26,7 +26,7 @@ test("add a flat rate fulfillment restriction", async () => {
     restriction: {
       type: "deny",
       attributes: [
-        { property: "vendor", value: "erik", propertyType: "string", operator: "eq" },
+        { property: "vendor", value: "reaction", propertyType: "string", operator: "eq" },
         { property: "productType", value: "knife", propertyType: "string", operator: "eq" }
       ],
       destination: { region: ["CO", "NY"] }

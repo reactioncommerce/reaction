@@ -15,7 +15,7 @@ export const encodeCatalogProductOpaqueId = encodeOpaqueId(namespaces.CatalogPro
  * @return {Object} transformed product media item
  */
 export function xformProductMedia(mediaItem, context) {
-  if (!mediaItem) return null;
+  if (!(mediaItem && mediaItem.URLs)) return null;
 
   const { priority, toGrid, productId, variantId, URLs: { large, medium, original, small, thumbnail } } = mediaItem;
 

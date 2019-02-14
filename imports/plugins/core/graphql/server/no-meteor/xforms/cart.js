@@ -221,7 +221,10 @@ export async function xformCartCheckout(collections, cart) {
 
   const discountTotal = cart.discount || 0;
 
-  const total = Math.max(0, itemTotal + fulfillmentTotal + taxTotal - discountTotal);
+  // surchargeTotal is sum of all surcharges is qty * amount for each item, summed
+  const surchargeTotal = (cart.surcharges || []).reduce((sum, surcharge) => (sum + surcharge.amount), 0);
+
+  const total = Math.max(0, itemTotal + fulfillmentTotal + taxTotal + surchargeTotal - discountTotal);
 
   let fulfillmentTotalMoneyObject = null;
   if (fulfillmentTotal !== null) {
@@ -265,6 +268,10 @@ export async function xformCartCheckout(collections, cart) {
         currencyCode: cart.currencyCode
       },
       taxTotal: taxTotalMoneyObject,
+      surchargeTotal: {
+        amount: surchargeTotal,
+        currencyCode: cart.currencyCode
+      },
       total: {
         amount: total,
         currencyCode: cart.currencyCode
