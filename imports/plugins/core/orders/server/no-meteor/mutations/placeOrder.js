@@ -470,7 +470,7 @@ export default async function placeOrder(context, input) {
     await addShipmentMethodToGroup(context, finalGroup, cleanedInput, groupInput, discountTotal, orderId);
 
     // Apply Taxes
-    await addTaxesToGroup(context, finalGroup, cleanedInput, groupInput, discountTotal, orderId);
+    await addTaxesToGroup(context, finalGroup, orderInput, discountTotal, orderId);
 
     // Add some more properties for convenience
     finalGroup.itemIds = finalGroup.items.map((item) => item._id);
