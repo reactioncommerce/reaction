@@ -41,7 +41,7 @@ export default async function productsByTagId(context, params) {
     }
   };
 
-  // Add a new field "__order" to each product with the order they are in the array
+  // Add a new field "positions" to each product with the order they are in the array
   const addFields = {
     $addFields: {
       position: {
@@ -50,16 +50,32 @@ export default async function productsByTagId(context, params) {
     }
   };
 
-  // Sort the results by "__order"
+  // Projection: Add a featuredPosition by order
+  const projection = {
+    $project: {
+      _id: 1,
+      position: 1,
+      title: 1,
+      sortPosition: {
+        $cond: {
+          if: { $lt: ["$position", 0] },
+          then: { $add: [{ $abs: "$position" }, positions.length] },
+          else: "$position"
+        }
+      }
+    }
+  };
+
+  // Sort the results by "posipositiontions"
   const sort = {
     $sort: {
-      position: 1
+      sortPosition: 1
     }
   };
 
   // Profit
   return {
     collection: Products,
-    pipeline: [match, addFields, sort]
+    pipeline: [match, addFields, projection, sort]
   };
 }
