@@ -1,4 +1,4 @@
-import { encodeCatalogProductOpaqueId, xformProductMedia } from "@reactioncommerce/reaction-graphql-xforms/catalogProduct";
+import { encodeCatalogProductOpaqueId, xformCatalogProductMedia } from "@reactioncommerce/reaction-graphql-xforms/catalogProduct";
 import { encodeProductOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/product";
 import { resolveShopFromShopId } from "@reactioncommerce/reaction-graphql-utils";
 import pricing from "./pricing";
@@ -12,16 +12,20 @@ export default {
   pricing,
   tagIds,
   tags,
-  media: (node, args, context) => node.media && node.media.map((mediaItem) => xformProductMedia(mediaItem, context)),
-  primaryImage: (node, args, context) => xformProductMedia(node.primaryImage, context),
+  media: (node, args, context) => {
+    return node.media && node.media.map((mediaItem) => xformCatalogProductMedia(mediaItem, context))
+  },
+  primaryImage: (node, args, context) => {
+    return xformCatalogProductMedia(node.primaryImage, context)
+  },
   variants: (node, args, context) => node.variants && node.variants.map((variant) => {
-    variant.media = variant.media && variant.media.map((mediaItem) => xformProductMedia(mediaItem, context));
-    variant.primaryImage = xformProductMedia(variant.primaryImage, context);
+    variant.media = variant.media && variant.media.map((mediaItem) => xformCatalogProductMedia(mediaItem, context));
+    variant.primaryImage = xformCatalogProductMedia(variant.primaryImage, context);
 
     if (variant.options) {
       variant.options = variant.options.map((option) => {
-        option.media = option.media && option.media.map((mediaItem) => xformProductMedia(mediaItem, context));
-        option.primaryImage = xformProductMedia(option.primaryImage, context);
+        option.media = option.media && option.media.map((mediaItem) => xformCatalogProductMedia(mediaItem, context));
+        option.primaryImage = xformCatalogProductMedia(option.primaryImage, context);
         return option;
       });
     }
