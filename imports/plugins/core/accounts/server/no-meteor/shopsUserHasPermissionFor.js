@@ -8,8 +8,8 @@ import { curryN } from "ramda";
  * @param {String} permission - Permission to check for.
  * @return {Array} Shop IDs user has provided permissions for
  */
-export function shopsUserHasPermissionFor(user, permission) {
-  if (!user || !user.roles) return [];
+export default function shopsUserHasPermissionFor(user, permission) {
+  if (!user || !user.roles || !permission) return [];
 
   const { roles } = user;
   const shopIds = [];

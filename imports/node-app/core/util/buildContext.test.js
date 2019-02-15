@@ -23,6 +23,7 @@ test("properly mutates the context object without user", async () => {
     shopId: "PRIMARY_SHOP_ID",
     user: null,
     userHasPermission: jasmine.any(Function),
+    shopsUserHasPermissionFor: jasmine.any(Function),
     userId: null,
     rootUrl: "http://localhost:3000/",
     getAbsoluteUrl: jasmine.any(Function)
@@ -51,6 +52,7 @@ test("properly mutates the context object with user", async () => {
     shopId: "PRIMARY_SHOP_ID",
     user: fakeUser,
     userHasPermission: jasmine.any(Function),
+    shopsUserHasPermissionFor: jasmine.any(Function),
     userId: fakeUser._id,
     rootUrl: "https://localhost:3000/",
     getAbsoluteUrl: jasmine.any(Function)
