@@ -33,7 +33,7 @@ services:
     ports:
       - "3000:3000"
     volumes:
-      - .:/opt/reaction/src
+      - .:/opt/reaction/src:cached
       - reaction_node_modules:/opt/reaction/src/node_modules # do not link node_modules in, and persist it between dc up runs
 
   mongo:
