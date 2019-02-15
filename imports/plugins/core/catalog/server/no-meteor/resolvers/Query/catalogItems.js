@@ -25,11 +25,11 @@ export default async function catalogItems(_, args, context) {
       throw new Error("A tag ID is required.");
     }
     const tagId = tagIds[0];
-    const query = await context.queries.catalogItemsAggregate(context, {
+    const aggregationParams = await context.queries.catalogItemsAggregate(context, {
       shopIds,
       tagId
     });
-    return getPaginatedAggregateResponse(query, connectionArgs);
+    return getPaginatedAggregateResponse(aggregationParams, connectionArgs);
   }
 
   if (connectionArgs.sortBy === "minPrice") {
