@@ -3,7 +3,19 @@ extend type Query {
   orderById(id: ID!, shopId: ID!, token: String): Order
 
   "Get all orders for a single account, optionally limited to certain shop IDs"
-  ordersByAccountId(accountId: ID!, shopIds: [ID]): [Order]!
+  ordersByAccountId(
+    accountId: ID!
+    shopIds: [ID]
+
+    after: ConnectionCursor,
+    before: ConnectionCursor,
+    first: ConnectionLimitInt,
+    last: ConnectionLimitInt,
+    sortOrder: SortOrder = desc,
+
+    "By default, items are sorted by when they were created, newest first. Set this to sort by one of the other allowed fields"
+    sortBy: OrdersByAccountIdSortByField = createdAt
+  ): OrdersByAccountIdConnection!
 
   "Get an order by its reference ID (the ID shown to customers)"
   orderByReferenceId(id: ID!, shopId: ID!, token: String): Order
@@ -20,6 +32,26 @@ extend type Mutation {
 enum OrderFulfillmentGroupItemsSortByField {
   _id
   addedAt
+}
+
+"The fields by which you are allowed to sort any query that returns a `NavigationItemConnection`"
+enum OrdersByAccountIdSortByField {
+  _id
+  createdAt
+}
+
+"Wraps a list of `Order`s, providing pagination cursors and information."
+type OrdersByAccountIdConnection implements NodeConnection {
+  edges: [OrdersByAccountIdEdge]
+  nodes: [Order]
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
+"A connection edge in which each node is a `Order` object"
+type OrdersByAccountIdEdge implements NodeEdge {
+  cursor: ConnectionCursor!
+  node: Order
 }
 
 "Wraps a list of `OrderItem`s, providing pagination cursors and information."

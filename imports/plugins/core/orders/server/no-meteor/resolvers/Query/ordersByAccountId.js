@@ -15,15 +15,14 @@ import { decodeShopOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/sh
  * @return {Promise<Object>|undefined} An Order object
  */
 export default async function ordersByAccountId(parentResult, args, context) {
-  const { accountId, shopIds: opaqueShopIds } = args;
+  const { accountId, shopIds: opaqueShopIds, ...connectionArgs } = args;
 
   const shopIds = opaqueShopIds && opaqueShopIds.map(decodeShopOpaqueId);
 
-  return context.queries.ordersByAccountId(context, {
+  const query = await context.queries.ordersByAccountId(context, {
     accountId: decodeAccountOpaqueId(accountId),
     shopIds
   });
 
-  // TODO: EK - Get paginated response
-  // return getPaginatedResponse(query, connectionArgs);
+  return getPaginatedResponse(query, connectionArgs);
 }
