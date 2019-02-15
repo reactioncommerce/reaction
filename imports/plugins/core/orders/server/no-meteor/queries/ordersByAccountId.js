@@ -19,11 +19,18 @@ export default async function ordersByAccountId(context, { accountId, shopIds } 
     throw new ReactionError("invalid-param", "You must provide accountId arguments");
   }
 
+  const query = {
+    accountId
+  };
+
+  if (shopIds) query.shopId = { $in: shopIds };
+
   if (accountId !== contextAccountId) {
     // If an admin wants all orders for an account, we force it to be limited to the
     // shops for which they're allowed to see orders.
     if (!shopIds) {
-      shopIds = shopsUserHasPermissionFor("orders");
+      const shopIdsUserHasPermissionFor = shopsUserHasPermissionFor("orders");
+      query.shopId = { $in: shopIdsUserHasPermissionFor };
     } else {
       shopIds.forEach((shopId) => {
         if (!userHasPermission(["orders"], shopId)) {
@@ -32,12 +39,6 @@ export default async function ordersByAccountId(context, { accountId, shopIds } 
       });
     }
   }
-
-  const query = {
-    accountId
-  };
-
-  if (shopIds) query.shopId = { $in: shopIds };
 
   return Orders.find(query);
 }
