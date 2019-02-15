@@ -21,7 +21,7 @@ services:
     build:
       context: .
       target: meteor-dev
-    command: bash -c "meteor npm install && node ./.reaction/waitForMongo.js && reaction"
+    command: bash -c "time meteor npm install --no-audit && node ./.reaction/waitForMongo.js && reaction"
     depends_on:
       - mongo
     env_file:
