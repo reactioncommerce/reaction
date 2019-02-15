@@ -17,16 +17,16 @@ test("properly mutates the context object without user", async () => {
   await buildContext(context, { user: undefined });
   expect(context).toEqual({
     collections: mockContext.collections,
+    getAbsoluteUrl: jasmine.any(Function),
     queries: {
       primaryShopId: jasmine.any(Function)
     },
+    rootUrl: "http://localhost:3000/",
     shopId: "PRIMARY_SHOP_ID",
+    shopsUserHasPermissionFor: jasmine.any(Function),
     user: null,
     userHasPermission: jasmine.any(Function),
-    shopsUserHasPermissionFor: jasmine.any(Function),
-    userId: null,
-    rootUrl: "http://localhost:3000/",
-    getAbsoluteUrl: jasmine.any(Function)
+    userId: null
   });
 });
 
@@ -46,16 +46,16 @@ test("properly mutates the context object with user", async () => {
     account: mockAccount,
     accountId: mockAccount._id,
     collections: mockContext.collections,
+    getAbsoluteUrl: jasmine.any(Function),
     queries: {
       primaryShopId: jasmine.any(Function)
     },
     shopId: "PRIMARY_SHOP_ID",
+    shopsUserHasPermissionFor: jasmine.any(Function),
     user: fakeUser,
     userHasPermission: jasmine.any(Function),
-    shopsUserHasPermissionFor: jasmine.any(Function),
-    userId: fakeUser._id,
     rootUrl: "https://localhost:3000/",
-    getAbsoluteUrl: jasmine.any(Function)
+    userId: fakeUser._id
   });
 
   // Make sure the hasPermission currying works with one arg
