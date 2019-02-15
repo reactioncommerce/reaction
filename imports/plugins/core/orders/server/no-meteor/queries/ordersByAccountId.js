@@ -22,15 +22,15 @@ export default async function ordersByAccountId(context, { accountId, shopIds } 
   if (accountId !== contextAccountId) {
     // If an admin wants all orders for an account, we force it to be limited to the
     // shops for which they're allowed to see orders.
-    if (!shopIds) shopIds = shopsUserHasPermissionFor;
-
-    // TODO: EK - instead of throwing an error, do we just add shops we have permission for to an array?
-    // Won't this throw an error if we ahve permission for one shop, but not another? We still want to show the data for that one.
-    shopIds.forEach((shopId) => {
-      if (!userHasPermission(["orders"], shopId)) {
-        throw new ReactionError("access-denied", "Access Denied");
-      }
-    });
+    if (!shopIds) {
+      shopIds = shopsUserHasPermissionFor("orders");
+    } else {
+      shopIds.forEach((shopId) => {
+        if (!userHasPermission(["orders"], shopId)) {
+          throw new ReactionError("access-denied", "Access Denied");
+        }
+      });
+    }
   }
 
   const query = {
