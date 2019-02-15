@@ -30,7 +30,7 @@ export default async function productsByTagId(context, params) {
   }
 
   // Products from catalog sample data
-  const positions = tag.featuredProductIds;
+  const positions = tag.featuredProductIds || [];
 
   // Aggregation Pipeline
   // Find the products in the "order" array
@@ -41,41 +41,56 @@ export default async function productsByTagId(context, params) {
     }
   };
 
-  // Add a new field "positions" to each product with the order they are in the array
-  const addFields = {
-    $addFields: {
-      position: {
-        $indexOfArray: [positions, "$_id"]
-      }
-    }
-  };
-
-  // Projection: Add a featuredPosition by order
-  const projection = {
-    $project: {
-      _id: 1,
-      position: 1,
-      title: 1,
-      sortPosition: {
-        $cond: {
-          if: { $lt: ["$position", 0] },
-          then: { $add: [{ $abs: "$position" }, positions.length] },
-          else: "$position"
+  if (positions.length) {
+    // Add a new field "positions" to each product with the order they are in the array
+    const addFields = {
+      $addFields: {
+        position: {
+          $indexOfArray: [positions, "$_id"]
         }
       }
-    }
-  };
+    };
 
-  // Sort the results by "posipositiontions"
+    // Projection: Add a featuredPosition by order
+    const projection = {
+      $project: {
+        _id: 1,
+        position: 1,
+        title: 1,
+        sortPosition: {
+          $cond: {
+            if: { $lt: ["$position", 0] },
+            then: { $add: [{ $abs: "$position" }, positions.length] },
+            else: "$position"
+          }
+        }
+      }
+    };
+
+    // Sort the results by "sortPosition"
+    const sort = {
+      $sort: {
+        sortPosition: 1
+      }
+    };
+
+    // Profit
+    return {
+      collection: Products,
+      pipeline: [match, addFields, projection, sort]
+    };
+  }
+
+  // Sort the results by "sortPosition"
   const sort = {
     $sort: {
-      sortPosition: 1
+      createdAt: 1
     }
   };
 
   // Profit
   return {
     collection: Products,
-    pipeline: [match, addFields, projection, sort]
+    pipeline: [match, sort]
   };
 }
