@@ -12,16 +12,20 @@ import ReactionError from "@reactioncommerce/reaction-error";
  * @return {Promise<Object>|undefined} - An Array of Order documents, if found
  */
 export default async function ordersByAccountId(context, { accountId, shopIds } = {}) {
-  const { accountId: contextAccountId, collections, userHasPermission } = context;
+  const { accountId: contextAccountId, collections, shopsUserHasPermissionFor, userHasPermission } = context;
   const { Orders } = collections;
-
 
   if (!accountId) {
     throw new ReactionError("invalid-param", "You must provide accountId arguments");
   }
 
-  // Unless you are an admin with orders permission, you are limited to seeing it if you placed it
   if (accountId !== contextAccountId) {
+    // If an admin wants all orders for an account, we force it to be limited to the
+    // shops for which they're allowed to see orders.
+    if (!shopIds) shopIds = shopsUserHasPermissionFor;
+
+    // TODO: EK - instead of throwing an error, do we just add shops we have permission for to an array?
+    // Won't this throw an error if we ahve permission for one shop, but not another? We still want to show the data for that one.
     shopIds.forEach((shopId) => {
       if (!userHasPermission(["orders"], shopId)) {
         throw new ReactionError("access-denied", "Access Denied");
@@ -35,5 +39,5 @@ export default async function ordersByAccountId(context, { accountId, shopIds } 
 
   if (shopIds) query.shopId = { $in: shopIds };
 
-  return Orders.find(query).toArray();
+  return Orders.find(query);
 }
