@@ -1,0 +1,10 @@
+{
+  "name": "reaction-plugin-email-templates",
+  "version": "1.0.0",
+  "description": "Default email templates plugin for Reaction",
+  "author": "Reaction Commerce",
+  "license": "GPL-3.0",
+  "dependencies": {
+    "handlebars": "4.1.0"
+  }
+}

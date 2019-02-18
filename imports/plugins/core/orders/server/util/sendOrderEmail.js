@@ -1,6 +1,5 @@
 import _ from "lodash";
 import Logger from "@reactioncommerce/logger";
-import { SSR } from "meteor/meteorhacks:ssr";
 import { Shops } from "/lib/collections";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
 import formatMoney from "/imports/utils/formatMoney";
@@ -77,9 +76,6 @@ export default function sendOrderEmail(order, action) {
 
   // Get Shop information
   const shop = Shops.findOne({ _id: order.shopId });
-
-  // Get shop logo, if available
-  const emailLogo = Reaction.Email.getShopLogo(shop);
 
   // TODO need to make this fully support multiple fulfillment groups. Now it's just collapsing into one
   const amount = order.shipping.reduce((sum, group) => sum + group.invoice.total, 0);
@@ -183,7 +179,6 @@ export default function sendOrderEmail(order, action) {
     shop,
     contactEmail: shop.emails[0].address,
     homepage: Reaction.absoluteUrl(),
-    emailLogo,
     copyrightDate,
     legalName: _.get(shop, "addressBook[0].company"),
     physicalAddress: {
@@ -252,32 +247,25 @@ export default function sendOrderEmail(order, action) {
   }
 
   // Compile Email with SSR
-  let subject;
-  let tpl;
+  let templateName;
 
   if (action === "shipped") {
-    tpl = "orders/shipped";
-    subject = "orders/shipped/subject";
+    templateName = "orders/shipped";
   } else if (action === "refunded") {
-    tpl = "orders/refunded";
-    subject = "orders/refunded/subject";
+    templateName = "orders/refunded";
   } else if (action === "itemRefund") {
-    tpl = "orders/itemRefund";
-    subject = "orders/itemRefund/subject";
+    templateName = "orders/itemRefund";
   } else {
-    tpl = `orders/${order.workflow.status}`;
-    subject = `orders/${order.workflow.status}/subject`;
+    templateName = `orders/${order.workflow.status}`;
   }
 
-  SSR.compileTemplate(tpl, Reaction.Email.getTemplate(tpl));
-  SSR.compileTemplate(subject, Reaction.Email.getSubject(tpl));
-
-  Reaction.Email.send({
-    to: order.email,
-    from: `${shop.name} <${shop.emails[0].address}>`,
-    subject: SSR.render(subject, dataForEmail),
-    html: SSR.render(tpl, dataForEmail)
-  });
+  const context = Promise.await(getGraphQLContextInMeteorMethod(Reaction.getUserId()));
+  Promise.await(context.mutations.sendEmail(context, {
+    data: dataForEmail,
+    fromShop: shop,
+    templateName,
+    to: order.email
+  }));
 
   return true;
 }

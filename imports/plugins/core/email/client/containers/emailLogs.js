@@ -3,7 +3,7 @@ import { registerComponent, composeWithTracker } from "@reactioncommerce/reactio
 import { Meteor } from "meteor/meteor";
 import { i18next } from "/client/api";
 import EmailLogs from "../components/emailLogs";
-import { Jobs } from "/lib/collections";
+import { Jobs } from "/imports/utils/jobs";
 
 const composer = (props, onData) => {
   if (Meteor.subscribe("Emails").ready()) {

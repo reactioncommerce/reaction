@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Components } from "@reactioncommerce/reaction-components";
 import { SortableTable } from "/imports/plugins/core/ui/client/components";
-import { Jobs } from "/lib/collections";
+import { Jobs } from "/imports/utils/jobs";
 import { i18next } from "/client/api";
 
 
