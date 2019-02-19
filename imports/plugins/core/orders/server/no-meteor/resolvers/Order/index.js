@@ -12,6 +12,6 @@ export default {
   notes: (node) => node.notes || [],
   payments: (node) => (Array.isArray(node.payments) ? node.payments.map(xformOrderPayment) : null),
   shop: resolveShopFromShopId,
-  status: (node) => orderStatus(node),
+  status: (node, { language }, context) => orderStatus(context, node, language),
   totalItemQuantity
 };

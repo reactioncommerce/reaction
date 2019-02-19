@@ -3,42 +3,34 @@
  * @method
  * @memberof Order/GraphQL
  * @summary Displays a human readable status of order state
+ * @param {Object} context An object with request-specific state
  * @param {Object} order - Result of the parent resolver, which is a Order object in GraphQL schema format
+ * @param {String} language Language to filter item content by
  * @return {String} A string of the order status
  */
-export default async function orderStatus(order) {
+export default async function orderStatus(context, order, language) {
+  const { Shops } = context.collections;
+  const shop = await Shops.findOne({ _id: order.shopId });
+  const orderStatusLabels = shop && shop.orderStatusLabels;
   const { workflow: { status } } = order;
 
-  if (status === "new") {
+  // If translations are available in the `Shops` collection,
+  // and are available for this specific order status, get translations
+  if (orderStatusLabels && orderStatusLabels[status]) {
+    const orderStatusLabel = orderStatusLabels[status];
+    const translatedLabel = orderStatusLabel.find((label) => label.language === language);
+
+    // If translations are available in desired language, return them.
+    // Otherwise, return raw status
     return {
-      label: "Order received",
-      type: "new"
+      label: (translatedLabel && translatedLabel.label) || status,
+      status
     };
   }
 
-  if (status === "coreOrderWorkflow/processing") {
-    return {
-      label: "Order received",
-      type: "processing"
-    };
-  }
-
-  if (status === "coreOrderWorkflow/completed") {
-    return {
-      label: "Shipped",
-      type: "shipped"
-    };
-  }
-
-  if (status === "coreOrderWorkflow/canceled") {
-    return {
-      label: "Canceled",
-      type: "canceled"
-    };
-  }
-
+  // If no translations are available in the `Shops` collection, use raw status data
   return {
     label: status,
-    type: status
+    status
   };
 }

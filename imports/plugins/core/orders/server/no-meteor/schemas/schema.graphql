@@ -81,7 +81,7 @@ type OrderStatus {
   label: String
 
   "The attribute type, e.g., new"
-  type: String
+  status: String
 }
 
 "A summary of the totals for this order"
@@ -254,7 +254,7 @@ type Order implements Node {
   shop: Shop!
 
   "The status of the order. Can be new, processing, shipped, complete."
-  status: OrderStatus
+  status(language: String!): OrderStatus
 
   "Total quantity of all items in the order"
   totalItemQuantity: Int!
