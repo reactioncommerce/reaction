@@ -1,5 +1,5 @@
 import collectionIndex from "/imports/utils/collectionIndex";
-import processEmailJobs from "../util/processEmailJobs";
+import processEmailJobs from "./util/processEmailJobs";
 
 /**
  * @summary Called on startup
