@@ -1,4 +1,5 @@
 import { isEqual } from "lodash";
+import Logger from "@reactioncommerce/logger";
 import getUpdatedCartItems from "./util/getUpdatedCartItems";
 
 const EMITTED_BY_NAME = "TAXES_CORE_PLUGIN";
@@ -18,6 +19,7 @@ export default function startup(context) {
   // have changed.
   appEvents.on("afterCartUpdate", async ({ cart }, { emittedBy } = {}) => {
     if (emittedBy === EMITTED_BY_NAME) return; // short circuit infinite loops
+    Logger.debug("Handling afterCartUpdate: taxes");
 
     const { cartItems, taxSummary } = await getUpdatedCartItems(context, cart);
 
