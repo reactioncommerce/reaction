@@ -211,6 +211,10 @@
   "scripts": {
     "devserver": "ROOT_URL=http://localhost:3030 MONGO_URL=mongodb://localhost:27017/reaction NODE_ENV=reaction-node BABEL_DISABLE_CACHE=1 nodemon ./imports/node-app/devserver/index.js",
     "dev": "node --experimental-modules ./.reaction/run/index.mjs",
+    "inspect": "node --experimental-modules ./.reaction/run/index.mjs --inspect",
+    "inspect-brk": "node --experimental-modules  ./.reaction/run/index.mjs --inspect-brk",
+    "inspect-docker": "node --experimental-modules  ./.reaction/run/index.mjs --inspect=0.0.0.0:9229",
+    "inspect-brk-docker": "node --experimental-modules  ./.reaction/run/index.mjs --inspect-brk=0.0.0.0:9229",
     "lint": "eslint .",
     "test": "npm run test:unit && npm run test:integration && npm run test:app",
     "test:app": "MONGO_URL='' TEST_CLIENT=0 meteor test --no-release-check --once --full-app --driver-package meteortesting:mocha",
