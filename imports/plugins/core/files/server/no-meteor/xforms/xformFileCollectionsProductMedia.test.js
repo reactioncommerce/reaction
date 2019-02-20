@@ -1,4 +1,4 @@
-import { xformProductMedia } from "./catalogProduct";
+import xformFileCollectionsProductMedia from "./xformFileCollectionsProductMedia";
 
 const ROOT_URL = "https://example.com";
 const context = {
@@ -19,7 +19,7 @@ test("catalogProduct works in base case", () => {
       thumbnail: `${ROOT_URL}/thumbnail.jpg`
     }
   };
-  const result = xformProductMedia(
+  const result = xformFileCollectionsProductMedia(
     {
       priority: "unit-test-priority",
       toGrid: "unit-test-to-grid",
@@ -39,11 +39,11 @@ test("catalogProduct works in base case", () => {
 });
 
 test("catalogProduct works in null case", () => {
-  const result = xformProductMedia(null, context);
+  const result = xformFileCollectionsProductMedia(null, context);
   expect(result).toBeNull();
 });
 
 test("catalogProduct works in {URLs: null} case", () => {
-  const result = xformProductMedia({ URLs: null }, context);
+  const result = xformFileCollectionsProductMedia({ URLs: null }, context);
   expect(result).toBeNull();
 });
