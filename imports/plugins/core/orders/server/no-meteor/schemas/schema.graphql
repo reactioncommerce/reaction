@@ -213,6 +213,11 @@ type OrderFulfillmentGroup implements Node {
   The fulfillment type. Any valid type that has been registered by a fulfillment plugin. Examples: "shipping", "digital"
   """
   type: FulfillmentType!
+
+  """
+  The order fulfillment group shipment tracking number
+  """
+  tracking: String
 }
 
 "An order"
