@@ -36,16 +36,15 @@ export default async function catalogItemsAggregate(context, { shopIds, tagId } 
     throw new ReactionError("not-found", "Tag not found");
   }
 
-  // Get array of featured products ids, in order
-  const order = tag.featuredProductIds;
-
   // If there are no featuredProductIds, return match
-  if (!order) {
+  if (!tag.featuredProductIds) {
     return {
       collection: Catalog,
       pipeline: [match]
     };
   }
+
+  const order = tag.featuredProductIds;
 
   // Add a new field "order" to each product with their order in the array
   const addFields = {
