@@ -24,7 +24,7 @@ export default function startup(context) {
     if (emittedBy === EMITTED_BY_NAME) return; // short circuit infinite loops
     Logger.debug("Handling afterCartUpdate: surcharges");
 
-    const { shipping } = cart;
+    const { surcharges, shipping } = cart;
     const cartSurcharges = [];
 
     // Merge surcharges from each shipping group
@@ -41,7 +41,7 @@ export default function startup(context) {
     // To avoid infinite looping among various `afterCartUpdate` handlers that also
     // update cart and emit a subsequent `afterCartUpdate`, we need to be sure we
     // do not do the update or emit the event unless we truly need to update something.
-    const previousSurcharges = cart.surcharges.map((appliedSurcharge) => ({ ...appliedSurcharge, _id: null }));
+    const previousSurcharges = (surcharges || []).map((appliedSurcharge) => ({ ...appliedSurcharge, _id: null }));
     const nextSurcharges = cartSurcharges.map((appliedSurcharge) => ({ ...appliedSurcharge, _id: null }));
     if (isEqual(previousSurcharges, nextSurcharges)) return;
 
