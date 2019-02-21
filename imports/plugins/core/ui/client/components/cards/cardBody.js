@@ -4,6 +4,7 @@ import PropTypes from "prop-types";
 import Radium from "radium";
 import classnames from "classnames";
 import { registerComponent, withAnimateHeight } from "@reactioncommerce/reaction-components";
+import CardContent from "@material-ui/core/CardContent";
 
 const styles = {
   noPadding: {
@@ -36,6 +37,12 @@ class CardBody extends Component {
       "no-padding": this.props.padded === false
     });
     const height = (this.props.expanded && "auto") || 0;
+
+    return (
+      <CardContent>
+        {this.props.children}
+      </CardContent>
+    );
 
     return (
       <AnimateHeight
