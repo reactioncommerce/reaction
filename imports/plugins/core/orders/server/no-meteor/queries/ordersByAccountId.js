@@ -26,7 +26,7 @@ export default async function ordersByAccountId(context, { accountId, orderStatu
 
   // Limit which orders are returned: `all`, `open`, or `completed`
   // `open` is anything that does not have the `workflow.status` of `coreOrderWorkflow/completed`
-  if (orderStatus !== "all") {
+  if (orderStatus !== "all" || null) {
     if (orderStatus === "open") {
       query = {
         "workflow.status": { $ne: "coreOrderWorkflow/completed" },
