@@ -4,6 +4,7 @@
   "translation": {
     "reaction-product-admin": {
       "admin": {
+        "products": "Products",
         "settings": {
           "productSettingsLabel": "Product Settings",
           "productDetailsLabel": "Product Details"
