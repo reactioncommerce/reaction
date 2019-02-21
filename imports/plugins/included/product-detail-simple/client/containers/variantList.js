@@ -11,6 +11,10 @@ import update from "immutability-helper";
 import { getVariantIds } from "/lib/selectors/variants";
 import { Media } from "/imports/plugins/core/files/client";
 
+/**
+ *
+ * @param {*} variantId
+ */
 function variantIsSelected(variantId) {
   const current = ReactionProduct.selectedVariant();
   if (
@@ -24,6 +28,10 @@ function variantIsSelected(variantId) {
   return false;
 }
 
+/**
+ *
+ * @param {*} variantId
+ */
 function variantIsInActionView(variantId) {
   const actionViewVariant = Reaction.getActionView().data;
 
@@ -35,6 +43,9 @@ function variantIsInActionView(variantId) {
   return false;
 }
 
+/**
+ *
+ */
 function getTopVariants() {
   let inventoryTotal = 0;
   const variants = ReactionProduct.getTopVariants();
@@ -73,13 +84,20 @@ function getTopVariants() {
   return [];
 }
 
+/**
+ *
+ * @param {*} variant
+ */
 function isSoldOut(variant) {
   return variant.inventoryAvailableToSell < 1;
 }
 
+/**
+ *
+ */
 class VariantListContainer extends Component {
-  componentWillReceiveProps() {
-    this.setState({});
+  state = {
+    selectedVariant: null
   }
 
   get variants() {
@@ -121,12 +139,7 @@ class VariantListContainer extends Component {
     Session.set(`variant-form-${editVariant._id}`, true);
 
     if (Reaction.hasPermission("createProduct") && !Reaction.isPreview()) {
-      Reaction.showActionView({
-        label: "Edit Variant",
-        i18nKeyLabel: "productDetailEdit.editVariant",
-        template: "variantForm",
-        data: editVariant
-      });
+      this.setState({ selectedVariant: variant });
     }
 
     // Prevent the default edit button `onEditButtonClick` function from running
@@ -166,6 +179,8 @@ class VariantListContainer extends Component {
           onVariantClick={this.handleVariantClick}
           onVariantVisibiltyToggle={this.handleVariantVisibilityToggle}
           onCreateVariant={this.handleCreateVariant}
+          selectedVariant={this.state.selectedVariant}
+          onVariantEditComplete={() => this.setState({ selectedVariant: null })}
           {...this.props}
           variants={this.variants}
         />
