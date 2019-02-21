@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import classnames from "classnames";
 import { Components, registerComponent } from "@reactioncommerce/reaction-components";
+import MuiCardHeader from "@material-ui/core/CardHeader";
 
 class CardHeader extends Component {
   static defaultProps = {
@@ -123,6 +124,13 @@ class CardHeader extends Component {
       "expandable": this.props.actAsExpander,
       validation
     });
+
+    return (
+      <MuiCardHeader
+        title={this.renderTitle()}
+        action={this.props.children}
+      />
+    );
 
     if (this.props.actAsExpander) {
       return (
