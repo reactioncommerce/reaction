@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import classnames from "classnames";
 import { Components } from "@reactioncommerce/reaction-components";
+import AppBar from "@material-ui/core/AppBar";
+import Toolbar from "@material-ui/core/Toolbar";
 import {
   Button,
   FlatButton,
@@ -47,7 +49,7 @@ class PublishControls extends Component {
     showDiffs: false
   };
 
-  componentWillReceiveProps() {
+  UNSAFE_componentWillReceiveProps() {
     this.setState({
       isHashUpdating: false
     });
@@ -313,11 +315,15 @@ class PublishControls extends Component {
 
   render() {
     return (
-      <Components.ToolbarGroup lastChild={true}>
-        {this.renderArchiveButton()}
-        {this.renderViewControls()}
-        {this.renderPublishButton()}
-      </Components.ToolbarGroup>
+      <AppBar color="default">
+        <Toolbar>
+          <Components.ToolbarGroup lastChild={true}>
+            {this.renderArchiveButton()}
+            {this.renderViewControls()}
+            {this.renderPublishButton()}
+          </Components.ToolbarGroup>
+        </Toolbar>
+      </AppBar>
     );
   }
 }
