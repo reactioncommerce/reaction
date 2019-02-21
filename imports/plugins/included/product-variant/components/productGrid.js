@@ -5,6 +5,15 @@ import { Components } from "@reactioncommerce/reaction-components";
 import { Session } from "meteor/session";
 import { Reaction } from "/client/api";
 
+import Card from "@material-ui/core/Card";
+import CardContent from "@material-ui/core/CardContent";
+import Table from "@material-ui/core/Table";
+import TableBody from "@material-ui/core/TableBody";
+import TableCell from "@material-ui/core/TableCell";
+import TableHead from "@material-ui/core/TableHead";
+import TablePagination from "@material-ui/core/TablePagination";
+import TableRow from "@material-ui/core/TableRow";
+
 class ProductGrid extends Component {
   static propTypes = {
     productMediaById: PropTypes.object,
@@ -60,13 +69,25 @@ class ProductGrid extends Component {
 
   render() {
     return (
-      <div className="container-main" onClick={this.onPageClick}>
-        <div className="product-grid">
-          <ul className="product-grid-list list-unstyled" id="product-grid-list">
-            {this.renderProductGridItems()}
-          </ul>
-        </div>
-      </div>
+      <Card>
+        <CardContent>
+          <Table>
+            <TableHead>
+              <TableRow>
+                <TableCell />
+                <TableCell />
+                <TableCell>Title</TableCell>
+                <TableCell>Price</TableCell>
+                <TableCell>Status</TableCell>
+                <TableCell />
+              </TableRow>
+            </TableHead>
+            <TableBody id="product-grid-list">
+              {this.renderProductGridItems()}
+            </TableBody>
+          </Table>
+        </CardContent>
+      </Card>
     );
   }
 }

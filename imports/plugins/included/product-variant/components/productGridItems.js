@@ -3,6 +3,12 @@ import PropTypes from "prop-types";
 import { Components } from "@reactioncommerce/reaction-components";
 import { formatPriceString } from "/client/api";
 
+import TableCell from "@material-ui/core/TableCell";
+import TableRow from "@material-ui/core/TableRow";
+import Checkbox from "@material-ui/core/Checkbox";
+import IconButton from "@material-ui/core/IconButton";
+import PencilIcon from "mdi-material-ui/Pencil";
+
 class ProductGridItems extends Component {
   static propTypes = {
     displayPrice: PropTypes.func,
@@ -46,10 +52,19 @@ class ProductGridItems extends Component {
   }
 
   renderMedia() {
-    const { product, productMedia } = this.props;
+    const { productMedia } = this.props;
+
+    const fileRecord = productMedia.primaryMedia;
+
+    if (fileRecord) {
+      const mediaUrl = fileRecord.url({ store: "thumbnail" });
+      return (
+        <img alt="" src={mediaUrl} height={30} />
+      );
+    }
 
     return (
-      <Components.ProductImage displayMedia={() => productMedia.primaryMedia} item={product} size="large" mode="span" />
+      <span>{"-"}</span>
     );
   }
 
@@ -88,36 +103,41 @@ class ProductGridItems extends Component {
     );
   }
 
+  handleSelect = (event) => {
+    console.log("event.target.checked", event.target.checked);
+
+    this.props.onSelect(event.target.checked, this.props.product);
+  }
+
   render() {
     const { isSearch, isSelected, pdpPath, product } = this.props;
 
     const productItem = (
-      <li
-        className={`product-grid-item product-small ${isSelected() ? "active" : ""}`}
-        data-id={product._id}
-        id={product._id}
-      >
-        <div className={isSearch ? "item-content" : ""}>
-          <span className="product-grid-item-alerts" />
-
-          <a className="product-grid-item-images"
-            href={pdpPath()}
-            data-event-category="grid"
-            data-event-label="grid product click"
-            data-event-value={product._id}
-            onDoubleClick={this.handleDoubleClick}
-            onClick={this.handleClick}
-          >
-            <div className={`product-primary-images ${this.renderVisible()}`}>
-              {this.renderMedia()}
-              {this.renderOverlay()}
-            </div>
-          </a>
-
-          {!isSearch && this.renderNotices()}
-          {this.renderGridContent()}
-        </div>
-      </li>
+      <TableRow className={`product-table-row-item ${isSelected() ? "active" : ""}`}>
+        <TableCell>
+          <Checkbox
+            onClick={this.handleSelect}
+            checked={isSelected()}
+          />
+        </TableCell>
+        <TableCell>
+          {this.renderMedia()}
+        </TableCell>
+        <TableCell>
+          {product.title}
+        </TableCell>
+        <TableCell>
+          {formatPriceString(this.props.displayPrice())}
+        </TableCell>
+        <TableCell>
+          {this.renderNotices()}
+        </TableCell>
+        <TableCell>
+          <IconButton onClick={this.handleDoubleClick}>
+            <PencilIcon />
+          </IconButton>
+        </TableCell>
+      </TableRow>
     );
 
     return productItem;

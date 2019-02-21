@@ -24,7 +24,7 @@ const wrapComponent = (Comp) => (
         if (this.props.product.__published) {
           ({ handle } = this.props.product.__published);
         }
-
+        return `/operator/products/${handle}`;
         return Reaction.Router.pathFor("product", {
           hash: {
             handle
@@ -74,11 +74,8 @@ const wrapComponent = (Comp) => (
 
     onDoubleClick = () => {
       const { product } = this.props;
-      const handle = (product.__published && product.__published.handle) || product.handle;
 
-      Reaction.Router.go("product", {
-        handle
-      });
+      Reaction.Router.go(`/operator/products/${product._id}`);
 
       // Open actionView to productDetails panel
       Reaction.state.set("edit/focus", "productDetails");
@@ -98,51 +95,36 @@ const wrapComponent = (Comp) => (
       event.preventDefault();
       const { product } = this.props;
 
-      if (Reaction.hasPermission("createProduct") && Reaction.isPreview() === false) {
-        if (this.props.isSearch) {
-          let { handle } = product;
-          if (product.__published) {
-            ({ handle } = product.__published);
-          }
+      if (this.props.isSearch) {
+        Reaction.Router.go(`/operator/products/${product._id}`);
+        this.props.unmountMe();
+        return;
+      }
 
-          Reaction.Router.go("product", {
-            handle
-          });
+      const isSelected = event.target.closest("li.product-grid-item.active");
+      const list = document.getElementById("product-grid-list");
 
-          this.props.unmountMe();
-        }
-
-        const isSelected = event.target.closest("li.product-grid-item.active");
-        const list = document.getElementById("product-grid-list");
-
-        if (isSelected) {
-          // If a product is already selected, and you are single clicking on another product(s)
-          // WITH command key, the product(s) are added to the selected products Session array
+      if (isSelected) {
+        // If a product is already selected, and you are single clicking on another product(s)
+        // WITH command key, the product(s) are added to the selected products Session array
+        this.handleCheckboxSelect(list, product);
+        if (event.metaKey || event.ctrlKey || event.shiftKey) {
           this.handleCheckboxSelect(list, product);
-          if (event.metaKey || event.ctrlKey || event.shiftKey) {
-            this.handleCheckboxSelect(list, product);
-          }
-        } else if (event.metaKey || event.ctrlKey || event.shiftKey) {
-          this.handleCheckboxSelect(list, product);
-        } else {
-          const checkbox = list.querySelector(`input[type=checkbox][value="${product._id}"]`);
-          Session.set("productGrid/selectedProducts", []);
-          if (checkbox) {
-            checkbox.checked = true;
-            this.props.itemSelectHandler(checkbox.checked, product._id);
-          }
         }
+      } else if (event.metaKey || event.ctrlKey || event.shiftKey) {
+        this.handleCheckboxSelect(list, product);
       } else {
-        const handle = (product.__published && product.__published.handle) || product.handle;
-
-        Reaction.Router.go("product", {
-          handle
-        });
-
-        if (this.props.isSearch) {
-          this.props.unmountMe();
+        const checkbox = list.querySelector(`input[type=checkbox][value="${product._id}"]`);
+        Session.set("productGrid/selectedProducts", []);
+        if (checkbox) {
+          checkbox.checked = true;
+          this.props.itemSelectHandler(checkbox.checked, product._id);
         }
       }
+    }
+
+    handleSelect = (isChecked, product) => {
+      this.props.itemSelectHandler(isChecked, product._id);
     }
 
     render() {
@@ -154,6 +136,7 @@ const wrapComponent = (Comp) => (
           displayPrice={this.displayPrice}
           onDoubleClick={this.onDoubleClick}
           onClick={this.onClick}
+          onSelect={this.handleSelect}
           {...this.props}
         />
       );
