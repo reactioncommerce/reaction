@@ -176,8 +176,8 @@ test("minimal result from primary tax service", async () => {
   const taxes = [
     {
       _id: "mockTax",
-      customData: {
-        foo: "bar"
+      customFields: {
+        taxesField: "abc123"
       },
       sourcing: "destination",
       tax: 15,
@@ -188,6 +188,9 @@ test("minimal result from primary tax service", async () => {
   ];
 
   const itemTax = {
+    customFields: {
+      taxesField: "abc123"
+    },
     itemId: orderItem._id,
     tax: 15,
     taxableAmount: 90,
@@ -197,6 +200,9 @@ test("minimal result from primary tax service", async () => {
   const taxSummary = {
     calculatedAt: new Date(),
     calculatedByTaxServiceName: "primary-tax-service-mock",
+    customFields: {
+      taxesField: "abc123"
+    },
     tax: 15,
     taxableAmount: 90,
     taxes

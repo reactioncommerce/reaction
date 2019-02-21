@@ -23,12 +23,9 @@ class ShopBrandMediaManager extends Component {
 
     return (
       <div>
-        {/* DragDropProvider is needed to avoid errors but we don't currently support dragging */}
-        <Components.DragDropProvider>
-          <div className="rui gallery-thumbnails">
-            {this.renderBrandImages()}
-          </div>
-        </Components.DragDropProvider>
+        <div className="rui gallery-thumbnails">
+          {this.renderBrandImages()}
+        </div>
         <Components.MediaUploader metadata={metadata} />
       </div>
     );

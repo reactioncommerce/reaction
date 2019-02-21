@@ -314,10 +314,6 @@ const wrapComponent = (Comp) =>
       });
     };
 
-    handleViewContextChange = (event, value) => {
-      Reaction.Router.setQueryParams({ as: value });
-    };
-
     handleDeleteProduct = () => {
       ReactionProduct.archiveProduct(this.props.product);
     };
@@ -336,7 +332,6 @@ const wrapComponent = (Comp) =>
             mediaGalleryComponent={<Components.MediaGallery media={media} />}
             onAddToCart={this.handleAddToCart}
             onCartQuantityChange={this.handleCartQuantityChange}
-            onViewContextChange={this.handleViewContextChange}
             socialComponent={<SocialContainer />}
             topVariantComponent={<VariantListContainer />}
             onDeleteProduct={this.handleDeleteProduct}
@@ -347,10 +342,12 @@ const wrapComponent = (Comp) =>
       );
     }
   };
+
 /**
- *
- * @param {*} props
- * @param {*} onData
+ * @private
+ * @param {Object} props Props
+ * @param {Function} onData Call this to update props
+ * @returns {undefined}
  */
 function composer(props, onData) {
   const tagSub = Meteor.subscribe("Tags");
@@ -358,8 +355,6 @@ function composer(props, onData) {
   const productId = props.match.params.handle;
   const variantId = ReactionProduct.selectedVariantId();
   const revisionType = Reaction.Router.getQueryParam("revision");
-  const viewProductAs = Reaction.getUserPreferences("reaction-dashboard", "viewAs", "administrator");
-console.log("productId", productId);
 
   let productSub;
   if (productId) {
@@ -444,13 +439,7 @@ console.log("productId", productId);
         productRevision = product.__published;
       }
 
-      let editable;
-
-      if (viewProductAs === "customer") {
-        editable = false;
-      } else {
-        editable = Reaction.hasPermission(["createProduct"]);
-      }
+      const editable = Reaction.hasPermission(["createProduct"]);
 
       const topVariants = ReactionProduct.getTopVariants();
 
@@ -464,7 +453,6 @@ console.log("productId", productId);
         tags,
         media: mediaArray,
         editable,
-        viewAs: viewProductAs,
         hasAdminPermission: Reaction.hasPermission(["createProduct"]),
         storedCart
       });

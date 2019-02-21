@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import _ from "lodash";
 import update from "immutability-helper";
 import { compose } from "recompose";
-import { registerComponent, composeWithTracker, Components } from "@reactioncommerce/reaction-components";
+import { registerComponent, composeWithTracker } from "@reactioncommerce/reaction-components";
 import { Meteor } from "meteor/meteor";
 import { Reaction, i18next } from "/client/api";
 import TagList from "../components/tags/tagList";
@@ -194,24 +194,22 @@ const wrapComponent = (Comp) => (
 
     render() {
       return (
-        <Components.DragDropProvider>
-          <Comp
-            newTag={this.state.newTag}
-            onClick={this.handleEditButtonClick}
-            onClearSuggestions={this.handleClearSuggestions}
-            onGetSuggestions={this.handleGetSuggestions}
-            onMoveTag={this.handleMoveTag}
-            onNewTagSave={this.handleNewTagSave}
-            onNewTagUpdate={this.handleNewTagUpdate}
-            onTagRemove={this.handleTagRemove}
-            onTagSave={this.handleTagSave}
-            onTagUpdate={this.handleTagUpdate}
-            suggestions={this.state.suggestions}
-            tags={this.tags}
-            tooltip="Unpublished changes"
-            {...this.props}
-          />
-        </Components.DragDropProvider>
+        <Comp
+          newTag={this.state.newTag}
+          onClick={this.handleEditButtonClick}
+          onClearSuggestions={this.handleClearSuggestions}
+          onGetSuggestions={this.handleGetSuggestions}
+          onMoveTag={this.handleMoveTag}
+          onNewTagSave={this.handleNewTagSave}
+          onNewTagUpdate={this.handleNewTagUpdate}
+          onTagRemove={this.handleTagRemove}
+          onTagSave={this.handleTagSave}
+          onTagUpdate={this.handleTagUpdate}
+          suggestions={this.state.suggestions}
+          tags={this.tags}
+          tooltip="Unpublished changes"
+          {...this.props}
+        />
       );
     }
   }

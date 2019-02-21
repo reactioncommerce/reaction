@@ -3,7 +3,6 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Components } from "@reactioncommerce/reaction-components";
 import { Session } from "meteor/session";
-import { Reaction } from "/client/api";
 
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
@@ -25,18 +24,15 @@ class ProductGrid extends Component {
   };
 
   onPageClick = (event) => {
-    // Do nothing if we are in preview mode
-    if (Reaction.isPreview() === false) {
-      // Don't trigger the clear selection if we're clicking on a grid item.
-      if (event.target.closest(".product-grid-item") === null) {
-        const selectedProducts = Session.get("productGrid/selectedProducts");
+    // Don't trigger the clear selection if we're clicking on a grid item.
+    if (event.target.closest(".product-grid-item") === null) {
+      const selectedProducts = Session.get("productGrid/selectedProducts");
 
-        // Do we have any selected products?
-        // If we do then lets reset the Grid Settings ActionView
-        if (Array.isArray(selectedProducts) && selectedProducts.length) {
-          // Reset sessions ver of selected products
-          Session.set("productGrid/selectedProducts", []);
-        }
+      // Do we have any selected products?
+      // If we do then lets reset the Grid Settings ActionView
+      if (Array.isArray(selectedProducts) && selectedProducts.length) {
+        // Reset sessions ver of selected products
+        Session.set("productGrid/selectedProducts", []);
       }
     }
   }

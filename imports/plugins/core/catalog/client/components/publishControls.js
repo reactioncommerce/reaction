@@ -7,7 +7,6 @@ import Toolbar from "@material-ui/core/Toolbar";
 import {
   Button,
   FlatButton,
-  Switch,
   Icon
 } from "/imports/plugins/core/ui/client/components";
 import { Translatable } from "/imports/plugins/core/ui/client/providers";
@@ -20,21 +19,14 @@ class PublishControls extends Component {
     documentIds: PropTypes.arrayOf(PropTypes.string),
     documents: PropTypes.arrayOf(PropTypes.object),
     isEnabled: PropTypes.bool,
-    isPreview: PropTypes.bool,
     onAction: PropTypes.func,
     onAddProduct: PropTypes.func,
     onPublishClick: PropTypes.func,
-    onViewContextChange: PropTypes.func,
     onVisibilityChange: PropTypes.func,
     revisions: PropTypes.arrayOf(PropTypes.object),
-    showViewAsControls: PropTypes.bool, // eslint-disable-line react/boolean-prop-naming
     translation: PropTypes.shape({
       lang: PropTypes.string
     })
-  }
-
-  static defaultProps = {
-    showViewAsControls: true
   }
 
   constructor(props) {
@@ -86,12 +78,6 @@ class PublishControls extends Component {
   handleAction = (event, value) => {
     if (this.props.onAction) {
       this.props.onAction(event, value, this.props.documentIds);
-    }
-  }
-
-  onViewContextChange = (event, isChecked) => {
-    if (typeof this.props.onViewContextChange === "function") {
-      this.props.onViewContextChange(event, isChecked ? "customer" : "administrator");
     }
   }
 
@@ -184,33 +170,29 @@ class PublishControls extends Component {
   }
 
   renderViewControls() {
-    if (this.props.showViewAsControls) {
-      let tooltip = "Private";
-      let i18nKeyTooltip = "app.private";
+    let tooltip = "Private";
+    let i18nKeyTooltip = "app.private";
 
-      if (this.isVisible === "public") {
-        tooltip = "Public";
-        i18nKeyTooltip = "app.public";
-      }
-
-      return (
-        <div className="hidden-xs">
-          <FlatButton
-            i18nKeyTooltip={i18nKeyTooltip}
-            icon="fa fa-eye-slash"
-            onIcon="fa fa-eye"
-            toggle={true}
-            tooltip={tooltip}
-            value="public"
-            onValue="private"
-            toggleOn={this.isVisible === "public"}
-            onToggle={this.handleVisibilityChange}
-          />
-        </div>
-      );
+    if (this.isVisible === "public") {
+      tooltip = "Public";
+      i18nKeyTooltip = "app.public";
     }
 
-    return null;
+    return (
+      <div className="hidden-xs">
+        <FlatButton
+          i18nKeyTooltip={i18nKeyTooltip}
+          icon="fa fa-eye-slash"
+          onIcon="fa fa-eye"
+          toggle={true}
+          tooltip={tooltip}
+          value="public"
+          onValue="private"
+          toggleOn={this.isVisible === "public"}
+          onToggle={this.handleVisibilityChange}
+        />
+      </div>
+    );
   }
 
   renderArchiveButton() {
@@ -231,17 +213,6 @@ class PublishControls extends Component {
         icon={"fa fa-cog"}
         value="settings"
         onClick={this.handleAction}
-      />
-    );
-  }
-
-  renderVisibilitySwitch() {
-    return (
-      <Switch
-        i18nKeyLabel={"admin.dashboard.preview"}
-        label={"Preview"}
-        checked={this.props.isPreview}
-        onChange={this.onViewContextChange}
       />
     );
   }

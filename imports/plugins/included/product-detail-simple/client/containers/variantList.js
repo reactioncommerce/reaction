@@ -172,6 +172,7 @@ class VariantListContainer extends Component {
 
   render() {
     return (
+<<<<<<< HEAD
       <Components.DragDropProvider>
         <Components.VariantList
           onEditVariant={this.handleEditVariant}
@@ -185,10 +186,27 @@ class VariantListContainer extends Component {
           variants={this.variants}
         />
       </Components.DragDropProvider>
+=======
+      <Components.VariantList
+        onEditVariant={this.handleEditVariant}
+        onMoveVariant={this.handleMoveVariant}
+        onVariantClick={this.handleVariantClick}
+        onVariantVisibiltyToggle={this.handleVariantVisibilityToggle}
+        onCreateVariant={this.handleCreateVariant}
+        {...this.props}
+        variants={this.variants}
+      />
+>>>>>>> origin/develop
     );
   }
 }
 
+/**
+ * @private
+ * @param {Object} props Props
+ * @param {Function} onData Call this to update props
+ * @returns {undefined}
+ */
 function composer(props, onData) {
   let childVariantMedia = [];
   const childVariants = getChildVariants();
@@ -208,13 +226,7 @@ function composer(props, onData) {
     );
   }
 
-  let editable;
-
-  if (Reaction.isPreview() === true) {
-    editable = false;
-  } else {
-    editable = Reaction.hasPermission(["createProduct"]);
-  }
+  const editable = Reaction.hasPermission(["createProduct"]);
 
   onData(null, {
     variants: getTopVariants(),

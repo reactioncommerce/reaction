@@ -35,12 +35,7 @@ const wrapComponent = (Comp) => (
       return "/";
     }
 
-    isSelected = () => {
-      if (Reaction.isPreview() === false) {
-        return _.includes(Session.get("productGrid/selectedProducts"), this.props.product._id) ? "active" : "";
-      }
-      return false;
-    }
+    isSelected = () => (_.includes(Session.get("productGrid/selectedProducts"), this.props.product._id) ? "active" : "")
 
     displayPrice = () => {
       const { product } = this.props;
