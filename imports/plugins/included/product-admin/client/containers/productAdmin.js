@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import _ from "lodash";
 import { compose } from "recompose";
 import { registerComponent, composeWithTracker } from "@reactioncommerce/reaction-components";
+import { withRouter } from "react-router";
 import { Meteor } from "meteor/meteor";
 import { Reaction } from "/client/api";
 import { getPrimaryMediaForItem, ReactionProduct } from "/lib/api";
@@ -100,9 +101,68 @@ const wrapComponent = (Comp) => (
   }
 );
 
+/**
+ *
+ */
+function getTopVariants() {
+  let inventoryTotal = 0;
+  const variants = ReactionProduct.getTopVariants();
+  if (variants.length) {
+    // calculate inventory total for all variants
+    for (const variant of variants) {
+      if (variant.inventoryManagement) {
+        const qty = variant.inventoryAvailableToSell;
+        if (typeof qty === "number") {
+          inventoryTotal += qty;
+        }
+      }
+    }
+    // calculate percentage of total inventory of this product
+    for (const variant of variants) {
+      const qty = variant.inventoryAvailableToSell;
+      variant.inventoryTotal = inventoryTotal;
+      if (variant.inventoryManagement && inventoryTotal) {
+        variant.inventoryPercentage = parseInt(qty / inventoryTotal * 100, 10);
+      } else {
+        // for cases when sellers doesn't use inventory we should always show
+        // "green" progress bar
+        variant.inventoryPercentage = 100;
+      }
+      if (variant.title) {
+        variant.inventoryWidth = parseInt(variant.inventoryPercentage - variant.title.length, 10);
+      } else {
+        variant.inventoryWidth = 0;
+      }
+    }
+    // sort variants in correct order
+    variants.sort((a, b) => a.index - b.index);
+
+    return variants;
+  }
+  return [];
+}
+
+/**
+ *
+ * @param {*} props
+ * @param {*} onData
+ */
 function composer(props, onData) {
-  const product = ReactionProduct.selectedProduct();
+  const productId = props.match.params.handle;
+  // const product = ReactionProduct.selectedProduct();
   const editable = Reaction.hasAdminAccess();
+  const variantId = ReactionProduct.selectedVariantId();
+
+  let product;
+  let productSub;
+  if (productId) {
+    productSub = Meteor.subscribe("Product", productId);
+  }
+
+  if (productSub && productSub.ready()) {
+    product = ReactionProduct.setProduct(productId, variantId);
+  }
+
   let tags;
   let media;
   let revisonDocumentIds;
@@ -143,7 +203,8 @@ function composer(props, onData) {
       revisonDocumentIds,
       templates,
       countries,
-      editable
+      editable,
+      variant: getTopVariants()
     });
   } else {
     onData(null, {
@@ -153,12 +214,14 @@ function composer(props, onData) {
 }
 
 registerComponent("ProductAdmin", ProductAdmin, [
+  withRouter,
   composeWithTracker(composer),
   wrapComponent
 ]);
 
 // Decorate component and export
 export default compose(
+  withRouter,
   composeWithTracker(composer),
   wrapComponent
 )(ProductAdmin);
