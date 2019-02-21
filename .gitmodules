@@ -31,3 +31,6 @@
 [submodule "imports/plugins/custom/reaction-plugin-product-publisher"]
 	path = imports/plugins/custom/reaction-plugin-product-publisher
 	url = git@github.com:sportsdirect/reaction-plugin-product-publisher.git
+[submodule "imports/plugins/custom/reaction-plugin-order-export"]
+	path = imports/plugins/custom/reaction-plugin-order-export
+	url = git@github.com:sportsdirect/reaction-plugin-order-export.git
