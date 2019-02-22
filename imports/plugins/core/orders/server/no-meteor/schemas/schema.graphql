@@ -262,6 +262,9 @@ type Order implements Node {
   "The status of the order. Can be new, processing, shipped, complete."
   status(language: String!): OrderStatus
 
+  "A summary of the totals for all fulfillment groups for this order"
+  summary: OrderSummary!
+
   "Total quantity of all items in the order"
   totalItemQuantity: Int!
 
