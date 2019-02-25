@@ -34,3 +34,6 @@
 [submodule "imports/plugins/custom/reaction-plugin-order-export"]
 	path = imports/plugins/custom/reaction-plugin-order-export
 	url = git@github.com:sportsdirect/reaction-plugin-order-export.git
+[submodule "imports/plugins/custom/reaction-plugin-import-tax-codes"]
+	path = imports/plugins/custom/reaction-plugin-import-tax-codes
+	url = git@github.com:sportsdirect/reaction-plugin-import-tax-codes.git
