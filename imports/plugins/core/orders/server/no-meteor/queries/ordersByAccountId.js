@@ -24,28 +24,28 @@ export default async function ordersByAccountId(context, { accountId, orderStatu
     accountId
   };
 
-  // Limit which orders are returned: `all`, `canceled`, `completed`, or open`
-  if (orderStatus !== "all" || null || undefined) {
-    if (orderStatus === "open") {
-      query = {
-        "workflow.status": { $nin: ["coreOrderWorkflow/canceled", "coreOrderWorkflow/completed"] },
-        ...query
-      };
-    }
-
-    if (orderStatus === "completed") {
-      query = {
-        "workflow.status": { $eq: "coreOrderWorkflow/completed" },
-        ...query
-      };
-    }
-
-    if (orderStatus === "canceled") {
+  // Limit which orders are returned
+  switch (orderStatus) {
+    case "canceled":
       query = {
         "workflow.status": { $eq: "coreOrderWorkflow/canceled" },
         ...query
       };
-    }
+      break;
+    case "completed":
+      query = {
+        "workflow.status": { $eq: "coreOrderWorkflow/completed" },
+        ...query
+      };
+      break;
+    case "open":
+      query = {
+        "workflow.status": { $nin: ["coreOrderWorkflow/canceled", "coreOrderWorkflow/completed"] },
+        ...query
+      };
+      break;
+    default:
+      break;
   }
 
 
