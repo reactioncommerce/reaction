@@ -77,14 +77,6 @@ type OrderItemAttribute {
   value: String
 }
 
-type OrderStatus {
-  "The attribute label, e.g., New"
-  label: String
-
-  "The attribute type, e.g., new"
-  status: String
-}
-
 "A summary of the totals for this order"
 type OrderSummary {
   "The total of all discounts applied, as a positive number"
@@ -235,6 +227,9 @@ type Order implements Node {
   "The date and time at which the cart was created, which is when the first item was added to it."
   createdAt: DateTime!
 
+  "The order status for display in UI"
+  displayStatus(language: String!): String!
+
   "An email address that has been associated with the cart"
   email: String
 
@@ -259,8 +254,8 @@ type Order implements Node {
   "The shop through which the order was placed"
   shop: Shop!
 
-  "The status of the order. Can be new, processing, shipped, complete."
-  status(language: String!): OrderStatus
+  "The machine-readable order status."
+  status: String!
 
   "A summary of the totals for all fulfillment groups for this order"
   summary: OrderSummary!

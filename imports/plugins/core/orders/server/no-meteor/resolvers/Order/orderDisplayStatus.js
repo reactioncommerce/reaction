@@ -1,5 +1,5 @@
 /**
- * @name "Order.orderStatus"
+ * @name "Order.orderDisplayStatus"
  * @method
  * @memberof Order/GraphQL
  * @summary Displays a human readable status of order state
@@ -8,7 +8,7 @@
  * @param {String} language Language to filter item content by
  * @return {String} A string of the order status
  */
-export default async function orderStatus(context, order, language) {
+export default async function orderDisplayStatus(context, order, language) {
   const { Shops } = context.collections;
   const shop = await Shops.findOne({ _id: order.shopId });
   const orderStatusLabels = shop && shop.orderStatusLabels;
@@ -22,15 +22,9 @@ export default async function orderStatus(context, order, language) {
 
     // If translations are available in desired language, return them.
     // Otherwise, return raw status
-    return {
-      label: (translatedLabel && translatedLabel.label) || status,
-      status
-    };
+    return (translatedLabel && translatedLabel.label) || status;
   }
 
   // If no translations are available in the `Shops` collection, use raw status data
-  return {
-    label: status,
-    status
-  };
+  return status;
 }
