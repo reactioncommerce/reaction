@@ -10,7 +10,7 @@ import { xformRateToRateObject } from "@reactioncommerce/reaction-graphql-xforms
  * @return {Object} An object containing order pricing information from all fulfillmentGroups
  */
 export default async function orderSummary(context, order) {
-  const { shipping: fulfillmentMethods } = order;
+  const { currencyCode, shipping: fulfillmentMethods } = order;
   const totalDiscounts = [];
   const totalShipping = [];
   const totalSubtotal = [];
@@ -41,8 +41,6 @@ export default async function orderSummary(context, order) {
   const totalTaxesAmount = totalTaxes.reduce((acc, value) => acc + value, 0);
   const totalTotalAmount = totalTotal.reduce((acc, value) => acc + value, 0);
 
-  // Get currencyCode from first fulfilllmentMethod
-  const { currencyCode } = fulfillmentMethods[0];
   // Calculate effective tax rate of combined fulfillmentGroups
   const effectiveTaxRate = totalTaxableAmountAmount > 0 ? totalTaxesAmount / totalTaxableAmountAmount : 0;
 
