@@ -170,6 +170,51 @@ test("throws if the database update fails", async () => {
   })).rejects.toThrowErrorMatchingSnapshot();
 });
 
+test("skips permission check if context.isInternalCall", async () => {
+  mockContext.collections.Orders.findOne.mockReturnValueOnce(Promise.resolve({
+    shipping: [
+      Factory.OrderFulfillmentGroup.makeOne({
+        items: [
+          Factory.OrderItem.makeOne({
+            _id: "abc",
+            quantity: 1,
+            workflow: {
+              status: "new",
+              workflow: ["new"]
+            }
+          })
+        ],
+        workflow: {
+          status: "new",
+          workflow: ["new"]
+        }
+      })
+    ],
+    shopId: "SHOP_ID",
+    workflow: {
+      status: "new",
+      workflow: ["new"]
+    }
+  }));
+
+  mockContext.collections.Orders.findOneAndUpdate.mockReturnValueOnce(Promise.resolve({
+    modifiedCount: 1,
+    value: {}
+  }));
+
+  mockContext.isInternalCall = true;
+
+  await cancelOrderItem(mockContext, {
+    itemId: "abc",
+    orderId: "abc",
+    cancelQuantity: 1
+  });
+
+  delete mockContext.isInternalCall;
+
+  expect(mockContext.userHasPermission).not.toHaveBeenCalled();
+});
+
 test("cancels all of an item", async () => {
   const item1 = Factory.OrderItem.makeOne({
     _id: "ITEM_1",
