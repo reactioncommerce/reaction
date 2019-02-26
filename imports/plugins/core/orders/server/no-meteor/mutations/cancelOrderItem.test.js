@@ -1,0 +1,550 @@
+import cancelOrderItem from "./cancelOrderItem";
+import Factory from "/imports/test-utils/helpers/factory";
+import mockContext from "/imports/test-utils/helpers/mockContext";
+
+beforeEach(() => {
+  jest.resetAllMocks();
+});
+
+test("throws if orderId isn't supplied", async () => {
+  await expect(cancelOrderItem(mockContext, {
+    itemId: "abc",
+    cancelQuantity: 1
+  })).rejects.toThrowErrorMatchingSnapshot();
+});
+
+test("throws if itemId isn't supplied", async () => {
+  await expect(cancelOrderItem(mockContext, {
+    orderId: "abc",
+    cancelQuantity: 1
+  })).rejects.toThrowErrorMatchingSnapshot();
+});
+
+test("throws if cancelQuantity isn't supplied", async () => {
+  await expect(cancelOrderItem(mockContext, {
+    itemId: "abc",
+    orderId: "abc"
+  })).rejects.toThrowErrorMatchingSnapshot();
+});
+
+test("throws if cancelQuantity is 0", async () => {
+  await expect(cancelOrderItem(mockContext, {
+    itemId: "abc",
+    orderId: "abc",
+    cancelQuantity: 0
+  })).rejects.toThrowErrorMatchingSnapshot();
+});
+
+test("throws if cancelQuantity is negative", async () => {
+  await expect(cancelOrderItem(mockContext, {
+    itemId: "abc",
+    orderId: "abc",
+    cancelQuantity: -1
+  })).rejects.toThrowErrorMatchingSnapshot();
+});
+
+test("throws if the order doesn't exist", async () => {
+  mockContext.collections.Orders.findOne.mockReturnValueOnce(Promise.resolve(null));
+
+  await expect(cancelOrderItem(mockContext, {
+    itemId: "abc",
+    orderId: "abc",
+    cancelQuantity: 1
+  })).rejects.toThrowErrorMatchingSnapshot();
+});
+
+test("throws if the order item doesn't exist", async () => {
+  mockContext.collections.Orders.findOne.mockReturnValueOnce(Promise.resolve({
+    shipping: [
+      {
+        items: [
+          {
+            _id: "xyz",
+            workflow: {
+              status: "new",
+              workflow: ["new"]
+            }
+          }
+        ],
+        workflow: {
+          status: "new",
+          workflow: ["new"]
+        }
+      }
+    ],
+    shopId: "SHOP_ID",
+    workflow: {
+      status: "new",
+      workflow: ["new"]
+    }
+  }));
+
+  mockContext.userHasPermission.mockReturnValueOnce(true);
+
+  await expect(cancelOrderItem(mockContext, {
+    itemId: "abc",
+    orderId: "abc",
+    cancelQuantity: 1
+  })).rejects.toThrowErrorMatchingSnapshot();
+});
+
+test("throws if permission check fails", async () => {
+  mockContext.collections.Orders.findOne.mockReturnValueOnce(Promise.resolve({
+    shipping: [
+      {
+        items: []
+      }
+    ],
+    shopId: "SHOP_ID"
+  }));
+
+  mockContext.userHasPermission.mockReturnValueOnce(false);
+
+  await expect(cancelOrderItem(mockContext, {
+    itemId: "abc",
+    orderId: "abc",
+    cancelQuantity: 1
+  })).rejects.toThrowErrorMatchingSnapshot();
+
+  expect(mockContext.userHasPermission).toHaveBeenCalledWith(["orders"], "SHOP_ID");
+});
+
+test("throws if cancelQuantity is greater than item quantity", async () => {
+  mockContext.collections.Orders.findOne.mockReturnValueOnce(Promise.resolve({
+    shipping: [
+      {
+        items: [
+          { _id: "abc", quantity: 1 }
+        ]
+      }
+    ],
+    shopId: "SHOP_ID"
+  }));
+
+  mockContext.userHasPermission.mockReturnValueOnce(true);
+
+  await expect(cancelOrderItem(mockContext, {
+    itemId: "abc",
+    orderId: "abc",
+    cancelQuantity: 2
+  })).rejects.toThrowErrorMatchingSnapshot();
+});
+
+test("throws if the database update fails", async () => {
+  mockContext.collections.Orders.findOne.mockReturnValueOnce(Promise.resolve({
+    shipping: [
+      Factory.OrderFulfillmentGroup.makeOne({
+        items: [
+          Factory.OrderItem.makeOne({
+            _id: "abc",
+            quantity: 1,
+            workflow: {
+              status: "new",
+              workflow: ["new"]
+            }
+          })
+        ],
+        workflow: {
+          status: "new",
+          workflow: ["new"]
+        }
+      })
+    ],
+    shopId: "SHOP_ID",
+    workflow: {
+      status: "new",
+      workflow: ["new"]
+    }
+  }));
+
+  mockContext.userHasPermission.mockReturnValueOnce(true);
+
+  mockContext.collections.Orders.findOneAndUpdate.mockReturnValueOnce(Promise.resolve({
+    modifiedCount: 0
+  }));
+
+  await expect(cancelOrderItem(mockContext, {
+    itemId: "abc",
+    orderId: "abc",
+    cancelQuantity: 1
+  })).rejects.toThrowErrorMatchingSnapshot();
+});
+
+test("cancels all of an item", async () => {
+  const item1 = Factory.OrderItem.makeOne({
+    _id: "ITEM_1",
+    cancelReason: null,
+    quantity: 1,
+    workflow: {
+      status: "new",
+      workflow: ["new"]
+    }
+  });
+
+  const item2 = Factory.OrderItem.makeOne({
+    _id: "ITEM_2",
+    cancelReason: null,
+    quantity: 1,
+    workflow: {
+      status: "new",
+      workflow: ["new"]
+    }
+  });
+
+  const group = Factory.OrderFulfillmentGroup.makeOne({
+    items: [item1, item2]
+  });
+
+  mockContext.collections.Orders.findOne.mockReturnValueOnce(Promise.resolve({
+    _id: "ORDER_1",
+    shipping: [group],
+    shopId: "SHOP_ID",
+    workflow: {
+      status: "new",
+      workflow: ["new"]
+    }
+  }));
+
+  mockContext.userHasPermission.mockReturnValueOnce(true);
+
+  mockContext.collections.Orders.findOneAndUpdate.mockReturnValueOnce(Promise.resolve({
+    modifiedCount: 1,
+    value: {}
+  }));
+
+  await cancelOrderItem(mockContext, {
+    itemId: "ITEM_1",
+    orderId: "ORDER_1",
+    cancelQuantity: 1,
+    reason: "REASON"
+  });
+
+  expect(mockContext.collections.Orders.findOneAndUpdate).toHaveBeenCalledWith(
+    { _id: "ORDER_1" },
+    {
+      $set: {
+        shipping: [
+          {
+            ...group,
+            items: [
+              {
+                ...item1,
+                cancelReason: "REASON",
+                workflow: {
+                  status: "coreOrderItemWorkflow/canceled",
+                  workflow: ["new", "coreOrderItemWorkflow/canceled"]
+                }
+              },
+              item2
+            ]
+          }
+        ],
+        updatedAt: jasmine.any(Date),
+        workflow: {
+          status: "new",
+          workflow: ["new"]
+        }
+      }
+    },
+    { returnOriginal: false }
+  );
+});
+
+test("cancels some of an item", async () => {
+  const item1 = Factory.OrderItem.makeOne({
+    _id: "ITEM_1",
+    cancelReason: null,
+    quantity: 5,
+    workflow: {
+      status: "new",
+      workflow: ["new"]
+    }
+  });
+
+  const item2 = Factory.OrderItem.makeOne({
+    _id: "ITEM_2",
+    cancelReason: null,
+    quantity: 1,
+    workflow: {
+      status: "new",
+      workflow: ["new"]
+    }
+  });
+
+  const group = Factory.OrderFulfillmentGroup.makeOne({
+    items: [item1, item2]
+  });
+
+  mockContext.collections.Orders.findOne.mockReturnValueOnce(Promise.resolve({
+    _id: "ORDER_1",
+    shipping: [group],
+    shopId: "SHOP_ID",
+    workflow: {
+      status: "new",
+      workflow: ["new"]
+    }
+  }));
+
+  mockContext.userHasPermission.mockReturnValueOnce(true);
+
+  mockContext.collections.Orders.findOneAndUpdate.mockReturnValueOnce(Promise.resolve({
+    modifiedCount: 1,
+    value: {}
+  }));
+
+  await cancelOrderItem(mockContext, {
+    itemId: "ITEM_1",
+    orderId: "ORDER_1",
+    cancelQuantity: 2,
+    reason: "REASON"
+  });
+
+  expect(mockContext.collections.Orders.findOneAndUpdate).toHaveBeenCalledWith(
+    { _id: "ORDER_1" },
+    {
+      $set: {
+        shipping: [
+          {
+            ...group,
+            items: [
+              {
+                ...item1,
+                cancelReason: "REASON",
+                quantity: 2,
+                workflow: {
+                  status: "coreOrderItemWorkflow/canceled",
+                  workflow: ["new", "coreOrderItemWorkflow/canceled"]
+                }
+              },
+              item2,
+              {
+                ...item1,
+                _id: jasmine.any(String),
+                quantity: 3,
+                workflow: {
+                  status: "new",
+                  workflow: ["new"]
+                }
+              }
+            ]
+          }
+        ],
+        updatedAt: jasmine.any(Date),
+        workflow: {
+          status: "new",
+          workflow: ["new"]
+        }
+      }
+    },
+    { returnOriginal: false }
+  );
+});
+
+test("cancels the group if all items are canceled", async () => {
+  const item1 = Factory.OrderItem.makeOne({
+    _id: "ITEM_1",
+    cancelReason: null,
+    quantity: 1,
+    workflow: {
+      status: "new",
+      workflow: ["new"]
+    }
+  });
+
+  const item2 = Factory.OrderItem.makeOne({
+    _id: "ITEM_2",
+    cancelReason: null,
+    quantity: 1,
+    workflow: {
+      status: "coreOrderItemWorkflow/canceled",
+      workflow: ["new", "coreOrderItemWorkflow/canceled"]
+    }
+  });
+
+  const group1 = Factory.OrderFulfillmentGroup.makeOne({
+    items: [item1, item2],
+    workflow: {
+      status: "new",
+      workflow: ["new"]
+    }
+  });
+
+  const group2 = Factory.OrderFulfillmentGroup.makeOne({
+    items: Factory.OrderItem.makeMany(3, {
+      workflow: {
+        status: "new",
+        workflow: ["new"]
+      }
+    }),
+    workflow: {
+      status: "new",
+      workflow: ["new"]
+    }
+  });
+
+  mockContext.collections.Orders.findOne.mockReturnValueOnce(Promise.resolve({
+    _id: "ORDER_1",
+    shipping: [group1, group2],
+    shopId: "SHOP_ID",
+    workflow: {
+      status: "new",
+      workflow: ["new"]
+    }
+  }));
+
+  mockContext.userHasPermission.mockReturnValueOnce(true);
+
+  mockContext.collections.Orders.findOneAndUpdate.mockReturnValueOnce(Promise.resolve({
+    modifiedCount: 1,
+    value: {}
+  }));
+
+  await cancelOrderItem(mockContext, {
+    itemId: "ITEM_1",
+    orderId: "ORDER_1",
+    cancelQuantity: 1
+  });
+
+  expect(mockContext.collections.Orders.findOneAndUpdate).toHaveBeenCalledWith(
+    { _id: "ORDER_1" },
+    {
+      $set: {
+        shipping: [
+          {
+            ...group1,
+            items: [
+              {
+                ...item1,
+                cancelReason: null,
+                workflow: {
+                  status: "coreOrderItemWorkflow/canceled",
+                  workflow: ["new", "coreOrderItemWorkflow/canceled"]
+                }
+              },
+              item2
+            ],
+            workflow: {
+              status: "coreOrderWorkflow/canceled",
+              workflow: ["new", "coreOrderWorkflow/canceled"]
+            }
+          },
+          group2
+        ],
+        updatedAt: jasmine.any(Date),
+        workflow: {
+          status: "new",
+          workflow: ["new"]
+        }
+      }
+    },
+    { returnOriginal: false }
+  );
+});
+
+test("cancels the order and emits afterOrderCancel if all groups are canceled", async () => {
+  const item1 = Factory.OrderItem.makeOne({
+    _id: "ITEM_1",
+    cancelReason: null,
+    quantity: 1,
+    workflow: {
+      status: "new",
+      workflow: ["new"]
+    }
+  });
+
+  const item2 = Factory.OrderItem.makeOne({
+    _id: "ITEM_2",
+    cancelReason: null,
+    quantity: 1,
+    workflow: {
+      status: "coreOrderItemWorkflow/canceled",
+      workflow: ["new", "coreOrderItemWorkflow/canceled"]
+    }
+  });
+
+  const group1 = Factory.OrderFulfillmentGroup.makeOne({
+    items: [item1, item2],
+    workflow: {
+      status: "new",
+      workflow: ["new"]
+    }
+  });
+
+  const group2 = Factory.OrderFulfillmentGroup.makeOne({
+    items: Factory.OrderItem.makeMany(3, {
+      workflow: {
+        status: "coreOrderItemWorkflow/canceled",
+        workflow: ["new", "coreOrderItemWorkflow/canceled"]
+      }
+    }),
+    workflow: {
+      status: "coreOrderWorkflow/canceled",
+      workflow: ["new", "coreOrderWorkflow/canceled"]
+    }
+  });
+
+  mockContext.collections.Orders.findOne.mockReturnValueOnce(Promise.resolve({
+    _id: "ORDER_1",
+    shipping: [group1, group2],
+    shopId: "SHOP_ID",
+    workflow: {
+      status: "new",
+      workflow: ["new"]
+    }
+  }));
+
+  mockContext.userHasPermission.mockReturnValueOnce(true);
+
+  mockContext.collections.Orders.findOneAndUpdate.mockReturnValueOnce(Promise.resolve({
+    modifiedCount: 1,
+    value: {}
+  }));
+
+  await cancelOrderItem(mockContext, {
+    itemId: "ITEM_1",
+    orderId: "ORDER_1",
+    cancelQuantity: 1
+  });
+
+  expect(mockContext.collections.Orders.findOneAndUpdate).toHaveBeenCalledWith(
+    { _id: "ORDER_1" },
+    {
+      $set: {
+        shipping: [
+          {
+            ...group1,
+            items: [
+              {
+                ...item1,
+                cancelReason: null,
+                workflow: {
+                  status: "coreOrderItemWorkflow/canceled",
+                  workflow: ["new", "coreOrderItemWorkflow/canceled"]
+                }
+              },
+              {
+                ...item2,
+                cancelReason: null,
+                workflow: {
+                  status: "coreOrderItemWorkflow/canceled",
+                  workflow: ["new", "coreOrderItemWorkflow/canceled"]
+                }
+              }
+            ],
+            workflow: {
+              status: "coreOrderWorkflow/canceled",
+              workflow: ["new", "coreOrderWorkflow/canceled"]
+            }
+          },
+          group2
+        ],
+        updatedAt: jasmine.any(Date),
+        workflow: {
+          status: "coreOrderWorkflow/canceled",
+          workflow: ["new", "coreOrderWorkflow/canceled"]
+        }
+      }
+    },
+    { returnOriginal: false }
+  );
+});
