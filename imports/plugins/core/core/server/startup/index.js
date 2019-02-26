@@ -13,12 +13,20 @@ import RegisterCore from "./register-core";
 import RegisterRouter from "./register-router";
 import setupCdn from "./cdn";
 
+const { REACTION_METEOR_APP_COMMAND_START_TIME } = process.env;
+
 /**
  * @summary Core startup function
  * @returns {undefined}
  */
 export default function startup() {
   const startTime = Date.now();
+
+  // This env may be set by the launch script, allowing us to time how long Meteor build/startup took.
+  if (REACTION_METEOR_APP_COMMAND_START_TIME) {
+    const elapsedMs = startTime - Number(REACTION_METEOR_APP_COMMAND_START_TIME);
+    Logger.info(`Meteor startup finished: ${elapsedMs}ms (This is incorrect if this is a restart.)`);
+  }
 
   setupCdn();
   Accounts();
