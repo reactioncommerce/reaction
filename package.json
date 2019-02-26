@@ -54,7 +54,7 @@
     "autoprefixer": "^7.2.5",
     "autosize": "^4.0.0",
     "body-parser": "^1.18.2",
-    "bootstrap": "^3.4.0",
+    "bootstrap": "^3.4.1",
     "classnames": "^2.2.5",
     "connect": "^3.6.6",
     "connect-route": "^0.1.5",
