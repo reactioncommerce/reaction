@@ -138,7 +138,7 @@ class VariantListContainer extends Component {
     ReactionProduct.setCurrentVariant(variant._id);
     Session.set(`variant-form-${editVariant._id}`, true);
 
-    if (Reaction.hasPermission("createProduct") && !Reaction.isPreview()) {
+    if (Reaction.hasPermission("createProduct")) {
       this.setState({ selectedVariant: variant });
     }
 
