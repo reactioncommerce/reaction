@@ -142,6 +142,9 @@ type OrderItem implements Node {
   "The shop associated with this cart item."
   shop: Shop!
 
+  "The machine-readable order item status."
+  status: String!
+
   "The price of the item multiplied by the quantity of this item ordered"
   subtotal: Money!
 
@@ -176,6 +179,9 @@ type OrderFulfillmentGroup implements Node {
 
   "The shop responsible for fulfilling this order"
   shop: Shop!
+
+  "The machine-readable fulfillment group status."
+  status: String!
 
   "A summary of the totals for this group"
   summary: OrderSummary!
@@ -226,6 +232,9 @@ type Order implements Node {
 
   "The shop through which the order was placed"
   shop: Shop!
+
+  "The machine-readable order status."
+  status: String!
 
   "Total quantity of all items in the order"
   totalItemQuantity: Int!
