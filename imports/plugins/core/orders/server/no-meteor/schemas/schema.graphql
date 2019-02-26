@@ -5,7 +5,7 @@ extend type Query {
   "Get all orders for a single account, optionally limited to certain shop IDs and certain orderStatus"
   ordersByAccountId(
     accountId: ID!
-    orderStatus: String
+    orderStatus: [String]
     shopIds: [ID]
 
     after: ConnectionCursor,

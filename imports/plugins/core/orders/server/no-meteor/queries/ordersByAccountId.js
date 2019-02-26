@@ -24,30 +24,14 @@ export default async function ordersByAccountId(context, { accountId, orderStatu
     accountId
   };
 
-  // Limit which orders are returned
-  switch (orderStatus) {
-    case "canceled":
-      query = {
-        "workflow.status": { $eq: "coreOrderWorkflow/canceled" },
-        ...query
-      };
-      break;
-    case "completed":
-      query = {
-        "workflow.status": { $eq: "coreOrderWorkflow/completed" },
-        ...query
-      };
-      break;
-    case "open":
-      query = {
-        "workflow.status": { $nin: ["coreOrderWorkflow/canceled", "coreOrderWorkflow/completed"] },
-        ...query
-      };
-      break;
-    default:
-      break;
+  // If orderStatus array is provided, only return orders with statuses in Array
+  // Otherwise, return all orders
+  if (Array.isArray(orderStatus) && orderStatus.length > 0) {
+    query = {
+      "workflow.status": { $in: orderStatus },
+      ...query
+    };
   }
-
 
   if (shopIds) query.shopId = { $in: shopIds };
 
