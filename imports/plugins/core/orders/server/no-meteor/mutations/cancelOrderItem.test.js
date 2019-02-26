@@ -109,6 +109,88 @@ test("throws if permission check fails", async () => {
   expect(mockContext.userHasPermission).toHaveBeenCalledWith(["orders"], "SHOP_ID");
 });
 
+test("throws if user who placed order tries to cancel at invalid current item status", async () => {
+  const accountId = "ACCOUNT_ID";
+
+  mockContext.collections.Orders.findOne.mockReturnValueOnce(Promise.resolve({
+    accountId,
+    shipping: [
+      Factory.OrderFulfillmentGroup.makeOne({
+        items: [
+          Factory.OrderItem.makeOne({
+            _id: "ITEM_1",
+            quantity: 1,
+            workflow: {
+              status: "processing",
+              workflow: ["new", "processing"]
+            }
+          })
+        ],
+        workflow: {
+          status: "new",
+          workflow: ["new"]
+        }
+      })
+    ],
+    shopId: "SHOP_ID",
+    workflow: {
+      status: "new",
+      workflow: ["new"]
+    }
+  }));
+
+  mockContext.accountId = accountId;
+
+  await expect(cancelOrderItem(mockContext, {
+    itemId: "ITEM_1",
+    orderId: "ORDER_1",
+    cancelQuantity: 1
+  })).rejects.toThrowErrorMatchingSnapshot();
+
+  mockContext.accountId = null;
+});
+
+test("throws if user who placed order tries to cancel at invalid current order status", async () => {
+  const accountId = "ACCOUNT_ID";
+
+  mockContext.collections.Orders.findOne.mockReturnValueOnce(Promise.resolve({
+    accountId,
+    shipping: [
+      Factory.OrderFulfillmentGroup.makeOne({
+        items: [
+          Factory.OrderItem.makeOne({
+            _id: "ITEM_1",
+            quantity: 1,
+            workflow: {
+              status: "new",
+              workflow: ["new"]
+            }
+          })
+        ],
+        workflow: {
+          status: "new",
+          workflow: ["new"]
+        }
+      })
+    ],
+    shopId: "SHOP_ID",
+    workflow: {
+      status: "processing",
+      workflow: ["new", "processing"]
+    }
+  }));
+
+  mockContext.accountId = accountId;
+
+  await expect(cancelOrderItem(mockContext, {
+    itemId: "ITEM_1",
+    orderId: "ORDER_1",
+    cancelQuantity: 1
+  })).rejects.toThrowErrorMatchingSnapshot();
+
+  mockContext.accountId = null;
+});
+
 test("throws if cancelQuantity is greater than item quantity", async () => {
   mockContext.collections.Orders.findOne.mockReturnValueOnce(Promise.resolve({
     shipping: [

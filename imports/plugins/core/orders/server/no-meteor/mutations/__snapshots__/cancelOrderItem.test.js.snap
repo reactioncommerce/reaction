@@ -19,3 +19,7 @@ exports[`throws if the database update fails 1`] = `"Unable to update order"`;
 exports[`throws if the order doesn't exist 1`] = `"Order not found"`;
 
 exports[`throws if the order item doesn't exist 1`] = `"Order item not found"`;
+
+exports[`throws if user who placed order tries to cancel at invalid current item status 1`] = `"Item status (processing) is not one of: new"`;
+
+exports[`throws if user who placed order tries to cancel at invalid current order status 1`] = `"Order status (processing) is not one of: new"`;

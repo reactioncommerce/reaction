@@ -6,6 +6,10 @@ import { Order as OrderSchema } from "/imports/collections/schemas";
 const canceledStatus = "coreOrderWorkflow/canceled";
 const itemCanceledStatus = "coreOrderItemWorkflow/canceled";
 
+// These should eventually be configurable in settings
+const itemStatusesThatOrdererCanCancel = ["new"];
+const orderStatusesThatOrdererCanCancel = ["new"];
+
 const inputSchema = new SimpleSchema({
   cancelQuantity: {
     type: SimpleSchema.Integer,
@@ -52,6 +56,12 @@ export default async function cancelOrderItem(context, input) {
     throw new ReactionError("access-denied", "Access Denied");
   }
 
+  const accountIsOrderer = (order.accountId && accountId === order.accountId);
+
+  if (accountIsOrderer && !orderStatusesThatOrdererCanCancel.includes(order.workflow.status)) {
+    throw new ReactionError("invalid", `Order status (${order.workflow.status}) is not one of: ${orderStatusesThatOrdererCanCancel.join(", ")}`);
+  }
+
   // Find and cancel the item
   let foundItem = false;
   const updatedGroups = order.shipping.map((group) => {
@@ -59,6 +69,10 @@ export default async function cancelOrderItem(context, input) {
     const updatedItems = group.items.map((item) => {
       if (item._id !== itemId) return item;
       foundItem = true;
+
+      if (accountIsOrderer && !itemStatusesThatOrdererCanCancel.includes(item.workflow.status)) {
+        throw new ReactionError("invalid", `Item status (${item.workflow.status}) is not one of: ${itemStatusesThatOrdererCanCancel.join(", ")}`);
+      }
 
       if (item.quantity > cancelQuantity) {
         itemToAdd = {
