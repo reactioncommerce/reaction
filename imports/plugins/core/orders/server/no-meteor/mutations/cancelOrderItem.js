@@ -36,13 +36,15 @@ export default async function cancelOrderItem(context, input) {
     reason = null
   } = input;
 
-  const { appEvents, collections, userHasPermission, userId } = context;
+  const { accountId, appEvents, collections, userHasPermission, userId } = context;
   const { Orders } = collections;
 
   const order = await Orders.findOne({ _id: orderId });
   if (!order) throw new ReactionError("not-found", "Order not found");
 
-  if (!userHasPermission(["orders"], order.shopId)) {
+  // Allowed if the account that placed the order is attempting to cancel
+  // or if the account has "orders" permission.
+  if ((!accountId || accountId !== order.accountId) && !userHasPermission(["orders"], order.shopId)) {
     throw new ReactionError("access-denied", "Access Denied");
   }
 
