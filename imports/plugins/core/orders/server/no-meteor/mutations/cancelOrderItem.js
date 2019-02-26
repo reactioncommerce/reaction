@@ -3,8 +3,14 @@ import ReactionError from "@reactioncommerce/reaction-error";
 import Random from "@reactioncommerce/random";
 import { Order as OrderSchema } from "/imports/collections/schemas";
 
+const canceledStatus = "coreOrderWorkflow/canceled";
+const itemCanceledStatus = "coreOrderItemWorkflow/canceled";
+
 const inputSchema = new SimpleSchema({
-  cancelQuantity: SimpleSchema.Integer,
+  cancelQuantity: {
+    type: SimpleSchema.Integer,
+    min: 1
+  },
   itemId: String,
   orderId: String,
   reason: {
@@ -27,7 +33,7 @@ export default async function cancelOrderItem(context, input) {
     orderId,
     itemId,
     cancelQuantity,
-    reason
+    reason = null
   } = input;
 
   const { appEvents, collections, userHasPermission, userId } = context;
@@ -63,8 +69,8 @@ export default async function cancelOrderItem(context, input) {
         cancelReason: reason,
         quantity: cancelQuantity,
         workflow: {
-          status: "coreOrderItemWorkflow/canceled",
-          workflow: [...item.workflow.workflow, "coreOrderItemWorkflow/canceled"]
+          status: itemCanceledStatus,
+          workflow: [...item.workflow.workflow, itemCanceledStatus]
         }
       };
     });
@@ -75,11 +81,11 @@ export default async function cancelOrderItem(context, input) {
 
     // If all items are canceled, set the group status to canceled
     let updatedGroupWorkflow = group.workflow;
-    const allItemsAreCanceled = updatedItems.every((item) => item.workflow.status === "coreOrderItemWorkflow/canceled");
-    if (allItemsAreCanceled) {
+    const allItemsAreCanceled = updatedItems.every((item) => item.workflow.status === itemCanceledStatus);
+    if (allItemsAreCanceled && updatedGroupWorkflow.status !== canceledStatus) {
       updatedGroupWorkflow = {
-        status: "coreOrderWorkflow/canceled",
-        workflow: [...updatedGroupWorkflow.workflow, "coreOrderWorkflow/canceled"]
+        status: canceledStatus,
+        workflow: [...updatedGroupWorkflow.workflow, canceledStatus]
       };
     }
 
@@ -91,11 +97,11 @@ export default async function cancelOrderItem(context, input) {
   // If all groups are canceled, set the order status to canceled
   let updatedOrderWorkflow = order.workflow;
   let fullOrderWasCanceled = false;
-  const allGroupsAreCanceled = updatedGroups.every((group) => group.workflow.status === "coreOrderWorkflow/canceled");
-  if (allGroupsAreCanceled) {
+  const allGroupsAreCanceled = updatedGroups.every((group) => group.workflow.status === canceledStatus);
+  if (allGroupsAreCanceled && updatedOrderWorkflow.status !== canceledStatus) {
     updatedOrderWorkflow = {
-      status: "coreOrderWorkflow/canceled",
-      workflow: [...updatedOrderWorkflow.workflow, "coreOrderWorkflow/canceled"]
+      status: canceledStatus,
+      workflow: [...updatedOrderWorkflow.workflow, canceledStatus]
     };
     fullOrderWasCanceled = true;
   }
@@ -115,7 +121,7 @@ export default async function cancelOrderItem(context, input) {
     modifier,
     { returnOriginal: false }
   );
-  if (modifiedCount === 0) throw new ReactionError("server-error", "Unable to update order");
+  if (modifiedCount === 0 || !updatedOrder) throw new ReactionError("server-error", "Unable to update order");
 
   await appEvents.emit("afterOrderUpdate", {
     order: updatedOrder,
