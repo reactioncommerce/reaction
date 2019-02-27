@@ -267,6 +267,18 @@ jobs:
           command: |
             docker run -t -e URL=${STAGING_URL} reactioncommerce/reaction-automation-client:latest npm run-script chrome
 
+  test-metrics:
+    <<: *defaults
+    steps:
+      - run:
+          name: Install Calibre CLI
+          command: |
+            sudo npm install -g calibre
+      - run:
+          name: California
+          command: |
+            calibre test create ${STAGING_URL} --location=California --connection=cable
+
   dockerfile-lint:
     <<: *defaults
     docker:
@@ -338,6 +350,9 @@ workflows:
       - test-e2e:
           requires:
             - deploy-to-ecs-release-branch
+      - test-metrics:
+          requires:
+            - build
       - eslint:
           requires:
             - build
