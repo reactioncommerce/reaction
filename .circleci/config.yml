@@ -277,7 +277,8 @@ jobs:
       - run:
           name: California
           command: |
-            ./node_modules/calibre/bin/linux/calibre test create ${STAGING_URL} --location=California --connection=cable
+            ./node_modules/calibre/bin/linux/calibre test create ${STAGING_URL} --location=California --connection=cable && 
+            ./node_modules/calibre/bin/linux/calibre calibre site create-snapshot --site reaction-core-california
       - run:
           name: North Virginia
           command: |
