@@ -1,4 +1,5 @@
 import { getHasPermissionFunctionForUser } from "/imports/plugins/core/accounts/server/no-meteor/hasPermission";
+import { getShopsUserHasPermissionForFunctionForUser } from "/imports/plugins/core/accounts/server/no-meteor/shopsUserHasPermissionFor";
 import getShopIdForContext from "/imports/plugins/core/accounts/server/no-meteor/getShopIdForContext";
 import getRootUrl from "/imports/plugins/core/core/server/util/getRootUrl";
 import getAbsoluteUrl from "/imports/plugins/core/core/server/util/getAbsoluteUrl";
@@ -37,6 +38,9 @@ export default async function buildContext(context, request = {}) {
 
   // Add a curried hasPermission tied to the current user (or to no user)
   context.userHasPermission = getHasPermissionFunctionForUser(context.user);
+
+  // Add array of all shopsIds user has permissions for
+  context.shopsUserHasPermissionFor = getShopsUserHasPermissionForFunctionForUser(context.user);
 
   context.rootUrl = getRootUrl(request);
   context.getAbsoluteUrl = (path) => getAbsoluteUrl(context.rootUrl, path);
