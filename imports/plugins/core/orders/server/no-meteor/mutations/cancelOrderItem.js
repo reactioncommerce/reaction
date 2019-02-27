@@ -176,7 +176,7 @@ export default async function cancelOrderItem(context, input) {
 
   if (fullOrderWasCanceled) {
     await appEvents.emit("afterOrderCancel", {
-      cancelledBy: userId,
+      canceledBy: userId,
       order: updatedOrder
     });
   }
