@@ -277,7 +277,7 @@ jobs:
       - run:
           name: California
           command: |
-            ./node_modules/calibre/bin/linux/calibre test create ${STAGING_URL} --location=California --connection=cable && ./node_modules/calibre/bin/linux/calibre calibre site create-snapshot --site reaction-core-california
+            ./node_modules/calibre/bin/linux/calibre test create ${STAGING_URL} --location=California --connection=cable
       - run:
           name: North Virginia
           command: |
@@ -290,7 +290,10 @@ jobs:
           name: Frankfurt
           command: |
             ./node_modules/calibre/bin/linux/calibre test create ${STAGING_URL} --location=Frankfurt --connection=cable
-
+      - run: 
+          name: Snapshots
+          command: |
+            ./node_modules/calibre/bin/linux/calibre calibre site create-snapshot --site reaction-core-california
 
   dockerfile-lint:
     <<: *defaults
