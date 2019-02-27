@@ -283,22 +283,18 @@ jobs:
           name: North Virginia
           command: |
             ./node_modules/calibre/bin/linux/calibre test create ${STAGING_URL} --location=NorthVirginia --connection=cable
+            # ./node_modules/calibre/bin/linux/calibre site create-snapshot --site reaction-core-northvirginia
       - run:
           name: London
           command: |
             ./node_modules/calibre/bin/linux/calibre test create ${STAGING_URL} --location=London --connection=cable
+            # ./node_modules/calibre/bin/linux/calibre site create-snapshot --site reaction-core-london
       - run:
           name: Frankfurt
           command: |
             ./node_modules/calibre/bin/linux/calibre test create ${STAGING_URL} --location=Frankfurt --connection=cable
-      # - run: 
-      #     name: Snapshots
-      #     command: |
-      #       # ./node_modules/calibre/bin/linux/calibre site create-snapshot --site reaction-core-california
-      #       # ./node_modules/calibre/bin/linux/calibre site create-snapshot --site reaction-core-northvirginia
-      #       # ./node_modules/calibre/bin/linux/calibre site create-snapshot --site reaction-core-london
-      #       # ./node_modules/calibre/bin/linux/calibre site create-snapshot --site reaction-core-frankfurt
-
+            # ./node_modules/calibre/bin/linux/calibre site create-snapshot --site reaction-core-frankfurt
+ 
   dockerfile-lint:
     <<: *defaults
     docker:
@@ -370,7 +366,9 @@ workflows:
       - test-e2e:
           requires:
             - deploy-to-ecs-release-branch
-      - test-metrics
+      - test-metrics:
+          requires:
+            - deploy-to-ecs-release-branch
       - eslint:
           requires:
             - build
