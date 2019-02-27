@@ -269,21 +269,15 @@ jobs:
 
   test-metrics:
     <<: *defaults
-    docker:
-      - image: circleci/node:11
     steps:
-      - run:
-          name: Symlink for node_modules
-          command: |
-            ln -s /usr/bin/nodejs /usr/bin/node
       - run:
           name: Install Calibre CLI
           command: |
-            npm install calibre
+            sudo npm install calibre
       - run:
           name: California
           command: |
-            calibre test create ${STAGING_URL} --location=California --connection=cable
+            ./node_modules/calibre/bin/linux/calibre test create ${STAGING_URL} --location=California --connection=cable
 
   dockerfile-lint:
     <<: *defaults
