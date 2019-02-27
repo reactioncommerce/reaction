@@ -9,6 +9,7 @@ import defineCollections from "../imports/node-app/core/util/defineCollections";
 import Factory from "../imports/test-utils/helpers/factory";
 import hashLoginToken from "../imports/node-app/core/util/hashLoginToken";
 import setUpFileCollections from "../imports/plugins/core/files/server/no-meteor/setUpFileCollections";
+import coreMediaXform from "../imports/plugins/core/files/server/no-meteor/xforms/xformFileCollectionsProductMedia";
 import mutations from "../imports/node-app/devserver/mutations";
 import queries from "../imports/node-app/devserver/queries";
 import schemas from "../imports/node-app/devserver/schemas";
@@ -20,7 +21,17 @@ class TestApp {
     this.context = {
       appEvents,
       collections: this.collections,
-      getFunctionsOfType: () => [],
+      getFunctionsOfType: (type) => {
+        let funcs;
+        switch (type) {
+          case "xformCatalogProductMedia":
+            funcs = [coreMediaXform];
+            break;
+          default:
+            funcs = [];
+        }
+        return funcs;
+      },
       mutations,
       queries
     };
