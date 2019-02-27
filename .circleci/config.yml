@@ -281,7 +281,7 @@ jobs:
       - run:
           name: North Virginia
           command: |
-            ./node_modules/calibre/bin/linux/calibre test create ${STAGING_URL} --location=NorthVirginia--connection=cable
+            ./node_modules/calibre/bin/linux/calibre test create ${STAGING_URL} --location=NorthVirginia --connection=cable
       - run:
           name: London
           command: |
