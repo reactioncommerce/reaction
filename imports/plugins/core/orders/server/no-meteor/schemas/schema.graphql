@@ -2,8 +2,21 @@ extend type Query {
   "Get an order by its ID"
   orderById(id: ID!, shopId: ID!, token: String): Order
 
-  "Get all orders for a single account, optionally limited to certain shop IDs"
-  ordersByAccountId(accountId: ID!, shopIds: [ID]): [Order]!
+  "Get all orders for a single account, optionally limited to certain shop IDs and certain orderStatus"
+  ordersByAccountId(
+    accountId: ID!
+    orderStatus: [String]
+    shopIds: [ID]
+
+    after: ConnectionCursor,
+    before: ConnectionCursor,
+    first: ConnectionLimitInt,
+    last: ConnectionLimitInt,
+    sortOrder: SortOrder = desc,
+
+    "By default, items are sorted by when they were created, newest first. Set this to sort by one of the other allowed fields"
+    sortBy: OrdersByAccountIdSortByField = createdAt
+  ): OrdersByAccountIdConnection!
 
   "Get an order by its reference ID (the ID shown to customers)"
   orderByReferenceId(id: ID!, shopId: ID!, token: String): Order
@@ -20,6 +33,26 @@ extend type Mutation {
 enum OrderFulfillmentGroupItemsSortByField {
   _id
   addedAt
+}
+
+"The fields by which you are allowed to sort any query that returns a `NavigationItemConnection`"
+enum OrdersByAccountIdSortByField {
+  _id
+  createdAt
+}
+
+"Wraps a list of `Order`s, providing pagination cursors and information."
+type OrdersByAccountIdConnection implements NodeConnection {
+  edges: [OrdersByAccountIdEdge]
+  nodes: [Order]
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
+"A connection edge in which each node is a `Order` object"
+type OrdersByAccountIdEdge implements NodeEdge {
+  cursor: ConnectionCursor!
+  node: Order
 }
 
 "Wraps a list of `OrderItem`s, providing pagination cursors and information."
@@ -173,6 +206,11 @@ type OrderFulfillmentGroup implements Node {
   The fulfillment type. Any valid type that has been registered by a fulfillment plugin. Examples: "shipping", "digital"
   """
   type: FulfillmentType!
+
+  """
+  The order fulfillment group shipment tracking number
+  """
+  tracking: String
 }
 
 "An order"
@@ -188,6 +226,9 @@ type Order implements Node {
 
   "The date and time at which the cart was created, which is when the first item was added to it."
   createdAt: DateTime!
+
+  "The order status for display in UI"
+  displayStatus(language: String!): String!
 
   "An email address that has been associated with the cart"
   email: String
@@ -212,6 +253,12 @@ type Order implements Node {
 
   "The shop through which the order was placed"
   shop: Shop!
+
+  "The machine-readable order status."
+  status: String!
+
+  "A summary of the totals for all fulfillment groups for this order"
+  summary: OrderSummary!
 
   "Total quantity of all items in the order"
   totalItemQuantity: Int!

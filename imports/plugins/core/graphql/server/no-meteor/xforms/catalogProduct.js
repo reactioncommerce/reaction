@@ -7,29 +7,23 @@ export const decodeCatalogProductOpaqueId = decodeOpaqueIdForNamespace(namespace
 export const encodeCatalogProductOpaqueId = encodeOpaqueId(namespaces.CatalogProduct);
 
 /**
- * @name xformProductMedia
+ * @name xformCatalogProductMedia
  * @method
  * @memberof GraphQL/Transforms
- * @param {Object} mediaItem object from a catalog product
- * @param {Object} context - an object containing the per-request state
- * @return {Object} transformed product media item
+ * @summary Transforms DB media object to final GraphQL result. Calls functions plugins have registered for type
+ *  "xformCatalogProductMedia". First to return an object is returned here
+ * @param {Object} mediaItem Media item object. See ImageInfo SimpleSchema
+ * @param {Object} context Request context
+ * @return {Object|null} Transformed media item or null
  */
-export function xformProductMedia(mediaItem, context) {
-  if (!(mediaItem && mediaItem.URLs)) return null;
-
-  const { priority, toGrid, productId, variantId, URLs: { large, medium, original, small, thumbnail } } = mediaItem;
-
-  return {
-    priority,
-    toGrid,
-    productId,
-    variantId,
-    URLs: {
-      large: context.getAbsoluteUrl(large),
-      medium: context.getAbsoluteUrl(medium),
-      original: context.getAbsoluteUrl(original),
-      small: context.getAbsoluteUrl(small),
-      thumbnail: context.getAbsoluteUrl(thumbnail)
+export async function xformCatalogProductMedia(mediaItem, context) {
+  const xformCatalogProductMediaFuncs = context.getFunctionsOfType("xformCatalogProductMedia");
+  for (const func of xformCatalogProductMediaFuncs) {
+    const xformedMediaItem = await func(mediaItem, context); // eslint-disable-line no-await-in-loop
+    if (xformedMediaItem) {
+      return xformedMediaItem;
     }
-  };
+  }
+
+  return null;
 }
