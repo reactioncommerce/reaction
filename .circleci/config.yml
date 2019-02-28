@@ -366,7 +366,7 @@ workflows:
             - deploy-to-ecs-release-branch
       - test-metrics:
           requires: 
-            - deploy-to-ecs
+            - deploy-to-ecs-release-branch
       - eslint:
           requires:
             - build
