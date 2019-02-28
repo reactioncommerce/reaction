@@ -279,19 +279,19 @@ jobs:
       - run:
           name: California
           command: |
-            ./circleci/bin/calibre-deploy.sh ${STAGING_URL} California
+            .circleci/bin/calibre-deploy.sh ${STAGING_URL} California
       - run:
           name: North Virginia
           command: |
-            ./circleci/bin/calibre-deploy.sh ${STAGING_URL} NorthVirginia
+            .circleci/bin/calibre-deploy.sh ${STAGING_URL} NorthVirginia
       - run:
           name: London
           command: |
-            ./circleci/bin/calibre-deploy.sh ${STAGING_URL} London
+            .circleci/bin/calibre-deploy.sh ${STAGING_URL} London
       - run:
           name: Frankfurt
           command: |
-            ./circleci/bin/calibre-deploy.sh ${STAGING_URL} Frankfurt
+            .circleci/bin/calibre-deploy.sh ${STAGING_URL} Frankfurt
  
   dockerfile-lint:
     <<: *defaults
