@@ -274,6 +274,7 @@ jobs:
       - run:
           name: Install Calibre CLI
           command: |
+            cd ~
             sudo npm install calibre
       - run:
           name: California
