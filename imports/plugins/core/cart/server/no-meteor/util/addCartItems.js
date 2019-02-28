@@ -35,7 +35,7 @@ const inputItemSchema = new SimpleSchema({
  *   Skipping this is not recommended for new code.
  * @return {Object} Object with `incorrectPriceFailures` and `minOrderQuantityFailures` and `updatedItemList` props
  */
-export default async function addCartItems(collections, currentItems, inputItems, options = {}) {
+export default async function addCartItems(collections, queries, currentItems, inputItems, options = {}) {
   inputItemSchema.validate(inputItems);
 
   const incorrectPriceFailures = [];
@@ -57,7 +57,7 @@ export default async function addCartItems(collections, currentItems, inputItems
       variant: chosenVariant
     } = await findProductAndVariant(collections, productId, productVariantId);
 
-    const variantPriceInfo = chosenVariant.pricing[price.currencyCode];
+    const variantPriceInfo = queries.getCartPrice(chosenVariant, price);
     if (!variantPriceInfo) {
       throw new ReactionError("invalid-param", `This product variant does not have a price for ${price.currencyCode}`);
     }

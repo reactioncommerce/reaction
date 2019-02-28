@@ -18,7 +18,7 @@ import addCartItemsUtil from "../util/addCartItems";
  */
 export default async function addCartItems(context, input, options = {}) {
   const { cartId, items, token } = input;
-  const { appEvents, collections, accountId = null, userId = null } = context;
+  const { appEvents, collections, queries, accountId = null, userId = null } = context;
   const { Cart } = collections;
 
   let selector;
@@ -43,7 +43,7 @@ export default async function addCartItems(context, input, options = {}) {
     incorrectPriceFailures,
     minOrderQuantityFailures,
     updatedItemList
-  } = await addCartItemsUtil(collections, cart.items, items, { skipPriceCheck: options.skipPriceCheck });
+  } = await addCartItemsUtil(collections, queries, cart.items, items, { skipPriceCheck: options.skipPriceCheck });
 
   const updatedAt = new Date();
 

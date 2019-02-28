@@ -1,26 +1,6 @@
 import Logger from "@reactioncommerce/logger";
-import updateCartItemsForVariantPriceChange from "./util/updateCartItemsForVariantPriceChange";
 
 const AFTER_CATALOG_UPDATE_EMITTED_BY_NAME = "CART_CORE_PLUGIN_AFTER_CATALOG_UPDATE";
-
-/**
- * @param {Object[]} catalogProductVariants The `product.variants` array from a catalog item
- * @returns {Object} Map of variant IDs to updated pricing objects
- */
-function getVariantPricingMap(catalogProductVariants) {
-  const variantPricingMap = {};
-
-  catalogProductVariants.forEach((variant) => {
-    variantPricingMap[variant.variantId] = variant.pricing;
-    if (variant.options) {
-      variant.options.forEach((option) => {
-        variantPricingMap[option.variantId] = option.pricing;
-      });
-    }
-  });
-
-  return variantPricingMap;
-}
 
 /**
  * @param {Object} appEvents App event emitter
@@ -29,7 +9,7 @@ function getVariantPricingMap(catalogProductVariants) {
  * @param {String} variantId The ID of the variant to update for
  * @returns {Promise<null>} Promise that resolves with null
  */
-async function updateAllCartsForVariant({ appEvents, Cart, pricing, variantId }) {
+async function updateAllCartsForVariant({ appEvents, Cart, pricing, variantId, queries }) {
   // Do find + update because we need the `cart.currencyCode` to figure out pricing
   // and we need current quantity to recalculate `subtotal` for each item.
   // It should be fine to load all results into an array because even for large shops,
@@ -44,7 +24,7 @@ async function updateAllCartsForVariant({ appEvents, Cart, pricing, variantId })
     const prices = pricing[cart.currencyCode];
     if (!prices) return;
 
-    const { didUpdate, updatedItems } = updateCartItemsForVariantPriceChange(cart.items, variantId, prices);
+    const { didUpdate, updatedItems } = queries.updateCartItemsForVariantPriceChange(cart.items, variantId, prices);
     if (!didUpdate) return;
 
     // Update the cart
@@ -79,7 +59,7 @@ async function updateAllCartsForVariant({ appEvents, Cart, pricing, variantId })
  * @returns {undefined}
  */
 export default function startup(context) {
-  const { appEvents, collections } = context;
+  const { appEvents, collections, queries } = context;
   const { Cart } = collections;
 
   // When an order is created, delete the source cart
@@ -99,13 +79,13 @@ export default function startup(context) {
     const { variants } = catalogProduct;
 
     // Build a map of variant IDs to their potentially-changed prices
-    const variantPricingMap = getVariantPricingMap(variants);
+    const variantPricingMap = queries.getVariantPricingMap(variants);
     const variantIds = Object.keys(variantPricingMap);
 
     // Update all cart items that are linked with the updated variants
     await Promise.all(variantIds.map(async (variantId) => {
       const pricing = variantPricingMap[variantId];
-      return updateAllCartsForVariant({ appEvents, Cart, pricing, variantId });
+      return updateAllCartsForVariant({ appEvents, Cart, pricing, variantId, queries });
     }));
   });
 }

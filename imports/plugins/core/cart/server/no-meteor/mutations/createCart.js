@@ -22,7 +22,7 @@ import addCartItems from "../util/addCartItems";
  */
 export default async function createCart(context, input) {
   const { items, shopId, shouldCreateWithoutItems = false } = input;
-  const { appEvents, collections, accountId = null, userId = null } = context;
+  const { appEvents, collections, queries, accountId = null, userId = null } = context;
   const { Cart, Shops } = collections;
 
   if (shouldCreateWithoutItems !== true && (!Array.isArray(items) || !items.length)) {
@@ -42,7 +42,7 @@ export default async function createCart(context, input) {
     incorrectPriceFailures,
     minOrderQuantityFailures,
     updatedItemList
-  } = await addCartItems(collections, [], items);
+  } = await addCartItems(collections, queries, [], items);
 
   // If all input items were invalid, don't create a cart
   if (!updatedItemList.length && shouldCreateWithoutItems !== true) {
