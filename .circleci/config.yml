@@ -270,6 +270,7 @@ jobs:
   test-metrics:
     <<: *defaults
     steps:
+      - checkout
       - run:
           name: Install Calibre CLI
           command: |
