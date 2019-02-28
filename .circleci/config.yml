@@ -364,7 +364,9 @@ workflows:
       - test-e2e:
           requires:
             - deploy-to-ecs-release-branch
-      - test-metrics
+      - test-metrics:
+          requires: 
+            - deploy-to-ecs
       - eslint:
           requires:
             - build
