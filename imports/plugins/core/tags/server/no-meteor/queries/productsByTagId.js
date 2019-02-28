@@ -29,9 +29,6 @@ export default async function productsByTagId(context, params) {
     throw new ReactionError("not-found", "Tag not found");
   }
 
-  // Products from catalog sample data
-  const positions = tag.featuredProductIds;
-
   // Aggregation Pipeline
   // Find the products in the "order" array
   const match = {
@@ -40,6 +37,18 @@ export default async function productsByTagId(context, params) {
       hashtags: { $in: [tagId] }
     }
   };
+
+  // If there are no featuredProductIds, return match without any sorting
+  if (!tag.featuredProductIds) {
+    return {
+      collection: Products,
+      pipeline: [match]
+    };
+  }
+
+  // Products from catalog sample data
+  const positions = tag.featuredProductIds;
+
 
   // Add a new field "positions" to each product with the order they are in the array
   const addFields = {
@@ -66,7 +75,7 @@ export default async function productsByTagId(context, params) {
     }
   };
 
-  // Sort the results by "posipositiontions"
+  // Sort the results by "positions"
   const sort = {
     $sort: {
       sortPosition: 1
