@@ -277,23 +277,19 @@ jobs:
       - run:
           name: California
           command: |
-            ./node_modules/calibre/bin/linux/calibre test create ${STAGING_URL} --location=California --connection=cable
-            ./node_modules/calibre/bin/linux/calibre site create-snapshot --site reaction-core-california
+            ./circleci/bin/calibre-deploy.sh ${STAGING_URL} California
       - run:
           name: North Virginia
           command: |
-            ./node_modules/calibre/bin/linux/calibre test create ${STAGING_URL} --location=NorthVirginia --connection=cable
-            # ./node_modules/calibre/bin/linux/calibre site create-snapshot --site reaction-core-northvirginia
+            ./circleci/bin/calibre-deploy.sh ${STAGING_URL} NorthVirginia
       - run:
           name: London
           command: |
-            ./node_modules/calibre/bin/linux/calibre test create ${STAGING_URL} --location=London --connection=cable
-            # ./node_modules/calibre/bin/linux/calibre site create-snapshot --site reaction-core-london
+            ./circleci/bin/calibre-deploy.sh ${STAGING_URL} London
       - run:
           name: Frankfurt
           command: |
-            ./node_modules/calibre/bin/linux/calibre test create ${STAGING_URL} --location=Frankfurt --connection=cable
-            # ./node_modules/calibre/bin/linux/calibre site create-snapshot --site reaction-core-frankfurt
+            ./circleci/bin/calibre-deploy.sh ${STAGING_URL} Frankfurt
  
   dockerfile-lint:
     <<: *defaults
@@ -366,9 +362,7 @@ workflows:
       - test-e2e:
           requires:
             - deploy-to-ecs-release-branch
-      - test-metrics:
-          requires:
-            - deploy-to-ecs-release-branch
+      - test-metrics
       - eslint:
           requires:
             - build
