@@ -10,8 +10,9 @@ LOCATION=$2
 
 # Run Snapshot
 # California Snapshot Only (Be more generic as we add more site locations to track)
-if [ $LOCATION="California" ]
+if [ $LOCATION = "California" ]
 then
     ./../node_modules/calibre/bin/linux/calibre site create-snapshot --site reaction-core-"$(echo $LOCATION | tr '[A-Z]' '[a-z]')"
+else
+    echo "No Snapshot Configured for Location"
 fi
-
