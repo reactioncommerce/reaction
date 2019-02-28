@@ -6,7 +6,7 @@ URL=$1
 LOCATION=$2
 
 # Run One Off Test
-# ./../node_modules/calibre/bin/linux/calibre test create $URL --location=$LOCATION
+./../node_modules/calibre/bin/linux/calibre test create $URL --location=$LOCATION
 
 # Run Snapshot
 # California Snapshot Only (Be more generic as we add more site locations to track)
