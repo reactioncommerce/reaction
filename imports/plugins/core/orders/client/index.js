@@ -23,6 +23,8 @@ import "./templates/orders.js";
 import "./containers/invoiceContainer";
 import "./containers/orderSummaryContainer";
 
+import "../lib/extendShopSchema";
+
 registerOperatorRoute({
   path: "/orders/:_id",
   mainComponent: OrderDetail,
