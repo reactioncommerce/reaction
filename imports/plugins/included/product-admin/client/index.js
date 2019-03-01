@@ -11,6 +11,7 @@ import { registerOperatorRoute } from "/imports/client/ui";
 
 import ProductList from "./components/ProductList";
 import ProductDetail from "./components/ProductDetail";
+import ContentViewExtraWideLayout from "/imports/client/ui/layouts/ContentViewExtraWideLayout";
 
 
 registerOperatorRoute({
@@ -23,6 +24,7 @@ registerOperatorRoute({
 registerOperatorRoute({
   isNavigationLink: true,
   isSetting: false,
+  layoutComponent: ContentViewExtraWideLayout,
   path: "/products",
   mainComponent: ProductList,
   // eslint-disable-next-line react/display-name, react/no-multi-comp
