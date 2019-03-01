@@ -13,23 +13,21 @@ class GridItemNotice extends Component {
     if (this.props.isSoldOut()) {
       if (this.props.isBackorder()) {
         return (
-          <span className="variant-qty-sold-out badge">
-            <Components.Translation defaultValue="Backorder" i18nKey="productDetail.backOrder" />
-          </span>
+          <Components.Translation defaultValue="Backorder" i18nKey="productDetail.backOrder" />
         );
       }
       return (
-        <span className="variant-qty-sold-out badge badge-danger">
-          <Components.Translation defaultValue="Sold Out!" i18nKey="productDetail.soldOut" />
-        </span>
+        <Components.Translation defaultValue="Sold Out!" i18nKey="productDetail.soldOut" />
       );
     } else if (this.props.isLowQuantity()) {
       return (
-        <div className="badge badge-low-inv-warning" title="">
-          <Components.Translation defaultValue="Limited Supply" i18nKey="productDetail.limitedSupply" />
-        </div>
+        <Components.Translation defaultValue="Limited Supply" i18nKey="productDetail.limitedSupply" />
       );
     }
+
+    return (
+      <Components.Translation defaultValue="Limited Supply" i18nKey="productDetail.limitedSupply" />
+    );
   }
   render() {
     return (
