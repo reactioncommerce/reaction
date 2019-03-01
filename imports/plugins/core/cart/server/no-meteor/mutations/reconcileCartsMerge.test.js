@@ -75,7 +75,7 @@ test("merges anonymous cart items into account cart items, deletes anonymous car
       items
     },
     anonymousCartSelector,
-    collections
+    context: mockContext
   });
 
   expect(Cart.deleteOne).toHaveBeenCalledWith(anonymousCartSelector);
@@ -104,7 +104,7 @@ test("throws if deleteOne fails", async () => {
       items
     },
     anonymousCartSelector,
-    collections
+    context: mockContext
   });
 
   return expect(promise).rejects.toThrowErrorMatchingSnapshot();
@@ -120,7 +120,7 @@ test("throws if updateOne fails", async () => {
       items
     },
     anonymousCartSelector,
-    collections
+    context: mockContext
   });
 
   return expect(promise).rejects.toThrowErrorMatchingSnapshot();
