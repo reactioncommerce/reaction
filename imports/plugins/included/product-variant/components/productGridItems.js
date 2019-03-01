@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Components } from "@reactioncommerce/reaction-components";
-import { formatPriceString } from "/client/api";
+import { formatPriceString, i18next } from "/client/api";
 
 import TableCell from "@material-ui/core/TableCell";
 import TableRow from "@material-ui/core/TableRow";
@@ -79,6 +79,20 @@ class ProductGridItems extends Component {
     );
   }
 
+  renderPublishStatus() {
+    const { product } = this.props;
+
+    if (product.publishedProductHash === product.currentProductHash) {
+      return (
+        <span>Published</span>
+      );
+    }
+
+    return (
+      <span>Unpublished</span>
+    );
+  }
+
   renderGridContent() {
     return (
       <div className="grid-content">
@@ -104,13 +118,11 @@ class ProductGridItems extends Component {
   }
 
   handleSelect = (event) => {
-    console.log("event.target.checked", event.target.checked);
-
     this.props.onSelect(event.target.checked, this.props.product);
   }
 
   render() {
-    const { isSearch, isSelected, pdpPath, product } = this.props;
+    const { isSelected, product } = this.props;
 
     const productItem = (
       <TableRow className={`product-table-row-item ${isSelected() ? "active" : ""}`}>
@@ -130,7 +142,13 @@ class ProductGridItems extends Component {
           {formatPriceString(this.props.displayPrice())}
         </TableCell>
         <TableCell>
-          {this.renderNotices()}
+          {this.renderPublishStatus()}
+        </TableCell>
+        <TableCell>
+          <Components.GridItemNotice product={product} />
+        </TableCell>
+        <TableCell>
+          {i18next.t(product.isVisible ? "admin.tags.visible" : "admin.tags.hidden")}
         </TableCell>
         <TableCell>
           <IconButton onClick={this.handleDoubleClick}>
