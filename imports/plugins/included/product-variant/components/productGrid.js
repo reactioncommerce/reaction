@@ -74,7 +74,9 @@ class ProductGrid extends Component {
                 <TableCell />
                 <TableCell>Title</TableCell>
                 <TableCell>Price</TableCell>
+                <TableCell>Published</TableCell>
                 <TableCell>Status</TableCell>
+                <TableCell>Visible</TableCell>
                 <TableCell />
               </TableRow>
             </TableHead>
