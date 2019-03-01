@@ -4,6 +4,17 @@
   "translation": {
     "reaction-product-admin": {
       "admin": {
+        "productTable": {
+          "bulkActions": {
+            "archive": "Archive",
+            "publish": "Publish",
+            "publishTitle": "Publish selected products?",
+            "publishMessage": "Selected products will be published to the catalog and made visible to customers.",
+            "makeVisible": "Make Visible",
+            "makeHidden": "Make Hidden",
+            "duplicate": "Duplicate"
+          }
+        },
         "products": "Products",
         "settings": {
           "productSettingsLabel": "Product Settings",
