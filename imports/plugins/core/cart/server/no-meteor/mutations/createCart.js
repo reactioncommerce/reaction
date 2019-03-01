@@ -42,7 +42,7 @@ export default async function createCart(context, input) {
     incorrectPriceFailures,
     minOrderQuantityFailures,
     updatedItemList
-  } = await addCartItems(collections, [], items);
+  } = await addCartItems(context, [], items);
 
   // If all input items were invalid, don't create a cart
   if (!updatedItemList.length && shouldCreateWithoutItems !== true) {
