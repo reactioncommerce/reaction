@@ -43,7 +43,7 @@ export default async function addCartItems(context, input, options = {}) {
     incorrectPriceFailures,
     minOrderQuantityFailures,
     updatedItemList
-  } = await addCartItemsUtil(collections, queries, cart.items, items, { skipPriceCheck: options.skipPriceCheck });
+  } = await addCartItemsUtil(context, cart.items, items, { skipPriceCheck: options.skipPriceCheck });
 
   const updatedAt = new Date();
 

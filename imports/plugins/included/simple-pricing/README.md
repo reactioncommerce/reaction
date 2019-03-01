@@ -27,7 +27,7 @@ const {
       variant: chosenVariant
     } = await findProductAndVariant(collections, productId, productVariantId);
 
-    const variantPriceInfo = queries.getCartPrice(chosenVariant, price);
+    const variantPriceInfo = await queries.getVariantPrice(context, chosenVariant, currencyCode);
     if (!variantPriceInfo) {
       throw new ReactionError("invalid-param", `This product variant does not have a price for ${price.currencyCode}`);
     }
@@ -35,9 +35,9 @@ const {
 
 ## Queries
 
-### Cart Price Queries
-**getCartPrice**
-This query is used to get a selected product's real price when adding the item to the Cart.
+### Price Queries
+**getVariantPrice**
+This query is used to get a selected product's real price.
 
 **getCurrentCatalogPriceForProductConfiguration**
 This query is used to verify a product's price is correct before we process the order.

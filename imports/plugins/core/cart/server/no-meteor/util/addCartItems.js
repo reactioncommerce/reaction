@@ -27,7 +27,7 @@ const inputItemSchema = new SimpleSchema({
 /**
  * @summary Given a list of current cart items and a list of items a shopper wants
  *   to add, validate available quantities and return the full merged list.
- * @param {Object} collections - Map of raw MongoDB collections
+ * @param {Object} context - App context
  * @param {Object[]} currentItems - Array of current items in CartItem schema
  * @param {Object[]} inputItems - Array of items to add in CartItemInput schema
  * @param {Object} [options] - Options
@@ -35,7 +35,9 @@ const inputItemSchema = new SimpleSchema({
  *   Skipping this is not recommended for new code.
  * @return {Object} Object with `incorrectPriceFailures` and `minOrderQuantityFailures` and `updatedItemList` props
  */
-export default async function addCartItems(collections, queries, currentItems, inputItems, options = {}) {
+export default async function addCartItems(context, currentItems, inputItems, options = {}) {
+  const { collections, queries } = context;
+
   inputItemSchema.validate(inputItems);
 
   const incorrectPriceFailures = [];
@@ -57,7 +59,7 @@ export default async function addCartItems(collections, queries, currentItems, i
       variant: chosenVariant
     } = await findProductAndVariant(collections, productId, productVariantId);
 
-    const variantPriceInfo = queries.getCartPrice(chosenVariant, price);
+    const variantPriceInfo = await queries.getVariantPrice(context, chosenVariant, price.currencyCode);
     if (!variantPriceInfo) {
       throw new ReactionError("invalid-param", `This product variant does not have a price for ${price.currencyCode}`);
     }

@@ -35,7 +35,7 @@ export default async function reconcileCartsMerge({
   }));
 
   // Merge the item lists
-  const { updatedItemList: items } = await addCartItems(collections, accountCart.items, itemsInput, {
+  const { updatedItemList: items } = await addCartItems(context, accountCart.items, itemsInput, {
     skipPriceCheck: true
   });
 
