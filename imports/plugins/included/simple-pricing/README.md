@@ -42,12 +42,5 @@ This query is used to get a selected product's real price.
 **getCurrentCatalogPriceForProductConfiguration**
 This query is used to verify a product's price is correct before we process the order.
 
-**getVariantPricingMap**
-This query creates a map of product pricing data keyed by variant ID. This is used to keep cart prices updated with product pricing changes.
-
-**updateCartItemsForVariantPriceChange**
-This query will update the cart items with new pricing information if any in cart products change.
-
-
 ### Catalog Price Queries
 TBD
