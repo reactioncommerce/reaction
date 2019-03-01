@@ -23,12 +23,13 @@ function getFlatVariantsAndOptions(catalogProductVariants) {
 }
 
 /**
- * @param {Object} appEvents App event emitter
  * @param {Object} Cart Cart collection
+ * @param {Object} context App context
  * @param {String} variant The catalog product variant or option
  * @returns {Promise<null>} Promise that resolves with null
  */
-async function updateAllCartsForVariant({ appEvents, Cart, variant, queries }) {
+async function updateAllCartsForVariant({ Cart, context, variant }) {
+  const { appEvents, queries } = context;
   const { variantId } = variant;
 
   // Do find + update because we need the `cart.currencyCode` to figure out pricing
@@ -80,7 +81,7 @@ async function updateAllCartsForVariant({ appEvents, Cart, variant, queries }) {
  * @returns {undefined}
  */
 export default function startup(context) {
-  const { appEvents, collections, queries } = context;
+  const { appEvents, collections } = context;
   const { Cart } = collections;
 
   // When an order is created, delete the source cart
@@ -102,8 +103,7 @@ export default function startup(context) {
     const variantsAndOptions = getFlatVariantsAndOptions(variants);
 
     // Update all cart items that are linked with the updated variants
-    await Promise.all(variantsAndOptions.map(async (variant) => {
-      return updateAllCartsForVariant({ appEvents, Cart, variant, queries });
-    }));
+    await Promise.all(variantsAndOptions.map(async (variant) =>
+      updateAllCartsForVariant({ Cart, context, variant })));
   });
 }

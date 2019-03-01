@@ -18,7 +18,7 @@ import addCartItemsUtil from "../util/addCartItems";
  */
 export default async function addCartItems(context, input, options = {}) {
   const { cartId, items, token } = input;
-  const { appEvents, collections, queries, accountId = null, userId = null } = context;
+  const { appEvents, collections, accountId = null, userId = null } = context;
   const { Cart } = collections;
 
   let selector;
