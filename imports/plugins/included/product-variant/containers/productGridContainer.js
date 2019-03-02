@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import _ from "lodash";
 import { Meteor } from "meteor/meteor";
+import { Counts } from "meteor/tmeasday:publish-counts";
 import { compose } from "recompose";
 import { i18next } from "/client/api";
 import { composeWithTracker, registerComponent } from "@reactioncommerce/reaction-components";
@@ -82,6 +83,14 @@ const wrapComponent = (Comp) => (
       ReactionProduct.cloneProduct(productIds);
     }
 
+    handlePageChange = (event, page) => {
+      Session.set("products/page", page);
+    }
+
+    handleChangeRowsPerPage = (event) => {
+      Session.set("productScrollLimit", event.target.value);
+    }
+
     get products() {
       const { isSearch, products, productsByKey, productIds } = this.props;
       if (isSearch) {
@@ -96,6 +105,8 @@ const wrapComponent = (Comp) => (
           {...this.props}
           itemSelectHandler={this.handleSelectProductItem}
           onArchiveProducts={this.handleArchiveProducts}
+          onChangePage={this.handlePageChange}
+          onChangeRowsPerPage={this.handleChangeRowsPerPage}
           onDuplicateProducts={this.handleDuplicateProducts}
           onPublishProducts={this.handlePublishProducts}
           onSelectAllProducts={this.handleSelectAllProductItems}
@@ -146,7 +157,10 @@ function composer(props, onData) {
 
   onData(null, {
     productMediaById,
-    selectedProductIds: Session.get("productGrid/selectedProducts")
+    page: Session.get("products/page") || 0,
+    productsPerPage: Session.get("productScrollLimit"),
+    selectedProductIds: Session.get("productGrid/selectedProducts"),
+    totalProductCount: Counts.get("products-count")
   });
 }
 

@@ -4,7 +4,6 @@ import PropTypes from "prop-types";
 import { Components } from "@reactioncommerce/reaction-components";
 import { Session } from "meteor/session";
 import { i18next } from "/client/api";
-
 import Button from "@material-ui/core/Button";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
@@ -15,6 +14,7 @@ import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
 import TableHead from "@material-ui/core/TableHead";
+import TableFooter from "@material-ui/core/TableFooter";
 import Toolbar from "@material-ui/core/Toolbar";
 import TablePagination from "@material-ui/core/TablePagination";
 import TableRow from "@material-ui/core/TableRow";
@@ -25,13 +25,18 @@ import ConfirmDialog from "/imports/client/ui/components/ConfirmDialog";
 class ProductGrid extends Component {
   static propTypes = {
     onArchiveProducts: PropTypes.func,
+    onChangePage: PropTypes.func,
+    onChangeRowsPerPage: PropTypes.func,
     onDuplicateProducts: PropTypes.func,
     onPublishProducts: PropTypes.func,
     onSelectAllProducts: PropTypes.func,
     onSetProductVisibility: PropTypes.func,
+    page: PropTypes.number,
     productMediaById: PropTypes.object,
     products: PropTypes.arrayOf(PropTypes.object),
-    selectedProductIds: PropTypes.arrayOf(PropTypes.string)
+    productsPerPage: PropTypes.number,
+    selectedProductIds: PropTypes.arrayOf(PropTypes.string),
+    totalProductCount: PropTypes.number
   }
 
   static defaultProps = {
@@ -219,6 +224,7 @@ class ProductGrid extends Component {
   }
 
   render() {
+    const { totalProductCount, page, productsPerPage, onChangePage, onChangeRowsPerPage } = this.props;
     const { isAllSelected } = this.state;
 
     return (
@@ -246,6 +252,18 @@ class ProductGrid extends Component {
             <TableBody id="product-grid-list">
               {this.renderProductGridItems()}
             </TableBody>
+            <TableFooter>
+              <TableRow>
+                <TablePagination
+                  count={totalProductCount}
+                  page={page}
+                  rowsPerPage={productsPerPage}
+                  rowsPerPageOptions={[10, 24, 50, 100]}
+                  onChangePage={onChangePage}
+                  onChangeRowsPerPage={onChangeRowsPerPage}
+                />
+              </TableRow>
+            </TableFooter>
           </Table>
         </CardContent>
       </Card>
