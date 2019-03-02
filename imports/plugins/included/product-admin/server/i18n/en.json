@@ -6,13 +6,27 @@
       "admin": {
         "productTable": {
           "bulkActions": {
+            "actions": "Actions",
             "archive": "Archive",
+            "archiveTitle": "Archive {{count}} product?",
+            "archiveTitle_plural": "Archive {{count}} products?",
+            "archiveMessage": "Archive products removes them from both admin and customer views.",
             "publish": "Publish",
-            "publishTitle": "Publish selected products?",
-            "publishMessage": "Selected products will be published to the catalog and made visible to customers.",
+            "publishTitle": "Publish {{count}} product?",
+            "publishTitle_plural": "Publish {{count}} products?",
+            "publishMessage": "Publish pending changes of selected products to your storefront.",
             "makeVisible": "Make Visible",
+            "makeVisibleTitle": "Make {{count}} product visible?",
+            "makeVisibleTitle_plural": "Make {{count}} product visible?",
+            "makeVisibleMessage": "Show selected products in your storefront. These changes will need to be published to take effect.",
             "makeHidden": "Make Hidden",
-            "duplicate": "Duplicate"
+            "makeHiddenTitle": "Hide {{count}} product?",
+            "makeHiddenTitle_plural": "Hide {{count}} products?",
+            "makeHiddenMessage": "Hide selected products from your storefront. These changes will need to be published to take effect.",
+            "duplicate": "Duplicate",
+            "duplicateTitle": "Duplicate {{count}} product?",
+            "duplicateTitle_plural": "Duplicate {{count}} products?",
+            "duplicateMessage": "Duplicate selected products and their variants."
           }
         },
         "products": "Products",
