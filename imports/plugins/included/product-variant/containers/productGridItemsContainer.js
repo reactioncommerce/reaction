@@ -132,6 +132,7 @@ const wrapComponent = (Comp) => (
           onDoubleClick={this.onDoubleClick}
           onClick={this.onClick}
           onSelect={this.handleSelect}
+          onSelectAllProducts={this.props.onSelectAllProducts}
           {...this.props}
         />
       );

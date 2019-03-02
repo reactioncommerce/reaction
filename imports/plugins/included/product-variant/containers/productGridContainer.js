@@ -1,7 +1,9 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import _ from "lodash";
+import { Meteor } from "meteor/meteor";
 import { compose } from "recompose";
+import { i18next } from "/client/api";
 import { composeWithTracker, registerComponent } from "@reactioncommerce/reaction-components";
 import { Session } from "meteor/session";
 import { Media } from "/imports/plugins/core/files/client";
@@ -28,7 +30,7 @@ const wrapComponent = (Comp) => (
     }
 
     handleSelectProductItem = (isChecked, productId) => {
-      let selectedProducts = Session.get("productGrid/selectedProducts") || [];
+      let selectedProducts = this.props.selectedProducts || [];
 
       if (isChecked) {
         selectedProducts.push(productId);
@@ -39,6 +41,45 @@ const wrapComponent = (Comp) => (
 
       // Save the selected items to the Session
       Session.set("productGrid/selectedProducts", selectedProducts);
+    }
+
+    handleSelectAllProductItems = (isChecked, productIds) => {
+      let selectedProducts;
+
+      if (isChecked) {
+        selectedProducts = _.uniq([...productIds]);
+      } else {
+        selectedProducts = [];
+      }
+
+      // Save the selected items to the Session
+      Session.set("productGrid/selectedProducts", selectedProducts);
+    }
+
+    handlePublishProducts = (productIds) => {
+      Meteor.call("catalog/publish/products", productIds, (error, result) => {
+        if (result) {
+          Alerts.toast(i18next.t("admin.catalogProductPublishSuccess", { defaultValue: "Product published to catalog" }), "success");
+        } else if (error) {
+          Alerts.toast(error.message, "error");
+        }
+      });
+    }
+
+    handleSetProductVisibility = (productIds, isVisible) => {
+      if (Array.isArray(productIds)) {
+        for (const productId of productIds) {
+          Meteor.call("products/updateProductField", productId, "isVisible", isVisible);
+        }
+      }
+    }
+
+    handleArchiveProducts = (productIds) => {
+      ReactionProduct.archiveProduct(productIds);
+    }
+
+    handleDuplicateProducts = (productIds) => {
+      ReactionProduct.cloneProduct(productIds);
     }
 
     get products() {
@@ -54,6 +95,11 @@ const wrapComponent = (Comp) => (
         <Comp
           {...this.props}
           itemSelectHandler={this.handleSelectProductItem}
+          onArchiveProducts={this.handleArchiveProducts}
+          onDuplicateProducts={this.handleDuplicateProducts}
+          onPublishProducts={this.handlePublishProducts}
+          onSelectAllProducts={this.handleSelectAllProductItems}
+          onSetProductVisibility={this.handleSetProductVisibility}
           products={this.products}
         />
       );
@@ -99,7 +145,8 @@ function composer(props, onData) {
   });
 
   onData(null, {
-    productMediaById
+    productMediaById,
+    selectedProductIds: Session.get("productGrid/selectedProducts")
   });
 }
 
