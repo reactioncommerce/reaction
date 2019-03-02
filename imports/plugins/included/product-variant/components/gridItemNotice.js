@@ -9,7 +9,7 @@ class GridItemNotice extends Component {
     isSoldOut: PropTypes.func
   }
 
-  renderNotice() {
+  render() {
     if (this.props.isSoldOut()) {
       if (this.props.isBackorder()) {
         return (
@@ -26,14 +26,7 @@ class GridItemNotice extends Component {
     }
 
     return (
-      <Components.Translation defaultValue="Limited Supply" i18nKey="productDetail.limitedSupply" />
-    );
-  }
-  render() {
-    return (
-      <div className="product-grid-badges">
-        {this.renderNotice()}
-      </div>
+      <Components.Translation defaultValue="In Stock" i18nKey="productDetail.inStock" />
     );
   }
 }
