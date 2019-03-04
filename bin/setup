@@ -2,29 +2,37 @@
 
 __dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 env_file=${__dir}/../.env
-env_example_file=${__dir}/../.env.example
 
-function main {
+function main() {
   set -e
 
   add_new_env_vars
 }
 
-function add_new_env_vars {
+function add_new_env_vars() {
   # create .env and set perms if it does not exist
-  [ ! -f "${env_file}" ] && { touch "${env_file}" ; chmod 0600 "${env_file}" ; }
+  [[ ! -f "${env_file}" ]] && {
+    touch "${env_file}"
+    chmod 0600 "${env_file}"
+  }
 
-  export IFS=$'\n'
-  for var in $(cat "${env_example_file}"); do
-    key="${var%%=*}"     # get var key
-    var=$(eval echo "$var") # generate dynamic values
+  find . imports/plugins/custom -name .env.example -type f -print0 |
+    xargs -0 grep -Ehv '^\s*#' |
+    {
+      while IFS= read -r var; do
+        if [[ -z "${var}" ]]; then
+          continue
+        fi
+        key="${var%%=*}"        # get var key
+        var=$(eval echo "$var") # generate dynamic values
 
-    # If .env doesn't contain this env key, add it
-    if ! $(grep -qLE "^$key=" "${env_file}"); then
-      echo "Adding $key to .env"
-      echo "$var" >> "${env_file}"
-    fi
-  done
+        # If .env doesn't contain this env key, add it
+        if ! grep -qLE "^$key=" "${env_file}"; then
+          echo "Adding $key to .env"
+          echo "$var" >>"${env_file}"
+        fi
+      done
+    }
 }
 
 main
