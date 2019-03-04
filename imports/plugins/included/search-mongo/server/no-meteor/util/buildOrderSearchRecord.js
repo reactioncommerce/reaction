@@ -14,45 +14,60 @@ export default async function buildOrderSearchRecord(collections, order) {
   }
 
   // get the billing and shipping for the order shop
-  const { shopId } = order;
-  const shopShipping = order.shipping.find((shipping) => shipping.shopId === shopId) || {};
-  if (!shopShipping) return;
+  const { billingAddress, shopId } = order;
+  const fulfillmentGroup = order.shipping.find((shipping) => shipping.shopId === shopId);
+  if (!fulfillmentGroup) return;
 
-  const { address: shopShippingAddress, payment } = shopShipping;
-  const shopBillingAddress = payment.address;
+  const { address: shippingAddress, invoice, shipped, packed } = fulfillmentGroup;
 
-  orderSearch.billingName = shopBillingAddress && shopBillingAddress.fullName;
-  orderSearch.billingPhone = shopBillingAddress && shopBillingAddress.phone.replace(/\D/g, "");
-  orderSearch.shippingName = shopShippingAddress && shopShippingAddress.fullName;
-  if (shopShippingAddress && shopShippingAddress.phone) {
-    orderSearch.shippingPhone = shopShippingAddress && shopShippingAddress.phone.replace(/\D/g, "");
+  if (shippingAddress) {
+    orderSearch.shippingAddress = {
+      address: shippingAddress.address1,
+      postal: shippingAddress.postal,
+      city: shippingAddress.city,
+      region: shippingAddress.region,
+      country: shippingAddress.country
+    };
+
+    orderSearch.shippingName = shippingAddress.fullName;
+
+    if (typeof shippingAddress.phone === "string") {
+      orderSearch.shippingPhone = shippingAddress.phone.replace(/\D/g, "");
+    }
   }
 
-  orderSearch.billingAddress = {
-    address: shopBillingAddress && shopBillingAddress.address1,
-    postal: shopBillingAddress && shopBillingAddress.postal,
-    city: shopBillingAddress && shopBillingAddress.city,
-    region: shopBillingAddress && shopBillingAddress.region,
-    country: shopBillingAddress && shopBillingAddress.country
-  };
-  orderSearch.shippingAddress = {
-    address: shopShippingAddress && shopShippingAddress.address1,
-    postal: shopShippingAddress && shopShippingAddress.postal,
-    city: shopShippingAddress && shopShippingAddress.city,
-    region: shopShippingAddress && shopShippingAddress.region,
-    country: shopShippingAddress && shopShippingAddress.country
-  };
+  if (billingAddress) {
+    orderSearch.billingAddress = {
+      address: billingAddress.address1,
+      postal: billingAddress.postal,
+      city: billingAddress.city,
+      region: billingAddress.region,
+      country: billingAddress.country
+    };
+
+    orderSearch.billingName = billingAddress.fullName;
+
+    if (typeof billingAddress.phone === "string") {
+      orderSearch.billingPhone = billingAddress.phone.replace(/\D/g, "");
+    }
+  }
 
   orderSearch.userEmails = [order.email];
-  orderSearch.orderTotal = payment.invoice.total;
+  orderSearch.orderTotal = invoice.total;
   // XXX Should adjust this to be in the shop's timezone since they are likely not in the same timezone as this server.
   orderSearch.orderDate = order.createdAt && `${order.createdAt.getFullYear()}/${order.createdAt.getMonth() + 1}/${order.createdAt.getDate()}`;
-  orderSearch.billingStatus = payment.status;
-  orderSearch.billingCard = payment.displayName;
+
+  const [payment] = order.payments || [];
+  if (payment) {
+    orderSearch.billingStatus = payment.status;
+    orderSearch.billingCard = payment.displayName;
+  }
+
   orderSearch.currentWorkflowStatus = order.workflow.status;
-  if (shopShipping.shipped) {
+
+  if (shipped) {
     orderSearch.shippingStatus = "Shipped";
-  } else if (shopShipping.packed) {
+  } else if (packed) {
     orderSearch.shippingStatus = "Packed";
   } else {
     orderSearch.shippingStatus = "New";

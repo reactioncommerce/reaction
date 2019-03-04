@@ -320,6 +320,7 @@
 
   .refund-input {
     margin-bottom: 5px;
+    margin-right: 15px;
   }
 
   .refund-button {
@@ -338,6 +339,17 @@
   background-color: @pre-bg;
   margin-left: -15px;
   margin-right: -15px;
+}
+
+.order-payment-list-item {
+  background-color: @pre-bg;
+  padding: 15px;
+  margin-bottom: 15px;
+}
+
+.order-payment-action-area {
+  margin-top: 20px;
+  margin-bottom: 5px;
 }
 
 .roll-up-content {
@@ -429,6 +441,12 @@
     .refund {
       background-color: @pre-bg;
     }
+}
+
+.invoice-actions-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
 }
 
 // New LESS for React orders panel

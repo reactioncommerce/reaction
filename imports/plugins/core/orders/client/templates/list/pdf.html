@@ -72,8 +72,8 @@
         <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
 
           <h2 style='margin-top:1em'>Bill To</h2>
-          {{#each shipment in order.shipping}}
-            {{#with shipment.payment.address}}
+          {{#each payment in order.payments}}
+            {{#with payment.address}}
               <strong><div>{{fullName}}</div></strong>
               <div>{{address1}}</div>
               <div>{{#if address2}}{{address2}},{{/if}}</div>

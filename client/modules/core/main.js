@@ -682,21 +682,6 @@ export default {
   },
 
   /**
-   * @name isPreview
-   * @method
-   * @memberof Core/Client
-   */
-  isPreview() {
-    const viewAs = this.getUserPreferences("reaction-dashboard", "viewAs", "administrator");
-
-    if (viewAs === "customer") {
-      return true;
-    }
-
-    return false;
-  },
-
-  /**
    * @name getPackageSettings
    * @method
    * @memberof Core/Client

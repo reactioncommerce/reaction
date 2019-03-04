@@ -254,7 +254,7 @@
       },
       "productVariant": {
         "addVariantOptions": "Aggiungere opzioni per attivaren il bottone 'Aggiungi al carrello'",
-        "inventoryQuantity": "Quantità",
+        "inventoryInStock": "Quantità",
         "title": "Etichetta",
         "price": "Prezzo",
         "optionTitle": "Opzione",

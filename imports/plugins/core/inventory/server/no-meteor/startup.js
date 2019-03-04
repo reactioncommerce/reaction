@@ -1,8 +1,8 @@
-import appEvents from "/imports/node-app/core/util/appEvents";
 import updateCatalogProductInventoryStatus from "/imports/plugins/core/catalog/server/no-meteor/utils/updateCatalogProductInventoryStatus";
-import getVariantInventoryNotAvailableToSellQuantity from "/imports/plugins/core/inventory/server/no-meteor/utils/getVariantInventoryNotAvailableToSellQuantity";
-import updateParentVariantsInventoryAvailableToSellQuantity from "/imports/plugins/core/inventory/server/no-meteor/utils/updateParentVariantsInventoryAvailableToSellQuantity";
-import updateParentVariantsInventoryInStockQuantity from "/imports/plugins/core/inventory/server/no-meteor/utils/updateParentVariantsInventoryInStockQuantity";
+import getVariantInventoryNotAvailableToSellQuantity from "./utils/getVariantInventoryNotAvailableToSellQuantity";
+import updateParentVariantsInventoryAvailableToSellQuantity from "./utils/updateParentVariantsInventoryAvailableToSellQuantity";
+import updateParentVariantsInventoryInStockQuantity from "./utils/updateParentVariantsInventoryInStockQuantity";
+
 /**
  * @summary Called on startup
  * @param {Object} context Startup context
@@ -10,18 +10,21 @@ import updateParentVariantsInventoryInStockQuantity from "/imports/plugins/core/
  * @returns {undefined}
  */
 export default function startup(context) {
+  const { appEvents } = context;
+
   appEvents.on("afterOrderCancel", async ({ order, returnToStock }) => {
     const { collections } = context;
 
     // Inventory is removed from stock only once an order has been approved
     // This is indicated by payment.status being anything other than `created`
     // We need to check to make sure the inventory has been removed before we return it to stock
-    const orderIsApproved = order.shipping.find((group) => group.payment.status !== "created");
+    const orderIsApproved = !Array.isArray(order.payments) || order.payments.length === 0 ||
+      !!order.payments.find((payment) => payment.status !== "created");
 
-    // If order is approved, the inventory has been taken away from both `inventoryQuantity` and `inventoryAvailableToSell`
+    // If order is approved, the inventory has been taken away from both `inventoryInStock` and `inventoryAvailableToSell`
     if (returnToStock && orderIsApproved) {
-    // Run this Product update inline instead of using ordersInventoryAdjust because the collection hooks fail
-    // in some instances which causes the order not to cancel
+      // Run this Product update inline instead of using ordersInventoryAdjust because the collection hooks fail
+      // in some instances which causes the order not to cancel
       const orderItems = order.shipping.reduce((list, group) => [...list, ...group.items], []);
       orderItems.forEach(async (item) => {
         const { value: updatedItem } = await collections.Products.findOneAndUpdate(
@@ -31,7 +34,7 @@ export default function startup(context) {
           {
             $inc: {
               inventoryAvailableToSell: +item.quantity,
-              inventoryQuantity: +item.quantity
+              inventoryInStock: +item.quantity
             }
           }, {
             returnOriginal: false
@@ -46,7 +49,7 @@ export default function startup(context) {
           {
             $inc: {
               inventoryAvailableToSell: +item.quantity,
-              inventoryQuantity: +item.quantity
+              inventoryInStock: +item.quantity
             }
           }
         );
@@ -61,7 +64,7 @@ export default function startup(context) {
       });
     }
 
-    // If order is not approved, the inventory hasn't been taken away from `inventoryQuantity`, but has been taken away from `inventoryAvailableToSell`
+    // If order is not approved, the inventory hasn't been taken away from `inventoryInStock`, but has been taken away from `inventoryAvailableToSell`
     if (!orderIsApproved) {
     // Run this Product update inline instead of using ordersInventoryAdjust because the collection hooks fail
     // in some instances which causes the order not to cancel
@@ -103,7 +106,7 @@ export default function startup(context) {
     }
   });
 
-  appEvents.on("afterOrderCreate", async (order) => {
+  appEvents.on("afterOrderCreate", async ({ order }) => {
     const { collections } = context;
     const orderItems = order.shipping.reduce((list, group) => [...list, ...group.items], []);
 
@@ -148,8 +151,13 @@ export default function startup(context) {
     });
   });
 
-  appEvents.on("afterOrderApprovePayment", async (order) => {
+  appEvents.on("afterOrderApprovePayment", async ({ order }) => {
     const { collections } = context;
+
+    // We only decrease the inventory quantity after the final payment is approved
+    const nonApprovedPayment = (order.payments || []).find((payment) => payment.status === "created");
+    if (nonApprovedPayment) return;
+
     const orderItems = order.shipping.reduce((list, group) => [...list, ...group.items], []);
 
     // Create a new set of unique productIds
@@ -164,7 +172,7 @@ export default function startup(context) {
         },
         {
           $inc: {
-            inventoryQuantity: -item.quantity
+            inventoryInStock: -item.quantity
           }
         }, {
           returnOriginal: false
@@ -178,7 +186,7 @@ export default function startup(context) {
         },
         {
           $inc: {
-            inventoryQuantity: -item.quantity
+            inventoryInStock: -item.quantity
           }
         }
       );
@@ -196,15 +204,15 @@ export default function startup(context) {
   appEvents.on("afterVariantUpdate", async ({ _id, field }) => {
     const { collections } = context;
 
-    // If the updated field was `inventoryQuantity`, adjust `inventoryAvailableToSell` quantities
-    if (field === "inventoryQuantity") {
+    // If the updated field was `inventoryInStock`, adjust `inventoryAvailableToSell` quantities
+    if (field === "inventoryInStock") {
       const doc = await collections.Products.findOne({ _id });
 
       // Get reserved inventory - the inventory currently in an unprocessed order
       const reservedInventory = await getVariantInventoryNotAvailableToSellQuantity(doc, collections);
 
       // Compute `inventoryAvailableToSell` as the inventory in stock minus the reserved inventory
-      const computedInventoryAvailableToSell = doc.inventoryQuantity - reservedInventory;
+      const computedInventoryAvailableToSell = doc.inventoryInStock - reservedInventory;
 
       await collections.Products.updateOne(
         {
@@ -219,7 +227,7 @@ export default function startup(context) {
 
       // Update `inventoryAvailableToSell` on all parents of this variant / option
       await updateParentVariantsInventoryAvailableToSellQuantity(doc, collections);
-      // Update `inventoryQuantity` on all parents of this variant / option
+      // Update `inventoryInStock` on all parents of this variant / option
       await updateParentVariantsInventoryInStockQuantity(doc, collections);
 
       // Publish inventory to catalog

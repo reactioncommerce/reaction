@@ -1,10 +1,53 @@
- <template name="coreOrderShippingTracking">
-   <!-- Temporary header until React panel is done -->
-   <div aria-labelledby="{{template}}" class="panel panel-default" id="{{template}}-panel" role="tabpanel">
-     <div class="panel-heading">
-       <h3 class="panel-title" data-i18n="orderWorkflow.{{toCamelCase label}}"><strong>Shipping</strong></h3>
-     </div>
-     <div class="panel-body">
+<template name="coreOrderShippingTracking">
+  <!-- Temporary header until React panel is done -->
+  <div aria-labelledby="{{template}}" class="panel panel-default" id="{{template}}-panel" role="tabpanel">
+    <div class="panel-heading">
+      <h3 class="panel-title" data-i18n="orderWorkflow.{{toCamelCase label}}"><strong>Shipping</strong></h3>
+    </div>
+    <div class="panel-body">
+      {{#with shipment.address}}
+        <div style="margin-bottom: 15px">
+          <div class="order-summary-form-group">
+            <strong data-i18n="orderShipping.shipTo">Ship to</strong>
+            <div class="invoice-details">
+              <strong>Phone: </strong>{{this.phone}}
+            </div>
+          </div>
+
+          <div style="margin-top: 4px">
+            <span>{{this.fullName}}</span>
+            <br/>
+            <span>{{this.address1}}</span>
+            {{#if this.address2}}<span><br/>{{this.address2}}</span>{{/if}}
+            <br/>
+            <span>
+              {{this.city}}, {{this.region}}, {{this.country}} {{this.postal}}
+            </span>
+          </div>
+        </div>
+      {{/with}}
+
+      <div class="roll-up-invoice-list" style="margin-bottom: 20px">
+        <div class="roll-up-content">
+          <div class="order-summary-form-group">
+            <strong data-i18n="orderShipping.carrier">Carrier</strong>
+            <div class="invoice-details">
+              {{shipment.shipmentMethod.carrier}} - {{shipment.shipmentMethod.label}}
+            </div>
+          </div>
+
+          <div class="order-summary-form-group">
+            <strong data-i18n="orderShipping.tracking">Tracking</strong>
+            <div class="invoice-details">
+              {{#if shipment.tracking}}
+                <button class="rui btn btn-link" data-event-action="editTracking">{{shipment.tracking}}</button>
+              {{else}}
+                {{noTrackingMessage}}
+              {{/if}}
+            </div>
+          </div>
+        </div>
+      </div>
 
       {{#if isNotCanceled}}
         {{#if printableLabels}}
@@ -30,13 +73,11 @@
                  <button class="rui btn btn-default" type="submit" data-i18n="app.save">Save</button>
                </div>
              </form>
-             {{else}}
-              {{#if shipment.tracking}}
-                <button class="rui btn btn-link" data-event-action="editTracking">{{shipment.tracking}}</button>
-              {{else}}
+            {{else}}
+              {{#unless shipment.tracking}}
                 <button class="rui btn btn-cta" data-event-action="refresh-shipping" data-i18n="orderShipping.generateTracking">Generate Label and Tracking</button>
                 <i class="fa fa-spinner fa-spin hidden" id="btn-processing"></i>
-              {{/if}}
+              {{/unless}}
             {{/if}}
         {{/if}}
 

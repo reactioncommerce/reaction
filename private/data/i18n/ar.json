@@ -254,7 +254,7 @@
       },
       "productVariant": {
         "addVariantOptions": "إضافة خيارات لتمكين \"إضافة إلى العربة\" بطو",
-        "inventoryQuantity": "كمية",
+        "inventoryInStock": "كمية",
         "title": "علامة",
         "price": "ثمن",
         "optionTitle": "خيار",

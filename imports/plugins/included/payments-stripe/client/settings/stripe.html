@@ -11,7 +11,6 @@
     {{#autoForm collection=Collections.Packages schema=StripePackageConfig doc=packageData type="update" id="stripe-update-form"}}
       {{>afQuickField name='settings.api_key'}}
       {{>afQuickField name='settings.public.publishable_key'}}
-      {{>afQuickField name="settings.support" options="allowed" noselect=true}}
       <button type="submit" class="btn btn-primary pull-right"><span data-i18n="app.saveChanges">Save Changes</span></button>
     {{/autoForm}}
   </div>

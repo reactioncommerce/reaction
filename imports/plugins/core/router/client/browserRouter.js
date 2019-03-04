@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import ReactDOM from "react-dom";
 import { ThemeProvider } from "styled-components";
+import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider";
 import { matchPath } from "react-router";
 import { Router as ReactRouter } from "react-router-dom";
 import { ApolloProvider } from "react-apollo";
@@ -19,6 +20,7 @@ import { MetaData } from "/lib/api/router/metadata";
 import { Router } from "../lib";
 import appComponents from "./appComponents";
 import theme from "./theme";
+import muiTheme from "./theme/muiTheme";
 
 const { history } = Router;
 
@@ -178,7 +180,9 @@ export function initBrowserRouter() {
               <TranslationProvider>
                 <ComponentsProvider value={appComponents}>
                   <ThemeProvider theme={theme}>
-                    <Components.App children={Router.reactComponents} />
+                    <MuiThemeProvider theme={muiTheme}>
+                      <Components.App children={Router.reactComponents} />
+                    </MuiThemeProvider>
                   </ThemeProvider>
                 </ComponentsProvider>
               </TranslationProvider>

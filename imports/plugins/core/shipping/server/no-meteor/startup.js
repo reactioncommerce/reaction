@@ -1,3 +1,4 @@
+import Logger from "@reactioncommerce/logger";
 import Random from "@reactioncommerce/random";
 import ReactionError from "@reactioncommerce/reaction-error";
 
@@ -24,10 +25,11 @@ function determineInitialGroupForItem(currentGroups, supportedFulfillmentTypes, 
 export default function startup({ appEvents, collections }) {
   const { Cart } = collections;
 
-  const handler = async (updatedCart) => {
+  const handler = async ({ cart: updatedCart }) => {
     if (!updatedCart) {
       throw new Error("afterCartUpdate hook run with no cart argument");
     }
+    Logger.debug("Handling afterCartUpdate: shipping");
 
     // Every time the cart is updated, create any missing fulfillment groups as necessary.
     // We need one group per type per shop, containing only the items from that shop.

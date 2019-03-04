@@ -6,12 +6,12 @@
       "admin": {
         "helpText": {
           "compareAtPrice": "Prezzo originale o MSRP",
-          "optionInventoryQuantity": "Inventario",
+          "optionInventoryInStock": "Inventario",
           "optionTitle": "Visualizzati nella pagina di dettaglio del prodotto",
           "price": "Prezzo d'acquisto",
           "title": "Visualizzati nel carrello, nella consegna e negli ordini",
           "variantBackorderToggle": "L'indennità Backorder è ora controllata da opzioni",
-          "variantInventoryQuantity": "L'inventario delle varianti è ora controllato da opzioni"
+          "variantInventoryInStock": "L'inventario delle varianti è ora controllato da opzioni"
         },
         "tooltip": {
           "validationError": "Errore di convalida"

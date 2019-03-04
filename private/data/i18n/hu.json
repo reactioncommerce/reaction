@@ -254,7 +254,7 @@
       },
       "productVariant": {
         "addVariantOptions": "Add lehetőség, hogy \"kosárban\" butto",
-        "inventoryQuantity": "Mennyiség",
+        "inventoryInStock": "Mennyiség",
         "title": "Címke",
         "price": "Ár",
         "optionTitle": "választási lehetőség",

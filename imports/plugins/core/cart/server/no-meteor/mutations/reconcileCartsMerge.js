@@ -10,7 +10,7 @@ import addCartItems from "../util/addCartItems";
  * @param {Object} accountCartSelector The MongoDB selector for the account cart
  * @param {Object} anonymousCart The anonymous cart document
  * @param {Object} anonymousCartSelector The MongoDB selector for the anonymous cart
- * @param {Object} collections A map of MongoDB collection instances
+ * @param {Object} context App context
  * @return {Object} The updated account cart
  */
 export default async function reconcileCartsMerge({
@@ -18,8 +18,10 @@ export default async function reconcileCartsMerge({
   accountCartSelector,
   anonymousCart,
   anonymousCartSelector,
-  collections
+  context,
+  userId
 }) {
+  const { collections } = context;
   const { Cart } = collections;
 
   // Convert item schema to input item schema
@@ -34,7 +36,7 @@ export default async function reconcileCartsMerge({
   }));
 
   // Merge the item lists
-  const { updatedItemList: items } = await addCartItems(collections, accountCart.items, itemsInput, {
+  const { updatedItemList: items } = await addCartItems(context, accountCart.items, itemsInput, {
     skipPriceCheck: true
   });
 
@@ -58,7 +60,10 @@ export default async function reconcileCartsMerge({
     updatedAt
   };
 
-  await appEvents.emit("afterCartUpdate", updatedCart);
+  await appEvents.emit("afterCartUpdate", {
+    cart: updatedCart,
+    updatedBy: userId
+  });
 
   // Delete anonymous cart
   const { deletedCount } = await Cart.deleteOne(anonymousCartSelector);

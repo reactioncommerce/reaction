@@ -104,7 +104,7 @@ const wrapComponent = (Comp) => (
         }
       }
 
-      // If there is an id on the current search appeng it to query
+      // If there is an id on the current search append it to query
       if (this.state.query._id) {
         query._id = this.state.query._id;
       }

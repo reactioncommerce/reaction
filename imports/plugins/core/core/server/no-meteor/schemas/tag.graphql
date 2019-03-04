@@ -47,7 +47,9 @@ type Tag implements Node & Deletable {
 
   "A string of the title to be displayed on a Tag Listing Page"
   displayTitle: String
-  
+
+  "A list of the IDs of top products in this tag"
+  featuredProductIds: [ID]
 }
 
 "The fields by which you are allowed to sort any query that returns a `TagConnection`"
@@ -78,7 +80,7 @@ extend type Query {
   tag(
     "Slug or ID of Tag"
     slugOrId: String,
-    
+
     "Set to true if you want to include tags that have isVisible set to false"
     shouldIncludeInvisible: Boolean = false
   ): Tag

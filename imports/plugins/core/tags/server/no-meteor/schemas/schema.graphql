@@ -1,0 +1,166 @@
+
+
+
+input AddTagInput {
+  "An optional string identifying the mutation call, which will be returned in the response payload"
+  clientMutationId: String
+
+  "Whether the tag is visible"
+  isVisible: Boolean!
+
+  "Unique name of the tag"
+  name: String!
+
+  "Title to display to customers"
+  displayTitle: String!
+
+  "The shop that owns the tag"
+  shopId: ID!
+
+  "Tag metafields"
+  metafields: [MetafieldInput]
+
+  "Hero media URL"
+  heroMediaUrl: String
+}
+
+type AddTagPayload {
+  "The same string you sent with the mutation params, for matching mutation calls with their responses"
+  clientMutationId: String
+
+  "The newly-created tag"
+  tag: Tag!
+
+  "The shop that owns the tag"
+  shopId: ID!
+}
+
+input SetTagHeroMediaInput {
+  "An optional string identifying the mutation call, which will be returned in the response payload"
+  clientMutationId: String
+
+  "ID of tag to add the hero image record to"
+  id: ID!
+
+  "The shop that owns the tag"
+  shopId: ID!
+
+  "File record document"
+  fileRecord: JSONObject
+}
+
+type SetTagHeroMediaPayload {
+  "The same string you sent with the mutation params, for matching mutation calls with their responses"
+  clientMutationId: String
+
+  "Tag the hero image was added to"
+  tag: Tag!
+}
+
+input RemoveTagInput {
+  "An optional string identifying the mutation call, which will be returned in the response payload"
+  clientMutationId: String
+
+  "ID of tag to delete"
+  id: ID!
+
+  "The shop that owns the tag"
+  shopId: ID!
+}
+
+type RemoveTagPayload {
+  "The same string you sent with the mutation params, for matching mutation calls with their responses"
+  clientMutationId: String
+
+  "The deleted tag"
+  tag: Tag!
+}
+
+input UpdateTagInput {
+  "An optional string identifying the mutation call, which will be returned in the response payload"
+  clientMutationId: String
+
+  "ID of rule to modify"
+  id: ID!
+
+  "Whether the tag is visible"
+  isVisible: Boolean!
+
+  "Unique name of the tag"
+  name: String!
+
+  "Title to display to customers"
+  displayTitle: String!
+
+  "The shop that owns the tag"
+  shopId: ID!
+
+  "Tag metafields"
+  metafields: [MetafieldInput]
+
+  "A list of the IDs of top products in this tag"
+  featuredProductIds: [ID]
+
+  "Hero media URL"
+  heroMediaUrl: String
+}
+
+type UpdateTagPayload {
+  "The same string you sent with the mutation params, for matching mutation calls with their responses"
+  clientMutationId: String
+
+  "The updated tag"
+  tag: Tag!
+}
+
+type TagProduct {
+  "The product id"
+  _id: ID!
+
+  "The date and time at which this CatalogProduct was created, which is when the related product was first published"
+  createdAt: DateTime!
+
+  "The title of the product"
+  title: String
+
+  "Position of the product"
+  position: Int
+}
+
+type TagProductEdge {
+  cursor: ConnectionCursor!
+  node: TagProduct
+}
+
+type TagProductConnection {
+  edges: [TagProductEdge]
+  nodes: [TagProduct]
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
+extend type Query {
+  "Returns a list of product in a tag"
+  productsByTagId(
+    shopId: ID!
+    tagId: ID!
+    after: ConnectionCursor
+    before: ConnectionCursor
+    first: ConnectionLimitInt
+    last: ConnectionLimitInt
+  ): TagProductConnection!
+}
+
+extend type Mutation {
+  "Adds a new tag"
+  addTag(input: AddTagInput!): AddTagPayload!
+
+  "Add an image to the tag"
+  setTagHeroMedia(input: SetTagHeroMediaInput!): SetTagHeroMediaPayload!
+
+  "Removes an existing tag"
+  removeTag(input: RemoveTagInput!): RemoveTagPayload!
+
+  "Updates an existing tag"
+  updateTag(input: UpdateTagInput!): UpdateTagPayload!
+}

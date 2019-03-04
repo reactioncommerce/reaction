@@ -18,7 +18,7 @@ const fieldNames = [
   "weight",
   "taxCode",
   "taxDescription",
-  "inventoryQuantity",
+  "inventoryInStock",
   "inventoryAvailableToSell",
   "inventoryPolicy",
   "lowInventoryWarningThreshold"
@@ -265,18 +265,18 @@ class VariantForm extends Component {
         <Fragment>
           <div className="col-sm-6">
             <Components.TextField
-              i18nKeyLabel="productVariant.inventoryQuantity"
+              i18nKeyLabel="productVariant.inventoryInStock"
               i18nKeyPlaceholder="0"
               placeholder="0"
               label="In Stock"
               type="number"
-              name="inventoryQuantity"
-              ref="inventoryQuantityInput"
-              value={this.variant.inventoryQuantity}
+              name="inventoryInStock"
+              ref="inventoryInStockInput"
+              value={this.variant.inventoryInStock}
               style={{ backgroundColor: "lightgrey", cursor: "not-allowed" }}
               disabled={true}
               helpText="Variants inventory in stock quantity is calculated by options inventory"
-              i18nKeyHelpText="admin.helpText.variantInventoryQuantity"
+              i18nKeyHelpText="admin.helpText.variantInventoryInStock"
             />
           </div>
           <div className="col-sm-6">
@@ -303,20 +303,20 @@ class VariantForm extends Component {
       <Fragment>
         <div className="col-sm-6">
           <Components.TextField
-            i18nKeyLabel="productVariant.inventoryQuantity"
+            i18nKeyLabel="productVariant.inventoryInStock"
             i18nKeyPlaceholder="0"
             placeholder="0"
             label="In Stock"
             type="number"
-            name="inventoryQuantity"
-            ref="inventoryQuantityInput"
-            value={this.variant.inventoryQuantity}
+            name="inventoryInStock"
+            ref="inventoryInStockInput"
+            value={this.variant.inventoryInStock}
             onChange={this.handleFieldChange}
             onBlur={this.handleFieldBlur}
             onReturnKeyDown={this.handleFieldBlur}
             validation={this.props.validation}
             helpText="Inventory in stock"
-            i18nKeyHelpText="admin.helpText.optionInventoryQuantity"
+            i18nKeyHelpText="admin.helpText.optionInventoryInStock"
           />
         </div>
         <div className="col-sm-6">

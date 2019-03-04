@@ -178,16 +178,6 @@ export default function twoColumn() {
           props: {
             placement: "productDetail"
           }
-        },
-
-        // Add to cart button
-        {
-          component: "AddToCartButton",
-          props: {
-            style: {
-              paddingTop: 20
-            }
-          }
         }
 
       ]

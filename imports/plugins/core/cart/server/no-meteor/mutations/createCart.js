@@ -22,7 +22,7 @@ import addCartItems from "../util/addCartItems";
  */
 export default async function createCart(context, input) {
   const { items, shopId, shouldCreateWithoutItems = false } = input;
-  const { appEvents, collections, accountId = null } = context;
+  const { appEvents, collections, accountId = null, userId = null } = context;
   const { Cart, Shops } = collections;
 
   if (shouldCreateWithoutItems !== true && (!Array.isArray(items) || !items.length)) {
@@ -42,7 +42,7 @@ export default async function createCart(context, input) {
     incorrectPriceFailures,
     minOrderQuantityFailures,
     updatedItemList
-  } = await addCartItems(collections, [], items);
+  } = await addCartItems(context, [], items);
 
   // If all input items were invalid, don't create a cart
   if (!updatedItemList.length && shouldCreateWithoutItems !== true) {
@@ -78,7 +78,10 @@ export default async function createCart(context, input) {
 
   if (result.ok !== 1) throw new ReactionError("server-error", "Unable to create cart");
 
-  await appEvents.emit("afterCartCreate", newCart);
+  await appEvents.emit("afterCartCreate", {
+    cart: newCart,
+    createdBy: userId
+  });
 
   return { cart: newCart, incorrectPriceFailures, minOrderQuantityFailures, token: anonymousAccessToken };
 }

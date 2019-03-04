@@ -254,7 +254,7 @@
       },
       "productVariant": {
         "addVariantOptions": "butto '' လှည်းထည့်ရန် 'ကို enable ရွေးချယ်စရာ Add",
-        "inventoryQuantity": "အရေအတွက်",
+        "inventoryInStock": "အရေအတွက်",
         "title": "တံဆိပ်",
         "price": "စျေးနှုန်း",
         "optionTitle": "option ကို",

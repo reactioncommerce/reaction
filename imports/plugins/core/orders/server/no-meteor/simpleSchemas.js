@@ -9,30 +9,61 @@ const Money = new SimpleSchema({
   }
 });
 
-const CommonOrderItem = new SimpleSchema({
-  _id: String,
-  isTaxable: {
-    type: Boolean,
-    optional: true
-  },
-  parcel: {
-    type: ShippingParcel,
-    optional: true
-  },
-  price: Money,
-  productId: String,
-  quantity: {
-    type: SimpleSchema.Integer,
-    min: 0
-  },
-  shopId: String,
-  subtotal: Money,
-  taxCode: {
+/**
+ * @name CommonOrderItemAttribute
+ * @memberof Schemas
+ * @type {SimpleSchema}
+ * @property {String} label optional
+ * @property {String} value optional
+ */
+const CommonOrderItemAttribute = new SimpleSchema({
+  label: {
     type: String,
     optional: true
   },
-  title: String,
-  variantId: String
+  value: {
+    type: String,
+    optional: true
+  }
+});
+
+export const CommonOrderItem = new SimpleSchema({
+  "_id": String,
+  "attributes": {
+    type: Array,
+    optional: true
+  },
+  "attributes.$": CommonOrderItemAttribute,
+  "isTaxable": {
+    type: Boolean,
+    optional: true
+  },
+  "parcel": {
+    type: ShippingParcel,
+    optional: true
+  },
+  "price": Money,
+  "productId": String,
+  "productVendor": {
+    type: String,
+    optional: true
+  },
+  "quantity": {
+    type: SimpleSchema.Integer,
+    min: 0
+  },
+  "shopId": String,
+  "subtotal": Money,
+  "taxCode": {
+    type: String,
+    optional: true
+  },
+  "title": String,
+  "variantId": String,
+  "variantTitle": {
+    type: String,
+    optional: true
+  }
 });
 
 const CommonOrderFulfillmentPrices = new SimpleSchema({
@@ -97,6 +128,10 @@ export const CommonOrder = new SimpleSchema({
     optional: true
   },
   currencyCode: String,
+  fulfillmentMethodId: {
+    type: String,
+    optional: true
+  },
   fulfillmentPrices: CommonOrderFulfillmentPrices,
   fulfillmentType: {
     type: String,

@@ -108,7 +108,7 @@ export async function xformProduct({ collections, product, shop, variants }) {
         variantInventory = {
           canBackorder: canBackorder(variantOptions),
           inventoryAvailableToSell: variant.inventoryAvailableToSell || 0,
-          inventoryInStock: variant.inventoryQuantity || 0,
+          inventoryInStock: variant.inventoryInStock || 0,
           isBackorder: isBackorder(variantOptions),
           isLowQuantity: isLowQuantity(variantOptions),
           isSoldOut: isSoldOut(variantOptions)
@@ -118,7 +118,7 @@ export async function xformProduct({ collections, product, shop, variants }) {
         variantInventory = {
           canBackorder: canBackorder([variant]),
           inventoryAvailableToSell: variant.inventoryAvailableToSell || 0,
-          inventoryInStock: variant.inventoryQuantity || 0,
+          inventoryInStock: variant.inventoryInStock || 0,
           isBackorder: isBackorder([variant]),
           isLowQuantity: isLowQuantity([variant]),
           isSoldOut: isSoldOut([variant])
@@ -136,7 +136,7 @@ export async function xformProduct({ collections, product, shop, variants }) {
           const optionInventory = {
             canBackorder: canBackorder([option]),
             inventoryAvailableToSell: option.inventoryAvailableToSell,
-            inventoryInStock: option.inventoryQuantity,
+            inventoryInStock: option.inventoryInStock,
             isBackorder: isBackorder([option]),
             isLowQuantity: isLowQuantity([option]),
             isSoldOut: isSoldOut([option])
@@ -157,7 +157,7 @@ export async function xformProduct({ collections, product, shop, variants }) {
     description: product.description,
     height: product.height,
     inventoryAvailableToSell: product.inventoryAvailableToSell || 0,
-    inventoryInStock: product.inventoryQuantity || 0,
+    inventoryInStock: product.inventoryInStock || 0,
     isBackorder: isBackorder(variants),
     isDeleted: !!product.isDeleted,
     isLowQuantity: isLowQuantity(variants),

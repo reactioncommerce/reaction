@@ -1,3 +1,5 @@
+import { createServer } from "http";
+import { PubSub } from "apollo-server";
 import mongodb, { MongoClient } from "mongodb";
 import appEvents from "./util/appEvents";
 import createApolloServer from "./createApolloServer";
@@ -30,14 +32,22 @@ export default class ReactionNodeApp {
       collections: this.collections,
       getFunctionsOfType(type) {
         return ((options.functionsByType || {})[type]) || [];
-      }
+      },
+      // In a large production app, you may want to use an external pub-sub system.
+      // See https://www.apollographql.com/docs/apollo-server/features/subscriptions.html#PubSub-Implementations
+      // We may eventually bind this directly to Kafka.
+      pubSub: new PubSub()
     };
 
     this.mongodb = options.mongodb || mongodb;
 
     const { resolvers, schemas } = options.graphQL;
 
-    const { expressApp } = createApolloServer({
+    const {
+      apolloServer,
+      expressApp,
+      path
+    } = createApolloServer({
       addCallMeteorMethod: this.options.addCallMeteorMethod || defaultAddCallMethod,
       context: this.context,
       debug: this.options.debug || false,
@@ -45,7 +55,12 @@ export default class ReactionNodeApp {
       schemas
     });
 
+    this.apolloServer = apolloServer;
     this.expressApp = expressApp;
+    this.graphQLPath = path;
+
+    // HTTP server for GraphQL subscription websocket handlers
+    this.httpServer = options.httpServer || createServer(this.expressApp);
   }
 
   setMongoDatabase(db) {
@@ -73,6 +88,10 @@ export default class ReactionNodeApp {
     });
   }
 
+  disconnectFromMongo() {
+    return this.mongoClient.close();
+  }
+
   async runServiceStartup() {
     const { additionalServices = [], functionsByType = {} } = this.options;
 
@@ -87,7 +106,10 @@ export default class ReactionNodeApp {
   async startServer({ port }) {
     return new Promise((resolve, reject) => {
       try {
-        this.server = this.expressApp.listen(String(port), () => {
+        // To also listen for WebSocket connections for GraphQL
+        // subs, this needs to be `this.httpServer.listen`
+        // rather than `this.expressApp.listen`.
+        this.server = this.httpServer.listen(String(port), () => {
           resolve();
         });
       } catch (error) {
@@ -121,6 +143,10 @@ export default class ReactionNodeApp {
   }
 
   async stop() {
+    // (1) Disconnect from MongoDB database
+    await this.disconnectFromMongo();
+
+    // (2) Stop the Express GraphQL server
     await this.stopServer();
   }
 }

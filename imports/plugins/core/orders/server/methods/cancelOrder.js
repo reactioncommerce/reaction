@@ -1,15 +1,13 @@
-import _ from "lodash";
 import Logger from "@reactioncommerce/logger";
 import { Meteor } from "meteor/meteor";
 import { check } from "meteor/check";
 import ReactionError from "@reactioncommerce/reaction-error";
-import { Orders, Packages } from "/lib/collections";
+import { Orders } from "/lib/collections";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
 import rawCollections from "/imports/collections/rawCollections";
 import createNotification from "/imports/plugins/included/notifications/server/no-meteor/createNotification";
-import orderCreditMethod from "../util/orderCreditMethod";
+import { getPaymentMethodConfigByName } from "/imports/plugins/core/payments/server/no-meteor/registration";
 import appEvents from "/imports/node-app/core/util/appEvents";
-
 
 /**
  * @name orders/cancelOrder
@@ -24,53 +22,80 @@ export default function cancelOrder(order, returnToStock) {
   check(order, Object);
   check(returnToStock, Boolean);
 
-  // REVIEW: Only marketplace admins should be able to cancel entire order?
-  // Unless order is entirely contained in a single shop? Do we need a switch on marketplace owner dashboard?
-  if (!Reaction.hasPermission("orders")) {
+  const authUserId = Reaction.getUserId();
+
+  if (!Reaction.hasPermission("orders", authUserId, order.shopId)) {
     throw new ReactionError("access-denied", "Access Denied");
   }
 
-  const { _id: paymentId, invoice, paymentPluginName } = orderCreditMethod(order);
-  const shippingRecord = order.shipping.find((shipping) => shipping.shopId === Reaction.getShopId());
-  const { itemIds } = shippingRecord;
+  // refund all payments to customer
+  (order.payments || []).forEach((payment) => {
+    switch (payment.status) {
+      case "completed":
+      case "partialRefund":
+        if (getPaymentMethodConfigByName(payment.name).canRefund) {
+          Meteor.call("orders/refunds/create", order._id, payment._id, payment.amount);
+        }
+        break;
 
-  const invoiceTotal = invoice.total;
-
-  // refund payment to customer
-  const paymentPlugin = Packages.findOne({ name: paymentPluginName, shopId: order.shopId });
-  const isRefundable = (_.get(paymentPlugin, "settings.support", []).indexOf("Refund") > -1);
-
-  if (isRefundable) {
-    Meteor.call("orders/refunds/create", order._id, paymentId, Number(invoiceTotal));
-  }
-
-  // send notification to user
-  const { accountId } = order;
-  const prefix = Reaction.getShopPrefix();
-  const url = `${prefix}/notifications`;
-  createNotification(rawCollections, { accountId, type: "orderCanceled", url }).catch((error) => {
-    Logger.error("Error in createNotification within shipmentShipped", error);
+      case "created":
+      case "approved":
+        Orders.update(
+          {
+            "_id": order._id,
+            "payments._id": payment._id
+          },
+          {
+            $set: {
+              "payments.$.status": "canceled"
+            }
+          }
+        );
+        break;
+      default:
+        break;
+    }
   });
 
   // update item workflow
-  Meteor.call("workflow/pushItemWorkflow", "coreOrderItemWorkflow/canceled", order, itemIds);
+  const orderItemIds = order.shipping.reduce((list, group) => [...list, ...group.items], []).map((item) => item._id);
+  Meteor.call("workflow/pushItemWorkflow", "coreOrderItemWorkflow/canceled", order, orderItemIds);
 
-  Promise.await(appEvents.emit("afterOrderCancel", { order, returnToStock }));
-
-  return Orders.update(
-    {
-      "_id": order._id,
-      "shipping.shopId": Reaction.getShopId(),
-      "shipping.payment.method": "credit"
+  const result = Orders.update({
+    _id: order._id,
+    shopId: order.shopId
+  }, {
+    $set: {
+      "workflow.status": "coreOrderWorkflow/canceled"
     },
-    {
-      $set: {
-        "workflow.status": "coreOrderWorkflow/canceled",
-        "shipping.$.payment.mode": "cancel"
-      },
-      $push: {
-        "workflow.workflow": "coreOrderWorkflow/canceled"
-      }
+    $push: {
+      "workflow.workflow": "coreOrderWorkflow/canceled"
     }
-  );
+  });
+
+  const updatedOrder = Orders.findOne({ _id: order._id });
+
+  Promise.await(appEvents.emit("afterOrderUpdate", {
+    order: updatedOrder,
+    updatedBy: authUserId
+  }));
+
+  Promise.await(appEvents.emit("afterOrderCancel", {
+    cancelledBy: authUserId,
+    order: updatedOrder,
+    returnToStock
+  }));
+
+  // send notification to user
+  const { accountId } = order;
+
+  if (accountId) {
+    const prefix = Reaction.getShopPrefix();
+    const url = `${prefix}/notifications`;
+    createNotification(rawCollections, { accountId, type: "orderCanceled", url }).catch((error) => {
+      Logger.error("Error in createNotification within shipmentShipped", error);
+    });
+  }
+
+  return result;
 }

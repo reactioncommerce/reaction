@@ -77,7 +77,7 @@ type FlatRateFulfillmentRestriction implements Node {
   shopId: ID!
 
   "Method IDs to apply this restriction to. If none, applies to all methods as a universal restriction."
-  methodIds: [String]
+  methodIds: [ID]
 
   """
   The type of this restriction. Allowed types are "allow" or "deny".
@@ -104,7 +104,7 @@ extend type Mutation {
 "Defines the input for a flat rate fulfillment method restriction."
 input FlatRateFulfillmentRestrictionInput {
   "Method IDs to apply this restriction to. If none, applies to all methods as a universal restriction."
-  methodIds: [String]
+  methodIds: [ID]
 
   """
   The type of this restriction. Allowed types are "allow" or "deny".

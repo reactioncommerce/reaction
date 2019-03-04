@@ -2,17 +2,65 @@ import Factory from "/imports/test-utils/helpers/factory";
 import mockContext from "/imports/test-utils/helpers/mockContext";
 import updateCartItemsQuantity from "./updateCartItemsQuantity";
 
+
+const cartItemId1 = Factory.CartItem.makeOne({
+  _id: "cartItemId1",
+  quantity: 5,
+  price: {
+    amount: 400,
+    currencyCode: "mockCurrencyCode"
+  },
+  subtotal: {
+    amount: 2000,
+    currencyCode: "mockCurrencyCode"
+  }
+});
+const cartItemId2 = Factory.CartItem.makeOne({
+  _id: "cartItemId2",
+  quantity: 5,
+  price: {
+    amount: 200,
+    currencyCode: "mockCurrencyCode"
+  },
+  subtotal: {
+    amount: 1000,
+    currencyCode: "mockCurrencyCode"
+  }
+});
+
 const dbCart = {
   _id: "cartId",
   items: [
-    Factory.CartItem.makeOne({
-      _id: "cartItemId1",
-      quantity: 5
-    }),
-    Factory.CartItem.makeOne({
-      _id: "cartItemId2",
-      quantity: 5
-    })
+    cartItemId1, cartItemId2
+  ]
+};
+
+const updatedCartItemId1 = Factory.CartItem.makeOne({
+  subtotal: {
+    amount: 2000,
+    currencyCode: "mockCurrencyCode"
+  },
+  ...cartItemId1
+});
+const updatedCartItemId2 = Factory.CartItem.makeOne({
+  subtotal: {
+    amount: 1000,
+    currencyCode: "mockCurrencyCode"
+  },
+  ...cartItemId2
+});
+
+const updatedDbCart = {
+  _id: "cartId",
+  items: [
+    updatedCartItemId1, updatedCartItemId2
+  ]
+};
+
+const updatedDbCartAfterRemoval = {
+  _id: "cartId",
+  items: [
+    updatedCartItemId2
   ]
 };
 
@@ -22,6 +70,7 @@ beforeEach(() => {
 
 test("updates the quantity of multiple items in account cart", async () => {
   mockContext.collections.Cart.findOne.mockReturnValueOnce(Promise.resolve(dbCart));
+  mockContext.collections.Cart.findOne.mockReturnValueOnce(Promise.resolve(updatedDbCart));
 
   const result = await updateCartItemsQuantity(mockContext, {
     cartId: "cartId",
@@ -72,23 +121,22 @@ test("updates the quantity of multiple items in account cart", async () => {
       _id: "cartId",
       items: [
         {
-          ...dbCart.items[0],
-          quantity: 1,
+          ...updatedDbCart.items[0],
+          quantity: 5,
           subtotal: {
-            amount: dbCart.items[0].price.amount,
-            currencyCode: dbCart.items[0].subtotal.currencyCode
+            amount: updatedDbCart.items[0].price.amount * 5,
+            currencyCode: updatedDbCart.items[0].subtotal.currencyCode
           }
         },
         {
-          ...dbCart.items[1],
-          quantity: 2,
+          ...updatedDbCart.items[1],
+          quantity: 5,
           subtotal: {
-            amount: dbCart.items[1].price.amount * 2,
-            currencyCode: dbCart.items[1].subtotal.currencyCode
+            amount: updatedDbCart.items[1].price.amount * 5,
+            currencyCode: updatedDbCart.items[1].subtotal.currencyCode
           }
         }
-      ],
-      updatedAt: jasmine.any(Date)
+      ]
     }
   });
 });
@@ -97,6 +145,7 @@ test("updates the quantity of multiple items in anonymous cart", async () => {
   const hashedToken = "+YED6SF/CZIIVp0pXBsnbxghNIY2wmjIVLsqCG4AN80=";
 
   mockContext.collections.Cart.findOne.mockReturnValueOnce(Promise.resolve(dbCart));
+  mockContext.collections.Cart.findOne.mockReturnValueOnce(Promise.resolve(updatedDbCart));
 
   const cachedAccountId = mockContext.accountId;
   mockContext.accountId = null;
@@ -152,23 +201,22 @@ test("updates the quantity of multiple items in anonymous cart", async () => {
       _id: "cartId",
       items: [
         {
-          ...dbCart.items[0],
-          quantity: 1,
+          ...updatedDbCart.items[0],
+          quantity: 5,
           subtotal: {
-            amount: dbCart.items[0].price.amount,
-            currencyCode: dbCart.items[0].subtotal.currencyCode
+            amount: updatedDbCart.items[0].price.amount * 5,
+            currencyCode: updatedDbCart.items[0].subtotal.currencyCode
           }
         },
         {
-          ...dbCart.items[1],
-          quantity: 2,
+          ...updatedDbCart.items[1],
+          quantity: 5,
           subtotal: {
-            amount: dbCart.items[1].price.amount * 2,
-            currencyCode: dbCart.items[1].subtotal.currencyCode
+            amount: updatedDbCart.items[1].price.amount * 5,
+            currencyCode: updatedDbCart.items[1].subtotal.currencyCode
           }
         }
-      ],
-      updatedAt: jasmine.any(Date)
+      ]
     }
   });
 });
@@ -196,6 +244,7 @@ test("throws when no account and no token passed", async () => {
 
 test("removes an item if quantity is 0", async () => {
   mockContext.collections.Cart.findOne.mockReturnValueOnce(Promise.resolve(dbCart));
+  mockContext.collections.Cart.findOne.mockReturnValueOnce(Promise.resolve(updatedDbCartAfterRemoval));
 
   const result = await updateCartItemsQuantity(mockContext, {
     cartId: "cartId",
@@ -238,15 +287,14 @@ test("removes an item if quantity is 0", async () => {
       _id: "cartId",
       items: [
         {
-          ...dbCart.items[1],
-          quantity: 2,
+          ...updatedDbCartAfterRemoval.items[0],
+          quantity: 5,
           subtotal: {
-            amount: dbCart.items[1].price.amount * 2,
-            currencyCode: dbCart.items[1].subtotal.currencyCode
+            amount: updatedDbCartAfterRemoval.items[0].price.amount * 5,
+            currencyCode: updatedDbCartAfterRemoval.items[0].subtotal.currencyCode
           }
         }
-      ],
-      updatedAt: jasmine.any(Date)
+      ]
     }
   });
 });
