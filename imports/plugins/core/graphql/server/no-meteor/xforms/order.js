@@ -1,7 +1,7 @@
 import ReactionError from "@reactioncommerce/reaction-error";
 import { namespaces } from "@reactioncommerce/reaction-graphql-utils";
+import { xformCatalogProductMedia } from "./catalogProduct";
 import { assocInternalId, assocOpaqueId, decodeOpaqueIdForNamespace, encodeOpaqueId } from "./id";
-import { xformProductMedia } from "./catalogProduct";
 
 export const assocOrderInternalId = assocInternalId(namespaces.Order);
 export const assocOrderOpaqueId = assocOpaqueId(namespaces.Order);
@@ -93,7 +93,7 @@ export function xformOrderFulfillmentGroupSelectedOption(fulfillmentOption) {
  * @param {Object[]} products Array of Product docs from the db
  * @return {Object} Same object with GraphQL-only props added
  */
-function xformOrderItem(context, item, catalogItems) {
+async function xformOrderItem(context, item, catalogItems) {
   const { productId, variantId } = item;
 
   const catalogItem = catalogItems.find((cItem) => cItem.product.productId === productId);
@@ -104,10 +104,13 @@ function xformOrderItem(context, item, catalogItems) {
   const catalogProduct = catalogItem.product;
 
   let media;
-  if (catalogProduct.media) {
+  if (catalogProduct.media || catalogProduct.primaryImage) {
     media = catalogProduct.media.find((mediaItem) => mediaItem.variantId === variantId);
+    if (!media) media = catalogProduct.primaryImage;
     if (!media) [media] = catalogProduct.media;
-    media = xformProductMedia(media, context);
+    if (media) {
+      media = await xformCatalogProductMedia(media, context);
+    }
   }
 
   return {
