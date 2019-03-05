@@ -101,19 +101,24 @@ export default async function cancelOrderItem(context, input) {
         throw new ReactionError("invalid-param", "cancelQuantity may not be greater than item quantity");
       }
 
+      const updatedItem = {
+        ...item,
+        cancelReason: reason,
+        quantity: cancelQuantity
+      };
+
+      if (item.workflow.status !== itemCanceledStatus) {
+        updatedItem.workflow = {
+          status: itemCanceledStatus,
+          workflow: [...item.workflow.workflow, itemCanceledStatus]
+        };
+      }
+
       // If we make it this far, then we've found the item that they want to cancel.
       // We set the status and the cancel reason if one was provided.
       // This will also decrement the quantity to match the quantity that is being
       // canceled, which will be offset by pushing `itemToAdd` into the array later.
-      return {
-        ...item,
-        cancelReason: reason,
-        quantity: cancelQuantity,
-        workflow: {
-          status: itemCanceledStatus,
-          workflow: [...item.workflow.workflow, itemCanceledStatus]
-        }
-      };
+      return updatedItem;
     });
 
     // If they canceled fewer than the full quantity of the item, add a new
@@ -123,30 +128,36 @@ export default async function cancelOrderItem(context, input) {
     }
 
     // If all items are canceled, set the group status to canceled
-    let updatedGroupWorkflow = group.workflow;
+    let updatedGroupWorkflow;
     const allItemsAreCanceled = updatedItems.every((item) => item.workflow.status === itemCanceledStatus);
-    if (allItemsAreCanceled && updatedGroupWorkflow.status !== canceledStatus) {
+    if (allItemsAreCanceled && group.workflow.status !== canceledStatus) {
       updatedGroupWorkflow = {
         status: canceledStatus,
-        workflow: [...updatedGroupWorkflow.workflow, canceledStatus]
+        workflow: [...group.workflow.workflow, canceledStatus]
       };
     }
 
+    const updatedGroup = { ...group, items: updatedItems };
+
+    if (updatedGroupWorkflow) {
+      updatedGroup.workflow = updatedGroupWorkflow;
+    }
+
     // Return the group, with items and workflow potentially updated.
-    return { ...group, items: updatedItems, workflow: updatedGroupWorkflow };
+    return updatedGroup;
   });
 
   // If we did not find any matching item ID while looping, something is wrong
   if (!foundItem) throw new ReactionError("not-found", "Order item not found");
 
   // If all groups are canceled, set the order status to canceled
-  let updatedOrderWorkflow = order.workflow;
+  let updatedOrderWorkflow;
   let fullOrderWasCanceled = false;
   const allGroupsAreCanceled = updatedGroups.every((group) => group.workflow.status === canceledStatus);
-  if (allGroupsAreCanceled && updatedOrderWorkflow.status !== canceledStatus) {
+  if (allGroupsAreCanceled && order.workflow.status !== canceledStatus) {
     updatedOrderWorkflow = {
       status: canceledStatus,
-      workflow: [...updatedOrderWorkflow.workflow, canceledStatus]
+      workflow: [...order.workflow.workflow, canceledStatus]
     };
     fullOrderWasCanceled = true;
   }
@@ -155,10 +166,13 @@ export default async function cancelOrderItem(context, input) {
   const modifier = {
     $set: {
       shipping: updatedGroups,
-      updatedAt: new Date(),
-      workflow: updatedOrderWorkflow
+      updatedAt: new Date()
     }
   };
+
+  if (updatedOrderWorkflow) {
+    modifier.$set.workflow = updatedOrderWorkflow;
+  }
 
   OrderSchema.validate(modifier, { modifier: true });
 
