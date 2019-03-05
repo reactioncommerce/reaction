@@ -1,3 +1,131 @@
+# v2.0.0-rc.10
+This is our tenth **release candidate** for v2.0.0 of Reaction. 
+Please check it out and let us know what works and what doesn't for you.
+
+This release is being coordinated with `reaction-platform` and is designed to work with the same versions of `reaction-next-starterkit` and `reaction-hydra`.
+
+# Improvements
+### UI Removal
+We have removed several UI components to transition and solidify that in 2.0 the application will only be used as an API and a UI for shop operators.
+
+Additional PRs will be coming to remove other pieces of the storefront UI bit by bit until only an operator UI is left. (#4947 , #4948)
+
+### Performance Tweaks
+- We have done a bunch of performance tweaks to increase performance and initial boot time! We removed the `reaction-cli` with this update. (#4992)
+
+### General
+- We have added the ability for shops to apply surcharges depending on criteria for an order. (#4829)
+- We have added a new Navigation Manager UI for Operator 2.0. (#4936)
+- We have added [envalid](https://www.npmjs.com/package/envalid) as a dependency for validating environment variables. (#4983)
+
+### GraphQL
+- We have streamlined the way plugins register functions that can transform media objects for a product. (#4987)
+- We have implemented GraphQL subscriptions support. (#4938)
+
+### Custom Data
+- We have added the capability to add a custom data object when placing an order. (#4962)
+- We have added the capability for `calculateOrderTaxes` to return a custom data object. (#4955) 
+
+### Custom Plugins
+- We have coalesced the separate env.example files from custom Reaction plugins into one file to reduce tedious integration steps. (#5003)
+
+# Breaking Changes
+### AppEvents
+- We have replaced all `Hooks` usage with the newer `appEvents`. This does not break anything within the core and included plugins, however:
+If you use community or custom plugins that depend on the `@reactioncommerce/hooks` package, you will need to update or obtain updated versions that use `context.appEvents` instead.
+If you have a plugin that uses `MethodHook`s, update it to implement those hooks a different way.
+review all `appEvents` consumed and emitted by custom plugins. Update expected and emitted arguments. See the table. (#4915)
+
+### Multiple Payment Support
+- All of the individual `placeOrder*` GraphQL mutations provided by the built-in payment plugins are removed and replaced with a single `placeOrder` mutation which supports multiple payments. Any custom payment method plugins will break due to the removal of `createOrder` internal mutation. Look at all changes. (#4908)
+
+### Surcharges
+- When applying surcharges to certain methods, there is a delay in the update. (#4984)
+
+### Updates
+- Refactor`inventoryQuantity` to `inventoryInStock` in `Products` collection, update if used in your codebase. (#4930)
+
+### Removals
+- There is no longer a storefront catalog grid (#4973)
+- There is no longer a Checkout UI (#4948)
+- There is no longer a Cart UI (#4948)
+
+# New Commands
+In relation to improving performance, we have added new debugging statements (#4992)!
+```
+"inspect": "node --experimental-modules --inspect ./.reaction/run/index.mjs",
+"inspect-brk": "node --experimental-modules --inspect-brk ./.reaction/run/index.mjs",
+"inspect-docker": "node --experimental-modules --inspect=0.0.0.0:9229 ./.reaction/run/index.mjs",
+"inspect-brk-docker": "node --experimental-modules --inspect-brk=0.0.0.0:9229 ./.reaction/run/index.mjs",
+```
+
+**Example Usage** : 
+```
+docker-compose run --rm --service-ports reaction yarn run inspect-brk --service-ports
+docker-compose run --rm --service-ports reaction yarn run inspect --service-ports
+```
+
+# New Documents
+We have added new documentation! :
+- We officially stated that `reaction-platform` has not been fully tested or is compatible with Windows.
+https://docs.reactioncommerce.com/docs/next/installation-reaction-platform
+- We added a Storefront UI Development guide answering: "How do I build a storefront for Reaction or adapt my storefront to get its data from Reaction, without starting from an example app" (https://docs.reactioncommerce.com/docs/next/storefront-intro)
+
+## Feature
+
+- feat: use .env.example files from custom plugins (#5003)
+- feat: add ordersByAccountId query (#4981)
+- feat: allow plugins to register functions to handle GraphQL transformation of catalog product media items (#4988)
+- feat: support storing custom fields on orders when placing (#4962)
+- feat: shipping Operator into 2.0 (#4967)
+- feat: custom tax data part 2 (#4965)
+- feat: allow tax services to add custom data to taxes (#4955)
+- feat: shipping surcharges (#4829)
+- feat: navigation manager UI (#4936)
+- feat: make Sitemap data available via GraphQL query (#4927)
+- feat: tag management operator UI (#4914)
+- feat: add custom fields to order schema (#4979)
+- feat: update collectionIndex util function to take options (#4950)
+- feat: add envalid package (#4943)
+- feat: GraphQL subscriptions (#4938)
+- feat: create fulfillment surcharges (#4801)
+
+## Fixes
+
+- fix: add tagId check to guard against undefined (#5015)
+- fix: do not emit afterCartUpdate unless surcharges are updated (#5001)
+- fix: properly save all customFields from tax service result (#4986)
+- fix: don't crash when mediaItem.URLs is null (#4982)
+- fix: addAccountAddressBookEntry mutation - set account updatedAt (#4971)
+- fix: taxes not updating reactively in starterkit (#4949)
+- fix: inventory is set to `NaN` in rare circumstances based on Migrations (#4946)
+- fix: use stripe.setAppInfo to identify ReactionCommerce to Stripe (#4942)
+- fix: tag bulk actions copy (#4941)
+- fix: ENOSPC error with jest --watch (#4939)
+- fix: tag ui bugs (#4933)
+- fix: migration 56 throwing an error (#4934)
+- fix: 404 from invite email link (#4919)
+
+## Refactor
+
+- refactor: update `inventoryQuantity` field to be `inventoryInStock` (#4930)
+- refactor: replace all Hooks with appEvents (#4915)
+- refactor: rewrite placeOrder and support multiple payments for an order (#4908)
+
+## Chores
+
+- chore: delete unused files (#4990)
+- chore: wrong version in migration 54 & 55 file (#4940)
+- chore: updated dependencies and snyk policies (#4974)
+- chore: meteor and docker performance tweaks (#4992)
+- chore: storefront catalog grid (#4973)
+- chore: remove the cart UI (#4948)
+- chore: remove the checkout UI (#4947)
+- chore: update to base image 1.8.0.2 to include Kafka binary libs (#4937)
+
+## Contributors
+Thanks, @rattrayalex-stripe for contributing to this release! 
+
 # v2.0.0-rc.9
 This is our ninth **release candidate** for v2.0.0 of Reaction. Please check it out and let us know what works and what doesn't for you.
 
