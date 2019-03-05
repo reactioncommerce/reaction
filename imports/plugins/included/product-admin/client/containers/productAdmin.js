@@ -9,7 +9,7 @@ import { Reaction } from "/client/api";
 import { getPrimaryMediaForItem, ReactionProduct } from "/lib/api";
 import { Tags, Templates } from "/lib/collections";
 import { Countries } from "/client/collections";
-import { ProductAdmin } from "../components";
+import ProductDetail from "../components/ProductDetail";
 
 const wrapComponent = (Comp) => (
   class ProductAdminContainer extends Component {
@@ -213,7 +213,7 @@ function composer(props, onData) {
   }
 }
 
-registerComponent("ProductAdmin", ProductAdmin, [
+registerComponent("ProductAdmin", ProductDetail, [
   withRouter,
   composeWithTracker(composer),
   wrapComponent
@@ -224,4 +224,4 @@ export default compose(
   withRouter,
   composeWithTracker(composer),
   wrapComponent
-)(ProductAdmin);
+)(ProductDetail);
