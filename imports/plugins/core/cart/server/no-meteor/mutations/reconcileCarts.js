@@ -67,7 +67,7 @@ export default async function reconcileCarts(context, input) {
 
       case "merge":
         return {
-          cart: await reconcileCartsMerge({ accountCart, accountCartSelector, anonymousCart, anonymousCartSelector, collections, userId })
+          cart: await reconcileCartsMerge({ accountCart, accountCartSelector, anonymousCart, anonymousCartSelector, context, userId })
         };
 
       default:

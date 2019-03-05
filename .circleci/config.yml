@@ -267,6 +267,32 @@ jobs:
           command: |
             docker run -t -e URL=${STAGING_URL} reactioncommerce/reaction-automation-client:latest npm run-script chrome
 
+  test-metrics:
+    <<: *defaults
+    steps:
+      - checkout
+      - run:
+          name: Install Calibre CLI
+          command: |
+            cd ~
+            sudo npm install calibre
+      - run:
+          name: California
+          command: |
+            .circleci/bin/calibre-deploy.sh ${STAGING_URL} California
+      - run:
+          name: North Virginia
+          command: |
+            .circleci/bin/calibre-deploy.sh ${STAGING_URL} NorthVirginia
+      - run:
+          name: London
+          command: |
+            .circleci/bin/calibre-deploy.sh ${STAGING_URL} London
+      - run:
+          name: Frankfurt
+          command: |
+            .circleci/bin/calibre-deploy.sh ${STAGING_URL} Frankfurt
+ 
   dockerfile-lint:
     <<: *defaults
     docker:
@@ -337,6 +363,9 @@ workflows:
             - build
       - test-e2e:
           requires:
+            - deploy-to-ecs-release-branch
+      - test-metrics:
+          requires: 
             - deploy-to-ecs-release-branch
       - eslint:
           requires:
