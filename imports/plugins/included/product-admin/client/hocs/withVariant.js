@@ -109,7 +109,7 @@ function composer(props, onData) {
       ...optionData,
       displayPrice: formatPriceString(Catalog.getVariantPriceRange(optionData._id)),
       media: optionMedia && optionMedia.filter((media) => (
-        media.metaData.variantId === optionData._id
+        media.metadata.variantId === optionData._id
       ))
     }));
   }
