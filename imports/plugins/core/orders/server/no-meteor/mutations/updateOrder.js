@@ -21,7 +21,7 @@ const inputSchema = new SimpleSchema({
 
 /**
  * @method updateOrder
- * @summary Use this mutation to move update order status, email, and other
+ * @summary Use this mutation to update order status, email, and other
  *   properties
  * @param {Object} context - an object containing the per-request state
  * @param {Object} input - Necessary input. See SimpleSchema
