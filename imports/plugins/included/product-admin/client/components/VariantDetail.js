@@ -12,11 +12,11 @@ import ProductHeader from "./ProductHeader";
 import VariantForm from "./VariantForm";
 
 /**
- * ProductDetail component
+ * VariantDetail component
  * @param {Object} props Component props
  * @return {Node} React node
  */
-function ProductDetail(props) {
+function VariantDetail(props) {
   const {
     option,
     options,
@@ -26,6 +26,8 @@ function ProductDetail(props) {
     removeVariant,
     restoreVariant,
     cloneVariant,
+    onCreateOption,
+    onCreateVariant,
     onVisibilityButtonClick
   } = props;
 
@@ -46,22 +48,31 @@ function ProductDetail(props) {
       <Grid container spacing={24}>
         <Grid item sm={4}>
           <ProductList
-            title={option ? "Options" : "Variants"}
             items={option ? options : variants}
+            onCreate={() => { option ? onCreateOption(variant) : onCreateVariant(product); }}
+            selectedVariantId={option ? option._id : variant._id}
+            title={option ? "Options" : "Variants"}
           />
         </Grid>
         <Grid item sm={8}>
           <VariantForm {...props} variant={option || variant} />
-          {!option && <VariantTable items={props.options} />}
+          {!option && (
+            <VariantTable
+              items={props.options}
+              onCreate={() => { onCreateOption(variant); }}
+            />
+          )}
         </Grid>
       </Grid>
     </Fragment>
   );
 }
 
-ProductDetail.propTypes = {
+VariantDetail.propTypes = {
   childVariants: PropTypes.arrayOf(PropTypes.object),
   cloneVariant: PropTypes.func,
+  onCreateOption: PropTypes.func,
+  onCreateVariant: PropTypes.func,
   onVisibilityButtonClick: PropTypes.func,
   option: PropTypes.arrayOf(PropTypes.object),
   options: PropTypes.arrayOf(PropTypes.object),
@@ -76,4 +87,4 @@ export default compose(
   withProduct,
   withVariant,
   withVariantForm
-)(ProductDetail);
+)(VariantDetail);
