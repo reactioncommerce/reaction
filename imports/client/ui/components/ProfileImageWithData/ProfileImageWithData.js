@@ -1,10 +1,16 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 import PropTypes from "prop-types";
 import gql from "graphql-tag";
+import { Meteor } from "meteor/meteor";
 import { Query } from "react-apollo";
+import { compose, withState } from "recompose";
+import { Link } from "react-router-dom";
 import { withComponents } from "@reactioncommerce/components-context";
 import { CustomPropTypes } from "@reactioncommerce/components/utils";
-import { Logger } from "/client/api";
+import { Logger, i18next } from "/client/api";
+import ButtonBase from "@material-ui/core/ButtonBase";
+import Menu from "@material-ui/core/Menu";
+import MenuItem from "@material-ui/core/MenuItem";
 
 const getViewer = gql`
   query getViewer {
@@ -19,7 +25,9 @@ class ProfileImageWithData extends Component {
   static propTypes = {
     components: PropTypes.shape({
       ProfileImage: CustomPropTypes.component.isRequired
-    })
+    }),
+    menuAnchorEl: PropTypes.any,
+    setMenuAnchorEl: PropTypes.func
   };
 
   static getDerivedStateFromError() {
@@ -35,7 +43,11 @@ class ProfileImageWithData extends Component {
   }
 
   render() {
-    const { components: { ProfileImage } } = this.props;
+    const {
+      components: { ProfileImage },
+      menuAnchorEl,
+      setMenuAnchorEl
+    } = this.props;
 
     if (this.state.hasError) return null;
 
@@ -45,7 +57,28 @@ class ProfileImageWithData extends Component {
           if (loading) return null;
 
           return (
-            <ProfileImage viewer={data.viewer} {...this.props} />
+            <Fragment>
+              <ButtonBase
+                centerRipple={true}
+                onClick={(event) => {
+                  setMenuAnchorEl(event.currentTarget);
+                }}
+              >
+                <ProfileImage viewer={data.viewer} {...this.props} />
+              </ButtonBase>
+
+              <Menu
+                id="profile-actions-menu"
+                anchorEl={menuAnchorEl}
+                open={Boolean(menuAnchorEl)}
+                onClose={() => setMenuAnchorEl(null)}
+              >
+                <Link to={"/operator/profile"}>
+                  <MenuItem>{i18next.t("admin.userAccountDropdown.profileLabel")}</MenuItem>
+                </Link>
+                <MenuItem onClick={Meteor.logout}>{i18next.t("accountsUI.signOut")}</MenuItem>
+              </Menu>
+            </Fragment>
           );
         }}
       </Query>
@@ -53,4 +86,7 @@ class ProfileImageWithData extends Component {
   }
 }
 
-export default withComponents(ProfileImageWithData);
+export default compose(
+  withComponents,
+  withState("menuAnchorEl", "setMenuAnchorEl", null)
+)(ProfileImageWithData);
