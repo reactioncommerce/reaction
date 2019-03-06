@@ -336,6 +336,16 @@ class ProductAdmin extends Component {
               value={this.product.originCountry}
               options={this.props.countries}
             />
+            <Components.TextField
+              i18nKeyLabel="productDetailEdit.template"
+              i18nKeyPlaceholder="productDetailEdit.templateSelectPlaceholder"
+              label="Template"
+              name="template"
+              onBlur={this.handleFieldBlur}
+              onChange={this.handleFieldChange}
+              ref="templateInput"
+              value={this.product.template}
+            />
             {this.product && (
               <div className="checkbox">
                 <Components.Checkbox
