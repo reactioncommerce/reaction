@@ -81,7 +81,7 @@ export default function cancelOrder(order, returnToStock) {
   }));
 
   Promise.await(appEvents.emit("afterOrderCancel", {
-    cancelledBy: authUserId,
+    canceledBy: authUserId,
     order: updatedOrder,
     returnToStock
   }));
