@@ -2,9 +2,8 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import Measure from "react-measure";
 import update from "immutability-helper";
-import { withRouter } from "react-router";
 import { compose } from "recompose";
-import { registerComponent, composeWithTracker } from "@reactioncommerce/reaction-components";
+import { composeWithTracker } from "@reactioncommerce/reaction-components";
 import _ from "lodash";
 import { FileRecord } from "@reactioncommerce/file-collections";
 import { Meteor } from "meteor/meteor";
@@ -38,29 +37,11 @@ const wrapComponent = (Comp) => (
       };
     }
 
-    // UNSAFE_componentWillReceiveProps(nextProps) {
-
-    // }
-
     static getDerivedStateFromProps(props) {
       return {
         media: props.media
       };
     }
-
-    // componentDidUpdate(prevProps, prevState) {
-    //   // We need to do this logic only if we've temporarily set media in state for latency compensation
-    //   if (!prevState.media) return;
-
-    //   const previousMediaIds = (prevState.media || []).map(({ _id }) => _id);
-    //   const nextMediaIds = (this.props.media || []).map(({ _id }) => _id);
-
-    //   // If added, moved, or reordered media items since last render, then we can assume
-    //   // we got updated data in subscription, clear state, and go back to using the prop
-    //   if (JSON.stringify(previousMediaIds) !== JSON.stringify(nextMediaIds)) {
-    //     this.setState({ media: null });
-    //   }
-    // }
 
     handleRemoveMedia = (media) => {
       const imageUrl = media.url({ store: "medium" });
