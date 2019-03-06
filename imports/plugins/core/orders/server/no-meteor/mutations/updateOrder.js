@@ -44,7 +44,7 @@ export default async function updateOrder(context, input) {
   const order = await Orders.findOne({ _id: orderId });
   if (!order) throw new ReactionError("not-found", "Order not found");
 
-  // Allow move if the account that placed the order is attempting to move
+  // Allow update if the account that placed the order is attempting to update
   // or if the account has "orders" permission. When called internally by another
   // plugin, context.isInternalCall can be set to `true` to disable this check.
   if (!isInternalCall && !userHasPermission(["orders"], order.shopId)) {
