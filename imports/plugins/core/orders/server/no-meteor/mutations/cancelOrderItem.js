@@ -146,6 +146,11 @@ export default async function cancelOrderItem(context, input) {
 
     const updatedGroup = { ...group, items: updatedItems };
 
+    // There is a convenience itemIds prop, so update that, too
+    if (itemToAdd) {
+      updatedGroup.itemIds.push(itemToAdd._id);
+    }
+
     if (updatedGroupWorkflow) {
       updatedGroup.workflow = updatedGroupWorkflow;
     }

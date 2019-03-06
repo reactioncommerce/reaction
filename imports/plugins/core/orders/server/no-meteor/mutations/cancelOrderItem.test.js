@@ -435,7 +435,8 @@ test("cancels some of an item", async () => {
   });
 
   const group = Factory.OrderFulfillmentGroup.makeOne({
-    items: [item1, item2]
+    items: [item1, item2],
+    itemIds: [item1._id, item2._id]
   });
 
   mockContext.collections.Orders.findOne.mockReturnValueOnce(Promise.resolve({
@@ -491,7 +492,8 @@ test("cancels some of an item", async () => {
                   workflow: ["new"]
                 }
               }
-            ]
+            ],
+            itemIds: [item1._id, item2._id, jasmine.any(String)]
           }
         ],
         updatedAt: jasmine.any(Date)
