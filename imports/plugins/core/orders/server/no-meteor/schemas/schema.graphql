@@ -24,6 +24,17 @@ extend type Query {
 
 extend type Mutation {
   """
+  Use this mutation to cancel one item of an order, either for the full ordered quantity
+  or for a partial quantity. If partial, the item will be split into two items and the
+  original item will have a lower quantity and will be canceled.
+
+  If this results in all items in a fulfillment group being canceled, the group will also
+  be canceled. If this results in all fulfillment groups being canceled, the full order will
+  also be canceled.
+  """
+  cancelOrderItem(input: CancelOrderItemInput!): CancelOrderItemPayload!
+
+  """
   Use this mutation to place an order, providing information necessary to pay for it.
   The order will be placed only if authorization is successful for all submitted payments.
   """
@@ -122,6 +133,9 @@ type OrderItem implements Node {
   """
   attributes: [OrderItemAttribute]
 
+  "If this order item is canceled, the reason for cancelation, if provided"
+  cancelReason: String
+
   "The date and time at which the order item was created"
   createdAt: DateTime!
 
@@ -161,6 +175,9 @@ type OrderItem implements Node {
   "The shop associated with this cart item."
   shop: Shop!
 
+  "The machine-readable order item status."
+  status: String!
+
   "The price of the item multiplied by the quantity of this item ordered"
   subtotal: Money!
 
@@ -195,6 +212,9 @@ type OrderFulfillmentGroup implements Node {
 
   "The shop responsible for fulfilling this order"
   shop: Shop!
+
+  "The machine-readable fulfillment group status."
+  status: String!
 
   "A summary of the totals for this group"
   summary: OrderSummary!
@@ -401,6 +421,37 @@ input PlaceOrderInput {
   payments: [PaymentInput]
 }
 
+"Input for the cancelOrderItem mutation"
+input CancelOrderItemInput {
+  "Quantity to cancel. Must be equal to or less than the item quantity."
+  cancelQuantity: Int!
+
+  "An optional string identifying the mutation call, which will be returned in the response payload"
+  clientMutationId: String
+
+  "ID of the item order you want to cancel"
+  itemId: ID!
+
+  "ID of the order that has the item you want to cancel"
+  orderId: ID!
+
+  """
+  An optional free text reason for cancellation, which may be shown to operators
+  or to the user who placed the order.
+  """
+  reason: String
+}
+
+"Response payload for the cancelOrderItem mutation"
+type CancelOrderItemPayload {
+  "The same string you sent with the mutation params, for matching mutation calls with their responses"
+  clientMutationId: String
+
+  "The updated order"
+  order: Order!
+}
+
+"Response payload for the placeOrder mutation"
 type PlaceOrderPayload {
   "The same string you sent with the mutation params, for matching mutation calls with their responses"
   clientMutationId: String
