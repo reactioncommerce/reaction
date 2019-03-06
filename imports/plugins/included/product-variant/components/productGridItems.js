@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import { Link } from "react-router-dom";
 import { Components } from "@reactioncommerce/reaction-components";
 import { formatPriceString, i18next } from "/client/api";
-
 import TableCell from "@material-ui/core/TableCell";
 import TableRow from "@material-ui/core/TableRow";
 import Checkbox from "@material-ui/core/Checkbox";
@@ -136,7 +136,7 @@ class ProductGridItems extends Component {
           {this.renderMedia()}
         </TableCell>
         <TableCell>
-          {product.title}
+          <Link to={`/operator/products/${product._id}`}>{product.title}</Link>
         </TableCell>
         <TableCell>
           {formatPriceString(this.props.displayPrice())}
