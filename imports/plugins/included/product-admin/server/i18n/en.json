@@ -4,6 +4,13 @@
   "translation": {
     "reaction-product-admin": {
       "admin": {
+        "createProduct": "Create product",
+        "productAdmin": {
+          "details": "Details",
+          "metadata": "Metadata",
+          "metafields": "Meta fields",
+          "mediaGallery": "Media Gallery"
+        },
         "productTable": {
           "bulkActions": {
             "actions": "Actions",
@@ -11,6 +18,9 @@
             "archiveTitle": "Archive {{count}} product?",
             "archiveTitle_plural": "Archive {{count}} products?",
             "archiveMessage": "Archive products removes them from both admin and customer views.",
+            "restore": "Restore",
+            "restoreTitle": "Restore {{count}} product?",
+            "restoreTitle_plural": "Restore {{count}} products?",
             "publish": "Publish",
             "publishTitle": "Publish {{count}} product?",
             "publishTitle_plural": "Publish {{count}} products?",
