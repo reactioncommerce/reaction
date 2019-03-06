@@ -1,59 +1,67 @@
-import React, { Component } from "react";
+import React from "react";
 import PropTypes from "prop-types";
 import { compose } from "recompose";
 import { composeWithTracker } from "@reactioncommerce/reaction-components";
 import { withRouter } from "react-router";
 import { Meteor } from "meteor/meteor";
-import { ReactionProduct } from "/lib/api";
+import { Catalog, ReactionProduct } from "/lib/api";
 import { Products } from "/lib/collections";
 import { Countries } from "/client/collections";
-import { Reaction, i18next } from "/client/api";
+import { Reaction, formatPriceString, i18next } from "/client/api";
 import { Media } from "/imports/plugins/core/files/client";
 import { getVariantIds } from "/lib/selectors/variants";
 
-const wrapComponent = (Comp) => (
-  class VariantEditContainer extends Component {
-    static propTypes = {
-      childVariants: PropTypes.arrayOf(PropTypes.object),
-      countries: PropTypes.arrayOf(PropTypes.object),
-      editFocus: PropTypes.string,
-      variant: PropTypes.object
-    };
+/**
+ * Create a new option from a supplied variant
+ * @param {Object} variant Variant object
+ * @returns {Promise} A promise that resolved to and object of shape `{ newVariantId }`
+ */
+export async function handleCreateOption(variant) {
+  const promise = await new Promise((resolve, reject) => {
+    Meteor.call("products/createVariant", variant._id, (error, result) => {
+      if (error) {
+        Alerts.alert({
+          text: i18next.t("productDetailEdit.addVariantFail", { title: variant.title }),
+          confirmButtonText: i18next.t("app.close", { defaultValue: "Close" })
+        });
+        reject(error);
+      } else if (result) {
+        resolve({ newVariantId: result });
+      }
+    });
+  });
 
-    handleCreateNewChildVariant(variant) {
-      Meteor.call("products/createVariant", variant._id, (error, result) => {
-        if (error) {
-          Alerts.alert({
-            text: i18next.t("productDetailEdit.addVariantFail", { title: variant.title }),
-            confirmButtonText: i18next.t("app.close", { defaultValue: "Close" })
-          });
-        } else if (result) {
-          const newVariantId = result;
-          const selectedProduct = ReactionProduct.selectedProduct();
-          const handle = (selectedProduct.__published && selectedProduct.__published.handle) || selectedProduct.handle;
-          ReactionProduct.setCurrentVariant(newVariantId);
-          // Session.set("variant-form-" + newVariantId, true);
-          const cardName = `variant-${newVariantId}`;
-          Reaction.state.set("edit/focus", cardName);
+  return promise;
+}
 
-          Reaction.Router.go("product", {
-            handle,
-            variantId: newVariantId
-          });
-        }
-      });
-    }
+const wrapComponent = (Comp) => {
+  /**
+   * withVariant HOC
+   * @param {Object} props Component props
+   * @return {Node} React component
+   */
+  function withVariant(props) {
+    const { history, product } = props;
 
-    render() {
-      return (
-        <Comp
-          handleCreateNewChildVariant={this.handleCreateNewChildVariant}
-          {...this.props}
-        />
-      );
-    }
+    return (
+      <Comp
+        onCreateOption={async (parentVariant) => {
+          const { newVariantId } = handleCreateOption(parentVariant);
+          history.push(`/operator/products/${product._id}/${parentVariant._id}/${newVariantId}`);
+          window && window.scrollTo(0, 0);
+        }}
+        {...props}
+      />
+    );
   }
-);
+
+  withVariant.propTypes = {
+    history: PropTypes.object,
+    product: PropTypes.func
+  };
+
+  return withVariant;
+};
 
 /**
  * Composer function to fetch variants and options
@@ -62,9 +70,9 @@ const wrapComponent = (Comp) => (
  * @returns {undefined} no return
  */
 function composer(props, onData) {
-  const { variantId, optionId } = props.match.params;
+  const { handle: productId, variantId, optionId } = props.match.params;
 
-  // Get the toplevel varaint
+  // Get the top-level variant
   const variant = Products.findOne({
     _id: variantId
   });
@@ -111,7 +119,10 @@ function composer(props, onData) {
     options,
     variant,
     option,
-    optionMedia
+    optionMedia,
+    productId,
+    variantId,
+    optionId
   });
 }
 
