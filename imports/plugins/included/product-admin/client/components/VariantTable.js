@@ -38,7 +38,12 @@ function getURL(item) {
  * @param {Object} props Component props
  * @returns {Node} Component representing a list of products, variants, or options
  */
-function VariantTable({ items, onAddVariant }) {
+function VariantTable(props) {
+  const {
+    items,
+    onCreate
+  } = props;
+
   if (!Array.isArray(items)) {
     return null;
   }
@@ -47,7 +52,7 @@ function VariantTable({ items, onAddVariant }) {
     <Card>
       <CardHeader
         action={
-          <IconButton onClick={onAddVariant}>
+          <IconButton onClick={onCreate}>
             <PlusIcon />
           </IconButton>
         }
@@ -69,10 +74,14 @@ function VariantTable({ items, onAddVariant }) {
             <TableRow>
               <TableCell>
                 {(Array.isArray(item.media) && item.media.length &&
-                  <img alt="" src={item.media[0].url({ store: "thumbnail" })} />
+                  <img alt="" src={item.media[0].url({ store: "thumbnail" })} width={36} />
                 ) || "-"}
               </TableCell>
-              <TableCell>{item.title || item.optionTitle || item.name}</TableCell>
+              <TableCell>
+                <Link to={getURL(item)}>
+                  {item.title || item.optionTitle || item.name}
+                </Link>
+              </TableCell>
               <TableCell>{item.price}</TableCell>
               <TableCell>Status</TableCell>
               <TableCell>{item.isVisible ? "Visible" : "Hidden"}</TableCell>
@@ -93,7 +102,7 @@ function VariantTable({ items, onAddVariant }) {
 
 VariantTable.propTypes = {
   items: PropTypes.arrayOf(PropTypes.object),
-  onAddVariant: PropTypes.func
+  onCreate: PropTypes.func
 };
 
 export default VariantTable;
