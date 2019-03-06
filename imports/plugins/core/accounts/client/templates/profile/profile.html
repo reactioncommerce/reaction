@@ -25,27 +25,7 @@
         </div>
       </div>
 
-      <div class="flex-item">
-        <div class="panel panel-default user-orders-list">
-          <div class="panel-heading">
-            {{#if isOwnerOfProfile}}
-              <h3 class="panel-title" data-i18n="accountsUI.yourOrders">Your orders</h3>
-            {{else}}
-              <h3 class="panel-title" data-i18n="accountsUI.usersOrders">User's orders</h3>
-            {{/if}}
-          </div>
-          <div class="panel-content">
-            {{> userOrdersList data=userOrders}}
-          </div>
-        </div>
-      </div>
-
       {{#if isOwnerOfProfile}}
-
-        <div class="flex-item">
-          {{> React AddressBook }}
-        </div>
-
         {{#if showMerchantSignup}}
           <div class="flex-item">
             <div class="panel panel-default">
