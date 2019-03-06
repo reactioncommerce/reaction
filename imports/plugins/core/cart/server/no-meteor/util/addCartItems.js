@@ -160,6 +160,8 @@ export default async function addCartItems(context, currentItems, inputItems, op
       updatedItemList.push(cartItem);
     } else {
       const currentCartItem = updatedItemList[currentMatchingItemIndex];
+      const updatedQuantity = currentCartItem.quantity + cartItem.quantity;
+      const updatedSubtotalAmount = updatedQuantity * cartItem.price.amount;
       updatedItemList[currentMatchingItemIndex] = {
         ...currentCartItem,
         ...cartItem,
@@ -167,7 +169,11 @@ export default async function addCartItems(context, currentItems, inputItems, op
         // chances that someone is adding the same item to the same cart in two different
         // browsers at the same time? Doing it this way allows for more functional and
         // testable code.
-        quantity: currentCartItem.quantity + cartItem.quantity
+        quantity: updatedQuantity,
+        subtotal: {
+          amount: updatedSubtotalAmount,
+          currencyCode: price.currencyCode
+        }
       };
     }
   });
