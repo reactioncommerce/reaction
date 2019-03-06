@@ -28,6 +28,11 @@ extend type Mutation {
   The order will be placed only if authorization is successful for all submitted payments.
   """
   placeOrder(input: PlaceOrderInput!): PlaceOrderPayload!
+
+  """
+  Use this mutation to update an order fulfillment group status and tracking number.
+  """
+  updateOrderFulfillmentGroup(input: UpdateOrderFulfillmentGroupInput!): UpdateOrderFulfillmentGroupPayload!
 }
 
 enum OrderFulfillmentGroupItemsSortByField {
@@ -195,6 +200,9 @@ type OrderFulfillmentGroup implements Node {
 
   "The shop responsible for fulfilling this order"
   shop: Shop!
+
+  "The machine-readable fulfillment group status."
+  status: String!
 
   "A summary of the totals for this group"
   summary: OrderSummary!
@@ -399,6 +407,33 @@ input PlaceOrderInput {
   method where the `amount` field is `null` will be charged the remainder due.
   """
   payments: [PaymentInput]
+}
+
+"Input for the updateOrderFulfillmentGroup mutation"
+input UpdateOrderFulfillmentGroupInput {
+  "An optional string identifying the mutation call, which will be returned in the response payload"
+  clientMutationId: String
+
+  "ID of the order fulfillment group to update"
+  orderFulfillmentGroupId: ID!
+
+  "ID of the order to update"
+  orderId: ID!
+
+  "Set the current order fulfillment group status to this"
+  status: String
+
+  "Set this as the current order fulfillment group shipment tracking reference"
+  tracking: String
+}
+
+"Response payload for the updateOrderFulfillmentGroup mutation"
+type UpdateOrderFulfillmentGroupPayload {
+  "The same string you sent with the mutation params, for matching mutation calls with their responses"
+  clientMutationId: String
+
+  "The updated order"
+  order: Order!
 }
 
 type PlaceOrderPayload {
