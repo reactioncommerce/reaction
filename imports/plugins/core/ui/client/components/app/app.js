@@ -103,7 +103,7 @@ class App extends Component {
         return this.renderOperatorApp();
       }
 
-      return this.renderAdminApp();
+      return null;
     }
 
     return (
