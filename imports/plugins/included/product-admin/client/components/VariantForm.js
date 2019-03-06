@@ -11,6 +11,7 @@ import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Switch from "@material-ui/core/Switch";
 import withStyles from "@material-ui/core/styles/withStyles";
 import { FormHelperText } from "@material-ui/core";
+import ProductMediaGallery from "./ProductMediaGallery";
 
 const fieldNames = [
   "optionTitle",
@@ -153,16 +154,6 @@ class VariantForm extends Component {
     this.handleFieldBlur(event, inverseValue, field);
   }
 
-  handleCardExpand = (event, card, cardName, isExpanded) => {
-    if (typeof this.props.onCardExpand === "function") {
-      this.props.onCardExpand(isExpanded ? cardName : undefined);
-    }
-  }
-
-  handleVariantVisibilityToggle = (variant) => this.props.onVisibilityButtonClick(variant)
-
-  isExpanded = (groupName) => this.state.expandedCard === groupName
-
   renderTaxCodeField() {
     const { taxCodes, validation } = this.props;
 
@@ -196,41 +187,6 @@ class VariantForm extends Component {
         validation={validation}
       />
     );
-  }
-
-  renderArchiveButton() {
-    if (this.props.isDeleted) {
-      return (
-        <Components.Button
-          icon="refresh"
-          className="rui btn btn-default btn-restore-variant flat"
-          tooltip="Restore"
-          onClick={() => this.props.restoreVariant(this.variant)}
-        />
-      );
-    }
-    return (
-      <Components.Button
-        icon="archive"
-        className="rui btn btn-default btn-remove-variant flat"
-        tooltip="Archive"
-        onClick={() => this.props.removeVariant(this.variant)}
-      />
-    );
-  }
-
-  renderArchivedLabel() {
-    if (this.props.isDeleted) {
-      return (
-        <div className="panel-subheading">
-          <span className="badge badge-danger" data-i18n="app.archived">
-            <span>Archived</span>
-          </span>
-        </div>
-      );
-    }
-
-    return null;
   }
 
   renderInventoryPolicyField() {
@@ -344,35 +300,13 @@ class VariantForm extends Component {
   }
 
   render() {
-    const { classes } = this.props;
-    const cardName = `variant-${this.variant._id}`;
+    const { classes, variant } = this.props;
     const currency = findCurrency(null, true);
 
     return (
       <div>
-        <Card
-          className={classes.card}
-          expandable={true}
-          expanded={this.isExpanded(cardName)}
-          name={cardName}
-          onExpand={this.handleCardExpand}
-        >
-          <CardHeader title={i18next.t("productDetailEdit.variantDetails")}>
-            {this.renderArchivedLabel()}
-            <Components.Button
-              icon="files-o"
-              className="rui btn btn-default btn-clone-variant flat"
-              tooltip="Duplicate"
-              onClick={() => this.props.cloneVariant(this.variant)}
-            />
-            <Components.VisibilityButton
-              onClick={() => this.handleVariantVisibilityToggle(this.variant)}
-              bezelStyle="flat"
-              primary={false}
-              toggleOn={this.variant.isVisible}
-            />
-            {this.renderArchiveButton()}
-          </CardHeader>
+        <Card className={classes.card}>
+          <CardHeader title={i18next.t("productDetailEdit.variantDetails")} />
           <CardContent expandable={true}>
             <Components.TextField
               i18nKeyLabel="productVariant.title"
@@ -502,6 +436,16 @@ class VariantForm extends Component {
                 />
               </div>
             </div>
+          </CardContent>
+        </Card>
+
+        <Card className={classes.card}>
+          <CardHeader title={i18next.t("admin.mediaGallery")} />
+          <CardContent>
+            <ProductMediaGallery
+              {...this.props}
+              variantId={variant._id}
+            />
           </CardContent>
         </Card>
 
