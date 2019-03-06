@@ -13,20 +13,22 @@ import ProductHeader from "./ProductHeader";
  * @return {Node} React node
  */
 function ProductDetail(props) {
+  const { onCreateVariant, product } = props;
+
   return (
     <Fragment>
       <Components.ProductPublish />
       <Grid container spacing={24}>
         <Grid item sm={12}>
           <ProductHeader
-            product={props.product}
-            title="Variants"
-            onCreate={props.onCreateVariant}
+            product={product}
           />
         </Grid>
         <Grid item sm={4}>
           <ProductList
             items={props.variants}
+            onCreate={() => onCreateVariant(product)}
+            title="Variants"
           />
         </Grid>
         <Grid item sm={8}>
