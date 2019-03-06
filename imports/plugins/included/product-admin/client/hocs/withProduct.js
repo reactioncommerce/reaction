@@ -1,111 +1,155 @@
-import React, { Component } from "react";
+import React from "react";
 import PropTypes from "prop-types";
 import _ from "lodash";
-import { compose } from "recompose";
+import { compose, withState } from "recompose";
 import { composeWithTracker } from "@reactioncommerce/reaction-components";
 import { withRouter } from "react-router";
 import { Media } from "/imports/plugins/core/files/client";
 import { Meteor } from "meteor/meteor";
-import { Reaction } from "/client/api";
-import { getPrimaryMediaForItem, ReactionProduct } from "/lib/api";
+import { Reaction, formatPriceString, i18next } from "/client/api";
+import { getPrimaryMediaForItem, ReactionProduct, Catalog } from "/lib/api";
 import { Tags, Templates } from "/lib/collections";
 import { Countries } from "/client/collections";
 import { getVariantIds } from "/lib/selectors/variants";
 
-const wrapComponent = (Comp) => (
-  class ProductAdminContainer extends Component {
-    static propTypes = {
-      product: PropTypes.object,
-      tags: PropTypes.arrayOf(PropTypes.object)
-    }
-
-    constructor(props) {
-      super(props);
-
-      this.state = {
-        newMetafield: {
-          key: "",
-          value: ""
-        }
-      };
-    }
-
-    handleCardExpand = (cardName) => {
-      Reaction.state.set("edit/focus", cardName);
-    }
-
-    handleDeleteProduct = (product) => {
-      ReactionProduct.archiveProduct(product || this.product);
-    }
-
-    handleProductFieldSave = (productId, fieldName, value) => {
-      Meteor.call("products/updateProductField", productId, fieldName, value, (error, result) => {
-        if (error) {
-          Alerts.toast(error.message, "error");
-          this.forceUpdate();
-        } else if (result.handle) {
-          Reaction.Router.go("product", {
-            handle: result.handle
-          });
-        }
-      });
-    }
-
-
-    handleMetaChange = (metafield) => {
-      const newState = {
-        newMetafield: metafield
-      };
-
-      this.setState(newState);
-    }
-
-    handleMetafieldSave = (productId, metafield, index) => {
-      // update existing metafield
-      if (index >= 0) {
-        Meteor.call("products/updateMetaFields", productId, metafield, index);
-      } else if (metafield.key && metafield.value) {
-        Meteor.call("products/updateMetaFields", productId, metafield);
+/**
+ * Create a new variant from a supplied product
+ * @param {Object} product Product object
+ * @returns {undefined} No return
+ */
+export async function handleCreateVariant(product) {
+  const promise = await new Promise((resolve, reject) => {
+    Meteor.call("products/createVariant", product._id, (error, result) => {
+      if (error) {
+        Alerts.alert({
+          text: i18next.t("productDetailEdit.addVariantFail", { title: product.title }),
+          confirmButtonText: i18next.t("app.close", { defaultValue: "Close" })
+        });
+        reject(error);
+      } else if (result) {
+        resolve({ newVariantId: result });
       }
+    });
+  });
 
-      this.setState({
-        newMetafield: {
-          key: "",
-          value: ""
-        }
-      });
+  return promise;
+}
+
+/**
+ * Metafield to remove
+ * @param {String} productId Product ID
+ * @param {Object} metafield Metafield object
+ * @param {String} metafield.key Key
+ * @param {String} metafield.value Value
+ * @returns {undefined} No return
+ */
+export function handleMetaRemove(productId, metafield) {
+  Meteor.call("products/removeMetaFields", productId, metafield);
+}
+
+/**
+ * Restore an archived product
+ * @param {Object} product Product object
+ * @returns {undefined} No return
+ */
+export function handleProductRestore(product) {
+  Meteor.call("products/updateProductField", product._id, "isDeleted", false);
+}
+
+/**
+ * Archive (soft delete) product
+ * @param {Object} product Product object
+ * @returns {undefined} No return
+ */
+export function handleDeleteProduct(product) {
+  ReactionProduct.archiveProduct(product);
+}
+
+/**
+ * Save a prodcut field
+ * @param {String} productId Product ID
+ * @param {String} fieldName Field name to save
+ * @param {Any} value Value for that field
+ * @returns {undefined} No return
+ */
+export function handleProductFieldSave(productId, fieldName, value) {
+  Meteor.call("products/updateProductField", productId, fieldName, value, (error) => {
+    if (error) {
+      Alerts.toast(error.message, "error");
+      this.forceUpdate();
     }
+  });
+}
 
-    handleMetaRemove = (productId, metafield) => {
-      Meteor.call("products/removeMetaFields", productId, metafield);
+/**
+ * Create a new product
+ * @returns {undefined} No return
+ */
+export function handleCreateProduct() {
+  Meteor.call("products/createProduct", (error, productId) => {
+    if (error) {
+      // throw new ReactionError("create-product-error", error);
+    } else if (productId) {
+      // go to new product
+      // this.props.history.push(`/operator/products/${productId}`);
     }
+  });
+}
 
-    handleProductRestore = (product) => {
-      Meteor.call("products/updateProductField", product._id, "isDeleted", false);
-    }
+const wrapComponent = (Comp) => {
+  /**
+   * withProduct HOC
+   * @param {Object} props Component props
+   * @returns {Node} React component
+   */
+  function withProduct(props) {
+    const {
+      history,
+      newMetafield,
+      setNewMetaField
+    } = props;
 
-    handleCreateVariant = () => {
+    return (
+      <Comp
+        newMetafield={newMetafield}
+        onDeleteProduct={handleDeleteProduct}
+        onMetaChange={setNewMetaField}
+        onMetaRemove={handleMetaRemove}
+        onMetaSave={(productId, metafield, index) => {
+          // update existing metafield
+          if (index >= 0) {
+            Meteor.call("products/updateMetaFields", productId, metafield, index);
+          } else if (metafield.key && metafield.value) {
+            Meteor.call("products/updateMetaFields", productId, metafield);
+          }
 
-    }
-
-    render() {
-      return (
-        <Comp
-          newMetafield={this.state.newMetafield}
-          onCardExpand={this.handleCardExpand}
-          onDeleteProduct={this.handleDeleteProduct}
-          onMetaChange={this.handleMetaChange}
-          onMetaRemove={this.handleMetaRemove}
-          onMetaSave={this.handleMetafieldSave}
-          onProductFieldSave={this.handleProductFieldSave}
-          onRestoreProduct={this.handleProductRestore}
-          onCreateVariant={this.handleCreateVariant}
-          {...this.props}
-        />
-      );
-    }
+          setNewMetaField({
+            key: "",
+            value: ""
+          });
+        }}
+        onProductFieldSave={handleProductFieldSave}
+        onRestoreProduct={handleProductRestore}
+        onCreateVariant={async (product) => {
+          const { newVariantId } = await handleCreateVariant(product);
+          history.push(`/operator/products/${product._id}/${newVariantId}`);
+        }}
+        {...props}
+      />
+    );
   }
-);
+
+  withProduct.propTypes = {
+    history: PropTypes.object,
+    newMetafield: PropTypes.shape({
+      key: PropTypes.string.isRequired,
+      value: PropTypes.string.isRequired
+    }),
+    setNewMetaField: PropTypes.func
+  };
+
+  return withProduct;
+};
 
 /**
  * Get top level variants
@@ -224,12 +268,12 @@ function composer(props, onData) {
 
       variants = variants.map((variantData) => ({
         ...variantData,
+        displayPrice: formatPriceString(Catalog.getVariantPriceRange(variantData._id)),
         media: variantMedia && variantMedia.filter((variantMediaItem) => (
           variantMediaItem.metadata.variantId === variantData._id
         ))
       }));
     }
-
 
     onData(null, {
       editFocus: Reaction.state.get("edit/focus") || "productDetails",
@@ -252,6 +296,7 @@ function composer(props, onData) {
 // Decorate component and export
 export default compose(
   withRouter,
+  withState("newMetafield", "setNewMetaField", { key: "", value: "" }),
   composeWithTracker(composer),
   wrapComponent
 );
