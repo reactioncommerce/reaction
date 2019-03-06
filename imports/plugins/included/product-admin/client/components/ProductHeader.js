@@ -1,15 +1,41 @@
-import React from "react";
+import React, { Fragment } from "react";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import { i18next } from "/client/api";
+import { compose, withState } from "recompose";
 import withStyles from "@material-ui/core/styles/withStyles";
-import Button from "@material-ui/core/Button";
+import IconButton from "@material-ui/core/IconButton";
+import Menu from "@material-ui/core/Menu";
+import MenuItem from "@material-ui/core/MenuItem";
 import Typography from "@material-ui/core/Typography";
+import ChevronRight from "mdi-material-ui/ChevronRight";
+import DotsHorizontalCircleIcon from "mdi-material-ui/DotsHorizontalCircle";
+import ConfirmDialog from "/imports/client/ui/components/ConfirmDialog";
 
 const styles = (theme) => ({
   root: {
     paddingTop: theme.spacing.unit * 2,
-    paddingBottom: theme.spacing.unit * 2
+    paddingBottom: theme.spacing.unit * 4
+  },
+  breadcrumbs: {
+    display: "flex",
+    alignItems: "center",
+    marginBottom: theme.spacing.unit * 2
+  },
+  breadcrumbIcon: {
+    fontSize: 14
+  },
+  breadcrumbLink: {
+    fontSize: "14px",
+    fontFamily: theme.typography.fontFamily,
+    color: "#3c3c3c",
+    border: 0,
+    textDecoration: "underline",
+    margin: "0 7px"
+  },
+  statusbar: {
+    display: "flex",
+    alignItems: "center"
   }
 });
 
@@ -27,7 +53,9 @@ function ProductHeader(props) {
     onRemoveVariant,
     onRestoreVariant,
     onVisibilityChange,
-    option
+    option,
+    setMenuAnchorEl,
+    menuAnchorEl
   } = props;
 
   if (!product) {
@@ -36,55 +64,122 @@ function ProductHeader(props) {
 
   const currentProduct = option || variant || product;
 
-  // Delete button
-  const deleteButton = (
-    <Button onClick={() => onRemoveVariant(currentProduct)} size="small">
-      {"Archive"}
-    </Button>
+  // Archive menu item
+  let archiveMenuItem = (
+    <ConfirmDialog
+      title={i18next.t("admin.productTable.bulkActions.archiveTitle")}
+      message={i18next.t("productDetailEdit.archiveThisProduct")}
+      onConfirm={() => onRemoveVariant(currentProduct)}
+    >
+      {({ openDialog }) => (
+        <MenuItem onClick={openDialog}>{i18next.t("admin.productTable.bulkActions.archive")}</MenuItem>
+      )}
+    </ConfirmDialog>
   );
 
   if (currentProduct.isDeleted) {
-    return (
-      <Button onClick={() => onRestoreVariant(currentProduct)} size="small">
-        {"Restore"}
-      </Button>
+    archiveMenuItem = (
+      <ConfirmDialog
+        title={i18next.t("admin.productTable.bulkActions.restoreTitle")}
+        message={i18next.t("productDetailEdit.restoreThisProduct")}
+        onConfirm={() => onRestoreVariant(currentProduct)}
+      >
+        {({ openDialog }) => (
+          <MenuItem onClick={openDialog}>{i18next.t("admin.productTable.bulkActions.restore")}</MenuItem>
+        )}
+      </ConfirmDialog>
     );
   }
 
   return (
     <div className={classes.root}>
-      <div>
-        <Link to="/operator/products">{"Products > "}</Link>
-        <Link to={`/operator/products/${product._id}`}>{product.title}</Link>
-        {variant && <Link to={`/operator/products/${product._id}/${variant._id}`}>{` > ${variant.title}`}</Link>}
-        {option && <Link to={`/operator/products/${product._id}/${variant._id}/${option._id}`}>{` > ${option.title}`}</Link>}
+      <div className={classes.breadcrumbs}>
+        <Link className={classes.breadcrumbLink} to="/operator/products">{"Products"}</Link>
+        <ChevronRight className={classes.breadcrumbIcon} />
+        <Link className={classes.breadcrumbLink} to={`/operator/products/${product._id}`}>
+          {product.title || "Untitled Product"}
+        </Link>
+        {variant && (
+          <Fragment>
+            <ChevronRight className={classes.breadcrumbIcon} />
+            <Link
+              className={classes.breadcrumbLink}
+              to={`/operator/products/${product._id}/${variant._id}`}
+            >
+              {variant.title || "Untitled Variant"}
+            </Link>
+          </Fragment>
+        )}
+        {option && (
+          <Fragment>
+            <ChevronRight className={classes.breadcrumbIcon} />
+            <Link
+              className={classes.breadcrumbLink}
+              to={`/operator/products/${product._id}/${variant._id}/${option._id}`}
+            >
+              {option.title || "Untitled Option"}
+            </Link>
+          </Fragment>
+        )}
       </div>
       <Typography variant="h2">
-        {(option && option.title) || (variant && variant.title) || (product && product.title)} {product.isDeleted && `(${i18next.t("app.archived")})`}
+        {
+          (option && (option.title || "Untitled Option")) ||
+          (variant && (variant.title || "Untitled Variant")) ||
+          (product && (product.title || "Untitled Product"))
+        }
+        {(currentProduct.isDeleted) && `(${i18next.t("app.archived")})`}
       </Typography>
-      <div>
-        {deleteButton}
-        <Button onClick={() => onCloneVariant(currentProduct)}>
-          {"Duplicate"}
-        </Button>
-        <Button
-          onClick={() => onVisibilityChange(currentProduct)}
+      <div className={classes.statusbar}>
+
+        <Typography>
+          {currentProduct.isVisible ? "Visible" : "Hidden"}
+          {currentProduct.isDeleted ? i18next.t("app.archived") : null}
+        </Typography>
+
+        <IconButton
+          onClick={(event) => {
+            setMenuAnchorEl(event.currentTarget);
+          }}
         >
-          {currentProduct.isVisible ? "Make Visible" : "Make Hidden"}
-        </Button>
+          <DotsHorizontalCircleIcon />
+        </IconButton>
+
+        <Menu
+          id="bulk-actions-menu"
+          anchorEl={menuAnchorEl}
+          open={Boolean(menuAnchorEl)}
+          onClose={() => setMenuAnchorEl(null)}
+        >
+          <MenuItem onClick={() => onVisibilityChange(currentProduct)}>
+            {currentProduct.isVisible ?
+              i18next.t("admin.productTable.bulkActions.makeHidden") :
+              i18next.t("admin.productTable.bulkActions.makeVisible")
+            }
+          </MenuItem>
+          <MenuItem onClick={onCloneVariant}>{i18next.t("admin.productTable.bulkActions.duplicate")}</MenuItem>
+          {archiveMenuItem}
+        </Menu>
+
       </div>
     </div>
   );
 }
+
 ProductHeader.propTypes = {
   classes: PropTypes.object,
+  menuAnchorEl: PropTypes.any,
   onCloneVariant: PropTypes.func,
   onRemoveVariant: PropTypes.func,
   onRestoreVariant: PropTypes.func,
   onVisibilityChange: PropTypes.func,
   option: PropTypes.object,
   product: PropTypes.object,
+  setMenuAnchorEl: PropTypes.func,
   variant: PropTypes.object
 };
 
-export default withStyles(styles, { name: "RuiProductHeader" })(ProductHeader);
+export default compose(
+  withState("menuAnchorEl", "setMenuAnchorEl", null),
+  withStyles(styles, { name: "RuiProductHeader" })
+)(ProductHeader);
