@@ -30,11 +30,22 @@ function getURL(item) {
 }
 
 /**
+ * Get the secondary label for the product item
+ * @param {Object} item A product, variant or option
+ * @returns {String} A text label with status and price
+ */
+function getItemSecondaryLabel({ isVisible, displayPrice }) {
+  const visibility = isVisible ? "Visible" : "Hidden";
+
+  return `${visibility} - ${displayPrice}`;
+}
+
+/**
  * Product list
  * @param {Object} props Component props
  * @returns {Node} Component representing a list of products, variants, or options
  */
-function ProductList({ items, title, onCreate }) {
+function ProductList({ items, title, onCreate, selectedVariantId }) {
   if (!Array.isArray(items)) {
     return null;
   }
@@ -49,18 +60,21 @@ function ProductList({ items, title, onCreate }) {
         }
         title={title}
       />
-      <List>
+      <List dense>
         {items.map((item) => (
           <Link key={item._id} to={getURL(item)}>
-            <ListItem button>
-              {(Array.isArray(item.media) && item.media.length) &&
+            <ListItem button selected={item._id === selectedVariantId}>
+              {(Array.isArray(item.media) && item.media.length &&
                 <img
                   alt=""
                   src={item.media[0].url({ store: "thumbnail" })}
                   width={36}
                 />
-              }
-              <ListItemText primary={item.title || item.optionTitle || item.name} />
+              ) || ""}
+              <ListItemText
+                primary={item.title || item.optionTitle || item.name}
+                secondary={getItemSecondaryLabel(item)}
+              />
             </ListItem>
           </Link>
         ))}
@@ -72,6 +86,7 @@ function ProductList({ items, title, onCreate }) {
 ProductList.propTypes = {
   items: PropTypes.arrayOf(PropTypes.object),
   onCreate: PropTypes.func,
+  selectedVariantId: PropTypes.string,
   title: PropTypes.string
 };
 
