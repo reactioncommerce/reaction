@@ -354,6 +354,10 @@ export const OrderFulfillmentGroup = new SimpleSchema({
     type: String,
     allowedValues: ["shipping"]
   },
+  "updatedAt": {
+    type: Date,
+    optional: true
+  },
   "workflow": Workflow
 });
 
