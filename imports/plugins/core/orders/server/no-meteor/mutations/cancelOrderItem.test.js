@@ -120,6 +120,11 @@ test("throws if user who placed order tries to cancel at invalid current item st
           Factory.OrderItem.makeOne({
             _id: "ITEM_1",
             quantity: 1,
+            price: {
+              amount: 1,
+              currencyCode: "USD"
+            },
+            subtotal: 1,
             workflow: {
               status: "processing",
               workflow: ["new", "processing"]
@@ -161,6 +166,11 @@ test("throws if user who placed order tries to cancel at invalid current order s
           Factory.OrderItem.makeOne({
             _id: "ITEM_1",
             quantity: 1,
+            price: {
+              amount: 1,
+              currencyCode: "USD"
+            },
+            subtotal: 1,
             workflow: {
               status: "new",
               workflow: ["new"]
@@ -220,6 +230,11 @@ test("throws if the database update fails", async () => {
           Factory.OrderItem.makeOne({
             _id: "abc",
             quantity: 1,
+            price: {
+              amount: 1,
+              currencyCode: "USD"
+            },
+            subtotal: 1,
             workflow: {
               status: "new",
               workflow: ["new"]
@@ -260,6 +275,11 @@ test("skips permission check if context.isInternalCall", async () => {
           Factory.OrderItem.makeOne({
             _id: "abc",
             quantity: 1,
+            price: {
+              amount: 1,
+              currencyCode: "USD"
+            },
+            subtotal: 1,
             workflow: {
               status: "new",
               workflow: ["new"]
@@ -302,6 +322,11 @@ test("cancels all of an item", async () => {
     _id: "ITEM_1",
     cancelReason: null,
     quantity: 1,
+    price: {
+      amount: 1,
+      currencyCode: "USD"
+    },
+    subtotal: 1,
     workflow: {
       status: "new",
       workflow: ["new"]
@@ -312,6 +337,11 @@ test("cancels all of an item", async () => {
     _id: "ITEM_2",
     cancelReason: null,
     quantity: 1,
+    price: {
+      amount: 1,
+      currencyCode: "USD"
+    },
+    subtotal: 1,
     workflow: {
       status: "new",
       workflow: ["new"]
@@ -377,7 +407,12 @@ test("cancels some of an item", async () => {
   const item1 = Factory.OrderItem.makeOne({
     _id: "ITEM_1",
     cancelReason: null,
+    price: {
+      amount: 5,
+      currencyCode: "USD"
+    },
     quantity: 5,
+    subtotal: 25,
     workflow: {
       status: "new",
       workflow: ["new"]
@@ -387,7 +422,12 @@ test("cancels some of an item", async () => {
   const item2 = Factory.OrderItem.makeOne({
     _id: "ITEM_2",
     cancelReason: null,
+    price: {
+      amount: 5,
+      currencyCode: "USD"
+    },
     quantity: 1,
+    subtotal: 5,
     workflow: {
       status: "new",
       workflow: ["new"]
@@ -434,6 +474,7 @@ test("cancels some of an item", async () => {
                 ...item1,
                 cancelReason: "REASON",
                 quantity: 2,
+                subtotal: 10,
                 workflow: {
                   status: "coreOrderItemWorkflow/canceled",
                   workflow: ["new", "coreOrderItemWorkflow/canceled"]
@@ -444,6 +485,7 @@ test("cancels some of an item", async () => {
                 ...item1,
                 _id: jasmine.any(String),
                 quantity: 3,
+                subtotal: 15,
                 workflow: {
                   status: "new",
                   workflow: ["new"]
@@ -464,6 +506,11 @@ test("cancels the group if all items are canceled", async () => {
     _id: "ITEM_1",
     cancelReason: null,
     quantity: 1,
+    price: {
+      amount: 1,
+      currencyCode: "USD"
+    },
+    subtotal: 1,
     workflow: {
       status: "new",
       workflow: ["new"]
@@ -474,6 +521,11 @@ test("cancels the group if all items are canceled", async () => {
     _id: "ITEM_2",
     cancelReason: null,
     quantity: 1,
+    price: {
+      amount: 1,
+      currencyCode: "USD"
+    },
+    subtotal: 1,
     workflow: {
       status: "coreOrderItemWorkflow/canceled",
       workflow: ["new", "coreOrderItemWorkflow/canceled"]
@@ -490,6 +542,12 @@ test("cancels the group if all items are canceled", async () => {
 
   const group2 = Factory.OrderFulfillmentGroup.makeOne({
     items: Factory.OrderItem.makeMany(3, {
+      price: {
+        amount: 1,
+        currencyCode: "USD"
+      },
+      quantity: 1,
+      subtotal: 1,
       workflow: {
         status: "new",
         workflow: ["new"]
@@ -561,6 +619,11 @@ test("cancels the order and emits afterOrderCancel if all groups are canceled", 
     _id: "ITEM_1",
     cancelReason: null,
     quantity: 1,
+    price: {
+      amount: 1,
+      currencyCode: "USD"
+    },
+    subtotal: 1,
     workflow: {
       status: "new",
       workflow: ["new"]
@@ -571,6 +634,11 @@ test("cancels the order and emits afterOrderCancel if all groups are canceled", 
     _id: "ITEM_2",
     cancelReason: null,
     quantity: 1,
+    price: {
+      amount: 1,
+      currencyCode: "USD"
+    },
+    subtotal: 1,
     workflow: {
       status: "coreOrderItemWorkflow/canceled",
       workflow: ["new", "coreOrderItemWorkflow/canceled"]
@@ -587,6 +655,12 @@ test("cancels the order and emits afterOrderCancel if all groups are canceled", 
 
   const group2 = Factory.OrderFulfillmentGroup.makeOne({
     items: Factory.OrderItem.makeMany(3, {
+      price: {
+        amount: 1,
+        currencyCode: "USD"
+      },
+      quantity: 1,
+      subtotal: 1,
       workflow: {
         status: "coreOrderItemWorkflow/canceled",
         workflow: ["new", "coreOrderItemWorkflow/canceled"]
@@ -669,6 +743,11 @@ test("succeeds if already canceled, but does not push canceled status again", as
     _id: "ITEM_1",
     cancelReason: null,
     quantity: 1,
+    price: {
+      amount: 1,
+      currencyCode: "USD"
+    },
+    subtotal: 1,
     workflow: {
       status: "coreOrderItemWorkflow/canceled",
       workflow: ["new", "coreOrderItemWorkflow/canceled"]
@@ -679,6 +758,11 @@ test("succeeds if already canceled, but does not push canceled status again", as
     _id: "ITEM_2",
     cancelReason: null,
     quantity: 1,
+    price: {
+      amount: 1,
+      currencyCode: "USD"
+    },
+    subtotal: 1,
     workflow: {
       status: "coreOrderItemWorkflow/canceled",
       workflow: ["new", "coreOrderItemWorkflow/canceled"]

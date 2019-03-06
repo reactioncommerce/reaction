@@ -92,11 +92,15 @@ export default async function cancelOrderItem(context, input) {
       // It will have the same status as this item has before we cancel it.
       // Later, after we exit this loop, we'll append it to the `group.items` list.
       if (item.quantity > cancelQuantity) {
+        const newItemQuantity = item.quantity - cancelQuantity;
         itemToAdd = {
           ...item,
           _id: Random.id(),
-          quantity: item.quantity - cancelQuantity
+          quantity: newItemQuantity
         };
+
+        // Update the subtotal since it is related to the quantity
+        itemToAdd.subtotal = item.price.amount * newItemQuantity;
       } else if (item.quantity < cancelQuantity) {
         throw new ReactionError("invalid-param", "cancelQuantity may not be greater than item quantity");
       }
@@ -106,6 +110,9 @@ export default async function cancelOrderItem(context, input) {
         cancelReason: reason,
         quantity: cancelQuantity
       };
+
+      // Update the subtotal since it is related to the quantity
+      updatedItem.subtotal = item.price.amount * cancelQuantity;
 
       if (item.workflow.status !== itemCanceledStatus) {
         updatedItem.workflow = {
