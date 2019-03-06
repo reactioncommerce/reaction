@@ -107,6 +107,7 @@ function composer(props, onData) {
 
     options = options.map((optionData) => ({
       ...optionData,
+      displayPrice: formatPriceString(Catalog.getVariantPriceRange(optionData._id)),
       media: optionMedia && optionMedia.filter((media) => (
         media.metaData.variantId === optionData._id
       ))
