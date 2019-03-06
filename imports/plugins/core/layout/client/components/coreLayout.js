@@ -1,70 +1,88 @@
 import React from "react";
 import PropTypes from "prop-types";
-import classnames from "classnames";
-import { getComponent, registerComponent } from "@reactioncommerce/reaction-components";
-import Blaze from "meteor/gadicc:blaze-react-component";
-import { Template } from "meteor/templating";
+import { registerComponent, Components } from "@reactioncommerce/reaction-components";
+import { Reaction } from "/client/api";
+import { Meteor } from "meteor/meteor";
+import Button from "@material-ui/core/Button";
+import withStyles from "@material-ui/core/styles/withStyles";
 
-class CoreLayout extends React.Component {
-  constructor(props) {
-    super(props);
+const styles = (theme) => ({
+  root: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    height: "100vh"
+  },
+  content: {
+    width: "100%",
+    maxWidth: 480
+  },
+  logo: {
+    display: "flex",
+    justifyContent: "center",
+    marginBottom: theme.spacing.unit * 3
+  },
+  logoutButton: {
+    textAlign: "center"
+  }
+});
 
-    const { structure } = this.props;
-    const { layoutHeader, layoutFooter } = structure || {};
-
-    const headerComponent = layoutHeader && getComponent(layoutHeader);
-    const footerComponent = layoutFooter && getComponent(layoutFooter);
-
-    if (headerComponent) {
-      this.headerComponent = React.createElement(headerComponent, {});
-    }
-
-    if (footerComponent) {
-      this.footerComponent = React.createElement(footerComponent, {});
-    }
+/**
+ * Core layout component
+ * This component has been re-commissioned as a login form for admins to redirect
+ * to operator 2.0
+ * @returns {Node} React component
+ */
+function CoreLayout({ classes }) {
+  // If the current user is an admin then redirect to /operator
+  if (Reaction.hasDashboardAccessForAnyShop()) {
+    window.location.replace("/operator");
+    return null;
   }
 
-  render() {
-    const { actionViewIsOpen, structure } = this.props;
-    const { template } = structure || {};
+  let content = <Components.Login />;
 
-    const pageClassName = classnames({
-      "page": true,
-      "show-settings": actionViewIsOpen
-    });
-
-    let mainNode = null;
-    try {
-      const mainComponent = getComponent(template);
-      mainNode = React.createElement(mainComponent, {});
-    } catch (error) {
-    //  Probe for Blaze template (legacy)
-      if (Template[template]) {
-        mainNode = <Blaze template={template} />;
-      }
-    }
-
-    return (
-      <div className={pageClassName} id="reactionAppContainer">
-
-        {this.headerComponent}
-
-        <main>
-          {mainNode}
-        </main>
-
-        {this.footerComponent}
+  // If the user is logged in, which makes them no longer anonymous
+  // But they aren't an admin, then give them a logout button.
+  if (!Reaction.hasPermission(["anonymous"])) {
+    content = (
+      <div className={classes.logoutButton}>
+        <Button
+          color="primary"
+          onClick={() => Meteor.logout()}
+          variant="contained"
+        >
+          {"Logout"}
+        </Button>
       </div>
     );
   }
+
+  return (
+    <div id="reactionAppContainer">
+      <div className={classes.root}>
+        <div className={classes.content}>
+          <div className={classes.logo}>
+            <img
+              alt="Reaction"
+              src="/resources/reaction-logo-circular.svg"
+              width={200}
+            />
+          </div>
+
+          {content}
+        </div>
+      </div>
+    </div>
+  );
 }
 
-CoreLayout.propTypes = {
-  actionViewIsOpen: PropTypes.bool, // eslint-disable-line react/boolean-prop-naming
-  data: PropTypes.object,
-  structure: PropTypes.object
+CoreLayout.propType = {
+  classes: PropTypes.object
 };
 
-registerComponent("coreLayout", CoreLayout);
+const componentWithStyles = withStyles(styles, { name: "RuiCoreLayout" })(CoreLayout);
 
-export default CoreLayout;
+registerComponent("coreLayout", componentWithStyles);
+
+export default componentWithStyles;
