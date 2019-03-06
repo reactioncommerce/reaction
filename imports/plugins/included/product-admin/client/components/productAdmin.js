@@ -7,13 +7,12 @@ import { i18next, Router } from "/client/api";
 import update from "immutability-helper";
 import { highlightInput } from "/imports/plugins/core/ui/client/helpers/animations";
 import withGenerateSitemaps from "/imports/plugins/included/sitemap-generator/client/hocs/withGenerateSitemaps";
-import ProductMediaGallery from "../containers/ProductMediaGallery";
-import Grid from "@material-ui/core/Grid";
 import Card from "@material-ui/core/Card";
 import CardHeader from "@material-ui/core/CardHeader";
 import CardContent from "@material-ui/core/CardContent";
 import withStyles from "@material-ui/core/styles/withStyles";
 import { compose } from "recompose";
+import ProductMediaGallery from "./ProductMediaGallery";
 
 const styles = (theme) => ({
   card: {
@@ -118,13 +117,6 @@ class ProductAdmin extends Component {
     }
   }
 
-
-  handleCardExpand = (event, card, cardName, isExpanded) => {
-    if (this.props.onCardExpand) {
-      this.props.onCardExpand(isExpanded ? cardName : undefined);
-    }
-  }
-
   handleDeleteProduct = () => {
     if (this.props.onDeleteProduct) {
       this.props.onDeleteProduct(this.props.product);
@@ -136,7 +128,6 @@ class ProductAdmin extends Component {
       this.props.onRestoreProduct(this.props.product);
     }
   }
-
 
   handleFieldChange = (event, value, field) => {
     const newState = update(this.state, {
@@ -265,25 +256,13 @@ class ProductAdmin extends Component {
   isExpanded = (groupName) => this.state.expandedCard === groupName
 
   render() {
-    console.log("ProductAdmin Props", this.props);
-
     const { classes } = this.props;
+
     return (
       <div>
         <Card className={classes.card}>
-          <CardHeader title={i18next.t("productDetailEdit.productSettings")} />
-          <CardContent expandable={true}>
-            <Components.Select
-              clearable={false}
-              i18nKeyLabel="productDetailEdit.template"
-              i18nKeyPlaceholder="productDetailEdit.templateSelectPlaceholder"
-              label="Template"
-              name="template"
-              onChange={this.handleSelectChange}
-              options={this.props.templates}
-              placeholder="Select a template"
-              value={this.product.template}
-            />
+          <CardHeader title={i18next.t("admin.productAdmin.details")} />
+          <CardContent>
             <Components.TextField
               i18nKeyLabel="productDetailEdit.title"
               i18nKeyPlaceholder="productDetailEdit.title"
@@ -372,15 +351,17 @@ class ProductAdmin extends Component {
         </Card>
 
         <Card className={classes.card}>
-          <CardHeader title={i18next.t("productDetailEdit.productMedia")} />
+          <CardHeader title={i18next.t("admin.productAdmin.mediaGallery")} />
           <CardContent>
-            <ProductMediaGallery />
+            <ProductMediaGallery
+              productId={this.product._id}
+            />
           </CardContent>
         </Card>
 
         <Card className={classes.card}>
           <CardHeader title={i18next.t("social.socialTitle")} />
-          <CardContent expandable={true}>
+          <CardContent>
             <Components.TextField
               i18nKeyLabel="productDetailEdit.facebookMsg"
               i18nKeyPlaceholder="productDetailEdit.facebookMsg"
@@ -444,7 +425,7 @@ class ProductAdmin extends Component {
 
         <Card className={classes.card}>
           <CardHeader title={i18next.t("productDetailEdit.details")} />
-          <CardContent expandable={true}>
+          <CardContent>
             <Components.Metadata
               metafields={this.product.metafields}
               newMetafield={this.props.newMetafield}
