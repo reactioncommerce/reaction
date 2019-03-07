@@ -14,10 +14,10 @@ import { getVariantIds } from "/lib/selectors/variants";
 /**
  * Create a new option from a supplied variant
  * @param {Object} variant Variant object
- * @returns {Promise} A promise that resolved to and object of shape `{ newVariantId }`
+ * @returns {Promise} A promise that resolves to and object of shape `{ newVariantId }`
  */
-export async function handleCreateOption(variant) {
-  const promiseResult = await new Promise((resolve, reject) => {
+export function handleCreateOption(variant) {
+  return new Promise((resolve, reject) => {
     Meteor.call("products/createVariant", variant._id, (error, result) => {
       if (error) {
         Alerts.alert({
@@ -25,13 +25,10 @@ export async function handleCreateOption(variant) {
           confirmButtonText: i18next.t("app.close", { defaultValue: "Close" })
         });
         reject(error);
-      } else if (result) {
-        resolve({ newVariantId: result });
       }
+      resolve({ newVariantId: result });
     });
   });
-
-  return promiseResult;
 }
 
 const wrapComponent = (Comp) => {
@@ -46,7 +43,7 @@ const wrapComponent = (Comp) => {
     return (
       <Comp
         onCreateOption={async (parentVariant) => {
-          const { newVariantId } = handleCreateOption(parentVariant);
+          const { newVariantId } = await handleCreateOption(parentVariant);
           history.push(`/operator/products/${product._id}/${parentVariant._id}/${newVariantId}`);
           window && window.scrollTo(0, 0);
         }}
