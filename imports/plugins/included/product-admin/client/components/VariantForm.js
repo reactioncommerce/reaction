@@ -204,7 +204,7 @@ class VariantForm extends Component {
               }}
             />
           }
-          label="Track inventory?"
+          label="Allow backorder"
         />
         {hasChildVariants &&
           <FormHelperText>
@@ -307,7 +307,7 @@ class VariantForm extends Component {
       <div>
         <Card className={classes.card}>
           <CardHeader title={i18next.t("productDetailEdit.variantDetails")} />
-          <CardContent expandable={true}>
+          <CardContent>
             <Components.TextField
               i18nKeyLabel="productVariant.title"
               i18nKeyPlaceholder="productVariant.title"
@@ -320,6 +320,21 @@ class VariantForm extends Component {
               onChange={this.handleFieldChange}
               onReturnKeyDown={this.handleFieldBlur}
               validation={this.props.validation}
+            />
+            <Components.TextField
+              i18nKeyLabel="productVariant.optionTitle"
+              i18nKeyPlaceholder="productVariant.optionTitle"
+              placeholder="optionTitle"
+              label="Short Label"
+              name="optionTitle"
+              ref="optionTitleInput"
+              value={this.variant.optionTitle}
+              onBlur={this.handleFieldBlur}
+              onChange={this.handleFieldChange}
+              onReturnKeyDown={this.handleFieldBlur}
+              validation={this.props.validation}
+              helpText={"Displayed on Product Detail Page"}
+              i18nKeyHelpText={"admin.helpText.optionTitle"}
             />
             <Components.Select
               clearable={false}
@@ -440,7 +455,7 @@ class VariantForm extends Component {
         </Card>
 
         <Card className={classes.card}>
-          <CardHeader title={i18next.t("admin.mediaGallery")} />
+          <CardHeader title={i18next.t("admin.productAdmin.mediaGallery")} />
           <CardContent>
             <ProductMediaGallery
               {...this.props}
@@ -461,7 +476,7 @@ class VariantForm extends Component {
                   }}
                 />
               }
-              label="Track inventory?"
+              label="Item is taxable"
             />
             {this.renderTaxCodeField()}
             <Components.TextField
@@ -493,7 +508,7 @@ class VariantForm extends Component {
                   }}
                 />
               }
-              label="Item is taxable?"
+              label="Manage inventory"
             />
             <div className="row">
               {this.renderQuantityField()}
