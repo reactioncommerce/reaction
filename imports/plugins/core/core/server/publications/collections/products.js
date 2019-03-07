@@ -392,7 +392,7 @@ Meteor.publish("ProductsAdminList", function (page = 0, limit = 24, productFilte
 
   delete selector.isVisible; // in edit mode, you should see all products
 
-  Counts.publish(this, "products-count", Products.find({ type: "simple" }));
+  Counts.publish(this, "products-count", Products.find(selector));
 
   // Get the IDs of the first N (limit) top-level products that match the query
   const productIds = Products.find(selector, {
