@@ -3,6 +3,7 @@ import Logger from "@reactioncommerce/logger";
 import Random from "@reactioncommerce/random";
 import { check, Match } from "meteor/check";
 import { EJSON } from "meteor/ejson";
+import { every } from "lodash";
 import { Meteor } from "meteor/meteor";
 import { ReactionProduct } from "/lib/api";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
@@ -675,6 +676,12 @@ Meteor.methods({
     }
 
     if (Array.isArray(productOrArray)) {
+      if (productOrArray.length && every(productOrArray, String)) {
+        productOrArray = Products.find({ // eslint-disable-line no-param-reassign
+          _id: { $in: productOrArray }
+        }).fetch();
+      }
+
       // Reduce to unique shops found among products in this array
       const shopIds = productOrArray.map((prod) => prod.shopId);
       const uniqueShopIds = [...new Set(shopIds)];
