@@ -50,5 +50,5 @@ test("get all items for shop", async () => {
     return;
   }
   console.log(result);
-  expect(result.catalogItems.nodes.count).toEqual(8);
+  expect(result.catalogItems.nodes.length).toEqual(8);
 });
