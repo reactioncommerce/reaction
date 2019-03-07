@@ -1,6 +1,9 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
+import { i18next } from "/client/api";
+import { compose, withStateHandlers } from "recompose";
+import withStyles from "@material-ui/core/styles/withStyles";
 import Card from "@material-ui/core/Card";
 import CardHeader from "@material-ui/core/CardHeader";
 import IconButton from "@material-ui/core/IconButton";
@@ -9,9 +12,17 @@ import TableHead from "@material-ui/core/TableHead";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
 import TableRow from "@material-ui/core/TableRow";
+import TextField from "@material-ui/core/TextField";
 import PencilIcon from "mdi-material-ui/Pencil";
 import PlusIcon from "mdi-material-ui/Plus";
+import { isInteger } from "lodash";
 
+const styles = () => ({
+  orderField: {
+    width: 70,
+    maxWidth: 70
+  }
+});
 
 /**
  * Get url for product, variant or option
@@ -40,8 +51,12 @@ function getURL(item) {
  */
 function VariantTable(props) {
   const {
+    classes,
     items,
-    onCreate
+    onCreate,
+    onChangeField,
+    orderForItem,
+    setOrderForItem
   } = props;
 
   if (!Array.isArray(items)) {
@@ -58,20 +73,42 @@ function VariantTable(props) {
         }
         title="Options"
       />
-      <Table>
+      <Table padding="dense">
         <TableHead>
           <TableRow>
+            <TableCell>{i18next.t("admin.productTable.header.order")}</TableCell>
             <TableCell />
-            <TableCell>Title</TableCell>
-            <TableCell>Price</TableCell>
-            <TableCell>Status</TableCell>
-            <TableCell>Visible</TableCell>
+            <TableCell>{i18next.t("admin.productTable.header.title")}</TableCell>
+            <TableCell>{i18next.t("admin.productTable.header.price")}</TableCell>
+            <TableCell>{i18next.t("admin.productTable.header.qty")}</TableCell>
+            <TableCell>{i18next.t("admin.productTable.header.visible")}</TableCell>
             <TableCell />
           </TableRow>
         </TableHead>
         <TableBody>
           {items.map((item) => (
-            <TableRow>
+            <TableRow key={`variantTable-${item._id}`}>
+              <TableCell>
+                <TextField
+                  className={classes.orderField}
+                  id="time"
+                  margin="dense"
+                  variant="outlined"
+                  type="numeric"
+                  value={orderForItem[item._id]}
+                  onKeyDown={(event) => {
+                    if (event.keyCode === 13) {
+                      onChangeField(item, "index", event.target.value);
+                    }
+                  }}
+                  onBlur={(event) => {
+                    onChangeField(item, "index", event.target.value);
+                  }}
+                  onChange={(event) => {
+                    setOrderForItem(item._id, event.target.value);
+                  }}
+                />
+              </TableCell>
               <TableCell>
                 {(Array.isArray(item.media) && item.media.length &&
                   <img alt="" src={item.media[0].url({ store: "thumbnail" })} width={36} />
@@ -82,8 +119,8 @@ function VariantTable(props) {
                   {item.title || item.optionTitle || item.name}
                 </Link>
               </TableCell>
-              <TableCell>{item.price}</TableCell>
-              <TableCell>Status</TableCell>
+              <TableCell>{item.displayPrice}</TableCell>
+              <TableCell>{item.inventoryInStock}</TableCell>
               <TableCell>{item.isVisible ? "Visible" : "Hidden"}</TableCell>
               <TableCell>
                 <Link to={getURL(item)}>
@@ -101,8 +138,38 @@ function VariantTable(props) {
 }
 
 VariantTable.propTypes = {
+  classes: PropTypes.object,
   items: PropTypes.arrayOf(PropTypes.object),
-  onCreate: PropTypes.func
+  onChangeField: PropTypes.func,
+  onCreate: PropTypes.func,
+  orderForItem: PropTypes.object,
+  setOrderForItem: PropTypes.func
 };
 
-export default VariantTable;
+
+const stateHandler = withStateHandlers(({ items }) => {
+  const orderForItem = {};
+
+  items.forEach((item) => {
+    orderForItem[item._id] = item.index;
+  });
+
+  return {
+    orderForItem
+  };
+}, {
+  setOrderForItem: ({ orderForItem }) => (_id, value) => {
+    const intValue = parseInt(value, 10);
+    return {
+      orderForItem: {
+        ...orderForItem,
+        [_id]: isInteger(intValue) ? intValue : ""
+      }
+    };
+  }
+});
+
+export default compose(
+  withStyles(styles, { name: "RuiVariantTable" }),
+  stateHandler
+)(VariantTable);
