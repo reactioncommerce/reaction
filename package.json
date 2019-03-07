@@ -93,7 +93,6 @@
     "later": "^1.2.0",
     "libphonenumber-js": "1.4.2",
     "lodash": "^4.17.11",
-    "lodash.pick": "^4.4.0",
     "match-sorter": "^2.3.0",
     "meteor-node-stubs": "0.4.1",
     "mobx": "^5.8.0",
