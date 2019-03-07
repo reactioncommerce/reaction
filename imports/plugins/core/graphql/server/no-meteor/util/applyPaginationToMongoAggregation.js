@@ -19,12 +19,11 @@ export default async function applyPaginationToMongoAggregation(aggregationParam
   const mockTotalCount = 30;
 
   if (first && last) throw new Error("Request either `first` or `last` but not both");
-  
+
   // Enforce a `first: 20` limit if no user-supplied limit, using the DEFAULT_LIMIT
   const limit = first || last || DEFAULT_LIMIT;
 
   let skip = 0;
-  
   if (last && mockTotalCount > last) {
     skip = mockTotalCount - last;
   }
@@ -76,9 +75,11 @@ export default async function applyPaginationToMongoAggregation(aggregationParam
   const facet = {
     $facet: {
       nodes: [
-        { $sort: {
-          featuredPosition: 1,
-        }},
+        {
+          $sort: {
+            featuredPosition: 1
+          }
+        },
         { $limit: limit },
         { $skip: skip || 0 }
       ],
@@ -91,9 +92,9 @@ export default async function applyPaginationToMongoAggregation(aggregationParam
   const results = await collection.aggregate([...pipeline, facet]).toArray();
   const firstResult = results[0];
 
-  let {
+  const {
     nodes,
-    pageInfo: [ { totalCount: newTotalCount } ]
+    pageInfo: [{ totalCount: newTotalCount }]
   } = firstResult;
 
   return {
