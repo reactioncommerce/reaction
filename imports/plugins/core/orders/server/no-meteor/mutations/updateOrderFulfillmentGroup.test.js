@@ -150,7 +150,8 @@ test("updates an order fulfillment group", async () => {
     orderId: "order1",
     orderFulfillmentGroupId: "group1",
     status: "NEW_STATUS",
-    tracking: "TRACK_REF"
+    tracking: "TRACK_REF",
+    trackingUrl: "http://track.me/TRACK_REF"
   });
 
   expect(mockContext.collections.Orders.findOneAndUpdate).toHaveBeenCalledWith(
@@ -161,6 +162,7 @@ test("updates an order fulfillment group", async () => {
     {
       $set: {
         "shipping.$.tracking": "TRACK_REF",
+        "shipping.$.trackingUrl": "http://track.me/TRACK_REF",
         "shipping.$.updatedAt": jasmine.any(Date),
         "shipping.$.workflow.status": "NEW_STATUS",
         "updatedAt": jasmine.any(Date)

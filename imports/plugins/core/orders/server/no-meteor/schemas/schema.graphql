@@ -46,7 +46,7 @@ extend type Mutation {
   updateOrder(input: UpdateOrderInput!): UpdateOrderPayload!
 
   """
-  Use this mutation to update an order fulfillment group status and tracking number.
+  Use this mutation to update an order fulfillment group status and tracking information.
   """
   updateOrderFulfillmentGroup(input: UpdateOrderFulfillmentGroupInput!): UpdateOrderFulfillmentGroupPayload!
 }
@@ -237,10 +237,11 @@ type OrderFulfillmentGroup implements Node {
   """
   type: FulfillmentType!
 
-  """
-  The order fulfillment group shipment tracking number
-  """
+  "The order fulfillment group shipment tracking number"
   tracking: String
+
+  "The order fulfillment group shipment tracking URL"
+  trackingUrl: String
 }
 
 "An order"
@@ -483,6 +484,9 @@ input UpdateOrderFulfillmentGroupInput {
 
   "Set this as the current order fulfillment group shipment tracking reference"
   tracking: String
+
+  "Set this as the current order fulfillment group shipment tracking URL"
+  trackingUrl: String
 }
 
 "Response payload for the cancelOrderItem mutation"

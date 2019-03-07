@@ -75,7 +75,8 @@ test("user with orders role can update an order fulfillment group", async () => 
       orderFulfillmentGroupId: encodeOrderFulfillmentGroupOpaqueId(group._id),
       orderId: encodeOrderOpaqueId(order._id),
       status: "NEW_STATUS",
-      tracking: "TRACK_REF"
+      tracking: "TRACK_REF",
+      trackingUrl: "http://track.me/TRACK_REF"
     });
   } catch (error) {
     expect(error).toBeUndefined();
@@ -84,4 +85,5 @@ test("user with orders role can update an order fulfillment group", async () => 
 
   expect(result.updateOrderFulfillmentGroup.order.fulfillmentGroups[0].status).toBe("NEW_STATUS");
   expect(result.updateOrderFulfillmentGroup.order.fulfillmentGroups[0].tracking).toBe("TRACK_REF");
+  expect(result.updateOrderFulfillmentGroup.order.fulfillmentGroups[0].trackingUrl).toBe("http://track.me/TRACK_REF");
 });

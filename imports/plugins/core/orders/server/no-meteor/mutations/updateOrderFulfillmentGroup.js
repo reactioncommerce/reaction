@@ -7,6 +7,10 @@ const inputSchema = new SimpleSchema({
     type: String,
     optional: true
   },
+  trackingUrl: {
+    type: String,
+    optional: true
+  },
   orderFulfillmentGroupId: String,
   orderId: String,
   status: {
@@ -27,6 +31,7 @@ export default async function updateOrderFulfillmentGroup(context, input) {
 
   const {
     tracking,
+    trackingUrl,
     orderFulfillmentGroupId,
     orderId,
     status
@@ -57,6 +62,7 @@ export default async function updateOrderFulfillmentGroup(context, input) {
   };
 
   if (tracking) modifier.$set["shipping.$.tracking"] = tracking;
+  if (trackingUrl) modifier.$set["shipping.$.trackingUrl"] = trackingUrl;
 
   if (status && orderFulfillmentGroup.workflow.status !== status) {
     modifier.$set["shipping.$.workflow.status"] = status;
