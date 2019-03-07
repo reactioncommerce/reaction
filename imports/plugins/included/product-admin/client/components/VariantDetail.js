@@ -41,8 +41,8 @@ function VariantDetail(props) {
           option={option}
           variant={variant}
           onCloneVariant={cloneVariant}
-          onRemoveVariant={removeVariant}
-          onRestoreVariant={restoreVariant}
+          onArchiveProduct={removeVariant}
+          onRestoreProduct={restoreVariant}
           onVisibilityChange={onVisibilityButtonClick}
         />
       </Grid>
