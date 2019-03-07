@@ -95,7 +95,10 @@ function ProductHeader(props) {
       <ConfirmDialog
         title={i18next.t("admin.productTable.bulkActions.restoreTitle")}
         message={i18next.t("productDetailEdit.restoreThisProduct")}
-        onConfirm={() => onRestoreProduct(currentProduct)}
+        onConfirm={() => {
+          onRestoreProduct(currentProduct);
+          setMenuAnchorEl(null);
+        }}
       >
         {({ openDialog }) => (
           <MenuItem onClick={openDialog}>{i18next.t("admin.productTable.bulkActions.restore")}</MenuItem>
@@ -164,7 +167,12 @@ function ProductHeader(props) {
           open={Boolean(menuAnchorEl)}
           onClose={() => setMenuAnchorEl(null)}
         >
-          <MenuItem onClick={() => onVisibilityChange(currentProduct)}>
+          <MenuItem
+            onClick={() => {
+              onVisibilityChange(currentProduct);
+              setMenuAnchorEl(null);
+            }}
+          >
             {currentProduct.isVisible ?
               i18next.t("admin.productTable.bulkActions.makeHidden") :
               i18next.t("admin.productTable.bulkActions.makeVisible")
@@ -182,6 +190,8 @@ function ProductHeader(props) {
                 // Clone product
                 onCloneProduct(product._id);
               }
+
+              setMenuAnchorEl(null);
             }}
           >
             {i18next.t("admin.productTable.bulkActions.duplicate")}
