@@ -77,6 +77,7 @@ VariantDetail.propTypes = {
   cloneVariant: PropTypes.func,
   onCreateOption: PropTypes.func,
   onCreateVariant: PropTypes.func,
+  onVariantFieldSave: PropTypes.func,
   onVisibilityButtonClick: PropTypes.func,
   option: PropTypes.object,
   options: PropTypes.arrayOf(PropTypes.object),
