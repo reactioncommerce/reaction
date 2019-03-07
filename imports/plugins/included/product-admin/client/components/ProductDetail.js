@@ -16,7 +16,7 @@ function ProductDetail(props) {
   const {
     onArchiveProduct,
     onCloneProduct,
-    onSetProductVisibility,
+    onToggleProductVisibility,
     onCreateVariant,
     product
   } = props;
@@ -30,7 +30,7 @@ function ProductDetail(props) {
             product={product}
             onArchiveProduct={onArchiveProduct}
             onCloneProduct={onCloneProduct}
-            onVisibilityChange={onSetProductVisibility}
+            onVisibilityChange={onToggleProductVisibility}
           />
         </Grid>
         <Grid item sm={4}>
@@ -53,7 +53,7 @@ ProductDetail.propTypes = {
   onArchiveProduct: PropTypes.func,
   onCloneProduct: PropTypes.func,
   onCreateVariant: PropTypes.func,
-  onSetProductVisibility: PropTypes.func,
+  onToggleProductVisibility: PropTypes.func,
   product: PropTypes.object,
   removeProduct: PropTypes.func,
   restoreProduct: PropTypes.func,

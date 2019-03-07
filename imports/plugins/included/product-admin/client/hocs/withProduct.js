@@ -89,13 +89,12 @@ export function handleProductFieldSave(productId, fieldName, value) {
 }
 
 /**
- * Set product visibility
- * @param {String} productId Product ID
- * @param {Boolean} isVisible Visibility status
+ * Toggle product visibility
+ * @param {String} product Product
  * @returns {undefined} No return
  */
-function handleSetProductVisibility(productId, isVisible) {
-  Meteor.call("products/updateProductField", productId, "isVisible", isVisible);
+function handleToggleProductVisibility(product) {
+  Meteor.call("products/updateProductField", product._id, "isVisible", !product.isVisible);
 }
 
 const wrapComponent = (Comp) => {
@@ -136,7 +135,7 @@ const wrapComponent = (Comp) => {
         }}
         onProductFieldSave={handleProductFieldSave}
         onRestoreProduct={handleProductRestore}
-        onSetProductVisibility={handleSetProductVisibility}
+        onToggleProductVisibility={handleToggleProductVisibility}
         onCreateVariant={async (product) => {
           const { newVariantId } = await handleCreateVariant(product);
           history.push(`/operator/products/${product._id}/${newVariantId}`);

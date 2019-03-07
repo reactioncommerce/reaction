@@ -68,7 +68,7 @@ const wrapComponent = (Comp) => (
       });
     }
 
-    handleSetProductVisibility = (productIds, isVisible) => {
+    handleToggleProductVisibility = (productIds, isVisible) => {
       if (Array.isArray(productIds)) {
         for (const productId of productIds) {
           Meteor.call("products/updateProductField", productId, "isVisible", isVisible);
@@ -111,7 +111,7 @@ const wrapComponent = (Comp) => (
           onDuplicateProducts={this.handleDuplicateProducts}
           onPublishProducts={this.handlePublishProducts}
           onSelectAllProducts={this.handleSelectAllProductItems}
-          onSetProductVisibility={this.handleSetProductVisibility}
+          onSetProductVisibility={this.handleToggleProductVisibility}
           products={this.products}
         />
       );
