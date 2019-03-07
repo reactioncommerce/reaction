@@ -15,10 +15,10 @@ import { getVariantIds } from "/lib/selectors/variants";
 /**
  * Create a new variant from a supplied product
  * @param {Object} product Product object
- * @returns {undefined} No return
+ * @returns {Promise} A promise that resolves to the new variant id
  */
-export async function handleCreateVariant(product) {
-  const promise = await new Promise((resolve, reject) => {
+export function handleCreateVariant(product) {
+  return new Promise((resolve, reject) => {
     Meteor.call("products/createVariant", product._id, (error, result) => {
       if (error) {
         Alerts.alert({
@@ -26,13 +26,11 @@ export async function handleCreateVariant(product) {
           confirmButtonText: i18next.t("app.close", { defaultValue: "Close" })
         });
         reject(error);
-      } else if (result) {
+      } else {
         resolve({ newVariantId: result });
       }
     });
   });
-
-  return promise;
 }
 
 /**
@@ -59,11 +57,10 @@ export function handleProductRestore(product) {
 /**
  * Archive (soft delete) product
  * @param {Object} product Product object
- * @param {Object} redirectUrl URL to redirect to on success
  * @returns {undefined} No return
  */
-export function handleArchiveProduct(product, redirectUrl) {
-  ReactionProduct.archiveProduct(product, redirectUrl || "/operator/products");
+export async function handleArchiveProduct(product) {
+  await ReactionProduct.archiveProduct(product);
 }
 
 /**
@@ -76,7 +73,7 @@ export function handleCloneProduct(product) {
 }
 
 /**
- * Save a prodcut field
+ * Save a product field
  * @param {String} productId Product ID
  * @param {String} fieldName Field name to save
  * @param {Any} value Value for that field
@@ -87,21 +84,6 @@ export function handleProductFieldSave(productId, fieldName, value) {
     if (error) {
       Alerts.toast(error.message, "error");
       this.forceUpdate();
-    }
-  });
-}
-
-/**
- * Create a new product
- * @returns {undefined} No return
- */
-export function handleCreateProduct() {
-  Meteor.call("products/createProduct", (error, productId) => {
-    if (error) {
-      // throw new ReactionError("create-product-error", error);
-    } else if (productId) {
-      // go to new product
-      // this.props.history.push(`/operator/products/${productId}`);
     }
   });
 }
@@ -132,7 +114,10 @@ const wrapComponent = (Comp) => {
     return (
       <Comp
         newMetafield={newMetafield}
-        onArchiveProduct={handleArchiveProduct}
+        onArchiveProduct={async (product, redirectUrl) => {
+          await handleArchiveProduct(product);
+          history.push(redirectUrl);
+        }}
         onCloneProduct={handleCloneProduct}
         onMetaChange={setNewMetaField}
         onMetaRemove={handleMetaRemove}
