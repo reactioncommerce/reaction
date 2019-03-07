@@ -421,7 +421,7 @@ class ProductAdmin extends Component {
         </Card>
 
         <Card className={classes.card}>
-          <CardHeader title={i18next.t("productDetailEdit.details")} />
+          <CardHeader title={i18next.t("admin.productAdmin.metadata")} />
           <CardContent>
             <Components.Metadata
               metafields={this.product.metafields}
