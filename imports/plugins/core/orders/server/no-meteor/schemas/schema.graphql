@@ -39,6 +39,11 @@ extend type Mutation {
   The order will be placed only if authorization is successful for all submitted payments.
   """
   placeOrder(input: PlaceOrderInput!): PlaceOrderPayload!
+
+  """
+  Use this mutation to update order details after the order has been placed.
+  """
+  updateOrder(input: UpdateOrderInput!): UpdateOrderPayload!
 }
 
 enum OrderFulfillmentGroupItemsSortByField {
@@ -404,23 +409,6 @@ input PaymentInput {
   method: PaymentMethodName!
 }
 
-"Input for the placeOrder mutation"
-input PlaceOrderInput {
-  "An optional string identifying the mutation call, which will be returned in the response payload"
-  clientMutationId: String
-
-  "The order to be placed, if payment is accepted"
-  order: OrderInput!
-
-  """
-  The information necessary to pay. Collect this information from the shopper during a checkout flow.
-  You need not provide any payment input if the total is zero.
-  The total of all payment input `amount` fields must add up to the order total. The first payment
-  method where the `amount` field is `null` will be charged the remainder due.
-  """
-  payments: [PaymentInput]
-}
-
 "Input for the cancelOrderItem mutation"
 input CancelOrderItemInput {
   "Quantity to cancel. Must be equal to or less than the item quantity."
@@ -442,6 +430,35 @@ input CancelOrderItemInput {
   reason: String
 }
 
+"Input for the placeOrder mutation"
+input PlaceOrderInput {
+  "An optional string identifying the mutation call, which will be returned in the response payload"
+  clientMutationId: String
+
+  "The order to be placed, if payment is accepted"
+  order: OrderInput!
+
+  """
+  The information necessary to pay. Collect this information from the shopper during a checkout flow.
+  You need not provide any payment input if the total is zero.
+  The total of all payment input `amount` fields must add up to the order total. The first payment
+  method where the `amount` field is `null` will be charged the remainder due.
+  """
+  payments: [PaymentInput]
+}
+
+"Input for the updateOrder mutation"
+input UpdateOrderInput {
+  "An optional string identifying the mutation call, which will be returned in the response payload"
+  clientMutationId: String
+  "Set the order email to this"
+  email: String
+  "ID of the order to update"
+  orderId: ID!
+  "Set the current order status to this"
+  status: String
+}
+
 "Response payload for the cancelOrderItem mutation"
 type CancelOrderItemPayload {
   "The same string you sent with the mutation params, for matching mutation calls with their responses"
@@ -461,4 +478,12 @@ type PlaceOrderPayload {
 
   "If you are not logged in, this will be a token that can be used for future requests"
   token: String
+}
+
+"Response payload for the updateOrder mutation"
+type UpdateOrderPayload {
+  "The same string you sent with the mutation params, for matching mutation calls with their responses"
+  clientMutationId: String
+  "The updated order"
+  order: Order!
 }
