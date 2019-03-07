@@ -12,6 +12,13 @@
           "mediaGallery": "Media Gallery"
         },
         "productTable": {
+          "header": {
+            "order": "Order",
+            "title": "Title",
+            "price": "Price",
+            "qty": "Qty",
+            "visible": "Visible"
+          },
           "bulkActions": {
             "actions": "Actions",
             "archive": "Archive",
