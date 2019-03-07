@@ -391,6 +391,8 @@ type CatalogItemProduct implements CatalogItem & Node {
 
   "The date and time at which this CatalogItem was last updated, which is when the related product was most recently published"
   updatedAt: DateTime!
+  
+  featuredPosition: Int
 }
 
 "Represents a catalog item that displays some non-product content"
