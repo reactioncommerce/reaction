@@ -44,6 +44,14 @@ extend type Mutation {
   Use this mutation to update order details after the order has been placed.
   """
   updateOrder(input: UpdateOrderInput!): UpdateOrderPayload!
+
+  """
+  Use this mutation to reduce the quantity of one item of an order and create
+  a new item for the remaining quantity in the same fulfillment group, and with the
+  same item status. You may want to do this if you are only able to partially fulfill
+  the item order right now.
+  """
+  splitOrderItem(input: SplitOrderItemInput!): SplitOrderItemPayload!
 }
 
 enum OrderFulfillmentGroupItemsSortByField {
@@ -447,6 +455,21 @@ input PlaceOrderInput {
   payments: [PaymentInput]
 }
 
+"Input for the splitOrderItem mutation"
+input SplitOrderItemInput {
+  "An optional string identifying the mutation call, which will be returned in the response payload"
+  clientMutationId: String
+
+  "ID of the item order you want to split"
+  itemId: ID!
+
+  "The quantity that will be transferred to a new order item on the same fulfillment group."
+  newItemQuantity: Int!
+
+  "ID of the order that has the item you want to split"
+  orderId: ID!
+}
+
 "Input for the updateOrder mutation"
 input UpdateOrderInput {
   "An optional string identifying the mutation call, which will be returned in the response payload"
@@ -478,6 +501,15 @@ type PlaceOrderPayload {
 
   "If you are not logged in, this will be a token that can be used for future requests"
   token: String
+}
+
+"Response payload for the splitOrderItem mutation"
+type SplitOrderItemPayload {
+  "The same string you sent with the mutation params, for matching mutation calls with their responses"
+  clientMutationId: String
+
+  "The updated order"
+  order: Order!
 }
 
 "Response payload for the updateOrder mutation"
