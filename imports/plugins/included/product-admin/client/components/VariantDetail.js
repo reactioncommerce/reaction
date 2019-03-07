@@ -28,7 +28,8 @@ function VariantDetail(props) {
     cloneVariant,
     onCreateOption,
     onCreateVariant,
-    onVisibilityButtonClick
+    onVisibilityButtonClick,
+    onVariantFieldSave
   } = props;
 
   return (
@@ -60,6 +61,9 @@ function VariantDetail(props) {
             <VariantTable
               items={props.options}
               onCreate={() => { onCreateOption(variant); }}
+              onChangeField={(item, field, value) => {
+                onVariantFieldSave(item._id, field, value, item);
+              }}
             />
           )}
         </Grid>
@@ -74,7 +78,7 @@ VariantDetail.propTypes = {
   onCreateOption: PropTypes.func,
   onCreateVariant: PropTypes.func,
   onVisibilityButtonClick: PropTypes.func,
-  option: PropTypes.arrayOf(PropTypes.object),
+  option: PropTypes.object,
   options: PropTypes.arrayOf(PropTypes.object),
   product: PropTypes.object,
   removeVariant: PropTypes.func,
