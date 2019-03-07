@@ -57,7 +57,7 @@ const wrapComponent = (Comp) => {
 
   withVariant.propTypes = {
     history: PropTypes.object,
-    product: PropTypes.func
+    product: PropTypes.object
   };
 
   return withVariant;
