@@ -16,8 +16,7 @@ import applyPaginationToMongoAggregation from "./applyPaginationToMongoAggregati
  * @return {Promise<Object>} `{ nodes, pageInfo, totalCount }`
  */
 export default async function getPaginatedAggregateResponse(aggregationParams, args) {
-  const totalCountAfterOrBefore = 0;
-  const { totalCount, pageInfo: { hasNextPage, hasPreviousPage }, nodes } = await applyPaginationToMongoAggregation(aggregationParams, args, totalCountAfterOrBefore);
+  const { totalCount, pageInfo: { hasNextPage, hasPreviousPage }, nodes } = await applyPaginationToMongoAggregation(aggregationParams, args);
 
   // Figure out proper hasNext/hasPrevious
   const pageInfo = {

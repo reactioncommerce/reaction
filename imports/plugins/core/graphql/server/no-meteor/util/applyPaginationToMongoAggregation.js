@@ -11,22 +11,27 @@ const DEFAULT_LIMIT = 20;
  * @param {MongoCollection} [aggregationParams.collection] - Mongo collection is run the aggregation on
  * @param {Array} [aggregationParams.pipeline] - Mongo aggregation pipeline array
  * @param {Object} args GraphQL query arguments
- * @param {Number} totalCount Total count of docs that match the query, after applying the before/after filter
  * @return {Promise<Object>} `{ totalCount, pageInfo: { hasNextPage, hasPreviousPage }, nodes }`
  */
-export default async function applyPaginationToMongoAggregation(aggregationParams, { first, last } = {}, totalCount) {
+export default async function applyPaginationToMongoAggregation(aggregationParams, { first, last } = {}) {
   const { collection, pipeline } = aggregationParams;
 
-  if (first && last) throw new Error("Request either `first` or `last` but not both");
+  const mockTotalCount = 30;
 
+  if (first && last) throw new Error("Request either `first` or `last` but not both");
+  
   // Enforce a `first: 20` limit if no user-supplied limit, using the DEFAULT_LIMIT
   const limit = first || last || DEFAULT_LIMIT;
 
   let skip = 0;
-  if (last && totalCount > last) skip = totalCount - last;
+  
+  if (last && mockTotalCount > last) {
+    skip = mockTotalCount - last;
+  }
 
   let hasNextPage = null;
   let hasPreviousPage = null;
+
   if (last) {
     if (skip === 0) {
       hasPreviousPage = false;
@@ -71,6 +76,9 @@ export default async function applyPaginationToMongoAggregation(aggregationParam
   const facet = {
     $facet: {
       nodes: [
+        { $sort: {
+          featuredPosition: 1,
+        }},
         { $limit: limit },
         { $skip: skip || 0 }
       ],
@@ -85,11 +93,7 @@ export default async function applyPaginationToMongoAggregation(aggregationParam
 
   let {
     nodes,
-    pageInfo: [
-      {
-        totalCount: newTotalCount
-      }
-    ]
+    pageInfo: [ { totalCount: newTotalCount } ]
   } = firstResult;
 
   return {
