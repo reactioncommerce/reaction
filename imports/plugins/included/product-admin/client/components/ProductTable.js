@@ -7,11 +7,11 @@ import { i18next } from "/client/api";
 import withCreateProduct from "../hocs/withCreateProduct";
 
 /**
- * ProductList component
+ * ProductTable component
  * @param {Object} props Component props
  * @return {Node} React node
  */
-function ProductList({ onCreateProduct }) {
+function ProductTable({ onCreateProduct }) {
   return (
     <Grid container spacing={24}>
       <Grid item sm={12}>
@@ -30,8 +30,8 @@ function ProductList({ onCreateProduct }) {
   );
 }
 
-ProductList.propTypes = {
+ProductTable.propTypes = {
   onCreateProduct: PropTypes.func
 };
 
-export default withCreateProduct(ProductList);
+export default withCreateProduct(ProductTable);
