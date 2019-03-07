@@ -13,7 +13,13 @@ import ProductHeader from "./ProductHeader";
  * @return {Node} React node
  */
 function ProductDetail(props) {
-  const { onCreateVariant, product } = props;
+  const {
+    onArchiveProduct,
+    onCloneProduct,
+    onSetProductVisibility,
+    onCreateVariant,
+    product
+  } = props;
 
   return (
     <Fragment>
@@ -22,6 +28,9 @@ function ProductDetail(props) {
         <Grid item sm={12}>
           <ProductHeader
             product={product}
+            onArchiveProduct={onArchiveProduct}
+            onCloneProduct={onCloneProduct}
+            onVisibilityChange={onSetProductVisibility}
           />
         </Grid>
         <Grid item sm={4}>
@@ -40,8 +49,14 @@ function ProductDetail(props) {
 }
 
 ProductDetail.propTypes = {
+  cloneProduct: PropTypes.func,
+  onArchiveProduct: PropTypes.func,
+  onCloneProduct: PropTypes.func,
   onCreateVariant: PropTypes.func,
+  onSetProductVisibility: PropTypes.func,
   product: PropTypes.object,
+  removeProduct: PropTypes.func,
+  restoreProduct: PropTypes.func,
   variants: PropTypes.arrayOf(PropTypes.object)
 };
 
