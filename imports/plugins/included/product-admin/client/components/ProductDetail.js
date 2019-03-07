@@ -6,6 +6,7 @@ import withProduct from "../hocs/withProduct";
 import ProductList from "./ProductList";
 import ProductAdminForm from "./productAdmin";
 import ProductHeader from "./ProductHeader";
+import VariantTable from "./VariantTable";
 
 /**
  * ProductDetail component
@@ -16,6 +17,7 @@ function ProductDetail(props) {
   const {
     onArchiveProduct,
     onCloneProduct,
+    onProductVariantFieldSave,
     onToggleProductVisibility,
     onCreateVariant,
     product
@@ -42,6 +44,14 @@ function ProductDetail(props) {
         </Grid>
         <Grid item sm={8}>
           <ProductAdminForm {...props} />
+          <VariantTable
+            title="Variants"
+            items={props.variants}
+            onCreate={() => { onCreateVariant(product); }}
+            onChangeField={(item, field, value) => {
+              onProductVariantFieldSave(item._id, field, value);
+            }}
+          />
         </Grid>
       </Grid>
     </Fragment>
@@ -53,6 +63,7 @@ ProductDetail.propTypes = {
   onArchiveProduct: PropTypes.func,
   onCloneProduct: PropTypes.func,
   onCreateVariant: PropTypes.func,
+  onProductVariantFieldSave: PropTypes.func,
   onToggleProductVisibility: PropTypes.func,
   product: PropTypes.object,
   removeProduct: PropTypes.func,

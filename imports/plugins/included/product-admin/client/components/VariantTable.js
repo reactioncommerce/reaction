@@ -51,6 +51,7 @@ function getURL(item) {
  */
 function VariantTable(props) {
   const {
+    title,
     classes,
     items,
     onCreate,
@@ -71,7 +72,7 @@ function VariantTable(props) {
             <PlusIcon />
           </IconButton>
         }
-        title="Options"
+        title={title || "Options"}
       />
       <Table padding="dense">
         <TableHead>
@@ -95,7 +96,7 @@ function VariantTable(props) {
                   margin="dense"
                   variant="outlined"
                   type="numeric"
-                  value={orderForItem[item._id]}
+                  value={orderForItem[item._id] || item.index || ""}
                   onKeyDown={(event) => {
                     if (event.keyCode === 13) {
                       onChangeField(item, "index", event.target.value);
@@ -143,16 +144,19 @@ VariantTable.propTypes = {
   onChangeField: PropTypes.func,
   onCreate: PropTypes.func,
   orderForItem: PropTypes.object,
-  setOrderForItem: PropTypes.func
+  setOrderForItem: PropTypes.func,
+  title: PropTypes.string
 };
 
 
 const stateHandler = withStateHandlers(({ items }) => {
   const orderForItem = {};
 
-  items.forEach((item) => {
-    orderForItem[item._id] = item.index;
-  });
+  if (Array.isArray(items)) {
+    items.forEach((item) => {
+      orderForItem[item._id] = item.index;
+    });
+  }
 
   return {
     orderForItem

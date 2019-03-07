@@ -89,6 +89,22 @@ export function handleProductFieldSave(productId, fieldName, value) {
 }
 
 /**
+ * Handle save of a product variant field
+ * @param {String} variantId Variant id
+ * @param {String} fieldName Field name
+ * @param {Any} value Any value supported by the variant schema
+ * @returns {undefined} No return
+ */
+export function handleProductVariantFieldSave(variantId, fieldName, value) {
+  Meteor.call("products/updateProductField", variantId, fieldName, value, (error) => {
+    if (error) {
+      Alerts.toast(error.message, "error");
+    }
+  });
+}
+
+
+/**
  * Toggle product visibility
  * @param {String} product Product
  * @returns {undefined} No return
@@ -118,6 +134,10 @@ const wrapComponent = (Comp) => {
           history.push(redirectUrl);
         }}
         onCloneProduct={handleCloneProduct}
+        onCreateVariant={async (product) => {
+          const { newVariantId } = await handleCreateVariant(product);
+          history.push(`/operator/products/${product._id}/${newVariantId}`);
+        }}
         onMetaChange={setNewMetaField}
         onMetaRemove={handleMetaRemove}
         onMetaSave={(productId, metafield, index) => {
@@ -134,12 +154,9 @@ const wrapComponent = (Comp) => {
           });
         }}
         onProductFieldSave={handleProductFieldSave}
+        onProductVariantFieldSave={handleProductVariantFieldSave}
         onRestoreProduct={handleProductRestore}
         onToggleProductVisibility={handleToggleProductVisibility}
-        onCreateVariant={async (product) => {
-          const { newVariantId } = await handleCreateVariant(product);
-          history.push(`/operator/products/${product._id}/${newVariantId}`);
-        }}
         {...props}
       />
     );
