@@ -21,7 +21,7 @@ const inputSchema = new SimpleSchema({
 
 /**
  * @method updateOrderFulfillmentGroup
- * @summary Use this mutation to update an order fulfillment group status and tracking number
+ * @summary Use this mutation to update an order fulfillment group status and tracking information
  * @param {Object} context - an object containing the per-request state
  * @param {Object} input - Necessary input. See SimpleSchema
  * @return {Promise<Object>} Object with `order` property containing the updated order
