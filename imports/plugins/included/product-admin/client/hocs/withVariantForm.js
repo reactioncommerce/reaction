@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { compose } from "recompose";
 import { composeWithTracker } from "@reactioncommerce/reaction-components";
 import { Meteor } from "meteor/meteor";
-import { Session } from "meteor/session";
+import { withRouter } from "react-router";
 import { Validation } from "@reactioncommerce/schemas";
 import { ReactionProduct } from "/lib/api";
 import { Reaction, i18next } from "/client/api";
@@ -15,6 +15,7 @@ import withTaxCodes from "/imports/plugins/core/taxes/client/hoc/withTaxCodes";
 const wrapComponent = (Comp) => (
   class VariantFormContainer extends Component {
     static propTypes = {
+      history: PropTypes.object,
       variant: PropTypes.object
     }
 
@@ -91,45 +92,27 @@ const wrapComponent = (Comp) => (
       });
     }
 
-    removeVariant = (variant) => {
-      const title = variant.title || i18next.t("productDetailEdit.thisVariant");
-
-      Alerts.alert({
-        title: i18next.t("productDetailEdit.archiveVariantConfirm", { title }),
-        showCancelButton: true,
-        confirmButtonText: "Archive"
-      }, (isConfirm) => {
-        if (isConfirm) {
-          this.setState({
-            isDeleted: !this.state.isDeleted
-          });
-          const id = variant._id;
-          Meteor.call("products/deleteVariant", id, (error, result) => {
-            if (result && ReactionProduct.selectedVariantId() === id) {
-              return ReactionProduct.setCurrentVariant(null);
-            }
-          });
+    removeVariant = (variant, redirectUrl) => {
+      const id = variant._id;
+      Meteor.call("products/deleteVariant", id, (error, result) => {
+        if (result && ReactionProduct.selectedVariantId() === id) {
+          redirectUrl && this.props.history.replace(redirectUrl);
         }
       });
     }
 
-    cloneVariant = (variant) => {
-      const title = variant.title || i18next.t("productDetailEdit.thisVariant");
-      const productId = ReactionProduct.selectedProductId();
+    cloneVariant = (productId, variantId) => {
+      const title = i18next.t("productDetailEdit.thisVariant");
       if (!productId) {
         return;
       }
-      Meteor.call("products/cloneVariant", productId, variant._id, (error, result) => {
+
+      Meteor.call("products/cloneVariant", productId, variantId, (error) => {
         if (error) {
           Alerts.alert({
             text: i18next.t("productDetailEdit.cloneVariantFail", { title }),
             confirmButtonText: i18next.t("app.close", { defaultValue: "Close" })
           });
-        } else if (result) {
-          const variantId = result[0];
-
-          ReactionProduct.setCurrentVariant(variantId);
-          Session.set(`variant-form-${variantId}`, true);
         }
       });
     }
@@ -252,6 +235,7 @@ const composer = async (props, onData) => {
 };
 
 export default compose(
+  withRouter,
   composeWithTracker(composer),
   withTaxCodes,
   wrapComponent
