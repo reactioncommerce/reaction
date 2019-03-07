@@ -17,7 +17,7 @@ import { getVariantIds } from "/lib/selectors/variants";
  * @returns {Promise} A promise that resolved to and object of shape `{ newVariantId }`
  */
 export async function handleCreateOption(variant) {
-  const result = await new Promise((resolve, reject) => {
+  const promiseResult = await new Promise((resolve, reject) => {
     Meteor.call("products/createVariant", variant._id, (error, result) => {
       if (error) {
         Alerts.alert({
@@ -31,7 +31,7 @@ export async function handleCreateOption(variant) {
     });
   });
 
-  return result;
+  return promiseResult;
 }
 
 const wrapComponent = (Comp) => {
