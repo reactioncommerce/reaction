@@ -155,6 +155,12 @@ export const rawMuiTheme = {
         borderRight: "none"
       }
     },
+    MuiOutlinedInput: {
+      inputMarginDense: {
+        paddingTop: 8,
+        paddingBottom: 8
+      }
+    },
     MuiTableCell: {
       root: {
         borderBottom: `1px solid ${colors.black10}`
