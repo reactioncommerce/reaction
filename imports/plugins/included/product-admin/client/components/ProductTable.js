@@ -20,7 +20,7 @@ function ProductTable({ onCreateProduct }) {
           onClick={onCreateProduct}
           variant="contained"
         >
-          {i18next.t("admin.createProduct")}
+          {i18next.t("admin.createProduct") || "Create Product"}
         </Button>
       </Grid>
       <Grid item sm={12}>
