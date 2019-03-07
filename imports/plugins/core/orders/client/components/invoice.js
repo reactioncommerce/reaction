@@ -1,9 +1,12 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { formatPriceString } from "/client/api";
+import { compose } from "recompose";
+import { withComponents } from "@reactioncommerce/components-context";
+import { CustomPropTypes } from "@reactioncommerce/components/utils";
 import { Components, registerComponent, withMoment } from "@reactioncommerce/reaction-components";
+import { formatPriceString, i18next } from "/client/api";
 import LineItems from "./lineItems";
-import InvoiceActions from "./invoiceActions";
+import OrderPayment from "./OrderPayment";
 
 /**
  * @file Invoice is a React Component for displaying the `invoice` section on the orders sideview
@@ -12,30 +15,87 @@ import InvoiceActions from "./invoiceActions";
  */
 
 class Invoice extends Component {
-  /**
-    * @name Invoice propTypes
-    * @type {propTypes}
-    * @param {Object} props - React PropTypes
-    * @property {Object} invoice - An object representing an invoice
-    * @property {Object} order - An object representing an order
-    * @property {Bool} discounts - A boolean indicating whether discounts are enabled
-    * @property {Array} refunds - An array/list of refunds
-    * @property {Bool} paymentCaptured - A boolean indicating whether payment has been captured
-    * @property {Bool} canMakeAdjustments - A boolean indicating whether adjustments could be made on total payment
-    * @property {Bool} hasRefundingEnabled - A boolean indicating whether payment supports refunds
-    * @property {Bool} isFetching - A boolean indicating whether refund list is being loaded
-    * @return {Node} React node containing component for displaying the `invoice` section on the orders sideview
-    */
   static propTypes = {
+    /**
+     * A boolean indicating whether adjustments could be made on total payment
+     */
     canMakeAdjustments: PropTypes.bool,
+    /**
+     * If you've set up a components context using
+     * [@reactioncommerce/components-context](https://github.com/reactioncommerce/components-context)
+     * (recommended), then this prop will come from there automatically. If you have not
+     * set up a components context or you want to override one of the components in a
+     * single spot, you can pass in the components prop directly.
+     */
+    components: PropTypes.shape({
+      /**
+       * Button component used for payment buttons
+       */
+      Button: CustomPropTypes.component.isRequired
+    }),
+    /**
+     * Currency details for the current shop
+     */
+    currency: PropTypes.object,
+    /**
+     * A boolean indicating whether discounts are enabled
+     */
     discounts: PropTypes.bool, // eslint-disable-line react/boolean-prop-naming
+    /**
+     * Function that renders media
+     */
     displayMedia: PropTypes.func,
-    hasRefundingEnabled: PropTypes.bool,
+    /**
+     * An order invoice document
+     */
     invoice: PropTypes.object,
+    /**
+     * Set true when currently capturing a payment
+     */
+    isCapturing: PropTypes.bool,
+    /**
+     * Is the refund list being loaded
+     */
     isFetching: PropTypes.bool,
+    /**
+     * True while a refund is being created
+     */
+    isRefunding: PropTypes.bool,
+    /**
+     * Injected MomentJS library
+     */
     moment: PropTypes.func,
+    /**
+     * Function to be called when "Approve" is clicked for a payment
+     */
+    onApprovePayment: PropTypes.func.isRequired,
+    /**
+     * Function to be called when "Cancel Order" is clicked
+     */
+    onCancelOrder: PropTypes.func.isRequired,
+    /**
+     * Function to be called when "Capture" is clicked for a payment
+     */
+    onCapturePayment: PropTypes.func.isRequired,
+    /**
+     * Function to be called when a refund is requested for a payment
+     */
+    onRefundPayment: PropTypes.func.isRequired,
+    /**
+     * An order document
+     */
     order: PropTypes.object,
-    paymentCaptured: PropTypes.bool, // eslint-disable-line react/boolean-prop-naming
+    /**
+     * List of payment methods defined for the shop that owns this order
+     */
+    paymentMethods: PropTypes.arrayOf(PropTypes.object),
+    /**
+     * A string representing the route/path for printed order
+     */
+    printOrder: PropTypes.string,
+    /**
+     * A list of refunds for this payment
+     */
     refunds: PropTypes.array
   }
 
@@ -44,7 +104,7 @@ class Invoice extends Component {
   }
 
   /**
-    * @name formatDate()
+    * @name formatDate
     * @method
     * @summary Formats dates
     * @param {Number} context - the date to be formatted
@@ -58,7 +118,7 @@ class Invoice extends Component {
   }
 
   /**
-    * @name handleClick()
+    * @name handleClick
     * @method
     * @summary Handle clicking the add discount link
     * @param {Event} event - the event that fired
@@ -72,7 +132,7 @@ class Invoice extends Component {
   }
 
   /**
-    * @name renderDiscountForm()
+    * @name renderDiscountForm
     * @method
     * @summary Displays the discount form
     * @returns {null} null
@@ -96,16 +156,16 @@ class Invoice extends Component {
   }
 
   /**
-    * @name renderRefundsInfo()
+    * @name renderRefundsInfo
     * @method
     * @summary Displays the refund information after the order payment breakdown on the invoice
     * @returns {null} null
     */
   renderRefundsInfo() {
-    const { hasRefundingEnabled, isFetching, refunds } = this.props;
+    const { isFetching, refunds } = this.props;
     return (
       <div>
-        {(hasRefundingEnabled && isFetching) &&
+        {(isFetching) &&
           <div className="form-group order-summary-form-group">
             <strong>Loading Refunds</strong>
             <div className="invoice-details">
@@ -125,7 +185,30 @@ class Invoice extends Component {
   }
 
   /**
-    * @name renderTotal()
+    * @name renderSurcharge
+    * @method
+    * @summary Displays the surcharge amount from the invoice, if available
+    * @returns {null} null
+    */
+  renderSurcharge() {
+    const { invoice: { surcharges } } = this.props;
+
+    if (surcharges) {
+      return (
+        <div className="order-summary-form-group">
+          <strong><Components.Translation defaultValue="Surcharge" i18nKey="cartSubTotals.surcharge"/></strong>
+          <div className="invoice-details">
+            {formatPriceString(surcharges)}
+          </div>
+        </div>
+      );
+    }
+
+    return null;
+  }
+
+  /**
+    * @name renderTotal
     * @method
     * @summary Displays the total payment form
     * @returns {null} null
@@ -143,33 +226,7 @@ class Invoice extends Component {
   }
 
   /**
-    * @name renderConditionalDisplay()
-    * @method
-    * @summary Displays either refunds info or the total payment form
-    * @returns {null} null
-    */
-  renderConditionalDisplay() {
-    const { canMakeAdjustments, paymentCaptured } = this.props;
-    return (
-      <div>
-        {canMakeAdjustments ?
-          <div> {this.renderTotal()} </div> :
-          <span>
-            {paymentCaptured ?
-              <div>
-                {this.renderRefundsInfo()}
-              </div>
-              :
-              <div> {this.renderTotal()} </div>
-            }
-          </span>
-        }
-      </div>
-    );
-  }
-
-  /**
-    * @name renderInvoice()
+    * @name renderInvoice
     * @method
     * @summary Displays the invoice form with broken down payment info
     * @returns {null} null
@@ -218,12 +275,52 @@ class Invoice extends Component {
             {this.renderDiscountForm()}
           </div>
         }
-        {this.renderConditionalDisplay()}
+        {this.renderSurcharge()}
+        {this.renderTotal()}
+        {this.renderRefundsInfo()}
       </div>
     );
   }
 
+  renderPayments() {
+    const {
+      currency,
+      isCapturing,
+      isRefunding,
+      onApprovePayment,
+      onCapturePayment,
+      onRefundPayment,
+      order,
+      paymentMethods = [],
+      refunds = []
+    } = this.props;
+
+    return order.payments.map((payment) => {
+      const refundsForPayment = refunds.filter((refund) => refund.paymentId === payment._id);
+      const paymentMethod = paymentMethods.find((method) => method.name === payment.name);
+
+      return (
+        <OrderPayment
+          currency={currency}
+          key={payment._id}
+          isCapturing={isCapturing}
+          isRefunding={isRefunding}
+          onApprovePayment={onApprovePayment}
+          onCapturePayment={onCapturePayment}
+          onRefundPayment={onRefundPayment}
+          payment={payment}
+          paymentMethod={paymentMethod}
+          refunds={refundsForPayment}
+        />
+      );
+    });
+  }
+
   render() {
+    const { components: { Button }, onCancelOrder, order, printOrder } = this.props;
+
+    const canCancelOrder = (order.workflow.status !== "coreOrderWorkflow/canceled");
+
     return (
       <Components.CardGroup>
         <Components.Card>
@@ -235,11 +332,34 @@ class Invoice extends Component {
           <Components.CardBody expandable={false}>
             <LineItems {...this.props} />
 
-            <div className="invoice-container">
+            <div>
               {this.renderInvoice()}
             </div>
 
-            <InvoiceActions {...this.props}/>
+            <div className="invoice-actions-container">
+              {!!printOrder && <div>
+                <a
+                  className="btn btn-default"
+                  href={printOrder}
+                  target="_blank"
+                  data-i18n="app.printInvoice"
+                >
+                  Print Invoice
+                </a>
+              </div>}
+
+              {canCancelOrder &&
+                <Button
+                  actionType="danger"
+                  onClick={onCancelOrder}
+                >
+                  {i18next.t("order.cancelOrderLabel")}
+                </Button>
+              }
+            </div>
+
+            <h3>Payments</h3>
+            {this.renderPayments()}
           </Components.CardBody>
         </Components.Card>
       </Components.CardGroup>
@@ -247,6 +367,12 @@ class Invoice extends Component {
   }
 }
 
-registerComponent("Invoice", Invoice, withMoment);
+registerComponent("Invoice", Invoice, [
+  withMoment,
+  withComponents
+]);
 
-export default withMoment(Invoice);
+export default compose(
+  withMoment,
+  withComponents
+)(Invoice);

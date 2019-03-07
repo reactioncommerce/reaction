@@ -85,7 +85,7 @@ export default function processEmailJobs() {
         upsert: true
       });
 
-      appEvents.emit("sendEmail", job, { sendEmailCompleted, sendEmailFailed });
+      appEvents.emit("sendEmail", { job, sendEmailCompleted, sendEmailFailed });
     });
 
     return callback();

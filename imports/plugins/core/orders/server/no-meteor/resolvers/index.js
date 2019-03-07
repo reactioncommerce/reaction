@@ -1,9 +1,12 @@
+import { getConnectionTypeResolvers } from "@reactioncommerce/reaction-graphql-utils";
+import Mutation from "./Mutation";
 import Order from "./Order";
 import OrderFulfillmentGroup from "./OrderFulfillmentGroup";
 import OrderItem from "./OrderItem";
 import Query from "./Query";
 
 export default {
+  Mutation,
   Order,
   OrderFulfillmentGroup,
   OrderFulfillmentGroupData: {
@@ -12,5 +15,7 @@ export default {
     }
   },
   OrderItem,
-  Query
+  Query,
+  ...getConnectionTypeResolvers("OrdersByAccountId")
+
 };

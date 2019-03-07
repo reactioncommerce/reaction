@@ -5,7 +5,7 @@ import { formatPriceString, i18next } from "/client/api";
 import Avatar from "react-avatar";
 import { withMoment } from "@reactioncommerce/reaction-components";
 import { Badge, ClickToCopy, Icon, RolloverCheckbox, Checkbox } from "@reactioncommerce/reaction-ui";
-import { getOrderRiskBadge, getOrderRiskStatus, getPaymentForCurrentShop, getTaxRiskStatus } from "../helpers";
+import { getOrderRiskBadge, getOrderRiskStatus, getTaxRiskStatus } from "../helpers";
 
 class OrderTableColumn extends Component {
   static propTypes = {
@@ -52,7 +52,8 @@ class OrderTableColumn extends Component {
     const { moment, row } = this.props;
     const { original: order } = row;
     const columnAccessor = row.column.id;
-    const { invoice } = getPaymentForCurrentShop(order);
+    const [payment] = order.payments || [];
+    const { amount = 0 } = payment || {};
     const orderPaymentRisk = getOrderRiskStatus(order);
     const orderTaxRisk = getTaxRiskStatus(order);
     const orderRisk = orderPaymentRisk || orderTaxRisk;
@@ -102,7 +103,7 @@ class OrderTableColumn extends Component {
     if (columnAccessor === "billingTotal") {
       return (
         <div style={{ marginTop: 7 }}>
-          <strong>{formatPriceString(invoice.total)}</strong>
+          <strong>{formatPriceString(amount)}</strong>
         </div>
       );
     }

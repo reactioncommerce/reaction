@@ -25,7 +25,7 @@ describe("Group test", function () {
   const sampleCustomerGroup = {
     name: "Customer",
     slug: "customer",
-    permissions: ["guest", "account/profile", "product", "tag", "index", "cart/checkout", "cart/completed"]
+    permissions: ["guest", "account/profile", "product", "tag", "index", "cart/completed"]
   };
 
   before(function () {

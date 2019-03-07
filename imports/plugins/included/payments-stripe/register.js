@@ -1,8 +1,8 @@
 /* eslint camelcase: 0 */
 import Reaction from "/imports/plugins/core/core/server/Reaction";
-import resolvers from "./server/no-meteor/resolvers";
 import schemas from "./server/no-meteor/schemas";
 import stripeCapturePayment from "./server/no-meteor/util/stripeCapturePayment";
+import stripeCreateAuthorizedPayment from "./server/no-meteor/util/stripeCreateAuthorizedPayment";
 import stripeCreateRefund from "./server/no-meteor/util/stripeCreateRefund";
 import stripeListRefunds from "./server/no-meteor/util/stripeListRefunds";
 
@@ -12,7 +12,6 @@ Reaction.registerPackage({
   icon: "fa fa-cc-stripe",
   autoEnable: true,
   graphQL: {
-    resolvers,
     schemas
   },
   paymentMethods: [{
@@ -20,6 +19,7 @@ Reaction.registerPackage({
     displayName: "Stripe Card",
     functions: {
       capturePayment: stripeCapturePayment,
+      createAuthorizedPayment: stripeCreateAuthorizedPayment,
       createRefund: stripeCreateRefund,
       listRefunds: stripeListRefunds
     }
@@ -27,11 +27,6 @@ Reaction.registerPackage({
   settings: {
     mode: false,
     api_key: "",
-    support: [
-      "Authorize",
-      "Capture",
-      "Refund"
-    ],
     public: {
       publishable_key: "",
       client_id: ""
@@ -45,13 +40,6 @@ Reaction.registerPackage({
       provides: ["paymentSettings"],
       container: "dashboard",
       template: "stripeSettings"
-    },
-
-    // Payment form for checkout
-    {
-      template: "stripePaymentForm",
-      provides: ["paymentMethod"],
-      icon: "fa fa-cc-stripe"
     }
   ]
 });

@@ -31,7 +31,7 @@ const rui_components = {
     pageContentPaddingBottom: "24px",
     pageContentPaddingLeft: "24px",
     pageContentPaddingRight: "24px",
-    pageContentPaddingTop: "24px",
+    pageContentPaddingTop: "80px",
     pageHeaderBackgroundColor: colors.black02
   },
   ProfileImage: {
@@ -47,7 +47,7 @@ const rui_components = {
     companyNameColor: colors.reactionBlue,
     companyNameBorderBottom: colors.reactionBlue200,
     dividerHeight: "20px",
-    drawerWidth: "264px",
+    drawerWidth: "280px",
     iconBarWidth,
     iconColor: colors.coolGrey300,
     listItemIconFontSize: "20px",
@@ -74,6 +74,13 @@ const rui_components = {
       ${colors.coolGrey100} ${iconBarWidth},
       ${colors.coolGrey100} 100%
     )`
+  },
+  MediaUploader: {
+    backgroundColor: colors.black02,
+    border: `1px solid ${colors.black20}`
+  },
+  HeroMediaSmall: {
+    border: `1px solid ${colors.reactionBlue}`
   }
 };
 

@@ -2,6 +2,16 @@ import SimpleSchema from "simpl-schema";
 
 export const Taxes = new SimpleSchema({
   _id: String,
+  /**
+   * Custom key/value data that you need to store.
+   * You'll need to extend GraphQL schemas if you
+   * want to expose any of this data through the API.
+   */
+  customFields: {
+    type: Object,
+    blackbox: true,
+    optional: true
+  },
   jurisdictionId: {
     type: String,
     optional: true
@@ -31,6 +41,16 @@ export const TaxSummary = new SimpleSchema({
     type: String,
     optional: true
   },
+  /**
+   * Custom key/value data that you need to store.
+   * You'll need to extend GraphQL schemas if you
+   * want to expose any of this data through the API.
+   */
+  customFields: {
+    type: Object,
+    blackbox: true,
+    optional: true
+  },
   referenceId: {
     type: String,
     optional: true
@@ -46,18 +66,30 @@ export const TaxSummary = new SimpleSchema({
   taxes: [Taxes]
 });
 
+export const TaxServiceItemTax = new SimpleSchema({
+  /**
+   * Custom key/value data that you need to store.
+   * You'll need to extend GraphQL schemas if you
+   * want to expose any of this data through the API.
+   */
+  customFields: {
+    type: Object,
+    blackbox: true,
+    optional: true
+  },
+  itemId: String,
+  tax: {
+    type: Number,
+    min: 0
+  },
+  taxableAmount: {
+    type: Number,
+    min: 0
+  },
+  taxes: [Taxes]
+});
+
 export const TaxServiceResult = new SimpleSchema({
-  "itemTaxes": Array,
-  "itemTaxes.$": Object,
-  "itemTaxes.$.itemId": String,
-  "itemTaxes.$.tax": {
-    type: Number,
-    min: 0
-  },
-  "itemTaxes.$.taxableAmount": {
-    type: Number,
-    min: 0
-  },
-  "itemTaxes.$.taxes": [Taxes],
-  "taxSummary": TaxSummary
+  itemTaxes: [TaxServiceItemTax],
+  taxSummary: TaxSummary
 });

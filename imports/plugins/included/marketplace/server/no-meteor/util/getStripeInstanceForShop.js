@@ -1,5 +1,5 @@
 import ReactionError from "@reactioncommerce/reaction-error";
-import stripeNpm from "stripe";
+import getStripeInstance from "./getStripeInstance";
 
 const PACKAGE_NAME = "reaction-marketplace";
 
@@ -12,20 +12,44 @@ const PACKAGE_NAME = "reaction-marketplace";
  */
 export default async function getStripeInstanceForShop(context, shopId) {
   const { collections } = context;
-  const { Packages } = collections;
+  const { Packages, Shops } = collections;
 
-  const stripePkg = await Packages.findOne({
-    name: PACKAGE_NAME,
-    shopId
-  });
+  const shop = await Shops.findOne({ _id: shopId });
 
-  const stripeApiKey = stripePkg && stripePkg.settings && stripePkg.settings.api_key;
-  if (!stripeApiKey) {
-    throw new ReactionError("not-configured", "Stripe is not configured properly. Please set an API Key.");
+  let merchantStripeUserId = null;
+  let primaryStripePkg;
+
+  // If merchant shop order, then get the stripe ID and the primary shop's
+  // application fee.
+  if (shop.shopType === "merchant") {
+    const merchantStripePkg = await Packages.findOne({ name: PACKAGE_NAME, shopId });
+    // If this merchant doesn't have stripe setup, fail.
+    if (!merchantStripePkg ||
+      !merchantStripePkg.settings ||
+      !merchantStripePkg.settings.connectAuth ||
+      !merchantStripePkg.settings.connectAuth.stripe_user_id) {
+      throw new ReactionError("server-error", `Error processing payment for merchant shop with ID ${shopId}`);
+    }
+    merchantStripeUserId = merchantStripePkg.settings.connectAuth.stripe_user_id;
+
+    const primaryShop = await Shops.findOne({ shopType: "primary" });
+    primaryStripePkg = await Packages.findOne({ name: PACKAGE_NAME, shopId: primaryShop._id });
+  } else {
+    primaryStripePkg = await Packages.findOne({ name: PACKAGE_NAME, shopId });
   }
 
+  const stripeApiKey = primaryStripePkg && primaryStripePkg.settings && primaryStripePkg.settings.api_key;
+  if (!stripeApiKey) {
+    throw new ReactionError("server-error", "Stripe is not configured properly. Please set an API Key.");
+  }
+
+  const stripe = getStripeInstance(stripeApiKey);
+
+  const applicationFee = primaryStripePkg.settings.applicationFee || 0;
+
   return {
-    applicationFee: stripePkg.settings.applicationFee,
-    stripe: stripeNpm(stripeApiKey)
+    applicationFee,
+    merchantStripeUserId,
+    stripe
   };
 }

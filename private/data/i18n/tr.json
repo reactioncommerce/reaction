@@ -254,7 +254,7 @@
       },
       "productVariant": {
         "addVariantOptions": "'Sepete ekle' sağlamak için seçenekleri eklemek butto",
-        "inventoryQuantity": "miktar",
+        "inventoryInStock": "miktar",
         "title": "Etiket",
         "price": "Fiyat",
         "optionTitle": "seçenek",

@@ -1,7 +1,10 @@
 /* eslint camelcase: 0 */
 import Reaction from "/imports/plugins/core/core/server/Reaction";
-import resolvers from "./server/no-meteor/resolvers";
 import schemas from "./server/no-meteor/schemas";
+import stripeCapturePayment from "./server/no-meteor/util/stripeCapturePayment";
+import stripeCreateAuthorizedPayment from "./server/no-meteor/util/stripeCreateAuthorizedPayment";
+import stripeCreateRefund from "./server/no-meteor/util/stripeCreateRefund";
+import stripeListRefunds from "./server/no-meteor/util/stripeListRefunds";
 
 Reaction.registerPackage({
   label: "Marketplace",
@@ -9,12 +12,21 @@ Reaction.registerPackage({
   icon: "fa fa-globe",
   autoEnable: false,
   graphQL: {
-    resolvers,
     schemas
   },
+  addRolesToGroups: [{
+    groups: ["owner", "shop manager", "customer", "guest"],
+    roles: ["stripe/connect/authorize"]
+  }],
   paymentMethods: [{
     name: "marketplace_stripe_card",
-    displayName: "Marketplace Stripe Card"
+    displayName: "Marketplace Stripe Card",
+    functions: {
+      capturePayment: stripeCapturePayment,
+      createAuthorizedPayment: stripeCreateAuthorizedPayment,
+      createRefund: stripeCreateRefund,
+      listRefunds: stripeListRefunds
+    }
   }],
   settings: {
     name: "Marketplace",
@@ -60,11 +72,6 @@ Reaction.registerPackage({
     },
     api_key: "",
     connectAuth: {},
-    support: [
-      "Authorize",
-      "Capture",
-      "Refund"
-    ],
     public: {
       allowMerchantSignup: false, // Merchants can sign up without an invite
       client_id: "",
@@ -125,13 +132,6 @@ Reaction.registerPackage({
       container: "dashboard",
       template: "stripeMarketplaceSettings",
       hideForShopTypes: ["merchant", "affiliate"]
-    },
-
-    // Payment form for checkout
-    {
-      template: "stripeMarketplacePaymentForm",
-      provides: ["paymentMethod"],
-      icon: "fa fa-cc-stripe"
     },
 
     // Redirect for Stripe Connect Sign-In

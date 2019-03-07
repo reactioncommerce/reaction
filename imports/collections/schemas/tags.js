@@ -88,7 +88,12 @@ export const Tag = new SimpleSchema({
   "displayTitle": {
     type: String,
     optional: true
-  }
+  },
+  "featuredProductIds": {
+    type: Array,
+    optional: true
+  },
+  "featuredProductIds.$": String
 });
 
 registerSchema("Tag", Tag);

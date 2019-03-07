@@ -254,7 +254,7 @@
       },
       "productVariant": {
         "addVariantOptions": "Lägg till variant för att göra det möjligt att lägga till i varukorgen.",
-        "inventoryQuantity": "Antal",
+        "inventoryInStock": "Antal",
         "title": "Etikett",
         "price": "Pris",
         "optionTitle": "Alternativ",

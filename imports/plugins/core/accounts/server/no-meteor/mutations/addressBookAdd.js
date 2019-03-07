@@ -1,6 +1,4 @@
-import Hooks from "@reactioncommerce/hooks";
 import Random from "@reactioncommerce/random";
-import { get } from "lodash";
 import ReactionError from "@reactioncommerce/reaction-error";
 
 /**
@@ -14,8 +12,8 @@ import ReactionError from "@reactioncommerce/reaction-error";
  * @return {Promise<Object>} with updated address
  */
 export default async function addressBookAdd(context, address, accountUserId) {
-  const { collections, userHasPermission, userId: userIdFromContext } = context;
-  const { Accounts, users: Users } = collections;
+  const { appEvents, collections, userHasPermission, userId: userIdFromContext } = context;
+  const { Accounts } = collections;
 
   const userId = accountUserId || userIdFromContext;
   const account = await Accounts.findOne({ userId });
@@ -43,11 +41,6 @@ export default async function addressBookAdd(context, address, accountUserId) {
           "profile.addressBook.$.isShippingDefault": false
         }
       });
-
-      Hooks.Events.run("afterAccountsUpdate", userIdFromContext, {
-        accountId: account._id,
-        updatedFields: ["isShippingDefault"]
-      });
     }
 
     if (address.isBillingDefault) {
@@ -59,44 +52,35 @@ export default async function addressBookAdd(context, address, accountUserId) {
           "profile.addressBook.$.isBillingDefault": false
         }
       });
-
-      Hooks.Events.run("afterAccountsUpdate", userIdFromContext, {
-        accountId: account._id,
-        updatedFields: ["isBillingDefault"]
-      });
     }
   }
 
-  const userUpdateQuery = {
-    $set: {
-      "profile.addressBook": address
+  const { value: updatedAccount } = await Accounts.findOneAndUpdate(
+    { userId },
+    {
+      $addToSet: {
+        "profile.addressBook": address
+      },
+      $set: {
+        updatedAt: new Date()
+      }
+    },
+    {
+      returnOriginal: false
     }
-  };
-  const accountsUpdateQuery = {
-    $addToSet: {
-      "profile.addressBook": address
-    }
-  };
+  );
 
-  // If there is no `name` field on account or this is the first address we're
-  // adding for this account, set the name from the address.fullName.
-  if (!account.name || get(account, "profile.addressBook.length", 0) === 0) {
-    userUpdateQuery.$set.name = address.fullName;
-    accountsUpdateQuery.$set = { name: address.fullName };
+  if (!updatedAccount) {
+    throw new ReactionError("server-error", "Unable to add address to account");
   }
 
-  await Users.updateOne({ _id: userId }, userUpdateQuery);
+  await appEvents.emit("afterAccountUpdate", {
+    account: updatedAccount,
+    updatedBy: userIdFromContext,
+    updatedFields: ["profile.addressBook"]
+  });
 
-  const result = await Accounts.updateOne({ userId }, accountsUpdateQuery);
-
-  // If the address update was successful, then return the full updated address
-  if (result.modifiedCount === 1) {
-    // Find the account
-    const updatedAccount = await Accounts.findOne({ userId });
-
-    // Pull the updated address and return it
-    return updatedAccount.profile.addressBook.find((updatedAddress) => address._id === updatedAddress._id);
-  }
-
-  throw new ReactionError("server-error", "Unable to add address to account");
+  // If the address update was successful, then return the full updated address.
+  // Since we just pushed into `profile.addressBook`, we know it will exist.
+  return updatedAccount.profile.addressBook.find((updatedAddress) => address._id === updatedAddress._id);
 }

@@ -1,5 +1,6 @@
 import { check } from "meteor/check";
 import { Orders } from "/lib/collections";
+import appEvents from "/imports/node-app/core/util/appEvents";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
 import ReactionError from "@reactioncommerce/reaction-error";
 
@@ -24,7 +25,7 @@ export default function updateShipmentTracking(order, shipment, tracking) {
     throw new ReactionError("access-denied", "Access Denied");
   }
 
-  return Orders.update(
+  const result = Orders.update(
     {
       "_id": order._id,
       "shipping._id": shipment._id
@@ -35,4 +36,16 @@ export default function updateShipmentTracking(order, shipment, tracking) {
       }
     }
   );
+
+  if (result !== 1) {
+    throw new ReactionError("server-error", "Unable to update order");
+  }
+
+  const updatedOrder = Orders.findOne({ _id: order._id });
+  Promise.await(appEvents.emit("afterOrderUpdate", {
+    order: updatedOrder,
+    updatedBy: Reaction.getUserId()
+  }));
+
+  return result;
 }

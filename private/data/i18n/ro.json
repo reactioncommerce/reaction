@@ -254,7 +254,7 @@
       },
       "productVariant": {
         "addVariantOptions": "Adăugați opțiuni pentru a permite 'Adauga in cos' butto",
-        "inventoryQuantity": "Cantitate",
+        "inventoryInStock": "Cantitate",
         "title": "Etichetă",
         "price": "Preț",
         "optionTitle": "Opțiune",
