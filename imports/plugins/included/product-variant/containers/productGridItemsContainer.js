@@ -25,11 +25,6 @@ const wrapComponent = (Comp) => (
           ({ handle } = this.props.product.__published);
         }
         return `/operator/products/${handle}`;
-        return Reaction.Router.pathFor("product", {
-          hash: {
-            handle
-          }
-        });
       }
 
       return "/";
