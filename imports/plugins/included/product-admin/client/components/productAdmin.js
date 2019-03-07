@@ -229,18 +229,6 @@ class ProductAdmin extends Component {
     return this.state.product || this.props.product || {};
   }
 
-  get permalink() {
-    if (this.props.product) {
-      return Router.pathFor("product", {
-        hash: {
-          handle: this.props.product.handle
-        }
-      });
-    }
-
-    return "";
-  }
-
   renderProductVisibilityLabel() {
     if (this.product.isVisible) {
       return (
@@ -276,7 +264,6 @@ class ProductAdmin extends Component {
               value={this.product.title}
             />
             <Components.TextField
-              helpText={this.permalink}
               i18nKeyLabel="productDetailEdit.permalink"
               i18nKeyPlaceholder="productDetailEdit.permalink"
               label="Permalink"
