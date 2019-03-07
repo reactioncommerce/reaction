@@ -59,10 +59,20 @@ export function handleProductRestore(product) {
 /**
  * Archive (soft delete) product
  * @param {Object} product Product object
+ * @param {Object} redirectUrl URL to redirect to on success
  * @returns {undefined} No return
  */
-export function handleDeleteProduct(product) {
-  ReactionProduct.archiveProduct(product);
+export function handleArchiveProduct(product, redirectUrl) {
+  ReactionProduct.archiveProduct(product, redirectUrl || "/operator/products");
+}
+
+/**
+ * Clone a product with all variants, options and media in tact
+ * @param {Object} product Product object
+ * @returns {undefined} No return
+ */
+export function handleCloneProduct(product) {
+  ReactionProduct.cloneProduct(product);
 }
 
 /**
@@ -96,6 +106,16 @@ export function handleCreateProduct() {
   });
 }
 
+/**
+ * Set product visibility
+ * @param {String} productId Product ID
+ * @param {Boolean} isVisible Visibility status
+ * @returns {undefined} No return
+ */
+function handleSetProductVisibility(productId, isVisible) {
+  Meteor.call("products/updateProductField", productId, "isVisible", isVisible);
+}
+
 const wrapComponent = (Comp) => {
   /**
    * withProduct HOC
@@ -112,7 +132,8 @@ const wrapComponent = (Comp) => {
     return (
       <Comp
         newMetafield={newMetafield}
-        onDeleteProduct={handleDeleteProduct}
+        onArchiveProduct={handleArchiveProduct}
+        onCloneProduct={handleCloneProduct}
         onMetaChange={setNewMetaField}
         onMetaRemove={handleMetaRemove}
         onMetaSave={(productId, metafield, index) => {
@@ -130,6 +151,7 @@ const wrapComponent = (Comp) => {
         }}
         onProductFieldSave={handleProductFieldSave}
         onRestoreProduct={handleProductRestore}
+        onSetProductVisibility={handleSetProductVisibility}
         onCreateVariant={async (product) => {
           const { newVariantId } = await handleCreateVariant(product);
           history.push(`/operator/products/${product._id}/${newVariantId}`);
