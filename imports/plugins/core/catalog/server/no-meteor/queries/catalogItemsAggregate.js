@@ -4,9 +4,9 @@ import ReactionError from "@reactioncommerce/reaction-error";
  * @name catalogItemsAggregate
  * @method
  * @memberof Catalog/NoMeteorQueries
- * @summary query the Catalog by shop ID and/or tag ID in featured product order
- * @param {Object} context - an object containing the per-request state
- * @param {Object} params - request parameters
+ * @summary Query the Catalog by shop IDs and/or a tag ID in featured product order
+ * @param {Object} context - An object containing the per-request state
+ * @param {Object} params - Request parameters
  * @param {String[]} [params.shopIds] - Shop IDs to include
  * @param {String} tagId - Tag ID
  * @return {Promise<MongoCursor>} - A MongoDB cursor for the proper query
@@ -18,6 +18,7 @@ export default async function catalogItemsAggregate(context, { shopIds, tagId } 
   if ((!shopIds || shopIds.length === 0) && (!tagId)) {
     throw new ReactionError("invalid-param", "You must provide a tagId or shopIds or both");
   }
+  
   // Match all products that belong to a single tag
   const match = {
     $match: {
@@ -42,6 +43,7 @@ export default async function catalogItemsAggregate(context, { shopIds, tagId } 
     };
   }
 
+  // Array of tag's featured product Ids in order
   const order = tag.featuredProductIds;
 
   // Add a new field "order" to each product with their order in the array
@@ -78,6 +80,6 @@ export default async function catalogItemsAggregate(context, { shopIds, tagId } 
 
   return {
     collection: Catalog,
-    pipeline: [match, addFields, projection, sort]
+    pipeline: [match, addFields, projection]
   };
 }
