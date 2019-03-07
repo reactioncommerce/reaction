@@ -17,7 +17,8 @@ const wrapComponent = (Comp) => (
       isSearch: PropTypes.bool,
       productIds: PropTypes.arrayOf(PropTypes.string),
       products: PropTypes.array,
-      productsByKey: PropTypes.object
+      productsByKey: PropTypes.object,
+      selectedProductIds: PropTypes.array
     }
 
     constructor(props) {
@@ -31,30 +32,30 @@ const wrapComponent = (Comp) => (
     }
 
     handleSelectProductItem = (isChecked, productId) => {
-      let selectedProducts = this.props.selectedProducts || [];
+      let selectedProductIds = this.props.selectedProductIds || [];
 
       if (isChecked) {
-        selectedProducts.push(productId);
-        selectedProducts = _.uniq(selectedProducts);
+        selectedProductIds.push(productId);
+        selectedProductIds = _.uniq(selectedProductIds);
       } else {
-        selectedProducts = _.without(selectedProducts, productId);
+        selectedProductIds = _.without(selectedProductIds, productId);
       }
 
       // Save the selected items to the Session
-      Session.set("productGrid/selectedProducts", selectedProducts);
+      Session.set("productGrid/selectedProducts", selectedProductIds);
     }
 
     handleSelectAllProductItems = (isChecked, productIds) => {
-      let selectedProducts;
+      let selectedProductIds;
 
       if (isChecked) {
-        selectedProducts = _.uniq([...productIds]);
+        selectedProductIds = _.uniq([...productIds]);
       } else {
-        selectedProducts = [];
+        selectedProductIds = [];
       }
 
       // Save the selected items to the Session
-      Session.set("productGrid/selectedProducts", selectedProducts);
+      Session.set("productGrid/selectedProducts", selectedProductIds);
     }
 
     handlePublishProducts = (productIds) => {
