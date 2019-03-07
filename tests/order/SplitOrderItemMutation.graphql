@@ -4,6 +4,7 @@ mutation ($itemId: ID!, $newItemQuantity: Int!, $orderId: ID!) {
     newItemQuantity: $newItemQuantity,
     orderId: $orderId
   }) {
+    newItemId
     order {
       fulfillmentGroups {
         items {

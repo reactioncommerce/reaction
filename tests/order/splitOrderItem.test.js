@@ -81,35 +81,15 @@ test("user with orders permission can split an order item", async () => {
     return;
   }
 
-  expect(result.splitOrderItem.order).toEqual({
-    fulfillmentGroups: [
-      {
-        items: {
-          nodes: [
-            {
-              _id: jasmine.any(String),
-              productConfiguration: {
-                // We will compare this to the first item in the next assertion
-                productVariantId: jasmine.any(String)
-              },
-              quantity: 2,
-              status: "new"
-            },
-            {
-              _id: encodeOrderItemOpaqueId(orderItem._id),
-              productConfiguration: {
-                // We will compare this to the second item in the next assertion
-                productVariantId: jasmine.any(String)
-              },
-              quantity: 1,
-              status: "new"
-            }
-          ]
-        }
-      }
-    ]
-  });
+  expect(result.splitOrderItem.newItemId).toEqual(jasmine.any(String));
 
   const group = result.splitOrderItem.order.fulfillmentGroups[0];
-  expect(group.items.nodes[0].productConfiguration.productVariantId).toBe(group.items.nodes[1].productConfiguration.productVariantId);
+  const items = group.items.nodes;
+  const existingItem = items.find((item) => item._id === encodeOrderItemOpaqueId(orderItem._id));
+  const newItem = items.find((item) => item._id !== encodeOrderItemOpaqueId(orderItem._id));
+
+  expect(existingItem.quantity).toBe(1);
+  expect(newItem.quantity).toBe(2);
+  expect(newItem.status).toBe(existingItem.status);
+  expect(existingItem.productConfiguration.productVariantId).toBe(newItem.productConfiguration.productVariantId);
 });

@@ -508,6 +508,9 @@ type SplitOrderItemPayload {
   "The same string you sent with the mutation params, for matching mutation calls with their responses"
   clientMutationId: String
 
+  "The ID of the new order item that was created"
+  newItemId: ID!
+
   "The updated order"
   order: Order!
 }

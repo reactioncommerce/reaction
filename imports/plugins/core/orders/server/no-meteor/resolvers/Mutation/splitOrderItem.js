@@ -23,7 +23,7 @@ export default async function splitOrderItem(parentResult, { input }, context) {
     orderId
   } = input;
 
-  const { order } = await context.mutations.splitOrderItem(context, {
+  const { newItemId, order } = await context.mutations.splitOrderItem(context, {
     newItemQuantity,
     itemId: decodeOrderItemOpaqueId(itemId),
     orderId: decodeOrderOpaqueId(orderId)
@@ -31,6 +31,7 @@ export default async function splitOrderItem(parentResult, { input }, context) {
 
   return {
     clientMutationId,
+    newItemId,
     order
   };
 }

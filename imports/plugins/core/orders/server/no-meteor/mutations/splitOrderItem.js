@@ -30,6 +30,7 @@ const inputSchema = new SimpleSchema({
  * @param {Object} context - an object containing the per-request state
  * @param {Object} input - Necessary input. See SimpleSchema
  * @return {Promise<Object>} Object with `order` property containing the created order
+ *   and `newItemId` property set to the ID of the new item
  */
 export default async function splitOrderItem(context, input) {
   inputSchema.validate(input);
@@ -55,6 +56,7 @@ export default async function splitOrderItem(context, input) {
 
   // Find and split the item
   let foundItem = false;
+  const newItemId = Random.id();
   const updatedGroups = order.shipping.map((group) => {
     let itemToAdd;
     const updatedItems = group.items.map((item) => {
@@ -69,7 +71,7 @@ export default async function splitOrderItem(context, input) {
       // The modified item to be created
       itemToAdd = {
         ...item,
-        _id: Random.id(),
+        _id: newItemId,
         quantity: newItemQuantity,
         subtotal: item.price.amount * newItemQuantity
       };
@@ -122,5 +124,5 @@ export default async function splitOrderItem(context, input) {
     updatedBy: userId
   });
 
-  return { order: updatedOrder };
+  return { newItemId, order: updatedOrder };
 }
