@@ -43,6 +43,19 @@ const wrapComponent = (Comp) => (
       };
     }
 
+    handleSetMediaPriority = (media, priority) => {
+      Meteor.call("media/updatePriority", media._id, priority, (error) => {
+        if (error) {
+          // Go back to using media prop instead of media state so that it doesn't appear successful
+          this.setState({ media: this.props.media });
+
+          Alerts.toast(error.reason, "warning", {
+            autoHide: 10000
+          });
+        }
+      });
+    }
+
     handleRemoveMedia = (media) => {
       const imageUrl = media.url({ store: "medium" });
       const mediaId = media._id;
@@ -184,6 +197,7 @@ const wrapComponent = (Comp) => (
                 onMouseEnterMedia={this.handleMouseEnterMedia}
                 onMouseLeaveMedia={this.handleMouseLeaveMedia}
                 onMoveMedia={this.handleMoveMedia}
+                onSetMediaPriority={this.handleSetMediaPriority}
                 onRemoveMedia={this.handleRemoveMedia}
                 {...this.props}
                 media={this.media}
@@ -257,7 +271,7 @@ function composer(props, onData) {
     editable: Reaction.hasPermission(props.permission || ["createProduct"]),
     media: sortMedia(media),
     userId: Reaction.getUserId(),
-    shopId: props.shopId || Reaction.getShopId(),
+    shopId: Reaction.getShopId(),
     productId,
     variantId
   });
