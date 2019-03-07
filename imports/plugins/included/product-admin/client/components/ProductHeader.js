@@ -77,6 +77,8 @@ function ProductHeader(props) {
           redirectUrl = `/operator/products/${product._id}/${variant._id}`;
         } else if (variant) {
           redirectUrl = `/operator/products/${product._id}`;
+        } else {
+          redirectUrl = "/operator/products";
         }
 
         onArchiveProduct(currentProduct, redirectUrl);
