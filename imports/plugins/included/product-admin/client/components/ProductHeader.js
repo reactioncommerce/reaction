@@ -49,9 +49,10 @@ function ProductHeader(props) {
     classes,
     product,
     variant,
+    onArchiveProduct,
+    onCloneProduct,
     onCloneVariant,
-    onRemoveVariant,
-    onRestoreVariant,
+    onRestoreProduct,
     onVisibilityChange,
     option,
     setMenuAnchorEl,
@@ -69,7 +70,17 @@ function ProductHeader(props) {
     <ConfirmDialog
       title={i18next.t("admin.productTable.bulkActions.archiveTitle")}
       message={i18next.t("productDetailEdit.archiveThisProduct")}
-      onConfirm={() => onRemoveVariant(currentProduct)}
+      onConfirm={() => {
+        let redirectUrl = "/operator/products";
+
+        if (option) {
+          redirectUrl = `/operator/products/${product._id}/${variant._id}`;
+        } else if (variant) {
+          redirectUrl = `/operator/products/${product._id}`;
+        }
+
+        onArchiveProduct(currentProduct, redirectUrl);
+      }}
     >
       {({ openDialog }) => (
         <MenuItem onClick={openDialog}>{i18next.t("admin.productTable.bulkActions.archive")}</MenuItem>
@@ -82,7 +93,7 @@ function ProductHeader(props) {
       <ConfirmDialog
         title={i18next.t("admin.productTable.bulkActions.restoreTitle")}
         message={i18next.t("productDetailEdit.restoreThisProduct")}
-        onConfirm={() => onRestoreVariant(currentProduct)}
+        onConfirm={() => onRestoreProduct(currentProduct)}
       >
         {({ openDialog }) => (
           <MenuItem onClick={openDialog}>{i18next.t("admin.productTable.bulkActions.restore")}</MenuItem>
@@ -157,7 +168,22 @@ function ProductHeader(props) {
               i18next.t("admin.productTable.bulkActions.makeVisible")
             }
           </MenuItem>
-          <MenuItem onClick={onCloneVariant}>{i18next.t("admin.productTable.bulkActions.duplicate")}</MenuItem>
+          <MenuItem
+            onClick={() => {
+              if (product && option) {
+                // Clone option
+                onCloneVariant(product._id, option._id);
+              } else if (product && variant) {
+                // Clone variant
+                onCloneVariant(product._id, variant._id);
+              } else {
+                // Clone product
+                onCloneProduct(product._id);
+              }
+            }}
+          >
+            {i18next.t("admin.productTable.bulkActions.duplicate")}
+          </MenuItem>
           {archiveMenuItem}
         </Menu>
 
@@ -169,14 +195,23 @@ function ProductHeader(props) {
 ProductHeader.propTypes = {
   classes: PropTypes.object,
   menuAnchorEl: PropTypes.any,
+  onArchiveProduct: PropTypes.func,
+  onCloneProduct: PropTypes.func,
   onCloneVariant: PropTypes.func,
-  onRemoveVariant: PropTypes.func,
-  onRestoreVariant: PropTypes.func,
+  onRestoreProduct: PropTypes.func,
   onVisibilityChange: PropTypes.func,
   option: PropTypes.object,
   product: PropTypes.object,
-  setMenuAnchorEl: PropTypes.func,
+  setMenuAnchorEl: PropTypes.func.isRequired,
   variant: PropTypes.object
+};
+
+ProductHeader.defaultProps = {
+  onRemoveVariant() {},
+  CloneProduct() {},
+  onCloneVariant() {},
+  onRestoreProduct() {},
+  onVisibilityChange() {}
 };
 
 export default compose(
