@@ -2,8 +2,6 @@ import React, { Children, Component } from "react";
 import PropTypes from "prop-types";
 import classnames from "classnames";
 import { registerComponent } from "@reactioncommerce/reaction-components";
-import MuiCard from "@material-ui/core/Card";
-import CardContent from "@material-ui/core/CardContent";
 
 class Card extends Component {
   constructor(props) {
@@ -67,9 +65,9 @@ class Card extends Component {
     }, className);
 
     return (
-      <MuiCard>
+      <div className={baseClassName} style={this.props.style}>
         {elements}
-      </MuiCard>
+      </div>
     );
   }
 }
