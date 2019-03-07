@@ -33,29 +33,33 @@ const styles = (theme) => ({
  * to operator 2.0
  * @returns {Node} React component
  */
-function CoreLayout({ classes }) {
-  // If the current user is an admin then redirect to /operator
-  if (Reaction.hasDashboardAccessForAnyShop()) {
-    window.location.replace("/operator");
-    return null;
-  }
-
+function CoreLayout({ classes, location }) {
   let content = <Components.Login />;
 
-  // If the user is logged in, which makes them no longer anonymous
-  // But they aren't an admin, then give them a logout button.
-  if (!Reaction.hasPermission(["anonymous"])) {
-    content = (
-      <div className={classes.logoutButton}>
-        <Button
-          color="primary"
-          onClick={() => Meteor.logout()}
-          variant="contained"
-        >
-          {"Logout"}
-        </Button>
-      </div>
-    );
+  // If we're not on /account or /account/login for hydra, and the user is signed in,
+  // then we will redirect or show a logout button
+  if (location.pathname.startsWith("/account") === false) {
+    // If the current user is an admin then redirect to /operator
+    if (Reaction.hasDashboardAccessForAnyShop()) {
+      window.location.replace("/operator");
+      return null;
+    }
+
+    // If the user is logged in, which makes them no longer anonymous
+    // But they aren't an admin, then give them a logout button.
+    if (!Reaction.hasPermission(["anonymous"])) {
+      content = (
+        <div className={classes.logoutButton}>
+          <Button
+            color="primary"
+            onClick={() => Meteor.logout()}
+            variant="contained"
+          >
+            {"Logout"}
+          </Button>
+        </div>
+      );
+    }
   }
 
   return (
@@ -77,8 +81,9 @@ function CoreLayout({ classes }) {
   );
 }
 
-CoreLayout.propType = {
-  classes: PropTypes.object
+CoreLayout.propTypes = {
+  classes: PropTypes.object,
+  location: PropTypes.object
 };
 
 const componentWithStyles = withStyles(styles, { name: "RuiCoreLayout" })(CoreLayout);
