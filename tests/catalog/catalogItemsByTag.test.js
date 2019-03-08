@@ -24,7 +24,7 @@ const mockCatalogItemsWithTag = Factory.Catalog.makeMany(30, {
   shopId: internalShopId
 });
 
-jest.setTimeout(30000000);
+jest.setTimeout(300000);
 
 let testApp;
 let query;

@@ -141,7 +141,7 @@ class TestApp {
   }
 
   async startMongo() {
-    this.mongoServer = new MongoDBMemoryServer({ instance: { port: 3485, ip: "0.0.0.0" }, binary: { version: "3.6.3" } });
+    this.mongoServer = new MongoDBMemoryServer();
     const mongoUri = await this.mongoServer.getConnectionString();
     this.connection = await MongoClient.connect(mongoUri, { useNewUrlParser: true });
     this.db = this.connection.db(await this.mongoServer.getDbName());
