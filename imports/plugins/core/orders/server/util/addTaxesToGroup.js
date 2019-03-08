@@ -23,23 +23,6 @@ export default async function addTaxesToGroup(context, group, orderInput, discou
     discountTotal
   });
 
-  const { itemTaxes, taxSummary } = await context.mutations.getFulfillmentGroupTaxes(context, { order: commonOrder, forceZeroes: true });
-  group.items = group.items.map((item) => {
-    const itemTax = itemTaxes.find((entry) => entry.itemId === item._id) || {};
-
-    const updatedItem = {
-      ...item,
-      tax: itemTax.tax,
-      taxableAmount: itemTax.taxableAmount,
-      taxes: itemTax.taxes
-    };
-
-    if (itemTax.customFields) {
-      updatedItem.customTaxFields = itemTax.customFields;
-    }
-
-    return updatedItem;
-  });
-
-  group.taxSummary = taxSummary;
+  // This will mutate `group` to add whatever tax fields the `taxes` plugin has added to the schemas.
+  return context.mutations.setTaxesOnFulfillmentGroup(context, { group, commonOrder });
 }
