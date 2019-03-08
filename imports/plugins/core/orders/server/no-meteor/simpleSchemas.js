@@ -189,7 +189,10 @@ export const orderFulfillmentGroupInputSchema = new SimpleSchema({
   "items.$": orderItemInputSchema,
   "selectedFulfillmentMethodId": String,
   "shopId": String,
-  "totalPrice": Number,
+  "totalPrice": {
+    type: Number,
+    optional: true
+  },
   "type": {
     type: String,
     allowedValues: ["shipping"]

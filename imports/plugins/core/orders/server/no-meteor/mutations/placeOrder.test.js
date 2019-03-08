@@ -38,12 +38,6 @@ test("places an anonymous $0 order with no cartId and no payments", async () => 
     shippingPrice: 0
   }]);
 
-  mockContext.mutations.setTaxesOnFulfillmentGroup = jest.fn().mockName("setTaxesOnFulfillmentGroup");
-  mockContext.mutations.setTaxesOnFulfillmentGroup.mockReturnValueOnce({
-    taxableAmount: 0,
-    taxTotal: 0
-  });
-
   mockContext.queries.shopById = jest.fn().mockName("shopById");
   mockContext.queries.shopById.mockReturnValueOnce([{
     availablePaymentMethods: ["PAYMENT1"]
@@ -96,7 +90,7 @@ test("places an anonymous $0 order with no cartId and no payments", async () => 
           surcharges: 0,
           taxableAmount: 0,
           taxes: 0,
-          total: 0,
+          total: 0
         },
         itemIds: [order.shipping[0].items[0]._id],
         items: [
@@ -144,7 +138,7 @@ test("places an anonymous $0 order with no cartId and no payments", async () => 
         workflow: {
           status: "new",
           workflow: [
-            "coreOrderWorkflow/notStarted"
+            "new"
           ]
         }
       }
@@ -155,7 +149,7 @@ test("places an anonymous $0 order with no cartId and no payments", async () => 
     updatedAt: jasmine.any(Date),
     workflow: {
       status: "new",
-      workflow: ["coreOrderWorkflow/created"]
+      workflow: ["new"]
     }
   });
 

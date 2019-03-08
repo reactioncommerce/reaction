@@ -1,7 +1,7 @@
 import getFulfillmentGroupTaxes from "./getFulfillmentGroupTaxes";
-import setTaxesOnFulfillmentGroup from "./setTaxesOnFulfillmentGroup";
+import setTaxesOnOrderFulfillmentGroup from "./setTaxesOnOrderFulfillmentGroup";
 
 export default {
   getFulfillmentGroupTaxes,
-  setTaxesOnFulfillmentGroup
+  setTaxesOnOrderFulfillmentGroup
 };

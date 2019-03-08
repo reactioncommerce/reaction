@@ -351,7 +351,7 @@ input OrderFulfillmentGroupInput {
   Order service. However, providing this value prevents an order being created for an amount that
   does not match what was shown to the shopper in order preview.
   """
-  totalPrice: Float!
+  totalPrice: Float
 
   """
   The fulfillment type. Any valid type that has been registered by a fulfillment plugin. Examples: "shipping", "digital"
