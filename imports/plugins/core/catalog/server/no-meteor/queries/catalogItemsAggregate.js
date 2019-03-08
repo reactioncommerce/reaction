@@ -18,7 +18,7 @@ export default async function catalogItemsAggregate(context, { shopIds, tagId } 
   if ((!shopIds || shopIds.length === 0) && (!tagId)) {
     throw new ReactionError("invalid-param", "You must provide a tagId or shopIds or both");
   }
-  
+
   // Match all products that belong to a single tag
   const match = {
     $match: {
@@ -27,7 +27,7 @@ export default async function catalogItemsAggregate(context, { shopIds, tagId } 
       }
     }
   };
-  
+
   const tag = await Tags.findOne({
     _id: tagId
   });
@@ -36,11 +36,21 @@ export default async function catalogItemsAggregate(context, { shopIds, tagId } 
     throw new ReactionError("not-found", "Tag not found");
   }
 
+  // Facet: Sort by featuredPosition
+  // Add pageInfo and count
+  const facetWithoutSort = {
+    $facet: {
+      pageInfo: [
+        { $count: "totalCount" }
+      ]
+    }
+  };
+
   // If there are no featuredProductIds, return match
   if (!tag.featuredProductIds) {
     return {
       collection: Catalog,
-      pipeline: [match]
+      pipeline: [match, facetWithoutSort]
     };
   }
 

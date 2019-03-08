@@ -1,20 +1,21 @@
+import { encodeTagOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/tag";
+import { encodeCatalogProductOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/catalogProduct";
 import TestApp from "../TestApp";
 import Factory from "/imports/test-utils/helpers/factory";
 import CatalogItemQuery from "./CatalogItemQuery.graphql";
-import { encodeTagOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/tag";
 
 const internalShopId = "123";
 const opaqueShopId = "cmVhY3Rpb24vc2hvcDoxMjM=";
 const shopName = "Test Shop";
 
-const mockTag = Factory.CatalogProduct.makeOne({
-  featuredProductIds: [100, 101, 102, 103, 104],
+const mockTag = Factory.Tag.makeOne({
+  featuredProductIds: ["110", "111", "112", "113", "114"],
   shopId: internalShopId
 });
 
 const mockCatalogItemsWithTag = Factory.Catalog.makeMany(30, {
-  _id: (iterator) => (iterator + 100).toString(),
-  product: Factory.CatalogProduct.makeOne({
+  product: (iterator) => Factory.CatalogProduct.makeOne({
+    _id: (iterator + 100).toString(),
     isDeleted: false,
     isVisible: true,
     tagIds: [mockTag._id],
@@ -23,7 +24,7 @@ const mockCatalogItemsWithTag = Factory.Catalog.makeMany(30, {
   shopId: internalShopId
 });
 
-jest.setTimeout(300000);
+jest.setTimeout(30000000);
 
 let testApp;
 let query;
@@ -33,43 +34,29 @@ beforeAll(async () => {
   await testApp.start();
   query = testApp.query(CatalogItemQuery);
   await testApp.insertPrimaryShop({ _id: internalShopId, name: shopName });
-  await testApp.collections.Tags.insertOne({ _id: mockTag._id, shopId: internalShopId });
+  await testApp.collections.Tags.insertOne(mockTag);
   await Promise.all(mockCatalogItemsWithTag.map((mockItem) => testApp.collections.Catalog.insertOne(mockItem)));
 });
 
 afterAll(async () => {
-  debugger;
   await testApp.collections.Shops.deleteOne({ _id: internalShopId });
-  await testApp.collections.Tags.deleteOne({ _id: mockTag._id, shopId: internalShopId });
+  await testApp.collections.Tags.deleteOne({ _id: mockTag._id });
   await Promise.all(mockCatalogItemsWithTag.map((mockItem) => testApp.collections.Catalog.deleteOne({ _id: mockItem._id })));
   testApp.stop();
 });
 
-test("get all items for one tag in one shop", async () => {
+test("get all items for on tag in order of featured, desc, with default limit of 20 items", async () => {
   let result;
   try {
-    result = await query({ shopIds: [opaqueShopId], tagIds: [mockTag._id] });
+    result = await query({ shopId: opaqueShopId, tagIds: [encodeTagOpaqueId(mockTag._id)], sortBy: "featured" });
   } catch (error) {
     expect(error).toBeUndefined();
     return;
   }
-  expect(result.catalogItems.nodes.length).toEqual(30);
-});
-
-test.only("get all items for on tag in order of featured, desc", async () => {
-  let result;
-  try {
-    result = await query({ shopIds: [opaqueShopId], tagIds: [encodeTagOpaqueId(mockTag._id)], sortBy: "featured" });
-  } catch (error) {
-    console.log(error);
-    debugger;
-    expect(error).toBeUndefined();
-    return;
-  }
-  expect(result.catalogItems.nodes.length).toEqual(30);
-  expect(result.catalogItems.nodes[0]._id).toEqual(mockTag.featuredTagIds[0]);
-  expect(result.catalogItems.nodes[1]._id).toEqual(mockTag.featuredTagIds[1]);
-  expect(result.catalogItems.nodes[2]._id).toEqual(mockTag.featuredTagIds[2]);
-  expect(result.catalogItems.nodes[3]._id).toEqual(mockTag.featuredTagIds[3]);
-  expect(result.catalogItems.nodes[4]._id).toEqual(mockTag.featuredTagIds[4]);
+  expect(result.catalogItems.edges.length).toEqual(20);
+  expect(result.catalogItems.edges[0].node.product._id).toEqual(encodeCatalogProductOpaqueId("110"));
+  expect(result.catalogItems.edges[1].node.product._id).toEqual(encodeCatalogProductOpaqueId("111"));
+  expect(result.catalogItems.edges[2].node.product._id).toEqual(encodeCatalogProductOpaqueId("112"));
+  expect(result.catalogItems.edges[3].node.product._id).toEqual(encodeCatalogProductOpaqueId("113"));
+  expect(result.catalogItems.edges[4].node.product._id).toEqual(encodeCatalogProductOpaqueId("114"));
 });

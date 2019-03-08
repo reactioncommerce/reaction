@@ -23,8 +23,8 @@ export default async function getPaginatedAggregateResponse(aggregationParams, a
   const { totalCount, pageInfo: { hasNextPage, hasPreviousPage }, nodes } = await applyPaginationToMongoAggregation(aggregationParams, args);
 
   const pageInfo = {
-    hasPreviousPage: hasPreviousPage,
-    hasNextPage: hasNextPage
+    hasPreviousPage,
+    hasNextPage
   };
 
   if (nodes.length) {

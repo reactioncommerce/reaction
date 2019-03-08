@@ -1,201 +1,59 @@
-query ($shopIds: [ID]!, $sortBy: CatalogItemSortByField, $tagIds: [ID] ) {
-  catalogItems(shopIds: $shopIds, sortBy: $sortBy, tagIds: $tagIds) {
+query catalogItemsQuery($shopId: ID!, $tagIds: [ID] $first: ConnectionLimitInt, $last:  ConnectionLimitInt, $before: ConnectionCursor, $after: ConnectionCursor, $sortBy: CatalogItemSortByField, $sortByPriceCurrencyCode: String, $sortOrder: SortOrder) {
+  catalogItems(shopIds: [$shopId], tagIds: $tagIds, first: $first, last: $last, before: $before, after: $after, sortBy: $sortBy, sortByPriceCurrencyCode: $sortByPriceCurrencyCode, sortOrder: $sortOrder) {
     totalCount
     pageInfo {
-        hasNextPage
-        hasPreviousPage
+      endCursor
+      startCursor
+      hasNextPage
+      hasPreviousPage
     }
-    nodes {
-      _id
-      ... on CatalogItemProduct {
-        product {
-          _id
-          barcode
-          createdAt
-          description
-          height
-          isBackorder
-          isLowQuantity
-          isSoldOut
-          length
-          lowInventoryWarningThreshold
-          metafields {
-            value
-            namespace
+    edges {
+      cursor
+      node {
+        _id
+        ... on CatalogItemProduct {
+          product {
+            _id
+            title
+            slug
             description
-            valueType
-            scope
-            key
-          }
-          metaDescription
-          minOrderQuantity
-          originCountry
-          pageTitle
-          parcel {
-            containers
-            length
-            width
-            height
-            weight
-          }
-          pricing {
-            currency {
-              _id
-              code
-            }
-            compareAtPrice {
-              amount
-            }
-            price
-            maxPrice
-            minPrice
-            displayPrice
-          }
-          media {
-            toGrid
-            priority
-            productId
-            variantId
-            URLs {
-              thumbnail
-              small
-              medium
-              large
-              original
-            }
-          }
-          primaryImage {
-            toGrid
-            priority
-            productId
-            variantId
-            URLs {
-              thumbnail
-              small
-              medium
-              large
-              original
-            }
-          }
-          productId
-          productType
-          shop {
-            _id
-          }
-          sku
-          slug
-          socialMetadata {
-            service
-            message
-          }
-          supportedFulfillmentTypes
-          tagIds
-          tags(first: 2) {
-            nodes {
-              _id
-            }
-          }
-          title
-          updatedAt
-          variants {
-            _id
-            barcode
-            createdAt
-            height
-            index
-            inventoryManagement
-            inventoryPolicy
+            vendor
             isLowQuantity
             isSoldOut
-            length
-            lowInventoryWarningThreshold
+            isBackorder
             metafields {
-              value
-              namespace
               description
-              valueType
-              scope
               key
-            }
-            minOrderQuantity
-            options {
-              _id
-              barcode
-              createdAt
-              height
-              index
-              inventoryManagement
-              inventoryPolicy
-              isLowQuantity
-              isSoldOut
-              isTaxable
-              length
-              lowInventoryWarningThreshold
-              metafields {
-                value
-                namespace
-                description
-                valueType
-                scope
-                key
-              }
-              minOrderQuantity
-              optionTitle
-              originCountry
-              pricing {
-                currency {
-                  _id
-                  code
-                }
-                compareAtPrice {
-                  amount
-                }
-                price
-                maxPrice
-                minPrice
-                displayPrice
-              }
-              shop {
-                _id
-              }
-              sku
-              taxCode
-              taxDescription
-              title
-              updatedAt
-              variantId
-              weight
-              width
-            }
-            originCountry
-            pricing {
-              currency {
-                _id
-                code
-              }
-              compareAtPrice {
-                amount
-              }
-              price
-              maxPrice
-              minPrice
-              displayPrice
+              namespace
+              scope
+              value
+              valueType
             }
             shop {
-              _id
+              currency {
+                code
+              }
             }
-            sku
-            taxCode
-            taxDescription
-            title
-            updatedAt
-            variantId
-            weight
-            width
+            pricing {
+              compareAtPrice {
+                displayAmount
+              }
+              currency {
+                code
+              }
+              displayPrice
+              minPrice
+              maxPrice
+            }
+            primaryImage {
+              URLs {
+                thumbnail
+                small
+                medium
+                large
+              }
+            }
           }
-          vendor
-          weight
-          width
         }
       }
     }
