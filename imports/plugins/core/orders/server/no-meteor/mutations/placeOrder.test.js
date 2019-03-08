@@ -104,7 +104,7 @@ test("places an anonymous $0 order with no cartId and no payments", async () => 
               amount: 0,
               currencyCode: orderInput.currencyCode
             },
-            productId: catalogProduct._id,
+            productId: catalogProduct.productId,
             productSlug: catalogProduct.slug,
             productTagIds: catalogProduct.tagIds,
             productType: catalogProduct.type,
@@ -114,7 +114,7 @@ test("places an anonymous $0 order with no cartId and no payments", async () => 
             subtotal: 0,
             title: catalogProduct.title,
             updatedAt: jasmine.any(Date),
-            variantId: catalogProductVariant._id,
+            variantId: catalogProductVariant.variantId,
             variantTitle: catalogProductVariant.title,
             workflow: {
               status: "new",

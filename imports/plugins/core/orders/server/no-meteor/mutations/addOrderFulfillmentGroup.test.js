@@ -97,7 +97,7 @@ test("throws if an item ID being moved does not exist", async () => {
 
   mockContext.userHasPermission.mockReturnValueOnce(true);
 
-  const mockUpdateGroupTotals = jest.fn().mockName("updateGroupTotals").mockReturnValue(Promise.resolve({ groupSurcharges: [] }))
+  const mockUpdateGroupTotals = jest.fn().mockName("updateGroupTotals").mockReturnValue(Promise.resolve({ groupSurcharges: [] }));
   rewire$updateGroupTotals(mockUpdateGroupTotals);
 
   const fulfillmentGroup = Factory.orderFulfillmentGroupInputSchema.makeOne({});
