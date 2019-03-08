@@ -27,6 +27,7 @@ export default async function catalogItemsAggregate(context, { shopIds, tagId } 
       }
     }
   };
+  
   const tag = await Tags.findOne({
     _id: tagId
   });
@@ -71,15 +72,25 @@ export default async function catalogItemsAggregate(context, { shopIds, tagId } 
     }
   };
 
-  // Sort by featuredPosition
-  const sort = {
-    $sort: {
-      featuredPosition: 1
+  // Facet: Sort by featuredPosition
+  // Add pageInfo and count
+  const facet = {
+    $facet: {
+      nodes: [
+        {
+          $sort: {
+            featuredPosition: 1
+          }
+        }
+      ],
+      pageInfo: [
+        { $count: "totalCount" }
+      ]
     }
   };
 
   return {
     collection: Catalog,
-    pipeline: [match, addFields, projection]
+    pipeline: [match, addFields, projection, facet]
   };
 }

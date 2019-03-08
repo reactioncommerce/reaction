@@ -13,21 +13,23 @@ import applyPaginationToMongoAggregation from "./applyPaginationToMongoAggregati
  * @param {MongoCollection} [aggregationParams.collection] - Mongo collection is run the aggregation on
  * @param {Array} [aggregationParams.pipeline] - Mongo aggregation pipeline array
  * @param {Object} args Connection arguments from GraphQL query
+ * @param {String} [args.after] - ID  of the cursor result
+ * @param {String} [args.before] - ID of the cursor result
+ * @param {Integer} [args.first] - Number of results to return after the `after`
+ * @param {Integer} [args.last] -  Number of results to return before the `before`
  * @return {Promise<Object>} `{ nodes, pageInfo, totalCount }`
  */
 export default async function getPaginatedAggregateResponse(aggregationParams, args) {
   const { totalCount, pageInfo: { hasNextPage, hasPreviousPage }, nodes } = await applyPaginationToMongoAggregation(aggregationParams, args);
 
-  // Figure out proper hasNext/hasPrevious
   const pageInfo = {
-    hasPreviousPage: hasPreviousPage || false,
-    hasNextPage: hasNextPage || false
+    hasPreviousPage: hasPreviousPage,
+    hasNextPage: hasNextPage
   };
 
-  const count = nodes.length;
-  if (count) {
+  if (nodes.length) {
     pageInfo.startCursor = nodes[0]._id;
-    pageInfo.endCursor = nodes[count - 1]._id;
+    pageInfo.endCursor = nodes[nodes.length - 1]._id;
   }
 
   return { nodes, pageInfo, totalCount };
