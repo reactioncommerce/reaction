@@ -9,7 +9,6 @@ import MUIListItemIcon from "@material-ui/core/ListItemIcon";
 import MUIDivider from "@material-ui/core/Divider";
 import MUIListItemText from "@material-ui/core/ListItemText";
 import MUIDrawer from "@material-ui/core/Drawer";
-import Typography from "@material-ui/core/Typography";
 import ShopLogoWithData from "../ShopLogoWithData";
 import {
   applyTheme,
@@ -64,7 +63,6 @@ const ListItemText = styledMUI(MUIListItemText)`
 
 const LogoArea = styled.div`
   display: flex;
-  flex-direction: column;
   justify-content: ${applyTheme("Sidebar.logoHorizontalAlign")};
   padding-top: ${applyTheme("Sidebar.logoPaddingTop")};
   padding-bottom: ${applyTheme("Sidebar.logoPaddingBottom")};
@@ -78,9 +76,6 @@ const StyledNav = styled.nav`
   display: flex;
   flex-direction: column;
   height: 100%;
-`;
-
-const StyledVersion = styled.p`
 `;
 
 const activeClassName = "nav-item-active";
@@ -133,14 +128,12 @@ export default class Sidebar extends Component {
       <StyledNav>
         <LogoArea>
           <ShopLogoWithData />
-          <StyledVersion><Typography variant="caption">v.12345222</Typography></StyledVersion>
         </LogoArea>
         <List>
           {this.renderNavigationMenuItems()}
           <Divider component="li" />
           {this.renderNavigationMenuItems(true)}
         </List>
-        <Typography variant="caption">v.54321</Typography>
       </StyledNav>
     );
 
