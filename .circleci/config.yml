@@ -346,7 +346,7 @@ jobs:
           name: Frankfurt
           command: |
             .circleci/bin/calibre-deploy.sh ${STAGING_URL} Frankfurt
- 
+
   dockerfile-lint:
     <<: *defaults
     docker:
@@ -357,7 +357,7 @@ jobs:
           docker_layer_caching: true
       - run:
           name: Dockerfile Lint
-          command: | 
+          command: |
             hadolint Dockerfile
 
   snyk-security:
@@ -399,13 +399,30 @@ jobs:
                 echo "package.json identical to target branch. Skipping Snyk."
               fi
             fi
+  validate-secrets:
+    docker:
+      - image: lachlanevenson/k8s-helm:v2.12.3
+    steps:
+      - checkout
+      - run:
+          name: Install prerequisite packages
+          command: apk --no-cache add bash curl git
+      - run:
+          name: Install helm secrets plugin
+          command: mkdir -p ~/.helm/plugins && helm plugin install https://github.com/futuresimple/helm-secrets
+      - run:
+          name: validate secrets
+          command: AWS_ACCESS_KEY_ID="${KUBECTL_CONFIG_STAGING_AWS_ACCESS_KEY_ID}" AWS_SECRET_ACCESS_KEY="${KUBECTL_CONFIG_STAGING_SECRET_AWS_ACCESS_KEY}" ./bin/validate-secrets
 
 workflows:
   version: 2
   build_and_test:
     jobs:
-      - build
+      - build:
+          requires:
+              - validate-secrets
       - dockerfile-lint
+      - validate-secrets
       - test-app:
           requires:
             - build
@@ -419,7 +436,7 @@ workflows:
           requires:
             - deploy-to-ecs-release-branch
       - test-metrics:
-          requires: 
+          requires:
             - deploy-to-ecs-release-branch
       - eslint:
           requires:
@@ -435,6 +452,7 @@ workflows:
       - deploy-to-ecs-release-branch:
           requires:
             - docker-push
+            - validate-secrets
           filters:
             branches:
               only: /^release-2.*/
@@ -471,12 +489,14 @@ workflows:
       - deploy-to-kube-bobs-staging:
           requires:
             - docker-push
+            - validate-secrets
           filters:
             branches:
               only: /^develop$/
       - deploy-to-kube-bobs-int:
           requires:
             - docker-push
+            - validate-secrets
           filters:
             branches:
               only: /^develop-test$/
