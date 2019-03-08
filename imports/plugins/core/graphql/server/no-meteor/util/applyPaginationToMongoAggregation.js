@@ -22,44 +22,46 @@ export default async function applyPaginationToMongoAggregation(aggregationParam
 
   const unpaginatedResults = await collection.aggregate([...pipeline]).toArray();
   const unpaginatedCatalogItems = unpaginatedResults[0].nodes;
-  const totalCount = unpaginatedResults[0].pageInfo[0].totalCount;
+  const { totalCount } = unpaginatedResults[0].pageInfo[0];
+  let hasPreviousPage;
+  let hasNextPage;
+  let paginatedCatalogItems;
 
   if (after) {
     let indexOfCursor;
-    for (var i=0; i < unpaginatedCatalogItems.length; i++) {
-      if (unpaginatedCatalogItems[i]._id === after) {
-        indexOfCursor = i
+    for (let interator = 0; interator < unpaginatedCatalogItems.length; interator += 1) {
+      if (unpaginatedCatalogItems[interator]._id === after) {
+        indexOfCursor = interator;
       }
     }
     if (first) {
       hasPreviousPage = indexOfCursor > 0;
       hasNextPage = ((totalCount - (first + indexOfCursor - 1)) > 0);
-      paginatedCatalogItems = unpaginatedCatalogItems.slice(indexOfCursor + 1,indexOfCursor + 1 + first)
+      paginatedCatalogItems = unpaginatedCatalogItems.slice(indexOfCursor + 1, indexOfCursor + 1 + first);
     }
   } else if (before) {
     let indexOfCursor;
-    for (var i=0; i < unpaginatedCatalogItems.length; i++) {
-      if (unpaginatedCatalogItems[i]._id === before) {
-        indexOfCursor = i;
+    for (let iterator = 0; iterator < unpaginatedCatalogItems.length; iterator += 1) {
+      if (unpaginatedCatalogItems[iterator]._id === before) {
+        indexOfCursor = iterator;
       }
     }
     if (last) {
       hasPreviousPage = totalCount > (indexOfCursor + last);
       hasNextPage = totalCount > indexOfCursor;
-      startIndex = ((indexOfCursor - 1 - last) > 0) ? (indexOfCursor - 1 - last) : 0;
-      paginatedCatalogItems = unpaginatedCatalogItems.slice(startIndex,indexOfCursor-1)
-
+      const startIndex = ((indexOfCursor - 1 - last) > 0) ? (indexOfCursor - 1 - last) : 0;
+      paginatedCatalogItems = unpaginatedCatalogItems.slice(startIndex, indexOfCursor - 1);
     }
   } else {
-    indexOfCursor = 0;
-    limit = first || last || DEFAULT_LIMIT;
+    const indexOfCursor = 0;
+    const limit = first || last || DEFAULT_LIMIT;
     hasPreviousPage = false;
     hasNextPage = (totalCount - limit) > 0;
-    paginatedCatalogItems = unpaginatedCatalogItems.slice(indexOfCursor,indexOfCursor+limit);
+    paginatedCatalogItems = unpaginatedCatalogItems.slice(indexOfCursor, indexOfCursor + limit);
   }
 
   return {
-    totalCount: totalCount,
+    totalCount,
     pageInfo: { hasNextPage, hasPreviousPage },
     nodes: paginatedCatalogItems
   };
