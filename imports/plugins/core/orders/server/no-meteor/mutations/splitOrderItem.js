@@ -48,7 +48,7 @@ export default async function splitOrderItem(context, input) {
   const order = await Orders.findOne({ _id: orderId });
   if (!order) throw new ReactionError("not-found", "Order not found");
 
-  // Allow cancel if the account has "orders" permission. When called internally by another
+  // Allow split if the account has "orders" permission. When called internally by another
   // plugin, context.isInternalCall can be set to `true` to disable this check.
   if (!isInternalCall && !userHasPermission(["orders"], order.shopId)) {
     throw new ReactionError("access-denied", "Access Denied");
