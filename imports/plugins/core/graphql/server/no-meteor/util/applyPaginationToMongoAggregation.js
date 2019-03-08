@@ -1,3 +1,5 @@
+import { constants } from "zlib";
+
 const DEFAULT_LIMIT = 20;
 
 /**
@@ -23,29 +25,20 @@ export default async function applyPaginationToMongoAggregation(aggregationParam
   const unpaginatedResults = await collection.aggregate([...pipeline]).toArray();
   const unpaginatedCatalogItems = unpaginatedResults[0].nodes;
   const { totalCount } = unpaginatedResults[0].pageInfo[0];
+
   let hasPreviousPage;
   let hasNextPage;
   let paginatedCatalogItems;
 
   if (after) {
-    let indexOfCursor;
-    for (let interator = 0; interator < unpaginatedCatalogItems.length; interator += 1) {
-      if (unpaginatedCatalogItems[interator]._id === after) {
-        indexOfCursor = interator;
-      }
-    }
+    const indexOfCursor = unpaginatedCatalogItems.findIndex((catalogItem) => catalogItem._id === after);
     if (first) {
       hasPreviousPage = indexOfCursor > 0;
       hasNextPage = ((totalCount - (first + indexOfCursor - 1)) > 0);
       paginatedCatalogItems = unpaginatedCatalogItems.slice(indexOfCursor + 1, indexOfCursor + 1 + first);
     }
   } else if (before) {
-    let indexOfCursor;
-    for (let iterator = 0; iterator < unpaginatedCatalogItems.length; iterator += 1) {
-      if (unpaginatedCatalogItems[iterator]._id === before) {
-        indexOfCursor = iterator;
-      }
-    }
+    const indexOfCursor = unpaginatedCatalogItems.findIndex((catalogItem) => catalogItem._id === before);
     if (last) {
       hasPreviousPage = totalCount > (indexOfCursor + last);
       hasNextPage = totalCount > indexOfCursor;
@@ -53,11 +46,11 @@ export default async function applyPaginationToMongoAggregation(aggregationParam
       paginatedCatalogItems = unpaginatedCatalogItems.slice(startIndex, indexOfCursor - 1);
     }
   } else {
-    const indexOfCursor = 0;
+    const startIndex = 0;
     const limit = first || last || DEFAULT_LIMIT;
     hasPreviousPage = false;
     hasNextPage = (totalCount - limit) > 0;
-    paginatedCatalogItems = unpaginatedCatalogItems.slice(indexOfCursor, indexOfCursor + limit);
+    paginatedCatalogItems = unpaginatedCatalogItems.slice(startIndex, startIndex + limit);
   }
 
   return {
