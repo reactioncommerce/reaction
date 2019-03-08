@@ -1,0 +1,203 @@
+query ($shopIds: [ID]!, $sortBy: CatalogItemSortByField, $tagIds: [ID] ) {
+  catalogItems(shopIds: $shopIds, sortBy: $sortBy, tagIds: $tagIds) {
+    totalCount
+    pageInfo {
+        hasNextPage
+        hasPreviousPage
+    }
+    nodes {
+      _id
+      ... on CatalogItemProduct {
+        product {
+          _id
+          barcode
+          createdAt
+          description
+          height
+          isBackorder
+          isLowQuantity
+          isSoldOut
+          length
+          lowInventoryWarningThreshold
+          metafields {
+            value
+            namespace
+            description
+            valueType
+            scope
+            key
+          }
+          metaDescription
+          minOrderQuantity
+          originCountry
+          pageTitle
+          parcel {
+            containers
+            length
+            width
+            height
+            weight
+          }
+          pricing {
+            currency {
+              _id
+              code
+            }
+            compareAtPrice {
+              amount
+            }
+            price
+            maxPrice
+            minPrice
+            displayPrice
+          }
+          media {
+            toGrid
+            priority
+            productId
+            variantId
+            URLs {
+              thumbnail
+              small
+              medium
+              large
+              original
+            }
+          }
+          primaryImage {
+            toGrid
+            priority
+            productId
+            variantId
+            URLs {
+              thumbnail
+              small
+              medium
+              large
+              original
+            }
+          }
+          productId
+          productType
+          shop {
+            _id
+          }
+          sku
+          slug
+          socialMetadata {
+            service
+            message
+          }
+          supportedFulfillmentTypes
+          tagIds
+          tags(first: 2) {
+            nodes {
+              _id
+            }
+          }
+          title
+          updatedAt
+          variants {
+            _id
+            barcode
+            createdAt
+            height
+            index
+            inventoryManagement
+            inventoryPolicy
+            isLowQuantity
+            isSoldOut
+            length
+            lowInventoryWarningThreshold
+            metafields {
+              value
+              namespace
+              description
+              valueType
+              scope
+              key
+            }
+            minOrderQuantity
+            options {
+              _id
+              barcode
+              createdAt
+              height
+              index
+              inventoryManagement
+              inventoryPolicy
+              isLowQuantity
+              isSoldOut
+              isTaxable
+              length
+              lowInventoryWarningThreshold
+              metafields {
+                value
+                namespace
+                description
+                valueType
+                scope
+                key
+              }
+              minOrderQuantity
+              optionTitle
+              originCountry
+              pricing {
+                currency {
+                  _id
+                  code
+                }
+                compareAtPrice {
+                  amount
+                }
+                price
+                maxPrice
+                minPrice
+                displayPrice
+              }
+              shop {
+                _id
+              }
+              sku
+              taxCode
+              taxDescription
+              title
+              updatedAt
+              variantId
+              weight
+              width
+            }
+            originCountry
+            pricing {
+              currency {
+                _id
+                code
+              }
+              compareAtPrice {
+                amount
+              }
+              price
+              maxPrice
+              minPrice
+              displayPrice
+            }
+            shop {
+              _id
+            }
+            sku
+            taxCode
+            taxDescription
+            title
+            updatedAt
+            variantId
+            weight
+            width
+          }
+          vendor
+          weight
+          width
+        }
+      }
+    }
+  }
+}

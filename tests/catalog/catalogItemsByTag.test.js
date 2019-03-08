@@ -1,24 +1,27 @@
 import TestApp from "../TestApp";
-// temp mocks
-import { mockMoreCatalogItems } from "../mocks/mockMoreCatalogItems";
-// temp mocks
-import CatalogProductItemsFullQuery from "./CatalogProductItemsFullQuery.graphql";
+import Factory from "/imports/test-utils/helpers/factory";
+import CatalogItemQuery from "./CatalogItemQuery.graphql";
+import { encodeTagOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/tag";
 
-const internalTagIds = [
-  "sjrKzMBz7HkX3ZSM7", // 8
-  "QGxZeKJtfubC4m3ck", // 3
-  "4jevtBGXLz2BF8Lf8" // 12
-];
+const internalShopId = "123";
+const opaqueShopId = "cmVhY3Rpb24vc2hvcDoxMjM=";
+const shopName = "Test Shop";
 
-const opaqueTagIds = [
-  "cmVhY3Rpb24vdGFnOnNqckt6TUJ6N0hrWDNaU003", // T-Shirts
-  "cmVhY3Rpb24vdGFnOlFHeFplS0p0ZnViQzRtM2Nr", // Womens
-  "cmVhY3Rpb24vdGFnOjRqZXZ0QkdYTHoyQkY4TGY4" // Shirts
-];
+const mockTag = Factory.CatalogProduct.makeOne({
+  featuredProductIds: [100, 101, 102, 103, 104],
+  shopId: internalShopId
+});
 
-export const internalShopId = "123";
-export const opaqueShopId = "cmVhY3Rpb24vc2hvcDoxMjM="; // reaction/shop:123
-export const shopName = "Test Shop";
+const mockCatalogItemsWithTag = Factory.Catalog.makeMany(30, {
+  _id: (iterator) => (iterator + 100).toString(),
+  product: Factory.CatalogProduct.makeOne({
+    isDeleted: false,
+    isVisible: true,
+    tagIds: [mockTag._id],
+    shopId: internalShopId
+  }),
+  shopId: internalShopId
+});
 
 jest.setTimeout(300000);
 
@@ -28,27 +31,45 @@ let query;
 beforeAll(async () => {
   testApp = new TestApp();
   await testApp.start();
-  query = testApp.query(CatalogProductItemsFullQuery);
+  query = testApp.query(CatalogItemQuery);
   await testApp.insertPrimaryShop({ _id: internalShopId, name: shopName });
-  await Promise.all(internalTagIds.map((_id) => testApp.collections.Tags.insert({ _id, shopId: internalShopId })));
-  await Promise.all(mockMoreCatalogItems.map((mockCatalogItem) => testApp.collections.Catalog.insert(mockCatalogItem)));
+  await testApp.collections.Tags.insertOne({ _id: mockTag._id, shopId: internalShopId });
+  await Promise.all(mockCatalogItemsWithTag.map((mockItem) => testApp.collections.Catalog.insertOne(mockItem)));
 });
 
 afterAll(async () => {
-  await testApp.collections.Shops.remove({ _id: internalShopId });
-  await Promise.all(internalTagIds.map((_id) => testApp.collections.Tags.remove({ _id })));
-  await Promise.all(mockMoreCatalogItems.map((mockCatalogItem) => testApp.collections.Catalog.remove({ _id: mockCatalogItem._id })));
+  debugger;
+  await testApp.collections.Shops.deleteOne({ _id: internalShopId });
+  await testApp.collections.Tags.deleteOne({ _id: mockTag._id, shopId: internalShopId });
+  await Promise.all(mockCatalogItemsWithTag.map((mockItem) => testApp.collections.Catalog.deleteOne({ _id: mockItem._id })));
   testApp.stop();
 });
 
-test("get all items for shop", async () => {
+test("get all items for one tag in one shop", async () => {
   let result;
   try {
-    result = await query({ shopIds: [opaqueShopId], tagIds: [opaqueTagIds[0]] });
+    result = await query({ shopIds: [opaqueShopId], tagIds: [mockTag._id] });
   } catch (error) {
     expect(error).toBeUndefined();
     return;
   }
-  console.log(result);
-  expect(result.catalogItems.nodes.length).toEqual(8);
+  expect(result.catalogItems.nodes.length).toEqual(30);
+});
+
+test.only("get all items for on tag in order of featured, desc", async () => {
+  let result;
+  try {
+    result = await query({ shopIds: [opaqueShopId], tagIds: [encodeTagOpaqueId(mockTag._id)], sortBy: "featured" });
+  } catch (error) {
+    console.log(error);
+    debugger;
+    expect(error).toBeUndefined();
+    return;
+  }
+  expect(result.catalogItems.nodes.length).toEqual(30);
+  expect(result.catalogItems.nodes[0]._id).toEqual(mockTag.featuredTagIds[0]);
+  expect(result.catalogItems.nodes[1]._id).toEqual(mockTag.featuredTagIds[1]);
+  expect(result.catalogItems.nodes[2]._id).toEqual(mockTag.featuredTagIds[2]);
+  expect(result.catalogItems.nodes[3]._id).toEqual(mockTag.featuredTagIds[3]);
+  expect(result.catalogItems.nodes[4]._id).toEqual(mockTag.featuredTagIds[4]);
 });
