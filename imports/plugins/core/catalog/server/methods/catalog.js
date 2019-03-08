@@ -675,7 +675,7 @@ Meteor.methods({
     }
 
     if (Array.isArray(productOrArray)) {
-      if (productOrArray.length && _.every(productOrArray, String)) {
+      if (productOrArray.length && _.every(productOrArray, (value) => typeof value === "string")) {
         productOrArray = Products.find({ // eslint-disable-line no-param-reassign
           _id: { $in: productOrArray }
         }).fetch();
