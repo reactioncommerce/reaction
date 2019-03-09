@@ -43,6 +43,10 @@ export const Taxes = new SimpleSchema({
     optional: true,
     index: 1
   },
+  rateIsTaxInclusive: {
+    type: Boolean,
+    defaultValue: false
+  },
   rate: Number
 }, { check, tracker: Tracker });
 
