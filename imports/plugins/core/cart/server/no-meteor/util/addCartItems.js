@@ -160,14 +160,21 @@ export default async function addCartItems(context, currentItems, inputItems, op
       updatedItemList.push(cartItem);
     } else {
       const currentCartItem = updatedItemList[currentMatchingItemIndex];
+      // Combine quantities. This is not atomic like $inc would be, but what are the
+      // chances that someone is adding the same item to the same cart in two different
+      // browsers at the same time? Doing it this way allows for more functional and
+      // testable code.
+      const updatedQuantity = currentCartItem.quantity + cartItem.quantity;
+      // Recalculate subtotal with new quantity number
+      const updatedSubtotalAmount = updatedQuantity * cartItem.price.amount;
       updatedItemList[currentMatchingItemIndex] = {
         ...currentCartItem,
         ...cartItem,
-        // Combine quantities. This is not atomic like $inc would be, but what are the
-        // chances that someone is adding the same item to the same cart in two different
-        // browsers at the same time? Doing it this way allows for more functional and
-        // testable code.
-        quantity: currentCartItem.quantity + cartItem.quantity
+        quantity: updatedQuantity,
+        subtotal: {
+          amount: updatedSubtotalAmount,
+          currencyCode: price.currencyCode
+        }
       };
     }
   });
