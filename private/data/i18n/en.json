@@ -181,6 +181,7 @@
         "addedToCart": "added",
         "showBarcodes": "Show barcodes",
         "soldOut": "Sold out!",
+        "inStock": "In Stock",
         "backOrder": "Backorder",
         "limitedSupply": "Limited supply",
         "publishProductVisible": "{{product}} is now visible",

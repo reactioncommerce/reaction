@@ -44,6 +44,11 @@ extend type Mutation {
   Use this mutation to update order details after the order has been placed.
   """
   updateOrder(input: UpdateOrderInput!): UpdateOrderPayload!
+
+  """
+  Use this mutation to update an order fulfillment group status and tracking information.
+  """
+  updateOrderFulfillmentGroup(input: UpdateOrderFulfillmentGroupInput!): UpdateOrderFulfillmentGroupPayload!
 }
 
 enum OrderFulfillmentGroupItemsSortByField {
@@ -232,10 +237,11 @@ type OrderFulfillmentGroup implements Node {
   """
   type: FulfillmentType!
 
-  """
-  The order fulfillment group shipment tracking number
-  """
+  "The order fulfillment group shipment tracking number"
   tracking: String
+
+  "The order fulfillment group shipment tracking URL"
+  trackingUrl: String
 }
 
 "An order"
@@ -451,12 +457,36 @@ input PlaceOrderInput {
 input UpdateOrderInput {
   "An optional string identifying the mutation call, which will be returned in the response payload"
   clientMutationId: String
+
   "Set the order email to this"
   email: String
+
   "ID of the order to update"
   orderId: ID!
+
   "Set the current order status to this"
   status: String
+}
+
+"Input for the updateOrderFulfillmentGroup mutation"
+input UpdateOrderFulfillmentGroupInput {
+  "An optional string identifying the mutation call, which will be returned in the response payload"
+  clientMutationId: String
+
+  "ID of the order fulfillment group to update"
+  orderFulfillmentGroupId: ID!
+
+  "ID of the order to update"
+  orderId: ID!
+
+  "Set the current order fulfillment group status to this"
+  status: String
+
+  "Set this as the current order fulfillment group shipment tracking reference"
+  tracking: String
+
+  "Set this as the current order fulfillment group shipment tracking URL"
+  trackingUrl: String
 }
 
 "Response payload for the cancelOrderItem mutation"
@@ -484,6 +514,16 @@ type PlaceOrderPayload {
 type UpdateOrderPayload {
   "The same string you sent with the mutation params, for matching mutation calls with their responses"
   clientMutationId: String
+
+  "The updated order"
+  order: Order!
+}
+
+"Response payload for the updateOrderFulfillmentGroup mutation"
+type UpdateOrderFulfillmentGroupPayload {
+  "The same string you sent with the mutation params, for matching mutation calls with their responses"
+  clientMutationId: String
+
   "The updated order"
   order: Order!
 }
