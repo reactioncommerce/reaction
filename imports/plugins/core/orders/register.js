@@ -3,12 +3,17 @@ import mutations from "./server/no-meteor/mutations";
 import queries from "./server/no-meteor/queries";
 import resolvers from "./server/no-meteor/resolvers";
 import schemas from "./server/no-meteor/schemas";
+import createRandomOrderId from "./server/util/createOrderId";
+
 
 Reaction.registerPackage({
   label: "Orders",
   name: "reaction-orders",
   icon: "fa fa-sun-o",
   autoEnable: true,
+  functionsByType: {
+    createOrderId: [createRandomOrderId]
+  },
   graphQL: {
     resolvers,
     schemas

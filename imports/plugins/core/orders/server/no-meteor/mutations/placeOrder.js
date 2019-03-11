@@ -443,7 +443,8 @@ export default async function placeOrder(context, input) {
   const orderSurcharges = [];
 
   // Create orderId
-  const orderId = Random.id();
+  const createOrderId = getFunctionsOfType("createOrderId");
+  const orderId = createOrderId();
 
   // Add more props to each fulfillment group, and validate/build the items in each group
   let orderTotal = 0;
