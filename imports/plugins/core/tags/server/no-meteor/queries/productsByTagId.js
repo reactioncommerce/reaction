@@ -29,6 +29,15 @@ export default async function productsByTagId(context, params) {
     throw new ReactionError("not-found", "Tag not found");
   }
 
+  // Match all products that belong to a single tag
+  const match = {
+    $match: {
+      "product.tagIds": {
+        $in: [tagId]
+      }
+    }
+  };
+
   // Products from catalog sample data
   const positions = tag.featuredProductIds || [];
 
@@ -39,7 +48,9 @@ export default async function productsByTagId(context, params) {
         position: {
           $indexOfArray: [positions, "$_id"]
         }
-        
+      }
+    };
+     
     // Projection: Add a featuredPosition by order
     const projection = {
       $project: {
