@@ -29,7 +29,7 @@ export default async function addOrderFulfillmentGroup(parentResult, { input }, 
   const { newFulfillmentGroupId, order } = await context.mutations.addOrderFulfillmentGroup(context, {
     fulfillmentGroup: {
       ...fulfillmentGroup,
-      items: decodeCartItemsOpaqueIds(fulfillmentGroup.items),
+      items: fulfillmentGroup.items ? decodeCartItemsOpaqueIds(fulfillmentGroup.items) : [],
       selectedFulfillmentMethodId: decodeFulfillmentMethodOpaqueId(fulfillmentGroup.selectedFulfillmentMethodId),
       shopId: decodeShopOpaqueId(fulfillmentGroup.shopId)
     },
