@@ -10,6 +10,7 @@ import {
   buildProductSearch,
   rebuildProductSearchIndex
 } from "../methods/";
+import { env } from "../config";
 
 function addBuildProductSearchCollection() {
   const productSearchCount = ProductSearch.find({}).count();
@@ -70,7 +71,7 @@ function addBuildAccountSearchCollection() {
 }
 
 appEvents.on("afterCoreInit", () => {
-  if (!Meteor.isAppTest) {
+  if (!Meteor.isAppTest && !env.DISABLE_MONGO_SEARCH) {
     buildEmptyProductSearch();
     addBuildProductSearchCollection();
     addBuildOrderSearchCollection();

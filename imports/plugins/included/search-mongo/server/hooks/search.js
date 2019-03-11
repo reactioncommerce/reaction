@@ -8,9 +8,11 @@ import {
   buildProductSearchRecord
 } from "../methods/searchcollections";
 import buildOrderSearchRecord from "../no-meteor/util/buildOrderSearchRecord";
+import { env } from "../config";
+
 
 appEvents.on("afterAccountCreate", ({ account }) => {
-  if (AccountSearch && !Meteor.isAppTest) {
+  if (AccountSearch && !Meteor.isAppTest && !env.DISABLE_MONGO_SEARCH) {
     // Passing forceIndex will run account search index even if
     // updated fields don't match a searchable field
     buildAccountSearchRecord(account._id, ["forceIndex"]);
@@ -18,19 +20,19 @@ appEvents.on("afterAccountCreate", ({ account }) => {
 });
 
 appEvents.on("afterAccountDelete", ({ account }) => {
-  if (AccountSearch && !Meteor.isAppTest) {
+  if (AccountSearch && !Meteor.isAppTest && !env.DISABLE_MONGO_SEARCH) {
     AccountSearch.remove(account._id);
   }
 });
 
 appEvents.on("afterAccountUpdate", ({ account, updatedFields }) => {
-  if (AccountSearch && !Meteor.isAppTest) {
+  if (AccountSearch && !Meteor.isAppTest && !env.DISABLE_MONGO_SEARCH) {
     buildAccountSearchRecord(account._id, updatedFields);
   }
 });
 
 appEvents.on("afterOrderUpdate", ({ order }) => {
-  if (!Meteor.isAppTest) {
+  if (!Meteor.isAppTest && !env.DISABLE_MONGO_SEARCH) {
     Promise.await(buildOrderSearchRecord(rawCollections, order));
   }
 });
@@ -40,7 +42,7 @@ appEvents.on("afterOrderUpdate", ({ order }) => {
  * @private
  */
 appEvents.on("afterProductSoftDelete", ({ product }) => {
-  if (ProductSearch && !Meteor.isAppTest && product.type === "simple") {
+  if (ProductSearch && !Meteor.isAppTest && product.type === "simple" && !env.DISABLE_MONGO_SEARCH) {
     const productId = product._id;
     ProductSearch.remove({ _id: productId });
     Logger.debug(`Removed product ${productId} from ProductSearch collection`);
@@ -51,7 +53,9 @@ appEvents.on("afterProductSoftDelete", ({ product }) => {
  * @summary Rebuild search record when product is published
  */
 appEvents.on("afterPublishProductToCatalog", ({ product }) => {
-  Logger.debug(`Rewriting search record for ${product.title}`);
-  ProductSearch.remove({ _id: product._id });
-  buildProductSearchRecord(product._id);
+  if (!env.DISABLE_MONGO_SEARCH) {
+    Logger.debug(`Rewriting search record for ${product.title}`);
+    ProductSearch.remove({ _id: product._id });
+    buildProductSearchRecord(product._id);
+  }
 });
