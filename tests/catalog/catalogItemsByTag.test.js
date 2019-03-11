@@ -94,9 +94,7 @@ test("get items for a tag by featured, even though it has no featuredProductIds"
   let result;
   try {
     result = await query({ shopId: opaqueShopId, tagIds: [encodeTagOpaqueId(mockTagWithFeatured._id)], sortBy: "featured" });
-    console.log(result);
   } catch (error) {
-    console.log(error);
     expect(error).toBeUndefined();
     return;
   }
