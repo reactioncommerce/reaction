@@ -443,12 +443,15 @@ export default async function placeOrder(context, input) {
   const orderSurcharges = [];
 
   // Create orderId
-  const createOrderId = getFunctionsOfType("createOrderId");
   let orderId;
-  if (!createOrderId) {
+  const createOrderIdFunctions = getFunctionsOfType("createOrderId");
+  if (!createOrderIdFunctions || createOrderIdFunctions.length === 0) {
     orderId = Random.id();
   } else {
-    orderId = createOrderId();
+    orderId = createOrderIdFunctions[0]();
+    if (createOrderIdFunctions.length > 1) {
+      Logger.warn("More than one createOrderId function defined. Using first one defined");
+    }
   }
 
   // Add more props to each fulfillment group, and validate/build the items in each group
