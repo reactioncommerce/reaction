@@ -14,7 +14,21 @@ IFS="$(printf "\n\t")"
 # ---- End unofficial bash strict mode boilerplate
 
 __dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-env_file=${__dir}/../.env
+env_source_param="$1"
+env_output_param="$2"
+env_output="${env_output_param:="${__dir}/../.env"}"
+env_source="${env_source_param:="${__dir}/../.env.example"}"
+
+function info {
+  echo "$@" >&2
+}
+
+function help() {
+  info "setup [input output [force]]"
+  info ""
+  info "Copies all environment variables from input to output. If force is 'force' then existing values will be overwritten."
+  info ""
+}
 
 function main() {
   set -e
@@ -23,14 +37,14 @@ function main() {
 }
 
 function add_new_env_vars() {
+  info "Copying env from ${env_source} to ${env_output}"
   # create .env and set perms if it does not exist
-  [[ ! -f "${env_file}" ]] && {
-    touch "${env_file}"
-    chmod 0600 "${env_file}"
+  [[ ! -f "${env_output}" ]] && {
+    touch "${env_output}"
+    chmod 0600 "${env_output}"
   }
 
-  find . -name .env.example -type f -print0 |
-    xargs -0 grep -Ehv '^\s*#' || true |
+  grep -Ehv '^\s*#' "${env_source}" |
     {
       while IFS= read -r var; do
         if [[ -z "${var}" ]]; then
@@ -40,9 +54,9 @@ function add_new_env_vars() {
         var=$(eval echo "$var") # generate dynamic values
 
         # If .env doesn't contain this env key, add it
-        if ! grep -qLE "^$key=" "${env_file}"; then
-          echo "Adding $key to .env"
-          echo "$var" >>"${env_file}"
+        if ! grep -qLE "^$key=" "${env_output}"; then
+          info "Adding $key to ${env_output}"
+          echo "$var" >>"${env_output}"
         fi
       done
     }
