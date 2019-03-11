@@ -4,17 +4,12 @@ import ReactionError from "@reactioncommerce/reaction-error";
  * @summary Calculates total discount amount for a cart based on all discounts
  *   that have been applied to it
  * @param {Object} context Context object
- * @param {String} cartId Cart ID
+ * @param {String} cart The cart to get discounts from
  * @returns {Object} Object with `discounts` array and `total`
  */
-export default async function getDiscountsTotalForCart(context, cartId) {
+export default async function getDiscountsTotalForCart(context, cart) {
   const { collections } = context;
-  const { Cart, Discounts } = collections;
-
-  const cart = await Cart.findOne({ _id: cartId });
-  if (!cart) {
-    throw new ReactionError("not-found", "Cart not found");
-  }
+  const { Discounts } = collections;
 
   // Currently, discounts are added as items in the billing array
   let discounts = await Promise.all((cart.billing || []).map(async (billing) => {
