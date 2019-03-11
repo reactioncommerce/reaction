@@ -321,6 +321,7 @@ registerSchema("OrderTransaction", OrderTransaction);
  * @property {String} shopId The shop that fulfills this group
  * @property {Number} totalItemQuantity The total item quantity, sum of all quantities
  * @property {String} tracking Tracking reference ID
+ * @property {String} trackingUrl Tracking URL
  * @property {String} type Fulfillment type
  * @property {Object} workflow Current status and past statuses for this fulfillment
  */
@@ -355,9 +356,17 @@ export const OrderFulfillmentGroup = new SimpleSchema({
     type: String,
     optional: true
   },
+  "trackingUrl": {
+    type: String,
+    optional: true
+  },
   "type": {
     type: String,
     allowedValues: ["shipping"]
+  },
+  "updatedAt": {
+    type: Date,
+    optional: true
   },
   "workflow": Workflow
 });

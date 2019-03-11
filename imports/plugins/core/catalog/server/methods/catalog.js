@@ -675,6 +675,12 @@ Meteor.methods({
     }
 
     if (Array.isArray(productOrArray)) {
+      if (productOrArray.length && _.every(productOrArray, (value) => typeof value === "string")) {
+        productOrArray = Products.find({ // eslint-disable-line no-param-reassign
+          _id: { $in: productOrArray }
+        }).fetch();
+      }
+
       // Reduce to unique shops found among products in this array
       const shopIds = productOrArray.map((prod) => prod.shopId);
       const uniqueShopIds = [...new Set(shopIds)];
