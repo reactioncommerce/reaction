@@ -36,21 +36,19 @@ export default async function catalogItemsAggregate(context, { shopIds, tagId } 
     throw new ReactionError("not-found", "Tag not found");
   }
 
-  // Facet: Sort by featuredPosition
-  // Add pageInfo and count
-  const facetWithoutSort = {
-    $facet: {
-      pageInfo: [
-        { $count: "totalCount" }
-      ]
-    }
-  };
 
   // If there are no featuredProductIds, return match
   if (!tag.featuredProductIds) {
+    // Sort by createdAt instead
+    const sort = {
+      $sort: {
+        createdAt: 1
+      }
+    };
+
     return {
       collection: Catalog,
-      pipeline: [match, facetWithoutSort]
+      pipeline: [match, sort]
     };
   }
 
@@ -82,25 +80,14 @@ export default async function catalogItemsAggregate(context, { shopIds, tagId } 
     }
   };
 
-  // Facet: Sort by featuredPosition
-  // Add pageInfo and count
-  const facet = {
-    $facet: {
-      nodes: [
-        {
-          $sort: {
-            featuredPosition: 1
-          }
-        }
-      ],
-      pageInfo: [
-        { $count: "totalCount" }
-      ]
+  const sort = {
+    $sort: {
+      featuredPosition: 1
     }
   };
 
   return {
     collection: Catalog,
-    pipeline: [match, addFields, projection, facet]
+    pipeline: [match, addFields, projection, sort]
   };
 }

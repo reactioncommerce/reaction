@@ -81,6 +81,7 @@ export default async function productsByTagId(context, params) {
     };
   }
 
+  // If there are no featured products, sort by createdAt
   const sort = {
     $sort: {
       createdAt: 1

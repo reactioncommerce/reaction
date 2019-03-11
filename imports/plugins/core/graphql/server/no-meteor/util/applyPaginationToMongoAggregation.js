@@ -20,7 +20,19 @@ export default async function applyPaginationToMongoAggregation(aggregationParam
 
   if (first && last) throw new Error("Request either `first` or `last` but not both");
 
-  const unpaginatedResults = await collection.aggregate([...pipeline]).toArray();
+  // Facet: Add pageInfo and count
+  const facet = {
+    $facet: {
+      nodes: [
+        { $skip: 0 }
+      ],
+      pageInfo: [
+        { $count: "totalCount" }
+      ]
+    }
+  };
+
+  const unpaginatedResults = await collection.aggregate([...pipeline, facet]).toArray();
   const unpaginatedCatalogItems = unpaginatedResults[0].nodes;
   const { totalCount } = unpaginatedResults[0].pageInfo[0];
 
