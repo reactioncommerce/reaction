@@ -29,62 +29,56 @@ export default async function productsByTagId(context, params) {
     throw new ReactionError("not-found", "Tag not found");
   }
 
-  // Aggregation Pipeline
-  // Find the products in the "order" array
-  const match = {
-    $match: {
-      shopId,
-      hashtags: { $in: [tagId] }
-    }
-  };
+  // Products from catalog sample data
+  const positions = tag.featuredProductIds || [];
 
-  // If there are no featuredProductIds, return match without any sorting
-  if (!tag.featuredProductIds) {
+  if (positions.length) {
+    // Add a new field "positions" to each product with the order they are in the array
+    const addFields = {
+      $addFields: {
+        position: {
+          $indexOfArray: [positions, "$_id"]
+        }
+        
+    // Projection: Add a featuredPosition by order
+    const projection = {
+      $project: {
+        _id: 1,
+        position: 1,
+        title: 1,
+        sortPosition: {
+          $cond: {
+            if: { $lt: ["$position", 0] },
+            then: { $add: [{ $abs: "$position" }, positions.length] },
+            else: "$position"
+          }
+        }
+      }
+    };
+
+    // Sort the results by "sortPosition"
+    const sort = {
+      $sort: {
+        sortPosition: 1
+      }
+    };
+
+    // Profit
     return {
       collection: Products,
-      pipeline: [match]
+      pipeline: [match, addFields, projection, sort]
     };
   }
 
-  // Products from catalog sample data
-  const positions = tag.featuredProductIds;
-
-
-  // Add a new field "positions" to each product with the order they are in the array
-  const addFields = {
-    $addFields: {
-      position: {
-        $indexOfArray: [positions, "$_id"]
-      }
-    }
-  };
-
-  // Projection: Add a featuredPosition by order
-  const projection = {
-    $project: {
-      _id: 1,
-      position: 1,
-      title: 1,
-      sortPosition: {
-        $cond: {
-          if: { $lt: ["$position", 0] },
-          then: { $add: [{ $abs: "$position" }, positions.length] },
-          else: "$position"
-        }
-      }
-    }
-  };
-
-  // Sort the results by "positions"
   const sort = {
     $sort: {
-      sortPosition: 1
+      createdAt: 1
     }
   };
 
   // Profit
   return {
     collection: Products,
-    pipeline: [match, addFields, projection, sort]
+    pipeline: [match, sort]
   };
 }
