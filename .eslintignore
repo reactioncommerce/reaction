@@ -6,3 +6,6 @@ client/plugins.js
 imports/plugins/custom/*
 packages/*
 server/plugins.js
+
+node_modules/*
+**/node_modules/*
