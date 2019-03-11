@@ -50,7 +50,7 @@ export default async function productsByTagId(context, params) {
         }
       }
     };
-     
+
     // Projection: Add a featuredPosition by order
     const projection = {
       $project: {
