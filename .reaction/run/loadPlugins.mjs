@@ -4,7 +4,7 @@ import childProcess from 'child_process';
 import _ from 'lodash';
 import Log from './logger';
 import { exists, getDirectories } from './fs';
-import pluginLists from "../disabledPlugins";
+import pluginConfig from "../pluginConfig";
 
 // add a message to the top of the plugins import file
 const importFileMessage = `
@@ -61,7 +61,7 @@ function getImportPaths(baseDirPath) {
 
   // get all plugin directories at provided base path
   // (ignore directories starting with a dot '.' or any directories in disabledPlugins)
-  const { disabledPlugins } = pluginLists;
+  const { disabledPlugins } = pluginConfig;
   const pluginDirs = _.reject(getDirectories(baseDirPath), (d) => d.charAt(0) === '.' || _.includes(disabledPlugins, d));
   const clientImportPaths = [];
   const serverImportPaths = [];
