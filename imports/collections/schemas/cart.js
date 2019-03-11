@@ -1,17 +1,10 @@
 import SimpleSchema from "simpl-schema";
 import { registerSchema } from "@reactioncommerce/schemas";
 import { Address } from "./address";
+import { Money, AppliedSurcharge } from "./core";
 import { Shipment, ShippingParcel } from "./shipping";
 import { Workflow } from "./workflow";
 import { Metafield } from "./metafield";
-
-const Money = new SimpleSchema({
-  currencyCode: String,
-  amount: {
-    type: Number,
-    min: 0
-  }
-});
 
 /**
  * @name CartItemAttribute
@@ -175,6 +168,7 @@ registerSchema("CartItems", CartItems);
  * @property {Payment[]} billing Array of Payment optional, blackbox
  * @property {String} sessionId Optional and deprecated
  * @property {Number} discount optional
+ * @property {Surcharges[]} surcharges optional
  * @property {Workflow} workflow optional
  * @property {Date} createdAt required
  * @property {Date} updatedAt optional
@@ -246,6 +240,13 @@ export const Cart = new SimpleSchema({
   "discount": {
     type: Number,
     optional: true
+  },
+  "surcharges": {
+    type: Array,
+    optional: true
+  },
+  "surcharges.$": {
+    type: AppliedSurcharge
   },
   "workflow": {
     type: Workflow,

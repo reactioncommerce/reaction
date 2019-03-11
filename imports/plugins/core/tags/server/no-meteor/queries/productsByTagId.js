@@ -32,15 +32,6 @@ export default async function productsByTagId(context, params) {
   // Products from catalog sample data
   const positions = tag.featuredProductIds || [];
 
-  // Aggregation Pipeline
-  // Find the products in the "order" array
-  const match = {
-    $match: {
-      shopId,
-      hashtags: { $in: [tagId] }
-    }
-  };
-
   if (positions.length) {
     // Add a new field "positions" to each product with the order they are in the array
     const addFields = {
@@ -48,9 +39,7 @@ export default async function productsByTagId(context, params) {
         position: {
           $indexOfArray: [positions, "$_id"]
         }
-      }
-    };
-
+        
     // Projection: Add a featuredPosition by order
     const projection = {
       $project: {
@@ -81,7 +70,6 @@ export default async function productsByTagId(context, params) {
     };
   }
 
-  // Sort the results by "sortPosition"
   const sort = {
     $sort: {
       createdAt: 1

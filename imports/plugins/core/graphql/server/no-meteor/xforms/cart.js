@@ -1,10 +1,10 @@
 import { namespaces } from "@reactioncommerce/reaction-graphql-utils";
 import ReactionError from "@reactioncommerce/reaction-error";
 import findVariantInCatalogProduct from "/imports/plugins/core/catalog/server/no-meteor/utils/findVariantInCatalogProduct";
+import { xformCatalogProductMedia } from "./catalogProduct";
+import { xformRateToRateObject } from "./core";
 import { assocInternalId, assocOpaqueId, decodeOpaqueIdForNamespace, encodeOpaqueId } from "./id";
 import { decodeProductOpaqueId } from "./product";
-import { xformProductMedia } from "./catalogProduct";
-import { xformRateToRateObject } from "./core";
 
 export const assocCartInternalId = assocInternalId(namespaces.Cart);
 export const assocCartOpaqueId = assocOpaqueId(namespaces.Cart);
@@ -42,7 +42,7 @@ export function decodeCartItemsOpaqueIds(items) {
  * @param {Object} cartItem CartItem
  * @return {Object} Same object with GraphQL-only props added
  */
-function xformCartItem(context, catalogItems, products, cartItem) {
+async function xformCartItem(context, catalogItems, products, cartItem) {
   const { productId, variantId } = cartItem;
 
   const catalogItem = catalogItems.find((cItem) => cItem.product.productId === productId);
@@ -57,10 +57,13 @@ function xformCartItem(context, catalogItems, products, cartItem) {
   }
 
   let media;
-  if (catalogProduct.media) {
+  if (catalogProduct.media || catalogProduct.primaryImage) {
     media = catalogProduct.media.find((mediaItem) => mediaItem.variantId === variantId);
+    if (!media) media = catalogProduct.primaryImage;
     if (!media) [media] = catalogProduct.media;
-    media = xformProductMedia(media, context);
+    if (media) {
+      media = await xformCatalogProductMedia(media, context);
+    }
   }
 
   const variantSourceProduct = products.find((product) => product._id === variantId);
@@ -221,7 +224,10 @@ export async function xformCartCheckout(collections, cart) {
 
   const discountTotal = cart.discount || 0;
 
-  const total = Math.max(0, itemTotal + fulfillmentTotal + taxTotal - discountTotal);
+  // surchargeTotal is sum of all surcharges is qty * amount for each item, summed
+  const surchargeTotal = (cart.surcharges || []).reduce((sum, surcharge) => (sum + surcharge.amount), 0);
+
+  const total = Math.max(0, itemTotal + fulfillmentTotal + taxTotal + surchargeTotal - discountTotal);
 
   let fulfillmentTotalMoneyObject = null;
   if (fulfillmentTotal !== null) {
@@ -265,6 +271,10 @@ export async function xformCartCheckout(collections, cart) {
         currencyCode: cart.currencyCode
       },
       taxTotal: taxTotalMoneyObject,
+      surchargeTotal: {
+        amount: surchargeTotal,
+        currencyCode: cart.currencyCode
+      },
       total: {
         amount: total,
         currencyCode: cart.currencyCode
