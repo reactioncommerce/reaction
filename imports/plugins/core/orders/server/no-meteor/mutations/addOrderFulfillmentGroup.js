@@ -80,6 +80,10 @@ export default async function addOrderFulfillmentGroup(context, input) {
 
       if (!movedSomeItems) return group;
 
+      if (updatedItems.length === 0) {
+        throw new ReactionError("invalid-param", "moveItemIds would result in group having no items");
+      }
+
       const updatedGroup = {
         ...group,
         // There is a convenience itemIds prop, so update that, too
