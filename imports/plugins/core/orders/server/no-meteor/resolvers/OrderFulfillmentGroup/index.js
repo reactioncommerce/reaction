@@ -17,5 +17,6 @@ export default {
   items,
   selectedFulfillmentOption: (node) => xformOrderFulfillmentGroupSelectedOption(node.shipmentMethod, node),
   shop: resolveShopFromShopId,
+  status: (node) => node.workflow.status,
   summary
 };

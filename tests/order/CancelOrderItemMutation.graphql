@@ -1,0 +1,22 @@
+mutation ($cancelQuantity: Int!, $itemId: ID!, $orderId: ID!, $reason: String) {
+  cancelOrderItem(input: {
+    cancelQuantity: $cancelQuantity,
+    itemId: $itemId,
+    orderId: $orderId,
+    reason: $reason
+  }) {
+    order {
+      fulfillmentGroups {
+        items {
+          nodes {
+            cancelReason
+            quantity
+            status
+          }
+        }
+        status
+      }
+      status
+    }
+  }
+}

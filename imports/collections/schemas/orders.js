@@ -162,6 +162,7 @@ export const OrderDiscount = new SimpleSchema({
  * @type {SimpleSchema}
  * @property {String} _id Unique ID for the item
  * @property {String} addedAt Date/time when this was first added to the cart/order
+ * @property {String} cancelReason Free text reason for cancel, if this item is canceled
  * @property {String} createdAt Date/time when this order item was created
  * @property {Document[]} documents optional
  * @property {History[]} history optional
@@ -185,6 +186,10 @@ export const OrderDiscount = new SimpleSchema({
 export const OrderItem = new SimpleSchema({
   "_id": String,
   "addedAt": Date,
+  "cancelReason": {
+    type: String,
+    optional: true
+  },
   "createdAt": Date,
   "documents": {
     type: Array,
@@ -316,6 +321,7 @@ registerSchema("OrderTransaction", OrderTransaction);
  * @property {String} shopId The shop that fulfills this group
  * @property {Number} totalItemQuantity The total item quantity, sum of all quantities
  * @property {String} tracking Tracking reference ID
+ * @property {String} trackingUrl Tracking URL
  * @property {String} type Fulfillment type
  * @property {Object} workflow Current status and past statuses for this fulfillment
  */
@@ -350,9 +356,17 @@ export const OrderFulfillmentGroup = new SimpleSchema({
     type: String,
     optional: true
   },
+  "trackingUrl": {
+    type: String,
+    optional: true
+  },
   "type": {
     type: String,
     allowedValues: ["shipping"]
+  },
+  "updatedAt": {
+    type: Date,
+    optional: true
   },
   "workflow": Workflow
 });
