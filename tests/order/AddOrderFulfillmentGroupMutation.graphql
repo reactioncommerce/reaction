@@ -24,6 +24,7 @@ mutation ($fulfillmentGroup: OrderFulfillmentGroupExistingOrderInput!, $moveItem
           _id
         }
         status
+        totalItemQuantity
         type
       }
     }

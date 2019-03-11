@@ -67,20 +67,25 @@ export default async function addOrderFulfillmentGroup(context, input) {
   const movingItems = [];
   if (moveItemIds) {
     updatedGroups = await Promise.all(order.shipping.map(async (group) => {
+      let movedSomeItems = false;
       const updatedItems = group.items.reduce((list, item) => {
         if (moveItemIds.includes(item._id)) {
           movingItems.push(item);
+          movedSomeItems = true;
         } else {
           list.push(item);
         }
         return list;
       }, []);
 
+      if (!movedSomeItems) return group;
+
       const updatedGroup = {
         ...group,
         // There is a convenience itemIds prop, so update that, too
         itemIds: updatedItems.map((item) => item._id),
-        items: updatedItems
+        items: updatedItems,
+        totalItemQuantity: updatedItems.reduce((sum, item) => sum + item.quantity, 0)
       };
 
       // Update group shipping, tax, totals, etc.
