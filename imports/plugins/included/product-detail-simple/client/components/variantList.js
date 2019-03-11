@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Components } from "@reactioncommerce/reaction-components";
+import Drawer from "@material-ui/core/Drawer";
 
 class VariantList extends Component {
   handleVariantEditClick = (event, editButtonProps) => {
@@ -168,11 +169,26 @@ class VariantList extends Component {
     return null;
   }
 
+  renderDrawer() {
+    const { selectedVariant, onVariantEditComplete } = this.props;
+    return (
+      <Drawer
+        anchor="right"
+        open={!!selectedVariant}
+        onClose={onVariantEditComplete}
+        variant="persistent"
+      >
+        <Components.VariantEditForm variant={selectedVariant} />
+      </Drawer>
+    );
+  }
+
   render() {
     return (
       <div className="product-variants">
         {this.renderVariants()}
         {this.renderChildVariants()}
+        {this.renderDrawer()}
       </div>
     );
   }

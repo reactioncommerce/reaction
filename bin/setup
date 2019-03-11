@@ -1,5 +1,18 @@
 #!/usr/bin/env bash
 
+# Please Use Google Shell Style: https://google.github.io/styleguide/shell.xml
+
+# ---- Start unofficial bash strict mode boilerplate
+# http://redsymbol.net/articles/unofficial-bash-strict-mode/
+set -o errexit  # always exit on error
+set -o errtrace # trap errors in functions as well
+set -o pipefail # don't ignore exit codes when piping output
+set -o posix    # more strict failures in subshells
+# set -x          # enable debugging
+
+IFS="$(printf "\n\t")"
+# ---- End unofficial bash strict mode boilerplate
+
 __dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 env_file=${__dir}/../.env
 
@@ -16,8 +29,8 @@ function add_new_env_vars() {
     chmod 0600 "${env_file}"
   }
 
-  find . imports/plugins/custom -name .env.example -type f -print0 |
-    xargs -0 grep -Ehv '^\s*#' |
+  find . -name .env.example -type f -print0 |
+    xargs -0 grep -Ehv '^\s*#' || true |
     {
       while IFS= read -r var; do
         if [[ -z "${var}" ]]; then

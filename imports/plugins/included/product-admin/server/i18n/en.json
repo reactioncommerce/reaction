@@ -4,6 +4,49 @@
   "translation": {
     "reaction-product-admin": {
       "admin": {
+        "createProduct": "Create product",
+        "productAdmin": {
+          "details": "Details",
+          "metadata": "Metadata",
+          "metafields": "Meta fields",
+          "mediaGallery": "Media Gallery"
+        },
+        "productTable": {
+          "header": {
+            "order": "Order",
+            "title": "Title",
+            "price": "Price",
+            "qty": "Qty",
+            "visible": "Visible"
+          },
+          "bulkActions": {
+            "actions": "Actions",
+            "archive": "Archive",
+            "archiveTitle": "Archive {{count}} product?",
+            "archiveTitle_plural": "Archive {{count}} products?",
+            "archiveMessage": "Archive products removes them from both admin and customer views.",
+            "restore": "Restore",
+            "restoreTitle": "Restore {{count}} product?",
+            "restoreTitle_plural": "Restore {{count}} products?",
+            "publish": "Publish",
+            "publishTitle": "Publish {{count}} product?",
+            "publishTitle_plural": "Publish {{count}} products?",
+            "publishMessage": "Publish pending changes of selected products to your storefront.",
+            "makeVisible": "Make Visible",
+            "makeVisibleTitle": "Make {{count}} product visible?",
+            "makeVisibleTitle_plural": "Make {{count}} product visible?",
+            "makeVisibleMessage": "Show selected products in your storefront. These changes will need to be published to take effect.",
+            "makeHidden": "Make Hidden",
+            "makeHiddenTitle": "Hide {{count}} product?",
+            "makeHiddenTitle_plural": "Hide {{count}} products?",
+            "makeHiddenMessage": "Hide selected products from your storefront. These changes will need to be published to take effect.",
+            "duplicate": "Duplicate",
+            "duplicateTitle": "Duplicate {{count}} product?",
+            "duplicateTitle_plural": "Duplicate {{count}} products?",
+            "duplicateMessage": "Duplicate selected products and their variants."
+          }
+        },
+        "products": "Products",
         "settings": {
           "productSettingsLabel": "Product Settings",
           "productDetailsLabel": "Product Details"

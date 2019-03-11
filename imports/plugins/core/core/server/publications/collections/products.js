@@ -2,6 +2,7 @@ import _ from "lodash";
 import Logger from "@reactioncommerce/logger";
 import SimpleSchema from "simpl-schema";
 import { Meteor } from "meteor/meteor";
+import { Counts } from "meteor/tmeasday:publish-counts";
 import { Tracker } from "meteor/tracker";
 import { check, Match } from "meteor/check";
 import { registerSchema } from "@reactioncommerce/schemas";
@@ -328,6 +329,76 @@ Meteor.publish("Products", function (productScrollLimit = 24, productFilters, so
   const productIds = Products.find(selector, {
     sort,
     limit: productScrollLimit
+  }, {
+    fields: {
+      _id: 1
+    }
+  }).map((product) => product._id);
+
+  // Return a cursor for the matching products plus all their variants
+  return Products.find({
+    $or: [{
+      ancestors: {
+        $in: productIds
+      }
+    }, {
+      _id: {
+        $in: productIds
+      }
+    }]
+  }, {
+    sort
+    // We shouldn't limit here. Otherwise we are limited to 24 total products which
+    // could be far less than 24 top-level products.
+  });
+});
+
+/**
+ * @summary Products publication
+ * @param {Number} [skip - Top-level product skip. Optional, defaults to 24
+ * @param {Number} [limit] - Top-level product limit. Optional, defaults to 24
+ * @param {Object} [productFilters] - Optional filters to apply
+ * @param {Object} [sort] - Optional MongoDB sort object
+ * @param {Boolean} [editMode] - If true, will add a shopId filter limiting the results to shops
+ *   for which the logged in user has "createProduct" permission. Default is false.
+ * @return {MongoCursor|undefined} Products collection cursor, or undefined if none to publish
+ */
+Meteor.publish("ProductsAdminList", function (page = 0, limit = 24, productFilters, sort = {}) {
+  check(page, Number);
+  check(limit, Number);
+  check(productFilters, Match.OneOf(undefined, Object));
+  check(sort, Match.OneOf(undefined, Object));
+
+  const selector = filterProducts(productFilters);
+
+  if (selector === false) {
+    return this.ready();
+  }
+
+  // Get a list of shopIds that this user has "createProduct" permissions for (owner permission is checked by default)
+  const userAdminShopIds = Reaction.getShopsWithRoles(["createProduct"], this.userId) || [];
+
+  // If the user isn't an admin of any shop, then don't show them any products
+  if (userAdminShopIds.length === 0) {
+    return this.ready();
+  }
+
+  // We publish an admin version of this publication to admins of products who are in "Edit Mode"
+  // Limit to only shops we have "createProduct" role for
+  selector.shopId.$in = _.intersection(selector.shopId.$in, userAdminShopIds);
+  if (selector.shopId.$in.length === 0) {
+    return this.ready();
+  }
+
+  delete selector.isVisible; // in edit mode, you should see all products
+
+  Counts.publish(this, "products-count", Products.find(selector));
+
+  // Get the IDs of the first N (limit) top-level products that match the query
+  const productIds = Products.find(selector, {
+    sort,
+    skip: page * limit,
+    limit
   }, {
     fields: {
       _id: 1
