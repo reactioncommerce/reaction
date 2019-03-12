@@ -1,0 +1,111 @@
+image: sportsdirect/reaction
+imageTag: e1e7127b34e9853130371a43e475b2ece505445f
+#imageTag: develop-routing-plugin
+#image: reactioncommerce/reaction
+#imageTag: develop
+#imageTag: release-2.0.0-rc.8
+imagePullPolicy: IfNotPresent
+## How many replicas?
+replicas: 1
+## Should the service be LoadBalancer, NodePort or ClusterIP
+## If you're using ingress, ClusterIP should be a solid choice
+##
+serviceType: NodePort
+## Name value of an image pull secret
+imagePullSecret: dockerhub-creds
+## What port is reaction running on internally
+## What port should reaction look like its running within the cluster
+service:
+    publicPort: 80
+    apiPort: 3000
+app:
+    envVars:
+    -   key: ROOT_URL
+        value: https://api.bobs-test.io
+    -   key: REACTION_USER
+        value: Reaction Admin
+    -   key: HYDRA_ADMIN_URL
+        value: http://hydra-hydra-admin-service:4445
+    -   key: HYDRA_OAUTH2_INTROSPECT_URL
+        value: http://hydra-hydra-admin-service:4445/oauth2/introspect
+    -   key: SKIP_FIXTURES
+        value: "1"
+    -   key: KAFKA_CLUSTER
+        value: kafka-cluster-cp-kafka.kafka:9092
+    -   key: KAFKA_TOPIC_CATALOG_SYNC_PRODUCTS
+        value: etl.catalog-sync.products.json-gen1
+    -   key: SITE_CODE
+        value: BOBS
+    -   key: ETCD_URL
+        value: http://etcd-staging.bobs-test.io:2379
+    -   key: KAFKA_TOPIC_PRODUCT_IMPORT_PRODUCTS
+        value: event.product-import.products.stream.json-gen1
+    -   key: KAFKA_TOPIC_PRODUCT_IMPORT_PRODUCTS_PARTITIONS
+        value: "3"
+    -   key: KAFKA_TOPIC_IMPORT_TAX_CODES_TAXCODES
+        value: etl.import-tax-codes.tax-codes.json-gen1
+    -   key: ORDER_EXPORT_RADIAL_URL
+        value: https://tst02-epapi-na.gsipartners.com/v1.0/OOMF/stores
+    -   key: KAFKA_TOPIC_IMPORT_ORDER_STATUS_ORDERS
+        value: etl.import-order-status.status.json-gen1
+    -   key: RADIAL_STORE_ID
+        value: BOBSUS
+    -   key: RADIAL_MODE
+        value: sandbox
+    -   key: DEFAULT_SHIPPING_METHOD_ID
+        value: SPbMh5gdz24Wr4J94
+    -   key: DEFAULT_SHIPPING_METHOD_RATE
+        value: "2.99"
+    -   key: KAFKA_TOPIC_CATALOG_IMPORT_ERRORS
+        value: etl.product-import.errors.json-gen1
+    -   key: KAFKA_TOPIC_PRODUCT_IMPORT_ERRORS
+        value: etl.product-import.errors.json-gen1
+    -   key: PRICING_GRAPHQL_URL
+        value: http://reaction-pricing-engine.bobs:8888/graphql
+    -   key: KAFKA_BOOTSTRAP_SERVERS
+        value: kafka-cluster-cp-kafka.kafka:9092
+    -   key: KAFKA_TOPIC_PRICEBOOKS
+        value: reaction.pricing.pricebook-aggregates.avro-gen1
+    -   key: KAFKA_TOPIC_PRICES_BY_ID
+        value: reaction.pricing.prices-by-id-aggregates.avro-gen1
+    -   key: SCHEMA_REGISTRY_URL
+        value: http://kafka-cluster-cp-schema-registry.kafka:8081
+    -   key: PRODUCT_PUBLISHER_AUTO_PUBLISH
+        value: true
+    -   key: PRICING_CONSUMER_ENABLED
+        value: false
+        ## Configure resource requests and limits
+        ## ref: http://kubernetes.io/docs/user-guide/compute-resources/
+resources:
+    requests:
+        memory: 500Mi
+        cpu: 700m
+    limits:
+        memory: 2Gi
+        cpu: "2"
+scheduling:
+    affinity:
+        node:
+            type: requiredDuringSchedulingIgnoredDuringExecution
+            #      - key: iamalabelkey
+            #        operator: In
+            #        values: ["value1", "value2"]
+            labels: null
+            #ENC[AES256_GCM,data:/AxU48oANC/5mep04XlvjMOa7X9U,iv:+qDoaGcKl6fXqtzkjvimnzguLD4pNqEJuuvHSC68HMw=,tag:jQROi6Hapw7yBDi0D9Y2cQ==,type:comment]
+            #ENC[AES256_GCM,data:TuNsnNZhHoYCrbSwHZpgFzu9CaiB,iv:rnlOvF87/+SdznNxkkx82EnNc2xs/MiBeVq/mVg+kcI=,tag:muQCSbir6qPalovamqjd2w==,type:comment]
+            #ENC[AES256_GCM,data:wzS1vSUBGiHqYHFjt9JCxa73ltrQ/Q==,iv:C1iQIdKqOQPp5tQkK5tuy1Z+U5if/mTjht4fXAV+JSY=,tag:3iftJaOaDjKgnj6y1HC/WQ==,type:comment]
+    tolerations: null
+    #ENC[AES256_GCM,data:ufnjoc4UThboZ6yuTqlCBqc=,iv:mc5Xns73/KQs+t+RUGRUE7Dv6IpKzP27Su0/ZWUyJuA=,tag:StFeoLrusVPN9OdGUg2z8A==,type:comment]
+    #ENC[AES256_GCM,data:Y5RBQ4JNPj3NsRgEBNttlCuzcsA=,iv:pk220k0cFcBOEtkROOLHxswes+WbXyG6mNEWcR0JmGU=,tag:BtLhygrxqrbwfHqZg+fjfA==,type:comment]
+    #ENC[AES256_GCM,data:qVHhWCe8YRwqJ046O+ATRZRvtg==,iv:bquVoNFEhRjHy2M6DAOPxEdvMcsPrXsP0ea3gqHSs28=,tag:zgoSBjZULntutJyU7+RM2Q==,type:comment]
+    #ENC[AES256_GCM,data:zpYpM1ju/msHDYkf7eC4GQrM9kXAL/fC,iv:d7Z0TkYVb6HgNVdo6OuhROMf6NM7Ye88eq4tLdz4ifQ=,tag:HAXRya78qolENgJ5ERQ6ZQ==,type:comment]
+    #ENC[AES256_GCM,data:GhlsmtrOty6CPb0JB38=,iv:lYt09wVg7kwVCoibOtaY+wZJZs3JgAJllqfNs8cgk7I=,tag:gPeSJfX3k2XLFa2X8hvgKw==,type:comment]
+    #ENC[AES256_GCM,data:VLBMDSWMFrP5ipeo8jHBoA==,iv:2aR33UjEzgvKVcEAznnOscP2pCZQEwGECHKFx9xJTnk=,tag:aMrw7UTgu3ax0G5JrBCkUQ==,type:comment]
+    #ENC[AES256_GCM,data:kCgL3mUOfTzOUdX5f2mt6GIwASzN43w=,iv:v2LxOtqNV/P9TivQbGGjXdwiw6+oxBkAlqSGkcAxYzs=,tag:nMw5UaEHidUz1dke5+zwvQ==,type:comment]
+    #ENC[AES256_GCM,data:R+QBshU1lForSq3yfdGTYP/BurOBCbd3yUfHvVPVdjcl8p8pCMAM/Qw0aAnt2cQvTNbY,iv:T3HtlIJ55dNPmsm6Xvv7TVQGX/5dqHn8K48ANKSoDg8=,tag:iXXdq+EUz+VyglMevinHDg==,type:comment]
+    #ENC[AES256_GCM,data:uau6qr2t,iv:+m5Ret7yhDnA0CmPpBsvk2WWSZng8I+VkRs8hNR+m9U=,tag:chqZ8A5sReqDmPpXQYl1WA==,type:comment]
+    #ENC[AES256_GCM,data:gQgIBTmnChXnidsB88GIXBZYhA8/hdCsO6/5I86E00d6QA==,iv:Flg9tNwl3of5rbjdzW2Lqv9ln/RffVZ5uJxuy7HhFN4=,tag:RABN0Xr+xWUKprLOO//nRA==,type:comment]
+    #ENC[AES256_GCM,data:FoffCapcecFB00LMog==,iv:u0kFv+F0vvRc1ffOWgeip7KaE/cmdUXY1EyivEePaxQ=,tag:kPkZfuvXQ4GMKBuW03QYNA==,type:comment]
+    #ENC[AES256_GCM,data:Ao/CpOd0BwC1XtKcrltqWIA=,iv:09dKYi4gENi7oBgGJuUWeuwisBeiy5lNm2nkWMtSyD8=,tag:10grFW1kyHTapc6R00qL8w==,type:comment]
+networkPolicy:
+    ingress: null
