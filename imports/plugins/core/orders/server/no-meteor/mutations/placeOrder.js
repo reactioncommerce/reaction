@@ -443,16 +443,8 @@ export default async function placeOrder(context, input) {
   const orderSurcharges = [];
 
   // Create orderId
-  let orderId;
-  const createOrderIdFunctions = getFunctionsOfType("createOrderId");
-  if (!createOrderIdFunctions || createOrderIdFunctions.length === 0) {
-    orderId = Random.id();
-  } else {
-    orderId = createOrderIdFunctions[0]();
-    if (createOrderIdFunctions.length > 1) {
-      Logger.warn("More than one createOrderId function defined. Using first one defined");
-    }
-  }
+  const orderId = Random.id();
+
 
   // Add more props to each fulfillment group, and validate/build the items in each group
   let orderTotal = 0;
@@ -554,7 +546,6 @@ export default async function placeOrder(context, input) {
     discounts,
     email,
     payments,
-    referenceId: Random.id(),
     shipping: finalFulfillmentGroups,
     shopId,
     surcharges: orderSurcharges,
@@ -566,6 +557,18 @@ export default async function placeOrder(context, input) {
     }
   };
 
+  let referenceId;
+  const createReferenceIdFunctions = getFunctionsOfType("createReferenceId");
+  if (!createReferenceIdFunctions || createReferenceIdFunctions.length === 0) {
+    referenceId = Random.id();
+  } else {
+    referenceId = createReferenceIdFunctions[0]();
+    if (createReferenceIdFunctions.length > 1) {
+      Logger.warn("More than one createReferenceId function defined. Using first one defined");
+    }
+  }
+
+  order.referenceId = referenceId;
   // Apply custom order data transformations from plugins
   const transformCustomOrderFieldsFuncs = getFunctionsOfType("transformCustomOrderFields");
   if (transformCustomOrderFieldsFuncs.length > 0) {
