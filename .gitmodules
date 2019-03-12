@@ -37,3 +37,6 @@
 [submodule "imports/plugins/custom/reaction-plugin-import-tax-codes"]
 	path = imports/plugins/custom/reaction-plugin-import-tax-codes
 	url = git@github.com:sportsdirect/reaction-plugin-import-tax-codes.git
+[submodule "imports/plugins/custom/reaction-plugin-gql-resolvers"]
+	path = imports/plugins/custom/reaction-plugin-gql-resolvers
+	url = git@github.com:sportsdirect/reaction-plugin-gql-resolvers.git
