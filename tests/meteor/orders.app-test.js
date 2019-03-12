@@ -33,7 +33,6 @@ describe("orders test", function () {
       "shipmentShipped": Meteor.server.method_handlers["orders/shipmentShipped"],
       "shipmentDelivered": Meteor.server.method_handlers["orders/shipmentDelivered"],
       "sendNotification": Meteor.server.method_handlers["orders/sendNotification"],
-      "updateShipmentTracking": Meteor.server.method_handlers["orders/updateShipmentTracking"],
       "updateHistory": Meteor.server.method_handlers["orders/updateHistory"],
       "refunds/create": Meteor.server.method_handlers["orders/refunds/create"],
       "refunds/refundItems": Meteor.server.method_handlers["orders/refunds/refundItems"],
@@ -411,29 +410,6 @@ describe("orders test", function () {
       sandbox.stub(Shops, "findOne", () => shop);
       const result = Meteor.call("orders/sendNotification", order._id);
       expect(result).to.be.true;
-    });
-  });
-
-  describe("orders/updateShipmentTracking", function () {
-    it("should return an error if user does not have permission", function () {
-      sandbox.stub(Reaction, "hasPermission", () => false);
-      const shipment = shippingObjectMethod(order);
-      spyOnMethod("updateShipmentTracking", order.userId);
-      function updateShipmentTracking() {
-        const trackingValue = "2340FLKD104309";
-        return Meteor.call("orders/updateShipmentTracking", order, shipment, trackingValue);
-      }
-      expect(updateShipmentTracking).to.throw(ReactionError, /Access Denied/);
-    });
-
-    it("should update the order tracking value", function () {
-      sandbox.stub(Reaction, "hasPermission", () => true);
-      const shipment = shippingObjectMethod(order);
-      spyOnMethod("updateShipmentTracking", order.userId);
-      const trackingValue = "2340FLKD104309";
-      Meteor.call("orders/updateShipmentTracking", order, shipment, trackingValue);
-      const orders = Orders.findOne({ _id: order._id });
-      expect(shippingObjectMethod(orders).tracking).to.equal(trackingValue);
     });
   });
 

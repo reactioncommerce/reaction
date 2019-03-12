@@ -136,17 +136,18 @@ function composer(props, onData) {
   }
 
   const scrollLimit = Session.get("productScrollLimit");
+  const productPage = Session.get("products/page") || 0;
   const sort = { createdAt: 1 };
 
   // Now that we have the necessary info, we can subscribe to Products we need
-  let productsSubscription = Meteor.subscribe("Products", scrollLimit, queryParams, sort, true);
+  let productsSubscription = Meteor.subscribe("ProductsAdminList", productPage, scrollLimit, queryParams, sort);
 
   // Force re-running products subscription when a product is cloned
   const resubscribe = resubscribeAfterCloning.get();
   if (resubscribe) {
     resubscribeAfterCloning.set(false);
     productsSubscription.stop();
-    productsSubscription = Meteor.subscribe("Products", scrollLimit, queryParams, sort, true);
+    productsSubscription = Meteor.subscribe("ProductsAdminList", productPage, scrollLimit, queryParams, sort);
   }
 
   if (productsSubscription.ready()) {
