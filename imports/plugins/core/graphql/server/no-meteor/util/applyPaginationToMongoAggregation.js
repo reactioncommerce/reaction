@@ -33,34 +33,43 @@ export default async function applyPaginationToMongoAggregation(aggregationParam
   };
 
   const unpaginatedResults = await collection.aggregate([...pipeline, facet]).toArray();
-  const unpaginatedCatalogItems = unpaginatedResults[0].nodes;
-  const { totalCount } = unpaginatedResults[0].pageInfo[0];
 
   let hasPreviousPage;
   let hasNextPage;
   let paginatedCatalogItems;
+  let totalCount;
 
-  if (after) {
-    const indexOfCursor = unpaginatedCatalogItems.findIndex((catalogItem) => catalogItem._id === after);
-    if (first) {
-      hasPreviousPage = indexOfCursor > 0;
-      hasNextPage = ((totalCount - (first + indexOfCursor - 1)) > 0);
-      paginatedCatalogItems = unpaginatedCatalogItems.slice(indexOfCursor + 1, indexOfCursor + 1 + first);
-    }
-  } else if (before) {
-    const indexOfCursor = unpaginatedCatalogItems.findIndex((catalogItem) => catalogItem._id === before);
-    if (last) {
-      hasPreviousPage = totalCount > (indexOfCursor + last);
-      hasNextPage = totalCount > indexOfCursor;
-      const startIndex = ((indexOfCursor - 1 - last) > 0) ? (indexOfCursor - 1 - last) : 0;
-      paginatedCatalogItems = unpaginatedCatalogItems.slice(startIndex, indexOfCursor - 1);
-    }
-  } else {
-    const startIndex = 0;
-    const limit = first || last || DEFAULT_LIMIT;
+  if (unpaginatedResults[0].nodes.length === 0) {
+    totalCount = unpaginatedResults[0].nodes.length;
+    hasNextPage = false;
     hasPreviousPage = false;
-    hasNextPage = (totalCount - limit) > 0;
-    paginatedCatalogItems = unpaginatedCatalogItems.slice(startIndex, startIndex + limit);
+    paginatedCatalogItems = unpaginatedResults[0].nodes;
+  } else {
+    const unpaginatedCatalogItems = unpaginatedResults[0].nodes;
+    // eslint-disable-next-line prefer-destructuring
+    totalCount = unpaginatedResults[0].pageInfo[0].totalCount;
+    if (after) {
+      const indexOfCursor = unpaginatedCatalogItems.findIndex((catalogItem) => catalogItem._id === after);
+      if (first) {
+        hasPreviousPage = indexOfCursor > 0;
+        hasNextPage = ((totalCount - (first + indexOfCursor - 1)) > 0);
+        paginatedCatalogItems = unpaginatedCatalogItems.slice(indexOfCursor + 1, indexOfCursor + 1 + first);
+      }
+    } else if (before) {
+      const indexOfCursor = unpaginatedCatalogItems.findIndex((catalogItem) => catalogItem._id === before);
+      if (last) {
+        hasPreviousPage = totalCount > (indexOfCursor + last);
+        hasNextPage = totalCount > indexOfCursor;
+        const startIndex = ((indexOfCursor - 1 - last) > 0) ? (indexOfCursor - 1 - last) : 0;
+        paginatedCatalogItems = unpaginatedCatalogItems.slice(startIndex, indexOfCursor - 1);
+      }
+    } else {
+      const startIndex = 0;
+      const limit = first || last || DEFAULT_LIMIT;
+      hasPreviousPage = false;
+      hasNextPage = (totalCount - limit) > 0;
+      paginatedCatalogItems = unpaginatedCatalogItems.slice(startIndex, startIndex + limit);
+    }
   }
 
   return {
