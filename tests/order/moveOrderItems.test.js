@@ -12,10 +12,37 @@ jest.setTimeout(300000);
 let testApp;
 let moveOrderItems;
 let catalogItem;
+let shopId;
+
+const fulfillmentMethodId = "METHOD_ID";
+const mockShipmentMethod = {
+  _id: fulfillmentMethodId,
+  handling: 0,
+  label: "mockLabel",
+  name: "mockName",
+  rate: 3.99
+};
+
 beforeAll(async () => {
-  testApp = new TestApp();
+  const getFulfillmentMethodsWithQuotes = (context, commonOrderExtended, [rates]) => {
+    rates.push({
+      carrier: "CARRIER",
+      handlingPrice: 0,
+      method: mockShipmentMethod,
+      rate: 3.99,
+      shippingPrice: 3.99,
+      shopId
+    });
+  };
+
+  testApp = new TestApp({
+    functionsByType: {
+      getFulfillmentMethodsWithQuotes: [getFulfillmentMethodsWithQuotes]
+    }
+  });
+
   await testApp.start();
-  await testApp.insertPrimaryShop();
+  shopId = await testApp.insertPrimaryShop();
 
   catalogItem = Factory.Catalog.makeOne({
     isDeleted: false,
@@ -60,11 +87,21 @@ test("user who placed an order can move an order item", async () => {
   });
 
   const group1 = Factory.OrderFulfillmentGroup.makeOne({
-    items: group1Items
+    items: group1Items,
+    shipmentMethod: {
+      ...mockShipmentMethod,
+      currencyCode: "USD"
+    },
+    shopId
   });
 
   const group2 = Factory.OrderFulfillmentGroup.makeOne({
-    items: group2Items
+    items: group2Items,
+    shipmentMethod: {
+      ...mockShipmentMethod,
+      currencyCode: "USD"
+    },
+    shopId
   });
 
   const order = Factory.Order.makeOne({

@@ -1,9 +1,17 @@
 import moveOrderItems from "./moveOrderItems";
 import Factory from "/imports/test-utils/helpers/factory";
 import mockContext from "/imports/test-utils/helpers/mockContext";
+import {
+  restore as restore$updateGroupTotals,
+  rewire as rewire$updateGroupTotals
+} from "../util/updateGroupTotals";
 
 beforeEach(() => {
   jest.resetAllMocks();
+});
+
+afterEach(() => {
+  restore$updateGroupTotals();
 });
 
 test("throws if orderId isn't supplied", async () => {
@@ -513,6 +521,9 @@ test("skips permission check if context.isInternalCall", async () => {
 
   mockContext.isInternalCall = true;
 
+  const mockUpdateGroupTotals = jest.fn().mockName("updateGroupTotals").mockReturnValue(Promise.resolve({ groupSurcharges: [] }));
+  rewire$updateGroupTotals(mockUpdateGroupTotals);
+
   await moveOrderItems(mockContext, {
     fromFulfillmentGroupId: "group1",
     itemIds: ["item1"],
@@ -528,6 +539,7 @@ test("skips permission check if context.isInternalCall", async () => {
 test("moves items", async () => {
   const group1Items = Factory.OrderItem.makeMany(3, {
     _id: (index) => `item_1_${index}`,
+    quantity: 1,
     workflow: {
       status: "new",
       workflow: ["new"]
@@ -536,6 +548,7 @@ test("moves items", async () => {
 
   const group2Items = Factory.OrderItem.makeMany(2, {
     _id: (index) => `item_2_${index}`,
+    quantity: 1,
     workflow: {
       status: "new",
       workflow: ["new"]
@@ -544,18 +557,21 @@ test("moves items", async () => {
 
   const group1 = Factory.OrderFulfillmentGroup.makeOne({
     _id: "group1",
-    items: group1Items
+    items: group1Items,
+    totalItemQuantity: group1Items.reduce((sum, item) => sum + item.quantity, 0)
   });
 
   const group2 = Factory.OrderFulfillmentGroup.makeOne({
     _id: "group2",
-    items: group2Items
+    items: group2Items,
+    totalItemQuantity: group2Items.reduce((sum, item) => sum + item.quantity, 0)
   });
 
   mockContext.collections.Orders.findOne.mockReturnValueOnce(Promise.resolve({
     _id: "order1",
     shipping: [group1, group2],
     shopId: "SHOP_ID",
+    totalItemQuantity: [group1, group2].reduce((sum, group) => sum + group.totalItemQuantity, 0),
     workflow: {
       status: "new",
       workflow: ["new"]
@@ -569,12 +585,17 @@ test("moves items", async () => {
     value: {}
   }));
 
+  const mockUpdateGroupTotals = jest.fn().mockName("updateGroupTotals").mockReturnValue(Promise.resolve({ groupSurcharges: [] }));
+  rewire$updateGroupTotals(mockUpdateGroupTotals);
+
   await moveOrderItems(mockContext, {
     fromFulfillmentGroupId: "group1",
     itemIds: ["item_1_0", "item_1_1"],
     orderId: "order1",
     toFulfillmentGroupId: "group2"
   });
+
+  const expectedGroup2Items = [...group2.items, group1.items[0], group1.items[1]];
 
   expect(mockContext.collections.Orders.findOneAndUpdate).toHaveBeenCalledWith(
     { _id: "order1" },
@@ -583,11 +604,15 @@ test("moves items", async () => {
         shipping: [
           {
             ...group1,
-            items: [group1.items[2]]
+            items: [group1.items[2]],
+            itemIds: [group1.items[2]._id],
+            totalItemQuantity: 1
           },
           {
             ...group2,
-            items: [...group2.items, group1.items[0], group1.items[1]]
+            items: expectedGroup2Items,
+            itemIds: expectedGroup2Items.map((item) => item._id),
+            totalItemQuantity: 4
           }
         ],
         updatedAt: jasmine.any(Date)

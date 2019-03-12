@@ -1,6 +1,8 @@
 import SimpleSchema from "simpl-schema";
 import ReactionError from "@reactioncommerce/reaction-error";
 import { Order as OrderSchema } from "/imports/collections/schemas";
+import updateGroupStatusFromItemStatus from "../util/updateGroupStatusFromItemStatus";
+import updateGroupTotals from "../util/updateGroupTotals";
 
 // These should eventually be configurable in settings
 const itemStatusesThatOrdererCanMove = ["new"];
@@ -88,26 +90,55 @@ export default async function moveOrderItems(context, input) {
     throw new ReactionError("not-found", "Some order items not found");
   }
 
+  const { billingAddress, cartId, currencyCode } = order;
+
   // Find and move the items
-  const updatedGroups = order.shipping.map((group) => {
+  const orderSurcharges = [];
+  const updatedGroups = await Promise.all(order.shipping.map(async (group) => {
+    if (group._id !== fromFulfillmentGroupId && group._id !== toFulfillmentGroupId) return group;
+
+    let updatedItems;
     if (group._id === fromFulfillmentGroupId) {
-      // Return group items with the moved items removed
-      return {
-        ...group,
-        items: group.items.filter((item) => !itemIds.includes(item._id))
-      };
+      // Remove the moved items
+      updatedItems = group.items.filter((item) => !itemIds.includes(item._id));
+    } else {
+      // Add the moved items
+      updatedItems = [...group.items, ...movedItems];
     }
 
-    if (group._id === toFulfillmentGroupId) {
-      // Return group items with the moved items added
-      return {
-        ...group,
-        items: [...group.items, ...movedItems]
-      };
+    if (updatedItems.length === 0) {
+      throw new ReactionError("invalid-param", "move would result in group having no items");
     }
 
-    return group;
-  });
+    // Create an updated group
+    const updatedGroup = {
+      ...group,
+      // There is a convenience itemIds prop, so update that, too
+      itemIds: updatedItems.map((item) => item._id),
+      items: updatedItems,
+      totalItemQuantity: updatedItems.reduce((sum, item) => sum + item.quantity, 0)
+    };
+
+    // Update group shipping, tax, totals, etc.
+    const { groupSurcharges } = await updateGroupTotals(context, {
+      billingAddress,
+      cartId,
+      currencyCode,
+      discountTotal: updatedGroup.invoice.discounts,
+      group: updatedGroup,
+      orderId,
+      selectedFulfillmentMethodId: updatedGroup.shipmentMethod._id
+    });
+
+    // Push all group surcharges to overall order surcharge array.
+    // Currently, we do not save surcharges per group
+    orderSurcharges.push(...groupSurcharges);
+
+    // Ensure proper group status
+    updateGroupStatusFromItemStatus(updatedGroup);
+
+    return updatedGroup;
+  }));
 
   // We're now ready to actually update the database and emit events
   const modifier = {
