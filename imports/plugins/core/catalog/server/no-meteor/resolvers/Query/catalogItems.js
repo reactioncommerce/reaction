@@ -23,10 +23,10 @@ export default async function catalogItems(_, args, context) {
 
   if (connectionArgs.sortBy === "featured") {
     if (!tagIds || tagIds.length === 0) {
-      throw new ReactionError("A tag ID is required.");
+      throw new ReactionError("not-found", "A tag ID is required.");
     }
     if (tagIds.length > 1) {
-      throw new ReactionError("Multiple tags cannot be sorted by featured.");
+      throw new ReactionError("invalid-parameter", "Multiple tags cannot be sorted by featured. Only the first tag will be returned.");
     }
     const tagId = tagIds[0];
     const aggregationParams = await context.queries.catalogItemsAggregate(context, {
