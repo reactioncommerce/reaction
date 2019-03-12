@@ -22,9 +22,10 @@ export default async function catalogItemsAggregate(context, { shopIds, tagId } 
   // Match all products that belong to a single tag
   const match = {
     $match: {
-      "product.tagIds": {
-        $in: [tagId]
-      }
+      "shopId": { $in: shopIds },
+      "product.tagIds": tagId,
+      "product.isDeleted": { $ne: true },
+      "product.isVisible": true
     }
   };
 
