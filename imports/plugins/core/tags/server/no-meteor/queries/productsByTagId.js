@@ -32,9 +32,8 @@ export default async function productsByTagId(context, params) {
   // Match all products that belong to a single tag
   const match = {
     $match: {
-      "product.tagIds": {
-        $in: [tagId]
-      }
+      shopId,
+      hashtags: { $in: [tagId] }
     }
   };
 
