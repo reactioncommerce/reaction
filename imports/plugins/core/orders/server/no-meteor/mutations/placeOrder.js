@@ -215,6 +215,7 @@ async function buildOrderItem(inputItem, currencyCode, context) {
     throw new ReactionError("invalid", `Provided price for the "${chosenVariant.title}" item does not match current published price`);
   }
 
+  console.log("chosenVariant", chosenVariant);
   if (!chosenVariant.canBackorder && (quantity > chosenVariant.inventoryAvailableToSell)) {
     throw new ReactionError("invalid-order-quantity", `Quantity ordered is more than available inventory for  "${chosenVariant.title}"`);
   }
@@ -558,13 +559,13 @@ export default async function placeOrder(context, input) {
   };
 
   let referenceId;
-  const createReferenceIdFunctions = getFunctionsOfType("createReferenceId");
+  const createReferenceIdFunctions = getFunctionsOfType("createOrderReferenceId");
   if (!createReferenceIdFunctions || createReferenceIdFunctions.length === 0) {
     referenceId = Random.id();
   } else {
     referenceId = createReferenceIdFunctions[0]();
     if (createReferenceIdFunctions.length > 1) {
-      Logger.warn("More than one createReferenceId function defined. Using first one defined");
+      Logger.warn("More than one createOrderReferenceId function defined. Using first one defined");
     }
   }
 
