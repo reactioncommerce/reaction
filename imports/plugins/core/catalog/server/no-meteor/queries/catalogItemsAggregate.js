@@ -36,7 +36,6 @@ export default async function catalogItemsAggregate(context, { shopIds, tagId } 
     throw new ReactionError("not-found", "Tag not found");
   }
 
-
   // If there are no featuredProductIds, return match
   if (!tag.featuredProductIds) {
     // Sort by createdAt instead
@@ -55,10 +54,10 @@ export default async function catalogItemsAggregate(context, { shopIds, tagId } 
   // Array of tag's featured product Ids in order
   const order = tag.featuredProductIds;
 
-  // Add a new field "order" to each product with their order in the array
+  // Add a new field "position" to each product with each product's order in the featured list array
   const addFields = {
     $addFields: {
-      __order: {
+      __position: {
         $indexOfArray: [order, "$product._id"]
       }
     }
@@ -68,13 +67,13 @@ export default async function catalogItemsAggregate(context, { shopIds, tagId } 
   const projection = {
     $project: {
       _id: 1,
-      __order: 1,
+      __position: 1,
       product: 1,
       featuredPosition: {
         $cond: {
-          if: { $lt: ["$__order", 0] },
-          then: { $add: [{ $abs: "$__order" }, order.length] },
-          else: "$__order"
+          if: { $lt: ["$__position", 0] },
+          then: { $add: [{ $abs: "$__position" }, order.length] },
+          else: "$__position"
         }
       }
     }
