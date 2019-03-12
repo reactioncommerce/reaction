@@ -57,16 +57,15 @@ const wrapComponent = (Comp) => (
   }
 );
 
+/**
+ *
+ * @param {*} props
+ * @param {*} onData
+ */
 function composer(props, onData) {
-  const productHandle = Reaction.Router.getParam("handle");
-
-  if (!productHandle) {
-    Reaction.clearActionView();
-  }
-
-  if (ReactionProduct.selectedTopVariant()) {
+  if (props.variant) {
     const variant = Products.findOne({
-      _id: ReactionProduct.selectedTopVariant()._id
+      _id: props.variant._id
     });
 
     const childVariants = ReactionProduct.getVariants(variant._id);
