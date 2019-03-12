@@ -22,7 +22,7 @@ export default async function catalogItems(_, args, context) {
   const tagIds = opaqueTagIds && opaqueTagIds.map(decodeTagOpaqueId);
 
   if (connectionArgs.sortBy === "featured") {
-    if (tagIds.length === 0) {
+    if (!tagIds || tagIds.length === 0) {
       throw new ReactionError("A tag ID is required.");
     }
     const tagId = tagIds[0];
