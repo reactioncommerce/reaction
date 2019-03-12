@@ -25,6 +25,9 @@ export default async function catalogItems(_, args, context) {
     if (!tagIds || tagIds.length === 0) {
       throw new ReactionError("A tag ID is required.");
     }
+    if (tagIds.length > 1) {
+      throw new ReactionError("Multiple tags cannot be sorted by featured.");
+    }
     const tagId = tagIds[0];
     const aggregationParams = await context.queries.catalogItemsAggregate(context, {
       shopIds,
