@@ -46,7 +46,6 @@ test("get all products with a certain tag", async () => {
   try {
     result = await query({ shopId: opaqueShopId, tagId: encodeTagOpaqueId(mockTagWithFeatured._id) });
   } catch (error) {
-    console.log(JSON.stringify(error, null, " "));
     expect(error).toBeUndefined();
     return;
   }
