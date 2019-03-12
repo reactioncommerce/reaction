@@ -331,7 +331,7 @@ jobs:
           docker_layer_caching: true
       - run:
           name: Dockerfile Lint
-          command: | 
+          command: |
             hadolint Dockerfile
 
   snyk-security:
@@ -374,11 +374,22 @@ jobs:
               fi
             fi
 
+  validate-secrets:
+    docker:
+      - image: "stedolan/jq"
+        entrypoint: "/bin/bash"
+    steps:
+      - checkout
+      - run:
+          command: "./bin/validate-secrets"
+
 workflows:
   version: 2
   build_and_test:
     jobs:
-      - build
+      - build:
+          requires:
+            - validate-secrets
       - dockerfile-lint
       - test-app:
           requires:
@@ -451,3 +462,4 @@ workflows:
           filters:
             branches:
               only: /^develop-test$/
+      - validate-secrets
