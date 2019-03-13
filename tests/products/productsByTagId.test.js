@@ -1,5 +1,5 @@
 import { encodeTagOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/tag";
-import { tagProductsQuery } from "/imports/plugins/core/tags/lib/queries";
+import ProductsByTagIdQuery from "./ProductsByTagQuery.graphql";
 import TestApp from "../TestApp";
 import Factory from "/imports/test-utils/helpers/factory";
 
@@ -20,6 +20,22 @@ const mockProductsWithTagAndFeaturedProducts = Factory.Product.makeMany(77, {
   shopId: internalShopId
 });
 
+const productsQuery = `query getProductsByTagId($shopId: ID!, $after: ConnectionCursor, $before: ConnectionCursor, $first: ConnectionLimitInt, $last: ConnectionLimitInt) {
+  productsByTagId(shopId: $shopId, after: $after, before: $before, first: $first, last: $last) {
+    totalCount
+    pageInfo {
+      hasNextPage
+      hasPreviousPage
+      startCursor
+      endCursor
+    }
+    nodes {
+      _id
+      position
+    }
+  }
+}`;
+
 jest.setTimeout(300000);
 
 let testApp;
@@ -28,7 +44,7 @@ let query;
 beforeAll(async () => {
   testApp = new TestApp();
   await testApp.start();
-  query = testApp.query(tagProductsQuery);
+  query = testApp.query(productsQuery);
   await testApp.insertPrimaryShop({ _id: internalShopId, name: shopName });
   await testApp.collections.Tags.insertOne(mockTagWithFeatured);
   await Promise.all(mockProductsWithTagAndFeaturedProducts.map((mockProduct) => testApp.collections.Products.insertOne(mockProduct)));
