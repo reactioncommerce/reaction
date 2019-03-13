@@ -39,7 +39,7 @@ class TagProductTable extends Component {
     }
 
     return (
-      <Query query={tagProductsQuery} variables={{ tagId, shopId, first: 10 }} fetchPolicy="network-only">
+      <Query query={tagProductsQuery} variables={{ tagId, shopId, first: 20 }} fetchPolicy="network-only">
         {({ data, fetchMore }) => {
           const productsByTagId = data && data.productsByTagId;
           let products;
@@ -51,7 +51,7 @@ class TagProductTable extends Component {
             fetchMore,
             data,
             queryName: "productsByTagId",
-            limit: 10
+            limit: 20
           });
 
           const { hasNextPage, hasPreviousPage, loadNextPage, loadPreviousPage } = pageInfo;
