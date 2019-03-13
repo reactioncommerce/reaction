@@ -1,0 +1,32 @@
+mutation ($fulfillmentGroup: OrderFulfillmentGroupExistingOrderInput!, $moveItemIds: [ID], $orderId: ID!) {
+  addOrderFulfillmentGroup(input: {
+    fulfillmentGroup: $fulfillmentGroup,
+    moveItemIds: $moveItemIds,
+    orderId: $orderId
+  }) {
+    newFulfillmentGroupId
+    order {
+      fulfillmentGroups {
+        items {
+          nodes {
+            price {
+              amount
+            }
+            productConfiguration {
+              productId
+              productVariantId
+            }
+            quantity
+            status
+          }
+        }
+        shop {
+          _id
+        }
+        status
+        totalItemQuantity
+        type
+      }
+    }
+  }
+}

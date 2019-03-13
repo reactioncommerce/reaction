@@ -16,7 +16,9 @@ import schemas from "../imports/node-app/devserver/schemas";
 import resolvers from "../imports/node-app/devserver/resolvers";
 
 class TestApp {
-  constructor(options = { extraSchemas: [] }) {
+  constructor(options = {}) {
+    const { extraSchemas = [], functionsByType = {} } = options;
+
     this.collections = {};
     this.context = {
       appEvents,
@@ -28,7 +30,7 @@ class TestApp {
             funcs = [coreMediaXform];
             break;
           default:
-            funcs = [];
+            funcs = functionsByType[type] || [];
         }
         return funcs;
       },
@@ -45,7 +47,7 @@ class TestApp {
         };
       },
       context: this.context,
-      schemas: [...schemas, ...options.extraSchemas],
+      schemas: [...schemas, ...extraSchemas],
       resolvers
       // Uncomment this if you need to debug a test. Otherwise we keep debug mode off to avoid extra
       // error logging in the test output.
