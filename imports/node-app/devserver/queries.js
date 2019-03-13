@@ -9,6 +9,7 @@ import navigation from "/imports/plugins/core/navigation/server/no-meteor/querie
 import shipping from "/imports/plugins/core/shipping/server/no-meteor/queries";
 import orders from "/imports/plugins/core/orders/server/no-meteor/queries";
 import taxes from "/imports/plugins/core/taxes/server/no-meteor/queries";
+import tags from "/imports/plugins/core/tags/server/no-meteor/queries";
 // INCLUDED
 import shippingRates from "/imports/plugins/included/shipping-rates/server/no-meteor/queries";
 
@@ -23,5 +24,6 @@ export default merge(
   shipping,
   orders,
   taxes,
+  tags,
   shippingRates
 );
