@@ -47,8 +47,7 @@ export const Invoice = new SimpleSchema({
   },
   total: {
     type: Number,
-    min: 0,
-    exclusiveMin: true
+    min: 0
   }
 });
 
