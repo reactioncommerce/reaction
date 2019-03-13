@@ -71,7 +71,7 @@ app:
     -   key: SCHEMA_REGISTRY_URL
         value: http://kafka-cluster-cp-schema-registry.kafka:8081
     -   key: PRODUCT_PUBLISHER_AUTO_PUBLISH
-        value: true
+        value: false
     -   key: PRICING_CONSUMER_ENABLED
         value: false
         ## Configure resource requests and limits
