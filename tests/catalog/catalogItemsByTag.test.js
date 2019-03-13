@@ -86,8 +86,6 @@ test("get items for a tag sorted by featured", async () => {
   try {
     result = await query({ shopId: opaqueShopId, tagIds: [encodeTagOpaqueId(mockTagWithFeatured._id)], sortBy: "featured" });
   } catch (error) {
-    console.log(error);
-    console.log(JSON.stringify(error, null, "  "));
     expect(error).toBeUndefined();
     return;
   }
