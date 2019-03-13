@@ -4,7 +4,6 @@ import { Components } from "@reactioncommerce/reaction-components";
 import Grid from "@material-ui/core/Grid";
 import withProduct from "../hocs/withProduct";
 import ProductList from "./ProductList";
-import ProductAdminForm from "./productAdmin";
 import ProductHeader from "./ProductHeader";
 import VariantTable from "./VariantTable";
 
@@ -43,7 +42,7 @@ function ProductDetail(props) {
           />
         </Grid>
         <Grid item sm={8}>
-          <ProductAdminForm {...props} />
+          <Components.ProductAdminForm {...props} />
           <VariantTable
             title="Variants"
             items={props.variants}

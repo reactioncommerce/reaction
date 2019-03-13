@@ -2,7 +2,7 @@ import "./templates/productAdmin.html";
 import "./templates/productAdmin.js";
 
 export { default as ProductAdmin } from "./containers/productAdmin";
-
+export { ProductAdmin as ProductAdminForm } from "./components";
 
 import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -13,6 +13,7 @@ import ProductTable from "./components/ProductTable";
 import ProductDetail from "./components/ProductDetail";
 import VariantDetail from "./components/VariantDetail";
 import ContentViewExtraWideLayout from "/imports/client/ui/layouts/ContentViewExtraWideLayout";
+import "./components"; // To register the components that need to be
 
 registerOperatorRoute({
   isNavigationLink: false,
