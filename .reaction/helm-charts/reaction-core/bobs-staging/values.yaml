@@ -73,7 +73,7 @@ app:
     -   key: PRODUCT_PUBLISHER_AUTO_PUBLISH
         value: false
     -   key: PRICING_CONSUMER_ENABLED
-        value: false
+        value: true
         ## Configure resource requests and limits
         ## ref: http://kubernetes.io/docs/user-guide/compute-resources/
 resources:
