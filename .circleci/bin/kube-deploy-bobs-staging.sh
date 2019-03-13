@@ -39,6 +39,6 @@ aws s3 cp s3://${KUBECTL_CONFIG_STAGING_S3_BUCKET}/${KUBECTL_CONFIG_STAGING_FILE
 # set kubectl context to circleci-context
 /usr/local/bin/kubectl config use-context circleci-context
 
-echo Running helm upgrade --set imageTag=$CIRCLE_SHA1 reaction-core .reaction/helm-charts/reaction-core -f /dev/stdin
+echo Running helm upgrade
 npx --quiet @reactioncommerce/merge-sops-secrets@1.1.1 ./.reaction/helm-charts/reaction-core/bobs-staging/values.yaml |
-  helm upgrade --set imageTag=$CIRCLE_SHA1 reaction-core .reaction/helm-charts/reaction-core/Chart.yaml -f /dev/stdin
+  helm upgrade --set imageTag=$CIRCLE_SHA1 reaction-core .reaction/helm-charts/reaction-core -f /dev/stdin
