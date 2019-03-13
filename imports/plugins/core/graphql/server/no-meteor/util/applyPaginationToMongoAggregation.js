@@ -61,7 +61,7 @@ export default async function applyPaginationToMongoAggregation(aggregationParam
         hasPreviousPage = totalCount > (indexOfCursor + last);
         hasNextPage = totalCount > indexOfCursor;
         const startIndex = ((indexOfCursor - 1 - last) > 0) ? (indexOfCursor - 1 - last) : 0;
-        paginatedCatalogItems = unpaginatedCatalogItems.slice(startIndex, indexOfCursor - 1);
+        paginatedCatalogItems = unpaginatedCatalogItems.slice(startIndex, indexOfCursor);
       }
     } else {
       const startIndex = 0;
