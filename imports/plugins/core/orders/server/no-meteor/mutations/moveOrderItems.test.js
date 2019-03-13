@@ -1,10 +1,10 @@
-import moveOrderItems from "./moveOrderItems";
 import Factory from "/imports/test-utils/helpers/factory";
 import mockContext from "/imports/test-utils/helpers/mockContext";
 import {
   restore as restore$updateGroupTotals,
   rewire as rewire$updateGroupTotals
 } from "../util/updateGroupTotals";
+import moveOrderItems from "./moveOrderItems";
 
 beforeEach(() => {
   jest.resetAllMocks();
