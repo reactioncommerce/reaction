@@ -33,11 +33,11 @@ export default async function applyPaginationToMongoAggregation(aggregationParam
   };
 
   const unpaginatedResults = await collection.aggregate([...pipeline, facet]).toArray();
-
   let hasPreviousPage;
   let hasNextPage;
   let paginatedCatalogItems;
   let totalCount;
+  const limit = first || last || DEFAULT_LIMIT;
 
   if (unpaginatedResults[0].nodes.length === 0) {
     totalCount = unpaginatedResults[0].nodes.length;
@@ -50,22 +50,17 @@ export default async function applyPaginationToMongoAggregation(aggregationParam
     totalCount = unpaginatedResults[0].pageInfo[0].totalCount;
     if (after) {
       const indexOfCursor = unpaginatedCatalogItems.findIndex((catalogItem) => catalogItem._id === after);
-      if (first) {
-        hasPreviousPage = indexOfCursor > 0;
-        hasNextPage = ((totalCount - (first + indexOfCursor - 1)) > 0);
-        paginatedCatalogItems = unpaginatedCatalogItems.slice(indexOfCursor + 1, indexOfCursor + 1 + first);
-      }
+      hasPreviousPage = indexOfCursor > 0;
+      hasNextPage = ((totalCount - (limit + indexOfCursor - 1)) > 0);
+      paginatedCatalogItems = unpaginatedCatalogItems.slice(indexOfCursor + 1, indexOfCursor + 1 + limit);
     } else if (before) {
       const indexOfCursor = unpaginatedCatalogItems.findIndex((catalogItem) => catalogItem._id === before);
-      if (last) {
-        hasPreviousPage = totalCount > (indexOfCursor + last);
-        hasNextPage = totalCount > indexOfCursor;
-        const startIndex = ((indexOfCursor - 1 - last) > 0) ? (indexOfCursor - 1 - last) : 0;
-        paginatedCatalogItems = unpaginatedCatalogItems.slice(startIndex, indexOfCursor);
-      }
+      hasPreviousPage = totalCount > (indexOfCursor + limit);
+      hasNextPage = totalCount > indexOfCursor;
+      const startIndex = ((indexOfCursor - 1 - limit) > 0) ? (indexOfCursor - 1 - limit) : 0;
+      paginatedCatalogItems = unpaginatedCatalogItems.slice(startIndex, indexOfCursor);
     } else {
       const startIndex = 0;
-      const limit = first || last || DEFAULT_LIMIT;
       hasPreviousPage = false;
       hasNextPage = (totalCount - limit) > 0;
       paginatedCatalogItems = unpaginatedCatalogItems.slice(startIndex, startIndex + limit);

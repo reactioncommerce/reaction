@@ -27,7 +27,7 @@ export default async function getPaginatedAggregateResponse(aggregationParams, a
     hasNextPage
   };
 
-  if (nodes.length) {
+  if (nodes && nodes.length) {
     pageInfo.startCursor = nodes[0]._id;
     pageInfo.endCursor = nodes[nodes.length - 1]._id;
   }
