@@ -9,8 +9,8 @@ import updateGroupTotals from "./updateGroupTotals";
  *   items array before calculating shipping, tax, surcharges, and totals.
  * @param {Object} [billingAddress] The primary billing address for the order, if known
  * @param {String|null} [cartId] ID of the cart from which the order is being placed, if applicable
- * @param {Object} currencyCode Currency code for all money values
- * @param {String} discountTotal Calculated discount total
+ * @param {String} currencyCode Currency code for all money values
+ * @param {Number} discountTotal Calculated discount total
  * @param {Object} inputGroup Order fulfillment group input. See schema.
  * @param {String} orderId ID of existing or new order to which this group will belong
  * @returns {Promise<Object>} The fulfillment group
