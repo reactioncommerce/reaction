@@ -8,6 +8,7 @@
  * @param {Number} groupSurchargeTotal Total surcharge amount for group
  * @param {Number} taxableAmount Total taxable amount for group
  * @param {Number} taxTotal Total tax for group
+ * @param {Object} taxData Custom tax data coming from tax provider
  * @returns {undefined}
  */
 export default function addInvoiceToGroup({
@@ -15,8 +16,10 @@ export default function addInvoiceToGroup({
   group,
   groupDiscountTotal,
   groupSurchargeTotal,
+  itemTaxes,
   taxableAmount,
-  taxTotal
+  taxTotal,
+  taxData
 }) {
   // Items
   const itemTotal = group.items.reduce((sum, item) => (sum + item.subtotal), 0);
@@ -34,6 +37,23 @@ export default function addInvoiceToGroup({
   // `buildOrderInputFromCart.js` in the client code.
   const total = Math.max(0, itemTotal + fulfillmentTotal + taxTotal + groupSurchargeTotal - groupDiscountTotal);
 
+  group.items = group.items.map((item) => {
+    const itemTax = itemTaxes.find((entry) => entry.itemId === item._id) || {};
+
+    const updatedItem = {
+      ...item,
+      tax: itemTax.tax,
+      taxableAmount: itemTax.taxableAmount,
+      taxes: itemTax.taxes
+    };
+
+    if (itemTax.customFields) {
+      updatedItem.customTaxFields = itemTax.customFields;
+    }
+
+    return updatedItem;
+  });
+
   group.invoice = {
     currencyCode,
     discounts: groupDiscountTotal,
@@ -43,6 +63,7 @@ export default function addInvoiceToGroup({
     surcharges: groupSurchargeTotal,
     taxableAmount,
     taxes: taxTotal,
+    taxData,
     total
   };
 }

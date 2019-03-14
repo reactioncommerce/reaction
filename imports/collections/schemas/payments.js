@@ -45,6 +45,11 @@ export const Invoice = new SimpleSchema({
     type: Number,
     min: 0
   },
+  taxData: {
+    type: Object,
+    blackbox: true,
+    optional: true
+  },
   total: {
     type: Number,
     min: 0

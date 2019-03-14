@@ -16,10 +16,6 @@ Cart.extend({
   }
 });
 
-OrderFulfillmentGroup.extend({
-  taxSummary: TaxSummary
-});
-
 CartItem.extend({
   /**
    * Custom key/value data that you need to store.
@@ -66,9 +62,18 @@ OrderItem.extend({
     blackbox: true,
     optional: true
   },
-  "isTaxable": Boolean,
-  "tax": Number,
-  "taxableAmount": Number,
+  "isTaxable": {
+    type: Boolean,
+    optional: true
+  },
+  "tax": {
+    type: Number,
+    optional: true
+  },
+  "taxableAmount": {
+    type: Number,
+    optional: true
+  },
   "taxCode": {
     type: String,
     optional: true

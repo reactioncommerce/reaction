@@ -54,7 +54,7 @@ export default async function updateGroupTotals(context, {
   });
 
   // Calculate and set taxes. Mutates group object in addition to returning the totals.
-  const { taxTotal, taxableAmount } = await addTaxesToGroup(context, {
+  const { taxTotal, taxableAmount, taxData, itemTaxes } = await addTaxesToGroup(context, {
     billingAddress,
     cartId,
     currencyCode,
@@ -69,8 +69,10 @@ export default async function updateGroupTotals(context, {
     group,
     groupDiscountTotal: discountTotal,
     groupSurchargeTotal,
+    itemTaxes,
     taxableAmount,
-    taxTotal
+    taxTotal,
+    taxData
   });
 
   if (expectedGroupTotal) {
