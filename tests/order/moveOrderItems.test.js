@@ -69,6 +69,10 @@ test("user who placed an order can move an order item", async () => {
   await testApp.setLoggedInUser({ _id: accountInternalId });
 
   const group1Items = Factory.OrderItem.makeMany(3, {
+    price: {
+      amount: 4.99,
+      currencyCode: "USD"
+    },
     productId: catalogItem.product.productId,
     variantId: catalogItem.product.variants[0].variantId,
     workflow: {
@@ -78,6 +82,10 @@ test("user who placed an order can move an order item", async () => {
   });
 
   const group2Items = Factory.OrderItem.makeMany(2, {
+    price: {
+      amount: 4.99,
+      currencyCode: "USD"
+    },
     productId: catalogItem.product.productId,
     variantId: catalogItem.product.variants[0].variantId,
     workflow: {
@@ -87,6 +95,11 @@ test("user who placed an order can move an order item", async () => {
   });
 
   const group1 = Factory.OrderFulfillmentGroup.makeOne({
+    invoice: Factory.Invoice.makeOne({
+      currencyCode: "USD",
+      // Need to ensure 0 discount to avoid creating negative totals
+      discounts: 0
+    }),
     items: group1Items,
     shipmentMethod: {
       ...mockShipmentMethod,
@@ -96,6 +109,11 @@ test("user who placed an order can move an order item", async () => {
   });
 
   const group2 = Factory.OrderFulfillmentGroup.makeOne({
+    invoice: Factory.Invoice.makeOne({
+      currencyCode: "USD",
+      // Need to ensure 0 discount to avoid creating negative totals
+      discounts: 0
+    }),
     items: group2Items,
     shipmentMethod: {
       ...mockShipmentMethod,
