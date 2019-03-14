@@ -2,7 +2,6 @@ import {
   Cart,
   CartItem,
   CatalogVariantSchema,
-  OrderFulfillmentGroup,
   OrderItem,
   ProductVariant,
   VariantBaseSchema
