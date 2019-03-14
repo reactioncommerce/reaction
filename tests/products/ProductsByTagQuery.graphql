@@ -1,5 +1,6 @@
 query productsByTagIdQuery($shopId: ID!, $first: ConnectionLimitInt, $tagId: ID!, $last:  ConnectionLimitInt, $before: ConnectionCursor, $after: ConnectionCursor) {
   productsByTagId(shopId: $shopId, tagId: $tagId, first: $first, last: $last, before: $before, after: $after) {
+    totalCount
     pageInfo {
       endCursor
       startCursor
