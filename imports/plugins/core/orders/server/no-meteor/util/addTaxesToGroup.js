@@ -31,12 +31,12 @@ export default async function addTaxesToGroup(context, {
     discountTotal
   });
 
-  // A taxes plugin is expected to add a mutation named `setTaxesOnFulfillmentGroup`.
+  // A taxes plugin is expected to add a mutation named `setTaxesOnOrderFulfillmentGroup`.
   // If this isn't done, assume 0 tax.
-  if (typeof mutations.setTaxesOnFulfillmentGroup !== "function") {
+  if (typeof mutations.setTaxesOnOrderFulfillmentGroup !== "function") {
     return { taxTotal: 0, taxableAmount: 0 };
   }
 
   // This will mutate `group` to add whatever tax fields the `taxes` plugin has added to the schemas.
-  return mutations.setTaxesOnFulfillmentGroup(context, { group, commonOrder });
+  return mutations.setTaxesOnOrderFulfillmentGroup(context, { group, commonOrder });
 }
