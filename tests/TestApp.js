@@ -14,6 +14,7 @@ import mutations from "../imports/node-app/devserver/mutations";
 import queries from "../imports/node-app/devserver/queries";
 import schemas from "../imports/node-app/devserver/schemas";
 import resolvers from "../imports/node-app/devserver/resolvers";
+import "../imports/node-app/devserver/extendSchemas";
 
 class TestApp {
   constructor(options = {}) {
