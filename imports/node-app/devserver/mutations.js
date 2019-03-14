@@ -7,7 +7,6 @@ import navigation from "/imports/plugins/core/navigation/server/no-meteor/mutati
 import orders from "/imports/plugins/core/orders/server/no-meteor/mutations";
 import payments from "/imports/plugins/core/payments/server/no-meteor/mutations";
 import shipping from "/imports/plugins/core/shipping/server/no-meteor/mutations";
-import tags from "/imports/plugins/core/tags/server/no-meteor/mutations";
 import taxes from "/imports/plugins/core/taxes/server/no-meteor/mutations";
 // INCLUDED
 import shippingRates from "/imports/plugins/included/shipping-rates/server/no-meteor/mutations";
@@ -21,7 +20,6 @@ export default merge(
   orders,
   payments,
   shipping,
-  tags,
   taxes,
   shippingRates
 );
