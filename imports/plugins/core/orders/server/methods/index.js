@@ -12,7 +12,6 @@ import shipmentPacked from "./shipmentPacked";
 import shipmentPicked from "./shipmentPicked";
 import shipmentShipped from "./shipmentShipped";
 import updateHistory from "./updateHistory";
-import updateShipmentTracking from "./updateShipmentTracking";
 
 /**
  * @file Methods for Orders.
@@ -35,6 +34,5 @@ export default {
   "orders/shipmentPacked": shipmentPacked,
   "orders/shipmentPicked": shipmentPicked,
   "orders/shipmentShipped": shipmentShipped,
-  "orders/updateHistory": updateHistory,
-  "orders/updateShipmentTracking": updateShipmentTracking
+  "orders/updateHistory": updateHistory
 };

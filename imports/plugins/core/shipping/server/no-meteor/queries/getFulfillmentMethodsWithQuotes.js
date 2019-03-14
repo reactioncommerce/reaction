@@ -13,8 +13,10 @@ import extendCommonOrder from "../util/extendCommonOrder";
 export default async function getFulfillmentMethodsWithQuotes(commonOrder, context) {
   const rates = [];
   const retrialTargets = [];
+
   // must have items to calculate shipping
   if (!commonOrder.items || !commonOrder.items.length) {
+    Logger.debug("getFulfillmentMethodsWithQuotes called with CommonOrder with no items");
     return rates;
   }
 
@@ -34,15 +36,6 @@ export default async function getFulfillmentMethodsWithQuotes(commonOrder, conte
     }
   }
 
-  let newRates = rates.filter(({ requestStatus }) => requestStatus !== "error");
-  if (newRates.length === 0) {
-    newRates = [{
-      requestStatus: "error",
-      shippingProvider: "all",
-      message: "All requests for fulfillment methods failed."
-    }];
-  }
-
   Logger.debug("getFulfillmentMethodsWithQuotes returning rates", rates);
-  return newRates;
+  return rates;
 }

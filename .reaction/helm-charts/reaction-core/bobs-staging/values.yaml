@@ -70,6 +70,16 @@ app:
         value: reaction.pricing.prices-by-id-aggregates.avro-gen1
     -   key: SCHEMA_REGISTRY_URL
         value: http://kafka-cluster-cp-schema-registry.kafka:8081
+    -   key: JAEGER_ENDPOINT
+        value: https://jaeger-collector.bobs-test.io/api/traces
+    -   key: KAFKA_PARTITIONS_LOYALTY
+        value: 3
+    -   key: KAFKA_TOPIC_LOYALTY_PLUGIN_DB_UPDATES
+        value: bobs.etl.loyalty-db-updates.json-gen1
+    -   key: KAFKA_TOPIC_LOYALTY_PLUGIN_DB_UPDATES_STATUS
+        value: bobs.etl.loyalty-db-updates-status.json-gen1
+    -   key: STARTING_NEW_CUSTOMER_NUMBER
+        value: 1
     -   key: PRODUCT_PUBLISHER_AUTO_PUBLISH
         value: false
     -   key: PRICING_CONSUMER_ENABLED

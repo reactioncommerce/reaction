@@ -102,8 +102,6 @@ class App extends Component {
       if (currentRoute.route.path.startsWith("/operator")) {
         return this.renderOperatorApp();
       }
-
-      return this.renderAdminApp();
     }
 
     return (
