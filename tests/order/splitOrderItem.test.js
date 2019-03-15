@@ -10,8 +10,41 @@ let splitOrderItem;
 let catalogItem;
 let mockOrdersAccount;
 let shopId;
+
+const fulfillmentMethodId = "METHOD_ID";
+const mockShipmentMethod = {
+  _id: fulfillmentMethodId,
+  handling: 0,
+  label: "mockLabel",
+  name: "mockName",
+  rate: 3.99
+};
+
+const mockInvoice = Factory.Invoice.makeOne({
+  currencyCode: "USD",
+  // Need to ensure 0 discount to avoid creating negative totals
+  discounts: 0
+});
+delete mockInvoice._id; // bug in Factory pkg
+
 beforeAll(async () => {
-  testApp = new TestApp();
+  const getFulfillmentMethodsWithQuotes = (context, commonOrderExtended, [rates]) => {
+    rates.push({
+      carrier: "CARRIER",
+      handlingPrice: 0,
+      method: mockShipmentMethod,
+      rate: 3.99,
+      shippingPrice: 3.99,
+      shopId
+    });
+  };
+
+  testApp = new TestApp({
+    functionsByType: {
+      getFulfillmentMethodsWithQuotes: [getFulfillmentMethodsWithQuotes]
+    }
+  });
+
   await testApp.start();
   shopId = await testApp.insertPrimaryShop();
 
@@ -58,10 +91,19 @@ test("user with orders permission can split an order item", async () => {
     accountId: "123",
     shipping: [
       Factory.OrderFulfillmentGroup.makeOne({
-        items: [orderItem]
+        invoice: mockInvoice,
+        items: [orderItem],
+        itemIds: [orderItem._id],
+        shipmentMethod: {
+          ...mockShipmentMethod,
+          currencyCode: "USD"
+        },
+        shopId,
+        totalItemQuantity: 3
       })
     ],
     shopId,
+    totalItemQuantity: 3,
     workflow: {
       status: "new",
       workflow: ["new"]

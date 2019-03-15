@@ -2,6 +2,8 @@ import SimpleSchema from "simpl-schema";
 import ReactionError from "@reactioncommerce/reaction-error";
 import Random from "@reactioncommerce/random";
 import { Order as OrderSchema } from "/imports/collections/schemas";
+import updateGroupStatusFromItemStatus from "../util/updateGroupStatusFromItemStatus";
+import updateGroupTotals from "../util/updateGroupTotals";
 
 /**
  * @name inputSchema
@@ -54,10 +56,13 @@ export default async function splitOrderItem(context, input) {
     throw new ReactionError("access-denied", "Access Denied");
   }
 
+  const { billingAddress, cartId, currencyCode } = order;
+
   // Find and split the item
   let foundItem = false;
   const newItemId = Random.id();
-  const updatedGroups = order.shipping.map((group) => {
+  const orderSurcharges = [];
+  const updatedGroups = await Promise.all(order.shipping.map(async (group) => {
     let itemToAdd;
     const updatedItems = group.items.map((item) => {
       if (item._id !== itemId) return item;
@@ -91,13 +96,35 @@ export default async function splitOrderItem(context, input) {
 
     updatedItems.push(itemToAdd);
 
-    return {
+    // Create an updated group
+    const updatedGroup = {
       ...group,
-      items: updatedItems,
       // There is a convenience itemIds prop, so update that, too
-      itemIds: [...group.itemIds, itemToAdd._id]
+      itemIds: updatedItems.map((item) => item._id),
+      items: updatedItems,
+      totalItemQuantity: updatedItems.reduce((sum, item) => sum + item.quantity, 0)
     };
-  });
+
+    // Update group shipping, tax, totals, etc.
+    const { groupSurcharges } = await updateGroupTotals(context, {
+      billingAddress,
+      cartId,
+      currencyCode,
+      discountTotal: updatedGroup.invoice.discounts,
+      group: updatedGroup,
+      orderId,
+      selectedFulfillmentMethodId: updatedGroup.shipmentMethod._id
+    });
+
+    // Push all group surcharges to overall order surcharge array.
+    // Currently, we do not save surcharges per group
+    orderSurcharges.push(...groupSurcharges);
+
+    // Ensure proper group status
+    updateGroupStatusFromItemStatus(updatedGroup);
+
+    return updatedGroup;
+  }));
 
   // If we did not find any matching item ID while looping, something is wrong
   if (!foundItem) throw new ReactionError("not-found", "Order item not found");
@@ -106,6 +133,8 @@ export default async function splitOrderItem(context, input) {
   const modifier = {
     $set: {
       shipping: updatedGroups,
+      surcharges: orderSurcharges,
+      totalItemQuantity: updatedGroups.reduce((sum, group) => sum + group.totalItemQuantity, 0),
       updatedAt: new Date()
     }
   };

@@ -1,9 +1,17 @@
-import splitOrderItem from "./splitOrderItem";
 import Factory from "/imports/test-utils/helpers/factory";
 import mockContext from "/imports/test-utils/helpers/mockContext";
+import {
+  restore as restore$updateGroupTotals,
+  rewire as rewire$updateGroupTotals
+} from "../util/updateGroupTotals";
+import splitOrderItem from "./splitOrderItem";
 
 beforeEach(() => {
   jest.resetAllMocks();
+});
+
+afterEach(() => {
+  restore$updateGroupTotals();
 });
 
 test("throws if orderId isn't supplied", async () => {
@@ -186,6 +194,9 @@ test("throws if the database update fails", async () => {
 
   mockContext.userHasPermission.mockReturnValueOnce(true);
 
+  const mockUpdateGroupTotals = jest.fn().mockName("updateGroupTotals").mockReturnValue(Promise.resolve({ groupSurcharges: [] }));
+  rewire$updateGroupTotals(mockUpdateGroupTotals);
+
   mockContext.collections.Orders.findOneAndUpdate.mockReturnValueOnce(Promise.resolve({
     modifiedCount: 0
   }));
@@ -234,6 +245,9 @@ test("skips permission check if context.isInternalCall", async () => {
     value: {}
   }));
 
+  const mockUpdateGroupTotals = jest.fn().mockName("updateGroupTotals").mockReturnValue(Promise.resolve({ groupSurcharges: [] }));
+  rewire$updateGroupTotals(mockUpdateGroupTotals);
+
   mockContext.isInternalCall = true;
 
   await splitOrderItem(mockContext, {
@@ -278,13 +292,15 @@ test("splits an item", async () => {
 
   const group = Factory.OrderFulfillmentGroup.makeOne({
     items: [item1, item2],
-    itemIds: [item1._id, item2._id]
+    itemIds: [item1._id, item2._id],
+    totalItemQuantity: 6
   });
 
   mockContext.collections.Orders.findOne.mockReturnValueOnce(Promise.resolve({
     _id: "ORDER_1",
     shipping: [group],
     shopId: "SHOP_ID",
+    totalItemQuantity: 6,
     workflow: {
       status: "new",
       workflow: ["new"]
@@ -292,6 +308,9 @@ test("splits an item", async () => {
   }));
 
   mockContext.userHasPermission.mockReturnValueOnce(true);
+
+  const mockUpdateGroupTotals = jest.fn().mockName("updateGroupTotals").mockReturnValue(Promise.resolve({ groupSurcharges: [] }));
+  rewire$updateGroupTotals(mockUpdateGroupTotals);
 
   mockContext.collections.Orders.findOneAndUpdate.mockReturnValueOnce(Promise.resolve({
     modifiedCount: 1,
@@ -325,10 +344,13 @@ test("splits an item", async () => {
                 subtotal: 15
               }
             ],
-            itemIds: [item1._id, item2._id, jasmine.any(String)]
+            itemIds: [item1._id, item2._id, jasmine.any(String)],
+            totalItemQuantity: 6
           }
         ],
-        updatedAt: jasmine.any(Date)
+        surcharges: [],
+        updatedAt: jasmine.any(Date),
+        totalItemQuantity: 6
       }
     },
     { returnOriginal: false }
