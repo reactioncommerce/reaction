@@ -52,4 +52,4 @@ private/plugins/*
 
 coverage/*
 
-.sops.yaml
+.reaction/pluginConfig.js
