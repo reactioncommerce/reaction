@@ -19,6 +19,10 @@ service:
     apiPort: 3000
 app:
     envVars:
+    -   key: REACTION_LOG_LEVEL
+        value: "debug"
+    -   key: REACTION_LOG_FORMAT
+        value: "json"
     -   key: ROOT_URL
         value: https://api-int.bobs-test.io
     -   key: REACTION_USER
