@@ -615,6 +615,8 @@ test("moves items", async () => {
             totalItemQuantity: 4
           }
         ],
+        surcharges: [],
+        totalItemQuantity: 5,
         updatedAt: jasmine.any(Date)
       }
     },

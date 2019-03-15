@@ -144,6 +144,8 @@ export default async function moveOrderItems(context, input) {
   const modifier = {
     $set: {
       shipping: updatedGroups,
+      surcharges: orderSurcharges,
+      totalItemQuantity: updatedGroups.reduce((sum, group) => sum + group.totalItemQuantity, 0),
       updatedAt: new Date()
     }
   };
