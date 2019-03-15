@@ -6,11 +6,18 @@ const mockContext = {
   },
   collections: {},
   getFunctionsOfType: jest.fn().mockName("getFunctionsOfType").mockReturnValue([]),
+  mutations: {},
+  queries: {},
   shopId: "FAKE_SHOP_ID",
   userHasPermission: jest.fn().mockName("userHasPermission"),
   userId: "FAKE_USER_ID"
 };
 
+/**
+ * @summary Returns a mock collection instance with the given name
+ * @param {String} collectionName The collection name
+ * @returns {Object} Mock collection instance
+ */
 export function mockCollection(collectionName) {
   return {
     insert() {
@@ -32,6 +39,7 @@ export function mockCollection(collectionName) {
       .mockReturnThis(),
     findOne: jest.fn().mockName(`${collectionName}.findOne`),
     findOneAndDelete: jest.fn().mockName(`${collectionName}.findOneAndDelete`),
+    findOneAndUpdate: jest.fn().mockName(`${collectionName}.findOneAndUpdate`),
     fetch: jest.fn().mockName(`${collectionName}.fetch`),
     insertOne: jest.fn().mockName(`${collectionName}.insertOne`),
     insertMany: jest.fn().mockName(`${collectionName}.insertMany`),

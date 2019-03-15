@@ -30,14 +30,14 @@ function getShipmentQuotesQueryStatus(rates) {
     };
   }
 
-  const firstRateItem = rates[0];
-  if (firstRateItem.requestStatus === "error") {
+  const errorResult = rates.find((option) => option.requestStatus === "error");
+  if (errorResult) {
     return {
       shipmentQuotes: [],
       shipmentQuotesQueryStatus: {
-        requestStatus: firstRateItem.requestStatus,
-        shippingProvider: firstRateItem.shippingProvider,
-        message: firstRateItem.message
+        requestStatus: errorResult.requestStatus,
+        shippingProvider: errorResult.shippingProvider,
+        message: errorResult.message
       }
     };
   }
