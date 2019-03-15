@@ -41,6 +41,11 @@ extend type Mutation {
   cancelOrderItem(input: CancelOrderItemInput!): CancelOrderItemPayload!
 
   """
+  Use this mutation to move one or more items between existing order fulfillment groups.
+  """
+  moveOrderItems(input: MoveOrderItemsInput!): MoveOrderItemsPayload!
+
+  """
   Use this mutation to place an order, providing information necessary to pay for it.
   The order will be placed only if authorization is successful for all submitted payments.
   """
@@ -502,6 +507,24 @@ input PlaceOrderInput {
   payments: [PaymentInput]
 }
 
+"Input for the moveOrderItems mutation"
+input MoveOrderItemsInput {
+  "The ID of the order fulfillment group from which all the items are to be moved."
+  fromFulfillmentGroupId: ID!
+
+  "An optional string identifying the mutation call, which will be returned in the response payload"
+  clientMutationId: String
+
+  "The list of item IDs to move. The full quantity must be moved."
+  itemIds: [ID]!
+
+  "ID of the order that has the items you want to move"
+  orderId: ID!
+
+  "The ID of the order fulfillment group to which all the items are to be moved."
+  toFulfillmentGroupId: ID!
+}
+
 "Input for the updateOrder mutation"
 input UpdateOrderInput {
   "An optional string identifying the mutation call, which will be returned in the response payload"
@@ -552,6 +575,15 @@ type AddOrderFulfillmentGroupPayload {
 
 "Response payload for the cancelOrderItem mutation"
 type CancelOrderItemPayload {
+  "The same string you sent with the mutation params, for matching mutation calls with their responses"
+  clientMutationId: String
+
+  "The updated order"
+  order: Order!
+}
+
+"Response payload for the moveOrderItems mutation"
+type MoveOrderItemsPayload {
   "The same string you sent with the mutation params, for matching mutation calls with their responses"
   clientMutationId: String
 
