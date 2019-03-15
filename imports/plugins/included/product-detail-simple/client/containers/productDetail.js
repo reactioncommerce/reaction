@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import _ from "lodash";
 import { StyleRoot } from "radium";
 import { compose } from "recompose";
+import { withRouter } from "react-router";
 import { Components, registerComponent, composeWithTracker } from "@reactioncommerce/reaction-components";
 import { $ } from "meteor/jquery";
 import { Meteor } from "meteor/meteor";
@@ -351,7 +352,7 @@ const wrapComponent = (Comp) =>
 function composer(props, onData) {
   const tagSub = Meteor.subscribe("Tags");
   const shopIdOrSlug = Reaction.Router.getParam("shopSlug");
-  const productId = Reaction.Router.getParam("handle");
+  const productId = props.match.params.handle;
   const variantId = ReactionProduct.selectedVariantId();
   const revisionType = Reaction.Router.getQueryParam("revision");
 
@@ -462,7 +463,7 @@ function composer(props, onData) {
   }
 }
 
-registerComponent("ProductDetail", ProductDetail, [composeWithTracker(composer), wrapComponent]);
+registerComponent("ProductDetail", ProductDetail, [withRouter, composeWithTracker(composer), wrapComponent]);
 
 // Decorate component and export
-export default compose(composeWithTracker(composer), wrapComponent)(ProductDetail);
+export default compose(withRouter, composeWithTracker(composer), wrapComponent)(ProductDetail);

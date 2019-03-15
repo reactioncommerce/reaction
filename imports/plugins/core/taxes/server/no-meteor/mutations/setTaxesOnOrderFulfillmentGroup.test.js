@@ -1,6 +1,7 @@
 import Factory from "/imports/test-utils/helpers/factory";
 import mockContext from "/imports/test-utils/helpers/mockContext";
-import addTaxesToGroup from "./addTaxesToGroup";
+import xformOrderGroupToCommonOrder from "/imports/plugins/core/orders/server/no-meteor/util/xformOrderGroupToCommonOrder";
+import setTaxesOnOrderFulfillmentGroup from "./setTaxesOnOrderFulfillmentGroup";
 
 const address = Factory.Address.makeOne({ _id: undefined });
 
@@ -60,7 +61,6 @@ const itemTaxes = [
   }
 ];
 
-if (!mockContext.mutations) mockContext.mutations = {};
 mockContext.mutations.getFulfillmentGroupTaxes = jest.fn().mockName("getFulfillmentGroupTaxes");
 
 mockContext.collections.Shops.findOne.mockReturnValue(Promise.resolve({ _id: "shopId1" }));
@@ -78,7 +78,17 @@ test("mutates group.items and group.taxSummary", async () => {
     taxSummary
   }));
 
-  await addTaxesToGroup(mockContext, group, orderInput);
+  const { billingAddress, cartId, currencyCode } = orderInput;
+
+  const commonOrder = await xformOrderGroupToCommonOrder({
+    billingAddress,
+    cartId,
+    collections: mockContext.collections,
+    currencyCode,
+    group
+  });
+
+  await setTaxesOnOrderFulfillmentGroup(mockContext, { group, commonOrder });
 
   expect(group.items[0].tax).toBe(0.5);
   expect(group.items[0].taxableAmount).toBe(10.99);
@@ -114,7 +124,17 @@ test("customFields are properly saved", async () => {
     }
   }));
 
-  await addTaxesToGroup(mockContext, group, orderInput);
+  const { billingAddress, cartId, currencyCode } = orderInput;
+
+  const commonOrder = await xformOrderGroupToCommonOrder({
+    billingAddress,
+    cartId,
+    collections: mockContext.collections,
+    currencyCode,
+    group
+  });
+
+  await setTaxesOnOrderFulfillmentGroup(mockContext, { group, commonOrder });
 
   expect(group.items[0].taxes[0].customFields).toEqual({ foo: "bar3" });
   expect(group.items[0].customTaxFields).toEqual({ foo: "bar2" });

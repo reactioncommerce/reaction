@@ -1,0 +1,17 @@
+mutation ($orderFulfillmentGroupId: ID!, $orderId: ID!, $status: String, $tracking: String, $trackingUrl: String) {
+  updateOrderFulfillmentGroup(input: {
+    orderFulfillmentGroupId: $orderFulfillmentGroupId,
+    orderId: $orderId,
+    status: $status,
+    tracking: $tracking,
+    trackingUrl: $trackingUrl
+  }) {
+    order {
+      fulfillmentGroups {
+        status
+        tracking
+        trackingUrl
+      }
+    }
+  }
+}

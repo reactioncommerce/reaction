@@ -75,3 +75,10 @@ registerOperatorRoute({
   SidebarIconComponent: (props) => <FontAwesomeIcon icon={faSignInAlt} {...props} />,
   sidebarI18nLabel: "admin.settings.accountSettingsLabel"
 });
+
+registerOperatorRoute({
+  isNavigationLink: false,
+  isSetting: false,
+  path: "/profile",
+  mainComponent: "accountProfile"
+});

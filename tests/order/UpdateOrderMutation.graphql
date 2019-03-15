@@ -1,0 +1,12 @@
+mutation ($email: String, $orderId: ID!, $status: String) {
+  updateOrder(input: {
+    email: $email,
+    orderId: $orderId,
+    status: $status
+  }) {
+    order {
+      email
+      status
+    }
+  }
+}
