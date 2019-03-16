@@ -1,5 +1,6 @@
 import { encodeTagOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/tag";
-import ProductsByTagIdQuery from "./ProductsByTagQuery.graphql";
+// import ProductsByTagIdQuery from "./ProductsByTagQuery.graphql";
+import { tagProductsQueryString } from "/imports/plugins/core/tags/lib/queries";
 import TestApp from "../TestApp";
 import Factory from "/imports/test-utils/helpers/factory";
 
@@ -33,7 +34,7 @@ let query;
 beforeAll(async () => {
   testApp = new TestApp();
   await testApp.start();
-  query = testApp.query(ProductsByTagIdQuery);
+  query = testApp.query(tagProductsQueryString);
   await testApp.insertPrimaryShop({ _id: internalShopId, name: shopName });
   await testApp.createUserAndAccount(mockAdminAccount, ["owner"]);
   await testApp.setLoggedInUser(mockAdminAccount);
@@ -57,7 +58,6 @@ test("get all 77 products with a certain tag", async () => {
     expect(error).toBeUndefined();
     return;
   }
-  expect(result.productsByTagId.totalCount).toEqual(77);
   expect(result.productsByTagId.pageInfo.hasNextPage).toEqual(false);
   expect(result.productsByTagId.pageInfo.hasPreviousPage).toEqual(false);
   expect(result.productsByTagId.nodes.length).toEqual(77);
@@ -71,7 +71,6 @@ test("get all products with a certain tag", async () => {
     expect(error).toBeUndefined();
     return;
   }
-  expect(result.productsByTagId.totalCount).toEqual(77);
   expect(result.productsByTagId.pageInfo.hasNextPage).toEqual(true);
   expect(result.productsByTagId.pageInfo.hasPreviousPage).toEqual(false);
   expect(result.productsByTagId.nodes.length).toEqual(20);
@@ -114,7 +113,6 @@ test("get all products with a certain tag, after the previous endCursor", async 
     return;
   }
   expect(secondQuery.productsByTagId.nodes.length).toEqual(20);
-  expect(secondQuery.productsByTagId.totalCount).toEqual(77);
   expect(secondQuery.productsByTagId.pageInfo.hasNextPage).toEqual(true);
   expect(secondQuery.productsByTagId.pageInfo.hasPreviousPage).toEqual(true);
 });
@@ -138,7 +136,6 @@ test("get all products with a certain tag, after the previous endCursor", async 
     return;
   }
   expect(secondQuery.productsByTagId.nodes.length).toEqual(7);
-  expect(secondQuery.productsByTagId.totalCount).toEqual(77);
   expect(secondQuery.productsByTagId.pageInfo.hasNextPage).toEqual(false);
   expect(secondQuery.productsByTagId.pageInfo.hasPreviousPage).toEqual(true);
 });
@@ -176,7 +173,7 @@ test("get all products with a certain tag, after the previous endCursor with a f
   expect(secondQuery.productsByTagId.nodes[19]).toEqual(totalQuery.productsByTagId.nodes[19 + 10]);
 });
 
-test("get all products with a certain tag, from the last", async () => {
+test("get the last 30 products with a certain tag", async () => {
   let totalQuery;
   let lastQuery;
   try {
@@ -193,50 +190,40 @@ test("get all products with a certain tag, from the last", async () => {
   const lastQueryLength = lastQuery.productsByTagId.nodes.length;
   const totalQueryLength = totalQuery.productsByTagId.nodes.length;
   expect(lastQuery.productsByTagId.nodes.length).toEqual(30);
-  expect(lastQuery.productsByTagId.totalCount).toEqual(77);
   expect(lastQuery.productsByTagId.pageInfo.hasNextPage).toEqual(false);
   expect(lastQuery.productsByTagId.pageInfo.hasPreviousPage).toEqual(true);
   expect(lastQuery.productsByTagId.nodes[lastQueryLength - 2]).toEqual(totalQuery.productsByTagId.nodes[totalQueryLength - 2]);
   expect(lastQuery.productsByTagId.nodes[lastQueryLength - 1]).toEqual(totalQuery.productsByTagId.nodes[totalQueryLength - 1]);
 });
 
-test("get all products with a certain tag, from the last before a specific endCursor", async () => {
-  // let totalQuery;
-  // let firstQuery;
-  // let secondQuery;
-  // try {
-  //   totalQuery = await query({ shopId: opaqueShopId, tagId: encodeTagOpaqueId(mockTagWithFeatured._id), first: 77 });
-  //   firstQuery = await query({
-  //     shopId: opaqueShopId,
-  //     tagId: encodeTagOpaqueId(mockTagWithFeatured._id),
-  //     last: 20
-  //   });
-  //   // Skip the last 20 by starting from the after endCursor of the firstQuery, which queried for the last 20 items
-  //   secondQuery = await query({
-  //     shopId: opaqueShopId,
-  //     tagId: encodeTagOpaqueId(mockTagWithFeatured._id),
-  //     before: firstQuery.productsByTagId.pageInfo.startCursor, // MTcy => atob("MTcy") => 172
-  //     last: 30
-  //   });
-  // } catch (error) {
-  //   expect(error).toBeUndefined();
-  //   return;
-  // }
-  // console.log(totalQuery.productsByTagId.nodes);
-  // console.log(firstQuery.productsByTagId.nodes);
-  // console.log(firstQuery.productsByTagId.pageInfo);
-  // console.log(secondQuery.productsByTagId.nodes);
-  // console.log(firstQuery.productsByTagId.pageInfo.endCursor);
-  // const firstQueryLength = firstQuery.productsByTagId.nodes.length;
-  // const secondQueryLength = secondQuery.productsByTagId.nodes.length;
-  // const totalQueryLength = totalQuery.productsByTagId.nodes.length;
-  // expect(totalQuery.productsByTagId.nodes.length).toEqual(77);
-  // expect(firstQuery.productsByTagId.nodes.length).toEqual(20);
-  // // expect(secondQuery.productsByTagId.nodes.length).toEqual(30);
-  // expect(secondQuery.productsByTagId.pageInfo.hasNextPage).toEqual(true);
-  // // expect(secondQuery.productsByTagId.pageInfo.hasPreviousPage).toEqual(true);
-  // expect(firstQuery.productsByTagId.nodes[firstQueryLength - 1]).toEqual(totalQuery.productsByTagId.nodes[totalQueryLength - 1]);
-  // expect(firstQuery.productsByTagId.nodes[firstQueryLength - 5]).toEqual(totalQuery.productsByTagId.nodes[totalQueryLength - 5]);
-  // // Skip last 20 from the end
-  // expect(secondQuery.productsByTagId.nodes[secondQueryLength - 1]).toEqual(totalQuery.productsByTagId.nodes[totalQueryLength - 1]);
+test("backwards pagination by getting all products with a certain tag, from the end", async () => {
+  let totalQuery;
+  let page5Query;
+  let page4Query;
+  try {
+    totalQuery = await query({ shopId: opaqueShopId, tagId: encodeTagOpaqueId(mockTagWithFeatured._id), first: 77 });
+    page5Query = await query({
+      shopId: opaqueShopId,
+      tagId: encodeTagOpaqueId(mockTagWithFeatured._id),
+      last: 20
+    });
+    // Skip the last 20 by starting from the after endCursor of the firstQuery, which queried for the last 20 items
+    page4Query = await query({
+      shopId: opaqueShopId,
+      tagId: encodeTagOpaqueId(mockTagWithFeatured._id),
+      before: page5Query.productsByTagId.pageInfo.startCursor, // MTU3 => atob("MTU3") => id 157
+      last: 20
+    });
+  } catch (error) {
+    expect(error).toBeUndefined();
+    return;
+  }
+  const page5 = page5Query.productsByTagId.nodes;
+  const page4 = page4Query.productsByTagId.nodes;
+  expect(totalQuery.productsByTagId.nodes.length).toEqual(77);
+  expect(page5.length).toEqual(20);
+  expect(page4.length).toEqual(20);
+  expect(page4Query.productsByTagId.pageInfo.hasNextPage).toEqual(true);
+  const page4last = page4[page4.length - 1];
+  expect(page4last._id).toEqual("156");
 });

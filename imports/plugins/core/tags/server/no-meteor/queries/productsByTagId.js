@@ -37,6 +37,13 @@ export default async function productsByTagId(context, params) {
     }
   };
 
+  // defaultSort by id
+  const defaultSort = {
+    $sort: {
+      _id: 1
+    }
+  };
+
   // Products from catalog sample data
   const positions = tag.featuredProductIds || [];
 
@@ -76,7 +83,7 @@ export default async function productsByTagId(context, params) {
     // Profit
     return {
       collection: Products,
-      pipeline: [match, addFields, projection, sort]
+      pipeline: [match, defaultSort, addFields, projection, sort]
     };
   }
 
@@ -90,6 +97,6 @@ export default async function productsByTagId(context, params) {
   // Profit
   return {
     collection: Products,
-    pipeline: [match, sort]
+    pipeline: [match, defaultSort, sort]
   };
 }
