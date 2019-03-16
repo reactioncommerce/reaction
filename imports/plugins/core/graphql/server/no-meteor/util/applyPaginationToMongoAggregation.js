@@ -52,15 +52,15 @@ export default async function applyPaginationToMongoAggregation(aggregationParam
       // first and after
       const indexOfCursor = unpaginatedItems.findIndex((item) => item._id === after);
       hasPreviousPage = indexOfCursor > 0;
-      hasNextPage = ((totalCount - (limit + indexOfCursor - 1)) > 0);
+      hasNextPage = ((totalCount - (limit + indexOfCursor - 1)) >= 0);
       paginatedItems = unpaginatedItems.slice(indexOfCursor + 1, indexOfCursor + 1 + limit);
     } else if (before) {
       // before and last
       const indexOfCursor = unpaginatedItems.findIndex((item) => item._id === before);
-      hasPreviousPage = false;
       hasNextPage = totalCount > indexOfCursor;
       const startIndex = ((indexOfCursor - limit) > 0) ? (indexOfCursor - limit) : 0;
       paginatedItems = unpaginatedItems.slice(startIndex, indexOfCursor);
+      hasPreviousPage = (startIndex - limit) >= 0;
     } else if (last) {
       hasPreviousPage = (totalCount - limit) > 0;
       hasNextPage = false;

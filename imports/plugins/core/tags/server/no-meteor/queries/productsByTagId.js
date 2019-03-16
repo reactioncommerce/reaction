@@ -97,6 +97,6 @@ export default async function productsByTagId(context, params) {
   // Profit
   return {
     collection: Products,
-    pipeline: [match, defaultSort, sort]
+    pipeline: [match, sort]
   };
 }

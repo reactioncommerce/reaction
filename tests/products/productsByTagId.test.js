@@ -1,5 +1,4 @@
 import { encodeTagOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/tag";
-// import ProductsByTagIdQuery from "./ProductsByTagQuery.graphql";
 import { tagProductsQueryString } from "/imports/plugins/core/tags/lib/queries";
 import TestApp from "../TestApp";
 import Factory from "/imports/test-utils/helpers/factory";
@@ -223,6 +222,7 @@ test("backwards pagination by getting all products with a certain tag, from the 
   expect(totalQuery.productsByTagId.nodes.length).toEqual(77);
   expect(page5.length).toEqual(20);
   expect(page4.length).toEqual(20);
+  expect(page4Query.productsByTagId.pageInfo.hasPreviousPage).toEqual(true);
   expect(page4Query.productsByTagId.pageInfo.hasNextPage).toEqual(true);
   const page4last = page4[page4.length - 1];
   expect(page4last._id).toEqual("156");
