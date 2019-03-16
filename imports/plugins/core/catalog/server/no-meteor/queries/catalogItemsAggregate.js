@@ -29,6 +29,13 @@ export default async function catalogItemsAggregate(context, { shopIds, tagId } 
     }
   };
 
+  // defaultSort by id
+  const defaultSort = {
+    $sort: {
+      "product._id": 1
+    }
+  };
+
   const tag = await Tags.findOne({
     _id: tagId
   });
@@ -88,6 +95,6 @@ export default async function catalogItemsAggregate(context, { shopIds, tagId } 
 
   return {
     collection: Catalog,
-    pipeline: [match, addFields, projection, sort]
+    pipeline: [match, defaultSort, addFields, projection, sort]
   };
 }
