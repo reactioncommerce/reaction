@@ -42,4 +42,4 @@
 	url = git@github.com:sportsdirect/reaction-plugin-gql-resolvers.git
 [submodule "imports/plugins/custom/reaction-plugin-loyalty"]
 	path = imports/plugins/custom/reaction-plugin-loyalty
-	url = https://github.com/sportsdirect/reaction-plugin-loyalty
+	url = git@github.com:sportsdirect/reaction-plugin-loyalty.git
