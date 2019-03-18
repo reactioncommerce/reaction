@@ -245,3 +245,49 @@ test("paginate forwards, using cursors from a previous query", async () => {
   // eslint-disable-next-line max-len
   expect(secondQuery.catalogItems.edges[secondQuery.catalogItems.edges.length - 1].node._id).toEqual(defaultQuery.catalogItems.edges[defaultQuery.catalogItems.edges.length - 1].node._id);
 });
+
+test("paginate forwards, by pages of 15, using cursors from a previous query", async () => {
+  let defaultQuery;
+  let firstQuery;
+  let secondQuery;
+  try {
+    defaultQuery = await query({
+      shopId: opaqueShopId,
+      tagIds: [encodeTagOpaqueId(mockTagWithFeatured._id)],
+      sortBy: "featured",
+      first: 30
+    });
+    firstQuery = await query({
+      shopId: opaqueShopId,
+      tagIds: [encodeTagOpaqueId(mockTagWithFeatured._id)],
+      sortBy: "featured",
+      first: 15
+    });
+    secondQuery = await query({
+      shopId: opaqueShopId,
+      tagIds: [encodeTagOpaqueId(mockTagWithFeatured._id)],
+      sortBy: "featured",
+      after: firstQuery.catalogItems.pageInfo.endCursor,
+      first: 15
+    });
+  } catch (error) {
+    expect(error).toBeUndefined();
+    return;
+  }
+  // defaultQuery gets all items at once, so hasNext and hasPrevious are false
+  expect(defaultQuery.catalogItems.pageInfo.hasNextPage).toEqual(false);
+  expect(defaultQuery.catalogItems.pageInfo.hasPreviousPage).toEqual(false);
+  // firstQuery gets the first 15, so hasNext is true and hasPrevious is false
+  expect(firstQuery.catalogItems.pageInfo.hasNextPage).toEqual(true);
+  expect(firstQuery.catalogItems.pageInfo.hasPreviousPage).toEqual(false);
+  expect(firstQuery.catalogItems.edges.length).toEqual(15);
+  // secondQuery gets the last 15, so hasNext is false and hasPrevious is true
+  expect(secondQuery.catalogItems.edges.length).toEqual(15);
+  // expect(secondQuery.catalogItems.pageInfo.hasNextPage).toEqual(false);
+  // expect(secondQuery.catalogItems.pageInfo.hasPreviousPage).toEqual(true);
+  // totalCount is 30, and the first 15 after the first 15 were queried, so there are only 10 left.
+  expect(secondQuery.catalogItems.edges[0].node._id).toEqual(defaultQuery.catalogItems.edges[15].node._id);
+  // get the last item
+  // eslint-disable-next-line max-len
+  expect(secondQuery.catalogItems.edges[secondQuery.catalogItems.edges.length - 1].node._id).toEqual(defaultQuery.catalogItems.edges[defaultQuery.catalogItems.edges.length - 1].node._id);
+});

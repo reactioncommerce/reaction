@@ -227,3 +227,32 @@ test("backwards pagination by getting all products with a certain tag, from the 
   const page4last = page4[page4.length - 1];
   expect(page4last._id).toEqual("156");
 });
+
+test("forward pagination where the last page is divisible by the page count", async () => {
+  let totalQuery;
+  let firstQuery;
+  let secondQuery;
+  try {
+    totalQuery = await query({ shopId: opaqueShopId, tagId: encodeTagOpaqueId(mockTagWithFeatured._id), first: 77 });
+    firstQuery = await query({
+      shopId: opaqueShopId,
+      tagId: encodeTagOpaqueId(mockTagWithFeatured._id),
+      first: 70
+    });
+    // Skip the first 10 by starting from the after endCursor of the firstQuery, which queried for the first 10 items
+    secondQuery = await query({
+      shopId: opaqueShopId,
+      tagId: encodeTagOpaqueId(mockTagWithFeatured._id),
+      after: firstQuery.productsByTagId.pageInfo.endCursor, // "MTA0" => atob("MTA0") => endCursor's node has an id of 104
+      first: 7
+    });
+  } catch (error) {
+    expect(error).toBeUndefined();
+    return;
+  }
+  expect(totalQuery.productsByTagId.nodes.length).toEqual(77);
+  expect(firstQuery.productsByTagId.nodes.length).toEqual(70);
+  expect(secondQuery.productsByTagId.nodes.length).toEqual(7);
+  expect(secondQuery.productsByTagId.pageInfo.hasPreviousPage).toEqual(true);
+  expect(secondQuery.productsByTagId.pageInfo.hasNextPage).toEqual(false);
+});
