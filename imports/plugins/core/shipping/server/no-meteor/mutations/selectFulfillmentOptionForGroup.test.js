@@ -27,25 +27,7 @@ test("selects an existing shipping method", async () => {
     fulfillmentGroupId: "group1",
     fulfillmentMethodId: "valid-method"
   });
-  expect(result).toEqual({
-    cart: {
-      _id: "cartId",
-      shipping: [{
-        _id: "group1",
-        itemIds: ["123"],
-        shipmentQuotes: [{
-          rate: 0,
-          method: {
-            _id: "valid-method"
-          }
-        }],
-        shipmentMethod: {
-          _id: "valid-method"
-        },
-        type: "shipping"
-      }]
-    }
-  });
+  expect(result).toEqual({ cart: fakeCart });
 
   expect(mockContext.collections.Cart.updateOne).toHaveBeenCalledWith({
     "_id": "cartId",
