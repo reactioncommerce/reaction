@@ -239,11 +239,11 @@ test("forward pagination where the last page is divisible by the page count", as
       tagId: encodeTagOpaqueId(mockTagWithFeatured._id),
       first: 70
     });
-    // Skip the first 10 by starting from the after endCursor of the firstQuery, which queried for the first 10 items
+    // Skip the first 70 by starting from the after endCursor of the firstQuery, which queried for the first 10 items
     secondQuery = await query({
       shopId: opaqueShopId,
       tagId: encodeTagOpaqueId(mockTagWithFeatured._id),
-      after: firstQuery.productsByTagId.pageInfo.endCursor, // "MTA0" => atob("MTA0") => endCursor's node has an id of 104
+      after: firstQuery.productsByTagId.pageInfo.endCursor,
       first: 7
     });
   } catch (error) {
