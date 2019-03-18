@@ -949,8 +949,8 @@ export default {
         }
         // Import package data
         this.Importer.package(combinedSettings, shopId);
+        Logger.info(`Successfully initialized  package: ${pkgName}... ${loadedIndex}/${totalPackages}`);
         loadedIndex++;
-        return Logger.info(`Successfully initialized  package: ${pkgName}... ${loadedIndex}/${totalPackages}`);
       }));
 
     // helper for removing layout duplicates
