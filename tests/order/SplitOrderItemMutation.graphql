@@ -1,0 +1,23 @@
+mutation ($itemId: ID!, $newItemQuantity: Int!, $orderId: ID!) {
+  splitOrderItem(input: {
+    itemId: $itemId,
+    newItemQuantity: $newItemQuantity,
+    orderId: $orderId
+  }) {
+    newItemId
+    order {
+      fulfillmentGroups {
+        items {
+          nodes {
+            _id
+            quantity
+            status
+            productConfiguration {
+              productVariantId
+            }
+          }
+        }
+      }
+    }
+  }
+}

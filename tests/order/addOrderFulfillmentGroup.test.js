@@ -25,6 +25,13 @@ const mockShipmentMethod = {
   rate: 3.99
 };
 
+const mockInvoice = Factory.Invoice.makeOne({
+  currencyCode: "USD",
+  // Need to ensure 0 discount to avoid creating negative totals
+  discounts: 0
+});
+delete mockInvoice._id; // bug in Factory pkg
+
 beforeAll(async () => {
   const getFulfillmentMethodsWithQuotes = (context, commonOrderExtended, [rates]) => {
     rates.push({
@@ -116,6 +123,7 @@ test("user with orders role can add an order fulfillment group with new items", 
   });
 
   const group = Factory.OrderFulfillmentGroup.makeOne({
+    invoice: mockInvoice,
     items: [orderItem],
     shopId
   });
@@ -238,6 +246,7 @@ test("user with orders role can add an order fulfillment group with moved items"
   });
 
   const group = Factory.OrderFulfillmentGroup.makeOne({
+    invoice: mockInvoice,
     items: [orderItemToStay, orderItemToMove],
     itemIds: [orderItemToStay._id, orderItemToMove._id],
     shipmentMethod: {
