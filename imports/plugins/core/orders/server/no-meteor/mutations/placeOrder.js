@@ -68,6 +68,7 @@ async function getCurrencyExchangeObject(collections, cartCurrencyCode, shopId, 
  * @summary Create all authorized payments for a potential order
  * @param {String} [accountId] The ID of the account placing the order
  * @param {Object} [billingAddress] Billing address for the order as a whole
+ * @param {Object} context - The application context
  * @param {String} currencyCode Currency code for interpreting the amount of all payments
  * @param {Object} currencyExchangeInfo Currency exchange info
  * @param {String} email Email address for the order
@@ -171,7 +172,7 @@ export default async function placeOrder(context, input) {
     shopId
   } = orderInput;
   const { accountId, account, collections, getFunctionsOfType, userId } = context;
-  const { Orders } = collections;
+  const { Orders, Cart } = collections;
 
   // We are mixing concerns a bit here for now. This is for backwards compatibility with current
   // discount codes feature. We are planning to revamp discounts soon, but until then, we'll look up
@@ -262,17 +263,26 @@ export default async function placeOrder(context, input) {
   };
 
   let referenceId;
+  // Grabbing cart to get the cart.referenceId. It's a shame since we are fetch cart twice before
+  const cart = await Cart.findOne({ _id: cartId }, { _id: 0, referenceId: 1});
   const createReferenceIdFunctions = getFunctionsOfType("createOrderReferenceId");
   if (!createReferenceIdFunctions || createReferenceIdFunctions.length === 0) {
-    referenceId = Random.id();
+    // if the cart has a reference Id, and no custom function is created use that
+    if (cart.referenceId) {
+      referenceId = cart.referenceId;
+    } else {
+      referenceId = Random.id();
+    }
   } else {
-    referenceId = createReferenceIdFunctions[0]();
+    referenceId = createReferenceIdFunctions[0](cart, order);
     if (createReferenceIdFunctions.length > 1) {
       Logger.warn("More than one createOrderReferenceId function defined. Using first one defined");
     }
   }
 
   order.referenceId = referenceId;
+
+
   // Apply custom order data transformations from plugins
   const transformCustomOrderFieldsFuncs = getFunctionsOfType("transformCustomOrderFields");
   if (transformCustomOrderFieldsFuncs.length > 0) {

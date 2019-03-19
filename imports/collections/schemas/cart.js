@@ -203,6 +203,11 @@ export const Cart = new SimpleSchema({
     index: 1,
     optional: true
   },
+  "referenceId": {
+    type: String,
+    index: 1,
+    optional: true
+  },
   "email": {
     type: String,
     optional: true,
