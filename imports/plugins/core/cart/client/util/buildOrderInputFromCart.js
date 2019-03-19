@@ -38,7 +38,7 @@ export default async function buildOrderInputFromCart(cart) {
   ]);
 
   const fulfillmentGroups = await Promise.all(cart.shipping.map(async (group) => {
-    const items = cart.items.filter((cartItem) => group.itemIds.indexOf(cartItem._id) !== -1);
+    const items = cart.items.filter((cartItem) => group.itemIds.includes(cartItem._id));
     const itemProductIds = items.map((item) => ({ namespace: "Product", id: item.productId }));
     const itemVariantIds = items.map((item) => ({ namespace: "Product", id: item.variantId }));
 
