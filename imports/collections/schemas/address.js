@@ -50,7 +50,7 @@ export const Address = new SimpleSchema({
   },
   "lastName": {
     type: String,
-    label: "Laast name",
+    label: "Last name",
     optional: true
   },
   "address1": {
