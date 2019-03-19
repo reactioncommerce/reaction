@@ -24,6 +24,12 @@ extend type Query {
 
 extend type Mutation {
   """
+  Use this mutation to add a new order fulfillment group to an order. It must have at least one
+  item. Items may be provided or moved from another existing group or both.
+  """
+  addOrderFulfillmentGroup(input: AddOrderFulfillmentGroupInput!): AddOrderFulfillmentGroupPayload!
+
+  """
   Use this mutation to cancel one item of an order, either for the full ordered quantity
   or for a partial quantity. If partial, the item will be split into two items and the
   original item will have a lower quantity and will be canceled.
@@ -35,10 +41,23 @@ extend type Mutation {
   cancelOrderItem(input: CancelOrderItemInput!): CancelOrderItemPayload!
 
   """
+  Use this mutation to move one or more items between existing order fulfillment groups.
+  """
+  moveOrderItems(input: MoveOrderItemsInput!): MoveOrderItemsPayload!
+
+  """
   Use this mutation to place an order, providing information necessary to pay for it.
   The order will be placed only if authorization is successful for all submitted payments.
   """
   placeOrder(input: PlaceOrderInput!): PlaceOrderPayload!
+
+  """
+  Use this mutation to reduce the quantity of one item of an order and create
+  a new item for the remaining quantity in the same fulfillment group, and with the
+  same item status. You may want to do this if you are only able to partially fulfill
+  the item order right now.
+  """
+  splitOrderItem(input: SplitOrderItemInput!): SplitOrderItemPayload!
 
   """
   Use this mutation to update order details after the order has been placed.
@@ -351,7 +370,35 @@ input OrderFulfillmentGroupInput {
   Order service. However, providing this value prevents an order being created for an amount that
   does not match what was shown to the shopper in order preview.
   """
-  totalPrice: Float!
+  totalPrice: Float
+
+  """
+  The fulfillment type. Any valid type that has been registered by a fulfillment plugin. Examples: "shipping", "digital"
+  """
+  type: FulfillmentType!
+}
+
+"Similar to `OrderFulfillmentGroupInput` but `items` can be omitted if moving existing items to the new group"
+input OrderFulfillmentGroupExistingOrderInput {
+  "Information needed by the selected fulfillment method to properly fulfill the order"
+  data: OrderFulfillmentGroupDataInput
+
+  "The list of items to be ordered"
+  items: [OrderFulfillmentGroupItemInput]
+
+  "The ID of the fulfillment method to be used for this order group"
+  selectedFulfillmentMethodId: ID!
+
+  "The shop that owns these items and needs to fulfill this part of the order"
+  shopId: ID!
+
+  """
+  The total price of the items, fulfillment, and taxes, for this group, less any discounts, in the
+  `order.currencyCode` currency. This value is not trusted; the actual total is calculated by the
+  Order service. However, providing this value prevents an order being created for an amount that
+  does not match what was shown to the shopper in order preview.
+  """
+  totalPrice: Float
 
   """
   The fulfillment type. Any valid type that has been registered by a fulfillment plugin. Examples: "shipping", "digital"
@@ -415,6 +462,21 @@ input PaymentInput {
   method: PaymentMethodName!
 }
 
+"Input for the addOrderFulfillmentGroup mutation"
+input AddOrderFulfillmentGroupInput {
+  "An optional string identifying the mutation call, which will be returned in the response payload"
+  clientMutationId: String
+
+  "The order fulfillment group input, used to build the new group"
+  fulfillmentGroup: OrderFulfillmentGroupExistingOrderInput!
+
+  "Optional list of order item IDs that should be moved from an existing group to the new group"
+  moveItemIds: [ID]
+
+  "ID of the order that has the item you want to add the group to"
+  orderId: ID!
+}
+
 "Input for the cancelOrderItem mutation"
 input CancelOrderItemInput {
   "Quantity to cancel. Must be equal to or less than the item quantity."
@@ -453,6 +515,39 @@ input PlaceOrderInput {
   payments: [PaymentInput]
 }
 
+"Input for the moveOrderItems mutation"
+input MoveOrderItemsInput {
+  "The ID of the order fulfillment group from which all the items are to be moved."
+  fromFulfillmentGroupId: ID!
+
+  "An optional string identifying the mutation call, which will be returned in the response payload"
+  clientMutationId: String
+
+  "The list of item IDs to move. The full quantity must be moved."
+  itemIds: [ID]!
+
+  "ID of the order that has the items you want to move"
+  orderId: ID!
+
+  "The ID of the order fulfillment group to which all the items are to be moved."
+  toFulfillmentGroupId: ID!
+}
+
+"Input for the splitOrderItem mutation"
+input SplitOrderItemInput {
+  "An optional string identifying the mutation call, which will be returned in the response payload"
+  clientMutationId: String
+
+  "ID of the item order you want to split"
+  itemId: ID!
+
+  "The quantity that will be transferred to a new order item on the same fulfillment group."
+  newItemQuantity: Int!
+
+  "ID of the order that has the item you want to split"
+  orderId: ID!
+}
+
 "Input for the updateOrder mutation"
 input UpdateOrderInput {
   "An optional string identifying the mutation call, which will be returned in the response payload"
@@ -489,8 +584,29 @@ input UpdateOrderFulfillmentGroupInput {
   trackingUrl: String
 }
 
+"Response payload for the addOrderFulfillmentGroup mutation"
+type AddOrderFulfillmentGroupPayload {
+  "The same string you sent with the mutation params, for matching mutation calls with their responses"
+  clientMutationId: String
+
+  "ID of the added fulfillment group"
+  newFulfillmentGroupId: ID!
+
+  "The updated order"
+  order: Order!
+}
+
 "Response payload for the cancelOrderItem mutation"
 type CancelOrderItemPayload {
+  "The same string you sent with the mutation params, for matching mutation calls with their responses"
+  clientMutationId: String
+
+  "The updated order"
+  order: Order!
+}
+
+"Response payload for the moveOrderItems mutation"
+type MoveOrderItemsPayload {
   "The same string you sent with the mutation params, for matching mutation calls with their responses"
   clientMutationId: String
 
@@ -508,6 +624,18 @@ type PlaceOrderPayload {
 
   "If you are not logged in, this will be a token that can be used for future requests"
   token: String
+}
+
+"Response payload for the splitOrderItem mutation"
+type SplitOrderItemPayload {
+  "The same string you sent with the mutation params, for matching mutation calls with their responses"
+  clientMutationId: String
+
+  "The ID of the new order item that was created"
+  newItemId: ID!
+
+  "The updated order"
+  order: Order!
 }
 
 "Response payload for the updateOrder mutation"

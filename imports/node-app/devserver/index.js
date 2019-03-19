@@ -6,6 +6,7 @@ import queries from "./queries";
 import resolvers from "./resolvers";
 import schemas from "./schemas";
 import filesStartup from "./filesStartup";
+import "./extendSchemas";
 
 const { MONGO_URL, PORT = 3030, ROOT_URL } = process.env;
 if (!MONGO_URL) throw new Error("You must set MONGO_URL");

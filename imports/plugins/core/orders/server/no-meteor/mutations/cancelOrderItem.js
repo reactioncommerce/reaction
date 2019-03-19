@@ -2,6 +2,7 @@ import SimpleSchema from "simpl-schema";
 import ReactionError from "@reactioncommerce/reaction-error";
 import Random from "@reactioncommerce/random";
 import { Order as OrderSchema } from "/imports/collections/schemas";
+import updateGroupStatusFromItemStatus from "../util/updateGroupStatusFromItemStatus";
 
 const canceledStatus = "coreOrderWorkflow/canceled";
 const itemCanceledStatus = "coreOrderItemWorkflow/canceled";
@@ -134,25 +135,14 @@ export default async function cancelOrderItem(context, input) {
       updatedItems.push(itemToAdd);
     }
 
-    // If all items are canceled, set the group status to canceled
-    let updatedGroupWorkflow;
-    const allItemsAreCanceled = updatedItems.every((item) => item.workflow.status === itemCanceledStatus);
-    if (allItemsAreCanceled && group.workflow.status !== canceledStatus) {
-      updatedGroupWorkflow = {
-        status: canceledStatus,
-        workflow: [...group.workflow.workflow, canceledStatus]
-      };
-    }
-
     const updatedGroup = { ...group, items: updatedItems };
+
+    // Ensure proper group status
+    updateGroupStatusFromItemStatus(updatedGroup);
 
     // There is a convenience itemIds prop, so update that, too
     if (itemToAdd) {
       updatedGroup.itemIds.push(itemToAdd._id);
-    }
-
-    if (updatedGroupWorkflow) {
-      updatedGroup.workflow = updatedGroupWorkflow;
     }
 
     // Return the group, with items and workflow potentially updated.

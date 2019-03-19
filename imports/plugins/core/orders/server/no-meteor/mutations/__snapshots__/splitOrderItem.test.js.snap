@@ -1,0 +1,23 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`throws if itemId isn't supplied 1`] = `"Item ID is required"`;
+
+exports[`throws if newItemQuantity is 0 1`] = `"New item quantity must be at least 1"`;
+
+exports[`throws if newItemQuantity is equal to item quantity 1`] = `"quantity must be less than current item quantity"`;
+
+exports[`throws if newItemQuantity is greater than item quantity 1`] = `"quantity must be less than current item quantity"`;
+
+exports[`throws if newItemQuantity is negative 1`] = `"New item quantity must be at least 1"`;
+
+exports[`throws if newItemQuantity isn't supplied 1`] = `"New item quantity is required"`;
+
+exports[`throws if orderId isn't supplied 1`] = `"Order ID is required"`;
+
+exports[`throws if permission check fails 1`] = `"Access Denied"`;
+
+exports[`throws if the database update fails 1`] = `"Unable to update order"`;
+
+exports[`throws if the order doesn't exist 1`] = `"Order not found"`;
+
+exports[`throws if the order item doesn't exist 1`] = `"Order item not found"`;

@@ -1,78 +1,30 @@
 const DEFAULT_LIMIT = 20;
 
 /**
- * Inspired by https://www.reindex.io/blog/relay-graphql-pagination-with-mongodb/
  * @name applyPaginationToMongoAggregation
  * @method
  * @memberof GraphQL/ResolverUtilities
- * @summary Adds `skip` and `limit` to a MongoDB Aggregation as necessary, based on GraphQL
- *   `first` and `last` params
+ * @summary Returns results of Mongo Aggregation, with first and after or last and before args applied as specificed in the Relay Cursor Connections Specification's pagination algorithm https://facebook.github.io/relay/graphql/connections.htm#sec-Pagination-algorithm
  * @param {Object} aggregationParams An object containing the collection and aggregation pipeline
  * @param {MongoCollection} [aggregationParams.collection] - Mongo collection is run the aggregation on
  * @param {Array} [aggregationParams.pipeline] - Mongo aggregation pipeline array
- * @param {Object} args GraphQL query arguments
- * @param {Number} totalCount Total count of docs that match the query, after applying the before/after filter
- * @return {Promise<Object>} `{ pageInfo }`
+ * @param {Object} args - Connection arguments from GraphQL query
+ * @param {String} [args.after] - ID  of the cursor result
+ * @param {String} [args.before] - ID of the cursor result
+ * @param {Integer} [args.first] - Number of results to return after the `after`
+ * @param {Integer} [args.last] -  Number of results to return before the `before`
+ * @return {Promise<Object>} `{ totalCount, pageInfo: { hasNextPage, hasPreviousPage }, nodes }`
  */
-export default async function applyPaginationToMongoAggregation(aggregationParams, { first, last } = {}, totalCount) {
+export default async function applyPaginationToMongoAggregation(aggregationParams, { first, last, before, after } = {}) {
   const { collection, pipeline } = aggregationParams;
 
   if (first && last) throw new Error("Request either `first` or `last` but not both");
 
-  // Enforce a `first: 20` limit if no user-supplied limit, using the DEFAULT_LIMIT
-  const limit = first || last || DEFAULT_LIMIT;
-
-  let skip = 0;
-  if (last && totalCount > last) skip = totalCount - last;
-
-  let hasNextPage = null;
-  let hasPreviousPage = null;
-  if (last) {
-    if (skip === 0) {
-      hasPreviousPage = false;
-    } else {
-      // For backward pagination, we can find out whether there is a previous page here, but we can't
-      // find out whether there's a next page because the cursor has already had "before" filtering
-      // added. Code external to this function will need to determine whether there are any documents
-      // after that "before" ID.
-
-      const facet = {
-        $facet: {
-          nodes: [
-            { $limit: limit + 1 },
-            { $skip: skip - 1 }
-          ]
-        }
-      };
-
-      const result = await collection.aggregate([...pipeline, facet]).toArray();
-      const { nodes } = (result && result[0]) || { nodes: [] };
-      hasPreviousPage = nodes.length > limit;
-    }
-  } else {
-    // For forward pagination, we can find out whether there is a next page here, but we can't
-    // find out whether there's a previous page because the cursor has already had "after" filtering
-    // added. Code external to this function will need to determine whether there are any documents
-    // before that "after" ID.
-    const facet = {
-      $facet: {
-        nodes: [
-          { $limit: limit + 1 }
-        ]
-      }
-    };
-
-    const result = await collection.aggregate([...pipeline, facet]).toArray();
-    const { nodes } = (result && result[0]) || { nodes: [] };
-    hasNextPage = nodes.length > limit;
-  }
-
-  // Now apply actual limit + skip
+  // Facet: Add pageInfo and count
   const facet = {
     $facet: {
       nodes: [
-        { $limit: limit },
-        { $skip: skip || 0 }
+        { $skip: 0 }
       ],
       pageInfo: [
         { $count: "totalCount" }
@@ -80,11 +32,53 @@ export default async function applyPaginationToMongoAggregation(aggregationParam
     }
   };
 
-  const results = await collection.aggregate([...pipeline, facet]).toArray();
+  const unpaginatedResults = await collection.aggregate([...pipeline, facet]).toArray();
+  let hasPreviousPage;
+  let hasNextPage;
+  let paginatedItems;
+  let totalCount;
+  const limit = first || last || DEFAULT_LIMIT;
+
+  if (unpaginatedResults[0].nodes.length === 0) {
+    totalCount = unpaginatedResults[0].nodes.length;
+    hasNextPage = false;
+    hasPreviousPage = false;
+    paginatedItems = unpaginatedResults[0].nodes;
+  } else {
+    const unpaginatedItems = unpaginatedResults[0].nodes;
+    // eslint-disable-next-line prefer-destructuring
+    totalCount = unpaginatedResults[0].pageInfo[0].totalCount;
+    if (after) {
+      // first and after
+      const indexOfCursor = unpaginatedItems.findIndex((item) => item._id === after);
+      hasPreviousPage = indexOfCursor > 0;
+      hasNextPage = ((totalCount - (limit + indexOfCursor + 1)) > 0);
+      paginatedItems = unpaginatedItems.slice(indexOfCursor + 1, indexOfCursor + 1 + limit);
+    } else if (before) {
+      // before and last
+      const indexOfCursor = unpaginatedItems.findIndex((item) => item._id === before);
+      hasNextPage = totalCount > indexOfCursor;
+      const startIndex = ((indexOfCursor - limit) > 0) ? (indexOfCursor - limit) : 0;
+      paginatedItems = unpaginatedItems.slice(startIndex, indexOfCursor);
+      hasPreviousPage = (startIndex - limit) >= 0;
+    } else if (last) {
+      hasPreviousPage = (totalCount - limit) > 0;
+      hasNextPage = false;
+      const startIndex = unpaginatedItems.length - limit;
+      const endIndex = unpaginatedItems.length;
+      paginatedItems = unpaginatedItems.slice(startIndex, endIndex);
+    } else {
+      // If after, before, and last are not provided, assume first
+      const startIndex = 0;
+      hasPreviousPage = false;
+      hasNextPage = (totalCount - limit) > 0;
+      paginatedItems = unpaginatedItems.slice(startIndex, startIndex + limit);
+    }
+  }
 
   return {
-    hasNextPage,
-    hasPreviousPage,
-    results
+    totalCount,
+    pageInfo: { hasNextPage, hasPreviousPage },
+    nodes: paginatedItems
   };
 }
