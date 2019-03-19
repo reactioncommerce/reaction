@@ -3,7 +3,6 @@ import PropTypes from "prop-types";
 import { Components } from "@reactioncommerce/reaction-components";
 import OrderTable from "../containers/orderTableContainer";
 import OrderFilter from "./orderFilter";
-import OrderSearch from "./orderSearch";
 
 class OrderDashboard extends Component {
   static propTypes = {
@@ -13,7 +12,6 @@ class OrderDashboard extends Component {
     filterShippingStatus: PropTypes.func,
     filterWorkflowStatus: PropTypes.func,
     handleBulkPaymentCapture: PropTypes.func,
-    handleChange: PropTypes.func,
     handleClick: PropTypes.func,
     handleSelect: PropTypes.func,
     isLoading: PropTypes.object,
@@ -24,7 +22,6 @@ class OrderDashboard extends Component {
     pages: PropTypes.number,
     query: PropTypes.object,
     renderFlowList: PropTypes.bool, // eslint-disable-line react/boolean-prop-naming
-    searchQuery: PropTypes.string,
     selectAllOrders: PropTypes.func,
     selectedItems: PropTypes.array,
     setShippingStatus: PropTypes.func,
@@ -58,9 +55,6 @@ class OrderDashboard extends Component {
   render() {
     return (
       <div className="order-dashboard-container">
-        <OrderSearch
-          handleChange={this.props.handleChange}
-        />
         <OrderFilter
           clearFilter={this.props.clearFilter}
           filterDates={this.props.filterDates}
