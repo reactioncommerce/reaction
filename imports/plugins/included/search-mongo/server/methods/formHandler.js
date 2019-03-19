@@ -10,7 +10,7 @@ import Reaction from "/imports/plugins/core/core/server/Reaction";
 
 function fieldsChanged(changedFields, fieldType = "includes") {
   for (const field of changedFields) {
-    if (field.indexOf(fieldType) !== -1) {
+    if (field.includes(fieldType)) {
       return true;
     }
   }
