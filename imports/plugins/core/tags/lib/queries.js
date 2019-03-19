@@ -25,13 +25,14 @@ export const getTag = gql`
   }
 `;
 
-export const tagProductsQuery = gql`
-  query getTagProducts($shopId: ID!, $tagId: ID!) {
-    productsByTagId(shopId: $shopId, tagId: $tagId) {
+export const tagProductsQueryString = `
+  query getTagProducts($shopId: ID!, $first: ConnectionLimitInt, $tagId: ID!, $last:  ConnectionLimitInt, $before: ConnectionCursor, $after: ConnectionCursor) {
+    productsByTagId(shopId: $shopId, tagId: $tagId, first: $first, last: $last, before: $before, after: $after) {
       pageInfo {
         endCursor
         startCursor
         hasNextPage
+        hasPreviousPage
       }
       nodes {
         _id
@@ -41,3 +42,5 @@ export const tagProductsQuery = gql`
     }
   }
 `;
+
+export const tagProductsQuery = gql`${tagProductsQueryString}`;
