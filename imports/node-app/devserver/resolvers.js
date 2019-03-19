@@ -10,6 +10,7 @@ import orders from "/imports/plugins/core/orders/server/no-meteor/resolvers";
 import payments from "/imports/plugins/core/payments/server/no-meteor/resolvers";
 import product from "/imports/plugins/core/product/server/no-meteor/resolvers";
 import shipping from "/imports/plugins/core/shipping/server/no-meteor/resolvers";
+import tags from "/imports/plugins/core/tags/server/no-meteor/resolvers";
 import taxes from "/imports/plugins/core/taxes/server/no-meteor/resolvers";
 // INCLUDED
 import shippingRates from "/imports/plugins/included/shipping-rates/server/no-meteor/resolvers";
@@ -26,6 +27,7 @@ export default merge(
   payments,
   product,
   shipping,
+  tags,
   taxes,
   shippingRates
 );
