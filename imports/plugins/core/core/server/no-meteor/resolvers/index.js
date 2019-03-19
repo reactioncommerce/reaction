@@ -71,6 +71,8 @@ export default {
  * @property {String} country - Country
  * @property {Boolean} [failedValidation] - Mark address as failed validation by address validation service
  * @property {String} fullName - Full name
+ * @property {String} [firstName] - First name
+ * @property {String} [lastName] - Last name
  * @property {Boolean} isBillingDefault - Mark address as default for billing
  * @property {Boolean} isCommercial - Mask address as commercial
  * @property {Boolean} isShippingDefault -  Mark address as default for shipping

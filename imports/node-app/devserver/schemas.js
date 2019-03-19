@@ -9,6 +9,7 @@ import orders from "/imports/plugins/core/orders/server/no-meteor/schemas";
 import payments from "/imports/plugins/core/payments/server/no-meteor/schemas";
 import product from "/imports/plugins/core/product/server/no-meteor/schemas";
 import shipping from "/imports/plugins/core/shipping/server/no-meteor/schemas";
+import tags from "/imports/plugins/core/tags/server/no-meteor/schemas";
 import taxes from "/imports/plugins/core/taxes/server/no-meteor/schemas";
 // INCLUDED
 import marketplace from "/imports/plugins/included/marketplace/server/no-meteor/schemas";
@@ -27,6 +28,7 @@ export default [
   ...payments,
   ...product,
   ...shipping,
+  ...tags,
   ...taxes,
   ...marketplace,
   ...paymentsExample,

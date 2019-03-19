@@ -29,11 +29,7 @@ export default async function productsByTagId(context, params) {
     throw new ReactionError("not-found", "Tag not found");
   }
 
-  // Products from catalog sample data
-  const positions = tag.featuredProductIds;
-
-  // Aggregation Pipeline
-  // Find the products in the "order" array
+  // Match all products that belong to a single tag
   const match = {
     $match: {
       shopId,
@@ -41,25 +37,66 @@ export default async function productsByTagId(context, params) {
     }
   };
 
-  // Add a new field "__order" to each product with the order they are in the array
-  const addFields = {
-    $addFields: {
-      position: {
-        $indexOfArray: [positions, "$_id"]
-      }
+  // defaultSort by id
+  const defaultSort = {
+    $sort: {
+      _id: 1
     }
   };
 
-  // Sort the results by "__order"
+  // Products from catalog sample data
+  const positions = tag.featuredProductIds || [];
+
+  if (positions.length) {
+    // Add a new field "positions" to each product with the order they are in the array
+    const addFields = {
+      $addFields: {
+        position: {
+          $indexOfArray: [positions, "$_id"]
+        }
+      }
+    };
+
+    // Projection: Add a featuredPosition by order
+    const projection = {
+      $project: {
+        _id: 1,
+        position: 1,
+        title: 1,
+        sortPosition: {
+          $cond: {
+            if: { $lt: ["$position", 0] },
+            then: { $add: [{ $abs: "$position" }, positions.length] },
+            else: "$position"
+          }
+        }
+      }
+    };
+
+    // Sort the results by "sortPosition"
+    const sort = {
+      $sort: {
+        sortPosition: 1
+      }
+    };
+
+    // Profit
+    return {
+      collection: Products,
+      pipeline: [match, defaultSort, addFields, projection, sort]
+    };
+  }
+
+  // If there are no featured products, sort by createdAt
   const sort = {
     $sort: {
-      position: 1
+      createdAt: 1
     }
   };
 
   // Profit
   return {
     collection: Products,
-    pipeline: [match, addFields, sort]
+    pipeline: [match, sort]
   };
 }
