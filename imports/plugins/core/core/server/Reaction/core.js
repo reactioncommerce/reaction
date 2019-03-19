@@ -889,7 +889,7 @@ export default {
     }
 
     const layouts = [];
-    let totalPackages = Object.keys(this.Packages).length;
+    const totalPackages = Object.keys(this.Packages).length;
     let loadedIndex = 1;
     // for each shop, we're loading packages in a unique registry
     _.each(this.Packages, (config, pkgName) =>
@@ -950,7 +950,7 @@ export default {
         // Import package data
         this.Importer.package(combinedSettings, shopId);
         Logger.info(`Successfully initialized  package: ${pkgName}... ${loadedIndex}/${totalPackages}`);
-        loadedIndex++;
+        loadedIndex += 1;
       }));
 
     // helper for removing layout duplicates
