@@ -73,10 +73,10 @@ app:
         value: reaction.pricing.prices-by-id-aggregates.avro-gen1
     -   key: SCHEMA_REGISTRY_URL
         value: http://kafka-cluster-int-cp-schema-registry.kafka:8081
-    -   key: KAFKA_PARTITIONS_LOYALTY
-        value: "3"
     -   key: JAEGER_ENDPOINT
         value: https://jaeger-collector-int.bobs-test.io/api/traces
+    -   key: KAFKA_PARTITIONS_LOYALTY
+        value: 3
     -   key: KAFKA_TOPIC_LOYALTY_PLUGIN_DB_UPDATES
         value: bobs.etl.loyalty-db-updates.json-gen1
     -   key: KAFKA_TOPIC_LOYALTY_PLUGIN_DB_UPDATES_STATUS
@@ -106,21 +106,6 @@ scheduling:
             #        operator: In
             #        values: ["value1", "value2"]
             labels: null
-            #ENC[AES256_GCM,data:6mLUwd2QmaAKSjLIWw8mt0Z9vBDj,iv:cPpiL8p2J3aK1S+0Xz86GIq4rjbzMS8s0fegtuQK4TQ=,tag:p9eYt/hK5+/NJmiirFT8Xw==,type:comment]
-            #ENC[AES256_GCM,data:e9UaXUTU7Aa7b1oGDUijXQqqRhb0,iv:/bfN4vLcZ3dwa8QWx0N19r7gdBF20YyyzFgJqqOVx6E=,tag:ufvr/q8DTPUmKmn0b66llA==,type:comment]
-            #ENC[AES256_GCM,data:Ge/zrB198Q0iJuGFu+e6acCUhywWjQ==,iv:/d6apVTfIwmC9T/W2bsMJ2lnkoZq4HNUCakdce+F12E=,tag:DpA1TgQ2FT4HRZJmnoOmAQ==,type:comment]
     tolerations: null
-    #ENC[AES256_GCM,data:HxqkTAzqE3LxTnXBv30fURs=,iv:02eCmNGaWnEWw3X+axi3jP8O4RIxsNc/nz2H+4geSSI=,tag:VQE7PzGVqtPJN7FsAM8Qvw==,type:comment]
-    #ENC[AES256_GCM,data:l9UvX++MDshp7ctwfQdBNm078MQ=,iv:y+xzhQ/QVnY2M984BBsJDJlPMIA0JhprSrHvEB5yA4E=,tag:XyXu+mwPrC1y+jCT34nf8w==,type:comment]
-    #ENC[AES256_GCM,data:La391ipBOtpb1lCZx92ptoWvvg==,iv:mC/F4HQit/FXlxC7IKB2EoM37n0qP6qOVePKGnd5qWA=,tag:I2Z/cDyocE8h9+inrWT8pQ==,type:comment]
-    #ENC[AES256_GCM,data:ZE+QmB3FzaiEfvTjhgIqjXKzcZNaXj3W,iv:FbDEgm1zX+6qIAWEc/hPXI/djGyA8e2dbUOQFhnQ1l0=,tag:kuGoZ0DwTsNK51WOyDAIOA==,type:comment]
-    #ENC[AES256_GCM,data:EVTVFnyXIdYMarbDINc=,iv:0NIsCX2NyOpE3SIDNg13wFgcD4Gk58rvAuFoHE2VKG0=,tag:9ihyROg9clRHU24BwdecZg==,type:comment]
-    #ENC[AES256_GCM,data:/xQdhBNMuVzDa4Fq73wUHg==,iv:H40Duf71RLR6BeHZ5Yl7IyQ6qml0XjnNoA1qr5E9MTw=,tag:xc6/OTOesJJav/hmx7gTrQ==,type:comment]
-    #ENC[AES256_GCM,data:8mTuZuiK0RMXFJK3UINbB5KVoWzNkxw=,iv:WiFy8OL/Z8xQQvryz1WDcRBppTKZlJyg513SJYWXmkg=,tag:wQqK/OBw7XJExoZmA1gDjQ==,type:comment]
-    #ENC[AES256_GCM,data:DcXRvCJW6+tPVl7w2n4S3Huh1V3yGna2g02dUMMyyhZ3r/m1O7pGtDMyrGivImgNXlLZ,iv:CeG3wNHEM5sQR2+adaV5/l2dEd6AcauuXlBKhbj9auw=,tag:xEniPlIBFn8pfRKDDr7PSw==,type:comment]
-    #ENC[AES256_GCM,data:cpo/KxeV,iv:2SYzvWoddtO6rA0eJwjYijoDYgMcBVojR6HAJzqZu9Q=,tag:yOpFGwLShIecxopVqfB01g==,type:comment]
-    #ENC[AES256_GCM,data:r8qKTbwtbR89AiTVg27erR3o2h+/nR2c7HKgM+z4pm2iwA==,iv:aiGIl69NVg7AK7bcNUj6MA/CHknCAv7huMPGMCXXLKE=,tag:x38b/DcHLDkDBIU8juD1NA==,type:comment]
-    #ENC[AES256_GCM,data:hgUFu0V+EJ8GiSvFjw==,iv:ol38Gld92uXLvNnldQ5HccxW49ZqWamoPxL7lb1rzbg=,tag:3rX4SjTrBNTgqKOIDOVOjg==,type:comment]
-    #ENC[AES256_GCM,data:+8xiyzRzzGoXg0D+ByPLkzQ=,iv:Y7putvrbM3jQIH51LtsOSpPYKdcCCrW9AYPvei1zikI=,tag:jSWzET824ht334me5lfVhw==,type:comment]
 networkPolicy:
     ingress: null
