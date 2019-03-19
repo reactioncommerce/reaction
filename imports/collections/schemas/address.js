@@ -17,6 +17,8 @@ const withoutCodeCountries = ["AO", "AG", "AW", "BS", "BZ", "BJ", "BW",
  * @type {SimpleSchema}
  * @property {String} _id
  * @property {String} fullName required
+ * @property {String} fistName
+ * @property {String} lastName
  * @property {String} address1 required
  * @property {String} address2
  * @property {String} city required
@@ -40,6 +42,16 @@ export const Address = new SimpleSchema({
   "fullName": {
     type: String,
     label: "Full name"
+  },
+  "firstName": {
+    type: String,
+    label: "First name",
+    optional: true
+  },
+  "lastName": {
+    type: String,
+    label: "Last name",
+    optional: true
   },
   "address1": {
     label: "Address 1",

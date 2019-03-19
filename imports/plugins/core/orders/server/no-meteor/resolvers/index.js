@@ -1,5 +1,5 @@
 import { getConnectionTypeResolvers } from "@reactioncommerce/reaction-graphql-utils";
-import { encodeOrderFulfillmentGroupOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/order";
+import { encodeOrderFulfillmentGroupOpaqueId, encodeOrderItemOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/order";
 import Mutation from "./Mutation";
 import Order from "./Order";
 import OrderFulfillmentGroup from "./OrderFulfillmentGroup";
@@ -20,5 +20,8 @@ export default {
   },
   OrderItem,
   Query,
+  SplitOrderItemPayload: {
+    newItemId: (node) => encodeOrderItemOpaqueId(node.newItemId)
+  },
   ...getConnectionTypeResolvers("OrdersByAccountId")
 };
