@@ -1,7 +1,5 @@
 # v2.0.0-rc.11
 
-Status: **Draft**
-
 This is our eleventh **release candidate** for v2.0.0 of Reaction.
 Please check it out and let us know what works and what doesn't for you.
 
@@ -55,8 +53,13 @@ All product forms have been moved on from the sidebar and into the main view and
 
 # Breaking Changes
 
+Reaction is no-longer a customer-facing app, it's an administration tool and offers a GraphQL API.
+
+We have removed the `search-mongo` and `ui-search` plugins from the `imports/plugins/included directory` of `reaction`. Which in turn removes `order search bar` from operator order UI. (#5053)
+
 ## Feature
 
+- feat: remove search plugins (#5053)
 - feat: allow users to disable plugins via config (#5031)
 - feat: add addOrderFulfillmentGroup mutation (#5027)
 - feat: add splitOrderItem mutation (#5024)
@@ -76,6 +79,11 @@ All product forms have been moved on from the sidebar and into the main view and
 - fix: startup asset provisioning (#5033)
 - fix: make bin/setup more robust to missing directories (#5026)
 - fix: item subtotal is incorrect when additional quantities of the same item are added to cart (#5021)
+
+## Chore
+
+- chore: add better logging of package loading (#5051)
+- chore: add optional first and last name fields to schemas (#5050)
 
 # v2.0.0-rc.10
 
