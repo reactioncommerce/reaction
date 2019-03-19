@@ -79,13 +79,13 @@ export default async function createCart(context, input) {
   if (!createReferenceIdFunctions || createReferenceIdFunctions.length === 0) {
     referenceId = Random.id();
   } else {
-    referenceId = createReferenceIdFunctions[0](cart);
+    referenceId = createReferenceIdFunctions[0](newCart);
     if (createReferenceIdFunctions.length > 1) {
       Logger.warn("More than one createCartReferenceId function defined. Using first one defined");
     }
   }
 
-  cart.referenceId = referenceId;
+  newCart.referenceId = referenceId;
 
   CartSchema.validate(newCart);
 
