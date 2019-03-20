@@ -1,5 +1,3 @@
-import ReactionError from "@reactioncommerce/reaction-error";
-
 /**
  * @summary Calculates total discount amount for a cart based on all discounts
  *   that have been applied to it

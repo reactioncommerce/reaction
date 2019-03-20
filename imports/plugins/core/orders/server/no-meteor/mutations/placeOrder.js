@@ -174,8 +174,10 @@ export default async function placeOrder(context, input) {
   } = orderInput;
   const { accountId, account, collections, getFunctionsOfType, userId } = context;
   const { Orders, Cart } = collections;
+
+  let cart;
   if (cartId) {
-    const cart = await Cart.findOne({ _id: cartId });
+    cart = await Cart.findOne({ _id: cartId });
     if (!cart) {
       throw new ReactionError("not-found", "Cart not found while trying to place order");
     }
@@ -275,7 +277,7 @@ export default async function placeOrder(context, input) {
   if (!createReferenceIdFunctions || createReferenceIdFunctions.length === 0) {
     // if the cart has a reference Id, and no custom function is created use that
     if (_.get(cart, "referenceId")) { // we want the else to fallthrough if no cart to keep the if/else logic simple
-      referenceId = cart.referenceId;
+      ({ referenceId } = cart);
     } else {
       referenceId = Random.id();
     }

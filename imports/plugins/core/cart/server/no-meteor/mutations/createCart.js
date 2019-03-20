@@ -1,9 +1,9 @@
 import Random from "@reactioncommerce/random";
 import ReactionError from "@reactioncommerce/reaction-error";
+import Logger from "@reactioncommerce/logger";
 import hashLoginToken from "/imports/node-app/core/util/hashLoginToken";
 import { Cart as CartSchema } from "/imports/collections/schemas";
 import addCartItems from "../util/addCartItems";
-import Logger from "@reactioncommerce/logger";
 
 /**
  * @method createCart
