@@ -1,4 +1,3 @@
-import { Meteor } from "meteor/meteor";
 import { Template } from "meteor/templating";
 import { i18next, Reaction } from "/client/api";
 import * as Collections from "/lib/collections";
@@ -103,43 +102,6 @@ Template.accountProfile.helpers({
       component: Components.ReactionAvatar,
       currentUser: true
     };
-  },
-
-  /**
-   * @method AddressBook
-   * @summary returns a component for updating a user's address.
-   * @since 2.0.0
-   * @return {Object} - contains the component for updating a user's address.
-   * @ignore
-   */
-  AddressBook() {
-    return {
-      component: Components.AddressBook
-    };
-  },
-
-  /**
-   * @method userOrders
-   * @summary returns a user's order history, up to the 25 most recent ones.
-   * @since 1.5.0
-   * @return {Array|null} - an array of a user's orders.
-   * @ignore
-   */
-  userOrders() {
-    const targetUserId = Reaction.Router.getQueryParam("userId") || Reaction.getUserId();
-    const account = Collections.Accounts.findOne({ userId: targetUserId });
-    const accountId = (account && account._id) || targetUserId;
-    const orderSub = Meteor.subscribe("AccountOrders", accountId);
-    if (orderSub.ready()) {
-      return Collections.Orders.find({
-        accountId
-      }, {
-        sort: {
-          createdAt: -1
-        },
-        limit: 25
-      });
-    }
   },
 
   /**
