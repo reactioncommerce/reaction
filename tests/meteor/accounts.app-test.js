@@ -25,10 +25,6 @@ describe("Account Meteor method ", function () {
   const originals = {};
   let sandbox;
 
-  before(function () {
-    originals["mergeCart"] = Meteor.server.method_handlers["cart/mergeCart"];
-  });
-
   after(() => {
     Packages.remove({});
     Cart.remove({});
@@ -68,12 +64,6 @@ describe("Account Meteor method ", function () {
   }
 
   describe("addressBookUpdate", function () {
-    beforeEach(function () {
-      // editing your address book also updates your cart, so be sure there
-      // is a cart present
-      Meteor.call("cart/createCart");
-    });
-
     it("should allow user to edit addresses", function () {
       sandbox.stub(Reaction, "hasAdminAccess", () => true);
       const updateAccountSpy = sandbox.spy(Accounts, "update");
@@ -152,12 +142,6 @@ describe("Account Meteor method ", function () {
   });
 
   describe("addressBookRemove", function () {
-    beforeEach(function () {
-      // editing your address book also updates your cart, so be sure there
-      // is a cart present
-      Meteor.call("cart/createCart");
-    });
-
     it("should allow user to remove address", function () {
       const address = fakeAccount.profile.addressBook[0];
       expect(fakeAccount.profile.addressBook.length).to.equal(1);
