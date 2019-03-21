@@ -205,7 +205,6 @@ export const Cart = new SimpleSchema({
   },
   "referenceId": {
     type: String,
-    index: 1,
     optional: true
   },
   "email": {
