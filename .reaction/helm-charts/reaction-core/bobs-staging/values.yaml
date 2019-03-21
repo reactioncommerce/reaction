@@ -19,7 +19,7 @@ service:
 app:
     envVars:
     -   key: REACTION_LOG_LEVEL
-        value: "warn"
+        value: "info"
     -   key: REACTION_LOG_FORMAT
         value: "json"
     -   key: ROOT_URL
