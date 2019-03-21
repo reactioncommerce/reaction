@@ -79,7 +79,7 @@ export default async function createCart(context, input) {
   if (!createReferenceIdFunctions || createReferenceIdFunctions.length === 0) {
     referenceId = Random.id();
   } else {
-    referenceId = await createReferenceIdFunctions[0](newCart);
+    referenceId = await createReferenceIdFunctions[0](context, newCart);
     if (typeof referenceId !== "string") {
       throw new ReactionError("invalid-parameter", "createCartReferenceId returned a non-string value");
     }
