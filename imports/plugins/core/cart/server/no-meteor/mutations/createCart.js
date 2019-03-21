@@ -79,7 +79,10 @@ export default async function createCart(context, input) {
   if (!createReferenceIdFunctions || createReferenceIdFunctions.length === 0) {
     referenceId = Random.id();
   } else {
-    referenceId = createReferenceIdFunctions[0](newCart);
+    referenceId = await createReferenceIdFunctions[0](newCart);
+    if (typeof referenceId !== "string") {
+      throw new ReactionError("invalid-parameter", "createCartReferenceId return a non-string value");
+    }
     if (createReferenceIdFunctions.length > 1) {
       Logger.warn("More than one createCartReferenceId function defined. Using first one defined");
     }

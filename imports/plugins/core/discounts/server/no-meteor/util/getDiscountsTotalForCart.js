@@ -2,7 +2,7 @@
  * @summary Calculates total discount amount for a cart based on all discounts
  *   that have been applied to it
  * @param {Object} context Context object
- * @param {String} cart The cart to get discounts from
+ * @param {Object} cart The cart to get discounts from
  * @returns {Object} Object with `discounts` array and `total`
  */
 export default async function getDiscountsTotalForCart(context, cart) {

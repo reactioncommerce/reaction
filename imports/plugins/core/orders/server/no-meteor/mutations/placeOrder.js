@@ -282,7 +282,10 @@ export default async function placeOrder(context, input) {
       referenceId = Random.id();
     }
   } else {
-    referenceId = createReferenceIdFunctions[0](cart, order);
+    referenceId = await createReferenceIdFunctions[0](order, cart);
+    if (typeof referenceId !== "string") {
+      throw new ReactionError("invalid-parameter", "createOrderReferenceId function returned a non-string value");
+    }
     if (createReferenceIdFunctions.length > 1) {
       Logger.warn("More than one createOrderReferenceId function defined. Using first one defined");
     }
