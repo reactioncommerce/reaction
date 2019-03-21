@@ -1,4 +1,5 @@
 import Reaction from "/imports/plugins/core/core/server/Reaction";
+import mutateNewOrderItemBeforeCreate from "./server/no-meteor/mutateNewOrderItemBeforeCreate";
 import mutateNewVariantBeforeCreate from "./server/no-meteor/mutateNewVariantBeforeCreate";
 import publishProductToCatalog from "./server/no-meteor/publishProductToCatalog";
 import { registerPluginHandler } from "./server/no-meteor/registration";
@@ -17,6 +18,7 @@ Reaction.registerPackage({
     publishedProductVariantFields: ["isTaxable", "taxCode", "taxDescription"]
   },
   functionsByType: {
+    mutateNewOrderItemBeforeCreate: [mutateNewOrderItemBeforeCreate],
     mutateNewVariantBeforeCreate: [mutateNewVariantBeforeCreate],
     publishProductToCatalog: [publishProductToCatalog],
     registerPluginHandler: [registerPluginHandler],

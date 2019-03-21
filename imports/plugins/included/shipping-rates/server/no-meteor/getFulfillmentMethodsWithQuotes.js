@@ -25,7 +25,6 @@ export default async function getFulfillmentMethodsWithQuotes(context, commonOrd
     fileName: "hooks.js"
   };
 
-
   if (retrialTargets.length > 0) {
     const isNotAmongFailedRequests = retrialTargets.every((target) =>
       target.packageName !== currentMethodInfo.packageName &&
@@ -36,14 +35,14 @@ export default async function getFulfillmentMethodsWithQuotes(context, commonOrd
   }
 
   // Verify that we have a valid address to work with
-  let shippingErrorDetails;
   if (!commonOrder.shippingAddress) {
-    shippingErrorDetails = {
+    const errorDetails = {
       requestStatus: "error",
       shippingProvider: "flat-rate-shipping",
       message: "Fulfillment group is missing a shipping address"
     };
-    return [[shippingErrorDetails], []];
+    rates.push(errorDetails);
+    return [rates, retrialTargets];
   }
 
   let merchantShippingRates = false;

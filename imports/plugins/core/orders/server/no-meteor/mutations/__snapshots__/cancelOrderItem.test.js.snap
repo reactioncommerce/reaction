@@ -1,0 +1,25 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`throws if cancelQuantity is 0 1`] = `"Cancel quantity must be at least 1"`;
+
+exports[`throws if cancelQuantity is greater than item quantity 1`] = `"cancelQuantity may not be greater than item quantity"`;
+
+exports[`throws if cancelQuantity is negative 1`] = `"Cancel quantity must be at least 1"`;
+
+exports[`throws if cancelQuantity isn't supplied 1`] = `"Cancel quantity is required"`;
+
+exports[`throws if itemId isn't supplied 1`] = `"Item ID is required"`;
+
+exports[`throws if orderId isn't supplied 1`] = `"Order ID is required"`;
+
+exports[`throws if permission check fails 1`] = `"Access Denied"`;
+
+exports[`throws if the database update fails 1`] = `"Unable to update order"`;
+
+exports[`throws if the order doesn't exist 1`] = `"Order not found"`;
+
+exports[`throws if the order item doesn't exist 1`] = `"Order item not found"`;
+
+exports[`throws if user who placed order tries to cancel at invalid current item status 1`] = `"Item status (processing) is not one of: new"`;
+
+exports[`throws if user who placed order tries to cancel at invalid current order status 1`] = `"Order status (processing) is not one of: new"`;

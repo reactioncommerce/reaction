@@ -56,6 +56,20 @@ input AddressInput {
   "The full name of a person at this address"
   fullName: String!
 
+  """
+  The first name of a person at this address
+  This is an optional field to support legacy and third party platforms
+  We use fullName internally, and use first and last name fields to combine into a full name if needed
+  """
+  firstName: String
+
+  """
+  The last name of a person at this address
+  This is an optional field to support legacy and third party platforms
+  We use fullName internally, and use first and last name fields to combine into a full name if needed
+  """
+  lastName: String
+
   "Is this the default address for billing purposes?"
   isBillingDefault: Boolean
 
@@ -100,6 +114,20 @@ type Address {
 
   "The full name of a person at this address"
   fullName: String!
+
+  """
+  The first name of a person at this address
+  This is an optional field to support legacy and third party platforms
+  We use fullName internally, and use first and last name fields to combine into a full name if needed
+  """
+  firstName: String
+
+  """
+  The last name of a person at this address
+  This is an optional field to support legacy and third party platforms
+  We use fullName internally, and use first and last name fields to combine into a full name if needed
+  """
+  lastName: String
 
   "Is this the default address for billing purposes?"
   isBillingDefault: Boolean

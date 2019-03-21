@@ -5,5 +5,6 @@ import productTags from "./productTags";
 export default {
   _id: (node) => encodeOrderItemOpaqueId(node._id),
   productTags,
-  shop: resolveShopFromShopId
+  shop: resolveShopFromShopId,
+  status: (node) => node.workflow.status
 };

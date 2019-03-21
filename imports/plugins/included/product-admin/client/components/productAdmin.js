@@ -3,10 +3,22 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import Alert from "sweetalert2";
 import { Components } from "@reactioncommerce/reaction-components";
-import { i18next, Router } from "/client/api";
+import { i18next } from "/client/api";
 import update from "immutability-helper";
 import { highlightInput } from "/imports/plugins/core/ui/client/helpers/animations";
 import withGenerateSitemaps from "/imports/plugins/included/sitemap-generator/client/hocs/withGenerateSitemaps";
+import Card from "@material-ui/core/Card";
+import CardHeader from "@material-ui/core/CardHeader";
+import CardContent from "@material-ui/core/CardContent";
+import withStyles from "@material-ui/core/styles/withStyles";
+import { compose } from "recompose";
+import ProductMediaGallery from "./ProductMediaGallery";
+
+const styles = (theme) => ({
+  card: {
+    marginBottom: theme.spacing.unit * 2
+  }
+});
 
 const fieldNames = [
   "title",
@@ -105,13 +117,6 @@ class ProductAdmin extends Component {
     }
   }
 
-
-  handleCardExpand = (event, card, cardName, isExpanded) => {
-    if (this.props.onCardExpand) {
-      this.props.onCardExpand(isExpanded ? cardName : undefined);
-    }
-  }
-
   handleDeleteProduct = () => {
     if (this.props.onDeleteProduct) {
       this.props.onDeleteProduct(this.props.product);
@@ -123,7 +128,6 @@ class ProductAdmin extends Component {
       this.props.onRestoreProduct(this.props.product);
     }
   }
-
 
   handleFieldChange = (event, value, field) => {
     const newState = update(this.state, {
@@ -225,18 +229,6 @@ class ProductAdmin extends Component {
     return this.state.product || this.props.product || {};
   }
 
-  get permalink() {
-    if (this.props.product) {
-      return Router.pathFor("product", {
-        hash: {
-          handle: this.props.product.handle
-        }
-      });
-    }
-
-    return "";
-  }
-
   renderProductVisibilityLabel() {
     if (this.product.isVisible) {
       return (
@@ -252,31 +244,13 @@ class ProductAdmin extends Component {
   isExpanded = (groupName) => this.state.expandedCard === groupName
 
   render() {
+    const { classes } = this.props;
+
     return (
-      <Components.CardGroup>
-        <Components.Card
-          expanded={this.isExpanded("productDetails")}
-          name={"productDetails"}
-          onExpand={this.handleCardExpand}
-        >
-          <Components.CardHeader
-            actAsExpander={true}
-            i18nKeyTitle="productDetailEdit.productSettings"
-            title="Product Settings"
-            onChange={this.handleFieldChange}
-          />
-          <Components.CardBody expandable={true}>
-            <Components.Select
-              clearable={false}
-              i18nKeyLabel="productDetailEdit.template"
-              i18nKeyPlaceholder="productDetailEdit.templateSelectPlaceholder"
-              label="Template"
-              name="template"
-              onChange={this.handleSelectChange}
-              options={this.props.templates}
-              placeholder="Select a template"
-              value={this.product.template}
-            />
+      <div>
+        <Card className={classes.card}>
+          <CardHeader title={i18next.t("admin.productAdmin.details")} />
+          <CardContent>
             <Components.TextField
               i18nKeyLabel="productDetailEdit.title"
               i18nKeyPlaceholder="productDetailEdit.title"
@@ -290,7 +264,6 @@ class ProductAdmin extends Component {
               value={this.product.title}
             />
             <Components.TextField
-              helpText={this.permalink}
               i18nKeyLabel="productDetailEdit.permalink"
               i18nKeyPlaceholder="productDetailEdit.permalink"
               label="Permalink"
@@ -350,6 +323,16 @@ class ProductAdmin extends Component {
               value={this.product.originCountry}
               options={this.props.countries}
             />
+            <Components.TextField
+              i18nKeyLabel="productDetailEdit.template"
+              i18nKeyPlaceholder="productDetailEdit.templateSelectPlaceholder"
+              label="Template"
+              name="template"
+              onBlur={this.handleFieldBlur}
+              onChange={this.handleFieldChange}
+              ref="templateInput"
+              value={this.product.template}
+            />
             {this.product && (
               <div className="checkbox">
                 <Components.Checkbox
@@ -361,19 +344,21 @@ class ProductAdmin extends Component {
                 />
               </div>
             )}
-          </Components.CardBody>
-        </Components.Card>
-        <Components.Card
-          expanded={this.isExpanded("social")}
-          name={"social"}
-          onExpand={this.handleCardExpand}
-        >
-          <Components.CardHeader
-            actAsExpander={true}
-            i18nKeyTitle="social.socialTitle"
-            title="Social"
-          />
-          <Components.CardBody expandable={true}>
+          </CardContent>
+        </Card>
+
+        <Card className={classes.card}>
+          <CardHeader title={i18next.t("admin.productAdmin.mediaGallery")} />
+          <CardContent>
+            <ProductMediaGallery
+              productId={this.product._id}
+            />
+          </CardContent>
+        </Card>
+
+        <Card className={classes.card}>
+          <CardHeader title={i18next.t("social.socialTitle")} />
+          <CardContent>
             <Components.TextField
               i18nKeyLabel="productDetailEdit.facebookMsg"
               i18nKeyPlaceholder="productDetailEdit.facebookMsg"
@@ -418,20 +403,12 @@ class ProductAdmin extends Component {
               ref="googleplusMsgInput"
               value={this.product.googleplusMsg}
             />
-          </Components.CardBody>
-        </Components.Card>
+          </CardContent>
+        </Card>
 
-        <Components.Card
-          expanded={this.isExpanded("hashtags")}
-          name={"hashtags"}
-          onExpand={this.handleCardExpand}
-        >
-          <Components.CardHeader
-            actAsExpander={true}
-            i18nKeyTitle="productDetail.tags"
-            title="Tags"
-          />
-          <Components.CardBody expandable={true}>
+        <Card className={classes.card}>
+          <CardHeader title={i18next.t("productDetail.tags")} />
+          <CardContent>
             <Components.TagList
               editable={this.props.editable}
               enableNewTagForm={true}
@@ -440,20 +417,12 @@ class ProductAdmin extends Component {
                 fullWidth: true
               }}
             />
-          </Components.CardBody>
-        </Components.Card>
+          </CardContent>
+        </Card>
 
-        <Components.Card
-          expanded={this.isExpanded("metafields")}
-          name={"metafields"}
-          onExpand={this.handleCardExpand}
-        >
-          <Components.CardHeader
-            actAsExpander={true}
-            i18nKeyTitle="productDetailEdit.details"
-            title="Details"
-          />
-          <Components.CardBody expandable={true}>
+        <Card className={classes.card}>
+          <CardHeader title={i18next.t("admin.productAdmin.metadata")} />
+          <CardContent>
             <Components.Metadata
               metafields={this.product.metafields}
               newMetafield={this.props.newMetafield}
@@ -461,14 +430,15 @@ class ProductAdmin extends Component {
               onMetaRemove={this.handleMetaRemove}
               onMetaSave={this.handleMetaSave}
             />
-          </Components.CardBody>
-        </Components.Card>
-      </Components.CardGroup>
+          </CardContent>
+        </Card>
+      </div>
     );
   }
 }
 
 ProductAdmin.propTypes = {
+  classes: PropTypes.object,
   countries: PropTypes.arrayOf(PropTypes.object),
   editFocus: PropTypes.oneOfType([PropTypes.string, PropTypes.arrayOf(PropTypes.string)]),
   editable: PropTypes.bool, // eslint-disable-line react/boolean-prop-naming
@@ -494,4 +464,8 @@ ProductAdmin.propTypes = {
   viewProps: PropTypes.object
 };
 
-export default withGenerateSitemaps(ProductAdmin);
+
+export default compose(
+  withGenerateSitemaps,
+  withStyles(styles)
+)(ProductAdmin);
