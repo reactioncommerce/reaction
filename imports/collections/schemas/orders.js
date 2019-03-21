@@ -466,7 +466,11 @@ export const Order = new SimpleSchema({
     optional: true
   },
   "payments.$": Payment,
-  "referenceId": String,
+  "referenceId": {
+    type: String,
+    index: 1,
+    unique: true
+  },
   "shipping": [OrderFulfillmentGroup],
   "shopId": {
     type: String,
