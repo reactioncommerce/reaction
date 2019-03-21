@@ -1,15 +1,14 @@
 /* eslint dot-notation: 0 */
 /* eslint prefer-arrow-callback:0 */
-import Random from "@reactioncommerce/random";
 import { Meteor } from "meteor/meteor";
 import { check, Match } from "meteor/check";
 import { Factory } from "meteor/dburles:factory";
 import ReactionError from "@reactioncommerce/reaction-error";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
-import { Cart, Products, Accounts } from "/lib/collections";
+import { Cart, Products } from "/lib/collections";
 import { expect } from "meteor/practicalmeteor:chai";
 import { sinon } from "meteor/practicalmeteor:sinon";
-import { getShop, getAddress } from "/imports/plugins/core/core/server/fixtures/shops";
+import { getShop } from "/imports/plugins/core/core/server/fixtures/shops";
 import { addProduct } from "/imports/plugins/core/core/server/fixtures/products";
 import Fixtures from "/imports/plugins/core/core/server/fixtures";
 
@@ -135,100 +134,6 @@ describe("Add/Create cart methods", function () {
         return Meteor.call("cart/addToCart", "fakeProductId", variantId, quantity);
       }
       expect(addToCartFunc).to.throw(ReactionError, "Product with such id was not found [not-found]");
-      return done();
-    });
-  });
-
-  describe("cart/unsetAddresses", function () {
-    it("should correctly remove addresses from cart", function (done) {
-      let cart = Factory.create("cart", { accountId });
-      spyOnMethod("setShipmentAddress", userId);
-      spyOnMethod("setPaymentAddress", userId);
-
-      const cartId = cart._id;
-      const address = Object.assign({}, getAddress(), {
-        _id: Random.id(),
-        isShippingDefault: true,
-        isBillingDefault: true
-      });
-
-      Meteor.call("cart/setPaymentAddress", cartId, null, address);
-      Meteor.call("cart/setShipmentAddress", cartId, null, address);
-      cart = Cart.findOne({ _id: cartId });
-      expect(cart).not.to.be.undefined;
-      expect(cart.shipping[0].address._id).to.equal(address._id);
-      expect(cart.billing[0].address._id).to.equal(address._id);
-
-      // our Method checking
-      Meteor.call("cart/unsetAddresses", cartId, null, address._id);
-
-      cart = Cart.findOne({ _id: cartId });
-      expect(cart).to.not.be.undefined;
-      expect(cart.shipping[0].address).to.be.undefined;
-      expect(cart.billing[0].address).to.be.undefined;
-      return done();
-    });
-
-    it("should throw error if wrong arguments were passed", function (done) {
-      const accountUpdateStub = sandbox.stub(Accounts, "update");
-
-      expect(function () {
-        return Meteor.call("cart/unsetAddresses", 123456);
-      }).to.throw();
-
-      expect(function () {
-        return Meteor.call("cart/unsetAddresses", {});
-      }).to.throw();
-
-      expect(function () {
-        return Meteor.call("cart/unsetAddresses", null);
-      }).to.throw();
-
-      expect(function () {
-        return Meteor.call("cart/unsetAddresses");
-      }).to.throw();
-
-      expect(function () {
-        return Meteor.call("cart/unsetAddresses", "asdad", 123);
-      }).to.throw();
-
-      // https://github.com/aldeed/meteor-simple-schema/issues/522
-      expect(function () {
-        return Meteor.call("accounts/addressBookRemove", () => {
-          expect(true).to.be.true;
-        });
-      }).to.not.throw();
-
-      expect(accountUpdateStub).to.not.have.been.called;
-      accountUpdateStub.restore();
-      return done();
-    });
-
-    it("should update cart via `type` argument", function (done) {
-      let cart = Factory.create("cart", { accountId });
-      spyOnMethod("setShipmentAddress", userId);
-      spyOnMethod("setPaymentAddress", userId);
-
-      const cartId = cart._id;
-      const address = Object.assign({}, getAddress(), {
-        _id: Random.id(),
-        isShippingDefault: true,
-        isBillingDefault: true
-      });
-      Meteor.call("cart/setPaymentAddress", cartId, null, address);
-      Meteor.call("cart/setShipmentAddress", cartId, null, address);
-      cart = Cart.findOne({ _id: cartId });
-
-      expect(cart.shipping[0].address._id).to.equal(address._id);
-      expect(cart.billing[0].address._id).to.equal(address._id);
-
-      Meteor.call("cart/unsetAddresses", cartId, null, address._id, "billing");
-      Meteor.call("cart/unsetAddresses", cartId, null, address._id, "shipping");
-
-      cart = Cart.findOne({ _id: cartId });
-
-      expect(cart.shipping[0].address).to.be.undefined;
-      expect(cart.billing[0].address).to.be.undefined;
       return done();
     });
   });

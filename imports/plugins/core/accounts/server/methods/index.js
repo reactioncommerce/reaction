@@ -1,4 +1,3 @@
-import addressBookAdd from "./addressBookAdd";
 import addressBookRemove from "./addressBookRemove";
 import addressBookUpdate from "./addressBookUpdate";
 import addUserPermissions from "./addUserPermissions";
@@ -7,7 +6,6 @@ import getUserId from "./getUserId";
 import groupMethods from "./group";
 import inviteShopMember from "./inviteShopMember";
 import inviteShopOwner from "./inviteShopOwner";
-import markAddressValidationBypassed from "./markAddressValidationBypassed";
 import removeEmailAddress from "./removeEmailAddress";
 import removeUserPermissions from "./removeUserPermissions";
 import sendResetPasswordEmail from "./sendResetPasswordEmail";
@@ -15,7 +13,6 @@ import setProfileCurrency from "./setProfileCurrency";
 import setUserPermissions from "./setUserPermissions";
 import updateEmailAddress from "./updateEmailAddress";
 import updateServiceConfiguration from "./updateServiceConfiguration";
-import validateAddress from "./validateAddress";
 import verifyAccount from "./verifyAccount";
 
 /**
@@ -33,14 +30,12 @@ import verifyAccount from "./verifyAccount";
 */
 
 export default {
-  "accounts/addressBookAdd": addressBookAdd,
   "accounts/addressBookRemove": addressBookRemove,
   "accounts/addressBookUpdate": addressBookUpdate,
   "accounts/addUserPermissions": addUserPermissions,
   "accounts/createFallbackLoginToken": createFallbackLoginToken,
   "accounts/inviteShopMember": inviteShopMember,
   "accounts/inviteShopOwner": inviteShopOwner,
-  "accounts/markAddressValidationBypassed": markAddressValidationBypassed,
   "accounts/removeEmailAddress": removeEmailAddress,
   "accounts/removeUserPermissions": removeUserPermissions,
   "accounts/sendResetPasswordEmail": sendResetPasswordEmail,
@@ -48,7 +43,6 @@ export default {
   "accounts/setUserPermissions": setUserPermissions,
   "accounts/updateEmailAddress": updateEmailAddress,
   "accounts/updateServiceConfiguration": updateServiceConfiguration,
-  "accounts/validateAddress": validateAddress,
   "accounts/verifyAccount": verifyAccount,
   "reaction/getUserId": getUserId,
   ...groupMethods
