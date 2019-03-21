@@ -81,9 +81,11 @@ app:
     -   key: KAFKA_TOPIC_LOYALTY_PLUGIN_DB_UPDATES_STATUS
         value: bobs.etl.loyalty-db-updates-status.json-gen1
     -   key: STARTING_NEW_CUSTOMER_NUMBER
-        value: 1
+        value: "1100151420184"
     -   key: PRODUCT_PUBLISHER_AUTO_PUBLISH
         value: false
+    -   key: LOYALTY_PLUGIN_BATCH_CONSUME_SIZE
+        value: "10000"
     -   key: PRICING_CONSUMER_ENABLED
         value: true
         ## Configure resource requests and limits
