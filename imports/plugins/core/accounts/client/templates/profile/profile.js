@@ -1,6 +1,5 @@
 import { Meteor } from "meteor/meteor";
 import { Template } from "meteor/templating";
-import { ReactiveVar } from "meteor/reactive-var";
 import { i18next, Reaction } from "/client/api";
 import * as Collections from "/lib/collections";
 import { Components } from "@reactioncommerce/reaction-components";
@@ -35,13 +34,6 @@ function getTargetAccount() {
 }
 
 Template.accountProfile.onCreated(() => {
-  const template = Template.instance();
-
-  template.userHasPassword = ReactiveVar(false);
-
-  Meteor.call("accounts/currentUserHasPassword", (error, result) => {
-    template.userHasPassword.set(result);
-  });
   // hide actionView if open, doesn't relate to profile page
   Reaction.hideActionView();
 });
@@ -124,17 +116,6 @@ Template.accountProfile.helpers({
     return {
       component: Components.AddressBook
     };
-  },
-
-  /**
-   * @method userHasPassword
-   * @summary checks whether a user has set a password for his/her account.
-   * @since 1.5.0
-   * @return {Boolean} - returns true if the current user has a password and false if otherwise.
-   * @ignore
-   */
-  userHasPassword() {
-    return Template.instance().userHasPassword.get();
   },
 
   /**
