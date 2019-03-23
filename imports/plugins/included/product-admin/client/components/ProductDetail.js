@@ -2,7 +2,6 @@ import React, { Fragment } from "react";
 import PropTypes from "prop-types";
 import { Components } from "@reactioncommerce/reaction-components";
 import Grid from "@material-ui/core/Grid";
-import withProduct from "../hocs/withProduct";
 import ProductList from "./ProductList";
 import ProductAdminForm from "./productAdmin";
 import ProductHeader from "./ProductHeader";
@@ -71,4 +70,4 @@ ProductDetail.propTypes = {
   variants: PropTypes.arrayOf(PropTypes.object)
 };
 
-export default withProduct(ProductDetail);
+export default ProductDetail;
