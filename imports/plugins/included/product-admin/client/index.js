@@ -18,6 +18,7 @@ import ContentViewExtraWideLayout from "/imports/client/ui/layouts/ContentViewEx
 import withCreateProduct from "./hocs/withCreateProduct";
 import withProduct from "./hocs/withProduct";
 import withVariant from "./hocs/withVariant";
+import withVariantOption from "./hocs/withVariantOption";
 
 // Register routes
 registerOperatorRoute({
@@ -27,7 +28,8 @@ registerOperatorRoute({
   mainComponent: VariantDetail,
   hocs: [
     withProduct,
-    withVariant
+    withVariant,
+    withVariantOption
   ]
 });
 
