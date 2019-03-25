@@ -2,6 +2,7 @@ import cors from "cors";
 import express from "express";
 import { makeExecutableSchema, mergeSchemas } from "apollo-server";
 import { ApolloServer } from "apollo-server-express";
+import config from "./config";
 import buildContext from "./util/buildContext";
 import getErrorFormatter from "./util/getErrorFormatter";
 import tokenMiddleware from "./util/tokenMiddleware";
@@ -55,13 +56,13 @@ export default function createApolloServer(options = {}) {
       return context;
     },
     debug: options.debug || false,
-    introspection: options.graphiql,
-    playground: options.graphiql,
     formatError: getErrorFormatter(),
     schema,
     subscriptions: {
       path
-    }
+    },
+    introspection: config.GRAPHQL_INTROSPECTION_ENABLED,
+    playground: config.GRAPHQL_PLAYGROUND_ENABLED
   });
 
   // GraphQL endpoint, enhanced with JSON body parser
