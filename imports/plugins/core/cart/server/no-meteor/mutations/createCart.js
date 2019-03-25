@@ -1,5 +1,6 @@
 import Random from "@reactioncommerce/random";
 import ReactionError from "@reactioncommerce/reaction-error";
+import Logger from "@reactioncommerce/logger";
 import hashLoginToken from "/imports/node-app/core/util/hashLoginToken";
 import { Cart as CartSchema } from "/imports/collections/schemas";
 import addCartItems from "../util/addCartItems";
@@ -22,7 +23,7 @@ import addCartItems from "../util/addCartItems";
  */
 export default async function createCart(context, input) {
   const { items, shopId, shouldCreateWithoutItems = false } = input;
-  const { appEvents, collections, accountId = null, userId = null } = context;
+  const { appEvents, collections, accountId = null, userId = null, getFunctionsOfType } = context;
   const { Cart, Shops } = collections;
 
   if (shouldCreateWithoutItems !== true && (!Array.isArray(items) || !items.length)) {
@@ -57,6 +58,7 @@ export default async function createCart(context, input) {
   const shop = await Shops.findOne({ _id: shopId }, { projection: { currency: 1 } });
   const cartCurrencyCode = (shop && shop.currency) || "USD";
 
+
   const createdAt = new Date();
   const newCart = {
     _id: Random.id(),
@@ -71,6 +73,22 @@ export default async function createCart(context, input) {
       status: "new"
     }
   };
+
+  let referenceId;
+  const createReferenceIdFunctions = getFunctionsOfType("createCartReferenceId");
+  if (!createReferenceIdFunctions || createReferenceIdFunctions.length === 0) {
+    referenceId = Random.id();
+  } else {
+    referenceId = await createReferenceIdFunctions[0](context, newCart);
+    if (typeof referenceId !== "string") {
+      throw new ReactionError("invalid-parameter", "createCartReferenceId returned a non-string value");
+    }
+    if (createReferenceIdFunctions.length > 1) {
+      Logger.warn("More than one createCartReferenceId function defined. Using first one defined");
+    }
+  }
+
+  newCart.referenceId = referenceId;
 
   CartSchema.validate(newCart);
 

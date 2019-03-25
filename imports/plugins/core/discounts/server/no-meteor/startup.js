@@ -17,10 +17,9 @@ export default function startup(context) {
     }
     Logger.debug("Handling afterCartUpdate: discounts");
 
-    const cartId = cart._id;
-    const { total: discount } = await getDiscountsTotalForCart(context, cartId);
+    const { total: discount } = await getDiscountsTotalForCart(context, cart);
     if (discount !== cart.discount) {
-      await Cart.update({ _id: cartId }, { $set: { discount } });
+      await Cart.update({ _id: cart._id }, { $set: { discount } });
     }
   });
 }
