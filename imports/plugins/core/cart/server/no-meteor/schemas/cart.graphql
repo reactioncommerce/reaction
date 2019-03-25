@@ -18,6 +18,9 @@ type Cart implements Node {
   "An email address that has been associated with the cart"
   email: String
 
+  "A string to reference the cart"
+  referenceId: String
+
   "The items that have been added to the cart. A cart is not created until the first item is added. Items can be removed from a cart, and a cart is not deleted if all items are removed from it. Because all items may have been removed, this may be an empty array."
   items(after: ConnectionCursor, before: ConnectionCursor, first: ConnectionLimitInt, last: ConnectionLimitInt, sortOrder: SortOrder = desc, sortBy: CartItemsSortByField = addedAt): CartItemConnection
 
