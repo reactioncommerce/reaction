@@ -11,6 +11,7 @@ import appEvents from "/imports/node-app/core/util/appEvents";
  * @param {Object} anonymousCartSelector The MongoDB selector for the anonymous cart
  * @param {MongoDB.Collection} Cart The Cart collection
  * @param {String} shopId The shop ID to associate with the new account cart
+ * @param {String} userId The ID of the user
  * @return {Object} The new account cart
  */
 export default async function convertAnonymousCartToNewAccountCart({
@@ -36,6 +37,10 @@ export default async function convertAnonymousCartToNewAccountCart({
       status: "new"
     }
   };
+
+  if (anonymousCart.referenceId) {
+    newCart.referenceId = anonymousCart.referenceId;
+  }
 
   CartSchema.validate(newCart);
 
