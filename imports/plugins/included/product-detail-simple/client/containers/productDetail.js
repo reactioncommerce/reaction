@@ -5,23 +5,19 @@ import { StyleRoot } from "radium";
 import { compose } from "recompose";
 import { withRouter } from "react-router";
 import { Components, registerComponent, composeWithTracker } from "@reactioncommerce/reaction-components";
-import { $ } from "meteor/jquery";
 import { Meteor } from "meteor/meteor";
 import { Catalog, ReactionProduct } from "/lib/api";
-import { Reaction, i18next, Logger } from "/client/api";
-import { Shops, Tags } from "/lib/collections";
+import { Reaction } from "/client/api";
+import { Tags } from "/lib/collections";
 import { ProductDetail } from "../components";
 import { SocialContainer, VariantListContainer } from "./";
 import { Media } from "/imports/plugins/core/files/client";
-import { getAnonymousCartsReactive, storeAnonymousCart } from "/imports/plugins/core/cart/client/util/anonymousCarts";
-import getCart from "/imports/plugins/core/cart/client/util/getCart";
 
 const wrapComponent = (Comp) =>
   class ProductDetailContainer extends Component {
     static propTypes = {
       media: PropTypes.arrayOf(PropTypes.object),
-      product: PropTypes.object,
-      storedCart: PropTypes.object
+      product: PropTypes.object
     };
 
     constructor(props) {
@@ -31,7 +27,6 @@ const wrapComponent = (Comp) =>
       this.textTimeOut = null;
 
       this.state = {
-        cartQuantity: 1,
         productClick: 0
       };
     }
@@ -42,267 +37,6 @@ const wrapComponent = (Comp) =>
 
     componentWillUnmount() {
       this._isMounted = false;
-    }
-
-    handleCartQuantityChange = (event, quantity) => {
-      this.setState({
-        cartQuantity: Math.max(quantity, 1)
-      });
-    };
-
-    handleAddToCart = () => {
-      let productId;
-      let quantity;
-      let maxQuantity;
-      let totalQuantity;
-      let storedQuantity = 0;
-      const currentVariant = ReactionProduct.selectedVariant();
-      const currentProduct = ReactionProduct.selectedProduct();
-
-      if (currentVariant) {
-        if (currentVariant.ancestors.length === 1) {
-          const options = ReactionProduct.getVariants(currentVariant._id);
-
-          if (options.length > 0) {
-            Alerts.inline("Please choose options before adding to cart", "warning", {
-              placement: "productDetail",
-              i18nKey: "productDetail.chooseOptions",
-              autoHide: 10000
-            });
-            return [];
-          }
-        }
-
-        if (currentVariant.inventoryPolicy && currentVariant.inventoryInStock < 1) {
-          Alerts.inline("Sorry, this item is out of stock!", "warning", {
-            placement: "productDetail",
-            i18nKey: "productDetail.outOfStock",
-            autoHide: 10000
-          });
-          return [];
-        }
-
-        if (this.props.storedCart && this.props.storedCart.items) {
-          this.props.storedCart.items.forEach((item) => {
-            if (item.variantId === currentVariant._id) {
-              storedQuantity = item.quantity;
-            }
-          });
-        }
-
-        quantity = parseInt(this.state.cartQuantity, 10);
-        totalQuantity = quantity + storedQuantity;
-        maxQuantity = currentVariant.inventoryInStock;
-
-        if (quantity < 1) {
-          quantity = 1;
-        }
-
-        if (currentVariant.inventoryPolicy && quantity > maxQuantity && storedQuantity < maxQuantity) {
-          Alerts.inline("Your product quantity has been adjusted to the max quantity in stock", "warning", {
-            placement: "productDetail",
-            i18nKey: "admin.inventoryAlerts.adjustedQuantity",
-            autoHide: 10000
-          });
-          quantity = maxQuantity - storedQuantity;
-          totalQuantity = maxQuantity;
-        }
-
-        if (
-          currentVariant.inventoryPolicy &&
-          totalQuantity > maxQuantity &&
-          storedQuantity < maxQuantity &&
-          quantity < maxQuantity
-        ) {
-          Alerts.inline("Your product quantity has been adjusted to the max quantity in stock", "warning", {
-            placement: "productDetail",
-            i18nKey: "admin.inventoryAlerts.adjustedQuantity",
-            autoHide: 10000
-          });
-          quantity = maxQuantity - storedQuantity;
-          totalQuantity = maxQuantity;
-        }
-
-        if (currentVariant.inventoryPolicy && totalQuantity > maxQuantity) {
-          Alerts.inline("Sorry, this item is out of stock!", "error", {
-            placement: "productDetail",
-            i18nKey: "productDetail.outOfStock",
-            autoHide: 10000
-          });
-          return [];
-        }
-
-        if (!currentProduct.isVisible) {
-          Alerts.inline("Publish product before adding to cart.", "error", {
-            placement: "productDetail",
-            i18nKey: "productDetail.publishFirst",
-            autoHide: 10000
-          });
-        } else {
-          productId = currentProduct._id;
-
-          const onAddToCartSuccess = () => {
-            // Reset cart quantity on success
-            this.handleCartQuantityChange(null, 1);
-
-            this.setState(({ productClick }) => ({
-              productClick: productClick + 1
-            }));
-
-            // slide out label
-            const addToCartText = i18next.t("productDetail.addedToCart");
-            const addToCartTitle = currentVariant.title || "";
-            // Grab and cache the width of the alert to be used in animation
-            const alertWidth = $(".cart-alert").width();
-            const direction = i18next.dir() === "rtl" ? "left" : "right";
-            const oppositeDirection = i18next.dir() === "rtl" ? "right" : "left";
-            if ($(".cart-alert").css("display") === "none") {
-              $("#spin").addClass("hidden");
-              $(".cart-alert-text").text(`${quantity} ${addToCartTitle} ${addToCartText}`);
-              this.handleSlideOut(alertWidth, direction, oppositeDirection);
-              this.animationTimeOut = setTimeout(() => {
-                this.handleSlideIn(alertWidth, direction, oppositeDirection);
-              }, 4000);
-            } else {
-              clearTimeout(this.textTimeOut);
-
-              // hides text and display spinner
-              $(".cart-alert-text").hide();
-              $("#spin").removeClass("hidden");
-
-              this.textTimeOut = setTimeout(() => {
-                $("#spin").addClass("hidden");
-                $(".cart-alert-text").text(`${this.state.productClick * quantity} ${addToCartTitle} ${addToCartText}`);
-                $(".cart-alert-text").fadeIn("slow");
-                if (this._isMounted) {
-                  this.setState({ productClick: 0 });
-                }
-              }, 2000);
-
-              clearTimeout(this.animationTimeOut);
-              this.animationTimeOut = setTimeout(() => {
-                this.handleSlideIn(alertWidth, direction, oppositeDirection);
-              }, 4000);
-            }
-          };
-
-          if (productId) {
-            const shop = Shops.findOne(Reaction.getPrimaryShopId());
-            const shopCurrency = (shop && shop.currency) || "USD";
-
-            const items = [{
-              price: {
-                amount: currentVariant.price,
-                currencyCode: shopCurrency
-              },
-              productConfiguration: {
-                productId,
-                productVariantId: currentVariant._id
-              },
-              quantity: quantity || 1
-            }];
-
-            const { cart } = getCart();
-            if (cart) {
-              const storedCarts = getAnonymousCartsReactive();
-              let token = null;
-              if (storedCarts && storedCarts.length) {
-                token = storedCarts[0].token; // eslint-disable-line prefer-destructuring
-              }
-              Meteor.call("cart/addToCart", cart._id, token, items, (error) => {
-                if (error) {
-                  Logger.error(error);
-                  Alerts.toast(error.message, "error");
-                  return;
-                }
-
-                onAddToCartSuccess();
-              });
-            } else {
-              Meteor.call("cart/createCart", items, (error, result) => {
-                if (error) {
-                  Logger.error(error);
-                  Alerts.toast(error.message, "error");
-                  return;
-                }
-
-                const {
-                  cart: createdCart,
-                  incorrectPriceFailures,
-                  minOrderQuantityFailures,
-                  token
-                } = result;
-
-                if (incorrectPriceFailures.length) {
-                  Logger.info("incorrectPriceFailures", incorrectPriceFailures);
-                  Alerts.toast("Prices have changed. Please refresh the page.", "error");
-                } else if (minOrderQuantityFailures.length) {
-                  Logger.info("minOrderQuantityFailures", minOrderQuantityFailures);
-                  Alerts.toast(`You must order at least ${minOrderQuantityFailures[0].minOrderQuantity} of this item`, "error");
-                }
-
-                if (createdCart) {
-                  if (token) {
-                    storeAnonymousCart({ _id: createdCart._id, shopId: shop && shop._id, token });
-                  }
-                  onAddToCartSuccess();
-                }
-              });
-            }
-          }
-
-          ReactionProduct.setCurrentVariant(null);
-
-          // scroll to top on cart add
-          $("html,body").animate(
-            {
-              scrollTop: 0
-            },
-            0
-          );
-        }
-      } else {
-        Alerts.inline("Select an option before adding to cart", "warning", {
-          placement: "productDetail",
-          i18nKey: "productDetail.selectOption",
-          autoHide: 8000
-        });
-      }
-
-      return null;
-    };
-
-    handleSlideOut(alertWidth, direction, oppositeDirection) {
-      // Animate slide out
-      return $(".cart-alert")
-        .show()
-        .css({
-          [oppositeDirection]: "auto",
-          [direction]: -alertWidth
-        })
-        .animate(
-          {
-            [oppositeDirection]: "auto",
-            [direction]: 0
-          },
-          600
-        );
-    }
-
-    handleSlideIn(alertWidth, direction, oppositeDirection) {
-      // Animate slide in
-      return $(".cart-alert").animate(
-        {
-          [oppositeDirection]: "auto",
-          [direction]: -alertWidth
-        },
-        {
-          duration: 600,
-          complete() {
-            $(".cart-alert").hide();
-          }
-        }
-      );
     }
 
     handleProductFieldChange = (productId, fieldName, value) => {
@@ -328,10 +62,7 @@ const wrapComponent = (Comp) =>
       return (
         <StyleRoot>
           <Comp
-            cartQuantity={this.state.cartQuantity}
             mediaGalleryComponent={<Components.MediaGallery media={media} />}
-            onAddToCart={this.handleAddToCart}
-            onCartQuantityChange={this.handleCartQuantityChange}
             socialComponent={<SocialContainer />}
             topVariantComponent={<VariantListContainer />}
             onDeleteProduct={this.handleDeleteProduct}
@@ -443,8 +174,6 @@ function composer(props, onData) {
 
       const topVariants = ReactionProduct.getTopVariants();
 
-      const { cart: storedCart } = getCart();
-
       onData(null, {
         variants: topVariants,
         layout: product.template || "productDetailSimple",
@@ -453,8 +182,7 @@ function composer(props, onData) {
         tags,
         media: mediaArray,
         editable,
-        hasAdminPermission: Reaction.hasPermission(["createProduct"]),
-        storedCart
+        hasAdminPermission: Reaction.hasPermission(["createProduct"])
       });
     } else {
       // onData must be called with composeWithTracker, or else the loading icon will show forever.
