@@ -195,24 +195,24 @@ jobs:
             .circleci/bin/ecs-deploy-bobs-develop-branch.sh
           no_output_timeout: 30m
 
-  deploy-to-kube-bobs-staging:
+  deploy-staging:
     <<: *defaults
     steps:
       - checkout
       - run:
           name: Update helm chart for reaction-core service in kubernetes staging env.
           command: |
-            .circleci/bin/kube-deploy-bobs-staging.sh
+            .circleci/bin/deploy-staging.sh
           no_output_timeout: 30m
 
-  deploy-to-kube-bobs-int:
+  deploy-int:
     <<: *defaults
     steps:
       - checkout
       - run:
           name: Update helm chart for reaction-core service in kubernetes int env.
           command: |
-            .circleci/bin/kube-deploy-bobs-int.sh
+            .circleci/bin/deploy-int.sh
           no_output_timeout: 30m
 
   deploy-docs:
@@ -243,7 +243,7 @@ jobs:
               exit 1;
             fi
 
-  eslint:
+  lint-javascript:
     <<: *defaults
     steps:
       - checkout
@@ -347,7 +347,7 @@ jobs:
           command: |
             .circleci/bin/calibre-deploy.sh ${STAGING_URL} Frankfurt
 
-  dockerfile-lint:
+  lint-dockerfile:
     <<: *defaults
     docker:
       - image: hadolint/hadolint:v1.6.6-6-g254b4ff
@@ -416,7 +416,7 @@ workflows:
       - build:
           requires:
             - validate-secrets
-      - dockerfile-lint
+      - lint-dockerfile
       - validate-secrets
       - test-app:
           requires:
@@ -433,7 +433,7 @@ workflows:
       - test-metrics:
           requires:
             - deploy-to-ecs-release-branch
-      - eslint:
+      - lint-javascript:
           requires:
             - build
       - docker-build:
@@ -451,24 +451,24 @@ workflows:
           filters:
             branches:
               only: /^release-2.*/
-#      - deploy-to-ecs-feature-branch:
-#          requires:
-#            - docker-push
-#          filters:
-#            branches:
-#              only: /^feat.*/
-#      - deploy-to-ecs-ems-develop-branch:
-#          requires:
-#            - docker-push
-#          filters:
-#            branches:
-#              only: /^develop.*/
-#      - deploy-to-ecs-bobs-develop-branch:
-#          requires:
-#            - docker-push
-#          filters:
-#            branches:
-#              only: /^develop.*/
+      # - deploy-to-ecs-feature-branch:
+      #     requires:
+      #       - docker-push
+      #     filters:
+      #       branches:
+      #         only: /^feat.*/
+      # - deploy-to-ecs-ems-develop-branch:
+      #     requires:
+      #       - docker-push
+      #     filters:
+      #       branches:
+      #         only: /^develop.*/
+      # - deploy-to-ecs-bobs-develop-branch:
+      #     requires:
+      #       - docker-push
+      #     filters:
+      #       branches:
+      #         only: /^develop.*/
       - deploy-docs:
           requires:
             - test-unit
@@ -481,18 +481,25 @@ workflows:
           context: reaction-validation
           requires:
             - build
-      - deploy-to-kube-bobs-staging:
+      - approve-deploy-int:
+          type: approval
           requires:
             - docker-push
             - validate-secrets
           filters:
             branches:
-              only: /^develop$/
-      - deploy-to-kube-bobs-int:
+              ignore: develop
+      - deploy-int:
+          requires:
+            - approve-deploy-int
+          filters:
+            branches:
+              ignore: develop
+      - deploy-staging:
           requires:
             - docker-push
             - validate-secrets
           filters:
             branches:
-              only: /^develop-test$/
+              only: develop
       - validate-secrets
