@@ -4,7 +4,6 @@ import { Template } from "meteor/templating";
 import { Reaction } from "/client/api";
 import Logger from "/client/modules/logger";
 import * as Collections from "/lib/collections";
-import getCart from "/imports/plugins/core/cart/client/util/getCart";
 
 /**
  * @name reactionTemplate
@@ -50,10 +49,8 @@ Template.registerHelper("reactionTemplate", (options) => {
   // and get the current status of the workflowTargetCollection
   if (Template.currentData() && Template.currentData()._id) {
     currentId = Template.currentData()._id;
-  } else {
-    const { cart } = getCart();
-    currentId = cart && cart._id;
   }
+
   // we'll get current cart status by default, as the most common case
   // TODO: expand query options
   currentId = options.hash.id || currentId;
