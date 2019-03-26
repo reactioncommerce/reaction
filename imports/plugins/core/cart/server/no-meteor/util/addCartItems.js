@@ -95,7 +95,9 @@ export default async function addCartItems(context, currentItems, inputItems, op
     // Until we do a more complete attributes revamp, we'll do our best to fudge attributes here.
     // The main issue is we do not have labels.
     const attributes = [];
+    let variantTitle = chosenVariant.title;
     if (parentVariant) {
+      variantTitle = parentVariant.title;
       attributes.push({
         label: null, // Set label to null for now. We expect to use it in the future.
         value: parentVariant.title
@@ -140,7 +142,7 @@ export default async function addCartItems(context, currentItems, inputItems, op
       title: catalogProduct.title,
       updatedAt: currentDateTime,
       variantId: productVariantId,
-      variantTitle: chosenVariant.title
+      variantTitle
     };
 
     if (variantPriceInfo.compareAtPrice || variantPriceInfo.compareAtPrice === 0) {
