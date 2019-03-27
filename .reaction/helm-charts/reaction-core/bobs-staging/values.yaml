@@ -92,6 +92,8 @@ app:
         value: true
     -   key: GRAPHQL_PLAYGROUND_ENABLED
         value: true        
+    -   key: CART_REFERENCE_ID_PREFIX
+        value: "44"    
         ## Configure resource requests and limits
         ## ref: http://kubernetes.io/docs/user-guide/compute-resources/
 resources:
