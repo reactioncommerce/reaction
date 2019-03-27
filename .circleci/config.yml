@@ -220,11 +220,8 @@ jobs:
             - ${GLOBAL_CACHE_VERSION}-node-modules-{{ .Branch }}
             - ${GLOBAL_CACHE_VERSION}-node-modules-master
       - run:
-          name: Install Reaction CLI
-          command: sudo npm install -g reaction-cli
-      - run:
           name: Load App Plugins
-          command: reaction plugins load
+          command: node --experimental-modules ./.reaction/scripts/build.mjs
       - run:
           name: Run Meteor Integration Tests
           command: .circleci/tests.sh
@@ -292,7 +289,7 @@ jobs:
           name: Frankfurt
           command: |
             .circleci/bin/calibre-deploy.sh ${STAGING_URL} Frankfurt
- 
+
   dockerfile-lint:
     <<: *defaults
     docker:
@@ -303,7 +300,7 @@ jobs:
           docker_layer_caching: true
       - run:
           name: Dockerfile Lint
-          command: | 
+          command: |
             hadolint Dockerfile
 
   snyk-security:
@@ -365,7 +362,7 @@ workflows:
           requires:
             - deploy-to-ecs-release-branch
       - test-metrics:
-          requires: 
+          requires:
             - deploy-to-ecs-release-branch
       - eslint:
           requires:
