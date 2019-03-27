@@ -91,9 +91,17 @@ app:
     -   key: GRAPHQL_INTROSPECTION_ENABLED
         value: true
     -   key: GRAPHQL_PLAYGROUND_ENABLED
-        value: true        
+        value: true
     -   key: CART_REFERENCE_ID_PREFIX
-        value: "44"    
+        value: "44"
+    -   key: KAFKA_TOPIC_ETL_SHIPPABLE_INVENTORY_STREAM
+        value: etl.shippable-inventory.inventory-stream.json-gen1
+    -   key: KAFKA_TOPIC_ETL_SHIPPABLE_INVENTORY_STATUS
+        value: etl.shippable-inventory.inventory-status.json-gen1
+    -   key: KAFKA_PARTITION_ETL_SHIPPABLE_INVENTORY_STATUS
+        value: 1
+    -   key: INVENTORY_PLUGIN_BATCH_CONSUME_SIZE
+        value: 1000
         ## Configure resource requests and limits
         ## ref: http://kubernetes.io/docs/user-guide/compute-resources/
 resources:
