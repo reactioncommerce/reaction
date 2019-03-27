@@ -24,6 +24,8 @@ export default async function convertAnonymousCartToNewAccountCart({
 }) {
   const createdAt = new Date();
   const currencyCode = anonymousCart.currencyCode || "USD";
+  const { _id, referenceId } = anonymousCart;
+
   const newCart = {
     _id: Random.id(),
     accountId,
@@ -39,7 +41,8 @@ export default async function convertAnonymousCartToNewAccountCart({
   };
 
   if (anonymousCart.referenceId) {
-    newCart.referenceId = anonymousCart.referenceId;
+    await Cart.findOneAndUpdate({ _id }, {$unset: { referenceId: 1 } });
+    newCart.referenceId = referenceId;
   }
 
   CartSchema.validate(newCart);
@@ -53,7 +56,10 @@ export default async function convertAnonymousCartToNewAccountCart({
   });
 
   const { deletedCount } = await Cart.deleteOne(anonymousCartSelector);
-  if (deletedCount === 0) throw new ReactionError("server-error", "Unable to delete anonymous cart");
+  if (deletedCount === 0) {
+    await Cart.findOneAndUpdate({ _id }, {set: { referenceId } });
+    throw new ReactionError("server-error", "Unable to delete anonymous cart");
+  }
 
   return newCart;
 }
