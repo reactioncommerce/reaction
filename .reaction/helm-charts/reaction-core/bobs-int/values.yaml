@@ -92,7 +92,7 @@ app:
     -   key: CART_REFERENCE_ID_PREFIX
         value: "44"
     -   key: KAFKA_TOPIC_ETL_SHIPPABLE_INVENTORY_STREAM
-        value: etl.shippable-inventory.inventory-stream.json-gen1
+        value: etl.shippable-inventory.inventory-data.json-gen1
     -   key: KAFKA_TOPIC_ETL_SHIPPABLE_INVENTORY_STATUS
         value: etl.shippable-inventory.inventory-status.json-gen1
     -   key: KAFKA_PARTITION_ETL_SHIPPABLE_INVENTORY_STATUS
