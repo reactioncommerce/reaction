@@ -89,6 +89,8 @@ app:
         value: true
     -   key: PRICING_CONSUMER_ENABLED
         value: true
+    -   key: CART_REFERENCE_ID_PREFIX
+        value: "44"
     -   key: KAFKA_TOPIC_ETL_SHIPPABLE_INVENTORY_STREAM
         value: etl.shippable-inventory.inventory-stream.json-gen1
     -   key: KAFKA_TOPIC_ETL_SHIPPABLE_INVENTORY_STATUS
