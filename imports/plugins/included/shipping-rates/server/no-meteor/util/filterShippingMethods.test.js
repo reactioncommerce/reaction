@@ -535,6 +535,7 @@ test("deny method - country on deny list, no item restrictions", async () => {
 
   expect(allowedMethods).toEqual([]);
 });
+
 test("deny method - region on deny list, no item restrictions", async () => {
   // Shipping Location: US, CA, 90405
 
@@ -597,6 +598,55 @@ test("deny method - postal on deny list, no item restrictions", async () => {
       destination: {
         postal: [
           "90405"
+        ]
+      }
+    }
+  ];
+
+  mockContext.collections.FlatRateFulfillmentRestrictions.toArray.mockReturnValue(Promise.resolve(mockMethodRestrictions));
+
+  const allowedMethods = await filterShippingMethods(mockContext, mockShippingMethod, mockHydratedOrder);
+
+  expect(allowedMethods).toEqual([]);
+});
+
+test("deny method - region on one deny list, but also is not on other deny lists", async () => {
+  // Shipping Location: US, CA, 90405
+
+  const mockMethodRestrictions = [
+    {
+      _id: "allow001",
+      methodIds: [
+        "stviZaLdqRvTKW6J5"
+      ],
+      type: "allow",
+      destination: {
+        country: [
+          "US"
+        ]
+      }
+    },
+    {
+      _id: "deny001",
+      methodIds: [
+        "stviZaLdqRvTKW6J5"
+      ],
+      type: "deny",
+      destination: {
+        region: [
+          "CA"
+        ]
+      }
+    },
+    {
+      _id: "deny002",
+      methodIds: [
+        "nUjYh7hYtbUh0Ojht7"
+      ],
+      type: "deny",
+      destination: {
+        region: [
+          "NY"
         ]
       }
     }
