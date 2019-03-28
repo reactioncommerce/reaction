@@ -51,20 +51,17 @@ async function xformCartItem(context, catalogItems, products, cartItem) {
   }
 
   const catalogProduct = catalogItem.product;
+
   const { variant } = findVariantInCatalogProduct(catalogProduct, variantId);
   if (!variant) {
     throw new ReactionError("invalid-param", `Product with ID ${productId} has no variant with ID ${variantId}`);
   }
 
-  const variantSourceProduct = products.find((product) => product._id === variantId);
-  const catalogVariantId = variantSourceProduct.ancestors[1];
-  const catalogVariant = catalogProduct.variants.find((cVariant) => cVariant._id === catalogVariantId);
-
   let media;
   // Give media in variants priority over a product's main media.
-  if (catalogVariant.media) {
+  if (variant.media) {
     // Transform variant's main image only
-    media = await xformCatalogProductMedia(catalogVariant.media[0], context);
+    media = await xformCatalogProductMedia(variant.media[0], context);
     // fallback, return media on catalogProduct
   } else if (catalogProduct.media || catalogProduct.primaryImage) {
     media = catalogProduct.media.find((mediaItem) => mediaItem.variantId === variantId);
@@ -74,6 +71,8 @@ async function xformCartItem(context, catalogItems, products, cartItem) {
       media = await xformCatalogProductMedia(media, context);
     }
   }
+
+  const variantSourceProduct = products.find((product) => product._id === variantId);
 
   return {
     ...cartItem,
