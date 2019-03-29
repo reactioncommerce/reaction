@@ -60,7 +60,7 @@ export default async function convertAnonymousCartToNewAccountCart({
   const { deletedCount } = await Cart.deleteOne(anonymousCartSelector);
   if (deletedCount === 0) {
     if (referenceId) {
-      await Cart.updateOne({ _id }, {set: { referenceId } });
+      await Cart.updateOne({ _id }, { $set: { referenceId } });
     }
     throw new ReactionError("server-error", "Unable to delete anonymous cart");
   }
