@@ -66,6 +66,7 @@
     "deep-diff": "^0.3.8",
     "deep-equal": "^1.0.1",
     "envalid": "^4.2.1",
+    "epimetheus": "^1.0.92",
     "escape-string-regexp": "^1.0.5",
     "express": "4.16.2",
     "faker": "^4.1.0",
