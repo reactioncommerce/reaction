@@ -60,15 +60,23 @@ export default async function calculateOrderTaxes({ context, order }) {
 
     return allTaxes
       .filter((taxDef) => !taxDef.taxCode || taxDef.taxCode === item.taxCode)
-      .map((taxDef) => ({
-        _id: Random.id(),
-        jurisdictionId: taxDef._id,
-        sourcing: taxDef.taxLocale,
-        tax: item.subtotal.amount * taxDef.rate,
-        taxableAmount: item.subtotal.amount,
-        taxName: taxDef.name,
-        taxRate: taxDef.rate
-      }));
+      .map((taxDef) => {
+        let tax = 0;
+        if (taxDef.rateIsTaxInclusive) {
+          tax = item.subtotal.amount * taxDef.rate / (1 - taxDef.rate);
+        } else {
+          tax = item.subtotal.amount * taxDef.rate;
+        }
+        return {
+          _id: Random.id(),
+          jurisdictionId: taxDef._id,
+          sourcing: taxDef.taxLocale,
+          tax,
+          taxableAmount: item.subtotal.amount,
+          taxName: taxDef.name,
+          taxRate: taxDef.rate
+        };
+      });
   }
 
   // calculate line item taxes
