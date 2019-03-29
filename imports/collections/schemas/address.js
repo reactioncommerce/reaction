@@ -17,7 +17,7 @@ const withoutCodeCountries = ["AO", "AG", "AW", "BS", "BZ", "BJ", "BW",
  * @type {SimpleSchema}
  * @property {String} _id
  * @property {String} fullName required
- * @property {String} fistName
+ * @property {String} firstName
  * @property {String} lastName
  * @property {String} address1 required
  * @property {String} address2
