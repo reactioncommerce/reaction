@@ -1,12 +1,15 @@
 import { registerBlock } from "../../../../core/components/lib";
-import ProductHeader from "../components/ProductHeader";
+
 import withVariantForm from "../hocs/withVariantForm";
 import withProductForm from "../hocs/withProductForm";
+import withVariantOrOption from "../hocs/withVariantOrOption";
+import ProductHeader from "./ProductHeader";
 import ProductDetailForm from "./ProductDetailForm";
 import ProductMetadataForm from "./ProductMetadataForm";
 import ProductSocialForm from "./ProductSocialForm";
 import ProductTagForm from "./ProductTagForm";
 import ProductMediaForm from "./ProductMediaForm";
+import VariantHeader from "./VariantHeader";
 import VariantTable from "./VariantTable";
 import VariantList from "./VariantList";
 import VariantDetailForm from "./VariantDetailForm";
@@ -21,14 +24,16 @@ import OptionTable from "./OptionTable";
 registerBlock({
   region: "ProductDetailSidebar",
   name: "VariantList",
-  component: VariantList
+  component: VariantList,
+  priority: 10
 });
 
 // ProductDetail Block: Header
 registerBlock({
   region: "ProductDetailHeader",
-  name: "header",
-  component: ProductHeader
+  name: "ProductHeader",
+  component: ProductHeader,
+  priority: 10
 });
 
 // ProductDetail Block Region: Main
@@ -81,21 +86,27 @@ registerBlock({
 registerBlock({
   region: "VariantDetailSidebar",
   name: "VariantList",
-  component: VariantList
+  component: VariantList,
+  priority: 10
 });
 
 // Header
 registerBlock({
   region: "VariantDetailHeader",
   name: "VariantHeader",
-  component: ProductHeader
+  component: VariantHeader,
+  hocs: [withVariantForm],
+  priority: 10
 });
 
 registerBlock({
   region: "VariantDetailMain",
   name: "VariantDetailForm",
   component: VariantDetailForm,
-  hocs: [withVariantForm],
+  hocs: [
+    withVariantOrOption,
+    withVariantForm
+  ],
   priority: 10
 });
 
@@ -103,7 +114,10 @@ registerBlock({
   region: "VariantDetailMain",
   name: "VariantMediaForm",
   component: VariantMediaForm,
-  hocs: [withVariantForm],
+  hocs: [
+    withVariantOrOption,
+    withVariantForm
+  ],
   priority: 20
 });
 
@@ -111,7 +125,10 @@ registerBlock({
   region: "VariantDetailMain",
   name: "VariantTaxForm",
   component: VariantTaxForm,
-  hocs: [withVariantForm],
+  hocs: [
+    withVariantOrOption,
+    withVariantForm
+  ],
   priority: 30
 });
 
@@ -119,7 +136,10 @@ registerBlock({
   region: "VariantDetailMain",
   name: "VariantInventoryForm",
   component: VariantInventoryForm,
-  hocs: [withVariantForm],
+  hocs: [
+    withVariantOrOption,
+    withVariantForm
+  ],
   priority: 30
 });
 
@@ -127,6 +147,5 @@ registerBlock({
   region: "VariantDetailMain",
   name: "OptionTable",
   component: OptionTable,
-  hocs: [withVariantForm],
   priority: 40
 });
