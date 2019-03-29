@@ -38,13 +38,13 @@ const wrapComponent = (Comp) => {
    * @return {Node} React component
    */
   function withVariant(props) {
-    const { history, product } = props;
+    const { history, productId, variantId } = props;
 
     return (
       <Comp
         onCreateOption={async (parentVariant) => {
           const { newVariantId } = await handleCreateOption(parentVariant);
-          history.push(`/operator/products/${product._id}/${parentVariant._id}/${newVariantId}`);
+          history.push(`/operator/products/${productId}/${variantId}/${newVariantId}`);
           window && window.scrollTo(0, 0);
         }}
         {...props}
@@ -54,7 +54,8 @@ const wrapComponent = (Comp) => {
 
   withVariant.propTypes = {
     history: PropTypes.object,
-    product: PropTypes.object
+    productId: PropTypes.string,
+    variantId: PropTypes.string
   };
 
   return withVariant;
