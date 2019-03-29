@@ -10,7 +10,7 @@ import VariantTable from "../components/VariantTable";
 function OptionTable(props) {
   const {
     onProductVariantFieldSave,
-    onCreateVariant,
+    onCreateOption,
     options,
     variant
   } = props;
@@ -19,7 +19,7 @@ function OptionTable(props) {
     <VariantTable
       title="Options"
       items={options}
-      onCreate={() => { onCreateVariant(variant); }}
+      onCreate={() => { onCreateOption(variant); }}
       onChangeField={(item, field, value) => {
         onProductVariantFieldSave(item._id, field, value);
       }}
@@ -28,7 +28,7 @@ function OptionTable(props) {
 }
 
 OptionTable.propTypes = {
-  onCreateVariant: PropTypes.func,
+  onCreateOption: PropTypes.func,
   onProductVariantFieldSave: PropTypes.func,
   options: PropTypes.object,
   variant: PropTypes.object
