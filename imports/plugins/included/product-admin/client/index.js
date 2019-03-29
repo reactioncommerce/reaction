@@ -2,8 +2,6 @@ import "./templates/productAdmin.html";
 import "./templates/productAdmin.js";
 import "./blocks";
 
-export { default as ProductAdmin } from "./containers/productAdmin";
-
 import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBox } from "@fortawesome/free-solid-svg-icons";
@@ -18,7 +16,6 @@ import ContentViewExtraWideLayout from "/imports/client/ui/layouts/ContentViewEx
 import withCreateProduct from "./hocs/withCreateProduct";
 import withProduct from "./hocs/withProduct";
 import withVariant from "./hocs/withVariant";
-import withVariantOption from "./hocs/withVariantOption";
 
 // Register routes
 registerOperatorRoute({
@@ -28,8 +25,7 @@ registerOperatorRoute({
   mainComponent: VariantDetail,
   hocs: [
     withProduct,
-    withVariant,
-    withVariantOption
+    withVariant
   ]
 });
 
