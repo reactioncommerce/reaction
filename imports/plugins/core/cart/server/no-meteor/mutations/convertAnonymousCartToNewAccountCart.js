@@ -40,8 +40,10 @@ export default async function convertAnonymousCartToNewAccountCart({
     }
   };
 
-  if (anonymousCart.referenceId) {
-    await Cart.findOneAndUpdate({ _id }, {$unset: { referenceId: 1 } });
+  if (referenceId) {
+    // referenceId has a uniqueness constraint but we want to copy the same value from anonymous cart to account cart
+    // so we have to remove the referenceId from the anonymous cart first
+    await Cart.findOneAndUpdate({ _id }, { $unset: { referenceId: 1 } });
     newCart.referenceId = referenceId;
   }
 
@@ -58,7 +60,7 @@ export default async function convertAnonymousCartToNewAccountCart({
   const { deletedCount } = await Cart.deleteOne(anonymousCartSelector);
   if (deletedCount === 0) {
     if (referenceId) {
-      await Cart.findOneAndUpdate({ _id }, {set: { referenceId } });
+      await Cart.updateOne({ _id }, {set: { referenceId } });
     }
     throw new ReactionError("server-error", "Unable to delete anonymous cart");
   }
