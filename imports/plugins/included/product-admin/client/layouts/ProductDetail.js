@@ -23,10 +23,10 @@ function ProductDetail(props) {
       <Components.ProductPublish />
       <Grid container spacing={24}>
         <Grid item sm={12}>
-          <Blocks region="ProductDetailHeader" blockProps={props} />
+          <Blocks region="ProductDetailHeader" blockProps={blockProps} />
         </Grid>
         <Grid item sm={4}>
-          <Blocks region="ProductDetailSidebar" blockProps={props} />
+          <Blocks region="ProductDetailSidebar" blockProps={blockProps} />
         </Grid>
         <Grid item sm={8}>
           <Blocks region="ProductDetailMain" blockProps={blockProps}>
