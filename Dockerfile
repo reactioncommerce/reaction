@@ -25,8 +25,7 @@ COPY --chown=node . $APP_SOURCE_DIR
 ##############################################################################
 FROM meteor-dev as builder
 
-RUN printf "\\n[-] Running Reaction plugin loader...\\n" \
- && reaction plugins load
+RUN node --experimental-modules ./.reaction/scripts/build.mjs
 RUN printf "\\n[-] Building Meteor application...\\n" \
  && meteor build --server-only --architecture os.linux.x86_64 --directory "$APP_BUNDLE_DIR"
 
