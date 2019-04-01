@@ -1,4 +1,5 @@
 import Logger from "@reactioncommerce/logger";
+import collectionIndex from "/imports/utils/collectionIndex";
 import hashProduct from "./mutations/hashProduct";
 
 /**
@@ -31,6 +32,9 @@ async function hashRelatedProduct(media, collections) {
  */
 export default function startup(context) {
   const { appEvents, collections } = context;
+
+  collectionIndex(collections.Catalog, { "product.productId": 1 }); // Used to update products
+  collectionIndex(collections.Catalog, { "product.variants.options._id": 1 }); // Used while publishing products
 
   appEvents.on("afterMediaInsert", ({ mediaRecord }) => {
     hashRelatedProduct(mediaRecord, collections).catch((error) => {
