@@ -1,17 +1,11 @@
-import { decodeShopOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/shop";
-
 /**
- * @name Query.systemInfo
+ * @name Query.systemInformation
  * @method
- * @memberof /GraphQL
- * @summary get system infomation for reaction site
- * @param {Object} _ - unused
- * @param {Object} args - an object of all arguments that were sent by the client
- * @param {String} args.shopId - shop id for which to get tax services
+ * @memberof SystemInformation/GraphQL
+ * @summary get system information for reaction site
  * @param {Object} context - an object containing the per-request state
- * @return {Promise<Object[]>} Array of tax services
+ * @return {<Object>} System Information Object
  */
-export default async function systemInformation(_, { shopId }, context) {
-  const dbShopId = decodeShopOpaqueId(shopId);
-  return context.queries.systemInformation(context, dbShopId);
+export default async function systemInformation() {
+  return context.queries.systemInformation();
 }
