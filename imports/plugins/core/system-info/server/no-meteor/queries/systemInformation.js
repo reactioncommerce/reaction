@@ -1,4 +1,3 @@
-import ReactionError from "@reactioncommerce/reaction-error";
 import packageJson from "/package.json";
 
 /**
@@ -6,11 +5,10 @@ import packageJson from "/package.json";
  * @method
  * @memberof SystemInformation/GraphQL
  * @summary get systemInformations
- * @param {Object} context - an object containing the per-request state
  * @return {<Object} System Information
  **/
-export default async function systemInformation(context) {
+export default async function systemInformation() {
   return {
-    apiVersion: packageJson['version']
+    apiVersion: packageJson.version
   };
 }
