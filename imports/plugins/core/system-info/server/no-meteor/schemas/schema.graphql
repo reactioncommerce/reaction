@@ -1,0 +1,9 @@
+extend type Query {
+  systemInformation: SystemInfo
+}
+
+"Represents Reaction System Infomation"
+type SystemInfo {
+  # core api version
+  apiVersion: String
+}
