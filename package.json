@@ -1,7 +1,7 @@
 {
   "name": "reaction",
   "description": "Reaction is a modern reactive, real-time event driven ecommerce platform.",
-  "version": "2.0.0-rc.10",
+  "version": "2.0.0-rc.11",
   "main": "main.js",
   "directories": {
     "test": "tests"
