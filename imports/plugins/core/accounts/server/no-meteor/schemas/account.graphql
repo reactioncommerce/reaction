@@ -130,6 +130,12 @@ type Account implements Node {
   "A paged list of the permission groups in which this account is listed"
   groups(after: ConnectionCursor, before: ConnectionCursor, first: ConnectionLimitInt, last: ConnectionLimitInt, sortOrder: SortOrder = asc, sortBy: GroupSortByField = createdAt): GroupConnection
 
+  "The first name of the person this account represents, if known"
+  firstName: String
+
+  "The last name of the person this account represents, if known"
+  lastName: String
+
   "Arbitrary additional metadata about this account"
   metafields: [Metafield]
 
