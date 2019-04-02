@@ -20,7 +20,7 @@ function ProductTagForm(props) {
       <CardContent>
         <Components.TagList
           editable={editable}
-          enableNewProductTagForm={true}
+          enableNewTagForm={true}
           product={product}
           tagProps={{
             fullWidth: true

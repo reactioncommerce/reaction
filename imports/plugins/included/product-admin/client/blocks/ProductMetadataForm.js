@@ -37,7 +37,7 @@ function ProductMetadataForm(props) {
 }
 
 ProductMetadataForm.propTypes = {
-  newMetafield: PropTypes.func,
+  newMetafield: PropTypes.object,
   onProductFieldChange: PropTypes.func,
   onProductMetaChange: PropTypes.func,
   onProductMetaRemove: PropTypes.func,

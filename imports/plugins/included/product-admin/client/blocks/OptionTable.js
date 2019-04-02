@@ -11,15 +11,17 @@ function OptionTable(props) {
   const {
     onProductVariantFieldSave,
     onCreateOption,
-    options,
-    variant
+    childVariants,
+    isAtMaxDepth
   } = props;
+
+  if (isAtMaxDepth) return null;
 
   return (
     <VariantTable
       title="Options"
-      items={options}
-      onCreate={() => { onCreateOption(variant); }}
+      items={childVariants}
+      onCreate={onCreateOption}
       onChangeField={(item, field, value) => {
         onProductVariantFieldSave(item._id, field, value);
       }}
@@ -28,10 +30,10 @@ function OptionTable(props) {
 }
 
 OptionTable.propTypes = {
+  childVariants: PropTypes.array,
+  isAtMaxDepth: PropTypes.bool,
   onCreateOption: PropTypes.func,
-  onProductVariantFieldSave: PropTypes.func,
-  options: PropTypes.object,
-  variant: PropTypes.object
+  onProductVariantFieldSave: PropTypes.func
 };
 
 export default OptionTable;

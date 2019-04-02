@@ -103,10 +103,7 @@ registerBlock({
   region: "VariantDetailMain",
   name: "VariantDetailForm",
   component: VariantDetailForm,
-  hocs: [
-    withVariantOrOption,
-    withVariantForm
-  ],
+  hocs: [withVariantForm],
   priority: 10
 });
 
@@ -114,10 +111,7 @@ registerBlock({
   region: "VariantDetailMain",
   name: "VariantMediaForm",
   component: VariantMediaForm,
-  hocs: [
-    withVariantOrOption,
-    withVariantForm
-  ],
+  hocs: [withVariantForm],
   priority: 20
 });
 
@@ -125,10 +119,7 @@ registerBlock({
   region: "VariantDetailMain",
   name: "VariantTaxForm",
   component: VariantTaxForm,
-  hocs: [
-    withVariantOrOption,
-    withVariantForm
-  ],
+  hocs: [withVariantForm],
   priority: 30
 });
 
@@ -136,10 +127,7 @@ registerBlock({
   region: "VariantDetailMain",
   name: "VariantInventoryForm",
   component: VariantInventoryForm,
-  hocs: [
-    withVariantOrOption,
-    withVariantForm
-  ],
+  hocs: [withVariantForm],
   priority: 30
 });
 

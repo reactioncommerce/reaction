@@ -10,21 +10,21 @@ import ProductList from "../components/ProductList";
  */
 function VariantList(props) {
   const {
-    option,
-    options,
+    parentVariant,
     product,
     variant,
     variants,
     onCreateOption,
     onCreateVariant
+
   } = props;
 
   return (
     <ProductList
-      items={option ? options : variants}
-      onCreate={() => { option ? onCreateOption(variant) : onCreateVariant(product); }}
-      selectedVariantId={(option && option._id) || (variant && variant._id)}
-      title={option ? "Options" : "Variants"}
+      items={variants}
+      onCreate={() => { parentVariant ? onCreateOption(parentVariant) : onCreateVariant(product); }}
+      selectedVariantId={variant && variant._id}
+      title={parentVariant ? "Options" : "Variants"}
     />
   );
 }
@@ -34,6 +34,7 @@ VariantList.propTypes = {
   onCreateVariant: PropTypes.func,
   option: PropTypes.object,
   options: PropTypes.arrayOf(PropTypes.object),
+  parentVariant: PropTypes.object,
   product: PropTypes.object,
   variant: PropTypes.object,
   variants: PropTypes.arrayOf(PropTypes.object)

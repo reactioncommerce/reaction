@@ -54,7 +54,7 @@ function ProductHeader(props) {
     onCloneVariant,
     onRestoreProduct,
     onVisibilityChange,
-    option,
+    parentVariant,
     setMenuAnchorEl,
     menuAnchorEl
   } = props;
@@ -63,7 +63,7 @@ function ProductHeader(props) {
     return null;
   }
 
-  const currentProduct = option || variant || product;
+  const currentProduct = variant || product;
 
   // Archive menu item
   let archiveMenuItem = (
@@ -73,8 +73,8 @@ function ProductHeader(props) {
       onConfirm={() => {
         let redirectUrl = "/operator/products";
 
-        if (option) {
-          redirectUrl = `/operator/products/${product._id}/${variant._id}`;
+        if (parentVariant) {
+          redirectUrl = `/operator/products/${product._id}/${parentVariant._id}`;
         } else if (variant) {
           redirectUrl = `/operator/products/${product._id}`;
         } else {
@@ -115,32 +115,33 @@ function ProductHeader(props) {
         <Link className={classes.breadcrumbLink} to={`/operator/products/${product._id}`}>
           {product.title || "Untitled Product"}
         </Link>
+
+        {parentVariant && (
+          <Fragment>
+            <ChevronRight className={classes.breadcrumbIcon} />
+            <Link
+              className={classes.breadcrumbLink}
+              to={`/operator/products/${product._id}/${parentVariant._id}`}
+            >
+              {parentVariant.title || "Untitled Variant"}
+            </Link>
+          </Fragment>
+        )}
+
         {variant && (
           <Fragment>
             <ChevronRight className={classes.breadcrumbIcon} />
             <Link
               className={classes.breadcrumbLink}
-              to={`/operator/products/${product._id}/${variant._id}`}
+              to={`/operator/products/${variant.ancestors.join("/")}/${variant._id}`}
             >
               {variant.title || "Untitled Variant"}
-            </Link>
-          </Fragment>
-        )}
-        {option && (
-          <Fragment>
-            <ChevronRight className={classes.breadcrumbIcon} />
-            <Link
-              className={classes.breadcrumbLink}
-              to={`/operator/products/${product._id}/${variant._id}/${option._id}`}
-            >
-              {option.title || "Untitled Option"}
             </Link>
           </Fragment>
         )}
       </div>
       <Typography variant="h2">
         {
-          (option && (option.title || "Untitled Option")) ||
           (variant && (variant.title || "Untitled Variant")) ||
           (product && (product.title || "Untitled Product"))
         }
@@ -180,10 +181,7 @@ function ProductHeader(props) {
           </MenuItem>
           <MenuItem
             onClick={() => {
-              if (product && option) {
-                // Clone option
-                onCloneVariant(product._id, option._id);
-              } else if (product && variant) {
+              if (product && variant) {
                 // Clone variant
                 onCloneVariant(product._id, variant._id);
               } else {

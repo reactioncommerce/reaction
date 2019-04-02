@@ -9,7 +9,7 @@ import ProductHeader from "../components/ProductHeader";
  */
 function VariantHeader(props) {
   const {
-    option,
+    parentVariant,
     product,
     variant,
     removeVariant,
@@ -20,8 +20,8 @@ function VariantHeader(props) {
 
   return (
     <ProductHeader
-      option={option}
       product={product}
+      parentVariant={parentVariant}
       variant={variant}
       onCloneVariant={cloneVariant}
       onArchiveProduct={removeVariant}

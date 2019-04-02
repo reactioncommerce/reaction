@@ -21,7 +21,7 @@ import withVariant from "./hocs/withVariant";
 registerOperatorRoute({
   isNavigationLink: false,
   isSetting: false,
-  path: "/products/:handle/:variantId/:optionId",
+  path: "/products/:handle/:parentVariantId/:variantId",
   mainComponent: VariantDetail,
   hocs: [
     withProduct,
