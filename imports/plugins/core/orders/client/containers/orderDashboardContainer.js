@@ -10,7 +10,6 @@ const wrapComponent = (Comp) => (
       super(props);
       this.state = {
         query: {},
-        searchQuery: "",
         shippingFilter: "",
         workflowFilter: "",
         skip: 0,
@@ -33,15 +32,6 @@ const wrapComponent = (Comp) => (
         };
         this.setState({ query });
       }
-    }
-
-    /**
-     * handleSearchChange - handler called on search query change
-     * @param  {String} value - search field current value
-     * @return {null} -
-     */
-    handleSearchChange = (value) => {
-      this.setState({ searchQuery: value });
     }
 
     filterWorkflowStatus = (event, value) => {
@@ -104,11 +94,6 @@ const wrapComponent = (Comp) => (
         }
       }
 
-      // If there is an id on the current search append it to query
-      if (this.state.query._id) {
-        query._id = this.state.query._id;
-      }
-
       this.setState({
         query,
         shippingFilter,
@@ -129,13 +114,11 @@ const wrapComponent = (Comp) => (
     render() {
       return (
         <Comp
-          searchQuery={this.state.searchQuery}
           query={this.state.query}
           clearFilter={this.clearFilter}
           filterDates={this.filterDates}
           filterShippingStatus={this.filterShippingStatus}
           filterWorkflowStatus={this.filterWorkflowStatus}
-          handleChange={this.handleSearchChange}
           skip={this.state.skip}
           pageSize={this.state.pageSize}
           onPageChange={this.updatePage}
