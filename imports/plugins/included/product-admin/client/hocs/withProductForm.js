@@ -8,7 +8,7 @@ import withGenerateSitemaps from "/imports/plugins/included/sitemap-generator/cl
 import { compose } from "recompose";
 
 const wrapComponent = (Comp) => {
-  class DetailForm extends Component {
+  class withProductForm extends Component {
     constructor(props) {
       super(props);
 
@@ -151,7 +151,7 @@ const wrapComponent = (Comp) => {
     }
   }
 
-  DetailForm.propTypes = {
+  withProductForm.propTypes = {
     classes: PropTypes.object,
     countries: PropTypes.arrayOf(PropTypes.object),
     editFocus: PropTypes.oneOfType([PropTypes.string, PropTypes.arrayOf(PropTypes.string)]),
@@ -181,7 +181,7 @@ const wrapComponent = (Comp) => {
     viewProps: PropTypes.object
   };
 
-  return DetailForm;
+  return withProductForm;
 };
 
 export default compose(
