@@ -97,6 +97,11 @@ export const rawMuiTheme = {
   props: {
     MuiAppBar: {
       elevation: 3
+    },
+    MuiCardHeader: {
+      titleTypographyProps: {
+        variant: "h6"
+      }
     }
   },
   // Override defined theme properties
@@ -148,6 +153,17 @@ export const rawMuiTheme = {
       },
       paperAnchorDockedLeft: {
         borderRight: "none"
+      }
+    },
+    MuiOutlinedInput: {
+      inputMarginDense: {
+        paddingTop: 8,
+        paddingBottom: 8
+      }
+    },
+    MuiTableCell: {
+      root: {
+        borderBottom: `1px solid ${colors.black10}`
       }
     }
   }

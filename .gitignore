@@ -54,3 +54,5 @@ imports/plugins/custom/*
 .reaction/config.json
 
 coverage/*
+
+.reaction/pluginConfig.js

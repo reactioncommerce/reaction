@@ -15,7 +15,7 @@ class ProductImage extends Component {
       title: PropTypes.string.isRequired,
       variantId: PropTypes.string
     }).isRequired,
-    mode: PropTypes.oneOf(["span", "img"]),
+    mode: PropTypes.oneOf(["span", "img", "img-only"]),
     size: PropTypes.string
   }
 
@@ -40,7 +40,7 @@ class ProductImage extends Component {
   }
 
   render() {
-    const { displayMedia, item, mode, size } = this.props;
+    const { displayMedia, item, mode, size, ...otherProps } = this.props;
 
     const fileRecord = displayMedia(item);
 
@@ -54,6 +54,14 @@ class ProductImage extends Component {
     if (mode === "span") {
       return (
         <span className="product-image" style={{ backgroundImage: `url('${mediaUrl}')` }}/>
+      );
+    } else if (mode === "img-only") {
+      return (
+        <img
+          alt={item.title}
+          src={mediaUrl}
+          {...otherProps}
+        />
       );
     }
 

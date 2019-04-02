@@ -4,7 +4,7 @@ import classnames from "classnames";
 import Autosuggest from "react-autosuggest";
 import { registerComponent } from "@reactioncommerce/reaction-components";
 import { i18next } from "/client/api";
-import { Button, Handle } from "/imports/plugins/core/ui/client/components";
+import { Button } from "/imports/plugins/core/ui/client/components";
 import { Router } from "@reactioncommerce/reaction-router";
 import { highlightInput } from "../../helpers/animations";
 
@@ -213,7 +213,6 @@ class TagItem extends Component {
           data-id={this.props.tag._id}
         >
           <form onSubmit={this.handleTagFormSubmit}>
-            <Handle />
             {this.renderAutosuggestInput()}
             <Button icon="times-circle" onClick={this.handleTagRemove} status="danger" />
             {this.props.isTagNav &&
@@ -242,7 +241,6 @@ class TagItem extends Component {
       <div className="rui item edit draggable">
         <div className={baseClassName}>
           <form onSubmit={this.handleTagFormSubmit}>
-            <Button icon="tag" />
             {this.renderAutosuggestInput()}
             <Button icon="plus" />
           </form>

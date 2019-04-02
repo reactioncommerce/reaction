@@ -13,7 +13,6 @@ import appEvents from "/imports/node-app/core/util/appEvents";
 import rawCollections from "/imports/collections/rawCollections";
 import getGraphQLContextInMeteorMethod from "/imports/plugins/core/graphql/server/getGraphQLContextInMeteorMethod";
 import hashProduct from "../no-meteor/mutations/hashProduct";
-import getCurrentCatalogPriceForProductConfiguration from "../no-meteor/queries/getCurrentCatalogPriceForProductConfiguration";
 import getProductPriceRange from "../no-meteor/utils/getProductPriceRange";
 import getVariants from "../no-meteor/utils/getVariants";
 import hasChildVariant from "../no-meteor/utils/hasChildVariant";
@@ -675,6 +674,12 @@ Meteor.methods({
     }
 
     if (Array.isArray(productOrArray)) {
+      if (productOrArray.length && _.every(productOrArray, (value) => typeof value === "string")) {
+        productOrArray = Products.find({ // eslint-disable-line no-param-reassign
+          _id: { $in: productOrArray }
+        }).fetch();
+      }
+
       // Reduce to unique shops found among products in this array
       const shopIds = productOrArray.map((prod) => prod.shopId);
       const uniqueShopIds = [...new Set(shopIds)];
@@ -1529,24 +1534,5 @@ Meteor.methods({
 
     // if collection updated we return new `isVisible` state
     return res === 1 && !product.isVisible;
-  },
-
-  /**
-   * @name catalog/getCurrentCatalogPriceForProductConfigurations
-   * @memberof Methods/Catalog
-   * @method
-   * @summary Gets the current price for multiple product configurations. Newer code that uses
-   *   GraphQL should not need this, but this is available while transitioning to GraphQL.
-   * @param {Object[]} productConfigurations - Product configuration objects, with `productId` and `productVariantId`
-   * @param {String} currencyCode Currency in which price is needed
-   * @return {Object[]} The same array of objects that was passed in, but with `price` added to each object.
-   */
-  "catalog/getCurrentCatalogPriceForProductConfigurations"(productConfigurations, currencyCode) {
-    check(productConfigurations, Array);
-    check(currencyCode, String);
-    return Promise.all(productConfigurations.map(async (productConfiguration) => {
-      const { price } = await getCurrentCatalogPriceForProductConfiguration(productConfiguration, currencyCode, rawCollections);
-      return { ...productConfiguration, price };
-    }));
   }
 });
