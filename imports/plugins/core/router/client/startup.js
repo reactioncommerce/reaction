@@ -6,8 +6,10 @@ import { Reaction } from "/client/api";
 import { Shops } from "/lib/collections";
 import { Router } from "../lib";
 import { initBrowserRouter } from "./browserRouter";
+import { loadRegisteredBlocks } from "../../components/lib";
 
 Meteor.startup(() => {
+  loadRegisteredBlocks();
   loadRegisteredComponents();
 
   // Subscribe to router required publications

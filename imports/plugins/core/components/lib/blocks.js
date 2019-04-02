@@ -1,10 +1,11 @@
-import { createElement } from "react";
+import React from "react";
 import PropTypes from "prop-types";
 import { Logger } from "/client/api";
 import { compose, setDisplayName } from "recompose";
 
 // export const Blocks = () ; // populated with final wrapped blocks
 export const BlocksTable = {}; // storage for separate elements of each block
+export const BlockComponents = {};
 
 /**
  * @name Blocks
@@ -19,10 +20,12 @@ export function Blocks(props) {
     children,
     blockProps
   } = props;
-  const blocks = getBlocks(region);
+  const blocks = BlockComponents[region];
   if (!blocks) return null;
 
-  const elements = blocks.map((component) => createElement(component, blockProps));
+  const elements = blocks.map((BlockComponent, key) => (
+    <BlockComponent key={key} {...blockProps} />
+  ));
 
   return children(elements);
 }
@@ -253,4 +256,19 @@ export const getBlockHOCs = (regionName, blockName) => BlocksTable[regionName][b
 export function copyBlockHOCs(sourceRegionName, sourceBlockName, targetBlock) {
   const sourceComponent = BlocksTable[sourceRegionName][sourceBlockName];
   return compose(...sourceComponent.hocs)(targetBlock);
+}
+
+/**
+ * @name loadRegisteredBlocks
+ * @method
+ * @summary Populate the final BlockComponents object with the contents of the lookup table.
+ * This should only be called once on app startup.
+ * @returns {Object} An object containing all of the registered blocks by region
+ * @memberof Components/Helpers
+ **/
+export function loadRegisteredBlocks() {
+  Object.keys(BlocksTable).forEach((regionName) => {
+    BlockComponents[regionName] = getBlocks(regionName);
+  });
+  return BlockComponents;
 }
