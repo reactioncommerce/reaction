@@ -2,7 +2,6 @@ import { registerBlock } from "../../../../core/components/lib";
 
 import withVariantForm from "../hocs/withVariantForm";
 import withProductForm from "../hocs/withProductForm";
-import withVariantOrOption from "../hocs/withVariantOrOption";
 import ProductHeader from "./ProductHeader";
 import ProductDetailForm from "./ProductDetailForm";
 import ProductMetadataForm from "./ProductMetadataForm";
