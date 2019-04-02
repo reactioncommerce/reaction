@@ -6,13 +6,13 @@ import PropTypes from "prop-types";
 import React, { Component } from "react";
 import SimpleSchema from "simpl-schema";
 import TextInput from "@reactioncommerce/components/TextInput/v1";
-import info from "../info";
 import { composeWithTracker } from "@reactioncommerce/reaction-components";
 import { Form } from "reacto-form";
 import { Meteor } from "meteor/meteor";
 import { Packages } from "/lib/collections";
 import { Reaction, i18next } from "/client/api";
-import { Translation } from "/imports/plugins/core/ui/client/components";
+import { Helmet } from "react-helmet";
+import info from "../info";
 
 const settingsSchema = new SimpleSchema({
   path: {
@@ -79,9 +79,11 @@ class MetricsSettings extends Component {
         validator={this.handleFormValidate}
         value={state}
       >
-        <h1>
-          <Translation defaultValue={info.displayName} i18nKey={`${info.ns}.displayName`} />
-        </h1>
+        <Helmet>
+          <title>{i18next.t(`${info.ns}.displayName`)}</title>
+        </Helmet>
+        {/* not translated because it's a proper tech name */}
+        <h1>Prometheus</h1>
         <Checkbox type="checkbox" name="enabled" label={i18next.t(`${info.ns}.settings.enabledLabel`)} />
         <Field name="path" label={i18next.t(`${info.ns}.settings.pathLabel`)} labelFor="path" isRequired={true}>
           <TextInput name="path" />
