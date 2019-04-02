@@ -51,13 +51,19 @@ async function xformCartItem(context, catalogItems, products, cartItem) {
   }
 
   const catalogProduct = catalogItem.product;
+
   const { variant } = findVariantInCatalogProduct(catalogProduct, variantId);
   if (!variant) {
     throw new ReactionError("invalid-param", `Product with ID ${productId} has no variant with ID ${variantId}`);
   }
 
   let media;
-  if (catalogProduct.media || catalogProduct.primaryImage) {
+  // Give media in variants priority over a product's main media.
+  if (variant.media) {
+    // Transform variant's main image only
+    media = await xformCatalogProductMedia(variant.media[0], context);
+    // fallback, return media on catalogProduct
+  } else if (catalogProduct.media || catalogProduct.primaryImage) {
     media = catalogProduct.media.find((mediaItem) => mediaItem.variantId === variantId);
     if (!media) media = catalogProduct.primaryImage;
     if (!media) [media] = catalogProduct.media;
