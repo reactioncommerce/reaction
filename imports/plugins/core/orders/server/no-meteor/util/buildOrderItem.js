@@ -1,3 +1,4 @@
+import { toFixed } from "accounting-js";
 import Random from "@reactioncommerce/random";
 import ReactionError from "@reactioncommerce/reaction-error";
 
@@ -48,7 +49,7 @@ export default async function buildOrderItem(context, { currencyCode, inputItem 
     productVendor: chosenProduct.vendor,
     quantity,
     shopId: chosenProduct.shopId,
-    subtotal: quantity * finalPrice,
+    subtotal: +toFixed(quantity * finalPrice, 3),
     title: chosenProduct.title,
     updatedAt: now,
     variantId: chosenVariant.variantId,
