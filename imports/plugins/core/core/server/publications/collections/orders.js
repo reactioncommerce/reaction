@@ -172,7 +172,10 @@ Meteor.publish("OrderById", (orderId) => {
 
   if (Reaction.hasPermission("orders", Reaction.getUserId(), shopId)) {
     return Orders.find({
-      _id: orderId
+      $or: [
+        { _id: orderId },
+        { referenceId: orderId }
+      ]
     }, { limit: 1 });
   }
 
@@ -183,7 +186,12 @@ Meteor.publish("OrderImages", (orderId) => {
   check(orderId, Match.Optional(String));
   if (!orderId) return [];
 
-  const order = Orders.findOne({ _id: orderId });
+  const order = Orders.findOne({
+    $or: [
+      { _id: orderId },
+      { referenceId: orderId }
+    ]
+  });
   if (!order) return [];
 
   const orderItems = order.shipping.reduce((list, group) => [...list, ...group.items], []);
