@@ -4,7 +4,7 @@ imageTag: e1e7127b34e9853130371a43e475b2ece505445f
 #imageTag: develop
 imagePullPolicy: IfNotPresent
 ## How many replicas?
-replicas: 4
+replicas: 2
 ## Should the service be LoadBalancer, NodePort or ClusterIP
 ## If you're using ingress, ClusterIP should be a solid choice
 ##
@@ -102,6 +102,8 @@ app:
         value: 1
     -   key: INVENTORY_PLUGIN_BATCH_CONSUME_SIZE
         value: 1000
+    -   key: SERVER_TYPE
+        value: WORKER
         ## Configure resource requests and limits
         ## ref: http://kubernetes.io/docs/user-guide/compute-resources/
 resources:
