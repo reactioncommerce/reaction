@@ -43,7 +43,7 @@ export default async function convertAnonymousCartToNewAccountCart({
   if (referenceId) {
     // referenceId has a uniqueness constraint but we want to copy the same value from anonymous cart to account cart
     // so we have to remove the referenceId from the anonymous cart first
-    await Cart.findOneAndUpdate({ _id }, { $unset: { referenceId: 1 } });
+    await Cart.updateOne({ _id }, { $unset: { referenceId: 1 } });
     newCart.referenceId = referenceId;
   }
 
