@@ -106,8 +106,8 @@ app:
         ## ref: http://kubernetes.io/docs/user-guide/compute-resources/
 resources:
     requests:
-        memory: 500Mi
-        cpu: 700m
+        memory: 2Gi
+        cpu: 1500m
     limits:
         memory: 2Gi
         cpu: "2"
