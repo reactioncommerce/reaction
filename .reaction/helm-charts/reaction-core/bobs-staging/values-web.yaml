@@ -4,7 +4,7 @@ imageTag: e1e7127b34e9853130371a43e475b2ece505445f
 #imageTag: develop
 imagePullPolicy: IfNotPresent
 ## How many replicas?
-replicas: 4
+replicas: 1
 ## Should the service be LoadBalancer, NodePort or ClusterIP
 ## If you're using ingress, ClusterIP should be a solid choice
 ##
