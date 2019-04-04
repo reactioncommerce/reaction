@@ -5,7 +5,6 @@ import { shopIdAutoValue } from "./helpers";
 const sharedFields = {
   shopId: {
     type: String,
-    index: 1,
     autoValue: shopIdAutoValue,
     label: "Template ShopId"
   },

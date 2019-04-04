@@ -29,7 +29,6 @@ export default function defineCollections(db, collections) {
     ProductSearch: db.collection("ProductSearch"),
     roles: db.collection("roles"),
     SellerShops: db.collection("SellerShops"),
-    Shipping: db.collection("Shipping"),
     Shops: db.collection("Shops"),
     Tags: db.collection("Tags"),
     Taxes: db.collection("Taxes"),

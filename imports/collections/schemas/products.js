@@ -1,3 +1,4 @@
+/* eslint-disable consistent-return */
 import SimpleSchema from "simpl-schema";
 import { Meteor } from "meteor/meteor";
 import { registerSchema } from "@reactioncommerce/schemas";
@@ -197,7 +198,6 @@ export const ProductVariant = new SimpleSchema({
   },
   "isDeleted": {
     type: Boolean,
-    index: 1,
     defaultValue: false
   },
   "isLowQuantity": {
@@ -212,7 +212,6 @@ export const ProductVariant = new SimpleSchema({
   },
   "isVisible": {
     type: Boolean,
-    index: 1,
     defaultValue: false
   },
   "length": {
@@ -260,7 +259,6 @@ export const ProductVariant = new SimpleSchema({
   },
   "shopId": {
     type: String,
-    index: 1,
     label: "Variant ShopId"
   },
   "sku": {
@@ -389,16 +387,14 @@ export const Product = new SimpleSchema({
   },
   "ancestors": {
     type: Array,
-    defaultValue: [],
-    index: 1
+    defaultValue: []
   },
   "ancestors.$": {
     type: String
   },
   "createdAt": {
     type: Date,
-    autoValue: createdAtAutoValue,
-    index: 1
+    autoValue: createdAtAutoValue
   },
   "currentProductHash": {
     type: String,
@@ -420,13 +416,11 @@ export const Product = new SimpleSchema({
   },
   "handle": {
     type: String,
-    optional: true,
-    index: 1
+    optional: true
   },
   "hashtags": {
     type: Array,
-    optional: true,
-    index: 1
+    optional: true
   },
   "hashtags.$": {
     type: String
@@ -458,7 +452,6 @@ export const Product = new SimpleSchema({
   },
   "isDeleted": {
     type: Boolean,
-    index: 1,
     defaultValue: false
   },
   "isLowQuantity": {
@@ -473,7 +466,6 @@ export const Product = new SimpleSchema({
   },
   "isVisible": {
     type: Boolean,
-    index: 1,
     defaultValue: false
   },
   "metaDescription": {
@@ -522,7 +514,6 @@ export const Product = new SimpleSchema({
   },
   "shopId": {
     type: String,
-    index: 1,
     label: "Product ShopId"
   },
   "shouldAppearInSitemap": {

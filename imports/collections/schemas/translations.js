@@ -16,17 +16,13 @@ import { shopIdAutoValue } from "./helpers";
 export const Translation = new SimpleSchema({
   shopId: {
     type: String,
-    index: 1,
     autoValue: shopIdAutoValue,
     label: "Translation ShopId"
   },
   language: {
     type: String
   },
-  i18n: {
-    type: String,
-    index: 1
-  },
+  i18n: String,
   ns: {
     type: String,
     label: "Namespace"
