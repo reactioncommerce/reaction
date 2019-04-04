@@ -2,8 +2,15 @@ extend type Query {
   systemInformation: SystemInfo
 }
 
+"Represents Reaction Plugin"
+type Plugin {
+  name: String,
+  version: String
+}
+
 "Represents Reaction System Infomation"
 type SystemInfo {
   # core api version
-  apiVersion: String
+  apiVersion: String,
+  plugins:[Plugin]
 }

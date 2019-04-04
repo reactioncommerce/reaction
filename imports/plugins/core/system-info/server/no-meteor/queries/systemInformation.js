@@ -5,10 +5,13 @@ import packageJson from "/package.json";
  * @method
  * @memberof SystemInformation/GraphQL
  * @summary get systemInformations
+ * @param {Object} context - an object containing the per-request state
  * @return {<Object} System Information
  **/
-export default async function systemInformation() {
+export default async function systemInformation(context) {
+
   return {
-    apiVersion: packageJson.version
+    apiVersion: packageJson.version,
+    plugins: await context.collections.Packages.find({ version: { $exists: true }}).toArray()
   };
 }
