@@ -34,7 +34,10 @@ Template.completedPDFLayout.onCreated(function () {
     this.subscribe("Orders");
 
     const order = Orders.findOne({
-      _id: currentRoute.params.id
+      $or: [
+        { _id: currentRoute.params.id },
+        { referenceId: currentRoute.params.id }
+      ]
     });
     this.state.set({
       order

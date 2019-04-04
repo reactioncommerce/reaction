@@ -9,17 +9,11 @@ import { registerSchema } from "@reactioncommerce/schemas";
  * @name Transactions
  * @memberof Schemas
  * @type {SimpleSchema}
- * @summary Discounts Tranaction History Schema
+ * @summary Discounts Transaction History Schema
  */
 export const Transactions = new SimpleSchema({
-  cartId: {
-    type: String,
-    index: 1
-  },
-  userId: {
-    type: String,
-    index: 1
-  },
+  cartId: String,
+  userId: String,
   appliedAt: {
     type: Date,
     optional: true
@@ -37,7 +31,6 @@ registerSchema("Transactions", Transactions);
 export const Discounts = new SimpleSchema({
   "shopId": {
     type: String,
-    index: 1,
     label: "Discounts shopId"
   },
   "label": {
@@ -51,7 +44,6 @@ export const Discounts = new SimpleSchema({
   "discountMethod": {
     label: "Discount Method Type",
     type: String,
-    index: 1,
     allowedValues: ["code", "rate"]
   },
   // discount is allowed to be string or number.
@@ -75,7 +67,6 @@ export const Discounts = new SimpleSchema({
   },
   "calculation.method": {
     type: String,
-    index: 1,
     defaultValue: "discount",
     allowedValues: ["credit", "discount", "sale", "shipping"]
   },
@@ -91,7 +82,7 @@ export const Discounts = new SimpleSchema({
   },
   "conditions.order.min": {
     type: Number,
-    label: "Mininum",
+    label: "Minimum",
     defaultValue: 0.00
   },
   "conditions.order.max": {

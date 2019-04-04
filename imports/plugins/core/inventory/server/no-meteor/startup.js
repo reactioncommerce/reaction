@@ -1,3 +1,4 @@
+import collectionIndex from "/imports/utils/collectionIndex";
 import updateCatalogProductInventoryStatus from "/imports/plugins/core/catalog/server/no-meteor/utils/updateCatalogProductInventoryStatus";
 import getVariantInventoryNotAvailableToSellQuantity from "./utils/getVariantInventoryNotAvailableToSellQuantity";
 import updateParentVariantsInventoryAvailableToSellQuantity from "./utils/updateParentVariantsInventoryAvailableToSellQuantity";
@@ -10,11 +11,18 @@ import updateParentVariantsInventoryInStockQuantity from "./utils/updateParentVa
  * @returns {undefined}
  */
 export default function startup(context) {
-  const { appEvents } = context;
+  const { appEvents, collections } = context;
+  const { Inventory } = collections;
+
+  // Create indexes. We set specific names for backwards compatibility
+  // with indexes created by the aldeed:schema-index Meteor package.
+  collectionIndex(Inventory, { orderItemId: 1 }, { name: "c2_orderItemId" });
+  collectionIndex(Inventory, { productId: 1 }, { name: "c2_productId" });
+  collectionIndex(Inventory, { shopId: 1 }, { name: "c2_shopId" });
+  collectionIndex(Inventory, { variantId: 1 }, { name: "c2_variantId" });
+  collectionIndex(Inventory, { "workflow.status": 1 }, { name: "c2_workflow.status" });
 
   appEvents.on("afterOrderCancel", async ({ order, returnToStock }) => {
-    const { collections } = context;
-
     // Inventory is removed from stock only once an order has been approved
     // This is indicated by payment.status being anything other than `created`
     // We need to check to make sure the inventory has been removed before we return it to stock
@@ -107,7 +115,6 @@ export default function startup(context) {
   });
 
   appEvents.on("afterOrderCreate", async ({ order }) => {
-    const { collections } = context;
     const orderItems = order.shipping.reduce((list, group) => [...list, ...group.items], []);
 
     // Create a new set of unique productIds
@@ -152,8 +159,6 @@ export default function startup(context) {
   });
 
   appEvents.on("afterOrderApprovePayment", async ({ order }) => {
-    const { collections } = context;
-
     // We only decrease the inventory quantity after the final payment is approved
     const nonApprovedPayment = (order.payments || []).find((payment) => payment.status === "created");
     if (nonApprovedPayment) return;
@@ -202,8 +207,6 @@ export default function startup(context) {
   });
 
   appEvents.on("afterVariantUpdate", async ({ _id, field }) => {
-    const { collections } = context;
-
     // If the updated field was `inventoryInStock`, adjust `inventoryAvailableToSell` quantities
     if (field === "inventoryInStock") {
       const doc = await collections.Products.findOne({ _id });
