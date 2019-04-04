@@ -29,20 +29,12 @@ export const Inventory = new SimpleSchema({
   },
   "shopId": {
     type: String,
-    index: 1,
     label: "Inventory ShopId"
   },
-  "productId": {
-    type: String,
-    index: true
-  },
-  "variantId": {
-    type: String,
-    index: true
-  },
+  "productId": String,
+  "variantId": String,
   "orderItemId": {
     type: String,
-    index: true,
     optional: true
   },
   "workflow": {

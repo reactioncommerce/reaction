@@ -121,7 +121,10 @@ const composer = (props, onData) => {
   if (orderSub.ready()) {
     // Find current order
     const order = Orders.findOne({
-      "_id": props.orderId,
+      "$or": [
+        { _id: props.orderId },
+        { referenceId: props.orderId }
+      ],
       "shipping._id": props.fulfillment && props.fulfillment._id
     });
 

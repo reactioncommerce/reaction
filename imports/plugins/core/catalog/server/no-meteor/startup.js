@@ -1,4 +1,5 @@
 import Logger from "@reactioncommerce/logger";
+import collectionIndex from "/imports/utils/collectionIndex";
 import hashProduct from "./mutations/hashProduct";
 
 /**
@@ -31,6 +32,17 @@ async function hashRelatedProduct(media, collections) {
  */
 export default function startup(context) {
   const { appEvents, collections } = context;
+  const { Catalog } = collections;
+
+  // Create indexes. We set specific names for backwards compatibility
+  // with indexes created by the aldeed:schema-index Meteor package.
+  collectionIndex(Catalog, { createdAt: 1 });
+  collectionIndex(Catalog, { shopId: 1 });
+  collectionIndex(Catalog, { updatedAt: 1 });
+  collectionIndex(Catalog, { "product._id": 1 });
+  collectionIndex(Catalog, { "product.productId": 1 });
+  collectionIndex(Catalog, { "product.slug": 1 });
+  collectionIndex(Catalog, { "product.tagIds": 1 });
 
   appEvents.on("afterMediaInsert", ({ mediaRecord }) => {
     hashRelatedProduct(mediaRecord, collections).catch((error) => {
