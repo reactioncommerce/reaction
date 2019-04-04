@@ -10,10 +10,7 @@ import { registerSchema } from "@reactioncommerce/schemas";
  * @summary Taxes schema
  */
 export const Taxes = new SimpleSchema({
-  shopId: {
-    type: String,
-    index: 1
-  },
+  shopId: String,
   taxCode: {
     type: String,
     label: "Tax Code",
@@ -28,20 +25,17 @@ export const Taxes = new SimpleSchema({
   region: {
     label: "State/Province/Region",
     type: String,
-    optional: true,
-    index: 1
+    optional: true
   },
   postal: {
     label: "ZIP/Postal Code",
     type: String,
-    optional: true,
-    index: 1
+    optional: true
   },
   country: {
     type: String,
     label: "Country",
-    optional: true,
-    index: 1
+    optional: true
   },
   rate: Number
 }, { check, tracker: Tracker });

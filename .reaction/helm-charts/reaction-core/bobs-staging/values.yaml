@@ -4,7 +4,7 @@ imageTag: e1e7127b34e9853130371a43e475b2ece505445f
 #imageTag: develop
 imagePullPolicy: IfNotPresent
 ## How many replicas?
-replicas: 1
+replicas: 4
 ## Should the service be LoadBalancer, NodePort or ClusterIP
 ## If you're using ingress, ClusterIP should be a solid choice
 ##
@@ -106,8 +106,8 @@ app:
         ## ref: http://kubernetes.io/docs/user-guide/compute-resources/
 resources:
     requests:
-        memory: 500Mi
-        cpu: 700m
+        memory: 2Gi
+        cpu: 1500m
     limits:
         memory: 2Gi
         cpu: "2"

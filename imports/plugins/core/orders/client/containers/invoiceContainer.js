@@ -499,7 +499,12 @@ function capturePayments(order, paymentIds) {
 const composer = (props, onData) => {
   const { fulfillment, orderId } = props;
 
-  const order = Orders.findOne({ _id: orderId });
+  const order = Orders.findOne({
+    $or: [
+      { _id: orderId },
+      { referenceId: orderId }
+    ]
+  });
   const shopId = Reaction.getShopId();
 
   if (order) {
