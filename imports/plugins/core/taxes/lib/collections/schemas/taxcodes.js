@@ -12,8 +12,7 @@ import { registerSchema } from "@reactioncommerce/schemas";
 export const TaxCodes = new SimpleSchema({
   "id": {
     type: String,
-    label: "Tax Id",
-    unique: true
+    label: "Tax Id"
   },
   "shopId": {
     type: String

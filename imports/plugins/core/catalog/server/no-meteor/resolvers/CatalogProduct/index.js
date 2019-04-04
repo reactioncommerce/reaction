@@ -13,19 +13,5 @@ export default {
   tagIds,
   tags,
   media: (node, args, context) => node.media && node.media.map((mediaItem) => xformCatalogProductMedia(mediaItem, context)),
-  primaryImage: (node, args, context) => xformCatalogProductMedia(node.primaryImage, context),
-  variants: (node, args, context) => node.variants && node.variants.map((variant) => {
-    variant.media = variant.media && variant.media.map((mediaItem) => xformCatalogProductMedia(mediaItem, context));
-    variant.primaryImage = xformCatalogProductMedia(variant.primaryImage, context);
-
-    if (variant.options) {
-      variant.options = variant.options.map((option) => {
-        option.media = option.media && option.media.map((mediaItem) => xformCatalogProductMedia(mediaItem, context));
-        option.primaryImage = xformCatalogProductMedia(option.primaryImage, context);
-        return option;
-      });
-    }
-
-    return variant;
-  })
+  primaryImage: (node, args, context) => xformCatalogProductMedia(node.primaryImage, context)
 };

@@ -34,10 +34,7 @@ export const Emails = new SimpleSchema({
     type: String,
     optional: true
   },
-  jobId: {
-    type: String,
-    index: true
-  },
+  jobId: String,
   type: {
     type: String,
     optional: true
