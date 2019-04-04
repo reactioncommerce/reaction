@@ -43,7 +43,6 @@
 [submodule "imports/plugins/custom/reaction-plugin-pricing-engine"]
 	path = imports/plugins/custom/reaction-plugin-pricing-engine
 	url = git@github.com:sportsdirect/reaction-plugin-pricing-engine.git
-  branch = trunk
 [submodule "imports/plugins/custom/reaction-plugin-shippable-inventory"]
 	path = imports/plugins/custom/reaction-plugin-shippable-inventory
 	url = git@github.com:sportsdirect/reaction-plugin-shippable-inventory.git
