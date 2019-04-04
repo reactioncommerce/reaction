@@ -11,6 +11,6 @@ import packageJson from "/package.json";
 export default async function systemInformation(context) {
   return {
     apiVersion: packageJson.version,
-    plugins: await context.collections.Packages.find({ version: { exists: true } }).toArray()
+    plugins: await context.collections.Packages.find({ version: { $exists: true } }).toArray()
   };
 }
