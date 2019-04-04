@@ -25,7 +25,6 @@ Meteor.publish("PaginatedOrders", function (query, options) {
     noReady: true,
     nonReactive: true
   });
-  console.log("query", query);
 
   return Orders.find({
     shopId,
