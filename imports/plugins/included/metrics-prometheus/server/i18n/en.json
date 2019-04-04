@@ -6,7 +6,7 @@
     "translation": {
       "metrics-prometheus": {
         "metrics-prometheus": {
-          "displayName": "Metrics",
+          "displayName": "Metrics Prometheus",
           "enabled": "Enabled",
           "settings": {
             "enabledLabel": "Enabled (requires restarting reaction)",
