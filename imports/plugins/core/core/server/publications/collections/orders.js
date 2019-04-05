@@ -19,12 +19,9 @@ Meteor.publish("PaginatedOrders", function (query, options) {
   }
 
   const limit = (options && options.limit) ? options.limit : 0;
-  const skip = (options && options.skip) ? options.skip : 0;
+  const page = (options && options.page) ? options.page : 0;
 
-  Counts.publish(this, "orders-count", Orders.find(), {
-    noReady: true,
-    nonReactive: true
-  });
+  Counts.publish(this, "orders-count", Orders.find({ shopId, ...query }), { noReady: true });
 
   return Orders.find({
     shopId,
@@ -34,7 +31,7 @@ Meteor.publish("PaginatedOrders", function (query, options) {
       createdAt: -1
     },
     limit,
-    skip
+    skip: page * limit
   });
 });
 
