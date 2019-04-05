@@ -119,7 +119,7 @@ export default function sendOrderEmail(order, action) {
   const refunds = [];
 
   const context = Promise.await(getGraphQLContextInMeteorMethod(null));
-  
+
   if (Array.isArray(order.payments)) {
     for (const payment of order.payments) {
       const shopRefunds = Promise.await(getPaymentMethodConfigByName(payment.name).functions.listRefunds(context, payment));

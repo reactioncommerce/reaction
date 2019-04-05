@@ -51,8 +51,8 @@ export default async function sendOrderEmail(context, input) {
   SSR.compileTemplate(subject, Reaction.Email.getSubject(tpl));
 
   Reaction.Email.send({
-    to: to,
-    from: from,
+    to,
+    from,
     subject: SSR.render(subject, dataForEmail),
     html: SSR.render(tpl, dataForEmail)
   });
