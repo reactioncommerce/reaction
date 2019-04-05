@@ -214,10 +214,7 @@ export const OrderItem = new SimpleSchema({
     optional: true
   },
   "price": Money,
-  "productId": {
-    type: String,
-    index: 1
-  },
+  "productId": String,
   "productSlug": {
     type: String,
     optional: true
@@ -243,16 +240,12 @@ export const OrderItem = new SimpleSchema({
     type: SimpleSchema.Integer,
     min: 0
   },
-  "shopId": {
-    type: String,
-    index: 1
-  },
+  "shopId": String,
   "subtotal": Number,
   "title": String,
   "updatedAt": Date,
   "variantId": {
     type: String,
-    index: 1,
     optional: true
   },
   "variantTitle": {
@@ -404,12 +397,10 @@ export const Order = new SimpleSchema({
   },
   "accountId": {
     type: String,
-    index: 1,
     optional: true
   },
   "anonymousAccessToken": {
     type: String,
-    index: 1,
     optional: true
   },
   // Although billing address is typically needed only by the payment plugin,
@@ -443,7 +434,6 @@ export const Order = new SimpleSchema({
   "email": {
     type: String,
     optional: true,
-    index: 1,
     regEx: SimpleSchema.RegEx.Email
   },
   "exportHistory": {
@@ -470,10 +460,7 @@ export const Order = new SimpleSchema({
     type: String
   },
   "shipping": [OrderFulfillmentGroup],
-  "shopId": {
-    type: String,
-    index: 1
-  },
+  "shopId": String,
   "surcharges": {
     type: Array,
     optional: true

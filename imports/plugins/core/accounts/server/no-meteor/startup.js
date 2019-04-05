@@ -1,6 +1,7 @@
 import Logger from "@reactioncommerce/logger";
 import Random from "@reactioncommerce/random";
 import appEvents from "/imports/node-app/core/util/appEvents";
+import collectionIndex from "/imports/utils/collectionIndex";
 import { Meteor } from "meteor/meteor";
 
 const defaultAdminRoles = [
@@ -160,8 +161,18 @@ async function createDefaultAdminUser(context) {
  * @returns {undefined}
  */
 export default async function startup(context) {
+  const { collections } = context;
+  const { Accounts } = collections;
+
   // timing is important, packages are rqd for initial permissions configuration.
   if (!Meteor.isAppTest) {
     await createDefaultAdminUser(context);
   }
+
+  // Create indexes. We set specific names for backwards compatibility
+  // with indexes created by the aldeed:schema-index Meteor package.
+  collectionIndex(Accounts, { groups: 1 }, { name: "c2_groups" });
+  collectionIndex(Accounts, { sessions: 1 }, { name: "c2_sessions" });
+  collectionIndex(Accounts, { shopId: 1 }, { name: "c2_shopId" });
+  collectionIndex(Accounts, { userId: 1 }, { name: "c2_userId" });
 }

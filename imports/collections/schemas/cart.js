@@ -77,10 +77,7 @@ export const CartItem = new SimpleSchema({
   },
   "price": Money,
   "priceWhenAdded": Money,
-  "productId": {
-    type: String,
-    index: 1
-  },
+  "productId": String,
   "productSlug": {
     type: String,
     optional: true
@@ -108,7 +105,6 @@ export const CartItem = new SimpleSchema({
   },
   "shopId": {
     type: String,
-    index: 1,
     label: "Cart Item shopId"
   },
   "subtotal": Money,
@@ -124,7 +120,6 @@ export const CartItem = new SimpleSchema({
   "updatedAt": Date,
   "variantId": {
     type: String,
-    index: 1,
     optional: true
   },
   "variantTitle": {
@@ -180,17 +175,14 @@ export const Cart = new SimpleSchema({
   },
   "shopId": {
     type: String,
-    index: 1,
     label: "Cart ShopId"
   },
   "accountId": {
     type: String,
-    index: 1,
     optional: true
   },
   "anonymousAccessToken": {
     type: String,
-    index: 1,
     optional: true
   },
   "currencyCode": String,
@@ -200,7 +192,6 @@ export const Cart = new SimpleSchema({
   },
   "sessionId": {
     type: String,
-    index: 1,
     optional: true
   },
   "referenceId": {
@@ -210,7 +201,6 @@ export const Cart = new SimpleSchema({
   "email": {
     type: String,
     optional: true,
-    index: 1,
     regEx: SimpleSchema.RegEx.Email
   },
   "items": {

@@ -270,8 +270,7 @@ export const VariantBaseSchema = new SimpleSchema({
   },
   "shopId": {
     type: String,
-    label: "Product ShopId",
-    index: 1
+    label: "Product ShopId"
   },
   "sku": {
     type: String,
@@ -381,8 +380,7 @@ export const CatalogProduct = new SimpleSchema({
   },
   "createdAt": {
     type: Date,
-    label: "Date/time this product was created at",
-    index: 1
+    label: "Date/time this product was created at"
   },
   "description": {
     type: String,
@@ -411,7 +409,6 @@ export const CatalogProduct = new SimpleSchema({
   "isDeleted": {
     type: Boolean,
     label: "Is deleted",
-    index: 1,
     defaultValue: false
   },
   "isLowQuantity": {
@@ -425,7 +422,6 @@ export const CatalogProduct = new SimpleSchema({
   "isVisible": {
     type: Boolean,
     label: "Indicates if a product is visible to non-admin users",
-    index: 1,
     defaultValue: false
   },
   "length": {
@@ -509,8 +505,7 @@ export const CatalogProduct = new SimpleSchema({
   },
   "shopId": {
     type: String,
-    label: "Product ShopId",
-    index: 1
+    label: "Product ShopId"
   },
   "sku": {
     type: String,
@@ -519,8 +514,7 @@ export const CatalogProduct = new SimpleSchema({
   },
   "slug": {
     type: String,
-    optional: true,
-    index: 1
+    optional: true
   },
   "socialMetadata": {
     type: Array,
@@ -609,13 +603,11 @@ export const Catalog = new SimpleSchema({
   },
   createdAt: {
     type: Date,
-    label: "Date/time this catalog item was created at",
-    index: 1
+    label: "Date/time this catalog item was created at"
   },
   shopId: {
     type: String,
-    label: "Product ShopId",
-    index: 1
+    label: "Product ShopId"
   },
   updatedAt: {
     type: Date,

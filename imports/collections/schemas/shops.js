@@ -275,8 +275,7 @@ export const Shop = new SimpleSchema({
   },
   "slug": {
     type: String,
-    optional: true,
-    unique: true
+    optional: true
   },
   "merchantShops": {
     type: Array,
@@ -289,23 +288,18 @@ export const Shop = new SimpleSchema({
     type: String,
     // Default value is merchant because we seed the first created shop with "primary"
     // In a marketplace, there should only be one "primary" shop
-    defaultValue: "merchant", // "primary", "merchant", "affiliate",
-    index: true
+    defaultValue: "merchant" // "primary", "merchant", "affiliate",
   },
   "active": {
     type: Boolean,
-    defaultValue: true,
-    index: true
+    defaultValue: true
   },
   // not sure what this is used for. Prefer the boolean above for indexing
   "status": {
     type: String,
     defaultValue: "active"
   },
-  "name": {
-    type: String,
-    index: 1
-  },
+  "name": String,
   "description": {
     type: String,
     optional: true
@@ -323,8 +317,7 @@ export const Shop = new SimpleSchema({
   },
   "domains": {
     type: Array,
-    defaultValue: ["localhost"],
-    index: 1
+    defaultValue: ["localhost"]
   },
   "domains.$": String,
   "emails": {
