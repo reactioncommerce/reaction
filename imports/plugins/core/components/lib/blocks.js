@@ -3,7 +3,6 @@ import PropTypes from "prop-types";
 import { Logger } from "/client/api";
 import { compose, setDisplayName } from "recompose";
 
-// export const Blocks = () ; // populated with final wrapped blocks
 export const BlocksTable = {}; // storage for separate elements of each block
 export const BlockComponents = {};
 
