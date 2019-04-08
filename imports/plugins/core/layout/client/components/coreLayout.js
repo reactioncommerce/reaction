@@ -5,6 +5,7 @@ import { Reaction } from "/client/api";
 import { Meteor } from "meteor/meteor";
 import Button from "@material-ui/core/Button";
 import withStyles from "@material-ui/core/styles/withStyles";
+import ShopLogo from "/imports/client/ui/components/ShopLogoWithData/ShopLogoWithData.js";
 
 const styles = (theme) => ({
   root: {
@@ -67,13 +68,11 @@ function CoreLayout({ classes, location }) {
       <div className={classes.root}>
         <div className={classes.content}>
           <div className={classes.logo}>
-            <img
-              alt="Reaction"
-              src="/resources/reaction-logo-circular.svg"
-              width={200}
+            <ShopLogo
+              linkTo="/"
+              size={200}
             />
           </div>
-
           {content}
         </div>
       </div>
