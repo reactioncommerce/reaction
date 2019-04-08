@@ -1,16 +1,21 @@
 extend type Query {
-  systemInformation: SystemInfo
+  systemInformation(shopId: ID!): SystemInformation!
 }
 
 "Represents Reaction Plugin"
 type Plugin {
-  name: String,
+  # name of plugin
+  name: String
+  # version of plugin
   version: String
 }
 
 "Represents Reaction System Infomation"
-type SystemInfo {
+type SystemInformation {
   # core api version
-  apiVersion: String,
+  apiVersion: String
+  # TODO: data version
+  # TODO: mongo version
+  #plugins installed with name, version information
   plugins:[Plugin]
 }
