@@ -120,15 +120,11 @@ const wrapComponent = (Comp) => {
    * @returns {Node} React component
    */
   function withProduct(props) {
-    const {
-      history,
-      newMetafield,
-      setNewMetaField
-    } = props;
+    const { history } = props;
 
     return (
       <Comp
-        newMetafield={newMetafield}
+        // newMetafield={newMetafield}
         onArchiveProduct={async (product, redirectUrl) => {
           await handleArchiveProduct(product);
           history.push(redirectUrl);
@@ -137,21 +133,6 @@ const wrapComponent = (Comp) => {
         onCreateVariant={async (product) => {
           const { newVariantId } = await handleCreateVariant(product);
           history.push(`/operator/products/${product._id}/${newVariantId}`);
-        }}
-        onMetaChange={setNewMetaField}
-        onMetaRemove={handleMetaRemove}
-        onMetaSave={(productId, metafield, index) => {
-          // update existing metafield
-          if (index >= 0) {
-            Meteor.call("products/updateMetaFields", productId, metafield, index);
-          } else if (metafield.key && metafield.value) {
-            Meteor.call("products/updateMetaFields", productId, metafield);
-          }
-
-          setNewMetaField({
-            key: "",
-            value: ""
-          });
         }}
         onProductFieldSave={handleProductFieldSave}
         onProductVariantFieldSave={handleProductVariantFieldSave}
