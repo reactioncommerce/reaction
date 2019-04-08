@@ -21,7 +21,7 @@ export default async function catalogItemsAggregate(context, { isSoldOut, shopId
 
   // If isSoldOut filter is provided, add it to the query
   let isSoldOutFilter = {};
-  if (isSoldOut === true || isSoldOut === false) {
+  if (typeof isSoldOut === "boolean") {
     isSoldOutFilter = { "product.isSoldOut": { $eq: isSoldOut } };
   }
 
