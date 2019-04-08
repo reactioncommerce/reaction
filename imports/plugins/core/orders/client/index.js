@@ -3,6 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faInbox } from "@fortawesome/free-solid-svg-icons";
 
 import { registerOperatorRoute } from "/imports/client/ui";
+import ContentViewExtraWideLayout from "/imports/client/ui/layouts/ContentViewExtraWideLayout";
 import Orders from "./containers/orderDashboardContainer";
 import OrderDetail from "./containers/orderDetailContainer";
 import "./helpers";
@@ -34,6 +35,7 @@ registerOperatorRoute({
 registerOperatorRoute({
   isNavigationLink: true,
   isSetting: false,
+  layoutComponent: ContentViewExtraWideLayout,
   mainComponent: Orders,
   path: "/orders",
   // eslint-disable-next-line react/display-name
