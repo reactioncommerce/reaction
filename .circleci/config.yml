@@ -441,6 +441,10 @@ workflows:
           context: reaction-publish-docker
           requires:
             - docker-build
+            - lint-javascript
+            - test-app
+            - test-unit
+            - test-integration
       - deploy-to-ecs-release-branch:
           requires:
             - docker-push
