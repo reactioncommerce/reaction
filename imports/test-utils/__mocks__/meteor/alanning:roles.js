@@ -1,4 +1,4 @@
 export const Roles = {
-    getGroupsForUser: () => [mockContext.shopId],
-    userIsInRole: () => true
-  };
+  getGroupsForUser: () => [],
+  userIsInRole: () => true
+};
