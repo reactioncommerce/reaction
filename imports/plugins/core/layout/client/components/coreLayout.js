@@ -5,7 +5,7 @@ import { Reaction } from "/client/api";
 import { Meteor } from "meteor/meteor";
 import Button from "@material-ui/core/Button";
 import withStyles from "@material-ui/core/styles/withStyles";
-import ShopLogo from "/imports/client/ui/components/ShopLogoWithData/ShopLogoWithData.js";
+import ShopLogo from "/imports/client/ui/components/ShopLogoWithData/ShopLogoWithData";
 
 const styles = (theme) => ({
   root: {
