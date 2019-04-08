@@ -11,7 +11,7 @@ const getShop = gql`
     shop(id: $id) {
       brandAssets {
         navbarBrandImage {
-          thumbnail
+          large
         }
       }
       name
@@ -32,7 +32,7 @@ function ShopLogoWithData({ shopId, linkTo, size }) {
       {({ loading, data }) => {
         if (loading) return null;
         const { shop } = data;
-        const customLogo = shop.brandAssets && shop.brandAssets.navbarBrandImage && shop.brandAssets.navbarBrandImage.thumbnail;
+        const customLogo = shop.brandAssets && shop.brandAssets.navbarBrandImage && shop.brandAssets.navbarBrandImage.large;
         const defaultLogo = "/resources/reaction-logo-circular.svg";
 
         return (
