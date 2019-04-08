@@ -102,6 +102,8 @@ app:
         value: 1
     -   key: INVENTORY_PLUGIN_BATCH_CONSUME_SIZE
         value: 1000
+    -   key: SHIPPABLE_INVENTORY_CONSUMER_ENABLED
+        value: true
         ## Configure resource requests and limits
         ## ref: http://kubernetes.io/docs/user-guide/compute-resources/
 resources:
