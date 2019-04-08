@@ -75,6 +75,8 @@ app:
         value: "3"
     -   key: KAFKA_TOPIC_PRODUCT_IMPORT_PRODUCTS
         value: event.product-import.products.stream.json-gen1
+    -   key: METRICS_ENABLED
+        value: true
     -   key: ORDER_EXPORT_RADIAL_URL
         value: https://tst02-epapi-na.gsipartners.com/v1.0/OOMF/stores
     -   key: PRICING_CONSUMER_ENABLED

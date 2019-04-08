@@ -47,3 +47,6 @@
 [submodule "imports/plugins/custom/reaction-plugin-shippable-inventory"]
 	path = imports/plugins/custom/reaction-plugin-shippable-inventory
 	url = git@github.com:sportsdirect/reaction-plugin-shippable-inventory.git
+[submodule "imports/plugins/custom/reaction-plugin-metrics-prometheus"]
+	path = imports/plugins/custom/reaction-plugin-metrics-prometheus
+	url = git@github.com:sportsdirect/reaction-plugin-metrics-prometheus.git
