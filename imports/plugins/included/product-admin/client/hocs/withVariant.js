@@ -38,13 +38,20 @@ const wrapComponent = (Comp) => {
    * @return {Node} React component
    */
   function withVariant(props) {
-    const { history, product } = props;
+    const {
+      history,
+      productId,
+      parentVariant,
+      variant
+    } = props;
+
+    const variantOrParent = parentVariant || variant;
 
     return (
       <Comp
-        onCreateOption={async (parentVariant) => {
-          const { newVariantId } = await handleCreateOption(parentVariant);
-          history.push(`/operator/products/${product._id}/${parentVariant._id}/${newVariantId}`);
+        onCreateOption={async () => {
+          const { newVariantId } = await handleCreateOption(variantOrParent);
+          history.push(`/operator/products/${productId}/${variantOrParent._id}/${newVariantId}`);
           window && window.scrollTo(0, 0);
         }}
         {...props}
@@ -54,7 +61,9 @@ const wrapComponent = (Comp) => {
 
   withVariant.propTypes = {
     history: PropTypes.object,
-    product: PropTypes.object
+    parentVariant: PropTypes.object,
+    productId: PropTypes.string,
+    variant: PropTypes.object
   };
 
   return withVariant;
@@ -67,31 +76,44 @@ const wrapComponent = (Comp) => {
  * @returns {undefined} no return
  */
 function composer(props, onData) {
-  const { handle: productId, variantId, optionId } = props.match.params;
+  const {
+    handle: productId,
+    parentVariantId,
+    variantId
+  } = props.match.params;
 
-  // Get the top-level variant
+  // Get the current level variant
   const variant = Products.findOne({
     _id: variantId
   });
 
   // Get the current variant or option;
-  let option;
-  let optionMedia = [];
+  let parentVariant;
+  let childVariants;
+  let childVariantMedia = [];
 
-  if (optionId) {
-    option = Products.findOne({
-      _id: optionId
+  // Get the parent variant
+  if (parentVariantId) {
+    parentVariant = Products.findOne({
+      _id: parentVariantId
     });
   }
 
-  let options = ReactionProduct.getVariants(variantId);
+  let variants;
 
-  if (options) {
-    if (Array.isArray(options)) {
-      optionMedia = Media.findLocal(
+  if (parentVariantId) {
+    variants = ReactionProduct.getVariants(parentVariantId);
+  } else {
+    variants = ReactionProduct.getTopVariants();
+  }
+  let variantMedia: [];
+
+  if (variants) {
+    if (Array.isArray(variants)) {
+      variantMedia = Media.findLocal(
         {
           "metadata.variantId": {
-            $in: getVariantIds(options)
+            $in: getVariantIds(variants)
           }
         },
         {
@@ -102,10 +124,37 @@ function composer(props, onData) {
       );
     }
 
-    options = options.map((optionData) => ({
+    variants = variants.map((variantData) => ({
+      ...variantData,
+      displayPrice: formatPriceString(Catalog.getVariantPriceRange(variantData._id)),
+      media: variantMedia && variantMedia.filter((media) => (
+        media.metadata.variantId === variantData._id
+      ))
+    }));
+  }
+
+  childVariants = ReactionProduct.getVariants(variantId);
+
+  if (childVariants) {
+    if (Array.isArray(childVariants)) {
+      childVariantMedia = Media.findLocal(
+        {
+          "metadata.variantId": {
+            $in: getVariantIds(childVariants)
+          }
+        },
+        {
+          sort: {
+            "metadata.priority": 1
+          }
+        }
+      );
+    }
+
+    childVariants = childVariants.map((optionData) => ({
       ...optionData,
       displayPrice: formatPriceString(Catalog.getVariantPriceRange(optionData._id)),
-      media: optionMedia && optionMedia.filter((media) => (
+      media: childVariantMedia && childVariantMedia.filter((media) => (
         media.metadata.variantId === optionData._id
       ))
     }));
@@ -114,13 +163,22 @@ function composer(props, onData) {
   onData(null, {
     countries: Countries.find({}).fetch(),
     editFocus: Reaction.state.get("edit/focus"),
-    options,
-    variant,
-    option,
-    optionMedia,
+    isAtMaxDepth: variant && variant.ancestors.length === 2,
     productId,
+
+    // Current variant
     variantId,
-    optionId
+    variant,
+    variants,
+    variantMedia,
+
+    // Parent variant
+    parentVariant,
+    parentVariantId,
+
+    // Child variants
+    childVariants,
+    childVariantMedia
   });
 }
 
