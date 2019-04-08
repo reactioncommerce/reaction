@@ -24,24 +24,23 @@ const getShop = gql`
  * @params {Object} props Component props
  * @returns {Node} React component
  */
-function ShopLogoWithData({ shopId }) {
+function ShopLogoWithData({ shopId, linkTo, size }) {
   if (!shopId) return null;
 
   return (
     <Query query={getShop} variables={{ id: shopId }}>
       {({ loading, data }) => {
         if (loading) return null;
-
         const { shop } = data;
         const customLogo = shop.brandAssets && shop.brandAssets.navbarBrandImage && shop.brandAssets.navbarBrandImage.thumbnail;
         const defaultLogo = "/resources/reaction-logo-circular.svg";
 
         return (
-          <Link to="/operator">
+          <Link to={linkTo}>
             <img
               alt={shop.name}
               src={customLogo || defaultLogo}
-              width={60}
+              width={size}
             />
           </Link>
         );
@@ -51,7 +50,16 @@ function ShopLogoWithData({ shopId }) {
 }
 
 ShopLogoWithData.propTypes = {
-  shopId: PropTypes.string
+  linkTo: PropTypes.string,
+  shopId: PropTypes.string.length,
+  size: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
 };
+
+
+ShopLogoWithData.defaultProps = {
+  linkTo: "/operator",
+  size: 60
+};
+
 
 export default withPrimaryShopId(withComponents(ShopLogoWithData));
