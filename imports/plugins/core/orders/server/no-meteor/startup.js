@@ -14,6 +14,7 @@ export default function startup(context) {
   // with indexes created by the aldeed:schema-index Meteor package.
   collectionIndex(Orders, { accountId: 1 }, { name: "c2_accountId" });
   collectionIndex(Orders, { anonymousAccessToken: 1 }, { name: "c2_anonymousAccessToken" });
+  collectionIndex(Orders, { createdAt: -1 }, { name: "c2_createdAt" });
   collectionIndex(Orders, { email: 1 }, { name: "c2_email" });
   collectionIndex(Orders, { referenceId: 1 }, { unique: true });
   collectionIndex(Orders, { sessionId: 1 }, { name: "c2_sessionId" });
