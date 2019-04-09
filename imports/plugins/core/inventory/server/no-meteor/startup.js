@@ -1,4 +1,3 @@
-import collectionIndex from "/imports/utils/collectionIndex";
 import updateCatalogProductInventoryStatus from "/imports/plugins/core/catalog/server/no-meteor/utils/updateCatalogProductInventoryStatus";
 import getVariantInventoryNotAvailableToSellQuantity from "./utils/getVariantInventoryNotAvailableToSellQuantity";
 import updateParentVariantsInventoryAvailableToSellQuantity from "./utils/updateParentVariantsInventoryAvailableToSellQuantity";
@@ -12,15 +11,6 @@ import updateParentVariantsInventoryInStockQuantity from "./utils/updateParentVa
  */
 export default function startup(context) {
   const { appEvents, collections } = context;
-  const { Inventory } = collections;
-
-  // Create indexes. We set specific names for backwards compatibility
-  // with indexes created by the aldeed:schema-index Meteor package.
-  collectionIndex(Inventory, { orderItemId: 1 }, { name: "c2_orderItemId" });
-  collectionIndex(Inventory, { productId: 1 }, { name: "c2_productId" });
-  collectionIndex(Inventory, { shopId: 1 }, { name: "c2_shopId" });
-  collectionIndex(Inventory, { variantId: 1 }, { name: "c2_variantId" });
-  collectionIndex(Inventory, { "workflow.status": 1 }, { name: "c2_workflow.status" });
 
   appEvents.on("afterOrderCancel", async ({ order, returnToStock }) => {
     // Inventory is removed from stock only once an order has been approved

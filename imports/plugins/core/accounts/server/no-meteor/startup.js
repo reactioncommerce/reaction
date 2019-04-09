@@ -172,7 +172,6 @@ export default async function startup(context) {
   // Create indexes. We set specific names for backwards compatibility
   // with indexes created by the aldeed:schema-index Meteor package.
   collectionIndex(Accounts, { groups: 1 }, { name: "c2_groups" });
-  collectionIndex(Accounts, { sessions: 1 }, { name: "c2_sessions" });
   collectionIndex(Accounts, { shopId: 1 }, { name: "c2_shopId" });
   collectionIndex(Accounts, { userId: 1 }, { name: "c2_userId" });
 }

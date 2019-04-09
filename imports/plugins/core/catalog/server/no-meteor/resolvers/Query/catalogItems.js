@@ -16,7 +16,7 @@ import ReactionError from "@reactioncommerce/reaction-error";
  * @return {Promise<Object>} A CatalogItemConnection object
  */
 export default async function catalogItems(_, args, context) {
-  const { shopIds: opaqueShopIds, tagIds: opaqueTagIds, ...connectionArgs } = args;
+  const { shopIds: opaqueShopIds, tagIds: opaqueTagIds, isSoldOut, ...connectionArgs } = args;
 
   const shopIds = opaqueShopIds && opaqueShopIds.map(decodeShopOpaqueId);
   const tagIds = opaqueTagIds && opaqueTagIds.map(decodeTagOpaqueId);
@@ -30,6 +30,7 @@ export default async function catalogItems(_, args, context) {
     }
     const tagId = tagIds[0];
     const aggregationParams = await context.queries.catalogItemsAggregate(context, {
+      isSoldOut,
       shopIds,
       tagId
     });
@@ -44,6 +45,7 @@ export default async function catalogItems(_, args, context) {
   }
 
   const query = await context.queries.catalogItems(context, {
+    isSoldOut,
     shopIds,
     tagIds
   });
