@@ -8,7 +8,6 @@ Reaction.registerPackage({
   name: "reaction-systeminfo",
   icon: "fa fa-info",
   autoEnable: true,
-  version: "1.0.0",
   graphQL: {
     resolvers,
     schemas
