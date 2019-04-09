@@ -79,6 +79,4 @@ class EmailTableColumn extends Component {
   }
 }
 
-registerComponent("EmailTableColumn", EmailTableColumn, withMoment);
-
 export default withMoment(EmailTableColumn);
