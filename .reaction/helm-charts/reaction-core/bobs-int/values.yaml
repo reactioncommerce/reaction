@@ -98,7 +98,11 @@ app:
     -   key: KAFKA_PARTITION_ETL_SHIPPABLE_INVENTORY_STATUS
         value: 1
     -   key: INVENTORY_PLUGIN_BATCH_CONSUME_SIZE
-        value: 1000
+        value: 100
+    -   key: SHIPPABLE_INVENTORY_CONSUMER_ENABLED
+        value: "true"
+    -   key: INITIAL_IMPORT
+        value: "true"
         ## Configure resource requests and limits
         ## ref: http://kubernetes.io/docs/user-guide/compute-resources/
 resources:
