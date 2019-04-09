@@ -34,6 +34,8 @@ app:
         value: http://hydra-hydra-admin-service:4445
     -   key: HYDRA_OAUTH2_INTROSPECT_URL
         value: http://hydra-hydra-admin-service:4445/oauth2/introspect
+    -   key: INITIAL_IMPORT
+        value: "true"
     -   key: INVENTORY_PLUGIN_BATCH_CONSUME_SIZE
         value: 100
     -   key: JAEGER_ENDPOINT
@@ -71,17 +73,21 @@ app:
     -   key: KAFKA_TOPIC_PRODUCT_IMPORT_ERRORS
         value: etl.product-import.errors.json-gen1
     -   key: KAFKA_TOPIC_PRODUCT_IMPORT_PRODUCTS_PARTITIONS
-        value: "3"
+        value: "1"
     -   key: KAFKA_TOPIC_PRODUCT_IMPORT_PRODUCTS
         value: event.product-import.products.stream.json-gen1
+    -   key: LOYALTY_CONSUMER_ENABLED
+        value: "false"
     -   key: LOYALTY_PLUGIN_BATCH_CONSUME_SIZE
         value: "10000"
     -   key: ORDER_EXPORT_RADIAL_URL
         value: https://tst02-epapi-na.gsipartners.com/v1.0/OOMF/stores
     -   key: PRICING_CONSUMER_ENABLED
-        value: true
+        value: "false"
     -   key: PRICING_GRAPHQL_URL
         value: http://reaction-pricing-engine.bobs:8888/graphql
+    -   key: PRODUCT_CONSUMER_ENABLED
+        value: "false"
     -   key: PRODUCT_PUBLISHER_AUTO_PUBLISH
         value: false
     -   key: RADIAL_MODE
@@ -99,13 +105,15 @@ app:
     -   key: SCHEMA_REGISTRY_URL
         value: http://kafka-cluster-cp-schema-registry.kafka:8081
     -   key: SHIPPABLE_INVENTORY_CONSUMER_ENABLED
-        value: true
+        value: "false"
     -   key: SITE_CODE
         value: BOBS
     -   key: SKIP_FIXTURES
         value: "1"
     -   key: STARTING_NEW_CUSTOMER_NUMBER
         value: "1100151420184"
+    -   key: TAXES_CONSUMER_ENABLED
+        value: "false"
         ## Configure resource requests and limits
         ## ref: http://kubernetes.io/docs/user-guide/compute-resources/
 resources:
