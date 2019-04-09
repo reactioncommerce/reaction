@@ -1,6 +1,4 @@
 import SimpleSchema from "simpl-schema";
-import { SSR } from "meteor/meteorhacks:ssr";
-import Reaction from "/imports/plugins/core/core/server/Reaction";
 
 const inputSchema = new SimpleSchema({
   action: {
