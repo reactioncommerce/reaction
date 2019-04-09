@@ -2,10 +2,12 @@ import SimpleSchema from "simpl-schema";
 
 const inputSchema = new SimpleSchema({
   action: {
-    type: String
+    type: String,
+    optional: true
   },
-  from: {
-    type: String
+  fromShop: {
+    type: Object,
+    blackbox: true
   },
   to: {
     type: String

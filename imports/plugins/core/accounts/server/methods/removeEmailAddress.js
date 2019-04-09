@@ -55,7 +55,6 @@ export default function removeEmailAddress(email) {
   // Verify new address
   sendVerificationEmail({
     bodyTemplate: "accounts/verifyUpdatedEmail",
-    subjectTemplate: "accounts/verifyUpdatedEmail/subject",
     userId: user._id
   });
 
