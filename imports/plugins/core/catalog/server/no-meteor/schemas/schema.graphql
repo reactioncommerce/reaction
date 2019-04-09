@@ -451,6 +451,9 @@ extend type Query {
     "Optionally provide a list of tag IDs to further filter the item list"
     tagIds: [ID],
 
+    "Optionally provide a flag to filter out sold out products"
+    isSoldOut: Boolean,
+
     after: ConnectionCursor,
     before: ConnectionCursor,
     first: ConnectionLimitInt,
