@@ -115,8 +115,9 @@ export default function sendOrderEmail(order, action) {
 
   const refunds = [];
 
+  const context = Promise.await(getGraphQLContextInMeteorMethod(null));
+
   if (Array.isArray(order.payments)) {
-    const context = Promise.await(getGraphQLContextInMeteorMethod(null));
     for (const payment of order.payments) {
       const shopRefunds = Promise.await(getPaymentMethodConfigByName(payment.name).functions.listRefunds(context, payment));
       const shopRefundsWithPaymentId = shopRefunds.map((shopRefund) => ({ ...shopRefund, paymentId: payment._id }));
@@ -246,25 +247,13 @@ export default function sendOrderEmail(order, action) {
     Logger.warn("No shop email configured. Using no-reply to send mail");
   }
 
-  // Compile Email with SSR
-  let templateName;
+  const to = order.email;
 
-  if (action === "shipped") {
-    templateName = "orders/shipped";
-  } else if (action === "refunded") {
-    templateName = "orders/refunded";
-  } else if (action === "itemRefund") {
-    templateName = "orders/itemRefund";
-  } else {
-    templateName = `orders/${order.workflow.status}`;
-  }
-
-  const context = Promise.await(getGraphQLContextInMeteorMethod(Reaction.getUserId()));
-  Promise.await(context.mutations.sendEmail(context, {
-    data: dataForEmail,
+  Promise.await(context.mutations.sendOrderEmail(context, {
+    action,
+    dataForEmail,
     fromShop: shop,
-    templateName,
-    to: order.email
+    to
   }));
 
   return true;
