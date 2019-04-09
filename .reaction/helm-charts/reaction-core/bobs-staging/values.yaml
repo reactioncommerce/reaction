@@ -62,6 +62,8 @@ app:
         value: etl.product-import.errors.json-gen1
     -   key: KAFKA_TOPIC_PRODUCT_IMPORT_ERRORS
         value: etl.product-import.errors.json-gen1
+    -   key: KAFKA_TOPIC_PRODUCT_IMPORT_ERRORS_PARTITIONS
+        value: "3"
     -   key: PRICING_GRAPHQL_URL
         value: http://reaction-pricing-engine.bobs:8888/graphql
     -   key: KAFKA_BOOTSTRAP_SERVERS
@@ -101,7 +103,9 @@ app:
     -   key: KAFKA_PARTITION_ETL_SHIPPABLE_INVENTORY_STATUS
         value: 1
     -   key: INVENTORY_PLUGIN_BATCH_CONSUME_SIZE
-        value: 1000
+        value: 100
+    -   key: SHIPPABLE_INVENTORY_CONSUMER_ENABLED
+        value: true
         ## Configure resource requests and limits
         ## ref: http://kubernetes.io/docs/user-guide/compute-resources/
 resources:
