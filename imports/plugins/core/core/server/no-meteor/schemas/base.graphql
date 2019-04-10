@@ -1,7 +1,6 @@
 scalar Date
 scalar DateTime
 scalar JSONObject
-scalar Time
 
 enum DistanceUnit {
   cm

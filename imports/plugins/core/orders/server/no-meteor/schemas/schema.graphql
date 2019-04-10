@@ -81,11 +81,28 @@ enum OrdersByAccountIdSortByField {
   createdAt
 }
 
-"Wraps a list of `Order`s, providing pagination cursors and information."
-type OrdersByAccountIdConnection implements NodeConnection {
+"""
+Wraps a list of `Order`s, providing pagination cursors and information.
+
+For information about what Relay-compatible connections are and how to use them, see the following articles:
+- [Relay Connection Documentation](https://facebook.github.io/relay/docs/en/graphql-server-specification.html#connections)
+- [Relay Connection Specification](https://facebook.github.io/relay/graphql/connections.htm)
+- [Using Relay-style Connections With Apollo Client](https://www.apollographql.com/docs/react/recipes/pagination.html)
+"""
+type OrdersByAccountIdConnection {
+  "The list of nodes that match the query, wrapped in an edge to provide a cursor string for each"
   edges: [OrdersByAccountIdEdge]
+
+  """
+  You can request the `nodes` directly to avoid the extra wrapping that `NodeEdge` has,
+  if you know you will not need to paginate the results.
+  """
   nodes: [Order]
+
+  "Information to help a client request the next or previous page"
   pageInfo: PageInfo!
+
+  "The total number of nodes that match your query"
   totalCount: Int!
 }
 
@@ -95,11 +112,28 @@ type OrdersByAccountIdEdge implements NodeEdge {
   node: Order
 }
 
-"Wraps a list of `OrderItem`s, providing pagination cursors and information."
-type OrderItemConnection implements NodeConnection {
+"""
+Wraps a list of `OrderItem`s, providing pagination cursors and information.
+
+For information about what Relay-compatible connections are and how to use them, see the following articles:
+- [Relay Connection Documentation](https://facebook.github.io/relay/docs/en/graphql-server-specification.html#connections)
+- [Relay Connection Specification](https://facebook.github.io/relay/graphql/connections.htm)
+- [Using Relay-style Connections With Apollo Client](https://www.apollographql.com/docs/react/recipes/pagination.html)
+"""
+type OrderItemConnection {
+  "The list of nodes that match the query, wrapped in an edge to provide a cursor string for each"
   edges: [OrderItemEdge]
+
+  """
+  You can request the `nodes` directly to avoid the extra wrapping that `NodeEdge` has,
+  if you know you will not need to paginate the results.
+  """
   nodes: [OrderItem]
+
+  "Information to help a client request the next or previous page"
   pageInfo: PageInfo!
+
+  "The total number of nodes that match your query"
   totalCount: Int!
 }
 
@@ -192,7 +226,7 @@ type OrderItem implements Node {
   "The type of product, used to display cart items differently"
   productType: String
 
-   "The list of tags that have been applied to this product"
+  "The list of tags that have been applied to this product"
   productTags(after: ConnectionCursor, before: ConnectionCursor, first: ConnectionLimitInt, last: ConnectionLimitInt, sortOrder: SortOrder = asc, sortBy: TagSortByField = _id): TagConnection
 
   "The product vendor"

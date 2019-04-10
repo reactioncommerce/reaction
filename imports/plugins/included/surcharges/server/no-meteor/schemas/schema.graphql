@@ -29,16 +29,8 @@ type Surcharge implements Node {
   "The surcharge ID."
   _id: ID!
 
-  "The shop ID"
-  shopId: ID!
-
-  "Method IDs to apply this surcharge to."
-  methodIds: [ID]
-
-  """
-  The type of this surcharge. Allowed types "surcharge".
-  """
-  type: SurchargeTypeEnum!
+  "Amount."
+  amount: Money!
 
   "Attribute restrictions."
   attributes: [SurchargeAttributeRestrictions]
@@ -46,29 +38,61 @@ type Surcharge implements Node {
   "Destination restrictions."
   destination: SurchargeDestinationRestrictions
 
-  "Amount."
-  amount: Money!
-
   "Message translated into provided / default language."
   message(language: String!): String!
 
   "Messages provided with content and all languages"
   messagesByLanguage: [SurchargeMessagesByLanguage]
+
+  "Method IDs to apply this surcharge to."
+  methodIds: [ID]
+
+  "The shop ID"
+  shopId: ID!
+
+  """
+  The type of this surcharge. Allowed types "surcharge".
+  """
+  type: SurchargeTypeEnum!
 }
 
 "Attribute Restrictions attached to a Surcharge"
 type SurchargeAttributeRestrictions {
-  property: String
-  value: String
-  propertyType: String
+  "The operator to use for value comparison"
   operator: String
+
+  "The property to check"
+  property: String
+
+  "The type of this property"
+  propertyType: String
+
+  "The value to check for"
+  value: String
 }
 
-"Wraps a list of `Surcharge`s, providing pagination cursors and information."
+"""
+Wraps a list of `Surcharge`s, providing pagination cursors and information.
+
+For information about what Relay-compatible connections are and how to use them, see the following articles:
+- [Relay Connection Documentation](https://facebook.github.io/relay/docs/en/graphql-server-specification.html#connections)
+- [Relay Connection Specification](https://facebook.github.io/relay/graphql/connections.htm)
+- [Using Relay-style Connections With Apollo Client](https://www.apollographql.com/docs/react/recipes/pagination.html)
+"""
 type SurchargeConnection {
+  "The list of nodes that match the query, wrapped in an edge to provide a cursor string for each"
   edges: [SurchargeEdge]
+
+  """
+  You can request the `nodes` directly to avoid the extra wrapping that `NodeEdge` has,
+  if you know you will not need to paginate the results.
+  """
   nodes: [Surcharge]
+
+  "Information to help a client request the next or previous page"
   pageInfo: PageInfo!
+
+  "Total count for all pages"
   totalCount: Int!
 }
 

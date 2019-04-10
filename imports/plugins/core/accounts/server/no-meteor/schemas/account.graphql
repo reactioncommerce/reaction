@@ -84,23 +84,6 @@ input RemoveAccountEmailRecordInput {
   clientMutationId: String
 }
 
-"The input object for mutating an existing `Account`"
-input AccountUpdatesInput {
-  currencyCode: String!
-}
-
-"Defines how an account should be updated, and which account"
-input UpdateAccountInput {
-  "The account ID"
-  accountId: ID!
-
-  "The field changes to apply"
-  updates: AccountUpdatesInput!
-
-  "An optional string identifying the mutation call, which will be returned in the response payload"
-  clientMutationId: String
-}
-
 "Per-account tax exemption settings used by the Avalara plugin"
 type TaxSettings {
   "Exemption number for an account"
@@ -163,11 +146,28 @@ type Account implements Node {
   updatedAt: DateTime!
 }
 
-"Wraps a list of `Accounts`, providing pagination cursors and information."
-type AccountConnection implements NodeConnection {
+"""
+Wraps a list of `Accounts`, providing pagination cursors and information.
+
+For information about what Relay-compatible connections are and how to use them, see the following articles:
+- [Relay Connection Documentation](https://facebook.github.io/relay/docs/en/graphql-server-specification.html#connections)
+- [Relay Connection Specification](https://facebook.github.io/relay/graphql/connections.htm)
+- [Using Relay-style Connections With Apollo Client](https://www.apollographql.com/docs/react/recipes/pagination.html)
+"""
+type AccountConnection {
+  "The list of nodes that match the query, wrapped in an edge to provide a cursor string for each"
   edges: [AccountEdge]
+
+  """
+  You can request the `nodes` directly to avoid the extra wrapping that `NodeEdge` has,
+  if you know you will not need to paginate the results.
+  """
   nodes: [Account]
+
+  "Information to help a client request the next or previous page"
   pageInfo: PageInfo!
+
+  "The total number of nodes that match your query"
   totalCount: Int!
 }
 

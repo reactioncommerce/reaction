@@ -132,10 +132,28 @@ type TagProductEdge {
   node: TagProduct
 }
 
+"""
+Wraps a list of `TagProduct`s, providing pagination cursors and information.
+
+For information about what Relay-compatible connections are and how to use them, see the following articles:
+- [Relay Connection Documentation](https://facebook.github.io/relay/docs/en/graphql-server-specification.html#connections)
+- [Relay Connection Specification](https://facebook.github.io/relay/graphql/connections.htm)
+- [Using Relay-style Connections With Apollo Client](https://www.apollographql.com/docs/react/recipes/pagination.html)
+"""
 type TagProductConnection {
+  "The list of nodes that match the query, wrapped in an edge to provide a cursor string for each"
   edges: [TagProductEdge]
+
+  """
+  You can request the `nodes` directly to avoid the extra wrapping that `NodeEdge` has,
+  if you know you will not need to paginate the results.
+  """
   nodes: [TagProduct]
+
+  "Information to help a client request the next or previous page"
   pageInfo: PageInfo!
+
+  "The total number of nodes that match your query"
   totalCount: Int!
 }
 
