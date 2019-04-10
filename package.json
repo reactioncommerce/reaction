@@ -432,6 +432,7 @@
       "enum-values-have-descriptions",
       "enum-values-sorted-alphabetically",
       "fields-have-descriptions",
+      "input-object-fields-sorted-alphabetically",
       "input-object-values-have-descriptions",
       "relay-connection-arguments-spec-custom",
       "relay-connection-types-spec",
