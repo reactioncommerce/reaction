@@ -18,6 +18,16 @@ type Cart implements Node {
   "An email address that has been associated with the cart"
   email: String
 
+  # Read-only: Carts that don't have an account should be considered anonymous
+  # and should be cleaned up after some time. This should not be set explicitly
+  # on the cart but can be derived and add to the Cart as a read-only
+  # attribute (read, value from a function.) The cart expiration ttl can then be
+  # modified without having to modify cart records.
+  # This value should not be stored in the database.
+  # Cart expiry is: updated_at + cart_expiry_threshold < now
+  "The date and time at which the cart will expire. Account carts usually do not expire, so they will have a null value here."
+  expiresAt: DateTime
+
   "The items that have been added to the cart. A cart is not created until the first item is added. Items can be removed from a cart, and a cart is not deleted if all items are removed from it. Because all items may have been removed, this may be an empty array."
   items(after: ConnectionCursor, before: ConnectionCursor, first: ConnectionLimitInt, last: ConnectionLimitInt, sortOrder: SortOrder = desc, sortBy: CartItemsSortByField = addedAt): CartItemConnection
 
@@ -37,20 +47,14 @@ type Cart implements Node {
 
   "The date and time at which this cart was last updated."
   updatedAt: DateTime!
-
-  # Read-only: Carts that don't have an account should be considered anonymous
-  # and should be cleaned up after some time. This should not be set explicitly
-  # on the cart but can be derived and add to the Cart as a read-only
-  # attribute (read, value from a function.) The cart expiration ttl can then be
-  # modified without having to modify cart records.
-  # This value should not be stored in the database.
-  # Cart expiry is: updated_at + cart_expiry_threshold < now
-  "The date and time at which the cart will expire. Account carts usually do not expire, so they will have a null value here."
-  expiresAt: DateTime
 }
 
+"Allowed values for cart item sortBy parameter"
 enum CartItemsSortByField {
+  "Cart item ID"
   _id
+
+  "Date and time at which the item was added to the cart"
   addedAt
 }
 
@@ -88,6 +92,7 @@ type CartItemEdge implements NodeEdge {
   node: CartItem
 }
 
+"One attribute of a cart item"
 type CartItemAttribute {
   "The attribute label, e.g., Color"
   label: String
@@ -121,15 +126,15 @@ type CartItem implements Node {
   compareAtPrice: Money
 
   """
-  The quantity of this item currently available to order.
-  """
-  currentQuantity: Int @deprecated(reason: "Use `inventoryAvailableToSell`.")
-
-  """
   The date and time at which the cart item was created. If an item is added, removed, and then added again,
   the original item is destroyed and this field will reflect the time it was created for the most recent addition.
   """
   createdAt: DateTime!
+
+  """
+  The quantity of this item currently available to order.
+  """
+  currentQuantity: Int @deprecated(reason: "Use `inventoryAvailableToSell`.")
 
   "The URLs for a picture of the item in various sizes"
   imageURLs: ImageSizes
@@ -174,11 +179,11 @@ type CartItem implements Node {
   "The product's slug"
   productSlug: String
 
-  "The type of product, used to display cart items differently"
-  productType: String
-
   "The list of tags that have been applied to this product"
   productTags(after: ConnectionCursor, before: ConnectionCursor, first: ConnectionLimitInt, last: ConnectionLimitInt, sortOrder: SortOrder = asc, sortBy: TagSortByField = _id): TagConnection
+
+  "The type of product, used to display cart items differently"
+  productType: String
 
   "The product vendor"
   productVendor: String
@@ -202,10 +207,19 @@ type CartItem implements Node {
   variantTitle: String
 }
 
+"Supported cart reconciliation modes"
 enum CartReconciliationMode {
-  merge
+  "Delete the anonymous cart and use the account cart."
   keepAccountCart
+
+  "Assign the anonymous cart to the account, and delete the account cart."
   keepAnonymousCart
+
+  """
+  Move all items from the anonymous cart into the account cart along with existing
+  account cart items. If the same item is in both carts, combine the quantities.
+  """
+  merge
 }
 
 ####################
@@ -229,14 +243,14 @@ extend type Query {
 
 "The input necessary to create a cart"
 input CreateCartInput {
+  "An optional string identifying the mutation call, which will be returned in the response payload"
+  clientMutationId: String
+
   "Array of items to add to new cart."
   items: [CartItemInput]!
 
   "ShopId association for the cart."
   shopId: ID!
-
-  "An optional string identifying the mutation call, which will be returned in the response payload"
-  clientMutationId: String
 }
 
 "Information about an item to add to a cart"
@@ -266,6 +280,7 @@ input ProductConfigurationInput {
   productVariantId: ID!
 }
 
+"Input for the `addCartItems` mutation"
 input AddCartItemsInput {
   "The cart ID"
   cartId: ID!
@@ -280,6 +295,7 @@ input AddCartItemsInput {
   token: String
 }
 
+"Input for the `removeCartItems` mutation"
 input RemoveCartItemsInput {
   "The cart ID"
   cartId: ID!
@@ -294,6 +310,7 @@ input RemoveCartItemsInput {
   token: String
 }
 
+"Input for the `updateCartItem` mutation"
 input UpdateCartItemInput {
   "The cart item ID"
   cartItemId: ID!
@@ -302,6 +319,7 @@ input UpdateCartItemInput {
   quantity: Int!
 }
 
+"Input for the `updateCartItemsQuantity` mutation"
 input UpdateCartItemsQuantityInput {
   "The cart ID"
   cartId: ID!

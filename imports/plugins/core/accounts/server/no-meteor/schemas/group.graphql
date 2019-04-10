@@ -1,8 +1,15 @@
 "The fields by which you are allowed to sort any query that returns an `GroupConnection`"
 enum GroupSortByField {
+  "Group ID"
   _id
-  name
+
+  "Date and time at which this group was created"
   createdAt
+
+  "Group name"
+  name
+
+  "Date and time at which this group was last updated"
   updatedAt
 }
 
@@ -62,11 +69,11 @@ input AddAccountToGroupInput {
   "The account ID"
   accountId: ID!
 
-  "The group ID"
-  groupId: ID!
-
   "An optional string identifying the mutation call, which will be returned in the response payload"
   clientMutationId: String
+
+  "The group ID"
+  groupId: ID!
 }
 
 "Defines a group and account that should be unlinked"
@@ -147,47 +154,47 @@ type GroupEdge implements NodeEdge {
 
 "The response from the `addAccountToGroup` mutation"
 type AddAccountToGroupPayload {
-  "The updated group"
-  group: Group
-
   "The same string you sent with the mutation params, for matching mutation calls with their responses"
   clientMutationId: String
+
+  "The updated group"
+  group: Group
 }
 
 "The response from the `createGroup` mutation"
 type CreateGroupPayload {
-  "The new group"
-  group: Group
-
   "The same string you sent with the mutation params, for matching mutation calls with their responses"
   clientMutationId: String
+
+  "The new group"
+  group: Group
 }
 
 "The response from the `updateGroup` mutation"
 type UpdateGroupPayload {
-  "The updated group"
-  group: Group
-
   "The same string you sent with the mutation params, for matching mutation calls with their responses"
   clientMutationId: String
+
+  "The updated group"
+  group: Group
 }
 
 "The response from the `removeAccountFromGroup` mutation"
 type RemoveAccountFromGroupPayload {
-  "The updated group"
-  group: Group
-
   "The same string you sent with the mutation params, for matching mutation calls with their responses"
   clientMutationId: String
+
+  "The updated group"
+  group: Group
 }
 
 "The response from the `removeGroup` mutation"
 type RemoveGroupPayload {
-  "Successfully removed?"
-  wasRemoved: Boolean!
-
   "The same string you sent with the mutation params, for matching mutation calls with their responses"
   clientMutationId: String
+
+  "Successfully removed?"
+  wasRemoved: Boolean!
 }
 
 extend type Mutation {
@@ -197,14 +204,14 @@ extend type Mutation {
   "Create a new permission group"
   createGroup(input: CreateGroupInput!): CreateGroupPayload
 
-  "Update an existing permission group"
-  updateGroup(input: UpdateGroupInput!): UpdateGroupPayload
-
   "Remove an account from a group"
   removeAccountFromGroup(input: RemoveAccountFromGroupInput!): RemoveAccountFromGroupPayload
 
   "Remove an existing permission group"
   removeGroup(input: RemoveGroupInput!): RemoveGroupPayload
+
+  "Update an existing permission group"
+  updateGroup(input: UpdateGroupInput!): UpdateGroupPayload
 }
 
 extend type Query {
