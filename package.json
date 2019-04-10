@@ -423,6 +423,9 @@
     ]
   },
   "graphql-schema-linter": {
+    "custom-rule-paths": [
+      ".reaction/graphql-linter-rules/relay_connection_arguments_spec.js"
+    ],
     "rules": [
       "defined-types-are-used",
       "deprecations-have-a-reason",
@@ -431,7 +434,6 @@
       "fields-have-descriptions",
       "input-object-values-have-descriptions",
       "relay-connection-types-spec",
-      "relay-connection-arguments-spec",
       "relay-page-info-spec",
       "types-are-capitalized",
       "types-have-descriptions"
