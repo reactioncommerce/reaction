@@ -1,135 +1,197 @@
-import React, { Component } from "react";
-import { compose } from "recompose";
-import { registerComponent } from "@reactioncommerce/reaction-components";
+import React from "react";
+import PropTypes from "prop-types";
+import { compose, withState } from "recompose";
+import { composeWithTracker, registerComponent } from "@reactioncommerce/reaction-components";
+import { Meteor } from "meteor/meteor";
+import { Counts } from "meteor/tmeasday:publish-counts";
+import { Orders } from "/lib/collections";
 import { filterShippingStatus, filterWorkflowStatus } from "../helpers";
-import OrderSubscription from "./orderSubscriptionContainer";
+import OrderDashboard from "../components/orderDashboard";
 
-const wrapComponent = (Comp) => (
-  class OrderDashboardContainer extends Component {
-    constructor(props) {
-      super(props);
-      this.state = {
-        query: {},
-        shippingFilter: "",
-        workflowFilter: "",
-        skip: 0,
-        pageSize: 10,
-        page: 0
-      };
-    }
+const wrapComponent = (Comp) => {
+  /**
+   * Order dashboard HOC
+   * @param {Object} props Component props
+   * @returns {undefined}
+   */
+  function OrderDashboardContainer(props) {
+    const {
+      setQuery,
+      workflowFilter,
+      shippingFilter,
+      setShippingFilter,
+      setWorkflowFilter,
+      setPagination,
+      pagination
+    } = props;
 
-    filterDates = (startDate, endDate) => {
-      const { query } = this.state;
 
+    const updatePage = (page) => {
+      setPagination({
+        ...pagination,
+        page
+      });
+    };
+
+    const updatePageSize = (pageSize) => {
+      setPagination({
+        ...pagination,
+        limit: pageSize
+      });
+    };
+
+    const filterDates = (startDate, endDate) => {
       if (startDate && endDate) {
         // generate time for start and end of day
         const formattedEndDate = endDate.endOf("day");
         const formattedStartDate = startDate.startOf("day");
 
-        query.createdAt = {
-          $gte: new Date(formattedStartDate.toISOString()),
-          $lte: new Date(formattedEndDate.toISOString())
-        };
-        this.setState({ query });
-      }
-    }
+        setQuery({
+          ...props.query,
+          createdAt: {
+            $gte: new Date(formattedStartDate.toISOString()),
+            $lte: new Date(formattedEndDate.toISOString())
+          }
+        });
 
-    filterWorkflowStatus = (event, value) => {
-      const query = filterWorkflowStatus(value);
-      const { shippingFilter } = this.state;
-      if (this.state.query.createdAt) {
-        query.createdAt = this.state.query.createdAt;
+        // Reset to the first page
+        updatePage(0);
       }
+    };
 
-      if (this.state.query._id) {
-        query._id = this.state.query._id;
-      }
-
-      this.setState({
-        query: { ...filterShippingStatus(shippingFilter.toLowerCase()), ...query },
-        workflowFilter: value
+    const handleFilterWorkflowStatus = (event, value) => {
+      setQuery({
+        ...props.query,
+        ...filterShippingStatus(shippingFilter.toLowerCase()),
+        ...filterWorkflowStatus(value)
       });
-    }
+      setWorkflowFilter(value);
 
-    filterShippingStatus = (event, value) => {
-      const query = filterShippingStatus(value);
-      const { workflowFilter } = this.state;
+      // Reset to the first page
+      updatePage(0);
+    };
 
-      if (this.state.query.createdAt) {
-        query.createdAt = this.state.query.createdAt;
-      }
-
-      if (this.state.query._id) {
-        query._id = this.state.query._id;
-      }
-
-      this.setState({
-        query: { ...filterWorkflowStatus(workflowFilter.toLowerCase()), ...query },
-        shippingFilter: value
+    const handleFilterShippingStatus = (event, value) => {
+      setQuery({
+        ...props.query,
+        ...filterWorkflowStatus(workflowFilter.toLowerCase()),
+        ...filterShippingStatus(value)
       });
-    }
+      setShippingFilter(value);
 
-    clearFilter = (filterString) => {
-      let query;
-      let { shippingFilter, workflowFilter } = this.state;
+      // Reset to the first page
+      updatePage(0);
+    };
+
+    const clearFilter = (filterString) => {
+      let query = {};
+      const { createdAt } = props.query;
+      const shippingStatus = filterShippingStatus(shippingFilter.toLowerCase());
+      const workflowStatus = filterWorkflowStatus(shippingFilter.toLowerCase());
 
       if (filterString === "workflow") {
-        workflowFilter = "";
-        query = { ...filterWorkflowStatus(workflowFilter), ...filterShippingStatus(shippingFilter.toLowerCase()) };
-
-        if (this.state.query.createdAt) {
-          query.createdAt = this.state.query.createdAt;
-        }
-      } else if (filterString === "date") {
+        // Reset the workflow filter, leave date and shipping alone
         query = {
-          ...filterWorkflowStatus(workflowFilter.toLowerCase()),
-          ...filterShippingStatus(shippingFilter.toLowerCase())
+          createdAt,
+          ...shippingStatus
+        };
+        setWorkflowFilter("");
+      } else if (filterString === "date") {
+        // Reset the date filter, leave workflow and shipping alone
+        query = {
+          ...workflowStatus,
+          ...shippingStatus
         };
       } else if (filterString === "shipping") {
-        shippingFilter = "";
-        query = { ...filterWorkflowStatus(workflowFilter.toLowerCase()), ...filterShippingStatus(shippingFilter) };
-
-        if (this.state.query.createdAt) {
-          query.createdAt = this.state.query.createdAt;
-        }
+        // Reset the shipping filter, leave date and workflow alone
+        query = {
+          createdAt,
+          ...workflowStatus
+        };
+        setShippingFilter("");
       }
 
-      this.setState({
-        query,
-        shippingFilter,
-        workflowFilter
-      });
-    }
+      setQuery(query);
 
-    updatePage = (page) => {
-      const offset = page * this.state.pageSize;
-      this.setState({ skip: offset, page });
-    }
+      // Reset to the first page
+      updatePage(0);
+    };
 
-    updatePageSize = (pageSize, pageIndex) => {
-      const offset = pageIndex * pageSize;
-      this.setState({ pageSize, skip: offset });
-    }
-
-    render() {
-      return (
-        <Comp
-          query={this.state.query}
-          clearFilter={this.clearFilter}
-          filterDates={this.filterDates}
-          filterShippingStatus={this.filterShippingStatus}
-          filterWorkflowStatus={this.filterWorkflowStatus}
-          skip={this.state.skip}
-          pageSize={this.state.pageSize}
-          onPageChange={this.updatePage}
-          onPageSizeChange={this.updatePageSize}
-          currentPage={this.state.page}
-        />
-      );
-    }
+    return (
+      <Comp
+        {...props}
+        clearFilter={clearFilter}
+        filterDates={filterDates}
+        filterShippingStatus={handleFilterShippingStatus}
+        filterWorkflowStatus={handleFilterWorkflowStatus}
+        onPageChange={updatePage}
+        onPageSizeChange={updatePageSize}
+      />
+    );
   }
-);
 
-registerComponent("OrderSubscription", OrderSubscription, [wrapComponent]);
+  OrderDashboardContainer.propTypes = {
+    pagination: PropTypes.object,
+    query: PropTypes.object,
+    setPagination: PropTypes.func,
+    setQuery: PropTypes.func,
+    setShippingFilter: PropTypes.func,
+    setWorkflowFilter: PropTypes.func,
+    shippingFilter: PropTypes.string,
+    workflowFilter: PropTypes.string
+  };
 
-export default compose(wrapComponent)(OrderSubscription);
+  return OrderDashboardContainer;
+};
+
+// State handlers
+const stateQuery = withState("query", "setQuery", {});
+const stateShipping = withState("shippingFilter", "setShippingFilter", "");
+const stateWorkflow = withState("workflowFilter", "setWorkflowFilter", "");
+const stateHandler = withState("pagination", "setPagination", {
+  page: 0,
+  limit: 10
+});
+
+/**
+ * Reactive composer
+ * @param {Object} props Props
+ * @param {Function} onData Data callback
+ * @returns {undefined}
+ */
+function composer(props, onData) {
+  const { query, pagination } = props;
+  const { limit, page } = pagination;
+  const options = { limit, page };
+
+  const ordersSubscription = Meteor.subscribe("PaginatedOrders", query, options);
+  const totalOrderCount = Counts.get("orders-count");
+
+  if (ordersSubscription.ready()) {
+    const results = Orders.find(query, { limit }).fetch();
+    onData(null, {
+      orders: results,
+      totalOrderCount,
+      pageSize: limit,
+      page
+    });
+  }
+}
+
+registerComponent("OrderSubscription", OrderDashboard, [
+  stateQuery,
+  stateShipping,
+  stateWorkflow,
+  stateHandler,
+  composeWithTracker(composer),
+  wrapComponent
+]);
+
+export default compose(
+  stateQuery,
+  stateShipping,
+  stateWorkflow,
+  stateHandler,
+  composeWithTracker(composer),
+  wrapComponent
+)(OrderDashboard);

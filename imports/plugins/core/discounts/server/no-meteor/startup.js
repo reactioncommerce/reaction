@@ -14,11 +14,7 @@ export default function startup(context) {
 
   // Create indexes. We set specific names for backwards compatibility
   // with indexes created by the aldeed:schema-index Meteor package.
-  collectionIndex(Discounts, { "calculation.method": 1 }, { name: "c2_calculation.method" });
-  collectionIndex(Discounts, { discountMethod: 1 }, { name: "c2_discountMethod" });
   collectionIndex(Discounts, { shopId: 1 }, { name: "c2_shopId" });
-  collectionIndex(Discounts, { "transactions.cartId": 1 }, { name: "c2_transactions.$.cartId" });
-  collectionIndex(Discounts, { "transactions.userId": 1 }, { name: "c2_transactions.$.userId" });
 
   appEvents.on("afterCartUpdate", async ({ cart }) => {
     if (!cart) {

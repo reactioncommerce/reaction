@@ -88,8 +88,8 @@ export default function startup(context) {
   // Create indexes. We set specific names for backwards compatibility
   // with indexes created by the aldeed:schema-index Meteor package.
   collectionIndex(Cart, { accountId: 1 }, { name: "c2_accountId" });
+  collectionIndex(Cart, { accountId: 1, shopId: 1 });
   collectionIndex(Cart, { anonymousAccessToken: 1 }, { name: "c2_anonymousAccessToken" });
-  collectionIndex(Cart, { email: 1 }, { name: "c2_email" });
   collectionIndex(Cart, {
     referenceId: 1
   }, {
@@ -103,30 +103,9 @@ export default function startup(context) {
       }
     }
   });
-  collectionIndex(Cart, { sessionId: 1 }, { name: "c2_sessionId" });
   collectionIndex(Cart, { shopId: 1 }, { name: "c2_shopId" });
-  collectionIndex(Cart, { "billing.paymentMethod.items.productId": 1 }, { name: "c2_billing.$.paymentMethod.items.$.productId" });
-  collectionIndex(Cart, { "billing.paymentMethod.items.shopId": 1 }, { name: "c2_billing.$.paymentMethod.items.$.shopId" });
-  collectionIndex(Cart, { "billing.paymentMethod.workflow.status": 1 }, { name: "c2_billing.$.paymentMethod.workflow.status" });
   collectionIndex(Cart, { "items.productId": 1 }, { name: "c2_items.$.productId" });
-  collectionIndex(Cart, { "items.product.ancestors": 1 }, { name: "c2_items.$.product.ancestors" });
-  collectionIndex(Cart, { "items.product.createdAt": 1 }, { name: "c2_items.$.product.createdAt" });
-  collectionIndex(Cart, { "items.product.handle": 1 }, { name: "c2_items.$.product.handle" });
-  collectionIndex(Cart, { "items.product.hashtags": 1 }, { name: "c2_items.$.product.hashtags" });
-  collectionIndex(Cart, { "items.product.isDeleted": 1 }, { name: "c2_items.$.product.isDeleted" });
-  collectionIndex(Cart, { "items.product.isVisible": 1 }, { name: "c2_items.$.product.isVisible" });
-  collectionIndex(Cart, { "items.product.shopId": 1 }, { name: "c2_items.$.product.shopId" });
-  collectionIndex(Cart, { "items.product.workflow.status": 1 }, { name: "c2_items.$.product.workflow.status" });
-  collectionIndex(Cart, { "items.shopId": 1 }, { name: "c2_items.$.shopId" });
   collectionIndex(Cart, { "items.variantId": 1 }, { name: "c2_items.$.variantId" });
-  collectionIndex(Cart, { "items.variants.isDeleted": 1 }, { name: "c2_items.$.variants.isDeleted" });
-  collectionIndex(Cart, { "items.variants.isVisible": 1 }, { name: "c2_items.$.variants.isVisible" });
-  collectionIndex(Cart, { "items.variants.shopId": 1 }, { name: "c2_items.$.variants.shopId" });
-  collectionIndex(Cart, { "items.variants.workflow.status": 1 }, { name: "c2_items.$.variants.workflow.status" });
-  collectionIndex(Cart, { "shipping.items.productId": 1 }, { name: "c2_shipping.$.items.$.productId" });
-  collectionIndex(Cart, { "shipping.items.shopId": 1 }, { name: "c2_shipping.$.items.$.shopId" });
-  collectionIndex(Cart, { "shipping.workflow.status": 1 }, { name: "c2_shipping.$.workflow.status" });
-  collectionIndex(Cart, { "workflow.status": 1 }, { name: "c2_workflow.status" });
 
   // When an order is created, delete the source cart
   appEvents.on("afterOrderCreate", async ({ order }) => {
