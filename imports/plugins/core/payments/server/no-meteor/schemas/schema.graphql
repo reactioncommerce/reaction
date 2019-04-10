@@ -101,7 +101,7 @@ enum PaymentStatus {
 
 # Use `extend union` to define a payment plugin's PaymentData type
 "Data identifying a payment for an order"
-union PaymentData
+union PaymentData = FakeData
 
 # Use `extend enum` to add a plugin's payment method name
 "The name of a payment method, which is how payment methods are keyed"
@@ -110,7 +110,7 @@ enum PaymentMethodName {
 }
 
 # Use `extend union` to define a payment plugin's PaymentMethodData type
-union PaymentMethodData
+union PaymentMethodData = FakeData
 
 "Describes a payment method"
 type PaymentMethod {

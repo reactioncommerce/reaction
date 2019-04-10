@@ -110,3 +110,20 @@ type Subscription {
   "A test subscription that returns an incremented number every 1 second for 10 seconds"
   tick: Int!
 }
+
+# Although the spec allows and Apollo supports defining an empty union
+# that is extended later in other files, the graphql-schema-linter
+# package currently has a problem with this, so we must assign FakeData
+# to the unions to work around this issue.
+#
+# Do not use this type, and remove it after this bug is fixed.
+#
+# Usage:
+#   union PaymentData = FakeData
+#
+# https://github.com/cjoudrey/graphql-schema-linter/issues/151
+"Do not use this"
+type FakeData {
+  "Do not use this"
+  doNotUse: String
+}

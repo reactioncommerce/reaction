@@ -72,7 +72,7 @@
     "fibers": "^2.0.0",
     "flatten-obj": "^3.1.1",
     "font-awesome": "^4.7.0",
-    "graphql": "14.0.2",
+    "graphql": "14.2.1",
     "graphql-fields": "1.1.0",
     "graphql-iso-date": "3.5.0",
     "graphql-relay": "0.5.5",
@@ -190,6 +190,7 @@
     "eslint-plugin-promise": "3.8.0",
     "eslint-plugin-react": "7.8.2",
     "fs-extra": "^7.0.1",
+    "graphql-schema-linter": "^0.2.0",
     "jest": "23.6.0",
     "jest-junit": "5.2.0",
     "js-yaml": "^3.12.1",
@@ -217,6 +218,7 @@
     "inspect-brk-docker": "node --experimental-modules  ./.reaction/scripts/run.mjs --inspect-brk=0.0.0.0:9229",
     "lint": "eslint .",
     "lint:errors": "eslint . --quiet",
+    "lint:gql": "graphql-schema-linter **/schemas/*.graphql",
     "test": "npm run test:unit && npm run test:integration && npm run test:app",
     "test:app": "MONGO_URL='' TEST_CLIENT=0 meteor test --no-release-check --once --full-app --driver-package meteortesting:mocha",
     "test:app:watch": "MONGO_URL='' TEST_CLIENT=0 TEST_WATCH=1 meteor test --no-release-check --full-app --driver-package meteortesting:mocha",
@@ -418,6 +420,21 @@
     "ext": "js,json,graphql",
     "watch": [
       "imports"
+    ]
+  },
+  "graphql-schema-linter": {
+    "rules": [
+      "defined-types-are-used",
+      "deprecations-have-a-reason",
+      "enum-values-have-descriptions",
+      "enum-values-sorted-alphabetically",
+      "fields-have-descriptions",
+      "input-object-values-have-descriptions",
+      "relay-connection-types-spec",
+      "relay-connection-arguments-spec",
+      "relay-page-info-spec",
+      "types-are-capitalized",
+      "types-have-descriptions"
     ]
   }
 }
