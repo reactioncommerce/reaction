@@ -11,14 +11,17 @@ function TypeFieldsSortedAlphabetically(context) {
   return {
     ObjectTypeDefinition: function ObjectTypeDefinition(node) {
       const fieldList = (node.fields || []).map((field) => field.name.value);
+      const sortedFieldList = fieldList.slice().sort();
 
-      if (!arraysEqual(fieldList, fieldList.slice().sort())) {
+      if (!arraysEqual(fieldList, sortedFieldList)) {
         context.reportError(
           new _validation_error.ValidationError(
             'type-fields-sorted-alphabetically',
             'The fields of object type `' +
               node.name.value +
-              '` must be sorted alphabetically.',
+              '` must be sorted alphabetically.' +
+              ' Expected sorting: ' +
+              sortedFieldList.join(', '),
             [node]
           )
         );
