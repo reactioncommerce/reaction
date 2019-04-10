@@ -1,4 +1,7 @@
+"A string used as a connection cursor"
 scalar ConnectionCursor
+
+"An integer which will be auto-adjusted to be greater than 0 and less than 50 if necessary"
 scalar ConnectionLimitInt
 
 "The order in which the connection results should be sorted, based on the `sortBy` field."

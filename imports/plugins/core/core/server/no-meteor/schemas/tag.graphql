@@ -6,6 +6,15 @@ type Tag implements Node & Deletable {
   "The date and time at which this tag was created"
   createdAt: DateTime!
 
+  "A string of the title to be displayed on a Tag Listing Page"
+  displayTitle: String
+
+  "A list of the IDs of top products in this tag"
+  featuredProductIds: [ID]
+
+  "A string containing the hero image url for a Tag Listing Page"
+  heroMediaUrl: String
+
   """
   If `true`, this object should be considered deleted. Soft deleted objects are not
   returned in query results unless you explicitly ask for them.
@@ -27,37 +36,37 @@ type Tag implements Node & Deletable {
   "The tag's position relative to other tags at the same level of the tag hierarchy"
   position: Int
 
-  "A list of the IDs of tags that have this tag as their parent in the tag hierarchy, in the user-defined order"
-  subTagIds: [ID]!
-
-  "A paged list of tags that have this tag as their parent in the tag hierarchy. Currently only three levels are supported."
-  subTags(after: ConnectionCursor, before: ConnectionCursor, first: ConnectionLimitInt, last: ConnectionLimitInt, sortOrder: SortOrder = asc, sortBy: TagSortByField = position): TagConnection
-
   "The shop to which this tag belongs"
   shop: Shop!
 
   "A unique URL-safe string representing this tag for links"
   slug: String
 
+  "A list of the IDs of tags that have this tag as their parent in the tag hierarchy, in the user-defined order"
+  subTagIds: [ID]!
+
+  "A paged list of tags that have this tag as their parent in the tag hierarchy. Currently only three levels are supported."
+  subTags(after: ConnectionCursor, before: ConnectionCursor, first: ConnectionLimitInt, last: ConnectionLimitInt, sortOrder: SortOrder = asc, sortBy: TagSortByField = position): TagConnection
+
   "The date and time at which this tag was last updated"
   updatedAt: DateTime!
-
-  "A string containing the hero image url for a Tag Listing Page"
-  heroMediaUrl: String
-
-  "A string of the title to be displayed on a Tag Listing Page"
-  displayTitle: String
-
-  "A list of the IDs of top products in this tag"
-  featuredProductIds: [ID]
 }
 
 "The fields by which you are allowed to sort any query that returns a `TagConnection`"
 enum TagSortByField {
+  "Tag ID"
   _id
+
+  "Date and time the tag was created"
   createdAt
+
+  "Tag name"
   name
+
+  "Tag position"
   position
+
+  "Date and time the tag was last updated"
   updatedAt
 }
 

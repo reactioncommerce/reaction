@@ -1,17 +1,36 @@
+"A date"
 scalar Date
+
+"A date and time"
 scalar DateTime
+
+"An object with any fields"
 scalar JSONObject
 
+"Distance units"
 enum DistanceUnit {
+  "Centimeter"
   cm
+
+  "Foot"
   ft
+
+  "Inch"
   in
 }
 
+"Mass units"
 enum MassUnit {
+  "Gram"
   g
+
+  "Kilogram"
   kg
+
+  "Pound"
   lb
+
+  "Ounce"
   oz
 }
 
@@ -36,12 +55,10 @@ type ImageSizes {
   thumbnail: String
 }
 
+"Information about an image"
 type ImageInfo {
-  """
-  If greater than 0, then this image should be used for the product grid. The number indicates which position
-  within the product grid item, for grid weights that show multiple images.
-  """
-  toGrid: Int
+  "A list of URLs for various size files of this image"
+  URLs: ImageSizes
 
   """
   Sort by priority ascending when displaying more than one image for a product in a user interface.
@@ -52,11 +69,14 @@ type ImageInfo {
   "The related product ID"
   productId: ID
 
+  """
+  If greater than 0, then this image should be used for the product grid. The number indicates which position
+  within the product grid item, for grid weights that show multiple images.
+  """
+  toGrid: Int
+
   "The related variant ID, if linked with a particular variant"
   variantId: ID
-
-  "A list of URLs for various size files of this image"
-  URLs: ImageSizes
 }
 
 "Represents some amount of a single currency"

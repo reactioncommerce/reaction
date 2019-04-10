@@ -1,45 +1,26 @@
 "Represents one type of currency"
 type Currency implements Node {
+  "ID"
   _id: ID!
+
+  "Currency code"
   code: String!
-  symbol: String!
-  format: String!
-  scale: Int
+
+  "Decimal symbol"
   decimal: String
-  thousand: String
+
+  "Format string"
+  format: String!
+
+  "Exchange rate from shop default currency, if known"
   rate: Float
-}
 
-"""
-Wraps a list of `Currencies`, providing pagination cursors and information.
+  "The decimal scale used by this currency"
+  scale: Int
 
-For information about what Relay-compatible connections are and how to use them, see the following articles:
-- [Relay Connection Documentation](https://facebook.github.io/relay/docs/en/graphql-server-specification.html#connections)
-- [Relay Connection Specification](https://facebook.github.io/relay/graphql/connections.htm)
-- [Using Relay-style Connections With Apollo Client](https://www.apollographql.com/docs/react/recipes/pagination.html)
-"""
-type CurrencyConnection {
-  "The list of nodes that match the query, wrapped in an edge to provide a cursor string for each"
-  edges: [CurrencyEdge]
+  "Currency symbol"
+  symbol: String!
 
-  """
-  You can request the `nodes` directly to avoid the extra wrapping that `NodeEdge` has,
-  if you know you will not need to paginate the results.
-  """
-  nodes: [Currency]
-
-  "Information to help a client request the next or previous page"
-  pageInfo: PageInfo!
-
-  "The total number of nodes that match your query"
-  totalCount: Int!
-}
-
-"A connection edge in which each node is an `Currency` object"
-type CurrencyEdge implements NodeEdge {
-  "The cursor that represents this node in the paginated results"
-  cursor: ConnectionCursor!
-
-  "The currency"
-  node: Currency
+  "Thousands separator symbol"
+  thousand: String
 }
