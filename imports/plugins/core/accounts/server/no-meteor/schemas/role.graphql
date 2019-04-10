@@ -40,7 +40,10 @@ type RoleConnection {
 
 "A connection edge in which each node is a `Role` object"
 type RoleEdge implements NodeEdge {
+  "The cursor that represents this node in the paginated results"
   cursor: ConnectionCursor!
+
+  "The role"
   node: Role
 }
 

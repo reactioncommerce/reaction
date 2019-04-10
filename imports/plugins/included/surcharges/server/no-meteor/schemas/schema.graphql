@@ -96,22 +96,36 @@ type SurchargeConnection {
   totalCount: Int!
 }
 
-"Destination Restrictions attached to a Surcharge"
+"""
+Destination restrictions attached to a surcharge. If multiple of `country`,
+`region`, and `postal` are set, there is an AND relationship.
+"""
 type SurchargeDestinationRestrictions {
+  "Restrict for any of these destination countries"
   country: [String]
-  region: [String]
+
+  "Restrict for any of these destination postal codes"
   postal: [String]
+
+  "Restrict for any of these destination regions"
+  region: [String]
 }
 
 "A connection edge in which each node is a `Surcharge` object"
 type SurchargeEdge {
+  "The cursor that represents this node in the paginated results"
   cursor: ConnectionCursor!
+
+  "The surcharge"
   node: Surcharge
 }
 
 "Object that includes translated content and language of translation"
 type SurchargeMessagesByLanguage {
+  "The message for this language"
   content: String!
+
+  "The language code"
   language: String!
 }
 
@@ -145,11 +159,15 @@ extend type OrderSummary {
 ###
 # Enums
 ###
+"Allowed values for surcharge `sortBy` parameter"
 enum SurchargeSortByField {
+  "The date the surcharge definition was created"
   createdAt
 }
 
+"Allowed values for surcharge type"
 enum SurchargeTypeEnum {
+  "Surcharge"
   surcharge
 }
 
@@ -162,11 +180,11 @@ input CreateSurchargeInput {
   "An optional string identifying the mutation call, which will be returned in the response payload"
   clientMutationId: String
 
-  "This defines the surcharge that you want to create"
-  surcharge: SurchargeInput!
-
   "The shop to create this surcharge for"
   shopId: ID!
+
+  "This defines the surcharge that you want to create"
+  surcharge: SurchargeInput!
 }
 
 "Input for the `deleteSurcharge` mutation"
@@ -174,43 +192,53 @@ input DeleteSurchargeInput {
   "An optional string identifying the mutation call, which will be returned in the response payload"
   clientMutationId: String
 
-  "The ID of the flat rate fulfillment method you want to delete"
-  surchargeId: ID!
-
   "The shop that owns the method"
   shopId: ID!
+
+  "The ID of the flat rate fulfillment method you want to delete"
+  surchargeId: ID!
 }
 
 "Input to add a surcharge message with language"
 input MessagesByLanguageInput {
+  "The message for this language"
   content: String!
+
+  "The language code"
   language: String!
 }
 
 "Input to add a surcharge attribute restriction"
 input SurchargeAttributeRestrictionsInput {
-  property: String
-  value: String
-  propertyType: String
+  "The operator to use for value comparison"
   operator: String
+
+  "The property to check"
+  property: String
+
+  "The type of this property"
+  propertyType: String
+
+  "The value to check for"
+  value: String
 }
 
 "Input to add a surcharge destination restriction"
 input SurchargeDestinationRestrictionsInput {
+  "Restrict for any of these destination countries"
   country: [String]
-  region: [String]
+
+  "Restrict for any of these destination postal codes"
   postal: [String]
+
+  "Restrict for any of these destination regions"
+  region: [String]
 }
 
 "Defines a surcharge."
 input SurchargeInput {
-  "Method IDs to apply this surcharge to."
-  methodIds: [ID]
-
-  """
-  The type of this surcharge. Allowed types are "surcharge".
-  """
-  type: SurchargeTypeEnum!
+  "Amount."
+  amount: Float!
 
   "Attribute restrictions."
   attributes: [SurchargeAttributeRestrictionsInput]
@@ -218,11 +246,16 @@ input SurchargeInput {
   "Destination restrictions."
   destination: SurchargeDestinationRestrictionsInput
 
-  "Amount."
-  amount: Float!
-
   "Messages by language."
   messagesByLanguage: [MessagesByLanguageInput]!
+
+  "Method IDs to apply this surcharge to."
+  methodIds: [ID]
+
+  """
+  The type of this surcharge. Allowed types are "surcharge".
+  """
+  type: SurchargeTypeEnum!
 }
 
 "Input for the `updateSurcharge` mutation"
@@ -256,6 +289,7 @@ extend type Query {
     sortBy: SurchargeSortByField = createdAt
   ): SurchargeConnection!
 
+  "Get a single surcharge definition by its ID"
   surchargeById(shopId: ID!, surchargeId: ID!): Surcharge
 }
 

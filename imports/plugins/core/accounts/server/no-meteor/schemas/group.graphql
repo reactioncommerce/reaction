@@ -138,7 +138,10 @@ type GroupConnection {
 
 "A connection edge in which each node is a `Group` object"
 type GroupEdge implements NodeEdge {
+  "The cursor that represents this node in the paginated results"
   cursor: ConnectionCursor!
+
+  "The group"
   node: Group
 }
 

@@ -408,8 +408,12 @@ type CatalogItemContent implements CatalogItem & Node {
   updatedAt: DateTime!
 }
 
+"A connection edge in which each node is a `CatalogItem` object"
 type CatalogItemEdge {
+  "The cursor that represents this node in the paginated results"
   cursor: ConnectionCursor!
+
+  "The catalog item"
   node: CatalogItem
 }
 

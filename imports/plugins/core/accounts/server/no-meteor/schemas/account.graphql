@@ -173,7 +173,10 @@ type AccountConnection {
 
 "A connection edge in which each node is an `Account` object"
 type AccountEdge implements NodeEdge {
+  "The cursor that represents this node in the paginated results"
   cursor: ConnectionCursor!
+
+  "The account"
   node: Account
 }
 

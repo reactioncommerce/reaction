@@ -81,8 +81,12 @@ type FlatRateFulfillmentRestrictionConnection {
   totalCount: Int!
 }
 
+"A connection edge in which each node is a `FlatRateFulfillmentRestriction` object"
 type FlatRateFulfillmentRestrictionEdge {
+  "The cursor that represents this node in the paginated results"
   cursor: ConnectionCursor!
+
+  "The flat rate fulfillment restriction"
   node: FlatRateFulfillmentRestriction
 }
 

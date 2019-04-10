@@ -37,6 +37,9 @@ type CurrencyConnection {
 
 "A connection edge in which each node is an `Currency` object"
 type CurrencyEdge implements NodeEdge {
+  "The cursor that represents this node in the paginated results"
   cursor: ConnectionCursor!
+
+  "The currency"
   node: Currency
 }

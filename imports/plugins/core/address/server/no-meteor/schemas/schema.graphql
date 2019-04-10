@@ -178,7 +178,10 @@ type AddressConnection {
 
 "A connection edge in which each node is an `Address` object"
 type AddressEdge {
+  "The cursor that represents this node in the paginated results"
   cursor: ConnectionCursor!
+
+  "The address"
   node: Address
 }
 

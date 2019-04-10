@@ -63,7 +63,10 @@ enum TagSortByField {
 
 "A connection edge in which each node is a `Tag` object"
 type TagEdge implements NodeEdge {
+  "The cursor that represents this node in the paginated results"
   cursor: ConnectionCursor!
+
+  "The tag"
   node: Tag
 }
 

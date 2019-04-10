@@ -51,7 +51,10 @@ type NavigationItemConnection {
 
 "A connection edge in which each node is a `NavigationItem` object"
 type NavigationItemEdge implements NodeEdge {
+  "The cursor that represents this node in the paginated results"
   cursor: ConnectionCursor!
+
+  "The navigation item"
   node: NavigationItem
 }
 

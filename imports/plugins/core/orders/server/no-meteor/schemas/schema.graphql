@@ -108,7 +108,10 @@ type OrdersByAccountIdConnection {
 
 "A connection edge in which each node is a `Order` object"
 type OrdersByAccountIdEdge implements NodeEdge {
+  "The cursor that represents this node in the paginated results"
   cursor: ConnectionCursor!
+
+  "The order"
   node: Order
 }
 
@@ -139,7 +142,10 @@ type OrderItemConnection {
 
 "A connection edge in which each node is a `OrderItem` object"
 type OrderItemEdge implements NodeEdge {
+  "The cursor that represents this node in the paginated results"
   cursor: ConnectionCursor!
+
+  "The order item"
   node: OrderItem
 }
 

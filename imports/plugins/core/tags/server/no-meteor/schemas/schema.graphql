@@ -127,8 +127,12 @@ type TagProduct {
   position: Int
 }
 
+"A connection edge in which each node is a `TagProduct` object"
 type TagProductEdge {
+  "The cursor that represents this node in the paginated results"
   cursor: ConnectionCursor!
+
+  "The tag product"
   node: TagProduct
 }
 
