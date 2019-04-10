@@ -424,7 +424,7 @@
   },
   "graphql-schema-linter": {
     "customRulePaths": [
-      ".reaction/graphql-linter-rules/*.js"
+      ".reaction/graphql-linter/rules/*.js"
     ],
     "rules": [
       "defined-types-are-used",
