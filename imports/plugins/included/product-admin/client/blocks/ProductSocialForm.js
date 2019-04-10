@@ -12,7 +12,6 @@ import CardHeader from "@material-ui/core/CardHeader";
 import CardContent from "@material-ui/core/CardContent";
 import withStyles from "@material-ui/core/styles/withStyles";
 import { compose } from "recompose";
-import ProductMediaGallery from "./ProductMediaGallery";
 
 const styles = (theme) => ({
   card: {
@@ -247,192 +246,55 @@ class ProductAdmin extends Component {
     const { classes } = this.props;
 
     return (
-      <div>
-        <Card className={classes.card}>
-          <CardHeader title={i18next.t("admin.productAdmin.details")} />
-          <CardContent>
-            <Components.TextField
-              i18nKeyLabel="productDetailEdit.title"
-              i18nKeyPlaceholder="productDetailEdit.title"
-              label="Title"
-              name="title"
-              onBlur={this.handleFieldBlur}
-              onChange={this.handleFieldChange}
-              onReturnKeyDown={this.handleFieldBlur}
-              placeholder="Title"
-              ref="titleInput"
-              value={this.product.title}
-            />
-            <Components.TextField
-              i18nKeyLabel="productDetailEdit.permalink"
-              i18nKeyPlaceholder="productDetailEdit.permalink"
-              label="Permalink"
-              name="handle"
-              onBlur={this.handleFieldBlur}
-              onChange={this.handleFieldChange}
-              onReturnKeyDown={this.handleFieldBlur}
-              placeholder="Permalink"
-              ref="handleInput"
-              value={this.product.handle}
-            />
-            <Components.TextField
-              i18nKeyLabel="productDetailEdit.pageTitle"
-              i18nKeyPlaceholder="productDetailEdit.pageTitle"
-              label="Subtitle"
-              name="pageTitle"
-              onBlur={this.handleFieldBlur}
-              onChange={this.handleFieldChange}
-              onReturnKeyDown={this.handleFieldBlur}
-              placeholder="Subtitle"
-              ref="subtitleInput"
-              value={this.product.pageTitle}
-            />
-            <Components.TextField
-              i18nKeyLabel="productDetailEdit.vendor"
-              i18nKeyPlaceholder="productDetailEdit.vendor"
-              label="Vendor"
-              name="vendor"
-              onBlur={this.handleFieldBlur}
-              onChange={this.handleFieldChange}
-              onReturnKeyDown={this.handleFieldBlur}
-              placeholder="Vendor"
-              ref="vendorInput"
-              value={this.product.vendor}
-            />
-            <Components.TextField
-              i18nKeyLabel="productDetailEdit.description"
-              i18nKeyPlaceholder="productDetailEdit.description"
-              label="Description"
-              multiline={true}
-              name="description"
-              onBlur={this.handleFieldBlur}
-              onChange={this.handleFieldChange}
-              placeholder="Description"
-              ref="descriptionInput"
-              value={this.product.description}
-            />
-            <Components.Select
-              clearable={false}
-              i18nKeyLabel="productDetailEdit.originCountry"
-              i18nKeyPlaceholder="productDetailEdit.originCountry"
-              label="Origin Country"
-              name="originCountry"
-              onChange={this.handleSelectChange}
-              placeholder="Select a Country"
-              ref="countryOfOriginInput"
-              value={this.product.originCountry}
-              options={this.props.countries}
-            />
-            <Components.TextField
-              i18nKeyLabel="productDetailEdit.template"
-              i18nKeyPlaceholder="productDetailEdit.templateSelectPlaceholder"
-              label="Template"
-              name="template"
-              onBlur={this.handleFieldBlur}
-              onChange={this.handleFieldChange}
-              ref="templateInput"
-              value={this.product.template}
-            />
-            {this.product && (
-              <div className="checkbox">
-                <Components.Checkbox
-                  i18nKeyLabel="productDetailEdit.shouldAppearInSitemap"
-                  label="Include in sitemap?"
-                  name="shouldAppearInSitemap"
-                  onChange={this.handleSitemapCheckboxChange}
-                  checked={this.product.shouldAppearInSitemap}
-                />
-              </div>
-            )}
-          </CardContent>
-        </Card>
-
-        <Card className={classes.card}>
-          <CardHeader title={i18next.t("admin.productAdmin.mediaGallery")} />
-          <CardContent>
-            <ProductMediaGallery
-              productId={this.product._id}
-            />
-          </CardContent>
-        </Card>
-
-        <Card className={classes.card}>
-          <CardHeader title={i18next.t("social.socialTitle")} />
-          <CardContent>
-            <Components.TextField
-              i18nKeyLabel="productDetailEdit.facebookMsg"
-              i18nKeyPlaceholder="productDetailEdit.facebookMsg"
-              label="Facebook Message"
-              multiline={true}
-              name="facebookMsg"
-              onBlur={this.handleFieldBlur}
-              onChange={this.handleFieldChange}
-              ref="facebookMsgInput"
-              value={this.product.facebookMsg}
-            />
-            <Components.TextField
-              i18nKeyLabel="productDetailEdit.twitterMsg"
-              i18nKeyPlaceholder="productDetailEdit.twitterMsg"
-              label="Twitter Message"
-              multiline={true}
-              name="twitterMsg"
-              onBlur={this.handleFieldBlur}
-              onChange={this.handleFieldChange}
-              ref="twitterMsgInput"
-              value={this.product.twitterMsg}
-            />
-            <Components.TextField
-              i18nKeyLabel="productDetailEdit.pinterestMsg"
-              i18nKeyPlaceholder="productDetailEdit.pinterestMsg"
-              label="Pinterest Message"
-              multiline={true}
-              name="pinterestMsg"
-              onBlur={this.handleFieldBlur}
-              onChange={this.handleFieldChange}
-              ref="pinterestMsgInput"
-              value={this.product.pinterestMsg}
-            />
-            <Components.TextField
-              i18nKeyLabel="productDetailEdit.googleplusMsg"
-              i18nKeyPlaceholder="productDetailEdit.googleplusMsg"
-              label="Google+ Message"
-              multiline={true}
-              name="googleplusMsg"
-              onBlur={this.handleFieldBlur}
-              onChange={this.handleFieldChange}
-              ref="googleplusMsgInput"
-              value={this.product.googleplusMsg}
-            />
-          </CardContent>
-        </Card>
-
-        <Card className={classes.card}>
-          <CardHeader title={i18next.t("productDetail.tags")} />
-          <CardContent>
-            <Components.TagList
-              editable={this.props.editable}
-              enableNewTagForm={true}
-              product={this.product}
-              tagProps={{
-                fullWidth: true
-              }}
-            />
-          </CardContent>
-        </Card>
-
-        <Card className={classes.card}>
-          <CardHeader title={i18next.t("admin.productAdmin.metadata")} />
-          <CardContent>
-            <Components.Metadata
-              metafields={this.product.metafields}
-              newMetafield={this.props.newMetafield}
-              onMetaChange={this.handleMetaChange}
-              onMetaRemove={this.handleMetaRemove}
-              onMetaSave={this.handleMetaSave}
-            />
-          </CardContent>
-        </Card>
-      </div>
+      <Card className={classes.card}>
+        <CardHeader title={i18next.t("social.socialTitle")} />
+        <CardContent>
+          <Components.TextField
+            i18nKeyLabel="productDetailEdit.facebookMsg"
+            i18nKeyPlaceholder="productDetailEdit.facebookMsg"
+            label="Facebook Message"
+            multiline={true}
+            name="facebookMsg"
+            onBlur={this.handleFieldBlur}
+            onChange={this.handleFieldChange}
+            ref="facebookMsgInput"
+            value={this.product.facebookMsg}
+          />
+          <Components.TextField
+            i18nKeyLabel="productDetailEdit.twitterMsg"
+            i18nKeyPlaceholder="productDetailEdit.twitterMsg"
+            label="Twitter Message"
+            multiline={true}
+            name="twitterMsg"
+            onBlur={this.handleFieldBlur}
+            onChange={this.handleFieldChange}
+            ref="twitterMsgInput"
+            value={this.product.twitterMsg}
+          />
+          <Components.TextField
+            i18nKeyLabel="productDetailEdit.pinterestMsg"
+            i18nKeyPlaceholder="productDetailEdit.pinterestMsg"
+            label="Pinterest Message"
+            multiline={true}
+            name="pinterestMsg"
+            onBlur={this.handleFieldBlur}
+            onChange={this.handleFieldChange}
+            ref="pinterestMsgInput"
+            value={this.product.pinterestMsg}
+          />
+          <Components.TextField
+            i18nKeyLabel="productDetailEdit.googleplusMsg"
+            i18nKeyPlaceholder="productDetailEdit.googleplusMsg"
+            label="Google+ Message"
+            multiline={true}
+            name="googleplusMsg"
+            onBlur={this.handleFieldBlur}
+            onChange={this.handleFieldChange}
+            ref="googleplusMsgInput"
+            value={this.product.googleplusMsg}
+          />
+        </CardContent>
+      </Card>
     );
   }
 }

@@ -50,7 +50,7 @@ export default async function extendCommonOrder(context, commonOrder) {
   }
 
   return {
-    items: products,
-    ...commonOrder
+    ...commonOrder,
+    items: products
   };
 }
