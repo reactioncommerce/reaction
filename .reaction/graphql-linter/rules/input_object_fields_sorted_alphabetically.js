@@ -12,9 +12,9 @@ function InputObjectFieldsSortedAlphabetically(context) {
   return {
     InputObjectTypeDefinition: function InputObjectTypeDefinition(node) {
       const fieldList = (node.fields || []).map((field) => field.name.value);
-      const sortedFieldList = listIsAlphabetical(fieldList);
+      const { isSorted, sortedList } = listIsAlphabetical(fieldList);
 
-      if (sortedFieldList !== true) {
+      if (!isSorted) {
         context.reportError(
           new _validation_error.ValidationError(
             "input-object-fields-sorted-alphabetically",
@@ -22,7 +22,7 @@ function InputObjectFieldsSortedAlphabetically(context) {
               node.name.value +
               "` must be sorted alphabetically." +
               " Expected sorting: " +
-              sortedFieldList.join(", "),
+              sortedList.join(", "),
             [node]
           )
         );
