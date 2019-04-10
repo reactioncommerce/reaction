@@ -423,8 +423,8 @@
     ]
   },
   "graphql-schema-linter": {
-    "custom-rule-paths": [
-      ".reaction/graphql-linter-rules/relay_connection_arguments_spec.js"
+    "customRulePaths": [
+      ".reaction/graphql-linter-rules/*.js"
     ],
     "rules": [
       "defined-types-are-used",
@@ -433,8 +433,10 @@
       "enum-values-sorted-alphabetically",
       "fields-have-descriptions",
       "input-object-values-have-descriptions",
+      "relay-connection-arguments-spec-custom",
       "relay-connection-types-spec",
       "relay-page-info-spec",
+      "type-fields-sorted-alphabetically",
       "types-are-capitalized",
       "types-have-descriptions"
     ]
