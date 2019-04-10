@@ -1,41 +1,77 @@
 ####
 # Custom data types for FlatRateFulfillmentRestriction data
 ####
+"An attribute restriction condition"
 type AttributeRestrictions {
-  property: String!
-  value: String!
-  propertyType: String!
+  "The operator to use for value comparison"
   operator: String!
+
+  "The property to check"
+  property: String!
+
+  "The type of this property"
+  propertyType: String!
+
+  "The value to check for"
+  value: String!
 }
 
+"""
+Destination restriction conditions. If multiple of `country`,
+`region`, and `postal` are set, there is an AND relationship.
+"""
 type DestinationRestrictions {
+  "Restrict for any of these destination countries"
   country: [String]
-  region: [String]
+
+  "Restrict for any of these destination postal codes"
   postal: [String]
+
+  "Restrict for any of these destination regions"
+  region: [String]
 }
 
+"Restriction type"
 enum RestrictionTypeEnum {
+  "Allow"
   allow
+
+  "Deny"
   deny
 }
 
+"Allowed values for `FlatRateFulfillmentRestriction` sortBy parameter"
 enum FlatRateFulfillmentRestrictionSortByField {
+  "Date the restriction was created"
   createdAt
 }
 
+"Input to create an attribute restriction condition"
 input AttributeRestrictionsInput {
-  property: String!
-  value: String!
-  propertyType: String!
+  "The operator to use for value comparison"
   operator: String!
+
+  "The property to check"
+  property: String!
+
+  "The type of this property"
+  propertyType: String!
+
+  "The value to check for"
+  value: String!
 }
 
+"Input for a destination restriction condition"
 input DestinationRestrictionsInput {
+  "Restrict for any of these destination countries"
   country: [String]
-  region: [String]
-  postal: [String]
-}
 
+  "Restrict for any of these destination postal codes"
+  postal: [String]
+
+  "Restrict for any of these destination regions"
+  region: [String]
+}
 
 ####
 # Queries
@@ -95,24 +131,23 @@ type FlatRateFulfillmentRestriction implements Node {
   "The restriction ID."
   _id: ID!
 
-  "The shop ID"
-  shopId: ID!
-
-  "Method IDs to apply this restriction to. If none, applies to all methods as a universal restriction."
-  methodIds: [ID]
-
-  """
-  The type of this restriction. Allowed types are "allow" or "deny".
-  """
-  type: RestrictionTypeEnum!
-
   "Attribute restrictions. Multiple attribute restrictions are evaluated with AND. If both destination and attribute restrictions are present, they evaluate with AND."
   attributes: [AttributeRestrictions]
 
   "Destination restrictions. If multiple destination restrictions are present, the most localized is the only one evaluated (i.e. evaluate postal if present, then region if present, then country). If both destination and attribute restrictions are present, they evaluate with AND."
   destination: DestinationRestrictions
-}
 
+  "Method IDs to apply this restriction to. If none, applies to all methods as a universal restriction."
+  methodIds: [ID]
+
+  "The shop ID"
+  shopId: ID!
+
+  """
+  The type of this restriction. Allowed types are "allow" or "deny".
+  """
+  type: RestrictionTypeEnum!
+}
 
 ####
 # Create restriction mutation
@@ -125,6 +160,12 @@ extend type Mutation {
 # Inputs
 "Defines the input for a flat rate fulfillment method restriction."
 input FlatRateFulfillmentRestrictionInput {
+  "Attribute restrictions. Multiple attribute restrictions are evaluated with AND. If both destination and attribute restrictions are present, they evaluate with AND."
+  attributes: [AttributeRestrictionsInput]
+
+  "Destination restrictions. If multiple destination restrictions are present, the most localized is the only one evaluated (i.e. evaluate postal if present, then region if present, then country). If both destination and attribute restrictions are present, they evaluate with AND."
+  destination: DestinationRestrictionsInput
+
   "Method IDs to apply this restriction to. If none, applies to all methods as a universal restriction."
   methodIds: [ID]
 
@@ -132,12 +173,6 @@ input FlatRateFulfillmentRestrictionInput {
   The type of this restriction. Allowed types are "allow" or "deny".
   """
   type: RestrictionTypeEnum!
-
-  "Attribute restrictions. Multiple attribute restrictions are evaluated with AND. If both destination and attribute restrictions are present, they evaluate with AND."
-  attributes: [AttributeRestrictionsInput]
-
-  "Destination restrictions. If multiple destination restrictions are present, the most localized is the only one evaluated (i.e. evaluate postal if present, then region if present, then country). If both destination and attribute restrictions are present, they evaluate with AND."
-  destination: DestinationRestrictionsInput
 }
 
 "Input for the `CreateFlatRateFulfillmentRestriction` mutation"
