@@ -1,4 +1,3 @@
-import retryFailed from "./retryFailed";
 import saveSettings from "./saveSettings";
 import verifySettings from "./verifySettings";
 
@@ -12,6 +11,5 @@ import verifySettings from "./verifySettings";
 
 export default {
   "email/saveSettings": saveSettings,
-  "email/verifySettings": verifySettings,
-  "emails/retryFailed": retryFailed
+  "email/verifySettings": verifySettings
 };

@@ -1,4 +1,5 @@
 import collectionIndex from "/imports/utils/collectionIndex";
+import processEmailJobs from "./util/processEmailJobs";
 
 /**
  * @summary Called on startup
@@ -14,5 +15,7 @@ export default function startup(context) {
   // with indexes created by the aldeed:schema-index Meteor package.
   collectionIndex(Emails, { jobId: 1 }, { name: "c2_jobId" });
   collectionIndex(Templates, { shopId: 1 }, { name: "c2_shopId" });
+
+  processEmailJobs(context);
 }
 

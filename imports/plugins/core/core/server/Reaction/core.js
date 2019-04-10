@@ -7,6 +7,7 @@ import { Roles } from "meteor/alanning:roles";
 import { EJSON } from "meteor/ejson";
 import * as Collections from "/lib/collections";
 import appEvents from "/imports/node-app/core/util/appEvents";
+import { Jobs } from "/imports/utils/jobs";
 import ConnectionDataStore from "/imports/plugins/core/core/server/util/connectionDataStore";
 import {
   customPublishedProductFields,
@@ -18,7 +19,6 @@ import {
   schemas
 } from "../no-meteor/pluginRegistration";
 import createGroups from "./createGroups";
-import processJobs from "./processJobs";
 import { registerTemplate } from "./templates";
 import { AbsoluteUrlMixin } from "./absoluteUrl";
 import { getUserId } from "./accountUtils";
@@ -30,7 +30,7 @@ import { getUserId } from "./accountUtils";
  */
 
 // Unpack the named Collections we use.
-const { Jobs, Packages, Shops, Accounts: AccountsCollection } = Collections;
+const { Packages, Shops, Accounts: AccountsCollection } = Collections;
 
 export default {
   ...AbsoluteUrlMixin,
@@ -45,7 +45,6 @@ export default {
     // start job server
     Jobs.startJobServer(() => {
       Logger.info("JobServer started");
-      processJobs();
       appEvents.emit("jobServerStart");
     });
     if (process.env.VERBOSE_JOBS) {

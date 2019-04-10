@@ -1,13 +1,13 @@
 import { Security } from "meteor/ongoworks:security";
 import { Roles } from "meteor/alanning:roles";
 import * as Collections from "/lib/collections";
+import { Jobs } from "/imports/utils/jobs";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
 
 const {
   Accounts,
   Packages,
   Emails,
-  Jobs,
   MediaRecords,
   Orders,
   Products,
