@@ -266,11 +266,11 @@ input UpdateSurchargeInput {
   "The shop that owns the method"
   shopId: ID!
 
-  "The ID of the flat rate fulfillment surcharge you want to update"
-  surchargeId: ID!
-
   "The updated surcharge. Pass the whole updated surcharge object without the ID."
   surcharge: SurchargeInput!
+
+  "The ID of the flat rate fulfillment surcharge you want to update"
+  surchargeId: ID!
 }
 
 

@@ -245,11 +245,11 @@ input UpdateFlatRateFulfillmentRestrictionInput {
   "An optional string identifying the mutation call, which will be returned in the response payload"
   clientMutationId: String
 
-  "The ID of the flat rate fulfillment method restriction you want to update"
-  restrictionId: ID!
-
   "The updated flat rate fulfillment method restriction. Pass the whole updated restriction object without the ID."
   restriction: FlatRateFulfillmentRestrictionInput!
+
+  "The ID of the flat rate fulfillment method restriction you want to update"
+  restrictionId: ID!
 
   "The shop that owns the flat rate fulfillment method restriction"
   shopId: ID!
