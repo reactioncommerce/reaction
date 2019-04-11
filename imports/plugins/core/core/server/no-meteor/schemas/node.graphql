@@ -1,4 +1,7 @@
+"A string used as a connection cursor"
 scalar ConnectionCursor
+
+"An integer which will be auto-adjusted to be greater than 0 and less than 50 if necessary"
 scalar ConnectionLimitInt
 
 "The order in which the connection results should be sorted, based on the `sortBy` field."
@@ -35,31 +38,6 @@ interface NodeEdge {
 
   "The node itself"
   node: Node
-}
-
-"""
-Objects implementing the `NodeConnection` interface are Relay-compatible connections.
-
-For information about what Relay-style connections are and how to use them, see the following articles:
-- [Relay Connection Documentation](https://facebook.github.io/relay/docs/en/graphql-server-specification.html#connections)
-- [Relay Connection Specification](https://facebook.github.io/relay/graphql/connections.htm)
-- [Using Relay-style Connections With Apollo Client](https://www.apollographql.com/docs/react/recipes/pagination.html)
-"""
-interface NodeConnection {
-  "The list of nodes that match the query, wrapped in an edge to provide a cursor string for each"
-  edges: [NodeEdge]
-
-  """
-  You can request the `nodes` directly to avoid the extra wrapping that `NodeEdge` has,
-  if you know you will not need to paginate the results.
-  """
-  nodes: [Node]
-
-  "Information to help a client request the next or previous page"
-  pageInfo: PageInfo!
-
-  "The total number of nodes that match your query"
-  totalCount: Int!
 }
 
 """

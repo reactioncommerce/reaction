@@ -203,6 +203,20 @@ jobs:
           command: |
             npm run lint -- --quiet
 
+  graphql-lint:
+    <<: *defaults
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - ${GLOBAL_CACHE_VERSION}-node-modules-{{ checksum "package.json" }}-{{ checksum "package-lock.json" }}
+            - ${GLOBAL_CACHE_VERSION}-node-modules-{{ .Branch }}
+            - ${GLOBAL_CACHE_VERSION}-node-modules-master
+      - run:
+          name: Lint GraphQL schemas
+          command: |
+            npm run lint:gql
+
   test-app:
     <<: *defaults
     steps:
@@ -365,6 +379,9 @@ workflows:
           requires:
             - deploy-to-ecs-release-branch
       - eslint:
+          requires:
+            - build
+      - graphql-lint:
           requires:
             - build
       - docker-build:

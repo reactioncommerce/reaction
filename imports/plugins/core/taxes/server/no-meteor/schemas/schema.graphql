@@ -87,8 +87,12 @@ extend type OrderItem {
   taxes: [CalculatedTax]!
 }
 
+"Tax sources"
 enum TaxSource {
+  "Tax is applied when the destination matches the tax jurisdiction"
   destination
+
+  "Tax is applied when the origin matches the tax jurisdiction"
   origin
 }
 
@@ -106,14 +110,14 @@ type CalculatedTax {
   "Amount of tax due"
   tax: Money!
 
-  "Amount that was used for calculating the tax due"
-  taxableAmount: Money!
-
   "A human-readable display name for showing this tax to operators and customers in the UI"
   taxName: String!
 
   "The tax rate used for this calculation"
   taxRate: Rate!
+
+  "Amount that was used for calculating the tax due"
+  taxableAmount: Money!
 }
 
 "A summary of tax-related calculations for a cart or order group"
