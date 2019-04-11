@@ -51,7 +51,6 @@ aldeed:autoform@6.2.0
 aldeed:collection2@3.0.1
 aldeed:template-extension
 bozhao:accounts-instagram
-meteorhacks:ssr
 meteorhacks:subs-manager
 ongoworks:security
 tmeasday:publish-counts

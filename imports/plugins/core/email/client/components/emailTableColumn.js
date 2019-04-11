@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Meteor } from "meteor/meteor";
-import { Components, registerComponent, withMoment } from "@reactioncommerce/reaction-components";
+import { Components, withMoment } from "@reactioncommerce/reaction-components";
 import { i18next } from "/client/api";
 
 class EmailTableColumn extends Component {
@@ -78,7 +78,5 @@ class EmailTableColumn extends Component {
     );
   }
 }
-
-registerComponent("EmailTableColumn", EmailTableColumn, withMoment);
 
 export default withMoment(EmailTableColumn);

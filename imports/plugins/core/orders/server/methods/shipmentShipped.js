@@ -33,12 +33,13 @@ export default function shipmentShipped(order, fulfillmentGroup) {
 
   // Notify by in-app notification
   const { accountId } = order;
-  const type = "orderShipped";
-  const prefix = Reaction.getShopPrefix();
-  const url = `${prefix}/notifications`;
-  createNotification(rawCollections, { accountId, type, url }).catch((error) => {
-    Logger.error("Error in createNotification within shipmentShipped", error);
-  });
+  if (accountId) {
+    const prefix = Reaction.getShopPrefix();
+    const url = `${prefix}/notifications`;
+    createNotification(rawCollections, { accountId, type: "orderShipped", url }).catch((error) => {
+      Logger.error("Error in createNotification within shipmentShipped", error);
+    });
+  }
 
   // Now move item statuses to completed
   const completedItemsResult = Meteor.call("workflow/pushItemWorkflow", "coreOrderItemWorkflow/completed", order, fulfillmentGroupItemIds);
