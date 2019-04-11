@@ -1,4 +1,5 @@
 import Reaction from "/imports/plugins/core/core/server/Reaction";
+import mutations from "./server/no-meteor/mutations";
 import startup from "./server/no-meteor/startup";
 
 Reaction.registerPackage({
@@ -6,6 +7,7 @@ Reaction.registerPackage({
   name: "reaction-email",
   icon: "fa fa-envelope-o",
   autoEnable: true,
+  mutations,
   functionsByType: {
     startup: [startup]
   },

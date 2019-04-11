@@ -72,7 +72,6 @@ mdg:validated-method@1.2.0
 meteor@1.9.2
 meteor-base@1.4.0
 meteorhacks:picker@1.0.3
-meteorhacks:ssr@2.2.0
 meteorhacks:subs-manager@1.6.4
 meteortesting:browser-tests@0.2.0
 meteortesting:mocha@0.6.0

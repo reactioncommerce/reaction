@@ -1,6 +1,5 @@
 import _ from "lodash";
 import Logger from "@reactioncommerce/logger";
-import { SSR } from "meteor/meteorhacks:ssr";
 import { Shops } from "/lib/collections";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
 import formatMoney from "/imports/utils/formatMoney";
@@ -78,9 +77,6 @@ export default function sendOrderEmail(order, action) {
   // Get Shop information
   const shop = Shops.findOne({ _id: order.shopId });
 
-  // Get shop logo, if available
-  const emailLogo = Reaction.Email.getShopLogo(shop);
-
   // TODO need to make this fully support multiple fulfillment groups. Now it's just collapsing into one
   const amount = order.shipping.reduce((sum, group) => sum + group.invoice.total, 0);
   const discounts = order.shipping.reduce((sum, group) => sum + group.invoice.discounts, 0);
@@ -119,8 +115,9 @@ export default function sendOrderEmail(order, action) {
 
   const refunds = [];
 
+  const context = Promise.await(getGraphQLContextInMeteorMethod(null));
+
   if (Array.isArray(order.payments)) {
-    const context = Promise.await(getGraphQLContextInMeteorMethod(null));
     for (const payment of order.payments) {
       const shopRefunds = Promise.await(getPaymentMethodConfigByName(payment.name).functions.listRefunds(context, payment));
       const shopRefundsWithPaymentId = shopRefunds.map((shopRefund) => ({ ...shopRefund, paymentId: payment._id }));
@@ -183,7 +180,6 @@ export default function sendOrderEmail(order, action) {
     shop,
     contactEmail: shop.emails[0].address,
     homepage: Reaction.absoluteUrl(),
-    emailLogo,
     copyrightDate,
     legalName: _.get(shop, "addressBook[0].company"),
     physicalAddress: {
@@ -251,33 +247,14 @@ export default function sendOrderEmail(order, action) {
     Logger.warn("No shop email configured. Using no-reply to send mail");
   }
 
-  // Compile Email with SSR
-  let subject;
-  let tpl;
+  const to = order.email;
 
-  if (action === "shipped") {
-    tpl = "orders/shipped";
-    subject = "orders/shipped/subject";
-  } else if (action === "refunded") {
-    tpl = "orders/refunded";
-    subject = "orders/refunded/subject";
-  } else if (action === "itemRefund") {
-    tpl = "orders/itemRefund";
-    subject = "orders/itemRefund/subject";
-  } else {
-    tpl = `orders/${order.workflow.status}`;
-    subject = `orders/${order.workflow.status}/subject`;
-  }
-
-  SSR.compileTemplate(tpl, Reaction.Email.getTemplate(tpl));
-  SSR.compileTemplate(subject, Reaction.Email.getSubject(tpl));
-
-  Reaction.Email.send({
-    to: order.email,
-    from: `${shop.name} <${shop.emails[0].address}>`,
-    subject: SSR.render(subject, dataForEmail),
-    html: SSR.render(tpl, dataForEmail)
-  });
+  Promise.await(context.mutations.sendOrderEmail(context, {
+    action,
+    dataForEmail,
+    fromShop: shop,
+    to
+  }));
 
   return true;
 }
