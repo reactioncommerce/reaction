@@ -172,10 +172,12 @@ extend type Query {
   productsByTagId(
     shopId: ID!
     tagId: ID!
-    after: ConnectionCursor
-    before: ConnectionCursor
-    first: ConnectionLimitInt
-    last: ConnectionLimitInt
+
+    "Page"
+    page: Int,
+
+    "Limit per page"
+    limit: ConnectionLimitInt
   ): TagProductConnection!
 }
 
