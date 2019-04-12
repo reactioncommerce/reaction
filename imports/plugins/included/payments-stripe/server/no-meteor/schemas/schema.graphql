@@ -10,5 +10,6 @@ type StripeCardPaymentData {
 extend union PaymentData = StripeCardPaymentData
 
 extend enum PaymentMethodName {
+  "Stripe Card payment method"
   stripe_card
 }
