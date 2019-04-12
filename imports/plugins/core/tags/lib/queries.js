@@ -26,14 +26,15 @@ export const getTag = gql`
 `;
 
 export const tagProductsQueryString = `
-  query getTagProducts($shopId: ID!, $first: ConnectionLimitInt, $tagId: ID!, $last:  ConnectionLimitInt, $before: ConnectionCursor, $after: ConnectionCursor) {
-    productsByTagId(shopId: $shopId, tagId: $tagId, first: $first, last: $last, before: $before, after: $after) {
+  query getTagProducts($shopId: ID!, $limit: ConnectionLimitInt, $tagId: ID!, $page: Int) {
+    productsByTagId(shopId: $shopId, tagId: $tagId, limit: $limit, page: $page) {
       pageInfo {
         endCursor
         startCursor
         hasNextPage
         hasPreviousPage
       }
+      totalCount
       nodes {
         _id
         title
