@@ -98,6 +98,8 @@ test("returns expected data structure", async () => {
           productId: "mockProductId",
           productVariantId: "mockVariantId"
         },
+        productImage: "large.jpg",
+        variantImage: "large.jpg",
         subtotal: {
           amount: jasmine.any(Number),
           currencyCode: "mockCurrencyCode"
@@ -133,6 +135,8 @@ test("returns expected data structure", async () => {
                 productId: "mockProductId",
                 productVariantId: "mockVariantId"
               },
+              productImage: "large.jpg",
+              variantImage: "large.jpg",
               subtotal: {
                 amount: jasmine.any(Number),
                 currencyCode: "mockCurrencyCode"
