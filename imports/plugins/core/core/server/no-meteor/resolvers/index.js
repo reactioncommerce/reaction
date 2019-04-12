@@ -1,5 +1,5 @@
 import { getConnectionTypeResolvers } from "@reactioncommerce/reaction-graphql-utils";
-import { GraphQLDate, GraphQLTime, GraphQLDateTime } from "graphql-iso-date";
+import { GraphQLDate, GraphQLDateTime } from "graphql-iso-date";
 import Address from "./Address";
 import ConnectionCursor from "./ConnectionCursor";
 import ConnectionLimitInt from "./ConnectionLimitInt";
@@ -43,7 +43,6 @@ export default {
     }
   },
   Tag,
-  Time: GraphQLTime,
   ...getConnectionTypeResolvers("Address"),
   ...getConnectionTypeResolvers("Tag")
 };
