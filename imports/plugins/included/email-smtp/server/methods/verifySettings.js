@@ -1,21 +1,23 @@
 import Logger from "@reactioncommerce/logger";
+import nodemailer from "@reactioncommerce/nodemailer";
 import getServiceConfig from "nodemailer-wellknown";
 import { Meteor } from "meteor/meteor";
 import { check, Match } from "meteor/check";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
+import getGraphQLContextInMeteorMethod from "/imports/plugins/core/graphql/server/getGraphQLContextInMeteorMethod";
 import ReactionError from "@reactioncommerce/reaction-error";
+import getMailConfig from "../util/getMailConfig";
 
 /**
  * @name email/verifySettings
  * @method
  * @summary Verify the current email configuration
  * @memberof Email/Methods
- * @param {Object} settings - optional settings object (otherwise uses settings in database)
+ * @param {Object} [settings] optional settings object (otherwise uses settings in database)
  * @return {Boolean} - returns true if SMTP connection succeeds
  */
 export default function verifySettings(settings) {
   if (!Reaction.hasPermission(["owner", "admin", "dashboard"], this.userId)) {
-    Logger.error("email/verifySettings: Access Denied");
     throw new ReactionError("access-denied", "Access Denied");
   }
 
@@ -46,16 +48,20 @@ export default function verifySettings(settings) {
     }
   }
 
-  const { Email } = Reaction;
+  if (!config) {
+    const shopId = Reaction.getShopId();
+    const context = Promise.await(getGraphQLContextInMeteorMethod(Reaction.getUserId()));
+    config = Promise.await(getMailConfig(context, shopId));
+  }
 
-  const conf = config || Email.getMailConfig();
+  Logger.debug(config, "Verifying email config settings");
 
-  Logger.debug(conf, "Verifying email config settings");
+  const transporter = nodemailer.createTransport(config);
 
   try {
-    return Meteor.wrapAsync(Email.verifyConfig)(conf);
-  } catch (e) {
-    Logger.error(e);
-    throw new ReactionError(e.responseCode, e.response);
+    return Meteor.wrapAsync(transporter.verify.bind(transporter))();
+  } catch (error) {
+    Logger.error(error);
+    throw new ReactionError(error.responseCode, error.response);
   }
 }

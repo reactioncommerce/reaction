@@ -161,15 +161,15 @@ type CartSummary {
   "The combined prices of all cart items"
   itemTotal: Money!
 
-  "The total amount that was deemed taxable by the tax service"
-  taxableAmount: Money!
-
   """
   The total estimated tax that has not already been included in the item prices. This may be null,
   and there is a difference between null and 0. Null means "not able to calculate", such as when no
   fulfillment methods have been selected or there is some other issue with the tax service.
   """
   taxTotal: Money
+
+  "The total amount that was deemed taxable by the tax service"
+  taxableAmount: Money!
 
   "The sum of `itemTotal`, `fulfillmentTotal`, and `taxTotal`, minus `discountTotal`"
   total: Money!

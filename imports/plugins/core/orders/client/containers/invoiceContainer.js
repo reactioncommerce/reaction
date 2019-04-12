@@ -379,7 +379,7 @@ class InvoiceContainer extends Component {
         });
 
         // Set warning if order is not yet captured
-        if (paymentMode !== "capture") {
+        if (paymentMode !== "captured") {
           Alerts.alert({
             text: i18next.t("order.refundItemsWait"),
             type: "warning"

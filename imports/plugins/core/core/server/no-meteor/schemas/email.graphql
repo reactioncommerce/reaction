@@ -3,10 +3,11 @@ scalar Email
 
 "A confirmable email record"
 type EmailRecord {
-  provides: String
-
   "The actual email address"
   address: Email
+
+  "The services provided by this address"
+  provides: String
 
   "Has this address been verified?"
   verified: Boolean
