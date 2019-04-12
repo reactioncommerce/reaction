@@ -6,6 +6,8 @@
 export { default as applyPaginationToMongoCursor } from "./applyPaginationToMongoCursor";
 export { default as applyPaginationToMongoAggregation } from "./applyPaginationToMongoAggregation";
 export { default as getConnectionTypeResolvers } from "./getConnectionTypeResolvers";
+export { default as getOffsetBasedPaginatedResponse } from "./getOffsetBasedPaginatedResponse";
+export { default as getOffsetBasedPaginatedResponseFromAggregation } from "./getOffsetBasedPaginatedResponseFromAggregation";
 export { default as getPaginatedAggregateResponse } from "./getPaginatedAggregateResponse";
 export { default as getPaginatedResponse } from "./getPaginatedResponse";
 export { default as namespaces } from "./namespaces";
