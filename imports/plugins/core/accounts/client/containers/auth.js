@@ -164,7 +164,6 @@ class AuthContainer extends Component {
             onError={this.hasError}
             loginFormMessages={this.formMessages}
             isLoading={this.state.isLoading}
-            onCompleteRoute="://localhost:4000/"
             isOpen
           />
         );
