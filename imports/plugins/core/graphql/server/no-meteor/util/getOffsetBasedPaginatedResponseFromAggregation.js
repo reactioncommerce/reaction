@@ -33,7 +33,8 @@ export default async function getOffsetBasedPaginatedResponseFromAggregation(agg
   // Run the aggregation
   const aggregationResult = await collection.aggregate([...pipeline, facet]).toArray();
 
-  const { nodes, pageInfo: { totalCount } } = aggregationResult[0];
+  const { nodes, pageInfo } = aggregationResult[0];
+  const { totalCount } = pageInfo[0];
   const nodeCount = (Array.isArray(nodes) && nodes.length) || 0;
 
   return {
