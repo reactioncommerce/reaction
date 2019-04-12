@@ -36,13 +36,6 @@ export default async function catalogItemsAggregate(context, { isSoldOut, shopId
     }
   };
 
-  // defaultSort by id
-  const defaultSort = {
-    $sort: {
-      "product._id": 1
-    }
-  };
-
   const tag = await Tags.findOne({
     _id: tagId
   });
@@ -102,6 +95,6 @@ export default async function catalogItemsAggregate(context, { isSoldOut, shopId
 
   return {
     collection: Catalog,
-    pipeline: [match, defaultSort, addFields, projection, sort]
+    pipeline: [match, addFields, projection, sort]
   };
 }
