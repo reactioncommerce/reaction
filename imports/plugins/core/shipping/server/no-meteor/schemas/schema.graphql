@@ -1,16 +1,36 @@
+"A shipping parcel"
 type ShippingParcel {
+  "Containers"
   containers: String
+
+  "Distance unit"
   distanceUnit: DistanceUnit
+
+  "Height"
   height: Float
+
+  "Length"
   length: Float
+
+  "Mass unit"
   massUnit: MassUnit
+
+  "Weight"
   weight: Float
+
+  "Width"
   width: Float
 }
 
+"Allowed fulfillment types"
 enum FulfillmentType {
+  "An order will be fulfilled digitally, such as by sending a download link"
   digital
+
+  "An order will be fulfilled by the customer picking it up"
   pickup
+
+  "An order will be fulfilled by the seller shipping it to the customer"
   shipping
 }
 
