@@ -34,8 +34,7 @@ export const Groups = new SimpleSchema({
     type: String
   },
   "shopId": {
-    type: String,
-    regEx: SimpleSchema.RegEx.Id
+    type: String
   },
   "createdBy": {
     type: String,
