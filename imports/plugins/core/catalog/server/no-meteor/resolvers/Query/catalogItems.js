@@ -1,7 +1,11 @@
-import { getPaginatedResponse, getPaginatedAggregateResponse } from "@reactioncommerce/reaction-graphql-utils";
+import ReactionError from "@reactioncommerce/reaction-error";
 import { decodeShopOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/shop";
 import { decodeTagOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/tag";
-import ReactionError from "@reactioncommerce/reaction-error";
+import {
+  getOffsetBasedPaginatedResponse,
+  getPaginatedResponse,
+  getOffsetBasedPaginatedResponseFromAggregation
+} from "@reactioncommerce/reaction-graphql-utils";
 
 /**
  * @name "Query.catalogItems"
@@ -17,38 +21,61 @@ import ReactionError from "@reactioncommerce/reaction-error";
  */
 export default async function catalogItems(_, args, context) {
   const { shopIds: opaqueShopIds, tagIds: opaqueTagIds, isSoldOut, ...connectionArgs } = args;
-
+  const { first, last, before, after, limit, page } = connectionArgs;
   const shopIds = opaqueShopIds && opaqueShopIds.map(decodeShopOpaqueId);
   const tagIds = opaqueTagIds && opaqueTagIds.map(decodeTagOpaqueId);
+  const isPaginationCursorBased = first || last || before || after;
+  const isPaginationOffsetBased = limit || page;
+
+  if (isPaginationCursorBased && isPaginationOffsetBased) {
+    throw new ReactionError(
+      "invalid-parameter",
+      "Parameters `first`, `last`, `before` and `after` are not supported along side `limit` and `page`."
+    );
+  }
 
   if (connectionArgs.sortBy === "featured") {
     if (!tagIds || tagIds.length === 0) {
       throw new ReactionError("not-found", "A tag ID is required.");
     }
+
     if (tagIds.length > 1) {
       throw new ReactionError("invalid-parameter", "Multiple tags cannot be sorted by featured. Only the first tag will be returned.");
     }
+
+    if (isPaginationCursorBased) {
+      throw new ReactionError(
+        "invalid-parameter",
+        "Parameters `first`, `last`, `before` and `after` are not supported for `sortBy:featured`. Use `page` and `limit` instead."
+      );
+    }
+
     const tagId = tagIds[0];
-    const aggregationParams = await context.queries.catalogItemsAggregate(context, {
+    const aggregationOptions = await context.queries.catalogItemsAggregate(context, {
       isSoldOut,
       shopIds,
       tagId
     });
-    return getPaginatedAggregateResponse(aggregationParams, connectionArgs);
+
+    return getOffsetBasedPaginatedResponseFromAggregation(aggregationOptions, connectionArgs);
   }
 
-  if (connectionArgs.sortBy === "minPrice") {
-    if (typeof connectionArgs.sortByPriceCurrencyCode !== "string") {
-      throw new Error("sortByPriceCurrencyCode is required when sorting by minPrice");
-    }
-    connectionArgs.sortBy = `product.pricing.${connectionArgs.sortByPriceCurrencyCode}.minPrice`;
-  }
-
-  const query = await context.queries.catalogItems(context, {
+  const cursor = await context.queries.catalogItems(context, {
     isSoldOut,
     shopIds,
     tagIds
   });
 
-  return getPaginatedResponse(query, connectionArgs);
+  // Maintain backwards compatibility with cursor based pagination
+  if (isPaginationCursorBased) {
+    if (connectionArgs.sortBy === "minPrice") {
+      if (typeof connectionArgs.sortByPriceCurrencyCode !== "string") {
+        throw new Error("sortByPriceCurrencyCode is required when sorting by minPrice");
+      }
+      connectionArgs.sortBy = `product.pricing.${connectionArgs.sortByPriceCurrencyCode}.minPrice`;
+    }
+    return getPaginatedResponse(cursor, connectionArgs);
+  }
+
+  return getOffsetBasedPaginatedResponse(cursor, connectionArgs);
 }
