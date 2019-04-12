@@ -1,6 +1,6 @@
-import { getPaginatedAggregateResponse } from "@reactioncommerce/reaction-graphql-utils";
 import { decodeShopOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/shop";
 import { decodeTagOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/tag";
+import { getOffsetBasedPaginatedResponseFromAggregation } from "@reactioncommerce/reaction-graphql-utils";
 
 /**
  * @name Query.productsByTagId
@@ -8,27 +8,20 @@ import { decodeTagOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/tag
  * @memberof Tags/GraphQL
  * @summary get a list of products by tag id
  * @param {Object} _ - unused
- * @param {Object} [params] - an object of all arguments that were sent by the client
- * @param {String} [params.shopId] - Shop id
- * @param {String} [params.tagId] - Tag id
+ * @param {Object} [args] - an object of all arguments that were sent by the client
+ * @param {String} [args.shopId] - Shop id
+ * @param {String} [args.tagId] - Tag id
  * @param {Object} context - an object containing the per-request state
  * @return {Promise<Array<Object>>} TagProducts Connection
  */
-export default async function productsByTagId(_, params, context) {
-  const shopId = decodeShopOpaqueId(params.shopId);
-  const tagId = decodeTagOpaqueId(params.tagId);
+export default async function productsByTagId(_, args, context) {
+  const shopId = decodeShopOpaqueId(args.shopId);
+  const tagId = decodeTagOpaqueId(args.tagId);
 
-  const query = await context.queries.productsByTagId(context, {
+  const aggregationOptions = await context.queries.productsByTagId(context, {
     shopId,
     tagId
   });
 
-  const connectionArgs = {
-    after: params.after,
-    before: params.before,
-    first: params.first,
-    last: params.last
-  };
-
-  return getPaginatedAggregateResponse(query, connectionArgs);
+  return getOffsetBasedPaginatedResponseFromAggregation(aggregationOptions, args);
 }
