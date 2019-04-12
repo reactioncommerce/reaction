@@ -10,8 +10,6 @@
  */
 export default async function getOffsetBasedPaginatedResponse(mongoCursor, args) {
   const { sortOrder } = args;
-  const totalCount = await mongoCursor.clone().count();
-  const nodes = await mongoCursor.toArray();
   const limit = args.limit || 20;
   const page = args.page || 0;
   const skip = page * limit;
@@ -32,6 +30,9 @@ export default async function getOffsetBasedPaginatedResponse(mongoCursor, args)
     .sort({
       [sortBy]: sortOrder === "desc" ? -1 : 1
     });
+
+  const totalCount = await mongoCursor.clone().count();
+  const nodes = await mongoCursor.toArray();
 
   return {
     nodes,
