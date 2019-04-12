@@ -541,7 +541,7 @@ extend type Query {
     page: Int,
 
     "Limit per page"
-    limit: Int,
+    limit: ConnectionLimitInt,
 
     "Provide a Currency code if sortBy is minPrice"
     sortByPriceCurrencyCode: String
