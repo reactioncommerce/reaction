@@ -95,11 +95,11 @@ input UpdateFlatRateFulfillmentMethodInput {
   "An optional string identifying the mutation call, which will be returned in the response payload"
   clientMutationId: String
 
-  "The ID of the flat rate fulfillment method you want to update"
-  methodId: ID!
-
   "The updated method. Pass the whole updated method object without the ID."
   method: FlatRateFulfillmentMethodInput!
+
+  "The ID of the flat rate fulfillment method you want to update"
+  methodId: ID!
 
   "The shop that owns the method"
   shopId: ID!

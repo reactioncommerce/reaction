@@ -107,6 +107,8 @@ app:
         value: "1"
     -   key: STARTING_NEW_CUSTOMER_NUMBER
         value: "1100151420184"
+    -   key: KAFKA_TOPIC_IMPORT_ORDER_STATUS_ORDERS
+        value: etl.import-order-status.status.json-gen1
         ## Configure resource requests and limits
         ## ref: http://kubernetes.io/docs/user-guide/compute-resources/
 resources:
