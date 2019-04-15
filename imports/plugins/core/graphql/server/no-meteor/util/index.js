@@ -5,6 +5,7 @@
 
 export { default as applyPaginationToMongoCursor } from "./applyPaginationToMongoCursor";
 export { default as applyPaginationToMongoAggregation } from "./applyPaginationToMongoAggregation";
+export { default as arrayJoinQuery } from "./arrayJoinQuery";
 export { default as getConnectionTypeResolvers } from "./getConnectionTypeResolvers";
 export { default as getPaginatedAggregateResponse } from "./getPaginatedAggregateResponse";
 export { default as getPaginatedResponse } from "./getPaginatedResponse";

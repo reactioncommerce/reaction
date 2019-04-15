@@ -14,7 +14,8 @@ const mockTagWithFeatured = Factory.Tag.makeOne({
 });
 
 const mockProductsWithTagAndFeaturedProducts = Factory.Product.makeMany(77, {
-  _id: (iterator) => (iterator + 100).toString(),
+  _id: (index) => (index + 100).toString(),
+  createdAt: (index) => new Date(Date.now() + (index * 1000)),
   isDeleted: false,
   isVisible: true,
   hashtags: [mockTagWithFeatured._id],
@@ -73,6 +74,7 @@ test("get all products with a certain tag", async () => {
   expect(result.productsByTagId.pageInfo.hasNextPage).toEqual(true);
   expect(result.productsByTagId.pageInfo.hasPreviousPage).toEqual(false);
   expect(result.productsByTagId.nodes.length).toEqual(20);
+  expect(result.productsByTagId.totalCount).toEqual(77);
 });
 
 test("get all products with a certain tag, sorted by Featured", async () => {
@@ -83,18 +85,18 @@ test("get all products with a certain tag, sorted by Featured", async () => {
     expect(error).toBeUndefined();
     return;
   }
-  expect(result.productsByTagId.nodes[0]._id).toEqual("110");
-  expect(result.productsByTagId.nodes[1]._id).toEqual("111");
-  expect(result.productsByTagId.nodes[2]._id).toEqual("112");
-  expect(result.productsByTagId.nodes[3]._id).toEqual("113");
-  expect(result.productsByTagId.nodes[4]._id).toEqual("114");
-  expect(result.productsByTagId.nodes[0].position).toEqual(0);
-  expect(result.productsByTagId.nodes[1].position).toEqual(1);
-  expect(result.productsByTagId.nodes[2].position).toEqual(2);
-  expect(result.productsByTagId.nodes[3].position).toEqual(3);
-  expect(result.productsByTagId.nodes[4].position).toEqual(4);
-  expect(result.productsByTagId.nodes[5].position).toEqual(-1);
-  expect(result.productsByTagId.nodes[10].position).toEqual(-1);
+  expect(result.productsByTagId.nodes[0]._id).toBe("110");
+  expect(result.productsByTagId.nodes[1]._id).toBe("111");
+  expect(result.productsByTagId.nodes[2]._id).toBe("112");
+  expect(result.productsByTagId.nodes[3]._id).toBe("113");
+  expect(result.productsByTagId.nodes[4]._id).toBe("114");
+  expect(result.productsByTagId.nodes[0].position).toBe(0);
+  expect(result.productsByTagId.nodes[1].position).toBe(1);
+  expect(result.productsByTagId.nodes[2].position).toBe(2);
+  expect(result.productsByTagId.nodes[3].position).toBe(3);
+  expect(result.productsByTagId.nodes[4].position).toBe(4);
+  expect(result.productsByTagId.nodes[5].position).toBe(null);
+  expect(result.productsByTagId.nodes[10].position).toBe(null);
 });
 
 test("get all products with a certain tag, after the previous endCursor", async () => {
@@ -116,7 +118,7 @@ test("get all products with a certain tag, after the previous endCursor", async 
   expect(secondQuery.productsByTagId.pageInfo.hasPreviousPage).toEqual(true);
 });
 
-test("get all products with a certain tag, after the previous endCursor", async () => {
+test("get all products with a certain tag, after the previous endCursor, end of results", async () => {
   let firstQuery;
   let secondQuery;
   try {
@@ -188,9 +190,10 @@ test("get the last 30 products with a certain tag", async () => {
   }
   const lastQueryLength = lastQuery.productsByTagId.nodes.length;
   const totalQueryLength = totalQuery.productsByTagId.nodes.length;
-  expect(lastQuery.productsByTagId.nodes.length).toEqual(30);
-  expect(lastQuery.productsByTagId.pageInfo.hasNextPage).toEqual(false);
-  expect(lastQuery.productsByTagId.pageInfo.hasPreviousPage).toEqual(true);
+  expect(lastQueryLength).toBe(30);
+  expect(lastQuery.productsByTagId.totalCount).toBe(77);
+  expect(lastQuery.productsByTagId.pageInfo.hasNextPage).toBe(false);
+  expect(lastQuery.productsByTagId.pageInfo.hasPreviousPage).toBe(true);
   expect(lastQuery.productsByTagId.nodes[lastQueryLength - 2]).toEqual(totalQuery.productsByTagId.nodes[totalQueryLength - 2]);
   expect(lastQuery.productsByTagId.nodes[lastQueryLength - 1]).toEqual(totalQuery.productsByTagId.nodes[totalQueryLength - 1]);
 });
@@ -219,13 +222,13 @@ test("backwards pagination by getting all products with a certain tag, from the 
   }
   const page5 = page5Query.productsByTagId.nodes;
   const page4 = page4Query.productsByTagId.nodes;
-  expect(totalQuery.productsByTagId.nodes.length).toEqual(77);
-  expect(page5.length).toEqual(20);
-  expect(page4.length).toEqual(20);
-  expect(page4Query.productsByTagId.pageInfo.hasPreviousPage).toEqual(true);
-  expect(page4Query.productsByTagId.pageInfo.hasNextPage).toEqual(true);
+  expect(totalQuery.productsByTagId.nodes.length).toBe(77);
+  expect(page5.length).toBe(20);
+  expect(page4.length).toBe(20);
+  expect(page4Query.productsByTagId.pageInfo.hasPreviousPage).toBe(true);
+  expect(page4Query.productsByTagId.pageInfo.hasNextPage).toBe(true);
   const page4last = page4[page4.length - 1];
-  expect(page4last._id).toEqual("156");
+  expect(page4last._id).toBe("156");
 });
 
 test("forward pagination where the last page is divisible by the page count", async () => {
@@ -255,4 +258,29 @@ test("forward pagination where the last page is divisible by the page count", as
   expect(secondQuery.productsByTagId.nodes.length).toEqual(7);
   expect(secondQuery.productsByTagId.pageInfo.hasPreviousPage).toEqual(true);
   expect(secondQuery.productsByTagId.pageInfo.hasNextPage).toEqual(false);
+});
+
+test("backward pagination that should include some featured and some non-featured", async () => {
+  let tenQuery;
+  let backQuery;
+  try {
+    tenQuery = await query({ shopId: opaqueShopId, tagId: encodeTagOpaqueId(mockTagWithFeatured._id), first: 10 });
+    backQuery = await query({
+      shopId: opaqueShopId,
+      tagId: encodeTagOpaqueId(mockTagWithFeatured._id),
+      before: tenQuery.productsByTagId.pageInfo.endCursor,
+      last: 10
+    });
+  } catch (error) {
+    expect(error).toBeUndefined();
+    return;
+  }
+  expect(tenQuery.productsByTagId.nodes.length).toBe(10);
+  expect(backQuery.productsByTagId.nodes.length).toBe(9);
+  expect(tenQuery.productsByTagId.pageInfo.hasPreviousPage).toBe(false);
+  expect(tenQuery.productsByTagId.pageInfo.hasNextPage).toBe(true);
+  expect(backQuery.productsByTagId.pageInfo.hasPreviousPage).toBe(false);
+  expect(backQuery.productsByTagId.pageInfo.hasNextPage).toBe(true);
+  expect(backQuery.productsByTagId.nodes[0]).toEqual(tenQuery.productsByTagId.nodes[0]);
+  expect(backQuery.productsByTagId.nodes[8]).toEqual(tenQuery.productsByTagId.nodes[8]);
 });

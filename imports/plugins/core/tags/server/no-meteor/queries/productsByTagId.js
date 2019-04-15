@@ -1,4 +1,7 @@
+import { arrayJoinQuery, getPaginatedResponse } from "@reactioncommerce/reaction-graphql-utils";
 import ReactionError from "@reactioncommerce/reaction-error";
+
+const DEFAULT_LIMIT = 20;
 
 /**
  * @name queries.productsByTagId
@@ -12,7 +15,7 @@ import ReactionError from "@reactioncommerce/reaction-error";
  * @return {Promise<Array<Object>>} array of TagProducts
  */
 export default async function productsByTagId(context, params) {
-  const { shopId, tagId } = params;
+  const { connectionArgs, shopId, tagId } = params;
   const { collections, userHasPermission } = context;
   const { Products, Tags } = collections;
 
@@ -23,80 +26,176 @@ export default async function productsByTagId(context, params) {
 
   const tag = await Tags.findOne({
     _id: tagId
+  }, {
+    projection: {
+      featuredProductIds: 1
+    }
   });
 
   if (!tag) {
     throw new ReactionError("not-found", "Tag not found");
   }
 
-  // Match all products that belong to a single tag
-  const match = {
-    $match: {
-      shopId,
-      hashtags: { $in: [tagId] }
+  const {
+    after,
+    before,
+    first,
+    last
+  } = connectionArgs;
+
+  if (first && last) throw new Error("Request either `first` or `last` but not both");
+
+  // Enforce a `first: 20` limit if no user-supplied limit, using the DEFAULT_LIMIT
+  const limit = first || last || DEFAULT_LIMIT;
+
+  const isForwardPagination = !last;
+  let hasNextPage = false;
+  let hasPreviousPage = false;
+
+  const cursor = Products.find({ hashtags: tagId, shopId });
+
+  // First get the list of products explicitly given a featured sort position.
+  const featuredCount = (tag.featuredProductIds || []).length;
+  if (featuredCount) {
+    const totalCount = cursor.clone().count();
+
+    // We can save ourselves some DB work when there are none
+    if (!totalCount) {
+      return {
+        nodes: [],
+        pageInfo: {
+          hasPreviousPage,
+          hasNextPage
+        },
+        totalCount
+      };
     }
-  };
 
-  // defaultSort by id
-  const defaultSort = {
-    $sort: {
-      _id: 1
+    let nodes;
+
+    if (isForwardPagination) {
+      const afterIndex = tag.featuredProductIds.indexOf(after);
+      if (!after || afterIndex > -1) {
+        nodes = await arrayJoinQuery({
+          arrayFieldPath: "featuredProductIds",
+          collection: Tags,
+          connectionArgs: {
+            after,
+            first: limit,
+            sortOrder: "asc"
+          },
+          positionFieldName: "position",
+          joinCollectionName: "Products",
+          selector: { _id: tagId }
+        });
+      } else {
+        nodes = [];
+      }
+
+      // If we found fewer than requested and are forward paginating,
+      // do a normal Products query for the rest
+      if (nodes.length < limit) {
+        const nonFeaturedProductsCursor = Products.find({
+          _id: { $nin: tag.featuredProductIds },
+          hashtags: tagId,
+          shopId
+        });
+
+        const result = await getPaginatedResponse(nonFeaturedProductsCursor, {
+          after,
+          first: limit - nodes.length,
+          sortBy: "createdAt",
+          sortOrder: "asc"
+        });
+
+        nodes.push(...result.nodes);
+
+        ({ hasNextPage } = result.pageInfo);
+        hasPreviousPage = !!(after && afterIndex !== 0);
+      } else {
+        hasNextPage = !!(totalCount > limit);
+        hasPreviousPage = !!(after && afterIndex !== 0);
+      }
+    } else {
+      // Backwards pagination
+      const beforeIndex = tag.featuredProductIds.indexOf(before);
+      if (beforeIndex > -1) {
+        nodes = await arrayJoinQuery({
+          arrayFieldPath: "featuredProductIds",
+          collection: Tags,
+          connectionArgs: {
+            before,
+            last: limit,
+            sortOrder: "asc"
+          },
+          positionFieldName: "position",
+          joinCollectionName: "Products",
+          selector: { _id: tagId }
+        });
+      } else {
+        nodes = [];
+      }
+
+      if (nodes.length < limit) {
+        const nonFeaturedProductsCursor = Products.find({
+          _id: { $nin: tag.featuredProductIds },
+          hashtags: tagId,
+          shopId
+        });
+
+        const result = await getPaginatedResponse(nonFeaturedProductsCursor, {
+          before,
+          last: limit - nodes.length,
+          sortBy: "createdAt",
+          sortOrder: "asc"
+        });
+
+        nodes.push(...result.nodes);
+
+        ({ hasNextPage } = result.pageInfo);
+        hasPreviousPage = result.pageInfo.hasPreviousPage || hasPreviousPage;
+
+        // We have to do this again after we know how many we got back,
+        // if we didn't get enough back.
+        if (beforeIndex === -1 && nodes.length < limit) {
+          const featuredNodes = await arrayJoinQuery({
+            arrayFieldPath: "featuredProductIds",
+            collection: Tags,
+            connectionArgs: {
+              last: limit - nodes.length,
+              sortOrder: "asc"
+            },
+            positionFieldName: "position",
+            joinCollectionName: "Products",
+            selector: { _id: tagId }
+          });
+
+          nodes = featuredNodes.concat(nodes);
+        }
+      } else {
+        hasPreviousPage = !!(before && beforeIndex !== 0);
+        hasNextPage = (before && beforeIndex < featuredCount - 1);
+      }
     }
-  };
 
-  // Products from catalog sample data
-  const positions = tag.featuredProductIds || [];
-
-  if (positions.length) {
-    // Add a new field "positions" to each product with the order they are in the array
-    const addFields = {
-      $addFields: {
-        position: {
-          $indexOfArray: [positions, "$_id"]
-        }
-      }
+    const pageInfo = {
+      hasPreviousPage,
+      hasNextPage
     };
 
-    // Projection: Add a featuredPosition by order
-    const projection = {
-      $project: {
-        _id: 1,
-        position: 1,
-        title: 1,
-        sortPosition: {
-          $cond: {
-            if: { $lt: ["$position", 0] },
-            then: { $add: [{ $abs: "$position" }, positions.length] },
-            else: "$position"
-          }
-        }
-      }
-    };
+    const count = nodes.length;
+    if (count) {
+      pageInfo.startCursor = nodes[0]._id;
+      pageInfo.endCursor = nodes[count - 1]._id;
+    }
 
-    // Sort the results by "sortPosition"
-    const sort = {
-      $sort: {
-        sortPosition: 1
-      }
-    };
-
-    // Profit
-    return {
-      collection: Products,
-      pipeline: [match, defaultSort, addFields, projection, sort]
-    };
+    return { nodes, pageInfo, totalCount };
   }
 
-  // If there are no featured products, sort by createdAt
-  const sort = {
-    $sort: {
-      createdAt: 1
-    }
-  };
-
-  // Profit
-  return {
-    collection: Products,
-    pipeline: [match, sort]
-  };
+  // If there are no featured products
+  return getPaginatedResponse(cursor, {
+    ...connectionArgs,
+    sortBy: "createdAt",
+    sortOrder: "asc"
+  });
 }
