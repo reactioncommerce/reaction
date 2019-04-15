@@ -27,9 +27,9 @@ app:
     -   key: ETCD_URL
         value: http://etcd-staging.bobs-test.io:2379
     -   key: GRAPHQL_INTROSPECTION_ENABLED
-        value: true
+        value: "true"
     -   key: GRAPHQL_PLAYGROUND_ENABLED
-        value: true
+        value: "true"
     -   key: HYDRA_ADMIN_URL
         value: http://hydra-hydra-admin-service:4445
     -   key: HYDRA_OAUTH2_INTROSPECT_URL
