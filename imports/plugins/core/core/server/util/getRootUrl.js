@@ -19,7 +19,7 @@ export default function getRootURL(request) {
   if (request) {
     const { hostname, protocol } = request;
     return `${protocol}://${hostname}/`;
-  } else {
-    return null;
   }
+
+  return null;
 }
