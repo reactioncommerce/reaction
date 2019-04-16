@@ -45,10 +45,11 @@ function add_new_env_vars() {
         # If .env doesn't contain this env key, add it
         if ! grep -qLE "^${key}=" "${env_file}"; then
           echo "Adding $key to .env"
-          echo "$var" >>"${env_file}"
+          echo -e "\n$var" >>"${env_file}"
         fi
       done
     }
+    sed '/^$/d' ${env_file} > ${env_file}_ && mv ${env_file}_ ${env_file}
 }
 
 main
