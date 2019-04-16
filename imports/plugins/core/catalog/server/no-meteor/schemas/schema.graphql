@@ -27,6 +27,15 @@ type PriceRange {
   range: String!
 }
 
+"Represents a filter to be applied to the Catalog collection"
+input CatalogFilter {
+  "The name of the filter",
+  name: String!
+
+  "The value of the filter"
+  value: String!
+}
+
 "The product price or price range for a specific currency"
 type ProductPricingInfo {
   """
@@ -530,6 +539,9 @@ extend type Query {
 
     "Optionally provide a flag to filter out sold out products"
     isSoldOut: Boolean,
+
+    "Filters to be applied to the Catalog collection"
+    filters: [CatalogFilter],
 
     after: ConnectionCursor,
     before: ConnectionCursor,

@@ -11,7 +11,7 @@ import ReactionError from "@reactioncommerce/reaction-error";
  * @param {String[]} [params.tags] - Tag IDs to include (OR)
  * @return {Promise<MongoCursor>} - A MongoDB cursor for the proper query
  */
-export default async function catalogItems(context, { isSoldOut, shopIds, tagIds } = {}) {
+export default async function catalogItems(context, { shopIds, tagIds, catalogFilters } = {}) {
   const { collections } = context;
   const { Catalog } = collections;
 
@@ -19,15 +19,9 @@ export default async function catalogItems(context, { isSoldOut, shopIds, tagIds
     throw new ReactionError("invalid-param", "You must provide tagIds or shopIds or both");
   }
 
-  // If isSoldOut filter is provided, add it to the query
-  let isSoldOutFilter = {};
-  if (typeof isSoldOut === "boolean") {
-    isSoldOutFilter = { "product.isSoldOut": { $eq: isSoldOut } };
-  }
-
   const query = {
     "product.isDeleted": { $ne: true },
-    ...isSoldOutFilter,
+    ...catalogFilters,
     "product.isVisible": true
   };
 

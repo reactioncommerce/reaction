@@ -11,18 +11,12 @@ import ReactionError from "@reactioncommerce/reaction-error";
  * @param {String} tagId - Tag ID
  * @return {Promise<MongoCursor>} - A MongoDB cursor for the proper query
  */
-export default async function catalogItemsAggregate(context, { isSoldOut, shopIds, tagId } = {}) {
+export default async function catalogItemsAggregate(context, { shopIds, tagId, catalogFilters } = {}) {
   const { collections } = context;
   const { Catalog, Tags } = collections;
 
   if ((!shopIds || shopIds.length === 0) && (!tagId)) {
     throw new ReactionError("invalid-param", "You must provide a tagId or shopIds or both");
-  }
-
-  // If isSoldOut filter is provided, add it to the query
-  let isSoldOutFilter = {};
-  if (typeof isSoldOut === "boolean") {
-    isSoldOutFilter = { "product.isSoldOut": { $eq: isSoldOut } };
   }
 
   // Match all products that belong to a single tag
@@ -31,7 +25,7 @@ export default async function catalogItemsAggregate(context, { isSoldOut, shopId
       "shopId": { $in: shopIds },
       "product.tagIds": tagId,
       "product.isDeleted": { $ne: true },
-      ...isSoldOutFilter,
+      ...catalogFilters,
       "product.isVisible": true
     }
   };
