@@ -54,7 +54,7 @@ test("returns expected data structure", async () => {
   mockContext.collections.Shops.findOne.mockReturnValueOnce(mockShop);
   mockContext.collections.Catalog.toArray.mockReturnValueOnce([mockCatalogItem]);
 
-  const data = await getDataForOrderEmail(mockContext, mockOrder);
+  const data = await getDataForOrderEmail(mockContext, { order: mockOrder });
 
   expect(data).toEqual({
     billing: {
