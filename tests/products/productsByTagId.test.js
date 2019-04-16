@@ -285,42 +285,6 @@ test("backward pagination that should include some featured and some non-feature
   expect(backQuery.productsByTagId.nodes[8]).toEqual(tenQuery.productsByTagId.nodes[8]);
 });
 
-test("forward pagination, first 2, three times", async () => {
-  let firstTwo;
-  let nextTwo;
-  let lastTwo;
-  try {
-    firstTwo = await query({ shopId: opaqueShopId, tagId: encodeTagOpaqueId(mockTagWithFeatured._id), first: 2 });
-    nextTwo = await query({
-      shopId: opaqueShopId,
-      tagId: encodeTagOpaqueId(mockTagWithFeatured._id),
-      first: 2,
-      after: firstTwo.productsByTagId.pageInfo.endCursor
-    });
-    lastTwo = await query({
-      shopId: opaqueShopId,
-      tagId: encodeTagOpaqueId(mockTagWithFeatured._id),
-      first: 2,
-      after: nextTwo.productsByTagId.pageInfo.endCursor
-    });
-  } catch (error) {
-    expect(error).toBeUndefined();
-    return;
-  }
-
-  expect(firstTwo.productsByTagId.nodes.length).toBe(2);
-  expect(firstTwo.productsByTagId.pageInfo.hasPreviousPage).toBe(false);
-  expect(firstTwo.productsByTagId.pageInfo.hasNextPage).toBe(true);
-
-  expect(nextTwo.productsByTagId.nodes.length).toBe(2);
-  expect(nextTwo.productsByTagId.pageInfo.hasPreviousPage).toBe(true);
-  expect(nextTwo.productsByTagId.pageInfo.hasNextPage).toBe(true);
-
-  expect(lastTwo.productsByTagId.nodes.length).toBe(2);
-  expect(lastTwo.productsByTagId.pageInfo.hasPreviousPage).toBe(true);
-  expect(lastTwo.productsByTagId.pageInfo.hasNextPage).toBe(true);
-});
-
 test("backward pagination, limit 2, within the featured list", async () => {
   let sevenQuery;
   let backTwo1;
@@ -413,14 +377,20 @@ test("forward pagination, limit 2, within the featured list", async () => {
   ]);
 
   expect(page1.productsByTagId.nodes.map((node) => node._id)).toEqual(["110", "111"]);
+  expect(page1.productsByTagId.nodes[0].position).toBe(0);
+  expect(page1.productsByTagId.nodes[1].position).toBe(1);
   expect(page1.productsByTagId.pageInfo.hasPreviousPage).toBe(false);
   expect(page1.productsByTagId.pageInfo.hasNextPage).toBe(true);
 
   expect(page2.productsByTagId.nodes.map((node) => node._id)).toEqual(["112", "113"]);
+  expect(page2.productsByTagId.nodes[0].position).toBe(2);
+  expect(page2.productsByTagId.nodes[1].position).toBe(3);
   expect(page2.productsByTagId.pageInfo.hasPreviousPage).toBe(true);
   expect(page2.productsByTagId.pageInfo.hasNextPage).toBe(true);
 
   expect(page3.productsByTagId.nodes.map((node) => node._id)).toEqual(["114", "100"]);
+  expect(page3.productsByTagId.nodes[0].position).toBe(4);
+  expect(page3.productsByTagId.nodes[1].position).toBe(null);
   expect(page3.productsByTagId.pageInfo.hasPreviousPage).toBe(true);
   expect(page3.productsByTagId.pageInfo.hasNextPage).toBe(true);
 });

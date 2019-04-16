@@ -124,6 +124,7 @@ export default async function arrayJoinQuery({
       $lookup: {
         from: joinCollectionName,
         let: {
+          fullArray: dollarFieldPath,
           slicedArray: "$slicedArray"
         },
         pipeline: [
@@ -137,7 +138,7 @@ export default async function arrayJoinQuery({
           {
             $addFields: {
               [positionFieldName]: {
-                $indexOfArray: ["$$slicedArray", "$_id"]
+                $indexOfArray: ["$$fullArray", "$_id"]
               }
             }
           },
