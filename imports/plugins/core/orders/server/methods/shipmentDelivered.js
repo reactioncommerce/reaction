@@ -1,6 +1,7 @@
 import { check } from "meteor/check";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
-import sendOrderEmail from "../util/sendOrderEmail";
+import getGraphQLContextInMeteorMethod from "/imports/plugins/core/graphql/server/getGraphQLContextInMeteorMethod";
+import sendOrderEmail from "../no-meteor/util/sendOrderEmail";
 import updateShipmentStatus from "../util/updateShipmentStatus";
 
 /**
@@ -24,7 +25,8 @@ export default function shipmentDelivered(order) {
     status: "delivered"
   });
 
-  sendOrderEmail(order, "delivered");
+  const context = Promise.await(getGraphQLContextInMeteorMethod(Reaction.getUserId()));
+  sendOrderEmail(context, order, "delivered");
 
   return true;
 }

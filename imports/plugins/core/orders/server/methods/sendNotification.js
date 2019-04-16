@@ -1,8 +1,9 @@
 import { check, Match } from "meteor/check";
 import { Accounts, Orders } from "/lib/collections";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
+import getGraphQLContextInMeteorMethod from "/imports/plugins/core/graphql/server/getGraphQLContextInMeteorMethod";
 import ReactionError from "@reactioncommerce/reaction-error";
-import sendOrderEmail from "../util/sendOrderEmail";
+import sendOrderEmail from "../no-meteor/util/sendOrderEmail";
 
 /**
  * @name orders/sendNotification
@@ -30,5 +31,6 @@ export default function sendNotification(orderId, action) {
 
   this.unblock();
 
-  return sendOrderEmail(order, action);
+  const context = Promise.await(getGraphQLContextInMeteorMethod(Reaction.getUserId()));
+  return sendOrderEmail(context, order, action);
 }
