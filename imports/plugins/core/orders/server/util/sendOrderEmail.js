@@ -1,6 +1,5 @@
 import Logger from "@reactioncommerce/logger";
 import getGraphQLContextInMeteorMethod from "/imports/plugins/core/graphql/server/getGraphQLContextInMeteorMethod";
-import getDataForEmail from "../no-meteor/util/getDataForEmail";
 
 /**
  * @summary Sends an email about an order.
@@ -17,7 +16,17 @@ export default function sendOrderEmail(order, action) {
   }
 
   const context = Promise.await(getGraphQLContextInMeteorMethod(null));
-  const dataForEmail = Promise.await(getDataForEmail(context, order));
+
+  const registeredFuncs = context.getFunctionsOfType("getDataForOrderEmail");
+  const getDataForOrderEmail = registeredFuncs[0];
+  if (!getDataForOrderEmail) {
+    Logger.warn("Cannot send email because no function of type `getDataForOrderEmail` is registered.");
+    return false;
+  } else if (registeredFuncs.length > 1) {
+    Logger.warn("Plugins registered more than one function of type `getDataForOrderEmail`. Using the first one.");
+  }
+
+  const dataForEmail = Promise.await(getDataForOrderEmail(context, { order }));
 
   Promise.await(context.mutations.sendOrderEmail(context, {
     action,

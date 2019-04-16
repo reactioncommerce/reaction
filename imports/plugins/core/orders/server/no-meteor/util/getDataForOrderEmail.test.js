@@ -1,7 +1,7 @@
 import Factory from "/imports/test-utils/helpers/factory";
 import mockContext from "/imports/test-utils/helpers/mockContext";
 import { restore, rewire$getPaymentMethodConfigByName } from "/imports/plugins/core/payments/server/no-meteor/registration";
-import getDataForEmail from "./getDataForEmail";
+import getDataForOrderEmail from "./getDataForOrderEmail";
 
 beforeAll(() => {
   rewire$getPaymentMethodConfigByName(() => ({
@@ -54,7 +54,7 @@ test("returns expected data structure", async () => {
   mockContext.collections.Shops.findOne.mockReturnValueOnce(mockShop);
   mockContext.collections.Catalog.toArray.mockReturnValueOnce([mockCatalogItem]);
 
-  const data = await getDataForEmail(mockContext, mockOrder);
+  const data = await getDataForOrderEmail(mockContext, mockOrder);
 
   expect(data).toEqual({
     billing: {

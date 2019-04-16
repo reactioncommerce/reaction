@@ -24,12 +24,13 @@ function formatDateForEmail(date) {
 }
 
 /**
- * @summary Builds data for rendering emails
+ * @summary Builds data for rendering order emails
  * @param {Object} context - App context
- * @param {Object} order - The order document
+ * @param {Object} input - Necessary input
+ * @param {Object} input.order - The order document
  * @returns {Object} Data object to use when rendering email templates
  */
-export default async function getDataForEmail(context, order) {
+export default async function getDataForOrderEmail(context, { order }) {
   const { collections, getAbsoluteUrl } = context;
   const { Shops } = collections;
 
