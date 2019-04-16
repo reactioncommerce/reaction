@@ -1,3 +1,5 @@
+const DEFAULT_LIMIT = 20;
+
 /**
  * @summary Performs a MongoDB query where an array of IDs in one collection
  *   is used as the list and the list order, and the documents matching
@@ -39,36 +41,51 @@ export default async function arrayJoinQuery({
   };
 
   let beforeAfterSlice = [dollarFieldPath, "$arrayFieldCount"];
-  if (before) {
+  if (last) {
     beforeAfterFields.beforeArrayIndex = { $indexOfArray: [dollarFieldPath, before] };
     beforeAfterSlice = [
       dollarFieldPath,
       {
-        $max: [
-          { $subtract: ["$beforeArrayIndex", last] },
-          0
-        ]
-      },
-      {
-        $subtract: [
-          "$beforeArrayIndex",
-          {
+        $cond: {
+          if: {
+            $eq: ["$beforeArrayIndex", -1]
+          },
+          then: {
+            $max: [
+              { $subtract: ["$arrayFieldCount", last] },
+              0
+            ]
+          },
+          else: {
             $max: [
               { $subtract: ["$beforeArrayIndex", last] },
               0
             ]
           }
-        ]
+        }
+      },
+      {
+        $cond: {
+          if: {
+            $eq: ["$beforeArrayIndex", -1]
+          },
+          then: {
+            $min: [last, "$arrayFieldCount"]
+          },
+          else: {
+            $min: [last, "$beforeArrayIndex"]
+          }
+        }
       }
     ];
-  } else if (after) {
+  } else {
     beforeAfterFields.afterArrayIndex = { $indexOfArray: [dollarFieldPath, after] };
     beforeAfterSlice = [
       dollarFieldPath,
       { $add: ["$afterArrayIndex", 1] },
       {
         $min: [
-          first,
+          first || DEFAULT_LIMIT,
           {
             $subtract: [
               { $add: ["$arrayFieldCount", 1] },

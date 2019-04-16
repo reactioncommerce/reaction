@@ -284,3 +284,143 @@ test("backward pagination that should include some featured and some non-feature
   expect(backQuery.productsByTagId.nodes[0]).toEqual(tenQuery.productsByTagId.nodes[0]);
   expect(backQuery.productsByTagId.nodes[8]).toEqual(tenQuery.productsByTagId.nodes[8]);
 });
+
+test("forward pagination, first 2, three times", async () => {
+  let firstTwo;
+  let nextTwo;
+  let lastTwo;
+  try {
+    firstTwo = await query({ shopId: opaqueShopId, tagId: encodeTagOpaqueId(mockTagWithFeatured._id), first: 2 });
+    nextTwo = await query({
+      shopId: opaqueShopId,
+      tagId: encodeTagOpaqueId(mockTagWithFeatured._id),
+      first: 2,
+      after: firstTwo.productsByTagId.pageInfo.endCursor
+    });
+    lastTwo = await query({
+      shopId: opaqueShopId,
+      tagId: encodeTagOpaqueId(mockTagWithFeatured._id),
+      first: 2,
+      after: nextTwo.productsByTagId.pageInfo.endCursor
+    });
+  } catch (error) {
+    expect(error).toBeUndefined();
+    return;
+  }
+
+  expect(firstTwo.productsByTagId.nodes.length).toBe(2);
+  expect(firstTwo.productsByTagId.pageInfo.hasPreviousPage).toBe(false);
+  expect(firstTwo.productsByTagId.pageInfo.hasNextPage).toBe(true);
+
+  expect(nextTwo.productsByTagId.nodes.length).toBe(2);
+  expect(nextTwo.productsByTagId.pageInfo.hasPreviousPage).toBe(true);
+  expect(nextTwo.productsByTagId.pageInfo.hasNextPage).toBe(true);
+
+  expect(lastTwo.productsByTagId.nodes.length).toBe(2);
+  expect(lastTwo.productsByTagId.pageInfo.hasPreviousPage).toBe(true);
+  expect(lastTwo.productsByTagId.pageInfo.hasNextPage).toBe(true);
+});
+
+test("backward pagination, limit 2, within the featured list", async () => {
+  let sevenQuery;
+  let backTwo1;
+  let backTwo2;
+  let backTwo3;
+  try {
+    sevenQuery = await query({ shopId: opaqueShopId, tagId: encodeTagOpaqueId(mockTagWithFeatured._id), first: 7 });
+    backTwo1 = await query({
+      shopId: opaqueShopId,
+      tagId: encodeTagOpaqueId(mockTagWithFeatured._id),
+      last: 2,
+      before: sevenQuery.productsByTagId.pageInfo.endCursor
+    });
+    backTwo2 = await query({
+      shopId: opaqueShopId,
+      tagId: encodeTagOpaqueId(mockTagWithFeatured._id),
+      last: 2,
+      before: backTwo1.productsByTagId.pageInfo.startCursor
+    });
+    backTwo3 = await query({
+      shopId: opaqueShopId,
+      tagId: encodeTagOpaqueId(mockTagWithFeatured._id),
+      last: 3,
+      before: backTwo2.productsByTagId.pageInfo.startCursor
+    });
+  } catch (error) {
+    expect(error).toBeUndefined();
+    return;
+  }
+
+  expect(sevenQuery.productsByTagId.nodes.map((node) => node._id)).toEqual([
+    "110",
+    "111",
+    "112",
+    "113",
+    "114",
+    "100",
+    "101"
+  ]);
+
+  expect(backTwo1.productsByTagId.nodes.map((node) => node._id)).toEqual(["114", "100"]);
+  expect(backTwo1.productsByTagId.pageInfo.hasPreviousPage).toBe(true);
+  expect(backTwo1.productsByTagId.pageInfo.hasNextPage).toBe(true);
+
+  expect(backTwo2.productsByTagId.nodes.map((node) => node._id)).toEqual(["112", "113"]);
+  expect(backTwo2.productsByTagId.pageInfo.hasPreviousPage).toBe(true);
+  expect(backTwo2.productsByTagId.pageInfo.hasNextPage).toBe(true);
+
+  expect(backTwo3.productsByTagId.nodes.map((node) => node._id)).toEqual(["110", "111"]);
+  expect(backTwo3.productsByTagId.pageInfo.hasPreviousPage).toBe(false);
+  expect(backTwo3.productsByTagId.pageInfo.hasNextPage).toBe(true);
+});
+
+test("forward pagination, limit 2, within the featured list", async () => {
+  let sixQuery;
+  let page1;
+  let page2;
+  let page3;
+  try {
+    sixQuery = await query({ shopId: opaqueShopId, tagId: encodeTagOpaqueId(mockTagWithFeatured._id), first: 6 });
+    page1 = await query({
+      shopId: opaqueShopId,
+      tagId: encodeTagOpaqueId(mockTagWithFeatured._id),
+      first: 2
+    });
+    page2 = await query({
+      shopId: opaqueShopId,
+      tagId: encodeTagOpaqueId(mockTagWithFeatured._id),
+      first: 2,
+      after: page1.productsByTagId.pageInfo.endCursor
+    });
+    page3 = await query({
+      shopId: opaqueShopId,
+      tagId: encodeTagOpaqueId(mockTagWithFeatured._id),
+      first: 2,
+      after: page2.productsByTagId.pageInfo.endCursor
+    });
+  } catch (error) {
+    expect(error).toBeUndefined();
+    return;
+  }
+
+  expect(sixQuery.productsByTagId.nodes.map((node) => node._id)).toEqual([
+    "110",
+    "111",
+    "112",
+    "113",
+    "114",
+    "100"
+  ]);
+
+  expect(page1.productsByTagId.nodes.map((node) => node._id)).toEqual(["110", "111"]);
+  expect(page1.productsByTagId.pageInfo.hasPreviousPage).toBe(false);
+  expect(page1.productsByTagId.pageInfo.hasNextPage).toBe(true);
+
+  expect(page2.productsByTagId.nodes.map((node) => node._id)).toEqual(["112", "113"]);
+  expect(page2.productsByTagId.pageInfo.hasPreviousPage).toBe(true);
+  expect(page2.productsByTagId.pageInfo.hasNextPage).toBe(true);
+
+  expect(page3.productsByTagId.nodes.map((node) => node._id)).toEqual(["114", "100"]);
+  expect(page3.productsByTagId.pageInfo.hasPreviousPage).toBe(true);
+  expect(page3.productsByTagId.pageInfo.hasNextPage).toBe(true);
+});

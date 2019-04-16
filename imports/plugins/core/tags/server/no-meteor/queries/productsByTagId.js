@@ -57,7 +57,7 @@ export default async function productsByTagId(context, params) {
   // First get the list of products explicitly given a featured sort position.
   const featuredCount = (tag.featuredProductIds || []).length;
   if (featuredCount) {
-    const totalCount = cursor.clone().count();
+    const totalCount = await cursor.clone().count();
 
     // We can save ourselves some DB work when there are none
     if (!totalCount) {
@@ -102,7 +102,7 @@ export default async function productsByTagId(context, params) {
         });
 
         const result = await getPaginatedResponse(nonFeaturedProductsCursor, {
-          after,
+          after: afterIndex > -1 ? null : after,
           first: limit - nodes.length,
           sortBy: "createdAt",
           sortOrder: "asc"
@@ -113,12 +113,16 @@ export default async function productsByTagId(context, params) {
         ({ hasNextPage } = result.pageInfo);
         hasPreviousPage = !!(after && afterIndex !== 0);
       } else {
-        hasNextPage = !!(totalCount > limit);
+        hasNextPage = afterIndex > -1 ? afterIndex + nodes.length < totalCount : nodes.length < totalCount;
         hasPreviousPage = !!(after && afterIndex !== 0);
       }
     } else {
       // Backwards pagination
       const beforeIndex = tag.featuredProductIds.indexOf(before);
+
+      // If the "before" ID is in the featured products list, then we need only
+      // the query of that list. We'll never need to add any additional non-featured
+      // products to the results;
       if (beforeIndex > -1) {
         nodes = await arrayJoinQuery({
           arrayFieldPath: "featuredProductIds",
@@ -132,11 +136,20 @@ export default async function productsByTagId(context, params) {
           joinCollectionName: "Products",
           selector: { _id: tagId }
         });
-      } else {
-        nodes = [];
-      }
 
-      if (nodes.length < limit) {
+        if (nodes.length) {
+          hasPreviousPage = tag.featuredProductIds.indexOf(nodes[0]._id) !== 0;
+        }
+
+        if (before && beforeIndex < featuredCount - 1) {
+          hasNextPage = true;
+        } else if ((before && beforeIndex === featuredCount - 1) || !before) {
+          hasNextPage = totalCount > featuredCount;
+        }
+      } else {
+        // The "before" ID is not in the featured products list. Start from the ID
+        // in the non-featured query or from the end of it. Then we'll add some
+        // featured products from the end of that list if necessary
         const nonFeaturedProductsCursor = Products.find({
           _id: { $nin: tag.featuredProductIds },
           hashtags: tagId,
@@ -145,19 +158,17 @@ export default async function productsByTagId(context, params) {
 
         const result = await getPaginatedResponse(nonFeaturedProductsCursor, {
           before,
-          last: limit - nodes.length,
+          last: limit,
           sortBy: "createdAt",
           sortOrder: "asc"
         });
 
-        nodes.push(...result.nodes);
-
-        ({ hasNextPage } = result.pageInfo);
-        hasPreviousPage = result.pageInfo.hasPreviousPage || hasPreviousPage;
+        ({ nodes } = result);
+        ({ hasNextPage, hasPreviousPage } = result.pageInfo);
 
         // We have to do this again after we know how many we got back,
         // if we didn't get enough back.
-        if (beforeIndex === -1 && nodes.length < limit) {
+        if (featuredCount > 0 && nodes.length < limit) {
           const featuredNodes = await arrayJoinQuery({
             arrayFieldPath: "featuredProductIds",
             collection: Tags,
@@ -171,10 +182,11 @@ export default async function productsByTagId(context, params) {
           });
 
           nodes = featuredNodes.concat(nodes);
+
+          if (nodes.length) {
+            hasPreviousPage = tag.featuredProductIds.indexOf(nodes[0]._id) !== 0;
+          }
         }
-      } else {
-        hasPreviousPage = !!(before && beforeIndex !== 0);
-        hasNextPage = (before && beforeIndex < featuredCount - 1);
       }
     }
 
