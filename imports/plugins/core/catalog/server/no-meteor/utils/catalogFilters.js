@@ -3,29 +3,29 @@ import ReactionError from "@reactioncommerce/reaction-error";
 const ALLOWED_FILTERS = [
   "isDeleted",
   "isVisible",
-  "isLowQuantity", 
+  "isLowQuantity",
   "isSoldOut",
   "isBackorder",
   "inventoryInStock",
-  "inventoryAvailableToSell",
-]
+  "inventoryAvailableToSell"
+];
 
 /**
  *
  * @method xformCatalogFilters
  * @summary Transforms JSON encoded filters for the Catalog collection into
  * Mongo expressions.
- * @param {Object[]} filters - Array of JSON encoded filters 
+ * @param {Object[]} filters - Array of JSON encoded filters
  * @return {Object[]} Array Mongo filter expressions
  */
 export default function xformCatalogFilters(filters) {
   const mongoFilters = {};
-  for (let i = 0; i < filters.length; i++) {
-    const { name: filterName, value } = filters[i];
+  for (let index = 0; index < filters.length; index += 1) {
+    const { name: filterName, value } = filters[index];
 
     // if this filter is not allowed, skip.
-    if (!ALLOWED_FILTERS.includes(filterName)) { 
-      continue; 
+    if (!ALLOWED_FILTERS.includes(filterName)) {
+      continue;
     }
 
     let filterValue;
@@ -36,17 +36,15 @@ export default function xformCatalogFilters(filters) {
     }
 
     // In the Catalog collection, each variant's available inventory,
-    // is the  sum of the available options inventory. There applying the filter to the 
+    // is the  sum of the available options inventory. There applying the filter to the
     // variant will yield the desired effect.
-    if ( filterName === "inventoryInStock") {
-      mongoFilters["product.variants"] = { "$elemMatch": { [filterName]: filterValue } };
+    if (filterName === "inventoryInStock" || filterName === "inventoryAvailableToSell") {
+      mongoFilters["product.variants"] = { $elemMatch: { [filterName]: filterValue } };
       continue;
     }
 
     mongoFilters[`product.${filterName}`] = filterValue;
   }
-
-  console.log("mongoFilters", mongoFilters);
 
   return mongoFilters;
 }

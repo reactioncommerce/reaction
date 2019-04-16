@@ -21,7 +21,11 @@ export default async function catalogItems(_, args, context) {
 
   const shopIds = opaqueShopIds && opaqueShopIds.map(decodeShopOpaqueId);
   const tagIds = opaqueTagIds && opaqueTagIds.map(decodeTagOpaqueId);
-  const catalogFilters = xformCatalogFilters(filters);
+
+  let catalogFilters = [];
+  if (filters && Array.isArray(filters) && filters.length) {
+    catalogFilters = xformCatalogFilters(filters);
+  }
 
   if (connectionArgs.sortBy === "featured") {
     if (!tagIds || tagIds.length === 0) {
