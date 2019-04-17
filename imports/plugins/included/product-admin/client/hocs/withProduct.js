@@ -216,6 +216,7 @@ function composer(props, onData) {
 
   if (productSub && productSub.ready()) {
     product = ReactionProduct.setProduct(productId, variantId);
+    product && Meteor.subscribe("Tags", product.hashtags);
 
     if (variantId) {
       ReactionProduct.setCurrentVariant(variantId);
