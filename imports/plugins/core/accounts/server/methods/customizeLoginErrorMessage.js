@@ -1,4 +1,3 @@
-import Logger from "@reactioncommerce/logger";
 import { check } from "meteor/check";
 import getGraphQLContextInMeteorMethod from "/imports/plugins/core/graphql/server/getGraphQLContextInMeteorMethod";
 
@@ -14,14 +13,14 @@ export default function customizeLoginErrorMessage(username, error) {
   check(username, String);
   check(error, Object);
 
-  let customError = error;
   const context = Promise.await(getGraphQLContextInMeteorMethod());
   const { getFunctionsOfType } = context;
   const customizeErrorFunctions = getFunctionsOfType("customizeLoginErrorMessage");
-  if (customizeErrorFunctions.length > 0) {
-    customError = customizeErrorFunctions[0](context, username, error);
-  } else if (customizeErrorFunctions.length > 1) {
-    Logger.warn("More than one customizeLoginErrorMessage function defined. Using first one defined");
+  for (const func of customizeErrorFunctions) {
+    const customError = Promise.await(func(context, username, error)); // eslint-disable-line no-await-in-loop
+    if (customError) {
+      return customError;
+    }
   }
-  return customError;
+  return error;
 }
