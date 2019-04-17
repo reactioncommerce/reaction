@@ -1,10 +1,10 @@
-import { getPaginatedResponse, getPaginatedAggregateResponse } from "@reactioncommerce/reaction-graphql-utils";
+import { getPaginatedResponse } from "@reactioncommerce/reaction-graphql-utils";
 import { decodeShopOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/shop";
 import { decodeTagOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/tag";
 import ReactionError from "@reactioncommerce/reaction-error";
 
 /**
- * @name "Query.catalogItems"
+ * @name Query/catalogItems
  * @method
  * @memberof Catalog/GraphQL
  * @summary Get a list of catalogItems
@@ -29,12 +29,12 @@ export default async function catalogItems(_, args, context) {
       throw new ReactionError("invalid-parameter", "Multiple tags cannot be sorted by featured. Only the first tag will be returned.");
     }
     const tagId = tagIds[0];
-    const aggregationParams = await context.queries.catalogItemsAggregate(context, {
+    return context.queries.catalogItemsAggregate(context, {
+      connectionArgs,
       isSoldOut,
       shopIds,
       tagId
     });
-    return getPaginatedAggregateResponse(aggregationParams, connectionArgs);
   }
 
   if (connectionArgs.sortBy === "minPrice") {
