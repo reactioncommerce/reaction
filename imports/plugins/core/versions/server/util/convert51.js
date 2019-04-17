@@ -12,7 +12,8 @@ import _ from "lodash";
 function getVariantInventoryNotAvailableToSellQuantity(variant, collections) {
   // Find orders that are new or processing
   const orders = collections.Orders.find({
-    "workflow.status": { $in: ["new", "coreOrderWorkflow/processing"] }
+    "workflow.status": { $in: ["new", "coreOrderWorkflow/processing"] },
+    "shipping.items.variantId": variant._id
   }).fetch();
 
   const reservedQuantity = orders.reduce((sum, order) => {
