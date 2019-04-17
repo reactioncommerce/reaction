@@ -5,8 +5,9 @@ import { check } from "meteor/check";
 import { Orders } from "/lib/collections";
 import appEvents from "/imports/node-app/core/util/appEvents";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
+import getGraphQLContextInMeteorMethod from "/imports/plugins/core/graphql/server/getGraphQLContextInMeteorMethod";
 import ReactionError from "@reactioncommerce/reaction-error";
-import sendOrderEmail from "../util/sendOrderEmail";
+import sendOrderEmail from "../no-meteor/util/sendOrderEmail";
 
 /**
  * @name orderQuantityAdjust
@@ -116,7 +117,8 @@ export default function refundItemsMethod(orderId, paymentId, refundItemsInfo) {
         updatedBy: Reaction.getUserId()
       }));
 
-      sendOrderEmail(order, "itemRefund");
+      const context = Promise.await(getGraphQLContextInMeteorMethod(Reaction.getUserId()));
+      sendOrderEmail(context, order, "itemRefund");
 
       fut.return({
         refund: true,

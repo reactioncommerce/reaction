@@ -4,6 +4,8 @@ import mongodb, { MongoClient } from "mongodb";
 import appEvents from "./util/appEvents";
 import createApolloServer from "./createApolloServer";
 import defineCollections from "./util/defineCollections";
+import getRootUrl from "/imports/plugins/core/core/server/util/getRootUrl";
+import getAbsoluteUrl from "/imports/plugins/core/core/server/util/getAbsoluteUrl";
 
 /**
  * @summary A default addCallMeteorMethod function. Adds `callMeteorMethod`
@@ -38,6 +40,9 @@ export default class ReactionNodeApp {
       // We may eventually bind this directly to Kafka.
       pubSub: new PubSub()
     };
+
+    this.context.rootUrl = getRootUrl();
+    this.context.getAbsoluteUrl = (path) => getAbsoluteUrl(this.context.rootUrl, path);
 
     this.mongodb = options.mongodb || mongodb;
 
