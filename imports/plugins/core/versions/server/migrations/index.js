@@ -58,3 +58,4 @@ import "./56_change_inventoryQuantity_to_inventoryInStock";
 import "./57_confirm_inventory_is_not_NaN";
 import "./58_add_reference_id_to_order";
 import "./59_drop_indexes";
+import "./60_remove_template_assets";
