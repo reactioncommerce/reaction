@@ -7,7 +7,9 @@ import { navigationTreeWith10LevelsFragment } from "./fragments";
 const updateNavigationTreeMutation = gql`
   mutation updateNavigationTreeMutation($input: UpdateNavigationTreeInput!) {
     updateNavigationTree(input: $input) {
-      ...NavigationTreeWith10Levels
+      navigationTree {
+        ...NavigationTreeWith10Levels
+      }
     }
   }
   ${navigationTreeWith10LevelsFragment}
