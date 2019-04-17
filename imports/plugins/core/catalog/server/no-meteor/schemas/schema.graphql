@@ -1,23 +1,30 @@
 "The list of currently supported social network identifiers"
 enum SocialNetwork {
-  twitter
+  "Facebook"
   facebook
-  pinterest
+
+  "Google+"
   googleplus
+
+  "Pinterest"
+  pinterest
+
+  "Twitter"
+  twitter
 }
 
 "Represents the minimum and maximum price of a product, among all its variants"
 type PriceRange {
-  """
-  A range display string in the format "min - max", without any currency symbol
-  """
-  range: String!
+  "The price, in shop currency, of the most expensive possible variant with the most expensive possible option"
+  max: Float!
 
   "The price, in shop currency, of the least expensive possible variant with the least expensive possible option"
   min: Float!
 
-  "The price, in shop currency, of the most expensive possible variant with the most expensive possible option"
-  max: Float!
+  """
+  A range display string in the format "min - max", without any currency symbol
+  """
+  range: String!
 }
 
 "The product price or price range for a specific currency"
@@ -91,34 +98,63 @@ type CurrencyExchangeProductPricingInfo {
 
 "Holds metadata specific to a specific social network service"
 type SocialMetadata {
-  "Which social network is this metadata for"
-  service: SocialNetwork
-
   "Default share message to use when sharing this product on this social network"
   message: String
+
+  "Which social network is this metadata for"
+  service: SocialNetwork
 }
 
 "This interface represents the fields that are identical for both Products and Variants"
 interface CatalogProductOrVariant {
+  "The product barcode value, if it has one"
   barcode: String
 
   # This should be required but we need to migrate existing data first
+  "The date and time at which this CatalogProduct was created, which is when the related product was first published"
   createdAt: DateTime
+
+  "The height of the product, if it has physical dimensions"
   height: Float
+
+  "True if at least one of the variants has inventoryManagement enabled and has an available quantity less than its lowInventoryWarningThreshold"
   isLowQuantity: Boolean!
+
+  "True if every product variant has inventoryManagement enabled and has 0 inventory"
   isSoldOut: Boolean!
+
+  "The length of the product, if it has physical dimensions"
   length: Float
+
+  "The quantity value below which `isLowQuantity` should be true"
   lowInventoryWarningThreshold: Int
+
+  "Arbitrary additional metadata about this product"
   metafields: [Metafield]
+
+  "The minimum quantity that must be added to a cart"
   minOrderQuantity: Int
+
+  "The country of origin"
   originCountry: String
+
+  "The shop to which this product belongs"
   shop: Shop!
+
+  "A stock keeping unit (SKU) identifier for this product"
   sku: String
+
+  "Product or variant title"
   title: String
 
   # This should be required but we need to migrate existing data first
+  "The date and time at which this CatalogProduct was last updated, which is when the related product was most recently published"
   updatedAt: DateTime
+
+  "The weight of the product on Earth, if it has physical dimensions"
   weight: Float
+
+  "The width of the product, if it has physical dimensions"
   width: Float
 }
 
@@ -185,11 +221,11 @@ type CatalogProduct implements CatalogProductOrVariant & Node {
   "All media for this product and its variants"
   media: [ImageInfo]
 
-  "Arbitrary additional metadata about this product"
-  metafields: [Metafield]
-
   "The product description to use for page `description` meta element in HTML"
   metaDescription: String
+
+  "Arbitrary additional metadata about this product"
+  metafields: [Metafield]
 
   "The minimum quantity that must be added to a cart"
   minOrderQuantity: Int
@@ -258,6 +294,7 @@ type CatalogProduct implements CatalogProductOrVariant & Node {
   width: Float
 }
 
+"A variant of a catalog product"
 type CatalogProductVariant implements CatalogProductOrVariant & Node {
   "The CatalogProductVariant ID. Do not assume that this is the same as the related variant ID. See `variantId` for that."
   _id: ID!
@@ -325,11 +362,11 @@ type CatalogProductVariant implements CatalogProductOrVariant & Node {
   "The minimum quantity that must be added to a cart"
   minOrderQuantity: Int
 
-  "Child variants, if any"
-  options: [CatalogProductVariant]
-
   "An option title. If this is set and this variant has a CatalogProductVariant parent, treat this variant as an option"
   optionTitle: String
+
+  "Child variants, if any"
+  options: [CatalogProductVariant]
 
   "The country of origin"
   originCountry: String
@@ -369,9 +406,16 @@ type CatalogProductVariant implements CatalogProductOrVariant & Node {
 Catalog items are combined to create a catalog. Each item can represent a different type of content.
 """
 interface CatalogItem {
+  "Item ID"
   _id: ID!
-  shop: Shop!
+
+  "Date and time at which the item was created"
   createdAt: DateTime
+
+  "Shop that owns the item"
+  shop: Shop!
+
+  "Date and time at which the item was last updated"
   updatedAt: DateTime
 }
 
@@ -380,14 +424,14 @@ type CatalogItemProduct implements CatalogItem & Node {
   "The CatalogItemProduct ID"
   _id: ID!
 
-  "The shop to which this catalog belongs"
-  shop: Shop!
+  "The date and time at which this CatalogItem was first created, which is when the related product was first published"
+  createdAt: DateTime!
 
   "The catalog product"
   product: CatalogProduct
 
-  "The date and time at which this CatalogItem was first created, which is when the related product was first published"
-  createdAt: DateTime!
+  "The shop to which this catalog belongs"
+  shop: Shop!
 
   "The date and time at which this CatalogItem was last updated, which is when the related product was most recently published"
   updatedAt: DateTime!
@@ -398,48 +442,81 @@ type CatalogItemContent implements CatalogItem & Node {
   "The CatalogItemProduct ID"
   _id: ID!
 
-  "The shop to which this catalog belongs"
-  shop: Shop!
-
   "The date and time at which this CatalogItem was first created"
   createdAt: DateTime!
+
+  "The shop to which this catalog belongs"
+  shop: Shop!
 
   "The date and time at which this CatalogItem was last updated"
   updatedAt: DateTime!
 }
 
+"A connection edge in which each node is a `CatalogItem` object"
 type CatalogItemEdge {
+  "The cursor that represents this node in the paginated results"
   cursor: ConnectionCursor!
+
+  "The catalog item"
   node: CatalogItem
 }
 
+"""
+Wraps a list of `CatalogItem`s, providing pagination cursors and information.
+
+For information about what Relay-compatible connections are and how to use them, see the following articles:
+- [Relay Connection Documentation](https://facebook.github.io/relay/docs/en/graphql-server-specification.html#connections)
+- [Relay Connection Specification](https://facebook.github.io/relay/graphql/connections.htm)
+- [Using Relay-style Connections With Apollo Client](https://www.apollographql.com/docs/react/recipes/pagination.html)
+"""
 type CatalogItemConnection {
+  "The list of nodes that match the query, wrapped in an edge to provide a cursor string for each"
   edges: [CatalogItemEdge]
+
+  """
+  You can request the `nodes` directly to avoid the extra wrapping that `NodeEdge` has,
+  if you know you will not need to paginate the results.
+  """
   nodes: [CatalogItem]
+
+  "Information to help a client request the next or previous page"
   pageInfo: PageInfo!
+
+  "The total number of nodes that match your query"
   totalCount: Int!
 }
 
+"One product catalog for a particular shop"
 type Catalog implements Node {
   "The Catalog ID"
   _id: ID!
 
-  "The shop to which this catalog belongs"
-  shop: Shop!
-
   "The date and time at which this Catalog was first created"
   createdAt: DateTime!
+
+  "The shop to which this catalog belongs"
+  shop: Shop!
 
   "The date and time at which this Catalog was last updated"
   updatedAt: DateTime!
 }
 
+"Allowed values for sorting catalog items"
 enum CatalogItemSortByField {
+  "Sort by item ID"
   _id
+
+  "Sort by date and time at which the item was created"
   createdAt
-  minPrice
-  updatedAt
+
+  "Sort in the shop-defined order for the tag filter"
   featured
+
+  "Sort by price"
+  minPrice
+
+  "Sort by date and time at which the item was last updated"
+  updatedAt
 }
 
 extend type Query {
@@ -450,6 +527,9 @@ extend type Query {
 
     "Optionally provide a list of tag IDs to further filter the item list"
     tagIds: [ID],
+
+    "Optionally provide a flag to filter out sold out products"
+    isSoldOut: Boolean,
 
     after: ConnectionCursor,
     before: ConnectionCursor,
@@ -463,6 +543,7 @@ extend type Query {
     "By default, items are sorted by newest products. Set this to sort by one of the other allowed fields"
     sortBy: CatalogItemSortByField = updatedAt
   ): CatalogItemConnection
+
   "Gets product from catalog"
   catalogItemProduct(
     "Provide either a product ID or slug"

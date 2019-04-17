@@ -12,7 +12,6 @@ export default function startup(context) {
 
   // Create indexes. We set specific names for backwards compatibility
   // with indexes created by the aldeed:schema-index Meteor package.
-  collectionIndex(Translations, { i18n: 1 }, { name: "c2_i18n" });
-  collectionIndex(Translations, { shopId: 1 }, { name: "c2_shopId" });
+  collectionIndex(Translations, { shopId: 1, i18n: 1 });
 }
 

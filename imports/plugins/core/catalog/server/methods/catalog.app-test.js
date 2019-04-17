@@ -11,6 +11,7 @@ import { sinon } from "meteor/practicalmeteor:sinon";
 import { Roles } from "meteor/alanning:roles";
 import ReactionError from "@reactioncommerce/reaction-error";
 import { addProduct, addProductSingleVariant } from "/imports/plugins/core/core/server/fixtures/products";
+import { getBaseContext } from "/imports/plugins/core/graphql/server/getGraphQLContextInMeteorMethod";
 import Fixtures from "/imports/plugins/core/core/server/fixtures";
 
 Fixtures();
@@ -28,8 +29,20 @@ describe("core product methods", function () {
   let removeStub;
   let insertStub;
 
-  before(function () {
+  before(function (done) {
+    this.timeout(20000);
+
     Products.remove({});
+
+    // We sleep until `setBaseContext` has run. I wish there were a better way to
+    // do this but Meteor starts app tests whenever it decides to, without waiting
+    // for all the startup code to run.
+    const handle = Meteor.setInterval(() => {
+      if (getBaseContext().queries) {
+        Meteor.clearInterval(handle);
+        done();
+      }
+    }, 500);
   });
 
   after(function () {

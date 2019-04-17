@@ -1,5 +1,4 @@
-import { Reaction } from "/client/api";
-import { Tags } from "/lib/collections";
+import { Meteor } from "meteor/meteor";
 
 /**
  * @name getTagSuggestions
@@ -10,21 +9,17 @@ import { Tags } from "/lib/collections";
  * @return {Promise<Array>} matching tags
  */
 export default async function getTagSuggestions(term, { excludeTags }) {
-  const slug = await Reaction.getSlug(term);
-
-  const selector = {
-    slug: new RegExp(slug, "i")
-  };
-
-  if (Array.isArray(excludeTags)) {
-    selector._id = {
-      $nin: excludeTags
-    };
+  try {
+    return new Promise((resolve, reject) => {
+      Meteor.call("tags/getBySlug", term, excludeTags, (error, result) => {
+        if (error) {
+          reject(error);
+        } else {
+          resolve(result);
+        }
+      });
+    });
+  } catch (error) {
+    return [];
   }
-
-  const tags = Tags.find(selector).map((tag) => ({
-    label: tag.name
-  }));
-
-  return tags;
 }

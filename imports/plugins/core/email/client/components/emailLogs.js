@@ -2,9 +2,9 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Components } from "@reactioncommerce/reaction-components";
 import { SortableTable } from "/imports/plugins/core/ui/client/components";
-import { Jobs } from "/lib/collections";
+import { Jobs } from "/imports/utils/jobs";
 import { i18next } from "/client/api";
-
+import EmailTableColumn from "./emailTableColumn";
 
 class EmailLogs extends Component {
   renderEmailsTable() {
@@ -34,7 +34,7 @@ class EmailLogs extends Component {
         accessor: field,
         Header: i18next.t(`admin.logs.headers.${field}`),
         Cell: (row) => (
-          <Components.EmailTableColumn row={row} />
+          <EmailTableColumn row={row} />
         ),
         className: colClassName,
         width: colWidth,

@@ -16,8 +16,6 @@ export default function startup(context) {
   collectionIndex(Products, { createdAt: 1 }, { name: "c2_createdAt" });
   collectionIndex(Products, { handle: 1 }, { name: "c2_handle" });
   collectionIndex(Products, { hashtags: 1 }, { name: "c2_hashtags" });
-  collectionIndex(Products, { isDeleted: 1 }, { name: "c2_isDeleted" });
-  collectionIndex(Products, { isVisible: 1 }, { name: "c2_isVisible" });
   collectionIndex(Products, { shopId: 1 }, { name: "c2_shopId" });
   collectionIndex(Products, { "workflow.status": 1 }, { name: "c2_workflow.status" });
 }

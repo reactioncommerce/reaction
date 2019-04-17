@@ -1,11 +1,10 @@
 import _ from "lodash";
-import Logger from "@reactioncommerce/logger";
 import { Meteor } from "meteor/meteor";
 import { Accounts as MeteorAccounts } from "meteor/accounts-base";
 import { check } from "meteor/check";
-import { SSR } from "meteor/meteorhacks:ssr";
 import { Accounts, Shops } from "/lib/collections";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
+import getGraphQLContextInMeteorMethod from "/imports/plugins/core/graphql/server/getGraphQLContextInMeteorMethod";
 
 /**
  * @name sendWelcomeEmail
@@ -29,15 +28,12 @@ export default function sendWelcomeEmail(shopId, userId, token) {
 
   const shop = Shops.findOne({ _id: shopId });
 
-  // Get shop logo, if available. If not, use default logo from file-system
-  const emailLogo = Reaction.Email.getShopLogo(shop);
   const copyrightDate = new Date().getFullYear();
   const user = Meteor.user();
   const dataForEmail = {
     // Shop Data
     shop,
     contactEmail: shop.emails[0].address,
-    emailLogo,
     copyrightDate,
     legalName: _.get(shop, "addressBook[0].company"),
     physicalAddress: {
@@ -71,26 +67,14 @@ export default function sendWelcomeEmail(shopId, userId, token) {
   dataForEmail.verificationUrl = MeteorAccounts.urls.verifyEmail(token);
 
   const userEmail = account.emails[0].address;
-  let shopEmail;
-  // provide some defaults for missing shop email.
-  if (!shop.emails) {
-    shopEmail = `${shop.name}@localhost`;
-    Logger.debug(`Shop email address not configured. Using ${shopEmail}`);
-  } else {
-    shopEmail = shop.emails[0].address;
-  }
 
-  const tpl = "accounts/sendWelcomeEmail";
-  const subject = "accounts/sendWelcomeEmail/subject";
-  SSR.compileTemplate(tpl, Reaction.Email.getTemplate(tpl));
-  SSR.compileTemplate(subject, Reaction.Email.getSubject(tpl));
-
-  Reaction.Email.send({
-    to: userEmail,
-    from: `${shop.name} <${shopEmail}>`,
-    subject: SSR.render(subject, dataForEmail),
-    html: SSR.render(tpl, dataForEmail)
-  });
+  const context = Promise.await(getGraphQLContextInMeteorMethod(Reaction.getUserId()));
+  Promise.await(context.mutations.sendEmail(context, {
+    data: dataForEmail,
+    fromShop: shop,
+    templateName: "accounts/sendWelcomeEmail",
+    to: userEmail
+  }));
 
   return true;
 }
