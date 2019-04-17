@@ -47,6 +47,6 @@
 [submodule "imports/plugins/custom/reaction-plugin-shippable-inventory"]
 	path = imports/plugins/custom/reaction-plugin-shippable-inventory
 	url = git@github.com:sportsdirect/reaction-plugin-shippable-inventory.git
-[submodule "imports/plugins/custom/imports/plugins/custom/reaction-plugin-import-order-status"]
-	path = imports/plugins/custom/imports/plugins/custom/reaction-plugin-import-order-status
+[submodule "imports/plugins/custom/reaction-plugin-import-order-status"]
+	path = imports/plugins/custom/reaction-plugin-import-order-status
 	url = git@github.com:sportsdirect/reaction-plugin-import-order-status.git
