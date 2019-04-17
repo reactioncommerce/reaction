@@ -2,6 +2,7 @@ import addressBookRemove from "./addressBookRemove";
 import addressBookUpdate from "./addressBookUpdate";
 import addUserPermissions from "./addUserPermissions";
 import createFallbackLoginToken from "./createFallbackLoginToken";
+import customizeLoginErrorMessage from "./customizeLoginErrorMessage";
 import getUserId from "./getUserId";
 import groupMethods from "./group";
 import inviteShopMember from "./inviteShopMember";
@@ -34,6 +35,7 @@ export default {
   "accounts/addressBookUpdate": addressBookUpdate,
   "accounts/addUserPermissions": addUserPermissions,
   "accounts/createFallbackLoginToken": createFallbackLoginToken,
+  "accounts/customizeLoginErrorMessage": customizeLoginErrorMessage,
   "accounts/inviteShopMember": inviteShopMember,
   "accounts/inviteShopOwner": inviteShopOwner,
   "accounts/removeEmailAddress": removeEmailAddress,
