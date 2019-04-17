@@ -2,14 +2,17 @@ import { compose, withProps } from "recompose";
 import { Meteor } from "meteor/meteor";
 import { Accounts } from "meteor/accounts-base";
 import { Roles } from "meteor/alanning:roles";
-import { Session } from "meteor/session";
 import { registerComponent, composeWithTracker, withCurrentAccount } from "@reactioncommerce/reaction-components";
 import { i18nextDep, i18next, Reaction, Logger } from "/client/api";
 import ReactionError from "@reactioncommerce/reaction-error";
-import { Tags } from "/lib/collections";
 import { getUserAvatar } from "/imports/plugins/core/accounts/client/helpers/helpers";
 import MainDropdown from "../components/mainDropdown";
 
+/**
+ * @summary Returns the display name for a user
+ * @param {Object} [displayUser] The user object. Defaults to logged in user.
+ * @return {String} Display name for a user
+ */
 function displayName(displayUser) {
   i18nextDep.depend();
 
@@ -33,10 +36,15 @@ function displayName(displayUser) {
       return i18next.t("accountsUI.guest", { defaultValue: "Guest" });
     }
   }
+
+  return null;
 }
 
+/**
+ * @summary get shortcuts with audience permissions based on user roles
+ * @returns {Object} Object with `provides`, `enabled`, and `audience` fields
+ */
 function getAdminShortcutIcons() {
-  // get shortcuts with audience permissions based on user roles
   const roles = Roles.getRolesForUser(Reaction.getUserId(), Reaction.getShopId());
 
   return {
@@ -46,11 +54,17 @@ function getAdminShortcutIcons() {
   };
 }
 
+/**
+ * @summary Selection change handler
+ * @param {Event} event Event
+ * @param {String} value New selected value
+ * @return {undefined}
+ */
 function handleChange(event, value) {
   event.preventDefault();
 
   if (value === "logout") {
-    return Meteor.logout((error) => {
+    Meteor.logout((error) => {
       if (error) {
         Logger.error(error, "Failed to logout.");
       }
@@ -61,21 +75,11 @@ function handleChange(event, value) {
       // for any new user who uses the same browser, temporarily, until the app is refreshed. This fixes that issue.
       Reaction.setShopId(Reaction.getPrimaryShopId());
     });
-  }
-
-  if (value.name === "createProduct") {
+  } else if (value.name === "createProduct") {
     Meteor.call("products/createProduct", (error, productId) => {
-      let currentTag;
-      let currentTagId;
-
       if (error) {
         throw new ReactionError("create-product-error", error);
       } else if (productId) {
-        currentTagId = Session.get("currentTag");
-        currentTag = Tags.findOne(currentTagId);
-        if (currentTag) {
-          Meteor.call("products/updateProductTags", productId, currentTag.name, currentTagId);
-        }
         // go to new product
         Reaction.Router.go("product", {
           handle: productId
@@ -83,10 +87,10 @@ function handleChange(event, value) {
       }
     });
   } else if (value.name !== "account/profile") {
-    return Reaction.showActionView(value);
+    Reaction.showActionView(value);
   } else if (value.route || value.name) {
     const route = value.name || value.route;
-    return Reaction.Router.go(route);
+    Reaction.Router.go(route);
   }
 }
 
