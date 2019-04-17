@@ -28,7 +28,7 @@ const deleteNavigationItemMutation = gql`
 
 const publishNavigationChangesMutation = gql`
   mutation publishNavigationChangesMutation($input: PublishNavigationChangesInput!) {
-    publishNavigationChanges(input: $input) {mon
+    publishNavigationChanges(input: $input) {
       navigationTree {
         ...NavigationTreeWith10Levels
       }
