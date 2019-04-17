@@ -1,45 +1,7 @@
 import _ from "lodash";
-import Logger from "@reactioncommerce/logger";
-import { Shops } from "/lib/collections";
-import Reaction from "/imports/plugins/core/core/server/Reaction";
+import { xformOrderItems } from "@reactioncommerce/reaction-graphql-xforms/order";
 import formatMoney from "/imports/utils/formatMoney";
-import { Media } from "/imports/plugins/core/files/server";
-import getGraphQLContextInMeteorMethod from "/imports/plugins/core/graphql/server/getGraphQLContextInMeteorMethod";
 import { getPaymentMethodConfigByName } from "/imports/plugins/core/payments/server/no-meteor/registration";
-
-/**
- * @name getPrimaryMediaForItem
- * @method
- * @summary Gets the FileRecord for the primary media item associated with the variant or product
- *   for the given item. This is similar to a function in /lib/api/helpers, but that one uses
- *   Media.findOneLocal, which is only for browser code.
- * @param {Object} item Must have `productId` and/or `variantId` set to get back a result.
- * @return {FileRecord|null} The primary media file record
- * @ignore
- */
-async function getPrimaryMediaForItem({ productId, variantId } = {}) {
-  let result;
-
-  if (variantId) {
-    result = await Media.findOne(
-      {
-        "metadata.variantId": variantId
-      },
-      { sort: { "metadata.priority": 1, "uploadedAt": 1 } }
-    );
-  }
-
-  if (!result && productId) {
-    result = await Media.findOne(
-      {
-        "metadata.productId": productId
-      },
-      { sort: { "metadata.priority": 1, "uploadedAt": 1 } }
-    );
-  }
-
-  return result || null;
-}
 
 /**
  * @name formatDateForEmail
@@ -62,20 +24,18 @@ function formatDateForEmail(date) {
 }
 
 /**
- * @summary Sends an email about an order.
- * @param {Object} order - The order document
- * @param {String} [action] - The action triggering the email
- * @returns {Boolean} True if sent; else false
+ * @summary Builds data for rendering order emails
+ * @param {Object} context - App context
+ * @param {Object} input - Necessary input
+ * @param {Object} input.order - The order document
+ * @returns {Object} Data object to use when rendering email templates
  */
-export default function sendOrderEmail(order, action) {
-  // anonymous account orders without emails.
-  if (!order.email) {
-    Logger.info("No order email found. No notification sent.");
-    return false;
-  }
+export default async function getDataForOrderEmail(context, { order }) {
+  const { collections, getAbsoluteUrl } = context;
+  const { Shops } = collections;
 
   // Get Shop information
-  const shop = Shops.findOne({ _id: order.shopId });
+  const shop = await Shops.findOne({ _id: order.shopId });
 
   // TODO need to make this fully support multiple fulfillment groups. Now it's just collapsing into one
   const amount = order.shipping.reduce((sum, group) => sum + group.invoice.total, 0);
@@ -115,14 +75,13 @@ export default function sendOrderEmail(order, action) {
 
   const refunds = [];
 
-  const context = Promise.await(getGraphQLContextInMeteorMethod(null));
-
   if (Array.isArray(order.payments)) {
-    for (const payment of order.payments) {
-      const shopRefunds = Promise.await(getPaymentMethodConfigByName(payment.name).functions.listRefunds(context, payment));
+    const promises = order.payments.map(async (payment) => {
+      const shopRefunds = await getPaymentMethodConfigByName(payment.name).functions.listRefunds(context, payment);
       const shopRefundsWithPaymentId = shopRefunds.map((shopRefund) => ({ ...shopRefund, paymentId: payment._id }));
       refunds.push(...shopRefundsWithPaymentId);
-    }
+    });
+    await Promise.all(promises);
   }
 
   const refundTotal = refunds.reduce((acc, refund) => acc + refund.amount, 0);
@@ -135,51 +94,50 @@ export default function sendOrderEmail(order, action) {
   // Combine same products into single "product" for display purposes
   const combinedItems = [];
 
+  // Transform all order items to add images, etc.
+  const adjustedOrderGroups = await Promise.all(order.shipping.map(async (group) => {
+    let items = await xformOrderItems(context, group.items);
+
+    items = items.map((item) => ({
+      ...item,
+      placeholderImage: getAbsoluteUrl("/resources/placeholder.gif"),
+      price: {
+        ...item.price,
+        // Add displayAmount to match user currency settings
+        displayAmount: formatMoney(item.price.amount * userCurrencyExchangeRate, userCurrency)
+      },
+      // These next two are for backward compatibility with existing email templates.
+      // New templates should use `imageURLs` instead.
+      productImage: item.imageURLs && item.imageURLs.large,
+      variantImage: item.imageURLs && item.imageURLs.large
+    }));
+
+    return { ...group, items };
+  }));
+
   // Loop through all items in the order. The items are split into individual items
-  const orderItems = order.shipping.reduce((list, group) => [...list, ...group.items], []);
+  const orderItems = adjustedOrderGroups.reduce((list, group) => [...list, ...group.items], []);
   for (const orderItem of orderItems) {
     // Find an existing item in the combinedItems array
     const foundItem = combinedItems.find((combinedItem) => combinedItem.variantId === orderItem.variantId);
 
     // Increment the quantity count for the duplicate product variants
     if (foundItem) {
-      foundItem.quantity += 1;
+      foundItem.quantity += orderItem.quantity;
     } else {
       // Otherwise push the unique item into the combinedItems array
-
-      // Add displayAmount to match user currency settings
-      orderItem.price.displayAmount = formatMoney(orderItem.price.amount * userCurrencyExchangeRate, userCurrency);
-
       combinedItems.push(orderItem);
-
-      // Placeholder image if there is no product image
-      orderItem.placeholderImage = `${Reaction.absoluteUrl()}resources/placeholder.gif`;
-
-      // variant image
-      const variantImage = Promise.await(getPrimaryMediaForItem({
-        productId: orderItem.productId,
-        variantId: orderItem.variantId
-      }));
-      if (variantImage) {
-        orderItem.variantImage = variantImage.url({ absolute: true, store: "large" });
-      }
-
-      // find a default image
-      const productImage = Promise.await(getPrimaryMediaForItem({ productId: orderItem.productId }));
-      if (productImage) {
-        orderItem.productImage = productImage.url({ absolute: true, store: "large" });
-      }
     }
   }
 
   const copyrightDate = new Date().getFullYear();
 
   // Merge data into single object to pass to email template
-  const dataForEmail = {
+  return {
     // Shop Data
     shop,
     contactEmail: shop.emails[0].address,
-    homepage: Reaction.absoluteUrl(),
+    homepage: getAbsoluteUrl("/"),
     copyrightDate,
     legalName: _.get(shop, "addressBook[0].company"),
     physicalAddress: {
@@ -193,22 +151,25 @@ export default function sendOrderEmail(order, action) {
       display: true,
       facebook: {
         display: true,
-        icon: `${Reaction.absoluteUrl()}resources/email-templates/facebook-icon.png`,
+        icon: getAbsoluteUrl("/resources/email-templates/facebook-icon.png"),
         link: "https://www.facebook.com"
       },
       googlePlus: {
         display: true,
-        icon: `${Reaction.absoluteUrl()}resources/email-templates/google-plus-icon.png`,
+        icon: getAbsoluteUrl("/resources/email-templates/google-plus-icon.png"),
         link: "https://plus.google.com"
       },
       twitter: {
         display: true,
-        icon: `${Reaction.absoluteUrl()}resources/email-templates/twitter-icon.png`,
+        icon: getAbsoluteUrl("/resources/email-templates/twitter-icon.png"),
         link: "https://www.twitter.com"
       }
     },
     // Order Data
-    order,
+    order: {
+      ...order,
+      shipping: adjustedOrderGroups
+    },
     billing: {
       address: billingAddressForEmail,
       payments: (order.payments || []).map((payment) => ({
@@ -233,28 +194,9 @@ export default function sendOrderEmail(order, action) {
     orderDate: formatDateForEmail(order.createdAt),
     orderUrl: `cart/completed?_id=${order.cartId}`,
     shipping: {
-      tracking,
+      address: shippingAddressForEmail,
       carrier,
-      address: shippingAddressForEmail
+      tracking
     }
   };
-
-  Logger.debug(`sendOrderEmail status: ${order.workflow.status}`);
-
-  // handle missing root shop email
-  if (!shop.emails[0].address) {
-    shop.emails[0].address = "no-reply@reactioncommerce.com";
-    Logger.warn("No shop email configured. Using no-reply to send mail");
-  }
-
-  const to = order.email;
-
-  Promise.await(context.mutations.sendOrderEmail(context, {
-    action,
-    dataForEmail,
-    fromShop: shop,
-    to
-  }));
-
-  return true;
 }
