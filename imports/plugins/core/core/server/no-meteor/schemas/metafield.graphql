@@ -1,19 +1,41 @@
 "User defined attributes. You can include only `key` and use these like tags, or also include a `value`."
 input MetafieldInput {
+  "Field description"
   description: String
+
+  "Field key"
   key: String!
+
+  "Field namespace"
   namespace: String
+
+  "Field scope"
   scope: String
+
+  "Field value"
   value: String
+
+  "Field value type"
   valueType: String
 }
 
 "User defined attributes"
 type Metafield {
+  "Field description"
   description: String
+
+  "Field key"
   key: String
+
+  "Field namespace"
   namespace: String
+
+  "Field scope"
   scope: String
+
+  "Field value"
   value: String
+
+  "Field value type"
   valueType: String
 }

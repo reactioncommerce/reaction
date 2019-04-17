@@ -15,12 +15,12 @@ MeteorAccounts.urls.enrollAccount = function (token) {
  * @memberof Accounts/Methods
  * @method
  * @private
- * @param  {Object} options - shop, currentUserName, token, emailLogo, name
+ * @param  {Object} options - shop, currentUserName, token, name
  * @return {Object} data - primaryShop, shop, contactEmail, homepage,
- * emailLogo, legalName, physicalAddress, shopName, socialLinks, user, invitedUserName, url
+ * legalName, physicalAddress, shopName, socialLinks, user, invitedUserName, url
  */
 export default function getDataForEmail(options) {
-  const { shop, currentUserName, token, emailLogo, name, url } = options;
+  const { shop, currentUserName, token, name, url } = options;
   const primaryShop = Shops.findOne(Reaction.getPrimaryShopId());
   const copyrightDate = new Date().getFullYear();
 
@@ -36,7 +36,6 @@ export default function getDataForEmail(options) {
     shop, // Shop Data
     contactEmail: _.get(shop, "emails[0].address"),
     homepage: Reaction.absoluteUrl(),
-    emailLogo,
     copyrightDate,
     legalName: _.get(shop, "addressBook[0].company"),
     physicalAddress: {

@@ -51,7 +51,7 @@ function ShopLogoWithData({ shopId, linkTo, size }) {
 
 ShopLogoWithData.propTypes = {
   linkTo: PropTypes.string,
-  shopId: PropTypes.string.length,
+  shopId: PropTypes.string,
   size: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
 };
 

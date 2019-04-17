@@ -1,9 +1,9 @@
 import { check } from "meteor/check";
 import { Reaction } from "/lib/api";
 import ReactionError from "@reactioncommerce/reaction-error";
-import { Jobs, Packages } from "/lib/collections";
+import { Packages } from "/lib/collections";
 import * as Schemas from "/lib/collections/schemas";
-import { Job } from "/imports/plugins/core/job-collection/lib";
+import { Job, Jobs } from "/imports/utils/jobs";
 
 /**
  * @name shop/updateShopExternalServices
