@@ -1,3 +1,4 @@
+const DEFAULT_LIMIT = 20;
 
 /**
  * @name getOffsetBasedPaginatedFromAggregation
@@ -13,8 +14,8 @@
  */
 export default async function getOffsetBasedPaginatedResponseFromAggregation(aggregationOptions, args) {
   const { collection, pipeline } = aggregationOptions;
-  const limit = args.limit || 20;
-  const page = args.page || 0;
+  const limit = args.limit || DEFAULT_LIMIT;
+  const page = Math.max(args.page, 0);
   const skip = page * limit;
 
   // Apply limit and skip
@@ -35,13 +36,13 @@ export default async function getOffsetBasedPaginatedResponseFromAggregation(agg
 
   const { nodes, pageInfo } = aggregationResult[0];
   const { totalCount } = pageInfo[0];
-  const nodeCount = (Array.isArray(nodes) && nodes.length) || 0;
+  const totalPageCount = Math.ceil(totalCount / limit);
 
   return {
     nodes,
     pageInfo: {
-      hasNextPage: (page + 1) * limit < totalCount,
-      hasPreviousPage: page > 0 && nodeCount,
+      hasNextPage: page >= 0 && (page + 1) < totalPageCount,
+      hasPreviousPage: page > 0 && page < totalPageCount,
       startCursor: (nodes.length && nodes[0]._id) || null,
       endCursor: (nodes.length && nodes[nodes.length - 1]._id) || null
     },
