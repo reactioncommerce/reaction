@@ -67,7 +67,7 @@ class AuthContainer extends Component {
     if (this.props.currentView === "loginFormSignInView") {
       Meteor.loginWithPassword(username, pword, (error) => {
         if (error) {
-          Meteor.call("accounts/customizeLoginErrorMessage", username, error, (_, customError) => {
+          Meteor.call("accounts/customizeLoginErrorMessage", username, error, (__, customError) => {
             this.setState({
               isLoading: false,
               formMessages: {
