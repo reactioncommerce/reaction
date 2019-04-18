@@ -13,6 +13,24 @@ enum SocialNetwork {
   twitter
 }
 
+"The list of currently supported top level Catalog props on which catalog items can be filtered."
+enum CatalogFilterName {
+  "isDeleted"
+  isDeleted
+
+  "isVisible"
+  isVisible
+
+  "isLowQuantity"
+  isLowQuantity
+
+  "isSoldOut"
+  isSoldOut
+
+  "isBackorder"
+  isBackorder
+}
+
 "Represents the minimum and maximum price of a product, among all its variants"
 type PriceRange {
   "The price, in shop currency, of the most expensive possible variant with the most expensive possible option"
@@ -27,13 +45,16 @@ type PriceRange {
   range: String!
 }
 
-"Represents a filter to be applied to the Catalog collection"
+"Represents a name of a filter to be applied to the Catalog collection"
 input CatalogFilter {
-  "The name of the filter",
-  name: String!
+  """
+  The name of the filter. Currently supported top level proudct props include: 
+  isDeleted, isVisible, isLowQuantity, isSoldOut, isBackorder
+  """
+  name: CatalogFilterName!
 
-  "The value of the filter"
-  value: String!
+  "The Boolean value of the filter"
+  value: Boolean!
 }
 
 "The product price or price range for a specific currency"
@@ -536,9 +557,6 @@ extend type Query {
 
     "Optionally provide a list of tag IDs to further filter the item list"
     tagIds: [ID],
-
-    "Optionally provide a flag to filter out sold out products"
-    isSoldOut: Boolean,
 
     "Filters to be applied to the Catalog collection"
     filters: [CatalogFilter],
