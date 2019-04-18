@@ -1,3 +1,5 @@
+const DEFAULT_LIMIT = 20;
+
 /**
  * @name getOffsetBasedPaginatedResponse
  * @method
@@ -10,8 +12,8 @@
  */
 export default async function getOffsetBasedPaginatedResponse(mongoCursor, args) {
   const { sortOrder } = args;
-  const limit = args.limit || 20;
-  const page = args.page || 0;
+  const limit = args.limit || DEFAULT_LIMIT;
+  const page = Math.max(args.page, 0);
   const skip = page * limit;
   let sortBy;
 
@@ -24,6 +26,10 @@ export default async function getOffsetBasedPaginatedResponse(mongoCursor, args)
     sortBy = args.sortBy; // eslint-disable-line prefer-destructuring
   }
 
+  // Count before applying filters
+  const totalCount = await mongoCursor.clone().count();
+
+  // Apply sorting and pagination
   mongoCursor
     .limit(limit)
     .skip(skip)
@@ -31,14 +37,15 @@ export default async function getOffsetBasedPaginatedResponse(mongoCursor, args)
       [sortBy]: sortOrder === "desc" ? -1 : 1
     });
 
-  const totalCount = await mongoCursor.clone().count();
+  // Get the desired results
   const nodes = await mongoCursor.toArray();
+  const totalPageCount = Math.ceil(totalCount / limit);
 
   return {
     nodes,
     pageInfo: {
-      hasNextPage: (page + 1) * limit < totalCount,
-      hasPreviousPage: page > 0 && totalCount,
+      hasNextPage: page >= 0 && (page + 1) < totalPageCount,
+      hasPreviousPage: page > 0 && page < totalPageCount,
       startCursor: (nodes.length && nodes[0]._id) || null,
       endCursor: (nodes.length && nodes[nodes.length - 1]._id) || null
     },
