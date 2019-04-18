@@ -3,7 +3,7 @@ import Logger from "@reactioncommerce/logger";
 import rawCollections from "/imports/collections/rawCollections";
 
 const {
-  Orders
+  Catalog
 } = rawCollections;
 
 /**
@@ -12,14 +12,14 @@ const {
  * indexes.
  */
 Migrations.add({
-  version: 61,
+  version: 62,
   up() {
     try {
-      Orders.dropIndex("c2_items.$.productId");
-      Orders.dropIndex("c2_items.$.variantId");
+      Catalog.dropIndex("createdAt_1");
+      Catalog.dropIndex("updatedAt_1");
     } catch (error) {
       // This may fail if the index doesn't exist, which is what we want anyway
-      Logger.warn(error, "Caught error from dropIndex calls in migration 61");
+      Logger.warn(error, "Caught error from dropIndex calls in migration 62");
     }
   }
 });
