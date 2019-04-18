@@ -19,7 +19,7 @@ const DEFAULT_LIMIT = 20;
  * @param {String} positionFieldName A field with this name will be added to each document.
  *   The value will be a number indicating the document's position in the join array or
  *   null if it isn't in the array.
- * @param {String} joinCollectionName The name of the collection to join, which
+ * @param {String} joinCollection The collection instance, which
  *   contains the documents that will be returned.
  * @param {String} joinFieldPath The field name or path in `joinCollection` that is referenced
  *   by the items in the array at `arrayFieldPath`
@@ -40,7 +40,6 @@ export default async function arrayJoinPlusRemainingQuery({
   collection,
   connectionArgs,
   joinCollection,
-  joinCollectionName,
   joinFieldPath,
   joinSelector,
   joinSortOrder,
@@ -65,7 +64,7 @@ export default async function arrayJoinPlusRemainingQuery({
     }
   });
 
-  if (!doc) throw new ReactionError("not-found", "Document not found");
+  if (!doc) throw new ReactionError("not-found", `${collection.collectionName} not found`);
 
   // Enforce a `first: 20` limit if no user-supplied limit, using the DEFAULT_LIMIT
   const limit = first || last || DEFAULT_LIMIT;
@@ -74,6 +73,7 @@ export default async function arrayJoinPlusRemainingQuery({
   let hasNextPage = false;
   let hasPreviousPage = false;
 
+  const joinCollectionName = joinCollection.collectionName;
   const cursor = joinCollection.find(joinSelector);
 
   // First get the list of documents from joinCollection explicitly listed in the array field.

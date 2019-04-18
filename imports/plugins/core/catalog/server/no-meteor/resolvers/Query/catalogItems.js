@@ -23,7 +23,7 @@ export default async function catalogItems(_, args, context) {
 
   if (connectionArgs.sortBy === "featured") {
     if (!tagIds || tagIds.length === 0) {
-      throw new ReactionError("not-found", "A tag ID is required.");
+      throw new ReactionError("not-found", "A tag ID is required for featured sort");
     }
     if (tagIds.length > 1) {
       throw new ReactionError("invalid-parameter", "Multiple tags cannot be sorted by featured. Only the first tag will be returned.");

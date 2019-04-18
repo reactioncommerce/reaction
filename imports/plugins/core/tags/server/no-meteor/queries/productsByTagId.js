@@ -27,7 +27,6 @@ export default async function productsByTagId(context, params) {
     collection: Tags,
     connectionArgs,
     joinCollection: Products,
-    joinCollectionName: "Products",
     joinFieldPath: "_id",
     joinSelector: { hashtags: tagId, shopId },
     joinSortOrder: "asc",

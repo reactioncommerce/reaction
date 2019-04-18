@@ -44,7 +44,6 @@ export default async function catalogItemsAggregate(context, {
     collection: Tags,
     connectionArgs,
     joinCollection: Catalog,
-    joinCollectionName: "Catalog",
     joinFieldPath: "product._id",
     joinSelector: selector,
     joinSortOrder: "asc",
