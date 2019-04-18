@@ -37,11 +37,26 @@ export default async function catalogItems(_, args, context) {
     });
   }
 
+  // minPrice is a sorting term that does not necessarily match the field path by which we truly want to sort.
+  // We allow plugins to return the true field name, or fallback to the default pricing field.
   if (connectionArgs.sortBy === "minPrice") {
-    if (typeof connectionArgs.sortByPriceCurrencyCode !== "string") {
-      throw new Error("sortByPriceCurrencyCode is required when sorting by minPrice");
+    let realSortByField;
+
+    // Allow external pricing plugins to handle this if registered. We'll use the
+    // first value returned that is a string.
+    for (const func of context.getFunctionsOfType("getMinPriceSortByFieldPath")) {
+      realSortByField = await func(context, { connectionArgs }); // eslint-disable-line no-await-in-loop
+      if (typeof realSortByField === "string") break;
     }
-    connectionArgs.sortBy = `product.pricing.${connectionArgs.sortByPriceCurrencyCode}.minPrice`;
+
+    if (!realSortByField) {
+      if (typeof connectionArgs.sortByPriceCurrencyCode !== "string") {
+        throw new Error("sortByPriceCurrencyCode is required when sorting by minPrice");
+      }
+      realSortByField = `product.pricing.${connectionArgs.sortByPriceCurrencyCode}.minPrice`;
+    }
+
+    connectionArgs.sortBy = realSortByField;
   }
 
   const query = await context.queries.catalogItems(context, {
