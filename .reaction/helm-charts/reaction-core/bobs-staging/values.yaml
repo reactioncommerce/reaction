@@ -80,6 +80,8 @@ app:
         value: "false"
     -   key: LOYALTY_PLUGIN_BATCH_CONSUME_SIZE
         value: "10000"
+    -   key: METRICS_ENABLED
+        value: true
     -   key: ORDER_EXPORT_RADIAL_URL
         value: https://tst02-epapi-na.gsipartners.com/v1.0/OOMF/stores
     -   key: PRICING_CONSUMER_ENABLED
