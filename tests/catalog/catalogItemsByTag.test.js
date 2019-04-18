@@ -1,5 +1,5 @@
 import { encodeTagOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/tag";
-import { encodeCatalogProductOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/catalogProduct";
+import { decodeCatalogProductOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/catalogProduct";
 import TestApp from "../TestApp";
 import Factory from "/imports/test-utils/helpers/factory";
 import CatalogItemQuery from "./CatalogItemQuery.graphql";
@@ -20,6 +20,7 @@ const mockTagWithoutFeatured = Factory.Tag.makeOne({
 const mockTagWithNoProducts = Factory.Tag.makeOne();
 
 const mockCatalogItemsWithFeatured = Factory.Catalog.makeMany(30, {
+  _id: (iterator) => (iterator + 100).toString(),
   product: (iterator) => Factory.CatalogProduct.makeOne({
     _id: (iterator + 100).toString(),
     isDeleted: false,
@@ -89,14 +90,14 @@ test("get items for a tag sorted by featured - in order of featuredProductIds", 
     expect(error).toBeUndefined();
     return;
   }
-  expect(result.catalogItems.totalCount).toEqual(30);
-  expect(result.catalogItems.pageInfo.hasNextPage).toEqual(true);
-  expect(result.catalogItems.pageInfo.hasPreviousPage).toEqual(false);
-  expect(result.catalogItems.edges[0].node.product._id).toEqual(encodeCatalogProductOpaqueId("110"));
-  expect(result.catalogItems.edges[1].node.product._id).toEqual(encodeCatalogProductOpaqueId("111"));
-  expect(result.catalogItems.edges[2].node.product._id).toEqual(encodeCatalogProductOpaqueId("112"));
-  expect(result.catalogItems.edges[3].node.product._id).toEqual(encodeCatalogProductOpaqueId("113"));
-  expect(result.catalogItems.edges[4].node.product._id).toEqual(encodeCatalogProductOpaqueId("114"));
+  expect(result.catalogItems.totalCount).toBe(30);
+  expect(result.catalogItems.pageInfo.hasNextPage).toBe(true);
+  expect(result.catalogItems.pageInfo.hasPreviousPage).toBe(false);
+  expect(decodeCatalogProductOpaqueId(result.catalogItems.edges[0].node.product._id)).toBe("110");
+  expect(decodeCatalogProductOpaqueId(result.catalogItems.edges[1].node.product._id)).toBe("111");
+  expect(decodeCatalogProductOpaqueId(result.catalogItems.edges[2].node.product._id)).toBe("112");
+  expect(decodeCatalogProductOpaqueId(result.catalogItems.edges[3].node.product._id)).toBe("113");
+  expect(decodeCatalogProductOpaqueId(result.catalogItems.edges[4].node.product._id)).toBe("114");
 });
 
 test("get items for a tag sorted by featured - return 20 items by default if no first or last are provided", async () => {
