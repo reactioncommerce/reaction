@@ -50,3 +50,6 @@
 [submodule "imports/plugins/custom/reaction-plugin-import-order-status"]
 	path = imports/plugins/custom/reaction-plugin-import-order-status
 	url = git@github.com:sportsdirect/reaction-plugin-import-order-status.git
+[submodule "imports/plugins/custom/reaction-plugin-email-templates"]
+	path = imports/plugins/custom/reaction-plugin-email-templates
+	url = https://github.com/sportsdirect/reaction-plugin-email-templates.git
