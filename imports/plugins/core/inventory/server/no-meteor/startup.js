@@ -1,7 +1,6 @@
 import updateCatalogProductInventoryStatus from "/imports/plugins/core/catalog/server/no-meteor/utils/updateCatalogProductInventoryStatus";
 import getVariantInventoryNotAvailableToSellQuantity from "./utils/getVariantInventoryNotAvailableToSellQuantity";
-import updateParentVariantsInventoryAvailableToSellQuantity from "./utils/updateParentVariantsInventoryAvailableToSellQuantity";
-import updateParentVariantsInventoryInStockQuantity from "./utils/updateParentVariantsInventoryInStockQuantity";
+import updateParentInventoryFields from "./utils/updateParentInventoryFields";
 
 /**
  * @summary Called on startup
@@ -218,10 +217,8 @@ export default function startup(context) {
         }
       );
 
-      // Update `inventoryAvailableToSell` on all parents of this variant / option
-      await updateParentVariantsInventoryAvailableToSellQuantity(doc, collections);
-      // Update `inventoryInStock` on all parents of this variant / option
-      await updateParentVariantsInventoryInStockQuantity(doc, collections);
+      // Update `inventoryInStock` and `inventoryAvailableToSell` on all parents of this variant / option
+      await updateParentInventoryFields(doc, collections);
 
       // Publish inventory to catalog
       await updateCatalogProductInventoryStatus(doc.ancestors[0], collections);

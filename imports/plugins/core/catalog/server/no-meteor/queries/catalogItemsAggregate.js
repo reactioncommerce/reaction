@@ -8,14 +8,14 @@ import arrayJoinPlusRemainingQuery from "/imports/utils/arrayJoinPlusRemainingQu
  * @summary Query the Catalog by shop IDs and/or a tag ID in featured product order
  * @param {Object} context - An object containing the per-request state
  * @param {Object} params - Request parameters
- * @param {Boolean} [params.isSoldOut] - Pass a boolean to filter by this value for isSoldOut
+ * @param {Object} [params.catalogBooleanFilters] - Additional filters object to add to the selector
  * @param {String[]} [params.shopIds] - Shop IDs to include
  * @param {String} params.tagId - Tag ID
  * @return {Promise<MongoCursor>} - A MongoDB cursor for the proper query
  */
 export default async function catalogItemsAggregate(context, {
   connectionArgs,
-  isSoldOut,
+  catalogBooleanFilters,
   shopIds,
   tagId
 } = {}) {
@@ -27,16 +27,12 @@ export default async function catalogItemsAggregate(context, {
   const selector = {
     "product.tagIds": tagId,
     "product.isDeleted": { $ne: true },
-    "product.isVisible": true
+    "product.isVisible": true,
+    ...catalogBooleanFilters
   };
 
   if (shopIds && shopIds.length > 0) {
     selector.shopId = { $in: shopIds };
-  }
-
-  // If isSoldOut filter is provided, add it to the query
-  if (typeof isSoldOut === "boolean") {
-    selector["product.isSoldOut"] = isSoldOut;
   }
 
   return arrayJoinPlusRemainingQuery({

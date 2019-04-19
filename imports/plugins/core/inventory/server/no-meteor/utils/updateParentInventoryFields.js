@@ -1,17 +1,19 @@
 import getTopLevelVariant from "/imports/plugins/core/catalog/server/no-meteor/utils/getTopLevelVariant";
-import getProductInventoryAvailableToSellQuantity from "/imports/plugins/core/inventory/server/no-meteor/utils/getProductInventoryAvailableToSellQuantity.js";
-import getVariantInventoryAvailableToSellQuantity from "/imports/plugins/core/inventory/server/no-meteor/utils/getVariantInventoryAvailableToSellQuantity";
+import getProductInventoryAvailableToSellQuantity from "./getProductInventoryAvailableToSellQuantity.js";
+import getProductInventoryInStockQuantity from "./getProductInventoryInStockQuantity";
+import getVariantInventoryAvailableToSellQuantity from "./getVariantInventoryAvailableToSellQuantity";
+import getVariantInventoryInStockQuantity from "./getVariantInventoryInStockQuantity";
 
 /**
  *
- * @method updateParentVariantsInventoryAvailableToSellQuantity
+ * @method updateParentInventoryFields
  * @summary Get the number of product variants that are currently reserved in an order.
  * This function can take any variant object.
  * @param {Object} item - A product item object, either from the cart or the products catalog
  * @param {Object} collections - Raw mongo collections.
- * @return {Promise<number>} Reserved variant quantity.
+ * @return {undefined}
  */
-export default async function updateParentVariantsInventoryAvailableToSellQuantity(item, collections) {
+export default async function updateParentInventoryFields(item, collections) {
   // Since either a cart item or a product catalog item can be provided, we need to determine
   // the parent based on different data
   // If this is a cart item, `productId` and `variantId` are fields on the object
@@ -32,6 +34,7 @@ export default async function updateParentVariantsInventoryAvailableToSellQuanti
   // If item is an option, update the quantity on its parent variant too
   if (topLevelVariant._id !== updateVariantId) {
     const variantInventoryAvailableToSellQuantity = await getVariantInventoryAvailableToSellQuantity(topLevelVariant, collections);
+    const variantInventoryInStockQuantity = await getVariantInventoryInStockQuantity(topLevelVariant, collections);
 
     await collections.Products.updateOne(
       {
@@ -39,7 +42,8 @@ export default async function updateParentVariantsInventoryAvailableToSellQuanti
       },
       {
         $set: {
-          inventoryAvailableToSell: variantInventoryAvailableToSellQuantity
+          inventoryAvailableToSell: variantInventoryAvailableToSellQuantity,
+          inventoryInStock: variantInventoryInStockQuantity
         }
       }
     );
@@ -47,6 +51,7 @@ export default async function updateParentVariantsInventoryAvailableToSellQuanti
 
   // Update the top level product to be the sum of all variant inventory numbers
   const productInventoryAvailableToSellQuantity = await getProductInventoryAvailableToSellQuantity(updateProductId, collections);
+  const productInventoryInStockQuantity = await getProductInventoryInStockQuantity(updateProductId, collections);
 
   await collections.Products.updateOne(
     {
@@ -54,7 +59,8 @@ export default async function updateParentVariantsInventoryAvailableToSellQuanti
     },
     {
       $set: {
-        inventoryAvailableToSell: productInventoryAvailableToSellQuantity
+        inventoryAvailableToSell: productInventoryAvailableToSellQuantity,
+        inventoryInStock: productInventoryInStockQuantity
       }
     }
   );
