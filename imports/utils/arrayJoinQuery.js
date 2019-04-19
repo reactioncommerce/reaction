@@ -29,10 +29,12 @@ export default async function arrayJoinQuery({
   },
   positionFieldName = "joinArrayPosition",
   joinCollectionName,
+  joinFieldPath = "_id",
   projection,
   selector
 }) {
   const dollarFieldPath = `$${arrayFieldPath}`;
+  const dollarJoinFieldPath = `$${joinFieldPath}`;
 
   const sort = sortOrder === "asc" ? 1 : -1;
 
@@ -131,14 +133,14 @@ export default async function arrayJoinQuery({
           {
             $match: {
               $expr: {
-                $in: ["$_id", "$$slicedArray"]
+                $in: [dollarJoinFieldPath, "$$slicedArray"]
               }
             }
           },
           {
             $addFields: {
               [positionFieldName]: {
-                $indexOfArray: ["$$fullArray", "$_id"]
+                $indexOfArray: ["$$fullArray", dollarJoinFieldPath]
               }
             }
           },

@@ -108,6 +108,7 @@ export default async function arrayJoinPlusRemainingQuery({
             sortOrder: joinSortOrder
           },
           joinCollectionName,
+          joinFieldPath,
           positionFieldName,
           projection,
           selector
@@ -157,6 +158,7 @@ export default async function arrayJoinPlusRemainingQuery({
             sortOrder: joinSortOrder
           },
           joinCollectionName,
+          joinFieldPath,
           positionFieldName,
           projection,
           selector
@@ -203,6 +205,7 @@ export default async function arrayJoinPlusRemainingQuery({
               sortOrder: joinSortOrder
             },
             joinCollectionName,
+            joinFieldPath,
             positionFieldName,
             projection,
             selector

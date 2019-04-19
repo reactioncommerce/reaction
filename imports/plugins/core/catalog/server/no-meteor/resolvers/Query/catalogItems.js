@@ -23,7 +23,7 @@ export default async function catalogItems(_, args, context) {
   const shopIds = opaqueShopIds && opaqueShopIds.map(decodeShopOpaqueId);
   const tagIds = opaqueTagIds && opaqueTagIds.map(decodeTagOpaqueId);
 
-  let catalogBooleanFilters = [];
+  let catalogBooleanFilters = {};
   if (Array.isArray(booleanFilters) && booleanFilters.length) {
     catalogBooleanFilters = await xformCatalogBooleanFilters(context, booleanFilters);
   }
