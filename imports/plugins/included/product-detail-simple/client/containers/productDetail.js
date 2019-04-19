@@ -81,7 +81,6 @@ const wrapComponent = (Comp) =>
  * @returns {undefined}
  */
 function composer(props, onData) {
-  const tagSub = Meteor.subscribe("Tags");
   const shopIdOrSlug = Reaction.Router.getParam("shopSlug");
   const productId = props.match.params.handle;
   const variantId = ReactionProduct.selectedVariantId();
@@ -91,7 +90,7 @@ function composer(props, onData) {
   if (productId) {
     productSub = Meteor.subscribe("Product", productId, shopIdOrSlug);
   }
-  if (productSub && productSub.ready() && tagSub.ready() && Reaction.Subscriptions.Cart && Reaction.Subscriptions.Cart.ready()) {
+  if (productSub && productSub.ready() && Reaction.Subscriptions.Cart && Reaction.Subscriptions.Cart.ready()) {
     const product = ReactionProduct.setProduct(productId, variantId);
     if (Reaction.hasPermission("createProduct")) {
       if (!Reaction.getActionView() && Reaction.isActionViewOpen() === true) {
@@ -107,6 +106,7 @@ function composer(props, onData) {
       let tags;
       const hashTags = product.hashtags || product.tagIds;
       if (_.isArray(hashTags)) {
+        Meteor.subscribe("Tags", hashTags);
         tags = Tags.find({ _id: { $in: hashTags } }).fetch();
       }
 

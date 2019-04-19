@@ -15,7 +15,7 @@ function ProductTagForm(props) {
   const { editable, product } = props;
 
   return (
-    <Card>
+    <Card style={{ overflow: "visible" }}>
       <CardHeader title={i18next.t("productDetail.tags")} />
       <CardContent>
         <Components.TagList

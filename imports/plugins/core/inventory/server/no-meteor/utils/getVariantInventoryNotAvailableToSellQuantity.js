@@ -10,7 +10,8 @@
 export default async function getVariantInventoryNotAvailableToSellQuantity(variant, collections) {
   // Find orders that are new or processing
   const orders = await collections.Orders.find({
-    "workflow.status": { $in: ["new", "coreOrderWorkflow/processing"] }
+    "workflow.status": { $in: ["new", "coreOrderWorkflow/processing"] },
+    "shipping.items.variantId": variant._id
   }).toArray();
 
   const reservedQuantity = orders.reduce((sum, order) => {
