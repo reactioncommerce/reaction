@@ -24,7 +24,7 @@ export default async function catalogItems(_, args, context) {
 
   let catalogBooleanFilters = [];
   if (Array.isArray(booleanFilters) && booleanFilters.length) {
-    catalogBooleanFilters = xformCatalogBooleanFilters(context, booleanFilters);
+    catalogBooleanFilters = await xformCatalogBooleanFilters(context, booleanFilters);
   }
 
   if (connectionArgs.sortBy === "featured") {

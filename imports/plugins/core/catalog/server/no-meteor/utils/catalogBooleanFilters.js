@@ -26,8 +26,11 @@ export default async function xformCatalogBooleanFilters(context, booleanFilters
 
   // Provide the opportunity for other plugins to add boolean filters
   for (const func of context.getFunctionsOfType("xformCatalogBooleanFilters")) {
-    const mongoFilter = await func(context, booleanFilters); // eslint-disable-line no-await-in-loop
-    if (mongoFilter) mongoFilters.push(mongoFilter);
+    const additionalMongoFilters = await func(context, booleanFilters); // eslint-disable-line no-await-in-loop
+    if (additionalMongoFilters) {
+      // Merge all filters
+      Array.prototype.push.apply(mongoFilters, additionalMongoFilters);
+    }
   }
 
   return {
