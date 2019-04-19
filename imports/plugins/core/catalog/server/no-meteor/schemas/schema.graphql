@@ -14,21 +14,12 @@ enum SocialNetwork {
 }
 
 "The list of currently supported top level Catalog props on which catalog items can be filtered."
-enum CatalogFilterName {
+enum CatalogBooleanFilterName {
   "isDeleted"
   isDeleted
 
   "isVisible"
   isVisible
-
-  "isLowQuantity"
-  isLowQuantity
-
-  "isSoldOut"
-  isSoldOut
-
-  "isBackorder"
-  isBackorder
 }
 
 "Represents the minimum and maximum price of a product, among all its variants"
@@ -45,15 +36,12 @@ type PriceRange {
   range: String!
 }
 
-"Represents a name of a filter to be applied to the Catalog collection"
-input CatalogFilter {
-  """
-  The name of the filter. Currently supported top level proudct props include: 
-  isDeleted, isVisible, isLowQuantity, isSoldOut, isBackorder
-  """
-  name: CatalogFilterName!
+"A filter to be applied to a Catalog query"
+input CatalogBooleanFilter {
+  "The name of the filter"
+  name: CatalogBooleanFilterName!
 
-  "The Boolean value of the filter"
+  "The filter value"
   value: Boolean!
 }
 
@@ -558,8 +546,8 @@ extend type Query {
     "Optionally provide a list of tag IDs to further filter the item list"
     tagIds: [ID],
 
-    "Filters to be applied to the Catalog collection"
-    filters: [CatalogFilter],
+    "Additional filters to apply"
+    booleanFilters: [CatalogBooleanFilter],
 
     after: ConnectionCursor,
     before: ConnectionCursor,

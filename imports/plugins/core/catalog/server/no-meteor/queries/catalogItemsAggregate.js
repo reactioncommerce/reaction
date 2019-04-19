@@ -11,7 +11,7 @@ import ReactionError from "@reactioncommerce/reaction-error";
  * @param {String} tagId - Tag ID
  * @return {Promise<MongoCursor>} - A MongoDB cursor for the proper query
  */
-export default async function catalogItemsAggregate(context, { shopIds, tagId, catalogFilters } = {}) {
+export default async function catalogItemsAggregate(context, { shopIds, tagId, catalogBooleanFilters } = {}) {
   const { collections } = context;
   const { Catalog, Tags } = collections;
 
@@ -25,7 +25,7 @@ export default async function catalogItemsAggregate(context, { shopIds, tagId, c
       "shopId": { $in: shopIds },
       "product.tagIds": tagId,
       "product.isDeleted": { $ne: true },
-      ...catalogFilters,
+      ...catalogBooleanFilters,
       "product.isVisible": true
     }
   };

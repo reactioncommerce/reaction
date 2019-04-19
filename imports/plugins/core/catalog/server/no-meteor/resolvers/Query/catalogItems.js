@@ -2,7 +2,7 @@ import { getPaginatedResponse, getPaginatedAggregateResponse } from "@reactionco
 import { decodeShopOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/shop";
 import { decodeTagOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/tag";
 import ReactionError from "@reactioncommerce/reaction-error";
-import xformCatalogFilters from "../../utils/catalogFilters";
+import xformCatalogBooleanFilters from "../../utils/catalogBooleanFilters";
 
 /**
  * @name "Query.catalogItems"
@@ -17,14 +17,14 @@ import xformCatalogFilters from "../../utils/catalogFilters";
  * @return {Promise<Object>} A CatalogItemConnection object
  */
 export default async function catalogItems(_, args, context) {
-  const { shopIds: opaqueShopIds, tagIds: opaqueTagIds, filters, ...connectionArgs } = args;
+  const { shopIds: opaqueShopIds, tagIds: opaqueTagIds, booleanFilters, ...connectionArgs } = args;
 
   const shopIds = opaqueShopIds && opaqueShopIds.map(decodeShopOpaqueId);
   const tagIds = opaqueTagIds && opaqueTagIds.map(decodeTagOpaqueId);
 
-  let catalogFilters = [];
-  if (filters && Array.isArray(filters) && filters.length) {
-    catalogFilters = xformCatalogFilters(filters);
+  let catalogBooleanFilters = [];
+  if (Array.isArray(booleanFilters) && booleanFilters.length) {
+    catalogBooleanFilters = xformCatalogBooleanFilters(context, booleanFilters);
   }
 
   if (connectionArgs.sortBy === "featured") {
@@ -38,7 +38,7 @@ export default async function catalogItems(_, args, context) {
     const aggregationParams = await context.queries.catalogItemsAggregate(context, {
       shopIds,
       tagId,
-      catalogFilters
+      catalogBooleanFilters
     });
     return getPaginatedAggregateResponse(aggregationParams, connectionArgs);
   }
@@ -53,7 +53,7 @@ export default async function catalogItems(_, args, context) {
   const query = await context.queries.catalogItems(context, {
     shopIds,
     tagIds,
-    catalogFilters
+    catalogBooleanFilters
   });
 
   return getPaginatedResponse(query, connectionArgs);
