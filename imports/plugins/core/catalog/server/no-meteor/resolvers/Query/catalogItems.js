@@ -2,6 +2,7 @@ import { getPaginatedResponse, getPaginatedAggregateResponse } from "@reactionco
 import { decodeShopOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/shop";
 import { decodeTagOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/tag";
 import ReactionError from "@reactioncommerce/reaction-error";
+import xformCatalogBooleanFilters from "../../utils/catalogBooleanFilters";
 
 /**
  * @name "Query.catalogItems"
@@ -16,10 +17,15 @@ import ReactionError from "@reactioncommerce/reaction-error";
  * @return {Promise<Object>} A CatalogItemConnection object
  */
 export default async function catalogItems(_, args, context) {
-  const { shopIds: opaqueShopIds, tagIds: opaqueTagIds, isSoldOut, ...connectionArgs } = args;
+  const { shopIds: opaqueShopIds, tagIds: opaqueTagIds, booleanFilters, ...connectionArgs } = args;
 
   const shopIds = opaqueShopIds && opaqueShopIds.map(decodeShopOpaqueId);
   const tagIds = opaqueTagIds && opaqueTagIds.map(decodeTagOpaqueId);
+
+  let catalogBooleanFilters = [];
+  if (Array.isArray(booleanFilters) && booleanFilters.length) {
+    catalogBooleanFilters = await xformCatalogBooleanFilters(context, booleanFilters);
+  }
 
   if (connectionArgs.sortBy === "featured") {
     if (!tagIds || tagIds.length === 0) {
@@ -30,9 +36,9 @@ export default async function catalogItems(_, args, context) {
     }
     const tagId = tagIds[0];
     const aggregationParams = await context.queries.catalogItemsAggregate(context, {
-      isSoldOut,
       shopIds,
-      tagId
+      tagId,
+      catalogBooleanFilters
     });
     return getPaginatedAggregateResponse(aggregationParams, connectionArgs);
   }
@@ -45,9 +51,9 @@ export default async function catalogItems(_, args, context) {
   }
 
   const query = await context.queries.catalogItems(context, {
-    isSoldOut,
     shopIds,
-    tagIds
+    tagIds,
+    catalogBooleanFilters
   });
 
   return getPaginatedResponse(query, connectionArgs);
