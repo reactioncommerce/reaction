@@ -27,9 +27,9 @@ app:
     -   key: ETCD_URL
         value: http://etcd-staging.bobs-test.io:2379
     -   key: GRAPHQL_INTROSPECTION_ENABLED
-        value: true
+        value: "true"
     -   key: GRAPHQL_PLAYGROUND_ENABLED
-        value: true
+        value: "true"
     -   key: HYDRA_ADMIN_URL
         value: http://hydra-hydra-admin-service:4445
     -   key: HYDRA_OAUTH2_INTROSPECT_URL
@@ -80,6 +80,8 @@ app:
         value: "false"
     -   key: LOYALTY_PLUGIN_BATCH_CONSUME_SIZE
         value: "10000"
+    -   key: METRICS_ENABLED
+        value: true
     -   key: ORDER_EXPORT_RADIAL_URL
         value: https://tst02-epapi-na.gsipartners.com/v1.0/OOMF/stores
     -   key: PRICING_CONSUMER_ENABLED
@@ -114,6 +116,8 @@ app:
         value: "1100151420184"
     -   key: TAXES_CONSUMER_ENABLED
         value: "false"
+    -   key: KAFKA_TOPIC_IMPORT_ORDER_STATUS_ORDERS
+        value: etl.import-order-status.status.json-gen1
         ## Configure resource requests and limits
         ## ref: http://kubernetes.io/docs/user-guide/compute-resources/
 resources:
