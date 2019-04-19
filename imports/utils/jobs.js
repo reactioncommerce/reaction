@@ -13,7 +13,9 @@ const Jobs = new JobCollection("Jobs", {
 });
 
 // Add an index to support the `status: "running"` lookups it does
-const { db } = MongoInternals.defaultRemoteCollectionDriver().mongo;
-collectionIndex(db.collection("Jobs"), { status: 1 });
+if (Meteor.isServer) {
+  const { db } = MongoInternals.defaultRemoteCollectionDriver().mongo;
+  collectionIndex(db.collection("Jobs"), { status: 1 });
+}
 
 export { Jobs, Job };
