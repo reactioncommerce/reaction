@@ -14,7 +14,7 @@ const DEFAULT_LIMIT = 20;
  *   where the value is an array of IDs from the joinCollection
  * @param {Object} collection A MongoDB Collection instance
  * @param {Object} connectionArgs Relay-compatible connection arguments.
- *   `before` and `after` are document IDs from `joinCollectionName`.
+ *   `before` and `after` are document IDs from `joinCollection`.
  *   `sortBy` and `sortOrder` are ignored.
  * @param {String} positionFieldName A field with this name will be added to each document.
  *   The value will be a number indicating the document's position in the join array or
@@ -73,7 +73,6 @@ export default async function arrayJoinPlusRemainingQuery({
   let hasNextPage = false;
   let hasPreviousPage = false;
 
-  const joinCollectionName = joinCollection.collectionName;
   const cursor = joinCollection.find(joinSelector);
 
   // First get the list of documents from joinCollection explicitly listed in the array field.
@@ -100,18 +99,17 @@ export default async function arrayJoinPlusRemainingQuery({
       const afterIndex = idList.indexOf(after);
       if (!after || afterIndex > -1) {
         nodes = await arrayJoinQuery({
-          arrayFieldPath,
-          collection,
           connectionArgs: {
             after,
             first: limit,
             sortOrder: joinSortOrder
           },
-          joinCollectionName,
+          joinArray: idList,
+          joinCollection,
           joinFieldPath,
+          joinSelector,
           positionFieldName,
-          projection,
-          selector
+          projection
         });
       } else {
         nodes = [];
@@ -150,18 +148,17 @@ export default async function arrayJoinPlusRemainingQuery({
       // We'll never need to add any additional docs to the results.
       if (beforeIndex > -1) {
         nodes = await arrayJoinQuery({
-          arrayFieldPath,
-          collection,
           connectionArgs: {
             before,
             last: limit,
             sortOrder: joinSortOrder
           },
-          joinCollectionName,
+          joinArray: idList,
+          joinCollection,
           joinFieldPath,
+          joinSelector,
           positionFieldName,
-          projection,
-          selector
+          projection
         });
 
         if (nodes.length) {
@@ -198,17 +195,16 @@ export default async function arrayJoinPlusRemainingQuery({
         // if we didn't get enough back.
         if (arrayCount > 0 && nodes.length < limit) {
           const referencedNodes = await arrayJoinQuery({
-            arrayFieldPath,
-            collection,
             connectionArgs: {
               last: limit - nodes.length,
               sortOrder: joinSortOrder
             },
-            joinCollectionName,
+            joinArray: idList,
+            joinCollection,
             joinFieldPath,
+            joinSelector,
             positionFieldName,
-            projection,
-            selector
+            projection
           });
 
           nodes = referencedNodes.concat(nodes);

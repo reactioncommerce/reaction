@@ -4,22 +4,19 @@ const DEFAULT_LIMIT = 20;
  * @summary Performs a MongoDB query where an array of IDs in one collection
  *   is used as the list and the list order, and the documents matching
  *   those IDs from another collection are returned.
- * @param {String} arrayFieldPath The field name or path in `collection`
- *   where the value is an array of IDs
- * @param {Object} collection A MongoDB Collection instance
  * @param {Object} connectionArgs Relay-compatible connection arguments.
- *   `before` and `after` are document IDs from `joinCollectionName`
- * @param {String} joinCollectionName The name of the collection to join, which
+ *   `before` and `after` are document IDs from `joinCollection`
+ * @param {Array} joinArray List of value from join collection by which to look up
+ * @param {String} joinCollection The collection to join, which
  *   contains the documents that will be returned.
+ * @param {String} joinFieldPath The path to the field in joinCollection that is referenced by
+ *   the items in joinArray
+ * @param {String} positionFieldName Name of field to add to each document with its position index
  * @param {Object} [projection] An optional projection to limit the fields included
- *   from `joinCollectionName` collection.
- * @param {Object} selector MongoDB selector by which to look up the array
- *   field value in `collection`
+ *   from `joinCollection` collection.
  * @return {Object[]} Array of found documents in correct sort
  */
 export default async function arrayJoinQuery({
-  arrayFieldPath,
-  collection,
   connectionArgs: {
     after,
     before,
@@ -27,137 +24,67 @@ export default async function arrayJoinQuery({
     last,
     sortOrder = "asc"
   },
-  positionFieldName = "joinArrayPosition",
-  joinCollectionName,
+  joinArray,
+  joinCollection,
   joinFieldPath = "_id",
-  projection,
-  selector
+  joinSelector,
+  positionFieldName = "joinArrayPosition",
+  projection
 }) {
-  const dollarFieldPath = `$${arrayFieldPath}`;
   const dollarJoinFieldPath = `$${joinFieldPath}`;
 
   const sort = sortOrder === "asc" ? 1 : -1;
 
-  const beforeAfterFields = {
-    arrayFieldCount: { $size: dollarFieldPath }
-  };
+  const arrayFieldCount = joinArray.length;
 
-  let beforeAfterSlice = [dollarFieldPath, "$arrayFieldCount"];
+  let slicedArray;
   if (last) {
-    beforeAfterFields.beforeArrayIndex = { $indexOfArray: [dollarFieldPath, before] };
-    beforeAfterSlice = [
-      dollarFieldPath,
-      {
-        $cond: {
-          if: {
-            $eq: ["$beforeArrayIndex", -1]
-          },
-          then: {
-            $max: [
-              { $subtract: ["$arrayFieldCount", last] },
-              0
-            ]
-          },
-          else: {
-            $max: [
-              { $subtract: ["$beforeArrayIndex", last] },
-              0
-            ]
-          }
-        }
-      },
-      {
-        $cond: {
-          if: {
-            $eq: ["$beforeArrayIndex", -1]
-          },
-          then: {
-            $min: [last, "$arrayFieldCount"]
-          },
-          else: {
-            $min: [last, "$beforeArrayIndex"]
-          }
-        }
+    const beforeArrayIndex = joinArray.indexOf(before);
+    if (beforeArrayIndex === 0) {
+      slicedArray = [];
+    } else {
+      let start;
+      let num;
+      if (beforeArrayIndex === -1) {
+        start = Math.max(arrayFieldCount - last, 0);
+        num = Math.min(arrayFieldCount, last);
+      } else {
+        start = Math.max(beforeArrayIndex - last, 0);
+        num = Math.min(beforeArrayIndex, last);
       }
-    ];
+      slicedArray = joinArray.slice(start, start + num);
+    }
   } else {
-    beforeAfterFields.afterArrayIndex = { $indexOfArray: [dollarFieldPath, after] };
-    beforeAfterSlice = [
-      dollarFieldPath,
-      { $add: ["$afterArrayIndex", 1] },
-      {
-        $min: [
-          first || DEFAULT_LIMIT,
-          {
-            $subtract: [
-              { $add: ["$arrayFieldCount", 1] },
-              "$afterArrayIndex"
-            ]
-          }
-        ]
-      }
-    ];
+    const afterArrayIndex = joinArray.indexOf(after);
+    if (afterArrayIndex === arrayFieldCount) {
+      slicedArray = [];
+    } else {
+      const start = afterArrayIndex + 1;
+      const num = Math.min(first || DEFAULT_LIMIT, arrayFieldCount + 1 - afterArrayIndex);
+      slicedArray = joinArray.slice(start, start + num);
+    }
   }
 
   const pipeline = [
     {
-      $match: selector
-    },
-    {
-      $addFields: beforeAfterFields
+      $match: {
+        $and: [
+          { [joinFieldPath]: { $in: slicedArray } },
+          joinSelector
+        ]
+      }
     },
     {
       $addFields: {
-        slicedArray: {
-          $cond: {
-            if: {
-              $or: [
-                { $eq: ["$beforeArrayIndex", 0] },
-                { $eq: ["$afterArrayIndex", "$arrayFieldCount"] }
-              ]
-            },
-            then: [],
-            else: { $slice: beforeAfterSlice }
-          }
+        [positionFieldName]: {
+          $indexOfArray: [joinArray, dollarJoinFieldPath]
         }
       }
     },
     {
-      $lookup: {
-        from: joinCollectionName,
-        let: {
-          fullArray: dollarFieldPath,
-          slicedArray: "$slicedArray"
-        },
-        pipeline: [
-          {
-            $match: {
-              $expr: {
-                $in: [dollarJoinFieldPath, "$$slicedArray"]
-              }
-            }
-          },
-          {
-            $addFields: {
-              [positionFieldName]: {
-                $indexOfArray: ["$$fullArray", dollarJoinFieldPath]
-              }
-            }
-          },
-          {
-            $sort: {
-              [positionFieldName]: sort
-            }
-          }
-        ],
-        as: "arrayDocs"
+      $sort: {
+        [positionFieldName]: sort
       }
-    },
-    {
-      $unwind: "$arrayDocs"
-    },
-    {
-      $replaceRoot: { newRoot: "$arrayDocs" }
     }
   ];
 
@@ -167,5 +94,5 @@ export default async function arrayJoinQuery({
     });
   }
 
-  return collection.aggregate(pipeline).toArray();
+  return joinCollection.aggregate(pipeline).toArray();
 }

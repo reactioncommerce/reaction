@@ -25,6 +25,7 @@ const mockCatalogItemsWithFeatured = Factory.Catalog.makeMany(30, {
     _id: (iterator + 100).toString(),
     isDeleted: false,
     isVisible: true,
+    productId: (iterator + 100).toString(),
     tagIds: [mockTagWithFeatured._id],
     shopId: internalShopId
   }),
