@@ -392,33 +392,17 @@ Meteor.publish("ProductsAdminList", function (page = 0, limit = 24, productFilte
 
   delete selector.isVisible; // in edit mode, you should see all products
 
-  Counts.publish(this, "products-count", Products.find(selector));
+  // noReady and nonReactive are needed for good performance on
+  // large data sets
+  Counts.publish(this, "products-count", Products.find(selector), {
+    noReady: true,
+    nonReactive: true
+  });
 
-  // Get the IDs of the first N (limit) top-level products that match the query
-  const productIds = Products.find(selector, {
+  // Get the first N (limit) top-level products that match the query
+  return Products.find(selector, {
     sort,
     skip: page * limit,
     limit
-  }, {
-    fields: {
-      _id: 1
-    }
-  }).map((product) => product._id);
-
-  // Return a cursor for the matching products plus all their variants
-  return Products.find({
-    $or: [{
-      ancestors: {
-        $in: productIds
-      }
-    }, {
-      _id: {
-        $in: productIds
-      }
-    }]
-  }, {
-    sort
-    // We shouldn't limit here. Otherwise we are limited to 24 total products which
-    // could be far less than 24 top-level products.
   });
 });

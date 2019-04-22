@@ -15,7 +15,7 @@ export default async function getProductInventoryAvailableToSellQuantity(product
   const variants = await getVariants(productId, collections, true);
 
   if (variants && variants.length) {
-    return variants.reduce((sum, variant) => sum + variant.inventoryAvailableToSell || 0, 0);
+    return variants.reduce((sum, variant) => sum + (variant.inventoryAvailableToSell || 0), 0);
   }
   return 0;
 }
