@@ -155,19 +155,6 @@ class AuthContainer extends Component {
 
   renderAuthView() {
     if (this.props.currentView === "loginFormSignInView") {
-      if (this.props.currentRoute.route.name === "reset-password") {
-        return (
-          <Components.UpdatePassword
-            {...this.props}
-            onFormSubmit={this.handleFormSubmit}
-            messages={this.state.formMessages}
-            onError={this.hasError}
-            loginFormMessages={this.formMessages}
-            isLoading={this.state.isLoading}
-            isOpen
-          />
-        );
-      }
       return (
         <Components.SignIn
           {...this.props}
@@ -188,6 +175,18 @@ class AuthContainer extends Component {
           loginFormMessages={this.formMessages}
           hasPasswordService={this.hasPasswordService}
           isLoading={this.state.isLoading}
+        />
+      );
+    } else if (this.props.currentView === "loginFormUpdatePasswordView") {
+      return (
+        <Components.UpdatePassword
+          {...this.props}
+          messages={this.state.formMessages}
+          onCompleteRoute={"/account/login?action=signin"}
+          onError={this.hasError}
+          loginFormMessages={this.formMessages}
+          isLoading={this.state.isLoading}
+          isOpen
         />
       );
     }
