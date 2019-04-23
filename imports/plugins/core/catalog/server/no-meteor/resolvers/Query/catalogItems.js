@@ -1,3 +1,4 @@
+import Logger from "@reactioncommerce/logger";
 import { getPaginatedResponse } from "@reactioncommerce/reaction-graphql-utils";
 import { decodeShopOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/shop";
 import { decodeTagOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/tag";
@@ -57,10 +58,9 @@ export default async function catalogItems(_, args, context) {
     }
 
     if (!realSortByField) {
-      if (typeof connectionArgs.sortByPriceCurrencyCode !== "string") {
-        throw new Error("sortByPriceCurrencyCode is required when sorting by minPrice");
-      }
-      realSortByField = `product.pricing.${connectionArgs.sortByPriceCurrencyCode}.minPrice`;
+      Logger.warn("An attempt to sort catalog items by minPrice was rejected. " +
+        "Verify that you have a pricing plugin installed and it registers a getMinPriceSortByFieldPath function.");
+      throw new ReactionError("invalid-parameter", "Sorting by minPrice is not supported");
     }
 
     connectionArgs.sortBy = realSortByField;

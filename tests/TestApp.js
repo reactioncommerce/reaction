@@ -133,6 +133,7 @@ class TestApp {
           symbol: "$"
         }
       },
+      currency: "USD",
       name: "Primary Shop",
       ...shopData,
       domains: [domain]

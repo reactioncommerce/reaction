@@ -242,15 +242,6 @@ const mockCatalogProduct = {
     weight: 7.77,
     width: 5.55
   },
-  pricing: {
-    USD: {
-      compareAtPrice: null,
-      displayPrice: "$992.00",
-      maxPrice: 992,
-      minPrice: 992,
-      price: null
-    }
-  },
   primaryImage: {
     URLs: {
       large: "large/path/to/image.jpg",
@@ -354,15 +345,6 @@ const mockCatalogProduct = {
       minOrderQuantity: 0,
       optionTitle: "Awesome Soft Bike",
       originCountry: "US",
-      pricing: {
-        USD: {
-          compareAtPrice: null,
-          displayPrice: "$992.00",
-          maxPrice: 992,
-          minPrice: 992,
-          price: 992
-        }
-      },
       primaryImage: {
         URLs: {
           large: "large/path/to/image.jpg",
@@ -385,15 +367,6 @@ const mockCatalogProduct = {
       width: 2
     }],
     originCountry: "US",
-    pricing: {
-      USD: {
-        compareAtPrice: 1100,
-        displayPrice: "$992.00",
-        maxPrice: 992,
-        minPrice: 992,
-        price: 0
-      }
-    },
     primaryImage: null,
     shopId: "123",
     sku: "sku",

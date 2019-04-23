@@ -1,4 +1,7 @@
 /**
+ * @summary Given a catalogProduct from the database, traverses it to find
+ *   and return the variant or option with the given `variantId`. If it's
+ *   an option, the `parentVariant` is also returned.
  * @param {Object} catalogProduct - The `product` property of a Catalog Item
  * @param {String} variantId - The variantId to look for
  * @returns {Object} Object with `variant` and `parentVariant` props.

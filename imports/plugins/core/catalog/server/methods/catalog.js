@@ -13,7 +13,6 @@ import appEvents from "/imports/node-app/core/util/appEvents";
 import rawCollections from "/imports/collections/rawCollections";
 import getGraphQLContextInMeteorMethod from "/imports/plugins/core/graphql/server/getGraphQLContextInMeteorMethod";
 import hashProduct from "../no-meteor/mutations/hashProduct";
-import getProductPriceRange from "../no-meteor/utils/getProductPriceRange";
 import getVariants from "../no-meteor/utils/getVariants";
 import hasChildVariant from "../no-meteor/utils/hasChildVariant";
 import isSoldOut from "/imports/plugins/core/inventory/server/no-meteor/utils/isSoldOut";
@@ -32,26 +31,12 @@ import isBackorder from "/imports/plugins/core/inventory/server/no-meteor/utils/
  */
 
 /**
- * updateVariantProductField
- * @private
- * @summary updates the variant
- * @param {Array} variants - the array of variants
- * @param {String} field - the field to update
- * @param {String} value - the value to add
- * @return {Array} - return an array
- */
-function updateVariantProductField(variants, field, value) {
-  return variants.map((variant) => Meteor.call("products/updateProductField", variant._id, field, value));
-}
-
-/**
  * @array toDenormalize
  * @private
  * @summary contains a list of fields, which should be denormalized
  * @type {string[]}
  */
 const toDenormalize = [
-  "price",
   "inventoryInStock",
   "lowInventoryWarningThreshold",
   "inventoryPolicy",
@@ -252,13 +237,8 @@ function denormalize(id, field) {
         isLowQuantity: Promise.await(isLowQuantity(variants, rawCollections))
       });
       break;
-    default: {
-      // "price" is object with range, min, max
-      const priceObject = Promise.await(getProductPriceRange(id, rawCollections));
-      Object.assign(update, {
-        price: priceObject
-      });
-    }
+    default:
+      return;
   }
 
   Products.update(
@@ -378,13 +358,6 @@ function updateCatalogProduct(userId, selector, modifier, validation) {
     .catch((error) => {
       Logger.error(`Error updating currentProductHash for product with ID ${product._id}`, error);
     });
-
-  if (product.ancestors && product.ancestors[0]) {
-    // If update is variant, recalculate top-level product's price range
-    const topLevelProductId = product.ancestors[0];
-    const price = Promise.await(getProductPriceRange(topLevelProductId, rawCollections));
-    Products.update({ _id: topLevelProductId }, { $set: { price } }, { selector: { type: 'simple' } });
-  }
 
   return result;
 }
@@ -1022,12 +995,15 @@ Meteor.methods({
     // If we get a result from the product update,
     // denormalize and attach results to top-level product
     if (result === 1) {
-      if (type === "variant" && toDenormalize.indexOf(field) >= 0) {
-        denormalize(doc.ancestors[0], field);
+      if (type === "variant") {
+        if (toDenormalize.indexOf(field) >= 0) {
+          denormalize(doc.ancestors[0], field);
+        }
+        appEvents.emit("afterVariantUpdate", { _id, field, value });
+      } else {
+        appEvents.emit("afterProductUpdate", { _id, field, value });
       }
     }
-
-    appEvents.emit("afterVariantUpdate", { _id, field, value });
 
     return update;
   },
@@ -1404,89 +1380,6 @@ Meteor.methods({
   },
 
   /**
-   * @name products/publishProduct
-   * @memberof Methods/Products
-   * @method
-   * @summary publish (visibility) of product
-   * @todo hook into publishing flow
-   * @param {String} productId - productId
-   * @return {Boolean} product.isVisible
-   */
-  "products/publishProduct"(productId) {
-    check(productId, String);
-
-    // Check first if Product exists and then if user has the proper rights
-    const product = Products.findOne(productId);
-    if (!product) {
-      throw new ReactionError("not-found", "Product not found");
-    } else if (!Reaction.hasPermission("createProduct", this.userId, product.shopId)) {
-      throw new ReactionError("access-denied", "Access Denied");
-    }
-
-    const variants = Products.find({
-      ancestors: {
-        $in: [productId]
-      }
-    }).fetch();
-    let variantValidator = true;
-
-    if (typeof product === "object" && product.title && product.title.length > 1) {
-      if (variants.length > 0) {
-        variants.forEach((variant) => {
-          // if this is a top variant with children, we avoid it to check price
-          // because we using price of its children
-          const options = Promise.await(getVariants(variant._id, rawCollections));
-          if ((variant.ancestors.length === 1 && !options.length) || variant.ancestors.length !== 1) {
-            if (!(typeof variant.price === "number" && variant.price > 0)) {
-              variantValidator = false;
-            }
-          }
-          // if variant has no title
-          if (typeof variant.title === "string" && !variant.title.length) {
-            variantValidator = false;
-          }
-          if (typeof variant.optionTitle === "string" && !variant.optionTitle.length) {
-            variantValidator = false;
-          }
-        });
-      } else {
-        Logger.debug("invalid product visibility ", productId);
-        throw new ReactionError("invalid-parameter", "Variant is required");
-      }
-
-      if (!variantValidator) {
-        Logger.debug("invalid product visibility ", productId);
-        throw new ReactionError("invalid-parameter", "Some properties are missing.");
-      }
-
-      // update product visibility
-      Logger.debug("toggle product visibility ", product._id, !product.isVisible);
-
-      const res = updateCatalogProduct(
-        this.userId,
-        {
-          _id: product._id
-        },
-        {
-          $set: {
-            isVisible: !product.isVisible
-          }
-        },
-        {
-          selector: { type: "simple" }
-        }
-      );
-
-      // update product variants visibility
-      updateVariantProductField(variants, "isVisible", !product.isVisible);
-      // if collection updated we return new `isVisible` state
-      return res === 1 && !product.isVisible;
-    }
-    Logger.debug("invalid product visibility ", productId);
-    throw new ReactionError("invalid-parameter", "Bad Request");
-  },
-
-  /**
    * @name products/toggleVisibility
    * @memberof Methods/Products
    * @method
@@ -1499,7 +1392,7 @@ Meteor.methods({
     check(productId, String);
 
     // Check first if Product exists and then if user has the proper rights
-    const product = Products.findOne(productId);
+    const product = Products.findOne({ _id: productId });
     if (!product) {
       throw new ReactionError("not-found", "Product not found");
     }
@@ -1508,6 +1401,8 @@ Meteor.methods({
       throw new ReactionError("access-denied", "Access Denied");
     }
 
+    const newFieldValue = !product.isVisible;
+
     const res = updateCatalogProduct(
       this.userId,
       {
@@ -1515,7 +1410,7 @@ Meteor.methods({
       },
       {
         $set: {
-          isVisible: !product.isVisible
+          isVisible: newFieldValue
         }
       },
       {
@@ -1525,14 +1420,23 @@ Meteor.methods({
       }
     );
 
-    if (Array.isArray(product.ancestors) && product.ancestors.length) {
-      const updateId = product.ancestors[0] || product._id;
-      const updatedPriceRange = Promise.await(getProductPriceRange(updateId, rawCollections));
-
-      Meteor.call("products/updateProductField", updateId, "price", updatedPriceRange);
+    if (res === 1) {
+      if (product.type === "variant") {
+        appEvents.emit("afterVariantUpdate", {
+          _id: productId,
+          field: "isVisible",
+          value: newFieldValue
+        });
+      } else {
+        appEvents.emit("afterProductUpdate", {
+          _id: productId,
+          field: "isVisible",
+          value: newFieldValue
+        });
+      }
     }
 
     // if collection updated we return new `isVisible` state
-    return res === 1 && !product.isVisible;
+    return res === 1 && newFieldValue;
   }
 });

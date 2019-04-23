@@ -51,9 +51,6 @@ const mockVariants = [
     minOrderQuantity: 0,
     optionTitle: "Untitled Option",
     originCountry: "US",
-    pricing: {
-      blackbox: true
-    },
     shopId: internalShopId,
     sku: "sku",
     title: "Small Concrete Pizza",
@@ -91,9 +88,6 @@ const mockVariants = [
     minOrderQuantity: 5,
     optionTitle: "Untitled Option 2",
     originCountry: "US",
-    pricing: {
-      blackbox: true
-    },
     shopId: internalShopId,
     sku: "sku",
     title: "Small Concrete Pizza",
@@ -139,9 +133,6 @@ const mockProduct = {
     width: 5.55,
     height: 6.66,
     weight: 7.77
-  },
-  pricing: {
-    blackbox: true
   },
   productId: internalProductId,
   productType: "productType",

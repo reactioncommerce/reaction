@@ -117,7 +117,6 @@ export const SocialMetadata = new SimpleSchema({
  * @property {Number} minOrderQuantity optional, default value: `1`
  * @property {String} optionTitle optional
  * @property {String} originCountry optional
- * @property {Object} pricing required
  * @property {ImageInfo} primaryImage optional
  * @property {String} shopId required
  * @property {String} sku optional
@@ -231,11 +230,6 @@ export const VariantBaseSchema = new SimpleSchema({
     label: "Origin country",
     optional: true
   },
-  "pricing": {
-    type: Object,
-    blackbox: true,
-    label: "Pricing"
-  },
   "primaryImage": {
     type: ImageInfo,
     label: "Primary Image",
@@ -322,7 +316,6 @@ export const CatalogVariantSchema = VariantBaseSchema.clone().extend({
  * @property {String} originCountry optional
  * @property {String} pageTitle optional
  * @property {ShippingParcel} parcel optional
- * @property {Object} pricing required
  * @property {ImageInfo} primaryImage optional
  * @property {String} productId required
  * @property {String} productType optional
@@ -451,11 +444,6 @@ export const CatalogProduct = new SimpleSchema({
     type: ShippingParcel,
     label: "Shipping parcel",
     optional: true
-  },
-  "pricing": {
-    type: Object,
-    blackbox: true,
-    label: "Pricing"
   },
   "primaryImage": {
     type: ImageInfo,

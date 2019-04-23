@@ -212,15 +212,6 @@ const expectedOptionsResponse = [
     minOrderQuantity: 0,
     optionTitle: "Awesome Soft Bike",
     originCountry: "US",
-    pricing: {
-      USD: {
-        compareAtPrice: 15,
-        displayPrice: "992.00",
-        maxPrice: 992.0,
-        minPrice: 992.0,
-        price: 992.0
-      }
-    },
     shop: {
       _id: opaqueShopId
     },
@@ -261,15 +252,6 @@ const expectedVariantsResponse = [
     minOrderQuantity: 0,
     options: expectedOptionsResponse,
     originCountry: "US",
-    pricing: {
-      USD: {
-        compareAtPrice: 0,
-        displayPrice: "2.99 - 5.99",
-        maxPrice: 5.99,
-        minPrice: 2.99,
-        price: null
-      }
-    },
     shop: {
       _id: opaqueShopId
     },
@@ -325,15 +307,6 @@ const expectedItemsResponse = {
             width: 5.55,
             height: 6.66,
             weight: 7.77
-          },
-          pricing: {
-            USD: {
-              compareAtPrice: 4.56,
-              displayPrice: "2.99 - 5.99",
-              maxPrice: 5.99,
-              minPrice: 2.99,
-              price: null
-            }
           },
           productId: opaqueProductId,
           media: [

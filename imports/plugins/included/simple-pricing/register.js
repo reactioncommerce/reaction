@@ -1,6 +1,9 @@
 import Reaction from "/imports/plugins/core/core/server/Reaction";
 import queries from "./server/no-meteor/queries";
+import schemas from "./server/no-meteor/schemas";
 import startup from "./server/no-meteor/startup";
+import getMinPriceSortByFieldPath from "./server/no-meteor/util/getMinPriceSortByFieldPath";
+import publishProductToCatalog from "./server/no-meteor/util/publishProductToCatalog";
 
 /**
  * Simple Pricing plugin
@@ -13,9 +16,13 @@ Reaction.registerPackage({
   icon: "fa fa-dollar-sign",
   autoEnable: true,
   functionsByType: {
+    getMinPriceSortByFieldPath: [getMinPriceSortByFieldPath],
+    publishProductToCatalog: [publishProductToCatalog],
     startup: [startup]
   },
-  graphQL: {},
+  graphQL: {
+    schemas
+  },
   queries,
   settings: {
     name: "Pricing"
