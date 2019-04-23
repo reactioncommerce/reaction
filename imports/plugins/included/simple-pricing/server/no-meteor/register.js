@@ -3,6 +3,8 @@ import resolvers from "./resolvers";
 import schemas from "./schemas";
 import startup from "./startup";
 import getMinPriceSortByFieldPath from "./util/getMinPriceSortByFieldPath";
+import mutateNewProductBeforeCreate from "./util/mutateNewProductBeforeCreate";
+import mutateNewVariantBeforeCreate from "./util/mutateNewVariantBeforeCreate";
 import publishProductToCatalog from "./util/publishProductToCatalog";
 
 /**
@@ -17,6 +19,8 @@ export default async function register(app) {
     icon: "fa fa-dollar-sign",
     functionsByType: {
       getMinPriceSortByFieldPath: [getMinPriceSortByFieldPath],
+      mutateNewProductBeforeCreate: [mutateNewProductBeforeCreate],
+      mutateNewVariantBeforeCreate: [mutateNewVariantBeforeCreate],
       publishProductToCatalog: [publishProductToCatalog],
       startup: [startup]
     },
@@ -24,6 +28,10 @@ export default async function register(app) {
       resolvers,
       schemas
     },
-    queries
+    queries,
+    catalog: {
+      publishedProductFields: ["price"],
+      publishedProductVariantFields: ["price"]
+    }
   });
 }

@@ -55,7 +55,6 @@ const mockVariants = [
     minOrderQuantity: 0,
     optionTitle: "Untitled Option",
     originCountry: "US",
-    price: 0,
     shopId: internalShopId,
     sku: "sku",
     title: "Small Concrete Pizza",
@@ -96,7 +95,6 @@ const mockVariants = [
     minOrderQuantity: 0,
     optionTitle: "Awesome Soft Bike",
     originCountry: "US",
-    price: 992.0,
     shopId: internalShopId,
     sku: "sku",
     title: "One pound bag",
@@ -146,11 +144,6 @@ const mockProduct = {
     weight: 7.77
   },
   pinterestMsg: "pinterestMessage",
-  price: {
-    max: 5.99,
-    min: 2.99,
-    range: "2.99 - 5.99"
-  },
   media: [
     {
       metadata: {

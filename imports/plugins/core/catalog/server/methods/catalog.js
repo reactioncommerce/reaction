@@ -196,7 +196,7 @@ function copyMedia(newId, variantOldId, variantNewId) {
  * @function denormalize
  * @private
  * @description With flattened model we do not want to get variant docs in
- * `products` publication, but we need some data from variants to display price,
+ * `products` publication, but we need some data from variants to display
  * quantity, etc. That's why we are denormalizing these properties into product
  * doc. Also, this way should have a speed benefit comparing the way where we
  * could dynamically build denormalization inside `products` publication.
@@ -204,7 +204,6 @@ function copyMedia(newId, variantOldId, variantNewId) {
  * removed
  * @param {String} id - product _id
  * @param {String} field - type of field. Could be:
- * "price",
  * "inventoryInStock",
  * "inventoryManagement",
  * "inventoryPolicy",
@@ -296,6 +295,7 @@ function flushQuantity(id) {
  * @private
  * @description creates a product
  * @param {Object} props - initial product properties
+ * @param {Object} info - Other info
  * @return {Object} product - new product
  */
 function createProduct(props = null, info = {}) {
@@ -324,13 +324,10 @@ function createProduct(props = null, info = {}) {
       }
     }
 
-    // Price is required on products
-    if (!newProductOrVariant.price) {
-      newProductOrVariant.price = {
-        range: "0.00 - 0.00",
-        min: 0,
-        max: 0
-      };
+    // Apply custom transformations from plugins.
+    for (const customFunc of context.getFunctionsOfType("mutateNewProductBeforeCreate")) {
+      // Functions of type "mutateNewVariantBeforeCreate" are expected to mutate the provided variant.
+      Promise.await(customFunc(newProductOrVariant, { context, ...info }));
     }
   }
 
@@ -384,7 +381,11 @@ Meteor.methods({
     const variant = Products.findOne(variantId);
     if (!variant) {
       throw new ReactionError("not-found", "Variant not found");
-    } else if (!Reaction.hasPermission("createProduct", this.userId, variant.shopId)) {
+    }
+
+    const authUserId = Reaction.getUserId();
+
+    if (!Reaction.hasPermission("createProduct", authUserId, variant.shopId)) {
       throw new ReactionError("access-denied", "Access Denied");
     }
 
@@ -408,10 +409,12 @@ Meteor.methods({
       ],
       type: "variant"
     }).fetch();
+
     // exit if we're trying to clone a ghost
-    if (variants.length === 0) {
-      return;
-    }
+    if (variants.length === 0) return [];
+
+    const context = Promise.await(getGraphQLContextInMeteorMethod(authUserId));
+
     const variantNewId = Random.id(); // for the parent variant
     // we need to make sure that top level variant will be cloned first, his
     // descendants later.
@@ -429,11 +432,7 @@ Meteor.methods({
         Object.assign(clone, sortedVariant, {
           _id: variantNewId,
           title: `${sortedVariant.title} - copy`,
-          optionTitle: `${sortedVariant.optionTitle} - copy`,
-          price: `${sortedVariant.price}` ? `${sortedVariant.price}` : `${variant.price}`,
-          compareAtPrice: `${sortedVariant.compareAtPrice}`
-            ? `${sortedVariant.compareAtPrice}`
-            : `${variant.compareAtPrice}`
+          optionTitle: `${sortedVariant.optionTitle} - copy`
         });
       } else {
         const parentIndex = sortedVariant.ancestors.indexOf(variantId);
@@ -445,10 +444,6 @@ Meteor.methods({
           ancestors: ancestorsClone,
           title: `${sortedVariant.title}`,
           optionTitle: `${sortedVariant.optionTitle}`,
-          price: `${sortedVariant.price}` ? `${sortedVariant.price}` : `${variant.price}`,
-          compareAtPrice: `${sortedVariant.compareAtPrice}`
-            ? `${sortedVariant.compareAtPrice}`
-            : `${variant.compareAtPrice}`,
           height: `${sortedVariant.height}`,
           width: `${sortedVariant.width}`,
           weight: `${sortedVariant.weight}`,
@@ -459,6 +454,12 @@ Meteor.methods({
       delete clone.createdAt;
       delete clone.inventoryInStock;
       delete clone.lowInventoryWarningThreshold;
+
+      // Apply custom transformations from plugins.
+      for (const customFunc of context.getFunctionsOfType("mutateNewVariantBeforeCreate")) {
+        // Functions of type "mutateNewVariantBeforeCreate" are expected to mutate the provided variant.
+        Promise.await(customFunc(clone, { context }));
+      }
 
       copyMedia(productId, oldId, clone._id);
 
@@ -529,8 +530,7 @@ Meteor.methods({
     const isOption = ancestors.length > 1;
     if (isOption) {
       Object.assign(newVariant, {
-        title: `${parent.title} - Untitled option`,
-        price: 0.0
+        title: `${parent.title} - Untitled option`
       });
     }
 
@@ -766,7 +766,6 @@ Meteor.methods({
    * @memberof Methods/Products
    * @method
    * @summary when we create a new product, we create it with an empty variant.
-   * all products have a variant with pricing and details
    * @return {String} The new product ID
    */
   "products/createProduct"() {
@@ -781,7 +780,6 @@ Meteor.methods({
     // Create a product variant
     createProduct({
       ancestors: [newSimpleProduct._id],
-      price: 0.0,
       title: "",
       type: "variant" // needed for multi-schema
     }, { product: newSimpleProduct, parentVariant: null, isOption: false });
@@ -1027,7 +1025,9 @@ Meteor.methods({
     const product = Products.findOne(productId);
     if (!product) {
       throw new ReactionError("not-found", "Product not found");
-    } else if (!Reaction.hasPermission("createProduct", this.userId, product.shopId)) {
+    }
+
+    if (!Reaction.hasPermission("createProduct", this.userId, product.shopId)) {
       throw new ReactionError("access-denied", "Access Denied");
     }
 
