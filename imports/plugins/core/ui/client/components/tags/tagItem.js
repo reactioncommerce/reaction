@@ -318,7 +318,11 @@ TagItem.propTypes = {
   onTagUpdate: PropTypes.func,
   parentTag: PropTypes.object,
   suggestions: PropTypes.arrayOf(PropTypes.object),
-  tag: PropTypes.object
+  tag: PropTypes.shape({
+    _id: PropTypes.string, // newTag will not have an _id
+    name: PropTypes.string.isRequired,
+    slug: PropTypes.string
+  })
 };
 
 registerComponent("TagItem", TagItem);
