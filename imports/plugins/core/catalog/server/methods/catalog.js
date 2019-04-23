@@ -305,10 +305,10 @@ function createProduct(props = null, info = {}) {
     ...(props || {})
   };
 
-  if (newProductOrVariant.type === "variant") {
-    const userId = Reaction.getUserId();
-    const context = Promise.await(getGraphQLContextInMeteorMethod(userId));
+  const userId = Reaction.getUserId();
+  const context = Promise.await(getGraphQLContextInMeteorMethod(userId));
 
+  if (newProductOrVariant.type === "variant") {
     // Apply custom transformations from plugins.
     for (const customFunc of context.getFunctionsOfType("mutateNewVariantBeforeCreate")) {
       // Functions of type "mutateNewVariantBeforeCreate" are expected to mutate the provided variant.
@@ -326,7 +326,7 @@ function createProduct(props = null, info = {}) {
 
     // Apply custom transformations from plugins.
     for (const customFunc of context.getFunctionsOfType("mutateNewProductBeforeCreate")) {
-      // Functions of type "mutateNewVariantBeforeCreate" are expected to mutate the provided variant.
+      // Functions of type "mutateNewProductBeforeCreate" are expected to mutate the provided variant.
       Promise.await(customFunc(newProductOrVariant, { context, ...info }));
     }
   }
@@ -378,7 +378,7 @@ Meteor.methods({
     check(variantId, String);
 
     // Check first if Variant exists and then if user has the right to clone it
-    const variant = Products.findOne(variantId);
+    const variant = Products.findOne({ _id: variantId });
     if (!variant) {
       throw new ReactionError("not-found", "Variant not found");
     }
@@ -458,7 +458,7 @@ Meteor.methods({
       // Apply custom transformations from plugins.
       for (const customFunc of context.getFunctionsOfType("mutateNewVariantBeforeCreate")) {
         // Functions of type "mutateNewVariantBeforeCreate" are expected to mutate the provided variant.
-        Promise.await(customFunc(clone, { context }));
+        Promise.await(customFunc(clone, { context, isOption: clone.ancestors.length > 1 }));
       }
 
       copyMedia(productId, oldId, clone._id);
