@@ -79,6 +79,10 @@ app:
         value: event.product-import.products.stream.json-gen1
     -   key: LOYALTY_CONSUMER_ENABLED
         value: "false"
+    -   key: MASTER_PUBLISH_CONSUMER_ENABLED
+        value: true
+    -   key: METRICS_ENABLED
+        value: true
     -   key: ORDER_EXPORT_RADIAL_URL
         value: https://tst02-epapi-na.gsipartners.com/v1.0/OOMF/stores
     -   key: PRICING_CONSUMER_ENABLED

@@ -43,10 +43,16 @@
 [submodule "imports/plugins/custom/reaction-plugin-pricing-engine"]
 	path = imports/plugins/custom/reaction-plugin-pricing-engine
 	url = git@github.com:sportsdirect/reaction-plugin-pricing-engine.git
-  branch = trunk
+	branch = trunk
 [submodule "imports/plugins/custom/reaction-plugin-shippable-inventory"]
 	path = imports/plugins/custom/reaction-plugin-shippable-inventory
 	url = git@github.com:sportsdirect/reaction-plugin-shippable-inventory.git
 [submodule "imports/plugins/custom/reaction-plugin-import-order-status"]
 	path = imports/plugins/custom/reaction-plugin-import-order-status
 	url = git@github.com:sportsdirect/reaction-plugin-import-order-status.git
+[submodule "imports/plugins/custom/reaction-plugin-metrics-prometheus"]
+	path = imports/plugins/custom/reaction-plugin-metrics-prometheus
+	url = git@github.com:sportsdirect/reaction-plugin-metrics-prometheus.git
+[submodule "imports/plugins/custom/reaction-plugin-email-templates"]
+	path = imports/plugins/custom/reaction-plugin-email-templates
+	url = git@github.com:sportsdirect/reaction-plugin-email-templates.git

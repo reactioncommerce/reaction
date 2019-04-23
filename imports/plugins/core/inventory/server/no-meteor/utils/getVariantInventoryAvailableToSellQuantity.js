@@ -22,7 +22,7 @@ export default async function getVariantInventoryAvailableToSellQuantity(variant
   }
 
   if (options && options.length) {
-    return options.reduce((sum, option) => sum + option.inventoryAvailableToSell || 0, 0);
+    return options.reduce((sum, option) => sum + (option.inventoryAvailableToSell || 0), 0);
   }
   return variant.inventoryAvailableToSell || 0;
 }
