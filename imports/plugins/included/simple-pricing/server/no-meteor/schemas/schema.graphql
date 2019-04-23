@@ -1,17 +1,3 @@
-"Represents the minimum and maximum price of a product, among all its variants"
-type PriceRange {
-  "The price, in shop currency, of the most expensive possible variant with the most expensive possible option"
-  max: Float!
-
-  "The price, in shop currency, of the least expensive possible variant with the least expensive possible option"
-  min: Float!
-
-  """
-  A range display string in the format "min - max", without any currency symbol
-  """
-  range: String!
-}
-
 "The product price or price range for a specific currency"
 type ProductPricingInfo {
   """
