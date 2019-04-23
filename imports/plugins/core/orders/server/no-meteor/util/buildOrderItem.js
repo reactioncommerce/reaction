@@ -29,7 +29,8 @@ export default async function buildOrderItem(context, { currencyCode, inputItem 
   const variantPriceInfo = await queries.getVariantPrice(context, chosenVariant, currencyCode);
   const finalPrice = (variantPriceInfo || {}).price;
 
-  if (!finalPrice) {
+  // Handle null or undefined price returned. Don't allow sale.
+  if (!finalPrice && finalPrice !== 0) {
     throw new ReactionError("invalid", `Unable to get current price for "${chosenVariant.title || chosenVariant._id}"`);
   }
 
