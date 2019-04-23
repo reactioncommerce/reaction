@@ -55,4 +55,4 @@
 	url = git@github.com:sportsdirect/reaction-plugin-metrics-prometheus.git
 [submodule "imports/plugins/custom/reaction-plugin-email-templates"]
 	path = imports/plugins/custom/reaction-plugin-email-templates
-	url = https://github.com/sportsdirect/reaction-plugin-email-templates.git
+	url = git@github.com:sportsdirect/reaction-plugin-email-templates.git
