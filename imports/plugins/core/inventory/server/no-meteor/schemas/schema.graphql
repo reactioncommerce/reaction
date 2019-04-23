@@ -1,0 +1,10 @@
+extend enum CatalogBooleanFilterName {
+  "isLowQuantity"
+  isLowQuantity
+
+  "isSoldOut"
+  isSoldOut
+
+  "isBackorder"
+  isBackorder
+}
