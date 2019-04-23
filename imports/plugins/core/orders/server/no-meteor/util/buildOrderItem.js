@@ -27,7 +27,11 @@ export default async function buildOrderItem(context, { currencyCode, inputItem 
   } = await queries.findProductAndVariant(context, productId, productVariantId);
 
   const variantPriceInfo = await queries.getVariantPrice(context, chosenVariant, currencyCode);
-  const finalPrice = variantPriceInfo.price;
+  const finalPrice = (variantPriceInfo || {}).price;
+
+  if (!finalPrice) {
+    throw new ReactionError("invalid", `Unable to get current price for "${chosenVariant.title || chosenVariant._id}"`);
+  }
 
   if (finalPrice !== price) {
     throw new ReactionError("invalid", `Provided price for the "${chosenVariant.title}" item does not match current published price`);
