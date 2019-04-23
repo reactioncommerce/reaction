@@ -37,6 +37,7 @@ test("calls queries.catalogItems and returns a partial connection", async () => 
 
   expect(catalogItems).toHaveBeenCalled();
   expect(catalogItems.mock.calls[0][1]).toEqual({
+    catalogBooleanFilters: [],
     shopIds: ["123"],
     tagIds: ["456"]
   });
