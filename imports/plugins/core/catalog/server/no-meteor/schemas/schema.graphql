@@ -13,6 +13,15 @@ enum SocialNetwork {
   twitter
 }
 
+"The list of currently supported top level Catalog props on which catalog items can be filtered."
+enum CatalogBooleanFilterName {
+  "isDeleted"
+  isDeleted
+
+  "isVisible"
+  isVisible
+}
+
 "Represents the minimum and maximum price of a product, among all its variants"
 type PriceRange {
   "The price, in shop currency, of the most expensive possible variant with the most expensive possible option"
@@ -25,6 +34,15 @@ type PriceRange {
   A range display string in the format "min - max", without any currency symbol
   """
   range: String!
+}
+
+"A filter to be applied to a Catalog query"
+input CatalogBooleanFilter {
+  "The name of the filter"
+  name: CatalogBooleanFilterName!
+
+  "The filter value"
+  value: Boolean!
 }
 
 "The product price or price range for a specific currency"
@@ -528,8 +546,8 @@ extend type Query {
     "Optionally provide a list of tag IDs to further filter the item list"
     tagIds: [ID],
 
-    "Optionally provide a flag to filter out sold out products"
-    isSoldOut: Boolean,
+    "Additional filters to apply"
+    booleanFilters: [CatalogBooleanFilter],
 
     after: ConnectionCursor,
     before: ConnectionCursor,
