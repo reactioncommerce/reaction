@@ -54,7 +54,9 @@
       },
       "productDetailEdit": {
         "template": "Template",
-        "templateSelectPlaceholder": "Select a template"
+        "templateSelectPlaceholder": "Select a template",
+        "supportedFulfillmentTypes": "Supported Fulfillment Types",
+        "supportedFulfillmentTypesPlaceholder": "Select supported fulfillment types"
       }
     }
   }
