@@ -1,3 +1,4 @@
+import { merge } from "lodash";
 import mongodb, { MongoClient } from "mongodb";
 import MongoDBMemoryServer from "mongodb-memory-server";
 import { gql } from "apollo-server";
@@ -12,13 +13,14 @@ import setUpFileCollections from "../imports/plugins/core/files/server/no-meteor
 import coreMediaXform from "../imports/plugins/core/files/server/no-meteor/xforms/xformFileCollectionsProductMedia";
 import mutations from "../imports/node-app/devserver/mutations";
 import queries from "../imports/node-app/devserver/queries";
-import schemas from "../imports/node-app/devserver/schemas";
-import resolvers from "../imports/node-app/devserver/resolvers";
+import importedSchemas from "../imports/node-app/devserver/schemas";
+import importedResolvers from "../imports/node-app/devserver/resolvers";
+import registerPlugins from "../imports/node-app/devserver/registerPlugins";
 import "../imports/node-app/devserver/extendSchemas";
 
 class TestApp {
   constructor(options = {}) {
-    const { extraSchemas = [], functionsByType = {} } = options;
+    const { extraSchemas = [] } = options;
 
     this.collections = {};
     this.context = {
@@ -31,32 +33,29 @@ class TestApp {
             funcs = [coreMediaXform];
             break;
           default:
-            funcs = functionsByType[type] || [];
+            funcs = this.functionsByType[type] || [];
         }
         return funcs;
       },
-      mutations,
-      queries
+      mutations: { ...mutations },
+      queries: { ...queries }
     };
 
-    const { apolloServer, expressApp } = createApolloServer({
-      addCallMeteorMethod(context) {
-        context.callMeteorMethod = (name) => {
-          console.warn(`The "${name}" Meteor method was called. The method has not yet been converted to a mutation that` + // eslint-disable-line no-console
-            " works outside of Meteor. If you are relying on a side effect or return value from this method, you may notice unexpected behavior.");
-          return null;
-        };
-      },
-      context: this.context,
-      schemas: [...schemas, ...extraSchemas],
-      resolvers
-      // Uncomment this if you need to debug a test. Otherwise we keep debug mode off to avoid extra
-      // error logging in the test output.
-      // debug: true
-    });
+    this.functionsByType = {};
+    this.graphQL = {
+      resolvers: { ...importedResolvers },
+      schemas: [...importedSchemas, ...extraSchemas]
+    };
+    this.registeredPlugins = {};
 
-    this.app = expressApp;
-    this.graphClient = createTestClient(apolloServer);
+    if (options.functionsByType) {
+      Object.keys(options.functionsByType).forEach((type) => {
+        if (!Array.isArray(this.functionsByType[type])) {
+          this.functionsByType[type] = [];
+        }
+        this.functionsByType[type].push(...options.functionsByType[type]);
+      });
+    }
   }
 
   mutate = (mutation) => async (variables) => {
@@ -144,6 +143,68 @@ class TestApp {
     return result.insertedId;
   }
 
+  // Keep this in sync with the real `registerPlugin` in `ReactionNodeApp`
+  async registerPlugin(plugin) {
+    if (typeof plugin.name !== "string" || plugin.name.length === 0) {
+      throw new Error("Plugin configuration passed to registerPlugin must have 'name' field");
+    }
+
+    if (this.registeredPlugins[plugin.name]) {
+      throw new Error(`You registered multiple plugins with the name "${plugin.name}"`);
+    }
+
+    this.registeredPlugins[plugin.name] = plugin;
+
+    if (plugin.graphQL) {
+      if (plugin.graphQL.resolvers) {
+        merge(this.graphQL.resolvers, plugin.graphQL.resolvers);
+      }
+      if (plugin.graphQL.schemas) {
+        this.graphQL.schemas.push(...plugin.graphQL.schemas);
+      }
+    }
+
+    if (plugin.mutations) {
+      merge(this.context.mutations, plugin.mutations);
+    }
+
+    if (plugin.queries) {
+      merge(this.context.queries, plugin.queries);
+    }
+
+    if (plugin.functionsByType) {
+      Object.keys(plugin.functionsByType).forEach((type) => {
+        if (!Array.isArray(this.functionsByType[type])) {
+          this.functionsByType[type] = [];
+        }
+        this.functionsByType[type].push(...plugin.functionsByType[type]);
+      });
+    }
+  }
+
+  initServer() {
+    const { resolvers, schemas } = this.graphQL;
+
+    const { apolloServer, expressApp } = createApolloServer({
+      addCallMeteorMethod(context) {
+        context.callMeteorMethod = (name) => {
+          console.warn(`The "${name}" Meteor method was called. The method has not yet been converted to a mutation that` + // eslint-disable-line no-console
+            " works outside of Meteor. If you are relying on a side effect or return value from this method, you may notice unexpected behavior.");
+          return null;
+        };
+      },
+      context: this.context,
+      schemas,
+      resolvers
+      // Uncomment this if you need to debug a test. Otherwise we keep debug mode off to avoid extra
+      // error logging in the test output.
+      // debug: true
+    });
+
+    this.app = expressApp;
+    this.graphClient = createTestClient(apolloServer);
+  }
+
   async startMongo() {
     this.mongoServer = new MongoDBMemoryServer();
     const mongoUri = await this.mongoServer.getConnectionString();
@@ -169,6 +230,8 @@ class TestApp {
   }
 
   async start() {
+    await registerPlugins(this);
+    this.initServer();
     await this.startMongo();
   }
 
