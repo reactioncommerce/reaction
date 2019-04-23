@@ -1,5 +1,5 @@
 import hash from "object-hash";
-import { customPublishedProductFields, customPublishedProductVariantFields } from "/imports/plugins/core/core/server/no-meteor/pluginRegistration";
+import { customPublishedProductFields, customPublishedProductVariantFields } from "../registration";
 import getCatalogProductMedia from "../utils/getCatalogProductMedia";
 import getTopLevelProduct from "../utils/getTopLevelProduct";
 

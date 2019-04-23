@@ -2,7 +2,7 @@ import collectionIndex from "/imports/utils/collectionIndex";
 import getProductPriceRange from "./util/getProductPriceRange";
 import getVariantPriceRange from "./util/getVariantPriceRange";
 
-const fieldsThatChangeAncestorPricing = ["isVisible", "price"];
+const fieldsThatChangeAncestorPricing = ["isDeleted", "isVisible", "price"];
 
 /**
  * @method startup

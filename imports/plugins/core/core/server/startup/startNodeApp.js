@@ -1,5 +1,4 @@
 import url from "url";
-import { merge } from "lodash";
 import Logger from "@reactioncommerce/logger";
 import { execute, subscribe } from "graphql";
 import { Accounts } from "meteor/accounts-base";
@@ -14,7 +13,6 @@ import { setBaseContext } from "/imports/plugins/core/graphql/server/getGraphQLC
 import coreSchemas from "../no-meteor/schemas";
 import coreResolvers from "../no-meteor/resolvers";
 import coreQueries from "../no-meteor/queries";
-import { functionsByType, mutations, queries, resolvers, schemas } from "../no-meteor/pluginRegistration";
 import runMeteorMethodWithContext from "../util/runMeteorMethodWithContext";
 
 // For Meteor app tests
@@ -23,19 +21,12 @@ export const isAppStartupComplete = () => appStartupIsComplete;
 
 /**
  * @summary Starts the Reaction Node app within a Meteor server
+ * @param {Function} [onAppInstanceCreated] Function to call with `app` after it is created
  * @returns {undefined}
  */
-export default async function startNodeApp() {
+export default async function startNodeApp({ onAppInstanceCreated }) {
   const { ROOT_URL } = process.env;
   const mongodb = MongoInternals.NpmModules.mongodb.module;
-
-  // Adding core resolvers this way because `core` is not a typical plugin and doesn't call registerPackage
-  // Note that coreResolvers comes first so that plugin resolvers can overwrite core resolvers if necessary
-  const finalResolvers = merge({}, coreResolvers, resolvers);
-
-  // Adding core queries this way because `core` is not a typical plugin and doesn't call registerPackage
-  // Note that coreQueries comes first so that plugin queries can overwrite core queries if necessary
-  const finalQueries = merge({}, coreQueries, queries);
 
   const app = new ReactionNodeApp({
     addCallMeteorMethod(context) {
@@ -48,19 +39,21 @@ export default async function startNodeApp() {
       createUser(options) {
         return Accounts.createUser(options);
       },
-      mutations,
-      queries: finalQueries,
+      queries: coreQueries,
       rootUrl: ROOT_URL
     },
-    functionsByType,
     graphQL: {
       graphiql: Meteor.isDevelopment,
-      resolvers: finalResolvers,
-      schemas: [...coreSchemas, ...schemas]
+      resolvers: coreResolvers,
+      schemas: coreSchemas
     },
     httpServer: WebApp.httpServer,
     mongodb
   });
+
+  if (onAppInstanceCreated) await onAppInstanceCreated(app);
+
+  app.initServer();
 
   const { db } = MongoInternals.defaultRemoteCollectionDriver().mongo;
   app.setMongoDatabase(db);
