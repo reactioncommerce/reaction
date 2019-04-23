@@ -40,7 +40,7 @@ export default function startup({ appEvents, collections }) {
     (updatedCart.items || []).forEach((item) => {
       let { supportedFulfillmentTypes } = item;
       if (!supportedFulfillmentTypes || supportedFulfillmentTypes.length === 0) {
-        supportedFulfillmentTypes = ["shipping"];
+        supportedFulfillmentTypes = ["shipping", "pickup", "digital"];
       }
 
       // Out of the current groups, returns the one that this item should be in by default, if it isn't
