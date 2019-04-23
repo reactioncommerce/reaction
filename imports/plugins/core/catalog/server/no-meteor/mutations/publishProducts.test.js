@@ -212,7 +212,6 @@ const expectedOptionsResponse = [
     minOrderQuantity: 0,
     optionTitle: "Awesome Soft Bike",
     originCountry: "US",
-    price: 992.0,
     pricing: {
       USD: {
         compareAtPrice: 15,
@@ -262,7 +261,6 @@ const expectedVariantsResponse = [
     minOrderQuantity: 0,
     options: expectedOptionsResponse,
     originCountry: "US",
-    price: 0,
     pricing: {
       USD: {
         compareAtPrice: 0,
@@ -327,11 +325,6 @@ const expectedItemsResponse = {
             width: 5.55,
             height: 6.66,
             weight: 7.77
-          },
-          price: {
-            max: 5.99,
-            min: 2.99,
-            range: "2.99 - 5.99"
           },
           pricing: {
             USD: {

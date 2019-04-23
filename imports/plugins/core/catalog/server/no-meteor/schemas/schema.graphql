@@ -257,9 +257,6 @@ type CatalogProduct implements CatalogProductOrVariant & Node {
   "Dimensions and other information about the containers in which this product will be shipped"
   parcel: ShippingParcel
 
-  "The range of prices among all variants (Deprecated use Pricing instead)"
-  price: PriceRange
-
   "Price and related information, per currency"
   pricing: [ProductPricingInfo]!
 
@@ -388,9 +385,6 @@ type CatalogProductVariant implements CatalogProductOrVariant & Node {
 
   "The country of origin"
   originCountry: String
-
-  "The price, in the default shop currency (Deprecated use Pricing instead)"
-  price: Float!
 
   "Price and related information, per currency"
   pricing: [ProductPricingInfo]!

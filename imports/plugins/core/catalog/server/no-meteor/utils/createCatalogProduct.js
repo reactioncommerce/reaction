@@ -41,7 +41,6 @@ export function xformVariant(variant, variantPriceInfo, shopCurrencyCode, varian
     minOrderQuantity: variant.minOrderQuantity,
     optionTitle: variant.optionTitle,
     originCountry: variant.originCountry,
-    price: variant.price,
     pricing: {
       [shopCurrencyCode]: {
         compareAtPrice: variant.compareAtPrice || null,
@@ -171,7 +170,6 @@ export async function xformProduct({ collections, product, shop, variants }) {
     originCountry: product.originCountry,
     pageTitle: product.pageTitle,
     parcel: product.parcel,
-    price: product.price,
     pricing: {
       [shop.currency]: {
         compareAtPrice: product.compareAtPrice || null,
