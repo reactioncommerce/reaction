@@ -33,6 +33,8 @@ export default async function xformCatalogBooleanFilters(context, booleanFilters
     }
   }
 
+  if (mongoFilters.length === 0) return {};
+
   return {
     $and: mongoFilters
   };
