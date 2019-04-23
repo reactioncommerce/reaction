@@ -11,6 +11,7 @@ import appEvents from "/imports/node-app/core/util/appEvents";
  * @param {Object} anonymousCartSelector The MongoDB selector for the anonymous cart
  * @param {MongoDB.Collection} Cart The Cart collection
  * @param {String} shopId The shop ID to associate with the new account cart
+ * @param {String} userId The ID of the user
  * @return {Object} The new account cart
  */
 export default async function convertAnonymousCartToNewAccountCart({
@@ -23,6 +24,8 @@ export default async function convertAnonymousCartToNewAccountCart({
 }) {
   const createdAt = new Date();
   const currencyCode = anonymousCart.currencyCode || "USD";
+  const { _id, referenceId } = anonymousCart;
+
   const newCart = {
     _id: Random.id(),
     accountId,
@@ -37,6 +40,13 @@ export default async function convertAnonymousCartToNewAccountCart({
     }
   };
 
+  if (referenceId) {
+    // referenceId has a uniqueness constraint but we want to copy the same value from anonymous cart to account cart
+    // so we have to remove the referenceId from the anonymous cart first
+    await Cart.updateOne({ _id }, { $unset: { referenceId: 1 } });
+    newCart.referenceId = referenceId;
+  }
+
   CartSchema.validate(newCart);
 
   const { result } = await Cart.insertOne(newCart);
@@ -48,7 +58,12 @@ export default async function convertAnonymousCartToNewAccountCart({
   });
 
   const { deletedCount } = await Cart.deleteOne(anonymousCartSelector);
-  if (deletedCount === 0) throw new ReactionError("server-error", "Unable to delete anonymous cart");
+  if (deletedCount === 0) {
+    if (referenceId) {
+      await Cart.updateOne({ _id }, { $set: { referenceId } });
+    }
+    throw new ReactionError("server-error", "Unable to delete anonymous cart");
+  }
 
   return newCart;
 }

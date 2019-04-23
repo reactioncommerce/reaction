@@ -3,12 +3,18 @@ import mutations from "./server/no-meteor/mutations";
 import queries from "./server/no-meteor/queries";
 import resolvers from "./server/no-meteor/resolvers";
 import schemas from "./server/no-meteor/schemas";
+import startup from "./server/no-meteor/startup";
+import getDataForOrderEmail from "./server/no-meteor/util/getDataForOrderEmail";
 
 Reaction.registerPackage({
   label: "Orders",
   name: "reaction-orders",
   icon: "fa fa-sun-o",
   autoEnable: true,
+  functionsByType: {
+    getDataForOrderEmail: [getDataForOrderEmail],
+    startup: [startup]
+  },
   graphQL: {
     resolvers,
     schemas

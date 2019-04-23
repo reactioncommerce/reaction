@@ -1,4 +1,5 @@
 import Reaction from "/imports/plugins/core/core/server/Reaction";
+import startup from "./server/no-meteor/startup";
 import xformFileCollectionsProductMedia from "./server/no-meteor/xforms/xformFileCollectionsProductMedia";
 
 Reaction.registerPackage({
@@ -10,6 +11,7 @@ Reaction.registerPackage({
     name: "File Collections"
   },
   functionsByType: {
+    startup: [startup],
     xformCatalogProductMedia: [xformFileCollectionsProductMedia]
   }
 });

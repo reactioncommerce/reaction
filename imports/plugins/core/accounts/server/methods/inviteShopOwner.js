@@ -1,10 +1,9 @@
-import _ from "lodash";
 import Random from "@reactioncommerce/random";
 import { Meteor } from "meteor/meteor";
 import { Accounts as MeteorAccounts } from "meteor/accounts-base";
 import { check, Match } from "meteor/check";
-import { SSR } from "meteor/meteorhacks:ssr";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
+import getGraphQLContextInMeteorMethod from "/imports/plugins/core/graphql/server/getGraphQLContextInMeteorMethod";
 import ReactionError from "@reactioncommerce/reaction-error";
 import getCurrentUserName from "../no-meteor/util/getCurrentUserName";
 import getDataForEmail from "../util/getDataForEmail";
@@ -52,18 +51,13 @@ export default function inviteShopOwner(options, shopData) {
   const primaryShop = Reaction.getPrimaryShop();
 
   // Compile Email with SSR
-  const tpl = "accounts/inviteShopOwner";
-  const subject = "accounts/inviteShopOwner/subject";
+  const templateName = "accounts/inviteShopOwner";
 
-  SSR.compileTemplate(tpl, Reaction.Email.getTemplate(tpl));
-  SSR.compileTemplate(subject, Reaction.Email.getSubject(tpl));
-
-  const emailLogo = Reaction.Email.getShopLogo(primaryShop);
   const token = Random.id();
   const currentUser = Meteor.user();
   const currentUserName = getCurrentUserName(currentUser);
   // uses primaryShop's data (name, address etc) in email copy sent to new merchant
-  const dataForEmail = getDataForEmail({ shop: primaryShop, currentUserName, name, token, emailLogo });
+  const dataForEmail = getDataForEmail({ shop: primaryShop, currentUserName, name, token });
 
   // 1) this should only be for new users, right?
   // 2) this doesn't happen automatically on new user creation?
@@ -74,12 +68,13 @@ export default function inviteShopOwner(options, shopData) {
     }
   });
 
-  Reaction.Email.send({
-    to: email,
-    from: `${_.get(dataForEmail, "primaryShop.name")} <${_.get(dataForEmail, "primaryShop.emails[0].address")}>`,
-    subject: SSR.render(subject, dataForEmail),
-    html: SSR.render(tpl, dataForEmail)
-  });
+  const context = Promise.await(getGraphQLContextInMeteorMethod(Reaction.getUserId()));
+  Promise.await(context.mutations.sendEmail(context, {
+    data: dataForEmail,
+    fromShop: primaryShop,
+    templateName,
+    to: email
+  }));
 
   return true;
 }

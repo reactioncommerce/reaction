@@ -35,11 +35,61 @@ export const NavigationTreeItem = new SimpleSchema({
       items,
       "items.$": {
         type: new SimpleSchema({
+          expanded,
           navigationItemId,
           items,
           "items.$": {
             type: new SimpleSchema({
-              navigationItemId
+              expanded,
+              navigationItemId,
+              items,
+              "items.$": {
+                type: new SimpleSchema({
+                  expanded,
+                  navigationItemId,
+                  items,
+                  "items.$": {
+                    type: new SimpleSchema({
+                      expanded,
+                      navigationItemId,
+                      items,
+                      "items.$": {
+                        type: new SimpleSchema({
+                          expanded,
+                          navigationItemId,
+                          items,
+                          "items.$": {
+                            type: new SimpleSchema({
+                              expanded,
+                              navigationItemId,
+                              items,
+                              "items.$": {
+                                type: new SimpleSchema({
+                                  expanded,
+                                  navigationItemId,
+                                  items,
+                                  "items.$": {
+                                    type: new SimpleSchema({
+                                      expanded,
+                                      navigationItemId,
+                                      items,
+                                      "items.$": {
+                                        type: new SimpleSchema({
+                                          navigationItemId
+                                        })
+                                      }
+                                    })
+                                  }
+                                })
+                              }
+                            })
+                          }
+                        })
+                      }
+                    })
+                  }
+                })
+              }
             })
           }
         })

@@ -21,43 +21,35 @@ import { registerSchema } from "@reactioncommerce/schemas";
 export const LayoutStructure = new SimpleSchema({
   template: {
     type: String,
-    optional: true,
-    index: true
+    optional: true
   },
   layoutHeader: {
     type: String,
-    optional: true,
-    index: true
+    optional: true
   },
   layoutFooter: {
     type: String,
-    optional: true,
-    index: true
+    optional: true
   },
   notFound: {
     type: String,
-    optional: true,
-    index: true
+    optional: true
   },
   dashboardHeader: {
     type: String,
-    optional: true,
-    index: true
+    optional: true
   },
   dashboardControls: {
     type: String,
-    optional: true,
-    index: true
+    optional: true
   },
   dashboardHeaderControls: {
     type: String,
-    optional: true,
-    index: true
+    optional: true
   },
   adminControlsFooter: {
     type: String,
-    optional: true,
-    index: true
+    optional: true
   }
 });
 
@@ -86,8 +78,7 @@ registerSchema("LayoutStructure", LayoutStructure);
 export const Layout = new SimpleSchema({
   "layout": {
     type: String,
-    optional: true,
-    index: true
+    optional: true
   },
   "workflow": {
     type: String,

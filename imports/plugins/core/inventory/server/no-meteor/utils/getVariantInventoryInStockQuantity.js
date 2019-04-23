@@ -22,7 +22,7 @@ export default async function getVariantInventoryInStockQuantity(variant, collec
   }
 
   if (options && options.length) {
-    return options.reduce((sum, option) => sum + option.inventoryInStock || 0, 0);
+    return options.reduce((sum, option) => sum + (option.inventoryInStock || 0), 0);
   }
   return variant.inventoryInStock || 0;
 }

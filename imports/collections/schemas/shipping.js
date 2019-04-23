@@ -484,14 +484,12 @@ export const Shipping = new SimpleSchema({
   },
   "shopId": {
     type: String,
-    index: 1,
     label: "Shipping ShopId"
   },
   "name": {
     type: String,
     label: "Service Name",
-    optional: true,
-    index: 1
+    optional: true
   },
   "provider": {
     type: ShippingProvider,

@@ -7,6 +7,8 @@ mutation ($accountId: ID!, $address: AddressInput!) {
       company
       country
       fullName
+      firstName
+      lastName
       isBillingDefault
       isCommercial
       isShippingDefault

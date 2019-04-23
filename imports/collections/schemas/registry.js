@@ -53,7 +53,6 @@ export const Registry = new SimpleSchema({
   "provides": {
     // Legacy `provides` apps use a String rather than an array. These are transformed in loadPackages
     type: Array,
-    index: true,
     optional: true
   },
   "provides.$": {
@@ -61,14 +60,12 @@ export const Registry = new SimpleSchema({
   },
   "route": {
     type: String,
-    optional: true,
-    index: true
+    optional: true
   },
   // TODO: This should _not_ be optional in the future, but we need to organize our packages better
   "name": {
     type: String,
     label: "Registry Name",
-    index: true,
     optional: true
   },
   "template": {
@@ -176,9 +173,9 @@ registerSchema("Registry", Registry);
  * @type {SimpleSchema}
  * @summary The PackageConfig is part of the configuration settings required for packages in the Registry.
  * The Registry Schema allows package settings to be defined. For more, read the in-depth {@link https://blog.reactioncommerce.com/an-intro-to-architecture-the-registry/ Intro to Architecture: The Registry}.
- * @property {String} shopId Autovalue removed {@link https://github.com/reactioncommerce/reaction/issues/646#issuecomment-169351842 here}
+ * @property {String} shopId The shop that owns this package config
  * @property {String} name required
- * @property {Boolean} enabled defalut value: true
+ * @property {Boolean} enabled default value: true
  * @property {String} icon optional
  * @property {Object} settings optional
  * @property {Registry[]} registry optional
@@ -187,14 +184,10 @@ registerSchema("Registry", Registry);
 export const PackageConfig = new SimpleSchema({
   "shopId": {
     type: String,
-    index: 1,
     label: "PackageConfig ShopId",
     optional: true
   },
-  "name": {
-    type: String,
-    index: 1
-  },
+  "name": String,
   "enabled": {
     type: Boolean,
     defaultValue: true

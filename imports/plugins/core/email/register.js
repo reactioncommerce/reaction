@@ -1,10 +1,16 @@
 import Reaction from "/imports/plugins/core/core/server/Reaction";
+import mutations from "./server/no-meteor/mutations";
+import startup from "./server/no-meteor/startup";
 
 Reaction.registerPackage({
   label: "Email",
   name: "reaction-email",
   icon: "fa fa-envelope-o",
   autoEnable: true,
+  mutations,
+  functionsByType: {
+    startup: [startup]
+  },
   settings: {
     name: "Email"
   },

@@ -5,8 +5,8 @@ import xformOrderGroupToCommonOrder from "./xformOrderGroupToCommonOrder";
  * @param {Object} context An object containing the per-request state
  * @param {Object} [billingAddress] The primary billing address for the order, if known
  * @param {String|null} [cartId] ID of the cart from which the order is being placed, if applicable
- * @param {Object} currencyCode Currency code for all money values
- * @param {String} discountTotal Calculated discount total
+ * @param {String} currencyCode Currency code for all money values
+ * @param {Number} discountTotal Calculated discount total
  * @param {Object} group The fulfillment group to be mutated
  * @param {String} orderId ID of existing or new order to which this group will belong
  * @returns {Object} An object with `taxTotal` and `taxableAmount` numeric properties
@@ -31,12 +31,12 @@ export default async function addTaxesToGroup(context, {
     discountTotal
   });
 
-  // A taxes plugin is expected to add a mutation named `setTaxesOnFulfillmentGroup`.
+  // A taxes plugin is expected to add a mutation named `setTaxesOnOrderFulfillmentGroup`.
   // If this isn't done, assume 0 tax.
-  if (typeof mutations.setTaxesOnFulfillmentGroup !== "function") {
+  if (typeof mutations.setTaxesOnOrderFulfillmentGroup !== "function") {
     return { taxTotal: 0, taxableAmount: 0 };
   }
 
   // This will mutate `group` to add whatever tax fields the `taxes` plugin has added to the schemas.
-  return mutations.setTaxesOnFulfillmentGroup(context, { group, commonOrder });
+  return mutations.setTaxesOnOrderFulfillmentGroup(context, { group, commonOrder });
 }

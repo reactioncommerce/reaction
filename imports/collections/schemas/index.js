@@ -12,7 +12,6 @@
  * @namespace Schemas
  */
 
-import "./schemaIndex";
 import "./schemaErrors";
 
 export * from "./accounts";

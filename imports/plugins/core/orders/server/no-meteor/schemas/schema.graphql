@@ -41,10 +41,23 @@ extend type Mutation {
   cancelOrderItem(input: CancelOrderItemInput!): CancelOrderItemPayload!
 
   """
+  Use this mutation to move one or more items between existing order fulfillment groups.
+  """
+  moveOrderItems(input: MoveOrderItemsInput!): MoveOrderItemsPayload!
+
+  """
   Use this mutation to place an order, providing information necessary to pay for it.
   The order will be placed only if authorization is successful for all submitted payments.
   """
   placeOrder(input: PlaceOrderInput!): PlaceOrderPayload!
+
+  """
+  Use this mutation to reduce the quantity of one item of an order and create
+  a new item for the remaining quantity in the same fulfillment group, and with the
+  same item status. You may want to do this if you are only able to partially fulfill
+  the item order right now.
+  """
+  splitOrderItem(input: SplitOrderItemInput!): SplitOrderItemPayload!
 
   """
   Use this mutation to update order details after the order has been placed.
@@ -57,45 +70,93 @@ extend type Mutation {
   updateOrderFulfillmentGroup(input: UpdateOrderFulfillmentGroupInput!): UpdateOrderFulfillmentGroupPayload!
 }
 
+"Allowed values for the `OrderFulfillmentGroupItems` sortBy parameter"
 enum OrderFulfillmentGroupItemsSortByField {
+  "Sort by the item ID"
   _id
+
+  "Sort by the date and time when the item was added to the order"
   addedAt
 }
 
 "The fields by which you are allowed to sort any query that returns a `NavigationItemConnection`"
 enum OrdersByAccountIdSortByField {
+  "Sort by the order ID"
   _id
+
+  "Sort by the date and time when the order was placed"
   createdAt
 }
 
-"Wraps a list of `Order`s, providing pagination cursors and information."
-type OrdersByAccountIdConnection implements NodeConnection {
+"""
+Wraps a list of `Order`s, providing pagination cursors and information.
+
+For information about what Relay-compatible connections are and how to use them, see the following articles:
+- [Relay Connection Documentation](https://facebook.github.io/relay/docs/en/graphql-server-specification.html#connections)
+- [Relay Connection Specification](https://facebook.github.io/relay/graphql/connections.htm)
+- [Using Relay-style Connections With Apollo Client](https://www.apollographql.com/docs/react/recipes/pagination.html)
+"""
+type OrdersByAccountIdConnection {
+  "The list of nodes that match the query, wrapped in an edge to provide a cursor string for each"
   edges: [OrdersByAccountIdEdge]
+
+  """
+  You can request the `nodes` directly to avoid the extra wrapping that `NodeEdge` has,
+  if you know you will not need to paginate the results.
+  """
   nodes: [Order]
+
+  "Information to help a client request the next or previous page"
   pageInfo: PageInfo!
+
+  "The total number of nodes that match your query"
   totalCount: Int!
 }
 
 "A connection edge in which each node is a `Order` object"
 type OrdersByAccountIdEdge implements NodeEdge {
+  "The cursor that represents this node in the paginated results"
   cursor: ConnectionCursor!
+
+  "The order"
   node: Order
 }
 
-"Wraps a list of `OrderItem`s, providing pagination cursors and information."
-type OrderItemConnection implements NodeConnection {
+"""
+Wraps a list of `OrderItem`s, providing pagination cursors and information.
+
+For information about what Relay-compatible connections are and how to use them, see the following articles:
+- [Relay Connection Documentation](https://facebook.github.io/relay/docs/en/graphql-server-specification.html#connections)
+- [Relay Connection Specification](https://facebook.github.io/relay/graphql/connections.htm)
+- [Using Relay-style Connections With Apollo Client](https://www.apollographql.com/docs/react/recipes/pagination.html)
+"""
+type OrderItemConnection {
+  "The list of nodes that match the query, wrapped in an edge to provide a cursor string for each"
   edges: [OrderItemEdge]
+
+  """
+  You can request the `nodes` directly to avoid the extra wrapping that `NodeEdge` has,
+  if you know you will not need to paginate the results.
+  """
   nodes: [OrderItem]
+
+  "Information to help a client request the next or previous page"
   pageInfo: PageInfo!
+
+  "The total number of nodes that match your query"
   totalCount: Int!
 }
 
 "A connection edge in which each node is a `OrderItem` object"
 type OrderItemEdge implements NodeEdge {
+  "The cursor that represents this node in the paginated results"
   cursor: ConnectionCursor!
+
+  "The order item"
   node: OrderItem
 }
 
+"One attribute of an order item"
 type OrderItemAttribute {
   "The attribute label, e.g., Color"
   label: String
@@ -118,11 +179,11 @@ type OrderSummary {
   "The combined prices of all cart items"
   itemTotal: Money!
 
-  "The total amount that was deemed taxable by the tax service"
-  taxableAmount: Money!
-
   "The total estimated tax that has not already been included in the item prices"
   taxTotal: Money!
+
+  "The total amount that was deemed taxable by the tax service"
+  taxableAmount: Money!
 
   "The sum of `itemTotal`, `fulfillmentTotal`, and `taxTotal`, minus `discountTotal`"
   total: Money!
@@ -176,11 +237,11 @@ type OrderItem implements Node {
   "The product's slug"
   productSlug: String
 
+  "The list of tags that have been applied to this product"
+  productTags(after: ConnectionCursor, before: ConnectionCursor, first: ConnectionLimitInt, last: ConnectionLimitInt, sortOrder: SortOrder = asc, sortBy: TagSortByField = _id): TagConnection
+
   "The type of product, used to display cart items differently"
   productType: String
-
-   "The list of tags that have been applied to this product"
-  productTags(after: ConnectionCursor, before: ConnectionCursor, first: ConnectionLimitInt, last: ConnectionLimitInt, sortOrder: SortOrder = asc, sortBy: TagSortByField = _id): TagConnection
 
   "The product vendor"
   productVendor: String
@@ -207,12 +268,18 @@ type OrderItem implements Node {
   variantTitle: String
 }
 
+"""
+Extra data for an order fulfillment group with type "shipping"
+"""
 type ShippingOrderFulfillmentGroupData {
+  "The address to ship to"
   shippingAddress: Address!
 }
 
+"Extra data for an order fulfillment group"
 union OrderFulfillmentGroupData = ShippingOrderFulfillmentGroupData
 
+"An order fulfillment group"
 type OrderFulfillmentGroup implements Node {
   "The order fulfillment group ID"
   _id: ID!
@@ -238,16 +305,16 @@ type OrderFulfillmentGroup implements Node {
   "Total quantity of all items in the group"
   totalItemQuantity: Int!
 
-  """
-  The fulfillment type. Any valid type that has been registered by a fulfillment plugin. Examples: "shipping", "digital"
-  """
-  type: FulfillmentType!
-
   "The order fulfillment group shipment tracking number"
   tracking: String
 
   "The order fulfillment group shipment tracking URL"
   trackingUrl: String
+
+  """
+  The fulfillment type. Any valid type that has been registered by a fulfillment plugin. Examples: "shipping", "digital"
+  """
+  type: FulfillmentType!
 }
 
 "An order"
@@ -304,16 +371,22 @@ type Order implements Node {
   updatedAt: DateTime!
 }
 
+"A note about an order"
 type OrderNote {
+  "The account who wrote this note"
   account: Account!
 
+  "The content of the note"
   content: String!
 
+  "The date and time at which this note was created"
   createdAt: DateTime!
 
+  "The date and time at which this note was last updated"
   updatedAt: DateTime!
 }
 
+"Input for an `OrderFulfillmentGroupItem`"
 input OrderFulfillmentGroupItemInput {
   "The date and time at which this item was first added to the source cart, if this is something you want to track"
   addedAt: DateTime
@@ -338,6 +411,7 @@ input OrderFulfillmentGroupDataInput {
   shippingAddress: AddressInput
 }
 
+"Input for an `OrderFulfillmentGroup`"
 input OrderFulfillmentGroupInput {
   "Information needed by the selected fulfillment method to properly fulfill the order"
   data: OrderFulfillmentGroupDataInput
@@ -393,6 +467,7 @@ input OrderFulfillmentGroupExistingOrderInput {
   type: FulfillmentType!
 }
 
+"Input for placing an order"
 input OrderInput {
   """
   The ID of the cart that is becoming an order. This is optional, and you can create an order without ever
@@ -426,6 +501,7 @@ input OrderInput {
   shopId: String!
 }
 
+"Input for adding order payments"
 input PaymentInput {
   """
   Amount to charge, which must be less than or equal to the order total. This is assumed
@@ -502,6 +578,39 @@ input PlaceOrderInput {
   payments: [PaymentInput]
 }
 
+"Input for the moveOrderItems mutation"
+input MoveOrderItemsInput {
+  "An optional string identifying the mutation call, which will be returned in the response payload"
+  clientMutationId: String
+
+  "The ID of the order fulfillment group from which all the items are to be moved."
+  fromFulfillmentGroupId: ID!
+
+  "The list of item IDs to move. The full quantity must be moved."
+  itemIds: [ID]!
+
+  "ID of the order that has the items you want to move"
+  orderId: ID!
+
+  "The ID of the order fulfillment group to which all the items are to be moved."
+  toFulfillmentGroupId: ID!
+}
+
+"Input for the splitOrderItem mutation"
+input SplitOrderItemInput {
+  "An optional string identifying the mutation call, which will be returned in the response payload"
+  clientMutationId: String
+
+  "ID of the item order you want to split"
+  itemId: ID!
+
+  "The quantity that will be transferred to a new order item on the same fulfillment group."
+  newItemQuantity: Int!
+
+  "ID of the order that has the item you want to split"
+  orderId: ID!
+}
+
 "Input for the updateOrder mutation"
 input UpdateOrderInput {
   "An optional string identifying the mutation call, which will be returned in the response payload"
@@ -559,6 +668,15 @@ type CancelOrderItemPayload {
   order: Order!
 }
 
+"Response payload for the moveOrderItems mutation"
+type MoveOrderItemsPayload {
+  "The same string you sent with the mutation params, for matching mutation calls with their responses"
+  clientMutationId: String
+
+  "The updated order"
+  order: Order!
+}
+
 "Response payload for the placeOrder mutation"
 type PlaceOrderPayload {
   "The same string you sent with the mutation params, for matching mutation calls with their responses"
@@ -569,6 +687,18 @@ type PlaceOrderPayload {
 
   "If you are not logged in, this will be a token that can be used for future requests"
   token: String
+}
+
+"Response payload for the splitOrderItem mutation"
+type SplitOrderItemPayload {
+  "The same string you sent with the mutation params, for matching mutation calls with their responses"
+  clientMutationId: String
+
+  "The ID of the new order item that was created"
+  newItemId: ID!
+
+  "The updated order"
+  order: Order!
 }
 
 "Response payload for the updateOrder mutation"

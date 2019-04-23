@@ -1,5 +1,5 @@
 import Logger from "@reactioncommerce/logger";
-import appEvents from "/imports/node-app/core/util/appEvents";
+import collectionIndex from "/imports/utils/collectionIndex";
 import getDiscountsTotalForCart from "/imports/plugins/core/discounts/server/no-meteor/util/getDiscountsTotalForCart";
 
 /**
@@ -9,7 +9,12 @@ import getDiscountsTotalForCart from "/imports/plugins/core/discounts/server/no-
  * @returns {undefined}
  */
 export default function startup(context) {
-  const { Cart } = context.collections;
+  const { appEvents, collections } = context;
+  const { Cart, Discounts } = collections;
+
+  // Create indexes. We set specific names for backwards compatibility
+  // with indexes created by the aldeed:schema-index Meteor package.
+  collectionIndex(Discounts, { shopId: 1 }, { name: "c2_shopId" });
 
   appEvents.on("afterCartUpdate", async ({ cart }) => {
     if (!cart) {
@@ -17,10 +22,9 @@ export default function startup(context) {
     }
     Logger.debug("Handling afterCartUpdate: discounts");
 
-    const cartId = cart._id;
-    const { total: discount } = await getDiscountsTotalForCart(context, cartId);
+    const { total: discount } = await getDiscountsTotalForCart(context, cart);
     if (discount !== cart.discount) {
-      await Cart.update({ _id: cartId }, { $set: { discount } });
+      await Cart.update({ _id: cart._id }, { $set: { discount } });
     }
   });
 }

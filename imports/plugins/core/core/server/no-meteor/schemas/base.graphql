@@ -1,18 +1,36 @@
+"A date"
 scalar Date
-scalar DateTime
-scalar JSONObject
-scalar Time
 
+"A date and time"
+scalar DateTime
+
+"An object with any fields"
+scalar JSONObject
+
+"Distance units"
 enum DistanceUnit {
+  "Centimeter"
   cm
+
+  "Foot"
   ft
+
+  "Inch"
   in
 }
 
+"Mass units"
 enum MassUnit {
+  "Gram"
   g
+
+  "Kilogram"
   kg
+
+  "Pound"
   lb
+
+  "Ounce"
   oz
 }
 
@@ -37,12 +55,10 @@ type ImageSizes {
   thumbnail: String
 }
 
+"Information about an image"
 type ImageInfo {
-  """
-  If greater than 0, then this image should be used for the product grid. The number indicates which position
-  within the product grid item, for grid weights that show multiple images.
-  """
-  toGrid: Int
+  "A list of URLs for various size files of this image"
+  URLs: ImageSizes
 
   """
   Sort by priority ascending when displaying more than one image for a product in a user interface.
@@ -53,11 +69,14 @@ type ImageInfo {
   "The related product ID"
   productId: ID
 
+  """
+  If greater than 0, then this image should be used for the product grid. The number indicates which position
+  within the product grid item, for grid weights that show multiple images.
+  """
+  toGrid: Int
+
   "The related variant ID, if linked with a particular variant"
   variantId: ID
-
-  "A list of URLs for various size files of this image"
-  URLs: ImageSizes
 }
 
 "Represents some amount of a single currency"
@@ -109,4 +128,21 @@ type Query {
 type Subscription {
   "A test subscription that returns an incremented number every 1 second for 10 seconds"
   tick: Int!
+}
+
+# Although the spec allows and Apollo supports defining an empty union
+# that is extended later in other files, the graphql-schema-linter
+# package currently has a problem with this, so we must assign FakeData
+# to the unions to work around this issue.
+#
+# Do not use this type, and remove it after this bug is fixed.
+#
+# Usage:
+#   union PaymentData = FakeData
+#
+# https://github.com/cjoudrey/graphql-schema-linter/issues/151
+"Do not use this"
+type FakeData {
+  "Do not use this"
+  doNotUse: String
 }
