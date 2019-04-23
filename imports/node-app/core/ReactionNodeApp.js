@@ -127,8 +127,8 @@ export default class ReactionNodeApp {
   }
 
   initServer() {
-    const { addCallMeteorMethod, debug, graphQL, httpServer } = this.options;
-    const { resolvers, schemas } = graphQL;
+    const { addCallMeteorMethod, debug, httpServer } = this.options;
+    const { resolvers, schemas } = this.graphQL;
 
     const {
       apolloServer,
