@@ -30,15 +30,28 @@ async function hashRelatedProduct(media, collections) {
  * @param {Object} context.collections Map of MongoDB collections
  * @returns {undefined}
  */
-export default function startup(context) {
+export default async function startup(context) {
   const { appEvents, collections } = context;
-  const { Catalog } = collections;
+  const { Catalog, Shops } = collections;
 
-  // Create indexes. We set specific names for backwards compatibility
-  // with indexes created by the aldeed:schema-index Meteor package.
-  collectionIndex(Catalog, { createdAt: 1 });
+  // Create indexes
+
+  // Without _id: 1 on these, they cannot be used for sorting by createdAt
+  // because all sorts include _id: 1 as secondary sort to be fully stable.
+  collectionIndex(Catalog, { createdAt: 1, _id: 1 });
+  collectionIndex(Catalog, { updatedAt: 1, _id: 1 });
+
+  // Add an index to support built-in minPrice sorting for the primary shop's
+  // default currency code only.
+  const shop = await Shops.findOne({ shopType: "primary" });
+  if (shop.currency) {
+    collectionIndex(Catalog, {
+      [`product.pricing.${shop.currency}.minPrice`]: 1,
+      _id: 1
+    });
+  }
+
   collectionIndex(Catalog, { shopId: 1 });
-  collectionIndex(Catalog, { updatedAt: 1 });
   collectionIndex(Catalog, { "product._id": 1 });
   collectionIndex(Catalog, { "product.productId": 1 });
   collectionIndex(Catalog, { "product.slug": 1 });
