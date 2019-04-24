@@ -77,10 +77,7 @@ input InviteShopMemberInput {
 }
 
 "Input parameters for the updateShopUrls mutation"
-input UpdateShopUrlsInput {
-  "The ID of the shop to which you want to invite this person"
-  shopId: ID!
-
+input StorefrontUrlsInput {
   "Storefront Home URL"
   storefrontHomeUrl: String
 
@@ -92,6 +89,15 @@ input UpdateShopUrlsInput {
 
   "Storefront Account Profile URL (can include `:accountId` in string)"
   storefrontAccountProfileUrl: String
+}
+
+"Input parameters for the updateShopUrls mutation"
+input UpdateShopUrlsInput {
+  "The ID of the shop to which you want to invite this person"
+  shopId: ID!
+
+  "Storefront Home URL"
+  storefrontUrls: StorefrontUrlsInput
 }
 
 "The response from the `inviteShopMember` mutation"

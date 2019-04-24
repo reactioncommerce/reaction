@@ -17,22 +17,14 @@ import { decodeShopOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/sh
 export default async function updateShopUrls(_, { input }, context) {
   const {
     shopId: opaqueShopId,
-    storefrontHomeUrl,
-    storefrontOrderUrl,
-    storefrontOrdersUrl,
-    storefrontAccountProfileUrl,
+    storefrontUrls,
     clientMutationId = null
   } = input;
   const shopId = decodeShopOpaqueId(opaqueShopId);
 
   const updatedShop = await context.mutations.updateShopUrls(context, {
     shopId,
-    storefrontUrls: {
-      storefrontHomeUrl,
-      storefrontOrderUrl,
-      storefrontOrdersUrl,
-      storefrontAccountProfileUrl
-    }
+    storefrontUrls
   });
 
   return {
