@@ -5,9 +5,13 @@ import ConnectionCursor from "./ConnectionCursor";
 import ConnectionLimitInt from "./ConnectionLimitInt";
 import Currency from "./Currency";
 import Money from "./Money";
+import Mutation from "./Mutation";
 import Query from "./Query";
 import Shop from "./Shop";
 import Tag from "./Tag";
+
+console.log("mutation", Mutation);
+
 
 export default {
   Address,
@@ -17,9 +21,7 @@ export default {
   Date: GraphQLDate,
   DateTime: GraphQLDateTime,
   Money,
-  Mutation: {
-    echo: (_, { str }) => `${str}`
-  },
+  Mutation,
   Query: {
     ping: () => "pong",
     ...Query
