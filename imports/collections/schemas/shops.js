@@ -223,6 +223,40 @@ const MerchantShop = new SimpleSchema({
 registerSchema("MerchantShop", MerchantShop);
 
 /**
+ * @name StorefrontUrls
+ * @memberof Schemas
+ * @type {SimpleSchema}
+ * @property {String[]} storefrontHomeUrlShop optional
+ * @property {String[]} storefrontOrderUrl optional
+ * @property {String[]} storefrontOrdersUrl optional
+ * @property {String[]} storefrontAccountProfileUrl optional
+ */
+const StorefrontUrls = new SimpleSchema({
+  storefrontHomeUrl: {
+    type: String,
+    label: "Storefront Home URL",
+    optional: true
+  },
+  storefrontOrderUrl: {
+    type: String,
+    label: "Storefront single order URL (can include `:orderReferenceId` and `:orderToken` in string)",
+    optional: true
+  },
+  storefrontOrdersUrl: {
+    type: String,
+    label: "Storefront orders URL (can include `:accountId` in string)",
+    optional: true
+  },
+  storefrontAccountProfileUrl: {
+    type: String,
+    label: "Storefront Account Profile URL (can include `:accountId` in string)",
+    optional: true
+  }
+});
+
+registerSchema("StorefrontUrls", StorefrontUrls);
+
+/**
  * @name Shop
  * @memberof Schemas
  * @type {SimpleSchema}
@@ -504,6 +538,11 @@ export const Shop = new SimpleSchema({
   "defaultNavigationTreeId": {
     type: String,
     optional: true
+  },
+  "storeFrontUrls": {
+    type: StorefrontUrls,
+    optional: true,
+    defaultValue: {}
   }
 });
 
