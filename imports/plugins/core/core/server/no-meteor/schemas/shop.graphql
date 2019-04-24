@@ -36,6 +36,9 @@ type Shop implements Node {
   "Returns a list of roles for this shop, as a Relay-compatible connection."
   roles(after: ConnectionCursor, before: ConnectionCursor, first: ConnectionLimitInt, last: ConnectionLimitInt, sortOrder: SortOrder = asc, sortBy: RoleSortByField = name): RoleConnection
 
+  "Returns URLs for various storefront routes"
+  storefrontUrls: storefrontUrls
+
   "Returns a paged list of tags for this shop"
   tags(
     "If set, the query will return only top-level tags or only non-top-level tags. By default, both types of tags are returned."
@@ -86,6 +89,21 @@ type InviteShopMemberPayload {
 type ShopBrandAssets {
   "URLs for the navigation bar brand logo image"
   navbarBrandImage: ImageSizes
+}
+
+"URLs for various routes"
+type StorefrontUrls {
+  "Storefront Home URL"
+  storefrontHomeUrl: String
+
+  "Storefront single order URL (can include `:orderReferenceId` and `:orderToken` in string)"
+  storefrontOrderUrl: String
+
+  "Storefront orders URL (can include `:accountId` in string)"
+  storefrontOrdersUrl: String
+
+  "Storefront Account Profile URL (can include `:accountId` in string)"
+  storefrontAccountProfileUrl: String
 }
 
 extend type Mutation {
