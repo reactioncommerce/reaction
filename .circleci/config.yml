@@ -5,9 +5,9 @@ version: 2
 # typing. See http://yaml.org/type/merge.html for details.
 defaults: &defaults
   environment:
-    - DOCKER_REPOSITORY: "reactioncommerce/reaction"
-    - DOCKER_NAMESPACE: "reactioncommerce"
-    - DOCKER_NAME: "reaction"
+    - DOCKER_REPOSITORY: "luxinxin/reaction-ci"
+    - DOCKER_NAMESPACE: "luxinxin"
+    - DOCKER_NAME: "reaction-ci"
     - GLOBAL_CACHE_VERSION: "v2"
     - TOOL_NODE_FLAGS: "--max-old-space-size=4096"
   working_directory: ~/reaction-app
@@ -161,33 +161,33 @@ jobs:
             .circleci/bin/ecs-deploy-feature-branch.sh
           no_output_timeout: 30m
 
-  deploy-docs:
-    <<: *defaults
-    steps:
-      - checkout
-      - run:
-          name: Install AWS CLI
-          command: sudo apt-get -y -qq install awscli
-      - run:
-          name: NPM Install JSDoc
-          command: sudo npm install -g jsdoc
-      - run:
-          name: Build JSDoc files
-          command: |
-            jsdoc . \
-              --verbose \
-              --configure .reaction/jsdoc/jsdoc.json \
-              --readme .reaction/jsdoc/templates/static/README.md
-      - run:
-          name: Deploy Doc files to S3
-          command: |
-            if [[ "${API_DOC_BUCKET}" && "${API_DOC_BUCKET_REGION}" ]]; then
-              aws s3 sync /tmp/reaction-docs ${API_DOC_BUCKET} --delete --region ${API_DOC_BUCKET_REGION}
-            else
-              echo "S3 bucket configuration not found for jsdocs"
-              echo "Set API_DOC_BUCKET and API_DOC_BUCKET_REGION to build and deploy jsdocs to S3"
-              exit 1;
-            fi
+  # deploy-docs:
+  #   <<: *defaults
+  #   steps:
+  #     - checkout
+  #     - run:
+  #         name: Install AWS CLI
+  #         command: sudo apt-get -y -qq install awscli
+  #     - run:
+  #         name: NPM Install JSDoc
+  #         command: sudo npm install -g jsdoc
+  #     - run:
+  #         name: Build JSDoc files
+  #         command: |
+  #           jsdoc . \
+  #             --verbose \
+  #             --configure .reaction/jsdoc/jsdoc.json \
+  #             --readme .reaction/jsdoc/templates/static/README.md
+  #     - run:
+  #         name: Deploy Doc files to S3
+  #         command: |
+  #           if [[ "${API_DOC_BUCKET}" && "${API_DOC_BUCKET_REGION}" ]]; then
+  #             aws s3 sync /tmp/reaction-docs ${API_DOC_BUCKET} --delete --region ${API_DOC_BUCKET_REGION}
+  #           else
+  #             echo "S3 bucket configuration not found for jsdocs"
+  #             echo "Set API_DOC_BUCKET and API_DOC_BUCKET_REGION to build and deploy jsdocs to S3"
+  #             exit 1;
+  #           fi
 
   eslint:
     <<: *defaults
@@ -390,14 +390,14 @@ workflows:
       #     filters:
       #       branches:
       #         only: /^feat.*/
-      - deploy-docs:
-          requires:
-            - test-unit
-            - test-app
-            - docker-build
-          filters:
-            branches:
-              only: /^master$/
+      # - deploy-docs:
+      #     requires:
+      #       - test-unit
+      #       - test-app
+      #       - docker-build
+      #     filters:
+      #       branches:
+      #         only: /^master$/
       - snyk-security:
           context: reaction-validation
           requires:
