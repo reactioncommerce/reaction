@@ -540,9 +540,8 @@ export const Shop = new SimpleSchema({
     type: String,
     optional: true
   },
-  "storeFrontUrls": {
+  "storefrontUrls": {
     type: StorefrontUrls,
-    optional: true,
     defaultValue: {}
   }
 });
