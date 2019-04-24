@@ -108,6 +108,8 @@ app:
         value: http://kafka-cluster-cp-schema-registry.kafka:8081
     -   key: SERVER_TYPE
         value: WORKER
+    -   key: SEO_METADATA_CONSUMER_ENABLED
+        value: "true"
     -   key: SHIPPABLE_INVENTORY_CONSUMER_ENABLED
         value: "false"
     -   key: SITE_CODE

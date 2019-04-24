@@ -107,6 +107,8 @@ app:
         value: https://api-int.bobs-test.io
     -   key: SCHEMA_REGISTRY_URL
         value: http://kafka-cluster-int-cp-schema-registry.kafka:8081
+    -   key: SEO_METADATA_CONSUMER_ENABLED
+        value: "true"
     -   key: SHIPPABLE_INVENTORY_CONSUMER_ENABLED
         value: "false"
     -   key: SITE_CODE
