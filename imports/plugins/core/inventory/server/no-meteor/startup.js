@@ -1,5 +1,5 @@
-import updateCatalogProductInventoryStatus from "/imports/plugins/core/catalog/server/no-meteor/utils/updateCatalogProductInventoryStatus";
 import getVariantInventoryNotAvailableToSellQuantity from "./utils/getVariantInventoryNotAvailableToSellQuantity";
+import updateCatalogProductInventoryStatus from "./utils/updateCatalogProductInventoryStatus";
 import updateParentInventoryFields from "./utils/updateParentInventoryFields";
 
 /**
