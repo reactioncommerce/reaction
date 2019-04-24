@@ -10,9 +10,6 @@ import Query from "./Query";
 import Shop from "./Shop";
 import Tag from "./Tag";
 
-console.log("mutation", Mutation);
-
-
 export default {
   Address,
   ConnectionCursor,
