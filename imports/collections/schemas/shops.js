@@ -301,6 +301,7 @@ registerSchema("StorefrontUrls", StorefrontUrls);
  * @property {Date} updatedAt optional
  * @property {Object[]} paymentMethods blackbox, default value: `[]`
  * @property {String[]} availablePaymentMethods default value: `[]`
+ * @property {Object} storefrontUrls default value: `{}`
  * @property {Workflow} workflow optional
  */
 export const Shop = new SimpleSchema({
