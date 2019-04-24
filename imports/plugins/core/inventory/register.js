@@ -13,5 +13,24 @@ Reaction.registerPackage({
   },
   graphQL: {
     schemas
+  },
+  catalog: {
+    publishedProductFields: [
+      "inventoryAvailableToSell",
+      "inventoryInStock",
+      "isBackorder",
+      "isLowQuantity",
+      "isSoldOut"
+    ],
+    publishedProductVariantFields: [
+      "inventoryAvailableToSell",
+      "inventoryInStock",
+      "inventoryManagement",
+      "inventoryPolicy",
+      "isBackorder",
+      "isLowQuantity",
+      "isSoldOut",
+      "lowInventoryWarningThreshold"
+    ]
   }
 });
