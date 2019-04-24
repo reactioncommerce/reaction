@@ -15,10 +15,7 @@ export default async function updateShopUrls(context, input) {
 
   const {
     shopId,
-    storefrontHomeUrl,
-    storefrontOrderUrl,
-    storefrontOrdersUrl,
-    storefrontAccountProfileUrl
+    storefrontUrls
   } = input;
 
   // Check permission to make sure user is allowed to do this
@@ -31,12 +28,7 @@ export default async function updateShopUrls(context, input) {
     { _id: shopId },
     {
       $set: {
-        storefrontUrls: {
-          storefrontHomeUrl,
-          storefrontOrderUrl,
-          storefrontOrdersUrl,
-          storefrontAccountProfileUrl
-        },
+        storefrontUrls,
         updatedAt: new Date()
       }
     },

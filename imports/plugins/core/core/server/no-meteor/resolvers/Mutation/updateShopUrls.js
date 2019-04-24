@@ -20,10 +20,12 @@ export default async function updateShopUrls(_, { input }, context) {
 
   const updatedShop = await context.mutations.updateShopUrls(context, {
     shopId,
-    storefrontHomeUrl,
-    storefrontOrderUrl,
-    storefrontOrdersUrl,
-    storefrontAccountProfileUrl
+    storefrontUrls: {
+      storefrontHomeUrl,
+      storefrontOrderUrl,
+      storefrontOrdersUrl,
+      storefrontAccountProfileUrl
+    }
   });
 
   return {
