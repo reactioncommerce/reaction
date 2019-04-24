@@ -1,3 +1,4 @@
+import config from "../config";
 import getVariantInventoryNotAvailableToSellQuantity from "./utils/getVariantInventoryNotAvailableToSellQuantity";
 import updateCatalogProductInventoryStatus from "./utils/updateCatalogProductInventoryStatus";
 import updateParentInventoryFields from "./utils/updateParentInventoryFields";
@@ -197,7 +198,7 @@ export default function startup(context) {
 
   appEvents.on("afterVariantUpdate", async ({ _id, field }) => {
     // If the updated field was `inventoryInStock`, adjust `inventoryAvailableToSell` quantities
-    if (field === "inventoryInStock") {
+    if (field === "inventoryInStock" || field === "lowInventoryWarningThreshold") {
       const doc = await collections.Products.findOne({ _id });
 
       // Get reserved inventory - the inventory currently in an unprocessed order
@@ -221,7 +222,9 @@ export default function startup(context) {
       await updateParentInventoryFields(doc, collections);
 
       // Publish inventory to catalog
-      await updateCatalogProductInventoryStatus(doc.ancestors[0], collections);
+      if (config.AUTO_PUBLISH_INVENTORY_FIELDS) {
+        await updateCatalogProductInventoryStatus(doc.ancestors[0], collections);
+      }
     }
   });
 }
