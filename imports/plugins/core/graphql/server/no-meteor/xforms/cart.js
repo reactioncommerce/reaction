@@ -133,8 +133,7 @@ function xformCartFulfillmentGroup(fulfillmentGroup, cart) {
       displayName: option.method.label || option.method.name,
       group: option.method.group || null,
       name: option.method.name,
-      // For now, this is always shipping. Revisit when adding download, pickup, etc. types
-      fulfillmentTypes: ["shipping"]
+      fulfillmentTypes: option.method.fulfillmentTypes
     },
     handlingPrice: {
       amount: option.handling || 0,
@@ -155,8 +154,7 @@ function xformCartFulfillmentGroup(fulfillmentGroup, cart) {
         displayName: fulfillmentGroup.shipmentMethod.label || fulfillmentGroup.shipmentMethod.name,
         group: fulfillmentGroup.shipmentMethod.group || null,
         name: fulfillmentGroup.shipmentMethod.name,
-        // For now, this is always shipping. Revisit when adding download, pickup, etc. types
-        fulfillmentTypes: ["shipping"]
+        fulfillmentTypes: fulfillmentGroup.shipmentMethod.fulfillmentTypes
       },
       handlingPrice: {
         amount: fulfillmentGroup.shipmentMethod.handling || 0,
