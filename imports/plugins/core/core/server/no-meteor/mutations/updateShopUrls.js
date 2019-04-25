@@ -7,8 +7,8 @@ import ReactionError from "@reactioncommerce/reaction-error";
  * @summary Add storefront Urls to a shop
  * @param {Object} context - GraphQL execution context
  * @param {Object} input - an object of all mutation arguments that were sent
- * @param {String} args.input.shopId - The shop ID
- * @param {Object} args.input.storefrontUrls - An object containing the Urls to update
+ * @param {String} input.shopId - The shop ID
+ * @param {Object} input.storefrontUrls - An object containing the Urls to update
  * @return {Promise<Object>} with updated shop
  */
 export default async function updateShopUrls(context, input) {
