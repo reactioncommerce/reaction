@@ -8,6 +8,7 @@ export default {
   _id: (account) => encodeAccountOpaqueId(account._id),
   addressBook,
   currency: (account) => getXformedCurrencyByCode(account.profile && account.profile.currency),
+  language: (account) => account.profile && account.profile.language,
   emailRecords: (account) => account.emails,
   preferences: (account) => get(account, "profile.preferences"),
   primaryEmailAddress: (account) => {

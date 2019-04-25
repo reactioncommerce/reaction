@@ -4,6 +4,7 @@ import inviteShopMember from "./inviteShopMember";
 import removeAccountAddressBookEntry from "./removeAccountAddressBookEntry";
 import removeAccountFromGroup from "./removeAccountFromGroup";
 import setAccountProfileCurrency from "./setAccountProfileCurrency";
+import setAccountProfileLanguage from "./setAccountProfileLanguage";
 import updateAccountAddressBookEntry from "./updateAccountAddressBookEntry";
 
 export default {
@@ -13,5 +14,6 @@ export default {
   removeAccountAddressBookEntry,
   removeAccountFromGroup,
   setAccountProfileCurrency,
+  setAccountProfileLanguage,
   updateAccountAddressBookEntry
 };
