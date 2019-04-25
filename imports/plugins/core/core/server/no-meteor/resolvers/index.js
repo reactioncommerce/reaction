@@ -18,7 +18,10 @@ export default {
   Date: GraphQLDate,
   DateTime: GraphQLDateTime,
   Money,
-  Mutation,
+  Mutation: {
+    echo: (_, { str }) => `${str}`,
+    ...Mutation
+  },
   Query: {
     ping: () => "pong",
     ...Query
