@@ -1,6 +1,5 @@
 import operators from "/imports/utils/operators";
 import propertyTypes from "/imports/utils/propertyTypes";
-import getVariantPrice from "/imports/plugins/custom/reaction-plugin-pricing-engine/server/no-meteor/queries/getVariantPrice";
 
 /**
  * @summary Filter surcharges based on surcharge restriction data
@@ -21,8 +20,8 @@ export async function surchargeCheck(context, surcharge, extendCommonOrder) {
         // If `prices` object exists, this means we are using the pricing engine,
         // instead of simple `price` field on a Product document.
         // We need to find the correct price from the engine to check against.
-        if (attribute.property === "price" && item.prices && Array.isArray(item.prices) && item.prices.length) {
-          const variantPrice = await getVariantPrice(context, item);
+        if (attribute.property === "price") {
+          const variantPrice = await context.queries.getVariantPrice(context, item);
           const { price } = variantPrice;
           attributeValue = price;
         }
