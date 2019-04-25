@@ -3,35 +3,24 @@ import propertyTypes from "/imports/utils/propertyTypes";
 
 /**
  * @summary Filter surcharges based on surcharge restriction data
- * @param {Object} context - Context
  * @param {Object} surcharge - surcharge to check attributes and destination against
  * @param {Object} extendCommonOrder - details about the purchase a user wants to make.
  * @returns {Bool} true / false as to whether method is still valid after this check
  */
-export async function surchargeCheck(context, surcharge, extendCommonOrder) {
+export async function surchargeCheck(surcharge, extendCommonOrder) {
   const { items, shippingAddress } = extendCommonOrder;
   const { attributes, destination } = surcharge;
 
   const validSurcharge = items.some((item) => { // eslint-disable-line
     if (Array.isArray(attributes) && attributes.length) {
       // Item must meet all attributes to be restricted
-      return attributes.every(async (attribute) => {
-        let attributeValue = attribute.value;
-        // If `prices` object exists, this means we are using the pricing engine,
-        // instead of simple `price` field on a Product document.
-        // We need to find the correct price from the engine to check against.
-        if (attribute.property === "price") {
-          const variantPrice = await context.queries.getVariantPrice(context, item);
-          const { price } = variantPrice;
-          attributeValue = price;
-        }
-
-        let attributeFound = operators[attribute.operator](item[attribute.property], propertyTypes[attribute.propertyType](attributeValue));
+      return attributes.every((attribute) => {
+        let attributeFound = operators[attribute.operator](item[attribute.property], propertyTypes[attribute.propertyType](attribute.value));
 
         // If attribute is an array on the item, use `includes` instead of checking for ===
         // This works for tags, tagIds, and any future attribute that might be an array
         if (Array.isArray(item[attribute.property])) {
-          attributeFound = item[attribute.property].includes(attributeValue);
+          attributeFound = item[attribute.property].includes(attribute.value);
         }
 
         if (attributeFound && shippingAddress) {
