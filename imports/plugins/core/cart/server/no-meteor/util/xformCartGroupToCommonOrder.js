@@ -22,24 +22,28 @@ export default async function xformCartGroupToCommonOrder(cart, group, context) 
   // We also need to add `subtotal` on each item, based on the current price of that item in
   // the catalog. `getFulfillmentGroupTaxes` uses subtotal prop to calculate the tax.
   // ** If you add any data here, be sure to add the same data to the matching xformOrderGroupToCommonOrder xform
-  items = items.map(async (item) => {
+  items = await Promise.all(items.map(async (item) => {
+    let itemPrice = item.price;
+
     // Get the catalog version of the item to get pricing data from it
-    const catalogProduct = catalogItemsInGroup.find((catalogItem) => catalogItem.product.productId === item.productId);
-    const catalogVariant = findVariantInCatalogProduct(catalogProduct.product, item.variantId);
-    const currentCatalogVariantPrice = await context.queries.getVariantPrice(context, catalogVariant, currencyCode);
+    if (catalogItemsInGroup) {
+      const catalogProduct = catalogItemsInGroup.find((catalogItem) => catalogItem.product.productId === item.productId);
+      const catalogVariant = findVariantInCatalogProduct(catalogProduct.product, item.variantId);
+      itemPrice = await context.queries.getVariantPrice(context, catalogVariant, currencyCode);
+    }
 
     return {
       _id: item._id,
       attributes: item.attributes,
       isTaxable: item.isTaxable,
       parcel: item.parcel,
-      price: currentCatalogVariantPrice.price,
+      price: itemPrice,
       productId: item.productId,
       productVendor: item.productVendor,
       quantity: item.quantity,
       shopId: item.shopId,
       subtotal: {
-        amount: +toFixed(item.price.amount * item.quantity, 3),
+        amount: +toFixed(itemPrice * item.quantity, 3),
         currencyCode
       },
       taxCode: item.taxCode,
@@ -47,7 +51,7 @@ export default async function xformCartGroupToCommonOrder(cart, group, context) 
       variantId: item.variantId,
       variantTitle: item.variantTitle
     };
-  });
+  }));
 
   const { address, shipmentMethod, shopId, type: fulfillmentType } = group;
   const shop = await collections.Shops.findOne({ _id: shopId });
