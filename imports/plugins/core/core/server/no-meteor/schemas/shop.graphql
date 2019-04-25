@@ -78,6 +78,9 @@ input InviteShopMemberInput {
 
 "Shop URLs to provide for the updateShopUrls mutation"
 input StorefrontUrlsInput {
+  "Storefront Account Profile URL (can include `:accountId` in string)"
+  storefrontAccountProfileUrl: String
+
   "Storefront Home URL"
   storefrontHomeUrl: String
 
@@ -86,9 +89,6 @@ input StorefrontUrlsInput {
 
   "Storefront orders URL (can include `:accountId` in string)"
   storefrontOrdersUrl: String
-
-  "Storefront Account Profile URL (can include `:accountId` in string)"
-  storefrontAccountProfileUrl: String
 }
 
 "Input parameters for the updateShopUrls mutation"
@@ -117,6 +117,9 @@ type ShopBrandAssets {
 
 "URLs for various routes"
 type StorefrontUrls {
+  "Storefront Account Profile URL (can include `:accountId` in string)"
+  storefrontAccountProfileUrl: String
+
   "Storefront Home URL"
   storefrontHomeUrl: String
 
@@ -125,9 +128,6 @@ type StorefrontUrls {
 
   "Storefront orders URL (can include `:accountId` in string)"
   storefrontOrdersUrl: String
-
-  "Storefront Account Profile URL (can include `:accountId` in string)"
-  storefrontAccountProfileUrl: String
 }
 
 "The response from the `updateShopUrls` mutation"
