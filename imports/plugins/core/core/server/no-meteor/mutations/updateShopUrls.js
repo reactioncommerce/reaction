@@ -18,6 +18,13 @@ export default async function updateShopUrls(context, input) {
     storefrontUrls
   } = input;
 
+  // Only update provided fields inside `storefrontUrls`,
+  // don't update the whole object
+  const sets = {};
+  Object.keys(storefrontUrls).forEach((key) => {
+    sets[`storefrontUrls.${key}`] = storefrontUrls[key];
+  });
+
   // Check permission to make sure user is allowed to do this
   // Security check for admin access
   if (!userHasPermission(["owner", "admin"], shopId)) {
@@ -28,7 +35,7 @@ export default async function updateShopUrls(context, input) {
     { _id: shopId },
     {
       $set: {
-        storefrontUrls,
+        ...sets,
         updatedAt: new Date()
       }
     },
