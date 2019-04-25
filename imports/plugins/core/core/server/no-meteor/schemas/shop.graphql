@@ -93,14 +93,14 @@ input StorefrontUrlsInput {
 
 "Input parameters for the updateShopUrls mutation"
 input UpdateShopUrlsInput {
+  "An optional string identifying the mutation call, which will be returned in the response payload"
+  clientMutationId: String
+
   "The ID of the shop to which you want to invite this person"
   shopId: ID!
 
   "URL object of all URL's for updateShopUrls mutation"
   storefrontUrls: StorefrontUrlsInput!
-
-  "An optional string identifying the mutation call, which will be returned in the response payload"
-  clientMutationId: String
 }
 
 "The response from the `inviteShopMember` mutation"
