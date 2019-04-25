@@ -146,7 +146,7 @@ extend type Mutation {
   """
   inviteShopMember(input: InviteShopMemberInput!): InviteShopMemberPayload
 
-  "Given URLs for various sho pages, update the Shops collection object with URL's"
+  "Given URLs for various shop pages, update the Shops collection object with URLs"
   updateShopUrls(input: UpdateShopUrlsInput!): UpdateShopUrlsPayload
 }
 
