@@ -28,8 +28,10 @@ export default async function xformCartGroupToCommonOrder(cart, group, context) 
     // Get the catalog version of the item to get pricing data from it
     if (catalogItemsInGroup) {
       const catalogProduct = catalogItemsInGroup.find((catalogItem) => catalogItem.product.productId === item.productId);
-      const catalogVariant = findVariantInCatalogProduct(catalogProduct.product, item.variantId);
-      itemPrice = await context.queries.getVariantPrice(context, catalogVariant, currencyCode);
+      if (catalogProduct) {
+        const catalogVariant = findVariantInCatalogProduct(catalogProduct.product, item.variantId);
+        itemPrice = await context.queries.getVariantPrice(context, catalogVariant, currencyCode);
+      }
     }
 
     return {
