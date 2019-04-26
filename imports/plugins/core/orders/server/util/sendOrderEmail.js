@@ -269,7 +269,7 @@ export default function sendOrderEmail(order, action) {
     subject = `orders/${order.workflow.status}/subject`;
   }
 
-  const account = Accounts.findOne({ emails: order.emails }, { _id: 0, profile: 1 });
+  const account = Accounts.findOne({ "emails.address": order.email }, { _id: 0, profile: 1 });
   const language = account && account.profile && account.profile.language;
 
   SSR.compileTemplate(tpl, Reaction.Email.getTemplate(tpl, language));
