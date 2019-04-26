@@ -7,40 +7,26 @@ import { Layout } from "./layouts";
 import { Metafield } from "./metafield";
 import { Workflow } from "./workflow";
 
+
 /**
- * @name CustomEmailSettings
+ * @name BrandAsset
  * @memberof Schemas
  * @type {SimpleSchema}
- * @property {String} service optional
- * @property {String} username optional
- * @property {String} password optional
- * @property {String} host optional
- * @property {Number} port optional
+ * @property {String} mediaId optional
+ * @property {String} type optional
  */
-export const CustomEmailSettings = new SimpleSchema({
-  service: {
+export const BrandAsset = new SimpleSchema({
+  mediaId: {
     type: String,
     optional: true
   },
-  username: {
+  type: {
     type: String,
-    optional: true
-  },
-  password: {
-    type: String,
-    optional: true
-  },
-  host: {
-    type: String,
-    optional: true
-  },
-  port: {
-    type: SimpleSchema.Integer,
     optional: true
   }
 });
 
-registerSchema("CustomEmailSettings", CustomEmailSettings);
+registerSchema("BrandAsset", BrandAsset);
 
 /**
  * @name Currency
@@ -86,6 +72,109 @@ export const Currency = new SimpleSchema({
 registerSchema("Currency", Currency);
 
 /**
+ * @name CustomEmailSettings
+ * @memberof Schemas
+ * @type {SimpleSchema}
+ * @property {String} service optional
+ * @property {String} username optional
+ * @property {String} password optional
+ * @property {String} host optional
+ * @property {Number} port optional
+ */
+export const CustomEmailSettings = new SimpleSchema({
+  service: {
+    type: String,
+    optional: true
+  },
+  username: {
+    type: String,
+    optional: true
+  },
+  password: {
+    type: String,
+    optional: true
+  },
+  host: {
+    type: String,
+    optional: true
+  },
+  port: {
+    type: SimpleSchema.Integer,
+    optional: true
+  }
+});
+
+registerSchema("CustomEmailSettings", CustomEmailSettings);
+
+/**
+ * @name Languages
+ * @memberof Schemas
+ * @type {SimpleSchema}
+ * @property {String} label required
+ * @property {String} i18n required
+ * @property {Boolean} enabled, default value: `true`
+ */
+export const Languages = new SimpleSchema({
+  label: {
+    type: String
+  },
+  i18n: {
+    type: String
+  },
+  enabled: {
+    type: Boolean,
+    defaultValue: true
+  }
+});
+
+registerSchema("Languages", Languages);
+
+/**
+ * @name Locale
+ * @memberof Schemas
+ * @type {SimpleSchema}
+ * @property {Object} continents blackbox
+ * @property {Object} countries blackbox
+ */
+export const Locale = new SimpleSchema({
+  continents: {
+    type: Object,
+    blackbox: true
+  },
+  countries: {
+    type: Object,
+    blackbox: true
+  }
+});
+
+registerSchema("Locale", Locale);
+
+/**
+ * @name MerchantShop
+ * @memberof Schemas
+ * @type {SimpleSchema}
+ * @property {String} _id Shop label
+ * @property {String} slug Shop slug
+ * @property {String} name Shop name
+ */
+export const MerchantShop = new SimpleSchema({
+  _id: {
+    type: String,
+    label: "Shop Label"
+  },
+  slug: {
+    type: String,
+    label: "Shop Slug"
+  },
+  name: {
+    type: String,
+    label: "Shop Name"
+  }
+});
+
+registerSchema("MerchantShop", MerchantShop);
+
+/**
  * @name ParcelSize
  * @memberof schemas
  * @type {SimpleSchema}
@@ -116,49 +205,6 @@ export const ParcelSize = new SimpleSchema({
 registerSchema("ParcelSize", ParcelSize);
 
 /**
- * @name Locale
- * @memberof Schemas
- * @type {SimpleSchema}
- * @property {Object} continents blackbox
- * @property {Object} countries blackbox
- */
-export const Locale = new SimpleSchema({
-  continents: {
-    type: Object,
-    blackbox: true
-  },
-  countries: {
-    type: Object,
-    blackbox: true
-  }
-});
-
-registerSchema("Locale", Locale);
-
-/**
- * @name Languages
- * @memberof Schemas
- * @type {SimpleSchema}
- * @property {String} label required
- * @property {String} i18n required
- * @property {Boolean} enabled, default value: `true`
- */
-export const Languages = new SimpleSchema({
-  label: {
-    type: String
-  },
-  i18n: {
-    type: String
-  },
-  enabled: {
-    type: Boolean,
-    defaultValue: true
-  }
-});
-
-registerSchema("Languages", Languages);
-
-/**
  * @name ShopTheme
  * @memberof Schemas
  * @type {SimpleSchema}
@@ -178,49 +224,38 @@ export const ShopTheme = new SimpleSchema({
 registerSchema("ShopTheme", ShopTheme);
 
 /**
- * @name BrandAsset
+ * @name StorefrontUrls
  * @memberof Schemas
  * @type {SimpleSchema}
- * @property {String} mediaId optional
- * @property {String} type optional
+ * @property {String[]} storefrontHomeUrlShop optional
+ * @property {String[]} storefrontOrderUrl optional
+ * @property {String[]} storefrontOrdersUrl optional
+ * @property {String[]} storefrontAccountProfileUrl optional
  */
-export const BrandAsset = new SimpleSchema({
-  mediaId: {
+export const StorefrontUrls = new SimpleSchema({
+  storefrontHomeUrl: {
     type: String,
+    label: "Storefront Home URL",
     optional: true
   },
-  type: {
+  storefrontOrderUrl: {
     type: String,
+    label: "Storefront single order URL (can include `:orderReferenceId` and `:orderToken` in string)",
+    optional: true
+  },
+  storefrontOrdersUrl: {
+    type: String,
+    label: "Storefront orders URL (can include `:accountId` in string)",
+    optional: true
+  },
+  storefrontAccountProfileUrl: {
+    type: String,
+    label: "Storefront Account Profile URL (can include `:accountId` in string)",
     optional: true
   }
 });
 
-registerSchema("BrandAsset", BrandAsset);
-
-/**
- * @name MerchantShop
- * @memberof Schemas
- * @type {SimpleSchema}
- * @property {String} _id Shop label
- * @property {String} slug Shop slug
- * @property {String} name Shop name
- */
-const MerchantShop = new SimpleSchema({
-  _id: {
-    type: String,
-    label: "Shop Label"
-  },
-  slug: {
-    type: String,
-    label: "Shop Slug"
-  },
-  name: {
-    type: String,
-    label: "Shop Name"
-  }
-});
-
-registerSchema("MerchantShop", MerchantShop);
+registerSchema("StorefrontUrls", StorefrontUrls);
 
 /**
  * @name Shop
@@ -266,6 +301,7 @@ registerSchema("MerchantShop", MerchantShop);
  * @property {Date} updatedAt optional
  * @property {Object[]} paymentMethods blackbox, default value: `[]`
  * @property {String[]} availablePaymentMethods default value: `[]`
+ * @property {Object[]} storefrontUrls optional
  * @property {Workflow} workflow optional
  */
 export const Shop = new SimpleSchema({
@@ -504,6 +540,11 @@ export const Shop = new SimpleSchema({
   "defaultNavigationTreeId": {
     type: String,
     optional: true
+  },
+  "storefrontUrls": {
+    type: StorefrontUrls,
+    optional: true,
+    defaultValue: {}
   }
 });
 
