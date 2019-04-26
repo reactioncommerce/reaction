@@ -35,6 +35,9 @@ export default (Component) => (
         const newNode = {};
         newNode.navigationItemId = node.id;
         newNode.expanded = node.expanded;
+        newNode.isVisible = node.isVisible;
+        newNode.isPrivate = node.isPrivate;
+        newNode.isSecondary = node.isSecondary;
 
         if (Array.isArray(node.children) && node.children.length) {
           newNode.items = this.sortableNavigationTreeToDraftItems(node.children);
