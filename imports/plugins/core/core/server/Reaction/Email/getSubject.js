@@ -35,7 +35,7 @@ export default function getSubject(template, language) {
 
     // use that template if found
     if (tmpl && tmpl.template) {
-      return tmpl.template;
+      return tmpl.subject;
     }
   }
 
