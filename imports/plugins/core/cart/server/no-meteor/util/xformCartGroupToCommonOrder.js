@@ -30,7 +30,8 @@ export default async function xformCartGroupToCommonOrder(cart, group, context) 
       const catalogProduct = catalogItemsInGroup.find((catalogItem) => catalogItem.product.productId === item.productId);
       if (catalogProduct) {
         const catalogVariant = findVariantInCatalogProduct(catalogProduct.product, item.variantId);
-        itemPrice = await context.queries.getVariantPrice(context, catalogVariant, currencyCode);
+        const variantPrice = await context.queries.getVariantPrice(context, catalogVariant, currencyCode);
+        itemPrice = variantPrice.price;
       }
     }
 
@@ -39,7 +40,10 @@ export default async function xformCartGroupToCommonOrder(cart, group, context) 
       attributes: item.attributes,
       isTaxable: item.isTaxable,
       parcel: item.parcel,
-      price: itemPrice,
+      price: {
+        amount: itemPrice,
+        currencyCode
+      },
       productId: item.productId,
       productVendor: item.productVendor,
       quantity: item.quantity,
