@@ -30,7 +30,7 @@ export default function getSubject(template, language) {
     // check database for a matching template using language param
     const tmpl = Templates.findOne({
       name: template,
-      language: language
+      language
     });
 
     // use that template if found
