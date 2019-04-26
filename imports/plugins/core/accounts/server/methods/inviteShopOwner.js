@@ -55,8 +55,11 @@ export default function inviteShopOwner(options, shopData) {
   const tpl = "accounts/inviteShopOwner";
   const subject = "accounts/inviteShopOwner/subject";
 
-  SSR.compileTemplate(tpl, Reaction.Email.getTemplate(tpl));
-  SSR.compileTemplate(subject, Reaction.Email.getSubject(tpl));
+  const account = Accounts.findOne({ userId }, { _id: 0, profile: 1 });
+  const language = account && account.profile && account.profile.language;
+
+  SSR.compileTemplate(tpl, Reaction.Email.getTemplate(tpl, language));
+  SSR.compileTemplate(subject, Reaction.Email.getSubject(tpl, language));
 
   const emailLogo = Reaction.Email.getShopLogo(primaryShop);
   const token = Random.id();

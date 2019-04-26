@@ -82,8 +82,9 @@ export default function sendWelcomeEmail(shopId, userId, token) {
 
   const tpl = "accounts/sendWelcomeEmail";
   const subject = "accounts/sendWelcomeEmail/subject";
-  SSR.compileTemplate(tpl, Reaction.Email.getTemplate(tpl));
-  SSR.compileTemplate(subject, Reaction.Email.getSubject(tpl));
+  const language = account && account.profile && account.profile.language;
+  SSR.compileTemplate(tpl, Reaction.Email.getTemplate(tpl, language));
+  SSR.compileTemplate(subject, Reaction.Email.getSubject(tpl, language));
 
   Reaction.Email.send({
     to: userEmail,

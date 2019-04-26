@@ -1,7 +1,7 @@
 import _ from "lodash";
 import Logger from "@reactioncommerce/logger";
 import { SSR } from "meteor/meteorhacks:ssr";
-import { Shops } from "/lib/collections";
+import { Accounts, Shops } from "/lib/collections";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
 import formatMoney from "/imports/utils/formatMoney";
 import { Media } from "/imports/plugins/core/files/server";
@@ -65,6 +65,7 @@ function formatDateForEmail(date) {
 /**
  * @summary Sends an email about an order.
  * @param {Object} order - The order document
+ * @param {String} userId - id of user to whome sendOrder is sent
  * @param {String} [action] - The action triggering the email
  * @returns {Boolean} True if sent; else false
  */
@@ -269,8 +270,11 @@ export default function sendOrderEmail(order, action) {
     subject = `orders/${order.workflow.status}/subject`;
   }
 
-  SSR.compileTemplate(tpl, Reaction.Email.getTemplate(tpl));
-  SSR.compileTemplate(subject, Reaction.Email.getSubject(tpl));
+  const account = Accounts.findOne({ emails: order.emails }, { _id: 0, profile: 1 });
+  const language = account && account.profile && account.profile.language;
+
+  SSR.compileTemplate(tpl, Reaction.Email.getTemplate(tpl, language));
+  SSR.compileTemplate(subject, Reaction.Email.getSubject(tpl, language));
 
   Reaction.Email.send({
     to: order.email,
