@@ -21,6 +21,9 @@ export const navigationItemFragment = gql`
 export const navigationTreeItemFragment = gql`
   fragment NavigationTreeItem on NavigationTreeItem {
     expanded
+    isVisible
+    isPrivate
+    isSecondary
     navigationItem {
       ...NavigationItem
     }
