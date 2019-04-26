@@ -13,6 +13,9 @@ extend type Query {
     last: ConnectionLimitInt,
     sortOrder: SortOrder = desc,
 
+    "Show hidden items"
+    showHiddenItems: Boolean,
+
     "By default, items are sorted by when they were created, newest first. Set this to sort by one of the other allowed fields"
     sortBy: NavigationItemSortByField = createdAt
   ): NavigationItemConnection
@@ -141,6 +144,15 @@ type NavigationTreeItem {
   "Whether the navigation item should display its children"
   expanded: Boolean
 
+  "Whether the navigation ttem should shown in query results for customers and admins"
+  isVisible: Boolean
+
+  "Whether the navigation item should be hidden from customers"
+  isPrivate: Boolean
+
+  "Whether the navigaton item is a secondary navigation item"
+  isSecondary: Boolean
+
   "The child navigation items"
   items: [NavigationTreeItem]
 
@@ -266,6 +278,14 @@ input NavigationTreeItemInput {
   "Whether the navigation item should display its children"
   expanded: Boolean
 
+  "Whether the navigation ttem should shown in query results for customers and admins"
+  isVisible: Boolean
+
+  "Whether the navigation item should be hidden from customers"
+  isPrivate: Boolean
+
+  "Whether the navigaton item is a secondary navigation item"
+  isSecondary: Boolean
   "The child navigation items"
   items: [NavigationTreeItemInput]
 
