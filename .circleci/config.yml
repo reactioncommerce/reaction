@@ -5,8 +5,8 @@ version: 2
 # typing. See http://yaml.org/type/merge.html for details.
 defaults: &defaults
   environment:
-    - DOCKER_REPOSITORY: "reactioncommerce/reaction"
-    - DOCKER_NAMESPACE: "reactioncommerce"
+    - DOCKER_REPOSITORY: "sportsdirect/reaction"
+    - DOCKER_NAMESPACE: "sportsdirect"
     - DOCKER_NAME: "reaction"
     - GLOBAL_CACHE_VERSION: "v2"
     - TOOL_NODE_FLAGS: "--max-old-space-size=4096"
@@ -19,6 +19,13 @@ jobs:
     <<: *defaults
     steps:
       - checkout
+      - add_ssh_keys:
+          fingerprints:
+            - "5c:d7:27:76:d6:6b:f3:b2:db:04:7f:a8:0e:bd:8b:a6"
+      - run:
+          name: Checkout git submodules
+          command: |
+            git submodule update --init --recursive
       - setup_remote_docker:
           docker_layer_caching: true
       - restore_cache:
@@ -82,6 +89,13 @@ jobs:
     <<: *defaults
     steps:
       - checkout
+      - add_ssh_keys:
+          fingerprints:
+            - "5c:d7:27:76:d6:6b:f3:b2:db:04:7f:a8:0e:bd:8b:a6"
+      - run:
+          name: Checkout git submodules
+          command: |
+            git submodule update --init --recursive
       - setup_remote_docker:
           docker_layer_caching: true
       - attach_workspace:
@@ -161,6 +175,46 @@ jobs:
             .circleci/bin/ecs-deploy-feature-branch.sh
           no_output_timeout: 30m
 
+  deploy-to-ecs-ems-develop-branch:
+    <<: *defaults
+    steps:
+      - checkout
+      - run:
+          name: Deploy new task definition and update service in ECS
+          command: |
+            .circleci/bin/ecs-deploy-ems-develop-branch.sh
+          no_output_timeout: 30m
+
+  deploy-to-ecs-bobs-develop-branch:
+    <<: *defaults
+    steps:
+      - checkout
+      - run:
+          name: Deploy new task definition and update service in ECS
+          command: |
+            .circleci/bin/ecs-deploy-bobs-develop-branch.sh
+          no_output_timeout: 30m
+
+  deploy-staging:
+    <<: *defaults
+    steps:
+      - checkout
+      - run:
+          name: Update helm chart for reaction-core service in kubernetes staging env.
+          command: |
+            .circleci/bin/deploy-staging.sh
+          no_output_timeout: 30m
+
+  deploy-int:
+    <<: *defaults
+    steps:
+      - checkout
+      - run:
+          name: Update helm chart for reaction-core service in kubernetes int env.
+          command: |
+            .circleci/bin/deploy-int.sh
+          no_output_timeout: 30m
+
   deploy-docs:
     <<: *defaults
     steps:
@@ -189,7 +243,7 @@ jobs:
               exit 1;
             fi
 
-  eslint:
+  lint-javascript:
     <<: *defaults
     steps:
       - checkout
@@ -304,7 +358,7 @@ jobs:
           command: |
             .circleci/bin/calibre-deploy.sh ${STAGING_URL} Frankfurt
 
-  dockerfile-lint:
+  lint-dockerfile:
     <<: *defaults
     docker:
       - image: hadolint/hadolint:v1.6.6-6-g254b4ff
@@ -357,12 +411,24 @@ jobs:
               fi
             fi
 
+  validate-secrets:
+    docker:
+      - image: "stedolan/jq"
+        entrypoint: "/bin/bash"
+    steps:
+      - checkout
+      - run:
+          command: "./bin/validate-secrets"
+
 workflows:
   version: 2
   build_and_test:
     jobs:
-      - build
-      - dockerfile-lint
+      - build:
+          requires:
+            - validate-secrets
+      - lint-dockerfile
+      - validate-secrets
       - test-app:
           requires:
             - build
@@ -378,7 +444,7 @@ workflows:
       - test-metrics:
           requires:
             - deploy-to-ecs-release-branch
-      - eslint:
+      - lint-javascript:
           requires:
             - build
       - graphql-lint:
@@ -392,9 +458,14 @@ workflows:
           context: reaction-publish-docker
           requires:
             - docker-build
+            - lint-javascript
+            - test-app
+            - test-unit
+            - test-integration
       - deploy-to-ecs-release-branch:
           requires:
             - docker-push
+            - validate-secrets
           filters:
             branches:
               only: /^release-2.*/
@@ -404,6 +475,18 @@ workflows:
       #     filters:
       #       branches:
       #         only: /^feat.*/
+      # - deploy-to-ecs-ems-develop-branch:
+      #     requires:
+      #       - docker-push
+      #     filters:
+      #       branches:
+      #         only: /^develop.*/
+      # - deploy-to-ecs-bobs-develop-branch:
+      #     requires:
+      #       - docker-push
+      #     filters:
+      #       branches:
+      #         only: /^develop.*/
       - deploy-docs:
           requires:
             - test-unit
@@ -416,3 +499,25 @@ workflows:
           context: reaction-validation
           requires:
             - build
+      - approve-deploy-int:
+          type: approval
+          requires:
+            - docker-push
+            - validate-secrets
+          filters:
+            branches:
+              ignore: develop
+      - deploy-int:
+          requires:
+            - approve-deploy-int
+          filters:
+            branches:
+              ignore: develop
+      - deploy-staging:
+          requires:
+            - docker-push
+            - validate-secrets
+          filters:
+            branches:
+              only: develop
+      - validate-secrets

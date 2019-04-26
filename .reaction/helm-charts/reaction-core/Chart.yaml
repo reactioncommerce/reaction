@@ -1,0 +1,13 @@
+name: reactioncommerce
+version: 2.0
+description: ReactionCommerce
+keywords:
+- reactioncommerce
+home: https://reactioncommerce.com/
+sources:
+- https://github.com/reactioncommerce/reactioncommerce
+- https://github.com/reactioncommerce/chart-reactioncommerce
+icon: https://avatars1.githubusercontent.com/u/5605462?v=4&s=200
+maintainers:
+- name: Reaction Commerce
+  email: admin@reactioncommerce.com
