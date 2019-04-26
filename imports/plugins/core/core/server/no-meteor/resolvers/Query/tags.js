@@ -14,12 +14,12 @@ import { decodeShopOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/sh
  */
 
 /**
- * @name "Query.tags"
+ * @name Query/tags
  * @method
  * @memberof Tag/GraphQL
  * @summary Returns the tags for a shop
  * @param {Object} _ - unused
- * @param {TagConnectionArgs} args - arguments sent by the client {@link ConnectionArgs|See default connection arguments}
+ * @param {TagConnectionArgs} connectionArgs - arguments sent by the client {@link ConnectionArgs|See default connection arguments}
  * @param {Object} context - an object containing the per-request state
  * @param {Object} info Info about the GraphQL request
  * @return {Promise<Object[]>} Promise that resolves with array of Tag objects
@@ -31,5 +31,9 @@ export default async function tags(_, connectionArgs, context, info) {
 
   const query = await context.queries.tags(context, dbShopId, connectionArgs);
 
-  return getPaginatedResponse(query, connectionArgs, wasFieldRequested("totalCount", info));
+  return getPaginatedResponse(query, connectionArgs, {
+    includeHasNextPage: wasFieldRequested("pageInfo.hasNextPage", info),
+    includeHasPreviousPage: wasFieldRequested("pageInfo.hasPreviousPage", info),
+    includeTotalCount: wasFieldRequested("totalCount", info)
+  });
 }

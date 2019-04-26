@@ -130,7 +130,11 @@ export default async function arrayJoinPlusRemainingQuery({
           first: limit - nodes.length,
           sortBy: sortByForRemainingDocs,
           sortOrder: sortOrderForRemainingDocs
-        }, false);
+        }, {
+          includeHasNextPage: true,
+          includeHasPreviousPage: false,
+          includeTotalCount: false
+        });
 
         nodes.push(...result.nodes);
 
@@ -186,7 +190,11 @@ export default async function arrayJoinPlusRemainingQuery({
           last: limit,
           sortBy: sortByForRemainingDocs,
           sortOrder: sortOrderForRemainingDocs
-        }, false);
+        }, {
+          includeHasNextPage: true,
+          includeHasPreviousPage: true,
+          includeTotalCount: false
+        });
 
         ({ nodes } = result);
         ({ hasNextPage, hasPreviousPage } = result.pageInfo);
@@ -235,5 +243,5 @@ export default async function arrayJoinPlusRemainingQuery({
     ...connectionArgs,
     sortBy: sortByForRemainingDocs,
     sortOrder: "asc"
-  }, false);
+  });
 }

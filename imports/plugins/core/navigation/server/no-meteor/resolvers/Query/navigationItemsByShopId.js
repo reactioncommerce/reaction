@@ -2,7 +2,7 @@ import { getPaginatedResponse, wasFieldRequested } from "@reactioncommerce/react
 import { decodeShopOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/shop";
 
 /**
- * @name Query.navigationItemsByShopId
+ * @name Query/navigationItemsByShopId
  * @method
  * @memberof Navigation/GraphQL
  * @summary Get a paginated list of navigation items for a shop, as an operator
@@ -19,5 +19,9 @@ export default async function navigationItemsByShopId(_, args, context, info) {
 
   const query = await context.queries.navigationItemsByShopId(context, decodedShopId);
 
-  return getPaginatedResponse(query, connectionArgs, wasFieldRequested("totalCount", info));
+  return getPaginatedResponse(query, connectionArgs, {
+    includeHasNextPage: wasFieldRequested("pageInfo.hasNextPage", info),
+    includeHasPreviousPage: wasFieldRequested("pageInfo.hasPreviousPage", info),
+    includeTotalCount: wasFieldRequested("totalCount", info)
+  });
 }

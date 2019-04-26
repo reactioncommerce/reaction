@@ -73,5 +73,9 @@ export default async function catalogItems(_, args, context, info) {
     tagIds
   });
 
-  return getPaginatedResponse(query, connectionArgs, wasFieldRequested("totalCount", info));
+  return getPaginatedResponse(query, connectionArgs, {
+    includeHasNextPage: wasFieldRequested("pageInfo.hasNextPage", info),
+    includeHasPreviousPage: wasFieldRequested("pageInfo.hasPreviousPage", info),
+    includeTotalCount: wasFieldRequested("totalCount", info)
+  });
 }

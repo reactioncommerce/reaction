@@ -2,7 +2,7 @@ import { getPaginatedResponse, wasFieldRequested } from "@reactioncommerce/react
 import { decodeShopOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/shop";
 
 /**
- * @name "Query.administrators"
+ * @name Query/administrators
  * @method
  * @memberof Accounts/GraphQL
  * @summary find and return the administrators (users with "admin" or "owner" role) for a shop
@@ -17,5 +17,9 @@ export default async function administrators(_, { shopId, ...connectionArgs }, c
   const dbShopId = decodeShopOpaqueId(shopId);
 
   const query = await context.queries.shopAdministrators(context, dbShopId);
-  return getPaginatedResponse(query, connectionArgs, wasFieldRequested("totalCount", info));
+  return getPaginatedResponse(query, connectionArgs, {
+    includeHasNextPage: wasFieldRequested("pageInfo.hasNextPage", info),
+    includeHasPreviousPage: wasFieldRequested("pageInfo.hasPreviousPage", info),
+    includeTotalCount: wasFieldRequested("totalCount", info)
+  });
 }

@@ -17,5 +17,9 @@ export default async function tags({ _id }, connectionArgs, context, info) {
 
   const query = await context.queries.tags(context, dbShopId, connectionArgs);
 
-  return getPaginatedResponse(query, connectionArgs, wasFieldRequested("totalCount", info));
+  return getPaginatedResponse(query, connectionArgs, {
+    includeHasNextPage: wasFieldRequested("pageInfo.hasNextPage", info),
+    includeHasPreviousPage: wasFieldRequested("pageInfo.hasPreviousPage", info),
+    includeTotalCount: wasFieldRequested("totalCount", info)
+  });
 }

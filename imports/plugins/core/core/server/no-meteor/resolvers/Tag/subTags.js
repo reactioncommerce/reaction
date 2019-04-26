@@ -11,12 +11,12 @@ import { xformArrayToConnection } from "@reactioncommerce/reaction-graphql-xform
  */
 
 /**
- * @name "Tag.subTags"
+ * @name Tag/subTags
  * @method
  * @memberof Tag/GraphQL
  * @summary Returns the child tags for a tag
  * @param {Object} tag - Tag response from parent resolver
- * @param {SubTagConnectionArgs} args - arguments sent by the client {@link ConnectionArgs|See default connection arguments}
+ * @param {SubTagConnectionArgs} connectionArgs - arguments sent by the client {@link ConnectionArgs|See default connection arguments}
  * @param {Object} context - an object containing the per-request state
  * @param {Object} info Info about the GraphQL request
  * @return {Promise<Object[]>} Promise that resolves with array of Tag objects
@@ -26,5 +26,9 @@ export default async function subTags({ relatedTagIds }, connectionArgs, context
 
   const query = await context.queries.tagsByIds(context, relatedTagIds, connectionArgs);
 
-  return getPaginatedResponse(query, connectionArgs, wasFieldRequested("totalCount", info));
+  return getPaginatedResponse(query, connectionArgs, {
+    includeHasNextPage: wasFieldRequested("pageInfo.hasNextPage", info),
+    includeHasPreviousPage: wasFieldRequested("pageInfo.hasPreviousPage", info),
+    includeTotalCount: wasFieldRequested("totalCount", info)
+  });
 }

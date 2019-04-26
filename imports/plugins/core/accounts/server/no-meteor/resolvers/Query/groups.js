@@ -11,7 +11,7 @@ import { decodeShopOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/sh
  */
 
 /**
- * @name "Query.groups"
+ * @name Query/groups
  * @method
  * @memberof Accounts/GraphQL
  * @summary find and return the administrators (users with "admin" or "owner" role) for a shop
@@ -26,5 +26,9 @@ export default async function groups(_, { shopId, ...connectionArgs }, context, 
   const dbShopId = decodeShopOpaqueId(shopId);
 
   const query = await context.queries.groups(context, dbShopId);
-  return getPaginatedResponse(query, connectionArgs, wasFieldRequested("totalCount", info));
+  return getPaginatedResponse(query, connectionArgs, {
+    includeHasNextPage: wasFieldRequested("pageInfo.hasNextPage", info),
+    includeHasPreviousPage: wasFieldRequested("pageInfo.hasPreviousPage", info),
+    includeTotalCount: wasFieldRequested("totalCount", info)
+  });
 }

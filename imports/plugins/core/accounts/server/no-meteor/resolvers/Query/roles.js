@@ -2,7 +2,7 @@ import { getPaginatedResponse, wasFieldRequested } from "@reactioncommerce/react
 import { decodeShopOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/shop";
 
 /**
- * @name "Query.roles"
+ * @name Query/roles
  * @method
  * @memberof Accounts/GraphQL
  * @summary find and return the roles for a shop
@@ -18,5 +18,9 @@ export default async function roles(_, { shopId, ...connectionArgs }, context, i
 
   const query = await context.queries.roles(context, dbShopId);
 
-  return getPaginatedResponse(query, connectionArgs, wasFieldRequested("totalCount", info));
+  return getPaginatedResponse(query, connectionArgs, {
+    includeHasNextPage: wasFieldRequested("pageInfo.hasNextPage", info),
+    includeHasPreviousPage: wasFieldRequested("pageInfo.hasPreviousPage", info),
+    includeTotalCount: wasFieldRequested("totalCount", info)
+  });
 }
