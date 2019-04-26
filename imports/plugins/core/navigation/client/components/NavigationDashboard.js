@@ -74,7 +74,7 @@ class NavigationDashboard extends Component {
     this.setState({ isModalOpen: false });
   }
 
-  updateNavigationItem = (navigationItemDoc) => {
+  updateNavigationItem = (navigationItemDoc, sortableTreeNode) => {
     const { _id, draftData } = navigationItemDoc;
     const { content, url, isUrlRelative, shouldOpenInNewWindow, classNames } = draftData;
     const { value } = content.find((ct) => ct.language === "en");
@@ -86,7 +86,22 @@ class NavigationDashboard extends Component {
       shouldOpenInNewWindow,
       classNames
     };
-    this.setState({ isModalOpen: true, navigationItem, modalMode: "edit" });
+
+    // Add visibility flags from the navigation tree node
+    if (sortableTreeNode) {
+      const { node: navigationTreeItem } = sortableTreeNode;
+      navigationItem.isInNavigationTree = typeof navigationTreeItem === "object";
+      navigationItem.isVisible = navigationTreeItem.isVisible;
+      navigationItem.isPrivate = navigationTreeItem.isPrivate;
+      navigationItem.isSecondary = navigationTreeItem.isSecondary;
+    }
+
+    this.setState({
+      isModalOpen: true,
+      navigationItem,
+      sortableTreeNode,
+      modalMode: "edit"
+    });
   }
 
   render() {
@@ -106,7 +121,8 @@ class NavigationDashboard extends Component {
     const {
       isModalOpen,
       modalMode,
-      navigationItem
+      navigationItem,
+      sortableTreeNode
     } = this.state;
 
     const toolbarClassName = classnames({
@@ -144,8 +160,10 @@ class NavigationDashboard extends Component {
               deleteNavigationItem={deleteNavigationItem}
               mode={modalMode}
               navigationItem={navigationItem}
+              sortableTreeNode={sortableTreeNode}
               onCloseForm={this.handleCloseModal}
               updateNavigationItem={updateNavigationItem}
+              onSetSortableNavigationTree={onSetSortableNavigationTree}
             />
           </div>
         </Modal>
