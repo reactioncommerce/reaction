@@ -49,9 +49,7 @@ const NavigationItem = {
  * @property {Array} items Child navigation items
  */
 export const NavigationTreeItem = new SimpleSchema({
-  navigationItemId,
-  expanded,
-  items,
+  ...NavigationItem,
   "items.$": {
     type: new SimpleSchema({
       ...NavigationItem,
