@@ -16,6 +16,30 @@ const expanded = {
   optional: true
 };
 
+const isPrivate = {
+  type: Boolean,
+  optional: true
+};
+
+const isSecondary = {
+  type: Boolean,
+  optional: true
+};
+
+const isVisible = {
+  type: Boolean,
+  optional: true
+};
+
+const NavigationItem = {
+  navigationItemId,
+  expanded,
+  isVisible,
+  isPrivate,
+  isSecondary,
+  items
+};
+
 /**
  * @name NavigationTreeItem
  * @memberof Schemas
@@ -30,52 +54,37 @@ export const NavigationTreeItem = new SimpleSchema({
   items,
   "items.$": {
     type: new SimpleSchema({
-      navigationItemId,
-      expanded,
-      items,
+      ...NavigationItem,
       "items.$": {
         type: new SimpleSchema({
-          expanded,
-          navigationItemId,
-          items,
+          ...NavigationItem,
           "items.$": {
             type: new SimpleSchema({
-              expanded,
-              navigationItemId,
-              items,
+              ...NavigationItem,
               "items.$": {
                 type: new SimpleSchema({
-                  expanded,
-                  navigationItemId,
-                  items,
+                  ...NavigationItem,
                   "items.$": {
                     type: new SimpleSchema({
-                      expanded,
-                      navigationItemId,
-                      items,
+                      ...NavigationItem,
                       "items.$": {
                         type: new SimpleSchema({
-                          expanded,
-                          navigationItemId,
-                          items,
+                          ...NavigationItem,
                           "items.$": {
                             type: new SimpleSchema({
-                              expanded,
-                              navigationItemId,
-                              items,
+                              ...NavigationItem,
                               "items.$": {
                                 type: new SimpleSchema({
-                                  expanded,
-                                  navigationItemId,
-                                  items,
+                                  ...NavigationItem,
                                   "items.$": {
                                     type: new SimpleSchema({
-                                      expanded,
-                                      navigationItemId,
-                                      items,
+                                      ...NavigationItem,
                                       "items.$": {
                                         type: new SimpleSchema({
-                                          navigationItemId
+                                          navigationItemId,
+                                          isVisible,
+                                          isPrivate,
+                                          isSecondary
                                         })
                                       }
                                     })
