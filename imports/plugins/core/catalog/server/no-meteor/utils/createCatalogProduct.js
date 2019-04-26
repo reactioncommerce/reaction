@@ -252,10 +252,11 @@ export default async function createCatalogProduct(product, context) {
   const catalogProduct = await xformProduct({ collections, product, shop, variants });
 
   // Apply custom transformations from plugins.
-  getFunctionsOfType("publishProductToCatalog").forEach((customPublishFunc) => {
+  for (const customPublishFn of getFunctionsOfType("publishProductToCatalog")) {
     // Functions of type "publishProductToCatalog" are expected to mutate the provided catalogProduct.
-    customPublishFunc(catalogProduct, { context, product, shop, variants });
-  });
+    // eslint-disable-next-line no-await-in-loop
+    await customPublishFn(catalogProduct, { context, product, shop, variants });
+  }
 
   return catalogProduct;
 }
