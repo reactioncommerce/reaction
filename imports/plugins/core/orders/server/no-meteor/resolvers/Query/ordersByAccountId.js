@@ -1,4 +1,4 @@
-import { getPaginatedResponse } from "@reactioncommerce/reaction-graphql-utils";
+import { getPaginatedResponse, wasFieldRequested } from "@reactioncommerce/reaction-graphql-utils";
 import { decodeAccountOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/account";
 import { decodeShopOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/shop";
 
@@ -13,9 +13,10 @@ import { decodeShopOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/sh
  * @param {String} params.orderStatus - workflow status to limit search results
  * @param {String} args.shopIds - shop IDs to check for orders from
  * @param {Object} context - An object containing the per-request state
+ * @param {Object} info Info about the GraphQL request
  * @return {Promise<Object>|undefined} An Order object
  */
-export default async function ordersByAccountId(parentResult, args, context) {
+export default async function ordersByAccountId(parentResult, args, context, info) {
   const { accountId, orderStatus, shopIds: opaqueShopIds, ...connectionArgs } = args;
 
   const shopIds = opaqueShopIds && opaqueShopIds.map(decodeShopOpaqueId);
@@ -26,5 +27,5 @@ export default async function ordersByAccountId(parentResult, args, context) {
     shopIds
   });
 
-  return getPaginatedResponse(query, connectionArgs);
+  return getPaginatedResponse(query, connectionArgs, wasFieldRequested("totalCount", info));
 }

@@ -1,4 +1,4 @@
-import { getPaginatedResponse } from "@reactioncommerce/reaction-graphql-utils";
+import { getPaginatedResponse, wasFieldRequested } from "@reactioncommerce/reaction-graphql-utils";
 import { decodeShopOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/shop";
 
 /**
@@ -9,13 +9,14 @@ import { decodeShopOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/sh
  * @param {Object} _ - unused
  * @param {ConnectionArgs} args - an object of all arguments that were sent by the client
  * @param {Object} context - an object containing the per-request state
+ * @param {Object} info Info about the GraphQL request
  * @return {Promise<Object[]>} Promise that resolves with array of user Roles objects
  */
-export default async function roles(_, { shopId, ...connectionArgs }, context) {
+export default async function roles(_, { shopId, ...connectionArgs }, context, info) {
   // Transform ID from base64
   const dbShopId = decodeShopOpaqueId(shopId);
 
   const query = await context.queries.roles(context, dbShopId);
 
-  return getPaginatedResponse(query, connectionArgs);
+  return getPaginatedResponse(query, connectionArgs, wasFieldRequested("totalCount", info));
 }

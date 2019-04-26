@@ -1,4 +1,4 @@
-import { getPaginatedResponse } from "@reactioncommerce/reaction-graphql-utils";
+import { getPaginatedResponse, wasFieldRequested } from "@reactioncommerce/reaction-graphql-utils";
 import { xformArrayToConnection } from "@reactioncommerce/reaction-graphql-xforms/connection";
 
 /**
@@ -11,11 +11,11 @@ import { xformArrayToConnection } from "@reactioncommerce/reaction-graphql-xform
  * @param {Object} context - an object containing the per-request state
  * @return {Promise<Object[]>} Promise that resolves with array of Tag objects
  */
-export default async function tags(product, connectionArgs, context) {
+export default async function tags(product, connectionArgs, context, info) {
   const { tagIds } = product;
   if (!tagIds || tagIds.length === 0) return xformArrayToConnection(connectionArgs, []);
 
   const query = await context.queries.tagsByIds(context, tagIds, connectionArgs);
 
-  return getPaginatedResponse(query, connectionArgs);
+  return getPaginatedResponse(query, connectionArgs, wasFieldRequested("totalCount", info));
 }

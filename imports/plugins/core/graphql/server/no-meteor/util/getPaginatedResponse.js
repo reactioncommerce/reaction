@@ -14,14 +14,19 @@ import getMongoSort from "./getMongoSort";
  *   based on GraphQL resolver arguments.
  * @param {Cursor} mongoCursor Node MongoDB Cursor instance. Will be mutated.
  * @param {Object} args Connection arguments from GraphQL query
+ * @param {Boolean} [includeTotalCount] Whether to return the `totalCount`. Default is `true`. Set this to
+ *   `false` if you don't need it to avoid an extra database command.
  * @return {Promise<Object>} `{ nodes, pageInfo, totalCount }`
  */
-async function getPaginatedResponse(mongoCursor, args) {
+async function getPaginatedResponse(mongoCursor, args, includeTotalCount = true) {
   const { sortBy, sortOrder } = args;
   const baseFilter = mongoCursor.cmd.query;
 
   // Get the total count, prior to adding before/after filtering
-  const totalCount = await mongoCursor.clone().count();
+  let totalCount = null;
+  if (includeTotalCount) {
+    totalCount = await mongoCursor.clone().count();
+  }
 
   // Get a MongoDB sort object
   const sort = getMongoSort({ sortBy, sortOrder });
