@@ -6,14 +6,17 @@ import Grid from "@material-ui/core/Grid";
 import { Form } from "reacto-form";
 import withStyles from "@material-ui/core/styles/withStyles";
 import Button from "@material-ui/core/Button";
+import Divider from "@material-ui/core/Divider";
 import IconButton from "@material-ui/core/IconButton";
 import CloseIcon from "mdi-material-ui/Close";
 import Checkbox from "@reactioncommerce/components/Checkbox/v1";
 import ErrorsBlock from "@reactioncommerce/components/ErrorsBlock/v1";
 import Field from "@reactioncommerce/components/Field/v1";
+import Select from "@reactioncommerce/components/Select/v1";
 import TextInput from "@reactioncommerce/components/TextInput/v1";
 import { i18next } from "/client/api";
 import ConfirmDialog from "/imports/client/ui/components/ConfirmDialog";
+import { changeNodeAtPath } from "react-sortable-tree";
 
 const styles = (theme) => ({
   closeButtonContainer: {
@@ -49,6 +52,8 @@ class NavigationItemForm extends Component {
     mode: PropTypes.oneOf(["create", "edit"]),
     navigationItem: PropTypes.object,
     onCloseForm: PropTypes.func,
+    onSetSortableNavigationTree: PropTypes.func,
+    sortableTreeNode: PropTypes.object,
     updateNavigationItem: PropTypes.func
   }
 
@@ -57,8 +62,8 @@ class NavigationItemForm extends Component {
   handleFormValidate = (doc) => navigationItemValidator(navigationItemFormSchema.clean(doc));
 
   handleFormSubmit = (input) => {
-    const { createNavigationItem, mode, navigationItem, onCloseForm, updateNavigationItem } = this.props;
-    const { name, url, isUrlRelative, shouldOpenInNewWindow, classNames } = input;
+    const { createNavigationItem, mode, navigationItem, onCloseForm, updateNavigationItem, sortableTreeNode, onSetSortableNavigationTree } = this.props;
+    const { name, url, isUrlRelative, isVisible, isPrivate, isSecondary, shouldOpenInNewWindow, classNames } = input;
 
     const navigationItemUpdate = {
       draftData: {
@@ -91,6 +96,19 @@ class NavigationItemForm extends Component {
         }
       });
     }
+
+    const newSortableNavigationTree = changeNodeAtPath({
+      ...sortableTreeNode,
+      newNode: {
+        ...sortableTreeNode.node,
+        isVisible,
+        isPrivate,
+        isSecondary
+      }
+    });
+
+    onSetSortableNavigationTree(newSortableNavigationTree);
+
     return onCloseForm();
   }
 
@@ -170,6 +188,23 @@ class NavigationItemForm extends Component {
                 <TextInput id={classNamesInputId} name="classNames" />
                 <ErrorsBlock names={["classNames"]} />
               </Field>
+              {navigationItem && navigationItem.isInNavigationTree &&
+                <Fragment>
+                  <Divider />
+                  <Field name="isVisible" helpText={i18next.t("navigationItem.isVisibleHelpText")}>
+                    <Checkbox name="isVisible" label={i18next.t("navigationItem.isVisible")} />
+                    <ErrorsBlock names={["isVisible"]} />
+                  </Field>
+                  <Field name="isPrivate" helpText={i18next.t("navigationItem.isPrivateHelpText")}>
+                    <Checkbox name="isPrivate" label={i18next.t("navigationItem.isPrivate")} />
+                    <ErrorsBlock names={["isPrivate"]} />
+                  </Field>
+                  <Field name="isSecondary" helpText={i18next.t("navigationItem.isSecondaryHelpText")}>
+                    <Checkbox name="isSecondary" label={i18next.t("navigationItem.isSecondary")} />
+                    <ErrorsBlock names={["isSecondary"]} />
+                  </Field>
+                </Fragment>
+              }
             </Form>
           </Grid>
         </Grid>
