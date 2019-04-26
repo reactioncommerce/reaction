@@ -4,6 +4,7 @@ import { Meteor } from "meteor/meteor";
 import { Accounts as MeteorAccounts } from "meteor/accounts-base";
 import { check, Match } from "meteor/check";
 import { SSR } from "meteor/meteorhacks:ssr";
+import { Accounts } from "/lib/collections";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
 import ReactionError from "@reactioncommerce/reaction-error";
 import getCurrentUserName from "../no-meteor/util/getCurrentUserName";
