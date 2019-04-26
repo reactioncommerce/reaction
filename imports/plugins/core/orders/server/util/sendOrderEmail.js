@@ -65,7 +65,6 @@ function formatDateForEmail(date) {
 /**
  * @summary Sends an email about an order.
  * @param {Object} order - The order document
- * @param {String} userId - id of user to whome sendOrder is sent
  * @param {String} [action] - The action triggering the email
  * @returns {Boolean} True if sent; else false
  */
