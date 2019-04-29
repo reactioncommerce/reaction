@@ -12,7 +12,6 @@ import CloseIcon from "mdi-material-ui/Close";
 import Checkbox from "@reactioncommerce/components/Checkbox/v1";
 import ErrorsBlock from "@reactioncommerce/components/ErrorsBlock/v1";
 import Field from "@reactioncommerce/components/Field/v1";
-import Select from "@reactioncommerce/components/Select/v1";
 import TextInput from "@reactioncommerce/components/TextInput/v1";
 import { i18next } from "/client/api";
 import ConfirmDialog from "/imports/client/ui/components/ConfirmDialog";
