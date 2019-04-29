@@ -42,7 +42,10 @@ afterAll(() => {
 
 test("calls applyPaginationToMongoCursor with mongo cursor and args", async () => {
   await getPaginatedResponse(mockCursor, mockArgs);
-  expect(applyPaginationToMongoCursorMock).toHaveBeenCalledWith(mockCursor, mockArgs, 5);
+  expect(applyPaginationToMongoCursorMock).toHaveBeenCalledWith(mockCursor, mockArgs, {
+    includeHasNextPage: true,
+    includeHasPreviousPage: true
+  });
 });
 
 test("calls applyBeforeAfterToFilter with correct args", async () => {
