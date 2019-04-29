@@ -84,7 +84,7 @@ class NavigationTreeContainer extends Component {
           }}
           generateNodeProps={this.generateNodeProps}
           treeData={sortableNavigationTree || []}
-          maxDepth={3}
+          maxDepth={10}
           onChange={onSetSortableNavigationTree}
           theme={SortableTheme}
           dndType={"CARD"}

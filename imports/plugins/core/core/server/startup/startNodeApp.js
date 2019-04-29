@@ -11,9 +11,10 @@ import { SubscriptionServer } from "subscriptions-transport-ws";
 import ReactionNodeApp from "/imports/node-app/core/ReactionNodeApp";
 import { NoMeteorMedia } from "/imports/plugins/core/files/server";
 import { setBaseContext } from "/imports/plugins/core/graphql/server/getGraphQLContextInMeteorMethod";
-import coreSchemas from "../no-meteor/schemas";
-import coreResolvers from "../no-meteor/resolvers";
+import coreMutations from "../no-meteor/mutations";
 import coreQueries from "../no-meteor/queries";
+import coreResolvers from "../no-meteor/resolvers";
+import coreSchemas from "../no-meteor/schemas";
 import { functionsByType, mutations, queries, resolvers, schemas } from "../no-meteor/pluginRegistration";
 import runMeteorMethodWithContext from "../util/runMeteorMethodWithContext";
 
@@ -29,13 +30,17 @@ export default async function startNodeApp() {
   const { ROOT_URL } = process.env;
   const mongodb = MongoInternals.NpmModules.mongodb.module;
 
-  // Adding core resolvers this way because `core` is not a typical plugin and doesn't call registerPackage
-  // Note that coreResolvers comes first so that plugin resolvers can overwrite core resolvers if necessary
-  const finalResolvers = merge({}, coreResolvers, resolvers);
+  // Adding core mutations this way because `core` is not a typical plugin and doesn't call registerPackage
+  // Note that coreMutations comes first so that plugin resolvers can overwrite core mutations if necessary
+  const finalMutations = merge({}, coreMutations, mutations);
 
   // Adding core queries this way because `core` is not a typical plugin and doesn't call registerPackage
   // Note that coreQueries comes first so that plugin queries can overwrite core queries if necessary
   const finalQueries = merge({}, coreQueries, queries);
+
+  // Adding core resolvers this way because `core` is not a typical plugin and doesn't call registerPackage
+  // Note that coreResolvers comes first so that plugin resolvers can overwrite core resolvers if necessary
+  const finalResolvers = merge({}, coreResolvers, resolvers);
 
   const app = new ReactionNodeApp({
     addCallMeteorMethod(context) {
@@ -48,7 +53,7 @@ export default async function startNodeApp() {
       createUser(options) {
         return Accounts.createUser(options);
       },
-      mutations,
+      mutations: finalMutations,
       queries: finalQueries,
       rootUrl: ROOT_URL
     },

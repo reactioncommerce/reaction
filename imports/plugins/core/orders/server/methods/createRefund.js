@@ -7,7 +7,7 @@ import accounting from "accounting-js";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
 import getGraphQLContextInMeteorMethod from "/imports/plugins/core/graphql/server/getGraphQLContextInMeteorMethod";
 import { getPaymentMethodConfigByName } from "/imports/plugins/core/payments/server/no-meteor/registration";
-import sendOrderEmail from "../util/sendOrderEmail";
+import sendOrderEmail from "../no-meteor/util/sendOrderEmail";
 
 /**
  * @name orders/refunds/create
@@ -90,5 +90,5 @@ export default function createRefund(orderId, paymentId, amount) {
   }));
 
   // Send email to notify customer of a refund
-  sendOrderEmail(order, "refunded");
+  sendOrderEmail(context, order, "refunded");
 }
