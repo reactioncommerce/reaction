@@ -23,7 +23,7 @@ function main() {
 }
 
 function file_ends_with_newline() {
-    [[ $(tail -c1 "${env_file}" | wc -l) -gt 0 ]]
+  [[ $(tail -c1 "${env_file}" | wc -l) -gt 0 ]]
 }
 
 function add_new_env_vars() {
