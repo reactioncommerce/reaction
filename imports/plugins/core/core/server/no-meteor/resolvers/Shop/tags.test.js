@@ -16,17 +16,15 @@ test("calls queries.tags and returns a partial connection", async () => {
 
   const result = await tagsResolver({ _id: base64ID }, {}, {
     queries: { tags }
-  });
+  }, { fieldNodes: [] });
 
   expect(result).toEqual({
     nodes: mockTags,
     pageInfo: {
       endCursor: "c3",
-      hasNextPage: false,
-      hasPreviousPage: false,
       startCursor: "a1"
     },
-    totalCount: 3
+    totalCount: null
   });
 
   expect(tags).toHaveBeenCalled();
