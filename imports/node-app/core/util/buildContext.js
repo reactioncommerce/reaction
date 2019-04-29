@@ -32,6 +32,9 @@ export default async function buildContext(context, request = {}) {
     context.accountId = (account && account._id) || null;
   }
 
+  // DEPRECATED. Client requests should include a shopId if one is needed.
+  context.shopId = await context.queries.primaryShopId(context.collections);
+
   // Add a curried hasPermission tied to the current user (or to no user)
   context.userHasPermission = getHasPermissionFunctionForUser(context.user);
 
