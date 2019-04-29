@@ -22,12 +22,22 @@ function main() {
   add_new_env_vars
 }
 
+function file_ends_with_newline() {
+    [[ $(tail -c1 "${env_file}" | wc -l) -gt 0 ]]
+}
+
 function add_new_env_vars() {
   # create .env and set perms if it does not exist
   [[ ! -f "${env_file}" ]] && {
     touch "${env_file}"
     chmod 0600 "${env_file}"
   }
+
+  # if the file does not end with new line add a new line to it
+  if ! file_ends_with_newline
+    then
+      echo "" >> "${env_file}"
+  fi
 
   find . -name .env.example -type f -print0 |
     (xargs -0 grep -Ehv '^\s*#' || true) |
