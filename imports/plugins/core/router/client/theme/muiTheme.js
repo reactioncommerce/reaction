@@ -122,6 +122,9 @@ export const rawMuiTheme = {
         padding: `${defaultSpacingUnit}px ${defaultSpacingUnit * 2}px`,
         textTransform: "initial"
       },
+      text: {
+        padding: `${defaultSpacingUnit}px ${defaultSpacingUnit * 2}px`
+      },
       outlined: {
         padding: `${defaultSpacingUnit}px ${defaultSpacingUnit * 2}px`
       },
