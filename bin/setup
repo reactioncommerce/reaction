@@ -34,9 +34,8 @@ function add_new_env_vars() {
   }
 
   # if the file does not end with new line add a new line to it
-  if ! file_ends_with_newline
-    then
-      echo "" >> "${env_file}"
+  if ! file_ends_with_newline; then
+    echo "" >> "${env_file}"
   fi
 
   find . -name .env.example -type f -print0 |
