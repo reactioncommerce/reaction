@@ -19,7 +19,7 @@ type Shop implements Node {
   currency: Currency
 
   "The default navigation tree for this shop"
-  defaultNavigationTree(language: String!): NavigationTree
+  defaultNavigationTree(language: String!, shouldIncludeSecondary: Boolean = false): NavigationTree
 
   "The ID of the shop's default navigation tree"
   defaultNavigationTreeId: String
