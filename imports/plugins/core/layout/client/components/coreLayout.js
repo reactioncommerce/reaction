@@ -49,7 +49,6 @@ function CoreLayout({ classes, location }) {
     // If the user is logged in, which makes them no longer anonymous
     // But they aren't an admin, then give them a logout button.
     if (!Reaction.hasPermission(["anonymous"])) {
-
       // If the user is logged in but not a admin redirect to the storefront.
       if (!Reaction.hasAdminAccess()) {
         const { storefrontUrls } = Reaction.getCurrentShop();
