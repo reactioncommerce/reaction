@@ -1,14 +1,4 @@
-import SimpleSchema from "simpl-schema";
 import { decodeNavigationTreeOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/navigationTree";
-
-const argsSchema = new SimpleSchema({
-  id: {
-    type: String
-  },
-  language: {
-    type: String
-  }
-});
 
 /**
  * @name Query.navigationTreeById
@@ -25,8 +15,6 @@ const argsSchema = new SimpleSchema({
  */
 export default async function navigationTreeById(_, args, context) {
   const { id, language, shouldIncludeSecondary } = args;
-
-  argsSchema.validate({ id, language });
 
   const navigationTreeId = decodeNavigationTreeOpaqueId(id);
 
