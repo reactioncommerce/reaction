@@ -13,7 +13,7 @@ test("calls NavigationTrees.findOne and returns a navigation tree", async () => 
   mockContext.collections.NavigationTrees.findOne.mockReturnValueOnce(mockNavigationTree);
   const result = await navigationTreeByIdQuery(mockContext, {
     language: "en",
-    navigatonTreeId: mockNavigationTreeId
+    navigationTreeId: mockNavigationTreeId
   });
   expect(result).toBe(mockNavigationTree);
   expect(mockContext.collections.NavigationTrees.findOne).toHaveBeenCalledWith(query);
