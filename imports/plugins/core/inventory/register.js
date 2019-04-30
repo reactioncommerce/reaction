@@ -1,7 +1,9 @@
 import Reaction from "/imports/plugins/core/core/server/Reaction";
 import config from "./server/config";
+import queries from "./server/no-meteor/queries";
 import startup from "./server/no-meteor/startup";
 import schemas from "./server/no-meteor/schemas";
+import publishProductToCatalog from "./server/no-meteor/utils/publishProductToCatalog";
 import xformCatalogBooleanFilters from "./server/no-meteor/utils/xformCatalogBooleanFilters";
 
 const publishedProductFields = [];
@@ -38,9 +40,11 @@ Reaction.registerPackage({
   name: "reaction-inventory",
   autoEnable: true,
   functionsByType: {
+    publishProductToCatalog: [publishProductToCatalog],
     startup: [startup],
     xformCatalogBooleanFilters: [xformCatalogBooleanFilters]
   },
+  queries,
   graphQL: {
     schemas
   },
