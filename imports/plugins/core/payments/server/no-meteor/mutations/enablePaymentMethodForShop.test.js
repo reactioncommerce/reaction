@@ -36,7 +36,11 @@ test("throws if userHasPermission returns false", async () => {
   mockContext.userHasPermission.mockReturnValue(false);
   mockShopById.mockReturnValue(fakeShop);
 
-  await expect(enablePaymentMethodForShop(mockContext, mockContext.shopId)).rejects.toThrowErrorMatchingSnapshot();
+  await expect(enablePaymentMethodForShop(mockContext, {
+    shopId: fakeShop._id,
+    paymentMethodName: "does not exist",
+    isEnabled: true
+  })).rejects.toThrowErrorMatchingSnapshot();
 });
 
 test("errors on missing arguments", async () => {

@@ -10,9 +10,10 @@ import { SubscriptionServer } from "subscriptions-transport-ws";
 import ReactionNodeApp from "/imports/node-app/core/ReactionNodeApp";
 import { NoMeteorMedia } from "/imports/plugins/core/files/server";
 import { setBaseContext } from "/imports/plugins/core/graphql/server/getGraphQLContextInMeteorMethod";
-import coreSchemas from "../no-meteor/schemas";
-import coreResolvers from "../no-meteor/resolvers";
+import coreMutations from "../no-meteor/mutations";
 import coreQueries from "../no-meteor/queries";
+import coreResolvers from "../no-meteor/resolvers";
+import coreSchemas from "../no-meteor/schemas";
 import runMeteorMethodWithContext from "../util/runMeteorMethodWithContext";
 
 // For Meteor app tests
@@ -40,6 +41,7 @@ export default async function startNodeApp({ onAppInstanceCreated }) {
         return Accounts.createUser(options);
       },
       queries: coreQueries,
+      mutations: coreMutations,
       rootUrl: ROOT_URL
     },
     graphQL: {

@@ -1,6 +1,6 @@
-import getTopLevelVariant from "/imports/plugins/core/catalog/server/no-meteor/utils/getTopLevelVariant";
-import getProductInventoryAvailableToSellQuantity from "./getProductInventoryAvailableToSellQuantity.js";
+import getProductInventoryAvailableToSellQuantity from "./getProductInventoryAvailableToSellQuantity";
 import getProductInventoryInStockQuantity from "./getProductInventoryInStockQuantity";
+import getTopLevelVariant from "./getTopLevelVariant";
 import getVariantInventoryAvailableToSellQuantity from "./getVariantInventoryAvailableToSellQuantity";
 import getVariantInventoryInStockQuantity from "./getVariantInventoryInStockQuantity";
 

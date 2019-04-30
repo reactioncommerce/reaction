@@ -130,6 +130,10 @@ export default async function arrayJoinPlusRemainingQuery({
           first: limit - nodes.length,
           sortBy: sortByForRemainingDocs,
           sortOrder: sortOrderForRemainingDocs
+        }, {
+          includeHasNextPage: true,
+          includeHasPreviousPage: false,
+          includeTotalCount: false
         });
 
         nodes.push(...result.nodes);
@@ -186,6 +190,10 @@ export default async function arrayJoinPlusRemainingQuery({
           last: limit,
           sortBy: sortByForRemainingDocs,
           sortOrder: sortOrderForRemainingDocs
+        }, {
+          includeHasNextPage: true,
+          includeHasPreviousPage: true,
+          includeTotalCount: false
         });
 
         ({ nodes } = result);

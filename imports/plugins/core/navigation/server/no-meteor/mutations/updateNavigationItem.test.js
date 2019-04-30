@@ -26,6 +26,8 @@ test("calls NavigationItems.findOne and updateOne, and returns the updated navig
     .mockReturnValueOnce(Promise.resolve(mockNavigationItem))
     .mockReturnValueOnce(Promise.resolve(mockNavigationItem));
 
+  mockContext.queries.primaryShopId = jest.fn().mockName("queries.primaryShopId").mockReturnValueOnce(Promise.resolve("FAKE_SHOP_ID"));
+
   const result = await updateNavigationItemMutation(mockContext, "n1", { metadata: "{ \"tagId\": \"t1\" }" });
 
   expect(mockContext.collections.NavigationItems.findOne).toHaveBeenCalledTimes(2);

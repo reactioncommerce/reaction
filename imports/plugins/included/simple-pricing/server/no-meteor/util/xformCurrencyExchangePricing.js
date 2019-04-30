@@ -12,9 +12,8 @@ import getDisplayPrice from "./getDisplayPrice";
  * @param {Object} context Object containing per-request state
  * @returns {Object} New pricing object with converted prices
  */
-export default async function xformCurrencyExchangePricing(pricing, currencyCode, context) {
-  const { shopId } = context;
-  const shop = await context.queries.shopById(context, shopId);
+export async function xformCurrencyExchangePricing(pricing, currencyCode, context) {
+  const shop = await context.queries.primaryShop(context);
 
   if (!currencyCode) {
     currencyCode = shop.currency; // eslint-disable-line no-param-reassign

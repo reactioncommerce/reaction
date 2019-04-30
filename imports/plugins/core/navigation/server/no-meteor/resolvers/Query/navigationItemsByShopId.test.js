@@ -49,17 +49,15 @@ test("calls queries.navigationItemsByShopId and returns a partial connection", a
 
   const result = await navigationItemsByShopIdResolver({}, { shopId: opaqueShopId }, {
     queries: { navigationItemsByShopId }
-  });
+  }, { fieldNodes: [] });
 
   expect(result).toEqual({
     nodes: mockNavigationItems,
     pageInfo: {
       endCursor: "n2",
-      hasNextPage: false,
-      hasPreviousPage: false,
       startCursor: "n1"
     },
-    totalCount: 2
+    totalCount: null
   });
 
   expect(navigationItemsByShopId).toHaveBeenCalled();

@@ -22,17 +22,15 @@ test("calls queries.catalogItems and returns a partial connection", async () => 
     tagIds
   }, {
     queries: { catalogItems }
-  });
+  }, { fieldNodes: [] });
 
   expect(result).toEqual({
     nodes: mockItems,
     pageInfo: {
       endCursor: "c3",
-      hasNextPage: false,
-      hasPreviousPage: false,
       startCursor: "a1"
     },
-    totalCount: 3
+    totalCount: null
   });
 
   expect(catalogItems).toHaveBeenCalled();
