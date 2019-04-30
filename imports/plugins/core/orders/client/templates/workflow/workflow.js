@@ -1,8 +1,18 @@
 import { Template } from "meteor/templating";
 import { Reaction } from "/client/api";
 import { Orders } from "/lib/collections";
+import OrderCard from "/imports/plugins/core/orders/client/containers/orderCardContainer";
 
 Template.coreOrderWorkflow.helpers({
+  /**
+   * @summary Reaction Order component
+   * @return {Component} React OrderCard component
+   * @ignore
+   */
+  orderCard() {
+    return OrderCard;
+  },
+
   /**
    * @summary Creates an Object with order id and a fulfillment object
    * @param  {String} orderId - An order id

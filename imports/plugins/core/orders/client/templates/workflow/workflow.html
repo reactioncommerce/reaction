@@ -1,4 +1,8 @@
 <template name="coreOrderWorkflow">
+  <div>
+    {{> React component=orderCard }}
+  </div>
+
   <div aria-multiselectable="true" class="panel-group" id="core-order-workflow-accordion" role="tablist">
     {{#with order}}
       {{#each shipment in shipping}}
