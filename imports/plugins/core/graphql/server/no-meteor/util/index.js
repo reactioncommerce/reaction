@@ -10,3 +10,4 @@ export { default as namespaces } from "./namespaces";
 export { default as optimizeIdOnly } from "./optimizeIdOnly";
 export { default as resolveAccountFromAccountId } from "./resolveAccountFromAccountId";
 export { default as resolveShopFromShopId } from "./resolveShopFromShopId";
+export { default as wasFieldRequested } from "./wasFieldRequested";
