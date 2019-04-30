@@ -5,11 +5,11 @@ import { decodeShopOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/sh
  * @method
  * @memberof SystemInformation/GraphQL
  * @summary get system information for reaction site
- * @param {ConnectionArgs} args An object of all arguments that were sent by the client
  * @param {Object} context An object containing the per-request state
- * @return {<Object>} System Information Object
+ * @param {ConnectionArgs} args An object of all arguments that were sent by the client
+ * @return {Promise<Object>} System Information Object
  */
 export default async function systemInformation(_, args, context) {
   const dbShopId = decodeShopOpaqueId(args.shopId);
-  return context.queries.systemInformation(dbShopId, context);
+  return context.queries.systemInformation(context, dbShopId);
 }
