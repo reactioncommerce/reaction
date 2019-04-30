@@ -182,7 +182,6 @@ class AuthContainer extends Component {
         <Components.UpdatePassword
           {...this.props}
           messages={this.state.formMessages}
-          onCompleteRoute={"/account/login?action=signin"}
           onError={this.hasError}
           loginFormMessages={this.formMessages}
           isLoading={this.state.isLoading}
