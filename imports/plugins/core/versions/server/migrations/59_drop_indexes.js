@@ -1,12 +1,16 @@
 import { Migrations } from "meteor/percolate:migrations";
+import { MongoInternals } from "meteor/mongo";
 import Logger from "@reactioncommerce/logger";
 import rawCollections from "/imports/collections/rawCollections";
+
+const { db } = MongoInternals.defaultRemoteCollectionDriver().mongo;
+
+const Inventory = db.collection("Inventory");
 
 const {
   Accounts,
   Cart,
   Discounts,
-  Inventory,
   Orders,
   Packages,
   Products,
