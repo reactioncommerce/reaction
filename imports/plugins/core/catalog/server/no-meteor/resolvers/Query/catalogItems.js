@@ -1,4 +1,4 @@
-import { getPaginatedResponse } from "@reactioncommerce/reaction-graphql-utils";
+import { getPaginatedResponse, wasFieldRequested } from "@reactioncommerce/reaction-graphql-utils";
 import { decodeShopOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/shop";
 import { decodeTagOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/tag";
 import ReactionError from "@reactioncommerce/reaction-error";
@@ -15,9 +15,10 @@ import xformCatalogBooleanFilters from "../../utils/catalogBooleanFilters";
  * @param {String[]} [args.tagIds] - limit to catalog items with this array of tags
  * @param {Object[]} [args.booleanFilters] - Array of boolean filter objects with `name` and `value`
  * @param {Object} context - an object containing the per-request state
+ * @param {Object} info Info about the GraphQL request
  * @return {Promise<Object>} A CatalogItemConnection object
  */
-export default async function catalogItems(_, args, context) {
+export default async function catalogItems(_, args, context, info) {
   const { shopIds: opaqueShopIds, tagIds: opaqueTagIds, booleanFilters, ...connectionArgs } = args;
 
   const shopIds = opaqueShopIds && opaqueShopIds.map(decodeShopOpaqueId);
@@ -72,5 +73,9 @@ export default async function catalogItems(_, args, context) {
     tagIds
   });
 
-  return getPaginatedResponse(query, connectionArgs);
+  return getPaginatedResponse(query, connectionArgs, {
+    includeHasNextPage: wasFieldRequested("pageInfo.hasNextPage", info),
+    includeHasPreviousPage: wasFieldRequested("pageInfo.hasPreviousPage", info),
+    includeTotalCount: wasFieldRequested("totalCount", info)
+  });
 }

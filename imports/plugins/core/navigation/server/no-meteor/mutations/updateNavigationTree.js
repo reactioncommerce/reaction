@@ -11,11 +11,13 @@ import decodeNavigationTreeItemIds from "../util/decodeNavigationTreeItemIds";
  * @return {Promise<Object>} Updated navigation tree
  */
 export default async function updateNavigationTree(context, _id, navigationTree) {
-  const { collections, userHasPermission, shopId } = context;
+  const { collections, userHasPermission } = context;
   const { NavigationTrees } = collections;
 
   NavigationTreeSchema.validate(navigationTree);
   const { draftItems, name } = navigationTree;
+
+  const shopId = await context.queries.primaryShopId(collections);
 
   if (userHasPermission(["core"], shopId) === false) {
     throw new ReactionError("access-denied", "You do not have permission to update a navigation tree");
