@@ -14,14 +14,28 @@ import getMongoSort from "./getMongoSort";
  *   based on GraphQL resolver arguments.
  * @param {Cursor} mongoCursor Node MongoDB Cursor instance. Will be mutated.
  * @param {Object} args Connection arguments from GraphQL query
+ * @param {Object} options Options
+ * @param {Boolean} [options.includeTotalCount] Whether to return the `totalCount`. Default is `true`. Set this to
+ *   `false` if you don't need it to avoid an extra database command.
+ * @param {Boolean} [options.includeHasPreviousPage] Whether to return the `pageInfo.hasPreviousPage`.
+ *   Default is `true`. Set this to `false` if you don't need it to avoid an extra database command.
+ * @param {Boolean} [options.includeHasNextPage] Whether to return the `pageInfo.hasNextPage`.
+ *   Default is `true`. Set this to `false` if you don't need it to avoid an extra database command.
  * @return {Promise<Object>} `{ nodes, pageInfo, totalCount }`
  */
-async function getPaginatedResponse(mongoCursor, args) {
+async function getPaginatedResponse(mongoCursor, args, {
+  includeHasNextPage = true,
+  includeHasPreviousPage = true,
+  includeTotalCount = true
+} = {}) {
   const { sortBy, sortOrder } = args;
   const baseFilter = mongoCursor.cmd.query;
 
   // Get the total count, prior to adding before/after filtering
-  const totalCount = await mongoCursor.clone().count();
+  let totalCount = null;
+  if (includeTotalCount) {
+    totalCount = await mongoCursor.clone().count();
+  }
 
   // Get a MongoDB sort object
   const sort = getMongoSort({ sortBy, sortOrder });
@@ -56,16 +70,20 @@ async function getPaginatedResponse(mongoCursor, args) {
   // Apply these to the cursor
   mongoCursor.filter(updatedFilter).sort(sort);
 
-  // Get the new count after applying before/after
-  const totalCountAfterOrBefore = await mongoCursor.clone().count();
-
-  const { hasPreviousPage, hasNextPage } = await applyPaginationToMongoCursor(mongoCursor, args, totalCountAfterOrBefore);
+  // Skip calculating pageInfo if it wasn't requested. Saves a db count command.
+  const { hasPreviousPage, hasNextPage } = await applyPaginationToMongoCursor(mongoCursor, args, {
+    includeHasNextPage,
+    includeHasPreviousPage
+  });
 
   // Figure out proper hasNext/hasPrevious
-  const pageInfo = {
-    hasPreviousPage: hasPreviousPage === null ? hasMore : hasPreviousPage,
-    hasNextPage: hasNextPage === null ? hasMore : hasNextPage
-  };
+  const pageInfo = {};
+  if (includeHasNextPage) {
+    pageInfo.hasNextPage = hasNextPage === null ? hasMore : hasNextPage;
+  }
+  if (includeHasPreviousPage) {
+    pageInfo.hasPreviousPage = hasPreviousPage === null ? hasMore : hasPreviousPage;
+  }
 
   const nodes = await mongoCursor.toArray();
   const count = nodes.length;

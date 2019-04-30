@@ -77,7 +77,7 @@ const testShop = {
 
 const testContext = {
   queries: {
-    shopById() {
+    primaryShop() {
       return testShop;
     }
   }
