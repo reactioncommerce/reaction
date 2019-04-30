@@ -287,11 +287,11 @@ input NavigationTreeItemInput {
   "Whether the navigation item should be hidden from customers"
   isPrivate: Boolean
 
-  "Whether the navigation ttem should shown in query results for customers and admins"
-  isVisible: Boolean
-
   "Whether the navigaton item is a secondary navigation item"
   isSecondary: Boolean
+
+  "Whether the navigation ttem should shown in query results for customers and admins"
+  isVisible: Boolean
 
   "The child navigation items"
   items: [NavigationTreeItemInput]
