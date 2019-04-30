@@ -1,6 +1,15 @@
 extend type Query {
   "Returns a navigation tree by its ID in the specified language"
-  navigationTreeById(id: ID!, language: String!): NavigationTree
+  navigationTreeById(
+    "The ID of the navigation tee"
+    id: ID!,
+
+    "Navigation language"
+    language: String!,
+
+    "Set to true if you want to include secondary navigation items along with the primary items"
+    shouldIncludeSecondary: Boolean = false
+  ): NavigationTree
 
   "Returns the navigation items for a shop"
   navigationItemsByShopId(
@@ -12,9 +21,6 @@ extend type Query {
     first: ConnectionLimitInt,
     last: ConnectionLimitInt,
     sortOrder: SortOrder = desc,
-
-    "Show hidden items"
-    showHiddenItems: Boolean,
 
     "By default, items are sorted by when they were created, newest first. Set this to sort by one of the other allowed fields"
     sortBy: NavigationItemSortByField = createdAt
