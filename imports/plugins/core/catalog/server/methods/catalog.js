@@ -15,10 +15,6 @@ import getGraphQLContextInMeteorMethod from "/imports/plugins/core/graphql/serve
 import hashProduct from "../no-meteor/mutations/hashProduct";
 import getProductPriceRange from "../no-meteor/utils/getProductPriceRange";
 import getVariants from "../no-meteor/utils/getVariants";
-import hasChildVariant from "../no-meteor/utils/hasChildVariant";
-import isSoldOut from "/imports/plugins/core/inventory/server/no-meteor/utils/isSoldOut";
-import isLowQuantity from "/imports/plugins/core/inventory/server/no-meteor/utils/isLowQuantity";
-import isBackorder from "/imports/plugins/core/inventory/server/no-meteor/utils/isBackorder";
 
 /* eslint new-cap: 0 */
 /* eslint no-loop-func: 0 */
@@ -51,11 +47,7 @@ function updateVariantProductField(variants, field, value) {
  * @type {string[]}
  */
 const toDenormalize = [
-  "price",
-  "inventoryInStock",
-  "lowInventoryWarningThreshold",
-  "inventoryPolicy",
-  "inventoryManagement"
+  "price"
 ];
 
 /**
@@ -211,55 +203,21 @@ function copyMedia(newId, variantOldId, variantNewId) {
  * @function denormalize
  * @private
  * @description With flattened model we do not want to get variant docs in
- * `products` publication, but we need some data from variants to display price,
- * quantity, etc. That's why we are denormalizing these properties into product
+ * `products` publication, but we need some data from variants to display price.
+ * That's why we are denormalizing these properties into product
  * doc. Also, this way should have a speed benefit comparing the way where we
  * could dynamically build denormalization inside `products` publication.
  * @summary update product denormalized properties if variant was updated or
  * removed
  * @param {String} id - product _id
- * @param {String} field - type of field. Could be:
- * "price",
- * "inventoryInStock",
- * "inventoryManagement",
- * "inventoryPolicy",
- * "lowInventoryWarningThreshold"
  * @since 0.11.0
  * @return {Number} - number of successful update operations. Should be "1".
  */
-function denormalize(id, field) {
-  const doc = Products.findOne(id);
-  let variants;
-  if (doc.type === "simple") {
-    variants = Promise.await(getVariants(id, rawCollections, true));
-  } else if (doc.type === "variant" && doc.ancestors.length === 1) {
-    variants = Promise.await(getVariants(id, rawCollections));
-  }
+function denormalize(id) {
   const update = {};
 
-  switch (field) {
-    case "inventoryPolicy":
-    case "inventoryInStock":
-    case "inventoryManagement":
-      Object.assign(update, {
-        isSoldOut: Promise.await(isSoldOut(variants, rawCollections)),
-        isLowQuantity: Promise.await(isLowQuantity(variants, rawCollections)),
-        isBackorder: Promise.await(isBackorder(variants, rawCollections))
-      });
-      break;
-    case "lowInventoryWarningThreshold":
-      Object.assign(update, {
-        isLowQuantity: Promise.await(isLowQuantity(variants, rawCollections))
-      });
-      break;
-    default: {
-      // "price" is object with range, min, max
-      const priceObject = Promise.await(getProductPriceRange(id, rawCollections));
-      Object.assign(update, {
-        price: priceObject
-      });
-    }
-  }
+  // "price" is object with range, min, max
+  update.price = Promise.await(getProductPriceRange(id, rawCollections));
 
   Products.update(
     id,
@@ -272,43 +230,6 @@ function denormalize(id, field) {
       }
     }
   );
-}
-
-/**
- * flushQuantity
- * @private
- * @summary if variant `inventoryInStock` not zero, function update it to
- * zero. This needed in case then option with it's own `inventoryInStock`
- * creates to top-level variant. In that case top-level variant should display
- * sum of his options `inventoryInStock` fields.
- * @param {String} id - variant _id
- * @return {Number} - collection update results
- */
-function flushQuantity(id) {
-  const variant = Products.findOne(id);
-  // if variant already have descendants, quantity should be 0, and we don't
-  // need to do all next actions
-  if (variant.inventoryInStock === 0) {
-    return 1; // let them think that we have one successful operation here
-  }
-
-  const productUpdate = Products.update(
-    {
-      _id: id
-    },
-    {
-      $set: {
-        inventoryInStock: 0
-      }
-    },
-    {
-      selector: {
-        type: "variant"
-      }
-    }
-  );
-
-  return productUpdate;
 }
 
 /**
@@ -484,8 +405,6 @@ Meteor.methods({
       }
       delete clone.updatedAt;
       delete clone.createdAt;
-      delete clone.inventoryInStock;
-      delete clone.lowInventoryWarningThreshold;
 
       copyMedia(productId, oldId, clone._id);
 
@@ -556,16 +475,10 @@ Meteor.methods({
     const isOption = ancestors.length > 1;
     if (isOption) {
       Object.assign(newVariant, {
-        title: `${parent.title} - Untitled option`,
-        price: 0.0
+        optionTitle: "Untitled",
+        price: 0.0,
+        title: `${parent.title} - Untitled`
       });
-    }
-
-    // if we are inserting child variant to top-level variant, we need to remove
-    // all top-level's variant inventory records and flush it's quantity,
-    // because it will be hold sum of all it descendants quantities.
-    if (ancestors.length === 2) {
-      flushQuantity(parentId);
     }
 
     createProduct(newVariant, { product, parentVariant, isOption });
@@ -968,12 +881,6 @@ Meteor.methods({
 
     if (!Reaction.hasPermission("createProduct", this.userId, doc.shopId)) {
       throw new ReactionError("access-denied", "Access Denied");
-    }
-
-    if (field === "inventoryInStock" && value === "") {
-      if (!Promise.await(hasChildVariant(_id, rawCollections))) {
-        throw new ReactionError("invalid", "Inventory Quantity is required when no child variants");
-      }
     }
 
     const { type } = doc;
