@@ -6,6 +6,7 @@ import queries from "./queries";
 import resolvers from "./resolvers";
 import schemas from "./schemas";
 import filesStartup from "./filesStartup";
+import registerPlugins from "./registerPlugins";
 import "./extendSchemas";
 
 const { MONGO_URL, PORT = 3030, ROOT_URL } = process.env;
@@ -29,12 +30,15 @@ const app = new ReactionNodeApp({
   }
 });
 
-// Serve files in the /public folder statically
-app.expressApp.use(express.static("public"));
+registerPlugins(app)
+  .then(() => {
+    // Serve files in the /public folder statically
+    app.expressApp.use(express.static("public"));
 
-app.apolloServer.installSubscriptionHandlers(app.httpServer);
+    app.apolloServer.installSubscriptionHandlers(app.httpServer);
 
-app.start({ mongoUrl: MONGO_URL, port: PORT })
+    return app.start({ mongoUrl: MONGO_URL, port: PORT });
+  })
   .then(() => {
     Logger.info(`GraphQL listening at ${ROOT_URL}${app.apolloServer.graphqlPath}`);
     Logger.info(`GraphQL subscriptions ready at ${ROOT_URL.replace("http", "ws")}${app.apolloServer.subscriptionsPath}`);

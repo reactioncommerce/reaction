@@ -74,29 +74,6 @@ export const ImageInfo = new SimpleSchema({
 });
 
 /**
- * @name CatalogPriceRange
- * @memberof Schemas
- * @type {SimpleSchema}
- * @property {Number} max required
- * @property {Number} min required
- * @property {String} range required
- */
-export const CatalogPriceRange = new SimpleSchema({
-  max: {
-    type: Number,
-    label: "Max price"
-  },
-  min: {
-    type: Number,
-    label: "Min price"
-  },
-  range: {
-    type: String,
-    label: "Price range"
-  }
-});
-
-/**
  * @name SocialMetadata
  * @memberof Schemas
  * @type {SimpleSchema}
@@ -135,8 +112,6 @@ export const SocialMetadata = new SimpleSchema({
  * @property {Number} minOrderQuantity optional, default value: `1`
  * @property {String} optionTitle optional
  * @property {String} originCountry optional
- * @property {CatalogPriceRange} price required
- * @property {Object} pricing required
  * @property {ImageInfo} primaryImage optional
  * @property {String} shopId required
  * @property {String} sku optional
@@ -229,14 +204,6 @@ export const VariantBaseSchema = new SimpleSchema({
     label: "Origin country",
     optional: true
   },
-  "price": {
-    type: Number
-  },
-  "pricing": {
-    type: Object,
-    blackbox: true,
-    label: "Pricing"
-  },
   "primaryImage": {
     type: ImageInfo,
     label: "Primary Image",
@@ -318,8 +285,6 @@ export const CatalogVariantSchema = VariantBaseSchema.clone().extend({
  * @property {String} originCountry optional
  * @property {String} pageTitle optional
  * @property {ShippingParcel} parcel optional
- * @property {CatalogPriceRange} price optional
- * @property {Object} pricing required
  * @property {ImageInfo} primaryImage optional
  * @property {String} productId required
  * @property {String} productType optional
@@ -428,15 +393,6 @@ export const CatalogProduct = new SimpleSchema({
     type: ShippingParcel,
     label: "Shipping parcel",
     optional: true
-  },
-  "price": {
-    type: CatalogPriceRange,
-    optional: true
-  },
-  "pricing": {
-    type: Object,
-    blackbox: true,
-    label: "Pricing"
   },
   "primaryImage": {
     type: ImageInfo,

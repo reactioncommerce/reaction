@@ -1,18 +1,14 @@
 import Logger from "@reactioncommerce/logger";
 import getCatalogProductMedia from "./getCatalogProductMedia";
-import getPriceRange from "./getPriceRange";
-
 /**
  * @method
  * @summary Converts a variant Product document into the catalog schema for variants
  * @param {Object} variant The variant from Products collection
- * @param {Object} variantPriceInfo The result of calling getPriceRange for this price or all child prices
- * @param {String} shopCurrencyCode The shop currency code for the shop to which this product belongs
  * @param {Object} variantMedia Media for this specific variant
  * @private
  * @returns {Object} The transformed variant
  */
-export function xformVariant(variant, variantPriceInfo, shopCurrencyCode, variantMedia) {
+export function xformVariant(variant, variantMedia) {
   const primaryImage = variantMedia.find(({ toGrid }) => toGrid === 1) || null;
 
   return {
@@ -31,16 +27,6 @@ export function xformVariant(variant, variantPriceInfo, shopCurrencyCode, varian
     minOrderQuantity: variant.minOrderQuantity,
     optionTitle: variant.optionTitle,
     originCountry: variant.originCountry,
-    price: variant.price,
-    pricing: {
-      [shopCurrencyCode]: {
-        compareAtPrice: variant.compareAtPrice || null,
-        displayPrice: variantPriceInfo.range,
-        maxPrice: variantPriceInfo.max,
-        minPrice: variantPriceInfo.min,
-        price: typeof variant.price === "number" ? variant.price : null
-      }
-    },
     primaryImage,
     shopId: variant.shopId,
     sku: variant.sku,
@@ -58,16 +44,11 @@ export function xformVariant(variant, variantPriceInfo, shopCurrencyCode, varian
  * @param {Object} data Data obj
  * @param {Object} data.context App context
  * @param {Object} data.product The source product
- * @param {Object} data.shop The Shop document for the shop that owns the product
  * @param {Object[]} data.variants The Product documents for all variants of this product
  * @returns {Object} The CatalogProduct document
  */
-export async function xformProduct({ context, product, shop, variants }) {
+export async function xformProduct({ context, product, variants }) {
   const { collections } = context;
-
-  const shopCurrencyCode = shop.currency;
-  const shopCurrencyInfo = shop.currencies[shopCurrencyCode];
-
   const catalogProductMedia = await getCatalogProductMedia(product._id, collections);
   const primaryImage = catalogProductMedia.find(({ toGrid }) => toGrid === 1) || null;
 
@@ -87,34 +68,21 @@ export async function xformProduct({ context, product, shop, variants }) {
     }
   });
 
-  const prices = [];
   const catalogProductVariants = topVariants
     // We want to explicitly map everything so that new properties added to variant are not published to a catalog unless we want them
     .map((variant) => {
-      let priceInfo;
-      const variantOptions = options.get(variant._id);
-      if (variantOptions) {
-        const optionPrices = variantOptions.map((option) => option.price);
-        priceInfo = getPriceRange(optionPrices, shopCurrencyInfo);
-      } else {
-        priceInfo = getPriceRange([variant.price], shopCurrencyInfo);
-      }
-      prices.push(priceInfo.min, priceInfo.max);
-
       const variantMedia = catalogProductMedia.filter((media) => media.variantId === variant._id);
+      const newVariant = xformVariant(variant, variantMedia);
 
-      const newVariant = xformVariant(variant, priceInfo, shopCurrencyCode, variantMedia);
-
-      if (variantOptions) {
-        newVariant.options = variantOptions.map((option) => {
+      if (newVariant.options) {
+        newVariant.options = newVariant.options.map((option) => {
           const optionMedia = catalogProductMedia.filter((media) => media.variantId === option._id);
-          return xformVariant(option, getPriceRange([option.price], shopCurrencyInfo), shopCurrencyCode, optionMedia);
+          return xformVariant(option, optionMedia);
         });
       }
+
       return newVariant;
     });
-
-  const productPriceInfo = getPriceRange(prices, shopCurrencyInfo);
 
   return {
     // We want to explicitly map everything so that new properties added to product are not published to a catalog unless we want them
@@ -133,16 +101,6 @@ export async function xformProduct({ context, product, shop, variants }) {
     originCountry: product.originCountry,
     pageTitle: product.pageTitle,
     parcel: product.parcel,
-    price: product.price,
-    pricing: {
-      [shop.currency]: {
-        compareAtPrice: product.compareAtPrice || null,
-        displayPrice: productPriceInfo.range,
-        maxPrice: productPriceInfo.max,
-        minPrice: productPriceInfo.min,
-        price: null
-      }
-    },
     primaryImage,
     // The _id prop could change whereas this should always point back to the source product in Products collection
     productId: product._id,

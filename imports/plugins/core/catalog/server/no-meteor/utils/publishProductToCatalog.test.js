@@ -43,10 +43,6 @@ const mockVariants = [
     minOrderQuantity: 0,
     optionTitle: "Untitled Option",
     originCountry: "US",
-    price: 0,
-    pricing: {
-      blackbox: true
-    },
     shopId: internalShopId,
     sku: "sku",
     title: "Small Concrete Pizza",
@@ -79,10 +75,6 @@ const mockVariants = [
     minOrderQuantity: 5,
     optionTitle: "Untitled Option 2",
     originCountry: "US",
-    price: 2.99,
-    pricing: {
-      blackbox: true
-    },
     shopId: internalShopId,
     sku: "sku",
     title: "Small Concrete Pizza",
@@ -123,14 +115,6 @@ const mockProduct = {
     width: 5.55,
     height: 6.66,
     weight: 7.77
-  },
-  price: {
-    max: 5.99,
-    min: 2.99,
-    range: "2.99 - 5.99"
-  },
-  pricing: {
-    blackbox: true
   },
   productId: internalProductId,
   productType: "productType",
@@ -182,11 +166,6 @@ const updatedMockProduct = {
     weight: 7.77
   },
   pinterestMsg: "pinterestMessage",
-  price: {
-    max: 5.99,
-    min: 2.99,
-    range: "2.99 - 5.99"
-  },
   media: [
     {
       metadata: {

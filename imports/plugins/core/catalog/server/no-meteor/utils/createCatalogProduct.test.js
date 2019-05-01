@@ -47,7 +47,6 @@ const mockVariants = [
     minOrderQuantity: 0,
     optionTitle: "Untitled Option",
     originCountry: "US",
-    price: 0,
     shopId: internalShopId,
     sku: "sku",
     title: "Small Concrete Pizza",
@@ -83,7 +82,6 @@ const mockVariants = [
     minOrderQuantity: 0,
     optionTitle: "Awesome Soft Bike",
     originCountry: "US",
-    price: 992.0,
     shopId: internalShopId,
     sku: "sku",
     title: "One pound bag",
@@ -128,11 +126,6 @@ const mockProduct = {
     weight: 7.77
   },
   pinterestMsg: "pinterestMessage",
-  price: {
-    max: 5.99,
-    min: 2.99,
-    range: "2.99 - 5.99"
-  },
   media: [
     {
       metadata: {
@@ -218,20 +211,6 @@ const mockCatalogProduct = {
     length: 4.44,
     weight: 7.77,
     width: 5.55
-  },
-  price: {
-    max: 5.99,
-    min: 2.99,
-    range: "2.99 - 5.99"
-  },
-  pricing: {
-    USD: {
-      compareAtPrice: null,
-      displayPrice: "$992.00",
-      maxPrice: 992,
-      minPrice: 992,
-      price: null
-    }
   },
   primaryImage: {
     URLs: {
@@ -326,16 +305,6 @@ const mockCatalogProduct = {
       minOrderQuantity: 0,
       optionTitle: "Awesome Soft Bike",
       originCountry: "US",
-      price: 992,
-      pricing: {
-        USD: {
-          compareAtPrice: null,
-          displayPrice: "$992.00",
-          maxPrice: 992,
-          minPrice: 992,
-          price: 992
-        }
-      },
       primaryImage: {
         URLs: {
           large: "large/path/to/image.jpg",
@@ -358,16 +327,6 @@ const mockCatalogProduct = {
       width: 2
     }],
     originCountry: "US",
-    price: 0,
-    pricing: {
-      USD: {
-        compareAtPrice: 1100,
-        displayPrice: "$992.00",
-        maxPrice: 992,
-        minPrice: 992,
-        price: 0
-      }
-    },
     primaryImage: null,
     shopId: "123",
     sku: "sku",

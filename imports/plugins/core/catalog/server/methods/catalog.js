@@ -13,8 +13,6 @@ import appEvents from "/imports/node-app/core/util/appEvents";
 import rawCollections from "/imports/collections/rawCollections";
 import getGraphQLContextInMeteorMethod from "/imports/plugins/core/graphql/server/getGraphQLContextInMeteorMethod";
 import hashProduct from "../no-meteor/mutations/hashProduct";
-import getProductPriceRange from "../no-meteor/utils/getProductPriceRange";
-import getVariants from "../no-meteor/utils/getVariants";
 
 /* eslint new-cap: 0 */
 /* eslint no-loop-func: 0 */
@@ -26,29 +24,6 @@ import getVariants from "../no-meteor/utils/getVariants";
  *
  * @namespace Methods/Products
  */
-
-/**
- * updateVariantProductField
- * @private
- * @summary updates the variant
- * @param {Array} variants - the array of variants
- * @param {String} field - the field to update
- * @param {String} value - the value to add
- * @return {Array} - return an array
- */
-function updateVariantProductField(variants, field, value) {
-  return variants.map((variant) => Meteor.call("products/updateProductField", variant._id, field, value));
-}
-
-/**
- * @array toDenormalize
- * @private
- * @summary contains a list of fields, which should be denormalized
- * @type {string[]}
- */
-const toDenormalize = [
-  "price"
-];
 
 /**
  * @function createTitle
@@ -200,43 +175,11 @@ function copyMedia(newId, variantOldId, variantNewId) {
 }
 
 /**
- * @function denormalize
- * @private
- * @description With flattened model we do not want to get variant docs in
- * `products` publication, but we need some data from variants to display price.
- * That's why we are denormalizing these properties into product
- * doc. Also, this way should have a speed benefit comparing the way where we
- * could dynamically build denormalization inside `products` publication.
- * @summary update product denormalized properties if variant was updated or
- * removed
- * @param {String} id - product _id
- * @since 0.11.0
- * @return {Number} - number of successful update operations. Should be "1".
- */
-function denormalize(id) {
-  const update = {};
-
-  // "price" is object with range, min, max
-  update.price = Promise.await(getProductPriceRange(id, rawCollections));
-
-  Products.update(
-    id,
-    {
-      $set: update
-    },
-    {
-      selector: {
-        type: "simple"
-      }
-    }
-  );
-}
-
-/**
  * @function createProduct
  * @private
  * @description creates a product
  * @param {Object} props - initial product properties
+ * @param {Object} info - Other info
  * @return {Object} product - new product
  */
 function createProduct(props = null, info = {}) {
@@ -246,10 +189,10 @@ function createProduct(props = null, info = {}) {
     ...(props || {})
   };
 
-  if (newProductOrVariant.type === "variant") {
-    const userId = Reaction.getUserId();
-    const context = Promise.await(getGraphQLContextInMeteorMethod(userId));
+  const userId = Reaction.getUserId();
+  const context = Promise.await(getGraphQLContextInMeteorMethod(userId));
 
+  if (newProductOrVariant.type === "variant") {
     // Apply custom transformations from plugins.
     for (const customFunc of context.getFunctionsOfType("mutateNewVariantBeforeCreate")) {
       // Functions of type "mutateNewVariantBeforeCreate" are expected to mutate the provided variant.
@@ -265,13 +208,10 @@ function createProduct(props = null, info = {}) {
       }
     }
 
-    // Price is required on products
-    if (!newProductOrVariant.price) {
-      newProductOrVariant.price = {
-        range: "0.00 - 0.00",
-        min: 0,
-        max: 0
-      };
+    // Apply custom transformations from plugins.
+    for (const customFunc of context.getFunctionsOfType("mutateNewProductBeforeCreate")) {
+      // Functions of type "mutateNewProductBeforeCreate" are expected to mutate the provided variant.
+      Promise.await(customFunc(newProductOrVariant, { context, ...info }));
     }
   }
 
@@ -300,13 +240,6 @@ function updateCatalogProduct(userId, selector, modifier, validation) {
       Logger.error(`Error updating currentProductHash for product with ID ${product._id}`, error);
     });
 
-  if (product.ancestors && product.ancestors[0]) {
-    // If update is variant, recalculate top-level product's price range
-    const topLevelProductId = product.ancestors[0];
-    const price = Promise.await(getProductPriceRange(topLevelProductId, rawCollections));
-    Products.update({ _id: topLevelProductId }, { $set: { price } }, { selector: { type: 'simple' } });
-  }
-
   return result;
 }
 
@@ -329,10 +262,14 @@ Meteor.methods({
     check(variantId, String);
 
     // Check first if Variant exists and then if user has the right to clone it
-    const variant = Products.findOne(variantId);
+    const variant = Products.findOne({ _id: variantId });
     if (!variant) {
       throw new ReactionError("not-found", "Variant not found");
-    } else if (!Reaction.hasPermission("createProduct", this.userId, variant.shopId)) {
+    }
+
+    const authUserId = Reaction.getUserId();
+
+    if (!Reaction.hasPermission("createProduct", authUserId, variant.shopId)) {
       throw new ReactionError("access-denied", "Access Denied");
     }
 
@@ -356,10 +293,12 @@ Meteor.methods({
       ],
       type: "variant"
     }).fetch();
+
     // exit if we're trying to clone a ghost
-    if (variants.length === 0) {
-      return;
-    }
+    if (variants.length === 0) return [];
+
+    const context = Promise.await(getGraphQLContextInMeteorMethod(authUserId));
+
     const variantNewId = Random.id(); // for the parent variant
     // we need to make sure that top level variant will be cloned first, his
     // descendants later.
@@ -377,11 +316,7 @@ Meteor.methods({
         Object.assign(clone, sortedVariant, {
           _id: variantNewId,
           title: `${sortedVariant.title} - copy`,
-          optionTitle: `${sortedVariant.optionTitle} - copy`,
-          price: `${sortedVariant.price}` ? `${sortedVariant.price}` : `${variant.price}`,
-          compareAtPrice: `${sortedVariant.compareAtPrice}`
-            ? `${sortedVariant.compareAtPrice}`
-            : `${variant.compareAtPrice}`
+          optionTitle: `${sortedVariant.optionTitle} - copy`
         });
       } else {
         const parentIndex = sortedVariant.ancestors.indexOf(variantId);
@@ -393,10 +328,6 @@ Meteor.methods({
           ancestors: ancestorsClone,
           title: `${sortedVariant.title}`,
           optionTitle: `${sortedVariant.optionTitle}`,
-          price: `${sortedVariant.price}` ? `${sortedVariant.price}` : `${variant.price}`,
-          compareAtPrice: `${sortedVariant.compareAtPrice}`
-            ? `${sortedVariant.compareAtPrice}`
-            : `${variant.compareAtPrice}`,
           height: `${sortedVariant.height}`,
           width: `${sortedVariant.width}`,
           weight: `${sortedVariant.weight}`,
@@ -405,6 +336,12 @@ Meteor.methods({
       }
       delete clone.updatedAt;
       delete clone.createdAt;
+
+      // Apply custom transformations from plugins.
+      for (const customFunc of context.getFunctionsOfType("mutateNewVariantBeforeCreate")) {
+        // Functions of type "mutateNewVariantBeforeCreate" are expected to mutate the provided variant.
+        Promise.await(customFunc(clone, { context, isOption: clone.ancestors.length > 1 }));
+      }
 
       copyMedia(productId, oldId, clone._id);
 
@@ -476,7 +413,6 @@ Meteor.methods({
     if (isOption) {
       Object.assign(newVariant, {
         optionTitle: "Untitled",
-        price: 0.0,
         title: `${parent.title} - Untitled`
       });
     }
@@ -556,11 +492,6 @@ Meteor.methods({
         deletedBy: authUserId
       });
     });
-
-    // After variant was removed from product, we need to recalculate all
-    // denormalized fields
-    const productId = variantsToDelete[0].ancestors[0];
-    toDenormalize.forEach((field) => denormalize(productId, field));
 
     Logger.debug(`Flagged variant and all its children as deleted.`);
 
@@ -706,7 +637,6 @@ Meteor.methods({
    * @memberof Methods/Products
    * @method
    * @summary when we create a new product, we create it with an empty variant.
-   * all products have a variant with pricing and details
    * @return {String} The new product ID
    */
   "products/createProduct"() {
@@ -721,7 +651,6 @@ Meteor.methods({
     // Create a product variant
     createProduct({
       ancestors: [newSimpleProduct._id],
-      price: 0.0,
       title: "",
       type: "variant" // needed for multi-schema
     }, { product: newSimpleProduct, parentVariant: null, isOption: false });
@@ -926,15 +855,14 @@ Meteor.methods({
       throw new ReactionError("server-error", err.message);
     }
 
-    // If we get a result from the product update,
-    // denormalize and attach results to top-level product
+    // If we get a result from the product update, emit update events
     if (result === 1) {
-      if (type === "variant" && toDenormalize.indexOf(field) >= 0) {
-        denormalize(doc.ancestors[0], field);
+      if (type === "variant") {
+        appEvents.emit("afterVariantUpdate", { _id, field, value });
+      } else {
+        appEvents.emit("afterProductUpdate", { _id, field, value });
       }
     }
-
-    appEvents.emit("afterVariantUpdate", { _id, field, value });
 
     return update;
   },
@@ -958,7 +886,9 @@ Meteor.methods({
     const product = Products.findOne(productId);
     if (!product) {
       throw new ReactionError("not-found", "Product not found");
-    } else if (!Reaction.hasPermission("createProduct", this.userId, product.shopId)) {
+    }
+
+    if (!Reaction.hasPermission("createProduct", this.userId, product.shopId)) {
       throw new ReactionError("access-denied", "Access Denied");
     }
 
@@ -1311,89 +1241,6 @@ Meteor.methods({
   },
 
   /**
-   * @name products/publishProduct
-   * @memberof Methods/Products
-   * @method
-   * @summary publish (visibility) of product
-   * @todo hook into publishing flow
-   * @param {String} productId - productId
-   * @return {Boolean} product.isVisible
-   */
-  "products/publishProduct"(productId) {
-    check(productId, String);
-
-    // Check first if Product exists and then if user has the proper rights
-    const product = Products.findOne(productId);
-    if (!product) {
-      throw new ReactionError("not-found", "Product not found");
-    } else if (!Reaction.hasPermission("createProduct", this.userId, product.shopId)) {
-      throw new ReactionError("access-denied", "Access Denied");
-    }
-
-    const variants = Products.find({
-      ancestors: {
-        $in: [productId]
-      }
-    }).fetch();
-    let variantValidator = true;
-
-    if (typeof product === "object" && product.title && product.title.length > 1) {
-      if (variants.length > 0) {
-        variants.forEach((variant) => {
-          // if this is a top variant with children, we avoid it to check price
-          // because we using price of its children
-          const options = Promise.await(getVariants(variant._id, rawCollections));
-          if ((variant.ancestors.length === 1 && !options.length) || variant.ancestors.length !== 1) {
-            if (!(typeof variant.price === "number" && variant.price > 0)) {
-              variantValidator = false;
-            }
-          }
-          // if variant has no title
-          if (typeof variant.title === "string" && !variant.title.length) {
-            variantValidator = false;
-          }
-          if (typeof variant.optionTitle === "string" && !variant.optionTitle.length) {
-            variantValidator = false;
-          }
-        });
-      } else {
-        Logger.debug("invalid product visibility ", productId);
-        throw new ReactionError("invalid-parameter", "Variant is required");
-      }
-
-      if (!variantValidator) {
-        Logger.debug("invalid product visibility ", productId);
-        throw new ReactionError("invalid-parameter", "Some properties are missing.");
-      }
-
-      // update product visibility
-      Logger.debug("toggle product visibility ", product._id, !product.isVisible);
-
-      const res = updateCatalogProduct(
-        this.userId,
-        {
-          _id: product._id
-        },
-        {
-          $set: {
-            isVisible: !product.isVisible
-          }
-        },
-        {
-          selector: { type: "simple" }
-        }
-      );
-
-      // update product variants visibility
-      updateVariantProductField(variants, "isVisible", !product.isVisible);
-      // if collection updated we return new `isVisible` state
-      return res === 1 && !product.isVisible;
-    }
-    Logger.debug("invalid product visibility ", productId);
-    throw new ReactionError("invalid-parameter", "Bad Request");
-  },
-
-  /**
    * @name products/toggleVisibility
    * @memberof Methods/Products
    * @method
@@ -1406,7 +1253,7 @@ Meteor.methods({
     check(productId, String);
 
     // Check first if Product exists and then if user has the proper rights
-    const product = Products.findOne(productId);
+    const product = Products.findOne({ _id: productId });
     if (!product) {
       throw new ReactionError("not-found", "Product not found");
     }
@@ -1415,6 +1262,8 @@ Meteor.methods({
       throw new ReactionError("access-denied", "Access Denied");
     }
 
+    const newFieldValue = !product.isVisible;
+
     const res = updateCatalogProduct(
       this.userId,
       {
@@ -1422,7 +1271,7 @@ Meteor.methods({
       },
       {
         $set: {
-          isVisible: !product.isVisible
+          isVisible: newFieldValue
         }
       },
       {
@@ -1432,14 +1281,23 @@ Meteor.methods({
       }
     );
 
-    if (Array.isArray(product.ancestors) && product.ancestors.length) {
-      const updateId = product.ancestors[0] || product._id;
-      const updatedPriceRange = Promise.await(getProductPriceRange(updateId, rawCollections));
-
-      Meteor.call("products/updateProductField", updateId, "price", updatedPriceRange);
+    if (res === 1) {
+      if (product.type === "variant") {
+        appEvents.emit("afterVariantUpdate", {
+          _id: productId,
+          field: "isVisible",
+          value: newFieldValue
+        });
+      } else {
+        appEvents.emit("afterProductUpdate", {
+          _id: productId,
+          field: "isVisible",
+          value: newFieldValue
+        });
+      }
     }
 
     // if collection updated we return new `isVisible` state
-    return res === 1 && !product.isVisible;
+    return res === 1 && newFieldValue;
   }
 });
