@@ -1,6 +1,5 @@
 import { getHasPermissionFunctionForUser } from "/imports/plugins/core/accounts/server/no-meteor/hasPermission";
 import { getShopsUserHasPermissionForFunctionForUser } from "/imports/plugins/core/accounts/server/no-meteor/shopsUserHasPermissionFor";
-import getShopIdForContext from "/imports/plugins/core/accounts/server/no-meteor/getShopIdForContext";
 import getRootUrl from "/imports/plugins/core/core/server/util/getRootUrl";
 import getAbsoluteUrl from "/imports/plugins/core/core/server/util/getAbsoluteUrl";
 
@@ -33,8 +32,8 @@ export default async function buildContext(context, request = {}) {
     context.accountId = (account && account._id) || null;
   }
 
-  // Add the shopId for this request, either from the authenticated user's preferences or based on the ROOT_URL domain name
-  context.shopId = await getShopIdForContext(context);
+  // DEPRECATED. Client requests should include a shopId if one is needed.
+  context.shopId = await context.queries.primaryShopId(context.collections);
 
   // Add a curried hasPermission tied to the current user (or to no user)
   context.userHasPermission = getHasPermissionFunctionForUser(context.user);

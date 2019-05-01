@@ -18,17 +18,15 @@ test("calls queries.shopAdministrators and returns a partial connection", async 
   const result = await administratorsResolver({ _id: base64ID }, {}, {
     queries: { shopAdministrators },
     userId: "999"
-  });
+  }, { fieldNodes: [] });
 
   expect(result).toEqual({
     nodes: mockAccounts,
     pageInfo: {
       endCursor: "c3",
-      hasNextPage: false,
-      hasPreviousPage: false,
       startCursor: "a1"
     },
-    totalCount: 3
+    totalCount: null
   });
 
   expect(shopAdministrators).toHaveBeenCalled();
