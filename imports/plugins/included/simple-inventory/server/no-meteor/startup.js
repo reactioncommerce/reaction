@@ -1,6 +1,3 @@
-import getVariantInventoryNotAvailableToSellQuantity from "./utils/getVariantInventoryNotAvailableToSellQuantity";
-import updateParentInventoryFields from "./utils/updateParentInventoryFields";
-
 /**
  * @summary Called on startup
  * @param {Object} context Startup context
@@ -160,32 +157,5 @@ export default function startup(context) {
         }
       );
     });
-  });
-
-  appEvents.on("afterVariantUpdate", async ({ _id, field }) => {
-    // If the updated field was `inventoryInStock`, adjust `inventoryAvailableToSell` quantities
-    if (field === "inventoryInStock" || field === "lowInventoryWarningThreshold") {
-      const doc = await collections.Products.findOne({ _id });
-
-      // Get reserved inventory - the inventory currently in an unprocessed order
-      const reservedInventory = await getVariantInventoryNotAvailableToSellQuantity(doc, collections);
-
-      // Compute `inventoryAvailableToSell` as the inventory in stock minus the reserved inventory
-      const computedInventoryAvailableToSell = doc.inventoryInStock - reservedInventory;
-
-      await collections.Products.updateOne(
-        {
-          _id: doc._id
-        },
-        {
-          $set: {
-            inventoryAvailableToSell: computedInventoryAvailableToSell
-          }
-        }
-      );
-
-      // Update `inventoryInStock` and `inventoryAvailableToSell` on all parents of this variant / option
-      await updateParentInventoryFields(doc, collections);
-    }
   });
 }
