@@ -1,6 +1,4 @@
-import config from "../config";
 import getVariantInventoryNotAvailableToSellQuantity from "./utils/getVariantInventoryNotAvailableToSellQuantity";
-import updateCatalogProductInventoryStatus from "./utils/updateCatalogProductInventoryStatus";
 import updateParentInventoryFields from "./utils/updateParentInventoryFields";
 
 /**
@@ -52,14 +50,6 @@ export default function startup(context) {
           }
         );
       });
-
-      // Publish inventory updates to the Catalog
-      // Since variants share the same productId, we only want to update each product once
-      // So we use a Set to get all unique productIds that were affected, then loop through that data
-      const productIds = [...new Set(orderItems.map((item) => item.productId))];
-      productIds.forEach(async (productId) => {
-        await updateCatalogProductInventoryStatus(productId, collections);
-      });
     }
 
     // If order is not approved, the inventory hasn't been taken away from `inventoryInStock`, but has been taken away from `inventoryAvailableToSell`
@@ -92,14 +82,6 @@ export default function startup(context) {
             }
           }
         );
-      });
-
-      // Publish inventory updates to the Catalog
-      // Since variants share the same productId, we only want to update each product once
-      // So we use a Set to get all unique productIds that were affected, then loop through that data
-      const productIds = [...new Set(orderItems.map((item) => item.productId))];
-      productIds.forEach(async (productId) => {
-        await updateCatalogProductInventoryStatus(productId, collections);
       });
     }
   });
@@ -137,14 +119,6 @@ export default function startup(context) {
           }
         }
       );
-    });
-
-    // Publish inventory updates to the Catalog
-    // Since variants share the same productId, we only want to update each product once
-    // So we use a Set to get all unique productIds that were affected, then loop through that data
-    const productIds = [...new Set(orderItems.map((item) => item.productId))];
-    productIds.forEach(async (productId) => {
-      await updateCatalogProductInventoryStatus(productId, collections);
     });
   });
 
@@ -186,14 +160,6 @@ export default function startup(context) {
         }
       );
     });
-
-    // Publish inventory updates to the Catalog
-    // Since variants share the same productId, we only want to update each product once
-    // So we use a Set to get all unique productIds that were affected, then loop through that data
-    const productIds = [...new Set(orderItems.map((item) => item.productId))];
-    productIds.forEach(async (productId) => {
-      await updateCatalogProductInventoryStatus(productId, collections);
-    });
   });
 
   appEvents.on("afterVariantUpdate", async ({ _id, field }) => {
@@ -220,11 +186,6 @@ export default function startup(context) {
 
       // Update `inventoryInStock` and `inventoryAvailableToSell` on all parents of this variant / option
       await updateParentInventoryFields(doc, collections);
-
-      // Publish inventory to catalog
-      if (config.AUTO_PUBLISH_INVENTORY_FIELDS) {
-        await updateCatalogProductInventoryStatus(doc.ancestors[0], collections);
-      }
     }
   });
 }
