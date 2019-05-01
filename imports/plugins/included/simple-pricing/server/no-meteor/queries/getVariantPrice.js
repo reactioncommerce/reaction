@@ -7,5 +7,9 @@
  * @return {Object} - A cart item price value.
  */
 export default function getVariantPrice(context, catalogVariant, currencyCode) {
-  return catalogVariant.pricing[currencyCode];
+  if (!currencyCode) throw new Error("getVariantPrice received no currency code");
+  if (!catalogVariant) throw new Error("getVariantPrice received no catalogVariant");
+  if (!catalogVariant.pricing) throw new Error(`Catalog variant ${catalogVariant._id} has no pricing information saved`);
+
+  return catalogVariant.pricing[currencyCode] || {};
 }
