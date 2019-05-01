@@ -3,6 +3,7 @@ import queries from "./server/no-meteor/queries";
 import schemas from "./server/no-meteor/schemas";
 import publishProductToCatalog from "./server/no-meteor/utils/publishProductToCatalog";
 import xformCatalogBooleanFilters from "./server/no-meteor/utils/xformCatalogBooleanFilters";
+import xformCatalogProductVariants from "./server/no-meteor/utils/xformCatalogProductVariants";
 
 Reaction.registerPackage({
   label: "Inventory",
@@ -10,7 +11,8 @@ Reaction.registerPackage({
   autoEnable: true,
   functionsByType: {
     publishProductToCatalog: [publishProductToCatalog],
-    xformCatalogBooleanFilters: [xformCatalogBooleanFilters]
+    xformCatalogBooleanFilters: [xformCatalogBooleanFilters],
+    xformCatalogProductVariants: [xformCatalogProductVariants]
   },
   queries,
   graphQL: {
