@@ -7,7 +7,7 @@ import { compose } from "recompose";
 import withOpaqueShopId from "/imports/plugins/core/graphql/lib/hocs/withOpaqueShopId";
 import OrderCard from "../components/orderCard";
 
-// import { orderByReferenceId } from "./queries";
+// import { orderByReferenceId } from "../graphql/queries/orderByReferenceId";
 // Why are we doing this here?
 // We can't import the query correctly as is, need to make updates but maybe only available with webpack
 // See: https://github.com/apollographql/graphql-tag#webpack-preprocessing-with-graphql-tagloader
@@ -225,7 +225,7 @@ class OrderCardContainer extends Component {
     const { match: { params: { _id } }, shopId } = this.props;
     const variables = {
       id: _id,
-      language: "en",
+      language: "en", // TODO: EK - get language from Shop
       shopId,
       token: null
     };

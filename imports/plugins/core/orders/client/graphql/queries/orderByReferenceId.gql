@@ -1,4 +1,9 @@
-#import "./fragments.gql"
+# Get an order
+query orderByReferenceId($id: ID!, $language: String!, $shopId: ID!, $token: String) {
+  order: orderByReferenceId(id: $id, shopId: $shopId, token: $token) {
+    ...OrderQueryFragment
+  }
+}
 
 # Common fields for order for queries
 fragment OrderCommon on Order {
@@ -196,7 +201,6 @@ fragment OrderCommon on Order {
   totalItemQuantity
   updatedAt
 }
-
 
 # Fragment for order query
 fragment OrderQueryFragment on Order {
