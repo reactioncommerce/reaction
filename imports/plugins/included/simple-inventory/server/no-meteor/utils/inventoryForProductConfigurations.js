@@ -1,9 +1,6 @@
 import getVariantInventoryAvailableToSellQuantity from "./getVariantInventoryAvailableToSellQuantity";
 import getVariantInventoryInStockQuantity from "./getVariantInventoryInStockQuantity";
 import getVariantInventoryNotAvailableToSellQuantity from "./getVariantInventoryNotAvailableToSellQuantity";
-import isBackorderFn from "./isBackorder";
-import isLowQuantityFn from "./isLowQuantity";
-import isSoldOutFn from "./isSoldOut";
 
 const DEFAULT_INFO = {
   inventoryAvailableToSell: 0,
@@ -66,7 +63,7 @@ export default async function inventoryForProductConfigurations(context, input) 
     let isLowQuantity = null;
     let isSoldOut = null;
 
-    if (fields.includes("inventoryAvailableToSell")) {
+    if (fields.includes("inventoryAvailableToSell") || fields.includes("isBackorder") || fields.includes("isLowQuantity") || fields.includes("isSoldOut")) {
       inventoryAvailableToSell = await getVariantInventoryAvailableToSellQuantity(variant, collections, variants);
     }
 
@@ -78,19 +75,24 @@ export default async function inventoryForProductConfigurations(context, input) 
       inventoryReserved = await getVariantInventoryNotAvailableToSellQuantity(variant, collections);
     }
 
-    if (fields.includes("isBackorder") || fields.includes("isLowQuantity") || fields.includes("isSoldOut")) {
+    if (fields.includes("isSoldOut")) {
+      isSoldOut = inventoryAvailableToSell <= 0;
+    }
+
+    if (fields.includes("isBackorder")) {
+      isBackorder = inventoryAvailableToSell <= 0;
+    }
+
+    if (fields.includes("isLowQuantity")) {
       const variantOptions = variants.filter((listVariant) => listVariant.ancestors.includes(variantId));
-
-      if (fields.includes("isBackorder")) {
-        isBackorder = variantOptions.length ? isBackorderFn(variantOptions) : isBackorderFn([variant]);
-      }
-
-      if (fields.includes("isLowQuantity")) {
-        isLowQuantity = variantOptions.length ? isLowQuantityFn(variantOptions) : isLowQuantityFn([variant]);
-      }
-
-      if (fields.includes("isSoldOut")) {
-        isSoldOut = variantOptions.length ? isSoldOutFn(variantOptions) : isSoldOutFn([variant]);
+      if (variantOptions.length) {
+        const optionInfo = await Promise.all(variantOptions.map(async (option) => ({
+          inventoryAvailableToSell: await getVariantInventoryAvailableToSellQuantity(variant, collections, variants),
+          lowInventoryWarningThreshold: option.lowInventoryWarningThreshold
+        })));
+        isLowQuantity = optionInfo.some((option) => option.inventoryAvailableToSell <= variant.lowInventoryWarningThreshold);
+      } else {
+        isLowQuantity = inventoryAvailableToSell <= variant.lowInventoryWarningThreshold;
       }
     }
 
