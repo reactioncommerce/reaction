@@ -1,11 +1,11 @@
 import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faInbox } from "@fortawesome/free-solid-svg-icons";
-
 import { registerOperatorRoute } from "/imports/client/ui";
 import ContentViewExtraWideLayout from "/imports/client/ui/layouts/ContentViewExtraWideLayout";
 import Orders from "./containers/orderDashboardContainer";
-import OrderDetail from "./containers/orderDetailContainer";
+import OrderCard from "/imports/plugins/core/orders/client/containers/orderCardContainer";
+
 import "./helpers";
 
 import "./templates/list/pdf.html";
@@ -26,12 +26,18 @@ import "./containers/orderSummaryContainer";
 
 import "../lib/extendShopSchema";
 
+/*
+ * Single order page
+ */
 registerOperatorRoute({
-  path: "/orders/:_id",
-  mainComponent: OrderDetail,
-  isNavigationLink: false
+  isNavigationLink: false,
+  mainComponent: OrderCard,
+  path: "/orders/:_id"
 });
 
+/*
+ * Orders table
+ */
 registerOperatorRoute({
   isNavigationLink: true,
   isSetting: false,
