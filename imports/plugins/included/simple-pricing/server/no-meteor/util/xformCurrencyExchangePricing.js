@@ -12,7 +12,7 @@ import getDisplayPrice from "./getDisplayPrice";
  * @param {Object} context Object containing per-request state
  * @returns {Object} New pricing object with converted prices
  */
-export async function xformCurrencyExchangePricing(pricing, currencyCode, context) {
+export default async function xformCurrencyExchangePricing(pricing, currencyCode, context) {
   const shop = await context.queries.primaryShop(context);
 
   if (!currencyCode) {
