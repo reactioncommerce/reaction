@@ -10,8 +10,8 @@
 export default async function xformCatalogProductVariants(context, catalogProductVariants, info = {}) {
   const { getFunctionsOfType } = context;
 
-  for (const mutateVariant of getFunctionsOfType("xformCatalogProductVariants")) {
-    await mutateVariant(context, catalogProductVariants, info); // eslint-disable-line no-await-in-loop
+  for (const mutateVariants of getFunctionsOfType("xformCatalogProductVariants")) {
+    await mutateVariants(context, catalogProductVariants, info); // eslint-disable-line no-await-in-loop
   }
 
   return catalogProductVariants;

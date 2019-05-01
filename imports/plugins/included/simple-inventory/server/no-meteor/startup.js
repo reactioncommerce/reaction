@@ -1,3 +1,14 @@
+import Logger from "@reactioncommerce/logger";
+
+/**
+ * @summary Get all order items
+ * @param {Object} order The order
+ * @return {Object[]} Order items from all fulfillment groups in a single array
+ */
+function getAllOrderItems(order) {
+  return order.shipping.reduce((list, group) => [...list, ...group.items], []);
+}
+
 /**
  * @summary Called on startup
  * @param {Object} context Startup context
@@ -5,7 +16,10 @@
  * @returns {undefined}
  */
 export default function startup(context) {
-  const { appEvents, collections } = context;
+  const { app, appEvents, collections } = context;
+
+  const SimpleInventory = app.db.collection("SimpleInventory");
+  collections.SimpleInventory = SimpleInventory;
 
   appEvents.on("afterOrderCancel", async ({ order, returnToStock }) => {
     // Inventory is removed from stock only once an order has been approved
@@ -14,108 +28,72 @@ export default function startup(context) {
     const orderIsApproved = !Array.isArray(order.payments) || order.payments.length === 0 ||
       !!order.payments.find((payment) => payment.status !== "created");
 
-    // If order is approved, the inventory has been taken away from both `inventoryInStock` and `inventoryAvailableToSell`
+    const bulkWriteOperations = [];
+
+    // If order is approved, the inventory has been taken away from `inventoryInStock`
     if (returnToStock && orderIsApproved) {
-      // Run this Product update inline instead of using ordersInventoryAdjust because the collection hooks fail
-      // in some instances which causes the order not to cancel
-      const orderItems = order.shipping.reduce((list, group) => [...list, ...group.items], []);
-      orderItems.forEach(async (item) => {
-        const { value: updatedItem } = await collections.Products.findOneAndUpdate(
-          {
-            _id: item.variantId
-          },
-          {
-            $inc: {
-              inventoryAvailableToSell: +item.quantity,
-              inventoryInStock: +item.quantity
-            }
-          }, {
-            returnOriginal: false
-          }
-        );
-
-        // Update parents of supplied item
-        await collections.Products.updateMany(
-          {
-            _id: { $in: updatedItem.ancestors }
-          },
-          {
-            $inc: {
-              inventoryAvailableToSell: +item.quantity,
-              inventoryInStock: +item.quantity
+      getAllOrderItems(order).forEach((item) => {
+        bulkWriteOperations.push({
+          updateOne: {
+            filter: {
+              productConfiguration: {
+                productId: item.productId,
+                variantId: item.variantId
+              }
+            },
+            update: {
+              $inc: {
+                inventoryInStock: item.quantity
+              }
             }
           }
-        );
+        });
+      });
+    } else if (!orderIsApproved) {
+      // If order is not approved, the inventory hasn't been taken away from `inventoryInStock` yet but is in `inventoryReserved`
+      getAllOrderItems(order).forEach((item) => {
+        bulkWriteOperations.push({
+          updateOne: {
+            filter: {
+              productConfiguration: {
+                productId: item.productId,
+                variantId: item.variantId
+              }
+            },
+            update: {
+              $inc: {
+                inventoryReserved: -item.quantity
+              }
+            }
+          }
+        });
       });
     }
 
-    // If order is not approved, the inventory hasn't been taken away from `inventoryInStock`, but has been taken away from `inventoryAvailableToSell`
-    if (!orderIsApproved) {
-    // Run this Product update inline instead of using ordersInventoryAdjust because the collection hooks fail
-    // in some instances which causes the order not to cancel
-      const orderItems = order.shipping.reduce((list, group) => [...list, ...group.items], []);
-      orderItems.forEach(async (item) => {
-        const { value: updatedItem } = await collections.Products.findOneAndUpdate(
-          {
-            _id: item.variantId
-          },
-          {
-            $inc: {
-              inventoryAvailableToSell: +item.quantity
-            }
-          }, {
-            returnOriginal: false
-          }
-        );
-
-        // Update parents of supplied item
-        await collections.Products.updateMany(
-          {
-            _id: { $in: updatedItem.ancestors }
-          },
-          {
-            $inc: {
-              inventoryAvailableToSell: +item.quantity
-            }
-          }
-        );
-      });
-    }
+    SimpleInventory.bulkWrite(bulkWriteOperations, { ordered: false }).catch((error) => {
+      Logger.error(error, "Bulk write error in simple-inventory afterOrderCancel listener");
+    });
   });
 
   appEvents.on("afterOrderCreate", async ({ order }) => {
-    const orderItems = order.shipping.reduce((list, group) => [...list, ...group.items], []);
-
-    // Create a new set of unique productIds
-    // We do this because variants might have the same productId
-    // and we don't want to update the product each time a variant is it's child
-    // we can map over the unique productIds at the end, and update each one once
-    orderItems.forEach(async (item) => {
-      // Update supplied item inventory
-      const { value: updatedItem } = await collections.Products.findOneAndUpdate(
-        {
-          _id: item.variantId
-        },
-        {
-          $inc: {
-            inventoryAvailableToSell: -item.quantity
+    const bulkWriteOperations = getAllOrderItems(order).map((item) => ({
+      updateOne: {
+        filter: {
+          productConfiguration: {
+            productId: item.productId,
+            variantId: item.variantId
           }
-        }, {
-          returnOriginal: false
-        }
-      );
-
-      // Update supplied item inventory
-      await collections.Products.updateMany(
-        {
-          _id: { $in: updatedItem.ancestors }
         },
-        {
+        update: {
           $inc: {
-            inventoryAvailableToSell: -item.quantity
+            inventoryReserved: item.quantity
           }
         }
-      );
+      }
+    }));
+
+    SimpleInventory.bulkWrite(bulkWriteOperations, { ordered: false }).catch((error) => {
+      Logger.error(error, "Bulk write error in simple-inventory afterOrderCreate listener");
     });
   });
 
@@ -124,38 +102,25 @@ export default function startup(context) {
     const nonApprovedPayment = (order.payments || []).find((payment) => payment.status === "created");
     if (nonApprovedPayment) return;
 
-    const orderItems = order.shipping.reduce((list, group) => [...list, ...group.items], []);
-
-    // Create a new set of unique productIds
-    // We do this because variants might have the same productId
-    // and we don't want to update the product each time a variant is it's child
-    // we can map over the unique productIds at the end, and update each one once
-    orderItems.forEach(async (item) => {
-      // Update supplied item inventory
-      const { value: updatedItem } = await collections.Products.findOneAndUpdate(
-        {
-          _id: item.variantId
-        },
-        {
-          $inc: {
-            inventoryInStock: -item.quantity
+    const bulkWriteOperations = getAllOrderItems(order).map((item) => ({
+      updateOne: {
+        filter: {
+          productConfiguration: {
+            productId: item.productId,
+            variantId: item.variantId
           }
-        }, {
-          returnOriginal: false
-        }
-      );
-
-      // Update supplied item inventory
-      await collections.Products.updateMany(
-        {
-          _id: { $in: updatedItem.ancestors }
         },
-        {
+        update: {
           $inc: {
-            inventoryInStock: -item.quantity
+            inventoryInStock: -item.quantity,
+            inventoryReserved: -item.quantity
           }
         }
-      );
+      }
+    }));
+
+    SimpleInventory.bulkWrite(bulkWriteOperations, { ordered: false }).catch((error) => {
+      Logger.error(error, "Bulk write error in simple-inventory afterOrderApprovePayment listener");
     });
   });
 }

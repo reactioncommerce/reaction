@@ -1,15 +1,4 @@
-import getVariantInventoryAvailableToSellQuantity from "./getVariantInventoryAvailableToSellQuantity";
-import getVariantInventoryInStockQuantity from "./getVariantInventoryInStockQuantity";
-import getVariantInventoryNotAvailableToSellQuantity from "./getVariantInventoryNotAvailableToSellQuantity";
-
-const DEFAULT_INFO = {
-  inventoryAvailableToSell: 0,
-  inventoryInStock: 0,
-  inventoryReserved: 0,
-  isBackorder: true,
-  isLowQuantity: true,
-  isSoldOut: true
-};
+import isEqual from "lodash/isEqual";
 
 /**
  * @summary Returns an object with inventory information for one or more
@@ -27,74 +16,33 @@ const DEFAULT_INFO = {
  */
 export default async function inventoryForProductConfigurations(context, input) {
   const { collections } = context;
-  const { Products } = collections;
-  const {
-    fields,
-    productConfigurations
-  } = input;
-  let { variants } = input;
+  const { SimpleInventory } = collections;
+  const { productConfigurations } = input;
 
-  const variantIds = productConfigurations.map(({ variantId }) => variantId);
+  const inventoryDocs = await SimpleInventory
+    .find({
+      productConfiguration: { $in: productConfigurations }
+    })
+    .limit(productConfigurations.length) // optimize query speed
+    .toArray();
 
-  if (!variants) {
-    variants = await Products.find({
-      $or: [
-        { _id: { $in: variantIds } },
-        { ancestors: { $in: variantIds } }
-      ]
-    }).toArray();
-  }
-
-  return Promise.all(productConfigurations.map(async (productConfiguration) => {
-    const { variantId } = productConfiguration;
-
-    const variant = variants.find((listVariant) => listVariant._id === variantId);
-    if (!variant) {
+  return productConfigurations.map((productConfiguration) => {
+    const inventoryDoc = inventoryDocs.find((doc) => isEqual(productConfiguration, doc.productConfiguration));
+    if (!inventoryDoc || !inventoryDoc.isEnabled) {
       return {
-        inventoryInfo: DEFAULT_INFO,
+        inventoryInfo: null,
         productConfiguration
       };
     }
 
-    let inventoryAvailableToSell = null;
-    let inventoryInStock = null;
-    let inventoryReserved = null;
-    let isBackorder = null;
-    let isLowQuantity = null;
-    let isSoldOut = null;
-
-    if (fields.includes("inventoryAvailableToSell") || fields.includes("isBackorder") || fields.includes("isLowQuantity") || fields.includes("isSoldOut")) {
-      inventoryAvailableToSell = await getVariantInventoryAvailableToSellQuantity(variant, collections, variants);
-    }
-
-    if (fields.includes("inventoryInStock")) {
-      inventoryInStock = await getVariantInventoryInStockQuantity(variant, collections, variants);
-    }
-
-    if (fields.includes("inventoryReserved")) {
-      inventoryReserved = await getVariantInventoryNotAvailableToSellQuantity(variant, collections);
-    }
-
-    if (fields.includes("isSoldOut")) {
-      isSoldOut = inventoryAvailableToSell <= 0;
-    }
-
-    if (fields.includes("isBackorder")) {
-      isBackorder = inventoryAvailableToSell <= 0;
-    }
-
-    if (fields.includes("isLowQuantity")) {
-      const variantOptions = variants.filter((listVariant) => listVariant.ancestors.includes(variantId));
-      if (variantOptions.length) {
-        const optionInfo = await Promise.all(variantOptions.map(async (option) => ({
-          inventoryAvailableToSell: await getVariantInventoryAvailableToSellQuantity(variant, collections, variants),
-          lowInventoryWarningThreshold: option.lowInventoryWarningThreshold
-        })));
-        isLowQuantity = optionInfo.some((option) => option.inventoryAvailableToSell <= variant.lowInventoryWarningThreshold);
-      } else {
-        isLowQuantity = inventoryAvailableToSell <= variant.lowInventoryWarningThreshold;
-      }
-    }
+    const { lowInventoryWarningThreshold } = inventoryDoc;
+    let { inventoryInStock, inventoryReserved } = inventoryDoc;
+    inventoryInStock = Math.max(0, inventoryInStock);
+    inventoryReserved = Math.max(0, inventoryReserved);
+    const inventoryAvailableToSell = Math.max(0, inventoryInStock - inventoryReserved);
+    const isSoldOut = inventoryAvailableToSell === 0;
+    const isBackorder = inventoryAvailableToSell === 0;
+    const isLowQuantity = inventoryAvailableToSell <= lowInventoryWarningThreshold;
 
     return {
       inventoryInfo: {
@@ -107,5 +55,5 @@ export default async function inventoryForProductConfigurations(context, input) 
       },
       productConfiguration
     };
-  }));
+  });
 }

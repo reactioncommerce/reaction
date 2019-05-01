@@ -25,12 +25,14 @@ export default async function xformCatalogProductVariants(context, catalogProduc
   const productConfigurations = [];
   for (const catalogProductVariant of catalogProductVariants) {
     productConfigurations.push({
+      isSellable: (catalogProductVariant.options || []).length === 0,
       productId: catalogProduct.productId,
       variantId: catalogProductVariant.variantId
     });
 
     for (const option of (catalogProductVariant.options || [])) {
       productConfigurations.push({
+        isSellable: true,
         productId: catalogProduct.productId,
         variantId: option.variantId
       });

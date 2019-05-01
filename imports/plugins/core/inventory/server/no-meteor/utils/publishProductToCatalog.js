@@ -13,6 +13,7 @@ export default async function publishProductToCatalog(catalogProduct, { context,
 
   const topVariantsInventoryInfo = await context.queries.inventoryForProductConfigurations(context, {
     productConfigurations: topVariants.map((option) => ({
+      isSellable: !variants.some((variant) => variant.ancestors.includes(option._id)),
       productId: option.ancestors[0],
       variantId: option._id
     })),

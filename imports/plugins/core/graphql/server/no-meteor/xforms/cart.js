@@ -74,9 +74,6 @@ async function xformCartItem(context, catalogItems, products, cartItem) {
   return {
     ...cartItem,
     imageURLs: media && media.URLs,
-    isBackorder: variant.isBackorder || false,
-    isLowQuantity: variant.isLowQuantity || false,
-    isSoldOut: variant.isSoldOut || false,
     productConfiguration: {
       productId: cartItem.productId,
       productVariantId: cartItem.variantId
@@ -90,7 +87,7 @@ async function xformCartItem(context, catalogItems, products, cartItem) {
  * @return {Object[]} Same array with GraphQL-only props added
  */
 export async function xformCartItems(context, items) {
-  const { collections } = context;
+  const { collections, getFunctionsOfType } = context;
   const { Catalog, Products } = collections;
 
   const productIds = items.map((item) => item.productId);
@@ -110,7 +107,13 @@ export async function xformCartItems(context, items) {
     }
   }).toArray();
 
-  return items.map((item) => xformCartItem(context, catalogItems, products, item));
+  const xformedItems = await Promise.all(items.map((item) => xformCartItem(context, catalogItems, products, item)));
+
+  for (const mutateItems of getFunctionsOfType("xformCartItems")) {
+    await mutateItems(context, xformedItems); // eslint-disable-line no-await-in-loop
+  }
+
+  return xformedItems;
 }
 
 /**

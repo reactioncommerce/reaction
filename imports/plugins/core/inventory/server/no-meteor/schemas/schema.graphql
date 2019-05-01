@@ -57,3 +57,22 @@ extend type CatalogProductVariant {
   "True if inventoryManagement is enabled and this variant has 0 inventory"
   isSoldOut: Boolean!
 }
+
+extend type CartItem {
+  """
+  The quantity of this item currently available to sell.
+  This number is updated when an order is placed by the customer.
+  This number does not include reserved inventory (i.e. inventory that has been ordered, but not yet processed by the operator).
+  This is most likely the quantity to display in the storefront UI.
+  """
+  inventoryAvailableToSell: Int
+
+  "Is this item currently backordered?"
+  isBackorder: Boolean!
+
+  "Is this item quantity available currently below it's low quantity threshold?"
+  isLowQuantity: Boolean!
+
+  "Is this item currently sold out?"
+  isSoldOut: Boolean!
+}
