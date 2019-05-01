@@ -109,9 +109,6 @@ const mockProduct = {
   fulfillmentService: "fulfillmentService",
   googleplusMsg: "googlePlusMessage",
   height: 11.23,
-  isBackorder: false,
-  isLowQuantity: false,
-  isSoldOut: false,
   length: 5.67,
   lowInventoryWarningThreshold: 2,
   metafields: [
