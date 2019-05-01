@@ -1,11 +1,15 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import Cancel from "mdi-material-ui/Cancel";
 import Email from "mdi-material-ui/Email";
 import Account from "mdi-material-ui/Account";
 import Phone from "mdi-material-ui/Phone";
 import withStyles from "@material-ui/core/styles/withStyles";
+import Button from "@material-ui/core/Button";
 import Card from "@material-ui/core/Card";
+import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
+import CardHeader from "@material-ui/core/CardHeader";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import Address from "@reactioncommerce/components/Address/v1";
@@ -15,6 +19,15 @@ import OrderCardStatusChip from "./orderCardStatusChip";
 
 
 const styles = (theme) => ({
+  displayFlexForIcon: {
+    display: "flex"
+  },
+  leftIcon: {
+    marginRight: theme.spacing.unit
+  },
+  paddingForIcon: {
+    marginRight: theme.spacing.unit
+  },
   orderCardDetailsHeader: {
     background: theme.palette.colors.coolGrey
   },
@@ -84,20 +97,30 @@ class OrderCardHeader extends Component {
 
     return (
       <Card>
+        <CardHeader
+          title="Order Details"
+        />
         <CardContent>
           <Grid container alignItems="center" justify="space-evenly">
             <Grid item xs={12} md={4}>
-              <Typography variant="body2"><Account />{shippingAddress.fullName}</Typography>
+              <Typography variant="body2" className={classes.displayFlexForIcon}>
+                <Account className={classes.paddingForIcon} /> {shippingAddress.fullName}
+              </Typography>
             </Grid>
             <Grid item xs={12} md={4}>
-              <Typography variant="body2"><Email />{email}</Typography>
+              <Typography variant="body2" className={classes.displayFlexForIcon}>
+                <Email className={classes.paddingForIcon} /> {email}
+              </Typography>
             </Grid>
             <Grid item xs={12} md={4}>
-              <Typography variant="body2"><Phone />{shippingAddress.phone}</Typography>
+              <Typography variant="body2" className={classes.displayFlexForIcon}>
+                <Phone className={classes.paddingForIcon} /> {shippingAddress.phone}
+              </Typography>
             </Grid>
           </Grid>
           <Grid container alignItems="center" className={classes.orderCardDivider}>
             <Grid item xs={12} md={4}>
+              <Typography variant="body2" className={classes.orderCardInfoTextBold}>Order Status:</Typography>
               <OrderCardStatusChip displayStatus={displayStatus} status={status} />
             </Grid>
             <Grid item xs={12} md={4}>
@@ -105,7 +128,7 @@ class OrderCardHeader extends Component {
               <Typography variant="body2">{orderDate}</Typography>
             </Grid>
             <Grid item xs={12} md={4}>
-              <Typography variant="body2" className={classes.orderCardInfoTextBold}>Order ID:</Typography>
+              <Typography variant="body2" className={classes.orderCardInfoTextBold}>Order Reference #:</Typography>
               <ClickToCopy
                 copyToClipboard={this.orderLink()}
                 displayText={referenceId}
@@ -141,6 +164,12 @@ class OrderCardHeader extends Component {
             </Grid>
           </section>
         </CardContent>
+        <CardActions>
+          <Button variant="contained" color="secondary" onClick={this.props.onCancelOrder}>
+            <Cancel className={classes.leftIcon} />
+            Cancel Order
+          </Button>
+        </CardActions>
       </Card>
     );
   }

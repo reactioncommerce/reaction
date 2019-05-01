@@ -12,18 +12,32 @@ class OrderCardFulfillmentGroup extends Component {
     })
   };
 
+  renderFulfillmentGroups() {
+    const { order } = this.props;
+    const { fulfillmentGroups } = order;
+
+    return fulfillmentGroups.map((fulfillmentGroup) => (
+      <Card elevation={0}>
+        <CardHeader
+          subheader={`Fulfillment group ${fulfillmentGroup._id}`}
+        />
+        <CardContent>
+          <Typography>
+          this is a fulfillment group
+          </Typography>
+        </CardContent>
+      </Card>
+    ));
+  }
+
   render() {
     return (
       <Card>
         <CardHeader
-          title="Order Card Fulfillment Group"
-          subheader="Order Card Fulfillment Group"
+          title="Fulfillment Groups"
         />
         <CardContent>
-          <Typography component="p">
-            Order Card Fulfillment Group
-          </Typography>
-
+          {this.renderFulfillmentGroups()}
         </CardContent>
       </Card>
     );

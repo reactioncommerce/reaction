@@ -1,8 +1,15 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import Printer from "mdi-material-ui/Printer";
 import Card from "@material-ui/core/Card";
+import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
+import CardHeader from "@material-ui/core/CardHeader";
+import IconButton from "@material-ui/core/IconButton";
 import CartSummary from "@reactioncommerce/components/CartSummary/v1";
+
+import { i18next, Logger, Reaction } from "/client/api";
+
 
 class OrderCardSummary extends Component {
   static propTypes = {
@@ -28,7 +35,15 @@ class OrderCardSummary extends Component {
   }
 
   render() {
-    const { order: { summary } } = this.props;
+    const { order } = this.props;
+    const { summary } = order;
+
+    const printOrder = Reaction.Router.pathFor("dashboard/pdf/orders", {
+      hash: {
+        id: order.referenceId
+      }
+    });
+
 
     if (summary) {
       const {
@@ -41,6 +56,9 @@ class OrderCardSummary extends Component {
 
       return (
         <Card>
+          <CardHeader
+            title="Order Summary"
+          />
           <CardContent>
             <CartSummary
               isDense
@@ -51,6 +69,13 @@ class OrderCardSummary extends Component {
               displayTotal={total && total.displayAmount}
             />
           </CardContent>
+          <CardActions>
+            <a href={printOrder} target="_blank">
+              <IconButton aria-label="Print">
+                <Printer />
+              </IconButton>
+            </a>
+          </CardActions>
         </Card>
       );
     }
