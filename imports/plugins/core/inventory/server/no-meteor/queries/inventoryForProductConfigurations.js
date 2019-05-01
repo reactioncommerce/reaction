@@ -1,10 +1,3 @@
-import getVariantInventoryAvailableToSellQuantity from "../utils/getVariantInventoryAvailableToSellQuantity";
-import getVariantInventoryInStockQuantity from "../utils/getVariantInventoryInStockQuantity";
-import getVariantInventoryNotAvailableToSellQuantity from "../utils/getVariantInventoryNotAvailableToSellQuantity";
-import isBackorderFn from "../utils/isBackorder";
-import isLowQuantityFn from "../utils/isLowQuantity";
-import isSoldOutFn from "../utils/isSoldOut";
-
 const ALL_FIELDS = [
   "inventoryAvailableToSell",
   "inventoryInStock",
@@ -18,9 +11,9 @@ const DEFAULT_INFO = {
   inventoryAvailableToSell: 0,
   inventoryInStock: 0,
   inventoryReserved: 0,
-  isBackorder: true,
-  isLowQuantity: true,
-  isSoldOut: true
+  isBackorder: false,
+  isLowQuantity: false,
+  isSoldOut: false
 };
 
 /**
@@ -35,84 +28,45 @@ const DEFAULT_INFO = {
  *   you can pass this to skip some calculations and database lookups, improving speed.
  * @param {Object[]} [input.variants] Optionally pass an array of the relevant variants if
  *   you have already looked them up. This will save a database query.
- * @return {Promise<Object[]>} Array of responses, in same order as `input.productConfigurations` array.
+ * @return {Promise<Object[]>} Array of responses. Order is not guaranteed to be the same
+ *   as `input.productConfigurations` array.
  */
 export default async function inventoryForProductConfigurations(context, input) {
-  const { collections } = context;
-  const { Products } = collections;
-  const {
-    fields = ALL_FIELDS,
-    productConfigurations
-  } = input;
-  let { variants } = input;
+  const { getFunctionsOfType } = context;
+  const { fields = ALL_FIELDS } = input;
+  let { productConfigurations } = input;
 
-  const variantIds = productConfigurations.map(({ variantId }) => variantId);
+  // If there are multiple plugins providing inventory, we use the first one that has a response
+  // for each product configuration.
+  const results = [];
+  for (const inventoryFn of getFunctionsOfType("inventoryForProductConfigurations")) {
+    // Functions of type "publishProductToCatalog" are expected to mutate the provided catalogProduct.
+    // eslint-disable-next-line no-await-in-loop
+    const pluginResults = await inventoryFn(context, { ...input, fields, productConfigurations });
 
-  if (!variants) {
-    variants = await Products.find({
-      $or: [
-        { _id: { $in: variantIds } },
-        { ancestors: { $in: variantIds } }
-      ]
-    }).toArray();
+    // Add only those with inventory info to final results.
+    // Otherwise add to productConfigurations for next run
+    productConfigurations = [];
+    for (const pluginResult of pluginResults) {
+      if (pluginResult.inventoryInfo) {
+        results.push(pluginResult);
+      } else {
+        productConfigurations.push(pluginResult.productConfiguration);
+      }
+    }
+
+    if (productConfigurations.length === 0) break; // found inventory info for every product config
   }
 
-  return Promise.all(productConfigurations.map(async (productConfiguration) => {
-    const { variantId } = productConfiguration;
+  // If no inventory info was found for some of the product configs, such as
+  // if there are no plugins providing inventory info, then use default info
+  // that allows the product to be purchased always.
+  for (const productConfiguration of productConfigurations) {
+    results.push({
+      productConfiguration,
+      inventoryInfo: DEFAULT_INFO
+    });
+  }
 
-    const variant = variants.find((listVariant) => listVariant._id === variantId);
-    if (!variant) {
-      return {
-        inventoryInfo: DEFAULT_INFO,
-        productConfiguration
-      };
-    }
-
-    let inventoryAvailableToSell = null;
-    let inventoryInStock = null;
-    let inventoryReserved = null;
-    let isBackorder = null;
-    let isLowQuantity = null;
-    let isSoldOut = null;
-
-    if (fields.includes("inventoryAvailableToSell")) {
-      inventoryAvailableToSell = await getVariantInventoryAvailableToSellQuantity(variant, collections, variants);
-    }
-
-    if (fields.includes("inventoryInStock")) {
-      inventoryInStock = await getVariantInventoryInStockQuantity(variant, collections, variants);
-    }
-
-    if (fields.includes("inventoryReserved")) {
-      inventoryReserved = await getVariantInventoryNotAvailableToSellQuantity(variant, collections);
-    }
-
-    if (fields.includes("isBackorder") || fields.includes("isLowQuantity") || fields.includes("isSoldOut")) {
-      const variantOptions = variants.filter((listVariant) => listVariant.ancestors.includes(variantId));
-
-      if (fields.includes("isBackorder")) {
-        isBackorder = variantOptions.length ? isBackorderFn(variantOptions) : isBackorderFn([variant]);
-      }
-
-      if (fields.includes("isLowQuantity")) {
-        isLowQuantity = variantOptions.length ? isLowQuantityFn(variantOptions) : isLowQuantityFn([variant]);
-      }
-
-      if (fields.includes("isSoldOut")) {
-        isSoldOut = variantOptions.length ? isSoldOutFn(variantOptions) : isSoldOutFn([variant]);
-      }
-    }
-
-    return {
-      inventoryInfo: {
-        inventoryAvailableToSell,
-        inventoryInStock,
-        inventoryReserved,
-        isBackorder,
-        isLowQuantity,
-        isSoldOut
-      },
-      productConfiguration
-    };
-  }));
+  return results;
 }

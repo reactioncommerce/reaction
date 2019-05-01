@@ -1,5 +1,5 @@
 import Reaction from "/imports/plugins/core/core/server/Reaction";
-// import queries from "./server/no-meteor/queries";
+import inventoryForProductConfigurations from "./server/no-meteor/utils/inventoryForProductConfigurations";
 import startup from "./server/no-meteor/startup";
 
 /**
@@ -11,8 +11,8 @@ Reaction.registerPackage({
   label: "Simple Inventory",
   name: "reaction-simple-inventory",
   functionsByType: {
+    inventoryForProductConfigurations: [inventoryForProductConfigurations],
     startup: [startup]
   },
   graphQL: {}
-  // queries
 });
