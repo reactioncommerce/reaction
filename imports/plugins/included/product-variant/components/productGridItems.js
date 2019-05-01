@@ -16,6 +16,7 @@ class ProductGridItems extends Component {
     isSelected: PropTypes.func,
     onClick: PropTypes.func,
     onDoubleClick: PropTypes.func,
+    onSelect: PropTypes.func,
     pdpPath: PropTypes.func,
     product: PropTypes.object,
     productMedia: PropTypes.object
@@ -38,19 +39,6 @@ class ProductGridItems extends Component {
     this.props.onClick(event);
   }
 
-  renderVisible() {
-    return this.props.product.isVisible ? "" : "not-visible";
-  }
-
-  renderOverlay() {
-    if (this.props.product.isVisible === false) {
-      return (
-        <div className="product-grid-overlay" />
-      );
-    }
-    return null;
-  }
-
   renderMedia() {
     const { productMedia } = this.props;
 
@@ -65,17 +53,6 @@ class ProductGridItems extends Component {
 
     return (
       <span>{"-"}</span>
-    );
-  }
-
-  renderNotices() {
-    const { product } = this.props;
-
-    return (
-      <div className="grid-alerts">
-        <Components.GridItemNotice product={product} />
-        <Components.GridItemControls product={product} />
-      </div>
     );
   }
 
