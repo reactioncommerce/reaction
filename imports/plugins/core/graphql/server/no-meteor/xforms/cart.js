@@ -72,14 +72,9 @@ async function xformCartItem(context, catalogItems, products, cartItem) {
     media = await xformCatalogProductMedia(media, context);
   }
 
-  const variantSourceProduct = products.find((product) => product._id === variantId);
-
   return {
     ...cartItem,
-    currentQuantity: variantSourceProduct && variantSourceProduct.inventoryInStock,
     imageURLs: media && media.URLs,
-    inventoryAvailableToSell: variantSourceProduct && variantSourceProduct.inventoryInStock,
-    inventoryInStock: variantSourceProduct && variantSourceProduct.inventoryInStock,
     isBackorder: variant.isBackorder || false,
     isLowQuantity: variant.isLowQuantity || false,
     isSoldOut: variant.isSoldOut || false,

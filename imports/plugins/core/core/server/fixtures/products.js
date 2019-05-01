@@ -34,7 +34,6 @@ export function metaField(options = {}) {
  * @param {String} [options.inventoryManagement] - Track inventory for this product?
  * @param {String} [options.inventoryPolicy] - Allow overselling of this product?
  * @param {String} [options.lowInventoryWarningThreshold] - Qty left of inventory that sets off warning
- * @param {String} [options.inventoryInStock] - Inventory Quantity
  * @param {String} [options.price] - productVariant price
  * @param {String} [options.title] - productVariant title
  * @param {String} [options.optionTitle] - productVariant option title
@@ -51,7 +50,6 @@ export function productVariant(options = {}) {
     inventoryManagement: faker.random.boolean(),
     inventoryPolicy: faker.random.boolean(),
     lowInventoryWarningThreshold: _.random(1, 5),
-    inventoryInStock: _.random(0, 100),
     isTaxable: faker.random.boolean(),
     isVisible: true,
     price: _.random(10, 1000),
@@ -87,7 +85,6 @@ export function productVariant(options = {}) {
  * @param {String} [options.inventoryManagement] - Track inventory for this product?
  * @param {String} [options.inventoryPolicy] - Allow overselling of this product?
  * @param {String} [options.lowInventoryWarningThreshold] - Qty left of inventory that sets off warning
- * @param {String} [options.inventoryInStock] - Inventory Quantity
  * @param {String} [options.price] - productVariant price
  * @param {String} [options.title] - productVariant title
  * @param {String} [options.optionTitle] - productVariant option title

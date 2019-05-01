@@ -89,50 +89,6 @@ describe("orders test", function () {
       expect(cancelOrder).to.throw(ReactionError, /Access Denied/);
     });
 
-    it("should increase inventory with number of items canceled when returnToStock option is selected", function () {
-      const orderItemId = order.shipping[0].items[0].variantId;
-      sandbox.stub(Reaction, "hasPermission", () => true); // Mock user permissions
-
-      const { inventoryInStock } = Products.findOne({ _id: orderItemId }) || {};
-
-      // approve the order (inventory decreases)
-      spyOnMethod("approvePayment", order.userId);
-      Meteor.call("orders/approvePayment", order);
-
-      // Since we update Order info inside the `orders/approvePayment` Meteor call,
-      // we need to re-find the order with the updated info
-      const updatedOrder = Orders.findOne({ _id: order._id });
-
-      // cancel order with returnToStock option (which should increment inventory)
-      spyOnMethod("cancelOrder", updatedOrder.userId);
-      Meteor.call("orders/cancelOrder", updatedOrder, true); // returnToStock = true;
-
-      const product = Products.findOne({ _id: orderItemId });
-      const inventoryAfterRestock = product.inventoryInStock;
-
-      expect(inventoryInStock).to.equal(inventoryAfterRestock);
-    });
-
-    it("should NOT increase/decrease inventory when returnToStock option is false", function () {
-      const orderItemId = order.shipping[0].items[0].variantId;
-      sandbox.stub(Reaction, "hasPermission", () => true); // Mock user permissions
-
-      // approve the order (inventory decreases)
-      spyOnMethod("approvePayment", order.userId);
-      Meteor.call("orders/approvePayment", order);
-
-      const { inventoryInStock } = Products.findOne({ _id: orderItemId }) || {};
-
-      // cancel order with NO returnToStock option (which should leave inventory untouched)
-      spyOnMethod("cancelOrder", order.userId);
-      Meteor.call("orders/cancelOrder", order, false); // returnToStock = false;
-
-      const product = Products.findOne({ _id: orderItemId });
-      const inventoryAfterNoRestock = product.inventoryInStock;
-
-      expect(inventoryInStock).to.equal(inventoryAfterNoRestock);
-    });
-
     it("should notify owner of the order, if the order is canceled", function () {
       sandbox.stub(Reaction, "hasPermission", () => true);
       const returnToStock = true;

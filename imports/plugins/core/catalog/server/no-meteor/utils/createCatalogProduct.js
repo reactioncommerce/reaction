@@ -123,8 +123,6 @@ export async function xformProduct({ context, product, shop, variants }) {
     createdAt: product.createdAt || new Date(),
     description: product.description,
     height: product.height,
-    inventoryAvailableToSell: product.inventoryAvailableToSell || 0,
-    inventoryInStock: product.inventoryInStock || 0,
     isDeleted: !!product.isDeleted,
     isVisible: !!product.isVisible,
     length: product.length,
