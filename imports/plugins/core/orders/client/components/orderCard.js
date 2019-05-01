@@ -1,8 +1,8 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 import PropTypes from "prop-types";
+import Helmet from "react-helmet";
 import withStyles from "@material-ui/core/styles/withStyles";
 import Grid from "@material-ui/core/Grid";
-import Typography from "@material-ui/core/Typography";
 import OrderCardFulfillmentGroup from "./orderCardFulfillmentGroup";
 import OrderCardHeader from "./orderCardHeader";
 import OrderCardSummary from "./orderCardSummary";
@@ -17,20 +17,25 @@ const styles = (theme) => ({
 class OrderCard extends Component {
   static propTypes = {
     classes: PropTypes.object,
+    onCancelOrder: PropTypes.func,
     order: PropTypes.object
   };
 
   renderHeader() {
-    const { order } = this.props;
+    const { onCancelOrder, order } = this.props;
 
-    return <OrderCardHeader order={order} />;
+    return (
+      <OrderCardHeader
+        onCancelOrder={onCancelOrder}
+        order={order}
+      />
+    );
   }
 
   renderFulfillmentGroups() {
     const { order } = this.props;
-    const { fulfillmentGroups } = order;
 
-    return fulfillmentGroups.map((fulfillmentGroup) => <OrderCardFulfillmentGroup key={fulfillmentGroup._id} order={order} shipment={fulfillmentGroup} />);
+    return <OrderCardFulfillmentGroup order={order} />;
   }
 
   renderSummary() {
@@ -40,31 +45,25 @@ class OrderCard extends Component {
   }
 
   render() {
-    const { classes } = this.props;
+    const { classes, order } = this.props;
 
     return (
-      <Grid container>
-        <Grid item xs={12} md={12}>
-          <section className={classes.orderCard}>
-            <Typography variant="h5" gutterBottom>
-              Order Details
-            </Typography>
-            {this.renderHeader()}
-          </section>
-          <section className={classes.orderCard}>
-            <Typography variant="h5" gutterBottom>
-              Shipments
-            </Typography>
-            {this.renderFulfillmentGroups()}
-          </section>
-          <section className={classes.orderCard}>
-            <Typography variant="h5" gutterBottom>
-              Summary
-            </Typography>
-            {this.renderSummary()}
-          </section>
+      <Fragment>
+        <Helmet title={`Order Details for order reference #${order.referenceId}`} />
+        <Grid container>
+          <Grid item xs={12} md={12}>
+            <section className={classes.orderCard}>
+              {this.renderHeader()}
+            </section>
+            <section className={classes.orderCard}>
+              {this.renderFulfillmentGroups()}
+            </section>
+            <section className={classes.orderCard}>
+              {this.renderSummary()}
+            </section>
+          </Grid>
         </Grid>
-      </Grid>
+      </Fragment>
     );
   }
 }
