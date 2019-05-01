@@ -2,20 +2,15 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import gql from "graphql-tag";
 import { Query } from "react-apollo";
+import { withRouter } from "react-router-dom";
 import { compose } from "recompose";
 import withOpaqueShopId from "/imports/plugins/core/graphql/lib/hocs/withOpaqueShopId";
 import OrderCard from "../components/orderCard";
 
 // import { orderByReferenceId } from "./queries";
-
-// Until the Blaze wrapper is removed, we need to provide the `MuiThemeProvider` and `ThemeProvider` here
-import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider";
-import { ThemeProvider } from "styled-components";
-import theme from "/imports/plugins/core/router/client/theme/index.js";
-import muiTheme from "/imports/plugins/core/router/client/theme/muiTheme.js";
-// Until the Blaze wrapper is removed, we need to provide the `MuiThemeProvider` and `ThemeProvider` here
-
-
+// Why are we doing this here?
+// We can't import the query correctly as is, need to make updates but maybe only available with webpack
+// See: https://github.com/apollographql/graphql-tag#webpack-preprocessing-with-graphql-tagloader
 const orderByReferenceId = gql`
   query orderByReferenceId($id: ID!, $language: String!, $shopId: ID!, $token: String) {
     order: orderByReferenceId(id: $id, shopId: $shopId, token: $token) {
@@ -218,14 +213,18 @@ const orderByReferenceId = gql`
 
 class OrderCardContainer extends Component {
   static propTypes = {
+    match: PropTypes.shape({
+      params: PropTypes.shape({
+        _id: PropTypes.string
+      })
+    }),
     shopId: PropTypes.string
   }
 
   render() {
-    const { shopId } = this.props;
-
+    const { match: { params: { _id } }, shopId } = this.props;
     const variables = {
-      id: "qsHg8zFpfgD5j9WXJ",
+      id: _id,
       language: "en",
       shopId,
       token: null
@@ -237,14 +236,10 @@ class OrderCardContainer extends Component {
           if (isLoading) return null;
           const { order } = orderData || {};
 
-          console.log(" ----- ----- ----- ----- ----- ----- order data ----- ----- ----- ----- ----- -----", order);
-
           return (
-            <ThemeProvider theme={theme}>
-              <MuiThemeProvider theme={muiTheme}>
-                <OrderCard order={order} />
-              </MuiThemeProvider>
-            </ThemeProvider>
+            <OrderCard
+              order={order}
+            />
           );
         }}
       </Query>
@@ -252,4 +247,7 @@ class OrderCardContainer extends Component {
   }
 }
 
-export default compose(withOpaqueShopId)(OrderCardContainer);
+export default compose(
+  withOpaqueShopId,
+  withRouter
+)(OrderCardContainer);
