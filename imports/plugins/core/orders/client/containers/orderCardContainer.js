@@ -2,7 +2,10 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import gql from "graphql-tag";
 import { Query } from "react-apollo";
+import { compose } from "recompose";
+import withOpaqueShopId from "/imports/plugins/core/graphql/lib/hocs/withOpaqueShopId";
 import OrderCard from "../components/orderCard";
+
 // import { orderByReferenceId } from "./queries";
 
 // Until the Blaze wrapper is removed, we need to provide the `MuiThemeProvider` and `ThemeProvider` here
@@ -11,8 +14,6 @@ import { ThemeProvider } from "styled-components";
 import theme from "/imports/plugins/core/router/client/theme/index.js";
 import muiTheme from "/imports/plugins/core/router/client/theme/muiTheme.js";
 // Until the Blaze wrapper is removed, we need to provide the `MuiThemeProvider` and `ThemeProvider` here
-
-import getOpaqueIds from "/imports/plugins/core/core/client/util/getOpaqueIds";
 
 
 const orderByReferenceId = gql`
@@ -216,27 +217,17 @@ const orderByReferenceId = gql`
 `;
 
 class OrderCardContainer extends Component {
-  static propTypes = {}
+  static propTypes = {
+    shopId: PropTypes.string
+  }
 
   render() {
-    const { primaryShopId, routingStore, uiStore } = this.props;
-
-    console.log(" ------ OrderCardContainer props", this.props);
-
-    // const conversionRequests = [
-    //   { namespace: "Shop", id: "J8Bhq3uTtdgwZx3rz" }
-    // ];
-
-    // const [
-    //   opaqueOrderId,
-    //   opaqueShopId,
-    //   ...opaquePaymentIds
-    // ] = await getOpaqueIds(conversionRequests);
+    const { shopId } = this.props;
 
     const variables = {
       id: "qsHg8zFpfgD5j9WXJ",
       language: "en",
-      shopId: "cmVhY3Rpb24vc2hvcDpKOEJocTN1VHRkZ3daeDNyeg==",
+      shopId,
       token: null
     };
 
@@ -261,4 +252,4 @@ class OrderCardContainer extends Component {
   }
 }
 
-export default OrderCardContainer;
+export default compose(withOpaqueShopId)(OrderCardContainer);
