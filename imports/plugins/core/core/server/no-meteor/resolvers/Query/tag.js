@@ -10,7 +10,7 @@ import { decodeTagOpaqueId } from "@reactioncommerce/reaction-graphql-xforms/tag
  */
 
 /**
- * @name "Query.tag"
+ * @name Query/tag
  * @method
  * @memberof Tag/GraphQL
  * @summary Returns a tag for a shop, based on tag slug or ID
