@@ -28,9 +28,9 @@ class OrderCard extends Component {
 
   renderFulfillmentGroups() {
     const { order } = this.props;
-    const { shipping } = order;
+    const { fulfillmentGroups } = order;
 
-    return shipping.map((shipment) => <OrderCardFulfillmentGroup order={order} shipment={shipment} />);
+    return fulfillmentGroups.map((fulfillmentGroup) => <OrderCardFulfillmentGroup key={fulfillmentGroup._id} order={order} shipment={fulfillmentGroup} />);
   }
 
   renderSummary() {

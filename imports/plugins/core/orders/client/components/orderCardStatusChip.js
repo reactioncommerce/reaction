@@ -30,11 +30,12 @@ const styles = (theme) => ({
 class OrderCardStatusChip extends Component {
   static propTypes = {
     classes: PropTypes.object,
-    status: PropTypes.String
+    displayStatus: PropTypes.string,
+    status: PropTypes.string
   };
 
   render() {
-    const { classes, status } = this.props;
+    const { classes, displayStatus, status } = this.props;
 
     let chipClasses;
     if (status === "coreOrderWorkflow/canceled") {
@@ -55,7 +56,7 @@ class OrderCardStatusChip extends Component {
 
     return (
       // TODO: EK - add translations here for status
-      <Chip label={status} className={chipClasses} />
+      <Chip label={displayStatus} className={chipClasses} />
     );
   }
 }

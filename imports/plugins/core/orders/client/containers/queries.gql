@@ -1,0 +1,27 @@
+#import "./fragments.gql"
+
+# Get an order
+query orderByReferenceId($id: ID!, $language: String!, $shopId: ID!, $token: String) {
+  order: orderByReferenceId(id: $id, shopId: $shopId, token: $token) {
+    ...OrderQueryFragment
+  }
+}
+
+# Get orders by accountId
+query ordersByAccountIdQuery($accountId: ID!, $language: String!, $orderStatus: [String]! = ["all"], $shopIds: [ID], $first: ConnectionLimitInt, $last:  ConnectionLimitInt, $before: ConnectionCursor, $after: ConnectionCursor) {
+  orders: ordersByAccountId(accountId: $accountId, orderStatus: $orderStatus, shopIds: $shopIds, first: $first, last: $last, before: $before, after: $after) {
+    totalCount
+    pageInfo {
+      endCursor
+      startCursor
+      hasNextPage
+      hasPreviousPage
+    }
+    edges {
+      cursor
+      node {
+        ...OrderQueryFragment
+      }
+    }
+  }
+}

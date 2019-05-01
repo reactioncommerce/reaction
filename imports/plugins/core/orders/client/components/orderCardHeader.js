@@ -1,18 +1,23 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import Email from "mdi-material-ui/Email";
+import Account from "mdi-material-ui/Account";
+import Phone from "mdi-material-ui/Phone";
 import withStyles from "@material-ui/core/styles/withStyles";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
+import Address from "@reactioncommerce/components/Address/v1";
 import { withMoment } from "@reactioncommerce/reaction-components";
 import { ClickToCopy } from "@reactioncommerce/reaction-ui";
 import OrderCardStatusChip from "./orderCardStatusChip";
 
 
-import Address from "@reactioncommerce/components/Address/v1";
-
 const styles = (theme) => ({
+  orderCardDetailsHeader: {
+    background: theme.palette.colors.coolGrey
+  },
   orderCardInfoTextBold: {
     fontWeight: theme.typography.fontWeightBold
   },
@@ -21,46 +26,13 @@ const styles = (theme) => ({
     marginTop: theme.spacing.unit * 2.5,
     paddingTop: theme.spacing.unit * 2.5
   },
-  orderCardInfoSection: {
+  orderCardSection: {
     marginBottom: theme.spacing.unit * 3
   },
   orderCardReferenceIdLink: {
     pointer: "cursor"
-  },
-
-
-
-
-  orderAddressText: {
-    color: theme.palette.colors.black65,
-    fontSize: "14px"
-  },
-
-
-
-
-  orderStatusNew: {
-    backgroundColor: `${theme.palette.colors.reactionBlue300}`,
-    color: "white",
-    fontWeight: "800"
-  },
-  orderStatusCanceled: {
-    backgroundColor: `${theme.palette.colors.red300}`,
-    color: "white",
-    fontWeight: "800"
-  },
-  orderStatusProcessing: {
-    backgroundColor: `${theme.palette.colors.reactionBlue300}`,
-    color: "white",
-    fontWeight: "800"
-  },
-  orderStatusShipped: {
-    backgroundColor: `${theme.palette.colors.reactionBlue}`,
-    color: "white",
-    fontWeight: "800"
   }
 });
-
 
 class OrderCardHeader extends Component {
   static propTypes = {
@@ -68,13 +40,12 @@ class OrderCardHeader extends Component {
     moment: PropTypes.func,
     order: PropTypes.shape({
       createdAt: PropTypes.string,
+      displayStatus: PropTypes.string,
       email: PropTypes.string,
-      payments: PropTypes.string, // TODO: EK - update this PropType
-      referenceId: PropTypes.string, // TODO: EK - update this PropType
-      shipping: PropTypes.string, // TODO: EK - update this PropType
-      workflow: PropTypes.shape({
-        status: PropTypes.string
-      })
+      fulfillmentGroups: PropTypes.array,
+      payments: PropTypes.array,
+      referenceId: PropTypes.string,
+      status: PropTypes.string
     })
   };
 
@@ -88,67 +59,72 @@ class OrderCardHeader extends Component {
 
     // If more than one payment method, display amount for each
     if (Array.isArray(payments) && payments.length > 1) {
-      return payments.map((payment) => <Typography variant="p">{payment.displayName} {payment.amount.displayAmount}</Typography>);
+      return payments.map((payment) => <Typography key={payment._id} variant="body2">{payment.displayName} {payment.amount.displayAmount}</Typography>);
     }
 
     // If only one payment method, do not display amount
-    return payments.map((payment) => <Typography variant="p">{payment.displayName}</Typography>);
+    return payments.map((payment) => <Typography key={payment._id} variant="body2">{payment.displayName}</Typography>);
   }
 
   renderOrderShipments() {
-    const { order: { shipping } } = this.props;
+    const { order: { fulfillmentGroups } } = this.props;
 
-    if (Array.isArray(shipping) && shipping.length) {
-      return shipping.map((fulfillmentGroup) => <Typography variant="p">{fulfillmentGroup.shipmentMethod.carrier} - {fulfillmentGroup.shipmentMethod.label}</Typography>); // eslint-disable-line
+    if (Array.isArray(fulfillmentGroups) && fulfillmentGroups.length) {
+      return fulfillmentGroups.map((fulfillmentGroup) => <Typography key={fulfillmentGroup._id} variant="body2">{fulfillmentGroup.selectedFulfillmentOption.fulfillmentMethod.carrier} - {fulfillmentGroup.selectedFulfillmentOption.fulfillmentMethod.displayName}</Typography>); // eslint-disable-line
     }
 
     return null;
   }
 
   render() {
-
-    console.log(" ----- ----- ----- ----- ----- renderHeader() this.props", this.props);
-
     const { classes, moment, order } = this.props;
-    const { createdAt, email, referenceId, payments, shipping, shipping: fulfillmentGroups, workflow: { status } } = order;
-    const { shippingAddress } = shipping[0].address;
+    const { createdAt, displayStatus, email, fulfillmentGroups, payments, referenceId, status } = order;
+    const { shippingAddress } = fulfillmentGroups[0].data;
     const orderDate = (moment && moment(createdAt).format("MM/DD/YYYY")) || createdAt.toLocaleString();
 
     return (
       <Card>
         <CardContent>
-          <Grid container alignItems="center">
+          <Grid container alignItems="center" justify="space-evenly">
             <Grid item xs={12} md={4}>
-              <Typography variant="p" className={classes.orderCardInfoTextBold}>Order Status:</Typography>
-              <OrderCardStatusChip status={status} />
+              <Typography variant="body2"><Account />{shippingAddress.fullName}</Typography>
             </Grid>
             <Grid item xs={12} md={4}>
-              <Typography variant="p" className={classes.orderCardInfoTextBold}>Date:</Typography>
-              <Typography variant="p">{orderDate}</Typography>
+              <Typography variant="body2"><Email />{email}</Typography>
             </Grid>
             <Grid item xs={12} md={4}>
-              <Typography variant="p" className={classes.orderCardInfoTextBold}>Order ID:</Typography>
-              <Typography variant="p" className={classes.orderCardReferenceIdLink}>
-                <ClickToCopy
-                  copyToClipboard={this.orderLink()}
-                  displayText={referenceId}
-                  i18nKeyTooltip="admin.orderWorkflow.summary.copyOrderLink"
-                  tooltip="Copy Order Link"
-                />
-              </Typography>
+              <Typography variant="body2"><Phone />{shippingAddress.phone}</Typography>
+            </Grid>
+          </Grid>
+          <Grid container alignItems="center" className={classes.orderCardDivider}>
+            <Grid item xs={12} md={4}>
+              <OrderCardStatusChip displayStatus={displayStatus} status={status} />
+            </Grid>
+            <Grid item xs={12} md={4}>
+              <Typography variant="body2" className={classes.orderCardInfoTextBold}>Date:</Typography>
+              <Typography variant="body2">{orderDate}</Typography>
+            </Grid>
+            <Grid item xs={12} md={4}>
+              <Typography variant="body2" className={classes.orderCardInfoTextBold}>Order ID:</Typography>
+              <ClickToCopy
+                copyToClipboard={this.orderLink()}
+                displayText={referenceId}
+                i18nKeyTooltip="admin.orderWorkflow.summary.copyOrderLink"
+                tooltip="Copy Order Link"
+              />
             </Grid>
           </Grid>
           <section className={classes.orderCardDivider}>
             <Grid container>
               <Grid item xs={12} md={6}>
-                <Grid item className={classes.orderCardInfoSection} xs={12} md={12}>
-                  <Typography variant="p" className={classes.orderCardInfoTextBold}>
+                <Grid item className={classes.orderCardSection} xs={12} md={12}>
+                  <Typography variant="body2" className={classes.orderCardInfoTextBold}>
                     Payment Method{payments.length !== 1 ? "s" : null}:
                   </Typography>
                   {this.renderOrderPayments()}
                 </Grid>
-                <Grid item className={classes.orderCardInfoSection} xs={12} md={12}>
-                  <Typography variant="p" className={classes.orderCardInfoTextBold}>
+                <Grid item className={classes.orderCardSection} xs={12} md={12}>
+                  <Typography variant="body2" className={classes.orderCardInfoTextBold}>
                     Shipping Method{fulfillmentGroups.length !== 1 ? "s" : null}:
                   </Typography>
                   {this.renderOrderShipments()}
@@ -156,10 +132,10 @@ class OrderCardHeader extends Component {
               </Grid>
               <Grid item xs={12} md={6}>
                 <Grid item xs={12} md={12}>
-                  <Typography variant="p" className={classes.orderCardInfoTextBold}>
+                  <Typography variant="body2" className={classes.orderCardInfoTextBold}>
                     Shipping Address:
                   </Typography>
-                  {/* <Address address={shippingAddress} className={classes.orderAddressText} /> */}
+                  <Address address={shippingAddress} />
                 </Grid>
               </Grid>
             </Grid>
