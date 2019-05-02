@@ -17,18 +17,21 @@ const expanded = {
 };
 
 const isPrivate = {
+  label: "Admin access only",
   type: Boolean,
-  optional: true
+  defaultValue: false
 };
 
 const isSecondary = {
+  label: "Secondary nav only",
   type: Boolean,
-  optional: true
+  defaultValue: false
 };
 
 const isVisible = {
+  label: "Show in storefront",
   type: Boolean,
-  optional: true
+  defaultValue: true
 };
 
 const NavigationItem = {
