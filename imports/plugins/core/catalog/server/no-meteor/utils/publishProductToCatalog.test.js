@@ -22,14 +22,10 @@ const mockVariants = [
   {
     _id: internalVariantIds[0],
     barcode: "barcode",
-    canBackorder: true,
     createdAt,
     height: 0,
     index: 0,
-    inventoryManagement: true,
-    inventoryPolicy: false,
     length: 0,
-    lowInventoryWarningThreshold: 0,
     metafields: [
       {
         value: "value",
@@ -54,14 +50,10 @@ const mockVariants = [
   {
     _id: internalVariantIds[0],
     barcode: "barcode",
-    canBackorder: true,
     createdAt,
     height: 0,
     index: 0,
-    inventoryManagement: true,
-    inventoryPolicy: false,
     length: 5,
-    lowInventoryWarningThreshold: 8,
     metafields: [
       {
         value: "value",
@@ -94,7 +86,6 @@ const mockProduct = {
   isDeleted: false,
   isVisible: true,
   length: 5.67,
-  lowInventoryWarningThreshold: 2,
   metafields: [
     {
       value: "value",
@@ -143,7 +134,6 @@ const updatedMockProduct = {
   googleplusMsg: "googlePlusMessage",
   height: 11.23,
   length: 5.67,
-  lowInventoryWarningThreshold: 2,
   metafields: [
     {
       value: "value",

@@ -35,23 +35,20 @@ export default async function inventoryForProductConfigurations(context, input) 
       };
     }
 
-    const { lowInventoryWarningThreshold } = inventoryDoc;
+    const { canBackorder, lowInventoryWarningThreshold } = inventoryDoc;
     let { inventoryInStock, inventoryReserved } = inventoryDoc;
     inventoryInStock = Math.max(0, inventoryInStock);
     inventoryReserved = Math.max(0, inventoryReserved);
     const inventoryAvailableToSell = Math.max(0, inventoryInStock - inventoryReserved);
-    const isSoldOut = inventoryAvailableToSell === 0;
-    const isBackorder = inventoryAvailableToSell === 0;
     const isLowQuantity = inventoryAvailableToSell <= lowInventoryWarningThreshold;
 
     return {
       inventoryInfo: {
+        canBackorder,
         inventoryAvailableToSell,
         inventoryInStock,
         inventoryReserved,
-        isBackorder,
-        isLowQuantity,
-        isSoldOut
+        isLowQuantity
       },
       productConfiguration
     };

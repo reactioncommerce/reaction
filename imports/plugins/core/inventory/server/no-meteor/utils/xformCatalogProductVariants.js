@@ -1,6 +1,7 @@
 import has from "lodash/has";
 
 const inventoryVariantFields = [
+  "canBackorder",
   "inventoryAvailableToSell",
   "inventoryInStock",
   "inventoryReserved",

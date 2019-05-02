@@ -14,7 +14,6 @@ export function xformVariant(variant, variantMedia) {
   return {
     _id: variant._id,
     barcode: variant.barcode,
-    canBackorder: !variant.inventoryPolicy,
     createdAt: variant.createdAt || new Date(),
     height: variant.height,
     index: variant.index || 0,

@@ -23,17 +23,13 @@ const mockVariants = [
     _id: internalVariantIds[0],
     ancestors: [internalCatalogProductId],
     barcode: "barcode",
-    canBackorder: true,
     createdAt,
     compareAtPrice: 1100,
     height: 0,
     index: 0,
-    inventoryManagement: true,
-    inventoryPolicy: false,
     isDeleted: false,
     isVisible: true,
     length: 0,
-    lowInventoryWarningThreshold: 0,
     metafields: [
       {
         value: "value",
@@ -59,16 +55,12 @@ const mockVariants = [
     _id: internalVariantIds[1],
     ancestors: [internalCatalogProductId, internalVariantIds[0]],
     barcode: "barcode",
-    canBackorder: false,
     createdAt,
     height: 2,
     index: 0,
-    inventoryManagement: true,
-    inventoryPolicy: true,
     isDeleted: false,
     isVisible: true,
     length: 2,
-    lowInventoryWarningThreshold: 0,
     metafields: [
       {
         value: "value",
@@ -103,7 +95,6 @@ const mockProduct = {
   googleplusMsg: "googlePlusMessage",
   height: 11.23,
   length: 5.67,
-  lowInventoryWarningThreshold: 2,
   metafields: [
     {
       value: "value",
@@ -180,7 +171,6 @@ const mockCatalogProduct = {
   isDeleted: false,
   isVisible: false,
   length: 5.67,
-  lowInventoryWarningThreshold: 2,
   media: [{
     URLs: {
       large: "large/path/to/image.jpg",
@@ -251,14 +241,10 @@ const mockCatalogProduct = {
   variants: [{
     _id: "875",
     barcode: "barcode",
-    canBackorder: false,
     createdAt,
     height: 0,
     index: 0,
-    inventoryManagement: true,
-    inventoryPolicy: false,
     length: 0,
-    lowInventoryWarningThreshold: 0,
     media: [],
     metafields: [{
       description: "description",
@@ -273,14 +259,10 @@ const mockCatalogProduct = {
     options: [{
       _id: "874",
       barcode: "barcode",
-      canBackorder: false,
       createdAt,
       height: 2,
       index: 0,
-      inventoryManagement: true,
-      inventoryPolicy: true,
       length: 2,
-      lowInventoryWarningThreshold: 0,
       media: [{
         URLs: {
           large: "large/path/to/image.jpg",

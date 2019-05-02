@@ -99,14 +99,10 @@ export const SocialMetadata = new SimpleSchema({
  * @type {SimpleSchema}
  * @property {String} _id required
  * @property {String} barcode optional
- * @property {Boolean} canBackorder required, Indicates when the seller has allowed the sale of product which is not in stock
  * @property {Date} createdAt required
  * @property {Number} height optional, default value: `0`
  * @property {Number} index required
- * @property {Boolean} inventoryManagement required, True if inventory management is enabled for this variant
- * @property {Boolean} inventoryPolicy required, True if inventory policy is enabled for this variant
  * @property {Number} length optional, default value: `0`
- * @property {Number} lowInventoryWarningThreshold optional, default value: `0`
  * @property {ImageInfo[]} media optional
  * @property {Metafield[]} metafields optional
  * @property {Number} minOrderQuantity optional, default value: `1`
@@ -131,10 +127,6 @@ export const VariantBaseSchema = new SimpleSchema({
     label: "Barcode",
     optional: true
   },
-  "canBackorder": {
-    type: Boolean,
-    label: "Can backorder"
-  },
   "createdAt": {
     type: Date,
     label: "Date/time this variant was created at"
@@ -150,24 +142,9 @@ export const VariantBaseSchema = new SimpleSchema({
     type: SimpleSchema.Integer,
     label: "The position of this variant among other variants at the same level of the product-variant-option hierarchy"
   },
-  "inventoryManagement": {
-    type: Boolean,
-    label: "Inventory management"
-  },
-  "inventoryPolicy": {
-    type: Boolean,
-    label: "Inventory policy"
-  },
   "length": {
     type: Number,
     label: "Length",
-    min: 0,
-    optional: true,
-    defaultValue: 0
-  },
-  "lowInventoryWarningThreshold": {
-    type: SimpleSchema.Integer,
-    label: "Warn at",
     min: 0,
     optional: true,
     defaultValue: 0
@@ -277,7 +254,6 @@ export const CatalogVariantSchema = VariantBaseSchema.clone().extend({
  * @property {Number} height optional, default value: `0`
  * @property {Boolean} isVisible required, default value: `false`
  * @property {Number} length optional, default value: `0`
- * @property {Number} lowInventoryWarningThreshold optional, default value: `0`
  * @property {ImageInfo[]} media optional
  * @property {Metafield[]} metafields optional
  * @property {String} metaDescription optional
@@ -341,13 +317,6 @@ export const CatalogProduct = new SimpleSchema({
   "length": {
     type: Number,
     label: "Length",
-    min: 0,
-    optional: true,
-    defaultValue: 0
-  },
-  "lowInventoryWarningThreshold": {
-    type: SimpleSchema.Integer,
-    label: "Warn at",
     min: 0,
     optional: true,
     defaultValue: 0

@@ -1,6 +1,7 @@
 import SimpleSchema from "simpl-schema";
 
 const ALL_FIELDS = [
+  "canBackorder",
   "inventoryAvailableToSell",
   "inventoryInStock",
   "inventoryReserved",
@@ -10,6 +11,7 @@ const ALL_FIELDS = [
 ];
 
 const DEFAULT_INFO = {
+  canBackorder: true,
   inventoryAvailableToSell: 0,
   inventoryInStock: 0,
   inventoryReserved: 0,
@@ -46,6 +48,7 @@ const inputSchema = new SimpleSchema({
 });
 
 const inventoryInfoSchema = new SimpleSchema({
+  canBackorder: Boolean,
   inventoryAvailableToSell: {
     type: SimpleSchema.Integer,
     min: 0
@@ -58,9 +61,7 @@ const inventoryInfoSchema = new SimpleSchema({
     type: SimpleSchema.Integer,
     min: 0
   },
-  isBackorder: Boolean,
-  isLowQuantity: Boolean,
-  isSoldOut: Boolean
+  isLowQuantity: Boolean
 });
 
 const pluginResultSchema = new SimpleSchema({
@@ -123,6 +124,9 @@ export default async function inventoryForProductConfigurations(context, input) 
     sellableProductConfigurations = [];
     for (const pluginResult of pluginResults) {
       if (pluginResult.inventoryInfo) {
+        // Add fields that we calculate here so that each plugin doesn't have to
+        pluginResult.inventoryInfo.isSoldOut = pluginResult.inventoryInfo.inventoryAvailableToSell === 0;
+        pluginResult.inventoryInfo.isBackorder = pluginResult.inventoryInfo.isSoldOut && pluginResult.inventoryInfo.canBackorder;
         results.push(pluginResult);
       } else {
         sellableProductConfigurations.push(pluginResult.productConfiguration);
@@ -158,6 +162,7 @@ export default async function inventoryForProductConfigurations(context, input) 
     results.push({
       productConfiguration,
       inventoryInfo: {
+        canBackorder: childOptionsInventory.some((option) => option.canBackorder),
         inventoryAvailableToSell: childOptionsInventory.reduce((sum, option) => sum + option.inventoryAvailableToSell, 0),
         inventoryInStock: childOptionsInventory.reduce((sum, option) => sum + option.inventoryInStock, 0),
         inventoryReserved: childOptionsInventory.reduce((sum, option) => sum + option.inventoryReserved, 0),

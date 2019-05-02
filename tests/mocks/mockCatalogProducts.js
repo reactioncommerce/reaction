@@ -41,13 +41,8 @@ export const mockInternalCatalogOptions = [
     createdAt: null,
     height: 2,
     index: 0,
-    inventoryManagement: true,
-    inventoryPolicy: true,
-    isLowQuantity: false,
-    isSoldOut: false,
     isTaxable: true,
     length: 2,
-    lowInventoryWarningThreshold: 0,
     metafields: [
       {
         value: "value",
@@ -86,13 +81,8 @@ export const mockInternalCatalogOptions = [
     createdAt: null,
     height: 2,
     index: 0,
-    inventoryManagement: true,
-    inventoryPolicy: true,
-    isLowQuantity: true,
-    isSoldOut: false,
     isTaxable: true,
     length: 2,
-    lowInventoryWarningThreshold: 0,
     metafields: [
       {
         value: "value",
@@ -137,13 +127,8 @@ export const mockExternalCatalogOptions = [
     createdAt: null,
     height: 2,
     index: 0,
-    inventoryManagement: true,
-    inventoryPolicy: true,
-    isLowQuantity: false,
-    isSoldOut: false,
     isTaxable: true,
     length: 2,
-    lowInventoryWarningThreshold: 0,
     metafields: [
       {
         value: "value",
@@ -188,13 +173,8 @@ export const mockExternalCatalogOptions = [
     createdAt: null,
     height: 2,
     index: 0,
-    inventoryManagement: true,
-    inventoryPolicy: true,
-    isLowQuantity: true,
-    isSoldOut: false,
     isTaxable: true,
     length: 2,
-    lowInventoryWarningThreshold: 0,
     metafields: [
       {
         value: "value",
@@ -245,13 +225,8 @@ export const mockInternalCatalogVariants = [
     createdAt: createdAt.toISOString(),
     height: 0,
     index: 0,
-    inventoryManagement: true,
-    inventoryPolicy: false,
-    isLowQuantity: true,
-    isSoldOut: false,
     isTaxable: true,
     length: 0,
-    lowInventoryWarningThreshold: 0,
     metafields: [
       {
         value: "value",
@@ -297,13 +272,8 @@ export const mockExternalCatalogVariants = [
     createdAt: createdAt.toISOString(),
     height: 0,
     index: 0,
-    inventoryManagement: true,
-    inventoryPolicy: false,
-    isLowQuantity: true,
-    isSoldOut: false,
     isTaxable: true,
     length: 0,
-    lowInventoryWarningThreshold: 0,
     metafields: [
       {
         value: "value",
@@ -356,7 +326,6 @@ export const mockInternalCatalogProducts = [
     height: 11.23,
     isVisible: true,
     length: 5.67,
-    lowInventoryWarningThreshold: 2,
     metafields: [
       {
         value: "value",
@@ -444,7 +413,6 @@ export const mockInternalCatalogProducts = [
     height: 11.23,
     isVisible: true,
     length: 5.67,
-    lowInventoryWarningThreshold: 2,
     metafields: [
       {
         value: "value",
@@ -547,7 +515,6 @@ export const mockExternalCatalogProducts = [
       isLowQuantity: false,
       isSoldOut: false,
       length: 5.67,
-      lowInventoryWarningThreshold: 2,
       metafields: [
         {
           value: "value",
@@ -653,7 +620,6 @@ export const mockExternalCatalogProducts = [
       isLowQuantity: false,
       isSoldOut: false,
       length: 5.67,
-      lowInventoryWarningThreshold: 2,
       metafields: [
         {
           value: "value",
