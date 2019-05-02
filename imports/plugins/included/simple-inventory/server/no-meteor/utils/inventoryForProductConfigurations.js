@@ -19,9 +19,11 @@ export default async function inventoryForProductConfigurations(context, input) 
   const { SimpleInventory } = collections;
   const { productConfigurations } = input;
 
+  const productVariantIds = productConfigurations.map(({ productVariantId }) => productVariantId);
+
   const inventoryDocs = await SimpleInventory
     .find({
-      productConfiguration: { $in: productConfigurations }
+      "productConfiguration.productVariantId": { $in: productVariantIds }
     })
     .limit(productConfigurations.length) // optimize query speed
     .toArray();

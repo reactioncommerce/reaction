@@ -14,12 +14,10 @@ export default async function buildOrderItem(context, { currencyCode, inputItem 
   const {
     addedAt,
     price,
-    productConfiguration: {
-      productId,
-      productVariantId
-    },
+    productConfiguration,
     quantity
   } = inputItem;
+  const { productId, productVariantId } = productConfiguration;
 
   const {
     catalogProduct: chosenProduct,
@@ -38,7 +36,12 @@ export default async function buildOrderItem(context, { currencyCode, inputItem 
     throw new ReactionError("invalid", `Provided price for the "${chosenVariant.title}" item does not match current published price`);
   }
 
-  if (!chosenVariant.canBackorder && (quantity > chosenVariant.inventoryAvailableToSell)) {
+  const inventoryInfo = await context.queries.inventoryForProductConfiguration(context, {
+    fields: ["canBackorder", "inventoryAvailableToSell"],
+    productConfiguration
+  });
+
+  if (!inventoryInfo.canBackorder && (quantity > inventoryInfo.inventoryAvailableToSell)) {
     throw new ReactionError("invalid-order-quantity", `Quantity ordered is more than available inventory for  "${chosenVariant.title}"`);
   }
 

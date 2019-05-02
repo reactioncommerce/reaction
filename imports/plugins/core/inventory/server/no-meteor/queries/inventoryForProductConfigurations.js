@@ -23,7 +23,7 @@ const DEFAULT_INFO = {
 const productConfigurationSchema = new SimpleSchema({
   isSellable: Boolean,
   productId: String,
-  variantId: String
+  productVariantId: String
 });
 
 const inputSchema = new SimpleSchema({
@@ -102,10 +102,11 @@ export default async function inventoryForProductConfigurations(context, input) 
   let sellableProductConfigurations = [];
   const parentVariantProductConfigurations = [];
   for (const productConfiguration of productConfigurations) {
-    if (productConfiguration.isSellable) {
-      sellableProductConfigurations.push(productConfiguration);
+    const { isSellable, ...coreProductConfiguration } = productConfiguration;
+    if (isSellable) {
+      sellableProductConfigurations.push(coreProductConfiguration);
     } else {
-      parentVariantProductConfigurations.push(productConfiguration);
+      parentVariantProductConfigurations.push(coreProductConfiguration);
     }
   }
 
