@@ -43,9 +43,9 @@ export default (Component) => (
       return navigationTree.map((node) => {
         const newNode = {};
         newNode.id = node.navigationItem._id;
-        newNode.isVisible = node.isVisible;
-        newNode.isPrivate = node.isPrivate;
-        newNode.isSecondary = node.isSecondary;
+        newNode.isVisible = typeof node.isVisible === "boolean" ? node.isVisible : true;
+        newNode.isPrivate = typeof node.isPrivate === "boolean" ? node.isPrivate : false;
+        newNode.isSecondary = typeof node.isSecondary === "boolean" ? node.isSecondary : false;
         newNode.title = this.getNavigationItemTitle(node.navigationItem).value;
         newNode.expanded = node.navigationItem.expanded;
         newNode.subtitle = node.navigationItem.draftData.url;
