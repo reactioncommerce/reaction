@@ -10,18 +10,32 @@ extend enum CatalogBooleanFilterName {
 }
 
 extend type CatalogProduct {
-  "True if isSoldOut is true AND none of the variants have an inventoryPolicy set AND available inventory is 0"
+  """
+  True if every purchasable variant of this product is sold out but allows backorders. A storefront UI may use this
+  to decide to show a "Backordered" indicator.
+  """
   isBackorder: Boolean!
 
-  "True if at least one of the variants has inventoryManagement enabled and has an available quantity less than its lowInventoryWarningThreshold"
+  """
+  True if at least one purchasable variant of this product has a low quantity in stock. A storefront UI may use this
+  to decide to show a "Low Quantity" indicator.
+  """
   isLowQuantity: Boolean!
 
-  "True if every product variant has inventoryManagement enabled and has 0 inventory"
+  """
+  True if every purchasable variant of this product is sold out. A storefront UI may use this
+  to decide to show a "Sold Out" indicator when `isBackorder` is not also true.
+  """
   isSoldOut: Boolean!
 }
 
 extend type CatalogProductVariant {
-  "Indicates when the seller has allowed the sale of product which is not in stock. True if inventoryManagement is true AND none of the variants have an inventoryPolicy set."
+  """
+  True for a purchasable variant if an order containing this variant will be accepted even where there is insufficient
+  available inventory to fulfill it immediately. For non-purchasable variants, this is true if at least one purchasable
+  child variant can be backordered. A storefront UI may use this in combination with `inventoryAvailableToSell` to
+  decide whether to show or enable an "Add to Cart" button.
+  """
   canBackorder: Boolean!
 
   """
@@ -42,19 +56,25 @@ extend type CatalogProductVariant {
   """
   inventoryInStock: Int
 
-  "True if inventory management is enabled for this variant"
-  inventoryManagement: Boolean!
-
-  "True if inventory policy is enabled for this variant"
-  inventoryPolicy: Boolean!
-
-  "True if isSoldOut is true AND none of the variants have an inventoryPolicy set AND available inventory is 0"
+  """
+  True for a purchasable variant if it is sold out but allows backorders. For non-purchasable variants, this is
+  true if every purchasable child variant is sold out but allows backorders. A storefront UI may use this
+  to decide to show a "Backordered" indicator.
+  """
   isBackorder: Boolean!
 
-  "True if inventoryManagement is enabled and this variant has an available quantity less than its lowInventoryWarningThreshold"
+  """
+  True for a purchasable variant if it has a low quantity in stock. For non-purchasable variants, this is
+  true if at least one purchasable child variant has a low quantity in stock. A storefront UI may use this
+  to decide to show a "Low Quantity" indicator.
+  """
   isLowQuantity: Boolean!
 
-  "True if inventoryManagement is enabled and this variant has 0 inventory"
+  """
+  True for a purchasable variant if it is sold out. For non-purchasable variants, this is
+  true if every purchasable child variant is sold out. A storefront UI may use this
+  to decide to show a "Sold Out" indicator when `isBackorder` is not also true.
+  """
   isSoldOut: Boolean!
 }
 
@@ -67,12 +87,21 @@ extend type CartItem {
   """
   inventoryAvailableToSell: Int
 
-  "Is this item currently backordered?"
+  """
+  True if this item is currently sold out but allows backorders. A storefront UI may use this
+  to decide to show a "Backordered" indicator.
+  """
   isBackorder: Boolean!
 
-  "Is this item quantity available currently below it's low quantity threshold?"
+  """
+  True it this item has a low quantity in stock. A storefront UI may use this
+  to decide to show a "Low Quantity" indicator.
+  """
   isLowQuantity: Boolean!
 
-  "Is this item currently sold out?"
+  """
+  True if this item is currently sold out. A storefront UI may use this
+  to decide to show a "Sold Out" indicator when `isBackorder` is not also true.
+  """
   isSoldOut: Boolean!
 }
