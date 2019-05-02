@@ -24,7 +24,7 @@
         "isVisibleHelpText": "Make this navigation item available to the storefront for both customers and admins.",
         "isPrivate": "Admin access only",
         "isPrivateHelpText": "Show only to admins. Used for staging changes to the navigation without exposing it to customers. \"Show in storefront\" must be checked.",
-        "isSecondary": "Hide from primary navigation",
+        "isSecondary": "Secondary nav only",
         "isSecondaryHelpText": "Prevent this item from showing up as a main navigation item. This item may still be visible in some navigation bars or sidebars."
       }
     }
