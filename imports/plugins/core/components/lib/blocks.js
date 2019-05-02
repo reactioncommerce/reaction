@@ -197,7 +197,7 @@ export function getBlocks(regionName) {
  * This function keeps track of the previous HOCs and wraps the new HOCs around previous ones
  * @param {Object} options Object containing block information
  * @param {String} options.region The region of the block that will be replaced
- * @param {String} options.block The name of the block that will be replaced 
+ * @param {String} options.block The name of the block that will be replaced
  * @param {React.Component} options.component Interchangeable/extendable component.
  * @param {Function|Array} options.hocs The HOCs to compose with the raw component.
  * @returns {Function|React.Component} A component callable with Components[name]
