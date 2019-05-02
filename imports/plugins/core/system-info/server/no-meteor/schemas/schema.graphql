@@ -1,8 +1,7 @@
-"Extend Query to include systemInformation"
 extend type Query {
+  "SystemInformation object"
   systemInformation(shopId: ID!): SystemInformation!
 }
-
 "Represents Reaction Plugin"
 type Plugin {
   "name of plugin"
