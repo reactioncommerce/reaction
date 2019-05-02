@@ -80,6 +80,11 @@ extend type CatalogProductVariant {
 
 extend type CartItem {
   """
+  The quantity of this item currently available to order.
+  """
+  currentQuantity: Int @deprecated(reason: "Use `inventoryAvailableToSell`.")
+
+  """
   The quantity of this item currently available to sell.
   This number is updated when an order is placed by the customer.
   This number does not include reserved inventory (i.e. inventory that has been ordered, but not yet processed by the operator).

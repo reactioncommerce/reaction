@@ -1,3 +1,7 @@
+import mutations from "./mutations";
+import queries from "./queries";
+import resolvers from "./resolvers";
+import schemas from "./schemas";
 import startup from "./startup";
 import inventoryForProductConfigurations from "./utils/inventoryForProductConfigurations";
 
@@ -18,6 +22,11 @@ export default async function register(app) {
       inventoryForProductConfigurations: [inventoryForProductConfigurations],
       startup: [startup]
     },
-    graphQL: {}
+    graphQL: {
+      resolvers,
+      schemas
+    },
+    mutations,
+    queries
   });
 }

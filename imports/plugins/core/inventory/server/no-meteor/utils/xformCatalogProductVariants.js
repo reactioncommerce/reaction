@@ -7,7 +7,14 @@ const inventoryVariantFields = [
   "inventoryReserved",
   "isBackorder",
   "isLowQuantity",
-  "isSoldOut"
+  "isSoldOut",
+  "options.canBackorder",
+  "options.inventoryAvailableToSell",
+  "options.inventoryInStock",
+  "options.inventoryReserved",
+  "options.isBackorder",
+  "options.isLowQuantity",
+  "options.isSoldOut"
 ];
 
 /**
@@ -28,14 +35,14 @@ export default async function xformCatalogProductVariants(context, catalogProduc
     productConfigurations.push({
       isSellable: (catalogProductVariant.options || []).length === 0,
       productId: catalogProduct.productId,
-      variantId: catalogProductVariant.variantId
+      productVariantId: catalogProductVariant.variantId
     });
 
     for (const option of (catalogProductVariant.options || [])) {
       productConfigurations.push({
         isSellable: true,
         productId: catalogProduct.productId,
-        variantId: option.variantId
+        productVariantId: option.variantId
       });
     }
   }
@@ -46,16 +53,16 @@ export default async function xformCatalogProductVariants(context, catalogProduc
 
   for (const catalogProductVariant of catalogProductVariants) {
     const { inventoryInfo: variantInventoryInfo } = variantsInventoryInfo.find(({ productConfiguration }) =>
-      productConfiguration.variantId === catalogProductVariant.variantId);
+      productConfiguration.productVariantId === catalogProductVariant.variantId);
     Object.getOwnPropertyNames(variantInventoryInfo).forEach((key) => {
       catalogProductVariant[key] = variantInventoryInfo[key];
     });
 
     for (const option of (catalogProductVariant.options || [])) {
       const { inventoryInfo: optionInventoryInfo } = variantsInventoryInfo.find(({ productConfiguration }) =>
-        productConfiguration.variantId === option.variantId);
+        productConfiguration.productVariantId === option.variantId);
       Object.getOwnPropertyNames(optionInventoryInfo).forEach((key) => {
-        catalogProductVariant[key] = optionInventoryInfo[key];
+        option[key] = optionInventoryInfo[key];
       });
     }
   }

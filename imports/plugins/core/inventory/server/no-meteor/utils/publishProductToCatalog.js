@@ -15,7 +15,7 @@ export default async function publishProductToCatalog(catalogProduct, { context,
     productConfigurations: topVariants.map((option) => ({
       isSellable: !variants.some((variant) => variant.ancestors.includes(option._id)),
       productId: option.ancestors[0],
-      variantId: option._id
+      productVariantId: option._id
     })),
     fields: ["isBackorder", "isLowQuantity", "isSoldOut"],
     variants

@@ -1,4 +1,5 @@
 import Logger from "@reactioncommerce/logger";
+import collectionIndex from "/imports/utils/collectionIndex";
 
 /**
  * @summary Get all order items
@@ -21,6 +22,8 @@ export default function startup(context) {
   const SimpleInventory = app.db.collection("SimpleInventory");
   collections.SimpleInventory = SimpleInventory;
 
+  collectionIndex(SimpleInventory, { "productConfiguration.productVariantId": 1, "shopId": 1 }, { unique: true });
+
   appEvents.on("afterOrderCancel", async ({ order, returnToStock }) => {
     // Inventory is removed from stock only once an order has been approved
     // This is indicated by payment.status being anything other than `created`
@@ -38,7 +41,7 @@ export default function startup(context) {
             filter: {
               productConfiguration: {
                 productId: item.productId,
-                variantId: item.variantId
+                productVariantId: item.variantId
               }
             },
             update: {
@@ -57,7 +60,7 @@ export default function startup(context) {
             filter: {
               productConfiguration: {
                 productId: item.productId,
-                variantId: item.variantId
+                productVariantId: item.variantId
               }
             },
             update: {
@@ -81,7 +84,7 @@ export default function startup(context) {
         filter: {
           productConfiguration: {
             productId: item.productId,
-            variantId: item.variantId
+            productVariantId: item.variantId
           }
         },
         update: {
@@ -107,7 +110,7 @@ export default function startup(context) {
         filter: {
           productConfiguration: {
             productId: item.productId,
-            variantId: item.variantId
+            productVariantId: item.variantId
           }
         },
         update: {

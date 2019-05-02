@@ -38,12 +38,9 @@ const mockVariants = [
     createdAt,
     height: 0,
     index: 0,
-    inventoryManagement: true,
-    inventoryPolicy: false,
     isDeleted: false,
     isVisible: true,
     length: 0,
-    lowInventoryWarningThreshold: 0,
     metafields: [
       {
         value: "value",
@@ -73,12 +70,9 @@ const mockVariants = [
     compareAtPrice: 15,
     height: 2,
     index: 0,
-    inventoryManagement: true,
-    inventoryPolicy: true,
     isDeleted: false,
     isVisible: true,
     length: 2,
-    lowInventoryWarningThreshold: 0,
     metafields: [
       {
         value: "value",
@@ -179,10 +173,7 @@ const expectedOptionsResponse = [
     createdAt: null,
     height: 2,
     index: 0,
-    inventoryManagement: true,
-    inventoryPolicy: true,
     length: 2,
-    lowInventoryWarningThreshold: 0,
     metafields: [
       {
         value: "value",
@@ -217,10 +208,7 @@ const expectedVariantsResponse = [
     createdAt: createdAt.toISOString(),
     height: 0,
     index: 0,
-    inventoryManagement: true,
-    inventoryPolicy: false,
     length: 0,
-    lowInventoryWarningThreshold: 0,
     metafields: [
       {
         value: "value",

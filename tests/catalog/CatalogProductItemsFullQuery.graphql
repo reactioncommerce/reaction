@@ -103,13 +103,10 @@ query ($shopIds: [ID]!, $first: ConnectionLimitInt, $sortBy: CatalogItemSortByFi
             createdAt
             height
             index
-            inventoryManagement
-            inventoryPolicy
             isLowQuantity
             isSoldOut
             isTaxable
             length
-            lowInventoryWarningThreshold
             metafields {
               value
               namespace
@@ -125,13 +122,10 @@ query ($shopIds: [ID]!, $first: ConnectionLimitInt, $sortBy: CatalogItemSortByFi
               createdAt
               height
               index
-              inventoryManagement
-              inventoryPolicy
               isLowQuantity
               isSoldOut
               isTaxable
               length
-              lowInventoryWarningThreshold
               metafields {
                 value
                 namespace

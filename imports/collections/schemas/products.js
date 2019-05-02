@@ -57,12 +57,9 @@ registerSchema("VariantMedia", VariantMedia);
  * @property {Event[]} eventLog optional, Variant Event Log
  * @property {Number} height optional, default value: `0`
  * @property {Number} index optional, Variant position number in list. Keep array index for moving variants in a list.
- * @property {Boolean} inventoryManagement, default value: `true`
- * @property {Boolean} inventoryPolicy, default value: `false`, If disabled, item can be sold even if it not in stock.
  * @property {Boolean} isDeleted, default value: `false`
  * @property {Boolean} isVisible, default value: `false`
  * @property {Number} length optional, default value: `0`
- * @property {Number} lowInventoryWarningThreshold, default value: `0`, Warn of low inventory at this number
  * @property {Metafield[]} metafields optional
  * @property {Number} minOrderQuantity optional
  * @property {String} optionTitle, Option internal name, default value: `"Untitled option"`
@@ -128,34 +125,6 @@ export const ProductVariant = new SimpleSchema({
     type: SimpleSchema.Integer,
     optional: true
   },
-  "inventoryManagement": {
-    type: Boolean,
-    label: "Inventory Tracking",
-    optional: true,
-    defaultValue: true,
-    custom() {
-      if (Meteor.isClient) {
-        if (!(this.siblingField("type").value === "inventory" || this.value ||
-          this.value === false)) {
-          return SimpleSchema.ErrorTypes.REQUIRED;
-        }
-      }
-    }
-  },
-  "inventoryPolicy": {
-    type: Boolean,
-    label: "Deny when out of stock",
-    optional: true,
-    defaultValue: false,
-    custom() {
-      if (Meteor.isClient) {
-        if (!(this.siblingField("type").value === "inventory" || this.value ||
-          this.value === false)) {
-          return SimpleSchema.ErrorTypes.REQUIRED;
-        }
-      }
-    }
-  },
   "isDeleted": {
     type: Boolean,
     defaultValue: false
@@ -167,13 +136,6 @@ export const ProductVariant = new SimpleSchema({
   "length": {
     label: "Length",
     type: Number,
-    min: 0,
-    optional: true,
-    defaultValue: 0
-  },
-  "lowInventoryWarningThreshold": {
-    type: SimpleSchema.Integer,
-    label: "Warn at",
     min: 0,
     optional: true,
     defaultValue: 0

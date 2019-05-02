@@ -8,11 +8,7 @@
 export default async function xformCartItems(context, items) {
   const productConfigurations = [];
   for (const item of items) {
-    productConfigurations.push({
-      isSellable: true,
-      productId: item.productConfiguration.productId,
-      variantId: item.productConfiguration.productVariantId
-    });
+    productConfigurations.push({ ...item.productConfiguration, isSellable: true });
   }
 
   const variantsInventoryInfo = await context.queries.inventoryForProductConfigurations(context, {
@@ -21,9 +17,12 @@ export default async function xformCartItems(context, items) {
 
   for (const item of items) {
     const { inventoryInfo: variantInventoryInfo } = variantsInventoryInfo.find(({ productConfiguration }) =>
-      productConfiguration.variantId === item.productConfiguration.productVariantId);
+      productConfiguration.productVariantId === item.productConfiguration.productVariantId);
     Object.getOwnPropertyNames(variantInventoryInfo).forEach((key) => {
       item[key] = variantInventoryInfo[key];
     });
+
+    // Set deprecated `currentQuantity` for now
+    item.currentQuantity = item.inventoryAvailableToSell;
   }
 }
