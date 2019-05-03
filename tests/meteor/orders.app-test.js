@@ -9,7 +9,7 @@ import ReactionError from "@reactioncommerce/reaction-error";
 import Fixtures from "/imports/plugins/core/core/server/fixtures";
 import Reaction from "/imports/plugins/core/core/server/Reaction";
 import { getShop } from "/imports/plugins/core/core/server/fixtures/shops";
-import { Orders, Notifications, Products, Shops } from "/lib/collections";
+import { Orders, Notifications, Shops } from "/lib/collections";
 import { Media } from "/imports/plugins/core/files/server";
 
 Fixtures();

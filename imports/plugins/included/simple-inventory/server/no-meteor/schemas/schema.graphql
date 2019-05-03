@@ -1,3 +1,4 @@
+"Inventory info for a specific product configuration. For inventory managed by the SimpleInventory plugin."
 type SimpleInventoryInfo {
   """
   Whether to allow ordering this product configuration when there is insufficient quantity available
@@ -26,14 +27,14 @@ type SimpleInventoryInfo {
 
 "Input for the `updateSimpleInventory` mutation. In addition to `shopId`, at least one field to update is required."
 input UpdateSimpleInventoryInput {
-  "An optional string identifying the mutation call, which will be returned in the response payload"
-  clientMutationId: String
-
   """
   Whether to allow ordering this product configuration when there is insufficient quantity available.
   Set this to `true` or `false` if you want to update it.
   """
   canBackorder: Boolean
+
+  "An optional string identifying the mutation call, which will be returned in the response payload"
+  clientMutationId: String
 
   """
   Current quantity of this product configuration in stock. Set this to an integer if you want to update it.
@@ -59,6 +60,7 @@ input UpdateSimpleInventoryInput {
   shopId: ID!
 }
 
+"Response payload for the `updateSimpleInventory` mutation"
 type UpdateSimpleInventoryPayload {
   "The same string you sent with the mutation params, for matching mutation calls with their responses"
   clientMutationId: String

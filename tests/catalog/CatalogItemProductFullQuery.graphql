@@ -16,7 +16,6 @@ query ($slugOrId: String!) {
       isLowQuantity
       isSoldOut
       length
-      lowInventoryWarningThreshold
       metafields {
         value
         namespace

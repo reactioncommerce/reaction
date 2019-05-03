@@ -70,8 +70,9 @@ export async function xformProduct({ context, product, variants }) {
       const variantMedia = catalogProductMedia.filter((media) => media.variantId === variant._id);
       const newVariant = xformVariant(variant, variantMedia);
 
-      if (newVariant.options) {
-        newVariant.options = newVariant.options.map((option) => {
+      const variantOptions = options.get(variant._id);
+      if (variantOptions) {
+        newVariant.options = variantOptions.map((option) => {
           const optionMedia = catalogProductMedia.filter((media) => media.variantId === option._id);
           return xformVariant(option, optionMedia);
         });
@@ -90,7 +91,6 @@ export async function xformProduct({ context, product, variants }) {
     isDeleted: !!product.isDeleted,
     isVisible: !!product.isVisible,
     length: product.length,
-    lowInventoryWarningThreshold: product.lowInventoryWarningThreshold,
     media: catalogProductMedia,
     metafields: product.metafields,
     metaDescription: product.metaDescription,

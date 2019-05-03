@@ -14,6 +14,7 @@ import tags from "/imports/plugins/core/tags/server/no-meteor/resolvers";
 import taxes from "/imports/plugins/core/taxes/server/no-meteor/resolvers";
 // INCLUDED
 import shippingRates from "/imports/plugins/included/shipping-rates/server/no-meteor/resolvers";
+import simpleInventory from "/imports/plugins/included/simple-inventory/server/no-meteor/resolvers";
 import simplePricing from "/imports/plugins/included/simple-pricing/server/no-meteor/resolvers";
 
 export default merge(
@@ -31,5 +32,6 @@ export default merge(
   tags,
   taxes,
   shippingRates,
+  simpleInventory,
   simplePricing
 );

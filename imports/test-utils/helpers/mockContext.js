@@ -74,6 +74,7 @@ export function mockCollection(collectionName) {
   "SellerShops",
   "Shipping",
   "Shops",
+  "SimpleInventory",
   "Tags",
   "Templates",
   "Themes",

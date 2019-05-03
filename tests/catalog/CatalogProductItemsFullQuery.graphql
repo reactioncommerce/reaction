@@ -18,7 +18,6 @@ query ($shopIds: [ID]!, $first: ConnectionLimitInt, $sortBy: CatalogItemSortByFi
           isLowQuantity
           isSoldOut
           length
-          lowInventoryWarningThreshold
           metafields {
             value
             namespace

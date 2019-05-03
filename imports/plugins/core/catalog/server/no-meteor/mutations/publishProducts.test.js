@@ -109,7 +109,6 @@ const mockProduct = {
   googleplusMsg: "googlePlusMessage",
   height: 11.23,
   length: 5.67,
-  lowInventoryWarningThreshold: 2,
   metafields: [
     {
       value: "value",
@@ -253,7 +252,6 @@ const expectedItemsResponse = {
           description: "description",
           height: 11.23,
           length: 5.67,
-          lowInventoryWarningThreshold: 2,
           metafields: [
             {
               value: "value",
