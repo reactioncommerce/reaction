@@ -59,3 +59,6 @@
 [submodule "imports/plugins/custom/reaction-plugin-import-seo-metadata"]
 	path = imports/plugins/custom/reaction-plugin-import-seo-metadata
 	url = git@github.com:sportsdirect/reaction-plugin-import-seo-metadata.git
+[submodule "imports/plugins/custom/imports/plugins/custom/reaction-plugin-radial-item-export"]
+	path = imports/plugins/custom/imports/plugins/custom/reaction-plugin-radial-item-export
+	url = git@github.com:sportsdirect/reaction-plugin-radial-item-export.git

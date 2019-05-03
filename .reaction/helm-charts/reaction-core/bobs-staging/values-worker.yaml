@@ -124,6 +124,8 @@ app:
         value: "true"
     -   key: CONSTANT_PUBLISHER_PAUSE_SECONDS
         value: 300
+    -   key: RADIAL_ITEM_EXPORT_CONSUMER_ENABLED
+        value: "true"
         ## Configure resource requests and limits
         ## ref: http://kubernetes.io/docs/user-guide/compute-resources/
 resources:
