@@ -127,6 +127,8 @@ export const mockExternalCatalogOptions = [
     createdAt: null,
     height: 2,
     index: 0,
+    isLowQuantity: false,
+    isSoldOut: false,
     isTaxable: true,
     length: 2,
     metafields: [
@@ -173,6 +175,8 @@ export const mockExternalCatalogOptions = [
     createdAt: null,
     height: 2,
     index: 0,
+    isLowQuantity: false,
+    isSoldOut: false,
     isTaxable: true,
     length: 2,
     metafields: [
@@ -272,6 +276,8 @@ export const mockExternalCatalogVariants = [
     createdAt: createdAt.toISOString(),
     height: 0,
     index: 0,
+    isLowQuantity: false,
+    isSoldOut: true,
     isTaxable: true,
     length: 0,
     metafields: [
