@@ -96,17 +96,19 @@ class NavigationItemForm extends Component {
       });
     }
 
-    const newSortableNavigationTree = changeNodeAtPath({
-      ...sortableTreeNode,
-      newNode: {
-        ...sortableTreeNode.node,
-        isVisible,
-        isPrivate,
-        isSecondary
-      }
-    });
+    if (navigationItem && navigationItem.isInNavigationTree) {
+      const newSortableNavigationTree = changeNodeAtPath({
+        ...sortableTreeNode,
+        newNode: {
+          ...sortableTreeNode.node,
+          isVisible,
+          isPrivate,
+          isSecondary
+        }
+      });
 
-    onSetSortableNavigationTree(newSortableNavigationTree);
+      onSetSortableNavigationTree(newSortableNavigationTree);
+    }
 
     return onCloseForm();
   }
