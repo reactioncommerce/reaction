@@ -324,6 +324,9 @@ export const mockInternalCatalogProducts = [
     createdAt: createdAt.toISOString(),
     description: "description",
     height: 11.23,
+    isBackorder: false,
+    isLowQuantity: false,
+    isSoldOut: false,
     isVisible: true,
     length: 5.67,
     metafields: [
@@ -411,6 +414,9 @@ export const mockInternalCatalogProducts = [
     createdAt: createdAt.toISOString(),
     description: "description",
     height: 11.23,
+    isBackorder: false,
+    isLowQuantity: false,
+    isSoldOut: false,
     isVisible: true,
     length: 5.67,
     metafields: [
