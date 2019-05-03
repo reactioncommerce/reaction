@@ -120,6 +120,10 @@ app:
         value: "1100151420184"
     -   key: TAXES_CONSUMER_ENABLED
         value: "false"
+    -   key: CONSTANT_PUBLISHER_MODE
+        value: "true"
+    -   key: CONSTANT_PUBLISHER_PAUSE_SECONDS
+        value: 300
         ## Configure resource requests and limits
         ## ref: http://kubernetes.io/docs/user-guide/compute-resources/
 resources:
