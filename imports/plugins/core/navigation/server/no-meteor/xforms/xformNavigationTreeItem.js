@@ -11,7 +11,7 @@ import getNavigationItemContentForLanguage from "../util/getNavigationItemConten
 export default async function xformNavigationTreeItem(context, language, item) {
   const { collections } = context;
   const { NavigationItems } = collections;
-  const { expanded, navigationItemId } = item;
+  const { expanded, isVisible, isPrivate, isSecondary, navigationItemId } = item;
   let { items = [] } = item;
 
   const navigationItem = await NavigationItems.findOne({ _id: navigationItemId });
@@ -34,6 +34,9 @@ export default async function xformNavigationTreeItem(context, language, item) {
   return {
     navigationItem,
     expanded,
+    isVisible: typeof isVisible === "boolean" ? isVisible : true,
+    isPrivate: typeof isVisible === "boolean" ? isPrivate : false,
+    isSecondary: typeof isVisible === "boolean" ? isSecondary : false,
     items
   };
 }
