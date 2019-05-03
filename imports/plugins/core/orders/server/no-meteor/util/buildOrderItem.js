@@ -38,7 +38,10 @@ export default async function buildOrderItem(context, { currencyCode, inputItem 
 
   const inventoryInfo = await context.queries.inventoryForProductConfiguration(context, {
     fields: ["canBackorder", "inventoryAvailableToSell"],
-    productConfiguration
+    productConfiguration: {
+      ...productConfiguration,
+      isSellable: true
+    }
   });
 
   if (!inventoryInfo.canBackorder && (quantity > inventoryInfo.inventoryAvailableToSell)) {

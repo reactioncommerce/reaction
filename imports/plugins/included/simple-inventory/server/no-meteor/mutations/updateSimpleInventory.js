@@ -95,13 +95,20 @@ export default async function updateSimpleInventory(context, input) {
     }
   });
 
-  if ($set.getOwnPropertyNames().length === 1) {
+  if (Object.getOwnPropertyNames($set).length === 1) {
     throw new ReactionError("invalid-param", "You must provide at least one field to update.");
   }
 
   const modifier = { $set, $setOnInsert };
 
-  SimpleInventoryCollectionSchema.validate(modifier, { modifier: true, upsert: true });
+  SimpleInventoryCollectionSchema.validate({
+    $set,
+    $setOnInsert: {
+      ...$setOnInsert,
+      "productConfiguration.productVariantId": productConfiguration.productVariantId,
+      shopId
+    }
+  }, { modifier: true, upsert: true });
 
   const { value: updatedDoc } = await SimpleInventory.findOneAndUpdate(
     {

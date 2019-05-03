@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
-import { Components } from "@reactioncommerce/reaction-components";
 import { formatPriceString, i18next } from "/client/api";
 import TableCell from "@material-ui/core/TableCell";
 import TableRow from "@material-ui/core/TableRow";
@@ -70,30 +69,6 @@ class ProductGridItems extends Component {
     );
   }
 
-  renderGridContent() {
-    return (
-      <div className="grid-content">
-        <a
-          href={this.props.pdpPath()}
-          data-event-category="grid"
-          data-event-action="product-click"
-          data-event-label="grid product click"
-          data-event-value={this.props.product._id}
-          onDoubleClick={this.handleDoubleClick}
-          onClick={this.handleClick}
-        >
-          <div className="overlay">
-            <div className="overlay-title">{this.props.product.title}</div>
-            <div className="currency-symbol">{formatPriceString(this.props.displayPrice())}</div>
-            {this.props.isSearch &&
-                <div className="overlay-description">{this.props.product.description}</div>
-            }
-          </div>
-        </a>
-      </div>
-    );
-  }
-
   handleSelect = (event) => {
     this.props.onSelect(event.target.checked, this.props.product);
   }
@@ -120,9 +95,6 @@ class ProductGridItems extends Component {
         </TableCell>
         <TableCell>
           {this.renderPublishStatus()}
-        </TableCell>
-        <TableCell>
-          <Components.GridItemNotice product={product} />
         </TableCell>
         <TableCell>
           {i18next.t(product.isVisible ? "admin.tags.visible" : "admin.tags.hidden")}
