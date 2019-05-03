@@ -1,3 +1,4 @@
+import registerInventoryPlugin from "/imports/plugins/core/inventory/server/no-meteor/register";
 import registerSimpleInventoryPlugin from "/imports/plugins/included/simple-inventory/server/no-meteor/register";
 import registerSimplePricingPlugin from "/imports/plugins/included/simple-pricing/server/no-meteor/register";
 
@@ -8,6 +9,7 @@ import registerSimplePricingPlugin from "/imports/plugins/included/simple-pricin
  * @return {Promise<null>} Null
  */
 export default async function registerPlugins(app) {
+  await registerInventoryPlugin(app);
   await registerSimpleInventoryPlugin(app);
   await registerSimplePricingPlugin(app);
 }
