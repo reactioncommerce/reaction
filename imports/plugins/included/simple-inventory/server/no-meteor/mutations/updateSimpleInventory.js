@@ -56,7 +56,7 @@ const defaultValues = {
 export default async function updateSimpleInventory(context, input) {
   inputSchema.validate(input);
 
-  const { collections, userHasPermission } = context;
+  const { collections, isInternalCall, userHasPermission } = context;
   const { Products, SimpleInventory } = collections;
   const { productConfiguration, shopId } = input;
 
@@ -71,7 +71,9 @@ export default async function updateSimpleInventory(context, input) {
   });
   if (!foundProduct) throw new ReactionError("not-found", "Product not found");
 
-  if (!userHasPermission(["admin"], shopId)) {
+  // Allow update if the account has "admin" permission. When called internally by another
+  // plugin, context.isInternalCall can be set to `true` to disable this check.
+  if (!isInternalCall && !userHasPermission(["admin"], shopId)) {
     throw new ReactionError("access-denied", "Access denied");
   }
 
