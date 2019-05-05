@@ -1,4 +1,22 @@
 # Snyk (https://snyk.io) policy file, patches or ignores known vulnerabilities.
 version: v1.13.3
-patch: {}
+# patches apply the minimum changes required to fix a vulnerability
+patch:
+  SNYK-JS-AXIOS-174505:
+    - '@reactioncommerce/file-collections > tus-node-server > @google-cloud/storage > @google-cloud/common > google-auto-auth > gcp-metadata > axios':
+        patched: '2019-05-05T23:04:21.537Z'
+    - '@reactioncommerce/file-collections > tus-node-server > @google-cloud/storage > gcs-resumable-upload > google-auto-auth > gcp-metadata > axios':
+        patched: '2019-05-05T23:04:21.537Z'
+    - '@reactioncommerce/file-collections > tus-node-server > @google-cloud/storage > @google-cloud/common > google-auto-auth > google-auth-library > axios':
+        patched: '2019-05-05T23:04:21.537Z'
+    - '@reactioncommerce/file-collections > tus-node-server > @google-cloud/storage > gcs-resumable-upload > google-auto-auth > google-auth-library > axios':
+        patched: '2019-05-05T23:04:21.537Z'
+    - '@reactioncommerce/file-collections > tus-node-server > @google-cloud/storage > @google-cloud/common > google-auto-auth > google-auth-library > gcp-metadata > axios':
+        patched: '2019-05-05T23:04:21.537Z'
+    - '@reactioncommerce/file-collections > tus-node-server > @google-cloud/storage > gcs-resumable-upload > google-auto-auth > google-auth-library > gcp-metadata > axios':
+        patched: '2019-05-05T23:04:21.537Z'
+    - '@reactioncommerce/file-collections > tus-node-server > @google-cloud/storage > @google-cloud/common > google-auto-auth > google-auth-library > gtoken > axios':
+        patched: '2019-05-05T23:04:21.537Z'
+    - '@reactioncommerce/file-collections > tus-node-server > @google-cloud/storage > gcs-resumable-upload > google-auto-auth > google-auth-library > gtoken > axios':
+        patched: '2019-05-05T23:04:21.537Z'
 ignore: {}
