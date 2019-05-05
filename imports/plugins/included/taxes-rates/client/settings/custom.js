@@ -124,6 +124,8 @@ Template.customTaxRates.helpers({
   countryOptions() {
     return Countries.find().fetch();
   },
+  // list of options for taxation location
+  localeOptions: TaxSchema.getAllowedValuesForKey("taxLocale").map((location) => ({ label: location, value: location })),
   statesForCountry() {
     const shop = Shops.findOne();
     const selectedCountry = AutoForm.getFieldValue("country");
