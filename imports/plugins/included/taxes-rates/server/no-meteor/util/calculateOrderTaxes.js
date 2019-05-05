@@ -3,29 +3,46 @@ import Random from "@reactioncommerce/random";
 const TAX_SERVICE_NAME = "custom-rates";
 
 /**
- * @summary Gets all applicable tax definitions based on shop ID and shipping address of a fulfillment group
+ * @summary Gets all applicable tax definitions based on shop ID and shipping address or origin addres
+ * of a fulfillment group
  * @param {Object} collections Map of MongoDB collections
  * @param {Object} order The order
  * @returns {Object[]} Array of tax definition docs
  */
 async function getTaxesForShop(collections, order) {
   const { Taxes } = collections;
-  const { shippingAddress, shopId } = order;
+  const { originAddress, shippingAddress, shopId } = order;
 
   // Find all defined taxes where the shipping address is a match
   const taxDocs = await Taxes.find({
     shopId,
-    taxLocale: "destination",
     $or: [{
-      postal: shippingAddress.postal
-    }, {
-      postal: null,
-      region: shippingAddress.region,
-      country: shippingAddress.country
-    }, {
-      postal: null,
-      region: null,
-      country: shippingAddress.country
+      taxLocale: "destination",
+      $or: [{
+        postal: shippingAddress.postal
+      }, {
+        postal: null,
+        region: shippingAddress.region,
+        country: shippingAddress.country
+      }, {
+        postal: null,
+        region: null,
+        country: shippingAddress.country
+      }]
+    },
+    {
+      taxLocale: "origin",
+      $or: [{
+        postal: originAddress.postal
+      }, {
+        postal: null,
+        region: originAddress.region,
+        country: originAddress.country
+      }, {
+        postal: null,
+        region: null,
+        country: originAddress.country
+      }]
     }]
   }).toArray();
 
@@ -45,9 +62,9 @@ async function getTaxesForShop(collections, order) {
  * @returns {Object|null} Calculated tax information, in `TaxServiceResult` schema, or `null` if can't calculate
  */
 export default async function calculateOrderTaxes({ context, order }) {
-  const { items, shippingAddress } = order;
+  const { items, originAddress, shippingAddress } = order;
 
-  if (!shippingAddress) return null;
+  if (!shippingAddress && !originAddress) return null;
 
   const allTaxes = await getTaxesForShop(context.collections, order);
 
